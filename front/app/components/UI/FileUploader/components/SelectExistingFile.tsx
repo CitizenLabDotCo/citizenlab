@@ -76,11 +76,13 @@ const SelectExistingFile = ({
               if (selectedFile) {
                 onFileAddFromRepository?.([
                   {
-                    id: selectedFile.id,
                     name: selectedFile.attributes.name,
                     size: selectedFile.attributes.size || 0,
                     url: selectedFile.attributes.content.url || '',
-                    remote: false, // "False" is used to indicate that the file isn't a new upload, but it's not an attachment on the resource yet either.
+                    // Note: When "id" exists and "remote" is false, we can use this to identify
+                    // files uploaded to the data repository that just haven't been attached to the Phase/Project/Event yet.
+                    id: selectedFile.id,
+                    remote: false,
                   },
                 ]);
               }

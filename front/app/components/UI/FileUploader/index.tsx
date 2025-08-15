@@ -113,74 +113,72 @@ const FileUploader = ({
   const fileNames = files.map((file) => file.name).join(', ');
 
   const content = (
-    <>
-      <Box
-        className={className}
-        key={id}
-        data-cy="e2e-file-uploader-container"
-        w="100%"
-      >
-        <>
-          {isDataRepositoryEnabled && allowFromDataRepository && (
-            // Select from the existing file library.
-            <Box mb="12px">
-              <DataRepositoryFileSelector
-                onFileAddFromRepository={onFileAddFromRepository}
-                files={files}
-              />
-            </Box>
-          )}
-          <FileInput
-            onAdd={handleFileOnAdd}
-            id={id}
-            multiple={multiple}
-            maxSizeMb={maxSizeMb}
-            dataCy={dataCy}
-          />
-        </>
-        <Error fieldName="file" apiErrors={apiErrors?.file} />
+    <Box
+      className={className}
+      key={id}
+      data-cy="e2e-file-uploader-container"
+      w="100%"
+    >
+      <>
+        {isDataRepositoryEnabled && allowFromDataRepository && (
+          // Select from the existing file library.
+          <Box mb="12px">
+            <DataRepositoryFileSelector
+              onFileAddFromRepository={onFileAddFromRepository}
+              files={files}
+            />
+          </Box>
+        )}
+        <FileInput
+          onAdd={handleFileOnAdd}
+          id={id}
+          multiple={multiple}
+          maxSizeMb={maxSizeMb}
+          dataCy={dataCy}
+        />
+      </>
+      <Error fieldName="file" apiErrors={apiErrors?.file} />
 
-        <List key={files.length} className="files-list e2e-files-list">
-          {files.map((file: FileType, index: number) =>
-            enableDragAndDrop ? (
-              <SortableRow
-                key={`item-${file.name}-${file.id}-row`}
-                id={file.id || file.name}
-                index={index}
-                moveRow={handleDragRow}
-                dropRow={handleDragEnd}
-                isLastItem={index === files.length - 1}
-              >
-                <Box w="100%">
-                  <FileDisplay
-                    key={`item-${file.id || file.name}-display`}
-                    onDeleteClick={handleFileOnRemove(file)}
-                    file={file}
-                  />
-                </Box>
-              </SortableRow>
-            ) : (
-              <Box key={`item-${file.name}-${file.id}`} w="100%">
+      <List key={files.length} className="files-list e2e-files-list">
+        {files.map((file: FileType, index: number) =>
+          enableDragAndDrop ? (
+            <SortableRow
+              key={`item-${file.name}-${file.id}-row`}
+              id={file.id || file.name}
+              index={index}
+              moveRow={handleDragRow}
+              dropRow={handleDragEnd}
+              isLastItem={index === files.length - 1}
+            >
+              <Box w="100%">
                 <FileDisplay
                   key={`item-${file.id || file.name}-display`}
                   onDeleteClick={handleFileOnRemove(file)}
                   file={file}
                 />
               </Box>
-            )
-          )}
-        </List>
+            </SortableRow>
+          ) : (
+            <Box key={`item-${file.name}-${file.id}`} w="100%">
+              <FileDisplay
+                key={`item-${file.id || file.name}-display`}
+                onDeleteClick={handleFileOnRemove(file)}
+                file={file}
+              />
+            </Box>
+          )
+        )}
+      </List>
 
-        <ScreenReaderOnly aria-live="polite">
-          <FormattedMessage
-            {...(files.length > 0
-              ? messages.a11y_filesToBeUploaded
-              : messages.a11y_noFiles)}
-            values={{ fileNames }}
-          />
-        </ScreenReaderOnly>
-      </Box>
-    </>
+      <ScreenReaderOnly aria-live="polite">
+        <FormattedMessage
+          {...(files.length > 0
+            ? messages.a11y_filesToBeUploaded
+            : messages.a11y_noFiles)}
+          values={{ fileNames }}
+        />
+      </ScreenReaderOnly>
+    </Box>
   );
 
   return enableDragAndDrop ? (
