@@ -2293,6 +2293,7 @@
   "app.containers.AdminPage.ProjectFiles.close": "Close",
   "app.containers.AdminPage.ProjectFiles.confirmAndUploadFiles": "Confirm and upload",
   "app.containers.AdminPage.ProjectFiles.confirmDelete": "Are you sure you want to delete this file?",
+  "app.containers.AdminPage.ProjectFiles.confirmDeleteEvenIfUsed2": "This file is currently being used as an attachment. Are you sure you want to delete it? This will remove it from all locations where it is used.",
   "app.containers.AdminPage.ProjectFiles.couldNotLoadMarkdown": "Could not load markdown file.",
   "app.containers.AdminPage.ProjectFiles.csvPreviewError": "Could not load CSV preview.",
   "app.containers.AdminPage.ProjectFiles.csvPreviewLimit": "Maximum 50 rows are shown in CSV previews.",
