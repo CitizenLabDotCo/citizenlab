@@ -890,7 +890,7 @@ const AdminProjectEventEdit = () => {
                   onFileRemove={handleEventFileOnRemove}
                   files={eventFiles}
                   apiErrors={isError(apiErrors) ? undefined : apiErrors}
-                  allowSelectingFromDataRepository={true}
+                  allowFromDataRepository={true}
                 />
               </SectionField>
             </Section>

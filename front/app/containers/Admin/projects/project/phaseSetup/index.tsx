@@ -387,9 +387,8 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
             </SubSectionTitle>
             <FileUploader
               id="project-timeline-edit-form-file-uploader"
-              // onFileAdd is for the old file uploader, which we will remove once the feature is released.
               onFileAdd={handlePhaseFileOnAdd}
-              // onFileAddFromRepository handles files added from the new Data Repository uploader.
+              // onFileAddFromRepository handles adding existing files from the new Data Repository.
               onFileAddFromRepository={handlePhaseFilesOnAddFromRepository}
               onFileRemove={handlePhaseFileOnRemove}
               onFileReorder={handleFilesReorder}

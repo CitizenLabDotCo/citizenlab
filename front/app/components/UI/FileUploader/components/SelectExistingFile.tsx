@@ -91,7 +91,7 @@ const SelectExistingFile = ({
               // Clear the current selection
               setFileId(null);
             }}
-            placeholder={formatMessage(messages.fromExistingFiles)}
+            placeholder={formatMessage(messages.selectFile)}
             options={filteredFileOptions}
           />
         </>

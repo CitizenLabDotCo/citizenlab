@@ -9,9 +9,13 @@ export default defineMessages({
     id: 'app.components.FileUploader.selectAFile',
     defaultMessage: 'Select a file',
   },
-  fromExistingFiles: {
-    id: 'app.components.FileUploader.fromExistingFiles2',
-    defaultMessage: 'Select from existing files',
+  chooseFromExistingFiles: {
+    id: 'app.components.FileUploader.chooseFromExistingFiles',
+    defaultMessage: 'Choose from existing files',
+  },
+  fileSelectModalTitle: {
+    id: 'app.components.FileUploader.fileSelectModalTitle',
+    defaultMessage: 'Select existing file',
   },
   or: {
     id: 'app.components.FileUploader.or',
