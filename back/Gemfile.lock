@@ -1212,13 +1212,13 @@ GEM
     securerandom (0.4.1)
     semantic_logger (4.15.0)
       concurrent-ruby (~> 1.0)
-    sentry-rails (5.2.1)
+    sentry-rails (5.0.2)
       railties (>= 5.0)
-      sentry-ruby-core (~> 5.2.1)
-    sentry-ruby (5.2.1)
+      sentry-ruby-core (~> 5.0.2)
+    sentry-ruby (5.0.2)
       concurrent-ruby (~> 1.0, >= 1.0.2)
-      sentry-ruby-core (= 5.2.1)
-    sentry-ruby-core (5.2.1)
+      sentry-ruby-core (= 5.0.2)
+    sentry-ruby-core (5.0.2)
       concurrent-ruby
     set (1.1.2)
     shoulda-matchers (6.2.0)
@@ -1468,8 +1468,8 @@ DEPENDENCIES
   saharspec
   scenic
   scientist (~> 1.6.4)
-  sentry-rails (~> 5.2.0)
-  sentry-ruby (~> 5.2.0)
+  sentry-rails (~> 5.0.0)
+  sentry-ruby (~> 5.0.0)
   seo!
   shoulda-matchers (~> 6.2.0)
   simple_segment (~> 1.5)
