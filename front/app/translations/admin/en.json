@@ -2884,6 +2884,7 @@
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesTooltip": "Attach files to provide additional context to the AI to support analysis.",
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesWithCurrentCount": "Attach files ({numberAttachedFiles})",
   "app.containers.AdminPage.projects.project.analysis.files.save": "Save",
+  "app.containers.AdminPage.projects.project.analysis.files.uploadFiles": "Upload files to project",
   "app.containers.AdminPage.projects.project.analysis.filter": "Only show inputs with this value",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Hide responses with no answer",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Auto-insights",
