@@ -14,6 +14,7 @@ import Wide from './Wide';
 const VisitorsCard = ({
   startAt,
   endAt,
+  projectId,
   compareStartAt,
   compareEndAt,
   resolution,
@@ -22,6 +23,7 @@ const VisitorsCard = ({
   const { currentResolution, stats, timeSeries } = useVisitors({
     startAt,
     endAt,
+    projectId,
     compareStartAt,
     compareEndAt,
     resolution,

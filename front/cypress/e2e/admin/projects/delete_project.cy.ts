@@ -18,7 +18,6 @@ describe('Admin: delete project', () => {
     }).then((project) => {
       const projectId = project.body.data.id;
       cy.visit('/admin/projects');
-      cy.acceptCookies();
 
       cy.dataCy('projects-overview-sort-select').select(
         'recently_created_desc'
@@ -50,7 +49,6 @@ describe('Admin: delete project', () => {
       const folderId = folder.body.data.id;
 
       cy.visit('/admin/projects');
-      cy.acceptCookies();
       cy.dataCy('projects-overview-folders-tab').click();
 
       cy.contains(folderTitleToDelete).should('exist');

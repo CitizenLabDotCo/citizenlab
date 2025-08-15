@@ -20,6 +20,7 @@ VisitorsWidget.craft = {
     title: {},
     startAt: undefined,
     endAt: undefined,
+    projectId: undefined,
     resolution: undefined,
     compareStartAt: undefined,
     compareEndAt: undefined,

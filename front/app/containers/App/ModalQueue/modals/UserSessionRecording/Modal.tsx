@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import {
   Icon,
@@ -8,52 +8,35 @@ import {
   Title,
   Box,
 } from '@citizenlab/cl2-component-library';
-import { get, set } from 'js-cookie';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import { set } from 'js-cookie';
 
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 
+import { useModalQueue } from '../..';
+
 import messages from './messages';
 
 const UserSessionRecordingModal = () => {
-  const [modalOpened, setModalOpened] = useState(false);
+  const { removeModal } = useModalQueue();
+
   const { formatMessage } = useIntl();
-  const userSessionRecodingFeatureFlag = useFeatureFlag({
-    name: 'user_session_recording',
-  });
-
-  useEffect(() => {
-    const shouldShowModal = () => {
-      const hasSeenModal = get('user_session_recording_modal');
-      const show =
-        userSessionRecodingFeatureFlag &&
-        hasSeenModal !== 'true' &&
-        Math.random() < 0.01; // 1% chance of showing the modal
-      return show;
-    };
-
-    if (shouldShowModal()) {
-      setModalOpened(true);
-    }
-  }, [userSessionRecodingFeatureFlag]);
 
   const onAccept = () => {
-    setModalOpened(false);
-    eventEmitter.emit('user_session_recording_accepted', true);
     set('user_session_recording_modal', 'true');
+    eventEmitter.emit('user_session_recording_accepted', true);
+    removeModal('user-session-recording');
   };
 
   const onClose = () => {
-    setModalOpened(false);
     set('user_session_recording_modal', 'true');
+    removeModal('user-session-recording');
   };
 
   return (
-    <Modal opened={modalOpened} close={onClose}>
+    <Modal opened close={onClose}>
       <Box p="24px">
         <Box display="flex" gap="16px" alignItems="center">
           <Icon

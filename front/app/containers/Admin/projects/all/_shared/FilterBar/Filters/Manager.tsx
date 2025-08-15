@@ -55,6 +55,7 @@ const Manager = ({ mr = '0px', onClear }: Props) => {
       options={sortedOptions}
       searchValue={searchValue}
       mr={mr}
+      openedDefaultValue={managerIds.length === 0}
       onChange={(managerIds) => {
         setParam('managers', managerIds);
         trackEventByName(tracks.setManager, {

@@ -18,11 +18,11 @@ const OPTIONS: {
 }[] = [
   {
     value: 'listed',
-    message: messages.discoverabilityPublic,
+    message: messages.discoverabilityListed,
   },
   {
     value: 'unlisted',
-    message: messages.discoverabilityHidden,
+    message: messages.discoverabilityUnlisted,
   },
 ];
 
@@ -44,6 +44,7 @@ const DiscoverabilityFilter = ({ onClear }: Props) => {
       title={formatMessage(messages.discoverabilityLabel)}
       options={options}
       selected={value}
+      openedDefaultValue={value.length === 0}
       onChange={(discoverability) => {
         setParam('discoverability', discoverability as Discoverability[]);
         trackEventByName(tracks.setDiscoverability, {
