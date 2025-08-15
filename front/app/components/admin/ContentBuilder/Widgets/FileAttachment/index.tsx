@@ -10,8 +10,11 @@ import {
 import { useNode } from '@craftjs/core';
 import { useParams } from 'react-router-dom';
 
+import useAddFileAttachment from 'api/file_attachments/useAddFileAttachment';
+import useDeleteFileAttachment from 'api/file_attachments/useDeleteFileAttachment';
 import useFileById from 'api/files/useFileById';
 import useFiles from 'api/files/useFiles';
+import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import FileDisplay from 'components/UI/FileAttachments/FileDisplay';
@@ -22,6 +25,7 @@ import messages from './messages';
 
 type FileAttachmentProps = {
   fileId?: string;
+  fileAttachmentId?: string;
 };
 
 const FileAttachment = ({ fileId }: FileAttachmentProps) => {
@@ -62,7 +66,14 @@ const FileAttachmentSettings = () => {
 
   const { formatMessage } = useIntl();
 
+  // File attachment API hooks
+  const { mutate: addFileAttachment } = useAddFileAttachment();
+  const { mutate: deleteFileAttachment } = useDeleteFileAttachment();
+
   const { projectId } = useParams();
+  const { data: projectDescriptionLayout } = useProjectDescriptionBuilderLayout(
+    projectId || ''
+  );
 
   // Get files for project
   const { data: files, isFetching: isFetchingFiles } = useFiles({
@@ -87,7 +98,7 @@ const FileAttachmentSettings = () => {
       my="32px"
       display="flex"
       flexDirection="column"
-      gap="24px"
+      gap="12px"
     >
       {fileOptions.length === 0 ? (
         <Text m="0px">{formatMessage(messages.noFilesAvailable)}</Text>
@@ -96,7 +107,28 @@ const FileAttachmentSettings = () => {
           value={fileId}
           onChange={(option) => {
             setProp((props: FileAttachmentProps) => {
+              // Remove any current file attachment.
+              if (props.fileAttachmentId) {
+                deleteFileAttachment(props.fileAttachmentId);
+              }
+              // Set the new selected file ID.
               props.fileId = option.value;
+
+              // Create a new file attachment to the project description layout.
+              projectDescriptionLayout?.data.id &&
+                addFileAttachment(
+                  {
+                    file_id: option.value,
+                    attachable_type: 'Layout',
+                    attachable_id: projectDescriptionLayout.data.id,
+                  },
+                  {
+                    onSuccess: (data) => {
+                      // Update the node's fileId prop with the newly created attachment.
+                      props.fileAttachmentId = data.data.id;
+                    },
+                  }
+                );
             });
           }}
           placeholder={formatMessage(messages.selectFile)}
@@ -107,7 +139,8 @@ const FileAttachmentSettings = () => {
 
       <ButtonWithLink
         linkTo={`/admin/projects/${projectId}/files`}
-        buttonStyle="secondary-outlined"
+        buttonStyle="text"
+        icon="upload-file"
         openLinkInNewTab={true}
       >
         {formatMessage(messages.uploadFiles)}
