@@ -59,7 +59,7 @@ class WebApi::V1::FilesController < ApplicationController
 
     if files.empty?
       file_attachments = policy_scope(@container.file_attachments.includes(:file))
-      render json: WebApi::V1::FileAttachmentSerializer.new(
+      render json: WebApi::V1::FileAttachmentSerializerAsLegacyFile.new(
         file_attachments,
         params: jsonapi_serializer_params
       ).serializable_hash
@@ -165,7 +165,7 @@ class WebApi::V1::FilesController < ApplicationController
   end
 
   def serialize_file(file)
-    serializer_class = file.is_a?(Files::FileAttachment) ? WebApi::V1::FileAttachmentSerializer : WebApi::V1::FileSerializer
+    serializer_class = file.is_a?(Files::FileAttachment) ? WebApi::V1::FileAttachmentSerializerAsLegacyFile : WebApi::V1::FileSerializer
     serializer_class.new(file, params: jsonapi_serializer_params).serializable_hash
   end
 
