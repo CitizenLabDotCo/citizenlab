@@ -11,6 +11,7 @@ import { AuthenticationContext } from 'api/authentication/authentication_require
 import { SSOParams } from 'api/authentication/singleSignOn';
 import useAuthUser from 'api/me/useAuthUser';
 
+import { useModalQueue } from 'containers/App/ModalQueue';
 import { invalidateAllActionDescriptors } from 'containers/Authentication/useSteps/invalidateAllActionDescriptors';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
@@ -38,6 +39,7 @@ export default function useSteps() {
   const anySSOEnabled = useAnySSOEnabled();
   const { pathname, search } = useLocation();
   const { data: authUser } = useAuthUser();
+  const { queueModal, removeModal } = useModalQueue();
 
   // The authentication data will be initialized with the global sign up flow.
   // In practice, this will be overwritten before firing the flow (see event
@@ -54,14 +56,20 @@ export default function useSteps() {
 
   const [currentStep, _setCurrentStep] = useState<Step>('closed');
 
-  const setCurrentStep = useCallback((step: Step) => {
-    if (step === 'closed') {
-      invalidateAllActionDescriptors();
-      queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
-    }
+  const setCurrentStep = useCallback(
+    (step: Step) => {
+      if (step === 'closed') {
+        invalidateAllActionDescriptors();
+        queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
+        removeModal('authentication');
+      } else {
+        queueModal('authentication');
+      }
 
-    _setCurrentStep(step);
-  }, []);
+      _setCurrentStep(step);
+    },
+    [queueModal, removeModal]
+  );
 
   const [state, setState] = useState<State>({
     flow: 'signup',

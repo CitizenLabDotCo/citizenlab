@@ -204,6 +204,12 @@ RSpec.describe ParticipationMethod::Proposals do
     end
   end
 
+  describe '#supported_email_campaigns' do
+    it 'returns campaigns supported for proposals' do
+      expect(participation_method.supported_email_campaigns).to match_array %w[comment_deleted_by_admin comment_on_idea_you_follow comment_on_your_comment cosponsor_of_your_idea idea_published invitation_to_cosponsor_idea mention_in_official_feedback official_feedback_on_idea_you_follow project_phase_started status_change_on_idea_you_follow your_input_in_screening]
+    end
+  end
+
   describe '#supports_serializing?' do
     it 'returns false for all attributes' do
       %i[

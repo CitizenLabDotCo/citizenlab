@@ -16,15 +16,16 @@ namespace :bulk_import do
       import_user = User.admin.order(:created_at).first
       import_path = "tmp/import_files/#{tenant.schema_name}"
 
-      # Extract users from users.xlsx on the file system from the ZIP file
-      user_extractor = BulkImportIdeas::Extractors::UserExtractor.new(locale, nil, import_path)
-      users = user_extractor.users
-      user_custom_fields = user_extractor.custom_fields
-
       # Extract & import projects, phases and content from projects.xlsx and other xlsx files on the file system from the ZIP file
       project_extractor = BulkImportIdeas::Extractors::ProjectExtractor.new(locale, nil, import_path)
       projects = project_extractor.projects
       importer = BulkImportIdeas::Importers::ProjectImporter.new(import_user, locale)
+
+      # Extract users from users.xlsx on the file system from the ZIP file
+      config = project_extractor.import_config # We reuse the config from the project extractor
+      user_extractor = BulkImportIdeas::Extractors::UserExtractor.new(locale, config, import_path)
+      users = user_extractor.users
+      user_custom_fields = user_extractor.custom_fields
 
       # Import or preview the projects and users
       if preview_only

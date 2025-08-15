@@ -523,10 +523,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            project_planning: {
-              enabled: true,
-              allowed: true
-            },
             project_planning_calendar: {
               enabled: true,
               allowed: true

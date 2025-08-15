@@ -8,17 +8,17 @@ RSpec.describe EmailCampaigns::CosponsorOfYourIdeaMailer do
     let_it_be(:author) { create(:user, first_name: 'Bob', last_name: 'Smith') }
     let_it_be(:cosponsor) { create(:user, first_name: 'Sarah', last_name: 'Jones') }
     let_it_be(:proposal) { create(:proposal, author: author) }
-    let_it_be(:campaign) { EmailCampaigns::Campaigns::CosponsorOfYourIdea.create! }
     let_it_be(:cosponsor_name) { UserDisplayNameService.new(AppConfiguration.instance, cosponsor).display_name!(cosponsor) }
-    let_it_be(:command) do
+
+    let(:campaign) { EmailCampaigns::Campaigns::CosponsorOfYourIdea.create! }
+    let(:command) do
       item = Notifications::CosponsorOfYourIdea.new(idea: proposal, initiating_user: cosponsor)
       activity = Activity.new(item: item, user: author)
-      commands = EmailCampaigns::Campaigns::CosponsorOfYourIdea.new.generate_commands(recipient: recipient, activity: activity)
+      commands = campaign.generate_commands(recipient: recipient, activity: activity)
       commands[0].merge({ recipient: recipient })
     end
-
-    let_it_be(:mailer) { described_class.with(command: command, campaign: campaign) }
-    let_it_be(:mail) { mailer.campaign_mail.deliver_now }
+    let(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let(:mail) { mailer.campaign_mail.deliver_now }
 
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
@@ -46,31 +46,81 @@ RSpec.describe EmailCampaigns::CosponsorOfYourIdeaMailer do
     end
 
     context 'with custom text' do
-      let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-
-      before do
-        campaign.update!(
-          subject_multiloc: { 'en' => 'Custom Subject - {{ cosponsorName }}' },
+      let!(:global_campaign) do
+        create(
+          :cosponsor_of_your_idea_campaign,
+          subject_multiloc: { 'en' => 'Custom Global Subject - {{ cosponsorName }}' },
           title_multiloc: { 'en' => 'NEW TITLE FOR {{ cosponsorName }}' },
+          button_text_multiloc: { 'en' => 'CLICK THE GLOBAL BUTTON' }
+        )
+      end
+      let!(:context_campaign) do
+        create(
+          :cosponsor_of_your_idea_campaign,
+          context: proposal.phases.first,
+          subject_multiloc: { 'en' => 'Custom Context Subject - {{ cosponsorName }}' },
           intro_multiloc: { 'en' => '<b>NEW BODY TEXT FOR {{ cosponsorName }}</b>' },
-          button_text_multiloc: { 'en' => 'CLICK THE BUTTON' }
+          button_text_multiloc: { 'en' => 'CLICK THE CONTEXT BUTTON' },
+          reply_to: 'noreply@govocal.com'
         )
       end
 
-      it 'can customise the subject' do
-        expect(mail.subject).to eq 'Custom Subject - Sarah Jones'
+      context 'on a global campaign' do
+        let(:campaign) { global_campaign }
+
+        it 'can customise the subject' do
+          expect(mail.subject).to eq 'Custom Global Subject - Sarah Jones'
+        end
+
+        it 'renders the reply to email' do
+          expect(mail.reply_to).to eq [ENV.fetch('DEFAULT_FROM_EMAIL', 'hello@citizenlab.co')]
+        end
+
+        it 'can customize the header' do
+          expect(mail_body(mail)).to have_tag('div') do
+            with_tag 'h1' do
+              with_text(/NEW TITLE FOR Sarah Jones/)
+            end
+            with_tag 'p' do
+              with_text(/Sarah Jones has accepted your invitation to co-sponsor your proposal\./)
+            end
+          end
+        end
+
+        it 'can customise the CTA' do
+          expect(mail_body(mail)).to have_tag('a', with: { href: command.dig(:event_payload, :idea_url) }) do
+            with_text(/CLICK THE GLOBAL BUTTON/)
+          end
+        end
       end
 
-      it 'can customise the title' do
-        expect(mail_body(mail)).to include('NEW TITLE FOR Sarah Jones')
-      end
+      context 'on a context campaign' do
+        let(:campaign) { context_campaign }
 
-      it 'can customise the body including HTML' do
-        expect(mail_body(mail)).to include('<b>NEW BODY TEXT FOR Sarah Jones</b>')
-      end
+        it 'can customise the subject' do
+          expect(mail.subject).to eq 'Custom Context Subject - Sarah Jones'
+        end
 
-      it 'can customise the cta button' do
-        expect(mail_body(mail)).to include('CLICK THE BUTTON')
+        it 'can customize the reply to email' do
+          expect(mail.reply_to).to eq ['noreply@govocal.com']
+        end
+
+        it 'can customize the header and fall back to global customzations' do
+          expect(mail_body(mail)).to have_tag('div') do
+            with_tag 'h1' do
+              with_text(/NEW TITLE FOR Sarah Jones/)
+            end
+            with_tag 'p' do
+              with_text(/NEW BODY TEXT FOR Sarah Jones/)
+            end
+          end
+        end
+
+        it 'can customise the CTA' do
+          expect(mail_body(mail)).to have_tag('a', with: { href: command.dig(:event_payload, :idea_url) }) do
+            with_text(/CLICK THE CONTEXT BUTTON/)
+          end
+        end
       end
     end
   end

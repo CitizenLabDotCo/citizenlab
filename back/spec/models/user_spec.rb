@@ -597,7 +597,7 @@ RSpec.describe User do
     end
 
     describe '.project_folder_moderator' do
-      context 'when a folder ID is provided' do
+      context 'when one folder ID is provided' do
         it 'excludes regular user with no roles' do
           expect(described_class.project_folder_moderator(project_folder.id)).not_to include(user)
         end
@@ -627,7 +627,27 @@ RSpec.describe User do
         end
       end
 
-      context 'when a folder ID is not provided' do
+      context 'when multiple folder IDs are provided' do
+        it 'works as an AND filter' do
+          # Create user who is a moderator of both folders
+          user = create(:user)
+          another_folder = create(:project_folder)
+          user.roles << { type: 'project_folder_moderator', project_folder_id: project_folder.id }
+          user.roles << { type: 'project_moderator', project_id: create(:project).id }
+          user.roles << { type: 'project_folder_moderator', project_folder_id: another_folder.id }
+          user.save!
+
+          # Create user who is moderator of only one folder
+          user_with_only_one_folder = create(:user)
+          user_with_only_one_folder.roles << { type: 'project_folder_moderator', project_folder_id: another_folder.id }
+          user_with_only_one_folder.save!
+
+          expect(described_class.project_folder_moderator(project_folder.id, another_folder.id)).to include(user)
+          expect(described_class.project_folder_moderator(project_folder.id, another_folder.id)).not_to include(user_with_only_one_folder)
+        end
+      end
+
+      context 'when no folder ID is not provided' do
         it 'includes only users with a folder moderator role' do
           expect(described_class.project_folder_moderator)
             .to match_array([project_folder_moderator, moderator_of_other_folder])

@@ -1,8 +1,7 @@
 import { ImageSizes, Multiloc, SupportedLocale, UploadFile } from 'typings';
 
-import { API_PATH } from 'containers/App/constants';
-
 import { TCategory } from 'components/ConsentManager/destinations';
+import { API_PATH } from 'containers/App/constants';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -274,7 +273,6 @@ export interface IAppConfigurationSettings {
   data_repository_ai_analysis?: AppConfigurationFeature;
   user_fields_in_surveys?: AppConfigurationFeature;
   html_pdfs?: AppConfigurationFeature;
-  project_planning?: AppConfigurationFeature;
   project_planning_calendar?: AppConfigurationFeature;
   common_ground?: AppConfigurationFeature;
   customised_automated_emails?: AppConfigurationFeature;

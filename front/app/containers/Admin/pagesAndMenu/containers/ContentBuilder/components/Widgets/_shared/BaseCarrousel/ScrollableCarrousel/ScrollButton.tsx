@@ -36,6 +36,7 @@ const ScrollButton = ({
         onClick();
       }}
       aria-hidden="true"
+      tabIndex={-1}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
