@@ -254,7 +254,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
       filesToRemove: phaseFilesToRemove,
       fileOrdering: initialFileOrdering || {},
       filesToAttach: inStatePhaseFiles.filter(
-        (file) => file.id && !file.remote // Files exist, but aren't attached to this phase yet
+        (file) => file.id && !file.remote // File IDs exist, but they aren't attached to this phase yet.
       ),
     })
       .then(() => {

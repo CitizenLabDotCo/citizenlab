@@ -1,14 +1,16 @@
 import { IRelationship } from 'typings';
 
+type AttachableType = 'Phase' | 'Project' | 'Event';
+
 export type QueryParameters = {
-  attachable_type?: string;
+  attachable_type?: AttachableType;
   attachable_id?: string;
   file_id?: number;
 };
 
 export interface IAddFileAttachmentProperties {
   file_id: string;
-  attachable_type: string;
+  attachable_type: AttachableType;
   attachable_id: string;
 }
 

@@ -4,6 +4,7 @@ import { isString } from 'lodash-es';
 
 import useAddFileAttachment from 'api/file_attachments/useAddFileAttachment';
 import PhaseFilesKeys from 'api/phase_files/keys';
+import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
 import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
 import useUpdatePhaseFile from 'api/phase_files/useUpdatePhaseFile';
 
@@ -13,7 +14,7 @@ import { SyncPhaseFilesArguments } from './types';
 
 export function useSyncPhaseFiles() {
   const { mutateAsync: addPhaseFileAttachment } = useAddFileAttachment();
-
+  const { mutateAsync: addPhaseFile } = useAddPhaseFile();
   const { mutateAsync: deletePhaseFile } = useDeletePhaseFile();
   const { mutateAsync: updatePhaseFile } = useUpdatePhaseFile();
 
@@ -25,42 +26,62 @@ export function useSyncPhaseFiles() {
       filesToAttach,
       fileOrdering,
     }: SyncPhaseFilesArguments) => {
-      // Create any missing File Attachments to the phase
+      // First, create any File Attachments for existing files from File Library
       if (filesToAttach && filesToAttach.length > 0) {
-        // Get any files that we need to attach
         const filesToAttachPromises = phaseFiles
-          .filter((file) => !file.remote)
+          .filter((file) => !file.remote && file.id) // Files with IDs that aren't remote yet are considered new attachments.
           .map((file) =>
             addPhaseFileAttachment({
               file_id: file.id || '',
               attachable_id: phaseId,
               attachable_type: 'Phase',
+            }).then((attachment) => {
+              // After attaching, also update the file's ordering
+              return updatePhaseFile({
+                phaseId,
+                fileId: attachment.data.id,
+                file: { ordering: file.ordering },
+                invalidate: false,
+              });
             })
           );
 
-        // Wait for the file attachments to be created
         await Promise.all(filesToAttachPromises);
       }
 
-      // Get any files that we need to remove
+      // Add newly uploaded files
+      const newlyUploadedFiles = phaseFiles.filter(
+        (file) => !file.remote && !file.id
+      );
+      const filesToAddPromises = newlyUploadedFiles.map((file) =>
+        addPhaseFile({
+          phaseId,
+          base64: file.base64 || '',
+          ordering: file.ordering!,
+          name: file.name,
+          invalidate: false,
+        })
+      );
+
+      // Remove files that need to be deleted
       const filesToRemovePromises = filesToRemove
         .filter((file) => file.remote && isString(file.id))
         .map((file) =>
           deletePhaseFile({
             phaseId,
             fileId: file.id,
-            invalidate: false, // Prevents re-fetching the list after each update. We handle it once instead at the end.
+            invalidate: false,
           })
         );
 
-      // Get any files that we need to change the ordering of
+      // Update ordering for existing remote files that were reordered
       const reorderedFiles = phaseFiles.filter((file) => {
         const initialOrdering = file.id ? fileOrdering[file.id] : undefined;
         return (
           file.remote &&
           typeof file.ordering !== 'undefined' &&
-          (typeof initialOrdering === 'undefined' ||
-            file.ordering !== initialOrdering)
+          initialOrdering !== undefined &&
+          file.ordering !== initialOrdering
         );
       });
 
@@ -71,17 +92,22 @@ export function useSyncPhaseFiles() {
           file: {
             ordering: file.ordering,
           },
-          invalidate: false, // Prevents re-fetching the list after each update. We handle it once instead at the end.
+          invalidate: false,
         })
       );
 
-      // Return a single promise that resolves when all mutations are done
-      await Promise.all([...filesToRemovePromises, ...filesToReorderPromises]);
+      // Execute all remaining operations in parallel
+      await Promise.all([
+        ...filesToAddPromises,
+        ...filesToRemovePromises,
+        ...filesToReorderPromises,
+      ]);
 
+      // Refresh the data
       await queryClient.invalidateQueries({
         queryKey: PhaseFilesKeys.list({ phaseId }),
       });
     },
-    [addPhaseFileAttachment, deletePhaseFile, updatePhaseFile]
+    [addPhaseFile, addPhaseFileAttachment, deletePhaseFile, updatePhaseFile]
   );
 }
