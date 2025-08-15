@@ -143,7 +143,7 @@ const FileUploader = ({
         {files.map((file: FileType, index: number) =>
           enableDragAndDrop ? (
             <SortableRow
-              key={`item-${file.id || file.name}-${index}-row`}
+              key={`item-${file.name}-${file.id}-row`}
               id={file.id || file.name}
               index={index}
               moveRow={handleDragRow}
@@ -152,14 +152,14 @@ const FileUploader = ({
             >
               <Box w="100%">
                 <FileDisplay
-                  key={`item-${file.id || file.name}-${index}-display`}
+                  key={`item-${file.name}-${file.id}-display`}
                   onDeleteClick={handleFileOnRemove(file)}
                   file={file}
                 />
               </Box>
             </SortableRow>
           ) : (
-            <Box key={`item-${file.id || file.name}-${index}`} w="100%">
+            <Box key={`item-${file.name}-${file.id}`} w="100%">
               <FileDisplay
                 key={`item-${file.id || file.name}-display`}
                 onDeleteClick={handleFileOnRemove(file)}
