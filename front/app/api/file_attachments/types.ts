@@ -1,6 +1,6 @@
 import { IRelationship } from 'typings';
 
-type AttachableType = 'Phase' | 'Project' | 'Event';
+type AttachableType = 'Phase' | 'Project' | 'Event' | 'Layout';
 
 export type QueryParameters = {
   attachable_type?: AttachableType;

@@ -10,6 +10,7 @@ import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
 import useFiles from 'api/files/useFiles';
 
 import MultipleSelect from 'components/HookForm/MultipleSelect';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { useIntl } from 'utils/cl-intl';
@@ -107,6 +108,17 @@ const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
             options={fileOptions}
             placeholder={formatMessage(messages.attachFilesFromProject)}
           />
+
+          <Box mt="24px">
+            <ButtonWithLink
+              linkTo={`/admin/projects/${projectId}/files`}
+              buttonStyle="text"
+              icon="upload-file"
+              openLinkInNewTab={true}
+            >
+              {formatMessage(messages.uploadFiles)}
+            </ButtonWithLink>
+          </Box>
         </Box>
       </form>
     </FormProvider>
