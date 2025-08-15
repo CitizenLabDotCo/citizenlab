@@ -29,6 +29,7 @@ import { IEvent, IEventProperties } from 'api/events/types';
 import useAddEvent from 'api/events/useAddEvent';
 import useEvent from 'api/events/useEvent';
 import useUpdateEvent from 'api/events/useUpdateEvent';
+import { addFileAttachment } from 'api/file_attachments/useAddFileAttachment';
 
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useLocale from 'hooks/useLocale';
@@ -41,6 +42,7 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import ErrorComponent from 'components/UI/Error';
 import FileUploader from 'components/UI/FileUploader';
+import { FileType } from 'components/UI/FileUploader/FileDisplay';
 import GoBackButton from 'components/UI/GoBackButton';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
@@ -91,7 +93,7 @@ const AdminProjectEventEdit = () => {
   const [apiErrors, setApiErrors] = useState<ApiErrorType>({});
   const [saving, setSaving] = useState<boolean>(false);
   const [submitState, setSubmitState] = useState<SubmitState>('disabled');
-  const [eventFiles, setEventFiles] = useState<UploadFile[]>([]);
+  const [eventFiles, setEventFiles] = useState<(UploadFile | FileType)[]>([]);
   const [croppedImgBase64, setCroppedImgBase64] = useState<string | null>(null);
 
   const [attributeDiff, setAttributeDiff] = useState<IEventProperties>(
@@ -315,6 +317,11 @@ const AdminProjectEventEdit = () => {
     setEventFiles([...eventFiles, newFile]);
   };
 
+  const handleEventFileOnAddFromRepository = (newFiles: FileType[]) => {
+    setSubmitState('enabled');
+    setEventFiles([...eventFiles, newFiles[0]]);
+  };
+
   const handleEventFileOnRemove = (eventFileToRemove: UploadFile) => {
     setSubmitState('enabled');
     setEventFilesToRemove([...eventFilesToRemove, eventFileToRemove]);
@@ -378,24 +385,34 @@ const AdminProjectEventEdit = () => {
     const { id: eventId } = data.data;
     eventFiles
       .filter((file) => !file.remote)
-      .map((file) =>
-        addEventFile(
-          {
-            eventId,
-            file: file.base64,
-            name: file.name,
-            ordering: null,
-          },
-          {
-            onSuccess: () => {
-              setSubmitState('success');
+      .map((file) => {
+        if (file.id && event?.data.id) {
+          // Attaching an existing file (file ID is present)
+          addFileAttachment({
+            file_id: file.id,
+            attachable_type: 'Event',
+            attachable_id: event.data.id,
+          });
+        } else {
+          // We are uploading a new file
+          addEventFile(
+            {
+              eventId,
+              file: file.base64 || '',
+              name: file.name,
+              ordering: null,
             },
-            onError: () => {
-              setSubmitState('error');
-            },
-          }
-        )
-      );
+            {
+              onSuccess: () => {
+                setSubmitState('success');
+              },
+              onError: () => {
+                setSubmitState('error');
+              },
+            }
+          );
+        }
+      });
     eventFilesToRemove
       .filter((file) => !!file.remote)
       .map((file) => {
@@ -888,6 +905,7 @@ const AdminProjectEventEdit = () => {
                   id="project-events-edit-form-file-uploader"
                   onFileAdd={handleEventFileOnAdd}
                   onFileRemove={handleEventFileOnRemove}
+                  onFileAddFromRepository={handleEventFileOnAddFromRepository}
                   files={eventFiles}
                   apiErrors={isError(apiErrors) ? undefined : apiErrors}
                   allowFromDataRepository={true}
