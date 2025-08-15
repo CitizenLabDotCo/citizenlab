@@ -15,9 +15,9 @@ RSpec.describe Files::FileFinder do
       @uploader1 = create(:user)
       @uploader2 = create(:user)
 
-      @file_without_uploader = create(:file, uploader: nil)
-      @uploader1_file = create(:file, uploader: @uploader1)
-      @uploader2_files = create_pair(:file, uploader: @uploader2)
+      @file_without_uploader = create(:global_file, uploader: nil)
+      @uploader1_file = create(:global_file, uploader: @uploader1)
+      @uploader2_files = create_pair(:global_file, uploader: @uploader2)
 
       @files = [
         @file_without_uploader,

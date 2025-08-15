@@ -36,6 +36,17 @@ Rails.application.routes.draw do
         end
       end
 
+      concern :file_attachable do |options|
+        unless options.key?(:attachable_type)
+          raise 'attachable_type option is required for concern :file_attachable'
+        end
+
+        resources :file_attachments,
+          controller: 'files/file_attachments',
+          only: %i[index create],
+          defaults: { attachable_type: options[:attachable_type], concern: :file_attachable }
+      end
+
       concerns :permissionable # for the global permission scope (with parent_param = nil)
 
       resources :activities, only: [:index]
@@ -43,6 +54,8 @@ Rails.application.routes.draw do
       resources :ideas,
         concerns: %i[reactable spam_reportable followable permissionable],
         defaults: { reactable: 'Idea', spam_reportable: 'Idea', followable: 'Idea', parent_param: :idea_id } do
+        concerns :file_attachable, attachable_type: 'Idea'
+
         resources :images, defaults: { container_type: 'Idea' }
         resources :files, defaults: { container_type: 'Idea' }
         resources :cosponsorships, defaults: { container_type: 'Idea' } do
@@ -139,6 +152,7 @@ Rails.application.routes.draw do
       resource :app_configuration, only: %i[show update]
 
       resources :static_pages do
+        concerns :file_attachable, attachable_type: 'StaticPage'
         resources :files, defaults: { container_type: 'StaticPage' }, shallow: false
         get 'by_slug/:slug', on: :collection, to: 'static_pages#by_slug'
       end
@@ -154,6 +168,8 @@ Rails.application.routes.draw do
       # https://github.com/rails/rails/pull/24405
 
       resources :events, only: %i[index show edit update destroy] do
+        concerns :file_attachable, attachable_type: 'Event'
+
         resources :files, defaults: { container_type: 'Event' }, shallow: false
         resources :images, defaults: { container_type: 'Event' }
         resources :attendances, module: 'events', only: %i[create index]
@@ -162,6 +178,8 @@ Rails.application.routes.draw do
       resources :event_attendances, only: %i[destroy], controller: 'events/attendances'
 
       resources :phases, only: %i[show show_mini edit update destroy], concerns: :permissionable, defaults: { parent_param: :phase_id } do
+        concerns :file_attachable, attachable_type: 'Phase'
+
         member do
           get 'survey_results'
           get 'common_ground_results'
@@ -186,6 +204,8 @@ Rails.application.routes.draw do
       end
 
       resources :projects, concerns: %i[followable], defaults: { followable: 'Project', parent_param: :project_id } do
+        concerns :file_attachable, attachable_type: 'Project'
+
         resources :events, only: %i[new create]
         resources :projects_allowed_input_topics, only: [:index]
         resources :phases, only: %i[index new create]
@@ -239,8 +259,8 @@ Rails.application.routes.draw do
       end
 
       resources :project_folders, controller: 'folders', concerns: [:followable], defaults: { followable: 'ProjectFolders::Folder' } do
+        concerns :file_attachable, attachable_type: 'ProjectFolders::Folder'
         resources :moderators, controller: 'folder_moderators', except: %i[update]
-
         resources :images, controller: '/web_api/v1/images', defaults: { container_type: 'ProjectFolder' }
         resources :files, controller: '/web_api/v1/files', defaults: { container_type: 'ProjectFolder' }
         get 'by_slug/:slug', on: :collection, to: 'folders#by_slug'
@@ -348,7 +368,10 @@ Rails.application.routes.draw do
 
       resources :files, controller: 'files/files' do
         get 'preview', on: :member, to: 'files/previews#show'
+        resources :attachments, controller: 'files/file_attachments', only: %i[index]
       end
+
+      resources :file_attachments, controller: 'files/file_attachments'
     end
   end
 

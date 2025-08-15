@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe WebApi::V1::FileAttachmentSerializer do
+RSpec.describe WebApi::V1::FileAttachmentSerializerAsLegacyFile do
   describe 'equivalence with WebApi::V1::FileSerializer' do
     let(:file_attachment) { @file_attachment }
     let(:idea_file) { @idea_file }

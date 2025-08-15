@@ -112,8 +112,8 @@ resource 'ProjectFile' do
     let(:project_id) { project.id }
 
     context 'when CONSTANTIZER search returns no legacy files but file attachments exist' do
-      let!(:file) { create(:file, name: 'test-attachment.pdf') }
-      let!(:file_attachment) { create(:file_attachment, file: file, attachable: project) }
+      let!(:file) { create(:file, name: 'test-attachment.pdf', projects: [project]) }
+      let!(:file_attachment) { create(:file_attachment, attachable: project, file: file) }
 
       example_request 'Returns file attachments with exact same JSON structure as legacy files' do
         assert_status 200
@@ -152,7 +152,7 @@ resource 'ProjectFile' do
 
     context 'when both CONSTANTIZER and file attachments have files' do
       let!(:project_file) { create(:project_file, project: project) }
-      let!(:file) { create(:file, name: 'test-attachment.pdf') }
+      let!(:file) { create(:file, name: 'test-attachment.pdf', projects: [project]) }
       let!(:file_attachment) { create(:file_attachment, file: file, attachable: project) }
 
       example_request 'Prioritizes CONSTANTIZER results over file attachments' do
