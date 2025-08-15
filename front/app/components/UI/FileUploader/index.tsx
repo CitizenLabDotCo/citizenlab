@@ -152,7 +152,7 @@ const FileUploader = ({
             >
               <Box w="100%">
                 <FileDisplay
-                  key={`item-${file.id || file.name}-display`}
+                  key={`item-${file.name}-${file.id}-display`}
                   onDeleteClick={handleFileOnRemove(file)}
                   file={file}
                 />

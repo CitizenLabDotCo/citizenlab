@@ -387,7 +387,7 @@ const AdminProjectEventEdit = () => {
       .filter((file) => !file.remote)
       .map((file) => {
         if (file.id && event?.data.id) {
-          // Attaching an existing file (file ID is present)
+          // Attaching an existing file (file ID is present, but remote is false)
           addFileAttachment({
             file_id: file.id,
             attachable_type: 'Event',

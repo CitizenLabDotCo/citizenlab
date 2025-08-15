@@ -5,29 +5,9 @@ export default defineMessages({
     id: 'app.components.FileUploader.fileUploadLabel',
     defaultMessage: 'Add files',
   },
-  selectAFile: {
-    id: 'app.components.FileUploader.selectAFile',
-    defaultMessage: 'Select a file',
-  },
   chooseFromExistingFiles: {
     id: 'app.components.FileUploader.chooseFromExistingFiles',
     defaultMessage: 'Choose from existing files',
-  },
-  fileSelectModalTitle: {
-    id: 'app.components.FileUploader.fileSelectModalTitle',
-    defaultMessage: 'Select existing file',
-  },
-  or: {
-    id: 'app.components.FileUploader.or',
-    defaultMessage: 'or',
-  },
-  fileAttachedSuccessfully: {
-    id: 'app.components.FileUploader.fileAttachedSuccessfully',
-    defaultMessage: 'Attached: {fileName}',
-  },
-  uploadFiles: {
-    id: 'app.components.FileUploader.uploadFiles',
-    defaultMessage: 'Upload new files',
   },
   selectFile: {
     id: 'app.components.FileUploader.selectFile',

@@ -163,9 +163,9 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
     updateFormData({ description_multiloc });
   };
 
-  const handlePhaseFileOnAdd = (newFile: FileType) => {
+  const handlePhaseFileOnAdd = (newFile: UploadFile) => {
     const modifiedNewFile = {
-      name: newFile.name,
+      name: newFile.name || newFile.filename,
       size: newFile.size,
       remote: false,
       base64: newFile.base64,
