@@ -20,6 +20,5 @@ export type SyncPhaseFilesArguments = {
   phaseId: string;
   phaseFiles: FileType[];
   filesToRemove: any[];
-  filesToAttach?: FileType[];
   fileOrdering: Record<string, number | undefined>;
 };

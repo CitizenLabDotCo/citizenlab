@@ -23,28 +23,28 @@ export function useSyncPhaseFiles() {
       phaseId,
       phaseFiles,
       filesToRemove,
-      filesToAttach,
       fileOrdering,
     }: SyncPhaseFilesArguments) => {
       // First, create any File Attachments for existing files from File Library
-      if (filesToAttach && filesToAttach.length > 0) {
-        const filesToAttachPromises = phaseFiles
-          .filter((file) => !file.remote && file.id) // Files with IDs that aren't remote yet are considered new attachments.
-          .map((file) =>
-            addPhaseFileAttachment({
-              file_id: file.id || '',
-              attachable_id: phaseId,
-              attachable_type: 'Phase',
-            }).then((attachment) => {
-              // After attaching, also update the file's ordering
-              return updatePhaseFile({
-                phaseId,
-                fileId: attachment.data.id,
-                file: { ordering: file.ordering },
-                invalidate: false,
-              });
-            })
-          );
+      const filesToAttach = phaseFiles.filter(
+        (file) => !file.remote && file.id // Files with IDs that aren't remote yet are considered new attachments.
+      );
+      if (filesToAttach.length > 0) {
+        const filesToAttachPromises = filesToAttach.map((file) =>
+          addPhaseFileAttachment({
+            file_id: file.id || '',
+            attachable_id: phaseId,
+            attachable_type: 'Phase',
+          }).then((attachment) => {
+            // After attaching, also update the file's ordering
+            return updatePhaseFile({
+              phaseId,
+              fileId: attachment.data.id,
+              file: { ordering: file.ordering },
+              invalidate: false,
+            });
+          })
+        );
 
         await Promise.all(filesToAttachPromises);
       }
