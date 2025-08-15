@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.editFile',
     defaultMessage: 'Edit file',
   },
+  cancel: {
+    id: 'app.containers.AdminPage.ProjectFiles.cancel',
+    defaultMessage: 'Cancel',
+  },
   dragAndDropFiles: {
     id: 'app.containers.AdminPage.ProjectFiles.dragAndDropFiles2',
     defaultMessage: 'Drag and drop any files here or',
@@ -30,10 +34,13 @@ export default defineMessages({
     defaultMessage:
       'Allow advanced analytics of these files using AI processing.',
   },
-  confirmDeleteEvenIfUsed: {
-    id: 'app.containers.AdminPage.ProjectFiles.confirmDeleteEvenIfUsed2',
-    defaultMessage:
-      'This file is currently being used as an attachment. Are you sure you want to delete it? This will remove it from all locations where it is used.',
+  fileBeingUsed: {
+    id: 'app.containers.AdminPage.ProjectFiles.fileBeingUsed',
+    defaultMessage: 'This file is currently being used as an attachment.',
+  },
+  willRemoveFromAllLocations: {
+    id: 'app.containers.AdminPage.ProjectFiles.willRemoveFromAllLocations',
+    defaultMessage: 'This will remove it from all locations where it is used.',
   },
   allowAiProcessingSingleFile: {
     id: 'app.containers.AdminPage.ProjectFiles.allowAiProcessingSingleFile',
