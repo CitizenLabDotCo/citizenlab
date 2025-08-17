@@ -2030,7 +2030,7 @@
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Eventos",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Archivos adjuntos (máximo 50MB)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "Los archivos agregados aparecerán en la página de información de proyecto.",
-  "app.containers.AdminPage.ProjectEdit.filesTab2": "360 Entrada",
+  "app.containers.AdminPage.ProjectEdit.filesTab2": "360 Input",
   "app.containers.AdminPage.ProjectEdit.findVolunteers": "Encuentra voluntarios",
   "app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText": "Pide a los participantes que se ofrezcan como voluntarios para diversas actividades y causas.",
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip2": "Como gestor de carpetas, puedes elegir una carpeta al crear el proyecto, pero sólo un administrador puede cambiarla después",
