@@ -298,10 +298,11 @@ en:
       title: 'New internal comment on ''%{post}'''
       preheader: 'New internal comment on ''%{post}'''
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} gave an update on the input ''%{input_title}''. Click the button below to enter the conversation with %{feedback_author_name}.'
-      header_title: 'There''s an update on an input you follow'
+      event_description: '%{feedback_author_name} gave an update on the input ''%{input_title}''. Click the button below to enter the conversation with %{feedback_author_name}.'
+      title: 'There''s an update on an input you follow'
       subject: 'An input you follow has received an official update on the platform of %{organizationName}'
       preheader: 'There''s an update on an input you follow'
+      cta_button: Go to this input
     mention_in_official_feedback:
       cta_button: 'Reply to %{organizationName}'
       event_description: '%{organizationName} mentioned you in their feedback on the idea ''%{post}''. Click the link below to enter the conversation with %{organizationName}.'
@@ -368,10 +369,11 @@ en:
       preheader: 'A new project was published'
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
-      header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
-      header_title: 'An input you follow has a new status'
+      event_description: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
+      title: 'An input you follow has a new status'
       subject: 'The status of "%{input_title}" has changed'
       preheader: 'An input you follow has a new status'
+      cta_button: Go to this input
     user_digest:
       subject: "Your activity on the participation platform of %{organizationName}"
       commented: "%{authorFirstName} commented:"

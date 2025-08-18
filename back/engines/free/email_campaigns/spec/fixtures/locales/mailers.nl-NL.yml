@@ -311,8 +311,8 @@ nl:
       main_header: '''%{post}'' heeft een nieuwe interne reactie'
       preheader: '''%{post}'' heeft een nieuwe interne reactie'
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} Gaf een update bij %{input_title}''.'
-      header_title: 'Er is een update op "%{input_title}"'
+      event_description: '%{feedback_author_name} Gaf een update bij %{input_title}''.'
+      title: 'Er is een update op "%{input_title}"'
       subject: 'Er is officiële feedback geplaatst op "%{input_title}"'
       preheader: 'Er is een update over een idee dat je volgt'
     mention_in_official_feedback:
@@ -384,8 +384,8 @@ nl:
       cta_go_to_project: "Ga naar projectinstellingen"
     status_change_on_idea_you_follow:
       status_change: 'De nieuwe status van dit idee is ''%{status}'''
-      header_message: '%{organizationName} heeft de status van de input ''%{input_title}'' op hun digitale participatieplatform bijgewerkt.'
-      header_title: 'Een bijdrage die je volgt, heeft een nieuwe status'
+      event_description: '%{organizationName} heeft de status van de input ''%{input_title}'' op hun digitale participatieplatform bijgewerkt.'
+      title: 'Een bijdrage die je volgt, heeft een nieuwe status'
       subject: 'De status van "%{input_title}" is veranderd'
       preheader: 'Een bijdrage die je volgt heeft een nieuwe status'
     user_digest:

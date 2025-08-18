@@ -105,6 +105,7 @@ en:
       proposal_title: 'Example Proposal'
       input_status_title: 'Example Status'
       input_status_description: 'An example of a status for an input (e.g. accepted, rejected, implemented...)'
+      official_feedback_body: 'Example official feedback'
     footer:
       "link_privacy_policy": "Privacy Policy"
       "link_terms_conditions": "Terms & Conditions"
@@ -335,10 +336,11 @@ en:
       title: 'New internal comment on ''%{post}'''
       preheader: 'New internal comment on ''%{post}'''
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
-      header_title: 'There''s an update on "%{input_title}"'
+      event_description: '%{feedback_author_name} gave an update on ''%{input_title}''.'
+      title: 'There''s an update on "%{input_title}"'
       subject: 'Official feedback was posted on "%{input_title}"'
       preheader: 'There''s an update on an input you follow'
+      cta_button: Go to this input
     mention_in_official_feedback:
       cta_button: 'Reply to %{organizationName}'
       event_description: '%{organizationName} mentioned you in their feedback on the idea ''%{post}‘. Click the link below to enter the conversation with %{organizationName}'
@@ -408,10 +410,11 @@ en:
       cta_go_to_project: "Go to project settings"
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
-      header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
-      header_title: 'An input you follow has a new status'
+      event_description: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
+      title: 'An input you follow has a new status'
       subject: 'The status of "%{input_title}" has changed'
       preheader: 'An input you follow has a new status'
+      cta_button: Go to this input
     user_digest:
       subject: "This week on the participation platform of %{organizationName}"
       commented: "%{authorFirstName} commented:"
