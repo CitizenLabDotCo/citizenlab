@@ -17,9 +17,9 @@ interface Props {
 const ActiveFilter = ({ filterKey, onRemove }: Props) => {
   switch (filterKey) {
     case 'status':
-      return <Status onClear={onRemove} />;
+      return <Status onClear={onRemove} openedDefaultValue={true} />;
     case 'managers':
-      return <Manager onClear={onRemove} />;
+      return <Manager onClear={onRemove} openedDefaultValue={true} />;
     case 'folder_ids':
       return <Folders onClear={onRemove} />;
     case 'participation_states':
