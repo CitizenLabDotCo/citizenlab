@@ -20,8 +20,6 @@ module Files
       preview.save!
     end
 
-    private
-
     def should_generate_preview?(file)
       @gotenberg.supported_by_libreoffice?(file.content) && file.content.file.extension.downcase != 'pdf'
     end

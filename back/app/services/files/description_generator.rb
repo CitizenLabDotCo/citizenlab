@@ -130,7 +130,7 @@ module Files
     end
 
     def previewable_as_pdf?(file)
-      PreviewService.new.send(:should_generate_preview?, file)
+      PreviewService.new.should_generate_preview?(file)
     end
 
     def docx?(file)
