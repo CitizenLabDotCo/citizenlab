@@ -146,7 +146,7 @@ module Files
         The description should be informative and capture the essential meaning of the document.
 
         Requirements:
-        - Avoid starting the summary with "The document is..." or similar generic introductions if possible
+        - Avoid starting the description with "The document is..." or similar generic introductions if possible
         - Ensure translations are culturally appropriate and linguistically natural for each locale
         - Values must be the description text accurately translated for each respective locale
         - All translations should maintain the same meaning and level of detail
