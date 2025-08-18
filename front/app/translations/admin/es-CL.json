@@ -2503,7 +2503,7 @@
   "app.containers.AdminPage.SettingsPage.languages": "Idiomas",
   "app.containers.AdminPage.SettingsPage.languagesTooltip": "Seleccione los idiomas en los que su plataforma está a disposición de usuarios. Fácilmente pueden elegir su idioma preferido de esta lista mediante un botón en la barra de navegación.",
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Actividad",
-  "app.containers.AdminPage.SettingsPage.loginHelper": "Pantalla de inicio de sesión",
+  "app.containers.AdminPage.SettingsPage.loginHelper": "Formulario de acceso",
   "app.containers.AdminPage.SettingsPage.loginHelperTooltip": "Se muestra en la parte superior del formulario de acceso.",
   "app.containers.AdminPage.SettingsPage.logo": "Logotipo",
   "app.containers.AdminPage.SettingsPage.noHeader": "Por favor, sube una imagen de encabezado",
