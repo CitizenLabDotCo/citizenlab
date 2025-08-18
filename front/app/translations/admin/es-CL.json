@@ -1123,7 +1123,7 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.manager": "Gestor",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.phase_starting_or_ending_soon": "Fase a punto de empezar o acabar",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created_asc1": "Creado recientemente (antiguo-nuevo)",
-  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created_desc1": "Creado recientemente (nuevo-viejo)",
+  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created_desc1": "Creado recientemente (nuevo-antiguo)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_viewed": "Vistos recientemente",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.status": "Estado",
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.admins": "Administradores",
