@@ -2283,7 +2283,7 @@
   "app.containers.AdminPage.ProjectFiles.aiPoweredInsights": "Analyses IA",
   "app.containers.AdminPage.ProjectFiles.aiPoweredInsightsDescription2": "Incluez les fichiers téléchargés dans vos analyses d'intelligence artificielle pour faire ressortir les sujets clés.",
   "app.containers.AdminPage.ProjectFiles.allowAiProcessing": "Autoriser l'utilisation de l'IA pour analyser ces fichiers.",
-  "app.containers.AdminPage.ProjectFiles.allowAiProcessingSingleFile": "Autoriser l'utilisation de l'IA pour analyser ces fichiers.",
+  "app.containers.AdminPage.ProjectFiles.allowAiProcessingSingleFile": "Autoriser l'utilisation de l'IA pour analyser ce fichier.",
   "app.containers.AdminPage.ProjectFiles.askButton": "Poser une question",
   "app.containers.AdminPage.ProjectFiles.categoryLabel": "Catégorie",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Choisir des fichiers",
