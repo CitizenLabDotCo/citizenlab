@@ -1,7 +1,8 @@
 import { ImageSizes, Multiloc, SupportedLocale, UploadFile } from 'typings';
 
-import { TCategory } from 'components/ConsentManager/destinations';
 import { API_PATH } from 'containers/App/constants';
+
+import { TCategory } from 'components/ConsentManager/destinations';
 
 import { Keys } from 'utils/cl-react-query/types';
 
