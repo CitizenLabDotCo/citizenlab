@@ -83,7 +83,7 @@ module Files
       if preview.content.full_url.present?
         preview.content
       elsif preview.status == 'pending'
-        raise ApplicationJob::RetryInError.new('Preview is pending, try again later.', 30.seconds)
+        raise PreviewPendingError
       elsif preview.status == 'failed' && docx?(file)
         docx_to_html(file)
       else
@@ -195,5 +195,6 @@ module Files
 
     class DescriptionGeneratorError < StandardError; end
     class ImageSizeLimitExceededError < DescriptionGeneratorError; end
+    class PreviewPendingError < DescriptionGeneratorError; end
   end
 end

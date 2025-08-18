@@ -91,14 +91,11 @@ RSpec.describe Files::DescriptionGenerator do
       end
 
       context 'when the preview is pending' do
-        it 'raises a ApplicationJob::RetryInError error' do
+        it 'raises a PreviewPendingError' do
           file = create_ai_file(name: 'david.docx')
 
           expect { service.generate_descriptions!(file) }
-            .to raise_error(ApplicationJob::RetryInError) do |error|
-            expect(error.message).to eq('Preview is pending, try again later.')
-            expect(error.retry_in).to eq(30.seconds)
-          end
+            .to raise_error(Files::DescriptionGenerator::PreviewPendingError)
         end
       end
 

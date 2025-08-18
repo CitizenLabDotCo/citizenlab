@@ -25,8 +25,7 @@ module Files
 
     def handle_error(error)
       case error
-      # TODO: Move this logic to the ApplicationJob class
-      when ApplicationJob::RetryInError then retry_in(error.retry_in)
+      when DescriptionGenerator::PreviewPendingError then retry_in(30.seconds)
       when *UNRECOVERABLE_ERRORS then expire
       else super
       end
