@@ -1,6 +1,6 @@
 module EmailCampaigns
   class PreviewService
-    PreviewUser = Struct.new(:first_name, :last_name, :display_name, :display_name_multiloc)
+    PreviewUser = Struct.new(:first_name, :last_name, :display_name, :display_name_multiloc, :surveys_url)
     PreviewContentItem = Struct.new(:id, :title_multiloc, :body_multiloc, :description_multiloc, :description_preview_multiloc, :url, :deleted_reason)
     PreviewEvent = Struct.new(:id, :title_multiloc, :address1, :address2_multiloc)
     PreviewData = Struct.new(:idea, :project, :phase, :comment, :proposal, :event, :input_status, :author, :initiator, :organization_name, :placeholder_image_url)
@@ -50,7 +50,8 @@ module EmailCampaigns
         author: PreviewUser.new(
           first_name: I18n.t('email_campaigns.preview_data.author_first_name', locale: recipient.locale),
           last_name: I18n.t('email_campaigns.preview_data.author_last_name', locale: recipient.locale),
-          display_name: I18n.t('email_campaigns.preview_data.author_display_name', locale: recipient.locale)
+          display_name: I18n.t('email_campaigns.preview_data.author_display_name', locale: recipient.locale),
+          surveys_url: "#{Frontend::UrlService.new.home_url}/profile/#{recipient.slug}/surveys"
         ),
         initiator: PreviewUser.new(
           first_name: I18n.t('email_campaigns.preview_data.initiator_first_name', locale: recipient.locale),

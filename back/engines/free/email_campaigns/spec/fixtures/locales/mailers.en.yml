@@ -466,6 +466,15 @@ en:
       event_description: 'The project "%{projectName}" is asking you to vote between %{numIdeas} options:'
       cta_message: 'Click the button below to participate'
       cta_vote: 'Go to the platform to vote'
+    survey_submitted:
+      subject: '%{organizationName}: Thank you for your response! 🎉'
+      preheader: 'Here are the details of your submission.'
+      title: 'Thank you for sharing your thoughts on "%{projectName}"!'
+      event_description: 'Your input for "%{projectName}" has been submitted successfully.'
+      if_you_would_like_to_review: 'If you would like to review your submission, you can download your responses below.'
+      your_submission_has_id: 'Your submission has the following unique identifier:'
+      you_can_use_this_id: 'You can use this identifier to contact the platform administrators in case you want your submission to be removed.'
+      cta_button: 'Download your responses'
     event_registration_confirmation:
       subject: "You're in! Your registration for \"%{eventTitle}\" is confirmed"
       preheader: "%{firstName}, thanks for registering for %{eventTitle}"

@@ -515,12 +515,12 @@ nl:
     survey_submitted:
       subject: '%{organizationName}: Bedankt voor je reactie! 🎉'
       preheader: 'Hier zijn de details van je inzending.'
-      main_header: 'Bedankt voor het delen van je mening over "%{projectName}"!'
-      your_input_submitted: 'Je bijdrage voor "%{projectName}" is succesvol ingediend.'
+      title: 'Bedankt voor het delen van je mening over "%{projectName}"!'
+      event_description: 'Je bijdrage voor "%{projectName}" is succesvol ingediend.'
       if_you_would_like_to_review: 'Als je je inzending nog eens wilt bekijken, kun je je reacties hieronder downloaden.'
       your_submission_has_id: 'Je inzending heeft de volgende unieke identificatiecode:'
       you_can_use_this_id: 'Je kunt deze identificatiecode gebruiken om contact op te nemen met de beheerders van het platform als je wilt dat je inzending wordt verwijderd.'
-      download_responses: 'Download je reacties'
+      cta_button: 'Download je reacties'
     admin_labels:
       recipient_role:
         admins: 'Aan platformbeheerders'

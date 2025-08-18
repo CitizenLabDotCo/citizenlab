@@ -539,12 +539,12 @@ en:
     survey_submitted:
       subject: '%{organizationName}: Thank you for your response! 🎉'
       preheader: 'Here are the details of your submission.'
-      main_header: 'Thank you for sharing your thoughts on "%{projectName}"!'
-      your_input_submitted: 'Your input for "%{projectName}" has been submitted successfully.'
+      title: 'Thank you for sharing your thoughts on "%{projectName}"!'
+      event_description: 'Your input for "%{projectName}" has been submitted successfully.'
       if_you_would_like_to_review: 'If you would like to review your submission, you can download your responses below.'
       your_submission_has_id: 'Your submission has the following unique identifier:'
       you_can_use_this_id: 'You can use this identifier to contact the platform administrators in case you want your submission to be removed.'
-      download_responses: 'Download your responses'
+      cta_button: 'Download your responses'
     admin_labels:
       recipient_role:
         admins: 'To admins'
