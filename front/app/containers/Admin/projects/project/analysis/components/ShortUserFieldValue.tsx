@@ -11,8 +11,7 @@ import T from 'components/T';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
-
-import { isStringArray } from './utils';
+import { isStringArray } from '../util';
 
 type Props = {
   customField: IUserCustomField;
