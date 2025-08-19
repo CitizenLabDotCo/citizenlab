@@ -383,3 +383,6 @@ lv:
     default_voting_term_plural: "balsis"
   ics_calendar_event:
     event_details: "Detalizēta informācija par pasākumu"
+  errors:
+    messages:
+      must_be_greater_than_min_characters: "jābūt lielākam par min rakstzīmēm"
