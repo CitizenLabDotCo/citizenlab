@@ -382,3 +382,6 @@ da:
     default_voting_term_plural: "afstemninger"
   ics_calendar_event:
     event_details: "Detaljer om begivenheden"
+  errors:
+    messages:
+      must_be_greater_than_min_characters: "skal være større end min tegn"
