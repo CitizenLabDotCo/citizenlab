@@ -386,3 +386,6 @@ ar:
     default_voting_term_plural: "أصوات"
   ics_calendar_event:
     event_details: "تفاصيل الحدث"
+  errors:
+    messages:
+      must_be_greater_than_min_characters: "يجب أن يكون أكبر من الحد الأدنى للأحرف"
