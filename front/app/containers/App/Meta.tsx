@@ -140,11 +140,9 @@ const Meta = () => {
           <link rel="icon" sizes="16x16" href={favicon.small} />
         )}
         {favicon?.large && (
-          <>
-            <link rel="apple-touch-icon" sizes="152x152" href={favicon.large} />
-            <link rel="manifest" href={`${API_PATH}/manifest.json`} />
-          </>
+          <link rel="apple-touch-icon" sizes="152x152" href={favicon.large} />
         )}
+        <link rel="manifest" href={`${API_PATH}/manifest.json`} />
         {/* // For clients using an Esri API Key to access private data,
             // we need to make sure we're sending the platform URL as the referrer
             // in these requests.
