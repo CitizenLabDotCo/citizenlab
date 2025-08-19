@@ -44,7 +44,7 @@ module Export
 
       def visit_multiselect(field)
         option_values = value_for(field) || []
-        return '' if option_values.empty?
+        return '' if option_values.empty? || !option_values.kind_of?(Array)
 
         option_titles = option_values.filter_map do |option_value|
           option_title = option_index[option_value]&.title_multiloc
