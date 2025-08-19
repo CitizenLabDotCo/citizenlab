@@ -52,7 +52,10 @@ const renderField = ({
         <InputMultilocWithLocaleSwitcher
           name={question.key}
           hideLocaleSwitcher
-          maxCharCount={question.key === 'title_multiloc' ? 120 : undefined}
+          maxCharCount={
+            question.max_characters ||
+            (question.key === 'title_multiloc' ? 120 : undefined)
+          }
           scrollErrorIntoView={true}
         />
       );
@@ -73,11 +76,18 @@ const renderField = ({
         <Input
           type={question.input_type === 'number' ? 'number' : 'text'}
           name={question.key}
+          maxCharCount={question.max_characters}
           scrollErrorIntoView={true}
         />
       );
     case 'multiline_text':
-      return <TextArea name={question.key} scrollErrorIntoView={true} />;
+      return (
+        <TextArea
+          name={question.key}
+          maxCharCount={question.max_characters}
+          scrollErrorIntoView={true}
+        />
+      );
     case 'select':
       return (
         <SingleSelectField question={question} scrollErrorIntoView={true} />
