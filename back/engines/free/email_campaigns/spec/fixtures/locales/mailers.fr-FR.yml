@@ -370,8 +370,8 @@ fr:
       preheader: 'Une nouvelle phase va bientôt commencer pour %{projectName}'
     project_published:
       subject: 'Un nouveau projet a été publié sur la plateforme de %{organizationName}'
-      header_title: 'Un nouveau projet a été publié'
-      header_message: 'La plateforme de participation de %{organizationName} vient de publier le projet suivant :'
+      title: 'Un nouveau projet a été publié'
+      event_description: 'La plateforme de participation de %{organizationName} vient de publier le projet suivant :'
       preheader: 'Un nouveau projet a été publié'
     project_review_request:
       subject: 'Demande de révision : Un projet est en attente d''approbation.'
@@ -510,9 +510,10 @@ fr:
     voting_phase_started:
       subject: '%{organizationName}: La phase de vote a commencé pour %{projectName}'
       preheader: 'La phase de vote a commencé pour %{projectName} sur la plateforme de participation de %{organizationName}'
+      title: '%{projectName}'
       event_description: 'Le projet "%{projectName}" vous invite à exprimer votre préférence parmi %{numIdeas} options :'
       cta_message: 'Cliquez sur le bouton ci-dessous pour participer'
-      cta_vote: 'Se rendre sur la plateforme pour voter'
+      cta_button: 'Se rendre sur la plateforme pour voter'
     survey_submitted:
       subject: '%{organizationName}: Merci pour votre réponse ! 🎉'
       preheader: 'Voici les détails de votre soumission.'

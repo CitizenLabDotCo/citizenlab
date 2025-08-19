@@ -369,8 +369,8 @@ nl:
       preheader: 'Een nieuwe fase gaat binnenkort van start voor %{projectName}'
     project_published:
       subject: 'Er is een nieuw project gepubliceerd op het platform van %{organizationName}'
-      header_title: 'Er is een nieuw project gepubliceerd'
-      header_message: 'Het participatieplatform van %{organizationName} heeft zojuist het volgende project gepubliceerd:'
+      title: 'Er is een nieuw project gepubliceerd'
+      event_description: 'Het participatieplatform van %{organizationName} heeft zojuist het volgende project gepubliceerd:'
       preheader: 'Er is een nieuw project gepubliceerd'
     project_review_request:
       subject: 'Beoordelingsverzoek: Een project wacht op goedkeuring.'
@@ -509,9 +509,10 @@ nl:
     voting_phase_started:
       subject: '%{organizationName}: De stemmingsfase is begonnen voor %{projectName}'
       preheader: 'De stemmingsfase is begonnen voor %{projectName} op het participatieplatform van %{organizationName}'
+      title: '%{projectName}'
       event_description: 'Het project "%{projectName}" vraagt je om te stemmen tussen %{numIdeas} opties:'
       cta_message: 'Klik op de knop hieronder om deel te nemen'
-      cta_vote: 'Ga naar het platform om te stemmen'
+      cta_button: 'Ga naar het platform om te stemmen'
     survey_submitted:
       subject: '%{organizationName}: Bedankt voor je reactie! 🎉'
       preheader: 'Hier zijn de details van je inzending.'
