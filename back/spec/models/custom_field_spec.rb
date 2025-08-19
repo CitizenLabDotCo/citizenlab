@@ -718,4 +718,51 @@ RSpec.describe CustomField do
       end
     end
   end
+
+  describe 'character limits' do
+    let(:custom_field) { build(:custom_field, input_type: 'text') }
+
+    context 'when input_type supports text' do
+      it 'validates min_characters is greater than or equal to 0' do
+        custom_field.min_characters = -1
+        expect(custom_field).not_to be_valid
+        expect(custom_field.errors[:min_characters]).to include('must be greater than or equal to 0')
+      end
+
+      it 'validates max_characters is greater than 0' do
+        custom_field.max_characters = 0
+        expect(custom_field).not_to be_valid
+        expect(custom_field.errors[:max_characters]).to include('must be greater than 0')
+      end
+
+      it 'validates max_characters is greater than min_characters' do
+        custom_field.min_characters = 10
+        custom_field.max_characters = 5
+        expect(custom_field).not_to be_valid
+        expect(custom_field.errors[:max_characters]).to include('must be greater than min characters')
+      end
+
+      it 'allows valid character limits' do
+        custom_field.min_characters = 5
+        custom_field.max_characters = 100
+        expect(custom_field).to be_valid
+      end
+
+      it 'allows nil character limits' do
+        custom_field.min_characters = nil
+        custom_field.max_characters = nil
+        expect(custom_field).to be_valid
+      end
+    end
+
+    context 'when input_type does not support text' do
+      let(:custom_field) { build(:custom_field, input_type: 'select') }
+
+      it 'does not validate character limits' do
+        custom_field.min_characters = -1
+        custom_field.max_characters = 0
+        expect(custom_field).to be_valid
+      end
+    end
+  end
 end
