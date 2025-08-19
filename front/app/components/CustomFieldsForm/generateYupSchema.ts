@@ -35,6 +35,8 @@ const generateYupValidationSchema = ({
       maximum_select_count,
       title_multiloc,
       enabled,
+      min_characters,
+      max_characters,
     } = question;
 
     const title = localize(title_multiloc);
@@ -47,18 +49,65 @@ const generateYupValidationSchema = ({
         if (key === 'title_multiloc') {
           schema[key] = enabled
             ? validateAtLeastOneLocale(formatMessage(messages.titleRequired), {
-                validateEachNonEmptyLocale: (schema) =>
-                  schema
+                validateEachNonEmptyLocale: (schema) => {
+                  let fieldSchema = schema
                     .min(3, formatMessage(messages.titleMinLength, { min: 3 }))
                     .max(
                       120,
                       formatMessage(messages.titleMaxLength, { max: 120 })
-                    ),
+                    );
+
+                  if (min_characters && min_characters > 3) {
+                    fieldSchema = fieldSchema.min(
+                      min_characters,
+                      formatMessage(messages.titleMinLength, {
+                        min: min_characters,
+                      })
+                    );
+                  }
+
+                  if (max_characters && max_characters < 120) {
+                    fieldSchema = fieldSchema.max(
+                      max_characters,
+                      formatMessage(messages.titleMaxLength, {
+                        max: max_characters,
+                      })
+                    );
+                  }
+
+                  return fieldSchema;
+                },
               })
             : {};
         } else {
           schema[key] = required
-            ? validateAtLeastOneLocale(formatMessage(messages.titleRequired))
+            ? validateAtLeastOneLocale(formatMessage(messages.titleRequired), {
+                validateEachNonEmptyLocale: (schema) => {
+                  let fieldSchema = schema;
+
+                  if (min_characters) {
+                    fieldSchema = fieldSchema.min(
+                      min_characters,
+                      formatMessage(messages.fieldMinLength, {
+                        min: min_characters,
+                        fieldName: title,
+                      })
+                    );
+                  }
+
+                  if (max_characters) {
+                    fieldSchema = fieldSchema.max(
+                      max_characters,
+                      formatMessage(messages.fieldMaxLength, {
+                        max: max_characters,
+                        fieldName: title,
+                      })
+                    );
+                  }
+
+                  return fieldSchema;
+                },
+              })
             : {};
         }
         break;
@@ -70,18 +119,66 @@ const generateYupValidationSchema = ({
             ? validateAtLeastOneLocale(
                 formatMessage(messages.descriptionRequired),
                 {
-                  validateEachNonEmptyLocale: (schema) =>
-                    schema.min(
-                      3, // I'm not seeing the error for this case
+                  validateEachNonEmptyLocale: (schema) => {
+                    let fieldSchema = schema.min(
+                      3,
                       formatMessage(messages.descriptionMinLength, { min: 3 })
-                    ),
+                    );
+
+                    if (min_characters && min_characters > 3) {
+                      fieldSchema = fieldSchema.min(
+                        min_characters,
+                        formatMessage(messages.descriptionMinLength, {
+                          min: min_characters,
+                        })
+                      );
+                    }
+
+                    if (max_characters) {
+                      fieldSchema = fieldSchema.max(
+                        max_characters,
+                        formatMessage(messages.descriptionMaxLength, {
+                          max: max_characters,
+                        })
+                      );
+                    }
+
+                    return fieldSchema;
+                  },
                 }
               )
             : {};
         } else {
           schema[key] = required
             ? validateAtLeastOneLocale(
-                formatMessage(messages.descriptionRequired)
+                formatMessage(messages.descriptionRequired),
+                {
+                  validateEachNonEmptyLocale: (schema) => {
+                    let fieldSchema = schema;
+
+                    if (min_characters) {
+                      fieldSchema = fieldSchema.min(
+                        min_characters,
+                        formatMessage(messages.fieldMinLength, {
+                          min: min_characters,
+                          fieldName: title,
+                        })
+                      );
+                    }
+
+                    if (max_characters) {
+                      fieldSchema = fieldSchema.max(
+                        max_characters,
+                        formatMessage(messages.fieldMaxLength, {
+                          max: max_characters,
+                          fieldName: title,
+                        })
+                      );
+                    }
+
+                    return fieldSchema;
+                  },
+                }
               )
             : {};
         }
@@ -98,6 +195,26 @@ const generateYupValidationSchema = ({
             .required(fieldRequired)
             .trim() // Removes leading/trailing whitespace before validation
             .min(1, fieldRequired); // Ensures at least one character after trimming
+        }
+
+        if (min_characters) {
+          fieldSchema = fieldSchema.min(
+            min_characters,
+            formatMessage(messages.fieldMinLength, {
+              min: min_characters,
+              fieldName: title,
+            })
+          );
+        }
+
+        if (max_characters) {
+          fieldSchema = fieldSchema.max(
+            max_characters,
+            formatMessage(messages.fieldMaxLength, {
+              max: max_characters,
+              fieldName: title,
+            })
+          );
         }
 
         if (key === 'location_description') {
