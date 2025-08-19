@@ -13,6 +13,8 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
+import { isStringArray } from './utils';
+
 type Props = {
   customField: IIdeaCustomField;
   rawValue?: any;
@@ -88,9 +90,13 @@ const ShortInputFieldValue = ({
       );
     }
     case 'multiselect': {
+      if (!isStringArray(rawValue)) {
+        return null;
+      }
+
       return (
         <>
-          {(rawValue as string[]).map((optionKey, index) => (
+          {rawValue.map((optionKey, index) => (
             <>
               {index !== 0 && ', '}
               <SelectOptionText
