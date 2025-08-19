@@ -131,6 +131,8 @@ const FormEdit = ({
         required: boolean(),
         ask_follow_up: boolean(),
         include_in_printed_form: boolean(),
+        min_characters: number().nullable(),
+        max_characters: number().nullable(),
         temp_id: string(),
         logic: validateLogic(formatMessage(messages.logicValidationError)),
       })
@@ -314,6 +316,15 @@ const FormEdit = ({
         }),
         ...(field.input_type === 'rating' && {
           maximum: field.maximum?.toString() || '5',
+        }),
+        ...([
+          'text',
+          'multiline_text',
+          'text_multiloc',
+          'html_multiloc',
+        ].includes(field.input_type) && {
+          min_characters: field.min_characters,
+          max_characters: field.max_characters,
         }),
       }));
 
