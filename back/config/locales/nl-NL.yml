@@ -382,3 +382,6 @@ nl:
     default_voting_term_plural: "stemmen"
   ics_calendar_event:
     event_details: "Details evenement"
+  errors:
+    messages:
+      must_be_greater_than_min_characters: "moet groter zijn dan min tekens"
