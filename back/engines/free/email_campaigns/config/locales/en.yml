@@ -486,9 +486,9 @@ en:
     voting_basket_submitted:
       subject: '%{organizationName}: You voted successfully'
       preheader: 'You voted successfully on the participation platform of %{organizationName}'
-      title_basket_submitted: 'You voted successfully'
+      title: 'You voted successfully'
       event_description: 'Thanks for participating. Your votes have been recorded. Visit the platform of %{organizationName} to see and manage your votes.'
-      cta_see_votes_submitted: 'See votes submitted'
+      cta_button: 'See votes submitted'
       cta_message: 'Click the button below to participate'
     native_survey_not_submitted:
       subject: '%{organizationName}: Almost there! Submit your answers'
@@ -500,26 +500,26 @@ en:
     voting_basket_not_submitted:
       subject: '%{organizationName}: You didn''t submit your votes'
       preheader: 'You didn''t submit your votes on the participation platform of %{organizationName}'
-      title_basket_not_submitted: 'You didn''t submit your votes'
+      title: 'You didn''t submit your votes'
       event_description: 'You selected a few options for %{contextTitle} but you didn''t submit your selection.'
-      cta_view_options_and_vote: 'View options and vote'
+      cta_button: 'View options and vote'
       cta_message: 'Click the button below to submit your selected options'
     voting_last_chance:
       subject: '%{organizationName}: Last chance to vote for %{phaseTitle}'
       preheader: 'Last chance to vote for %{phaseTitle} on the participation platform of %{organizationName}'
-      title_last_chance: 'Last chance to vote for %{phaseTitle}'
+      title: 'Last chance to vote for %{phaseTitle}'
       body_1: 'The voting phase for the %{projectTitle} project is coming to a close tomorrow, at midnight.'
       body_2: 'Time is running out, and we noticed that you haven''t cast your vote yet! Act now by simply clicking the button below to participate.'
       body_3: 'By doing so, you''ll gain access to a range of options and have the chance to provide your input, which is crucial in deciding the future of this project.'
-      cta_vote: 'Vote'
+      cta_button: 'Vote'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} vote results revealed!'
       preheader: '%{phaseTitle} vote results revealed on the participation platform of %{organizationName}'
-      title_results: '%{phaseTitle} vote results revealed!'
+      title: '%{phaseTitle} vote results revealed!'
       body_1: 'Results are in!'
       body_2: 'The results of the %{phaseTitle} vote in the %{organizationName} platform have been published!'
       body_3: 'We encourage you to review the results and stay tuned for further updates on the next steps.'
-      cta_see_results: 'See results in the platform'
+      cta_button: 'See results in the platform'
     event_registration_confirmation:
       subject: "You're in! Your registration for \"%{eventTitle}\" is confirmed"
       preheader: "%{firstName}, thanks for registering for %{eventTitle}"

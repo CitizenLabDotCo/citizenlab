@@ -38,6 +38,8 @@ module EmailCampaigns
     include ActivityTriggerable
     include Disableable
     include Trackable
+    include ContentConfigurable
+    include ContextConfigurable
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: %w[trial active]
 
@@ -69,6 +71,20 @@ module EmailCampaigns
 
     def self.trigger_multiloc_key
       'email_campaigns.admin_labels.trigger.voting_basket_submitted'
+    end
+
+    def activity_context(activity)
+      return nil unless activity.item.is_a?(::Notification)
+
+      activity.item.phase
+    end
+
+    def self.supported_context_class
+      Phase
+    end
+
+    def self.supports_context?(context)
+      supports_phase_participation_method?(context)
     end
 
     def generate_commands(recipient:, activity:)

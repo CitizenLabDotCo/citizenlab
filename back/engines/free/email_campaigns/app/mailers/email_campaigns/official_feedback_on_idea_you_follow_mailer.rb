@@ -10,7 +10,7 @@ module EmailCampaigns
 
     def substitution_variables
       {
-        feedback_author_name: localize_for_recipient(event.official_feedback_author_multiloc),
+        feedback_author_name: localize_for_recipient(event&.official_feedback_author_multiloc),
         input_title: localize_for_recipient(event&.idea_title_multiloc),
         organizationName: organization_name
       }

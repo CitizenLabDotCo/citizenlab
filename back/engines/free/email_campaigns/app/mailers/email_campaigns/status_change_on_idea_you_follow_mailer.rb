@@ -10,7 +10,7 @@ module EmailCampaigns
 
     def substitution_variables
       {
-        status: localize_for_recipient(event.idea_status_title_multiloc),
+        status: localize_for_recipient(event&.idea_status_title_multiloc),
         input_title: localize_for_recipient(event&.idea_title_multiloc),
         organizationName: organization_name
       }
