@@ -384,3 +384,6 @@ lt:
     default_voting_term_plural: "balsai"
   ics_calendar_event:
     event_details: "Informacija apie renginį"
+  errors:
+    messages:
+      must_be_greater_than_min_characters: "turi būti didesnis nei min simbolių"
