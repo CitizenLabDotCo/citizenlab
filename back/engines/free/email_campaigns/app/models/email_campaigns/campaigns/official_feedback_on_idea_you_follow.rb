@@ -99,7 +99,7 @@ module EmailCampaigns
           idea_title_multiloc: notification.idea.title_multiloc,
           idea_body_multiloc: notification.idea.body_multiloc,
           idea_author_name: name_service.display_name!(notification.idea.author),
-          unfollow_url: Frontend::UrlService.new.unfollow_url(Follower.new(followable: notification.idea, user: recipient)),
+          unfollow_url: Frontend::UrlService.new.unfollow_url(Follower.new(followable: notification.idea, user: recipient))
         }
       }]
     end
