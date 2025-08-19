@@ -383,3 +383,6 @@ sr-Latn:
     default_voting_term_plural: "votes"
   ics_calendar_event:
     event_details: "Event details"
+  errors:
+    messages:
+      must_be_greater_than_min_characters: "must be greater than min characters"
