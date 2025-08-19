@@ -35,7 +35,7 @@ const Settings = () => {
       className: 'intercom-product-tour-project-settings-tab-description',
     },
     {
-      label: formatMessage(messages.projectTags),
+      label: formatMessage(messages.inputTags),
       name: 'tags',
       url: `/admin/projects/${projectId}/settings/tags`,
       className: 'intercom-product-tour-project-settings-tab-project-tags',
