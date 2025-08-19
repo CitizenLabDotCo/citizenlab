@@ -384,3 +384,6 @@ pl:
     default_voting_term_plural: "głosy"
   ics_calendar_event:
     event_details: "Szczegóły wydarzenia"
+  errors:
+    messages:
+      must_be_greater_than_min_characters: "musi być większa niż min znaków"
