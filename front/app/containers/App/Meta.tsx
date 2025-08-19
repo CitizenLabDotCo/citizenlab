@@ -133,24 +133,16 @@ const Meta = () => {
         <meta property="fb:app_id" content={fbAppId} />
         <meta property="og:site_name" content={organizationName} />
         <meta name="application-name" content={organizationName} />
-        {favicon && (
+        {favicon?.medium && (
+          <link rel="icon" sizes="32x32" href={favicon.medium} />
+        )}
+        {favicon?.small && (
+          <link rel="icon" sizes="16x16" href={favicon.small} />
+        )}
+        {favicon?.large && (
           <>
-            {favicon.medium && (
-              <link rel="icon" sizes="32x32" href={favicon.medium} />
-            )}
-            {favicon.small && (
-              <link rel="icon" sizes="16x16" href={favicon.small} />
-            )}
-            {favicon.large && (
-              <>
-                <link
-                  rel="apple-touch-icon"
-                  sizes="152x152"
-                  href={favicon.large}
-                />
-                <link rel="manifest" href={`${API_PATH}/manifest.json`} />
-              </>
-            )}
+            <link rel="apple-touch-icon" sizes="152x152" href={favicon.large} />
+            <link rel="manifest" href={`${API_PATH}/manifest.json`} />
           </>
         )}
         {/* // For clients using an Esri API Key to access private data,
