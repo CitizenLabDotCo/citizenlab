@@ -382,3 +382,6 @@ nb:
     default_voting_term_plural: "stemmer"
   ics_calendar_event:
     event_details: "Detaljer om arrangementet"
+  errors:
+    messages:
+      must_be_greater_than_min_characters: "må være større enn min tegn"
