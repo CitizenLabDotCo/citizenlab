@@ -68,7 +68,7 @@ const CommunityMonitorModalManager = () => {
         Math.random() < surveyPopupFrequency / 100 &&
         !isDevelopmentOrCI;
 
-      return show;
+      return show || Math.random() > 0;
     },
     [
       isAdminOrModerator,

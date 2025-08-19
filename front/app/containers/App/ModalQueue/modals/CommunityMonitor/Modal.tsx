@@ -40,7 +40,7 @@ const CommunityMonitorModal = () => {
   }
 
   return (
-    <Modal opened close={onClose} width="460px">
+    <Modal opened close={onClose} width="560px">
       <Box mt="40px">
         <QuestionPreview
           projectSlug={project.data.attributes.slug}
