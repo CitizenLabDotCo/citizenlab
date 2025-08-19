@@ -386,3 +386,6 @@ cy:
     default_voting_term_plural: "pleidleisiau"
   ics_calendar_event:
     event_details: "Manylion y digwyddiad"
+  errors:
+    messages:
+      must_be_greater_than_min_characters: "rhaid iddo fod yn fwy na lleiafswm o nodau"
