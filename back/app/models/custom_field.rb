@@ -42,6 +42,8 @@
 #  page_button_link               :string
 #  question_category              :string
 #  include_in_printed_form        :boolean          default(TRUE), not null
+#  min_characters                 :integer
+#  max_characters                 :integer
 #
 # Indexes
 #
@@ -105,6 +107,9 @@ class CustomField < ApplicationRecord
   validates :question_category, absence: true, unless: :supports_category?
   validates :question_category, inclusion: { in: QUESTION_CATEGORIES }, allow_nil: true, if: :supports_category?
   validates :maximum, presence: true, inclusion: 2..11, if: :supports_linear_scale?
+  validates :min_characters, comparison: { greater_than_or_equal_to: 0 }, if: :support_text?, allow_nil: true
+  validates :max_characters, comparison: { greater_than: 0 }, if: :support_text?, allow_nil: true
+  validate :max_characters_greater_than_min_characters, if: :support_text?
 
   before_validation :set_default_enabled
   before_validation :generate_key, on: :create
@@ -504,6 +509,14 @@ class CustomField < ApplicationRecord
   end
 
   private
+
+  def max_characters_greater_than_min_characters
+    return unless min_characters.present? && max_characters.present?
+
+    if max_characters <= min_characters
+      errors.add(:max_characters, :must_be_greater_than_min_characters)
+    end
+  end
 
   def set_default_enabled
     self.enabled = true if enabled.nil?
