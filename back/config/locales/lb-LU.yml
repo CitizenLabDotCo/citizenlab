@@ -382,3 +382,6 @@ lb:
     default_voting_term_plural: "Stëmmen"
   ics_calendar_event:
     event_details: "Event Detailer"
+  errors:
+    messages:
+      must_be_greater_than_min_characters: "muss méi grouss wéi min Zeechen sinn"
