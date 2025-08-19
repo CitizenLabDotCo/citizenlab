@@ -334,6 +334,16 @@ describe Export::Xlsx::ValueVisitor do
           end
         end
       end
+
+      context 'when the value is a string because the admin edited a live survey' do
+        let(:value) { 'cat' }
+
+        it 'returns an empty string' do
+          I18n.with_locale('nl-NL') do
+            expect(visitor.visit_multiselect(field)).to eq ''
+          end
+        end
+      end
     end
 
     describe '#visit_multiselect_image' do
