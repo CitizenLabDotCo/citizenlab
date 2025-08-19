@@ -5,19 +5,7 @@ module EmailCampaigns
     include EmailCampaigns::MailerPreview
 
     def campaign_mail
-      project = Project.first
-      command = {
-        recipient: recipient_user,
-        event_payload: {
-          project_id: project.id,
-          project_title_multiloc: project.title_multiloc,
-          project_ideas_count: project.ideas_count,
-          project_url: Frontend::UrlService.new.model_to_url(project, locale: Locale.new(recipient_user.locale))
-        }
-      }
-      campaign = EmailCampaigns::Campaigns::ProjectModerationRightsReceived.first
-
-      campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
+      preview_campaign_mail(EmailCampaigns::Campaigns::ProjectModerationRightsReceived)
     end
   end
 end
