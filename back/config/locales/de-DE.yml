@@ -382,3 +382,6 @@ de:
     default_voting_term_plural: "Stimmen"
   ics_calendar_event:
     event_details: "Veranstaltungsdetails"
+  errors:
+    messages:
+      must_be_greater_than_min_characters: "muss größer sein als min Zeichen"
