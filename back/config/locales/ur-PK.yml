@@ -382,3 +382,6 @@ ur:
     default_voting_term_plural: "ووٹ"
   ics_calendar_event:
     event_details: "واقعہ کی تفصیلات"
+  errors:
+    messages:
+      must_be_greater_than_min_characters: "کم سے کم حروف سے بڑا ہونا چاہیے۔"
