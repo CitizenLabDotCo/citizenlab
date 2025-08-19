@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Tbody, Text, Th, Tr } from '@citizenlab/cl2-component-library';
+import {
+  Tbody,
+  Text,
+  Th,
+  Tr,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 
@@ -18,6 +24,7 @@ interface Props {
 }
 
 const TableBody = ({ question, getAriaLabel }: Props) => {
+  const isPhone = useBreakpoint('phone');
   const localize = useLocalize();
 
   // Put all labels from the UI Schema in an array so we can easily access them
@@ -46,6 +53,7 @@ const TableBody = ({ question, getAriaLabel }: Props) => {
                 color="grey700"
                 wordBreak="break-word"
                 lineHeight="1.2"
+                fontSize={isPhone ? 's' : 'm'}
               >
                 {labelsFromSchema[index]}
 
