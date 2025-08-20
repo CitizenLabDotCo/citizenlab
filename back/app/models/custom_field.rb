@@ -515,7 +515,7 @@ class CustomField < ApplicationRecord
     return unless min_characters.present? && max_characters.present?
 
     if max_characters <= min_characters
-      errors.add(:max_characters, :must_be_greater_than_min_characters)
+      errors.add(:max_characters, :max_must_be_greater_than_min_characters)
     end
   end
 

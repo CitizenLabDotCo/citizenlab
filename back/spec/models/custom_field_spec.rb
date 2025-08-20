@@ -739,7 +739,7 @@ RSpec.describe CustomField do
         custom_field.min_characters = 10
         custom_field.max_characters = 5
         expect(custom_field).not_to be_valid
-        expect(custom_field.errors[:max_characters]).to include('must be greater than min characters')
+        expect(custom_field.errors[:max_characters]).to include('The maximum must be greater than the minimum.')
       end
 
       it 'allows valid character limits' do
