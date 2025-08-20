@@ -19,7 +19,7 @@ import { getLinearScaleLabel } from '../LinearScale/utils';
 
 import { MAXIMUM } from './constants';
 
-const StyledText = styled(Text)<{ selected?: boolean }>`
+const StyledText = styled(Text)`
   text-overflow: ellipsis;
   margin-bottom: 12px;
   cursor: pointer;
