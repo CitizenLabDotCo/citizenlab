@@ -384,4 +384,4 @@ nb:
     event_details: "Detaljer om arrangementet"
   errors:
     messages:
-      must_be_greater_than_min_characters: "må være større enn min tegn"
+      max_must_be_greater_than_min_characters: "Maksimum må være større enn minimum."
