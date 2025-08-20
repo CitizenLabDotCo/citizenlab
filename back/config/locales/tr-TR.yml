@@ -384,4 +384,4 @@ tr:
     event_details: "Etkinlik detayları"
   errors:
     messages:
-      must_be_greater_than_min_characters: "min karakterden büyük olmalıdır"
+      max_must_be_greater_than_min_characters: "Maksimum değer minimum değerden büyük olmalıdır."
