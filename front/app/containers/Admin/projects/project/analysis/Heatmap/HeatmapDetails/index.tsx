@@ -18,6 +18,7 @@ import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHeat
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import { ICustomFieldBinData } from 'api/custom_field_bins/types';
 import useCustomFieldBins from 'api/custom_field_bins/useCustomFieldBins';
+import { deduplicateBins } from 'api/custom_field_bins/utils';
 import useCustomFieldOption from 'api/custom_field_options/useCustomFieldOption';
 import useCustomFieldOptions from 'api/custom_field_options/useCustomFieldOptions';
 import { IFlatCustomField } from 'api/custom_fields/types';
@@ -115,10 +116,14 @@ const HeatmapDetails = ({
 
   const { data: columnOptions } = useCustomFieldOptions(selectedColumnFieldId);
 
-  const { data: columnBins } = useCustomFieldBins(selectedColumnFieldId);
-  const { data: rowBins } = useCustomFieldBins(
+  const { data: _columnBins } = useCustomFieldBins(selectedColumnFieldId);
+  const { data: _rowBins } = useCustomFieldBins(
     !isSelectedRowTypeTags ? selectedRowType : undefined
   );
+
+  // Temp fix
+  const columnBins = _columnBins ? deduplicateBins(_columnBins) : undefined;
+  const rowBins = _rowBins ? deduplicateBins(_rowBins) : undefined;
 
   if (!columnOptions || !columnBins) return null;
 
