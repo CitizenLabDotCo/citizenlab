@@ -124,7 +124,9 @@ module ParticipationMethod
           end,
           required: true,
           enabled: true,
-          ordering: 1
+          ordering: 1,
+          min_characters: 3,
+          max_characters: 120
         ),
         CustomField.new(
           id: SecureRandom.uuid,
@@ -169,7 +171,8 @@ module ParticipationMethod
           end,
           required: true,
           enabled: true,
-          ordering: 3
+          ordering: 3,
+          min_characters: 3,
         ),
         CustomField.new(
           id: SecureRandom.uuid,
