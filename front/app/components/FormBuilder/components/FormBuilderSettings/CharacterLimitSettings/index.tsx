@@ -44,6 +44,7 @@ const CharacterLimitSettings = ({
               min="0"
               size="small"
               onKeyDown={handleKeyDown}
+              placeholder={formatMessage(messages.noLimit)}
             />
           </Box>
         </Box>
