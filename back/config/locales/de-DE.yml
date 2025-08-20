@@ -384,4 +384,4 @@ de:
     event_details: "Veranstaltungsdetails"
   errors:
     messages:
-      must_be_greater_than_min_characters: "muss größer als die Mindestanzahl an Zeichen sein"
+      max_must_be_greater_than_min_characters: "Das Maximum muss größer sein als das Minimum."
