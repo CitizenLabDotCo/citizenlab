@@ -21,7 +21,6 @@ import { MAXIMUM } from './constants';
 
 const StyledText = styled(Text)`
   text-overflow: ellipsis;
-  margin-bottom: 12px;
   cursor: pointer;
   word-break: break-all;
   white-space: nowrap;
