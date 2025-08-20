@@ -1,9 +1,8 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import projectFilesKeys from './keys';
 import { IProjectFile, UpdateProjectFileObject } from './types';
 
 const updateProjectFile = async ({
@@ -18,16 +17,8 @@ const updateProjectFile = async ({
   });
 
 const useUpdateProjectFile = () => {
-  const queryClient = useQueryClient();
   return useMutation<IProjectFile, CLErrors, UpdateProjectFileObject>({
     mutationFn: updateProjectFile,
-    onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: projectFilesKeys.list({
-          projectId: variables.projectId,
-        }),
-      });
-    },
   });
 };
 

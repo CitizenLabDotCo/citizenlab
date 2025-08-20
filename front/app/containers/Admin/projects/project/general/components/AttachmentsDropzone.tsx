@@ -15,6 +15,7 @@ interface Props {
   projectFiles: UploadFile[];
   apiErrors: CLErrors;
   handleProjectFileOnAdd: (newProjectFile: UploadFile) => void;
+  handleProjectFileOnAddFromRepository: (newFiles: UploadFile[]) => void;
   handleProjectFileOnRemove: (projectFileToRemove: UploadFile) => void;
   onFileReorder: (updatedFiles: UploadFile[]) => void;
 }
@@ -23,6 +24,7 @@ const AttachmentsDropzone = ({
   projectFiles,
   apiErrors,
   handleProjectFileOnAdd,
+  handleProjectFileOnAddFromRepository,
   handleProjectFileOnRemove,
   onFileReorder,
 }: Props) => (
@@ -37,10 +39,12 @@ const AttachmentsDropzone = ({
       id="e2e-project-file-uploader"
       dataCy={'e2e-project-file-uploader'}
       onFileAdd={handleProjectFileOnAdd}
+      onFileAddFromRepository={handleProjectFileOnAddFromRepository}
       onFileRemove={handleProjectFileOnRemove}
       files={projectFiles}
       apiErrors={apiErrors}
       onFileReorder={onFileReorder}
+      allowFromDataRepository={true}
       enableDragAndDrop
       multiple
     />
