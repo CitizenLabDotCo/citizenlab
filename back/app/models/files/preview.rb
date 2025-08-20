@@ -1,3 +1,22 @@
+# == Schema Information
+#
+# Table name: files_previews
+#
+#  id         :uuid             not null, primary key
+#  content    :string
+#  file_id    :uuid             not null
+#  status     :string           default("pending")
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+# Indexes
+#
+#  index_files_previews_on_file_id  (file_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (file_id => files.id)
+#
 module Files
   # A Files::Preview instance is a PDF version of a Files::File, that is
   # generated internally for previewing purposes.
@@ -16,6 +35,10 @@ module Files
 
     def completed?
       status == 'completed'
+    end
+
+    def name
+      "#{file.name}.pdf"
     end
   end
 end

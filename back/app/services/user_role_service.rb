@@ -78,4 +78,54 @@ class UserRoleService
   def moderates_something?(user)
     user.admin? || user.project_moderator? || user.project_folder_moderator?
   end
+
+  # Returns a hash with project IDs as keys and arrays of users as values
+  def moderators_per_project(project_ids)
+    return {} if project_ids.empty?
+
+    users = User.where(<<~SQL.squish, project_ids)
+      EXISTS (
+        SELECT 1 FROM jsonb_array_elements(roles) AS role
+        WHERE role->>'type' = 'project_moderator'
+          AND role->>'project_id' = ANY (ARRAY[?]::varchar[])
+      )
+    SQL
+
+    users.each_with_object({}) do |user, hash|
+      user.roles.each do |role|
+        next unless role['type'] == 'project_moderator'
+
+        project_id = role['project_id']
+        next unless project_id && project_ids.include?(project_id)
+
+        hash[project_id] ||= []
+        hash[project_id] << user
+      end
+    end
+  end
+
+  # Returns a hash with folder IDs as keys and arrays of users as values
+  def moderators_per_folder(folder_ids)
+    return {} if folder_ids.empty?
+
+    users = User.where(<<~SQL.squish, folder_ids)
+      EXISTS (
+        SELECT 1 FROM jsonb_array_elements(roles) AS role
+        WHERE role->>'type' = 'project_folder_moderator'
+          AND role->>'project_folder_id' = ANY(ARRAY[?]::varchar[])
+      )
+    SQL
+
+    users.each_with_object({}) do |user, hash|
+      user.roles.each do |role|
+        next unless role['type'] == 'project_folder_moderator'
+
+        folder_id = role['project_folder_id']
+        next unless folder_id && folder_ids.include?(folder_id)
+
+        hash[folder_id] ||= []
+        hash[folder_id] << user
+      end
+    end
+  end
 end

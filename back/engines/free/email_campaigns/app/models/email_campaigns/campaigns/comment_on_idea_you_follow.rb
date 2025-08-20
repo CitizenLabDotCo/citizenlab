@@ -20,6 +20,7 @@
 #  title_multiloc       :jsonb
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
+#  context_type         :string
 #
 # Indexes
 #
@@ -36,6 +37,7 @@ module EmailCampaigns
     include Consentable
     include Disableable
     include ContentConfigurable
+    include ContextConfigurable
     include ActivityTriggerable
     include RecipientConfigurable
     include LifecycleStageRestrictable
@@ -46,6 +48,12 @@ module EmailCampaigns
 
     def activity_triggers
       { 'Notifications::CommentOnIdeaYouFollow' => { 'created' => true } }
+    end
+
+    def activity_context(activity)
+      return nil if !activity.item.is_a?(::Notification)
+
+      activity.item.idea && TimelineService.new.current_phase(activity.item.idea.project)
     end
 
     def filter_notification_recipient(users_scope, activity:, time: nil)
@@ -70,6 +78,14 @@ module EmailCampaigns
 
     def self.trigger_multiloc_key
       'email_campaigns.admin_labels.trigger.user_comments'
+    end
+
+    def self.supported_context_class
+      Phase
+    end
+
+    def self.supports_context?(context)
+      supports_phase_participation_method?(context)
     end
 
     def generate_commands(recipient:, activity:, time: nil)

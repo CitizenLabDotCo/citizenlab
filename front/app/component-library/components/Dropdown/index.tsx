@@ -66,6 +66,16 @@ const Content = styled.div<ContentProps>`
   ${media.phone`
     max-height: ${(props: ContentProps) => props.mobileMaxHeight};
   `}
+
+  ::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+  }
 `;
 
 export const DropdownListItem = styled.button`

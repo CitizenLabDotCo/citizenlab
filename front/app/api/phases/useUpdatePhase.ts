@@ -1,12 +1,14 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import campaignsKeys from 'api/campaigns/keys';
 import projectsKeys from 'api/projects/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import phasesKeys from './keys';
 import { IPhase, UpdatePhaseObject } from './types';
+import supportedCampaignNamesKeys from 'api/supported_campaign_names/keys';
 
 const updatePhase = async ({ phaseId, ...requestBody }: UpdatePhaseObject) =>
   fetcher<IPhase>({
@@ -29,6 +31,12 @@ const useUpdatePhase = () => {
       });
       queryClient.invalidateQueries({
         queryKey: phasesKeys.item({ phaseId: variables.phaseId }),
+      });
+      queryClient.invalidateQueries({ queryKey: campaignsKeys.lists() });
+      queryClient.invalidateQueries({
+        queryKey: supportedCampaignNamesKeys.lists({
+          phaseId: variables.phaseId,
+        }),
       });
     },
   });

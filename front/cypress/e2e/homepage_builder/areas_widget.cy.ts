@@ -83,8 +83,7 @@ describe('"In your area" (areas) widget', () => {
 
   it('shows projects of the areas I follow', () => {
     // Create project with area
-    cy.visit('/admin/projects/all');
-    cy.acceptCookies();
+    cy.visit('/admin/projects');
     cy.dataCy('e2e-new-project-button').should('be.visible').click();
     cy.get('.e2e-project-general-form');
 

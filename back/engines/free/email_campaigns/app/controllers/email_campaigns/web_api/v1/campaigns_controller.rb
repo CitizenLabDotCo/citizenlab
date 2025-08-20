@@ -3,31 +3,31 @@
 module EmailCampaigns
   class WebApi::V1::CampaignsController < EmailCampaignsController
     before_action :set_campaign, only: %i[show update do_send send_preview preview deliveries stats destroy]
+    skip_after_action :verify_authorized, only: %i[supported_campaign_names]
 
     def index
-      @campaigns = policy_scope(Campaign)
+      @campaigns = CampaignPolicy::Scope.new(pundit_user, Campaign, campaign_context)
+        .resolve
         .order(created_at: :desc)
-
-      if params[:campaign_names]
-        campaign_types = params[:campaign_names].map { |name| Campaign.from_campaign_name(name) }
-        @campaigns = @campaigns.where(type: campaign_types)
-      end
+      # Necessary because we instantiate the scope directly instead of using Pundit's
+      # `policy_scope` method.
+      skip_policy_scope
 
       if params[:without_campaign_names]
         campaign_types = params[:without_campaign_names].map { |name| Campaign.from_campaign_name(name) }
         @campaigns = @campaigns.where.not(type: campaign_types)
       end
 
-      @campaigns = @campaigns.where(context_id: params[:context_id]) if params[:context_id]
-
-      case params[:manual]&.downcase
-      when 'true' then @campaigns = @campaigns.manual
-      when 'false' then @campaigns = @campaigns.automatic
+      if campaign_context
+        @campaigns = @campaigns.where(context: campaign_context)
+        supported_ids = @campaigns.filter { |campaign| campaign.class.supports_context?(campaign_context) }.map(&:id)
+        @campaigns = @campaigns.where(id: supported_ids)
       end
 
-      @campaigns = @campaigns
-        .page(params.dig(:page, :number))
-        .per(params.dig(:page, :size))
+      @campaigns = parse_bool(params[:manual]) ? @campaigns.manual : @campaigns.automatic if params[:manual]
+
+      @campaigns = paginate @campaigns
+
       render json: linked_json(@campaigns, WebApi::V1::CampaignSerializer, params: jsonapi_serializer_params)
     end
 
@@ -41,6 +41,13 @@ module EmailCampaigns
       end.new
       @campaign.assign_attributes(campaign_params)
       @campaign.author ||= current_user
+      if campaign_context
+        if !@campaign.class.supports_context?(campaign_context)
+          raise Pundit::NotAuthorizedErrorWithReason, reason: 'Context not supported by campaign'
+        end
+
+        @campaign.context = campaign_context
+      end
 
       authorize @campaign
       SideFxCampaignService.new.before_create(@campaign, current_user)
@@ -111,7 +118,13 @@ module EmailCampaigns
 
     def preview
       preview = EmailCampaigns::DeliveryService.new.preview_email(@campaign, current_user)
-      render json: preview
+      render json: {
+        data: {
+          id: @campaign.id,
+          type: 'campaign_preview',
+          attributes: preview
+        }
+      }
     end
 
     def deliveries
@@ -132,11 +145,33 @@ module EmailCampaigns
       render json: raw_json(EmailCampaigns::Delivery.status_counts(@campaign.id))
     end
 
+    def supported_campaign_names
+      campaigns = DeliveryService::CAMPAIGN_CLASSES.select do |claz|
+        claz.supports_context?(campaign_context)
+      end
+      render json: raw_json(campaigns.map(&:campaign_name))
+    end
+
     private
 
     def set_campaign
       @campaign = Campaign.find(params[:id])
       authorize @campaign
+    end
+
+    def campaign_context
+      return @campaign_context if @campaign_context
+
+      context_type = params[:campaign_context]
+      return @campaign_context = nil if !context_type
+
+      context_id = params[:"#{context_type.underscore}_id"]
+      context_model = case context_type
+      when 'Project' then Project
+      when 'Phase' then Phase
+      else raise "Unsupported context level for campaigns: #{reactable_type}"
+      end
+      @campaign_context = context_model.find(context_id)
     end
 
     def campaign_params
@@ -148,7 +183,6 @@ module EmailCampaigns
         :enabled,
         :sender,
         :reply_to,
-        :context_id,
         group_ids: [],
         subject_multiloc: I18n.available_locales,
         body_multiloc: I18n.available_locales
@@ -158,7 +192,7 @@ module EmailCampaigns
     def automated_campaign_params
       params.require(:campaign).permit(
         :enabled,
-        :context_id,
+        :reply_to,
         subject_multiloc: I18n.available_locales,
         title_multiloc: I18n.available_locales,
         intro_multiloc: I18n.available_locales,

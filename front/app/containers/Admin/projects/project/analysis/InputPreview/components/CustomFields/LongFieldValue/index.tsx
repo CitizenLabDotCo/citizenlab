@@ -3,7 +3,7 @@ import React from 'react';
 import { IInputsData } from 'api/analysis_inputs/types';
 import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
 
-import { getRelatedTextAnswer } from '../../../../util';
+import { getRelatedTextAnswer, isStringArray } from '../../../../util';
 
 import BodyMultilocLongField from './CustomFieldLongFieldValues/BodyMultilocLongField';
 import CheckboxLongField from './CustomFieldLongFieldValues/CheckboxLongField';
@@ -22,7 +22,6 @@ import SelectLongField from './CustomFieldLongFieldValues/SelectLongField';
 import ShpefileLongField from './CustomFieldLongFieldValues/ShapefileLongField';
 import TextLongField from './CustomFieldLongFieldValues/TextLongField';
 import TitleMultilocLongField from './CustomFieldLongFieldValues/TitleMultilocLongField';
-
 type Props = {
   customFieldId: string;
   input: IInputsData;
@@ -109,6 +108,10 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
           );
         }
         case 'multiselect': {
+          if (!isStringArray(rawValue)) {
+            return null;
+          }
+
           return (
             <MultiselectLongField
               rawValue={rawValue}

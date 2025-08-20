@@ -14,14 +14,15 @@ module Files
 
     # Called by the GeneratePreviewJob to generate the preview content PDF
     def generate_preview_content(preview)
-      temp_file = @gotenberg.render_libreoffice_to_pdf(preview.file.content.file.file, preview.file.content.content_type, preview.file.name)
+      binary_file_content = StringIO.new(preview.file.content.read)
+      temp_file = @gotenberg.render_libreoffice_to_pdf(binary_file_content, preview.file.content.content_type, preview.name)
       preview.content = temp_file
       preview.status = 'completed'
       preview.save!
     end
 
     def should_generate_preview?(file)
-      @gotenberg.supported_by_libreoffice?(file.content) && file.content.file.extension.downcase != 'pdf'
+      @gotenberg.supported_by_libreoffice?(file.name) && file.content.file.extension.downcase != 'pdf'
     end
   end
 end

@@ -70,7 +70,7 @@ const FallbackStep = ({
       >
         <HeaderContent id="e2e-signed-in-header-default-cta">
           <Left>
-            <Title variant="h2" m="0" color="white">
+            <Title variant="h2" m="0" color="white" as="h1">
               {defaultMessage && !isEmptyMultiloc(defaultMessage) ? (
                 <T value={defaultMessage} supportHtml />
               ) : (

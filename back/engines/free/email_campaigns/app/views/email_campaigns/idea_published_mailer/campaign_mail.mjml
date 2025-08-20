@@ -32,7 +32,7 @@
           <td style="padding-left: 10px; padding-bottom:15px">
             <%=
               format_message('action_add_image', values: {
-                addImageLink: "<a href=\"#{url_service.idea_edit_url(app_configuration, event.idea_id)}\" style=\"text-decoration: underline;\">#{format_message('add_image')}</a>"
+                addImageLink: "<a target=\"_blank\" href=\"#{url_service.idea_edit_url(app_configuration, event.idea_id)}\" style=\"text-decoration: underline;\">#{format_message('add_image')}</a>"
               }, escape_html: false)
             %>
           </td>
@@ -53,7 +53,7 @@
         <td style="padding-left: 10px; padding-bottom:15px">
           <%=
             format_message('action_share_fb', values: {
-              fbLink: "<a href=\"https://www.facebook.com/sharer/sharer.php?u=#{CGI.escape event.idea_url}\" style=\"text-decoration: underline;\">Facebook</a>"
+              fbLink: "<a target=\"_blank\" href=\"https://www.facebook.com/sharer/sharer.php?u=#{CGI.escape event.idea_url}\" style=\"text-decoration: underline;\">Facebook</a>"
             }, escape_html: false)
           %>
         </td>
@@ -74,7 +74,7 @@
         <td style="padding-left: 10px; padding-bottom:15px;">
           <%=
             format_message('action_share_twitter', values: {
-              twitterLink: "<a href=\"https://twitter.com/intent/tweet?text=#{CGI.escape event.idea_url}\" style=\"text-decoration: underline;\">X</a>"
+              twitterLink: "<a target=\"_blank\" href=\"https://twitter.com/intent/tweet?text=#{CGI.escape event.idea_url}\" style=\"text-decoration: underline;\">X</a>"
             }, escape_html: false)
           %>
         </td>
@@ -118,7 +118,7 @@
         <td style="padding-left: 10px; padding-bottom:15px;">
           <%=
             format_message('action_share_link', values: {
-              link: "<a href=\"#{event.idea_url}\" style=\"text-decoration: underline;\">#{format_message('link')}</a>"
+              link: "<a target=\"_blank\" href=\"#{event.idea_url}\" style=\"text-decoration: underline;\">#{format_message('link')}</a>"
             }, escape_html: false)
           %>
         </td>

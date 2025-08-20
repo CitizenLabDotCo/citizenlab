@@ -74,6 +74,7 @@ import Spotlight, {
   buttonTextDefault,
 } from '../Widgets/Spotlight';
 import TextMultiloc, { textMultilocTitle } from '../Widgets/TextMultiloc';
+import VideoEmbed, { videoEmbedTitle } from '../Widgets/VideoEmbed';
 
 import { platformCreatedBeforeReleaseNewWidgets } from './utils';
 
@@ -93,7 +94,13 @@ const HomepageBuilderToolbox = ({
 
   const { data: appConfiguration } = useAppConfiguration();
 
-  if (!appConfigurationLocales || !appConfiguration) return null;
+  if (
+    !appConfigurationLocales ||
+    !appConfiguration ||
+    !formatMessageWithLocale
+  ) {
+    return null;
+  }
 
   const toMultiloc = (message: MessageDescriptor) => {
     return createMultiloc(appConfigurationLocales, (locale) => {
@@ -279,6 +286,12 @@ const HomepageBuilderToolbox = ({
           }
           icon="code"
           label={formatMessage(iframeTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-video-embed"
+          component={<VideoEmbed markup="" />}
+          icon="video"
+          label={formatMessage(videoEmbedTitle)}
         />
         <DraggableElement
           id="e2e-draggable-accordion"

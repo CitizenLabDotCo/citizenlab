@@ -71,7 +71,6 @@ describe('Survey logic conflict', () => {
 
     // Take survey and make sure it works as expected
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
-    cy.acceptCookies();
 
     // Make sure submit button is shown
     cy.dataCy('e2e-submit-form');

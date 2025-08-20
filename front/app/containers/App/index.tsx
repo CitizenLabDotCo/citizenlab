@@ -34,6 +34,7 @@ import {
 import Authentication from 'containers/Authentication';
 import MainHeader from 'containers/MainHeader';
 
+import ConsentManager from 'components/ConsentManager';
 import ErrorBoundary from 'components/ErrorBoundary';
 
 import { trackPage } from 'utils/analytics';
@@ -50,12 +51,12 @@ import {
 import { usePermission } from 'utils/permissions';
 import { isAdmin, isModerator } from 'utils/permissions/roles';
 
-import CommunityMonitorModal from './CommunityMonitorModal';
 import messages from './messages';
 import Meta from './Meta';
-import UserSessionRecordingModal from './UserSessionRecordingModal';
+import { ModalQueueProvider } from './ModalQueue';
+import CommunityMonitorModalManager from './ModalQueue/modals/CommunityMonitor/ModalManager';
+import UserSessionRecordingModalManager from './ModalQueue/modals/UserSessionRecording/ModalManager';
 
-const ConsentManager = lazy(() => import('components/ConsentManager'));
 const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
 const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
 
@@ -330,73 +331,69 @@ const App = ({ children }: Props) => {
         </Box>
       )}
       <ThemeProvider theme={{ ...theme, isRtl: locale.startsWith('ar') }}>
-        <GlobalStyle />
-        <Box
-          className={appContainerClassName}
-          display="flex"
-          flexDirection="column"
-          alignItems="stretch"
-          position="relative"
-          background={colors.white}
-          minHeight="100vh"
-        >
-          <Meta />
-          <UserSessionRecordingModal />
-          <CommunityMonitorModal />
-          <ErrorBoundary>
-            <Suspense fallback={null}>
+        <ModalQueueProvider>
+          <GlobalStyle />
+          <Box
+            className={appContainerClassName}
+            display="flex"
+            flexDirection="column"
+            alignItems="stretch"
+            position="relative"
+            background={colors.white}
+            minHeight="100vh"
+          >
+            <Meta />
+            <ErrorBoundary>
+              <UserSessionRecordingModalManager />
+              <ConsentManager />
+              <CommunityMonitorModalManager />
               <UserDeletedModal
                 modalOpened={userDeletedSuccessfullyModalOpened}
                 closeUserDeletedModal={closeUserDeletedModal}
                 userSuccessfullyDeleted={userSuccessfullyDeleted}
               />
-            </Suspense>
-          </ErrorBoundary>
-          <ErrorBoundary>
-            <Authentication />
-          </ErrorBoundary>
-          <ErrorBoundary>
-            <div id="modal-portal" />
-          </ErrorBoundary>
-          <ErrorBoundary>
-            <Suspense fallback={null}>
-              <ConsentManager />
-            </Suspense>
-          </ErrorBoundary>
-          {showFrontOfficeNavbar() && (
-            <ErrorBoundary>
-              <MainHeader />
             </ErrorBoundary>
-          )}
-          {!isAuthenticationPending && (
-            <Box
-              display="flex"
-              flexDirection="column"
-              alignItems="stretch"
-              flex="1"
-              id="main-content"
-              pt={
-                showFrontOfficeNavbar()
-                  ? `${stylingConsts.menuHeight}px`
-                  : undefined
-              }
-            >
-              {canAccessRoute ? (
-                <ErrorBoundary>{children}</ErrorBoundary>
-              ) : (
-                <Navigate to="/" />
-              )}
-            </Box>
-          )}
-          {showFooter && (
-            <Suspense fallback={null}>
-              <PlatformFooter />
-            </Suspense>
-          )}
-          <ErrorBoundary>
-            <div id="mobile-nav-portal" />
-          </ErrorBoundary>
-        </Box>
+            <ErrorBoundary>
+              <Authentication />
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <div id="modal-portal" />
+            </ErrorBoundary>
+            {showFrontOfficeNavbar() && (
+              <ErrorBoundary>
+                <MainHeader />
+              </ErrorBoundary>
+            )}
+            {!isAuthenticationPending && (
+              <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="stretch"
+                flex="1"
+                id="main-content"
+                pt={
+                  showFrontOfficeNavbar()
+                    ? `${stylingConsts.menuHeight}px`
+                    : undefined
+                }
+              >
+                {canAccessRoute ? (
+                  <ErrorBoundary>{children}</ErrorBoundary>
+                ) : (
+                  <Navigate to="/" />
+                )}
+              </Box>
+            )}
+            {showFooter && (
+              <Suspense fallback={null}>
+                <PlatformFooter />
+              </Suspense>
+            )}
+            <ErrorBoundary>
+              <div id="mobile-nav-portal" />
+            </ErrorBoundary>
+          </Box>
+        </ModalQueueProvider>
       </ThemeProvider>
     </>
   );

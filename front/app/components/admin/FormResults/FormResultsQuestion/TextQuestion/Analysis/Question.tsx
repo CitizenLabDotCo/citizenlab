@@ -48,6 +48,7 @@ const Question = ({
   const question = data?.data.attributes.question;
   const answer = data?.data.attributes.answer;
   const filters = data?.data.attributes.filters;
+  const fileIds = data?.data.relationships.files?.data.map((file) => file.id);
   const generatedAt = data?.data.attributes.generated_at;
   const missingInputsCount = data?.data.attributes.missing_inputs_count || 0;
 
@@ -82,6 +83,7 @@ const Question = ({
           <InsightBody
             text={answer}
             filters={filters}
+            fileIds={fileIds}
             analysisId={analysisId}
             projectId={projectId}
             phaseId={phaseId}

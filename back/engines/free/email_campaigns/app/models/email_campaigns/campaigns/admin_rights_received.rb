@@ -20,6 +20,7 @@
 #  title_multiloc       :jsonb
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
+#  context_type         :string
 #
 # Indexes
 #
@@ -37,6 +38,7 @@ module EmailCampaigns
     include Disableable
     include LifecycleStageRestrictable
     include Trackable
+    include ContentConfigurable
     allow_lifecycle_stages except: %w[trial churned]
 
     recipient_filter :filter_notification_recipient

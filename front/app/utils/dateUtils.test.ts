@@ -76,15 +76,116 @@ describe('timeAgo is reported correctly', () => {
   });
 
   it('should accurately return months passed since a date', () => {
-    let date = new Date();
-    date.setMonth(date.getMonth() - 1);
-    let timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
-    // expect(timeAgoResponse).toEqual('1 month ago'); TODO: Commented out today to fix failing test due to date.
+    // Use a consistent test date that won't have month boundary issues
+    // Set current date to July 15th, 2024 - one month ago would be June 15th
+    const testDate = new Date('2024-07-15T12:00:00Z');
+    jest.useFakeTimers();
+    jest.setSystemTime(testDate);
 
-    date = new Date();
-    date.setMonth(date.getMonth() - 2);
-    timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
+    // We set a date to avoid this test returning different results on different days
+    const oneMonthAgo = new Date(2024, 5, 15); // June 15th, 2024
+    let timeAgoResponse = timeAgo(oneMonthAgo.valueOf(), 'en') || '';
+    expect(timeAgoResponse).toEqual('1 month ago');
+
+    const twoMonthsAgo = new Date(2024, 4, 15); // May 15th, 2024
+    timeAgoResponse = timeAgo(twoMonthsAgo.valueOf(), 'en') || '';
     expect(timeAgoResponse).toEqual('2 months ago');
+
+    // Clean up
+    jest.useRealTimers();
+  });
+
+  it('should handle edge case where subtracting one month results in invalid date (e.g., July 31 -> June 31)', () => {
+    // This test replicates the July 31st failure
+    // When you subtract 1 month from July 31st, you get June 31st which doesn't exist
+    // JavaScript automatically adjusts this to July 1st, making it exactly 4 weeks ago
+
+    // Set the current date to July 31st, 2024
+    const july31st2024 = new Date('2024-07-31T12:00:00Z');
+    jest.useFakeTimers();
+    jest.setSystemTime(july31st2024);
+
+    // Create a date that would cause this issue (like July 31st)
+    const problematicDate = new Date(2024, 6, 31); // July 31st, 2024
+    const oneMonthBefore = new Date(
+      problematicDate.getFullYear(),
+      problematicDate.getMonth() - 1,
+      problematicDate.getDate()
+    );
+
+    // Verify that the date was adjusted (should be July 1st, not June 31st)
+    expect(oneMonthBefore.getMonth()).toBe(6); // July (0-indexed)
+    expect(oneMonthBefore.getDate()).toBe(1);
+
+    // The timeAgo function should correctly report this as "4 weeks ago"
+    // because that's more accurate than "1 month ago"
+    const timeAgoResponse = timeAgo(oneMonthBefore.valueOf(), 'en') || '';
+    expect(timeAgoResponse).toEqual('4 weeks ago');
+
+    // Clean up
+    jest.useRealTimers();
+  });
+
+  it('should handle edge case where subtracting one month results in invalid date (e.g., March 31 -> February 31)', () => {
+    // This test covers the March 31st -> February scenario
+    // When you subtract 1 month from March 31st, you get February 31st which doesn't exist
+    // JavaScript automatically adjusts this to March 2nd (in leap year) or March 2nd (in non-leap year)
+
+    // Set the current date to March 31st, 2024 (leap year)
+    const march31st2024 = new Date('2024-03-31T12:00:00Z');
+    jest.useFakeTimers();
+    jest.setSystemTime(march31st2024);
+
+    // Create a date that would cause this issue (like March 31st)
+    const problematicDate = new Date(2024, 2, 31); // March 31st, 2024
+    const oneMonthBefore = new Date(
+      problematicDate.getFullYear(),
+      problematicDate.getMonth() - 1,
+      problematicDate.getDate()
+    );
+
+    // Verify that the date was adjusted (should be March 2nd in leap year)
+    expect(oneMonthBefore.getMonth()).toBe(2); // March (0-indexed)
+    expect(oneMonthBefore.getDate()).toBe(2); // March 2nd in leap year
+
+    // The timeAgo function should correctly report this as "4 weeks ago"
+    // because that's more accurate than "1 month ago"
+    const timeAgoResponse = timeAgo(oneMonthBefore.valueOf(), 'en') || '';
+    expect(timeAgoResponse).toEqual('4 weeks ago');
+
+    // Clean up
+    jest.useRealTimers();
+  });
+
+  it('should handle edge case where subtracting one month results in invalid date (e.g., March 31 -> February 31 in non-leap year)', () => {
+    // This test covers the March 31st -> February scenario in a non-leap year
+    // When you subtract 1 month from March 31st, you get February 31st which doesn't exist
+    // JavaScript automatically adjusts this to March 3rd
+
+    // Set the current date to March 31st, 2023 (non-leap year)
+    const march31st2023 = new Date('2023-03-31T12:00:00Z');
+    jest.useFakeTimers();
+    jest.setSystemTime(march31st2023);
+
+    // Create a date that would cause this issue (like March 31st)
+    const problematicDate = new Date(2023, 2, 31); // March 31st, 2023
+    const oneMonthBefore = new Date(
+      problematicDate.getFullYear(),
+      problematicDate.getMonth() - 1,
+      problematicDate.getDate()
+    );
+
+    // Verify that the date was adjusted (should be March 3rd in non-leap year)
+    expect(oneMonthBefore.getMonth()).toBe(2); // March (0-indexed)
+    expect(oneMonthBefore.getDate()).toBe(3); // March 3rd in non-leap year
+
+    // The timeAgo function should correctly report this as "4 weeks ago"
+    // because that's more accurate than "1 month ago"
+    const timeAgoResponse = timeAgo(oneMonthBefore.valueOf(), 'en') || '';
+    expect(timeAgoResponse).toEqual('4 weeks ago');
+
+    // Clean up
+    jest.useRealTimers();
   });
 
   it('should accurately return years passed since a date', () => {
