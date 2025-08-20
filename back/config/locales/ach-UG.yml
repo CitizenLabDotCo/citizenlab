@@ -384,4 +384,4 @@ ach:
     event_details: "crwdns5156451:0crwdne5156451:0"
   errors:
     messages:
-      must_be_greater_than_min_characters: "crwdns5156453:0crwdne5156453:0"
+      max_must_be_greater_than_min_characters: "crwdns5170951:0crwdne5170951:0"
