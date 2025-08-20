@@ -57,24 +57,27 @@ const generateYupValidationSchema = ({
               validateEachNonEmptyLocale: (schema) => {
                 let fieldSchema = schema;
 
-                if (min_characters) {
-                  fieldSchema = fieldSchema.min(
-                    min_characters,
-                    formatMessage(messages.fieldMinLength, {
-                      min: min_characters,
-                      fieldName: title,
-                    })
-                  );
-                }
+                // Only apply character limits to text_multiloc, not html_multiloc
+                if (input_type === 'text_multiloc') {
+                  if (min_characters) {
+                    fieldSchema = fieldSchema.min(
+                      min_characters,
+                      formatMessage(messages.fieldMinLength, {
+                        min: min_characters,
+                        fieldName: title,
+                      })
+                    );
+                  }
 
-                if (max_characters) {
-                  fieldSchema = fieldSchema.max(
-                    max_characters,
-                    formatMessage(messages.fieldMaxLength, {
-                      max: max_characters,
-                      fieldName: title,
-                    })
-                  );
+                  if (max_characters) {
+                    fieldSchema = fieldSchema.max(
+                      max_characters,
+                      formatMessage(messages.fieldMaxLength, {
+                        max: max_characters,
+                        fieldName: title,
+                      })
+                    );
+                  }
                 }
 
                 return fieldSchema;

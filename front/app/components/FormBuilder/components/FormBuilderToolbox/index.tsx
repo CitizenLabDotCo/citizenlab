@@ -86,9 +86,7 @@ const FormBuilderToolbox = ({
         [locale]: '',
       },
       // Set default character limits for text-supporting fields
-      ...(['text', 'multiline_text', 'text_multiloc', 'html_multiloc'].includes(
-        type
-      ) && {
+      ...(['text', 'multiline_text', 'text_multiloc'].includes(type) && {
         min_characters: 3,
         max_characters: type === 'text_multiloc' ? 120 : undefined,
       }),

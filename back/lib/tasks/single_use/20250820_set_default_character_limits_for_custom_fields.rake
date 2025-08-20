@@ -10,8 +10,8 @@ namespace :single_use do
     Tenant.safe_switch_each do |tenant|
       Rails.logger.info "Setting default character limits for tenant #{tenant.name}\n\n"
 
-      # Get all text-supporting custom fields
-      text_fields = CustomField.where(input_type: %w[text multiline_text text_multiloc html_multiloc])
+      # Get all text-supporting custom fields (excluding html_multiloc)
+      text_fields = CustomField.where(input_type: %w[text multiline_text text_multiloc])
 
       text_fields.each do |field|
         original_field = field.deep_dup

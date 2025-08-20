@@ -332,12 +332,9 @@ const FormEdit = ({
         ...(field.input_type === 'rating' && {
           maximum: field.maximum?.toString() || '5',
         }),
-        ...([
-          'text',
-          'multiline_text',
-          'text_multiloc',
-          'html_multiloc',
-        ].includes(field.input_type) && {
+        ...(['text', 'multiline_text', 'text_multiloc'].includes(
+          field.input_type
+        ) && {
           min_characters: field.min_characters,
           max_characters: field.max_characters,
         }),
