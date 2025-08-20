@@ -8,6 +8,7 @@ import { DEFAULT_CATEGORICAL_COLORS } from 'components/admin/Graphs/styling';
 
 import { binAge } from 'utils/dataUtils';
 import { roundPercentages } from 'utils/math';
+import { truncate } from 'utils/textUtils';
 
 export const parseResponse = (
   response: DemographicsResponse,
@@ -106,7 +107,7 @@ const parseOtherResponse = (
     return {
       icon: 'circle' as const,
       color: statusColorById[column],
-      label: labels[i],
+      label: truncate(labels[i], 50),
       value: data[0][column],
     };
   });
