@@ -384,4 +384,4 @@ fi:
     event_details: "Tapahtuman tiedot"
   errors:
     messages:
-      must_be_greater_than_min_characters: "on oltava suurempi kuin min merkkiä"
+      max_must_be_greater_than_min_characters: "Maksimin on oltava suurempi kuin minimin."
