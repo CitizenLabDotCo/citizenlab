@@ -171,7 +171,7 @@ module ParticipationMethod
           end,
           required: true,
           enabled: true,
-          ordering: 3,
+          ordering: 3
         ),
         CustomField.new(
           id: SecureRandom.uuid,
