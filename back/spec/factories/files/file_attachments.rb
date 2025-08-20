@@ -44,7 +44,7 @@ FactoryBot.define do
 
     attachable do
       # @overrides allow us to break the circular dependency between file and attachable
-      # and stack overflow errors.rel
+      # and stack overflow errors.
       project = @overrides[:file]&.projects&.first
 
       if project.present?

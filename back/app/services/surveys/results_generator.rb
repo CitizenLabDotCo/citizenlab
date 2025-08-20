@@ -189,8 +189,10 @@ module Surveys
       elsif field.supports_multiple_selection?
         %{
           jsonb_array_elements(
-            CASE WHEN jsonb_path_exists(#{table}.custom_field_values, '$ ? (exists (@."#{field.key}"))')
-              THEN #{table}.custom_field_values->'#{field.key}'
+            CASE WHEN (
+              jsonb_path_exists(#{table}.custom_field_values, '$ ? (exists (@."#{field.key}"))') AND
+              jsonb_typeof(#{table}.custom_field_values->'#{field.key}') = 'array'
+            ) THEN #{table}.custom_field_values->'#{field.key}'
               ELSE '[null]'::jsonb END
           ) as #{as}
       }
