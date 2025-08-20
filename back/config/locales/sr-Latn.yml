@@ -385,4 +385,4 @@ sr-Latn:
     event_details: "Event details"
   errors:
     messages:
-      must_be_greater_than_min_characters: "must be greater than min characters"
+      max_must_be_greater_than_min_characters: "The maximum must be greater than the minimum."
