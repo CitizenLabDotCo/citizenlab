@@ -30,42 +30,39 @@ const CharacterLimitSettings = ({
 
   return (
     <Box mb="24px">
-      <Box mb="16px">
-        <Label>{formatMessage(messages.characterLimits)}</Label>
-      </Box>
-
-      <Box ml="16px">
-        <Box mb="8px" display="flex">
-          <Box minWidth="120px" my="auto">
+      <Box display="flex" alignItems="center" gap="12px" w="100%">
+        <Box display="flex" w="100%">
+          <Box w="100%" my="auto">
             <Label
               htmlFor="minCharactersInput"
               value={formatMessage(messages.minCharacters)}
             />
+            <Input
+              id="minCharactersInput"
+              name={minCharactersName}
+              type="number"
+              min="0"
+              size="small"
+              onKeyDown={handleKeyDown}
+            />
           </Box>
-          <Input
-            id="minCharactersInput"
-            name={minCharactersName}
-            type="number"
-            min="0"
-            size="small"
-            onKeyDown={handleKeyDown}
-          />
         </Box>
-        <Box display="flex">
-          <Box minWidth="120px" my="auto">
+        <Box display="flex" w="100%">
+          <Box w="100%" my="auto">
             <Label
               htmlFor="maxCharactersInput"
               value={formatMessage(messages.maxCharacters)}
             />
+            <Input
+              name={maxCharactersName}
+              id="maxCharactersInput"
+              type="number"
+              size="small"
+              min={watch(minCharactersName) ? watch(minCharactersName) + 1 : 1}
+              onKeyDown={handleKeyDown}
+              placeholder={formatMessage(messages.noLimit)}
+            />
           </Box>
-          <Input
-            name={maxCharactersName}
-            id="maxCharactersInput"
-            type="number"
-            size="small"
-            min={watch(minCharactersName) ? watch(minCharactersName) + 1 : 1}
-            onKeyDown={handleKeyDown}
-          />
         </Box>
       </Box>
     </Box>
