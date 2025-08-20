@@ -52,10 +52,7 @@ const renderField = ({
         <InputMultilocWithLocaleSwitcher
           name={question.key}
           hideLocaleSwitcher
-          maxCharCount={
-            question.max_characters ||
-            (question.key === 'title_multiloc' ? 120 : undefined)
-          }
+          maxCharCount={question.max_characters}
           scrollErrorIntoView={true}
         />
       );
