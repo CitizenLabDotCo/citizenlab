@@ -164,7 +164,7 @@ class CustomField < ApplicationRecord
   end
 
   def support_text?
-    %w[text multiline_text text_multiloc multiline_text_multiloc].include?(input_type)
+    %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type)
   end
 
   def support_option_images?
