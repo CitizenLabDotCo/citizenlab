@@ -2296,7 +2296,7 @@
   "app.containers.AdminPage.ProjectFiles.done": "Fertig",
   "app.containers.AdminPage.ProjectFiles.downloadFile": "Datei herunterladen",
   "app.containers.AdminPage.ProjectFiles.downloadFullFile": "Vollständige Datei herunterladen",
-  "app.containers.AdminPage.ProjectFiles.dragAndDropFiles2": "Ziehen Sie beliebige Dateien per Drag & Drop hierher oder",
+  "app.containers.AdminPage.ProjectFiles.dragAndDropFiles2": "Beliebige Dateien per Drag & Drop hierherziehen oder",
   "app.containers.AdminPage.ProjectFiles.editFile": "Datei bearbeiten",
   "app.containers.AdminPage.ProjectFiles.fileDescriptionLabel": "Beschreibung",
   "app.containers.AdminPage.ProjectFiles.fileNameCannotContainDot": "Der Dateiname darf keinen Punkt enthalten.",
