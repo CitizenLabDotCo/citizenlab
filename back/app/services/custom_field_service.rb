@@ -4,7 +4,8 @@ class CustomFieldService
   include CustomFieldUserOverrides
 
   def initialize
-    @multiloc_service = MultilocService.new app_configuration: AppConfiguration.instance
+    @app_configuration = AppConfiguration.instance
+    @multiloc_service = MultilocService.new app_configuration: @app_configuration
   end
 
   def ui_and_json_multiloc_schemas(configuration, fields)
@@ -66,7 +67,7 @@ class CustomFieldService
       override_method = "#{field.resource_type.underscore}_#{field.code}_to_ui_schema_field"
       memo[field.key] =
         if field.code && respond_to?(override_method, true)
-          send(override_method, field, locale)
+          send(override_method, field, locale, @app_configuration)
         else
           send(:"#{field.input_type}_to_ui_schema_field", field, locale)
         end
