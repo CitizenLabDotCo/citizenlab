@@ -388,4 +388,4 @@ cy:
     event_details: "Manylion y digwyddiad"
   errors:
     messages:
-      must_be_greater_than_min_characters: "rhaid iddo fod yn fwy na lleiafswm o nodau"
+      max_must_be_greater_than_min_characters: "Rhaid i'r uchafswm fod yn fwy na'r isafswm."
