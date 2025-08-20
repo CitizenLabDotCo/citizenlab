@@ -116,16 +116,16 @@ const HeatmapDetails = ({
 
   const { data: columnOptions } = useCustomFieldOptions(selectedColumnFieldId);
 
-  let { data: columnBins } = useCustomFieldBins(selectedColumnFieldId);
-  let { data: rowBins } = useCustomFieldBins(
+  const { data: _columnBins } = useCustomFieldBins(selectedColumnFieldId);
+  const { data: _rowBins } = useCustomFieldBins(
     !isSelectedRowTypeTags ? selectedRowType : undefined
   );
 
-  if (!columnOptions || !columnBins) return null;
-
   // Temp fix
-  columnBins = deduplicateBins(columnBins);
-  rowBins = rowBins ? deduplicateBins(rowBins) : undefined;
+  const columnBins = _columnBins ? deduplicateBins(_columnBins) : undefined;
+  const rowBins = _rowBins ? deduplicateBins(_rowBins) : undefined;
+
+  if (!columnOptions || !columnBins) return null;
 
   return (
     <Box
