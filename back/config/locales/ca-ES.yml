@@ -384,4 +384,4 @@ ca:
     event_details: "Detalls de l'esdeveniment"
   errors:
     messages:
-      must_be_greater_than_min_characters: "ha de ser superior al mínim de caràcters"
+      max_must_be_greater_than_min_characters: "El màxim ha de ser més gran que el mínim."
