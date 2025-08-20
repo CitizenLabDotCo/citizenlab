@@ -384,4 +384,4 @@ fr-BE:
     event_details: "Détails de l'événement"
   errors:
     messages:
-      must_be_greater_than_min_characters: "doit être supérieur à min caractères"
+      max_must_be_greater_than_min_characters: "Le maximum doit être supérieur au minimum."
