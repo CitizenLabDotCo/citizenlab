@@ -384,4 +384,4 @@ hu:
     event_details: "Az esemény részletei"
   errors:
     messages:
-      must_be_greater_than_min_characters: "több karakternek kell lennie, mint a minimális karakterszám"
+      max_must_be_greater_than_min_characters: "A maximumnak nagyobbnak kell lennie a minimumnál."
