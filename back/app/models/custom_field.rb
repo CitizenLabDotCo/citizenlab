@@ -112,6 +112,7 @@ class CustomField < ApplicationRecord
   validate :max_characters_greater_than_min_characters, if: :support_text?
 
   before_validation :set_default_enabled
+  before_validation :set_default_character_limits
   before_validation :generate_key, on: :create
   before_validation :sanitize_description_multiloc
   after_create(if: :domicile?) { Area.recreate_custom_field_options }
@@ -520,6 +521,16 @@ class CustomField < ApplicationRecord
 
   def set_default_enabled
     self.enabled = true if enabled.nil?
+  end
+
+  def set_default_character_limits
+    return unless support_text?
+
+    # Set min_characters = 3 for all text-supporting fields
+    self.min_characters = 3 if min_characters.nil?
+
+    # Set max_characters = 120 for title_multiloc fields, null for others
+    self.max_characters = 120 if input_type == 'text_multiloc' && key == 'title_multiloc' && max_characters.nil?
   end
 
   def generate_key
