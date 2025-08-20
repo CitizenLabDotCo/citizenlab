@@ -525,12 +525,14 @@ class CustomField < ApplicationRecord
 
   def set_default_character_limits
     return unless support_text?
+    return unless new_record? # Only set defaults for new records
 
-    # Set min_characters = 3 for all text-supporting fields
-    self.min_characters = 3 if min_characters.nil?
-
-    # Set max_characters = 120 for title_multiloc fields, null for others
-    self.max_characters = 120 if input_type == 'text_multiloc' && key == 'title_multiloc' && max_characters.nil?
+    # Only set defaults for title_multiloc fields (which are built-in fields)
+    # Don't set defaults for regular text fields created through the API
+    if input_type == 'text_multiloc' && key == 'title_multiloc'
+      self.min_characters = 3 if min_characters.nil?
+      self.max_characters = 120 if max_characters.nil?
+    end
   end
 
   def generate_key
