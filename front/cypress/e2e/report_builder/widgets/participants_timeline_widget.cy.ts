@@ -131,7 +131,7 @@ describe('Report builder Participants timeline widget', () => {
     cy.wait('@saveReportLayout');
 
     cy.visit(`projects/${projectSlug}`);
-    cy.acceptCookies();
+
     cy.get('.recharts-surface:first').trigger('mouseover');
 
     cy.contains('New Widget Title').should('exist');

@@ -103,6 +103,10 @@ module ParticipationMethod
       nil # Never allow posting again
     end
 
+    def supported_email_campaigns
+      super + %w[native_survey_not_submitted survey_submitted]
+    end
+
     def supports_permitted_by_everyone?
       true
     end

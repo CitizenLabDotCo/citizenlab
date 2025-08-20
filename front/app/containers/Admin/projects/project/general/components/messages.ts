@@ -9,13 +9,13 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.general.components.UnlistedInput.selectHowDiscoverableProjectIs',
     defaultMessage: 'Select how discoverable this project is.',
   },
-  public: {
-    id: 'app.containers.Admin.projects.project.general.components.UnlistedInput.public',
-    defaultMessage: 'Public',
+  listed: {
+    id: 'app.containers.Admin.projects.project.general.components.UnlistedInput.listd',
+    defaultMessage: 'Listed',
   },
-  hidden: {
-    id: 'app.containers.Admin.projects.project.general.components.UnlistedInput.hidden',
-    defaultMessage: 'Hidden',
+  unlisted: {
+    id: 'app.containers.Admin.projects.project.general.components.UnlistedInput.unlisted',
+    defaultMessage: 'Unlisted',
   },
   thisProjectIsVisibleToEveryone: {
     id: 'app.containers.Admin.projects.project.general.components.UnlistedInput.thisProjectIsVisibleToEveryone',

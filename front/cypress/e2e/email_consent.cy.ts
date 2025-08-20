@@ -2,7 +2,6 @@ describe('email consent', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/messaging/emails/custom/new');
-    cy.acceptCookies();
   });
 
   it('lets admins create a custom email, this email contains a link to unsubscribe', () => {

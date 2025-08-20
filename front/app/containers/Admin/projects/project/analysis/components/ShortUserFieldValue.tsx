@@ -11,6 +11,7 @@ import T from 'components/T';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
+import { isStringArray } from '../util';
 
 type Props = {
   customField: IUserCustomField;
@@ -63,9 +64,13 @@ const ShortUserFieldValue = ({ customField, rawValue }: Props) => {
       );
     }
     case 'multiselect': {
+      if (!isStringArray(rawValue)) {
+        return null;
+      }
+
       return (
         <>
-          {(rawValue as string[]).map((optionKey, index) => (
+          {rawValue.map((optionKey, index) => (
             <>
               {index !== 0 && ', '}
               <SelectOptionText

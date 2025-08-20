@@ -12,6 +12,8 @@ import { IntlProvider } from 'react-intl';
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
+import { ModalQueueProvider } from 'containers/App/ModalQueue';
+
 import history from 'utils/browserHistory';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
@@ -28,20 +30,22 @@ const AllTheProviders = ({ children }: { children: ReactNode }) => {
       <HistoryRouter history={history as any}>
         <QueryClientProvider client={queryClient}>
           <ThemeProvider theme={getTheme(null)}>
-            <GlobalStyle />
-            <IntlProvider
-              locale="en"
-              messages={messages}
-              onError={(err) => {
-                if (err.code === 'MISSING_TRANSLATION') {
-                  console.warn('Missing translation', err.message);
-                  return;
-                }
-                throw err;
-              }}
-            >
-              <div id="modal-portal">{children}</div>
-            </IntlProvider>
+            <ModalQueueProvider>
+              <GlobalStyle />
+              <IntlProvider
+                locale="en"
+                messages={messages}
+                onError={(err) => {
+                  if (err.code === 'MISSING_TRANSLATION') {
+                    console.warn('Missing translation', err.message);
+                    return;
+                  }
+                  throw err;
+                }}
+              >
+                <div id="modal-portal">{children}</div>
+              </IntlProvider>
+            </ModalQueueProvider>
           </ThemeProvider>
         </QueryClientProvider>
       </HistoryRouter>
