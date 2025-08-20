@@ -2018,6 +2018,7 @@
   "app.containers.app.navbar.fullMobileNavigation": "Mobile complet",
   "app.containers.app.navbar.logIn": "Se connecter",
   "app.containers.app.navbar.logoImgAltText": "{orgName} Accueil",
+  "app.containers.app.navbar.more": "Plus",
   "app.containers.app.navbar.myProfile": "Mon activité",
   "app.containers.app.navbar.search": "Rechercher",
   "app.containers.app.navbar.showFullMenu": "Afficher le menu complet",
