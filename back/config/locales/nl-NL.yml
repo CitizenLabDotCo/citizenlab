@@ -384,4 +384,4 @@ nl:
     event_details: "Details evenement"
   errors:
     messages:
-      must_be_greater_than_min_characters: "moet groter zijn dan min tekens"
+      max_must_be_greater_than_min_characters: "Het maximum moet groter zijn dan het minimum."
