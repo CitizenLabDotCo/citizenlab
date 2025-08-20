@@ -3,7 +3,7 @@ import { deduplicateBins } from './utils';
 
 describe('deduplicateBins', () => {
   it('should deduplicate AgeBins with the same range', () => {
-    const input: ICustomFieldBins['data'] = [
+    const inputData: ICustomFieldBins['data'] = [
       {
         id: '14c331b7-e337-4338-b69f-a7c6470a6005',
         type: 'custom_field_bin',
@@ -381,15 +381,17 @@ describe('deduplicateBins', () => {
       },
     ];
 
-    const expectedOutput: ICustomFieldBins['data'] = [
-      input[0],
-      input[3],
-      input[6],
-      input[9],
-      input[11],
-    ];
+    const expectedOutputData: ICustomFieldBins = {
+      data: [
+        inputData[0],
+        inputData[3],
+        inputData[6],
+        inputData[9],
+        inputData[11],
+      ],
+    };
 
-    const result = deduplicateBins(input);
-    expect(result).toEqual(expectedOutput);
+    const result = deduplicateBins({ data: inputData });
+    expect(result).toEqual(expectedOutputData);
   });
 });

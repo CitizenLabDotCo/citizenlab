@@ -1,8 +1,6 @@
 import { ICustomFieldBins } from './types';
 
-export const deduplicateBins = (
-  bins: ICustomFieldBins['data']
-): ICustomFieldBins['data'] => {
+export const deduplicateBins = (bins: ICustomFieldBins): ICustomFieldBins => {
   const binType = bins[0].attributes.type;
 
   // Only implementing for age bins for now
@@ -13,7 +11,7 @@ export const deduplicateBins = (
   const deduplicatedBins: ICustomFieldBins['data'] = [];
   const seenRanges = new Set<string>();
 
-  for (const bin of bins) {
+  for (const bin of bins.data) {
     const { range } = bin.attributes;
     if (!range) continue;
 
@@ -24,5 +22,5 @@ export const deduplicateBins = (
     }
   }
 
-  return deduplicatedBins;
+  return { data: deduplicatedBins };
 };
