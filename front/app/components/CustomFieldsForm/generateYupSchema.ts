@@ -99,7 +99,7 @@ const generateYupValidationSchema = ({
             .min(1, fieldRequired); // Ensures at least one character after trimming
         }
 
-        if (min_characters) {
+        if (min_characters && input_type !== 'date') {
           fieldSchema = fieldSchema.min(
             min_characters,
             formatMessage(messages.fieldMinLength, {
@@ -109,7 +109,7 @@ const generateYupValidationSchema = ({
           );
         }
 
-        if (max_characters) {
+        if (max_characters && input_type !== 'date') {
           fieldSchema = fieldSchema.max(
             max_characters,
             formatMessage(messages.fieldMaxLength, {
