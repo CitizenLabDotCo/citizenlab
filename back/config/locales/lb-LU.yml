@@ -384,4 +384,4 @@ lb:
     event_details: "Event Detailer"
   errors:
     messages:
-      must_be_greater_than_min_characters: "muss méi grouss wéi min Zeechen sinn"
+      max_must_be_greater_than_min_characters: "De Maximum muss méi grouss wéi de Minimum sinn."
