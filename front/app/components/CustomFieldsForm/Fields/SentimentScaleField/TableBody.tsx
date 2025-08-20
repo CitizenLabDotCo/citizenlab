@@ -7,6 +7,7 @@ import {
   Tr,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 
@@ -17,6 +18,15 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { getLinearScaleLabel } from '../LinearScale/utils';
 
 import { MAXIMUM } from './constants';
+
+const StyledText = styled(Text)<{ selected?: boolean }>`
+  text-overflow: ellipsis;
+  margin-bottom: 12px;
+  cursor: pointer;
+  word-break: break-all;
+  white-space: nowrap;
+  overflow: hidden;
+`;
 
 interface Props {
   question: IFlatCustomField;
@@ -45,13 +55,13 @@ const TableBody = ({ question, getAriaLabel }: Props) => {
               scope="col"
               tabIndex={-1}
               pb="8px"
+              position="relative"
             >
-              <Text
+              <StyledText
                 textAlign="center"
                 m="0px"
                 px="4px"
                 color="grey700"
-                wordBreak="break-word"
                 lineHeight="1.2"
                 fontSize={isPhone ? 's' : 'm'}
               >
@@ -64,7 +74,7 @@ const TableBody = ({ question, getAriaLabel }: Props) => {
                   {!labelsFromSchema[index] && getAriaLabel(index + 1, MAXIMUM)}
                   {/* We use index + 1 because the index is 0-indexed, but the values are 1-indexed. */}
                 </ScreenReaderOnly>
-              </Text>
+              </StyledText>
             </Th>
           );
         })}
