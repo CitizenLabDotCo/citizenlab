@@ -384,4 +384,4 @@ da:
     event_details: "Detaljer om begivenheden"
   errors:
     messages:
-      must_be_greater_than_min_characters: "skal være større end min tegn"
+      max_must_be_greater_than_min_characters: "Maksimum skal være større end minimum."
