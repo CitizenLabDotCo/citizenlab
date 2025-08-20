@@ -2,21 +2,26 @@
 http_interactions:
 - request:
     method: post
-    uri: https://api.openai.com/v1/chat/completions
+    uri: https://bedrock-runtime.eu-central-1.amazonaws.com/model/eu.anthropic.claude-sonnet-4-20250514-v1:0/invoke
     body:
       encoding: UTF-8
-      string: '{"model":"gpt-4.1","messages":[{"role":"user","content":[{"type":"text","text":"Analyze
+      string: '{"anthropic_version":"bedrock-2023-05-31","messages":[{"role":"user","content":[{"type":"text","text":"Analyze
         the provided document and generate a concise description or abstract (2-3
         sentences) that accurately summarizes its nature, main purpose, key content,
         and relevant context. \nThe description should be informative and capture
-        the essential meaning of the document.\n\nRequirements:\n- Avoid starting
-        the summary with \"The document is...\" or similar generic introductions if
-        possible\n- Ensure translations are culturally appropriate and linguistically
-        natural for each locale\n- Values must be the description text accurately
+        the essential meaning of the document. As extra context, the filename is:
+        \"david.docx\"\n\nOutput the results as a properly formatted JSON object with
+        the following requirements:\n- Avoid starting the summary with \"The document
+        is...\" or similar generic introductions.\n- Keys must be the following locale
+        codes: en, fr-FR, nl-NL\n- Values must be the description text accurately
         translated for each respective locale\n- All translations should maintain
-        the same meaning and level of detail\n\nAs extra context, the filename is:
-        \"david.docx\"\n"},{"type":"text","text":"<file name=''david.docx20250804-6881-bjr9ax.html''
-        mime_type=''text/html''><p style=\"font-size:12pt;text-align:center;\">Lorem
+        the same meaning and level of detail\n- Use proper JSON formatting with double
+        quotes around all keys and string values\n- Ensure the JSON is valid and parseable\n\nThe
+        response must contain ONLY the JSON object - no additional text, explanations,
+        code blocks, or formatting outside the JSON structure.\n\nExample format:\n{\n  \"en\":
+        \"... (description in en) ...\",\n  \"fr-FR\": \"... (description in fr-FR)
+        ...\",\n  \"nl-NL\": \"... (description in nl-NL) ...\"\n}\n"},{"type":"text","text":"<file
+        name=''david.docx20250820-203-qgnmj3.html'' mime_type=''text/html''><p style=\"font-size:12pt;text-align:center;\">Lorem
         ipsum </p>\\n<p style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em></em></strong></span></p>\\n<p
         style=\"font-size:12pt;\">Lorem ipsum dolor sit amet, consectetur adipiscing
         elit. Nunc ac faucibus odio. </p>\\n<p style=\"font-size:10pt;text-align:both;\"><span
@@ -162,80 +167,47 @@ http_interactions:
         Morbi velit neque, semper quis lorem quis, efficitur dignissim ipsum. Ut ac
         lorem sed turpis imperdiet eleifend sit amet id sapien.</em></strong></span></p>\\n<p
         style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em></em></strong></span></p>\\n<p
-        style=\"font-size:12pt;\"></p></file>"}]}],"stream":false,"temperature":0.7,"response_format":{"type":"json_schema","json_schema":{"name":"response","schema":{"type":"object","required":["en","fr-FR","nl-NL"],"properties":{"en":{"type":"string","minLength":1,"maxLength":1000},"fr-FR":{"type":"string","minLength":1,"maxLength":1000},"nl-NL":{"type":"string","minLength":1,"maxLength":1000}},"additionalProperties":false},"strict":true}}}'
+        style=\"font-size:12pt;\"></p></file>"}]},{"role":"assistant","content":[{"type":"text","text":"{"}]}],"max_tokens":4096,"temperature":0.7}'
     headers:
       User-Agent:
       - Faraday v2.12.2
+      X-Amz-Date:
+      - 20250820T101528Z
+      X-Amz-Content-Sha256:
+      - c435efe772d5dc206dbdd4270288d96d4dcfdb944e4390434646c9553cbe5534
       Authorization:
-      - Bearer <OPENAI_API_KEY>
+      - AWS4-HMAC-SHA256 Credential=AKIAVVRDDPNZZGMDU2VU/20250820/eu-central-1/bedrock/aws4_request,
+        SignedHeaders=host;x-amz-content-sha256;x-amz-date, Signature=cb0f81d1f6e985f6e9082e0b745cbbef2aa2067302c915c0b594f204a890f290
       Content-Type:
+      - application/json
+      Accept:
       - application/json
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
   response:
     status:
       code: 200
       message: OK
     headers:
       Date:
-      - Mon, 04 Aug 2025 12:34:12 GMT
+      - Wed, 20 Aug 2025 10:15:33 GMT
       Content-Type:
       - application/json
-      Transfer-Encoding:
-      - chunked
+      Content-Length:
+      - '1355'
       Connection:
       - keep-alive
-      Access-Control-Expose-Headers:
-      - X-Request-ID
-      Openai-Organization:
-      - citizenlab
-      Openai-Processing-Ms:
-      - '3948'
-      Openai-Project:
-      - proj_TXtYJItFSu3RsJfLbtCfsOI6
-      Openai-Version:
-      - '2020-10-01'
-      X-Envoy-Upstream-Service-Time:
-      - '3975'
-      X-Ratelimit-Limit-Requests:
-      - '10000'
-      X-Ratelimit-Limit-Tokens:
-      - '2000000'
-      X-Ratelimit-Remaining-Requests:
-      - '9999'
-      X-Ratelimit-Remaining-Tokens:
-      - '1996633'
-      X-Ratelimit-Reset-Requests:
-      - 6ms
-      X-Ratelimit-Reset-Tokens:
-      - 101ms
-      X-Request-Id:
-      - req_62307a64e0614d078f89d2ad3d9374c7
-      X-Envoy-Decorator-Operation:
-      - router.openai.svc.cluster.local:5004/*
-      Cf-Cache-Status:
-      - DYNAMIC
-      Set-Cookie:
-      - __cf_bm=qi0JN.9EPX_jtcTvEUuNre5PTsEQdmuDcfRQoZtBN04-1754310852-1.0.1.1-93rdU29OaPcBaMOlBkqCg6hhFQfFZy0_2Ln6HE14X.sCGUT44MwA81tnQwbzJAUWIfugFGgNP8IvRZ.Ci77vwlr993I1EsHA1HA_ABF5qPY;
-        path=/; expires=Mon, 04-Aug-25 13:04:12 GMT; domain=.api.openai.com; HttpOnly;
-        Secure; SameSite=None
-      - _cfuvid=Jxz9vRXt7WRwmzJTmowCzqfzJVVBKqTKJjVrDTwW.4A-1754310852381-0.0.1.1-604800000;
-        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains; preload
-      X-Content-Type-Options:
-      - nosniff
-      Server:
-      - cloudflare
-      Cf-Ray:
-      - 969e16516f1f74fa-BRU
-      Alt-Svc:
-      - h3=":443"; ma=86400
+      X-Amzn-Requestid:
+      - 4dbb6e50-077d-4cb1-9b09-14c1b3276cc4
+      X-Amzn-Bedrock-Invocation-Latency:
+      - '4979'
+      X-Amzn-Bedrock-Output-Token-Count:
+      - '275'
+      X-Amzn-Bedrock-Input-Token-Count:
+      - '4933'
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        ewogICJpZCI6ICJjaGF0Y21wbC1DMG9nQ0ZtWnZVRTBZanZqZWc5WXZoaEJNY1k0QyIsCiAgIm9iamVjdCI6ICJjaGF0LmNvbXBsZXRpb24iLAogICJjcmVhdGVkIjogMTc1NDMxMDg0OCwKICAibW9kZWwiOiAiZ3B0LTQuMS0yMDI1LTA0LTE0IiwKICAiY2hvaWNlcyI6IFsKICAgIHsKICAgICAgImluZGV4IjogMCwKICAgICAgIm1lc3NhZ2UiOiB7CiAgICAgICAgInJvbGUiOiAiYXNzaXN0YW50IiwKICAgICAgICAiY29udGVudCI6ICJ7XCJlblwiOlwiVGhpcyBkb2N1bWVudCBjb25zaXN0cyBwcmltYXJpbHkgb2YgcGxhY2Vob2xkZXIgdGV4dCAoXFxcIkxvcmVtIGlwc3VtXFxcIikgYW5kIHNhbXBsZSBmb3JtYXR0aW5nLCBsaWtlbHkgc2VydmluZyBhcyBhIHRlbXBsYXRlIG9yIG1vY2stdXAgZm9yIGxheW91dCBhbmQgc3R5bGUgZGVtb25zdHJhdGlvbi4gSXQgY29udGFpbnMgcGFyYWdyYXBocyB3aXRoIHZhcmlvdXMgdHlwb2dyYXBoaWMgc3R5bGVzIGFuZCBzb21lIG51bWJlcmVkIHNlY3Rpb25zLCBidXQgbGFja3Mgc3Vic3RhbnRpdmUgb3IgY29udGV4dHVhbCBjb250ZW50LlwiLFwiZnItRlJcIjpcIkNlIGRvY3VtZW50IGVzdCBwcmluY2lwYWxlbWVudCBjb21wb3PDqSBkZSB0ZXh0ZSBmYWN0aWNlICjCqyBMb3JlbSBpcHN1bSDCuykgZXQgZGUgbWlzZXMgZW4gZm9ybWUgZXhlbXBsZXMsIHNlcnZhbnQgcHJvYmFibGVtZW50IGRlIG1vZMOobGUgb3UgZGUgbWFxdWV0dGUgcG91ciBsYSBwcsOpc2VudGF0aW9uIGV0IGxhIG1pc2UgZW4gcGFnZS4gSWwgY29tcHJlbmQgZGVzIHBhcmFncmFwaGVzIHV0aWxpc2FudCBkaXZlcnMgc3R5bGVzIHR5cG9ncmFwaGlxdWVzIGV0IHF1ZWxxdWVzIHNlY3Rpb25zIG51bcOpcm90w6llcywgbWFpcyBuZSBjb250aWVudCBwYXMgZGUgY29udGVudSBpbmZvcm1hdGlmIG91IGNvbnRleHR1ZWwuXCIsXCJubC1OTFwiOlwiRGl0IGRvY3VtZW50IGJlc3RhYXQgaG9vZmR6YWtlbGlqayB1aXQgcGxhYXRzYWFuZHVpZGluZ3N0ZWtzdCAoXFxcIkxvcmVtIGlwc3VtXFxcIikgZW4gdm9vcmJlZWxkb3BtYWFrLCB2ZXJtb2VkZWxpamsgYmVkb2VsZCBhbHMgc2phYmxvb24gb2Ygb3B6ZXQgdm9vciBsYXktb3V0LSBlbiBzdGlqbGRlbW9uc3RyYXRpZS4gSGV0IGJldmF0IHBhcmFncmFmZW4gbWV0IHZlcnNjaGlsbGVuZGUgdHlwb2dyYWZpc2NoZSBzdGlqbGVuIGVuIGVua2VsZSBnZW51bW1lcmRlIHNlY3RpZXMsIG1hYXIgYmV2YXQgdmVyZGVyIGdlZW4gaW5ob3VkZWxpamtlIG9mIGNvbnRleHR1ZWxlIGluZm9ybWF0aWUuXCJ9IiwKICAgICAgICAicmVmdXNhbCI6IG51bGwsCiAgICAgICAgImFubm90YXRpb25zIjogW10KICAgICAgfSwKICAgICAgImxvZ3Byb2JzIjogbnVsbCwKICAgICAgImZpbmlzaF9yZWFzb24iOiAic3RvcCIKICAgIH0KICBdLAogICJ1c2FnZSI6IHsKICAgICJwcm9tcHRfdG9rZW5zIjogMzcxMSwKICAgICJjb21wbGV0aW9uX3Rva2VucyI6IDIwNywKICAgICJ0b3RhbF90b2tlbnMiOiAzOTE4LAogICAgInByb21wdF90b2tlbnNfZGV0YWlscyI6IHsKICAgICAgImNhY2hlZF90b2tlbnMiOiAwLAogICAgICAiYXVkaW9fdG9rZW5zIjogMAogICAgfSwKICAgICJjb21wbGV0aW9uX3Rva2Vuc19kZXRhaWxzIjogewogICAgICAicmVhc29uaW5nX3Rva2VucyI6IDAsCiAgICAgICJhdWRpb190b2tlbnMiOiAwLAogICAgICAiYWNjZXB0ZWRfcHJlZGljdGlvbl90b2tlbnMiOiAwLAogICAgICAicmVqZWN0ZWRfcHJlZGljdGlvbl90b2tlbnMiOiAwCiAgICB9CiAgfSwKICAic2VydmljZV90aWVyIjogImRlZmF1bHQiLAogICJzeXN0ZW1fZmluZ2VycHJpbnQiOiAiZnBfNzk5ZTRjYTNmMSIKfQo=
-  recorded_at: Mon, 04 Aug 2025 12:34:12 GMT
+        eyJpZCI6Im1zZ19iZHJrXzAxTEdlV0dNWXZVR0J2YXpEVmlZY3NYZCIsInR5cGUiOiJtZXNzYWdlIiwicm9sZSI6ImFzc2lzdGFudCIsIm1vZGVsIjoiY2xhdWRlLXNvbm5ldC00LTIwMjUwNTE0IiwiY29udGVudCI6W3sidHlwZSI6InRleHQiLCJ0ZXh0IjoiXG4gIFwiZW5cIjogXCJBIGZvcm1hdHRlZCB0ZXh0IGRvY3VtZW50IGNvbnRhaW5pbmcgTG9yZW0gaXBzdW0gcGxhY2Vob2xkZXIgdGV4dCBhcnJhbmdlZCBpbiBtdWx0aXBsZSBwYXJhZ3JhcGhzIHdpdGggdmFyaW91cyBmb250IHNpemVzIGFuZCBzdHlsaW5nIChib2xkLCBpdGFsaWMsIHVuZGVybGluZWQpLiBUaGUgZG9jdW1lbnQgaW5jbHVkZXMgYSBudW1iZXJlZCBsaXN0IHNlY3Rpb24gd2l0aCA1IGl0ZW1zIGFuZCBhcHBlYXJzIHRvIGJlIGEgdGVtcGxhdGUgb3Igc2FtcGxlIGRvY3VtZW50IGZvciB0ZXN0aW5nIGxheW91dCBhbmQgZm9ybWF0dGluZyBwdXJwb3Nlcy5cIixcbiAgXCJmci1GUlwiOiBcIlVuIGRvY3VtZW50IHRleHRlIGZvcm1hdMOpIGNvbnRlbmFudCBkdSB0ZXh0ZSBkZSBzdWJzdGl0dXRpb24gTG9yZW0gaXBzdW0gb3JnYW5pc8OpIGVuIHBsdXNpZXVycyBwYXJhZ3JhcGhlcyBhdmVjIGRpdmVyc2VzIHRhaWxsZXMgZGUgcG9saWNlIGV0IHN0eWxlcyAoZ3JhcywgaXRhbGlxdWUsIHNvdWxpZ27DqSkuIExlIGRvY3VtZW50IGluY2x1dCB1bmUgc2VjdGlvbiBkZSBsaXN0ZSBudW3DqXJvdMOpZSBhdmVjIDUgw6lsw6ltZW50cyBldCBzZW1ibGUgw6p0cmUgdW4gbW9kw6hsZSBvdSB1biBkb2N1bWVudCBkJ2V4ZW1wbGUgcG91ciB0ZXN0ZXIgbGEgbWlzZSBlbiBwYWdlIGV0IGxlIGZvcm1hdGFnZS5cIixcbiAgXCJubC1OTFwiOiBcIkVlbiBnZWZvcm1hdHRlZXJkIHRla3N0ZG9jdW1lbnQgbWV0IExvcmVtIGlwc3VtLXBsYWF0c2hvdWRlciB0ZWtzdCBnZXJhbmdzY2hpa3QgaW4gbWVlcmRlcmUgYWxpbmVhJ3MgbWV0IHZlcnNjaGlsbGVuZGUgbGV0dGVyZ3Jvb3R0ZXMgZW4gb3BtYWFrICh2ZXQsIGN1cnNpZWYsIG9uZGVyc3RyZWVwdCkuIEhldCBkb2N1bWVudCBiZXZhdCBlZW4gZ2VudW1tZXJkZSBsaWpzdHNlY3RpZSBtZXQgNSBpdGVtcyBlbiBsaWprdCBlZW4gc2phYmxvb24gb2Ygdm9vcmJlZWxkZG9jdW1lbnQgdGUgemlqbiB2b29yIGhldCB0ZXN0ZW4gdmFuIGxheS1vdXQgZW4gb3BtYWFrZG9lbGVpbmRlbi5cIlxufSJ9XSwic3RvcF9yZWFzb24iOiJlbmRfdHVybiIsInN0b3Bfc2VxdWVuY2UiOm51bGwsInVzYWdlIjp7ImlucHV0X3Rva2VucyI6NDkzMywiY2FjaGVfY3JlYXRpb25faW5wdXRfdG9rZW5zIjowLCJjYWNoZV9yZWFkX2lucHV0X3Rva2VucyI6MCwib3V0cHV0X3Rva2VucyI6Mjc1fX0=
+  recorded_at: Wed, 20 Aug 2025 10:15:33 GMT
 recorded_with: VCR 6.2.0

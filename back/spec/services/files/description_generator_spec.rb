@@ -47,23 +47,12 @@ RSpec.describe Files::DescriptionGenerator do
       expect(file.description_multiloc.keys).to match_array %w[en nl-NL fr-FR]
     end
 
-    it 'includes the file name in the prompt' do
-      file = create_ai_file(name: 'afvalkalender.pdf')
-
-      expect_any_instance_of(RubyLLM::Chat)
-        .to receive(:ask)
-        .with(satisfy { |prompt| prompt.include?(file.name) }, anything)
-        .and_return(instance_double(RubyLLM::Message, content: {}))
-
-      service.generate_descriptions!(file)
-    end
-
     # BadRequestError is raised when an unsupported file is included in the request sent
     # to the LLM. Sometimes, it's not possible to determine in advance whether a file is
-    # supported. For example, some MP3 files are supported while others aren't, depending
-    # on the specific variant.
+    # supported. For example, some image formats are supported while others aren't,
+    # depending on the model.
     it 'raises RubyLLM::BadRequestError for unsupported file', :vcr do
-      file = create_ai_file(name: 'david.mp3')
+      file = create_ai_file(name: 'robot.tiff')
 
       expect { service.generate_descriptions!(file) }
         .to raise_error(RubyLLM::BadRequestError)

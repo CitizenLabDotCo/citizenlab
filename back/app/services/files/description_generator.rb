@@ -40,13 +40,43 @@ module Files
     # @param locales [Array<String>] Array of locale codes
     # @return [Hash] Hash with locale keys and description values
     def generate_descriptions(file, locales)
-      schema = description_schema(locales)
-      chat = RubyLLM.chat(model: 'gpt-4.1').with_schema(schema)
-      prompt = build_prompt(file.name)
+      chat = RubyLLM.chat(model: infer_best_model)
+      prompt = build_prompt(file.name, locales)
+      prefill_msg = '{' # Prefill the response to encourage the LLM to respond with a JSON object
 
-      with_preprocessed_file_content(file) do |source|
-        chat.ask(prompt, with: source).content
+      # @type [RubyLLM::Message]
+      response = with_preprocessed_file_content(file) do |source|
+        chat.add_message(role: :user, content: RubyLLM::Content.new(prompt, source))
+        chat.add_message(role: :assistant, content: prefill_msg)
+        chat.complete
       end
+
+      content = prefill_msg + response.content
+      parse_llm_response(content, locales)
+    end
+
+    # Selects the best available Claude model for the Bedrock provider.
+    # Uses Sonnet 4 if available, otherwise falls back to Sonnet 3.7.
+    #
+    # @return [String] The model ID to use
+    def infer_best_model
+      available_models = RubyLLM.models
+        .select { |model| model.provider == 'bedrock' }
+        .map(&:id)
+
+      # These are not full model IDs, but substrings used to find the corresponding model
+      # ID, since model IDs can vary depending on the Bedrock region.
+      preferred_models = %w[
+        anthropic.claude-sonnet-4
+        anthropic.claude-3-7-sonnet
+      ]
+
+      preferred_models.each do |substring|
+        matching_model = available_models.find { |id| id.include?(substring) }
+        return matching_model if matching_model
+      end
+
+      raise DescriptionGeneratorError, 'No suitable model found for description generation.'
     end
 
     # Yields the preprocessed file content to the block. If no preprocessing is needed,
@@ -140,28 +170,54 @@ module Files
         file.name.rpartition('.').last == 'docx'
     end
 
-    def build_prompt(file_name)
+    def build_prompt(file_name, locales)
       <<~PROMPT
         Analyze the provided document and generate a concise description or abstract (2-3 sentences) that accurately summarizes its nature, main purpose, key content, and relevant context. 
-        The description should be informative and capture the essential meaning of the document.
+        The description should be informative and capture the essential meaning of the document. As extra context, the filename is: "#{file_name}"
 
-        Requirements:
-        - Avoid starting the description with "The document is..." or similar generic introductions if possible
-        - Ensure translations are culturally appropriate and linguistically natural for each locale
+        Output the results as a properly formatted JSON object with the following requirements:
+        - Avoid starting the summary with "The document is..." or similar generic introductions.
+        - Keys must be the following locale codes: #{locales.join(', ')}
         - Values must be the description text accurately translated for each respective locale
         - All translations should maintain the same meaning and level of detail
+        - Use proper JSON formatting with double quotes around all keys and string values
+        - Ensure the JSON is valid and parseable
 
-        As extra context, the filename is: "#{file_name}"
+        The response must contain ONLY the JSON object - no additional text, explanations, code blocks, or formatting outside the JSON structure.
+
+        Example format:
+        #{JSON.pretty_generate(locales.index_with { |locale| "... (description in #{locale}) ..." })}
       PROMPT
     end
 
-    def description_schema(locales)
-      {
-        type: 'object',
-        required: locales,
-        properties: locales.index_with { { type: 'string', minLength: 1, maxLength: 1000 } },
-        additionalProperties: false
-      }
+    # @param response_content [String] The raw LLM response
+    # @param expected_locales [Array<String>] Expected locale codes
+    # @return [Hash] Parsed descriptions hash
+    # @raise [InvalidMultilocResponseError] if the response cannot be parsed
+    def parse_llm_response(response_content, expected_locales)
+      parsed_response = JSON.parse(response_content)
+
+      missing_locales = expected_locales - parsed_response.keys
+      if missing_locales.any?
+        ErrorReporter.report_msg("LLM response is missing locales: #{missing_locales.join(', ')}", extra: {
+          response_content: json_content,
+          file_id: file.id
+        })
+      end
+
+      supported_locales = CL2_SUPPORTED_LOCALES.map(&:to_s)
+      invalid_locales = parsed_response.keys - supported_locales
+      if invalid_locales.any?
+        ErrorReporter.report_msg("LLM response contains invalid locales: #{invalid_locales.join(', ')}", extra: {
+          response_content: json_content,
+          file_id: file.id
+        })
+      end
+
+      # We are lenient and accept any additional *valid* locales in the response.
+      parsed_response.slice(*supported_locales)
+    rescue JSON::ParserError => e
+      raise InvalidMultilocResponseError, "Failed to parse LLM response as JSON: #{e.message}"
     end
 
     class << self
@@ -194,6 +250,7 @@ module Files
     end
 
     class DescriptionGeneratorError < StandardError; end
+    class InvalidMultilocResponseError < DescriptionGeneratorError; end
     class ImageSizeLimitExceededError < DescriptionGeneratorError; end
     class PreviewPendingError < DescriptionGeneratorError; end
   end
