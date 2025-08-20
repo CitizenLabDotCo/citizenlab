@@ -45,143 +45,42 @@ const generateYupValidationSchema = ({
     });
 
     switch (input_type) {
-      case 'text_multiloc': {
-        if (key === 'title_multiloc') {
-          schema[key] = enabled
-            ? validateAtLeastOneLocale(formatMessage(messages.titleRequired), {
-                validateEachNonEmptyLocale: (schema) => {
-                  let fieldSchema = schema
-                    .min(3, formatMessage(messages.titleMinLength, { min: 3 }))
-                    .max(
-                      120,
-                      formatMessage(messages.titleMaxLength, { max: 120 })
-                    );
-
-                  if (min_characters && min_characters > 3) {
-                    fieldSchema = fieldSchema.min(
-                      min_characters,
-                      formatMessage(messages.titleMinLength, {
-                        min: min_characters,
-                      })
-                    );
-                  }
-
-                  if (max_characters && max_characters < 120) {
-                    fieldSchema = fieldSchema.max(
-                      max_characters,
-                      formatMessage(messages.titleMaxLength, {
-                        max: max_characters,
-                      })
-                    );
-                  }
-
-                  return fieldSchema;
-                },
-              })
-            : {};
-        } else {
-          schema[key] = required
-            ? validateAtLeastOneLocale(formatMessage(messages.titleRequired), {
-                validateEachNonEmptyLocale: (schema) => {
-                  let fieldSchema = schema;
-
-                  if (min_characters) {
-                    fieldSchema = fieldSchema.min(
-                      min_characters,
-                      formatMessage(messages.fieldMinLength, {
-                        min: min_characters,
-                        fieldName: title,
-                      })
-                    );
-                  }
-
-                  if (max_characters) {
-                    fieldSchema = fieldSchema.max(
-                      max_characters,
-                      formatMessage(messages.fieldMaxLength, {
-                        max: max_characters,
-                        fieldName: title,
-                      })
-                    );
-                  }
-
-                  return fieldSchema;
-                },
-              })
-            : {};
-        }
-        break;
-      }
-
+      case 'text_multiloc':
       case 'html_multiloc': {
-        if (key === 'body_multiloc') {
-          schema[key] = enabled
-            ? validateAtLeastOneLocale(
-                formatMessage(messages.descriptionRequired),
-                {
-                  validateEachNonEmptyLocale: (schema) => {
-                    let fieldSchema = schema.min(
-                      3,
-                      formatMessage(messages.descriptionMinLength, { min: 3 })
-                    );
+        const requiredMessage =
+          input_type === 'text_multiloc'
+            ? formatMessage(messages.titleRequired)
+            : formatMessage(messages.descriptionRequired);
 
-                    if (min_characters && min_characters > 3) {
-                      fieldSchema = fieldSchema.min(
-                        min_characters,
-                        formatMessage(messages.descriptionMinLength, {
-                          min: min_characters,
-                        })
-                      );
-                    }
+        schema[key] = enabled
+          ? validateAtLeastOneLocale(requiredMessage, {
+              validateEachNonEmptyLocale: (schema) => {
+                let fieldSchema = schema;
 
-                    if (max_characters) {
-                      fieldSchema = fieldSchema.max(
-                        max_characters,
-                        formatMessage(messages.descriptionMaxLength, {
-                          max: max_characters,
-                        })
-                      );
-                    }
-
-                    return fieldSchema;
-                  },
+                if (min_characters) {
+                  fieldSchema = fieldSchema.min(
+                    min_characters,
+                    formatMessage(messages.fieldMinLength, {
+                      min: min_characters,
+                      fieldName: title,
+                    })
+                  );
                 }
-              )
-            : {};
-        } else {
-          schema[key] = required
-            ? validateAtLeastOneLocale(
-                formatMessage(messages.descriptionRequired),
-                {
-                  validateEachNonEmptyLocale: (schema) => {
-                    let fieldSchema = schema;
 
-                    if (min_characters) {
-                      fieldSchema = fieldSchema.min(
-                        min_characters,
-                        formatMessage(messages.fieldMinLength, {
-                          min: min_characters,
-                          fieldName: title,
-                        })
-                      );
-                    }
-
-                    if (max_characters) {
-                      fieldSchema = fieldSchema.max(
-                        max_characters,
-                        formatMessage(messages.fieldMaxLength, {
-                          max: max_characters,
-                          fieldName: title,
-                        })
-                      );
-                    }
-
-                    return fieldSchema;
-                  },
+                if (max_characters) {
+                  fieldSchema = fieldSchema.max(
+                    max_characters,
+                    formatMessage(messages.fieldMaxLength, {
+                      max: max_characters,
+                      fieldName: title,
+                    })
+                  );
                 }
-              )
-            : {};
-        }
+
+                return fieldSchema;
+              },
+            })
+          : {};
         break;
       }
 
