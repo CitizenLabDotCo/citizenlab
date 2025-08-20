@@ -12,7 +12,7 @@ import { FocusOn } from 'react-focus-on';
 import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { RouteType } from 'routes';
-import { object, boolean, array, string, number } from 'yup';
+import { object, boolean, array, string, number, mixed } from 'yup';
 
 import {
   IFlatCreateCustomField,
@@ -52,6 +52,21 @@ import {
   supportsLinearScaleLabels,
   getQuestionCategory,
 } from './utils';
+
+const nullableNumber = number()
+  .transform((value, originalValue) => {
+    // If the original input is null or an empty string, transform it to null.
+    if (
+      originalValue === null ||
+      (typeof originalValue === 'string' && originalValue.trim() === '')
+    ) {
+      return null;
+    }
+
+    // The 'value' is already cast by Yup. If it's not a valid number (NaN), return null.
+    return isNaN(value) ? null : value;
+  })
+  .nullable();
 
 interface FormValues {
   customFields: IFlatCustomField[];
@@ -131,8 +146,8 @@ const FormEdit = ({
         required: boolean(),
         ask_follow_up: boolean(),
         include_in_printed_form: boolean(),
-        min_characters: number().nullable(),
-        max_characters: number().nullable(),
+        min_characters: nullableNumber,
+        max_characters: nullableNumber,
         temp_id: string(),
         logic: validateLogic(formatMessage(messages.logicValidationError)),
       })
