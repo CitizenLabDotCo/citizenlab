@@ -12,7 +12,7 @@ import { FocusOn } from 'react-focus-on';
 import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { RouteType } from 'routes';
-import { object, boolean, array, string, number, mixed } from 'yup';
+import { object, boolean, array, string, number } from 'yup';
 
 import {
   IFlatCreateCustomField,
