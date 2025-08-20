@@ -93,10 +93,6 @@ export function getAdditionalSettings(
   locales: SupportedLocale[],
   platformLocale: SupportedLocale
 ) {
-  if (builtInFieldKeys.includes(field.key)) {
-    return null;
-  }
-
   switch (inputType) {
     case 'sentiment_linear_scale':
       return (
