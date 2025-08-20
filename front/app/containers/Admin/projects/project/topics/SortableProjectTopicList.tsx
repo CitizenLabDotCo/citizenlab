@@ -124,16 +124,7 @@ const SortableProjectTopicList = memo(
         <>
           {isLastSelectedTopic && (
             <StyledWarning>
-              <FormattedMessage
-                {...messages.lastTopicWarning}
-                values={{
-                  ideaFormLink: (
-                    <StyledLink to={`/admin/projects/${projectId}/form`}>
-                      <FormattedMessage {...messages.inputForm} />
-                    </StyledLink>
-                  ),
-                }}
-              />
+              <FormattedMessage {...messages.lastTopicWarning} />
             </StyledWarning>
           )}
           <SortableList
