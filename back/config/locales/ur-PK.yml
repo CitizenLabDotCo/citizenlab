@@ -384,4 +384,4 @@ ur:
     event_details: "واقعہ کی تفصیلات"
   errors:
     messages:
-      must_be_greater_than_min_characters: "کم سے کم حروف سے بڑا ہونا چاہیے۔"
+      max_must_be_greater_than_min_characters: "زیادہ سے زیادہ کم از کم سے زیادہ ہونا چاہیے۔"
