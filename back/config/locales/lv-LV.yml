@@ -385,4 +385,4 @@ lv:
     event_details: "Detalizēta informācija par pasākumu"
   errors:
     messages:
-      must_be_greater_than_min_characters: "jābūt lielākam par min rakstzīmēm"
+      max_must_be_greater_than_min_characters: "Maksimālajai vērtībai jābūt lielākai par minimālo."
