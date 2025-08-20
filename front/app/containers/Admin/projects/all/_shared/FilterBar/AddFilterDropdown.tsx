@@ -6,12 +6,18 @@ import {
   Dropdown,
   DropdownListItem,
   Tooltip,
+  colors,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
 
 import { FilterKey, FILTER_CONFIG } from './constants';
 import messages from './Filters/messages';
+
+const StyledDropdownListItem = styled(DropdownListItem)`
+  color: ${colors.black};
+`;
 
 interface Props {
   availableFilters: FilterKey[];
@@ -61,13 +67,13 @@ const AddFilterDropdown = ({ availableFilters, onAddFilter }: Props) => {
         content={
           <Box>
             {availableFilters.map((filterKey, index) => (
-              <DropdownListItem
+              <StyledDropdownListItem
                 key={index}
                 data-cy={`projects-overview-add-filter-${filterKey}`}
                 onClick={() => handleAddFilter(filterKey)}
               >
                 {formatMessage(FILTER_CONFIG[filterKey])}
-              </DropdownListItem>
+              </StyledDropdownListItem>
             ))}
           </Box>
         }

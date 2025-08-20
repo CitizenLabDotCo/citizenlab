@@ -14,11 +14,16 @@ import messages from './messages';
 import tracks from './tracks';
 
 interface Props {
+  openedDefaultValue?: boolean;
   mr?: string;
   onClear?: () => void;
 }
 
-const Manager = ({ mr = '0px', onClear }: Props) => {
+const Manager = ({
+  openedDefaultValue = false,
+  mr = '0px',
+  onClear,
+}: Props) => {
   const [searchValue, setSearchValue] = useState('');
 
   const managerIds = useParam('managers') ?? [];
@@ -55,7 +60,7 @@ const Manager = ({ mr = '0px', onClear }: Props) => {
       options={sortedOptions}
       searchValue={searchValue}
       mr={mr}
-      openedDefaultValue={managerIds.length === 0}
+      openedDefaultValue={openedDefaultValue && managerIds.length === 0}
       onChange={(managerIds) => {
         setParam('managers', managerIds);
         trackEventByName(tracks.setManager, {
