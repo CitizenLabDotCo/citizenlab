@@ -30,12 +30,12 @@ namespace :single_use do
         end
 
         # Also ensure title_multiloc fields have the correct limits even if they have other values
-        if field.input_type == 'text_multiloc' && field.key == 'title_multiloc'
-          if field.min_characters != 3 || field.max_characters != 120
-            field.min_characters = 3
-            field.max_characters = 120
-            updated = true
-          end
+        if field.input_type == 'text_multiloc' &&
+           field.key == 'title_multiloc' &&
+           (field.min_characters != 3 || field.max_characters != 120)
+          field.min_characters = 3
+          field.max_characters = 120
+          updated = true
         end
 
         # Save and report if any changes were made
