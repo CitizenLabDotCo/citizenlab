@@ -386,4 +386,4 @@ pl:
     event_details: "Szczegóły wydarzenia"
   errors:
     messages:
-      must_be_greater_than_min_characters: "musi być większa niż min znaków"
+      max_must_be_greater_than_min_characters: "Maksimum musi być większe niż minimum."
