@@ -1360,7 +1360,6 @@
   "app.containers.AdminPage.Topics.deleteTopicLabel": "Delete",
   "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "Aquesta etiqueta ja no es podrà afegir a publicacions noves d'aquest projecte.",
   "app.containers.AdminPage.Topics.inputForm": "Input form",
-  "app.containers.AdminPage.Topics.lastTopicWarning": "Es requereix almenys una etiqueta. Si no voleu utilitzar etiquetes, podeu desactivar-les a la pestanya {ideaFormLink}.",
   "app.containers.AdminPage.Topics.projectTopicsDescription": "Podeu afegir i eliminar les etiquetes que es poden assignar a les publicacions d'aquest projecte.",
   "app.containers.AdminPage.Topics.remove": "Remove",
   "app.containers.AdminPage.Topics.title": "Project tags",

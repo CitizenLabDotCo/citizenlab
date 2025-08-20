@@ -1127,7 +1127,6 @@
   "app.containers.AdminPage.Topics.deleteTopicLabel": "Delete",
   "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "This tag will no longer be able to be added to new posts in this project.",
   "app.containers.AdminPage.Topics.inputForm": "Input form",
-  "app.containers.AdminPage.Topics.lastTopicWarning": "At least one tag is required. If you do not want to use tags, they can be disabled in the {ideaFormLink} tab.",
   "app.containers.AdminPage.Topics.projectTopicsDescription": "You can add and delete the tags that can be assigned to posts in this project.",
   "app.containers.AdminPage.Topics.remove": "Remove",
   "app.containers.AdminPage.Topics.title": "Project tags",

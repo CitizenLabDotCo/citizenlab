@@ -2620,7 +2620,6 @@
   "app.containers.AdminPage.Topics.deleteTopicLabel": "Dzēst",
   "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "Šo tagu vairs nevarēs pievienot jauniem ierakstiem šajā projektā.",
   "app.containers.AdminPage.Topics.inputForm": "Ievades datu veidlapa",
-  "app.containers.AdminPage.Topics.lastTopicWarning": "Nepieciešams vismaz viens tags. Ja nevēlaties izmantot tagus, tos var atspējot cilnē {ideaFormLink}.",
   "app.containers.AdminPage.Topics.projectTopicsDescription": "Jūs varat pievienot un dzēst tagus, kurus var piešķirt ierakstiem šajā projektā.",
   "app.containers.AdminPage.Topics.remove": "Noņemt",
   "app.containers.AdminPage.Topics.title": "Projekta tagi",

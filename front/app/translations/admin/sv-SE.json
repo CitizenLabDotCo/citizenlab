@@ -2620,7 +2620,6 @@
   "app.containers.AdminPage.Topics.deleteTopicLabel": "Radera",
   "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "Det här ämnet kommer inte längre att kunna läggas till i nya inlägg i det här projektet.",
   "app.containers.AdminPage.Topics.inputForm": "Indataformulär",
-  "app.containers.AdminPage.Topics.lastTopicWarning": "Minst ett ämne krävs. Om du inte vill använda ämnen kan de inaktiveras på fliken {ideaFormLink}.",
   "app.containers.AdminPage.Topics.projectTopicsDescription": "Du kan lägga till och ta bort ämnen som kan tilldelas inlägg i det här projektet.",
   "app.containers.AdminPage.Topics.remove": "Ta bort",
   "app.containers.AdminPage.Topics.title": "Projektämnen",

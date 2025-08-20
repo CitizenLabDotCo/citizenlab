@@ -2620,7 +2620,6 @@
   "app.containers.AdminPage.Topics.deleteTopicLabel": "Deletar",
   "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "Este tópico já não poderá ser adicionado a novos posts neste projeto.",
   "app.containers.AdminPage.Topics.inputForm": "Formulário de entrada",
-  "app.containers.AdminPage.Topics.lastTopicWarning": "É necessário pelo menos um tópico. Se você não quiser usar tópicos, eles podem ser desabilitados na guia {ideaFormLink}.",
   "app.containers.AdminPage.Topics.projectTopicsDescription": "Você pode adicionar e excluir os tópicos que podem ser atribuídos às entradas neste projeto.",
   "app.containers.AdminPage.Topics.remove": "Remover",
   "app.containers.AdminPage.Topics.title": "Etiqueta dos projetos",

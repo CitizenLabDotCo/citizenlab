@@ -2620,7 +2620,6 @@
   "app.containers.AdminPage.Topics.deleteTopicLabel": "Löschen",
   "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "Dieses Thema kann nicht mehr zu neuen Beiträgen in diesem Projekt hinzugefügt werden.",
   "app.containers.AdminPage.Topics.inputForm": "Eingabeformular",
-  "app.containers.AdminPage.Topics.lastTopicWarning": "Es wird mindestens ein Thema benötigt. Wenn Sie keine Themen verwenden möchten, können diese in der Registerkarte {ideaFormLink} deaktiviert werden.",
   "app.containers.AdminPage.Topics.projectTopicsDescription": "Sie können die Themen, die den Beiträgen in diesem Projekt zugewiesen werden können, hinzufügen und löschen.",
   "app.containers.AdminPage.Topics.remove": "Entfernen",
   "app.containers.AdminPage.Topics.title": "Themen",

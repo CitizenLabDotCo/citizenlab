@@ -2620,7 +2620,6 @@
   "app.containers.AdminPage.Topics.deleteTopicLabel": "Izbriši",
   "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "Ova tema više neće moći biti dodeljivana objavama u sklopu ovog projekta. ",
   "app.containers.AdminPage.Topics.inputForm": "Forma unosa",
-  "app.containers.AdminPage.Topics.lastTopicWarning": "Potrebna je barem jedna tema. Ako ne želite da ih koristite, možete ih isključiti putem {ideaFormLink} kartice. \n",
   "app.containers.AdminPage.Topics.projectTopicsDescription": "Možete dodati ili obrisati teme koje se dodeljuju unosima u okviru ovog projekta.",
   "app.containers.AdminPage.Topics.remove": "Ukloni",
   "app.containers.AdminPage.Topics.title": "Dozvoljene kategorije unosa",

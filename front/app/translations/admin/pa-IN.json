@@ -2620,7 +2620,6 @@
   "app.containers.AdminPage.Topics.deleteTopicLabel": "ਮਿਟਾਓ",
   "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "ਇਹ ਟੈਗ ਹੁਣ ਇਸ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਨਵੀਆਂ ਪੋਸਟਾਂ ਵਿੱਚ ਜੋੜਿਆ ਨਹੀਂ ਜਾ ਸਕੇਗਾ।",
   "app.containers.AdminPage.Topics.inputForm": "ਇੰਪੁੱਟ ਫਾਰਮ",
-  "app.containers.AdminPage.Topics.lastTopicWarning": "ਘੱਟੋ-ਘੱਟ ਇੱਕ ਟੈਗ ਦੀ ਲੋੜ ਹੈ। ਜੇਕਰ ਤੁਸੀਂ ਟੈਗਸ ਦੀ ਵਰਤੋਂ ਨਹੀਂ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ, ਤਾਂ ਉਹਨਾਂ ਨੂੰ {ideaFormLink} ਟੈਬ ਵਿੱਚ ਅਯੋਗ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ।",
   "app.containers.AdminPage.Topics.projectTopicsDescription": "ਤੁਸੀਂ ਉਹਨਾਂ ਟੈਗਾਂ ਨੂੰ ਜੋੜ ਅਤੇ ਮਿਟਾ ਸਕਦੇ ਹੋ ਜੋ ਇਸ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਪੋਸਟਾਂ ਨੂੰ ਨਿਰਧਾਰਤ ਕੀਤੇ ਜਾ ਸਕਦੇ ਹਨ।",
   "app.containers.AdminPage.Topics.remove": "ਹਟਾਓ",
   "app.containers.AdminPage.Topics.title": "ਪ੍ਰੋਜੈਕਟ ਟੈਗਸ",

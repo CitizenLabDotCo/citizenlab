@@ -2620,7 +2620,6 @@
   "app.containers.AdminPage.Topics.deleteTopicLabel": "Dileu",
   "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "Ni fydd modd ychwanegu'r tag hwn at bostiadau newydd yn y prosiect hwn mwyach.",
   "app.containers.AdminPage.Topics.inputForm": "Ffurflen fewnbwn",
-  "app.containers.AdminPage.Topics.lastTopicWarning": "Mae angen o leiaf un tag. Os nad ydych am ddefnyddio tagiau, gellir eu hanalluogi yn y tab {ideaFormLink} .",
   "app.containers.AdminPage.Topics.projectTopicsDescription": "Gallwch ychwanegu a dileu'r tagiau y gellir eu neilltuo i bostiadau yn y prosiect hwn.",
   "app.containers.AdminPage.Topics.remove": "Dileu",
   "app.containers.AdminPage.Topics.title": "Tagiau prosiect",

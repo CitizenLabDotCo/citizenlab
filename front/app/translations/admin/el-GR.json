@@ -1360,7 +1360,6 @@
   "app.containers.AdminPage.Topics.deleteTopicLabel": "Delete",
   "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "Αυτή η ετικέτα δεν θα μπορεί πλέον να προστεθεί σε νέες δημοσιεύσεις σε αυτό το έργο.",
   "app.containers.AdminPage.Topics.inputForm": "Input form",
-  "app.containers.AdminPage.Topics.lastTopicWarning": "Απαιτείται τουλάχιστον μία ετικέτα. Αν δεν θέλετε να χρησιμοποιείτε ετικέτες, μπορείτε να τις απενεργοποιήσετε στην καρτέλα {ideaFormLink}.",
   "app.containers.AdminPage.Topics.projectTopicsDescription": "Μπορείτε να προσθέσετε και να διαγράψετε τις ετικέτες που μπορούν να αντιστοιχιστούν σε δημοσιεύσεις σε αυτό το έργο.",
   "app.containers.AdminPage.Topics.remove": "Remove",
   "app.containers.AdminPage.Topics.title": "Project tags",

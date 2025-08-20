@@ -2620,7 +2620,6 @@
   "app.containers.AdminPage.Topics.deleteTopicLabel": "Verwijderen",
   "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "Dit onderwerp zal niet langer in projecten worden gebruikt.",
   "app.containers.AdminPage.Topics.inputForm": "Invulformulier",
-  "app.containers.AdminPage.Topics.lastTopicWarning": "Er is minimaal één tag vereist. Als je geen tags wilt gebruiken, kun je deze uitschakelen op het tabblad {ideaFormLink}.",
   "app.containers.AdminPage.Topics.projectTopicsDescription": "Je kunt de tags toevoegen en verwijderen die aan bijdragen in dit project kunnen worden toegewezen.",
   "app.containers.AdminPage.Topics.remove": "Verwijderen",
   "app.containers.AdminPage.Topics.title": "Toegestane invoer-tags",

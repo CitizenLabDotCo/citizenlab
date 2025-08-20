@@ -2620,7 +2620,6 @@
   "app.containers.AdminPage.Topics.deleteTopicLabel": "Sil",
   "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "Bu etiket artık bu projedeki yeni yayınlara eklenemeyecektir.",
   "app.containers.AdminPage.Topics.inputForm": "Girdi formu",
-  "app.containers.AdminPage.Topics.lastTopicWarning": "En az bir etiket gereklidir. Etiket kullanmak istemiyorsanız {ideaFormLink} sekmesinden etiketleri devre dışı bırakabilirsiniz.",
   "app.containers.AdminPage.Topics.projectTopicsDescription": "Bu projedeki yayınlara atanabilecek etiketleri ekleyebilir ve silebilirsiniz.",
   "app.containers.AdminPage.Topics.remove": "Kaldır",
   "app.containers.AdminPage.Topics.title": "Proje etiketleri",

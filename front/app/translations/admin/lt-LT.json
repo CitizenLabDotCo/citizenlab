@@ -2620,7 +2620,6 @@
   "app.containers.AdminPage.Topics.deleteTopicLabel": "Ištrinti",
   "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "Šios žymos nebebus galima pridėti prie naujų šio projekto pranešimų.",
   "app.containers.AdminPage.Topics.inputForm": "Įvesties forma",
-  "app.containers.AdminPage.Topics.lastTopicWarning": "Būtina bent viena žyma. Jei nenorite naudoti žymų, jas galima išjungti skirtuke {ideaFormLink} .",
   "app.containers.AdminPage.Topics.projectTopicsDescription": "Galite pridėti ir ištrinti žymas, kurias galima priskirti šio projekto pranešimams.",
   "app.containers.AdminPage.Topics.remove": "Pašalinti",
   "app.containers.AdminPage.Topics.title": "Projekto žymos",
