@@ -27,7 +27,7 @@ export interface ICampaignData {
     sender: 'author' | 'organization';
     reply_to: 'author' | 'organization';
     editable_regions?: EditableRegion[];
-    editable_region_variable_keys?: string[];
+    substitution_variable_keys?: string[];
     created_at: string;
     updated_at: string;
     deliveries_count: number;
