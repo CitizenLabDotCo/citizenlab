@@ -386,4 +386,4 @@ lt:
     event_details: "Informacija apie renginį"
   errors:
     messages:
-      must_be_greater_than_min_characters: "turi būti didesnis nei min simbolių"
+      max_must_be_greater_than_min_characters: "Didžiausia reikšmė turi būti didesnė už mažiausią."
