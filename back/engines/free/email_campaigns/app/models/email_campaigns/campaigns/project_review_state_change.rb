@@ -37,6 +37,7 @@ module EmailCampaigns
   class Campaigns::ProjectReviewStateChange < Campaign
     include ActivityTriggerable
     include Trackable
+    include ContentConfigurable
 
     recipient_filter :notification_recipient
 
@@ -70,7 +71,17 @@ module EmailCampaigns
 
     def generate_commands(recipient:, activity:, time: nil)
       notification = activity.item
-      [{ event_payload: { project_review_id: notification.project_review_id } }]
+      review = notification.project_review
+      [
+        {
+          event_payload: {
+            project_title_multiloc: review.project.title_multiloc,
+            project_description_multiloc: review.project.description_preview_multiloc,
+            admin_project_url: Frontend::UrlService.new.admin_project_url(review.project_id),
+            reviewer_name: review.reviewer.full_name
+          }
+        }
+      ]
     end
   end
 end

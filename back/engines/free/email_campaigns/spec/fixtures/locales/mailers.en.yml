@@ -368,6 +368,16 @@ en:
       event_description: 'The participation platform of %{organizationName} just published the following project:'
       preheader: 'A new project was published'
       cta_button: 'Go to this project'
+    project_review_request:
+      subject: 'Review request: A project is waiting for approval.'
+      title: '%{requesterName} has invited you to review the project "%{projectTitle}"'
+      event_description: "Currently, the project is in draft mode and isn't visible to users. Once you've reviewed and approved it, the moderator will be able to publish it."
+      cta_button: "Review the project"
+    project_review_state_change:
+      subject: '"%{projectTitle}" has been approved'
+      title: '%{reviewerName} approved the project "%{projectTitle}"'
+      event_description: "The project is now ready to go live. You can publish it whenever you're ready!"
+      cta_button: "Go to project settings"
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
       event_description: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
