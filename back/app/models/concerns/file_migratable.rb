@@ -8,7 +8,10 @@ module FileMigratable
   extend ActiveSupport::Concern
 
   included do
-    default_scope { where(migrated_file_id: nil) }
+    default_scope { where(migrated_file_id: nil, migration_skipped_reason: nil) }
+
+    scope :migrated, -> { unscope(:where).where.not(migrated_file_id: nil) }
+    scope :migration_skipped, -> { unscope(:where).where.not(migration_skipped_reason: nil) }
 
     belongs_to :migrated_file, class_name: 'Files::File', optional: true
   end
@@ -16,5 +19,9 @@ module FileMigratable
   # @return [Boolean] true if the file has been migrated
   def migrated?
     migrated_file_id.present?
+  end
+
+  def migration_skipped?
+    migration_skipped_reason.present?
   end
 end

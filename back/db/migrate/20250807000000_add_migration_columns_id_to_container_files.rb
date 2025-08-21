@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
-class AddMigratedFileIdToContainerFiles < ActiveRecord::Migration[7.1]
+class AddMigrationColumnsIdToContainerFiles < ActiveRecord::Migration[7.1]
   def change
-    # Adding a column to mark migrated files across all legacy file tables. This allows
+    # Adding columns to mark migrated files across all legacy file tables. This allows
     # migrated files to be treated as deleted while still retaining them in the database,
     # making it possible to revert the migration if needed.
+    #
+    # A file is considered migrated if the `migrated_file_id` or `migration_skipped_reason`
+    # column is set.
     container_file_tables = %i[
       event_files
       phase_files
@@ -19,6 +22,8 @@ class AddMigratedFileIdToContainerFiles < ActiveRecord::Migration[7.1]
         foreign_key: { to_table: :files },
         type: :uuid, null: true, index: true,
         comment: 'References the Files::File record after migration to new file system'
+
+      add_column table, :migration_skipped_reason, :string, null: true
     end
   end
 end
