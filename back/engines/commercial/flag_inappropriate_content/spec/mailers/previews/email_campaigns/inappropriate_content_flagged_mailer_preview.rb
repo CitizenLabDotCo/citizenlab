@@ -5,7 +5,7 @@ module EmailCampaigns
     include EmailCampaigns::MailerPreview
 
     def campaign_mail
-      preview_campaign_mail(EmailCampaigns::Campaigns::InappropriateContentFlagged)
+      preview_campaign_mail(::FlagInappropriateContent::EmailCampaigns::Campaigns::InappropriateContentFlagged)
     end
   end
 end
