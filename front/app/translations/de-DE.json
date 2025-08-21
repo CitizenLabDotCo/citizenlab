@@ -822,7 +822,7 @@
   "app.components.formBuilder.good": "Gut",
   "app.components.formBuilder.helmetTitle": "Eingabeformular erstellen",
   "app.components.formBuilder.imageFileUpload": "Bild-Upload",
-  "app.components.formBuilder.inputTagManager": "Seite Tags eingeben",
+  "app.components.formBuilder.inputTagManager": "Seite der Beitrags-Tags",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Ungültige Logik",
   "app.components.formBuilder.labels2": "Bezeichnungen (optional)",
   "app.components.formBuilder.labelsTooltipContent2": "Wählen Sie optionale Beschriftungen für jeden der linearen Skalenwerte.",
