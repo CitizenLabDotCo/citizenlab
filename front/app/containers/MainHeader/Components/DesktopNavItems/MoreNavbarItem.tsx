@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 
-import { Dropdown, colors, Button } from '@citizenlab/cl2-component-library';
+import {
+  Dropdown,
+  colors,
+  Button,
+  Box,
+} from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
@@ -23,7 +28,7 @@ const DropdownListItem = styled(Link)`
   font-size: 14px;
   font-weight: 500;
   transition: background-color 100ms ease-out;
-  white-space: nowrap;
+  overflow: hidden;
 
   &:hover {
     background-color: ${colors.grey300};
@@ -35,6 +40,13 @@ const DropdownListItem = styled(Link)`
     background-color: ${colors.teal500};
     color: white;
   }
+`;
+
+const DropdownItemText = styled.span`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
 `;
 
 interface NavbarItemProps {
@@ -77,7 +89,7 @@ const MoreNavbarItem = ({ overflowItems }: Props) => {
         onClickOutside={closeDropdown}
         top="100%"
         left="0"
-        width="200px"
+        width="250px"
         zIndex="9999"
         content={
           <>
@@ -89,7 +101,9 @@ const MoreNavbarItem = ({ overflowItems }: Props) => {
                 onClick={closeDropdown}
                 scrollToTop
               >
-                <T value={item.navigationItemTitle} />
+                <DropdownItemText>
+                  <T value={item.navigationItemTitle} />
+                </DropdownItemText>
               </DropdownListItem>
             ))}
           </>
