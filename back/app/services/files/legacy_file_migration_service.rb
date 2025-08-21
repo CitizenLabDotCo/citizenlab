@@ -63,7 +63,7 @@ module Files
     def migrate_container_class(container_class, stats: Statistics.new)
       legacy_file_association = LEGACY_FILE_ASSOCIATIONS.fetch(container_class)
 
-      container_class.where.associated(legacy_file_association).find_each do |container|
+      container_class.where.associated(legacy_file_association).distinct.find_each do |container|
         migrate_container(container, stats: stats)
       end
 
@@ -81,10 +81,10 @@ module Files
           migrate_legacy_file(container, legacy_file)
         rescue RemoteFileMissingError
           logger.error('Skipping file with missing content', log_payload(container, legacy_file))
-          legacy_file.update!(migration_skipped_reason: 'File content missing')
+          legacy_file.update_column(:migration_skipped_reason, 'File content missing')
           files_skipped += 1
         rescue StandardError => e
-          error_details = log_payload(container, legacy_file, error: e.message)
+          error_details = log_payload(container, legacy_file, error_class: e.class.name, error_msg: e.message)
           stats.errors << error_details
           logger.error('Failed to migrate legacy file', error_details, e)
           raise ActiveRecord::Rollback
@@ -167,8 +167,8 @@ module Files
     end
 
     def update_idea_cf_values!(idea, from_id, to_id)
-      idea.custom_field_values.transform_values! do |value|
-        value.merge('id' => to_id) if value['id'] == from_id
+      idea.custom_field_values.each_value do |value|
+        value['id'] = to_id if value.is_a?(Hash) && value['id'] == from_id
       end
 
       idea.save!
