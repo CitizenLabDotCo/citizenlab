@@ -2620,6 +2620,7 @@
   "app.containers.AdminPage.Topics.deleteTopicLabel": "Löschen",
   "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "Dieses Thema kann nicht mehr zu neuen Beiträgen in diesem Projekt hinzugefügt werden.",
   "app.containers.AdminPage.Topics.inputForm": "Eingabeformular",
+  "app.containers.AdminPage.Topics.lastTopicWarning2": "Es ist mindestens ein Thema erforderlich. Wenn Sie keine Tags verwenden möchten, können Sie das Element 'Tags' aus dem Eingabeformular einer beliebigen Phase löschen (falls vorhanden).",
   "app.containers.AdminPage.Topics.projectTopicsDescription": "Sie können die Themen, die den Beiträgen in diesem Projekt zugewiesen werden können, hinzufügen und löschen.",
   "app.containers.AdminPage.Topics.remove": "Entfernen",
   "app.containers.AdminPage.Topics.title": "Themen",
