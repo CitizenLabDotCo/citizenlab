@@ -45,6 +45,10 @@ export interface Props {
 
 const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
   const { formatMessage } = useIntl();
+  console.log(
+    'imageSupportPageURL value:',
+    formatMessage(messages.imageSupportPageURL)
+  );
   const customHomepageBannerAllowed = useFeatureFlag({
     name: 'customisable_homepage_banner',
     onlyCheckAllowed: true,
@@ -79,6 +83,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
                               href={formatMessage(messages.imageSupportPageURL)}
                               target="_blank"
                               rel="noreferrer"
+                              onClick={(e) => e.stopPropagation()}
                             >
                               <FormattedMessage
                                 {...messages.fullWidthBannerTooltipLink}
@@ -149,6 +154,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
                               href={formatMessage(messages.imageSupportPageURL)}
                               target="_blank"
                               rel="noreferrer"
+                              onClick={(e) => e.stopPropagation()}
                             >
                               <FormattedMessage
                                 {...messages.twoRowBannerTooltipLink}
@@ -194,6 +200,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
                               href={formatMessage(messages.imageSupportPageURL)}
                               target="_blank"
                               rel="noreferrer"
+                              onClick={(e) => e.stopPropagation()}
                             >
                               <FormattedMessage
                                 {...messages.fixedRatioBannerTooltipLink}
