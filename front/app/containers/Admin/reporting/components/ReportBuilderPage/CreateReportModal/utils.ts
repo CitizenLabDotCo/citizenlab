@@ -8,9 +8,9 @@ import { Template } from './typings';
 
 interface Params {
   reportId: string;
-  selectedProjectId: string | undefined;
   template: Template;
-  dates: Partial<DateRange>;
+  selectedProjectId?: string;
+  dates?: Partial<DateRange>;
   year: number | null;
   quarter: number | null;
 }
@@ -19,12 +19,15 @@ export const getRedirectUrl = ({
   reportId,
   selectedProjectId,
   template,
-  dates: { from, to },
+  dates,
   year,
   quarter,
 }: Params) => {
   const reportBuilderRoute = '/admin/reporting/report-builder';
   const reportRoute = `${reportBuilderRoute}/${reportId}/editor`;
+
+  const from = dates?.from;
+  const to = dates?.to;
 
   let params = '';
 
