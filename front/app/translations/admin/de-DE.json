@@ -1169,7 +1169,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.unlisted": "Ungelistet",
   "app.containers.Admin.projects.all.new.Projects.Table.visibility": "Sichtbarkeit",
   "app.containers.Admin.projects.all.new.Projects.Table.visibilityColon": "Sichtbarkeit:",
-  "app.containers.Admin.projects.all.new.Projects.Table.xGroups": "{numberOfGroups} Gruppen",
+  "app.containers.Admin.projects.all.new.Projects.Table.xGroups": "{numberOfGroups} Gruppe(n)",
   "app.containers.Admin.projects.all.new.Projects.Table.xManagers": "{numberOfManagers} Manager*innen",
   "app.containers.Admin.projects.all.new.Projects.Table.yearsLeft": "noch {years} Jahre",
   "app.containers.Admin.projects.all.new.Projects.Table.yearsToStart": "noch {years} Jahre bis zum Start",
