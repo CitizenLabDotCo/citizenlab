@@ -360,9 +360,9 @@ nl:
       subject: '%{projectName} ging een nieuwe fase in'
       preheader: 'Een nieuwe fase is gestart voor %{projectName}'
     project_phase_upcoming:
-      cta_view_phase: 'Zet deze fase klaar'
+      cta_button: 'Zet deze fase klaar'
       event_description: 'Het project ''%{projectName}'' gaat binnenkort een nieuwe fase in. Zorg ervoor dat alles klaar staat: Is er een goede beschrijving? Werden geselecteerde bijdrages al naar deze fase overgeplaatst? Wil je je burgers nog informeren over bepaalde zaken via een e-mailcampagne?'
-      main_header: '%{firstName}, een project gaat binnenkort een nieuwe fase in'
+      title: '%{firstName}, een project gaat binnenkort een nieuwe fase in'
       subtitle: 'Over ''%{projectName}'''
       new_phase: 'Het project gaat de fase ''%{phaseTitle}'' in'
       subject: 'Zet alles klaar voor de nieuwe fase van %{projectName}'

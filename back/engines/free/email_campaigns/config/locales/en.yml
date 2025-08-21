@@ -387,9 +387,9 @@ en:
       subject: '%{projectName} entered a new phase'
       preheader: 'A new phase has been started for %{projectName}'
     project_phase_upcoming:
-      cta_view_phase: 'Set this new phase up'
+      cta_button: 'Set this new phase up'
       event_description: 'The project ''%{projectName}'' will be entering a new phase soon. Make sure everything is set up for this phase: Is there an adequate description? Are selected ideas transferred to this phase? Do you want to inform your citizens on the specifics of this phase through a custom email campaign?'
-      main_header: '%{firstName}, a project will enter a new phase soon'
+      title: '%{firstName}, a project will enter a new phase soon'
       subtitle: 'About ''%{projectName}'''
       new_phase: 'The project will enter the phase ''%{phaseTitle}'''
       subject: 'Get everything set up for the new phase of %{projectName}'
