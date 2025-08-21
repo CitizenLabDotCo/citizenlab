@@ -24,32 +24,63 @@ module Files
       StaticPage => :static_page_files
     }.freeze
 
-    def migrate_all
-      LEGACY_FILE_ASSOCIATIONS.keys.each do |container_class|
-        migrate_container_class(container_class)
-      end
+    attr_reader :logger
+
+    def initialize(logger: Rails.logger)
+      @logger = logger
     end
 
-    def migrate_container_class(container_class)
+    def migrate_all
+      stats = Statistics.new
+
+      LEGACY_FILE_ASSOCIATIONS.keys.each do |container_class|
+        migrate_container_class(container_class, stats: stats)
+      end
+
+      stats
+    end
+
+    def migrate_container_class(container_class, stats: Statistics.new)
       legacy_file_association = LEGACY_FILE_ASSOCIATIONS.fetch(container_class)
 
       container_class.where.associated(legacy_file_association).find_each do |container|
-        migrate_container(container)
+        migrate_container(container, stats: stats)
       end
+
+      stats
     end
 
-    def migrate_container(container)
+    def migrate_container(container, stats: Statistics.new)
       legacy_file_association = LEGACY_FILE_ASSOCIATIONS.fetch(container.class)
 
       Files::File.transaction do
+        log_data = { container_type: container.class.name, container_id: container.id }
+
+        files_migrated = 0
+        files_skipped = 0
+
         container.send(legacy_file_association).find_each do |legacy_file|
+          log_data[:legacy_file_class] = legacy_file.class.name
+          log_data[:legacy_file_id] = legacy_file.id
+
           migrate_legacy_file(container, legacy_file)
+        rescue RemoteFileMissingError
+          logger.error('Skipping file with missing content', log_data)
+          files_skipped += 1
+        else
+          logger.info('Migrated legacy file', log_data)
+          files_migrated += 1
         end
 
-        Rails.logger.info 'Migrated legacy file', legacy_file: legacy_file.id, file: file.id, container: container.id, container_class: container.class
-      rescue RemoteFileMissingError
-        Rails.logger.error 'Skipping file with missing content', legacy_file: legacy_file.id, container: container.id, container_class: container.class
+        stats.files_migrated += files_migrated
+        stats.containers_migrated += 1
       end
+
+      stats
+    rescue StandardError => e
+      logger.error('Failed to migrate legacy file', log_payload.merge(error: e.message), e)
+      stats.errors << { container_type: container.class.name, container_id: container.id, error: e.message }
+      stats
     end
 
     private
@@ -87,6 +118,21 @@ module Files
       end
 
       idea.save!
+    end
+
+    class Statistics
+      attr_accessor :containers_migrated, :files_migrated, :files_skipped, :errors
+
+      def initialize
+        @containers_migrated = 0
+        @files_migrated = 0
+        @files_skipped = 0
+        @errors = []
+      end
+
+      def containers_failed
+        errors.pluck(:container_id).uniq.count
+      end
     end
 
     class RemoteFileMissingError < StandardError; end
