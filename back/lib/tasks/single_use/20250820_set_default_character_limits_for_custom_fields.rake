@@ -23,8 +23,8 @@ namespace :single_use do
           updated = true
         end
 
-        # Set max_characters = 120 for title_multiloc fields if not already set
-        if field.input_type == 'text_multiloc' && field.key == 'title_multiloc' && field.max_characters.nil?
+        # Set max_characters = 120 for built-in title_multiloc fields if not already set
+        if field.code == 'title_multiloc' && field.max_characters.nil?
           field.max_characters = 120
           updated = true
         end
