@@ -2620,6 +2620,7 @@
   "app.containers.AdminPage.Topics.deleteTopicLabel": "Usuń",
   "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "Ten temat nie będzie już mógł być wykorzystywany w projektach.",
   "app.containers.AdminPage.Topics.inputForm": "Formularz inicjatywy",
+  "app.containers.AdminPage.Topics.lastTopicWarning2": "Wymagany jest co najmniej jeden temat. Jeśli nie chcesz używać tagów, element \"Tagi\" może zostać usunięty z formularza wprowadzania dowolnej fazy (jeśli jest obecny).",
   "app.containers.AdminPage.Topics.projectTopicsDescription": "Możesz dodawać i usuwać tematy, które mogą być przypisane do inicjatyw w tym projekcie.",
   "app.containers.AdminPage.Topics.remove": "Usuń",
   "app.containers.AdminPage.Topics.title": "Tagi dozwolone",
