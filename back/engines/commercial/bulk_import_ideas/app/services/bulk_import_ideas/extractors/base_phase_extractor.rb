@@ -4,8 +4,10 @@ module BulkImportIdeas::Extractors
   class BasePhaseExtractor < BaseExtractor
     def initialize(locale, config, xlsx_file_path, worksheet_name, attributes = {})
       super(locale, config)
-      workbook = RubyXL::Parser.parse_buffer(open(xlsx_file_path).read)
-      @worksheet = workbook.worksheets.find { |sheet| sheet.sheet_name == worksheet_name }
+      if xlsx_file_path
+        workbook = RubyXL::Parser.parse_buffer(open(xlsx_file_path).read)
+        @worksheet = workbook.worksheets.find { |sheet| sheet.sheet_name == worksheet_name }
+      end
       @idea_columns = []
       @user_columns = []
       @attributes = attributes
@@ -33,7 +35,7 @@ module BulkImportIdeas::Extractors
     private
 
     def default_phase_title
-      @worksheet.sheet_name
+      @worksheet ? @worksheet.sheet_name : 'Default phase title'
     end
 
     def idea_custom_fields
@@ -45,6 +47,8 @@ module BulkImportIdeas::Extractors
     end
 
     def generate_idea_rows
+      return if !@worksheet
+
       data = []
 
       start_cell, end_cell = ideas_col_range
@@ -73,7 +77,7 @@ module BulkImportIdeas::Extractors
 
     def column_header(col_index)
       row_index = header_row_index(col_index)
-      column_name = clean_string_value(@worksheet[row_index][col_index]&.value)
+      column_name = @worksheet && clean_string_value(@worksheet[row_index][col_index]&.value)
 
       return nil if column_name.nil? || @config[:ignored_columns].include?(column_name)
 
