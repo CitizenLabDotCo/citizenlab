@@ -96,12 +96,17 @@ class CommunityMonitorService
     return nil if responses.blank?
 
     # Create a new report for the previous quarter if one does not already exist
-    ReportBuilder::Report.create!(
+    report = ReportBuilder::Report.new(
       name: "#{year}-#{quarter} #{I18n.t('email_campaigns.community_monitor_report.report_name')}",
       phase: phase,
       year: year,
       quarter: quarter
     )
+    side_fx_service.before_create(report, current_user)
+
+    report.save!
+    side_fx_service.after_create(report, current_user)
+    report
   end
 
   private
