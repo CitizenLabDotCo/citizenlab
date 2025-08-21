@@ -12,6 +12,7 @@
 #  updated_at                                                                             :datetime         not null
 #  name                                                                                   :string
 #  migrated_file_id(References the Files::File record after migration to new file system) :uuid
+#  migration_skipped_reason                                                               :string
 #
 # Indexes
 #
