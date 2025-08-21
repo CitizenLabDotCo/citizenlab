@@ -132,9 +132,7 @@ const ReportBuilderPage = ({ tabsToHide }: ReportBuilderPageProps) => {
   if (!reports) return null;
   if (!me) return null;
 
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const sortedReports = reports?.data.sort((a, b) => {
+  const sortedReports = reports.data.sort((a, b) => {
     return b.attributes.updated_at.localeCompare(a.attributes.updated_at);
   });
 
