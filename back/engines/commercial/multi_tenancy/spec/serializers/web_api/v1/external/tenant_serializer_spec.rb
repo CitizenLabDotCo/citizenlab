@@ -25,7 +25,7 @@ describe 'WebApi::V1::External::TenantSerializer' do
             'organization_type' => 'medium_city',
             'onboarding' => true,
             'authentication_token_lifetime_in_days' => 30,
-            "min_user_age" => 12
+            'min_user_age' => 12
           }
       },
       style: {},
