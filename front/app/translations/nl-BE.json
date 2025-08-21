@@ -156,7 +156,7 @@
   "app.components.CustomFieldsForm.clickOnMapMultipleToAdd3": "Klik op de kaart om te tekenen. Sleep daarna punten om ze te verplaatsen.",
   "app.components.CustomFieldsForm.clickOnMapToAddOrType": "Klik op de kaart of typ hieronder een adres om je antwoord toe te voegen.",
   "app.components.CustomFieldsForm.confirm": "Bevestigen",
-  "app.components.CustomFieldsForm.descriptionMaxLength": "De beschrijving moet maximaal {max} tekens lang zijn",
+  "app.components.CustomFieldsForm.descriptionMaxLength": "De beschrijving mag maximaal {max} tekens lang zijn",
   "app.components.CustomFieldsForm.descriptionMinLength": "De beschrijving moet minstens {min} tekens lang zijn",
   "app.components.CustomFieldsForm.descriptionRequired": "De beschrijving is vereist",
   "app.components.CustomFieldsForm.fieldMaxLength": "Het veld \"{fieldName}\" mag maximaal {max} tekens lang zijn.",
