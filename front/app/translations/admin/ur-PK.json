@@ -2620,6 +2620,7 @@
   "app.containers.AdminPage.Topics.deleteTopicLabel": "حذف کریں۔",
   "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "یہ ٹیگ اب اس پروجیکٹ میں نئی پوسٹس میں شامل نہیں کیا جا سکے گا۔",
   "app.containers.AdminPage.Topics.inputForm": "ان پٹ فارم",
+  "app.containers.AdminPage.Topics.lastTopicWarning2": "کم از کم ایک موضوع درکار ہے۔ اگر آپ ٹیگز استعمال نہیں کرنا چاہتے تو 'ٹیگز' آئٹم کو کسی بھی مرحلے کے ان پٹ فارم (اگر موجود ہو) سے حذف کیا جا سکتا ہے۔",
   "app.containers.AdminPage.Topics.projectTopicsDescription": "آپ ان ٹیگز کو شامل اور حذف کر سکتے ہیں جو اس پروجیکٹ میں پوسٹس کے لیے تفویض کیے جا سکتے ہیں۔",
   "app.containers.AdminPage.Topics.remove": "ہٹا دیں۔",
   "app.containers.AdminPage.Topics.title": "پروجیکٹ ٹیگز",
