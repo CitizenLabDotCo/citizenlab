@@ -45,10 +45,6 @@ export interface Props {
 
 const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
   const { formatMessage } = useIntl();
-  console.log(
-    'imageSupportPageURL value:',
-    formatMessage(messages.imageSupportPageURL)
-  );
   const customHomepageBannerAllowed = useFeatureFlag({
     name: 'customisable_homepage_banner',
     onlyCheckAllowed: true,
