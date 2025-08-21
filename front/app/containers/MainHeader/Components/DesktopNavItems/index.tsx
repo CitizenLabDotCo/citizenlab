@@ -16,12 +16,15 @@ import DesktopNavbarItem from './DesktopNavbarItem';
 import getNavbarItemPropsArray from './getNavbarItemPropsArray';
 import MoreNavbarItem from './MoreNavbarItem';
 
+// Reserved space for right-side navigation elements (search, notifications, user menu, etc.)
+const RESERVED_RIGHT_SPACE = 500;
+
 const Container = styled.nav`
   height: 100%;
   margin-left: 35px;
   flex: 1;
   overflow: visible;
-  max-width: calc(100vw - 400px);
+  max-width: calc(100vw - ${RESERVED_RIGHT_SPACE}px);
 
   /* Hide desktop nav only on phones */
   ${media.phone`
@@ -91,7 +94,10 @@ const DesktopNavItems = () => {
       return;
     }
 
-    const availableWidth = Math.min(containerWidth, window.innerWidth - 350); // Reduced from 400 to 350 to trigger overflow sooner
+    const availableWidth = Math.min(
+      containerWidth,
+      window.innerWidth - RESERVED_RIGHT_SPACE
+    );
 
     hiddenContainer.innerHTML = '';
 
