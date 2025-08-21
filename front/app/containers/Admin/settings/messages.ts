@@ -111,12 +111,16 @@ export default defineMessages({
       'Add the URL of the website you want to link this platform with. Used in the footer on the home page.',
   },
   signupFormText: {
-    id: 'app.containers.AdminPage.SettingsPage.signupFormText',
-    defaultMessage: 'Registration helper text',
+    id: 'app.containers.AdminPage.SettingsPage.signupFormText2',
+    defaultMessage: 'Registration and login helper text',
   },
-  signupFormTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.signupFormTooltip',
-    defaultMessage: 'Add a short description at the top of the sign-up form.',
+  loginHelper: {
+    id: 'app.containers.AdminPage.SettingsPage.loginHelper',
+    defaultMessage: 'Login screen',
+  },
+  loginHelperTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.loginHelperTooltip',
+    defaultMessage: 'This is shown on the top of the login form.',
   },
   step1: {
     id: 'app.containers.AdminPage.SettingsPage.step1',
@@ -136,9 +140,9 @@ export default defineMessages({
     defaultMessage: 'Content moderation',
   },
   registrationHelperTextDescription: {
-    id: 'app.containers.AdminPage.SettingsPage.registrationHelperTextDescription',
+    id: 'app.containers.AdminPage.SettingsPage.registrationHelperTextDescription2',
     defaultMessage:
-      'Provide a short description at the top of your registration form.',
+      'Add short descriptions for the top of the sign-up and login forms.',
   },
   profanityBlockerSetting: {
     id: 'app.containers.AdminPage.SettingsPage.profanityBlockerSetting',
