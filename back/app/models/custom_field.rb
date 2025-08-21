@@ -522,8 +522,6 @@ class CustomField < ApplicationRecord
     self.enabled = true if enabled.nil?
   end
 
-
-
   def generate_key
     return if key
     return if !accepts_input?
