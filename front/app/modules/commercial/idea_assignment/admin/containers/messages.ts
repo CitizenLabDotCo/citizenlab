@@ -8,10 +8,10 @@ export default defineMessages({
   inputAssignmentTooltipText: {
     id: 'app.containers.AdminPage.ProjectEdit.inputAssignmentTooltipText',
     defaultMessage:
-      'All new inputs in this project will be assigned to this person. The assignee can be changed in the {ideaManagerLink}.',
+      'All new inputs in this project will be assigned to this person. The assignee can be changed in the {globalInputManagerLink} or the input manager at the phase-level (ideation and proposal phases only).',
   },
-  inputManagerLinkText: {
-    id: 'app.containers.AdminPage.ProjectEdit.inputManagerLinkText',
-    defaultMessage: 'input manager',
+  globalInputManagerLinkText: {
+    id: 'app.containers.AdminPage.ProjectEdit.globalInputManagerLinkText',
+    defaultMessage: 'global input manager',
   },
 });
