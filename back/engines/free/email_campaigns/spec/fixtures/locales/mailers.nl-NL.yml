@@ -409,8 +409,8 @@ nl:
       no_unread_notifications: "Tijd om deel te nemen!  Bezoek het platform om te ontdekken wat er aan het gebeuren is."
       unread_notifications: "Je hebt nieuwe meldingen! Bezoek het platform om te ontdekken wat er aan het gebeuren is."
     threshold_reached_for_admin:
-      cta_process_initiative: 'Zet de volgende stappen met dit voorstel'
-      main_header: 'Een voorstel heeft het benodigd aantal stemmen bereikt!'
+      cta_button: 'Zet de volgende stappen met dit voorstel'
+      title: 'Een voorstel heeft het benodigd aantal stemmen bereikt!'
       subject: '"%{input_title}" heeft het benodigd aantal stemmen op je platform bereikt'
       preheader: 'Tijd om de volgende stappen te nemen'
     welcome:

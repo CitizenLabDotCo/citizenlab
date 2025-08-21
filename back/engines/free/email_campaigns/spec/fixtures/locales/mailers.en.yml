@@ -408,10 +408,9 @@ en:
       no_unread_notifications: "You don't have any unread notifications. Visit the platform to contribute your input and generate new notifications!"
       unread_notifications: "You have unread notifications. Visit the platform to discover what's happening!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Take this initiative to the next steps'
-      event_description: 'An initiative reached the voting threshold on your platform. Click the button below to take it to the next steps!'
-      main_header: 'An initiative reached the voting threshold!'
-      subject: 'An initiative reached the voting threshold on your platform'
+      cta_button: 'Take this proposal to the next steps'
+      title: 'A proposal reached the voting threshold!'
+      subject: '"%{input_title}" reached the voting threshold'
       preheader: 'Make sure to take the next steps'
     welcome:
       cta_button: 'Discover the platform'

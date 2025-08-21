@@ -410,8 +410,8 @@ fr:
       no_unread_notifications: "Il est temps de recréer de l'activité ! Visitez la plateforme pour découvrir ce qu'il s'y passe."
       unread_notifications: "Vous avez de nouvelles notifications ! Visitez la plate-forme pour découvrir ce qu'il s'y passe."
     threshold_reached_for_admin:
-      cta_process_initiative: 'Passez cette proposition à l''étape suivante'
-      main_header: 'Une proposition a atteint le nombre de voix requis!'
+      cta_button: 'Passez cette proposition à l''étape suivante'
+      title: 'Une proposition a atteint le nombre de voix requis!'
       subject: '"%{input_title}" a atteint le nombre de voix requis sur votre plateforme'
       preheader: 'Assurez-vous de passer aux étapes suivantes'
     welcome:
