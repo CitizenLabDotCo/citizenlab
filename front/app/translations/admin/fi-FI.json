@@ -2620,6 +2620,7 @@
   "app.containers.AdminPage.Topics.deleteTopicLabel": "Poistaa",
   "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "Tätä tunnistetta ei voi enää lisätä tämän projektin uusiin viesteihin.",
   "app.containers.AdminPage.Topics.inputForm": "Syöttölomake",
+  "app.containers.AdminPage.Topics.lastTopicWarning2": "Vähintään yksi aihe vaaditaan. Jos et halua käyttää tunnisteita, 'Tunnisteet'-kohdan voi poistaa minkä tahansa vaiheen syöttölomakkeesta (jos sellainen on).",
   "app.containers.AdminPage.Topics.projectTopicsDescription": "Voit lisätä ja poistaa tunnisteita, jotka voidaan liittää tämän projektin viesteihin.",
   "app.containers.AdminPage.Topics.remove": "Poista",
   "app.containers.AdminPage.Topics.title": "Projektin tunnisteet",
