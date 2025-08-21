@@ -41,7 +41,7 @@ export interface Report {
       data: {
         id: string;
         type: 'content-builder-layout';
-      } | null;
+      };
     };
     owner?: {
       data: {
