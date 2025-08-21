@@ -100,7 +100,7 @@ class CommunityMonitorService
       layout_attributes: {
         craftjs_json: {},
         enabled: true,
-      code: 'report'
+        code: 'report'
       },
       name: "#{year}-#{quarter} #{I18n.t('email_campaigns.community_monitor_report.report_name')}",
       phase: phase,
