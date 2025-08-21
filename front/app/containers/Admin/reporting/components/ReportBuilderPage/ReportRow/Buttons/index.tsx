@@ -2,9 +2,9 @@ import React from 'react';
 
 import { colors, Tooltip } from '@citizenlab/cl2-component-library';
 
+import { Report } from 'api/reports/types';
 import useCopyReport from 'api/reports/useCopyReport';
 import useDeleteReport from 'api/reports/useDeleteReport';
-import useReport from 'api/reports/useReport';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -24,29 +24,26 @@ const ReportRowTooltip = ({ disabled, content, children }) => (
 );
 
 interface Props {
-  reportId: string;
+  report: Report;
   showDuplicate?: boolean;
 }
 
-const Buttons = ({ reportId, showDuplicate = true }: Props) => {
+const Buttons = ({ report, showDuplicate = true }: Props) => {
   const { formatMessage } = useIntl();
   const { mutate: duplicateReport, isLoading: isDuplicating } = useCopyReport();
   const { mutate: deleteReport, isLoading: isDeleting } = useDeleteReport();
-  const { data: report } = useReport(reportId);
-  if (!report) return null;
 
   const isLoading = isDuplicating || isDeleting;
-  const canEdit =
-    report.data.attributes.action_descriptors.editing_report.enabled;
+  const canEdit = report.attributes.action_descriptors.editing_report.enabled;
 
   const handleDeleteReport = async () => {
-    const reportName = report.data.attributes.name;
+    const reportName = report.attributes.name;
 
     const message = reportName
       ? formatMessage(messages.confirmDeleteReport, { reportName })
       : formatMessage(messages.confirmDeleteThisReport);
 
-    if (window.confirm(message)) deleteReport(report.data.id);
+    if (window.confirm(message)) deleteReport(report.id);
   };
 
   return (
@@ -73,7 +70,7 @@ const Buttons = ({ reportId, showDuplicate = true }: Props) => {
             buttonStyle="secondary-outlined"
             processing={isDuplicating}
             disabled={isLoading || !canEdit}
-            onClick={() => duplicateReport({ id: reportId })}
+            onClick={() => duplicateReport({ id: report.id })}
           >
             {formatMessage(messages.duplicate)}
           </BaseButton>
@@ -88,7 +85,7 @@ const Buttons = ({ reportId, showDuplicate = true }: Props) => {
           icon="edit"
           buttonStyle="secondary-outlined"
           disabled={isLoading || !canEdit}
-          linkTo={`/admin/reporting/report-builder/${reportId}/editor`}
+          linkTo={`/admin/reporting/report-builder/${report.id}/editor`}
         >
           {formatMessage(messages.edit)}
         </BaseButton>

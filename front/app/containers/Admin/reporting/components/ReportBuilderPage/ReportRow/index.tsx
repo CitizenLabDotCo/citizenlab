@@ -34,7 +34,7 @@ const ReportRow = ({ report }: Props) => {
           />
         </Box>
         <Box display="flex">
-          <Buttons reportId={report.id} />
+          <Buttons report={report} />
         </Box>
       </Box>
     </ListItem>
