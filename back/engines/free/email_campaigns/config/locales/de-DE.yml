@@ -266,7 +266,7 @@ de:
       preheader: '%{authorName} hinterließ einen Kommentar zu einer Idee für %{organizationName}'
       title: '%{authorName} hat einen Beitrag kommentiert, dem Sie folgen'
       event_description: '%{authorNameFull} hat eine Reaktion auf ''%{inputTitle}'' abgegeben. Klicken Sie auf den Button unten, um das Gespräch mit %{authorName} fortzusetzen.'
-      cta_button: 'Antworten Sie auf %{commentAuthor}'
+      cta_button: '%{commentAuthor} antworten'
       main_header:
         idea: '%{authorName} hat eine Idee kommentiert, der Sie folgen'
         question: '%{authorName} hat eine Frage kommentiert, der Sie folgen'
@@ -300,7 +300,7 @@ de:
       preheader: '%{authorName} hat auf Ihren Kommentar auf der Plattform von %{organizationName} geantwortet'
       title: '%{authorName} hat auf Ihren Kommentar geantwortet'
       event_description: '%{authorNameFull} hat eine Antwort auf Ihren Kommentar zu "%{post}" auf der Beteiligungsplattform geschrieben. Klicken Sie auf den Button unten, um auf %{authorName} zu reagieren.'
-      cta_button: 'Antworten Sie auf %{authorFirstName}'
+      cta_button: '%{authorFirstName} antworten'
       replied: '%{authorFirstName} hat geantwortet:'
     internal_comment_on_your_internal_comment:
       cta_button: 'Kommentar anzeigen von %{firstName}'
@@ -575,7 +575,7 @@ de:
         user_who_submitted_the_input: 'Nutzende, die*der den Beitrag veröffentlicht hat'
         user_who_voted: 'Nutzer*innen, die abgestimmt haben'
         user_who_was_invited: 'Eingeladene*r Nutzer*in'
-        user_with_unsubmitted_survey: 'Nutzer*innen, die ihre Umfrage begonnen, aber noch nicht abgeschickt haben'
+        user_with_unsubmitted_survey: 'Nutzer*innen mit einer nicht eingereichten Umfrage'
         user_with_unsubmitted_votes: 'Nutzer*innen, die Ihre Stimme(n) nicht abgeschickt haben'
         users_who_engaged_but_not_voted: 'Nutzer*innen, die sich mit dem Projekt beschäftigt, aber nicht abgestimmt haben'
         users_who_engaged_with_the_project: 'Nutzer*in interagiert mit Beitrag'
