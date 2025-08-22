@@ -30,6 +30,7 @@ export interface IAnalysisData {
     all_custom_fields: { data: IRelationship[] };
     additional_custom_fields?: { data: IRelationship[] };
     main_custom_field?: { data: IRelationship | null };
+    files?: { data: IRelationship[] } | null;
   };
 }
 
@@ -49,4 +50,5 @@ export interface IAddAnalysis {
   phaseId?: string;
   additionalCustomFields?: string[];
   mainCustomField?: string;
+  files?: string[]; // An array of file IDs
 }

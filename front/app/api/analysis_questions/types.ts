@@ -1,3 +1,5 @@
+import { IRelationship } from 'typings';
+
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 
 import { Keys } from 'utils/cl-react-query/types';
@@ -36,6 +38,9 @@ export interface IQuestionData {
         id: string;
         type: 'background_task';
       };
+    };
+    files?: {
+      data: IRelationship[];
     };
   };
 }

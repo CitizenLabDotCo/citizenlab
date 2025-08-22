@@ -152,6 +152,11 @@
             "pattern": "^$|^/.*$",
             "private": true
           },
+          "login_helper_text": {
+            "title": "Login Helper Text",
+            "description": "Optional short text, shown at the top of the login screen. Supports HTML.",
+            "$ref": "#/definitions/multiloc_string"
+          },
           "signup_helper_text": {
             "title": "Sign-up Helper Text (Step 1)",
             "description": "Optional short text, shown at the top of Step 1 of the sign up form (i.e., email and password). Supports HTML.",
@@ -1457,18 +1462,6 @@
         "type": "object",
         "title": "Data repository: AI analysis",
         "description": "Enables the AI Analysis features for the Data Repository (360 Input).",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "project_planning": {
-        "type": "object",
-        "title": "Project planning",
-        "description": "New back office projects overview [DO NOT ENABLE]",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

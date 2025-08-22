@@ -48,6 +48,9 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
       end
     }
 
+    # This scope works as an AND filter.
+    # So the user will only be included in the scope if they
+    # have moderation rights for all the specified project folders.
     scope :project_folder_moderator, lambda { |*project_folder_ids|
       return where("roles @> '[{\"type\":\"project_folder_moderator\"}]'") if project_folder_ids.empty?
 

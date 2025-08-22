@@ -202,7 +202,7 @@ module EmailCampaigns
 
     def filter_campaigns_on_activity_context(campaigns, activity)
       campaigns = campaigns.select do |campaign|
-        !campaign.context || campaign.activity_context(activity) == campaign.context
+        !campaign.context || (campaign.activity_context(activity) == campaign.context && campaign.class.supports_context?(campaign.context))
       end
       context_types = campaigns.select(&:context).map(&:type)
       campaigns.select do |campaign|

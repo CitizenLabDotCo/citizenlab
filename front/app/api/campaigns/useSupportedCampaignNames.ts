@@ -5,6 +5,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 
 import { CampaignContext } from './types';
 import { getCampaignsContextPath } from './util';
+import supportedCampaignNamesKeys from 'api/supported_campaign_names/keys';
 
 interface ISupportedCampaignNamesData {
   data: {
@@ -24,7 +25,7 @@ const useSupportedCampaignNames = (
   context: CampaignContext = {}
 ): UseQueryResult<ISupportedCampaignNamesData, CLErrors> => {
   return useQuery<ISupportedCampaignNamesData, CLErrors>({
-    queryKey: ['campaign', 'supported_campaign_names', context],
+    queryKey: supportedCampaignNamesKeys.lists(context),
     queryFn: () => fetchSupportedCampaignNames(context),
   });
 };

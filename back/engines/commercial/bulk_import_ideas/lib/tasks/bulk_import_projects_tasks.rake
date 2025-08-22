@@ -12,21 +12,26 @@ namespace :bulk_import do
 
     tenant.switch do
       preview_only = args[:preview_only] ? args[:preview_only] == 'true' : false
-      locale = args[:locale] || AppConfiguration.instance.settings.dig('core', 'locales').first # TODO: pass the locale to the extractor
+      locale = args[:locale] || AppConfiguration.instance.settings.dig('core', 'locales').first
       import_user = User.admin.order(:created_at).first
-
-      # TODO: Extract & import users from an xlsx files in the ZIP
-
-      # Extract & import projects, phases and content from the unzipped xlsx files currently on the file system
       import_path = "tmp/import_files/#{tenant.schema_name}"
-      project_extractor = BulkImportIdeas::Extractors::ProjectExtractor.new(locale, import_path)
+
+      # Extract & import projects, phases and content from projects.xlsx and other xlsx files on the file system from the ZIP file
+      project_extractor = BulkImportIdeas::Extractors::ProjectExtractor.new(locale, nil, import_path)
       projects = project_extractor.projects
       importer = BulkImportIdeas::Importers::ProjectImporter.new(import_user, locale)
 
+      # Extract users from users.xlsx on the file system from the ZIP file
+      config = project_extractor.import_config # We reuse the config from the project extractor
+      user_extractor = BulkImportIdeas::Extractors::UserExtractor.new(locale, config, import_path)
+      users = user_extractor.users
+      user_custom_fields = user_extractor.custom_fields
+
+      # Import or preview the projects and users
       if preview_only
-        importer.preview(projects)
+        importer.preview(projects, users, user_custom_fields)
       else
-        importer.import(projects)
+        importer.import(projects, users, user_custom_fields)
       end
 
       importer.import_log.each do |log_message|

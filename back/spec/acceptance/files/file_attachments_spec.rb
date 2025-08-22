@@ -7,30 +7,44 @@ require_relative '../shared/errors_examples'
 
 resource 'FileAttachments' do
   header 'Content-Type', 'application/json'
-  before { admin_header_token }
 
-  let_it_be(:project) { create(:project) }
-  let(:project_id) { project.id }
+  get 'web_api/v1/file_attachments' do
+    parameter :attachable_id, 'Filter by attachable id', required: false
+    parameter :file_id, 'Filter by file id', required: false
 
-  get 'web_api/v1/projects/:project_id/files' do
-    let_it_be(:file_attachment) { create_pair(:file_attachment, attachable: project) }
+    let!(:event) { create(:event) }
+    let!(:event_attachments) { create_pair(:file_attachment, attachable: event) }
+    let!(:project) { create(:project) }
+    let!(:project_attachment) { create(:file_attachment, attachable: project) }
 
-    context 'when there are legacy files' do
-      let!(:legacy_file) { create(:project_file, project: project) }
+    context 'when admin' do
+      before { admin_header_token }
 
-      example_request 'List only the legacy files' do
+      example_request 'List all file attachments' do
         assert_status 200
-        expect(response_data.size).to eq(1)
-        expect(response_ids).to eq [legacy_file.id]
+        expect(response_data.size).to eq(3)
+      end
+
+      example 'List all file attachments for a specific attachable', document: false do
+        do_request(attachable_id: event.id)
+        assert_status 200
+        expect(response_ids).to match_array event_attachments.map(&:id)
+      end
+
+      example 'List all file attachments for a specific file', document: false do
+        do_request(file_id: project_attachment.file.id)
+        assert_status 200
+        expect(response_ids).to match_array [project_attachment.id]
       end
     end
 
-    context 'when there are only file attachments' do
-      example 'List the file attachments' do
+    context 'when visitor' do
+      before { project.admin_publication.update!(publication_status: 'draft') }
+
+      example 'List file attachments of attachables that the user can view', document: false do
         do_request
         assert_status 200
-        expect(response_data.size).to eq(2)
-        expect(response_ids).to match_array file_attachment.map(&:id)
+        expect(response_ids).to match_array event_attachments.map(&:id)
       end
     end
 
@@ -45,35 +59,45 @@ resource 'FileAttachments' do
     end
   end
 
-  get 'web_api/v1/projects/:project_id/files/:id' do
+  get 'web_api/v1/file_attachments/:id' do
+    let_it_be(:project, reload: true) { create(:project) }
     let_it_be(:file_attachment) { create(:file_attachment, attachable: project) }
-    let_it_be(:legacy_file) { create(:project_file, project: project) }
 
-    let(:project_id) { project.id }
     let(:id) { file_attachment.id }
 
-    example 'Get a file attachment by id' do
-      do_request(id: file_attachment.id)
-      assert_status 200
+    context 'when admin' do
+      before { admin_header_token }
 
-      expect(response_data).to match hash_including(
-        id: file_attachment.id,
-        type: 'file',
-        attributes: hash_including(
-          ordering: file_attachment.position,
-          file: { url: file_attachment.file.content.url },
-          name: file_attachment.file.name,
-          size: file_attachment.file.size,
-          created_at: file_attachment.file.created_at.iso8601(3),
-          updated_at: file_attachment.file.updated_at.iso8601(3)
+      example_request 'Get a file attachment by id' do
+        assert_status 200
+
+        expect(response_data).to match(
+          id: file_attachment.id,
+          type: 'file_attachment',
+          attributes: {
+            position: file_attachment.position,
+            created_at: anything,
+            updated_at: anything
+          },
+          relationships: {
+            file: { data: { id: file_attachment.file.id, type: 'file' } },
+            attachable: { data: { id: file_attachment.attachable_id, type: 'project' } }
+          }
         )
-      )
+      end
     end
 
-    example 'Get a legacy file by id' do
-      do_request(id: legacy_file.id)
-      assert_status 200
-      expect(response_data[:id]).to eq(legacy_file.id)
+    context 'when visitor' do
+      example 'Get a file attachment for an attachable that the user can view', document: false do
+        do_request
+        assert_status 200
+      end
+
+      example '[error] Get a file attachment for an attachable that the user cannot view', document: false do
+        project.admin_publication.update!(publication_status: 'draft')
+        do_request
+        assert_status 401
+      end
     end
 
     context 'when the legacy file is migrated' do
@@ -85,77 +109,170 @@ resource 'FileAttachments' do
     end
   end
 
-  patch 'web_api/v1/projects/:project_id/files/:id' do
-    with_options scope: :file do
-      parameter :ordering, 'An integer to update the order of the file attachments', required: false
+  post 'web_api/v1/file_attachments' do
+    let_it_be(:file) { create(:file) }
+    let_it_be(:attachable) { file.projects.first }
+
+    with_options(scope: :file_attachment) do
+      with_options required: true do
+        parameter :file_id, 'ID of the file to attach'
+        parameter :attachable_type, 'Type of the resource to attach the file to'
+        parameter :attachable_id, 'ID of the resource to attach the file to'
+      end
+
+      parameter :position, 'Position of the file attachment'
     end
 
-    example 'Update the ordering of a file attachment by id' do
-      attachment1 = create(:file_attachment, attachable: project, position: 1)
-      attachment2 = create(:file_attachment, attachable: project, position: 2)
+    let(:file_id) { file.id }
+    let(:attachable_type) { 'Project' }
+    let(:attachable_id) { attachable.id }
+    let(:position) { 2 }
 
-      expect(attachment1.position).to eq(1)
-      expect(attachment2.position).to eq(2)
+    context 'when admin' do
+      before { admin_header_token }
 
-      do_request(id: attachment2.id, ordering: 1)
-      assert_status 200
-      expect(response_data.dig(:attributes, :ordering)).to eq(1)
+      example 'Create a file attachment' do
+        expect { do_request }
+          .to enqueue_job(LogActivityJob)
+          .with(a_kind_of(Files::FileAttachment), 'created', anything, anything)
 
-      # The front-end has full control over the ordering of file attachments which can
-      # lead to inconsistencies. This will be reworked in the future.
-      # See ticket TAN-5126.
-      expect(attachment1.reload.position).to eq(1)
-      expect(attachment2.reload.position).to eq(1)
+        assert_status 201
+
+        expect(response_data).to match(
+          id: anything,
+          type: 'file_attachment',
+          attributes: {
+            position: 2,
+            created_at: anything,
+            updated_at: anything
+          },
+          relationships: {
+            file: { data: { id: file.id, type: 'file' } },
+            attachable: { data: { id: attachable.id, type: 'project' } }
+          }
+        )
+      end
     end
 
-    example 'Update the ordering of a legacy file by id' do
-      # We only need one file to test reordering because the backend does not manage
-      # ordering for legacy files. The value can be set arbitrarily by the frontend.
-      file = create(:project_file, project: project, ordering: 1)
-      # This should not be taken into account. In principle, file attachments and legacy
-      # files should not be mixed, but we're testing it anyway.
-      attachment = create(:file_attachment, attachable: project, position: 1)
+    context 'when moderator of the project to which the attachable belongs' do
+      before do
+        moderator = create(:project_moderator, projects: [attachable])
+        header_token_for(moderator)
+      end
 
-      do_request(id: file.id, ordering: 2)
-      assert_status 200
-      expect(response_data.dig(:attributes, :ordering)).to eq(2)
+      example 'Create a file attachment' do
+        do_request
+        assert_status 201
+      end
+    end
 
-      expect(file.reload.ordering).to eq(2)
-      expect(attachment.reload.position).to eq(1)
+    context 'when moderator of another project' do
+      before do
+        moderator = create(:project_moderator)
+        header_token_for(moderator)
+      end
+
+      example '[error] Create a file attachment', document: false do
+        do_request
+        assert_status 401
+      end
     end
   end
 
-  delete 'web_api/v1/projects/:project_id/files/:id' do
-    let_it_be(:file_attachment) { create(:file_attachment, attachable: project) }
-    let_it_be(:legacy_file) { create(:project_file, project: project) }
+  patch 'web_api/v1/file_attachments/:id' do
+    with_options(scope: :file_attachment) do
+      parameter :position, 'Position of the file attachment'
+    end
 
-    context 'when this is the only attachment of the file' do
-      example 'Delete a file attachment by id (and the file)' do
-        do_request(id: file_attachment.id)
+    let(:file_attachment) { create(:file_attachment, to: :project, position: 1) }
+    let(:id) { file_attachment.id }
+    let(:position) { 2 }
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      example 'Update a project file attachment' do
+        expect { do_request }
+          .to change { file_attachment.reload.position }.from(1).to(2)
+          .and enqueue_job(LogActivityJob)
+          .with(file_attachment, 'changed', anything, anything)
 
         assert_status 200
-        expect { file_attachment.file.reload }.to raise_error(ActiveRecord::RecordNotFound)
+        expect(response_data.dig(:attributes, :position)).to eq(2)
+      end
+    end
+
+    context 'when normal user' do
+      let(:user) { create(:user) }
+
+      before { header_token_for(user) }
+
+      example '[error] Update a project file attachment', document: false do
+        do_request
+        assert_status 401
+      end
+
+      example 'Update a file attachment on their own idea', document: false do
+        idea = create(:idea, author: user)
+        file_attachment = create(:file_attachment, attachable: idea, position: 1)
+
+        do_request(id: file_attachment.id, position: 2)
+
+        assert_status 200
+        expect(file_attachment.reload.position).to eq(2)
+      end
+    end
+  end
+
+  delete 'web_api/v1/file_attachments/:id' do
+    let_it_be(:file_attachment) { create(:file_attachment, to: :event) }
+
+    let(:id) { file_attachment.id }
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      example 'Delete a file attachment' do
+        expect { do_request }.to have_enqueued_job(LogActivityJob)
+        expect(response_status).to eq(200)
         expect { file_attachment.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
-    context 'when there are other attachments of the file' do
-      let!(:other_attachment) { create(:file_attachment, file: file_attachment.file) }
+    context 'when normal user' do
+      let(:user) { create(:user) }
 
-      example 'Delete a file attachment by id' do
+      before { header_token_for(user) }
+
+      example '[error] Delete an event file attachment', document: false do
+        do_request
+        assert_status 401
+      end
+
+      example 'Delete a file attachment on their own idea', document: false do
+        idea = create(:idea, author: user)
+        file_attachment = create(:file_attachment, attachable: idea)
+
         do_request(id: file_attachment.id)
 
         assert_status 200
-        expect { file_attachment.file.reload }.not_to raise_error
         expect { file_attachment.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
+  end
 
-    example 'Delete a legacy file by id' do
-      do_request(id: legacy_file.id)
+  get 'web_api/v1/files/:file_id/attachments' do
+    let_it_be(:file) { create(:file) }
+    let_it_be(:file_attachments) { create_pair(:file_attachment, file: file) }
+
+    let(:file_id) { file.id }
+
+    # Add a file attachment that should not be returned.
+    before { create(:file_attachment) }
+
+    example_request 'List all file attachments of a file' do
       assert_status 200
-      expect { ProjectFile.find(legacy_file.id) }
-        .to raise_error(ActiveRecord::RecordNotFound)
+      expect(response_data.size).to eq(2)
     end
 
     context 'when the legacy file is migrated' do
@@ -167,72 +284,94 @@ resource 'FileAttachments' do
     end
   end
 
-  post 'web_api/v1/projects/:project_id/files' do
-    with_options scope: :file do
-      parameter :file, 'The base64 encoded file', required: true
-      parameter :name, 'The name of the file, including the file extension', required: true
-      parameter :ordering, 'An integer that is used to order the file attachments within a project', required: false
+  shared_examples 'attachable resource' do |name, attachable_factory: name|
+    context "#{name}s behave like an attachable resource" do
+      before { admin_header_token } # rubocop:disable RSpec/ScatteredSetup
+
+      get "web_api/v1/#{name}s/:attachable_id/file_attachments" do
+        let_it_be(:attachable) { create(attachable_factory) }
+        let_it_be(:file_attachments) { create_pair(:file_attachment, attachable: attachable) }
+
+        let(:attachable_id) { attachable.id }
+
+        # Add a file attachment that should not be returned.
+        before { create(:file_attachment) } # rubocop:disable RSpec/ScatteredSetup
+
+        example "List all file attachments of a #{name}", document: false do
+          do_request
+          assert_status 200
+          expect(response_ids).to match_array file_attachments.map(&:id)
+        end
+      end
+
+      post "web_api/v1/#{name}s/:attachable_id/file_attachments" do
+        with_options(scope: :file_attachment) do
+          parameter :file_id, 'ID of the file to attach', required: true
+          parameter :position, 'Position of the file attachment', required: false
+        end
+
+        let(:tmp_fa) { create(:file_attachment, to: attachable_factory).tap(&:delete) }
+        let(:attachable) { tmp_fa.attachable }
+        let(:file) { tmp_fa.file }
+
+        # Parameters
+        let(:attachable_id) { attachable.id }
+        let(:file_id) { file.id }
+
+        example "Create a file attachment for a #{name}", document: false do
+          do_request
+          assert_status 201
+
+          file_attachment = Files::FileAttachment.find(response_data[:id])
+          expect(file_attachment.attachable).to eq(attachable)
+          expect(file_attachment.file).to eq(file)
+        end
+      end
     end
+  end
 
-    ValidationErrorHelper.new.error_fields(self, ProjectFile)
+  include_examples 'attachable resource', 'project'
+  include_examples 'attachable resource', 'event'
+  include_examples 'attachable resource', 'phase'
+  include_examples 'attachable resource', 'static_page'
 
-    let(:ordering) { 1 }
-    let(:name) { 'minimal_pdf.pdf' }
-    let(:file) { file_as_base64 name, 'application/pdf' }
+  # Special case for ideas: the attachments cannot be created directly.
+  # They are automatically managed when creating or replacing the files on the idea.
+  context 'ideas behave like an attachable resource' do
+    before { admin_header_token } # rubocop:disable RSpec/ScatteredSetup
 
-    context 'when there are no legacy files' do
-      let!(:file_attachment) { create(:file_attachment, attachable: project, position: 1) }
+    get 'web_api/v1/ideas/:attachable_id/file_attachments' do
+      let_it_be(:idea) { create(:idea) }
+      let_it_be(:file_attachments) { create_pair(:file_attachment, attachable: idea) }
 
-      example 'Create a file as a file attachment' do
-        expect { do_request }
-          .to change(Files::File, :count).by(1)
-          .and(change(Files::FileAttachment, :count).by(1))
-          .and(change(Files::FilesProject, :count).by(1))
-          .and not_change(ProjectFile, :count)
-          .and not_change(file_attachment.reload, :position)
+      let(:attachable_id) { idea.id }
 
-        assert_status 201
+      # Add a file attachment that should not be returned.
+      before { create(:file_attachment) } # rubocop:disable RSpec/ScatteredSetup
 
-        expect(response_data).to match hash_including(
-          id: be_present,
-          type: 'file',
-          attributes: {
-            ordering: ordering,
-            file: { url: be_present },
-            name: name,
-            size: 130,
-            created_at: be_present,
-            updated_at: be_present
-          }
-        )
-
-        attachment = Files::FileAttachment.find(response_data[:id])
-        expect(attachment.file.projects).to contain_exactly(project)
+      example 'List all file attachments of an idea', document: false do
+        do_request
+        assert_status 200
+        expect(response_ids).to match_array file_attachments.map(&:id)
       end
     end
 
-    context 'when there are legacy files' do
-      before { create(:project_file, project: project) }
+    post 'web_api/v1/ideas/:attachable_id/file_attachments' do
+      with_options(scope: :file_attachment) do
+        parameter :file_id, 'ID of the file to attach', required: true
+        parameter :position, 'Position of the file attachment', required: false
+      end
 
-      example 'Create a file as a legacy file' do
-        expect { do_request }
-          .to change(ProjectFile, :count).by(1)
+      let(:attachable) { create(:idea) }
+      let(:file) { create(:file, projects: [attachable.project]) }
 
-        assert_status 201
-        expect(response_data[:id]).to be_present
+      # Parameters
+      let(:attachable_id) { attachable.id }
+      let(:file_id) { file.id }
 
-        expect(response_data).to match hash_including(
-          id: be_present,
-          type: 'file',
-          attributes: {
-            ordering: ordering,
-            file: { url: be_present },
-            name: name,
-            size: 130,
-            created_at: be_present,
-            updated_at: be_present
-          }
-        )
+      example '[error] Cannot attach an existing file to an idea', document: false do
+        do_request
+        assert_status 401
       end
     end
 

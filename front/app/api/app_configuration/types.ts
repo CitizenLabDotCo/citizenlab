@@ -36,6 +36,7 @@ export type IAppConfigurationSettingsCore = {
   meta_title?: Multiloc | null;
   meta_description?: Multiloc | null;
   google_search_console_meta_attribute?: string | null;
+  login_helper_text?: Multiloc | null;
   signup_helper_text?: Multiloc | null;
   custom_fields_signup_helper_text?: Multiloc | null;
   color_main: string | null;
@@ -274,7 +275,6 @@ export interface IAppConfigurationSettings {
   data_repository_ai_analysis?: AppConfigurationFeature;
   user_fields_in_surveys?: AppConfigurationFeature;
   html_pdfs?: AppConfigurationFeature;
-  project_planning?: AppConfigurationFeature;
   project_planning_calendar?: AppConfigurationFeature;
   common_ground?: AppConfigurationFeature;
   customised_automated_emails?: AppConfigurationFeature;

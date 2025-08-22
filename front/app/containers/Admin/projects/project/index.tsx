@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import {
   Outlet as RouterOutlet,
   useLocation,
@@ -10,6 +11,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import NavigationTabs from 'components/admin/NavigationTabs';
 import Tab from 'components/admin/NavigationTabs/Tab';
+import NewLabel from 'components/UI/NewLabel';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -64,7 +66,12 @@ const AdminProjectsProjectIndex = () => {
         {isDataRepositoryEnabled && (
           <Tab
             className="intercom-admin-project-files-tab"
-            label={formatMessage(messages.filesTab)}
+            label={
+              <Box display="flex" alignItems="center" gap="8px">
+                {formatMessage(messages.filesTab)}
+                <NewLabel />
+              </Box>
+            }
             url={`/admin/projects/${projectId}/files`}
             active={pathname.includes(`/admin/projects/${projectId}/files`)}
           />
