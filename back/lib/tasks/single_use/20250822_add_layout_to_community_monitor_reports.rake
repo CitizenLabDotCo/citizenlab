@@ -14,7 +14,7 @@ namespace :single_use do
 
       # Step 1: get all community monitor autogenerate reports
       community_monitor_project_id = app_config.settings.dig('community_monitor', 'project_id')
-      community_monitor_phase = Phase.find_by(project_id: project_id)
+      community_monitor_phase = Phase.find_by(project_id: community_monitor_project_id)
 
       if community_monitor_phase.nil?
         puts "community_monitor_project_id: #{community_monitor_project_id}"

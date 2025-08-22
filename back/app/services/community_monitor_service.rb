@@ -92,29 +92,37 @@ class CommunityMonitorService
     return existing_report if existing_report
 
     # Do not create a report if there are no responses for the previous quarter
-    responses = phase.ideas.where(published_at: start_date..end_date)
+    # responses = phase.ideas.where(published_at: start_date..end_date)
+    responses = phase.ideas
     return nil if responses.blank?
 
     # Create a new report for the previous quarter if one does not already exist
-    report = ReportBuilder::Report.new(
-      layout_attributes: {
-        craftjs_json: {},
-        enabled: true,
-        code: 'report'
-      },
+    # report = ReportBuilder::Report.new(
+    #   layout_attributes: {
+    #     craftjs_json: {},
+    #     enabled: true,
+    #     code: 'report'
+    #   },
+    #   name: "#{year}-#{quarter} #{I18n.t('email_campaigns.community_monitor_report.report_name')}",
+    #   phase: phase,
+    #   year: year,
+    #   quarter: quarter
+    # )
+
+    # current_user = User.super_admins.first
+
+    # side_fx_service.before_create(report, current_user)
+
+    # report.save!
+    # side_fx_service.after_create(report, current_user)
+    # report
+
+    ReportBuilder::Report.create!(
       name: "#{year}-#{quarter} #{I18n.t('email_campaigns.community_monitor_report.report_name')}",
       phase: phase,
       year: year,
       quarter: quarter
     )
-
-    current_user = User.super_admins.first
-
-    side_fx_service.before_create(report, current_user)
-
-    report.save!
-    side_fx_service.after_create(report, current_user)
-    report
   end
 
   private
