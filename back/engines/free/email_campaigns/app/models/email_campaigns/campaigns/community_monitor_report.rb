@@ -101,12 +101,15 @@ module EmailCampaigns
     end
 
     def content_worth_sending?(_)
-      return false unless community_monitor_service.phase
+      # Temporarily disabling this email campaign until issues
+      # around community monitor report generation are resolved
+      false
+      # return false unless community_monitor_service.phase
 
-      report = community_monitor_service.find_or_create_previous_quarter_report
-      return false unless report
+      # report = community_monitor_service.find_or_create_previous_quarter_report
+      # return false unless report
 
-      true
+      # true
     end
 
     def community_monitor_service
