@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::FileAttachmentSerializer < WebApi::V1::BaseSerializer
+class WebApi::V1::FileAttachmentSerializerAsLegacyFile < WebApi::V1::BaseSerializer
   set_type :file
 
   attribute :ordering, &:position
