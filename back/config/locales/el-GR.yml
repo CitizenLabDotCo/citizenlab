@@ -382,3 +382,6 @@ el:
     default_voting_term_plural: "ψήφοι"
   ics_calendar_event:
     event_details: "Λεπτομέρειες εκδήλωσης"
+  errors:
+    messages:
+      max_must_be_greater_than_min_characters: "Το μέγιστο πρέπει να είναι μεγαλύτερο από το ελάχιστο."

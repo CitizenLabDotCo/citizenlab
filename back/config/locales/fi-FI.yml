@@ -382,3 +382,6 @@ fi:
     default_voting_term_plural: "ääniä"
   ics_calendar_event:
     event_details: "Tapahtuman tiedot"
+  errors:
+    messages:
+      max_must_be_greater_than_min_characters: "Maksimin on oltava suurempi kuin minimin."
