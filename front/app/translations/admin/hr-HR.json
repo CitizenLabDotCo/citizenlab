@@ -2620,6 +2620,7 @@
   "app.containers.AdminPage.Topics.deleteTopicLabel": "Izbriši",
   "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "Ova tema više neće moći biti dodjeljivana objavama u sklopu ovog projekta.",
   "app.containers.AdminPage.Topics.inputForm": "Obrazac za unos",
+  "app.containers.AdminPage.Topics.lastTopicWarning2": "Obavezna je barem jedna tema. Ako ne želite koristiti oznake, stavku 'Oznake' možete izbrisati iz obrasca za unos bilo koje faze (ako postoji).",
   "app.containers.AdminPage.Topics.projectTopicsDescription": "Možete dodati ili obrisati oznake koje se dodjeljuju objavama u okviru ovog projekta.",
   "app.containers.AdminPage.Topics.remove": "Ukloni",
   "app.containers.AdminPage.Topics.title": "Oznake projekta",

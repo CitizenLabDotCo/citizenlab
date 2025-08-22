@@ -2620,6 +2620,7 @@
   "app.containers.AdminPage.Topics.deleteTopicLabel": "Dileu",
   "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "Ni fydd modd ychwanegu'r tag hwn at bostiadau newydd yn y prosiect hwn mwyach.",
   "app.containers.AdminPage.Topics.inputForm": "Ffurflen fewnbwn",
+  "app.containers.AdminPage.Topics.lastTopicWarning2": "Mae angen o leiaf un pwnc. Os nad ydych chi am ddefnyddio tagiau, gellir dileu'r eitem 'Tagiau' o ffurflen fewnbwn unrhyw gam (os yw'n bresennol).",
   "app.containers.AdminPage.Topics.projectTopicsDescription": "Gallwch ychwanegu a dileu'r tagiau y gellir eu neilltuo i bostiadau yn y prosiect hwn.",
   "app.containers.AdminPage.Topics.remove": "Dileu",
   "app.containers.AdminPage.Topics.title": "Tagiau prosiect",

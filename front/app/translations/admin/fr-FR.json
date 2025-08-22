@@ -2620,6 +2620,7 @@
   "app.containers.AdminPage.Topics.deleteTopicLabel": "Supprimer",
   "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "Ce sujet ne pourra plus être utilisé dans ce projet.",
   "app.containers.AdminPage.Topics.inputForm": "Formulaire de contribution",
+  "app.containers.AdminPage.Topics.lastTopicWarning2": "Au moins un sujet est requis. Si vous ne souhaitez pas utiliser de balises, l'élément \"Balises\" peut être supprimé du formulaire de saisie de chaque phase (s'il est présent).",
   "app.containers.AdminPage.Topics.projectTopicsDescription": "Vous pouvez ajouter et supprimer les rubriques pouvant être affectées aux contributions de ce projet.",
   "app.containers.AdminPage.Topics.remove": "Supprimer",
   "app.containers.AdminPage.Topics.title": "Etiquettes autorisées",
