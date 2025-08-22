@@ -165,7 +165,7 @@ describe Files::LegacyFileMigrationService do
         expect(migrated_file.name).to eq legacy_file.name
         expect(migrated_file.created_at).to eq legacy_file.created_at
         expect(migrated_file.projects).to contain_exactly(event.project)
-        expect(migrated_file.ai_processing_allowed).to eq false
+        expect(migrated_file.ai_processing_allowed).to be(false)
         expect(migrated_file.category).to eq 'other'
         expect(migrated_file.uploader).to be_nil
 

@@ -53,7 +53,7 @@ module Files
     end
 
     def migrate_all(stats: Statistics.new)
-      LEGACY_FILE_ASSOCIATIONS.keys.each do |container_class|
+      LEGACY_FILE_ASSOCIATIONS.each_key do |container_class|
         migrate_container_class(container_class, stats: stats)
       end
 
