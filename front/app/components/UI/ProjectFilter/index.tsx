@@ -1,13 +1,14 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 
 import {
-  Select,
   Box,
   Label,
   Spinner,
   BoxProps,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import { debounce } from 'lodash-es';
+import ReactSelect from 'react-select';
+import { useTheme } from 'styled-components';
 import { IOption } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -15,6 +16,8 @@ import { IProjectData, PublicationStatus } from 'api/projects/types';
 import useProjects from 'api/projects/useProjects';
 
 import useLocalize, { Localize } from 'hooks/useLocalize';
+
+import selectStyles from 'components/UI/MultipleSelect/styles';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
@@ -41,12 +44,6 @@ interface Props {
   includeHiddenProjects?: boolean;
 }
 
-const StyledSelect = styled(Select)`
-  select {
-    padding: 11px;
-  }
-`;
-
 const generateProjectOptions = (
   projects: IProjectData[],
   localize: Localize,
@@ -72,6 +69,9 @@ const ProjectFilter = ({
 }: Props & Omit<BoxProps, 'children'>) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
+  const theme = useTheme();
+  const [searchValue, setSearchValue] = useState('');
+
   const { data: projects } = useProjects({
     publicationStatuses: PUBLICATION_STATUSES,
     canModerate: true,
@@ -79,7 +79,7 @@ const ProjectFilter = ({
   });
   const { data: authUser } = useAuthUser();
 
-  const projectFilterOptions = useMemo(() => {
+  const allProjectOptions = useMemo(() => {
     if (!projects || !authUser) return null;
 
     const emptyOption = emptyOptionMessage
@@ -103,25 +103,71 @@ const ProjectFilter = ({
     localize,
   ]);
 
+  // Filter options based on search value
+  const filteredOptions = useMemo(() => {
+    if (!allProjectOptions) return [];
+    if (!searchValue) return allProjectOptions;
+
+    return allProjectOptions.filter((option) =>
+      option.label.toLowerCase().includes(searchValue.toLowerCase())
+    );
+  }, [allProjectOptions, searchValue]);
+
+  const handleInputChange = useMemo(() => {
+    return debounce((searchTerm: string) => {
+      setSearchValue(searchTerm);
+    }, 300);
+  }, []);
+
+  const handleChange = useCallback(
+    (option: Option | null) => {
+      if (!option) {
+        onProjectFilter({ value: undefined, label: '' });
+        return;
+      }
+      onProjectFilter(option);
+    },
+    [onProjectFilter]
+  );
+
   const label = formatMessage(messages.labelProjectFilter);
+
+  if (!allProjectOptions) {
+    return (
+      <Box {...boxProps}>
+        {!hideLabel && <Label>{label}</Label>}
+        <Spinner />
+      </Box>
+    );
+  }
+
+  const selectedOption =
+    allProjectOptions.find((option) => option.value === selectedProjectId) ||
+    null;
 
   return (
     <Box {...boxProps}>
-      {projectFilterOptions ? (
-        <StyledSelect
-          id="projectFilter"
-          label={hideLabel ? undefined : label}
-          value={selectedProjectId}
-          options={projectFilterOptions}
-          placeholder={placeholder}
-          onChange={onProjectFilter}
-        />
-      ) : (
-        <>
-          {!hideLabel && <Label>{label}</Label>}
-          <Spinner />
-        </>
-      )}
+      <ReactSelect
+        value={selectedOption}
+        options={filteredOptions}
+        onChange={handleChange}
+        onInputChange={handleInputChange}
+        isSearchable
+        blurInputOnSelect
+        backspaceRemovesValue={false}
+        menuShouldScrollIntoView={false}
+        placeholder={placeholder || label}
+        styles={{
+          ...selectStyles(theme),
+          menuPortal: (base) => ({
+            ...base,
+            zIndex: 1001,
+          }),
+        }}
+        menuPosition="fixed"
+        menuPlacement="auto"
+        isClearable
+      />
     </Box>
   );
 };
