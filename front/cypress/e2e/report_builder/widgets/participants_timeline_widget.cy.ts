@@ -6,11 +6,11 @@ describe('Report builder Participants timeline widget', () => {
   let projectSlug: string;
   let reportId: string;
   let phaseId: string;
+  const projectTitle = randomString();
 
   beforeEach(() => {
     cy.setAdminLoginCookie();
 
-    const projectTitle = randomString();
     const projectDescriptionPreview = randomString();
     const projectDescription = randomString();
     const phaseTitle = randomString();
@@ -103,7 +103,7 @@ describe('Report builder Participants timeline widget', () => {
     // Set project filter
     cy.selectReactSelectOption(
       '#e2e-report-builder-project-filter-box',
-      projectId
+      projectTitle
     );
 
     // Set date range and compare with previous period
