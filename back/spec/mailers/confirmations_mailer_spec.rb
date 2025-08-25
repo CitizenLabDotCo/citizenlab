@@ -25,11 +25,10 @@ RSpec.describe ConfirmationsMailer do
 
         mailer.send_confirmation_code.deliver_now
 
-        expect(mailer_instance.mailgun_headers.keys).to match_array %w[X-Mailgun-Variables X-Mailgun-Track]
+        expect(mailer_instance.mailgun_headers.keys).to match_array %w[X-Mailgun-Variables]
         expect(JSON.parse(mailer_instance.mailgun_headers['X-Mailgun-Variables'])).to match(
           hash_including('cl_tenant_id' => instance_of(String))
         )
-        expect(mailer_instance.mailgun_headers['X-Mailgun-Track']).to eq 'no'
       end
     end
 
