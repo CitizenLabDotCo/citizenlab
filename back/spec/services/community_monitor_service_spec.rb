@@ -134,6 +134,7 @@ describe CommunityMonitorService do
         expect(report.phase).to eq project.phases.first
         expect(report.year).to eq 2025
         expect(report.quarter).to eq 2
+        expect(report.layout).to be_present
       end
 
       it 'does not create a report when there are no responses' do
