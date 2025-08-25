@@ -40,11 +40,11 @@ class GotenbergClient
 
   def render_libreoffice_to_pdf(file, content_type, file_name)
     raise GotenbergServiceUnavailableError unless up?
-    raise FileTypeUnsupportedError unless supported_by_libreoffice?(file)
+    raise FileTypeUnsupportedError unless supported_by_libreoffice?(file_name)
 
     url = "#{@api_url}/forms/libreoffice/convert"
     payload = {
-      'files' => Faraday::Multipart::FilePart.new(file, content_type)
+      'files' => Faraday::UploadIO.new(file, content_type, file_name)
     }
 
     conn = Faraday.new(url) do |f|
@@ -62,20 +62,13 @@ class GotenbergClient
     output_pdf
   end
 
-  def supported_by_libreoffice?(file)
+  def supported_by_libreoffice?(file_name)
     # According to https://gotenberg.dev/docs/routes#office-documents-into-pdfs-route
     supported_extensions = %w[
       .123 .602 .abw .bib .bmp .cdr .cgm .cmx .csv .cwk .dbf .dif .doc .docm .docx .dot .dotm .dotx .dxf .emf .eps .epub .fodg .fodp .fods .fodt .fopd .gif .htm .html .hwp .jpeg .jpg .key .ltx .lwp .mcw .met .mml .mw .numbers .odd .odg .odm .odp .ods .odt .otg .oth .otp .ots .ott .pages .pbm .pcd .pct .pcx .pdb .pdf .pgm .png .pot .potm .potx .ppm .pps .ppt .pptm .pptx .psd .psw .pub .pwp .pxl .ras .rtf .sda .sdc .sdd .sdp .sdw .sgl .slk .smf .stc .std .sti .stw .svg .svm .swf .sxc .sxd .sxg .sxi .sxm .sxw .tga .tif .tiff .txt .uof .uop .uos .uot .vdx .vor .vsd .vsdm .vsdx .wb2 .wk1 .wks .wmf .wpd .wpg .wps .xbm .xhtml .xls .xlsb .xlsm .xlsx .xlt .xltm .xltx .xlw .xml .xpm .zabw
     ]
 
-    ext =
-      if file.respond_to?(:path)
-        File.extname(file.path).downcase
-      elsif file.is_a?(String)
-        File.extname(file).downcase
-      else
-        raise ArgumentError, 'Unsupported file type for extension check'
-      end
+    ext = File.extname(file_name).downcase
 
     supported_extensions.include?(ext)
   end

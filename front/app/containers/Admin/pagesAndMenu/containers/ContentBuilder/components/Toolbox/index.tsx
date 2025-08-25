@@ -74,6 +74,7 @@ import Spotlight, {
   buttonTextDefault,
 } from '../Widgets/Spotlight';
 import TextMultiloc, { textMultilocTitle } from '../Widgets/TextMultiloc';
+import VideoEmbed, { videoEmbedTitle } from '../Widgets/VideoEmbed';
 
 import { platformCreatedBeforeReleaseNewWidgets } from './utils';
 
@@ -285,6 +286,12 @@ const HomepageBuilderToolbox = ({
           }
           icon="code"
           label={formatMessage(iframeTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-video-embed"
+          component={<VideoEmbed markup="" />}
+          icon="video"
+          label={formatMessage(videoEmbedTitle)}
         />
         <DraggableElement
           id="e2e-draggable-accordion"

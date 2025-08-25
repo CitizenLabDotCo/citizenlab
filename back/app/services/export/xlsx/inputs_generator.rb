@@ -43,7 +43,17 @@ module Export
       end
 
       def eager_load_inputs(inputs)
-        inputs.includes(:project, :author, :ideas_topics, :topics, :idea_files, :idea_status, :assignee).order(:created_at)
+        inputs.includes(
+          :project,
+          :author,
+          :ideas_topics,
+          :topics,
+          :idea_files,
+          :file_attachments,
+          :attached_files,
+          :idea_status,
+          :assignee
+        ).order(:created_at)
       end
 
       def generate_for_timeline_project(workbook, project)
