@@ -54,7 +54,12 @@ const generateProjectOptions = (
     label: localize(project.attributes.title_multiloc),
   }));
 
-  return [...(emptyOption ? [emptyOption] : []), ...projectOptions];
+  // Sort project options alphabetically by label
+  const sortedProjectOptions = projectOptions.sort((a, b) =>
+    a.label.localeCompare(b.label, undefined, { sensitivity: 'base' })
+  );
+
+  return [...(emptyOption ? [emptyOption] : []), ...sortedProjectOptions];
 };
 
 const ProjectFilter = ({
