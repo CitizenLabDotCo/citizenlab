@@ -29,7 +29,7 @@ describe('Phase report', () => {
 
   let projectId: string;
   let projectSlug: string;
-  let projectTitle: string;
+  const projectTitle = randomString();
   let currentInfoPhaseId: string;
   let futureInfoPhaseId: string;
   let ideationPhaseId: string;
@@ -40,7 +40,6 @@ describe('Phase report', () => {
       cy.apiRemoveProject(projectId);
       projectId = '';
       projectSlug = '';
-      projectTitle = '';
       currentInfoPhaseId = '';
       futureInfoPhaseId = '';
       ideationPhaseId = '';
@@ -50,9 +49,8 @@ describe('Phase report', () => {
     cy.setAdminLoginCookie();
     cy.apiRemoveAllReports();
 
-    const projectTitleValue = randomString();
     cy.apiCreateProject({
-      title: projectTitleValue,
+      title: projectTitle,
       descriptionPreview: randomString(),
       description: randomString(),
       publicationStatus: 'published',
@@ -60,7 +58,6 @@ describe('Phase report', () => {
       .then((project) => {
         projectId = project.body.data.id;
         projectSlug = project.body.data.attributes.slug;
-        projectTitle = projectTitleValue;
 
         return cy.apiCreatePhase({
           projectId,
