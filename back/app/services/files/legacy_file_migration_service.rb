@@ -45,7 +45,7 @@ module Files
     def migrate_all_tenants
       stats = Statistics.new
 
-      Tenant.all.each do |tenant|
+      Tenant.not_deleted.each do |tenant|
         tenant.switch { migrate_all(stats: stats) }
       end
 
