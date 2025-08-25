@@ -100,7 +100,9 @@ resource 'Idea Custom Fields' do
             input_type: 'text',
             enabled: false,
             key: Regexp.new('inserted_field'),
-            ordering: 1
+            ordering: 1,
+            min_characters: nil,
+            max_characters: nil
           }),
           id: an_instance_of(String),
           type: 'custom_field',
@@ -113,7 +115,9 @@ resource 'Idea Custom Fields' do
             input_type: 'text',
             key: field_to_update.key,
             ordering: 2,
-            required: true
+            required: true,
+            min_characters: nil,
+            max_characters: nil
           }),
           id: an_instance_of(String),
           type: 'custom_field',

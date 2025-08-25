@@ -2290,7 +2290,9 @@ CREATE TABLE public.custom_fields (
     page_button_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     page_button_link character varying,
     question_category character varying,
-    include_in_printed_form boolean DEFAULT true NOT NULL
+    include_in_printed_form boolean DEFAULT true NOT NULL,
+    min_characters integer,
+    max_characters integer
 );
 
 
@@ -7810,6 +7812,8 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250820100333'),
+('20250820091158'),
 ('20250808071349'),
 ('20250807120354'),
 ('20250807000000'),
@@ -7836,7 +7840,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250611110008'),
 ('20250610112901'),
 ('20250609151800'),
-('20250606074930'),
 ('20250605090517'),
 ('20250603161856'),
 ('20250528153448'),
@@ -7870,6 +7873,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250204143605'),
 ('20250120125531'),
 ('20250117121004'),
+('20250101000000'),
 ('20241230172612'),
 ('20241230165518'),
 ('20241230165323'),

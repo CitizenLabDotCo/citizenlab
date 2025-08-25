@@ -35,6 +35,8 @@ const generateYupValidationSchema = ({
       maximum_select_count,
       title_multiloc,
       enabled,
+      min_characters,
+      max_characters,
     } = question;
 
     const title = localize(title_multiloc);
@@ -43,48 +45,45 @@ const generateYupValidationSchema = ({
     });
 
     switch (input_type) {
-      case 'text_multiloc': {
-        if (key === 'title_multiloc') {
-          schema[key] = enabled
-            ? validateAtLeastOneLocale(formatMessage(messages.titleRequired), {
-                validateEachNonEmptyLocale: (schema) =>
-                  schema
-                    .min(3, formatMessage(messages.titleMinLength, { min: 3 }))
-                    .max(
-                      120,
-                      formatMessage(messages.titleMaxLength, { max: 120 })
-                    ),
-              })
-            : {};
-        } else {
-          schema[key] = required
-            ? validateAtLeastOneLocale(formatMessage(messages.titleRequired))
-            : {};
-        }
-        break;
-      }
-
+      case 'text_multiloc':
       case 'html_multiloc': {
-        if (key === 'body_multiloc') {
-          schema[key] = enabled
-            ? validateAtLeastOneLocale(
-                formatMessage(messages.descriptionRequired),
-                {
-                  validateEachNonEmptyLocale: (schema) =>
-                    schema.min(
-                      3, // I'm not seeing the error for this case
-                      formatMessage(messages.descriptionMinLength, { min: 3 })
-                    ),
+        const requiredMessage =
+          input_type === 'text_multiloc'
+            ? formatMessage(messages.titleRequired)
+            : formatMessage(messages.descriptionRequired);
+
+        schema[key] = enabled
+          ? validateAtLeastOneLocale(requiredMessage, {
+              validateEachNonEmptyLocale: (schema) => {
+                let fieldSchema = schema;
+
+                // Only apply character limits to text_multiloc, not html_multiloc
+                if (input_type === 'text_multiloc') {
+                  if (min_characters) {
+                    fieldSchema = fieldSchema.min(
+                      min_characters,
+                      formatMessage(messages.fieldMinLength, {
+                        min: min_characters,
+                        fieldName: title,
+                      })
+                    );
+                  }
+
+                  if (max_characters) {
+                    fieldSchema = fieldSchema.max(
+                      max_characters,
+                      formatMessage(messages.fieldMaxLength, {
+                        max: max_characters,
+                        fieldName: title,
+                      })
+                    );
+                  }
                 }
-              )
-            : {};
-        } else {
-          schema[key] = required
-            ? validateAtLeastOneLocale(
-                formatMessage(messages.descriptionRequired)
-              )
-            : {};
-        }
+
+                return fieldSchema;
+              },
+            })
+          : {};
         break;
       }
 
@@ -98,6 +97,26 @@ const generateYupValidationSchema = ({
             .required(fieldRequired)
             .trim() // Removes leading/trailing whitespace before validation
             .min(1, fieldRequired); // Ensures at least one character after trimming
+        }
+
+        if (min_characters && input_type !== 'date') {
+          fieldSchema = fieldSchema.min(
+            min_characters,
+            formatMessage(messages.fieldMinLength, {
+              min: min_characters,
+              fieldName: title,
+            })
+          );
+        }
+
+        if (max_characters && input_type !== 'date') {
+          fieldSchema = fieldSchema.max(
+            max_characters,
+            formatMessage(messages.fieldMaxLength, {
+              max: max_characters,
+              fieldName: title,
+            })
+          );
         }
 
         if (key === 'location_description') {

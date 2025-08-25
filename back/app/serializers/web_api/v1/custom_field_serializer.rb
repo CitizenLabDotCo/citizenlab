@@ -71,6 +71,10 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
     object.multiselect?
   }
 
+  attributes :min_characters, :max_characters, if: proc { |object, _params|
+    object.support_text?
+  }
+
   has_many :options, record_type: :custom_field_option, serializer: ::WebApi::V1::CustomFieldOptionSerializer
   has_many :matrix_statements, record_type: :custom_field_matrix_statement, serializer: ::WebApi::V1::CustomFieldMatrixStatementSerializer, if: proc { |field|
     field.supports_matrix_statements?
