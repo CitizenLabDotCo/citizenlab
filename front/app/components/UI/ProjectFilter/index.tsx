@@ -146,7 +146,7 @@ const ProjectFilter = ({
     null;
 
   return (
-    <Box {...boxProps}>
+    <Box {...boxProps} width="100%">
       <ReactSelect
         value={selectedOption}
         options={filteredOptions}
