@@ -5,6 +5,7 @@ import moment = require('moment');
 import { base64 } from '../../../fixtures/base64img';
 
 let projectId: string;
+const projectTitle = randomString();
 let projectSlug: string;
 let surveyPhaseId: string;
 let surveyFields: ICustomFieldResponse[];
@@ -37,7 +38,7 @@ const userIds: string[] = [];
 describe('Survey question widget', () => {
   before(() => {
     cy.apiCreateProject({
-      title: randomString(),
+      title: projectTitle,
       descriptionPreview: randomString(),
       description: randomString(),
       publicationStatus: 'published',
@@ -205,7 +206,7 @@ describe('Survey question widget', () => {
         // Select project, phase and question
         cy.selectReactSelectOption(
           '#e2e-report-builder-project-filter-box',
-          projectId
+          projectTitle
         );
         cy.get('#e2e-phase-filter').select(surveyPhaseId);
         cy.get('.e2e-question-select select')
