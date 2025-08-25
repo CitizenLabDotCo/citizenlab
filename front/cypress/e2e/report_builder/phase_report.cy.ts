@@ -29,6 +29,7 @@ describe('Phase report', () => {
 
   let projectId: string;
   let projectSlug: string;
+  let projectTitle: string;
   let currentInfoPhaseId: string;
   let futureInfoPhaseId: string;
   let ideationPhaseId: string;
@@ -39,6 +40,7 @@ describe('Phase report', () => {
       cy.apiRemoveProject(projectId);
       projectId = '';
       projectSlug = '';
+      projectTitle = '';
       currentInfoPhaseId = '';
       futureInfoPhaseId = '';
       ideationPhaseId = '';
@@ -48,8 +50,9 @@ describe('Phase report', () => {
     cy.setAdminLoginCookie();
     cy.apiRemoveAllReports();
 
+    const projectTitleValue = randomString();
     cy.apiCreateProject({
-      title: randomString(),
+      title: projectTitleValue,
       descriptionPreview: randomString(),
       description: randomString(),
       publicationStatus: 'published',
@@ -57,6 +60,7 @@ describe('Phase report', () => {
       .then((project) => {
         projectId = project.body.data.id;
         projectSlug = project.body.data.attributes.slug;
+        projectTitle = projectTitleValue;
 
         return cy.apiCreatePhase({
           projectId,
@@ -179,7 +183,7 @@ describe('Phase report', () => {
   };
 
   context('when report is visible', () => {
-    it.only('is visible in current phase when created from scratch', () => {
+    it('is visible in current phase when created from scratch', () => {
       cy.setAdminLoginCookie();
       cy.apiCreateReportBuilder(currentInfoPhaseId, true).then((report) => {
         const reportId = report.body.data.id;
@@ -208,7 +212,7 @@ describe('Phase report', () => {
         // Expect project to already be selected
         cy.get('#e2e-report-builder-project-filter-box').should(
           'contain.text',
-          'Test Project'
+          projectTitle
         );
 
         saveReport(reportId);
