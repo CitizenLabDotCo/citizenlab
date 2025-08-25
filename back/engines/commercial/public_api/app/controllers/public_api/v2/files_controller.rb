@@ -16,7 +16,7 @@ module PublicApi
 
     def create
       file = ::Files::File.new(create_params)
-      file.files_projects.build(project_id: params[:file][:project_id]) if params[:file][:project_id]
+      file.files_projects.build(project_id: params[:file][:project_id])
 
       side_fx.before_create(file, nil)
       if file.save

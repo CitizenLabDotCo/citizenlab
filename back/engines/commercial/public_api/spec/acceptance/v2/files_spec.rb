@@ -16,11 +16,11 @@ resource 'Files' do
   let!(:project) { create(:project) }
   let!(:files) do
     [
-      create(:file, uploader: user, category: 'meeting'),
-      create(:file, uploader: user, category: 'report'),
-      create(:file, uploader: nil, category: 'policy'),
-      create(:file, uploader: user, category: 'other'),
-      create(:file, uploader: nil, category: 'info_sheet')
+      create(:file, :meeting, uploader: user),
+      create(:file, :report, uploader: user),
+      create(:file, :policy, uploader: nil),
+      create(:file, :other, uploader: user),
+      create(:file, :info_sheet, uploader: nil)
     ]
   end
 
@@ -39,9 +39,9 @@ resource 'Files' do
 
     include_context 'common_list_params'
 
-    parameter :uploader, 'Filter by uploader ID (can be an array)', type: :string
-    parameter :project_id, 'Filter by project ID (can be an array)', type: :string
-    parameter :category, 'Filter by category (can be an array)', type: :string
+    parameter :uploader, 'Filter by uploader ID (can be an array)', type: %i[string array]
+    parameter :project_id, 'Filter by project ID (can be an array)', type: %i[string array]
+    parameter :category, 'Filter by category (can be an array)', type: %i[string array]
     parameter :search, 'Search files by name or description', type: :string
 
     context 'when the page size is smaller than the total number of files' do
@@ -170,27 +170,42 @@ resource 'Files' do
     let(:name) { 'Test File' }
     let(:project_id) { project.id }
     let(:content) { file_as_base64('minimal_pdf.pdf', 'application/pdf') }
-    let(:category) { 'other' }
+    let(:category) { 'meeting' }
     let(:description_multiloc) { { 'en' => 'Test file description' } }
-    let(:ai_processing_allowed) { false }
+    let(:ai_processing_allowed) { true }
 
     example_request 'Uploads a file' do
       assert_status 201
       expect(json_response_body[:file]).to include({
         name: 'Test File',
-        category: 'other',
+        category: 'meeting',
         uploader_id: nil,
         description: 'Test file description',
-        ai_processing_allowed: false,
+        ai_processing_allowed: true,
         created_at: kind_of(String),
         updated_at: kind_of(String),
         size: 130,
         url: kind_of(String)
       })
+      file = Files::File.find(json_response_body.dig(:file, :id))
+      expect(file.projects).to contain_exactly(project)
+    end
+
+    context 'without project_id' do
+      let(:project_id) { nil }
+
+      example_request '[Error] Uploads a file without a project' do
+        assert_status 422
+        expect(json_response_body).to include({
+          errors: include({
+            files_projects: [{ error: 'invalid' }]
+          })
+        })
+      end
     end
   end
 
-  put '/api/v2/files/:id' do
+  patch '/api/v2/files/:id' do
     route_summary 'Update a file'
     route_description 'Update the metadata of an existing file. Changing the content of the file is not supported.'
     include_context 'common_auth'
