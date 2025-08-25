@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 
-import {
-  Dropdown,
-  colors,
-  Button,
-  Box,
-} from '@citizenlab/cl2-component-library';
+import { Dropdown, colors, Button } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
