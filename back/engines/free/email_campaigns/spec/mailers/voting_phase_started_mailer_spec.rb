@@ -5,7 +5,6 @@ require 'rails_helper'
 RSpec.describe EmailCampaigns::VotingPhaseStartedMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
-    let_it_be(:project) { create(:project_with_phases) }
     let_it_be(:command) do
       {
         recipient: recipient,
