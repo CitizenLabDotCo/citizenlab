@@ -39,11 +39,12 @@ module PublicApi
         meta: meta_properties(@items)
     end
 
-    def show_item(query, serializer, root_key: nil)
+    def show_item(query, serializer, root_key: nil, status: :ok)
       render json: query,
         serializer: serializer,
         root: root_key,
-        adapter: :json
+        adapter: :json,
+        status:
     end
 
     def meta_properties(relation)
