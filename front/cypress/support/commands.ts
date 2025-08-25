@@ -2251,10 +2251,12 @@ Cypress.Commands.add('apiCreateManualGroup', apiCreateManualGroup);
 Cypress.Commands.add('apiAddMembership', apiAddMembership);
 
 // ReactSelect helper function
-const selectReactSelectOption = (selector: string, optionValue: string) => {
+const selectReactSelectOption = (selector: string, label: string) => {
   cy.get(selector).click();
-  cy.get(selector).find('input').type(optionValue);
-  cy.get(`[data-value="${optionValue}"]`).click();
+  cy.get(`${selector} input[id$='-input']`).type(`${label}{enter}`, {
+    force: true,
+  });
+  cy.get(selector).should('contain.text', label);
 };
 
 Cypress.Commands.add('selectReactSelectOption', selectReactSelectOption);
