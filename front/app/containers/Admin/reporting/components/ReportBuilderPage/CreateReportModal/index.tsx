@@ -159,6 +159,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
               selectedProjectId={selectedProjectId}
               emptyOptionMessage={messages.noProjectSelected}
               onProjectFilter={handleProjectFilter}
+              id="e2e-project-filter"
             />
           </Box>
         )}

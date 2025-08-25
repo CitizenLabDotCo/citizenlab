@@ -29,6 +29,7 @@ describe('Phase report', () => {
 
   let projectId: string;
   let projectSlug: string;
+  const projectTitle = randomString();
   let currentInfoPhaseId: string;
   let futureInfoPhaseId: string;
   let ideationPhaseId: string;
@@ -49,7 +50,7 @@ describe('Phase report', () => {
     cy.apiRemoveAllReports();
 
     cy.apiCreateProject({
-      title: randomString(),
+      title: projectTitle,
       descriptionPreview: randomString(),
       description: randomString(),
       publicationStatus: 'published',
@@ -206,9 +207,9 @@ describe('Phase report', () => {
         cy.wait(1000);
 
         // Expect project to already be selected
-        cy.get('#e2e-report-builder-project-filter-box select').should(
-          'have.value',
-          projectId
+        cy.get('#e2e-report-builder-project-filter-box').should(
+          'contain.text',
+          projectTitle
         );
 
         saveReport(reportId);
