@@ -32,6 +32,14 @@ resource 'ProjectFile' do
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :attributes, :file)).to be_present
     end
+
+    context 'when a legacy file is migrated' do
+      example 'Get a migrated legacy file by id [NOT FOUND]' do
+        migrated_file = create(:project_file, project_id: project_id, migrated_file: create(:file))
+        do_request(file_id: migrated_file.id)
+        assert_status 404
+      end
+    end
   end
 
   patch 'web_api/v1/projects/:project_id/files/:file_id' do
@@ -63,13 +71,37 @@ resource 'ProjectFile' do
     let(:name) { 'afvalkalender.pdf' }
     let(:file) { file_as_base64 name, 'application/pdf' }
 
-    example_request 'Add a file attachment to a project' do
-      assert_status 201
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :attributes, :file)).to be_present
-      expect(json_response.dig(:data, :attributes, :ordering)).to eq(1)
-      expect(json_response.dig(:data, :attributes, :name)).to eq(name)
-      expect(json_response.dig(:data, :attributes, :size)).to be_present
+    context 'when there are legacy files' do
+      example 'Add a file to a project' do
+        expect { do_request }
+          .to change(@project.project_files.reload, :count).by(1)
+          .and not_change(@project.file_attachments.reload, :count)
+
+        assert_status 201
+
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :attributes, :file)).to be_present
+        expect(json_response.dig(:data, :attributes, :ordering)).to eq(1)
+        expect(json_response.dig(:data, :attributes, :name)).to eq(name)
+        expect(json_response.dig(:data, :attributes, :size)).to be_present
+      end
+    end
+
+    context 'when there are only migrated legacy files' do
+      before do
+        @project.project_files.each do |file|
+          file.update!(migrated_file: create(:file))
+        end
+      end
+
+      example 'Create a file as a file attachment' do
+        expect { do_request }
+          .to change(Files::File, :count).by(1)
+          .and(change(Files::FileAttachment, :count).by(1))
+          .and not_change(ProjectFile, :count)
+
+        assert_status 201
+      end
     end
 
     describe do
@@ -103,6 +135,14 @@ resource 'ProjectFile' do
     example_request 'Delete a file attachment from a project' do
       expect(response_status).to eq 200
       expect { ProjectFile.find(file_id) }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    context 'when the legacy file is migrated' do
+      example 'Delete a migrated legacy file by id [NOT FOUND]' do
+        migrated_file = create(:project_file, project_id: project_id, migrated_file: create(:file))
+        do_request(file_id: migrated_file.id)
+        assert_status 404
+      end
     end
   end
 
