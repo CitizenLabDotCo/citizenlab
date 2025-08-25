@@ -84,7 +84,7 @@ describe('Idea template', () => {
 
       cy.get('.e2e-create-report-modal-title-input').type(randomString());
       cy.get('#project-template-radio').click({ force: true });
-      cy.get('#projectFilter').select(projectId);
+      cy.selectReactSelectOption('#e2e-project-filter', projectTitle);
 
       cy.get('div[data-testid="create-report-button"] > button').click();
 
