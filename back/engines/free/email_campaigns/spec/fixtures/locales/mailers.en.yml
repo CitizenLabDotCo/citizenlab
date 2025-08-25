@@ -40,6 +40,7 @@ en:
       "voting_last_chance": Last chance to vote
       "voting_phase_started": New project phase with voting
       "voting_results": Voting results
+      "your_input_in_screening": My input awaits screening
     general:
       by_author: 'by %{authorName}'
       author_wrote: '%{authorName} wrote:'
@@ -297,10 +298,11 @@ en:
       title: 'New internal comment on ''%{post}'''
       preheader: 'New internal comment on ''%{post}'''
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} gave an update on the input ''%{input_title}''. Click the button below to enter the conversation with %{feedback_author_name}.'
-      header_title: 'There''s an update on an input you follow'
+      event_description: '%{feedback_author_name} gave an update on the input ''%{input_title}''. Click the button below to enter the conversation with %{feedback_author_name}.'
+      title: 'There''s an update on an input you follow'
       subject: 'An input you follow has received an official update on the platform of %{organizationName}'
       preheader: 'There''s an update on an input you follow'
+      cta_button: Go to this input
     mention_in_official_feedback:
       cta_button: 'Reply to %{organizationName}'
       event_description: '%{organizationName} mentioned you in their feedback on the idea ''%{post}''. Click the link below to enter the conversation with %{organizationName}.'
@@ -315,8 +317,8 @@ en:
       cta_button: 'Resume your survey response'
       submissions_close: 'Submissions will close on %{phaseEndDate}.'
     project_moderation_rights_received:
-      cta_manage_project: 'Manage this project'
-      message_you_became_moderator: 'An adminstrator of the participation platform of %{organizationName} just made you project manager of the following project:'
+      cta_button: 'Manage this project'
+      event_description: 'An adminstrator of the participation platform of %{organizationName} just made you project manager of the following project:'
       no_ideas: 'No ideas yet'
       preheader: 'An adminstrator of the participation platform of %{organizationName} just made you a project manager of the following project'
       subject: 'You became a project manager on the platform of %{organizationName}'
@@ -327,11 +329,11 @@ en:
       title_moderate_analyse_input: 'Moderate and analyse the input'
       title_share_project_information: 'Provide project information'
       title_what_can_you_do_moderator: 'What can you do as a project manager?'
-      title_you_became_moderator: 'You became a project manager'
+      title: 'You became a project manager'
       x_ideas: '%{numberOfIdeas} ideas'
     project_folder_moderation_rights_received:
-      cta_view_folder_button: 'View this folder'
-      message_added_as_folderadmin: 'You''ve been given folder manager rights on %{organizationName}''s participation platform for the following folder:'
+      cta_button: 'View this folder'
+      event_description: 'You''ve been given folder manager rights on %{organizationName}''s participation platform for the following folder:'
       no_projects: 'No projects yet'
       preheader: 'An administrator of the participation platform of %{organizationName} just made you a manager of the following folder'
       subject: 'You became a project folder manager on the participation platform of %{organizationName}'
@@ -342,7 +344,7 @@ en:
       title_moderate_analyse_input: 'Moderate and analyse the input'
       title_manage_folder: 'Manage the folder settings and create new projects.'
       title_what_can_you_do_folderadmin: 'What can you do as a folder manager?'
-      title_added_as_folderadmin: 'You''ve been added as a folder manager'
+      title: 'You''ve been added as a folder manager'
       x_projects: '%{numberOfProjects} projects'
     project_phase_started:
       cta_button: 'Discover this new phase'
@@ -353,31 +355,43 @@ en:
       subject: '%{projectName} entered a new phase'
       preheader: 'A new phase has been started for %{projectName}'
     project_phase_upcoming:
-      cta_view_phase: 'Set this new phase up'
+      cta_button: 'Set this new phase up'
       event_description: 'The project ''%{projectName}'' will be entering a new phase soon. Make sure everything is set up for this phase: Is there an adequate description? Are selected ideas transferred to this phase? Do you want to inform your citizens on the specifics of this phase through a custom email campaign?'
-      main_header: '%{firstName}, a project will enter a new phase soon'
+      title: '%{firstName}, a project will enter a new phase soon'
       subtitle: 'About ''%{projectName}'''
       new_phase: 'The project will enter the phase ''%{phaseTitle}'''
       subject: 'Get everything set up for the new phase of %{projectName}'
       preheader: 'A new phase will start soon for %{projectName}'
     project_published:
       subject: 'A new project was published on the platform of %{organizationName}'
-      header_title: 'A new project was published'
-      header_message: 'The participation platform of %{organizationName} just published the following project:'
+      title: 'A new project was published'
+      event_description: 'The participation platform of %{organizationName} just published the following project:'
       preheader: 'A new project was published'
+      cta_button: 'Go to this project'
+    project_review_request:
+      subject: 'Review request: A project is waiting for approval.'
+      title: '%{requesterName} has invited you to review the project "%{projectTitle}"'
+      event_description: "Currently, the project is in draft mode and isn't visible to users. Once you've reviewed and approved it, the moderator will be able to publish it."
+      cta_button: "Review the project"
+    project_review_state_change:
+      subject: '"%{projectTitle}" has been approved'
+      title: '%{reviewerName} approved the project "%{projectTitle}"'
+      event_description: "The project is now ready to go live. You can publish it whenever you're ready!"
+      cta_button: "Go to project settings"
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
-      header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
-      header_title: 'An input you follow has a new status'
+      event_description: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
+      title: 'An input you follow has a new status'
       subject: 'The status of "%{input_title}" has changed'
       preheader: 'An input you follow has a new status'
+      cta_button: Go to this input
     user_digest:
       subject: "Your activity on the participation platform of %{organizationName}"
       commented: "%{authorFirstName} commented:"
       preheader: "Weekly overview of %{organizationName}"
-      title_your_weekly_report: "Discover what happened last week"
-      intro_text: "Here's a summary of what happened on the participation platform of %{organizationName}."
-      cta_go_to_the_platform: "Go to the platform"
+      title: "Discover what happened last week"
+      event_description: "Here's a summary of what happened on the participation platform of %{organizationName}."
+      cta_button: "Go to the platform"
       title_no_activity_past_week: "No activity in the past week"
       title_proposals: "Proposals started"
       proposals_started_text: "Proposals are ideas that need to gain traction and support from others (people like you!) in order to move forward. Below is a list of proposals that have been put forward in the last week. Click on any of them to take a look and offer your support and feedback!"
@@ -394,16 +408,15 @@ en:
       no_unread_notifications: "You don't have any unread notifications. Visit the platform to contribute your input and generate new notifications!"
       unread_notifications: "You have unread notifications. Visit the platform to discover what's happening!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Take this initiative to the next steps'
-      event_description: 'An initiative reached the voting threshold on your platform. Click the button below to take it to the next steps!'
-      main_header: 'An initiative reached the voting threshold!'
-      subject: 'An initiative reached the voting threshold on your platform'
+      cta_button: 'Take this proposal to the next steps'
+      title: 'A proposal reached the voting threshold!'
+      subject: '"%{input_title}" reached the voting threshold'
       preheader: 'Make sure to take the next steps'
     welcome:
-      cta_join_platform: 'Discover the platform'
+      cta_button: 'Discover the platform'
       subject: 'Welcome to the platform of %{organizationName}'
-      main_header: Welcome!
-      message_welcome: 'Congratulations, you successfully signed up on the participation platform of %{organizationName}. You can now discover the platform and make your voice heard. You can also add a profile picture and a short description to tell others who you are.'
+      title: Welcome!
+      event_description: 'Congratulations, you successfully signed up on the participation platform of %{organizationName}. You can now discover the platform and make your voice heard. You can also add a profile picture and a short description to tell others who you are.'
       preheader: 'Here''s what you can do on the platform of %{organizationName}'
     idea_published:
       subject: 'Your idea has been published'
@@ -432,39 +445,49 @@ en:
     voting_basket_submitted:
       subject: '%{organizationName}: You voted successfully'
       preheader: 'You voted successfully on the participation platform of %{organizationName}'
-      title_basket_submitted: 'You voted successfully'
+      title: 'You voted successfully'
       event_description: 'Thanks for participating. Your votes have been recorded. Visit the platform of %{organizationName} to see and manage your votes.'
-      cta_see_votes_submitted: 'See votes submitted'
+      cta_button: 'See votes submitted'
       cta_message: 'Click the button below to participate'
     voting_basket_not_submitted:
       subject: '%{organizationName}: You didn''t submit your votes'
       preheader: 'You didn''t submit your votes on the participation platform of %{organizationName}'
-      title_basket_not_submitted: 'You didn''t submit your votes'
+      title: 'You didn''t submit your votes'
       event_description: 'You selected a few options for %{contextTitle} but you didn''t submit your selection.'
-      cta_view_options_and_vote: 'View options and vote'
+      cta_button: 'View options and vote'
       cta_message: 'Click the button below to submit your selected options'
     voting_last_chance:
       subject: '%{organizationName}: Last chance to vote for %{phaseTitle}'
       preheader: 'Last chance to vote for %{phaseTitle} on the participation platform of %{organizationName}'
-      title_last_chance: 'Last chance to vote for %{phaseTitle}'
+      title: 'Last chance to vote for %{phaseTitle}'
       body_1: 'The voting phase for the %{projectTitle} project is coming to a close tomorrow, at midnight.'
       body_2: 'Time is running out, and we noticed that you haven''t cast your vote yet! Act now by simply clicking the button below to participate.'
       body_3: 'By doing so, you''ll gain access to a range of options and have the chance to provide your input, which is crucial in deciding the future of this project.'
-      cta_vote: 'Vote'
+      cta_button: 'Vote'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} vote results revealed!'
       preheader: '%{phaseTitle} vote results revealed on the participation platform of %{organizationName}'
-      title_results: '%{phaseTitle} vote results revealed!'
+      title: '%{phaseTitle} vote results revealed!'
       body_1: 'Results are in!'
       body_2: 'The results of the %{phaseTitle} vote in the %{organizationName} platform have been published!'
       body_3: 'We encourage you to review the results and stay tuned for further updates on the next steps.'
-      cta_see_results: 'See results in the platform'
+      cta_button: 'See results in the platform'
     voting_phase_started:
       subject: '%{organizationName}: The voting phase started for %{projectName}'
       preheader: 'The voting phase started for %{projectName} on the participation platform of %{organizationName}'
+      title: '%{projectName}'
       event_description: 'The project "%{projectName}" is asking you to vote between %{numIdeas} options:'
       cta_message: 'Click the button below to participate'
-      cta_vote: 'Go to the platform to vote'
+      cta_button: 'Go to the platform to vote'
+    survey_submitted:
+      subject: '%{organizationName}: Thank you for your response! 🎉'
+      preheader: 'Here are the details of your submission.'
+      title: 'Thank you for sharing your thoughts on "%{projectName}"!'
+      event_description: 'Your input for "%{projectName}" has been submitted successfully.'
+      if_you_would_like_to_review: 'If you would like to review your submission, you can download your responses below.'
+      your_submission_has_id: 'Your submission has the following unique identifier:'
+      you_can_use_this_id: 'You can use this identifier to contact the platform administrators in case you want your submission to be removed.'
+      cta_button: 'Download your responses'
     event_registration_confirmation:
       subject: "You're in! Your registration for \"%{eventTitle}\" is confirmed"
       preheader: "%{firstName}, thanks for registering for %{eventTitle}"
@@ -478,6 +501,19 @@ en:
           project: 'Project'
       cta_button: 'View the event'
       cta_add_to_calendar: 'Add to your calendar'
+    your_input_in_screening:
+      main_header: 
+        idea: 'Your idea is in "%{prescreening_status_title}"'
+        question: 'Your question is in "%{prescreening_status_title}"'
+        contribution: 'Your contribution is in "%{prescreening_status_title}"'
+        project: 'Your project is in "%{prescreening_status_title}"'
+        issue: 'Your issue is in "%{prescreening_status_title}"'
+        option: 'Your option is in "%{prescreening_status_title}"'
+        proposal: 'Your proposal is in "%{prescreening_status_title}"'
+        petition: 'Your petition is in "%{prescreening_status_title}"'
+      event_description: '"%{input_title}" will become visible to others once it has been reviewed and approved.'
+      subject: '"%{input_title}" is almost published'
+      preheader: 'It''s currently in %{prescreening_status_title}'
     admin_labels:
       recipient_role:
         admins: 'To admins'

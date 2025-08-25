@@ -39,6 +39,7 @@ module FlagInappropriateContent
       include ::EmailCampaigns::ActivityTriggerable
       include ::EmailCampaigns::Disableable
       include ::EmailCampaigns::Trackable
+      include ::EmailCampaigns::ContentConfigurable
       include ::EmailCampaigns::LifecycleStageRestrictable
 
       allow_lifecycle_stages only: %w[trial active]
@@ -86,7 +87,6 @@ module FlagInappropriateContent
 
           {
             flaggable_author: flaggable.author,
-            flaggable: flaggable,
             flaggable_type: flag.flaggable_type,
             flag_automatically_detected: flag.automatically_detected?
           }

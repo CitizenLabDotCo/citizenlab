@@ -23,7 +23,6 @@ RSpec.describe EmailCampaigns::Campaigns::ProjectPublished do
       expect(command).to match({
         event_payload: hash_including(
           project_title_multiloc: notification.project.title_multiloc,
-          project_ideas_count: notification.project.ideas_count,
           project_url: an_instance_of(String)
         )
       })

@@ -39,6 +39,7 @@ module EmailCampaigns
     include ::EmailCampaigns::RecipientConfigurable
     include ::EmailCampaigns::Disableable
     include ::EmailCampaigns::Trackable
+    include ::EmailCampaigns::ContentConfigurable
     include ::EmailCampaigns::LifecycleStageRestrictable
 
     allow_lifecycle_stages only: %w[trial active]

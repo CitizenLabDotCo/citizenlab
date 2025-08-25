@@ -6,21 +6,22 @@ RSpec.describe ProjectFolders::EmailCampaigns::ProjectFolderModerationRightsRece
   describe 'campaign_mail' do
     let_it_be(:project_folder) { create(:project_folder) }
     let_it_be(:recipient) { create(:project_folder_moderator, locale: 'en', project_folders: [project_folder]) }
-    let_it_be(:campaign) { EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived.create! }
     let_it_be(:command) do
       {
         recipient: recipient,
         event_payload: {
           project_folder_id: project_folder.id,
-          project_folder_title_multiloc: project_folder.title_multiloc,
-          project_folder_projects_count: project_folder.projects.count,
+          project_folder_title_multiloc: { 'en' => 'Example folder title' },
+          project_folder_projects_count: 7,
           project_folder_url: 'https://admin.folder.url'
         }
       }
     end
 
-    let_it_be(:mailer) { described_class.with(command: command, campaign: campaign) }
-    let_it_be(:mail) { mailer.campaign_mail.deliver_now }
+    let(:campaign) { create(:project_folder_moderation_rights_received_campaign) }
+    let(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let(:mail) { mailer.campaign_mail.deliver_now }
+    let(:body) { mail_body(mail) }
 
     before do
       EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
@@ -29,7 +30,7 @@ RSpec.describe ProjectFolders::EmailCampaigns::ProjectFolderModerationRightsRece
     include_examples 'campaign delivery tracking'
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('You became a project folder manager')
+      expect(mail.subject).to eq 'You became a project folder manager on the participation platform of Liege'
     end
 
     it 'renders the receiver email' do
@@ -40,13 +41,99 @@ RSpec.describe ProjectFolders::EmailCampaigns::ProjectFolderModerationRightsRece
       expect(mail.from).to all(end_with('@citizenlab.co'))
     end
 
-    it 'assigns the message box title (title_what_can_you_do_folderadmin)' do
-      title = I18n.t('email_campaigns.project_folder_moderation_rights_received.title_what_can_you_do_folderadmin')
-      expect(mail.body.encoded).to match(title)
+    it 'includes the header' do
+      expect(body).to have_tag('div') do
+        with_tag 'h1' do
+          with_text(/You've been added as a folder manager/)
+        end
+        with_tag 'p' do
+          with_text(/You've been given folder manager rights on Liege's participation platform for the following folder:/)
+        end
+      end
     end
 
-    it 'assigns moderate CTA' do
-      expect(mail.body.encoded).to match('https://admin.folder.url')
+    it 'includes the folder box' do
+      expect(body).to have_tag('table') do
+        with_tag 'h2' do
+          with_text(/Example folder title/)
+        end
+        with_tag 'p' do
+          with_text(/7 projects/)
+        end
+      end
+    end
+
+    it 'includes the CTA' do
+      expect(body).to have_tag('a', with: { href: 'https://admin.folder.url' }) do
+        with_text(/View this folder/)
+      end
+    end
+
+    it 'includes the info box' do
+      expect(body).to have_tag('table') do
+        with_tag 'h2' do
+          with_text(/What can you do as a folder manager?/)
+        end
+        with_tag 'h3' do
+          with_text(/Manage the folder settings and create new projects./)
+        end
+        with_tag 'p' do
+          with_text(/A folder is way to organize several participation projects together./)
+        end
+        with_tag 'h3' do
+          with_text(/Design the participatory process/)
+        end
+        with_tag 'p' do
+          with_text(/You can manage the different participation projects within your folder/)
+        end
+        with_tag 'h3' do
+          with_text(/Moderate and analyse the input/)
+        end
+        with_tag 'p' do
+          with_text(/Once the projects are launched, the first inputs will start coming in./)
+        end
+      end
+    end
+
+    context 'with custom text' do
+      let!(:global_campaign) do
+        create(
+          :project_folder_moderation_rights_received_campaign,
+          subject_multiloc: { 'en' => 'Custom Global Subject - {{ organizationName }}' },
+          title_multiloc: { 'en' => 'NEW TITLE FOR {{ numberOfProjects }}' },
+          intro_multiloc: { 'en' => 'NEW BODY TEXT {{ folderName }}' },
+          button_text_multiloc: { 'en' => 'CLICK THE GLOBAL BUTTON' }
+        )
+      end
+
+      context 'on a global campaign' do
+        let(:campaign) { global_campaign }
+
+        it 'can customise the subject' do
+          expect(mail.subject).to eq 'Custom Global Subject - Liege'
+        end
+
+        it 'renders the reply to email' do
+          expect(mail.reply_to).to eq [ENV.fetch('DEFAULT_FROM_EMAIL', 'hello@citizenlab.co')]
+        end
+
+        it 'can customize the header' do
+          expect(body).to have_tag('div') do
+            with_tag 'h1' do
+              with_text(/NEW TITLE FOR 7/)
+            end
+            with_tag 'p' do
+              with_text(/NEW BODY TEXT Example folder title/)
+            end
+          end
+        end
+
+        it 'includes the CTA' do
+          expect(body).to have_tag('a', with: { href: 'https://admin.folder.url' }) do
+            with_text(/CLICK THE GLOBAL BUTTON/)
+          end
+        end
+      end
     end
   end
 end

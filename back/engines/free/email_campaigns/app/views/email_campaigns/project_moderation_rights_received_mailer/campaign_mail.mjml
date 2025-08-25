@@ -24,12 +24,12 @@
 <mj-section padding="0 0 80px">
   <mj-column>
     <mj-button
-      href="<%= url_service.admin_project_url(event.project_id) %>"
+      href="<%= event.project_url %>"
       border-radius="5px"
       background-color="#044D6C"
       color="#fff"
       width="100%"
-      padding="0 25px"><%= format_message('cta_manage_project') %></mj-button>
+      padding="0 25px"><%= cta_button_text %></mj-button>
   </mj-column>
 </mj-section>
 

@@ -5,24 +5,31 @@ return unless defined? EmailCampaigns::ApplicationMailer
 module ProjectFolders
   module EmailCampaigns
     class ProjectFolderModerationRightsReceivedMailer < ::EmailCampaigns::ApplicationMailer
-      protected
+      include ::EmailCampaigns::EditableWithPreview
 
-      def subject
-        format_message('subject', values: { organizationName: organization_name })
+      def editable
+        %i[subject_multiloc title_multiloc intro_multiloc button_text_multiloc]
       end
 
-      private
-
-      def header_title
-        format_message('title_added_as_folderadmin')
+      def substitution_variables
+        {
+          folderName: localize_for_recipient(event&.project_folder_title_multiloc),
+          numberOfProjects: event&.project_folder_projects_count,
+          organizationName: organization_name
+        }
       end
 
-      def header_message
-        format_message('message_added_as_folderadmin', values: { organizationName: organization_name })
-      end
-
-      def preheader
-        format_message('preheader', values: { organizationName: organization_name })
+      def preview_command(recipient)
+        data = preview_service.preview_data(recipient)
+        {
+          recipient: recipient,
+          event_payload: {
+            project_folder_id: data.folder.id,
+            project_folder_title_multiloc: data.folder.title_multiloc,
+            project_folder_projects_count: 5,
+            project_folder_url: data.folder.url
+          }
+        }
       end
     end
   end

@@ -39,8 +39,9 @@ module EmailCampaigns
     include ActivityTriggerable
     include RecipientConfigurable
     include Trackable
-    include LifecycleStageRestrictable
+    include ContentConfigurable
     include ContextConfigurable
+    include LifecycleStageRestrictable
     allow_lifecycle_stages only: %w[trial active]
 
     recipient_filter :filter_notification_recipient

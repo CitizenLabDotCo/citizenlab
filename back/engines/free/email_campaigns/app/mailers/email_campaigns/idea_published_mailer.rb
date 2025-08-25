@@ -11,6 +11,7 @@ module EmailCampaigns
     def substitution_variables
       {
         input_title: localize_for_recipient(event&.idea_title_multiloc),
+        projectTitle: localize_for_recipient(event&.project_title_multiloc),
         firstName: recipient_first_name,
         organizationName: organization_name
       }
@@ -26,7 +27,8 @@ module EmailCampaigns
           idea_body_multiloc: data.idea.body_multiloc,
           idea_url: data.idea.url,
           idea_images: [],
-          input_term: 'idea'
+          input_term: 'idea',
+          project_title_multiloc: data.project.title_multiloc
         }
       }
     end
