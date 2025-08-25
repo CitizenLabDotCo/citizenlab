@@ -8,6 +8,7 @@ describe('Broken report', () => {
   let surveyPhaseId: string;
   let surveyFields: ICustomFieldResponse[];
   let surveySchema: IIdeaJsonFormSchemas;
+  const projectTitle = randomString();
 
   let reportPhaseId: string;
 
@@ -15,7 +16,7 @@ describe('Broken report', () => {
 
   before(() => {
     cy.apiCreateProject({
-      title: randomString(),
+      title: projectTitle,
       descriptionPreview: randomString(),
       description: randomString(),
       publicationStatus: 'published',
@@ -137,7 +138,7 @@ describe('Broken report', () => {
       // Select project, phase and question
       cy.selectReactSelectOption(
         '#e2e-report-builder-project-filter-box',
-        projectId
+        projectTitle
       );
       cy.get('#e2e-phase-filter').select(surveyPhaseId);
       cy.get('.e2e-question-select select').first().select(surveyFields[1].id);
