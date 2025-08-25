@@ -202,6 +202,7 @@ module Files
       if legacy_file
         payload[:legacy_file_type] = legacy_file.class.name
         payload[:legacy_file_id] = legacy_file.id
+        payload[:legacy_file_path] = legacy_file.file.path
       end
 
       payload.merge!(kwargs)
