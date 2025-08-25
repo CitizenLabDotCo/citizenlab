@@ -21,8 +21,8 @@ export interface ICustomFieldBinData {
     updated_at: string;
   };
   relationships: {
-    custom_field: { data?: IRelationship };
-    custom_field_option: { data?: IRelationship } | null;
+    custom_field: { data?: IRelationship | null };
+    custom_field_option: { data?: IRelationship | null } | null;
   };
 }
 
