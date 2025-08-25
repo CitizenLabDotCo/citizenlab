@@ -84,7 +84,7 @@ const ReportTab = () => {
                 label={formatMessage(messages.visible)}
               />
             </Box>
-            <Buttons reportId={reportId} showDuplicate={false} />
+            <Buttons report={report.data} showDuplicate={false} />
           </Box>
         )}
       </Box>
