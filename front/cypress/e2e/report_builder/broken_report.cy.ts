@@ -135,7 +135,10 @@ describe('Broken report', () => {
       cy.wait(1000);
 
       // Select project, phase and question
-      cy.get('#e2e-report-builder-project-filter-box select').select(projectId);
+      cy.selectReactSelectOption(
+        '#e2e-report-builder-project-filter-box',
+        projectId
+      );
       cy.get('#e2e-phase-filter').select(surveyPhaseId);
       cy.get('.e2e-question-select select').first().select(surveyFields[1].id);
 

@@ -70,6 +70,7 @@ const ProjectFilter = ({
   hideLabel = false,
   onProjectFilter,
   includeHiddenProjects = false,
+  id,
   ...boxProps
 }: Props & Omit<BoxProps, 'children'>) => {
   const localize = useLocalize();
@@ -153,6 +154,7 @@ const ProjectFilter = ({
   return (
     <Box {...boxProps} width="100%">
       <ReactSelect
+        id={id}
         value={selectedOption}
         options={filteredOptions}
         onChange={handleChange}

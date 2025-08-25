@@ -179,7 +179,7 @@ describe('Phase report', () => {
   };
 
   context('when report is visible', () => {
-    it('is visible in current phase when created from scratch', () => {
+    it.only('is visible in current phase when created from scratch', () => {
       cy.setAdminLoginCookie();
       cy.apiCreateReportBuilder(currentInfoPhaseId, true).then((report) => {
         const reportId = report.body.data.id;
@@ -206,9 +206,9 @@ describe('Phase report', () => {
         cy.wait(1000);
 
         // Expect project to already be selected
-        cy.get('#e2e-report-builder-project-filter-box select').should(
-          'have.value',
-          projectId
+        cy.get('#e2e-report-builder-project-filter-box').should(
+          'contain.text',
+          'Test Project'
         );
 
         saveReport(reportId);

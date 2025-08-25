@@ -96,6 +96,7 @@ declare global {
       apiCreateNativeSurveyPhase: typeof apiCreateNativeSurveyPhase;
       createProjectWithNativeSurveyPhase: typeof createProjectWithNativeSurveyPhase;
       createProjectWithIdeationPhase: typeof createProjectWithIdeationPhase;
+      selectReactSelectOption: typeof selectReactSelectOption;
     }
   }
 }
@@ -2248,6 +2249,16 @@ Cypress.Commands.add(
 );
 Cypress.Commands.add('apiCreateManualGroup', apiCreateManualGroup);
 Cypress.Commands.add('apiAddMembership', apiAddMembership);
+
+// ReactSelect helper function
+const selectReactSelectOption = (selector: string, optionValue: string) => {
+  cy.get(selector).click();
+  cy.get(selector).find('input').type(optionValue);
+  cy.get(`[data-value="${optionValue}"]`).click();
+};
+
+Cypress.Commands.add('selectReactSelectOption', selectReactSelectOption);
+
 Cypress.Commands.add(
   'createProjectWithIdeationPhase',
   createProjectWithIdeationPhase

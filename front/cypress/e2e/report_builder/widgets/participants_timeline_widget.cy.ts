@@ -101,7 +101,10 @@ describe('Report builder Participants timeline widget', () => {
     cy.wait(1000);
 
     // Set project filter
-    cy.get('#e2e-report-builder-project-filter-box select').select(projectId);
+    cy.selectReactSelectOption(
+      '#e2e-report-builder-project-filter-box',
+      projectId
+    );
 
     // Set date range and compare with previous period
     cy.get('.e2e-statistic-delta').should('not.exist');
