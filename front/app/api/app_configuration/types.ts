@@ -272,6 +272,7 @@ export interface IAppConfigurationSettings {
     project_id: string;
   };
   data_repository?: AppConfigurationFeature;
+  data_repository_transcription?: AppConfigurationFeature;
   data_repository_ai_analysis?: AppConfigurationFeature;
   user_fields_in_surveys?: AppConfigurationFeature;
   html_pdfs?: AppConfigurationFeature;

@@ -43,6 +43,27 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully',
     defaultMessage: 'All files uploaded successfully',
   },
+  transcription: {
+    id: 'app.containers.AdminPage.ProjectFiles.transcription',
+    defaultMessage: 'Transcription',
+  },
+  transcriptionPending: {
+    id: 'app.containers.AdminPage.ProjectFiles.transcriptionPending',
+    defaultMessage:
+      'The transcription is being generated. This can take a few minutes.',
+  },
+  transcriptionChapters: {
+    id: 'app.containers.AdminPage.ProjectFiles.transcriptionChapters',
+    defaultMessage: 'Chapters',
+  },
+  speakerA: {
+    id: 'app.containers.AdminPage.ProjectFiles.speakerA',
+    defaultMessage: 'Speaker {speaker}',
+  },
+  unableToGenerateTranscription: {
+    id: 'app.containers.AdminPage.ProjectFiles.unableToGenerateTranscription',
+    defaultMessage: 'Unable to generate a transcript.',
+  },
   unknown: {
     id: 'app.containers.AdminPage.ProjectFiles.unknown',
     defaultMessage: 'Unknown',
