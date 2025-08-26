@@ -11,13 +11,15 @@ module Files
       uploader: NO_VALUE,
       project: NO_VALUE,
       category: nil, # We can use nil instead of NO_VALUE bc nil is not a valid value for category
-      search: nil
+      search: nil,
+      exclude_idea_files: true
     )
       @scope = scope
       @uploader = uploader
       @project = project
       @category = category
       @search = search
+      @exclude_idea_files = exclude_idea_files
     end
 
     def execute
@@ -26,6 +28,7 @@ module Files
         .then { filter_by_project(_1) }
         .then { filter_by_category(_1) }
         .then { filter_by_search(_1) }
+        .then { filter_out_idea_files(_1) }
     end
 
     private
@@ -48,6 +51,14 @@ module Files
 
     def filter_by_search(files)
       @search.nil? ? files : files.search(@search)
+    end
+
+    def filter_out_idea_files(files)
+      return files unless @exclude_idea_files
+
+      files.where.not(
+        id: Files::FileAttachment.where(attachable_type: 'Idea').select(:file_id)
+      )
     end
   end
 end

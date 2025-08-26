@@ -95,9 +95,13 @@ class WebApi::V1::Files::FilesController < ApplicationController
 
   def finder_params
     params.permit(
-      :search, :uploader, :project, :category,
+      :search,
+      :exclude_idea_files,
+      :uploader, :project, :category,
       uploader: [], project: [], category: []
-    ).to_h.symbolize_keys
+    ).to_h.symbolize_keys.tap do |it|
+      it[:exclude_idea_files] = parse_bool(it[:exclude_idea_files]) if it.key?(:exclude_idea_files)
+    end
   end
 
   def order_params

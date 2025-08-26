@@ -13,6 +13,10 @@ resource 'Files' do
     parameter :project, 'Filter files by project ID(s)', type: %i[string array]
     parameter :search, 'Filter files by searching in filename'
 
+    parameter :exclude_idea_files, <<~DESC.squish, type: :boolean, default: true
+      Whether to exclude files that are attached to ideas. Defaults to true.
+    DESC
+
     parameter :category, <<~CATEGORY_DESC.squish, type: %i[string array], required: false
       Filter files by category (values: #{Files::File.categories.values.join(', ')})
     CATEGORY_DESC
@@ -35,6 +39,26 @@ resource 'Files' do
       example_request 'List all files' do
         assert_status 200
         expect(response_data.size).to eq 2
+      end
+
+      example 'Exclude idea files by default', document: false do
+        file = create(:file_attachment, to: :idea).file
+
+        do_request
+
+        assert_status 200
+        expect(response_ids).not_to include(file.id)
+      end
+
+      describe 'when including idea files' do
+        example 'Include idea files', document: false do
+          file = create(:file_attachment, to: :idea).file
+
+          do_request(exclude_idea_files: false)
+
+          assert_status 200
+          expect(response_ids).to include(file.id)
+        end
       end
 
       describe 'when filtering by uploader' do
