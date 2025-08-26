@@ -6,11 +6,11 @@ hu:
       "inappropriate_content_flagged": Nem megfelelő tartalom megjelölve – rendszergazdák
     inappropriate_content_flagged:
       subject: 'Egy bejegyzést megjelöltek ellenőrzésre'
-      header_title: 'Egy bejegyzést megjelöltek ellenőrzésre'
+      title: 'Egy bejegyzést ellenőrzésre jelöltek meg'
       author_wrote: '%{authorName} írta:'
       preheader: 'Az Ön platformján lévő bejegyzést megjelöltük felülvizsgálatra'
       automatically_flagged: >
         Ezt a bejegyzést a rendszer automatikusan észlelte, mint potenciálisan nem megfelelő tartalmat. Azért küldjük Önnek ezt az értesítést, hogy a saját moderálási irányelveinek megfelelően áttekinthesse a bejegyzést.
       how_to_review: >
         Ha a bejegyzés nem tartalmaz nem megfelelő tartalmat, a figyelmeztetést a platformon keresztül eltávolíthatja az adminisztrációs panel Tevékenység lapján.
-      cta_review: 'Tekintse át'
+      cta_button: 'Véleményezés'
