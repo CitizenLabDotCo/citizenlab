@@ -17,7 +17,6 @@ module BulkImportIdeas::Extractors
       {
         participation_method: 'ideation',
         input_term: 'question',
-        campaigns_settings: { project_phase_started: true }
       }
     end
   end
