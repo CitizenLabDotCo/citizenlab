@@ -95,6 +95,7 @@ lt:
       project_title: 'Projekto pavyzdys'
       project_description_preview: 'Tai tam tikras etapo turinio pavyzdys, naudojamas el. laiškų turiniui peržiūrėti. Tai nėra tikrasis turinys.'
       phase_title: 'Pavyzdys fazė'
+      folder_title: 'Pavyzdžio aplankas'
       comment_body: 'Tai pavyzdinis komentaras, naudojamas el. laiškų turiniui peržiūrėti. Tai nėra tikrasis turinys.'
       comment_deleted_reason: 'Jūsų pavyzdžio komentaras buvo laikomas netinkamu.'
       idea_title: 'Idėjos pavyzdys'
@@ -103,6 +104,9 @@ lt:
       event_address1: '10 Example Street, Exampleton, Exampleshire'
       event_address2: '3a kambarys, viršutinis aukštas'
       proposal_title: 'Pasiūlymo pavyzdys'
+      input_status_title: 'Pavyzdys Būklė'
+      input_status_description: 'Įvesties būsenos pavyzdys (pvz., priimta, atmesta, įgyvendinta...)'
+      official_feedback_body: 'Oficialių atsiliepimų pavyzdys'
     footer:
       "link_privacy_policy": "Privatumo politika"
       "link_terms_conditions": "Taisyklės ir sąlygos"
@@ -333,10 +337,11 @@ lt:
       title: 'Naujas vidinis komentaras ''%{post}'''
       preheader: 'Naujas vidinis komentaras ''%{post}'''
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} pateikė naujausią informaciją apie "%{input_title}".'
-      header_title: 'Yra atnaujinta informacija apie "%{input_title}"'
+      event_description: '%{feedback_author_name} pateikė naujausią informaciją apie "%{input_title}".'
+      title: 'Yra atnaujinta informacija apie "%{input_title}"'
       subject: 'Oficialūs atsiliepimai buvo paskelbti "%{input_title}"'
       preheader: 'Atnaujinta informacija apie įvestį, kurią sekate'
+      cta_button: Eikite į šią įvestį
     mention_in_official_feedback:
       cta_button: 'Atsakyti į %{organizationName}'
       event_description: '%{organizationName} paminėjo jus savo atsiliepimuose apie idėją "%{post}". Spustelėkite toliau pateiktą nuorodą, jei norite prisijungti prie pokalbio su %{organizationName}.'
@@ -344,8 +349,8 @@ lt:
       subject: '%{organizationName} paminėjo jus savo atsiliepimuose'
       preheader: '%{commentAuthor} paminėjo jus atsiliepimuose'
     project_moderation_rights_received:
-      cta_manage_project: 'Valdykite šį projektą'
-      message_you_became_moderator: 'Dalyvavimo platformos %{organizationName} administratorius ką tik paskyrė jus šio projekto vadovu:'
+      cta_button: 'Valdykite šį projektą'
+      event_description: 'Dalyvavimo platformos %{organizationName} administratorius ką tik paskyrė jus šio projekto vadovu:'
       no_ideas: 'Dar nėra idėjų'
       preheader: 'Dalyvavimo platformos %{organizationName} administratorius ką tik paskyrė jus šio projekto vadovu.'
       subject: 'Tapote projektų vadovu %{organizationName}platformoje.'
@@ -356,11 +361,11 @@ lt:
       title_moderate_analyse_input: 'Vidutiniškai apdoroti ir analizuoti įvesties duomenis'
       title_share_project_information: 'Pateikite informaciją apie projektą'
       title_what_can_you_do_moderator: 'Ką galite padaryti kaip projektų vadovas?'
-      title_you_became_moderator: 'Tapote projektų vadovu'
+      title: 'Tapote projektų vadovu'
       x_ideas: '%{numberOfIdeas} idėjos'
     project_folder_moderation_rights_received:
-      cta_view_folder_button: 'Peržiūrėti šį aplanką'
-      message_added_as_folderadmin: 'Jums suteiktos aplanko tvarkytojo teisės %{organizationName}''s dalyvavimo platformoje šiam aplankui:'
+      cta_button: 'Peržiūrėti šį aplanką'
+      event_description: 'Jums suteiktos aplanko tvarkytojo teisės %{organizationName}''s dalyvavimo platformoje šiam aplankui:'
       no_projects: 'Projektų dar nėra'
       preheader: 'Dalyvavimo platformos %{organizationName} administratorius ką tik paskyrė jus šio aplanko valdytoju.'
       subject: 'Tapote projekto aplanko valdytoju dalyvavimo platformoje %{organizationName}.'
@@ -371,7 +376,7 @@ lt:
       title_moderate_analyse_input: 'Vidutiniškai apdoroti ir analizuoti įvesties duomenis'
       title_manage_folder: 'Tvarkykite aplanko nustatymus ir kurkite naujus projektus.'
       title_what_can_you_do_folderadmin: 'Ką galite padaryti kaip aplankų tvarkytojas?'
-      title_added_as_folderadmin: 'Buvote pridėtas kaip aplankų tvarkytojas'
+      title: 'Buvote pridėtas kaip aplankų tvarkytojas'
       x_projects: '%{numberOfProjects} projektai'
     project_phase_started:
       cta_button: 'Atraskite šį naują etapą'
@@ -382,41 +387,43 @@ lt:
       subject: '%{projectName} prasidėjo naujas etapas.'
       preheader: 'Prasidėjo naujas %{projectName}etapas.'
     project_phase_upcoming:
-      cta_view_phase: 'Nustatykite šį naują etapą'
+      cta_button: 'Nustatykite šį naują etapą'
       event_description: 'Netrukus prasidės naujas projekto "%{projectName}" etapas. Pasirūpinkite, kad viskas būtų paruošta šiam etapui: Ar yra tinkamas aprašymas? Ar pasirinktos idėjos perkeltos į šį etapą? Ar norite informuoti savo piliečius apie šio etapo ypatumus naudodami pasirinktinę el. pašto kampaniją?'
-      main_header: '%{firstName}, netrukus prasidės naujas projekto etapas'
+      title: '%{firstName}, netrukus prasidės naujas projekto etapas'
       subtitle: 'Apie ''%{projectName}'''
       new_phase: 'Projektas pereis į etapą "%{phaseTitle}".'
       subject: 'Pasirūpinkite, kad viskas būtų paruošta naujam %{projectName}etapui.'
       preheader: 'Netrukus prasidės naujas %{projectName}etapas'
     project_published:
       subject: 'Naujas projektas paskelbtas %{organizationName}platformoje.'
-      header_title: 'Paskelbtas naujas projektas'
-      header_message: 'Dalyvavimo platformoje %{organizationName} ką tik paskelbtas šis projektas:'
+      title: 'Paskelbtas naujas projektas'
+      event_description: 'Dalyvavimo platformoje %{organizationName} ką tik paskelbtas šis projektas:'
       preheader: 'Paskelbtas naujas projektas'
+      cta_button: 'Eikite į šį projektą'
     project_review_request:
       subject: 'Prašymas atlikti peržiūrą: Projektas laukia patvirtinimo.'
-      header: '%{requesterName} pakvietė peržiūrėti projektą "%{projectTitle}"'
-      header_message: "Šiuo metu projektas veikia juodraščio režimu ir nėra matomas naudotojams. Kai jį peržiūrėsite ir patvirtinsite, moderatorius galės jį paskelbti."
-      cta_review_project: "Projekto peržiūra"
+      title: '%{requesterName} pakvietė peržiūrėti projektą "%{projectTitle}"'
+      event_description: "Šiuo metu projektas veikia juodraščio režimu ir nėra matomas naudotojams. Kai jį peržiūrėsite ir patvirtinsite, moderatorius galės jį paskelbti."
+      cta_button: "Projekto peržiūra"
     project_review_state_change:
       subject: '"%{projectTitle}" buvo patvirtintas'
-      header: '%{reviewerName} patvirtino projektą "%{projectTitle}"'
-      header_message: "Projektas jau parengtas veikti. Galite jį paskelbti, kai tik būsite pasiruošę!"
-      cta_go_to_project: "Eikite į projekto nustatymus"
+      title: '%{reviewerName} patvirtino projektą "%{projectTitle}"'
+      event_description: "Projektas jau parengtas veikti. Galite jį paskelbti, kai tik būsite pasiruošę!"
+      cta_button: "Eikite į projekto nustatymus"
     status_change_on_idea_you_follow:
       status_change: 'Naujoji šio įvesties būsena yra ''%{status}'''
-      header_message: '%{organizationName} savo skaitmeninėje dalyvavimo platformoje atnaujino įvesties statusą "%{input_title}".'
-      header_title: 'Įvestis, kurią sekate, turi naują būseną'
+      event_description: '%{organizationName} savo skaitmeninėje dalyvavimo platformoje atnaujino įvesties statusą "%{input_title}".'
+      title: 'Įvestis, kurią sekate, turi naują būseną'
       subject: 'Pasikeitė statusas "%{input_title}"'
       preheader: 'Įvestis, kurią sekate, turi naują būseną'
+      cta_button: Eikite į šią įvestį
     user_digest:
       subject: "Šią savaitę dalyvavimo platformoje %{organizationName}"
       commented: "%{authorFirstName} komentavo:"
       preheader: "Savaitės apžvalga %{organizationName}"
-      title_your_weekly_report: "Sužinokite, kas nutiko praėjusią savaitę"
-      intro_text: "Čia pateikiama santrauka to, kas įvyko %{organizationName}dalyvavimo platformoje."
-      cta_go_to_the_platform: "Eikite į platformą"
+      title: "Sužinokite, kas nutiko praėjusią savaitę"
+      event_description: "Čia pateikiama santrauka to, kas įvyko %{organizationName}dalyvavimo platformoje."
+      cta_button: "Eikite į platformą"
       title_no_activity_past_week: "Per pastarąją savaitę nebuvo jokios veiklos"
       successful_proposals_title: "Pasiekta riba"
       successful_proposals_text: "Per pastarąją savaitę jos sulaukė pakankamo palaikymo, kad galėtų pereiti į kitą etapą."
@@ -431,15 +438,15 @@ lt:
       no_unread_notifications: "Neturite jokių neperskaitytų pranešimų."
       unread_notifications: "Turite neperskaitytų pranešimų. Apsilankykite platformoje ir sužinokite, kas vyksta!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Pradėkite tolesnius šio pasiūlymo įgyvendinimo etapus'
-      main_header: 'Pasiūlymas pasiekė balsavimo ribą!'
+      cta_button: 'Pradėkite tolesnius šio pasiūlymo įgyvendinimo etapus'
+      title: 'Pasiūlymas pasiekė balsavimo ribą!'
       subject: '"%{input_title}" pasiekė balsavimo ribą'
       preheader: 'Būtinai imkitės tolesnių veiksmų'
     welcome:
-      cta_join_platform: 'Atraskite platformą'
+      cta_button: 'Atraskite platformą'
       subject: 'Sveiki atvykę į %{organizationName}platformą'
-      main_header: Sveiki atvykę!
-      message_welcome: 'Sveikiname, sėkmingai užsiregistravote %{organizationName}dalyvavimo platformoje. Dabar galite atrasti platformą ir pareikšti savo nuomonę. Taip pat galite pridėti profilio nuotrauką ir trumpą aprašymą, kad kitiems pasakytumėte, kas esate.'
+      title: Sveiki atvykę!
+      event_description: 'Sveikiname, sėkmingai užsiregistravote %{organizationName}dalyvavimo platformoje. Dabar galite atrasti platformą ir pareikšti savo nuomonę. Taip pat galite pridėti profilio nuotrauką ir trumpą aprašymą, kad kitiems pasakytumėte, kas esate.'
       preheader: 'Štai ką galite daryti %{organizationName}platformoje'
     idea_published:
       subject: 'Jūsų idėja buvo paskelbta'
@@ -475,15 +482,15 @@ lt:
         option: 'Jūsų galimybė yra "%{prescreening_status_title}"'
         proposal: 'Jūsų pasiūlymas yra "%{prescreening_status_title}"'
         petition: 'Jūsų peticija yra "%{prescreening_status_title}"'
-      message: '"%{input_title}" taps matomas kitiems, kai bus peržiūrėtas ir patvirtintas.'
+      event_description: '"%{input_title}" taps matomas kitiems, kai bus peržiūrėtas ir patvirtintas.'
       subject: '"%{input_title}" yra beveik paskelbtas'
       preheader: 'Šiuo metu jis yra %{prescreening_status_title}'
     voting_basket_submitted:
       subject: '%{organizationName}: Jūs sėkmingai balsavote'
       preheader: 'Sėkmingai balsavote %{organizationName}dalyvavimo platformoje'
-      title_basket_submitted: 'Sėkmingai balsavote'
+      title: 'Sėkmingai balsavote'
       event_description: 'Ačiū už dalyvavimą. Jūsų balsai buvo užregistruoti. Apsilankykite %{organizationName} platformoje ir peržiūrėkite bei tvarkykite savo balsus.'
-      cta_see_votes_submitted: 'Žiūrėti pateiktus balsus'
+      cta_button: 'Žiūrėti pateiktus balsus'
       cta_message: 'Spustelėkite toliau esantį mygtuką ir dalyvaukite'
     native_survey_not_submitted:
       subject: '%{organizationName}: Beveik ten! Pateikite savo atsakymus'
@@ -495,26 +502,26 @@ lt:
     voting_basket_not_submitted:
       subject: '%{organizationName}: Jūs nepateikėte savo balsų'
       preheader: 'Jūs nepateikėte savo balsų %{organizationName}dalyvavimo platformoje.'
-      title_basket_not_submitted: 'Jūs nepateikėte savo balsų'
+      title: 'Jūs nepateikėte savo balsų'
       event_description: 'Pasirinkote kelias %{contextTitle} parinktis, tačiau jų nepateikėte.'
-      cta_view_options_and_vote: 'Peržiūrėkite parinktis ir balsuokite'
+      cta_button: 'Peržiūrėkite parinktis ir balsuokite'
       cta_message: 'Spustelėkite toliau esantį mygtuką, kad pateiktumėte pasirinktas parinktis'
     voting_last_chance:
       subject: '%{organizationName}: Paskutinė galimybė balsuoti už %{phaseTitle}'
       preheader: 'Paskutinė galimybė balsuoti už %{phaseTitle} dalyvavimo platformoje %{organizationName}'
-      title_last_chance: 'Paskutinė galimybė balsuoti už %{phaseTitle}'
+      title: 'Paskutinė galimybė balsuoti už %{phaseTitle}'
       body_1: 'Rytoj, vidurnaktį, baigsis projekto %{projectTitle} balsavimo etapas.'
       body_2: 'Laikas bėga, o mes pastebėjome, kad dar nebalsavote! Dalyvaukite dabar, tiesiog spustelėdami toliau esantį mygtuką.'
       body_3: 'Tokiu būdu galėsite susipažinti su įvairiomis galimybėmis ir pareikšti savo nuomonę, kuri yra labai svarbi priimant sprendimus dėl šio projekto ateities.'
-      cta_vote: 'Balsuoti'
+      cta_button: 'Balsuoti'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} atskleisti balsavimo rezultatai!'
       preheader: '%{phaseTitle} dalyvavimo platformoje %{organizationName}paskelbti balsavimo rezultatai'
-      title_results: '%{phaseTitle} atskleisti balsavimo rezultatai!'
+      title: '%{phaseTitle} atskleisti balsavimo rezultatai!'
       body_1: 'Rezultatai paskelbti!'
       body_2: 'Paskelbti %{phaseTitle} balsavimo rezultatai %{organizationName} platformoje!'
       body_3: 'Raginame susipažinti su rezultatais ir laukti papildomos informacijos apie tolesnius veiksmus.'
-      cta_see_results: 'Rezultatus žiūrėkite platformoje'
+      cta_button: 'Rezultatus žiūrėkite platformoje'
     event_registration_confirmation:
       subject: "Dalyvaujate! Jūsų registracija \"%{eventTitle}\" patvirtinta"
       preheader: "%{firstName}, ačiū, kad užsiregistravote %{eventTitle}"
@@ -531,18 +538,19 @@ lt:
     voting_phase_started:
       subject: '%{organizationName}: Prasidėjo %{projectName}balsavimo etapas'
       preheader: 'Prasidėjo balsavimo etapas %{projectName} dalyvavimo platformoje %{organizationName}.'
+      title: '%{projectName}'
       event_description: 'Projekte "%{projectName}" prašoma balsuoti už vieną iš %{numIdeas} variantų:'
       cta_message: 'Spustelėkite toliau esantį mygtuką ir dalyvaukite'
-      cta_vote: 'Eikite į platformą ir balsuokite'
+      cta_button: 'Eikite į platformą ir balsuokite'
     survey_submitted:
       subject: '%{organizationName}: Dėkojame už atsakymą! 🎉'
       preheader: 'Pateikiame jūsų pateiktos informacijos detales.'
-      main_header: 'Dėkojame, kad dalijatės mintimis apie "%{projectName}"!'
-      your_input_submitted: 'Jūsų įvestis "%{projectName}" buvo sėkmingai pateikta.'
+      title: 'Dėkojame, kad dalijatės mintimis apie "%{projectName}"!'
+      event_description: 'Jūsų įvestis "%{projectName}" buvo sėkmingai pateikta.'
       if_you_would_like_to_review: 'Jei norite peržiūrėti savo pateiktą informaciją, toliau galite atsisiųsti savo atsakymus.'
       your_submission_has_id: 'Jūsų pateiktai paraiškai suteiktas šis unikalus identifikatorius:'
       you_can_use_this_id: 'Šį identifikatorių galite naudoti norėdami susisiekti su platformos administratoriais, jei norite, kad jūsų pateikta informacija būtų pašalinta.'
-      download_responses: 'Atsisiųskite savo atsakymus'
+      cta_button: 'Atsisiųskite savo atsakymus'
     admin_labels:
       recipient_role:
         admins: 'Administratoriams'

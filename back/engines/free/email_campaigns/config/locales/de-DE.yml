@@ -95,6 +95,7 @@ de:
       project_title: 'Beispielprojekt'
       project_description_preview: 'Dies ist ein Beispiel für Phaseninhalte, die zur Vorschau des Inhalts von E-Mails verwendet werden. Dies ist kein echter Inhalt.'
       phase_title: 'Beispielphase'
+      folder_title: 'Beispiel-Ordner'
       comment_body: 'Dies ist ein Beispielkommentar, der für die Vorschau des Inhalts von E-Mails verwendet wird. Dies ist kein echter Inhalt.'
       comment_deleted_reason: 'Ihr Beispielkommentar wurde als unangemessen betrachtet.'
       idea_title: 'Beispiel-Idee'
@@ -103,6 +104,9 @@ de:
       event_address1: 'Beispielstraße 10, Beispiel-Stadt, Beispiel-Land'
       event_address2: 'Zimmer 3a, Obergeschoss'
       proposal_title: 'Beispiel-Vorschlag'
+      input_status_title: 'Beispiel Status'
+      input_status_description: 'Ein Beispiel für einen Status für eine Eingabe (z.B. akzeptiert, abgelehnt, implementiert...)'
+      official_feedback_body: 'Beispiel für ein offizielles Feedback'
     footer:
       "link_privacy_policy": "Impressum & Datenschutz"
       "link_terms_conditions": "Nutzungsbedingungen"
@@ -333,10 +337,11 @@ de:
       title: 'Neuer interner Kommentar zu ''%{post}'''
       preheader: '''%{post}'' hat einen neuen internen Kommentar erhalten'
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} hat ein offizielles Update zu %{input_title} gegeben''.'
-      header_title: 'Es gibt ein Update zu "%{input_title}"'
+      event_description: '%{feedback_author_name} hat ein offizielles Update zu %{input_title} gegeben''.'
+      title: 'Es gibt ein Update zu "%{input_title}"'
       subject: 'Ein offizielles Update wurde zu "%{input_title}" veröffentlicht'
       preheader: 'Es gibt ein Update für einen Beitrag, dem Sie folgen'
+      cta_button: Zum Beitrag
     mention_in_official_feedback:
       cta_button: '%{organizationName} antworten'
       event_description: '%{organizationName} hat dich in seinem Feedback zu der Idee ''%{post}'' erwähnt. Klicke auf den unten stehenden Link, um mit %{organizationName} zu interagieren'
@@ -344,8 +349,8 @@ de:
       subject: '%{organizationName} hat Sie in ihrem Feedback erwähnt'
       preheader: '%{commentAuthor} hat Sie in der Rückmeldung erwähnt'
     project_moderation_rights_received:
-      cta_manage_project: 'Verwalten Sie dieses Projekt'
-      message_you_became_moderator: 'Ein Admin der Beteiligungsplattform %{organizationName} hat Sie gerade zum/zur Projektmanager*in des folgenden Projekts ernannt:'
+      cta_button: 'Verwalten Sie dieses Projekt'
+      event_description: 'Ein Admin der Beteiligungsplattform %{organizationName} hat Sie gerade zum/zur Projektmanager*in des folgenden Projekts ernannt:'
       no_ideas: 'Noch keine Ideen'
       preheader: 'Ein Admin der Beteiligungsplattform %{organizationName} hat Sie gerade zum/zur Projektmanager*in des folgenden Projekts ernannt'
       subject: 'Sie sind jetzt Projektmanager*in auf der Plattform %{organizationName}'
@@ -356,11 +361,11 @@ de:
       title_moderate_analyse_input: 'Moderieren und analysieren Sie den Input der Bürger:innen'
       title_share_project_information: 'Stellen Sie Projektinformationen bereit'
       title_what_can_you_do_moderator: 'Was können Sie als Projektmanager*in tun?'
-      title_you_became_moderator: 'Sie sind nun Projektmanager*in'
+      title: 'Sie sind nun Projektmanager*in'
       x_ideas: '%{numberOfIdeas} Ideen'
     project_folder_moderation_rights_received:
-      cta_view_folder_button: 'Diesen Ordner anzeigen'
-      message_added_as_folderadmin: 'Sie haben Administrationsrechte auf der Beteiligungsplattform %{organizationName} für den folgenden Ordner erhalten:'
+      cta_button: 'Diesen Ordner anzeigen'
+      event_description: 'Sie haben Administrationsrechte auf der Beteiligungsplattform %{organizationName} für den folgenden Ordner erhalten:'
       no_projects: 'Noch keine Projekte erhalten'
       preheader: 'Ein Admin der Beteiligungsplattform %{organizationName} hat Sie soeben zu einer:einem Manager:in des folgenden Projektordners ernannt'
       subject: 'Sie wurden zu einer:einem Ordnermanager:in auf der Plattform von %{organizationName} ernannt'
@@ -371,7 +376,7 @@ de:
       title_moderate_analyse_input: 'Moderieren und analysieren Sie den Input der Bürger:innen'
       title_manage_folder: 'Verwalten Sie die Ordnereinstellungen und erstellen Sie neue Projekte.'
       title_what_can_you_do_folderadmin: 'Was können Sie als Ordnermanager:in machen?'
-      title_added_as_folderadmin: 'Sie wurden als OrdnermanagerIn hinzugefügt'
+      title: 'Sie wurden als OrdnermanagerIn hinzugefügt'
       x_projects: '%{numberOfProjects} Projekte'
     project_phase_started:
       cta_button: 'Neue Phase entdecken'
@@ -382,41 +387,43 @@ de:
       subject: '%{projectName} ist in einer neuen Phase'
       preheader: 'Für %{projectName} hat eine neue Phase begonnen'
     project_phase_upcoming:
-      cta_view_phase: 'Neue Phase einrichten'
+      cta_button: 'Neue Phase einrichten'
       event_description: 'Das Projekt ''%{projectName}'' befindet sich bald in einer neuen Phase. Stellen Sie sicher, dass für diese Phase alles vorbereitet ist: Ist die Beschreibung zutreffend? Werden zurückgehaltene Ideen in diese Phase übernommen? Möchten Sie die Bürger:innen über die Details dieser Phase mit einer gezielten E-Mail-Kampagne informieren?'
-      main_header: '%{firstName}, ein Projekt befindet sich bald in einer neuen Phase'
+      title: '%{firstName}, ein Projekt befindet sich bald in einer neuen Phase'
       subtitle: 'Über ''%{projectName}'''
       new_phase: 'Das Projekt geht in die Phase "%{phaseTitle}"'
       subject: 'Richten Sie alles für die neue Phase von %{projectName} ein'
       preheader: 'Bald beginnt eine neue Phase für %{projectName}'
     project_published:
       subject: 'Ein neues Projekt wurde auf der Plattform von %{organizationName} veröffentlicht'
-      header_title: 'Ein neues Projekt wurde veröffentlicht'
-      header_message: 'Die Beteiligungsplattform von %{organizationName} hat gerade das folgende Projekt veröffentlicht:'
+      title: 'Ein neues Projekt wurde veröffentlicht'
+      event_description: 'Die Beteiligungsplattform von %{organizationName} hat gerade das folgende Projekt veröffentlicht:'
       preheader: 'Ein neues Projekt wurde veröffentlicht'
+      cta_button: 'Zum Projekt'
     project_review_request:
       subject: 'Antrag auf Freigabe: Ein Projekt wartet auf Freigabe.'
-      header: '%{requesterName} hat Sie eingeladen, das Projekt "%{projectTitle}" freizugeben'
-      header_message: "Derzeit befindet sich das Projekt im Entwurfsmodus und ist für Nutzer*innen nicht sichtbar. Sobald Sie es geprüft und freigegeben haben, kann der/die Projektmanager*in es veröffentlichen."
-      cta_review_project: "Projekt überprüfen"
+      title: '%{requesterName} hat Sie eingeladen, das Projekt "%{projectTitle}" freizugeben'
+      event_description: "Derzeit befindet sich das Projekt im Entwurfsmodus und ist für Nutzer*innen nicht sichtbar. Sobald Sie es geprüft und freigegeben haben, kann der/die Projektmanager*in es veröffentlichen."
+      cta_button: "Projekt überprüfen"
     project_review_state_change:
       subject: '"%{projectTitle}" wurde freigegeben'
-      header: '%{reviewerName} hat das Projekt "%{projectTitle}" freigegeben'
-      header_message: "Das Projekt ist jetzt bereit, live zu gehen. Sie können es veröffentlichen, wann immer Sie bereit sind!"
-      cta_go_to_project: "Zu den Projekteinstellungen"
+      title: '%{reviewerName} hat das Projekt "%{projectTitle}" freigegeben'
+      event_description: "Das Projekt ist jetzt bereit, live zu gehen. Sie können es veröffentlichen, wann immer Sie bereit sind!"
+      cta_button: "Zu den Projekteinstellungen"
     status_change_on_idea_you_follow:
       status_change: 'Der neue Status dieses Beitrags ist ''%{status}'''
-      header_message: '%{organizationName} hat den Status des Beitrags ''%{input_title}'' auf Ihrer digitalen Beteiligungsplattform aktualisiert.'
-      header_title: 'Ein Beitrag, dem Sie folgen, hat einen neuen Status'
+      event_description: '%{organizationName} hat den Status des Beitrags ''%{input_title}'' auf Ihrer digitalen Beteiligungsplattform aktualisiert.'
+      title: 'Ein Beitrag, dem Sie folgen, hat einen neuen Status'
       subject: 'Der Status von "%{input_title}" hat sich geändert'
       preheader: 'Ein Beitrag, dem Sie folgen, hat einen neuen Status'
+      cta_button: Zum Beitrag
     user_digest:
       subject: "Ihre Aktivität auf der Beteiligungsplattform %{organizationName}"
       commented: "%{authorFirstName} kommentierte:"
       preheader: "Wöchentliche Übersicht über %{organizationName}"
-      title_your_weekly_report: "Entdecken Sie, was letzte Woche passiert ist"
-      intro_text: "Hier finden Sie eine Zusammenfassung dessen, was auf der Beteiligungsplattform %{organizationName} passiert ist."
-      cta_go_to_the_platform: "Zur Plattform"
+      title: "Entdecken Sie, was letzte Woche passiert ist"
+      event_description: "Hier finden Sie eine Zusammenfassung dessen, was auf der Beteiligungsplattform %{organizationName} passiert ist."
+      cta_button: "Zur Plattform"
       title_no_activity_past_week: "Keine Aktivität in der letzten Woche"
       successful_proposals_title: "Schwelle erreicht"
       successful_proposals_text: "Diese Vorschläge haben genug Unterstützung erhalten, um in die nächste Phase zu gehen! Klicke auf den Vorschlag, um mehr darüber zu erfahren, was als nächstes passiert."
@@ -431,15 +438,15 @@ de:
       no_unread_notifications: "Sie haben keine ungelesenen Benachrichtigungen. Besuchen Sie die Plattform, um etwas zu posten und neue Benachrichtigungen zu generieren!"
       unread_notifications: "Sie haben ungelesene Benachrichtigungen. Besuchen Sie die Plattform, um zu erfahren, was los ist."
     threshold_reached_for_admin:
-      cta_process_initiative: 'Nächste Schritte für diesen Vorschlag'
-      main_header: 'Ein Vorschlag hat die Abstimmungsschwelle erreicht!'
+      cta_button: 'Nächste Schritte für diesen Vorschlag'
+      title: 'Ein Vorschlag hat die Abstimmungsschwelle erreicht!'
       subject: 'Eine Initiative hat die Abstimmungsschwelle auf Ihrer Plattform erreicht'
       preheader: 'Stelle sicher, dass du die nächsten Schritte ausführst'
     welcome:
-      cta_join_platform: 'Plattform entdecken'
+      cta_button: 'Plattform entdecken'
       subject: 'Ihre Registrierung für die %{organizationName} Plattform'
-      main_header: Herzlich Willkommen!
-      message_welcome: 'Sie haben sich erfolgreich auf der Beteiligungsplattform %{organizationName} registriert. Hier können Sie im Dialog mit uns zu bestimmten Fragestellungen Ihre Gedanken austauschen, Ideen sammeln und Feedback geben.'
+      title: Herzlich Willkommen!
+      event_description: 'Sie haben sich erfolgreich auf der Beteiligungsplattform %{organizationName} registriert. Hier können Sie im Dialog mit uns zu bestimmten Fragestellungen Ihre Gedanken austauschen, Ideen sammeln und Feedback geben.'
       preheader: 'Das können Sie auf der Plattform von %{organizationName} tun:'
     idea_published:
       subject: 'Dein Beitrag wurde veröffentlicht'
@@ -475,15 +482,15 @@ de:
         option: 'Ihre Option ist in "%{prescreening_status_title}"'
         proposal: 'Dein Vorschlag ist in "%{prescreening_status_title}"'
         petition: 'Ihre Petition ist in "%{prescreening_status_title}"'
-      message: '"%{input_title}" wird für andere sichtbar, sobald der Beitrag geprüft und genehmigt wurde.'
+      event_description: '"%{input_title}" wird für andere sichtbar, sobald der Beitrag geprüft und genehmigt wurde.'
       subject: '"%{input_title}" ist fast veröffentlicht'
       preheader: 'Es befindet sich derzeit in %{prescreening_status_title}'
     voting_basket_submitted:
       subject: '%{organizationName}: Sie haben erfolgreich abgestimmt'
       preheader: 'Sie haben erfolgreich auf der Beteiligungsplattform von %{organizationName} abgestimmt'
-      title_basket_submitted: 'Sie haben erfolgreich abgestimmt'
+      title: 'Sie haben erfolgreich abgestimmt'
       event_description: 'Vielen Dank für Ihre Teilnahme. Ihre Stimmen wurden aufgezeichnet. Besuchen Sie die Plattform von %{organizationName}, um Ihre Stimmen zu sehen und zu verwalten.'
-      cta_see_votes_submitted: 'Siehe abgegebene Stimmen'
+      cta_button: 'Siehe abgegebene Stimmen'
       cta_message: 'Klicken Sie auf den Button unten, um teilzunehmen'
     native_survey_not_submitted:
       subject: '%{organizationName}: Fast geschafft! Reichen Sie Ihre Antworten ein'
@@ -495,26 +502,26 @@ de:
     voting_basket_not_submitted:
       subject: '%{organizationName}: Sie haben Ihre Stimmen nicht abgegeben'
       preheader: 'Sie haben Ihre Stimme nicht auf der Beteiligungsplattform von %{organizationName} abgegeben'
-      title_basket_not_submitted: 'Sie haben Ihre Stimmen nicht abgegeben'
+      title: 'Sie haben Ihre Stimmen nicht abgegeben'
       event_description: 'Sie haben ein paar Optionen für %{contextTitle} ausgewählt, aber Sie haben Ihre Auswahl nicht abgeschickt.'
-      cta_view_options_and_vote: 'Optionen ansehen und abstimmen'
+      cta_button: 'Optionen ansehen und abstimmen'
       cta_message: 'Klicken Sie auf den Button unten, um Ihre ausgewählten Optionen abzuschicken'
     voting_last_chance:
       subject: '%{organizationName}: Letzte Chance, für %{phaseTitle} abzustimmen'
       preheader: 'Letzte Chance, für %{phaseTitle} auf der Beteiligungsplattform von %{organizationName} abzustimmen'
-      title_last_chance: 'Letzte Chance, für %{phaseTitle} abzustimmen'
+      title: 'Letzte Chance, für %{phaseTitle} abzustimmen'
       body_1: 'Die Abstimmungsphase für das Projekt %{projectTitle} geht morgen um Mitternacht zu Ende.'
       body_2: 'Die Zeit läuft ab und wir haben festgestellt, dass Sie Ihre Stimme noch nicht abgegeben haben! Klicken Sie auf den Button unten und machen Sie mit.'
       body_3: 'Auf diese Weise erhalten Sie Zugang zu einer Reihe von Optionen und haben die Möglichkeit, Ihre Stimme abzugeben, die für die Entscheidung über die Zukunft dieses Projekts entscheidend ist.'
-      cta_vote: 'Abstimmen'
+      cta_button: 'Auswählen'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} Abstimmungsergebnisse veröffentlicht!'
       preheader: '%{phaseTitle} Abstimmungsergebnisse auf der Beteiligungsplattform von %{organizationName} veröffentlicht'
-      title_results: '%{phaseTitle} Abstimmungsergebnisse veröffentlicht!'
+      title: '%{phaseTitle} Abstimmungsergebnisse veröffentlicht!'
       body_1: 'Die Ergebnisse sind da!'
       body_2: 'Die Ergebnisse der Abstimmung von %{phaseTitle} auf der Plattform %{organizationName} sind veröffentlicht worden!'
       body_3: 'Schauen Sie sich die Ergebnisse an. Wir halten Sie über die nächsten Schritte auf dem Laufenden.'
-      cta_see_results: 'Ergebnisse auf der Plattform ansehen'
+      cta_button: 'Ergebnisse auf der Plattform ansehen'
     event_registration_confirmation:
       subject: "Sie sind dabei! Ihre Anmeldung für \"%{eventTitle}\" ist bestätigt"
       preheader: "%{firstName}, danke für Ihre Anmeldung für %{eventTitle}"
@@ -531,18 +538,19 @@ de:
     voting_phase_started:
       subject: '%{organizationName}: Die Abstimmungsphase für %{projectName} hat begonnen'
       preheader: 'Die Abstimmungsphase für %{projectName} hat auf der Teilnahme-Plattform %{organizationName} begonnen'
+      title: '%{projectName}'
       event_description: 'Für das Projekt "%{projectName}" können Sie aus %{numIdeas} Optionen wählen:'
       cta_message: 'Auf den Button klicken, um teilzunehmen'
-      cta_vote: 'Zur Plattform, um abzustimmen'
+      cta_button: 'Zur Plattform, um abzustimmen'
     survey_submitted:
       subject: '%{organizationName}: Vielen Dank für Ihre Antwort! 🎉'
       preheader: 'Details zur Einreichung.'
-      main_header: 'Danke, dass Sie Ihre Gedanken zu "%{projectName}" mit uns teilen!'
-      your_input_submitted: 'Ihr Beitrag für "%{projectName}" wurde erfolgreich versendet.'
+      title: 'Danke, dass Sie Ihre Gedanken zu "%{projectName}" mit uns teilen!'
+      event_description: 'Ihr Beitrag für "%{projectName}" wurde erfolgreich versendet.'
       if_you_would_like_to_review: 'Wenn Sie Ihren Beitrag überprüfen möchten, können Sie Ihre Antworten unten herunterladen.'
       your_submission_has_id: 'Ihr Beitrag hat die folgende eindeutige Kennung:'
       you_can_use_this_id: 'Sie können diese Kennung verwenden, um die Admins der Plattform zu kontaktieren, falls Sie möchten, dass Ihr Beitrag entfernt wird.'
-      download_responses: 'Antworten herunterladen'
+      cta_button: 'Antworten herunterladen'
     admin_labels:
       recipient_role:
         admins: 'An Admins'
