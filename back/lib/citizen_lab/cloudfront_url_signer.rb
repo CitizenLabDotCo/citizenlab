@@ -6,7 +6,7 @@ module CitizenLab
       @key_pair_id = key_pair_id || ENV.fetch('CLOUDFRONT_KEY_PAIR_ID')
 
       private_key_content = private_key ||
-                            ENV['CLOUDFRONT_PRIVATE_KEY'].presence ||
+                            ENV['CLOUDFRONT_PRIVATE_KEY']&.gsub('\n', "\n").presence ||
                             File.read(ENV.fetch('CLOUDFRONT_PRIVATE_KEY_PATH'))
 
       @signer = Aws::CloudFront::UrlSigner.new(
