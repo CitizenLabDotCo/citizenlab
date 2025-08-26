@@ -22,10 +22,16 @@ namespace :single_use do
 
       # Step 1: get all community monitor autogenerate reports
       community_monitor_project_id = app_config.settings.dig('community_monitor', 'project_id')
+
+      if community_monitor_project_id.nil?
+        print_padded 'Community monitor project id not specified'
+        next
+      end
+
       community_monitor_phase = Phase.find_by(project_id: community_monitor_project_id)
 
       if community_monitor_phase.nil?
-        print_padded "community_monitor_project_id: #{community_monitor_project_id}"
+        print_padded 'Community monitor phase not found'
         raise 'Community monitor phase not found'
       end
 
