@@ -218,6 +218,8 @@ resource 'Files' do
       parameter :description_multiloc, 'The description of the file, as a multiloc string'
       parameter :ai_processing_allowed, 'Whether AI processing is allowed for this file (defaults to false)'
       parameter :category, "The category of the file (values: #{Files::File.categories.values.join(', ')})"
+      parameter :attachable_type, 'The type of the resource to which the file will be attached'
+      parameter :attachable_id, 'The ID of the resource to which the file will be attached'
     end
 
     let(:name) { 'afvalkalender.pdf' }
@@ -317,6 +319,23 @@ resource 'Files' do
           id: kind_of(String),
           type: 'file_preview'
         })
+      end
+
+      example 'Create a file and attach it directly to a resource' do
+        event = create(:event, project: Project.find(project))
+
+        do_request(file: { attachable_type: 'Event', attachable_id: event.id })
+
+        assert_status 201
+        file = Files::File.find(response_data[:id])
+        expect(file.attachments.first.attachable).to eq(event)
+      end
+
+      example '[error] Create a file and attach it directly to a incorrect resource' do
+        event = create(:event) # not in the same project as the file
+
+        do_request(file: { attachable_type: 'Event', attachable_id: event.id })
+        assert_status 422
       end
     end
   end

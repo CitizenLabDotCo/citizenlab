@@ -81,6 +81,14 @@ class WebApi::V1::Files::FilesController < ApplicationController
     ).tap do |create_params|
       create_params[:content_by_content] = params.require(:file).permit(:content, :name)
       create_params[:uploader_id] = current_user.id
+
+      # Optional initial attachment
+      attachable_id = params.dig(:file, :attachable_id)
+      attachable_type = params.dig(:file, :attachable_type)
+
+      if attachable_id.present? && attachable_type.present?
+        create_params[:attachments_attributes] = [{ attachable_id:, attachable_type: }]
+      end
     end
   end
 
