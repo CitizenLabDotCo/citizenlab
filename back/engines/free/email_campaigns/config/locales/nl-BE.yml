@@ -104,9 +104,9 @@ nl-BE:
       event_address1: 'Voorbeeldstraat 10, Voorbeeldgem, Zuid-Voorbeeldland'
       event_address2: 'Kamer 3a, boven'
       proposal_title: 'Voorbeeldvoorstel'
-      input_status_title: 'Voorbeeld status'
-      input_status_description: 'Een voorbeeld van een status voor een invoer (bijv. geaccepteerd, afgewezen, geïmplementeerd...)'
-      official_feedback_body: 'Voorbeeld officiële feedback'
+      input_status_title: 'Voorbeeldstatus'
+      input_status_description: 'Een voorbeeld van een status voor een bijdrage (bijv. geaccepteerd, afgewezen, geïmplementeerd...)'
+      official_feedback_body: 'Voorbeeld update'
     footer:
       "link_privacy_policy": "Privacybeleid"
       "link_terms_conditions": "Gebruiksvoorwaarden"
@@ -137,11 +137,11 @@ nl-BE:
       event_description: 'Ontdek rond welke ideeën er het meest werd gediscussieerd de afgelopen week. Hieronder vind je het overzicht!'
       cta_button: 'Ga naar het platform'
       new_users: 'Nieuwe gebruikers'
-      new_inputs: 'Nieuwe bijdrage'
+      new_inputs: 'Nieuwe bijdragen'
       new_comments: 'Nieuwe reacties'
       title_activity_past_week: 'Activiteit van de afgelopen week'
       title_no_activity_past_week: 'Er was geen activiteit in de afgelopen week'
-      reached_threshold: 'Drempel bereikt'
+      reached_threshold: 'Bereikte het benodigd aantal stemmen'
       yesterday_by_author: 'Gisteren door %{author}'
       today_by_author: 'Vandaag door %{author}'
       x_days_ago_by_author: '%{x} dagen geleden door %{author}'
@@ -415,7 +415,7 @@ nl-BE:
       event_description: '%{organizationName} heeft de status van de input ''%{input_title}'' op hun digitale participatieplatform bijgewerkt.'
       title: 'Een bijdrage die je volgt, heeft een nieuwe status'
       subject: 'De status van "%{input_title}" is veranderd'
-      preheader: 'Een bijdrage die je volgt heeft een nieuwe status'
+      preheader: 'Een bijdrage die je volgt, heeft een nieuwe status'
       cta_button: Ga naar deze bijdrage
     user_digest:
       subject: "Wekelijkse update van het participatieplatform van %{organizationName}"
@@ -439,7 +439,7 @@ nl-BE:
       unread_notifications: "Je hebt nieuwe meldingen! Bezoek het platform om te ontdekken wat er aan het gebeuren is."
     threshold_reached_for_admin:
       cta_button: 'Zet de volgende stappen met dit voorstel'
-      title: 'Een voorstel bereikte het nodige aantal stemmen!'
+      title: 'Een voorstel heeft het benodigd aantal stemmen bereikt!'
       subject: '"%{input_title}" heeft het benodigd aantal stemmen op je platform bereikt'
       preheader: 'Tijd om de volgende stappen te nemen'
     welcome:
@@ -502,7 +502,7 @@ nl-BE:
     voting_basket_not_submitted:
       subject: '%{organizationName}: Je hebt je stemmen niet ingediend'
       preheader: 'Je hebt je stem niet uitgebracht op het participatieplatform van %{organizationName}'
-      title: 'Je hebt je stemmen niet ingediend'
+      title: 'Je hebt je stemmen niet verzonden'
       event_description: 'Je hebt een paar opties geselecteerd voor %{contextTitle}, maar je hebt je selectie niet ingediend.'
       cta_button: 'Bekijk opties en stem'
       cta_message: 'Klik op de knop hieronder om je geselecteerde opties in te dienen'

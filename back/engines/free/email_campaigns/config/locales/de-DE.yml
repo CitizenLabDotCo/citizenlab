@@ -105,8 +105,8 @@ de:
       event_address2: 'Zimmer 3a, Obergeschoss'
       proposal_title: 'Beispiel-Vorschlag'
       input_status_title: 'Beispiel Status'
-      input_status_description: 'Ein Beispiel für einen Status für eine Eingabe (z.B. akzeptiert, abgelehnt, implementiert...)'
-      official_feedback_body: 'Beispiel für ein offizielles Feedback'
+      input_status_description: 'Ein Beispiel für einen Beitragsstatus (z.B. akzeptiert, abgelehnt, implementiert...)'
+      official_feedback_body: 'Beispiel für ein offizielles Update'
     footer:
       "link_privacy_policy": "Impressum & Datenschutz"
       "link_terms_conditions": "Nutzungsbedingungen"
@@ -349,7 +349,7 @@ de:
       subject: '%{organizationName} hat Sie in ihrem Feedback erwähnt'
       preheader: '%{commentAuthor} hat Sie in der Rückmeldung erwähnt'
     project_moderation_rights_received:
-      cta_button: 'Verwalten Sie dieses Projekt'
+      cta_button: 'Projekt verwalten'
       event_description: 'Ein Admin der Beteiligungsplattform %{organizationName} hat Sie gerade zum/zur Projektmanager*in des folgenden Projekts ernannt:'
       no_ideas: 'Noch keine Ideen'
       preheader: 'Ein Admin der Beteiligungsplattform %{organizationName} hat Sie gerade zum/zur Projektmanager*in des folgenden Projekts ernannt'
@@ -365,7 +365,7 @@ de:
       x_ideas: '%{numberOfIdeas} Ideen'
     project_folder_moderation_rights_received:
       cta_button: 'Diesen Ordner anzeigen'
-      event_description: 'Sie haben Administrationsrechte auf der Beteiligungsplattform %{organizationName} für den folgenden Ordner erhalten:'
+      event_description: 'Sie haben Adminrechte auf der Beteiligungsplattform %{organizationName} für den folgenden Ordner erhalten:'
       no_projects: 'Noch keine Projekte erhalten'
       preheader: 'Ein Admin der Beteiligungsplattform %{organizationName} hat Sie soeben zu einer:einem Manager:in des folgenden Projektordners ernannt'
       subject: 'Sie wurden zu einer:einem Ordnermanager:in auf der Plattform von %{organizationName} ernannt'
@@ -376,7 +376,7 @@ de:
       title_moderate_analyse_input: 'Moderieren und analysieren Sie den Input der Bürger:innen'
       title_manage_folder: 'Verwalten Sie die Ordnereinstellungen und erstellen Sie neue Projekte.'
       title_what_can_you_do_folderadmin: 'Was können Sie als Ordnermanager:in machen?'
-      title: 'Sie wurden als OrdnermanagerIn hinzugefügt'
+      title: 'Sie wurden als Ordnermanager*in hinzugefügt'
       x_projects: '%{numberOfProjects} Projekte'
     project_phase_started:
       cta_button: 'Neue Phase entdecken'
@@ -408,7 +408,7 @@ de:
     project_review_state_change:
       subject: '"%{projectTitle}" wurde freigegeben'
       title: '%{reviewerName} hat das Projekt "%{projectTitle}" freigegeben'
-      event_description: "Das Projekt ist jetzt bereit, live zu gehen. Sie können es veröffentlichen, wann immer Sie bereit sind!"
+      event_description: "Das Projekt ist nun bereit für die Veröffentlichung. Sie können es veröffentlichen, sobald Sie bereit sind!"
       cta_button: "Zu den Projekteinstellungen"
     status_change_on_idea_you_follow:
       status_change: 'Der neue Status dieses Beitrags ist ''%{status}'''
@@ -502,7 +502,7 @@ de:
     voting_basket_not_submitted:
       subject: '%{organizationName}: Sie haben Ihre Stimmen nicht abgegeben'
       preheader: 'Sie haben Ihre Stimme nicht auf der Beteiligungsplattform von %{organizationName} abgegeben'
-      title: 'Sie haben Ihre Stimmen nicht abgegeben'
+      title: 'Sie haben Ihre Stimme nicht abgegeben'
       event_description: 'Sie haben ein paar Optionen für %{contextTitle} ausgewählt, aber Sie haben Ihre Auswahl nicht abgeschickt.'
       cta_button: 'Optionen ansehen und abstimmen'
       cta_message: 'Klicken Sie auf den Button unten, um Ihre ausgewählten Optionen abzuschicken'
