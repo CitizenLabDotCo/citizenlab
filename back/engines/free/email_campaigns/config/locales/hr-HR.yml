@@ -95,6 +95,7 @@ hr:
       project_title: 'Primjer projekta'
       project_description_preview: 'Ovo je primjer faznog sadržaja koji se koristi za pregled sadržaja e-poruka. Ovo nije stvarni sadržaj.'
       phase_title: 'Primjer faze'
+      folder_title: 'Primjer mape'
       comment_body: 'Ovo je primjer komentara koji se koristi za pregled sadržaja e-poruka. Ovo nije stvarni sadržaj.'
       comment_deleted_reason: 'Vaš primjer komentara smatran je neprikladnim.'
       idea_title: 'Primjer ideje'
@@ -103,6 +104,9 @@ hr:
       event_address1: '10 Example Street, Exampleton, Exampleshire'
       event_address2: 'Soba 3a, Gore'
       proposal_title: 'Primjer prijedloga'
+      input_status_title: 'Primjer statusa'
+      input_status_description: 'Primjer statusa za unos (npr. prihvaćeno, odbijeno, implementirano...)'
+      official_feedback_body: 'Primjer službene povratne informacije'
     footer:
       "link_privacy_policy": "Pravila o privatnosti"
       "link_terms_conditions": "Uvjeti korištenja"
@@ -333,10 +337,11 @@ hr:
       title: 'Novi interni komentar na ''%{post}'''
       preheader: '''%{post}'' ima novi interni komentar'
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} je dao ažuriranje na ''%{input_title}''.'
-      header_title: 'Postoji ažuriranje na "%{input_title}"'
+      event_description: '%{feedback_author_name} je dao/la ažuriranje o ''%{input_title}''.'
+      title: 'Postoji ažuriranje za "%{input_title}"'
       subject: 'Službene povratne informacije objavljene su na "%{input_title}"'
       preheader: 'Postoji ažuriranje unosa koji slijedite'
+      cta_button: Idi na ovaj ulaz
     mention_in_official_feedback:
       cta_button: 'Odgovor na %{organizationName}'
       event_description: 'Spomenuti ste od strane %{organizationName} i upućene su vam povratne informacije o ideji „%{post}“. Kliknite na poveznicu dolje kako biste započeli razgovor s %{organizationName}'
@@ -344,8 +349,8 @@ hr:
       subject: '%{organizationName} vas je spomenuo/la u povratnim informacijama'
       preheader: '%{commentAuthor} vas je spomenuo/la u povratnim informacijama'
     project_moderation_rights_received:
-      cta_manage_project: 'Upravljajte ovim projektom'
-      message_you_became_moderator: 'Administrator %{organizationName} platforme za sudjelovanje vas je postavio za voditelja sljedećeg projekta:'
+      cta_button: 'Upravljaj ovim projektom'
+      event_description: 'Administrator platforme za sudjelovanje %{organizationName} upravo vas je imenovao voditeljem projekta za sljedeći projekt:'
       no_ideas: 'Još uvijek nema ideja'
       preheader: 'Administrator %{organizationName} platforme za sudjelovanje vas je postavio za voditelja sljedećeg projekta'
       subject: 'Postali ste voditelj projekta na %{organizationName} platformi'
@@ -356,11 +361,11 @@ hr:
       title_moderate_analyse_input: 'Moderirajte i analizirajte unos'
       title_share_project_information: 'Navedite informacije o projektu'
       title_what_can_you_do_moderator: 'Što možete učiniti kao voditelj projekta?'
-      title_you_became_moderator: 'Postali ste voditelj projekta'
+      title: 'Postali ste voditelj projekta'
       x_ideas: '%{numberOfIdeas} ideja'
     project_folder_moderation_rights_received:
-      cta_view_folder_button: 'Prikaži ovu mapu'
-      message_added_as_folderadmin: 'Dobili ste prava za upravljanje sljedećom mapom na %{organizationName} platformi za sudjelovanje:'
+      cta_button: 'Prikaži ovu mapu'
+      event_description: 'Dobili ste prava upravitelja mapa na platformi za sudjelovanje korisnika %{organizationName}za sljedeću mapu:'
       no_projects: 'Još nema projekata'
       preheader: 'Administrator %{organizationName} platforme za sudjelovanje vas je upravo postavio za voditelja sljedeće mape'
       subject: 'Postali ste voditelj projektne mape na %{organizationName} platformi za sudjelovanje'
@@ -371,7 +376,7 @@ hr:
       title_moderate_analyse_input: 'Moderirajte i analizirajte unos'
       title_manage_folder: 'Upravljajte postavkama mape i izrađujte nove projekte.'
       title_what_can_you_do_folderadmin: 'Što možete učiniti kao voditelj mape?'
-      title_added_as_folderadmin: 'Dodani ste kao voditelj mape'
+      title: 'Dodani ste kao upravitelj mapa'
       x_projects: '%{numberOfProjects} projekata'
     project_phase_started:
       cta_button: 'Otkrijte ovu novu fazu'
@@ -382,41 +387,43 @@ hr:
       subject: '%{projectName} je ušao u novu fazu'
       preheader: 'Započeta je nova faza za %{projectName}'
     project_phase_upcoming:
-      cta_view_phase: 'Postavite ovu novu fazu'
+      cta_button: 'Postavite ovu novu fazu'
       event_description: 'Projekt ''%{projectName}'' uskoro ulazi u novu fazu. Provjerite je li sve postavljeno za ovu fazu: Postoji li odgovarajući opis? Prebacuju li se odabrane ideje u ovu fazu? Želite li svoje građane informirati o specifičnostima ove faze putem prilagođene kampanje e-poštom?'
-      main_header: '%{firstName}, projekt će uskoro ući u novu fazu'
+      title: '%{firstName}, projekt će uskoro ući u novu fazu'
       subtitle: 'O ''%{projectName}'''
       new_phase: 'Projekt će ući u fazu ''%{phaseTitle}'''
       subject: 'Pripremite sve za novu fazu projekta %{projectName}'
       preheader: 'Uskoro počinje nova faza projekta %{projectName}'
     project_published:
       subject: 'Novi projekt objavljen je na platformi %{organizationName}'
-      header_title: 'Objavljen je novi projekt'
-      header_message: 'Platforma za sudjelovanje %{organizationName} upravo je objavila sljedeći projekt:'
+      title: 'Objavljen je novi projekt'
+      event_description: 'Platforma za sudjelovanje %{organizationName} upravo je objavila sljedeći projekt:'
       preheader: 'Objavljen je novi projekt'
+      cta_button: 'Idi na ovaj projekt'
     project_review_request:
       subject: 'Zahtjev za pregled: Projekt čeka odobrenje.'
-      header: '%{requesterName} vas je pozvao da pregledate projekt "%{projectTitle}"'
-      header_message: "Trenutno je projekt u načinu nacrta i nije vidljiv korisnicima. Nakon što ga pregledate i odobrite, moderator će ga moći objaviti."
-      cta_review_project: "Pregledajte projekt"
+      title: '%{requesterName} vas je pozvao/la da recenzirate projekt "%{projectTitle}"'
+      event_description: "Trenutno je projekt u nacrtu i nije vidljiv korisnicima. Nakon što ga pregledate i odobrite, moderator će ga moći objaviti."
+      cta_button: "Pregledajte projekt"
     project_review_state_change:
       subject: '"%{projectTitle}" je odobren'
-      header: '%{reviewerName} odobrio projekt "%{projectTitle}"'
-      header_message: "Projekt je sada spreman za pokretanje. Možete ga objaviti kad god budete spremni!"
-      cta_go_to_project: "Idite na postavke projekta"
+      title: '%{reviewerName} odobrio/la je projekt "%{projectTitle}"'
+      event_description: "Projekt je sada spreman za objavu. Možete ga objaviti kad god budete spremni!"
+      cta_button: "Idi na postavke projekta"
     status_change_on_idea_you_follow:
       status_change: 'Novi status ovog unosa je ''%{status}'''
-      header_message: '%{organizationName} je ažurirao status unosa ''%{input_title}'' na svojoj platformi za digitalno sudjelovanje.'
-      header_title: 'Unos koji slijedite ima novi status'
+      event_description: '%{organizationName} ažurirao/la je status unosa ''%{input_title}'' na svojoj platformi za digitalno sudjelovanje.'
+      title: 'Unos koji pratite ima novi status'
       subject: 'Status "%{input_title}" je promijenjen'
       preheader: 'Unos koji slijedite ima novi status'
+      cta_button: Idi na ovaj ulaz
     user_digest:
       subject: "Vaša aktivnost na %{organizationName} platformi za sudjelovanje"
       commented: "%{authorFirstName} je komentirao/la:"
       preheader: "Tjedni pregled %{organizationName}"
-      title_your_weekly_report: "Saznajte što se događalo prethodnog tjedna"
-      intro_text: "Evo sažetka događanja na %{organizationName} platformi za sudjelovanje."
-      cta_go_to_the_platform: "Idi na platformu"
+      title: "Otkrijte što se dogodilo prošli tjedan"
+      event_description: "Evo sažetka onoga što se dogodilo na platformi za sudjelovanje %{organizationName}."
+      cta_button: "Idi na platformu"
       title_no_activity_past_week: "Nije bilo aktivnosti tijekom proteklog tjedna"
       successful_proposals_title: "Došao do praga"
       successful_proposals_text: "Ovi su prijedlozi dobili dovoljnu podršku za prelazak u sljedeću fazu! Kliknite na prijedlog kako biste saznali što se dalje događa s njim."
@@ -431,15 +438,15 @@ hr:
       no_unread_notifications: "Nema nepročitanih obavijesti. Posjetite platformu kako biste dali svoj doprinos i generirali nove obavijesti!"
       unread_notifications: "Imate nepročitane obavijesti. Posjetite platformu kako biste saznali novosti!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Pomognite ovoj inicijativi da prijeđe u narednu fazu'
-      main_header: 'Inicijativa je dosegla prag glasovanja!'
+      cta_button: 'Poduzmite sljedeće korake s ovim prijedlogom'
+      title: 'Prijedlog je dosegao prag glasovanja!'
       subject: 'Inicijativa je dosegla prag glasovanja na vašoj platformi'
       preheader: 'Obvezno poduzmite sljedeće korake'
     welcome:
-      cta_join_platform: 'Otkrijte platformu'
+      cta_button: 'Otkrijte platformu'
       subject: 'Dobro došli na %{organizationName} platformu'
-      main_header: Dobro došli!
-      message_welcome: 'Čestitamo, uspješno ste se prijavili na %{organizationName} platformu za sudjelovanje. Možete otkriti platformu i poduzeti korake kako bi se vaš glas čuo. Također možete dodati profilnu sliku i kratak opis kako biste drugima rekli više o sebi.'
+      title: Dobrodošli!
+      event_description: 'Čestitamo, uspješno ste se prijavili na platformu za sudjelovanje %{organizationName}. Sada možete otkriti platformu i izraziti svoj stav. Također možete dodati profilnu sliku i kratak opis kako biste drugima rekli tko ste.'
       preheader: 'Evo što možete napraviti na %{organizationName} platformi'
     idea_published:
       subject: 'Vaša ideja je objavljena'
@@ -475,15 +482,15 @@ hr:
         option: 'Vaša opcija je u "%{prescreening_status_title}"'
         proposal: 'Vaš prijedlog je u "%{prescreening_status_title}"'
         petition: 'Vaša peticija je u "%{prescreening_status_title}"'
-      message: '"%{input_title}" postat će vidljiv drugima nakon što bude pregledan i odobren.'
+      event_description: '"%{input_title}" će postati vidljiv drugima nakon što bude pregledan i odobren.'
       subject: '"%{input_title}" je skoro objavljen'
       preheader: 'Trenutno je u %{prescreening_status_title}'
     voting_basket_submitted:
       subject: '%{organizationName}: Uspješno ste glasali'
       preheader: 'Uspješno ste glasali na platformi za sudjelovanje od %{organizationName}'
-      title_basket_submitted: 'Uspješno ste glasali'
+      title: 'Uspješno ste glasali'
       event_description: 'Hvala na sudjelovanju. Vaši glasovi su zabilježeni. Posjetite platformu %{organizationName} da vidite i upravljate svojim glasovima.'
-      cta_see_votes_submitted: 'Pogledajte poslane glasove'
+      cta_button: 'Pogledajte poslane glasove'
       cta_message: 'Za sudjelovanje kliknite gumb ispod'
     native_survey_not_submitted:
       subject: '%{organizationName}: Još malo pa smo stigli! Pošaljite svoje odgovore'
@@ -495,26 +502,26 @@ hr:
     voting_basket_not_submitted:
       subject: '%{organizationName}: Niste predali svoje glasove'
       preheader: 'Niste poslali svoje glasove na platformi za sudjelovanje od %{organizationName}'
-      title_basket_not_submitted: 'Niste predali svoje glasove'
+      title: 'Niste poslali svoje glasove'
       event_description: 'Odabrali ste nekoliko opcija za %{contextTitle} , ali niste poslali svoj odabir.'
-      cta_view_options_and_vote: 'Pogledajte opcije i glasajte'
+      cta_button: 'Pogledajte opcije i glasajte'
       cta_message: 'Pritisnite donji gumb za slanje odabranih opcija'
     voting_last_chance:
       subject: '%{organizationName}: Zadnja prilika da glasate za %{phaseTitle}'
       preheader: 'Zadnja prilika za glasanje za %{phaseTitle} na platformi za sudjelovanje %{organizationName}'
-      title_last_chance: 'Zadnja prilika da glasate za %{phaseTitle}'
+      title: 'Posljednja prilika za glasanje za %{phaseTitle}'
       body_1: 'Faza glasovanja za projekt %{projectTitle} završava sutra, u ponoć.'
       body_2: 'Vrijeme curi, a primijetili smo da još niste dali svoj glas! Djelujte sada jednostavnim klikom na donji gumb za sudjelovanje.'
       body_3: 'Čineći to, dobit ćete pristup nizu opcija i imati priliku dati svoj doprinos, što je ključno u odlučivanju o budućnosti ovog projekta.'
-      cta_vote: 'Glasanje'
+      cta_button: 'Glasanje'
     voting_results:
       subject: 'Objavljeni rezultati glasova %{organizationName}: %{phaseTitle}!'
       preheader: '%{phaseTitle} rezultata glasovanja otkriveno je na platformi za sudjelovanje od %{organizationName}'
-      title_results: 'Objavljeno %{phaseTitle} rezultata glasovanja!'
+      title: 'Objavljeni su rezultati glasanja %{phaseTitle} !'
       body_1: 'Stigli su rezultati!'
       body_2: 'Objavljeni su rezultati %{phaseTitle} glasova u %{organizationName} platformi!'
       body_3: 'Potičemo vas da pregledate rezultate i ostanete s nama radi daljnjih ažuriranja o sljedećim koracima.'
-      cta_see_results: 'Pogledajte rezultate na platformi'
+      cta_button: 'Pogledajte rezultate na platformi'
     event_registration_confirmation:
       subject: "Upadas! Vaša registracija za \"%{eventTitle}\" je potvrđena"
       preheader: "%{firstName}, hvala na registraciji za %{eventTitle}"
@@ -531,18 +538,19 @@ hr:
     voting_phase_started:
       subject: '%{organizationName}: Faza glasovanja započela je za %{projectName}'
       preheader: 'Faza glasovanja započela je za %{projectName} na platformi za sudjelovanje %{organizationName}'
+      title: '%{projectName}'
       event_description: 'Projekt "%{projectName}" vas poziva da glasate između %{numIdeas} opcije:'
       cta_message: 'Za sudjelovanje kliknite gumb ispod'
-      cta_vote: 'Idite na platformu za glasanje'
+      cta_button: 'Idite na platformu za glasanje'
     survey_submitted:
       subject: '%{organizationName}: Hvala vam na odgovoru! 🎉'
       preheader: 'Evo pojedinosti vašeg podneska.'
-      main_header: 'Hvala što ste podijelili svoje mišljenje o "%{projectName}"!'
-      your_input_submitted: 'Vaš unos za "%{projectName}" je uspješno poslan.'
+      title: 'Hvala što ste podijelili svoje mišljenje o "%{projectName}"!'
+      event_description: 'Vaš unos za "%{projectName}" je uspješno poslan.'
       if_you_would_like_to_review: 'Ako želite pregledati svoj podnesak, svoje odgovore možete preuzeti u nastavku.'
       your_submission_has_id: 'Vaš podnesak ima sljedeći jedinstveni identifikator:'
       you_can_use_this_id: 'Možete koristiti ovaj identifikator za kontaktiranje administratora platforme u slučaju da želite da se vaš podnesak ukloni.'
-      download_responses: 'Preuzmite svoje odgovore'
+      cta_button: 'Preuzmite svoje odgovore'
     admin_labels:
       recipient_role:
         admins: 'Adminima'
