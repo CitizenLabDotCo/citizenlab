@@ -24,7 +24,9 @@ RSpec.describe ReportBuilder::LiveGraphDataUnitPolicy do
     let_it_be(:user) { build(:project_moderator, projects: [project]) }
     let_it_be(:another_project) { create(:project) }
 
-    it { is_expected.not_to permit(:live) }
+    # Project moderators should be able to access global project data
+    # for widgets like ProjectsTimelineWidget and ProjectsWidget
+    it { is_expected.to permit(:live) }
 
     context 'when project_id is present' do
       let(:props) { { project_id: project.id } }
