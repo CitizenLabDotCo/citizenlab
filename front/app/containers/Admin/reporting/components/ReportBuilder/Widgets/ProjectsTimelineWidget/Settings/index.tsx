@@ -4,6 +4,7 @@ import { Box, Text, Select, Input } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { IOption } from 'typings';
 
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectFolders from 'api/project_folders/useProjectFolders';
 import useUsers from 'api/users/useUsers';
 
@@ -16,6 +17,7 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import MultiSelect from 'components/UI/MultiSelect';
 
 import { useIntl } from 'utils/cl-intl';
+import { isModerator } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
 
 import { TitleInput } from '../../ChartWidgets/_shared/ChartWidgetSettings';
@@ -52,6 +54,7 @@ type MultiSelectProp =
 const Settings = () => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const { data: authUser } = useAuthUser();
 
   const {
     actions: { setProp },
@@ -84,6 +87,7 @@ const Settings = () => {
 
   const { data: managersData } = useUsers({});
   const { data: foldersData } = useProjectFolders({});
+  const isProjectModerator = isModerator(authUser);
 
   const handleMultiSelectChange =
     (propName: MultiSelectProp) => (options: IOption[]) => {
@@ -194,22 +198,25 @@ const Settings = () => {
   return (
     <Box>
       <TitleInput />
-      <SettingsField>
-        <MultiSelect
-          selected={managers}
-          options={managerOptions}
-          title={formatMessage(projectFilterMessages.manager)}
-          onChange={(managerIds) => {
-            handleMultiSelectChange('managers')(
-              managerIds.map((id) => ({
-                value: id,
-                label:
-                  managerOptions.find((opt) => opt.value === id)?.label || id,
-              }))
-            );
-          }}
-        />
-      </SettingsField>
+      {/* Only show Manager filter for admins, not for project moderators */}
+      {!isProjectModerator && (
+        <SettingsField>
+          <MultiSelect
+            selected={managers}
+            options={managerOptions}
+            title={formatMessage(projectFilterMessages.manager)}
+            onChange={(managerIds) => {
+              handleMultiSelectChange('managers')(
+                managerIds.map((id) => ({
+                  value: id,
+                  label:
+                    managerOptions.find((opt) => opt.value === id)?.label || id,
+                }))
+              );
+            }}
+          />
+        </SettingsField>
+      )}
       <SettingsField label={formatMessage(messages.publicationStatus)}>
         <MultipleSelect
           value={status}
