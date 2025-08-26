@@ -149,6 +149,7 @@ gem 'ruby_llm', '~> 1.6.2'
 # exception.
 gem 'aws-sdk-s3', '~> 1'
 gem 'aws-sdk-bedrockruntime', '~> 1'
+gem 'aws-sdk-cloudfront', '~> 1.118.0'
 gem 'bootsnap', '~> 1', require: false
 gem 'dalli', '~> 3.2.8'
 gem 'mailgun-ruby', '~>1.2.16'
