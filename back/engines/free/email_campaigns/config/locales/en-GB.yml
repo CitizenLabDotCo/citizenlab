@@ -106,7 +106,7 @@ en-GB:
       proposal_title: 'Example Proposal'
       input_status_title: 'Example Status'
       input_status_description: 'An example of a status for an input (e.g. accepted, rejected, implemented...)'
-      official_feedback_body: 'Example official feedback'
+      official_feedback_body: 'Example official update'
     footer:
       "link_privacy_policy": "Privacy Policy"
       "link_terms_conditions": "Terms & Conditions"
@@ -339,15 +339,15 @@ en-GB:
     official_feedback_on_idea_you_follow:
       event_description: '%{feedback_author_name} gave an update on ''%{input_title}''.'
       title: 'There''s an update on "%{input_title}"'
-      subject: 'Official feedback was posted on "%{input_title}"'
+      subject: 'Official update was posted on "%{input_title}"'
       preheader: 'There''s an update on an input you follow'
       cta_button: Go to this input
     mention_in_official_feedback:
       cta_button: 'Reply to %{organizationName}'
-      event_description: '%{organizationName} mentioned you in their feedback on the idea ''%{post}‘. Click the link below to enter the conversation with %{organizationName}'
+      event_description: '%{organizationName} mentioned you in their update on the idea ''%{post}‘. Click the link below to enter the conversation with %{organizationName}'
       title: 'You have been mentioned'
-      subject: '%{organizationName} mentioned you in their feedback'
-      preheader: '%{commentAuthor} mentioned you in feedback'
+      subject: '%{organizationName} mentioned you in their update'
+      preheader: '%{commentAuthor} mentioned you in update'
     project_moderation_rights_received:
       cta_button: 'Manage this project'
       event_description: 'An adminstrator of the participation platform of %{organizationName} just made you project manager of the following project:'
