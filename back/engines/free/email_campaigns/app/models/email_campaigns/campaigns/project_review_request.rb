@@ -36,7 +36,9 @@ module EmailCampaigns
   class Campaigns::ProjectReviewRequest < Campaign
     include ActivityTriggerable
     include Trackable
+    include ContentConfigurable
 
+    filter :filter_request_approved
     recipient_filter :notification_recipient
 
     def mailer_class
@@ -45,6 +47,10 @@ module EmailCampaigns
 
     def activity_triggers
       { 'Notifications::ProjectReviewRequest' => { 'created' => true } }
+    end
+
+    def filter_request_approved(activity:, time: nil)
+      activity && activity.item.project_review.approved?
     end
 
     def notification_recipient(users_scope, activity:, time: nil)
@@ -74,7 +80,17 @@ module EmailCampaigns
 
     def generate_commands(recipient:, activity:, time: nil)
       notification = activity.item
-      [{ event_payload: { project_review_id: notification.project_review_id } }]
+      review = notification.project_review
+      [
+        {
+          event_payload: {
+            project_title_multiloc: review.project.title_multiloc,
+            project_description_multiloc: review.project.description_preview_multiloc,
+            admin_project_url: Frontend::UrlService.new.admin_project_url(review.project_id),
+            requester_name: review.requester&.first_name
+          }
+        }
+      ]
     end
   end
 end

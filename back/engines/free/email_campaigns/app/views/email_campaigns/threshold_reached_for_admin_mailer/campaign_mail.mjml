@@ -18,4 +18,4 @@
 
 
 <!-- CTA button -->
-<%= render 'application/cta_button', href: event.idea_url, message: format_message('cta_process_initiative') %>
+<%= render 'application/cta_button', href: event.idea_url, message: cta_button_text %>

@@ -15,7 +15,7 @@ module EmailCampaigns
 
       # Automated campaigns only.
       with_options unless: :manual? do
-        validates :title_multiloc, multiloc: { presence: true }
+        validates :title_multiloc, multiloc: { presence: false }
         validates :intro_multiloc, multiloc: { presence: false, html: true }
         validates :button_text_multiloc, multiloc: { presence: true }, if: :editable_button_text?
         before_validation :sanitize_intro_multiloc

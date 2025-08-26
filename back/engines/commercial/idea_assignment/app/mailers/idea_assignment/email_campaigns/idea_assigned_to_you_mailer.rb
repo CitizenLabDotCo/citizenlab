@@ -3,24 +3,31 @@
 module IdeaAssignment
   module EmailCampaigns
     class IdeaAssignedToYouMailer < ::EmailCampaigns::ApplicationMailer
-      protected
+      include ::EmailCampaigns::EditableWithPreview
 
-      def subject
-        format_message('subject', values: { organizationName: organization_name })
+      def editable
+        %i[subject_multiloc title_multiloc intro_multiloc button_text_multiloc]
       end
 
-      private
-
-      def header_title
-        format_message('main_header', values: { firstName: recipient_first_name })
+      def substitution_variables
+        {
+          firstName: recipient&.first_name,
+          authorName: event&.post_author_name,
+          organizationName: organization_name
+        }
       end
 
-      def header_message
-        format_message('event_description_idea')
-      end
-
-      def preheader
-        format_message('preheader_idea', values: { organizationName: organization_name, authorName: event.post_author_name })
+      def preview_command(recipient)
+        data = preview_service.preview_data(recipient)
+        {
+          recipient: recipient,
+          event_payload: {
+            post_title_multiloc: data.idea.title_multiloc,
+            post_body_multiloc: data.idea.body_multiloc,
+            post_author_name: data.author.display_name,
+            post_url: data.idea.url
+          }
+        }
       end
     end
   end

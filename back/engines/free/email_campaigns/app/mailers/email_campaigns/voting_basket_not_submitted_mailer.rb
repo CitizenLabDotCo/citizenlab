@@ -2,24 +2,28 @@
 
 module EmailCampaigns
   class VotingBasketNotSubmittedMailer < ApplicationMailer
-    protected
+    include EditableWithPreview
 
-    def subject
-      format_message('subject', values: { organizationName: organization_name })
+    def editable
+      %i[subject_multiloc title_multiloc intro_multiloc button_text_multiloc]
     end
 
-    private
-
-    def header_title
-      format_message('title_basket_not_submitted')
+    def substitution_variables
+      {
+        organizationName: organization_name,
+        contextTitle: event&.context_title_multiloc
+      }
     end
 
-    def header_message
-      format_message('event_description', values: { contextTitle: localize_for_recipient(event.context_title_multiloc) })
-    end
-
-    def preheader
-      format_message('preheader', values: { organizationName: organization_name })
+    def preview_command(recipient)
+      data = preview_service.preview_data(recipient)
+      {
+        recipient: recipient,
+        event_payload: {
+          project_url: data.project.url,
+          context_title_multiloc: data.phase.title_multiloc
+        }
+      }
     end
   end
 end
