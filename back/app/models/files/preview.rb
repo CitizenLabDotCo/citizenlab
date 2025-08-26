@@ -36,5 +36,9 @@ module Files
     def completed?
       status == 'completed'
     end
+
+    def name
+      "#{file.name}.pdf"
+    end
   end
 end

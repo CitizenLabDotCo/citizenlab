@@ -66,7 +66,7 @@ class WebApi::V1::IdeasController < ApplicationController
       current_user: current_user
     ).find_records
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
-    ideas = ideas.includes(:author, :topics, :project, :idea_status, :idea_files)
+    ideas = ideas.includes(:author, :topics, :project, :idea_status)
 
     render json: linked_json(ideas, WebApi::V1::PostMarkerSerializer, params: jsonapi_serializer_params)
   end
@@ -78,7 +78,7 @@ class WebApi::V1::IdeasController < ApplicationController
       current_user: current_user
     ).find_records
     ideas = SortByParamsService.new.sort_ideas(ideas, params, current_user)
-    ideas = ideas.includes(:author, :topics, :project, :idea_status, :idea_files)
+    ideas = ideas.includes(:author, :topics, :project, :idea_status, :idea_files, :attached_files)
 
     with_cosponsors = AppConfiguration.instance.feature_activated?('input_cosponsorship')
     ideas = ideas.includes(:cosponsors) if with_cosponsors
@@ -167,7 +167,14 @@ class WebApi::V1::IdeasController < ApplicationController
     form = phase_for_input.pmethod.custom_form
     extract_custom_field_values_from_params!(form)
     params_for_create = idea_params form
+    files_params = extract_file_params(params_for_create)
+
     input = Idea.new params_for_create
+
+    files_params.each do |file_params|
+      build_idea_file_attachment(input, file_params)
+    end
+
     input.creation_phase = (phase_for_input if !phase_for_input.pmethod.transitive?)
     input.phase_ids = [phase_for_input.id] if params.dig(:idea, :phase_ids).blank?
 
@@ -229,6 +236,15 @@ class WebApi::V1::IdeasController < ApplicationController
     params_service.mark_custom_field_values_to_clear!(input.custom_field_values, params[:idea][:custom_field_values])
 
     update_params = idea_params(input.custom_form).to_h
+
+    legacy_files = FileUpload.where(idea: input)
+
+    unless legacy_files.exists?
+      extract_file_params(update_params).each do |file_params|
+        build_idea_file_attachment(input, file_params)
+      end
+    end
+
     phase_ids = update_params.delete(:phase_ids) if update_params[:phase_ids]
     update_params[:custom_field_values] = params_service.updated_custom_field_values(input.custom_field_values, update_params[:custom_field_values])
     CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
@@ -376,26 +392,53 @@ class WebApi::V1::IdeasController < ApplicationController
   def update_file_upload_fields(input, custom_form, params)
     file_uploads_exist = false
     params_for_file_upload_fields = extract_params_for_file_upload_fields custom_form, params
+
+    legacy_files = FileUpload.where(idea: input)
+
     params_for_file_upload_fields.each do |key, params_for_files_field|
-      if params_for_files_field['id']
-        idea_file = FileUpload.find(params_for_files_field['id'])
-        if idea_file
-          input.custom_field_values[key] = { id: idea_file.id, name: idea_file.name }
-          file_uploads_exist = true
-        end
+      if (file_id = params_for_files_field['id'])
+        idea_file = Files::FileAttachment.find_by(id: file_id) || FileUpload.find(file_id)
+        filename = idea_file.is_a?(FileUpload) ? idea_file.name : idea_file.file.name
+        input.custom_field_values[key] = { id: idea_file.id, name: filename }
+        file_uploads_exist = true
+
       elsif params_for_files_field['content']
-        idea_file = FileUpload.create!(
-          idea: input,
-          file_by_content: {
+        idea_file = if legacy_files.exists?
+          FileUpload.create!(idea: input, file_by_content: {
             name: params_for_files_field['name'],
             content: params_for_files_field['content']
-          }
-        )
-        input.custom_field_values[key] = { id: idea_file.id, name: idea_file.name }
+          })
+        else
+          build_idea_file_attachment(input, params_for_files_field).tap(&:save!)
+        end
+
+        filename = idea_file.is_a?(FileUpload) ? idea_file.name : idea_file.file.name
+        input.custom_field_values[key] = { id: idea_file.id, name: filename }
         file_uploads_exist = true
       end
     end
+
     input.save! if file_uploads_exist
+  end
+
+  def extract_file_params(idea_params)
+    idea_params
+      .delete(:idea_files_attributes).to_a
+      .map { |file_params| file_params.fetch(:file_by_content) }
+  end
+
+  def build_idea_file_attachment(idea, file_params)
+    files_file = Files::File.new(
+      content_by_content: {
+        content: file_params['content'],
+        name: file_params['name']
+      },
+      uploader: current_user
+    )
+
+    project = idea.project
+    files_file.files_projects.build(project: project)
+    idea.file_attachments.build(file: files_file)
   end
 
   def sidefx

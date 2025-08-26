@@ -129,18 +129,6 @@ resource 'Campaigns' do
           expect(json_response[:data].size).to eq 1
           expect(json_response[:data].pluck(:id)).to eq [manual_project.id]
         end
-
-        example 'List only campaigns supported by the context', document: false do
-          create(:comment_on_idea_you_follow_campaign, context: nil)
-          create(:comment_on_idea_you_follow_campaign, context: manual_project.context)
-
-          do_request
-
-          assert_status 200
-          json_response = json_parse(response_body)
-          expect(json_response[:data].size).to eq 1
-          expect(json_response[:data].pluck(:id)).to eq [manual_project.id]
-        end
       end
 
       get '/web_api/v1/phases/:context_id/campaigns' do
@@ -151,6 +139,26 @@ resource 'Campaigns' do
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 1
           expect(json_response[:data].pluck(:id)).to eq [automated_phase.id]
+        end
+
+        context 'voting phase' do
+          let(:context) { create(:budgeting_phase) }
+          let(:context_id) { context.id }
+
+          example 'List only campaigns supported by the context', document: false do
+            create(:comment_on_idea_you_follow_campaign, context: nil)
+            create(:voting_basket_not_submitted_campaign, context: nil)
+            voting_campaign = create(:voting_basket_not_submitted_campaign, context: context)
+            create(:cosponsor_of_your_idea_campaign, context: nil)
+            create(:cosponsor_of_your_idea_campaign, context: context)
+
+            do_request
+
+            assert_status 200
+            json_response = json_parse(response_body)
+            expect(json_response[:data].size).to eq 1
+            expect(json_response[:data].pluck(:id)).to eq [voting_campaign.id]
+          end
         end
 
         example '[Unauthorized] List no campaigns, for a user that cannot moderate campaigns', document: false do
@@ -169,7 +177,7 @@ resource 'Campaigns' do
       example_request 'Lists all campaigns supported for an ideation phase' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes)).to match_array %w[project_phase_started]
+        expect(json_response.dig(:data, :attributes)).to eq %w[comment_deleted_by_admin comment_on_idea_you_follow comment_on_your_comment idea_published mention_in_official_feedback official_feedback_on_idea_you_follow project_phase_started status_change_on_idea_you_follow your_input_in_screening]
       end
     end
 

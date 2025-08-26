@@ -5,7 +5,6 @@ require 'rails_helper'
 RSpec.describe EmailCampaigns::MentionInOfficialFeedbackMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
-    let_it_be(:campaign) { EmailCampaigns::Campaigns::MentionInOfficialFeedback.create! }
     let_it_be(:command) do
       {
         recipient: recipient,
@@ -21,8 +20,9 @@ RSpec.describe EmailCampaigns::MentionInOfficialFeedbackMailer do
       }
     end
 
-    let_it_be(:mailer) { described_class.with(command: command, campaign: campaign) }
-    let_it_be(:mail) { mailer.campaign_mail.deliver_now }
+    let(:campaign) { EmailCampaigns::Campaigns::MentionInOfficialFeedback.create! }
+    let(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let(:mail) { mailer.campaign_mail.deliver_now }
 
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
@@ -45,31 +45,81 @@ RSpec.describe EmailCampaigns::MentionInOfficialFeedbackMailer do
     end
 
     context 'with custom text' do
-      let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-
-      before do
-        campaign.update!(
-          subject_multiloc: { 'en' => 'Custom Subject - {{ organizationName }}' },
+      let!(:global_campaign) do
+        create(
+          :mention_in_official_feedback_campaign,
+          subject_multiloc: { 'en' => 'Custom Global Subject - {{ organizationName }}' },
           title_multiloc: { 'en' => 'NEW TITLE FOR {{ post }}' },
+          button_text_multiloc: { 'en' => 'CLICK THE GLOBAL BUTTON' }
+        )
+      end
+      let!(:context_campaign) do
+        create(
+          :mention_in_official_feedback_campaign,
+          context: create(:phase),
+          subject_multiloc: { 'en' => 'Custom Context Subject - {{ organizationName }}' },
           intro_multiloc: { 'en' => '<b>NEW BODY TEXT</b>' },
-          button_text_multiloc: { 'en' => 'CLICK THE BUTTON' }
+          button_text_multiloc: { 'en' => 'CLICK THE CONTEXT BUTTON' },
+          reply_to: 'noreply@govocal.com'
         )
       end
 
-      it 'can customise the subject' do
-        expect(mail.subject).to eq 'Custom Subject - Liege'
+      context 'on a global campaign' do
+        let(:campaign) { global_campaign }
+
+        it 'can customise the subject' do
+          expect(mail.subject).to eq 'Custom Global Subject - Liege'
+        end
+
+        it 'renders the reply to email' do
+          expect(mail.reply_to).to eq [ENV.fetch('DEFAULT_FROM_EMAIL', 'hello@citizenlab.co')]
+        end
+
+        it 'can customize the header' do
+          expect(mail_body(mail)).to have_tag('div') do
+            with_tag 'h1' do
+              with_text(/NEW TITLE FOR My post is great\./)
+            end
+            with_tag 'p' do
+              with_text(/Liege mentioned you in their feedback on the idea 'My post is great\.'\. Click the link below to enter the conversation with Liege\./)
+            end
+          end
+        end
+
+        it 'can customise the CTA' do
+          expect(mail_body(mail)).to have_tag('a', with: { href: command.dig(:event_payload, :official_feedback_url) }) do
+            with_text(/CLICK THE GLOBAL BUTTON/)
+          end
+        end
       end
 
-      it 'can customise the title' do
-        expect(mail_body(mail)).to include('NEW TITLE FOR My post is great.')
-      end
+      context 'on a context campaign' do
+        let(:campaign) { context_campaign }
 
-      it 'can customise the body including HTML' do
-        expect(mail_body(mail)).to include('<b>NEW BODY TEXT</b>')
-      end
+        it 'can customise the subject' do
+          expect(mail.subject).to eq 'Custom Context Subject - Liege'
+        end
 
-      it 'can customise the cta button' do
-        expect(mail_body(mail)).to include('CLICK THE BUTTON')
+        it 'can customize the reply to email' do
+          expect(mail.reply_to).to eq ['noreply@govocal.com']
+        end
+
+        it 'can customize the header and fall back to global customzations' do
+          expect(mail_body(mail)).to have_tag('div') do
+            with_tag 'h1' do
+              with_text(/NEW TITLE FOR My post is great\./)
+            end
+            with_tag 'p' do
+              with_text(/NEW BODY TEXT/)
+            end
+          end
+        end
+
+        it 'can customise the CTA' do
+          expect(mail_body(mail)).to have_tag('a', with: { href: command.dig(:event_payload, :official_feedback_url) }) do
+            with_text(/CLICK THE CONTEXT BUTTON/)
+          end
+        end
       end
     end
   end

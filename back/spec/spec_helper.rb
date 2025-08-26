@@ -241,7 +241,17 @@ VCR.configure do |config|
   config.hook_into :webmock
   config.allow_http_connections_when_no_cassette = true
   config.cassette_library_dir = Rails.root / 'spec' / 'fixtures' / 'vcr_cassettes'
-  config.filter_sensitive_data('<ASSEMBLYAI_API_KEY>') { ENV.fetch('ASSEMBLYAI_API_KEY') } if ENV['ASSEMBLYAI_API_KEY']
+  config.configure_rspec_metadata!
+
+  # Filter out sensitive data from cassettes
+  sensitive_data = {
+    '<OPENAI_API_KEY>' => ENV.fetch('OPENAI_API_KEY', nil),
+    '<ASSEMBLYAI_API_KEY>' => ENV.fetch('ASSEMBLYAI_API_KEY', nil)
+  }
+
+  sensitive_data.each do |placeholder, secret|
+    config.filter_sensitive_data(placeholder) { secret.to_s } if secret.present?
+  end
 end
 
 RspecApiDocumentation.configure do |config|

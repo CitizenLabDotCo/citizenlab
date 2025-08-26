@@ -11,6 +11,7 @@ class WebApi::V1::FileV2Serializer < WebApi::V1::BaseSerializer
     :mime_type,
     :size,
     :ai_processing_allowed,
+    :description_generation_status,
     :created_at,
     :updated_at
   )

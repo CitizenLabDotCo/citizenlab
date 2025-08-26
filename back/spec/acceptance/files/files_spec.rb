@@ -151,6 +151,7 @@ resource 'Files' do
           attributes: {
             name: file.name,
             description_multiloc: {},
+            description_generation_status: nil,
             content: { url: file.content.url },
             ai_processing_allowed: false,
             mime_type: 'application/pdf',
@@ -229,6 +230,7 @@ resource 'Files' do
             name: name,
             content: { url: file.content.url },
             description_multiloc: {},
+            description_generation_status: nil,
             ai_processing_allowed: false,
             mime_type: 'application/pdf',
             category: 'other',
@@ -267,18 +269,21 @@ resource 'Files' do
         expect(file.description_multiloc).to eq(description_multiloc)
       end
 
-      example 'Create a file with ai_processing_allowed set to true', document: false do
+      example 'Create a file with ai_processing_allowed set to true', :active_job_que_adapter, document: false do
         do_request(file: { name: name, content: content, ai_processing_allowed: true })
 
         assert_status 201
 
-        expect(response_data[:attributes][:ai_processing_allowed]).to be true
+        expect(response_data[:attributes]).to include(
+          ai_processing_allowed: true,
+          description_generation_status: 'pending'
+        )
 
         file = Files::File.find(response_data[:id])
         expect(file.ai_processing_allowed).to be true
       end
 
-      example 'casts ai_processing_allowed to boolean', document: false do
+      example 'casts ai_processing_allowed to boolean', :active_job_que_adapter, document: false do
         do_request(file: { name: name, content: content, ai_processing_allowed: 'whatever' })
         assert_status 201
         expect(response_data[:attributes][:ai_processing_allowed]).to be true
