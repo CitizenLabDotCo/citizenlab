@@ -333,8 +333,8 @@ ur:
       title: '''%{post}'' پر نیا داخلی تبصرہ'
       preheader: '''%{post}'' میں ایک نیا داخلی تبصرہ ہے۔'
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
-      header_title: 'There''s an update on "%{input_title}"'
+      header_message: '%{feedback_author_name} نے ''%{input_title}'' پر ایک اپ ڈیٹ دیا۔'
+      header_title: '"%{input_title}" پر ایک اپ ڈیٹ ہے'
       subject: 'Official feedback was posted on "%{input_title}"'
       preheader: 'There''s an update on an input you follow'
     mention_in_official_feedback:
@@ -406,8 +406,8 @@ ur:
       cta_go_to_project: "پروجیکٹ کی ترتیبات پر جائیں۔"
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
-      header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
-      header_title: 'An input you follow has a new status'
+      header_message: '%{organizationName} نے اپنے ڈیجیٹل شرکت کے پلیٹ فارم پر ان پٹ ''%{input_title}'' کی حیثیت کو اپ ڈیٹ کیا۔'
+      header_title: 'آپ جس ان پٹ کی پیروی کرتے ہیں اس کی نئی حیثیت ہوتی ہے۔'
       subject: 'The status of "%{input_title}" has changed'
       preheader: 'An input you follow has a new status'
     user_digest:
