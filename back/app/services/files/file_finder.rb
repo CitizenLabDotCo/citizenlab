@@ -10,7 +10,7 @@ module Files
       scope = Files::File.all,
       uploader: NO_VALUE,
       project: NO_VALUE,
-      category: nil, # We can use nil instead of NO_VALUE bc category is not nullable.
+      category: nil, # We can use nil instead of NO_VALUE bc nil is not a valid value for category
       search: nil
     )
       @scope = scope
