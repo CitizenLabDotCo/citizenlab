@@ -16,7 +16,7 @@ module BulkImportIdeas::Extractors
     def participation_method_attributes
       {
         participation_method: 'ideation',
-        input_term: 'question',
+        input_term: 'question'
       }
     end
   end
