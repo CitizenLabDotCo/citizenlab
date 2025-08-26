@@ -5,10 +5,11 @@ require 'rspec_api_documentation/dsl'
 
 def create_campaign_params(context)
   context.parameter :campaign_name, "The type of campaign. One of #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: true, scope: :campaign
-  context.parameter :sender, "Who is shown as the sender towards the recipients, either #{EmailCampaigns::SenderConfigurable::SENDERS.join(' or ')}", required: true, scope: :campaign
+  context.parameter :sender, "Who is shown as the sender towards the recipients, either #{EmailCampaigns::SenderConfigurable::SENDERS.join(' or ')}", required: false, scope: :campaign
   context.parameter :reply_to, 'The e-mail of the reply-to address. Defaults to the author', required: false, scope: :campaign
-  context.parameter :subject_multiloc, 'The of the email, as a multiloc string', required: true, scope: :campaign
-  context.parameter :body_multiloc, 'The body of the email campaign, as a multiloc string. Supports basic HTML', required: true, scope: :campaign
+  context.parameter :subject_multiloc, 'The subject of the email, as a multiloc string', required: false, scope: :campaign
+  context.parameter :body_multiloc, 'The body of the email campaign, as a multiloc string. Supports basic HTML', required: false, scope: :campaign
+  context.parameter :enabled, 'Whether the campaign is enabled or not, as a boolean', required: false, scope: :campaign
 end
 
 def update_campaign_params(context)
@@ -25,7 +26,7 @@ resource 'Campaigns' do
   before do
     @manual_campaigns = create_list(:manual_campaign, 4)
     @manual_project_participants_campaign = create(:manual_project_participants_campaign)
-    @automated_campaigns = create_list(:official_feedback_on_idea_you_follow_campaign, 2)
+    @automated_campaigns = [create(:official_feedback_on_idea_you_follow_campaign), create(:welcome_campaign)]
   end
 
   context 'as an admin' do
@@ -63,15 +64,16 @@ resource 'Campaigns' do
       end
 
       example 'List ALL automatic campaigns' do
-        # Create one of every type of automated campaign
+        EmailCampaigns::Campaign.all.each(&:destroy!)
         SettingsService.new.activate_feature! 'community_monitor'
+        # Create one of every type of automated campaign
         @campaigns = EmailCampaigns::DeliveryService.new.campaign_classes.each do |klaz|
           factory_type = :"#{klaz.name.demodulize.underscore}_campaign"
           create(factory_type)
         end
 
         do_request(manual: false)
-        expect(response_data.size).to eq 50
+        expect(response_data.size).to eq 48
       end
 
       example 'List all manual campaigns when one has been sent' do
@@ -105,10 +107,10 @@ resource 'Campaigns' do
         content_type_multiloc = multiloc_service.i18n_to_multiloc(@automated_campaigns[0].class.content_type_multiloc_key).transform_keys(&:to_sym)
         trigger_multiloc = multiloc_service.i18n_to_multiloc(@automated_campaigns[0].class.trigger_multiloc_key).transform_keys(&:to_sym)
 
-        expect(json_response[:data][0][:attributes][:recipient_role_multiloc]).to eq    recipient_role_multiloc
-        expect(json_response[:data][0][:attributes][:recipient_segment_multiloc]).to eq recipient_segment_multiloc
-        expect(json_response[:data][0][:attributes][:content_type_multiloc]).to eq      content_type_multiloc
-        expect(json_response[:data][0][:attributes][:trigger_multiloc]).to eq           trigger_multiloc
+        expect(json_response[:data][1][:attributes][:recipient_role_multiloc]).to eq    recipient_role_multiloc
+        expect(json_response[:data][1][:attributes][:recipient_segment_multiloc]).to eq recipient_segment_multiloc
+        expect(json_response[:data][1][:attributes][:content_type_multiloc]).to eq      content_type_multiloc
+        expect(json_response[:data][1][:attributes][:trigger_multiloc]).to eq           trigger_multiloc
       end
     end
 
@@ -127,18 +129,6 @@ resource 'Campaigns' do
           expect(json_response[:data].size).to eq 1
           expect(json_response[:data].pluck(:id)).to eq [manual_project.id]
         end
-
-        example 'List only campaigns supported by the context', document: false do
-          create(:comment_on_idea_you_follow_campaign, context: nil)
-          create(:comment_on_idea_you_follow_campaign, context: manual_project.context)
-
-          do_request
-
-          assert_status 200
-          json_response = json_parse(response_body)
-          expect(json_response[:data].size).to eq 1
-          expect(json_response[:data].pluck(:id)).to eq [manual_project.id]
-        end
       end
 
       get '/web_api/v1/phases/:context_id/campaigns' do
@@ -149,6 +139,26 @@ resource 'Campaigns' do
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 1
           expect(json_response[:data].pluck(:id)).to eq [automated_phase.id]
+        end
+
+        context 'voting phase' do
+          let(:context) { create(:budgeting_phase) }
+          let(:context_id) { context.id }
+
+          example 'List only campaigns supported by the context', document: false do
+            create(:comment_on_idea_you_follow_campaign, context: nil)
+            create(:voting_basket_not_submitted_campaign, context: nil)
+            voting_campaign = create(:voting_basket_not_submitted_campaign, context: context)
+            create(:cosponsor_of_your_idea_campaign, context: nil)
+            create(:cosponsor_of_your_idea_campaign, context: context)
+
+            do_request
+
+            assert_status 200
+            json_response = json_parse(response_body)
+            expect(json_response[:data].size).to eq 1
+            expect(json_response[:data].pluck(:id)).to eq [voting_campaign.id]
+          end
         end
 
         example '[Unauthorized] List no campaigns, for a user that cannot moderate campaigns', document: false do
@@ -167,7 +177,7 @@ resource 'Campaigns' do
       example_request 'Lists all campaigns supported for an ideation phase' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes)).to match_array %w[project_phase_started]
+        expect(json_response.dig(:data, :attributes)).to eq %w[comment_deleted_by_admin comment_on_idea_you_follow comment_on_your_comment idea_published mention_in_official_feedback official_feedback_on_idea_you_follow project_phase_started status_change_on_idea_you_follow your_input_in_screening]
       end
     end
 

@@ -27,7 +27,7 @@ export interface ICampaignData {
     sender: 'author' | 'organization';
     reply_to: 'author' | 'organization';
     editable_regions?: EditableRegion[];
-    editable_region_variable_keys?: string[];
+    substitution_variable_keys?: string[];
     created_at: string;
     updated_at: string;
     deliveries_count: number;
@@ -157,19 +157,21 @@ export type CampaignName =
   | RegisterUserCampaignName
   | AdminModeratorCampaignName;
 
-export interface QueryParameters extends CampaignContext {
+export interface QueryParameters {
+  context?: CampaignContext;
   manual?: boolean;
   withoutCampaignNames?: CampaignName[];
   pageSize?: number;
   pageNumber?: number;
 }
 
-export interface CampaignAdd extends CampaignContext {
+export interface CampaignAdd {
   campaign_name: string;
+  context?: CampaignContext;
   enabled?: boolean;
-  subject_multiloc: Multiloc;
-  body_multiloc: Multiloc;
-  sender: string;
+  subject_multiloc?: Multiloc;
+  body_multiloc?: Multiloc;
+  sender?: string;
   reply_to?: string;
   group_ids?: string[];
 }

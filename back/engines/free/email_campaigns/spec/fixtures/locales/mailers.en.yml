@@ -303,7 +303,7 @@ en:
       preheader: 'There''s an update on an input you follow'
     mention_in_official_feedback:
       cta_button: 'Reply to %{organizationName}'
-      event_description: '%{organizationName} mentioned you in their feedback on the idea ''%{post}‘. Click the link below to enter the conversation with %{organizationName}'
+      event_description: '%{organizationName} mentioned you in their feedback on the idea ''%{post}''. Click the link below to enter the conversation with %{organizationName}.'
       title: 'You have been mentioned'
       subject: '%{organizationName} mentioned you in their feedback'
       preheader: '%{organizationName} mentioned you in feedback'
@@ -345,9 +345,9 @@ en:
       title_added_as_folderadmin: 'You''ve been added as a folder manager'
       x_projects: '%{numberOfProjects} projects'
     project_phase_started:
-      cta_view_phase: 'Discover this new phase'
+      cta_button: 'Discover this new phase'
       event_description: 'This project entered a new phase on the platform of %{organizationName}. Click on the link below to learn more!'
-      main_header: 'A new phase started for project ''%{projectName}'''
+      title: 'A new phase started for project ''%{projectName}'''
       subtitle: 'About ''%{projectName}'''
       new_phase: 'This project entered the phase ''%{phaseTitle}'''
       subject: '%{projectName} entered a new phase'

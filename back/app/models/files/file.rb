@@ -89,10 +89,29 @@ module Files
 
     belongs_to :uploader, class_name: 'User', optional: true
 
+    before_save :update_metadata
+
+    # This callback is used to break the circular destroy dependency between the +File+
+    # and +FileAttachment+ models (and more specifically with the
+    # +FileAttachment#destroy_orphaned_file+ callback). It needs to be defined before the
+    # associations with +dependent: :destroy+ for associated records to be able to check
+    # whether the file is being destroyed.
+    around_destroy :mark_as_being_destroyed
+
+    has_many :attachments, class_name: 'Files::FileAttachment', inverse_of: :file, dependent: :destroy
     has_many :files_projects, class_name: 'Files::FilesProject', dependent: :destroy
     has_many :projects, through: :files_projects
+    has_one :preview, class_name: 'Files::Preview', dependent: :destroy, inverse_of: :file
 
-    # TODO: Maybe reconsider the name of this column.
+    has_one(
+      :desc_generation_job,
+      -> { where(root_job_type: 'Files::DescriptionGenerationJob') },
+      class_name: 'Jobs::Tracker',
+      as: :context,
+      inverse_of: :context,
+      dependent: :destroy
+    )
+
     mount_base64_file_uploader :content, FileUploader
 
     validates :name, presence: true
@@ -100,8 +119,6 @@ module Files
     validates :size, numericality: { greater_than_or_equal_to: 0, allow_nil: true }
     validates :description_multiloc, multiloc: { presence: false }
     validates :ai_processing_allowed, inclusion: { in: [true, false] }
-
-    before_save :update_metadata
 
     # It is not meant to be used directly. See `search` scope below.
     pg_search_scope :_pg_search_only,
@@ -147,7 +164,37 @@ module Files
       from(all_matches).order('pg_search_rank DESC')
     }
 
+    def description_generation_status
+      status = desc_generation_job&.status
+
+      # TODO: Improve the tracker interface to make this simpler.
+      if status == :completed
+        desc_generation_job.error_count.positive? ? :failed : :completed
+      else
+        status
+      end
+    end
+
+    def being_destroyed?
+      !!@being_destroyed
+    end
+
+    def image?
+      content.content_type.start_with?('image/')
+    end
+
+    def text?
+      content.content_type.start_with?('text/')
+    end
+
     private
+
+    def mark_as_being_destroyed
+      @being_destroyed = true
+      yield
+    ensure
+      @being_destroyed = false
+    end
 
     def update_metadata
       return unless content.present? && content_changed?

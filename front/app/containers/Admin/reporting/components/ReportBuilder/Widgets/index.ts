@@ -33,6 +33,9 @@ import ImageMultiloc, { imageMultilocTitle } from './ImageMultiloc';
 import MostReactedIdeasWidget, {
   mostReactedIdeasTitle,
 } from './MostReactedIdeasWidget';
+import ProjectsTimelineWidget, {
+  projectsTimelineTitle,
+} from './ProjectsTimelineWidget';
 import ProjectsWidget, { projectsTitle } from './ProjectsWidget';
 import SingleIdeaWidget, { singleIdeaTitle } from './SingleIdeaWidget';
 import SurveyQuestionResultWidget, {
@@ -64,6 +67,7 @@ export const WIDGETS = {
 
   // DEPRECATED
   ReactionsByTimeWidget,
+  ProjectsTimelineWidget,
 };
 
 type WidgetName = keyof typeof WIDGETS;
@@ -92,6 +96,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
 
   // DEPRECATED
   ReactionsByTimeWidget: reactionsByTimeTitle,
+  ProjectsTimelineWidget: projectsTimelineTitle,
 };
 
 const WIDGETS_WITH_CHILDREN = new Set<string>([

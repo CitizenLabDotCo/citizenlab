@@ -21,7 +21,7 @@ const AdminPhaseEmailWrapper = () => {
   const { data: supportedCampaigns } = useSupportedCampaignNames({ phaseId });
   const supportedCampaignNames = supportedCampaigns?.data.attributes || [];
   const contextCampaigns = useCampaigns({
-    ...(phaseId ? { phaseId } : {}),
+    ...(phaseId ? { context: { phaseId } } : {}),
     pageSize: 250,
   }).data?.pages.flatMap((page) => page.data);
   const { data: supportedCampaignsPages } = useCampaigns({ pageSize: 250 });
@@ -50,7 +50,7 @@ const AdminPhaseEmailWrapper = () => {
               <CampaignRow
                 campaign={stringifyCampaignFields(campaign, localize)}
                 key={campaign.id}
-                phaseId={phaseId}
+                context={{ phaseId }}
               />
             )
           );

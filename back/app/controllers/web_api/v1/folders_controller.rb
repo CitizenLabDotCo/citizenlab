@@ -31,25 +31,24 @@ class WebApi::V1::FoldersController < ApplicationController
 
   def index_for_admin
     project_folders = policy_scope(ProjectFolders::Folder)
-    project_folders = FoldersFinderAdminService.execute(project_folders, params)
-    project_folders = paginate project_folders
-    project_folders = project_folders.includes(:admin_publication)
 
     authorize project_folders
 
-    moderators_per_folder = User
-      .where("roles @> '[{\"type\":\"project_folder_moderator\"}]'")
-      .each_with_object({}) do |user, moderators_per_folder_hash|
-        user.roles.each do |role|
-          next unless role['type'] == 'project_folder_moderator'
+    # The authorize statement above ensures that we only allow
+    # admins or folder managers.
+    # If the current user is not an admin, but only a folder manager,
+    # we filter the folders to only those that the user moderates.
+    if !current_user.admin?
+      params[:managers] = [current_user.id]
+    end
 
-          folder_id = role['project_folder_id']
-          next unless folder_id
+    project_folders = FoldersFinderAdminService.execute(project_folders, params)
+    project_folders = paginate project_folders
+    project_folders = project_folders.includes(:admin_publication, :images)
 
-          moderators_per_folder_hash[folder_id] ||= []
-          moderators_per_folder_hash[folder_id] << user
-        end
-      end
+    moderators_per_folder = UserRoleService.new.moderators_per_folder(
+      project_folders.pluck(:id)
+    )
 
     render json: linked_json(
       project_folders,
@@ -58,7 +57,7 @@ class WebApi::V1::FoldersController < ApplicationController
         visible_children_count_by_parent_id: visible_children_count_by_parent_id,
         moderators_per_folder: moderators_per_folder
       ),
-      include: [:moderators]
+      include: %i[moderators images]
     )
   end
 

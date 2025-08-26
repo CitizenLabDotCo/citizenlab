@@ -18,18 +18,16 @@ const fetchFiles = (queryParams: QueryParameters) =>
     queryParams,
   });
 
-const useFiles = (
-  {
-    pageNumber,
-    pageSize,
-    uploaderId,
-    project,
-    sort,
-    search,
-    deleted,
-  }: GetFilesParameters,
-  { enabled = true }: { enabled?: boolean } = { enabled: true }
-) => {
+const useFiles = ({
+  pageNumber,
+  pageSize,
+  uploaderId,
+  project,
+  sort,
+  search,
+  deleted,
+  enabled = true,
+}: GetFilesParameters) => {
   const queryParameters: QueryParameters = {
     'page[number]': pageNumber ?? 1,
     'page[size]': pageSize ?? 250,

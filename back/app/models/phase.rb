@@ -66,6 +66,7 @@ class Phase < ApplicationRecord
   include Surveys::SurveyPhase
   include Volunteering::VolunteeringPhase
   include DocumentAnnotation::DocumentAnnotationPhase
+  include Files::FileAttachable
 
   PARTICIPATION_METHODS = ParticipationMethod::Base.all_methods.map(&:method_str).freeze
   VOTING_METHODS        = %w[budgeting multiple_voting single_voting].freeze
@@ -108,7 +109,7 @@ class Phase < ApplicationRecord
   validates :prescreening_enabled, inclusion: { in: [true, false] }
   validate :validate_end_at
   validate :validate_previous_blank_end_at
-  validate :validate_start_at_before_end_at
+  validate :validate_start_at_before_end_at # Also enforced by the phases_start_before_end check constraint
   validate :validate_no_other_overlapping_phases
   validates :manual_voters_amount, numericality: { only_integer: true, greater_than_or_equal_to: 0, allow_nil: true }
   # This is a counter cache column, but it was too complex to implement it with counter_culture. It's
@@ -168,8 +169,6 @@ class Phase < ApplicationRecord
   # voting?
   with_options if: :voting? do
     validates :voting_method, presence: true, inclusion: { in: VOTING_METHODS }
-    validates :voting_term_singular_multiloc, multiloc: { presence: false }
-    validates :voting_term_plural_multiloc, multiloc: { presence: false }
     validates :autoshare_results_enabled, inclusion: { in: [true, false] }
   end
   validates :voting_min_total,
@@ -242,18 +241,6 @@ class Phase < ApplicationRecord
 
   def reacting_dislike_limited?
     reacting_dislike_method == 'limited'
-  end
-
-  def voting_term_singular_multiloc_with_fallback
-    MultilocService.new.i18n_to_multiloc('voting_method.default_voting_term_singular').merge(
-      voting_term_singular_multiloc || {}
-    )
-  end
-
-  def voting_term_plural_multiloc_with_fallback
-    MultilocService.new.i18n_to_multiloc('voting_method.default_voting_term_plural').merge(
-      voting_term_plural_multiloc || {}
-    )
   end
 
   def started?

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { IntlProvider, createIntlCache, createIntl } from 'react-intl';
 import { SupportedLocale } from 'typings';
@@ -23,54 +23,75 @@ interface Props {
 }
 
 const LanguageProvider = ({ children }: Props) => {
+  const [initialLocaleSet, setInitialLocaleSet] = useState(false);
   const [messages, setMessages] = useState<AllMessages>({} as AllMessages);
   const [intlShapes, setIntlShapes] = useState<IntlShapes>({} as IntlShapes);
   const tenantLocales = useAppConfigurationLocales();
   const [locale, setLocale] = useState<SupportedLocale | null>(null);
 
   useEffect(() => {
-    const sub = localeStream().observable.subscribe((locale) => {
+    const sub = localeStream().observable.subscribe(async (locale) => {
+      await loadLocale(locale);
       setLocale(locale);
     });
 
     return () => sub.unsubscribe();
   });
 
-  useEffect(() => {
-    if (!tenantLocales) return;
-
-    for (const locale of tenantLocales) {
+  const loadLocale = useCallback(
+    async (locale: SupportedLocale) => {
+      // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!messages[locale] && messagesGlob[`/i18n/${locale}.ts`]) {
-        messagesGlob[`/i18n/${locale}.ts`]().then((module) => {
-          const intlCache = createIntlCache();
+        const module = await messagesGlob[`/i18n/${locale}.ts`]();
+        const intlCache = createIntlCache();
 
-          const intlShape = createIntl(
-            {
-              locale,
-              messages: module.default,
-            },
-            intlCache
-          );
+        const intlShape = createIntl(
+          {
+            locale,
+            messages: module.default,
+          },
+          intlCache
+        );
 
-          setMessages((prevState) => ({
-            ...prevState,
-            [locale]: module.default,
-          }));
-          setIntlShapes((prevState) => ({
-            ...prevState,
-            [locale]: intlShape,
-          }));
-        });
+        setMessages((prevState) => ({
+          ...prevState,
+          [locale]: module.default,
+        }));
+        setIntlShapes((prevState) => ({
+          ...prevState,
+          [locale]: intlShape,
+        }));
       }
-    }
-  }, [tenantLocales, messages]);
+    },
+    [messages]
+  );
+
+  const loadLocales = useCallback(async () => {
+    if (!tenantLocales) return;
+
+    const promises = tenantLocales.map((locale) => {
+      return loadLocale(locale);
+    });
+
+    await Promise.all(promises);
+  }, [tenantLocales, loadLocale]);
+
+  useEffect(() => {
+    if (initialLocaleSet) return;
+    if (!tenantLocales) return;
+    if (!locale) return;
+    if (!tenantLocales.includes(locale)) return;
+
+    loadLocale(locale);
+    setInitialLocaleSet(true);
+  }, [tenantLocales, locale, messages, loadLocale, initialLocaleSet]);
 
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (locale && messages[locale]) {
     return (
-      <CustomIntlContext.Provider value={intlShapes}>
+      <CustomIntlContext.Provider value={{ intlShapes, loadLocales }}>
         <IntlProvider locale={locale} key={locale} messages={messages[locale]}>
           {React.Children.only(children)}
         </IntlProvider>

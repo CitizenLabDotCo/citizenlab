@@ -75,6 +75,8 @@ const AdminProjectProposals = lazy(() => import('./project/proposals'));
 
 const AdminProjectsData = lazy(() => import('./project/data'));
 
+const EmailsEdit = lazy(() => import('../messaging/Edit'));
+
 export function adminProjectsProjectPath(projectId: string): RouteType {
   return `/admin/projects/${projectId}`;
 }
@@ -82,11 +84,6 @@ export function adminProjectsProjectPath(projectId: string): RouteType {
 export enum projectsRoutes {
   projects = 'projects',
   new = 'new',
-  allProjects = 'all',
-  published = 'published',
-  draft = 'draft',
-  archived = 'archived',
-  pending = 'pending',
   projectIdeaId = ':projectId/ideas/:ideaId',
   projectSettings = ':projectId/settings',
   projectTraffic = 'traffic',
@@ -130,11 +127,6 @@ export enum projectsRoutes {
 
 export type projectsRouteTypes =
   | AdminRoute<projectsRoutes.projects>
-  | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.allProjects}`>
-  | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.published}`>
-  | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.draft}`>
-  | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.archived}`>
-  | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.pending}`>
   | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.new}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/ideas/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/settings`>
@@ -184,46 +176,6 @@ const createAdminProjectsRoutes = () => {
     children: [
       {
         index: true,
-        element: (
-          <PageLoading>
-            <AdminProjectsList />
-          </PageLoading>
-        ),
-      },
-      {
-        path: projectsRoutes.allProjects,
-        element: (
-          <PageLoading>
-            <AdminProjectsList />
-          </PageLoading>
-        ),
-      },
-      {
-        path: projectsRoutes.published,
-        element: (
-          <PageLoading>
-            <AdminProjectsList />
-          </PageLoading>
-        ),
-      },
-      {
-        path: projectsRoutes.draft,
-        element: (
-          <PageLoading>
-            <AdminProjectsList />
-          </PageLoading>
-        ),
-      },
-      {
-        path: projectsRoutes.archived,
-        element: (
-          <PageLoading>
-            <AdminProjectsList />
-          </PageLoading>
-        ),
-      },
-      {
-        path: projectsRoutes.pending,
         element: (
           <PageLoading>
             <AdminProjectsList />
@@ -486,6 +438,10 @@ const createAdminProjectsRoutes = () => {
                     <AdminPhaseEmails />
                   </PageLoading>
                 ),
+              },
+              {
+                path: ':phaseId/emails/:campaignId/edit',
+                element: <EmailsEdit campaignType="automated" />,
               },
               {
                 path: projectsRoutes.projectPhaseIdeas,

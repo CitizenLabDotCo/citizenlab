@@ -151,6 +151,7 @@ resource 'Files' do
           attributes: {
             name: file.name,
             description_multiloc: {},
+            description_generation_status: nil,
             content: { url: file.content.url },
             ai_processing_allowed: false,
             mime_type: 'application/pdf',
@@ -161,9 +162,21 @@ resource 'Files' do
           },
           relationships: {
             uploader: { data: { id: file.uploader_id, type: 'user' } },
-            projects: { data: [{ id: project.id, type: 'project' }] }
+            projects: { data: [{ id: project.id, type: 'project' }] },
+            preview: { data: nil }
           }
         )
+      end
+
+      example 'Get one file with preview' do
+        file_preview = create(:file_preview, file:)
+        do_request
+        assert_status 200
+        expect(response_data.dig(:relationships, :preview, :data)).to include(
+          id: file_preview.id,
+          type: 'file_preview'
+        )
+        expect(json_response_body[:included].map { |i| i[:id] }).to include(file_preview.id)
       end
     end
 
@@ -216,6 +229,7 @@ resource 'Files' do
             name: name,
             content: { url: file.content.url },
             description_multiloc: {},
+            description_generation_status: nil,
             ai_processing_allowed: false,
             mime_type: 'application/pdf',
             category: 'other',
@@ -225,7 +239,8 @@ resource 'Files' do
           },
           relationships: {
             uploader: { data: { id: admin.id, type: 'user' } },
-            projects: { data: [{ id: project, type: 'project' }] }
+            projects: { data: [{ id: project, type: 'project' }] },
+            preview: { data: nil } # pdf file doesn't generate a preview
           }
         )
       end
@@ -252,18 +267,21 @@ resource 'Files' do
         expect(file.description_multiloc).to eq(description_multiloc)
       end
 
-      example 'Create a file with ai_processing_allowed set to true', document: false do
+      example 'Create a file with ai_processing_allowed set to true', :active_job_que_adapter, document: false do
         do_request(file: { name: name, content: content, ai_processing_allowed: true })
 
         assert_status 201
 
-        expect(response_data[:attributes][:ai_processing_allowed]).to be true
+        expect(response_data[:attributes]).to include(
+          ai_processing_allowed: true,
+          description_generation_status: 'pending'
+        )
 
         file = Files::File.find(response_data[:id])
         expect(file.ai_processing_allowed).to be true
       end
 
-      example 'casts ai_processing_allowed to boolean', document: false do
+      example 'casts ai_processing_allowed to boolean', :active_job_que_adapter, document: false do
         do_request(file: { name: name, content: content, ai_processing_allowed: 'whatever' })
         assert_status 201
         expect(response_data[:attributes][:ai_processing_allowed]).to be true
@@ -271,6 +289,15 @@ resource 'Files' do
         do_request(file: { name: name, content: content, ai_processing_allowed: 'off' })
         assert_status 201
         expect(response_data[:attributes][:ai_processing_allowed]).to be false
+      end
+
+      example 'create a file that supports a PDF preview', document: false do
+        do_request(file: { name: 'test.docx', content: file_as_base64('david.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') })
+        assert_status 201
+        expect(response_data[:relationships][:preview][:data]).to include({
+          id: kind_of(String),
+          type: 'file_preview'
+        })
       end
     end
   end

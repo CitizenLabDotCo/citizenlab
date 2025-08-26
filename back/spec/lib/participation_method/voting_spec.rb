@@ -157,6 +157,12 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
+  describe '#supported_email_campaigns' do
+    it 'returns campaigns supported for voting' do
+      expect(participation_method.supported_email_campaigns).to match_array %w[comment_deleted_by_admin comment_on_idea_you_follow comment_on_your_comment idea_published mention_in_official_feedback official_feedback_on_idea_you_follow project_phase_started status_change_on_idea_you_follow voting_basket_not_submitted voting_last_chance voting_phase_started voting_results your_input_in_screening]
+    end
+  end
+
   describe '#supports_serializing?' do
     # Other attributes are delegated to the voting method
     it 'returns false for the other attributes' do

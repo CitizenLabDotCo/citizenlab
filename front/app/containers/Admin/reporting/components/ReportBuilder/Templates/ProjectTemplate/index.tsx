@@ -30,6 +30,7 @@ import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
 import DemographicsWidget from '../../Widgets/ChartWidgets/DemographicsWidget';
 import { INPUT_TYPES } from '../../Widgets/ChartWidgets/DemographicsWidget/Settings';
 import ParticipantsWidget from '../../Widgets/ChartWidgets/ParticipantsWidget';
+import VisitorsWidget from '../../Widgets/ChartWidgets/VisitorsWidget';
 import ImageMultilocWidget from '../../Widgets/ImageMultiloc';
 import MostReactedIdeasWidget from '../../Widgets/MostReactedIdeasWidget';
 import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget';
@@ -76,7 +77,8 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
     !report ||
     !projectModerator ||
     !userFields ||
-    !templateData
+    !templateData ||
+    !formatMessageWithLocale
   ) {
     return null;
   }
@@ -256,6 +258,15 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
         )}
       />
       <WhiteSpace />
+      <VisitorsWidget
+        projectId={projectId}
+        title={toMultiloc(
+          WIDGET_TITLES.VisitorsWidget,
+          appConfigurationLocales,
+          formatMessageWithLocale
+        )}
+        {...projectPeriod}
+      />
     </Element>
   );
 };

@@ -55,7 +55,7 @@ describe('Idea creation', () => {
 
   it('allows the admin to add an idea to an old phase', () => {
     cy.visit(`admin/projects/${projectId}/phases/${firstPhaseId}/ideas`);
-    cy.acceptCookies();
+
     cy.get('#e2e-new-idea').click();
     cy.wait(1000);
 

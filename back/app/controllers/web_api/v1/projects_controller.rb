@@ -181,16 +181,22 @@ class WebApi::V1::ProjectsController < ApplicationController
     projects = policy_scope(Project).not_hidden
     projects = ProjectsFinderAdminService.execute(projects, params, current_user: current_user)
 
-    @projects = paginate projects
-    @projects = @projects.includes(:phases, :admin_publication)
+    projects = paginate projects
+    projects = projects.includes(:phases, :admin_publication, :project_images, :groups)
 
-    authorize @projects, :index_for_admin?
+    moderators_per_project = UserRoleService.new.moderators_per_project(
+      projects.pluck(:id)
+    )
+
+    authorize projects, :index_for_admin?
 
     render json: linked_json(
-      @projects,
+      projects,
       WebApi::V1::ProjectMiniAdminSerializer,
-      params: jsonapi_serializer_params,
-      include: %i[phases]
+      params: jsonapi_serializer_params(
+        moderators_per_project: moderators_per_project
+      ),
+      include: %i[phases project_images groups]
     )
   end
 

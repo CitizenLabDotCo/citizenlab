@@ -81,6 +81,7 @@ gem 'active_model_serializers', '~> 0.10.15'
 gem 'jwt', '~> 2.8.1'
 gem 'que', '~> 2.3.0'
 
+gem 'activerecord', '~> 7.1.5.2'
 gem 'activerecord-import', '~> 1.7'
 gem 'json-schema', '~> 4.3'
 gem 'activerecord-postgis-adapter', '~> 9.0.2'
@@ -96,6 +97,7 @@ gem 'rails-i18n', '~> 7.0.9'
 gem 'awesome_nested_set', '~> 3.6.0'
 gem 'axlsx', '3.0.0.pre' # write xlsx files
 gem 'rubyXL', '~> 3.4.27' # read xlsx files. Has issues with writing files https://github.com/CitizenLabDotCo/citizenlab/pull/7834
+gem 'docx', '~> 0.3.0'
 gem 'counter_culture', '~> 3.5'
 gem 'groupdate', '~> 6.5'
 gem 'icalendar', '~> 2.10'
@@ -124,6 +126,7 @@ gem 'simple_segment', '~>1.5'
 gem 'omniauth_openid_connect', '~> 0.7.1'
 gem 'faraday-jwt', '~> 0.1.0'
 gem 'acts_as_list', '~> 1.2'
+gem 'positioning', '~> 0.4.6'
 gem 'bunny', '>= 2.7.2'
 gem 'faker'
 gem 'order_as_specified'
@@ -136,6 +139,9 @@ gem 'prawn-grouping', '~> 0.2.0'
 gem 'pdf-reader'
 gem 'faraday'
 gem 'faraday-multipart'
+
+# AI
+gem 'ruby_llm', '~> 1.6.2'
 
 # Also required here to be able to initialize Mailgun in
 # e.g. production.rb, which would otherwise result in an

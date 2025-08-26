@@ -6,6 +6,7 @@ class WebApi::V1::Files::FilesController < ApplicationController
   def index
     files =
       Files::FileFinder.new(**finder_params).execute
+        .then { |scope| scope.includes(:preview) }
         .then { |scope| scope.order(**order_params) }
         .then { policy_scope(_1) }
         .then { paginate(_1) }
@@ -13,7 +14,8 @@ class WebApi::V1::Files::FilesController < ApplicationController
     render json: linked_json(
       files,
       WebApi::V1::FileV2Serializer,
-      params: jsonapi_serializer_params
+      params: jsonapi_serializer_params,
+      include: [:preview]
     )
   end
 
@@ -22,7 +24,8 @@ class WebApi::V1::Files::FilesController < ApplicationController
 
     render json: WebApi::V1::FileV2Serializer.new(
       file,
-      params: jsonapi_serializer_params
+      params: jsonapi_serializer_params,
+      include: [:preview]
     ).serializable_hash
   end
 

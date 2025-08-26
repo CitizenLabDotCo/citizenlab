@@ -1,9 +1,11 @@
 import { IAppConfigurationData } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from 'api/me/useAuthUser';
 import { IUserData } from 'api/users/types';
 
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
-import { IConsentCookie } from './consent';
+import { getConsent, IConsentCookie } from './consent';
 import {
   allCategories,
   getDestinationConfigs,
@@ -87,10 +89,10 @@ export const getCurrentPreferences = (
   return output;
 };
 
-export const getConsentRequired = (
+function getConsentRequired(
   cookieConsent: IConsentCookie | null,
   activeDestinations: IDestinationConfig[]
-) => {
+): boolean {
   const isConsentRequired =
     !cookieConsent ||
     !!activeDestinations.find(
@@ -99,4 +101,17 @@ export const getConsentRequired = (
     );
 
   return isConsentRequired;
-};
+}
+
+export function useConsentRequired() {
+  const { data: appConfiguration } = useAppConfiguration();
+  const { data: authUser } = useAuthUser();
+
+  const activeDestinations = getActiveDestinations(
+    appConfiguration?.data,
+    authUser?.data
+  );
+  const cookieConsent = getConsent();
+
+  return getConsentRequired(cookieConsent, activeDestinations);
+}

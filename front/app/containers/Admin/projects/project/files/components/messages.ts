@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.chooseFiles',
     defaultMessage: 'Choose files',
   },
+  editFile: {
+    id: 'app.containers.AdminPage.ProjectFiles.editFile',
+    defaultMessage: 'Edit file',
+  },
   dragAndDropFiles: {
     id: 'app.containers.AdminPage.ProjectFiles.dragAndDropFiles2',
     defaultMessage: 'Drag and drop any files here or',
@@ -25,6 +29,11 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.allowAiProcessing',
     defaultMessage:
       'Allow advanced analytics of these files using AI processing.',
+  },
+  allowAiProcessingSingleFile: {
+    id: 'app.containers.AdminPage.ProjectFiles.allowAiProcessingSingleFile',
+    defaultMessage:
+      'Allow advanced analytics of this file using AI processing.',
   },
   searchFiles: {
     id: 'app.containers.AdminPage.ProjectFiles.searchFiles',
@@ -78,6 +87,10 @@ export default defineMessages({
     defaultMessage:
       'This file will not be uploaded, as it exceeds the maximum limit of 50 MB.',
   },
+  description: {
+    id: 'app.containers.AdminPage.ProjectFiles.description',
+    defaultMessage: 'Description',
+  },
   upload: {
     id: 'app.containers.AdminPage.ProjectFiles.upload',
     defaultMessage: 'Upload',
@@ -87,8 +100,8 @@ export default defineMessages({
     defaultMessage: 'Done',
   },
   selectFileType: {
-    id: 'app.containers.AdminPage.ProjectFiles.selectFileType',
-    defaultMessage: 'File type',
+    id: 'app.containers.AdminPage.ProjectFiles.selectFileType2',
+    defaultMessage: 'Category',
   },
   informationPoint1Title: {
     id: 'app.containers.AdminPage.ProjectFiles.informationPoint1Title',

@@ -106,14 +106,16 @@ module Surveys
         .select("custom_field_values->'#{field.key}'->'id' as value")
         .where("custom_field_values->'#{field.key}' IS NOT NULL")
         .map(&:value)
-      files = IdeaFile.where(id: file_ids).map do |file|
-        { name: file.name, url: file.file.url }
-      end
-      response_count = files.size
 
-      core_field_attributes(field, response_count:).merge({
-        files: files
-      })
+      files = ::Files::FileAttachment.where(id: file_ids).map do |attachment|
+        { name: attachment.file.name, url: attachment.file.content.url }
+      end
+
+      files.concat(IdeaFile.where(id: file_ids).map do |file|
+        { name: file.name, url: file.file.url }
+      end)
+
+      core_field_attributes(field, response_count: files.size).merge(files: files)
     end
 
     def visit_shapefile_upload(field)
@@ -189,8 +191,10 @@ module Surveys
       elsif field.supports_multiple_selection?
         %{
           jsonb_array_elements(
-            CASE WHEN jsonb_path_exists(#{table}.custom_field_values, '$ ? (exists (@."#{field.key}"))')
-              THEN #{table}.custom_field_values->'#{field.key}'
+            CASE WHEN (
+              jsonb_path_exists(#{table}.custom_field_values, '$ ? (exists (@."#{field.key}"))') AND
+              jsonb_typeof(#{table}.custom_field_values->'#{field.key}') = 'array'
+            ) THEN #{table}.custom_field_values->'#{field.key}'
               ELSE '[null]'::jsonb END
           ) as #{as}
       }
@@ -311,6 +315,9 @@ module Surveys
       inputs
         .select("custom_field_values->'#{field_key}' as value")
         .where("custom_field_values->'#{field_key}' IS NOT NULL")
+        # Remove all sequences of one or more whitespace characters (including spaces, newlines, tabs),
+        # then check the result is not empty. TRIM would not handle newlines correctly.
+        .where("regexp_replace(custom_field_values->>'#{field_key}', '[[:space:]]+', '', 'g') != ''")
         .map { |answer| { answer: answer.value.to_s } }
         .sort_by { |a| a[:answer] }
     end

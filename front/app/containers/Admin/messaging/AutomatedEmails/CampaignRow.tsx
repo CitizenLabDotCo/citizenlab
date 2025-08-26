@@ -6,6 +6,8 @@ import {
   ListItem,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
+import { useLocation } from 'react-router-dom';
+import { RouteType } from 'routes';
 
 import { CampaignContext } from 'api/campaigns/types';
 import useAddCampaign from 'api/campaigns/useAddCampaign';
@@ -16,38 +18,33 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 
 import messages from '../messages';
 
 import CampaignDescription from './CampaignDescription';
 import { CampaignData } from './types';
 
-type Props = CampaignContext & {
+type Props = {
   campaign: CampaignData;
+  context?: CampaignContext;
   onClickViewExample?: () => void;
 };
 
-const CampaignRow = ({
-  campaign,
-  phaseId,
-  projectId,
-  onClickViewExample,
-}: Props) => {
-  const hasContext = !!(phaseId || projectId);
+const CampaignRow = ({ campaign, context, onClickViewExample }: Props) => {
   const { formatMessage } = useIntl();
+  const { pathname } = useLocation();
   const { mutate: addCampaign } = useAddCampaign();
   const { mutate: updateCampaign } = useUpdateCampaign();
+  const unpersistedContextCampaign =
+    context && !campaign.relationships.context?.data?.id;
+
   const toggleEnabled = () => {
-    const unpersistedContextCampaign =
-      hasContext && !campaign.relationships.context?.data?.id;
     if (unpersistedContextCampaign) {
       addCampaign({
-        phaseId,
+        context,
         campaign_name: campaign.attributes.campaign_name,
         enabled: !campaign.attributes.enabled,
-        subject_multiloc: campaign.attributes.subject_multiloc,
-        body_multiloc: campaign.attributes.body_multiloc,
-        sender: campaign.attributes.sender,
       });
     } else {
       updateCampaign({
@@ -59,10 +56,32 @@ const CampaignRow = ({
     }
   };
 
-  const isEditingEnabled = useFeatureFlag({
-    name: 'customised_automated_emails',
-  });
+  const isEditingEnabled =
+    useFeatureFlag({
+      name: 'customised_automated_emails',
+    }) &&
+    (!context || campaign.attributes.enabled);
   const isEditable = (campaign.attributes.editable_regions || []).length > 0;
+  const handleEditClick = () => {
+    if (unpersistedContextCampaign) {
+      addCampaign(
+        {
+          context,
+          campaign_name: campaign.attributes.campaign_name,
+          enabled: campaign.attributes.enabled,
+        },
+        {
+          onSuccess: (addedCampaign) => {
+            clHistory.push(
+              `${pathname}/${addedCampaign.data.id}/edit` as RouteType
+            );
+          },
+        }
+      );
+    } else {
+      clHistory.push(`${pathname}/${campaign.id}/edit` as RouteType);
+    }
+  };
 
   return (
     <ListItem p="8px 0">
@@ -84,7 +103,7 @@ const CampaignRow = ({
               </ButtonWithLink>
             </Box>
           )}
-          {isEditingEnabled && !hasContext && (
+          {isEditingEnabled && (
             <Box ml="12px">
               <Tooltip
                 disabled={isEditable}
@@ -92,7 +111,7 @@ const CampaignRow = ({
               >
                 <ButtonWithLink
                   icon="edit"
-                  linkTo={`/admin/messaging/emails/automated/${campaign.id}/edit`}
+                  onClick={handleEditClick}
                   disabled={!isEditable}
                   buttonStyle="secondary-outlined"
                 >

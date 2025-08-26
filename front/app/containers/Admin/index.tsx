@@ -124,8 +124,14 @@ const AdminPage = memo<Props>(({ className }) => {
       /admin\/projects\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(\/(?!projects(?:\/|$))[\w-]+)*/
     ) && !isFoldersPage;
 
+  const projectsExceptNewAndFolders =
+    pathname.includes('admin/projects') &&
+    !pathname.includes('admin/projects/new') &&
+    !pathname.includes('admin/projects/folders');
+
   const noPadding =
     pathname.includes('admin/dashboard') ||
+    projectsExceptNewAndFolders ||
     pathname.includes('admin/messaging') ||
     pathname.includes('admin/settings') ||
     pathname.includes('admin/ideas') ||
@@ -134,6 +140,7 @@ const AdminPage = memo<Props>(({ className }) => {
 
   const fullWidth =
     pathname.includes('admin/dashboard') ||
+    projectsExceptNewAndFolders ||
     pathname.includes('admin/messaging') ||
     pathname.includes('admin/settings') ||
     pathname.includes('admin/ideas') ||

@@ -46,6 +46,9 @@ import InputMultilocWithLocaleSwitcher, {
 import Label from './components/Label';
 import ListItem from './components/ListItem';
 import LocaleSwitcher from './components/LocaleSwitcher';
+import MultiSelect, {
+  Props as MultiSelectProps,
+} from './components/MultiSelect';
 import Quote from './components/Quote';
 import Radio, { Props as RadioProps } from './components/Radio';
 import SearchInput, {
@@ -76,6 +79,7 @@ import Toggle from './components/Toggle';
 import Tooltip, { TooltipProps } from './components/Tooltip';
 import useBreakpoint from './hooks/useBreakpoint';
 import useWindowSize from './hooks/useWindowSize';
+import InputContainer from './utils/containers/InputContainer';
 import {
   viewportWidths,
   media,
@@ -96,6 +100,7 @@ import {
   Color,
   isRtl,
 } from './utils/styleUtils';
+import { truncate } from './utils/textUtils';
 import { IGraphPoint, IOption, Locale } from './utils/typings';
 
 export type {
@@ -126,6 +131,7 @@ export type {
   Color,
   InputMultilocWithLocaleSwitcherProps,
   InputProps,
+  MultiSelectProps,
   SelectProps,
   SearchInputProps,
   ColorPickerInputProps,
@@ -180,6 +186,7 @@ export {
   remCalc,
   calculateContrastRatio,
   hexToRgb,
+  truncate,
   Table,
   Thead,
   Tbody,
@@ -201,4 +208,8 @@ export {
   Shimmer,
   Divider,
   Quote,
+  InputContainer,
+
+  /** @deprecated Please use components/UI/MultiSelect instead */
+  MultiSelect,
 };

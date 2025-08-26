@@ -368,6 +368,24 @@ describe Analysis::InputsFinder do
       })
     end
 
+    let_it_be(:input3) do
+      create(:idea, project: analysis.source_project, custom_field_values: {
+        custom_field_text.key => ''
+      })
+    end
+
+    let_it_be(:input4) do
+      create(:idea, project: analysis.source_project, custom_field_values: {
+        custom_field_text.key => '  '
+      })
+    end
+
+    let_it_be(:input5) do
+      create(:idea, project: analysis.source_project, custom_field_values: {
+        custom_field_text.key => "   \n"
+      })
+    end
+
     it 'filters out custom_field with no empty values correctly' do
       @params = { input_custom_field_no_empty_values: true }
       expect(output).to contain_exactly(input1, input2)
