@@ -7,7 +7,6 @@ RSpec.describe EmailCampaigns::InternalCommentOnUnassignedUnmoderatedIdeaMailer 
     let_it_be(:recipient) { create(:user, locale: 'en') }
     let_it_be(:idea_image) { create(:idea_image) }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::InternalCommentOnUnassignedUnmoderatedIdea.create! }
-    let_it_be(:token) { ResetPasswordService.new.generate_reset_password_token recipient }
     let_it_be(:command) do
       {
         recipient: recipient,

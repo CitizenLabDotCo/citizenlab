@@ -2,28 +2,30 @@
 
 module EmailCampaigns
   class SurveySubmittedMailer < ApplicationMailer
-    protected
+    include EditableWithPreview
 
-    def subject
-      format_message('subject', values: {
-        organizationName: organization_name
-      })
+    def editable
+      %i[subject_multiloc title_multiloc intro_multiloc button_text_multiloc]
     end
 
-    private
-
-    def header_title
-      format_message('main_header', values: {
-        projectName: localize_for_recipient(event.project_title_multiloc)
-      })
+    def substitution_variables
+      {
+        organizationName: organization_name,
+        projectName: localize_for_recipient(event&.project_title_multiloc)
+      }
     end
 
-    def header_message
-      nil
-    end
-
-    def preheader
-      format_message('preheader', values: { firstName: recipient_first_name, organizationName: organization_name })
+    def preview_command(recipient)
+      data = preview_service.preview_data(recipient)
+      {
+        recipient: recipient,
+        event_payload: {
+          idea_id: data.idea.id,
+          project_title_multiloc: data.project.title_multiloc,
+          profile_url: "#{Frontend::UrlService.new.home_url}/profile/#{recipient.slug}/surveys",
+          has_password: true
+        }
+      }
     end
   end
 end

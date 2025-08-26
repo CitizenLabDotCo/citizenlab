@@ -38,6 +38,7 @@ module EmailCampaigns
     include RecipientConfigurable
     include Disableable
     include Trackable
+    include ContentConfigurable
     include LifecycleStageRestrictable
     allow_lifecycle_stages except: ['churned']
 

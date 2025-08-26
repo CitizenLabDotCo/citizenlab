@@ -38,6 +38,7 @@ module EmailCampaigns
     include Consentable
     include Schedulable
     include Trackable
+    include ContentConfigurable
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: ['active']
 

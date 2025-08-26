@@ -75,7 +75,7 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
           context: input.phases.last,
           subject_multiloc: { 'en' => 'Custom Context Subject' },
           title_multiloc: { 'en' => 'NEW CONTEXT TITLE' },
-          intro_multiloc: { 'en' => '<b>NEW CONTEXT BODY TEXT</b>' },
+          intro_multiloc: { 'en' => '<b>NEW CONTEXT BODY TEXT {{ projectTitle }}</b>' },
           reply_to: 'noreply@govocal.com'
         )
       end
@@ -120,7 +120,7 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
               with_text(/NEW CONTEXT TITLE/)
             end
             with_tag 'p' do
-              with_text(/NEW CONTEXT BODY TEXT/)
+              with_text(/NEW CONTEXT BODY TEXT Renew West Parc/)
             end
           end
         end

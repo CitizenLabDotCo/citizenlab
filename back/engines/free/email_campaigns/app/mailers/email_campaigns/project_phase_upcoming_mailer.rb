@@ -2,26 +2,32 @@
 
 module EmailCampaigns
   class ProjectPhaseUpcomingMailer < ApplicationMailer
-    private
+    include EditableWithPreview
 
-    def project_title
-      localize_for_recipient(event.project_title_multiloc)
+    def editable
+      %i[subject_multiloc title_multiloc intro_multiloc button_text_multiloc]
     end
 
-    def subject
-      format_message('subject', values: { projectName: project_title })
+    def substitution_variables
+      {
+        firstName: recipient&.first_name,
+        projectName: localize_for_recipient(event&.project_title_multiloc),
+        phaseTitle: localize_for_recipient(event&.phase_title_multiloc),
+        organizationName: organization_name
+      }
     end
 
-    def header_title
-      format_message('main_header', values: { firstName: recipient_first_name })
-    end
-
-    def header_message
-      format_message('event_description', values: { projectName: project_title })
-    end
-
-    def preheader
-      format_message('preheader', values: { projectName: project_title })
+    def preview_command(recipient)
+      data = preview_service.preview_data(recipient)
+      {
+        recipient: recipient,
+        event_payload: {
+          phase_title_multiloc: data.phase.title_multiloc,
+          phase_url: data.phase.url,
+          project_title_multiloc: data.project.title_multiloc,
+          project_description_preview_multiloc: data.project.description_preview_multiloc
+        }
+      }
     end
   end
 end
