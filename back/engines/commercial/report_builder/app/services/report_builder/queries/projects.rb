@@ -3,15 +3,24 @@ module ReportBuilder
     def run_query(start_at: nil, end_at: nil, publication_statuses: ['published'], **_other_props)
       start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
 
-      overlapping_project_ids = Phase
-        .select(:project_id)
-        .where("(start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)", start_date, end_date)
+      # Build base query with date filtering
+      base_query = build_base_query(start_date, end_date)
 
-      overlapping_projects = Project
-        .joins(:admin_publication)
-        .where(id: overlapping_project_ids)
-        .where(admin_publication: { publication_status: publication_statuses })
-        .not_hidden
+      # Use ProjectsFinderAdminService.execute to handle user permissions and filtering
+      params = {
+        status: publication_statuses,
+        start_at: start_at,
+        end_at: end_at
+      }
+
+      overlapping_projects = ProjectsFinderAdminService.execute(
+        base_query,
+        params,
+        current_user: @current_user
+      )
+
+      # Get project IDs for related data
+      overlapping_project_ids = overlapping_projects.pluck(:id)
 
       periods = Phase
         .select(
@@ -47,6 +56,17 @@ module ReportBuilder
     end
 
     private
+
+    def build_base_query(start_date, end_date)
+      overlapping_project_ids = Phase
+        .select(:project_id)
+        .where("(start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)", start_date, end_date)
+
+      Project
+        .joins(:admin_publication)
+        .where(id: overlapping_project_ids)
+        .not_hidden
+    end
 
     def serialize(entity, serializer)
       serializer.new(entity, params: { current_user: @current_user }).serializable_hash[:data]
