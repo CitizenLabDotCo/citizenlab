@@ -105,7 +105,7 @@ nl:
       event_address2: 'Kamer 3a, boven'
       proposal_title: 'Voorbeeldvoorstel'
       input_status_title: 'Voorbeeld status'
-      input_status_description: 'Een voorbeeld van een status voor een invoer (bijv. geaccepteerd, afgewezen, geïmplementeerd...)'
+      input_status_description: 'Een voorbeeld van een status voor een bijdrage (bijv. geaccepteerd, afgewezen, geïmplementeerd...)'
       official_feedback_body: 'Voorbeeld officiële feedback'
     footer:
       "link_privacy_policy": "Privacybeleid"
