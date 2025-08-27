@@ -889,6 +889,7 @@
   "app.containers.Admin.emails.groups": "Grupper",
   "app.containers.Admin.emails.helmetDescription": "Send ut manuelle e-poster til brukergrupper og aktiver automatiserte kampanjer",
   "app.containers.Admin.emails.nameVariablesInfo2": "Du kan henvende deg direkte til innbyggerne ved hjelp av variablene {firstName} {lastName}. For eksempel \"Kjære {firstName} {lastName}, ...\"",
+  "app.containers.Admin.emails.preview": "Forhåndsvisning",
   "app.containers.Admin.emails.previewSentConfirmation": "En e-post med forhåndsvisning er sendt til e-postadressen din",
   "app.containers.Admin.emails.previewTitle": "Forhåndsvisning",
   "app.containers.Admin.emails.regionMultilocError": "Vennligst oppgi en verdi for alle språk",
