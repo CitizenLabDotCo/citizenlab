@@ -59,7 +59,7 @@ module ParticipationMethod
         title_page: { locks: { enabled: true, title_multiloc: true } },
         title_multiloc: { locks: { enabled: true, required: true, title_multiloc: true } },
         body_multiloc: { locks: { enabled: true, required: true, title_multiloc: true } },
-        idea_images_attributes: { locks: { enabled: true, title_multiloc: true } },
+        idea_images_attributes: { locks: { title_multiloc: true } },
         idea_files_attributes: { locks: { title_multiloc: true } },
         topic_ids: { locks: { title_multiloc: true } },
         location_description: { locks: { title_multiloc: true } }
