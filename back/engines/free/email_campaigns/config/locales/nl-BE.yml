@@ -133,11 +133,11 @@ nl-BE:
       event_description: 'Ontdek rond welke ideeën er het meest werd gediscussieerd de afgelopen week. Hieronder vind je het overzicht!'
       cta_button: 'Ga naar het platform'
       new_users: 'Nieuwe gebruikers'
-      new_inputs: 'Nieuwe bijdrage'
+      new_inputs: 'Nieuwe bijdragen'
       new_comments: 'Nieuwe reacties'
       title_activity_past_week: 'Activiteit van de afgelopen week'
       title_no_activity_past_week: 'Er was geen activiteit in de afgelopen week'
-      reached_threshold: 'Drempel bereikt'
+      reached_threshold: 'Bereikte het benodigd aantal stemmen'
       yesterday_by_author: 'Gisteren door %{author}'
       today_by_author: 'Vandaag door %{author}'
       x_days_ago_by_author: '%{x} dagen geleden door %{author}'
@@ -409,7 +409,7 @@ nl-BE:
       header_message: '%{organizationName} heeft de status van de input ''%{input_title}'' op hun digitale participatieplatform bijgewerkt.'
       header_title: 'Een bijdrage die je volgt, heeft een nieuwe status'
       subject: 'De status van "%{input_title}" is veranderd'
-      preheader: 'Een bijdrage die je volgt heeft een nieuwe status'
+      preheader: 'Een bijdrage die je volgt, heeft een nieuwe status'
     user_digest:
       subject: "Wekelijkse update van het participatieplatform van %{organizationName}"
       commented: "%{authorFirstName} schreef:"
@@ -575,7 +575,7 @@ nl-BE:
         user_who_submitted_the_input: 'Gebruiker die de bijdrage heeft ingestuurd'
         user_who_voted: 'Gebruiker die heeft gestemd'
         user_who_was_invited: 'Gebruiker die werd uitgenodigd'
-        user_with_unsubmitted_survey: 'Gebruiker die zijn vragenlijst is begonnen, maar nog niet heeft ingediend'
+        user_with_unsubmitted_survey: 'Gebruiker met een niet-ingediende vragenlijst'
         user_with_unsubmitted_votes: 'Gebruiker die nog geen stem heeft uitgebracht'
         users_who_engaged_but_not_voted: 'Gebruikers die betrokken waren bij het project maar niet hebben gestemd'
         users_who_engaged_with_the_project: 'Gebruikers die zich met het project bezighielden'
