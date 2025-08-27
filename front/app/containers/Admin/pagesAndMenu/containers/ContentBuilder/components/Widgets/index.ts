@@ -121,6 +121,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
 const WIDGETS_WITH_CHILDREN = new Set<string>([
   'TwoColumn',
   'ThreeColumn',
+  'AccordionMultiloc',
 ] satisfies WidgetName[]);
 
 export const hasChildren = (nodeName: string) => {
