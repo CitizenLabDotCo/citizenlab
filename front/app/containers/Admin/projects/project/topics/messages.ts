@@ -52,9 +52,9 @@ export default defineMessages({
     defaultMessage: 'Topic Manager',
   },
   lastTopicWarning: {
-    id: 'app.containers.AdminPage.Topics.lastTopicWarning2',
+    id: 'app.containers.AdminPage.Topics.lastTopicWarning3',
     defaultMessage:
-      'At least one topic is required. If you do not wish to use tags, the ‘Tags’ item can be deleted from any phase’s input form (if present).',
+      'At least one tag is required. If you do not wish to use tags, the ‘Tags’ item can be deleted from any phase’s input form (if present).',
   },
   inputForm: {
     id: 'app.containers.AdminPage.Topics.inputForm',
