@@ -95,6 +95,7 @@ kl:
       project_title: 'Example project'
       project_description_preview: 'This is some example phase content used for previewing the content of emails. This is not real content.'
       phase_title: 'Example phase'
+      folder_title: 'Example folder'
       comment_body: 'This is an example comment used for previewing the content of emails. This is not real content.'
       comment_deleted_reason: 'Your example comment was considered inappropriate.'
       idea_title: 'Example Idea'
@@ -103,6 +104,9 @@ kl:
       event_address1: '10 Example Street, Exampleton, Exampleshire'
       event_address2: 'Room 3a, Upstairs'
       proposal_title: 'Example Proposal'
+      input_status_title: 'Example Status'
+      input_status_description: 'An example of a status for an input (e.g. accepted, rejected, implemented...)'
+      official_feedback_body: 'Example official feedback'
     footer:
       "link_privacy_policy": "Kinaasutsimik isertuusinermi politikki"
       "link_terms_conditions": "Piumasaqaatit atugassarititaasullu"
@@ -333,10 +337,11 @@ kl:
       title: 'New internal comment on ''%{post}'''
       preheader: 'New internal comment on ''%{post}'''
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
-      header_title: 'There''s an update on "%{input_title}"'
+      event_description: '%{feedback_author_name} gave an update on ''%{input_title}''.'
+      title: 'There''s an update on "%{input_title}"'
       subject: 'Official feedback was posted on "%{input_title}"'
       preheader: 'There''s an update on an input you follow'
+      cta_button: Go to this input
     mention_in_official_feedback:
       cta_button: 'Reply to %{organizationName}'
       event_description: '%{organizationName} isumassarsiami ''%{post}''mi oqaaseqaammini taavaatit. Linki ataaniittoq tooruk %{organizationName} oqaloqatiginiarukku'
@@ -344,8 +349,8 @@ kl:
       subject: '%{organizationName}p oqaaseqaammini taavaatit'
       preheader: '%{commentAuthor}ip oqaaseqaammini taavaatit'
     project_moderation_rights_received:
-      cta_manage_project: 'Manage this project'
-      message_you_became_moderator: '%{organizationName}p ilaasortaanut aqutsisup suliniutit ukua ilinnut tunniuppai:'
+      cta_button: 'Manage this project'
+      event_description: 'An adminstrator of the participation platform of %{organizationName} just made you project manager of the following project:'
       no_ideas: 'Suli isumassarsiaqanngilaq'
       preheader: '%{organizationName}p platformimi ilaasortanut aqutsisup suliniutit ukua ilinnut tunniuppai'
       subject: 'Platformimi suliniutit ukua aqutsisuuffigilerpatit %{organizationName}'
@@ -356,11 +361,11 @@ kl:
       title_moderate_analyse_input: 'Nassiunneqartut aqukkit misissuataarlugillu'
       title_share_project_information: 'Suliniummut paasissutissat immersukkit'
       title_what_can_you_do_moderator: 'Suliami aqutsisutut qanoq iliuuseqarsinnaavit?'
-      title_you_became_moderator: 'Aqutsisunngorputit'
+      title: 'You became a project manager'
       x_ideas: '%{numberOfIdeas} isumassarsiat'
     project_folder_moderation_rights_received:
-      cta_view_folder_button: 'Mappi nuisiuguk '
-      message_added_as_folderadmin: '%{organizationName}-ip peqataasitsinermut nittartagaani mappimut tulliuttumut aqutsinissannut pisinnaatitaaffeqalerputit:'
+      cta_button: 'View this folder'
+      event_description: 'You''ve been given folder manager rights on %{organizationName}''s participation platform for the following folder:'
       no_projects: 'Suli projekteqanngilaq'
       preheader: 'Peqataasitsinermut nittartakkami %{organizationName}imi ingerlatsisup mappimut tulliuttumut aqutsisunngortippaatit'
       subject: 'Peqataasitsinermut nittartakkami %{organizationName}imi projekt mappinut aqutsisunngorputit'
@@ -371,7 +376,7 @@ kl:
       title_moderate_analyse_input: 'Nassiunneqartut aqukkit misissuataarlugillu'
       title_manage_folder: 'Mappimi inissitsitigaq aaqqisoruk, nutaanillu projektiliorlutit'
       title_what_can_you_do_folderadmin: 'Mappinik aqutsisutut suna suliarisinnaaviuk?'
-      title_added_as_folderadmin: 'Mappinik aqutsisussatut ilanngunneqarputit'
+      title: 'You''ve been added as a folder manager'
       x_projects: 'Projektit %{numberOfProjects}it '
     project_phase_started:
       cta_button: 'Discover this new phase'
@@ -382,41 +387,43 @@ kl:
       subject: '%{projectName} fasemut nutaamut pivoq'
       preheader: '%{projectName}mut fase nutaaq aallartippoq'
     project_phase_upcoming:
-      cta_view_phase: 'Fase una nutaaq inissititeruk'
+      cta_button: 'Set this new phase up'
       event_description: 'Suliaq"%{projectName}" nutaamik fasemik aallartissaaq. Uani fasemi suna tamarmi inissititerneqarsimassasoq qulakkeeruk: Nassuiarnera naammappa? Isumassarsiat imarineqareersut uunga fasemut nuunneqassappat? Uuma fasep e-mailikkut tulluarsakkakkut innuttaasunut nassuiarnissaa kissaatigiviuk?'
-      main_header: '%{firstName}, suliniut ullut XXX qaangiuppata fasemut nutaamut pissaaq'
+      title: '%{firstName}, a project will enter a new phase soon'
       subtitle: 'About ''%{projectName}'''
       new_phase: 'Suliniut fasemut ''%{phaseTitle}'' pivoq'
       subject: '%{projectName}mi fasemut nutaamut piareersarit'
       preheader: '%{projectName}mut suliniummik nutaamik aallartitsisoqarpoq '
     project_published:
       subject: 'A new project was published on the platform of %{organizationName}'
-      header_title: 'A new project was published'
-      header_message: 'The participation platform of %{organizationName} just published the following project:'
+      title: 'A new project was published'
+      event_description: 'The participation platform of %{organizationName} just published the following project:'
       preheader: 'A new project was published'
+      cta_button: 'Go to this project'
     project_review_request:
       subject: 'Review request: A project is waiting for approval.'
-      header: '%{requesterName} has invited you to review the project "%{projectTitle}"'
-      header_message: "Currently, the project is in draft mode and isn't visible to users. Once you've reviewed and approved it, the moderator will be able to publish it."
-      cta_review_project: "Review the project"
+      title: '%{requesterName} has invited you to review the project "%{projectTitle}"'
+      event_description: "Currently, the project is in draft mode and isn't visible to users. Once you've reviewed and approved it, the moderator will be able to publish it."
+      cta_button: "Review the project"
     project_review_state_change:
       subject: '"%{projectTitle}" has been approved'
-      header: '%{reviewerName} approved the project "%{projectTitle}"'
-      header_message: "The project is now ready to go live. You can publish it whenever you're ready!"
-      cta_go_to_project: "Go to project settings"
+      title: '%{reviewerName} approved the project "%{projectTitle}"'
+      event_description: "The project is now ready to go live. You can publish it whenever you're ready!"
+      cta_button: "Go to project settings"
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
-      header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
-      header_title: 'An input you follow has a new status'
+      event_description: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
+      title: 'An input you follow has a new status'
       subject: 'The status of "%{input_title}" has changed'
       preheader: 'An input you follow has a new status'
+      cta_button: Go to this input
     user_digest:
       subject: "%{organizationName}mut peqataanermi platformimi sapaatip akunnikkaartumik paasissutissat kingullit ilanngullugit takussutissaq"
       commented: "%{authorFirstName} oqaaseqaateqarpoq:"
       preheader: "Sapaatip akunnikkaartumik %{organizationName}mut nalunaarsuutit"
-      title_your_weekly_report: "Sapaatip akunnerani kingullermi susoqarsimanersoq paasiniaruk"
-      intro_text: "Here's a summary of what happened on the participation platform of %{organizationName}."
-      cta_go_to_the_platform: "Platformi pulaaruk"
+      title: "Discover what happened last week"
+      event_description: "Here's a summary of what happened on the participation platform of %{organizationName}."
+      cta_button: "Go to the platform"
       title_no_activity_past_week: "Sapaatip akunnerani kingullermi suliaqanngilaq"
       successful_proposals_title: "Reached the threshold"
       successful_proposals_text: "These proposals have gotten enough support to move to the next stage! Click on the proposal to learn more about what happens next."
@@ -431,15 +438,15 @@ kl:
       no_unread_notifications: "You've got no unread notifications. However, we invite you to visit the platform to discover what’s happening."
       unread_notifications: "You've got unread notifications. We invite you to visit the platform to discover what’s happening."
     threshold_reached_for_admin:
-      cta_process_initiative: 'Suliniut una tullianut ingerlateqqiguk'
-      main_header: 'Suliniutip taasinermi killiffissani anguaa!'
+      cta_button: 'Take this proposal to the next steps'
+      title: 'A proposal reached the voting threshold!'
       subject: 'Platforminni suliniutip taasinermi killiffissani anguaa'
       preheader: 'Tulliata naammassinissaa qulakkeeruk'
     welcome:
-      cta_join_platform: 'Platformi misissuataaruk'
+      cta_button: 'Discover the platform'
       subject: '%{organizationName}-mut platformimut tikilluarit'
-      main_header: Tikilluarit!
-      message_welcome: 'Pilluarit, %{organizationName}-mi platformimi peqataanissamut nalunaarsimavutit. Ilisimasat, isumassarsiat isummatillu siaruartikkit platformilu misissuataaruk. Eqqaamajuk, aamma assitaliisinnaagavit naatsumillu kinaanerit oqaluttuaralugu.'
+      title: Welcome!
+      event_description: 'Congratulations, you successfully signed up on the participation platform of %{organizationName}. You can now discover the platform and make your voice heard. You can also add a profile picture and a short description to tell others who you are.'
       preheader: 'Uani %{organizationName} platformimi taamaaliorsinnaavutit'
     idea_published:
       subject: 'Your idea has been published'
@@ -475,15 +482,15 @@ kl:
         option: 'Your option is in "%{prescreening_status_title}"'
         proposal: 'Your proposal is in "%{prescreening_status_title}"'
         petition: 'Your petition is in "%{prescreening_status_title}"'
-      message: '"%{input_title}" will become visible to others once it has been reviewed and approved.'
+      event_description: '"%{input_title}" will become visible to others once it has been reviewed and approved.'
       subject: '"%{input_title}" is almost published'
       preheader: 'It''s currently in %{prescreening_status_title}'
     voting_basket_submitted:
       subject: '%{organizationName}: You voted successfully'
       preheader: 'You voted successfully on the participation platform of %{organizationName}'
-      title_basket_submitted: 'You voted successfully'
+      title: 'You voted successfully'
       event_description: 'Thanks for participating. Your votes have been recorded. Visit the platform of %{organizationName} to see and manage your votes.'
-      cta_see_votes_submitted: 'See votes submitted'
+      cta_button: 'See votes submitted'
       cta_message: 'Click the button below to participate'
     native_survey_not_submitted:
       subject: '%{organizationName}: Almost there! Submit your answers'
@@ -495,26 +502,26 @@ kl:
     voting_basket_not_submitted:
       subject: '%{organizationName}: You didn''t submit your votes'
       preheader: 'You didn''t submit your votes on the participation platform of %{organizationName}'
-      title_basket_not_submitted: 'You didn''t submit your votes'
+      title: 'You didn''t submit your votes'
       event_description: 'You selected a few options for %{contextTitle} but you didn''t submit your selection.'
-      cta_view_options_and_vote: 'View options and vote'
+      cta_button: 'View options and vote'
       cta_message: 'Click the button below to submit your selected options'
     voting_last_chance:
       subject: '%{organizationName}: Last chance to vote for %{phaseTitle}'
       preheader: 'Last chance to vote for %{phaseTitle} on the participation platform of %{organizationName}'
-      title_last_chance: 'Last chance to vote for %{phaseTitle}'
+      title: 'Last chance to vote for %{phaseTitle}'
       body_1: 'The voting phase for the %{projectTitle} project is coming to a close tomorrow, at midnight.'
       body_2: 'Time is running out, and we noticed that you haven''t cast your vote yet! Act now by simply clicking the button below to participate.'
       body_3: 'By doing so, you''ll gain access to a range of options and have the chance to provide your input, which is crucial in deciding the future of this project.'
-      cta_vote: 'Vote'
+      cta_button: 'Vote'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} vote results revealed!'
       preheader: '%{phaseTitle} vote results revealed on the participation platform of %{organizationName}'
-      title_results: '%{phaseTitle} vote results revealed!'
+      title: '%{phaseTitle} vote results revealed!'
       body_1: 'Results are in!'
       body_2: 'The results of the %{phaseTitle} vote in the %{organizationName} platform have been published!'
       body_3: 'We encourage you to review the results and stay tuned for further updates on the next steps.'
-      cta_see_results: 'See results in the platform'
+      cta_button: 'See results in the platform'
     event_registration_confirmation:
       subject: "You're in! Your registration for \"%{eventTitle}\" is confirmed"
       preheader: "%{firstName}, thanks for registering for %{eventTitle}"
@@ -531,18 +538,19 @@ kl:
     voting_phase_started:
       subject: '%{organizationName}: The voting phase started for %{projectName}'
       preheader: 'The voting phase started for %{projectName} on the participation platform of %{organizationName}'
+      title: '%{projectName}'
       event_description: 'The project "%{projectName}" is asking you to vote between %{numIdeas} options:'
       cta_message: 'Click the button below to participate'
-      cta_vote: 'Go to the platform to vote'
+      cta_button: 'Go to the platform to vote'
     survey_submitted:
       subject: '%{organizationName}: Thank you for your response! 🎉'
       preheader: 'Here are the details of your submission.'
-      main_header: 'Thank you for sharing your thoughts on "%{projectName}"!'
-      your_input_submitted: 'Your input for "%{projectName}" has been submitted successfully.'
+      title: 'Thank you for sharing your thoughts on "%{projectName}"!'
+      event_description: 'Your input for "%{projectName}" has been submitted successfully.'
       if_you_would_like_to_review: 'If you would like to review your submission, you can download your responses below.'
       your_submission_has_id: 'Your submission has the following unique identifier:'
       you_can_use_this_id: 'You can use this identifier to contact the platform administrators in case you want your submission to be removed.'
-      download_responses: 'Download your responses'
+      cta_button: 'Download your responses'
     admin_labels:
       recipient_role:
         admins: 'To admins'
