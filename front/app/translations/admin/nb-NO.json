@@ -2620,6 +2620,7 @@
   "app.containers.AdminPage.Topics.deleteTopicLabel": "Slett",
   "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "Denne taggen vil ikke lenger kunne legges til i nye innlegg i dette prosjektet.",
   "app.containers.AdminPage.Topics.inputForm": "Inndataskjema",
+  "app.containers.AdminPage.Topics.lastTopicWarning2": "Minst ett emne er påkrevd. Hvis du ikke ønsker å bruke tagger, kan du slette \"Tagger\"-elementet fra inndataskjemaet for alle faser (hvis det finnes).",
   "app.containers.AdminPage.Topics.projectTopicsDescription": "Du kan legge til og slette tagger som kan tilordnes innlegg i dette prosjektet.",
   "app.containers.AdminPage.Topics.remove": "Fjern",
   "app.containers.AdminPage.Topics.title": "Prosjekttagger",

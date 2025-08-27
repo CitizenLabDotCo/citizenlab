@@ -2620,6 +2620,7 @@
   "app.containers.AdminPage.Topics.deleteTopicLabel": "Eliminar",
   "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "Este tema ya no podrá ser utilizado en los proyectos.",
   "app.containers.AdminPage.Topics.inputForm": "Formulario de aportes",
+  "app.containers.AdminPage.Topics.lastTopicWarning2": "Se requiere al menos un tema. Si no deseas utilizar etiquetas, puedes eliminar el elemento \"Etiquetas\" del formulario de entrada de cualquier fase (si está presente).",
   "app.containers.AdminPage.Topics.projectTopicsDescription": "Puedes agregar y eliminar los temas que se pueden asignar a las entradas en este proyecto.",
   "app.containers.AdminPage.Topics.remove": "Eliminar",
   "app.containers.AdminPage.Topics.title": "Etiquetas de entrada permitidas",
