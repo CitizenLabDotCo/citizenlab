@@ -889,6 +889,7 @@
   "app.containers.Admin.emails.groups": "ਸਮੂਹ",
   "app.containers.Admin.emails.helmetDescription": "ਉਪਭੋਗਤਾ ਸਮੂਹਾਂ ਨੂੰ ਮੈਨੂਅਲ ਈਮੇਲ ਭੇਜੋ ਅਤੇ ਸਵੈਚਲਿਤ ਮੁਹਿੰਮਾਂ ਨੂੰ ਸਰਗਰਮ ਕਰੋ",
   "app.containers.Admin.emails.nameVariablesInfo2": "ਤੁਸੀਂ {firstName} {lastName}ਵੇਰੀਏਬਲ ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹੋਏ ਨਾਗਰਿਕਾਂ ਨਾਲ ਸਿੱਧਾ ਗੱਲ ਕਰ ਸਕਦੇ ਹੋ। ਜਿਵੇਂ ਕਿ \"ਪਿਆਰੇ {firstName} {lastName}, ...\"",
+  "app.containers.Admin.emails.preview": "ਝਲਕ",
   "app.containers.Admin.emails.previewSentConfirmation": "ਇੱਕ ਪੂਰਵਦਰਸ਼ਨ ਈਮੇਲ ਤੁਹਾਡੇ ਈਮੇਲ ਪਤੇ 'ਤੇ ਭੇਜੀ ਗਈ ਹੈ",
   "app.containers.Admin.emails.previewTitle": "ਝਲਕ",
   "app.containers.Admin.emails.regionMultilocError": "ਕਿਰਪਾ ਕਰਕੇ ਸਾਰੀਆਂ ਭਾਸ਼ਾਵਾਂ ਲਈ ਇੱਕ ਮੁੱਲ ਪ੍ਰਦਾਨ ਕਰੋ।",
