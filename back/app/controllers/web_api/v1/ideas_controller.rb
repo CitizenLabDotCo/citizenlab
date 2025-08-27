@@ -577,7 +577,6 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def not_allowed_update_errors(input)
-    puts "idea: #{input.inspect}"
     can_moderate = UserRoleService.new.can_moderate?(input.project, current_user)
 
     if can_moderate == false && anonymous_not_allowed?(TimelineService.new.current_phase_not_archived(input.project))

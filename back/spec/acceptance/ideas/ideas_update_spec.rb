@@ -321,10 +321,23 @@ resource 'Ideas' do
 
             example 'Does not reject the anonymous parameter' do
               do_request idea: { anonymous: true }
+
               assert_status 200
-              json_response = json_parse response_body
               expect(response_data.dig(:relationships, :author, :data, :id)).to be_nil
               expect(response_data.dig(:attributes, :anonymous)).to be true
+            end
+          end
+
+          describe 'when anonymous posting is allowed and phase is not current' do
+            let(:allow_anonymous_participation) { true }
+
+            example 'updates without error' do
+              project.phases.first.update! start_at: 2.weeks.ago, end_at: 1.week.ago
+
+              do_request idea: { body_multiloc: { 'en' => 'Updated body' } }
+
+              assert_status 200
+              expect(response_data.dig(:attributes, :body_multiloc)).to eq({ en: 'Updated body' })
             end
           end
 
