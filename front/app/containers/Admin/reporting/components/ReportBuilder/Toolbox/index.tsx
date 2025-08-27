@@ -39,6 +39,7 @@ import {
   isModerator,
   isProjectModerator,
   isSuperAdmin,
+  isAdmin,
 } from 'utils/permissions/roles';
 
 import Analysis from '../Analysis';
@@ -79,6 +80,7 @@ const ReportBuilderToolbox = ({
 
   const { data: authUser } = useAuthUser();
   const userIsModerator = !!authUser && isModerator(authUser);
+  const isUserAdmin = isAdmin(authUser);
 
   const { data: projects } = useProjects(
     {
@@ -368,19 +370,23 @@ const ReportBuilderToolbox = ({
               icon="chart-bar"
               label={formatMessage(WIDGET_TITLES.MethodsUsedWidget)}
             />
-            <DraggableElement
-              id="e2e-draggable-projects-widget"
-              component={
-                <ProjectsWidget
-                  title={toMultiloc(WIDGET_TITLES.ProjectsWidget)}
-                  startAt={undefined}
-                  endAt={chartEndDate}
-                />
-              }
-              icon="projects"
-              label={formatMessage(WIDGET_TITLES.ProjectsWidget)}
-            />
-            {projectPlanningCalendarEnabled && (
+            {/* Only show Projects Widget for admins, not for project moderators */}
+            {isUserAdmin && (
+              <DraggableElement
+                id="e2e-draggable-projects-widget"
+                component={
+                  <ProjectsWidget
+                    title={toMultiloc(WIDGET_TITLES.ProjectsWidget)}
+                    startAt={undefined}
+                    endAt={chartEndDate}
+                  />
+                }
+                icon="projects"
+                label={formatMessage(WIDGET_TITLES.ProjectsWidget)}
+              />
+            )}
+            {/* Only show Projects Timeline Widget for admins, not for project moderators */}
+            {projectPlanningCalendarEnabled && isUserAdmin && (
               <DraggableElement
                 id="e2e-draggable-projects-timeline-widget"
                 component={

@@ -219,12 +219,24 @@ resource 'Ideas' do
           end
 
           describe do
-            let(:idea_files_attributes) { [{ name: 'afvalkalender.pdf', file: encode_file_as_base64('afvalkalender.pdf') }] }
+            let(:idea_files_attributes) do
+              [{
+                name: 'afvalkalender.pdf',
+                file_by_content: {
+                  name: 'afvalkalender.pdf',
+                  content: encode_file_as_base64('afvalkalender.pdf')
+                }
+              }]
+            end
 
             example_request 'Create an idea with a file' do
               assert_status 201
-              json_response = json_parse(response_body)
-              expect(Idea.find(json_response.dig(:data, :id)).idea_files.size).to eq 1
+
+              idea = Idea.find(response_data[:id])
+
+              # We are no longer using idea_files for new ideas.
+              expect(idea.idea_files.size).to eq(0)
+              expect(idea.attached_files.size).to eq(1)
             end
           end
 

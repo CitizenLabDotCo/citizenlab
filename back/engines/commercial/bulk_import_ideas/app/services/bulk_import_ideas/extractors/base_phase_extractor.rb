@@ -103,7 +103,6 @@ module BulkImportIdeas::Extractors
     def participation_method_attributes
       {
         participation_method: 'native_survey',
-        campaigns_settings: { project_phase_started: true },
         native_survey_title_multiloc: { en: 'Survey' },
         native_survey_button_multiloc: { en: 'Take the Survey' },
         user_fields_in_form: true

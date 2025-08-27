@@ -20,7 +20,8 @@
           "color_text",
           "lifecycle_stage",
           "country_code",
-          "authentication_token_lifetime_in_days"
+          "authentication_token_lifetime_in_days",
+          "min_user_age"
         ],
         "additionalProperties": false,
         "required": ["allowed", "enabled", "lifecycle_stage", "country_code"],
@@ -258,6 +259,13 @@
             "description": "When disabled exports and analyses on native survey phases will not return any private attributes.",
             "type": "boolean",
             "default": true
+          },
+          "min_user_age": {
+            "title": "Minimum user age",
+            "description": "Used to determine the available birthyears in the birthyear registration question",
+            "type": "integer",
+            "minimum": 0,
+            "default": 12
           }
         }
       },
@@ -1485,7 +1493,19 @@
       "customised_automated_emails": {
         "type": "object",
         "title": "Customised automated emails",
-        "description": "Override text of the default emails and preview [DO NOT ENABLE]",
+        "description": "Override text of the default emails and preview",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "customised_automated_context_emails": {
+        "type": "object",
+        "title": "Customised automated context emails",
+        "description": "Override text of the default emails and preview, for specific contexts (e.g. phases, events...)",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

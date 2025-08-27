@@ -20,4 +20,4 @@
 </mj-section>
 
 
-<%= render partial: 'application/cta_button', locals: { href: url_service.admin_ideas_url, message: format_message('cta_reply_to', values: { authorName: event.post_author_name }) } %>
+<%= render partial: 'application/cta_button', locals: { href: url_service.admin_ideas_url, message: cta_button_text } %>
