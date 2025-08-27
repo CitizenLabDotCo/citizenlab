@@ -95,6 +95,7 @@ nl:
       project_title: 'Voorbeeldproject'
       project_description_preview: 'Dit is een voorbeeld van fase-inhoud die wordt gebruikt om de inhoud van e-mails te bekijken. Dit is geen echte inhoud.'
       phase_title: 'Voorbeeldfase'
+      folder_title: 'Voorbeeld map'
       comment_body: 'Dit is een voorbeeldreactie die wordt gebruikt om een voorvertoning van inhoud van e-mails te laten zien. Dit is niet de echte inhoud.'
       comment_deleted_reason: 'Je voorbeeldcommentaar werd als ongepast beschouwd.'
       idea_title: 'Voorbeeldidee'
@@ -103,6 +104,9 @@ nl:
       event_address1: 'Voorbeeldstraat 10, Voorbeeldhoven, Zuid-Voorbeeldland'
       event_address2: 'Kamer 3a, boven'
       proposal_title: 'Voorbeeldvoorstel'
+      input_status_title: 'Voorbeeld status'
+      input_status_description: 'Een voorbeeld van een status voor een invoer (bijv. geaccepteerd, afgewezen, geïmplementeerd...)'
+      official_feedback_body: 'Voorbeeld officiële feedback'
     footer:
       "link_privacy_policy": "Privacybeleid"
       "link_terms_conditions": "Gebruiksvoorwaarden"
@@ -333,10 +337,11 @@ nl:
       title: 'Nieuw intern commentaar op ''%{post}'''
       preheader: '''%{post}'' heeft een nieuwe interne reactie'
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} Gaf een update bij %{input_title}''.'
-      header_title: 'Er is een update op "%{input_title}"'
+      event_description: '%{feedback_author_name} Gaf een update bij %{input_title}''.'
+      title: 'Er is een update op "%{input_title}"'
       subject: 'Er is officiële feedback geplaatst op "%{input_title}"'
       preheader: 'Er is een update over een idee dat je volgt'
+      cta_button: Ga naar deze bijdrage
     mention_in_official_feedback:
       cta_button: 'Beantwoord %{organizationName}'
       event_description: '%{organizationName} heeft je genoemd in hun feedback op het idee ''%{post}''. Klik op onderstaande link om in gesprek te gaan met %{organizationName}'
@@ -344,8 +349,8 @@ nl:
       subject: '%{organizationName} noemde je in hun feedback'
       preheader: '%{commentAuthor} heeft je genoemd in feedback'
     project_moderation_rights_received:
-      cta_manage_project: 'Beheer dit project'
-      message_you_became_moderator: 'Een platformbeheerder van het platform van %{organizationName} heeft jou zojuist projectbeheerder gemaakt van het volgende project:'
+      cta_button: 'Beheer dit project'
+      event_description: 'Een platformbeheerder van het platform van %{organizationName} heeft jou zojuist projectbeheerder gemaakt van het volgende project:'
       no_ideas: 'Nog geen bijdrages'
       preheader: 'Een platformbeheerder van het platform van %{organizationName} heeft jou zojuist projectbeheerder gemaakt van het volgende project'
       subject: 'Je bent nu projectbeheerder op het platform van %{organizationName}'
@@ -356,11 +361,11 @@ nl:
       title_moderate_analyse_input: 'Beheer en analyseer de input'
       title_share_project_information: 'Geef informatie bij het project.'
       title_what_can_you_do_moderator: 'Wat kan je doen als projectbeheerder?'
-      title_you_became_moderator: 'Je werd net projectbeheerder'
+      title: 'Je werd net projectbeheerder'
       x_ideas: '%{numberOfIdeas} bijdrages'
     project_folder_moderation_rights_received:
-      cta_view_folder_button: 'Bekijk deze map'
-      message_added_as_folderadmin: 'Je hebt beheerdersrechten gekregen op %{organizationName}''s participatieplatform voor de volgende map:'
+      cta_button: 'Bekijk deze map'
+      event_description: 'Je hebt beheerdersrechten gekregen op %{organizationName}''s participatieplatform voor de volgende map:'
       no_projects: 'Nog geen projecten'
       preheader: 'Een platformbeheerder van het platform van %{organizationName} heeft jou zojuist mapbeheerder gemaakt van de volgende map'
       subject: 'Je bent nu mapbeheerder op het participatieplatform van %{organizationName}'
@@ -371,7 +376,7 @@ nl:
       title_moderate_analyse_input: 'Beheer en analyseer de input'
       title_manage_folder: 'Beheer de mapinstellingen en maak nieuwe projecten.'
       title_what_can_you_do_folderadmin: 'Wat kan je doen als mapbeheerder?'
-      title_added_as_folderadmin: 'Je werd net mapbeheerder'
+      title: 'Je werd net mapbeheerder'
       x_projects: '%{numberOfProjects} projecten'
     project_phase_started:
       cta_button: 'Ontdek deze nieuwe fase'
@@ -382,41 +387,43 @@ nl:
       subject: '%{projectName} ging een nieuwe fase in'
       preheader: 'Een nieuwe fase is gestart voor %{projectName}'
     project_phase_upcoming:
-      cta_view_phase: 'Zet deze fase klaar'
+      cta_button: 'Zet deze fase klaar'
       event_description: 'Het project ''%{projectName}'' gaat binnenkort een nieuwe fase in. Zorg ervoor dat alles klaar staat: Is er een goede beschrijving? Werden geselecteerde bijdrages al naar deze fase overgeplaatst? Wil je je burgers nog informeren over bepaalde zaken via een e-mailcampagne?'
-      main_header: '%{firstName}, een project gaat binnenkort een nieuwe fase in'
+      title: '%{firstName}, een project gaat binnenkort een nieuwe fase in'
       subtitle: 'Over ''%{projectName}'''
       new_phase: 'Het project gaat de fase ''%{phaseTitle}'' in'
       subject: 'Zet alles klaar voor de nieuwe fase van %{projectName}'
       preheader: 'Een nieuwe fase gaat binnenkort van start voor %{projectName}'
     project_published:
       subject: 'Er is een nieuw project gepubliceerd op het platform van %{organizationName}'
-      header_title: 'Er is een nieuw project gepubliceerd'
-      header_message: 'Het participatieplatform van %{organizationName} heeft zojuist het volgende project gepubliceerd:'
+      title: 'Er is een nieuw project gepubliceerd'
+      event_description: 'Het participatieplatform van %{organizationName} heeft zojuist het volgende project gepubliceerd:'
       preheader: 'Er is een nieuw project gepubliceerd'
+      cta_button: 'Ga naar dit project'
     project_review_request:
       subject: 'Beoordelingsverzoek: Een project wacht op goedkeuring.'
-      header: '%{requesterName} heeft je uitgenodigd om het project "%{projectTitle}" te beoordelen'
-      header_message: "Momenteel staat het project in conceptmodus en is het niet zichtbaar voor gebruikers. Zodra je het hebt goedgekeurd, kan de moderator het publiceren."
-      cta_review_project: "Het project beoordelen"
+      title: '%{requesterName} heeft je uitgenodigd om het project "%{projectTitle}" te beoordelen'
+      event_description: "Momenteel staat het project in conceptmodus en is het niet zichtbaar voor gebruikers. Zodra je het hebt goedgekeurd, kan de moderator het publiceren."
+      cta_button: "Het project beoordelen"
     project_review_state_change:
       subject: '"%{projectTitle}" is goedgekeurd'
-      header: '%{reviewerName} heeft het project "%{projectTitle}" goedgekeurd'
-      header_message: "Het project is nu klaar om live te gaan. Je kunt het publiceren wanneer je er klaar voor bent!"
-      cta_go_to_project: "Ga naar projectinstellingen"
+      title: '%{reviewerName} heeft het project "%{projectTitle}" goedgekeurd'
+      event_description: "Het project is nu klaar om live te gaan. Je kunt het publiceren wanneer je er klaar voor bent!"
+      cta_button: "Ga naar projectinstellingen"
     status_change_on_idea_you_follow:
       status_change: 'De nieuwe status van dit idee is ''%{status}'''
-      header_message: '%{organizationName} heeft de status van de input ''%{input_title}'' op hun digitale participatieplatform bijgewerkt.'
-      header_title: 'Een bijdrage die je volgt, heeft een nieuwe status'
+      event_description: '%{organizationName} heeft de status van de input ''%{input_title}'' op hun digitale participatieplatform bijgewerkt.'
+      title: 'Een bijdrage die je volgt, heeft een nieuwe status'
       subject: 'De status van "%{input_title}" is veranderd'
       preheader: 'Een bijdrage die je volgt heeft een nieuwe status'
+      cta_button: Ga naar deze bijdrage
     user_digest:
       subject: "Wekelijkse update van het participatieplatform van %{organizationName}"
       commented: "%{authorFirstName} schreef:"
       preheader: "Dit gebeurde er vorige week op het platform"
-      title_your_weekly_report: "Ontdek wat er vorige week is gebeurd"
-      intro_text: "Hier is een overzicht van wat er is gebeurd op het participatieplatform van %{organizationName}."
-      cta_go_to_the_platform: "Ga naar het platform"
+      title: "Ontdek wat er vorige week is gebeurd"
+      event_description: "Hier is een overzicht van wat er is gebeurd op het participatieplatform van %{organizationName}."
+      cta_button: "Ga naar het platform"
       title_no_activity_past_week: "Geen activiteit de afgelopen week"
       successful_proposals_title: "Bereikte het benodigd aantal stemmen"
       successful_proposals_text: "Deze voorstellen hebben genoeg steun gevonden om naar de volgende stap te gaan! Klik op het voorstel om meer te weten te komen over wat er hierna gebeurt."
@@ -431,15 +438,15 @@ nl:
       no_unread_notifications: "Tijd om deel te nemen!  Bezoek het platform om te ontdekken wat er aan het gebeuren is."
       unread_notifications: "Je hebt nieuwe meldingen! Bezoek het platform om te ontdekken wat er aan het gebeuren is."
     threshold_reached_for_admin:
-      cta_process_initiative: 'Zet de volgende stappen met dit voorstel'
-      main_header: 'Een voorstel heeft het benodigd aantal stemmen bereikt!'
+      cta_button: 'Zet de volgende stappen met dit voorstel'
+      title: 'Een voorstel bereikte het nodige aantal stemmen!'
       subject: '"%{input_title}" heeft het benodigd aantal stemmen op je platform bereikt'
       preheader: 'Tijd om de volgende stappen te nemen'
     welcome:
-      cta_join_platform: 'Ontdek het platform'
+      cta_button: 'Ontdek het platform'
       subject: 'Welkom op het platform van %{organizationName}'
-      main_header: Welkom!
-      message_welcome: 'Leuk dat je je hebt geregistreerd op het participatieplatform van %{organizationName}. Je kan het platform nu ontdekken en je stem laten horen. Je kan ook een profielfoto en een korte beschrijving toevoegen om anderen te vertellen wie je bent.'
+      title: Welkom!
+      event_description: 'Leuk dat je je hebt geregistreerd op het participatieplatform van %{organizationName}. Je kan het platform nu ontdekken en je stem laten horen. Je kan ook een profielfoto en een korte beschrijving toevoegen om anderen te vertellen wie je bent.'
       preheader: 'Hier is wat je kan doen op het platform van %{organizationName}'
     idea_published:
       subject: 'Je idee is gepubliceerd'
@@ -475,15 +482,15 @@ nl:
         option: 'Je optie staat op "%{prescreening_status_title}"'
         proposal: 'Je voorstel staat in "%{prescreening_status_title}"'
         petition: 'Je petitie staat in "%{prescreening_status_title}"'
-      message: '"%{input_title}" wordt zichtbaar voor anderen zodra het is beoordeeld en goedgekeurd.'
+      event_description: '"%{input_title}" wordt zichtbaar voor anderen zodra het is beoordeeld en goedgekeurd.'
       subject: '"%{input_title}" is bijna gepubliceerd'
       preheader: 'Het staat momenteel in %{prescreening_status_title}'
     voting_basket_submitted:
       subject: '%{organizationName}: Je hebt succesvol gestemd'
       preheader: 'Je hebt succesvol gestemd op het participatieplatform van %{organizationName}'
-      title_basket_submitted: 'Je hebt succesvol gestemd'
+      title: 'Je hebt succesvol gestemd'
       event_description: 'Bedankt voor je deelname. Je stemmen zijn geregistreerd. Ga naar het platform van %{organizationName} om je stemmen te bekijken en te beheren.'
-      cta_see_votes_submitted: 'Bekijk ingediende stemmen'
+      cta_button: 'Bekijk ingediende stemmen'
       cta_message: 'Klik op de knop hieronder om deel te nemen'
     native_survey_not_submitted:
       subject: '%{organizationName}: Bijna klaar! Stuur je antwoorden in'
@@ -495,26 +502,26 @@ nl:
     voting_basket_not_submitted:
       subject: '%{organizationName}: Je hebt je stemmen niet ingediend'
       preheader: 'Je hebt je stem niet uitgebracht op het participatieplatform van %{organizationName}'
-      title_basket_not_submitted: 'Je hebt je stemmen niet ingediend'
+      title: 'Je hebt je stemmen niet ingediend'
       event_description: 'Je hebt een paar opties geselecteerd voor %{contextTitle}, maar je hebt je selectie niet ingediend.'
-      cta_view_options_and_vote: 'Bekijk opties en stem'
+      cta_button: 'Bekijk opties en stem'
       cta_message: 'Klik op de knop hieronder om je geselecteerde opties in te dienen'
     voting_last_chance:
       subject: '%{organizationName}: Laatste kans om te stemmen voor %{phaseTitle}'
       preheader: 'Laatste kans om te stemmen voor %{phaseTitle} op het participatieplatform van %{organizationName}'
-      title_last_chance: 'Laatste kans om te stemmen voor %{phaseTitle}'
+      title: 'Laatste kans om te stemmen voor %{phaseTitle}'
       body_1: 'De stemfase voor het %{projectTitle} project loopt morgen om middernacht af.'
       body_2: 'De tijd dringt en we hebben gemerkt dat je nog geen stem hebt uitgebracht! Doe nu mee door op de knop hieronder te klikken.'
       body_3: 'Door dit te doen krijg je toegang tot een reeks opties en krijg je de kans om je inbreng te geven, wat cruciaal is bij het beslissen over de toekomst van dit project.'
-      cta_vote: 'Stem'
+      cta_button: 'Stem'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} stemresultaten bekendgemaakt!'
       preheader: '%{phaseTitle} stemresultaten bekendgemaakt op het participatieplatform van %{organizationName}'
-      title_results: '%{phaseTitle} stemresultaten bekendgemaakt!'
+      title: '%{phaseTitle} stemresultaten bekendgemaakt!'
       body_1: 'De resultaten zijn binnen!'
       body_2: 'De resultaten van de %{phaseTitle} stemming op het %{organizationName} platform zijn gepubliceerd!'
       body_3: 'We raden je aan om de resultaten te bekijken en op de hoogte te blijven van de volgende stappen.'
-      cta_see_results: 'Bekijk resultaten op het platform'
+      cta_button: 'Bekijk resultaten op het platform'
     event_registration_confirmation:
       subject: "Je bent erbij! Je inschrijving voor \"%{eventTitle}\" is bevestigd"
       preheader: "%{firstName}, bedankt voor het registreren voor %{eventTitle}"
@@ -531,18 +538,19 @@ nl:
     voting_phase_started:
       subject: '%{organizationName}: De stemmingsfase is begonnen voor %{projectName}'
       preheader: 'De stemmingsfase is begonnen voor %{projectName} op het participatieplatform van %{organizationName}'
+      title: '%{projectName}'
       event_description: 'Het project "%{projectName}" vraagt je om te stemmen tussen %{numIdeas} opties:'
       cta_message: 'Klik op de knop hieronder om deel te nemen'
-      cta_vote: 'Ga naar het platform om te stemmen'
+      cta_button: 'Ga naar het platform om te stemmen'
     survey_submitted:
       subject: '%{organizationName}: Bedankt voor je reactie! 🎉'
       preheader: 'Hier zijn de details van je inzending.'
-      main_header: 'Bedankt voor het delen van je mening over "%{projectName}"!'
-      your_input_submitted: 'Je bijdrage voor "%{projectName}" is succesvol ingediend.'
+      title: 'Bedankt voor het delen van je mening over "%{projectName}"!'
+      event_description: 'Je bijdrage voor "%{projectName}" is succesvol ingediend.'
       if_you_would_like_to_review: 'Als je je inzending nog eens wilt bekijken, kun je je reacties hieronder downloaden.'
       your_submission_has_id: 'Je inzending heeft de volgende unieke identificatiecode:'
       you_can_use_this_id: 'Je kunt deze identificatiecode gebruiken om contact op te nemen met de beheerders van het platform als je wilt dat je inzending wordt verwijderd.'
-      download_responses: 'Download je reacties'
+      cta_button: 'Download je reacties'
     admin_labels:
       recipient_role:
         admins: 'Aan platformbeheerders'
@@ -575,7 +583,7 @@ nl:
         user_who_submitted_the_input: 'Gebruiker die de bijdrage heeft ingestuurd'
         user_who_voted: 'Gebruiker die heeft gestemd'
         user_who_was_invited: 'Gebruiker die werd uitgenodigd'
-        user_with_unsubmitted_survey: 'Gebruiker die zijn vragenlijst is begonnen, maar nog niet heeft ingediend'
+        user_with_unsubmitted_survey: 'Gebruiker met een niet-ingediende vragenlijst'
         user_with_unsubmitted_votes: 'Gebruiker die nog geen stem heeft uitgebracht'
         users_who_engaged_but_not_voted: 'Gebruikers die betrokken waren bij het project maar niet hebben gestemd'
         users_who_engaged_with_the_project: 'Gebruikers die zich met het project bezighielden'

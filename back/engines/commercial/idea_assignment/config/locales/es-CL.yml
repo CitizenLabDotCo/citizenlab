@@ -6,8 +6,8 @@ es-CL:
       "idea_assigned_to_you": Asignación de una idea - administradores y administradores de proyecto
     idea_assigned_to_you:
       by_author: 'por %{authorName}'
-      cta_reply_to: 'Dale retroalimentación a %{authorName}'
-      event_description_idea: 'Una idea ha sido asignada a ti. Dale retroalimentación, escribiendo una actualización oficial o cambiando el estado de la idea.'
-      main_header: '%{firstName}, tienes una nueva asignación'
+      cta_button: 'Envía tus comentarios a %{authorName}'
+      event_description: 'Un aporte ha sido asignado a ti. Escribe una actualización oficial o cambia el estado del aporte.'
+      title: '%{firstName}, se te asignó un aporte'
       subject: 'Tienes una asignación en la plataforma de %{organizationName}'
       preheader_idea: 'La idea de %{authorName} ha sido asignada a ti'

@@ -2,35 +2,42 @@
 
 module EmailCampaigns
   class VotingPhaseStartedMailer < ApplicationMailer
-    private
+    include EditableWithPreview
 
-    def project_title
-      localize_for_recipient(event.project_title_multiloc)
+    def editable
+      %i[subject_multiloc title_multiloc intro_multiloc button_text_multiloc]
     end
 
-    def subject
-      format_message('subject', values: {
-        organizationName: organization_name,
-        projectName: localize_for_recipient(event.project_title_multiloc)
-      })
+    def substitution_variables
+      {
+        projectName: localize_for_recipient(event&.project_title_multiloc),
+        numIdeas: event&.ideas&.size,
+        organizationName: organization_name
+      }
     end
 
-    def header_title
-      localize_for_recipient(event.project_title_multiloc)
-    end
-
-    def header_message
-      format_message('event_description', values: {
-        projectName: localize_for_recipient(event.project_title_multiloc),
-        numIdeas: event.ideas.size
-      })
-    end
-
-    def preheader
-      format_message('preheader', values: {
-        organizationName: organization_name,
-        projectName: localize_for_recipient(event.project_title_multiloc)
-      })
+    def preview_command(recipient)
+      data = preview_service.preview_data(recipient)
+      {
+        recipient: recipient,
+        event_payload: {
+          project_url: data.project.url,
+          project_title_multiloc: data.project.title_multiloc,
+          phase_title_multiloc: data.phase.title_multiloc,
+          ideas: [
+            {
+              title_multiloc: data.idea.title_multiloc,
+              url: data.idea.url,
+              images: [{ versions: { small: data.placeholder_image_url } }]
+            },
+            {
+              title_multiloc: data.idea.title_multiloc,
+              url: data.idea.url,
+              images: [{ versions: { small: data.placeholder_image_url } }]
+            }
+          ]
+        }
+      }
     end
   end
 end
