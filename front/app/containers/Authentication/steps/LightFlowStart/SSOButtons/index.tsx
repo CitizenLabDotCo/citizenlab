@@ -57,10 +57,10 @@ const SSOButtons = (props: Props) => {
     !franceconnectLoginEnabled &&
     !claveUnicaLoginEnabled &&
     !hoplrLoginEnabled &&
+    !idAustriaLoginEnabled &&
     !criiptoLoginEnabled &&
     !keycloakLoginEnabled &&
-    !twodayLoginEnabled &&
-    !idAustriaLoginEnabled
+    !twodayLoginEnabled
   ) {
     if (passwordLoginEnabled) {
       return null;

@@ -139,9 +139,7 @@ const AuthProviders = memo<Props>(
 
     const isPasswordSigninOrSignupAllowed =
       passwordLoginEnabled &&
-      (flow === 'signin' || // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        (flow === 'signup' && tenantSettings?.password_login?.enable_signup));
+      (flow === 'signin' || tenantSettings?.password_login?.enable_signup);
 
     const showFCButton =
       franceconnectLoginEnabled && error !== 'franceconnect_merging_failed';
