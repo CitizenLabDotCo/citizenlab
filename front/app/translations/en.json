@@ -822,6 +822,7 @@
   "app.components.formBuilder.good": "Good",
   "app.components.formBuilder.helmetTitle": "Form builder",
   "app.components.formBuilder.imageFileUpload": "Image upload",
+  "app.components.formBuilder.inputImages": "Input images",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Invalid logic",
   "app.components.formBuilder.labels2": "Labels (optional)",
   "app.components.formBuilder.labelsTooltipContent2": "Choose optional labels for any of the linear scale values.",

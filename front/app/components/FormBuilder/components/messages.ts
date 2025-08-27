@@ -111,6 +111,10 @@ export default defineMessages({
     id: 'app.components.formBuilder.drawArea',
     defaultMessage: 'Draw area',
   },
+  inputImages: {
+    id: 'app.components.formBuilder.inputImages',
+    defaultMessage: 'Input images',
+  },
   proposedBudget: {
     id: 'app.components.formBuilder.proposedBudget',
     defaultMessage: 'Proposed budget',
