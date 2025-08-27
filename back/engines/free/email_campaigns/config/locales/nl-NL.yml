@@ -105,7 +105,7 @@ nl:
       event_address2: 'Kamer 3a, boven'
       proposal_title: 'Voorbeeldvoorstel'
       input_status_title: 'Voorbeeld status'
-      input_status_description: 'Een voorbeeld van een status voor een invoer (bijv. geaccepteerd, afgewezen, geïmplementeerd...)'
+      input_status_description: 'Een voorbeeld van een status voor een bijdrage (bijv. geaccepteerd, afgewezen, geïmplementeerd...)'
       official_feedback_body: 'Voorbeeld officiële feedback'
     footer:
       "link_privacy_policy": "Privacybeleid"
@@ -337,7 +337,7 @@ nl:
       title: 'Nieuw intern commentaar op ''%{post}'''
       preheader: '''%{post}'' heeft een nieuwe interne reactie'
     official_feedback_on_idea_you_follow:
-      event_description: '%{feedback_author_name} Gaf een update bij %{input_title}''.'
+      event_description: '%{feedback_author_name} gaf een update op %{input_title}''.'
       title: 'Er is een update op "%{input_title}"'
       subject: 'Er is officiële feedback geplaatst op "%{input_title}"'
       preheader: 'Er is een update over een idee dat je volgt'
@@ -350,7 +350,7 @@ nl:
       preheader: '%{commentAuthor} heeft je genoemd in feedback'
     project_moderation_rights_received:
       cta_button: 'Beheer dit project'
-      event_description: 'Een platformbeheerder van het platform van %{organizationName} heeft jou zojuist projectbeheerder gemaakt van het volgende project:'
+      event_description: 'Een platformbeheerder van het participatieplatform van %{organizationName} heeft jou zojuist projectbeheerder gemaakt van het volgende project:'
       no_ideas: 'Nog geen bijdrages'
       preheader: 'Een platformbeheerder van het platform van %{organizationName} heeft jou zojuist projectbeheerder gemaakt van het volgende project'
       subject: 'Je bent nu projectbeheerder op het platform van %{organizationName}'
