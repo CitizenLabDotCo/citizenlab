@@ -889,6 +889,7 @@
   "app.containers.Admin.emails.groups": "Gruplar",
   "app.containers.Admin.emails.helmetDescription": "Kullanıcı gruplarına manuel e-postalar gönderin ve otomatik kampanyalar etkinleştirin",
   "app.containers.Admin.emails.nameVariablesInfo2": "{firstName} {lastName}değişkenlerini kullanarak vatandaşlarla doğrudan konuşabilirsiniz. Örneğin \"Sayın {firstName} {lastName}, ...\"",
+  "app.containers.Admin.emails.preview": "Önizleme",
   "app.containers.Admin.emails.previewSentConfirmation": "E-posta adresinize bir e-posta önizlemesi gönderildi",
   "app.containers.Admin.emails.previewTitle": "Önizleme",
   "app.containers.Admin.emails.regionMultilocError": "Lütfen tüm diller için bir değer girin",
