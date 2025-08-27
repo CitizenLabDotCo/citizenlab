@@ -889,6 +889,7 @@
   "app.containers.Admin.emails.groups": "Grupos",
   "app.containers.Admin.emails.helmetDescription": "Enviar emails manual a cierto grupo del ciudadano y activar campañas automatizadas",
   "app.containers.Admin.emails.nameVariablesInfo2": "Puedes hablar directamente a los ciudadanos usando las variables {firstName} {lastName}. Por ejemplo, \"Estimado {firstName} {lastName},...\"",
+  "app.containers.Admin.emails.preview": "Vista previa",
   "app.containers.Admin.emails.previewSentConfirmation": "Un correo de vista previa ha sido enviado a tu correo",
   "app.containers.Admin.emails.previewTitle": "Vista previa",
   "app.containers.Admin.emails.regionMultilocError": "Indica un valor para todos los idiomas",
