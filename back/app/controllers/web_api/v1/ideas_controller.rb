@@ -577,12 +577,16 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def not_allowed_update_errors(input)
-    if anonymous_not_allowed?(TimelineService.new.current_phase_not_archived(input.project))
+    can_moderate = UserRoleService.new.can_moderate?(input.project, current_user)
+
+    if !can_moderate && anonymous_not_allowed?(TimelineService.new.current_phase_not_archived(input.project))
       return { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }
     end
+
     if idea_status_not_allowed?(input)
       return { errors: { idea_status_id: [{ error: 'Cannot manually assign inputs to this status', value: input.idea_status_id }] } }
     end
+
     if !input.participation_method_on_creation.transitive? && input.project_id_changed?
       return { errors: { project_id: [{ error: 'Cannot change the project of non-transitive inputs', value: input.project_id }] } }
     end
