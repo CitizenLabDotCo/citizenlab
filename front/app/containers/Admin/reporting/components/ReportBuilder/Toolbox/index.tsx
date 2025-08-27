@@ -368,19 +368,23 @@ const ReportBuilderToolbox = ({
               icon="chart-bar"
               label={formatMessage(WIDGET_TITLES.MethodsUsedWidget)}
             />
-            <DraggableElement
-              id="e2e-draggable-projects-widget"
-              component={
-                <ProjectsWidget
-                  title={toMultiloc(WIDGET_TITLES.ProjectsWidget)}
-                  startAt={undefined}
-                  endAt={chartEndDate}
-                />
-              }
-              icon="projects"
-              label={formatMessage(WIDGET_TITLES.ProjectsWidget)}
-            />
-            {projectPlanningCalendarEnabled && (
+            {/* Only show Projects Widget for admins, not for project moderators */}
+            {!userIsModerator && (
+              <DraggableElement
+                id="e2e-draggable-projects-widget"
+                component={
+                  <ProjectsWidget
+                    title={toMultiloc(WIDGET_TITLES.ProjectsWidget)}
+                    startAt={undefined}
+                    endAt={chartEndDate}
+                  />
+                }
+                icon="projects"
+                label={formatMessage(WIDGET_TITLES.ProjectsWidget)}
+              />
+            )}
+            {/* Only show Projects Timeline Widget for admins, not for project moderators */}
+            {projectPlanningCalendarEnabled && !userIsModerator && (
               <DraggableElement
                 id="e2e-draggable-projects-timeline-widget"
                 component={
