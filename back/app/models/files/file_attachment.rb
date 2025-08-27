@@ -46,20 +46,17 @@ module Files
 
     scope :ordered, -> { order(:position) }
 
-    after_destroy :destroy_orphaned_file
+    after_destroy :destroy_orphaned_idea_file
 
     private
 
-    # If this is the last attachment for the underlying file, also delete the file, which
-    # is always the case currently as the application does not provide a way to attach the
-    # same file to multiple resources for now.
-    #
-    # This is a temporary implementation that maintains the existing behavior: the user
-    # expects the file to be removed from our servers if the attachment or the resource
-    # it's attached to is deleted. This is of particular importance for the files attached
-    # to ideas since they are typically uploaded by end users and not by admins. This will
-    # be reworked in the future to be less destructive.
-    def destroy_orphaned_file
+    # Files uploaded by end users (currently, files attached to ideas) are automatically
+    # deleted if their last attachment is removed (in theory, there should only be one
+    # such attachment). This is to maintain the expected behavior that when an idea is
+    # deleted or a file is detached from an idea, the file is also removed from our
+    # storage.
+    def destroy_orphaned_idea_file
+      return unless attachable_type == 'Idea'
       return if file.being_destroyed? || file.attachments.reload.present?
 
       file.destroy!

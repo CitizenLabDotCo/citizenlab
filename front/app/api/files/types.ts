@@ -50,6 +50,7 @@ export interface QueryParameters {
   sort?: FileSortOptions;
   search?: string;
   deleted?: boolean;
+  excluded_idea_files?: boolean;
   'page[number]'?: number;
   'page[size]'?: number;
 }
@@ -63,6 +64,7 @@ export interface GetFilesParameters {
   search?: string;
   deleted?: boolean;
   enabled?: boolean;
+  excludeIdeaFiles?: boolean;
 }
 
 export interface IFiles {

@@ -13,6 +13,10 @@ resource 'Files' do
     parameter :project, 'Filter files by project ID(s)', type: %i[string array]
     parameter :search, 'Filter files by searching in filename'
 
+    parameter :exclude_idea_files, <<~DESC.squish, type: :boolean, default: true
+      Whether to exclude files that are attached to ideas. Defaults to true.
+    DESC
+
     parameter :category, <<~CATEGORY_DESC.squish, type: %i[string array], required: false
       Filter files by category (values: #{Files::File.categories.values.join(', ')})
     CATEGORY_DESC
@@ -35,6 +39,26 @@ resource 'Files' do
       example_request 'List all files' do
         assert_status 200
         expect(response_data.size).to eq 2
+      end
+
+      example 'Exclude idea files by default', document: false do
+        file = create(:file_attachment, to: :idea).file
+
+        do_request
+
+        assert_status 200
+        expect(response_ids).not_to include(file.id)
+      end
+
+      describe 'when including idea files' do
+        example 'Include idea files', document: false do
+          file = create(:file_attachment, to: :idea).file
+
+          do_request(exclude_idea_files: false)
+
+          assert_status 200
+          expect(response_ids).to include(file.id)
+        end
       end
 
       describe 'when filtering by uploader' do
@@ -194,6 +218,8 @@ resource 'Files' do
       parameter :description_multiloc, 'The description of the file, as a multiloc string'
       parameter :ai_processing_allowed, 'Whether AI processing is allowed for this file (defaults to false)'
       parameter :category, "The category of the file (values: #{Files::File.categories.values.join(', ')})"
+      parameter :attachable_type, 'The type of the resource to which the file will be attached'
+      parameter :attachable_id, 'The ID of the resource to which the file will be attached'
     end
 
     let(:name) { 'afvalkalender.pdf' }
@@ -293,6 +319,23 @@ resource 'Files' do
           id: kind_of(String),
           type: 'file_preview'
         })
+      end
+
+      example 'Create a file and attach it directly to a resource' do
+        event = create(:event, project: Project.find(project))
+
+        do_request(file: { attachable_type: 'Event', attachable_id: event.id })
+
+        assert_status 201
+        file = Files::File.find(response_data[:id])
+        expect(file.attachments.first.attachable).to eq(event)
+      end
+
+      example '[error] Create a file and attach it directly to a incorrect resource' do
+        event = create(:event) # not in the same project as the file
+
+        do_request(file: { attachable_type: 'Event', attachable_id: event.id })
+        assert_status 422
       end
     end
   end

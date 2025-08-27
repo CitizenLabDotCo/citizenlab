@@ -25,6 +25,16 @@ module Files
       return false unless record.uploader_id == user.id # cannot upload file on behalf of another user
       return true if admin?
 
+      # If the file is attached to other models immediately during creation, check that
+      # the user has permission to create those attachments. Note that this may be
+      # redundant since:
+      # - attempting to attach the file to resources in other projects would make the file invalid
+      # - and we also verify that the user moderates all the file's projects
+      # However, future changes/refactorings could break these assumptions, so we err on
+      # the side of caution.
+      attachments = record.attachments
+      return false if attachments.any? { |att| !policy_for(att).create? }
+
       # Allow creation only if the user moderates all associated projects.
       #
       # Note: Getting the projects by querying `Project` directly instead of using

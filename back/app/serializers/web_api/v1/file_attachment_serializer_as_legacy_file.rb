@@ -2,6 +2,7 @@
 
 class WebApi::V1::FileAttachmentSerializerAsLegacyFile < WebApi::V1::BaseSerializer
   set_type :file
+  set_id :file_id
 
   attribute :ordering, &:position
 

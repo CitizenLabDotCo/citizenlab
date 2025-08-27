@@ -98,6 +98,28 @@ RSpec.describe Files::FileAttachment do
     end
   end
 
+  context 'when attaching a file to an Idea' do
+    it 'destroys the associated file when the attachment is destroyed' do
+      attachment = create(:file_attachment, to: :idea)
+      file = attachment.file
+
+      attachment.destroy!
+
+      expect { file.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+
+  context 'when attaching a file to a non-Idea resource' do
+    it 'does not destroy the associated file when the attachment is destroyed' do
+      attachment = create(:file_attachment, to: :project)
+      file = attachment.file
+
+      attachment.destroy!
+
+      expect { file.reload }.not_to raise_error
+    end
+  end
+
   describe 'ATTACHABLE_TYPES' do
     it 'ensures all types include Files::FileAttachable concern' do
       described_class::ATTACHABLE_TYPES.each do |type|

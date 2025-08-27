@@ -81,6 +81,14 @@ class WebApi::V1::Files::FilesController < ApplicationController
     ).tap do |create_params|
       create_params[:content_by_content] = params.require(:file).permit(:content, :name)
       create_params[:uploader_id] = current_user.id
+
+      # Optional initial attachment
+      attachable_id = params.dig(:file, :attachable_id)
+      attachable_type = params.dig(:file, :attachable_type)
+
+      if attachable_id.present? && attachable_type.present?
+        create_params[:attachments_attributes] = [{ attachable_id:, attachable_type: }]
+      end
     end
   end
 
@@ -95,9 +103,13 @@ class WebApi::V1::Files::FilesController < ApplicationController
 
   def finder_params
     params.permit(
-      :search, :uploader, :project, :category,
+      :search,
+      :exclude_idea_files,
+      :uploader, :project, :category,
       uploader: [], project: [], category: []
-    ).to_h.symbolize_keys
+    ).to_h.symbolize_keys.tap do |it|
+      it[:exclude_idea_files] = parse_bool(it[:exclude_idea_files]) if it.key?(:exclude_idea_files)
+    end
   end
 
   def order_params
