@@ -889,6 +889,7 @@
   "app.containers.Admin.emails.groups": "Grupper",
   "app.containers.Admin.emails.helmetDescription": "Skicka ut manuella e-postmeddelanden till användargrupper och aktivera automatiserade kampanjer",
   "app.containers.Admin.emails.nameVariablesInfo2": "Du kan vända dig direkt till mottagarna med hjälp av variablerna {firstName} {lastName}. T.ex. \"Kära {firstName} {lastName}, ...\"",
+  "app.containers.Admin.emails.preview": "Förhandsgranskning",
   "app.containers.Admin.emails.previewSentConfirmation": "En förhandsvisning av e-postmeddelandet har skickats till din e-postadress",
   "app.containers.Admin.emails.previewTitle": "Förhandsvisning",
   "app.containers.Admin.emails.regionMultilocError": "Vänligen ange ett värde för alla språk",

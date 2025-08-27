@@ -889,6 +889,7 @@
   "app.containers.Admin.emails.groups": "Grwpiau",
   "app.containers.Admin.emails.helmetDescription": "Anfon e-byst llaw i grwpiau defnyddwyr a rhoi ymgyrchoedd awtomataidd ar waith",
   "app.containers.Admin.emails.nameVariablesInfo2": "Gallwch siarad yn uniongyrchol â dinasyddion gan ddefnyddio'r newidynnau {firstName} {lastName}. Ee \"Annwyl {firstName} {lastName},...\"",
+  "app.containers.Admin.emails.preview": "Rhagolwg",
   "app.containers.Admin.emails.previewSentConfirmation": "Mae e-bost rhagolwg wedi'i anfon i'ch cyfeiriad e-bost",
   "app.containers.Admin.emails.previewTitle": "Rhagolwg",
   "app.containers.Admin.emails.regionMultilocError": "Rhowch werth ar gyfer pob iaith",

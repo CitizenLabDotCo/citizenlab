@@ -889,6 +889,7 @@
   "app.containers.Admin.emails.groups": "گروپس",
   "app.containers.Admin.emails.helmetDescription": "یوزر گروپس کو دستی ای میلز بھیجیں اور خودکار مہمات کو چالو کریں۔",
   "app.containers.Admin.emails.nameVariablesInfo2": "آپ متغیرات کا استعمال کرتے ہوئے شہریوں سے براہ راست بات کر سکتے ہیں {firstName} {lastName}۔ مثال کے طور پر \"پیارے {firstName} {lastName}، ...\"",
+  "app.containers.Admin.emails.preview": "پیش نظارہ",
   "app.containers.Admin.emails.previewSentConfirmation": "ایک پیش نظارہ ای میل آپ کے ای میل پتے پر بھیج دیا گیا ہے۔",
   "app.containers.Admin.emails.previewTitle": "پیش نظارہ",
   "app.containers.Admin.emails.regionMultilocError": "براہ کرم تمام زبانوں کے لیے ایک قدر فراہم کریں۔",

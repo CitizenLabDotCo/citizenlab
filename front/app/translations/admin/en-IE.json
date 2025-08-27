@@ -889,6 +889,7 @@
   "app.containers.Admin.emails.groups": "Groups",
   "app.containers.Admin.emails.helmetDescription": "Send out manual emails to user groups and activate automated campaigns",
   "app.containers.Admin.emails.nameVariablesInfo2": "You can speak directly to citizens using the variables {firstName} {lastName}. E.g. \"Dear {firstName} {lastName}, ...\"",
+  "app.containers.Admin.emails.preview": "Preview",
   "app.containers.Admin.emails.previewSentConfirmation": "A preview email has been sent to your email address",
   "app.containers.Admin.emails.previewTitle": "Preview",
   "app.containers.Admin.emails.regionMultilocError": "Please provide a value for all languages",

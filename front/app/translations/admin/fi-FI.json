@@ -889,6 +889,7 @@
   "app.containers.Admin.emails.groups": "Ryhmät",
   "app.containers.Admin.emails.helmetDescription": "Lähetä manuaalisia sähköposteja käyttäjäryhmille ja aktivoi automaattisia kampanjoita",
   "app.containers.Admin.emails.nameVariablesInfo2": "Voit puhua suoraan kansalaisille käyttämällä muuttujia {firstName} {lastName}. Esim. \"Rakas {firstName} {lastName}, ...\"",
+  "app.containers.Admin.emails.preview": "Esikatselu",
   "app.containers.Admin.emails.previewSentConfirmation": "Sähköpostiosoitteeseesi on lähetetty esikatseluviesti",
   "app.containers.Admin.emails.previewTitle": "Esikatselu",
   "app.containers.Admin.emails.regionMultilocError": "Anna arvo kaikille kielille",
