@@ -889,6 +889,7 @@
   "app.containers.Admin.emails.groups": "Grupe",
   "app.containers.Admin.emails.helmetDescription": "Ručno pošaljite e-poruke grupama korisnika i aktivirajte automatske kampanje",
   "app.containers.Admin.emails.nameVariablesInfo2": "Možete se obratiti izravno građanima koristeći varijable {firstName} {lastName}. Npr. \"Dragi {firstName} {lastName}, ...\"",
+  "app.containers.Admin.emails.preview": "Pregled",
   "app.containers.Admin.emails.previewSentConfirmation": "Probna e-poruka poslana je na vašu adresu e-pošte",
   "app.containers.Admin.emails.previewTitle": "Pretpregled",
   "app.containers.Admin.emails.regionMultilocError": "Molimo navedite vrijednost za sve jezike",

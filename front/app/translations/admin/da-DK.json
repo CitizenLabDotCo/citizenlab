@@ -889,6 +889,7 @@
   "app.containers.Admin.emails.groups": "Grupper",
   "app.containers.Admin.emails.helmetDescription": "Send manuelle e-mails til brugergrupper, og aktiver automatiserede kampagner",
   "app.containers.Admin.emails.nameVariablesInfo2": "Du kan tale direkte til borgerne ved hjælp af variablerne {firstName} {lastName}. F.eks. \"Kære {firstName} {lastName}, ...\"",
+  "app.containers.Admin.emails.preview": "Eksempel",
   "app.containers.Admin.emails.previewSentConfirmation": "Der er blevet sendt en preview e-mail til din e-mailadresse",
   "app.containers.Admin.emails.previewTitle": "Eksempel",
   "app.containers.Admin.emails.regionMultilocError": "Angiv venligst en værdi for alle sprog",

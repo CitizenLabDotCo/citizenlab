@@ -889,6 +889,7 @@
   "app.containers.Admin.emails.groups": "Grupės",
   "app.containers.Admin.emails.helmetDescription": "Siųskite rankinius el. laiškus naudotojų grupėms ir aktyvuokite automatines kampanijas",
   "app.containers.Admin.emails.nameVariablesInfo2": "Su piliečiais galite kalbėtis tiesiogiai naudodami kintamuosius {firstName} {lastName}. Pavyzdžiui, \"Gerbiamas {firstName} {lastName}, ...\".",
+  "app.containers.Admin.emails.preview": "Peržiūra",
   "app.containers.Admin.emails.previewSentConfirmation": "Į jūsų el. pašto adresą buvo išsiųstas peržiūros el. laiškas",
   "app.containers.Admin.emails.previewTitle": "Peržiūra",
   "app.containers.Admin.emails.regionMultilocError": "Nurodykite visų kalbų vertę",

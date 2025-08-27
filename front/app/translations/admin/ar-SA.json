@@ -889,6 +889,7 @@
   "app.containers.Admin.emails.groups": "المجموعات",
   "app.containers.Admin.emails.helmetDescription": "أرسل الرسائل الإلكترونية إلى مجموعة مواطنين محددة وفعّل الحملات التلقائية",
   "app.containers.Admin.emails.nameVariablesInfo2": "يمكنك التحدث مباشرة إلى المواطنين باستخدام المتغيرات {firstName} {lastName}. على سبيل المثال \"عزيزي {firstName} {lastName}، ...\"",
+  "app.containers.Admin.emails.preview": "معاينة",
   "app.containers.Admin.emails.previewSentConfirmation": "تم إرسال رسالة معاينة إلكترونية إلى عنوان بريدك الإلكتروني",
   "app.containers.Admin.emails.previewTitle": "معاينة",
   "app.containers.Admin.emails.regionMultilocError": "يرجى تقديم قيمة لجميع اللغات",

@@ -889,6 +889,7 @@
   "app.containers.Admin.emails.groups": "Grupas",
   "app.containers.Admin.emails.helmetDescription": "Izsūtiet manuālus e-pasta ziņojumus lietotāju grupām un aktivizējiet automatizētas kampaņas.",
   "app.containers.Admin.emails.nameVariablesInfo2": "Jūs varat tieši sazināties ar iedzīvotājiem, izmantojot mainīgos lielumus {firstName} {lastName}. Piemēram, \"Dārgais {firstName} {lastName}, ...\".",
+  "app.containers.Admin.emails.preview": "Priekšskatījums",
   "app.containers.Admin.emails.previewSentConfirmation": "Uz jūsu e-pasta adresi ir nosūtīts e-pasts priekšskatīšanai",
   "app.containers.Admin.emails.previewTitle": "Priekšskatījums",
   "app.containers.Admin.emails.regionMultilocError": "Lūdzu, norādiet vērtību visām valodām",
