@@ -95,6 +95,7 @@ ca:
       project_title: 'Projecte d''exemple'
       project_description_preview: 'Aquest és un exemple de contingut de fase utilitzat per previsualitzar el contingut dels correus electrònics. Això no és contingut real.'
       phase_title: 'Fase d''exemple'
+      folder_title: 'Carpeta d''exemple'
       comment_body: 'Aquest és un exemple de comentari que s''utilitza per previsualitzar el contingut dels correus electrònics. Això no és contingut real.'
       comment_deleted_reason: 'El teu comentari d''exemple s''ha considerat inadequat.'
       idea_title: 'Idea d''exemple'
@@ -103,6 +104,9 @@ ca:
       event_address1: '10 Example Street, Exampleton, Exampleshire'
       event_address2: 'Habitació 3a, planta superior'
       proposal_title: 'Proposta d''exemple'
+      input_status_title: 'Estat de l''exemple'
+      input_status_description: 'Un exemple d''estat per a una entrada (per exemple, acceptat, rebutjat, implementat...)'
+      official_feedback_body: 'Exemple de comentaris oficials'
     footer:
       "link_privacy_policy": "Política de privacitat"
       "link_terms_conditions": "Termes i Condicions"
@@ -333,10 +337,11 @@ ca:
       title: 'Nou comentari intern a ''%{post}'''
       preheader: '''%{post}'' té un nou comentari intern'
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} ha fet una actualització sobre %{input_title}''.'
-      header_title: 'Hi ha un comentari nou a "%{input_title}"'
+      event_description: '%{feedback_author_name} ha donat una actualització sobre ''%{input_title}''.'
+      title: 'Hi ha una actualització a "%{input_title}"'
       subject: 'Official feedback was posted on "%{input_title}"'
       preheader: 'There''s an update on an input you follow'
+      cta_button: Ves a aquesta entrada
     mention_in_official_feedback:
       cta_button: 'Respon a %{organizationName}'
       event_description: '%{organizationName} t''ha mencionat en els seus comentaris sobre la idea "%{post}". Feu clic a l''enllaç següent per entrar a la conversa amb %{organizationName}'
@@ -344,8 +349,8 @@ ca:
       subject: '%{organizationName} t''han mencionat als seus comentaris'
       preheader: '%{commentAuthor} t''han mencionat als comentaris'
     project_moderation_rights_received:
-      cta_manage_project: 'Gestionar aquest projecte'
-      message_you_became_moderator: 'Un administrador de la plataforma de participació de %{organizationName} us acaba de fer cap de projecte del següent projecte:'
+      cta_button: 'Gestiona aquest projecte'
+      event_description: 'Un administrador de la plataforma de participació de %{organizationName} t''acaba de nomenar gestor del projecte següent:'
       no_ideas: 'Encara no hi ha idees'
       preheader: 'Un administrador de la plataforma de participació de %{organizationName} us acaba de convertir en cap de projecte del següent projecte'
       subject: 'Et vas convertir en gestor de projectes a la plataforma de %{organizationName}'
@@ -356,11 +361,11 @@ ca:
       title_moderate_analyse_input: 'Moderar i analitzar l''entrada'
       title_share_project_information: 'Proporcionar informació del projecte'
       title_what_can_you_do_moderator: 'Què pots fer com a gestor de projectes?'
-      title_you_became_moderator: 'Et vas convertir en gestor de projectes'
+      title: 'Vas convertir-te en gestor de projectes'
       x_ideas: '%{numberOfIdeas} idees'
     project_folder_moderation_rights_received:
-      cta_view_folder_button: 'Visualitza aquesta carpeta'
-      message_added_as_folderadmin: 'T''han concedit drets de gestor de carpetes a la plataforma de participació de %{organizationName}per a la carpeta següent:'
+      cta_button: 'Veure aquesta carpeta'
+      event_description: 'Se us han donat drets de gestor de carpetes a la plataforma de participació de %{organizationName}per a la carpeta següent:'
       no_projects: 'Encara no hi ha projectes'
       preheader: 'Un administrador de la plataforma de participació de %{organizationName} us acaba de convertir en gestor de la següent carpeta'
       subject: 'T''has convertit en gestor de carpetes de projectes a la plataforma de participació de %{organizationName}'
@@ -371,7 +376,7 @@ ca:
       title_moderate_analyse_input: 'Moderar i analitzar l''entrada'
       title_manage_folder: 'Gestioneu la configuració de la carpeta i creeu nous projectes.'
       title_what_can_you_do_folderadmin: 'Què pots fer com a gestor de carpetes?'
-      title_added_as_folderadmin: 'T''han afegit com a gestor de carpetes'
+      title: 'T''han afegit com a gestor de carpetes'
       x_projects: '%{numberOfProjects} projectes'
     project_phase_started:
       cta_button: 'Descobreix aquesta nova fase'
@@ -382,41 +387,43 @@ ca:
       subject: '%{projectName} va entrar en una nova fase'
       preheader: 'S''ha iniciat una nova fase per a %{projectName}'
     project_phase_upcoming:
-      cta_view_phase: 'Estableix aquesta nova fase'
+      cta_button: 'Configura aquesta nova fase'
       event_description: 'El projecte ''%{projectName}'' entrarà aviat en una nova fase. Assegureu-vos que tot estigui configurat per a aquesta fase: hi ha una descripció adequada? Les idees seleccionades es traslladen a aquesta fase? Vols informar els teus ciutadans sobre les especificitats d''aquesta fase mitjançant una campanya de correu electrònic personalitzada?'
-      main_header: '%{firstName}, un projecte entrarà en una nova fase aviat'
+      title: '%{firstName}, un projecte entrarà aviat en una nova fase'
       subtitle: 'Sobre ''%{projectName}'''
       new_phase: 'El projecte entrarà a la fase ''%{phaseTitle}'''
       subject: 'Configureu-ho tot per a la nova fase de %{projectName}'
       preheader: 'Aviat començarà una nova fase per al %{projectName}'
     project_published:
       subject: 'Es va publicar un nou projecte a la plataforma de %{organizationName}'
-      header_title: 'S''ha publicat un nou projecte'
-      header_message: 'La plataforma de participació de %{organizationName} acaba de publicar el següent projecte:'
+      title: 'S''ha publicat un nou projecte'
+      event_description: 'La plataforma de participació de %{organizationName} acaba de publicar el següent projecte:'
       preheader: 'S''ha publicat un nou projecte'
+      cta_button: 'Ves a aquest projecte'
     project_review_request:
       subject: 'Sol·licitud de revisió: un projecte està pendent d''aprovació.'
-      header: '%{requesterName} t''ha convidat a revisar el projecte "%{projectTitle}"'
-      header_message: "Actualment, el projecte està en mode d'esborrany i no és visible per als usuaris. Un cop l'hagueu revisat i aprovat, el moderador podrà publicar-lo."
-      cta_review_project: "Revisa el projecte"
+      title: '%{requesterName} t''ha convidat a revisar el projecte "%{projectTitle}"'
+      event_description: "Actualment, el projecte està en mode esborrany i no és visible per als usuaris. Un cop l'hagis revisat i aprovat, el moderador podrà publicar-lo."
+      cta_button: "Revisar el projecte"
     project_review_state_change:
       subject: '"%{projectTitle}" s''ha aprovat'
-      header: '%{reviewerName} va aprovar el projecte "%{projectTitle}"'
-      header_message: "El projecte ja està a punt per posar-se en marxa. Pots publicar-lo sempre que estiguis preparat!"
-      cta_go_to_project: "Vés a la configuració del projecte"
+      title: '%{reviewerName} va aprovar el projecte "%{projectTitle}"'
+      event_description: "El projecte ja està llest per publicar-se. El podeu publicar quan vulgueu!"
+      cta_button: "Anar a la configuració del projecte"
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
-      header_message: '%{organizationName} ha actualitzat l''estat de l''entrada ''%{input_title}'' a la seva plataforma de participació digital.'
-      header_title: 'Una entrada que segueixes té un estat nou'
+      event_description: '%{organizationName} ha actualitzat l''estat de l''entrada ''%{input_title}'' a la seva plataforma de participació digital.'
+      title: 'Una entrada que segueixes té un estat nou'
       subject: 'The status of "%{input_title}" has changed'
       preheader: 'An input you follow has a new status'
+      cta_button: Ves a aquesta entrada
     user_digest:
       subject: "La teva activitat a la plataforma de participació de %{organizationName}"
       commented: "%{authorFirstName} ha comentat:"
       preheader: "Vista general setmanal de %{organizationName}"
-      title_your_weekly_report: "Descobreix què va passar la setmana passada"
-      intro_text: "Aquí teniu un resum del que va passar a la plataforma de participació de %{organizationName}."
-      cta_go_to_the_platform: "Aneu a la plataforma"
+      title: "Descobreix què va passar la setmana passada"
+      event_description: "Aquí teniu un resum del que va passar a la plataforma de participació de %{organizationName}."
+      cta_button: "Anar a la plataforma"
       title_no_activity_past_week: "No hi ha activitat durant la darrera setmana"
       successful_proposals_title: "S'ha arribat al llindar"
       successful_proposals_text: "Aquestes propostes han rebut prou suport per passar a la següent etapa! Feu clic a la proposta per saber més sobre què passarà a continuació."
@@ -431,15 +438,15 @@ ca:
       no_unread_notifications: "No teniu cap notificació no llegida. Visiteu la plataforma per aportar les vostres aportacions i generar noves notificacions!"
       unread_notifications: "Tens notificacions no llegides. Visita la plataforma per descobrir què està passant!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Porta aquesta iniciativa als passos següents'
-      main_header: 'Una iniciativa ha arribat al llindar de votació!'
+      cta_button: 'Porta aquesta proposta als passos següents'
+      title: 'Una proposta ha arribat al llindar de votació!'
       subject: 'Una iniciativa ha arribat al llindar de votació a la vostra plataforma'
       preheader: 'Assegureu-vos de fer els següents passos'
     welcome:
-      cta_join_platform: 'Descobreix la plataforma'
+      cta_button: 'Descobreix la plataforma'
       subject: 'Benvinguts a la plataforma de %{organizationName}'
-      main_header: Benvingut!
-      message_welcome: 'Enhorabona, t''has registrat amb èxit a la plataforma de participació de %{organizationName}. Ara pots descobrir la plataforma i fer sentir la teva veu. També pots afegir una foto de perfil i una breu descripció per dir als altres qui ets.'
+      title: Benvingut/da!
+      event_description: 'Enhorabona, t''has registrat correctament a la plataforma de participació de %{organizationName}. Ara pots descobrir la plataforma i fer sentir la teva veu. També pots afegir una foto de perfil i una breu descripció per dir als altres qui ets.'
       preheader: 'Aquí teniu el que podeu fer a la plataforma de %{organizationName}'
     idea_published:
       subject: 'La teva idea ha estat publicada'
@@ -475,15 +482,15 @@ ca:
         option: 'La vostra opció és a "%{prescreening_status_title}"'
         proposal: 'La teva proposta és a "%{prescreening_status_title}"'
         petition: 'La teva petició és a "%{prescreening_status_title}"'
-      message: '"%{input_title}" serà visible per als altres un cop hagi estat revisat i aprovat.'
+      event_description: '«%{input_title}» serà visible per als altres un cop s''hagi revisat i aprovat.'
       subject: '"%{input_title}" gairebé està publicat'
       preheader: 'Actualment és a %{prescreening_status_title}'
     voting_basket_submitted:
       subject: '%{organizationName}: has votat correctament'
       preheader: 'Heu votat amb èxit a la plataforma de participació de %{organizationName}'
-      title_basket_submitted: 'Has votat correctament'
+      title: 'Has votat correctament'
       event_description: 'Gràcies per participar. Els vostres vots s''han registrat. Visiteu la plataforma de %{organizationName} per veure i gestionar els vostres vots.'
-      cta_see_votes_submitted: 'Veure vots enviats'
+      cta_button: 'Veure els vots enviats'
       cta_message: 'Feu clic al botó següent per participar'
     native_survey_not_submitted:
       subject: '%{organizationName}: Gairebé allà! Envieu les vostres respostes'
@@ -495,26 +502,26 @@ ca:
     voting_basket_not_submitted:
       subject: '%{organizationName}: no heu enviat els vostres vots'
       preheader: 'No heu enviat els vostres vots a la plataforma de participació de %{organizationName}'
-      title_basket_not_submitted: 'No heu enviat els vostres vots'
+      title: 'No has enviat els teus vots'
       event_description: 'Heu seleccionat algunes opcions per a %{contextTitle} , però no heu enviat la vostra selecció.'
-      cta_view_options_and_vote: 'Veure opcions i votar'
+      cta_button: 'Veure opcions i votar'
       cta_message: 'Feu clic al botó següent per enviar les opcions seleccionades'
     voting_last_chance:
       subject: '%{organizationName}: última oportunitat per votar %{phaseTitle}'
       preheader: 'Última oportunitat per votar %{phaseTitle} a la plataforma de participació de %{organizationName}'
-      title_last_chance: 'Última oportunitat per votar %{phaseTitle}'
+      title: 'Última oportunitat per votar per %{phaseTitle}'
       body_1: 'La fase de votació del projecte %{projectTitle} s''acaba demà, a mitjanit.'
       body_2: 'El temps s''acaba i ens hem adonat que encara no has votat! Actua ara fent clic al botó següent per participar.'
       body_3: 'En fer-ho, tindreu accés a una sèrie d''opcions i tindreu l''oportunitat de donar la vostra aportació, que és crucial per decidir el futur d''aquest projecte.'
-      cta_vote: 'Vota'
+      cta_button: 'Vota'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} resultats de vots revelats!'
       preheader: '%{phaseTitle} resultats de votació revelats a la plataforma de participació d'' %{organizationName}'
-      title_results: 'S''han revelat els resultats de %{phaseTitle} vots!'
+      title: '%{phaseTitle} Resultats de la votació revelats!'
       body_1: 'Ja tenim els resultats!'
       body_2: 'S''han publicat els resultats de la votació %{phaseTitle} a la plataforma %{organizationName}!'
       body_3: 'Us animem a revisar els resultats i estar atents per a més actualitzacions sobre els passos següents.'
-      cta_see_results: 'Veure resultats a la plataforma'
+      cta_button: 'Veure resultats a la plataforma'
     event_registration_confirmation:
       subject: "Estàs dins! El vostre registre per a \"%{eventTitle}\" està confirmat"
       preheader: "%{firstName}, gràcies per registrar-te a %{eventTitle}"
@@ -531,18 +538,19 @@ ca:
     voting_phase_started:
       subject: '%{organizationName}: la fase de votació va començar per a %{projectName}'
       preheader: 'La fase de votació va començar per %{projectName} a la plataforma de participació de l'' %{organizationName}'
+      title: '%{projectName}'
       event_description: 'El projecte "%{projectName}" us demana que voteu entre %{numIdeas} opcions:'
       cta_message: 'Feu clic al botó següent per participar'
-      cta_vote: 'Aneu a la plataforma per votar'
+      cta_button: 'Ves a la plataforma per votar'
     survey_submitted:
       subject: '%{organizationName}: Gràcies per la teva resposta! 🎉'
       preheader: 'Aquí teniu els detalls de la vostra presentació.'
-      main_header: 'Gràcies per compartir els teus pensaments sobre "%{projectName}"!'
-      your_input_submitted: 'La vostra entrada per a "%{projectName}" s''ha enviat correctament.'
+      title: 'Gràcies per compartir les teves opinions sobre "%{projectName}"!'
+      event_description: 'La teva entrada per a "%{projectName}" s''ha enviat correctament.'
       if_you_would_like_to_review: 'Si voleu revisar el vostre enviament, podeu descarregar les vostres respostes a continuació.'
       your_submission_has_id: 'El vostre enviament té l''identificador únic següent:'
       you_can_use_this_id: 'Podeu utilitzar aquest identificador per posar-vos en contacte amb els administradors de la plataforma en cas que vulgueu que s''elimini el vostre enviament.'
-      download_responses: 'Descarrega les teves respostes'
+      cta_button: 'Baixa les teves respostes'
     admin_labels:
       recipient_role:
         admins: 'Als administradors'
