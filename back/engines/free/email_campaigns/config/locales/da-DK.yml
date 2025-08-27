@@ -95,7 +95,7 @@ da:
       project_title: 'Eksempel på projekt'
       project_description_preview: 'Dette er et eksempel på faseindhold, der bruges til forhåndsvisning af indholdet i e-mails. Det er ikke rigtigt indhold.'
       phase_title: 'Eksempel på fase'
-      folder_title: 'Eksempel på mappe'
+      folder_title: 'Eksempelmappe'
       comment_body: 'Dette er et eksempel på en kommentar, der bruges til at få vist indholdet af e-mails. Det er ikke rigtigt indhold.'
       comment_deleted_reason: 'Dit eksempel på en kommentar blev betragtet som upassende.'
       idea_title: 'Eksempel på idé'
