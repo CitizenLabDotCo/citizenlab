@@ -100,7 +100,7 @@ const CollapseContainer = styled(Box)<{
     max-height: ${(props) => `${props.transitionHeight}px`};
     overflow: hidden;
 
-    &.collapsed-exit-active {
+    &.expanded-exit-active {
       opacity: 0;
       max-height: 0px;
       overflow: hidden;
@@ -159,13 +159,13 @@ const Accordion = ({
           exit={false}
           classNames={`expanded`}
         >
-          <CollapseContainer
+          {/* <CollapseContainer
             aria-live="polite"
             transitionHeight={transitionHeightPx}
             timeout={timeoutMilliseconds}
-          >
-            {children}
-          </CollapseContainer>
+          > */}
+          {children}
+          {/* </CollapseContainer> */}
         </CSSTransition>
       </Box>
     </ListItem>
