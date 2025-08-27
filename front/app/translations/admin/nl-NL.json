@@ -889,7 +889,7 @@
   "app.containers.Admin.emails.groups": "Groepen",
   "app.containers.Admin.emails.helmetDescription": "Send out manual emails to certain citizen group and active automated campaigns",
   "app.containers.Admin.emails.nameVariablesInfo2": "Je kunt inwoners rechtstreeks aanspreken met de variabelen {firstName} {lastName}. Bijv. \"Beste {firstName} {lastName}, ...\"",
-  "app.containers.Admin.emails.preview": "Test e-mail",
+  "app.containers.Admin.emails.preview": "Voorvertoning",
   "app.containers.Admin.emails.previewSentConfirmation": "Een voorbeeld e-mail is verzonden naar jouw e-mailadres",
   "app.containers.Admin.emails.previewTitle": "Voorvertoning",
   "app.containers.Admin.emails.regionMultilocError": "Geef een waarde op voor alle talen",
