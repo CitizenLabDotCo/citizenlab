@@ -579,7 +579,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def not_allowed_update_errors(input)
     can_moderate = UserRoleService.new.can_moderate?(input.project, current_user)
 
-    if can_moderate == false && anonymous_not_allowed?(TimelineService.new.current_phase_not_archived(input.project))
+    if !can_moderate && anonymous_not_allowed?(TimelineService.new.current_phase_not_archived(input.project))
       return { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }
     end
 
