@@ -92,6 +92,16 @@ const BuiltInFields = ({
       >
         <FormattedMessage {...messages.defaultContent} />
       </Title>
+      {builderConfig.builtInFields.includes('idea_images_attributes') && (
+        <ToolboxItem
+          icon="image"
+          label={formatMessage(messages.inputImages)}
+          onClick={() => enableField('idea_images_attributes')}
+          disabled={!enabledBuiltInFieldKeys.includes('idea_images_attributes')}
+          disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
+          data-cy="e2e-idea-images-attributes-item"
+        />
+      )}
       {builderConfig.builtInFields.includes('proposed_budget') && (
         <ToolboxItem
           icon="money-bag"
