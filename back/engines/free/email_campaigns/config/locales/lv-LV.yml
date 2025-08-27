@@ -333,8 +333,8 @@ lv:
       title: 'Jauns iekšējais komentārs par "%{post}'
       preheader: '''%{post}'' ir jauns iekšējais komentārs'
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
-      header_title: 'There''s an update on "%{input_title}"'
+      header_message: '%{feedback_author_name} sniedza atjauninātu informāciju par "%{input_title}".'
+      header_title: 'Ir atjauninājums par "%{input_title}"'
       subject: 'Official feedback was posted on "%{input_title}"'
       preheader: 'There''s an update on an input you follow'
     mention_in_official_feedback:
@@ -406,8 +406,8 @@ lv:
       cta_go_to_project: "Dodieties uz projekta iestatījumiem"
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
-      header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
-      header_title: 'An input you follow has a new status'
+      header_message: '%{organizationName} savā digitālās līdzdalības platformā atjaunināja ievades statusu "%{input_title}".'
+      header_title: 'Ievadam, kuram sekojat, ir jauns statuss'
       subject: 'The status of "%{input_title}" has changed'
       preheader: 'An input you follow has a new status'
     user_digest:
