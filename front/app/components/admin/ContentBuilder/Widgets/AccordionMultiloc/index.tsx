@@ -6,29 +6,35 @@ import {
   Title,
   Toggle,
 } from '@citizenlab/cl2-component-library';
-import { useNode } from '@craftjs/core';
+import { useNode, Element } from '@craftjs/core';
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
 import { useIntl } from 'utils/cl-intl';
 
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
+import Container from '../Container';
 
 import messages from './messages';
 
 interface AccordionProps {
-  text: Multiloc;
+  text?: Multiloc; // Keep for backward compatibility during migration
   title: Multiloc;
   openByDefault?: boolean;
+  children?: React.ReactNode; // For canvas mode
 }
 
-const Accordion = ({ text, title, openByDefault = false }: AccordionProps) => {
+const Accordion = ({
+  text,
+  title,
+  openByDefault = false,
+  children,
+}: AccordionProps) => {
   const theme = useTheme();
   const localize = useLocalize();
   const componentDefaultPadding = useCraftComponentDefaultPadding();
@@ -49,9 +55,12 @@ const Accordion = ({ text, title, openByDefault = false }: AccordionProps) => {
         </Box>
       }
     >
-      <QuillEditedContent textColor={theme.colors.tenantText}>
+      {/* <QuillEditedContent textColor={theme.colors.tenantText}>
         <div dangerouslySetInnerHTML={{ __html: localize(text) }} />
-      </QuillEditedContent>
+      </QuillEditedContent> */}
+      <Box>
+        <Element id="accordion-content" is={Container} canvas />
+      </Box>
     </AccordionComponent>
   );
 };
@@ -89,7 +98,7 @@ const AccordionSettings = () => {
           noImages
           noVideos
           id="quill-editor"
-          valueMultiloc={text}
+          valueMultiloc={text || {}}
           onChange={(value) => {
             setProp((props: AccordionProps) => (props.text = value));
           }}
@@ -121,6 +130,13 @@ Accordion.craft = {
   },
   custom: {
     title: messages.accordionMultiloc,
+    hasChildren: true,
+  },
+  rules: {
+    canMoveIn: (incomingNodes) => {
+      // Allow all components to be moved into accordion when in canvas mode
+      return true;
+    },
   },
 };
 
