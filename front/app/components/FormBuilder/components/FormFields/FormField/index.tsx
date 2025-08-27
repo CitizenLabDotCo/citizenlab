@@ -112,8 +112,7 @@ export const FormField = ({
   const isGroupDeletable = getGroupDeletable();
   const shouldShowDelete = !(
     (field.input_type === 'page' && !isGroupDeletable) ||
-    get(lockedAttributes, 'enabled', false) ||
-    hasFullPageRestriction
+    get(lockedAttributes, 'enabled', false)
   );
 
   const editFieldAndValidate = (defaultTab: ICustomFieldSettingsTab) => {
