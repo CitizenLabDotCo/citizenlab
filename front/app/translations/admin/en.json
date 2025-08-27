@@ -2620,7 +2620,7 @@
   "app.containers.AdminPage.Topics.deleteTopicLabel": "Delete",
   "app.containers.AdminPage.Topics.generalTopicDeletionWarning": "This tag will no longer be able to be added to new posts in this project.",
   "app.containers.AdminPage.Topics.inputForm": "Input form",
-  "app.containers.AdminPage.Topics.lastTopicWarning2": "At least one topic is required. If you do not wish to use tags, the ‘Tags’ item can be deleted from any phase’s input form (if present).",
+  "app.containers.AdminPage.Topics.lastTopicWarning3": "At least one tag is required. If you do not wish to use tags, the ‘Tags’ item can be deleted from any phase’s input form (if present).",
   "app.containers.AdminPage.Topics.projectTopicsDescription": "You can add and delete the tags that can be assigned to posts in this project.",
   "app.containers.AdminPage.Topics.remove": "Remove",
   "app.containers.AdminPage.Topics.title": "Project tags",
