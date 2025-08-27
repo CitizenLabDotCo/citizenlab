@@ -105,7 +105,7 @@ nl:
       event_address2: 'Kamer 3a, boven'
       proposal_title: 'Voorbeeldvoorstel'
       input_status_title: 'Voorbeeld status'
-      input_status_description: 'Een voorbeeld van een status voor een invoer (bijv. geaccepteerd, afgewezen, geïmplementeerd...)'
+      input_status_description: 'Een voorbeeld van een status voor een bijdrage (bijv. geaccepteerd, afgewezen, geïmplementeerd...)'
       official_feedback_body: 'Voorbeeld officiële feedback'
     footer:
       "link_privacy_policy": "Privacybeleid"
@@ -337,7 +337,7 @@ nl:
       title: 'Nieuw intern commentaar op ''%{post}'''
       preheader: '''%{post}'' heeft een nieuwe interne reactie'
     official_feedback_on_idea_you_follow:
-      event_description: '%{feedback_author_name} Gaf een update bij %{input_title}''.'
+      event_description: '%{feedback_author_name} gaf een update op %{input_title}''.'
       title: 'Er is een update op "%{input_title}"'
       subject: 'Er is officiële feedback geplaatst op "%{input_title}"'
       preheader: 'Er is een update over een idee dat je volgt'
@@ -350,7 +350,7 @@ nl:
       preheader: '%{commentAuthor} heeft je genoemd in feedback'
     project_moderation_rights_received:
       cta_button: 'Beheer dit project'
-      event_description: 'Een platformbeheerder van het platform van %{organizationName} heeft jou zojuist projectbeheerder gemaakt van het volgende project:'
+      event_description: 'Een platformbeheerder van het participatieplatform van %{organizationName} heeft jou zojuist projectbeheerder gemaakt van het volgende project:'
       no_ideas: 'Nog geen bijdrages'
       preheader: 'Een platformbeheerder van het platform van %{organizationName} heeft jou zojuist projectbeheerder gemaakt van het volgende project'
       subject: 'Je bent nu projectbeheerder op het platform van %{organizationName}'
@@ -361,7 +361,7 @@ nl:
       title_moderate_analyse_input: 'Beheer en analyseer de input'
       title_share_project_information: 'Geef informatie bij het project.'
       title_what_can_you_do_moderator: 'Wat kan je doen als projectbeheerder?'
-      title: 'Je werd net projectbeheerder'
+      title: 'Je bent projectbeheerder geworden'
       x_ideas: '%{numberOfIdeas} bijdrages'
     project_folder_moderation_rights_received:
       cta_button: 'Bekijk deze map'
@@ -376,7 +376,7 @@ nl:
       title_moderate_analyse_input: 'Beheer en analyseer de input'
       title_manage_folder: 'Beheer de mapinstellingen en maak nieuwe projecten.'
       title_what_can_you_do_folderadmin: 'Wat kan je doen als mapbeheerder?'
-      title: 'Je werd net mapbeheerder'
+      title: 'Je bent mapbeheerder geworden'
       x_projects: '%{numberOfProjects} projecten'
     project_phase_started:
       cta_button: 'Ontdek deze nieuwe fase'
@@ -387,7 +387,7 @@ nl:
       subject: '%{projectName} ging een nieuwe fase in'
       preheader: 'Een nieuwe fase is gestart voor %{projectName}'
     project_phase_upcoming:
-      cta_button: 'Zet deze fase klaar'
+      cta_button: 'Stel deze nieuwe fase in'
       event_description: 'Het project ''%{projectName}'' gaat binnenkort een nieuwe fase in. Zorg ervoor dat alles klaar staat: Is er een goede beschrijving? Werden geselecteerde bijdrages al naar deze fase overgeplaatst? Wil je je burgers nog informeren over bepaalde zaken via een e-mailcampagne?'
       title: '%{firstName}, een project gaat binnenkort een nieuwe fase in'
       subtitle: 'Over ''%{projectName}'''
@@ -412,7 +412,7 @@ nl:
       cta_button: "Ga naar projectinstellingen"
     status_change_on_idea_you_follow:
       status_change: 'De nieuwe status van dit idee is ''%{status}'''
-      event_description: '%{organizationName} heeft de status van de input ''%{input_title}'' op hun digitale participatieplatform bijgewerkt.'
+      event_description: '%{organizationName} heeft de status van de bijdrage ''%{input_title}'' op hun digitale participatieplatform bijgewerkt.'
       title: 'Een bijdrage die je volgt, heeft een nieuwe status'
       subject: 'De status van "%{input_title}" is veranderd'
       preheader: 'Een bijdrage die je volgt heeft een nieuwe status'
