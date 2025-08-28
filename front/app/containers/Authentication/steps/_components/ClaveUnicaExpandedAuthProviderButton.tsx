@@ -3,13 +3,9 @@ import React, { memo, useCallback, useState } from 'react';
 import { fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import {
-  TVerificationMethod,
-  TVerificationMethodName,
-} from 'api/verification_methods/types';
+import { TVerificationMethodName } from 'api/verification_methods/types';
 import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
 
-// move to core
 import ClaveUnicaButton from 'components/UI/ClaveUnicaButton';
 
 import { useIntl } from 'utils/cl-intl';
@@ -68,12 +64,9 @@ const ClaveUnicaExpandedAuthProviderButton = memo<Props>(
       []
     );
 
-    const handleOnClaveUnicaSelected = useCallback(
-      (_method: TVerificationMethod) => {
-        onSelectAuthProvider('clave_unica');
-      },
-      [onSelectAuthProvider]
-    );
+    const handleOnClaveUnicaSelected = useCallback(() => {
+      onSelectAuthProvider('clave_unica');
+    }, [onSelectAuthProvider]);
 
     if (isNilOrError(verificationMethods)) return null;
 
@@ -92,8 +85,6 @@ const ClaveUnicaExpandedAuthProviderButton = memo<Props>(
           }}
         >
           <ClaveUnicaButton
-            last={false}
-            method={claveUnicaMethod}
             onClick={handleOnClaveUnicaSelected}
             message={formatMessage(messages.continueWithLoginMechanism, {
               loginMechanismName: 'ClaveÚnica',

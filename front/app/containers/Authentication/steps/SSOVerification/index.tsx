@@ -8,7 +8,7 @@ import useVerificationMethodVerifiedActions from 'api/verification_methods/useVe
 
 import SSOVerificationButton from 'containers/Authentication/steps/_components/SSOVerificationButton';
 
-import ClaveUnicaButton from 'components/UI/ClaveUnicaButton/ClaveUnicaButton';
+import ClaveUnicaButton from 'components/UI/ClaveUnicaButton';
 import claveUnicaButtonMessages from 'components/UI/ClaveUnicaButton/messages';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
 import franceConnectButtonMessages from 'components/UI/FranceConnectButton/messages';

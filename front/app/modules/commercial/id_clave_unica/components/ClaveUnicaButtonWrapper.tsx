@@ -2,7 +2,7 @@ import React from 'react';
 
 import { AUTH_PATH } from 'containers/App/constants';
 
-import ClaveUnicaButton from 'components/UI/ClaveUnicaButton/ClaveUnicaButton';
+import ClaveUnicaButton from 'components/UI/ClaveUnicaButton';
 
 import { getJwt } from 'utils/auth/jwt';
 import { removeUrlLocale } from 'utils/removeUrlLocale';
