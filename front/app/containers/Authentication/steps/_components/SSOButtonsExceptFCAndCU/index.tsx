@@ -31,7 +31,9 @@ interface Props {
   onSelectAuthProvider: TOnContinueFunction;
 }
 
-const SSOButtonsExceptFC = ({
+// All our sso methods except FranceConnect and ClaveUnica
+// because they have weird custom rules
+const SSOButtonsExceptFCAndCU = ({
   showConsent,
   flow,
   onSelectAuthProvider,
@@ -199,4 +201,4 @@ const SSOButtonsExceptFC = ({
   );
 };
 
-export default SSOButtonsExceptFC;
+export default SSOButtonsExceptFCAndCU;

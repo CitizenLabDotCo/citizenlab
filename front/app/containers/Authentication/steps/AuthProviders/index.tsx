@@ -19,7 +19,8 @@ import AuthProviderButton, {
   TOnContinueFunction,
   Props as AuthProviderButtonProps,
 } from '../_components/AuthProviderButton';
-import SSOButtonsExceptFC from '../_components/SSOButtonsExceptFC';
+import ClaveUnicaExpandedAuthProviderButton from '../_components/ClaveUnicaExpandedAuthProviderButton';
+import SSOButtonsExceptFCAndCU from '../_components/SSOButtonsExceptFCAndCU';
 import TextButton from '../_components/TextButton';
 
 import messages from './messages';
@@ -119,7 +120,15 @@ const AuthProviders = memo<Props>(
             )}
           </WrappedAuthProviderButton>
         )}
-        <SSOButtonsExceptFC
+        {ssoProviders.claveUnica && (
+          <Box mb="18px">
+            <ClaveUnicaExpandedAuthProviderButton
+              showConsent={showConsent}
+              onSelectAuthProvider={onSelectAuthProvider}
+            />
+          </Box>
+        )}
+        <SSOButtonsExceptFCAndCU
           showConsent={showConsent}
           flow={flow}
           onSelectAuthProvider={onSelectAuthProvider}

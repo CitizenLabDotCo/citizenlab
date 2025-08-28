@@ -10,7 +10,8 @@ import Or from 'components/UI/Or';
 
 import { useIntl } from 'utils/cl-intl';
 
-import SSOButtonsExceptFC from '../../_components/SSOButtonsExceptFC';
+import ClaveUnicaExpandedAuthProviderButton from '../../_components/ClaveUnicaExpandedAuthProviderButton';
+import SSOButtonsExceptFCAndCU from '../../_components/SSOButtonsExceptFCAndCU';
 
 import FranceConnectButton from './FranceConnectButton';
 import messages from './messages';
@@ -46,7 +47,15 @@ const SSOButtons = ({ onClickSSO }: Props) => {
         {ssoProviders.franceconnect && (
           <FranceConnectButton onClick={() => onClickSSO('franceconnect')} />
         )}
-        <SSOButtonsExceptFC
+        {ssoProviders.claveUnica && (
+          <Box mb="18px">
+            <ClaveUnicaExpandedAuthProviderButton
+              showConsent={true}
+              onSelectAuthProvider={() => onClickSSO('clave_unica')}
+            />
+          </Box>
+        )}
+        <SSOButtonsExceptFCAndCU
           showConsent={false}
           flow="signin"
           onSelectAuthProvider={onClickSSO}
