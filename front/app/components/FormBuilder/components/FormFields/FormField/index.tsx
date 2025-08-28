@@ -219,6 +219,10 @@ export const FormField = ({
         remove(fieldIndex);
       }
     }
+    // When deleting the body page, also delete its body_multiloc field
+    if (field.code === 'body_page') {
+      remove(fieldIndex);
+    }
     closeSettings(false);
     trigger();
   };

@@ -152,7 +152,7 @@ class Idea < ApplicationRecord
   validates :publication_status, presence: true, inclusion: { in: PUBLICATION_STATUSES }
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }, if: :title_multiloc_required?
-  validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }, if: :body_multiloc_required?
+  validates :body_multiloc, multiloc: { presence: false, html: true }
   validates :proposed_budget, numericality: { greater_than_or_equal_to: 0, if: :proposed_budget }
 
   validate :validate_creation_phase
@@ -381,10 +381,6 @@ class Idea < ApplicationRecord
 
   def title_multiloc_required?
     !draft? && participation_method_on_creation.built_in_title_required?
-  end
-
-  def body_multiloc_required?
-    !draft? && participation_method_on_creation.built_in_body_required?
   end
 
   def sanitize_body_multiloc
