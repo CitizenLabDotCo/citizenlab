@@ -47,7 +47,7 @@ const ViennaSamlButton = ({ onContinue, flow }: Props) => {
       <AuthProviderButton
         authProvider="id_vienna_saml"
         onContinue={handleOnContinue}
-        showConsent={flow === 'signin'}
+        showConsent={flow === 'signup'}
       >
         <Container>
           <ViennaIcon />
