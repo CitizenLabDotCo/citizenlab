@@ -76,11 +76,7 @@ const DesktopNavItems = () => {
       return;
     }
 
-    if (
-      !containerRef.current ||
-      !hiddenItemsRef.current ||
-     !navbarItems
-    ) {
+    if (!containerRef.current || !hiddenItemsRef.current || !navbarItems) {
       return;
     }
 
@@ -101,7 +97,7 @@ const DesktopNavItems = () => {
 
     hiddenContainer.innerHTML = '';
 
-    const tempItems: HTMLElement[] = [];
+    const tempHTMLElements: HTMLElement[] = [];
     const allItems: NavbarItemProps[] = [];
 
     navbarItemPropsArray.forEach((navbarItemProps) => {
@@ -109,8 +105,8 @@ const DesktopNavItems = () => {
         navbarItemProps;
 
       if (linkTo === '/projects') {
-        const tempItem = document.createElement('div');
-        tempItem.style.cssText = `
+        const tempElement = document.createElement('div');
+        tempElement.style.cssText = `
           display: inline-block;
           padding: 0 30px;
           white-space: nowrap;
@@ -122,9 +118,9 @@ const DesktopNavItems = () => {
           typeof navigationItemTitle === 'string'
             ? navigationItemTitle
             : navigationItemTitle.en || 'All projects';
-        tempItem.textContent = `${titleText} ▼`;
-        hiddenContainer.appendChild(tempItem);
-        tempItems.push(tempItem);
+        tempElement.textContent = `${titleText} ▼`;
+        hiddenContainer.appendChild(tempElement);
+        tempHTMLElements.push(tempElement);
         allItems.push({ linkTo, onlyActiveOnIndex, navigationItemTitle });
       } else if (linkTo) {
         const tempItem = document.createElement('div');
@@ -142,7 +138,7 @@ const DesktopNavItems = () => {
             : navigationItemTitle.en || 'Item';
         tempItem.textContent = titleText;
         hiddenContainer.appendChild(tempItem);
-        tempItems.push(tempItem);
+        tempHTMLElements.push(tempItem);
         allItems.push({ linkTo, onlyActiveOnIndex, navigationItemTitle });
       }
     });
@@ -156,18 +152,18 @@ const DesktopNavItems = () => {
 
     // Pass 1: try to fit all items WITHOUT reserving space for the More button
     let currentWidth = 0;
-    const visibleNoMore: NavbarItemProps[] = [];
-    const overflowNoMore: NavbarItemProps[] = [];
+    const visibleWithoutMoreButton: NavbarItemProps[] = [];
+    const overflowWithoutMoreButton: NavbarItemProps[] = [];
 
-    tempItems.forEach((tempItem, index) => {
+    tempHTMLElements.forEach((tempItem, index) => {
       const itemWidth = tempItem.offsetWidth;
       const wouldFit = currentWidth + itemWidth <= availableWidth;
 
       if (wouldFit) {
-        visibleNoMore.push(allItems[index]);
+        visibleWithoutMoreButton.push(allItems[index]);
         currentWidth += itemWidth;
       } else {
-        overflowNoMore.push(allItems[index]);
+        overflowWithoutMoreButton.push(allItems[index]);
       }
     });
 
@@ -182,7 +178,7 @@ const DesktopNavItems = () => {
     };
 
     // If everything fits, don't show More; render all items directly
-    if (overflowNoMore.length === 0) {
+    if (overflowWithoutMoreButton.length === 0) {
       if (!arraysEqual(visibleItems, allItems) || overflowItems.length > 0) {
         setVisibleItems(allItems);
         setOverflowItems([]);
@@ -193,7 +189,7 @@ const DesktopNavItems = () => {
       const overflowWithMore: NavbarItemProps[] = [];
       let widthWithMore = 0;
 
-      tempItems.forEach((tempItem, index) => {
+      tempHTMLElements.forEach((tempItem, index) => {
         const itemWidth = tempItem.offsetWidth;
         const wouldFit =
           widthWithMore + itemWidth <= availableWidth - moreButtonWidth;
@@ -218,7 +214,7 @@ const DesktopNavItems = () => {
           const recalculatedOverflow: NavbarItemProps[] = [];
           let recalculatedWidth = 0;
 
-          tempItems.forEach((tempItem, index) => {
+          tempHTMLElements.forEach((tempItem, index) => {
             const itemWidth = tempItem.offsetWidth;
             const isAllProjects = allItems[index].linkTo === '/projects';
 
@@ -266,7 +262,7 @@ const DesktopNavItems = () => {
       }
     }
 
-    tempItems.forEach((item) => item.remove());
+    tempHTMLElements.forEach((item) => item.remove());
   }, [navbarItems, visibleItems, overflowItems]);
 
   useEffect(() => {
