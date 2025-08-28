@@ -13,7 +13,7 @@ import FranceConnectImage from './franceconnect.png';
 import messages from './messages';
 
 const Container = styled.div`
-  margin-top: 12px;
+  margin-bottom: 18px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
