@@ -23,9 +23,9 @@ import {
   calculateItemDistribution,
 } from './utils';
 
-// Reserved space for right-side navigation elements (search, notifications, user menu, etc.)
-const RESERVED_RIGHT_SPACE = 500;
-const MORE_BUTTON_WIDTH = 60;
+// Reserved space for right-side navigation elements (search, notifications, user menu, language selector, etc.)
+const RESERVED_RIGHT_SPACE = 600;
+const MORE_BUTTON_WIDTH = 80;
 
 const Container = styled.nav`
   height: 100%;
@@ -72,23 +72,6 @@ const DesktopNavItems = () => {
   const [overflowItems, setOverflowItems] = useState<NavbarItemProps[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  // Function to check if all items fit without needing a More button
-  const calculateIfAllItemsFit = useCallback(
-    (
-      tempElements: HTMLElement[],
-      allItems: NavbarItemProps[],
-      availableWidth: number
-    ): boolean => {
-      const { overflow } = calculateItemDistribution(
-        tempElements,
-        allItems,
-        availableWidth
-      );
-      return overflow.length === 0;
-    },
-    []
-  );
-
   // Function to calculate items when More button is needed
   const calculateItemsWithMoreButton = useCallback(
     (
@@ -127,9 +110,11 @@ const DesktopNavItems = () => {
       return;
     }
 
+    // Calculate available width, ensuring we always reserve space for the More button
+    // to prevent overlap with search and other right-side elements
     const availableWidth = Math.min(
       containerWidth,
-      window.innerWidth - RESERVED_RIGHT_SPACE
+      window.innerWidth - RESERVED_RIGHT_SPACE - MORE_BUTTON_WIDTH
     );
 
     // Clear hidden container and create temporary elements for measurement
@@ -149,28 +134,23 @@ const DesktopNavItems = () => {
       }
     });
 
-    const allItemsFit = calculateIfAllItemsFit(
-      tempHTMLElements,
-      allItems,
-      availableWidth
-    );
+    // Always calculate with More button space reserved to prevent overlap
+    const { visible: visibleWithMore, overflow: overflowWithMore } =
+      calculateItemsWithMoreButton(
+        tempHTMLElements,
+        allItems,
+        availableWidth,
+        MORE_BUTTON_WIDTH
+      );
 
-    if (allItemsFit) {
-      // All items fit, no need for More button
+    // If no overflow items, we don't need to show the More button
+    if (overflowWithMore.length === 0) {
       if (!isEqual(visibleItems, allItems) || overflowItems.length > 0) {
         setVisibleItems(allItems);
         setOverflowItems([]);
       }
     } else {
-      // Items overflow, need More button
-      const { visible: visibleWithMore, overflow: overflowWithMore } =
-        calculateItemsWithMoreButton(
-          tempHTMLElements,
-          allItems,
-          availableWidth,
-          MORE_BUTTON_WIDTH
-        );
-
+      // We have overflow items, show the More button
       if (
         !isEqual(visibleItems, visibleWithMore) ||
         !isEqual(overflowItems, overflowWithMore)
@@ -186,7 +166,6 @@ const DesktopNavItems = () => {
     navbarItems,
     visibleItems,
     overflowItems,
-    calculateIfAllItemsFit,
     calculateItemsWithMoreButton,
     localize,
     isDropdownOpen,
