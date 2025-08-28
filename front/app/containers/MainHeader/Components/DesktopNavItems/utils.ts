@@ -27,27 +27,37 @@ export const createTempElement = (
   return element;
 };
 
+type ItemDistribution = {
+  visible: NavbarItemProps[];
+  overflow: NavbarItemProps[];
+};
+
 export const calculateItemDistribution = (
   tempElements: HTMLElement[],
   allItems: NavbarItemProps[],
   availableWidth: number,
   reservedWidth: number = 0
-): { visible: NavbarItemProps[]; overflow: NavbarItemProps[] } => {
-  const visible: NavbarItemProps[] = [];
-  const overflow: NavbarItemProps[] = [];
-  let currentWidth = 0;
+): ItemDistribution => {
+  const maxAllowedWidth = availableWidth - reservedWidth;
+  let cumulativeWidth = 0;
 
-  tempElements.forEach((tempElement, index) => {
-    const itemWidth = tempElement.offsetWidth;
-    const wouldFit = currentWidth + itemWidth <= availableWidth - reservedWidth;
-
-    if (wouldFit) {
-      visible.push(allItems[index]);
-      currentWidth += itemWidth;
-    } else {
-      overflow.push(allItems[index]);
-    }
+  // Find the index of the first item that makes the total width exceed the limit.
+  const breakIndex = allItems.findIndex((_item, index) => {
+    // We use the tempElements array to get the real-time width
+    const itemWidth = tempElements[index].offsetWidth;
+    cumulativeWidth += itemWidth;
+    return cumulativeWidth > maxAllowedWidth;
   });
 
-  return { visible, overflow };
+  // If findIndex never found an item that overflowed, it returns -1.
+  // This means all items are visible.
+  if (breakIndex === -1) {
+    return { visible: allItems, overflow: [] };
+  }
+
+  // If a breakIndex was found, split the original array at that point.
+  return {
+    visible: allItems.slice(0, breakIndex),
+    overflow: allItems.slice(breakIndex),
+  };
 };
