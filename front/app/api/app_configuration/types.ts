@@ -157,6 +157,10 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
   };
+  vienna_citizen_login?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   custom_accessibility_statement_link: {
     allowed: boolean;
     enabled: boolean;
