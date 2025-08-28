@@ -113,7 +113,7 @@ export default defineMessages({
   },
   inputImages: {
     id: 'app.components.formBuilder.inputImages',
-    defaultMessage: 'Input images',
+    defaultMessage: 'Images',
   },
   proposedBudget: {
     id: 'app.components.formBuilder.proposedBudget',
