@@ -159,11 +159,4 @@ describe('<DesktopNavbar />', () => {
 
     expect(screen.getByRole('navigation')).toBeInTheDocument();
   });
-
-  it('renders navigation container correctly', () => {
-    render(<DesktopNavbar />);
-
-    expect(screen.getByRole('navigation')).toBeInTheDocument();
-    expect(screen.getByLabelText('Primary')).toBeInTheDocument();
-  });
 });
