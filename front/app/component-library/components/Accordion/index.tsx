@@ -69,6 +69,10 @@ const CollapseContainer = styled(Box)<{
   opacity: 1;
   display: flex;
   flex-wrap: wrap;
+  & > * {
+    flex-grow: 1;
+    width: 100%;
+  }
   transition: ${(props) =>
     `all ${props.timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1)`};
   will-change: opacity, height;
@@ -159,13 +163,13 @@ const Accordion = ({
           exit={false}
           classNames={`expanded`}
         >
-          {/* <CollapseContainer
+          <CollapseContainer
             aria-live="polite"
             transitionHeight={transitionHeightPx}
             timeout={timeoutMilliseconds}
-          > */}
-          {children}
-          {/* </CollapseContainer> */}
+          >
+            {children}
+          </CollapseContainer>
         </CSSTransition>
       </Box>
     </ListItem>
