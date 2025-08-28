@@ -29,14 +29,14 @@ import {
   Step,
   AuthenticationData,
 } from '../typings';
-import useAnySSOEnabled from '../useAnySSOEnabled';
+import useAuthConfig from '../useAuthConfig';
 
 import { getStepConfig } from './stepConfig';
 
 let initialized = false;
 
 export default function useSteps() {
-  const anySSOEnabled = useAnySSOEnabled();
+  const { anySSOProviderEnabled } = useAuthConfig();
   const { pathname, search } = useLocation();
   const { data: authUser } = useAuthUser();
   const { queueModal, removeModal } = useModalQueue();
@@ -121,7 +121,7 @@ export default function useSteps() {
       setCurrentStep,
       setError,
       updateState,
-      anySSOEnabled,
+      anySSOProviderEnabled,
       state
     );
   }, [
@@ -130,7 +130,7 @@ export default function useSteps() {
     setCurrentStep,
     setError,
     updateState,
-    anySSOEnabled,
+    anySSOProviderEnabled,
     state,
   ]);
 
