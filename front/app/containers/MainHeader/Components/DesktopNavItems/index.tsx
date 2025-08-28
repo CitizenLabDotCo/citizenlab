@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 
 import { media, isRtl } from '@citizenlab/cl2-component-library';
-import { isEqual } from 'lodash-es';
 import styled from 'styled-components';
 
 import useNavbarItems from 'api/navbar/useNavbarItems';
@@ -19,8 +18,11 @@ import getNavbarItemPropsArray from './getNavbarItemPropsArray';
 import MoreNavbarItem from './MoreNavbarItem';
 import {
   NavbarItemProps,
-  createTempElement,
   calculateItemDistribution,
+  validateCalculationPrerequisites,
+  calculateAvailableWidth,
+  createTempElementsForMeasurement,
+  updateVisibleAndOverflowItems,
 } from './utils';
 
 // Reserved space for right-side navigation elements (search, notifications, user menu, language selector, etc.)
@@ -92,49 +94,38 @@ const DesktopNavItems = () => {
 
   // Function to measure available space and determine which items fit
   const calculateVisibleItems = useCallback(() => {
-    // Don't recalculate if any dropdown is open
-    if (isDropdownOpen) {
+    if (
+      !validateCalculationPrerequisites(
+        containerRef,
+        hiddenItemsRef,
+        navbarItems,
+        isDropdownOpen
+      )
+    ) {
       return;
     }
 
-    if (!containerRef.current || !hiddenItemsRef.current || !navbarItems) {
-      return;
-    }
-
-    const navbarItemPropsArray = getNavbarItemPropsArray(navbarItems.data);
-    const container = containerRef.current;
-    const hiddenContainer = hiddenItemsRef.current;
+    const navbarItemPropsArray = getNavbarItemPropsArray(navbarItems!.data);
+    const container = containerRef.current!;
+    const hiddenContainer = hiddenItemsRef.current!;
     const containerWidth = container.offsetWidth;
 
-    if (containerWidth === 0) {
-      return;
-    }
-
-    // Calculate available width, ensuring we always reserve space for the More button
-    // to prevent overlap with search and other right-side elements
-    const availableWidth = Math.min(
+    // Calculate available width with More button space reserved
+    const availableWidth = calculateAvailableWidth(
       containerWidth,
-      window.innerWidth - RESERVED_RIGHT_SPACE - MORE_BUTTON_WIDTH
+      RESERVED_RIGHT_SPACE,
+      MORE_BUTTON_WIDTH
     );
 
-    // Clear hidden container and create temporary elements for measurement
-    hiddenContainer.innerHTML = '';
-    const tempHTMLElements: HTMLElement[] = [];
-    const allItems: NavbarItemProps[] = [];
+    // Create temporary elements for measurement
+    const { tempElements: tempHTMLElements, allItems } =
+      createTempElementsForMeasurement(
+        navbarItemPropsArray,
+        hiddenContainer,
+        localize
+      );
 
-    navbarItemPropsArray.forEach((navbarItemProps) => {
-      const { linkTo, onlyActiveOnIndex, navigationItemTitle } =
-        navbarItemProps;
-
-      if (linkTo) {
-        const titleText = localize(navigationItemTitle);
-        const tempElement = createTempElement(titleText, hiddenContainer);
-        tempHTMLElements.push(tempElement);
-        allItems.push({ linkTo, onlyActiveOnIndex, navigationItemTitle });
-      }
-    });
-
-    // Always calculate with More button space reserved to prevent overlap
+    // Calculate item distribution with More button space reserved
     const { visible: visibleWithMore, overflow: overflowWithMore } =
       calculateItemsWithMoreButton(
         tempHTMLElements,
@@ -143,22 +134,16 @@ const DesktopNavItems = () => {
         MORE_BUTTON_WIDTH
       );
 
-    // If no overflow items, we don't need to show the More button
-    if (overflowWithMore.length === 0) {
-      if (!isEqual(visibleItems, allItems) || overflowItems.length > 0) {
-        setVisibleItems(allItems);
-        setOverflowItems([]);
-      }
-    } else {
-      // We have overflow items, show the More button
-      if (
-        !isEqual(visibleItems, visibleWithMore) ||
-        !isEqual(overflowItems, overflowWithMore)
-      ) {
-        setVisibleItems(visibleWithMore);
-        setOverflowItems(overflowWithMore);
-      }
-    }
+    // Update visible and overflow items
+    updateVisibleAndOverflowItems(
+      visibleWithMore,
+      overflowWithMore,
+      allItems,
+      visibleItems,
+      overflowItems,
+      setVisibleItems,
+      setOverflowItems
+    );
 
     // Clean up temporary elements
     tempHTMLElements.forEach((HTMLElement) => HTMLElement.remove());
