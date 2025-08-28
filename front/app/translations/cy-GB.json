@@ -822,6 +822,7 @@
   "app.components.formBuilder.good": "Da",
   "app.components.formBuilder.helmetTitle": "Adeiladwr ffurflenni",
   "app.components.formBuilder.imageFileUpload": "Uwchlwytho delwedd",
+  "app.components.formBuilder.inputImages": "Delweddau",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Rhesymeg annilys",
   "app.components.formBuilder.labels2": "Labeli (dewisol)",
   "app.components.formBuilder.labelsTooltipContent2": "Dewiswch labeli dewisol ar gyfer unrhyw un o'r gwerthoedd graddfa llinol.",
