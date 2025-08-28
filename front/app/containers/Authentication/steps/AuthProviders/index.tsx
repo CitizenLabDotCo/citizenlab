@@ -124,7 +124,7 @@ const AuthProviders = memo<Props>(
         {ssoProviders.claveUnica && (
           <Box mb="18px">
             <ClaveUnicaExpandedAuthProviderButton
-              flow={flow}
+              showConsent={showConsent}
               onSelectAuthProvider={onSelectAuthProvider}
             />
           </Box>

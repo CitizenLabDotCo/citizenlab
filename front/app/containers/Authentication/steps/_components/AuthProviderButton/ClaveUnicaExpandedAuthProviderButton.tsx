@@ -9,8 +9,6 @@ import {
 } from 'api/verification_methods/types';
 import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
 
-import { SignUpInFlow } from 'containers/Authentication/typings';
-
 // move to core
 import ClaveUnicaButton from 'components/UI/ClaveUnicaButton';
 
@@ -43,18 +41,17 @@ export type TOnContinueFunction = (authProvider: AuthProvider) => void;
 
 export interface Props {
   id?: string;
-  flow: SignUpInFlow;
+  showConsent: boolean;
   className?: string;
   onSelectAuthProvider: TOnContinueFunction;
 }
 
 const ClaveUnicaExpandedAuthProviderButton = memo<Props>(
-  ({ flow, className, id, onSelectAuthProvider }) => {
+  ({ showConsent, className, id, onSelectAuthProvider }) => {
     const [tacAccepted, setTacAccepted] = useState(false);
     const [tacError, setTacError] = useState(false);
     const [privacyAccepted, setPrivacyAccepted] = useState(false);
     const [privacyError, setPrivacyError] = useState(false);
-    const showConsent = flow === 'signup';
     const { formatMessage } = useIntl();
     const { data: verificationMethods } = useVerificationMethods();
 
