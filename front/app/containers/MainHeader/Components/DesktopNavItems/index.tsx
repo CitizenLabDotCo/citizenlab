@@ -141,16 +141,7 @@ const DesktopNavItems = () => {
       const { linkTo, onlyActiveOnIndex, navigationItemTitle } =
         navbarItemProps;
 
-      if (linkTo === '/projects') {
-        const titleText =
-          localize(navigationItemTitle) || formatMessage(messages.allProjects);
-        const tempElement = createTempElement(
-          `${titleText} ▼`,
-          hiddenContainer
-        );
-        tempHTMLElements.push(tempElement);
-        allItems.push({ linkTo, onlyActiveOnIndex, navigationItemTitle });
-      } else if (linkTo) {
+      if (linkTo) {
         const titleText = localize(navigationItemTitle);
         const tempElement = createTempElement(titleText, hiddenContainer);
         tempHTMLElements.push(tempElement);
@@ -232,7 +223,7 @@ const DesktopNavItems = () => {
       ref={containerRef}
     >
       <NavbarItems>
-        {visibleItems.map((navbarItemProps, i) => {
+        {visibleItems.map((navbarItemProps) => {
           const { linkTo, onlyActiveOnIndex, navigationItemTitle } =
             navbarItemProps;
 
@@ -242,7 +233,7 @@ const DesktopNavItems = () => {
                 linkTo={linkTo}
                 navigationItemTitle={navigationItemTitle}
                 onDropdownStateChange={setIsDropdownOpen}
-                key={i}
+                key={linkTo}
               />
             );
           }
@@ -252,7 +243,7 @@ const DesktopNavItems = () => {
                 linkTo={linkTo}
                 onlyActiveOnIndex={onlyActiveOnIndex}
                 navigationItemTitle={navigationItemTitle}
-                key={i}
+                key={linkTo}
               />
             );
           }
