@@ -24,9 +24,9 @@ const InfoWithAccordions: UserComponent = () => {
       <WhiteSpace size="small" />
       <TwoColumn columnLayout="2-1">
         <Element id="left" is={Container} canvas>
-          <AccordionMultiloc title={{}} text={{}} />
-          <AccordionMultiloc title={{}} text={{}} />
-          <AccordionMultiloc title={{}} text={{}} />
+          <AccordionMultiloc title={{}} />
+          <AccordionMultiloc title={{}} />
+          <AccordionMultiloc title={{}} />
         </Element>
         <Element id="right" is={Container} canvas />
       </TwoColumn>
