@@ -70,7 +70,7 @@ const DesktopNavItems = () => {
   const hiddenItemsRef = useRef<HTMLDivElement>(null);
   const [visibleItems, setVisibleItems] = useState<NavbarItemProps[]>([]);
   const [overflowItems, setOverflowItems] = useState<NavbarItemProps[]>([]);
-  const isDropdownOpenRef = useRef(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   // Function to check if all items fit without needing a More button
   const calculateIfAllItemsFit = useCallback(
@@ -110,7 +110,7 @@ const DesktopNavItems = () => {
   // Function to measure available space and determine which items fit
   const calculateVisibleItems = useCallback(() => {
     // Don't recalculate if any dropdown is open
-    if (isDropdownOpenRef.current) {
+    if (isDropdownOpen) {
       return;
     }
 
@@ -199,6 +199,7 @@ const DesktopNavItems = () => {
     calculateItemsWithMoreButton,
     localize,
     formatMessage,
+    isDropdownOpen,
   ]);
 
   useEffect(() => {
@@ -214,24 +215,10 @@ const DesktopNavItems = () => {
       }, 250);
     };
 
-    // Listen for dropdown state changes with proper cleanup
-    const handleDocumentClick = (e: Event) => {
-      const target = e.target as Element;
-      if (target.closest('[data-testid="admin-publications-navbar-item"]')) {
-        const button = target.closest(
-          '[data-testid="admin-publications-navbar-item"]'
-        );
-        const isExpanded = button?.getAttribute('aria-expanded') === 'true';
-        isDropdownOpenRef.current = isExpanded;
-      }
-    };
-
-    document.addEventListener('click', handleDocumentClick);
     window.addEventListener('resize', handleResize);
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      document.removeEventListener('click', handleDocumentClick);
       clearTimeout(timer);
       clearTimeout(resizeTimer);
     };
@@ -254,6 +241,7 @@ const DesktopNavItems = () => {
               <AdminPublicationsNavbarItem
                 linkTo={linkTo}
                 navigationItemTitle={navigationItemTitle}
+                onDropdownStateChange={setIsDropdownOpen}
                 key={i}
               />
             );

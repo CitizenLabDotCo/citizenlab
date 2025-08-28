@@ -139,11 +139,13 @@ const ProjectsListFooter = styled(Link)`
 interface Props {
   linkTo: RouteType;
   navigationItemTitle: Multiloc;
+  onDropdownStateChange?: (isOpen: boolean) => void;
 }
 
 const AdminPublicationsNavbarItem = ({
   linkTo,
   navigationItemTitle,
+  onDropdownStateChange,
   location,
 }: Props & WithRouterProps) => {
   const [projectsDropdownOpened, setProjectsDropdownOpened] = useState(false);
@@ -177,6 +179,11 @@ const AdminPublicationsNavbarItem = ({
   useEffect(() => {
     setProjectsDropdownOpened(false);
   }, [location, setProjectsDropdownOpened]);
+
+  // Notify parent component of dropdown state changes
+  useEffect(() => {
+    onDropdownStateChange?.(projectsDropdownOpened);
+  }, [projectsDropdownOpened, onDropdownStateChange]);
 
   const toggleProjectsDropdown = (event: FormEvent) => {
     event.preventDefault();
