@@ -15,14 +15,14 @@ export default function useAuthConfig() {
 
   // Allows super admins to sign in with password when password login is disabled
   // through hidden param (?super_admin)
-  const superAdmin = searchParams.get('super_admin') !== null;
+  const superAdminParam = searchParams.get('super_admin') !== null;
 
   // A hidden path that will show all methods inc any that are admin only
   const { pathname } = useLocation();
   const showAdminOnlyMethods = pathname.endsWith('/sign-in/admin');
 
   const passwordLoginEnabled =
-    useFeatureFlag({ name: 'password_login' }) || superAdmin;
+    useFeatureFlag({ name: 'password_login' }) || superAdminParam;
 
   const google = useFeatureFlag({ name: 'google_login' });
 
