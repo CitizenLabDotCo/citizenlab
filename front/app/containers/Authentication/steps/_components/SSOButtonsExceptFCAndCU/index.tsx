@@ -13,7 +13,6 @@ import AuthProviderButton, {
   Props as AuthProviderButtonProps,
   TOnContinueFunction,
 } from '../AuthProviderButton';
-import ClaveUnicaExpandedAuthProviderButton from '../ClaveUnicaExpandedAuthProviderButton';
 import parentMessages from '../messages';
 import ViennaSamlButton from '../ViennaSamlButton';
 
@@ -59,14 +58,6 @@ const SSOButtonsExceptFCAndCU = ({
         >
           <FormattedMessage {...messages.continueWithFakeSSO} />
         </WrappedAuthProviderButton>
-      )}
-      {ssoProviders.claveUnica && (
-        <Box mb="18px">
-          <ClaveUnicaExpandedAuthProviderButton
-            showConsent={showConsent}
-            onSelectAuthProvider={onSelectAuthProvider}
-          />
-        </Box>
       )}
       {ssoProviders.hoplr && (
         <WrappedAuthProviderButton
