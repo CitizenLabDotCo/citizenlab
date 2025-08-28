@@ -79,7 +79,7 @@ const DesktopNavItems = () => {
     if (
       !containerRef.current ||
       !hiddenItemsRef.current ||
-      isNilOrError(navbarItems)
+     !navbarItems
     ) {
       return;
     }
