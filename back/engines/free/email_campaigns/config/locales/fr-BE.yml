@@ -105,8 +105,8 @@ fr-BE:
       event_address2: 'Salle 3a, à l''étage'
       proposal_title: 'Exemple de proposition'
       input_status_title: 'Exemple de statut'
-      input_status_description: 'Exemple de statut d''une entrée (par exemple, acceptée, rejetée, mise en œuvre...)'
-      official_feedback_body: 'Exemple de retour d''information officiel'
+      input_status_description: 'Exemple de statut pour une contribution (par ex. accepté, rejeté, mis en œuvre...)'
+      official_feedback_body: 'Exemple de retour officiel'
     footer:
       "link_privacy_policy": "Politique de confidentialité"
       "link_terms_conditions": "Conditions Générales d'Utilisation"
@@ -350,7 +350,7 @@ fr-BE:
       preheader: '%{commentAuthor} vous a mentionné dans un commentaire'
     project_moderation_rights_received:
       cta_button: 'Gérez ce projet'
-      event_description: 'Un administrateur de la plateforme de %{organizationName} vous a nommé administrateur projet du projet suivant :'
+      event_description: 'Un administrateur de la plateforme de participation de %{organizationName} vient de vous nommer gestionnaire du projet suivant :'
       no_ideas: 'Il n''y a pas encore d''idées'
       preheader: 'Un administrateur de la plateforme de %{organizationName} vous a nommé modérateur du projet suivant'
       subject: 'Vous êtes à présent un modérateur sur la plateforme de %{organizationName}'
@@ -361,11 +361,11 @@ fr-BE:
       title_moderate_analyse_input: 'Modérer et analyser les contributions'
       title_share_project_information: 'Fournir des informations au sujet du projet'
       title_what_can_you_do_moderator: 'Que pouvez-vous faire en tant que modérateur ?'
-      title: 'Vous êtes à présent administrateur projet'
+      title: 'Vous avez été nommé gestionnaire de projet'
       x_ideas: '%{numberOfIdeas} idées'
     project_folder_moderation_rights_received:
       cta_button: 'Voir ce dossier'
-      event_description: 'Vous avez reçu des droits d''administrateur sur la plateforme de participation de %{organizationName} pour le dossier suivant :'
+      event_description: 'Vous avez reçu les droits de gestionnaire de dossier sur la plateforme de participation de %{organizationName} pour le dossier suivant :'
       no_projects: 'Pas encore de projets'
       preheader: 'Un administrateur de la plateforme de %{organizationName} vous a nommé administrateur du dossier suivant'
       subject: 'Vous êtes à présent un administrateur de dossier sur la plateforme de %{organizationName}'
@@ -376,7 +376,7 @@ fr-BE:
       title_moderate_analyse_input: 'Modérer et analyser les contributions'
       title_manage_folder: 'Gérez les paramètres du dossier et créez de nouveaux projets.'
       title_what_can_you_do_folderadmin: 'Que pouvez-vous faire en tant qu''administrateur de dossiers ?'
-      title: 'Vous êtes à présent gestionnaire de dossiers'
+      title: 'Vous avez été nommé gestionnaire de dossier'
       x_projects: '%{numberOfProjects} projets'
     project_phase_started:
       cta_button: 'Découvrez la nouvelle phase'
@@ -402,12 +402,12 @@ fr-BE:
       cta_button: 'Voir le projet'
     project_review_request:
       subject: 'Demande de révision : Un projet est en attente d''approbation.'
-      title: '%{requesterName} vous a invité à vérifier le projet "%{projectTitle}"'
+      title: '%{requesterName} vous a invité à vérifier le projet « %{projectTitle} »'
       event_description: "Actuellement, le projet est en mode brouillon et n'est pas visible par les utilisateurs. Une fois que vous l'aurez vérifié et approuvé, le modérateur pourra le publier."
       cta_button: "Vérifier le projet"
     project_review_state_change:
       subject: '"%{projectTitle}" a été approuvé'
-      title: '%{reviewerName} a approuvé le projet "%{projectTitle}"'
+      title: '%{reviewerName} a approuvé le projet « %{projectTitle} »'
       event_description: "Le projet est maintenant prêt à être mis en ligne. Vous pouvez le publier dès que vous êtes prêt !"
       cta_button: "Accéder au projet"
     status_change_on_idea_you_follow:
@@ -541,7 +541,7 @@ fr-BE:
       title: '%{projectName}'
       event_description: 'Le projet "%{projectName}" vous invite à exprimer votre préférence parmi %{numIdeas} options :'
       cta_message: 'Cliquez sur le bouton ci-dessous pour participer'
-      cta_button: 'Se rendre sur la plateforme pour voter'
+      cta_button: 'Voter sur la plateforme'
     survey_submitted:
       subject: '%{organizationName}: Merci pour votre réponse ! 🎉'
       preheader: 'Voici les détails de votre soumission.'
