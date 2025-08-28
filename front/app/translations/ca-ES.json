@@ -822,6 +822,7 @@
   "app.components.formBuilder.good": "Bé",
   "app.components.formBuilder.helmetTitle": "Constructor de formularis",
   "app.components.formBuilder.imageFileUpload": "Pujada d'imatges",
+  "app.components.formBuilder.inputImages": "Imatges",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Lògica no vàlida",
   "app.components.formBuilder.labels2": "Etiquetes (opcional)",
   "app.components.formBuilder.labelsTooltipContent2": "Trieu etiquetes opcionals per a qualsevol dels valors d'escala lineal.",
