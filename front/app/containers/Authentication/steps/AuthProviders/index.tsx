@@ -16,10 +16,12 @@ import Or from 'components/UI/Or';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
+import AuthProviderButton, {
+  TOnContinueFunction,
+} from '../_components/AuthProviderButton';
+import ClaveUnicaExpandedAuthProviderButton from '../_components/AuthProviderButton/ClaveUnicaExpandedAuthProviderButton';
 import TextButton from '../_components/TextButton';
 
-import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
-import ClaveUnicaExpandedAuthProviderButton from './ClaveUnicaExpandedAuthProviderButton';
 import messages from './messages';
 
 const Container = styled.div`

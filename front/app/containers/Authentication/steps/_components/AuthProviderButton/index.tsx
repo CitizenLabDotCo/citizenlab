@@ -12,15 +12,11 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 
+import { AuthProvider } from '../../AuthProviders';
+import messages from '../../AuthProviders/messages';
+
 import Consent from './Consent';
-import messages from './messages';
-
-import { AuthProvider } from '.';
-
-const tracks = {
-  signInWithSSOClicked: 'Sign in with SSO button clicked',
-  signUpWithSSOClicked: 'Sign up with SSO button clicked',
-};
+import tracks from './tracks';
 
 const timeout = 300;
 
