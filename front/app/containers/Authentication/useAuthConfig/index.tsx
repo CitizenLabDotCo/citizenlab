@@ -78,40 +78,26 @@ export default function useAuthConfig() {
 
   const fakeSso = useFeatureFlag({ name: 'fake_sso' });
 
-  const anySSOProviderEnabled =
-    google ||
-    facebook ||
-    azureAd ||
-    azureAdB2c ||
-    franceconnect ||
-    viennaCitizen ||
-    claveUnica ||
-    hoplr ||
-    idAustria ||
-    criipto ||
-    nemlogIn ||
-    keycloak ||
-    twoday ||
-    fakeSso;
+  const ssoProviders = {
+    google,
+    facebook,
+    azureAd,
+    azureAdB2c,
+    franceconnect,
+    viennaCitizen,
+    claveUnica,
+    hoplr,
+    idAustria,
+    criipto,
+    nemlogIn,
+    keycloak,
+    twoday,
+    fakeSso,
+  };
 
   return {
     passwordLoginEnabled,
-    ssoProviders: {
-      google,
-      facebook,
-      azureAd,
-      azureAdB2c,
-      franceconnect,
-      viennaCitizen,
-      claveUnica,
-      hoplr,
-      idAustria,
-      criipto,
-      nemlogIn,
-      keycloak,
-      twoday,
-      fakeSso,
-    },
-    anySSOProviderEnabled,
+    ssoProviders,
+    anySSOProviderEnabled: Object.values(ssoProviders).some((v) => v),
   };
 }
