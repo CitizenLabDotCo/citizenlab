@@ -92,6 +92,8 @@ const AuthProviders = memo<Props>(
     const showMainAuthMethods =
       isPasswordSigninOrSignupAllowed || anySSOProviderEnabled;
 
+    const showConsent = flow === 'signup';
+
     return (
       <Container
         id={
@@ -111,7 +113,7 @@ const AuthProviders = memo<Props>(
         {ssoProviders.fakeSso && (
           <WrappedAuthProviderButton
             icon="bullseye"
-            flow={flow}
+            showConsent={showConsent}
             authProvider="fake_sso"
             onContinue={onSelectAuthProvider}
             id="e2e-login-with-fake-sso"
@@ -130,7 +132,7 @@ const AuthProviders = memo<Props>(
         {ssoProviders.hoplr && (
           <WrappedAuthProviderButton
             icon="hoplr"
-            flow={flow}
+            showConsent={showConsent}
             authProvider="hoplr"
             onContinue={onSelectAuthProvider}
           >
@@ -139,7 +141,7 @@ const AuthProviders = memo<Props>(
         )}
         {ssoProviders.nemlogIn && (
           <WrappedAuthProviderButton
-            flow={flow}
+            showConsent={showConsent}
             authProvider="nemlog_in"
             onContinue={onSelectAuthProvider}
           >
@@ -149,7 +151,7 @@ const AuthProviders = memo<Props>(
         {ssoProviders.idAustria && (
           <WrappedAuthProviderButton
             icon="idaustria"
-            flow={flow}
+            showConsent={showConsent}
             authProvider="id_austria"
             onContinue={onSelectAuthProvider}
           >
@@ -164,7 +166,7 @@ const AuthProviders = memo<Props>(
         {ssoProviders.criipto && (
           <WrappedAuthProviderButton
             icon="mitid"
-            flow={flow}
+            showConsent={showConsent}
             authProvider="criipto"
             onContinue={onSelectAuthProvider}
           >
@@ -182,7 +184,7 @@ const AuthProviders = memo<Props>(
         {ssoProviders.keycloak && (
           <WrappedAuthProviderButton
             icon="idporten"
-            flow={flow}
+            showConsent={showConsent}
             authProvider="keycloak"
             onContinue={onSelectAuthProvider}
           >
@@ -197,7 +199,7 @@ const AuthProviders = memo<Props>(
         {ssoProviders.twoday && (
           <WrappedAuthProviderButton
             icon="bankId"
-            flow={flow}
+            showConsent={showConsent}
             authProvider="twoday"
             onContinue={onSelectAuthProvider}
           >
@@ -216,7 +218,7 @@ const AuthProviders = memo<Props>(
         />
         {isPasswordSigninOrSignupAllowed && (
           <WrappedAuthProviderButton
-            flow={flow}
+            showConsent={showConsent}
             icon="email"
             authProvider="email"
             onContinue={onSelectAuthProvider}
@@ -231,7 +233,7 @@ const AuthProviders = memo<Props>(
         )}
         {ssoProviders.google && (
           <WrappedAuthProviderButton
-            flow={flow}
+            showConsent={showConsent}
             icon="google"
             authProvider="google"
             onContinue={onSelectAuthProvider}
@@ -242,7 +244,7 @@ const AuthProviders = memo<Props>(
         {ssoProviders.facebook && (
           <WrappedAuthProviderButton
             icon="facebook"
-            flow={flow}
+            showConsent={showConsent}
             authProvider="facebook"
             onContinue={onSelectAuthProvider}
           >
@@ -252,7 +254,7 @@ const AuthProviders = memo<Props>(
         {ssoProviders.azureAd && (
           <WrappedAuthProviderButton
             icon="microsoft-windows"
-            flow={flow}
+            showConsent={showConsent}
             authProvider="azureactivedirectory"
             onContinue={onSelectAuthProvider}
           >
@@ -265,7 +267,7 @@ const AuthProviders = memo<Props>(
         {ssoProviders.azureAdB2c && (
           <WrappedAuthProviderButton
             icon="microsoft-windows"
-            flow={flow}
+            showConsent={showConsent}
             authProvider="azureactivedirectory_b2c"
             onContinue={onSelectAuthProvider}
           >

@@ -5,8 +5,6 @@ import { darken } from 'polished';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled, { useTheme } from 'styled-components';
 
-import { SignUpInFlow } from 'containers/Authentication/typings';
-
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
@@ -98,23 +96,14 @@ export type TOnContinueFunction = (authProvider: AuthProvider) => void;
 export interface Props {
   id?: string;
   icon?: IconNames;
-  flow: SignUpInFlow;
   authProvider: AuthProvider;
+  showConsent: boolean;
   onContinue: TOnContinueFunction;
   children: React.ReactNode;
-  showConsentOnFlow?: SignUpInFlow;
 }
 
 const AuthProviderButton = memo<Props>(
-  ({
-    flow,
-    authProvider,
-    onContinue,
-    children,
-    id,
-    icon,
-    showConsentOnFlow = 'signup',
-  }) => {
+  ({ id, icon, authProvider, showConsent, onContinue, children }) => {
     const [expanded, setExpanded] = useState(false);
     const [tacAccepted, setTacAccepted] = useState(false);
     const [tacError, setTacError] = useState(false);
@@ -133,14 +122,14 @@ const AuthProviderButton = memo<Props>(
       (event: React.FormEvent) => {
         event.preventDefault();
 
-        if (showConsentOnFlow === flow && authProvider !== 'email') {
+        if (showConsent && authProvider !== 'email') {
           setExpanded((prevExpanded) => !prevExpanded);
         } else {
           trackEventByName(tracks.signInWithSSOClicked, { authProvider });
           onContinue(authProvider);
         }
       },
-      [flow, authProvider, onContinue, showConsentOnFlow]
+      [showConsent, authProvider, onContinue]
     );
 
     const handleContinueClicked = useCallback(() => {
@@ -198,7 +187,7 @@ const AuthProviderButton = memo<Props>(
           {children}
         </ButtonWithLink>
 
-        {showConsentOnFlow === flow && (
+        {showConsent && (
           <CSSTransition
             classNames="consent"
             in={expanded}
