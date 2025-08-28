@@ -81,8 +81,8 @@ const MainHeader = () => {
     useState<boolean>(false);
 
   // Show desktop navbar down to phone breakpoint so the "More" menu can handle overflow
-  const isSmallerThanPhone = useBreakpoint('phone');
-  const isDesktopUser = !isSmallerThanPhone;
+  const isSmallerThanTablet = useBreakpoint('tablet');
+  const isDesktopUser = !isSmallerThanTablet;
 
   // Used to show the mobile navbar on scrolling up, or hide it on scrolling down
   useEffect(() => {
