@@ -337,11 +337,11 @@ es:
       title: 'Nuevo comentario interno en ''%{post}'''
       preheader: '''%{post}'' tiene un nuevo comentario interno'
     official_feedback_on_idea_you_follow:
-      event_description: '%{feedback_author_name} dejó una actualización oficial sobre %{input_title}''.'
+      event_description: '%{feedback_author_name} dejó una respuesta oficial sobre %{input_title}''.'
       title: 'Hay una actualización en "%{input_title}"'
       subject: 'Se publicaron comentarios oficiales en "%{input_title}"'
       preheader: 'Hay una actualización en un aporte que sigues'
-      cta_button: Ir a este aporte
+      cta_button: Ir a esta entrada
     mention_in_official_feedback:
       cta_button: 'Responder a %{organizationName}'
       event_description: '%{organizationName} te ha mencionado en su comentario sobre la idea ''%{post}''. Haga clic en el siguiente enlace para entrar en la conversación con %{organizationName}'
@@ -365,7 +365,7 @@ es:
       x_ideas: '%{numberOfIdeas} ideas'
     project_folder_moderation_rights_received:
       cta_button: 'Ver esta carpeta'
-      event_description: 'Se le han otorgado derechos de administrador en la plataforma de participación de %{organizationName}para la siguiente carpeta:'
+      event_description: 'Se le han otorgado derechos de administrador en la plataforma de participación de %{organizationName} para la siguiente carpeta:'
       no_projects: 'Todavía no hay proyectos'
       preheader: 'Un administrador de la plataforma de participación de %{organizationName} acaba de administrador gestor de la siguiente carpeta'
       subject: 'Te convertiste en administrador de carpetas de la plataforma %{organizationName}'
@@ -413,10 +413,10 @@ es:
     status_change_on_idea_you_follow:
       status_change: 'El nuevo estado de este aporte es ''%{status}'''
       event_description: '%{organizationName} actualizó el estado del aporte ''%{input_title}'' en su plataforma digital de participación.'
-      title: 'Un aporte que sigues tiene un nuevo estado'
+      title: 'Una entrada que sigues tiene un nuevo estado'
       subject: 'El estatus de "%{input_title}" ha cambiando'
       preheader: 'Un aporte que sigues tiene un nuevo estado'
-      cta_button: Ir a este aporte
+      cta_button: Ir a esta entrada
     user_digest:
       subject: "Actualización semanal de la plataforma de participación de %{organizationName}"
       commented: "%{authorFirstName} comentó:"
@@ -517,7 +517,7 @@ es:
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} ¡Revelados los resultados de la votación!'
       preheader: '%{phaseTitle} resultados de la votación revelados en la plataforma de participación de %{organizationName}'
-      title: '%{phaseTitle} ¡resultados de la votación revelados!'
+      title: '¡Mira los resultados de la votación de %{phaseTitle}!'
       body_1: '¡Ya están los resultados!'
       body_2: '¡Se han publicado los resultados de la votación %{phaseTitle} en la plataforma %{organizationName} !'
       body_3: 'Te animamos a que revises los resultados y permanezcas atento a las actualizaciones sobre los próximos pasos.'
