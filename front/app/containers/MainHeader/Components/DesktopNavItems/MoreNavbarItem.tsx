@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Dropdown, colors, Button } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
 import T from 'components/T';
@@ -57,6 +57,7 @@ interface Props {
 const MoreNavbarItem = ({ overflowItems }: Props) => {
   const { formatMessage } = useIntl();
   const [dropdownOpened, setDropdownOpened] = useState(false);
+  const theme = useTheme();
 
   const toggleDropdown = () => {
     setDropdownOpened(!dropdownOpened);
@@ -78,6 +79,8 @@ const MoreNavbarItem = ({ overflowItems }: Props) => {
         text={formatMessage(messages.more)}
         onClick={toggleDropdown}
         buttonStyle="text"
+        textColor={theme.colors.tenantText}
+        iconColor={theme.colors.tenantText}
       />
       <Dropdown
         opened={dropdownOpened}
