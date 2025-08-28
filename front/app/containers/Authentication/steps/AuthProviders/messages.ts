@@ -9,41 +9,9 @@ export default defineMessages({
     id: 'app.components.AuthProviders.logInWithEmail',
     defaultMessage: 'Log in with Email',
   },
-  continueWithGoogle: {
-    id: 'app.components.AuthProviders.continueWithGoogle',
-    defaultMessage: 'Continue with Google',
-  },
-  continueWithFacebook: {
-    id: 'app.components.AuthProviders.continueWithFacebook',
-    defaultMessage: 'Continue with Facebook',
-  },
-  continueWithHoplr: {
-    id: 'app.components.AuthProviders.continueWithHoplr',
-    defaultMessage: 'Continue with Hoplr',
-  },
-  continueWithNemlogIn: {
-    id: 'app.components.AuthProviders.continueWithNemlogIn',
-    defaultMessage: 'Continue with MitID',
-  },
-  continueWithIdAustria: {
-    id: 'app.components.AuthProviders.continueWithIdAustria',
-    defaultMessage: 'Continue with ID Austria',
-  },
-  continueWithAzure: {
-    id: 'app.components.AuthProviders.continueWithAzure',
-    defaultMessage: 'Continue with {azureProviderName}',
-  },
-  continueWithLoginMechanism: {
-    id: 'app.components.AuthProviders.continueWithLoginMechanism',
-    defaultMessage: 'Continue with {loginMechanismName}',
-  },
   signUpButtonAltText: {
     id: 'app.components.AuthProviders.signUpButtonAltText',
     defaultMessage: 'Sign up with {loginMechanismName}',
-  },
-  continueWithFakeSSO: {
-    id: 'app.components.AuthProviders.continueWithFakeSSO',
-    defaultMessage: 'Continue with Fake SSO',
   },
   goToLogIn: {
     id: 'app.components.AuthProviders.goToLogIn',

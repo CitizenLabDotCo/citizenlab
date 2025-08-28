@@ -9,7 +9,6 @@ import { SSOProvider } from 'api/authentication/singleSignOn';
 import { ErrorCode } from 'containers/Authentication/typings';
 import useAuthConfig from 'containers/Authentication/useAuthConfig';
 
-import Outlet from 'components/Outlet';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
 import Or from 'components/UI/Or';
 
@@ -20,7 +19,7 @@ import AuthProviderButton, {
   TOnContinueFunction,
   Props as AuthProviderButtonProps,
 } from '../_components/AuthProviderButton';
-import ClaveUnicaExpandedAuthProviderButton from '../_components/AuthProviderButton/ClaveUnicaExpandedAuthProviderButton';
+import SSOButtonsExceptFC from '../_components/SSOButtonsExceptFC';
 import TextButton from '../_components/TextButton';
 
 import messages from './messages';
@@ -60,11 +59,6 @@ const AuthProviders = memo<Props>(
     const showAdminLoginLink =
       flow === 'signin' &&
       tenantSettings?.azure_ad_login?.visibility === 'link';
-
-    const azureProviderName =
-      tenantSettings?.azure_ad_login?.login_mechanism_name;
-    const azureB2cProviderName =
-      tenantSettings?.azure_ad_b2c_login?.login_mechanism_name;
 
     const handleOnFranceConnectSelected = useCallback(
       (event: React.FormEvent) => {
@@ -110,112 +104,6 @@ const AuthProviders = memo<Props>(
           />
         )}
         {showMainAuthMethods && ssoProviders.franceconnect && <Or />}
-        {ssoProviders.fakeSso && (
-          <WrappedAuthProviderButton
-            icon="bullseye"
-            showConsent={showConsent}
-            authProvider="fake_sso"
-            onContinue={onSelectAuthProvider}
-            id="e2e-login-with-fake-sso"
-          >
-            <FormattedMessage {...messages.continueWithFakeSSO} />
-          </WrappedAuthProviderButton>
-        )}
-        {ssoProviders.claveUnica && (
-          <Box mb="18px">
-            <ClaveUnicaExpandedAuthProviderButton
-              showConsent={showConsent}
-              onSelectAuthProvider={onSelectAuthProvider}
-            />
-          </Box>
-        )}
-        {ssoProviders.hoplr && (
-          <WrappedAuthProviderButton
-            icon="hoplr"
-            showConsent={showConsent}
-            authProvider="hoplr"
-            onContinue={onSelectAuthProvider}
-          >
-            <FormattedMessage {...messages.continueWithHoplr} />
-          </WrappedAuthProviderButton>
-        )}
-        {ssoProviders.nemlogIn && (
-          <WrappedAuthProviderButton
-            showConsent={showConsent}
-            authProvider="nemlog_in"
-            onContinue={onSelectAuthProvider}
-          >
-            <FormattedMessage {...messages.continueWithNemlogIn} />
-          </WrappedAuthProviderButton>
-        )}
-        {ssoProviders.idAustria && (
-          <WrappedAuthProviderButton
-            icon="idaustria"
-            showConsent={showConsent}
-            authProvider="id_austria"
-            onContinue={onSelectAuthProvider}
-          >
-            <FormattedMessage
-              {...messages.continueWithLoginMechanism}
-              values={{
-                loginMechanismName: 'ID Austria',
-              }}
-            />
-          </WrappedAuthProviderButton>
-        )}
-        {ssoProviders.criipto && (
-          <WrappedAuthProviderButton
-            icon="mitid"
-            showConsent={showConsent}
-            authProvider="criipto"
-            onContinue={onSelectAuthProvider}
-          >
-            <FormattedMessage
-              {...messages.continueWithLoginMechanism}
-              values={{
-                loginMechanismName:
-                  process.env.NODE_ENV === 'development'
-                    ? 'MitID (Criipto)'
-                    : 'MitID',
-              }}
-            />
-          </WrappedAuthProviderButton>
-        )}
-        {ssoProviders.keycloak && (
-          <WrappedAuthProviderButton
-            icon="idporten"
-            showConsent={showConsent}
-            authProvider="keycloak"
-            onContinue={onSelectAuthProvider}
-          >
-            <FormattedMessage
-              {...messages.continueWithLoginMechanism}
-              values={{
-                loginMechanismName: 'ID-Porten',
-              }}
-            />
-          </WrappedAuthProviderButton>
-        )}
-        {ssoProviders.twoday && (
-          <WrappedAuthProviderButton
-            icon="bankId"
-            showConsent={showConsent}
-            authProvider="twoday"
-            onContinue={onSelectAuthProvider}
-          >
-            <FormattedMessage
-              {...messages.continueWithLoginMechanism}
-              values={{
-                loginMechanismName: 'BankID eller Freja eID+',
-              }}
-            />
-          </WrappedAuthProviderButton>
-        )}
-        <Outlet
-          id="app.components.SignUpIn.AuthProviders.ContainerStart"
-          flow={flow}
-          onContinue={onSelectAuthProvider}
-        />
         {isPasswordSigninOrSignupAllowed && (
           <WrappedAuthProviderButton
             showConsent={showConsent}
@@ -231,52 +119,11 @@ const AuthProviders = memo<Props>(
             )}
           </WrappedAuthProviderButton>
         )}
-        {ssoProviders.google && (
-          <WrappedAuthProviderButton
-            showConsent={showConsent}
-            icon="google"
-            authProvider="google"
-            onContinue={onSelectAuthProvider}
-          >
-            <FormattedMessage {...messages.continueWithGoogle} />
-          </WrappedAuthProviderButton>
-        )}
-        {ssoProviders.facebook && (
-          <WrappedAuthProviderButton
-            icon="facebook"
-            showConsent={showConsent}
-            authProvider="facebook"
-            onContinue={onSelectAuthProvider}
-          >
-            <FormattedMessage {...messages.continueWithFacebook} />
-          </WrappedAuthProviderButton>
-        )}
-        {ssoProviders.azureAd && (
-          <WrappedAuthProviderButton
-            icon="microsoft-windows"
-            showConsent={showConsent}
-            authProvider="azureactivedirectory"
-            onContinue={onSelectAuthProvider}
-          >
-            <FormattedMessage
-              {...messages.continueWithAzure}
-              values={{ azureProviderName }}
-            />
-          </WrappedAuthProviderButton>
-        )}
-        {ssoProviders.azureAdB2c && (
-          <WrappedAuthProviderButton
-            icon="microsoft-windows"
-            showConsent={showConsent}
-            authProvider="azureactivedirectory_b2c"
-            onContinue={onSelectAuthProvider}
-          >
-            <FormattedMessage
-              {...messages.continueWithAzure}
-              values={{ azureProviderName: azureB2cProviderName }}
-            />
-          </WrappedAuthProviderButton>
-        )}
+        <SSOButtonsExceptFC
+          showConsent={showConsent}
+          flow={flow}
+          onSelectAuthProvider={onSelectAuthProvider}
+        />
         {passwordLoginEnabled && (
           <Text m="0">
             <FormattedMessage

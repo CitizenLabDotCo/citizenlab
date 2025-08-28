@@ -16,7 +16,7 @@ import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { AuthProvider } from '../../AuthProviders';
-import messages from '../../AuthProviders/messages';
+import messages from '../messages';
 
 import Consent from './Consent';
 
