@@ -12,8 +12,8 @@ import { useIntl } from 'utils/cl-intl';
 
 import SSOButtonsExceptFC from '../../_components/SSOButtonsExceptFC';
 
+import FranceConnectButton from './FranceConnectButton';
 import messages from './messages';
-import SSOButton from './SSOButton';
 
 interface Props {
   onClickSSO: (ssoProvider: SSOProviderWithoutVienna) => void;
@@ -44,11 +44,11 @@ const SSOButtons = ({ onClickSSO }: Props) => {
       )}
       <Box>
         {ssoProviders.franceconnect && (
-          <SSOButton ssoProvider="facebook" onClickSSO={onClickSSO} />
+          <FranceConnectButton onClick={() => onClickSSO('franceconnect')} />
         )}
         <SSOButtonsExceptFC
           showConsent={false}
-          flow="signup"
+          flow="signin"
           onSelectAuthProvider={onClickSSO}
         />
       </Box>
