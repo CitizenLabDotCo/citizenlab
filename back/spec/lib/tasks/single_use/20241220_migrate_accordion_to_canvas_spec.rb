@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# rubocop:disable RSpec/DescribeClass
 RSpec.describe 'single_use:migrate_accordion_to_canvas', type: :task do
   before { load_rake_tasks_if_not_loaded }
 
@@ -9,7 +10,7 @@ RSpec.describe 'single_use:migrate_accordion_to_canvas', type: :task do
 
   describe 'migration functionality' do
     let!(:project) { create(:project) }
-    let!(:homepage_layout) { create(:homepage_layout, project: project) }
+    let!(:homepage_layout) { create(:homepage_layout, content_buildable: project) }
 
     before do
       # Create a layout with accordion components
@@ -78,8 +79,8 @@ RSpec.describe 'single_use:migrate_accordion_to_canvas', type: :task do
       expect(accordion_two['props']).not_to have_key('text')
 
       # Check that TextMultiloc nodes were created
-      expect(accordion_one['nodes']).to have(1).item
-      expect(accordion_two['nodes']).to have(1).item
+      expect(accordion_one['nodes'].length).to eq(1)
+      expect(accordion_two['nodes'].length).to eq(1)
 
       text_node_one_id = accordion_one['nodes'].first
       text_node_two_id = accordion_two['nodes'].first
@@ -129,7 +130,7 @@ RSpec.describe 'single_use:migrate_accordion_to_canvas', type: :task do
 
   describe 'rollback functionality' do
     let!(:project) { create(:project) }
-    let!(:homepage_layout) { create(:homepage_layout, project: project) }
+    let!(:homepage_layout) { create(:homepage_layout, content_buildable: project) }
 
     before do
       # Create a layout with migrated accordion components
@@ -199,7 +200,7 @@ RSpec.describe 'single_use:migrate_accordion_to_canvas', type: :task do
 
   describe 'test functionality' do
     let!(:project) { create(:project) }
-    let!(:homepage_layout) { create(:homepage_layout, project: project) }
+    let!(:homepage_layout) { create(:homepage_layout, content_buildable: project) }
 
     before do
       # Create a layout with mixed accordion types
@@ -269,3 +270,4 @@ RSpec.describe 'single_use:migrate_accordion_to_canvas', type: :task do
     end
   end
 end
+# rubocop:enable RSpec/DescribeClass
