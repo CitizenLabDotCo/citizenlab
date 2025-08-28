@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe 'single_use:migrate_accordion_to_canvas' do
-  before(:all) { load_rake_tasks_if_not_loaded }
+RSpec.describe 'single_use:migrate_accordion_to_canvas', type: :task do
+  before { load_rake_tasks_if_not_loaded }
 
   let(:task_name) { 'single_use:migrate_accordion_to_canvas' }
 
