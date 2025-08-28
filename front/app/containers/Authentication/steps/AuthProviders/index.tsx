@@ -1,15 +1,13 @@
 import React, { memo, useCallback } from 'react';
 
 import { Text } from '@citizenlab/cl2-component-library';
-import { useLocation, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { SSOProvider } from 'api/authentication/singleSignOn';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import { ErrorCode } from 'containers/Authentication/typings';
+import useAuthConfig from 'containers/Authentication/useAuthConfig';
 
 import Outlet from 'components/Outlet';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
@@ -55,66 +53,14 @@ const AuthProviders = memo<Props>(
   ({ flow, className, error, onSwitchFlow, onSelectAuthProvider }) => {
     const { formatMessage } = useIntl();
     const { data: tenant } = useAppConfiguration();
-    const { pathname } = useLocation();
     const tenantSettings = tenant?.data.attributes.settings;
-
-    // Allows testing of specific SSO providers without showing to all users eg ?provider=keycloak
-    const [searchParams] = useSearchParams();
-    const providerForTest = searchParams.get('provider');
-
-    // To allow super admins to sign in with password when password login is disabled
-    const superAdmin = searchParams.get('super_admin') !== null;
-
-    // A hidden path that will show all methods inc any that are admin only
-    const showAdminOnlyMethods = pathname.endsWith('/sign-in/admin');
+    const { passwordLoginEnabled, anySSOProviderEnabled, ssoProviders } =
+      useAuthConfig();
 
     // Show link to the above hidden path
     const showAdminLoginLink =
       flow === 'signin' &&
       tenantSettings?.azure_ad_login?.visibility === 'link';
-
-    const passwordLoginEnabled =
-      useFeatureFlag({ name: 'password_login' }) || superAdmin;
-    const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
-    const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
-    const azureAdLoginEnabled =
-      useFeatureFlag({ name: 'azure_ad_login' }) &&
-      ((tenantSettings?.azure_ad_login?.visibility !== 'link' &&
-        tenantSettings?.azure_ad_login?.visibility !== 'hide') ||
-        showAdminOnlyMethods);
-    const azureAdB2cLoginEnabled = useFeatureFlag({
-      name: 'azure_ad_b2c_login',
-    });
-    const franceconnectLoginEnabled = useFeatureFlag({
-      name: 'franceconnect_login',
-    });
-    const viennaCitizenLoginEnabled = useFeatureFlag({
-      name: 'vienna_citizen_login',
-    });
-    const claveUnicaLoginEnabled = useFeatureFlag({
-      name: 'clave_unica_login',
-    });
-    const hoplrLoginEnabled = useFeatureFlag({
-      name: 'hoplr_login',
-    });
-    const idAustriaLoginEnabled = useFeatureFlag({
-      name: 'id_austria_login',
-    });
-    const criiptoLoginEnabled = useFeatureFlag({
-      name: 'criipto_login',
-    });
-    const fakeSsoEnabled = useFeatureFlag({ name: 'fake_sso' });
-    const nemlogInLoginEnabled = useFeatureFlag({
-      name: 'nemlog_in_login',
-    });
-    const keycloakLoginEnabled =
-      useFeatureFlag({
-        name: 'keycloak_login',
-      }) || providerForTest === 'keycloak';
-    const twodayLoginEnabled =
-      useFeatureFlag({
-        name: 'twoday_login',
-      }) || providerForTest === 'twoday';
 
     const azureProviderName =
       tenantSettings?.azure_ad_login?.login_mechanism_name;
@@ -142,22 +88,10 @@ const AuthProviders = memo<Props>(
       (flow === 'signin' || tenantSettings?.password_login?.enable_signup);
 
     const showFCButton =
-      franceconnectLoginEnabled && error !== 'franceconnect_merging_failed';
+      ssoProviders.franceconnect && error !== 'franceconnect_merging_failed';
 
     const showMainAuthMethods =
-      isPasswordSigninOrSignupAllowed ||
-      fakeSsoEnabled ||
-      facebookLoginEnabled ||
-      azureAdLoginEnabled ||
-      azureAdB2cLoginEnabled ||
-      viennaCitizenLoginEnabled ||
-      claveUnicaLoginEnabled ||
-      hoplrLoginEnabled ||
-      criiptoLoginEnabled ||
-      keycloakLoginEnabled ||
-      twodayLoginEnabled ||
-      nemlogInLoginEnabled ||
-      idAustriaLoginEnabled;
+      isPasswordSigninOrSignupAllowed || anySSOProviderEnabled;
 
     return (
       <Container
@@ -174,8 +108,8 @@ const AuthProviders = memo<Props>(
             })}
           />
         )}
-        {showMainAuthMethods && franceconnectLoginEnabled && <Or />}
-        {fakeSsoEnabled && (
+        {showMainAuthMethods && ssoProviders.franceconnect && <Or />}
+        {ssoProviders.fakeSso && (
           <StyledAuthProviderButton
             icon="bullseye"
             flow={flow}
@@ -186,13 +120,13 @@ const AuthProviders = memo<Props>(
             <FormattedMessage {...messages.continueWithFakeSSO} />
           </StyledAuthProviderButton>
         )}
-        {claveUnicaLoginEnabled && (
+        {ssoProviders.claveUnica && (
           <StyledClaveUnicaExpandedAuthProviderButton
             flow={flow}
             onSelectAuthProvider={onSelectAuthProvider}
           />
         )}
-        {hoplrLoginEnabled && (
+        {ssoProviders.hoplr && (
           <StyledAuthProviderButton
             icon="hoplr"
             flow={flow}
@@ -202,7 +136,7 @@ const AuthProviders = memo<Props>(
             <FormattedMessage {...messages.continueWithHoplr} />
           </StyledAuthProviderButton>
         )}
-        {nemlogInLoginEnabled && (
+        {ssoProviders.nemlogIn && (
           <StyledAuthProviderButton
             flow={flow}
             authProvider="nemlog_in"
@@ -211,7 +145,7 @@ const AuthProviders = memo<Props>(
             <FormattedMessage {...messages.continueWithNemlogIn} />
           </StyledAuthProviderButton>
         )}
-        {idAustriaLoginEnabled && (
+        {ssoProviders.idAustria && (
           <StyledAuthProviderButton
             icon="idaustria"
             flow={flow}
@@ -226,7 +160,7 @@ const AuthProviders = memo<Props>(
             />
           </StyledAuthProviderButton>
         )}
-        {criiptoLoginEnabled && (
+        {ssoProviders.criipto && (
           <StyledAuthProviderButton
             icon="mitid"
             flow={flow}
@@ -244,7 +178,7 @@ const AuthProviders = memo<Props>(
             />
           </StyledAuthProviderButton>
         )}
-        {keycloakLoginEnabled && (
+        {ssoProviders.keycloak && (
           <StyledAuthProviderButton
             icon="idporten"
             flow={flow}
@@ -259,7 +193,7 @@ const AuthProviders = memo<Props>(
             />
           </StyledAuthProviderButton>
         )}
-        {twodayLoginEnabled && (
+        {ssoProviders.twoday && (
           <StyledAuthProviderButton
             icon="bankId"
             flow={flow}
@@ -294,7 +228,7 @@ const AuthProviders = memo<Props>(
             )}
           </StyledAuthProviderButton>
         )}
-        {googleLoginEnabled && (
+        {ssoProviders.google && (
           <StyledAuthProviderButton
             flow={flow}
             icon="google"
@@ -304,7 +238,7 @@ const AuthProviders = memo<Props>(
             <FormattedMessage {...messages.continueWithGoogle} />
           </StyledAuthProviderButton>
         )}
-        {facebookLoginEnabled && (
+        {ssoProviders.facebook && (
           <StyledAuthProviderButton
             icon="facebook"
             flow={flow}
@@ -314,7 +248,7 @@ const AuthProviders = memo<Props>(
             <FormattedMessage {...messages.continueWithFacebook} />
           </StyledAuthProviderButton>
         )}
-        {azureAdLoginEnabled && (
+        {ssoProviders.azureAd && (
           <StyledAuthProviderButton
             icon="microsoft-windows"
             flow={flow}
@@ -327,7 +261,7 @@ const AuthProviders = memo<Props>(
             />
           </StyledAuthProviderButton>
         )}
-        {azureAdB2cLoginEnabled && (
+        {ssoProviders.azureAdB2c && (
           <StyledAuthProviderButton
             icon="microsoft-windows"
             flow={flow}
