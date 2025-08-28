@@ -178,7 +178,7 @@ const AdminPublicationsNavbarItem = ({
 
   useEffect(() => {
     setProjectsDropdownOpened(false);
-  }, [location, setProjectsDropdownOpened]);
+  }, [location.pathname]);
 
   // Notify parent component of dropdown state changes
   useEffect(() => {
@@ -214,7 +214,7 @@ const AdminPublicationsNavbarItem = ({
         top="68px"
         left="10px"
         opened={projectsDropdownOpened}
-        onClickOutside={toggleProjectsDropdown}
+        onClickOutside={() => setProjectsDropdownOpened(false)}
         zIndex="500"
         content={
           <ProjectsList id="e2e-projects-dropdown-content">
