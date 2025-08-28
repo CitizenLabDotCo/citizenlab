@@ -24,7 +24,7 @@ const SSOButtons = ({ onClickSSO }: Props) => {
   const { passwordLoginEnabled, ssoProviders, anySSOProviderEnabled } =
     useAuthConfig();
 
-  if (anySSOProviderEnabled) {
+  if (!anySSOProviderEnabled) {
     if (passwordLoginEnabled) {
       return null;
     }
