@@ -189,7 +189,6 @@ const DesktopNavItems = () => {
     calculateIfAllItemsFit,
     calculateItemsWithMoreButton,
     localize,
-    formatMessage,
     isDropdownOpen,
   ]);
 
