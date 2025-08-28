@@ -3,8 +3,9 @@ import React from 'react';
 import { fontSizes, Box, Text } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { StyledAuthProviderButton } from 'containers/Authentication/steps/AuthProviders';
-import { TOnContinueFunction } from 'containers/Authentication/steps/_components/AuthProviderButton';
+import AuthProviderButton, {
+  TOnContinueFunction,
+} from 'containers/Authentication/steps/_components/AuthProviderButton';
 import { SignUpInFlow } from 'containers/Authentication/typings';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -42,31 +43,33 @@ const ViennaSamlButton = ({ onContinue, flow }: Props) => {
     }
   };
   return (
-    <StyledAuthProviderButton
-      authProvider="id_vienna_saml"
-      onContinue={handleOnContinue}
-      flow={flow}
-      showConsentOnFlow={'signin'}
-    >
-      <Container>
-        <ViennaIcon />
-        <TextContainer>
-          <FormattedMessage
-            {...(flow === 'signin'
-              ? messages.signInWithStandardPortal
-              : messages.signUpWithStandardPortal)}
-          />
+    <Box mb="18px">
+      <AuthProviderButton
+        authProvider="id_vienna_saml"
+        onContinue={handleOnContinue}
+        flow={flow}
+        showConsentOnFlow={'signin'}
+      >
+        <Container>
+          <ViennaIcon />
+          <TextContainer>
+            <FormattedMessage
+              {...(flow === 'signin'
+                ? messages.signInWithStandardPortal
+                : messages.signUpWithStandardPortal)}
+            />
 
-          {flow === 'signup' && (
-            <SignUpSubHeader as="span">
-              <FormattedMessage
-                {...messages.signUpWithStandardPortalSubHeader}
-              />
-            </SignUpSubHeader>
-          )}
-        </TextContainer>
-      </Container>
-    </StyledAuthProviderButton>
+            {flow === 'signup' && (
+              <SignUpSubHeader as="span">
+                <FormattedMessage
+                  {...messages.signUpWithStandardPortalSubHeader}
+                />
+              </SignUpSubHeader>
+            )}
+          </TextContainer>
+        </Container>
+      </AuthProviderButton>
+    </Box>
   );
 };
 
