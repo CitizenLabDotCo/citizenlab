@@ -15,10 +15,10 @@ import ClaveUnicaButton from 'components/UI/ClaveUnicaButton';
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-import { AuthProvider } from '../../AuthProviders';
-import messages from '../messages';
+import { AuthProvider } from '../AuthProviders';
 
-import Consent from './Consent';
+import Consent from './AuthProviderButton/Consent';
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;

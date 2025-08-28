@@ -15,7 +15,7 @@ import AuthProviderButton, {
   Props as AuthProviderButtonProps,
   TOnContinueFunction,
 } from '../AuthProviderButton';
-import ClaveUnicaExpandedAuthProviderButton from '../AuthProviderButton/ClaveUnicaExpandedAuthProviderButton';
+import ClaveUnicaExpandedAuthProviderButton from '../ClaveUnicaExpandedAuthProviderButton';
 import parentMessages from '../messages';
 
 import messages from './messages';
