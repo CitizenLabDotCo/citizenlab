@@ -1,3 +1,4 @@
+import { isEqual } from 'lodash-es';
 import { RouteType } from 'routes';
 import { Multiloc } from 'typings';
 
@@ -16,7 +17,7 @@ export interface NavbarItemProps {
   navigationItemTitle: Multiloc;
 }
 
-export const createTempElement = (
+const createTempElement = (
   text: string,
   container: HTMLElement
 ): HTMLElement => {
@@ -60,4 +61,94 @@ export const calculateItemDistribution = (
     visible: allItems.slice(0, breakIndex),
     overflow: allItems.slice(breakIndex),
   };
+};
+
+export const validateCalculationPrerequisites = (
+  containerRef: React.RefObject<HTMLDivElement>,
+  hiddenItemsRef: React.RefObject<HTMLDivElement>,
+  navbarItems: any,
+  isDropdownOpen: boolean
+): boolean => {
+  if (isDropdownOpen) {
+    return false;
+  }
+
+  if (!containerRef.current || !hiddenItemsRef.current || !navbarItems) {
+    return false;
+  }
+
+  const containerWidth = containerRef.current.offsetWidth;
+  if (containerWidth === 0) {
+    return false;
+  }
+
+  return true;
+};
+
+export const calculateAvailableWidth = (
+  containerWidth: number,
+  reservedRightSpace: number,
+  moreButtonWidth: number
+): number => {
+  return Math.min(
+    containerWidth,
+    window.innerWidth - reservedRightSpace - moreButtonWidth
+  );
+};
+
+export const createTempElementsForMeasurement = (
+  navbarItemPropsArray: Array<{
+    linkTo: RouteType | null;
+    onlyActiveOnIndex: boolean;
+    navigationItemTitle: Multiloc;
+  }>,
+  hiddenContainer: HTMLElement,
+  localize: (multiloc: Multiloc) => string
+): { tempElements: HTMLElement[]; allItems: NavbarItemProps[] } => {
+  hiddenContainer.innerHTML = '';
+  const tempHTMLElements: HTMLElement[] = [];
+  const allItems: NavbarItemProps[] = [];
+
+  navbarItemPropsArray.forEach((navbarItemProps) => {
+    const { linkTo, onlyActiveOnIndex, navigationItemTitle } = navbarItemProps;
+
+    if (linkTo) {
+      const titleText = localize(navigationItemTitle);
+      const tempElement = createTempElement(titleText, hiddenContainer);
+      tempHTMLElements.push(tempElement);
+      allItems.push({ linkTo, onlyActiveOnIndex, navigationItemTitle });
+    }
+  });
+
+  return { tempElements: tempHTMLElements, allItems };
+};
+
+export const updateVisibleAndOverflowItems = (
+  visibleWithMore: NavbarItemProps[],
+  overflowWithMore: NavbarItemProps[],
+  allItems: NavbarItemProps[],
+  currentVisibleItems: NavbarItemProps[],
+  currentOverflowItems: NavbarItemProps[],
+  setVisibleItems: (items: NavbarItemProps[]) => void,
+  setOverflowItems: (items: NavbarItemProps[]) => void
+): void => {
+  // If no overflow items, we don't need to show the More button
+  if (overflowWithMore.length === 0) {
+    if (
+      !isEqual(currentVisibleItems, allItems) ||
+      currentOverflowItems.length > 0
+    ) {
+      setVisibleItems(allItems);
+      setOverflowItems([]);
+    }
+  } else {
+    // We have overflow items, show the More button
+    if (
+      !isEqual(currentVisibleItems, visibleWithMore) ||
+      !isEqual(currentOverflowItems, overflowWithMore)
+    ) {
+      setVisibleItems(visibleWithMore);
+      setOverflowItems(overflowWithMore);
+    }
+  }
 };
