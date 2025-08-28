@@ -6,7 +6,7 @@ import styled from 'styled-components';
 // CSS extracted from the official Clave Unica button
 // https://drive.google.com/file/d/1-aBGu5XEjHD1LYcqOZP_mUg4ekFLDv6v/view
 // The Button component is not used to easily use the same CSS as the official button.
-const ClaveUnicaButtonContainer = styled.a`
+const ClaveUnicaButtonContainer = styled.button`
   justify-content: center;
   font-family: Roboto, sans-serif;
   font-weight: 400;
