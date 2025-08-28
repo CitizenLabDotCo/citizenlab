@@ -42,28 +42,34 @@ export default defineMessages({
     defaultMessage: 'Ends today',
   },
   daysLeft: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Table.daysLeft',
-    defaultMessage: '{days}d left',
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.daysLeft2',
+    defaultMessage:
+      '{days, plural, no {{days} days} one {{days} day} other {{days} days}} left',
   },
   monthsLeft: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Table.monthsLeft',
-    defaultMessage: '{months}mo left',
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.monthsLeft2',
+    defaultMessage:
+      '{months, plural, no {{months} months} one {{months} month} other {{months} months}} left',
   },
   yearsLeft: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Table.yearsLeft',
-    defaultMessage: '{years}y left',
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.yearsLeft2',
+    defaultMessage:
+      '{years, plural, no {{years} years} one {{years} year} other {{years} years}} left',
   },
   daysToStart: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Table.daysToStart',
-    defaultMessage: '{days}d to start',
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.daysToStart2',
+    defaultMessage:
+      '{days, plural, no {{days} days} one {{days} day} other {{days} days}} to start',
   },
   monthsToStart: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Table.monthsToStart',
-    defaultMessage: '{months}mo to start',
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.monthsToStart2',
+    defaultMessage:
+      '{months, plural, no {{months} months} one {{months} month} other {{months} months}} to start',
   },
   yearsToStart: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Table.yearsToStart',
-    defaultMessage: '{years}y to start',
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.yearsToStart2',
+    defaultMessage:
+      '{years, plural, no {{years} years} one {{years} year} other {{years} years}} to start',
   },
   currentPhase: {
     id: 'app.containers.Admin.projects.all.new.Projects.Table.currentPhase',
