@@ -1,170 +1,95 @@
 # frozen_string_literal: true
 
 namespace :single_use do
-  desc 'Create test accordions to demonstrate migration'
+  desc 'Create test data with accordions to demonstrate migration'
   task create_test_accordions: :environment do
-    puts "Creating test accordions..."
+    puts 'Creating test accordions...'
 
-    # Process all tenants
-    Tenant.all.each do |tenant|
-      puts "\nProcessing tenant: #{tenant.host}"
-      create_test_accordions_for_tenant(tenant)
-    end
+    # Create a test project
+    project = FactoryBot.create(:project, title_multiloc: { 'en' => 'Test Project for Accordion Migration' })
 
-    puts "\nTest accordions created!"
-  end
+    # Create homepage layout with accordions
+    homepage_layout = FactoryBot.create(:homepage_layout, project: project)
 
-  private
+    # Sample accordion content
+    accordion_titles = [
+      { 'en' => 'What is CitizenLab?' },
+      { 'en' => 'How to participate' },
+      { 'en' => 'Frequently Asked Questions' },
+      { 'en' => 'Contact Information' },
+      { 'en' => 'Privacy Policy' }
+    ]
 
-  def create_test_accordions_for_tenant(tenant)
-    tenant.switch do
-      # Create test homepage layout with accordions
-      create_test_homepage_layout
+    accordion_texts = [
+      { 'en' => '<p>CitizenLab is a civic tech platform that enables governments and organizations to engage with their citizens through participatory democracy.</p>' },
+      { 'en' => '<p>You can participate by voting on ideas, submitting proposals, and engaging in discussions with other community members.</p>' },
+      { 'en' => '<p><strong>Q: How do I create an account?</strong><br>A: Click the sign-up button and follow the registration process.</p>' },
+      { 'en' => '<p>For questions or support, please contact us at support@citizenlab.co</p>' },
+      { 'en' => '<p>We take your privacy seriously. Read our full privacy policy to understand how we protect your data.</p>' }
+    ]
 
-      # Create test project description layout with accordions
-      create_test_project_description_layout
-    end
-  end
-
-  def create_test_homepage_layout
-    # Check if test layout already exists
-    existing_layout = ContentBuilder::Layout.find_by(code: 'test_homepage_with_accordions')
-    if existing_layout
-      puts "  Test homepage layout already exists, skipping..."
-      return
-    end
-
-    # Create test craftjs JSON with accordions
-    craftjs_json = {
-      "ROOT" => {
-        "type" => "div",
-        "isCanvas" => true,
-        "props" => { "id" => "e2e-content-builder-frame" },
-        "displayName" => "div",
-        "custom" => {},
-        "hidden" => false,
-        "nodes" => ["TEST_ACCORDION_1", "TEST_ACCORDION_2", "TEST_ACCORDION_3"],
-        "linkedNodes" => {}
-      },
-      "TEST_ACCORDION_1" => {
-        "type" => { "resolvedName" => "AccordionMultiloc" },
-        "isCanvas" => false,
-        "props" => {
-          "title" => { "en" => "Test Accordion with Text Content" },
-          "text" => { "en" => "This is test content that will be migrated to a TextMultiloc component." },
-          "openByDefault" => true
+    # Create accordions with different content
+    accordion_titles.each_with_index do |title, index|
+      accordion_node = {
+        'type' => { 'resolvedName' => 'AccordionMultiloc' },
+        'props' => {
+          'title' => title,
+          'text' => accordion_texts[index],
+          'openByDefault' => index == 0 # First accordion open by default
         },
-        "displayName" => "AccordionMultiloc",
-        "custom" => {
-          "title" => {
-            "id" => "app.containers.admin.ContentBuilder.accordionMultiloc",
-            "defaultMessage" => "Accordion"
-          }
-        },
-        "parent" => "ROOT",
-        "hidden" => false,
-        "nodes" => [],
-        "linkedNodes" => {}
-      },
-      "TEST_ACCORDION_2" => {
-        "type" => { "resolvedName" => "AccordionMultiloc" },
-        "isCanvas" => false,
-        "props" => {
-          "title" => { "en" => "Empty Accordion" },
-          "text" => { "en" => "" },
-          "openByDefault" => false
-        },
-        "displayName" => "AccordionMultiloc",
-        "custom" => {
-          "title" => {
-            "id" => "app.containers.admin.ContentBuilder.accordionMultiloc",
-            "defaultMessage" => "Accordion"
-          }
-        },
-        "parent" => "ROOT",
-        "hidden" => false,
-        "nodes" => [],
-        "linkedNodes" => {}
-      },
-      "TEST_ACCORDION_3" => {
-        "type" => { "resolvedName" => "AccordionMultiloc" },
-        "isCanvas" => false,
-        "props" => {
-          "title" => { "en" => "Another Test Accordion" },
-          "text" => { "en" => "This accordion has some content that should be preserved during migration." },
-          "openByDefault" => false
-        },
-        "displayName" => "AccordionMultiloc",
-        "custom" => {
-          "title" => {
-            "id" => "app.containers.admin.ContentBuilder.accordionMultiloc",
-            "defaultMessage" => "Accordion"
-          }
-        },
-        "parent" => "ROOT",
-        "hidden" => false,
-        "nodes" => [],
-        "linkedNodes" => {}
+        'nodes' => [],
+        'custom' => {},
+        'isCanvas' => false,
+        'hidden' => false,
+        'linkedNodes' => {}
       }
-    }
 
-    # Create the layout
-    layout = ContentBuilder::Layout.create!(
-      code: 'test_homepage_with_accordions',
-      craftjs_json: craftjs_json
-    )
-
-    puts "  Created test homepage layout with 3 accordions"
-  end
-
-  def create_test_project_description_layout
-    # Check if test layout already exists
-    existing_layout = ContentBuilder::Layout.find_by(code: 'test_project_description_with_accordions')
-    if existing_layout
-      puts "  Test project description layout already exists, skipping..."
-      return
+      # Add accordion to layout
+      homepage_layout.craftjs_json['ROOT']['nodes'].push(accordion_node)
     end
 
-    # Create test craftjs JSON with accordions
-    craftjs_json = {
-      "ROOT" => {
-        "type" => "div",
-        "isCanvas" => true,
-        "props" => { "id" => "e2e-content-builder-frame" },
-        "displayName" => "div",
-        "custom" => {},
-        "hidden" => false,
-        "nodes" => ["TEST_PROJECT_ACCORDION_1"],
-        "linkedNodes" => {}
-      },
-      "TEST_PROJECT_ACCORDION_1" => {
-        "type" => { "resolvedName" => "AccordionMultiloc" },
-        "isCanvas" => false,
-        "props" => {
-          "title" => { "en" => "Project Description Accordion" },
-          "text" => { "en" => "This accordion contains project description content that will be migrated." },
-          "openByDefault" => true
+    # Create project page layout with accordions
+    project_page_layout = FactoryBot.create(:project_page_layout, project: project)
+
+    # Add accordions to project page
+    project_accordion_titles = [
+      { 'en' => 'Project Timeline' },
+      { 'en' => 'Budget Information' },
+      { 'en' => 'Stakeholder Feedback' }
+    ]
+
+    project_accordion_texts = [
+      { 'en' => '<p>Phase 1: Planning (Jan-Mar)<br>Phase 2: Implementation (Apr-Jun)<br>Phase 3: Evaluation (Jul-Sep)</p>' },
+      { 'en' => '<p>Total budget: €50,000<br>Allocated for community engagement and platform development.</p>' },
+      { 'en' => '<p>We have received valuable feedback from over 200 community members. Your input shapes our decisions.</p>' }
+    ]
+
+    project_accordion_titles.each_with_index do |title, index|
+      accordion_node = {
+        'type' => { 'resolvedName' => 'AccordionMultiloc' },
+        'props' => {
+          'title' => title,
+          'text' => project_accordion_texts[index],
+          'openByDefault' => false
         },
-        "displayName" => "AccordionMultiloc",
-        "custom" => {
-          "title" => {
-            "id" => "app.containers.admin.ContentBuilder.accordionMultiloc",
-            "defaultMessage" => "Accordion"
-          }
-        },
-        "parent" => "ROOT",
-        "hidden" => false,
-        "nodes" => [],
-        "linkedNodes" => {}
+        'nodes' => [],
+        'custom' => {},
+        'isCanvas' => false,
+        'hidden' => false,
+        'linkedNodes' => {}
       }
-    }
 
-    # Create the layout
-    layout = ContentBuilder::Layout.create!(
-      code: 'test_project_description_with_accordions',
-      craftjs_json: craftjs_json
-    )
+      # Add accordion to project page layout
+      project_page_layout.craftjs_json['ROOT']['nodes'].push(accordion_node)
+    end
 
-    puts "  Created test project description layout with 1 accordion"
+    # Save layouts
+    homepage_layout.save!
+    project_page_layout.save!
+
+    puts "Created #{accordion_titles.length} accordions in homepage layout"
+    puts "Created #{project_accordion_titles.length} accordions in project page layout"
+    puts "Project ID: #{project.id}"
+    puts 'Test data creation completed!'
   end
 end

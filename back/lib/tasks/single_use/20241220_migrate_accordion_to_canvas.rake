@@ -1,111 +1,91 @@
 # frozen_string_literal: true
 
 namespace :single_use do
-  desc 'Migrate accordion components from text-based to canvas-based'
+  desc 'Migrate existing accordion components to canvas mode with TextMultiloc children'
+
   task migrate_accordion_to_canvas: :environment do
-    puts "Starting accordion canvas migration..."
-    
+    puts 'Starting accordion migration to canvas mode...'
+
     # Process all tenants
     Tenant.all.each do |tenant|
       puts "\nProcessing tenant: #{tenant.host}"
-      migrate_tenant_accordions(tenant)
+      migrate_accordions_for_tenant(tenant)
     end
-    
-    puts "\nMigration completed!"
+
+    puts "\nAccordion migration completed!"
   end
 
   private
 
-  def migrate_tenant_accordions(tenant)
+  def migrate_accordions_for_tenant(tenant)
     tenant.switch do
-      # Get all content builder layouts
-      layouts = ContentBuilder::Layout.where.not("code LIKE 'backup/%'")
-      
-      puts "  Found #{layouts.count} layouts to process"
-      
+      # Find all ContentBuilder::Layout records
+      layouts = ContentBuilder::Layout.all
+
       layouts.each do |layout|
-        migrate_layout_accordions(layout)
+        next unless layout.craftjs_json.is_a?(Hash)
+
+        puts "  Processing layout: #{layout.code || layout.id}"
+
+        # Collect nodes to migrate first to avoid modification during iteration
+        nodes_to_migrate = []
+
+        layout.craftjs_json.each do |node_id, node|
+          next unless node.is_a?(Hash)
+          next unless node['type'].is_a?(Hash) && node['type']['resolvedName'] == 'AccordionMultiloc'
+
+          # Check if this accordion has text content that needs migration
+          text_prop = node['props']&.dig('text')
+          next unless text_prop.is_a?(Hash) && text_prop.values.any?(&:present?)
+
+          nodes_to_migrate << { node_id: node_id, node: node, text_prop: text_prop }
+        end
+
+        # Migrate collected nodes
+        nodes_to_migrate.each do |migration_data|
+          migrate_accordion_node(layout, migration_data)
+        end
+
+        # Save the layout if any changes were made
+        if nodes_to_migrate.any?
+          layout.save!
+          puts "    Migrated #{nodes_to_migrate.length} accordion(s)"
+        else
+          puts '    No accordions to migrate'
+        end
       end
     end
   end
 
-  def migrate_layout_accordions(layout)
-    craftjs_json = layout.craftjs_json
-    return unless craftjs_json.is_a?(Hash)
-    
-    # Collect nodes to migrate before iterating to avoid modification during iteration
-    nodes_to_migrate = []
-    
-    craftjs_json.each do |node_id, node|
-      if should_migrate_accordion_node?(node)
-        nodes_to_migrate << { node_id: node_id, node: node }
-      end
-    end
-    
-    if nodes_to_migrate.any?
-      puts "    Layout #{layout.code}: Found #{nodes_to_migrate.length} accordion(s) to migrate"
-      
-      nodes_to_migrate.each do |item|
-        migrate_accordion_node(layout, item[:node_id], item[:node])
-      end
-      
-      # Save the updated layout
-      layout.save!
-      puts "    Layout #{layout.code}: Migration completed"
-    end
-  end
+  def migrate_accordion_node(layout, migration_data)
+    node_id = migration_data[:node_id]
+    node = migration_data[:node]
+    text_prop = migration_data[:text_prop]
 
-  def should_migrate_accordion_node?(node)
-    return false unless node.is_a?(Hash)
-    return false unless node['type'].is_a?(Hash) && node['type']['resolvedName'] == 'AccordionMultiloc'
-    return false if node['props']&.dig('text').blank? # No text to migrate
-    
-    # Check if text has actual content
-    text_prop = node['props']['text']
-    return false unless text_prop.is_a?(Hash)
-    
-    # Check if any locale has non-empty content
-    text_prop.values.any? { |content| content.present? && content.strip.present? }
-  end
-
-  def migrate_accordion_node(layout, node_id, node)
-    text_prop = node['props']['text'] || {}
-    
-    # Generate a unique ID for the new TextMultiloc node
-    text_node_id = generate_node_id
-    
-    # Create the TextMultiloc child node
+    # Create a new TextMultiloc node
+    text_node_id = "#{node_id}_text"
     text_node = {
       'type' => { 'resolvedName' => 'TextMultiloc' },
-      'props' => { 'text' => text_prop },
-      'parent' => node_id,
-      'isCanvas' => false,
-      'nodes' => [],
-      'linkedNodes' => {},
-      'custom' => {
-        'title' => {
-          'id' => 'app.containers.admin.ContentBuilder.textMultiloc',
-          'defaultMessage' => 'Text'
-        }
+      'props' => {
+        'text' => text_prop
       },
+      'nodes' => [],
+      'custom' => {},
+      'isCanvas' => false,
       'hidden' => false,
-      'displayName' => 'TextMultiloc'
+      'linkedNodes' => {}
     }
-    
-    # Update the accordion node
-    node['props'].delete('text')
-    node['nodes'] = [text_node_id]
-    
-    # Add the new text node to the layout
-    layout.craftjs_json[text_node_id] = text_node
-    
-    puts "      Created TextMultiloc node #{text_node_id} with content: #{text_prop.values.first&.truncate(50)}"
-    
-    true
-  end
 
-  def generate_node_id
-    # Generate a unique ID similar to craft.js format
-    SecureRandom.alphanumeric(11)
+    # Add the text node to the layout
+    layout.craftjs_json[text_node_id] = text_node
+
+    # Update the accordion node to be a canvas and include the text node
+    node['nodes'] = [text_node_id]
+    node['isCanvas'] = true
+
+    # Remove the text prop from the accordion (it's now in the child TextMultiloc)
+    node['props'].delete('text')
+
+    puts "    Migrated accordion #{node_id} with text content"
   end
 end
