@@ -1,6 +1,6 @@
 import React, { memo, useCallback } from 'react';
 
-import { Text } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -18,6 +18,7 @@ import Link from 'utils/cl-router/Link';
 
 import AuthProviderButton, {
   TOnContinueFunction,
+  Props as AuthProviderButtonProps,
 } from '../_components/AuthProviderButton';
 import ClaveUnicaExpandedAuthProviderButton from '../_components/AuthProviderButton/ClaveUnicaExpandedAuthProviderButton';
 import TextButton from '../_components/TextButton';
@@ -31,15 +32,11 @@ const Container = styled.div`
   width: 100%;
 `;
 
-export const StyledAuthProviderButton = styled(AuthProviderButton)`
-  margin-bottom: 18px;
-`;
-
-export const StyledClaveUnicaExpandedAuthProviderButton = styled(
-  ClaveUnicaExpandedAuthProviderButton
-)`
-  margin-bottom: 18px;
-`;
+const WrappedAuthProviderButton = (props: AuthProviderButtonProps) => (
+  <Box mb="18px">
+    <AuthProviderButton {...props} />
+  </Box>
+);
 
 interface Props {
   flow: 'signup' | 'signin';
@@ -112,7 +109,7 @@ const AuthProviders = memo<Props>(
         )}
         {showMainAuthMethods && ssoProviders.franceconnect && <Or />}
         {ssoProviders.fakeSso && (
-          <StyledAuthProviderButton
+          <WrappedAuthProviderButton
             icon="bullseye"
             flow={flow}
             authProvider="fake_sso"
@@ -120,35 +117,37 @@ const AuthProviders = memo<Props>(
             id="e2e-login-with-fake-sso"
           >
             <FormattedMessage {...messages.continueWithFakeSSO} />
-          </StyledAuthProviderButton>
+          </WrappedAuthProviderButton>
         )}
         {ssoProviders.claveUnica && (
-          <StyledClaveUnicaExpandedAuthProviderButton
-            flow={flow}
-            onSelectAuthProvider={onSelectAuthProvider}
-          />
+          <Box mb="18px">
+            <ClaveUnicaExpandedAuthProviderButton
+              flow={flow}
+              onSelectAuthProvider={onSelectAuthProvider}
+            />
+          </Box>
         )}
         {ssoProviders.hoplr && (
-          <StyledAuthProviderButton
+          <WrappedAuthProviderButton
             icon="hoplr"
             flow={flow}
             authProvider="hoplr"
             onContinue={onSelectAuthProvider}
           >
             <FormattedMessage {...messages.continueWithHoplr} />
-          </StyledAuthProviderButton>
+          </WrappedAuthProviderButton>
         )}
         {ssoProviders.nemlogIn && (
-          <StyledAuthProviderButton
+          <WrappedAuthProviderButton
             flow={flow}
             authProvider="nemlog_in"
             onContinue={onSelectAuthProvider}
           >
             <FormattedMessage {...messages.continueWithNemlogIn} />
-          </StyledAuthProviderButton>
+          </WrappedAuthProviderButton>
         )}
         {ssoProviders.idAustria && (
-          <StyledAuthProviderButton
+          <WrappedAuthProviderButton
             icon="idaustria"
             flow={flow}
             authProvider="id_austria"
@@ -160,10 +159,10 @@ const AuthProviders = memo<Props>(
                 loginMechanismName: 'ID Austria',
               }}
             />
-          </StyledAuthProviderButton>
+          </WrappedAuthProviderButton>
         )}
         {ssoProviders.criipto && (
-          <StyledAuthProviderButton
+          <WrappedAuthProviderButton
             icon="mitid"
             flow={flow}
             authProvider="criipto"
@@ -178,10 +177,10 @@ const AuthProviders = memo<Props>(
                     : 'MitID',
               }}
             />
-          </StyledAuthProviderButton>
+          </WrappedAuthProviderButton>
         )}
         {ssoProviders.keycloak && (
-          <StyledAuthProviderButton
+          <WrappedAuthProviderButton
             icon="idporten"
             flow={flow}
             authProvider="keycloak"
@@ -193,10 +192,10 @@ const AuthProviders = memo<Props>(
                 loginMechanismName: 'ID-Porten',
               }}
             />
-          </StyledAuthProviderButton>
+          </WrappedAuthProviderButton>
         )}
         {ssoProviders.twoday && (
-          <StyledAuthProviderButton
+          <WrappedAuthProviderButton
             icon="bankId"
             flow={flow}
             authProvider="twoday"
@@ -208,7 +207,7 @@ const AuthProviders = memo<Props>(
                 loginMechanismName: 'BankID eller Freja eID+',
               }}
             />
-          </StyledAuthProviderButton>
+          </WrappedAuthProviderButton>
         )}
         <Outlet
           id="app.components.SignUpIn.AuthProviders.ContainerStart"
@@ -216,7 +215,7 @@ const AuthProviders = memo<Props>(
           onContinue={onSelectAuthProvider}
         />
         {isPasswordSigninOrSignupAllowed && (
-          <StyledAuthProviderButton
+          <WrappedAuthProviderButton
             flow={flow}
             icon="email"
             authProvider="email"
@@ -228,30 +227,30 @@ const AuthProviders = memo<Props>(
             ) : (
               <FormattedMessage {...messages.logInWithEmail} />
             )}
-          </StyledAuthProviderButton>
+          </WrappedAuthProviderButton>
         )}
         {ssoProviders.google && (
-          <StyledAuthProviderButton
+          <WrappedAuthProviderButton
             flow={flow}
             icon="google"
             authProvider="google"
             onContinue={onSelectAuthProvider}
           >
             <FormattedMessage {...messages.continueWithGoogle} />
-          </StyledAuthProviderButton>
+          </WrappedAuthProviderButton>
         )}
         {ssoProviders.facebook && (
-          <StyledAuthProviderButton
+          <WrappedAuthProviderButton
             icon="facebook"
             flow={flow}
             authProvider="facebook"
             onContinue={onSelectAuthProvider}
           >
             <FormattedMessage {...messages.continueWithFacebook} />
-          </StyledAuthProviderButton>
+          </WrappedAuthProviderButton>
         )}
         {ssoProviders.azureAd && (
-          <StyledAuthProviderButton
+          <WrappedAuthProviderButton
             icon="microsoft-windows"
             flow={flow}
             authProvider="azureactivedirectory"
@@ -261,10 +260,10 @@ const AuthProviders = memo<Props>(
               {...messages.continueWithAzure}
               values={{ azureProviderName }}
             />
-          </StyledAuthProviderButton>
+          </WrappedAuthProviderButton>
         )}
         {ssoProviders.azureAdB2c && (
-          <StyledAuthProviderButton
+          <WrappedAuthProviderButton
             icon="microsoft-windows"
             flow={flow}
             authProvider="azureactivedirectory_b2c"
@@ -274,7 +273,7 @@ const AuthProviders = memo<Props>(
               {...messages.continueWithAzure}
               values={{ azureProviderName: azureB2cProviderName }}
             />
-          </StyledAuthProviderButton>
+          </WrappedAuthProviderButton>
         )}
         {passwordLoginEnabled && (
           <Text m="0">

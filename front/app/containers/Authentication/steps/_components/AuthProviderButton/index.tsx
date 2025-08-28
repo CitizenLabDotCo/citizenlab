@@ -100,7 +100,6 @@ export interface Props {
   icon?: IconNames;
   flow: SignUpInFlow;
   authProvider: AuthProvider;
-  className?: string;
   onContinue: TOnContinueFunction;
   children: React.ReactNode;
   showConsentOnFlow?: SignUpInFlow;
@@ -110,7 +109,6 @@ const AuthProviderButton = memo<Props>(
   ({
     flow,
     authProvider,
-    className,
     onContinue,
     children,
     id,
@@ -180,7 +178,7 @@ const AuthProviderButton = memo<Props>(
       authProvider === 'id_vienna_saml' || (tacAccepted && privacyAccepted);
 
     return (
-      <Container className={className} id={id}>
+      <Container id={id}>
         <ButtonWithLink
           icon={icon}
           iconSize="22px"
