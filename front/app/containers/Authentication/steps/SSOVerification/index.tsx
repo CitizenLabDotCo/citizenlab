@@ -8,13 +8,12 @@ import useVerificationMethodVerifiedActions from 'api/verification_methods/useVe
 
 import SSOVerificationButton from 'containers/Authentication/steps/_components/SSOVerificationButton';
 
-import ClaveUnicaButton from 'components/UI/ClaveUnicaButton';
-import claveUnicaButtonMessages from 'components/UI/ClaveUnicaButton/messages';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
 import franceConnectButtonMessages from 'components/UI/FranceConnectButton/messages';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
+import ClaveUnicaExpandedAuthProviderButton from '../_components/ClaveUnicaExpandedAuthProviderButton';
 import TextButton from '../_components/TextButton';
 
 import messages from './messages';
@@ -35,14 +34,9 @@ const SSOVerification = ({ onClickSSO, onClickLogin }: Props) => {
   const methodButton = (methodName: TVerificationMethodName) => {
     if (methodName === 'clave_unica') {
       return (
-        <ClaveUnicaButton
-          disabled={false}
-          message={
-            <FormattedMessage {...claveUnicaButtonMessages.verifyClaveUnica} />
-          }
-          onClick={() => {
-            onClickSSO('clave_unica');
-          }}
+        <ClaveUnicaExpandedAuthProviderButton
+          showConsent
+          onSelectAuthProvider={onClickSSO}
         />
       );
     } else if (methodName === 'franceconnect') {
