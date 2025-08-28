@@ -822,6 +822,7 @@
   "app.components.formBuilder.good": "Good",
   "app.components.formBuilder.helmetTitle": "Форм буилдер",
   "app.components.formBuilder.imageFileUpload": "Отпремање слике",
+  "app.components.formBuilder.inputImages": "Images",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Неважећа логика",
   "app.components.formBuilder.labels2": "Labels (optional)",
   "app.components.formBuilder.labelsTooltipContent2": "Choose optional labels for any of the linear scale values.",
