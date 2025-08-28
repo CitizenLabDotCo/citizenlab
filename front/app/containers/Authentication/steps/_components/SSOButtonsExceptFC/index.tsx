@@ -7,8 +7,6 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { SignUpInFlow } from 'containers/Authentication/typings';
 import useAuthConfig from 'containers/Authentication/useAuthConfig';
 
-import Outlet from 'components/Outlet';
-
 import { FormattedMessage } from 'utils/cl-intl';
 
 import AuthProviderButton, {
@@ -17,6 +15,7 @@ import AuthProviderButton, {
 } from '../AuthProviderButton';
 import ClaveUnicaExpandedAuthProviderButton from '../ClaveUnicaExpandedAuthProviderButton';
 import parentMessages from '../messages';
+import ViennaSamlButton from '../ViennaSamlButton';
 
 import messages from './messages';
 
@@ -149,11 +148,7 @@ const SSOButtonsExceptFC = ({
           />
         </WrappedAuthProviderButton>
       )}
-      <Outlet
-        id="app.components.SignUpIn.AuthProviders.ContainerStart"
-        flow={flow}
-        onContinue={onSelectAuthProvider}
-      />
+      <ViennaSamlButton flow={flow} onContinue={onSelectAuthProvider} />
       {ssoProviders.google && (
         <WrappedAuthProviderButton
           showConsent={showConsent}
