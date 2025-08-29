@@ -1613,7 +1613,7 @@
   "app.containers.NewAuthModal.steps.Password.rememberMe": "Να με θυμάσαι",
   "app.containers.NewAuthModal.steps.Password.rememberMeTooltip": "Μην επιλέγετε εάν χρησιμοποιείτε δημόσιο υπολογιστή",
   "app.containers.NewAuthModal.steps.Success.allDone": "Όλα έτοιμα",
-  "app.containers.NewAuthModal.steps.Success.nowContinueYourParticipation": "Τώρα συνεχίστε τη συμμετοχή σας.",
+  "app.containers.NewAuthModal.steps.Success.nowContinueYourParticipation": "Τώρα μπορείτε να συνεχίσετε.",
   "app.containers.NewAuthModal.steps.VerificationSuccess.userVerifiedSubtitle": "Η ταυτότητά σας έχει επαληθευτεί. Τώρα είστε πλήρες μέλος της κοινότητας σε αυτή την πλατφόρμα.",
   "app.containers.NewAuthModal.steps.VerificationSuccess.userVerifiedTitle": "Είστε τώρα επαληθευμένοι !",
   "app.containers.NewAuthModal.steps.close": "Κλείστε το",
