@@ -111,6 +111,10 @@ export default defineMessages({
     id: 'app.components.formBuilder.drawArea',
     defaultMessage: 'Draw area',
   },
+  bodyMultiloc: {
+    id: 'app.components.formBuilder.bodyMultiloc',
+    defaultMessage: 'Description',
+  },
   inputImages: {
     id: 'app.components.formBuilder.inputImages',
     defaultMessage: 'Input images',

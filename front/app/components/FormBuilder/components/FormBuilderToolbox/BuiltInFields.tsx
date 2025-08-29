@@ -92,6 +92,16 @@ const BuiltInFields = ({
       >
         <FormattedMessage {...messages.defaultContent} />
       </Title>
+      {builderConfig.builtInFields.includes('body_multiloc') && (
+        <ToolboxItem
+          icon="survey-long-answer-2"
+          label={formatMessage(messages.bodyMultiloc)}
+          onClick={() => enableField('body_multiloc')} // TODO: Also add body_page
+          disabled={!enabledBuiltInFieldKeys.includes('body_multiloc')}
+          disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
+          data-cy="e2e-body-multiloc-item"
+        />
+      )}
       {builderConfig.builtInFields.includes('idea_images_attributes') && (
         <ToolboxItem
           icon="image"
