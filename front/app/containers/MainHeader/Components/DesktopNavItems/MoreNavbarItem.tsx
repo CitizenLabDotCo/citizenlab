@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 
-import { Dropdown, colors, Button } from '@citizenlab/cl2-component-library';
+import {
+  Dropdown,
+  Icon,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
 import T from 'components/T';
@@ -44,6 +49,26 @@ const DropdownItemText = styled.span`
   flex: 1;
 `;
 
+const StyledButton = styled.button`
+  color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
+  font-weight: 500;
+  padding: 0 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 100ms ease-out;
+  height: 100%;
+  position: relative;
+  white-space: nowrap;
+  cursor: pointer;
+  &:hover {
+    color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
+    text-decoration: underline;
+  }
+`;
+
 interface NavbarItemProps {
   linkTo: RouteType;
   navigationItemTitle: Multiloc;
@@ -57,7 +82,6 @@ interface Props {
 const MoreNavbarItem = ({ overflowItems }: Props) => {
   const { formatMessage } = useIntl();
   const [dropdownOpened, setDropdownOpened] = useState(false);
-  const theme = useTheme();
 
   const toggleDropdown = () => {
     setDropdownOpened(!dropdownOpened);
@@ -73,15 +97,10 @@ const MoreNavbarItem = ({ overflowItems }: Props) => {
 
   return (
     <li style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-      <Button
-        icon="dots-horizontal"
-        iconPos="right"
-        text={formatMessage(messages.more)}
-        onClick={toggleDropdown}
-        buttonStyle="text"
-        textColor={theme.colors.tenantText}
-        iconColor={theme.colors.tenantText}
-      />
+      <StyledButton onClick={toggleDropdown}>
+        {formatMessage(messages.more)}
+        <Icon name="dots-horizontal" ml="8px" />
+      </StyledButton>
       <Dropdown
         opened={dropdownOpened}
         onClickOutside={closeDropdown}
