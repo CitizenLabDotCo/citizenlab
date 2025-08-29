@@ -2623,7 +2623,7 @@
   "app.containers.AdminPage.Topics.lastTopicWarning3": "Mindestens een Tag ass erfuerderlech. Wann Dir keng Tags benotze wëllt, kann den Element 'Tags' aus dem Inputformular vun all Phase geläscht ginn (wann et een ass).",
   "app.containers.AdminPage.Topics.projectTopicsDescription1": "Dir kënnt d'Tags derbäisetzen an läschen, déi den Inputen an dësem Projet zougewise kënne ginn.",
   "app.containers.AdminPage.Topics.remove": "Remove",
-  "app.containers.AdminPage.Topics.title": "Project tags",
+  "app.containers.AdminPage.Topics.title": "Projet-Tags",
   "app.containers.AdminPage.Topics.topicManager1": "Tag Manager",
   "app.containers.AdminPage.Topics.topicManagerInfo1": "Wann Dir zousätzlech Projet-Tags derbäisetzen wëllt, kënnt Dir dat an der {topicManagerLink}maachen.",
   "app.containers.AdminPage.Users.GroupCreation.createGroupButton": "Add a new group",
