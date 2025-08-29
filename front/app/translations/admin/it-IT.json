@@ -2623,7 +2623,7 @@
   "app.containers.AdminPage.Topics.lastTopicWarning3": "È richiesto almeno un tag. Se non desideri utilizzare i tag, la voce \"Tag\" può essere eliminata dal modulo di inserimento di ogni fase (se presente).",
   "app.containers.AdminPage.Topics.projectTopicsDescription1": "Puoi aggiungere e cancellare i tag che possono essere assegnati agli ingressi in questo progetto.",
   "app.containers.AdminPage.Topics.remove": "Remove",
-  "app.containers.AdminPage.Topics.title": "Project tags",
+  "app.containers.AdminPage.Topics.title": "Tag del progetto",
   "app.containers.AdminPage.Topics.topicManager1": "Tag Manager",
   "app.containers.AdminPage.Topics.topicManagerInfo1": "Se vuoi aggiungere altri tag al progetto, puoi farlo nel sito {topicManagerLink}.",
   "app.containers.AdminPage.Users.GroupCreation.createGroupButton": "Add a new group",
