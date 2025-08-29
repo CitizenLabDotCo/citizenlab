@@ -2623,7 +2623,7 @@
   "app.containers.AdminPage.Topics.lastTopicWarning3": "Απαιτείται τουλάχιστον μία ετικέτα. Εάν δεν επιθυμείτε να χρησιμοποιείτε ετικέτες, το στοιχείο \"Ετικέτες\" μπορεί να διαγραφεί από τη φόρμα εισαγωγής οποιασδήποτε φάσης (εάν υπάρχει).",
   "app.containers.AdminPage.Topics.projectTopicsDescription1": "Μπορείτε να προσθέσετε και να διαγράψετε τις ετικέτες που μπορούν να εκχωρηθούν σε εισόδους σε αυτό το έργο.",
   "app.containers.AdminPage.Topics.remove": "Remove",
-  "app.containers.AdminPage.Topics.title": "Project tags",
+  "app.containers.AdminPage.Topics.title": "Ετικέτες έργου",
   "app.containers.AdminPage.Topics.topicManager1": "Διαχείριση ετικετών",
   "app.containers.AdminPage.Topics.topicManagerInfo1": "Αν θέλετε να προσθέσετε επιπλέον ετικέτες έργου, μπορείτε να το κάνετε στη διεύθυνση {topicManagerLink}.",
   "app.containers.AdminPage.Users.GroupCreation.createGroupButton": "Προσθήκη νέας ομάδας",
