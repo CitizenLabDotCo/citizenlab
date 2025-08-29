@@ -105,7 +105,8 @@ class CommunityMonitorService
       name: "#{year}-#{quarter} #{I18n.t('email_campaigns.community_monitor_report.report_name')}",
       phase: phase,
       year: year,
-      quarter: quarter
+      quarter: quarter,
+      community_monitor: true
     )
 
     current_user = User.super_admins.first

@@ -137,7 +137,7 @@ describe('<ReportBuilderPage />', () => {
       fireEvent.click(screen.getByTestId('create-report-button'));
       expect(mockCreateReport).toHaveBeenCalledTimes(1);
       expect(mockCreateReport).toHaveBeenCalledWith(
-        { name: 'Test project' },
+        { name: 'Test project', community_monitor: false },
         expect.anything()
       );
     });
