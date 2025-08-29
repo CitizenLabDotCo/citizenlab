@@ -873,6 +873,7 @@
   "app.components.formBuilder.page": "Page",
   "app.components.formBuilder.pageCannotBeDeleted": "This page can't be deleted.",
   "app.components.formBuilder.pageCannotBeDeletedNorNewFieldsAdded": "This page cannot be deleted and does not allow any additional fields to be added.",
+  "app.components.formBuilder.pageCannotNewFieldsAdded": "This page does not allow any additional fields to be added.",
   "app.components.formBuilder.pageRuleLabel": "Next page is:",
   "app.components.formBuilder.pagesLogicHelperTextDefault1": "If no logic is added, the form will follow its normal flow. If both the page and its questions have logic, the question logic will take precedence. Ensure this aligns with your intended flow For more information, visit {supportPageLink}",
   "app.components.formBuilder.preview": "Preview:",
