@@ -822,6 +822,7 @@
   "app.components.formBuilder.good": "Jó",
   "app.components.formBuilder.helmetTitle": "Űrlapépítő",
   "app.components.formBuilder.imageFileUpload": "Képfeltöltés",
+  "app.components.formBuilder.inputImages": "Képek",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Érvénytelen logika",
   "app.components.formBuilder.labels2": "Címkék (opcionális)",
   "app.components.formBuilder.labelsTooltipContent2": "Válasszon opcionális címkéket a lineáris skálaértékek bármelyikéhez.",

@@ -95,7 +95,7 @@ da:
       project_title: 'Eksempel på projekt'
       project_description_preview: 'Dette er et eksempel på faseindhold, der bruges til forhåndsvisning af indholdet i e-mails. Det er ikke rigtigt indhold.'
       phase_title: 'Eksempel på fase'
-      folder_title: 'Eksempel på mappe'
+      folder_title: 'Eksempelmappe'
       comment_body: 'Dette er et eksempel på en kommentar, der bruges til at få vist indholdet af e-mails. Det er ikke rigtigt indhold.'
       comment_deleted_reason: 'Dit eksempel på en kommentar blev betragtet som upassende.'
       idea_title: 'Eksempel på idé'
@@ -397,7 +397,7 @@ da:
     project_published:
       subject: 'Et nyt projekt blev offentliggjort på platformen %{organizationName}'
       title: 'Et nyt projekt blev offentliggjort'
-      event_description: 'Borgerinddragelsesplatformen for %{organizationName} har netop offentliggjort følgende projekt:'
+      event_description: 'Inddragelsesplatformen for %{organizationName} har netop offentliggjort følgende projekt:'
       preheader: 'Et nyt projekt blev offentliggjort'
       cta_button: 'Gå til dette projekt'
     project_review_request:
@@ -438,8 +438,8 @@ da:
       no_unread_notifications: "Det er tid til at generere nogle nye aktiviteter! Besøg platformen for at finde ud af, hvad der sker."
       unread_notifications: "Du har nye notifikationer! Besøg platformen for at finde ud af, hvad der sker."
     threshold_reached_for_admin:
-      cta_button: 'Før dette initiativ til de næste trin'
-      title: 'Et initiativ har nået stemmetærskel!'
+      cta_button: 'Tag dette forslag til de næste trin'
+      title: 'Et forslag har nået stemmegrænsen!'
       subject: 'Et initiativ har nået stemmetærskelgrænsen på din platform'
       preheader: 'Sørg for, at du gennemfører de næste trin'
     welcome:

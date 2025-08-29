@@ -822,6 +822,7 @@
   "app.components.formBuilder.good": "جيد",
   "app.components.formBuilder.helmetTitle": "مُنشئ النماذج",
   "app.components.formBuilder.imageFileUpload": "تحميل صورة",
+  "app.components.formBuilder.inputImages": "الصور",
   "app.components.formBuilder.invalidLogicBadgeMessage": "أساس منطقي غير صالح",
   "app.components.formBuilder.labels2": "العلامات (اختياري)",
   "app.components.formBuilder.labelsTooltipContent2": "اختر تسميات اختيارية لأي من قيم المقياس الخطي.",

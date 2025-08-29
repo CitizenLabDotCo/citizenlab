@@ -822,6 +822,7 @@
   "app.components.formBuilder.good": "Bra",
   "app.components.formBuilder.helmetTitle": "Skjemabygger",
   "app.components.formBuilder.imageFileUpload": "Bildeopplasting",
+  "app.components.formBuilder.inputImages": "Bilder",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Ugyldig logikk",
   "app.components.formBuilder.labels2": "Etiketter (valgfritt)",
   "app.components.formBuilder.labelsTooltipContent2": "Velg valgfrie etiketter for alle de lineære skalaverdiene.",

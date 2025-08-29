@@ -822,6 +822,7 @@
   "app.components.formBuilder.good": "God",
   "app.components.formBuilder.helmetTitle": "Formularbygger",
   "app.components.formBuilder.imageFileUpload": "Upload af billede",
+  "app.components.formBuilder.inputImages": "Billeder",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Ugyldig logik",
   "app.components.formBuilder.labels2": "Etiketter (valgfrit)",
   "app.components.formBuilder.labelsTooltipContent2": "Vælg valgfrie etiketter til enhver af de lineære skalaværdier.",

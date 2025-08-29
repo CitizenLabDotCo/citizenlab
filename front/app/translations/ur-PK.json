@@ -822,6 +822,7 @@
   "app.components.formBuilder.good": "اچھا",
   "app.components.formBuilder.helmetTitle": "فارم بنانے والا",
   "app.components.formBuilder.imageFileUpload": "تصویر اپ لوڈ کریں۔",
+  "app.components.formBuilder.inputImages": "امیجز",
   "app.components.formBuilder.invalidLogicBadgeMessage": "غلط منطق",
   "app.components.formBuilder.labels2": "لیبلز (اختیاری)",
   "app.components.formBuilder.labelsTooltipContent2": "کسی بھی لکیری پیمانے کی قدروں کے لیے اختیاری لیبل منتخب کریں۔",

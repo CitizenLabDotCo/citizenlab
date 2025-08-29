@@ -822,6 +822,7 @@
   "app.components.formBuilder.good": "Labi",
   "app.components.formBuilder.helmetTitle": "Veidlapas veidotājs",
   "app.components.formBuilder.imageFileUpload": "Attēlu augšupielāde",
+  "app.components.formBuilder.inputImages": "Attēli",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Nederīga loģika",
   "app.components.formBuilder.labels2": "Etiķetes (pēc izvēles)",
   "app.components.formBuilder.labelsTooltipContent2": "Izvēlieties papildu marķējumus jebkurai lineārās skalas vērtībai.",

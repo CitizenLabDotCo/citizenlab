@@ -822,6 +822,7 @@
   "app.components.formBuilder.good": "Geras",
   "app.components.formBuilder.helmetTitle": "Formos kūrėjas",
   "app.components.formBuilder.imageFileUpload": "Vaizdų įkėlimas",
+  "app.components.formBuilder.inputImages": "Vaizdai",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Netinkama logika",
   "app.components.formBuilder.labels2": "Etiketės (neprivaloma)",
   "app.components.formBuilder.labelsTooltipContent2": "Pasirinkite neprivalomas etiketes bet kuriai linijinės skalės vertei.",
