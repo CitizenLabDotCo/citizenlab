@@ -112,8 +112,7 @@ export const FormField = ({
   const isGroupDeletable = getGroupDeletable();
   const shouldShowDelete = !(
     (field.input_type === 'page' && !isGroupDeletable) ||
-    get(lockedAttributes, 'enabled', false) ||
-    hasFullPageRestriction
+    get(lockedAttributes, 'enabled', false)
   );
 
   const editFieldAndValidate = (defaultTab: ICustomFieldSettingsTab) => {
@@ -203,9 +202,15 @@ export const FormField = ({
   };
 
   const onDelete = (fieldIndex: number) => {
-    if (builtInFieldKeys.includes(field.key)) {
-      const newField = { ...field, enabled: false };
+    if (!!field.code) {
+      const newField = { ...field, enabled: false }; // Setting `enabled: false` doesn't seem to work well for pages.
       setValue(`customFields.${index}`, newField);
+      // When deleting the body page, also delete its body_multiloc field
+      if (field.code === 'body_page') {
+        const newBody = { ...formCustomFields[index + 1], enabled: false };
+        console.log(newBody);
+        setValue(`customFields.${index + 1}`, newBody);
+      }
     } else {
       const field = formCustomFields[fieldIndex];
 

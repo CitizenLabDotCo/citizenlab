@@ -111,6 +111,10 @@ export default defineMessages({
     id: 'app.components.formBuilder.drawArea',
     defaultMessage: 'Draw area',
   },
+  bodyMultiloc: {
+    id: 'app.components.formBuilder.bodyMultiloc',
+    defaultMessage: 'Description',
+  },
   inputImages: {
     id: 'app.components.formBuilder.inputImages',
     defaultMessage: 'Images',
@@ -275,6 +279,11 @@ export default defineMessages({
     id: 'app.components.formBuilder.disabledCustomFieldsTooltip1',
     defaultMessage:
       'Adding custom content is not part of your current license. Reach out to your GovSuccess Manager to learn more about it.',
+  },
+  pageCannotNewFieldsAdded: {
+    id: 'app.components.formBuilder.pageCannotNewFieldsAdded',
+    defaultMessage:
+      'This page does not allow any additional fields to be added.',
   },
   pageCannotBeDeletedNorNewFieldsAdded: {
     id: 'app.components.formBuilder.pageCannotBeDeletedNorNewFieldsAdded',

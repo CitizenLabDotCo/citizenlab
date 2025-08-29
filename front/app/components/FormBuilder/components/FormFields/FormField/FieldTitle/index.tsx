@@ -46,14 +46,18 @@ const FieldTitle = ({
   const getLockMessage = () => {
     if (field.input_type === 'page') {
       if (hasFullPageRestriction) {
-        return formatMessage(messages.pageCannotBeDeletedNorNewFieldsAdded);
+        if (field.code === 'body_page') {
+          return formatMessage(messages.pageCannotNewFieldsAdded);
+        } else {
+          return formatMessage(messages.pageCannotBeDeletedNorNewFieldsAdded);
+        }
       }
       if (lockedAttributes?.enabled) {
         return formatMessage(messages.pageCannotBeDeleted);
       }
     }
 
-    if (lockedAttributes?.enabled) {
+    if (lockedAttributes?.enabled && field.code != 'body_multiloc') {
       return formatMessage(messages.questionCannotBeDeleted);
     }
 
