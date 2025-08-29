@@ -2030,6 +2030,7 @@
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Renginiai",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Priedai (ne daugiau kaip 50 MB)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "Failai neturėtų būti didesni nei 50 MB. Pridėti failai bus rodomi projekto informacijos puslapyje.",
+  "app.containers.AdminPage.ProjectEdit.filesTab2": "360 įvestis",
   "app.containers.AdminPage.ProjectEdit.findVolunteers": "Rasti savanorių",
   "app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText": "Paprašykite dalyvių savanoriškai dalyvauti veikloje ir renginiuose.",
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip2": "Kaip aplankų tvarkytojas, kurdami projektą galite pasirinkti aplanką, tačiau vėliau jį pakeisti gali tik administratorius.",

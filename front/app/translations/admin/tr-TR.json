@@ -2030,6 +2030,7 @@
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Etkinlikler",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Ekler (maksimum 50 MB)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "Dosyalar 50 MB'tan büyük olmamalıdır. Eklenen dosyalar proje bilgileri sayfasında gösterilir.",
+  "app.containers.AdminPage.ProjectEdit.filesTab2": "360 Giriş",
   "app.containers.AdminPage.ProjectEdit.findVolunteers": "Gönüllüler bulun",
   "app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText": "Katılımcılardan faaliyetler ve amaçlar için gönüllü olmalarını isteyin.",
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip2": "Bir klasör yöneticisi olarak, projeyi oluştururken bir klasör seçebilirsiniz, ancak daha sonra bunu yalnızca bir yönetici değiştirebilir",

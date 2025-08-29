@@ -2030,6 +2030,7 @@
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Events",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Attachments (max 50MB)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "Files should not be larger than 50Mb. Added files will be shown on the project information page.",
+  "app.containers.AdminPage.ProjectEdit.filesTab2": "360 Input",
   "app.containers.AdminPage.ProjectEdit.findVolunteers": "Find volunteers",
   "app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText": "Ask participants to volunteer for activities and causes.",
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip2": "As a folder manager, you can choose a folder when creating the project, but only an admin can change it afterward",
