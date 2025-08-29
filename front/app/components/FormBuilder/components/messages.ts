@@ -276,6 +276,11 @@ export default defineMessages({
     defaultMessage:
       'Adding custom content is not part of your current license. Reach out to your GovSuccess Manager to learn more about it.',
   },
+  pageCannotNewFieldsAdded: {
+    id: 'app.components.formBuilder.pageCannotNewFieldsAdded',
+    defaultMessage:
+      'This page does not allow any additional fields to be added.',
+  },
   pageCannotBeDeletedNorNewFieldsAdded: {
     id: 'app.components.formBuilder.pageCannotBeDeletedNorNewFieldsAdded',
     defaultMessage:
