@@ -59,7 +59,7 @@ module ReportBuilder
       service = CommunityMonitorService.new
       return Report.none unless service.enabled? && service.phase
 
-      reports.where(phase_id: service.phase.id)
+      reports.where(community_monitor: true)
     end
   end
 end
