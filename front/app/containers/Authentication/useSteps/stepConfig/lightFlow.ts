@@ -56,6 +56,13 @@ export const lightFlow = (
       CONTINUE_WITH_SSO: (ssoProvider: SSOProviderWithoutVienna) => {
         if (ssoProvider === 'franceconnect') {
           setCurrentStep('light-flow:france-connect-login');
+        } else if (ssoProvider === 'clave_unica') {
+          handleOnSSOClick(
+            ssoProvider,
+            getAuthenticationData(),
+            true,
+            state.flow
+          );
         } else {
           updateState({ ssoProvider });
           setCurrentStep('light-flow:sso-policies');

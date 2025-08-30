@@ -1,16 +1,13 @@
 import React from 'react';
 
 import { TVerificationMethodName } from 'api/verification_methods/types';
-import { isLastVerificationMethod } from 'api/verification_methods/util';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 import messages from '../../../components/UI/ClaveUnicaButton/messages';
 
-const ClaveUnicaButton = React.lazy(
-  () => import('../../../components/UI/ClaveUnicaButton')
-);
+import ClaveUnicaButtonWrapper from './components/ClaveUnicaButtonWrapper';
 
 const verificationMethodName: TVerificationMethodName = 'clave_unica';
 const configuration: ModuleConfiguration = {
@@ -24,14 +21,8 @@ const configuration: ModuleConfiguration = {
       );
 
       if (method) {
-        const last = isLastVerificationMethod(
-          verificationMethodName,
-          verificationMethods
-        );
         return (
-          <ClaveUnicaButton
-            last={last}
-            method={method}
+          <ClaveUnicaButtonWrapper
             message={<FormattedMessage {...messages.verifyClaveUnica} />}
             {...otherProps}
           />

@@ -25,9 +25,7 @@ import { TTabName } from 'containers/Admin/projects/new';
 import { NavItem } from 'containers/Admin/sideBar/navItems';
 import { GroupCreationModal } from 'containers/Admin/users';
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
-import { AuthProvider } from 'containers/Authentication/steps/AuthProviders';
 import { TVerificationStep } from 'containers/Authentication/steps/Verification/utils';
-import { SignUpInFlow } from 'containers/Authentication/typings';
 
 import { ManagerType } from 'components/admin/PostManager';
 import { OutletRenderProps } from 'components/Outlet';
@@ -161,10 +159,6 @@ export interface OutletsPropertyMap {
   };
   'app.components.NotificationMenu.Notification': {
     notification: TNotificationData;
-  };
-  'app.components.SignUpIn.AuthProviders.ContainerStart': {
-    flow: SignUpInFlow;
-    onContinue: (authProvider: AuthProvider) => void;
   };
   'app.containers.Admin.projects.edit.general.components.TopicInputs.tooltipExtraCopy': Record<
     string,

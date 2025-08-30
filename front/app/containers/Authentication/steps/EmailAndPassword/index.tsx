@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import { SetError } from 'containers/Authentication/typings';
-import useAnySSOEnabled from 'containers/Authentication/useAnySSOEnabled';
+import useAuthConfig from 'containers/Authentication/useAuthConfig';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
@@ -34,7 +34,7 @@ const EmailAndPassword = ({
   onSwitchFlow,
   closeModal,
 }: Props) => {
-  const anySSOEnabled = useAnySSOEnabled();
+  const { anySSOProviderEnabled } = useAuthConfig();
   const { formatMessage } = useIntl();
 
   return (
@@ -46,7 +46,7 @@ const EmailAndPassword = ({
         closeModal={closeModal}
       />
       <Text mt="12px">
-        {anySSOEnabled ? (
+        {anySSOProviderEnabled ? (
           <TextButton
             id="e2e-login-options"
             onClick={onGoBack}

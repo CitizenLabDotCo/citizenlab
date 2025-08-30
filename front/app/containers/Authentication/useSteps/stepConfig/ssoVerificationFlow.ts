@@ -37,8 +37,17 @@ export const ssoVerificationFlow = (
             'signup'
           );
         } else {
-          updateState({ ssoProvider });
-          setCurrentStep('sso-verification:sso-providers-policies');
+          if (ssoProvider === 'clave_unica') {
+            handleOnSSOClick(
+              ssoProvider,
+              getAuthenticationData(),
+              true,
+              'signup'
+            );
+          } else {
+            updateState({ ssoProvider });
+            setCurrentStep('sso-verification:sso-providers-policies');
+          }
         }
       },
       GO_TO_LOGIN: () => {
