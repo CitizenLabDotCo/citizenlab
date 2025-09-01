@@ -59,6 +59,9 @@ describe('Admin: edit project', () => {
 
     cy.visit('/admin/projects?status=%5B"draft"%5D');
 
+    // Set sort again
+    cy.dataCy('projects-overview-sort-select').select('recently_created_desc');
+
     // Project should appear on top of the projects list. Click it
     const project2 = cy
       .dataCy('projects-overview-table-row')
