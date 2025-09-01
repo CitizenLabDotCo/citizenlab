@@ -30,7 +30,7 @@ resource 'FileAttachments as legacy files' do
         do_request
         assert_status 200
         expect(response_data.size).to eq(2)
-        expect(response_ids).to match_array file_attachment.map(&:id)
+        expect(response_ids).to match_array file_attachment.pluck(:file_id)
       end
     end
   end
@@ -47,7 +47,7 @@ resource 'FileAttachments as legacy files' do
       assert_status 200
 
       expect(response_data).to match hash_including(
-        id: file_attachment.id,
+        id: file_attachment.file_id,
         type: 'file',
         attributes: hash_including(
           ordering: file_attachment.position,
@@ -108,11 +108,12 @@ resource 'FileAttachments as legacy files' do
   end
 
   delete 'web_api/v1/projects/:project_id/files/:id' do
-    let_it_be(:file_attachment) { create(:file_attachment, attachable: project) }
     let_it_be(:legacy_file) { create(:project_file, project: project) }
 
-    context 'when this is the only attachment of the file' do
-      example 'Delete a file attachment by id (and the file)' do
+    context 'when attaching a file to an Idea' do
+      let!(:file_attachment) { create(:file_attachment, to: :idea) }
+
+      example 'Delete a file attachment by id and the file' do
         do_request(id: file_attachment.id)
 
         assert_status 200
@@ -121,8 +122,8 @@ resource 'FileAttachments as legacy files' do
       end
     end
 
-    context 'when there are other attachments of the file' do
-      let!(:other_attachment) { create(:file_attachment, file: file_attachment.file) }
+    context 'when attaching a file to a non-Idea resource' do
+      let!(:file_attachment) { create(:file_attachment, to: :event) }
 
       example 'Delete a file attachment by id' do
         do_request(id: file_attachment.id)
@@ -157,7 +158,7 @@ resource 'FileAttachments as legacy files' do
     context 'when there are no legacy files' do
       let!(:file_attachment) { create(:file_attachment, attachable: project, position: 1) }
 
-      example 'Create a file as a file attachment' do
+      example 'Create a file and a file attachment' do
         expect { do_request }
           .to change(Files::File, :count).by(1)
           .and(change(Files::FileAttachment, :count).by(1))
@@ -180,8 +181,9 @@ resource 'FileAttachments as legacy files' do
           }
         )
 
-        attachment = Files::FileAttachment.find(response_data[:id])
-        expect(attachment.file.projects).to contain_exactly(project)
+        file = Files::File.find(response_data[:id])
+        expect(file.attachments.count).to eq(1)
+        expect(file.projects).to contain_exactly(project)
       end
     end
 

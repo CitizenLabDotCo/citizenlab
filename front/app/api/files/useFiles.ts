@@ -26,6 +26,7 @@ const useFiles = ({
   sort,
   search,
   deleted,
+  excludeIdeaFiles,
   enabled = true,
 }: GetFilesParameters) => {
   const queryParameters: QueryParameters = {
@@ -33,6 +34,7 @@ const useFiles = ({
     'page[size]': pageSize ?? 250,
     uploader_id: uploaderId,
     project: project?.length ? project : undefined,
+    excluded_idea_files: excludeIdeaFiles,
     sort,
     search,
     deleted,

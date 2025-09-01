@@ -100,6 +100,16 @@ RSpec.describe Files::FilePolicy do
         it { is_expected.to permit(:create) }
         it { is_expected.to permit(:update) }
         it { is_expected.to permit(:destroy) }
+
+        context 'when the file is immediately attached to a resource at creation time' do
+          let(:file) do
+            build(:file, uploader: user).tap do |f|
+              f.attachments.build(attachable: create(:static_page))
+            end
+          end
+
+          it { is_expected.to permit(:create) }
+        end
       end
 
       context 'when the user is not the uploader' do
