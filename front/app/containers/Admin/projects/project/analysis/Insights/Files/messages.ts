@@ -26,4 +26,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.files.save',
     defaultMessage: 'Save',
   },
+  uploadFiles: {
+    id: 'app.containers.AdminPage.projects.project.analysis.files.uploadFiles',
+    defaultMessage: 'Upload files to project',
+  },
 });
