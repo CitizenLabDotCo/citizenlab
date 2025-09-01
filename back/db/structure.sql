@@ -3381,7 +3381,8 @@ CREATE TABLE public.report_builder_reports (
     visible boolean DEFAULT false NOT NULL,
     name_tsvector tsvector GENERATED ALWAYS AS (to_tsvector('simple'::regconfig, (name)::text)) STORED,
     year integer,
-    quarter integer
+    quarter integer,
+    community_monitor boolean DEFAULT false NOT NULL
 );
 
 
@@ -7809,6 +7810,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250829154300'),
 ('20250808071349'),
 ('20250807120354'),
 ('20250807000000'),

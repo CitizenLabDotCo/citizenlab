@@ -74,6 +74,9 @@ describe('Admin: edit project', () => {
 
     cy.visit('/admin/projects?status=%5B"archived"%5D');
 
+    // Set sort again
+    cy.dataCy('projects-overview-sort-select').select('recently_created_desc');
+
     cy.dataCy('projects-overview-table-row')
       .first()
       .get('td')
