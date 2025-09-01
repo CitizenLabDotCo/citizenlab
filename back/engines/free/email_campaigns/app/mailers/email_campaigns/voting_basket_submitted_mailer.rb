@@ -2,28 +2,38 @@
 
 module EmailCampaigns
   class VotingBasketSubmittedMailer < ApplicationMailer
-    protected
+    include EditableWithPreview
 
-    def subject
-      format_message('subject', values: { organizationName: organization_name })
+    def editable
+      %i[subject_multiloc title_multiloc intro_multiloc button_text_multiloc]
     end
 
-    private
-
-    def header_title
-      format_message('title_basket_submitted')
+    def substitution_variables
+      {
+        organizationName: organization_name
+      }
     end
 
-    def header_message
-      format_message(
-        'event_description',
-        values: { organizationName: organization_name },
-        escape_html: false
-      )
-    end
-
-    def preheader
-      format_message('preheader', values: { organizationName: organization_name })
+    def preview_command(recipient)
+      data = preview_service.preview_data(recipient)
+      {
+        recipient: recipient,
+        event_payload: {
+          project_url: data.project.url,
+          voted_ideas: [
+            {
+              title_multiloc: data.idea.title_multiloc,
+              url: data.idea.url,
+              images: [{ versions: { small: data.placeholder_image_url } }]
+            },
+            {
+              title_multiloc: data.idea.title_multiloc,
+              url: data.idea.url,
+              images: [{ versions: { small: data.placeholder_image_url } }]
+            }
+          ]
+        }
+      }
     end
   end
 end

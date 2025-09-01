@@ -137,7 +137,9 @@ const Edit = ({ campaignType }: EditProps) => {
         <Box width="50%">
           <Box display="inline-flex" width="100%" mb="12px">
             <Box width="70%">
-              <h2>Preview</h2>
+              <h2>
+                <FormattedMessage {...messages.preview} />
+              </h2>
             </Box>
             <Box>
               <Button

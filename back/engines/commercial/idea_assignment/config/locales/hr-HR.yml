@@ -6,8 +6,8 @@ hr:
       "idea_assigned_to_you": Dodjela ideje – administratori i voditelji projekata
     idea_assigned_to_you:
       by_author: 'od %{authorName}'
-      cta_reply_to: 'Pošaljite povratne informacije za %{authorName}'
-      event_description_idea: 'Dodijeljenа vam je ideja. Pružite povratne informacije pisanjem službenog ažuriranja ili promjenom njenog statusa.'
-      main_header: '%{firstName}, imate novi zadatak'
+      cta_button: 'Dajte povratne informacije korisniku %{authorName}'
+      event_description: 'Dodijeljen vam je unos. Dajte povratne informacije pisanjem službenog ažuriranja ili promjenom njegovog statusa.'
+      title: '%{firstName}, dodijeljen vam je ulaz'
       subject: 'Imate zadatak na %{organizationName} platformi '
       preheader_idea: 'Dodijeljena vam je ideja od %{authorName}'

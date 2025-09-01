@@ -65,12 +65,13 @@ module Files
       file.destroy!
     end
 
+    # Prevent files from being attached to resources in other projects.
     def validate_file_belongs_to_project
       return unless attachable_type.in?(%w[Project Phase Event Idea])
       return unless file.present? && attachable.present?
 
       # Using `files_projects` instead of `projects` because `projects` does not include
-      # projects whose corresponding `files_project` records have not yet been persisted.
+      # projects whose corresponding `files_project` records have not yet been saved.
       project_ids = file.files_projects.map(&:project_id)
 
       if project_ids.exclude?(attachable.project_id)
@@ -78,16 +79,21 @@ module Files
       end
     end
 
+    # Prevent reuse of idea files. If a file is attached to an idea, it cannot be attached
+    # to any other resource.
     def validate_idea_attachment_uniqueness
       return unless file
 
-      if file.attachments.exists?(attachable_type: 'Idea')
+      # Other attachments for the *same file*.
+      other_attachments = file.attachments.where.not(id: id)
+
+      if other_attachments.exists?(attachable_type: 'Idea')
         errors.add(
           :file,
           :already_attached,
           message: 'cannot be attached to other resources because it is already attached to an idea'
         )
-      elsif attachable_type == 'Idea' && file.attachments.exists?
+      elsif attachable_type == 'Idea' && other_attachments.exists?
         errors.add(
           :file,
           :already_attached,

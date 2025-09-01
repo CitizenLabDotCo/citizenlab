@@ -178,7 +178,7 @@ Metrics/BlockNesting:
 # Offense count: 102
 # Configuration parameters: CountComments, CountAsOne.
 Metrics/ClassLength:
-  Max: 479
+  Max: 500
   Exclude:
     - 'engines/commercial/multi_tenancy/db/seeds/tenants.rb'
     - 'app/services/survey_results_generator_service.rb'

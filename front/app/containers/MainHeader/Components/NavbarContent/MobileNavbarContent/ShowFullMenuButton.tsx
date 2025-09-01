@@ -20,8 +20,8 @@ const ShowFullMenuButton = ({ onClick }: Props) => {
       onClick={onClick}
       iconName="menu"
       a11y_buttonActionMessage={formatMessage(messages.showFullMenu)}
-      iconColor={theme.colors.tenantText}
-      iconColorOnHover={theme.colors.tenantText}
+      iconColor={theme.navbarTextColor ?? theme.colors.tenantText}
+      iconColorOnHover={theme.navbarTextColor ?? theme.colors.tenantText}
     />
   );
 };

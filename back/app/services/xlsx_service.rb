@@ -135,6 +135,10 @@ class XlsxService
   end
 
   def generate_idea_xlsx_columns(_ideas, view_private_attributes: false, with_tags: false, with_cosponsors: false)
+    get_attachments_urls = lambda do |i|
+      i.attached_files.map { |f| f.content.url } + i.idea_files.map { |f| f.file.url }
+    end
+
     columns = [
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },
       { header: 'title',                f: ->(i) { multiloc_service.t(i.title_multiloc) } },
@@ -158,7 +162,7 @@ class XlsxService
       { header: 'latitude',             f: ->(i) { i.location_point&.coordinates&.last },                                  skip_sanitization: true },
       { header: 'longitude',            f: ->(i) { i.location_point&.coordinates&.first },                                 skip_sanitization: true },
       { header: 'location_description', f: ->(i) { i.location_description } },
-      { header: 'attachments',          f: ->(i) { i.idea_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true, width: 2 }
+      { header: 'attachments',          f: ->(i) { get_attachments_urls.call(i).join("\n") }, skip_sanitization: true, width: 2 }
     ]
 
     if with_cosponsors

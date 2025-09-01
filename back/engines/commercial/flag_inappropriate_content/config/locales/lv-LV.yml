@@ -6,11 +6,11 @@ lv:
       "inappropriate_content_flagged": Nepiemērots saturs atzīmēts ar karodziņu - administratori
     inappropriate_content_flagged:
       subject: 'Ieraksts jūsu platformā ir atzīmēts pārskatīšanai'
-      header_title: 'Ieraksts jūsu platformā ir atzīmēts pārskatīšanai'
+      title: 'Ieraksts ir atzīmēts pārskatīšanai'
       author_wrote: '%{authorName} rakstīja:'
       preheader: 'Ieraksts jūsu platformā ir atzīmēts pārskatīšanai'
       automatically_flagged: >
         Šī ziņa tika automātiski konstatēta kā iespējami neatbilstoša satura ziņa. Mēs nosūtām jums šo paziņojumu, lai jūs varētu pārskatīt šo ziņu saskaņā ar savām moderēšanas vadlīnijām.
       how_to_review: >
         Ja ieraksts nesatur nepiemērotu saturu, varat dzēst brīdinājumu, izmantojot savu platformu administratora paneļa cilnē Darbība.
-      cta_review: 'Pārskats'
+      cta_button: 'Pārskats'

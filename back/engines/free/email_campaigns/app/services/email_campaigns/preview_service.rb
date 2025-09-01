@@ -1,9 +1,9 @@
 module EmailCampaigns
   class PreviewService
-    PreviewUser = Struct.new(:first_name, :last_name, :display_name, :display_name_multiloc)
-    PreviewContentItem = Struct.new(:id, :title_multiloc, :body_multiloc, :description_preview_multiloc, :url, :deleted_reason)
+    PreviewUser = Struct.new(:first_name, :last_name, :display_name, :display_name_multiloc, :surveys_url)
+    PreviewContentItem = Struct.new(:id, :title_multiloc, :body_multiloc, :description_multiloc, :description_preview_multiloc, :url, :deleted_reason)
     PreviewEvent = Struct.new(:id, :title_multiloc, :address1, :address2_multiloc)
-    PreviewData = Struct.new(:idea, :project, :phase, :comment, :proposal, :event, :author, :initiator, :organization_name, :placeholder_image_url)
+    PreviewData = Struct.new(:idea, :project, :phase, :folder, :comment, :proposal, :event, :input_status, :official_feedback, :author, :initiator, :organization_name, :placeholder_image_url)
 
     # Static content that can be used across all email previews.
     def preview_data(recipient)
@@ -31,6 +31,11 @@ module EmailCampaigns
           title_multiloc: multiloc_service.i18n_to_multiloc('email_campaigns.preview_data.phase_title'),
           url: "/#{recipient.locale}/phase/example-project/example-phase"
         ),
+        folder: PreviewContentItem.new(
+          id: SecureRandom.uuid,
+          title_multiloc: multiloc_service.i18n_to_multiloc('email_campaigns.preview_data.folder_title'),
+          url: "/#{recipient.locale}/folders/example-folder"
+        ),
         comment: PreviewContentItem.new(
           id: SecureRandom.uuid,
           body_multiloc: multiloc_service.i18n_to_multiloc('email_campaigns.preview_data.comment_body'),
@@ -42,10 +47,20 @@ module EmailCampaigns
           address1: I18n.t('email_campaigns.preview_data.event_address1', locale: recipient.locale),
           address2_multiloc: multiloc_service.i18n_to_multiloc('email_campaigns.preview_data.event_address2')
         ),
+        input_status: PreviewContentItem.new(
+          id: SecureRandom.uuid,
+          title_multiloc: multiloc_service.i18n_to_multiloc('email_campaigns.preview_data.input_status_title'),
+          description_multiloc: multiloc_service.i18n_to_multiloc('email_campaigns.preview_data.input_status_description')
+        ),
+        official_feedback: PreviewContentItem.new(
+          body_multiloc: multiloc_service.i18n_to_multiloc('email_campaigns.preview_data.official_feedback_body'),
+          url: "/#{recipient.locale}/ideas/example-idea"
+        ),
         author: PreviewUser.new(
           first_name: I18n.t('email_campaigns.preview_data.author_first_name', locale: recipient.locale),
           last_name: I18n.t('email_campaigns.preview_data.author_last_name', locale: recipient.locale),
-          display_name: I18n.t('email_campaigns.preview_data.author_display_name', locale: recipient.locale)
+          display_name: I18n.t('email_campaigns.preview_data.author_display_name', locale: recipient.locale),
+          surveys_url: "#{Frontend::UrlService.new.home_url}/profile/#{recipient.slug}/surveys"
         ),
         initiator: PreviewUser.new(
           first_name: I18n.t('email_campaigns.preview_data.initiator_first_name', locale: recipient.locale),

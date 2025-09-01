@@ -46,7 +46,6 @@ class WebApi::V1::Files::FileAttachmentsController < ApplicationController
 
   def update
     update_params = params.require(:file_attachment).permit(:position)
-
     authorize(file_attachment)
 
     side_fx.before_update(file_attachment, current_user)

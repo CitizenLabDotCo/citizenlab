@@ -1,11 +1,12 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import supportedCampaignNamesKeys from 'api/supported_campaign_names/keys';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import { CampaignContext } from './types';
 import { getCampaignsContextPath } from './util';
-import supportedCampaignNamesKeys from 'api/supported_campaign_names/keys';
 
 interface ISupportedCampaignNamesData {
   data: {

@@ -4,6 +4,7 @@ import { Thead, Tr, Th } from '@citizenlab/cl2-component-library';
 
 import { ICustomFieldBinData } from 'api/custom_field_bins/types';
 import useCustomFieldBins from 'api/custom_field_bins/useCustomFieldBins';
+import { deduplicateBins } from 'api/custom_field_bins/utils';
 import useCustomFieldOption from 'api/custom_field_options/useCustomFieldOption';
 
 import { useGetOptionText } from './utils';
@@ -28,7 +29,9 @@ const OptionTextTh = ({ bin }: { bin: ICustomFieldBinData }) => {
 const HeatmapTableHead: React.FC<CustomFieldOptionsProps> = ({
   customFieldId,
 }) => {
-  const { data: bins } = useCustomFieldBins(customFieldId);
+  let { data: bins } = useCustomFieldBins(customFieldId);
+  // Temp fix
+  bins = bins ? deduplicateBins(bins) : undefined;
 
   return (
     <Thead>

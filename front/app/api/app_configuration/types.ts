@@ -1,7 +1,8 @@
 import { ImageSizes, Multiloc, SupportedLocale, UploadFile } from 'typings';
 
-import { TCategory } from 'components/ConsentManager/destinations';
 import { API_PATH } from 'containers/App/constants';
+
+import { TCategory } from 'components/ConsentManager/destinations';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -35,6 +36,7 @@ export type IAppConfigurationSettingsCore = {
   meta_title?: Multiloc | null;
   meta_description?: Multiloc | null;
   google_search_console_meta_attribute?: string | null;
+  login_helper_text?: Multiloc | null;
   signup_helper_text?: Multiloc | null;
   custom_fields_signup_helper_text?: Multiloc | null;
   color_main: string | null;
@@ -276,6 +278,7 @@ export interface IAppConfigurationSettings {
   project_planning_calendar?: AppConfigurationFeature;
   common_ground?: AppConfigurationFeature;
   customised_automated_emails?: AppConfigurationFeature;
+  customised_automated_context_emails?: AppConfigurationFeature;
   project_importer?: AppConfigurationFeature;
 }
 

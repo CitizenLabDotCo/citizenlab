@@ -39,6 +39,7 @@ module EmailCampaigns
     include ActivityTriggerable
     include RecipientConfigurable
     include Trackable
+    include ContentConfigurable
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: %w[trial active]
 
@@ -77,7 +78,6 @@ module EmailCampaigns
       [{
         event_payload: {
           project_title_multiloc: project.title_multiloc,
-          project_ideas_count: project.ideas_count,
           project_url: Frontend::UrlService.new.model_to_url(project, locale: Locale.new(recipient.locale)),
           unfollow_url: Frontend::UrlService.new.unfollow_url(Follower.new(user: recipient))
         }

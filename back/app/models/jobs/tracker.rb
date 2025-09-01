@@ -20,17 +20,19 @@
 #
 # Indexes
 #
-#  index_jobs_trackers_on_completed_at   (completed_at)
-#  index_jobs_trackers_on_context        (context_type,context_id)
-#  index_jobs_trackers_on_owner_id       (owner_id)
-#  index_jobs_trackers_on_project_id     (project_id)
-#  index_jobs_trackers_on_root_job_id    (root_job_id) UNIQUE
-#  index_jobs_trackers_on_root_job_type  (root_job_type)
+#  idx_on_context_type_context_id_root_job_type_d5d424e7c3  (context_type,context_id,root_job_type) UNIQUE WHERE ((root_job_type)::text = 'Files::DescriptionGenerationJob'::text)
+#  index_jobs_trackers_on_completed_at                      (completed_at)
+#  index_jobs_trackers_on_context                           (context_type,context_id)
+#  index_jobs_trackers_on_owner_id                          (owner_id)
+#  index_jobs_trackers_on_project_id                        (project_id)
+#  index_jobs_trackers_on_root_job_id                       (root_job_id) UNIQUE
+#  index_jobs_trackers_on_root_job_type                     (root_job_type)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (owner_id => users.id)
 #  fk_rails_...  (project_id => projects.id)
+#
 
 # +Jobs::Tracker+ provides progress tracking for ActiveJob job trees. It is meant to be used
 # in conjunction with the +Jobs::TrackableJob+ concern. Ideally, the methods of

@@ -47,7 +47,7 @@ const EditCampaignForm = ({
   // Schema and default values are derived from which editable regions are present
   const editableRegions = campaign.data.attributes.editable_regions || [];
   const editableRegionVariableKeys =
-    campaign.data.attributes.editable_region_variable_keys || [];
+    campaign.data.attributes.substitution_variable_keys || [];
 
   const schema = object({
     ...editableRegions.reduce((fieldSchema, region) => {

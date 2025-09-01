@@ -20,11 +20,12 @@ const OPTIONS = [
 ] as const;
 
 interface Props {
+  openedDefaultValue?: boolean;
   mr?: string;
   onClear?: () => void;
 }
 
-const Status = ({ mr, onClear }: Props) => {
+const Status = ({ openedDefaultValue = false, mr, onClear }: Props) => {
   const { formatMessage } = useIntl();
   const statuses = useParam('status') ?? [];
 
@@ -38,7 +39,7 @@ const Status = ({ mr, onClear }: Props) => {
       selected={statuses}
       options={options}
       mr={mr}
-      openedDefaultValue={statuses.length === 0}
+      openedDefaultValue={openedDefaultValue && statuses.length === 0}
       onChange={(statuses) => {
         setParam('status', statuses as PublicationStatus[]);
         trackEventByName(tracks.setStatus, {

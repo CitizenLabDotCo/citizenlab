@@ -80,7 +80,7 @@ const CheckboxMultiSelect = ({
                     padding="18px 20px 18px 20px"
                     checkedColor={'tenantPrimary'}
                     label={
-                      <Text m="0px" color={'tenantPrimary'}>
+                      <Text m="0px" color="black">
                         {option.label}
                       </Text>
                     }

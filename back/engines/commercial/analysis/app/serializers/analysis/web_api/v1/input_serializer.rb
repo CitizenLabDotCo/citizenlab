@@ -8,7 +8,6 @@ module Analysis
 
         attributes :title_multiloc, :body_multiloc, :custom_field_values, :published_at, :updated_at, :likes_count, :dislikes_count, :comments_count, :votes_count, :location_description
 
-        has_many :idea_files, serializer: ::WebApi::V1::FileSerializer
         belongs_to :author, serializer: ::Analysis::WebApi::V1::AnalysisUserSerializer
         belongs_to :idea, serializer: ::WebApi::V1::IdeaSerializer do |input|
           input

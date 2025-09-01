@@ -22,6 +22,31 @@ RSpec.describe Surveys::ResultsGenerator do
       generator = described_class.new(survey_phase)
       expect { generator.generate_result_for_field('missing_field') }.to raise_error('Question not found')
     end
+
+    it 'works if multiselect question has single select answer' do
+      create(
+        :native_survey_response,
+        project: project,
+        phases: phases_of_inputs,
+        custom_field_values: {
+          text_field.key => 'Green',
+          multiselect_field.key => 'some_single_select_value',
+          select_field.key => 'other',
+          "#{select_field.key}_other" => 'Austin',
+          multiselect_image_field.key => ['house'],
+          matrix_linear_scale_field.key => {
+            'ride_bicycles_more_often' => 3
+          },
+          sentiment_linear_scale_field.key => 5,
+          "#{sentiment_linear_scale_field.key}_follow_up" => 'Great thanks very much'
+        },
+        author: create(:user, custom_field_values: { gender: 'female', domicile: domicile_user_custom_field.options[1].area.id }),
+        created_at: '2025-04-05'
+      )
+
+      generator = described_class.new(survey_phase)
+      expect { generator.generate_result_for_field(multiselect_field.id) }.not_to raise_error
+    end
   end
 
   describe 'generate_results' do
