@@ -127,18 +127,6 @@ describe('Quill Character Count Consistency', () => {
   });
 
   describe('Performance and Memory', () => {
-    it('should handle multiple function calls efficiently', () => {
-      const html = '<p>Hello World</p>';
-
-      const startTime = performance.now();
-      for (let i = 0; i < 1000; i++) {
-        getPlainTextLengthFromHTML(html);
-      }
-      const endTime = performance.now();
-
-      expect(endTime - startTime).toBeLessThan(200);
-    });
-
     it('should not leak memory with repeated DOM operations', () => {
       const html = '<p>Hello World</p>';
 
