@@ -54,8 +54,6 @@ const OPTIONS: { value: ParticipationMethod; message: MessageDescriptor }[] = [
   },
 ];
 
-const SURVEY_VALUES = ['survey', 'native_survey'];
-
 interface Props {
   onClear: () => void;
 }
@@ -70,18 +68,9 @@ const ParticipationMethods = ({ onClear }: Props) => {
   }));
 
   const handleOnChange = (selected: string[]) => {
-    // if the value is survey, we send both native and external surveys
-    const selectedWithoutSurveyValues = selected.filter(
-      (method) => !SURVEY_VALUES.includes(method)
-    );
-
-    const updatedMethods = selected.includes('survey')
-      ? [...selectedWithoutSurveyValues, ...SURVEY_VALUES]
-      : selectedWithoutSurveyValues;
-
-    setParam('participation_methods', updatedMethods as ParticipationMethod[]);
+    setParam('participation_methods', selected as ParticipationMethod[]);
     trackEventByName(tracks.setParticipationMethod, {
-      participation_methods: JSON.stringify(updatedMethods),
+      participation_methods: JSON.stringify(selected),
     });
   };
 
