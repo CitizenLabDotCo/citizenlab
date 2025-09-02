@@ -63,6 +63,8 @@ const renderField = ({
           hideLocaleSwitcher
           scrollErrorIntoView={true}
           id={question.key}
+          maxCharCount={question.max_characters}
+          minCharCount={question.min_characters}
         />
       );
     case 'text':

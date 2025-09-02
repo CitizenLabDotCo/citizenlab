@@ -6,7 +6,7 @@ import React, {
   useLayoutEffect,
 } from 'react';
 
-import { Label, IconTooltip } from '@citizenlab/cl2-component-library';
+import { Label, IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import Quill, { RangeStatic } from 'quill';
 
@@ -37,6 +37,8 @@ export interface Props {
   onChange?: (html: string) => void;
   onFocus?: () => void;
   onBlur?: () => void;
+  maxCharCount?: number;
+  minCharCount?: number;
 }
 
 configureQuill();
@@ -57,6 +59,8 @@ const QuillEditor = ({
   onChange,
   onBlur,
   onFocus,
+  maxCharCount,
+  minCharCount,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [editor, setEditor] = useState<Quill | null>(null);
@@ -183,6 +187,12 @@ const QuillEditor = ({
     editor?.focus();
   }, [editor]);
 
+  const getSmartTextLength = useCallback((quillInstance: Quill): number => {
+    // Quill always adds a trailing newline, so subtract 1 to get actual text length
+    // Empty editor returns '\n' (length 1), so this gives us 0 as expected
+    return Math.max(0, quillInstance.getText().length - 1);
+  }, []);
+
   const className = focussed ? 'focus' : '';
 
   return (
@@ -213,6 +223,23 @@ const QuillEditor = ({
       <div>
         <div ref={containerRef} />
       </div>
+      {(maxCharCount || minCharCount) && editor && (
+        <Box
+          display="flex"
+          justifyContent="flex-end"
+          mt="8px"
+          color={
+            (maxCharCount && getSmartTextLength(editor) > maxCharCount) ||
+            (minCharCount && getSmartTextLength(editor) < minCharCount)
+              ? 'red600'
+              : 'textSecondary'
+          }
+        >
+          {getSmartTextLength(editor)}
+          {maxCharCount && ` / ${maxCharCount}`}
+          {minCharCount && ` (≥ ${minCharCount})`}
+        </Box>
+      )}
     </StyleContainer>
   );
 };
