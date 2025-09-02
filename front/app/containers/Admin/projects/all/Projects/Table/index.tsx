@@ -15,7 +15,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import useParticipantCounts from 'api/participant_counts/useParticipantCounts';
-import { ParticipationMethod } from 'api/phases/types';
 import useInfiniteProjectsMiniAdmin from 'api/projects_mini_admin/useInfiniteProjectsMiniAdmin';
 
 import useInfiniteScroll from 'hooks/useInfiniteScroll';
@@ -25,30 +24,13 @@ import { useIntl } from 'utils/cl-intl';
 import ColHeader from '../../_shared/ColHeader';
 import sharedMessages from '../../_shared/messages';
 import { useParams } from '../../_shared/params';
+import { getParticipationMethods } from '../../_shared/utils';
 
 import EmptyRow from './EmptyRow';
 import messages from './messages';
 import Row from './Row';
 
 const PAGE_SIZE = 10;
-
-const SURVEY_VALUES: ParticipationMethod[] = ['survey', 'native_survey'];
-
-const getParticipationMethods = (
-  participation_methods?: ParticipationMethod[]
-) => {
-  if (!participation_methods) return undefined;
-
-  if (participation_methods.includes('survey')) {
-    return [
-      ...participation_methods.filter(
-        (method) => !SURVEY_VALUES.includes(method)
-      ),
-      ...SURVEY_VALUES,
-    ];
-  }
-  return participation_methods;
-};
 
 const Table = () => {
   const { formatMessage } = useIntl();
