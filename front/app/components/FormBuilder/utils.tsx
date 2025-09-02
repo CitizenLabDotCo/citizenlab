@@ -211,6 +211,7 @@ export function getAdditionalSettings(
     case 'text':
     case 'multiline_text':
     case 'text_multiloc':
+    case 'html_multiloc':
       return (
         <CharacterLimitSettings
           minCharactersName={`customFields.${field.index}.min_characters`}
