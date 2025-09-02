@@ -89,6 +89,8 @@ module EmailCampaigns
     end
 
     def format_invite_text(invite)
+      return unless invite.invite_text
+
       html = TextImageService.new.render_data_images(invite.invite_text, field: :invite_text, imageable: invite)
       fix_image_widths(html)
     end
