@@ -6,11 +6,55 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 import { Localize } from 'hooks/useLocalize';
 
 import legacyMessages from 'components/Form/Components/Controls/messages';
+import { getPlainTextLengthFromHTML } from 'components/UI/QuillEditor/utils';
 
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 import { convertWKTToGeojson } from './Fields/MapField/multiPointUtils';
 import messages from './messages';
+
+// Helper function to validate HTML content with character limits
+const validateHTMLWithCharacterLimits = (
+  schema: any,
+  formatMessage: FormatMessage,
+  title: string,
+  minCharCount?: number,
+  maxCharCount?: number
+) => {
+  let fieldSchema = schema;
+
+  if (minCharCount) {
+    fieldSchema = fieldSchema.test(
+      'min-characters',
+      formatMessage(messages.fieldMinLength, {
+        min: minCharCount,
+        fieldName: title,
+      }),
+      (value: string) => {
+        if (!value) return true; // Let required validation handle empty values
+        const plainTextLength = getPlainTextLengthFromHTML(value);
+        return plainTextLength >= minCharCount;
+      }
+    );
+  }
+
+  if (maxCharCount) {
+    fieldSchema = fieldSchema.test(
+      'max-characters',
+      formatMessage(messages.fieldMaxLength, {
+        max: maxCharCount,
+        fieldName: title,
+      }),
+      (value: string) => {
+        if (!value) return true; // Let required validation handle empty values
+        const plainTextLength = getPlainTextLengthFromHTML(value);
+        return plainTextLength <= maxCharCount;
+      }
+    );
+  }
+
+  return fieldSchema;
+};
 
 // NOTE: When the question is a built-in field, it is necessary to
 // check the `enabled` property before adding it to the schema.
@@ -57,8 +101,8 @@ const generateYupValidationSchema = ({
               validateEachNonEmptyLocale: (schema) => {
                 let fieldSchema = schema;
 
-                // Only apply character limits to text_multiloc, not html_multiloc
                 if (input_type === 'text_multiloc') {
+                  // Apply standard character limits to text_multiloc
                   if (min_characters) {
                     fieldSchema = fieldSchema.min(
                       min_characters,
@@ -78,6 +122,15 @@ const generateYupValidationSchema = ({
                       })
                     );
                   }
+                } else {
+                  // Apply HTML-aware character limits to html_multiloc
+                  fieldSchema = validateHTMLWithCharacterLimits(
+                    fieldSchema,
+                    formatMessage,
+                    title,
+                    min_characters,
+                    max_characters
+                  );
                 }
 
                 return fieldSchema;
@@ -99,7 +152,7 @@ const generateYupValidationSchema = ({
             .min(1, fieldRequired); // Ensures at least one character after trimming
         }
 
-        if (min_characters && input_type !== 'date') {
+        if (min_characters) {
           fieldSchema = fieldSchema.min(
             min_characters,
             formatMessage(messages.fieldMinLength, {
@@ -109,7 +162,7 @@ const generateYupValidationSchema = ({
           );
         }
 
-        if (max_characters && input_type !== 'date') {
+        if (max_characters) {
           fieldSchema = fieldSchema.max(
             max_characters,
             formatMessage(messages.fieldMaxLength, {
@@ -120,9 +173,7 @@ const generateYupValidationSchema = ({
         }
 
         if (key === 'location_description') {
-          schema[key] = enabled
-            ? fieldSchema.nullable()
-            : fieldSchema.nullable();
+          schema[key] = fieldSchema.nullable();
         } else {
           schema[key] = fieldSchema;
         }
