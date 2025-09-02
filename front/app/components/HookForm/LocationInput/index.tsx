@@ -98,16 +98,22 @@ const LocationInput = ({
   ]);
 
   useEffect(() => {
-    if (locationDescription) {
+    // If the user clicked on the map, we just use those coordinates
+    if (locationDescription && !latitude && !longitude) {
       getLocationGeojson(locationDescription).then((location_point_geojson) => {
         setValue('location_point_geojson', {
           ...location_point_geojson,
         });
       });
+    } else if (longitude && latitude) {
+      setValue('location_point_geojson', {
+        type: 'Point',
+        coordinates: [Number(longitude), Number(latitude)],
+      });
     } else {
       setValue('location_point_geojson', {});
     }
-  }, [locationDescription, setValue]);
+  }, [latitude, locationDescription, longitude, setValue]);
 
   const value = locationDescription
     ? {
@@ -135,6 +141,9 @@ const LocationInput = ({
                 shouldTouch: true,
               });
               trigger(name);
+              // Clear the latitude and longitude from the URL
+              searchParams.delete('lat');
+              searchParams.delete('lng');
             }}
           />
         )}
