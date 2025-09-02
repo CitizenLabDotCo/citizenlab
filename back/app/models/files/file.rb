@@ -103,6 +103,13 @@ module Files
     has_many :projects, through: :files_projects
     has_one :preview, class_name: 'Files::Preview', dependent: :destroy, inverse_of: :file
 
+    has_one :project_folders_file, class_name: 'ProjectFolders::File', foreign_key: 'migrated_file_id', inverse_of: 'migrated_file', dependent: :destroy
+    has_one :event_file, class_name: 'EventFile', foreign_key: 'migrated_file_id', inverse_of: 'migrated_file', dependent: :destroy
+    has_one :idea_file, class_name: 'IdeaFile', foreign_key: 'migrated_file_id', inverse_of: 'migrated_file', dependent: :destroy
+    has_one :phase_file, class_name: 'PhaseFile', foreign_key: 'migrated_file_id', inverse_of: 'migrated_file', dependent: :destroy
+    has_one :project_file, class_name: 'ProjectFile', foreign_key: 'migrated_file_id', inverse_of: 'migrated_file', dependent: :destroy
+    has_one :static_page_file, class_name: 'StaticPageFile', foreign_key: 'migrated_file_id', inverse_of: 'migrated_file', dependent: :destroy
+
     has_one(
       :desc_generation_job,
       -> { where(root_job_type: 'Files::DescriptionGenerationJob') },

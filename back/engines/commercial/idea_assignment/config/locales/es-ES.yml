@@ -7,7 +7,7 @@ es:
     idea_assigned_to_you:
       by_author: 'por %{authorName}'
       cta_button: 'Envía tus comentarios a %{authorName}'
-      event_description: 'Un aporte ha sido asignado a ti. Escribe una actualización oficial o cambia el estado del aporte.'
-      title: '%{firstName}, se te asignó un aporte'
+      event_description: 'Un aporte te ha sido asignado. Escribe una actualización oficial o cambia el estado del aporte.'
+      title: '%{firstName}, se te asignó una entrada'
       subject: 'Tienes una asignación en la plataforma de %{organizationName}'
       preheader_idea: 'La idea de %{authorName} ha sido asignada a ti'

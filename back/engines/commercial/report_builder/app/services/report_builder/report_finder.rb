@@ -50,7 +50,9 @@ module ReportBuilder
       return reports if service_reports.nil?
 
       owners = service_reports ? User.super_admins : User.not_super_admins
-      reports.where(owner: owners)
+      reports
+        .where(owner: owners)
+        .where(community_monitor: false)
     end
 
     def filter_by_community_monitor(reports)
@@ -59,7 +61,7 @@ module ReportBuilder
       service = CommunityMonitorService.new
       return Report.none unless service.enabled? && service.phase
 
-      reports.where(phase_id: service.phase.id)
+      reports.where(community_monitor: true)
     end
   end
 end
