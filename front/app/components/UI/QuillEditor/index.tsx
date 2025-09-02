@@ -19,7 +19,12 @@ import { createQuill } from './createQuill';
 import messages from './messages';
 import StyleContainer from './StyleContainer';
 import Toolbar from './Toolbar';
-import { getHTML, setHTML, syncPlaceHolder } from './utils';
+import {
+  getHTML,
+  setHTML,
+  syncPlaceHolder,
+  getQuillPlainTextLength,
+} from './utils';
 
 export interface Props {
   id: string;
@@ -187,12 +192,6 @@ const QuillEditor = ({
     editor?.focus();
   }, [editor]);
 
-  const getSmartTextLength = useCallback((quillInstance: Quill): number => {
-    // Quill always adds a trailing newline, so subtract 1 to get actual text length
-    // Empty editor returns '\n' (length 1), so this gives us 0 as expected
-    return Math.max(0, quillInstance.getText().length - 1);
-  }, []);
-
   const className = focussed ? 'focus' : '';
 
   return (
@@ -229,13 +228,13 @@ const QuillEditor = ({
           justifyContent="flex-end"
           mt="8px"
           color={
-            (maxCharCount && getSmartTextLength(editor) > maxCharCount) ||
-            (minCharCount && getSmartTextLength(editor) < minCharCount)
+            (maxCharCount && getQuillPlainTextLength(editor) > maxCharCount) ||
+            (minCharCount && getQuillPlainTextLength(editor) < minCharCount)
               ? 'red600'
               : 'textSecondary'
           }
         >
-          {getSmartTextLength(editor)}
+          {getQuillPlainTextLength(editor)}
           {maxCharCount && ` / ${maxCharCount}`}
           {minCharCount && ` (≥ ${minCharCount})`}
         </Box>
