@@ -76,7 +76,11 @@ const ActionFormSurvey = ({
 
   return (
     <form className={`e2e-action-form-${action}`}>
-      <AccessRestrictions permissionData={permissionData} onChange={onChange} />
+      <AccessRestrictions
+        showAnyone
+        permissionData={permissionData}
+        onChange={onChange}
+      />
       {permitted_by !== 'admins_moderators' && (
         <>
           <Box mt="24px">

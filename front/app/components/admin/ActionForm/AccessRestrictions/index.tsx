@@ -15,11 +15,16 @@ import CustomizeErrorMessage from './CustomizeErrorMessage';
 import GroupSelect from './GroupSelect';
 
 interface Props {
+  showAnyone?: boolean;
   permissionData: IPermissionData;
   onChange: (changes: Changes) => void;
 }
 
-const AccessRestrictions = ({ permissionData, onChange }: Props) => {
+const AccessRestrictions = ({
+  showAnyone = false,
+  permissionData,
+  onChange,
+}: Props) => {
   const {
     relationships,
     attributes: { permitted_by },
@@ -49,7 +54,7 @@ const AccessRestrictions = ({ permissionData, onChange }: Props) => {
           </Box>
           <Box display="flex" gap="16px">
             <CardButtons
-              showAnyone={false}
+              showAnyone={showAnyone}
               permittedBy={permitted_by}
               onUpdate={(permitted_by) => {
                 onChange({ permitted_by });
