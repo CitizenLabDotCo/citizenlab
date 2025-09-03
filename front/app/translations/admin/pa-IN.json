@@ -1291,7 +1291,7 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.removeField": "ਖੇਤਰ ਹਟਾਓ",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.requiredGroup1": "ਲੋੜੀਂਦਾ - ਹਮੇਸ਼ਾਂ ਸਮਰਥਿਤ ਕਿਉਂਕਿ ਸਮੂਹ ਦੁਆਰਾ ਹਵਾਲਾ ਦਿੱਤਾ ਜਾਂਦਾ ਹੈ",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.authenticateWithVerificationProvider2": "{verificationMethod}ਨਾਲ ਪ੍ਰਮਾਣਿਤ ਕਰੋ",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.completeTheDemographicQuestionsBelow": "ਹੇਠਾਂ ਦਿੱਤੇ ਜਨਸੰਖਿਆ ਸੰਬੰਧੀ ਸਵਾਲ ਪੂਰੇ ਕਰੋ।",
+  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.completeTheDemographicQuestionsAbove": "ਉੱਪਰ ਦਿੱਤੇ ਜਨਸੰਖਿਆ ਸੰਬੰਧੀ ਸਵਾਲ ਪੂਰੇ ਕਰੋ।",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.confirmYourEmail": "ਆਪਣੀ ਈਮੇਲ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.dataReturned": "ਪੁਸ਼ਟੀਕਰਨ ਵਿਧੀ ਤੋਂ ਡਾਟਾ ਵਾਪਸ ਕੀਤਾ ਗਿਆ:",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterNameLastNameEmailAndPassword1": "ਪਹਿਲਾ ਨਾਮ, ਆਖਰੀ ਨਾਮ, ਈਮੇਲ ਅਤੇ ਪਾਸਵਰਡ ਦਰਜ ਕਰੋ",
