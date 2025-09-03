@@ -14,7 +14,7 @@ const DataCollection = ({ allow_anonymous_participation, onChange }: Props) => {
         User data collection
       </Title>
       <Radio
-        name="anonymous"
+        name="ask-demographics-and-link-user-account"
         value={false}
         currentValue={allow_anonymous_participation}
         label={
@@ -28,7 +28,7 @@ const DataCollection = ({ allow_anonymous_participation, onChange }: Props) => {
         onChange={onChange}
       />
       <Radio
-        name="listed"
+        name="anonymous"
         value={true}
         currentValue={allow_anonymous_participation}
         label={
