@@ -3,7 +3,7 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import filesKeys from './keys';
+import fileAttachmentsKeys from './keys';
 import { IAddFileAttachmentProperties, IFileAttachment } from './types';
 
 export const addFileAttachment = async (
@@ -23,7 +23,7 @@ const useAddFileAttachment = () => {
   return useMutation<IFileAttachment, CLErrors, IAddFileAttachmentProperties>({
     mutationFn: addFileAttachment,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: filesKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: fileAttachmentsKeys.lists() });
     },
   });
 };

@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import filesKeys from './keys';
+import fileAttachmentsKeys from './keys';
 
 const deleteFileAttachment = (id: string) =>
   fetcher({
@@ -17,7 +17,7 @@ const useDeleteFileAttachment = () => {
     mutationFn: deleteFileAttachment,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: filesKeys.lists(),
+        queryKey: fileAttachmentsKeys.lists(),
       });
     },
   });
