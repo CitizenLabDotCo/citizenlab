@@ -822,6 +822,7 @@
   "app.components.formBuilder.good": "Bon",
   "app.components.formBuilder.helmetTitle": "Générateur de formulaires",
   "app.components.formBuilder.imageFileUpload": "Téléchargement d’image",
+  "app.components.formBuilder.inputImages": "Images",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Logique invalide",
   "app.components.formBuilder.labels2": "Étiquettes (optionnel)",
   "app.components.formBuilder.labelsTooltipContent2": "Attribuez une étiquette descriptive à chaque valeur de l'échelle linéaire.",

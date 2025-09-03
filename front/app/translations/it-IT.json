@@ -822,6 +822,7 @@
   "app.components.formBuilder.good": "Buono",
   "app.components.formBuilder.helmetTitle": "Costruttore di moduli",
   "app.components.formBuilder.imageFileUpload": "Caricamento dell'immagine",
+  "app.components.formBuilder.inputImages": "Immagini",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Logica non valida",
   "app.components.formBuilder.labels2": "Etichette (facoltative)",
   "app.components.formBuilder.labelsTooltipContent2": "Scegli le etichette opzionali per qualsiasi valore della scala lineare.",

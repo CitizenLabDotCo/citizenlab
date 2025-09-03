@@ -822,6 +822,7 @@
   "app.components.formBuilder.good": "Goed",
   "app.components.formBuilder.helmetTitle": "Formulierbouwer",
   "app.components.formBuilder.imageFileUpload": "Afbeelding uploaden",
+  "app.components.formBuilder.inputImages": "Afbeeldingen",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Ongeldige logica",
   "app.components.formBuilder.labels2": "Labels (optioneel)",
   "app.components.formBuilder.labelsTooltipContent2": "Kies optionele labels voor de lineaire schaalwaarden.",

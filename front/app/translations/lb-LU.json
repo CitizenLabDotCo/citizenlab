@@ -822,6 +822,7 @@
   "app.components.formBuilder.good": "Gutt",
   "app.components.formBuilder.helmetTitle": "Form Builder",
   "app.components.formBuilder.imageFileUpload": "Bild-Upload",
+  "app.components.formBuilder.inputImages": "Biller",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Ongëlteg Logik",
   "app.components.formBuilder.labels2": "Etiketten (optional)",
   "app.components.formBuilder.labelsTooltipContent2": "Wielt fakultativ Etiketten fir eng vun de linear Skala Wäerter.",

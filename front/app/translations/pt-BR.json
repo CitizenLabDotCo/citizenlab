@@ -822,6 +822,7 @@
   "app.components.formBuilder.good": "Bom",
   "app.components.formBuilder.helmetTitle": "Construtor de formulários",
   "app.components.formBuilder.imageFileUpload": "Carregamento de imagens",
+  "app.components.formBuilder.inputImages": "Imagens",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Lógica inválida",
   "app.components.formBuilder.labels2": "Rótulos (opcional)",
   "app.components.formBuilder.labelsTooltipContent2": "Escolha rótulos opcionais para qualquer um dos valores da escala linear.",
