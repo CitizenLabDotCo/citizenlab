@@ -73,6 +73,7 @@ const ActionFormSurvey = ({
       />
       <DataCollection
         allow_anonymous_participation={allow_anonymous_participation}
+        permitted_by={permitted_by}
         onChange={() => {
           onChangePhaseSetting?.({
             allow_anonymous_participation: !allow_anonymous_participation,
