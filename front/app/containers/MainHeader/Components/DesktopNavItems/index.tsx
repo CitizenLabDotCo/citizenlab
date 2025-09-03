@@ -26,8 +26,8 @@ import {
 } from './utils';
 
 // Reserved space for right-side navigation elements (search, notifications, user menu, language selector, etc.)
-const RESERVED_RIGHT_SPACE = 600;
-const MORE_BUTTON_WIDTH = 80;
+const RESERVED_RIGHT_SPACE = 500;
+const MORE_BUTTON_WIDTH = 130;
 
 const Container = styled.nav`
   height: 100%;

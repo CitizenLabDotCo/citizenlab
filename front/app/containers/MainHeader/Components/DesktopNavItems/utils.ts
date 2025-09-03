@@ -57,10 +57,21 @@ export const calculateItemDistribution = (
   }
 
   // If a breakIndex was found, split the original array at that point.
-  return {
-    visible: allItems.slice(0, breakIndex),
-    overflow: allItems.slice(breakIndex),
-  };
+  const visible = allItems.slice(0, breakIndex);
+  const overflow = allItems.slice(breakIndex);
+
+  // If there is only one overflow item, check if it's actually bigger
+  // than the more item. Because if it is smaller it does not make sense
+  // to replace it with the more button.
+  if (overflow.length === 1) {
+    const lastElement = tempElements[tempElements.length - 1];
+
+    if (lastElement.offsetWidth < reservedWidth) {
+      return { visible: allItems, overflow: [] };
+    }
+  }
+
+  return { visible, overflow };
 };
 
 export const validateCalculationPrerequisites = (
