@@ -81,7 +81,7 @@ const ActionFormSurvey = ({
       />
       {permitted_by !== 'admins_moderators' && (
         <>
-          <Box mt="24px">
+          <Box mt="20px">
             <Fields
               phaseId={phaseId}
               action={action}
