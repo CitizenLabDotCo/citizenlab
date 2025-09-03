@@ -80,7 +80,9 @@ const Blocks = ({
               number={
                 2 + enabledSteps(emailConfirmationEnabled, verificationEnabled)
               }
-              text={formatMessage(messages.completeTheExtraQuestionsBelow)}
+              text={formatMessage(
+                messages.completeTheDemographicQuestionsBelow
+              )}
             />
           </>
         )}
@@ -116,7 +118,9 @@ const Blocks = ({
               number={
                 2 + enabledSteps(emailConfirmationEnabled, verificationEnabled)
               }
-              text={formatMessage(messages.completeTheExtraQuestionsBelow)}
+              text={formatMessage(
+                messages.completeTheDemographicQuestionsBelow
+              )}
             />
           </>
         )}
@@ -124,30 +128,23 @@ const Blocks = ({
     );
   }
 
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (permittedBy === 'verified') {
-    return (
-      <>
-        <SSOBlock
-          verificationExpiry={verificationExpiry}
-          onChangeVerificationExpiry={onChangeVerificationExpiry}
-        />
-        {showCustomFields && !userFieldsInForm && (
-          <>
-            <Edge />
-            <Block
-              number={2}
-              text={formatMessage(messages.completeTheExtraQuestionsBelow)}
-            />
-          </>
-        )}
-      </>
-    );
-  }
-
-  // Unreachable
-  return null;
+  return (
+    <>
+      <SSOBlock
+        verificationExpiry={verificationExpiry}
+        onChangeVerificationExpiry={onChangeVerificationExpiry}
+      />
+      {showCustomFields && !userFieldsInForm && (
+        <>
+          <Edge />
+          <Block
+            number={2}
+            text={formatMessage(messages.completeTheDemographicQuestionsBelow)}
+          />
+        </>
+      )}
+    </>
+  );
 };
 
 export default Blocks;
