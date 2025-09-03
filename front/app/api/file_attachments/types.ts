@@ -18,18 +18,6 @@ export type IFileAttachments = {
   data: IFileAttachment[];
 };
 
-export type IFileAttachmentData = {
-  type: 'file_attachment';
-  id: string;
-  attributes: {
-    position: number;
-  };
-  relationships: {
-    attachable: { data: IRelationship };
-    file: { data: IRelationship };
-  };
-};
-
 export interface IUpdateFileAttachmentProperties {
   id: string;
   position: number;
