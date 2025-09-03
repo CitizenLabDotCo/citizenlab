@@ -36,5 +36,5 @@ const useFileAttachments = ({
   });
 };
 
-// eslint-disable-next-line import/no-default-export
+// ts-prune-ignore-next
 export default useFileAttachments;

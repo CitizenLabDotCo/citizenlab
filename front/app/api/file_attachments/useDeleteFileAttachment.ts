@@ -23,5 +23,5 @@ const useDeleteFileAttachment = () => {
   });
 };
 
-// eslint-disable-next-line import/no-default-export
+// ts-prune-ignore-next
 export default useDeleteFileAttachment;

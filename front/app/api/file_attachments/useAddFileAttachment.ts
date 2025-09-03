@@ -28,4 +28,5 @@ const useAddFileAttachment = () => {
   });
 };
 
+// ts-prune-ignore-next
 export default useAddFileAttachment;
