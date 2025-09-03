@@ -1291,7 +1291,7 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.removeField": "Fjern feltet",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.requiredGroup1": "Påkrævet - altid aktiveret, fordi der henvises til gruppen",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.authenticateWithVerificationProvider2": "Godkend med {verificationMethod}",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.completeTheDemographicQuestionsBelow": "Udfyld de demografiske spørgsmål nedenfor",
+  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.completeTheDemographicQuestionsAbove": "Udfyld de demografiske spørgsmål ovenfor",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.confirmYourEmail": "Bekræft din e-mail",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.dataReturned": "Data returneret fra verifikationsmetoden:",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterNameLastNameEmailAndPassword1": "Indtast fornavn, efternavn, e-mail og adgangskode",
