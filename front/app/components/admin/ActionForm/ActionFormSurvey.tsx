@@ -13,8 +13,8 @@ import FlowVisualization from '../ActionForm/FlowVisualization';
 import messages from '../ActionForm/messages';
 import ResetButton from '../ActionForm/ResetButton';
 import { showResetButton } from '../ActionForm/utils';
-import AnonymousPostingToggle from '../AnonymousPostingToggle';
 
+import DataCollection from './DataCollection';
 import { Props } from './types';
 
 const ActionFormSurvey = ({
@@ -71,18 +71,14 @@ const ActionFormSurvey = ({
         permissionData={permissionData}
         onChange={onChange}
       />
-      <Box mt="20px">
-        {phase && (
-          <AnonymousPostingToggle
-            allow_anonymous_participation={allow_anonymous_participation}
-            handleAllowAnonymousParticipationOnChange={() => {
-              onChangePhaseSetting?.({
-                allow_anonymous_participation: !allow_anonymous_participation,
-              });
-            }}
-          />
-        )}
-      </Box>
+      <DataCollection
+        allow_anonymous_participation={allow_anonymous_participation}
+        onChange={() => {
+          onChangePhaseSetting?.({
+            allow_anonymous_participation: !allow_anonymous_participation,
+          });
+        }}
+      />
       {permitted_by !== 'admins_moderators' && (
         <>
           <Box mt="24px">
