@@ -81,7 +81,7 @@ const Blocks = ({
                 2 + enabledSteps(emailConfirmationEnabled, verificationEnabled)
               }
               text={formatMessage(
-                messages.completeTheDemographicQuestionsBelow
+                messages.completeTheDemographicQuestionsAbove
               )}
             />
           </>
@@ -119,7 +119,7 @@ const Blocks = ({
                 2 + enabledSteps(emailConfirmationEnabled, verificationEnabled)
               }
               text={formatMessage(
-                messages.completeTheDemographicQuestionsBelow
+                messages.completeTheDemographicQuestionsAbove
               )}
             />
           </>
@@ -139,7 +139,7 @@ const Blocks = ({
           <Edge />
           <Block
             number={2}
-            text={formatMessage(messages.completeTheDemographicQuestionsBelow)}
+            text={formatMessage(messages.completeTheDemographicQuestionsAbove)}
           />
         </>
       )}
