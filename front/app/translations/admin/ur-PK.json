@@ -1291,7 +1291,7 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.removeField": "فیلڈ کو ہٹا دیں۔",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.requiredGroup1": "مطلوبہ - ہمیشہ فعال کیونکہ گروپ کے ذریعہ حوالہ دیا گیا ہے۔",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.authenticateWithVerificationProvider2": "{verificationMethod}کے ساتھ تصدیق کریں۔",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.completeTheDemographicQuestionsBelow": "ذیل میں آبادیاتی سوالات کو مکمل کریں۔",
+  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.completeTheDemographicQuestionsAbove": "اوپر دیے گئے آبادیاتی سوالات کو مکمل کریں۔",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.confirmYourEmail": "اپنے ای میل کی تصدیق کریں۔",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.dataReturned": "توثیقی طریقہ سے ڈیٹا واپس کیا گیا:",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterNameLastNameEmailAndPassword1": "پہلا نام، آخری نام، ای میل اور پاس ورڈ درج کریں۔",
