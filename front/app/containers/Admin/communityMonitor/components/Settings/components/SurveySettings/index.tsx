@@ -25,7 +25,6 @@ import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
 
 import ViewSurveyButton from '../../../ViewSurveyButton';
 import messages from '../../messages';
-import AnonymousToggle from '../AnonymousToggle';
 
 const SurveySettings = () => {
   const locale = useLocale();
@@ -176,7 +175,6 @@ const SurveySettings = () => {
 
       {phaseId && (
         <Box mt="20px">
-          <AnonymousToggle phaseId={phaseId} />
           <UserFieldsToggle phaseId={phaseId} />
         </Box>
       )}
