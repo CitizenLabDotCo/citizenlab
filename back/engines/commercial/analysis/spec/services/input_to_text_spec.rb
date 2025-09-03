@@ -126,7 +126,7 @@ describe Analysis::InputToText do
         <<~TEXT
           ### Where did you hear from us?
           Newspaper
-          
+
           ### Would you recommend us to a friend?
           Yes, I would
         TEXT
@@ -159,7 +159,7 @@ describe Analysis::InputToText do
         <<~TEXT
           ### QUESTION_1
           Newspaper
-          
+
           ### Would you recommend us to a friend?
           Yes, I would
 
@@ -179,5 +179,62 @@ describe Analysis::InputToText do
         TEXT
       )
     end
+
+    it 'generates multiple lines for ranking fields' do
+      custom_field = create(:custom_field_ranking, :with_options)
+      service = described_class.new([custom_field])
+
+      input = build(
+        :idea,
+        custom_field_values: {
+          custom_field.key => %w[by_bike by_train]
+        }
+      )
+
+      expect(service.formatted(input)).to eq(
+        <<~TEXT
+          ### Rank your favourite means of public transport
+          1. By bike
+          2. By train
+        TEXT
+      )
+    end
+
+    it 'generates multiple lines for matrix linear scale fields' do
+      custom_field = create(:custom_field_matrix_linear_scale)
+      create(:custom_field_matrix_statement, custom_field: custom_field, key: 'more_benches_in_park', title_multiloc: { en: 'We need more benches in the park' })
+      service = described_class.new([custom_field.reload])
+
+      input = build(
+        :idea,
+        custom_field_values: {
+          custom_field.key => { 'send_more_animals_to_space' => 5, 'more_benches_in_park' => 2 }
+        }
+      )
+
+      expect(service.formatted(input)).to eq(
+        <<~TEXT
+          ### Please indicate how strong you agree or disagree with the following statements.
+          We should send more animals into space - 5 (Strongly agree)
+          We need more benches in the park - 2
+        TEXT
+      )
+    end
+  end
+
+  it 'respects the `include_comments` option' do
+    custom_field = create(:custom_field_text, title_multiloc: { en: 'Where did you hear from us?' })
+    service = described_class.new([custom_field])
+
+    input = build(
+      :idea,
+      custom_field_values: {
+        custom_field.key => 'Newspaper'
+      },
+      comments: [build(:comment, body_multiloc: { en: 'This is a comment' })]
+    )
+
+    expect(service.formatted(input, include_comments: true)).to include('This is a comment')
+    expect(service.formatted(input, include_comments: false)).not_to include('This is a comment')
   end
 end

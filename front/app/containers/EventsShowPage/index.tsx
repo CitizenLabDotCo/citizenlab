@@ -25,6 +25,7 @@ import { isUnauthorizedRQ } from 'utils/errorUtils';
 
 import DesktopTopBar from './components/DesktopTopBar';
 import EventDescription from './components/EventDescription';
+import EventShowPageMeta from './components/EventShowPageMeta';
 import InformationColumnDesktop from './components/InformationColumnDesktop';
 import InformationSectionMobile from './components/InformationSectionMobile';
 import MobileTopBar from './components/MobileTopBar';
@@ -77,6 +78,8 @@ const EventsShowPage = () => {
     event?.data.relationships.project.data.id
   );
   const { data: eventImage } = useEventImage(event?.data);
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const largeImage = eventImage?.data.attributes?.versions?.large;
 
   if (status === 'loading') {
@@ -100,6 +103,7 @@ const EventsShowPage = () => {
 
   return (
     <>
+      <EventShowPageMeta event={event.data} />
       {isSmallerThanTablet ? (
         <MobileTopBar projectId={event.data.relationships.project.data.id} />
       ) : (

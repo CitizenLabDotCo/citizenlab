@@ -10,8 +10,8 @@ class InputJsonSchemaGeneratorService < JsonSchemaGeneratorService
       properties: locales.index_with do |_locale|
         {
           type: 'string',
-          minLength: 10,
-          maxLength: 80
+          minLength: 3,
+          maxLength: 120
         }
       end
     }
@@ -26,7 +26,7 @@ class InputJsonSchemaGeneratorService < JsonSchemaGeneratorService
       properties: locales.index_with do |_locale|
         {
           type: 'string',
-          minLength: 40
+          minLength: 3
         }
       end
     }
@@ -52,6 +52,17 @@ class InputJsonSchemaGeneratorService < JsonSchemaGeneratorService
           end
         end
       end
+    }
+  end
+
+  def visit_cosponsor_ids(field)
+    {
+      type: 'array',
+      uniqueItems: true,
+      minItems: field.enabled? && field.required? ? 1 : 0,
+      items: {
+        type: 'string'
+      }
     }
   end
 end

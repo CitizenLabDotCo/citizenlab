@@ -50,6 +50,9 @@ module Analysis
       scope = inputs
       if params[:input_custom_field_no_empty_values] && analysis.main_custom_field_id
         scope = scope.where.not("ideas.custom_field_values->>'#{analysis.main_custom_field.key}' IS NULL")
+          # Remove all sequences of one or more whitespace characters (including spaces, newlines, tabs),
+          # then check the result is not empty. TRIM would not handle newlines correctly.
+          .where("regexp_replace(custom_field_values->>'#{analysis.main_custom_field.key}', '[[:space:]]+', '', 'g') != ''")
       end
       scope
     end
@@ -182,13 +185,18 @@ module Analysis
           else
             scope.where("ideas.custom_field_values->>'#{cf.key}' IN (?)", value)
           end
-        when 'multiselect'
+        when 'multiselect', 'multiselect_image'
           scope = if value.include?(nil)
             scope.where("ideas.custom_field_values->>'#{cf.key}' IS NULL OR jsonb_array_length(ideas.custom_field_values->'#{cf.key}') = 0")
           else
             scope.where("(ideas.custom_field_values->>'#{cf.key}')::jsonb ?| array[:value]", value: value)
           end
-        when 'number', 'linear_scale'
+          scope = if value.include?(nil)
+            scope.where("ideas.custom_field_values->>'#{cf.key}' IS NULL OR jsonb_array_length(ideas.custom_field_values->'#{cf.key}') = 0")
+          else
+            scope.where("(ideas.custom_field_values->>'#{cf.key}')::jsonb ?| array[:value]", value: value)
+          end
+        when 'number', 'linear_scale', 'rating', 'sentiment_linear_scale'
           scope = if value.include?(nil)
             scope.where("ideas.custom_field_values->>'#{cf.key}' IS NULL")
           else

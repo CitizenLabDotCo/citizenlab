@@ -27,7 +27,6 @@ const useProjectById = (id?: string | null, useCache: boolean = true) => {
     queryKey: projectsKeys.item({ id }),
     queryFn: () => fetchProjectById({ id, useCache }),
     enabled: !!id,
-    ...(useCache === false && { staleTime: 0 }),
   });
 };
 

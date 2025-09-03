@@ -72,10 +72,8 @@ const PREDICATE_MESSAGES: Record<TPredicate, MessageDescriptor> = {
   is_not_project: messages.predicate_is_not_project,
   is_one_of_folders: messages.predicate_is_one_of_folders,
   is_not_folder: messages.predicate_is_not_folder,
-  is_one_of_ideas: messages.predicate_is_one_of_ideas,
-  is_not_idea: messages.predicate_is_not_idea,
-  is_one_of_initiatives: messages.predicate_is_one_of_initiatives,
-  is_not_initiative: messages.predicate_is_not_initiative,
+  is_one_of_inputs: messages.predicate_is_one_of_inputs,
+  is_not_input: messages.predicate_is_not_input,
 
   // Event attendance
   attends_something: messages.predicate_attends_something,
@@ -86,6 +84,10 @@ const PREDICATE_MESSAGES: Record<TPredicate, MessageDescriptor> = {
   is_not_topic: messages.predicate_is_not_topic,
   is_one_of_areas: messages.predicate_is_one_of_areas,
   is_not_area: messages.predicate_is_not_area,
+
+  // Community monitor
+  taken_survey: messages.predicate_taken_survey,
+  not_taken_survey: messages.predicate_not_taken_survey,
 };
 
 const PredicateSelector = memo(
@@ -100,6 +102,8 @@ const PredicateSelector = memo(
     };
 
     const generateOptions = (): IOption[] => {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (ruleType) {
         const ruleTypePredicates = keys(ruleTypeConstraints[ruleType]);
         return ruleTypePredicates.map((predicate) => {

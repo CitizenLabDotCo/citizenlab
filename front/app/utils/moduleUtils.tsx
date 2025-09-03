@@ -8,7 +8,6 @@ import {
   omitBy,
   cloneDeep,
 } from 'lodash-es';
-import { Moment } from 'moment';
 import { IntlFormatters } from 'react-intl';
 import {
   InsertConfigurationOptions,
@@ -19,7 +18,6 @@ import {
 
 import { IGroupDataAttributes, MembershipType } from 'api/groups/types';
 import { IIdeaData } from 'api/ideas/types';
-import { IInitiativeData } from 'api/initiatives/types';
 import { TNotificationData } from 'api/notifications/types';
 import { TVerificationMethod } from 'api/verification_methods/types';
 
@@ -31,18 +29,10 @@ import { AuthProvider } from 'containers/Authentication/steps/AuthProviders';
 import { TVerificationStep } from 'containers/Authentication/steps/Verification/utils';
 import { SignUpInFlow } from 'containers/Authentication/typings';
 
-import {
-  Dates,
-  ProjectId,
-  Resolution,
-} from 'components/admin/GraphCards/typings';
 import { ManagerType } from 'components/admin/PostManager';
-import { IResolution } from 'components/admin/ResolutionControl';
 import { OutletRenderProps } from 'components/Outlet';
 import PageLoading from 'components/UI/PageLoading';
 import { ITabItem } from 'components/UI/Tabs';
-
-export type StatCardProps = ProjectId & Dates & Resolution;
 
 export type ITabsOutlet = {
   formatMessage: IntlFormatters['formatMessage'];
@@ -96,22 +86,6 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.users.UsersHeader.icon': {
     type: GroupCreationModal;
   };
-  'app.containers.Admin.dashboard.summary.inputStatus': {
-    projectId: string | undefined;
-    startAtMoment: Moment | null | undefined;
-    endAtMoment: Moment | null;
-    resolution: IResolution;
-  };
-  'app.containers.Admin.dashboard.summary.emailDeliveries': {
-    projectId: string | undefined;
-    startAtMoment: Moment | null | undefined;
-    endAtMoment: Moment | null;
-    resolution: IResolution;
-  };
-  'app.containers.Admin.dashboard.summary.projectStatus': StatCardProps;
-  'app.containers.Admin.dashboard.summary.proposals': StatCardProps;
-  'app.containers.Admin.dashboard.summary.invitations': StatCardProps;
-  'app.containers.Admin.dashboard.summary.events': StatCardProps;
   'app.containers.IdeasShow.MetaInformation': {
     ideaId: string;
     compact?: boolean;
@@ -120,7 +94,6 @@ export interface OutletsPropertyMap {
     projectId: string;
     children: OutletRenderProps;
   };
-  'app.containers.Admin.initiatives.tabs': ITabsOutlet;
   'app.containers.Admin.ideas.tabs': ITabsOutlet;
   'app.containers.Admin.sideBar.navItems': {
     onData: (data: InsertConfigurationOptions<NavItem>) => void;
@@ -141,19 +114,10 @@ export interface OutletsPropertyMap {
     onVerified: () => void;
     activeStep: TVerificationStep;
   };
-  'app.components.PostShowComponents.ActionBar.right': {
-    translateButtonClicked: boolean;
-    onClick: () => void;
-    initiative: IInitiativeData;
-  };
   'app.components.PostShowComponents.CommentFooter.left': {
     commentId: string;
   };
-  'app.containers.InitiativesShow.left': {
-    translateButtonClicked: boolean;
-    onClick: () => void;
-    initiative: IInitiativeData;
-  };
+
   'app.containers.IdeasShow.left': {
     translateButtonClicked: boolean;
     onClick: () => void;
@@ -169,15 +133,12 @@ export interface OutletsPropertyMap {
     postId: string;
     body: string;
     translateButtonClicked?: boolean;
-    postType: 'idea' | 'initiative';
   };
   'app.components.PostShowComponents.Title.translation': {
     postId: string;
-    postType: 'idea' | 'initiative';
     title: string;
     translateButtonClicked?: boolean;
     color?: string;
-    align: 'left' | 'center';
   };
   'app.containers.Admin.settings.general.form': {
     onSettingChange: (settingName: string, settingValue: any) => void;
@@ -245,7 +206,6 @@ interface Routes {
   citizen: RouteConfiguration[];
   admin: RouteConfiguration[];
   'admin.projects': RouteConfiguration[];
-  'admin.initiatives': RouteConfiguration[];
   'admin.ideas': RouteConfiguration[];
   'admin.pages-menu': RouteConfiguration[];
   'admin.dashboards': RouteConfiguration[];
@@ -333,11 +293,17 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
 
   const callLifecycleMethods = (lifecycleMethod: LifecycleMethod) => () => {
     moduleConfigurations.forEach((module: ModuleConfiguration) =>
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       module?.[lifecycleMethod]?.()
     );
   };
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const citizenRoutes = parseModuleRoutes(mergedRoutes?.citizen);
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const adminRoutes = parseModuleRoutes(mergedRoutes?.admin, RouteTypes.ADMIN);
 
   return {
@@ -345,39 +311,51 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
     routes: {
       citizen: citizenRoutes,
       admin: adminRoutes,
-      'admin.initiatives': parseModuleRoutes(
-        mergedRoutes?.['admin.initiatives'],
-        RouteTypes.ADMIN
-      ),
       'admin.ideas': parseModuleRoutes(
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         mergedRoutes?.['admin.ideas'],
         RouteTypes.ADMIN
       ),
       'admin.pages-menu': parseModuleRoutes(
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         mergedRoutes?.['admin.pages-menu'],
         RouteTypes.ADMIN
       ),
       'admin.dashboards': parseModuleRoutes(
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         mergedRoutes?.['admin.dashboards'],
         RouteTypes.ADMIN
       ),
       'admin.projects': parseModuleRoutes(
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         mergedRoutes?.['admin.projects'],
         RouteTypes.ADMIN
       ),
       'admin.project_templates': parseModuleRoutes(
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         mergedRoutes?.['admin.project_templates'],
         RouteTypes.ADMIN
       ),
       'admin.settings': parseModuleRoutes(
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         mergedRoutes?.['admin.settings'],
         RouteTypes.ADMIN
       ),
       'admin.tools': parseModuleRoutes(
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         mergedRoutes?.['admin.tools'],
         RouteTypes.ADMIN
       ),
       'admin.reporting': parseModuleRoutes(
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         mergedRoutes?.['admin.reporting'],
         RouteTypes.ADMIN
       ),
@@ -386,6 +364,8 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
     afterMountApplication: callLifecycleMethods('afterMountApplication'),
     streamsToReset: moduleConfigurations.reduce(
       (acc: string[], module: ModuleConfiguration) => {
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         return [...acc, ...(module?.streamsToReset ?? [])];
       },
       []
@@ -426,6 +406,8 @@ export const insertConfiguration =
     const isItemInsertedAfter =
       itemAlreadyInserted &&
       insertAfterName &&
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       itemAtInsertIndex &&
       itemAtInsertIndex.name === insertAfterName;
 

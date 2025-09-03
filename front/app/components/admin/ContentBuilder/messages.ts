@@ -1,14 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  content: {
-    id: 'app.containers.admin.ContentBuilder.content',
-    defaultMessage: 'CONTENT',
-  },
-  layout: {
-    id: 'app.containers.admin.ContentBuilder.layout',
-    defaultMessage: 'LAYOUT',
-  },
   urlPlaceholder: {
     id: 'app.containers.admin.ContentBuilder.urlPlaceholder',
     defaultMessage: 'https://example.com',
@@ -25,5 +17,9 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.errorMessage',
     defaultMessage:
       'There is an error on { locale } content, please fix the issue to be able to save your changes',
+  },
+  error: {
+    id: 'app.containers.admin.ContentBuilder.error',
+    defaultMessage: 'error',
   },
 });

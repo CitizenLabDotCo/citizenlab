@@ -3,14 +3,15 @@ import React from 'react';
 import { isNil } from 'lodash-es';
 import { FormattedDate } from 'react-intl';
 
+import useUserCustomFieldsOptions from 'api/custom_field_options/useCustomFieldOptions';
 import { IUserCustomField } from 'api/user_custom_fields/types';
-import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 
 import T from 'components/T';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
+import { isStringArray } from '../util';
 
 type Props = {
   customField: IUserCustomField;
@@ -47,6 +48,8 @@ const ShortUserFieldValue = ({ customField, rawValue }: Props) => {
     case 'multiline_text':
     case 'number':
     case 'checkbox':
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (rawValue === null || rawValue === undefined || rawValue === '') {
         return <>{formatMessage(messages.noAnswer)}</>;
       } else {
@@ -61,9 +64,13 @@ const ShortUserFieldValue = ({ customField, rawValue }: Props) => {
       );
     }
     case 'multiselect': {
+      if (!isStringArray(rawValue)) {
+        return null;
+      }
+
       return (
         <>
-          {(rawValue as string[]).map((optionKey, index) => (
+          {rawValue.map((optionKey, index) => (
             <>
               {index !== 0 && ', '}
               <SelectOptionText

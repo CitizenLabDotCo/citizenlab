@@ -16,13 +16,7 @@ const updateInternalComment = async ({
     body: { internal_comment: requestBody },
   });
 
-const useUpdateInternalComment = ({
-  ideaId,
-  initiativeId,
-}: {
-  ideaId?: string;
-  initiativeId?: string;
-}) => {
+const useUpdateInternalComment = ({ ideaId }: { ideaId?: string }) => {
   const queryClient = useQueryClient();
   return useMutation<
     IInternalComment,
@@ -36,15 +30,6 @@ const useUpdateInternalComment = ({
           queryKey: internalCommentKeys.list({
             type: 'idea',
             ideaId,
-          }),
-        });
-      }
-
-      if (initiativeId) {
-        queryClient.invalidateQueries({
-          queryKey: internalCommentKeys.list({
-            type: 'initiative',
-            initiativeId,
           }),
         });
       }

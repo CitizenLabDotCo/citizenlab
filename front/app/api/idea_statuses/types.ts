@@ -1,5 +1,6 @@
-import { uniq } from 'lodash-es';
 import { Multiloc } from 'typings';
+
+import { ParticipationMethod } from 'api/phases/types';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -7,60 +8,47 @@ import ideaStatusesKeys from './keys';
 
 export type IdeaStatusesKeys = Keys<typeof ideaStatusesKeys>;
 
+export type IdeaStatusParticipationMethod = Extract<
+  ParticipationMethod,
+  'ideation' | 'proposals'
+>;
+
 export type IdeaStatusesQueryParams = {
-  participation_method?: 'ideation' | 'proposals';
+  participation_method: IdeaStatusParticipationMethod;
+  exclude_codes?: InputStatusCode[];
 };
 
-type InputStatusCode =
-  | 'proposed'
+/* Ideation status codes */
+// Locked status codes are defined in the BE: LOCKED_CODES in models/idea_status.rb
+type LockedIdeationInputStatusCode = 'prescreening' | 'proposed';
+export type NonLockedIdeationInputStatusCode =
   | 'viewed'
   | 'under_consideration'
   | 'accepted'
   | 'rejected'
   | 'implemented'
-  | 'custom'
+  | 'custom';
+type IdeationStatusCode =
+  | LockedIdeationInputStatusCode
+  | NonLockedIdeationInputStatusCode;
+
+/* Proposal status codes */
+// Locked status codes are defined in the BE: LOCKED_CODES in models/idea_status.rb
+type LockedProposalInputStatusCode =
+  | 'prescreening'
+  | 'proposed'
   | 'threshold_reached'
-  | 'expired'
+  | 'expired';
+export type NonLockedProposalInputStatusCode =
   | 'answered'
-  | 'ineligible';
+  | 'ineligible'
+  | 'custom';
+type ProposalsStatusCode =
+  | LockedProposalInputStatusCode
+  | NonLockedProposalInputStatusCode;
 
-export const inputStatusCodes: Record<
-  'ideation' | 'proposals',
-  InputStatusCode[]
-> = {
-  ideation: [
-    'proposed',
-    'viewed',
-    'under_consideration',
-    'accepted',
-    'rejected',
-    'implemented',
-    'custom',
-  ],
-  proposals: [
-    'proposed',
-    'threshold_reached',
-    'expired',
-    'answered',
-    'ineligible',
-    'custom',
-  ],
-};
-
-export const automatedInputStatusCodes: Set<InputStatusCode> = new Set([
-  'proposed',
-  'threshold_reached',
-  'expired',
-]);
-
-const allMergedInputStatusCodes = uniq(
-  Object.keys(inputStatusCodes)
-    .map(function (v) {
-      return inputStatusCodes[v];
-    })
-    .flat()
-);
-export type TIdeaStatusCode = (typeof allMergedInputStatusCodes)[number];
+/* Input status codes */
+export type InputStatusCode = IdeationStatusCode | ProposalsStatusCode;
 
 export interface IIdeaStatusData {
   id: string;
@@ -68,12 +56,13 @@ export interface IIdeaStatusData {
   attributes: {
     title_multiloc: Multiloc;
     color: string;
-    code: TIdeaStatusCode;
+    code: InputStatusCode;
     ordering: number;
     description_multiloc: Multiloc;
     ideas_count?: number;
     locked: boolean;
     can_manually_transition_to: boolean;
+    participation_method: IdeaStatusParticipationMethod;
   };
 }
 
@@ -81,18 +70,18 @@ export interface IIdeaStatusAdd {
   title_multiloc: Multiloc;
   description_multiloc?: Multiloc;
   color?: string;
-  code?: TIdeaStatusCode;
+  code?: InputStatusCode;
   ordering?: number;
-  participation_method: 'ideation' | 'proposals';
+  participation_method: IdeaStatusParticipationMethod;
 }
 
 export interface IIdeaStatusUpdate {
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   color?: string;
-  code?: TIdeaStatusCode;
+  code?: InputStatusCode;
   ordering?: number;
-  participation_method: 'ideation' | 'proposals';
+  participation_method: IdeaStatusParticipationMethod;
 }
 
 export interface IIdeaStatus {

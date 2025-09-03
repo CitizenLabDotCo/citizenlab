@@ -2,10 +2,10 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
-    "lib": ["es5", "es2015", "dom"],
+    "lib": ["es5", "es2017", "dom"],
     "skipLibCheck": true,
     "strict": true,
-    "types": ["cypress", "cypress-file-upload"]
+    "types": ["cypress", "cypress-file-upload", "cypress-axe"]
   },
   "exclude": ["../node_modules", "../app", "../e2e", "../internals"],
   "include": ["../cypress/**/*.ts"]

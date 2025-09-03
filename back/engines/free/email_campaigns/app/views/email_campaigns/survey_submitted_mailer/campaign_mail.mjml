@@ -1,0 +1,13 @@
+<!-- Action list -->
+<mj-section padding="0 25px 10px">
+  <mj-column>
+    <mj-text>
+      <p><%= format_message('your_submission_has_id') %></p>
+      <p style="font-weight: bold;"><%= event.idea_id %></p>
+      <p><%= format_message('you_can_use_this_id') %></p>
+    </mj-text>
+  </mj-column>
+</mj-section>
+<% if event.has_password %>
+  <%= render partial: 'application/cta_button', locals: { href: event.profile_url, message: cta_button_text } %>
+<% end %>

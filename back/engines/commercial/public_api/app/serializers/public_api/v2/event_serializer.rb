@@ -8,6 +8,7 @@ class PublicApi::V2::EventSerializer < PublicApi::V2::BaseSerializer
     :location,
     :location_point,
     :attendees_count,
+    :maximum_attendees,
     :start_at,
     :end_at,
     :created_at,

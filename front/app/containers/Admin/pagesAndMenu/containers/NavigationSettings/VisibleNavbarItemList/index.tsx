@@ -1,24 +1,21 @@
 import React from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 
-import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
 import useDeleteCustomPage from 'api/custom_pages/useDeleteCustomPage';
+import { INavbarItem } from 'api/navbar/types';
 import useDeleteNavbarItem from 'api/navbar/useDeleteNavbarItem';
 import useNavbarItems from 'api/navbar/useNavbarItems';
 import useReorderNavbarItem from 'api/navbar/useReorderNavbarItems';
 import { getNavbarItemSlug } from 'api/navbar/util';
-import useProjectSlugById from 'api/projects/useProjectSlugById';
 
 import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSettings/NavbarItemRow';
 import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 
-import {
-  LockedRow,
-  SortableList,
-  SortableRow,
-} from 'components/admin/ResourceList';
-import { Item } from 'components/admin/ResourceList/SortableList';
+import LockedRow from 'components/admin/ResourceList/LockedRow';
+import SortableList, { Item } from 'components/admin/ResourceList/SortableList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 import { SubSectionTitle } from 'components/admin/Section';
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -33,8 +30,6 @@ const VisibleNavbarItemList = ({
   const { mutate: removeNavbarItem } = useDeleteNavbarItem();
   const { mutate: reorderNavbarItem } = useReorderNavbarItem();
   const { data: navbarItems } = useNavbarItems();
-  const pageSlugById = useCustomPageSlugById();
-  const projectSlugById = useProjectSlugById();
 
   if (!navbarItems) {
     return null;
@@ -42,6 +37,8 @@ const VisibleNavbarItemList = ({
 
   const handleClickEdit = (navbarItem: Item) => () => {
     // redirect to homepage edit page
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (navbarItem?.attributes?.code && navbarItem.attributes.code === 'home') {
       clHistory.push(
         `${ADMIN_PAGES_MENU_PATH}/homepage-builder/?variant=signedOut`
@@ -60,15 +57,7 @@ const VisibleNavbarItemList = ({
   };
 
   const getViewButtonLink = (navbarItem: Item) => {
-    return (
-      getNavbarItemSlug(
-        navbarItem.attributes.code,
-        pageSlugById,
-        navbarItem.relationships.static_page.data?.id,
-        projectSlugById,
-        navbarItem.relationships.project.data?.id
-      ) || '/'
-    );
+    return getNavbarItemSlug(navbarItem as INavbarItem) || '/';
   };
 
   const handleClickRemove = (navbarItemId: string) => () => {
@@ -86,7 +75,7 @@ const VisibleNavbarItemList = ({
     return navbarItem.relationships.project.data !== null;
   };
   return (
-    <>
+    <Box className="intercom-admin-pages-menu-navigation-items">
       <SubSectionTitle>
         <FormattedMessage {...messages.navigationItems} />
       </SubSectionTitle>
@@ -145,7 +134,7 @@ const VisibleNavbarItemList = ({
           </>
         )}
       </SortableList>
-    </>
+    </Box>
   );
 };
 

@@ -9,8 +9,9 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useInternalComment from 'api/internal_comments/useInternalComment';
 import useInternalComments from 'api/internal_comments/useInternalComments';
 
+import Highlighter from 'components/Highlighter';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -31,15 +32,13 @@ const StyledChildCommentForm = styled(InternalChildCommentForm)`
   margin-left: 38px;
 `;
 
-const LoadMoreButton = styled(Button)`
+const LoadMoreButton = styled(ButtonWithLink)`
   margin-top: 20px;
   margin-left: 38px;
 `;
 
 interface Props {
   ideaId: string | undefined;
-  initiativeId: string | undefined;
-  postType: 'idea' | 'initiative';
   commentId: string;
   childCommentIds: string[];
   className?: string;
@@ -48,8 +47,6 @@ interface Props {
 const InternalParentComment = ({
   commentId,
   ideaId,
-  initiativeId,
-  postType,
   className,
   childCommentIds,
 }: Props) => {
@@ -75,6 +72,8 @@ const InternalParentComment = ({
     const projectId = idea?.data.relationships.project.data.id || null;
     const commentDeleted =
       comment.data.attributes.publication_status === 'deleted';
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const hasChildComments = childCommentIds && childCommentIds.length > 0;
     const modifiedChildCommentIds = childComments
       ? childComments
@@ -95,14 +94,15 @@ const InternalParentComment = ({
     return (
       <Container className={`${className || ''} e2e-parent-and-childcomments`}>
         <ParentCommentContainer className={commentDeleted ? 'deleted' : ''}>
-          <InternalComment
-            ideaId={ideaId}
-            initiativeId={initiativeId}
-            projectId={projectId}
-            commentId={commentId}
-            commentType="parent"
-            hasChildComments={hasChildComments}
-          />
+          <Highlighter fragmentId={commentId}>
+            <InternalComment
+              ideaId={ideaId}
+              projectId={projectId}
+              commentId={commentId}
+              commentType="parent"
+              hasChildComments={hasChildComments}
+            />
+          </Highlighter>
         </ParentCommentContainer>
 
         {hasNextPage && (
@@ -128,21 +128,19 @@ const InternalParentComment = ({
 
         {modifiedChildCommentIds.length > 0 &&
           modifiedChildCommentIds.map((childCommentId, index) => (
-            <InternalComment
-              ideaId={ideaId}
-              initiativeId={initiativeId}
-              projectId={projectId}
-              key={childCommentId}
-              commentId={childCommentId}
-              commentType="child"
-              last={index === modifiedChildCommentIds.length - 1}
-            />
+            <Highlighter fragmentId={childCommentId} key={childCommentId}>
+              <InternalComment
+                ideaId={ideaId}
+                projectId={projectId}
+                commentId={childCommentId}
+                commentType="child"
+                last={index === modifiedChildCommentIds.length - 1}
+              />
+            </Highlighter>
           ))}
 
         <StyledChildCommentForm
           ideaId={ideaId}
-          initiativeId={initiativeId}
-          postType={postType}
           projectId={projectId}
           parentId={commentId}
         />

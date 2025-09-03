@@ -6,7 +6,6 @@ import { CLErrors, Multiloc, UploadFile } from 'typings';
 
 import useAdminPublication from 'api/admin_publications/useAdminPublication';
 import useAddProjectFolderFile from 'api/project_folder_files/useAddProjectFolderFile';
-import useDeleteProjectFolderFile from 'api/project_folder_files/useDeleteProjectFolderFile';
 import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
 import {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
@@ -15,11 +14,15 @@ import {
 import useAddProjectFolderImage from 'api/project_folder_images/useAddProjectFolderImage';
 import useDeleteProjectFolderImage from 'api/project_folder_images/useDeleteProjectFolderImage';
 import useProjectFolderImages from 'api/project_folder_images/useProjectFolderImages';
+import useUpdateProjectFolderImage from 'api/project_folder_images/useUpdateProjectFolderImage';
 import useAddProjectFolder from 'api/project_folders/useAddProjectFolder';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
 
+import { useSyncFolderFiles } from 'hooks/files/useSyncFolderFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
+import projectMessages from 'containers/Admin/projects/project/general/messages';
 
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
@@ -67,8 +70,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     Resource hooks
     ==============
   */
-  const { mutateAsync: deleteProjectFolderFile } = useDeleteProjectFolderFile();
   const { mutateAsync: addProjectFolderFile } = useAddProjectFolderFile();
+  const syncProjectFolderFiles = useSyncFolderFiles();
+
   const { data: projectFolder } = useProjectFolderById(projectFolderId);
   const { data: projectFolderFilesRemote } = useProjectFolderFiles({
     projectFolderId,
@@ -78,6 +82,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     folderId: projectFolderId,
   });
   const { mutateAsync: addProjectFolderImage } = useAddProjectFolderImage();
+  const { mutateAsync: updateProjectFolderImage } =
+    useUpdateProjectFolderImage();
   const { mutateAsync: deleteProjectFolderImage } =
     useDeleteProjectFolderImage();
 
@@ -105,6 +111,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const [descriptionMultiloc, setDescriptionMultiloc] =
     useState<Multiloc | null>(null);
   const [headerBgBase64, setHeaderBgBase64] = useState<string | null>(null);
+  const [headerImageAltText, setHeaderImageAltText] = useState<Multiloc>({});
   const [publicationStatus, setPublicationStatus] = useState<
     'published' | 'draft' | 'archived'
   >('published');
@@ -112,6 +119,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const [folderCardImage, setFolderCardImage] = useState<UploadFile | null>(
     null
   );
+  const [folderCardImageAltText, setFolderCardImageAltText] =
+    useState<Multiloc>({});
   const [croppedFolderCardBase64, setCroppedFolderCardBase64] = useState<
     string | null
   >(null);
@@ -141,6 +150,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         setShortDescriptionMultiloc(
           projectFolder.data.attributes.description_preview_multiloc
         );
+        setHeaderImageAltText(
+          projectFolder.data.attributes.header_bg_alt_text_multiloc
+        );
       }
     })();
   }, [mode, projectFolder]);
@@ -154,15 +166,19 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   useEffect(() => {
     (async () => {
       if (mode === 'edit' && projectFolderImagesRemote) {
-        const imagePromises = projectFolderImagesRemote.data.map((img) => {
+        for (const img of projectFolderImagesRemote.data) {
           const url = img.attributes.versions.large;
+          const altTextValue = img.attributes.alt_text_multiloc;
 
-          return url
-            ? convertUrlToUploadFile(url, img.id, null)
-            : new Promise<null>((resolve) => resolve(null));
-        });
-        const images = await Promise.all(imagePromises);
-        setFolderCardImage(images[0]);
+          if (url) {
+            const uploadFile = await convertUrlToUploadFile(url, img.id, null);
+            if (uploadFile) {
+              setFolderCardImage(uploadFile);
+              setFolderCardImageAltText(altTextValue);
+              break;
+            }
+          }
+        }
       }
     })();
   }, [mode, projectFolderImagesRemote]);
@@ -242,6 +258,16 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     });
   }, []);
 
+  const handleFolderImageAltTextChange = (altTextMultiloc: Multiloc) => {
+    setSubmitState('enabled');
+    setFolderCardImageAltText(altTextMultiloc);
+  };
+
+  const handleHeaderImageAltTextChange = (altTextMultiloc: Multiloc) => {
+    setSubmitState('enabled');
+    setHeaderImageAltText(altTextMultiloc);
+  };
+
   const handleProjectFolderFileOnRemove = useCallback(
     (fileToRemove: UploadFile) => {
       setSubmitState('enabled');
@@ -257,6 +283,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     },
     []
   );
+
+  const handleFilesReorder = (updatedFiles: UploadFile[]) => {
+    setProjectFolderFiles(updatedFiles);
+    setSubmitState('enabled');
+  };
 
   const validate = useCallback(() => {
     let valid = false;
@@ -298,6 +329,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                 description_multiloc: descriptionMultiloc,
                 description_preview_multiloc: shortDescriptionMultiloc,
                 header_bg: headerBgBase64,
+                header_bg_alt_text_multiloc: headerImageAltText,
                 admin_publication_attributes: {
                   publication_status: publicationStatus,
                 },
@@ -312,6 +344,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                       ? addProjectFolderImage({
                           folderId: projectFolder.data.id,
                           base64: croppedFolderCardBase64,
+                          alt_text_multiloc: folderCardImageAltText,
                         })
                       : null;
 
@@ -323,6 +356,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                       })
                     );
 
+                    // TODO: Fix this the next time the file is edited.
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                     (cardImageToAddPromise || filesToAddPromises) &&
                       (await Promise.all<any>([
                         cardImageToAddPromise,
@@ -353,8 +388,18 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               ? addProjectFolderImage({
                   folderId: projectFolder.data.id,
                   base64: croppedFolderCardBase64,
+                  alt_text_multiloc: folderCardImageAltText,
                 })
               : null;
+            const cardToEditPromise =
+              folderCardImage && folderCardImage.id
+                ? updateProjectFolderImage({
+                    imageId: folderCardImage.id,
+                    folderId: projectFolder.data.id,
+                    base64: folderCardImage.base64,
+                    alt_text_multiloc: folderCardImageAltText,
+                  })
+                : null;
             const cardToRemovePromises =
               folderCardImageToRemove?.id &&
               deleteProjectFolderImage({
@@ -362,24 +407,28 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                 imageId: folderCardImageToRemove.id,
               });
 
-            const filesToAddPromises = projectFolderFiles
-              .filter((file) => !file.remote)
-              .map((file) =>
-                addProjectFolderFile({
-                  projectFolderId,
-                  file: file.base64,
-                  name: file.name,
-                })
-              );
-            const filesToRemovePromises = projectFolderFilesToRemove.map((id) =>
-              deleteProjectFolderFile({ projectFolderId, fileId: id })
+            const initialFileOrdering = projectFolderFilesRemote?.data.reduce(
+              (acc, file) => {
+                if (file.id) {
+                  acc[file.id] = file.attributes.ordering;
+                }
+                return acc;
+              },
+              {}
             );
+
+            const folderFilesPromise = await syncProjectFolderFiles({
+              projectFolderId,
+              projectFolderFiles,
+              filesToRemove: projectFolderFilesToRemove,
+              fileOrdering: initialFileOrdering || {},
+            });
 
             await Promise.all<any>([
               cardToAddPromise,
+              cardToEditPromise,
               cardToRemovePromises,
-              ...filesToAddPromises,
-              ...filesToRemovePromises,
+              folderFilesPromise,
             ]);
 
             const changedTitleMultiloc = !isEqual(
@@ -427,6 +476,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                     ? shortDescriptionMultiloc
                     : undefined,
                   header_bg: changedHeaderBg ? headerBgBase64 : undefined,
+                  header_bg_alt_text_multiloc: headerImageAltText,
                   admin_publication_attributes: {
                     publication_status: publicationStatus,
                   },
@@ -535,11 +585,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             </>
           </SectionField>
         )}
-        <SectionField>
+        <SectionField data-cy="e2e-project-folder-short-description">
           <SubSectionTitle>
             <FormattedMessage {...messages.folderDescriptions} />
           </SubSectionTitle>
-          <Box mb="35px" data-cy="e2e-project-folder-description">
+          <Box mb="35px">
             <TextAreaMultilocWithLocaleSwitcher
               data-cy="e2e-project-folder-short-description"
               valueMultiloc={shortDescriptionMultiloc}
@@ -574,6 +624,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           <HeaderBgUploader
             imageUrl={projectFolder?.data.attributes.header_bg?.large}
             onImageChange={handleHeaderBgChange}
+            onHeaderImageAltTextChange={handleHeaderImageAltTextChange}
+            headerImageAltText={headerImageAltText}
           />
         </SectionField>
 
@@ -605,6 +657,26 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             />
           )}
         </SectionField>
+        {folderCardImage && (
+          <SectionField>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.folderImageAltTextTitle} />
+              <IconTooltip
+                content={
+                  <FormattedMessage
+                    {...projectMessages.projectImageAltTextTooltip}
+                  />
+                }
+              />
+            </SubSectionTitle>
+            <InputMultilocWithLocaleSwitcher
+              type="text"
+              valueMultiloc={folderCardImageAltText}
+              label={<FormattedMessage {...projectMessages.altText} />}
+              onChange={handleFolderImageAltTextChange}
+            />
+          </SectionField>
+        )}
         <SectionField>
           <SubSectionTitle>
             <FormattedMessage {...messages.fileUploadLabel} />
@@ -619,6 +691,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             onFileAdd={handleProjectFolderFileOnAdd}
             onFileRemove={handleProjectFolderFileOnRemove}
             files={projectFolderFiles}
+            onFileReorder={handleFilesReorder}
+            enableDragAndDrop
+            multiple
           />
         </SectionField>
         <SubmitWrapper

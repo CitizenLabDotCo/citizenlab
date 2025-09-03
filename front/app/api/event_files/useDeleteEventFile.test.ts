@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import useDeleteEventFile from './useDeleteEventFile';
 const apiPath = '*/events/:eventId/files/:fileId';
@@ -18,7 +18,7 @@ describe('useDeleteEventFile', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useDeleteEventFile(), {
+    const { result } = renderHook(() => useDeleteEventFile(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -36,7 +36,7 @@ describe('useDeleteEventFile', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useDeleteEventFile(), {
+    const { result } = renderHook(() => useDeleteEventFile(), {
       wrapper: createQueryClientWrapper(),
     });
 

@@ -89,12 +89,12 @@ describe('Event show page', () => {
     cy.get('#e2e-participants-count').should('not.exist');
     cy.get('#e2e-text-only-location').should('exist');
     cy.get('#e2e-location-with-coordinates-button').should('not.exist');
-    cy.get('[data-cy="e2e-event-description"]');
+    cy.dataCy('e2e-event-description');
 
     // Click attend button
     cy.get('.e2e-event-attendance-button').click();
     // Confirm that the button now shows "attending"
-    cy.get('.e2e-event-attendance-button').contains('Attending');
+    cy.get('.e2e-event-attendance-button').contains('Registered');
     // Confirm that participant count is now shown
     cy.get('#e2e-participants-count').should('exist');
   });
@@ -112,6 +112,8 @@ describe('Event show page', () => {
     // Event in an admin-view-only project, when not logged in should show unauthorized notice
     cy.clearCookies();
     cy.visit(`/events/${eventIdNoCoordinates}`);
+    cy.acceptCookies();
+
     cy.get('#e2e-not-authorized').should('exist');
     cy.get('#e2e-event-title').should('not.exist');
   });

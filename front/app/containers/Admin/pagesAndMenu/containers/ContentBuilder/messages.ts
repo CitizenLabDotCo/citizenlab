@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  sections: {
-    id: 'app.containers.admin.ContentBuilder.homepage.sections',
-    defaultMessage: 'SECTIONS',
-  },
   oneColumn: {
     id: 'app.containers.admin.ContentBuilder.homepage.oneColumnLayout',
     defaultMessage: '1 column',
@@ -38,8 +34,21 @@ export default defineMessages({
     defaultMessage:
       'Enable proposals in the “Proposals” section in the admin panel to unlock them in the homepage',
   },
-  highlightTitle: {
-    id: 'app.containers.admin.ContentBuilder.homepage.highlightTitle',
-    defaultMessage: 'Highlight',
+  communityMonitorCtaDefaultTitle: {
+    id: 'app.containers.admin.ContentBuilder.homepage.communityMonitorCtaDefaultTitle',
+    defaultMessage: 'Help us serve you better',
+  },
+  communityMonitorCtaDefaultDescription: {
+    id: 'app.containers.admin.ContentBuilder.homepage.communityMonitorCtaDefaultDescription',
+    defaultMessage:
+      'This is a quarterly, ongoing survey that tracks how you feel about governance & public services.',
+  },
+  communityMonitorCtaDefaultSurveyButtonText: {
+    id: 'app.containers.admin.ContentBuilder.homepage.communityMonitorCtaDefaultSurveyButtonText',
+    defaultMessage: 'Take the survey',
+  },
+  fileAttachment: {
+    id: 'app.containers.admin.ContentBuilder.homepage.fileAttachment',
+    defaultMessage: 'File attachment',
   },
 });

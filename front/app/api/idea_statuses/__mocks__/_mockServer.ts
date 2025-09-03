@@ -18,6 +18,7 @@ export const ideaStatusesData: IIdeaStatusData[] = [
       ordering: 1,
       locked: false,
       can_manually_transition_to: true,
+      participation_method: 'ideation',
     },
   },
   {
@@ -35,6 +36,7 @@ export const ideaStatusesData: IIdeaStatusData[] = [
       ordering: 2,
       locked: true,
       can_manually_transition_to: true,
+      participation_method: 'ideation',
     },
   },
 ];

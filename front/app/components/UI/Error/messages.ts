@@ -144,6 +144,11 @@ export default defineMessages({
     defaultMessage:
       'The format of the file you tried to upload is not supported.',
   },
+  extension_whitelist_error: {
+    id: 'app.errors.extension_whitelist_error',
+    defaultMessage:
+      'The format of the file you tried to upload is not supported.',
+  },
   cant_change_after_first_response: {
     id: 'app.errors.cant_change_after_first_response',
     defaultMessage:
@@ -334,6 +339,15 @@ export default defineMessages({
     defaultMessage:
       'Enter a valid link. Make sure the link starts with https://',
   },
+  maximum_attendees_greater_than_attendees_count: {
+    id: 'app.errors.maximum_attendees_greater_than_attendees_count1',
+    defaultMessage:
+      'The maximum number of registrants must be greater than or equal to the current number of registrants.',
+  },
+  maximum_attendees_greater_than: {
+    id: 'app.errors.maximum_attendees_greater_than1',
+    defaultMessage: 'The maximum number of registrants must be greater than 0.',
+  },
   title_multiloc_includes_banned_words: {
     id: 'app.errors.title_multiloc_includes_banned_words',
     defaultMessage:
@@ -353,5 +367,14 @@ export default defineMessages({
     id: 'app.errors.verification_taken',
     defaultMessage:
       'Verification cannot be completed as another account has been verified using the same details.',
+  },
+  number_invalid: {
+    id: 'app.errors.number_invalid',
+    defaultMessage: 'Please enter a valid number.',
+  },
+  base_includes_banned_words: {
+    id: 'app.errors.base_includes_banned_words',
+    defaultMessage:
+      'You may have used one or more words that are considered profanity. Please alter your text to remove any profanities that might be present.',
   },
 });

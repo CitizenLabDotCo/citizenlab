@@ -1,8 +1,5 @@
 import React from 'react';
 
-// components
-
-// styling
 import styled from 'styled-components';
 
 import { colors, fontSizes } from '../../utils/styleUtils';
@@ -14,11 +11,15 @@ interface InnerBorders {
   bodyCells?: boolean;
 }
 
-const StyledBox = styled(Box)<{ innerBorders?: InnerBorders }>`
+const StyledBox = styled(Box)<{
+  innerBorders?: InnerBorders;
+  borderSpacing?: string;
+}>`
   text-align: left;
   font-size: ${fontSizes.s}px;
   color: ${colors.primary};
   border-collapse: separate;
+  border-spacing: ${({ borderSpacing }) => borderSpacing || '0'};
 
   thead > tr > th {
     border-bottom: 1px solid ${colors.grey200};
@@ -64,9 +65,11 @@ const StyledBox = styled(Box)<{ innerBorders?: InnerBorders }>`
       : ''}
 `;
 
-export interface Props extends BoxProps {
+type Props = Omit<BoxProps, 'border'> & {
+  borderSpacing?: string;
   innerBorders?: InnerBorders;
-}
+  border?: any; // TODO: Figure out why this prop results in a type error in React 18 and fix it
+};
 
 const Table = ({ children, innerBorders, ...otherProps }: Props) => (
   <StyledBox

@@ -4,7 +4,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   @@multiloc_service = MultilocService.new
 
   def comments_count
-    count = StatCommentPolicy::Scope.new(current_user, Comment.published).resolve
+    count = policy_scope(Comment.published, policy_scope_class: StatCommentPolicy::Scope)
       .where(created_at: @start_at..@end_at)
       .published
       .count
@@ -13,14 +13,13 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   end
 
   def comments_by_topic_serie
-    comments = StatCommentPolicy::Scope.new(current_user, Comment.published).resolve
-
+    comments = policy_scope(Comment.published, policy_scope_class: StatCommentPolicy::Scope)
     comments = apply_project_filter(comments)
     comments = apply_group_filter(comments)
 
     comments
       .where(created_at: @start_at..@end_at)
-      .joins('INNER JOIN ideas ON ideas.id = comments.post_id')
+      .joins('INNER JOIN ideas ON ideas.id = comments.idea_id')
       .joins('INNER JOIN ideas_topics ON ideas_topics.idea_id = ideas.id')
       .group('ideas_topics.topic_id')
       .order('ideas_topics.topic_id')
@@ -52,14 +51,13 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   end
 
   def comments_by_project_serie
-    comments = StatCommentPolicy::Scope.new(current_user, Comment.published).resolve
-
+    comments = policy_scope(Comment.published, policy_scope_class: StatCommentPolicy::Scope)
     comments = apply_topic_filter(comments)
     comments = apply_group_filter(comments)
 
     comments
       .where(created_at: @start_at..@end_at)
-      .joins('INNER JOIN ideas ON ideas.id = comments.post_id')
+      .joins('INNER JOIN ideas ON ideas.id = comments.idea_id')
       .group('ideas.project_id')
       .order('ideas.project_id')
       .count
@@ -91,7 +89,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
 
   def apply_project_filter(comments)
     if params[:project]
-      comments.joins('INNER JOIN ideas ON ideas.id = comments.post_id').where(ideas: { project_id: params[:project] })
+      comments.joins('INNER JOIN ideas ON ideas.id = comments.idea_id').where(ideas: { project_id: params[:project] })
     else
       comments
     end
@@ -100,7 +98,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   def apply_topic_filter(comments)
     if params[:topic]
       comments
-        .joins('INNER JOIN ideas ON ideas.id = comments.post_id')
+        .joins('INNER JOIN ideas ON ideas.id = comments.idea_id')
         .joins('INNER JOIN ideas_topics ON ideas_topics.idea_id = ideas.id')
         .where(ideas: { ideas_topics: { topic_id: params[:topic] } })
     else

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Box, Text, Label } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -12,14 +12,18 @@ import useLocale from 'hooks/useLocale';
 import { SetError, State } from 'containers/Authentication/typings';
 import useAnySSOEnabled from 'containers/Authentication/useAnySSOEnabled';
 
+import { SectionField } from 'components/admin/Section';
 import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import { StyledPasswordIconTooltip } from 'components/smallForm';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
+import Error from 'components/UI/Error';
 import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 import {
   isCLErrorsWrapper,
   handleHookFormSubmissionError,
@@ -56,6 +60,7 @@ const EmailAndPasswordSignUp = ({
   const { data: appConfiguration } = useAppConfiguration();
   const locale = useLocale();
   const { formatMessage } = useIntl();
+  const [profanityApiError, setProfanityApiError] = useState(false);
 
   const appConfigSettings = appConfiguration?.data.attributes.settings;
   const minimumPasswordLength =
@@ -92,7 +97,17 @@ const EmailAndPasswordSignUp = ({
         isInvitation: !!state.token,
         token: state.token,
       });
+      setProfanityApiError(false);
     } catch (e) {
+      const profanityApiError = Array.isArray(e?.errors?.base)
+        ? e.errors.base.find(
+            (apiError) => apiError.error === 'includes_banned_words'
+          )
+        : null;
+      if (profanityApiError) {
+        setProfanityApiError(true);
+      }
+
       if (isCLErrorsWrapper(e)) {
         handleHookFormSubmissionError(e, methods.setError);
         return;
@@ -106,6 +121,24 @@ const EmailAndPasswordSignUp = ({
     <Box id="e2e-sign-up-email-password-container">
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(handleSubmit)}>
+          <SectionField>
+            {profanityApiError && (
+              <Error
+                text={
+                  <FormattedMessage
+                    {...commentsMessages.profanityError}
+                    values={{
+                      guidelinesLink: (
+                        <Link to="/pages/faq" target="_blank">
+                          {formatMessage(commentsMessages.guidelinesLinkText)}
+                        </Link>
+                      ),
+                    }}
+                  />
+                }
+              />
+            )}
+          </SectionField>
           <Box id="e2e-firstName-container">
             <Input
               name="first_name"
@@ -154,7 +187,7 @@ const EmailAndPasswordSignUp = ({
             <PoliciesMarkup />
           </Box>
           <Box w="100%" display="flex" mt="24px">
-            <Button
+            <ButtonWithLink
               type="submit"
               width="auto"
               disabled={loading}
@@ -162,7 +195,7 @@ const EmailAndPasswordSignUp = ({
               id="e2e-signup-password-submit-button"
             >
               {formatMessage(sharedMessages.continue)}
-            </Button>
+            </ButtonWithLink>
           </Box>
         </form>
         <Text mt="24px">

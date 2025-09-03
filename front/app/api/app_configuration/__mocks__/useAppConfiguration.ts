@@ -10,6 +10,7 @@ export const appConfigurationData: IAppConfigurationData = {
     settings: {
       core: {
         allowed: true,
+        country_code: 'BE',
         enabled: true,
         locales: ['en'],
         population: 12500,
@@ -32,8 +33,20 @@ export const appConfigurationData: IAppConfigurationData = {
         maximum_moderators_number: 4,
         additional_admins_number: 4,
         additional_moderators_number: 4,
+        allow_sharing: true,
+        private_attributes_in_export: true,
+        area_term: {
+          en: 'region',
+        },
+        areas_term: {
+          en: 'regions',
+        },
       },
       advanced_custom_pages: {
+        allowed: true,
+        enabled: true,
+      },
+      pages: {
         allowed: true,
         enabled: true,
       },
@@ -46,15 +59,6 @@ export const appConfigurationData: IAppConfigurationData = {
         enabled: true,
         tenant_site_id: '13',
         product_site_id: '14',
-      },
-      initiatives: {
-        allowed: true,
-        enabled: true,
-        days_limit: 50,
-        eligibility_criteria: {},
-        posting_tips: {},
-        threshold_reached_message: {},
-        reacting_threshold: 5,
       },
     },
     logo: {

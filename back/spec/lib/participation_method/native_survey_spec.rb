@@ -18,7 +18,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
       let!(:proposed) { create(:idea_status_proposed) }
       let(:input) { build(:idea, publication_status: nil, idea_status: nil) }
 
-      it 'sets the publication_status to "publised" and the idea_status to "proposed"' do
+      it 'sets the publication_status to "published" and the idea_status to "proposed"' do
         participation_method.assign_defaults input
         expect(input.publication_status).to eq 'published'
         expect(input.idea_status).to eq proposed
@@ -57,7 +57,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
       # in the database, but not necessarily in memory.
       phase_in_db = Phase.find(phase.id)
 
-      expect(phase_in_db.custom_form.custom_fields.size).to eq 2
+      expect(phase_in_db.custom_form.custom_fields.size).to eq 3
 
       question_page = phase_in_db.custom_form.custom_fields[0]
       expect(question_page.title_multiloc).to eq({})
@@ -131,6 +131,12 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
+  describe '#supported_email_campaigns' do
+    it 'returns campaigns supported for native surveys' do
+      expect(participation_method.supported_email_campaigns).to match_array %w[native_survey_not_submitted project_phase_started survey_submitted]
+    end
+  end
+
   describe '#supports_serializing?' do
     it 'returns true for native survey attributes' do
       %i[native_survey_title_multiloc native_survey_button_multiloc].each do |attribute|
@@ -140,27 +146,57 @@ RSpec.describe ParticipationMethod::NativeSurvey do
 
     it 'returns false for the other attributes' do
       %i[
-        voting_method voting_max_total voting_min_total voting_max_votes_per_idea baskets_count
-        voting_term_singular_multiloc voting_term_plural_multiloc votes_count
+        voting_method voting_max_total voting_min_total
+        voting_max_votes_per_idea baskets_count votes_count
       ].each do |attribute|
         expect(participation_method.supports_serializing?(attribute)).to be false
       end
     end
   end
 
+  describe '#supports_private_attributes_in_export?' do
+    it 'returns true if config setting is set to true' do
+      config = AppConfiguration.instance
+      config.settings['core']['private_attributes_in_export'] = true
+      config.save!
+      expect(participation_method.supports_private_attributes_in_export?).to be true
+    end
+
+    it 'returns false if config setting is set to false' do
+      config = AppConfiguration.instance
+      config.settings['core']['private_attributes_in_export'] = false
+      config.save!
+      expect(participation_method.supports_private_attributes_in_export?).to be false
+    end
+
+    it 'returns true if the setting is not present' do
+      expect(participation_method.supports_private_attributes_in_export?).to be true
+    end
+  end
+
+  describe '#user_fields_in_form?' do
+    it 'returns false when not enabled' do
+      expect(participation_method.user_fields_in_form?).to be false
+    end
+
+    it 'returns true when enabled' do
+      phase.user_fields_in_form = true
+      expect(participation_method.user_fields_in_form?).to be true
+    end
+  end
+
   its(:additional_export_columns) { is_expected.to eq [] }
   its(:allowed_ideas_orders) { is_expected.to be_empty }
-  its(:proposed_budget_in_form?) { is_expected.to be false }
   its(:return_disabled_actions?) { is_expected.to be true }
   its(:supports_assignment?) { is_expected.to be false }
-  its(:supports_built_in_fields?) { is_expected.to be false }
+  its(:built_in_title_required?) { is_expected.to be(false) }
+  its(:built_in_body_required?) { is_expected.to be(false) }
   its(:supports_commenting?) { is_expected.to be false }
   its(:supports_edits_after_publication?) { is_expected.to be false }
   its(:supports_exports?) { is_expected.to be true }
   its(:supports_input_term?) { is_expected.to be false }
   its(:supports_inputs_without_author?) { is_expected.to be true }
-  its(:supports_multiple_posts?) { is_expected.to be false }
-  its(:supports_pages_in_form?) { is_expected.to be true }
+  its(:allow_posting_again_after) { is_expected.to be_nil }
   its(:supports_permitted_by_everyone?) { is_expected.to be true }
   its(:supports_public_visibility?) { is_expected.to be false }
   its(:supports_reacting?) { is_expected.to be false }
@@ -169,4 +205,17 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   its(:supports_toxicity_detection?) { is_expected.to be false }
   its(:use_reactions_as_votes?) { is_expected.to be false }
   its(:transitive?) { is_expected.to be false }
+  its(:form_logic_enabled?) { is_expected.to be true }
+  its(:follow_idea_on_idea_submission?) { is_expected.to be false }
+  its(:validate_phase) { is_expected.to be_nil }
+  its(:supports_custom_field_categories?) { is_expected.to be false }
+  its(:supports_multiple_phase_reports?) { is_expected.to be false }
+  its(:add_autoreaction_to_inputs?) { is_expected.to be(false) }
+  its(:everyone_tracking_enabled?) { is_expected.to be false }
+
+  describe 'proposed_budget_in_form?' do # private method
+    it 'is expected to be false' do
+      expect(participation_method.send(:proposed_budget_in_form?)).to be false
+    end
+  end
 end

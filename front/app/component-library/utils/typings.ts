@@ -27,3 +27,5 @@ export type IGraphPoint = {
 };
 
 export type InputSize = 'small' | 'medium';
+
+export type FontWeight = 'bold' | 'normal' | 'semi-bold';

@@ -3,14 +3,9 @@ class CustomFieldParamsService
     fields_with_simple_keys = []
     fields_with_array_keys = {}
     allowed_fields.each do |field|
-      # Perhaps we could apply the visitor pattern here
-      case field.input_type
-      when 'multiselect', 'multiselect_image'
-        fields_with_array_keys[field.key.to_sym] = []
-      when 'file_upload', 'shapefile_upload'
-        fields_with_array_keys[field.key.to_sym] = %i[id content name]
-      when 'html_multiloc', 'multiline_text_multiloc', 'text_multiloc'
-        fields_with_array_keys[field.key.to_sym] = CL2_SUPPORTED_LOCALES
+      field_keys = supported_keys_in_custom_field_values(field)
+      if field_keys
+        fields_with_array_keys[field.key.to_sym] = field_keys
       else
         fields_with_simple_keys << field.key.to_sym
       end
@@ -53,6 +48,19 @@ class CustomFieldParamsService
   end
 
   private
+
+  def supported_keys_in_custom_field_values(custom_field)
+    case custom_field.input_type
+    when 'multiselect', 'multiselect_image', 'ranking'
+      [] # Array-like value
+    when 'file_upload', 'shapefile_upload'
+      %i[id content name]
+    when 'html_multiloc', 'multiline_text_multiloc', 'text_multiloc'
+      CL2_SUPPORTED_LOCALES
+    when 'matrix_linear_scale'
+      custom_field.matrix_statements.pluck(:key).map(&:to_sym)
+    end
+  end
 
   # Do not save any 'other' text values if the select field does not include 'other' as an option
   def reject_other_text_values(extra_field_values)

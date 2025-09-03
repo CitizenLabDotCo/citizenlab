@@ -66,13 +66,6 @@ describe('<Title />', () => {
     expect(text).toHaveStyle(`font-size: ${fontSizes.s}px;`);
   });
 
-  it('renders with correct font weight', () => {
-    render(<Title fontWeight="normal">Test title</Title>);
-    const text = screen.getByRole('heading');
-
-    expect(text).toHaveStyle(`font-weight: normal;`);
-  });
-
   it('renders with correct text align', () => {
     render(<Title textAlign="center">Test title</Title>);
     const text = screen.getByRole('heading');

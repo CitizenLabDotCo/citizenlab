@@ -9,7 +9,7 @@ import OptionLabel from './OptionLabel';
 import { Option } from './typings';
 import { optionIsUser } from './utils';
 
-interface Props {
+export interface Props {
   selectedUserId: string | null;
   placeholder?: string;
   id?: string;

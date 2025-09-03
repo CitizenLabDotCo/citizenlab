@@ -14,7 +14,9 @@ import useLocalize from 'hooks/useLocalize';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
-import Button, { Props as ButtonProps } from 'components/UI/Button';
+import ButtonWithLink, {
+  Props as ButtonProps,
+} from 'components/UI/ButtonWithLink';
 
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { trackEventByName } from 'utils/analytics';
@@ -48,7 +50,7 @@ const IdeaButton = memo<Props>(
     latLng,
     phase,
     participationMethod,
-    ...buttonContainerProps
+    ...buttonProps
   }) => {
     const { data: project } = useProjectById(projectId);
     const { data: phases } = usePhases(projectId);
@@ -103,7 +105,7 @@ const IdeaButton = memo<Props>(
       trackEventByName(tracks.postYourIdeaButtonClicked);
 
       if (authenticationRequirements) {
-        signUp();
+        signIn();
         return;
       }
 
@@ -113,8 +115,8 @@ const IdeaButton = memo<Props>(
       }
     };
 
-    const signUp = (event?: React.MouseEvent) => {
-      signUpIn('signup')(event);
+    const signIn = (event?: React.MouseEvent) => {
+      signUpIn('signin')(event);
     };
 
     const signUpIn =
@@ -142,6 +144,8 @@ const IdeaButton = memo<Props>(
 
     const tippyEnabled = !enabled && !!disabledReason;
 
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (inMap && !enabled && !!disabledReason) {
       return (
         <TippyContent
@@ -175,8 +179,8 @@ const IdeaButton = memo<Props>(
               disabledReason ? disabledReason : ''
             }`}
           >
-            <Button
-              {...buttonContainerProps}
+            <ButtonWithLink
+              {...buttonProps}
               aria-describedby={
                 tippyEnabled ? 'tooltip-content-idea-button' : undefined
               }
@@ -194,10 +198,13 @@ const IdeaButton = memo<Props>(
                     question: messages.addAQuestion,
                     issue: messages.submitAnIssue,
                     contribution: messages.addAContribution,
+                    proposal: messages.addAProposal,
+                    initiative: messages.addAnInitiative,
+                    petition: messages.addAPetition,
                   })}
                 />
               )}
-            </Button>
+            </ButtonWithLink>
           </Box>
         </Tooltip>
       </Box>

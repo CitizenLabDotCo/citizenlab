@@ -5,10 +5,8 @@ import styled, { css } from 'styled-components';
 import { ITab } from 'typings';
 
 import useIdeaById from 'api/ideas/useIdeaById';
-import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 import InternalComments from 'components/admin/InternalComments';
 import { Tab } from 'components/admin/NavigationTabs';
@@ -32,7 +30,6 @@ const NavigationTabs = styled.nav`
 
 export interface Props {
   postId: string;
-  postType: 'idea' | 'initiative';
   className?: string;
   allowAnonymousParticipation?: boolean;
   showInternalComments?: boolean;
@@ -43,7 +40,6 @@ type NavTab = ITab & { name: CommentType };
 
 const CommentsSection = ({
   postId,
-  postType,
   className,
   allowAnonymousParticipation,
   showInternalComments = false,
@@ -52,25 +48,26 @@ const CommentsSection = ({
   const isInternalCommentingEnabled = useFeatureFlag({
     name: 'internal_commenting',
   });
-  const initiativeCommentingPermissions = useInitiativesPermissions(
-    'commenting_initiative'
-  );
-  const [selectedTab, setSelectedTab] = useState<CommentType>('internal');
-  const initiativeId = postType === 'initiative' ? postId : undefined;
-  const ideaId = postType === 'idea' ? postId : undefined;
-  const { data: initiative } = useInitiativeById(initiativeId);
-  const { data: idea } = useIdeaById(ideaId);
-  const post = initiative || idea;
+  const isInternalCommentingAllowed = useFeatureFlag({
+    name: 'internal_commenting',
+    onlyCheckAllowed: true,
+  });
+  const isInternalCommentingAllowedAndDisabled =
+    isInternalCommentingAllowed && !isInternalCommentingEnabled;
 
-  if (!post) return null;
-  const publicCommentCount = post.data.attributes.comments_count;
-  const internalCommentCount = post.data.attributes.internal_comments_count;
+  const [selectedTab, setSelectedTab] = useState<CommentType>('internal');
+  const { data: idea } = useIdeaById(postId);
+
+  if (!idea) return null;
+  const publicCommentCount = idea.data.attributes.comments_count;
+  const internalCommentCount = idea.data.attributes.internal_comments_count;
   const commenting_idea =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     idea?.data.attributes.action_descriptors.commenting_idea;
-  const commentingEnabled =
-    postType === 'idea'
-      ? commenting_idea?.enabled
-      : initiativeCommentingPermissions?.enabled;
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  const commentingEnabled = commenting_idea?.enabled;
 
   const tabs: NavTab[] = [
     {
@@ -89,7 +86,7 @@ const CommentsSection = ({
     },
   ];
 
-  if (showInternalComments && isInternalCommentingEnabled) {
+  if (showInternalComments && !isInternalCommentingAllowedAndDisabled) {
     return (
       <Box mt="70px">
         <NavigationTabs>
@@ -117,18 +114,24 @@ const CommentsSection = ({
               )}
               <PublicComments
                 postId={postId}
-                postType={postType}
                 allowAnonymousParticipation={allowAnonymousParticipation}
                 className={className}
               />
             </Box>
           )}
           {selectedTab === 'internal' && (
-            <InternalComments
-              postId={postId}
-              postType={postType}
-              className={className}
-            />
+            <>
+              {!isInternalCommentingAllowed && (
+                <Box mt="16px">
+                  <Warning>
+                    {formatMessage(messages.internalCommentingNudgeMessage)}
+                  </Warning>
+                </Box>
+              )}
+              {isInternalCommentingEnabled && (
+                <InternalComments postId={postId} className={className} />
+              )}
+            </>
           )}
         </Box>
       </Box>
@@ -138,7 +141,6 @@ const CommentsSection = ({
   return (
     <PublicComments
       postId={postId}
-      postType={postType}
       allowAnonymousParticipation={allowAnonymousParticipation}
       className={className}
     />

@@ -22,6 +22,8 @@ const fetchEventImage = ({
 
 const useEventImage = (event: IEventData | undefined) => {
   const eventId = event?.id;
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const imageId = event?.relationships?.event_images?.data?.[0]?.id;
   return useQuery<IEventImage, CLErrors, IEventImage, EventImagesKeys>({
     queryKey: eventImagesKeys.item({ id: imageId }),

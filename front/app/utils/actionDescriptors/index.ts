@@ -74,6 +74,7 @@ const actionDisabledMessages: {
     user_not_in_group: messages.votingNotInGroup,
     user_blocked: messages.votingNotPermitted,
     user_not_verified: messages.votingNotVerified,
+    project_inactive: messages.votingDisabledProjectInactive,
   },
   budgeting: {
     user_not_signed_in: messages.budgetingNotSignedIn,
@@ -81,6 +82,7 @@ const actionDisabledMessages: {
     user_not_in_group: messages.budgetingNotInGroup,
     user_blocked: messages.budgetingNotPermitted,
     user_not_verified: messages.budgetingNotVerified,
+    project_inactive: messages.votingDisabledProjectInactive,
   },
   annotating_document: {
     project_inactive: messages.documentAnnotationDisabledProjectInactive,

@@ -70,7 +70,7 @@ module UserCustomFields
         def custom_field_key_from_path
           key = request
             .path.split('/').last
-            .match(/^users_by_(?<key>age|birthyear|domicile|education|gender)/)&.[](:key)
+            .match(/^users_by_(?<key>age|birthyear|domicile|gender)/)&.[](:key)
 
           key == 'age' ? 'birthyear' : key
         end
@@ -118,6 +118,8 @@ module UserCustomFields
               }
             end
 
+          # Remove option id from xlsx output - confusing for customers
+          xlsx_columns.delete(:option_id)
           XlsxService.new.xlsx_from_columns(xlsx_columns, sheetname: "users_by_#{custom_field.key}")
         end
 

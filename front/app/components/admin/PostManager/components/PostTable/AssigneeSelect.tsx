@@ -1,7 +1,8 @@
 import React from 'react';
 
+import { colors, IOption, Select } from '@citizenlab/cl2-component-library';
 import { memoize } from 'lodash-es';
-import { Select } from 'semantic-ui-react';
+import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { IUser, IUsers } from 'api/users/types';
@@ -11,6 +12,20 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
 
+const StyledSelect = styled(Select)`
+  width: 160px;
+
+  // Semantic UI Select component was replaced here which changed the UI, but I wanted to
+  // maintain similar styles to what we had before so it looks visually consistent.
+  select {
+    padding-right: 36px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border: solid 1px ${colors.grey300};
+    color: ${colors.primary};
+    font-size: 14px;
+  }
+`;
 interface Props {
   projectId?: string;
   assigneeId: string | undefined;
@@ -37,10 +52,9 @@ const AssigneeSelect = ({ projectId, assigneeId, onAssigneeChange }: Props) => {
         .filter((assignee) => assignee.id !== authUser.data.id)
         .map((assignee) => ({
           value: assignee.id,
-          text: formatMessage(messages.assignedTo, {
+          label: formatMessage(messages.assignedTo, {
             assigneeName: `${assignee.attributes.first_name} ${assignee.attributes.last_name}`,
           }),
-          className: 'e2e-assignee-filter-other-user',
         }));
 
       // Order of assignee filter options:
@@ -48,30 +62,27 @@ const AssigneeSelect = ({ projectId, assigneeId, onAssigneeChange }: Props) => {
       return [
         {
           value: authUser.data.id,
-          text: formatMessage(messages.assignedToMe),
-          id: 'e2e-assignee-select-assigned-to-user',
+          label: formatMessage(messages.assignedToMe),
         },
         {
           value: 'unassigned',
-          text: formatMessage(messages.noOne),
-          id: 'e2e-assignee-select-unassigned',
+          label: formatMessage(messages.noOne),
         },
         ...dynamicOptions,
       ];
     }
   );
 
-  const handleOnAssigneeChange = (
-    _event: React.SyntheticEvent,
-    { value }: { value?: unknown }
-  ) => {
-    if (typeof value === 'string') {
-      onAssigneeChange(value === 'unassigned' ? undefined : value);
+  const handleOnAssigneeChange = (option: IOption) => {
+    if (typeof option.value === 'string') {
+      onAssigneeChange(
+        option.value === 'unassigned' ? undefined : option.value
+      );
     }
   };
 
   return (
-    <Select
+    <StyledSelect
       id={'post-row-select-assignee'}
       options={getAssigneeOptions(prospectAssignees, authUser)}
       onChange={handleOnAssigneeChange}

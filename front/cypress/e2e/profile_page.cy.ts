@@ -36,7 +36,7 @@ describe('Profile Page', () => {
       })
       .then((idea) => {
         ideaId = idea.body.data.id;
-        return cy.apiAddComment(ideaId, 'idea', commentContent, undefined, jwt);
+        return cy.apiAddComment(ideaId, commentContent, undefined, jwt);
       })
       .then((comment) => {
         commentId = comment.body.data.id;
@@ -61,17 +61,22 @@ describe('Profile Page', () => {
     cy.visit(`/profile/${newUserName}-${newUserSurname}`);
     cy.get('#e2e-usersshowpage');
     cy.wait(1000);
+    cy.injectAxe();
   });
 
   it('shows the page, and main infos', () => {
     cy.get('#e2e-usersshowpage-fullname').contains(
       `${newUserName} ${newUserSurname}`
     );
+    cy.checkA11y(undefined, {
+      includedImpacts: ['critical', 'serious'],
+    });
   });
 
   it('shows the ideas the user posted', () => {
     cy.get('.e2e-search-input input').type(ideaTitle);
     cy.get('.e2e-search-input input').should('have.value', ideaTitle);
+
     cy.get('#e2e-ideas-container')
       .find('.e2e-idea-card')
       .should('have.length', 1)
@@ -82,12 +87,18 @@ describe('Profile Page', () => {
     cy.get('.e2e-comment-section-nav').click();
     cy.get('.e2e-profile-comments');
     cy.get('.e2e-profile-comments').contains(commentContent);
+
+    cy.checkA11y(undefined, {
+      includedImpacts: ['critical', 'serious'],
+    });
   });
 
   it('shows the events the user is attending', () => {
     cy.clearCookies();
     // Confirm that the user event tab is not visible to other users
     cy.visit(`/profile/${newUserName}-${newUserSurname}`);
+    cy.acceptCookies();
+
     cy.get('#e2e-usersshowpage');
     cy.get('.e2e-events-nav').should('not.exist');
 

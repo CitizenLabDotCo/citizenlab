@@ -42,23 +42,42 @@ describe('Input form builder', () => {
   });
 
   it('allows user to turn on / off the proposed budget default field but not edit its question title', () => {
-    // Check that the tags field is not present on the idea form before turning it off
-    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
-    cy.acceptCookies();
+    const title = randomString(12);
+    const description = randomString(42);
 
-    cy.get('#propertiesproposed_budget').should('not.exist');
+    // Visit the project page and accept cookies. This is needed because the cookie banner is not interactive on the input form
+    cy.visit(`/projects/${projectSlug}`);
+
+    // Check that the proposed budget field is not present on the idea form before turning it off
+    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+
+    // Fill in the title and description since these are required
+    cy.get('#title_multiloc ').type(title, { delay: 0 });
+    cy.get('#title_multiloc ').should('contain.value', title);
+
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+
+    cy.get('#body_multiloc .ql-editor').type(description);
+    cy.get('#body_multiloc .ql-editor').contains(description);
+    cy.wait(500);
+
+    // Go to the next page of the idea form
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+
+    // Page 3 should have the proposed budget field but does not
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+
+    cy.get('#proposed_budget').should('not.exist');
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form`);
-    cy.get('[data-cy="e2e-edit-input-form"]').click();
+    cy.dataCy('e2e-edit-input-form').click();
 
-    cy.get('[data-cy="e2e-proposed-budget-item"]').as(
-      'proposedBudgetToolboxItem'
-    );
+    cy.dataCy('e2e-proposed-budget-item').as('proposedBudgetToolboxItem');
     cy.get('@proposedBudgetToolboxItem').should('exist');
 
     // The proposed budget tool box item should be enabled as it is not on the canvas
     cy.get('@proposedBudgetToolboxItem').should('not.have.attr', 'disabled');
-    cy.get('[data-cy="e2e-form-fields"]').within(() => {
+    cy.dataCy('e2e-form-fields').within(() => {
       cy.contains('Proposed Budget').should('not.exist');
     });
 
@@ -68,7 +87,7 @@ describe('Input form builder', () => {
     cy.get('@proposedBudgetToolboxItem').should('have.attr', 'disabled');
 
     // Check to see that the proposed budget is added to the canvas
-    cy.get('[data-cy="e2e-form-fields"]').within(() => {
+    cy.dataCy('e2e-form-fields').within(() => {
       cy.contains('Proposed Budget').should('exist');
       cy.contains('Proposed Budget').click();
     });
@@ -84,6 +103,22 @@ describe('Input form builder', () => {
     // Fill in the form
     cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
 
-    cy.get('#propertiesproposed_budget').should('exist');
+    // Fill in the title and description since these are required
+    cy.get('#title_multiloc ').type(title, { delay: 0 });
+    cy.get('#title_multiloc ').should('contain.value', title);
+
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+
+    cy.get('#body_multiloc .ql-editor').type(description);
+    cy.get('#body_multiloc .ql-editor').contains(description);
+    cy.wait(500);
+
+    // Go to the next page of the idea form
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+
+    // Page 3 should have the proposed budget field
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+
+    cy.get('#proposed_budget').should('exist');
   });
 });

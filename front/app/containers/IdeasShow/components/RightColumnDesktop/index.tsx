@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, Divider } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import usePhases from 'api/phases/usePhases';
@@ -13,14 +14,15 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import FollowUnfollow from 'components/FollowUnfollow';
 import ReactionControl from 'components/ReactionControl';
+import { showIdeationReactions } from 'components/ReactionControl/utils';
 
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 
 import { rightColumnWidthDesktop } from '../../styleConstants';
 import GoToCommentsButton from '../Buttons/GoToCommentsButton';
 import IdeaSharingButton from '../Buttons/IdeaSharingButton';
 import SharingButtonComponent from '../Buttons/SharingButtonComponent';
+import Cosponsorship from '../Cosponsorship';
 import MetaInformation from '../MetaInformation';
 import ProposalInfo from '../ProposalInfo';
 
@@ -39,6 +41,7 @@ const RightColumnDesktop = ({
   authorId,
   className,
 }: Props) => {
+  const theme = useTheme();
   const { data: phases } = usePhases(projectId);
   const { data: idea } = useIdeaById(ideaId);
   const followEnabled = useFeatureFlag({
@@ -50,37 +53,17 @@ const RightColumnDesktop = ({
   const phase = getCurrentPhase(phases?.data);
   const votingConfig = getVotingMethodConfig(phase?.attributes.voting_method);
 
-  const ideaIsInParticipationContext =
-    phase && idea ? isIdeaInParticipationContext(idea, phase) : undefined;
+  const ideaIsInParticipationContext = phase
+    ? isIdeaInParticipationContext(idea.data, phase)
+    : undefined;
 
   const commentingEnabled =
-    !!idea?.data.attributes.action_descriptors.commenting_idea.enabled;
+    idea.data.attributes.action_descriptors.commenting_idea.enabled;
 
-  // showReactionControl
   const participationMethod = phase?.attributes.participation_method;
-
-  const reactingActionDescriptor =
-    idea.data.attributes.action_descriptors.reacting_idea;
-  const reactingFutureEnabled = !!(
-    reactingActionDescriptor.up.future_enabled_at ||
-    reactingActionDescriptor.down.future_enabled_at
-  );
-  const cancellingEnabled = reactingActionDescriptor.cancelling_enabled;
-  const likesCount = idea.data.attributes.likes_count;
-  const dislikesCount = idea.data.attributes.dislikes_count;
-  const showReactionControl =
-    participationMethod !== 'voting' &&
-    participationMethod !== 'proposals' &&
-    (reactingActionDescriptor.enabled ||
-      isFixableByAuthentication(reactingActionDescriptor.disabled_reason) ||
-      cancellingEnabled ||
-      reactingFutureEnabled ||
-      likesCount > 0 ||
-      dislikesCount > 0);
 
   const showInteractionsContainer =
     ideaIsInParticipationContext || commentingEnabled || followEnabled;
-
   return (
     <Box
       flex={`0 0 ${rightColumnWidthDesktop}px`}
@@ -91,35 +74,49 @@ const RightColumnDesktop = ({
       className={className}
     >
       <Box display="flex" flexDirection="column">
-        {showInteractionsContainer && (
+        {showInteractionsContainer && participationMethod && (
           <Box
             padding="20px"
-            borderRadius="3px"
+            borderRadius={theme.borderRadius}
             background={colors.background}
             mb="12px"
           >
             {participationMethod === 'proposals' && (
-              <Box bg="white" p="12px">
-                <ProposalInfo idea={idea} />
-              </Box>
+              <>
+                <Box
+                  p="12px"
+                  bg={colors.white}
+                  borderRadius={theme.borderRadius}
+                >
+                  <ProposalInfo idea={idea} />
+                </Box>
+                <Divider />
+              </>
             )}
-            {showReactionControl && (
-              <Box pb="23px" mb="23px">
-                <ReactionControl styleType="shadow" ideaId={ideaId} size="4" />
-              </Box>
-            )}
-            {phase && ideaIsInParticipationContext && (
-              <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
-                {votingConfig?.getIdeaPageVoteInput({
-                  ideaId,
-                  phase,
-                  compact: false,
-                })}
-              </Box>
-            )}
-
+            {participationMethod === 'ideation' &&
+              showIdeationReactions(idea.data) && (
+                <>
+                  <ReactionControl
+                    styleType="shadow"
+                    ideaId={ideaId}
+                    size="4"
+                  />
+                  <Divider />
+                </>
+              )}
+            {participationMethod === 'voting' &&
+              ideaIsInParticipationContext &&
+              votingConfig && (
+                <Box pb="24px" mb="24px" borderBottom="solid 1px #ccc">
+                  {votingConfig.getIdeaPageVoteInput({
+                    ideaId,
+                    phase,
+                    compact: false,
+                  })}
+                </Box>
+              )}
             {commentingEnabled && (
-              <Box mb="10px">
+              <Box mb="12px">
                 <GoToCommentsButton />
               </Box>
             )}
@@ -127,14 +124,15 @@ const RightColumnDesktop = ({
               followableType="ideas"
               followableId={ideaId}
               followersCount={idea.data.attributes.followers_count}
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               followerId={idea.data.relationships.user_follower?.data?.id}
               toolTipType="input"
-              buttonStyle={
-                participationMethod === 'proposals' ? 'white' : 'primary'
-              }
             />
           </Box>
         )}
+        <Cosponsorship ideaId={ideaId} />
+
         <Box mb="16px">
           <IdeaSharingButton
             ideaId={ideaId}

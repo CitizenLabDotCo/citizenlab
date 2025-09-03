@@ -34,24 +34,6 @@ class ResolveTextVariables extends PureComponent<Props> {
         orgName: localize(tenant.attributes.settings.core.organization_name),
       };
 
-      const initiativeSettings = tenant.attributes.settings.initiatives;
-
-      if (initiativeSettings.eligibility_criteria) {
-        textVariables.initiativesEligibilityCriteria = localize(
-          initiativeSettings.eligibility_criteria
-        );
-      }
-      if (initiativeSettings.threshold_reached_message) {
-        textVariables.initiativesThresholdReachedMessage = localize(
-          initiativeSettings.threshold_reached_message
-        );
-      }
-
-      textVariables.initiativesVotingThreshold =
-        initiativeSettings.reacting_threshold.toString();
-      textVariables.initiativesDaysLimit =
-        initiativeSettings.days_limit.toString();
-
       return textVariables;
     }
 

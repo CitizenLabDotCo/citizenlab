@@ -8,7 +8,6 @@ export type CommentsKeys = Keys<typeof commentsKeys>;
 
 export type ICommentParameters = {
   ideaId?: string;
-  initiativeId?: string;
   authorId?: string;
   commentId?: string;
 };
@@ -38,7 +37,7 @@ export interface ICommentData {
   type: 'comment';
   attributes: IPresentComment | IDeletedComment;
   relationships: {
-    post: {
+    idea: {
       data: IRelationship;
     };
     author: {
@@ -64,7 +63,6 @@ export interface IComments {
 
 export interface INewComment {
   ideaId?: string;
-  initiativeId?: string;
   author_id: string;
   parent_id?: string;
   body_multiloc: Multiloc;

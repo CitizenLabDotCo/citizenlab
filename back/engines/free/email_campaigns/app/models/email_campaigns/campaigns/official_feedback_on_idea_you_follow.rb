@@ -4,19 +4,23 @@
 #
 # Table name: email_campaigns_campaigns
 #
-#  id               :uuid             not null, primary key
-#  type             :string           not null
-#  author_id        :uuid
-#  enabled          :boolean
-#  sender           :string
-#  reply_to         :string
-#  schedule         :jsonb
-#  subject_multiloc :jsonb
-#  body_multiloc    :jsonb
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  deliveries_count :integer          default(0), not null
-#  context_id       :uuid
+#  id                   :uuid             not null, primary key
+#  type                 :string           not null
+#  author_id            :uuid
+#  enabled              :boolean
+#  sender               :string
+#  reply_to             :string
+#  schedule             :jsonb
+#  subject_multiloc     :jsonb
+#  body_multiloc        :jsonb
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  deliveries_count     :integer          default(0), not null
+#  context_id           :uuid
+#  title_multiloc       :jsonb
+#  intro_multiloc       :jsonb
+#  button_text_multiloc :jsonb
+#  context_type         :string
 #
 # Indexes
 #
@@ -31,9 +35,12 @@
 module EmailCampaigns
   class Campaigns::OfficialFeedbackOnIdeaYouFollow < Campaign
     include Consentable
+    include Disableable
     include ActivityTriggerable
     include RecipientConfigurable
     include Trackable
+    include ContentConfigurable
+    include ContextConfigurable
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: %w[trial active]
 
@@ -67,6 +74,20 @@ module EmailCampaigns
       'email_campaigns.admin_labels.trigger.input_is_updated'
     end
 
+    def activity_context(activity)
+      return nil unless activity.item.is_a?(::Notification)
+
+      activity.item.idea && TimelineService.new.current_phase(activity.item.idea.project)
+    end
+
+    def self.supported_context_class
+      Phase
+    end
+
+    def self.supports_context?(context)
+      supports_phase_participation_method?(context)
+    end
+
     def generate_commands(recipient:, activity:, time: nil)
       notification = activity.item
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
@@ -75,10 +96,10 @@ module EmailCampaigns
           official_feedback_author_multiloc: notification.official_feedback.author_multiloc,
           official_feedback_body_multiloc: notification.official_feedback.body_multiloc,
           official_feedback_url: Frontend::UrlService.new.model_to_url(notification.official_feedback, locale: Locale.new(recipient.locale)),
-          post_published_at: notification.post.published_at.iso8601,
-          post_title_multiloc: notification.post.title_multiloc,
-          post_author_name: name_service.display_name!(notification.post.author),
-          unfollow_url: Frontend::UrlService.new.unfollow_url(Follower.new(followable: notification.post, user: recipient))
+          idea_title_multiloc: notification.idea.title_multiloc,
+          idea_body_multiloc: notification.idea.body_multiloc,
+          idea_author_name: name_service.display_name!(notification.idea.author),
+          unfollow_url: Frontend::UrlService.new.unfollow_url(Follower.new(followable: notification.idea, user: recipient))
         }
       }]
     end

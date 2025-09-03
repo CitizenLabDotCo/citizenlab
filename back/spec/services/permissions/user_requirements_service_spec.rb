@@ -201,6 +201,42 @@ describe Permissions::UserRequirementsService do
             group_membership: false
           })
         end
+
+        context 'when the action is following' do
+          before { permission.update!(permission_scope: nil, action: 'following') }
+
+          it 'does not permit a visitor when password login is enabled' do
+            requirements = service.requirements(permission, nil)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements).to eq({
+              authentication: {
+                permitted_by: 'everyone_confirmed_email',
+                missing_user_attributes: %i[email confirmation]
+              },
+              verification: false,
+              custom_fields: { 'birthyear' => 'optional' },
+              onboarding: false,
+              group_membership: false
+            })
+          end
+
+          it 'does not permit a visitor and returns the requirements for "users" instead when password login is NOT enabled' do
+            SettingsService.new.deactivate_feature! 'password_login'
+
+            requirements = service.requirements(permission, nil)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements).to eq({
+              authentication: {
+                permitted_by: 'users',
+                missing_user_attributes: %i[first_name last_name email confirmation password]
+              },
+              verification: false,
+              custom_fields: { 'birthyear' => 'optional' },
+              onboarding: true,
+              group_membership: false
+            })
+          end
+        end
       end
 
       context 'when permitted_by is set to users' do
@@ -371,6 +407,15 @@ describe Permissions::UserRequirementsService do
             })
           end
         end
+
+        context 'when user fields are enabled as part of the survey form' do
+          it 'does not return any custom fields as part of the requirements' do
+            survey_phase = build(:native_survey_phase, user_fields_in_form: true)
+            permission.permission_scope = survey_phase
+            requirements = service.requirements(permission, nil)
+            expect(requirements[:custom_fields]).to be_empty
+          end
+        end
       end
 
       context 'when permitted_by is set to admins_moderators and user confirmation feature is off' do
@@ -484,6 +529,196 @@ describe Permissions::UserRequirementsService do
             onboarding: false,
             group_membership: false
           })
+        end
+      end
+    end
+
+    context 'verification via groups' do
+      context 'when permission has groups and permission has a verification group' do
+        let(:groups) { [create(:group), create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])] }
+        let(:group_permission) { create(:permission, permitted_by: 'users', groups: groups) }
+
+        context 'there is no user' do
+          it 'requires verification' do
+            requirements = service.requirements(group_permission, nil)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements[:authentication][:permitted_by]).to eq 'users'
+            expect(requirements[:verification]).to be true
+          end
+        end
+
+        context 'a user is not verified' do
+          before { user.update!(verified: false) }
+
+          it 'requires verification' do
+            requirements = service.requirements(group_permission, user)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements[:authentication][:permitted_by]).to eq 'users'
+            expect(requirements[:verification]).to be true
+          end
+        end
+
+        context 'a user is verified' do
+          before { user.update!(verified: true) }
+
+          it 'verification is satisfied' do
+            requirements = service.requirements(group_permission, user)
+            expect(service.permitted?(requirements)).to be true
+            expect(requirements[:authentication][:permitted_by]).to eq 'users'
+            expect(requirements[:verification]).to be false
+          end
+        end
+      end
+
+      context 'when permission has a group but is NOT set to a verification group' do
+        let(:groups) { [create(:group), create(:smart_group)] }
+        let(:group_permission) { create(:permission, permitted_by: 'users', groups: groups) }
+
+        it 'verification is not required' do
+          requirements = service.requirements(group_permission, nil)
+          expect(requirements[:authentication][:permitted_by]).to eq 'users'
+          expect(requirements[:verification]).to be false
+        end
+      end
+
+      context 'when permission has no groups' do
+        let(:permission) { create(:permission, permitted_by: 'users') }
+
+        it 'verification is not required' do
+          requirements = service.requirements(permission, nil)
+          expect(requirements[:authentication][:permitted_by]).to eq 'users'
+          expect(requirements[:verification]).to be false
+        end
+      end
+    end
+
+    context 'verification via permitted_by "verified"' do
+      let(:verified_permission) { create(:permission, permitted_by: 'verified') }
+
+      before do
+        # To allow permitted_by 'verified' we need to enable at least one verification method
+        SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+      end
+
+      context 'there is no user' do
+        it 'requires verification' do
+          requirements = service.requirements(verified_permission, nil)
+          expect(service.permitted?(requirements)).to be false
+          expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+          expect(requirements[:verification]).to be true
+        end
+      end
+
+      context 'a user is not verified' do
+        before { user.update!(verified: false) }
+
+        it 'requires verification' do
+          requirements = service.requirements(verified_permission, user)
+          expect(service.permitted?(requirements)).to be false
+          expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+          expect(requirements[:verification]).to be true
+        end
+
+        it 'does not remove missing authentication requirements if not verified' do
+          user.update!(unique_code: '1234abcd', email: nil, password: nil)
+          requirements = service.requirements(verified_permission, user)
+          expect(requirements[:authentication][:missing_user_attributes]).to eq %i[email password]
+        end
+      end
+
+      context 'a user is verified' do
+        before do
+          user.update!(verified: true)
+          create(:verification, user: user, method_name: 'fake_sso')
+        end
+
+        context 'when verification_expiry is nil' do
+          it 'verification is satisfied' do
+            requirements = service.requirements(verified_permission, user)
+            expect(service.permitted?(requirements)).to be true
+            expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+            expect(requirements[:verification]).to be false
+          end
+
+          it 'removes all missing authentication requirements if verified' do
+            user.update!(unique_code: '1234abcd', email: nil, password: nil)
+            requirements = service.requirements(verified_permission, user)
+            expect(requirements[:authentication][:missing_user_attributes]).to be_empty
+          end
+
+          it 'removes locked custom fields if verified' do
+            verified_permission.update!(global_custom_fields: false)
+            create(:permissions_custom_field, custom_field: CustomField.find_by(key: 'gender'), permission: verified_permission, required: true) # locked
+            create(:permissions_custom_field, custom_field: CustomField.find_by(key: 'birthyear'), permission: verified_permission, required: true) # locked
+            create(:permissions_custom_field, custom_field: create(:custom_field_domicile), permission: verified_permission, required: true) # not locked
+            requirements = service.requirements(verified_permission, user)
+            expect(requirements[:custom_fields]).to eq({ 'domicile' => 'required' })
+          end
+        end
+
+        context 'when verification_expiry is set to 0' do
+          before { verified_permission.update!(verification_expiry: 0) }
+
+          it 'does not require verification after less than 30 minutes' do
+            travel_to Time.now + 15.minutes do
+              requirements = service.requirements(verified_permission, user)
+              expect(service.permitted?(requirements)).to be true
+              expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+              expect(requirements[:verification]).to be false
+            end
+          end
+
+          it 'requires verification again after more than 30 minutes' do
+            travel_to Time.now + 30.minutes + 1.second do
+              requirements = service.requirements(verified_permission, user)
+              expect(service.permitted?(requirements)).to be false
+              expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+              expect(requirements[:verification]).to be true
+            end
+          end
+        end
+
+        context 'when verification_expiry is set greater than 0' do
+          it 'requires verification again after more than a day' do
+            verified_permission.update!(verification_expiry: 1)
+            travel_to Time.now + 1.day + 1.second do
+              requirements = service.requirements(verified_permission, user)
+              expect(service.permitted?(requirements)).to be false
+              expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+              expect(requirements[:verification]).to be true
+            end
+          end
+
+          it 'does not requires verification before 1 day' do
+            verified_permission.update!(verification_expiry: 1)
+            travel_to Time.now + 23.hours do
+              requirements = service.requirements(verified_permission, user)
+              expect(service.permitted?(requirements)).to be true
+              expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+              expect(requirements[:verification]).to be false
+            end
+          end
+
+          it 'requires verification again after more than 30 days' do
+            verified_permission.update!(verification_expiry: 30)
+            travel_to Time.now + 30.days + 1.second do
+              requirements = service.requirements(verified_permission, user)
+              expect(service.permitted?(requirements)).to be false
+              expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+              expect(requirements[:verification]).to be true
+            end
+          end
+        end
+      end
+
+      context 'a user is verified and has email, but is not confirmed' do
+        let(:user) { create(:user_with_confirmation, verified: true) }
+
+        it 'requires email confirmation' do
+          expect(user.confirmation_required?).to be true
+          requirements = service.requirements(verified_permission, user)
+          expect(service.permitted?(requirements)).to be false
+          expect(requirements[:authentication][:missing_user_attributes]).to eq ['confirmation']
         end
       end
     end

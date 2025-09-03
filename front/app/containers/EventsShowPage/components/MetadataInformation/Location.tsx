@@ -6,7 +6,7 @@ import { IEventData } from 'api/events/types';
 
 import useLocale from 'hooks/useLocale';
 
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -22,12 +22,16 @@ const Location = ({ event }: Props) => {
   const isPhoneOrSmaller = useBreakpoint('phone');
   const currentLocale = useLocale();
   const position = event?.attributes.location_point_geojson;
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const address1 = event?.attributes?.address_1;
 
   if (isNilOrError(currentLocale) || !address1) {
     return null;
   }
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const address2 = event?.attributes?.address_2_multiloc[currentLocale];
 
   if (address1) {
@@ -37,7 +41,7 @@ const Location = ({ event }: Props) => {
         <Content>
           {position ? (
             <Box display="flex">
-              <Button
+              <ButtonWithLink
                 m="0px"
                 p="0px"
                 fontSize="m"
@@ -55,7 +59,7 @@ const Location = ({ event }: Props) => {
                 <Text mt="4px" color="coolGrey600" m="0px" p="0px" fontSize="s">
                   {address1.slice(0, address1.indexOf(','))}
                 </Text>
-              </Button>
+              </ButtonWithLink>
             </Box>
           ) : (
             <Text

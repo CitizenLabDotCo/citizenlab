@@ -5,25 +5,28 @@ import {
   Spinner,
   stylingConsts,
   Button,
-  colors,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import Transition from 'react-transition-group/Transition';
 import { SupportedLocale } from 'typings';
 
+import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
 import useProjects from 'api/projects/useProjects';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useAppConfigurationLocales, {
+  createMultiloc,
+} from 'hooks/useAppConfigurationLocales';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
-import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
+import Section from 'components/admin/ContentBuilder/Toolbox/Section';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import { trackEventByName } from 'utils/analytics';
@@ -32,7 +35,12 @@ import {
   useFormatMessageWithLocale,
   MessageDescriptor,
 } from 'utils/cl-intl';
-import { isModerator } from 'utils/permissions/roles';
+import {
+  isModerator,
+  isProjectModerator,
+  isSuperAdmin,
+  isAdmin,
+} from 'utils/permissions/roles';
 
 import Analysis from '../Analysis';
 import { WIDGET_TITLES } from '../Widgets';
@@ -43,9 +51,11 @@ import ParticipationWidget from '../Widgets/ChartWidgets/ParticipationWidget';
 import RegistrationsWidget from '../Widgets/ChartWidgets/RegistrationsWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
 import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
+import CommunityMonitorHealthScoreWidget from '../Widgets/CommunityMonitorHealthScoreWidget';
 import IframeMultiloc from '../Widgets/IframeMultiloc';
 import ImageMultiloc from '../Widgets/ImageMultiloc';
 import MostReactedIdeasWidget from '../Widgets/MostReactedIdeasWidget';
+import ProjectsTimelineWidget from '../Widgets/ProjectsTimelineWidget';
 import ProjectsWidget from '../Widgets/ProjectsWidget';
 import SingleIdeaWidget from '../Widgets/SingleIdeaWidget';
 import SurveyQuestionResultWidget from '../Widgets/SurveyQuestionResultWidget';
@@ -59,12 +69,6 @@ type ReportBuilderToolboxProps = {
   selectedLocale: SupportedLocale;
 };
 
-const Section = ({ children }) => (
-  <Box borderTop={`1px solid ${colors.divider}`} pt="12px" mb="12px">
-    {children}
-  </Box>
-);
-
 const ReportBuilderToolbox = ({
   selectedLocale,
 }: ReportBuilderToolboxProps) => {
@@ -73,9 +77,10 @@ const ReportBuilderToolbox = ({
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const { projectId } = useReportContext();
   const appConfigurationLocales = useAppConfigurationLocales();
-  const { data: authUser } = useAuthUser();
 
+  const { data: authUser } = useAuthUser();
   const userIsModerator = !!authUser && isModerator(authUser);
+  const isUserAdmin = isAdmin(authUser);
 
   const { data: projects } = useProjects(
     {
@@ -87,14 +92,26 @@ const ReportBuilderToolbox = ({
     }
   );
 
+  // Check if the user moderates the communtiy monitor, to decide if
+  // we want to show this widget in the toolbox.
+  const { data: communityMonitorProject } = useCommunityMonitorProject({});
+  const moderatesCommunityMonitor =
+    communityMonitorProject &&
+    (isSuperAdmin(authUser) ||
+      isProjectModerator(authUser, communityMonitorProject.data.id));
+
   const { data: phases } = usePhases(projectId);
   const { data: userFields } = useUserCustomFields({ inputTypes: ['select'] });
+  const projectPlanningCalendarEnabled = useFeatureFlag({
+    name: 'project_planning_calendar',
+  });
 
   if (
     !appConfigurationLocales ||
     !authUser ||
     (userIsModerator && !projects) ||
-    !userFields
+    !userFields ||
+    !formatMessageWithLocale
   ) {
     return (
       <Container>
@@ -162,7 +179,7 @@ const ReportBuilderToolbox = ({
               id="e2e-report-builder-ai-tab"
               onClick={() => {
                 setSelectedTab('ai');
-                trackEventByName(tracks.openReportBuilderAITab.name);
+                trackEventByName(tracks.openReportBuilderAITab);
               }}
               buttonStyle={selectedTab === 'ai' ? 'secondary-outlined' : 'text'}
             >
@@ -248,6 +265,17 @@ const ReportBuilderToolbox = ({
           </Section>
 
           <Section>
+            {moderatesCommunityMonitor && (
+              <DraggableElement
+                id="e2e-draggable-community-monitor-health-score-widget"
+                component={<CommunityMonitorHealthScoreWidget />}
+                icon="chart-bar"
+                label={formatMessage(
+                  WIDGET_TITLES.CommunityMonitorHealthScoreWidget
+                )}
+              />
+            )}
+
             <DraggableElement
               id="e2e-draggable-visitors-timeline-widget"
               component={
@@ -342,18 +370,34 @@ const ReportBuilderToolbox = ({
               icon="chart-bar"
               label={formatMessage(WIDGET_TITLES.MethodsUsedWidget)}
             />
-            <DraggableElement
-              id="e2e-draggable-projects-widget"
-              component={
-                <ProjectsWidget
-                  title={toMultiloc(WIDGET_TITLES.ProjectsWidget)}
-                  startAt={undefined}
-                  endAt={chartEndDate}
-                />
-              }
-              icon="projects"
-              label={formatMessage(WIDGET_TITLES.ProjectsWidget)}
-            />
+            {/* Only show Projects Widget for admins, not for project moderators */}
+            {isUserAdmin && (
+              <DraggableElement
+                id="e2e-draggable-projects-widget"
+                component={
+                  <ProjectsWidget
+                    title={toMultiloc(WIDGET_TITLES.ProjectsWidget)}
+                    startAt={undefined}
+                    endAt={chartEndDate}
+                  />
+                }
+                icon="projects"
+                label={formatMessage(WIDGET_TITLES.ProjectsWidget)}
+              />
+            )}
+            {/* Only show Projects Timeline Widget for admins, not for project moderators */}
+            {projectPlanningCalendarEnabled && isUserAdmin && (
+              <DraggableElement
+                id="e2e-draggable-projects-timeline-widget"
+                component={
+                  <ProjectsTimelineWidget
+                    title={toMultiloc(WIDGET_TITLES.ProjectsTimelineWidget)}
+                  />
+                }
+                icon="chart-bar"
+                label={formatMessage(WIDGET_TITLES.ProjectsTimelineWidget)}
+              />
+            )}
           </Section>
         </Box>
         <Box p="8px" display={selectedTab === 'ai' ? 'block' : 'none'}>

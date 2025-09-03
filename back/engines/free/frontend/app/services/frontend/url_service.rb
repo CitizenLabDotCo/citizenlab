@@ -15,23 +15,21 @@ module Frontend
       when Idea
         subroute = 'ideas'
         slug = model_instance.slug
-      when Initiative
-        subroute = 'initiatives'
-        slug = model_instance.slug
       when StaticPage
         subroute = 'pages'
         slug = model_instance.slug
       when User
         subroute = 'profile'
         slug = model_instance.slug
-      when Comment, OfficialFeedback # Comments and official feedbacks do not have a path yet, we return the post path for now
-        return model_to_path(model_instance.post)
+      when Comment, OfficialFeedback # Comments and official feedback do not have a path yet, we return the idea path for now
+        return model_to_path(model_instance.idea)
       when InternalComment # Internal comments are only implemented in the Back Office / Admin UI
-        if model_instance.post_type == 'Idea'
-          return "admin/projects/#{model_instance.post.project_id}/ideas/#{model_instance.post.id}##{model_instance.id}"
-        elsif model_instance.post_type == 'Initiative'
-          return "admin/initiatives/#{model_instance.post.id}##{model_instance.id}"
-        end
+        return "admin/projects/#{model_instance.idea.project_id}/ideas/#{model_instance.idea.id}##{model_instance.id}"
+      when Analysis::Analysis
+        project_id = model_instance.source_project.id
+        phase_id = model_instance.phase_id
+        analysis_id = model_instance.id
+        return "admin/projects/#{project_id}/analysis/#{analysis_id}#{phase_id ? "?phase_id=#{phase_id}" : ''}"
       when ProjectFolders::Folder
         subroute = 'folders'
         slug = model_instance.slug
@@ -64,8 +62,6 @@ module Frontend
         subroute = 'projects'
       when 'Idea'
         subroute = 'ideas'
-      when 'Initiative'
-        subroute = 'initiatives'
       when 'Page'
         subroute = 'pages'
       end
@@ -130,26 +126,12 @@ module Frontend
       "#{configuration.base_frontend_uri}/pages/privacy-policy"
     end
 
-    def initiatives_url(configuration = app_config_instance)
-      "#{configuration.base_frontend_uri}/initiatives"
-    end
-
     def admin_ideas_url(configuration = app_config_instance)
       "#{configuration.base_frontend_uri}/admin/ideas"
     end
 
     def admin_project_url(project_id, configuration = app_config_instance)
-      project = Project.find(project_id)
-      last_phase_id = project ? TimelineService.new.current_or_backup_transitive_phase(project)&.id : nil
-      if last_phase_id
-        "#{configuration.base_frontend_uri}/admin/projects/#{project_id}/phases/#{last_phase_id}/ideas"
-      else
-        "#{configuration.base_frontend_uri}/admin/projects/#{project_id}/settings"
-      end
-    end
-
-    def admin_initiatives_url(configuration = app_config_instance)
-      "#{configuration.base_frontend_uri}/admin/initiatives"
+      "#{configuration.base_frontend_uri}/admin/projects/#{project_id}"
     end
 
     def idea_edit_url(configuration, idea_id)
@@ -158,6 +140,10 @@ module Frontend
 
     def reset_confirmation_code_url(options = {})
       "#{home_url(options)}/reset-confirmation-code"
+    end
+
+    def profile_surveys_url(user_slug, options = {})
+      "#{home_url(options)}/profile/#{user_slug}/surveys"
     end
 
     private

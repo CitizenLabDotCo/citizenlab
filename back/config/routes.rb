@@ -20,20 +20,6 @@ Rails.application.routes.draw do
       concern :followable do
         resources :followers, only: [:create]
       end
-      concern :post do
-        resources :comments, shallow: true,
-          concerns: %i[reactable spam_reportable],
-          defaults: { reactable: 'Comment', spam_reportable: 'Comment' } do
-          get :children, on: :member
-          post :mark_as_deleted, on: :member
-        end
-        resources :internal_comments, except: [:destroy], shallow: true do
-          get :children, on: :member
-          patch :mark_as_deleted, on: :member
-        end
-        get 'comments/as_xlsx', on: :collection, to: 'comments#index_xlsx'
-        resources :official_feedback, shallow: true
-      end
       concern :spam_reportable do
         resources :spam_reports, shallow: true
       end
@@ -50,47 +36,65 @@ Rails.application.routes.draw do
         end
       end
 
+      concern :file_attachable do |options|
+        unless options.key?(:attachable_type)
+          raise 'attachable_type option is required for concern :file_attachable'
+        end
+
+        resources :file_attachments,
+          controller: 'files/file_attachments',
+          only: %i[index create],
+          defaults: { attachable_type: options[:attachable_type], concern: :file_attachable }
+      end
+
       concerns :permissionable # for the global permission scope (with parent_param = nil)
 
       resources :activities, only: [:index]
 
       resources :ideas,
-        concerns: %i[reactable spam_reportable post followable permissionable],
-        defaults: { reactable: 'Idea', spam_reportable: 'Idea', post: 'Idea', followable: 'Idea', parent_param: :idea_id } do
+        concerns: %i[reactable spam_reportable followable permissionable],
+        defaults: { reactable: 'Idea', spam_reportable: 'Idea', followable: 'Idea', parent_param: :idea_id } do
+        concerns :file_attachable, attachable_type: 'Idea'
+
         resources :images, defaults: { container_type: 'Idea' }
         resources :files, defaults: { container_type: 'Idea' }
+        resources :cosponsorships, defaults: { container_type: 'Idea' } do
+          patch 'accept', on: :member
+        end
 
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         get :mini, on: :collection, action: 'index_mini'
+        get :survey_submissions, on: :collection, action: 'index_survey_submissions'
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
         get :as_markers, on: :collection, action: 'index_idea_markers'
         get :filter_counts, on: :collection
         get :json_forms_schema, on: :member
         get 'draft/:phase_id', on: :collection, to: 'ideas#draft_by_phase'
-      end
 
-      resources :initiatives,
-        concerns: %i[reactable spam_reportable post followable],
-        defaults: { reactable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative', followable: 'Initiative' } do
-        resources :images, defaults: { container_type: 'Initiative' }
-        resources :files, defaults: { container_type: 'Initiative' }
+        resources :official_feedback, shallow: true
+        resources :comments, shallow: true,
+          concerns: %i[reactable spam_reportable],
+          defaults: { reactable: 'Comment', spam_reportable: 'Comment' } do
+          get :children, on: :member
+          post :mark_as_deleted, on: :member
+        end
+        resources :internal_comments, except: [:destroy], shallow: true do
+          get :children, on: :member
+          patch :mark_as_deleted, on: :member
+        end
+        get 'comments/as_xlsx', on: :collection, to: 'comments#index_xlsx'
 
-        resources :initiative_status_changes, shallow: true, except: %i[update destroy]
-
-        get :as_xlsx, on: :collection, action: 'index_xlsx'
-        get 'by_slug/:slug', on: :collection, to: 'initiatives#by_slug'
-        get :as_markers, on: :collection, action: 'index_initiative_markers'
-        get :filter_counts, on: :collection
-        get :allowed_transitions, on: :member
-        patch :accept_cosponsorship_invite, on: :member
+        post :similar_ideas, on: :collection
+        resources :authoring_assistance_responses, only: %i[create]
+        get :as_xlsx, on: :member, action: 'show_xlsx'
       end
 
       resources :background_jobs, only: %i[index]
+      resources :jobs, only: %i[index show]
 
       resources :idea_statuses do
         patch 'reorder', on: :member
       end
-      resources :initiative_statuses, only: %i[index show]
 
       resources :location, only: [] do
         get :autocomplete, on: :collection
@@ -112,10 +116,12 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'users#by_slug'
         get 'by_invite/:token', on: :collection, to: 'users#by_invite'
         get 'ideas_count', on: :member
-        get 'initiatives_count', on: :member
         get 'comments_count', on: :member
         get 'blocked_count', on: :collection
         get 'check/:email', on: :collection, to: 'users#check', constraints: { email: /.*/ }
+        scope module: 'verification' do
+          get 'me/locked_attributes', on: :collection, to: 'locked_attributes#index'
+        end
 
         resources :comments, only: [:index], controller: 'user_comments'
       end
@@ -136,6 +142,9 @@ Rails.application.routes.draw do
 
       resources :areas do
         resources :followers, only: [:create], defaults: { followable: 'Area' }
+        collection do
+          get 'with_visible_projects_counts', to: 'areas#with_visible_projects_counts'
+        end
       end
 
       resources :followers, except: %i[create update]
@@ -143,6 +152,7 @@ Rails.application.routes.draw do
       resource :app_configuration, only: %i[show update]
 
       resources :static_pages do
+        concerns :file_attachable, attachable_type: 'StaticPage'
         resources :files, defaults: { container_type: 'StaticPage' }, shallow: false
         get 'by_slug/:slug', on: :collection, to: 'static_pages#by_slug'
       end
@@ -158,6 +168,8 @@ Rails.application.routes.draw do
       # https://github.com/rails/rails/pull/24405
 
       resources :events, only: %i[index show edit update destroy] do
+        concerns :file_attachable, attachable_type: 'Event'
+
         resources :files, defaults: { container_type: 'Event' }, shallow: false
         resources :images, defaults: { container_type: 'Event' }
         resources :attendances, module: 'events', only: %i[create index]
@@ -165,18 +177,35 @@ Rails.application.routes.draw do
       end
       resources :event_attendances, only: %i[destroy], controller: 'events/attendances'
 
-      resources :phases, only: %i[show edit update destroy], concerns: :permissionable, defaults: { parent_param: :phase_id } do
+      resources :phases, only: %i[show show_mini edit update destroy], concerns: :permissionable, defaults: { parent_param: :phase_id } do
+        concerns :file_attachable, attachable_type: 'Phase'
+
+        member do
+          get 'survey_results'
+          get 'common_ground_results'
+          get 'sentiment_by_quarter'
+          get :as_xlsx, action: 'index_xlsx'
+          get :mini, action: 'show_mini'
+          get 'submission_count'
+          get 'progress', action: 'show_progress'
+          delete 'inputs', action: 'delete_inputs'
+        end
+
+        resources :inputs, only: [], controller: 'ideas' do
+          post 'copy', on: :collection
+        end
+
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
-        get 'survey_results', on: :member
-        get :as_xlsx, on: :member, action: 'index_xlsx'
-        get 'submission_count', on: :member
-        delete 'inputs', on: :member, action: 'delete_inputs'
         resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
           get 'json_forms_schema', on: :collection
         end
+        get 'custom_form', on: :member, controller: 'custom_forms', action: 'show', defaults: { container_type: 'Phase' }
+        patch 'custom_form', on: :member, controller: 'custom_forms', action: 'update', defaults: { container_type: 'Phase' }
       end
 
       resources :projects, concerns: %i[followable], defaults: { followable: 'Project', parent_param: :project_id } do
+        concerns :file_attachable, attachable_type: 'Project'
+
         resources :events, only: %i[new create]
         resources :projects_allowed_input_topics, only: [:index]
         resources :phases, only: %i[index new create]
@@ -190,11 +219,33 @@ Rails.application.routes.draw do
           get :users_search, on: :collection
         end
 
-        post 'copy', on: :member
-        get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
-        get :as_xlsx, on: :member, action: 'index_xlsx'
-        get :votes_by_user_xlsx, on: :member, action: 'votes_by_user_xlsx'
-        get :votes_by_input_xlsx, on: :member, action: 'votes_by_input_xlsx'
+        collection do
+          get 'by_slug/:slug', to: 'projects#by_slug'
+          get 'for_areas', action: 'index_for_areas'
+          get 'for_topics', action: 'index_for_topics'
+          get 'finished_or_archived', action: 'index_finished_or_archived'
+          get 'for_followed_item', action: 'index_for_followed_item'
+          get 'with_active_participatory_phase', action: 'index_with_active_participatory_phase'
+          get 'community_monitor', action: 'community_monitor'
+          get 'for_admin', action: 'index_for_admin'
+          get 'participant_counts', action: 'participant_counts'
+        end
+
+        resource :review, controller: 'project_reviews'
+
+        member do
+          post :copy
+          post :refresh_preview_token
+
+          get :as_xlsx, action: 'index_xlsx'
+          get :votes_by_user_xlsx
+          get :votes_by_input_xlsx
+
+          delete :participation_data, action: 'destroy_participation_data'
+
+          get 'custom_form', controller: 'custom_forms', action: 'show', defaults: { container_type: 'Project' }
+          patch 'custom_form', controller: 'custom_forms', action: 'update', defaults: { container_type: 'Project' }
+        end
       end
 
       resources :projects_allowed_input_topics, only: %i[show create destroy] do
@@ -203,15 +254,17 @@ Rails.application.routes.draw do
 
       resources :admin_publications, only: %i[index show] do
         patch 'reorder', on: :member
+        get 'select_and_order_by_ids', on: :collection, action: 'index_select_and_order_by_ids'
         get 'status_counts', on: :collection
       end
 
       resources :project_folders, controller: 'folders', concerns: [:followable], defaults: { followable: 'ProjectFolders::Folder' } do
+        concerns :file_attachable, attachable_type: 'ProjectFolders::Folder'
         resources :moderators, controller: 'folder_moderators', except: %i[update]
-
         resources :images, controller: '/web_api/v1/images', defaults: { container_type: 'ProjectFolder' }
         resources :files, controller: '/web_api/v1/files', defaults: { container_type: 'ProjectFolder' }
         get 'by_slug/:slug', on: :collection, to: 'folders#by_slug'
+        get 'for_admin', on: :collection, action: 'index_for_admin'
       end
 
       resources :notifications, only: %i[index show] do
@@ -257,8 +310,6 @@ Rails.application.routes.draw do
           get 'ideas_by_project_as_xlsx'
         end
 
-        get 'initiatives_count', controller: 'stats_initiatives'
-
         with_options controller: 'stats_comments' do
           get 'comments_count'
           get 'comments_by_topic'
@@ -282,10 +333,6 @@ Rails.application.routes.draw do
         get 'users'
       end
 
-      scope 'action_descriptors', controller: 'action_descriptors' do
-        get 'initiatives'
-      end
-
       resources :baskets, except: [:index] do
         resources :baskets_ideas, shallow: true
       end
@@ -294,6 +341,37 @@ Rails.application.routes.draw do
       resources :avatars, only: %i[index show]
 
       resources :ideas_phases, only: %i[show]
+
+      resources :verification_methods, module: 'verification', only: [:index] do
+        get :first_enabled, on: :collection
+        get :first_enabled_for_verified_actions, on: :collection
+        Verification::VerificationService.new
+          .all_methods
+          .select { |vm| vm.verification_method_type == :manual_sync }
+          .each do |vm|
+          post "#{vm.name}/verification", to: 'verifications#create', on: :collection, :defaults => { method_name: vm.name }
+        end
+      end
+
+      # Somewhat confusingly, custom_fields are accessed separately as a
+      # resource as either user custom_fields (in separate engine) or input
+      # custom_fields (nested under projects/phases). custom_field_bins and
+      # custom_field_options behave exactly the same for both types of custom
+      # fields, so we define them here and mount them under the otherwise empty
+      # custom_fields route.
+      resources :custom_fields, only: [] do
+        resources :custom_field_bins, only: %i[index show], shallow: true
+        resources :custom_field_options, controller: '/web_api/v1/custom_field_options', shallow: true do
+          patch 'reorder', on: :member
+        end
+      end
+
+      resources :files, controller: 'files/files' do
+        get 'preview', on: :member, to: 'files/previews#show'
+        resources :attachments, controller: 'files/file_attachments', only: %i[index]
+      end
+
+      resources :file_attachments, controller: 'files/file_attachments'
     end
   end
 
@@ -303,9 +381,4 @@ Rails.application.routes.draw do
   post '/auth/failure', to: 'omniauth_callback#failure'
   get '/auth/:provider/logout_data', to: 'omniauth_callback#logout_data'
   get '/auth/:provider/spslo', to: 'omniauth_callback#spslo'
-
-  if Rails.env.development?
-    require 'que/web'
-    mount Que::Web => '/que'
-  end
 end

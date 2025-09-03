@@ -33,13 +33,11 @@ resource 'Comments' do
     end
   end
 
-  # TODO: move-old-proposals-test
   patch 'web_api/v1/comments/:id' do
     before do
       SettingsService.new.activate_feature! 'moderation'
       SettingsService.new.activate_feature! 'flag_inappropriate_content'
-      @initiative = create(:initiative)
-      @comment = create(:comment, author: @user, post: @initiative)
+      @comment = create(:comment, author: @user, idea: create(:proposal))
     end
 
     with_options scope: :comment do
@@ -52,7 +50,7 @@ resource 'Comments' do
     example 'Toxicity detection job is enqueued when updating an comment\'s body', document: false do
       expect do
         do_request
-      end.to have_enqueued_job(ToxicityDetectionJob).with(@comment, attributes: [:body_multiloc])
+      end.to have_enqueued_job(ToxicityDetectionJob).with(@comment)
     end
   end
 end

@@ -7,18 +7,29 @@ describe SideFxIdeaService do
   let(:user) { create(:user) }
 
   describe 'before create' do
-    it 'sets the assignee to the default_assignee of the project' do
-      default_assignee = create(:admin)
-      project = create(:project, default_assignee: default_assignee)
-      idea = build(:idea, project: project)
+    let(:default_assignee) { create(:admin) }
+    let(:project) { create(:project, default_assignee: default_assignee) }
+
+    it 'does not set the assignee of a draft idea to the default_assignee of the project' do
+      idea = build(:idea, project: project, publication_status: 'draft')
+      service.before_create(idea, user)
+      expect(idea.assignee).to be_nil
+    end
+
+    it 'sets the assignee of a submitted idea to the default_assignee of the project' do
+      idea = build(:idea, project: project, publication_status: 'submitted')
+      service.before_create(idea, user)
+      expect(idea.assignee).to eq default_assignee
+    end
+
+    it 'sets the assignee of a published idea to the default_assignee of the project' do
+      idea = build(:idea, project: project, publication_status: 'published')
       service.before_create(idea, user)
       expect(idea.assignee).to eq default_assignee
     end
 
     it "doesn't change the assignee if it's already set" do
-      default_assignee = create(:admin)
       assignee = build(:admin)
-      project = create(:project, default_assignee: default_assignee)
       idea = build(:idea, project: project, assignee: assignee)
       service.before_create(idea, user)
       expect(idea.assignee).to eq assignee
@@ -55,20 +66,34 @@ describe SideFxIdeaService do
       end
     end
 
-    it 'sets the assignee to the default_assignee of the project on publish' do
-      default_assignee = create(:admin)
-      project = create(:project, default_assignee: default_assignee)
-      idea = create(:idea, project: project, publication_status: 'draft')
-      idea.publication_status = 'published'
-      expect { service.before_update(idea, user) }.to change { idea.assignee }.from(nil).to(default_assignee)
-    end
+    context 'when no assignee was set before update' do
+      let(:default_assignee) { create(:admin) }
+      let(:project) { create(:project, default_assignee: default_assignee) }
 
-    it "doesn't set the assignee if it's already set before publish" do
-      default_assignee = create(:admin)
-      project = create(:project, default_assignee: default_assignee)
-      idea = create(:idea, project: project, publication_status: 'draft', assignee: create(:admin))
-      idea.publication_status = 'published'
-      expect { service.before_update(idea, user) }.not_to(change { idea.assignee })
+      it 'does not set the assignee of a draft idea to the default_assignee of the project' do
+        idea = build(:idea, project: project, publication_status: 'draft')
+        service.before_update(idea, user)
+        expect(idea.assignee).to be_nil
+      end
+
+      it 'sets the assignee of a submitted idea to the default_assignee of the project' do
+        idea = build(:idea, project: project, publication_status: 'submitted')
+        service.before_update(idea, user)
+        expect(idea.assignee).to eq default_assignee
+      end
+
+      it 'sets the assignee of a published idea to the default_assignee of the project' do
+        idea = build(:idea, project: project, publication_status: 'published')
+        service.before_update(idea, user)
+        expect(idea.assignee).to eq default_assignee
+      end
+
+      it "doesn't change the assignee if it's already set" do
+        assignee = build(:admin)
+        idea = build(:idea, project: project, assignee: assignee)
+        service.before_create(idea, user)
+        expect(idea.assignee).to eq assignee
+      end
     end
   end
 

@@ -1,6 +1,8 @@
 import { RouteType } from 'routes';
 
-import { Dates } from 'components/admin/DateRangePicker';
+import { DateRange } from 'components/admin/DatePickers/_shared/typings';
+
+import { toBackendDateString } from 'utils/dateUtils';
 
 import { Template } from './typings';
 
@@ -8,14 +10,18 @@ interface Params {
   reportId: string;
   selectedProjectId: string | undefined;
   template: Template;
-  dates: Dates;
+  dates: Partial<DateRange>;
+  year: number | null;
+  quarter: number | null;
 }
 
 export const getRedirectUrl = ({
   reportId,
   selectedProjectId,
   template,
-  dates: { startDate, endDate },
+  dates: { from, to },
+  year,
+  quarter,
 }: Params) => {
   const reportBuilderRoute = '/admin/reporting/report-builder';
   const reportRoute = `${reportBuilderRoute}/${reportId}/editor`;
@@ -26,13 +32,16 @@ export const getRedirectUrl = ({
     params = `?templateProjectId=${selectedProjectId}`;
   }
 
-  if (template === 'platform' && startDate && endDate) {
-    const startDateParam = `startDatePlatformReport=${startDate.format(
-      'YYYY-MM-DD'
-    )}`;
-    const endDateParam = `endDatePlatformReport=${endDate.format(
-      'YYYY-MM-DD'
-    )}`;
+  if (template === 'community-monitor' && year && quarter) {
+    params = `?year=${year}&quarter=${quarter}`;
+  }
+
+  if (template === 'platform' && from && to) {
+    const startDateFormat = toBackendDateString(from);
+    const endDateFormat = toBackendDateString(to);
+
+    const startDateParam = `startDatePlatformReport=${startDateFormat}`;
+    const endDateParam = `endDatePlatformReport=${endDateFormat}`;
 
     params = `?${startDateParam}&${endDateParam}`;
   }

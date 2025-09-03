@@ -8,7 +8,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 7.0'
+gem 'rails', '~> 7.1.5.1'
 gem 'pg', '~> 1.5.6'
 gem 'puma', '~> 6.4.3'
 gem 'bcrypt', '~> 3.1.20' # Use ActiveModel has_secure_password
@@ -18,6 +18,7 @@ gem 'csv', '~> 3.3.0'
 gem 'rack-cors', '2.0.0'
 
 group :development, :test do
+  gem 'ricecream', '~> 0.2.1'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'pry'
@@ -74,36 +75,37 @@ group :test do
   # gem 'bullet'
 end
 
-gem 'pundit', '~> 2.3.2'
-gem 'active_model_serializers', '~> 0.10.12'
+gem 'pundit', '~> 2.5.0'
+gem 'active_model_serializers', '~> 0.10.15'
 
 gem 'jwt', '~> 2.8.1'
 gem 'que', '~> 2.3.0'
-gem 'que-web', '~> 0.10.0'
 
+gem 'activerecord', '~> 7.1.5.2'
 gem 'activerecord-import', '~> 1.7'
 gem 'json-schema', '~> 4.3'
-gem 'activerecord-postgis-adapter', '~> 8.0'
+gem 'activerecord-postgis-adapter', '~> 9.0.2'
 
 gem 'carrierwave', '~> 3.0.7'
-gem 'carrierwave-base64', '~> 2.10'
+gem 'carrierwave-base64', '~> 2.11'
 gem 'fog-aws', '~> 3.24'
 
-gem 'api-pagination', '~> 5.0.0'
+gem 'api-pagination', '~> 6.0.0'
 gem 'kaminari', '~> 1.2'
 gem 'rails-i18n', '~> 7.0.9'
 
 gem 'awesome_nested_set', '~> 3.6.0'
 gem 'axlsx', '3.0.0.pre' # write xlsx files
 gem 'rubyXL', '~> 3.4.27' # read xlsx files. Has issues with writing files https://github.com/CitizenLabDotCo/citizenlab/pull/7834
+gem 'docx', '~> 0.3.0'
 gem 'counter_culture', '~> 3.5'
-gem 'groupdate', '~> 4.1'
+gem 'groupdate', '~> 6.5'
 gem 'icalendar', '~> 2.10'
 gem 'interactor'
 gem 'interactor-rails'
 gem 'liquid', '~> 5.5'
 gem 'mini_magick', '~> 4.13'
-gem 'nokogiri', '~> 1.16.5'
+gem 'nokogiri', '~> 1.18.9'
 gem 'pg_search', '~> 2.3.5'
 gem 'premailer-rails', '~> 1.12.0'
 gem 'rest-client'
@@ -114,7 +116,7 @@ gem 'scientist', '~> 1.6.4'
 
 gem 'okcomputer'
 gem 'omniauth', '~> 2.1'
-gem 'omniauth-saml', '~> 2.2.0'
+gem 'omniauth-saml', '~> 2.2.3'
 gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
@@ -123,14 +125,23 @@ gem 'sentry-rails'
 gem 'simple_segment', '~>1.5'
 gem 'omniauth_openid_connect', '~> 0.7.1'
 gem 'faraday-jwt', '~> 0.1.0'
-gem 'acts_as_list', '~> 1.1'
+gem 'acts_as_list', '~> 1.2'
+gem 'positioning', '~> 0.4.6'
 gem 'bunny', '>= 2.7.2'
 gem 'faker'
 gem 'order_as_specified'
 gem 'scenic'
-gem 'ice_cube', '~> 0.16'
+gem 'ice_cube', '~> 0.17'
+
+# Libraries for PDF generation /reading
 gem 'prawn', '~> 2.5'
 gem 'prawn-grouping', '~> 0.2.0'
+gem 'pdf-reader'
+gem 'faraday'
+gem 'faraday-multipart'
+
+# AI
+gem 'ruby_llm', '~> 1.6.2'
 
 # Also required here to be able to initialize Mailgun in
 # e.g. production.rb, which would otherwise result in an
@@ -138,9 +149,10 @@ gem 'prawn-grouping', '~> 0.2.0'
 # exception.
 gem 'aws-sdk-s3', '~> 1'
 gem 'aws-sdk-bedrockruntime', '~> 1'
+gem 'aws-sdk-cloudfront', '~> 1.118.0'
 gem 'bootsnap', '~> 1', require: false
 gem 'dalli', '~> 3.2.8'
-gem 'mailgun-ruby', '~>1.2.14'
+gem 'mailgun-ruby', '~>1.2.16'
 gem 'rails_semantic_logger'
 gem 'rinku', '~> 2'
 gem 'jsonapi-serializer'
@@ -151,9 +163,12 @@ gem 'intercom', '~> 4.2'
 # through the emails engine and is therefore specified
 # in the main app.
 gem 'mjml-rails', '~> 4.11'
+gem 'mrml'
 gem 'cloudfront-rails', '~> 0.4'
 gem 'google-cloud-document_ai', '~> 1.4'
 gem 'combine_pdf', '~> 1.0.26'
+gem 'neighbor', '~> 0.5.0'
+gem 'browser', '~> 6.1'
 
 # Temporarily add nkf and mutex_m to the Gemfile to clear the following warnings:
 #   .../.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/bootsnap-1.18.3/lib/bootsnap/load_path_cache/core_ext/kernel_require.rb:30:
@@ -193,12 +208,13 @@ free_engines.each do |engine_name|
   gem engine_name, path: path if File.directory?(path)
 end
 
-gem 'ros-apartment', require: 'apartment'
+gem 'ros-apartment', '~> 3.1.0', require: 'apartment'
 
 commercial_engines = [
   'multi_tenancy',
 
   'admin_api',
+  'aggressive_caching',
   'analysis',
   'analytics',
   'bulk_import_ideas',
@@ -220,9 +236,7 @@ commercial_engines = [
   'smart_groups',
   'user_custom_fields',
 
-  # ID verification engines.
-  # Engines that registers verification methods must be installed before the
-  # verification engine.
+  # ID verification & SSO engines.
   'id_auth0',
   'id_bogus',
   'id_bosa_fas',
@@ -233,14 +247,13 @@ commercial_engines = [
   'id_franceconnect',
   'id_gent_rrn',
   'id_id_card_lookup',
+  'id_keycloak',
+  'id_id_austria',
   'id_nemlog_in',
   'id_oostende_rrn',
-  # Some engines actually register an authentication method rather
-  # than a verification method, so the constraint does not apply. However, we still
-  # group them with the other "id_" engines.
   'id_hoplr',
   'id_vienna_saml',
-  'verification'
+  'id_twoday'
 ]
 
 commercial_engines.each do |engine_name|

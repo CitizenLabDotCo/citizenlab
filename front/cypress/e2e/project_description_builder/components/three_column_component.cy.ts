@@ -21,7 +21,7 @@ describe('Project description builder Three Column component', () => {
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
-        cy.apiEnableProjectDescriptionBuilder({ projectId }).then(() => {
+        cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
           cy.visit(
             `/admin/project-description-builder/projects/${projectId}/description`
           );

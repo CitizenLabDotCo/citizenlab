@@ -2,16 +2,10 @@
 
 module EmailCampaigns
   class WelcomeMailerPreview < ActionMailer::Preview
-    include EmailCampaigns::MailerPreviewRecipient
+    include EmailCampaigns::MailerPreview
 
     def campaign_mail
-      # TODO: generate commands with campaign#generate_commands method
-      command = {
-        recipient: recipient_user
-      }
-      campaign = EmailCampaigns::Campaigns::Welcome.first
-
-      campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
+      preview_campaign_mail(EmailCampaigns::Campaigns::Welcome)
     end
   end
 end

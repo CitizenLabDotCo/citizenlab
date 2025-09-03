@@ -246,6 +246,8 @@ describe Analysis::InputsFinder do
     let_it_be(:custom_field_date) { create(:custom_field_date, resource: custom_form) }
     let_it_be(:custom_field_number) { create(:custom_field_number, resource: custom_form) }
     let_it_be(:custom_field_linear_scale) { create(:custom_field_linear_scale, resource: custom_form) }
+    let_it_be(:custom_field_rating) { create(:custom_field_rating, resource: custom_form) }
+    let_it_be(:custom_field_multiselect_image) { create(:custom_field_multiselect_image, :with_options, resource: custom_form) }
 
     let_it_be(:input0) { create(:idea, project: analysis.source_project) }
     let_it_be(:input1) do
@@ -254,7 +256,9 @@ describe Analysis::InputsFinder do
         custom_field_multiselect.key => [custom_field_multiselect.options[0].key],
         custom_field_date.key => '2022-01-01',
         custom_field_number.key => 1,
-        custom_field_linear_scale.key => 1
+        custom_field_linear_scale.key => 1,
+        custom_field_rating.key => 1,
+        custom_field_multiselect_image.key => [custom_field_multiselect_image.options[0].key]
       })
     end
 
@@ -264,7 +268,9 @@ describe Analysis::InputsFinder do
         custom_field_multiselect.key => [custom_field_multiselect.options[1].key],
         custom_field_date.key => '2022-01-02',
         custom_field_number.key => 2,
-        custom_field_linear_scale.key => 2
+        custom_field_linear_scale.key => 2,
+        custom_field_rating.key => 2,
+        custom_field_multiselect_image.key => [custom_field_multiselect_image.options[1].key]
       })
     end
 
@@ -290,6 +296,16 @@ describe Analysis::InputsFinder do
 
     it 'filters correctly on custom_field with input_type linear_scale' do
       @params = { "input_custom_#{custom_field_linear_scale.id}": [1, 2] }
+      expect(output).to contain_exactly(input1, input2)
+    end
+
+    it 'filters correctly on custom_field with input_type rating' do
+      @params = { "input_custom_#{custom_field_rating.id}": [1, 2] }
+      expect(output).to contain_exactly(input1, input2)
+    end
+
+    it 'filters correctly on custom_field with input_type multiselect_image' do
+      @params = { "input_custom_#{custom_field_multiselect_image.id}": [custom_field_multiselect_image.options[0].key, custom_field_multiselect_image.options[1].key] }
       expect(output).to contain_exactly(input1, input2)
     end
 
@@ -322,6 +338,16 @@ describe Analysis::InputsFinder do
       @params = { "input_custom_#{custom_field_linear_scale.id}": [nil] }
       expect(output).to contain_exactly(input0)
     end
+
+    it 'returns items with no value on on an array with a nil value with input type rating' do
+      @params = { "input_custom_#{custom_field_rating.id}": [nil] }
+      expect(output).to contain_exactly(input0)
+    end
+
+    it 'returns items with no value on on an array with a nil value with input type multiselect_image' do
+      @params = { "input_custom_#{custom_field_multiselect_image.id}": [nil] }
+      expect(output).to contain_exactly(input0)
+    end
   end
 
   describe 'input_custom_field_no_empty_values' do
@@ -342,6 +368,24 @@ describe Analysis::InputsFinder do
       })
     end
 
+    let_it_be(:input3) do
+      create(:idea, project: analysis.source_project, custom_field_values: {
+        custom_field_text.key => ''
+      })
+    end
+
+    let_it_be(:input4) do
+      create(:idea, project: analysis.source_project, custom_field_values: {
+        custom_field_text.key => '  '
+      })
+    end
+
+    let_it_be(:input5) do
+      create(:idea, project: analysis.source_project, custom_field_values: {
+        custom_field_text.key => "   \n"
+      })
+    end
+
     it 'filters out custom_field with no empty values correctly' do
       @params = { input_custom_field_no_empty_values: true }
       expect(output).to contain_exactly(input1, input2)
@@ -356,6 +400,7 @@ describe Analysis::InputsFinder do
     let_it_be(:custom_field_date) { create(:custom_field_date, resource: custom_form) }
     let_it_be(:custom_field_number) { create(:custom_field_number, resource: custom_form) }
     let_it_be(:custom_field_linear_scale) { create(:custom_field_linear_scale, resource: custom_form) }
+    let_it_be(:custom_field_rating) { create(:custom_field_rating, resource: custom_form) }
 
     let_it_be(:input0) { create(:idea, project: analysis.source_project) }
     let_it_be(:input1) do
@@ -364,7 +409,8 @@ describe Analysis::InputsFinder do
         custom_field_multiselect.key => [custom_field_multiselect.options[0].key],
         custom_field_date.key => '2022-01-01',
         custom_field_number.key => 1,
-        custom_field_linear_scale.key => 1
+        custom_field_linear_scale.key => 1,
+        custom_field_rating.key => 1
       })
     end
 
@@ -374,7 +420,8 @@ describe Analysis::InputsFinder do
         custom_field_multiselect.key => [custom_field_multiselect.options[1].key],
         custom_field_date.key => '2022-01-02',
         custom_field_number.key => 2,
-        custom_field_linear_scale.key => 2
+        custom_field_linear_scale.key => 2,
+        custom_field_rating.key => 2
       })
     end
 
@@ -385,6 +432,11 @@ describe Analysis::InputsFinder do
 
     it 'filters correctly on custom_field with input_type linear_scale' do
       @params = { "input_custom_#{custom_field_linear_scale.id}_from": 1, "input_custom_#{custom_field_linear_scale.id}_to": 2 }
+      expect(output).to contain_exactly(input1, input2)
+    end
+
+    it 'filters correctly on custom_field with input_type rating' do
+      @params = { "input_custom_#{custom_field_rating.id}_from": 1, "input_custom_#{custom_field_rating.id}_to": 2 }
       expect(output).to contain_exactly(input1, input2)
     end
   end

@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Divider, Text } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 
 import useAnalyses from 'api/analyses/useAnalyses';
 import { ParticipationMethod } from 'api/phases/types';
 
-import Divider from 'components/admin/Divider';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
+import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -36,14 +36,18 @@ const Analyses = ({
   const relevantAnalyses = questionId
     ? analyses?.data.filter(
         (analysis) =>
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           analysis.relationships.main_custom_field?.data?.id === questionId
       )
     : analyses?.data;
 
+  const hasRelevantAnalyses = relevantAnalyses && relevantAnalyses.length > 0;
+
   const projectLink: RouteType =
     participationMethod === 'ideation'
       ? `/admin/projects/${projectId}/phases/${phaseId}/ideas`
-      : `/admin/projects/${projectId}/phases/${phaseId}/native-survey`;
+      : `/admin/projects/${projectId}/phases/${phaseId}/results`;
 
   if (relevantAnalyses?.length === 0 && !isLoading) {
     return (
@@ -51,13 +55,13 @@ const Analyses = ({
         <Divider />
         <Text>{formatMessage(messages.noInsights)}</Text>
         <Box display="flex">
-          <Button
+          <ButtonWithLink
             linkTo={projectLink}
             buttonStyle="secondary-outlined"
             openLinkInNewTab
           >
             {formatMessage(messages.openProject)}
-          </Button>
+          </ButtonWithLink>
         </Box>
       </Box>
     );
@@ -65,6 +69,16 @@ const Analyses = ({
 
   return (
     <div>
+      {phaseId && hasRelevantAnalyses && (
+        <Box mb="16px">
+          <Warning>
+            <Text p="0px" m="0px" fontSize="s" color="teal700">
+              {formatMessage(messages.dragAiContentInfo)}
+            </Text>
+          </Warning>
+        </Box>
+      )}
+
       {projectId &&
         relevantAnalyses?.map((analysis) => (
           <Insights

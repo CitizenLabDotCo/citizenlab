@@ -63,6 +63,7 @@ interface Props {
   hideImagePlaceholder?: boolean;
   hideIdeaStatus?: boolean;
   phaseId?: string;
+  hasFilterSidebar?: boolean;
 }
 
 const IdeasList = ({
@@ -78,6 +79,7 @@ const IdeasList = ({
   hideImage = false,
   hideImagePlaceholder = false,
   hideIdeaStatus = false,
+  hasFilterSidebar = false,
   phaseId,
 }: Props) => {
   const smallerThanPhone = useBreakpoint('phone');
@@ -108,7 +110,11 @@ const IdeasList = ({
                     key={idea.id}
                     flex-grow="0"
                     margin="10px"
-                    width={smallerThanPhone ? '100%' : 'calc(50% - 20px)'}
+                    width={
+                      smallerThanPhone || hasFilterSidebar
+                        ? '100%'
+                        : 'calc(50% - 20px)'
+                    }
                   >
                     <IdeaCard
                       ideaId={idea.id}

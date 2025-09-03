@@ -2,14 +2,14 @@ import { SupportedLocale } from 'typings';
 
 import { IFlatCustomField, IOptionsType } from 'api/custom_fields/types';
 
-import { formEndOption } from 'components/FormBuilder/utils';
-
 import { isNilOrError } from 'utils/helperUtils';
 
 export const getOptionRule = (
   option: IOptionsType,
   field: IFlatCustomField
 ) => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const rules = field.logic?.rules;
   if (!isNilOrError(rules) && (option.id || option.temp_id)) {
     const rule = rules.find(
@@ -26,6 +26,8 @@ export const getLinearScaleRule = (
   option: { key: number; label: string },
   field: IFlatCustomField
 ) => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const rules = field.logic?.rules;
   if (!isNilOrError(rules) && option.key) {
     const rule = rules.find((rule) => rule.if === option.key);
@@ -36,7 +38,7 @@ export const getLinearScaleRule = (
   return undefined;
 };
 
-export const getLinearScaleOptions = (maximum: number) => {
+export const getLinearOrRatingOptions = (maximum: number) => {
   const linearScaleOptionArray = Array.from(
     { length: maximum },
     (_, i) => i + 1
@@ -59,6 +61,8 @@ export const getTitleFromAnswerId = (
       return answerId.toString();
     }
     // Otherwise this is an option ID, return the related option title
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const option = field?.options?.find(
       (option) => option.id === answerId || option.temp_id === answerId
     );
@@ -68,13 +72,18 @@ export const getTitleFromAnswerId = (
 };
 
 export const getTitleFromPageId = (
-  pageId: string | number | undefined,
-  formEndMessage: string,
+  pageId: string | undefined,
   pageMessage: string,
-  fieldNumbers: Record<string, number>
+  fieldNumbers: Record<string, number>,
+  formCustomFields: IFlatCustomField[],
+  lastPageMessage: string
 ) => {
   if (!pageId) return;
-  if (pageId === formEndOption) return formEndMessage;
+
+  const lastCustomField = formCustomFields[formCustomFields.length - 1];
+  if (pageId === lastCustomField.id) {
+    return lastPageMessage;
+  }
 
   return `${pageMessage} ${fieldNumbers[pageId]}`;
 };

@@ -2,24 +2,20 @@
 
 module EmailCampaigns
   class WelcomeMailer < ApplicationMailer
-    protected
+    include EditableWithPreview
 
-    def preheader
-      format_message('preheader', values: { organizationName: organization_name })
+    def editable
+      %i[subject_multiloc title_multiloc intro_multiloc button_text_multiloc]
     end
 
-    def subject
-      format_message('subject', values: { organizationName: organization_name })
+    def substitution_variables
+      {
+        organizationName: organization_name
+      }
     end
 
-    private
-
-    def header_title
-      format_message('main_header')
-    end
-
-    def header_message
-      format_message('message_welcome', values: { organizationName: organization_name })
+    def preview_command(recipient)
+      { recipient: recipient }
     end
   end
 end

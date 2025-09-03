@@ -36,6 +36,7 @@ const SetAsProjectModerator = ({
   );
   const localize = useLocalize();
   const { data: adminPublications } = useAdminPublications({});
+
   const flatAdminPublications = adminPublications?.pages.flatMap(
     (page) => page.data
   );
@@ -45,6 +46,8 @@ const SetAsProjectModerator = ({
 
   if (!flatAdminPublications) return null;
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const options = flatAdminPublications?.map((publication) => ({
     value: publication.id,
     label: isFolder(publication)

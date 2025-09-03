@@ -21,60 +21,6 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.proposals.VoteControl.minutes',
     defaultMessage: 'mins',
   },
-  proposedStatusExplanation: {
-    id: 'app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanation',
-    defaultMessage:
-      '{votingThreshold} votes needed to get this initiative {proposedStatusExplanationBold}',
-  },
-  proposedStatusExplanationBold: {
-    id: 'app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationBold',
-    defaultMessage: 'considered by {orgName}',
-  },
-  proposedStatusExplanationMobile: {
-    id: 'app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationMobile',
-    defaultMessage:
-      '{votingThreshold} votes needed within {daysLeft, plural, =0 {less than a day} one {one day} other {# days}} to get this initiative {proposedStatusExplanationMobileBold}',
-  },
-  proposedStatusExplanationMobileBold: {
-    id: 'app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationMobileBold',
-    defaultMessage: 'considered by {orgName}',
-  },
-  ineligibleStatusExplanation: {
-    id: 'app.containers.IdeasShow.proposals.VoteControl.ineligibleStatusExplanation',
-    defaultMessage:
-      "This initiative doesn't meet the criteria {ineligibleStatusExplanationBold}",
-  },
-  ineligibleStatusExplanationBold: {
-    id: 'app.containers.IdeasShow.proposals.VoteControl.ineligibleStatusExplanationBold',
-    defaultMessage: 'to be eligible',
-  },
-  expiredStatusExplanation: {
-    id: 'app.containers.IdeasShow.proposals.VoteControl.expiredStatusExplanation',
-    defaultMessage:
-      'This initiative expired as it {expiredStatusExplanationBold}.',
-  },
-  expiredStatusExplanationBold: {
-    id: 'app.containers.IdeasShow.proposals.VoteControl.expiredStatusExplanationBold',
-    defaultMessage: "didn't reach {votingThreshold} votes in time",
-  },
-  thresholdReachedStatusExplanation: {
-    id: 'app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStatusExplanation',
-    defaultMessage:
-      '{thresholdReachedStatusExplanationBold}. {orgName} got notified and will provide an answer. Voting remains open.',
-  },
-  thresholdReachedStatusExplanationBold: {
-    id: 'app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStatusExplanationBold',
-    defaultMessage: 'The threshold has been reached',
-  },
-  answeredStatusExplanation: {
-    id: 'app.containers.IdeasShow.proposals.VoteControl.answeredStatusExplanation',
-    defaultMessage: '{answeredStatusExplanationBold} Voting remains open.',
-  },
-  answeredStatusExplanationBold: {
-    id: 'app.containers.IdeasShow.proposals.VoteControl.answeredStatusExplanationBold',
-    defaultMessage:
-      '{orgName} received the initiative and gave an official answer.',
-  },
   xVotes: {
     id: 'app.containers.IdeasShow.proposals.VoteControl.xVotes',
     defaultMessage:

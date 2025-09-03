@@ -20,11 +20,20 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
 
 import { configureMapView } from './config';
-import { InitialData } from './types';
-import { getDefaultBasemap, handleWebMapReferenceLayers } from './utils';
+import { InitialData, DefaultBasemapType } from './types';
+import {
+  getDefaultBasemapType,
+  getDefaultBasemap,
+  handleWebMapReferenceLayers,
+} from './utils';
 
 // Custom Esri styles
-const MapContainer = styled(Box)`
+const MapContainer = styled(Box)<{
+  basemapType: DefaultBasemapType;
+}>`
+  background: ${(props) =>
+    `${props.basemapType === 'BasemapAt' ? 'white' : ''}`};
+
   .esri-legend--card__message {
     display: none;
   }
@@ -193,8 +202,8 @@ const EsriMap = ({
         }
 
         // Remove any internal layers that were passed in as props to the Web Map
-        map.layers?.forEach((layer) => {
-          if (layer.id?.includes('_internal')) {
+        map.layers.forEach((layer) => {
+          if (layer.id.includes('_internal')) {
             map.remove(layer);
           }
         });
@@ -208,7 +217,7 @@ const EsriMap = ({
         });
 
         // If the WebMap has reference layers, save them in state
-        setReferenceLayers(map.basemap?.referenceLayers || null);
+        setReferenceLayers(map.basemap.referenceLayers);
       });
     }
   }, [layers, map, mapView, referenceLayers]);
@@ -250,11 +259,12 @@ const EsriMap = ({
   }, [locale]);
 
   useEffect(() => {
-    // Set the Esri API key
-    const esriApiKey =
+    const apiKey =
       appConfig?.data.attributes.settings.esri_integration?.api_key;
-    if (esriApiKey) {
-      esriConfig.apiKey = esriApiKey;
+
+    // Set the Esri API key
+    if (apiKey) {
+      esriConfig.apiKey = apiKey;
     }
   }, [appConfig?.data.attributes.settings.esri_integration?.api_key]);
 
@@ -265,6 +275,7 @@ const EsriMap = ({
         ref={mapRef}
         width={width ? `${width}` : '100%'}
         height={height ? `${height}` : '400px'}
+        basemapType={getDefaultBasemapType(globalMapSettings.tile_provider)}
       />
     </>
   );
@@ -274,11 +285,13 @@ const EsriMapWrapper = (props: Omit<EsriMapProps, 'globalMapSettings'>) => {
   const { data: appConfig } = useAppConfiguration();
   const globalMapSettings = appConfig?.data.attributes.settings.maps;
 
-  if (globalMapSettings) {
-    return <EsriMap globalMapSettings={globalMapSettings} {...props} />;
-  }
-
-  return null;
+  return (
+    <>
+      {globalMapSettings && (
+        <EsriMap globalMapSettings={globalMapSettings} {...props} />
+      )}
+    </>
+  );
 };
 
 export default EsriMapWrapper;

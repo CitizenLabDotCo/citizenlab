@@ -8,11 +8,10 @@ import {
   IconButton,
 } from '@citizenlab/cl2-component-library';
 import { lighten } from 'polished';
-import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
 import { ScreenReaderOnly } from 'utils/a11y';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { returnFileSize } from 'utils/fileUtils';
 
 import messages from './messages';
@@ -39,6 +38,7 @@ const FileInfo = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 `;
 
 const FileDownloadLink = styled.a<{ error: boolean }>`
@@ -81,6 +81,7 @@ export interface FileType {
   name: string;
   size: number;
   error?: string[];
+  ordering?: number;
 }
 
 interface Props {
@@ -88,12 +89,10 @@ interface Props {
   onDeleteClick: (event: React.MouseEvent) => void;
 }
 
-const FileDisplay = ({
-  file,
-  intl: { formatMessage },
-  onDeleteClick,
-}: Props & WrappedComponentProps) => {
+const FileDisplay = ({ file, onDeleteClick }: Props) => {
   const { url, size, name: filename, error } = file;
+  const { formatMessage } = useIntl();
+
   return (
     <Container error={!!error}>
       <Paperclip name="paperclip" ariaHidden />
@@ -133,4 +132,4 @@ const FileDisplay = ({
   );
 };
 
-export default injectIntl(FileDisplay);
+export default FileDisplay;

@@ -14,14 +14,11 @@ import {
 
 const getCommentsEndpoint = ({
   ideaId,
-  initiativeId,
   authorId,
   commentId,
 }: ICommentParameters) => {
   if (ideaId) {
     return `ideas/${ideaId}/comments`;
-  } else if (initiativeId) {
-    return `initiatives/${initiativeId}/comments`;
   } else if (commentId) {
     return `comments/${commentId}/children`;
   } else return `users/${authorId}/comments`;
@@ -41,23 +38,24 @@ const fetchComments = (
   });
 
 const useComments = (
-  parameters: ICommentParameters & ICommentQueryParameters
+  parameters: ICommentParameters & ICommentQueryParameters,
+  hasComments = true
 ) => {
   return useInfiniteQuery<IComments, CLErrors, IComments, CommentsKeys>({
     queryKey: commentKeys.list(parameters),
     queryFn: ({ pageParam }) =>
       fetchComments({ ...parameters, pageNumber: pageParam }),
     getNextPageParam: (lastPage) => {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const hasNextPage = lastPage.links?.next;
       const pageNumber = getPageNumberFromUrl(lastPage.links.self);
 
       return hasNextPage && pageNumber ? pageNumber + 1 : null;
     },
     enabled:
-      !!parameters.authorId ||
-      !!parameters.initiativeId ||
-      !!parameters.ideaId ||
-      !!parameters.commentId,
+      hasComments &&
+      (!!parameters.authorId || !!parameters.ideaId || !!parameters.commentId),
   });
 };
 

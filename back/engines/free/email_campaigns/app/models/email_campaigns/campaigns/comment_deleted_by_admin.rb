@@ -4,19 +4,23 @@
 #
 # Table name: email_campaigns_campaigns
 #
-#  id               :uuid             not null, primary key
-#  type             :string           not null
-#  author_id        :uuid
-#  enabled          :boolean
-#  sender           :string
-#  reply_to         :string
-#  schedule         :jsonb
-#  subject_multiloc :jsonb
-#  body_multiloc    :jsonb
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  deliveries_count :integer          default(0), not null
-#  context_id       :uuid
+#  id                   :uuid             not null, primary key
+#  type                 :string           not null
+#  author_id            :uuid
+#  enabled              :boolean
+#  sender               :string
+#  reply_to             :string
+#  schedule             :jsonb
+#  subject_multiloc     :jsonb
+#  body_multiloc        :jsonb
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  deliveries_count     :integer          default(0), not null
+#  context_id           :uuid
+#  title_multiloc       :jsonb
+#  intro_multiloc       :jsonb
+#  button_text_multiloc :jsonb
+#  context_type         :string
 #
 # Indexes
 #
@@ -34,6 +38,8 @@ module EmailCampaigns
     include Disableable
     include LifecycleStageRestrictable
     include Trackable
+    include ContentConfigurable
+    include ContextConfigurable
     allow_lifecycle_stages only: %w[trial active]
 
     recipient_filter :filter_notification_recipient
@@ -58,10 +64,23 @@ module EmailCampaigns
           comment_body_multiloc: notification.comment.body_multiloc,
           reason_code: notification.reason_code,
           other_reason: notification.other_reason,
-          post_type: notification.post_type,
-          post_url: Frontend::UrlService.new.model_to_url(notification.post, locale: Locale.new(recipient.locale))
+          idea_url: Frontend::UrlService.new.model_to_url(notification.idea, locale: Locale.new(recipient.locale))
         }
       }]
+    end
+
+    def activity_context(activity)
+      return nil unless activity.item.is_a?(::Notification)
+
+      activity.item.idea && TimelineService.new.current_phase(activity.item.idea.project)
+    end
+
+    def self.supported_context_class
+      Phase
+    end
+
+    def self.supports_context?(context)
+      supports_phase_participation_method?(context)
     end
 
     def self.recipient_role_multiloc_key

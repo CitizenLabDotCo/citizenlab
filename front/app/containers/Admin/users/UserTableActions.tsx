@@ -5,6 +5,7 @@ import {
   Box,
   colors,
   fontSizes,
+  Divider,
 } from '@citizenlab/cl2-component-library';
 import { useQueryClient } from '@tanstack/react-query';
 import { saveAs } from 'file-saver';
@@ -21,9 +22,8 @@ import usersKeys from 'api/users/keys';
 
 import { API_PATH } from 'containers/App/constants';
 
-import Divider from 'components/admin/Divider';
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Checkbox from 'components/UI/Checkbox';
 import SearchInput from 'components/UI/SearchInput';
 
@@ -120,7 +120,7 @@ const DropdownListItem = styled.button`
   }
 `;
 
-const DropdownFooterButton = styled(Button)`
+const DropdownFooterButton = styled(ButtonWithLink)`
   .Button {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
@@ -160,7 +160,7 @@ const UserTableActions = ({
   const showSelectAndExport = usersDataLength !== 0;
 
   const toggleAllUsers = () => {
-    trackEventByName(tracks.toggleAllUsers.name);
+    trackEventByName(tracks.toggleAllUsers);
     toggleSelectAll();
   };
 
@@ -205,6 +205,8 @@ const UserTableActions = ({
     };
 
   const addUsersToGroups = async () => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (selectedGroupIds && selectedGroupIds.length > 0) {
       const usersIds = selectedUsers === 'all' ? allUsersIds : selectedUsers;
       const promises: Promise<IGroupMemberships | CLErrorsWrapper>[] = [];
@@ -226,11 +228,9 @@ const UserTableActions = ({
         setProcessing(false);
       };
 
-      trackEventByName(tracks.addUsersToGroup.name, {
-        extra: {
-          usersIds,
-          selectedGroupIds,
-        },
+      trackEventByName(tracks.addUsersToGroup, {
+        usersIds: usersIds.toString(),
+        selectedGroupIds: selectedGroupIds.toString(),
       });
 
       if (isArray(usersIds)) {
@@ -249,10 +249,8 @@ const UserTableActions = ({
         success();
         return true;
       } catch (error) {
-        trackEventByName(tracks.addedRedundantUserToGroup.name, {
-          extra: {
-            errorResponse: error,
-          },
+        trackEventByName(tracks.addedRedundantUserToGroup, {
+          errorResponse: error.toString(),
         });
 
         // if error because users already part of group(s)
@@ -323,10 +321,10 @@ const UserTableActions = ({
         </Box>
         {showSelectAndExport && (
           <>
-            <Button
+            <ButtonWithLink
               ml="auto"
               onClick={exportUsers}
-              className={`export e2e-${exportType} hasLeftMargin`}
+              className={`export e2e-${exportType} hasLeftMargin intercom-users-export-users-button`}
               buttonStyle="admin-dark-text"
               whiteSpace="wrap"
               icon="user-data"
@@ -334,10 +332,10 @@ const UserTableActions = ({
               fontSize={`${fontSizes.s}px`}
             >
               <FormattedMessage {...messages[exportType]} />
-            </Button>
+            </ButtonWithLink>
             {selectedUsers !== 'none' && manualGroups && (
               <ActionButtonWrapper>
-                <Button
+                <ButtonWithLink
                   className="e2e-move-users"
                   onClick={toggleDropdown}
                   buttonStyle="admin-dark-text"
@@ -347,7 +345,7 @@ const UserTableActions = ({
                   fontSize={`${fontSizes.s}px`}
                 >
                   <FormattedMessage {...messages.moveUsersTableAction} />
-                </Button>
+                </ButtonWithLink>
 
                 <Dropdown
                   width="300px"
@@ -384,6 +382,8 @@ const UserTableActions = ({
                       padding="12px"
                       whiteSpace="normal"
                       disabled={
+                        // TODO: Fix this the next time the file is edited.
+                        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                         !selectedGroupIds || selectedGroupIds.length === 0
                       }
                     >
@@ -395,7 +395,7 @@ const UserTableActions = ({
             )}
 
             {groupType === 'manual' && selectedUsers !== 'none' && (
-              <Button
+              <ButtonWithLink
                 onClick={handleGroupsDeleteClick}
                 className="hasLeftMargin"
                 buttonStyle="admin-dark-text"
@@ -405,7 +405,7 @@ const UserTableActions = ({
                 fontSize={`${fontSizes.s}px`}
               >
                 <FormattedMessage {...messages.membershipDelete} />
-              </Button>
+              </ButtonWithLink>
             )}
           </>
         )}

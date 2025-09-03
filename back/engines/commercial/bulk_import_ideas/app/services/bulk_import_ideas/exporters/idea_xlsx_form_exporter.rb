@@ -14,11 +14,11 @@ module BulkImportIdeas::Exporters
         locale_last_name_label => 'Test',
         locale_email_label => 'bill@govocal.com',
         locale_permission_label => 'X',
-        locale_published_label => '18-07-2022'
+        locale_published_label => Time.zone.today.strftime('%d-%m-%Y')
       }
 
       xlsx_utils = Export::Xlsx::Utils.new
-      @form_fields.each do |field|
+      form_fields.each do |field|
         column_name = xlsx_utils.add_duplicate_column_name_suffix(custom_field_service.handle_title(field, @locale))
 
         value = case field.input_type
@@ -28,8 +28,14 @@ module BulkImportIdeas::Exporters
           field.options.map { |o| custom_field_service.handle_title(o, @locale) }.join '; '
         when 'topic_ids'
           @project.allowed_input_topics.map { |t| t.title_multiloc[@locale] }.join '; '
-        when 'number', 'linear_scale'
+        when 'number', 'linear_scale', 'rating'
           field.maximum || 3
+        when 'checkbox'
+          'X'
+        when 'date'
+          Time.zone.today.strftime('%d-%m-%Y')
+        when 'matrix_linear_scale'
+          format_matrix_field(field)
         else
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
         end
@@ -49,6 +55,10 @@ module BulkImportIdeas::Exporters
       XlsxService.new.hash_array_to_xlsx [columns]
     end
 
+    def format
+      'xlsx'
+    end
+
     def mime_type
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     end
@@ -58,7 +68,7 @@ module BulkImportIdeas::Exporters
     end
 
     def importer_data
-      fields = @form_fields.map do |field|
+      fields = form_fields.map do |field|
         {
           name: custom_field_service.handle_title(field, @locale),
           type: 'field',
@@ -70,8 +80,8 @@ module BulkImportIdeas::Exporters
           position: nil
         }
       end
-      options = @form_fields.map do |field|
-        field.options.map do |option|
+      options = form_fields.map do |field|
+        field.ordered_transformed_options.map do |option|
           {
             name: custom_field_service.handle_title(option, @locale),
             type: 'option',
@@ -89,6 +99,26 @@ module BulkImportIdeas::Exporters
         page_count: 1,
         fields: fields + options.flatten
       }
+    end
+
+    private
+
+    def format_matrix_field(field)
+      multiloc_service = MultilocService.new
+
+      labels = (1..field.maximum).map do |i|
+        attr_name = :"linear_scale_label_#{i}_multiloc"
+        I18n.with_locale(@locale) { multiloc_service.t(field[attr_name]) }
+      end.compact_blank
+
+      field.matrix_statements.map.with_index do |statement, i|
+        statement_title = I18n.with_locale(@locale) { multiloc_service.t(statement.title_multiloc) }
+        "#{statement_title}: #{labels[i % labels.length]}"
+      end.join('; ')
+    end
+
+    def form_fields
+      @form_fields ||= IdeaCustomFieldsService.new(@participation_method.custom_form).xlsx_importable_fields
     end
   end
 end

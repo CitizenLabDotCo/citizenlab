@@ -77,17 +77,19 @@ RSpec.describe ParticipationMethod::Voting do
     it 'returns the default ideation fields' do
       expect(
         participation_method.default_fields(create(:custom_form, participation_context: phase)).map(&:code)
-      ).to eq %w[
-        ideation_section1
-        title_multiloc
-        body_multiloc
-        ideation_section2
-        idea_images_attributes
-        idea_files_attributes
-        ideation_section3
-        topic_ids
-        location_description
-        proposed_budget
+      ).to eq [
+        'title_page',
+        'title_multiloc',
+        'body_page',
+        'body_multiloc',
+        'uploads_page',
+        'idea_images_attributes',
+        'idea_files_attributes',
+        'details_page',
+        'topic_ids',
+        'location_description',
+        'proposed_budget',
+        nil
       ]
     end
   end
@@ -134,7 +136,7 @@ RSpec.describe ParticipationMethod::Voting do
   describe '#additional_export_columns' do
     context 'voting method is budgeting' do
       it 'returns [picks, budget]' do
-        expect(participation_method.additional_export_columns).to eq %w[picks budget]
+        expect(participation_method.additional_export_columns).to match_array %w[manual_votes picks budget]
       end
     end
 
@@ -142,7 +144,7 @@ RSpec.describe ParticipationMethod::Voting do
       let(:phase) { create(:multiple_voting_phase) }
 
       it 'returns [participants, votes]' do
-        expect(participation_method.additional_export_columns).to eq %w[participants votes]
+        expect(participation_method.additional_export_columns).to match_array %w[manual_votes participants votes]
       end
     end
 
@@ -150,21 +152,19 @@ RSpec.describe ParticipationMethod::Voting do
       let(:phase) { create(:single_voting_phase) }
 
       it 'returns [votes] if voting method is single_voting' do
-        expect(participation_method.additional_export_columns).to eq %w[votes]
+        expect(participation_method.additional_export_columns).to match_array %w[manual_votes votes]
       end
     end
   end
 
-  describe '#supports_serializing?' do
-    it 'returns true for voting attributes' do
-      %i[
-        voting_method voting_max_total voting_min_total voting_max_votes_per_idea baskets_count
-        voting_term_singular_multiloc voting_term_plural_multiloc votes_count
-      ].each do |attribute|
-        expect(participation_method.supports_serializing?(attribute)).to be true
-      end
+  describe '#supported_email_campaigns' do
+    it 'returns campaigns supported for voting' do
+      expect(participation_method.supported_email_campaigns).to match_array %w[comment_deleted_by_admin comment_on_idea_you_follow comment_on_your_comment idea_published mention_in_official_feedback official_feedback_on_idea_you_follow project_phase_started status_change_on_idea_you_follow voting_basket_not_submitted voting_basket_submitted voting_last_chance voting_phase_started voting_results your_input_in_screening]
     end
+  end
 
+  describe '#supports_serializing?' do
+    # Other attributes are delegated to the voting method
     it 'returns false for the other attributes' do
       %i[native_survey_title_multiloc native_survey_button_multiloc].each do |attribute|
         expect(participation_method.supports_serializing?(attribute)).to be false
@@ -173,17 +173,16 @@ RSpec.describe ParticipationMethod::Voting do
   end
 
   its(:allowed_ideas_orders) { is_expected.to eq ['random'] }
-  its(:proposed_budget_in_form?) { is_expected.to be true }
   its(:return_disabled_actions?) { is_expected.to be false }
   its(:supports_assignment?) { is_expected.to be true }
-  its(:supports_built_in_fields?) { is_expected.to be true }
+  its(:built_in_title_required?) { is_expected.to be(true) }
+  its(:built_in_body_required?) { is_expected.to be(true) }
   its(:supports_commenting?) { is_expected.to be true }
   its(:supports_edits_after_publication?) { is_expected.to be true }
   its(:supports_exports?) { is_expected.to be true }
   its(:supports_input_term?) { is_expected.to be true }
   its(:supports_inputs_without_author?) { is_expected.to be false }
-  its(:supports_multiple_posts?) { is_expected.to be true }
-  its(:supports_pages_in_form?) { is_expected.to be false }
+  its(:allow_posting_again_after) { is_expected.to eq 0.seconds }
   its(:supports_permitted_by_everyone?) { is_expected.to be false }
   its(:supports_public_visibility?) { is_expected.to be true }
   its(:supports_toxicity_detection?) { is_expected.to be true }
@@ -192,4 +191,18 @@ RSpec.describe ParticipationMethod::Voting do
   its(:supports_submission?) { is_expected.to be false }
   its(:use_reactions_as_votes?) { is_expected.to be false }
   its(:transitive?) { is_expected.to be true }
+  its(:supports_private_attributes_in_export?) { is_expected.to be true }
+  its(:form_logic_enabled?) { is_expected.to be false }
+  its(:follow_idea_on_idea_submission?) { is_expected.to be true }
+  its(:supports_custom_field_categories?) { is_expected.to be false }
+  its(:user_fields_in_form?) { is_expected.to be false }
+  its(:supports_multiple_phase_reports?) { is_expected.to be false }
+  its(:add_autoreaction_to_inputs?) { is_expected.to be(false) }
+  its(:everyone_tracking_enabled?) { is_expected.to be false }
+
+  describe 'proposed_budget_in_form?' do # private method
+    it 'is expected to be true' do
+      expect(participation_method.send(:proposed_budget_in_form?)).to be true
+    end
+  end
 end

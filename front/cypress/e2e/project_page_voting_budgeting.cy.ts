@@ -5,7 +5,6 @@ describe('Budgeting project', () => {
   let projectId: string;
   let projectSlug: string;
   let ideaId: string;
-  let ideaSlug: string;
   let userId: string;
   const projectTitle = randomString();
   const ideaTitle = randomString();
@@ -58,7 +57,6 @@ describe('Budgeting project', () => {
           })
           .then((idea) => {
             ideaId = idea.body.data.id;
-            ideaSlug = idea.body.data.attributes.slug;
             cy.apiSignup(firstName, lastName, email, password).then(
               (response) => {
                 userId = (response as any).body.data.id;
@@ -66,7 +64,7 @@ describe('Budgeting project', () => {
             );
             cy.setLoginCookie(email, password);
             cy.visit(`/en/projects/${projectSlug}`);
-            cy.acceptCookies();
+
             cy.wait(1000);
           });
       });
@@ -83,25 +81,20 @@ describe('Budgeting project', () => {
     cy.apiRemoveUser(userId);
   });
 
-  it('shows the idea cards', () => {
+  it('shows the idea cards, sorting options and event CTA', () => {
     cy.get('.e2e-timeline-project-idea-cards');
-  });
-
-  it('hides the idea sorting options', () => {
     cy.get('.e2e-filter-selector-button').should('not.exist');
-  });
-
-  it('shows the event CTA when applicable', () => {
-    cy.get('#e2e-project-see-events-button').should('exist');
+    cy.get('#e2e-project-see-events-button').should('be.visible');
   });
 
   it('can allocate the budget to ideas and show how much budget is left', () => {
     cy.contains('Submit your budget');
     cy.contains('How to participate');
-    cy.contains('500 / 500');
+    // EUR is the default currency in E2E seed data
+    cy.contains('EUR 500 / EUR 500');
 
     cy.get('#e2e-voting-submit-button')
-      .should('exist')
+      .should('be.visible')
       .should('have.class', 'disabled');
 
     cy.wait(2000);
@@ -117,14 +110,15 @@ describe('Budgeting project', () => {
     cy.wait('@voteForIdea');
 
     cy.get('#e2e-voting-submit-button')
-      .should('exist')
+      .should('be.visible')
       .should('not.have.class', 'disabled');
 
-    cy.contains('400 / 500');
+    // EUR is the default currency in E2E seed data
+    cy.contains('EUR 400 / EUR 500');
   });
 
   it('can submit the budget', () => {
-    cy.get('#e2e-voting-submit-button');
+    cy.get('#e2e-voting-submit-button').should('be.visible');
     cy.wait(4000);
     cy.get('#e2e-voting-submit-button').find('button').click({ force: true });
     cy.wait(1000);
@@ -139,8 +133,8 @@ describe('Budgeting project', () => {
 
   it('can modify the budget and remove an option', () => {
     cy.get('#e2e-modify-votes')
-      .should('exist')
-      .should('contain', 'Modify your budget');
+      .should('be.visible')
+      .should('contain', 'Modify your submission');
 
     cy.wait(2000);
 
@@ -162,7 +156,7 @@ describe('Budgeting project', () => {
       .should('have.class', 'not-in-basket');
 
     cy.get('#e2e-voting-submit-button')
-      .should('exist')
+      .should('be.visible')
       .should('have.class', 'disabled');
   });
 });

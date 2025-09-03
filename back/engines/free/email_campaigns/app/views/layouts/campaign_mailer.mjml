@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <mjml>
   <%= render partial: 'email_campaigns/application/head' %>
 

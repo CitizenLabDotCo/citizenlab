@@ -32,11 +32,13 @@ interface Option {
 }
 
 interface Props {
-  projectId?: string;
+  selectedProjectId?: string;
+  excludeProjectId?: string;
   emptyOptionMessage?: MessageDescriptor;
   placeholder?: string;
   hideLabel?: boolean;
   onProjectFilter: (filter: Option) => void;
+  includeHiddenProjects?: boolean;
 }
 
 const StyledSelect = styled(Select)`
@@ -59,11 +61,13 @@ const generateProjectOptions = (
 };
 
 const ProjectFilter = ({
-  projectId,
+  selectedProjectId,
+  excludeProjectId,
   emptyOptionMessage,
   placeholder,
   hideLabel = false,
   onProjectFilter,
+  includeHiddenProjects = false,
   ...boxProps
 }: Props & Omit<BoxProps, 'children'>) => {
   const localize = useLocalize();
@@ -71,6 +75,7 @@ const ProjectFilter = ({
   const { data: projects } = useProjects({
     publicationStatuses: PUBLICATION_STATUSES,
     canModerate: true,
+    includeHidden: includeHiddenProjects,
   });
   const { data: authUser } = useAuthUser();
 
@@ -84,8 +89,19 @@ const ProjectFilter = ({
         }
       : null;
 
-    return generateProjectOptions(projects.data, localize, emptyOption);
-  }, [projects, authUser, localize, formatMessage, emptyOptionMessage]);
+    const filteredProjects = excludeProjectId
+      ? projects.data.filter((project) => project.id !== excludeProjectId)
+      : projects.data;
+
+    return generateProjectOptions(filteredProjects, localize, emptyOption);
+  }, [
+    projects,
+    authUser,
+    emptyOptionMessage,
+    formatMessage,
+    excludeProjectId,
+    localize,
+  ]);
 
   const label = formatMessage(messages.labelProjectFilter);
 
@@ -95,7 +111,7 @@ const ProjectFilter = ({
         <StyledSelect
           id="projectFilter"
           label={hideLabel ? undefined : label}
-          value={projectId}
+          value={selectedProjectId}
           options={projectFilterOptions}
           placeholder={placeholder}
           onChange={onProjectFilter}

@@ -1,8 +1,0 @@
-{
-  "files": [
-    {
-      "path": "./build/main.*.min.js",
-      "maxSize": "600 kB"
-    }
-  ]
-}

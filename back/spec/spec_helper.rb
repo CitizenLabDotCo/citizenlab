@@ -79,10 +79,10 @@ RSpec.configure do |config|
   #   # metadata: `fit`, `fdescribe` and `fcontext`, respectively.
   #   config.filter_run_when_matching :focus
   #
-  #   # Allows RSpec to persist some state between runs in order to support
-  #   # the `--only-failures` and `--next-failure` CLI options. We recommend
-  #   # you configure your source control system to ignore this file.
-  #   config.example_status_persistence_file_path = "spec/examples.txt"
+  # Allows RSpec to persist some state between runs in order to support
+  # the `--only-failures` and `--next-failure` CLI options.
+  # This file is gitignored.
+  config.example_status_persistence_file_path = 'spec/examples.txt'
   #
   #   # Limits the available syntax to the non-monkey patched syntax that is
   #   # recommended. For more details, see:
@@ -125,6 +125,8 @@ RSpec.configure do |config|
     require './engines/commercial/public_api/spec/factories/api_clients'
     require './engines/commercial/analysis/spec/factories/analyses'
     require './engines/commercial/analysis/spec/factories/background_tasks'
+    require './engines/commercial/analysis/spec/factories/comments_summaries'
+    require './engines/commercial/analysis/spec/factories/heatmap_cells'
     require './engines/commercial/analysis/spec/factories/insights'
     require './engines/commercial/analysis/spec/factories/summaries'
     require './engines/commercial/analysis/spec/factories/taggings'
@@ -222,6 +224,14 @@ RSpec.configure do |config|
 
   # By default, skip the slow tests and template tests. Can be overriden on the command line.
   config.filter_run_excluding template_test: true
+
+  config.before(:example, clear_cache: true) do
+    Rails.cache.clear
+  end
+
+  config.after(:example, clear_cache: true) do
+    Rails.cache.clear
+  end
 end
 
 RSpec::Matchers.define_negated_matcher :not_change, :change
@@ -230,6 +240,17 @@ require 'vcr'
 VCR.configure do |config|
   config.hook_into :webmock
   config.allow_http_connections_when_no_cassette = true
+  config.cassette_library_dir = Rails.root / 'spec' / 'fixtures' / 'vcr_cassettes'
+  config.configure_rspec_metadata!
+
+  # Filter out sensitive data from cassettes
+  sensitive_data = {
+    '<OPENAI_API_KEY>' => ENV.fetch('OPENAI_API_KEY', nil)
+  }
+
+  sensitive_data.each do |placeholder, secret|
+    config.filter_sensitive_data(placeholder) { secret.to_s } if secret.present?
+  end
 end
 
 RspecApiDocumentation.configure do |config|

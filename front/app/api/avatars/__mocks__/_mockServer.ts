@@ -6,7 +6,7 @@ import { getOrigin } from 'utils/storybook/getOrigin';
 
 import { IAvatarData } from '../types';
 
-const image = `${getOrigin()}/images/female_avatar_5`;
+const image = `${getOrigin()}/images/female_avatar_5.jpg`;
 
 export const avatarsData: IAvatarData[] = [
   {

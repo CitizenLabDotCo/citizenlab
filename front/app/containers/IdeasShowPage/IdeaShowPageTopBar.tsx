@@ -10,7 +10,7 @@ import { lighten } from 'polished';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import useIdeaById from 'api/ideas/useIdeaById';
+import { IIdeaData } from 'api/ideas/types';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
 import { isIdeaInParticipationContext } from 'api/phases/utils';
@@ -19,6 +19,10 @@ import useProjectById from 'api/projects/useProjectById';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import ReactionControl from 'components/ReactionControl';
+import {
+  showIdeationReactions,
+  showProposalsReactions,
+} from 'components/ReactionControl/utils';
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
@@ -59,35 +63,26 @@ const Left = styled.div`
 const Right = styled.div``;
 
 interface Props {
-  ideaId?: string;
-  projectId: string;
+  idea: IIdeaData;
   deselectIdeaOnMap?: () => void;
   className?: string;
-  phase?: IPhaseData;
+  phase: IPhaseData | undefined;
 }
 
 const IdeaShowPageTopBar = ({
-  ideaId,
-  projectId,
+  idea,
   className,
   deselectIdeaOnMap,
   phase,
 }: Props) => {
+  const projectId = idea.relationships.project.data.id;
+  const ideaId = idea.id;
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
-  const { data: idea } = useIdeaById(ideaId);
   const isSmallerThanTablet = useBreakpoint('tablet');
 
   const [searchParams] = useSearchParams();
   const [goBack] = useState(searchParams.get('go_back'));
-
-  const votingConfig = getVotingMethodConfig(phase?.attributes.voting_method);
-
-  const ideaIsInParticipationContext =
-    phase && idea ? isIdeaInParticipationContext(idea, phase) : undefined;
-
-  const isProposalPhase =
-    phase?.attributes.participation_method === 'proposals';
 
   useEffect(() => {
     removeSearchParams(['go_back']);
@@ -101,6 +96,8 @@ const IdeaShowPageTopBar = ({
       project &&
       isFixableByAuthentication(disabled_reason)
     ) {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const phaseId = project.data.relationships?.current_phase?.data?.id;
       if (phaseId) {
         triggerAuthenticationFlow({
@@ -126,8 +123,14 @@ const IdeaShowPageTopBar = ({
     }
   }, [goBack, deselectIdeaOnMap, project]);
 
+  const votingConfig = getVotingMethodConfig(phase?.attributes.voting_method);
+  const ideaIsInParticipationContext = phase
+    ? isIdeaInParticipationContext(idea, phase)
+    : false;
+  const participationMethod = phase?.attributes.participation_method;
+
   return (
-    <Container className={className || ''}>
+    <Container className={className || ''} data-cy="e2e-ideashowpage-topbar">
       <TopBarInner>
         <Left>
           <GoBackButtonSolid
@@ -136,26 +139,37 @@ const IdeaShowPageTopBar = ({
           />
         </Left>
         <Right>
-          {/* Only visible if not voting */}
-          {phase?.attributes.participation_method !== 'voting' && ( // To reduce bias we want to hide the reactions during voting methods
-            <ReactionControl
-              size="1"
-              styleType="border"
-              ideaId={ideaId}
-              disabledReactionClick={onDisabledReactClick}
-              variant={isProposalPhase ? 'text' : 'icon'}
-            />
-          )}
-          {/* Only visible if voting */}
-          {ideaId && phase && ideaIsInParticipationContext && (
-            <Box mr="8px">
-              {votingConfig?.getIdeaPageVoteInput({
-                ideaId,
-                phase,
-                compact: true,
-              })}
-            </Box>
-          )}
+          {participationMethod === 'ideation' &&
+            showIdeationReactions(idea) && (
+              <ReactionControl
+                size="1"
+                styleType="border"
+                ideaId={ideaId}
+                disabledReactionClick={onDisabledReactClick}
+                variant={'icon'}
+              />
+            )}
+          {participationMethod === 'proposals' &&
+            showProposalsReactions(idea) && (
+              <ReactionControl
+                size="1"
+                styleType="border"
+                ideaId={ideaId}
+                disabledReactionClick={onDisabledReactClick}
+                variant={'text'}
+              />
+            )}
+          {participationMethod === 'voting' &&
+            ideaIsInParticipationContext &&
+            phase && (
+              <Box mr="8px">
+                {votingConfig?.getIdeaPageVoteInput({
+                  ideaId,
+                  phase,
+                  compact: true,
+                })}
+              </Box>
+            )}
         </Right>
       </TopBarInner>
     </Container>

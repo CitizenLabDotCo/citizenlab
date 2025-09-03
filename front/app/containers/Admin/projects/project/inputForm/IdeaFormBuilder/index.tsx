@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
@@ -7,74 +7,81 @@ import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
-import useLocale from 'hooks/useLocale';
-
-import PDFExportModal, {
-  FormValues,
-} from 'containers/Admin/projects/components/PDFExportModal';
-
 import FormBuilder from 'components/FormBuilder/edit';
+import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
-import { saveIdeaFormAsPDF } from '../saveIdeaFormAsPDF';
 import { ideationConfig, proposalsConfig } from '../utils';
 
-const configs = {
+const configs: {
+  [key in 'ideation' | 'voting' | 'proposals']: FormBuilderConfig;
+} = {
   ideation: ideationConfig,
+  voting: ideationConfig,
   proposals: proposalsConfig,
 };
 
-const IdeaFormBuilder = () => {
-  const [exportModalOpen, setExportModalOpen] = useState(false);
-
-  const { projectId, phaseId } = useParams() as {
-    projectId: string;
-    phaseId: string;
-  };
-
-  const { data: project } = useProjectById(projectId);
-  const { data: phase } = usePhase(phaseId);
-
-  const participation_method =
-    phase?.data.attributes.participation_method || 'ideation';
-  const config = configs[participation_method] || ideationConfig;
+const IdeaFormBuilder = ({
+  participationMethod,
+  phaseId,
+  projectId,
+  projectSlug,
+}: {
+  // All participation methods that use "simpleFormEditor"
+  // (see front/app/utils/configs/participationMethodConfig/index.tsx)
+  participationMethod: 'ideation' | 'proposals' | 'voting';
+  phaseId: string;
+  projectId: string;
+  projectSlug: string;
+}) => {
+  const config = configs[participationMethod];
 
   const { data: formCustomFields } = useFormCustomFields({
     projectId,
-    // Only use phaseId for proposals
-    phaseId: participation_method !== 'ideation' ? phaseId : undefined,
+    phaseId: config.isFormPhaseSpecific ? phaseId : undefined,
   });
-
-  const locale = useLocale();
 
   const goBackUrl: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/form`;
 
-  const handleDownloadPDF = () => setExportModalOpen(true);
-
-  const handleExportPDF = async ({ personal_data }: FormValues) => {
-    await saveIdeaFormAsPDF({ phaseId, locale, personal_data });
-  };
-
-  if (!project || !phase) return null;
-
   return (
-    <>
-      <FormBuilder
-        builderConfig={{
-          ...config,
-          formCustomFields,
-          goBackUrl,
-          onDownloadPDF: handleDownloadPDF,
-        }}
-        viewFormLink={`/projects/${project.data.attributes.slug}/ideas/new?phase_id=${phaseId}`}
-      />
-      <PDFExportModal
-        open={exportModalOpen}
-        formType="idea_form"
-        onClose={() => setExportModalOpen(false)}
-        onExport={handleExportPDF}
-      />
-    </>
+    <FormBuilder
+      builderConfig={{
+        ...config,
+        formCustomFields,
+        goBackUrl,
+      }}
+      viewFormLink={`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`}
+    />
   );
 };
 
-export default IdeaFormBuilder;
+export default () => {
+  const { projectId, phaseId } = useParams();
+  const { data: project } = useProjectById(projectId);
+  const { data: phase } = usePhase(phaseId);
+
+  if (!projectId || !phaseId || !project || !phase) return null;
+
+  const participationMethod = phase.data.attributes.participation_method;
+
+  // These checks are strictly not necessary since this component should only render
+  // for one of these participation methods (all participation methods that use "simpleFormEditor";
+  // see front/app/utils/configs/participationMethodConfig/index.tsx).
+  // They're here for documenting purposes + they provide
+  // better types inside IdeaFormBuilder for now.
+  if (
+    participationMethod === 'ideation' ||
+    participationMethod === 'voting' ||
+    participationMethod === 'proposals'
+  ) {
+    return (
+      <IdeaFormBuilder
+        participationMethod={participationMethod}
+        phaseId={phaseId}
+        projectId={projectId}
+        projectSlug={project.data.attributes.slug}
+      />
+    );
+  }
+
+  return null;
+};

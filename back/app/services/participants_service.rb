@@ -22,25 +22,6 @@ class ParticipantsService
       .where(dimension_date_created_id: since..to)
   end
 
-  def initiatives_participants(initiatives)
-    participants = User.none
-
-    # Posting
-    participants = participants.or(User.where(id: initiatives.select(:author_id)))
-
-    # Commenting
-    comments = Comment.where(post: initiatives)
-    participants = participants.or(User.where(id: comments.select(:author_id)))
-
-    # Initiative reacting
-    reactions = Reaction.where(reactable: initiatives)
-    participants = participants.or(User.where(id: reactions.select(:user_id)))
-
-    # Comment reacting
-    reactions = Reaction.where(reactable: comments)
-    participants.or(User.where(id: reactions.select(:user_id)))
-  end
-
   def ideas_participants(ideas, options = {})
     since = options[:since]
     actions = options[:actions] || PROJECT_PARTICIPANT_ACTIONS
@@ -57,7 +38,7 @@ class ParticipantsService
     end
 
     # Commenting
-    comments = Comment.where(post_id: ideas)
+    comments = Comment.where(idea: ideas)
     if actions.include? :commenting
       comments_since = if since
         comments.where('created_at::date >= (?)::date', since)
@@ -100,7 +81,7 @@ class ParticipantsService
   # Returns the total count of all project participants including anonymous posts - cached
   def project_participants_count(project)
     is_active = TimelineService.new.timeline_active(project) == :present
-    expires_in = is_active ? 1.hour : 1.day
+    expires_in = is_active ? 30.minutes : 1.day
 
     Rails.cache.fetch("#{project.cache_key}/participant_count", expires_in: expires_in) do
       project_participants_count_uncached(project)
@@ -113,6 +94,18 @@ class ParticipantsService
       .select(:participant_id)
       .distinct
       .count
+  end
+
+  # Returns a hash of project IDs to participant counts for the given projects.
+  # Uses cached data.
+  def projects_participants_counts(projects)
+    projects.each_with_object({}) do |project, counts|
+      counts[project.id] = project_participants_count(project)
+    end
+  end
+
+  def clear_project_participants_count_cache(project)
+    Rails.cache.delete("#{project.cache_key}/participant_count")
   end
 
   # Returns the total count of all folder participants including anonymous posts - cached
@@ -128,7 +121,7 @@ class ParticipantsService
   def projects_participants(projects, options = {})
     since = options[:since]
     actions = options[:actions] || PROJECT_PARTICIPANT_ACTIONS
-    ideas = Idea.where(project: projects)
+    ideas = Idea.where(project: projects).where.not(publication_status: 'draft')
     participants = ideas_participants(ideas, options)
 
     # Voting
@@ -173,5 +166,40 @@ class ParticipantsService
   def idea_statuses_participants(idea_statuses, options = {})
     ideas = Idea.where(idea_status: idea_statuses)
     ideas_participants ideas, options
+  end
+
+  def destroy_participation_data(project)
+    # Destroy volunteers data
+    Volunteering::Volunteer
+      .joins(cause: { phase: :project })
+      .where(cause: { phases: { project_id: project.id } })
+      .destroy_all
+
+    # Destroy event attendance data
+    Events::Attendance
+      .joins(event: :project)
+      .where(events: { project_id: project.id })
+      .destroy_all
+
+    # Destroy poll data
+    Polls::Response
+      .joins(phase: :project)
+      .where(phases: { project_id: project.id })
+      .destroy_all
+
+    # Destroy comments, reactions and baskets data
+    Comment.where(idea: project.ideas).destroy_all
+    Reaction.where(reactable: project.ideas).destroy_all
+    Basket.where(phase: project.phases).destroy_all
+
+    # We must update_counts explicitly because the current implementation of Basket does
+    # not use `counter_culture`.
+    project.phases.each { |phase| Basket.update_counts(phase) }
+
+    # Destroy only ideas that are not in voting phases.
+    # (Ideas in voting phases are considered part of the project setup.)
+    voting_phases = project.phases.where(participation_method: 'voting')
+    ideas_in_voting_phases = IdeasPhase.where(phase: voting_phases).select(:idea_id)
+    Idea.where(project: project).where.not(id: ideas_in_voting_phases).destroy_all
   end
 end

@@ -26,6 +26,7 @@ describe('Idea show page actions', () => {
           canPost: true,
           canComment: true,
           canReact: true,
+          reacting_dislike_enabled: true,
         });
       })
       .then((phase) => {
@@ -52,7 +53,6 @@ describe('Idea show page actions', () => {
 
       cy.visit(`/ideas/${ideaSlug}`);
       cy.get('#e2e-idea-show');
-      cy.acceptCookies();
 
       // We wait for this request so that we know the idea page is more or less
       // done loading. Should not be necessary but reduces flakiness.
@@ -76,7 +76,6 @@ describe('Idea show page actions', () => {
     before(() => {
       cy.visit(`/ideas/${ideaSlug}`);
       cy.get('#e2e-idea-show');
-      cy.acceptCookies();
     });
 
     it('saves a new official feedback, shows it and deletes it', () => {
@@ -99,10 +98,10 @@ describe('Idea show page actions', () => {
       );
     });
 
-    describe('Map idea card', () => {
+    describe('Map view', () => {
       it('displays correct likes and dislikes on map idea card', () => {
         cy.visit(`/projects/${projectSlug}`);
-        cy.get('#view-tab-2').should('exist');
+        cy.get('#view-tab-2').should('be.visible');
         cy.get('#view-tab-2').click();
         cy.get('#e2e-idea-map-card')
           .first()
@@ -110,6 +109,11 @@ describe('Idea show page actions', () => {
             cy.get('#e2e-map-card-like-count').should('contain', '1');
             cy.get('#e2e-map-card-dislike-count').should('contain', '0');
           });
+      });
+
+      it('displays the top bar of the input', () => {
+        cy.visit(`/projects/${projectSlug}?view=map&idea_map_id=${ideaId}`);
+        cy.dataCy('e2e-ideashowpage-topbar').should('be.visible');
       });
     });
   });
@@ -127,7 +131,7 @@ describe('Idea show page actions', () => {
         cy.reload();
       });
 
-      it.skip('has working up and dislike buttons', () => {
+      it('has working up and dislike buttons', () => {
         cy.visit(`/ideas/${ideaSlug}`);
         cy.intercept(`**/ideas/by_slug/${ideaSlug}`).as('ideaRequest');
 
@@ -190,7 +194,7 @@ describe('Idea show page actions', () => {
           ideaId2 = idea.body.data.id;
           ideaSlug2 = idea.body.data.attributes.slug;
 
-          cy.apiAddComment(ideaId2, 'idea', randomString());
+          cy.apiAddComment(ideaId2, randomString());
         });
       });
 
@@ -202,7 +206,7 @@ describe('Idea show page actions', () => {
         cy.setLoginCookie(email, password);
         cy.reload();
         cy.visit(`/ideas/${ideaSlug2}`);
-        cy.acceptCookies();
+
         cy.get('#e2e-idea-show');
       });
 
@@ -218,6 +222,7 @@ describe('Idea show page actions', () => {
           const commentBody = randomString();
           cy.get('.e2e-comment-reply-button').first().click({ force: true });
           cy.wait(1000);
+          cy.get('.e2e-childcomment-form textarea').first().type(' ');
           cy.get('.e2e-childcomment-form textarea').first().type(commentBody);
           cy.get('.e2e-submit-childcomment').first().click();
           cy.wait(2000);

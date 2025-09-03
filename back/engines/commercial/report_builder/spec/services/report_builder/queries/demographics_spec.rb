@@ -90,6 +90,38 @@ RSpec.describe ReportBuilder::Queries::Demographics do
           '_blank' => 1
         })
       end
+
+      context 'user fields stored in ideas' do
+        before do
+          create(:idea_status_proposed)
+          phase = create(:native_survey_phase, project: @project, user_fields_in_form: true)
+          create(:native_survey_response, project: @project, creation_phase: phase, author: nil, created_at: now - 1.year, custom_field_values: { "u_#{@custom_field.key}" => @option1.key })
+          create(:native_survey_response, project: @project, creation_phase: phase, author: nil, custom_field_values: { "u_#{@custom_field.key}" => @option2.key })
+          create(:native_survey_response, project: @project, creation_phase: phase, author: nil, custom_field_values: {})
+        end
+
+        it 'adds demographics from user fields stored in ideas when the project filter is used' do
+          result = query.run_query(custom_field_id: @custom_field.id, project_id: @project.id)
+
+          expect(result[:series]).to match({
+            @option1.key => 2,
+            @option2.key => 1,
+            @option3.key => 1,
+            '_blank' => 1
+          })
+        end
+
+        it 'works with project and date filter' do
+          result = query.run_query(custom_field_id: @custom_field.id, start_at: start_at, end_at: end_at, project_id: @project.id)
+
+          expect(result[:series]).to match({
+            @option1.key => 1,
+            @option2.key => 0,
+            @option3.key => 1,
+            '_blank' => 0
+          })
+        end
+      end
     end
 
     context 'birthyear field' do

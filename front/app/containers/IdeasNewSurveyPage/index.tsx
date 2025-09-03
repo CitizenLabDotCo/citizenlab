@@ -92,6 +92,8 @@ const IdeasNewSurveyPage = () => {
     return <SurveyNotActiveNotice project={project.data} />;
   }
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if ((enabled === 'maybe' && authenticationRequirements) || disabledReason) {
     const triggerAuthFlow = () => {
       triggerAuthenticationFlow({
@@ -103,13 +105,19 @@ const IdeasNewSurveyPage = () => {
       });
     };
 
+    const fixableByAuthentication =
+      !isNilOrError(authenticationRequirements) ||
+      (disabledReason && isFixableByAuthentication(disabledReason)) ||
+      false;
+
+    // By default, trigger the modal right away if relevant for better UX.
+    if (fixableByAuthentication) {
+      triggerAuthFlow();
+    }
+
     return (
       <Unauthorized
-        fixableByAuthentication={
-          !isNilOrError(authenticationRequirements) ||
-          (disabledReason && isFixableByAuthentication(disabledReason)) ||
-          false
-        }
+        fixableByAuthentication={fixableByAuthentication}
         triggerAuthFlow={triggerAuthFlow}
       />
     );

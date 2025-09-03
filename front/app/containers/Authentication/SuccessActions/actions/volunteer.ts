@@ -12,6 +12,8 @@ export interface VolunteerParams {
 export const volunteer =
   ({ cause }: VolunteerParams) =>
   async () => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (cause.relationships?.user_volunteer?.data) {
       await deleteVolunteer({
         causeId: cause.id,

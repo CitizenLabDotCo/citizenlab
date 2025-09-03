@@ -24,7 +24,7 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
 
   # Update the configuration attributes according to config params without saving it.
   def update_configuration!(configuration, params)
-    configuration.attributes = configuration.attributes.deep_merge(params).compact
+    configuration.attributes = configuration.attributes.deep_merge(params.to_h).compact
     remove_images!(configuration, params)
     configuration
   end
@@ -43,3 +43,5 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
       .permit(:logo, :favicon, settings: {}, style: {})
   end
 end
+
+WebApi::V1::AppConfigurationsController.include(AggressiveCaching::Patches::WebApi::V1::AppConfigurationsController)

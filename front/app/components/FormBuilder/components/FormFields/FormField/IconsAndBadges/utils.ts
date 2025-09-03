@@ -4,6 +4,12 @@ import { ICustomFieldInputType } from 'api/custom_fields/types';
 
 import { builtInFieldKeys } from 'components/FormBuilder/utils';
 
+export const communityMonitorDefaultPageKeys = [
+  'page_quality_of_life',
+  'page_service_delivery',
+  'page_governance_and_trust',
+];
+
 const getBuiltinFieldIcon = (key: string): IconNames => {
   switch (key) {
     case 'title_multiloc':
@@ -20,6 +26,8 @@ const getBuiltinFieldIcon = (key: string): IconNames => {
       return 'upload-file';
     case 'proposed_budget':
       return 'money-bag';
+    case 'cosponsor_ids':
+      return 'volunteer';
     default:
       return 'survey';
   }
@@ -43,8 +51,8 @@ const getCustomFieldIcon = (inputType: ICustomFieldInputType): IconNames => {
       return 'survey-number-field';
     case 'linear_scale':
       return 'survey-linear-scale';
-    case 'section':
-      return 'section';
+    case 'rating':
+      return 'rating';
     case 'file_upload':
     case 'shapefile_upload':
     case 'files':

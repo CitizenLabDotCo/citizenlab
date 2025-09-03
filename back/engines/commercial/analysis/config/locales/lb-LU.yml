@@ -1,3 +1,20 @@
 lb:
   analysis:
     example_tag_n: Beispill Tag %{n}
+    cell_statement:
+      percent_more: "%{percent}% méi"
+      percent_less: "%{percent}% manner"
+      range_min_max: "%{min} bis %{max}"
+      range_min: "%{min} oder méi"
+      range_max: "%{max} oder manner"
+      tag_vs_bin:
+        inputs: "Leit déi '%{answer}' op '%{question}' posten %{percent_more_less} an '%{tag}' wéi duerchschnëttlech."
+        likes: "Leit déi '%{answer}' op '%{question}' äntweren wéi %{percent_more_less} Input an '%{tag}' wéi duerchschnëttlech."
+        dislikes: "D'Leit, déi '%{answer}' op '%{question}' reagéieren net gär %{percent_more_less} Inputen an '%{tag}' wéi duerchschnëttlech."
+        participants: "Leit, déi '%{answer}' op '%{question}' reagéieren, bedeelegen %{percent_more_less} un '%{tag}' wéi duerchschnëttlech."
+      bin_vs_bin:
+        inputs: "Leit déi '%{answer1}' op '%{question1}' äntweren '%{answer2}' op '%{question2}' %{percent_more_less} wéi duerchschnëttlech."
+        likes: "Leit, déi '%{answer1}' op '%{question1}' gären %{percent_more_less} Input äntweren wa se '%{answer2}' op '%{question2}' äntweren wéi duerchschnëttlech."
+        dislikes: "Leit déi '%{answer1}' op '%{question1}' äntweren net gär %{percent_more_less} Input wann se '%{answer2}' op '%{question2}' wéi duerchschnëttlech äntweren."
+        participants: "Leit, déi '%{answer1}' op '%{question1}' reagéieren, bedeelegen %{percent_more_less} wa se '%{answer2}' op '%{question2}' wéi duerchschnëttlech äntweren."
+

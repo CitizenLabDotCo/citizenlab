@@ -4,14 +4,14 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   @@multiloc_service = MultilocService.new
 
   def ideas_count
-    ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
+    ideas = policy_scope(Idea.published, policy_scope_class: StatIdeaPolicy::Scope)
       .where(published_at: @start_at..@end_at)
     result = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
     render json: raw_json({ count: result.count })
   end
 
   def ideas_by_topic_serie
-    ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
+    ideas = policy_scope(Idea.published, policy_scope_class: StatIdeaPolicy::Scope)
     ideas = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
 
     ideas
@@ -49,7 +49,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   end
 
   def ideas_by_project_serie
-    ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
+    ideas = policy_scope(Idea.published, policy_scope_class: StatIdeaPolicy::Scope)
     ideas = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
 
     ideas

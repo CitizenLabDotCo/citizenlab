@@ -20,19 +20,13 @@ describe 'WebApi::V1::External::TenantSerializer' do
             'color_text' => anything,
             'color_secondary' => anything,
             'lifecycle_stage' => 'active',
+            'country_code' => 'BE',
             'organization_name' => { 'en' => 'Liege', 'fr-FR' => 'Liege', 'nl-NL' => 'Luik' },
             'organization_type' => 'medium_city',
             'onboarding' => true,
-            'authentication_token_lifetime_in_days' => 30
-          },
-        'initiatives' =>
-          { 'allowed' => true,
-            'enabled' => true,
-            'days_limit' => 90,
-            'reacting_threshold' => 300,
-            'eligibility_criteria' => { 'en' => 'Eligibility criteria' },
-            'posting_tips' => { 'en' => 'Posting tips' },
-            'threshold_reached_message' => { 'en' => 'Threshold reached' } }
+            'authentication_token_lifetime_in_days' => 30,
+            'min_user_age' => 12
+          }
       },
       style: {},
       logo: { 'small' => nil, 'medium' => nil, 'large' => nil } }

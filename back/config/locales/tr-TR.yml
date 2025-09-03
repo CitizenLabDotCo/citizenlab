@@ -58,21 +58,6 @@ tr:
     answered_description: cevap verdi
     ineligible: uygun değil
     ineligible_description: uygun değil
-  initiative_statuses:
-    review_pending: inceleme beklemede
-    review_pending_description: inceleme beklemede
-    changes_requested: talep edi̇len deği̇şi̇kli̇kler
-    changes_requested_description: talep edi̇len deği̇şi̇kli̇kler
-    proposed: önerilen
-    proposed_description: önerilen
-    expired: süresi dolan
-    expired_description: süresi dolan
-    threshold_reached: eşiğe ulaşan
-    threshold_reached_description: eşiğe ulaşan
-    answered: yanıtlanan
-    answered_description: yanıtlanan
-    ineligible: uygun değil
-    ineligible_description: uygun değil
   topics:
     nature: Doğa ve Biyoçeşitlilik
     nature_description: Doğa ve Biyoçeşitlilik
@@ -106,20 +91,20 @@ tr:
     services_description: Kamu hizmetleri
     other: Diğer
     other_description: Diğer
+    quality_of_life: Yaşam kalitesi
+    service_delivery: Hizmet sunumu
+    governance_and_trust: Yönetişim ve güven
   static_pages:
     terms_and_conditions_title: Hüküm ve koşullar
     terms_and_conditions_body: >
       <p>Bu hüküm ve koşullar, platforma katkıda bulunmanın kurallarını ve yönergelerini ana hatlarıyla belirtir ve yapıcı bir diyaloğun sağlanmasına yardımcı olmayı amaçlar.</p> <p>Platformu daha da geliştirmek için fikirlerinizi support@govocal.com adresine gönderebilirsiniz.</p> <h2>Kimler katılabilir?</h2> <p>Platform üzerinden herkes kamuya açık projeleri görüntüleyebilir. İçeriğe katkıda bulunmak istiyorsanız (örneğin, girdi göndermek veya oy kullanmak) kaydolmanız ve bir hesap oluşturmanız gerekir. E-posta adresinizi kullanarak kaydolabilirsiniz; bazı platformlar için mevcut bir Facebook veya Google hesabını kullanarak oturum açmak da mümkün olabilir. Bu hizmetlerden birini kullanırsanız adınız, e-posta adresiniz ve profil fotoğrafınız platform hesabınızla paylaşılacak ve hesabınıza eklenecektir.</p> <p>Hesabınızın oluşturulmasının size sahiplik hakkı vermediğini lütfen unutmayın. Platform  yöneticileri, bu sayfada belirtilen hüküm ve koşullara uyulmaması gibi nedenlerle hesapları reddedebilir, askıya alabilir veya silebilir.</p> <p>Hesabınız için genel koşullar şunlardır: </p> <ul> <li> <strong>Tek bir hesap oluşturabilirsiniz</strong> <p>Kişiler birden fazla hesap oluşturamaz ve tutamaz. Verdiğiniz hesap bilgileri doğru olmalıdır ve bu hesap bir platform yöneticisinin izni olmadan başkasına devredilemez. </p> </li> <li> <strong>Hesabınız ticari tanıtım için kullanılamaz</strong> <p>Hesaplar yalnızca reklam, ürün veya hizmet pazarlama vb. amaçlarla kullanılamaz.</p> </li> <li> <strong>Hesap bilgilerinizi güvenli ve gizli tutmaktan siz sorumlusunuz</strong> <p>Hesabınızı, hesabınızın parolasını ve giriş bilgilerini yalnızca siz kullanabilirsiniz. Hesap güvenliğinizi artırmak için rakamlar, küçük harfler ve büyük harflerden oluşan bir parola kullanmanız önerilir. Hesabınızda meydana gelen herhangi bir kayıp veya hasardan sorumlu değiliz ve çalınmasından (örneğin, kimlik avı yoluyla) sorumlu tutulamayız. Sizden parolanız gibi oturum açma bilgilerinizi hiçbir zaman istemeyiz. </p>  <h2>Platformdaki etkinliğiniz</h2> <p>Güvenli ve üretken katılımı sağlamak için, bu platformda yayınlanabilecek içerik türüne ilişkin bazı kısıtlamalar vardır. Platformda yayınladığınız tüm içerikler aşağıdakilerden arındırılmış olmalıdır:</p> <ul> <li> <strong>Özel veriler</strong> <p>Gizli veriler, telefon numaraları ve adresler gibi başkaları hakkındaki kişisel bilgiler, kişilerin açık izinleri ve rızaları olmadan yayınlanamaz.  </p> <li><strong>Spam / kötü amaçlı yazılım / kimlik avı / virüsler / solucanlar / Truva atları</strong> <p>Başkalarının gizliliğini ihlal etmeyi veya başkalarının tarayıcılarına veya bilgisayarlarına zarar vermeyi veya bozmayı amaçlayan kötü amaçlı içerik veya bağlantılar.</p> </li> <li> <strong>Tehditler, hakaretler ve diğer uygunsuz içerikler </strong> <p>Kişisel saldırılar ve hakaretler, tehdit edici davranışlar veya dil, ayrımcı yorumlar, küfür ve diğer saldırgan dil.</p> </li> <li><strong>Reklam ve ticari faaliyet</strong> <p>Yalnızca ticari bir hizmet veya ürünün reklamını yapmak amacıyla yayınlanan içerik.</p> </li> <li> <strong>Telif hakkıyla korunan materyaller</strong> <p>Fikri mülkiyet haklarını ihlal eden içerikler (örneğin, telif hakkıyla korunan görseller).</p> </li> <li> <strong>Yasa dışı faaliyetler</strong> <p>Herhangi bir şekilde yasa dışı faaliyetleri teşvik eden içerikler.</li></p> </ul> <p>Yukarıdakilerden herhangi birini içeren gönderiler ve diğer içerikler düzenlenebilir, silinebilir veya başka bir şekilde gönderilmesi engellenebilir ve hesap geçici olarak engellenebilir veya kalıcı olarak silinebilir. Geçici veya kalıcı olarak askıya alınmaktan kaçınmak için oluşturulan yeni veya ek hesaplar da izlenebilir ve silinebilir.</p> <h2>Geçerli yasalar</h2> <p>Bir hesabın kullanımı geçerli yasaları ihlal edemez. Bu, gizlilik mevzuatının, fikri mülkiyet haklarının, ceza kanununun vb. ihlalini içerir.</p> <p>Platformda yayınlanan ve yukarıdaki kurallara ve yasalara uymayan içerikten hiçbir şekilde sorumlu tutulamayız. İhlaller support@govocal.com adresine bildirilebilir ve ilgili mesajların silinmesine ve/veya ilgili hesabın askıya alınmasına veya kalıcı olarak iptal edilmesine neden olabilir.</p> <p>Platformda yayınlanan içeriğin zararlı dosyalar veya bağlantılar içermesi mümkündür. Platform üzerinden dosya indirerek veya köprülere erişerek oluşabilecek herhangi bir zararın riskini ve sorumluluğunu kendiniz üstlenirsiniz.</p> <h2>Mülkiyet hakları</h2> <p>Bu platform, içeriği, kaynak kodu, veritabanları vb. ile ilgili fikri mülkiyet hakları ile korunmaktadır. Platformda yayınladığınız tüm orijinal içerikler herkesin kullanımına açıktır ve içeriğinizin atıfta bulunularak paylaşılmasına veya uyarlanmasına izin veren Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) Genel Lisansı kapsamındadır. Platformu ve herkese açık nitelikte olmayan herhangi bir içeriğini izinsiz olarak hiçbir biçimde çoğaltamaz, dağıtamaz, değiştiremez veya iletemezsiniz.</p>
     privacy_policy_title: Gi̇zli̇li̇k Politikası
     privacy_policy_body: >
-      <p>Verilerin işlenmesinden sorumludur:</p> <p>CitizenLab NV - Pachecolaan 34 - 1000 Brüksel - Belçika</p> <p>İletişim e-posta adresi: support@govocal.com</p> <p>Organizasyon: //müşteri iletişim bilgilerini giriniz</p> <h2>1. GİZLİLİK POLİTİKASI</h2> <p>Bu 'Gizlilik Politikası' Go Vocal tarafından bu web sitesi aracılığıyla kuruluş adına toplanan 'Kişisel Veriler' için geçerlidir.</p> <h2>2. KİŞİSEL VERİLER NEDİR?</h2> <p>Bu Gizlilik Politikasında, Kişisel Veriler sizi tanımlamayı mümkün kılan bilgileri ifade eder. Tanımlanabilir bir kişi, doğrudan veya dolaylı olarak, özellikle bir kimlik numarasına veya fiziksel, fizyolojik, zihinsel, ekonomik, kültürel veya sosyal kimlikle bağlantılı bir veya daha fazla faktöre atıfta bulunarak tanımlanabilen kişidir. Kişisel bilgilerin tipik bir örneği adınız ve e-posta adresinizdir.</p> <h2>3. HANGİ KİŞİSEL VERİLERİ TOPLARIZ?</h2> <p>Kişisel Verilerinizi aşağıdaki üç kaynaktan toplayabiliriz:</p> <h3>3.1 Platforma kayıt işlemi sırasında sağladığınız ve bazıları isteğe bağlı olan Kişisel Veriler.</h3> <p>Sizden toplayabileceğimiz kişisel veriler şunlardır:</p> <ul> <li>Ad ve soyadı</li> <li>E-posta adresi</li> <li>Doğum yılı</li> <li>Cinsiyet</li> <li>İkamet edilen bölge</li> <li>Tercih edilen dil</li> </ul> <p>Bu liste, kuruluşun talebi üzerine genişletilebilir. Google Accounts, Facebook veya FranceConnect gibi bir 3. taraf kimlik doğrulama sağlayıcısı aracılığıyla oturum açmayı seçerseniz bu verileri onlardan alırız. Kimliğinizi COW, FranceConnect veya CSAM gibi bir 3. taraf kimlik sağlayıcısı ile doğrulamayı seçerseniz bu bilgileri onlardan alırız.</p> <h3>3.2 Platformumuzdaki katılımcı faaliyetlerinizde sağladığınız kişisel veriler.</h3> <p>Platformda gerçekleştirdiğiniz her eylem (oylama, fikir yayınlama, yorum yazma, anketi yanıtlama vb.) kaydedilir ve saklanır. Bu veriler aynı zamanda kayıt verilerinizle (3.1) bağlantılıdır, bu da kuruluşun platform profilinizi bu katılım verileriyle ilişkilendirebileceği anlamına gelir.</p> <h3>3.3 Platformumuzu ziyaret ettiğinizde topladığımız Kişisel Veriler.</h3> <p>Biz (ve bizim adımıza hareket eden üçüncü taraf bilgi işleyiciler) platformun çalışma performansını ve güvenliğini değerlendirmek için platformumuzun kullanımı hakkında bilgi toplarız. Bu amaçla, IP adresiniz ve tarayıcı ayrıntılarınız gibi sizi tanımlayabilecek teknik bilgileri toplarız. Hizmetlerimizi kullandığınızda bu tür verilerin toplanmasını kabul etmiş olursunuz.</p> <p>Hizmetlerimizi geliştirmek için kullanım verilerini de toplarız, istediğiniz zaman bu verilerin toplanmasını onay yöneticisinden devre dışı bırakabilirsiniz.</p> <h2>4. KİŞİSEL VERİLERİ NASIL KULLANIRIZ?</h2> <p>Kişisel verilerinizi aşağıdaki amaçlar için kullanabiliriz:</p> <ul> <li>Öncelikle ve en önemlisi, girdilerinizi ilgili bağlamda kuruluşa iletmek ve karar vermelerine yardımcı olmak için bu platformda toplanan tüm verilerin toplu raporlarını çıkarmak.</li> <li>Bu web sitesinde kullanıcı profilinizi oluşturmak ve tutmak.</li> <li>Kullanıcıların tanımlanmasını ve kimlik doğrulamasını yönetmek.</li> <li>Topluluğunuz hakkında bilgi vermek ve/veya platformda ilginizi çekebilecek faaliyetler olduğunda sizi bilgilendirmek. E-posta bildirimleri alma tercihlerinizi kullanıcı profilinizden istediğiniz zaman devre dışı bırakabilirsiniz.</li> <li>Hizmetlerimizi geliştirmek ve işleyişini izlemek için.</li> </ul> <p>Kişisel veriler yalnızca işlenmeleri için gereken süre boyunca saklanır ve işlenir. Ardından veriler silinir veya anonimleştirilir.</p> <h2>5. KİŞİSEL VERİLERİNİZİ KİMLERLE PAYLAŞIRIZ?</h2> <p>Kişisel verilerinizi, adına bu verileri topladığımız kuruluş ile paylaşırız. Verilerinizi bizim adımıza çalışan alt işleyicilerle paylaşırız. Kişisel verilerinizi asla başka hizmet sağlayıcılara satmayız veya kiralamayız ve Kişisel Verilerinizi GDPR ile uyumlu olmayan herhangi bir hizmet sağlayıcı ile paylaşmayız.</p> <h2>6. KİŞİSEL VERİLERİNİZİ NEREYE AKTARIRIZ?</h2> <p>Kişisel Verilerinizi yalnızca GDPR madde 44'e uygun olmaları halinde Avrupa Ekonomik Alanı dışında yerleşik hizmet sağlayıcılara aktarıyoruz.</p> <h2>7. HANGİ HAKLARA SAHİPSİNİZ?</h2> <p>Kişisel verilerinizi istediğiniz zaman görüntüleme ve Go Vocal'in kişisel verilerinizi kullanımı hakkında bilgi alma hakkına sahipsiniz.</p> <h3>7.1 Düzeltme, silme ve işlemeyi kısıtlama hakkı</h3> <p>Kişisel verilerinizi Go Vocal'e verip vermemeye karar vermekte özgürsünüz. Ayrıca, Go Vocal'den kişisel verilerinizi düzeltmesini, tamamlamasını veya kaldırmasını talep etme hakkına her zaman sahipsiniz. Kişisel verilerin sağlanmasının reddedilmesinin veya silinmesinin talep edilmesinin belirli hizmetlerin artık sunulamayacağı anlamına geldiğini kabul edersiniz. Kişisel verilerinizin işlenmesinin sınırlandırılmasını da talep edebilirsiniz. Hesabınızı platformdan kaldırmayı seçerseniz, hakkınızda toplanan kişisel veriler sunucularımızdan kaldırılacaktır. Hakkınızdaki bazı kişisel bilgiler, güvenlik ve yasal nedenlerle tuttuğumuz günlük verilerinde en çok 30 gün saklanabilir.</p> <h3>7.2 İtiraz hakkı</h3> <p>Ciddi ve meşru nedenlerle kişisel verilerinizin işlenmesine itiraz etme hakkına sahipsiniz. Ayrıca, kişisel verilerinizin doğrudan pazarlama amacıyla kullanılmasına her zaman itiraz etme hakkına sahipsiniz; bu gibi durumlarda neden belirtmek zorunda değilsiniz.</p> <h3>7.3 Veri taşınabilirliği hakkı</h3> <p>Go Vocal'e sağladığınız kişisel verileri yapılandırılmış, tipik ve makine tarafından okunabilir bir biçimde alma ve/veya farklı denetleyicilere aktarma hakkına sahipsiniz.</p> <h3>7.4 Onayı geri çekme hakkı</h3> <p>İşleme önceden verdiğiniz onaya dayandığı sürece, bu onayı geri çekme hakkına sahipsiniz.</p> <h3>7.5 Haklarınızı kullanma</h3> <p>Bu amaçla Go Vocal ile iletişime geçerek, support@govocal.com adresine e-posta göndererek, Pachecolaan 34, 1000 Brüksel, Belçika adresine posta göndererek veya kimlik kartınızın ön yüzünün bir kopyasını eklemeniz koşuluyla Web Sitemizdeki "Bize ulaşın" formunu kullanarak haklarınızı kullanabilirsiniz.</p> <h3>7.6 Otomatik karar verme ve profil oluşturma</h3> <p>Kişisel verilerinizin işlenmesi profil oluşturmayı içermez ve ayrıca Go Vocal tarafından otomatik karar vermeye tabi tutulmayacaktır.</p> <h3>7.7 Şikayette bulunma hakkı</h3> <p>Ülkenizdeki Kişisel Verilerin Gizliliği yetkililerine veya Go Vocal'in tabi olduğu Belçika'daki Kişisel Verilerin Gizliliği yetkililerine şikayette bulunma hakkına sahipsiniz: Drukpersstraat 35, 1000 Brüksel, Belçika, Tel +32 (0)2 274 48 00, Faks +32 (0)2 274 48 35, e-posta: contact@adp-gba.be. Bu, mahkemelerden muafiyet sağlamaz.</p> <h2>8. VERİ TOPLAMA VE İŞLEME HAKKINDA EK BİLGİLER</h2> <h3>Yasal prosedürler</h3> <p>Go Vocal ve bu verileri adına işlediğimiz Kuruluş, Kullanıcının Kişisel Verilerini yasal amaçlarla, bu Uygulamanın veya ilgili hizmetlerin yasa dışı kullanımı durumunda mahkeme veya yasal işlemlerden önceki aşamalar için kullanabilir. Kullanıcı, Go Vocal ve birlikte çalıştığımız Kuruluşun, Verilerin işlenmesi için yetkili devlet kurumlarının talebi üzerine kişisel verileri ifşa etmek zorunda kalabileceğinin farkındadır. Bu işlemenin yasal dayanağı, hüküm ve koşulların kabulü (sözleşme temeli) ve verilen rızadır.</p> <h3>Güvenlik Önlemleri</h3> <p>Go Vocal, kişisel verilerin imha edilmesini, kaybolmasını, tahrif edilmesini, değiştirilmesini, izinsiz erişimini veya üçüncü taraflara hatalı bir şekilde ifşa edilmesini ve bu verilerle ilgili diğer yasaklanmış işlemleri önlemek için teknolojik ve organizasyonel düzeyde ayarlanmış güvenlik önlemleri geliştirmiştir. Go Vocal, kişisel verilerinizin üçüncü bir tarafça yanlış veya yasa dışı kullanımından kaynaklanan doğrudan veya dolaylı kayıplardan hiçbir koşulda sorumlu tutulamaz. Giriş bilgilerinize ve parolanıza izinsiz erişimleri tamamen önlemek de dahil olmak üzere güvenlik talimatlarına her zaman uymalısınız. Web sitesinin bilgisayarınız, IP adresiniz ve kimlik bilgileriniz üzerinden kullanımından ve bunların gizliliğinden yalnızca siz sorumlusunuz.</p> <h3>Bu gizlilik politikasındaki değişiklikler</h3> <p>Go Vocal, Kullanıcıları bu sayfada bilgilendirerek bu gizlilik politikasını istediği zaman değiştirme hakkını saklı tutar. Olası değişiklikler için bu sayfayı kontrol etmenizi öneririz. Son değişikliğin tarihi sayfanın altında belirtilmiştir. Bir Kullanıcı politikadaki herhangi bir değişikliğe itiraz ederse, Kullanıcı bu Uygulamayı kullanmaya devam etmemelidir. Aksi belirtilmedikçe, o tarihte geçerli olan Gizlilik Politikası, topladığımız tüm Kişisel Veriler için geçerlidir.</p> <p><em>En son güncelleme: 17.12.2019</em></p>
+      <p>Verilerin işlenmesinden sorumludur:</p> <p>Go Vocal NV - Pachecolaan 34 - 1000 Brüksel - Belçika</p> <p>İletişim e-posta adresi: support@govocal.com</p> <p>Organizasyon: //müşteri iletişim bilgilerini giriniz</p> <h2>1. GİZLİLİK POLİTİKASI</h2> <p>Bu 'Gizlilik Politikası' Go Vocal tarafından bu web sitesi aracılığıyla kuruluş adına toplanan 'Kişisel Veriler' için geçerlidir.</p> <h2>2. KİŞİSEL VERİLER NEDİR?</h2> <p>Bu Gizlilik Politikasında, Kişisel Veriler sizi tanımlamayı mümkün kılan bilgileri ifade eder. Tanımlanabilir bir kişi, doğrudan veya dolaylı olarak, özellikle bir kimlik numarasına veya fiziksel, fizyolojik, zihinsel, ekonomik, kültürel veya sosyal kimlikle bağlantılı bir veya daha fazla faktöre atıfta bulunarak tanımlanabilen kişidir. Kişisel bilgilerin tipik bir örneği adınız ve e-posta adresinizdir.</p> <h2>3. HANGİ KİŞİSEL VERİLERİ TOPLARIZ?</h2> <p>Kişisel Verilerinizi aşağıdaki üç kaynaktan toplayabiliriz:</p> <h3>3.1 Platforma kayıt işlemi sırasında sağladığınız ve bazıları isteğe bağlı olan Kişisel Veriler.</h3> <p>Sizden toplayabileceğimiz kişisel veriler şunlardır:</p> <ul> <li>Ad ve soyadı</li> <li>E-posta adresi</li> <li>Doğum yılı</li> <li>Cinsiyet</li> <li>İkamet edilen bölge</li> <li>Tercih edilen dil</li> </ul> <p>Bu liste, kuruluşun talebi üzerine genişletilebilir. Google Accounts, Facebook veya FranceConnect gibi bir 3. taraf kimlik doğrulama sağlayıcısı aracılığıyla oturum açmayı seçerseniz bu verileri onlardan alırız. Kimliğinizi COW, FranceConnect veya CSAM gibi bir 3. taraf kimlik sağlayıcısı ile doğrulamayı seçerseniz bu bilgileri onlardan alırız.</p> <h3>3.2 Platformumuzdaki katılımcı faaliyetlerinizde sağladığınız kişisel veriler.</h3> <p>Platformda gerçekleştirdiğiniz her eylem (oylama, fikir yayınlama, yorum yazma, anketi yanıtlama vb.) kaydedilir ve saklanır. Bu veriler aynı zamanda kayıt verilerinizle (3.1) bağlantılıdır, bu da kuruluşun platform profilinizi bu katılım verileriyle ilişkilendirebileceği anlamına gelir.</p> <h3>3.3 Platformumuzu ziyaret ettiğinizde topladığımız Kişisel Veriler.</h3> <p>Biz (ve bizim adımıza hareket eden üçüncü taraf bilgi işleyiciler) platformun çalışma performansını ve güvenliğini değerlendirmek için platformumuzun kullanımı hakkında bilgi toplarız. Bu amaçla, IP adresiniz ve tarayıcı ayrıntılarınız gibi sizi tanımlayabilecek teknik bilgileri toplarız. Hizmetlerimizi kullandığınızda bu tür verilerin toplanmasını kabul etmiş olursunuz.</p> <p>Hizmetlerimizi geliştirmek için kullanım verilerini de toplarız, istediğiniz zaman bu verilerin toplanmasını onay yöneticisinden devre dışı bırakabilirsiniz.</p> <h2>4. KİŞİSEL VERİLERİ NASIL KULLANIRIZ?</h2> <p>Kişisel verilerinizi aşağıdaki amaçlar için kullanabiliriz:</p> <ul> <li>Öncelikle ve en önemlisi, girdilerinizi ilgili bağlamda kuruluşa iletmek ve karar vermelerine yardımcı olmak için bu platformda toplanan tüm verilerin toplu raporlarını çıkarmak.</li> <li>Bu web sitesinde kullanıcı profilinizi oluşturmak ve tutmak.</li> <li>Kullanıcıların tanımlanmasını ve kimlik doğrulamasını yönetmek.</li> <li>Topluluğunuz hakkında bilgi vermek ve/veya platformda ilginizi çekebilecek faaliyetler olduğunda sizi bilgilendirmek. E-posta bildirimleri alma tercihlerinizi kullanıcı profilinizden istediğiniz zaman devre dışı bırakabilirsiniz.</li> <li>Hizmetlerimizi geliştirmek ve işleyişini izlemek için.</li> </ul> <p>Kişisel veriler yalnızca işlenmeleri için gereken süre boyunca saklanır ve işlenir. Ardından veriler silinir veya anonimleştirilir.</p> <h2>5. KİŞİSEL VERİLERİNİZİ KİMLERLE PAYLAŞIRIZ?</h2> <p>Kişisel verilerinizi, adına bu verileri topladığımız kuruluş ile paylaşırız. Verilerinizi bizim adımıza çalışan alt işleyicilerle paylaşırız. Kişisel verilerinizi asla başka hizmet sağlayıcılara satmayız veya kiralamayız ve Kişisel Verilerinizi GDPR ile uyumlu olmayan herhangi bir hizmet sağlayıcı ile paylaşmayız.</p> <h2>6. KİŞİSEL VERİLERİNİZİ NEREYE AKTARIRIZ?</h2> <p>Kişisel Verilerinizi yalnızca GDPR madde 44'e uygun olmaları halinde Avrupa Ekonomik Alanı dışında yerleşik hizmet sağlayıcılara aktarıyoruz.</p> <h2>7. HANGİ HAKLARA SAHİPSİNİZ?</h2> <p>Kişisel verilerinizi istediğiniz zaman görüntüleme ve Go Vocal'in kişisel verilerinizi kullanımı hakkında bilgi alma hakkına sahipsiniz.</p> <h3>7.1 Düzeltme, silme ve işlemeyi kısıtlama hakkı</h3> <p>Kişisel verilerinizi Go Vocal'e verip vermemeye karar vermekte özgürsünüz. Ayrıca, Go Vocal'den kişisel verilerinizi düzeltmesini, tamamlamasını veya kaldırmasını talep etme hakkına her zaman sahipsiniz. Kişisel verilerin sağlanmasının reddedilmesinin veya silinmesinin talep edilmesinin belirli hizmetlerin artık sunulamayacağı anlamına geldiğini kabul edersiniz. Kişisel verilerinizin işlenmesinin sınırlandırılmasını da talep edebilirsiniz. Hesabınızı platformdan kaldırmayı seçerseniz, hakkınızda toplanan kişisel veriler sunucularımızdan kaldırılacaktır. Hakkınızdaki bazı kişisel bilgiler, güvenlik ve yasal nedenlerle tuttuğumuz günlük verilerinde en çok 30 gün saklanabilir.</p> <h3>7.2 İtiraz hakkı</h3> <p>Ciddi ve meşru nedenlerle kişisel verilerinizin işlenmesine itiraz etme hakkına sahipsiniz. Ayrıca, kişisel verilerinizin doğrudan pazarlama amacıyla kullanılmasına her zaman itiraz etme hakkına sahipsiniz; bu gibi durumlarda neden belirtmek zorunda değilsiniz.</p> <h3>7.3 Veri taşınabilirliği hakkı</h3> <p>Go Vocal'e sağladığınız kişisel verileri yapılandırılmış, tipik ve makine tarafından okunabilir bir biçimde alma ve/veya farklı denetleyicilere aktarma hakkına sahipsiniz.</p> <h3>7.4 Onayı geri çekme hakkı</h3> <p>İşleme önceden verdiğiniz onaya dayandığı sürece, bu onayı geri çekme hakkına sahipsiniz.</p> <h3>7.5 Haklarınızı kullanma</h3> <p>Bu amaçla Go Vocal ile iletişime geçerek, support@govocal.com adresine e-posta göndererek, Pachecolaan 34, 1000 Brüksel, Belçika adresine posta göndererek veya kimlik kartınızın ön yüzünün bir kopyasını eklemeniz koşuluyla Web Sitemizdeki "Bize ulaşın" formunu kullanarak haklarınızı kullanabilirsiniz.</p> <h3>7.6 Otomatik karar verme ve profil oluşturma</h3> <p>Kişisel verilerinizin işlenmesi profil oluşturmayı içermez ve ayrıca Go Vocal tarafından otomatik karar vermeye tabi tutulmayacaktır.</p> <h3>7.7 Şikayette bulunma hakkı</h3> <p>Ülkenizdeki Kişisel Verilerin Gizliliği yetkililerine veya Go Vocal'in tabi olduğu Belçika'daki Kişisel Verilerin Gizliliği yetkililerine şikayette bulunma hakkına sahipsiniz: Drukpersstraat 35, 1000 Brüksel, Belçika, Tel +32 (0)2 274 48 00, Faks +32 (0)2 274 48 35, e-posta: contact@adp-gba.be. Bu, mahkemelerden muafiyet sağlamaz.</p> <h2>8. VERİ TOPLAMA VE İŞLEME HAKKINDA EK BİLGİLER</h2> <h3>Yasal prosedürler</h3> <p>Go Vocal ve bu verileri adına işlediğimiz Kuruluş, Kullanıcının Kişisel Verilerini yasal amaçlarla, bu Uygulamanın veya ilgili hizmetlerin yasa dışı kullanımı durumunda mahkeme veya yasal işlemlerden önceki aşamalar için kullanabilir. Kullanıcı, Go Vocal ve birlikte çalıştığımız Kuruluşun, Verilerin işlenmesi için yetkili devlet kurumlarının talebi üzerine kişisel verileri ifşa etmek zorunda kalabileceğinin farkındadır. Bu işlemenin yasal dayanağı, hüküm ve koşulların kabulü (sözleşme temeli) ve verilen rızadır.</p> <h3>Güvenlik Önlemleri</h3> <p>Go Vocal, kişisel verilerin imha edilmesini, kaybolmasını, tahrif edilmesini, değiştirilmesini, izinsiz erişimini veya üçüncü taraflara hatalı bir şekilde ifşa edilmesini ve bu verilerle ilgili diğer yasaklanmış işlemleri önlemek için teknolojik ve organizasyonel düzeyde ayarlanmış güvenlik önlemleri geliştirmiştir. Go Vocal, kişisel verilerinizin üçüncü bir tarafça yanlış veya yasa dışı kullanımından kaynaklanan doğrudan veya dolaylı kayıplardan hiçbir koşulda sorumlu tutulamaz. Giriş bilgilerinize ve parolanıza izinsiz erişimleri tamamen önlemek de dahil olmak üzere güvenlik talimatlarına her zaman uymalısınız. Web sitesinin bilgisayarınız, IP adresiniz ve kimlik bilgileriniz üzerinden kullanımından ve bunların gizliliğinden yalnızca siz sorumlusunuz.</p> <h3>Bu gizlilik politikasındaki değişiklikler</h3> <p>Go Vocal, Kullanıcıları bu sayfada bilgilendirerek bu gizlilik politikasını istediği zaman değiştirme hakkını saklı tutar. Olası değişiklikler için bu sayfayı kontrol etmenizi öneririz. Son değişikliğin tarihi sayfanın altında belirtilmiştir. Bir Kullanıcı politikadaki herhangi bir değişikliğe itiraz ederse, Kullanıcı bu Uygulamayı kullanmaya devam etmemelidir. Aksi belirtilmedikçe, o tarihte geçerli olan Gizlilik Politikası, topladığımız tüm Kişisel Veriler için geçerlidir.</p> <p><em>En son güncelleme: 17.12.2019</em></p>
     infopage_title: Bilgi Sayfası
     infopage_body: "<p>Bu <strong>tam kapsamlı katılım platformu</strong> belediyenizin veya kuruluşunuzun bir girişimidir ve fikir toplama, oylama, tartışma, anket, katılımcı bütçe oluşturma, çevrimiçi haritalama, senaryo planlama, danışma kurulları ve komiteler için destek vb. kamuya danışma süreçlerinde kullanılabilir.</p>\n<p>Ana sayfada, hangi <strong>süreçlerinin aktif olduğunu </strong>ve şu anda hangi <strong>aşamada </strong>olduklarını görebilirsiniz.</p>\n<p><img data-cl2-text-image-text-reference=\"e2c7bc7a-017d-4887-a3cb-b94185617a59\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<h2>Platformda nasıl oturum açarım?</h2>\n<p>Adınızı, soyadınızı ve e-posta adresinizi girerek kolayca oturum açabilirsiniz. Google veya Facebook hesabınızı da kullanabilirsiniz. Başkaları tarafından sadece adınız ve soyadınız görülebilecektir.</p>\n<h2>Platformu kendim kullanabilir miyim? Örneğin bir kamuoyu görüşü almak için?</h2>\n<p>Kesinlikle kullanabilirsiniz. Belediyenizdeki veya kuruluşunuzdaki sorumludan size proje moderatörü olmanız için gerekli izinleri vermesini isteyin. Bu izinler verildikten sonra, kendi projenizi ve zaman çizelgenizi oluşturabilir ve istediğiniz bilgileri (video, belge, resim vb.) paylaşabilirsiniz. Bu, başkalarını platforma davet etmenize, projenizde fikir yayınlamalarına, oy vermelerine veya yorum yapmalarına da olanak tanır.</p>\n<h2>Bir dernek/kuruluş/komite olarak katılabilir miyim? </h2>\n<p>Evet, bu mümkün. Platformda sadece adınız ve soyadınız başkaları tarafından görülebildiğinden, profilinizi oluştururken kuruluşunuzun adını kullanmanız yeterlidir.</p>\n<h2>Neden kendim bir web sitesi oluşturmak yerine bu platformu kullanayım?</h2>\n<p>Çevrimiçi katılım konusunda uzman ve kendini işine adamış geliştiricilerden oluşan bir ekip (<a href=\"https://www.govocal.com/en\" target=\"_blank\">Go Vocal</a>, belediyeniz veya kuruluşunuz tarafından görevlendirilmiştir) bu platformu günlük olarak geliştirmekte ve güncellemektedir. En küçük bir hata bile anında giderilir ve yaratıcı önerileriniz varsa platformda hangi özellikleri kullanabileceğinizi veya hangilerinin yakında kullanılabilir hale geleceğini göstererek size yardımcı olabilirler.</p>\n<p><img data-cl2-text-image-text-reference=\"392d0e47-e5f9-41ab-9ceb-affac617b8b1\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<p><strong><em>Daha fazla bilgiye mi ihtiyacınız var?</em></strong><em> Platformu kullanmak istiyor musunuz? Sorularınız veya geri bildiriminiz mi var? Belediyenizdeki veya kuruluşunuzdaki sorumlu kişilerle ya da support@govocal.com adresinden Go Vocal ile iletişime geçin.</em></p><strong>"
     faq_title: SSS
     faq_body: "<h2 class=\"ql-align-justify\">Bu platformun oluşturulma amacı nedir?</h2><p class=\"ql-align-justify\">Bu platform, bilgi paylaşmak, girdi ve geri bildirim almak için ortak bir merkez olarak tasarlanmıştır. Halihazırda aktif olan katılım projeleri ana sayfada gösterilir. Her katılım projesinin fikir eklemek, bir öneri hakkında yorum yapmak, projeleri oylamak ve önceliklendirmek veya bir ankete katılmak gibi farklı bir katılım şekli olabilir.</p><h2 class=\"ql-align-justify\">Nasıl katılabilirim?</h2><p class=\"ql-align-justify\">Herkese açık projelere her zaman göz atabilirsiniz ancak bir işlem yapmak için kaydolmanız gerekir. Bu, topluluk olma duygusunu korumaya ve girdilerin meşruiyetini sağlamaya yardımcı olur.</p><h2 class=\"ql-align-justify\">İnsanlar benimle ilgili hangi bilgileri görebilir?</h2><p class=\"ql-align-justify\">Adınız, fotoğrafınız ve eğer eklediyseniz biyografiniz görülür. Bu bilgileri Ayarlarınızdan değiştirebilirsiniz.</p><h2 class=\"ql-align-justify\">Neden girdimi yayınlayamıyorum veya yorum yapamıyorum?</h2><p class=\"ql-align-justify\">Yayınlama, yorum ve oylama, bir projenin yalnızca belirli zamanlarında veya aşamalarında etkinleştirilebilir. Bazı durumlarda, bir proje yalnızca belirli bir paydaş grubunun katkılarına açık olabilir.</p><p class=\"ql-align-justify\">Bir proje için yayınlama o anda etkinse, yayın göndermenizi isteyen bir düğme görürsünüz. Alternatif olarak, diğer katılım fırsatları için diğer aktif projelere göz atabilirsiniz.</p><h2 class=\"ql-align-justify\">Girdimi nasıl düzenleyebilirim veya silebilirim?</h2><p class=\"ql-align-justify\">Girdinizi yayınladıysanız ancak düzenleme yapmak veya silmek istiyorsanız, yayının sağ üst köşesindeki üç küçük noktaya tıklayarak bu seçeneği bulabilirsiniz.</p><h2 class=\"ql-align-justify\">Topluluk kuralları ve moderasyon politikaları nelerdir?</h2><p class=\"ql-align-justify\">Topluluk kurallarımız, platformun herkesin katılabileceği güvenli bir alan olmasını sağlamayı amaçlar. Lütfen yayınlarınızda aşağıdakilerin bulunmadığından emin olun:</p><ul>\n  <li class=\"ql-align-justify\">Kişisel saldırılar, hakaretler, küfürlü veya ayrımcı yorumlar</li>\n  <li class=\"ql-align-justify\">Küfür dahil saldırgan dil</li>\n  <li class=\"ql-align-justify\">Pazarlama veya reklam materyalleri</li>\n  <li class=\"ql-align-justify\">Diğer bireyler hakkında kişisel bilgiler</li>\n  <li class=\"ql-align-justify\">Görseller gibi telifli materyaller</li>\n  </ul><p class=\"ql-align-justify\">Bu yönergelere uymayan tüm yayınlar veya yorumlar düzenlenebilir, silinebilir ya da çok ağır ihlallerde yayınlanması engellenebilir. Daha fazla bilgi için lütfen Hüküm ve Koşullarımızı inceleyin.</p><h2 class=\"ql-align-justify\">Saldırgan bir yayını nasıl şikayet edebilirim?</h2><p class=\"ql-align-justify\">Bir yayını şikayet etmek için yayının sağ üst köşesindeki üç küçük noktaya tıklayın. Lütfen içeriği şikayet etme nedeninizi belirtin. Bu işlem, yayının incelenmesi için bir bildirim gönderir.</p><h2 class=\"ql-align-justify\">Kaydolurken veya oturum açarken neden zorluk yaşıyorum?</h2><p class=\"ql-align-justify\">Kaydolamıyorsanız, bunun nedeni aynı e-posta adresiyle zaten kaydolmuş olmanız veya daha önce platforma katılmak için bir davet almış olmanız olabilir. E-posta adresinizin bekleyen bir davet tarafından alındığını belirten bir mesaj görürseniz lütfen e-postanızı kontrol edin ve hesabınızı kaydetmek için davetiyedeki bağlantıya tıklayın. Daveti bulamazsanız, spam kutunuza bakmayı deneyin veya yeni bir davetiye isteyin.</p><h2 class=\"ql-align-justify\">Parolamı nasıl sıfırlarım?</h2><p class=\"ql-align-justify\">Oturum açma sayfasında her zaman parolanızı sıfırlama talebinde bulunabilirsiniz. Parolanızı sıfırlarsanız e-posta adresinize bir bağlantı gönderilir. Parolanızı değiştirmek için talimatları uygulayın. Güvenlik nedeniyle, bu bağlantı bir saat süreyle geçerli olur. Bağlantının süresi dolduysa yeni bir sıfırlama bağlantısı oluşturmak için oturum açma sayfasındaki \"Parolanızı mı unuttunuz?\" seçeneğine tekrar tıklayabilirsiniz.</p><p class=\"ql-align-justify\">E-postayı almadıysanız, spam kutunuzda olmadığından ve bağlantıyı kaydolduğunuz e-posta adresine gönderdiğinizden emin olun.</p><h2 class=\"ql-align-justify\">Verilerimle ne yapacaksınız?</h2><p class=\"ql-align-justify\">Veri toplama ve kullanımı hakkında daha fazla bilgi için gizlilik politikamızı inceleyin. Kısacası, verilerinizi asla reklam, pazarlama veya diğer spam türleri için kullanmayız.</p><h2 class=\"ql-align-justify\">Hangi e-postaları alacağım?</h2><p class=\"ql-align-justify\">Yayınlarınızdan birine yanıt verilmesi gibi, hesabınızla ve platformdaki etkinliğinizle ilgili e-postalar alabilirsiniz. Hangi e-postaları alacağınızı Ayarlar bölümünden kontrol edebilirsiniz. E-posta bildirimlerini açıp kapatabileceğiniz \"Bildirimler\" adlı bir bölüm bulunmaktadır.</p><h2 class=\"ql-align-justify\">Hesabımı nasıl silebilirim?</h2><p class=\"ql-align-justify\">Ayarlarınızda hesabınızı silme seçeneği bulunmaktadır. Gönderdiğiniz girdiler yayınlanmaya devam eder ancak adınız yayından kaldırılır ve 'bilinmeyen yazar' ifadesi ile değiştirilir. Tüm girdilerinizi silmek istiyorsanız lütfen hesabınızı silmeden önce yapın.</p>"
-    initiatives_title: Öneriler
-    initiatives_body: >
-      <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="b4e659ab-2830-48fd-b3ce-96e16856262f" height="374.3745928338762" width="819" alt=""> <h2>Vatandaş önerisi nedir?</h2> <p>Bir $|orgName| sakini olarak bu platform aracılığıyla önerinizi gündeme getirebilirsiniz. Bu öneriler tercihen yerel yönetim bölgesi ile bağlantılı ve bir ihtiyaç, istek veya hayalden kaynaklanan somut fikirlerdir. Bu sizin kendi öneriniz olabileceği gibi ortak bir öneri de olabilir. Mevcut bir durumu değiştirmek, iyileştirmek ya da yeni bir proje başlatmak isteyebilirsiniz.</p> <p>Önerinizin hayata geçirilmesinde, $|orgName| tarafından katılım hem gerekli hem de mümkün olmalıdır. Önerinizle ilgili fikir geliştirme veya iş birliği için katılımınız tercih edilir ancak bu bir zorunluluk değildir. Bu nedenle "Otoyoldaki hız sınırını 80 km/saate düşürmek" güçlü bir öneri değilken "Ana caddeyi yaya bölgesine dönüştürmek" güçlü bir öneridir. Önerilerinizi getirin! Daha fazla bilgiye ihtiyaç duyulursa sizinle iletişime geçilecektir.</p><h2>Neden bu platforma bir öneri göndermelisiniz?</h2> <p>Bu, $|orgName| için resmi katılım platformudur ve aşağıdaki avantajları sunar:</p> <ul> <li>$|orgName| bu platformun resmi sahibi rolündedir ve platformdaki öneri ve görüşleri sürekli olarak takip eder. Bir öneri yayınladığınızda, sorumlu kişi otomatik olarak bir mesaj alır. Önerinizin dikkate alındığından emin olmak için onlarla iletişime geçmeniz gerekmez.</li> <li>Bu platform, vatandaşların önerileri gibi resmi katılımcı eylemler için özel olarak geliştirilmiştir. Kullanıcı deneyiminden adım adım yaklaşıma kadar her unsur, vatandaş katılımını kolaylaştırmak için oluşturulmuştur. Geleneksel sosyal medyayı kullanırken, öneriniz çok sayıda uyaran arasında kaybolabilir ve sıradan bir e-posta, dolu bir gelen kutusu içinde hemen kaybolur.</li> <li>Aynı bölgede yaşadığınız kişiler de bu platformda yer almaktadır. Önerinizi destekleyebilir ve geliştirebilirler. Öneriniz ne kadar yaratıcı olursa ve ne kadar çok destek toplamayı başarırsa hayata geçirilme şansı o kadar artar.</li> </ul> <h2>Nereden başlamanız gerekir?</h2> <p>Öncelikle, önerinizin aşağıdaki kriterleri karşılayıp karşılamadığını kontrol edin:</p> <p>$|initiativesEligibilityCriteria|</p> <h2>Öneriniz $|initiativesDaysLimit| gün içinde $|initiativesVotingThreshold| oy sayısına ulaştığında ne bekleyebilirsiniz?</h2> <p>$|initiativesThresholdReachedMessage|</p> <h2>Zamanında $|initiativesVotingThreshold| oy alamayan önerilere ne olur? </h2> <p>Böyle şeyler olur ama endişelenmeyin. Öneriniz platformda kalmaya devam edecektir. Önerinizin durumu otomatik olarak 'Süresi dolan' olarak değişecektir. Sonuç olarak, oylama artık mümkün olmayacaktır. Dilerseniz, kendi önerinizi istediğiniz zaman silebilirsiniz.</p>
   nav_bar_items:
     home:
       title: Ana Sayfa
@@ -144,6 +129,7 @@ tr:
     open_idea_phase_title: Mevcut aşama
     native_survey_title: Anket
     native_survey_button: Ankete katılın
+    community_monitor_title: Topluluk gözlemcisi
   events:
     council_meeting_title: Kurul Toplantısı
     council_meeting_description: >
@@ -156,8 +142,6 @@ tr:
         title: Doğum yılı
       domicile:
         title: İkamet yeri
-      education:
-        title: Eğitim
     ideas:
       title:
         title: Başlık
@@ -170,6 +154,9 @@ tr:
       topic_ids:
         title: Etiketler
         description:
+      consponsor_ids:
+        title: Eş sponsorlar
+        description: Aşağıdaki alan aracılığıyla eş sponsorları davet edin. Davet edilen eş sponsor(lar) bir e-posta alacaktır.
       location:
         title: Konum
         description:
@@ -184,16 +171,59 @@ tr:
       attachments:
         title: Ekler
         description:
-      section1:
+      title_page:
         description:
-      section2:
+      body_page:
+        title: Bize daha fazlasını anlatın
+        description:
+      uploads_page:
         title: Resimler ve ekler
         description:
-      section3:
+      details_page:
         title: Detaylar
         description:
       other_input_field:
         title: Cevabınızı yazın
+        print_title: Eğer '%{other_option}' ise, lütfen belirtiniz
+      ask_follow_up_field:
+        title: Bize nedenini söyleyin
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Yaşanacak bir yer olarak şehir
+        sense_of_safety:
+          title: Genel güvenlik hissi
+        access_to_parks:
+          title: Parklara, yeşil alanlara ve rekreasyon olanaklarına erişim
+        affordable_housing:
+          title: Uygun fiyatlı konutların mevcudiyeti
+        employment_opportunities:
+          title: İstihdam ve ekonomik ilerleme fırsatları
+        quality_of_services:
+          title: Şehir tarafından sağlanan hizmetlerin genel kalitesi
+        overall_value:
+          title: Şehir vergileriniz ve harçlarınız için aldığınız toplam değer
+        cleanliness_and_maintenance:
+          title: Sokakların ve kamusal alanların genel temizliği ve bakımı
+        trust_in_government:
+          title: Yerel yönetime güven
+        responsiveness_of_officials:
+          title: Seçilmiş yetkililerin toplumun endişelerine karşı duyarlılığı
+        transparency_of_money_spent:
+          title: Belediye vergilerinin nasıl harcandığı konusunda şeffaflık
+      question_categories:
+        quality_of_life: Yaşam kalitesi
+        service_delivery: Hizmet sunumu
+        governance_and_trust: Yönetişim ve güven
+        other: Diğer
+      labels:
+        label_1: Çok zayıf
+        label_2: Zayıf
+        label_3: Adil
+        label_4: İyi
+        label_5: Mükemmel
+      form_end:
+        button_text: Eve dönüş
   custom_forms:
     categories:
       main_content:
@@ -209,6 +239,12 @@ tr:
           title: Sorununuz nedir?
         option:
           title: Seçeneğiniz nedir ?
+        proposal:
+          title: Teklifiniz nedir?
+        initiative:
+          title: Girişiminiz nedir?
+        petition:
+          title: Dilekçeniz nedir?
   custom_field_options:
     gender:
       male: Erkek
@@ -216,21 +252,6 @@ tr:
       unspecified: Diğer
     domicile:
       outside: Başka bir yer
-    education:
-      ISCED2: Ortaokul
-      ISCED3: Lise
-      ISCED4: Orta öğretim sonrası yüksek öğretim dışı eğitim
-      ISCED5: Ön lisans
-      ISCED6: Lisans veya eşdeğeri
-      ISCED7: Yüksek lisans veya eşdeğeri
-      ISCED8: Doktora veya eşdeğeri
-  initiatives:
-    default_threshold_reached_message: >
-      <p>Öneri sahipleri, önerilerini sunmak için kurul toplantısına davet edilebilir. Bu süreçle ilgili bilgilendirme sağlanır.</p>
-    default_eligibility_criteria: >
-      <ul> <li>Yerel yönetimin etki alanı ve yetkileri dahilinde olmalıdır</li> <li>Bireysel çıkarlardan ziyade kamu yararına hizmet etmelidir</li> <li>Her tür ayrımcılıktan uzak olmalıdır</li> <li>Başkalarına zarar vermemelidir</li> </ul>
-    default_posting_tips: >
-      <ul><li>Önerinizi daha detaylı açıklamak için acele etmeyin. Gerekirse, önce bir taslak yazın ve kopyalayıp buraya yapıştırın.</li><li>Önerinizin ne olduğunu net bir şekilde açıklayan anlamlı bir başlık seçin.</li><li>Öne çıkmasını sağlamak için önerinize uygun bir görsel ekleyin.</li><li>Videolar, ilham verici örnekler, teknik bilgiler veya planlar gibi ilgili ekleri ekleyin.</li><li>Başkalarından destek toplamak için fikrinizi sosyal medyada ve diğer kanallarda paylaşın.</li></ul>
   reset_password_mailer:
     send_reset_password:
       preheader: '%{organizationName}için şifrenizi sıfırlayın'
@@ -257,12 +278,14 @@ tr:
       first_name: 'İlk isim(ler)'
       image_url: 'Resim URL''si'
       input_id: 'KIMLIK'
+      manual_votes: 'Çevrimdışı oylar'
       input_url: 'URL'
       last_name: 'Soyadı'
       latitude: 'Enlem'
       likes_count: 'Beğeniler'
       location: 'Konum'
       longitude: 'Boylam'
+      neutral_reactions_count: 'Emin değilim'
       participants: 'Katılımcılar'
       picks: 'Seçimler'
       project: 'Proje'
@@ -280,8 +303,10 @@ tr:
       option1: 'Seçenek 1'
       option2: 'Seçenek 2'
     form_end_page:
-      title_text: 'Neredeyse bitti'
-      description_text_2: "Cevaplarınızı göndermek üzeresiniz. 'Gönder'e tıklayarak bize cevaplarınızı analiz etme izni vermiş olursunuz.<br/>Gönderdikten sonra artık geri dönüp cevaplarınızdan herhangi birini değiştiremezsiniz."
+      title_text_3: 'Görüşlerinizi paylaştığınız için teşekkür ederiz!'
+      description_text_3: "Girdiniz başarıyla gönderildi."
+    form_user_page:
+      title_text: 'Senin hakkında'
     pdf_export:
       personal_data: 'Kişisel veriler'
       personal_data_explanation_public: "Girdinizi %{organizationName}'un çevrimiçi katılım platformuna göndereceğiz. Adınızın bu girdinin yazarı olarak görüntülenmesini ve girdinizle ilgili güncellemeleri e-posta ile almak istiyorsanız, lütfen bu sayfadaki aşağıdaki alanları doldurun ve sizin için bir hesap oluşturalım. E-postanız herkese açık olmayacak ve sadece %{organizationName}tarafından kullanılacaktır. Anonim kalmak istiyorsanız veya kişisel verilerinizi bu şekilde kullanmamızı kabul etmiyorsanız, bu alanları boş bırakabilirsiniz."
@@ -306,6 +331,17 @@ tr:
       write_as_clearly: 'Mümkün olduğunca açık bir şekilde <b></b> yazın - bu formlar taranabilir'
       write_in_language: 'Cevaplarınızı bu formla aynı dilde yazın'
       linear_scale_print_description: 'Lütfen sadece %{min_label} ve %{max_label} arasında bir sayı yazın'
+      unsupported_field: 'Bu alan kağıt üzerinde doldurulamaz. Lütfen bunun yerine bu formun çevrimiçi sürümünü kullanın.'
+      ranking_print_description: 'Lütfen her kutuya 1 (en çok tercih edilen) ve %{max_rank} (en az tercih edilen) arasında bir sayı yazın. Her numarayı tam olarak bir kez kullanın.'
+      matrix_print_description: 'Her sıra için, tercihinizi belirtmek üzere bir daireyi çarpı ile işaretleyin.'
+      rating_print_description: 'Bunu 1 (en kötü) ile %{max_stars} (en iyi) arasında bir sayı yazarak değerlendirin.'
+      sentiment_linear_scale_print_description: 'Lütfen 1 ile 5 arasında bir sayı yazınız.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
+      point_print_description: 'Lütfen konumu göstermek için aşağıdaki haritaya bir X işareti çizin veya bunun yerine adresi yazın.'
+      line_print_description: 'Lütfen aşağıdaki harita üzerinde bir rota çizin.'
+      polygon_print_description: 'Lütfen aşağıdaki harita üzerinde bir şekil çizin.'
+      select_print_description: 'Sadece bir seçenek seçin.'
+      date_print_description: 'Lütfen YYYY-MM-DD formatında bir tarih yazınız.'
   project_copy:
     title_suffix: 'Kopya'
   confirmations_mailer:
@@ -334,6 +370,8 @@ tr:
       you_can_sign_in_again_from: "%{date}adresinden tekrar oturum açabilirsiniz."
   user:
     anon_first_name: "Kullanıcı"
+    anon_scheme:
+      animals: 'timsah,timsah,alpaka,karınca,antilop,maymun,armadillo,babun,porsuk,yarasa,ayı,kunduz,arı,böcek,bufalo,kelebek,deve,manda,karibu,kedi,sığır,çita,şempanze,çinçilla,ağustos böceği,istiridye,hamamböceği,morina,çakal,yengeç,kriket,karga,kuzgun,geyik,dinozor,köpek,yunus,domuzbalığı,ördek,kartal,yılanbalığı,fil,geyik,gelincik,balık,sinek,tilki,kurbağa,kurbağa,gerbil,zürafa,sivrisinek,gnu,antilop,keçi,Japon balığı,kaz,goril,çekirge,kobay,hamster,tavşan,kirpi,ringa balığı,su aygırı,eşekarısı,at,tazı,sırtlan,impala,çakal,denizanası,kanguru,wallaby,koala,leopar,aslan,kertenkele,lama,çekirge,bit,macaw,mallard,mammoth,manatee,sansar,mink,minnow,köstebek,geyik,sivrisinek,fare,sıçan,katır,muskrat,su samuru,öküz,istiridye,panda,domuz,platypus,kirpi,çayır köpeği,pug,tavşan,rakun,ren geyiği,gergedan,somon,sardalya,akrep,fok,deniz aslanı,serval,köpekbalığı,koyun,kokarca,salyangoz,yılan,örümcek,sincap,kuğu,termit,kaplan,alabalık,kaplumbağa,mors,eşekarısı,balina,kurt,vombat,ağaçkakan,solucan,yak,sarı ceket,zebra'
   time:
     am: am
     formats:
@@ -344,3 +382,6 @@ tr:
     default_voting_term_plural: "oylar"
   ics_calendar_event:
     event_details: "Etkinlik detayları"
+  errors:
+    messages:
+      max_must_be_greater_than_min_characters: "Maksimum değer minimum değerden büyük olmalıdır."

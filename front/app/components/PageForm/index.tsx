@@ -14,7 +14,7 @@ import Feedback from 'components/HookForm/Feedback';
 import FileUploader from 'components/HookForm/FileUploader';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
@@ -23,7 +23,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 import messages from './messages';
-import NavbarTitleField from './NavbarTitleField';
 
 export interface FormValues {
   nav_bar_item_title_multiloc?: Multiloc;
@@ -108,14 +107,6 @@ const PageForm = ({ onSubmit, defaultValues, pageId }: Props) => {
             successMessage={formatMessage(messages.savePageSuccessMessage)}
           />
         </SectionField>
-        <NavbarTitleField
-          pageId={pageId}
-          navbarItemId={
-            !isNilOrError(page) && page.data.relationships.nav_bar_item.data
-              ? page.data.relationships.nav_bar_item.data.id
-              : null
-          }
-        />
         <SectionField>
           <InputMultilocWithLocaleSwitcher
             label={formatMessage(messages.pageTitle)}
@@ -140,9 +131,12 @@ const PageForm = ({ onSubmit, defaultValues, pageId }: Props) => {
           <FileUploader name="local_page_files" remoteFiles={files} />
         </SectionField>
         <Box display="flex">
-          <Button type="submit" processing={methods.formState.isSubmitting}>
+          <ButtonWithLink
+            type="submit"
+            processing={methods.formState.isSubmitting}
+          >
             {formatMessage(messages.savePage)}
-          </Button>
+          </ButtonWithLink>
         </Box>
       </form>
     </FormProvider>

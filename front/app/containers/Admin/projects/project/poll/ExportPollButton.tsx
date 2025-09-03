@@ -6,7 +6,7 @@ import { WrappedComponentProps } from 'react-intl';
 
 import exportPollResponses from 'api/poll_responses/exportPollResponses';
 
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -36,7 +36,10 @@ class ExportPollButton extends React.PureComponent<
   }
 
   trackExportPoll = () => {
-    trackEventByName(tracks.clickExportPoll.name, { extra: { ...this.props } });
+    trackEventByName(tracks.clickExportPoll, {
+      phaseId: this.props.phaseId,
+      phaseName: this.props.phaseName,
+    });
   };
 
   handleExportPollResults = async () => {
@@ -61,7 +64,7 @@ class ExportPollButton extends React.PureComponent<
     const { className } = this.props;
     const { exporting } = this.state;
     return (
-      <Button
+      <ButtonWithLink
         buttonStyle="secondary-outlined"
         icon="download"
         onClick={this.handleExportPollResults}
@@ -69,7 +72,7 @@ class ExportPollButton extends React.PureComponent<
         className={className}
       >
         <FormattedMessage {...messages.exportPollResults} />
-      </Button>
+      </ButtonWithLink>
     );
   }
 }

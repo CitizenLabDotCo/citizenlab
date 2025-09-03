@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import endpoints, { apiPathBySlug, project2 } from './__mocks__/_mockServer';
 import useProjectBySlug from './useProjectBySlug';
@@ -16,12 +16,9 @@ describe('useProjectBySlug', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(
-      () => useProjectBySlug(projectSlug),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useProjectBySlug(projectSlug), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     expect(result.current.isLoading).toBe(true);
 
@@ -38,12 +35,9 @@ describe('useProjectBySlug', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
-      () => useProjectBySlug(projectSlug),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useProjectBySlug(projectSlug), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     expect(result.current.isLoading).toBe(true);
     await waitFor(() => expect(result.current.isError).toBe(true));

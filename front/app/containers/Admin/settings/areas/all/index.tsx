@@ -12,22 +12,19 @@ import useCustomPages from 'api/custom_pages/useCustomPages';
 import useLocalize from 'hooks/useLocalize';
 
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import {
-  SortableList,
-  SortableRow,
-  TextCell,
-} from 'components/admin/ResourceList';
+import { TextCell } from 'components/admin/ResourceList';
+import SortableList from 'components/admin/ResourceList/SortableList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 import {
   Section,
   SectionDescription,
   SectionTitle,
 } from 'components/admin/Section';
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 
@@ -77,13 +74,13 @@ const AreaList = () => {
       <AreaTermConfig />
 
       <ButtonWrapper>
-        <Button
+        <ButtonWithLink
           buttonStyle="admin-dark"
           icon="plus-circle"
           linkTo="/admin/settings/areas/new"
         >
           <FormattedMessage {...messages.addAreaButton} />
-        </Button>
+        </ButtonWithLink>
       </ButtonWrapper>
       <SortableList
         items={areas.data}
@@ -133,13 +130,14 @@ const AreaListRow = ({
 }: AreaListRowProps) => {
   const localize = useLocalize();
 
-  const staticPageIds = item.relationships.static_pages.data.map(
+  const staticPageIds = item.relationships.static_pages?.data.map(
     (page) => page.id
   );
   const { data: pages } = useCustomPages();
 
-  const staticPages =
-    pages?.data.filter((page) => staticPageIds.includes(page.id)) || [];
+  const staticPages = staticPageIds
+    ? pages?.data.filter((page) => staticPageIds.includes(page.id)) || []
+    : [];
 
   return (
     <SortableRow
@@ -152,7 +150,7 @@ const AreaListRow = ({
       <TextCell className="expand">
         <T value={item.attributes.title_multiloc} />
       </TextCell>
-      {staticPageIds.length > 0 && !isNilOrError(staticPages) && (
+      {staticPageIds && staticPageIds.length > 0 && (
         <Box>
           <IconTooltip
             iconColor={colors.error}
@@ -178,21 +176,21 @@ const AreaListRow = ({
           />
         </Box>
       )}
-      <Button
+      <ButtonWithLink
         onClick={handleDeleteClick(item.id)}
         buttonStyle="text"
         icon="delete"
-        disabled={staticPageIds.length > 0}
+        disabled={staticPageIds && staticPageIds.length > 0}
       >
         <FormattedMessage {...messages.deleteButtonLabel} />
-      </Button>
-      <Button
+      </ButtonWithLink>
+      <ButtonWithLink
         linkTo={`/admin/settings/areas/${item.id}`}
         buttonStyle="secondary-outlined"
         icon="edit"
       >
         <FormattedMessage {...messages.editButtonLabel} />
-      </Button>
+      </ButtonWithLink>
     </SortableRow>
   );
 };

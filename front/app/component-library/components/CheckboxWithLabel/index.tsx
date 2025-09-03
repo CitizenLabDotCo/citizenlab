@@ -10,6 +10,9 @@ type Props = {
   labelTooltipText?: string | JSX.Element | null;
   // This should be used for testing. Only add id prop if there's no other option
   dataTestId?: string;
+  ariaLabel?: string;
+  tabIndex?: number;
+  dataCy?: string;
 } & CheckboxProps &
   BoxPaddingProps &
   BoxMarginProps;
@@ -27,6 +30,9 @@ const CheckboxWithLabel = ({
   labelTooltipText,
   dataTestId,
   usePrimaryBorder,
+  ariaLabel,
+  tabIndex,
+  dataCy,
   ...boxProps
 }: Props) => {
   const handleLabelClick = (event: React.MouseEvent) => {
@@ -43,6 +49,7 @@ const CheckboxWithLabel = ({
       onClick={handleLabelClick}
       data-testid={dataTestId || `${testEnv('check-mark-label')}`}
       style={{ cursor: 'pointer' }}
+      data-cy={dataCy}
       {...boxProps}
     >
       <Checkbox
@@ -54,12 +61,20 @@ const CheckboxWithLabel = ({
         size={size}
         usePrimaryBorder={usePrimaryBorder}
         name={name}
+        aria-label={ariaLabel}
+        tabIndex={tabIndex}
         mr="8px"
       />
-      <Box as="span" mr="4px">
-        {label}
-      </Box>
-      {labelTooltipText && <IconTooltip content={labelTooltipText} />}
+      {label}
+      &nbsp;
+      {labelTooltipText && (
+        <IconTooltip
+          display="inline"
+          content={labelTooltipText}
+          role={ariaLabel ? 'none' : undefined}
+          placement="auto"
+        />
+      )}
     </Box>
   );
 };

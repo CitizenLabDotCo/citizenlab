@@ -5,9 +5,9 @@ import { IAppConfiguration } from 'api/app_configuration/types';
 import { tenantInfo, IEvent } from 'utils/analytics';
 import { getUrlLocale } from 'utils/getUrlLocale';
 import { isNilOrError } from 'utils/helperUtils';
+import matchPath, { getAllPathsFromRoutes } from 'utils/matchPath';
 
 import { getProjectId } from './getProjectId';
-import matchPath, { getAllPathsFromRoutes } from './matchPath';
 
 export const trackEvent = (
   event: IEvent,
@@ -21,6 +21,8 @@ export const trackEvent = (
     window._paq.push([
       'trackEvent',
       event.name,
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       ...(Object.values(properties || {}) || []).filter(
         (item) => typeof item === 'string'
       ),

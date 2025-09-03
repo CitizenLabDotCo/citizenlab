@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import useDeleteCampaign from './useDeleteCampaign';
 const apiPath = '*campaigns/:id';
@@ -18,7 +18,7 @@ describe('useDeleteCampaign', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useDeleteCampaign(), {
+    const { result } = renderHook(() => useDeleteCampaign(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -36,7 +36,7 @@ describe('useDeleteCampaign', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useDeleteCampaign(), {
+    const { result } = renderHook(() => useDeleteCampaign(), {
       wrapper: createQueryClientWrapper(),
     });
 

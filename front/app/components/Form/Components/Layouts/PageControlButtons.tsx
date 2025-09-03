@@ -6,36 +6,121 @@ import {
   defaultStyles,
   useBreakpoint,
   colors,
+  IconNames,
 } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
+import { Multiloc } from 'typings';
+
+import useAuthUser from 'api/me/useAuthUser';
+import { IPhaseData } from 'api/phases/types';
+import { getInputTerm } from 'api/phases/utils';
+import { IProject } from 'api/projects/types';
+
+import useLocalize from 'hooks/useLocalize';
 
 import LanguageSelector from 'containers/MainHeader/Components/LanguageSelector';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
+
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import messages from '../../messages';
+
+type PageVariant = 'other' | 'submission' | 'after-submission';
+
+const CY_DATA_VALUES: Record<PageVariant, string> = {
+  other: 'e2e-next-page',
+  submission: 'e2e-submit-form',
+  'after-submission': 'e2e-after-submission',
+};
+
+const ICON_VALUES: Record<PageVariant, IconNames | undefined> = {
+  other: 'chevron-right',
+  submission: 'send',
+  'after-submission': undefined,
+};
+
+const BUTTON_MESSAGES: Record<PageVariant, MessageDescriptor> = {
+  other: messages.next,
+  submission: messages.submit,
+  'after-submission': messages.backToProject,
+};
+
+const inputTermMessages: Record<string, MessageDescriptor> = {
+  idea: messages.viewYourIdea,
+  option: messages.viewYourOption,
+  project: messages.viewYourProject,
+  question: messages.viewYourQuestion,
+  issue: messages.viewYourIssue,
+  contribution: messages.viewYourContribution,
+  proposal: messages.viewYourProposal,
+  petition: messages.viewYourPetition,
+  initiative: messages.viewYourInitiative,
+};
 
 interface Props {
   handleNextAndSubmit: () => void;
   handlePrevious: () => void;
   hasPreviousPage: boolean;
-  currentStep: number;
   isLoading: boolean;
-  showSubmit: boolean;
-  dataCyValue: string;
+  pageVariant: PageVariant;
+  phases: IPhaseData[] | undefined;
+  currentPhase: IPhaseData | undefined;
+  pageButtonLabelMultiloc?: Multiloc;
+  pageButtonLink?: string;
+  project: IProject | undefined;
 }
 
 const PageControlButtons = ({
   handleNextAndSubmit,
   handlePrevious,
   hasPreviousPage,
-  currentStep,
   isLoading,
-  showSubmit,
-  dataCyValue,
+  pageVariant,
+  phases,
+  pageButtonLabelMultiloc,
+  pageButtonLink,
+  currentPhase,
+  project,
 }: Props) => {
   const theme = useTheme();
+  const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
+  const { data: authUser } = useAuthUser();
+  const userCanModerate = project
+    ? canModerateProject(project.data, authUser)
+    : false;
+
+  const getButtonMessage = () => {
+    if (pageVariant !== 'after-submission') {
+      return formatMessage(BUTTON_MESSAGES[pageVariant]);
+    }
+
+    const customLabel = localize(pageButtonLabelMultiloc);
+    if (customLabel) {
+      return customLabel;
+    }
+
+    const participationMethod = currentPhase?.attributes.participation_method;
+
+    if (participationMethod === 'common_ground') {
+      // We redirect admins to the input manager to easily manage inputs
+      // and users to their own input.
+      const messageKey = userCanModerate
+        ? messages.backToInputManager
+        : messages.viewYourInput;
+      return formatMessage(messageKey);
+    }
+
+    if (participationMethod === 'native_survey') {
+      return formatMessage(messages.backToProject);
+    }
+
+    const inputTerm = getInputTerm(phases, currentPhase);
+    return formatMessage(inputTermMessages[inputTerm]);
+  };
 
   return (
     <Box
@@ -48,7 +133,6 @@ const PageControlButtons = ({
       py={'16px'}
     >
       <Box>
-        {' '}
         {/* We wrap it in a Box here to maintain the spacing and keep the next buttons right-aligned when the language selector is empty, preventing the need to move the locale check logic here. */}
         <LanguageSelector
           dropdownClassName={'open-upwards'}
@@ -62,7 +146,7 @@ const PageControlButtons = ({
         />
       </Box>
       <Box display="flex" justifyContent="center" alignItems="center">
-        {hasPreviousPage && (
+        {hasPreviousPage && pageVariant !== 'after-submission' && (
           <Button
             onClick={handlePrevious}
             data-cy="e2e-previous-page"
@@ -73,24 +157,31 @@ const PageControlButtons = ({
             <FormattedMessage {...messages.previous} />
           </Button>
         )}
-        <Button
-          onClick={handleNextAndSubmit}
-          data-cy={dataCyValue}
-          icon={showSubmit ? 'send' : 'chevron-right'}
-          iconPos="right"
-          key={currentStep.toString()}
-          bgColor={
-            showSubmit
-              ? theme.colors.tenantSecondary
-              : theme.colors.tenantPrimary
-          }
-          boxShadow={defaultStyles.boxShadow}
-          processing={isLoading}
-        >
-          <FormattedMessage
-            {...(showSubmit ? messages.submit : messages.next)}
-          />
-        </Button>
+        {pageButtonLink ? (
+          <ButtonWithLink
+            data-cy={CY_DATA_VALUES[pageVariant]}
+            icon={ICON_VALUES[pageVariant]}
+            iconPos="right"
+            bgColor={theme.colors.tenantPrimary}
+            boxShadow={defaultStyles.boxShadow}
+            processing={isLoading}
+            linkTo={pageButtonLink}
+          >
+            {getButtonMessage()}
+          </ButtonWithLink>
+        ) : (
+          <Button
+            onClick={handleNextAndSubmit}
+            data-cy={CY_DATA_VALUES[pageVariant]}
+            icon={ICON_VALUES[pageVariant]}
+            iconPos="right"
+            bgColor={theme.colors.tenantPrimary}
+            boxShadow={defaultStyles.boxShadow}
+            processing={isLoading}
+          >
+            {getButtonMessage()}
+          </Button>
+        )}
       </Box>
     </Box>
   );

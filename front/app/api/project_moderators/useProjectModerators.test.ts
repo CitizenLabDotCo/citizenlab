@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import useProjectModerators from './useProjectModerators';
 
@@ -19,7 +19,7 @@ describe('useProjectModerators', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useProjectModerators({ projectId: '1' }),
       {
         wrapper: createQueryClientWrapper(),
@@ -41,7 +41,7 @@ describe('useProjectModerators', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useProjectModerators({ projectId: '1' }),
       {
         wrapper: createQueryClientWrapper(),

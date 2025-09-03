@@ -13,7 +13,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::Participation do
       Analytics::PopulateDimensionsService.populate_types
 
       idea = create(:idea, created_at: @date)
-      create(:comment, created_at: @date, post: idea)
+      create(:comment, created_at: @date, idea: idea)
       create(:basket, created_at: @date)
     end
 

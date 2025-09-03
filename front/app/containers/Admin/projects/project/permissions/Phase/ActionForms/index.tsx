@@ -26,10 +26,11 @@ const ActionForms = ({ phaseId }: Props) => {
 
   if (!permissions || !phase) return null;
 
-  const postType =
-    phase.data.attributes.participation_method === 'native_survey'
-      ? 'nativeSurvey'
-      : 'defaultInput';
+  const postType = ['native_survey', 'community_monitor_survey'].includes(
+    phase.data.attributes.participation_method
+  )
+    ? 'nativeSurvey'
+    : 'defaultInput';
 
   if (permissions.data.length === 0) {
     return (

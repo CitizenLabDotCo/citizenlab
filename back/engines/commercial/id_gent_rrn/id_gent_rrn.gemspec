@@ -16,7 +16,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'rails', '~> 7.0'
   s.add_dependency 'httparty'
-  s.add_dependency 'verification'
 
   s.add_development_dependency 'rspec_api_documentation'
   s.add_development_dependency 'rspec-rails'

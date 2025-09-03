@@ -18,6 +18,7 @@ export default function usePostManagerColumnFilter(
             'selection',
             'title',
             'picks',
+            'offline_picks',
             'budget',
             'comments',
           ]);
@@ -26,11 +27,18 @@ export default function usePostManagerColumnFilter(
             'selection',
             'title',
             'votes',
+            'offline_votes',
             'participants',
             'comments',
           ]);
         case 'single_voting':
-          return new Set<string>(['selection', 'title', 'votes', 'comments']);
+          return new Set<string>([
+            'selection',
+            'title',
+            'votes',
+            'offline_votes',
+            'comments',
+          ]);
       }
     }
     // Default columns

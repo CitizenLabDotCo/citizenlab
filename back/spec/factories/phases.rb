@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :phase do
+  factory :phase, aliases: [:ideation_phase] do
     project
     ideas_order { nil }
     input_term { nil }
@@ -29,7 +29,6 @@ FactoryBot.define do
 
     voting_min_total { 1 }
     voting_max_total { 10_000 }
-    campaigns_settings { { project_phase_started: true } }
 
     transient do
       with_permissions { false }
@@ -49,6 +48,13 @@ FactoryBot.define do
       after(:create) do |phase, _evaluator|
         phase.start_at = Time.now - 7.days
         phase.end_at = Time.now + 7.days
+      end
+    end
+
+    factory :past_phase do
+      after(:create) do |phase, _evaluator|
+        phase.start_at = Time.now - 30.days
+        phase.end_at = Time.now - 20.days
       end
     end
 
@@ -107,6 +113,15 @@ FactoryBot.define do
       end
     end
 
+    factory :community_monitor_survey_phase do
+      association :project, factory: :community_monitor_project, with_phase: false
+      participation_method { 'community_monitor_survey' }
+      native_survey_title_multiloc { { 'en' => 'Community Monitor', 'nl-BE' => 'Gemeenschapsmonitor' } }
+      native_survey_button_multiloc { { 'en' => 'Take the survey', 'nl-BE' => 'De enquete invullen' } }
+      start_at { Time.zone.today - 7.days }
+      end_at { nil }
+    end
+
     factory :single_voting_phase do
       participation_method { 'voting' }
       voting_method { 'single_voting' }
@@ -132,6 +147,16 @@ FactoryBot.define do
     factory :document_annotation_phase do
       participation_method { 'document_annotation' }
       document_annotation_embed_url { 'https://citizenlab.konveio.com/document-title' }
+    end
+
+    factory :common_ground_phase do
+      title_multiloc { { 'en' => 'Common Ground (en)', 'nl-BE' => 'Common Ground (nl)' } }
+      participation_method { 'common_ground' }
+    end
+
+    trait :ongoing do
+      start_at { Time.zone.today - 7.days }
+      end_at { Time.zone.today + 7.days }
     end
   end
 end

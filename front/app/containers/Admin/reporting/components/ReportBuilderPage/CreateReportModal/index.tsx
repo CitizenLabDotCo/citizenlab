@@ -7,15 +7,18 @@ import {
   Input,
   Label,
   colors,
+  Select,
 } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
-import useAddReport from 'api/reports/useAddReport';
+import useAddReport, { AddReport } from 'api/reports/useAddReport';
 
+import { generateYearSelectOptions } from 'containers/Admin/reporting/utils/generateYearSelectOptions';
 import reportTitleIsTaken from 'containers/Admin/reporting/utils/reportTitleIsTaken';
 
-import DateRangePicker, { Dates } from 'components/admin/DateRangePicker';
-import Button from 'components/UI/Button';
+import { DateRange } from 'components/admin/DatePickers/_shared/typings';
+import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
 import ProjectFilter from 'components/UI/ProjectFilter';
@@ -42,7 +45,9 @@ const CreateReportModal = ({ open, onClose }: Props) => {
   const [selectedProjectId, setSelectedProjectId] = useState<
     string | undefined
   >();
-  const [dates, setDates] = useState<Dates>({ startDate: null, endDate: null });
+  const [dates, setDates] = useState<Partial<DateRange>>({});
+  const [year, setYear] = useState<number | null>(null);
+  const [quarter, setQuarter] = useState<number | null>(null);
 
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const { formatMessage } = useIntl();
@@ -51,7 +56,8 @@ const CreateReportModal = ({ open, onClose }: Props) => {
   const blockSubmit =
     reportTitleTooShort ||
     (template === 'project' ? selectedProjectId === undefined : false) ||
-    (template === 'platform' ? !dates.startDate || !dates.endDate : false);
+    (template === 'platform' ? !dates.from || !dates.to : false) ||
+    (template === 'community-monitor' ? !year || !quarter : false);
 
   const handleProjectFilter = (option: IOption) => {
     setSelectedProjectId(option.value === '' ? undefined : option.value);
@@ -61,28 +67,32 @@ const CreateReportModal = ({ open, onClose }: Props) => {
     if (blockSubmit) return;
     setErrorMessage(undefined);
 
-    createReport(
-      { name: reportTitle },
-      {
-        onSuccess: (report) => {
-          clHistory.push(
-            getRedirectUrl({
-              reportId: report.data.id,
-              selectedProjectId,
-              template,
-              dates,
-            })
-          );
-        },
-        onError: (e) => {
-          if (reportTitleIsTaken(e)) {
-            setErrorMessage(formatMessage(messages.reportTitleAlreadyExists));
-          } else {
-            setErrorMessage(formatMessage(messages.anErrorOccurred));
-          }
-        },
-      }
-    );
+    const createReportParams: AddReport = {
+      community_monitor: template === 'community-monitor',
+      name: reportTitle,
+    };
+
+    createReport(createReportParams, {
+      onSuccess: (report) => {
+        clHistory.push(
+          getRedirectUrl({
+            reportId: report.data.id,
+            selectedProjectId,
+            year,
+            quarter,
+            template,
+            dates,
+          })
+        );
+      },
+      onError: (e) => {
+        if (reportTitleIsTaken(e)) {
+          setErrorMessage(formatMessage(messages.reportTitleAlreadyExists));
+        } else {
+          setErrorMessage(formatMessage(messages.anErrorOccurred));
+        }
+      },
+    });
   };
 
   return (
@@ -112,22 +122,44 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           <Label>{formatMessage(messages.reportTemplate)}</Label>
           <RadioButtons value={template} onChange={setTemplate} />
         </Box>
+        {template === 'community-monitor' && (
+          <Box width="100%" mt="12px">
+            <Box mb="16px">
+              <Select
+                id="e2e-year-select"
+                placeholder={formatMessage(messages.selectYear)}
+                value={year}
+                options={generateYearSelectOptions(2025)} // Genereates list: 2025 until current year
+                onChange={(option) => setYear(option.value)}
+              />
+            </Box>
+
+            <Select
+              id="e2e-quarter-select"
+              placeholder={formatMessage(messages.selectQuarter)}
+              value={quarter}
+              options={[1, 2, 3, 4].map((quarter) => ({
+                label: formatMessage(messages.quarter, {
+                  quarterValue: quarter,
+                }), // e.g., "Quarter 1"
+                value: quarter,
+              }))}
+              onChange={(option) => setQuarter(option.value)}
+            />
+          </Box>
+        )}
         {template === 'project' && (
           <Box width="100%" mt="12px">
             <ProjectFilter
-              projectId={selectedProjectId}
+              selectedProjectId={selectedProjectId}
               emptyOptionMessage={messages.noProjectSelected}
               onProjectFilter={handleProjectFilter}
             />
           </Box>
         )}
         {template === 'platform' && (
-          <Box width="100%" mt="12px">
-            <DateRangePicker
-              startDate={dates.startDate}
-              endDate={dates.endDate}
-              onDatesChange={setDates}
-            />
+          <Box width="100%" mt="12px" display="flex">
+            <DateRangePicker selectedRange={dates} onUpdateRange={setDates} />
           </Box>
         )}
         {errorMessage && (
@@ -135,7 +167,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
             <Error text={errorMessage} />
           </Box>
         )}
-        <Button
+        <ButtonWithLink
           bgColor={colors.primary}
           width="auto"
           mt="40px"
@@ -146,7 +178,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           onClick={onCreateReport}
         >
           {formatMessage(messages.emptyStateButtonText)}
-        </Button>
+        </ButtonWithLink>
       </Box>
     </Modal>
   );

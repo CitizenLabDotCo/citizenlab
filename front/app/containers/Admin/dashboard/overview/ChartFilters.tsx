@@ -20,6 +20,7 @@ interface Props {
   minDate?: Moment;
   projectId: string | undefined;
   resolution: IResolution;
+  timeControlTooltip?: string;
   onChangeTimeRange: (
     startAtMoment: Moment | null,
     endAtMoment: Moment | null
@@ -36,6 +37,7 @@ const ChartFilters = ({
   minDate,
   projectId,
   resolution,
+  timeControlTooltip,
   onChangeTimeRange,
   onProjectFilter,
   onChangeResolution,
@@ -61,6 +63,7 @@ const ChartFilters = ({
           onChange={onChangeTimeRange}
           showAllTime={showAllTime}
           minDate={minDate}
+          tooltip={timeControlTooltip}
         />
         {showProjectFilter && (
           <Box ml="12px" maxWidth="350px">

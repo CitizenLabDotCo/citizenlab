@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { ideaData } from './__mocks__/_mockServer';
 import useAddIdea from './useAddIdea';
@@ -20,7 +20,7 @@ describe('useAddIdea', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAddIdea(), {
+    const { result } = renderHook(() => useAddIdea(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -30,7 +30,6 @@ describe('useAddIdea', () => {
         title_multiloc: {
           en: 'test',
         },
-        publication_status: 'published',
         body_multiloc: {
           en: 'test',
         },
@@ -48,7 +47,7 @@ describe('useAddIdea', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAddIdea(), {
+    const { result } = renderHook(() => useAddIdea(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -58,7 +57,6 @@ describe('useAddIdea', () => {
         title_multiloc: {
           en: 'test',
         },
-        publication_status: 'published',
         body_multiloc: {
           en: 'test',
         },

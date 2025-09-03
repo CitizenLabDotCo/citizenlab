@@ -6,6 +6,8 @@ import {
   media,
   isRtl,
   Box,
+  Title,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import styled from 'styled-components';
@@ -17,7 +19,6 @@ import EventsSpinner from 'containers/EventsPage/EventsViewer/EventsSpinner';
 import eventsPageMessages from 'containers/EventsPage/messages';
 
 import EventCards from 'components/EventCards';
-import VerticalCenterer from 'components/VerticalCenterer';
 
 import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -36,29 +37,14 @@ const Header = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding-bottom: 30px;
-  border-bottom: 1px solid #d1d1d1;
-  margin-bottom: 30px;
-
-  ${media.phone`
-    margin-bottom: 21px;
-  `}
 
   ${isRtl`
     flex-direction: row-reverse;
   `}
 `;
 
-const Title = styled.h2`
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.xl}px;
-  font-weight: 500;
-  line-height: normal;
-  padding: 0;
-  margin: 0;
-
+const StyledTitle = styled(Title)`
   ${media.phone`
-    text-align: center;
     margin: 0;
   `};
 `;
@@ -86,6 +72,7 @@ const EventsWidget = ({ staticPageId }: Props) => {
     sort: '-start_at',
     ...(staticPageId && { staticPageId }),
   });
+  const isSmallerThanPhone = useBreakpoint('phone');
 
   const eventsLoading = isNil(events);
   const eventsError = isError(events);
@@ -93,7 +80,9 @@ const EventsWidget = ({ staticPageId }: Props) => {
   return (
     <Box display="flex" flexDirection="column">
       <Header>
-        <Title>{formatMessage(messages.upcomingEventsWidgetTitle)}</Title>
+        <StyledTitle variant="h2" color="tenantText" m="0">
+          {formatMessage(messages.upcomingEventsWidgetTitle)}
+        </StyledTitle>
       </Header>
 
       {eventsLoading ? (
@@ -108,11 +97,15 @@ const EventsWidget = ({ staticPageId }: Props) => {
             )}
 
             {!isNilOrError(events) && events.data.length === 0 && (
-              <VerticalCenterer>
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent={isSmallerThanPhone ? 'center' : 'flex-start'}
+              >
                 <NoEventsText>
                   {formatMessage(eventsPageMessages.noUpcomingOrOngoingEvents)}
                 </NoEventsText>
-              </VerticalCenterer>
+              </Box>
             )}
 
             <EventCards events={events} />

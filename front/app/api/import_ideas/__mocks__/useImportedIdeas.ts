@@ -27,8 +27,14 @@ export const ideasData: IIdeaData[] = [
       budget: null,
       proposed_budget: null,
       baskets_count: 0,
+      total_votes: 0,
       votes_count: 0,
       action_descriptors: {
+        editing_idea: {
+          enabled: true,
+          disabled_reason: null,
+          future_enabled_at: null,
+        },
         reacting_idea: {
           enabled: true,
           disabled_reason: null,
@@ -63,6 +69,7 @@ export const ideasData: IIdeaData[] = [
       anonymous: false,
       author_hash: 'abc123',
       followers_count: 0,
+      manual_votes_amount: 0,
     },
     relationships: {
       topics: {

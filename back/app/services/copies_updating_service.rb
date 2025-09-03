@@ -3,7 +3,7 @@
 class CopiesUpdatingService
   def update_custom_fields
     scope = CustomField.where(resource_type: User.name)
-    %w[gender birthyear domicile education].each do |code|
+    %w[gender birthyear domicile].each do |code|
       scope.where(code: code).find_each do |record|
         update_multiloc_value(record, :title_multiloc, "custom_fields.users.#{code}.title")
       end

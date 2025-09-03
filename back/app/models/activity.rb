@@ -30,7 +30,7 @@ class Activity < ApplicationRecord
   MANAGEMENT_FILTERS = [
     { item_type: 'Idea', actions: %w[created changed deleted] },
     { item_type: 'Phase', actions: %w[created changed deleted] },
-    { item_type: 'Project', actions: %w[created changed deleted] },
+    { item_type: 'Project', actions: %w[created changed deleted project_review_requested project_review_approved] },
     { item_type: 'ProjectFolders::Folder', actions: %w[created changed deleted] }
   ].freeze
 

@@ -16,7 +16,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { Row } from 'components/admin/ResourceList';
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -29,13 +29,15 @@ interface Props {
 
 const DraftCampaignRow = ({ campaign, context }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: project } = useProjectById(campaign.attributes.context_id);
+  const { data: project } = useProjectById(
+    campaign.relationships.context?.data?.id
+  );
   const localize = useLocalize();
 
   const editLink: RouteType =
     context === 'global'
       ? `/admin/messaging/emails/custom/${campaign.id}`
-      : `/admin/projects/${campaign.attributes.context_id}/messaging/${campaign.id}`;
+      : `/admin/projects/${campaign.relationships.context?.data?.id}/messaging/${campaign.id}`;
 
   return (
     <Row id={campaign.id}>
@@ -52,6 +54,8 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
           {context === 'global' && project && (
             <Text m="0px">
               {formatMessage(messages.project)}:{' '}
+              {/* TODO: Fix this the next time the file is edited. */}
+              {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
               {localize(project?.data.attributes.title_multiloc)}
             </Text>
           )}
@@ -59,9 +63,13 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
       </Box>
 
       <Box minWidth="220px" display="flex" justifyContent="flex-end">
-        <Button linkTo={editLink} buttonStyle="secondary-outlined" icon="edit">
+        <ButtonWithLink
+          linkTo={editLink}
+          buttonStyle="secondary-outlined"
+          icon="edit"
+        >
           <FormattedMessage {...messages.manageButtonLabel} />
-        </Button>
+        </ButtonWithLink>
       </Box>
     </Row>
   );

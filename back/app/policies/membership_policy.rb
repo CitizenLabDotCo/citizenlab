@@ -1,14 +1,7 @@
 # frozen_string_literal: true
 
 class MembershipPolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user  = user
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
       if user&.admin?
         scope.all
@@ -19,11 +12,11 @@ class MembershipPolicy < ApplicationPolicy
   end
 
   def create?
-    user&.active? && user&.admin?
+    user&.active? && user.admin?
   end
 
   def show?
-    user&.active? && user&.admin?
+    user&.active? && user.admin?
   end
 
   def show_by_user_id?
@@ -31,7 +24,7 @@ class MembershipPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user&.active? && user&.admin?
+    user&.active? && user.admin?
   end
 
   def destroy_by_user_id?
@@ -39,6 +32,6 @@ class MembershipPolicy < ApplicationPolicy
   end
 
   def users_search?
-    user&.active? && user&.admin?
+    user&.active? && user.admin?
   end
 end

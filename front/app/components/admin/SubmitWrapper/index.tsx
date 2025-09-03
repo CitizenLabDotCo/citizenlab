@@ -6,10 +6,10 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled, { css } from 'styled-components';
 import { Omit } from 'typings';
 
-import Button, {
+import ButtonWithLink, {
   ButtonStyles,
   Props as OriginalButtonProps,
-} from 'components/UI/Button';
+} from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
@@ -73,10 +73,7 @@ const Message = styled.p`
 `;
 
 interface Props
-  extends Omit<
-    OriginalButtonProps,
-    'className' | 'text' | 'disabled' | 'setSubmitButtonRef' | 'processing'
-  > {
+  extends Omit<OriginalButtonProps, 'text' | 'disabled' | 'processing'> {
   status: ISubmitState;
   loading: boolean;
   customError?: string | null;
@@ -101,7 +98,6 @@ const SubmitWrapper = (props: Props) => {
     'processing',
     'disabled',
     'onClick',
-    'setSubmitButtonRef',
     'messages',
     'loading',
   ]);
@@ -134,13 +130,13 @@ const SubmitWrapper = (props: Props) => {
 
   return (
     <Wrapper aria-live="polite" fullWidth={!!fullWidth}>
-      <Button
-        className="e2e-submit-wrapper-button"
+      <ButtonWithLink
+        className={`e2e-submit-wrapper-button ${props.className ?? ''}`}
         buttonStyle={style}
         processing={loading}
         disabled={isSubmitButtonDisabled}
         onClick={onClick}
-        setSubmitButtonRef={setSubmitButtonRef}
+        ref={setSubmitButtonRef}
         {...buttonProps}
       >
         {(status === 'enabled' ||
@@ -149,7 +145,7 @@ const SubmitWrapper = (props: Props) => {
         {status === 'success' && (
           <FormattedMessage {...messages.buttonSuccess} />
         )}
-      </Button>
+      </ButtonWithLink>
 
       {status === 'error' && (
         <Message className="error">

@@ -61,12 +61,13 @@ describe('Project description builder toggle', () => {
 
     // Attach a project file
     cy.visit(`admin/projects/${projectId}/settings`);
+    cy.wait(2000);
     cy.scrollTo('bottom');
-    cy.acceptCookies();
+
     cy.get('#e2e-project-file-uploader').selectFile(
       'cypress/fixtures/example.pdf'
     );
-    cy.wait(4000);
+    cy.wait(2000);
 
     // Submit project
     cy.get('.e2e-submit-wrapper-button button').click();
@@ -93,7 +94,7 @@ describe('Project description builder toggle', () => {
     cy.contains('Original project description.').should('be.visible');
   });
 
-  it.skip('shows attachments added to the project after description added using project description builder', () => {
+  it('shows attachments added to the project after description added using project description builder', () => {
     cy.intercept(`**/projects/${projectId}`).as('saveProject');
     cy.intercept(`**/projects/${projectId}/files`).as('saveProjectFiles');
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
@@ -102,12 +103,15 @@ describe('Project description builder toggle', () => {
 
     // Attach a project file
     cy.visit(`admin/projects/${projectId}/settings`);
+    cy.wait(2000);
     cy.scrollTo('bottom');
-    cy.acceptCookies();
-    cy.get('#e2e-project-file-uploader').selectFile(
+
+    cy.dataCy('e2e-project-file-uploader').should('exist');
+    cy.dataCy('e2e-project-file-uploader').selectFile(
       'cypress/fixtures/example.pdf'
     );
-    cy.wait(4000);
+    cy.contains('example.pdf').should('exist');
+    cy.wait(2000);
 
     // Submit project
     cy.get('.e2e-submit-wrapper-button button').click();
@@ -116,10 +120,7 @@ describe('Project description builder toggle', () => {
     cy.contains('Your form has been saved!').should('be.visible');
 
     cy.visit(`/admin/projects/${projectId}/settings/description`);
-    cy.get('#e2e-toggle-enable-project-description-builder').click({
-      force: true,
-    });
-
+    cy.apiToggleProjectDescriptionBuilder({ projectId, enabled: true });
     cy.visit(
       `/admin/project-description-builder/projects/${projectId}/description`
     );
@@ -137,10 +138,9 @@ describe('Project description builder toggle', () => {
     cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.contains('Edited text.').should('be.visible');
 
     // Check that attachment is present
-    cy.wait(1000);
-    cy.contains('example.pdf').should('exist');
+    cy.contains('Edited text.').should('be.visible');
+    cy.contains('example.pdf').should('be.visible');
   });
 });

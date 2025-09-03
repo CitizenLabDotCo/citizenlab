@@ -6,6 +6,7 @@ import {
   isRtl,
   fontSizes,
   colors,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -32,29 +33,6 @@ import SelectAreas from './SelectAreas';
 import SelectTopics from './SelectTopics';
 import { getShowFilters, getShowFiltersLabel } from './show';
 import Tabs from './Tabs';
-
-const Title = styled.h2<{ hasPublications: boolean }>`
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.xl}px;
-  font-weight: 500;
-  line-height: normal;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  text-align: center;
-  margin-bottom: 28px;
-
-  ${(props) =>
-    media.phone`
-      text-align: left;
-      margin-bottom: ${props.hasPublications ? '36' : '20'}px;
-      margin-left: 4px;
-    `}
-
-  ${isRtl`
-    direction: rtl;
-  `}
-`;
 
 const Container = styled.div<{ showFilters: boolean }>`
   width: 100%;
@@ -219,8 +197,12 @@ const Header = ({
     <div className={className}>
       {showTitle ? (
         <Title
-          hasPublications={hasPublications}
+          variant="h2"
           data-testid="currently-working-on-text"
+          color="tenantText"
+          m="0"
+          mb={isSmallerThanPhone ? (hasPublications ? '36px' : '20px') : '20px'}
+          ml={isSmallerThanPhone ? '4px' : '0'}
         >
           {currentlyWorkingOn}
         </Title>

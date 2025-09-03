@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 
-import { Icon, Dropdown, colors } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  Dropdown,
+  colors,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
+import { getMonth } from 'date-fns';
 import moment, { Moment } from 'moment';
 import styled from 'styled-components';
 
-import DateRangePicker from 'components/admin/DateRangePicker';
-import Button from 'components/UI/Button';
+import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -22,7 +28,7 @@ const DropdownContainer = styled.div`
   cursor: pointer;
 `;
 
-const StyledButton = styled(Button)`
+const StyledButton = styled(ButtonWithLink)`
   margin-right: 15px;
 `;
 
@@ -54,6 +60,7 @@ interface Props {
   startAtMoment?: Moment | null;
   endAtMoment: Moment | null;
   minDate?: Moment;
+  tooltip?: string;
   onChange: (startAtMoment: Moment | null, endAtMoment: Moment | null) => void;
 }
 
@@ -62,6 +69,7 @@ const TimeControl = ({
   startAtMoment,
   endAtMoment,
   minDate,
+  tooltip,
   onChange,
 }: Props) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
@@ -192,11 +200,27 @@ const TimeControl = ({
         />
       </DropdownContainer>
       <DateRangePicker
-        startDate={startAtMoment === undefined ? null : startAtMoment}
-        endDate={endAtMoment}
-        onDatesChange={handleDatesChange}
-        minDate={minDate}
+        selectedRange={{
+          from: startAtMoment ? startAtMoment.toDate() : undefined,
+          to: endAtMoment ? endAtMoment.toDate() : undefined,
+        }}
+        startMonth={minDate?.toDate()}
+        disabled={
+          minDate
+            ? {
+                from: new Date(getMonth(minDate.toDate())),
+                to: minDate.toDate(),
+              }
+            : undefined
+        }
+        onUpdateRange={({ from, to }) => {
+          handleDatesChange({
+            startDate: from ? moment(from) : null,
+            endDate: to ? moment(to) : null,
+          });
+        }}
       />
+      {tooltip && <IconTooltip ml="12px" content={tooltip} />}
     </Container>
   );
 };

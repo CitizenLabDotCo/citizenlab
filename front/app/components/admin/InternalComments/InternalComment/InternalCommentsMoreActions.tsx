@@ -8,7 +8,7 @@ import useMarkInternalCommentForDeletion from 'api/internal_comments/useMarkInte
 import useAuthUser from 'api/me/useAuthUser';
 
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 
@@ -37,13 +37,13 @@ const ButtonsWrapper = styled.div`
   padding: 30px;
 `;
 
-const CancelButton = styled(Button)`
+const CancelButton = styled(ButtonWithLink)`
   margin-right: 10px;
   margin-top: 5px;
   margin-bottom: 5px;
 `;
 
-const AcceptButton = styled(Button)`
+const AcceptButton = styled(ButtonWithLink)`
   margin-top: 5px;
   margin-bottom: 5px;
 `;
@@ -55,7 +55,6 @@ export interface Props {
   onCommentEdit: () => void;
   className?: string;
   ideaId: string | undefined;
-  initiativeId: string | undefined;
 }
 
 const InternalCommentsMoreActions = ({
@@ -63,15 +62,15 @@ const InternalCommentsMoreActions = ({
   comment,
   className,
   ideaId,
-  initiativeId,
 }: Props) => {
   const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const parentCommentId = comment.relationships?.parent?.data?.id;
   const { data: authUser } = useAuthUser();
   const { mutate: markForDeletion, isLoading } =
     useMarkInternalCommentForDeletion({
       ideaId,
-      initiativeId,
       parentCommentId,
     });
   const [modalVisible_delete, setModalVisible_delete] = useState(false);

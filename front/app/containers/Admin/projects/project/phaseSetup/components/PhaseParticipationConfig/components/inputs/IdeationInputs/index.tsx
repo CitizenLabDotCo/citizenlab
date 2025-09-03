@@ -3,7 +3,9 @@ import React from 'react';
 import { Radio, IconTooltip, IOption } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
-import { IdeaDefaultSortMethod, InputTerm } from 'api/phases/types';
+import { IdeaSortMethod, InputTerm } from 'api/phases/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
@@ -15,7 +17,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
+import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import { ReactingLimitInput } from '../../shared/styling';
+import PrescreeningToggle from '../_shared/PrescreeningToggle';
 import SortingPicker from '../_shared/SortingPicker';
 import UserActions from '../_shared/UserActions';
 
@@ -27,6 +31,9 @@ interface Props {
   reacting_enabled?: boolean | null;
   reacting_like_method: 'unlimited' | 'limited' | null | undefined;
   reacting_like_limited_max: number | null | undefined;
+  similarity_enabled?: boolean | null;
+  similarity_threshold_title: number | null | undefined;
+  similarity_threshold_body: number | null | undefined;
   allow_anonymous_participation: boolean | null | undefined;
   noLikingLimitError?: string;
   reacting_dislike_enabled: boolean | null | undefined;
@@ -53,9 +60,14 @@ interface Props {
   ) => void;
   presentation_mode: 'card' | 'map' | null | undefined;
   handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
-  ideas_order: IdeaDefaultSortMethod | undefined;
-  handleIdeaDefaultSortMethodChange: (
-    ideas_order: IdeaDefaultSortMethod
+  ideas_order: IdeaSortMethod | undefined;
+  handleIdeaDefaultSortMethodChange: (ideas_order: IdeaSortMethod) => void;
+  prescreening_enabled: boolean | null | undefined;
+  togglePrescreeningEnabled: (prescreening_enabled: boolean) => void;
+  handleSimilarityEnabledChange: (value: boolean) => void;
+  handleThresholdChange: (
+    field: 'similarity_threshold_title' | 'similarity_threshold_body',
+    value: number
   ) => void;
 }
 
@@ -87,7 +99,18 @@ const IdeationInputs = ({
   handleIdeasDisplayChange,
   ideas_order,
   handleIdeaDefaultSortMethodChange,
+  prescreening_enabled,
+  togglePrescreeningEnabled,
+  similarity_enabled,
+  similarity_threshold_title,
+  similarity_threshold_body,
+  handleSimilarityEnabledChange,
+  handleThresholdChange,
 }: Props) => {
+  const prescreeningIdeationEnabled = useFeatureFlag({
+    name: 'prescreening_ideation',
+  });
+
   return (
     <>
       <AnonymousPostingToggle
@@ -100,6 +123,12 @@ const IdeationInputs = ({
         input_term={input_term}
         handleInputTermChange={handleInputTermChange}
       />
+      {prescreeningIdeationEnabled && (
+        <PrescreeningToggle
+          prescreening_enabled={prescreening_enabled}
+          togglePrescreeningEnabled={togglePrescreeningEnabled}
+        />
+      )}
       <UserActions
         submission_enabled={submission_enabled || false}
         commenting_enabled={commenting_enabled || false}
@@ -195,6 +224,15 @@ const IdeationInputs = ({
         </FeatureFlag>
       )}
 
+      <SimilarityDetectionConfig
+        apiErrors={apiErrors}
+        similarity_enabled={similarity_enabled}
+        similarity_threshold_title={similarity_threshold_title}
+        similarity_threshold_body={similarity_threshold_body}
+        handleSimilarityEnabledChange={handleSimilarityEnabledChange}
+        handleThresholdChange={handleThresholdChange}
+      />
+
       <DefaultViewPicker
         presentation_mode={presentation_mode}
         apiErrors={apiErrors}
@@ -204,6 +242,7 @@ const IdeationInputs = ({
       <SortingPicker
         options={[
           { key: 'trending', value: 'trending' },
+          { key: 'comments_count', value: 'comments_count' },
           { key: 'random', value: 'random' },
           { key: 'popular', value: 'popular' },
           { key: 'newest', value: 'new' },

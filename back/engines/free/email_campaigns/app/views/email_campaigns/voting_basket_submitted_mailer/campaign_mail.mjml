@@ -9,4 +9,4 @@
     </mj-text>
   </mj-column>
 </mj-section>
-<%= render partial: 'application/cta_button', locals: { href: event.project_url, message: format_message('cta_see_votes_submitted') } %>
+<%= render partial: 'application/cta_button', locals: { href: event.project_url, message: cta_button_text } %>

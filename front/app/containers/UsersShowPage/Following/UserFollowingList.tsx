@@ -1,22 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
-import {
-  Box,
-  Text,
-  colors,
-  useBreakpoint,
-  Spinner,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text, colors, Spinner } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 import { FollowableObject } from 'api/follow_unfollow/types';
 import useFollowers from 'api/follow_unfollow/useFollowers';
 
 import IdeaCard from 'components/IdeaCard';
-import InitiativeCard from 'components/InitiativeCard';
 import ProjectFolderCard from 'components/ProjectAndFolderCards/components/ProjectFolderCard';
 import ProjectCard from 'components/ProjectCard';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -37,7 +30,6 @@ const UserFollowingList = ({ value }: Props) => {
   } = useFollowers({
     followableObject: value,
   });
-  const isSmallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
 
   const theme = useTheme();
@@ -77,27 +69,8 @@ const UserFollowingList = ({ value }: Props) => {
                   <Box width="100%">
                     <IdeaCard
                       ideaId={follower.relationships.followable.data.id}
-                      showFollowButton
                     />
                   </Box>
-                </Box>
-              );
-            } else if (
-              follower.relationships.followable.data.type === 'initiative'
-            ) {
-              return (
-                <Box
-                  key={follower.id}
-                  display="flex"
-                  flexGrow={0}
-                  w={
-                    isSmallerThanPhone ? '100%' : 'calc(100% * (1 / 3) - 26px)'
-                  }
-                >
-                  <InitiativeCard
-                    initiativeId={follower.relationships.followable.data.id}
-                    showFollowButton
-                  />
                 </Box>
               );
             } else if (
@@ -108,7 +81,6 @@ const UserFollowingList = ({ value }: Props) => {
                   key={follower.id}
                   projectId={follower.relationships.followable.data.id}
                   size="small"
-                  showFollowButton
                 />
               );
             } else if (
@@ -120,7 +92,6 @@ const UserFollowingList = ({ value }: Props) => {
                   folderId={follower.relationships.followable.data.id}
                   size="small"
                   layout="threecolumns"
-                  showFollowButton
                 />
               );
             }
@@ -129,7 +100,7 @@ const UserFollowingList = ({ value }: Props) => {
         </Box>
       )}
       {hasNextPage && (
-        <Button
+        <ButtonWithLink
           onClick={() => fetchNextPage()}
           buttonStyle="secondary-outlined"
           text={<FormattedMessage {...messages.loadMore} />}

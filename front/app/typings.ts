@@ -1,8 +1,7 @@
 import { MouseEvent, FC } from 'react';
 
-import { WrappedComponentProps } from 'react-intl';
+import { MessageDescriptor } from 'react-intl';
 import { RouteType } from 'routes';
-import { TableCellProps } from 'semantic-ui-react';
 
 import { TAppConfigurationSetting } from 'api/app_configuration/types';
 
@@ -12,6 +11,8 @@ import {
 } from 'containers/App/constants';
 
 import { TFieldName } from 'components/UI/Error';
+
+import { FormatMessageValues } from 'utils/cl-intl/useIntl';
 
 declare global {
   interface Function {
@@ -26,6 +27,7 @@ declare global {
     googleMaps?: boolean;
     intercomSettings: any;
     satismeter?: any;
+    Cypress?: any;
   }
 }
 
@@ -34,23 +36,6 @@ export interface IRelationship {
   type: string;
 }
 
-export type ILocationInfo =
-  | {
-      location_description: string | undefined;
-      location_point_geojson: {
-        type: 'Point';
-        coordinates: number[];
-      };
-    }
-  | {
-      location_description: undefined;
-      error: 'not_found';
-      location_point_geojson: {
-        type: 'Point';
-        coordinates: number[];
-      };
-    };
-
 export interface ITab {
   name: string;
   label: string;
@@ -58,6 +43,7 @@ export interface ITab {
   active?: boolean | ((pathname: string) => boolean);
   feature?: TAppConfigurationSetting;
   statusLabel?: string;
+  className?: string;
 }
 
 export type CellConfiguration<ComponentProps> = {
@@ -65,7 +51,6 @@ export type CellConfiguration<ComponentProps> = {
   onChange?: (event: unknown) => void;
   onClick?: (event: MouseEvent) => void;
   featureFlag?: TAppConfigurationSetting;
-  cellProps?: TableCellProps;
   width?: number;
   Component: FC<ComponentProps>;
 };
@@ -92,6 +77,7 @@ export interface UploadFile extends File {
   remote: boolean;
   extension?: string;
   error?: string[];
+  ordering?: number;
 }
 
 export interface IOption {
@@ -121,10 +107,6 @@ export type GraphqlMultiloc = {
   content: string;
   locale: SupportedLocale;
 }[];
-
-export type MultilocFormValues = {
-  [field: string]: Multiloc | null | undefined;
-};
 
 export interface CLError {
   error: string;
@@ -178,4 +160,12 @@ export type Override<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
 
 export type Percentage = `${number}%`;
 
-export type FormatMessage = WrappedComponentProps['intl']['formatMessage'];
+export type FormatMessage = (
+  messageDescriptor: MessageDescriptor,
+  values?: FormatMessageValues
+) => string;
+
+export type Pagination = {
+  'page[number]'?: number;
+  'page[size]'?: number;
+};

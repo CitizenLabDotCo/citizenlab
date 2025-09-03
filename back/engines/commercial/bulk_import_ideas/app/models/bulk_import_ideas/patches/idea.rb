@@ -20,23 +20,20 @@ module BulkImportIdeas::Patches::Idea
         # Delete an author that was created but then replaced (either by another user or nil)
         User.find(author_id_was).destroy! if author_id_changed? && idea_import&.user_created == true
 
-        # TODO: What if there is another idea with the same user id - update the next idea import with user created true? So there is always one?
-
-        # Create an anonymous author if no author supplied
-        new_author_created = false
-        if author.nil?
-          new_author = User.new(unique_code: SecureRandom.uuid, locale: idea_import.locale)
-          new_author.save!
-          self.author = new_author
-          new_author_created = true
-        end
-
-        idea_import.update!(
+        # Update the idea import record with the current changes
+        update_attributes = {
           approved_at: Time.now,
-          user_created: new_author_created || idea_import&.user_created,
-          user_consent: !new_author_created,
-          content_changes: changes.except('publication_status', 'published_at', 'submitted_at', 'updated_at')
-        )
+          content_changes: changes.except('publication_status', 'published_at', 'submitted_at', 'updated_at'),
+          user_consent: !!author
+        }
+
+        update_attributes = update_attributes.merge({ user_created: false }) if author.nil?
+
+        # Did the author change and was a new one created? Assume if created within the last 30 minutes it probably was
+        new_author_created = author_id_changed? && (author&.created_at&.>= 30.minutes.ago)
+        update_attributes = update_attributes.merge({ user_created: true }) if new_author_created
+
+        idea_import.update!(update_attributes)
       end
 
       def remove_import_author

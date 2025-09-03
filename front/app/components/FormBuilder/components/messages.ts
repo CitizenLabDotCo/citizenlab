@@ -14,6 +14,10 @@ export default defineMessages({
     defaultMessage:
       'If you have access to our AI package, you will be able to summarise and categorise text responses with AI',
   },
+  category: {
+    id: 'app.components.formBuilder.category',
+    defaultMessage: 'Category',
+  },
   mappingNotInCurrentLicense: {
     id: 'app.components.formBuilder.mappingNotInCurrentLicense',
     defaultMessage:
@@ -23,6 +27,18 @@ export default defineMessages({
     id: 'app.components.formBuilder.shortAnswer',
     defaultMessage: 'Short answer',
   },
+  ranking: {
+    id: 'app.components.formBuilder.ranking',
+    defaultMessage: 'Ranking',
+  },
+  matrix: {
+    id: 'app.components.formBuilder.matrix',
+    defaultMessage: 'Matrix',
+  },
+  sentiment: {
+    id: 'app.components.formBuilder.sentiment',
+    defaultMessage: 'Sentiment scale',
+  },
   longAnswer: {
     id: 'app.components.formBuilder.longAnswer',
     defaultMessage: 'Long answer',
@@ -30,10 +46,6 @@ export default defineMessages({
   page: {
     id: 'app.components.formBuilder.page',
     defaultMessage: 'Page',
-  },
-  section: {
-    id: 'app.components.formBuilder.section',
-    defaultMessage: 'Section',
   },
   surveyEnd: {
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd',
@@ -71,9 +83,17 @@ export default defineMessages({
     id: 'app.components.formBuilder.linearScale',
     defaultMessage: 'Linear scale',
   },
+  rating: {
+    id: 'app.components.formBuilder.rating',
+    defaultMessage: 'Rating',
+  },
   fileUpload: {
     id: 'app.components.formBuilder.fileUpload',
     defaultMessage: 'File upload',
+  },
+  cosponsors: {
+    id: 'app.components.formBuilder.cosponsors',
+    defaultMessage: 'Co-sponsors',
   },
   shapefileUpload: {
     id: 'app.components.formBuilder.shapefileUpload',
@@ -200,15 +220,15 @@ export default defineMessages({
     id: 'app.components.formBuilder.formEnd',
     defaultMessage: 'Form end',
   },
-  questionLogicHelperText: {
-    id: 'app.components.formBuilder.questionLogicHelperTextDefault',
+  multipleChoiceHelperText: {
+    id: 'app.components.formBuilder.multipleChoiceHelperText',
     defaultMessage:
-      'If no logic is added to an answer, the form will follow its normal flow. Adding logic to a question will make it required by default. For more information, visit {supportPageLink}',
+      'If multiple options lead to different pages and participants select more than one, the furthest page will be shown. Ensure this behavior aligns with your intended flow.',
   },
   pagesLogicHelperText: {
-    id: 'app.components.formBuilder.pagesLogicHelperTextDefault',
+    id: 'app.components.formBuilder.pagesLogicHelperTextDefault1',
     defaultMessage:
-      'If no logic is added, the form will follow its normal flow. For more information, visit {supportPageLink}',
+      'If no logic is added, the form will follow its normal flow. If both the page and its questions have logic, the question logic will take precedence. Ensure this aligns with your intended flow For more information, visit {supportPageLink}',
   },
   goToPageInputLabel: {
     id: 'app.components.formBuilder.goToPageInputLabel',
@@ -218,13 +238,17 @@ export default defineMessages({
     id: 'app.components.formBuilder.ruleForAnswerLabel',
     defaultMessage: 'If answer is:',
   },
+  ruleForAnswerLabelMultiselect: {
+    id: 'app.components.formBuilder.ruleForAnswerLabelMultiselect',
+    defaultMessage: 'If answers include:',
+  },
   pageRuleLabel: {
     id: 'app.components.formBuilder.pageRuleLabel',
     defaultMessage: 'Next page is:',
   },
-  nextPageLabel: {
-    id: 'app.components.formBuilder.nextPageLabel',
-    defaultMessage: 'Next:',
+  continuePageLabel: {
+    id: 'app.components.formBuilder.continuePageLabel',
+    defaultMessage: 'Continues to',
   },
   supportArticleLinkText: {
     id: 'app.components.formBuilder.supportArticleLinkText',
@@ -244,13 +268,18 @@ export default defineMessages({
       'This has already been added in the form. Default content may only be used once.',
   },
   disabledCustomFieldsTooltip: {
-    id: 'app.components.formBuilder.disabledCustomFieldsTooltip',
+    id: 'app.components.formBuilder.disabledCustomFieldsTooltip1',
     defaultMessage:
-      'Adding custom content is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.',
+      'Adding custom content is not part of your current license. Reach out to your GovSuccess Manager to learn more about it.',
   },
-  sectionCannotBeDeleted: {
-    id: 'app.components.formBuilder.sectionCannotBeDeleted',
-    defaultMessage: "This section can't be deleted.",
+  pageCannotBeDeletedNorNewFieldsAdded: {
+    id: 'app.components.formBuilder.pageCannotBeDeletedNorNewFieldsAdded',
+    defaultMessage:
+      'This page cannot be deleted and does not allow any additional fields to be added.',
+  },
+  pageCannotBeDeleted: {
+    id: 'app.components.formBuilder.pageCannotBeDeleted',
+    defaultMessage: "This page can't be deleted.",
   },
   questionCannotBeDeleted: {
     id: 'app.components.formBuilder.questionCannotBeDeleted',
@@ -277,5 +306,74 @@ export default defineMessages({
   cancelLeaveBuilderButtonText: {
     id: 'app.components.formBuilder.cancelLeaveBuilderButtonText',
     defaultMessage: 'Cancel',
+  },
+  stronglyDisagree: {
+    id: 'app.components.formBuilder.stronglyDisagree',
+    defaultMessage: 'Strongly disagree',
+  },
+  disagree: {
+    id: 'app.components.formBuilder.disagree',
+    defaultMessage: 'Disagree',
+  },
+  neutral: {
+    id: 'app.components.formBuilder.neutral',
+    defaultMessage: 'Neutral',
+  },
+  agree: {
+    id: 'app.components.formBuilder.agree',
+    defaultMessage: 'Agree',
+  },
+  stronglyAgree: {
+    id: 'app.components.formBuilder.stronglyAgree',
+    defaultMessage: 'Strongly agree',
+  },
+  logicAnyOtherAnswer: {
+    id: 'app.components.formBuilder.logicAnyOtherAnswer',
+    defaultMessage: 'Any other answer',
+  },
+  logicNoAnswer: {
+    id: 'app.components.formBuilder.logicNoAnswer2',
+    defaultMessage: 'Not answered',
+  },
+  logicPanelAnyOtherAnswer: {
+    id: 'app.components.formBuilder.logicPanelAnyOtherAnswer',
+    defaultMessage: 'If any other answer',
+  },
+  logicPanelNoAnswer: {
+    id: 'app.components.formBuilder.logicPanelNoAnswer',
+    defaultMessage: 'If not answered',
+  },
+  lastPage: {
+    id: 'app.components.formBuilder.lastPage',
+    defaultMessage: 'Ending',
+  },
+  veryBad: {
+    id: 'app.components.formBuilder.veryBad',
+    defaultMessage: 'Very bad',
+  },
+  bad: {
+    id: 'app.components.formBuilder.bad',
+    defaultMessage: 'Bad',
+  },
+  ok: {
+    id: 'app.components.formBuilder.ok',
+    defaultMessage: 'Ok',
+  },
+  good: {
+    id: 'app.components.formBuilder.good',
+    defaultMessage: 'Good',
+  },
+  veryGood: {
+    id: 'app.components.formBuilder.veryGood',
+    defaultMessage: 'Very good',
+  },
+  manageTagsExplanation: {
+    id: 'app.components.formBuilder.manageTagsExplanation',
+    defaultMessage:
+      'You can manage the tags shown in this question on the {inputTagsLink} of the project.',
+  },
+  inputTagsPage: {
+    id: 'app.components.formBuilder.inputTagManager',
+    defaultMessage: 'Input tags page',
   },
 });

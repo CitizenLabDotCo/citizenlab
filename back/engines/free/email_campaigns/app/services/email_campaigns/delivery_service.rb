@@ -9,25 +9,17 @@ module EmailCampaigns
       Campaigns::CommentDeletedByAdmin,
       Campaigns::CommentMarkedAsSpam,
       Campaigns::CommentOnIdeaYouFollow,
-      Campaigns::CommentOnInitiativeYouFollow,
       Campaigns::CommentOnYourComment,
-      Campaigns::CosponsorOfYourInitiative,
+      Campaigns::CosponsorOfYourIdea,
       Campaigns::EventRegistrationConfirmation,
       Campaigns::IdeaMarkedAsSpam,
       Campaigns::IdeaPublished,
-      Campaigns::InitiativeAssignedToYou,
-      Campaigns::InitiativeMarkedAsSpam,
-      Campaigns::InitiativePublished,
-      Campaigns::InitiativeResubmittedForReview,
       Campaigns::InternalCommentOnIdeaAssignedToYou,
       Campaigns::InternalCommentOnIdeaYouCommentedInternallyOn,
       Campaigns::InternalCommentOnIdeaYouModerate,
-      Campaigns::InternalCommentOnInitiativeAssignedToYou,
-      Campaigns::InternalCommentOnInitiativeYouCommentedInternallyOn,
-      Campaigns::InternalCommentOnUnassignedInitiative,
       Campaigns::InternalCommentOnUnassignedUnmoderatedIdea,
       Campaigns::InternalCommentOnYourInternalComment,
-      Campaigns::InvitationToCosponsorInitiative,
+      Campaigns::InvitationToCosponsorIdea,
       Campaigns::InviteReceived,
       Campaigns::InviteReminder,
       Campaigns::Manual,
@@ -37,17 +29,18 @@ module EmailCampaigns
       Campaigns::ModeratorDigest,
       Campaigns::NativeSurveyNotSubmitted,
       Campaigns::NewCommentForAdmin,
-      Campaigns::NewIdeaForAdmin,
-      Campaigns::NewInitiativeForAdmin,
+      Campaigns::NewIdeaForAdminPublished,
+      Campaigns::NewIdeaForAdminPrescreening,
       Campaigns::OfficialFeedbackOnIdeaYouFollow,
-      Campaigns::OfficialFeedbackOnInitiativeYouFollow,
       Campaigns::ProjectFolderModerationRightsReceived,
       Campaigns::ProjectModerationRightsReceived,
       Campaigns::ProjectPhaseStarted,
       Campaigns::ProjectPhaseUpcoming,
       Campaigns::ProjectPublished,
+      Campaigns::ProjectReviewRequest,
+      Campaigns::ProjectReviewStateChange,
       Campaigns::StatusChangeOnIdeaYouFollow,
-      Campaigns::StatusChangeOnInitiativeYouFollow,
+      Campaigns::SurveySubmitted,
       Campaigns::ThresholdReachedForAdmin,
       Campaigns::UserDigest,
       Campaigns::VotingBasketNotSubmitted,
@@ -56,11 +49,15 @@ module EmailCampaigns
       Campaigns::VotingPhaseStarted,
       Campaigns::VotingResults,
       Campaigns::Welcome,
-      Campaigns::YourProposedInitiativesDigest
+      Campaigns::YourInputInScreening
     ].freeze
 
     def campaign_classes
-      CAMPAIGN_CLASSES
+      @campaign_classes ||= begin
+        classes = CAMPAIGN_CLASSES.deep_dup
+        classes << Campaigns::CommunityMonitorReport if AppConfiguration.instance.feature_activated?('community_monitor')
+        classes
+      end
     end
 
     def campaign_types
@@ -86,6 +83,8 @@ module EmailCampaigns
     #  called on every activity
     def send_on_activity(activity)
       campaign_candidates = Campaign.where(type: campaign_types)
+      campaign_candidates = filter_campaigns_on_activity_context(campaign_candidates, activity)
+
       apply_send_pipeline(campaign_candidates, activity: activity)
     end
 
@@ -95,24 +94,40 @@ module EmailCampaigns
     end
 
     def send_preview(campaign, recipient)
-      campaign.generate_commands(
-        recipient: recipient,
-        time: Time.zone.now
-      ).each do |command|
-        process_command(campaign, command.merge({ recipient: recipient }))
+      commands = if campaign.manual?
+        generate_commands(campaign, recipient)
+      else
+        [campaign.preview_command(recipient)].compact
+      end
+      return unless commands.any?
+
+      commands.each do |command|
+        process_command(campaign, command)
       end
     end
 
-    # This only works for emails that are sent out internally
-    def preview_html(campaign, recipient)
-      command = campaign.generate_commands(
-        recipient: recipient,
-        time: Time.zone.now
-      ).first&.merge(recipient: recipient)
-      return unless command
+    def preview_email(campaign, recipient)
+      command = if campaign.manual?
+        generate_commands(campaign, recipient).first
+      else
+        campaign.preview_command(recipient)
+      end
+      return {} unless command
 
-      mail = campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
-      mail.body.to_s
+      mail = campaign.mailer_class.with(campaign:, command:).campaign_mail
+      return {} unless mail
+
+      {
+        to: if campaign.class.recipient_segment_multiloc_key
+              I18n.t(campaign.class.recipient_segment_multiloc_key, locale: recipient.locale)
+            else
+              campaign.groups.map { |g| MultilocService.new.t(g.title_multiloc, recipient.locale) }.join(', ')
+        end,
+        from: mail[:from].value,
+        reply_to: mail.reply_to.first,
+        subject: mail.subject,
+        html: mail.body.to_s
+      }
     end
 
     private
@@ -121,7 +136,7 @@ module EmailCampaigns
     # * time: Time object when the sending command happened
     # * activity: Activity object which activity happened
     def apply_send_pipeline(campaign_candidates, options = {})
-      valid_campaigns           = filter_valid_campaigns_before_send(campaign_candidates, options)
+      valid_campaigns           = filter_campaigns(campaign_candidates, options)
       campaigns_with_recipients = assign_campaigns_recipients(valid_campaigns, options)
       campaigns_with_command    = assign_campaigns_command(campaigns_with_recipients, options)
 
@@ -129,8 +144,8 @@ module EmailCampaigns
       process_send_campaigns(campaigns_with_command)
     end
 
-    def filter_valid_campaigns_before_send(campaigns, options)
-      campaigns.select { |campaign| campaign.run_before_send_hooks(**options) }
+    def filter_campaigns(campaigns, options)
+      campaigns.select { |campaign| campaign.run_filter_hooks(**options) }
     end
 
     def assign_campaigns_recipients(campaigns, options)
@@ -142,14 +157,14 @@ module EmailCampaigns
 
     def assign_campaigns_command(campaigns_with_recipients, options)
       campaigns_with_recipients.flat_map do |(recipient, campaign)|
-        campaign.generate_commands(recipient: recipient, **options)
-          .map { |command| command.merge(recipient: recipient) }
+        generate_commands(campaign, recipient, options)
           .zip([campaign].cycle)
       end
     end
 
     def process_send_campaigns(campaigns_with_command)
       campaigns_with_command.each do |(command, campaign)|
+        campaign.run_before_send_hooks(command)
         process_command(campaign, command)
         campaign.run_after_send_hooks(command)
       end
@@ -174,6 +189,25 @@ module EmailCampaigns
         .with(campaign: campaign, command: command)
         .campaign_mail
         .deliver_later(wait: command[:delay] || 0)
+    end
+
+    def generate_commands(campaign, recipient, options = {})
+      campaign.generate_commands(recipient:, **options).map do |command|
+        command.merge(
+          recipient: recipient,
+          time: Time.zone.now
+        )
+      end
+    end
+
+    def filter_campaigns_on_activity_context(campaigns, activity)
+      campaigns = campaigns.select do |campaign|
+        !campaign.context || (campaign.activity_context(activity) == campaign.context && campaign.class.supports_context?(campaign.context))
+      end
+      context_types = campaigns.select(&:context).map(&:type)
+      campaigns.select do |campaign|
+        campaign.context || context_types.exclude?(campaign.type)
+      end
     end
   end
 end

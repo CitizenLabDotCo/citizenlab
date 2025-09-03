@@ -2,12 +2,11 @@
 
 module ParticipationMethod
   class Voting < Ideation
+    SUPPORTED_REACTION_MODES = [].freeze
+    delegate :additional_export_columns, :supports_serializing?, :validate_phase, to: :voting_method
+
     def self.method_str
       'voting'
-    end
-
-    def additional_export_columns
-      Factory.instance.voting_method_for(phase).export_columns
     end
 
     def allowed_ideas_orders
@@ -15,8 +14,10 @@ module ParticipationMethod
     end
 
     def assign_defaults_for_phase
+      super
       phase.ideas_order ||= 'random'
-      Factory.instance.voting_method_for(phase).assign_defaults_for_phase
+      phase.vote_term ||= 'vote'
+      voting_method.assign_defaults_for_phase
     end
 
     # Remove after unified status implementation
@@ -24,19 +25,24 @@ module ParticipationMethod
       'ideation'
     end
 
-    def supports_reacting?
-      false
-    end
-
-    def supports_serializing?(attribute)
-      %i[
-        voting_method voting_max_total voting_min_total voting_max_votes_per_idea baskets_count
-        voting_term_singular_multiloc voting_term_plural_multiloc votes_count
-      ].include?(attribute)
+    def supported_email_campaigns
+      super + %w[voting_basket_submitted voting_basket_not_submitted voting_last_chance voting_phase_started voting_results]
     end
 
     def supports_submission?
       false
+    end
+
+    def supports_vote_term?
+      true
+    end
+
+    def add_autoreaction_to_inputs?
+      supports_submission?
+    end
+
+    def voting_method
+      Factory.instance.voting_method_for(phase)
     end
   end
 end

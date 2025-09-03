@@ -49,6 +49,12 @@ const endpoints = {
   'POST projects/:projectId/images': http.post(projectImagesPath, () => {
     return HttpResponse.json({ data: projectImagesData[0] }, { status: 200 });
   }),
+  'PATCH projects/:projectId/images/:imageId': http.patch(
+    projectImagePath,
+    () => {
+      return HttpResponse.json({ data: projectImagesData[0] }, { status: 200 });
+    }
+  ),
   'DELETE projects/:projectId/images/:imageId': http.delete(
     projectImagePath,
     () => {

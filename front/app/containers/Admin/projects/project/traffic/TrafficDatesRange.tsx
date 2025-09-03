@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
-import moment, { Moment } from 'moment';
+import { Box, IconTooltip, Text } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
 import { useParams } from 'react-router-dom';
 
-import DateRangePicker from 'components/admin/DateRangePicker';
-import Warning from 'components/UI/Warning';
+import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
+import ResolutionControl, {
+  IResolution,
+} from 'components/admin/ResolutionControl';
 
 import { useIntl } from 'utils/cl-intl';
+import { toBackendDateString, parseBackendDateString } from 'utils/dateUtils';
 
+import Charts from './Charts';
 import messages from './messages';
-import TrafficReportPreview from './TrafficReportPreview';
 
 const TrafficDatesRange = ({
   defaultStartDate,
@@ -23,19 +26,9 @@ const TrafficDatesRange = ({
 
   const { formatMessage } = useIntl();
 
-  const [startAt, setStartAt] = useState<string | undefined>(defaultStartDate);
-  const [endAt, setEndAt] = useState<string | undefined>(defaultEndDate);
-
-  const handleChangeTimeRange = ({
-    startDate,
-    endDate,
-  }: {
-    startDate: Moment | null;
-    endDate: Moment | null;
-  }) => {
-    setStartAt(startDate?.format('YYYY-MM-DD'));
-    setEndAt(endDate?.format('YYYY-MM-DD'));
-  };
+  const [startAt, setStartAt] = useState(defaultStartDate);
+  const [endAt, setEndAt] = useState(defaultEndDate);
+  const [resolution, setResolution] = useState<IResolution>('month');
 
   return (
     <div>
@@ -43,25 +36,32 @@ const TrafficDatesRange = ({
         <Text variant="bodyM" color="textSecondary" mb="5px">
           {formatMessage(messages.selectPeriod)}
         </Text>
-        <DateRangePicker
-          startDate={startAt ? moment(startAt) : null}
-          endDate={endAt ? moment(endAt) : null}
-          onDatesChange={handleChangeTimeRange}
-        />
+        <Box w="100%" display="flex" justifyContent="space-between">
+          <Box display="flex" alignItems="center">
+            <DateRangePicker
+              selectedRange={{
+                from: startAt ? parseBackendDateString(startAt) : undefined,
+                to: endAt ? parseBackendDateString(endAt) : undefined,
+              }}
+              onUpdateRange={({ from, to }) => {
+                setStartAt(toBackendDateString(from));
+                setEndAt(toBackendDateString(to));
+              }}
+            />
+            <IconTooltip
+              ml="12px"
+              content={formatMessage(messages.visitorDataBanner)}
+            />
+          </Box>
+          <ResolutionControl value={resolution} onChange={setResolution} />
+        </Box>
       </Box>
-      <Box mx="44px" mb="20px">
-        <Warning>
-          <Text color="primary" m="0px">
-            {formatMessage(messages.cookieBannerUpdatedInfo)}
-          </Text>
-        </Warning>
-      </Box>
-
-      <Box p="44px" mx="44px" bg="white">
-        <TrafficReportPreview
+      <Box mx="36px">
+        <Charts
           projectId={projectId}
-          startAt={startAt}
-          endAt={endAt}
+          startAtMoment={moment(startAt)}
+          endAtMoment={moment(endAt)}
+          resolution={resolution}
         />
       </Box>
     </div>

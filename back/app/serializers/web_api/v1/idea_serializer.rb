@@ -19,8 +19,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     :published_at,
     :budget,
     :proposed_budget,
-    :baskets_count,
-    :votes_count,
+    :manual_votes_amount,
     :anonymous,
     :author_hash
 
@@ -58,6 +57,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
   has_many :idea_images, serializer: WebApi::V1::ImageSerializer
   has_many :phases
   has_many :ideas_phases
+  has_many :cosponsors, record_type: :user, serializer: WebApi::V1::UserSerializer
 
   belongs_to :author, record_type: :user, serializer: WebApi::V1::UserSerializer
   belongs_to :project
@@ -96,6 +96,40 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
       end
     end
   end
+
+  def self.find_ideas_phase(idea, phase)
+    idea.ideas_phases.find { |ideas_phase| ideas_phase.phase_id == phase.id }
+  end
+
+  attribute :baskets_count do |idea, params|
+    if params[:phase]
+      find_ideas_phase(idea, params[:phase])&.baskets_count
+    else
+      idea.baskets_count
+    end
+  end
+
+  attribute :votes_count do |idea, params|
+    if params[:phase]
+      find_ideas_phase(idea, params[:phase])&.votes_count
+    else
+      idea.votes_count
+    end
+  end
+
+  attribute :total_votes, if: proc { |_, params|
+    params[:phase]
+  } do |idea, params|
+    idea.total_votes(params[:phase])
+  end
+
+  attribute :manual_votes_last_updated_at, if: proc { |idea, params|
+    can_moderate?(idea, params)
+  }
+
+  has_one :manual_votes_last_updated_by, record_type: :user, serializer: WebApi::V1::UserSerializer, if: proc { |idea, params|
+    can_moderate?(idea, params)
+  }
 end
 
 WebApi::V1::IdeaSerializer.include(IdeaAssignment::Extensions::WebApi::V1::IdeaSerializer)

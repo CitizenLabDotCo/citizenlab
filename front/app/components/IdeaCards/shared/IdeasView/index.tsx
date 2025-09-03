@@ -5,9 +5,11 @@ import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { IIdeaMarkers } from 'api/idea_markers/types';
 import { IIdeaData } from 'api/ideas/types';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
-import { IdeaDefaultSortMethod } from 'api/phases/types';
+import { IdeaSortMethod } from 'api/phases/types';
 
 import IdeasMap from 'components/IdeasMap';
+
+import { InputFiltersProps } from '../../IdeasWithFiltersSidebar/InputFilters';
 
 import IdeasList from './IdeasList';
 
@@ -15,7 +17,7 @@ interface Props {
   view: 'card' | 'map';
   // This prop is used to set the aria-labelledby attribute. Set this to false if only one view is shown all the time. That is when the tabs are hidden.
   hasMoreThanOneView?: boolean;
-  defaultSortingMethod?: IdeaDefaultSortMethod;
+  defaultSortingMethod?: IdeaSortMethod;
   hideImage: boolean;
   hideImagePlaceholder: boolean;
   hideIdeaStatus: boolean;
@@ -27,6 +29,8 @@ interface Props {
   loadingMore: boolean;
   ideaMarkers?: IIdeaMarkers;
   onLoadMore(): void;
+  inputFiltersProps?: InputFiltersProps;
+  hasFilterSidebar?: boolean;
 }
 
 const IdeasView = ({
@@ -43,6 +47,8 @@ const IdeasView = ({
   ideaMarkers,
   onLoadMore,
   hasMoreThanOneView = true,
+  hasFilterSidebar = false,
+  inputFiltersProps,
 }: Props) => {
   const { data: mapConfig, isLoading } = useProjectMapConfig(
     projectId || undefined
@@ -54,7 +60,7 @@ const IdeasView = ({
 
   return (
     <>
-      {view === 'card' && list && (
+      {view === 'card' && (
         <IdeasList
           ariaLabelledBy={hasMoreThanOneView ? 'view-tab-1' : undefined}
           id={'view-panel-1'}
@@ -64,11 +70,11 @@ const IdeasView = ({
           hasIdeas={list.length > 0}
           loadingMore={loadingMore}
           list={list}
-          tabIndex={0}
           hideImage={hideImage}
           hideImagePlaceholder={hideImagePlaceholder}
           hideIdeaStatus={hideIdeaStatus}
           phaseId={phaseId}
+          hasFilterSidebar={hasFilterSidebar}
         />
       )}
       {view === 'map' && projectId && (
@@ -78,6 +84,7 @@ const IdeasView = ({
             phaseId={phaseId}
             mapConfig={mapConfig}
             ideaMarkers={ideaMarkers}
+            inputFiltersProps={inputFiltersProps}
           />
         </Box>
       )}

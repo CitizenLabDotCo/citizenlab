@@ -13,6 +13,7 @@ module MultiTenancy
           internal_role
           title_multiloc
           visible_to
+          hidden
         ]
       end
     end

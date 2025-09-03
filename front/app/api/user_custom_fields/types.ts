@@ -19,7 +19,6 @@ export type TCustomFieldCode =
   | 'gender'
   | 'birthyear'
   | 'domicile'
-  | 'education'
   | 'title'
   | 'body'
   | 'topic_ids'
@@ -45,8 +44,8 @@ export interface IUserCustomFieldData {
     updated_at: string;
   };
   relationships?: {
-    custom_field_options: {
-      data: IRelationship;
+    options: {
+      data: IRelationship[];
     };
     current_ref_distribution: {
       data: IRelationship;

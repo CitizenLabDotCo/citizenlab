@@ -21,11 +21,6 @@ export interface Resolution {
   resolution: IResolution;
 }
 
-export interface Pagination {
-  pageSize: number;
-  pageNumber: number;
-}
-
 // Hook return values
 export interface Stat {
   value: string;

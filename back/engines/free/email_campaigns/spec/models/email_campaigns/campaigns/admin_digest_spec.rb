@@ -11,7 +11,8 @@ RSpec.describe EmailCampaigns::Campaigns::AdminDigest do
     let(:campaign) { create(:admin_digest_campaign) }
     let!(:admin) { create(:admin) }
     let!(:old_ideas) { create_list(:idea, 2, published_at: 20.days.ago) }
-    let!(:new_ideas) { create_list(:idea, 3, published_at: 1.day.ago) }
+    let!(:new_ideas) { create_list(:idea, 2, published_at: 1.day.ago) }
+    let!(:new_proposal) { create(:proposal, published_at: 1.day.ago) }
     let!(:reaction) { create(:reaction, mode: 'up', reactable: new_ideas.first) }
     let!(:draft) { create(:idea, publication_status: 'draft') }
 
@@ -19,18 +20,21 @@ RSpec.describe EmailCampaigns::Campaigns::AdminDigest do
       command = campaign.generate_commands(recipient: admin).first
 
       expect(
-        command.dig(:event_payload, :statistics, :new_ideas_increase)
-      ).to eq(new_ideas.size)
+        command.dig(:event_payload, :statistics, :new_inputs_increase)
+      ).to eq(3)
       expect(
         command.dig(:event_payload, :statistics, :new_comments_increase)
       ).to eq(0)
       expect(
-        command.dig(:event_payload, :top_project_ideas).flat_map { |tpi| tpi[:top_ideas].pluck(:id) }
+        command.dig(:event_payload, :top_project_inputs).flat_map { |tpi| tpi[:top_ideas].pluck(:id) }
       ).to include(new_ideas.first.id)
       expect(
-        command.dig(:event_payload, :top_project_ideas).flat_map { |tpi| tpi[:top_ideas].pluck(:id) }
+        command.dig(:event_payload, :top_project_inputs).flat_map { |tpi| tpi[:top_ideas].pluck(:id) }
       ).not_to include(draft.id)
-      expect(command.dig(:tracked_content, :idea_ids)).to include(new_ideas.first.id)
+      expect(
+        command.dig(:event_payload, :top_project_inputs).flat_map { |tpi| tpi[:top_ideas].pluck(:id) }
+      ).to include(new_proposal.id)
+      expect(command.dig(:tracked_content, :idea_ids)).to include(new_ideas.first.id, new_proposal.id)
     end
 
     it 'does not include native survey responses' do
@@ -40,22 +44,8 @@ RSpec.describe EmailCampaigns::Campaigns::AdminDigest do
 
       command = campaign.generate_commands(recipient: admin).first
       expect(
-        command.dig(:event_payload, :top_project_ideas).flat_map { |tpi| tpi[:top_ideas].pluck(:id) }
+        command.dig(:event_payload, :top_project_inputs).flat_map { |tpi| tpi[:top_ideas].pluck(:id) }
       ).not_to include response.id
-    end
-
-    it "only includes 'new' initiatives" do
-      create(:initiative_status_proposed)
-
-      old_initiative = create(:initiative, build_status_change: false)
-      old_initiative.initiative_status_changes.first.update!(created_at: 8.days.ago) # more than 1 week ago
-
-      new_initiative = create(:initiative, build_status_change: false)
-      new_initiative.initiative_status_changes.first.update!(created_at: 6.days.ago) # less than 1 week ago
-
-      command = campaign.generate_commands(recipient: admin).first
-
-      expect(command.dig(:event_payload, :new_initiatives).pluck(:id)).to match_array [new_initiative.id]
     end
   end
 

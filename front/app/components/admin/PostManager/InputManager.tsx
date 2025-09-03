@@ -1,11 +1,11 @@
-import React, { Suspense, lazy, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useSearchParams } from 'react-router-dom';
 
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
-import { IQueryParameters, Sort } from 'api/ideas/types';
+import { IIdeaQueryParameters, Sort } from 'api/ideas/types';
 import useIdeas from 'api/ideas/useIdeas';
 import { TPhases } from 'api/phases/types';
 import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
@@ -13,6 +13,7 @@ import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTop
 import { IProjectData } from 'api/projects/types';
 import useTopics from 'api/topics/useTopics';
 
+import PostPreview from 'components/admin/PostManager/components/PostPreview';
 import Outlet from 'components/Outlet';
 import SearchInput from 'components/UI/SearchInput';
 
@@ -23,7 +24,6 @@ import { getPageNumberFromUrl, getSortDirection } from 'utils/paginationUtils';
 import ActionBar from './components/ActionBar';
 import FilterSidebar from './components/FilterSidebar';
 import IdeasCount from './components/IdeasCount';
-import InfoSidebar from './components/InfoSidebar';
 import PostTable from './components/PostTable';
 import IdeaFeedbackToggle from './components/TopLevelFilters/IdeaFeedbackToggle';
 
@@ -38,14 +38,10 @@ import {
   TopActionBar,
 } from '.';
 
-const LazyPostPreview = lazy(
-  () => import('components/admin/PostManager/components/PostPreview')
-);
-
 interface Props {
   // When the PostManager is used in /admin/projects, we pass down the current project id as a prop
   projectId?: string | null;
-  phaseId?: string | null;
+  phaseId?: string;
   visibleFilterMenus: TFilterMenu[]; // cannot be empty.
   defaultFilterMenu: TFilterMenu;
   phases?: TPhases;
@@ -65,7 +61,7 @@ const InputManager = ({
   phaseId,
 }: Props) => {
   const type = projectId ? 'ProjectIdeas' : 'AllIdeas';
-  const [queryParameters, setQueryParameters] = useState<IQueryParameters>({
+  const [queryParameters, setQueryParameters] = useState<IIdeaQueryParameters>({
     'page[size]': 10,
     sort: 'new',
     projects: projectId ? [projectId] : undefined,
@@ -77,7 +73,7 @@ const InputManager = ({
   });
   const { data: ideas } = useIdeas(queryParameters);
   const { data: ideaStatuses } = useIdeaStatuses({
-    participation_method: 'ideation',
+    queryParams: { participation_method: 'ideation' },
   });
   const { data: ideaTopics } = useTopics();
   const { data: projectAllowedInputTopics } = useProjectAllowedInputTopics({
@@ -94,6 +90,8 @@ const InputManager = ({
     const topicIdsSet = topicIds.length > 0 ? new Set(topicIds) : undefined;
 
     if (topicIdsSet) {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       return ideaTopics?.data.filter((topic) => topicIdsSet?.has(topic.id));
     }
 
@@ -229,13 +227,18 @@ const InputManager = ({
 
   const onResetParams = () => {
     setQueryParameters(
-      // Don't reset the project filter if we're in the project input manager
+      // Don't reset the project filter OR phase filter if we're in the project input manager
       // or all ideas (including from other projects) will be visible.
+      // Maintain transitive=true parameter to filter out proposal ideas.
       type === 'ProjectIdeas' && typeof projectId === 'string'
         ? {
             projects: [projectId],
+            phase: queryParameters.phase,
+            transitive: true,
           }
-        : {}
+        : {
+            transitive: true,
+          }
     );
   };
 
@@ -286,7 +289,6 @@ const InputManager = ({
       <ThreeColumns>
         <LeftColumn>
           <ActionBar
-            type={type}
             selection={selection}
             resetSelection={resetSelection}
             handleClickEdit={openPreviewEdit}
@@ -300,6 +302,8 @@ const InputManager = ({
           <SearchInput
             debounce={1500}
             onChange={onChangeSearchTerm}
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             a11y_numberOfSearchResults={ideas?.data.length}
           />
         </MiddleColumnTop>
@@ -335,7 +339,7 @@ const InputManager = ({
             sortDirection={
               queryParameters.sort
                 ? getSortDirection(queryParameters.sort)
-                : 'ascending'
+                : 'descending'
             }
             onChangeSort={onChangeSorting}
             posts={ideas.data}
@@ -354,17 +358,15 @@ const InputManager = ({
             openPreview={openPreview}
           />
         </MiddleColumn>
-        <InfoSidebar postIds={[...selection]} openPreview={openPreview} />
       </ThreeColumns>
-      <Suspense fallback={null}>
-        <LazyPostPreview
-          type={type}
-          postId={previewPostId}
-          mode={previewMode}
-          onClose={closePreview}
-          onSwitchPreviewMode={switchPreviewMode}
-        />
-      </Suspense>
+      <PostPreview
+        type={type}
+        postId={previewPostId}
+        selectedPhaseId={selectedPhaseId}
+        mode={previewMode}
+        onClose={closePreview}
+        onSwitchPreviewMode={switchPreviewMode}
+      />
     </>
   );
 };

@@ -4,14 +4,16 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { Element } from '@craftjs/core';
 import { FormatMessage } from 'typings';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { useProjects } from 'api/graph_data_units';
 import { ProjectReportsPublicationStatus } from 'api/graph_data_units/requestTypes';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useAppConfigurationLocales, {
+  createMultiloc,
+} from 'hooks/useAppConfigurationLocales';
 
 import useParticipants from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ParticipantsWidget/useParticipants';
-import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
@@ -31,6 +33,7 @@ import ParticipantsWidget from '../../Widgets/ChartWidgets/ParticipantsWidget';
 import ParticipationWidget from '../../Widgets/ChartWidgets/ParticipationWidget';
 import RegistrationsWidget from '../../Widgets/ChartWidgets/RegistrationsWidget';
 import VisitorsWidget from '../../Widgets/ChartWidgets/VisitorsWidget';
+import ImageMultilocWidget from '../../Widgets/ImageMultiloc';
 import ProjectsWidget from '../../Widgets/ProjectsWidget';
 import TextMultiloc from '../../Widgets/TextMultiloc';
 import TwoColumn from '../../Widgets/TwoColumn';
@@ -59,6 +62,7 @@ const PlatformTemplateContent = ({
   const comparedDateRange = getComparedDateRange({ startDate, endDate });
 
   const formatMessageWithLocale = useFormatMessageWithLocale();
+  const { data: appConfiguration } = useAppConfiguration();
   const appConfigurationLocales = useAppConfigurationLocales();
   const { data: userFields } = useUserCustomFields({
     inputTypes: INPUT_TYPES,
@@ -79,7 +83,14 @@ const PlatformTemplateContent = ({
     publication_statuses: publicationStatuses,
   });
 
-  if (!appConfigurationLocales || !userFields || !stats || !projects) {
+  if (
+    !appConfigurationLocales ||
+    !userFields ||
+    !stats ||
+    !projects ||
+    !appConfiguration ||
+    !formatMessageWithLocale
+  ) {
     return null;
   }
 
@@ -146,6 +157,12 @@ const PlatformTemplateContent = ({
 
   return (
     <Element id="platform-report-template" is={Box} canvas>
+      <ImageMultilocWidget
+        image={{
+          imageUrl: appConfiguration.data.attributes.logo?.medium ?? undefined,
+        }}
+        stretch={false}
+      />
       <TextMultiloc text={reportStats} />
       <WhiteSpace size="small" />
       <TextMultiloc

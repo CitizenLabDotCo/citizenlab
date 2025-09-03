@@ -8,4 +8,6 @@ RSpec.describe ImpactTracking::Session do
   describe 'Default factory' do
     it { is_expected.to be_valid }
   end
+
+  it { is_expected.to have_many(:pageviews).dependent(:destroy) }
 end

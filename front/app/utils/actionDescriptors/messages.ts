@@ -131,6 +131,11 @@ export default defineMessages({
     id: 'app.utils.participationMethodConfig.voting.votingNotVerified',
     defaultMessage: 'You must verify your account before you can vote.',
   },
+  votingDisabledProjectInactive: {
+    id: 'app.utils.participationMethodConfig.voting.votingDisabledProjectInactive',
+    defaultMessage:
+      'Voting is no longer available, since this phase is no longer active.',
+  },
   budgetingNotSignedIn: {
     id: 'app.utils.votingMethodUtils.budgetingNotSignedIn2',
     defaultMessage: 'You must log in or register to assign budgets.',
@@ -193,11 +198,6 @@ export default defineMessages({
     id: 'app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted',
     defaultMessage:
       'Only certain users can take this survey. Please {signUpLink} or {logInLink} first.',
-  },
-  surveyDisabledMaybeNotVerified: {
-    id: 'app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified',
-    defaultMessage:
-      'Only verified users can take this survey. Please {signUpLink} or {logInLink} first.',
   },
   surveyDisabledNotActiveUser: {
     id: 'app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser',

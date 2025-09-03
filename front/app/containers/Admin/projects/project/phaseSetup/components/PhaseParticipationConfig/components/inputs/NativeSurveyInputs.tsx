@@ -10,7 +10,8 @@ import useLocalize from 'hooks/useLocalize';
 
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import Button from 'components/UI/Button';
+import UserFieldsInSurveyToggle from 'components/admin/UserFieldsInSurveyToggle/UserFieldsInSurveyToggle';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
@@ -21,12 +22,14 @@ import messages from '../messages';
 
 interface Props {
   allow_anonymous_participation: boolean | null | undefined;
+  user_fields_in_form: boolean | null | undefined;
   apiErrors: CLErrors | null;
   phase?: IPhase;
   formData: IUpdatedPhaseProperties;
   handleAllowAnonymousParticipationOnChange: (
     allow_anonymous_participation: boolean
   ) => void;
+  handleUserFieldsInFormOnChange: (user_fields_in_survey: boolean) => void;
   handleSurveyTitleChange: (
     value: Multiloc,
     locale: string | undefined
@@ -36,10 +39,12 @@ interface Props {
 
 const NativeSurveyInputs = ({
   allow_anonymous_participation,
+  user_fields_in_form,
   apiErrors,
   phase,
   formData,
   handleAllowAnonymousParticipationOnChange,
+  handleUserFieldsInFormOnChange,
   handleSurveyTitleChange,
   handleSurveyCTAChange,
 }: Props) => {
@@ -63,7 +68,7 @@ const NativeSurveyInputs = ({
                 color="primary"
                 mb="0px"
                 fontSize="m"
-                style={{ fontWeight: 600 }}
+                fontWeight="semi-bold"
               >
                 <FormattedMessage {...messages.userAnonymityLabelMain} />
               </Text>
@@ -81,6 +86,12 @@ const NativeSurveyInputs = ({
           </Box>
         }
       />
+
+      <UserFieldsInSurveyToggle
+        userFieldsInForm={user_fields_in_form}
+        handleUserFieldsInFormOnChange={handleUserFieldsInFormOnChange}
+      />
+
       <SectionField>
         <SubSectionTitle>
           <FormattedMessage {...parentMessages.surveyTitleLabel} />
@@ -115,7 +126,7 @@ const NativeSurveyInputs = ({
         <SubSectionTitle>
           <FormattedMessage {...parentMessages.previewSurveyCTALabel} />
         </SubSectionTitle>
-        <Button
+        <ButtonWithLink
           width="fit-content"
           onClick={(event) => {
             if (phase) {
@@ -128,7 +139,7 @@ const NativeSurveyInputs = ({
           }}
         >
           {localize(formData.native_survey_button_multiloc)}
-        </Button>
+        </ButtonWithLink>
       </SectionField>
     </>
   );

@@ -10,39 +10,40 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { IFlatCustomField, LogicType } from 'api/custom_fields/types';
+import {
+  IFlatCustomField,
+  IFlatCustomFieldWithIndex,
+  LogicType,
+} from 'api/custom_fields/types';
 
-import Button from 'components/UI/Button';
+import { getTitleFromPageId } from 'components/FormBuilder/components/FormFields/FormField/Logic/utils';
+import { getFieldNumbers } from 'components/FormBuilder/components/utils';
+import { findNextPageAfterCurrentPage } from 'components/FormBuilder/utils';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isPageRuleValid } from 'utils/yup/validateLogic';
 
 import messages from '../../messages';
 
+import usePages from './usePages';
+
 type RuleInputProps = {
-  name: string;
-  fieldId: string;
+  field: IFlatCustomFieldWithIndex;
   validationError?: string;
-  pages:
-    | {
-        value: string | undefined;
-        label: string;
-      }[]
-    | undefined;
 };
 
-export const PageRuleInput = ({
-  pages,
-  name,
-  fieldId,
-  validationError,
-}: RuleInputProps) => {
+export const PageRuleInput = ({ field, validationError }: RuleInputProps) => {
+  const fieldId = field.temp_id || field.id;
+  const name = `customFields.${field.index}.logic`;
+  const pages = usePages(field);
+  const { formatMessage } = useIntl();
   const { setValue, watch, trigger, control } = useFormContext();
-  const logic = watch(name) as LogicType;
+  const logic = watch(name) as LogicType | undefined;
   const fields: IFlatCustomField[] = watch('customFields');
   const [selectedPage, setSelectedPage] = useState<string | null | undefined>(
-    logic && logic?.next_page_id ? logic.next_page_id : undefined
+    logic?.next_page_id ? logic.next_page_id : undefined
   );
   const [showRuleInput, setShowRuleInput] = useState<boolean>(
     selectedPage ? true : false
@@ -72,6 +73,15 @@ export const PageRuleInput = ({
     }
   };
 
+  // Get the default next page when no rule is set
+  const defaultNextPage = getTitleFromPageId(
+    findNextPageAfterCurrentPage(fields, fieldId),
+    formatMessage(messages.page),
+    getFieldNumbers(fields),
+    fields,
+    formatMessage(messages.lastPage)
+  );
+
   return (
     <>
       <Controller
@@ -94,26 +104,24 @@ export const PageRuleInput = ({
                         width="320px"
                         data-cy="e2e-rule-input-select"
                       >
-                        {pages && (
-                          <Select
-                            value={selectedPage}
-                            options={pages}
-                            label={
-                              <Text
-                                mb="0px"
-                                margin="0px"
-                                color="coolGrey600"
-                                fontSize="s"
-                              >
-                                <FormattedMessage {...messages.pageRuleLabel} />
-                              </Text>
-                            }
-                            onChange={onSelectionChange}
-                          />
-                        )}
+                        <Select
+                          value={selectedPage}
+                          options={pages}
+                          label={
+                            <Text
+                              mb="0px"
+                              margin="0px"
+                              color="coolGrey600"
+                              fontSize="s"
+                            >
+                              <FormattedMessage {...messages.pageRuleLabel} />
+                            </Text>
+                          }
+                          onChange={onSelectionChange}
+                        />
                       </Box>
                       <Box ml="auto" flexGrow={0} flexShrink={0}>
-                        <Button
+                        <ButtonWithLink
                           onClick={removeRule}
                           mt="36px"
                           buttonStyle="text"
@@ -125,7 +133,7 @@ export const PageRuleInput = ({
                             fill={`${colors.coolGrey600}`}
                             name="delete"
                           />
-                        </Button>
+                        </ButtonWithLink>
                       </Box>
                     </Box>
                     {validationError && isRuleInvalid && (
@@ -147,8 +155,9 @@ export const PageRuleInput = ({
                       flexShrink={0}
                       flexWrap="wrap"
                     >
-                      <Text color="coolGrey600" fontSize="s">
-                        <FormattedMessage {...messages.pageRuleLabel} />
+                      <Text color="coolGrey600" fontSize="s" fontStyle="italic">
+                        <FormattedMessage {...messages.pageRuleLabel} />{' '}
+                        {defaultNextPage}
                       </Text>
                     </Box>
                     <Box
@@ -158,7 +167,7 @@ export const PageRuleInput = ({
                       flexGrow={0}
                       flexShrink={0}
                     >
-                      <Button
+                      <ButtonWithLink
                         onClick={() => {
                           setShowRuleInput(true);
                         }}
@@ -170,9 +179,9 @@ export const PageRuleInput = ({
                         <Icon
                           width="24px"
                           fill={`${colors.coolGrey600}`}
-                          name="plus-circle"
+                          name="edit"
                         />
-                      </Button>
+                      </ButtonWithLink>
                     </Box>
                   </Box>
                 )}

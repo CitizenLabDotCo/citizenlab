@@ -81,7 +81,7 @@ const UserDeletedModal = ({
       {userSuccessfullyDeleted ? (
         <Container>
           <img src={illustration} alt="illu" />
-          <Title className="e2e-user-deleted-success-modal-content">
+          <Title data-cy="e2e-user-deleted-success-modal-content">
             <FormattedMessage {...messages.userDeletedTitle} />
           </Title>
           <Subtitle>

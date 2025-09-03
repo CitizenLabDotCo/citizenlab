@@ -73,12 +73,13 @@ export interface Props {
   children: string | JSX.Element;
   icon?: IconNames;
   className?: string;
+  hideIcon?: boolean;
 }
 
-const Warning = ({ children, icon, className }: Props) => {
+const Warning = ({ children, icon, className, hideIcon }: Props) => {
   return (
     <Container className={`${className || ''}`}>
-      <StyledIcon name={icon || 'info-outline'} />
+      {!hideIcon && <StyledIcon name={icon || 'info-outline'} />}
       <Text>{children}</Text>
     </Container>
   );

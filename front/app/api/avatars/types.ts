@@ -28,7 +28,7 @@ export interface IAvatars {
 }
 
 export type InputParameters = {
-  context_type?: 'project' | 'group' | 'idea' | 'initiative';
+  context_type?: 'project' | 'group' | 'idea';
   context_id?: string;
   limit?: number;
   enabled?: boolean;

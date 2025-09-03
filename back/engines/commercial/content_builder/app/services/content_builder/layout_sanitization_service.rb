@@ -9,7 +9,7 @@ module ContentBuilder
     private
 
     def sanitize_html_in_text_elements(craftjson, features)
-      LayoutService.new.select_craftjs_elements_for_types(craftjson, %w[TextMultiloc AccordionMultiloc]).each do |elt|
+      LayoutService.new.select_craftjs_elements_for_types(craftjson, Layout::TEXT_CRAFTJS_NODE_TYPES).each do |elt|
         text_multiloc = elt.dig 'props', 'text'
         text_multiloc.transform_values! do |text|
           html_sanitizer.sanitize text, features if text

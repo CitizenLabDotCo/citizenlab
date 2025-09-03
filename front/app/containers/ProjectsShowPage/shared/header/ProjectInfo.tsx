@@ -1,24 +1,24 @@
 import React from 'react';
 
 import {
-  Title,
   Box,
   useBreakpoint,
   media,
   isRtl,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useProjectFiles from 'api/project_files/useProjectFiles';
 import useProjectById from 'api/projects/useProjectById';
 
-import Fragment from 'components/Fragment';
-import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
 import T from 'components/T';
 import FileAttachments from 'components/UI/FileAttachments';
 
+import ProjectArchivedIndicator from './ProjectArchivedIndicator';
 import ProjectInfoSideBar from './ProjectInfoSideBar';
+import ProjectPreviewIndicator from './ProjectPreviewIndicator';
 
 const Container = styled.div`
   display: flex;
@@ -61,10 +61,6 @@ const Right = styled.div`
   `}
 `;
 
-const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)`
-  margin-bottom: 20px;
-`;
-
 interface Props {
   projectId: string;
   className?: string;
@@ -78,21 +74,28 @@ const ProjectInfo = ({ projectId, className }: Props) => {
   if (project) {
     return (
       <Container className={`${className || ''} e2e-project-info`}>
-        <Fragment name={`projects/${project.data.id}/info`}>
-          <Left>
-            <Title variant="h1" color="tenantText">
-              <T value={project.data.attributes.title_multiloc} />
-            </Title>
-
+        <Left>
+          <Title color="tenantText">
+            <T value={project.data.attributes.title_multiloc} />
+          </Title>
+          <Box id={`project-description-${project.data.id}`}>
             {isSmallerThanTablet && (
-              <StyledProjectArchivedIndicator projectId={projectId} />
+              <ProjectArchivedIndicator projectId={projectId} mb="20px" />
             )}
 
+            {isSmallerThanTablet && (
+              <ProjectPreviewIndicator projectId={projectId} mb="20px" />
+            )}
             <Box mb="24px">
               <ReadMoreWrapper
                 fontSize="m"
                 contentId="description"
-                value={project.data.attributes.description_multiloc}
+                content={
+                  <T
+                    value={project.data.attributes.description_multiloc}
+                    supportHtml
+                  />
+                }
               />
             </Box>
 
@@ -101,11 +104,11 @@ const ProjectInfo = ({ projectId, className }: Props) => {
                 <FileAttachments files={projectFiles.data} />
               </Box>
             )}
-          </Left>
-          <Right>
-            <ProjectInfoSideBar projectId={project.data.id} />
-          </Right>
-        </Fragment>
+          </Box>
+        </Left>
+        <Right>
+          <ProjectInfoSideBar projectId={project.data.id} />
+        </Right>
       </Container>
     );
   }

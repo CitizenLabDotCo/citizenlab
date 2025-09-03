@@ -10,10 +10,11 @@ import useReorderProjectAllowedInputTopics from 'api/project_allowed_input_topic
 import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
 import useTopics from 'api/topics/useTopics';
 
-import { SortableList, SortableRow } from 'components/admin/ResourceList';
+import SortableList from 'components/admin/ResourceList/SortableList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 import { StyledLink } from 'components/admin/Section';
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal, {
   ModalContentContainer,
   Content,
@@ -22,11 +23,13 @@ import Modal, {
 import Warning from 'components/UI/Warning';
 import VerticalCenterer from 'components/VerticalCenterer';
 
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError, byId } from 'utils/helperUtils';
 
 import messages from './messages';
+import tracks from './tracks';
 
 export const RowTitle = styled(T)`
   font-size: ${fontSizes.base}px;
@@ -81,6 +84,7 @@ const SortableProjectTopicList = memo(
       if (projectAllowedInputTopicIdToDelete) {
         deleteProjectAllowedInputTopic(projectAllowedInputTopicIdToDelete, {
           onSuccess: () => {
+            trackEventByName(tracks.projectTagsEdited, { projectId });
             setShowConfirmationModal(false);
             setProjectAllowedInputTopicIdToDelete(null);
           },
@@ -163,7 +167,7 @@ const SortableProjectTopicList = memo(
                       >
                         <RowTitle value={getTitle(projectAllowedInputTopic)} />
                       </Box>
-                      <Button
+                      <ButtonWithLink
                         onClick={handleProjectTopicDelete(
                           projectAllowedInputTopic.id
                         )}
@@ -173,7 +177,7 @@ const SortableProjectTopicList = memo(
                         id="e2e-project-topic-delete-button"
                       >
                         <FormattedMessage {...messages.delete} />
-                      </Button>
+                      </ButtonWithLink>
                     </SortableRow>
                   )
                 )}
@@ -190,20 +194,20 @@ const SortableProjectTopicList = memo(
                 <FormattedMessage {...messages.generalTopicDeletionWarning} />
               </Content>
               <ButtonsWrapper>
-                <Button
+                <ButtonWithLink
                   buttonStyle="secondary-outlined"
                   onClick={closeSendConfirmationModal}
                 >
                   <FormattedMessage {...messages.cancel} />
-                </Button>
-                <Button
+                </ButtonWithLink>
+                <ButtonWithLink
                   buttonStyle="delete"
                   onClick={handleProjectTopicDeletionConfirm}
                   processing={isLoading}
                   id="e2e-project-topic-delete-confirm-button"
                 >
                   <FormattedMessage {...messages.delete} />
-                </Button>
+                </ButtonWithLink>
               </ButtonsWrapper>
             </ModalContentContainer>
           </Modal>

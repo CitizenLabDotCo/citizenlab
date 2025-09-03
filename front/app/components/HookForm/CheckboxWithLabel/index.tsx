@@ -53,7 +53,9 @@ const CheckboxWithLabel = ({
             {...rest}
             checked={value}
             onChange={() => {
-              setValue(name, !currentValue);
+              setValue(name, !currentValue, {
+                shouldDirty: true,
+              });
               handleSideEffects?.();
               trigger(name);
             }}

@@ -1,6 +1,8 @@
 import { isString } from 'lodash-es';
 import { UploadFile } from 'typings';
 
+import { IFileData } from 'api/files/types';
+
 import { reportError } from 'utils/loggingUtils';
 
 import { isNilOrError } from './helperUtils';
@@ -21,15 +23,11 @@ export const imageSizes = {
     medium: [298, 135],
     small: [96, 96],
   },
-  initiativeImg: {
-    fb: [1200, 630],
-    medium: [298, 135],
-    small: [96, 96],
-  },
 };
 
 export async function getBase64FromFile(file: File) {
   return new Promise<string>((resolve, reject) => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (file && !isString(file)) {
       const reader = new FileReader();
       reader.onloadend = (event: any) => resolve(event.target.result);
@@ -100,6 +98,7 @@ export function getFilesToAdd(
     // filter out the local files that are already represent in the remote files
     return localFiles.filter((localFile) => {
       return !remoteFiles.some((remoteFile) =>
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         remoteFile ? remoteFile.filename === localFile.filename : true
       );
     });
@@ -124,3 +123,55 @@ export function returnFileSize(size: number) {
 export function isUploadFile(file: UploadFile | null): file is UploadFile {
   return file !== null;
 }
+
+export const base64ToBlob = (base64: string): Blob | null => {
+  try {
+    const matches = base64.match(/^data:(.*?);base64,(.*)$/);
+    if (!matches || matches.length < 3) {
+      return null;
+    }
+
+    const mimeType = matches[1];
+    const byteCharacters = atob(matches[2]);
+    const byteNumbers = new Array(byteCharacters.length)
+      .fill(0)
+      .map((_, i) => byteCharacters.charCodeAt(i));
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: mimeType });
+  } catch (error) {
+    console.error('Failed to convert base64 to Blob:', error);
+    return null;
+  }
+};
+
+/**
+ * Downloads a file from a given URL by fetching it as a blob and triggering a client-side download.
+ * Works even if the server doesn't send a Content-Disposition header.
+ */
+export const saveFileToDisk = async (file: IFileData) => {
+  try {
+    // Fetch the file from its URL
+    const res = await fetch(file.attributes.content.url);
+
+    // Ensure the response was successful
+    if (!res.ok) throw new Error('Download failed');
+
+    // Convert the response to a Blob object
+    const blob = await res.blob();
+
+    // Create a temporary object URL for the blob
+    const url = URL.createObjectURL(blob);
+
+    // Create a hidden anchor element and trigger a download
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = file.attributes.name || 'download';
+    a.click();
+
+    // Clean up the temporary URL to free memory
+    URL.revokeObjectURL(url);
+  } catch (e) {
+    // Log any download or fetch errors
+    console.error('File download error:', e);
+  }
+};

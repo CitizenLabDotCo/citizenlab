@@ -35,6 +35,7 @@ const BottomInfoSection = () => {
 
   return (
     <GenericBottomInfoSection
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       pageData={customPage?.data}
       updatePage={(data) => updateCustomPage({ id: customPageId, ...data })}
       updatePageAndEnableSection={(data) =>

@@ -27,8 +27,9 @@ import DraftCampaignDetails from 'components/admin/Email/DraftCampaignDetails';
 import SentCampaignDetails from 'components/admin/Email/SentCampaignDetails';
 import Stamp from 'components/admin/Email/Stamp';
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
+import GoBackButton from 'components/UI/GoBackButton';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -101,9 +102,10 @@ const Show = () => {
   const { data: tenant } = useAppConfiguration();
   const { data: campaign } = useCampaign(campaignId);
   const { data: project } = useProjectById(
-    campaign?.data.attributes.context_id
+    campaign?.data.relationships.context?.data?.id
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const authorId = campaign?.data.relationships.author.data?.id;
   const { data: sender } = useUserById(authorId);
 
@@ -161,6 +163,7 @@ const Show = () => {
       senderName = getFullName(sender.data);
     } else if (senderType === 'organization' && tenant) {
       senderName = localize(
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         tenant?.data.attributes.settings.core.organization_name
       );
     }
@@ -192,8 +195,13 @@ const Show = () => {
     const senderName = getSenderName(senderType);
     const noGroupsSelected = groupIds.length === 0;
 
+    const goBack = () => {
+      clHistory.push(`/admin/messaging/emails/custom`);
+    };
+
     return (
       <Box background={colors.white} p="40px" id="e2e-custom-email-container">
+        <GoBackButton onClick={goBack} />
         <Box display="flex" mb="20px">
           <Box display="flex" alignItems="center" mr="auto">
             <Title mr="12px">
@@ -213,13 +221,13 @@ const Show = () => {
           </Box>
           {isDraft(campaign.data) && (
             <Buttons>
-              <Button
+              <ButtonWithLink
                 linkTo={`/admin/messaging/emails/custom/${campaign.data.id}/edit`}
                 buttonStyle="secondary-outlined"
               >
                 <FormattedMessage {...messages.editButtonLabel} />
-              </Button>
-              <Button
+              </ButtonWithLink>
+              <ButtonWithLink
                 buttonStyle="admin-dark"
                 icon="send"
                 iconPos="right"
@@ -228,7 +236,7 @@ const Show = () => {
                 processing={isLoading}
               >
                 <FormattedMessage {...messages.send} />
-              </Button>
+              </ButtonWithLink>
             </Buttons>
           )}
         </Box>
@@ -267,7 +275,7 @@ const Show = () => {
                       to={`/admin/projects/${project.data.id}`}
                       target="_blank"
                     >
-                      {localize(project?.data.attributes.title_multiloc)}
+                      {localize(project.data.attributes.title_multiloc)}
                     </Link>
                   </span>
                 )}
@@ -331,13 +339,13 @@ const Show = () => {
               <FormattedMessage {...messages.toAllUsers} />
             </SendNowWarning>
             <ButtonsWrapper>
-              <Button
+              <ButtonWithLink
                 buttonStyle="secondary-outlined"
                 linkTo={`/admin/messaging/emails/custom/${campaign.data.id}/edit`}
               >
                 <FormattedMessage {...messages.changeRecipientsButton} />
-              </Button>
-              <Button
+              </ButtonWithLink>
+              <ButtonWithLink
                 buttonStyle="primary"
                 onClick={confirmSendCampaign(campaign.data.id)}
                 icon="send"
@@ -346,7 +354,7 @@ const Show = () => {
                 processing={isLoading}
               >
                 <FormattedMessage {...messages.sendNowButton} />
-              </Button>
+              </ButtonWithLink>
             </ButtonsWrapper>
           </Box>
         </Modal>

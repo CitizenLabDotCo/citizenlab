@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { invitesData } from './__mocks__/useInvites';
 import useInvites from './useInvites';
@@ -19,7 +19,7 @@ describe('useInvites', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () =>
         useInvites({
           pageNumber: 1,
@@ -45,7 +45,7 @@ describe('useInvites', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () =>
         useInvites({
           pageNumber: 1,

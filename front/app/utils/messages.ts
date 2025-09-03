@@ -125,6 +125,7 @@ export default defineMessages({
     id: 'app.utils.participationMethod.onSurveySubmission',
     defaultMessage: 'Thank you. Your response has been received.',
   },
+  // #input_term_copy
   ideaFormTitle: {
     id: 'app.utils.IdeasNewPage.ideaFormTitle',
     defaultMessage: 'Add new idea',
@@ -148,6 +149,18 @@ export default defineMessages({
   issueFormTitle1: {
     id: 'app.utils.IdeasNewPage.issueFormTitle1',
     defaultMessage: 'Add new comment',
+  },
+  proposalFormTitle: {
+    id: 'app.utils.IdeasNewPage.proposalFormTitle',
+    defaultMessage: 'Add new proposal',
+  },
+  initiativeFormTitle: {
+    id: 'app.utils.IdeasNewPage.initiativeFormTitle',
+    defaultMessage: 'Add new initiative',
+  },
+  petitionFormTitle: {
+    id: 'app.utils.IdeasNewPage.petitionFormTitle',
+    defaultMessage: 'Add new petition',
   },
   surveyTitle: {
     id: 'app.utils.IdeasNewPage.surveyTitle',
@@ -188,6 +201,10 @@ export default defineMessages({
   trending: {
     id: 'app.utils.IdeaCards.trending',
     defaultMessage: 'Trending',
+  },
+  mostDiscussed: {
+    id: 'app.utils.IdeaCards.mostDiscussed',
+    defaultMessage: 'Most discussed',
   },
   random: {
     id: 'app.utils.IdeaCards.random',

@@ -17,6 +17,8 @@ PublicApi::Engine.routes.draw do
       get 'deleted', on: :collection
     end
 
+    resources :files, concerns: :deleted_items
+
     with_options only: %i[index show], concerns: :deleted_items do |route_mapper|
       route_mapper.resources :comments
       route_mapper.resources :baskets
@@ -26,11 +28,11 @@ PublicApi::Engine.routes.draw do
       route_mapper.resources :events
       route_mapper.resources :event_attendances
       route_mapper.resources :ideas
-      route_mapper.resources :initiatives
       route_mapper.resources :phases
       route_mapper.resources :project_folders
       route_mapper.resources :reactions, only: %i[index]
       route_mapper.resources :topics
+      route_mapper.resources :areas
       route_mapper.resources :users
       route_mapper.resources :volunteering_causes
       route_mapper.resources :volunteering_volunteers

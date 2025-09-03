@@ -22,10 +22,11 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.noNotifications',
     defaultMessage: "You don't have any notifications yet",
   },
-  cosponsorOfYourInitiative: {
-    id: 'app.containers.NotificationMenu.cosponsorOfYourInitiative',
-    defaultMessage: '{name} cosponsored your proposal',
+  cosponsorOfYourIdea: {
+    id: 'app.containers.NotificationMenu.cosponsorOfYourIdea',
+    defaultMessage: '{name} accepted your co-sponsorship invitation',
   },
+  // #input_term_copy
   userCommentedOnIdeaYouFollow: {
     id: 'app.containers.NotificationMenu.userCommentedOnIdeaYouFollow',
     defaultMessage: '{name} commented on an idea that you follow',
@@ -50,9 +51,17 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.userCommentedOnContributionYouFollow',
     defaultMessage: '{name} commented on a contribution that you follow',
   },
+  userCommentedOnProposalYouFollow: {
+    id: 'app.containers.NotificationMenu.userCommentedOnProposalYouFollow',
+    defaultMessage: '{name} commented on a proposal that you follow',
+  },
   userCommentedOnInitiativeYouFollow: {
     id: 'app.containers.NotificationMenu.userCommentedOnInitiativeYouFollow',
     defaultMessage: '{name} commented on an initiative that you follow',
+  },
+  userCommentedOnPetitionYouFollow: {
+    id: 'app.containers.NotificationMenu.userCommentedOnPetitionYouFollow',
+    defaultMessage: '{name} commented on a petition that you follow',
   },
   userReactedToYourComment: {
     id: 'app.containers.NotificationMenu.userReactedToYourComment',
@@ -66,10 +75,6 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.mentionInInternalComment',
     defaultMessage: '{name} mentioned you in an internal comment',
   },
-  initiativeResubmittedForReview: {
-    id: 'app.containers.NotificationMenu.initiativeResubmittedForReview',
-    defaultMessage: '"{initiativeTitle}" resubmitted for review',
-  },
   internalCommentOnYourInternalComment: {
     id: 'app.containers.NotificationMenu.internalCommentOnYourInternalComment',
     defaultMessage: '{name} commented on your internal comment',
@@ -77,10 +82,6 @@ export default defineMessages({
   internalCommentOnIdeaAssignedToYou: {
     id: 'app.containers.NotificationMenu.internalCommentOnIdeaAssignedToYou',
     defaultMessage: '{name} commented internally on an input assigned to you',
-  },
-  internalCommentOnInitiativeAssignedToYou: {
-    id: 'app.containers.NotificationMenu.internalCommentOnInitiativeAssignedToYou',
-    defaultMessage: '{name} commented internally on a proposal assigned to you',
   },
   internalCommentOnIdeaYouModerate: {
     id: 'app.containers.NotificationMenu.internalCommentOnIdeaYouModerate',
@@ -92,23 +93,47 @@ export default defineMessages({
     defaultMessage:
       '{name} commented internally on an input that you commented on internally',
   },
-  internalCommentOnInitiativeYouCommentedInternallyOn: {
-    id: 'app.containers.NotificationMenu.internalCommentOnInitiativeYouCommentedInternallyOn',
-    defaultMessage:
-      '{name} commented internally on a proposal that you commented on internally',
-  },
   internalCommentOnUnassignedUnmoderatedIdea: {
     id: 'app.containers.NotificationMenu.internalCommentOnUnassignedUnmoderatedIdea',
     defaultMessage:
       '{name} commented internally on an unassigned input in an unmanaged project',
   },
-  internalCommentOnUnassignedInitiative: {
-    id: 'app.containers.NotificationMenu.internalCommentOnUnassignedInitiative',
-    defaultMessage: '{name} commented internally on an unassigned proposal',
+  invitationToCosponsorIdea: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorIdea',
+    defaultMessage: '{name} invited you to co-sponsor an idea',
+  },
+  invitationToCosponsorOption: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorOption',
+    defaultMessage: '{name} invited you to co-sponsor an option',
+  },
+  invitationToCosponsorQuestion: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorQuestion',
+    defaultMessage: '{name} invited you to co-sponsor a question',
+  },
+
+  invitationToCosponsorIssue: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorIssue',
+    defaultMessage: '{name} invited you to co-sponsor an issue',
+  },
+  invitationToCosponsorContribution: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorContribution',
+    defaultMessage: '{name} invited you to co-sponsor a contribution',
+  },
+  invitationToCosponsorProject: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorProject',
+    defaultMessage: '{name} invited you to co-sponsor a project',
+  },
+  invitationToCosponsorPetition: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorPetition',
+    defaultMessage: '{name} invited you to co-sponsor a petition',
+  },
+  invitationToCosponsorProposal: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorProposal',
+    defaultMessage: '{name} invited you to co-sponsor a proposal',
   },
   invitationToCosponsorInitiative: {
     id: 'app.containers.NotificationMenu.invitationToCosponsorInitiative',
-    defaultMessage: '{name} invited you to cosponsor a proposal',
+    defaultMessage: '{name} invited you to co-sponsor an initiative',
   },
   userReportedCommentAsSpam: {
     id: 'app.containers.NotificationMenu.userReportedCommentAsSpam1',
@@ -121,10 +146,6 @@ export default defineMessages({
   statusChangedOnIdeaYouFollow: {
     id: 'app.containers.NotificationMenu.statusChangedOnIdeaYouFollow',
     defaultMessage: '{ideaTitle} status has changed to {status}',
-  },
-  statusChangedOnInitiativeYouFollow: {
-    id: 'app.containers.NotificationMenu.statusChangedOnInitiativeYouFollow',
-    defaultMessage: '{initiativeTitle} status has changed to {status}',
   },
   thresholdReachedForAdmin: {
     id: 'app.containers.NotificationMenu.thresholdReachedForAdmin',
@@ -165,6 +186,7 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.deletedUser',
     defaultMessage: 'Deleted user',
   },
+  // #input_term_copy
   officialFeedbackOnIdeaYouFollow: {
     id: 'app.containers.NotificationMenu.officialFeedbackOnIdeaYouFollow',
     defaultMessage:
@@ -195,10 +217,20 @@ export default defineMessages({
     defaultMessage:
       '{officialName} gave an official update on a contribution you follow',
   },
+  officialFeedbackOnProposalYouFollow: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnProposalYouFollow',
+    defaultMessage:
+      '{officialName} gave an official update on a proposal you follow',
+  },
   officialFeedbackOnInitiativeYouFollow: {
     id: 'app.containers.NotificationMenu.officialFeedbackOnInitiativeYouFollow',
     defaultMessage:
       '{officialName} gave an official update on an initiative you follow',
+  },
+  officialFeedbackOnPetitionYouFollow: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnPetitionYouFollow',
+    defaultMessage:
+      '{officialName} gave an official update on a petition you follow',
   },
   mentionInOfficialFeedback: {
     id: 'app.containers.NotificationMenu.mentionInOfficialFeedback',
@@ -215,6 +247,15 @@ export default defineMessages({
   projectPublished: {
     id: 'app.containers.NotificationMenu.projectPublished',
     defaultMessage: 'A new project was published',
+  },
+  projectReviewRequest: {
+    id: 'app.containers.NotificationMenu.projectReviewRequest',
+    defaultMessage:
+      '{name} requested approval to publish the project "{projectTitle}"',
+  },
+  projectReviewStateChange: {
+    id: 'app.containers.NotificationMenu.projectReviewStateChange',
+    defaultMessage: '{name} approved "{projectTitle}" for publication',
   },
   postAssignedToYou: {
     id: 'app.containers.NotificationMenu.postAssignedToYou',

@@ -3,7 +3,7 @@ import React from 'react';
 import { Radio, IconTooltip } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
-import { IdeaDefaultSortMethod } from 'api/phases/types';
+import { IdeaSortMethod } from 'api/phases/types';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
@@ -14,11 +14,9 @@ import messages from '../../../../../../messages';
 
 interface Props {
   options: { key: string; value: string }[];
-  ideas_order: IdeaDefaultSortMethod | undefined;
+  ideas_order: IdeaSortMethod | undefined;
   apiErrors: CLErrors | null | undefined;
-  handleIdeaDefaultSortMethodChange: (
-    ideas_order: IdeaDefaultSortMethod
-  ) => void;
+  handleIdeaDefaultSortMethodChange: (ideas_order: IdeaSortMethod) => void;
 }
 
 export default ({

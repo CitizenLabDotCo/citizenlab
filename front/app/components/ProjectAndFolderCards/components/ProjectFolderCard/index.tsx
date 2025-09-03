@@ -9,10 +9,11 @@ import {
   Icon,
   useBreakpoint,
   Box,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { RouteType } from 'routes';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 
 import useAdminPublication from 'api/admin_publications/useAdminPublication';
 import {
@@ -22,8 +23,9 @@ import {
 import useProjectFolderImage from 'api/project_folder_images/useProjectFolderImage';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
+import useLocalize from 'hooks/useLocalize';
+
 import AvatarBubbles from 'components/AvatarBubbles';
-import FollowUnfollow from 'components/FollowUnfollow';
 import { TLayout } from 'components/ProjectAndFolderCards';
 import T from 'components/T';
 import Image from 'components/UI/Image';
@@ -99,6 +101,10 @@ const Container = styled(Link)`
     width: 100%;
     min-height: 460px;
   `}
+
+  &.dynamic {
+    border: 1px ${colors.grey300} solid;
+  }
 `;
 
 const FolderImageContainer = styled.div`
@@ -241,10 +247,7 @@ const ContentHeaderLabel = styled.span`
   align-items: center;
 `;
 
-const FolderTitle = styled.h3`
-  line-height: normal;
-  font-weight: 500;
-  font-size: ${fontSizes.xl}px;
+const FolderTitle = styled(Title)`
   color: ${({ theme }) => theme.colors.tenantText};
   margin: 0;
   padding: 0;
@@ -310,13 +313,13 @@ export interface Props {
   size: TProjectFolderCardSize;
   layout: TLayout;
   className?: string;
-  showFollowButton?: boolean;
 }
 
 const ProjectFolderCard = memo<Props>(
-  ({ folderId, size, layout, className, showFollowButton }) => {
+  ({ folderId, size, layout, className }) => {
     const isSmallerThanPhone = useBreakpoint('phone');
     const { data: projectFolder } = useProjectFolderById(folderId);
+    const localize = useLocalize();
 
     // We use this hook instead of useProjectFolderImages
     // because that one doesn't work well with our caching system
@@ -328,12 +331,11 @@ const ProjectFolderCard = memo<Props>(
     const { data: publication } = useAdminPublication(
       projectFolder?.data.relationships.admin_publication.data?.id || null
     );
-    const theme = useTheme();
 
     const handleProjectCardOnClick = useCallback(
       (projectFolderId: string) => () => {
         trackEventByName(tracks.clickOnProjectCard, {
-          extra: { projectFolderId },
+          projectFolderId,
         });
       },
       []
@@ -342,7 +344,7 @@ const ProjectFolderCard = memo<Props>(
     const handleProjectTitleOnClick = useCallback(
       (projectFolderId: string) => () => {
         trackEventByName(tracks.clickOnProjectTitle, {
-          extra: { projectFolderId },
+          projectFolderId,
         });
       },
       []
@@ -354,14 +356,22 @@ const ProjectFolderCard = memo<Props>(
 
     // Footer
     const avatarIds =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       projectFolder?.data.relationships.avatars &&
-      projectFolder?.data.relationships.avatars.data
-        ? projectFolder?.data.relationships.avatars.data.map(
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      projectFolder?.data.relationships.avatars.data // TODO: Fix this the next time the file is edited.
+        ? // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          projectFolder?.data.relationships.avatars.data.map(
             (avatar) => avatar.id
           )
         : [];
-    const showAvatarBubbles = avatarIds ? avatarIds.length > 0 : false;
-    const showFooter = showAvatarBubbles;
+    const showAvatarBubbles =
+      projectFolder.data.attributes.participants_count > 0;
+    const folderImageAltText = localize(
+      projectFolderImage?.data.attributes.alt_text_multiloc
+    );
 
     // Images
     const imageVersions = !projectFolderImage
@@ -405,7 +415,7 @@ const ProjectFolderCard = memo<Props>(
 
     const screenReaderContent = (
       <ScreenReaderOnly>
-        <FolderTitle>
+        <FolderTitle variant="h3">
           <FormattedMessage {...messages.a11y_folderTitle} />
           <T value={publication.data.attributes.publication_title_multiloc} />
         </FolderTitle>
@@ -441,7 +451,9 @@ const ProjectFolderCard = memo<Props>(
             <FolderImagePlaceholderIcon name="building" />
           </FolderImagePlaceholder>
 
-          {imageUrl && <FolderImage src={imageUrl} alt="" cover={true} />}
+          {imageUrl && (
+            <FolderImage src={imageUrl} alt={folderImageAltText} cover={true} />
+          )}
         </FolderImageContainer>
 
         <FolderContent className={size}>
@@ -449,6 +461,7 @@ const ProjectFolderCard = memo<Props>(
 
           <ContentBody className={size} aria-hidden>
             <FolderTitle
+              variant="h3"
               onClick={handleProjectTitleOnClick(
                 publication.data.relationships.publication.data.id
               )}
@@ -478,35 +491,18 @@ const ProjectFolderCard = memo<Props>(
               }}
             </T>
           </ContentBody>
-          <Box borderTop={`1px solid ${colors.divider}`} pt="16px" mt="30px">
-            <ContentFooter className={`${size} ${!showFooter ? 'hidden' : ''}`}>
-              <Box h="100%" display="flex" alignItems="center">
-                {showAvatarBubbles && (
+          {showAvatarBubbles && (
+            <Box borderTop={`1px solid ${colors.divider}`} pt="16px" mt="30px">
+              <ContentFooter className={size}>
+                <Box h="100%" display="flex" alignItems="center">
                   <AvatarBubbles
                     size={32}
                     limit={3}
-                    userCountBgColor={theme.colors.tenantPrimary}
                     avatarIds={avatarIds}
-                    userCount={
-                      projectFolder?.data.attributes.participants_count
-                    }
+                    userCount={projectFolder.data.attributes.participants_count}
                   />
-                )}
-              </Box>
-            </ContentFooter>
-          </Box>
-          {showFollowButton && (
-            <Box display="flex" justifyContent="flex-end" mt="24px">
-              <FollowUnfollow
-                followableType="projects"
-                followableId={projectFolder.data.id}
-                followersCount={projectFolder.data.attributes.followers_count}
-                followerId={
-                  projectFolder.data.relationships.user_follower?.data?.id
-                }
-                w="100%"
-                toolTipType="projectOrFolder"
-              />
+                </Box>
+              </ContentFooter>
             </Box>
           )}
         </FolderContent>

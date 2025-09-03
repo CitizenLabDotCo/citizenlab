@@ -104,6 +104,17 @@ describe Permissions::IdeaPermissionsService do
         end
       end
     end
+
+    context 'when permitted group requires verification' do
+      let(:current_phase_attrs) { { with_permissions: true } }
+
+      it 'returns `user_not_verified` when not permitted' do
+        permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'commenting_idea')
+        verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
+        permission.update!(permitted_by: 'users', group_ids: [create(:group).id, verified_members.id])
+        expect(service.denied_reason_for_action('commenting_idea')).to eq 'user_not_verified'
+      end
+    end
   end
 
   describe '"reacting_idea" denied_reason_for_action' do
@@ -112,6 +123,42 @@ describe Permissions::IdeaPermissionsService do
 
     it 'returns nil when reacting is enabled in the current phase' do
       expect(reason).to be_nil
+    end
+
+    context "when idea has 'proposed' status" do
+      let(:proposed_status) { create(:idea_status, code: 'proposed') }
+      let(:input) { create(:idea, project: project, phases: [project.phases[2]], idea_status: proposed_status) }
+
+      it "does not return 'not_reactable_status_code'" do
+        expect(reason).to be_nil
+      end
+    end
+
+    context "when idea has 'prescreening' status" do
+      let(:prescreening_status) { create(:idea_status, code: 'prescreening') }
+      let(:input) { create(:idea, project: project, phases: [project.phases[2]], publication_status: 'submitted', idea_status: prescreening_status) }
+
+      it "returns 'not_reactable_status_code'" do
+        expect(reason).to eq 'not_reactable_status_code'
+      end
+    end
+
+    context "when idea has 'ineligible' status" do
+      let(:ineligible_status) { create(:idea_status, code: 'ineligible') }
+      let(:input) { create(:idea, project: project, phases: [project.phases[2]], idea_status: ineligible_status) }
+
+      it "returns 'not_reactable_status_code'" do
+        expect(reason).to eq 'not_reactable_status_code'
+      end
+    end
+
+    context "when idea has 'expired' status" do
+      let(:expired_status) { create(:idea_status, code: 'ineligible') }
+      let(:input) { create(:idea, project: project, phases: [project.phases[2]], idea_status: expired_status) }
+
+      it "returns 'not_reactable_status_code'" do
+        expect(reason).to eq 'not_reactable_status_code'
+      end
     end
 
     context 'when the idea is not in the current phase' do
@@ -201,13 +248,39 @@ describe Permissions::IdeaPermissionsService do
         end
       end
     end
+
+    context 'when permitted group requires verification' do
+      let(:current_phase_attrs) { { with_permissions: true, reacting_dislike_enabled: true } }
+
+      context 'when in the current phase and reacting is not permitted' do
+        it "returns 'user_not_verified'" do
+          permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'reacting_idea')
+          verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
+          permission.update!(permitted_by: 'users', groups: [create(:group), verified_members])
+          expect(service.denied_reason_for_reaction_mode('up')).to eq 'user_not_verified'
+          expect(service.denied_reason_for_reaction_mode('down')).to eq 'user_not_verified'
+        end
+      end
+
+      context 'for an unauthenticated visitor' do
+        let(:user) { nil }
+
+        it "returns 'user_not_signed_in' if reacting is not permitted" do
+          permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'reacting_idea')
+          group = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
+          permission.update!(permitted_by: 'users', groups: [create(:group), group])
+          expect(service.denied_reason_for_reaction_mode('up')).to eq 'user_not_signed_in'
+          expect(service.denied_reason_for_reaction_mode('down')).to eq 'user_not_signed_in'
+        end
+      end
+    end
   end
 
   describe 'denied_reason_for_reaction_mode' do
     let(:input) { create(:idea, project: project, phases: project.phases) }
 
     context 'when reacting is enabled' do
-      let(:current_phase_attrs) { { reacting_enabled: true } }
+      let(:current_phase_attrs) { { reacting_enabled: true, reacting_dislike_enabled: true } }
 
       it 'returns nil' do
         expect(service.denied_reason_for_reaction_mode('up')).to be_nil
@@ -243,7 +316,7 @@ describe Permissions::IdeaPermissionsService do
     end
 
     context "when it's not in the current phase" do
-      let(:project) { create(:project_with_current_phase, phases_config: { sequence: 'xxcxx' }, current_phase_attrs: { reacting_enabled: true }) }
+      let(:project) { create(:project_with_current_phase, phases_config: { sequence: 'xxcxx' }, current_phase_attrs: { reacting_enabled: true, reacting_dislike_enabled: true }) }
       let(:idea_phases) { project.phases.order(:start_at).take(2) + [project.phases.order(:start_at).last] }
       let(:input) { create(:idea, project: project, phases: idea_phases) }
 
@@ -272,7 +345,7 @@ describe Permissions::IdeaPermissionsService do
     end
 
     context 'when likes are limited' do
-      let(:project) { create(:single_phase_ideation_project, phase_attrs: { reacting_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 1 }) }
+      let(:project) { create(:single_phase_ideation_project, phase_attrs: { reacting_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 1, reacting_dislike_enabled: true }) }
 
       it 'returns `reacting_like_limited_max_reached` when the like limit was reached' do
         create(:reaction, mode: 'up', user: user, reactable: input)
@@ -321,7 +394,7 @@ describe Permissions::IdeaPermissionsService do
     context 'with phase permissions' do
       let(:reasons) { Permissions::PhasePermissionsService::REACTING_DENIED_REASONS }
 
-      let(:current_phase_attrs) { { with_permissions: true } }
+      let(:current_phase_attrs) { { with_permissions: true, reacting_dislike_enabled: true } }
       let(:input) { create(:idea, project: project, phases: [project.phases[2]]) }
       let(:permission) do
         TimelineService.new.current_phase_not_archived(project).permissions
@@ -407,6 +480,17 @@ describe Permissions::IdeaPermissionsService do
         expect(reason).to eq 'project_inactive'
       end
     end
+
+    context 'permitted group requires verification' do
+      let(:current_phase_attrs) { { with_permissions: true, participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 10_000 } }
+
+      it 'returns `user_not_verified` when the idea is in the current phase and budgeting is not permitted' do
+        permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'voting')
+        verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
+        permission.update!(permitted_by: 'users', groups: [create(:group), verified_members])
+        expect(service.denied_reason_for_action('voting')).to eq 'user_not_verified'
+      end
+    end
   end
 
   describe 'action_descriptors' do
@@ -423,6 +507,7 @@ describe Permissions::IdeaPermissionsService do
         :idea_images, :idea_trending_info, :topics,
         :idea_import,
         :phases,
+        :idea_status,
         {
           project: [:admin_publication, { phases: { permissions: [:groups] } }, { custom_form: [:custom_fields] }],
           author: [:unread_notifications]

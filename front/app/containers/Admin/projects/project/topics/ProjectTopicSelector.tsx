@@ -9,14 +9,16 @@ import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/usePr
 import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
 import useTopics from 'api/topics/useTopics';
 
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
+import { trackEventByName } from 'utils/analytics';
 import { injectIntl } from 'utils/cl-intl';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 import messages from './messages';
+import tracks from './tracks';
 
 const Container = styled.div`
   width: 100%;
@@ -32,7 +34,7 @@ const SelectGroupsContainer = styled.div`
   margin-bottom: 30px;
 `;
 
-const AddTopicButton = styled(Button)`
+const AddTopicButton = styled(ButtonWithLink)`
   flex-grow: 0;
   flex-shrink: 0;
   margin-left: 30px;
@@ -85,6 +87,7 @@ const ProjectTopicSelector = memo(
 
       try {
         await Promise.all(promises);
+        trackEventByName(tracks.projectTagsEdited, { projectId });
         setProcessing(false);
         setSelectedTopicOptions([]);
       } catch {
@@ -128,6 +131,8 @@ const ProjectTopicSelector = memo(
             icon="plus-circle"
             onClick={handleOnAddTopicsClick}
             disabled={
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               !selectedTopicOptions || selectedTopicOptions.length === 0
             }
             processing={processing}

@@ -23,7 +23,8 @@ namespace :cl2_back do
           maximum_admins_number: 2,
           maximum_moderators_number: 2,
           additional_admins_number: 2,
-          additional_moderators_number: 1
+          additional_moderators_number: 1,
+          allow_sharing: true
         },
         maps: {
           enabled: true,
@@ -85,6 +86,10 @@ namespace :cl2_back do
           enabled: true
         },
         intercom: {
+          enabled: true,
+          allowed: true
+        },
+        community_monitor: {
           enabled: true,
           allowed: true
         },
@@ -162,24 +167,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        initiatives: {
-          enabled: true,
-          allowed: true,
-          reacting_threshold: 300,
-          days_limit: 90,
-          threshold_reached_message: MultilocService.new.i18n_to_multiloc(
-            'initiatives.default_threshold_reached_message',
-            locales: CL2_SUPPORTED_LOCALES
-          ),
-          eligibility_criteria: MultilocService.new.i18n_to_multiloc(
-            'initiatives.default_eligibility_criteria',
-            locales: CL2_SUPPORTED_LOCALES
-          ),
-          posting_tips: MultilocService.new.i18n_to_multiloc(
-            'initiatives.default_posting_tips',
-            locales: CL2_SUPPORTED_LOCALES
-          )
-        },
         polls: {
           enabled: true,
           allowed: true
@@ -235,6 +222,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        project_preview_link: {
+          enabled: true,
+          allowed: true
+        },
         project_description_builder: {
           enabled: true,
           allowed: true
@@ -268,6 +259,10 @@ namespace :cl2_back do
           allowed: true
         },
         posthog_integration: {
+          enabled: false,
+          allowed: false
+        },
+        posthog_user_tracking: {
           enabled: false,
           allowed: false
         },
@@ -308,6 +303,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        auto_insights: {
+          enabled: true,
+          allowed: true
+        },
         report_data_grouping: {
           enabled: true,
           allowed: true
@@ -317,6 +316,34 @@ namespace :cl2_back do
           allowed: true
         },
         customisable_homepage_banner: {
+          enabled: true,
+          allowed: true
+        },
+        project_review: {
+          enabled: true,
+          allowed: true
+        },
+        platform_templates: {
+          enabled: false,
+          allowed: false
+        },
+        project_library: {
+          enabled: false,
+          allowed: false
+        },
+        common_ground: {
+          enabled: true,
+          allowed: true
+        },
+        data_repository: {
+          enabled: true,
+          allowed: true
+        },
+        data_repository_ai_analysis: {
+          enabled: true,
+          allowed: true
+        },
+        project_planning_calendar: {
           enabled: true,
           allowed: true
         }

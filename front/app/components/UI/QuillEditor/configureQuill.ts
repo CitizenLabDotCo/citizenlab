@@ -1,5 +1,5 @@
 import Quill from 'quill';
-import BlotFormatter from 'quill-blot-formatter';
+import BlotFormatter from 'quill-blot-formatter/dist/BlotFormatter';
 
 import {
   attributes,

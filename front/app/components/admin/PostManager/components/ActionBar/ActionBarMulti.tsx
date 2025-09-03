@@ -1,95 +1,60 @@
 import React, { useState } from 'react';
 
-import { Button, Icon } from 'semantic-ui-react';
-
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
-import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 
 import WarningModal from 'components/WarningModal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import { ManagerType } from '../..';
-
+import DeleteButton from './DeleteButton';
 import messages from './messages';
 
 interface Props {
-  type: ManagerType;
-  /** A set of ids of ideas/initiatives that are currently selected */
+  /** A set of ids of ideas that are currently selected */
   selection: Set<string>;
   resetSelection: () => void;
 }
 
-const ActionBarMulti = ({ selection, resetSelection, type }: Props) => {
+const ActionBarMulti = ({ selection, resetSelection }: Props) => {
   const [warningModalOpen, setWarningModalOpen] = useState(false);
   const [isLoadingDeleteIdea, setIsLoadingDeleteIdea] = useState(false);
-  const [isLoadingDeleteInitiative, setIsLoadingDeleteInitiative] =
-    useState(false);
 
   const { formatMessage } = useIntl();
   const { mutateAsync: deleteIdea } = useDeleteIdea();
-  const { mutateAsync: deleteInitiative } = useDeleteInitiative();
 
   const openWarningModal = () => setWarningModalOpen(true);
   const closeWarningModal = () => setWarningModalOpen(false);
 
   const handleDelete = async () => {
-    if (type === 'Initiatives') {
-      setIsLoadingDeleteInitiative(true);
+    setIsLoadingDeleteIdea(true);
 
-      // Yes, terribly inefficient, but if you try to do this in
-      // parallel the database crashes. To do this properly
-      // we should add a bulk delete endpoint instead.
-      for (const initiativeId of selection) {
-        await deleteInitiative({ initiativeId });
-      }
-
-      resetSelection();
-      setIsLoadingDeleteInitiative(false);
-      closeWarningModal();
-    } else {
-      setIsLoadingDeleteIdea(true);
-
-      // Yes, terribly inefficient, but if you try to do this in
-      // parallel the database crashes. To do this properly
-      // we should add a bulk delete endpoint instead.
-      for (const ideaId of selection) {
-        await deleteIdea(ideaId);
-      }
-
-      resetSelection();
-      setIsLoadingDeleteIdea(false);
-      closeWarningModal();
+    // Yes, terribly inefficient, but if you try to do this in
+    // parallel the database crashes. To do this properly
+    // we should add a bulk delete endpoint instead.
+    for (const ideaId of selection) {
+      await deleteIdea(ideaId);
     }
+
+    resetSelection();
+    setIsLoadingDeleteIdea(false);
+    closeWarningModal();
   };
 
-  const deleteMessage =
-    type === 'Initiatives'
-      ? messages.deleteAllSelectedInitiatives
-      : messages.deleteAllSelectedInputs;
+  const deleteMessage = messages.deleteAllSelectedInputs;
 
   return (
     <>
-      <Button negative={true} basic={true} onClick={openWarningModal}>
-        <Icon name="delete" />
+      <DeleteButton onClick={openWarningModal}>
         <FormattedMessage
           {...deleteMessage}
           values={{ count: selection.size }}
         />
-      </Button>
+      </DeleteButton>
       <WarningModal
         open={warningModalOpen}
-        isLoading={isLoadingDeleteIdea || isLoadingDeleteInitiative}
-        title={
-          type === 'Initiatives'
-            ? formatMessage(messages.deleteInitiativesTitle)
-            : formatMessage(messages.deleteInputsTitle)
-        }
-        explanation={
-          type === 'Initiatives'
-            ? formatMessage(messages.deleteInitiativesExplanation)
-            : formatMessage(messages.deleteInputsExplanation)
-        }
+        isLoading={isLoadingDeleteIdea}
+        title={formatMessage(messages.deleteInputsTitle)}
+        explanation={formatMessage(messages.deleteInputsExplanation)}
         onClose={closeWarningModal}
         onConfirm={handleDelete}
       />

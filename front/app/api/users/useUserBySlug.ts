@@ -6,13 +6,13 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import userKeys from './keys';
 import { IUser, UsersKeys } from './types';
 
-const fetchUserBySlug = ({ slug }: { slug: string | null }) =>
+const fetchUserBySlug = ({ slug }: { slug?: string | null }) =>
   fetcher<IUser>({
     path: `/users/by_slug/${slug}`,
     action: 'get',
   });
 
-const useUserBySlug = (userSlug: string | null) => {
+const useUserBySlug = (userSlug?: string | null) => {
   return useQuery<IUser, CLErrors, IUser, UsersKeys>({
     queryKey: userKeys.item({ slug: userSlug }),
     queryFn: () => fetchUserBySlug({ slug: userSlug }),

@@ -123,18 +123,12 @@ const UserTableRow = ({
     setShowChangeSeatModal(false);
   };
 
-  const isProposalsEnabled = useFeatureFlag({ name: 'initiatives' });
-
   const handleDeleteClick = () => {
     const baseDeleteMessage = `${formatMessage(
       messages.userDeletionConfirmation
     )}`;
 
-    const deleteMessage = isProposalsEnabled
-      ? `${baseDeleteMessage}\n\n${formatMessage(
-          messages.userDeletionProposalVotes
-        )}`
-      : baseDeleteMessage;
+    const deleteMessage = baseDeleteMessage;
 
     if (window.confirm(deleteMessage)) {
       if (userInRowIsCurrentUser) {

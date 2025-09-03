@@ -95,7 +95,7 @@ context 'hoplr authentication' do
     get '/auth/hoplr?random-passthrough-param=somevalue'
     follow_redirect!
 
-    expect(response).to redirect_to('/en/?random-passthrough-param=somevalue')
+    expect(response).to redirect_to('/en/?random-passthrough-param=somevalue&sso_flow=signup&sso_success=true')
 
     user = User.last
     expect_user_to_have_attributes(user)
@@ -156,7 +156,6 @@ context 'hoplr authentication' do
             expect(User.last.confirmation_required?).to be(true)
           end
 
-          # rubocop:disable RSpec/NestedGroups
           context 'when password login is disabled (when email can be updated)' do
             before do
               SettingsService.new.deactivate_feature!('password_login')
@@ -168,7 +167,6 @@ context 'hoplr authentication' do
               expect(User.last.confirmation_required?).to be(false)
             end
           end
-          # rubocop:enable RSpec/NestedGroups
         end
       end
     end

@@ -4,12 +4,10 @@ import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 
-import { HeaderTitle } from 'containers/Admin/projects/all/StyledComponents';
-
 import { FormattedMessage } from 'utils/cl-intl';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
-import { isAdmin } from 'utils/permissions/roles';
+import { usePermission } from 'utils/permissions';
 
 // localisation
 
@@ -17,6 +15,7 @@ import messages from '../messages';
 
 import ItemsInFolder from './ItemsInFolder';
 import ItemsNotInFolder from './ItemsNotInFolder';
+import { HeaderTitle } from './StyledComponents';
 
 const Container = styled.div`
   min-height: 60vh;
@@ -52,11 +51,14 @@ const AdminFolderProjectsList = ({
 }: WithRouterProps) => {
   const { data: authUser } = useAuthUser();
 
+  const canManageProjects = usePermission({
+    item: 'project_folder',
+    action: 'manage_projects',
+  });
+
   if (isNilOrError(authUser)) {
     return null;
   }
-
-  const userIsAdmin = authUser && isAdmin(authUser);
 
   return (
     <Container>
@@ -70,7 +72,7 @@ const AdminFolderProjectsList = ({
 
         <ItemsInFolder projectFolderId={projectFolderId} />
 
-        {userIsAdmin && (
+        {canManageProjects && (
           <>
             <ListHeader>
               <StyledHeaderTitle>

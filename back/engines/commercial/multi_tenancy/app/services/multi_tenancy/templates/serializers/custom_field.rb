@@ -7,7 +7,6 @@ module MultiTenancy
         ref_attribute :resource
 
         attributes %i[
-          answer_visible_to
           code
           description_multiloc
           enabled
@@ -21,6 +20,10 @@ module MultiTenancy
           linear_scale_label_5_multiloc
           linear_scale_label_6_multiloc
           linear_scale_label_7_multiloc
+          linear_scale_label_8_multiloc
+          linear_scale_label_9_multiloc
+          linear_scale_label_10_multiloc
+          linear_scale_label_11_multiloc
           select_count_enabled
           maximum_select_count
           minimum_select_count
@@ -29,6 +32,13 @@ module MultiTenancy
           random_option_ordering
           dropdown_layout
           page_layout
+          page_button_label_multiloc
+          page_button_link
+          ask_follow_up
+          question_category
+          include_in_printed_form
+          min_characters
+          max_characters
         ]
 
         # Enigmatic comment from the previous implementation:

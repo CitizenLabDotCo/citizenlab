@@ -90,7 +90,7 @@ export default defineMessages({
   moderatorLabelTooltipLink: {
     id: 'app.containers.Admin.Invitations.moderatorLabelTooltipLink',
     defaultMessage:
-      'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step/set-up/pointing-out-the-right-project-moderators',
+      'http://support.govocal.com/en-your-citizenlab-platform-step-by-step/set-up/pointing-out-the-right-project-moderators',
   },
   moderatorLabelTooltipLinkText: {
     id: 'app.containers.Admin.Invitations.moderatorLabelTooltipLinkText',
@@ -174,10 +174,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Invitations.inviteStatusAccepted',
     defaultMessage: 'Accepted',
   },
-  confirmDelete: {
-    id: 'app.containers.Admin.Invitations.confirmDelete',
-    defaultMessage: "Yes, I'm sure",
-  },
   currentlyNoInvitesThatMatchSearch: {
     id: 'app.containers.Admin.Invitations.currentlyNoInvitesThatMatchSearch',
     defaultMessage: 'There are no invites that match your search',
@@ -193,7 +189,7 @@ export default defineMessages({
   invitesSupportPageURL: {
     id: 'app.containers.Admin.Invitations.invitesSupportPageURL',
     defaultMessage:
-      'http://support.citizenlab.co/en/articles/1771605-invite-people-to-the-platform',
+      'http://support.govocal.com/en/articles/1771605-invite-people-to-the-platform',
   },
   tabInviteUsers: {
     id: 'app.containers.Admin.Invitations.tabInviteUsers',
@@ -222,5 +218,13 @@ export default defineMessages({
   required: {
     id: 'UI.FormComponents.required',
     defaultMessage: 'required',
+  },
+  a11y_removeInvite: {
+    id: 'app.containers.Admin.Invitations.a11y_removeInvite',
+    defaultMessage: 'Remove invitation',
+  },
+  deleteInviteConfirmation: {
+    id: 'app.containers.Admin.Invitations.deleteInviteConfirmation',
+    defaultMessage: 'Are you sure you want to delete this invitation?',
   },
 });

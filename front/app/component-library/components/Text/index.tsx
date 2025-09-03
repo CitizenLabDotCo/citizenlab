@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { FontWeight } from 'component-library/utils/typings';
 import styled, { css } from 'styled-components';
 
 import {
@@ -8,6 +9,7 @@ import {
   fontSizes,
   isRtl,
   Color,
+  getFontWeightCSS,
 } from '../../utils/styleUtils';
 import Box, {
   BoxMarginProps,
@@ -24,7 +26,6 @@ import Box, {
 
 type Variant = 'bodyL' | 'bodyM' | 'bodyS' | 'bodyXs';
 type FontSize = keyof typeof fontSizes;
-type FontWeight = 'bold' | 'normal';
 type FontStyle = 'italic' | 'normal';
 type TextDecoration = string;
 type TextOverflow = 'ellipsis' | 'clip';
@@ -57,6 +58,8 @@ export type TextProps = {
   whiteSpace?: WhiteSpace;
   textAlign?: TextAlign;
   wordBreak?: WordBreak;
+  textShadow?: string;
+  lineHeight?: string;
 } & BoxMarginProps &
   BoxPaddingProps &
   BoxPositionProps &
@@ -66,10 +69,10 @@ export type TextProps = {
   BoxDisplayProps &
   BoxOverflowProps &
   BoxVisibilityProps &
-  React.HTMLAttributes<HTMLParagraphElement>;
+  React.HTMLAttributes<HTMLParagraphElement> &
+  React.HTMLAttributes<HTMLElement>;
 
 const StyledText = styled(Box)<BoxProps & TextProps>`
-  line-height: 1.5;
   ${isRtl`direction: rtl;`}
   ${({
     variant,
@@ -82,14 +85,18 @@ const StyledText = styled(Box)<BoxProps & TextProps>`
     whiteSpace,
     textAlign,
     wordBreak,
+    textShadow,
     theme,
+    lineHeight,
   }: TextProps & { theme: MainThemeProps }) => css`
+    line-height: ${lineHeight ? lineHeight : '1.5'};
     color: ${color ? theme.colors[color] : colors.textPrimary};
-    font-weight: ${fontWeight ? fontWeight : 'normal'};
+    font-weight: ${getFontWeightCSS(fontWeight || 'normal')};
     font-style: ${fontStyle ? fontStyle : 'normal'};
     text-decoration: ${textDecoration ? textDecoration : 'none'};
     text-overflow: ${textOverflow ? textOverflow : 'clip'};
     white-space: ${whiteSpace ? whiteSpace : 'normal'};
+    text-shadow: ${textShadow ? textShadow : 'none'};
     word-break: ${wordBreak ? wordBreak : 'normal'};
     ${textAlign ? `text-align: ${textAlign};` : ''}
     ${variant === 'bodyL'

@@ -105,12 +105,16 @@ const MobileView = ({
   }, [data, inputType, locale, mapView, theme.colors.tenantPrimary]);
 
   // If there is a user input, zoom to the extent of the drawing
-  useEffect(() => {
-    const graphicsLayer = getUserInputGraphicsLayer(mapView);
-    if (graphicsLayer?.graphics) {
-      mapView?.goTo(graphicsLayer.graphics);
-    }
-  }, [mapView, mapView?.map?.layers]);
+  useEffect(
+    () => {
+      const graphicsLayer = getUserInputGraphicsLayer(mapView);
+      if (graphicsLayer?.graphics) {
+        mapView?.goTo(graphicsLayer.graphics);
+      }
+    }, // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    [mapView, mapView?.map?.layers]
+  );
 
   return (
     <>

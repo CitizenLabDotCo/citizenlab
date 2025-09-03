@@ -4,19 +4,23 @@
 #
 # Table name: email_campaigns_campaigns
 #
-#  id               :uuid             not null, primary key
-#  type             :string           not null
-#  author_id        :uuid
-#  enabled          :boolean
-#  sender           :string
-#  reply_to         :string
-#  schedule         :jsonb
-#  subject_multiloc :jsonb
-#  body_multiloc    :jsonb
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  deliveries_count :integer          default(0), not null
-#  context_id       :uuid
+#  id                   :uuid             not null, primary key
+#  type                 :string           not null
+#  author_id            :uuid
+#  enabled              :boolean
+#  sender               :string
+#  reply_to             :string
+#  schedule             :jsonb
+#  subject_multiloc     :jsonb
+#  body_multiloc        :jsonb
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  deliveries_count     :integer          default(0), not null
+#  context_id           :uuid
+#  title_multiloc       :jsonb
+#  intro_multiloc       :jsonb
+#  button_text_multiloc :jsonb
+#  context_type         :string
 #
 # Indexes
 #
@@ -31,9 +35,12 @@
 module EmailCampaigns
   class Campaigns::StatusChangeOnIdeaYouFollow < Campaign
     include Consentable
+    include Disableable
     include ActivityTriggerable
     include RecipientConfigurable
     include Trackable
+    include ContentConfigurable
+    include ContextConfigurable
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: %w[trial active]
 
@@ -67,25 +74,28 @@ module EmailCampaigns
       'email_campaigns.admin_labels.trigger.input_status_changes'
     end
 
+    def activity_context(activity)
+      return nil unless activity.item.is_a?(::Notification)
+
+      activity.item.idea && TimelineService.new.current_phase(activity.item.idea.project)
+    end
+
+    def self.supported_context_class
+      Phase
+    end
+
+    def self.supports_context?(context)
+      supports_phase_participation_method?(context)
+    end
+
     def generate_commands(recipient:, activity:)
-      idea = activity.item.post
+      idea = activity.item.idea
       status = idea.idea_status
       [{
         event_payload: {
-          post_id: idea.id,
-          post_title_multiloc: idea.title_multiloc,
-          post_body_multiloc: idea.body_multiloc,
-          post_url: Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient.locale)),
-          post_images: idea.idea_images.map do |image|
-            {
-              ordering: image.ordering,
-              versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
-            }
-          end,
-          idea_status_id: status.id,
+          idea_title_multiloc: idea.title_multiloc,
+          idea_url: Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient.locale)),
           idea_status_title_multiloc: status.title_multiloc,
-          idea_status_code: status.code,
-          idea_status_color: status.color,
           unfollow_url: Frontend::UrlService.new.unfollow_url(Follower.new(followable: idea, user: recipient))
         }
       }]

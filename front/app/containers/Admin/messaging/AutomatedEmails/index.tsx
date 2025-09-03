@@ -66,7 +66,7 @@ const AutomatedEmails = () => {
   };
 
   return (
-    <>
+    <Box className="intercom-messaging-automated-emails-page">
       <Box mb="28px">
         <Title color="primary">
           <FormattedMessage {...messages.automatedEmails} />
@@ -92,7 +92,7 @@ const AutomatedEmails = () => {
           onClose={() => setExampleModalCampaignId(null)}
         />
       )}
-    </>
+    </Box>
   );
 };
 
@@ -127,7 +127,7 @@ const CampaignsSubGroup = ({
   onClickViewExample,
 }: CampaignsSubGroupProps) => (
   <Box>
-    <Title color="primary" variant="h4" mt="24px" fontWeight="normal">
+    <Title color="primary" variant="h4" mt="24px">
       {content_type}
     </Title>
     {campaigns.map((campaign: CampaignData) => (

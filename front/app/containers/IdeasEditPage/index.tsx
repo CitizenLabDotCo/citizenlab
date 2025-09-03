@@ -10,12 +10,17 @@ import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
 import { isUnauthorizedRQ } from 'utils/errorUtils';
+import { usePermission } from 'utils/permissions';
 
 import IdeasEditForm from './IdeasEditForm';
 
 const IdeasEditPage = () => {
   const { ideaId } = useParams() as { ideaId: string };
-  const { status, error } = useIdeaById(ideaId);
+  const { status, error, data: idea } = useIdeaById(ideaId);
+  const ideaEditPermission = usePermission({
+    item: idea?.data || null,
+    action: 'edit',
+  });
 
   if (status === 'loading') {
     return (
@@ -31,6 +36,10 @@ const IdeasEditPage = () => {
     }
 
     return <PageNotFound />;
+  }
+
+  if (!ideaEditPermission) {
+    return <Unauthorized />;
   }
 
   return <IdeasEditForm ideaId={ideaId} />;

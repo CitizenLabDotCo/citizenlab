@@ -10,73 +10,41 @@ import {
 import { useFormContext } from 'react-hook-form';
 
 import {
-  IFlatCustomField,
+  ICustomFieldSettingsTab,
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
 import {
-  formEndOption,
   getTranslatedStringKey,
   FormBuilderConfig,
 } from 'components/FormBuilder/utils';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
 import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
 import tracks from '../tracks';
-import { getFieldNumbers } from '../utils';
 
-import { ContentSettings } from './ContentSettings';
-import { LogicSettings } from './LogicSettings';
+import ContentSettings from './ContentSettings';
+import LogicSettings from './LogicSettings';
+import PrintSupportTooltip from './PrintSupportTooltip';
 
 interface Props {
   field: IFlatCustomFieldWithIndex;
   closeSettings: (triggerAutosave?: boolean) => void;
   builderConfig: FormBuilderConfig;
-  surveyHasSubmissions: boolean;
 }
 
 const FormBuilderSettings = ({
   field,
   closeSettings,
   builderConfig,
-  surveyHasSubmissions,
 }: Props) => {
-  const locales = useAppConfigurationLocales();
-  const [currentTab, setCurrentTab] = useState<'content' | 'logic'>('content');
-  const { formatMessage } = useIntl();
+  const [currentTab, setCurrentTab] = useState<ICustomFieldSettingsTab>(
+    field.defaultTab || 'content'
+  );
   const { watch } = useFormContext();
-  const formCustomFields: IFlatCustomField[] = watch('customFields');
-
-  if (isNilOrError(locales)) {
-    return null;
-  }
-
-  const getPageList = () => {
-    const fieldNumbers = getFieldNumbers(formCustomFields);
-    const pageArray: { value: string; label: string }[] = [];
-
-    formCustomFields?.forEach((field) => {
-      if (field.input_type === 'page') {
-        pageArray.push({
-          value: field.temp_id || field.id,
-          label: `${formatMessage(messages.page)} ${fieldNumbers[field.id]}`,
-        });
-      }
-    });
-    pageArray.push({
-      value: formEndOption,
-      label: `${formatMessage(
-        builderConfig.formEndPageLogicOption || messages.formEnd
-      )}`,
-    });
-    return pageArray;
-  };
 
   const translatedStringKey = getTranslatedStringKey(
     watch(`customFields.${field.index}.input_type`),
@@ -85,9 +53,26 @@ const FormBuilderSettings = ({
   const tabNotActiveBorder = `1px solid ${colors.grey400}`;
   const tabActiveBorder = `4px solid ${colors.primary}`;
   const fieldType = watch(`customFields.${field.index}.input_type`);
-  const showTabbedSettings = ['linear_scale', 'select', 'page'].includes(
-    fieldType
-  );
+
+  const getShowTabbedSettings = () => {
+    const isFieldWithLogicTab = [
+      'linear_scale',
+      'select',
+      'rating',
+      'page',
+    ].includes(fieldType);
+
+    // For backwards compatibility, we only show the logic tab for multiselect/multiselect_image if they already have logic.
+    const fieldHasLogic = field.logic.rules && field.logic.rules.length > 0;
+    const isMultiselectWithLogic =
+      ['multiselect', 'multiselect_image'].includes(fieldType) && fieldHasLogic;
+
+    const isFormEndPage = fieldType === 'page' && field.key === 'form_end';
+
+    return (isFieldWithLogicTab || isMultiselectWithLogic) && !isFormEndPage;
+  };
+
+  const showTabbedSettings = getShowTabbedSettings();
 
   return (
     <Box
@@ -119,9 +104,16 @@ const FormBuilderSettings = ({
         />
       </Box>
       {translatedStringKey && (
-        <Title variant="h4" as="h2" mb="8px">
-          <FormattedMessage {...translatedStringKey} />
-        </Title>
+        <Box display="flex">
+          <Box>
+            <Title variant="h4" as="h2" mb="8px">
+              <FormattedMessage {...translatedStringKey} />
+            </Title>
+          </Box>
+          <Box pt="16px" ml="8px">
+            <PrintSupportTooltip fieldType={fieldType} />
+          </Box>
+        </Box>
       )}
       {showTabbedSettings && builderConfig.isLogicEnabled && (
         <Box display="flex" width="100%" mb="40px">
@@ -157,17 +149,13 @@ const FormBuilderSettings = ({
         </Box>
       )}
       {(!showTabbedSettings ||
-        !builderConfig.isLogicEnabled ||
+        !builderConfig.isLogicEnabled || // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         (showTabbedSettings && currentTab === 'content')) && (
-        <ContentSettings
-          field={field}
-          locales={locales}
-          surveyHasSubmissions={surveyHasSubmissions}
-        />
+        <ContentSettings field={field} />
       )}
       {showTabbedSettings && currentTab === 'logic' && (
         <LogicSettings
-          pageOptions={getPageList()}
           field={field}
           key={field.index}
           builderConfig={builderConfig}

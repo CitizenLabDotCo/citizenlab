@@ -26,6 +26,14 @@ export interface AddProjectFolderObject {
   ordering?: number | null;
 }
 
+export interface UpdateProjectFolderFileObject {
+  projectFolderId: string;
+  fileId: string;
+  file: {
+    ordering?: number;
+  };
+}
+
 export interface IQueryParameters {
   projectFolderId: string;
 }

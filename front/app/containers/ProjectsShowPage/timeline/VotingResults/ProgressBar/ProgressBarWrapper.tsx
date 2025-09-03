@@ -5,11 +5,17 @@ import { useTheme } from 'styled-components';
 
 interface Props {
   votesPercentage: number;
+  manualVotesPercentage?: number;
   children: ReactNode;
   tooltip: string;
 }
 
-const ProgressBarWrapper = ({ children, votesPercentage, tooltip }: Props) => {
+const ProgressBarWrapper = ({
+  children,
+  votesPercentage,
+  manualVotesPercentage,
+  tooltip,
+}: Props) => {
   const theme = useTheme();
 
   return (
@@ -27,16 +33,28 @@ const ProgressBarWrapper = ({ children, votesPercentage, tooltip }: Props) => {
         <Box
           w="100%"
           h="8px"
-          borderRadius="2px"
           border={`1px solid ${theme.colors.tenantPrimary}`}
           bgColor={theme.colors.tenantPrimaryLighten75}
           position="relative"
+          display="flex"
         >
           <Box
             w={`${votesPercentage}%`}
             h="100%"
             bgColor={theme.colors.tenantPrimary}
-            borderRadius="2px"
+          />
+          <Box
+            w={`${manualVotesPercentage}%`}
+            h="100%"
+            style={{
+              backgroundImage: `repeating-linear-gradient(
+            135deg,
+            ${theme.colors.tenantPrimary},
+            ${theme.colors.tenantPrimary} 4px,
+            ${theme.colors.tenantPrimaryLighten75} 4px,
+            ${theme.colors.tenantPrimaryLighten75} 8px
+          )`,
+            }}
           />
         </Box>
       </Box>

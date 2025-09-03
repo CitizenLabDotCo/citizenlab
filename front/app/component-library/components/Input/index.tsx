@@ -80,9 +80,11 @@ export interface InputProps {
   onBlur?: (arg: FormEvent<HTMLInputElement>) => void;
   setRef?: (arg: HTMLInputElement) => void | undefined;
   onKeyDown?: (event: KeyboardEvent) => void;
+  onMultilinePaste?: (lines: string[]) => void;
   autoFocus?: boolean;
   min?: string;
   max?: string;
+  step?: string;
   name?: string;
   maxCharCount?: number;
   disabled?: boolean;
@@ -145,6 +147,7 @@ class Input extends PureComponent<InputProps> {
       maxCharCount,
       min,
       max,
+      step,
       autoFocus,
       onFocus,
       disabled,
@@ -154,6 +157,8 @@ class Input extends PureComponent<InputProps> {
       autocomplete,
       size = 'medium',
       'data-testid': dataTestId,
+      onChange,
+      onMultilinePaste,
     } = this.props;
     const hasError = !isNil(this.props.error) && !isEmpty(this.props.error);
     const optionalProps = isBoolean(spellCheck) ? { spellCheck } : null;
@@ -197,6 +202,7 @@ class Input extends PureComponent<InputProps> {
           ref={this.handleRef}
           min={min}
           max={max}
+          step={step}
           // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus={autoFocus}
           disabled={disabled}
@@ -204,6 +210,22 @@ class Input extends PureComponent<InputProps> {
           required={required}
           autoComplete={autocomplete}
           onKeyDown={onKeyDown}
+          onPaste={
+            onMultilinePaste
+              ? (e) => {
+                  e.preventDefault();
+                  navigator.clipboard.readText().then((text) => {
+                    const split = text.split('\n');
+
+                    if (split.length === 1) {
+                      onChange?.(split[0], this.props.locale);
+                    } else {
+                      onMultilinePaste(split);
+                    }
+                  });
+                }
+              : undefined
+          }
           {...optionalProps}
         />
 

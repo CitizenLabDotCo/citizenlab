@@ -4,7 +4,7 @@ import { IIdeaData } from 'api/ideas/types';
 import { ParticipationMethod } from 'api/phases/types';
 import useProjectById from 'api/projects/useProjectById';
 
-import IdeaFooter from './IdeaFooter';
+import IdeationFooter from './IdeationFooter';
 import ProposalFooter from './ProposalFooter';
 import VotingFooter from './VotingFooter';
 
@@ -34,7 +34,7 @@ const Footer = ({ idea, hideIdeaStatus, participationMethod }: Props) => {
 
   if (participationMethod === 'ideation') {
     return (
-      <IdeaFooter
+      <IdeationFooter
         idea={idea}
         hideIdeaStatus={hideIdeaStatus}
         showCommentCount={showCommentCount}

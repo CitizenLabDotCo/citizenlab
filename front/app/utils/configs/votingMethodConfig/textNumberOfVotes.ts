@@ -1,4 +1,5 @@
 import { IPhaseData } from 'api/phases/types';
+import { getPhaseVoteTermMessage } from 'api/phases/utils';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -12,37 +13,22 @@ type Props = {
   formatMessage: ReturnType<typeof useIntl>['formatMessage'];
 };
 
-const getVoteTerms = ({ phase, localize, formatMessage }: Props) => {
-  const { voting_term_singular_multiloc, voting_term_plural_multiloc } =
-    phase.attributes;
-
-  const voteTerm = voting_term_singular_multiloc
-    ? localize(voting_term_singular_multiloc)
-    : formatMessage(messages.midSentenceVote);
-  const votesTerm = voting_term_plural_multiloc
-    ? localize(voting_term_plural_multiloc)
-    : formatMessage(messages.midSentenceVotes);
-
-  return { voteTerm, votesTerm };
-};
-
 const getTextNumberOfVotes = ({
   numberOfVotes,
   phase,
-  localize,
   formatMessage,
 }: Props & { numberOfVotes: number }) => {
-  const { voteTerm, votesTerm } = getVoteTerms({
-    phase,
-    localize,
-    formatMessage,
-  });
-
-  return formatMessage(messages.numberOfVotes, {
-    numberOfVotes: numberOfVotes.toLocaleString(),
-    voteTerm,
-    votesTerm,
-  });
+  return formatMessage(
+    getPhaseVoteTermMessage(phase, {
+      vote: messages.numberOfVotes,
+      point: messages.numberOfPoints,
+      token: messages.numberOfTokens,
+      credit: messages.numberOfCredits,
+    }),
+    {
+      numberOfVotes,
+    }
+  );
 };
 
 export { getTextNumberOfVotes };

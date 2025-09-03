@@ -13,11 +13,10 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty, get, isError } from 'lodash-es';
-import moment from 'moment';
 import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 import { useTheme } from 'styled-components';
-import { Multiloc, CLError, UploadFile } from 'typings';
+import { Multiloc, UploadFile } from 'typings';
 
 import useAddEventFile from 'api/event_files/useAddEventFile';
 import useDeleteEventFile from 'api/event_files/useDeleteEventFile';
@@ -25,6 +24,7 @@ import useEventFiles from 'api/event_files/useEventFiles';
 import useAddEventImage from 'api/event_images/useAddEventImage';
 import useDeleteEventImage from 'api/event_images/useDeleteEventImage';
 import useEventImage from 'api/event_images/useEventImage';
+import useUpdateEventImage from 'api/event_images/useUpdateEventImage';
 import { IEvent, IEventProperties } from 'api/events/types';
 import useAddEvent from 'api/events/useAddEvent';
 import useEvent from 'api/events/useEvent';
@@ -33,10 +33,12 @@ import useUpdateEvent from 'api/events/useUpdateEvent';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useLocale from 'hooks/useLocale';
 
-import DateTimePicker from 'components/admin/DateTimePicker';
+import projectMessages from 'containers/Admin/projects/project/general/messages';
+
+import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import ErrorComponent from 'components/UI/Error';
 import FileUploader from 'components/UI/FileUploader';
 import GoBackButton from 'components/UI/GoBackButton';
@@ -47,54 +49,40 @@ import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMult
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import {
-  roundToNearestMultipleOfFive,
-  calculateRoundedEndDate,
-} from 'utils/dateUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { geocode } from 'utils/locationTools';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
+import DateTimeSelection from './components/DateTimeSelection';
 import messages from './messages';
+import { SubmitState, ErrorType, ApiErrorType } from './types';
+import { initializeEventTimes } from './utils';
 
 const EventMap = lazy(() => import('./components/EventMap'));
 
-export type SubmitState = 'disabled' | 'enabled' | 'error' | 'success';
-type ErrorType =
-  | Error
-  | CLError[]
-  | {
-      [fieldName: string]: CLError[];
-    };
-
-type ApiErrorType =
-  | Error
-  | {
-      [fieldName: string]: CLError[];
-    };
-
 const AdminProjectEventEdit = () => {
-  const { id, projectId } = useParams() as {
-    id: string;
-    projectId: string;
-  };
+  const { id: eventId, projectId } = useParams();
+
+  const isCreatingNewEvent = !eventId;
+
   const { width, containerRef } = useContainerWidthAndHeight();
   const { formatMessage } = useIntl();
   const theme = useTheme();
   const locale = useLocale();
 
   const { mutate: addEvent } = useAddEvent();
-  const { data: event, isInitialLoading } = useEvent(id);
+  const { data: event, isInitialLoading } = useEvent(eventId);
   const { mutate: updateEvent } = useUpdateEvent();
 
   // event files
   const { mutate: addEventFile } = useAddEventFile();
   const { mutate: deleteEventFile } = useDeleteEventFile();
-  const { data: remoteEventFiles } = useEventFiles(id);
+  const { data: remoteEventFiles } = useEventFiles(eventId);
 
   // event image
   const { mutate: addEventImage } = useAddEventImage();
+  const { mutate: updateEventImage } = useUpdateEventImage();
   const { mutate: deleteEventImage } = useDeleteEventImage();
   const { data: remoteEventImage } = useEventImage(event?.data);
 
@@ -104,13 +92,19 @@ const AdminProjectEventEdit = () => {
   const [saving, setSaving] = useState<boolean>(false);
   const [submitState, setSubmitState] = useState<SubmitState>('disabled');
   const [eventFiles, setEventFiles] = useState<UploadFile[]>([]);
+  const [croppedImgBase64, setCroppedImgBase64] = useState<string | null>(null);
 
-  const [attributeDiff, setAttributeDiff] = useState<IEventProperties>({});
-  const [attendanceOptionsVisible, setAttendanceOptionsVisible] =
+  const [attributeDiff, setAttributeDiff] = useState<IEventProperties>(
+    isCreatingNewEvent ? initializeEventTimes() : {}
+  );
+
+  const [registerButtonOptionsVisible, setRegisterButtonOptionsVisible] =
+    useState(false);
+  const [registrationLimitVisible, setRegistrationLimitVisible] =
     useState(false);
   const [uploadedImage, setUploadedImage] = useState<UploadFile | null>(null);
   const [locationPoint, setLocationPoint] = useState<GeoJSON.Point | null>(
-    event?.data?.attributes?.location_point_geojson || null
+    event?.data.attributes.location_point_geojson || null
   );
   const [geocodedPoint, setGeocodedPoint] = useState<GeoJSON.Point | null>(
     null
@@ -119,41 +113,34 @@ const AdminProjectEventEdit = () => {
     []
   );
   const [successfulGeocode, setSuccessfulGeocode] = useState(false);
+  const [eventImageAltText, setEventImagealtText] = useState<Multiloc | null>(
+    null
+  );
+  const [hasAltTextChanged, setHasAltTextChanged] = useState(false);
 
   // Remote values
-  const remotePoint = event?.data?.attributes?.location_point_geojson;
+  const remotePoint = event?.data.attributes.location_point_geojson;
 
   const eventAttrs = event
-    ? { ...event?.data.attributes, ...attributeDiff }
+    ? // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      {
+        ...event.data.attributes,
+        ...attributeDiff,
+      }
     : { ...attributeDiff };
-
-  useEffect(() => {
-    // Check that the event has loaded and only then can we be sure if we are creating a new one or using an existing one
-    if (!isInitialLoading) {
-      const initialRoundedStartDate = roundToNearestMultipleOfFive(new Date());
-      const initialRoundedEndDate = calculateRoundedEndDate(
-        initialRoundedStartDate
-      );
-
-      setAttributeDiff({
-        start_at: event
-          ? event.data.attributes.start_at
-          : initialRoundedStartDate.toISOString(),
-        end_at: event
-          ? event.data.attributes.end_at
-          : initialRoundedEndDate.toISOString(),
-      });
-    }
-  }, [event, isInitialLoading]);
 
   // Set image value to remote image if present
   useEffect(() => {
     async function convertRemoteImage() {
       if (remoteEventImage) {
         const imageUrl = remoteEventImage.data.attributes.versions.medium;
+        const altTextValue = remoteEventImage.data.attributes.alt_text_multiloc;
         if (imageUrl) {
           const imageFile = await convertUrlToUploadFile(imageUrl);
           setUploadedImage(imageFile);
+          setEventImagealtText(altTextValue);
+          setHasAltTextChanged(false);
         }
       }
     }
@@ -170,10 +157,17 @@ const AdminProjectEventEdit = () => {
     }
   }, [remotePoint]);
 
+  useEffect(() => {
+    if (typeof eventAttrs.maximum_attendees === 'number') {
+      // If we have a maximum number of attendees, we want to ensure the toggle is on
+      setRegistrationLimitVisible(true);
+    }
+  }, [eventAttrs.maximum_attendees]);
+
   // If there is a custom button url, set the state accordingly
   useEffect(() => {
     if (eventAttrs.using_url) {
-      setAttendanceOptionsVisible(true);
+      setRegisterButtonOptionsVisible(true);
     }
   }, [eventAttrs.using_url]);
 
@@ -251,9 +245,29 @@ const AdminProjectEventEdit = () => {
     });
   };
 
+  const handleLimitToggleOnChange = (toggleValue: boolean) => {
+    setSubmitState('enabled');
+    setRegistrationLimitVisible(toggleValue);
+    setAttributeDiff({
+      ...attributeDiff,
+      maximum_attendees: toggleValue === false ? null : 100,
+    });
+  };
+
+  const handleMaximumRegistrantsChange = (maximum_attendees: string) => {
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      // If maximum_attendees is an empty string, set it to 0.
+      // Number('') returns 0.
+      maximum_attendees: Number(maximum_attendees),
+    });
+    setErrors({});
+  };
+
   const handleCustomButtonToggleOnChange = (toggleValue: boolean) => {
     setSubmitState('enabled');
-    setAttendanceOptionsVisible(toggleValue);
+    setRegisterButtonOptionsVisible(toggleValue);
     setAttributeDiff({
       ...attributeDiff,
       using_url: '',
@@ -277,63 +291,18 @@ const AdminProjectEventEdit = () => {
     setErrors({});
   };
 
-  const handleDateTimePickerOnChange =
-    (name: 'start_at' | 'end_at') => (time: moment.Moment) => {
-      if (!isInitialLoading) {
-        setSubmitState('enabled');
-        setAttributeDiff((previousState) => {
-          const newAttributes = {
-            ...previousState,
-            [name]: time.toISOString(),
-          };
-
-          // If the start time is changed, update the end time
-          if (name === 'start_at' && newAttributes['start_at']) {
-            const duration = newAttributes['end_at']
-              ? moment
-                  .duration(
-                    moment(newAttributes['end_at']).diff(
-                      moment(previousState['start_at'])
-                    )
-                  )
-                  .asMinutes()
-              : 30;
-
-            newAttributes['end_at'] = calculateRoundedEndDate(
-              new Date(newAttributes['start_at']),
-              duration
-            ).toISOString();
-          } else if (name === 'end_at' && newAttributes['end_at']) {
-            const isStartDateAfterEndDate =
-              newAttributes['start_at'] && newAttributes['end_at']
-                ? newAttributes['start_at'] > newAttributes['end_at']
-                : false;
-
-            if (isStartDateAfterEndDate) {
-              const duration = moment
-                .duration(
-                  moment(previousState['end_at']).diff(
-                    moment(newAttributes['start_at'])
-                  )
-                )
-                .asMinutes();
-
-              newAttributes['start_at'] = calculateRoundedEndDate(
-                new Date(newAttributes['end_at']),
-                -duration
-              ).toISOString();
-            }
-          }
-
-          return newAttributes;
-        });
-        setErrors({});
-      }
-    };
+  const handleDateTimePickerOnChange = (
+    value: React.SetStateAction<IEventProperties>
+  ) => {
+    setSubmitState('enabled');
+    setAttributeDiff(value);
+    setErrors({});
+  };
 
   const handleOnImageAdd = (imageFiles: UploadFile[]) => {
     setSubmitState('enabled');
     setUploadedImage(imageFiles[0]);
+    setCroppedImgBase64(imageFiles[0].base64);
   };
 
   const handleOnImageRemove = () => {
@@ -356,26 +325,48 @@ const AdminProjectEventEdit = () => {
     );
   };
 
-  const handleEventImage = async (data: IEvent) => {
+  const addOrDeleteEventImage = async (data: IEvent) => {
     const hasRemoteImage = !isNilOrError(remoteEventImage);
     const remoteImageId = hasRemoteImage
-      ? event?.data?.relationships?.event_images?.data?.[0].id
+      ? event?.data.relationships.event_images.data[0].id
       : undefined;
     if (
       (uploadedImage === null || !uploadedImage.remote) &&
       hasRemoteImage &&
-      remoteImageId
+      remoteImageId &&
+      eventId
     ) {
       deleteEventImage({
-        eventId: id,
+        eventId,
         imageId: remoteImageId,
       });
     }
-    if (uploadedImage && !uploadedImage.remote) {
+    if (uploadedImage && croppedImgBase64 && !uploadedImage.remote) {
       addEventImage({
         eventId: data.data.id,
         image: {
+          image: croppedImgBase64 || '',
+          ...(eventImageAltText
+            ? { alt_text_multiloc: eventImageAltText }
+            : {}),
+        },
+      });
+    }
+  };
+
+  const updateImage = async (data: IEvent) => {
+    const hasRemoteImage = !isNilOrError(remoteEventImage);
+    const remoteImageId = hasRemoteImage
+      ? event?.data.relationships.event_images.data[0].id
+      : undefined;
+
+    if (remoteImageId && uploadedImage && eventImageAltText) {
+      updateEventImage({
+        eventId: data.data.id,
+        imageId: remoteImageId,
+        image: {
           image: uploadedImage.base64,
+          alt_text_multiloc: eventImageAltText,
         },
       });
     }
@@ -384,51 +375,49 @@ const AdminProjectEventEdit = () => {
   const handleEventFiles = async (data: IEvent) => {
     setSubmitState('success');
 
-    if (data) {
-      const { id: eventId } = data.data;
-      eventFiles
-        .filter((file) => !file.remote)
-        .map((file) =>
-          addEventFile(
-            {
-              eventId,
-              file: file.base64,
-              name: file.name,
-              ordering: null,
+    const { id: eventId } = data.data;
+    eventFiles
+      .filter((file) => !file.remote)
+      .map((file) =>
+        addEventFile(
+          {
+            eventId,
+            file: file.base64,
+            name: file.name,
+            ordering: null,
+          },
+          {
+            onSuccess: () => {
+              setSubmitState('success');
             },
+            onError: () => {
+              setSubmitState('error');
+            },
+          }
+        )
+      );
+    eventFilesToRemove
+      .filter((file) => !!file.remote)
+      .map((file) => {
+        if (file.id) {
+          deleteEventFile(
+            { eventId, fileId: file.id },
             {
               onSuccess: () => {
+                setEventFilesToRemove(
+                  eventFilesToRemove.filter(
+                    (fileToRemove) => fileToRemove.id !== file.id
+                  )
+                );
                 setSubmitState('success');
               },
               onError: () => {
                 setSubmitState('error');
               },
             }
-          )
-        );
-      eventFilesToRemove
-        .filter((file) => !!file.remote)
-        .map((file) => {
-          if (file.id) {
-            deleteEventFile(
-              { eventId, fileId: file.id },
-              {
-                onSuccess: () => {
-                  setEventFilesToRemove(
-                    eventFilesToRemove.filter((fileToRemove) => {
-                      fileToRemove.id !== file.id;
-                    })
-                  );
-                  setSubmitState('success');
-                },
-                onError: () => {
-                  setSubmitState('error');
-                },
-              }
-            );
-          }
-        });
-    }
+          );
+        }
+      });
   };
 
   const handleOnSubmit = async (e: FormEvent) => {
@@ -446,17 +435,17 @@ const AdminProjectEventEdit = () => {
       setSaving(true);
 
       // If only files have changed
-      if (isEmpty(attributeDiff) && eventFilesToRemove) {
-        if (event) {
-          handleEventFiles(event);
-        }
+      if (isEmpty(attributeDiff) && event) {
+        handleEventFiles(event);
       }
 
       // If only image has changed
-      if (isEmpty(attributeDiff) && imageChanged) {
-        if (event) {
-          handleEventImage(event);
-        }
+      if (isEmpty(attributeDiff) && imageChanged && event) {
+        addOrDeleteEventImage(event);
+      }
+
+      if (hasAltTextChanged && !imageChanged && event) {
+        updateImage(event);
       }
 
       // non-file input fields have changed
@@ -465,17 +454,21 @@ const AdminProjectEventEdit = () => {
         if (event) {
           updateEvent(
             {
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               eventId: event?.data.id,
               event: {
                 ...attributeDiff,
                 location_point_geojson: locationPointChanged
                   ? locationPointUpdated
-                  : event?.data.attributes.location_point_geojson,
+                  : // TODO: Fix this the next time the file is edited.
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                    event?.data.attributes.location_point_geojson,
               },
             },
             {
               onSuccess: async (data) => {
-                handleEventImage(data);
+                addOrDeleteEventImage(data);
                 handleEventFiles(data);
                 setSubmitState('success');
               },
@@ -500,10 +493,11 @@ const AdminProjectEventEdit = () => {
               onSuccess: async (data) => {
                 setSubmitState('success');
                 handleEventFiles(data);
-                handleEventImage(data);
+                addOrDeleteEventImage(data);
                 clHistory.push(`/admin/projects/${projectId}/events`);
               },
               onError: async (errors) => {
+                setSaving(false);
                 setErrors(errors.errors);
                 setSubmitState('error');
               },
@@ -524,9 +518,21 @@ const AdminProjectEventEdit = () => {
     }
   };
 
+  const handleEventImageAltTextChange = (altTextMultiloc: Multiloc) => {
+    setSubmitState('enabled');
+    setEventImagealtText(altTextMultiloc);
+    setHasAltTextChanged(true);
+  };
+
+  const handleImageCropChange = (imgBase64: string) => {
+    setCroppedImgBase64(imgBase64);
+  };
+
   if (event !== undefined && isInitialLoading) {
     return <Spinner />;
   }
+
+  const imageShouldBeSaved = uploadedImage ? !uploadedImage.remote : false;
 
   return (
     <Box mt="44px" mx="44px">
@@ -567,59 +573,69 @@ const AdminProjectEventEdit = () => {
               </SectionField>
               <SectionField>
                 <Label>{formatMessage(messages.eventImage)}</Label>
-                <ImagesDropzone
-                  images={uploadedImage ? [uploadedImage] : []}
-                  maxImagePreviewWidth="360px"
-                  objectFit="contain"
-                  acceptedFileTypes={{
-                    'image/*': ['.jpg', '.jpeg', '.png'],
-                  }}
-                  onAdd={handleOnImageAdd}
-                  onRemove={handleOnImageRemove}
-                  imagePreviewRatio={1 / 2}
-                />
-              </SectionField>
-              <Title
-                variant="h4"
-                fontWeight="bold"
-                color="primary"
-                style={{ fontWeight: '600' }}
-              >
-                {formatMessage(messages.eventDates)}
-              </Title>
-              <Box display="flex" flexDirection="column" maxWidth="400px">
-                <SectionField style={{ width: 'auto' }}>
-                  <Label>
-                    <FormattedMessage {...messages.dateStartLabel} />
-                  </Label>
-                  <DateTimePicker
-                    value={eventAttrs.start_at}
-                    onChange={handleDateTimePickerOnChange('start_at')}
-                  />
-                  <ErrorComponent apiErrors={get(errors, 'start_at')} />
-                </SectionField>
 
+                {!imageShouldBeSaved && (
+                  <ImagesDropzone
+                    images={uploadedImage ? [uploadedImage] : []}
+                    maxImagePreviewWidth="360px"
+                    objectFit="contain"
+                    acceptedFileTypes={{
+                      'image/*': ['.jpg', '.jpeg', '.png'],
+                    }}
+                    onAdd={handleOnImageAdd}
+                    onRemove={handleOnImageRemove}
+                    imagePreviewRatio={1 / 3}
+                  />
+                )}
+
+                {imageShouldBeSaved && (
+                  <Box display="flex" flexDirection="column" gap="8px">
+                    <ImageCropperContainer
+                      image={uploadedImage}
+                      onComplete={handleImageCropChange}
+                      aspectRatioWidth={3}
+                      aspectRatioHeight={1}
+                      onRemove={handleOnImageRemove}
+                    />
+                  </Box>
+                )}
+              </SectionField>
+              {uploadedImage && (
                 <SectionField>
                   <Label>
-                    <FormattedMessage {...messages.datesEndLabel} />
+                    <FormattedMessage {...messages.eventImageAltTextTitle} />
+                    <IconTooltip
+                      content={
+                        <FormattedMessage
+                          {...projectMessages.projectImageAltTextTooltip}
+                        />
+                      }
+                    />
                   </Label>
-                  <DateTimePicker
-                    value={eventAttrs.end_at}
-                    onChange={handleDateTimePickerOnChange('end_at')}
+                  <InputMultilocWithLocaleSwitcher
+                    type="text"
+                    valueMultiloc={eventImageAltText}
+                    label={<FormattedMessage {...projectMessages.altText} />}
+                    onChange={handleEventImageAltTextChange}
                   />
-                  <ErrorComponent apiErrors={get(errors, 'end_at')} />
                 </SectionField>
-              </Box>
+              )}
 
-              <Title
-                variant="h4"
-                fontWeight="bold"
-                color="primary"
-                style={{ fontWeight: '600' }}
-              >
+              <Title variant="h4" color="primary" fontWeight="semi-bold">
+                {formatMessage(messages.eventDates)}
+              </Title>
+              {eventAttrs.start_at && eventAttrs.end_at && (
+                <DateTimeSelection
+                  startAt={eventAttrs.start_at}
+                  endAt={eventAttrs.end_at}
+                  errors={errors}
+                  setAttributeDiff={handleDateTimePickerOnChange}
+                />
+              )}
+
+              <Title variant="h4" color="primary" fontWeight="semi-bold">
                 {formatMessage(messages.eventLocation)}
               </Title>
-
               <SectionField>
                 <Box mt="16px" maxWidth="400px">
                   <Input
@@ -701,6 +717,8 @@ const AdminProjectEventEdit = () => {
                           setLocationPoint={setLocationPoint}
                           position={
                             geocodedPoint || // Present when an address is geocoded but hasn't been saved yet
+                            // TODO: Fix this the next time the file is edited.
+                            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                             event?.data?.attributes?.location_point_geojson
                           }
                         />
@@ -712,47 +730,90 @@ const AdminProjectEventEdit = () => {
 
               <Title
                 variant="h4"
-                fontWeight="bold"
                 color="primary"
-                style={{ fontWeight: '600' }}
+                fontWeight="semi-bold"
                 mt="48px"
               >
-                {formatMessage(messages.attendanceButton)}
+                {formatMessage(messages.registrationLimit)}
               </Title>
               <SectionField>
                 <Toggle
                   label={
                     <Box display="flex">
-                      {formatMessage(
-                        messages.toggleCustomAttendanceButtonLabel
-                      )}
+                      {formatMessage(messages.toggleRegistrationLimitLabel)}
                       <Box ml="4px">
                         <IconTooltip
                           content={formatMessage(
-                            messages.toggleCustomAttendanceButtonTooltip
+                            messages.toggleRegistrationLimitTooltip
                           )}
                         />
                       </Box>
                     </Box>
                   }
-                  checked={attendanceOptionsVisible}
+                  checked={registrationLimitVisible}
                   onChange={() => {
-                    handleCustomButtonToggleOnChange(!attendanceOptionsVisible);
+                    handleLimitToggleOnChange(!registrationLimitVisible);
                   }}
                 />
               </SectionField>
-              {attendanceOptionsVisible && (
+              {registrationLimitVisible && (
+                <SectionField>
+                  <Input
+                    id="maximum_attendees"
+                    label={formatMessage(messages.maximumRegistrants)}
+                    type="number"
+                    value={eventAttrs.maximum_attendees?.toString()}
+                    onChange={handleMaximumRegistrantsChange}
+                  />
+                  <ErrorComponent
+                    fieldName="maximum_attendees"
+                    apiErrors={get(errors, 'maximum_attendees')}
+                  />
+                </SectionField>
+              )}
+
+              <Title
+                variant="h4"
+                color="primary"
+                fontWeight="semi-bold"
+                mt="48px"
+              >
+                {formatMessage(messages.registerButton)}
+              </Title>
+              <SectionField>
+                <Toggle
+                  label={
+                    <Box display="flex">
+                      {formatMessage(messages.toggleCustomRegisterButtonLabel)}
+                      <Box ml="4px">
+                        <IconTooltip
+                          content={formatMessage(
+                            messages.toggleCustomRegisterButtonTooltip2
+                          )}
+                        />
+                      </Box>
+                    </Box>
+                  }
+                  checked={registerButtonOptionsVisible}
+                  onChange={() => {
+                    handleCustomButtonToggleOnChange(
+                      !registerButtonOptionsVisible
+                    );
+                  }}
+                />
+              </SectionField>
+              {registerButtonOptionsVisible && (
                 <>
                   <SectionField>
                     <Box maxWidth="400px">
                       <InputMultilocWithLocaleSwitcher
-                        id="event-address-2"
+                        id="custom-button-text"
                         label={formatMessage(messages.customButtonText)}
                         type="text"
                         valueMultiloc={eventAttrs.attend_button_multiloc}
                         onChange={handleCustomButtonMultilocOnChange}
                         labelTooltipText={formatMessage(
-                          messages.customButtonTextTooltip
+                          messages.customButtonTextTooltip3
                         )}
                         maxCharCount={28}
                       />
@@ -778,21 +839,29 @@ const AdminProjectEventEdit = () => {
                       <Box width="100%">
                         <Label>{formatMessage(messages.preview)}</Label>
                       </Box>
-                      <Button
+                      <ButtonWithLink
                         minWidth="160px"
                         iconPos={'right'}
                         icon={
-                          attendanceOptionsVisible ? undefined : 'plus-circle'
+                          // TODO: Fix this the next time the file is edited.
+                          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                          registerButtonOptionsVisible
+                            ? undefined
+                            : 'plus-circle'
                         }
                         iconSize="20px"
                         bgColor={theme.colors.tenantPrimary}
                         linkTo={eventAttrs.using_url}
                         openLinkInNewTab={true}
                       >
+                        {/* TODO: Fix this the next time the file is edited. */}
+                        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
                         {eventAttrs?.attend_button_multiloc?.[locale]
-                          ? eventAttrs?.attend_button_multiloc[locale]
-                          : formatMessage(messages.attend)}
-                      </Button>
+                          ? // TODO: Fix this the next time the file is edited.
+                            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                            eventAttrs?.attend_button_multiloc[locale]
+                          : formatMessage(messages.register)}
+                      </ButtonWithLink>
                     </Box>
                   )}
                 </>
@@ -800,9 +869,8 @@ const AdminProjectEventEdit = () => {
 
               <Title
                 variant="h4"
-                fontWeight="bold"
                 color="primary"
-                style={{ fontWeight: '600' }}
+                fontWeight="semi-bold"
                 mt="48px"
               >
                 {formatMessage(messages.additionalInformation)}

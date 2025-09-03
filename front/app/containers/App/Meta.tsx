@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -16,7 +16,6 @@ import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 import { imageSizes } from 'utils/fileUtils';
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 
@@ -29,48 +28,59 @@ const Meta = () => {
   const localize = useLocalize();
   const { pathname } = useLocation();
 
-  if (
-    !isNilOrError(locale) &&
-    !isNilOrError(tenant) &&
-    !isNilOrError(homepageLayout)
-  ) {
-    const tenantLocales = tenant.data.attributes.settings.core.locales;
+  if (tenant && homepageLayout) {
+    const favicon = tenant.data.attributes.favicon;
+    const settings = tenant.data.attributes.settings;
+    const tenantLocales = settings.core.locales;
 
-    const headerBg = homepageLayout.data.attributes.craftjs_json
-      ? Object.values(homepageLayout.data.attributes.craftjs_json).find(
-          (node) => node.displayName === 'HomepageBanner'
-        )?.props.image?.imageUrl
-      : '';
+    // TODO: Fix this the next time the file is edited.
+    /* eslint-disable @typescript-eslint/no-unnecessary-condition */
+    const bannerNode = homepageLayout?.data?.attributes?.craftjs_json
+      ? Object.values(homepageLayout.data.attributes.craftjs_json || {}).find(
+          (node: any) => {
+            return (
+              node &&
+              node.type &&
+              typeof node.type === 'object' &&
+              'resolvedName' in node.type &&
+              node.type.resolvedName === 'HomepageBanner'
+            );
+          }
+        )
+      : null;
+    /* eslint-enable @typescript-eslint/no-unnecessary-condition */
 
-    const organizationNameMultiLoc =
-      tenant.data.attributes.settings.core.organization_name;
+    const headerBg = bannerNode?.props?.image?.imageUrl || '';
+
+    const organizationNameMultiLoc = settings.core.organization_name;
     const organizationName = localize(organizationNameMultiLoc);
     const url = `https://${tenant.data.attributes.host}`;
-    const fbAppId =
-      tenant.data.attributes.settings.facebook_login &&
-      tenant.data.attributes.settings.facebook_login.app_id;
+    const fbAppId = settings.facebook_login && settings.facebook_login.app_id;
 
-    const metaTitleMultiLoc = tenant.data.attributes.settings.core.meta_title;
+    const metaTitleMultiLoc = settings.core.meta_title;
     const metaTitle =
       localize(metaTitleMultiLoc) || formatMessage(messages.metaTitle1);
 
-    const metaDescriptionMultiLoc =
-      tenant.data.attributes.settings.core.meta_description;
+    const metaDescriptionMultiLoc = settings.core.meta_description;
     let metaDescription = localize(metaDescriptionMultiLoc);
     metaDescription =
       metaDescription || formatMessage(messages.appMetaDescription);
     const googleSearchConsoleMetaAttribute =
-      tenant.data.attributes.settings.core.google_search_console_meta_attribute;
+      settings.core.google_search_console_meta_attribute;
 
-    const lifecycleStage = tenant.data.attributes.settings.core.lifecycle_stage;
+    const lifecycleStage = settings.core.lifecycle_stage;
     const blockIndexing = !['active', 'churned'].includes(lifecycleStage);
 
-    // Show default tags only on the homepage and backoffice.
+    const esriApiKey =
+      tenant.data.attributes.settings.esri_integration?.api_key;
+
+    // Show default tags only in the backoffice.
     // All other front office pages have their own title and description meta tags.
     // Ideally, we should ensure that all backoffice pages have their own meta tags and remove them from here..
     // This is necessary because on initial load, Helmet is not overriding them in child pages.
-    const showDefaultTitleAndDescTags =
-      pathname.startsWith(`/${locale}/admin/`) || pathname === `/${locale}/`;
+    const showDefaultTitleAndDescTags = pathname.startsWith(
+      `/${locale}/admin/`
+    );
 
     return (
       <Helmet>
@@ -123,34 +133,23 @@ const Meta = () => {
         <meta property="fb:app_id" content={fbAppId} />
         <meta property="og:site_name" content={organizationName} />
         <meta name="application-name" content={organizationName} />
-        {tenant.data.attributes.favicon &&
-          tenant.data.attributes.favicon.medium && (
-            <link
-              rel="icon"
-              sizes="32x32"
-              href={tenant.data.attributes.favicon.medium}
-            />
-          )}
-        {tenant.data.attributes.favicon &&
-          tenant.data.attributes.favicon.small && (
-            <link
-              rel="icon"
-              sizes="16x16"
-              href={tenant.data.attributes.favicon.small}
-            />
-          )}
-        {tenant.data.attributes.favicon &&
-          tenant.data.attributes.favicon.large && (
-            <link
-              rel="apple-touch-icon"
-              sizes="152x152"
-              href={tenant.data.attributes.favicon.large}
-            />
-          )}
-        {tenant.data.attributes.favicon &&
-          tenant.data.attributes.favicon.large && (
-            <link rel="manifest" href={`${API_PATH}/manifest.json`} />
-          )}
+        {favicon?.medium && (
+          <link rel="icon" sizes="32x32" href={favicon.medium} />
+        )}
+        {favicon?.small && (
+          <link rel="icon" sizes="16x16" href={favicon.small} />
+        )}
+        {favicon?.large && (
+          <link rel="apple-touch-icon" sizes="152x152" href={favicon.large} />
+        )}
+        <link rel="manifest" href={`${API_PATH}/manifest.json`} />
+        {/* // For clients using an Esri API Key to access private data,
+            // we need to make sure we're sending the platform URL as the referrer
+            // in these requests.
+
+            // In our nginx configuration, we're setting the referrer policy to 'no-referrer'
+            // by default, so we need to override it here so Esri network requests work properly. */}
+        {esriApiKey && <meta name="referrer" content="origin" />}
       </Helmet>
     );
   }

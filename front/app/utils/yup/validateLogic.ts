@@ -13,7 +13,7 @@ export const isRuleValid = (
   fieldBeingValidatedId: string,
   fields: IFlatCustomField[]
 ) => {
-  if ((rule && rule.goto_page_id === 'survey_end') || rule === undefined) {
+  if (rule === undefined) {
     return true;
   }
 
@@ -36,7 +36,7 @@ export const isPageRuleValid = (
   sourcePageId: string,
   nextPageId?: string
 ) => {
-  if (nextPageId === 'survey_end' || !nextPageId) {
+  if (!nextPageId) {
     return true;
   }
   const indexOfTargetPage = fields.findIndex(
@@ -54,7 +54,15 @@ const validateLogic = (message: string) => {
       logic: object(),
     })
     .when('input_type', (input_type: string, schema) => {
-      if (['select', 'linear_scale'].includes(input_type)) {
+      if (
+        [
+          'multiselect',
+          'multiselect_image',
+          'select',
+          'linear_scale',
+          'rating',
+        ].includes(input_type)
+      ) {
         return schema.test(
           'rules reference prior pages',
           message,
@@ -62,7 +70,11 @@ const validateLogic = (message: string) => {
             // Extract current state of customFields
             const fields = obj.from[2].value.customFields;
 
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (!isNilOrError(obj) && value && fields) {
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               return (value.rules || []).every((rule) =>
                 isRuleValid(rule, obj.parent.id, fields)
               );
@@ -77,6 +89,8 @@ const validateLogic = (message: string) => {
           (value: LogicType, obj) => {
             const fields = obj.from[2].value.customFields;
 
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (!isNilOrError(obj) && value?.next_page_id && fields) {
               return isPageRuleValid(fields, obj.parent.id, value.next_page_id);
             }

@@ -1,24 +1,46 @@
 # frozen_string_literal: true
 
 class AdminPublicationPolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user  = user
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
       AdminPublication
         .publication_types
-        .map { |klass| scope.where(publication: Pundit.policy_scope(user, klass)) } # scope per publication type
+        .map { |klass| scope.where(publication: scope_for_klass(klass)) } # scope per publication type
         .reduce(&:or) # joining partial scopes
+    end
+
+    private
+
+    def scope_for_klass(klass)
+      # If the publication is a project, we usually hide hidden projects
+      if klass == Project
+        scope = scope_for(klass)
+
+        if !context[:include_hidden]
+          scope = scope.not_hidden
+        end
+
+        if context[:remove_unlisted]
+          scope = ProjectPolicy.apply_listed_scope(
+            scope,
+            user,
+            context[:remove_unlisted]
+          )
+        end
+
+        scope
+      else
+        scope_for(klass)
+      end
     end
   end
 
+  def index_select_and_order_by_ids?
+    true
+  end
+
   def show?
-    Pundit.policy(user, record.publication).show?
+    policy_for(record.publication).show?
   end
 
   def reorder?

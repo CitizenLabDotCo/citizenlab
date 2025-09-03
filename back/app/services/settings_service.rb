@@ -67,14 +67,9 @@ class SettingsService
     res
   end
 
-  def remove_private_settings(settings, schema)
-    res = settings.deep_dup
-    schema['properties'].each do |feature, feature_schema|
-      feature_schema['properties'].each do |setting, setting_schema|
-        res[feature]&.delete(setting) if setting_schema['private']
-      end
-    end
-    res
+  def format_for_front_end(settings, schema)
+    settings = disable_verification_if_no_methods_enabled(settings)
+    remove_private_settings(settings, schema)
   end
 
   def activate_feature!(feature, config: nil, settings: {})
@@ -92,7 +87,7 @@ class SettingsService
     config.save!
   end
 
-  def minimal_required_settings(locales: ['en'], lifecycle_stage: 'demo')
+  def minimal_required_settings(locales: ['en'], lifecycle_stage: 'demo', country_code: 'BE')
     {
       core: {
         enabled: true,
@@ -105,12 +100,36 @@ class SettingsService
         color_secondary: '#008292',
         color_text: '#333',
         lifecycle_stage: lifecycle_stage,
+        country_code: country_code,
         authentication_token_lifetime_in_days: 30
       }
     }
   end
 
+  # Ensures the FE does not show verification if:
+  # a) There are no verification methods
+  # b) All verification methods are flagged as 'hide_from_profile'
+  def disable_verification_if_no_methods_enabled(settings)
+    return settings if !settings['verification'] || settings['verification']['enabled'] == false
+
+    enabled = settings['verification']['verification_methods'].present?
+    enabled = false if settings['verification']['verification_methods']&.pluck('hide_from_profile')&.all?(true)
+
+    settings['verification']['enabled'] = enabled
+    settings
+  end
+
   private
+
+  def remove_private_settings(settings, schema)
+    res = settings.deep_dup
+    schema['properties'].each do |feature, feature_schema|
+      feature_schema['properties'].each do |setting, setting_schema|
+        res[feature]&.delete(setting) if setting_schema['private']
+      end
+    end
+    res
+  end
 
   def default_setting(schema, feature, setting)
     schema.dig('properties', feature, 'properties', setting, 'default')

@@ -1,120 +1,141 @@
 import { randomString, randomEmail } from '../support/commands';
+import moment = require('moment');
 
-describe('Initiative form page', () => {
-  const firstName = randomString();
-  const lastName = randomString();
-  const email = randomEmail();
-  const password = randomString();
-  const initiativeTitle = randomString(10);
-  const initiativeContent = randomString(30);
-  const newInitiativeTitle = randomString(10);
-  const newInitiativeContent = randomString(30);
-  let jwt: string;
-  let initiativeId: string;
-
-  before(() => {
-    cy.apiSignup(firstName, lastName, email, password);
-    cy.apiLogin(email, password)
-      .then((user) => {
-        jwt = user.body.jwt;
-        return cy.apiCreateInitiative({
-          initiativeTitle,
-          initiativeContent,
-          jwt,
-        });
-      })
-      .then((initiative) => {
-        initiativeId = initiative.body.data.id;
-      });
-  });
+describe('Proposal edit page', () => {
+  const projectTitle = randomString();
+  const projectDescriptionPreview = randomString();
+  const projectDescription = randomString();
+  const oldTitle = randomString(40);
+  const newTitle = randomString(40);
+  const ideaContent = randomString(60);
+  const locationGeoJSON = {
+    type: 'Point',
+    coordinates: [4.351710300000036, 50.8503396],
+  };
+  const locationDescription = 'Brussel, België';
+  const extraFieldTitle = randomString();
+  const extraFieldAnswer = randomString();
+  let projectId: string;
+  let phaseId: string;
+  let inputId: string;
+  let inputSlug: string;
 
   beforeEach(() => {
-    cy.setLoginCookie(email, password);
-    cy.visit(`/initiatives/edit/${initiativeId}`);
-    cy.acceptCookies();
-    cy.get('.e2e-initiative-edit-page');
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+    }
+    cy.setAdminLoginCookie();
+
+    // Create proposals project
+    cy.apiCreateProject({
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus: 'published',
+    }).then((project) => {
+      projectId = project.body.data.id;
+      // projectSlug = project.body.data.attributes.slug;
+      return cy
+        .apiCreatePhase({
+          projectId: projectId,
+          title: 'Proposals',
+          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'proposals',
+          canPost: true,
+          canComment: true,
+          canReact: true,
+        })
+        .then((phase) => {
+          phaseId = phase.body.data.id;
+          // Create a proposal with location
+          return cy
+            .apiCreateIdea({
+              projectId,
+              ideaTitle: oldTitle,
+              ideaContent: ideaContent,
+              locationGeoJSON,
+              locationDescription,
+            })
+            .then((idea) => {
+              inputId = idea.body.data.id;
+              inputSlug = idea.body.data.attributes.slug;
+            });
+        });
+    });
   });
 
-  it('has a working initiative edit form', () => {
-    cy.intercept('PATCH', `**/initiatives/${initiativeId}`).as(
-      'initiativePatchRequest'
-    );
+  it('edit a proposal after form changes while adding an image and cosponsors', () => {
+    cy.intercept('GET', `**/ideas/${inputSlug}**`).as('idea');
 
-    cy.get('#title_multiloc').as('titleInput');
-    cy.get('#e2e-initiative-form-description-section .ql-editor').as(
-      'descriptionInput'
-    );
+    // Check original values
+    cy.visit(`/ideas/${inputSlug}`);
+    cy.get('#e2e-idea-show');
+    cy.get('#e2e-idea-title').should('exist').contains(oldTitle);
+    cy.get('#e2e-idea-description').should('exist').contains(ideaContent);
+    cy.get('#e2e-idea-location-map').should('exist');
 
-    // check initial values
-    cy.get('@titleInput').should('have.value', initiativeTitle);
-    cy.get('@descriptionInput').contains(initiativeContent);
+    // Edit input form
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form/edit`);
+    // Delete the Details page
+    cy.dataCy('e2e-more-field-actions').eq(2).click({ force: true });
+    cy.get('.e2e-more-actions-list button').contains('Delete').click();
+    // Delete the Location field
+    cy.dataCy('e2e-more-field-actions').eq(3).click({ force: true });
+    cy.get('.e2e-more-actions-list button').contains('Delete').click();
+    // Add an extra field
+    cy.dataCy('e2e-short-answer').click();
+    cy.get('#e2e-title-multiloc').type(extraFieldTitle, {
+      force: true,
+      delay: 0,
+    });
+    // Save the form
+    cy.get('form').submit();
+    cy.wait(1000);
 
-    // edit title and description
-    cy.get('@titleInput').clear().type(newInitiativeTitle);
-    cy.get('@descriptionInput').clear().type(newInitiativeContent);
+    // Edit proposal
+    cy.visit(`/ideas/edit/${inputId}`);
 
-    // verify the new values
-    cy.get('@titleInput').should('have.value', newInitiativeTitle);
-    cy.get('@descriptionInput').contains(newInitiativeContent);
+    cy.wait('@idea');
+    cy.get('#e2e-idea-edit-page');
+    cy.get('#idea-form').should('exist');
 
-    // add a topic
-    cy.get('.e2e-topics-picker').find('button').eq(3).click();
+    // Edit title
+    cy.get('#title_multiloc ').as('titleInput');
+    cy.get('@titleInput').should('exist');
+    cy.get('@titleInput').should('have.value', oldTitle);
+    cy.wait(1000); // So typing the title doesn't get interrupted
+    cy.get('@titleInput')
+      .clear()
+      .should('exist')
+      .should('not.be.disabled')
+      .type(newTitle, { delay: 0 });
+    cy.get('@titleInput').should('exist');
+    cy.get('@titleInput').should('contain.value', newTitle);
 
-    // verify that the topic has been selected
-    cy.get('.e2e-topics-picker')
-      .find('button.selected')
-      .should('have.length', 1);
+    // Go to body page
+    cy.dataCy('e2e-next-page').should('be.visible').click();
 
-    // save the form
-    cy.get('#e2e-initiative-publish-button').click();
+    // Go to uploads page and add an image
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.get('#e2e-idea-image-upload input').attachFile('icon.png');
+    // Check that the tags field was not removed
+    cy.get('.e2e-topics-picker').should('exist');
+    // Answer the extra field
+    cy.contains(extraFieldTitle).should('exist');
+    cy.get(`*[id^="${extraFieldTitle}"]`).type(extraFieldAnswer, {
+      force: true,
+    });
 
-    cy.wait('@initiativePatchRequest');
-
-    // verify redirect to the initiative page
-    cy.location('pathname').should('eq', `/en/initiatives/${initiativeTitle}`);
-
-    // verify the content on the initiative page
-    cy.get('#e2e-initiative-title').contains(newInitiativeTitle);
-    cy.get('#e2e-initiative-description').contains(newInitiativeContent);
-  });
-
-  it('saves and removes the header/banner image', () => {
-    // NOTE: if this test fails, there's a decent chance there is also a main image.
-    // Because of that, there will be two buttons with the e2e-remove-image-button.
-    cy.get('#header_bg').attachFile('icon.png');
-    // save the form
-    cy.intercept('PATCH', `**/initiatives/${initiativeId}`).as(
-      'initiativePatchRequest1'
-    );
-
-    cy.get('#e2e-initiative-publish-button').click();
+    // Submit
+    cy.dataCy('e2e-submit-form').click();
     cy.get('#e2e-accept-disclaimer').click();
-    cy.wait('@initiativePatchRequest1');
+    cy.wait(1000);
 
-    // // verify redirect to the initiative page
-    cy.location('pathname').should('eq', `/en/initiatives/${initiativeTitle}`);
-    // Verify banner image exists
-    cy.wait(2000);
-    cy.get('[data-cy="e2e-initiative-banner-image"]').should('exist');
-
-    // Back to edit form
-    cy.visit(`/initiatives/edit/${initiativeId}`);
-    cy.get('[data-cy="e2e-remove-image-button"]').click();
-
-    cy.intercept('PATCH', `**/initiatives/${initiativeId}`).as(
-      'initiativePatchRequest2'
-    );
-
-    // save the form
-    cy.get('#e2e-initiative-publish-button').click();
-    cy.wait('@initiativePatchRequest2');
-
-    // Verify banner image does not exist
-    cy.wait(2000);
-    cy.get('[data-cy="e2e-initiative-banner-image"]').should('not.exist');
-  });
-
-  after(() => {
-    cy.apiRemoveInitiative(initiativeId);
+    // Check new values
+    cy.visit(`/ideas/${inputSlug}`);
+    cy.get('#e2e-idea-show');
+    cy.get('#e2e-idea-title').should('exist').contains(newTitle);
+    cy.get('#e2e-idea-description').should('exist').contains(ideaContent);
+    cy.get('#e2e-idea-location-map').should('not.exist');
   });
 });

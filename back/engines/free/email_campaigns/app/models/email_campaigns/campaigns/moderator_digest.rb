@@ -4,19 +4,23 @@
 #
 # Table name: email_campaigns_campaigns
 #
-#  id               :uuid             not null, primary key
-#  type             :string           not null
-#  author_id        :uuid
-#  enabled          :boolean
-#  sender           :string
-#  reply_to         :string
-#  schedule         :jsonb
-#  subject_multiloc :jsonb
-#  body_multiloc    :jsonb
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  deliveries_count :integer          default(0), not null
-#  context_id       :uuid
+#  id                   :uuid             not null, primary key
+#  type                 :string           not null
+#  author_id            :uuid
+#  enabled              :boolean
+#  sender               :string
+#  reply_to             :string
+#  schedule             :jsonb
+#  subject_multiloc     :jsonb
+#  body_multiloc        :jsonb
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  deliveries_count     :integer          default(0), not null
+#  context_id           :uuid
+#  title_multiloc       :jsonb
+#  intro_multiloc       :jsonb
+#  button_text_multiloc :jsonb
+#  context_type         :string
 #
 # Indexes
 #
@@ -35,12 +39,13 @@ module EmailCampaigns
     include Schedulable
     include Trackable
     include LifecycleStageRestrictable
+    include ContentConfigurable
     allow_lifecycle_stages only: ['active']
 
     recipient_filter :user_filter_moderator_only
     recipient_filter :user_filter_no_invitees
 
-    before_send :content_worth_sending?
+    filter :content_worth_sending?
 
     N_TOP_IDEAS = 12
 
@@ -83,16 +88,18 @@ module EmailCampaigns
         statistics = statistics project
         next if project.admin_publication.archived? || zero_statistics?(statistics)
 
-        project_name = project.title_multiloc[recipient.locale] || project.title_multiloc[I18n.default_locale]
-        top_ideas = top_ideas project, name_service
-        idea_ids = top_ideas.pluck(:id)
+        project_title = project.title_multiloc[recipient.locale] || project.title_multiloc[I18n.default_locale]
+        top_ideas = top_ideas(project, name_service)
+        successful_proposals = successful_proposals(project, name_service)
+        idea_ids = (top_ideas.pluck(:id) + successful_proposals.pluck(:id)).uniq
         {
           event_payload: {
             project_id: project.id,
-            project_name: project_name,
-            statistics: statistics,
-            top_ideas: top_ideas,
-            has_new_ideas: top_ideas.any?
+            project_title: project_title,
+            statistics:,
+            top_ideas:,
+            has_new_ideas: top_ideas.any?,
+            successful_proposals:
           },
           tracked_content: {
             idea_ids: idea_ids
@@ -120,7 +127,7 @@ module EmailCampaigns
       ps = ParticipantsService.new
       participants_increase = ps.projects_participants([project], since: (Time.now - days_ago)).size
       ideas = Idea.published.where(project_id: project.id).load
-      comments = Comment.where(post_id: ideas.map(&:id))
+      comments = Comment.where(idea_id: ideas.map(&:id))
       {
         new_ideas_increase: stat_increase(ideas.filter_map(&:published_at)),
         new_comments_increase: stat_increase(comments.filter_map(&:created_at)),
@@ -144,7 +151,6 @@ module EmailCampaigns
       stat_dates.count { |t| t > (Time.now - days_ago) }
     end
 
-    # @param [UserDisplayNameService] name_service
     def top_ideas(project, name_service)
       # take N_TOP_IDEAS
       top_ideas = Idea.published.where project_id: project.id
@@ -178,6 +184,27 @@ module EmailCampaigns
       new_reactions_count = idea.reactions.where('created_at > ?', Time.now - days_ago).count
       new_comments_increase = idea.comments.where('created_at > ?', Time.now - days_ago).count
       new_reactions_count + new_comments_increase
+    end
+
+    def successful_proposals(project, name_service)
+      @successful_proposals ||= Idea
+        .where(project_id: project.id)
+        .published
+        .with_status_code('threshold_reached')
+        .with_status_transitioned_after(Time.now - days_ago)
+        .map { |idea| serialize_proposal(idea, name_service) }
+    end
+
+    def serialize_proposal(idea, name_service)
+      {
+        id: idea.id,
+        title_multiloc: idea.title_multiloc,
+        url: Frontend::UrlService.new.model_to_url(idea),
+        published_at: idea.published_at.iso8601,
+        author_name: name_service.display_name!(idea.author),
+        likes_count: idea.likes_count,
+        comments_count: idea.comments_count
+      }
     end
 
     protected

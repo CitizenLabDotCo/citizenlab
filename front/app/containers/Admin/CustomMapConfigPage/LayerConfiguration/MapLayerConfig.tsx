@@ -22,7 +22,7 @@ import {
   SectionField,
   SubSectionTitle,
 } from 'components/admin/Section';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
@@ -67,7 +67,7 @@ const FooterRight = styled.div`
   margin-left: 15px;
 `;
 
-const CancelButton = styled(Button)`
+const CancelButton = styled(ButtonWithLink)`
   margin-left: 10px;
 `;
 
@@ -115,6 +115,8 @@ const MapLayerConfig = memo<Props & WrappedComponentProps>(
     const tenantLocales = useAppConfigurationLocales();
 
     const mapLayer =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       mapConfig?.data?.attributes?.layers?.find(
         (layer) => layer.id === mapLayerId
       ) || undefined;
@@ -127,8 +129,12 @@ const MapLayerConfig = memo<Props & WrappedComponentProps>(
       title_multiloc: getEditableTitleMultiloc(mapLayer),
       color: getLayerColor(mapLayer),
       markerSymbol:
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         mapLayer?.geojson?.features?.[0]?.properties?.['marker-symbol'] || '',
       tooltipContent:
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         mapLayer?.geojson?.features?.[0]?.properties?.tooltipContent,
     });
 
@@ -138,9 +144,13 @@ const MapLayerConfig = memo<Props & WrappedComponentProps>(
           title_multiloc: getEditableTitleMultiloc(mapLayer),
           color: getLayerColor(mapLayer),
           markerSymbol:
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             mapLayer?.geojson?.features?.[0]?.properties?.['marker-symbol'] ||
             '',
           tooltipContent:
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             mapLayer?.geojson?.features?.[0]?.properties?.tooltipContent,
         },
         false
@@ -209,14 +219,20 @@ const MapLayerConfig = memo<Props & WrappedComponentProps>(
           title_multiloc
         ).every((key) => isEmpty((title_multiloc as Multiloc)[key]));
 
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (isTitleMultilocEmpty && mapConfig && !isNilOrError(tenantLocales)) {
           title_multiloc = getUnnamedLayerTitleMultiloc(tenantLocales);
         }
 
         const geojson = cloneDeep(
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           mapLayer?.geojson || {}
         ) as GeoJSON.FeatureCollection;
 
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         geojson?.features.forEach((feature) => {
           feature.properties = {
             ...feature.properties,
@@ -241,6 +257,8 @@ const MapLayerConfig = memo<Props & WrappedComponentProps>(
         try {
           await updateProjectMapLayer({
             id: mapLayer.id,
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             mapConfigId: mapConfig?.data?.id,
             title_multiloc,
             geojson,
@@ -325,14 +343,14 @@ const MapLayerConfig = memo<Props & WrappedComponentProps>(
 
         <Footer>
           <FooterLeft>
-            <Button
+            <ButtonWithLink
               buttonStyle="admin-dark"
               onClick={handleOnSubmit}
               processing={processing}
               disabled={!touched}
             >
               <FormattedMessage {...messages.save} />
-            </Button>
+            </ButtonWithLink>
 
             <CancelButton
               buttonStyle="secondary-outlined"

@@ -17,7 +17,7 @@ const Container = ({ children, ...rest }: Props) => (
     zIndex="99999"
     flex="0 0 auto"
     h={`calc(100vh - ${stylingConsts.menuHeight}px)`}
-    w="210px"
+    w="236px"
     display="flex"
     flexDirection="column"
     alignItems="center"

@@ -39,8 +39,10 @@ export const SelectionScreen = ({
   const { formatMessage } = useIntl();
 
   const selectedFieldIds = new Set(
-    selectedFields
-      ?.map((field) => field.relationships.custom_field.data?.id)
+    selectedFields // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      ?.map((field) => field.relationships.custom_field.data?.id) // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       .filter((id) => id !== null) as string[]
   );
 

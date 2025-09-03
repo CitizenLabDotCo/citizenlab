@@ -2,17 +2,9 @@
 
 module Polls
   class QuestionPolicy < ApplicationPolicy
-    class Scope
-      attr_reader :user, :scope
-
-      def initialize(user, scope)
-        @user  = user
-        @scope = scope
-      end
-
+    class Scope < ApplicationPolicy::Scope
       def resolve
-        phases = Pundit.policy_scope(user, Phase)
-        scope.where(phase: phases)
+        scope.where(phase: scope_for(Phase))
       end
     end
 
@@ -21,7 +13,7 @@ module Polls
     end
 
     def show?
-      ProjectPolicy.new(user, record.phase.project).show?
+      policy_for(record.phase.project).show?
     end
 
     def update?

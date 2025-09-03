@@ -8,7 +8,7 @@ import { useTheme } from 'styled-components';
 import EsriMap from 'components/EsriMap';
 import { getMapPinSymbol } from 'components/EsriMap/utils';
 
-import { SubmitState } from '../edit';
+import { SubmitState } from '../types';
 
 export interface Props {
   mapHeight?: string;
@@ -26,7 +26,11 @@ const EventMap = memo<Props>(
       // Create point graphic for event location
       const pointGraphic = new Graphic({
         geometry: new Point({
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           longitude: locationPoint?.current?.coordinates[0],
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           latitude: locationPoint?.current?.coordinates[1],
         }),
         symbol: getMapPinSymbol({ color: theme.colors.tenantPrimary }),

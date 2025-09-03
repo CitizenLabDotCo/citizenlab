@@ -143,39 +143,60 @@ describe XlsxService do
         expect(worksheet[0].cells.map(&:value)).to include custom_field.title_multiloc['en']
       end
     end
-  end
 
-  # TODO: move-old-proposals-test
-  describe 'generate_initiatives_xlsx' do
-    let(:initiatives) { create_list(:initiative, 2) }
-    let(:xlsx) { service.generate_initiatives_xlsx(initiatives) }
-    let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
-    let(:worksheet) { workbook.worksheets[0] }
+    describe 'cosponsorship' do
+      it 'does not contain the cosponsors by default' do
+        expect(worksheet[0].cells.map(&:value)).not_to include 'cosponsors'
+      end
 
-    it 'exports a valid excel file' do
-      expect { workbook }.not_to raise_error
+      it 'contains the cosponsors if with_cosponsors is set to true' do
+        cosponsorship = create(:cosponsorship, idea: ideas.first)
+
+        xlsx = service.generate_ideas_xlsx(ideas, with_cosponsors: true)
+        workbook = RubyXL::Parser.parse_buffer(xlsx)
+        worksheet = workbook.worksheets[0]
+
+        expect(worksheet[0].cells.map(&:value)).to include 'cosponsors'
+        expect(worksheet[1].cells.map(&:value)).to include(cosponsorship.user.full_name)
+      end
     end
 
-    it 'contains a row for every initiative' do
-      expect(worksheet.sheet_data.size).to eq(initiatives.size + 1)
-    end
+    describe 'default columns' do
+      it 'includes all expected default columns in export' do
+        headers = worksheet[0].cells.map(&:value)
 
-    describe do
-      let(:xlsx) { service.generate_initiatives_xlsx(initiatives, view_private_attributes: false) }
-
-      it 'hides private attributes' do
-        custom_field = create(:custom_field, enabled: false)
-        expect(worksheet[0].cells.map(&:value)).not_to include 'author_id'
-        expect(worksheet[0].cells.map(&:value)).not_to include 'author_email'
-        expect(worksheet[0].cells.map(&:value)).not_to include 'assignee_email'
-        expect(worksheet[0].cells.map(&:value)).to include custom_field.title_multiloc['en']
+        expect(headers).to include(
+          'id',
+          'title',
+          'description',
+          'author_name',
+          'author_email',
+          'author_id',
+          'published_at',
+          'submitted_at',
+          'comments',
+          'likes',
+          'dislikes',
+          'unsure',
+          'url',
+          'project',
+          'topics',
+          'status',
+          'latitude',
+          'longitude',
+          'location_description',
+          'proposed_budget',
+          'assignee',
+          'assignee_email',
+          'attachments'
+        )
       end
     end
   end
 
-  describe 'generate_idea_comments_xlsx' do
-    let(:comments) { create_list(:comment, 5, post: create(:idea)) }
-    let(:xlsx) { service.generate_idea_comments_xlsx(comments) }
+  describe 'generate_comments_xlsx' do
+    let(:comments) { create_list(:comment, 5, idea: create(:idea)) }
+    let(:xlsx) { service.generate_comments_xlsx(comments) }
     let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
     let(:worksheet) { workbook.worksheets[0] }
 
@@ -189,32 +210,7 @@ describe XlsxService do
     end
 
     describe do
-      let(:xlsx) { service.generate_idea_comments_xlsx(comments, view_private_attributes: false) }
-
-      it 'hides private attributes' do
-        custom_field = create(:custom_field, enabled: false)
-        expect(worksheet[0].cells.map(&:value)).not_to include 'author_id'
-        expect(worksheet[0].cells.map(&:value)).not_to include 'author_email'
-        expect(worksheet[0].cells.map(&:value)).not_to include 'author_name'
-        expect(worksheet[0].cells.map(&:value)).to include custom_field.title_multiloc['en']
-      end
-    end
-  end
-
-  describe 'generate_initiative_comments_xlsx' do
-    let(:comments) { create_list(:comment, 5, post: create(:initiative)) }
-    let(:xlsx) { service.generate_initiative_comments_xlsx(comments) }
-    let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
-    let(:worksheet) { workbook.worksheets[0] }
-
-    it 'exports a valid excel file and contains a row for every comment' do
-      expect { workbook }.not_to raise_error
-      expect(worksheet.sheet_data.size).to eq(comments.size + 1)
-      expect(worksheet[comments.size].cells.map(&:value)[worksheet[0].cells.map(&:value).index('parent_comment_id')]).to eq comments.last.parent_id
-    end
-
-    describe do
-      let(:xlsx) { service.generate_initiative_comments_xlsx(comments, view_private_attributes: false) }
+      let(:xlsx) { service.generate_comments_xlsx(comments, view_private_attributes: false) }
 
       it 'hides private attributes' do
         custom_field = create(:custom_field, enabled: false)

@@ -13,13 +13,6 @@ class WebApi::V1::FilesController < ApplicationController
       file_relationship: :idea_files,
       container_id: :idea_id
     },
-    'Initiative' => {
-      container_class: Initiative,
-      file_class: InitiativeFile,
-      policy_scope_class: InitiativeFilePolicy::Scope,
-      file_relationship: :initiative_files,
-      container_id: :initiative_id
-    },
     'Project' => {
       container_class: Project,
       file_class: ProjectFile,
@@ -58,44 +51,80 @@ class WebApi::V1::FilesController < ApplicationController
   }
 
   before_action :set_container, only: %i[index create]
-  before_action :set_file, only: %i[show destroy]
+  before_action :set_file, only: %i[show destroy update]
   skip_after_action :verify_policy_scoped
 
   def index
-    @files = @container.send(secure_constantize(:file_relationship)).order(:ordering)
-    @files = secure_constantize(:policy_scope_class).new(current_user, @files).resolve
-    render json: WebApi::V1::FileSerializer.new(@files, params: jsonapi_serializer_params).serializable_hash
+    files = @container.send(secure_constantize(:file_relationship)).order(:ordering)
+
+    if files.empty?
+      file_attachments = policy_scope(@container.file_attachments.includes(:file))
+      render json: WebApi::V1::FileAttachmentSerializerAsLegacyFile.new(
+        file_attachments,
+        params: jsonapi_serializer_params
+      ).serializable_hash
+    else
+      files = secure_constantize(:policy_scope_class).new(pundit_user, files).resolve
+      render json: WebApi::V1::FileSerializer.new(
+        files,
+        params: jsonapi_serializer_params
+      ).serializable_hash
+    end
   end
 
   def show
-    render json: WebApi::V1::FileSerializer.new(@file, params: jsonapi_serializer_params).serializable_hash
+    render json: serialize_file(@file)
   end
 
   def create
-    @file = @container.send(secure_constantize(:file_relationship)).new file_params
-    authorize @file
+    container_files = @container.send(secure_constantize(:file_relationship))
+
+    # If there exist files using the legacy file class, continue using it. We'll migrate
+    # all the files of a given container at once. They cannot be mixed.
+    file = if container_files.exists?
+      @container.send(secure_constantize(:file_relationship)).new(create_file_params)
+    else
+      build_file_attachment
+    end
+
+    authorize(file)
+
+    if file.save
+      render json: serialize_file(file), status: :created
+    else
+      render json: { errors: transform_carrierwave_error_details(file.errors, :file) }, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    new_ordering = params.dig(:file, :ordering)
+    return render(json: serialize_file(@file)) unless new_ordering
+
+    if @file.is_a?(Files::FileAttachment)
+      @file.position = new_ordering
+    else
+      @file.ordering = new_ordering
+    end
+
     if @file.save
-      render json: WebApi::V1::FileSerializer.new(
-        @file,
-        params: jsonapi_serializer_params
-      ).serializable_hash, status: :created
+      render json: serialize_file(@file)
     else
       render json: { errors: transform_carrierwave_error_details(@file.errors, :file) }, status: :unprocessable_entity
     end
   end
 
   def destroy
-    file = @file.destroy
-    if file.destroyed?
-      head :ok
-    else
-      head :internal_server_error
-    end
+    @file.destroy!
+    SideFxFileService.new.after_destroy(@file)
+
+    head :ok
+  rescue ActiveRecord::RecordNotDestroyed
+    render json: { errors: @file.errors.details }, status: :unprocessable_entity
   end
 
   private
 
-  def file_params
+  def create_file_params
     params_of_file = params.require(:file).permit(
       :file,
       :ordering,
@@ -112,8 +141,17 @@ class WebApi::V1::FilesController < ApplicationController
     returned_file_params
   end
 
+  def update_file_params
+    params.require(:file).permit(:ordering)
+  end
+
   def set_file
-    @file = secure_constantize(:file_class).find params[:id]
+    # First attempt to find using legacy file class
+    @file = secure_constantize(:file_class).find(params[:id])
+    authorize @file
+  rescue ActiveRecord::RecordNotFound
+    # Fall back to FileAttachment lookup
+    @file = Files::FileAttachment.includes(:file).find(params[:id])
     authorize @file
   end
 
@@ -124,5 +162,29 @@ class WebApi::V1::FilesController < ApplicationController
 
   def secure_constantize(key)
     CONSTANTIZER.fetch(params[:container_type])[key]
+  end
+
+  def serialize_file(file)
+    serializer_class = file.is_a?(Files::FileAttachment) ? WebApi::V1::FileAttachmentSerializerAsLegacyFile : WebApi::V1::FileSerializer
+    serializer_class.new(file, params: jsonapi_serializer_params).serializable_hash
+  end
+
+  def build_file_attachment
+    file_params = create_file_params
+
+    files_file = Files::File.new(
+      content_by_content: file_params[:file_by_content].slice(:content, :name),
+      uploader: current_user
+    )
+
+    if (project = @container.try(:project))
+      files_file.files_projects.build(project: project)
+    end
+
+    Files::FileAttachment.new(
+      file: files_file,
+      attachable: @container,
+      position: file_params[:ordering]
+    )
   end
 end

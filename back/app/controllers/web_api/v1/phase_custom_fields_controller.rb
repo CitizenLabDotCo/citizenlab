@@ -15,6 +15,7 @@ class WebApi::V1::PhaseCustomFieldsController < ApplicationController
 
   private
 
+  # @return [Phase]
   def phase
     @phase ||= Phase.find params[:phase_id]
   end
@@ -23,3 +24,5 @@ class WebApi::V1::PhaseCustomFieldsController < ApplicationController
     IdeaCustomFieldsService.new(phase.pmethod.custom_form).enabled_fields_with_other_options
   end
 end
+
+WebApi::V1::PhaseCustomFieldsController.include(AggressiveCaching::Patches::WebApi::V1::PhaseCustomFieldsController)

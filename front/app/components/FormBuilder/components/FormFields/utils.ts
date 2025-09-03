@@ -28,7 +28,7 @@ export const getFieldBackgroundColor = (
     return rgba(colors.tealLight, 0.7);
   } else if (hasErrors) {
     return colors.errorLight;
-  } else if (['page', 'section'].includes(field.input_type)) {
+  } else if (field.input_type === 'page') {
     return rgba(colors.coolGrey300, 0.15);
   }
   return undefined;
@@ -50,6 +50,8 @@ const getBuiltinFieldBadgeLabel = (key: string): MessageDescriptor => {
       return messages.fileUpload;
     case 'proposed_budget':
       return messages.proposedBudget;
+    case 'cosponsor_ids':
+      return messages.cosponsors;
     default:
       return messages.default;
   }
@@ -76,6 +78,8 @@ const getCustomFieldBadgeLabel = (
       return messages.number;
     case 'linear_scale':
       return messages.linearScale;
+    case 'rating':
+      return messages.rating;
     case 'shapefile_upload':
       return messages.shapefileUpload;
     case 'file_upload':
@@ -86,6 +90,12 @@ const getCustomFieldBadgeLabel = (
       return messages.drawRoute;
     case 'polygon':
       return messages.drawArea;
+    case 'ranking':
+      return messages.ranking;
+    case 'matrix_linear_scale':
+      return messages.matrix;
+    case 'sentiment_linear_scale':
+      return messages.sentiment;
     default:
       return messages.default;
   }

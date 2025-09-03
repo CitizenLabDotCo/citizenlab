@@ -20,11 +20,9 @@ import { isBuiltInField, isHiddenField } from 'api/user_custom_fields/util';
 
 import customfieldMessages from 'containers/Admin/settings/registration/CustomFieldRoutes/messages';
 
-import {
-  SortableList,
-  SortableRow,
-  TextCell,
-} from 'components/admin/ResourceList';
+import { TextCell } from 'components/admin/ResourceList';
+import SortableList from 'components/admin/ResourceList/SortableList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 import {
   Section,
   SectionTitle,
@@ -32,7 +30,7 @@ import {
   SubSectionTitle,
 } from 'components/admin/Section';
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
@@ -126,7 +124,7 @@ const CustomFieldSettings = () => {
   };
 
   return (
-    <Section>
+    <Section className="intercom-settings-tab-registration-fields">
       <SectionTitle>
         <FormattedMessage {...messages.registrationFields} />
       </SectionTitle>
@@ -212,7 +210,7 @@ const CustomFieldSettings = () => {
                     )}
                     <Buttons>
                       {!isBuiltInField(field) && !isHiddenField(field) && (
-                        <Button
+                        <ButtonWithLink
                           className={`e2e-delete-custom-field-btn e2e-${field.attributes.title_multiloc['en-GB']}`}
                           onClick={handleOnDeleteClick(field.id)}
                           buttonStyle="text"
@@ -221,11 +219,11 @@ const CustomFieldSettings = () => {
                           <FormattedMessage
                             {...customfieldMessages.deleteButtonLabel}
                           />
-                        </Button>
+                        </ButtonWithLink>
                       )}
                       {!isHiddenField(field) && (
-                        <Button
-                          className={`e2e-custom-field-edit-btn e2e-${field.attributes.title_multiloc['en-GB']}`}
+                        <ButtonWithLink
+                          className={`e2e-custom-field-edit-btn e2e-${field.attributes.title_multiloc['en-GB']} intercom-settings-tab-registration-fields-edit`}
                           linkTo={`/admin/settings/registration/custom-fields/${field.id}/field-settings`}
                           buttonStyle="secondary-outlined"
                           icon="edit"
@@ -233,7 +231,7 @@ const CustomFieldSettings = () => {
                           <FormattedMessage
                             {...customfieldMessages.editButtonLabel}
                           />
-                        </Button>
+                        </ButtonWithLink>
                       )}
                     </Buttons>
                   </SortableRow>
@@ -243,13 +241,14 @@ const CustomFieldSettings = () => {
           )}
         </SortableList>
       </Box>
-      <Button
+      <ButtonWithLink
         buttonStyle="admin-dark"
         icon="plus-circle"
         linkTo="/admin/settings/registration/custom-fields/new"
+        className="intercom-settings-tab-registration-fields-new"
       >
         <FormattedMessage {...messages.addAFieldButton} />
-      </Button>
+      </ButtonWithLink>
     </Section>
   );
 };

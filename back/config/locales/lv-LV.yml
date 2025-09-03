@@ -58,21 +58,6 @@ lv:
     answered_description: atbildēja
     ineligible: neatbilstoši
     ineligible_description: neatbilstoši
-  initiative_statuses:
-    review_pending: pārskatīšana vēl nav pabeigta
-    review_pending_description: pārskatīšana vēl nav pabeigta
-    changes_requested: pieprasītās izmaiņas
-    changes_requested_description: pieprasītās izmaiņas
-    proposed: ierosinātais
-    proposed_description: ierosinātais
-    expired: termiņš ir beidzies
-    expired_description: termiņš ir beidzies
-    threshold_reached: slieksnis sasniegts
-    threshold_reached_description: slieksnis sasniegts
-    answered: atbildēts
-    answered_description: atbildēts
-    ineligible: nepiemērots
-    ineligible_description: nepiemērots
   topics:
     nature: Daba un bioloģiskā daudzveidība
     nature_description: Daba un bioloģiskā daudzveidība
@@ -106,20 +91,20 @@ lv:
     services_description: Sabiedriskie pakalpojumi
     other: Cits
     other_description: Cits
+    quality_of_life: Dzīves kvalitāte
+    service_delivery: Pakalpojumu sniegšana
+    governance_and_trust: Pārvaldība un uzticēšanās
   static_pages:
     terms_and_conditions_title: Noteikumi un nosacījumi
     terms_and_conditions_body: >
       <p>Šajos noteikumos un nosacījumos ir izklāstīti noteikumi un vadlīnijas, kā sniegt ieguldījumu platformā, un to mērķis ir palīdzēt nodrošināt konstruktīvu dialogu.</p> <p>Jūsu idejas platformas turpmākai pilnveidošanai ir laipni gaidītas, un tās var sūtīt uz support@govocal.com.</p> <h2>Kas var piedalīties?</h2> <p>Ikviens var apskatīt sabiedriskus projektus caur šo platformu. Ja vēlaties pievienot saturu (piemēram, iesniegt datus vai balsot), jums būs jāreģistrējas un jāizveido konts. Jūs varat reģistrēties, izmantojot savu e-pasta adresi; dažās platformās var būt ir iespējams pierakstīties, izmantojot esošo Facebook vai Google kontu. Ja izmantojat kādu no šiem pakalpojumiem, jūsu vārds, e-pasta adrese un profila fotoattēls tiks kopīgots ar platformas kontu un pievienots tam.</p> <p>Lūdzu, nemiet vērā, ka konta izveidošana nenodrošina jums īpašumtiesības. Platformas administratori var atteikt, apturēt vai dzēst kontus tādu iemeslu dēļ kā šajā lapā izklāstīto noteikumu un nosacījumu neievērošana.</p> <p>Vispārēji nosacījumi attiecībā uz jūsu kontu ir šādi: </p> <ul> <li> <strong>Jūs varat izveidot vienu kontu</strong> <p>Persona nedrīkst izveidot un uzturēt vairākus kontus. Jūsu norādītajai konta informācijai jābūt precīzai, un šo kontu nevar nodot citai personai bez platformas administratora atļaujas.</p> </li> <li><strong>Jūsu kontu nedrīkst izmantot komerciālai reklāmai</strong> <p>Kontu nevar izmantot tikai un vienīgi reklāmai, produkta vai pakalpojuma realizācijai utt.</p> </li> <li> <strong>Jūs esat atbildīgs par sava konta informācijas drošību un konfidencialitāti</strong> <p>Jūs esat vienīgā persona, kurai drīkst izmantot savu kontu un kurai ir piekļuve konta parolei un pieteikšanās datiem. Lai uzlabotu konta drošību, iesakām izmantot paroli, kurā ir ciparu, mazo un lielo burtu kombinācija. Mēs neesam atbildīgi par jebkādiem zaudējumiem vai bojājumiem, kas radušies jūsu kontam, un nevaram uzņemties atbildību par tā zādzību (piemēram, ar pikšķerēšanas palīdzību). Ņemiet vērā, ka mēs nekad neprasīsim jūsu pieteikšanās datus, piemēram, paroli. </p> <h2>Jūsu darbība platformā</h2> <p>Lai nodrošinātu drošu un produktīvu dalību, pastāv daži ierobežojumi attiecībā uz satura veidu, ko var publicēt šajā platformā. Jebkurš saturs, ko publicējat platformā, nedrīkst ietvert:</p> <ul> <li> <strong>Privātos datus</strong> <p>Konfidenciālus datus un personisku informāciju par citām personām, piemēram, tālruņa numurus un adreses, nedrīkst publicēt bez viņu skaidras atļaujas un piekrišanas.</p> <li><strong>Spamu / ļaunprātīgu programmatūru / pikšķerēšanu / vīrusus / tārpus / Trojas zirgus</strong> <p>Ļaunprātīgu saturu vai saites, kuru mērķis ir pārkāpt citu personu privātumu vai sabojāt vai traucēt citu personu pārlūkprogrammas vai datorus.</p> </li> <li> <strong>Draudus, apvainojumus un citu nepiedienīgu saturu </strong> <p>Personīgus uzbrukumus un apvainojumus, draudošu uzvedību vai izteicienus, diskriminējošus komentārus, rupjības un citus aizvainojošus izteicienus.</p> </li> <li><strong>Reklāmu un komercdarbību</strong> <p>Saturu, kas publicēts ar vienīgo mērķi reklamēt komerciālu pakalpojumu vai produktu.</p> </li> <li> <strong>Ar autortiesībām aizsargātu materiālu</strong> <p>Saturu, kas pārkāpj intelektuālā īpašuma tiesības (piem, ar autortiesībām aizsargātus attēlus).</p> </li> <li> <strong>Nelikumīgas darbības</strong> <p>Saturu, kas jebkādā veidā veicina nelikumīgas darbības.</li></p> </ul> <p>Pieteikumi un cits saturs, kas ietver kādu no iepriekš minētajiem punktiem, var tikt rediģēts, dzēsts vai citādi aizliegts publicēšanai, un konts var tikt uz laiku bloķēts vai neatgriezeniski dzēsts. Jauni vai papildu konti, kas izveidoti, lai izvairītos no pagaidu vai pastāvīgas apturēšanas, arī var tikt uzraudzīti un izdzēsti.</p> <h2>Piemērojamie likumi</h2> <p>Konta izmantošana nedrīkst pārkāpt piemērojamos likumus. Tas attiecas arī uz jebkādiem privātuma tiesību aktu, intelektuālā īpašuma tiesību, kriminālkodeksa u. c. pārkāpumiem.</p> <p>Mēs nekādā veidā nevaram uzņemties atbildību par platformā publicēto saturu, kas neatbilst iepriekš minētajiem noteikumiem un likumiem. Par pārkāpumiem var ziņot uz support@govocal.com, un to rezultātā attiecīgās ziņas var tikt dzēstas un/vai pamatkonts var tikt apturēts vai neatgriezeniski anulēts.</p> <p>Iespējams, ka platformā publicētais saturs var saturēt kaitīgus failus vai saites. Lejupielādējot failus vai piekļūstot hipersaitēm, izmantojot platformu, jūs uzņematies risku un atbildību par jebkādu kaitējumu, kas var rasties.</p> <h2>Īpašumtiesības</h2> <p>Šo platformu aizsargā intelektuālā īpašuma tiesības, kas saistītas ar tās saturu, pirmkodu, datubāzēm utt. Jebkurš oriģināls saturs, ko jūs ievietojat platformā, var būt publiski redzams, un uz to attiecas Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) publiskā licence, kas ļauj jūsu saturu kopīgot vai pielāgot, norādot autoru. Bez atļaujas nedrīkst citādi reproducēt, izplatīt, pārveidot vai pārraidīt platformu un tās saturu, kas nepieder pie neaizsargātajiem darbiem.</p>
     privacy_policy_title: Privātuma politika
     privacy_policy_body: >
-      <p>Atbildīgais par datu apstrādi:</p> <p>CitizenLab NV - Pachecolaan 34 - 1000 Brisele - Beļģija</p> <p>Kontakta e-pasta adrese: support@govocal.com</p> <p>Organizācija: //ievietot klienta kontaktinformāciju</p><h2>1. PRIVĀTUMA POLITIKA</h2><p> Šī "Privātuma politika" attiecas uz "Personas datiem", ko Go Vocal organizācijas vārdā vāc, izmantojot šo tīmekļa vietni.</p> <h2>2. KAS IR PERSONAS DATI? </h2> <p> Šajā privātuma politikā ar personas datiem saprot informāciju, kas ļauj jūs identificēt. Identificējama persona ir tāda, kuru var tieši vai netieši identificēt, jo īpaši atsaucoties uz identifikācijas numuru vai vienu vai vairākiem faktoriem, kas saistīti ar fizisko, fizioloģisko, garīgo, ekonomisko, kultūras vai sociālo identitāti. Tipisks personas datu piemērs ir jūsu vārds un e-pasta adrese.</p> <h2>3. KĀDUS PERSONAS DATUS MĒS VĀCAM? </h2> <p>Mēs varam vākt jūsu Personas datus no šādiem trim avotiem:</p> <h3>3.1 Personas dati, kurus jūs sniedzat reģistrācijas procesa laikā Platformā, un daži no tiem nav obligāti.</h3> <p>Personas dati, kurus mēs no jums varētu vākt, ir šādi:</p> <ul> <li>Vārds un uzvārds</li> <li>E-pasta adrese</li> <li>Dzimšanas gads</li> <li>Dzimums</li> <li>Dzīvesvieta</li> <li>Vēlamā valoda</li> </ul> <p>Šis saraksts var tikt paplašināts pēc organizācijas pieprasījuma. Ja izvēlaties pierakstīties, izmantojot trešās puses autentifikācijas pakalpojumu sniedzēju, piemēram, Google Accounts, Facebook vai FranceConnect, mēs šos datus iegūsim no tiem. Ja izvēlaties apliecināt savu identitāti, izmantojot trešās puses identitātes nodrošinātāju, piemēram, COW, FranceConnect vai CSAM, mēs šo informāciju iegūsim no tiem.</p> <h3>3.2 Personas dati, ko sniedzat, veicot līdzdalības darbības mūsu platformā.</h3> <p>Katra darbība, ko veicat platformā (balsošana, idejas publicēšana, komentāra rakstīšana, aptaujas veikšana...), tiek reģistrēta un saglabāta. Šie dati ir saistīti arī ar jūsu reģistrācijas datiem (3.1. punkts), kas nozīmē, ka organizācija var saistīt jūsu platformas profilu ar šiem līdzdalības datiem.</p> <h3>3.3 Personas dati, kurus mēs apkopojam, kad jūs apmeklējat mūsu platformu.</h3> <p>Mēs (un trešās puses apstrādātāji, kas darbojās mūsu vārdā) apkopojam informāciju par mūsu platformas izmantošanu, lai novērtētu platformas efektīvu darbību un drošību. Šim nolūkam mēs apkopojam tehnisku informāciju, kas var jūs identificēt, piemēram, jūsu IP adresi un pārlūkprogrammas informāciju. Izmantojot mūsu pakalpojumus, jūs piekrītat šo datu vākšanai.</p><p>Mēs vācam arī lietošanas datus, lai uzlabotu mūsu pakalpojumus, un jūs jebkurā laikā varat atteikties no šo datu vākšanas, izmantojot piekrišanas pārvaldnieku.</p> <h2>4. KĀ MĒS IZMANTOJAM PERSONAS DATUS?</h2> <p>Mēs varam izmantot jūsu personas datus šādiem nolūkiem:</p> <ul> <li>Pirmkārt un galvenokārt, lai paziņotu par jūsu ievadītajiem datiem organizācijai un sagatavotu apkopotus pārskatus par visiem šajā platformā apkopotajiem datiem, lai palīdzētu lēmumu pieņemšanā.</li> <li>Lai izveidotu un uzturētu jūsu lietotāja profilu šajā tīmekļa vietnē.</li> <li>Lai pārvaldītu lietotāju identifikāciju un autentifikāciju.</li> <li>Lai sniegtu informāciju par jūsu kopienu un/vai brīdinātu jūs, kad darbības platformā varētu jūs interesēt. Jūs jebkurā laikā varat atteikties no lietotāja e-pasta vēstuļu saņemšanas savā lietotāja profilā.</li> <li>Lai uzlabotu mūsu pakalpojumus un uzraudzītu to funkcionalitāti.</li> </ul> <p>Personas dati tiek glabāti un apstrādāti tikai tik ilgi, cik nepieciešams to apstrādes mērķa sasniegšanai. Pēc tam dati tiks dzēsti vai anonimizēti.</p> <h2>5. AR KO MĒS KOPĪGOJAM JŪSU PERSONAS DATUS? </h2> <p>Mēs kopīgojam jūsu personas datus ar organizāciju, kuras vārdā mēs šos datus apkopojam. Mēs kopīgojam jūsu datus ar apakšapstrādātājiem, kas strādā mūsu vārdā. Mēs nekad nepārdosim vai neiznomāsim jūsu personas datus citiem pakalpojumu sniedzējiem, kā arī nekopīgosim jūsu personas datus ar pakalpojumu sniedzējiem, kuri neatbilst VDAR prasībām.</p> <h2>6. KUR MĒS NODODAM JŪSU PERSONAS DATUS?</h2> <p>Mēs nododam jūsu personas datus pakalpojumu sniedzējiem, kas reģistrēti ārpus Eiropas Ekonomikas zonas, tikai tad, ja tie atbilst VDAR 44. panta prasībām.</p> <h2>7. KĀDAS IR JŪSU TIESĪBAS?</h2> <p>Jums ir tiesības jebkurā laikā apskatīt savus personas datus, kā arī saņemt informāciju par to, kā Go Vocal izmanto jūsu personas datus.</p> <h3>7.1 Tiesības uz datu labošanu, dzēšanu un apstrādes ierobežošanu</h3> <p>Jūs varat brīvi izlemt, vai sniegt savus personas datus Go Vocal vai nesniegt. Turklāt jums vienmēr ir tiesības pieprasīt Go Vocal labot, papildināt vai dzēst jūsu personas datus. Jūs apzināties, ka atteikums sniegt personas datus vai pieprasījums tos dzēst nozīmē, ka noteiktus pakalpojumus vairs nevar sniegt. Jūs varat arī pieprasīt, lai jūsu personas datu apstrāde tiktu ierobežota. Ja izvēlaties noņemt savu kontu no platformas, jūsu personas dati tiks dzēsti no mūsu serveriem. Daļa personas informācijas par jums var palikt reģistrēšanas datos, kurus mēs glabājam drošības un juridisku iemeslu dēļ līdz 30 dienām.</p> <h3>7.2. Tiesības iebilst</h3> <p>Jums ir tiesības iebilst pret savu personas datu apstrādi nopietnu un likumīgu iemeslu dēļ. Turklāt jums vienmēr ir tiesības iebilst pret savu personas datu izmantošanu tiešās tirdzniecības nolūkos; šādos gadījumos jums nav jānorāda iemesli.</p> <h3>7.3 Tiesības uz datu pārnesamību</h3> <p>Jums ir tiesības saņemt personas datus, ko esat sniedzis Go Vocal, strukturētā, tipiskā un mašīnlasāmā formā un/vai tos nodot dažādiem pārziņiem.</p> <h3>7.4. Tiesības atsaukt piekrišanu</h3> <p>Ja datu apstrādes pamatā ir jūsu iepriekšēja piekrišana, jums ir tiesības atsaukt šo piekrišanu.</p> <h3>7.5. Savu tiesību izmantošana</h3> <p>Jūs varat izmantot savas tiesības, sazinoties ar Go Vocal, rakstot e-pastu uz support@govocal.com, pa pastu uz adresi Pachecolaan 34, 1000 Brisele, Beļģija vai izmantojot veidlapu "Sazinieties ar mums" mūsu tīmekļa vietnē, ar nosacījumu, ka jūs pievienojat savas personas apliecības priekšpuses kopiju.</p> <h3>7.6 Automatizēta lēmumu pieņemšana un profilēšana</h3> <p>Jūsu personas datu apstrāde neietver profilēšanu, un Go Vocal neveic arī automatizētu lēmumu pieņemšanu.</p> <h3>7.7 Tiesības iesniegt sūdzību</h3> <p>Jums ir tiesības iesniegt sūdzību savas valsts privātuma iestādei vai Beļģijas privātuma iestādei, kuras kompetencē ir Go Vocal: Drukpersstraat 35, 1000 Brisele, Beļģija, tālr. +32 (0)2 274 48 00, fakss +32 (0)2 274 48 35, e-pasts: contact@adp-gba.be. Tas neietekmē atvieglojumus civiltiesā.</p> <h2>8. PAPILDU INFORMĀCIJA PAR DATU VĀKŠANU UN APSTRĀDI</h2> <h3>Juridiskās procedūras</h3><p>Go Vocal un Organizācija, kuras vajadzībām mēs apstrādājam šos datus, var izmantot Lietotāja Personas datus juridiskajiem mērķiem, tiesas vai tiesvedības iepriekšējiem posmiem šī Pieteikuma vai saistīto pakalpojumu nelikumīgas izmantošanas gadījumā. Lietotājs apzinās, ka Go Vocal un Organizācijai, ar kuru mēs sadarbojamies, var rasties pienākums izpaust personas datus pēc kompetento valsts iestāžu pieprasījuma par šo datu apstrādi. Šīs apstrādes juridiskais pamats ir piekrišana noteikumiem un nosacījumiem (līguma pamats) un dotā piekrišana.</p> <h3>Drošības pasākumi</h3> <p>Go Vocal ir izstrādājusi drošības pasākumus, kas ir pielāgoti tehnoloģiskā un organizatoriskā līmenī, lai novērstu personas datu iznīcināšanu, nozaudēšanu, viltošanu, pārveidošanu, neatļautu piekļuvi tiem vai kļūdainu izpaušanu trešajām personām, kā arī jebkādu citu neatļautu šo datu apstrādi. Go Vocal nekādos apstākļos nevar uzņemties atbildību par jebkādiem tiešiem vai netiešiem zaudējumiem, kas radušies tādēļ, ka trešā persona nepareizi vai nelikumīgi izmantojusi jūsu personas datus. Jums vienmēr ir jāievēro drošības instrukcijas, tostarp jānovērš jebkāda aizliegta piekļuve jūsu pieteikšanās datiem un parolei. Jūs esat pilnībā atbildīgs par tīmekļa vietnes izmantošanu sava datorā, IP adresi un identifikācijas datiem, kā arī par to konfidencialitāti.</p> <h3>Izmaiņas šajā privātuma politikā</h3> <p>Go Vocal patur tiesības jebkurā laikā mainīt šo privātuma politiku, par to informējot Lietotājus šajā lapā. Mēs aicinām jūs pārbaudīt šo lapu, lai uzzinātu par iespējamām izmaiņām. Pēdējo izmaiņu datums ir norādīts lapas apakšā. Ja Lietotājs iebilst pret jebkādām izmaiņām politikā, Lietotājs nedrīkst turpināt lietot šo Pieteikumu. Ja vien nav norādīts citādi, uz visiem mūsu apkopotajiem Personas datiem attiecas tobrīd spēkā esošā Privātuma politika.</p> <p><em>Pēdējais atjauninājums: 17.12.2019</em></p>
+      <p>Atbildīgais par datu apstrādi:</p> <p>Go Vocal NV - Pachecolaan 34 - 1000 Brisele - Beļģija</p> <p>Kontakta e-pasta adrese: support@govocal.com</p> <p>Organizācija: //ievietot klienta kontaktinformāciju</p><h2>1. PRIVĀTUMA POLITIKA</h2><p> Šī "Privātuma politika" attiecas uz "Personas datiem", ko Go Vocal organizācijas vārdā vāc, izmantojot šo tīmekļa vietni.</p> <h2>2. KAS IR PERSONAS DATI? </h2> <p> Šajā privātuma politikā ar personas datiem saprot informāciju, kas ļauj jūs identificēt. Identificējama persona ir tāda, kuru var tieši vai netieši identificēt, jo īpaši atsaucoties uz identifikācijas numuru vai vienu vai vairākiem faktoriem, kas saistīti ar fizisko, fizioloģisko, garīgo, ekonomisko, kultūras vai sociālo identitāti. Tipisks personas datu piemērs ir jūsu vārds un e-pasta adrese.</p> <h2>3. KĀDUS PERSONAS DATUS MĒS VĀCAM? </h2> <p>Mēs varam vākt jūsu Personas datus no šādiem trim avotiem:</p> <h3>3.1 Personas dati, kurus jūs sniedzat reģistrācijas procesa laikā Platformā, un daži no tiem nav obligāti.</h3> <p>Personas dati, kurus mēs no jums varētu vākt, ir šādi:</p> <ul> <li>Vārds un uzvārds</li> <li>E-pasta adrese</li> <li>Dzimšanas gads</li> <li>Dzimums</li> <li>Dzīvesvieta</li> <li>Vēlamā valoda</li> </ul> <p>Šis saraksts var tikt paplašināts pēc organizācijas pieprasījuma. Ja izvēlaties pierakstīties, izmantojot trešās puses autentifikācijas pakalpojumu sniedzēju, piemēram, Google Accounts, Facebook vai FranceConnect, mēs šos datus iegūsim no tiem. Ja izvēlaties apliecināt savu identitāti, izmantojot trešās puses identitātes nodrošinātāju, piemēram, COW, FranceConnect vai CSAM, mēs šo informāciju iegūsim no tiem.</p> <h3>3.2 Personas dati, ko sniedzat, veicot līdzdalības darbības mūsu platformā.</h3> <p>Katra darbība, ko veicat platformā (balsošana, idejas publicēšana, komentāra rakstīšana, aptaujas veikšana...), tiek reģistrēta un saglabāta. Šie dati ir saistīti arī ar jūsu reģistrācijas datiem (3.1. punkts), kas nozīmē, ka organizācija var saistīt jūsu platformas profilu ar šiem līdzdalības datiem.</p> <h3>3.3 Personas dati, kurus mēs apkopojam, kad jūs apmeklējat mūsu platformu.</h3> <p>Mēs (un trešās puses apstrādātāji, kas darbojās mūsu vārdā) apkopojam informāciju par mūsu platformas izmantošanu, lai novērtētu platformas efektīvu darbību un drošību. Šim nolūkam mēs apkopojam tehnisku informāciju, kas var jūs identificēt, piemēram, jūsu IP adresi un pārlūkprogrammas informāciju. Izmantojot mūsu pakalpojumus, jūs piekrītat šo datu vākšanai.</p><p>Mēs vācam arī lietošanas datus, lai uzlabotu mūsu pakalpojumus, un jūs jebkurā laikā varat atteikties no šo datu vākšanas, izmantojot piekrišanas pārvaldnieku.</p> <h2>4. KĀ MĒS IZMANTOJAM PERSONAS DATUS?</h2> <p>Mēs varam izmantot jūsu personas datus šādiem nolūkiem:</p> <ul> <li>Pirmkārt un galvenokārt, lai paziņotu par jūsu ievadītajiem datiem organizācijai un sagatavotu apkopotus pārskatus par visiem šajā platformā apkopotajiem datiem, lai palīdzētu lēmumu pieņemšanā.</li> <li>Lai izveidotu un uzturētu jūsu lietotāja profilu šajā tīmekļa vietnē.</li> <li>Lai pārvaldītu lietotāju identifikāciju un autentifikāciju.</li> <li>Lai sniegtu informāciju par jūsu kopienu un/vai brīdinātu jūs, kad darbības platformā varētu jūs interesēt. Jūs jebkurā laikā varat atteikties no lietotāja e-pasta vēstuļu saņemšanas savā lietotāja profilā.</li> <li>Lai uzlabotu mūsu pakalpojumus un uzraudzītu to funkcionalitāti.</li> </ul> <p>Personas dati tiek glabāti un apstrādāti tikai tik ilgi, cik nepieciešams to apstrādes mērķa sasniegšanai. Pēc tam dati tiks dzēsti vai anonimizēti.</p> <h2>5. AR KO MĒS KOPĪGOJAM JŪSU PERSONAS DATUS? </h2> <p>Mēs kopīgojam jūsu personas datus ar organizāciju, kuras vārdā mēs šos datus apkopojam. Mēs kopīgojam jūsu datus ar apakšapstrādātājiem, kas strādā mūsu vārdā. Mēs nekad nepārdosim vai neiznomāsim jūsu personas datus citiem pakalpojumu sniedzējiem, kā arī nekopīgosim jūsu personas datus ar pakalpojumu sniedzējiem, kuri neatbilst VDAR prasībām.</p> <h2>6. KUR MĒS NODODAM JŪSU PERSONAS DATUS?</h2> <p>Mēs nododam jūsu personas datus pakalpojumu sniedzējiem, kas reģistrēti ārpus Eiropas Ekonomikas zonas, tikai tad, ja tie atbilst VDAR 44. panta prasībām.</p> <h2>7. KĀDAS IR JŪSU TIESĪBAS?</h2> <p>Jums ir tiesības jebkurā laikā apskatīt savus personas datus, kā arī saņemt informāciju par to, kā Go Vocal izmanto jūsu personas datus.</p> <h3>7.1 Tiesības uz datu labošanu, dzēšanu un apstrādes ierobežošanu</h3> <p>Jūs varat brīvi izlemt, vai sniegt savus personas datus Go Vocal vai nesniegt. Turklāt jums vienmēr ir tiesības pieprasīt Go Vocal labot, papildināt vai dzēst jūsu personas datus. Jūs apzināties, ka atteikums sniegt personas datus vai pieprasījums tos dzēst nozīmē, ka noteiktus pakalpojumus vairs nevar sniegt. Jūs varat arī pieprasīt, lai jūsu personas datu apstrāde tiktu ierobežota. Ja izvēlaties noņemt savu kontu no platformas, jūsu personas dati tiks dzēsti no mūsu serveriem. Daļa personas informācijas par jums var palikt reģistrēšanas datos, kurus mēs glabājam drošības un juridisku iemeslu dēļ līdz 30 dienām.</p> <h3>7.2. Tiesības iebilst</h3> <p>Jums ir tiesības iebilst pret savu personas datu apstrādi nopietnu un likumīgu iemeslu dēļ. Turklāt jums vienmēr ir tiesības iebilst pret savu personas datu izmantošanu tiešās tirdzniecības nolūkos; šādos gadījumos jums nav jānorāda iemesli.</p> <h3>7.3 Tiesības uz datu pārnesamību</h3> <p>Jums ir tiesības saņemt personas datus, ko esat sniedzis Go Vocal, strukturētā, tipiskā un mašīnlasāmā formā un/vai tos nodot dažādiem pārziņiem.</p> <h3>7.4. Tiesības atsaukt piekrišanu</h3> <p>Ja datu apstrādes pamatā ir jūsu iepriekšēja piekrišana, jums ir tiesības atsaukt šo piekrišanu.</p> <h3>7.5. Savu tiesību izmantošana</h3> <p>Jūs varat izmantot savas tiesības, sazinoties ar Go Vocal, rakstot e-pastu uz support@govocal.com, pa pastu uz adresi Pachecolaan 34, 1000 Brisele, Beļģija vai izmantojot veidlapu "Sazinieties ar mums" mūsu tīmekļa vietnē, ar nosacījumu, ka jūs pievienojat savas personas apliecības priekšpuses kopiju.</p> <h3>7.6 Automatizēta lēmumu pieņemšana un profilēšana</h3> <p>Jūsu personas datu apstrāde neietver profilēšanu, un Go Vocal neveic arī automatizētu lēmumu pieņemšanu.</p> <h3>7.7 Tiesības iesniegt sūdzību</h3> <p>Jums ir tiesības iesniegt sūdzību savas valsts privātuma iestādei vai Beļģijas privātuma iestādei, kuras kompetencē ir Go Vocal: Drukpersstraat 35, 1000 Brisele, Beļģija, tālr. +32 (0)2 274 48 00, fakss +32 (0)2 274 48 35, e-pasts: contact@adp-gba.be. Tas neietekmē atvieglojumus civiltiesā.</p> <h2>8. PAPILDU INFORMĀCIJA PAR DATU VĀKŠANU UN APSTRĀDI</h2> <h3>Juridiskās procedūras</h3><p>Go Vocal un Organizācija, kuras vajadzībām mēs apstrādājam šos datus, var izmantot Lietotāja Personas datus juridiskajiem mērķiem, tiesas vai tiesvedības iepriekšējiem posmiem šī Pieteikuma vai saistīto pakalpojumu nelikumīgas izmantošanas gadījumā. Lietotājs apzinās, ka Go Vocal un Organizācijai, ar kuru mēs sadarbojamies, var rasties pienākums izpaust personas datus pēc kompetento valsts iestāžu pieprasījuma par šo datu apstrādi. Šīs apstrādes juridiskais pamats ir piekrišana noteikumiem un nosacījumiem (līguma pamats) un dotā piekrišana.</p> <h3>Drošības pasākumi</h3> <p>Go Vocal ir izstrādājusi drošības pasākumus, kas ir pielāgoti tehnoloģiskā un organizatoriskā līmenī, lai novērstu personas datu iznīcināšanu, nozaudēšanu, viltošanu, pārveidošanu, neatļautu piekļuvi tiem vai kļūdainu izpaušanu trešajām personām, kā arī jebkādu citu neatļautu šo datu apstrādi. Go Vocal nekādos apstākļos nevar uzņemties atbildību par jebkādiem tiešiem vai netiešiem zaudējumiem, kas radušies tādēļ, ka trešā persona nepareizi vai nelikumīgi izmantojusi jūsu personas datus. Jums vienmēr ir jāievēro drošības instrukcijas, tostarp jānovērš jebkāda aizliegta piekļuve jūsu pieteikšanās datiem un parolei. Jūs esat pilnībā atbildīgs par tīmekļa vietnes izmantošanu sava datorā, IP adresi un identifikācijas datiem, kā arī par to konfidencialitāti.</p> <h3>Izmaiņas šajā privātuma politikā</h3> <p>Go Vocal patur tiesības jebkurā laikā mainīt šo privātuma politiku, par to informējot Lietotājus šajā lapā. Mēs aicinām jūs pārbaudīt šo lapu, lai uzzinātu par iespējamām izmaiņām. Pēdējo izmaiņu datums ir norādīts lapas apakšā. Ja Lietotājs iebilst pret jebkādām izmaiņām politikā, Lietotājs nedrīkst turpināt lietot šo Pieteikumu. Ja vien nav norādīts citādi, uz visiem mūsu apkopotajiem Personas datiem attiecas tobrīd spēkā esošā Privātuma politika.</p> <p><em>Pēdējais atjauninājums: 17.12.2019</em></p>
     infopage_title: Informācijas lapa
     infopage_body: "<p>Šī <strong>daudzfunkciju līdzdalības platforma</strong> ir jūsu pašvaldības vai organizācijas iniciatīva, un to var izmantot dažādiem sabiedriskās apspriešanas procesiem: ideju vākšanai, balsošanai, diskusijām, aptaujām, apsekojumiem, līdzdalības budžeta veidošanai, tiešsaistes kartēšanai, scenāriju plānošanai, konsultatīvo padomju un komiteju atbalstam, ...</p>\n<p>Sākumlapā jūs redzēsiet, kuri <strong>procesi ir aktīvi </strong>un kurā <strong>posmā </strong>tie pašlaik atrodas </p> \n<p><img data-cl2-text-image-text-reference=\"e2c7bc7a-017d-4887-a3cb-b94185617a59\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<h2>Kā pierakstīties platformā?</h2>\n<p>Pierakstīšanās notiek vienkārši, norādot savu vārdu, uzvārdu un e-pasta adresi. Jūs varat izmantot arī savu Google vai Facebook kontu. Pārējiem būs redzams tikai jūsu vārds un uzvārds </p>.\n<h2>Vai es pats varu izmantot platformu, piemēram, lai organizētu sabiedrisko apspriešanu?</h2>\n<p>Protams. Lūdziet atbildīgo personu savā pašvaldībā vai organizācijā piešķirt jums nepieciešamās atļaujas tiesības, lai kļūtu par projekta moderatoru. Pēc šo tiesību piešķiršanas jūs varat izveidot savu projektu un laika grafiku un kopīgot informāciju (video, dokumentus, attēlus u. c.). Tas ļaus jums arī uzaicināt citus dalībniekus piedalīties platformā, ļaujot viņiem publicēt idejas jūsu projektā, balsot vai komentēt.</p>\n<h2> Vai es varu piedalīties kā asociācija/organizācija/komiteja? </h2>\n<p>Ja, tas ir iespējams. Ņemot vērā, ka citiem platformā ir redzams tikai jūsu vārds un uzvārds, veidojot savu profilu, jūs varat vienkārši izmantot savas organizācijas nosaukumu </p>.\n<h2>Kāpēc man vajadzētu izmantot šo platformu, nevis pašam izveidot tīmekļa vietni?</h2>\n<p>Šo platformu ik dienu uzlabo un atjaunina īpašu izstrādātāju un tiešsaistes līdzdalības speciālistu komanda (<a href=\"https://www.govocal.com/en\" target=\"_blank\">Go Vocal</a>, kuras pasūtītājs ir jūsu pašvaldība vai organizācija). Pat mazākā kļūda tiek nekavējoties novērsta, un, ja jums ir radoši priekšlikumi, viņi var jums palīdzēt, norādot, kuras funkcijas var izmantot šim nolūkam vai kuras funkcijas atrodas izstrādāšanas stadijā.</p>\n<p><img data-cl2-text-image-text-reference=\"392d0e47-e5f9-41ab-9ceb-affac617b8b1\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<p><strong><em>Vai nepieciešama papildu informācija?</em></strong><em>Vai vēlaties izmantot platformu? Jautājumi vai atsauksmes? Sazinieties ar atbildīgo personu savā pašvaldībā vai organizācijā. Vai sazinieties ar Go Vocal, izmantojot support@govocal.com.</em></p><strong>"
     faq_title: BUJ
     faq_body: "<h2 class=\"ql-align-justify\">Kam ir paredzēta šī platforma?</h2><p class=\"ql-align-justify\">Šī platforma ir veidota kā centrmezgls, lai kopīgotu informāciju, iegūtu datus un atsauksmes. Pašlaik aktīvie līdzdalības projekti ir redzami sākumlapā - katram līdzdalības projektam var būt atšķirīgs iesaistīšanās veids, piemēram, idejas pievienošana, priekšlikuma komentēšana, balsošana par projektiem un to prioritāšu noteikšana vai aptaujas veikšana. </p><h2 class=\"ql-align-justify\">Kā es varu piedalīties? </h2><p class=\"ql-align-justify\">Jūs vienmēr varat pārlūkot sabiedriskus projektus, bet, lai veiktu kādu darbību, jums būs jāreģistrējas. Tas palīdz uzturēt kopienas sajūtu un nodrošināt ievadīto datu likumību. </p><h2 class=\"ql-align-justify\">Kādu informāciju par mani var redzēt citi cilvēki?</h2><p class=\"ql-align-justify\">Ir redzams jūsu vārds, fotoattēls un biogrāfija, ja esat to pievienojis. Tos vienmēr varat mainīt savos Iestatījumos.</p><h2 class=\"ql-align-justify\">Kāpēc es nevaru publicēt datus vai iesniegt komentāru?</h2><p class=\"ql-align-justify\">Publicēšanas, komentēšanas un balsošanas funkcija var būt ieslēgta tikai noteiktos projekta posmos. Atsevišķos gadījumos projekts var būt atvērts tikai noteiktas ieinteresēto personu grupas ieguldījumam.</p><p class=\"ql-align-justify\">Ja publicēšana projektā pašlaik ir iespējota, jūs redzēsiet pogu, kas aicinās jūs iesniegt ziņu. Alternatīvi varat pārlūkot citus aktīvos projektus, lai atrastu papildu iesaistīšanās iespējas.</p><h2 class=\"ql-align-justify\">Kā rediģēt vai dzēst ievadītos datus?</h2><p class=\"ql-align-justify\">Ja esat ievietojis datus, bet vēlaties tos rediģēt vai dzēst, šo iespēju atradīsiet, noklikšķinot uz trim maziem punktiņiem ziņas augšējā labajā pusē. </p><h2 class=\"ql-align-justify\">Kādas ir kopienas vadlīnijas un moderēšanas politika?</h2><p class=\"ql-align-justify\">Mūsu kopienas vadlīnijas ir izstrādātas, lai palīdzētu nodrošināt, ka platforma ir droša vieta, kurā ikviens var piedalīties. Lūdzu, pārliecinieties, ka jūsu ziņās nav:</p><ul>\n  <li class=\"ql-align-justify\">Personīgu uzbrukumu, apvainojumu, aizvainojošu vai diskriminējošu komentāru</li>\n  <li class=\"ql-align-justify\">Aizvainojošu izteicienu, tostarp rupjību</li>\n  <li class=\"ql-align-justify\">Mārketinga vai reklāmas materiālu</li>\n  <li class=\"ql-align-justify\">Personiskas informācijas par citām personām</li>\n  <li class=\"ql-align-justify\">Ar autortiesībām aizsargātu materiālu, piemēram, attēlu</li>\n  </ul><p class=\"ql-align-justify\"> Jebkuras ziņas vai komentāri, kas neatbilst šīm vadlīnijām, var tikt rediģēti vai dzēsti, vai, ārkārtas gadījumos, to publicēšana var tikt aizliegta. Lūdzu, iepazīstieties ar mūsu Noteikumiem un nosacījumiem, lai uzzinātu vairāk. </p><h2 class=\"ql-align-justify\">Kā ziņot par aizvainojošu ziņu?</h2><p class=\"ql-align-justify\">Lai ziņotu par aizvainojošu ziņu, noklikšķiniet uz trim mazajiem punktiem ziņas augšējā labajā stūrī. Lūdzu, norādiet iemeslu, kāpēc ziņojat par saturu, - tas nosūtīs paziņojumu, lai ziņu pārskatītu.</p><h2 class=\"ql-align-justify\">Kāpēc man ir grūtības pierakstīties vai pieteikties?</h2><p class=\"ql-align-justify\">Ja jums neizdodas pierakstīties, tas var būt tāpēc, ka jau esat reģistrējies ar to pašu e-pasta adresi vai iepriekš saņēmis uzaicinājumu pievienoties platformai. Ja redzat ziņojumu, ka jūsu e-pasta adrese ir aizņemta ar gaidāmo uzaicinājumu, pārbaudiet savu e-pastu un nospiediet uz ielūgumā norādīto saiti, lai reģistrētu savu kontu. Ja uzaicinājumu nevarat atrast, mēģiniet meklēt savā surogātpasta kastītē vai pieprasiet jaunu uzaicinājumu. </p><h2 class=\"ql-align-justify\">Kā atiestatīt paroli?</h2><p class=\"ql-align-justify\">Jūs vienmēr varat pieprasīt atiestatīt paroli no pieteikšanās lapas. Ja pieprasīsiet atiestatīt paroli, uz jūsu e-pasta adresi tiks nosūtīta saite - sekojiet norādījumiem, lai mainītu paroli. Drošības apsvērumu dēļ saite ir derīga vienu stundu. Ja saites derīguma termiņš ir beidzies, varat vienkārši vēlreiz uzklikšķināt uz \"Aizmirsāt paroli?\" pieteikšanās lapā, lai ģenerētu jaunu atjaunināšanas saiti.</p><p class=\"ql-align-justify\">Ja neesat saņēmis e-pasta vēstuli, pārbaudiet, vai tā nav nonākusi surogātpastā un vai saite ir nosūtīta uz to pašu e-pasta adresi, ar kuru reģistrējāties.</p><h2 class=\"ql-align-justify\">Ko jūs darīsiet ar maniem datiem?</h2><p class=\"ql-align-justify\">Lai iegūtu vairāk informācijas par datu vākšanu un izmantošanu, iepazīstieties ar mūsu privātuma politiku. Īsumā, mēs nekad neizmantosim jūsu datus reklāmai, mārketingam vai cita veida surogātpastam.</p><h2 class=\"ql-align-justify\">Kādus e-pastus es saņemšu?</h2><p class=\"ql-align-justify\">Jūs varat saņemt e-pastus, kas saistīti ar jūsu kontu un darbību platformā, piemēram, kad kāds atbildēs uz kādu no jūsu ziņojumiem. Jūs varat kontrolēt, kādus e-pastus saņemat, savos Iestatījumos. Ir sadaļa \"Paziņojumi\", kurā varat ieslēgt un izslēgt e-pasta paziņojumus.</p><h2 class=\"ql-align-justify\">Kā dzēst savu kontu?</h2><p class=\"ql-align-justify\">Iestatījumos ir iespēja dzēst savu kontu. Jūsu dati paliks publicēti, taču jūsu vārds tiks dzēsts un aizstāts ar \"nezināms autors\". Ja vēlaties izdzēst visus savus ievadītos datus, lūdzu, dariet to pirms konta dzēšanas. </p>"
-    initiatives_title: Priekšlikumi
-    initiatives_body: >
-      <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="b4e659ab-2830-48fd-b3ce-96e16856262f" height="374.3745928338762" width="819" alt=""> <h2>Kas ir pilsoņa priekšlikums?</h2> <p>Būdams $|orgName| iedzīvotājs, jūs varat iekļaut savu priekšlikumu darba kārtībā, izmantojot šo platformu. Vēlams, lai šie priekšlikumi būtu konkrētas idejas, kas ir saistītas ar vietējo politiku un izriet no kādas vajadzības, vēlmes vai sapņa. Tas var būt jūsu pašu vai kopīgs priekšlikums. Varbūt vēlaties mainīt vai uzlabot esošo situāciju vai uzsākt jaunu projektu.</p> <p>Jūsu priekšlikuma īstenošanā ir nepieciešama un iespējama $|orgName| iesaistīšanās. Ideālā scenārijā jūs esat pieejams arī turpmākām pārdomām vai sadarbībai, taču tas nav obligāti. "Samazināt ātruma ierobežojumu uz šosejas līdz 80 km/h" tāpēc nav spēcīgs priekšlikums, bet "Pārveidot galveno ielu par gājēju zonu" ir. Nāciet klajā ar saviem priekšlikumiem! Ja būs nepieciešama papildu informācija, jūs saņemsiet atjauninājumu vai reakciju.</p><h2>Kāpēc ievietot priekšlikumu šajā platformā?</h2> <p>Šī ir $|orgName| oficiālā līdzdalības platforma, kas piedāvā šādas priekšrocības:</p> <ul> <li>$|orgName| ir oficiāli iesaistīts kā šīs platformas īpašnieks un aktīvi uzrauga, kas šeit notiek. Kad publicējat priekšlikumu, atbildīgā persona automātiski saņem ziņojumu. Jums nevajag ar viņiem sazināties, lai pārliecinātos, ka jūsu priekšlikums ir ņemts vērā.</li> <li>Šī platforma ir īpaši izstrādāta oficiālām līdzdalības darbībām, piemēram, pilsoņu priekšlikumiem. Katrs elements, sākot no lietotāja pieredzes un beidzot ar pakāpenisku pieeju, ir veidots tieši šim nolūkam. Izmantojot tradicionālos sociālos plašsaziņas līdzekļus, jūsu priekšlikums varētu pazust stimulu pārslodzē, un parasts e-pasts ātri pazūd pilnajā iesūtnē.</li> <li>Šajā platformā piedalās arī jūsu līdzpilsoņi. Viņi var atbalstīt un precizēt jūsu priekšlikumu. Jo radošāks ir jūsu priekšlikums un jo lielāku atbalstu tam izdosies savākt, jo lielāka iespēja, ka tas tiks īstenots!</li> </ul> <h2>Kā sākt?</h2> <p>Vispirms pārbaudiet, vai jūsu priekšlikums atbilst šādiem kritērijiem:</p> <p>$|initiativesEligibilityCriteria|</p> <h2>Ko jūs varat sagaidīt, ja jūsu priekšlikums saņems $|initiativesVotingThreshold| balsis $|initiativesDaysLimit| dienu laikā?</h2> <p>$|IniciativesThresholdReachedMessage|</p> <h2>Kas notiek ar priekšlikumiem, kas nesaņem $|initiativesVotingThreshold| balsis laikā? </h2> <p>Tas notiek, bet neuztraucieties. Jūsu priekšlikums paliks platformā. Jūsu priekšlikuma statuss automātiski mainīsies uz "Izbeidzies". Tā rezultātā balsošana vairs nebūs iespējama. Ja vēlaties, jebkurā laikā varat izdzēst savu priekšlikumu.</p>
   nav_bar_items:
     home:
       title: Sākums
@@ -144,6 +129,7 @@ lv:
     open_idea_phase_title: Pašreizējā fāze
     native_survey_title: Aptauja
     native_survey_button: Veiciet aptauju
+    community_monitor_title: Kopienas uzraudzītājs
   events:
     council_meeting_title: Padomes sēde
     council_meeting_description: >
@@ -156,8 +142,6 @@ lv:
         title: Dzimšanas gads
       domicile:
         title: Dzīvesvieta
-      education:
-        title: Izglītība
     ideas:
       title:
         title: Nosaukums
@@ -170,6 +154,9 @@ lv:
       topic_ids:
         title: Tagi
         description:
+      consponsor_ids:
+        title: Līdzfinansētāji
+        description: Uzaiciniet līdzfinansētājus, izmantojot tālāk norādīto lauku. Uzaicinātais(-ie) līdzsponsors(-i) saņems e-pastu.
       location:
         title: Atrašanās vieta
         description:
@@ -184,16 +171,59 @@ lv:
       attachments:
         title: Pielikumi
         description:
-      section1:
+      title_page:
         description:
-      section2:
+      body_page:
+        title: Pastāstiet mums vairāk
+        description:
+      uploads_page:
         title: Attēli un pielikumi
         description:
-      section3:
+      details_page:
         title: Sīkāka informācija
         description:
       other_input_field:
         title: Ierakstiet savu atbildi
+        print_title: Ja "%{other_option}", lūdzu, norādiet
+      ask_follow_up_field:
+        title: Pastāstiet mums, kāpēc
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Pilsēta kā dzīvesvieta
+        sense_of_safety:
+          title: Vispārējā drošības sajūta
+        access_to_parks:
+          title: Piekļuve parkiem, zaļajām zonām un atpūtas iespējām.
+        affordable_housing:
+          title: Pieejamu mājokļu pieejamība
+        employment_opportunities:
+          title: Nodarbinātības un ekonomiskās izaugsmes iespējas
+        quality_of_services:
+          title: Pilsētas sniegto pakalpojumu kopējā kvalitāte
+        overall_value:
+          title: Kopējā vērtība, ko saņemat par saviem pilsētas nodokļiem un nodevām
+        cleanliness_and_maintenance:
+          title: Ielu un sabiedrisko vietu vispārējā tīrība un uzturēšana
+        trust_in_government:
+          title: Uzticība vietējai pārvaldei
+        responsiveness_of_officials:
+          title: Ievēlēto amatpersonu spēja reaģēt uz kopienas problēmām
+        transparency_of_money_spent:
+          title: Pārredzamība par to, kā tiek tērēta pašvaldības nodokļu nauda.
+      question_categories:
+        quality_of_life: Dzīves kvalitāte
+        service_delivery: Pakalpojumu sniegšana
+        governance_and_trust: Pārvaldība un uzticēšanās
+        other: Citi
+      labels:
+        label_1: Ļoti slikti
+        label_2: Slikts
+        label_3: Godīgi
+        label_4: Labi
+        label_5: Lielisks
+      form_end:
+        button_text: Atgriezties mājās
   custom_forms:
     categories:
       main_content:
@@ -209,6 +239,12 @@ lv:
           title: Kāda ir jūsu problēma?
         option:
           title: Kāda ir jūsu izvēle?
+        proposal:
+          title: Kāds ir jūsu priekšlikums?
+        initiative:
+          title: Kāda ir jūsu iniciatīva?
+        petition:
+          title: Kāda ir jūsu petīcija?
   custom_field_options:
     gender:
       male: Vīrietis
@@ -216,21 +252,6 @@ lv:
       unspecified: Cits
     domicile:
       outside: Kaut kur citur
-    education:
-      ISCED2: Pirmās pakāpes vispārējā vidējā izglītība
-      ISCED3: Vidējā izglītība
-      ISCED4: Pēcvidusskolas neterciārā izglītība
-      ISCED5: Īsa cikla augstākā izglītība
-      ISCED6: Bakalaura grāds vai līdzvērtīgs grāds
-      ISCED7: Maģistra grāds vai līdzvērtīgs grāds
-      ISCED8: Doktora grāds vai līdzvērtīgs grāds
-  initiatives:
-    default_threshold_reached_message: >
-      <p>Iniciatori tiek aicināti iepazīstināt ar saviem priekšlikumiem nākamajā padomes sēdē. Mēs sniegsim oficiālu atjauninātu informāciju.</p>
-    default_eligibility_criteria: >
-      <ul> <li>Tai ir jāiekļaujas vietējās politikas jomās un kompetencē</li> <li>Tai ir jākalpo sabiedrības interesēm, nevis jūsu individuālajām interesēm</li> <li>Tā nediskriminē pēc dzimuma, rases, vecuma vai izcelsmes </li> <li>Tā nekaitē citiem</li> </ul>.
-    default_posting_tips: >
-      <ul><li>Atvēliet laiku, lai detalizēti izklāstītu savu priekšlikumu. Ja nepieciešams, vispirms uzrakstiet melnrakstu un pēc tam kopējiet un ielīmējiet to šeit.</li><li>Izvēlieties jēgpilnu nosaukumu, kas skaidri paskaidro, ko ietver jūsu priekšlikums.</li><li>Vizualizējiet savu priekšlikumu ar atbilstošu attēlu, kas palīdzēs tam izcelties!</li><li>Pievienojiet attiecīgus pielikumus, piemēram, videoklipus, iedvesmojošus piemērus, tehnisko informāciju vai plānus.</li><li>Koplietojiet savu ideju sociālajos medijos un citos kanālos, lai iegūtu atbalstu no citiem.</li></ul>
   reset_password_mailer:
     send_reset_password:
       preheader: 'Atiestatīt paroli %{organizationName}'
@@ -257,12 +278,14 @@ lv:
       first_name: 'Vārds(-i)'
       image_url: 'Attēla URL'
       input_id: 'ID'
+      manual_votes: 'Bezsaistes balsojumi'
       input_url: 'URL'
       last_name: 'Uzvārds'
       latitude: 'Ģeogrāfiskais platums'
       likes_count: 'Patīk'
       location: 'Atrašanās vieta'
       longitude: 'Ģeogrāfiskais garums'
+      neutral_reactions_count: 'Nav zināms'
       participants: 'Dalībnieki'
       picks: 'Picks'
       project: 'Projekts'
@@ -280,8 +303,10 @@ lv:
       option1: '1. variants'
       option2: '2. variants'
     form_end_page:
-      title_text: 'Gandrīz pabeigts'
-      description_text_2: "Jūs gatavojaties iesniegt savas atbildes. Noklikšķinot uz \"Iesniegt\", jūs atļaujat mums analizēt jūsu atbildes.<br/>Pēc iesniegšanas jūs vairs nevarēsiet atgriezties un mainīt savas atbildes."
+      title_text_3: 'Paldies, ka dalījāties ar savu ieguldījumu!'
+      description_text_3: "Jūsu dati ir veiksmīgi iesniegti."
+    form_user_page:
+      title_text: 'Par jums'
     pdf_export:
       personal_data: 'Personas dati'
       personal_data_explanation_public: "Mēs iesniegsim jūsu viedokli tiešsaistes līdzdalības platformā %{organizationName}. Ja vēlaties, lai jūsu vārds un uzvārds būtu redzams kā šī ieguldījuma autors un jūs saņemtu jauninājumus, kas saistīti ar jūsu ieguldījumu, pa e-pastu, lūdzu, aizpildiet turpmāk norādītos laukus šajā lapā, un mēs izveidosim jums kontu. Jūsu e-pasts nebūs publiski pieejams, un to izmantos tikai %{organizationName}. Ja vēlaties palikt anonīms vai nepiekrītat, ka mēs šādā veidā izmantojam jūsu personas datus, varat tos atstāt tukšus."
@@ -307,6 +332,17 @@ lv:
       write_as_clearly: 'Rakstiet pēc iespējas skaidrāk <b>skaidri</b> - šīs veidlapas var tikt skenētas.'
       write_in_language: 'Atbildes rakstiet tajā pašā valodā, kurā ir šī veidlapa.'
       linear_scale_print_description: 'Lūdzu, ierakstiet tikai skaitli no %{min_label} līdz %{max_label} .'
+      unsupported_field: 'Šo lauku nevar aizpildīt uz papīra. Lūdzu, izmantojiet šīs veidlapas tiešsaistes versiju.'
+      ranking_print_description: 'Lūdzu, katrā lodziņā ierakstiet skaitli no 1 (visvēlamākais) līdz %{max_rank} (vismazāk vēlamais). Katru skaitli izmantojiet tieši vienu reizi.'
+      matrix_print_description: 'Katrā rindā ar krustiņu atzīmējiet vienu apli, lai norādītu savu izvēli.'
+      rating_print_description: 'Novērtējiet to, ierakstot skaitli no 1 (sliktākais) līdz %{max_stars} (labākais).'
+      sentiment_linear_scale_print_description: 'Lūdzu, ierakstiet skaitli no 1 līdz 5.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
+      point_print_description: 'Lūdzu, uzzīmējiet X zemāk esošajā kartē, lai norādītu atrašanās vietu, vai arī ierakstiet adresi.'
+      line_print_description: 'Lūdzu, uzzīmējiet maršrutu zemāk redzamajā kartē.'
+      polygon_print_description: 'Lūdzu, uzzīmējiet figūru zemāk redzamajā kartē.'
+      select_print_description: 'Izvēlieties tikai vienu iespēju.'
+      date_print_description: 'Lūdzu, ierakstiet datumu formātā GGGGG-MM-DD.'
   project_copy:
     title_suffix: 'Kopija'
   confirmations_mailer:
@@ -335,6 +371,8 @@ lv:
       you_can_sign_in_again_from: "Varat atkal pierakstīties no %{date}"
   user:
     anon_first_name: "Lietotājs"
+    anon_scheme:
+      animals: 'aligators, krokodils, alpaka, skudra, antilope, pērtiķis, bruņurupucis, babuīns, kazlēns, sikspārnis, lācis, bebrs, bišu, vabole, bifeļu, tauriņš, kamielis, ūdens bifeļu, karibu, kaķis, liellopi, gepards, šimpanzis, šinšilla, cigada, gliemezis, tarakāns, menca, kojots, krabju, cīrulis, vārna, vārna,briedis, dinozaurs, suns, delfīns, cūkdelfīns, pīle, ērglis, zuilis, zilonis, aļnis, sesks, zivs, muša, lapsa, vardze, krupis, žurka, žurka, žurka, žubīte, žirafe, žurka, žubīte, zilonis, kaza, zelta zivtiņa, zoss, gorilla, mārrutks, jūrascūciņa, kāmis, zaķis, ezis, siļķe, haizivs, hipopotams, sirse, zirgs, kurts,hiena,impala,šakālis,medūza,ķengurs,kengurs,valabijs,koala,leopards,lauva,ķirzaka,lama,lauķis,lauvene,lauze,makabs,makabs,krunka,mamuts,lamantīns,klijāns,kurmītis,ūdele,sienāzis,sienāzis,mošķis,pele,žurka,muļķis,mošķeris,ūdrs,vērsis,ūdele,panda,cūka,platipusa,dzeguze,prēriju suns,mopsis,trusis,jenots,ziemeļbriedis,ziemeļbriedis,degunradis,laši,sardīne,skorpions,ronis,jūras lauva,servals,haizivs,aita,skunks,gliemezis,čūska,zirneklis,vāvere,gulbis,termīts,tīģeris,forele,bruņurupucis,bruņurupucis,bruņurupucis,bruņurupucis,valzis,vaļu,vilks,vombats,mežacūka,tārps,jaks,dzeltenkaja,zebra'
   time:
     am: am
     formats:
@@ -345,3 +383,6 @@ lv:
     default_voting_term_plural: "balsis"
   ics_calendar_event:
     event_details: "Detalizēta informācija par pasākumu"
+  errors:
+    messages:
+      max_must_be_greater_than_min_characters: "Maksimālajai vērtībai jābūt lielākai par minimālo."

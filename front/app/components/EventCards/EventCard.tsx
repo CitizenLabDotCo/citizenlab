@@ -6,7 +6,12 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useEventImage from 'api/event_images/useEventImage';
 import { IEventData } from 'api/events/types';
+
+import useLocalize from 'hooks/useLocalize';
+
+import Image from 'components/UI/Image';
 
 import clHistory from 'utils/cl-router/history';
 
@@ -19,11 +24,12 @@ import EventInformation from './EventInformation';
 */
 const Container = styled.li`
   ${defaultCardStyle};
-  padding: 16px;
   display: flex;
+  flex-direction: column;
   box-shadow: none;
   border: solid 1px #ccc;
   border-radius: 6px;
+  overflow: hidden; // Ensures image and inner content respect border radius
   position: relative;
 
   &:hover {
@@ -33,14 +39,36 @@ const Container = styled.li`
   }
 `;
 
+const AspectRatioBox = styled.div`
+  position: relative;
+  width: 100%;
+  padding-top: 33.33%; /* Enforces 3:1 aspect ratio */
+  overflow: hidden;
+`;
+
+const EventCardImage = styled(Image)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
 interface Props {
   event: IEventData;
   className?: string;
   id?: string;
 }
 
-const EventCard = memo<Props>((props) => {
-  const { event, className, id } = props;
+const EventCard = memo<Props>(({ event, className, id }) => {
+  const localize = useLocalize();
+
+  const { data: eventImage } = useEventImage(event);
+  const mediumImage = eventImage?.data.attributes.versions.medium;
+  const eventImageAltText = localize(
+    eventImage?.data.attributes.alt_text_multiloc
+  );
 
   const navigateToEventPage = () => {
     clHistory.push(`/events/${event.id}`, { scrollToTop: true });
@@ -58,6 +86,16 @@ const EventCard = memo<Props>((props) => {
       }}
       tabIndex={0}
     >
+      {mediumImage && (
+        <AspectRatioBox>
+          <EventCardImage
+            src={mediumImage}
+            alt={eventImageAltText}
+            cover={true}
+          />
+        </AspectRatioBox>
+      )}
+
       <EventInformation event={event} />
     </Container>
   );

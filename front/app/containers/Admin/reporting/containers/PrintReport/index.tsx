@@ -4,7 +4,7 @@ import { Text, Spinner, Box } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -93,7 +93,7 @@ export const PrintReport = ({ reportId, _print = true }: Props) => {
 };
 
 const PrintReportWrapper = () => {
-  const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
+  const reportBuilderEnabled = useReportBuilderEnabled();
   const { reportId } = useParams();
 
   if (!reportBuilderEnabled || reportId === undefined) {

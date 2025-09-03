@@ -34,6 +34,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.phaseAccessRights',
     defaultMessage: 'Access rights',
   },
+  phaseEmails: {
+    id: 'app.containers.AdminPage.ProjectEdit.phaseEmails',
+    defaultMessage: 'Emails',
+  },
   pollTab: {
     id: 'app.containers.AdminPage.ProjectEdit.pollTab',
     defaultMessage: 'Poll',
@@ -49,6 +53,10 @@ export default defineMessages({
   eventsTab: {
     id: 'app.containers.AdminPage.ProjectEdit.eventsTab',
     defaultMessage: 'Events',
+  },
+  filesTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.filesTab2',
+    defaultMessage: '360 Input',
   },
   viewPublicProject: {
     id: 'app.containers.AdminPage.ProjectEdit.viewPublicProject',
@@ -160,11 +168,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.totalBudget',
     defaultMessage: 'Total budget',
   },
-  totalBudgetExplanation: {
-    id: 'app.containers.AdminPage.ProjectEdit.totalBudgetExplanation',
-    defaultMessage:
-      "By default, your budget is set using your local currency. You can change your platform's currency to 'credits' or 'tokens' by contacting our support center.",
-  },
   minimum: {
     id: 'app.containers.AdminPage.ProjectEdit.minimum',
     defaultMessage: 'Minimum',
@@ -216,9 +219,9 @@ export default defineMessages({
     defaultMessage: 'Enable disliking',
   },
   disableDislikingTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.disableDislikingTooltip',
+    id: 'app.containers.AdminPage.ProjectEdit.disableDislikingTooltip2',
     defaultMessage:
-      'This will disable disliking, but liking will still be enabled. You can disable reacting completely in the Actions section of this tab.',
+      'This will enable or disable disliking, but liking will still be enabled. We recommend leaving this disabled unless you are carrying out an option analysis.',
   },
   dislikingDisabled: {
     id: 'app.containers.AdminPage.ProjectEdit.downvotingDisabled',
@@ -307,6 +310,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.trendingSortingMethod',
     defaultMessage: 'Trending',
   },
+  comments_countSortingMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.commens_countSortingMethod',
+    defaultMessage: 'Most discussed',
+  },
   randomSortingMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.randomSortingMethod',
     defaultMessage: 'Random',
@@ -330,7 +337,7 @@ export default defineMessages({
   surveyServiceTooltipLink: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink1',
     defaultMessage:
-      'https://support.citizenlab.co/en/articles/7025887-creating-an-external-survey-project',
+      'https://support.govocal.com/en/articles/7025887-creating-an-external-survey-project',
   },
   surveyServiceTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltip',
@@ -403,9 +410,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.surveyResultsTab',
     defaultMessage: 'Survey Results',
   },
+  resultsTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.resultsTab',
+    defaultMessage: 'Results',
+  },
   surveyTab: {
     id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.surveyTab',
     defaultMessage: 'Survey',
+  },
+  surveyFormTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.surveyFormTab',
+    defaultMessage: 'Survey form',
   },
   exportSurveyResults: {
     id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults',
@@ -419,6 +434,24 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager',
     defaultMessage:
       'Give feedback, assign topics or copy inputs to the next project phase.',
+  },
+  importInputs: {
+    id: 'app.containers.AdminPage.ProjectEdit.PostManager.importInputs',
+    defaultMessage: 'Import',
+  },
+  votingShareResultsTurnedOff: {
+    id: 'app.containers.AdminPage.ProjectEdit.PostManager.votingShareResultsTurnedOff',
+    defaultMessage: 'Result sharing is turned off.',
+  },
+  votingShareResultsTurnedOff2: {
+    id: 'app.containers.AdminPage.ProjectEdit.PostManager.votingShareResultsTurnedOff2',
+    defaultMessage:
+      "Voting results won't be shared at the end of the phase unless you modify it in the phase setup.",
+  },
+  votingShareResultsTurnedOn: {
+    id: 'app.containers.AdminPage.ProjectEdit.PostManager.votingShareResultsTurnedOn2',
+    defaultMessage:
+      'These results will be automatically shared once the phase ends. Modify the end date of this phase to change when the results are shared.',
   },
   subtitleInputProjectProposals: {
     id: 'app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals',
@@ -435,8 +468,9 @@ export default defineMessages({
   },
   hiddenFieldsSupportArticleUrl: {
     id: 'app.components.admin.PostManager.hiddenFieldsSupportArticleUrl',
-    defaultMessage: 'https://support.citizenlab.co/en/articles/1641202',
+    defaultMessage: 'https://support.govocal.com/en/articles/1641202',
   },
+  // #input_term_copy
   ideaTerm: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.ideaTerm',
     defaultMessage: 'Idea',
@@ -460,6 +494,18 @@ export default defineMessages({
   contributionTerm: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.contributionTerm',
     defaultMessage: 'Contribution',
+  },
+  proposalTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.proposalTerm',
+    defaultMessage: 'Proposal',
+  },
+  initiativeTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.initiativeTerm',
+    defaultMessage: 'Initiative',
+  },
+  petitionTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.petitionTerm',
+    defaultMessage: 'Petition',
   },
   inputTermSelectLabel: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel',
@@ -504,7 +550,7 @@ export default defineMessages({
   googleFormsTooltipLink: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink',
     defaultMessage:
-      'https://support.citizenlab.co/en/articles/5050525-how-to-embed-your-google-forms-survey-in-a-project-phase',
+      'https://support.govocal.com/en/articles/5050525-how-to-embed-your-google-forms-survey-in-a-project-phase',
   },
   googleFormsTooltipLinkText: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText',
@@ -582,9 +628,21 @@ export default defineMessages({
     defaultMessage:
       'Inputs won’t be visible until an admin reviews and approves them. Authors can’t edit inputs after they are screened or reacted on.',
   },
-  prescreeningTooltip: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.screeningTooltip',
+  missingStartDateError: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.missingStartDateError',
+    defaultMessage: 'Missing start date',
+  },
+  missingEndDateError: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.missingEndDateError',
+    defaultMessage: 'Missing end date',
+  },
+  beta: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.beta',
+    defaultMessage: 'Beta',
+  },
+  betaTooltip: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.betaTooltip',
     defaultMessage:
-      'Screening is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
+      "This participation method is in beta. We're gradually rolling it out to gather feedback and improve the experience.",
   },
 });

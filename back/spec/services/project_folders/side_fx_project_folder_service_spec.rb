@@ -60,5 +60,16 @@ describe ProjectFolders::SideFxProjectFolderService do
           .to enqueue_job(LogActivityJob).exactly(1).times
       end
     end
+
+    it 'invokes ContentBuilder::LayoutService#clean_homepage_layout_when_publication_deleted' do
+      layout_service = instance_double(ContentBuilder::LayoutService)
+      allow(ContentBuilder::LayoutService).to receive(:new).and_return(layout_service)
+      expect(layout_service).to receive(
+        :clean_homepage_layout_when_publication_deleted
+      ).with(instance_of(ProjectFolders::Folder))
+
+      frozen_folder = project_folder.destroy
+      service.after_destroy(frozen_folder, user)
+    end
   end
 end

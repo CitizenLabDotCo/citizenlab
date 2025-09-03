@@ -1,5 +1,17 @@
+import { FC } from 'react';
+
+import { LegendProps } from 'recharts';
+
+import { LegendDimensions, LegendItem } from '../_components/Legend/typings';
 import { Props as MultiBarChartProps } from '../MultiBarChart/typings';
 import { KeyOfType, BaseMapping, CornerRadius } from '../typings';
+
+export interface CustomLegendProps extends Omit<LegendProps, 'payload'> {
+  items: LegendItem[];
+  legendDimensions: LegendDimensions;
+}
+
+type CustomLegendType = FC<CustomLegendProps>;
 
 export interface Props<Row>
   extends Omit<
@@ -9,6 +21,7 @@ export interface Props<Row>
   mapping: Mapping<Row>;
   onMouseOver?: (payload: Payload<Row>, event: React.MouseEvent) => void;
   onMouseOut?: (payload: Payload<Row>, event: React.MouseEvent) => void;
+  CustomLegend?: CustomLegendType;
 }
 
 interface Payload<Row> {

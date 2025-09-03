@@ -1,22 +1,17 @@
 import React, { useState, useRef } from 'react';
 
-import {
-  useBreakpoint,
-  colors,
-  defaultStyles,
-} from '@citizenlab/cl2-component-library';
+import { useBreakpoint, colors } from '@citizenlab/cl2-component-library';
 import { isString, trim } from 'lodash-es';
 import { hideVisually } from 'polished';
 import styled from 'styled-components';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAddInternalCommentToIdea from 'api/internal_comments/useAddInternalCommentToIdea';
-import useAddInternalCommentToInitiative from 'api/internal_comments/useAddInternalCommentToInitiative';
 import useAuthUser from 'api/me/useAuthUser';
 
 import Avatar from 'components/Avatar';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 
 import { trackEventByName } from 'utils/analytics';
@@ -64,8 +59,7 @@ const Form = styled.form`
   }
 
   &.focused {
-    border-color: ${colors.black};
-    box-shadow: ${defaultStyles.boxShadowFocused};
+    border: solid 2px ${(props) => props.theme.colors.tenantPrimary};
   }
 `;
 
@@ -85,24 +79,17 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-const CancelButton = styled(Button)`
+const CancelButton = styled(ButtonWithLink)`
   margin-right: 8px;
 `;
 
 interface Props {
   ideaId: string | undefined;
-  initiativeId: string | undefined;
-  postType: 'idea' | 'initiative';
   postingComment: (arg: boolean) => void;
   className?: string;
 }
 
-const InternalParentCommentForm = ({
-  ideaId,
-  initiativeId,
-  postType,
-  className,
-}: Props) => {
+const InternalParentCommentForm = ({ ideaId, className }: Props) => {
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
   const smallerThanTablet = useBreakpoint('tablet');
@@ -110,10 +97,7 @@ const InternalParentCommentForm = ({
     mutate: addInternalCommentToIdea,
     isLoading: addCommentToIdeaIsLoading,
   } = useAddInternalCommentToIdea();
-  const {
-    mutate: addInternalCommentToInitiative,
-    isLoading: addCommentToInitiativeIsLoading,
-  } = useAddInternalCommentToInitiative();
+
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
   const [inputValue, setInputValue] = useState('');
   const [focused, setFocused] = useState(false);
@@ -122,8 +106,7 @@ const InternalParentCommentForm = ({
   const { data: idea } = useIdeaById(ideaId);
   const projectId = idea ? idea.data.relationships.project.data.id : null;
 
-  const processing =
-    addCommentToIdeaIsLoading || addCommentToInitiativeIsLoading;
+  const processing = addCommentToIdeaIsLoading;
 
   if (!authUser) {
     return null;
@@ -138,10 +121,8 @@ const InternalParentCommentForm = ({
 
   const onFocus = () => {
     trackEventByName(tracks.focusParentCommentEditor, {
-      extra: {
-        postId: ideaId || initiativeId,
-        postType,
-      },
+      postId: ideaId,
+      postType: 'idea',
     });
 
     setFocused(true);
@@ -166,44 +147,15 @@ const InternalParentCommentForm = ({
       );
 
       trackEventByName(tracks.clickParentCommentPublish, {
-        extra: {
-          postId: ideaId || initiativeId,
-          postType,
-          content: inputValue,
-        },
+        postId: ideaId,
+        postType: 'idea',
+        content: inputValue,
       });
 
-      if (postType === 'idea' && projectId && ideaId) {
+      if (projectId && ideaId) {
         addInternalCommentToIdea(
           {
             ideaId,
-            author_id: authUser.data.id,
-            body: commentBodyText,
-          },
-          {
-            onSuccess: (comment) => {
-              const parentComment = document.getElementById(comment.data.id);
-              if (parentComment) {
-                setTimeout(() => {
-                  parentComment.scrollIntoView({ behavior: 'smooth' });
-                }, 100);
-              }
-              commentAdded();
-              close();
-            },
-            onError: (error) => {
-              setHasApiError(true);
-
-              throw error;
-            },
-          }
-        );
-      }
-
-      if (postType === 'initiative' && initiativeId) {
-        addInternalCommentToInitiative(
-          {
-            initiativeId,
             author_id: authUser.data.id,
             body: commentBodyText,
           },
@@ -269,8 +221,7 @@ const InternalParentCommentForm = ({
               name="comment"
               placeholder={textAreaPlaceholder}
               rows={focused || processing ? 4 : 1}
-              postId={ideaId || initiativeId}
-              postType={postType}
+              postId={ideaId}
               value={inputValue}
               error={getErrorMessage()}
               onChange={onChange}
@@ -281,7 +232,7 @@ const InternalParentCommentForm = ({
               border="none"
               boxShadow="none"
               getTextareaRef={setRef}
-              roles={getMentionRoles(postType === 'idea')}
+              roles={getMentionRoles(true)}
             />
             <ButtonWrapper className={focused || processing ? 'visible' : ''}>
               <CancelButton
@@ -292,7 +243,7 @@ const InternalParentCommentForm = ({
               >
                 <FormattedMessage {...commentsMessages.cancel} />
               </CancelButton>
-              <Button
+              <ButtonWithLink
                 className="e2e-submit-parentcomment"
                 processing={processing}
                 onClick={onSubmit}
@@ -301,7 +252,7 @@ const InternalParentCommentForm = ({
                 icon="shield-check"
               >
                 <FormattedMessage {...commentsMessages.postInternalComment} />
-              </Button>
+              </ButtonWithLink>
             </ButtonWrapper>
           </label>
         </Form>

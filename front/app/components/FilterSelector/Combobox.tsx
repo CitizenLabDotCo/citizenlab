@@ -78,6 +78,8 @@ const Combobox = ({
   useEffect(() => {
     if (focusedIndex !== null && listboxRef.current) {
       const items = listboxRef.current.querySelectorAll('li');
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (items[focusedIndex]) {
         (items[focusedIndex] as HTMLElement).focus();
       }
@@ -109,6 +111,8 @@ const Combobox = ({
           if (focusedIndex !== null) {
             event.preventDefault();
             const selectedItem = items[focusedIndex];
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (selectedItem) {
               selectedItem.click();
             }
@@ -133,11 +137,14 @@ const Combobox = ({
             minWidth={minWidth ? minWidth : undefined}
             onKeyDown={handleKeyDown}
             ariaExpanded={opened}
-            aria-controls={baseID}
+            ariaControls={baseID}
             // Needed to track aria-labelledby
             id={`${baseID}-label`}
             role="combobox"
             aria-haspopup="listbox"
+            ariaLabel={
+              typeof currentTitle === 'string' ? currentTitle : undefined
+            }
           >
             <Box display="flex" gap="8px">
               {currentTitle}

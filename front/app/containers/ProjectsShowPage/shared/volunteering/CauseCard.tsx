@@ -10,6 +10,7 @@ import {
   defaultCardStyle,
   isRtl,
   Tooltip,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 
@@ -22,7 +23,7 @@ import { IProject } from 'api/projects/types';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Image from 'components/UI/Image';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
@@ -83,16 +84,6 @@ const Right = styled.div`
 const Content = styled.div`
   flex: 1 1 auto;
   margin-bottom: 30px;
-`;
-
-const Title = styled.h3`
-  color: ${(props) => props.theme.colors.tenantText};
-  font-size: ${fontSizes.xxl}px;
-  font-weight: 500;
-  line-height: normal;
-  margin: 0;
-  margin-bottom: 20px;
-  padding: 0;
 `;
 
 const Description = styled.div`
@@ -180,6 +171,8 @@ const CauseCard = ({ cause, className, project }: Props) => {
   const { windowWidth } = useWindowSize();
 
   const volunteer = useCallback(() => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (cause.relationships?.user_volunteer?.data) {
       deleteVolunteer({
         causeId: cause.id,
@@ -221,6 +214,8 @@ const CauseCard = ({ cause, className, project }: Props) => {
     }
   };
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const isVolunteer = !!cause.relationships?.user_volunteer?.data;
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
 
@@ -258,7 +253,7 @@ const CauseCard = ({ cause, className, project }: Props) => {
 
       <Right>
         <Content>
-          <Title>
+          <Title variant="h3" color="tenantText" mt="0px">
             <T value={cause.attributes.title_multiloc} />
           </Title>
           <ScreenReaderOnly>
@@ -286,7 +281,7 @@ const CauseCard = ({ cause, className, project }: Props) => {
             )}
           >
             <div>
-              <Button
+              <ButtonWithLink
                 onClick={handleOnVolunteerButtonClick}
                 icon={!isVolunteer ? 'volunteer' : 'volunteer-off'}
                 buttonStyle={!isVolunteer ? 'primary' : 'secondary-outlined'}
@@ -298,7 +293,7 @@ const CauseCard = ({ cause, className, project }: Props) => {
                 ) : (
                   <FormattedMessage {...messages.becomeVolunteerButton} />
                 )}
-              </Button>
+              </ButtonWithLink>
             </div>
           </Tooltip>
         </ActionWrapper>

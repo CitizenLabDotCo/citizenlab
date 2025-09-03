@@ -53,14 +53,26 @@ export const getTabs = (
       feature: 'polls',
       name: 'poll',
     },
-    phase.attributes.participation_method === 'native_survey' && {
-      label: formatMessage(messages.surveyTab),
-      url: 'native-survey',
-      name: 'survey',
-    },
+    ...(['native_survey', 'community_monitor'].includes(
+      phase.attributes.participation_method
+    )
+      ? [
+          {
+            label: formatMessage(messages.resultsTab),
+            url: 'results',
+            name: 'results',
+          },
+          {
+            label: formatMessage(messages.surveyFormTab),
+            url: 'survey-form',
+            name: 'survey-form',
+          },
+        ]
+      : []),
     phase.attributes.participation_method === 'survey' &&
       surveys_enabled &&
-      typeform_enabled &&
+      typeform_enabled && // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       (!surveys_enabled || phase.attributes.survey_service === 'typeform') && {
         label: formatMessage(messages.surveyResultsTab),
         url: 'survey-results',
@@ -83,6 +95,11 @@ export const getTabs = (
       label: formatMessage(messages.phaseAccessRights),
       url: 'access-rights',
       name: 'access-rights',
+    },
+    {
+      label: formatMessage(messages.phaseEmails),
+      url: 'emails',
+      name: 'emails',
     },
   ].filter((tab) => typeof tab === 'object') as IPhaseTab[];
 };

@@ -14,8 +14,8 @@ import {
 } from 'containers/Authentication/typings';
 
 import FormWrapper from 'components/Form/Components/FormWrapper';
-import { isValidData, customAjv } from 'components/Form/utils';
-import Button from 'components/UI/Button';
+import customAjv from 'components/Form/utils/customAjv';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import UserCustomFieldsForm from 'components/UserCustomFields';
 
 import { trackEventByName } from 'utils/analytics';
@@ -55,8 +55,12 @@ const CustomFields = ({
   }, []);
 
   const schema =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     userCustomFieldsSchema?.data.attributes?.json_schema_multiloc[locale];
   const uiSchema =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     userCustomFieldsSchema?.data.attributes?.ui_schema_multiloc[locale];
 
   if (!authUser || !userCustomFieldsSchema || !schema || !uiSchema) {
@@ -64,7 +68,7 @@ const CustomFields = ({
   }
 
   const handleSubmit = async () => {
-    if (!isValidData(schema, uiSchema, formData, customAjv)) {
+    if (!customAjv.validate(schema, formData)) {
       setShowAllErrors(true);
     } else {
       try {
@@ -83,6 +87,8 @@ const CustomFields = ({
       pb={smallerThanPhone ? '14px' : '28px'}
       id="e2e-signup-custom-fields-container"
     >
+      {/* TODO: Fix this the next time the file is edited. */}
+      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
       <FormWrapper formId={uiSchema?.options?.formId}>
         <UserCustomFieldsForm
           authenticationContext={authenticationData.context}
@@ -97,7 +103,7 @@ const CustomFields = ({
           alignItems={smallerThanPhone ? 'stretch' : 'center'}
           justifyContent={smallerThanPhone ? 'center' : 'space-between'}
         >
-          <Button
+          <ButtonWithLink
             id="e2e-signup-custom-fields-submit-btn"
             processing={loading}
             disabled={loading}
@@ -106,7 +112,7 @@ const CustomFields = ({
           />
 
           {allowSkip && (
-            <Button
+            <ButtonWithLink
               id="e2e-signup-custom-fields-skip-btn"
               buttonStyle="text"
               padding="0"
@@ -118,7 +124,7 @@ const CustomFields = ({
               mb={smallerThanPhone ? '16px' : undefined}
             >
               {formatMessage(messages.skip)}
-            </Button>
+            </ButtonWithLink>
           )}
         </Box>
       </FormWrapper>

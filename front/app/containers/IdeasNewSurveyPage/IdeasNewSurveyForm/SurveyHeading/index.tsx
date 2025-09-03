@@ -9,21 +9,24 @@ import {
   stylingConsts,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import ideasKeys from 'api/ideas/keys';
 import useAuthUser from 'api/me/useAuthUser';
+import usePhase from 'api/phases/usePhase';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import clHistory from 'utils/cl-router/history';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+
+import { getLeaveFormDestination } from '../utils';
 
 import messages from './messages';
 
@@ -41,9 +44,14 @@ type Props = {
 };
 
 const SurveyHeading = ({ titleText, phaseId }: Props) => {
+  const location = useLocation();
+
   const { slug: projectSlug } = useParams();
   const { data: project } = useProjectBySlug(projectSlug);
+  const { data: phase } = usePhase(phaseId);
   const { data: authUser } = useAuthUser();
+
+  const phaseParticipationMethod = phase?.data.attributes.participation_method;
 
   const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
@@ -54,12 +62,44 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
   const closeModal = () => {
     setShowLeaveModal(false);
   };
+  const [searchParams] = useSearchParams();
+
+  const hasBeenSubmitted = !!searchParams.get('idea_id');
 
   if (!project) return null;
 
   const showEditSurveyButton =
     !isSmallerThanPhone && canModerateProject(project.data, authUser);
-  const linkToSurveyBuilder: RouteType = `/admin/projects/${project.data.id}/phases/${phaseId}/native-survey/edit`;
+  const linkToSurveyBuilder: RouteType =
+    phaseParticipationMethod === 'community_monitor_survey'
+      ? `/admin/community-monitor/projects/${project.data.id}/phases/${phaseId}/survey/edit`
+      : `/admin/projects/${project.data.id}/phases/${phaseId}/survey-form/edit`;
+
+  const leaveForm = () => {
+    const leaveFormDestination = getLeaveFormDestination(
+      phaseParticipationMethod
+    );
+
+    switch (leaveFormDestination) {
+      case 'go-back':
+        // If there is a back history, go back, otherwise go to the homepage
+        location.key !== 'default' ? clHistory.goBack() : clHistory.push('/');
+        break;
+      case 'project-page':
+        clHistory.push(`/projects/${projectSlug}`);
+        break;
+      default:
+        clHistory.push(`/projects/${projectSlug}`);
+    }
+
+    // We need to invalidate any previously cached draft idea.
+    // Invalidating the draft while "in" the survey (I.e. In the useUpdateIdea
+    // when survey page next/previous buttons clicked) causes issues.
+    // TODO: Find a better solution for this.
+    queryClient.invalidateQueries({
+      queryKey: ideasKeys.item({ id: phaseId }),
+    });
+  };
 
   return (
     <>
@@ -77,7 +117,7 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
         borderBottom={`1px solid ${colors.divider}`}
       >
         <StyledSurveyTitle
-          color={'tenantPrimary'}
+          color={'tenantText'}
           variant="bodyS"
           fontSize="m"
           my="0px"
@@ -91,7 +131,7 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
           ml="auto"
         >
           {showEditSurveyButton && (
-            <Button
+            <ButtonWithLink
               data-cy="e2e-edit-survey-link"
               icon="edit"
               linkTo={linkToSurveyBuilder}
@@ -100,13 +140,18 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
               mr="12px"
             >
               <FormattedMessage {...messages.editSurvey} />
-            </Button>
+            </ButtonWithLink>
           )}
           <IconButton
             iconName="close"
             onClick={(event) => {
               event?.preventDefault();
-              openModal();
+
+              if (hasBeenSubmitted) {
+                leaveForm();
+              } else {
+                openModal();
+              }
             }}
             iconColor={colors.textSecondary}
             iconColorOnHover={colors.black}
@@ -136,32 +181,23 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
             alignItems="center"
             gap="20px"
           >
-            <Button
+            <ButtonWithLink
               buttonStyle="secondary-outlined"
               width="100%"
               onClick={closeModal}
             >
               <FormattedMessage {...messages.cancelLeaveSurveyButtonText} />
-            </Button>
-            <Button
+            </ButtonWithLink>
+            <ButtonWithLink
               icon={authUser ? 'arrow-left-circle' : 'delete'}
               data-cy="e2e-confirm-delete-survey-results"
               buttonStyle={authUser ? 'primary' : 'delete'}
               width="100%"
               mb={isSmallerThanPhone ? '16px' : undefined}
-              onClick={() => {
-                clHistory.push(`/projects/${projectSlug}`);
-                // We need to invalidate any previously cached draft idea.
-                // Invalidating the draft while "in" the survey (I.e. In the useUpdateIdea
-                // when survey page next/previous buttons clicked) causes issues.
-                // TODO: Find a better solution for this.
-                queryClient.invalidateQueries({
-                  queryKey: ideasKeys.item({ id: phaseId }),
-                });
-              }}
+              onClick={leaveForm}
             >
               <FormattedMessage {...messages.confirmLeaveFormButtonText} />
-            </Button>
+            </ButtonWithLink>
           </Box>
         </Box>
       </Modal>

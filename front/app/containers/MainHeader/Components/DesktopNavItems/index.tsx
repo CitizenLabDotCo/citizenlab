@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 
 import { media, isRtl } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
 import useNavbarItems from 'api/navbar/useNavbarItems';
-import useProjectSlugById from 'api/projects/useProjectSlugById';
+
+import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -15,12 +15,29 @@ import messages from '../../messages';
 import AdminPublicationsNavbarItem from './AdminPublicationsNavbarItem';
 import DesktopNavbarItem from './DesktopNavbarItem';
 import getNavbarItemPropsArray from './getNavbarItemPropsArray';
+import MoreNavbarItem from './MoreNavbarItem';
+import {
+  NavbarItemProps,
+  calculateItemDistribution,
+  validateCalculationPrerequisites,
+  calculateAvailableWidth,
+  createTempElementsForMeasurement,
+  updateVisibleAndOverflowItems,
+} from './utils';
+
+// Reserved space for right-side navigation elements (search, notifications, user menu, language selector, etc.)
+const RESERVED_RIGHT_SPACE = 500;
+const MORE_BUTTON_WIDTH = 130;
 
 const Container = styled.nav`
   height: 100%;
   margin-left: 35px;
+  flex: 1;
+  overflow: visible;
+  max-width: calc(100vw - ${RESERVED_RIGHT_SPACE}px);
 
-  ${media.tablet`
+  /* Hide desktop nav only on phones */
+  ${media.phone`
     display: none;
   `}
   ${isRtl`
@@ -40,24 +57,136 @@ const NavbarItems = styled.ul`
   `};
 `;
 
+const HiddenItemsContainer = styled.div`
+  position: absolute;
+  visibility: hidden;
+  height: 0;
+  overflow: hidden;
+`;
+
 const DesktopNavItems = () => {
   const { data: navbarItems } = useNavbarItems();
-  const pageSlugById = useCustomPageSlugById();
-  const projectSlugById = useProjectSlugById();
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const hiddenItemsRef = useRef<HTMLDivElement>(null);
+  const [visibleItems, setVisibleItems] = useState<NavbarItemProps[]>([]);
+  const [overflowItems, setOverflowItems] = useState<NavbarItemProps[]>([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) return null;
-
-  const navbarItemPropsArray = getNavbarItemPropsArray(
-    navbarItems.data,
-    pageSlugById,
-    projectSlugById
+  // Function to calculate items when More button is needed
+  const calculateItemsWithMoreButton = useCallback(
+    (
+      tempElements: HTMLElement[],
+      allItems: NavbarItemProps[],
+      availableWidth: number,
+      moreButtonWidth: number
+    ): { visible: NavbarItemProps[]; overflow: NavbarItemProps[] } => {
+      return calculateItemDistribution(
+        tempElements,
+        allItems,
+        availableWidth,
+        moreButtonWidth
+      );
+    },
+    []
   );
 
+  // Function to measure available space and determine which items fit
+  const calculateVisibleItems = useCallback(() => {
+    if (
+      !validateCalculationPrerequisites(
+        containerRef,
+        hiddenItemsRef,
+        navbarItems,
+        isDropdownOpen
+      )
+    ) {
+      return;
+    }
+
+    const navbarItemPropsArray = getNavbarItemPropsArray(navbarItems!.data);
+    const container = containerRef.current!;
+    const hiddenContainer = hiddenItemsRef.current!;
+    const containerWidth = container.offsetWidth;
+
+    // Calculate available width with More button space reserved
+    const availableWidth = calculateAvailableWidth(
+      containerWidth,
+      RESERVED_RIGHT_SPACE,
+      MORE_BUTTON_WIDTH
+    );
+
+    // Create temporary elements for measurement
+    const { tempElements: tempHTMLElements, allItems } =
+      createTempElementsForMeasurement(
+        navbarItemPropsArray,
+        hiddenContainer,
+        localize
+      );
+
+    // Calculate item distribution with More button space reserved
+    const { visible: visibleWithMore, overflow: overflowWithMore } =
+      calculateItemsWithMoreButton(
+        tempHTMLElements,
+        allItems,
+        availableWidth,
+        MORE_BUTTON_WIDTH
+      );
+
+    // Update visible and overflow items
+    updateVisibleAndOverflowItems(
+      visibleWithMore,
+      overflowWithMore,
+      allItems,
+      visibleItems,
+      overflowItems,
+      setVisibleItems,
+      setOverflowItems
+    );
+
+    // Clean up temporary elements
+    tempHTMLElements.forEach((HTMLElement) => HTMLElement.remove());
+  }, [
+    navbarItems,
+    visibleItems,
+    overflowItems,
+    calculateItemsWithMoreButton,
+    localize,
+    isDropdownOpen,
+  ]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      calculateVisibleItems();
+    }, 100);
+
+    let resizeTimer: NodeJS.Timeout;
+    const handleResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        calculateVisibleItems();
+      }, 250);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(timer);
+      clearTimeout(resizeTimer);
+    };
+  }, [calculateVisibleItems]);
+
+  if (isNilOrError(navbarItems)) return null;
+
   return (
-    <Container aria-label={formatMessage(messages.ariaLabel)}>
+    <Container
+      aria-label={formatMessage(messages.ariaLabel)}
+      ref={containerRef}
+    >
       <NavbarItems>
-        {navbarItemPropsArray.map((navbarItemProps, i) => {
+        {visibleItems.map((navbarItemProps) => {
           const { linkTo, onlyActiveOnIndex, navigationItemTitle } =
             navbarItemProps;
 
@@ -66,7 +195,8 @@ const DesktopNavItems = () => {
               <AdminPublicationsNavbarItem
                 linkTo={linkTo}
                 navigationItemTitle={navigationItemTitle}
-                key={i}
+                onDropdownStateChange={setIsDropdownOpen}
+                key={linkTo}
               />
             );
           }
@@ -76,13 +206,19 @@ const DesktopNavItems = () => {
                 linkTo={linkTo}
                 onlyActiveOnIndex={onlyActiveOnIndex}
                 navigationItemTitle={navigationItemTitle}
-                key={i}
+                key={linkTo}
               />
             );
           }
           return null;
         })}
+        {overflowItems.length > 0 && (
+          <MoreNavbarItem overflowItems={overflowItems} />
+        )}
       </NavbarItems>
+
+      {/* Hidden container for measuring item widths */}
+      <HiddenItemsContainer ref={hiddenItemsRef} />
     </Container>
   );
 };

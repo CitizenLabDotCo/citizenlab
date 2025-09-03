@@ -2,13 +2,13 @@ import { Multiloc } from 'typings';
 import { object, lazy, string, StringSchema } from 'yup';
 
 interface Props {
-  validateEachLocale: (schema: StringSchema) => StringSchema;
+  validateEachNonEmptyLocale: (schema: StringSchema) => StringSchema;
 }
 
 const validateAtLeastOneLocale = (
   message: string,
-  { validateEachLocale }: Props = {
-    validateEachLocale: (schema) => schema,
+  { validateEachNonEmptyLocale }: Props = {
+    validateEachNonEmptyLocale: (schema) => schema,
   }
 ) => {
   return lazy((multiloc: Multiloc) => {
@@ -23,10 +23,13 @@ const validateAtLeastOneLocale = (
       );
     }
     return object(
-      locales.reduce(
-        (acc, locale) => ((acc[locale] = validateEachLocale(string())), acc),
-        {}
-      )
+      locales.reduce((acc, locale) => {
+        acc[locale] =
+          multiloc[locale] && multiloc[locale].trim() !== ''
+            ? validateEachNonEmptyLocale(string())
+            : string();
+        return acc;
+      }, {})
     );
   });
 };

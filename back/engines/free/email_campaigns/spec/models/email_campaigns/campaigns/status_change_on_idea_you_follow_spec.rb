@@ -22,15 +22,9 @@ RSpec.describe EmailCampaigns::Campaigns::StatusChangeOnIdeaYouFollow do
 
       expect(command).to match({
         event_payload: hash_including(
-          post_id: notification.post.id,
-          post_title_multiloc: notification.post.title_multiloc,
-          post_body_multiloc: notification.post.body_multiloc,
-          post_url: an_instance_of(String),
-          post_images: an_instance_of(Array),
-          idea_status_id: notification.post_status.id,
-          idea_status_title_multiloc: notification.post_status.title_multiloc,
-          idea_status_code: notification.post_status.code,
-          idea_status_color: notification.post_status.color
+          idea_title_multiloc: notification.idea.title_multiloc,
+          idea_url: an_instance_of(String),
+          idea_status_title_multiloc: notification.idea_status.title_multiloc
         )
       })
     end

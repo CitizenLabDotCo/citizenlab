@@ -1,3 +1,20 @@
 ar:
   analysis:
     example_tag_n: علامة المثال %{n}
+    cell_statement:
+      percent_more: "%{percent}% أكثر"
+      percent_less: "%{percent}أقل بنسبة %"
+      range_min_max: "%{min} إلى %{max}"
+      range_min: "%{min} أو أكثر"
+      range_max: "%{max} أو أقل"
+      tag_vs_bin:
+        inputs: "الأشخاص الذين يستجيبون لـ '%{answer}' إلى '%{question}' ينشرون %{percent_more_less} في '%{tag}' أكثر من المتوسط."
+        likes: "الأشخاص الذين يستجيبون بـ '%{answer}' إلى '%{question}' مثل %{percent_more_less} المدخلات في '%{tag}' أكثر من المتوسط."
+        dislikes: "الأشخاص الذين يستجيبون بـ '%{answer}' إلى '%{question}' لا يحبون مدخلات %{percent_more_less} في '%{tag}' أكثر من المتوسط."
+        participants: "الأشخاص الذين يستجيبون لـ '%{answer}' إلى '%{question}' يشاركون بنسبة %{percent_more_less} في '%{tag}' أكثر من المتوسط."
+      bin_vs_bin:
+        inputs: "الأشخاص الذين يجيبون بـ '%{answer1}' على '%{question1}' يجيبون بـ '%{answer2}' على '%{question2}' %{percent_more_less} ' أكثر من المتوسط."
+        likes: "الأشخاص الذين يستجيبون بـ '%{answer1}' إلى '%{question1}' يحبون %{percent_more_less} المدخلات عندما يجيبون بـ '%{answer2}' إلى '%{question2}' عن المتوسط."
+        dislikes: "الأشخاص الذين يجيبون بـ '%{answer1}' على '%{question1}' لا يحبون مدخلات %{percent_more_less} عندما يجيبون بـ '%{answer2}' على '%{question2}' أكثر من المتوسط."
+        participants: "الأشخاص الذين يجيبون بـ '%{answer1}' على '%{question1}' يشاركون بـ %{percent_more_less} عندما يجيبون بـ '%{answer2}' على '%{question2}' أكثر من المتوسط."
+

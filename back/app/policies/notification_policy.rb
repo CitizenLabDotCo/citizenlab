@@ -1,20 +1,9 @@
 # frozen_string_literal: true
 
 class NotificationPolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user  = user
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
-      if @user
-        scope.where(recipient_id: @user.id)
-      else
-        scope.none
-      end
+      user ? scope.where(recipient_id: user.id) : scope.none
     end
   end
 

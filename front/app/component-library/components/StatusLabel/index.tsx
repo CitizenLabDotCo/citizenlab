@@ -3,11 +3,10 @@ import React, { FC, memo } from 'react';
 import styled, { css } from 'styled-components';
 
 import { fontSizes, colors } from '../../utils/styleUtils';
-import Box, { BoxWidthProps } from '../Box';
+import Box, { BoxHeightProps, BoxMarginProps, BoxWidthProps } from '../Box';
 import Icon, { IconProps } from '../Icon';
 
 const Container = styled(Box)<{ backgroundColor: string; variant: Variant }>`
-  height: 28px;
   font-size: ${fontSizes.xs}px;
   font-weight: 500;
   line-height: normal;
@@ -41,17 +40,22 @@ type Props = {
   className?: string;
   text: JSX.Element | string;
   backgroundColor: string;
+  color?: string;
   icon?: IconProps['name'];
   variant?: Variant;
-} & BoxWidthProps;
+} & BoxWidthProps &
+  BoxHeightProps &
+  BoxMarginProps;
 
 const StatusLabel: FC<Props> = memo<Props>(
   ({
     backgroundColor,
+    color,
     className,
     icon,
     text,
     variant = 'default',
+    height = '28px',
     ...rest
   }) => {
     return (
@@ -60,6 +64,8 @@ const StatusLabel: FC<Props> = memo<Props>(
         className={className || ''}
         variant={variant}
         {...rest}
+        height={height}
+        color={color}
       >
         {icon && (
           <Icon

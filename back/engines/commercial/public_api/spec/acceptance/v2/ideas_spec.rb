@@ -5,10 +5,8 @@ require 'rspec_api_documentation/dsl'
 require './engines/commercial/public_api/spec/acceptance/v2/support/shared'
 
 resource 'Posts' do
-  # NOTE: Same name as in initiatives_spec to combine the documentation into the same section
   explanation <<~DESC.squish
-    Posts are written inputs created by citizens. These can be ideas, initiatives
-    (proposals), or survey responses.
+    Posts are written inputs created by citizens. These can be ideas, proposals, or survey responses.
   DESC
 
   include_context 'common_auth'

@@ -16,7 +16,7 @@ import {
 import { Keys } from 'utils/cl-react-query/types';
 
 import {
-  IdeaDefaultSortMethod,
+  IdeaSortMethod,
   InputTerm,
   ParticipationMethod,
   TSurveyService,
@@ -43,6 +43,8 @@ export interface Props {
   publicationStatuses: PublicationStatus[];
   canModerate?: boolean;
   projectIds?: string[];
+  includeHidden?: boolean;
+  removeAllUnlisted?: boolean;
 }
 
 export interface QueryParameters {
@@ -53,6 +55,8 @@ export interface QueryParameters {
   publication_statuses: PublicationStatus[];
   filter_can_moderate?: boolean;
   filter_ids?: string[];
+  include_hidden?: boolean;
+  remove_all_unlisted?: boolean;
 }
 
 // Responses
@@ -70,9 +74,12 @@ export interface IProjectAttributes {
   description_multiloc: Multiloc;
   description_preview_multiloc: Multiloc;
   slug: string;
+  preview_token: string;
   created_at: string;
   updated_at: string;
+  first_published_at: string | null;
   header_bg: ProjectHeaderBgImageSizes;
+  header_bg_alt_text_multiloc: Multiloc;
   comments_count: number;
   avatars_count: number;
   followers_count: number;
@@ -86,24 +93,27 @@ export interface IProjectAttributes {
   publication_status: PublicationStatus;
   include_all_areas: boolean;
   folder_id?: string | null;
-  action_descriptors: {
-    posting_idea: ActionDescriptorFutureEnabled<ProjectPostingDisabledReason>;
-    commenting_idea: ActionDescriptor<ProjectCommentingDisabledReason>;
-    // Same disabled reasons as commenting_idea at time of writing
-    comment_reacting_idea: ActionDescriptor<ProjectCommentingDisabledReason>;
-    reacting_idea: ActionDescriptor<ProjectReactingDisabledReason> & {
-      up: ActionDescriptor<ProjectReactingDisabledReason>;
-      down: ActionDescriptor<ProjectReactingDisabledReason>;
-    };
-    taking_survey: ActionDescriptor<ProjectSurveyDisabledReason>;
-    taking_poll: ActionDescriptor<ProjectPollDisabledReason>;
-    annotating_document: ActionDescriptor<ProjectDocumentAnnotationDisabledReason>;
-    voting: ActionDescriptor<ProjectVotingDisabledReason>;
-    attending_event: ActionDescriptor<ProjectDisabledReason>;
-    volunteering: ActionDescriptor<ProjectVolunteeringDisabledReason>;
-  };
+  action_descriptors: ActionDescriptors;
   uses_content_builder: boolean;
+  listed: boolean;
 }
+
+export type ActionDescriptors = {
+  posting_idea: ActionDescriptorFutureEnabled<ProjectPostingDisabledReason>;
+  commenting_idea: ActionDescriptor<ProjectCommentingDisabledReason>;
+  // Same disabled reasons as commenting_idea at time of writing
+  comment_reacting_idea: ActionDescriptor<ProjectCommentingDisabledReason>;
+  reacting_idea: ActionDescriptor<ProjectReactingDisabledReason> & {
+    up: ActionDescriptor<ProjectReactingDisabledReason>;
+    down: ActionDescriptor<ProjectReactingDisabledReason>;
+  };
+  taking_survey: ActionDescriptor<ProjectSurveyDisabledReason>;
+  taking_poll: ActionDescriptor<ProjectPollDisabledReason>;
+  annotating_document: ActionDescriptor<ProjectDocumentAnnotationDisabledReason>;
+  voting: ActionDescriptor<ProjectVotingDisabledReason>;
+  attending_event: ActionDescriptor<ProjectDisabledReason>;
+  volunteering: ActionDescriptor<ProjectVolunteeringDisabledReason>;
+};
 
 export interface IProjectData {
   id: string;
@@ -143,7 +153,7 @@ export interface IProjectData {
   };
 }
 
-type Visibility = 'public' | 'groups' | 'admins';
+export type Visibility = 'public' | 'groups' | 'admins';
 type PresentationMode = 'map' | 'card';
 
 interface ProjectHeaderBgImageSizes {
@@ -188,10 +198,11 @@ export interface IUpdatedProjectProperties {
   document_annotation_embed_url?: string | null;
   default_assignee_id?: string | null;
   poll_anonymous?: boolean;
-  ideas_order?: IdeaDefaultSortMethod;
+  ideas_order?: IdeaSortMethod;
   input_term?: InputTerm;
   slug?: string;
   topic_ids?: string[];
   include_all_areas?: boolean;
   folder_id?: string | null;
+  listed?: boolean;
 }

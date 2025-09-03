@@ -35,6 +35,7 @@ const Summary = ({
 
   const summary = data?.data.attributes.summary;
   const filters = data?.data.attributes.filters;
+  const fileIds = data?.data.relationships.files?.data.map((file) => file.id);
   const generatedAt = data?.data.attributes.generated_at;
 
   if (!summary) {
@@ -87,10 +88,13 @@ const Summary = ({
         <InsightBody
           text={summary}
           filters={filters}
+          fileIds={fileIds}
           analysisId={analysisId}
           projectId={projectId}
           phaseId={phaseId}
           generatedAt={generatedAt}
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           backgroundTaskId={data?.data.relationships.background_task.data.id}
         />
 
@@ -100,6 +104,8 @@ const Summary = ({
           analysisId={analysisId}
           projectId={projectId}
           phaseId={phaseId}
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           customFieldIds={data?.data.attributes.custom_field_ids}
         />
       </Box>

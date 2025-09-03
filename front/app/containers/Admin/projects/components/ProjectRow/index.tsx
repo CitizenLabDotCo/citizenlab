@@ -85,6 +85,8 @@ const ProjectRow = ({
   const { data: project } = useProjectById(projectId);
 
   const { data: parentPublication } = useAdminPublication(
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     publication.relationships.parent?.data?.id || null
   );
   const localize = useLocalize();
@@ -98,7 +100,7 @@ const ProjectRow = ({
   const handleActionLoading = (actionType: ActionType, isRunning: boolean) => {
     if (actionType === 'copying') {
       setIsBeingCopyied(isRunning);
-    } else if (actionType === 'deleting') {
+    } else {
       setIsBeingDeleted(isRunning);
     }
   };
@@ -174,6 +176,8 @@ const ProjectRow = ({
                   type="button"
                   className={[
                     'e2e-admin-edit-publication',
+                    // TODO: Fix this the next time the file is edited.
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                     publication.attributes.publication_title_multiloc?.[
                       'en-GB'
                     ],
@@ -195,6 +199,7 @@ const ProjectRow = ({
           {!hideMoreActions && (
             <ProjectMoreActionsMenu
               projectId={projectId}
+              firstPublishedAt={project.data.attributes.first_published_at}
               folderId={folderId ? folderId : undefined}
               setError={setError}
               setIsRunningAction={handleActionLoading}

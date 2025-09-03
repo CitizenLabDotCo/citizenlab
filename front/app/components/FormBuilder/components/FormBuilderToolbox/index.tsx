@@ -14,35 +14,37 @@ import {
   ICustomFieldInputType,
   IFlatCreateCustomField,
   IFlatCustomField,
+  IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
-import {
-  generateTempId,
-  FormBuilderConfig,
-} from 'components/FormBuilder/utils';
+import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
+import { generateTempId, isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 
 import BuiltInFields from './BuiltInFields';
 import LayoutFields from './LayoutFields';
 import ToolboxItem from './ToolboxItem';
+import { getInitialLinearScaleLabel } from './utils';
 
 interface FormBuilderToolboxProps {
   onAddField: (field: IFlatCreateCustomField, index: number) => void;
   builderConfig: FormBuilderConfig;
   move: (indexA: number, indexB: number) => void;
+  // Callback to focus a field in the right-hand settings pane
+  onSelectField: (field: IFlatCustomFieldWithIndex) => void;
 }
 
 const FormBuilderToolbox = ({
   onAddField,
   builderConfig,
   move,
+  onSelectField,
 }: FormBuilderToolboxProps) => {
   const isInputFormCustomFieldsFlagEnabled = useFeatureFlag({
     name: 'input_form_custom_fields',
@@ -54,6 +56,7 @@ const FormBuilderToolbox = ({
 
   const { watch } = useFormContext();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
+
   const isCustomFieldsDisabled =
     !isInputFormCustomFieldsFlagEnabled &&
     !builderConfig.alwaysShowCustomFields;
@@ -65,41 +68,96 @@ const FormBuilderToolbox = ({
     'toolboxTitle',
     messages.content
   );
+
   if (isNilOrError(locale)) return null;
 
   const addField = (inputType: ICustomFieldInputType) => {
-    const index = !isNilOrError(formCustomFields) ? formCustomFields.length : 0;
-    onAddField(
-      {
-        id: `${Math.floor(Date.now() * Math.random())}`,
-        temp_id: generateTempId(),
-        logic: {
-          ...(inputType !== 'page' ? { rules: [] } : undefined),
-        },
-        isLocalOnly: true,
-        description_multiloc: {},
-        input_type: inputType,
-        required: false,
-        title_multiloc: {
-          [locale]: '',
-        },
-        linear_scale_label_1_multiloc: {},
-        linear_scale_label_2_multiloc: {},
-        linear_scale_label_3_multiloc: {},
-        linear_scale_label_4_multiloc: {},
-        linear_scale_label_5_multiloc: {},
-        linear_scale_label_6_multiloc: {},
-        linear_scale_label_7_multiloc: {},
-        maximum: 5,
-        options: [
-          {
-            title_multiloc: {},
-          },
-        ],
-        enabled: true,
+    const createField = (type: ICustomFieldInputType) => ({
+      id: `${Math.floor(Date.now() * Math.random())}`,
+      temp_id: generateTempId(),
+      logic: {
+        ...(type !== 'page' ? { rules: [] } : undefined),
       },
-      index
-    );
+      isLocalOnly: true,
+      description_multiloc: {},
+      input_type: type,
+      required: false,
+      title_multiloc: {
+        [locale]: '',
+      },
+      // Set default character limits for text-supporting fields (excluding html_multiloc)
+      ...(['text', 'multiline_text', 'text_multiloc'].includes(type) && {
+        min_characters: 3,
+        max_characters: type === 'text_multiloc' ? 120 : undefined,
+      }),
+      linear_scale_label_1_multiloc: getInitialLinearScaleLabel({
+        value: 1,
+        inputType: type,
+        formatMessage,
+        locale,
+      }),
+      linear_scale_label_2_multiloc: getInitialLinearScaleLabel({
+        value: 2,
+        inputType: type,
+        formatMessage,
+        locale,
+      }),
+      linear_scale_label_3_multiloc: getInitialLinearScaleLabel({
+        value: 3,
+        inputType: type,
+        formatMessage,
+        locale,
+      }),
+      linear_scale_label_4_multiloc: getInitialLinearScaleLabel({
+        value: 4,
+        inputType: type,
+        formatMessage,
+        locale,
+      }),
+      linear_scale_label_5_multiloc: getInitialLinearScaleLabel({
+        value: 5,
+        inputType: type,
+        formatMessage,
+        locale,
+      }),
+      linear_scale_label_6_multiloc: {},
+      linear_scale_label_7_multiloc: {},
+      linear_scale_label_8_multiloc: {},
+      linear_scale_label_9_multiloc: {},
+      linear_scale_label_10_multiloc: {},
+      linear_scale_label_11_multiloc: {},
+      maximum: 5,
+      ask_follow_up: false,
+      options: [
+        {
+          title_multiloc: {},
+        },
+      ],
+      matrix_statements: [
+        {
+          title_multiloc: {},
+        },
+      ],
+      enabled: true,
+    });
+
+    const previousField = formCustomFields[formCustomFields.length - 2];
+    const isLastFieldTitleOrBody =
+      previousField.key === 'title_multiloc' ||
+      previousField.key === 'body_multiloc';
+
+    // If the field before the last is a title or body field, we add a new page and add it to the new page
+    // This is because the title and description pages should only have those fields
+    if (isLastFieldTitleOrBody && inputType !== 'page') {
+      const indexForPage = formCustomFields.length - 1;
+      onAddField(createField('page'), indexForPage);
+
+      const indexForInputField = indexForPage + 1;
+      onAddField(createField(inputType), indexForInputField);
+    } else {
+      const indexForInputField = formCustomFields.length - 1;
+      onAddField(createField(inputType), indexForInputField);
+    }
   };
 
   return (
@@ -116,17 +174,20 @@ const FormBuilderToolbox = ({
       overflowX="visible"
       borderRight={`1px solid ${colors.borderLight}`}
       pb="80px"
+      data-cy="e2e-form-builder-toolbox"
     >
       <Box overflowY="auto" w="100%" display="inline">
         <LayoutFields addField={addField} builderConfig={builderConfig} />
         {builderConfig.displayBuiltInFields && (
-          <BuiltInFields move={move} builderConfig={builderConfig} />
+          <BuiltInFields
+            move={move}
+            builderConfig={builderConfig}
+            addField={addField}
+            onSelectField={onSelectField}
+          />
         )}
-        <Box display="flex" alignItems="center">
+        <Box display="flex" alignItems="center" ml="16px" mt="16px">
           <Title
-            fontWeight="normal"
-            ml="16px"
-            mt="16px"
             variant="h6"
             m="0px"
             as="h3"
@@ -137,13 +198,12 @@ const FormBuilderToolbox = ({
           </Title>
           {!builderConfig.alwaysShowCustomFields && (
             <IconTooltip
-              ml="4px"
               icon={isCustomFieldsDisabled ? 'info-outline' : 'info-solid'}
               iconColor={
                 isCustomFieldsDisabled ? colors.coolGrey300 : colors.coolGrey500
               }
               placement="right-start"
-              py="0px"
+              ml="4px"
               content={
                 <Box>
                   <Text my="4px" color="white" fontSize="s">
@@ -161,7 +221,7 @@ const FormBuilderToolbox = ({
           label={formatMessage(messages.shortAnswer)}
           onClick={() => addField('text')}
           data-cy="e2e-short-answer"
-          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
           inputType="text"
           disabled={isCustomFieldsDisabled}
           showAIUpsell
@@ -171,7 +231,7 @@ const FormBuilderToolbox = ({
           label={formatMessage(messages.longAnswer)}
           onClick={() => addField('multiline_text')}
           data-cy="e2e-long-answer"
-          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
           inputType="multiline_text"
           disabled={isCustomFieldsDisabled}
           showAIUpsell
@@ -181,7 +241,7 @@ const FormBuilderToolbox = ({
           label={formatMessage(messages.singleChoice)}
           onClick={() => addField('select')}
           data-cy="e2e-single-choice"
-          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
           inputType="select"
           disabled={isCustomFieldsDisabled}
         />
@@ -190,7 +250,7 @@ const FormBuilderToolbox = ({
           label={formatMessage(messages.multipleChoice)}
           onClick={() => addField('multiselect')}
           data-cy="e2e-multiple-choice"
-          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
           inputType="multiselect"
           disabled={isCustomFieldsDisabled}
         />
@@ -199,7 +259,7 @@ const FormBuilderToolbox = ({
           label={formatMessage(messages.multipleChoiceImage)}
           onClick={() => addField('multiselect_image')}
           data-cy="e2e-image-choice"
-          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
           inputType="multiselect_image"
           disabled={isCustomFieldsDisabled}
         />
@@ -208,16 +268,53 @@ const FormBuilderToolbox = ({
           label={formatMessage(messages.linearScale)}
           onClick={() => addField('linear_scale')}
           data-cy="e2e-linear-scale"
-          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
           inputType="linear_scale"
           disabled={isCustomFieldsDisabled}
         />
+        <ToolboxItem
+          icon="survey-ranking"
+          label={formatMessage(messages.ranking)}
+          onClick={() => addField('ranking')}
+          data-cy="e2e-ranking"
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
+          inputType="ranking"
+          disabled={isCustomFieldsDisabled}
+        />
+        <ToolboxItem
+          icon="rating"
+          label={formatMessage(messages.rating)}
+          onClick={() => addField('rating')}
+          data-cy="e2e-rating"
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
+          inputType="rating"
+          disabled={isCustomFieldsDisabled}
+        />
+        <ToolboxItem
+          icon="survey-sentiment"
+          label={formatMessage(messages.sentiment)}
+          onClick={() => addField('sentiment_linear_scale')}
+          data-cy="e2e-sentiment"
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
+          inputType="sentiment_linear_scale"
+          disabled={isCustomFieldsDisabled}
+        />
+        <ToolboxItem
+          icon="survey-matrix"
+          label={formatMessage(messages.matrix)}
+          onClick={() => addField('matrix_linear_scale')}
+          data-cy="e2e-matrix"
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
+          inputType="matrix_linear_scale"
+          disabled={isCustomFieldsDisabled}
+        />
+
         <ToolboxItem
           icon="survey-number-field"
           label={formatMessage(messages.number)}
           onClick={() => addField('number')}
           data-cy="e2e-number-field"
-          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
           inputType="number"
           disabled={isCustomFieldsDisabled}
         />
@@ -226,15 +323,14 @@ const FormBuilderToolbox = ({
           label={formatMessage(messages.fileUpload)}
           onClick={() => addField('file_upload')}
           data-cy="e2e-file-upload-field"
-          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
           inputType="file_upload"
           disabled={isCustomFieldsDisabled}
         />
         <Box>
-          {!builderConfig.toolboxFieldsToExclude.includes('point') && ( // We want to show the mapping section
+          {builderConfig.toolboxFieldsToInclude.includes('point') && ( // We want to show the mapping section
             <>
               <Title
-                fontWeight="normal"
                 ml="16px"
                 mt="16px"
                 variant="h6"
@@ -250,7 +346,7 @@ const FormBuilderToolbox = ({
                 label={formatMessage(messages.dropPin)}
                 onClick={() => addField('point')}
                 data-cy="e2e-point-field"
-                fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+                fieldsToInclude={builderConfig.toolboxFieldsToInclude}
                 inputType="point"
                 disabled={!isFormMappingEnabled}
                 disabledTooltipMessage={messages.mappingNotInCurrentLicense}
@@ -261,7 +357,7 @@ const FormBuilderToolbox = ({
                   label={formatMessage(messages.drawRoute)}
                   onClick={() => addField('line')}
                   data-cy="e2e-line-field"
-                  fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+                  fieldsToInclude={builderConfig.toolboxFieldsToInclude}
                   inputType="line"
                   disabled={!isFormMappingEnabled}
                   disabledTooltipMessage={messages.mappingNotInCurrentLicense}
@@ -271,7 +367,7 @@ const FormBuilderToolbox = ({
                   label={formatMessage(messages.drawArea)}
                   onClick={() => addField('polygon')}
                   data-cy="e2e-polygon-field"
-                  fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+                  fieldsToInclude={builderConfig.toolboxFieldsToInclude}
                   inputType="polygon"
                   disabled={!isFormMappingEnabled}
                   disabledTooltipMessage={messages.mappingNotInCurrentLicense}
@@ -281,7 +377,7 @@ const FormBuilderToolbox = ({
                   label={formatMessage(messages.shapefileUpload)}
                   onClick={() => addField('shapefile_upload')}
                   data-cy="e2e-file-shapefile-field"
-                  fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+                  fieldsToInclude={builderConfig.toolboxFieldsToInclude}
                   inputType="shapefile_upload"
                   disabled={!isFormMappingEnabled}
                   disabledTooltipMessage={messages.mappingNotInCurrentLicense}

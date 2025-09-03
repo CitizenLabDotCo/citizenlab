@@ -20,7 +20,6 @@ import { PageRuleInput } from './PageRuleInput';
 import { QuestionRuleInput } from './QuestionRuleInput';
 
 type LogicSettingsProps = {
-  pageOptions: { value: string; label: string }[];
   field: IFlatCustomFieldWithIndex;
   builderConfig: FormBuilderConfig | undefined;
 };
@@ -32,11 +31,7 @@ export type AnswersType =
     }[]
   | undefined;
 
-export const LogicSettings = ({
-  pageOptions,
-  field,
-  builderConfig,
-}: LogicSettingsProps) => {
+const LogicSettings = ({ field, builderConfig }: LogicSettingsProps) => {
   const { formatMessage } = useIntl();
   const {
     watch,
@@ -45,11 +40,7 @@ export const LogicSettings = ({
   const locale = useLocale();
   const selectOptions = watch(`customFields.${field.index}.options`);
   const linearScaleMaximum = watch(`customFields.${field.index}.maximum`);
-
-  if (isNilOrError(locale)) {
-    return null;
-  }
-
+  const fieldRequired = watch(`customFields.${field.index}.required`);
   const error = get(formContextErrors, `customFields.${field.index}.logic`);
   const validationError = error?.message as string | undefined;
 
@@ -64,8 +55,8 @@ export const LogicSettings = ({
           label: option.title_multiloc[locale]?.toString(),
         }))
     : undefined;
-  // For Linear Scale Field
-  if (field.input_type === 'linear_scale') {
+  // For Linear Scale and Rating Fields
+  if (['linear_scale', 'rating'].includes(field.input_type)) {
     const linearScaleOptionArray = Array.from(
       { length: linearScaleMaximum },
       (_, i) => i + 1
@@ -74,6 +65,20 @@ export const LogicSettings = ({
       key: option,
       label: option.toString(),
     }));
+  }
+
+  // Add options for 'any_other_answer' and 'no_answer'
+  if (answers) {
+    answers.push({
+      key: 'any_other_answer',
+      label: formatMessage(messages.logicPanelAnyOtherAnswer),
+    });
+    if (!fieldRequired) {
+      answers.push({
+        key: 'no_answer',
+        label: formatMessage(messages.logicPanelNoAnswer),
+      });
+    }
   }
 
   return (
@@ -104,48 +109,27 @@ export const LogicSettings = ({
                 </Warning>
               )}
           </Box>
-          <PageRuleInput
-            fieldId={field.temp_id || field.id}
-            validationError={validationError}
-            name={`customFields.${field.index}.logic`}
-            pages={pageOptions}
-          />
+          <PageRuleInput field={field} validationError={validationError} />
         </>
       ) : (
         <>
-          <Box mb="24px">
-            {builderConfig &&
-              !isNilOrError(builderConfig.supportArticleLink) && (
-                <Warning>
-                  <FormattedMessage
-                    {...(builderConfig.questionLogicHelperText ||
-                      messages.questionLogicHelperText)}
-                    values={{
-                      supportPageLink: (
-                        <a
-                          href={formatMessage(builderConfig.supportArticleLink)}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <FormattedMessage
-                            {...messages.supportArticleLinkText}
-                          />
-                        </a>
-                      ),
-                    }}
-                  />
-                </Warning>
-              )}
-          </Box>
+          {['multiselect', 'multiselect_image'].includes(field.input_type) && (
+            <Box mb="24px">
+              {builderConfig &&
+                !isNilOrError(builderConfig.supportArticleLink) && (
+                  <Warning>
+                    <FormattedMessage {...messages.multipleChoiceHelperText} />
+                  </Warning>
+                )}
+            </Box>
+          )}
           {answers &&
-            answers.map((answer) => (
-              <Box key={answer.key}>
+            answers.map((answer, i) => (
+              <Box key={i}>
                 <QuestionRuleInput
-                  fieldId={field.temp_id || field.id}
+                  field={field}
                   validationError={validationError}
-                  name={`customFields.${field.index}`}
                   answer={answer}
-                  pages={pageOptions}
                 />
               </Box>
             ))}
@@ -155,3 +139,5 @@ export const LogicSettings = ({
     </>
   );
 };
+
+export default LogicSettings;

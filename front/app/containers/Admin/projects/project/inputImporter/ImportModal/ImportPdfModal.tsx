@@ -5,15 +5,11 @@ import {
   Text,
   Title,
   Button,
-  TooltipContentWrapper,
-  Icon,
-  stylingConsts,
   colors,
-  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { UploadFile, SupportedLocale } from 'typings';
 import { object, string, mixed, boolean } from 'yup';
 
@@ -21,7 +17,6 @@ import { IBackgroundJobData } from 'api/background_jobs/types';
 import useAddOfflineIdeasAsync from 'api/import_ideas/useAddOfflineIdeasAsync';
 import usePhase from 'api/phases/usePhase';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
@@ -58,13 +53,14 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
   const { projectId } = useParams() as {
     projectId: string;
   };
-  const importPrintedFormsEnabled = useFeatureFlag({
-    name: 'import_printed_forms',
-  });
+
+  // TEMP: Remove this when the legacy PDF format is no longer required
+  const [searchParams] = useSearchParams();
+  const legacyPdfImport = searchParams.get('legacy_pdf') !== null;
 
   const downloadFormPath =
     phase?.data.attributes.participation_method === 'native_survey'
-      ? `/admin/projects/${projectId}/phases/${phaseId}/native-survey`
+      ? `/admin/projects/${projectId}/phases/${phaseId}/survey-form`
       : `/admin/projects/${projectId}/phases/${phaseId}/form`;
 
   const defaultValues: FormValues = {
@@ -110,6 +106,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
         phase_id: phaseId,
         file: file.base64,
         format: 'pdf',
+        legacy_pdf: legacyPdfImport,
         ...rest,
       });
 
@@ -122,7 +119,6 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
   };
   return (
     <Modal
-      fullScreen={false}
       width="780px"
       opened={open}
       close={onClose}
@@ -133,30 +129,6 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
       }
       niceHeader
     >
-      {/* inspired by front/app/containers/Admin/projects/project/ideas/AnalysisBanner.tsx */}
-      {importPrintedFormsEnabled || (
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          borderRadius={stylingConsts.borderRadius}
-          mx="24px"
-          mb="-8px"
-          px="8px"
-          bgColor={colors.errorLight}
-        >
-          <Box display="flex" alignItems="center">
-            <Icon
-              name="lock"
-              width="50px"
-              height="50px"
-              mr="8px"
-              fill={colors.textPrimary}
-            />
-            <Text>{formatMessage(messages.disabledPDFImportTooltip)}</Text>
-          </Box>
-        </Box>
-      )}
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(submitFile)}>
           <Box w="100%" p="24px">
@@ -200,28 +172,14 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
               />
             </Box>
             <Box w="100%" display="flex" mt="32px">
-              <Tooltip
-                theme={''}
-                maxWidth={350}
-                disabled={importPrintedFormsEnabled}
-                content={
-                  <TooltipContentWrapper tippytheme="light">
-                    <FormattedMessage {...messages.disabledPDFImportTooltip} />
-                  </TooltipContentWrapper>
-                }
+              <Button
+                bgColor={colors.primary}
+                width="auto"
+                type="submit"
+                processing={isLoading}
               >
-                <Box>
-                  <Button
-                    bgColor={colors.primary}
-                    width="auto"
-                    type="submit"
-                    processing={isLoading}
-                    disabled={!importPrintedFormsEnabled || isLoading}
-                  >
-                    <FormattedMessage {...messages.upload} />
-                  </Button>
-                </Box>
-              </Tooltip>
+                <FormattedMessage {...messages.upload} />
+              </Button>
             </Box>
           </Box>
         </form>

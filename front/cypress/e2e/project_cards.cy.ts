@@ -32,7 +32,6 @@ describe('Project and folder cards on front page', () => {
 
   beforeEach(() => {
     cy.goToLandingPage();
-    cy.acceptCookies();
   });
 
   it('shows published project but not archived project if tab === Active', () => {
@@ -121,12 +120,15 @@ describe('Native survey project card', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit(`/`);
-    cy.acceptCookies();
   });
 
   it('Correct CTA button on card is shown', () => {
-    cy.contains('Take the survey').should('exist');
-    cy.contains('Take the survey').click({ force: true });
+    const cardCTA = cy
+      .get('.e2e-project-card')
+      .first()
+      .contains('Take the survey');
+    cardCTA.should('exist');
+    cardCTA.click({ force: true });
     cy.url().should('include', `/projects/${projectSlug}`);
   });
 

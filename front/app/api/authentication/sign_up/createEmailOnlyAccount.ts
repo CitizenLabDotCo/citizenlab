@@ -39,6 +39,8 @@ export default async function createEmailOnlyAccount({
 
   const response = await triggerCreateEmailOnlyAccount(bodyData);
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (response.data) {
     await getAndSetToken({ email });
     invalidateQueryCache();

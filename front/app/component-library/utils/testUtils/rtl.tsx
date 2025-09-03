@@ -2,17 +2,20 @@
 import React, { FC } from 'react';
 
 import { render, RenderOptions } from '@testing-library/react';
+import { HelmetProvider } from 'react-helmet-async';
 import { ThemeProvider } from 'styled-components';
 
 import GlobalStyle from '../../global-styles';
 import { getTheme } from '../styleUtils';
 
-const AllTheProviders: FC = ({ children }) => {
+const AllTheProviders: FC = ({ children }: { children?: React.ReactNode }) => {
   return (
-    <ThemeProvider theme={getTheme(null)}>
-      <GlobalStyle />
-      {children}
-    </ThemeProvider>
+    <HelmetProvider>
+      <ThemeProvider theme={getTheme(null)}>
+        <GlobalStyle />
+        {children}
+      </ThemeProvider>
+    </HelmetProvider>
   );
 };
 

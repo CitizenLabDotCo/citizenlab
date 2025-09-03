@@ -15,15 +15,19 @@ export interface ICampaignData {
   id: string;
   type: string;
   attributes: {
-    context_id?: string;
     campaign_name: CampaignName;
     campaign_description_multiloc: Multiloc;
     // Only undefined for invite_received?
     enabled?: boolean;
     subject_multiloc: Multiloc;
     body_multiloc: Multiloc;
+    title_multiloc?: Multiloc;
+    intro_multiloc?: Multiloc;
+    button_text_multiloc?: Multiloc;
     sender: 'author' | 'organization';
     reply_to: 'author' | 'organization';
+    editable_regions?: EditableRegion[];
+    substitution_variable_keys?: string[];
     created_at: string;
     updated_at: string;
     deliveries_count: number;
@@ -38,6 +42,7 @@ export interface ICampaignData {
     schedule: any;
     // Undefined for campaigns that are not scheduled
     schedule_multiloc?: Multiloc;
+    has_preview: boolean;
     delivery_stats?: {
       sent: number;
       bounced: number;
@@ -53,6 +58,9 @@ export interface ICampaignData {
     author: {
       data: IRelationship;
     };
+    context?: {
+      data?: IRelationship;
+    };
     groups: {
       data: IRelationship[];
     };
@@ -64,7 +72,17 @@ export interface CampaignFormValues {
   reply_to: string;
   subject_multiloc: Multiloc;
   body_multiloc: Multiloc;
+  title_text_multiloc?: Multiloc;
+  intro_multiloc?: Multiloc;
+  button_text_multiloc?: Multiloc;
   group_ids?: string[];
+}
+
+export interface EditableRegion {
+  key: string;
+  type: 'html' | 'text';
+  default_value_multiloc?: Multiloc;
+  allow_blank_locales: boolean;
 }
 
 type CampaignUpdate =
@@ -85,21 +103,16 @@ export interface ICampaign {
 type RegisterUserCampaignName =
   | 'comment_deleted_by_admin'
   | 'comment_on_idea_you_follow'
-  | 'comment_on_initiative_you_follow'
   | 'comment_on_your_comment'
-  | 'cosponsor_of_your_initiative'
   | 'event_registration_confirmation'
   | 'idea_published'
   | 'invitation_to_cosponsor'
-  | 'initiative_published'
   | 'mention_in_official_feedback'
   | 'official_feedback_on_idea_you_follow'
-  | 'official_feedback_on_initiative_you_follow'
   | 'project_phase_started'
   | 'project_phase_upcoming'
   | 'project_published'
   | 'status_change_on_idea_you_follow'
-  | 'status_change_on_initiative_you_follow'
   | 'user_digest'
   | 'voting_basket_not_submitted'
   | 'voting_basket_submitted'
@@ -112,9 +125,6 @@ export const internalCommentNotificationTypes = [
   'internal_comment_on_idea_assigned_to_you',
   'internal_comment_on_idea_you_commented_internally_on',
   'internal_comment_on_idea_you_moderate',
-  'internal_comment_on_initiative_assigned_to_you',
-  'internal_comment_on_initiative_you_commented_internally_on',
-  'internal_comment_on_unassigned_initiative',
   'internal_comment_on_unassigned_unmoderated_idea',
   'internal_comment_on_your_internal_comment',
   'mention_in_internal_comment',
@@ -131,17 +141,12 @@ type AdminModeratorCampaignName =
   | 'idea_assigned_to_you'
   | 'idea_marked_as_spam'
   | 'inappropriate_content_flagged'
-  | 'initiative_assigned_to_you'
-  | 'initiative_marked_as_spam'
-  | 'initiative_resubmitted_for_review'
   | 'moderator_digest'
   | 'new_comment_for_admin'
   | 'new_idea_for_admin'
-  | 'new_initiative_for_admin'
   | 'project_folder_moderation_rights_received'
   | 'project_moderation_rights_received'
   | 'threshold_reached_for_admin'
-  | 'your_proposed_initiatives_digest'
   | InternalCommentType;
 
 export type CampaignName =
@@ -153,7 +158,8 @@ export type CampaignName =
   | AdminModeratorCampaignName;
 
 export interface QueryParameters {
-  campaignNames?: CampaignName[];
+  context?: CampaignContext;
+  manual?: boolean;
   withoutCampaignNames?: CampaignName[];
   pageSize?: number;
   pageNumber?: number;
@@ -161,10 +167,16 @@ export interface QueryParameters {
 
 export interface CampaignAdd {
   campaign_name: string;
-  subject_multiloc: Multiloc;
-  body_multiloc: Multiloc;
-  sender: string;
+  context?: CampaignContext;
+  enabled?: boolean;
+  subject_multiloc?: Multiloc;
+  body_multiloc?: Multiloc;
+  sender?: string;
   reply_to?: string;
   group_ids?: string[];
-  context_id?: string;
 }
+
+export type CampaignContext = {
+  phaseId?: string;
+  projectId?: string;
+};

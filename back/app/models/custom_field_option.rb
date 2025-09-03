@@ -45,6 +45,7 @@ class CustomFieldOption < ApplicationRecord
   after_update :update_area
 
   has_one :image, dependent: :destroy, class_name: 'CustomFieldOptionImage', inverse_of: :custom_field_option
+  has_many :custom_field_bins, dependent: :destroy, class_name: 'CustomFieldBins::OptionBin', inverse_of: :custom_field_option
 
   delegate :project_id, to: :custom_field
 
@@ -76,7 +77,7 @@ class CustomFieldOption < ApplicationRecord
     title = title_multiloc.values.first
     return unless title
 
-    self.key = CustomFieldService.new.generate_key(title, other) do |key_proposal|
+    self.key = CustomFieldService.new.generate_key(title, other_option: other) do |key_proposal|
       self.class.find_by(key: key_proposal, custom_field: custom_field)
     end
   end

@@ -16,7 +16,7 @@ import messages from 'containers/UsersEditPage/messages';
 
 import Avatar from 'components/Avatar';
 import FeatureFlag from 'components/FeatureFlag';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { FormSection } from 'components/UI/FormComponents';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -88,7 +88,7 @@ const StyledText = styled(Text)`
   margin-top: 10px;
 `;
 
-const VerifyButton = styled(Button)``;
+const VerifyButton = styled(ButtonWithLink)``;
 
 const ReverifyButton = styled.button`
   color: ${colors.teal};
@@ -160,6 +160,8 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
           <>
             <AvatarAndShield aria-hidden>
               <StyledAvatar
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 userId={authUser?.data.id}
                 size={52}
                 bgColor="transparent"

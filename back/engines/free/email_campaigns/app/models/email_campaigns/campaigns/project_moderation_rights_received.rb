@@ -4,19 +4,23 @@
 #
 # Table name: email_campaigns_campaigns
 #
-#  id               :uuid             not null, primary key
-#  type             :string           not null
-#  author_id        :uuid
-#  enabled          :boolean
-#  sender           :string
-#  reply_to         :string
-#  schedule         :jsonb
-#  subject_multiloc :jsonb
-#  body_multiloc    :jsonb
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  deliveries_count :integer          default(0), not null
-#  context_id       :uuid
+#  id                   :uuid             not null, primary key
+#  type                 :string           not null
+#  author_id            :uuid
+#  enabled              :boolean
+#  sender               :string
+#  reply_to             :string
+#  schedule             :jsonb
+#  subject_multiloc     :jsonb
+#  body_multiloc        :jsonb
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  deliveries_count     :integer          default(0), not null
+#  context_id           :uuid
+#  title_multiloc       :jsonb
+#  intro_multiloc       :jsonb
+#  button_text_multiloc :jsonb
+#  context_type         :string
 #
 # Indexes
 #
@@ -34,6 +38,7 @@ module EmailCampaigns
     include RecipientConfigurable
     include Disableable
     include Trackable
+    include ContentConfigurable
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: %w[trial active]
 
@@ -58,7 +63,7 @@ module EmailCampaigns
           project_id: notification.project.id,
           project_title_multiloc: notification.project.title_multiloc,
           project_ideas_count: notification.project.ideas_count,
-          project_url: Frontend::UrlService.new.model_to_url(notification.project, locale: Locale.new(recipient.locale))
+          project_url: Frontend::UrlService.new.admin_project_url(notification.project_id)
         }
       }]
     end

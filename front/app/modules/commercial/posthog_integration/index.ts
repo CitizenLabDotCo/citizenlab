@@ -41,62 +41,63 @@ const lazyLoadedPosthog = async () => {
 
 let posthogClient: PostHog | undefined;
 
-const initializePosthog = async (
+export const initializePosthog = async (
   token: string,
   user: IUser | undefined,
   appConfig: IAppConfiguration
 ) => {
   const posthog = await lazyLoadedPosthog();
 
-  posthog.init(token, {
-    api_host: 'https://eu.posthog.com',
-    disable_session_recording: true,
-    autocapture: false,
-    persistence: 'memory', // no cookies
-    loaded(ph) {
-      if (posthog.has_opted_out_capturing({ enable_persistence: false })) {
-        posthog.opt_in_capturing({ enable_persistence: false });
-      }
+  if (!posthog.__loaded) {
+    posthog.init(token, {
+      api_host: 'https://eu.posthog.com',
+      disable_session_recording: true,
+      autocapture: false,
+      persistence: 'memory', // no cookies
+      loaded(ph) {
+        if (posthog.has_opted_out_capturing()) {
+          posthog.opt_in_capturing();
+        }
 
-      if (user) {
-        // This sets the user for all subsequent events, and sets/updates her attributes
-        ph.identify(user.data.id, {
-          email: user.data.attributes.email,
-          name: getFullName(user.data),
-          first_name: user.data.attributes.first_name,
-          last_name: user.data.attributes.last_name,
-          locale: user.data.attributes.locale,
-          highest_role: user.data.attributes.highest_role,
+        if (user) {
+          // This sets the user for all subsequent events, and sets/updates her attributes
+          ph.identify(user.data.id, {
+            email: user.data.attributes.email,
+            name: getFullName(user.data),
+            first_name: user.data.attributes.first_name,
+            last_name: user.data.attributes.last_name,
+            locale: user.data.attributes.locale,
+            highest_role: user.data.attributes.highest_role,
+          });
+        }
+
+        // These are the groups we're associating the user with
+        ph.group('tenant', appConfig.data.id, {
+          name: appConfig.data.attributes.name,
+          host: appConfig.data.attributes.host,
+          lifecycle_stage:
+            appConfig.data.attributes.settings.core.lifecycle_stage,
         });
-      }
 
-      // These are the groups we're associating the user with
-      ph.group('tenant', appConfig.data.id, {
-        name: appConfig.data.attributes.name,
-        host: appConfig.data.attributes.host,
-        lifecycle_stage:
-          appConfig.data.attributes.settings.core.lifecycle_stage,
-      });
-
-      // These properties will be sent along with all events
-      ph.register({
-        tenantId: appConfig.data.id,
-      });
-    },
-  });
-
-  if (!eventsSubscription || eventsSubscription.closed) {
-    eventsSubscription = events$.subscribe((event) => {
-      posthog.capture(event.name, event.properties);
+        // These properties will be sent along with all events
+        ph.register({
+          tenantId: appConfig.data.id,
+        });
+      },
     });
-  }
 
-  if (!pagesSubscription || pagesSubscription.closed) {
-    pagesSubscription = pageChanges$.subscribe((_pageChange) => {
-      posthog.capture('$pageview');
-    });
-  }
+    if (!eventsSubscription || eventsSubscription.closed) {
+      eventsSubscription = events$.subscribe((event) => {
+        posthog.capture(event.name, event.properties);
+      });
+    }
 
+    if (!pagesSubscription || pagesSubscription.closed) {
+      pagesSubscription = pageChanges$.subscribe((_pageChange) => {
+        posthog.capture('$pageview');
+      });
+    }
+  }
   return posthog;
 };
 
@@ -136,15 +137,13 @@ const configuration: ModuleConfiguration = {
             ) {
               return;
             }
-            if (!posthogClient) {
-              posthogClient = await initializePosthog(
-                POSTHOG_API_KEY,
-                user ?? undefined,
-                appConfig
-              );
-            }
+            await initializePosthog(
+              POSTHOG_API_KEY,
+              user ?? undefined,
+              appConfig
+            );
 
-            posthogClient.startSessionRecording();
+            posthogClient?.startSessionRecording();
           }
 
           // ADMINS AND MODERATORS
@@ -180,9 +179,9 @@ const configuration: ModuleConfiguration = {
 
             // There seems to be no way to call opt_out_capturing without posthog
             // writing to localstorage. Clearing it, instead, seems to work fine.
-            posthogClient?.clear_opt_in_out_capturing({
-              enable_persistence: false,
-            });
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            posthogClient?.clear_opt_in_out_capturing();
           }
         }
       }

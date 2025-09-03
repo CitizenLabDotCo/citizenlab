@@ -33,7 +33,6 @@ const CustomRadio = styled.div<{ borderColor: string | undefined }>`
   border-radius: 50%;
   border: ${({ borderColor }) =>
     borderColor ? `solid 1px ${borderColor}` : `solid 1px ${colors.grey500}`};
-  border: ;
   transition: all 120ms ease-out;
 
   ${isRtl`
@@ -107,6 +106,8 @@ export type Props = {
   buttonColor?: string | undefined;
   className?: string;
   isRequired?: boolean;
+  onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
+  onClick?: () => void;
 } & BoxPaddingProps &
   BoxMarginProps;
 
@@ -122,7 +123,9 @@ const Radio = ({
   className,
   isRequired,
   usePrimaryBorder = false,
+  onKeyDown,
   onChange: _onChange,
+  onClick,
   ...rest
 }: Props) => {
   const theme = useTheme();
@@ -134,12 +137,17 @@ const Radio = ({
     if (!disabled && onChange) {
       const targetElement = get(event, 'target') as HTMLElement;
       const targetElementIsLink =
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         targetElement &&
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         targetElement.hasAttribute &&
         targetElement.hasAttribute('href');
 
       if (!targetElementIsLink) {
         onChange(value);
+        onClick && onClick();
       }
     }
   };
@@ -158,6 +166,7 @@ const Radio = ({
     <Box
       onClick={handleOnChange}
       display="flex"
+      alignItems="flex-start"
       data-testid="radio-container"
       {...rest}
     >
@@ -172,6 +181,7 @@ const Radio = ({
         onBlur={handleOnBlur}
         required={isRequired}
         readOnly
+        onKeyDown={onKeyDown}
       />
       <CustomRadio
         className={`${inputFocused ? 'focused' : ''}

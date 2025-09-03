@@ -17,6 +17,30 @@ import Icon from '../Icon';
 import IconButton from '../IconButton';
 import Input from '../Input';
 
+const StyledInputWrapper = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
+const StyledLabel = styled.label<{ isFloating: boolean; color?: string }>`
+  position: absolute;
+  left: 12px;
+  top: ${({ isFloating }) => (isFloating ? '0px' : '50%')};
+  font-size: ${({ isFloating }) => (isFloating ? '14px' : '16px')};
+  background-color: white;
+  padding: 0 4px;
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition: all 0.2s ease;
+  z-index: 2;
+  ${({ color }) => (color ? `color: ${color};` : '')}
+
+  ${isRtl`
+    left: auto;
+    right: 12px;
+  `}
+`;
+
 const StyledInput = styled(Input)`
   input {
     padding-right: 40px;
@@ -26,7 +50,6 @@ const StyledInput = styled(Input)`
       display: none;
     }
   }
-
   ${isRtl`
     input{
         padding-right: ${defaultStyles.inputPadding};
@@ -46,7 +69,7 @@ const IconContainer = styled.div<{ inputSize?: InputSize }>`
 `;
 
 export interface Props {
-  id: string;
+  id?: string;
   defaultValue?: string;
   placeholder: string;
   ariaLabel: string;
@@ -57,6 +80,9 @@ export interface Props {
   className?: string;
   size?: InputSize;
   setInputRef?: (arg: HTMLInputElement) => void;
+  labelColor?: string;
+  hideLabel?: boolean;
+  dataCy?: string;
 }
 
 const SearchInput = ({
@@ -70,10 +96,14 @@ const SearchInput = ({
   className,
   size,
   setInputRef,
+  labelColor,
+  hideLabel = false,
+  dataCy,
 }: Props) => {
   const [internalSearchTerm, setInternalSearchTerm] = useState(
     defaultValue ?? null
   );
+  const [isFocused, setIsFocused] = useState(false);
 
   const debouncedOnChange = useMemo(
     () =>
@@ -95,46 +125,65 @@ const SearchInput = ({
 
   const handleOnReset = (event?: MouseEvent | KeyboardEvent) => {
     event?.preventDefault();
-
-    if (!isEmpty(internalSearchTerm)) {
-      onChange(null);
-      setInternalSearchTerm(null);
-    }
+    setInternalSearchTerm('');
+    onChange(null);
   };
 
   const handleRef = (element: HTMLInputElement) => {
     setInputRef && setInputRef(element);
   };
 
-  const userHasEnteredSearchTerm = !isEmpty(internalSearchTerm);
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+  };
+
+  const isLabelFloating = isFocused || !!internalSearchTerm;
 
   return (
-    <Box className={className || ''} position="relative">
-      <StyledInput
-        id={id}
-        className="e2e-search-input"
-        type="text"
-        aria-label={ariaLabel}
-        placeholder={placeholder}
-        value={internalSearchTerm || ''}
-        onChange={handleOnChange}
-        size={size}
-        data-testid={testEnv('input-field')}
-        setRef={handleRef}
-      />
-      <IconContainer inputSize={size}>
-        {userHasEnteredSearchTerm ? (
-          <IconButton
-            iconName={'close'}
-            onClick={handleOnReset}
-            iconColor={colors.textSecondary}
-            iconColorOnHover={'#000'}
-            a11y_buttonActionMessage={a11y_closeIconTitle}
-          />
-        ) : (
-          <Icon name="search" fill={colors.textSecondary} />
+    <Box className={className || ''} position="relative" data-cy={dataCy}>
+      <StyledInputWrapper>
+        {!hideLabel && (
+          <StyledLabel
+            htmlFor={id}
+            isFloating={isLabelFloating}
+            color={labelColor}
+          >
+            {placeholder}
+          </StyledLabel>
         )}
-      </IconContainer>
+        <StyledInput
+          id={id}
+          className="e2e-search-input"
+          type="text"
+          aria-label={ariaLabel}
+          placeholder={isLabelFloating ? '' : placeholder}
+          value={internalSearchTerm || ''}
+          onChange={handleOnChange}
+          size={size}
+          data-testid={testEnv('input-field')}
+          setRef={handleRef}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+        />
+        <IconContainer inputSize={size}>
+          {internalSearchTerm ? (
+            <IconButton
+              iconName="close"
+              onClick={handleOnReset}
+              iconColor={colors.textSecondary}
+              iconColorOnHover="#000"
+              a11y_buttonActionMessage={a11y_closeIconTitle}
+              mr="-5px"
+            />
+          ) : (
+            <Icon name="search" fill={colors.textSecondary} />
+          )}
+        </IconContainer>
+      </StyledInputWrapper>
     </Box>
   );
 };

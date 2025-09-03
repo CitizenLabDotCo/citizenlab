@@ -6,11 +6,13 @@ import {
   Box,
   Text,
   Tooltip,
+  Image,
 } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 
+import useAuthUser from 'api/me/useAuthUser';
 import { IUserData } from 'api/users/types';
 import useUserById from 'api/users/useUserById';
 
@@ -19,7 +21,7 @@ import Link from 'utils/cl-router/Link';
 
 import messages from './messages';
 
-const Name = styled.span<{
+export const Name = styled.span<{
   color?: string;
   fontWeight?: number;
   fontSize?: number;
@@ -78,6 +80,7 @@ interface Props extends StyleProps {
   hideLastName?: boolean;
   anonymous?: boolean;
   showModeratorStyles?: boolean;
+  showAvatar?: boolean;
 }
 
 const UserName = ({
@@ -92,9 +95,13 @@ const UserName = ({
   color,
   showModeratorStyles,
   anonymous,
+  showAvatar,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: user } = useUserById(userId);
+  const { data: authUser } = useAuthUser();
+
+  const avatarUrl = user?.data.attributes.avatar?.medium;
 
   const sharedNameProps: StyleProps = {
     fontWeight,
@@ -161,24 +168,59 @@ const UserName = ({
       e2e-username
     `;
 
-    if (isLinkToProfile) {
+    const isAuthorWithNoName =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      user.data.id === authUser?.data.id && authUser?.data.attributes.no_name;
+
+    const nameElement = (
+      <Name {...sharedNameProps} className={classNames}>
+        {showAvatar && avatarUrl && (
+          <Image
+            src={avatarUrl}
+            alt={name}
+            width={`${fontSize || 14}px`}
+            height={`${fontSize || 14}px`}
+            borderRadius="50%"
+            mb="4px"
+            marginRight="4px"
+          />
+        )}
+        {name}
+      </Name>
+    );
+
+    const linkedNamelement = (
+      <Link
+        to={profileLink}
+        className={`e2e-author-link ${className || ''}`}
+        scrollToTop
+      >
+        {nameElement}
+      </Link>
+    );
+
+    if (isAuthorWithNoName) {
       return (
-        <Link
-          to={profileLink}
-          className={`e2e-author-link ${className || ''}`}
-          scrollToTop
+        <Tooltip
+          placement="top-start"
+          maxWidth={'260px'}
+          theme={'dark'}
+          content={
+            <Box style={{ cursor: 'default' }}>
+              <Text my="8px" color="white" fontSize="s">
+                {formatMessage(messages.authorWithNoNameTooltip)}
+              </Text>
+            </Box>
+          }
         >
-          <Name {...sharedNameProps} className={classNames}>
-            {name}
-          </Name>
-        </Link>
+          {linkedNamelement}
+        </Tooltip>
       );
+    } else if (isLinkToProfile) {
+      return linkedNamelement;
     } else {
-      return (
-        <Name {...sharedNameProps} className={classNames}>
-          {name}
-        </Name>
-      );
+      return nameElement;
     }
   }
 

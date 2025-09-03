@@ -12,7 +12,6 @@ import ReactionsByTimeCard from 'components/admin/GraphCards/ReactionsByTimeCard
 import RegistrationsCard from 'components/admin/GraphCards/RegistrationsCard';
 import { GraphsContainer, Column } from 'components/admin/GraphWrappers';
 import { IResolution } from 'components/admin/ResolutionControl';
-import Outlet from 'components/Outlet';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -22,6 +21,11 @@ import messages from '../messages';
 import tracks from '../tracks';
 
 import ChartFilters from './ChartFilters';
+import EmailDeliveriesCard from './charts/EmailDeliveriesCard';
+import EventsCard from './charts/EventsCard';
+import InputStatusCard from './charts/InputStatusCard';
+import InvitationsCard from './charts/InvitationsCard';
+import ProjectStatusCard from './charts/ProjectStatusCard';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
 import { getSensibleResolution } from './getSensibleResolution';
@@ -75,7 +79,10 @@ const OverviewDashboard = () => {
 
   const handleOnProjectFilter = useCallback(
     (filter: { value: string; label: string }) => {
-      trackEventByName(tracks.filteredOnProject.name, { project: filter });
+      trackEventByName(tracks.filteredOnProject, {
+        filterValue: filter.value,
+        filterLabel: filter.label,
+      });
 
       setCurrentProjectFilter(filter.value);
       setCurrentProjectFilterLabel(filter.label);
@@ -84,7 +91,7 @@ const OverviewDashboard = () => {
   );
 
   const onResourceByTopicChange = useCallback((option) => {
-    trackEventByName(tracks.choseResource.name, {
+    trackEventByName(tracks.choseResource, {
       newResource: option,
       graph: 'resourceByTopic',
     });
@@ -93,7 +100,7 @@ const OverviewDashboard = () => {
   }, []);
 
   const onResourceByProjectChange = useCallback((option) => {
-    trackEventByName(tracks.choseResource.name, {
+    trackEventByName(tracks.choseResource, {
       newResource: option,
       graph: 'resourceByProject',
     });
@@ -151,19 +158,11 @@ const OverviewDashboard = () => {
             hideParticipationRate
           />
         </Column>
-        <Title
-          ml="12px"
-          mt="40px"
-          width="100%"
-          variant="h2"
-          color="primary"
-          fontWeight="normal"
-        >
+        <Title ml="12px" mt="40px" width="100%" variant="h2" color="primary">
           {formatMessage(overviewMessages.projectsAndParticipation)}
         </Title>
         <Column>
-          <Outlet
-            id="app.containers.Admin.dashboard.summary.projectStatus"
+          <ProjectStatusCard
             projectId={currentProjectFilter}
             startAtMoment={startAtMoment}
             endAtMoment={endAtMoment}
@@ -189,13 +188,6 @@ const OverviewDashboard = () => {
           />
         </Column>
         <Column>
-          <Outlet
-            id="app.containers.Admin.dashboard.summary.proposals"
-            projectId={currentProjectFilter}
-            startAtMoment={startAtMoment}
-            endAtMoment={endAtMoment}
-            resolution={resolution}
-          />
           <SelectableResourceByProjectChart
             className="dynamicHeight fullWidth e2e-resource-by-project-chart"
             onResourceByProjectChange={onResourceByProjectChange}
@@ -210,26 +202,17 @@ const OverviewDashboard = () => {
           />
         </Column>
         <>
-          <Title
-            ml="12px"
-            mt="40px"
-            width="100%"
-            variant="h2"
-            color="primary"
-            fontWeight="normal"
-          >
+          <Title ml="12px" mt="40px" width="100%" variant="h2" color="primary">
             {formatMessage(overviewMessages.management)}
           </Title>
           <Column>
-            <Outlet
-              id="app.containers.Admin.dashboard.summary.inputStatus"
+            <InputStatusCard
               projectId={currentProjectFilter}
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}
               resolution={resolution}
             />
-            <Outlet
-              id="app.containers.Admin.dashboard.summary.events"
+            <EventsCard
               projectId={currentProjectFilter}
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}
@@ -237,15 +220,13 @@ const OverviewDashboard = () => {
             />
           </Column>
           <Column>
-            <Outlet
-              id="app.containers.Admin.dashboard.summary.emailDeliveries"
+            <EmailDeliveriesCard
               projectId={currentProjectFilter}
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}
               resolution={resolution}
             />
-            <Outlet
-              id="app.containers.Admin.dashboard.summary.invitations"
+            <InvitationsCard
               projectId={currentProjectFilter}
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}

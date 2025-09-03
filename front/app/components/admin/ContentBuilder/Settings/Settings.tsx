@@ -8,7 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -43,7 +43,7 @@ const Settings = ({ selectedNode, onClose, onDelete }: Props) => {
       w="400px"
       h={`calc(100vh - ${stylingConsts.menuHeight}px)`}
       background="#ffffff"
-      overflowY="auto"
+      overflowY="visible"
       id="e2e-content-builder-settings"
     >
       <StyledCloseIconButton
@@ -53,27 +53,29 @@ const Settings = ({ selectedNode, onClose, onDelete }: Props) => {
         iconColor={colors.textSecondary}
         iconColorOnHover={'#000'}
       />
-      {selectedNode.title && (
-        <Title variant="h2" mt="-4px" mb="32px">
-          <FormattedMessage {...selectedNode.title} />
-        </Title>
-      )}
-      {selectedNode.settings && React.createElement(selectedNode.settings)}
-      {selectedNode.isDeletable && !selectedNode.custom?.noDelete ? (
-        <Box display="flex">
-          <Button
-            id="e2e-delete-button"
-            icon="delete"
-            buttonStyle="primary-outlined"
-            borderColor={colors.error}
-            textColor={colors.error}
-            iconColor={colors.error}
-            onClick={onDelete}
-          >
-            <FormattedMessage {...messages.delete} />
-          </Button>
-        </Box>
-      ) : null}
+      <Box h="100%" pr="8px" overflowY="auto">
+        {selectedNode.title && (
+          <Title variant="h2" mt="-4px" mb="32px">
+            <FormattedMessage {...selectedNode.title} />
+          </Title>
+        )}
+        {selectedNode.settings && React.createElement(selectedNode.settings)}
+        {selectedNode.isDeletable ? (
+          <Box display="flex">
+            <ButtonWithLink
+              id="e2e-delete-button"
+              icon="delete"
+              buttonStyle="primary-outlined"
+              borderColor={colors.error}
+              textColor={colors.error}
+              iconColor={colors.error}
+              onClick={onDelete}
+            >
+              <FormattedMessage {...messages.delete} />
+            </ButtonWithLink>
+          </Box>
+        ) : null}
+      </Box>
     </StyledBox>
   );
 };

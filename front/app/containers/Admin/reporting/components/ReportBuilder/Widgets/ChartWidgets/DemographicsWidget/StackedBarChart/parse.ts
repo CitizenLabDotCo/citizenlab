@@ -8,6 +8,7 @@ import { DEFAULT_CATEGORICAL_COLORS } from 'components/admin/Graphs/styling';
 
 import { binAge } from 'utils/dataUtils';
 import { roundPercentages } from 'utils/math';
+import { truncate } from 'utils/textUtils';
 
 export const parseResponse = (
   response: DemographicsResponse,
@@ -57,11 +58,14 @@ const parseBirthyearResponse = (
 
   const statusColorById = createColorMap(columns);
 
-  const legendItems = columns.map((column) => ({
-    icon: 'circle' as const,
-    color: statusColorById[column],
-    label: column,
-  }));
+  const legendItems = columns.map((column) => {
+    return {
+      icon: 'circle' as const,
+      color: statusColorById[column],
+      label: column,
+      value: data[0][column],
+    };
+  });
 
   return {
     data,
@@ -87,23 +91,35 @@ const parseOtherResponse = (
 
   const columns = [...columnsWithoutBlank, '_blank'];
 
-  const percentages = roundPercentages(
-    columns.map((column) => data[0][column])
-  );
-  const statusColorById = createColorMap(columns);
+  const sortedColumns = columns.sort((a, b) => data[0][b] - data[0][a]);
 
-  const labels = columns.map((column) => {
+  const percentages = roundPercentages(
+    sortedColumns.map((column) => data[0][column])
+  );
+  const statusColorById = createColorMap(sortedColumns);
+
+  const labels = sortedColumns.map((column) => {
     if (column === '_blank') return blankLabel;
     return localize(options[column].title_multiloc);
   });
 
-  const legendItems = columns.map((column, i) => ({
-    icon: 'circle' as const,
-    color: statusColorById[column],
-    label: labels[i],
-  }));
+  const legendItems = sortedColumns.map((column, i) => {
+    return {
+      icon: 'circle' as const,
+      color: statusColorById[column],
+      label: truncate(labels[i], 50),
+      value: data[0][column],
+    };
+  });
 
-  return { data, percentages, columns, statusColorById, labels, legendItems };
+  return {
+    data,
+    percentages,
+    columns: sortedColumns,
+    statusColorById,
+    labels,
+    legendItems,
+  };
 };
 
 const createColorMap = (columns: string[]) => {

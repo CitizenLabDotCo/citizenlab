@@ -7,6 +7,10 @@ class ProjectsFilteringService
 
   class << self
     def for_homepage_filter(current_user)
+      # TODO: Find a way to pass the policy context when instantiating the scope.
+      #   This should not cause any issue since the current usage of the policy context
+      #   does not impact the homepage content. But for consistency, we should find a way
+      #   to pass the policy context.
       homepage_publications =
         AdminPublicationsFilteringService.for_homepage_filter AdminPublicationPolicy::Scope.new(
           current_user,
@@ -59,5 +63,18 @@ class ProjectsFilteringService
     moderated_project_ids = user.roles.select { |r| r['type'] == 'project_moderator' }.pluck('project_id')
 
     scope.where(id: moderated_project_ids)
+  end
+
+  add_filter('review_state') do |scope, options|
+    if options[:review_state].present?
+      case options[:review_state]
+      when 'approved'
+        scope.joins(:review).where.not(project_reviews: { approved_at: nil })
+      when 'pending'
+        scope.joins(:review).where(project_reviews: { approved_at: nil })
+      end
+    else
+      scope
+    end
   end
 end

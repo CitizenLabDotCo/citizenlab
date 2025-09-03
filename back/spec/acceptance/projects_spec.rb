@@ -4,7 +4,56 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Projects' do
-  explanation 'Ideas have to be posted in a city project, or they can be posted in the open idea box.'
+  explanation 'Projects can have phases which can be of different participation methods.'
+
+  shared_examples 'Unauthorized (401)' do
+    example 'Unauthorized (401)', document: false do
+      do_request
+      expect(status).to eq 401
+    end
+  end
+
+  shared_context 'PATCH project parameters' do
+    with_options scope: :project do
+      parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
+      parameter :description_multiloc, 'The description of the project, as a multiloc HTML string', required: true
+      parameter :description_preview_multiloc, 'The description preview of the project, as a multiloc string'
+      parameter :slug, 'The unique slug of the project'
+      parameter :header_bg, 'Base64 encoded header image'
+      parameter :area_ids, 'Array of ids of the associated areas'
+      parameter :topic_ids, 'Array of ids of the associated topics'
+      parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(',')}.", required: false
+      parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned', required: false
+      parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)'
+    end
+
+    with_options scope: %i[project admin_publication_attributes] do
+      parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(',')}.", required: false
+    end
+
+    ValidationErrorHelper.new.error_fields(self, Project)
+  end
+
+  shared_context 'POST project parameters' do
+    with_options scope: :project do
+      parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
+      parameter :description_multiloc, 'The description of the project, as a multiloc HTML string', required: true
+      parameter :description_preview_multiloc, 'The description preview of the project, as a multiloc string'
+      parameter :slug, 'The unique slug of the project. If not given, it will be auto generated'
+      parameter :header_bg, 'Base64 encoded header image'
+      parameter :area_ids, 'Array of ids of the associated areas'
+      parameter :topic_ids, 'Array of ids of the associated topics'
+      parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(',')}. Defaults to public.", required: false
+      parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)', required: false
+      parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned', required: false
+    end
+
+    with_options scope: %i[project admin_publication_attributes] do
+      parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(',')}. Defaults to published.", required: false
+    end
+
+    ValidationErrorHelper.new.error_fields(self, Project)
+  end
 
   let(:json_response) { json_parse(response_body) }
 
@@ -21,6 +70,8 @@ resource 'Projects' do
       @projects = %w[published published draft published archived archived published]
         .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
     end
+
+    let(:user) { @user }
 
     get 'web_api/v1/projects' do
       with_options scope: :page do
@@ -176,7 +227,8 @@ resource 'Projects' do
             voting: { enabled: false, disabled_reason: 'project_inactive' },
             attending_event: { enabled: true, disabled_reason: nil },
             volunteering: { enabled: false, disabled_reason: 'project_inactive' }
-          }
+          },
+          preview_token: an_instance_of(String)
         )
         expect(json_response.dig(:data, :relationships)).to include(
           areas: { data: [] }
@@ -233,24 +285,7 @@ resource 'Projects' do
     end
 
     post 'web_api/v1/projects' do
-      with_options scope: :project do
-        parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
-        parameter :description_multiloc, 'The description of the project, as a multiloc HTML string', required: true
-        parameter :description_preview_multiloc, 'The description preview of the project, as a multiloc string'
-        parameter :slug, 'The unique slug of the project. If not given, it will be auto generated'
-        parameter :header_bg, 'Base64 encoded header image'
-        parameter :area_ids, 'Array of ids of the associated areas'
-        parameter :topic_ids, 'Array of ids of the associated topics'
-        parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(',')}. Defaults to public.", required: false
-        parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)', required: false
-        parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned', required: false
-      end
-
-      with_options scope: %i[project admin_publication_attributes] do
-        parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(',')}. Defaults to published.", required: false
-      end
-
-      ValidationErrorHelper.new.error_fields(self, Project)
+      include_context 'POST project parameters'
 
       describe do
         before do
@@ -267,21 +302,30 @@ resource 'Projects' do
         let(:area_ids) { create_list(:area, 2).map(&:id) }
         let(:topic_ids) { create_list(:topic, 2).map(&:id) }
         let(:visible_to) { 'admins' }
-        let(:publication_status) { 'draft' }
+        let(:publication_status) { 'published' }
         let(:default_assignee_id) { create(:admin).id }
 
         example_request 'Create a timeline project' do
           assert_status 201
-          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
-          expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
-          expect(json_response.dig(:data, :attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
+
+          new_project = Project.find(response_data[:id])
+
+          expect(response_data[:attributes]).to include(
+            title_multiloc: title_multiloc.symbolize_keys,
+            description_multiloc: description_multiloc.symbolize_keys,
+            description_preview_multiloc: description_preview_multiloc.symbolize_keys,
+            visible_to: visible_to,
+            first_published_at: new_project.admin_publication.first_published_at.iso8601(3),
+            header_bg: be_present
+          )
+
           expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
           expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
-          expect(json_response.dig(:data, :attributes, :visible_to)).to eq 'admins'
-          expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'draft'
           expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id
 
-          expect(json_response.dig(:data, :attributes, :header_bg)).to be_present
+          admin_publication_attrs = json_response[:included].find { |its| its[:type] == 'admin_publication' }[:attributes]
+          expect(admin_publication_attrs[:publication_status]).to eq('published')
+
           # New projects are added to the top
           expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
         end
@@ -299,28 +343,9 @@ resource 'Projects' do
     end
 
     patch 'web_api/v1/projects/:id' do
-      before do
-        @project = create(:project)
-      end
+      include_context 'PATCH project parameters'
 
-      with_options scope: :project do
-        parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
-        parameter :description_multiloc, 'The description of the project, as a multiloc HTML string', required: true
-        parameter :description_preview_multiloc, 'The description preview of the project, as a multiloc string'
-        parameter :slug, 'The unique slug of the project'
-        parameter :header_bg, 'Base64 encoded header image'
-        parameter :area_ids, 'Array of ids of the associated areas'
-        parameter :topic_ids, 'Array of ids of the associated topics'
-        parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(',')}.", required: false
-        parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned', required: false
-        parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)'
-      end
-
-      with_options scope: %i[project admin_publication_attributes] do
-        parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(',')}.", required: false
-      end
-
-      ValidationErrorHelper.new.error_fields(self, Project)
+      before { @project = create(:project) }
 
       let(:id) { @project.id }
       let(:title_multiloc) { { 'en' => 'Changed title' } }
@@ -449,6 +474,154 @@ resource 'Projects' do
         do_request
         expect(moderator.reload.project_moderator?(id)).to be false
       end
+
+      context 'when the homepage layout references the project or its admin_publication' do
+        let!(:project2) { create(:project) }
+
+        let!(:layout) do
+          create(
+            :homepage_layout,
+            craftjs_json: {
+              ROOT: {
+                type: 'div',
+                nodes: %w[
+                  nUOW77iNcW
+                  lsKEOMxTkR
+                ],
+                props: {
+                  id: 'e2e-content-builder-frame'
+                },
+                custom: {},
+                hidden: false,
+                isCanvas: true,
+                displayName: 'div',
+                linkedNodes: {}
+              },
+              nUOW77iNcW: {
+                type: {
+                  resolvedName: 'Selection'
+                },
+                nodes: [],
+                props: {
+                  titleMultiloc: {
+                    en: 'Projects and folders'
+                  },
+                  adminPublicationIds: [
+                    project.admin_publication.id,
+                    project2.admin_publication.id
+                  ]
+                },
+                custom: {},
+                hidden: false,
+                parent: 'ROOT',
+                isCanvas: false,
+                displayName: 'Selection',
+                linkedNodes: {}
+              },
+              lsKEOMxTkR: {
+                type: {
+                  resolvedName: 'Spotlight'
+                },
+                nodes: [],
+                props: {
+                  publicationId: project.id,
+                  titleMultiloc: {
+                    en: 'Highlighted project'
+                  },
+                  publicationType: 'project',
+                  buttonTextMultiloc: {
+                    en: 'Look at this project!'
+                  },
+                  descriptionMultiloc: {
+                    en: 'some description text'
+                  }
+                },
+                custom: {},
+                hidden: false,
+                parent: 'ROOT',
+                isCanvas: false,
+                displayName: 'Spotlight',
+                linkedNodes: {}
+              }
+            }
+          )
+        end
+
+        example 'Deleting removes any Spotlight widget(s) for the project from the homepage layout', document: false do
+          do_request
+          expect(layout.reload.craftjs_json['lsKEOMxTkR']).to be_nil
+        end
+
+        example 'References to deleted homepage layout Spotlight widgets are also removed', document: false do
+          do_request
+          expect(layout.reload.craftjs_json['ROOT']['nodes']).to eq %w[nUOW77iNcW]
+        end
+
+        example(
+          'Deleting removes its admin_publication ID from Selection widget(s) in homepage layout',
+          document: false
+        ) do
+          do_request
+
+          expect(response_status).to eq 200
+          expect(layout.reload.craftjs_json['nUOW77iNcW']['props']['adminPublicationIds'])
+            .to match_array [project2.admin_publication.id]
+        end
+      end
+    end
+
+    delete 'web_api/v1/projects/:id/participation_data' do
+      let(:project) { create(:project) }
+      let(:id) { project.id }
+      let(:ideation_phase) do
+        create(
+          :phase,
+          project: project,
+          participation_method: 'ideation',
+          start_at: (Time.zone.today - 40.days),
+          end_at: (Time.zone.today - 31.days)
+        )
+      end
+
+      let(:volunteering_phase) do
+        create(
+          :volunteering_phase,
+          project: project,
+          start_at: (Time.zone.today - 30.days),
+          end_at: (Time.zone.today - 21.days)
+        )
+      end
+
+      let(:poll_phase) do
+        create(
+          :poll_phase,
+          project: project,
+          start_at: (Time.zone.today - 20.days),
+          end_at: (Time.zone.today - 11.days)
+        )
+      end
+
+      let!(:idea) { create(:idea, project: project) }
+
+      let!(:cause) { create(:cause, phase: volunteering_phase) }
+
+      let!(:volunteer) { create(:volunteer, cause: cause) }
+
+      let!(:poll_response) { create(:poll_response, phase: poll_phase) }
+
+      example 'Reset participation data of a project' do
+        side_fx = SideFxProjectService.new
+        allow(SideFxProjectService).to receive(:new).and_return(side_fx)
+        expect(side_fx)
+          .to receive(:after_destroy_participation_data).and_call_original
+
+        do_request
+
+        expect(response_status).to eq 200
+        expect(project.ideas).to be_empty
+        expect(cause.volunteers).to be_empty
+        expect(poll_phase.poll_responses).to be_empty
+      end
     end
 
     post 'web_api/v1/projects/:id/copy' do
@@ -460,6 +633,72 @@ resource 'Projects' do
 
         copied_project = Project.find(json_response.dig(:data, :id))
         expect(copied_project.title_multiloc['en']).to include(source_project.title_multiloc['en'])
+      end
+
+      example 'Copy non-draft project', document: false do
+        expect(source_project.admin_publication.publication_status).not_to eq 'draft'
+
+        do_request
+        assert_status 201
+
+        copied_project = Project.find(json_response.dig(:data, :id))
+        expect(copied_project.admin_publication.publication_status).to eq 'draft'
+      end
+
+      example 'Copy a project in a folder', document: false do
+        folder = create(:project_folder, projects: [source_project])
+
+        do_request
+        assert_status 201
+
+        copied_project = Project.find(json_response.dig(:data, :id))
+        expect(copied_project.folder_id).to eq folder.id
+      end
+
+      example 'Copy a project with a project moderator as default_assignee', document: false do
+        moderator = create(:project_moderator, projects: [source_project])
+        source_project.update!(default_assignee: moderator)
+
+        do_request
+        assert_status 201
+
+        copied_project = Project.find(json_response.dig(:data, :id))
+        expect(copied_project.default_assignee_id).to eq @user.id
+      end
+
+      context 'as a project moderator' do
+        before do
+          header 'Content-Type', 'application/json'
+          @user = create(:user, roles: [{ type: 'project_moderator', project_id: source_project.id }])
+          header_token_for @user
+        end
+
+        example 'Copying a project in a folder copies to root', document: false do
+          create(:project_folder, projects: [source_project])
+
+          do_request
+          assert_status 201
+
+          copied_project = Project.find(json_response.dig(:data, :id))
+          expect(copied_project.folder_id).to be_nil
+        end
+      end
+
+      context 'as a folder moderator' do
+        let(:folder) { create(:project_folder, projects: [source_project]) }
+
+        before do
+          header 'Content-Type', 'application/json'
+          @user = create(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: folder.id }])
+          header_token_for @user
+        end
+
+        example_request 'Copying a project in a folder copies to the same folder', document: false do
+          assert_status 201
+
+          copied_project = Project.find(json_response.dig(:data, :id))
+          expect(copied_project.folder_id).to eq folder.id
+        end
       end
     end
 
@@ -514,7 +753,8 @@ resource 'Projects' do
           :idea,
           project: project,
           custom_field_values: { extra_idea_field.key => 'Answer' },
-          phases: [ideation_phase, single_voting_phase]
+          phases: [ideation_phase, single_voting_phase],
+          manual_votes_amount: 24
         )
       end
       let!(:survey_response) do
@@ -525,6 +765,12 @@ resource 'Projects' do
           phases: [native_survey_phase],
           custom_field_values: { linear_scale_field.key => 2 }
         )
+      end
+
+      before do
+        config = AppConfiguration.instance
+        config.settings['core']['private_attributes_in_export'] = true
+        config.save!
       end
 
       example_request 'Download inputs of a timeline project with different phases in separate sheets' do
@@ -553,6 +799,7 @@ resource 'Projects' do
               'Comments',
               'Likes',
               'Dislikes',
+              'Offline votes',
               'URL',
               'Project',
               'Status',
@@ -579,6 +826,7 @@ resource 'Projects' do
                 0,
                 0,
                 0,
+                24,
                 "http://example.org/ideas/#{ideation_response.slug}",
                 project.title_multiloc['en'],
                 ideation_response.idea_status.title_multiloc['en'],
@@ -631,6 +879,7 @@ resource 'Projects' do
               'Published at',
               'Comments',
               'Votes',
+              'Offline votes',
               'URL',
               'Project',
               'Status',
@@ -656,6 +905,7 @@ resource 'Projects' do
                 an_instance_of(DateTime), # published_at
                 0,
                 0,
+                24,
                 "http://example.org/ideas/#{ideation_response.slug}",
                 project.title_multiloc['en'],
                 ideation_response.idea_status.title_multiloc['en'],
@@ -665,6 +915,56 @@ resource 'Projects' do
             ]
           }
         ])
+      end
+
+      example 'Downloaded inputs do not include ideas with no content' do
+        # Simulating a survey response with no content, which already
+        # existed before the phase participation_method was changed.
+        survey_response.title_multiloc = {}
+        survey_response.body_multiloc = {}
+        survey_response.save!(validate: false)
+
+        native_survey_phase.update!(participation_method: 'ideation')
+
+        do_request
+        assert_status 200
+        xlsx = xlsx_contents response_body
+        expect(xlsx.size).to eq 3
+
+        all_values = xlsx.flat_map { |sheet| sheet[:rows].flatten }
+        expect(all_values).not_to include(survey_response.id)
+      end
+    end
+  end
+
+  post 'web_api/v1/projects/:id/refresh_preview_token' do
+    context 'when admin' do
+      before do
+        @admin = create(:admin)
+        header_token_for(@admin)
+      end
+
+      let(:project) { create(:project) }
+      let(:id) { project.id }
+
+      example 'Refresh the preview token of a project' do
+        expect { do_request }.to change { project.reload.preview_token }
+        assert_status 200
+      end
+    end
+
+    context 'when regular user' do
+      before do
+        @user = create(:user)
+        header_token_for(@user)
+      end
+
+      let(:project) { create(:project) }
+      let(:id) { project.id }
+
+      example '[Unauthorized] Refresh the preview token of a project', document: false do
+        do_request
+        expect(status).to eq 401
       end
     end
   end
@@ -797,18 +1097,19 @@ resource 'Projects' do
         ]
 
         expect(header_row1).to match_array(
-          expected_first_columns + [french_column_headers['votes_count']] + expected_last_columns
+          expected_first_columns + [french_column_headers['votes_count'], french_column_headers['manual_votes']] + expected_last_columns
         )
         expect(header_row2).to match_array(
           expected_first_columns +
-          [french_column_headers['votes_count'], french_column_headers['participants']] +
+          [french_column_headers['votes_count'], french_column_headers['participants'], french_column_headers['manual_votes']] +
           expected_last_columns
         )
         expect(header_row3).to match_array(
           expected_first_columns +
           [
             "#{french_column_headers['picks']} / #{french_column_headers['participants']}",
-            french_column_headers['cost']
+            french_column_headers['cost'],
+            french_column_headers['manual_votes']
           ] +
           expected_last_columns
         )
@@ -872,6 +1173,40 @@ resource 'Projects' do
         assert_status 200
         expect(json_response[:data].size).to eq @projects.size
       end
+
+      context 'When community monitor project exists' do
+        before { @projects << create(:community_monitor_project) }
+
+        example 'Does not include hidden community monitor project by default', document: false do
+          do_request filter_can_moderate: true, publication_statuses: AdminPublication::PUBLICATION_STATUSES
+          assert_status 200
+          expect(json_response[:data].size).to eq(@projects.size - 1)
+          expect(response_data.map { |d| d.dig(:attributes, :slug) }).not_to include 'community-monitor'
+        end
+
+        example 'Return all projects including hidden community monitor project', document: false do
+          do_request include_hidden: true, filter_can_moderate: true, publication_statuses: AdminPublication::PUBLICATION_STATUSES
+          assert_status 200
+          expect(json_response[:data].size).to eq @projects.size
+          expect(response_data.map { |d| d.dig(:attributes, :slug) }).to include 'community-monitor'
+        end
+      end
+
+      context 'When unlisted projects exist' do
+        before { @projects << create(:project, listed: false) }
+
+        example 'Returns unlisted projects by default', document: false do
+          do_request
+          assert_status 200
+          expect(json_response[:data].size).to eq(@projects.size)
+        end
+
+        example 'Does not return unlisted projects if remove_all_unlisted is true', document: false do
+          do_request remove_all_unlisted: true
+          assert_status 200
+          expect(json_response[:data].size).to eq(@projects.size - 1)
+        end
+      end
     end
 
     context 'when non-moderator/non-admin user' do
@@ -933,6 +1268,48 @@ resource 'Projects' do
         expect(json_response[:data].size).to eq 0
       end
     end
+
+    get 'web_api/v1/projects/:id' do
+      let(:id) { project.id }
+
+      context 'when the project is in draft' do
+        let_it_be(:project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
+
+        context 'and the project_preview_link feature flag is enabled' do
+          before do
+            settings = AppConfiguration.instance.settings
+            settings['project_preview_link'] = { 'enabled' => true, 'allowed' => true }
+            AppConfiguration.instance.update!(settings: settings)
+          end
+
+          context 'and a valid preview_token is provided in cookies' do
+            before { header('Cookie', "preview_token=#{project.preview_token}") }
+
+            example 'Get a project by id', document: false do
+              do_request
+              assert_status 200
+              expect(json_response.dig(:data, :id)).to eq project.id
+            end
+          end
+
+          context 'and an invalid preview_token is provided in cookies' do
+            before { header('Cookie', 'preview_token=invalid') }
+
+            include_examples 'Unauthorized (401)'
+          end
+
+          context 'and no preview_token is provided in cookies' do
+            include_examples 'Unauthorized (401)'
+          end
+        end
+
+        context 'and the project_preview_link feature flag is disabled and a valid preview_token is provided in cookies' do
+          before { header('Cookie', "preview_token=#{project.preview_token}") }
+
+          include_examples 'Unauthorized (401)'
+        end
+      end
+    end
   end
 
   context 'as a project folder moderator' do
@@ -986,7 +1363,7 @@ resource 'Projects' do
 
         example 'Download phase inputs WITH private user data', document: false do
           phase = project.phases.first
-          expected_params = [[idea], project.phases.first, { view_private_attributes: true }]
+          expected_params = [[idea], project.phases.first]
           allow(Export::Xlsx::InputSheetGenerator).to receive(:new)
             .and_return(Export::Xlsx::InputSheetGenerator.new(*expected_params))
           do_request
@@ -1014,6 +1391,7 @@ resource 'Projects' do
                 'Comments',
                 'Likes',
                 'Dislikes',
+                'Offline votes',
                 'URL',
                 'Project',
                 'Status',
@@ -1039,6 +1417,7 @@ resource 'Projects' do
                   0,
                   0,
                   0,
+                  nil,
                   "http://example.org/ideas/#{idea.slug}",
                   project.title_multiloc['en'],
                   idea.idea_status.title_multiloc['en'],
@@ -1053,24 +1432,7 @@ resource 'Projects' do
     end
 
     post 'web_api/v1/projects' do
-      with_options scope: :project do
-        parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
-        parameter :description_multiloc, 'The description of the project, as a multiloc HTML string', required: true
-        parameter :description_preview_multiloc, 'The description preview of the project, as a multiloc string'
-        parameter :slug, 'The unique slug of the project. If not given, it will be auto generated'
-        parameter :header_bg, 'Base64 encoded header image'
-        parameter :area_ids, 'Array of ids of the associated areas'
-        parameter :topic_ids, 'Array of ids of the associated topics'
-        parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(',')}. Defaults to public.", required: false
-        parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)', required: false
-        parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned', required: false
-      end
-
-      with_options scope: %i[project admin_publication_attributes] do
-        parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(',')}. Defaults to published.", required: false
-      end
-
-      ValidationErrorHelper.new.error_fields(self, Project)
+      include_context 'POST project parameters'
 
       describe do
         let(:project) { build(:project) }
@@ -1176,6 +1538,346 @@ resource 'Projects' do
         example_request 'It does not authorize the folder moderator' do
           assert_status 401
         end
+      end
+    end
+  end
+
+  delete 'web_api/v1/projects/:id' do
+    context 'when project moderator' do
+      before do
+        header_token_for moderator
+      end
+
+      let(:moderator) { create(:project_moderator, projects: [project]) }
+      let(:project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
+      let(:id) { project.id }
+
+      example 'Delete a project that has never been published', document: false do
+        do_request
+
+        assert_status 200
+        expect { Project.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      example '[Unauthorized] Delete a project that has been published', document: false do
+        project.admin_publication.update!(first_published_at: Time.zone.now)
+
+        do_request
+
+        assert_status 401
+        expect(Project.where(id: id)).to exist
+      end
+    end
+  end
+
+  patch 'web_api/v1/projects/:id' do
+    include_context 'PATCH project parameters'
+
+    context 'when project moderator' do
+      before { header_token_for(moderator) }
+
+      let(:moderator) { create(:project_moderator, projects: [project]) }
+      let(:project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
+      let(:id) { project.id }
+
+      context 'when the project has never been published' do
+        before do # Sanity check
+          raise 'Project should not have been published' if project.ever_published?
+        end
+
+        context 'and has not been approved' do
+          before do
+            create(:project_review, project: project)
+          end
+
+          example 'Cannot update the project status', document: false do
+            # The request should be successful, but the parameter should be ignored.
+            expect do
+              do_request(project: { admin_publication_attributes: { publication_status: 'archived' } })
+            end.not_to change { project.reload.admin_publication.publication_status }
+
+            assert_status 200
+          end
+        end
+
+        context 'and has been approved' do
+          before do
+            create(:project_review, :approved, project: project)
+          end
+
+          example 'Update the project status', document: false do
+            expect do
+              do_request(project: { admin_publication_attributes: { publication_status: 'published' } })
+            end.to change { project.reload.admin_publication.publication_status }.from('draft').to('published')
+
+            assert_status 200
+          end
+        end
+      end
+
+      context 'when the project has been published' do
+        before { project.admin_publication.update!(first_published_at: Time.zone.now) }
+
+        example 'Update the project status', document: false do
+          expect do
+            do_request(project: { admin_publication_attributes: { publication_status: 'published' } })
+          end.to change { project.reload.admin_publication.publication_status }.from('draft').to('published')
+
+          assert_status 200
+        end
+      end
+    end
+  end
+
+  post 'web_api/v1/projects' do
+    include_context 'POST project parameters'
+
+    context 'when project moderator' do
+      before { header_token_for moderator }
+
+      let(:moderator) { create(:project_moderator) }
+      let(:project_attrs) { attributes_for(:project) }
+      let(:title_multiloc) { project_attrs[:title_multiloc] }
+      let(:description_multiloc) { project_attrs[:description_multiloc] }
+
+      # can create a draft project
+      example 'Create a draft project', document: false do
+        expect do
+          do_request(project: { admin_publication_attributes: { publication_status: 'draft' } })
+        end.to change(Project, :count).by(1)
+
+        assert_status 201
+
+        # The user should automatically be added as a project moderator
+        project_id = response_data[:id]
+        expect(moderator.reload).to be_project_moderator(project_id)
+      end
+
+      # cannot create a published project
+      example '[Unauthorized] Create a published project', document: false do
+        do_request(project: { admin_publication_attributes: { publication_status: 'published' } })
+        assert_status 401
+      end
+
+      # cannot create a project in a folder
+      example '[Unauthorized] Create a project in a folder', document: false do
+        do_request(project: { folder_id: create(:project_folder).id })
+        assert_status 401
+      end
+    end
+  end
+
+  post 'web_api/v1/projects/:id/copy' do
+    let(:source_project) { create(:project) }
+    let(:id) { source_project.id }
+
+    context 'when project moderator' do
+      before { header_token_for moderator }
+
+      context 'when the user moderates the source project' do
+        let(:moderator) { create(:project_moderator, projects: [source_project]) }
+
+        example 'Copy a project', document: false do
+          do_request
+          assert_status 201
+
+          copy_id = response_data[:id]
+          expect(Project.where(id: copy_id)).to exist
+        end
+
+        example 'Copy a project in a folder', document: false do
+          folder = create(:project_folder)
+          source_project.update!(folder: folder)
+
+          do_request
+          assert_status 201
+
+          copy_id = response_data[:id]
+          expect(Project.find(copy_id).folder_id).to be_nil
+        end
+      end
+
+      context 'when the user does not moderate the source project' do
+        let(:moderator) { create(:project_moderator) }
+
+        example '[Unauthorized] Copy a project', document: false do
+          do_request
+          assert_status 401
+        end
+      end
+    end
+
+    context 'when project folder moderator' do
+      before { header_token_for moderator }
+
+      context 'when the user moderates the folder of the source project' do
+        let(:source_project) { create(:project, folder: create(:project_folder)) }
+        let(:moderator) { create(:project_folder_moderator, project_folders: [source_project.folder]) }
+
+        example 'Copy a project in the folder', document: false do
+          do_request
+          assert_status 201
+
+          copy_id = response_data[:id]
+          expect(Project.find(copy_id).folder_id).to eq(source_project.folder_id)
+        end
+      end
+
+      context 'when the user does not moderate the folder of the source project' do
+        let(:moderator) { create(:project_folder_moderator) }
+
+        example '[Unauthorized] Copy a project in the folder', document: false do
+          do_request
+          assert_status 401
+        end
+      end
+    end
+  end
+
+  get 'web_api/v1/projects/community_monitor' do
+    context 'hidden project exists' do
+      let!(:project) { create(:community_monitor_project) }
+
+      context 'community monitor project ID already saved in settings' do
+        example 'Community monitor project is returned' do
+          do_request
+          assert_status 200
+        end
+      end
+    end
+
+    context 'hidden project does not exist' do
+      before { SettingsService.new.activate_feature! 'community_monitor' }
+
+      context 'when resident' do
+        example 'Error: Community monitor project not found' do
+          do_request
+          assert_status 404
+        end
+      end
+
+      context 'when admin' do
+        before { admin_header_token }
+
+        example 'Community monitor project is created and returned' do
+          do_request
+          assert_status 200
+
+          created_project = Project.first
+          created_phase = Phase.first
+          created_permission = Permission.first
+          created_form = CustomForm.first
+          expect(created_project.hidden).to be true
+          expect(created_project.internal_role).to eq 'community_monitor'
+          expect(created_project.title_multiloc['en']).to eq 'Community monitor'
+          expect(created_phase.project).to eq created_project
+          expect(created_phase.participation_method).to eq 'community_monitor_survey'
+          expect(created_phase.title_multiloc['en']).to eq 'Community monitor'
+          expect(created_permission.permission_scope).to eq created_phase
+          expect(created_permission.permitted_by).to eq 'everyone'
+          expect(created_form.participation_context).to eq created_phase
+          expect(created_form.custom_fields.count).to eq 15
+
+          settings = AppConfiguration.instance.settings
+          expect(settings['community_monitor']['project_id']).to eq created_project.id
+        end
+      end
+    end
+
+    context 'when logged out resident' do
+      context 'hidden community monitor project exists & everyone tracking enabled' do
+        let!(:phase) do
+          phase = create(:community_monitor_survey_phase, with_permissions: true)
+          phase.permissions.first.update!(permitted_by: 'everyone', everyone_tracking_enabled: true)
+          phase
+        end
+
+        example 'Get community monitor project' do
+          do_request
+          assert_status 200
+        end
+
+        context 'Survey has already been submitted' do
+          let!(:response) { create(:native_survey_response, project: phase.project, creation_phase: phase, author: nil, author_hash: author_hash) }
+
+          context 'when no consent given' do
+            let(:author_hash) do
+              # No consent hash based on ip and user agent
+              user_agent = 'User-Agent: Mozilla/5.0'
+              ip = '1.2.3.4'
+              "n_#{Idea.create_author_hash(ip + user_agent, phase.project_id, true)}"
+            end
+
+            example 'Get community monitor project when survey already submitted without consent' do
+              header 'User-Agent', 'User-Agent: Mozilla/5.0'
+              header 'X-Forwarded-For', '1.2.3.4'
+              do_request
+              assert_status 200
+
+              disabled_reason = response_data.dig(:attributes, :action_descriptors, :posting_idea, :disabled_reason)
+              expect(disabled_reason).to eq 'posting_limited_max_reached'
+            end
+          end
+
+          context 'when consent given - using hash from cookie' do
+            let(:author_hash) { 'COOKIE_AUTHOR_HASH' }
+
+            example 'Get community monitor project when survey already submitted with consent' do
+              header('Cookie', "#{phase.id}={\"lo\": \"#{author_hash}\"};cl2_consent={\"analytics\": true}")
+              do_request
+              assert_status 200
+
+              disabled_reason = response_data.dig(:attributes, :action_descriptors, :posting_idea, :disabled_reason)
+              expect(disabled_reason).to eq 'posting_limited_max_reached'
+            end
+          end
+        end
+      end
+    end
+  end
+
+  get 'web_api/v1/projects/finished_or_archived' do
+    before do
+      @listed_archived_project = create(:project_with_past_phases, admin_publication_attributes: { publication_status: 'archived' })
+      @unlisted_archived_project = create(:project_with_past_phases, listed: false, admin_publication_attributes: { publication_status: 'archived' })
+    end
+
+    example 'Returns only listed projects' do
+      do_request filter_by: 'finished_and_archived'
+      assert_status 200
+      expect(response_data.pluck(:id)).to match_array [@listed_archived_project.id]
+    end
+  end
+
+  get 'web_api/v1/projects/for_admin' do
+    context 'when moderator' do
+      before do
+        @listed_projects = create_list(:project, 5)
+        @unlisted_projects = create_list(:project, 4, listed: false)
+        @listed_projects_user_moderates = create_list(:project, 3)
+        @unlisted_projects_user_moderates = create_list(:project, 2, listed: false)
+
+        @projects_user_moderates = @listed_projects_user_moderates + @unlisted_projects_user_moderates
+
+        @moderator = create(:project_moderator, projects: @projects_user_moderates)
+
+        @projects_user_moderates.each do |project|
+          @moderator.add_role 'project_moderator', project_id: project.id
+        end
+
+        @moderator.save!
+
+        header_token_for(@moderator)
+      end
+
+      example 'Only shows projects that user moderates, including unlisted' do
+        do_request
+        assert_status 200
+        expect(response_data.size).to eq 5
+        expect(response_data.pluck(:id).sort).to match_array [
+          *@listed_projects_user_moderates.pluck(:id),
+          *@unlisted_projects_user_moderates.pluck(:id)
+        ].sort
       end
     end
   end

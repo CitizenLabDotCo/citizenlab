@@ -17,8 +17,8 @@ import MapView from '@arcgis/core/views/MapView';
 import WebMap from '@arcgis/core/WebMap';
 import Popup from '@arcgis/core/widgets/Popup';
 import { colors } from '@citizenlab/cl2-component-library';
-import { uuid4 } from '@sentry/utils';
 import { transparentize } from 'polished';
+import { v4 as uuidv4 } from 'uuid';
 
 import { IMapConfig } from 'api/map_config/types';
 import { IMapLayerAttributes } from 'api/map_layers/types';
@@ -26,12 +26,26 @@ import { IMapLayerAttributes } from 'api/map_layers/types';
 import { Localize } from 'hooks/useLocalize';
 
 import { hexToRGBA } from 'utils/helperUtils';
+import { projectPointToWebMercator } from 'utils/mapUtils/map';
 
 import {
   BASEMAP_AT_ATTRIBUTION,
   DEFAULT_TILE_PROVIDER,
   MAPTILER_ATTRIBUTION,
 } from './constants';
+import { DefaultBasemapType } from './types';
+
+// getBasemapType
+// Description: Gets the basemap type given a certain tileProvider URL.
+export const getDefaultBasemapType = (
+  tileProvider: string | undefined
+): DefaultBasemapType => {
+  if (tileProvider?.includes('wien.gv.at/basemap')) {
+    return 'BasemapAt';
+  }
+
+  return 'MapTiler';
+};
 
 // getDefaultBasemap
 // Description: Gets the correct basemap given a certain tileProvider URL.
@@ -69,10 +83,14 @@ export const getDefaultBasemap = (tileProvider: string | undefined): Layer => {
 // getTileAttribution
 // Description: Gets the correct tile attribution given a certain tileProvider URL.
 const getTileAttribution = (tileProvider: string): string => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (tileProvider?.includes('maptiler')) {
     return MAPTILER_ATTRIBUTION;
   }
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (tileProvider?.includes('wien.gv.at/basemap')) {
     return BASEMAP_AT_ATTRIBUTION;
   }
@@ -374,11 +392,11 @@ export const changeCursorOnHover = (event: any, mapView: MapView) => {
 // Description: Center a specific location on the map
 export const goToMapLocation = async (
   coordinates: GeoJSON.Point,
-  mapView: MapView,
+  mapView?: MapView,
   zoomLevel?: number
 ) => {
   mapView
-    .goTo(
+    ?.goTo(
       {
         center: [coordinates.coordinates[0], coordinates.coordinates[1]],
         zoom: zoomLevel || mapView.zoom,
@@ -395,9 +413,12 @@ export const goToMapLocation = async (
 // esriPointToGeoJson
 // Description: Converts an Esri point to an GeoJSON.Point
 export const esriPointToGeoJson = (esriPoint: Point): GeoJSON.Point => {
+  // Project the point to Web Mercator, in case the map is using a different projection
+  const projectedPoint = projectPointToWebMercator(esriPoint);
+
   return {
     type: 'Point',
-    coordinates: [esriPoint.longitude, esriPoint.latitude],
+    coordinates: [projectedPoint.longitude, projectedPoint.latitude],
   };
 };
 
@@ -450,7 +471,7 @@ export const getClusterConfiguration = (clusterSymbolColor?: string) => {
 
 // showAddInputPopup
 // Description: Shows a popup where the user clicked and adds content from a popupContentNode
-// Usage: This is used by the Initiative Map and Idea Map to show "Submit" buttons on map click.
+// Usage: This is used by the Idea Map to show "Submit" buttons on map click.
 type AddInputPopupProps = {
   event;
   mapView: MapView;
@@ -466,24 +487,29 @@ export const showAddInputPopup = ({
   popupContentNode,
   popupTitle,
 }: AddInputPopupProps) => {
-  goToMapLocation(esriPointToGeoJson(event.mapPoint), mapView).then(() => {
-    // Create an Esri popup
-    mapView.popup = new Popup({
-      collapseEnabled: false,
-      dockEnabled: false,
-      dockOptions: {
-        buttonEnabled: false,
-        breakpoint: false,
-      },
-      location: event.mapPoint,
-      title: popupTitle,
-    });
-    // Set content of the popup to the node we created (so we can insert our React component via a portal)
-    mapView.popup.content = popupContentNode;
-    // Close any open UI elements and open the popup
-    setSelectedInput(null);
-    mapView.openPopup();
-  });
+  // Project the point to Web Mercator to guarantee the correct coordinate system
+  const clickedPointProjected = projectPointToWebMercator(event.mapPoint);
+
+  goToMapLocation(esriPointToGeoJson(clickedPointProjected), mapView).then(
+    () => {
+      // Create an Esri popup
+      mapView.popup = new Popup({
+        collapseEnabled: false,
+        dockEnabled: false,
+        dockOptions: {
+          buttonEnabled: false,
+          breakpoint: false,
+        },
+        location: clickedPointProjected,
+        title: popupTitle,
+      });
+      // Set content of the popup to the node we created (so we can insert our React component via a portal)
+      mapView.popup.content = popupContentNode;
+      // Close any open UI elements and open the popup
+      setSelectedInput(null);
+      mapView.openPopup();
+    }
+  );
 };
 
 // createEsriFeatureLayers
@@ -533,12 +559,16 @@ export const parseLayers = (
   mapConfig: IMapConfig | null | undefined,
   localize: Localize
 ) => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const mapConfigLayers = mapConfig?.data?.attributes.layers;
   if (!mapConfigLayers) return [];
 
   // All layers are either of type Esri or GeoJSON, so we can check just the first layer
   if (mapConfigLayers[0]?.type === 'CustomMaps::GeojsonLayer') {
     return createEsriGeoJsonLayers(mapConfigLayers, localize);
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   } else if (mapConfigLayers[0]?.type === 'CustomMaps::EsriFeatureLayer') {
     return createEsriFeatureLayers(mapConfigLayers, localize);
   }
@@ -562,7 +592,7 @@ export const createEsriGeoJsonLayers = (
 
     // create new geojson layer using the created url
     const geoJsonLayer = new GeoJSONLayer({
-      id: `${uuid4()}`,
+      id: `${uuidv4()}`,
       url,
       customParameters: {
         layerId: layer.id,
@@ -570,6 +600,8 @@ export const createEsriGeoJsonLayers = (
     });
 
     // All features in a layer will have the same geometry, so we can just check the first feature
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const geometryType = layer.geojson?.features?.[0]?.geometry?.type;
 
     if (geometryType === 'Polygon') {
@@ -637,6 +669,8 @@ export const handleWebMapReferenceLayers = (
   referenceLayers: Collection<Layer>
 ) => {
   // Add current basemap layers to new variable
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const newBasemapLayers = webMap.basemap?.baseLayers;
   // Append the reference layers to the new basemap layers list
   webMap.addMany(referenceLayers.toArray());
@@ -649,6 +683,8 @@ export const handleWebMapReferenceLayers = (
 // applyHeatMapRenderer
 // Description: Apply a heat map renderer to a point Feature layer
 export const applyHeatMapRenderer = (layer: FeatureLayer, mapView: MapView) => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (layer && mapView) {
     // Set up the parameters for the heatmapRendererCreator
     const heatmapParams = {

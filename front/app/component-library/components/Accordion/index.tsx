@@ -1,11 +1,16 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 
 import useInstanceId from '../../hooks/useInstanceId';
 import { colors, isRtl } from '../../utils/styleUtils';
-import Box, { BoxMarginProps, BoxPaddingProps, BoxWidthProps } from '../Box';
+import Box, {
+  BoxBorderProps,
+  BoxMarginProps,
+  BoxPaddingProps,
+  BoxWidthProps,
+} from '../Box';
 import Icon from '../Icon';
 import ListItem from '../ListItem';
 
@@ -20,7 +25,8 @@ type AccordionProps = {
   transitionHeightPx?: number;
 } & BoxMarginProps &
   BoxWidthProps &
-  BoxPaddingProps;
+  BoxPaddingProps &
+  BoxBorderProps;
 
 const ChevronIcon = styled(Icon)`
   fill: ${colors.textSecondary};
@@ -116,16 +122,13 @@ const Accordion = ({
   const [isExpanded, setIsExpanded] = useState(isOpenByDefault);
   const uuid = useInstanceId();
 
-  useEffect(() => {
-    setIsExpanded(isOpenByDefault);
-  }, [isOpenByDefault]);
-
   const handleChange = () => {
     setIsExpanded(!isExpanded);
     onChange && onChange(!isExpanded);
   };
 
   return (
+    // In the future, ideally use the CollapsibleContainer component here insetad.
     <ListItem className={className} {...rest}>
       <Box display="flex" alignItems="center">
         {prefix}
@@ -142,25 +145,29 @@ const Accordion = ({
           <ChevronIcon name="chevron-right" />
         </TitleButton>
       </Box>
-      <CSSTransition
-        in={isExpanded}
-        timeout={timeoutMilliseconds}
-        mountOnEnter={true}
-        unmountOnExit={true}
-        exit={false}
-        classNames={`expanded`}
+      <Box
+        role="region"
+        aria-live="polite"
+        id={`collapsed-section-${uuid}`}
+        aria-labelledby={`accordion-title-${uuid}`}
       >
-        <CollapseContainer
-          id={`collapsed-section-${uuid}`}
-          role="region"
-          aria-labelledby={`accordion-title-${uuid}`}
-          aria-live="polite"
-          transitionHeight={transitionHeightPx}
+        <CSSTransition
+          in={isExpanded}
           timeout={timeoutMilliseconds}
+          mountOnEnter={true}
+          unmountOnExit={true}
+          exit={false}
+          classNames={`expanded`}
         >
-          {children}
-        </CollapseContainer>
-      </CSSTransition>
+          <CollapseContainer
+            aria-live="polite"
+            transitionHeight={transitionHeightPx}
+            timeout={timeoutMilliseconds}
+          >
+            {children}
+          </CollapseContainer>
+        </CSSTransition>
+      </Box>
     </ListItem>
   );
 };

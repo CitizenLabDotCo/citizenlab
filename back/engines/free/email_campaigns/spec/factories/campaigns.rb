@@ -18,7 +18,7 @@ FactoryBot.define do
     end
 
     factory :manual_project_participants_campaign, class: EmailCampaigns::Campaigns::ManualProjectParticipants do
-      association :project, factory: :project_with_active_ideation_phase
+      association :context, factory: :project_with_active_ideation_phase
     end
   end
 
@@ -42,11 +42,11 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :comment_on_initiative_you_follow_campaign, class: EmailCampaigns::Campaigns::CommentOnInitiativeYouFollow do
+  factory :community_monitor_report_campaign, class: EmailCampaigns::Campaigns::CommunityMonitorReport do
     enabled { true }
   end
 
-  factory :cosponsor_of_your_initiative_campaign, class: EmailCampaigns::Campaigns::CosponsorOfYourInitiative do
+  factory :cosponsor_of_your_idea_campaign, class: EmailCampaigns::Campaigns::CosponsorOfYourIdea do
     enabled { true }
   end
 
@@ -58,27 +58,15 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :your_input_in_screening_campaign, class: EmailCampaigns::Campaigns::YourInputInScreening do
+    enabled { true }
+  end
+
   factory :invite_received_campaign, class: EmailCampaigns::Campaigns::InviteReceived do
     enabled { true }
   end
 
   factory :invite_reminder_campaign, class: EmailCampaigns::Campaigns::InviteReminder do
-    enabled { true }
-  end
-
-  factory :initiative_assigned_to_you_campaign, class: EmailCampaigns::Campaigns::InitiativeAssignedToYou do
-    enabled { true }
-  end
-
-  factory :initiative_marked_as_spam_campaign, class: EmailCampaigns::Campaigns::InitiativeMarkedAsSpam do
-    enabled { true }
-  end
-
-  factory :initiative_published_campaign, class: EmailCampaigns::Campaigns::InitiativePublished do
-    enabled { true }
-  end
-
-  factory :initiative_resubmitted_for_review_campaign, class: EmailCampaigns::Campaigns::InitiativeResubmittedForReview do
     enabled { true }
   end
 
@@ -94,18 +82,6 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :internal_comment_on_initiative_assigned_to_you_campaign, class: EmailCampaigns::Campaigns::InternalCommentOnInitiativeAssignedToYou do
-    enabled { true }
-  end
-
-  factory :internal_comment_on_initiative_you_commented_internally_on_campaign, class: EmailCampaigns::Campaigns::InternalCommentOnInitiativeYouCommentedInternallyOn do
-    enabled { true }
-  end
-
-  factory :internal_comment_on_unassigned_initiative_campaign, class: EmailCampaigns::Campaigns::InternalCommentOnUnassignedInitiative do
-    enabled { true }
-  end
-
   factory :internal_comment_on_unassigned_unmoderated_idea_campaign, class: EmailCampaigns::Campaigns::InternalCommentOnUnassignedUnmoderatedIdea do
     enabled { true }
   end
@@ -114,7 +90,7 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :invitation_to_cosponsor_initiative_campaign, class: EmailCampaigns::Campaigns::InvitationToCosponsorInitiative do
+  factory :invitation_to_cosponsor_idea_campaign, class: EmailCampaigns::Campaigns::InvitationToCosponsorIdea do
     enabled { true }
   end
 
@@ -130,19 +106,15 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :new_idea_for_admin_campaign, class: EmailCampaigns::Campaigns::NewIdeaForAdmin do
+  factory :new_idea_for_admin_published_campaign, class: EmailCampaigns::Campaigns::NewIdeaForAdminPublished do
     enabled { true }
   end
 
-  factory :new_initiative_for_admin_campaign, class: EmailCampaigns::Campaigns::NewInitiativeForAdmin do
+  factory :new_idea_for_admin_prescreening_campaign, class: EmailCampaigns::Campaigns::NewIdeaForAdminPrescreening do
     enabled { true }
   end
 
   factory :official_feedback_on_idea_you_follow_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnIdeaYouFollow do
-    enabled { true }
-  end
-
-  factory :official_feedback_on_initiative_you_follow_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnInitiativeYouFollow do
     enabled { true }
   end
 
@@ -166,11 +138,19 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :project_review_request_campaign, class: EmailCampaigns::Campaigns::ProjectReviewRequest do
+    enabled { true }
+  end
+
+  factory :project_review_state_change_campaign, class: EmailCampaigns::Campaigns::ProjectReviewStateChange do
+    enabled { true }
+  end
+
   factory :status_change_on_idea_you_follow_campaign, class: EmailCampaigns::Campaigns::StatusChangeOnIdeaYouFollow do
     enabled { true }
   end
 
-  factory :status_change_on_initiative_you_follow_campaign, class: EmailCampaigns::Campaigns::StatusChangeOnInitiativeYouFollow do
+  factory :survey_submitted_campaign, class: EmailCampaigns::Campaigns::SurveySubmitted do
     enabled { true }
   end
 
@@ -198,11 +178,6 @@ FactoryBot.define do
   end
 
   factory :user_digest_campaign, class: EmailCampaigns::Campaigns::UserDigest do
-    enabled { true }
-    schedule { weekly_schedule }
-  end
-
-  factory :your_proposed_initiatives_digest_campaign, class: EmailCampaigns::Campaigns::YourProposedInitiativesDigest do
     enabled { true }
     schedule { weekly_schedule }
   end

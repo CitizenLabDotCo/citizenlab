@@ -12,7 +12,9 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     :slug,
     :visible_to,
     :created_at,
-    :updated_at
+    :updated_at,
+    :header_bg_alt_text_multiloc,
+    :listed
   )
 
   attribute :folder_id do |project|
@@ -21,6 +23,10 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
 
   attribute :publication_status do |object|
     object.admin_publication.publication_status
+  end
+
+  attribute :first_published_at do |object|
+    object.admin_publication.first_published_at
   end
 
   attribute :description_multiloc do |object|
@@ -33,7 +39,9 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
 
   attribute :action_descriptors do |object, params|
     user_requirements_service = params[:user_requirements_service] || Permissions::UserRequirementsService.new(check_groups_and_verification: false)
-    Permissions::ProjectPermissionsService.new(object, current_user(params), user_requirements_service: user_requirements_service).action_descriptors
+    request = params[:request] || nil
+
+    Permissions::ProjectPermissionsService.new(object, current_user(params), user_requirements_service: user_requirements_service, request: request).action_descriptors
   end
 
   attribute :avatars_count do |object, params|
@@ -41,7 +49,6 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :participants_count do |object, params|
-    participants_service = ParticipantsService.new
     use_cache = params[:use_cache].to_s != 'false'
 
     if use_cache
@@ -58,6 +65,8 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
       TimelineService.new.timeline_active object
     end
   end
+
+  attribute :preview_token, if: proc { |object, params| can_moderate? object, params }
 
   has_one :admin_publication
 
@@ -79,9 +88,11 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   end
 
   def self.avatars_for_project(object, _params)
-    # TODO: call only once (not a second time for counts)
+    AvatarsService.new(participants_service).avatars_for_project(object, limit: 3)
+  end
+
+  def self.participants_service
     @participants_service ||= ParticipantsService.new
-    AvatarsService.new(@participants_service).avatars_for_project(object, limit: 3)
   end
 
   def self.user_follower(object, params)

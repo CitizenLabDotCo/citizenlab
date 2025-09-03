@@ -4,7 +4,7 @@ import { darken, transparentize } from 'polished';
 import { css } from 'styled-components';
 
 import { isNilOrError } from './helperUtils';
-import { InputSize } from './typings';
+import { FontWeight, InputSize } from './typings';
 
 export const isRtl = (style: any, ...args: any[]) => css`
   ${(props) => (props.theme.isRtl ? css(style, ...args) : '')}
@@ -92,6 +92,7 @@ export const themeColors = {
   green700: '#024D2B',
   green500: '#04884C', // formerly clGreen
   green400: '#32B67A',
+  green300: '#62C462',
   green100: '#e4f7ef', // formerly clGreenSuccessBackground
 
   /**
@@ -137,8 +138,10 @@ export type Color =
   | 'tenantPrimary'
   | 'tenantPrimaryLighten75'
   | 'tenantPrimaryLighten95'
+  | 'tenantPrimaryLighten90'
   | 'tenantSecondary'
-  | 'tenantText';
+  | 'tenantText'
+  | 'inherit';
 
 export const fontSizes = {
   xs: 12,
@@ -153,7 +156,7 @@ export const fontSizes = {
   xxxxxl: 42,
 };
 
-type FontSizesType = keyof typeof fontSizes;
+export type FontSizesType = keyof typeof fontSizes;
 
 export const boxShadow = css`
   box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.05);
@@ -163,7 +166,6 @@ export const defaultStyles = {
   boxShadow: '0px 2px 4px -1px rgba(0,0,0,0.06)',
   boxShadowHoverSmall: '0px 2px 4px -1px rgba(0,0,0,0.2)',
   boxShadowHoverBig: '0px 4px 12px -1px rgba(0,0,0,0.12)',
-  boxShadowFocused: `0 0 0 3px ${transparentize(0.65, colors.textSecondary)}`,
   boxShadowError: `0 0 0 3px ${transparentize(0.65, colors.red600)}`,
   inputPadding: '12px',
 };
@@ -188,8 +190,7 @@ export const defaultCardHoverStyle = css`
 `;
 
 export const defaultOutline = css`
-  border-color: ${colors.black};
-  box-shadow: ${defaultStyles.boxShadowFocused};
+  border: 2px solid ${(props) => props.theme.colors.tenantPrimary};
 `;
 
 export const defaultInputStyle = css`
@@ -259,6 +260,17 @@ export const stylingConsts = {
   border: `1px solid ${colors.divider}`,
 };
 
+export const getFontWeightCSS = (fontWeight: FontWeight) => {
+  switch (fontWeight) {
+    case 'bold': // Value of 700
+      return 'bold';
+    case 'semi-bold':
+      return 600;
+    case 'normal':
+      return 'normal'; // Value of 400
+  }
+};
+
 type StylingConstsType = {
   menuHeight: number;
   mobileMenuHeight: number;
@@ -274,7 +286,6 @@ type StylingConstsType = {
 // Reusable text styling
 export function quillEditedContent(
   buttonColor = colors.teal,
-  linkColor = colors.teal,
   textColor = colors.textPrimary,
   mentionColor = colors.textPrimary,
   fontSize: 's' | 'base' | 'm' | 'l' = 'base',
@@ -295,7 +306,7 @@ export function quillEditedContent(
   return `
     ${defaultFontStyle}
 
-    a, li, p {
+    li, p {
       ${defaultFontStyle}
     }
 
@@ -315,7 +326,7 @@ export function quillEditedContent(
       a {
         font-size: inherit;
         font-weight: inherit;
-        text-decoration: inherit;
+        text-decoration: underline;
       }
     }
 
@@ -329,7 +340,7 @@ export function quillEditedContent(
       a {
         font-size: inherit;
         font-weight: inherit;
-        text-decoration: inherit;
+        text-decoration: underline;
       }
     }
 
@@ -342,7 +353,8 @@ export function quillEditedContent(
     }
 
     a {
-      color: ${linkColor};
+      color: #0000EE; /* Standard fallback for all browsers */
+      color: -webkit-link; /* Overrides the fallback in WebKit browsers */
       text-decoration: underline;
       overflow-wrap: break-word;
       word-wrap: break-word;
@@ -350,12 +362,6 @@ export function quillEditedContent(
       word-break: break-word;
       hyphens: auto;
       transition: background 80ms ease-out;
-
-      &:hover {
-        color: ${darken(0.15, linkColor)};
-        background: ${transparentize(0.91, linkColor)};
-        text-decoration: underline;
-      }
     }
 
     ul, ol {
@@ -476,6 +482,9 @@ export function getTheme(tenant: any = null): MainThemeProps {
       tenantPrimaryLighten95: core
         ? transparentize(0.95, core.color_main)
         : transparentize(0.95, '#ef0071'),
+      tenantPrimaryLighten90: core
+        ? transparentize(0.9, core.color_main)
+        : transparentize(0.9, '#ef0071'),
     },
     fontFamily,
     fontSizes,
@@ -531,4 +540,21 @@ export function hexToRgb(hex: any) {
         b: parseInt(result[3], 16),
       }
     : null;
+}
+
+// RGBAtoRGB
+// Description: Function to convert RGBA color to RGB representation by blending it with a white background.
+// https://stackoverflow.com/a/71532946
+export function RGBAtoRGB(rgba: string, alpha: number) {
+  const rgbaValues: RegExpMatchArray | null = rgba.match(/\d+/g);
+
+  if (rgbaValues) {
+    const r = Math.round((1 - alpha) * 255 + alpha * parseFloat(rgbaValues[0]));
+    const g = Math.round((1 - alpha) * 255 + alpha * parseFloat(rgbaValues[1]));
+    const b = Math.round((1 - alpha) * 255 + alpha * parseFloat(rgbaValues[2]));
+
+    return `rgba(${r},${g},${b}, 1.0)`;
+  }
+
+  return '';
 }

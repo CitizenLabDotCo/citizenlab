@@ -32,8 +32,7 @@ const Container = styled(Link)`
   margin: 0;
   margin-bottom: 5px;
 
-  &:hover,
-  &:focus {
+  &:hover {
     color: ${colors.textPrimary};
     background-color: ${colors.grey300};
   }
@@ -112,7 +111,7 @@ const NotificationWrapper = ({
 }: Props) => {
   const locale = useLocale();
   const track = () => {
-    trackEventByName(tracks.clickNotification.name, { extra: { linkTo } });
+    trackEventByName(tracks.clickNotification, { linkTo });
   };
 
   if (!isNilOrError(locale)) {

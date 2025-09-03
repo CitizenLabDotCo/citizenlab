@@ -10,17 +10,16 @@ export default defineMessages({
     defaultMessage: 'Total participants',
   },
   cardTitleTooltipMessage: {
-    id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3',
+    id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage4',
     defaultMessage:
-      'Participants are users or visitors that have participated in a project, posted or interacted with a proposal, attended events or followed things.',
+      'Participants are users or visitors that have participated in a project, posted or interacted with a proposal or attended events.',
   },
   participationRate: {
     id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate',
     defaultMessage: 'Participation rate',
   },
   participationRateTooltip: {
-    id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip3',
-    defaultMessage:
-      'Percentage of visitors that become participants. Only participants and visitors that accepted cookies are counted.',
+    id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip4',
+    defaultMessage: 'Percentage of visitors that become participants.',
   },
 });

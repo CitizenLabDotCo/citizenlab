@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import customFieldOptionKeys from 'api/custom_field_options/keys';
+import customFormKeys from 'api/custom_form/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -17,20 +17,31 @@ type IUpdateCustomFieldProperties = {
   > & {
     id?: string;
   })[];
+  customForm: {
+    saveType: 'auto' | 'manual';
+    openedAt?: string;
+    fieldsLastUpdatedAt?: string;
+  };
 };
 
 const updateCustomField = async ({
   projectId,
   phaseId,
   customFields,
+  customForm,
 }: IUpdateCustomFieldProperties) => {
   const apiEndpoint = phaseId
-    ? `admin/phases/${phaseId}/custom_fields/update_all`
-    : `admin/projects/${projectId}/custom_fields/update_all`;
+    ? `phases/${phaseId}/custom_fields/update_all`
+    : `projects/${projectId}/custom_fields/update_all`;
   return fetcher<ICustomField>({
     path: `/${apiEndpoint}`,
     action: 'patch',
-    body: { custom_fields: customFields },
+    body: {
+      custom_fields: customFields,
+      form_save_type: customForm.saveType,
+      form_opened_at: customForm.openedAt,
+      fields_last_updated_at: customForm.fieldsLastUpdatedAt,
+    },
   });
 };
 
@@ -45,12 +56,21 @@ const useUpdateCustomField = () => {
           phaseId: variables.phaseId,
         }),
       });
+
       queryClient.invalidateQueries({
-        queryKey: customFieldsKeys.lists(),
+        queryKey: customFormKeys.item({
+          projectId: variables.projectId,
+        }),
       });
-      queryClient.invalidateQueries({
-        queryKey: customFieldOptionKeys.items(),
-      });
+
+      if (variables.phaseId) {
+        queryClient.invalidateQueries({
+          queryKey: customFormKeys.item({
+            projectId: variables.projectId,
+            phaseId: variables.phaseId,
+          }),
+        });
+      }
     },
   });
 };

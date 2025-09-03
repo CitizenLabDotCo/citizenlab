@@ -14,6 +14,15 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.searchReports',
     defaultMessage: 'Search reports',
   },
+  communityMonitorReports: {
+    id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.communityMonitorReports',
+    defaultMessage: 'Community monitor reports',
+  },
+  communityMonitorReportsTooltip: {
+    id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.communityMonitorReportsTooltip',
+    defaultMessage:
+      'These are reports are related to the Community Monitor. Reports are automatically generated every quarter.',
+  },
   yourReports: {
     id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.yourReports',
     defaultMessage: 'Your reports',

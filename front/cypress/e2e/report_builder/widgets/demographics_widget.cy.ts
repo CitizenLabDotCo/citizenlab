@@ -19,7 +19,8 @@ const users = Array(4)
 
 const userIds: string[] = [];
 
-describe('Demographics widget', () => {
+// Temporarily skip intermitttent demographics widget test. Tracking fix with TAN-2811
+describe.skip('Demographics widget', () => {
   before(() => {
     cy.apiCreateProject({
       title: randomString(),

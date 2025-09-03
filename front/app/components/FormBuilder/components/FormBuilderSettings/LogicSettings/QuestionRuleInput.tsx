@@ -12,40 +12,37 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import {
   IFlatCustomField,
+  IFlatCustomFieldWithIndex,
   LogicType,
   QuestionRuleType,
 } from 'api/custom_fields/types';
 
-import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
+import ErrorComponent from 'components/UI/Error';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { isRuleValid } from 'utils/yup/validateLogic';
 
 import messages from '../../messages';
 
+import usePages from './usePages';
+
 type QuestionRuleInputProps = {
-  fieldId: string;
+  field: IFlatCustomFieldWithIndex;
   validationError: string | undefined;
   answer: { key: string | number | undefined; label: string | undefined };
-  name: string;
-  pages:
-    | {
-        value: string | undefined;
-        label: string;
-      }[]
-    | undefined;
 };
 
 export const QuestionRuleInput = ({
-  fieldId,
-  pages,
-  name,
+  field,
   answer,
   validationError,
 }: QuestionRuleInputProps) => {
+  const fieldId = field.temp_id || field.id;
+  const name = `customFields.${field.index}`;
+  const pages = usePages(field);
+  const { formatMessage } = useIntl();
   const { setValue, watch, trigger, control } = useFormContext();
-  const field: IFlatCustomField = watch(name);
   const logic: LogicType = field.logic;
   const rules = logic.rules;
   const fields: IFlatCustomField[] = watch('customFields');
@@ -58,9 +55,7 @@ export const QuestionRuleInput = ({
   const [selectedPage, setSelectedPage] = useState<string | null | undefined>(
     initialValue ? initialValue.goto_page_id : undefined
   );
-  const [showRuleInput, setShowRuleInput] = useState<boolean>(
-    initialValue ? true : false
-  );
+  const [showRuleInput, setShowRuleInput] = useState<boolean>(!!initialValue);
 
   const onSelectionChange = (page: IOption) => {
     setSelectedPage(page.value);
@@ -77,6 +72,7 @@ export const QuestionRuleInput = ({
         goto_page_id: page.value.toString(),
       };
       setRuleIsInvalid(!isRuleValid(newRule, fieldId, fields));
+
       if (logic.rules) {
         const newRulesArray = logic.rules;
         newRulesArray.push(newRule);
@@ -84,10 +80,7 @@ export const QuestionRuleInput = ({
       } else {
         logic.rules = [newRule];
       }
-      // Update rule variable
-      const required =
-        logic.rules && logic.rules.length > 0 ? true : field.required;
-      setValue(name, { ...field, logic, required }, { shouldDirty: true });
+      setValue(name, { ...field, logic }, { shouldDirty: true });
       trigger();
     }
   };
@@ -98,11 +91,19 @@ export const QuestionRuleInput = ({
       logic.rules = logic.rules.filter((rule) => rule.if !== answer.key);
     }
     // Update rule variable
-    const required =
-      logic.rules && logic.rules.length > 0 ? true : field.required;
-    setValue(name, { ...field, logic, required }, { shouldDirty: true });
+    setValue(name, { ...field, logic }, { shouldDirty: true });
     trigger();
   };
+
+  const isCatchAllLogicRule =
+    answer.key &&
+    ['any_other_answer', 'no_answer'].includes(answer.key.toString());
+
+  const ruleForAnswerLabel = ['multiselect', 'multiselect_image'].includes(
+    field.input_type
+  )
+    ? formatMessage(messages.ruleForAnswerLabelMultiselect)
+    : formatMessage(messages.ruleForAnswerLabel);
 
   return (
     <>
@@ -123,16 +124,41 @@ export const QuestionRuleInput = ({
                   trigger();
                 }}
               >
-                <Box width="90px" flexGrow={0} flexShrink={0} flexWrap="wrap">
-                  <Text color={'coolGrey600'} fontSize="s">
-                    <FormattedMessage {...messages.ruleForAnswerLabel} />
-                  </Text>
-                </Box>
-                <Box width="215px" flexGrow={0} flexShrink={0} flexWrap="wrap">
-                  <Text fontSize="s" fontWeight="bold">
-                    {answer.label}
-                  </Text>
-                </Box>
+                {isCatchAllLogicRule ? (
+                  <Box
+                    width="305px"
+                    flexGrow={0}
+                    flexShrink={0}
+                    flexWrap="wrap"
+                  >
+                    <Text color={'coolGrey600'} fontSize="s" fontStyle="italic">
+                      {answer.label}
+                    </Text>
+                  </Box>
+                ) : (
+                  <>
+                    <Box
+                      width="90px"
+                      flexGrow={0}
+                      flexShrink={0}
+                      flexWrap="wrap"
+                    >
+                      <Text color={'coolGrey600'} fontSize="s">
+                        {ruleForAnswerLabel}
+                      </Text>
+                    </Box>
+                    <Box
+                      width="215px"
+                      flexGrow={0}
+                      flexShrink={0}
+                      flexWrap="wrap"
+                    >
+                      <Text fontSize="s" fontWeight="bold">
+                        {answer.label}
+                      </Text>
+                    </Box>
+                  </>
+                )}
                 {!showRuleInput && (
                   <Box
                     ml="auto"
@@ -141,7 +167,7 @@ export const QuestionRuleInput = ({
                     flexGrow={0}
                     flexShrink={0}
                   >
-                    <Button
+                    <ButtonWithLink
                       onClick={() => {
                         setShowRuleInput(true);
                       }}
@@ -155,7 +181,7 @@ export const QuestionRuleInput = ({
                         fill={`${colors.coolGrey600}`}
                         name="plus-circle"
                       />
-                    </Button>
+                    </ButtonWithLink>
                   </Box>
                 )}
               </Box>
@@ -170,28 +196,24 @@ export const QuestionRuleInput = ({
                     width="320px"
                     data-cy="e2e-rule-input-select"
                   >
-                    {pages && (
-                      <Select
-                        value={selectedPage}
-                        options={pages}
-                        label={
-                          <Text
-                            mb="0px"
-                            margin="0px"
-                            color="coolGrey600"
-                            fontSize="s"
-                          >
-                            <FormattedMessage
-                              {...messages.goToPageInputLabel}
-                            />
-                          </Text>
-                        }
-                        onChange={onSelectionChange}
-                      />
-                    )}
+                    <Select
+                      value={selectedPage}
+                      options={pages}
+                      label={
+                        <Text
+                          mb="0px"
+                          margin="0px"
+                          color="coolGrey600"
+                          fontSize="s"
+                        >
+                          <FormattedMessage {...messages.goToPageInputLabel} />
+                        </Text>
+                      }
+                      onChange={onSelectionChange}
+                    />
                   </Box>
                   <Box ml="auto" flexGrow={0} flexShrink={0}>
-                    <Button
+                    <ButtonWithLink
                       onClick={() => {
                         setSelectedPage(undefined);
                         setShowRuleInput(false);
@@ -207,13 +229,13 @@ export const QuestionRuleInput = ({
                         fill={`${colors.coolGrey600}`}
                         name="delete"
                       />
-                    </Button>
+                    </ButtonWithLink>
                   </Box>
                 </Box>
               )}
               {validationError && ruleIsInvalid && (
                 <Box mb="12px" data-cy="e2e-rule-input-error">
-                  <Error
+                  <ErrorComponent
                     marginTop="8px"
                     marginBottom="8px"
                     text={validationError}

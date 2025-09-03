@@ -54,16 +54,28 @@ fr:
       attachments:
         title: Pièces jointes
         description:
-      section1:
+      title_page:
         description:
-      section2:
+      body_page:
+        title: Dites-nous plus
+        description:
+      uploads_page:
         title: Images et pièces jointes
         description:
-      section3:
-        title: Details
+      details_page:
+        title: Détails
         description:
       other_input_field:
         title: Tapez votre réponse
+        print_title: Si '%{other_option}', veuillez préciser
+    community_monitor:
+      question_categories:
+        quality_of_life: Qualité de vie
+        service_delivery: Prestation de services
+        governance_and_trust: Gouvernance et confiance
+        other: Autre
+      form_end:
+        button_text: Retour à l'accueil
   custom_forms:
     categories:
       main_content:
@@ -79,6 +91,10 @@ fr:
           title: Quel est votre problème ?
         option:
           title: Quelle est votre option ?
+  user:
+    anon_first_name: "Utilisateur"
+    anon_scheme:
+      animals: 'Oryctérope,Chat,Ornithorynque,Girafe,Zèbre'
   xlsx_export:
     anonymous: 'Anonyme'
     column_headers:
@@ -97,13 +113,15 @@ fr:
       email: 'E-mail'
       first_name: 'Prénom(s)'
       image_url: "URL de l'image"
+      manual_votes: 'Votes hors ligne'
       input_id: 'Identifiant'
       input_url: 'URL'
       last_name: 'Nom de famille'
       latitude: 'Latitude'
       likes_count: 'Likes'
       location: 'Emplacement'
-      longitude: 'Longitude' 
+      longitude: 'Longitude'
+      neutral_reactions_count: 'Incertain'
       participants: 'Participants'
       picks: 'Sélections'
       project: 'Projet'

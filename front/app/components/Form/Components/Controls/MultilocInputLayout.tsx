@@ -25,9 +25,15 @@ const MultilocInputLayout = ({
 
   const localizedElement =
     (uischema as Layout).elements.find(
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       (el) => el?.options?.locale === locale
-    ) || (uischema as Layout).elements?.[0];
+    ) || // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    (uischema as Layout).elements?.[0];
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (localizedElement) {
     return (
       <JsonFormsDispatch

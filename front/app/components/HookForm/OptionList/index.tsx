@@ -16,12 +16,12 @@ import { SupportedLocale, CLError, RHFErrors, Multiloc } from 'typings';
 
 import { IOptionsType } from 'api/custom_fields/types';
 
-import { List, SortableRow } from 'components/admin/ResourceList';
+import { List } from 'components/admin/ResourceList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 import { SectionField } from 'components/admin/Section';
-import { generateTempId } from 'components/FormBuilder/utils';
 import Error, { TFieldName } from 'components/UI/Error';
 
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, generateTempId } from 'utils/helperUtils';
 
 export type Option = {
   id?: string;
@@ -195,6 +195,8 @@ const OptionList = ({
                                     size="small"
                                     type="text"
                                     value={
+                                      // TODO: Fix this the next time the file is edited.
+                                      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                                       option.title_multiloc &&
                                       option.title_multiloc[selectedLocale]
                                     }

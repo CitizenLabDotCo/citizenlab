@@ -23,6 +23,7 @@ export interface IEventData {
     created_at: string;
     updated_at: string;
     attendees_count: number;
+    maximum_attendees: number | null;
     attend_button_multiloc?: Multiloc;
     using_url?: RouteType;
     online_link?: string | null;
@@ -72,6 +73,8 @@ export interface IEvents {
 }
 
 export interface IEventProperties {
+  start_at?: string;
+  end_at?: string;
   project_id?: string;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
@@ -80,10 +83,9 @@ export interface IEventProperties {
   address_1?: string | null;
   location_point_geojson?: GeoJSON.Point | null;
   online_link?: string;
-  start_at?: string;
-  end_at?: string;
   attend_button_multiloc?: Multiloc;
   using_url?: RouteType;
+  maximum_attendees?: number | null;
 }
 
 export interface IAddEventProperties {

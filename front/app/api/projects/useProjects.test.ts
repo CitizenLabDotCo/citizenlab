@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import endpoints, { projects, apiPathAll } from './__mocks__/_mockServer';
 import useProjects from './useProjects';
@@ -14,7 +14,7 @@ describe('useProjects', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useProjects({ pageNumber: 1, publicationStatuses: ['published'] }),
       {
         wrapper: createQueryClientWrapper(),
@@ -36,7 +36,7 @@ describe('useProjects', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useProjects({ pageNumber: 1, publicationStatuses: ['published'] }),
       {
         wrapper: createQueryClientWrapper(),

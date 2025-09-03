@@ -21,6 +21,10 @@
 #  baskets_count                :integer          default(0), not null
 #  votes_count                  :integer          default(0), not null
 #  followers_count              :integer          default(0), not null
+#  preview_token                :string           not null
+#  header_bg_alt_text_multiloc  :jsonb
+#  hidden                       :boolean          default(FALSE), not null
+#  listed                       :boolean          default(TRUE), not null
 #
 # Indexes
 #
@@ -31,11 +35,14 @@
 #  fk_rails_...  (default_assignee_id => users.id)
 #
 class Project < ApplicationRecord
+  include Files::FileAttachable
   include PgSearch::Model
+
+  attribute :preview_token, :string, default: -> { generate_preview_token }
 
   VISIBLE_TOS = %w[public groups admins].freeze
 
-  slug from: proc { |project| project.title_multiloc.values.find(&:present?) }
+  slug from: proc { |project| project.title_multiloc&.values&.find(&:present?) }
 
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
@@ -62,6 +69,10 @@ class Project < ApplicationRecord
   accepts_nested_attributes_for :text_images
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
   has_many :followers, as: :followable, dependent: :destroy
+  has_many :impact_tracking_pageviews, class_name: 'ImpactTracking::Pageview', dependent: :nullify
+  has_many :jobs_trackers, class_name: 'Jobs::Tracker', dependent: :destroy
+  has_many :files_projects, class_name: 'Files::FilesProject', dependent: :destroy
+  has_many :files, through: :files_projects
 
   before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
@@ -71,6 +82,7 @@ class Project < ApplicationRecord
   has_many :notifications, dependent: :nullify
 
   has_one :nav_bar_item, dependent: :destroy
+  has_one :review, class_name: 'ProjectReview', dependent: :destroy
 
   has_one :admin_publication, as: :publication, dependent: :destroy
   accepts_nested_attributes_for :admin_publication, update_only: true
@@ -82,7 +94,7 @@ class Project < ApplicationRecord
   after_save :reassign_moderators, if: :folder_changed?
   after_commit :clear_folder_changes, if: :folder_changed?
 
-  INTERNAL_ROLES = %w[open_idea_box].freeze
+  INTERNAL_ROLES = %w[open_idea_box community_monitor].freeze
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
@@ -91,8 +103,14 @@ class Project < ApplicationRecord
   validates :internal_role, inclusion: { in: INTERNAL_ROLES, allow_nil: true }
   validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template } # TODO: This should always be validated!
 
+  scope :not_hidden, -> { where(hidden: false) }
+
   pg_search_scope :search_by_all,
     against: %i[title_multiloc description_multiloc description_preview_multiloc slug],
+    using: { tsearch: { prefix: true } }
+
+  pg_search_scope :search_by_title,
+    against: :title_multiloc,
     using: { tsearch: { prefix: true } }
 
   scope :with_all_areas, -> { where(include_all_areas: true) }
@@ -110,8 +128,12 @@ class Project < ApplicationRecord
     includes(:admin_publication).order('admin_publications.ordering')
   }
 
+  scope :draft, lambda {
+    includes(:admin_publication).where(admin_publications: { publication_status: 'draft' })
+  }
+
   scope :not_draft, lambda {
-    includes(:admin_publication).where.not(admin_publications: { publication_status: 'draft' })
+    where.not(id: draft)
   }
 
   scope :publicly_visible, lambda {
@@ -120,16 +142,28 @@ class Project < ApplicationRecord
 
   scope :user_groups_visible, lambda { |user|
     user_groups = Group.joins(:projects).where(projects: self).with_user(user)
-    project_ids = GroupsProject.where(projects: self).where(groups: user_groups).select(:project_id).distinct
+    project_ids = GroupsProject.where(project: self).where(group: user_groups).select(:project_id)
     where(id: project_ids)
   }
 
+  scope :not_in_draft_folder, lambda {
+    joins(:admin_publication)
+      .joins('LEFT OUTER JOIN admin_publications AS parent_pubs ON admin_publications.parent_id = parent_pubs.id')
+      .where("admin_publications.parent_id IS NULL OR parent_pubs.publication_status != 'draft'")
+  }
+
   alias project_id id
+
+  delegate :published?, :ever_published?, :never_published?, to: :admin_publication, allow_nil: true
 
   class << self
     def search_ids_by_all_including_patches(term)
       result = defined?(super) ? super : []
       result + search_by_all(term).pluck(:id)
+    end
+
+    def generate_preview_token
+      SecureRandom.urlsafe_base64(64)
     end
   end
 
@@ -189,12 +223,21 @@ class Project < ApplicationRecord
     self.folder_changed = false
   end
 
+  # @return [ParticipationMethod::Base]
   def pmethod
     # NOTE: if a project is passed to this method, timeline projects used to always return 'Ideation'
     # as it was never set and defaulted to this when the participation_method was available on the project
     # The following mimics the same behaviour now that participation method is not available on the project
     # TODO: Maybe change to find phase with ideation or voting where created date between start and end date?
     @pmethod ||= ParticipationMethod::Ideation.new(phases.first)
+  end
+
+  def refresh_preview_token
+    self.preview_token = self.class.generate_preview_token
+  end
+
+  def hidden?
+    hidden
   end
 
   private
@@ -223,6 +266,8 @@ class Project < ApplicationRecord
   end
 
   def strip_title
+    return unless title_multiloc&.any?
+
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end

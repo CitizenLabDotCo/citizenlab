@@ -1,8 +1,11 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useMemo } from 'react';
 
 import { Box, Input } from '@citizenlab/cl2-component-library';
 import { ControlProps, RankedTester, rankWith } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
+import { debounce } from 'lodash-es';
+
+import { useIdeaSelect } from 'containers/IdeasNewPage/SimilarInputs/InputSelectContext';
 
 import { FormLabel } from 'components/UI/FormComponents';
 
@@ -30,6 +33,12 @@ export const TitleControl = ({
   visible,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
+  const { setTitle, showSimilarInputs } = useIdeaSelect();
+
+  const debouncedSetTitle = useMemo(
+    () => debounce((val: string) => setTitle(val), 400),
+    [setTitle]
+  );
 
   const onChange = useCallback(
     (value: string) => {
@@ -37,8 +46,11 @@ export const TitleControl = ({
         path,
         schema.type === 'number' && value ? parseInt(value, 10) : value
       );
+      if (showSimilarInputs) {
+        debouncedSetTitle(value);
+      }
     },
-    [schema.type, handleChange, path]
+    [handleChange, path, schema.type, showSimilarInputs, debouncedSetTitle]
   );
 
   if (!visible) {
@@ -46,7 +58,7 @@ export const TitleControl = ({
   }
 
   return (
-    <Box id="e2e-idea-title-input">
+    <Box id="title_multiloc">
       <FormLabel
         htmlFor={sanitizeForClassname(id)}
         labelValue={label}
@@ -61,15 +73,23 @@ export const TitleControl = ({
           type={schema.type === 'number' ? 'number' : 'text'}
           value={data}
           onChange={onChange}
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           maxCharCount={schema?.maxLength}
           onBlur={() => {
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             uischema?.options?.transform === 'trim_on_blur' &&
               isString(data) &&
               onChange(data.trim());
             setDidBlur(true);
           }}
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           disabled={uischema?.options?.readonly}
         />
+        {/* TODO: Fix this the next time the file is edited. */}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
       <ErrorDisplay
@@ -78,6 +98,7 @@ export const TitleControl = ({
         fieldPath={path}
         didBlur={didBlur}
       />
+      {/* {showSimilarInputs && <SimilarIdeasList />} */}
     </Box>
   );
 };

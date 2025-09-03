@@ -6,7 +6,7 @@ resource 'Idea Custom Fields' do
 
   before { header 'Content-Type', 'application/json' }
 
-  get 'web_api/v1/admin/phases/:phase_id/custom_fields/:custom_field_id/as_geojson' do
+  get 'web_api/v1/phases/:phase_id/custom_fields/:custom_field_id/as_geojson' do
     let(:project) { create(:single_phase_native_survey_project) }
     let(:phase) { project.phases.first }
     let(:form) { create(:custom_form, participation_context: phase) }

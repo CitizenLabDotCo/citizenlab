@@ -1,14 +1,7 @@
 # frozen_string_literal: true
 
 class IdeaStatusPolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user  = user
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
       scope.all
     end
@@ -19,7 +12,7 @@ class IdeaStatusPolicy < ApplicationPolicy
   end
 
   def create?
-    user&.active? && user&.admin?
+    user&.active? && user.admin?
   end
 
   def update?

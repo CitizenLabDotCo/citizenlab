@@ -17,15 +17,16 @@ import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
+import useSubmissionsCount from 'api/submission_count/useSubmissionCount';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
+import DownloadPDFButtonWithModal from 'components/admin/FormSync/DownloadPDFButtonWithModal';
 import {
   FormBuilderConfig,
   getIsPostingEnabled,
 } from 'components/FormBuilder/utils';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import GoBackButton from 'components/UI/GoBackButton';
 import Modal from 'components/UI/Modal';
 
@@ -48,8 +49,8 @@ type FormBuilderTopBarProps = {
   builderConfig: FormBuilderConfig;
   viewFormLink: RouteType;
   autosaveEnabled: boolean;
-  showAutosaveToggle: boolean;
   setAutosaveEnabled: Dispatch<SetStateAction<boolean>>;
+  phaseId: string;
 };
 
 const FormBuilderTopBar = ({
@@ -58,20 +59,18 @@ const FormBuilderTopBar = ({
   viewFormLink,
   autosaveEnabled,
   setAutosaveEnabled,
-  showAutosaveToggle,
+  phaseId,
 }: FormBuilderTopBarProps) => {
-  const printedFormsEnabled =
-    useFeatureFlag({
-      name: 'import_printed_forms',
-    }) && builderConfig.onDownloadPDF;
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const { projectId, phaseId } = useParams() as {
+  const { projectId } = useParams() as {
     projectId: string;
-    phaseId?: string;
   };
   const { data: project } = useProjectById(projectId);
-  const { data: phase } = usePhase(phaseId || null);
+  const { data: phase } = usePhase(phaseId);
+  const { data: submissionCount } = useSubmissionsCount({
+    phaseId,
+  });
   const {
     formState: { isDirty },
   } = useFormContext();
@@ -81,12 +80,6 @@ const FormBuilderTopBar = ({
     setShowLeaveModal(false);
   };
 
-  if (!project) {
-    return null;
-  }
-
-  const isPostingEnabled = getIsPostingEnabled(phase?.data);
-
   const handleGoback = () => {
     if (isDirty) {
       setShowLeaveModal(true);
@@ -94,6 +87,14 @@ const FormBuilderTopBar = ({
       clHistory.push(builderConfig.goBackUrl || `/admin/projects/${projectId}`);
     }
   };
+
+  if (!project || !phase || !submissionCount) {
+    return null;
+  }
+
+  const isPostingEnabled = getIsPostingEnabled(phase.data);
+  const showAutosaveToggle =
+    submissionCount.data.attributes.totalSubmissions === 0;
 
   return (
     <Box
@@ -106,6 +107,7 @@ const FormBuilderTopBar = ({
       background={`${colors.white}`}
       borderBottom={`1px solid ${colors.borderLight}`}
       top="0px"
+      data-cy="e2e-form-builder-top-bar"
     >
       <Box
         p="16px"
@@ -168,17 +170,12 @@ const FormBuilderTopBar = ({
             />
           </Box>
         )}
-        {printedFormsEnabled && (
-          <Button
-            buttonStyle="secondary-outlined"
-            icon="download"
-            mr="20px"
-            onClick={builderConfig.onDownloadPDF}
-          >
-            <FormattedMessage {...ownMessages.downloadPDF} />
-          </Button>
-        )}
-        <Button
+        <DownloadPDFButtonWithModal
+          mr="20px"
+          formType={builderConfig.type}
+          phaseId={phaseId}
+        />
+        <ButtonWithLink
           buttonStyle="secondary-outlined"
           icon="eye"
           mr="20px"
@@ -188,14 +185,14 @@ const FormBuilderTopBar = ({
           data-cy="e2e-preview-form-button"
         >
           <FormattedMessage {...builderConfig.viewFormLinkCopy} />
-        </Button>
-        <Button
+        </ButtonWithLink>
+        <ButtonWithLink
           buttonStyle="admin-dark"
           processing={isSubmitting}
           type="submit"
         >
           <FormattedMessage {...messages.save} />
-        </Button>
+        </ButtonWithLink>
       </Box>
       <Modal opened={showLeaveModal} close={closeModal}>
         <Box display="flex" flexDirection="column" width="100%" p="20px">
@@ -215,21 +212,21 @@ const FormBuilderTopBar = ({
             width="100%"
             alignItems="center"
           >
-            <Button
+            <ButtonWithLink
               buttonStyle="secondary-outlined"
               width="100%"
               onClick={closeModal}
               mr="16px"
             >
               <FormattedMessage {...messages.cancelLeaveBuilderButtonText} />
-            </Button>
-            <Button
+            </ButtonWithLink>
+            <ButtonWithLink
               buttonStyle="delete"
               width="100%"
               linkTo={builderConfig.goBackUrl || `/admin/projects/${projectId}`}
             >
               <FormattedMessage {...messages.confirmLeaveBuilderButtonText} />
-            </Button>
+            </ButtonWithLink>
           </Box>
         </Box>
       </Modal>

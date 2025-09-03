@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { data } from './__mocks__/useApiClients';
 import useApiClients from './useApiClients';
@@ -20,7 +20,7 @@ describe('useApiClients', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useApiClients(), {
+    const { result } = renderHook(() => useApiClients(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -39,7 +39,7 @@ describe('useApiClients', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useApiClients(), {
+    const { result } = renderHook(() => useApiClients(), {
       wrapper: createQueryClientWrapper(),
     });
 

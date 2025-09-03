@@ -1,14 +1,15 @@
 import { first, last, sortBy } from 'lodash-es';
+import { MessageDescriptor } from 'react-intl';
 import { SupportedLocale } from 'typings';
 
-import { IIdea } from 'api/ideas/types';
+import { IIdeaData } from 'api/ideas/types';
 import { IProjectData } from 'api/projects/types';
 
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { hasTextInSpecifiedLocale } from 'utils/locale';
 
-import { IPhaseData } from './types';
+import { IPhaseData, VoteTerm } from './types';
 
 export function canContainIdeas(phase: IPhaseData) {
   const pm = phase.attributes.participation_method;
@@ -106,14 +107,14 @@ export function getLatestRelevantPhase(phases: IPhaseData[]) {
 }
 
 export const isIdeaInParticipationContext = (
-  idea: IIdea,
+  idea: IIdeaData,
   participationContext: IProjectData | IPhaseData
 ) => {
   if (participationContext.type === 'project') {
-    return idea.data.relationships.project.data.id === participationContext.id;
+    return idea.relationships.project.data.id === participationContext.id;
   }
 
-  return idea.data.relationships.phases.data.some(
+  return idea.relationships.phases.data.some(
     (phase) => participationContext.id === phase.id
   );
 };
@@ -149,6 +150,14 @@ export function getInputTerm(
   return 'idea';
 }
 
+export function getPhaseVoteTermMessage(
+  phase: IPhaseData,
+  voteTermMessages: { [key in VoteTerm]: MessageDescriptor }
+) {
+  const voteTermMessageKey = phase.attributes.vote_term;
+  return voteTermMessages[voteTermMessageKey];
+}
+
 export const INPUT_TERMS = [
   'idea',
   'option',
@@ -156,6 +165,9 @@ export const INPUT_TERMS = [
   'question',
   'issue',
   'contribution',
+  'proposal',
+  'initiative',
+  'petition',
 ];
 
-export const ideaDefaultSortMethodFallback = 'trending';
+export const IdeaSortMethodFallback = 'trending';

@@ -2,31 +2,45 @@
 
 module EmailCampaigns
   class IdeaPublishedMailer < ApplicationMailer
+    include EditableWithPreview
+
+    def editable
+      %i[subject_multiloc intro_multiloc title_multiloc]
+    end
+
+    def substitution_variables
+      {
+        input_title: localize_for_recipient(event&.idea_title_multiloc),
+        projectTitle: localize_for_recipient(event&.project_title_multiloc),
+        firstName: recipient_first_name,
+        organizationName: organization_name
+      }
+    end
+
+    def preview_command(recipient)
+      data = preview_service.preview_data(recipient)
+      {
+        recipient: recipient,
+        event_payload: {
+          idea_id: data.idea.id,
+          idea_title_multiloc: data.idea.title_multiloc,
+          idea_body_multiloc: data.idea.body_multiloc,
+          idea_url: data.idea.url,
+          idea_images: [],
+          input_term: 'idea',
+          project_title_multiloc: data.project.title_multiloc
+        }
+      }
+    end
+
     protected
 
+    # Subject has a dynamic default text based on the input term.
     def subject
-      format_message('subject', values: { organizationName: organization_name })
-    end
-
-    private
-
-    def header_title
-      format_message('main_header')
-    end
-
-    def header_message
-      # TODO: tech debt
-      if app_configuration.name == 'Stad Leuven'
-        '<p style="margin-bottom: 20px;">
-           Bedankt om je idee te delen. We houden je verder op de hoogte van de volgende stappen binnen dit project.
-         </p>'.html_safe
-      else
-        format_message('message_next_steps', values: { firstName: recipient_first_name, organizationName: organization_name })
-      end
-    end
-
-    def preheader
-      format_message('preheader', values: { firstName: recipient_first_name, organizationName: organization_name })
+      format_editable_region(
+        :subject_multiloc,
+        override_default_key: "input_type_subject.#{event.input_term}"
+      )
     end
   end
 end

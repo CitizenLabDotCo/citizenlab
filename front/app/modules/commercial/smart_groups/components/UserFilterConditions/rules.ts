@@ -8,8 +8,6 @@ import IdeaStatusValueSelector from './ValueSelector/IdeaStatusValueSelector';
 import IdeaStatusValuesSelector from './ValueSelector/IdeaStatusValuesSelector';
 import IdeaValueSelector from './ValueSelector/IdeaValueSelector';
 import IdeaValuesSelector from './ValueSelector/IdeaValuesSelector';
-import InitiativeValueSelector from './ValueSelector/InitiativeValueSelector';
-import InitiativeValuesSelector from './ValueSelector/InitiativeValuesSelector';
 import NumberValueSelector from './ValueSelector/NumberValueSelector';
 import ProjectFolderValueSelector from './ValueSelector/ProjectFolderValueSelector';
 import ProjectFolderValuesSelector from './ValueSelector/ProjectFolderValuesSelector';
@@ -46,7 +44,8 @@ export type TStaticRuleType =
   | 'participated_in_project'
   | 'participated_in_topic'
   | 'participated_in_idea_status'
-  | 'verified';
+  | 'verified'
+  | 'participated_in_community_monitor';
 
 export type TCustomRuleType =
   | 'custom_field_text'
@@ -67,21 +66,20 @@ type TStaticPredicate =
   | TParticipatedInTopicPredicate
   | TParticipatedInStatusPredicate
   | TVerifiedPredicate
-  | TFollowPredicate;
+  | TFollowPredicate
+  | TParticipatedInCommunityMonitorPredicate;
 
 type TFollowPredicate =
   | 'something'
   | 'nothing'
   | 'is_not_project'
   | 'is_not_folder'
-  | 'is_not_initiative'
-  | 'is_not_idea'
+  | 'is_not_input'
   | 'is_not_topic'
   | 'is_not_area'
   | 'is_one_of_projects'
   | 'is_one_of_folders'
-  | 'is_one_of_ideas'
-  | 'is_one_of_initiatives'
+  | 'is_one_of_inputs'
   | 'is_one_of_topics'
   | 'is_one_of_areas';
 
@@ -165,6 +163,10 @@ type TParticipatedInStatusPredicate =
   | 'not_reacted_idea_in'
   | 'reacted_comment_in'
   | 'not_reacted_comment_in';
+
+type TParticipatedInCommunityMonitorPredicate =
+  | 'taken_survey'
+  | 'not_taken_survey';
 
 type TVerifiedPredicate = 'is_verified' | 'not_is_verified';
 
@@ -484,14 +486,12 @@ export type TRule =
         | 'nothing'
         | 'is_not_project'
         | 'is_not_folder'
-        | 'is_not_idea'
-        | 'is_not_initiative'
+        | 'is_not_input'
         | 'is_not_topic'
         | 'is_not_area'
         | 'is_one_of_projects'
         | 'is_one_of_folders'
-        | 'is_one_of_ideas'
-        | 'is_one_of_initiatives'
+        | 'is_one_of_inputs'
         | 'is_one_of_topics'
         | 'is_one_of_areas';
       value?: string | string[];
@@ -499,6 +499,10 @@ export type TRule =
   | {
       ruleType?: 'verified';
       predicate?: 'is_verified' | 'not_is_verified';
+    }
+  | {
+      ruleType?: 'participated_in_community_monitor';
+      predicate?: 'taken_survey' | 'not_taken_survey';
     };
 
 export const ruleTypeConstraints = {
@@ -564,10 +568,8 @@ export const ruleTypeConstraints = {
     is_not_project: ProjectValueSelector,
     is_one_of_folders: ProjectFolderValuesSelector,
     is_not_folder: ProjectFolderValueSelector,
-    is_one_of_ideas: IdeaValuesSelector,
-    is_not_idea: IdeaValueSelector,
-    is_one_of_initiatives: InitiativeValuesSelector,
-    is_not_initiative: InitiativeValueSelector,
+    is_one_of_inputs: IdeaValuesSelector,
+    is_not_input: IdeaValueSelector,
     is_one_of_topics: TopicValuesSelector,
     is_not_topic: TopicValueSelector,
     is_one_of_areas: AreaValuesSelector,
@@ -643,6 +645,10 @@ export const ruleTypeConstraints = {
   verified: {
     is_verified: null,
     not_is_verified: null,
+  },
+  participated_in_community_monitor: {
+    taken_survey: null,
+    not_taken_survey: null,
   },
 };
 

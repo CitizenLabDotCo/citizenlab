@@ -1,3 +1,20 @@
 es:
   analysis:
     example_tag_n: Ejemplo de etiqueta %{n}
+    cell_statement:
+      percent_more: "%{percent}% más"
+      percent_less: "%{percent}% menos"
+      range_min_max: "%{min} a %{max}"
+      range_min: "%{min} o más"
+      range_max: "%{max} o menos"
+      tag_vs_bin:
+        inputs: "Las personas que responden '%{answer}' a '%{question}' publican %{percent_more_less} en '%{tag}' más que la media."
+        likes: "A las personas que responden '%{answer}' a '%{question}' les gustan más las entradas de %{percent_more_less} en '%{tag}' que la media."
+        dislikes: "A las personas que responden '%{answer}' a '%{question}' les disgustan las entradas de %{percent_more_less} en '%{tag}' más que a la media."
+        participants: "Las personas que responden '%{answer}' a '%{question}' participan %{percent_more_less} en '%{tag}' más que la media."
+      bin_vs_bin:
+        inputs: "Las personas que responden '%{answer1}' a '%{question1}' responden '%{answer2}' a '%{question2}' %{percent_more_less} que la media."
+        likes: "A las personas que responden '%{answer1}' a '%{question1}' les gustan más las aportaciones de %{percent_more_less} cuando responden '%{answer2}' a '%{question2}' que la media."
+        dislikes: "A las personas que responden '%{answer1}' a '%{question1}' no les gustan las aportaciones de %{percent_more_less} cuando responden '%{answer2}' a '%{question2}' que la media."
+        participants: "Las personas que responden '%{answer1}' a '%{question1}' participan %{percent_more_less} cuando responden '%{answer2}' a '%{question2}' que la media."
+

@@ -113,9 +113,11 @@ const ReactionIconContainer = styled.div<{
   }) => {
     if (buttonReactionModeIsActive) {
       if (
-        reactingEnabled ||
+        reactingEnabled || // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         (!reactingEnabled &&
-          disabledReason === 'reacting_dislike_limited_max_reached') ||
+          disabledReason === 'reacting_dislike_limited_max_reached') || // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         (!reactingEnabled &&
           disabledReason === 'reacting_like_limited_max_reached')
       ) {
@@ -260,6 +262,8 @@ const ReactionIcon = styled(Icon)<{
         `;
       }
 
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!reactingEnabled) {
         return `
           fill: ${
@@ -399,6 +403,10 @@ const ReactionButton = ({
     const projectName = localize(project.data.attributes.title_multiloc);
     const buttonReactionModeIsActive = buttonReactionMode === userReactionMode;
 
+    const describedById = disabledReason
+      ? `describedbyid-${ideaId}`
+      : undefined;
+
     const disabledMessage = disabledReasonMessage && (
       <FormattedMessage
         {...disabledReasonMessage}
@@ -414,9 +422,18 @@ const ReactionButton = ({
         placement="top"
         theme="dark"
         disabled={disabledReason === null}
-        content={disabledMessage}
+        content={
+          <span
+            // aria-hidden is needed because we already use ScreenReaderOnly for screen readers
+            // and we don't want to duplicate the message
+            aria-hidden
+          >
+            {disabledMessage}
+          </span>
+        }
         trigger="mouseenter"
         width={variant === 'text' ? '100%' : 'fit-content'}
+        useContentWrapper={false}
       >
         <>
           {variant === 'text' && (
@@ -424,6 +441,8 @@ const ReactionButton = ({
               onClick={onClick}
               icon={buttonReactionModeIsActive ? 'check' : 'vote-ballot'}
               bgColor={buttonReactionModeIsActive ? colors.success : undefined}
+              className="e2e-ideacard-vote-button"
+              aria-describedby={describedById}
             >
               {buttonReactionModeIsActive ? (
                 <FormattedMessage {...messages.voted} />
@@ -454,6 +473,7 @@ const ReactionButton = ({
                 }[buttonReactionMode],
                 buttonReactionModeEnabled ? 'enabled' : '',
               ].join(' ')}
+              aria-describedby={describedById}
             >
               <ReactionIconContainer
                 styleType={styleType}
@@ -488,9 +508,8 @@ const ReactionButton = ({
               </ReactionCount>
             </Button>
           )}
-          {disabledReason && (
-            // Adding a dot as a hack to make the screen reader read the message with the correct pause after the previous text. Ideally all messages should have a dot at the end.
-            <ScreenReaderOnly>
+          {describedById && disabledMessage && (
+            <ScreenReaderOnly id={describedById}>
               {`. `}
               {disabledMessage}
             </ScreenReaderOnly>

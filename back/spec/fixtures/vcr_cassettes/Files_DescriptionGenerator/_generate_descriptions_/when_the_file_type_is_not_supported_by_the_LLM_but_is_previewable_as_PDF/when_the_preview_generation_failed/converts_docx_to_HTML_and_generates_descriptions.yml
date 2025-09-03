@@ -1,0 +1,213 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://bedrock-runtime.eu-central-1.amazonaws.com/model/eu.anthropic.claude-sonnet-4-20250514-v1:0/invoke
+    body:
+      encoding: UTF-8
+      string: '{"anthropic_version":"bedrock-2023-05-31","messages":[{"role":"user","content":[{"type":"text","text":"Analyze
+        the provided document and generate a concise description or abstract (2-3
+        sentences) that accurately summarizes its nature, main purpose, key content,
+        and relevant context. \nThe description should be informative and capture
+        the essential meaning of the document. As extra context, the filename is:
+        \"david.docx\"\n\nOutput the results as a properly formatted JSON object with
+        the following requirements:\n- Avoid starting the summary with \"The document
+        is...\" or similar generic introductions.\n- Keys must be the following locale
+        codes: en, fr-FR, nl-NL\n- Values must be the description text accurately
+        translated for each respective locale\n- All translations should maintain
+        the same meaning and level of detail\n- Use proper JSON formatting with double
+        quotes around all keys and string values\n- Ensure the JSON is valid and parseable\n\nThe
+        response must contain ONLY the JSON object - no additional text, explanations,
+        code blocks, or formatting outside the JSON structure.\n\nExample format:\n{\n  \"en\":
+        \"... (description in en) ...\",\n  \"fr-FR\": \"... (description in fr-FR)
+        ...\",\n  \"nl-NL\": \"... (description in nl-NL) ...\"\n}\n"},{"type":"text","text":"<file
+        name=''david.docx20250820-203-qgnmj3.html'' mime_type=''text/html''><p style=\"font-size:12pt;text-align:center;\">Lorem
+        ipsum </p>\\n<p style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em></em></strong></span></p>\\n<p
+        style=\"font-size:12pt;\">Lorem ipsum dolor sit amet, consectetur adipiscing
+        elit. Nunc ac faucibus odio. </p>\\n<p style=\"font-size:10pt;text-align:both;\"><span
+        style=\"font-size:10pt;\"><strong><em></em></strong></span></p>\\n<p style=\"font-size:10pt;text-align:both;\"><span
+        style=\"font-size:10pt;\"><strong><em>Vestibulum neque massa, scelerisque
+        sit amet ligula eu, congue molestie mi. Praesent ut varius sem. Nullam at
+        porttitor arcu, nec lacinia nisi. Ut ac dolor vitae odio interdum condimentum.
+        </em></strong></span><span style=\"font-size:10pt;\"><strong><em>Vivamus dapibus
+        sodales ex, vitae malesuada ipsum cursus convallis. Maecenas sed egestas nulla,
+        ac condimentum orci. </em></strong></span><span style=\"font-size:10pt;\"><strong><em>Mauris
+        diam felis, vulputate ac suscipit et, iaculis non est. Curabitur semper arcu
+        ac ligula semper, nec luctus nisl blandit. Integer lacinia ante ac libero
+        lobortis imperdiet. </em></strong></span><span style=\"font-size:10pt;\"><strong><em>Nullam
+        mollis convallis ipsum, ac accumsan nunc vehicula vitae. </em></strong></span><span
+        style=\"font-size:10pt;\"><strong><em>Nulla eget justo in felis tristique
+        fringilla. Morbi sit amet tortor quis risus auctor condimentum. Morbi in ullamcorper
+        elit. Nulla iaculis tellus sit amet mauris tempus fringilla.</em></strong></span></p>\\n<p
+        style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em>Maecenas
+        mauris lectus, lobortis et purus mattis, blandit dictum tellus.</em></strong></span></p>\\n<p
+        style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em>Maecenas
+        non lorem quis tellus placerat varius. </em></strong></span></p>\\n<p style=\"font-size:10pt;text-align:both;\"><span
+        style=\"font-size:10pt;\"><strong><em>Nulla facilisi. </em></strong></span></p>\\n<p
+        style=\"font-size:10pt;text-align:both;\"><span style=\"text-decoration:underline;font-size:10pt;\"><strong><em>Aenean
+        congue fringilla justo ut aliquam. </em></strong></span></p>\\n<p style=\"font-size:10pt;text-align:both;\"><span
+        style=\"font-size:10pt;\"><strong><em>Mauris id ex erat. </em></strong></span><span
+        style=\"font-size:10pt;\"><strong><em>Nunc vulputate neque vitae justo facilisis,
+        non condimentum ante sagittis. </em></strong></span></p>\\n<p style=\"font-size:10pt;text-align:both;\"><span
+        style=\"font-size:10pt;\"><strong><em>Morbi viverra semper lorem nec molestie.
+        </em></strong></span></p>\\n<p style=\"font-size:10pt;text-align:both;\"><span
+        style=\"font-size:10pt;\"><strong><em>Maecenas tincidunt est efficitur ligula
+        euismod, sit amet ornare est vulputate.</em></strong></span></p>\\n<p style=\"font-size:12pt;text-align:both;\"></p>\\n<p
+        style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em></em></strong></span></p>\\n<p
+        style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em></em></strong></span></p>\\n<p
+        style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em></em></strong></span></p>\\n<p
+        style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em></em></strong></span></p>\\n<p
+        style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em></em></strong></span></p>\\n<p
+        style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em></em></strong></span></p>\\n<p
+        style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em></em></strong></span></p>\\n<p
+        style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em></em></strong></span></p>\\n<p
+        style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em>In
+        non mauris justo. Duis vehicula mi vel mi pretium, a viverra erat efficitur.
+        Cras aliquam est ac eros varius, id iaculis dui auctor. Duis pretium neque
+        ligula, et pulvinar mi placerat et. Nulla nec nunc sit amet nunc posuere vestibulum.
+        Ut id neque eget tortor mattis tristique. Donec ante est, blandit sit amet
+        tristique vel, lacinia pulvinar arcu. Pellentesque scelerisque fermentum erat,
+        id posuere justo pulvinar ut. Cras id eros sed enim aliquam lobortis. Sed
+        lobortis nisl ut eros efficitur tincidunt. Cras justo mi, porttitor quis mattis
+        vel, ultricies ut purus. Ut facilisis et lacus eu cursus.</em></strong></span></p>\\n<p
+        style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em>In
+        eleifend velit vitae libero sollicitudin euismod. Fusce vitae vestibulum velit.
+        Pellentesque vulputate lectus quis pellentesque commodo. Aliquam erat volutpat.
+        Vestibulum in egestas velit. Pellentesque fermentum nisl vitae fringilla venenatis.
+        Etiam id mauris vitae orci maximus ultricies. </em></strong></span></p>\\n<p
+        style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em></em></strong></span></p>\\n<p
+        style=\"font-size:12pt;\">Cras fringilla ipsum magna, in fringilla dui commodo
+        a.</p>\\n<p style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em></em></strong></span></p>\\n<p
+        style=\"font-size:10pt;text-align:left;\"><span style=\"font-size:10pt;\"><strong><em></em></strong></span></p>\\n<p
+        style=\"font-size:10pt;text-align:left;\"><span style=\"font-size:10pt;\"><strong><em>Lorem
+        ipsum</em></strong></span></p>\\n<p style=\"font-size:10pt;text-align:left;\"><span
+        style=\"font-size:10pt;\">Lorem ipsum</span></p>\\n<p style=\"font-size:10pt;text-align:left;\"><span
+        style=\"font-size:10pt;\">Lorem ipsum</span></p>\\n<p style=\"font-size:10pt;text-align:left;\"><span
+        style=\"font-size:10pt;\">1</span></p>\\n<p style=\"font-size:10pt;text-align:left;\"><span
+        style=\"font-size:10pt;\"><strong><em>In eleifend velit vitae libero sollicitudin
+        euismod.</em></strong></span></p>\\n<p style=\"font-size:10pt;text-align:left;\"><span
+        style=\"font-size:10pt;\">Lorem</span></p>\\n<p style=\"font-size:10pt;text-align:left;\"><span
+        style=\"font-size:10pt;\"></span></p>\\n<p style=\"font-size:10pt;text-align:left;\"><span
+        style=\"font-size:10pt;\">2</span></p>\\n<p style=\"font-size:10pt;text-align:left;\"><span
+        style=\"font-size:10pt;\"><strong><em>Cras fringilla ipsum magna, in fringilla
+        dui commodo a.</em></strong></span></p>\\n<p style=\"font-size:10pt;text-align:left;\"><span
+        style=\"font-size:10pt;\">Ipsum</span></p>\\n<p style=\"font-size:10pt;text-align:left;\"><span
+        style=\"font-size:10pt;\"></span></p>\\n<p style=\"font-size:10pt;text-align:left;\"><span
+        style=\"font-size:10pt;\">3</span></p>\\n<p style=\"font-size:10pt;text-align:left;\"><span
+        style=\"font-size:10pt;\"><strong><em>Aliquam erat volutpat. </em></strong></span></p>\\n<p
+        style=\"font-size:10pt;text-align:left;\"><span style=\"font-size:10pt;\">Lorem</span></p>\\n<p
+        style=\"font-size:10pt;text-align:left;\"><span style=\"font-size:10pt;\"></span></p>\\n<p
+        style=\"font-size:10pt;text-align:left;\"><span style=\"font-size:10pt;\">4</span></p>\\n<p
+        style=\"font-size:10pt;text-align:left;\"><span style=\"font-size:10pt;\"><strong><em>Fusce
+        vitae vestibulum velit. </em></strong></span></p>\\n<p style=\"font-size:10pt;text-align:left;\"><span
+        style=\"font-size:10pt;\">Lorem</span></p>\\n<p style=\"font-size:10pt;text-align:left;\"><span
+        style=\"font-size:10pt;\"></span></p>\\n<p style=\"font-size:10pt;text-align:left;\"><span
+        style=\"font-size:10pt;\">5</span></p>\\n<p style=\"font-size:10pt;text-align:left;\"><span
+        style=\"font-size:10pt;\"><strong><em>Etiam vehicula luctus fermentum.</em></strong></span></p>\\n<p
+        style=\"font-size:10pt;text-align:left;\"><span style=\"font-size:10pt;\">Ipsum</span></p>\\n<p
+        style=\"font-size:10pt;text-align:left;\"><span style=\"font-size:10pt;\"></span></p>\\n<p
+        style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em></em></strong></span></p>\\n<p
+        style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em>Etiam
+        vehicula luctus fermentum. In vel metus congue, pulvinar lectus vel, fermentum
+        dui. Maecenas ante orci, egestas ut aliquet sit amet, sagittis a magna. Aliquam
+        ante quam, pellentesque ut dignissim quis, laoreet eget est. Aliquam erat
+        volutpat. Class aptent taciti sociosqu ad litora torquent per conubia nostra,
+        per inceptos himenaeos. Ut ullamcorper justo sapien, in cursus libero viverra
+        eget. Vivamus auctor imperdiet urna, at pulvinar leo posuere laoreet. Suspendisse
+        neque nisl, fringilla at iaculis scelerisque, ornare vel dolor. Ut et pulvinar
+        nunc. Pellentesque fringilla mollis efficitur. Nullam venenatis commodo imperdiet.
+        Morbi velit neque, semper quis lorem quis, efficitur dignissim ipsum. Ut ac
+        lorem sed turpis imperdiet eleifend sit amet id sapien.</em></strong></span></p>\\n<p
+        style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em></em></strong></span></p>\\n<p
+        style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em></em></strong></span></p>\\n<p
+        style=\"font-size:12pt;\">Lorem ipsum dolor sit amet, consectetur adipiscing
+        elit. </p>\\n<p style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em></em></strong></span></p>\\n<p
+        style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em>Nunc
+        ac faucibus odio. Vestibulum neque massa, scelerisque sit amet ligula eu,
+        congue molestie mi. Praesent ut varius sem. Nullam at porttitor arcu, nec
+        lacinia nisi. Ut ac dolor vitae odio interdum condimentum. Vivamus dapibus
+        sodales ex, vitae malesuada ipsum cursus convallis. Maecenas sed egestas nulla,
+        ac condimentum orci. Mauris diam felis, vulputate ac suscipit et, iaculis
+        non est. Curabitur semper arcu ac ligula semper, nec luctus nisl blandit.
+        Integer lacinia ante ac libero lobortis imperdiet. Nullam mollis convallis
+        ipsum, ac accumsan nunc vehicula vitae. Nulla eget justo in felis tristique
+        fringilla. Morbi sit amet tortor quis risus auctor condimentum. Morbi in ullamcorper
+        elit. Nulla iaculis tellus sit amet mauris tempus fringilla.</em></strong></span></p>\\n<p
+        style=\"font-size:12pt;\">Maecenas mauris lectus, lobortis et purus mattis,
+        blandit dictum tellus. </p>\\n<p style=\"font-size:10pt;text-align:both;\"><span
+        style=\"font-size:10pt;\"><strong><em>Maecenas non lorem quis tellus placerat
+        varius. Nulla facilisi. Aenean congue fringilla justo ut aliquam. Mauris id
+        ex erat. Nunc vulputate neque vitae justo facilisis, non condimentum ante
+        sagittis. Morbi viverra semper lorem nec molestie. Maecenas tincidunt est
+        efficitur ligula euismod, sit amet ornare est vulputate.</em></strong></span></p>\\n<p
+        style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em>In
+        non mauris justo. Duis vehicula mi vel mi pretium, a viverra erat efficitur.
+        Cras aliquam est ac eros varius, id iaculis dui auctor. Duis pretium neque
+        ligula, et pulvinar mi placerat et. Nulla nec nunc sit amet nunc posuere vestibulum.
+        Ut id neque eget tortor mattis tristique. Donec ante est, blandit sit amet
+        tristique vel, lacinia pulvinar arcu. Pellentesque scelerisque fermentum erat,
+        id posuere justo pulvinar ut. Cras id eros sed enim aliquam lobortis. Sed
+        lobortis nisl ut eros efficitur tincidunt. Cras justo mi, porttitor quis mattis
+        vel, ultricies ut purus. Ut facilisis et lacus eu cursus.</em></strong></span></p>\\n<p
+        style=\"font-size:12pt;\">In eleifend velit vitae libero sollicitudin euismod.
+        </p>\\n<p style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em>Fusce
+        vitae vestibulum velit. Pellentesque vulputate lectus quis pellentesque commodo.
+        Aliquam erat volutpat. Vestibulum in egestas velit. Pellentesque fermentum
+        nisl vitae fringilla venenatis. Etiam id mauris vitae orci maximus ultricies.
+        Cras fringilla ipsum magna, in fringilla dui commodo a.</em></strong></span></p>\\n<p
+        style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em>Etiam
+        vehicula luctus fermentum. In vel metus congue, pulvinar lectus vel, fermentum
+        dui. Maecenas ante orci, egestas ut aliquet sit amet, sagittis a magna. Aliquam
+        ante quam, pellentesque ut dignissim quis, laoreet eget est. Aliquam erat
+        volutpat. Class aptent taciti sociosqu ad litora torquent per conubia nostra,
+        per inceptos himenaeos. Ut ullamcorper justo sapien, in cursus libero viverra
+        eget. Vivamus auctor imperdiet urna, at pulvinar leo posuere laoreet. Suspendisse
+        neque nisl, fringilla at iaculis scelerisque, ornare vel dolor. Ut et pulvinar
+        nunc. Pellentesque fringilla mollis efficitur. Nullam venenatis commodo imperdiet.
+        Morbi velit neque, semper quis lorem quis, efficitur dignissim ipsum. Ut ac
+        lorem sed turpis imperdiet eleifend sit amet id sapien.</em></strong></span></p>\\n<p
+        style=\"font-size:10pt;text-align:both;\"><span style=\"font-size:10pt;\"><strong><em></em></strong></span></p>\\n<p
+        style=\"font-size:12pt;\"></p></file>"}]},{"role":"assistant","content":[{"type":"text","text":"{"}]}],"max_tokens":4096,"temperature":0.7}'
+    headers:
+      User-Agent:
+      - Faraday v2.12.2
+      X-Amz-Date:
+      - 20250820T101528Z
+      X-Amz-Content-Sha256:
+      - c435efe772d5dc206dbdd4270288d96d4dcfdb944e4390434646c9553cbe5534
+      Authorization:
+      - AWS4-HMAC-SHA256 Credential=AKIAVVRDDPNZZGMDU2VU/20250820/eu-central-1/bedrock/aws4_request,
+        SignedHeaders=host;x-amz-content-sha256;x-amz-date, Signature=cb0f81d1f6e985f6e9082e0b745cbbef2aa2067302c915c0b594f204a890f290
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Wed, 20 Aug 2025 10:15:33 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '1355'
+      Connection:
+      - keep-alive
+      X-Amzn-Requestid:
+      - 4dbb6e50-077d-4cb1-9b09-14c1b3276cc4
+      X-Amzn-Bedrock-Invocation-Latency:
+      - '4979'
+      X-Amzn-Bedrock-Output-Token-Count:
+      - '275'
+      X-Amzn-Bedrock-Input-Token-Count:
+      - '4933'
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        eyJpZCI6Im1zZ19iZHJrXzAxTEdlV0dNWXZVR0J2YXpEVmlZY3NYZCIsInR5cGUiOiJtZXNzYWdlIiwicm9sZSI6ImFzc2lzdGFudCIsIm1vZGVsIjoiY2xhdWRlLXNvbm5ldC00LTIwMjUwNTE0IiwiY29udGVudCI6W3sidHlwZSI6InRleHQiLCJ0ZXh0IjoiXG4gIFwiZW5cIjogXCJBIGZvcm1hdHRlZCB0ZXh0IGRvY3VtZW50IGNvbnRhaW5pbmcgTG9yZW0gaXBzdW0gcGxhY2Vob2xkZXIgdGV4dCBhcnJhbmdlZCBpbiBtdWx0aXBsZSBwYXJhZ3JhcGhzIHdpdGggdmFyaW91cyBmb250IHNpemVzIGFuZCBzdHlsaW5nIChib2xkLCBpdGFsaWMsIHVuZGVybGluZWQpLiBUaGUgZG9jdW1lbnQgaW5jbHVkZXMgYSBudW1iZXJlZCBsaXN0IHNlY3Rpb24gd2l0aCA1IGl0ZW1zIGFuZCBhcHBlYXJzIHRvIGJlIGEgdGVtcGxhdGUgb3Igc2FtcGxlIGRvY3VtZW50IGZvciB0ZXN0aW5nIGxheW91dCBhbmQgZm9ybWF0dGluZyBwdXJwb3Nlcy5cIixcbiAgXCJmci1GUlwiOiBcIlVuIGRvY3VtZW50IHRleHRlIGZvcm1hdMOpIGNvbnRlbmFudCBkdSB0ZXh0ZSBkZSBzdWJzdGl0dXRpb24gTG9yZW0gaXBzdW0gb3JnYW5pc8OpIGVuIHBsdXNpZXVycyBwYXJhZ3JhcGhlcyBhdmVjIGRpdmVyc2VzIHRhaWxsZXMgZGUgcG9saWNlIGV0IHN0eWxlcyAoZ3JhcywgaXRhbGlxdWUsIHNvdWxpZ27DqSkuIExlIGRvY3VtZW50IGluY2x1dCB1bmUgc2VjdGlvbiBkZSBsaXN0ZSBudW3DqXJvdMOpZSBhdmVjIDUgw6lsw6ltZW50cyBldCBzZW1ibGUgw6p0cmUgdW4gbW9kw6hsZSBvdSB1biBkb2N1bWVudCBkJ2V4ZW1wbGUgcG91ciB0ZXN0ZXIgbGEgbWlzZSBlbiBwYWdlIGV0IGxlIGZvcm1hdGFnZS5cIixcbiAgXCJubC1OTFwiOiBcIkVlbiBnZWZvcm1hdHRlZXJkIHRla3N0ZG9jdW1lbnQgbWV0IExvcmVtIGlwc3VtLXBsYWF0c2hvdWRlciB0ZWtzdCBnZXJhbmdzY2hpa3QgaW4gbWVlcmRlcmUgYWxpbmVhJ3MgbWV0IHZlcnNjaGlsbGVuZGUgbGV0dGVyZ3Jvb3R0ZXMgZW4gb3BtYWFrICh2ZXQsIGN1cnNpZWYsIG9uZGVyc3RyZWVwdCkuIEhldCBkb2N1bWVudCBiZXZhdCBlZW4gZ2VudW1tZXJkZSBsaWpzdHNlY3RpZSBtZXQgNSBpdGVtcyBlbiBsaWprdCBlZW4gc2phYmxvb24gb2Ygdm9vcmJlZWxkZG9jdW1lbnQgdGUgemlqbiB2b29yIGhldCB0ZXN0ZW4gdmFuIGxheS1vdXQgZW4gb3BtYWFrZG9lbGVpbmRlbi5cIlxufSJ9XSwic3RvcF9yZWFzb24iOiJlbmRfdHVybiIsInN0b3Bfc2VxdWVuY2UiOm51bGwsInVzYWdlIjp7ImlucHV0X3Rva2VucyI6NDkzMywiY2FjaGVfY3JlYXRpb25faW5wdXRfdG9rZW5zIjowLCJjYWNoZV9yZWFkX2lucHV0X3Rva2VucyI6MCwib3V0cHV0X3Rva2VucyI6Mjc1fX0=
+  recorded_at: Wed, 20 Aug 2025 10:15:33 GMT
+recorded_with: VCR 6.2.0

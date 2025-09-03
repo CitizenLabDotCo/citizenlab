@@ -53,7 +53,7 @@ const ImportExcelModal = ({ open, onClose, onImport }: Props) => {
 
   const downloadFormPath =
     phase?.data.attributes.participation_method === 'native_survey'
-      ? `/admin/projects/${projectId}/phases/${phaseId}/native-survey`
+      ? `/admin/projects/${projectId}/phases/${phaseId}/survey-form`
       : `/admin/projects/${projectId}/phases/${phaseId}/form`;
 
   const defaultValues: FormValues = {
@@ -94,7 +94,6 @@ const ImportExcelModal = ({ open, onClose, onImport }: Props) => {
 
   return (
     <Modal
-      fullScreen={false}
       width="780px"
       opened={open}
       close={onClose}

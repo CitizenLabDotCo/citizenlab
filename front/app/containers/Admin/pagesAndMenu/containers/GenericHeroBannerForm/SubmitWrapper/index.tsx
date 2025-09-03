@@ -6,10 +6,10 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled, { css } from 'styled-components';
 import { Omit } from 'typings';
 
-import Button, {
+import ButtonWithLink, {
   ButtonStyles,
   Props as OriginalButtonProps,
-} from 'components/UI/Button';
+} from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
@@ -75,7 +75,7 @@ const Message = styled.p`
 interface Props
   extends Omit<
     OriginalButtonProps,
-    'className' | 'text' | 'disabled' | 'setSubmitButtonRef' | 'processing'
+    'className' | 'text' | 'disabled' | 'processing'
   > {
   status: ISubmitState;
   loading: boolean;
@@ -146,13 +146,13 @@ const SubmitWrapper = (props: Props) => {
 
   return (
     <Wrapper aria-live="polite" fullWidth={!!fullWidth}>
-      <Button
+      <ButtonWithLink
         className="e2e-submit-wrapper-button"
         buttonStyle={style}
         processing={loading}
         disabled={isSubmitButtonDisabled}
         onClick={onClick}
-        setSubmitButtonRef={setSubmitButtonRef}
+        ref={setSubmitButtonRef}
         {...buttonProps}
       >
         {(status === 'enabled' ||
@@ -161,17 +161,17 @@ const SubmitWrapper = (props: Props) => {
         {status === 'success' && (
           <FormattedMessage {...messages.buttonSuccess} />
         )}
-      </Button>
+      </ButtonWithLink>
 
       {/* show a secondary button if an onClick handler is provided for it */}
       {secondaryButtonOnClick && (
-        <Button
+        <ButtonWithLink
           data-cy="e2e-submit-wrapper-secondary-submit-button"
           buttonStyle={secondaryButtonStyle}
           processing={loading}
           disabled={isSubmitButtonDisabled}
           onClick={secondaryButtonOnClick}
-          setSubmitButtonRef={setSecondaryButtonRef}
+          ref={setSecondaryButtonRef}
           ml="25px"
         >
           {secondaryButtonSaveMessage ? (
@@ -179,7 +179,7 @@ const SubmitWrapper = (props: Props) => {
           ) : (
             <FormattedMessage {...messages.buttonSave} />
           )}
-        </Button>
+        </ButtonWithLink>
       )}
 
       {status === 'error' && (

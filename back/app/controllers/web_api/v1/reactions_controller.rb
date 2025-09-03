@@ -109,7 +109,6 @@ class WebApi::V1::ReactionsController < ApplicationController
     @policy_class = case @reactable_type
     when 'Idea' then IdeaReactionPolicy
     when 'Comment' then CommentReactionPolicy
-    when 'Initiative' then InitiativeReactionPolicy
     else raise "#{@reactable_type} has no reaction policy defined"
     end
     raise 'must not be blank' if @reactable_type.blank? || @reactable_id.blank?
@@ -121,8 +120,6 @@ class WebApi::V1::ReactionsController < ApplicationController
       IdeaReactionPolicy
     when Comment
       CommentReactionPolicy
-    when Initiative
-      InitiativeReactionPolicy
     else
       raise "reactable #{reactable.class} has no reaction policy defined"
     end

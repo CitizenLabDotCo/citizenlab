@@ -9,6 +9,8 @@ import Legend from '@arcgis/core/widgets/Legend';
 
 import { AppConfigurationMapSettings } from 'api/app_configuration/types';
 
+import { calculateScaleFromZoom } from 'utils/mapUtils/map';
+
 import { InitialData } from './types';
 
 export const configureMapView = (
@@ -21,11 +23,26 @@ export const configureMapView = (
   setMapCenter(mapView, initialData, globalMapSettings);
 
   // Set initial extent
-  mapView.zoom = initialData?.zoom || globalMapSettings.zoom_level || 18;
+  const zoomLevel = initialData?.zoom || globalMapSettings.zoom_level || 18;
+  mapView.zoom = zoomLevel;
   mapView.constraints = {
     maxZoom: initialData?.maxZoom || 22,
     minZoom: 5,
   };
+
+  // Note: Here we set the map scale manually if the spatial reference is not Web Mercator (3857) or WGS84 (4326).
+  //
+  // Why? - Only Web Mercator & WGS84 can work with fixed zoom levels — other projections (like national/local grids)
+  // don't support zoom levels in the same way, so mapView.zoom won't behave as expected.
+  //
+  // The vast majority of maps on our platform are in Web Mercator, but some maps (like the UK and Finnish maps)
+  // sometimes use a different projection and need this specific handling.
+  //
+  // Setting mapView.scale ensures consistent map zooming behavior across all projections.
+  const spatialReferenceId = mapView.center.spatialReference.wkid;
+  if (spatialReferenceId !== 3857 && spatialReferenceId !== 4326) {
+    mapView.scale = calculateScaleFromZoom(zoomLevel);
+  }
 
   // Change location of zoom widget if specified
   if (initialData?.showZoomControls === false || isMobileOrSmaller) {
@@ -33,7 +50,10 @@ export const configureMapView = (
     mapView.ui.remove(zoom);
   } else if (initialData?.zoomWidgetLocation === 'right') {
     const zoom = mapView.ui.find('zoom');
-    mapView.ui.add(zoom, 'top-right');
+
+    // Note: Incorrect type from ArcGIS API, ui might be null.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    mapView.ui?.add(zoom, 'top-right');
   }
 
   // Add fullscreen widget if set
@@ -41,12 +61,15 @@ export const configureMapView = (
     const fullscreen = new Fullscreen({
       view: mapView,
     });
-    mapView.ui.add(fullscreen, 'top-right');
+
+    // Note: Incorrect type from ArcGIS API, ui might be null.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    mapView.ui?.add(fullscreen, 'top-right');
   }
 
   // Add map legend if set
   if (initialData?.showLegend) {
-    addMapLegend(mapView, isMobileOrSmaller, initialData?.showLegendExpanded);
+    addMapLegend(mapView, isMobileOrSmaller, initialData.showLegendExpanded);
   }
 
   // Show layer visibility controls if set
@@ -55,9 +78,11 @@ export const configureMapView = (
   }
 
   // Add any ui elements that were passed in
-  if (initialData?.uiElements && mapView) {
-    initialData?.uiElements.forEach((uiElement) => {
-      mapView.ui.add(uiElement.element, uiElement.position);
+  if (initialData?.uiElements) {
+    initialData.uiElements.forEach((uiElement) => {
+      // Note: Incorrect type from ArcGIS API, ui might be null.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      mapView.ui?.add(uiElement.element, uiElement.position);
     });
   }
 };
@@ -71,12 +96,12 @@ export const setMapCenter = (
 ) => {
   mapView.center = initialData?.center
     ? new Point({
-        latitude: initialData?.center.coordinates[1],
-        longitude: initialData?.center.coordinates[0],
+        latitude: initialData.center.coordinates[1],
+        longitude: initialData.center.coordinates[0],
       })
     : new Point({
-        latitude: Number(globalMapSettings.map_center?.lat) || 0,
-        longitude: Number(globalMapSettings.map_center?.long) || 0,
+        latitude: Number(globalMapSettings.map_center.lat) || 0,
+        longitude: Number(globalMapSettings.map_center.long) || 0,
       });
 };
 
@@ -100,8 +125,9 @@ export const addMapLegend = (
         : showLegendExpanded,
     mode: 'floating',
   });
-
-  mapView.ui.add(legend, 'bottom-right');
+  // Note: Incorrect type from ArcGIS API, ui might be null.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  mapView.ui?.add(legend, 'bottom-right');
 };
 
 // showLayerVisibilityControls
@@ -115,7 +141,10 @@ export const showLayerVisibilityControls = (mapView: MapView) => {
     expanded: false,
     mode: 'floating',
   });
-  mapView.ui.add(layerList, {
+
+  // Note: Incorrect type from ArcGIS API, ui might be null.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  mapView.ui?.add(layerList, {
     position: 'top-right',
   });
 };

@@ -11,7 +11,7 @@ resource 'Permissions' do
     @project = create(:single_phase_ideation_project)
     @phase = TimelineService.new.current_phase_not_archived(@project)
     Permissions::PermissionsUpdateService.new.update_all_permissions
-    SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso' }] }
+    SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
   end
 
   let(:project_id) { @project.id }
@@ -91,7 +91,7 @@ resource 'Permissions' do
 
       example_request 'List all global permissions' do
         assert_status 200
-        expect(response_data.size).to eq 6
+        expect(response_data.size).to eq 3
         expect(response_data.map { |d| d.dig(:attributes, :action) }).to match_array Permission.available_actions(nil)
       end
     end
@@ -123,9 +123,8 @@ resource 'Permissions' do
       end
     end
 
-    # TODO: posting_initiative
     get 'web_api/v1/permissions/:action' do
-      let(:action) { 'posting_initiative' }
+      let(:action) { 'attending_event' }
 
       example_request 'Get one global permission by action' do
         assert_status 200
@@ -198,7 +197,6 @@ resource 'Permissions' do
       end
     end
 
-    # TODO: posting_initiative
     patch 'web_api/v1/permissions/:action' do
       with_options scope: :permission do
         parameter :permitted_by, "Defines who is granted permission, either #{Permission::PERMITTED_BIES.join(',')}.", required: false
@@ -207,7 +205,7 @@ resource 'Permissions' do
       end
       ValidationErrorHelper.new.error_fields(self, Permission)
 
-      let(:action) { 'reacting_initiative' }
+      let(:action) { 'attending_event' }
       let(:permitted_by) { 'users' }
       let(:group_ids) { create_list(:group, 3).map(&:id) }
 
@@ -396,29 +394,51 @@ resource 'Permissions' do
     end
 
     get 'web_api/v1/permissions/:action/schema' do
-      before do
-        @permission = Permission.find_by permission_scope_type: nil, action: 'visiting'
-        @field1 = create(:custom_field, required: true)
-        @field2 = create(:custom_field, required: false)
-      end
-
       let(:action) { 'visiting' }
 
-      example_request 'Get the json and ui schema for a global permission with custom fields' do
-        assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :type)).to eq 'schema'
-        json_attributes = json_response.dig(:data, :attributes)
-        expect(json_attributes[:json_schema_multiloc][:en]).to eq({
-          type: 'object',
-          additionalProperties: false,
-          properties: {
-            @field1.key.to_sym => { type: 'string' },
-            @field2.key.to_sym => { type: 'string' }
-          },
-          required: [@field1.key]
-        })
-        expect(json_attributes[:ui_schema_multiloc]).to be_present
+      context 'without verification' do
+        before do
+          @permission = Permission.find_by permission_scope_type: nil, action: 'visiting'
+          @field1 = create(:custom_field, required: true)
+          @field2 = create(:custom_field, required: false)
+        end
+
+        example_request 'Get the json and ui schema for a global permission with custom fields' do
+          assert_status 200
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :type)).to eq 'schema'
+          json_attributes = json_response.dig(:data, :attributes)
+          expect(json_attributes[:json_schema_multiloc][:en]).to eq({
+            type: 'object',
+            additionalProperties: false,
+            properties: {
+              @field1.key.to_sym => { type: 'string' },
+              @field2.key.to_sym => { type: 'string' }
+            },
+            required: [@field1.key]
+          })
+          expect(json_attributes[:ui_schema_multiloc]).to be_present
+        end
+      end
+
+      context 'with fields locked by verification' do
+        before do
+          create(:custom_field_gender, required: false)
+          Permissions::PermissionsUpdateService.new.update_all_permissions
+
+          user = create(:user)
+          create(:verification, method_name: 'bogus', user: user) # Bogus locks the `gender` custom_field
+
+          header 'Content-Type', 'application/json'
+          header_token_for user
+        end
+
+        example_request 'Locked fields are marked in the UI schema' do
+          assert_status 200
+          expect(response_data[:type]).to eq 'schema'
+          expect(response_data.dig(:attributes, :json_schema_multiloc, :en, :required)).to eq ['gender']
+          expect(response_data.dig(:attributes, :ui_schema_multiloc, :en, :elements).find { |e| e[:scope] == '#/properties/gender' }[:options].to_h).to include({})
+        end
       end
     end
 

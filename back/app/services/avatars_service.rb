@@ -44,37 +44,18 @@ class AvatarsService
     users_and_count(user_ids_and_count)
   end
 
-  # Returns a hash containing a list of users with avatars for a post and the total member count.
-  # @param post[Post] The group for which avatars of its members should be fetched
-  # @param post_type
-  # @param users[ActiveRecord::Relation] Scope of users to be filtered for avatars
-  # @param limit[Integer] Limit the number of users returned. Does not affect the total count
-  # @return [Hash] A hash containing the users with avatars and total count of participants
-  def avatars_for_post(post, post_type, users: User.active, limit: 5)
-    user_ids_and_count = Rails.cache.fetch("#{post.cache_key}/user_avatars", expires_in: 1.day) do
-      commenters = users.joins(:comments).where(comments: { post_id: post.id, post_type: post_type, publication_status: 'published' })
-      users_for_post = users.where(id: post.author).or(users.where(id: commenters))
-      fetch_user_ids_and_count(users_for_post, limit)
-    end
-    users_and_count(user_ids_and_count)
-  end
-
   # Returns a hash containing a list of users with avatars for an idea and the total member count.
   # @param idea[Idea] The group for which avatars of its members should be fetched
   # @param users[ActiveRecord::Relation] Scope of users to be filtered for avatars
   # @param limit[Integer] Limit the number of users returned. Does not affect the total count
   # @return [Hash] A hash containing the users with avatars and total count of participants
   def avatars_for_idea(idea, users: User.active, limit: 5)
-    avatars_for_post idea, 'Idea', users: users, limit: limit
-  end
-
-  # Returns a hash containing a list of users with avatars for an initiative and the total member count.
-  # @param initiative[Initiative] The group for which avatars of its members should be fetched
-  # @param users[ActiveRecord::Relation] Scope of users to be filtered for avatars
-  # @param limit[Integer] Limit the number of users returned. Does not affect the total count
-  # @return [Hash] A hash containing the users with avatars and total count of participants
-  def avatars_for_initiative(initiative, users: User.active, limit: 5)
-    avatars_for_post initiative, 'Initiative', users: users, limit: limit
+    user_ids_and_count = Rails.cache.fetch("#{idea.cache_key}/user_avatars", expires_in: 1.day) do
+      commenters = users.joins(:comments).where(comments: { idea_id: idea.id, publication_status: 'published' })
+      users_for_idea = users.where(id: idea.author).or(users.where(id: commenters))
+      fetch_user_ids_and_count(users_for_idea, limit)
+    end
+    users_and_count(user_ids_and_count)
   end
 
   # Returns a hash containing a list of users with avatars

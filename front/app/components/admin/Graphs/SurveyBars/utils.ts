@@ -16,7 +16,6 @@ export const parseQuestionResult = (
 ): Answer[] => {
   if (result.grouped) {
     const { multilocs, answers, totalPickCount } = result;
-    if (!multilocs) throw new Error('Multilocs are missing');
 
     const colorSchemeMap = constructColorSchemeMap(result.legend, colorScheme);
 
@@ -30,6 +29,8 @@ export const parseQuestionResult = (
 
       return {
         label,
+        logicFilterId: null,
+        logic: {},
         image,
         count,
         percentage: roundPercentage(count, totalPickCount, 1),
@@ -57,34 +58,59 @@ export const parseQuestionResult = (
     });
   }
 
-  const { multilocs, answers, totalPickCount } = result;
+  const {
+    multilocs,
+    answers,
+    logic,
+    inputType,
+    totalPickCount,
+    totalResponseCount,
+  } = result;
   if (!multilocs) throw new Error('Multilocs are missing');
 
-  return answers.map(({ count, answer }) => {
-    const label =
-      answer === null
-        ? noAnswerCopy
-        : localize(multilocs.answer[answer].title_multiloc);
+  // Don't return 'No answer' if everyone answered
+  const filteredAnswers = answers?.filter(
+    ({ count, answer }) => !(answer === null && count === 0)
+  );
 
-    const image = answer ? multilocs.answer[answer].image : undefined;
+  return (
+    filteredAnswers?.map(({ count, answer }) => {
+      const label =
+        answer === null
+          ? noAnswerCopy
+          : localize(multilocs.answer[answer].title_multiloc);
 
-    const percentage = roundPercentage(count, totalPickCount, 1);
+      const image = answer ? multilocs.answer[answer].image : undefined;
+      const percentage =
+        // When we show results of a multi-select question,
+        // we use the percentage of total responses (totalResponseCount) per option
+        // rather than percentage of total options selected (totalPickCount).
+        inputType === 'multiselect'
+          ? roundPercentage(count, totalResponseCount, 1)
+          : roundPercentage(count, totalPickCount, 1);
 
-    return {
-      label,
-      image,
-      count,
-      percentage,
-      bars: [
-        {
-          type: 'single',
-          percentage,
-          count,
-          color: colorScheme[0],
-        },
-      ],
-    };
-  });
+      const logicAnswerKey = answer === null ? 'no_answer' : answer;
+      const logicForAnswer = logic?.answer?.[logicAnswerKey];
+      const logicFilterId = logic?.answer?.[logicAnswerKey]?.id || null;
+
+      return {
+        label,
+        logicFilterId,
+        logic: logicForAnswer,
+        image,
+        count,
+        percentage,
+        bars: [
+          {
+            type: 'single',
+            percentage,
+            count,
+            color: colorScheme[0],
+          },
+        ],
+      };
+    }) || []
+  );
 };
 
 export const EMPTY_COLOR = colors.coolGrey300;

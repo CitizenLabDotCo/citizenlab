@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { ideaData, links } from './__mocks__/_mockServer';
 import useInfiniteIdeas from './useInfiniteIdeas';
@@ -19,7 +19,7 @@ describe('useInfiniteIdeas', () => {
   afterAll(() => server.close());
 
   it('returns data correctly with next page', async () => {
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () =>
         useInfiniteIdeas({
           'page[number]': 1,
@@ -49,7 +49,7 @@ describe('useInfiniteIdeas', () => {
         );
       })
     );
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () =>
         useInfiniteIdeas({
           'page[number]': 1,
@@ -76,7 +76,7 @@ describe('useInfiniteIdeas', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () =>
         useInfiniteIdeas({
           'page[number]': 1,

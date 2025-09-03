@@ -36,6 +36,7 @@ export type IAppConfigurationSettingsCore = {
   meta_title?: Multiloc | null;
   meta_description?: Multiloc | null;
   google_search_console_meta_attribute?: string | null;
+  login_helper_text?: Multiloc | null;
   signup_helper_text?: Multiloc | null;
   custom_fields_signup_helper_text?: Multiloc | null;
   color_main: string | null;
@@ -55,6 +56,11 @@ export type IAppConfigurationSettingsCore = {
   additional_admins_number: TSeatNumber;
   additional_moderators_number: TSeatNumber;
   onboarding?: boolean;
+  allow_sharing: boolean;
+  customer_portal_url?: string | null;
+  anonymous_name_scheme?: string | null;
+  private_attributes_in_export: boolean;
+  country_code: string | null;
 };
 
 export type TSeatNumber = number | null | undefined;
@@ -76,6 +82,10 @@ export type ProposalsSettings = {
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
   advanced_custom_pages: {
+    allowed: boolean;
+    enabled: boolean;
+  };
+  pages: {
     allowed: boolean;
     enabled: boolean;
   };
@@ -103,7 +113,7 @@ export interface IAppConfigurationSettings {
     client_id: string;
     logo_url: string;
     login_mechanism_name: string;
-    admin_only?: boolean;
+    visibility?: 'show' | 'link' | 'hide';
   };
   azure_ad_b2c_login?: {
     allowed: boolean;
@@ -127,7 +137,19 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
   };
+  id_austria_login?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   criipto_login?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
+  keycloak_login?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
+  twoday_login?: {
     allowed: boolean;
     enabled: boolean;
   };
@@ -141,9 +163,6 @@ export interface IAppConfigurationSettings {
     url?: string;
   };
   maps?: AppConfigurationMapSettings;
-  initiatives: ProposalsSettings;
-  initiative_review?: AppConfigurationFeature;
-  initiative_cosponsors?: AppConfigurationFeature;
   fragments?: {
     allowed: boolean;
     enabled: boolean;
@@ -170,6 +189,7 @@ export interface IAppConfigurationSettings {
   survey_xact_surveys?: AppConfigurationFeature;
   snap_survey_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
+  project_preview_link?: AppConfigurationFeature;
   bulk_import_ideas?: AppConfigurationFeature;
   granular_permissions?: AppConfigurationFeature;
   machine_translations?: AppConfigurationFeature;
@@ -218,6 +238,7 @@ export interface IAppConfigurationSettings {
   report_builder?: AppConfigurationFeature;
   report_data_grouping?: AppConfigurationFeature;
   posthog_integration?: AppConfigurationFeature;
+  posthog_user_tracking?: AppConfigurationFeature;
   user_blocking?: AppConfigurationFeature & {
     duration: boolean;
   };
@@ -230,6 +251,7 @@ export interface IAppConfigurationSettings {
   large_summaries?: AppConfigurationFeature;
   ask_a_question?: AppConfigurationFeature;
   advanced_autotagging?: AppConfigurationFeature;
+  auto_insights?: AppConfigurationFeature;
   import_printed_forms?: AppConfigurationFeature;
   input_importer?: AppConfigurationFeature;
   user_session_recording?: AppConfigurationFeature;
@@ -237,9 +259,27 @@ export interface IAppConfigurationSettings {
   multi_language_platform?: AppConfigurationFeature;
   customisable_homepage_banner?: AppConfigurationFeature;
   management_feed?: AppConfigurationFeature;
-  proposals_participation_method?: AppConfigurationFeature;
   fake_sso?: AppConfigurationFeature;
   prescreening?: AppConfigurationFeature;
+  prescreening_ideation?: AppConfigurationFeature;
+  input_cosponsorship?: AppConfigurationFeature;
+  project_review?: AppConfigurationFeature;
+  input_iq?: AppConfigurationFeature;
+  platform_templates?: AppConfigurationFeature;
+  authoring_assistance_prototype?: AppConfigurationFeature;
+  project_library?: AppConfigurationFeature;
+  community_monitor?: AppConfigurationFeature & {
+    project_id: string;
+  };
+  data_repository?: AppConfigurationFeature;
+  data_repository_ai_analysis?: AppConfigurationFeature;
+  user_fields_in_surveys?: AppConfigurationFeature;
+  html_pdfs?: AppConfigurationFeature;
+  project_planning_calendar?: AppConfigurationFeature;
+  common_ground?: AppConfigurationFeature;
+  customised_automated_emails?: AppConfigurationFeature;
+  customised_automated_context_emails?: AppConfigurationFeature;
+  project_importer?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
@@ -294,7 +334,7 @@ export type TCurrency = TCustomCurrency | TCountryCurrency;
 type TCustomCurrency =
   // token, credit
   'TOK' | 'CRE';
-type TCountryCurrency =
+export type TCountryCurrency =
   // currencies associated with countries, e.g. EUR and USD
   // list is based on the currencies.rb file
   | 'AED'

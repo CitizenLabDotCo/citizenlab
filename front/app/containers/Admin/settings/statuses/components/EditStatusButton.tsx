@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { Tooltip, TooltipProps } from '@citizenlab/cl2-component-library';
+import { Tooltip, Box, TooltipProps } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -30,14 +30,17 @@ const EditStatusButton = ({
       content={tooltipContent}
       trigger="mouseenter"
     >
-      <Button
-        linkTo={linkTo}
-        buttonStyle="secondary-outlined"
-        icon="edit"
-        disabled={buttonDisabled}
-      >
-        <FormattedMessage {...messages.editButtonLabel} />
-      </Button>
+      <Box>
+        <ButtonWithLink
+          linkTo={linkTo}
+          buttonStyle="secondary-outlined"
+          icon="edit"
+          disabled={buttonDisabled}
+          data-testid="e2e-edit-status-button"
+        >
+          <FormattedMessage {...messages.editButtonLabel} />
+        </ButtonWithLink>
+      </Box>
     </Tooltip>
   );
 };

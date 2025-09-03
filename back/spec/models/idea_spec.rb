@@ -5,6 +5,58 @@ require 'rails_helper'
 RSpec.describe Idea do
   context 'associations' do
     it { is_expected.to have_many(:reactions) }
+    it { is_expected.to have_many(:idea_relations).dependent(:destroy) }
+    it { is_expected.to have_many(:related_ideas).through(:idea_relations) }
+  end
+
+  describe 'title validation' do
+    it 'requires title_multiloc when title_multiloc_required? is true' do
+      idea = build(:idea, publication_status: 'published')
+      allow(idea).to receive(:title_multiloc_required?).and_return(true)
+
+      idea.title_multiloc = nil
+
+      expect(idea).to be_invalid
+      expect(idea.errors[:title_multiloc]).to include("can't be blank")
+    end
+
+    it 'does not require title_multiloc when title_multiloc_required? is false' do
+      idea = build(:idea)
+      allow(idea).to receive(:title_multiloc_required?).and_return(false)
+
+      idea.title_multiloc = nil
+
+      expect(idea).to be_valid
+    end
+  end
+
+  describe 'body validation' do
+    it 'requires title_multiloc when body_multiloc_required? is true' do
+      idea = build(:idea, publication_status: 'published')
+      allow(idea).to receive(:body_multiloc_required?).and_return(true)
+
+      idea.body_multiloc = nil
+
+      expect(idea).to be_invalid
+      expect(idea.errors[:body_multiloc]).to include("can't be blank")
+    end
+
+    it 'does not require body_multiloc when body_multiloc_required? is false' do
+      idea = build(:idea)
+      allow(idea).to receive(:body_multiloc_required?).and_return(false)
+
+      idea.body_multiloc = nil
+
+      expect(idea).to be_valid
+    end
+  end
+
+  it 'validates presence of slug' do
+    idea = build(:idea)
+    allow(idea).to receive(:generate_slug) # Stub to do nothing
+    idea.slug = nil
+    expect(idea).to be_invalid
+    expect(idea.errors[:slug]).to include("can't be blank")
   end
 
   context 'Default factory' do
@@ -440,7 +492,7 @@ RSpec.describe Idea do
         create(:idea, idea_status: create(:idea_status_proposed)),
         create(:idea, idea_status: create(:idea_status, code: 'threshold_reached'))
       ]
-      create(:official_feedback, post: ideas[0])
+      create(:official_feedback, idea: ideas[0])
 
       expect(described_class.feedback_needed.ids).to match_array [ideas[2].id, ideas[3].id]
     end
@@ -547,8 +599,8 @@ RSpec.describe Idea do
   end
 
   describe 'activity_after' do
-    let_it_be(:recent_idea) { create(:idea, updated_at: 1.day.ago) }
-    let_it_be(:old_idea) { create(:idea, updated_at: 30.days.ago) }
+    let_it_be(:recent_idea) { create(:idea).tap { |idea| idea.update!(updated_at: 1.day.ago) } }
+    let_it_be(:old_idea) { create(:idea).tap { |idea| idea.update!(updated_at: 30.days.ago) } }
 
     let(:recent_ideas) { described_class.activity_after(7.days.ago) }
 
@@ -559,7 +611,7 @@ RSpec.describe Idea do
     end
 
     it 'returns ideas with recent comments' do
-      create(:comment, post: old_idea, updated_at: 1.day.ago)
+      create(:comment, idea: old_idea, updated_at: 1.day.ago)
       expect(recent_ideas).to include old_idea
     end
 
@@ -569,8 +621,8 @@ RSpec.describe Idea do
     end
 
     it 'does not return duplicates' do
-      create(:comment, post: recent_idea, updated_at: 1.day.ago)
-      create(:comment, post: recent_idea, updated_at: 1.day.ago)
+      create(:comment, idea: recent_idea, updated_at: 1.day.ago)
+      create(:comment, idea: recent_idea, updated_at: 1.day.ago)
 
       recent_ids = recent_ideas.pluck(:id)
       expect(recent_ids.size).to eq 1
@@ -592,6 +644,13 @@ RSpec.describe Idea do
         'en' => '<p>Test</p><script>This should be removed!</script>'
       })
       expect(idea.body_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!' })
+    end
+
+    it 'sanitizes img tags in the body' do
+      idea = create(:idea, body_multiloc: {
+        'en' => 'Something <img src=x onerror=alert(1)>'
+      })
+      expect(idea.body_multiloc).to eq({ 'en' => 'Something <img src="x">' })
     end
 
     it "allows embedded youtube video's in the body" do
@@ -678,6 +737,33 @@ RSpec.describe Idea do
         idea.update!(author: author)
         expect(idea.author_hash).not_to eq old_idea_hash
       end
+    end
+  end
+
+  describe 'where_pmethod scope' do
+    it 'returns only the ideas with a participation method that returns true for the given block' do
+      create(:idea_status_proposed)
+      idea = create(:idea)
+      proposal = create(:proposal)
+      _response = create(:native_survey_response)
+
+      expect(described_class.where_pmethod { |pmethod| %w[ideation proposals].include? pmethod.class.method_str }).to match_array [proposal, idea]
+    end
+  end
+
+  describe 'with_content scope' do
+    it 'filters out ideas with empty title and body multiloc hashes' do
+      create(:idea_status_proposed)
+
+      # Skipping validations because, in theory, inputs in ideation phases should always
+      # have a title and body—but this can happen if the participation method of the
+      # phase is changed.
+      idea_with_only_title = build(:idea, body_multiloc: {}).tap { _1.save(validate: false) }
+      idea_with_only_body = build(:idea, title_multiloc: {}).tap { _1.save(validate: false) }
+      _idea_without_content = build(:idea, title_multiloc: {}, body_multiloc: {}).tap { _1.save(validate: false) }
+      idea_with_both = create(:idea)
+
+      expect(described_class.with_content).to match_array [idea_with_only_title, idea_with_only_body, idea_with_both]
     end
   end
 end

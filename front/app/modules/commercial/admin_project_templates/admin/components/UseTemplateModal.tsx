@@ -27,7 +27,7 @@ import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import useLocalize from 'hooks/useLocalize';
 
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Modal from 'components/UI/Modal';
@@ -101,11 +101,11 @@ const Footer = styled.div`
   align-items: center;
 `;
 
-const CreateProjectButton = styled(Button)`
+const CreateProjectButton = styled(ButtonWithLink)`
   margin-right: 10px;
 `;
 
-const CloseButton = styled(Button)``;
+const CloseButton = styled(ButtonWithLink)``;
 
 export interface Props {
   projectTemplateId: string;
@@ -191,7 +191,8 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
 
     const onCreateProject = useCallback(async () => {
       const invalidTitle =
-        isEmpty(titleMultiloc) ||
+        isEmpty(titleMultiloc) || // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         (titleMultiloc &&
           Object.getOwnPropertyNames(titleMultiloc).every((key) =>
             isEmpty(titleMultiloc[`${key}`])
@@ -223,6 +224,8 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
         );
       }
 
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!invalidTitle && !invalidDate && titleMultiloc && startDate) {
         setResponseError(null);
         setTitleError(null);
@@ -298,8 +301,13 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
       setTitleError(null);
       setStartDateError(null);
       setProcessing(false);
-      setSuccess(false);
       setResponseError(null);
+
+      // If the modal is not opened, (e.g. when closed) reset the success state.
+      // This avoids resetting on every prop change.
+      if (!opened) {
+        setSuccess(false);
+      }
 
       const folders: IOption[] =
         projectFolders &&

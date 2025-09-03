@@ -8,6 +8,7 @@ class Locale
     monolingual(config: config) || new(config.settings('core', 'locales').first)
   end
 
+  # Returns the monolingual locale from the app_configuration if there is only one locale configured, otherwise nil
   def self.monolingual(config: nil)
     config ||= AppConfiguration.instance
     config_locales = config.settings('core', 'locales')
@@ -28,6 +29,13 @@ class Locale
     /^ar.*$/.match?(locale_sym) ? 'rtl' : 'ltr'
   end
 
+  def resolve_multiloc(multiloc)
+    return multiloc[to_s] if multiloc.key?(to_s)
+
+    preferred_key = multiloc.keys.min_by { |key| fallback_languages.index(Locale.new(key).language) || fallback_languages.size }
+    multiloc[preferred_key] || multiloc.values.first
+  end
+
   def fallback_languages
     mapping_without_en = {
       :'ca-ES' => [:es],
@@ -42,7 +50,7 @@ class Locale
   end
 
   def language
-    locale_sym.to_s.split('-').first.to_sym
+    to_s.split('-').first.to_sym
   end
 
   def language_copy

@@ -6,12 +6,6 @@ class SideFxReactionService
   def after_create(reaction, current_user)
     InputStatusService.auto_transition_input!(reaction.reactable.reload) if reaction.reactable_type == 'Idea'
 
-    if reaction.reactable_type == 'Initiative'
-      AutomatedTransitionJob.perform_now
-
-      lock_initiative_editing_if_required(reaction)
-    end
-
     action = "#{reactable_type(reaction)}_#{reaction.mode == 'up' ? 'liked' : 'disliked'}"
     log_activity_job(reaction, action, current_user)
     create_followers reaction, current_user
@@ -23,12 +17,6 @@ class SideFxReactionService
   end
 
   private
-
-  def lock_initiative_editing_if_required(reaction)
-    return if reaction.reactable.editing_locked || reaction.user_id == reaction.reactable.author_id
-
-    reaction.reactable.update!(editing_locked: true)
-  end
 
   def reactable_type(reaction)
     reaction.reactable_type.underscore
@@ -56,8 +44,8 @@ class SideFxReactionService
   def create_followers(reaction, user)
     post = case reaction.reactable_type
     when 'Comment'
-      reaction.reactable.post
-    when 'Idea', 'Initiative'
+      reaction.reactable.idea
+    when 'Idea'
       reaction.reactable
     end
     return if !post.is_a? Idea

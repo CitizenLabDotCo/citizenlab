@@ -1,6 +1,8 @@
 module Export
   module Xlsx
     class ValueVisitor < FieldVisitorService
+      VALUE_SEPARATOR = ';'
+
       def initialize(model, option_index, app_configuration: nil)
         super()
         @model = model
@@ -42,13 +44,17 @@ module Export
 
       def visit_multiselect(field)
         option_values = value_for(field) || []
-        return '' if option_values.empty?
+        return '' if option_values.empty? || !option_values.is_a?(Array)
 
         option_titles = option_values.filter_map do |option_value|
           option_title = option_index[option_value]&.title_multiloc
           value_for_multiloc option_title
         end
         option_titles.join(VALUE_SEPARATOR)
+      end
+
+      def visit_ranking(field)
+        visit_multiselect(field)
       end
 
       def visit_multiselect_image(field)
@@ -97,13 +103,15 @@ module Export
       end
 
       def visit_file_upload(field)
-        file = value_for(field)
+        file_id = value_for(field)['id']
+        return '' unless file_id
 
-        return '' if file['id'].blank?
-
-        file_id = file['id']
-        idea_file = model.idea_files.detect { |f| f.id == file_id }
-        idea_file.file.url
+        if (file = model.idea_files.detect { |f| f.id == file_id })
+          file.file.url
+        else
+          file_attachment = model.file_attachments.detect { |f| f.id == file_id }
+          file_attachment.file.content.url
+        end
       end
 
       def visit_shapefile_upload(field)
@@ -119,16 +127,21 @@ module Export
         topic_titles.join(VALUE_SEPARATOR)
       end
 
+      def visit_cosponsor_ids(_field)
+        ''
+      end
+
       private
 
       attr_reader :model, :option_index, :multiloc_service
 
-      VALUE_SEPARATOR = ', '
-
       def built_in_files
-        return '' if model.idea_files.empty?
+        return '' if model.idea_files.empty? && model.attached_files.empty?
 
-        model.idea_files.map { |idea_file| idea_file.file.url }.join("\n")
+        urls = model.idea_files.map { |idea_file| idea_file.file.url } +
+               model.attached_files.map { |file| file.content.url }
+
+        urls.join("\n")
       end
 
       def value_for(field)

@@ -30,7 +30,7 @@ const SingleDateStylized = ({ day, month, time }: Props) => {
       <Text mt="0px" m="0px" fontWeight="normal" fontSize="m" color="grey700">
         {month}
       </Text>
-      <Text m="0px" fontWeight="bold" fontSize="l" style={{ fontWeight: 600 }}>
+      <Text m="0px" fontSize="l" fontWeight="semi-bold">
         {time}
       </Text>
     </Box>

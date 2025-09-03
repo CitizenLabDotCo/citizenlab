@@ -58,21 +58,6 @@ ach:
     answered_description: crwdns2782551:0crwdne2782551:0
     ineligible: crwdns2782553:0crwdne2782553:0
     ineligible_description: crwdns2782555:0crwdne2782555:0
-  initiative_statuses:
-    review_pending: crwdns904347:0crwdne904347:0
-    review_pending_description: crwdns904349:0crwdne904349:0
-    changes_requested: crwdns904351:0crwdne904351:0
-    changes_requested_description: crwdns904353:0crwdne904353:0
-    proposed: crwdns207728:0crwdne207728:0
-    proposed_description: crwdns207730:0crwdne207730:0
-    expired: crwdns207732:0crwdne207732:0
-    expired_description: crwdns207734:0crwdne207734:0
-    threshold_reached: crwdns207736:0crwdne207736:0
-    threshold_reached_description: crwdns207738:0crwdne207738:0
-    answered: crwdns207740:0crwdne207740:0
-    answered_description: crwdns207742:0crwdne207742:0
-    ineligible: crwdns207744:0crwdne207744:0
-    ineligible_description: crwdns207746:0crwdne207746:0
   topics:
     nature: crwdns207748:0crwdne207748:0
     nature_description: crwdns207750:0crwdne207750:0
@@ -106,6 +91,9 @@ ach:
     services_description: crwdns207806:0crwdne207806:0
     other: crwdns207808:0crwdne207808:0
     other_description: crwdns207810:0crwdne207810:0
+    quality_of_life: crwdns4268414:0crwdne4268414:0
+    service_delivery: crwdns4268416:0crwdne4268416:0
+    governance_and_trust: crwdns4268418:0crwdne4268418:0
   static_pages:
     terms_and_conditions_title: crwdns207812:0crwdne207812:0
     terms_and_conditions_body: >
@@ -117,9 +105,6 @@ ach:
     infopage_body: "crwdns207822:0crwdne207822:0"
     faq_title: crwdns207824:0crwdne207824:0
     faq_body: "crwdns207826:0crwdne207826:0"
-    initiatives_title: crwdns207828:0crwdne207828:0
-    initiatives_body: >
-      crwdns207830:0crwdne207830:0
   nav_bar_items:
     home:
       title: crwdns207832:0crwdne207832:0
@@ -144,6 +129,7 @@ ach:
     open_idea_phase_title: crwdns1443018:0crwdne1443018:0
     native_survey_title: crwdns1930452:0crwdne1930452:0
     native_survey_button: crwdns1930454:0crwdne1930454:0
+    community_monitor_title: crwdns4243451:0crwdne4243451:0
   events:
     council_meeting_title: crwdns207852:0crwdne207852:0
     council_meeting_description: >
@@ -156,8 +142,6 @@ ach:
         title: crwdns207858:0crwdne207858:0
       domicile:
         title: crwdns207860:0crwdne207860:0
-      education:
-        title: crwdns207862:0crwdne207862:0
     ideas:
       title:
         title: crwdns207864:0crwdne207864:0
@@ -170,6 +154,9 @@ ach:
       topic_ids:
         title: crwdns207874:0crwdne207874:0
         description: crwdns207876:0crwdne207876:0
+      consponsor_ids:
+        title: crwdns3238295:0crwdne3238295:0
+        description: crwdns3238297:0crwdne3238297:0
       location:
         title: crwdns207878:0crwdne207878:0
         description: crwdns207880:0crwdne207880:0
@@ -184,16 +171,59 @@ ach:
       attachments:
         title: crwdns207892:0crwdne207892:0
         description: crwdns207894:0crwdne207894:0
-      section1:
-        description: crwdns207896:0crwdne207896:0
-      section2:
-        title: crwdns207898:0crwdne207898:0
-        description: crwdns207900:0crwdne207900:0
-      section3:
-        title: crwdns207902:0crwdne207902:0
-        description: crwdns207904:0crwdne207904:0
+      title_page:
+        description: crwdns4368150:0crwdne4368150:0
+      body_page:
+        title: crwdns4368152:0crwdne4368152:0
+        description: crwdns4368154:0crwdne4368154:0
+      uploads_page:
+        title: crwdns4368156:0crwdne4368156:0
+        description: crwdns4368158:0crwdne4368158:0
+      details_page:
+        title: crwdns4368160:0crwdne4368160:0
+        description: crwdns4368162:0crwdne4368162:0
       other_input_field:
         title: crwdns3058777:0crwdne3058777:0
+        print_title: crwdns4607205:0%{other_option}crwdne4607205:0
+      ask_follow_up_field:
+        title: crwdns4218549:0crwdne4218549:0
+    community_monitor:
+      questions:
+        place_to_live:
+          title: crwdns4268420:0crwdne4268420:0
+        sense_of_safety:
+          title: crwdns4268422:0crwdne4268422:0
+        access_to_parks:
+          title: crwdns4268424:0crwdne4268424:0
+        affordable_housing:
+          title: crwdns4268426:0crwdne4268426:0
+        employment_opportunities:
+          title: crwdns4268428:0crwdne4268428:0
+        quality_of_services:
+          title: crwdns4268430:0crwdne4268430:0
+        overall_value:
+          title: crwdns4268432:0crwdne4268432:0
+        cleanliness_and_maintenance:
+          title: crwdns4268434:0crwdne4268434:0
+        trust_in_government:
+          title: crwdns4268436:0crwdne4268436:0
+        responsiveness_of_officials:
+          title: crwdns4268438:0crwdne4268438:0
+        transparency_of_money_spent:
+          title: crwdns4268440:0crwdne4268440:0
+      question_categories:
+        quality_of_life: crwdns4268442:0crwdne4268442:0
+        service_delivery: crwdns4268444:0crwdne4268444:0
+        governance_and_trust: crwdns4268446:0crwdne4268446:0
+        other: crwdns4268448:0crwdne4268448:0
+      labels:
+        label_1: crwdns4268450:0crwdne4268450:0
+        label_2: crwdns4268452:0crwdne4268452:0
+        label_3: crwdns4268454:0crwdne4268454:0
+        label_4: crwdns4268456:0crwdne4268456:0
+        label_5: crwdns4268458:0crwdne4268458:0
+      form_end:
+        button_text: crwdns4268460:0crwdne4268460:0
   custom_forms:
     categories:
       main_content:
@@ -209,6 +239,12 @@ ach:
           title: crwdns207914:0crwdne207914:0
         option:
           title: crwdns207916:0crwdne207916:0
+        proposal:
+          title: crwdns3324807:0crwdne3324807:0
+        initiative:
+          title: crwdns3324809:0crwdne3324809:0
+        petition:
+          title: crwdns3324811:0crwdne3324811:0
   custom_field_options:
     gender:
       male: crwdns207924:0crwdne207924:0
@@ -216,21 +252,6 @@ ach:
       unspecified: crwdns207928:0crwdne207928:0
     domicile:
       outside: crwdns207930:0crwdne207930:0
-    education:
-      ISCED2: crwdns207932:0crwdne207932:0
-      ISCED3: crwdns207934:0crwdne207934:0
-      ISCED4: crwdns207936:0crwdne207936:0
-      ISCED5: crwdns207938:0crwdne207938:0
-      ISCED6: crwdns207940:0crwdne207940:0
-      ISCED7: crwdns207942:0crwdne207942:0
-      ISCED8: crwdns207944:0crwdne207944:0
-  initiatives:
-    default_threshold_reached_message: >
-      crwdns207946:0crwdne207946:0
-    default_eligibility_criteria: >
-      crwdns207948:0crwdne207948:0
-    default_posting_tips: >
-      crwdns963563:0crwdne963563:0
   reset_password_mailer:
     send_reset_password:
       preheader: 'crwdns3166231:0%{organizationName}crwdne3166231:0'
@@ -257,12 +278,14 @@ ach:
       first_name: 'crwdns2289940:0crwdne2289940:0'
       image_url: 'crwdns1160092:0crwdne1160092:0'
       input_id: 'crwdns207958:0crwdne207958:0'
+      manual_votes: 'crwdns3549663:0crwdne3549663:0'
       input_url: 'crwdns207984:0crwdne207984:0'
       last_name: 'crwdns2289942:0crwdne2289942:0'
       latitude: 'crwdns207960:0crwdne207960:0'
       likes_count: 'crwdns703335:0crwdne703335:0'
       location: 'crwdns2201784:0crwdne2201784:0'
       longitude: 'crwdns207962:0crwdne207962:0'
+      neutral_reactions_count: 'crwdns4734571:0crwdne4734571:0'
       participants: 'crwdns777773:0crwdne777773:0'
       picks: 'crwdns777771:0crwdne777771:0'
       project: 'crwdns207986:0crwdne207986:0'
@@ -280,8 +303,10 @@ ach:
       option1: 'crwdns207996:0crwdne207996:0'
       option2: 'crwdns207998:0crwdne207998:0'
     form_end_page:
-      title_text: 'crwdns2888713:0crwdne2888713:0'
-      description_text_2: "crwdns2888715:0crwdne2888715:0"
+      title_text_3: 'crwdns4156807:0crwdne4156807:0'
+      description_text_3: "crwdns4156809:0crwdne4156809:0"
+    form_user_page:
+      title_text: 'crwdns4280914:0crwdne4280914:0'
     pdf_export:
       personal_data: 'crwdns1160094:0crwdne1160094:0'
       personal_data_explanation_public: "crwdns2677453:0%{organizationName}crwdnd2677453:0%{organizationName}crwdne2677453:0"
@@ -306,6 +331,17 @@ ach:
       write_as_clearly: 'crwdns1160122:0crwdne1160122:0'
       write_in_language: 'crwdns1160124:0crwdne1160124:0'
       linear_scale_print_description: 'crwdns2158536:0%{min_label}crwdnd2158536:0%{max_label}crwdne2158536:0'
+      unsupported_field: 'crwdns4607207:0crwdne4607207:0'
+      ranking_print_description: 'crwdns4708651:0%{max_rank}crwdne4708651:0'
+      matrix_print_description: 'crwdns4708653:0crwdne4708653:0'
+      rating_print_description: 'crwdns4708655:0%{max_stars}crwdne4708655:0'
+      sentiment_linear_scale_print_description: 'crwdns4708657:0crwdne4708657:0'
+      sentiment_linear_scale_print_labels: 'crwdns4708659:0%{min_label}crwdnd4708659:0%{neutral_label}crwdnd4708659:0%{max_label}crwdne4708659:0'
+      point_print_description: 'crwdns4708661:0crwdne4708661:0'
+      line_print_description: 'crwdns4708663:0crwdne4708663:0'
+      polygon_print_description: 'crwdns4708665:0crwdne4708665:0'
+      select_print_description: 'crwdns4708667:0crwdne4708667:0'
+      date_print_description: 'crwdns4916067:0crwdne4916067:0'
   project_copy:
     title_suffix: 'crwdns208004:0crwdne208004:0'
   confirmations_mailer:
@@ -334,6 +370,8 @@ ach:
       you_can_sign_in_again_from: "crwdns417908:0%{date}crwdne417908:0"
   user:
     anon_first_name: "crwdns523109:0crwdne523109:0"
+    anon_scheme:
+      animals: 'crwdns3338239:0crwdne3338239:0'
   time:
     am: crwdns522947:0crwdne522947:0
     formats:
@@ -344,3 +382,6 @@ ach:
     default_voting_term_plural: "crwdns777779:0crwdne777779:0"
   ics_calendar_event:
     event_details: "crwdns3166237:0crwdne3166237:0"
+  errors:
+    messages:
+      max_must_be_greater_than_min_characters: "crwdns5211557:0crwdne5211557:0"

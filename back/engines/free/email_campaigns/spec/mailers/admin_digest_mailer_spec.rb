@@ -2,15 +2,13 @@
 
 require 'rails_helper'
 
-# TODO: move-old-proposals-test
 RSpec.describe EmailCampaigns::AdminDigestMailer do
   describe 'campaign_mail' do
-    let_it_be(:recipient) { create(:admin, locale: 'en') }
+    let_it_be(:recipient) { create(:admin, locale: 'en', first_name: 'Bob', last_name: 'Jones') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::AdminDigest.create! }
     let_it_be(:command) do
       top_ideas = create_list(:idea, 3)
-      new_initiatives = create_list(:initiative, 3)
-      successful_initiatives = create_list(:initiative, 2)
+      successful_proposals = create_list(:proposal, 2)
 
       {
         recipient: recipient,
@@ -18,11 +16,9 @@ RSpec.describe EmailCampaigns::AdminDigestMailer do
           statistics: {
             activities: {
               new_ideas: { increase: 1 },
-              new_initiatives: { increase: 1 },
               new_reactions: { increase: 1 },
               new_comments: { increase: 1 },
               total_ideas: 1,
-              total_initiatives: 2,
               total_users: 3
             },
             users: {
@@ -31,27 +27,28 @@ RSpec.describe EmailCampaigns::AdminDigestMailer do
               active_users: { increase: 1 }
             }
           },
-          top_project_ideas: [
+          top_project_inputs: [
             {
               project: { url: 'some_fake_url', title_multiloc: { 'en' => 'project title' } },
               current_phase: nil,
-              top_ideas: top_ideas.map { |idea| campaign.serialize_idea(idea) }
+              top_ideas: top_ideas.map { |idea| campaign.serialize_input(idea) }
             }
           ],
-          new_initiatives: new_initiatives.map { |initiative| campaign.serialize_initiative(initiative) },
-          successful_initiatives: successful_initiatives.map { |initiative| campaign.serialize_initiative(initiative) }
+          successful_proposals: successful_proposals.map { |proposal| campaign.serialize_input(proposal) }
         },
         tracked_content: {
-          idea_ids: [],
-          initiative_ids: []
+          idea_ids: []
         }
       }
     end
 
-    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let_it_be(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let_it_be(:mail) { mailer.campaign_mail.deliver_now }
     let_it_be(:mail_document) { Nokogiri::HTML.fragment(mail.html_part.body.raw_source) }
 
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
+
+    include_examples 'campaign delivery tracking'
 
     it 'renders the subject' do
       expect(mail.subject).to start_with('Your weekly admin report')
@@ -66,26 +63,51 @@ RSpec.describe EmailCampaigns::AdminDigestMailer do
     end
 
     it 'assigns organisation name' do
-      expect(mail.body.encoded).to match(AppConfiguration.instance.settings('core', 'organization_name', 'en'))
-    end
-
-    it 'shows all ideas' do
-      expect(mail_document.css('.idea').length).to eq 3
+      expect(mail_body(mail)).to match(AppConfiguration.instance.settings('core', 'organization_name', 'en'))
     end
 
     it 'renders links to the top project ideas' do
-      ideas_urls = command.dig(:event_payload, :top_project_ideas).first[:top_ideas].pluck(:url)
-      first_idea_link = mail_document.css('.idea a').first
+      ideas_urls = command.dig(:event_payload, :top_project_inputs).first[:top_ideas].pluck(:url)
+      first_idea_link = mail_document.css('.top-projects .idea a').first
       expect(first_idea_link.attr('href')).to eq(ideas_urls.first)
     end
 
-    it 'shows all initiatives' do
-      expect(mail_document.css('.initiative').length).to eq 5
+    it 'renders the proposal that reached the threshold' do
+      expect(mail_document.css('.successful-proposals .idea').length).to eq 2
     end
 
     it 'assigns home url' do
-      expect(mail.body.encoded)
+      expect(mail_body(mail))
         .to match(Frontend::UrlService.new.home_url(app_configuration: AppConfiguration.instance, locale: Locale.new('en')))
+    end
+
+    context 'with custom text' do
+      let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+      before do
+        campaign.update!(
+          subject_multiloc: { 'en' => 'Custom Subject - {{ firstName }}' },
+          title_multiloc: { 'en' => 'NEW TITLE FOR {{ firstName }}' },
+          intro_multiloc: { 'en' => '<b>NEW BODY TEXT</b>' },
+          button_text_multiloc: { 'en' => 'CLICK THE BUTTON' }
+        )
+      end
+
+      it 'can customise the subject' do
+        expect(mail.subject).to eq 'Custom Subject - Bob'
+      end
+
+      it 'can customise the title' do
+        expect(mail_body(mail)).to include('NEW TITLE FOR Bob')
+      end
+
+      it 'can customise the body including HTML' do
+        expect(mail_body(mail)).to include('<b>NEW BODY TEXT</b>')
+      end
+
+      it 'can customise the cta button' do
+        expect(mail_body(mail)).to include('CLICK THE BUTTON')
+      end
     end
   end
 end

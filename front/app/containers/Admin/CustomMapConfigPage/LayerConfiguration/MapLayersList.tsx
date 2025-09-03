@@ -19,9 +19,10 @@ import useReorderMapLayer from 'api/map_layers/useReorderMapLayer';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { SortableList, SortableRow } from 'components/admin/ResourceList';
+import SortableList from 'components/admin/ResourceList/SortableList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 import { SubSectionTitle } from 'components/admin/Section';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -74,9 +75,9 @@ const Buttons = styled.div`
   margin-left: 15px;
 `;
 
-const EditButton = styled(Button)``;
+const EditButton = styled(ButtonWithLink)``;
 
-const RemoveButton = styled(Button)``;
+const RemoveButton = styled(ButtonWithLink)``;
 
 const Spacer = styled.div`
   width: 14px;
@@ -118,6 +119,8 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
     };
 
     const removeLayer = (layerId: string) => (event: React.FormEvent) => {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       event?.preventDefault();
 
       const message = formatMessage(messages.deleteConfirmation);
@@ -128,8 +131,12 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
     };
 
     const removeWebMap = () => {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (mapConfig?.data.id) {
         updateMapConfig({
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           mapConfigId: mapConfig?.data.id,
           esri_web_map_id: null,
         });
@@ -137,6 +144,8 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
     };
 
     const toggleLayerConfig = (layerId: string) => (event: React.FormEvent) => {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       event?.preventDefault();
       onEditLayer(layerId);
     };
@@ -149,8 +158,12 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
       </a>
     );
 
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const layers = mapConfig?.data.attributes?.layers;
     const layersWithOrdering =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       layers && layers.length > 0 ? addOrderingToLayers(layers) : null;
 
     return (
@@ -268,6 +281,8 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
             )}
           </StyledSortableList>
         )}
+        {/* TODO: Fix this the next time the file is edited. */}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         {mapConfig?.data.attributes.esri_web_map_id && (
           <Box borderBottom={`1px solid ${colors.divider}`} mb="36px">
             <Box mb="24px" ml="32px">
@@ -275,6 +290,8 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
                 <LayerIcon name="map" color={colors.coolGrey600} />
                 <LayerName>
                   {formatMessage(messages.esriWebMap)}:{' '}
+                  {/* TODO: Fix this the next time the file is edited. */}
+                  {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
                   {mapConfig?.data.attributes.esri_web_map_id}
                 </LayerName>
                 <Buttons>
@@ -301,6 +318,8 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
           </Box>
         )}
 
+        {/* TODO: Fix this the next time the file is edited. */}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         {mapConfig?.data?.id && (
           <>
             {isEsriIntegrationEnabled && ( // TODO: Remove hiding of buttons once Esri integration is released + internal training done

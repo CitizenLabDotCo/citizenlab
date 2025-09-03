@@ -129,13 +129,33 @@ const SettingsRegistrationTab = () => {
           <FormattedMessage {...messages.registrationTitle} />
         </SectionTitle>
         <Box mb="60px" key={'signup_fields'}>
-          <SubSectionTitle>
+          <SubSectionTitle className="intercom-settings-tab-registration-helper-text">
             <FormattedMessage {...messages.signupFormText} />
           </SubSectionTitle>
           <SectionDescription>
             <FormattedMessage {...messages.registrationHelperTextDescription} />
           </SectionDescription>
           <form onSubmit={handleSubmit}>
+            <SectionField>
+              <InputMultilocWithLocaleSwitcher
+                type="text"
+                valueMultiloc={latestAppConfigSettings.core.login_helper_text}
+                onChange={handleCoreSettingWithMultilocOnChange(
+                  'login_helper_text'
+                )}
+                label={
+                  <LabelTooltip>
+                    <FormattedMessage {...messages.loginHelper} />
+                    <IconTooltip
+                      content={
+                        <FormattedMessage {...messages.loginHelperTooltip} />
+                      }
+                    />
+                  </LabelTooltip>
+                }
+              />
+            </SectionField>
+
             <SectionField>
               <InputMultilocWithLocaleSwitcher
                 type="text"

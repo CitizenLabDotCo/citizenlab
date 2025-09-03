@@ -3,7 +3,10 @@
 module AdminApi
   class ProjectsController < AdminApiController
     def index
-      projects = Project.includes({ admin_publication: { parent: [:publication] } })
+      projects = Project.includes(
+        { admin_publication: { parent: [:publication] } },
+        :project_images
+      )
       render json: projects, adapter: :attributes
     end
 

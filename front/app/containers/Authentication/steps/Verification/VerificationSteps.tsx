@@ -1,5 +1,6 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -59,18 +60,20 @@ const VerificationSteps = memo<Props>(
           selectedMethod.attributes.name
         )
       ) {
-        if (authenticationData?.successAction) {
+        localStorage.setItem(
+          'auth_context',
+          JSON.stringify(authenticationData.context)
+        );
+        if (authenticationData.successAction) {
           localStorage.setItem(
             'auth_success_action',
             JSON.stringify(authenticationData.successAction)
           );
         }
-        if (authenticationData?.context) {
-          localStorage.setItem(
-            'auth_context',
-            JSON.stringify(authenticationData.context)
-          );
-        }
+        localStorage.setItem(
+          'auth_path',
+          window.location.pathname as RouteType
+        );
       }
 
       setMethod(selectedMethod);

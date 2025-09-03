@@ -1,21 +1,15 @@
-import React, { FormEvent, useEffect, useState, useCallback } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 
 import {
-  Text,
   Box,
   Title,
   IconTooltip,
   colors,
 } from '@citizenlab/cl2-component-library';
-import moment from 'moment';
 import { useParams } from 'react-router-dom';
 import { CLErrors, UploadFile, Multiloc } from 'typings';
 
-import { CampaignName, ICampaignData } from 'api/campaigns/types';
-import useCampaigns from 'api/campaigns/useCampaigns';
 import { IPhaseFiles } from 'api/phase_files/types';
-import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
-import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
 import usePhaseFiles from 'api/phase_files/usePhaseFiles';
 import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';
 import useAddPhase from 'api/phases/useAddPhase';
@@ -23,12 +17,9 @@ import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
+import { useSyncPhaseFiles } from 'hooks/files/useSyncPhaseFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
-import useLocalize from 'hooks/useLocalize';
-
-import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
-import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEmails/utils';
 
 import {
   Section,
@@ -50,13 +41,13 @@ import {
 import clHistory from 'utils/cl-router/history';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
-import CampaignRow from './components/CampaignRow';
+// import DateSetup from './components/DateSetup';
 import DateSetup from './components/DateSetup';
 import PhaseParticipationConfig from './components/PhaseParticipationConfig';
 import { ideationDefaultConfig } from './components/PhaseParticipationConfig/utils/participationMethodConfigs';
 import messages from './messages';
 import { SubmitStateType, ValidationErrors } from './typings';
-import { getTimelineTab, getStartDate } from './utils';
+import { getTimelineTab } from './utils';
 import validate from './validate';
 
 const convertToFileType = (phaseFiles: IPhaseFiles | undefined) => {
@@ -79,18 +70,15 @@ const convertToFileType = (phaseFiles: IPhaseFiles | undefined) => {
 interface Props {
   projectId: string;
   phase: IPhase | undefined;
-  flatCampaigns: ICampaignData[];
 }
 
-const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
+const AdminPhaseEdit = ({ projectId, phase }: Props) => {
   const phaseId = phase?.data.id;
-
-  const { mutateAsync: addPhaseFile } = useAddPhaseFile();
-  const { mutateAsync: deletePhaseFile } = useDeletePhaseFile();
   const { data: phaseFiles } = usePhaseFiles(phaseId || null);
   const { data: phases } = usePhases(projectId);
   const { mutate: addPhase } = useAddPhase();
   const { mutate: updatePhase } = useUpdatePhase();
+  const syncPhaseFiles = useSyncPhaseFiles();
   const [errors, setErrors] = useState<CLErrors | null>(null);
   const [processing, setProcessing] = useState<boolean>(false);
   const [inStatePhaseFiles, setInStatePhaseFiles] = useState<FileType[]>(
@@ -102,28 +90,15 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
     {}
   );
-  const localize = useLocalize();
   const { formatMessage } = useIntl();
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const { width, containerRef } = useContainerWidthAndHeight();
   const tenantLocales = useAppConfigurationLocales();
 
-  const initialCampaignsSettings = flatCampaigns.reduce((acc, campaign) => {
-    acc[campaign.attributes.campaign_name] = campaign.attributes.enabled;
-    return acc;
-  }, {});
-
   useEffect(() => {
     // Whenever the selected phase changes, we reset the form data.
     // If no phase is selected, we initialize the form data with default values.
-    setFormData(
-      phase
-        ? phase.data.attributes
-        : {
-            campaigns_settings: initialCampaignsSettings,
-            ...ideationDefaultConfig,
-          }
-    );
+    setFormData(phase ? phase.data.attributes : ideationDefaultConfig);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase]);
 
@@ -133,49 +108,44 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
     }
   }, [phaseFiles]);
 
-  const handlePhaseParticipationConfigChange = useCallback(
-    (participationContextConfig: IUpdatedPhaseProperties) => {
-      const surveyCTALabel = tenantLocales?.reduce((acc, locale) => {
-        acc[locale] = formatMessageWithLocale(
-          locale,
-          messages.defaultSurveyCTALabel
-        );
-        return acc;
-      }, {});
+  if (!formatMessageWithLocale) return null;
 
-      const surveyTitle = tenantLocales?.reduce((acc, locale) => {
-        acc[locale] = formatMessageWithLocale(
-          locale,
-          messages.defaultSurveyTitleLabel
-        );
-        return acc;
-      }, {});
+  const handlePhaseParticipationConfigChange = (
+    participationContextConfig: IUpdatedPhaseProperties
+  ) => {
+    const surveyCTALabel = tenantLocales?.reduce((acc, locale) => {
+      acc[locale] = formatMessageWithLocale(
+        locale,
+        messages.defaultSurveyCTALabel
+      );
+      return acc;
+    }, {});
 
-      setSubmitState('enabled');
-      // Important to keep the order of the spread operators
-      setFormData((formData) => ({
-        ...formData,
-        ...participationContextConfig,
-        ...(participationContextConfig.participation_method ===
-          'native_survey' &&
-          !formData?.native_survey_button_multiloc &&
-          !phase?.data.attributes.native_survey_button_multiloc && {
-            native_survey_button_multiloc: surveyCTALabel,
-          }),
-        ...(participationContextConfig.participation_method ===
-          'native_survey' &&
-          !formData?.native_survey_title_multiloc &&
-          !phase?.data.attributes.native_survey_button_multiloc && {
-            native_survey_title_multiloc: surveyTitle,
-          }),
-      }));
-    },
-    [
-      formatMessageWithLocale,
-      phase?.data.attributes.native_survey_button_multiloc,
-      tenantLocales,
-    ]
-  );
+    const surveyTitle = tenantLocales?.reduce((acc, locale) => {
+      acc[locale] = formatMessageWithLocale(
+        locale,
+        messages.defaultSurveyTitleLabel
+      );
+      return acc;
+    }, {});
+
+    setSubmitState('enabled');
+    // Important to keep the order of the spread operators
+    setFormData((formData) => ({
+      ...formData,
+      ...participationContextConfig,
+      ...(participationContextConfig.participation_method === 'native_survey' &&
+        !formData?.native_survey_button_multiloc &&
+        !phase?.data.attributes.native_survey_button_multiloc && {
+          native_survey_button_multiloc: surveyCTALabel,
+        }),
+      ...(participationContextConfig.participation_method === 'native_survey' &&
+        !formData?.native_survey_title_multiloc &&
+        !phase?.data.attributes.native_survey_button_multiloc && {
+          native_survey_title_multiloc: surveyTitle,
+        }),
+    }));
+  };
 
   const updateFormData = (newData: Partial<IUpdatedPhaseProperties>) => {
     setSubmitState('enabled');
@@ -211,7 +181,9 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
     setInStatePhaseFiles(
       isDuplicate
         ? inStatePhaseFiles
-        : [...(inStatePhaseFiles || []), modifiedNewFile]
+        : // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          [...(inStatePhaseFiles || []), modifiedNewFile]
     );
     setSubmitState(isDuplicate ? submitState : 'enabled');
   };
@@ -220,7 +192,14 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
     setInStatePhaseFiles(
       inStatePhaseFiles.filter((file) => file.name !== fileToRemove.name)
     );
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     setPhaseFilesToRemove([...(phaseFilesToRemove || []), fileToRemove]);
+    setSubmitState('enabled');
+  };
+
+  const handleFilesReorder = (updatedFiles: UploadFile[]) => {
+    setInStatePhaseFiles(updatedFiles);
     setSubmitState('enabled');
   };
 
@@ -228,11 +207,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
     event.preventDefault();
     if (!formData) return;
 
-    const { isValidated, errors } = validate(
-      formData,
-      formatMessage,
-      tenantLocales
-    );
+    const { isValidated, errors } = validate(formData, phases, formatMessage);
 
     setValidationErrors(errors);
 
@@ -242,6 +217,8 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
   };
 
   const handleError = (error: { errors: CLErrors }) => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     setErrors(error.errors || null);
     setProcessing(false);
     setSubmitState('error');
@@ -253,16 +230,20 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
   ) => {
     const phaseResponse = response.data;
     const phaseId = phaseResponse.id;
-    const filesToAddPromises = inStatePhaseFiles
-      .filter((file): file is UploadFile => !file.remote)
-      .map((file) =>
-        addPhaseFile({ phaseId, base64: file.base64, name: file.name })
-      );
-    const filesToRemovePromises = phaseFilesToRemove
-      .filter((file) => file.remote)
-      .map((file) => deletePhaseFile({ phaseId, fileId: file.id as string }));
 
-    await Promise.all([...filesToAddPromises, ...filesToRemovePromises])
+    const initialFileOrdering = phaseFiles?.data.reduce((acc, file) => {
+      if (file.id) {
+        acc[file.id] = file.attributes.ordering;
+      }
+      return acc;
+    }, {});
+
+    await syncPhaseFiles({
+      phaseId,
+      phaseFiles: inStatePhaseFiles,
+      filesToRemove: phaseFilesToRemove,
+      fileOrdering: initialFileOrdering || {},
+    })
       .then(() => {
         setPhaseFilesToRemove([]);
         setProcessing(false);
@@ -296,31 +277,18 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
 
   const save = async (formData: IUpdatedPhaseProperties) => {
     if (processing) return;
-
     setProcessing(true);
-
-    const start = getStartDate({
-      phase: phase?.data,
-      phases,
-      formData,
-    });
-    const end = formData.end_at ? moment(formData.end_at) : null;
-
-    // If the start date was automatically calculated, we need to update the dates in submit if even if the user didn't change them
-    const updatedAttr = {
-      ...formData,
-      ...(!formData.start_at &&
-        start && {
-          start_at: start.locale('en').format('YYYY-MM-DD'),
-          end_at:
-            formData.end_at ||
-            (end ? end.locale('en').format('YYYY-MM-DD') : ''),
-        }),
-    };
 
     if (phase) {
       updatePhase(
-        { phaseId: phase?.data.id, ...updatedAttr },
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        {
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          phaseId: phase?.data.id,
+          ...formData,
+        },
         {
           onSuccess: (response) => {
             handleSaveResponse(response, false);
@@ -332,7 +300,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
       addPhase(
         {
           projectId,
-          ...updatedAttr,
+          ...formData,
         },
         {
           onSuccess: (response) => {
@@ -342,17 +310,6 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
         }
       );
     }
-  };
-
-  const handleCampaignEnabledOnChange = (campaign: CampaignData) => {
-    const campaignKey = campaign.attributes.campaign_name;
-
-    updateFormData({
-      campaigns_settings: {
-        ...formData?.campaigns_settings,
-        [campaignKey]: !formData?.campaigns_settings?.[campaignKey],
-      },
-    });
   };
 
   if (!formData) return null;
@@ -377,14 +334,14 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
             />
             <Error apiErrors={errors && errors.title_multiloc} />
           </SectionField>
-
           <DateSetup
             formData={formData}
             errors={errors}
+            validationErrors={validationErrors}
             setSubmitState={setSubmitState}
             setFormData={setFormData}
+            setValidationErrors={setValidationErrors}
           />
-
           <PhaseParticipationConfig
             phase={phase}
             formData={formData}
@@ -414,7 +371,6 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
             />
             <Error apiErrors={errors && errors.description_multiloc} />
           </SectionField>
-
           <SectionField>
             <SubSectionTitle>
               <FormattedMessage {...messages.uploadAttachments} />
@@ -423,39 +379,23 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
               id="project-timeline-edit-form-file-uploader"
               onFileAdd={handlePhaseFileOnAdd}
               onFileRemove={handlePhaseFileOnRemove}
+              onFileReorder={handleFilesReorder}
               files={inStatePhaseFiles}
+              enableDragAndDrop
+              multiple
               apiErrors={errors}
             />
           </SectionField>
 
-          {Object.keys(flatCampaigns).length > 0 && (
-            <SectionField>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.automatedEmails} />
-              </SubSectionTitle>
-              <Text color="coolGrey600" mt="0px" fontSize="m">
-                <FormattedMessage {...messages.automatedEmailsDescription} />
-              </Text>
-              {flatCampaigns.map((campaign) => (
-                <CampaignRow
-                  campaign={stringifyCampaignFields(campaign, localize)}
-                  checked={
-                    !!formData?.campaigns_settings?.[
-                      campaign.attributes.campaign_name
-                    ]
-                  }
-                  key={campaign.id}
-                  handleOnEnabledToggle={handleCampaignEnabledOnChange}
-                />
-              ))}
-            </SectionField>
-          )}
-
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           {errors && errors.project && (
             <SectionField>
               <Error apiErrors={errors.project} />
             </SectionField>
           )}
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           {errors && errors.base && (
             <SectionField>
               <Error apiErrors={errors.base} />
@@ -491,29 +431,17 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
   );
 };
 
-const CONFIGURABLE_CAMPAIGN_NAMES: CampaignName[] = ['project_phase_started'];
-
 const AdminPhaseEditWrapper = () => {
   const { projectId, phaseId } = useParams();
   const { data: phase } = usePhase(phaseId);
-  const { data: campaigns } = useCampaigns({
-    campaignNames: CONFIGURABLE_CAMPAIGN_NAMES,
-    pageSize: 250,
-  });
 
-  const flatCampaigns = campaigns?.pages.flatMap((page) => page.data);
-
-  if (!projectId || !flatCampaigns) return null;
+  if (!projectId) return null;
 
   const phaseLoading = phaseId && phase?.data.id !== phaseId;
   if (phaseLoading) return null;
 
   return (
-    <AdminPhaseEdit
-      projectId={projectId}
-      phase={phaseId ? phase : undefined}
-      flatCampaigns={flatCampaigns}
-    />
+    <AdminPhaseEdit projectId={projectId} phase={phaseId ? phase : undefined} />
   );
 };
 

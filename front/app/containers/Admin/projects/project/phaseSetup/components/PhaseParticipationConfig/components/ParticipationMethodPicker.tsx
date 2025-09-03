@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   IconTooltip,
@@ -18,7 +18,7 @@ import { IPhase, ParticipationMethod } from 'api/phases/types';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
 
@@ -26,6 +26,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../../../../messages';
 
+import commonGroundImage from './assets/common_ground.png';
 import documentImage from './assets/document.png';
 import ideationImage from './assets/ideation.png';
 import informationImage from './assets/information.png';
@@ -93,10 +94,18 @@ const ParticipationMethodPicker = ({
   const pollsEnabled = useFeatureFlag({
     name: 'polls',
   });
-
-  const proposalsParticipationMethodEnabled = useFeatureFlag({
-    name: 'proposals_participation_method',
+  const commonGroundEnabled = useFeatureFlag({
+    name: 'common_ground',
   });
+
+  useEffect(() => {
+    setSelectedMethod(participation_method);
+    setShowSurveyOptions(
+      participation_method === 'native_survey' ||
+        participation_method === 'survey' ||
+        participation_method === 'poll'
+    );
+  }, [participation_method]);
 
   const changeMethod = (newMethod?: ParticipationMethod) => {
     const method = newMethod || methodToChangeTo;
@@ -116,6 +125,11 @@ const ParticipationMethodPicker = ({
   const handleMethodSelect = (event, method: ParticipationMethod) => {
     event.preventDefault();
 
+    // We don't want to change the method if it is the same
+    if (selectedMethod === method) {
+      return;
+    }
+
     if (phase) {
       setMethodToChangeTo(method);
       setShowChangeMethodModal(true);
@@ -127,7 +141,7 @@ const ParticipationMethodPicker = ({
   return (
     <>
       <SectionField>
-        <SubSectionTitle>
+        <SubSectionTitle className="intercom-admin-participation-method-picker-heading">
           <FormattedMessage {...messages.participationMethodTitleText} />
           <IconTooltip
             content={
@@ -150,17 +164,57 @@ const ParticipationMethodPicker = ({
               onClick={(event) => handleMethodSelect(event, 'ideation')}
               image={ideationImage}
               selected={selectedMethod === 'ideation'}
+              participation_method="ideation"
             />
 
-            {proposalsParticipationMethodEnabled && (
-              <ParticipationMethodChoice
-                key="proposals"
-                title={formatMessage(messages2.proposalsTitle)}
-                subtitle={formatMessage(messages2.proposalsDescription)}
-                onClick={(event) => handleMethodSelect(event, 'proposals')}
-                image={proposalsImage}
-                selected={selectedMethod === 'proposals'}
-              />
+            <ParticipationMethodChoice
+              key="proposals"
+              title={formatMessage(messages2.proposalsTitle)}
+              subtitle={formatMessage(messages2.proposalsDescription)}
+              onClick={(event) => handleMethodSelect(event, 'proposals')}
+              image={proposalsImage}
+              selected={selectedMethod === 'proposals'}
+              participation_method="proposals"
+            />
+
+            {commonGroundEnabled && (
+              <Box position="relative">
+                <ParticipationMethodChoice
+                  key="common_ground"
+                  title={formatMessage(messages2.commonGroundTitle)}
+                  subtitle={formatMessage(messages2.commonGroundDescription)}
+                  onClick={(event) =>
+                    handleMethodSelect(event, 'common_ground')
+                  }
+                  image={commonGroundImage}
+                  selected={selectedMethod === 'common_ground'}
+                  participation_method="common_ground"
+                />
+                <Box
+                  style={{ transform: 'translateX(-50%)' }}
+                  position="absolute"
+                  top="10%"
+                  left="50%"
+                >
+                  <Tooltip
+                    maxWidth="500px"
+                    placement="bottom"
+                    content={formatMessage(messages.betaTooltip)}
+                    hideOnClick={false}
+                  >
+                    <Badge color={colors.coolGrey600} className="inverse">
+                      <Box
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        gap="6px"
+                      >
+                        {formatMessage(messages.beta)}
+                      </Box>
+                    </Badge>
+                  </Tooltip>
+                </Box>
+              </Box>
             )}
 
             <ParticipationMethodChoice
@@ -170,6 +224,7 @@ const ParticipationMethodPicker = ({
               onClick={(event) => handleMethodSelect(event, 'native_survey')}
               image={surveyImage}
               selected={showSurveyOptions}
+              participation_method="native_survey"
             />
 
             <ParticipationMethodChoice
@@ -179,6 +234,7 @@ const ParticipationMethodPicker = ({
               onClick={(event) => handleMethodSelect(event, 'voting')}
               image={votingImage}
               selected={selectedMethod === 'voting'}
+              participation_method="voting"
             />
 
             <ParticipationMethodChoice
@@ -188,6 +244,7 @@ const ParticipationMethodPicker = ({
               onClick={(event) => handleMethodSelect(event, 'information')}
               image={informationImage}
               selected={selectedMethod === 'information'}
+              participation_method="information"
             />
 
             <ParticipationMethodChoice
@@ -197,6 +254,7 @@ const ParticipationMethodPicker = ({
               onClick={(event) => handleMethodSelect(event, 'volunteering')}
               image={volunteeringImage}
               selected={selectedMethod === 'volunteering'}
+              participation_method="volunteering"
             />
             {documentAnnotationAllowed ? (
               documentAnnotationEnabled && (
@@ -211,6 +269,7 @@ const ParticipationMethodPicker = ({
                     }}
                     image={documentImage}
                     selected={selectedMethod === 'document_annotation'}
+                    participation_method="document_annotation"
                   />
                 </Box>
               )
@@ -222,6 +281,7 @@ const ParticipationMethodPicker = ({
                   subtitle={formatMessage(messages2.documentDescription)}
                   image={documentImage}
                   selected={selectedMethod === 'document_annotation'}
+                  participation_method="document_annotation"
                 />
                 <Box
                   style={{ transform: 'translateX(-50%)' }}
@@ -265,6 +325,8 @@ const ParticipationMethodPicker = ({
                   }
                   title={formatMessage(messages2.survey)}
                   selected={selectedMethod === 'native_survey'}
+                  key="native_survey"
+                  participation_method="native_survey"
                 >
                   <ParticipationMethodDescriptionWrapper
                     selected={selectedMethod === 'native_survey'}
@@ -293,6 +355,7 @@ const ParticipationMethodPicker = ({
                     onClick={(event) => handleMethodSelect(event, 'poll')}
                     title={formatMessage(messages2.quickPoll)}
                     selected={selectedMethod === 'poll'}
+                    participation_method="poll"
                   >
                     <ChildText selected={selectedMethod === 'poll'}>
                       {formatMessage(messages2.quickPollDescription)}
@@ -305,6 +368,7 @@ const ParticipationMethodPicker = ({
                     onClick={(event) => handleMethodSelect(event, 'survey')}
                     title={formatMessage(messages2.externalSurvey)}
                     selected={selectedMethod === 'survey'}
+                    participation_method="survey"
                   >
                     <ParticipationMethodDescriptionWrapper
                       selected={selectedMethod === 'survey'}
@@ -343,15 +407,15 @@ const ParticipationMethodPicker = ({
             width="100%"
             alignItems="center"
           >
-            <Button
+            <ButtonWithLink
               buttonStyle="secondary-outlined"
               width="100%"
               onClick={closeModal}
               mr="16px"
             >
               <FormattedMessage {...messages2.cancelMethodChange} />
-            </Button>
-            <Button
+            </ButtonWithLink>
+            <ButtonWithLink
               buttonStyle="delete"
               width="100%"
               onClick={() => {
@@ -360,7 +424,7 @@ const ParticipationMethodPicker = ({
               }}
             >
               <FormattedMessage {...messages2.confirmMethodChange} />
-            </Button>
+            </ButtonWithLink>
           </Box>
         </Box>
       </Modal>

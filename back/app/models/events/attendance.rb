@@ -33,7 +33,17 @@ module Events
       message: 'is already registered to this event' # rubocop:disable Rails/I18nLocaleTexts
     }
 
+    validate :maximum_attendees_not_reached
+
     counter_culture :event, column_name: 'attendees_count'
+
+    private
+
+    def maximum_attendees_not_reached
+      if event.maximum_attendees.present? && event.attendees_count >= event.maximum_attendees
+        errors.add(:base, 'Maximum number of attendees reached')
+      end
+    end
   end
 end
 

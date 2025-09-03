@@ -52,7 +52,7 @@ resource 'Stats - Ideas' do
 
     travel_to(start_at - 1.month) do
       i = create(:proposal, project: @project2, idea_status: @proposed)
-      create(:official_feedback, post: i)
+      create(:official_feedback, idea: i)
     end
     travel_to(start_at + 2.months) do
       @ideas_with_topics += create_list(:idea_with_topics, 2, project: @project1, idea_status: @proposed)

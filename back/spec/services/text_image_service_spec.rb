@@ -8,7 +8,7 @@ describe TextImageService do
   describe 'swap_data_images_multiloc' do
     before do
       stub_request(:any, 'res.cloudinary.com').to_return(
-        body: png_image_as_base64('image10.png')
+        body: png_image_as_base64('image10.jpg')
       )
     end
 

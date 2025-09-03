@@ -92,15 +92,16 @@ RSpec.describe ParticipationMethod::Ideation do
   describe '#default_fields' do
     it 'returns the default ideation fields' do
       expect(
-        participation_method.default_fields(create(:custom_form, participation_context: phase)).map(&:code)
+        participation_method.default_fields(create(:custom_form, participation_context: phase)).filter_map(&:code)
       ).to eq %w[
-        ideation_section1
+        title_page
         title_multiloc
+        body_page
         body_multiloc
-        ideation_section2
+        uploads_page
         idea_images_attributes
         idea_files_attributes
-        ideation_section3
+        details_page
         topic_ids
         location_description
         proposed_budget
@@ -171,12 +172,17 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
+  describe '#supported_email_campaigns' do
+    it 'returns campaigns supported for ideation' do
+      expect(participation_method.supported_email_campaigns).to match_array %w[comment_deleted_by_admin comment_on_idea_you_follow comment_on_your_comment idea_published mention_in_official_feedback official_feedback_on_idea_you_follow project_phase_started status_change_on_idea_you_follow your_input_in_screening]
+    end
+  end
+
   describe '#supports_serializing?' do
     it 'returns false for all attributes' do
       %i[
-        voting_method voting_max_total voting_min_total voting_max_votes_per_idea baskets_count
-        voting_term_singular_multiloc voting_term_plural_multiloc votes_count
-        native_survey_title_multiloc native_survey_button_multiloc
+        voting_method voting_max_total voting_min_total voting_max_votes_per_idea
+        baskets_count votes_count native_survey_title_multiloc native_survey_button_multiloc
       ].each do |attribute|
         expect(participation_method.supports_serializing?(attribute)).to be false
       end
@@ -187,7 +193,7 @@ RSpec.describe ParticipationMethod::Ideation do
     it 'has constraints on built in fields to lock certain values from being changed' do
       expect(participation_method.constraints.size).to be 8
       expect(participation_method.constraints.keys).to match_array %i[
-        ideation_section1
+        title_page
         title_multiloc
         body_multiloc
         idea_images_attributes
@@ -207,25 +213,43 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
-  its(:additional_export_columns) { is_expected.to eq [] }
-  its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new] }
-  its(:proposed_budget_in_form?) { is_expected.to be true }
+  its(:additional_export_columns) { is_expected.to eq %w[manual_votes] }
+  its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new comments_count] }
   its(:return_disabled_actions?) { is_expected.to be false }
   its(:supports_assignment?) { is_expected.to be true }
-  its(:supports_built_in_fields?) { is_expected.to be true }
+  its(:built_in_title_required?) { is_expected.to be(true) }
+  its(:built_in_body_required?) { is_expected.to be(true) }
   its(:supports_commenting?) { is_expected.to be true }
   its(:supports_edits_after_publication?) { is_expected.to be true }
   its(:supports_exports?) { is_expected.to be true }
   its(:supports_input_term?) { is_expected.to be true }
   its(:supports_inputs_without_author?) { is_expected.to be false }
-  its(:supports_multiple_posts?) { is_expected.to be true }
-  its(:supports_pages_in_form?) { is_expected.to be false }
+  its(:allow_posting_again_after) { is_expected.to eq 0.seconds }
   its(:supports_permitted_by_everyone?) { is_expected.to be false }
   its(:supports_public_visibility?) { is_expected.to be true }
-  its(:supports_reacting?) { is_expected.to be true }
   its(:supports_status?) { is_expected.to be true }
   its(:supports_submission?) { is_expected.to be true }
   its(:supports_toxicity_detection?) { is_expected.to be true }
   its(:use_reactions_as_votes?) { is_expected.to be false }
   its(:transitive?) { is_expected.to be true }
+  its(:supports_private_attributes_in_export?) { is_expected.to be true }
+  its(:form_logic_enabled?) { is_expected.to be false }
+  its(:follow_idea_on_idea_submission?) { is_expected.to be true }
+  its(:validate_phase) { is_expected.to be_nil }
+  its(:supports_custom_field_categories?) { is_expected.to be false }
+  its(:user_fields_in_form?) { is_expected.to be false }
+  its(:supports_multiple_phase_reports?) { is_expected.to be false }
+  its(:add_autoreaction_to_inputs?) { is_expected.to be(true) }
+  its(:everyone_tracking_enabled?) { is_expected.to be false }
+
+  its(:supports_reacting?) { is_expected.to be(true) }
+  it { expect(participation_method.supports_reacting?('up')).to be(true) }
+  it { expect(participation_method.supports_reacting?('down')).to be(true) }
+  it { expect(participation_method.supports_reacting?('neutral')).to be(false) }
+
+  describe 'proposed_budget_in_form?' do # private method
+    it 'is expected to be true' do
+      expect(participation_method.send(:proposed_budget_in_form?)).to be true
+    end
+  end
 end

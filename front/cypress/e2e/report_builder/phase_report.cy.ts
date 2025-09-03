@@ -34,7 +34,17 @@ describe('Phase report', () => {
   let ideationPhaseId: string;
   let surveyPhaseId: string;
 
-  before(() => {
+  beforeEach(() => {
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+      projectId = '';
+      projectSlug = '';
+      currentInfoPhaseId = '';
+      futureInfoPhaseId = '';
+      ideationPhaseId = '';
+      surveyPhaseId = '';
+    }
+
     cy.setAdminLoginCookie();
     cy.apiRemoveAllReports();
 
@@ -116,7 +126,9 @@ describe('Phase report', () => {
   });
 
   after(() => {
-    cy.apiRemoveProject(projectId);
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+    }
   });
 
   const reportShouldNotBeVisible = (report: any) => {

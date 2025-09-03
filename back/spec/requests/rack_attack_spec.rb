@@ -248,16 +248,16 @@ describe 'Rack::Attack' do
   it 'limits search requests from same IP to 15 in 20 seconds' do
     freeze_time do
       15.times do
-        get '/web_api/v1/initiatives?search=some-random-search-term'
+        get '/web_api/v1/ideas?search=some-random-search-term'
       end
       expect(status).to eq(200) # OK
 
-      get '/web_api/v1/initiatives?search=some-random-search-term'
+      get '/web_api/v1/ideas?search=some-random-search-term'
       expect(status).to eq(429) # Too many requests
     end
 
     travel_to(20.seconds.from_now) do
-      get '/web_api/v1/initiatives?search=some-random-search-term'
+      get '/web_api/v1/ideas?search=some-random-search-term'
       expect(status).to eq(200) # OK
     end
   end
@@ -519,6 +519,74 @@ describe 'Rack::Attack' do
     travel_to(3.minutes.from_now) do
       get '/web_api/v1/projects'
       expect(status).to eq(200)
+    end
+  end
+
+  it 'limits authoring assistance response requests from same IP to 10 in 20 seconds' do
+    token = AuthToken::AuthToken.new(payload: create(:user).to_token_payload).token
+    headers = {
+      'CONTENT_TYPE' => 'application/json',
+      'Authorization' => "Bearer #{token}"
+    }
+
+    freeze_time do
+      10.times do
+        post(
+          "/web_api/v1/ideas/#{SecureRandom.uuid}/authoring_assistance_responses",
+          params: '{ "authoring_assistance_response": { "custom_free_prompt": "Is this a good idea?" } }',
+          headers: headers
+        )
+      end
+      expect(status).to eq(401) # Not found
+
+      post(
+        "/web_api/v1/ideas/#{SecureRandom.uuid}/authoring_assistance_responses",
+        params: '{ "authoring_assistance_response": { "custom_free_prompt": "Is this a good idea?" } }',
+        headers: headers
+      )
+      expect(status).to eq(429) # Too many requests
+    end
+  end
+
+  it 'limits similar inputs requests from same IP to 5 in 1 second' do
+    token = AuthToken::AuthToken.new(payload: create(:user).to_token_payload).token
+    headers = {
+      'CONTENT_TYPE' => 'application/json',
+      'Authorization' => "Bearer #{token}"
+    }
+
+    allow_any_instance_of(CohereMultilingualEmbeddings).to receive(:embedding) do
+      create(:embeddings_similarity).embedding
+    end
+    SettingsService.new.activate_feature! 'input_iq'
+
+    project_id = create(:project_with_active_ideation_phase).id
+    params_proc = proc do |title|
+      {
+        idea: {
+          project_id: project_id,
+          title_multiloc: {
+            'en' => title
+          }
+        }
+      }.to_json
+    end
+    freeze_time do
+      5.times do |i|
+        post(
+          '/web_api/v1/ideas/similar_ideas',
+          params: params_proc.call("Title #{i}"),
+          headers: headers
+        )
+      end
+      expect(status).to eq 200 # OK
+
+      post(
+        '/web_api/v1/ideas/similar_ideas',
+        params: params_proc.call('Final idea'),
+        headers: headers
+      )
+      expect(status).to eq 429 # Too many requests
     end
   end
 end

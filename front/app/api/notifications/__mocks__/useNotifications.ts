@@ -27,7 +27,6 @@ export const notificationsData: TNotificationData[] = [
       read_at: '2023-05-30T12:49:33.519Z',
       created_at: '2023-05-30T12:48:30.174Z',
       type: 'comment_on_your_comment',
-      post_type: 'Idea',
       initiating_user_first_name: 'Sylvester',
       initiating_user_last_name: 'Kalinoski',
       initiating_user_slug: 'sylvester-kalinoski',

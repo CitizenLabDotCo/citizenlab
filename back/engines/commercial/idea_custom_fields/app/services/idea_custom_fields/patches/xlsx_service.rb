@@ -3,7 +3,7 @@
 module IdeaCustomFields
   module Patches
     module XlsxService
-      def generate_idea_xlsx_columns(ideas, view_private_attributes: false, with_tags: false)
+      def generate_idea_xlsx_columns(ideas, view_private_attributes: false, with_tags: false, with_cosponsors: false)
         super + custom_form_custom_field_columns(ideas)
       end
 
@@ -13,7 +13,9 @@ module IdeaCustomFields
         idea_custom_fields = ideas.map(&:project).flat_map do |project|
           next unless project.custom_form
 
-          ::IdeaCustomFieldsService.new(project.custom_form).reportable_fields.reject(&:built_in?)
+          ::IdeaCustomFieldsService.new(project.custom_form)
+            .xlsx_exportable_fields
+            .reject(&:built_in?)
         end
 
         # options keys are only unique in the scope of their field, namespacing to avoid collisions

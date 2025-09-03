@@ -20,8 +20,8 @@ export default function useRegistrations({
 
   const { data: analytics } = useRegistrationsLive(
     {
-      start_at: startAtMoment?.toISOString(),
-      end_at: endAtMoment?.toISOString(),
+      start_at: startAtMoment?.local().format('YYYY-MM-DD'),
+      end_at: endAtMoment?.local().format('YYYY-MM-DD'),
       resolution,
       ...getComparedPeriod(resolution),
     },
@@ -36,7 +36,7 @@ export default function useRegistrations({
     () =>
       analytics?.data
         ? parseTimeSeries(
-            analytics.data.attributes[0],
+            analytics.data.attributes.registrations_timeseries,
             startAtMoment,
             endAtMoment,
             currentResolution

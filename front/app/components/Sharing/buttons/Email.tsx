@@ -29,13 +29,13 @@ const Email = ({
   const trackClick = (medium: Medium) => () => {
     const properties = { network: medium };
 
-    trackEventByName(tracks.shareButtonClicked.name, properties);
+    trackEventByName(tracks.shareButtonClicked, properties);
   };
 
   return (
     <Button
       onClick={handleClick(href)}
-      aria-label={formatMessage(messages.shareByEmail)}
+      ariaLabel={formatMessage(messages.shareByEmail)}
       icon="email"
       iconSize="20px"
       width="40px"

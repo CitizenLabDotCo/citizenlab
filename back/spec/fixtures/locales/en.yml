@@ -6,6 +6,10 @@ en:
   nav_bar_items:
     home:
       title: Home
+  topics:
+    quality_of_life: Quality of life
+    service_delivery: Service delivery
+    governance_and_trust: Governance and trust
   form_builder:
     default_select_field:
       title: Default question
@@ -25,6 +29,21 @@ en:
       this_answer: This answer will only be shared with moderators, and not to the public.
       page: Page
       date_published: Date Published (dd-mm-yyyy)
+      instructions: 'Instructions'
+      write_as_clearly: 'Write as <b>clearly</b> as you can— these forms might be scanned'
+      write_in_language: 'Write your answers in the same language as this form'
+      linear_scale_print_description: 'Please write a number between %{min_label} and %{max_label} only'
+      unsupported_field: This field cannot be completed on paper. Please use the online version of this form instead.
+      ranking_print_description: 'Please write a number from 1 (most preferred) and %{max_rank} (least preferred) in each box. Use each number exactly once.'
+      matrix_print_description: 'For each row, mark one circle with a cross to indicate your preference.'
+      rating_print_description: 'Rate this by writing a number between 1 (worst) and %{max_stars} (best).'
+      sentiment_linear_scale_print_description: 'Please write a number between 1 and 5.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
+      point_print_description: 'Please draw an X on the map below to show the location or write the address instead.'
+      line_print_description: 'Please draw a route on the map below.'
+      polygon_print_description: 'Please draw a shape on the map below.'
+      select_print_description: 'Only choose one option.'
+      date_print_description: 'Please write a date in the format YYYY-MM-DD.'
   custom_fields:
     ideas:
       title:
@@ -52,16 +71,64 @@ en:
       attachments:
         title: Attachments
         description:
-      section1:
+      title_page:
         description:
-      section2:
+      body_page:
+        title: Tell us more
+        description:
+      uploads_page:
         title: Images and attachments
-        description: Upload your favourite files here
-      section3:
+        description:
+      details_page:
         title: Details
         description:
       other_input_field:
         title: Type your answer
+        print_title: If '%{other_option}', please specify
+      ask_follow_up_field:
+        title: Tell us why
+    community_monitor:
+      questions:
+        place_to_live:
+          title: City as a place to live
+        sense_of_safety:
+          title: Overall sense of safety
+        access_to_parks:
+          title: Access to parks, green spaces, and recreational opportunities
+        affordable_housing:
+          title: Availability of affordable housing
+        employment_opportunities:
+          title: Employment and economic advancement opportunities
+        quality_of_services:
+          title: Overall quality of services provided by the city
+        overall_value:
+          title: Overall value you receive for your city taxes and fees
+        cleanliness_and_maintenance:
+          title: Overall cleanliness and maintenance of streets and public spaces
+        trust_in_government:
+          title: Trust in local government
+        responsiveness_of_officials:
+          title: Responsiveness of elected officials to community concerns
+        transparency_of_money_spent:
+          title: Transparency about how municipal tax money is spent
+      question_categories:
+        quality_of_life: Quality of life
+        service_delivery: Service delivery
+        governance_and_trust: Governance and trust
+        other: Other
+      labels:
+        label_1: Very poor
+        label_2: Poor
+        label_3: Fair
+        label_4: Good
+        label_5: Excellent
+      form_end:
+        button_text: Back to home
+  phases:
+    open_idea_phase_title: Current phase
+    native_survey_title: Survey
+    native_survey_button: Take the survey
+    community_monitor_title: Community monitor
   custom_forms:
     categories:
       main_content:
@@ -77,8 +144,23 @@ en:
           title: What is your issue?
         option:
           title: What is your option?
+        proposal:
+          title: What is your proposal?
+        initiative:
+          title: What is your initiative?
+        petition:
+          title: What is your petition?
+  custom_field_options:
+    gender:
+      male: Male
+      female: Female
+      unspecified: Other
+    domicile:
+      outside: Somewhere else
   user:
     anon_first_name: "User"
+    anon_scheme:
+      animals: 'Aardvark,Cat,Platypus,Giraffe,Zebra'
   xlsx_export:
     anonymous: 'Anonymous'
     column_headers:
@@ -97,13 +179,15 @@ en:
       email: 'Email'
       first_name: 'First name(s)'
       image_url: 'Image URL'
+      manual_votes: 'Offline votes'
       input_id: 'ID'
       input_url: 'URL'
       last_name: 'Last name'
       latitude: 'Latitude'
       likes_count: 'Likes'
       location: 'Location'
-      longitude: 'Longitude' 
+      longitude: 'Longitude'
+      neutral_reactions_count: 'Unsure'
       participants: 'Participants'
       picks: 'Picks'
       project: 'Project'

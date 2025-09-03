@@ -70,6 +70,8 @@ const configuration: ModuleConfiguration = {
             s.async = true;
             s.src = `https://widget.intercom.io/widget/'${INTERCOM_APP_ID}`;
             const x = d.getElementsByTagName('script')[0];
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             x?.parentNode?.insertBefore(s, x);
           };
           if (document.readyState === 'complete') {

@@ -62,6 +62,10 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.inPlatformSurveyPhase',
     defaultMessage: 'In platform survey phase',
   },
+  commonGroundPhase: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.commonGroundPhase',
+    defaultMessage: 'Common ground phase',
+  },
   everyone: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.everyone',
     defaultMessage: 'Everyone',
@@ -118,9 +122,9 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.annotatingDocument',
     defaultMessage: '<b>Annotating document:</b>  {participants}',
   },
-  attendingEvent: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.attendingEvent',
-    defaultMessage: '<b>Attending event:</b>  {participants}',
+  registeredForEvent: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.registeredForEvent',
+    defaultMessage: '<b>Registered for event:</b>  {participants}',
   },
   volunteering: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.volunteering',

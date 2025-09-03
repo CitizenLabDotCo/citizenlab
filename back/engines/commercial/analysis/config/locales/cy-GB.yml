@@ -1,3 +1,20 @@
 cy:
   analysis:
     example_tag_n: Tag enghreifftiol %{n}
+    cell_statement:
+      percent_more: "%{percent}% yn fwy"
+      percent_less: "%{percent}% yn llai"
+      range_min_max: "%{min} i %{max}"
+      range_min: "%{min} neu fwy"
+      range_max: "%{max} neu lai"
+      tag_vs_bin:
+        inputs: "Pobl sy'n ymateb '%{answer}' i '%{question}' post %{percent_more_less} yn '%{tag}' na'r cyfartaledd."
+        likes: "Pobl sy'n ymateb '%{answer}' i '%{question}' fel %{percent_more_less} mewnbynnau yn '%{tag}' na'r cyfartaledd."
+        dislikes: "Pobl sy'n ymateb '%{answer}' i '%{question}' ddim yn hoffi %{percent_more_less} mewnbynnau yn '%{tag}' na'r cyfartaledd."
+        participants: "Mae pobl sy'n ymateb '%{answer}' i '%{question}' yn cymryd rhan %{percent_more_less} yn '%{tag}' na'r cyfartaledd."
+      bin_vs_bin:
+        inputs: "Pobl sy'n ymateb '%{answer1}' i '%{question1}' ateb '%{answer2}' i '%{question2}' %{percent_more_less} na'r cyfartaledd."
+        likes: "Pobl sy'n ymateb '%{answer1}' i '%{question1}' fel %{percent_more_less} mewnbynnau pan fyddant yn ateb '%{answer2}' i '%{question2}' na'r cyfartaledd."
+        dislikes: "Pobl sy'n ymateb '%{answer1}' i '%{question1}' ddim yn hoffi %{percent_more_less} mewnbynnau pan fyddant yn ateb '%{answer2}' i '%{question2}' na'r cyfartaledd."
+        participants: "Mae pobl sy'n ymateb '%{answer1}' i '%{question1}' yn cymryd rhan %{percent_more_less} pan fyddant yn ateb '%{answer2}' i '%{question2}' na'r cyfartaledd."
+

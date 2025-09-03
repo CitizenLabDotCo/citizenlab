@@ -4,19 +4,23 @@
 #
 # Table name: email_campaigns_campaigns
 #
-#  id               :uuid             not null, primary key
-#  type             :string           not null
-#  author_id        :uuid
-#  enabled          :boolean
-#  sender           :string
-#  reply_to         :string
-#  schedule         :jsonb
-#  subject_multiloc :jsonb
-#  body_multiloc    :jsonb
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  deliveries_count :integer          default(0), not null
-#  context_id       :uuid
+#  id                   :uuid             not null, primary key
+#  type                 :string           not null
+#  author_id            :uuid
+#  enabled              :boolean
+#  sender               :string
+#  reply_to             :string
+#  schedule             :jsonb
+#  subject_multiloc     :jsonb
+#  body_multiloc        :jsonb
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  deliveries_count     :integer          default(0), not null
+#  context_id           :uuid
+#  title_multiloc       :jsonb
+#  intro_multiloc       :jsonb
+#  button_text_multiloc :jsonb
+#  context_type         :string
 #
 # Indexes
 #
@@ -35,12 +39,14 @@ module EmailCampaigns
     include RecipientConfigurable
     include Disableable
     include Trackable
+    include ContentConfigurable
+    include ContextConfigurable
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: ['active']
 
-    before_send :campaign_enabled_for_phase?
-
     recipient_filter :filter_notification_recipient
+
+    validates :context_type, inclusion: { in: ['Phase'], allow_blank: true }
 
     def mailer_class
       ProjectPhaseStartedMailer
@@ -48,6 +54,12 @@ module EmailCampaigns
 
     def activity_triggers
       { 'Notifications::ProjectPhaseStarted' => { 'created' => true } }
+    end
+
+    def activity_context(activity)
+      return nil if !activity.item.is_a?(::Notification)
+
+      activity.item.phase
     end
 
     def filter_notification_recipient(users_scope, activity:, time: nil)
@@ -70,6 +82,14 @@ module EmailCampaigns
       'email_campaigns.admin_labels.trigger.project_phase_changes'
     end
 
+    def self.supported_context_class
+      Phase
+    end
+
+    def self.supports_context?(context)
+      supports_phase_participation_method?(context)
+    end
+
     def generate_commands(recipient:, activity:, time: nil)
       notification = activity.item
       if notification.phase.voting?
@@ -89,16 +109,6 @@ module EmailCampaigns
           delay: 8.hours.to_i
         }]
       end
-    end
-
-    def manageable_by_project_moderator?
-      true
-    end
-
-    private
-
-    def campaign_enabled_for_phase?(activity:, time: nil)
-      activity.item.phase.campaigns_settings['project_phase_started']
     end
   end
 end

@@ -1,3 +1,4 @@
+import { addDays, format } from 'date-fns';
 import { http, HttpResponse } from 'msw';
 
 import { IPhaseData } from '../types';
@@ -11,7 +12,7 @@ export const phasesData: IPhaseData[] = [
       title_multiloc: { en: 'A Mock Information phase' },
       description_multiloc: { en: 'For testing purposes' },
       start_at: 'today',
-      end_at: 'one week from now',
+      end_at: format(addDays(new Date(), 21), 'yyyy-MM-dd'),
       created_at: 'yesterday',
       updated_at: 'yesterday but later',
       submission_enabled: false,
@@ -20,16 +21,17 @@ export const phasesData: IPhaseData[] = [
       reacting_like_limited_max: 0,
       reacting_dislike_enabled: false,
       reacting_dislike_limited_max: 0,
-      participation_method: 'information',
+      participation_method: 'ideation',
       reacting_like_method: 'limited',
       reacting_dislike_method: 'limited',
       input_term: 'idea',
       presentation_mode: 'card',
       ideas_count: 3,
-      campaigns_settings: { project_phase_started: true },
       votes_count: 0,
+      vote_term: 'vote',
       baskets_count: 0,
       report_public: false,
+      total_votes_amount: 0,
     },
     relationships: {
       permissions: {
@@ -70,10 +72,11 @@ export const phasesData: IPhaseData[] = [
       reacting_dislike_enabled: false,
       reacting_dislike_limited_max: 0,
       ideas_count: 3,
-      campaigns_settings: { project_phase_started: true },
       votes_count: 0,
+      vote_term: 'vote',
       baskets_count: 0,
       report_public: false,
+      total_votes_amount: 0,
     },
     relationships: {
       permissions: {
@@ -110,10 +113,11 @@ export const phasesData: IPhaseData[] = [
       reacting_dislike_limited_max: 0,
       input_term: 'idea',
       ideas_count: 3,
-      campaigns_settings: { project_phase_started: true },
       votes_count: 0,
+      vote_term: 'vote',
       baskets_count: 0,
       report_public: false,
+      total_votes_amount: 0,
     },
     relationships: {
       permissions: {
@@ -155,10 +159,11 @@ export const mockPhaseInformationData: IPhaseData = {
     input_term: 'idea',
     presentation_mode: 'card',
     ideas_count: 3,
-    campaigns_settings: { project_phase_started: true },
     votes_count: 0,
+    vote_term: 'vote',
     baskets_count: 0,
     report_public: false,
+    total_votes_amount: 0,
   },
   relationships: {
     permissions: {
@@ -199,10 +204,11 @@ export const mockPhaseIdeationData: IPhaseData = {
     reacting_dislike_limited_max: 0,
     input_term: 'idea',
     ideas_count: 3,
-    campaigns_settings: { project_phase_started: true },
+    vote_term: 'vote',
     votes_count: 0,
     baskets_count: 0,
     report_public: false,
+    total_votes_amount: 0,
   },
   relationships: {
     permissions: {
@@ -245,10 +251,11 @@ export const mockPhaseSurveyTypeformData: IPhaseData = {
     survey_embed_url: 'myTestSurvey.typeform.com',
     reacting_dislike_enabled: false,
     reacting_dislike_limited_max: 0,
-    campaigns_settings: { project_phase_started: true },
     votes_count: 0,
+    vote_term: 'vote',
     baskets_count: 0,
     report_public: false,
+    total_votes_amount: 0,
   },
   relationships: {
     permissions: {
@@ -291,10 +298,11 @@ export const mockPhaseSurveyGoogleFormData: IPhaseData = {
     survey_service: 'google_forms',
     survey_embed_url: 'myTestSurvey.google_forms.com',
     ideas_count: 2,
-    campaigns_settings: { project_phase_started: true },
     votes_count: 0,
+    vote_term: 'vote',
     baskets_count: 0,
     report_public: false,
+    total_votes_amount: 0,
   },
   relationships: {
     permissions: {
@@ -342,9 +350,6 @@ const votingPhase: IPhaseData = {
     created_at: '2023-11-12T11:05:43.934Z',
     updated_at: '2024-01-25T17:29:22.242Z',
     ideas_count: 0,
-    campaigns_settings: {
-      project_phase_started: true,
-    },
     submission_enabled: true,
     commenting_enabled: true,
     reacting_enabled: true,
@@ -360,25 +365,9 @@ const votingPhase: IPhaseData = {
     voting_min_total: 0,
     voting_max_votes_per_idea: 1,
     baskets_count: 0,
-    voting_term_singular_multiloc: {
-      en: 'vote',
-      'nl-BE': 'stem',
-      'fr-BE': 'vote',
-      'de-DE': 'Stimme',
-      'es-CL': 'votar',
-      'sr-Latn': 'vote',
-      'da-DK': 'stem',
-    },
-    voting_term_plural_multiloc: {
-      en: 'votes',
-      'nl-BE': 'stemmen',
-      'fr-BE': 'votes',
-      'de-DE': 'Stimmen',
-      'es-CL': 'votos',
-      'sr-Latn': 'votes',
-      'da-DK': 'afstemninger',
-    },
-    votes_count: 0,
+    votes_count: 100,
+    total_votes_amount: 100,
+    vote_term: 'vote',
     report_public: false,
   },
   relationships: {
@@ -397,5 +386,43 @@ const votingPhase: IPhaseData = {
 export const votingPhaseHandler = http.get(apiPathPhase, () => {
   return HttpResponse.json({ data: votingPhase }, { status: 200 });
 });
+
+export const votingPastNoResultPhaseHandler = http.get(apiPathPhase, () => {
+  const votingPhasePastNoResultSharing = votingPhase;
+  votingPhasePastNoResultSharing.attributes.autoshare_results_enabled = false;
+  votingPhasePastNoResultSharing.attributes.start_at = '2023-11-10';
+  votingPhasePastNoResultSharing.attributes.end_at = '2023-11-19';
+
+  return HttpResponse.json(
+    { data: votingPhasePastNoResultSharing },
+    { status: 200 }
+  );
+});
+
+export const budgetingPastNoResultPhaseHandler = http.get(apiPathPhase, () => {
+  const votingPhasePastNoResultSharing = votingPhase;
+  votingPhasePastNoResultSharing.attributes.voting_method = 'budgeting';
+  votingPhasePastNoResultSharing.attributes.voting_max_total = 1000;
+  votingPhasePastNoResultSharing.attributes.start_at = '2023-11-10';
+  votingPhasePastNoResultSharing.attributes.end_at = '2023-11-19';
+
+  return HttpResponse.json(
+    { data: votingPhasePastNoResultSharing },
+    { status: 200 }
+  );
+});
+
+export const votingPhaseAutoshareDisabledHandler = http.get(
+  apiPathPhase,
+  () => {
+    const votingPhaseAutoshareDisabled = votingPhase;
+    votingPhaseAutoshareDisabled.attributes.autoshare_results_enabled = false;
+
+    return HttpResponse.json(
+      { data: votingPhaseAutoshareDisabled },
+      { status: 200 }
+    );
+  }
+);
 
 export default endpoints;

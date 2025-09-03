@@ -10,7 +10,7 @@ import {
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import styled from 'styled-components';
 
-import { dropdownLayoutTester } from 'components/Form/utils';
+import dropdownLayoutTester from 'components/Form/utils/dropdownLayoutTester';
 import { FormLabel } from 'components/UI/FormComponents';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
@@ -25,7 +25,6 @@ import { getInstructionMessage } from './utils';
 
 const StyledMultipleSelect = styled(MultipleSelect)`
   flex-grow: 1;
-  z-index: 800 !important;
 `;
 
 const MultiSelectControl = ({
@@ -70,7 +69,7 @@ const MultiSelectControl = ({
             options={options}
             onChange={(vals) => {
               setDidBlur(true);
-              if (vals?.length === 0) {
+              if (vals.length === 0) {
                 handleChange(path, undefined);
               } else {
                 handleChange(
@@ -80,14 +79,14 @@ const MultiSelectControl = ({
               }
             }}
             inputId={sanitizeForClassname(id)}
-            disabled={uischema?.options?.readonly}
+            disabled={uischema.options?.readonly}
             // On phones, the keyboard that appears is too large
             // and covers the options. So we disable the search functionality
             isSearchable={!isSmallerThanPhone}
           />
         </Box>
 
-        <VerificationIcon show={uischema?.options?.verificationLocked} />
+        <VerificationIcon show={uischema.options?.verificationLocked} />
       </Box>
       <Box mt="4px">
         <ErrorDisplay
@@ -108,11 +107,19 @@ export const multiSelectControlTester = (
   jsonSchema: JsonSchema
 ) => {
   if (
-    uiSchema?.options?.input_type === 'multiselect' &&
-    dropdownLayoutTester(uiSchema, jsonSchema)
+    uiSchema.options?.input_type === 'multiselect' &&
+    dropdownLayoutTester(uiSchema, jsonSchema, {
+      rootSchema: jsonSchema,
+      config: {},
+    })
   ) {
     return 1000;
-  } else if (isPrimitiveArrayControl(uiSchema, jsonSchema)) {
+  } else if (
+    isPrimitiveArrayControl(uiSchema, jsonSchema, {
+      rootSchema: jsonSchema,
+      config: {},
+    })
+  ) {
     return 4;
   }
   return -1;

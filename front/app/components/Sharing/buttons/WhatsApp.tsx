@@ -27,7 +27,7 @@ const WhatsApp = ({
 
   const trackClick = (medium: Medium) => () => {
     const properties = { network: medium };
-    trackEventByName(tracks.shareButtonClicked.name, properties);
+    trackEventByName(tracks.shareButtonClicked, properties);
   };
 
   const whatsAppSharingText = encodeURIComponent(whatsAppMessage).concat(
@@ -39,7 +39,7 @@ const WhatsApp = ({
   return (
     <Button
       onClick={handleClick(whatsAppHref)}
-      aria-label={formatMessage(messages.shareViaWhatsApp)}
+      ariaLabel={formatMessage(messages.shareViaWhatsApp)}
       bgColor={colors.success}
       width="40px"
       height="40px"

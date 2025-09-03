@@ -10,23 +10,23 @@ import {
   IdeaStatusesQueryParams,
 } from './types';
 
-const fetchIdeaStatuses = ({ participation_method }: IdeaStatusesQueryParams) =>
+const fetchIdeaStatuses = (queryParams: IdeaStatusesQueryParams) =>
   fetcher<IIdeaStatuses>({
     path: '/idea_statuses',
     action: 'get',
-    queryParams: { participation_method },
+    queryParams,
   });
 
 const useIdeaStatuses = ({
   enabled = true,
-  participation_method,
+  queryParams,
 }: {
   enabled?: boolean;
-  participation_method: IdeaStatusesQueryParams['participation_method'];
+  queryParams: IdeaStatusesQueryParams;
 }) => {
   return useQuery<IIdeaStatuses, CLErrors, IIdeaStatuses, IdeaStatusesKeys>({
-    queryKey: ideaStatusesKeys.list({ participation_method }),
-    queryFn: () => fetchIdeaStatuses({ participation_method }),
+    queryKey: ideaStatusesKeys.list(queryParams),
+    queryFn: () => fetchIdeaStatuses(queryParams),
     enabled,
   });
 };

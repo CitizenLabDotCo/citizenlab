@@ -1,12 +1,14 @@
-import { ILinks, IRelationship, Multiloc } from 'typings';
+import { Multiloc, ILinks, IRelationship } from 'typings';
 
-import { PublicationStatus } from 'api/projects/types';
+import { PublicationStatus, Visibility } from 'api/projects/types';
 
 import { Keys } from 'utils/cl-react-query/types';
 
 import adminPublicationsKeys from './keys';
 
 export type AdminPublicationsKeys = Keys<typeof adminPublicationsKeys>;
+
+export type ReviewState = 'pending' | 'approved';
 
 export interface IQueryParameters {
   topicIds?: string[] | null;
@@ -19,21 +21,18 @@ export interface IQueryParameters {
   rootLevelOnly?: boolean;
   removeNotAllowedParents?: boolean;
   onlyProjects?: boolean;
+  review_state?: ReviewState;
   filter_is_moderator_of?: boolean;
   filter_user_is_moderator_of?: string;
+  // This excludes projects that are already inside included folders from the result set, so we don't show duplicates.
+  exclude_projects_in_included_folders?: boolean;
+  include_publications?: boolean;
+  remove_all_unlisted?: boolean;
+  visibility?: Visibility[];
+  discoverability?: ('listed' | 'unlisted')[];
 }
 
-/**
- * The sole purpose of this interface is to allow widening the types
- * in external modules, by reopening the interface and adding other key-values
- */
-export interface IAdminPublicationTypeMap {
-  project: 'project';
-  folder: 'folder';
-}
-
-export type AdminPublicationType =
-  IAdminPublicationTypeMap[keyof IAdminPublicationTypeMap];
+export type AdminPublicationType = 'project' | 'folder';
 
 /**
     Data structure to handle the ordering of published projects and folders.

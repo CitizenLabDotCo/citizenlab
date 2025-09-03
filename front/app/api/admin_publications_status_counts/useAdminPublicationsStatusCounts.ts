@@ -8,7 +8,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import adminPublicationsStatusCountsKeys from './keys';
 import { IStatusCounts, AdminPublicationsStatusCountsKeys } from './types';
 
-const fetchStatusCounts = ({
+export const fetchStatusCounts = ({
   rootLevelOnly,
   removeNotAllowedParents,
   publicationStatusFilter,
@@ -35,7 +35,10 @@ const fetchStatusCounts = ({
     },
   });
 
-const useAdminPublicationsStatusCounts = (queryParams: IQueryParameters) => {
+const useAdminPublicationsStatusCounts = (
+  queryParams: IQueryParameters,
+  { enabled = true } = {}
+) => {
   return useQuery<
     IStatusCounts,
     CLErrors,
@@ -44,6 +47,7 @@ const useAdminPublicationsStatusCounts = (queryParams: IQueryParameters) => {
   >({
     queryKey: adminPublicationsStatusCountsKeys.item(queryParams),
     queryFn: () => fetchStatusCounts(queryParams),
+    enabled,
   });
 };
 

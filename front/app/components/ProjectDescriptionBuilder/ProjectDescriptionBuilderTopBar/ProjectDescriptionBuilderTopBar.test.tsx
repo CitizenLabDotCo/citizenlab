@@ -5,7 +5,7 @@ import { Editor } from '@craftjs/core';
 import { IProjectDescriptionBuilderData } from 'api/project_description_builder/types';
 
 import clHistory from 'utils/cl-router/history';
-import { render, screen, fireEvent, act, within } from 'utils/testUtils/rtl';
+import { render, screen, act, within, fireEvent } from 'utils/testUtils/rtl';
 
 import ProjectDescriptionBuilderTopBar from '.';
 
@@ -237,9 +237,9 @@ describe('ProjectDescriptionBuilderTopBar', () => {
     expect(screen.queryByText('en')).not.toBeInTheDocument();
   });
 
-  it('renders locale switcher when there is only one locale', () => {
+  it('renders locale switcher when there is more than one locale', () => {
     mockLocalesData = ['en', 'fr-FR'];
-    render(
+    const { container } = render(
       <Editor>
         <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
@@ -250,12 +250,13 @@ describe('ProjectDescriptionBuilderTopBar', () => {
         />
       </Editor>
     );
-    expect(screen.getByText('en')).toBeInTheDocument();
+    expect(container.querySelector('#e2e-locale-select')).toBeInTheDocument();
   });
 
   it('calls onSelectLocale correctly when the locale is changed', () => {
+    mockLocalesData = ['en', 'fr-FR'];
     const onSelectLocale = jest.fn();
-    render(
+    const { container } = render(
       <Editor>
         <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
@@ -266,7 +267,12 @@ describe('ProjectDescriptionBuilderTopBar', () => {
         />
       </Editor>
     );
-    fireEvent.click(screen.getByText('fr-FR'));
+
+    expect(container.querySelector('#e2e-locale-select')).toBeInTheDocument();
+
+    fireEvent.change(container.querySelector('#e2e-locale-select'), {
+      target: { value: 'fr-FR' },
+    });
     expect(onSelectLocale).toHaveBeenCalledWith({
       editorData: {},
       locale: 'fr-FR',

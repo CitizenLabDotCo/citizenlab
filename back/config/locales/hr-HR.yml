@@ -58,21 +58,6 @@ hr:
     answered_description: odgovorio
     ineligible: nepodoban
     ineligible_description: nepodoban
-  initiative_statuses:
-    review_pending: pregled na čekanju
-    review_pending_description: pregled na čekanju
-    changes_requested: tražene izmjene
-    changes_requested_description: tražene izmjene
-    proposed: predloženo
-    proposed_description: predloženo
-    expired: isteklo
-    expired_description: isteklo
-    threshold_reached: dosegnut prag
-    threshold_reached_description: dosegnut prag
-    answered: odgovoreno
-    answered_description: odgovoreno
-    ineligible: nije prihvatljivo
-    ineligible_description: nije prihvatljivo
   topics:
     nature: Priroda i bioraznolikost
     nature_description: Priroda i bioraznolikost
@@ -106,20 +91,20 @@ hr:
     services_description: Javne usluge
     other: Ostalo
     other_description: Ostalo
+    quality_of_life: Kvaliteta života
+    service_delivery: Isporuka usluga
+    governance_and_trust: Upravljanje i povjerenje
   static_pages:
     terms_and_conditions_title: Uvjeti i odredbe
     terms_and_conditions_body: >
       <p>Ovi uvjeti i odredbe opisuju pravila i smjernice za doprinos platformi i namijenjeni su osiguravanju konstruktivnog dijaloga.</p> <p>Vaše ideje za daljnje poboljšanje platforme dobrodošle su i mogu se poslati na support@ Go Vocal.co.</p> <h2>Tko može sudjelovati?</h2> <p>Svatko može vidjeti javne projekte putem platforme. Ako želite doprinijeti sadržaju (npr. poslati unos ili glasovati), morat ćete se registrirati i izraditi račun. Registrirati se možete koristeći svoju adresu e-pošte; za neke platforme moguće se prijaviti i putem postojećeg Facebook ili Google računa. Ako koristite bilo koju od ovih usluga, vaše ime, adresa e-pošte i profilna fotografija bit će podijeljeni i dodani na vaš račun platforme.</p> <p>Imajte na umu da izradom računa ne dobivate vlasništvo nad njim. Administratori platforme mogu odbiti, obustaviti ili izbrisati račune iz razloga kao što je nepridržavanje odredbi i uvjeta navedenih na ovoj stranici.</p> <p>Opći uvjeti za vaš račun jesu sljedeći: </p> <ul> <li> <strong>Možete izraditi jedan račun</strong> <p>Pojedinac ne može izraditi i održavati više računa. Podaci o računu koje navedete moraju biti točni i ovaj se račun ne može prenijeti na nekog drugog bez dopuštenja administratora platforme. </p> </li> <li> <strong>Vaš račun ne smije se koristiti za komercijalnu promidžbu</strong> <p>Račun se ne smije koristiti samo u svrhu oglašavanja, marketinga proizvoda ili usluge itd. </p> </li> <li> <strong>Odgovorni ste za čuvanje sigurnosti i povjerljivosti podataka računa</strong> <p>Vi ste jedina osoba koja bi trebala koristiti svoj račun i imati pristup zaporci računa i detaljima prijave. Kako biste poboljšali sigurnost svog računa, savjetujemo korištenje lozinke s kombinacijom brojeva, malih i velikih slova. Nismo odgovorni ni za kakav gubitak ili štetu nastalu na vašem računu i ne možemo se smatrati odgovornima za njegovu krađu (npr. putem krađe identiteta). Imajte na umu da od vas nikada nećemo tražiti podatke za prijavu kao što je zaporka. </p> <h2>Vaša aktivnost na platformi</h2> <p>Kako bismo osigurali sigurno i produktivno sudjelovanje, postoje neka ograničenja u pogledu vrste sadržaja koji se može objaviti na ovoj platformi. Svaki sadržaj koji objavite na platformi ne smije sadržavati:</p> <ul> <li> <strong>Privatni podaci</strong> <p>Povjerljivi podaci i osobne informacije o drugima, kao što su telefonski brojevi i adrese, ne smiju se objaviti bez njihovog izričitog ovlaštenja i pristanka. </p> <li><strong>Neželjena pošta / zlonamjerni softver / krađa identiteta / virusi / crvi / Trojanci</strong> <p>Zlonamjerni sadržaj ili veze čija je namjera narušavanje privatnosti drugih ili oštećenje ili ometanje tuđih preglednika ili računala. </p> </li> <li> <strong>Prijetnje, uvrede i ostali neprimjereni sadržaji </strong> <p>Osobni napadi i uvrede, prijeteće ponašanje ili jezik, diskriminirajući komentari, vulgarnost i drugi uvredljivi jezik.</p>> </li> <li><strong>Oglašavanje i komercijalna aktivnost</strong> <p>Sadržaj objavljen s isključivom svrhom oglašavanja komercijalne usluge ili proizvoda.</p> </li> <li> <strong> Materijal zaštićen autorskim pravima</strong> <p>Sadržaj koji krši prava intelektualnog vlasništva (npr. slike zaštićene autorskim pravima).</p> </li> <li> <strong>Nezakonite aktivnosti</strong> <p>Sadržaj koji u bilo kojem način promovira nezakonite aktivnosti.</li></p> </ul> <p>Prijave i drugi sadržaji koji uključuju bilo što od navedenog mogu se uređivati, brisati ili na se drugi način može spriječiti njihovo objavljivanje, a račun može biti privremeno blokiran ili trajno izbrisan. Novi ili dodatni računi izrađeni kako bi se izbjegla privremena ili trajna obustava također se mogu nadzirati i brisati.</p> <h2>Primjenjivi zakoni</h2> <p>Korištenjem računa ne smiju se kršiti primjenjivi zakoni. To uključuje svako kršenje zakona o privatnosti, prava intelektualnog vlasništva, kaznenog zakona itd.</p> <p>Ne možemo se smatrati odgovornim ni na koji način za sadržaj objavljen na platformi koji nije u skladu s gore navedenim pravilima i zakonima. Kršenja se mogu prijaviti na support@govocal.com i mogu rezultirati brisanjem relevantnih poruka i/ili obustavom ili trajnim opozivom temeljnog računa.</p> <p>Moguće je da sadržaj objavljen na platformi može sadržavati štetne datoteke ili veze. Preuzimanjem datoteka ili pristupom hipervezama putem platforme preuzimate rizik i odgovornost za bilo kakvu štetu koja može nastati.</p> <h2>Prava vlasništva</h2> <p>Ova platforma zaštićena je pravima intelektualnog vlasništva koja se odnose na sadržaj, izvorni kod, baze podataka itd. Svaki originalni sadržaj koji objavite na platformi može biti vidljiv javnosti i spada pod javnu licencu Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) koja omogućuje dijeljenje ili prilagodbu vašeg sadržaja uz atribuciju. Ne smijete bez dopuštenja na drugi način reproducirati, distribuirati, mijenjati ili prenositi platformu i bilo koji njezin sadržaj koji ne spada u javnu domenu.</p>
     privacy_policy_title: Pravila o privatnosti
     privacy_policy_body: >
-      <p>Odgovorno tijelo za obradu podataka:</p> <p>CitizenLab NV – Pachecolaan 34 – 1000 Bruxelles – Belgija</p> <p>Adresa e-pošte za kontakt: support@govocal.com</p> <p>Organizacija: //umetnite kontakte klijenta</p> <h2>1. PRAVILA O PRIVATNOSTI</h2> <p>Ova “Pravila o privatnosti” primjenjuju se na “Osobne podatke” koje prikuplja Go Vocal u ime organizacije putem ovog web-mjesta.</p> <h2>2. ŠTO SU OSOBNI PODACI?</h2> <p>U ovim Pravilima o privatnosti osobni podaci odnose se na informacije koje omogućuju vašu identifikaciju. Osoba koja se može identificirati jest netko tko se može identificirati, bilo izravno ili neizravno, posebice pozivanjem na identifikacijski broj ili na jedan ili više čimbenika koji su povezani s fizičkim, fiziološkim, mentalnim, ekonomskim, kulturnim ili društvenim identitetom. Tipičan primjer osobnih podataka vaše je ime i adresa e-pošte.</p> <h2>3. KOJE OSOBNE PODATKE PRIKUPLJAMO?</h2> <p>Vaše osobne podatke možemo prikupiti iz sljedeća tri izvora:</p> <h3>3.1 Osobni podaci koje dajete tijekom postupka registracije na platformi, od kojih su neki nisu obavezni.</h3> <p>Osobni podaci koje možemo prikupiti od vas jesu:</p> <ul> <li>Ime i prezime</li> <li>Adresa e-pošte</li> <li>Godina rođenja</li> <li>Spol</li> <li>Područje stanovanja</li> <li>Željeni jezik</li> </ul> <p>Ovaj popis može se proširiti na zahtjev organizacije. Ako se odlučite prijaviti putem davatelja autentifikacije treće strane kao Google računi, Facebook ili FranceConnect, te ćemo podatke dobiti od njih. Ako odlučite potvrditi svoj identitet kod davatelja identiteta treće strane kao što je COW, FranceConnect ili CSAM, te ćemo informacije dobiti od njih.</p> <h3>3.2 Osobni podaci koje dajete prilikom sudjelovanja na našoj platformi.</h3> <p>Svaka radnja koju poduzmete na platformi (glasovanje, objavljivanje ideje, pisanje komentara, odgovaranje na anketu,…) registrira se i pohranjuje. Ovi su podaci također povezani s vašim podacima o registraciji (3.1), što znači da organizacija može povezati vaš profil platforme s ovim podacima o sudjelovanju.</p> <h3>3.3 Osobni podaci koje prikupljamo kada posjetite našu platformu.</h3> <p>Mi (i obrađivači treće strane koji djeluju u naše ime) prikupljamo podatke o uporabi naše platforme za procjenu dobrog funkcioniranja i sigurnosti platforme. U tu svrhu prikupljamo tehničke podatke koji vas mogu identificirati, kao što su vaša IP adresa i detalji preglednika. Korištenjem naših usluga pristajete na prikupljanje tih podataka.</p> <p>Također prikupljamo podatke o uporabi kako bismo poboljšali naše usluge, možete u bilo kojem trenutku odustati od ovog prikupljanja kod upravitelja pristanka.</p> <h2>4. KAKO KORISTIMO OSOBNE PODATKE?</h2> <p>Vaše osobne podatke možemo koristiti u sljedeće svrhe:</p> <ul> <li>Prvo i najvažnije, za prenošenje vašeg unosa organizaciji s relevantnim kontekstom i za izradu agregiranih izvješća o svim podacima prikupljenim na ovoj platformi kao pomoć u donošenju odluka.</li> <li>Za izradu i održavanje vašeg korisničkog profila na ovom web-mjestu.</li> <li>Za upravljanje identificiranjem i provjerom autentičnosti korisnika.</li> <li>Kako bismo mogli pružiti informacije o vašoj zajednici i/ili vas upozoriti kako bi vas aktivnosti na platformi mogle zanimati. Možete u bilo kojem trenutku isključiti korisničku e-poštu s svog korisničkog profila.</li> <li>Kako bismo poboljšali naše usluge i pratili njihove funkcionalnosti.</li> </ul> <p>Osobni podaci samo se pohranjuju i obrađuju u razdoblju potrebnom za svrhu obrade. Nakon toga će podaci biti izbrisani ili anonimizirani.</p> <h2>5. S KIM DIJELIMO VAŠE OSOBNE PODATKE?</h2> <p>Vaše osobne podatke dijelimo s organizacijom u čije ime prikupljamo te podatke. Vaše podatke dijelimo s podizvršiteljima obrade koji rade u naše ime. Nikada nećemo prodati niti iznajmiti vaše osobne podatke drugim pružateljima usluga, niti ćemo dijeliti vaše osobne podatke s bilo kojim pružateljima usluga koji nisu u skladu s GDPR-om.</p> <h2>6. KAMO PRENOSIMO VAŠE OSOBNE PODATKE?</h2> <p>Vaše osobne podatke prenosimo samo pružateljima usluga s poslovnim nastanom izvan Europskog gospodarskog prostora ako su u skladu s člankom 44. GDPR-a.</p> <h2>7. KOJA PRAVA IMATE?</h2> <p>Imate pravo uvida u svoje osobne podatke u bilo kojem trenutku, kao i pravo informirati se o tome kako Go Vocal koristi vaše osobne podatke.</p> <h3>7.1 Pravo na ispravak, brisanje i ograničenje obrade</h3> <p>Slobodno možete odlučiti hoćete li svoje osobne podatke dati Go Vocalu ili ne. Osim toga, uvijek imate pravo od Go Vocala zatražiti ispravak, dopunu ili uklanjanje vaših osobnih podataka. Prihvaćate da odbijanje pružanja ili zahtjev za brisanjem osobnih podataka znači da se određene usluge više ne mogu isporučivati. Također možete zatražiti da se ograniči obrada vaših osobnih podataka. Ako odlučite ukloniti svoj račun s platforme, osobni podaci koji su prikupljeni o vama bit će uklonjeni s naših poslužitelja. Neki osobni podaci o vama mogu ostati u podacima za prijavu koje čuvamo iz sigurnosnih i pravnih razloga do 30 dana.</p> <h3>7.2 Pravo na prigovor</h3> <p>Imate pravo na prigovor na obradu vaših osobnih podataka iz ozbiljnih i legitimnih razloga. Osim toga, uvijek imate pravo prigovora na korištenje vaših osobnih podataka u svrhe izravnog marketinga; u takvim slučajevima ne morate navoditi razloge.</p> <h3>7.3 Pravo na prenosivost podataka</h3> <p>Imate pravo dobiti osobne podatke koje ste dali Go Vocalu u strukturiranom, tipičnom i strojno čitljivom obliku i/ili ih prenijeti različitim voditeljima obrade.</p> <h3>7.4 Pravo na povlačenje privole</h3> <p>U mjeri u kojoj se obrada temelji na vašoj prethodnoj privoli, imate pravo povući ovo odobrenje.</p> <h3>7.5 Ostvarivanje vaših prava</h3> <p>Svoja prava možete ostvariti kontaktiranjem Go Vocala u tu svrhu, e-poštom na support@govocal.com, poštom na Pachecolaan 34, 1000 Bruxelles, Belgija ili korištenjem obrasca “Kontaktirajte nas” na našem web-mjestu, pod uvjetom da priložite kopiju prednje strane svoje osobne iskaznice.</p> <h3>7.6 Automatizirano donošenje odluka i profiliranje</h3> <p >Obrada vaših osobnih podataka ne uključuje profiliranje i Go Vocal je također neće upotrijebiti za automatsko donošenje odluka.</p> <h3>7.7 Pravo na podnošenje pritužbe</h3> <p>Imate e pravo podnošenja pritužbe tijelu za zaštitu privatnosti u vašoj zemlji ili belgijskom tijelu za zaštitu privatnosti pod koje tijelo spada Go Vocal: Drukpersstraat 35, 1000 Bruxelles, Belgija, Tel +32 (0)2 274 48 00, Fax +32 (0 )2 274 48 35, e-pošta: contact@adp-gba.be. Ovo ne utječe na oslobađanje pred građanskim sudom.</p> <h2>8. DODATNE INFORMACIJE O PRIKUPLJANJU I OBRADI PODATAKA</h2> <h3>Pravni postupci</h3> <p>Go Vocal i organizacija za koju obrađujemo ove podatke mogu koristiti osobne podatke korisnika u pravne svrhe, za sudske ili pravne postupke prethodne faze u slučaju nezakonitog korištenja ove aplikacije ili povezanih usluga. Korisnik je svjestan kako bi Go Vocal i organizacija s kojom surađujemo mogli biti dužni otkriti osobne podatke na zahtjev nadležnih državnih institucija za obradu podataka. Pravna osnova za ovu obradu jest prihvaćanje uvjeta (ugovorna osnova) i dana suglasnost.</p> <h3>Sigurnosne mjere</h3> <p>Go Vocal je razvio sigurnosne mjere koje su prilagođene tehnološkim i organizacijskoj razini kako bi se spriječilo uništavanje, gubitak, krivotvorenje, mijenjanje, zabranjeni pristup ili pogrešno otkrivanje osobnih podataka trećim stranama kao i svaka druga zabranjena obrada tih podataka. Go Vocal se ni pod kojim uvjetima ne može smatrati odgovornim ni za kakav izravni ili neizravni gubitak koji proizlazi iz netočne ili nezakonite upotrebe vaših osobnih podataka od strane treće strane. Morate se u svakom trenutku pridržavati sigurnosnih uputa, uključujući sprječavanje svih zabranjenih pristupa vašim podacima za prijavu i zaporki. Isključivo ste odgovorni za korištenje web-mjesta na vašem računalu, IP adresu i vaše identifikacijske podatke, kao i za povjerljivost istih.</p> <h3>Promjene ovh pravila o privatnosti</h3> <p>Go Vocal zadržava pravo promijeniti ova pravila o privatnosti u bilo kojem trenutku obavještavanjem korisnika na ovoj stranici. Potičemo vas da provjerite ovu stranicu radi mogućih promjena. Datum zadnje izmjene naveden je na dnu stranice. Ako se Korisnik protivi bilo kojoj promjeni pravila, ne smije nastaviti koristiti ovu aplikaciju. Osim ako nije drugačije naznačeno, važeća pravila o privatnosti koja su u tom trenutku primjenjiva primjenjuju se na sve osobne podatke koje smo prikupili.</p> <p><em>Posljednje ažuriranje: 17/12/2019</em></p>
+      <p>Odgovorno tijelo za obradu podataka:</p> <p>Go Vocal NV – Pachecolaan 34 – 1000 Bruxelles – Belgija</p> <p>Adresa e-pošte za kontakt: support@govocal.com</p> <p>Organizacija: //umetnite kontakte klijenta</p> <h2>1. PRAVILA O PRIVATNOSTI</h2> <p>Ova “Pravila o privatnosti” primjenjuju se na “Osobne podatke” koje prikuplja Go Vocal u ime organizacije putem ovog web-mjesta.</p> <h2>2. ŠTO SU OSOBNI PODACI?</h2> <p>U ovim Pravilima o privatnosti osobni podaci odnose se na informacije koje omogućuju vašu identifikaciju. Osoba koja se može identificirati jest netko tko se može identificirati, bilo izravno ili neizravno, posebice pozivanjem na identifikacijski broj ili na jedan ili više čimbenika koji su povezani s fizičkim, fiziološkim, mentalnim, ekonomskim, kulturnim ili društvenim identitetom. Tipičan primjer osobnih podataka vaše je ime i adresa e-pošte.</p> <h2>3. KOJE OSOBNE PODATKE PRIKUPLJAMO?</h2> <p>Vaše osobne podatke možemo prikupiti iz sljedeća tri izvora:</p> <h3>3.1 Osobni podaci koje dajete tijekom postupka registracije na platformi, od kojih su neki nisu obavezni.</h3> <p>Osobni podaci koje možemo prikupiti od vas jesu:</p> <ul> <li>Ime i prezime</li> <li>Adresa e-pošte</li> <li>Godina rođenja</li> <li>Spol</li> <li>Područje stanovanja</li> <li>Željeni jezik</li> </ul> <p>Ovaj popis može se proširiti na zahtjev organizacije. Ako se odlučite prijaviti putem davatelja autentifikacije treće strane kao Google računi, Facebook ili FranceConnect, te ćemo podatke dobiti od njih. Ako odlučite potvrditi svoj identitet kod davatelja identiteta treće strane kao što je COW, FranceConnect ili CSAM, te ćemo informacije dobiti od njih.</p> <h3>3.2 Osobni podaci koje dajete prilikom sudjelovanja na našoj platformi.</h3> <p>Svaka radnja koju poduzmete na platformi (glasovanje, objavljivanje ideje, pisanje komentara, odgovaranje na anketu,…) registrira se i pohranjuje. Ovi su podaci također povezani s vašim podacima o registraciji (3.1), što znači da organizacija može povezati vaš profil platforme s ovim podacima o sudjelovanju.</p> <h3>3.3 Osobni podaci koje prikupljamo kada posjetite našu platformu.</h3> <p>Mi (i obrađivači treće strane koji djeluju u naše ime) prikupljamo podatke o uporabi naše platforme za procjenu dobrog funkcioniranja i sigurnosti platforme. U tu svrhu prikupljamo tehničke podatke koji vas mogu identificirati, kao što su vaša IP adresa i detalji preglednika. Korištenjem naših usluga pristajete na prikupljanje tih podataka.</p> <p>Također prikupljamo podatke o uporabi kako bismo poboljšali naše usluge, možete u bilo kojem trenutku odustati od ovog prikupljanja kod upravitelja pristanka.</p> <h2>4. KAKO KORISTIMO OSOBNE PODATKE?</h2> <p>Vaše osobne podatke možemo koristiti u sljedeće svrhe:</p> <ul> <li>Prvo i najvažnije, za prenošenje vašeg unosa organizaciji s relevantnim kontekstom i za izradu agregiranih izvješća o svim podacima prikupljenim na ovoj platformi kao pomoć u donošenju odluka.</li> <li>Za izradu i održavanje vašeg korisničkog profila na ovom web-mjestu.</li> <li>Za upravljanje identificiranjem i provjerom autentičnosti korisnika.</li> <li>Kako bismo mogli pružiti informacije o vašoj zajednici i/ili vas upozoriti kako bi vas aktivnosti na platformi mogle zanimati. Možete u bilo kojem trenutku isključiti korisničku e-poštu s svog korisničkog profila.</li> <li>Kako bismo poboljšali naše usluge i pratili njihove funkcionalnosti.</li> </ul> <p>Osobni podaci samo se pohranjuju i obrađuju u razdoblju potrebnom za svrhu obrade. Nakon toga će podaci biti izbrisani ili anonimizirani.</p> <h2>5. S KIM DIJELIMO VAŠE OSOBNE PODATKE?</h2> <p>Vaše osobne podatke dijelimo s organizacijom u čije ime prikupljamo te podatke. Vaše podatke dijelimo s podizvršiteljima obrade koji rade u naše ime. Nikada nećemo prodati niti iznajmiti vaše osobne podatke drugim pružateljima usluga, niti ćemo dijeliti vaše osobne podatke s bilo kojim pružateljima usluga koji nisu u skladu s GDPR-om.</p> <h2>6. KAMO PRENOSIMO VAŠE OSOBNE PODATKE?</h2> <p>Vaše osobne podatke prenosimo samo pružateljima usluga s poslovnim nastanom izvan Europskog gospodarskog prostora ako su u skladu s člankom 44. GDPR-a.</p> <h2>7. KOJA PRAVA IMATE?</h2> <p>Imate pravo uvida u svoje osobne podatke u bilo kojem trenutku, kao i pravo informirati se o tome kako Go Vocal koristi vaše osobne podatke.</p> <h3>7.1 Pravo na ispravak, brisanje i ograničenje obrade</h3> <p>Slobodno možete odlučiti hoćete li svoje osobne podatke dati Go Vocalu ili ne. Osim toga, uvijek imate pravo od Go Vocala zatražiti ispravak, dopunu ili uklanjanje vaših osobnih podataka. Prihvaćate da odbijanje pružanja ili zahtjev za brisanjem osobnih podataka znači da se određene usluge više ne mogu isporučivati. Također možete zatražiti da se ograniči obrada vaših osobnih podataka. Ako odlučite ukloniti svoj račun s platforme, osobni podaci koji su prikupljeni o vama bit će uklonjeni s naših poslužitelja. Neki osobni podaci o vama mogu ostati u podacima za prijavu koje čuvamo iz sigurnosnih i pravnih razloga do 30 dana.</p> <h3>7.2 Pravo na prigovor</h3> <p>Imate pravo na prigovor na obradu vaših osobnih podataka iz ozbiljnih i legitimnih razloga. Osim toga, uvijek imate pravo prigovora na korištenje vaših osobnih podataka u svrhe izravnog marketinga; u takvim slučajevima ne morate navoditi razloge.</p> <h3>7.3 Pravo na prenosivost podataka</h3> <p>Imate pravo dobiti osobne podatke koje ste dali Go Vocalu u strukturiranom, tipičnom i strojno čitljivom obliku i/ili ih prenijeti različitim voditeljima obrade.</p> <h3>7.4 Pravo na povlačenje privole</h3> <p>U mjeri u kojoj se obrada temelji na vašoj prethodnoj privoli, imate pravo povući ovo odobrenje.</p> <h3>7.5 Ostvarivanje vaših prava</h3> <p>Svoja prava možete ostvariti kontaktiranjem Go Vocala u tu svrhu, e-poštom na support@govocal.com, poštom na Pachecolaan 34, 1000 Bruxelles, Belgija ili korištenjem obrasca “Kontaktirajte nas” na našem web-mjestu, pod uvjetom da priložite kopiju prednje strane svoje osobne iskaznice.</p> <h3>7.6 Automatizirano donošenje odluka i profiliranje</h3> <p >Obrada vaših osobnih podataka ne uključuje profiliranje i Go Vocal je također neće upotrijebiti za automatsko donošenje odluka.</p> <h3>7.7 Pravo na podnošenje pritužbe</h3> <p>Imate e pravo podnošenja pritužbe tijelu za zaštitu privatnosti u vašoj zemlji ili belgijskom tijelu za zaštitu privatnosti pod koje tijelo spada Go Vocal: Drukpersstraat 35, 1000 Bruxelles, Belgija, Tel +32 (0)2 274 48 00, Fax +32 (0 )2 274 48 35, e-pošta: contact@adp-gba.be. Ovo ne utječe na oslobađanje pred građanskim sudom.</p> <h2>8. DODATNE INFORMACIJE O PRIKUPLJANJU I OBRADI PODATAKA</h2> <h3>Pravni postupci</h3> <p>Go Vocal i organizacija za koju obrađujemo ove podatke mogu koristiti osobne podatke korisnika u pravne svrhe, za sudske ili pravne postupke prethodne faze u slučaju nezakonitog korištenja ove aplikacije ili povezanih usluga. Korisnik je svjestan kako bi Go Vocal i organizacija s kojom surađujemo mogli biti dužni otkriti osobne podatke na zahtjev nadležnih državnih institucija za obradu podataka. Pravna osnova za ovu obradu jest prihvaćanje uvjeta (ugovorna osnova) i dana suglasnost.</p> <h3>Sigurnosne mjere</h3> <p>Go Vocal je razvio sigurnosne mjere koje su prilagođene tehnološkim i organizacijskoj razini kako bi se spriječilo uništavanje, gubitak, krivotvorenje, mijenjanje, zabranjeni pristup ili pogrešno otkrivanje osobnih podataka trećim stranama kao i svaka druga zabranjena obrada tih podataka. Go Vocal se ni pod kojim uvjetima ne može smatrati odgovornim ni za kakav izravni ili neizravni gubitak koji proizlazi iz netočne ili nezakonite upotrebe vaših osobnih podataka od strane treće strane. Morate se u svakom trenutku pridržavati sigurnosnih uputa, uključujući sprječavanje svih zabranjenih pristupa vašim podacima za prijavu i zaporki. Isključivo ste odgovorni za korištenje web-mjesta na vašem računalu, IP adresu i vaše identifikacijske podatke, kao i za povjerljivost istih.</p> <h3>Promjene ovh pravila o privatnosti</h3> <p>Go Vocal zadržava pravo promijeniti ova pravila o privatnosti u bilo kojem trenutku obavještavanjem korisnika na ovoj stranici. Potičemo vas da provjerite ovu stranicu radi mogućih promjena. Datum zadnje izmjene naveden je na dnu stranice. Ako se Korisnik protivi bilo kojoj promjeni pravila, ne smije nastaviti koristiti ovu aplikaciju. Osim ako nije drugačije naznačeno, važeća pravila o privatnosti koja su u tom trenutku primjenjiva primjenjuju se na sve osobne podatke koje smo prikupili.</p> <p><em>Posljednje ažuriranje: 17/12/2019</em></p>
     infopage_title: Stranica s informacijama
     infopage_body: "<p>Ova <strong>sveobuhvatna platforma za sudjelovanje</strong> inicijativa je vaše općine ili organizacije i može se koristiti za različite procese javnih konzultacija: prikupljanje ideja, glasovanje, rasprave, upitnike, ankete, skupno određivanje proračuna, mapiranje na mreži, planiranje scenarija, podršku za savjetodavne odbore i komisije, ...</p>\n<p>Na početnoj stranici vidjet ćete koji su <strong>procesi aktivni </strong>i u kojoj se <strong>fazi </strong>trenutačno nalaze.</p>\n<p><img data-cl2-text-image-text-reference=\"e2c7bc7a-017d-4887-a3cb-b94185617a59\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<h2>Kako se mogu prijaviti na platformu?</h2>\n<p>Prijava je jednostavna tako da unesete svoje ime i prezime te svoju adresu e-pošte. Također možete koristiti svoj Google ili Facebook račun. Drugima će biti vidljivi samo vaše ime i prezime.</p>\n<h2>Mogu li sam koristiti platformu, npr. organizirati javno savjetovanje?</h2>\n<p>Apsolutno. Zamolite odgovorne u vašoj općini ili organizaciji da vam daju potrebna prava za dopuštenje da postanete moderator projekta. Nakon što dobijete ta dopuštenja, možete postaviti vlastiti projekt i vremenski okvir te dijeliti informacije koje želite (videozapise, dokumente, slike, ...). To će vam također omogućiti da pozovete druge na platformu, omogućujući im da objavljuju ideje unutar vašeg projekta, glasaju ili komentiraju.</p>\n<h2>Mogu li sudjelovati kao udruga/organizacija/odbor? </h2>\n<p>Da, to je moguće. S obzirom da su samo vaše ime i prezime vidljivi drugima na platformi, možete jednostavno koristiti naziv svoje organizacije dok postavljate svoj profil.</p>\n<h2>Zašto da koristim ovu platformu, a ne da sam napravim web-mjesto?</h2>\n<p>Tim predanih programera i stručnjaka za online sudjelovanje (<a href=\"https://www.govocal.com/en\" target=\"_blank\">Go Vocal</a>, naručila vaša općina ili organizacija) poboljšava i ažurira ovu platformu na dnevnoj bazi. Čak i najmanja pogreška rješava se odmah, a ako imate kreativne prijedloge, oni vam mogu pomoći da istaknu koje se značajke platforme mogu koristiti za to ili koje su u pripremi.</p>\n<p><img data-cl2-text-image-text-reference=\"392d0e47-e5f9-41ab-9ceb-affac617b8b1\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<p><strong><em>Trebate više informacija?</em></strong><em> Želite li koristiti platformu? Imate pitanja ili povratne informacije? Obratite se odgovornom u vašoj općini ili organizaciji. Ili kontaktirajte Go Vocal putem support@govocal.com.</em></p><strong>"
     faq_title: Česta pitanja
     faq_body: "<h2 class=\"ql-align-justify\">Čemu služi ova platforma?</h2><p class=\"ql-align-justify\">Ova je platforma osmišljena kao centralno središte za dijeljenje informacija i dobivanje unosa i povratnih informacija . Projekti sudjelovanja koji su trenutačno aktivni prikazani su na početnoj stranici – svaki projekt sudjelovanja može imati drugačiji način angažmana, bilo da se radi o dodavanju ideje, komentiranju prijedloga, glasovanju i davanju prioriteta projektima ili ispunjavanju ankete. </p><h2 class=\"ql-align-justify\">Kako mogu sudjelovati? </h2><p class=\"ql-align-justify\">Uvijek možete pregledavati javne projekte, ali morat ćete se prijaviti kako biste poduzeli radnju. To pomaže u održavanju osjećaja zajednice i osigurava legitimnost unosa. </p><h2 class=\"ql-align-justify\">Koje informacije ljudi mogu vidjeti o meni?</h2><p class=\"ql-align-justify\">Bit će vidljivi vaše ime, fotografija i biografija, ako ste ih dodali. To uvijek možete promijeniti u postavkama.</p><h2 class=\"ql-align-justify\">Zašto ne mogu objaviti svoj unos ili poslati komentar?</h2><p class=\"ql-align-justify\">Objavljivanje, komentiranje i glasovanje mogu biti omogućeni samo tijekom određenih vremena ili faza projekta. U nekim slučajevima projekt može biti otvoren samo za sudjelovanje određene skupine sudionika.</p><p class=\"ql-align-justify\">Ako je za projekt objavljivanje trenutačno omogućeno, vidjet ćete gumb koji traži od vas da pošaljete objavu. Alternativno, možete pregledavati druge aktivne projekte za dodatne prilike za angažman.</p><h2 class=\"ql-align-justify\">Kako mogu urediti ili izbrisati svoj unos?</h2><p class=\"ql-align-justify\">Ako ste objavili svoj unos, ali ga želite urediti ili izbrisati, ovu opciju možete pronaći klikom na tri male točkice u gornjem desnom kutu objave. </p><h2 class=\"ql-align-justify\">Koje su smjernice zajednice i pravila moderiranja?</h2><p class=\"ql-align-justify\">Naše smjernice zajednice su tu da pomognu osigurati da platforma bude siguran prostor za sudjelovanje svih. Pobrinite se da vaše objave ne sadrže sljedeće:</p><ul>\n   <li class=\"ql-align-justify\">Osobni napadi, uvrede, uvredljivi ili diskriminirajući komentari</li>\n   <li class=\"ql-align-justify\">Uvredljiv jezik, uključujući vulgarnost</li>\n   <li class=\"ql-align-justify\">Marketinški ili reklamni materijal</li>\n   <li class=\"ql-align-justify\">Osobni podaci o drugim pojedincima</li>\n   <li class=\"ql-align-justify\">Materijal zaštićen autorskim pravima kao što su slike</li>\n   </ul><p class=\"ql-align-justify\">Sve objave ili komentari koji nisu u skladu s ovim smjernicama mogu se uređivati ili brisati ili se u ekstremnim slučajevima može spriječiti njihovo objavljivanje. Pregledajte naše Uvjete i odredbe za više informacija. </p><h2 class=\"ql-align-justify\">Kako mogu prijaviti uvredljivu objavu?</h2><p class=\"ql-align-justify\">Kliknite na tri male točkice u gornjem desnom kutu objave kako biste je prijavili. Navedite razlog zbog kojeg prijavljujete sadržaj – time ćete poslati obavijest da se objava pregleda.</p><h2 class=\"ql-align-justify\">Zašto imam poteškoća s registracijom ili prijavom?</h2><p class=\"ql-align-justify\">Ako se ne možete prijaviti, to može biti zato što ste se već registrirali s istom adresom e-pošte ili ste prethodno primili poziv da se pridružite platformi. Ako vidite poruku da je vaša adresa e-pošte zauzeta s pozivnicom na čekanju, provjerite svoju e-poštu i slijedite vezu u pozivnici kako biste registrirali svoj račun. Ako ne možete pronaći pozivnicu, pokušajte pogledati u pretinac neželjene pošte ili zatražite novu pozivnicu. </p><h2 class=\"ql-align-justify\">Kako mogu poništiti svoju zaporku?</h2><p class=\"ql-align-justify\">Uvijek možete zatražiti poništavanje zaporke iz dnevnika na stranici. Ako poništite lozinku, na vašu adresu e-pošte bit će poslana poveznica – slijedite upute za promjenu zaporke. Iz sigurnosnih razloga poveznica vrijedi jedan sat. Ako je poveznica istekla, možete jednostavno ponovo kliknuti “Zaboravili ste zaporku?” na stranici za prijavu kako biste generirali novu poveznicu za poništavanje.</p><p class=\"ql-align-justify\">Ako niste primili e-poštu, provjerite da nije u neželjenoj pošti i da se poveznica šalje na istu adresu e-pošte s kojom ste se prijavili.</p><h2 class=\"ql-align-justify\">Što ćete učiniti s mojim podacima?</h2><p class=\"ql-align-justify\">Pogledajte naša pravila o privatnosti za više informacija o prikupljanju i korištenju podataka. Ukratko, nikada nećemo koristiti vaše podatke za oglašavanje, marketing ili druge vrste neželjene pošte.</p><h2 class=\"ql-align-justify\">Koje ću poruke e-pošte primati?</h2><p class=\" ql-align-justify\">Možete primiti e-poštu u vezi s vašim računom i vašom aktivnošću na platformi, na primjer, kada netko odgovori na jednu od vaših objava. U postavkama možete kontrolirati koje ćete poruke e-pošte primati. Postoji odjeljak pod nazivom “Obavijesti” u kojem možete uključiti i isključiti obavijesti putem e-pošte.</p><h2 class=\"ql-align-justify\">Kako mogu izbrisati svoj račun?</h2><p class=\" ql-align-justify\">U postavkama postoji opcija za brisanje računa. Unos koji ste objavili ostat će objavljen, ali će vaše ime biti uklonjeno iz objave i zamijenjeno s “nepoznati autor.” Ako želite izbrisati sve svoje unose, učinite to prije brisanja računa. </p>"
-    initiatives_title: Prijedlozi
-    initiatives_body: >
-      <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="b4e659ab-2830-48fd-b3ce-96e16856262f" height="374.3745928338762" width="819" alt=""> <h2>Što je prijedlog građanina?</h2> <p>Kao stanovnik $|orgName| možete staviti svoj prijedlog na dnevni red putem ove platforme. Ovi su prijedlozi po mogućnosti konkretne ideje koje su povezane s lokalnom politikom i proizlaze iz potrebe, želje ili sna. To može biti vaš vlastiti prijedlog ili zajednički prijedlog. Možda biste htjeli promijeniti ili poboljšati postojeću situaciju ili započeti novi projekt.</p> <p>Uključenost $|orgName| u provedbi vašeg prijedloga mora biti i potrebna i moguća. U idealnom scenariju bit ćete dostupni za daljnje razmišljanje ili suradnju, ali to nije obveza. “Smanjenje ograničenja brzine na autocesti na 80 km/h” dakle nije osobito snažan prijedlog, dok “Pretvaranje glavne ulice u pješačku zonu” jest. Stoga donesite svoje prijedloge! Ako je potrebno više informacija, primit ćete ažuriranje ili reakciju.</p><h2>Zašto objaviti prijedlog na ovoj platformi?</h2> <p>Ovo je službena platforma za sudjelovanje $|orgName| koja nudi sljedeće prednosti:</p> <ul> <li>$|orgName| je službeno uključen kao vlasnik ove platforme, te aktivno prati što se ovdje događa. Kada objavite ponudu, odgovorna osoba automatski prima poruku. Ne morate ih kontaktirati kako biste bili sigurni da je vaš prijedlog uzet u obzir.</li> <li>Ova je platforma razvijena posebno za službene radnje sudjelovanja, kao što su prijedlozi građana. Svaki element, od korisničkog iskustva do pristupa korak po korak, osmišljen je upravo u tu svrhu. Kada koristite tradicionalne društvene medije, vaš bi prijedlog mogao nestati u gomili poticaja, a obična e-pošta brzo nestane u punom ulaznom pretincu.</li> <li>Na ovoj platformi prisutni su i vaši sugrađani. Oni mogu podržati i doraditi vaš prijedlog. Što je vaš prijedlog kreativniji i što više podrške uspije prikupiti, veće su šanse da će biti implementiran!</li> </ul> <h2>Kako započeti?</h2> <p>Najprije provjerite ispunjava li vaš prijedlog sljedeće kriterije:</p> <p>$|initiativesEligibilityCriteria|</p> <h2>Što možete očekivati kada vaš prijedlog dosegne $|initiativesVotingThreshold| glasova unutar $|initiativesDaysLimit| dana?</h2> <p>$|initiativesThresholdReachedMessage|</p> <h2>Što se događa s prijedlozima koji ne dobiju $|initiativesVotingThreshold| glasova na vrijeme? </h2> <p>To se događa, ali ne brinite. Vaš će prijedlog ostati na platformi. Status vašeg prijedloga automatski će se promijeniti u “Istekao”. Zbog toga glasovanje više neće biti moguće. Ako želite, možete izbrisati svoj prijedlog u bilo kojem trenutku.</p>
   nav_bar_items:
     home:
       title: Početna
@@ -144,6 +129,7 @@ hr:
     open_idea_phase_title: Trenutna faza
     native_survey_title: Pregled
     native_survey_button: Popuni anketu
+    community_monitor_title: Monitor zajednice
   events:
     council_meeting_title: Sastanak vijeća
     council_meeting_description: >
@@ -156,8 +142,6 @@ hr:
         title: Godina rođenja
       domicile:
         title: Mjesto prebivališta
-      education:
-        title: Obrazovanje
     ideas:
       title:
         title: Naslov
@@ -170,6 +154,9 @@ hr:
       topic_ids:
         title: Oznake
         description:
+      consponsor_ids:
+        title: Supokrovitelji
+        description: Pozovite susponzore putem donjeg polja. Pozvani susponzor(i) primit će e-poruku.
       location:
         title: Lokacija
         description:
@@ -184,16 +171,59 @@ hr:
       attachments:
         title: Privici
         description:
-      section1:
+      title_page:
         description:
-      section2:
+      body_page:
+        title: Recite nam više
+        description:
+      uploads_page:
         title: Slike i prilozi
         description:
-      section3:
-        title: Pojedinosti
+      details_page:
+        title: pojedinosti
         description:
       other_input_field:
         title: Upišite svoj odgovor
+        print_title: Ako je '%{other_option}', molimo navedite
+      ask_follow_up_field:
+        title: Reci nam zašto
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Grad kao mjesto za život
+        sense_of_safety:
+          title: Opći osjećaj sigurnosti
+        access_to_parks:
+          title: Pristup parkovima, zelenim površinama i mogućnostima za rekreaciju
+        affordable_housing:
+          title: Dostupnost pristupačnog stanovanja
+        employment_opportunities:
+          title: Mogućnosti zapošljavanja i ekonomskog napredovanja
+        quality_of_services:
+          title: Ukupna kvaliteta usluga koje pruža grad
+        overall_value:
+          title: Ukupna vrijednost koju dobivate za gradske poreze i naknade
+        cleanliness_and_maintenance:
+          title: Cjelokupna čistoća i održavanje ulica i javnih površina
+        trust_in_government:
+          title: Povjerenje u lokalnu vlast
+        responsiveness_of_officials:
+          title: Odaziv izabranih dužnosnika na probleme zajednice
+        transparency_of_money_spent:
+          title: Transparentnost o tome kako se troši novac od općinskih poreza
+      question_categories:
+        quality_of_life: Kvaliteta života
+        service_delivery: Isporuka usluga
+        governance_and_trust: Upravljanje i povjerenje
+        other: ostalo
+      labels:
+        label_1: Vrlo siromašan
+        label_2: Jadno
+        label_3: Fer
+        label_4: Dobro
+        label_5: Izvrsno
+      form_end:
+        button_text: Povratak kući
   custom_forms:
     categories:
       main_content:
@@ -209,6 +239,12 @@ hr:
           title: Šta je vaša tema ?
         option:
           title: Što je vaša opcija?
+        proposal:
+          title: Koji je vaš prijedlog?
+        initiative:
+          title: Koja je vaša inicijativa?
+        petition:
+          title: Koja je vaša molba?
   custom_field_options:
     gender:
       male: Muškarac
@@ -216,21 +252,6 @@ hr:
       unspecified: Ostalo
     domicile:
       outside: Negdje drugdje
-    education:
-      ISCED2: Osnovna škola
-      ISCED3: Gimnazija
-      ISCED4: Strukovna škola
-      ISCED5: Viša škola
-      ISCED6: Prvostupnik ili ekvivalentno
-      ISCED7: Magistar ili ekvivalentno
-      ISCED8: Doktor znanosti ili ekvivalentno
-  initiatives:
-    default_threshold_reached_message: >
-      <p>Pozivaju se inicijatori da svoj prijedlog iznesu na sljedećem sastanku vijeća. Osigurat ćemo službeno ažuriranje.</p>
-    default_eligibility_criteria: >
-      <ul> <li>Mora spadati u područja politike i nadležnosti lokalne politike</li> <li>Služi javnom interesu, a ne vašem individualnom interesu</li> <li>Ne diskriminira na temelju spola, rase, dobi ili podrijetla</li> <li>Ne šteti drugima</li> </ul>
-    default_posting_tips: >
-      <ul><li>Odvojite vrijeme da razradite svoj prijedlog. Ako je potrebno, prvo upišite nacrt, a zatim ga kopirajte i zalijepite ovdje.</li><li>Odaberite smislen naslov koji jasno objašnjava što vaš prijedlog podrazumijeva.</li><li>Vizualizirajte svoj prijedlog prikladnom slikom kako bi se istaknuo!</li><li>Dodajte relevantne privitke, kao što su videozapisi, inspirativni primjeri, tehnički detalji ili planovi.</li><li>Podijelite svoju ideju na društvenim medijima i drugim kanalima kako biste prikupili podršku drugih.</li></ul>
   reset_password_mailer:
     send_reset_password:
       preheader: 'Ponovno postavite lozinku za %{organizationName}'
@@ -257,12 +278,14 @@ hr:
       first_name: 'Imena)'
       image_url: 'URL slike'
       input_id: 'ID'
+      manual_votes: 'Izvanmrežni glasovi'
       input_url: 'URL'
       last_name: 'Prezime'
       latitude: 'Geografska širina'
       likes_count: 'Sviđa mi se'
       location: 'Mjesto'
       longitude: 'Geografska duljina'
+      neutral_reactions_count: 'Nisam siguran/sigurna'
       participants: 'Sudionici'
       picks: 'Pijuci'
       project: 'Projekt'
@@ -280,8 +303,10 @@ hr:
       option1: '1. opcija'
       option2: '2. opcija'
     form_end_page:
-      title_text: 'Skoro gotovo'
-      description_text_2: "Upravo ćete poslati svoje odgovore. Klikom na 'Pošalji' dajete nam dopuštenje da analiziramo vaše odgovore.<br/>Nakon što pošaljete, više se nećete moći vratiti i promijeniti nijedan od svojih odgovora."
+      title_text_3: 'Hvala što ste podijelili svoj doprinos!'
+      description_text_3: "Vaš unos je uspješno poslan."
+    form_user_page:
+      title_text: 'O tebi'
     pdf_export:
       personal_data: 'Osobni podaci'
       personal_data_explanation_public: "Poslat ćemo vaš doprinos online platformi za sudjelovanje %{organizationName}. Ako želite da se vaše ime prikaže kao autor ovog unosa i da putem e-pošte primate ažuriranja relevantna za vaš unos, ispunite sljedeća polja na ovoj stranici i mi ćemo za vas kreirati račun. Vaša e-pošta neće biti javna i koristit će je samo %{organizationName}. Ukoliko želite ostati anonimni ili ne pristajete na korištenje Vaših osobnih podataka na ovaj način, možete ih ostaviti prazne."
@@ -307,6 +332,17 @@ hr:
       write_as_clearly: 'Napišite što jasnije <b></b> ti se obrasci mogu skenirati'
       write_in_language: 'Napišite svoje odgovore na istom jeziku kao i ovaj obrazac'
       linear_scale_print_description: 'Napišite samo broj između %{min_label} i %{max_label}'
+      unsupported_field: 'Ovo polje ne može se ispuniti na papiru. Umjesto toga, koristite online verziju ovog obrasca.'
+      ranking_print_description: 'Molimo vas da u svaki okvir upišete broj od 1 (najviše preferirano) do %{max_rank} (najmanje preferirano). Svaki broj upotrijebite točno jednom.'
+      matrix_print_description: 'Za svaki red označite jedan krug križićem kako biste naznačili svoju preferenciju.'
+      rating_print_description: 'Ocijenite ovo upisivanjem broja između 1 (najgore) i %{max_stars} (najbolje).'
+      sentiment_linear_scale_print_description: 'Molimo vas da napišete broj između 1 i 5.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
+      point_print_description: 'Molimo vas da na karti ispod nacrtate X kako biste prikazali lokaciju ili umjesto toga napišete adresu.'
+      line_print_description: 'Molimo vas da nacrtate rutu na karti ispod.'
+      polygon_print_description: 'Molimo vas da nacrtate oblik na karti ispod.'
+      select_print_description: 'Odaberite samo jednu opciju.'
+      date_print_description: 'Molimo upišite datum u formatu GGGG-MM-DD.'
   project_copy:
     title_suffix: 'Kopija'
   confirmations_mailer:
@@ -335,6 +371,8 @@ hr:
       you_can_sign_in_again_from: "Možete se ponovno prijaviti od %{date}"
   user:
     anon_first_name: "Korisnik"
+    anon_scheme:
+      animals: 'aligator, krokodil, alpaka, mrav, antilopa, majmun, armadilo, babun, jazavac, šišmiš, medvjed, dabar, pčela, buba, bivol, leptir, deva, vodeni bivol, karibu, mačka, govedo, gepard, čimpanza, činčila, cikada ,školjka,žohar,bakalar,kojot,rak,cvrčak,vrana,gavran,jelen,dinosaur,pas,dupin,pliskavica,patka,orao,jegulja,slon,los,tvor,riba,muha,lisica,žaba,krastača,gerbil ,žirafa,gnat,gnu,gnu,koza,zlatna ribica,guska,gorila,skakavac,zamorac,hrčak,zec,jež,haringa,nilski konj,stršljen,konj,gonič,hijena,impala,šakal,meduza,klokan,wallaby, koala, leopard, lav, gušter, lama, skakavac, uš, ara, divlja patka, mamut, morska krava, kuna, kun, gavjeć, krtica, los, komarac, miš, štakor, mazga, muskrat, vidra, vol, kamenica, panda, svinja, kljunar, dikobraz, prerijski pas, mops, zec, rakun, sob, nosorog, losos, sardina, škorpion, tuljan, morski lav, serval, morski pas, ovca, tvor, puž, zmija, pauk, vjeverica, labud, termit, tigar, pastrva, kornjača, kornjača, morž, osa, kit, vuk, vombat, buka, crv, jak, žuta jakna, zebra'
   time:
     am: am
     formats:
@@ -345,3 +383,6 @@ hr:
     default_voting_term_plural: "glasova"
   ics_calendar_event:
     event_details: "Detalji događaja"
+  errors:
+    messages:
+      max_must_be_greater_than_min_characters: "Maksimalna vrijednost mora biti veća od minimalne."

@@ -133,6 +133,8 @@ const Avatar = memo(
       );
     }
 
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const slug = user?.data.attributes.slug;
     const profileLink: RouteType = `/profile/${slug}`;
     const hasValidProfileLink = profileLink !== '/profile/undefined';
@@ -190,6 +192,8 @@ const AvatarInner = ({
   const bgColor = props.bgColor || 'transparent';
 
   if (isNilOrError(user)) {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (authorHash === null) {
       return null;
     } else {

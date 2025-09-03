@@ -3,6 +3,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { IdeaStatusParticipationMethod } from 'api/idea_statuses/types';
 import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import useUpdateIdeaStatus from 'api/idea_statuses/useUpdateIdeaStatus';
@@ -27,9 +28,9 @@ const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom: 20px;
 `;
 
-const Edit = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
+const Edit = ({ variant }: { variant: IdeaStatusParticipationMethod }) => {
   const { data: ideaStatuses } = useIdeaStatuses({
-    participation_method: variant,
+    queryParams: { participation_method: variant },
   });
   const { statusId } = useParams() as { statusId: string };
   const { data: ideaStatus } = useIdeaStatus(statusId);
@@ -47,14 +48,14 @@ const Edit = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
   };
 
   const goBack = () => {
-    clHistory.push(`/admin/settings/${variant}/statuses`);
+    clHistory.push(`/admin/settings/statuses/${variant}`);
   };
 
   if (ideaStatuses && ideaStatus && tenantLocales) {
     const { color, title_multiloc, description_multiloc, code, locked } =
       ideaStatus.data.attributes;
     return (
-      <>
+      <div data-testid="e2e-edit-status-page">
         <StyledGoBackButton onClick={goBack} />
         <Section>
           <StyledSectionTitle>
@@ -72,7 +73,7 @@ const Edit = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
             variant={variant}
           />
         </Section>
-      </>
+      </div>
     );
   }
 

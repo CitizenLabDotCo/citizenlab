@@ -14,6 +14,7 @@ module MultiTenancy
 
       def create_fixed_projects
         create_mixed_3_methods_project
+        create_archived_project
       end
 
       def create_mixed_3_methods_project
@@ -29,16 +30,14 @@ module MultiTenancy
           description_multiloc: runner.rand_description_multiloc,
           participation_method: 'proposals',
           start_at: Time.zone.today - 30.days,
-          end_at: Time.zone.today - 11.days,
-          campaigns_settings: { project_phase_started: true }
+          end_at: Time.zone.today - 11.days
         )
         project.phases.create!(
           title_multiloc: { 'en' => 'Current ideation phase' },
           description_multiloc: runner.rand_description_multiloc,
           participation_method: 'ideation',
           start_at: Time.zone.today - 10.days,
-          end_at: Time.zone.today + 10.days,
-          campaigns_settings: { project_phase_started: true }
+          end_at: Time.zone.today + 10.days
         )
         project.phases.create!(
           title_multiloc: { 'en' => 'Future native survey phase' },
@@ -46,10 +45,29 @@ module MultiTenancy
           participation_method: 'native_survey',
           start_at: Time.zone.today + 11.days,
           end_at: nil,
-          campaigns_settings: { project_phase_started: true },
           native_survey_title_multiloc: { 'en' => 'Survey' },
           native_survey_button_multiloc: { 'en' => 'Take the survey' }
         )
+        project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.jpg").open)
+      end
+
+      def create_archived_project
+        project = Project.create!(
+          title_multiloc: { 'en' => 'Archived project' },
+          description_multiloc: runner.rand_description_multiloc,
+          slug: 'archived-project',
+          header_bg: Rails.root.join('spec/fixtures/image6.jpg').open,
+          allowed_input_topics: Topic.all,
+          admin_publication_attributes: { publication_status: 'archived' }
+        )
+        project.phases.create!(
+          title_multiloc: { 'en' => 'Past information phase' },
+          description_multiloc: runner.rand_description_multiloc,
+          participation_method: 'information',
+          start_at: Time.zone.today - 30.days,
+          end_at: Time.zone.today - 11.days
+        )
+        project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.jpg").open)
       end
 
       def create_random_projects
@@ -58,7 +76,7 @@ module MultiTenancy
             title_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
             description_multiloc: runner.rand_description_multiloc,
             description_preview_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
-            header_bg: rand(25) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
+            header_bg: rand(25) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.jpg").open,
             visible_to: %w[admins groups public public public][rand(5)],
             areas: Array.new(rand(3)) { rand(Area.count) }.uniq.map { |offset| Area.offset(offset).first },
             allowed_input_topics: Topic.all.shuffle.take(rand(Topic.count) + 1),
@@ -71,7 +89,7 @@ module MultiTenancy
 
           project.save!
 
-          project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
+          project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.jpg").open)
 
           if rand(5) == 0
             rand(1..3).times do
@@ -102,8 +120,7 @@ module MultiTenancy
             description_multiloc: runner.rand_description_multiloc,
             start_at: start_at,
             end_at: (start_at += rand(150).days),
-            participation_method: %w[ideation voting poll information ideation ideation][rand(6)],
-            campaigns_settings: { project_phase_started: true }
+            participation_method: %w[ideation voting poll information ideation ideation][rand(6)]
           })
           if phase.voting?
             phase.assign_attributes(voting_method: 'budgeting', voting_max_total: rand(100..1_000_099).round(-2))
@@ -116,7 +133,8 @@ module MultiTenancy
               reacting_like_method: %w[unlimited unlimited unlimited limited][rand(4)],
               reacting_like_limited_max: rand(1..15),
               reacting_dislike_method: %w[unlimited unlimited unlimited limited][rand(4)],
-              reacting_dislike_limited_max: rand(1..15)
+              reacting_dislike_limited_max: rand(1..15),
+              autoshare_results_enabled: true
             })
           end
           phase.save!

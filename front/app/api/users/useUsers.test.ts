@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { usersData } from './__mocks__/_mockServer';
 import useUsers from './useUsers';
@@ -20,7 +20,7 @@ describe('useUsers', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useUsers({}), {
+    const { result } = renderHook(() => useUsers({}), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -39,7 +39,7 @@ describe('useUsers', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useUsers({}), {
+    const { result } = renderHook(() => useUsers({}), {
       wrapper: createQueryClientWrapper(),
     });
 

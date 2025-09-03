@@ -33,7 +33,7 @@ import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Title from 'components/PostShowComponents/Title';
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import FileAttachments from 'components/UI/FileAttachments';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
@@ -44,8 +44,9 @@ import { getAddressOrFallbackDMS } from 'utils/map';
 
 import messages from '../messages';
 
-import FeedbackSettings from './FeedbackSettings';
-import ReactionPreview from './ReactionPreview';
+import FeedbackSettings from './Components/FeedbackSettings';
+import OfflineVoteSettings from './Components/OfflineVoteSettings';
+import ReactionPreview from './Components/ReactionPreview';
 
 const StyledTitle = styled(Title)`
   margin-bottom: 20px;
@@ -154,9 +155,15 @@ interface Props {
   ideaId: string;
   closePreview: () => void;
   handleClickEdit: () => void;
+  selectedPhaseId?: string;
 }
 
-const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
+const AdminIdeaContent = ({
+  handleClickEdit,
+  closePreview,
+  ideaId,
+  selectedPhaseId,
+}: Props) => {
   const { data: idea } = useIdeaById(ideaId);
   const { data: project } = useProjectById(
     idea?.data.relationships.project.data.id
@@ -180,6 +187,8 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
   };
 
   const currentPhase = getCurrentPhase(phases?.data);
+  const isCommonGround =
+    currentPhase?.attributes.participation_method === 'common_ground';
   const ideaTitle = localize(idea.data.attributes.title_multiloc);
   const ideaImageLarge =
     ideaImages && ideaImages.data.length > 0
@@ -196,34 +205,40 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
   const allowAnonymousParticipation =
     currentPhase?.attributes.allow_anonymous_participation;
 
+  const votingMethod = phases?.data.find(
+    (phase) => phase.id === selectedPhaseId
+  )?.attributes.voting_method;
+
   return (
     <Container>
       <Top>
-        <Button
+        <ButtonWithLink
           mr="8px"
           buttonStyle="primary"
           icon="edit"
           onClick={handleClickEdit}
         >
           <FormattedMessage {...messages.edit} />
-        </Button>
-        <Button
-          linkTo={`/ideas/${idea.data.attributes.slug}`}
-          // We open in a new tab not lose state of the input manager
-          openLinkInNewTab
-          icon="eye"
-          buttonStyle="secondary-outlined"
-        >
-          <FormattedMessage {...messages.view} />
-        </Button>
-        <Button
+        </ButtonWithLink>
+        {!isCommonGround && (
+          <ButtonWithLink
+            linkTo={`/ideas/${idea.data.attributes.slug}`}
+            // We open in a new tab not lose state of the input manager
+            openLinkInNewTab
+            icon="eye"
+            buttonStyle="secondary-outlined"
+          >
+            <FormattedMessage {...messages.view} />
+          </ButtonWithLink>
+        )}
+        <ButtonWithLink
           id="e2e-input-manager-side-modal-delete-button"
           buttonStyle="text"
           icon="delete"
           onClick={handleClickDelete}
         >
           <FormattedMessage {...messages.delete} />
-        </Button>
+        </ButtonWithLink>
       </Top>
       <Content>
         {!isNilOrError(project) && (
@@ -244,95 +259,99 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
           </BelongsToProject>
         )}
 
-        <StyledTitle postId={ideaId} postType="idea" title={ideaTitle} />
+        <StyledTitle postId={ideaId} title={ideaTitle} />
         <StyledPostedBy
           ideaId={ideaId}
           authorId={authorId}
           anonymous={idea.data.attributes.anonymous}
         />
-        <Row>
-          <Left>
-            {ideaImageLarge && (
-              <IdeaImage
-                src={ideaImageLarge}
-                alt=""
-                className="e2e-ideaImage"
+        {/* We don't show these values for common ground. We are only interested in the title for now */}
+        {!isCommonGround && (
+          <Row>
+            <Left>
+              {ideaImageLarge && (
+                <IdeaImage
+                  src={ideaImageLarge}
+                  alt=""
+                  className="e2e-ideaImage"
+                />
+              )}
+
+              {proposedBudget && (
+                <>
+                  <BodySectionTitle>
+                    <FormattedMessage {...messages.proposedBudgetTitle} />
+                  </BodySectionTitle>
+                  <IdeaProposedBudget proposedBudget={proposedBudget} />
+                  <BodySectionTitle>
+                    <FormattedMessage {...messages.bodyTitle} />
+                  </BodySectionTitle>
+                </>
+              )}
+
+              <StyledBody
+                postId={ideaId}
+                body={localize(idea.data.attributes.body_multiloc)}
               />
-            )}
 
-            {proposedBudget && (
-              <>
-                <BodySectionTitle>
-                  <FormattedMessage {...messages.proposedBudgetTitle} />
-                </BodySectionTitle>
-                <IdeaProposedBudget proposedBudget={proposedBudget} />
-                <BodySectionTitle>
-                  <FormattedMessage {...messages.bodyTitle} />
-                </BodySectionTitle>
-              </>
-            )}
+              {!isNilOrError(project) && ideaGeoPosition && ideaAddress && (
+                <StyledMap
+                  address={ideaAddress}
+                  position={ideaGeoPosition}
+                  projectId={project.data.id}
+                />
+              )}
 
-            <StyledBody
-              postId={ideaId}
-              postType="idea"
-              body={localize(idea.data.attributes.body_multiloc)}
-            />
+              {ideaFiles && (
+                <Box mb="25px">
+                  <FileAttachments files={ideaFiles.data} />
+                </Box>
+              )}
 
-            {!isNilOrError(project) && ideaGeoPosition && ideaAddress && (
-              <StyledMap
-                address={ideaAddress}
-                position={ideaGeoPosition}
-                projectId={project.data.id}
+              <StyledOfficialFeedback postId={ideaId} permissionToPost />
+
+              <CommentsSection
+                allowAnonymousParticipation={allowAnonymousParticipation}
+                postId={ideaId}
+                showInternalComments
               />
-            )}
+            </Left>
+            <Right>
+              <ReactionPreview ideaId={ideaId} />
 
-            {ideaFiles && (
-              <Box mb="25px">
-                <FileAttachments files={ideaFiles.data} />
-              </Box>
-            )}
+              {idea.data.attributes.budget && (
+                <>
+                  <BudgetBox>
+                    <FormattedBudget value={idea.data.attributes.budget} />
+                    <Picks>
+                      <FormattedMessage
+                        {...messages.picks}
+                        values={{
+                          picksNumber: idea.data.attributes.baskets_count,
+                        }}
+                      />
+                      &nbsp;
+                      <IconTooltip
+                        content={
+                          <FormattedMessage {...messages.pbItemCountTooltip} />
+                        }
+                      />
+                    </Picks>
+                  </BudgetBox>
+                </>
+              )}
 
-            <StyledOfficialFeedback
-              postId={ideaId}
-              postType="idea"
-              permissionToPost
-            />
-
-            <CommentsSection
-              allowAnonymousParticipation={allowAnonymousParticipation}
-              postId={ideaId}
-              postType="idea"
-              showInternalComments
-            />
-          </Left>
-          <Right>
-            <ReactionPreview ideaId={ideaId} />
-
-            {idea.data.attributes.budget && (
-              <>
-                <BudgetBox>
-                  <FormattedBudget value={idea.data.attributes.budget} />
-                  <Picks>
-                    <FormattedMessage
-                      {...messages.picks}
-                      values={{
-                        picksNumber: idea.data.attributes.baskets_count,
-                      }}
-                    />
-                    &nbsp;
-                    <IconTooltip
-                      content={
-                        <FormattedMessage {...messages.pbItemCountTooltip} />
-                      }
-                    />
-                  </Picks>
-                </BudgetBox>
-              </>
-            )}
-
-            <FeedbackSettings ideaId={ideaId} projectId={project.data.id} />
-          </Right>
-        </Row>
+              <FeedbackSettings ideaId={ideaId} projectId={project.data.id} />
+              {selectedPhaseId && votingMethod && (
+                <OfflineVoteSettings
+                  phaseId={selectedPhaseId}
+                  ideaId={ideaId}
+                  votingMethod={votingMethod}
+                />
+              )}
+            </Right>
+          </Row>
+        )}
       </Content>
     </Container>
   );

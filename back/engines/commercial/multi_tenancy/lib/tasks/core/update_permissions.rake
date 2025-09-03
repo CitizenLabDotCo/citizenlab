@@ -5,6 +5,7 @@ namespace :fix_existing_tenants do
   task update_permissions: [:environment] do |_t, _args|
     Rails.logger.info 'fix_existing_tenants:update_permissions started'
     Tenant.creation_finalized.each do |tenant|
+      Rails.logger.info "Updating permissions for tenant #{tenant.name}"
       Apartment::Tenant.switch(tenant.schema_name) do
         Permissions::PermissionsUpdateService.new.update_all_permissions
       end
@@ -37,19 +38,6 @@ namespace :fix_existing_tenants do
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         Permission.where(permitted_by: 'everyone').where.not(action: 'taking_survey').update_all permitted_by: 'users'
-      end
-    end
-  end
-
-  desc 'Migrate initiatives posting_enabled before removal'
-  task migrate_initiatives_posting_enabled: [:environment] do |_t, _args|
-    tenants = Tenant.all.reject do |tenant|
-      tenant.configuration.settings.dig('initiatives', 'posting_enabled')
-    end
-
-    tenants.each do |tenant|
-      Apartment::Tenant.switch(tenant.schema_name) do
-        Permission.where(action: 'posting_initiative').update_all permitted_by: 'admins_moderators'
       end
     end
   end

@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { projectFolderData } from './__mocks__/useProjectFolder';
 import useAddProjectFolder from './useAddProjectFolder';
@@ -20,7 +20,7 @@ describe('useAddProjectFolder', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAddProjectFolder(), {
+    const { result } = renderHook(() => useAddProjectFolder(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -63,11 +63,11 @@ describe('useAddProjectFolder', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAddProjectFolder(), {
+    const { result } = renderHook(() => useAddProjectFolder(), {
       wrapper: createQueryClientWrapper(),
     });
 
-    act(async () => {
+    act(() => {
       result.current.mutate({
         title_multiloc: {
           en: 'new folder',
@@ -93,9 +93,8 @@ describe('useAddProjectFolder', () => {
           publication_status: 'published',
         },
       });
-
-      await waitFor(() => expect(result.current.isError).toBe(true));
-      expect(result.current.error).toBeDefined();
     });
+    await waitFor(() => expect(result.current.isError).toBe(true));
+    expect(result.current.error).toBeDefined();
   });
 });

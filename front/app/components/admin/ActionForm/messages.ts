@@ -45,6 +45,24 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.restrictParticipation',
     defaultMessage: 'Restrict participation to user group(s)',
   },
+  everyoneTracking: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTracking2',
+    defaultMessage: 'Advanced spam detection',
+  },
+  everyoneTrackingToggle: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTrackingToggle',
+    defaultMessage: 'Enable advanced spam detection',
+  },
+  everyoneTrackingDescription: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTrackingDescription',
+    defaultMessage:
+      'This feature helps prevent duplicate survey submissions from logged-out users by analyzing IP addresses and device data. While not as precise as requiring login, it can help to reduce the number of duplicate responses.',
+  },
+  everyoneTrackingNote: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTrackingNote',
+    defaultMessage:
+      'Note: On shared networks (like offices or public Wi-Fi), there is a small chance that different users could be flagged as duplicates.',
+  },
   authentication: {
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.authentication',
     defaultMessage: 'Authentication',

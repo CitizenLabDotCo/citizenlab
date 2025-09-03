@@ -5,10 +5,12 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAnalysis from 'api/analyses/useAnalysis';
+import { IInput } from 'api/analysis_inputs/types';
 import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
+import { IIdeaCustomField } from 'api/idea_custom_fields/types';
 import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
 
-import useLocalize from 'hooks/useLocalize';
+import useLocalize, { Localize } from 'hooks/useLocalize';
 
 import Link from 'utils/cl-router/Link';
 
@@ -31,6 +33,38 @@ const StyledLink = styled(Link)<{ isActive: boolean }>`
     }`}
 `;
 
+const referenceDisplayValue = (
+  input: IInput,
+  customField: IIdeaCustomField,
+  localize: Localize
+) => {
+  const customFieldValues = input.data.attributes.custom_field_values;
+  const customFieldInputType = customField.data.attributes.input_type;
+  const customFieldKey = customField.data.attributes.key;
+  const titleMultiloc = input.data.attributes.title_multiloc;
+
+  // Localize title multiloc if it's not an empty object {} or undefined
+  if (titleMultiloc && Object.keys(titleMultiloc).length > 0) {
+    return localize(titleMultiloc);
+  }
+
+  if (!customFieldKey) {
+    return null;
+  }
+
+  if (customFieldInputType === 'select') {
+    if (customFieldValues[customFieldKey] === 'other') {
+      return customFieldValues[`${customFieldKey}_other`];
+    }
+  }
+  if (customFieldInputType === 'multiselect') {
+    if (customFieldValues[customFieldKey]?.includes('other')) {
+      return customFieldValues[`${customFieldKey}_other`];
+    }
+  }
+  return customFieldValues[customFieldKey];
+};
+
 const ReferenceLink = ({
   match,
   analysisId,
@@ -44,11 +78,13 @@ const ReferenceLink = ({
   phaseId: string;
   selectedInputId: string;
 }) => {
+  const localize = useLocalize();
   const { pathname } = useLocation();
 
-  const localize = useLocalize();
   const { data: analysis } = useAnalysis(analysisId);
   const { data: input } = useAnalysisInput(analysisId, match);
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const mainQuestion = analysis?.data.relationships.main_custom_field?.data?.id;
   const { data: customField } = useIdeaCustomField({
     projectId: phaseId ? undefined : projectId,
@@ -56,25 +92,22 @@ const ReferenceLink = ({
     customFieldId: mainQuestion,
   });
 
-  const titleMultiloc = input?.data.attributes.title_multiloc;
-  const customFieldKey = customField?.data.attributes.key;
   const mainQuestionResponse =
-    customFieldKey &&
-    input?.data.attributes.custom_field_values?.[customFieldKey];
+    input && customField && referenceDisplayValue(input, customField, localize);
 
   const isAnalysisScreen = pathname.includes('/analysis/');
+
   return (
     <Tooltip
       content={
         <Box>
-          <p>{localize(titleMultiloc)}</p>
           <p>{mainQuestionResponse}</p>
         </Box>
       }
       zIndex={9999}
       placement="top"
       theme="light"
-      disabled={!titleMultiloc && !mainQuestionResponse}
+      disabled={!mainQuestionResponse}
     >
       <Box display="inline">
         <StyledLink

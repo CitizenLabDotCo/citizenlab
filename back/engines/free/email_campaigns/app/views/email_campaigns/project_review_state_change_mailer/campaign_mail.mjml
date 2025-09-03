@@ -1,0 +1,11 @@
+<% if localize_for_recipient(event.project_description_multiloc).present? %>
+  <%= render partial: 'email_campaigns/projects/about_project', locals: {
+    homepage_description: localize_for_recipient(event.project_description_multiloc),
+    message: localize_for_recipient(event.project_title_multiloc)
+  } %>
+<% end %>
+
+<%= render partial: 'application/cta_button', locals: {
+  href: event.admin_project_url ,
+  message: cta_button_text
+} %>

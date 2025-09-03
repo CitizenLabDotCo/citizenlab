@@ -3,9 +3,8 @@ import { randomString } from '../../../support/commands';
 describe('Admin: add project', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
-    cy.visit('/admin/projects/all');
-    cy.acceptCookies();
-    cy.get('[data-cy="e2e-new-project-button"]').click();
+    cy.visit('/admin/projects');
+    cy.dataCy('e2e-new-project-button').click();
     cy.wait(1000);
     cy.get('.e2e-project-general-form');
   });
@@ -18,191 +17,78 @@ describe('Admin: add project', () => {
         const projectTitleNLNL = randomString();
         const projectTitleFRBE = randomString();
 
-        // Type random project titles for these required fields
-        cy.get('#project-title').type(projectTitleEN);
-        cy.get('.e2e-localeswitcher.nl-BE').click();
-        cy.get('#project-title').type(projectTitleNLBE);
-        cy.get('.e2e-localeswitcher.nl-NL').click();
-        cy.get('#project-title').type(projectTitleNLNL);
-        cy.get('.e2e-localeswitcher.fr-BE').click();
-        cy.get('#project-title').type(projectTitleFRBE);
+        // Fill in all locales
+        cy.get('#e2e-project-title-setting-field').type(projectTitleEN);
+        cy.get('.e2e-localeswitcher.nl-BE').should('be.visible').click();
+        cy.get('#e2e-project-title-setting-field').type(projectTitleNLBE);
+        cy.get('.e2e-localeswitcher.nl-NL').should('be.visible').click();
+        cy.get('#e2e-project-title-setting-field').type(projectTitleNLNL);
+        cy.get('.e2e-localeswitcher.fr-BE').should('be.visible').click();
+        cy.get('#e2e-project-title-setting-field').type(projectTitleFRBE);
 
-        // Submit project
+        // Submit form
         cy.get('.e2e-submit-wrapper-button button').click();
 
-        cy.wait(2000);
+        // Confirm the project is saved and appears as draft
+        cy.visit('/admin/projects');
+        cy.dataCy('projects-overview-sort-select').select(
+          'recently_created_desc'
+        );
 
-        // Project should appear on top of the projects list
-        cy.visit('/admin/projects/all');
-        cy.get('#e2e-admin-projects-list-unsortable')
-          .children()
+        cy.dataCy('projects-overview-table-row')
           .first()
           .contains(projectTitleEN);
-        cy.get('#e2e-admin-projects-list-unsortable')
-          .children()
-          .first()
-          .contains('Draft');
-      });
 
-      it('creates a draft project', () => {
-        const projectTitleEN = randomString();
-        const projectTitleNLBE = randomString();
-        const projectTitleNLNL = randomString();
-        const projectTitleFRBE = randomString();
-
-        // Select 'Draft' publication status
-        cy.get('.e2e-projecstatus-draft').click();
-
-        // Type random project titles for these required fields
-        cy.get('#project-title').type(projectTitleEN);
-        cy.get('.e2e-localeswitcher.nl-BE').click();
-        cy.get('#project-title').type(projectTitleNLBE);
-        cy.get('.e2e-localeswitcher.nl-NL').click();
-        cy.get('#project-title').type(projectTitleNLNL);
-        cy.get('.e2e-localeswitcher.fr-BE').click();
-        cy.get('#project-title').type(projectTitleFRBE);
-
-        // Submit project
-        cy.get('.e2e-submit-wrapper-button button').click();
-
-        cy.wait(2000);
-
-        // Project should appear on top of the projects list
-        cy.visit('/admin/projects/all');
-        cy.get('#e2e-admin-projects-list-unsortable')
-          .children()
-          .first()
-          .contains(projectTitleEN);
-        cy.get('#e2e-admin-projects-list-unsortable')
-          .children()
-          .first()
-          .contains('Draft');
-      });
-
-      it('creates a published project', () => {
-        const projectTitleEN = randomString();
-        const projectTitleNLBE = randomString();
-        const projectTitleNLNL = randomString();
-        const projectTitleFRBE = randomString();
-
-        // Select 'Draft' publication status
-        cy.get('.e2e-projecstatus-published').click();
-
-        // Type random project titles for these required fields
-        cy.get('#project-title').type(projectTitleEN);
-        cy.get('.e2e-localeswitcher.nl-BE').click();
-        cy.get('#project-title').type(projectTitleNLBE);
-        cy.get('.e2e-localeswitcher.nl-NL').click();
-        cy.get('#project-title').type(projectTitleNLNL);
-        cy.get('.e2e-localeswitcher.fr-BE').click();
-        cy.get('#project-title').type(projectTitleFRBE);
-
-        // Submit project
-        cy.get('.e2e-submit-wrapper-button button').click();
-
-        cy.wait(2000);
-
-        // Project should appear on top of the projects list
-        cy.visit('/admin/projects/all');
-        cy.get('#e2e-admin-projects-list-unsortable')
-          .children()
-          .first()
-          .contains(projectTitleEN);
-      });
-
-      it('creates an archived project', () => {
-        const projectTitleEN = randomString();
-        const projectTitleNLBE = randomString();
-        const projectTitleNLNL = randomString();
-        const projectTitleFRBE = randomString();
-
-        // Select 'Archived' publication status
-        cy.get('.e2e-projecstatus-archived').click();
-
-        // Type random project titles for these required fields
-        cy.get('#project-title').type(projectTitleEN);
-        cy.get('.e2e-localeswitcher.nl-BE').click();
-        cy.get('#project-title').type(projectTitleNLBE);
-        cy.get('.e2e-localeswitcher.nl-NL').click();
-        cy.get('#project-title').type(projectTitleNLNL);
-        cy.get('.e2e-localeswitcher.fr-BE').click();
-        cy.get('#project-title').type(projectTitleFRBE);
-
-        // Submit project
-        cy.get('.e2e-submit-wrapper-button button').click();
-        cy.wait(2000);
-
-        // Project should appear on top of the projects list
-        cy.visit('/admin/projects/all');
-        cy.get('#e2e-admin-projects-list-unsortable')
-          .children()
-          .first()
-          .contains(projectTitleEN);
-        cy.get('#e2e-admin-projects-list-unsortable')
-          .children()
-          .first()
-          .contains('Archived');
+        cy.dataCy('projects-overview-table-row').first().contains('Draft');
       });
     });
 
-    // This test is failing because the project list at the bottom disappears,
-    // and I (Luuc) have absolutely no idea why. So disabling for now.
-    context.skip('Areas: Selection', () => {
-      it('creates a published project with the correct area', () => {
+    context('Areas: Selection', () => {
+      it('creates a project with the correct area', () => {
+        cy.intercept('POST', '**/web_api/v1/projects').as('createProject');
+
         const projectTitleEN = randomString();
         const projectTitleNLBE = randomString();
         const projectTitleNLNL = randomString();
         const projectTitleFRBE = randomString();
 
-        // Select 'Published' publication status
-        cy.get('.e2e-projecstatus-published').click();
-
-        // Type random project titles for these required fields
-        cy.get('#project-title').type(projectTitleEN);
-        cy.get('.e2e-localeswitcher.nl-BE').click();
-        cy.get('#project-title').type(projectTitleNLBE);
-        cy.get('.e2e-localeswitcher.nl-NL').click();
-        cy.get('#project-title').type(projectTitleNLNL);
-        cy.get('.e2e-localeswitcher.fr-BE').click();
-        cy.get('#project-title').type(projectTitleFRBE);
+        // Fill in all locales
+        cy.get('#e2e-project-title-setting-field').type(projectTitleEN);
+        cy.get('.e2e-localeswitcher.nl-BE').should('be.visible').click();
+        cy.get('#e2e-project-title-setting-field').type(projectTitleNLBE);
+        cy.get('.e2e-localeswitcher.nl-NL').should('be.visible').click();
+        cy.get('#e2e-project-title-setting-field').type(projectTitleNLNL);
+        cy.get('.e2e-localeswitcher.fr-BE').should('be.visible').click();
+        cy.get('#e2e-project-title-setting-field').type(projectTitleFRBE);
 
         // Select 'Selection' as Areas option
         cy.get('.e2e-areas-selection').click();
 
-        // Pick (only) area
+        // Select specific area
         cy.get('#e2e-area-selector')
           .click()
           .find('input')
           .type('Carrotgem')
           .trigger('keydown', { keyCode: 13, which: 13 });
 
-        // Submit project
+        // Submit
         cy.get('.e2e-submit-wrapper-button button').click();
 
-        cy.wait(2000);
+        // Expect the correct area to be set for the newly created project
+        cy.wait('@createProject').then((interception) => {
+          const projectId = interception.response?.body.data.id;
 
-        // Get projectId, then areaId and look up area to compare
-        cy.get('#e2e-admin-projects-list-unsortable').contains(projectTitleEN);
-        cy.get(`.e2e-admin-edit-project.${projectTitleEN}`)
-          .find('a')
-          .then((manageProjectButtonLinks) => {
-            const manageProjectButtonLink = manageProjectButtonLinks[0];
-            const href = manageProjectButtonLink.href;
-            const hrefSegments = href && href.split('/');
-            const projectId = hrefSegments[hrefSegments.length - 2];
-            return projectId;
-          })
-          .then((projectId) => {
-            return cy.getProjectById(projectId);
-          })
-          .then((projectData) => {
-            const areaId = projectData.body.data.relationships.areas.data[0].id;
-            return cy.getArea(areaId);
-          })
-          .then((areaData) => {
-            const area = areaData.body.data.attributes.title_multiloc['en'];
-            expect(area).to.eq('Carrotgem');
+          // Make a separate request to the project endpoint, as the createProject
+          // intercept might not include the area relationship yet (results in flakiness)
+          cy.getProjectById(projectId).then((project) => {
+            const areaId = project.body.data.relationships.areas.data?.[0]?.id;
+            cy.getArea(areaId).then((area) => {
+              expect(area.body.data.attributes.title_multiloc.en).to.equal(
+                'Carrotgem'
+              );
+            });
           });
+        });
       });
     });
   });

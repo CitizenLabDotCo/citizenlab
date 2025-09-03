@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import {
   Box,
@@ -7,8 +7,8 @@ import {
   stylingConsts,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
+import { UseFormSetError } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
-import { CLErrors } from 'typings';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
@@ -20,16 +20,12 @@ import { IUser } from 'api/users/types';
 import useUpdateUser from 'api/users/useUpdateUser';
 import useUserById from 'api/users/useUserById';
 
-import useInputSchema from 'hooks/useInputSchema';
 import useLocalize from 'hooks/useLocalize';
 
-import { getFormValues as getIdeaFormValues } from 'containers/IdeasEditPage/utils';
-
-import { FormData } from 'components/Form/typings';
-import { customAjv, isValidData } from 'components/Form/utils';
+import { FormValues } from 'components/Form/typings';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { geocode } from 'utils/locationTools';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 import messages from '../messages';
 
@@ -52,6 +48,8 @@ interface Props {
 
 const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   const localize = useLocalize();
+  const [ideaFormDataValid, setIdeaFormDataValid] = useState(false);
+  const setError = useRef<UseFormSetError<FormValues>>();
 
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -62,16 +60,9 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
     Record<string, UserFormData>
   >({});
   const [ideaFormStatePerIdea, setIdeaFormStatePerIdea] = useState<
-    Record<string, FormData>
+    Record<string, FormValues>
   >({});
-  const [ideaFormApiErrors, setIdeaFormApiErrors] = useState<
-    CLErrors | undefined
-  >();
 
-  const { schema, uiSchema } = useInputSchema({
-    projectId,
-    phaseId,
-  });
   const { data: idea } = useIdeaById(ideaId ?? undefined);
   const { data: author } = useUserById(
     idea?.data.relationships.author?.data?.id,
@@ -91,8 +82,6 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   const { mutate: updateUser } = useUpdateUser();
   const { mutateAsync: createOfflineUser } = useCreateOfflineUser();
 
-  if (!schema || !uiSchema) return null;
-
   const userFormData = getUserFormValues(
     ideaId,
     userFormStatePerIdea,
@@ -100,11 +89,15 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
     ideaMetadata
   );
 
-  const ideaFormData: FormData | null =
+  const ideaFormData: FormValues | null =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     ideaId && ideaFormStatePerIdea[ideaId]
       ? ideaFormStatePerIdea[ideaId]
-      : idea && schema
-      ? getIdeaFormValues(idea, schema)
+      : // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      idea
+      ? idea.data.attributes
       : null;
 
   const setUserFormData = (
@@ -118,7 +111,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
     }));
   };
 
-  const setIdeaFormData = (ideaFormData: FormData) => {
+  const setIdeaFormData = (ideaFormData: FormValues) => {
     if (!ideaId) return;
 
     setIdeaFormStatePerIdea((ideaFormStatePerIdea) => ({
@@ -128,14 +121,6 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   };
 
   const userFormDataValid = isUserFormDataValid(userFormData);
-
-  const ideaFormDataValid = isValidData(
-    schema,
-    uiSchema,
-    ideaFormData,
-    customAjv,
-    false
-  );
 
   const onApproveIdea = async () => {
     if (
@@ -174,29 +159,12 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
       });
     }
 
-    const {
-      location_description,
-      idea_files_attributes: _idea_files_attributes,
-      idea_images_attributes: _idea_images_attributes,
-      topic_ids: _topic_ideas,
-      author_id: _author_id,
-      ...supportedFormData
-    } = ideaFormData;
-
-    const location_point_geojson =
-      typeof location_description === 'string' &&
-      location_description.length > 0
-        ? await geocode(location_description)
-        : undefined;
-
     try {
       await updateIdea({
         id: ideaId,
         requestBody: {
+          ...ideaFormData,
           publication_status: 'published',
-          ...supportedFormData,
-          ...(location_description ? { location_description } : {}),
-          ...(location_point_geojson ? { location_point_geojson } : {}),
           ...(userFormDataAction === 'remove-assigned-user'
             ? { author_id: null }
             : {}),
@@ -225,8 +193,9 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
 
       const nextIdeaId = getNextIdeaId(ideaId, ideas);
       setIdeaId(nextIdeaId);
-    } catch (e) {
-      setIdeaFormApiErrors(e.errors);
+    } catch (error) {
+      setError.current &&
+        handleHookFormSubmissionError(error, setError.current);
     }
   };
 
@@ -260,13 +229,11 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
               />
             )}
             <IdeaForm
-              schema={schema}
-              uiSchema={uiSchema}
-              showAllErrors={true}
-              apiErrors={ideaFormApiErrors}
-              formData={ideaFormData}
-              ideaMetadata={ideaMetadata}
+              formData={ideaFormData ?? {}}
+              setIdeaFormDataValid={setIdeaFormDataValid}
               setFormData={setIdeaFormData}
+              setError={setError}
+              key={ideaId}
             />
           </>
         )}

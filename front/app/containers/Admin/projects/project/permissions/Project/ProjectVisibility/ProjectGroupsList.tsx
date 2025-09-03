@@ -14,7 +14,7 @@ import useProjectGroups from 'api/project_groups/useProjectGroups';
 import useLocalize from 'hooks/useLocalize';
 
 import { List, Row } from 'components/admin/ResourceList';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -41,7 +41,7 @@ const StyledMultipleSelect = styled(MultipleSelect)`
   z-index: 5;
 `;
 
-const AddGroupButton = styled(Button)`
+const AddGroupButton = styled(ButtonWithLink)`
   flex-grow: 0;
   flex-shrink: 0;
   margin-left: 30px;
@@ -53,10 +53,9 @@ const GroupMembershipCount = styled.p``;
 
 interface Props {
   projectId: string;
-  onAddButtonClicked: () => void;
 }
 
-const ProjectGroupsList = ({ projectId, onAddButtonClicked }: Props) => {
+const ProjectGroupsList = ({ projectId }: Props) => {
   const localize = useLocalize();
   const { mutateAsync: addProjectGroup } = useAddProjectGroup();
   const { mutate: deleteProjectGroup } = useDeleteProjectGroup({ projectId });
@@ -94,8 +93,6 @@ const ProjectGroupsList = ({ projectId, onAddButtonClicked }: Props) => {
       try {
         await Promise.all(promises);
         setSelectedGroups(null);
-
-        onAddButtonClicked();
       } catch (error) {
         // eslint-disable-next-line no-console
         if (process.env.NODE_ENV === 'development') console.log(error);
@@ -107,6 +104,8 @@ const ProjectGroupsList = ({ projectId, onAddButtonClicked }: Props) => {
     groups: IGroups | null,
     groupsProjects: IProjectGroupData[]
   ) => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (groupsProjects && groups) {
       return groups.data
         .filter((group) => {
@@ -181,13 +180,13 @@ const ProjectGroupsList = ({ projectId, onAddButtonClicked }: Props) => {
                 values={{ count: projectGroup.membership_count }}
               />
             </GroupMembershipCount>
-            <Button
+            <ButtonWithLink
               onClick={createDeleteGroupHandler(projectGroup.group_project_id)}
               buttonStyle="text"
               icon="delete"
             >
               <FormattedMessage {...messages.deleteButtonLabel} />
-            </Button>
+            </ButtonWithLink>
           </Row>
         ))}
       </List>

@@ -23,7 +23,11 @@ describe('ImageCropper', () => {
         onRemove={jest.fn()}
       />
     );
-    expect(screen.getByRole('img')).toBeInTheDocument();
+    expect(
+      screen.getByRole('presentation', {
+        name: '',
+      })
+    ).toBeInTheDocument();
   });
   it('does not render when there is no image', () => {
     render(
@@ -35,6 +39,10 @@ describe('ImageCropper', () => {
         onRemove={jest.fn()}
       />
     );
-    expect(screen.queryByRole('img')).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('presentation', {
+        name: '',
+      })
+    ).not.toBeInTheDocument();
   });
 });

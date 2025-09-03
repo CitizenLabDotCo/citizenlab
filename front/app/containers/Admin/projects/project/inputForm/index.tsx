@@ -1,53 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { saveAs } from 'file-saver';
 import { useParams } from 'react-router-dom';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useLocale from 'hooks/useLocale';
-
-import PDFExportModal, {
-  FormValues,
-} from 'containers/Admin/projects/components/PDFExportModal';
-import { API_PATH } from 'containers/App/constants';
-
+import DownloadPDFButtonWithModal from 'components/admin/FormSync/DownloadPDFButtonWithModal';
+import ExcelDownloadButton from 'components/admin/FormSync/ExcelDownloadButton';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-import { requestBlob } from 'utils/requestBlob';
 
 import messages from './messages';
-import { saveIdeaFormAsPDF } from './saveIdeaFormAsPDF';
 
-export const IdeaForm = () => {
-  const inputImporterEnabled = useFeatureFlag({
-    name: 'input_importer',
-  });
-
-  const [exportModalOpen, setExportModalOpen] = useState(false);
+export const InputForm = () => {
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
-  };
-
-  const locale = useLocale();
-
-  const handleDownloadPDF = () => setExportModalOpen(true);
-
-  const handleExportPDF = async ({ personal_data }: FormValues) => {
-    if (isNilOrError(locale)) return;
-    await saveIdeaFormAsPDF({ phaseId, locale, personal_data });
-  };
-
-  const downloadExampleXlsxFile = async () => {
-    const blob = await requestBlob(
-      `${API_PATH}/phases/${phaseId}/importer/export_form/idea/xlsx`,
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    );
-    saveAs(blob, 'example.xlsx');
   };
 
   return (
@@ -62,7 +30,7 @@ export const IdeaForm = () => {
           </SectionDescription>
         </Box>
         <Box display="flex" flexDirection="row">
-          <Button
+          <ButtonWithLink
             mr="8px"
             linkTo={`/admin/projects/${projectId}/phases/${phaseId}/form/edit`}
             width="auto"
@@ -70,37 +38,17 @@ export const IdeaForm = () => {
             data-cy="e2e-edit-input-form"
           >
             <FormattedMessage {...messages.editInputForm} />
-          </Button>
-          <Box mr="8px">
-            <Button
-              onClick={handleDownloadPDF}
-              width="auto"
-              icon="download"
-              data-cy="e2e-save-input-form-pdf"
-            >
-              <FormattedMessage {...messages.downloadInputForm} />
-            </Button>
-          </Box>
-          {inputImporterEnabled && (
-            <Button
-              mr="8px"
-              buttonStyle="secondary-outlined"
-              icon="download"
-              onClick={downloadExampleXlsxFile}
-            >
-              <FormattedMessage {...messages.downloadExcelTemplate} />
-            </Button>
-          )}
+          </ButtonWithLink>
+          <DownloadPDFButtonWithModal
+            mr="8px"
+            formType="input_form"
+            phaseId={phaseId}
+          />
+          <ExcelDownloadButton phaseId={phaseId} />
         </Box>
       </Box>
-      <PDFExportModal
-        open={exportModalOpen}
-        formType="idea_form"
-        onClose={() => setExportModalOpen(false)}
-        onExport={handleExportPDF}
-      />
     </>
   );
 };
 
-export default IdeaForm;
+export default InputForm;

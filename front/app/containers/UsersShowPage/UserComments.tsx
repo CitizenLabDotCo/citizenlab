@@ -17,7 +17,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
 import useUserBySlug from 'api/users/useUserBySlug';
 
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -87,6 +87,8 @@ export const UserComments = () => {
   }
 
   if (
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     commentsList === null ||
     (!isNilOrError(commentsList) && commentsList.length === 0)
   ) {
@@ -108,11 +110,11 @@ export const UserComments = () => {
   if (commentsList.length > 0) {
     const commentGroups = groupBy(
       commentsList,
-      (comment) => comment.relationships.post.data.id
+      (comment) => comment.relationships.idea.data.id
     );
 
     return (
-      <Container className="e2e-profile-comments">
+      <Container className="e2e-profile-comments" id="tab-comments">
         <ScreenReaderOnly>
           <FormattedMessage
             tagName="h2"
@@ -132,15 +134,11 @@ export const UserComments = () => {
           )}
           {Object.keys(commentGroups).map((postId) => {
             const commentGroup = commentGroups[postId];
-            const postType = commentGroup[0].relationships.post.data.type as
-              | 'idea'
-              | 'initiative';
 
             return (
               <PostCommentGroup
                 key={postId}
                 postId={postId}
-                postType={postType}
                 comments={commentGroup}
                 userId={user.data.id}
               />
@@ -150,7 +148,7 @@ export const UserComments = () => {
 
         {hasNextPage && (
           <Footer>
-            <Button
+            <ButtonWithLink
               onClick={() => fetchNextPage()}
               processing={isFetchingNextPage}
               icon="refresh"
@@ -161,7 +159,7 @@ export const UserComments = () => {
               height="50px"
             >
               <FormattedMessage {...messages.loadMoreComments} />
-            </Button>
+            </ButtonWithLink>
           </Footer>
         )}
       </Container>

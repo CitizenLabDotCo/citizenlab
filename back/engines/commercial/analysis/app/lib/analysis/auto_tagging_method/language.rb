@@ -2,10 +2,7 @@
 
 module Analysis
   class AutoTaggingMethod::Language < AutoTaggingMethod::Base
-    include NLPCloudHelpers
-
     TAG_TYPE = 'language'
-    DETECTION_THRESHOLD = 0.8
 
     protected
 
@@ -16,30 +13,26 @@ module Analysis
       filtered_inputs.includes(:author).each_with_index do |input, i|
         update_progress(i / total_inputs.to_f) if i % 5 == 0
 
-        nlp = nlp_cloud_client_for(
-          'python-langdetect'
-        )
-
         text = input_to_text.execute(input).values.join("\n")
         next if text.strip.empty?
 
-        # We retry 10 times due to rate limiting
-        result = retry_rate_limit(10, 2) do
-          nlp.langdetection(text)
-        end
+        language = language_for_text(text)
+        next if !language
 
-        result['languages'].map(&:first).each do |(language, score)|
-          if score > DETECTION_THRESHOLD
-            tag = find_or_create_tag(language)
-            find_or_create_tagging!(input_id: input.id, tag_id: tag.id)
-          end
-        end
+        tag = find_or_create_tag(language)
+        find_or_create_tagging!(input_id: input.id, tag_id: tag.id)
       end
     rescue StandardError => e
       raise AutoTaggingFailedError, e
     end
 
     private
+
+    def language_for_text(input_text)
+      prompt = LLM::Prompt.new.fetch('language_detection', input_text:)
+      lang = gpt4mini.chat(prompt).strip
+      lang if lang.size == 2
+    end
 
     def find_or_create_tag(language)
       tags_by_name[language] ||= Tag.find_or_create_by!(name: language, tag_type: TAG_TYPE, analysis: analysis)

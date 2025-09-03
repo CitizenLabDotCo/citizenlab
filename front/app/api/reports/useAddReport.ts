@@ -8,14 +8,20 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import reportsKeys from './keys';
 import { ReportResponse } from './types';
 
-type AddReport =
+export type AddReport =
   | {
       name: string;
-      phase_id?: never;
+      // phase_id is the phase where the report will be published in
+      // not the phase that the report is about
+      phase_id?: null;
     }
   | {
-      name?: never;
+      name?: null;
       phase_id: string;
+    }
+  | {
+      name: string;
+      community_monitor: boolean;
     };
 
 const addReport = async (requestBody: AddReport) =>

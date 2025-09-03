@@ -8,7 +8,6 @@ export type InternalCommentsKeys = Keys<typeof commentsKeys>;
 
 export type IInternalCommentParameters =
   | { type: 'idea'; ideaId: string }
-  | { type: 'initiative'; initiativeId: string }
   | { type: 'author'; authorId: string }
   | { type: 'comment'; commentId: string };
 
@@ -33,7 +32,7 @@ export interface IInternalCommentData {
   type: 'internal_comment';
   attributes: IPresentInternalComment | IDeletedInternalComment;
   relationships: {
-    post: {
+    idea: {
       data: IRelationship;
     };
     author: {
@@ -56,10 +55,6 @@ export interface IInternalComments {
 
 export interface IIdeaNewInternalComment extends INewInternalComment {
   ideaId: string;
-}
-
-export interface IInitiativeNewInternalComment extends INewInternalComment {
-  initiativeId: string;
 }
 
 export interface INewInternalComment {

@@ -17,6 +17,11 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.addAQuestion',
     defaultMessage: 'Add a question',
   },
+  contactGovSuccessToAccessAddingAQuestion: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.contactGovSuccessToAccessAddingAQuestion',
+    defaultMessage:
+      'The ability to add or edit user fields at phase level is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.',
+  },
   customFieldNameOptions: {
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.customFieldNameOptions',
     defaultMessage: '{customFieldName} options',
@@ -44,5 +49,10 @@ export default defineMessages({
   noExtraQuestions: {
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.noExtraQuestions',
     defaultMessage: 'No extra questions will be asked.',
+  },
+  fieldsShownInSurveyForm: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldsShownInSurveyForm',
+    defaultMessage:
+      "These questions will be added as the last page of the survey form, because 'Show fields in survey?' has been selected in phase settings.",
   },
 });

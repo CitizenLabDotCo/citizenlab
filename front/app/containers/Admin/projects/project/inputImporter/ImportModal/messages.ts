@@ -18,11 +18,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.formCanBeDownloadedHere',
     defaultMessage: 'The form can be downloaded here.',
   },
-  disabledPDFImportTooltip: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.disabledPDFImportTooltip',
-    defaultMessage:
-      'Importing PDF files of scanned forms is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.',
-  },
   uploadExcelFile: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadExcelFile',
     defaultMessage:

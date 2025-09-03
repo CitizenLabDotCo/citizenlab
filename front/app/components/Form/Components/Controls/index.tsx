@@ -26,6 +26,9 @@ import MultilocInputLayout, {
 import MultiSelectControl, {
   multiSelectControlTester,
 } from 'components/Form/Components/Controls/MultiSelectControl';
+import RankingControl, {
+  rankingControlTester,
+} from 'components/Form/Components/Controls/RankingControl';
 import SingleSelectControl, {
   singleSelectControlTester,
 } from 'components/Form/Components/Controls/SingleSelectControl';
@@ -44,16 +47,16 @@ import UserPickerControl, {
 import WYSIWYGControl, {
   WYSIWYGControlTester,
 } from 'components/Form/Components/Controls/WYSIWYGControl';
-import CLCategoryLayout, {
-  clCategoryTester,
-} from 'components/Form/Components/Layouts/CLCategoryLayout';
-import CLSurveyPageLayout, {
+import CLPageLayout, {
   clPageTester,
-} from 'components/Form/Components/Layouts/CLSurveyPageLayout';
+} from 'components/Form/Components/Layouts/CLPageLayout';
 import OrderedLayout, {
   orderedLayoutTester,
 } from 'components/Form/Components/Layouts/OrderedLayout';
 
+import CosponsorsControl, {
+  cosponsorsControlTester,
+} from './CosponsorsControl';
 import ImageMultichoiceControl, {
   imageMultichoiceControlTester,
 } from './ImageMultichoiceControl';
@@ -61,9 +64,14 @@ import LinearScaleControl, {
   linearScaleControlTester,
 } from './LinearScaleControl';
 import MapControl, { mapControlTester } from './MapInput/MapControl';
+import MatrixControl, { matrixControlTester } from './MatrixControl';
 import MultiSelectCheckboxControl, {
   multiSelectCheckboxControlTester,
 } from './MultiSelectCheckboxControl';
+import RatingControl, { ratingControlTester } from './RatingControl';
+import SentimentLinearScaleControl, {
+  sentimentLinearScaleControlTester,
+} from './SentimentLinearScaleControl';
 import ShapefileUploadControl, {
   shapefileUploadControlTester,
 } from './ShapefileUploadControl';
@@ -81,9 +89,7 @@ import SingleSelectRadioEnumControl, {
 } from './SingleSelectRadioEnumControl';
 
 export {
-  CLCategoryLayout,
-  clCategoryTester,
-  CLSurveyPageLayout,
+  CLPageLayout,
   clPageTester,
   OrderedLayout,
   orderedLayoutTester,
@@ -112,6 +118,10 @@ export {
   MultiSelectControl,
   multiSelectControlTester,
   MultiSelectCheckboxControl,
+  rankingControlTester,
+  RankingControl,
+  matrixControlTester,
+  MatrixControl,
   multiSelectCheckboxControlTester,
   ImageMultichoiceControl,
   imageMultichoiceControlTester,
@@ -131,8 +141,14 @@ export {
   multilocInputTester,
   LinearScaleControl,
   linearScaleControlTester,
+  RatingControl,
+  ratingControlTester,
   SingleAttachmentControl,
   singleAttachmentControlTester,
   ShapefileUploadControl,
   shapefileUploadControlTester,
+  CosponsorsControl,
+  cosponsorsControlTester,
+  SentimentLinearScaleControl,
+  sentimentLinearScaleControlTester,
 };

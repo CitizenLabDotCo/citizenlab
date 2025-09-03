@@ -12,11 +12,12 @@ import useReport from 'api/reports/useReport';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import useUserById from 'api/users/useUserById';
 
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useAppConfigurationLocales, {
+  createMultiloc,
+} from 'hooks/useAppConfigurationLocales';
 
 import { WIDGET_TITLES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
 import getProjectPeriod from 'containers/Admin/reporting/utils/getProjectPeriod';
-import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
@@ -29,13 +30,14 @@ import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
 import DemographicsWidget from '../../Widgets/ChartWidgets/DemographicsWidget';
 import { INPUT_TYPES } from '../../Widgets/ChartWidgets/DemographicsWidget/Settings';
 import ParticipantsWidget from '../../Widgets/ChartWidgets/ParticipantsWidget';
+import VisitorsWidget from '../../Widgets/ChartWidgets/VisitorsWidget';
 import ImageMultilocWidget from '../../Widgets/ImageMultiloc';
 import MostReactedIdeasWidget from '../../Widgets/MostReactedIdeasWidget';
 import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget';
 import TextMultiloc from '../../Widgets/TextMultiloc';
 import TwoColumn from '../../Widgets/TwoColumn';
 import { TemplateContext } from '../context';
-import { getPeriod } from '../utils';
+import { getPeriod, toMultiloc } from '../utils';
 
 import { getTemplateData } from './getTemplateData';
 import messages from './messages';
@@ -62,7 +64,9 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
   const { data: surveyQuestions } = useRawCustomFields({
     phaseId:
       templateData?.participationMethod === 'native_survey'
-        ? templateData?.phaseId
+        ? // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          templateData?.phaseId
         : undefined,
   });
 
@@ -73,7 +77,8 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
     !report ||
     !projectModerator ||
     !userFields ||
-    !templateData
+    !templateData ||
+    !formatMessageWithLocale
   ) {
     return null;
   }
@@ -92,6 +97,8 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
   if (!appConfigurationLocales) return null;
 
   const reportTitle = report.data.attributes.name;
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const projectTitle = project?.data.attributes.title_multiloc;
 
   const reportTitleMultiloc = reportTitle
@@ -116,7 +123,11 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
         <ul>
           <li>
             <b>${formatMessage(messages.projectLabel)}</b>:
-            ${` ${projectTitle?.[locale] ?? ''}`}
+            ${
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+              ` ${projectTitle?.[locale] ?? ''}`
+            }
           </li>
           ${period ? `<li>${period}</li>` : ''}
           <li>
@@ -137,12 +148,6 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
         <h3>${formatMessageWithLocale(locale, title)}</h3>
         <p>${formatMessageWithLocale(locale, text)}</p>
       `;
-    });
-  };
-
-  const toMultiloc = (message: MessageDescriptor) => {
-    return createMultiloc(appConfigurationLocales, (locale) => {
-      return formatMessageWithLocale(locale, message);
     });
   };
 
@@ -187,7 +192,11 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
       <WhiteSpace />
       <ParticipantsWidget
         projectId={projectId}
-        title={toMultiloc(WIDGET_TITLES.ParticipantsWidget)}
+        title={toMultiloc(
+          WIDGET_TITLES.ParticipantsWidget,
+          appConfigurationLocales,
+          formatMessageWithLocale
+        )}
         {...projectPeriod}
       />
       <WhiteSpace />
@@ -203,7 +212,11 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
       ))}
       {participationMethod === 'ideation' && (
         <MostReactedIdeasWidget
-          title={toMultiloc(WIDGET_TITLES.MostReactedIdeasWidget)}
+          title={toMultiloc(
+            WIDGET_TITLES.MostReactedIdeasWidget,
+            appConfigurationLocales,
+            formatMessageWithLocale
+          )}
           projectId={projectId}
           phaseId={phaseId}
           numberOfIdeas={5}
@@ -245,6 +258,15 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
         )}
       />
       <WhiteSpace />
+      <VisitorsWidget
+        projectId={projectId}
+        title={toMultiloc(
+          WIDGET_TITLES.VisitorsWidget,
+          appConfigurationLocales,
+          formatMessageWithLocale
+        )}
+        {...projectPeriod}
+      />
     </Element>
   );
 };

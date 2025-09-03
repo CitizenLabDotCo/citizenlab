@@ -5,7 +5,7 @@ import { useTheme } from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
-import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+import { getCurrentPhase, getInputTerm, getLastPhase } from 'api/phases/utils';
 
 import IdeaButton from 'components/IdeaButton';
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
@@ -16,6 +16,7 @@ import {
 
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { FormattedMessage } from 'utils/cl-intl';
+import { getInputTermMessage } from 'utils/i18n';
 import { scrollToElement } from 'utils/scroll';
 
 import messages from '../messages';
@@ -53,6 +54,7 @@ const IdeationCTABar = ({ phases, project }: CTABarProps) => {
         enabled ? (
           <Box width="100%">
             <IdeaButton
+              dataCy="e2e-ideation-start-idea-button"
               id="e2e-ideation-cta-button"
               projectId={project.id}
               fontWeight="500"
@@ -78,11 +80,23 @@ const IdeationCTABar = ({ phases, project }: CTABarProps) => {
             fontWeight="500"
             bgColor={theme.colors.white}
             textColor={theme.colors.tenantText}
-            textHoverColor={theme.colors.black}
+            bgHoverColor={theme.colors.grey100}
             padding="6px 12px"
             fontSize="14px"
           >
-            <FormattedMessage {...messages.seeIdeas} />
+            <FormattedMessage
+              {...getInputTermMessage(getInputTerm(phases), {
+                idea: messages.seeIdeas,
+                option: messages.seeOptions,
+                project: messages.seeProjects,
+                question: messages.seeQuestions,
+                issue: messages.seeIssues,
+                contribution: messages.seeContributions,
+                proposal: messages.seeProposals,
+                initiative: messages.seeInitiatives,
+                petition: messages.seePetitions,
+              })}
+            />
           </Button>
         )
       }

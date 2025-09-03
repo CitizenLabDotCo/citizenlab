@@ -10,15 +10,8 @@ module Moderation
       case object.moderatable_type
       when 'Idea'
         { project: { id: object.project_id, slug: object.project_slug, title_multiloc: object.project_title_multiloc } }
-      when 'Initiative'
-        {}
       when 'Comment'
-        case object.post_type
-        when 'Idea'
-          { project: { id: object.project_id, slug: object.project_slug, title_multiloc: object.project_title_multiloc }, object.post_type.underscore.to_sym => { id: object.post_id, slug: object.post_slug, title_multiloc: object.post_title_multiloc } }
-        when 'Initiative'
-          { object.post_type.underscore.to_sym => { id: object.post_id, slug: object.post_slug, title_multiloc: object.post_title_multiloc } }
-        end
+        { project: { id: object.project_id, slug: object.project_slug, title_multiloc: object.project_title_multiloc }, object.post_type.underscore.to_sym => { id: object.post_id, slug: object.post_slug, title_multiloc: object.post_title_multiloc } }
       end
     end
 

@@ -17,7 +17,7 @@ module MultiTenancy
           idea = Idea.create!({
             title_multiloc: runner.create_for_some_locales { Faker::Lorem.sentence[0...80] },
             body_multiloc: runner.rand_description_multiloc,
-            idea_status: runner.rand_instance(IdeaStatus.all),
+            idea_status: runner.rand_instance(IdeaStatus.for_public_posts),
             topics: topics,
             author: runner.rand_instance(User.all),
             project: project,
@@ -32,7 +32,7 @@ module MultiTenancy
           })
 
           [1, 1, 2, 2, 3][rand(5)].times do |_i|
-            idea.idea_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
+            idea.idea_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.jpg").open)
           end
           if rand(5) == 0
             rand(1..3).times do

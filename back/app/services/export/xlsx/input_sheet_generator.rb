@@ -3,13 +3,13 @@ module Export
     class InputSheetGenerator
       US_DATE_TIME_FORMAT = 'mm/dd/yyyy hh:mm:ss'
 
-      def initialize(inputs, phase, include_private_attributes)
+      def initialize(inputs, phase)
         @inputs = inputs
         @phase = phase
-        @include_private_attributes = include_private_attributes
+        @include_private_attributes = phase.pmethod.supports_private_attributes_in_export?
         @participation_method = phase.pmethod
         @value_visitor = Xlsx::ValueVisitor
-        @fields_in_form = IdeaCustomFieldsService.new(participation_method.custom_form).reportable_fields
+        @fields_in_form = IdeaCustomFieldsService.new(participation_method.custom_form).xlsx_exportable_fields
         @multiloc_service = MultilocService.new(app_configuration: AppConfiguration.instance)
         @url_service = Frontend::UrlService.new
       end
@@ -73,6 +73,13 @@ module Export
         ComputedFieldForReport.new(column_header_for('longitude'), ->(input) { input.location_point&.coordinates&.first })
       end
 
+      def matrix_statement_report_field(statement)
+        ComputedFieldForReport.new(
+          multiloc_service.t(statement.title_multiloc),
+          ->(input) { input.custom_field_values.dig(statement.custom_field.key, statement.key) }
+        )
+      end
+
       def created_at_report_field
         ComputedFieldForReport.new(column_header_for('created_at'), ->(input) { input.created_at })
       end
@@ -93,12 +100,20 @@ module Export
         ComputedFieldForReport.new(column_header_for('dislikes_count'), ->(input) { input.dislikes_count })
       end
 
+      def neutral_reactions_count_report_field
+        ComputedFieldForReport.new(column_header_for('neutral_reactions_count'), ->(input) { input.neutral_reactions_count })
+      end
+
       def baskets_count_report_field(column_header_key)
         ComputedFieldForReport.new(column_header_for(column_header_key), ->(input) { voting_context(input, phase).baskets_count })
       end
 
       def votes_count_report_field
         ComputedFieldForReport.new(column_header_for('votes_count'), ->(input) { voting_context(input, phase).votes_count })
+      end
+
+      def manual_votes_amount_report_field
+        ComputedFieldForReport.new(column_header_for('manual_votes'), ->(input) { input.manual_votes_amount })
       end
 
       def input_url_report_field
@@ -140,8 +155,15 @@ module Export
               input_fields << latitude_report_field
               input_fields << longitude_report_field
             end
+            if field.input_type == 'matrix_linear_scale'
+              field.matrix_statements.each do |statement|
+                input_fields << matrix_statement_report_field(statement)
+              end
+              next
+            end
             input_fields << Export::CustomFieldForExport.new(field, @value_visitor)
             input_fields << Export::CustomFieldForExport.new(field.other_option_text_field, @value_visitor) if field.other_option_text_field
+            input_fields << Export::CustomFieldForExport.new(field.follow_up_text_field, @value_visitor) if field.follow_up_text_field
           end
         end
       end
@@ -154,7 +176,9 @@ module Export
             author_id_report_field
           ]
         else
-          []
+          [
+            author_id_report_field
+          ]
         end
       end
 
@@ -163,14 +187,14 @@ module Export
           meta_fields << created_at_report_field
           meta_fields << published_at_report_field if participation_method.supports_public_visibility?
           meta_fields << comments_count_report_field if participation_method.supports_commenting?
-          if participation_method.supports_reacting?
-            meta_fields << likes_count_report_field
-            meta_fields << dislikes_count_report_field
-          end
+          meta_fields << likes_count_report_field if participation_method.supports_reacting?('up')
+          meta_fields << dislikes_count_report_field if participation_method.supports_reacting?('down')
+          meta_fields << neutral_reactions_count_report_field if participation_method.supports_reacting?('neutral')
           meta_fields << baskets_count_report_field('picks') if participation_method.additional_export_columns.include? 'picks'
           meta_fields << baskets_count_report_field('participants') if participation_method.additional_export_columns.include? 'participants'
           meta_fields << votes_count_report_field if participation_method.additional_export_columns.include? 'votes'
           meta_fields << budget_report_field if participation_method.additional_export_columns.include? 'budget'
+          meta_fields << manual_votes_amount_report_field if participation_method.additional_export_columns.include? 'manual_votes'
           meta_fields << input_url_report_field if participation_method.supports_public_visibility?
           meta_fields << project_report_field
           meta_fields << status_report_field if participation_method.supports_status?
@@ -182,12 +206,10 @@ module Export
       end
 
       def user_report_fields
+        return [] if participation_method.user_fields_in_form? # User fields are returned from the idea if they are included in the form
+
         registration_fields.map do |field|
-          if field.code == 'domicile'
-            Export::DomicileFieldForExport.new(field, @value_visitor, :author)
-          else
-            Export::CustomFieldForExport.new(field, @value_visitor, :author)
-          end
+          Export::CustomFieldForExport.new(field, @value_visitor, :author)
         end
       end
 

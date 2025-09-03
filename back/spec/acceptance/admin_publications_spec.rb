@@ -15,6 +15,7 @@ resource 'AdminPublication' do
     project_statuses.map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
   end
   let(:published_projects) { projects.select { |p| p.admin_publication.publication_status == 'published' } }
+  let(:draft_projects) { projects.select { |p| p.admin_publication.publication_status == 'draft' } }
   let(:publication_ids) { response_data.map { |d| d.dig(:relationships, :publication, :data, :id) } }
   let!(:empty_draft_folder) { create(:project_folder, admin_publication_attributes: { publication_status: 'draft' }) }
 
@@ -44,53 +45,51 @@ resource 'AdminPublication' do
       parameter :filter_can_moderate, 'Filter out the projects the current_user is not allowed to moderate. False by default', required: false
       parameter :filter_is_moderator_of, 'Filter out the publications the current_user is not moderator of. False by default', required: false
       parameter :filter_user_is_moderator_of, 'Filter out the publications the given user is moderator of (user id)', required: false
+      parameter :exclude_projects_in_included_folders, 'Exclude projects in included folders (boolean)', required: false
+      parameter :review_state, 'Filter by project review status (pending, approved)', required: false
 
       example_request 'List all admin publications' do
+        hidden_project = create(:community_monitor_project)
         expect(status).to eq(200)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 10
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 8
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 2
+        expect(response_data.size).to eq 10
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 8
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 2
+        expect(response_data.pluck(:id)).not_to include(hidden_project.admin_publication.id)
       end
 
       example 'List all top-level admin publications' do
         do_request(depth: 0)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 7
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 5
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 2
+        expect(response_data.size).to eq 7
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 5
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 2
       end
 
       example 'List all admin publications in a folder' do
         do_request(folder: custom_folder.id)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 3
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 0
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 3
+        expect(response_data.size).to eq 3
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 0
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 3
       end
 
       example 'List all draft or archived admin publications' do
         do_request(publication_statuses: %w[draft archived])
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 5
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [empty_draft_folder.id, projects[2].id, projects[3].id, projects[5].id, projects[6].id]
-        expect(json_response[:data].find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 0
+        expect(response_data.size).to eq 5
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [empty_draft_folder.id, projects[2].id, projects[3].id, projects[5].id, projects[6].id]
+        expect(response_data.find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 0
       end
 
       example_request 'List projects only' do
         do_request(only_projects: 'true')
         expect(status).to eq(200)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 8
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 8
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 0
+        expect(response_data.size).to eq 8
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 8
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 0
       end
 
       example 'List publications admin can moderate', document: false do
         do_request filter_can_moderate: true
-        json_response = json_parse(response_body)
         assert_status 200
-        expect(json_response[:data].size).to eq 10
+        expect(response_data.size).to eq 10
       end
 
       example 'List publications a specific user can moderate', document: false do
@@ -107,6 +106,24 @@ resource 'AdminPublication' do
         do_request filter_user_is_moderator_of: moderator.id
         assert_status 200
         expect(publication_ids).to match_array [projects[0].id, projects[1].id, moderated_folder.id]
+      end
+
+      example 'Includes unlisted projects', document: false do
+        unlisted_project = create(:project, listed: false)
+
+        do_request
+        assert_status 200
+        expect(response_data.size).to eq 11
+        expect(response_data.pluck(:id)).to include unlisted_project.admin_publication.id
+      end
+
+      example 'Does not include unlisted projects if remove_all_unlisted is true', document: false do
+        unlisted_project = create(:project, listed: false)
+
+        do_request remove_all_unlisted: true
+        assert_status 200
+        expect(response_data.size).to eq 10
+        expect(response_data.pluck(:id)).not_to include unlisted_project.admin_publication.id
       end
 
       context 'when admin is moderator of publications' do
@@ -187,6 +204,20 @@ resource 'AdminPublication' do
         expect(publication_ids).to match_array [published_projects[0].id, custom_folder.id]
       end
 
+      example 'List all admin publications with pending project review' do
+        create(:project_review, project: draft_projects.first)
+
+        do_request(review_state: 'pending', publication_statuses: ['draft'], only_projects: true)
+        expect(publication_ids).to match_array [draft_projects.first.id]
+      end
+
+      example 'List all admin publications with approved project review' do
+        create(:project_review, :approved, project: draft_projects.first)
+
+        do_request(review_state: 'approved', publication_statuses: ['draft'], only_projects: true)
+        expect(publication_ids).to match_array [draft_projects.first.id]
+      end
+
       describe "showing empty folders (which don't have any projects)" do
         let!(:custom_folder) { create(:project_folder, projects: []) }
 
@@ -244,18 +275,83 @@ resource 'AdminPublication' do
         example 'List all root-level admin publications is ordered correctly', document: false do
           do_request(depth: 0)
           expect(status).to eq(200)
-          json_response = json_parse(response_body)
-          expect(json_response[:data].map { |d| d.dig(:attributes, :publication_title_multiloc, :en) })
+
+          expect(response_data.map { |d| d.dig(:attributes, :publication_title_multiloc, :en) })
             .to eq(%w[P1 F1 P2 F2 P6 P7 P8])
         end
 
         example 'List only project publications maintains a flattened nested ordering', document: false do
           do_request(only_projects: 'true')
           expect(status).to eq(200)
-          json_response = json_parse(response_body)
-          expect(json_response[:data].map { |d| d.dig(:attributes, :publication_title_multiloc, :en) })
+
+          expect(response_data.map { |d| d.dig(:attributes, :publication_title_multiloc, :en) })
             .to eq(%w[P1 P2 P3-f2 P4-f2 P5-f2 P6 P7 P8])
         end
+      end
+    end
+
+    get 'web_api/v1/admin_publications/select_and_order_by_ids' do
+      with_options scope: :page do
+        parameter :number, 'Page number'
+        parameter :size, 'Number of projects per page'
+      end
+      parameter :ids, 'Filter and order by IDs', required: false
+
+      let(:draft_ids) { AdminPublication.all.draft.pluck(:id) }
+      let(:non_draft_ids) { AdminPublication.all.not_draft.pluck(:id) }
+
+      example 'List records with specified IDs, in order of IDs' do
+        do_request(ids: [
+          non_draft_ids[3],
+          non_draft_ids[0],
+          'not_an_admin_publication_id',
+          non_draft_ids[1],
+          non_draft_ids[4]
+        ])
+
+        expect(status).to eq(200)
+
+        expect(response_data.pluck(:id))
+          .to eq [non_draft_ids[3], non_draft_ids[0], non_draft_ids[1], non_draft_ids[4]]
+      end
+
+      example 'Maintains ordering by IDs in pagination', document: false do
+        do_request(
+          ids: [
+            non_draft_ids[3],
+            non_draft_ids[0],
+            'not_an_admin_publication_id',
+            non_draft_ids[1],
+            non_draft_ids[4],
+            non_draft_ids[2]
+          ],
+          page: { number: 2, size: 3 }
+        )
+
+        expect(status).to eq(200)
+        expect(response_data.pluck(:id)).to eq [non_draft_ids[4], non_draft_ids[2]]
+      end
+
+      example 'Does not include draft admin_publications', document: false do
+        do_request(ids: [
+          non_draft_ids[3],
+          draft_ids[1],
+          non_draft_ids[0],
+          draft_ids[0],
+          non_draft_ids[1],
+          non_draft_ids[4]
+        ])
+
+        expect(status).to eq(200)
+        expect(response_data.pluck(:id))
+          .to eq [non_draft_ids[3], non_draft_ids[0], non_draft_ids[1], non_draft_ids[4]]
+      end
+
+      example 'Returns empty data when no records are found', document: false do
+        do_request(ids: ['not_an_admin_publication_id'])
+
+        expect(status).to eq(200)
+        expect(response_data).to be_empty
       end
     end
 
@@ -270,7 +366,7 @@ resource 'AdminPublication' do
 
       let!(:projects) do
         Array.new(3) do |i|
-          create(:project, admin_publication_attributes: { publication_status: 'published', ordering: i })
+          create(:project, admin_publication_attributes: { publication_status: 'published', ordering: i + 1 })
         end
       end
 
@@ -281,9 +377,8 @@ resource 'AdminPublication' do
         old_second_publication = AdminPublication.find_by(ordering: ordering)
         do_request
         expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :ordering)).to eq ordering
-        expect(json_response.dig(:data, :id)).to eq id
+        expect(response_data.dig(:attributes, :ordering)).to eq ordering
+        expect(response_data[:id]).to eq id
 
         expect(AdminPublication.find(id).ordering).to eq(ordering)
         expect(old_second_publication.reload.ordering).to eq 2 # previous second is now third
@@ -295,12 +390,10 @@ resource 'AdminPublication' do
 
       example_request 'Get one admin publication by id' do
         expect(status).to eq 200
-        json_response = json_parse(response_body)
-
-        expect(json_response.dig(:data, :id)).to eq projects.first.admin_publication.id
-        expect(json_response.dig(:data, :relationships, :publication, :data, :type)).to eq 'project'
-        expect(json_response.dig(:data, :relationships, :publication, :data, :id)).to eq projects.first.id
-        expect(json_response.dig(:data, :attributes, :publication_slug)).to eq projects.first.slug
+        expect(response_data[:id]).to eq projects.first.admin_publication.id
+        expect(response_data.dig(:relationships, :publication, :data, :type)).to eq 'project'
+        expect(response_data.dig(:relationships, :publication, :data, :id)).to eq projects.first.id
+        expect(response_data.dig(:attributes, :publication_slug)).to eq projects.first.slug
       end
     end
 
@@ -308,13 +401,9 @@ resource 'AdminPublication' do
       example 'Get publication_status counts for top-level admin publications' do
         do_request(depth: 0)
         expect(status).to eq 200
-
-        json_response = json_parse(response_body)
-
-        expect(json_response[:data][:attributes][:status_counts][:draft]).to eq 2
-        expect(json_response[:data][:attributes][:status_counts][:archived]).to eq 2
-
-        expect(json_response[:data][:attributes][:status_counts][:published]).to eq 3
+        expect(response_data[:attributes][:status_counts][:draft]).to eq 2
+        expect(response_data[:attributes][:status_counts][:archived]).to eq 2
+        expect(response_data[:attributes][:status_counts][:published]).to eq 3
       end
     end
   end
@@ -334,34 +423,33 @@ resource 'AdminPublication' do
       end
       parameter :topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
-      parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default', required: false
       parameter :remove_not_allowed_parents, 'Filter out folders with no visible children for the current user', required: false
+      parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default', required: false
       parameter :folder, 'Filter by folder (project folder id)', required: false
+      parameter :include_publications, 'Include the related publications and associated items', required: false
 
       example 'Listed admin publications have correct visible children count', document: false do
         do_request(folder: nil, remove_not_allowed_parents: true)
         expect(status).to eq(200)
-        json_response = json_parse(response_body)
         # Only 3 of initial 6 projects are not in folder
-        expect(json_response[:data].size).to eq 3
+        expect(response_data.size).to eq 3
         # Only 1 folder expected - Draft folder created at top of file is not visible to resident,
         # nor should a folder with only a draft project in it
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 1
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 1
         # 3 projects are inside folder, 3 top-level projects remain, of which 1 is not visible (draft)
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 2
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 2
         # Only the two non-draft projects are visible to resident
-        expect(json_response[:data].find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 2
+        expect(response_data.find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 2
       end
 
-      example 'Visible children count should take account with applied filters', document: false do
+      example 'Visible children count should take account of applied filters', document: false do
         projects.first.admin_publication.update! publication_status: 'archived'
         do_request(folder: nil, publication_statuses: ['published'], remove_not_allowed_parents: true)
         expect(status).to eq(200)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 2
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 1
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 1
-        expect(json_response[:data].find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 1
+        expect(response_data.size).to eq 2
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 1
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 1
+        expect(response_data.find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 1
       end
 
       context 'search param' do
@@ -505,7 +593,6 @@ resource 'AdminPublication' do
             build(:layout, craftjs_json: { sometext: { props: { text: { en: 'othertext' } } } })
           ])
           do_request search: 'sometext'
-
           expect(response_data.size).to eq 1
           expect(response_ids).to contain_exactly(project.admin_publication.id)
         end
@@ -515,8 +602,37 @@ resource 'AdminPublication' do
         AdminPublication.publication_types.each { |claz| claz.all.each(&:destroy!) }
         do_request(publication_statuses: ['published'])
         expect(status).to eq(200)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 0
+        expect(response_data.size).to eq 0
+      end
+    end
+
+    get 'web_api/v1/admin_publications/select_and_order_by_ids' do
+      with_options scope: :page do
+        parameter :number, 'Page number'
+        parameter :size, 'Number of projects per page'
+      end
+      parameter :ids, 'Filter and order by IDs', required: false
+
+      example 'Includes correct counts of visible children', document: false do
+        group_project = create(:project, visible_to: 'groups')
+        draft_project = create(:project, admin_publication_attributes: { publication_status: 'draft' })
+        folder_with_children = create(:project_folder, projects: [published_projects[0], group_project, draft_project])
+
+        do_request(ids: [folder_with_children.admin_publication.id])
+
+        expect(status).to eq(200)
+        expect(response_data.first.dig(:attributes, :visible_children_count)).to eq 1
+      end
+
+      example 'Does not includes folders containing only non-visible children', document: false do
+        group_project = create(:project, visible_to: 'groups')
+        draft_project = create(:project, admin_publication_attributes: { publication_status: 'draft' })
+        folder_with_non_visible_children = create(:project_folder, projects: [group_project, draft_project])
+
+        do_request(ids: [folder_with_non_visible_children.admin_publication.id])
+
+        expect(status).to eq(200)
+        expect(response_data).to be_empty
       end
     end
   end
@@ -529,12 +645,9 @@ resource 'AdminPublication' do
       example 'Get publication_status counts for top-level admin publications' do
         do_request(depth: 0)
         expect(status).to eq 200
-
-        json_response = json_parse(response_body)
-        expect(json_response[:data][:attributes][:status_counts][:draft]).to be_nil
-        expect(json_response[:data][:attributes][:status_counts][:published]).to eq 2
-
-        expect(json_response[:data][:attributes][:status_counts][:archived]).to eq 1
+        expect(response_data[:attributes][:status_counts][:draft]).to be_nil
+        expect(response_data[:attributes][:status_counts][:published]).to eq 2
+        expect(response_data[:attributes][:status_counts][:archived]).to eq 1
       end
     end
   end
@@ -555,6 +668,7 @@ resource 'AdminPublication' do
       parameter :only_projects, 'Include projects only (no folders)', required: false
       parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
       parameter :filter_is_moderator_of, 'Filter out the publications the user is not moderator of. False by default', required: false
+      parameter :exclude_projects_in_included_folders, 'Exclude projects in included folders (boolean)', required: false
 
       before do
         @moderator = create(:project_moderator, projects: [published_projects[0], published_projects[1]])
@@ -563,11 +677,54 @@ resource 'AdminPublication' do
 
       example 'List only the projects the current user is moderator of' do
         do_request(filter_is_moderator_of: true, only_projects: true)
-        json_response = json_parse(response_body)
+
         assert_status 200
-        expect(json_response[:data].size).to eq 2
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) })
+        expect(response_data.size).to eq 2
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :id) })
           .to match_array [published_projects[0].id, published_projects[1].id]
+      end
+
+      # This is how the FE requests the admin_publications to show in the 'Your projects' tab,
+      # to avoid showing projects twice (as a seperate item AND in a moderated folder)
+      example 'List only folders (none unless also folder mod) and root level projects user is moderator of' do
+        root_project = create(:project, admin_publication_attributes: { publication_status: 'published' })
+        moderator_roles = @moderator.roles << { type: 'project_moderator', project_id: root_project.id }
+        @moderator.update!(roles: moderator_roles)
+
+        do_request(filter_is_moderator_of: true, exclude_projects_in_included_folders: true)
+        assert_status 200
+        expect(publication_ids).to match_array [published_projects[0].id, published_projects[1].id, root_project.id]
+      end
+
+      example 'Lists projects', document: false do
+        do_request
+        assert_status 200
+        expect(response_data.size).to eq 7
+      end
+
+      example 'Unlisted projects that user can moderate are included', document: false do
+        unlisted_project_user_moderates = create(:project, listed: false)
+        unlisted_project = create(:project, listed: false)
+
+        moderator_roles = @moderator.roles << { type: 'project_moderator', project_id: unlisted_project_user_moderates.id }
+        @moderator.update!(roles: moderator_roles)
+
+        do_request
+        assert_status 200
+        expect(response_data.size).to eq 8
+        expect(response_data.pluck(:id)).to include unlisted_project_user_moderates.admin_publication.id
+        expect(response_data.pluck(:id)).not_to include unlisted_project.admin_publication.id
+      end
+
+      example 'Unlisted projects user can moderate are excluded if remove_all_unlisted is true', document: false do
+        unlisted_project_user_moderates = create(:project, listed: false)
+
+        moderator_roles = @moderator.roles << { type: 'project_moderator', project_id: unlisted_project_user_moderates.id }
+        @moderator.update!(roles: moderator_roles)
+
+        do_request remove_all_unlisted: true
+        assert_status 200
+        expect(response_data.size).to eq 7
       end
     end
   end
@@ -605,6 +762,7 @@ resource 'AdminPublication' do
       parameter :only_projects, 'Include projects only (no folders)', required: false
       parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
       parameter :filter_is_moderator_of, 'Filter out the publications the user is not moderator of. False by default', required: false
+      parameter :exclude_projects_in_included_folders, 'Exclude projects in included folders (boolean)', required: false
 
       example 'List publications user is moderator of', document: false do
         do_request filter_is_moderator_of: true
@@ -616,6 +774,58 @@ resource 'AdminPublication' do
         do_request(filter_is_moderator_of: true, only_projects: true)
         assert_status 200
         expect(publication_ids).to match_array @folder.projects.pluck(:id)
+      end
+
+      # This is how the FE requests the admin_publications to show in the 'Your projects' tab,
+      # to avoid showing projects twice (as a seperate item AND in a moderated folder)
+      example 'List only folders and root level projects user is moderator of' do
+        root_project = create(:project, admin_publication_attributes: { publication_status: 'published' })
+        moderator_roles = @moderator.roles << { type: 'project_moderator', project_id: root_project.id }
+        @moderator.update!(roles: moderator_roles)
+
+        do_request(filter_is_moderator_of: true, exclude_projects_in_included_folders: true)
+        assert_status 200
+        expect(publication_ids).to match_array [project_folder.id, @folder.id, root_project.id].flatten
+      end
+
+      example 'Lists publications', document: false do
+        do_request
+        expect(response_data.size).to eq 18
+      end
+
+      example 'Includes unlisted projects in folder user can moderate', document: false do
+        unlisted_project_user_moderates = create(
+          :project,
+          listed: false,
+          admin_publication_attributes: {
+            publication_status: 'published',
+            parent_id: project_folder.admin_publication.id
+          }
+        )
+
+        unlisted_project = create(:project, listed: false)
+
+        do_request
+        assert_status 200
+        expect(response_data.size).to eq 19
+        expect(response_ids).to include unlisted_project_user_moderates.admin_publication.id
+        expect(response_ids).not_to include unlisted_project.admin_publication.id
+      end
+
+      example 'Does not include unlisted projects user can moderate if remove_all_unlisted is true', document: false do
+        unlisted_project_user_moderates = create(
+          :project,
+          listed: false,
+          admin_publication_attributes: {
+            publication_status: 'published',
+            parent_id: project_folder.admin_publication.id
+          }
+        )
+
+        do_request remove_all_unlisted: true
+        assert_status 200
+        expect(response_data.size).to eq 18
+        expect(response_ids).not_to include unlisted_project_user_moderates.admin_publication.id
       end
     end
 
@@ -641,13 +851,131 @@ resource 'AdminPublication' do
           expect(second_publication.ordering).to eq second_publication_ordering
 
           do_request
-          new_ordering = json_parse(response_body).dig(:data, :attributes, :ordering)
+          new_ordering = response_data.dig(:attributes, :ordering)
 
           expect(response_status).to eq 200
           expect(new_ordering).to eq second_publication_ordering
           expect(second_publication.reload.ordering).to eq publication_ordering
         end
       end
+    end
+  end
+
+  context "when include_publications parameter is 'true'" do
+    shared_examples 'include_publications' do
+      get 'web_api/v1/admin_publications' do
+        parameter :include_publications, 'Include the related publications and associated items', required: false
+
+        example ':include_publications includes the related publications & expected associations', document: false do
+          project = create(:project_with_active_ideation_phase)
+          project_image = create(:project_image, project: project)
+          folder = create(:project_folder)
+          folder_image = create(:project_folder_image, project_folder: folder)
+
+          # We need a participant, to get some included avatar data
+          participant = create(:user)
+          create(:idea, project: project, author: participant)
+
+          do_request include_publications: 'true'
+          expect(status).to eq(200)
+
+          relationships_data = response_data.map { |d| d.dig(:relationships, :publication, :data) }
+
+          related_project_ids = relationships_data.select { |d| d[:type] == 'project' }.pluck(:id)
+          related_folder_ids = relationships_data.select { |d| d[:type] == 'folder' }.pluck(:id)
+
+          included_projects = json_response_body[:included].select { |d| d[:type] == 'project' }
+          included_folder_ids = json_response_body[:included].select { |d| d[:type] == 'folder' }.pluck(:id)
+          included_phase_ids = json_response_body[:included].select { |d| d[:type] == 'phase' }.pluck(:id)
+          included_avatar_ids = json_response_body[:included].select { |d| d[:type] == 'avatar' }.pluck(:id)
+          included_image_ids = json_response_body[:included].select { |d| d[:type] == 'image' }.pluck(:id)
+
+          current_phase_ids = included_projects.filter_map { |d| d.dig(:relationships, :current_phase, :data, :id) }
+          avatar_ids = included_projects.map { |d| d.dig(:relationships, :avatars, :data) }.flatten.pluck(:id)
+
+          expect(related_project_ids).to match included_projects.pluck(:id)
+          expect(related_folder_ids).to match included_folder_ids
+          expect(current_phase_ids).to match included_phase_ids
+          expect(avatar_ids).to match included_avatar_ids
+          expect(included_image_ids).to include project_image.id
+          expect(included_image_ids).to include folder_image.id
+        end
+      end
+    end
+
+    describe 'when admin' do
+      before do
+        @admin = create(:admin)
+        header_token_for(@admin)
+      end
+
+      include_examples 'include_publications'
+    end
+
+    describe 'when project moderator' do
+      before do
+        @moderator = create(:project_moderator, projects: [published_projects[0], published_projects[1]])
+        header_token_for(@moderator)
+      end
+
+      include_examples 'include_publications'
+    end
+
+    describe 'when project folder moderator' do
+      before do
+        @moderator = create(:project_folder_moderator, project_folders: [create(:project_folder)])
+        header_token_for(@moderator)
+      end
+
+      include_examples 'include_publications'
+    end
+
+    describe 'when resident' do
+      before { resident_header_token }
+
+      include_examples 'include_publications'
+
+      get 'web_api/v1/admin_publications' do
+        with_options scope: :page do
+          parameter :number, 'Page number'
+          parameter :size, 'Number of projects per page'
+        end
+        parameter :depth, 'Filter by depth', required: false
+        parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default (OR)', required: false
+        parameter :remove_not_allowed_parents, 'Filter out folders which contain only projects that are not visible to the user', required: false
+        parameter :include_publications, 'Include the related publications and associated items', required: false
+
+        example_request 'Index action does not invoke unnecessary queries' do
+          project = create(:project_with_active_ideation_phase)
+          create(:project_image, project: project)
+          folder = create(:project_folder)
+          create(:project_folder_image, project_folder: folder)
+
+          # We need a participant, to get some included avatar data
+          participant = create(:user)
+          create(:idea, project: project, author: participant)
+
+          # There is probably lots more that could be done to improve the query count here, but this test
+          # is here to help ensure that we don't make things worse.
+          #
+          # Down from 138, before adding more items to @publications = @publications.includes(...) in TAN-2806 #9110
+          # in the case where we make use of the include_publications parameter
+          expect do
+            do_request(
+              page: { size: 6, number: 1 },
+              depth: 0,
+              publication_statuses: %w[published archived],
+              include_publications: 'true'
+            )
+          end.not_to exceed_query_limit(123)
+
+          assert_status 200
+        end
+      end
+    end
+
+    describe 'when not logged in' do
+      include_examples 'include_publications'
     end
   end
 end

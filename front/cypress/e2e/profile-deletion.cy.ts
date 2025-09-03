@@ -3,25 +3,22 @@ import { randomString, randomEmail } from '../support/commands';
 describe('profile deletion', () => {
   const firstName = randomString();
   const lastName = randomString();
-  const peasantEmail = randomEmail();
-  const peasantPassword = randomString();
+  const email = randomEmail();
+  const password = randomString();
 
   before(() => {
-    cy.apiSignup(firstName, lastName, peasantEmail, peasantPassword).then(
-      () => {
-        cy.setLoginCookie(peasantEmail, peasantPassword);
-        cy.visit('/profile/edit');
-        cy.acceptCookies();
-      }
-    );
+    cy.apiSignup(firstName, lastName, email, password).then(() => {
+      cy.setLoginCookie(email, password);
+    });
   });
-  it.skip('lets user delete their profile', () => {
-    cy.get('.e2e-delete-profile').find('button').click();
-    cy.get('.e2e-delete-profile-confirm').find('button').click();
-    cy.wait(3000);
-    cy.get('.e2e-user-deleted-success-modal-content');
-    cy.get('.e2e-modal-close-button').click();
-    cy.get('.e2e-user-deleted-success-modal-content').should('not.exist');
-    cy.get('.e2e-user-menu-container').should('not.exist');
+
+  it('lets user delete their profile', () => {
+    cy.visit('/profile/edit');
+    cy.dataCy('e2e-delete-profile-button').should('be.visible').click();
+    cy.dataCy('e2e-delete-profile-confirmation').should('be.visible').click();
+    cy.dataCy('e2e-user-deleted-success-modal-content').should('be.visible');
+    // Check that the user is logged out
+    cy.visit('/profile/edit');
+    cy.dataCy('e2e-unauthorized-must-sign-in').should('be.visible');
   });
 });

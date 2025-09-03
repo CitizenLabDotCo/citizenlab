@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import endpoints, { usersData, apiPath } from './__mocks__/_mockServer';
 import useUserById from './useUserById';
@@ -16,7 +16,7 @@ describe('useUserById', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useUserById(userId), {
+    const { result } = renderHook(() => useUserById(userId), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -35,7 +35,7 @@ describe('useUserById', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useUserById(userId), {
+    const { result } = renderHook(() => useUserById(userId), {
       wrapper: createQueryClientWrapper(),
     });
 

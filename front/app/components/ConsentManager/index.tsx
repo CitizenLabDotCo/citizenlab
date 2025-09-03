@@ -1,178 +1,73 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import { useEffect } from 'react';
+
+import { useSearchParams } from 'react-router-dom';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
-import eventEmitter from 'utils/eventEmitter';
-import { isNilOrError } from 'utils/helperUtils';
+import useObserveEvent from 'hooks/useObserveEvent';
 
-import {
-  getConsent,
-  IConsentCookie,
-  ISavedDestinations,
-  setConsent,
-} from './consent';
-import Container from './Container';
-import { allCategories, TCategory } from './destinations';
-import { IPreferences } from './typings';
-import {
-  getCurrentPreferences,
-  getActiveDestinations,
-  getCategory,
-  categorizeDestinations,
-  getConsentRequired,
-} from './utils';
+import { useModalQueue } from 'containers/App/ModalQueue';
+
+import eventEmitter from 'utils/eventEmitter';
+
+import { getConsent, ISavedDestinations } from './consent';
+import { useConsentRequired, getCurrentPreferences } from './utils';
 
 const ConsentManager = () => {
-  const [preferences, setPreferences] = useState<IPreferences>({
-    functional: true,
-  });
-  const [cookieConsent, setCookieConsent] = useState<IConsentCookie | null>(
-    null
-  );
-
-  const { data: appConfiguration } = useAppConfiguration();
+  const { queueModal, removeModal } = useModalQueue();
   const { data: authUser } = useAuthUser();
+  const { data: appConfiguration } = useAppConfiguration();
 
+  const [searchParams] = useSearchParams();
+  const from = searchParams.get('from');
+
+  const isConsentRequired = useConsentRequired();
+
+  // Code that should run every time the app is first loaded.
+  // Initialize everything that needs to be initialized,
+  // for which cookies already were accepted prior.
+  // E.g. if you accepted cookies for intercom last session,
+  // this session we need to make sure intercom gets
+  // initialized when the app loads. This code handles that.
   useEffect(() => {
-    const cookieConsent = getConsent();
-    setCookieConsent(cookieConsent);
+    const consent = getConsent();
+
+    const defaultPreferences = getCurrentPreferences(
+      appConfiguration?.data,
+      authUser?.data,
+      consent
+    );
+
+    if (defaultPreferences.functional === undefined) {
+      defaultPreferences.functional = true;
+    }
 
     eventEmitter.emit<ISavedDestinations>(
       'destinationConsentChanged',
-      cookieConsent?.savedChoices || {}
+      consent?.savedChoices || {}
     );
-  }, []);
+  }, [appConfiguration?.data, authUser?.data]);
 
-  const resetPreferences = useCallback(() => {
-    setPreferences(
-      getCurrentPreferences(
-        appConfiguration?.data,
-        authUser?.data,
-        cookieConsent
-      )
-    );
-  }, [appConfiguration, authUser, cookieConsent]);
+  useEffect(() => {
+    /*
+      When we click the link to the cookie policy in the modal, 
+      we wouldn't be able to read the cookie policy without this, 
+      because the modal is on top of the page.
+      Search the codebase for 'from=cookie-modal' to see where this is used.
+    */
+    if (from === 'cookie-modal') {
+      removeModal('consent-modal');
+    } else if (isConsentRequired) {
+      queueModal('consent-modal');
+    }
+  }, [from, isConsentRequired, queueModal, removeModal]);
 
-  const updatePreference = useCallback(
-    (category: TCategory, value: boolean) => {
-      setPreferences((preferences) => ({
-        ...preferences,
-        [category]: value,
-      }));
-    },
-    []
-  );
+  useObserveEvent('openConsentManager', () => {
+    queueModal('consent-modal');
+  });
 
-  const saveConsent = useCallback(
-    (newPreferences: IPreferences) => {
-      if (isNilOrError(appConfiguration)) return;
-      const newChoices: ISavedDestinations = {};
-
-      getActiveDestinations(appConfiguration.data, authUser?.data).forEach(
-        (config) => {
-          newChoices[config.key] =
-            newPreferences[getCategory(appConfiguration.data, config)];
-        }
-      );
-
-      setConsent({
-        ...newPreferences,
-        savedChoices: {
-          ...cookieConsent?.savedChoices,
-          ...newChoices,
-        },
-      });
-
-      eventEmitter.emit<ISavedDestinations>(
-        'destinationConsentChanged',
-        newChoices
-      );
-
-      setCookieConsent(getConsent());
-    },
-    [appConfiguration, authUser, cookieConsent?.savedChoices]
-  );
-
-  const onSaveConsent = () => saveConsent(preferences);
-
-  const accept = useCallback(() => {
-    const newPreferences: IPreferences = {};
-
-    allCategories().forEach((category) => {
-      newPreferences[category] =
-        preferences[category] === undefined ? true : preferences[category];
-    });
-
-    setPreferences(newPreferences);
-    saveConsent(newPreferences);
-  }, [preferences, saveConsent]);
-
-  const reject = useCallback(() => {
-    const newPreferences = {
-      advertising: false,
-      analytics: false,
-      functional: true,
-    };
-
-    setPreferences(newPreferences);
-    saveConsent(newPreferences);
-  }, [saveConsent]);
-
-  const toggleDefault = useCallback(
-    (modalOpened: boolean) => {
-      const newPreferences: IPreferences = {};
-      const modalIsCurrentlyOpening = !modalOpened;
-
-      // If modal is currently opening: overwrite undefined preferences with false
-      if (modalIsCurrentlyOpening) {
-        allCategories().forEach((category) => {
-          newPreferences[category] =
-            preferences[category] === undefined ? false : preferences[category];
-        });
-      }
-
-      // If modal is currently closing: overwrite false preferences with undefined
-      if (!modalIsCurrentlyOpening) {
-        allCategories().forEach((category) => {
-          newPreferences[category] =
-            preferences[category] === false ? undefined : preferences[category];
-        });
-      }
-
-      setPreferences(newPreferences);
-    },
-    [preferences]
-  );
-
-  const activeDestinations = useMemo(
-    () => getActiveDestinations(appConfiguration?.data, authUser?.data),
-    [appConfiguration, authUser]
-  );
-
-  const activeCategorizedDestinations = useMemo(
-    () => categorizeDestinations(appConfiguration?.data, activeDestinations),
-    [appConfiguration, activeDestinations]
-  );
-
-  const isConsentRequired = useMemo(
-    () => getConsentRequired(cookieConsent, activeDestinations),
-    [cookieConsent, activeDestinations]
-  );
-
-  return (
-    <Container
-      accept={accept}
-      reject={reject}
-      onToggleModal={toggleDefault}
-      updatePreference={updatePreference}
-      resetPreferences={resetPreferences}
-      saveConsent={onSaveConsent}
-      isConsentRequired={isConsentRequired}
-      preferences={preferences}
-      categorizedDestinations={activeCategorizedDestinations}
-    />
-  );
+  return null;
 };
 
 export default ConsentManager;

@@ -3,8 +3,6 @@ import React, { useRef, useEffect, useState } from 'react';
 import { media, isRtl, useBreakpoint } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import Fragment from 'components/Fragment';
-
 import DesktopNavItems from './Components/DesktopNavItems';
 import DesktopNavbarContent from './Components/NavbarContent/DesktopNavbarContent';
 import MobileNavbarContent from './Components/NavbarContent/MobileNavbarContent';
@@ -56,13 +54,24 @@ const Left = styled.div`
   display: flex;
   align-items: center;
   height: ${({ theme }) => theme.menuHeight}px;
+  flex: 1;
+  min-width: 0;
   ${isRtl`
     flex-direction: row-reverse;
     `}
 `;
 
-const StyledRightFragment = styled(Fragment)`
-  max-width: 200px;
+const RightContainer = styled.div`
+  flex-shrink: 0;
+  min-width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: ${({ theme }) => theme.menuHeight}px;
+
+  ${isRtl`
+    justify-content: flex-start;
+  `}
 `;
 
 const MainHeader = () => {
@@ -70,30 +79,33 @@ const MainHeader = () => {
 
   const [showMobileStickyNav, setShowMobileStickyNav] =
     useState<boolean>(false);
-  const [scrollTop, setScrollTop] = useState(0);
 
+  // Show desktop navbar down to phone breakpoint so the "More" menu can handle overflow
   const isSmallerThanTablet = useBreakpoint('tablet');
   const isDesktopUser = !isSmallerThanTablet;
 
-  // Used to show/hide the mobile navbar on scroll
+  // Used to show the mobile navbar on scrolling up, or hide it on scrolling down
   useEffect(() => {
+    let lastScrollTop = 0;
+
     function onScroll() {
+      // Positive value means we've scrolled down
       const currentPosition = document.documentElement.scrollTop;
-      if (currentPosition <= 0) {
-        setShowMobileStickyNav(false); // Don't show if we're at the top already
-      } else if (currentPosition > scrollTop) {
-        // downscroll
+
+      // not scrolled yet/still at the top or downscroll
+      if (currentPosition <= 0 || currentPosition > lastScrollTop) {
         setShowMobileStickyNav(false);
-      } else {
         // upscroll
+      } else {
         setShowMobileStickyNav(true);
       }
-      setScrollTop(currentPosition <= 0 ? 0 : currentPosition);
+
+      lastScrollTop = currentPosition <= 0 ? 0 : currentPosition;
     }
 
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
-  }, [scrollTop]);
+  }, []);
 
   return (
     <Container
@@ -107,9 +119,9 @@ const MainHeader = () => {
           {isDesktopUser && <DesktopNavItems />}
         </Left>
 
-        <StyledRightFragment name="navbar-right">
+        <RightContainer>
           {isDesktopUser ? <DesktopNavbarContent /> : <MobileNavbarContent />}
-        </StyledRightFragment>
+        </RightContainer>
       </ContainerInner>
     </Container>
   );

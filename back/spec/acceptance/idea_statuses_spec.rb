@@ -10,6 +10,7 @@ resource 'IdeaStatuses' do
 
   get 'web_api/v1/idea_statuses' do
     parameter :participation_method, 'Filter by participation method. Either "ideation" or "proposals".', required: false
+    parameter :exclude_codes, 'Filter out statuses with these codes.', required: false
 
     before_all do
       create_list(:idea_status, 3)
@@ -17,13 +18,26 @@ resource 'IdeaStatuses' do
     end
 
     context 'when visitor' do
-      let(:participation_method) { 'ideation' }
+      example 'List all ideation input statuses' do
+        do_request participation_method: 'ideation'
 
-      example_request 'List all ideation input statuses' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data].all? { |status| status.dig(:attributes, :participation_method) == 'ideation' }).to be true
+      end
+
+      example 'Exclude statuses with specific codes' do
+        create(:idea_status, code: 'prescreening')
+        create(:proposals_status, code: 'proposed')
+
+        do_request exclude_codes: %w[prescreening proposed]
+
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 5
+        expect(json_response[:data].none? { |status| status.dig(:attributes, :code).in? %w[prescreening proposed] })
+          .to be true
       end
     end
 

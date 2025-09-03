@@ -1,6 +1,5 @@
 import React, { lazy, Suspense } from 'react';
 
-const IdeasWithFiltersSidebar = lazy(() => import('./IdeasWithFiltersSidebar'));
 const IdeasWithoutFiltersSidebar = lazy(
   () => import('./IdeasWithoutFiltersSidebar')
 );
@@ -10,7 +9,6 @@ import styled from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 
-import { Props as WithSidebarProps } from './IdeasWithFiltersSidebar';
 import { Props as WithoutSidebarProps } from './IdeasWithoutFiltersSidebar';
 
 const Container = styled.div`
@@ -36,19 +34,6 @@ const Wrapper = ({
     )}
     <Suspense fallback={null}>{children}</Suspense>
   </Container>
-);
-
-type IdeaCardsWithFiltersSidebarProps = Omit<WrapperProps, 'children'> &
-  WithSidebarProps;
-
-export const IdeaCardsWithFiltersSidebar = ({
-  className,
-  invisibleTitleMessage,
-  ...ideaCardsProps
-}: IdeaCardsWithFiltersSidebarProps) => (
-  <Wrapper className={className} invisibleTitleMessage={invisibleTitleMessage}>
-    <IdeasWithFiltersSidebar {...ideaCardsProps} />
-  </Wrapper>
 );
 
 type IdeaCardsWithoutFiltersSidebarProps = Omit<WrapperProps, 'children'> &

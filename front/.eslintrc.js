@@ -26,6 +26,11 @@ module.exports = {
     'unused-imports',
     'import',
   ],
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
   rules: {
     '@typescript-eslint/member-delimiter-style': ['warn'],
     '@typescript-eslint/naming-convention': 'off',
@@ -221,6 +226,7 @@ module.exports = {
         markers: ['/'],
       },
     ],
+    '@typescript-eslint/no-unnecessary-condition': 'error',
   },
   ignorePatterns: [
     '.rollup.config.cjs',

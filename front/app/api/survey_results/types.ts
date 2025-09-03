@@ -10,6 +10,9 @@ export type SurveyResultsKeys = Keys<typeof surveyResultsKeys>;
 
 export type IParameters = {
   phaseId: string | null;
+  filterLogicIds: string[];
+  quarter?: number;
+  year?: number;
 };
 
 export interface Answer {
@@ -37,11 +40,16 @@ export type AnswerMultilocsGrouped = AnswerMultilocs & {
 type BaseResult = {
   inputType: ICustomFieldInputType;
   question: Multiloc;
+  description: Multiloc;
   customFieldId: string;
   required: boolean;
+  hidden: boolean;
   totalResponseCount: number;
   totalPickCount: number;
   questionResponseCount: number;
+  questionNumber: number;
+  pageNumber: number | null;
+  logic?: ResultLogic;
   numberResponses?: { answer: number }[];
 
   // Defined for text questions,
@@ -49,12 +57,56 @@ type BaseResult = {
   textResponses?: { answer: string }[];
 };
 
+export type RankingsCounts = Record<string, Record<string, number>>;
+export type AverageRankings = Record<string, string>;
+
+export type ResultLogic = {
+  nextPageNumber?: number;
+  numQuestionsSkipped?: number;
+  answer?: Record<string, OptionLogic>;
+};
+
+export type OptionLogic = ResultLogic & {
+  id?: string;
+  nextPageNumber?: number;
+  numQuestionsSkipped?: number;
+};
+
+export interface MatrixLinearScaleAnswer {
+  answer: string | number | null;
+  count: number;
+  percentage: number;
+}
+
+export type MatrixLinearScaleResult = {
+  question: Multiloc;
+  questionResponseCount: number;
+  answers: MatrixLinearScaleAnswer[];
+};
+
+type LinearScaleAverage = {
+  this_period: number | null;
+  last_period: number | null;
+};
+
 export type ResultUngrouped = BaseResult & {
   grouped: false;
-  answers: Answer[];
+  answers?: Answer[];
+  questionCategory?: string;
+  questionCategoryMultiloc?: Multiloc;
+
+  // Rankings
+  average_rankings?: AverageRankings;
+  rankings_counts?: RankingsCounts;
+
+  // Linear scales
+  averages?: LinearScaleAverage;
 
   // Undefined for text and file upload questions
   multilocs?: AnswerMultilocs;
+
+  // Matrix linear scale question
+  linear_scales?: Record<string, MatrixLinearScaleResult>;
 
   // Defined map questions
   mapConfigId?: string;
@@ -69,6 +121,7 @@ export type ResultUngrouped = BaseResult & {
 export type ResultGrouped = BaseResult & {
   grouped: true;
   answers: GroupedAnswer[];
+  averages?: LinearScaleAverage;
   multilocs: AnswerMultilocsGrouped;
   legend: (string | null)[];
 };
@@ -83,4 +136,10 @@ export interface SurveyResultsType {
     type: 'survey_results';
     attributes: SurveyResultAttributes;
   };
+}
+
+export interface LogicConfig {
+  toggleLogicIds: (optionId: string) => void;
+  filterLogicIds: string[];
+  isLoading: boolean;
 }

@@ -13,13 +13,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.users',
     defaultMessage: 'Users',
   },
-  initiatives: {
-    id: 'app.containers.AdminPage.SideBar.initiatives',
-    defaultMessage: 'Initiatives',
-  },
   groups: {
     id: 'app.containers.AdminPage.SideBar.groups',
     defaultMessage: 'Groups',
+  },
+  community_monitor: {
+    id: 'app.containers.AdminPage.SideBar.community_monitor',
+    defaultMessage: 'Community monitor',
   },
   projects: {
     id: 'app.containers.AdminPage.SideBar.projects',
@@ -61,21 +61,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.tools',
     defaultMessage: 'Tools',
   },
-  academy: {
-    id: 'app.containers.AdminPage.SideBar.academy',
-    defaultMessage: 'Academy',
-  },
-  linkToAcademy: {
-    id: 'app.containers.AdminPage.SideBar.linkToAcademy',
-    defaultMessage: 'https://academy.citizenlab.co/',
-  },
   guide: {
     id: 'app.containers.AdminPage.SideBar.guide',
     defaultMessage: 'Guide',
   },
   linkToSupport: {
-    id: 'app.containers.AdminPage.SideBar.linkToSupport',
-    defaultMessage: 'https://support.citizenlab.co',
+    id: 'app.containers.AdminPage.SideBar.linkToSupport2',
+    defaultMessage: 'https://support.govocal.com',
   },
   toPlatform: {
     id: 'app.containers.AdminPage.SideBar.toPlatform',
@@ -93,9 +85,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.communityPlatform',
     defaultMessage: 'Community platform',
   },
+  customerPortal: {
+    id: 'app.containers.AdminPage.SideBar.customerPortal',
+    defaultMessage: 'Customer portal',
+  },
   linkToCommunityPlatform: {
-    id: 'app.containers.AdminPage.SideBar.linkToCommunityPlatform',
-    defaultMessage: 'https://community.citizenlab.co',
+    id: 'app.containers.AdminPage.SideBar.linkToCommunityPlatform2',
+    defaultMessage: 'https://community.govocal.com',
   },
   notifications: {
     id: 'app.containers.AdminPage.SideBar.notifications',
@@ -124,5 +120,9 @@ export default defineMessages({
   projectManager: {
     id: 'app.containers.AdminPage.SideBar.projectManager',
     defaultMessage: 'Project manager',
+  },
+  inspirationHub: {
+    id: 'app.containers.AdminPage.SideBar.inspirationHub',
+    defaultMessage: 'Inspiration hub',
   },
 });

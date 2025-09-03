@@ -27,6 +27,7 @@ const PARTICIPATION_METHODS: ParticipationMethod[] = [
   'poll',
   'survey',
   'document_annotation',
+  'common_ground',
 ];
 
 const LABELS: Record<ParticipationMethod, MessageDescriptor> = {
@@ -34,11 +35,13 @@ const LABELS: Record<ParticipationMethod, MessageDescriptor> = {
   ideation: messages.ideation,
   proposals: messages.proposals,
   native_survey: messages.nativeSurvey,
+  community_monitor_survey: messages.nativeSurvey,
   voting: messages.voting,
   volunteering: messages.volunteering,
   poll: messages.poll,
   survey: messages.survey,
   document_annotation: messages.document_annotation,
+  common_ground: messages.commonGround,
 };
 
 const MethodsUsedCard = ({

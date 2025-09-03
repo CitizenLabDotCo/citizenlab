@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { pollQuestionsData } from './__mocks__/usePollQuestions';
 import useAddPollQuestion from './useAddPollQuestion';
@@ -20,7 +20,7 @@ describe('useAddPollQuestion', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAddPollQuestion(), {
+    const { result } = renderHook(() => useAddPollQuestion(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -42,7 +42,7 @@ describe('useAddPollQuestion', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAddPollQuestion(), {
+    const { result } = renderHook(() => useAddPollQuestion(), {
       wrapper: createQueryClientWrapper(),
     });
 

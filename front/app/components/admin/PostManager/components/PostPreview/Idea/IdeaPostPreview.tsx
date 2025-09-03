@@ -1,14 +1,16 @@
 import React from 'react';
 
 import { PreviewMode } from 'components/admin/PostManager';
-import AdminIdeaContent from 'components/admin/PostManager/components/PostPreview/Idea/AdminIdeaContent';
-import AdminIdeaEdit from 'components/admin/PostManager/components/PostPreview/Idea/AdminIdeaEdit';
+
+import AdminIdeaContent from './AdminIdeaContent';
+import AdminIdeaEdit from './AdminIdeaEdit';
 
 export interface Props {
   onClose: () => void;
   ideaId: string | null;
   onSwitchPreviewMode: () => void;
   mode: PreviewMode;
+  selectedPhaseId?: string;
 }
 
 const IdeaPostPreview = ({
@@ -16,6 +18,7 @@ const IdeaPostPreview = ({
   ideaId,
   onSwitchPreviewMode,
   mode,
+  selectedPhaseId,
 }: Props) => {
   if (!ideaId) {
     return null;
@@ -27,6 +30,7 @@ const IdeaPostPreview = ({
         ideaId={ideaId}
         closePreview={onClose}
         handleClickEdit={onSwitchPreviewMode}
+        selectedPhaseId={selectedPhaseId}
       />
     ),
     edit: <AdminIdeaEdit ideaId={ideaId} goBack={onSwitchPreviewMode} />,

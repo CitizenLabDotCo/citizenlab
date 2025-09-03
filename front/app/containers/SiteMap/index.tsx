@@ -9,7 +9,6 @@ import useAuthUser from 'api/me/useAuthUser';
 import useNavbarItems from 'api/navbar/useNavbarItems';
 import { DEFAULT_PAGE_SLUGS } from 'api/navbar/util';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import ContentContainer from 'components/ContentContainer';
@@ -96,11 +95,14 @@ const NavItem = styled.button`
 `;
 
 const SiteMap = () => {
-  const proposalsEnabled = useFeatureFlag({ name: 'initiatives' });
   const { data: navBarItems } = useNavbarItems();
   const localize = useLocalize();
   const { data: pages } = useCustomPages();
   const { data: authUser } = useAuthUser();
+
+  const hasStaticPageWithCode = (code: TCustomPageCode): boolean => {
+    return pages?.data.some((page) => page.attributes.code === code) || false;
+  };
 
   const scrollTo =
     (component: RefObject<HTMLHeadingElement | null>) =>
@@ -121,7 +123,6 @@ const SiteMap = () => {
   const archivedSection = useRef<HTMLHeadingElement | null>(null);
   const currentSection = useRef<HTMLHeadingElement | null>(null);
   const draftSection = useRef<HTMLHeadingElement | null>(null);
-  const initiativesSection = useRef<HTMLHeadingElement | null>(null);
   const userSpaceSection = useRef<HTMLHeadingElement | null>(null);
   const customPagesSection = useRef<HTMLHeadingElement | null>(null);
   const hasProjectSubsection =
@@ -130,11 +131,11 @@ const SiteMap = () => {
   if (pages) {
     const nonCustomStaticPages = pages.data.filter((page) => {
       const showPageConditions: Record<TCustomPageCode, boolean> = {
-        proposals: proposalsEnabled,
         about: true,
         faq: true,
         'terms-and-conditions': true,
         'privacy-policy': true,
+        'cookie-policy': true,
         custom: false,
       };
 
@@ -226,18 +227,6 @@ const SiteMap = () => {
                           </ProjectsSubsectionUl>
                         )}
                       </li>
-                      {proposalsEnabled && (
-                        <li>
-                          <NavItem
-                            onMouseDown={removeFocusAfterMouseClick}
-                            onClick={scrollTo(initiativesSection)}
-                          >
-                            <FormattedMessage
-                              {...messages.initiativesSection}
-                            />
-                          </NavItem>
-                        </li>
-                      )}
                       <li>
                         <NavItem
                           onMouseDown={removeFocusAfterMouseClick}
@@ -258,7 +247,9 @@ const SiteMap = () => {
                       navBarItems.data
                         .filter(
                           (navBarItem) =>
-                            navBarItem.relationships.static_page.data === null
+                            navBarItem.relationships.static_page.data ===
+                              null &&
+                            navBarItem.relationships.project.data === null
                         )
                         .map((navBarItem) => (
                           <li key={navBarItem.id}>
@@ -281,6 +272,16 @@ const SiteMap = () => {
                         </li>
                       );
                     })}
+                    {/* Default cookie policy link if no custom one exists */}
+                    {!hasStaticPageWithCode('cookie-policy') && (
+                      <li key="default-cookie-policy">
+                        <Link to="/pages/cookie-policy">
+                          <FormattedMessage
+                            {...messages.cookiePolicyLinkTitle}
+                          />
+                        </Link>
+                      </li>
+                    )}
                   </ul>
                   <>
                     {authUser && (
@@ -313,27 +314,6 @@ const SiteMap = () => {
                   <ProjectsAndFoldersSection
                     projectsSectionRef={projectsSection}
                   />
-                  <>
-                    {proposalsEnabled && (
-                      <>
-                        <H2 ref={initiativesSection} tabIndex={-1}>
-                          <FormattedMessage {...messages.initiativesSection} />
-                        </H2>
-                        <ul>
-                          <li>
-                            <Link to="/initiatives">
-                              <FormattedMessage {...messages.initiativesList} />
-                            </Link>
-                          </li>
-                          <li>
-                            <Link to="/pages/initiatives">
-                              <FormattedMessage {...messages.initiativesInfo} />
-                            </Link>
-                          </li>
-                        </ul>
-                      </>
-                    )}
-                  </>
                   <>
                     {customStaticPages.length > 0 && (
                       <>

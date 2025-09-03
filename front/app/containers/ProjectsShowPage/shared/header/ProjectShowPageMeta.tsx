@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { IProjectData } from 'api/projects/types';
@@ -69,6 +69,7 @@ const ProjectShowPageMeta = ({ project }: Props) => {
       />
       <meta property="og:url" content={location.href} />
       <meta name="twitter:card" content="summary_large_image" />
+      {project.attributes.listed && <meta name="robots" content="noindex" />}
     </Helmet>
   );
 };

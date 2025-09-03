@@ -4,8 +4,6 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
 import { ITab } from 'typings';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import NavigationTabs, {
   Tab,
   TabsPageLayout,
@@ -21,9 +19,6 @@ import messages from './messages';
 const SettingsPage = () => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
-  const proposalsParitipationMethdEnabled = useFeatureFlag({
-    name: 'proposals_participation_method',
-  });
 
   const tabs: ITab[] = [
     {
@@ -53,18 +48,9 @@ const SettingsPage = () => {
     },
     {
       name: 'statuses',
-      label: formatMessage(messages.tabInputStatuses),
-      url: '/admin/settings/ideation/statuses',
+      label: formatMessage(messages.statuses),
+      url: '/admin/settings/statuses',
     },
-    ...(proposalsParitipationMethdEnabled
-      ? ([
-          {
-            name: 'proposal-statuses',
-            label: formatMessage(messages.tabProposalStatuses),
-            url: '/admin/settings/proposals/statuses',
-          },
-        ] as ITab[])
-      : []),
     {
       name: 'policies',
       label: formatMessage(messages.tabPolicies),
@@ -79,12 +65,13 @@ const SettingsPage = () => {
         description={messages.helmetDescription}
       />
       <NavigationTabs>
-        {tabs.map(({ url, label }) => (
+        {tabs.map(({ url, label, name }) => (
           <Tab
             label={label}
             url={url}
             key={url}
             active={isTopBarNavActive('/admin/settings', pathname, url)}
+            className={`intercom-settings-tab-${name}`}
           />
         ))}
       </NavigationTabs>

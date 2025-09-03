@@ -11,6 +11,7 @@ import useLocalize from 'hooks/useLocalize';
 
 type Props = {
   'data-cy'?: string;
+  formatBold?: boolean;
 } & React.ComponentProps<typeof OriginalFormattedMessage>;
 
 const RtlBox = styled.span`
@@ -33,6 +34,13 @@ const FormattedMessageComponent = (props: Props) => {
         {...props}
         values={{
           ...props.values,
+          ...(props.formatBold
+            ? {
+                b: (chunks) => (
+                  <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+                ),
+              }
+            : {}),
           tenantName: appConfig.data.attributes.name,
           orgType: appConfig.data.attributes.settings.core.organization_type,
           orgName: localize(

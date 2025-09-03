@@ -167,6 +167,41 @@ export type BoxZIndexProps = {
   zIndex?: string;
 };
 
+type BoxCursorProps = {
+  // Full list: https://www.w3schools.com/cssref/pr_class_cursor.php
+  cursor?:
+    | 'alias'
+    | 'all-scroll'
+    | 'auto'
+    | 'cell'
+    | 'col-resize'
+    | 'context-menu'
+    | 'copy'
+    | 'crosshair'
+    | 'default'
+    | 'ew-resize'
+    | 'grab'
+    | 'grabbing'
+    | 'help'
+    | 'move'
+    | 'none'
+    | 'not-allowed'
+    | 'pointer'
+    | 'progress'
+    | 'text'
+    | 'wait'
+    | 'zoom-in'
+    | 'zoom-out';
+};
+
+type BoxAspectRatioProps = {
+  aspectRatio?: string;
+};
+
+type BoxTransformProps = {
+  transform?: string;
+};
+
 export type BoxProps = BoxColorProps &
   BoxShadowProps &
   BoxBackgroundProps &
@@ -181,7 +216,11 @@ export type BoxProps = BoxColorProps &
   BoxBorderProps &
   BoxVisibilityProps &
   BoxZIndexProps &
-  React.HTMLAttributes<HTMLDivElement>;
+  BoxCursorProps &
+  BoxAspectRatioProps &
+  BoxTransformProps &
+  React.HTMLAttributes<HTMLDivElement> &
+  React.HTMLAttributes<HTMLQuoteElement>;
 
 const Box = styled.div<BoxProps>`
   // colors and background
@@ -332,6 +371,21 @@ const Box = styled.div<BoxProps>`
   // z-index
   ${(props) => css`
     ${props.zIndex ? `z-index: ${props.zIndex}` : ''};
+  `}
+
+  // cursor
+  ${(props) => css`
+    ${props.cursor ? `cursor: ${props.cursor}` : ''};
+  `}
+
+  // aspect ratio
+  ${(props) => css`
+    ${props.aspectRatio ? `aspect-ratio: ${props.aspectRatio}` : ''};
+  `}
+
+  // transformation
+  ${(props) => css`
+    ${props.transform ? `transform: ${props.transform}` : ''};
   `}
 `;
 

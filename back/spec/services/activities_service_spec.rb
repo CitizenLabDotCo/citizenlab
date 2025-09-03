@@ -190,7 +190,9 @@ describe ActivitiesService do
 
     describe '#create_survey_not_submitted_activities' do
       let(:updated_at) { Time.parse '2022-07-01 10:00:00 +0000' }
-      let!(:idea) { create(:native_survey_response, publication_status: 'draft', updated_at: updated_at) }
+      let!(:idea) { create(:native_survey_response, publication_status: 'draft').tap { |input| input.update!(updated_at: updated_at) } }
+
+      before { create(:idea_status_proposed) }
 
       it 'logs survey_not_submitted activity when a native survey response is in draft but was last updated over 1 day ago' do
         now = updated_at + 1.day
@@ -219,20 +221,34 @@ describe ActivitiesService do
         expect { service.create_periodic_activities(now: now) }
           .not_to(have_enqueued_job(LogActivityJob))
       end
+
+      it 'does not log an activity when an author has already submitted a survey for this phase' do
+        create(
+          :native_survey_response,
+          author: idea.author,
+          project: idea.project,
+          creation_phase: idea.creation_phase,
+          publication_status: 'published'
+        )
+        now = updated_at + 1.day
+        expect { service.create_periodic_activities(now: now) }
+          .not_to have_enqueued_job(LogActivityJob)
+      end
     end
 
     describe '#create_phase_ended_activities' do
       let(:now) { Time.parse '2022-07-01 10:00:00 +0000' }
+      let(:date_now) { Date.parse '2022-07-01' }
 
       it 'logs phase ended activity when a phase has ended' do
-        phase = create(:budgeting_phase, start_at: now - 10.days, end_at: now - 1.hour)
+        phase = create(:budgeting_phase, start_at: now - 10.days, end_at: date_now - 1.day)
         expect { service.create_periodic_activities(now: now) }
           .to have_enqueued_job(LogActivityJob)
           .with(phase, 'ended', nil, now, project_id: phase.project_id)
       end
 
       it 'does not log a phase ended activity when one has already been logged' do
-        phase = create(:budgeting_phase, start_at: now - 10.days, end_at: now - 1.hour)
+        phase = create(:budgeting_phase, start_at: now - 10.days, end_at: date_now - 1.day)
         create(:activity, item: phase, action: 'ended')
         expect { service.create_periodic_activities(now: now) }
           .not_to have_enqueued_job(LogActivityJob)
@@ -240,7 +256,7 @@ describe ActivitiesService do
       end
 
       it 'does not log a phase ended activity when the phase has not ended' do
-        phase = create(:budgeting_phase, start_at: now - 10.days, end_at: now + 1.day)
+        phase = create(:budgeting_phase, start_at: now - 10.days, end_at: date_now)
         expect { service.create_periodic_activities(now: now) }
           .not_to have_enqueued_job(LogActivityJob)
           .with(phase, 'ended', nil, now, project_id: phase.project_id)

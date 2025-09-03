@@ -8,6 +8,11 @@ class WebApi::V1::BaseSerializer
     params[:current_user]
   end
 
+  # @return [ApplicationPolicy::UserContext,User]
+  def self.user_context(params)
+    params[:user_context] || params[:current_user] || raise('user_context missing in serializer parameters')
+  end
+
   def self.signed_in?(_object, params)
     !!current_user(params)
   end

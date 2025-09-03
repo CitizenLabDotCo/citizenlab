@@ -1,6 +1,10 @@
 import React from 'react';
 
-import { defaultCardStyle, media } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  defaultCardStyle,
+  media,
+} from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import styled from 'styled-components';
 
@@ -13,6 +17,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import EventPreviews from 'components/EventPreviews';
 import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
+import T from 'components/T';
 import FileAttachments from 'components/UI/FileAttachments';
 
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -70,9 +75,7 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
     return null;
   }
 
-  const content = phase
-    ? localize(phase.data.attributes.description_multiloc)
-    : '';
+  const content = localize(phase.data.attributes.description_multiloc);
   const contentIsEmpty =
     content === '' || content === '<p></p>' || content === '<p><br></p>';
   const descriptionHasContent = !contentIsEmpty || !isEmpty(phaseFiles);
@@ -85,7 +88,9 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
       id={`phase-description-panel-${phaseNumber}`}
       aria-labelledby={`phase-tab-${phaseNumber}`}
       hasBottomMargin={
-        phase.data.attributes.participation_method !== 'information'
+        !['information', 'common_ground'].includes(
+          phase.data.attributes.participation_method
+        )
       }
     >
       <PhaseTitle
@@ -93,21 +98,26 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
         phaseId={selectedPhaseId}
         descriptionHasContent={descriptionHasContent}
       />
-      {phase && descriptionHasContent && (
-        <>
+      {descriptionHasContent && (
+        <Box id={`phase-description-${selectedPhaseId}`}>
           <ReadMoreWrapper
             fontSize="base"
             contentId="phase-description"
-            value={phase.data.attributes?.description_multiloc}
+            content={
+              <T
+                value={phase.data.attributes.description_multiloc}
+                supportHtml
+              />
+            }
           />
 
           {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) && (
             <StyledFileAttachments files={phaseFiles.data} />
           )}
-        </>
+        </Box>
       )}
       {isActivePhase && (
-        <EventPreviews projectId={phase?.data.relationships.project.data.id} />
+        <EventPreviews projectId={phase.data.relationships.project.data.id} />
       )}
     </Container>
   );

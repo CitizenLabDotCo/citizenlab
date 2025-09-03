@@ -19,10 +19,12 @@
           "color_secondary",
           "color_text",
           "lifecycle_stage",
-          "authentication_token_lifetime_in_days"
+          "country_code",
+          "authentication_token_lifetime_in_days",
+          "min_user_age"
         ],
         "additionalProperties": false,
-        "required": ["allowed", "enabled", "lifecycle_stage"],
+        "required": ["allowed", "enabled", "lifecycle_stage", "country_code"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
@@ -49,6 +51,14 @@
             "description": "The lifecycle stage of the customer.",
             "type": "string",
             "enum": ["trial", "expired_trial", "demo", "active", "churned", "not_applicable"]
+          },
+          <% country_codes_service = CountryCodesService.new %>
+          "country_code": {
+            "title": "Country",
+            "description": "The country where the platform's citizens are located. Type first letters of the country name, in English, to search.",
+            "type": ["string", "null"],
+            "enum": <%= country_codes_service.codes_in_name_order.to_json %>,
+            "enumNames": <%= country_codes_service.names_in_name_order.to_json %>
           },
           "timezone": {
             "title": "Time Zone",
@@ -143,6 +153,11 @@
             "pattern": "^$|^/.*$",
             "private": true
           },
+          "login_helper_text": {
+            "title": "Login Helper Text",
+            "description": "Optional short text, shown at the top of the login screen. Supports HTML.",
+            "$ref": "#/definitions/multiloc_string"
+          },
           "signup_helper_text": {
             "title": "Sign-up Helper Text (Step 1)",
             "description": "Optional short text, shown at the top of Step 1 of the sign up form (i.e., email and password). Supports HTML.",
@@ -158,6 +173,12 @@
             "description": "Onboarding step after login or signup, asking for topics you are interested in.",
             "type": "boolean",
             "default": false
+          },
+          "allow_sharing":  {
+            "title": "Sharing content on socials",
+            "description": "Allow users to share content via social media or email.",
+            "type": "boolean",
+            "default": true
           },
           "areas_term": {
             "title": "Geographic Units",
@@ -219,6 +240,32 @@
             "title": "Additional number of manager seats",
             "description": "Number of project and folder manager seats bought additionally over the contract limit.",
             "type": ["integer", "null"]
+          },
+          "customer_portal_url": {
+            "title": "Customer portal URL",
+            "description": "Link to the customer portal in Planhat.",
+            "type": "string",
+            "format": "uri"
+          },
+          "anonymous_name_scheme":  {
+            "title": "Scheme to use when displaying anonymous names",
+            "description": "Default is User 123456.",
+            "type": "string",
+            "enum": ["user", "animal"],
+            "default": "user"
+          },
+          "private_attributes_in_export":  {
+            "title": "Allow private attributes (user name & email) in native survey exports & analysis?",
+            "description": "When disabled exports and analyses on native survey phases will not return any private attributes.",
+            "type": "boolean",
+            "default": true
+          },
+          "min_user_age": {
+            "title": "Minimum user age",
+            "description": "Used to determine the available birthyears in the birthyear registration question",
+            "type": "integer",
+            "minimum": 0,
+            "default": 12
           }
         }
       },
@@ -327,6 +374,18 @@
         }
       },
 
+      "project_preview_link" : {
+        "type": "object",
+        "title": "Project Preview Link",
+        "description": "Allows sharing a preview of a draft project via a link, which can be found in the project's settings.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "password_login": {
         "type": "object",
         "title": "Password Login",
@@ -427,11 +486,12 @@
             "type": "string",
             "description": "The Login Mechanism Name is used for user-facing copy. For instance, \"Sign up with {login_mechanism_name}.\"."
           },
-          "admin_only": {
-            "title": "Admin only",
-            "type": "boolean",
-            "default": false,
-            "description": "Should this login mechanism be available only for admins at /sign-in/admin ?"
+          "visibility": {
+            "title": "Visibility",
+            "type": "string",
+            "enum": ["show", "link", "hide"],
+            "default": "show",
+            "description": "Should this login mechanism be shown with other options to everyone, be hidden but available at /sign-in/admin or linked from the login modal via an 'admin options' link?"
           }
         }
       },
@@ -522,7 +582,7 @@
           },
           "map_center": {
             "title": "Map Center",
-            "description": "The default center point of the platform maps (latitude/longitude). Use a dot as a decimal separator.",
+            "description": "The default center point of the platform maps (latitude/longitude). Use a dot as a decimal separator. South and West values should be negative.",
             "type": "object",
             "additionalProperties": false,
             "properties": {
@@ -658,125 +718,27 @@
         }
       },
 
-      "initiatives": {
-        "type": "object",
-        "title": "Proposals",
-        "description":  "Allow proposals. Disabling this feature removes the corresponding item from the navbar",
-        "additionalProperties": false,
-        "required-settings": ["reacting_threshold", "days_limit", "threshold_reached_message", "eligibility_criteria"],
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true },
-          "enabled": { "type": "boolean", "default": true },
-          "require_review":{
-            "title": "Require Review",
-            "description": "Require Review. If enabled, proposals will need to be approved by an admin before they are visible to the public.",
-            "type": "boolean",
-            "default": false
-          },
-          "require_cosponsors":{
-            "title": "Require Cosponsors",
-            "description": "Require Cosponsors. If enabled, proposals will need to be cosponsored by other users.",
-            "type": "boolean",
-            "default": false
-          },
-          "cosponsors_number": {
-            "title": "Number of cosponsors",
-            "description": "The number of cosponsors required to publish a proposal.",
-            "type": "integer",
-            "minimum": 1,
-            "default": 3
-          },
-          "voting_threshold": {
-            "title": "Voting Threshold",
-            "description": "Deprecated - Use 'Reacting Threshold'",
-            "type": "integer",
-            "minimum": 2,
-            "default": 300
-          },
-          "reacting_threshold": {
-            "title": "Reacting Threshold",
-            "description": "Default value for how many votes (reactions) a proposal needs to move to the next stage. This value can be changed in the admin panel on the platform.",
-            "type": "integer",
-            "minimum": 2,
-            "default": 300
-          },
-          "days_limit": {
-            "title": "Time Limit (in days)",
-            "description": "Default value for how many days a proposal has to meet the voting threshold and move to the next stage. This value can be changed in the admin panel on the platform.",
-            "type": "integer",
-            "minimum": 1,
-            "default": 90
-          },
-          "threshold_reached_message": {
-            "title": "Proposal Success Message",
-            "description": "Default text that users receive when their proposal reaches the voting threshold. Supports HTML paragraphs and breaks. This text can be changed in the admin panel on the platform.",
-            "$ref": "#/definitions/multiloc_string",
-            "default": <%= MultilocService.new.i18n_to_multiloc(
-            'initiatives.default_threshold_reached_message',
-            locales: CL2_SUPPORTED_LOCALES).to_json
-            %>
-          },
-          "eligibility_criteria": {
-            "title": "Proposal Criteria",
-            "description": "Default text specifying criteria that proposals should meet. Supports HTML paragraphs and breaks. This text can be changed in the admin panel on the platform.",
-            "$ref": "#/definitions/multiloc_string",
-            "default": <%= MultilocService.new.i18n_to_multiloc(
-            'initiatives.default_eligibility_criteria',
-            locales: CL2_SUPPORTED_LOCALES).to_json
-            %>
-          },
-          "posting_tips": {
-            "title": "Posting tips",
-            "description": "Text specifying tips for posting a proposal.",
-            "$ref": "#/definitions/multiloc_string",
-            "default": <%= MultilocService.new.i18n_to_multiloc(
-            'initiatives.default_posting_tips',
-            locales: CL2_SUPPORTED_LOCALES).to_json
-            %>
-          },
-          "allow_anonymous_participation": {
-            "title": "Allow users to participate anonymously",
-            "description": "Users may still choose to participate with their real name, but they will have the option to submit inputs or comments anonymously if they choose to do so. All users will still need to comply with the requirements set in the Access Rights tab for their comments and/or inputs to go through. Admins and/or project moderators will not be able to know the identity of users behind anonymous inputs or comments. They will, however, still be able to moderate these submissions as they do for non anonymous ones.",
-            "type": "boolean",
-            "default": false
-          }
-        }
-      },
-
-      "initiative_review": {
-        "type": "object",
-        "title": "Proposal Review",
-        "description": "Allow proposal review. When this is enabled, the feature is activated. When disabled the require_review toggle in the BO & Proposal settings here will be ignored.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "initiative_cosponsors": {
-        "type": "object",
-        "title": "Proposal Cosponsors",
-        "description": "This feature makes it possible to require cosponsors to publish a proposal.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
       "prescreening": {
         "type": "object",
-        "title": "Screening",
-        "description": "When active, screening can be activated on a per-project basis, which requires admins/moderators to explicitly approve each input before it becomes visible to the public.",
+        "title": "Screening (proposals)",
+        "description": "When active, screening can be activated for proposals phases, which requires admins/moderators to explicitly approve each input before it becomes visible to the public.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
+      "prescreening_ideation": {
+        "type": "object",
+        "title": "Screening (ideation)",
+        "description": "When active, screening can be activated for ideation phases, which requires admins/moderators to explicitly approve each input before it becomes visible to the public.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
         }
       },
 
@@ -939,7 +901,8 @@
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": false}
+          "enabled": { "type": "boolean", "default": false},
+          "extended_blocking": { "type": "boolean", "default": false}
         }
       },
 
@@ -969,8 +932,8 @@
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
         }
       },
 
@@ -1084,32 +1047,10 @@
         }
       },
 
-      "fragments": {
-        "type": "object",
-        "title": "Fragments",
-        "description":  "Internal system to allow specific pieces of UI to be overridden with custom HTML.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "required-settings": ["enabled_fragments"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "enabled_fragments": {
-            "title": "Enabled Fragments",
-            "type": "array",
-            "default": [],
-            "description": "List of fragment names that should be enabled (e.g., 'signed-out-header').",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-
       "form_mapping": {
         "type": "object",
         "title": "Mapping features used in in-platform surveys",
-        "description":  "Alpha version - do not enable for active platform(s) unless agreed with Product. Mapping questions (pin, route & area), Esri Shapefile upload, and map page.",
+        "description":  "Mapping questions (pin, route & area), Esri Shapefile upload, and map page.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1214,6 +1155,18 @@
         }
       },
 
+      "html_pdfs": {
+        "type": "object",
+        "title": "Use HTML PDF generator",
+        "description": "Enables the new advanced PDF generation for export and import - disable only if old printed forms need to be imported/accessed.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
       "input_importer": {
         "type": "object",
         "title": "Input importer",
@@ -1226,10 +1179,22 @@
         }
       },
 
+      "posthog_user_tracking": {
+        "type": "object",
+        "title": "Posthog user tracking",
+        "description": "This integration enables sending usage events to PostHog, a product analytics tools. It applies to all users. It requires active consent from the user.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "user_session_recording": {
         "type": "object",
-        "title": "User session recording",
-        "description": "Enables the recording of a small fraction of user sessions for analysis and product research purposes. Requires active consent from the customer.",
+        "title": "Posthog user session recording",
+        "description": "Enables the recording of a small fraction of user sessions for analysis and product research purposes. Requires active consent from the user.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1286,6 +1251,18 @@
         }
       },
 
+      "auto_insights": {
+        "type": "object",
+        "title": "Statistical insights for surveys and ideation",
+        "description": "Enables the use of statistical insights in an analysis for surveys and ideation",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "multi_language_platform": {
         "type": "object",
         "title": "Multi-language platform",
@@ -1317,6 +1294,18 @@
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
+      "input_cosponsorship": {
+        "type": "object",
+        "title": "Input co-sponsorship",
+        "description": "Enables the ability to invite co-sponsors to your inputs.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
         }
@@ -1326,6 +1315,209 @@
         "type": "object",
         "title": "Management Feed",
         "description": "Experimental feature: A minimal list of selected actions performed by admins or managers in the last 30 days. Not all actions are included.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "project_review": {
+        "type": "object",
+        "title": "Project review",
+        "description": "Enables the ability to review projects before they are published.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "authoring_assistance_prototype": {
+        "type": "object",
+        "title": "Experimental feature: Authoring assistance prototype",
+        "description":	"Show an informative box to admins on the idea pages with guidance on how the written text could be improved (duplicate detection, toxicity, free custom prompt...). Inputs posted while the feature was disabled will not be included as duplicates.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
+      "input_iq": {
+        "type": "object",
+        "title": "InputIQ",
+        "description":	"Help the user with writing better ideas and proposals through AI assistance while typing in the input form. Inputs posted while the feature was disabled will not be listed as similar inputs.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
+      "platform_templates": {
+        "type": "object",
+        "title": "Platform templates",
+        "description": "Allow non-superadmins to create reports using platform templates.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "project_library": {
+        "type": "object",
+        "title": "Inspiration hub",
+        "description": "Temporary feature flag we are using to be able to hide our work in progress from the live platforms. Do not enable this feature!",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "user_fields_in_surveys": {
+        "type": "object",
+        "title": "User fields in surveys",
+        "description": "Allow surveys to embed user fields directly in the survey form, instead of asking through registration.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
+      "verification": {
+        "type": "object",
+        "title": "Verification",
+        "description": "Use a pre-defined list to verify user identities during registration.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false },
+          "verification_methods": {
+            "title": "Verification Methods",
+            "private": true,
+            "type": "array",
+            "default": [],
+            "items": {
+              "anyOf": <%= ::Verification::VerificationService.new.all_methods_json_schema %>
+            }
+          }
+        }
+      },
+
+      "community_monitor": {
+        "type": "object",
+        "title": "Community Monitor",
+        "description": "Long running public survey.",
+        "additionalProperties": false,
+        "required": [
+          "allowed",
+          "enabled"
+        ],
+        "properties": {
+          "allowed": {
+            "type": "boolean",
+            "default": false
+          },
+          "enabled": {
+            "type": "boolean",
+            "default": false
+          },
+          "project_id": {
+            "title": "The ID of the required hidden project",
+            "description": "Do not edit unless you know what you're doing. This is usually set by the system",
+            "type": "string"
+          }
+        }
+      },
+
+      "common_ground": {
+        "type": "object",
+        "title": "Common ground",
+        "description": "Common Ground is a participation method that lets participants post and react to concise statements using a swipe style: agree, disagree, or unsure. Statements are then ranked by consensus and controversy.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "data_repository": {
+        "type": "object",
+        "title": "Data repository",
+        "description": "Data Repository feature (360 Input). Enables a files tab in the project back office, where admins & PMs can upload files and documents related to the project.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "data_repository_ai_analysis": {
+        "type": "object",
+        "title": "Data repository: AI analysis",
+        "description": "Enables the AI Analysis features for the Data Repository (360 Input).",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "project_planning_calendar": {
+        "type": "object",
+        "title": "Project planning: calendar view",
+        "description": "Feature flag for calendar view in new projects page",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "customised_automated_emails": {
+        "type": "object",
+        "title": "Customised automated emails",
+        "description": "Override text of the default emails and preview",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "customised_automated_context_emails": {
+        "type": "object",
+        "title": "Customised automated context emails",
+        "description": "Override text of the default emails and preview, for specific contexts (e.g. phases, events...)",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "project_importer": {
+        "type": "object",
+        "title": "Project importer [Alpha]",
+        "description": "Super admin only feature to import project, phases and content from XLSX.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1356,10 +1548,13 @@
     "id_gent_rrn": ["verification"],
     "id_oostende_rrn": ["verification"],
     "id_id_card_lookup": ["verification"],
+    "id_keycloak": ["verification"],
+
     "power_bi": ["public_api_tokens"],
     "large_summaries": ["analysis"],
     "ask_a_question": ["analysis"],
     "advanced_autotagging": ["analysis"],
+    "auto_insights": ["analysis"],
     "import_printed_forms": ["input_importer"]
   },
   "definitions": {

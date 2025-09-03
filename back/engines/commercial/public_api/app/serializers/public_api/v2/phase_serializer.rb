@@ -15,6 +15,7 @@ class PublicApi::V2::PhaseSerializer < PublicApi::V2::BaseSerializer
     :baskets_count,
     :votes_count,
     :submission_enabled,
+    :autoshare_results_enabled,
     :commenting_enabled,
     :reacting_enabled,
     :reacting_like_method,
@@ -22,6 +23,7 @@ class PublicApi::V2::PhaseSerializer < PublicApi::V2::BaseSerializer
     :reacting_dislike_enabled,
     :reacting_dislike_method,
     :reacting_dislike_limited_max,
+    :voting_method,
     :voting_max_total,
     :voting_min_total
 

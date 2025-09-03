@@ -17,7 +17,7 @@ import useProjectFolderBySlug from 'api/project_folders/useProjectFolderBySlug';
 import ContentContainer from 'components/ContentContainer';
 import FollowUnfollow from 'components/FollowUnfollow';
 import PageNotFound from 'components/PageNotFound';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
@@ -114,14 +114,14 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
                 justifyContent="flex-end"
                 ml="30px"
               >
-                <Button
+                <ButtonWithLink
                   icon="edit"
                   linkTo={`/admin/projects/folders/${projectFolder.id}/settings`}
                   buttonStyle="secondary-outlined"
                   padding="6px 12px"
                 >
                   <FormattedMessage {...messages.editFolder} />
-                </Button>
+                </ButtonWithLink>
               </Box>
             )}
             <Box ml="8px">
@@ -129,6 +129,8 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
                 followableType="project_folders"
                 followableId={projectFolder.id}
                 followersCount={projectFolder.attributes.followers_count}
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 followerId={projectFolder.relationships.user_follower?.data?.id}
                 followableSlug={projectFolder.attributes.slug}
                 w="auto"

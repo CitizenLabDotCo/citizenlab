@@ -16,7 +16,7 @@ export default defineMessages({
   intro2022: {
     id: 'app.containers.AccessibilityStatement.intro2022',
     defaultMessage:
-      '{citizenLabLink} is committed to providing a platform that is accessible to all users, regardless of technology or ability. Current relevant accessibility standards are adhered to in our on-going efforts to maximise the accessibility and usability of our platforms for all users.',
+      '{goVocalLink} is committed to providing a platform that is accessible to all users, regardless of technology or ability. Current relevant accessibility standards are adhered to in our on-going efforts to maximise the accessibility and usability of our platforms for all users.',
   },
   changePreferencesText: {
     id: 'app.containers.AccessibilityStatement.changePreferencesText',
@@ -44,15 +44,6 @@ export default defineMessages({
     id: 'app.containers.AccessibilityStatement.onlineWorkshopsException',
     defaultMessage:
       'Our online workshops have a live video streaming component, which does not currently support subtitles.',
-  },
-  compatibilityTitle: {
-    id: 'app.containers.AccessibilityStatement.compatibilityTitle2022',
-    defaultMessage: 'Compatibility with assistive technology',
-  },
-  screenReaderBugWarning: {
-    id: 'app.containers.AccessibilityStatement.screenReaderBugWarning',
-    defaultMessage:
-      'Screen reader bugs may occur with different browser/screen reader combinations. Bugs can be reported through the feedback process outlined below.',
   },
   technologiesTitle: {
     id: 'app.containers.AccessibilityStatement.technologiesTitle',
@@ -131,14 +122,14 @@ export default defineMessages({
     id: 'app.containers.AccessibilityStatement.workshops',
     defaultMessage: 'Workshops',
   },
-  surveyTools: {
-    id: 'app.containers.AccessibilityStatement.surveyTools',
-    defaultMessage: 'Survey tools',
+  embeddedSurveyTools: {
+    id: 'app.containers.AccessibilityStatement.embeddedSurveyTools',
+    defaultMessage: 'Embedded survey tools',
   },
-  surveyToolsException: {
-    id: 'app.containers.AccessibilityStatement.surveyToolsException',
+  embeddedSurveyToolsException: {
+    id: 'app.containers.AccessibilityStatement.embeddedSurveyToolsException',
     defaultMessage:
-      'Survey tools that are available for use on this platform are third-party software and may not be accessible.',
+      'The embedded survey tools that are available for use on this platform are third-party software and may not be accessible.',
   },
   mapping: {
     id: 'app.containers.AccessibilityStatement.mapping',
@@ -163,14 +154,5 @@ export default defineMessages({
     id: 'app.containers.AccessibilityStatement.mapping_4',
     defaultMessage:
       'For Ideation projects and proposals, there is an option to display inputs in a map view, which is not accessible. However, for these methods there is an alternative list view of inputs available, which is accessible.',
-  },
-  screenReaderSearchResults: {
-    id: 'app.containers.AccessibilityStatement.screenReaderSearchResults',
-    defaultMessage: 'Search function',
-  },
-  screenReaderSearchResultsException: {
-    id: 'app.containers.AccessibilityStatement.screenReaderSearchResultsException',
-    defaultMessage:
-      'Screen reader users may experience difficulties when using the search function. The number of search results may not be reported consistently.',
   },
 });

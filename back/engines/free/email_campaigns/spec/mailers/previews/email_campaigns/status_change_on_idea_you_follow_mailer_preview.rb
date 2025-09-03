@@ -2,17 +2,10 @@
 
 module EmailCampaigns
   class StatusChangeOnIdeaYouFollowMailerPreview < ActionMailer::Preview
-    include EmailCampaigns::MailerPreviewRecipient
+    include EmailCampaigns::MailerPreview
 
     def campaign_mail
-      campaign = EmailCampaigns::Campaigns::StatusChangeOnIdeaYouFollow.first
-
-      command = campaign.generate_commands(
-        recipient: recipient_user,
-        activity: Activity.new(item: Notification.new(post: Idea.first))
-      ).first.merge({ recipient: recipient_user })
-
-      campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
+      preview_campaign_mail(EmailCampaigns::Campaigns::StatusChangeOnIdeaYouFollow)
     end
   end
 end

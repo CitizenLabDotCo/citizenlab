@@ -4,7 +4,6 @@ import { quillEditedContent } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 
 const Container = styled.div<{
-  linkColor: Props['linkColor'];
   textColor: Props['textColor'];
   mentionColor: Props['mentionColor'];
   fontSize: Props['fontSize'];
@@ -13,7 +12,6 @@ const Container = styled.div<{
   ${(props) =>
     quillEditedContent(
       props.theme.colors.tenantPrimary,
-      props.linkColor,
       props.textColor,
       props.mentionColor,
       props.fontSize,
@@ -23,7 +21,6 @@ const Container = styled.div<{
 
 interface Props {
   disableTabbing?: boolean;
-  linkColor?: string;
   textColor?: string;
   mentionColor?: string;
   fontSize?: 's' | 'base' | 'm' | 'l';
@@ -33,7 +30,6 @@ interface Props {
 }
 
 const QuillEditedContent = ({
-  linkColor,
   textColor,
   mentionColor,
   fontSize,
@@ -59,7 +55,6 @@ const QuillEditedContent = ({
 
   return (
     <Container
-      linkColor={linkColor}
       textColor={textColor}
       mentionColor={mentionColor || theme.colors.tenantText}
       fontSize={fontSize}

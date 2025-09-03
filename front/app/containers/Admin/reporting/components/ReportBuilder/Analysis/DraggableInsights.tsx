@@ -29,7 +29,7 @@ const DraggableInsight = ({
         connectors.create(ref, component, {
           onCreate: (node) => {
             selectNode(node.rootNodeId);
-            trackEventByName(tracks.dragAndDropInsightInReportBuilder.name);
+            trackEventByName(tracks.dragAndDropInsightInReportBuilder);
           },
         })
       }

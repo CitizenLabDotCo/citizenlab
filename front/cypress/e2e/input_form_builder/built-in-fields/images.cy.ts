@@ -41,17 +41,17 @@ describe('Input form builder', () => {
 
   it('does not allow the images field to be deleted and provides no way to edit its question title', () => {
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form`);
-    cy.get('[data-cy="e2e-edit-input-form"]').click();
+    cy.dataCy('e2e-edit-input-form').click();
 
-    cy.get('[data-cy="e2e-form-fields"]').within(() => {
+    cy.dataCy('e2e-form-fields').within(() => {
       cy.contains('Images').should('exist');
       cy.contains('Image upload').should('exist');
       cy.contains('Image upload').click();
     });
 
-    cy.get('[data-cy="e2e-form-fields"]').within(() => {
+    cy.dataCy('e2e-form-fields').within(() => {
       cy.contains('Images').within(() => {
-        cy.get('[data-cy="e2e-more-field-actions"]').should('not.exist');
+        cy.dataCy('e2e-more-field-actions').should('not.exist');
       });
     });
 

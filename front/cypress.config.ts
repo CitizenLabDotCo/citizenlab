@@ -10,7 +10,6 @@ export default defineConfig({
   viewportWidth: 1400,
   viewportHeight: 800,
   video: false,
-  videoUploadOnPasses: false,
   chromeWebSecurity: false,
   numTestsKeptInMemory: process.env.CYPRESS_NUM_TESTS_KEPT_IN_MEMORY
     ? Number(process.env.CYPRESS_NUM_TESTS_KEPT_IN_MEMORY)
@@ -27,6 +26,5 @@ export default defineConfig({
       return require('./cypress/plugins/index.js')(on, config);
     },
     baseUrl: 'http://localhost:3000',
-    experimentalSessionAndOrigin: false,
   },
 });

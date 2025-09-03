@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { customPagesData } from './__mocks__/useCustomPages';
 import useAddCustomPage from './useAddCustomPage';
@@ -20,7 +20,7 @@ describe('useAddCustomPage', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAddCustomPage(), {
+    const { result } = renderHook(() => useAddCustomPage(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -43,7 +43,7 @@ describe('useAddCustomPage', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAddCustomPage(), {
+    const { result } = renderHook(() => useAddCustomPage(), {
       wrapper: createQueryClientWrapper(),
     });
 

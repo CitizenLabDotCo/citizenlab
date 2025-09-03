@@ -31,6 +31,9 @@ const useAddEventAttendance = (eventId: string) => {
         queryClient.invalidateQueries({
           queryKey: eventsKeys.item({ id: eventId }),
         });
+        queryClient.invalidateQueries({
+          queryKey: eventsKeys.list({}),
+        });
         if (params.attendeeId) {
           queryClient.invalidateQueries({
             queryKey: eventsKeys.list({ attendeeId: params.attendeeId }),

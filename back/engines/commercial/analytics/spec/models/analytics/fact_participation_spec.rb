@@ -5,7 +5,6 @@ require 'rails_helper'
 RSpec.describe Analytics::FactParticipation do
   context 'without dimension types being present' do
     let!(:idea) { create(:idea) }
-    let!(:initiative) { create(:initiative) }
 
     it 'no participations will be returned' do
       expect(described_class.count).to eq(0)
@@ -31,16 +30,6 @@ RSpec.describe Analytics::FactParticipation do
 
       it 'is not available as a participation fact' do
         expect(described_class.count).to eq(0)
-      end
-    end
-
-    # TODO: move-old-proposals-test
-    context 'when an initiative is created' do
-      let!(:initiative) { create(:initiative) }
-
-      it 'is also available as a participation fact' do
-        participation = described_class.find(initiative.id)
-        expect(participation.dimension_type.name).to eq('initiative')
       end
     end
 

@@ -96,7 +96,7 @@ describe MultiTenancy::Templates::TenantSerializer do
 
     it 'can deal with missing authors' do
       idea = create(:idea, author: nil)
-      create(:comment, post: idea)
+      create(:comment, idea: idea)
 
       serializer = described_class.new(Tenant.current, uploads_full_urls: true)
       template = serializer.run(deserializer_format: true)
@@ -117,11 +117,10 @@ describe MultiTenancy::Templates::TenantSerializer do
       expect(template.dig('models', 'static_page', 0, 'remote_header_bg_url')).to match(%r{/uploads/.*/static_page/header_bg/.*.jpg})
     end
 
-    # TODO: move-old-proposals-test
-    it 'successfully copies over cosponsors_intiatives' do
-      initiative = create(:initiative, title_multiloc: { en: 'initiative-1' })
+    it 'successfully copies over cosponsorships' do
+      proposal = create(:proposal, title_multiloc: { en: 'proposal-1' })
       user = create(:user, email: 'user-1@g.com')
-      create(:cosponsors_initiative, user: user, initiative: initiative)
+      create(:cosponsorship, user: user, idea: proposal)
 
       template = tenant_serializer.run(deserializer_format: true)
 
@@ -129,11 +128,11 @@ describe MultiTenancy::Templates::TenantSerializer do
       tenant.switch do
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
 
-        expect(CosponsorsInitiative.count).to be 1
+        expect(Cosponsorship.count).to be 1
 
-        cosponsors_initiative = CosponsorsInitiative.first
-        expect(cosponsors_initiative.user.email).to eq user.email
-        expect(cosponsors_initiative.initiative.title_multiloc).to eq initiative.title_multiloc
+        cosponsorship = Cosponsorship.first
+        expect(cosponsorship.user.email).to eq user.email
+        expect(cosponsorship.idea.title_multiloc).to eq proposal.title_multiloc
       end
     end
 
@@ -232,7 +231,7 @@ describe MultiTenancy::Templates::TenantSerializer do
     it 'skips custom field values with ID references' do
       project = create(:single_phase_native_survey_project)
       custom_form = create(:custom_form, participation_context: project.phases.first)
-      supported_fields = %i[custom_field_number custom_field_linear_scale custom_field_checkbox].map do |factory|
+      supported_fields = %i[custom_field_number custom_field_linear_scale custom_field_rating custom_field_checkbox].map do |factory|
         create(factory, :for_custom_form, resource: custom_form)
       end
       unsupported_field = create(:custom_field, :for_custom_form, input_type: 'file_upload', resource: custom_form)
@@ -312,6 +311,15 @@ describe MultiTenancy::Templates::TenantSerializer do
       # SSO user added above
       expect(template['models']['user'].last['email']).to be_nil
       expect(template['models']['user'].last['unique_code']).not_to be_nil
+    end
+
+    it 'changes "verified" permissions to "user" permissions' do
+      SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+      create(:permission, :by_admins_moderators)
+      create(:permission, :by_verified)
+      template = tenant_serializer.run(deserializer_format: true)
+      expect(template['models']['permission'].first['permitted_by']).to eq 'admins_moderators' # Not changed
+      expect(template['models']['permission'].last['permitted_by']).to eq 'users' # Changed
     end
   end
 end

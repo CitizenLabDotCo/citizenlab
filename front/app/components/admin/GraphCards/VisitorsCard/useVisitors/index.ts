@@ -15,6 +15,7 @@ export default function useVisitorsData({
   startAtMoment,
   endAtMoment,
   resolution = 'month',
+  projectId,
 }: QueryParameters) {
   const { formatMessage } = useIntl();
   const [currentResolution, setCurrentResolution] =
@@ -22,9 +23,10 @@ export default function useVisitorsData({
 
   const { data: analytics } = useVisitorsLive(
     {
-      start_at: startAtMoment?.toISOString(),
-      end_at: endAtMoment?.toISOString(),
+      start_at: startAtMoment?.local().format('YYYY-MM-DD'),
+      end_at: endAtMoment?.local().format('YYYY-MM-DD'),
       resolution,
+      project_id: projectId,
       ...getComparedPeriod(resolution),
     },
     {
@@ -40,7 +42,7 @@ export default function useVisitorsData({
     () =>
       analytics?.data
         ? parseTimeSeries(
-            analytics.data.attributes[0],
+            analytics.data.attributes.visitors_timeseries,
             startAtMoment,
             endAtMoment,
             currentResolution

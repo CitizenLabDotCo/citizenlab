@@ -13,8 +13,7 @@ resource 'Mailgun Events' do
   post 'hooks/mailgun_events' do
     let(:delivery) { create(:delivery) }
     let(:signature) { '19317083e86d1be8e76337d3c92fd637279386a6a8cbfe3a8826915570599a9d' }
-    let(:campaign_id) { delivery.campaign_id }
-    let(:user_id) { delivery.user_id }
+    let(:delivery_id) { delivery.id }
 
     let(:cl_tenant_id) { AppConfiguration.instance.id }
     let(:mailgun_event) do
@@ -27,8 +26,7 @@ resource 'Mailgun Events' do
         'event-data': {
           event: 'opened',
           'user-variables': {
-            cl_campaign_id: campaign_id,
-            cl_user_id: user_id,
+            cl_delivery_id: delivery_id,
             cl_tenant_id: cl_tenant_id
           }
         }
@@ -65,17 +63,8 @@ resource 'Mailgun Events' do
       end
     end
 
-    context '[error] for a non-existing campaign' do
-      let!(:campaign_id) { 'ab71f907-d1ab-45b0-996f-9bf596b861b5' }
-
-      example 'returns not_acceptable' do
-        do_request(mailgun_event)
-        expect(response_status).to eq 406
-      end
-    end
-
-    context '[error] for a non-existing recipient' do
-      let!(:user_id) { 'a0ce2303-47d5-4337-9746-89eadb32c406' }
+    context '[error] for a non-existing delivery' do
+      let(:delivery_id) { 'ab71f907-d1ab-45b0-996f-9bf596b861b5' }
 
       example 'returns not_acceptable' do
         do_request(mailgun_event)

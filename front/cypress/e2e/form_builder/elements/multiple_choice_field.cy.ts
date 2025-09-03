@@ -43,43 +43,75 @@ describe('Form builder multiple choice choose multiple component', () => {
   });
 
   it('adds multiselect multiple choice field and is displayed when filling survey', () => {
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
-    cy.get('[data-cy="e2e-multiple-choice"]').click();
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
+    cy.dataCy('e2e-multiple-choice');
+    cy.wait(2000);
+    cy.dataCy('e2e-multiple-choice').click();
     cy.get('#e2e-title-multiloc').type('Question title 2', { force: true });
     cy.get('#e2e-option-input-0').type('Option 1 question 2', { force: true });
     cy.get('form').submit();
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.contains('Question title 2').should('exist');
     cy.contains('Option 1 question 2').should('exist');
-    cy.get('#e2e-multiselect-control').should('exist');
+  });
+
+  it('allows submitting when there is an other option but it is not filled out', () => {
+    const questionTitle = randomString();
+
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
+
+    cy.dataCy('e2e-multiple-choice');
+    cy.wait(2000);
+    cy.dataCy('e2e-multiple-choice').click();
+
+    cy.dataCy('e2e-other-option-toggle').find('input').click({ force: true });
+    cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
+    cy.get('#e2e-option-input-0').type('Car', { force: true });
+    cy.get('#e2e-option-input-1').should('exist');
+    cy.contains('Save').click();
+
+    // Go to survey
+    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.contains(questionTitle).should('exist');
+
+    // Save survey response
+    cy.dataCy('e2e-submit-form').should('exist');
+    cy.dataCy('e2e-submit-form').click();
+
+    // Check that we're on final page and return to project
+    cy.dataCy('e2e-after-submission').should('exist');
+    cy.dataCy('e2e-after-submission').click();
+
+    // Make sure we're back at the project
+    cy.url().should('include', `projects/${projectSlug}`);
   });
 
   it('allows using an other option that is mandatory when other is selected when entering data in the form/survey', () => {
     const otherText = 'Other';
     const questionTitle = randomString();
     const otherAnswer = 'Walking';
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
-    cy.acceptCookies();
-    cy.get('[data-cy="e2e-multiple-choice"]').click();
-    cy.get('[data-cy="e2e-other-option-toggle"]')
-      .find('input')
-      .click({ force: true });
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
+
+    cy.dataCy('e2e-multiple-choice');
+    cy.wait(2000);
+    cy.dataCy('e2e-multiple-choice').click();
+
+    cy.dataCy('e2e-other-option-toggle').find('input').click({ force: true });
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
     cy.get('#e2e-option-input-0').type('Car', { force: true });
     cy.get('#e2e-option-input-1').should('exist');
     cy.contains('Save').click();
+
+    // Go to survey
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.contains(questionTitle).should('exist');
+
+    // Select 'Other' option
     cy.contains(otherText).click({ force: true });
     cy.contains('Survey').should('exist');
-    cy.get('#e2e-single-select-control').should('exist');
 
-    // Try going to the next page without filling in the survey
-    cy.get('[data-cy="e2e-next-page"]').click();
+    // Try submitting without entering data for required field
+    cy.dataCy('e2e-submit-form').click();
 
     // verify that an error is shown and that we stay on the page
     cy.get('.e2e-error-message').should('exist');
@@ -90,27 +122,25 @@ describe('Form builder multiple choice choose multiple component', () => {
       }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
     );
 
-    cy.get('[id^="properties"]')
+    cy.get(`[id^="${questionTitle}"]`)
+      .last()
       .should(($element) => {
         const id = $element.attr('id');
-        expect(id).to.include(questionTitle);
         expect(Cypress._.endsWith(id, '_other')).to.be.true;
       })
       .type(otherAnswer, { force: true });
 
-    // Go to the next page
-    cy.get('[data-cy="e2e-next-page"]').click();
-
     // Save survey response
-    cy.get('[data-cy="e2e-submit-form"]').should('exist');
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').should('exist');
+    cy.wait(1000);
+    cy.dataCy('e2e-submit-form').click();
 
-    // Check that we show a success message
-    cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
-    // close modal
-    cy.get('.e2e-modal-close-button').click();
-    // check that the modal is no longer on the page
-    cy.get('#e2e-modal-container').should('have.length', 0);
+    // Check that we're on final page and return to project
+    cy.dataCy('e2e-after-submission').should('exist');
+    cy.dataCy('e2e-after-submission').click();
+
+    // Make sure we're back at the project
+    cy.url().should('include', `projects/${projectSlug}`);
   });
 
   after(() => {

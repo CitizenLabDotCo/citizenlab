@@ -3,6 +3,25 @@
 require 'rails_helper'
 
 describe WebApi::V1::CustomFieldSerializer do
+  let!(:default_attributes) do
+    {
+      code: nil,
+      created_at: an_instance_of(ActiveSupport::TimeWithZone),
+      description_multiloc: {},
+      enabled: true,
+      input_type: 'text',
+      key: nil,
+      ordering: 0,
+      required: false,
+      title_multiloc: {},
+      updated_at: an_instance_of(ActiveSupport::TimeWithZone),
+      logic: {},
+      constraints: {},
+      random_option_ordering: false,
+      include_in_printed_form: true
+    }
+  end
+
   context 'for user custom fields' do
     let(:field) { create(:custom_field, resource_type: 'User') }
 
@@ -32,22 +51,15 @@ describe WebApi::V1::CustomFieldSerializer do
       params = { params: { constraints: {}, supports_answer_visible_to: true } }
       serialized_field = described_class.new(field, params).serializable_hash
       attributes = serialized_field[:data][:attributes]
-      expect(attributes).to match({
-        code: nil,
-        created_at: an_instance_of(ActiveSupport::TimeWithZone),
+      expect(attributes).to match(default_attributes.merge({
         description_multiloc: { 'en' => 'Which councils are you attending in our city?' },
-        enabled: true,
         input_type: 'text',
         key: 'extra',
-        ordering: 0,
-        required: false,
         title_multiloc: { 'en' => 'Did you attend' },
-        updated_at: an_instance_of(ActiveSupport::TimeWithZone),
-        logic: {},
-        constraints: {},
-        answer_visible_to: 'admins',
-        random_option_ordering: false
-      })
+        visible_to_public: false,
+        min_characters: nil,
+        max_characters: nil
+      }))
     end
   end
 
@@ -70,11 +82,9 @@ describe WebApi::V1::CustomFieldSerializer do
     it 'includes maximum and scale value labels' do
       serialized_field = described_class.new(field).serializable_hash
       attributes = serialized_field[:data][:attributes]
-      expect(attributes).to match({
-        code: nil,
-        created_at: an_instance_of(ActiveSupport::TimeWithZone),
+      expect(attributes).to match(default_attributes.merge({
+        title_multiloc: { 'en' => 'We need a swimming pool.' },
         description_multiloc: { 'en' => 'Please indicate how strong you agree or disagree.' },
-        enabled: true,
         input_type: 'linear_scale',
         key: 'scale',
         maximum: 5,
@@ -85,14 +95,56 @@ describe WebApi::V1::CustomFieldSerializer do
         linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
         linear_scale_label_6_multiloc: {},
         linear_scale_label_7_multiloc: {},
-        ordering: 0,
-        required: false,
+        linear_scale_label_8_multiloc: {},
+        linear_scale_label_9_multiloc: {},
+        linear_scale_label_10_multiloc: {},
+        linear_scale_label_11_multiloc: {}
+      }))
+    end
+  end
+
+  context 'sentiment_linear_scale field' do
+    let(:field) { create(:custom_field_sentiment_linear_scale, :for_custom_form, key: 'scale') }
+
+    it 'includes maximum and scale value labels' do
+      serialized_field = described_class.new(field).serializable_hash
+      attributes = serialized_field[:data][:attributes]
+      expect(attributes).to match(default_attributes.merge({
         title_multiloc: { 'en' => 'We need a swimming pool.' },
-        updated_at: an_instance_of(ActiveSupport::TimeWithZone),
-        logic: {},
-        constraints: {},
-        random_option_ordering: false
-      })
+        description_multiloc: { 'en' => 'Please indicate how strong you agree or disagree.' },
+        input_type: 'sentiment_linear_scale',
+        key: 'scale',
+        maximum: 5,
+        linear_scale_label_1_multiloc: { 'en' => 'Strongly disagree' },
+        linear_scale_label_2_multiloc: { 'en' => 'Disagree' },
+        linear_scale_label_3_multiloc: { 'en' => 'Neutral' },
+        linear_scale_label_4_multiloc: { 'en' => 'Agree' },
+        linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
+        linear_scale_label_6_multiloc: {},
+        linear_scale_label_7_multiloc: {},
+        linear_scale_label_8_multiloc: {},
+        linear_scale_label_9_multiloc: {},
+        linear_scale_label_10_multiloc: {},
+        linear_scale_label_11_multiloc: {},
+        ask_follow_up: false
+      }))
+    end
+  end
+
+  context 'rating field' do
+    let(:field) { create(:custom_field_rating, :for_custom_form, key: 'scale') }
+
+    it 'includes maximum value' do
+      serialized_field = described_class.new(field).serializable_hash
+      attributes = serialized_field[:data][:attributes]
+      expect(attributes).to match(default_attributes.merge({
+        title_multiloc: { 'en' => 'How would you rate our service?' },
+        description_multiloc: { 'en' => 'Please rate your experience from 1 (poor) to 5 (excellent).' },
+        input_type: 'rating',
+        key: 'scale',
+        maximum: 5,
+        ordering: 0
+      }))
     end
   end
 
@@ -109,22 +161,14 @@ describe WebApi::V1::CustomFieldSerializer do
     it 'does not include the logic' do
       serialized_field = described_class.new(field).serializable_hash
       attributes = serialized_field[:data][:attributes]
-      expect(attributes).to match({
-        code: nil,
-        created_at: an_instance_of(ActiveSupport::TimeWithZone),
+      expect(attributes).to match(default_attributes.merge({
+        title_multiloc: { 'en' => 'Cycling survey' },
         description_multiloc: { 'en' => 'This is a survey on your cycling habits.' },
-        enabled: true,
         input_type: 'page',
         key: 'page_1',
-        ordering: 0,
         page_layout: 'default',
-        required: false,
-        title_multiloc: { 'en' => 'Cycling survey' },
-        updated_at: an_instance_of(ActiveSupport::TimeWithZone),
-        logic: { 'next_page_id' => 'TEMP-ID-1' },
-        constraints: {},
-        random_option_ordering: false
-      })
+        logic: { 'next_page_id' => 'TEMP-ID-1' }
+      }))
     end
   end
 
@@ -134,25 +178,16 @@ describe WebApi::V1::CustomFieldSerializer do
     it 'includes the dropdown_layout attribute' do
       serialized_field = described_class.new(field).serializable_hash
       attributes = serialized_field[:data][:attributes]
-      expect(attributes).to match({
-        code: nil,
-        created_at: an_instance_of(ActiveSupport::TimeWithZone),
+      expect(attributes).to match(default_attributes.merge({
+        title_multiloc: { 'en' => 'What languages do you speak?' },
         description_multiloc: { 'en' => 'Which councils are you attending in our city?' },
         dropdown_layout: false,
-        enabled: true,
         input_type: 'multiselect',
         maximum_select_count: nil,
         minimum_select_count: nil,
         key: 'multiselect',
-        ordering: 0,
-        required: false,
-        select_count_enabled: false,
-        title_multiloc: { 'en' => 'What languages do you speak?' },
-        updated_at: an_instance_of(ActiveSupport::TimeWithZone),
-        logic: {},
-        constraints: {},
-        random_option_ordering: false
-      })
+        select_count_enabled: false
+      }))
     end
   end
 
@@ -162,22 +197,13 @@ describe WebApi::V1::CustomFieldSerializer do
     it 'includes the dropdown_layout attribute' do
       serialized_field = described_class.new(field).serializable_hash
       attributes = serialized_field[:data][:attributes]
-      expect(attributes).to match({
-        code: nil,
-        created_at: an_instance_of(ActiveSupport::TimeWithZone),
+      expect(attributes).to match(default_attributes.merge({
+        title_multiloc: { 'en' => 'Member of councils?' },
         description_multiloc: { 'en' => 'Which councils are you attending in our city?' },
         dropdown_layout: false,
-        enabled: true,
         input_type: 'select',
-        key: 'select',
-        ordering: 0,
-        required: false,
-        title_multiloc: { 'en' => 'Member of councils?' },
-        updated_at: an_instance_of(ActiveSupport::TimeWithZone),
-        logic: {},
-        constraints: {},
-        random_option_ordering: false
-      })
+        key: 'select'
+      }))
     end
   end
 end

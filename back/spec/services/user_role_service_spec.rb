@@ -32,16 +32,9 @@ describe UserRoleService do
       expect(service.can_moderate?(idea, create(:user))).to be false
     end
 
-    it 'for an initiative' do
-      initiative = create(:initiative)
-
-      expect(service.can_moderate?(initiative, create(:admin))).to be true
-      expect(service.can_moderate?(initiative, create(:user))).to be false
-    end
-
     it 'for a comment' do
-      initiative = create(:initiative)
-      comment = create(:comment, post: initiative)
+      proposal = create(:proposal)
+      comment = create(:comment, idea: proposal)
 
       expect(service.can_moderate?(comment, create(:admin))).to be true
       expect(service.can_moderate?(comment, create(:user))).to be false
@@ -132,19 +125,9 @@ describe UserRoleService do
       also_moderator = create(:project_moderator, projects: [project])
       create(:project_moderator, projects: [other_project])
       idea = create(:idea, project: project)
-      comment = create(:comment, post: idea)
+      comment = create(:comment, idea: idea)
 
       expect(service.moderators_for(comment).ids).to match_array [admin.id, moderator.id, also_moderator.id]
-    end
-
-    it 'lists all moderators of an initiative' do
-      project = create(:project)
-      create(:user)
-      admin = create(:admin)
-      create(:project_moderator, projects: [project])
-      initiative = create(:initiative)
-
-      expect(service.moderators_for(initiative).ids).to match_array [admin.id]
     end
   end
 
@@ -236,6 +219,56 @@ describe UserRoleService do
 
     it 'permits folders moderators' do
       expect(service.moderates_something?(create(:project_folder_moderator))).to be true
+    end
+  end
+
+  describe 'moderators_per_project' do
+    it 'works' do
+      p1, p2, p3 = create_list(:project, 3)
+      m1 = create(:project_moderator, projects: [p1, p2])
+      m2 = create(:project_moderator, projects: [p2])
+      create(:project_moderator, projects: [p3])
+      m4 = create(:project_moderator, projects: [p3, p2])
+
+      expect(service.moderators_per_project([p1.id, p2.id])).to eq({
+        p1.id => [m1],
+        p2.id => [m1, m2, m4]
+      })
+    end
+
+    it 'does not crash if empty array is passed' do
+      expect(service.moderators_per_project([])).to eq({})
+    end
+
+    it 'does not crash if no moderators exist' do
+      p1 = create(:project)
+      expect(service.moderators_per_project([p1.id])).to eq({})
+    end
+  end
+
+  describe 'moderators_per_folder' do
+    it 'works' do
+      f1, f2, f3, f4 = create_list(:project_folder, 4)
+      m1 = create(:project_folder_moderator, project_folders: [f1, f2])
+      m2 = create(:project_folder_moderator, project_folders: [f2])
+      m3 = create(:project_folder_moderator, project_folders: [f3])
+      create(:project_folder_moderator, project_folders: [f4])
+      m5 = create(:project_folder_moderator, project_folders: [f4, f3])
+
+      expect(service.moderators_per_folder([f1.id, f2.id, f3.id])).to eq({
+        f1.id => [m1],
+        f2.id => [m1, m2],
+        f3.id => [m3, m5]
+      })
+    end
+
+    it 'does not crash if empty array is passed' do
+      expect(service.moderators_per_project([])).to eq({})
+    end
+
+    it 'does not crash if no moderators exist' do
+      f1 = create(:project_folder)
+      expect(service.moderators_per_folder([f1.id])).to eq({})
     end
   end
 end

@@ -13,8 +13,9 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { InsertConfigurationOptions } from 'typings';
 
+import { IAppConfiguration } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useIdeasCount from 'api/idea_count/useIdeasCount';
-import useInitiativesCount from 'api/initiative_counts/useInitiativesCount';
 import useAuthUser from 'api/me/useAuthUser';
 import { IUser } from 'api/users/types';
 
@@ -36,7 +37,7 @@ import { UserMenu } from './UserMenu';
 const Menu = styled.div`
   z-index: 10;
   flex: 0 0 auto;
-  width: 210px;
+  width: 224px;
 
   @media print {
     display: none;
@@ -49,7 +50,7 @@ const Menu = styled.div`
 
 const MenuInner = styled.nav`
   flex: 0 0 auto;
-  width: 210px;
+  width: 224px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -82,27 +83,25 @@ const getTopAndBottomNavItems = (navItems: NavItem[]) => {
 
 interface Props {
   authUser: IUser;
+  appConfiguration: IAppConfiguration;
 }
 
 const Sidebar = ({ authUser }: Props) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
+
   const { data: ideasCount } = useIdeasCount(
     {
       feedback_needed: true,
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       assignee: authUser?.data.id,
       transitive: true,
     },
     isAdmin(authUser)
   );
-  const { data: initiativesCount } = useInitiativesCount(
-    {
-      feedback_needed: true,
-      assignee: authUser?.data.id,
-    },
-    isAdmin(authUser)
-  );
-  const [navItems, setNavItems] = useState<NavItem[]>(defaultNavItems);
+
+  const [navItems, setNavItems] = useState(defaultNavItems);
   const isPagesAndMenuPage = isPage('pages_menu', pathname);
   const isSmallerThanPhone = useBreakpoint('tablet');
 
@@ -116,22 +115,13 @@ const Sidebar = ({ authUser }: Props) => {
             ideasCount.data.attributes.count
           ) {
             return { ...navItem, count: ideasCount.data.attributes.count };
-          } else if (
-            navItem.name === 'initiatives' &&
-            initiativesCount &&
-            initiativesCount.data.attributes.count
-          ) {
-            return {
-              ...navItem,
-              count: initiativesCount.data.attributes.count,
-            };
           }
           return navItem;
         }
       );
       return updatedNavItems;
     });
-  }, [ideasCount, initiativesCount]);
+  }, [ideasCount]);
 
   const handleData = (
     insertNavItemOptions: InsertConfigurationOptions<NavItem>
@@ -139,6 +129,8 @@ const Sidebar = ({ authUser }: Props) => {
     setNavItems(insertConfiguration(insertNavItemOptions)(navItems));
   };
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!(navItems && navItems.length > 1)) {
     return null;
   }
@@ -210,9 +202,13 @@ const Sidebar = ({ authUser }: Props) => {
 
 const SidebarWrapper = () => {
   const { data: authUser } = useAuthUser();
-  if (!authUser) return null;
+  const { data: appConfiguration } = useAppConfiguration();
 
-  return <Sidebar authUser={authUser} />;
+  if (!authUser || !appConfiguration) {
+    return null;
+  }
+
+  return <Sidebar authUser={authUser} appConfiguration={appConfiguration} />;
 };
 
 export default SidebarWrapper;

@@ -13,7 +13,7 @@ class IdNemlogIn::KkiLocationApi
       basic_auth: { username: api_config['username'], password: api_config['password'] }
     )
     unless response.success?
-      ErrorReporter.report_msg('Error in KKI Location API', extra: { status_code: response.code })
+      ErrorReporter.report_msg('Error in KKI Location API', extra: { status_code: response.code, cpr_number: cpr_number })
     end
     response['cprMunicipalityCode']
   end

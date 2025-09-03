@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import endpoints, {
   apiPathImages,
@@ -17,7 +17,7 @@ describe('useIdeaImages', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useIdeaImages('ideaId'), {
+    const { result } = renderHook(() => useIdeaImages('ideaId'), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -36,7 +36,7 @@ describe('useIdeaImages', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useIdeaImages('ideaId'), {
+    const { result } = renderHook(() => useIdeaImages('ideaId'), {
       wrapper: createQueryClientWrapper(),
     });
 

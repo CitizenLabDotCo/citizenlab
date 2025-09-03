@@ -6,11 +6,10 @@ import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import FormattedAnchor from 'components/FormattedAnchor';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -71,8 +70,6 @@ const DeletionDialog = ({
     closeDialog();
   };
 
-  const isProposalsEnabled = useFeatureFlag({ name: 'initiatives' });
-
   if (!isNilOrError(appConfiguration)) {
     const logo = appConfiguration.data.attributes.logo?.medium;
     // just the org's name works fine as alt text for a11y purposes
@@ -92,13 +89,9 @@ const DeletionDialog = ({
           <FormattedMessage {...messages.reasonsToStayListTitle} />
         </Styledh2>
         <ul>
-          {isProposalsEnabled && (
-            <li>
-              <FormattedMessage
-                {...messages.activeProposalVotesWillBeDeleted}
-              />
-            </li>
-          )}
+          <li>
+            <FormattedMessage {...messages.activeProposalVotesWillBeDeleted} />
+          </li>
           <li>
             <FormattedMessage {...messages.tooManyEmails} />
           </li>
@@ -129,24 +122,24 @@ const DeletionDialog = ({
           </li>
         </ul>
         <ButtonsContainer>
-          <Button
+          <ButtonWithLink
             buttonStyle="delete"
             id="deletion"
             onClick={deleteProfile}
             width="auto"
             justifyWrapper="left"
-            className="e2e-delete-profile-confirm"
+            data-cy="e2e-delete-profile-confirmation"
           >
             <FormattedMessage {...messages.deleteMyAccount} />
-          </Button>
-          <Button
+          </ButtonWithLink>
+          <ButtonWithLink
             buttonStyle="text"
             onClick={closeDialog}
             width="auto"
             justifyWrapper="left"
           >
             <FormattedMessage {...messages.cancel} />
-          </Button>
+          </ButtonWithLink>
         </ButtonsContainer>
       </Container>
     );

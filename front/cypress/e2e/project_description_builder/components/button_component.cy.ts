@@ -21,7 +21,7 @@ describe('Project description builder Button component', () => {
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
-        cy.apiEnableProjectDescriptionBuilder({ projectId }).then(() => {
+        cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
           cy.visit(
             `/admin/project-description-builder/projects/${projectId}/description`
           );
@@ -91,7 +91,7 @@ describe('Project description builder Button component', () => {
     );
 
     cy.get('.e2e-button').should('exist');
-    cy.get('.e2e-button').parent().click({ force: true });
+    cy.get('.e2e-button').wait(1000).parent().click({ force: true });
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');

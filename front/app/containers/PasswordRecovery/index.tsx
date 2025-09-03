@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Success } from '@citizenlab/cl2-component-library';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { WrappedComponentProps } from 'react-intl';
 
 import sendPasswordResetMail from 'api/authentication/reset_password/sendPasswordResetEmail';

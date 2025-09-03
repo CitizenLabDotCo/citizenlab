@@ -9,17 +9,14 @@ import {
   getTheme,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { configureScope } from '@sentry/react';
-import { PreviousPathnameContext } from 'context';
+import * as Sentry from '@sentry/react';
 import GlobalStyle from 'global-styles';
 import 'intersection-observer';
-import { includes, uniq } from 'lodash-es';
-import 'moment-timezone';
-import moment from 'moment';
+// moment-timezone extends the regular moment library,
+// so there's no need to import both moment and moment-timezone
+import moment from 'moment-timezone';
 import { useLocation } from 'react-router-dom';
-import { RouteType } from 'routes';
 import styled, { ThemeProvider } from 'styled-components';
-import { SupportedLocale } from 'typings';
 
 import { IAppConfigurationStyle } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -27,33 +24,39 @@ import useAuthUser from 'api/me/useAuthUser';
 import useDeleteSelf from 'api/users/useDeleteSelf';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
 
-import { appLocalesMomentPairs, locales } from 'containers/App/constants';
+import {
+  appLocalesMomentPairs,
+  localeGetter,
+  locales,
+} from 'containers/App/constants';
 import Authentication from 'containers/Authentication';
 import MainHeader from 'containers/MainHeader';
 
+import ConsentManager from 'components/ConsentManager';
 import ErrorBoundary from 'components/ErrorBoundary';
 
 import { trackPage } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import Navigate from 'utils/cl-router/Navigate';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import eventEmitter from 'utils/eventEmitter';
 import {
-  endsWith,
+  initiativeShowPageSlug,
   isIdeaShowPage,
-  isInitiativeShowPage,
   isPage,
 } from 'utils/helperUtils';
-import { localeStream } from 'utils/localeStream';
 import { usePermission } from 'utils/permissions';
 import { isAdmin, isModerator } from 'utils/permissions/roles';
 
 import messages from './messages';
 import Meta from './Meta';
-import UserSessionRecordingModal from './UserSessionRecordingModal';
+import { ModalQueueProvider } from './ModalQueue';
+import CommunityMonitorModalManager from './ModalQueue/modals/CommunityMonitor/ModalManager';
+import UserSessionRecordingModalManager from './ModalQueue/modals/UserSessionRecording/ModalManager';
 
-const ConsentManager = lazy(() => import('components/ConsentManager'));
 const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
 const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
 
@@ -64,7 +67,7 @@ const SkipLinkStyled = styled.a`
   background: ${colors.black};
   color: ${colors.white};
   padding: 8px;
-  z-index: 1000;
+  z-index: 10000;
   text-align: center;
   text-decoration: none;
   &:focus {
@@ -76,18 +79,25 @@ interface Props {
   children: React.ReactNode;
 }
 
-const locale$ = localeStream().observable;
+const importedLocales = new Set();
+async function importMomentLocaleFilePromise(momentLocale: string) {
+  try {
+    await localeGetter(momentLocale);
+    importedLocales.add(momentLocale);
+  } catch (error) {
+    console.error(`Error processing locale: ${momentLocale}`, error);
+  }
+}
 
 const App = ({ children }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const location = useLocation();
   const { formatMessage } = useIntl();
+  const locale = useLocale();
+  const momentLocale = appLocalesMomentPairs[locale] || 'en';
 
   const { mutate: signOutAndDeleteAccount } = useDeleteSelf();
   const [isAppInitialized, setIsAppInitialized] = useState(false);
-  const [previousPathname, setPreviousPathname] = useState<RouteType | null>(
-    null
-  );
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
   const appContainerClassName =
@@ -98,27 +108,45 @@ const App = ({ children }: Props) => {
   ] = useState(false);
   const [userSuccessfullyDeleted, setUserSuccessfullyDeleted] = useState(false);
 
-  const [locale, setLocale] = useState<SupportedLocale | null>(null);
-  const [signUpInModalOpened, setSignUpInModalOpened] = useState(false);
-
   const redirectsEnabled = useFeatureFlag({ name: 'redirects' });
 
-  const fullscreenModalEnabled = useFeatureFlag({
-    name: 'franceconnect_login',
-  });
+  useEffect(() => {
+    moment.locale(momentLocale);
+  }, [momentLocale]);
+
+  useEffect(() => {
+    if (!appConfiguration) return;
+
+    const appConfigMomentLocales = [
+      // The set ensures that locales are unique. Some of our locales share the same moment locale.
+      ...new Set(
+        appConfiguration.data.attributes.settings.core.locales
+          .filter((loc) => loc !== 'en')
+          .map((loc) => appLocalesMomentPairs[loc])
+      ),
+    ];
+    const importPromises = appConfigMomentLocales
+      .filter(
+        (appConfigMomentLocale) => !importedLocales.has(appConfigMomentLocale)
+      )
+      .map((appConfigMomentLocale) =>
+        importMomentLocaleFilePromise(appConfigMomentLocale)
+      );
+
+    Promise.all(importPromises).then(() => {
+      // The latest imported locale file would overwrite the moment locale (for some reason).
+      moment.locale(momentLocale);
+    });
+  }, [appConfiguration, momentLocale]);
 
   useEffect(() => {
     if (appConfiguration && !isAppInitialized) {
+      // Set the default timezone
       moment.tz.setDefault(
         appConfiguration.data.attributes.settings.core.timezone
       );
 
-      uniq(
-        appConfiguration.data.attributes.settings.core.locales
-          .filter((locale) => locale !== 'en')
-          .map((locale) => appLocalesMomentPairs[locale])
-      ).forEach((locale) => require(`moment/locale/${locale}.js`));
-
+      // Weglot initialization
       if (appConfiguration.data.attributes.settings.core.weglot_api_key) {
         const script = document.createElement('script');
         script.async = false;
@@ -135,10 +163,8 @@ const App = ({ children }: Props) => {
         script.src = 'https://cdn.weglot.com/weglot.min.js';
       }
 
-      if (
-        appConfiguration.data.attributes.style &&
-        appConfiguration.data.attributes.style.customFontAdobeId
-      ) {
+      // Custom Adobe fonts or custom font URLs
+      if (appConfiguration.data.attributes.style?.customFontAdobeId) {
         import('webfontloader').then((WebfontLoader) => {
           WebfontLoader.load({
             typekit: {
@@ -148,10 +174,7 @@ const App = ({ children }: Props) => {
             },
           });
         });
-      } else if (
-        appConfiguration.data.attributes.style &&
-        appConfiguration.data.attributes.style.customFontURL
-      ) {
+      } else if (appConfiguration.data.attributes.style?.customFontURL) {
         import('webfontloader').then((WebfontLoader) => {
           const fontName = (
             appConfiguration.data.attributes.style as IAppConfigurationStyle
@@ -159,6 +182,7 @@ const App = ({ children }: Props) => {
           const fontURL = (
             appConfiguration.data.attributes.style as IAppConfigurationStyle
           ).customFontURL;
+
           if (fontName !== undefined && fontURL !== undefined) {
             WebfontLoader.load({
               custom: {
@@ -177,20 +201,18 @@ const App = ({ children }: Props) => {
     const handleCustomRedirect = () => {
       const { pathname } = location;
       const urlSegments = pathname.replace(/^\/+/g, '').split('/');
+      const localeInUrl = urlSegments[0];
       const pathnameWithoutLocale = removeLocale(pathname).pathname?.replace(
         /\//,
         ''
       );
 
-      if (
-        appConfiguration &&
-        appConfiguration.data.attributes.settings.redirects
-      ) {
+      if (appConfiguration?.data.attributes.settings.redirects) {
         const { rules } = appConfiguration.data.attributes.settings.redirects;
         rules.forEach((rule) => {
           if (
             urlSegments.length > 1 &&
-            includes(locales, urlSegments[0]) &&
+            locales.includes(localeInUrl) &&
             pathnameWithoutLocale === rule.path
           ) {
             window.location.href = rule.target;
@@ -199,24 +221,13 @@ const App = ({ children }: Props) => {
       }
     };
 
-    const newPreviousPathname = location.pathname as RouteType;
-    const pathsToIgnore = ['sign-up', 'sign-in', 'invite'];
-    setPreviousPathname(
-      !endsWith(newPreviousPathname, pathsToIgnore)
-        ? newPreviousPathname
-        : previousPathname
-    );
     if (redirectsEnabled) {
       handleCustomRedirect();
     }
+  }, [redirectsEnabled, appConfiguration, location]);
 
+  useEffect(() => {
     const subscriptions = [
-      locale$.subscribe((locale) => {
-        const momentLoc = appLocalesMomentPairs[locale] || 'en';
-        moment.locale(momentLoc);
-        setLocale(locale);
-      }),
-
       eventEmitter
         .observeEvent('deleteProfileAndShowSuccessModal')
         .subscribe(() => {
@@ -236,21 +247,12 @@ const App = ({ children }: Props) => {
     return () => {
       subscriptions.forEach((subscription) => subscription.unsubscribe());
     };
-  }, [
-    location.pathname,
-    previousPathname,
-    redirectsEnabled,
-    appConfiguration,
-    location,
-    signOutAndDeleteAccount,
-  ]);
+  }, [signOutAndDeleteAccount]);
 
   useEffect(() => {
     if (authUser) {
-      configureScope((scope) => {
-        scope.setUser({
-          id: authUser.data.id,
-        });
+      Sentry.getCurrentScope().setUser({
+        id: authUser.data.id,
       });
     }
   }, [authUser]);
@@ -259,30 +261,31 @@ const App = ({ children }: Props) => {
     trackPage(location.pathname);
   }, [location.pathname]);
 
+  const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
+
+  // Redirect from /initiatives/:slug to /ideas/:slug to make sure old initiative links still work
+  useEffect(() => {
+    if (initiativeShowPageSlug(urlSegments)) {
+      const slug = initiativeShowPageSlug(urlSegments);
+      clHistory.replace(`/ideas/${slug}`);
+    }
+  }, [urlSegments]);
+
   const closeUserDeletedModal = () => {
     setUserDeletedSuccessfullyModalOpened(false);
   };
 
   const isAdminPage = isPage('admin', location.pathname);
   const isPagesAndMenuPage = isPage('pages_menu', location.pathname);
-  const isInitiativeFormPage = isPage('initiative_form', location.pathname);
   const isIdeaFormPage = isPage('idea_form', location.pathname);
   const isIdeaEditPage = isPage('idea_edit', location.pathname);
-  const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
   const isEventPage = isPage('event_page', location.pathname);
   const isNativeSurveyPage = isPage('native_survey', location.pathname);
 
   const theme = getTheme(appConfiguration);
   const showFooter =
-    !isAdminPage &&
-    !isIdeaFormPage &&
-    !isInitiativeFormPage &&
-    !isIdeaEditPage &&
-    !isInitiativeEditPage &&
-    !isNativeSurveyPage;
+    !isAdminPage && !isIdeaFormPage && !isIdeaEditPage && !isNativeSurveyPage;
   const { pathname } = removeLocale(location.pathname);
-  const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
-  const disableScroll = fullscreenModalEnabled && signUpInModalOpened;
   const isAuthenticationPending = authUser === undefined;
   const canAccessRoute = usePermission({
     item: {
@@ -298,14 +301,10 @@ const App = ({ children }: Props) => {
     }
 
     // citizen
-    if (isNativeSurveyPage) return false;
+    if (isNativeSurveyPage || isIdeaFormPage || isIdeaEditPage) return false;
 
     if (isSmallerThanTablet) {
-      if (
-        isEventPage ||
-        isIdeaShowPage(urlSegments) ||
-        isInitiativeShowPage(urlSegments)
-      ) {
+      if (isEventPage || isIdeaShowPage(urlSegments)) {
         return false;
       }
     }
@@ -331,8 +330,8 @@ const App = ({ children }: Props) => {
           <Spinner />
         </Box>
       )}
-      <PreviousPathnameContext.Provider value={previousPathname}>
-        <ThemeProvider theme={{ ...theme, isRtl: !!locale?.startsWith('ar') }}>
+      <ThemeProvider theme={{ ...theme, isRtl: locale.startsWith('ar') }}>
+        <ModalQueueProvider>
           <GlobalStyle />
           <Box
             className={appContainerClassName}
@@ -341,39 +340,24 @@ const App = ({ children }: Props) => {
             alignItems="stretch"
             position="relative"
             background={colors.white}
-            /* When the fullscreen modal is enabled on a platform and
-             * is currently open, we want to disable scrolling on the
-             * app sitting below it (CL-1101).
-             * For instance, with a fullscreen modal, we want to
-             * be able to disable scrolling on the page behind the modal
-             */
-            overflow={disableScroll ? 'hidden' : undefined}
             minHeight="100vh"
           >
             <Meta />
-            <UserSessionRecordingModal />
             <ErrorBoundary>
-              <Suspense fallback={null}>
-                <UserDeletedModal
-                  modalOpened={userDeletedSuccessfullyModalOpened}
-                  closeUserDeletedModal={closeUserDeletedModal}
-                  userSuccessfullyDeleted={userSuccessfullyDeleted}
-                />
-              </Suspense>
+              <UserSessionRecordingModalManager />
+              <ConsentManager />
+              <CommunityMonitorModalManager />
+              <UserDeletedModal
+                modalOpened={userDeletedSuccessfullyModalOpened}
+                closeUserDeletedModal={closeUserDeletedModal}
+                userSuccessfullyDeleted={userSuccessfullyDeleted}
+              />
             </ErrorBoundary>
             <ErrorBoundary>
-              <Authentication setModalOpen={setSignUpInModalOpened} />
+              <Authentication />
             </ErrorBoundary>
             <ErrorBoundary>
               <div id="modal-portal" />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <div id="topbar-portal" />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <Suspense fallback={null}>
-                <ConsentManager />
-              </Suspense>
             </ErrorBoundary>
             {showFrontOfficeNavbar() && (
               <ErrorBoundary>
@@ -386,7 +370,6 @@ const App = ({ children }: Props) => {
                 flexDirection="column"
                 alignItems="stretch"
                 flex="1"
-                overflowY="auto"
                 id="main-content"
                 pt={
                   showFrontOfficeNavbar()
@@ -410,8 +393,8 @@ const App = ({ children }: Props) => {
               <div id="mobile-nav-portal" />
             </ErrorBoundary>
           </Box>
-        </ThemeProvider>
-      </PreviousPathnameContext.Provider>
+        </ModalQueueProvider>
+      </ThemeProvider>
     </>
   );
 };

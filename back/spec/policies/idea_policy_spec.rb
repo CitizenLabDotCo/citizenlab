@@ -6,6 +6,7 @@ describe IdeaPolicy do
   subject(:policy) { described_class.new(user, idea) }
 
   let(:scope) { IdeaPolicy::Scope.new(user, project.ideas) }
+  let(:editing_idea_disabled_reason) { Permissions::IdeaPermissionsService.new(idea, user).denied_reason_for_action('editing_idea') }
 
   context 'on an idea in a public project' do
     let(:project) { create(:single_phase_ideation_project) }
@@ -19,6 +20,7 @@ describe IdeaPolicy do
         is_expected.to permit(:by_slug)
         is_expected.not_to permit(:create)
         is_expected.not_to permit(:update)
+        expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)
         is_expected.not_to permit(:index_xlsx)
 
@@ -34,6 +36,7 @@ describe IdeaPolicy do
         is_expected.to     permit(:by_slug)
         is_expected.not_to permit(:create)
         is_expected.not_to permit(:update)
+        expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)
         is_expected.not_to permit(:index_xlsx)
 
@@ -52,6 +55,7 @@ describe IdeaPolicy do
         is_expected.to     permit(:by_slug)
         is_expected.not_to permit(:create)
         is_expected.not_to permit(:update)
+        expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)
         is_expected.not_to permit(:index_xlsx)
 
@@ -67,6 +71,7 @@ describe IdeaPolicy do
         is_expected.to permit(:by_slug)
         is_expected.to permit(:create)
         is_expected.to permit(:update)
+        expect(editing_idea_disabled_reason).to be_nil
         is_expected.to permit(:destroy)
         is_expected.not_to permit(:index_xlsx)
 
@@ -82,6 +87,7 @@ describe IdeaPolicy do
         is_expected.to permit(:by_slug)
         is_expected.to permit(:create)
         is_expected.to permit(:update)
+        expect(editing_idea_disabled_reason).to be_nil
         is_expected.to permit(:destroy)
         is_expected.to permit(:index_xlsx)
 
@@ -96,6 +102,7 @@ describe IdeaPolicy do
         is_expected.to permit(:show)
         is_expected.to permit(:create)
         is_expected.to permit(:update)
+        expect(editing_idea_disabled_reason).to be_nil
         is_expected.to permit(:destroy)
         is_expected.to permit(:index_xlsx)
 
@@ -104,14 +111,18 @@ describe IdeaPolicy do
     end
 
     context 'when there is a posting idea disabled reason' do
-      before do
-        allow_any_instance_of(Permissions::ProjectPermissionsService)
-          .to receive(:denied_reason_for_action).and_return(disabled_reason)
-      end
-
-      described_class::EXCLUDED_REASONS_FOR_UPDATE.each do |disabled_reason|
+      %w[posting_disabled posting_limited_max_reached].each do |disabled_reason|
         context "when the disabled reason is excluded for update: '#{disabled_reason}'" do
-          let(:disabled_reason) { disabled_reason }
+          before do
+            case disabled_reason
+            when 'posting_disabled'
+              project.phases.first.update!(submission_enabled: false)
+            when 'posting_limited_max_reached'
+              create(:idea, project: idea.project, author: idea.author)
+              allow_any_instance_of(ParticipationMethod::Ideation)
+                .to receive(:allow_posting_again_after).and_return(nil)
+            end
+          end
 
           context 'for an admin' do
             let(:user) { create(:admin) }
@@ -121,10 +132,11 @@ describe IdeaPolicy do
               is_expected.to permit(:by_slug)
               is_expected.to permit(:create)
               is_expected.to permit(:update)
+              expect(editing_idea_disabled_reason).to be_nil
               is_expected.to permit(:destroy)
               is_expected.to permit(:index_xlsx)
 
-              expect(scope.resolve.size).to eq 1
+              expect(scope.resolve.size).to eq project.ideas.count
             end
           end
 
@@ -136,13 +148,13 @@ describe IdeaPolicy do
               is_expected.to permit(:by_slug)
               expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
               is_expected.to permit(:update)
+              expect(editing_idea_disabled_reason).to be_nil
               is_expected.to permit(:destroy)
               is_expected.not_to permit(:index_xlsx)
 
-              expect(scope.resolve.size).to eq 1
+              expect(scope.resolve.size).to eq project.ideas.count
             end
 
-            # rubocop:disable RSpec/NestedGroups
             context 'when the idea is going to be published' do
               before do
                 idea.update!(publication_status: 'draft')
@@ -154,43 +166,134 @@ describe IdeaPolicy do
                 expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError)
               end
             end
-            # rubocop:enable RSpec/NestedGroups
           end
         end
       end
+    end
 
-      context "when the disabled reason is not excluded for update: 'posting_not_supported'" do
-        let(:disabled_reason) { 'posting_not_supported' }
+    context "when the disabled reason is not excluded for update: 'posting_not_supported'" do
+      before do
+        allow_any_instance_of(Permissions::ProjectPermissionsService)
+          .to receive(:denied_reason_for_action).and_return('posting_not_supported')
+      end
 
-        context 'for an admin' do
-          let(:user) { create(:admin) }
+      context 'for an admin' do
+        let(:user) { create(:admin) }
 
-          it do
-            is_expected.to permit(:show)
-            is_expected.to permit(:by_slug)
-            is_expected.to permit(:create)
-            is_expected.to permit(:update)
-            is_expected.to permit(:destroy)
-            is_expected.to permit(:index_xlsx)
+        it do
+          is_expected.to permit(:show)
+          is_expected.to permit(:by_slug)
+          is_expected.to permit(:create)
+          is_expected.to permit(:update)
+          expect(editing_idea_disabled_reason).to be_nil
+          is_expected.to permit(:destroy)
+          is_expected.to permit(:index_xlsx)
 
-            expect(scope.resolve.size).to eq 1
-          end
+          expect(scope.resolve.size).to eq 1
         end
+      end
 
-        context 'for the author' do
-          let(:user) { idea.author }
+      context 'for the author' do
+        let(:user) { idea.author }
 
-          it do
-            is_expected.to permit(:show)
-            is_expected.to permit(:by_slug)
-            is_expected.not_to permit(:index_xlsx)
-            expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
-            expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError)
-            expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError)
+        it do
+          is_expected.to permit(:show)
+          is_expected.to permit(:by_slug)
+          is_expected.not_to permit(:index_xlsx)
+          expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
+          expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError)
+          expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError)
 
-            expect(scope.resolve.size).to eq 1
-          end
+          expect(scope.resolve.size).to eq 1
         end
+      end
+    end
+  end
+
+  context 'on a published native survey response in a public project' do
+    let!(:proposed_status) { create(:idea_status_proposed) }
+    let(:idea) { create(:native_survey_response) }
+    let(:project) { idea.project }
+
+    context 'for a visitor' do
+      let(:user) { nil }
+
+      it do
+        is_expected.not_to permit(:show)
+        is_expected.not_to permit(:by_slug)
+        is_expected.not_to permit(:update)
+        is_expected.not_to permit(:destroy)
+        is_expected.not_to permit(:index_xlsx)
+
+        expect(scope.resolve.size).to eq 0
+      end
+    end
+
+    context 'for a resident who is not the response author' do
+      let(:user) { create(:user) }
+
+      it do
+        is_expected.not_to     permit(:show)
+        is_expected.not_to     permit(:by_slug)
+        is_expected.not_to permit(:create)
+        is_expected.not_to permit(:update)
+        is_expected.not_to permit(:destroy)
+        is_expected.not_to permit(:index_xlsx)
+
+        expect(scope.resolve.size).to eq 0
+      end
+    end
+
+    context 'for a resident who is the response author' do
+      let(:user) { idea.author }
+
+      it do
+        is_expected.to permit(:show)
+        is_expected.to permit(:by_slug)
+        is_expected.not_to permit(:update)
+        is_expected.not_to permit(:destroy)
+        is_expected.not_to permit(:index_xlsx)
+
+        expect(scope.resolve.size).to eq 1
+      end
+
+      context 'with an unsaved idea' do
+        let(:project) { create(:project_with_active_native_survey_phase) }
+        let(:user) { create(:user) }
+        let(:idea) { build(:native_survey_response, project:, author: user) }
+
+        it do
+          is_expected.to permit(:create)
+        end
+      end
+    end
+
+    context 'for an admin' do
+      let(:user) { create(:admin) }
+
+      it do
+        is_expected.to permit(:show)
+        is_expected.to permit(:by_slug)
+        is_expected.to permit(:create)
+        is_expected.not_to permit(:update)
+        is_expected.to permit(:destroy)
+        is_expected.to permit(:index_xlsx)
+
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context 'for a moderator' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it do
+        is_expected.to permit(:show)
+        is_expected.to permit(:create)
+        is_expected.not_to permit(:update)
+        is_expected.to permit(:destroy)
+        is_expected.to permit(:index_xlsx)
+
+        expect(scope.resolve.size).to eq 1
       end
     end
   end
@@ -207,6 +310,7 @@ describe IdeaPolicy do
         is_expected.not_to permit(:by_slug)
         is_expected.not_to permit(:create)
         is_expected.not_to permit(:update)
+        expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)
         is_expected.not_to permit(:index_xlsx)
 
@@ -222,6 +326,7 @@ describe IdeaPolicy do
         is_expected.not_to permit(:by_slug)
         expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
         is_expected.not_to permit(:update)
+        expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)
         is_expected.not_to permit(:index_xlsx)
 
@@ -237,6 +342,7 @@ describe IdeaPolicy do
         is_expected.to permit(:by_slug)
         is_expected.to permit(:create)
         is_expected.to permit(:update)
+        expect(editing_idea_disabled_reason).to be_nil
         is_expected.to permit(:destroy)
         is_expected.to permit(:index_xlsx)
 
@@ -251,6 +357,7 @@ describe IdeaPolicy do
         is_expected.to permit(:show)
         is_expected.to permit(:create)
         is_expected.to permit(:update)
+        expect(editing_idea_disabled_reason).to be_nil
         is_expected.to permit(:destroy)
         is_expected.to permit(:index_xlsx)
 
@@ -269,6 +376,7 @@ describe IdeaPolicy do
       is_expected.not_to permit(:by_slug)
       is_expected.not_to permit(:create)
       is_expected.not_to permit(:update)
+      expect(editing_idea_disabled_reason).to be_present
       is_expected.not_to permit(:destroy)
       is_expected.not_to permit(:index_xlsx)
 
@@ -286,6 +394,7 @@ describe IdeaPolicy do
       is_expected.not_to permit(:by_slug)
       expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
       is_expected.not_to permit(:update)
+      expect(editing_idea_disabled_reason).to be_present
       is_expected.not_to permit(:destroy)
       is_expected.not_to permit(:index_xlsx)
 
@@ -303,6 +412,7 @@ describe IdeaPolicy do
       is_expected.to permit(:by_slug)
       is_expected.not_to permit(:create)
       is_expected.not_to permit(:update)
+      expect(editing_idea_disabled_reason).to be_present
       is_expected.not_to permit(:destroy)
       is_expected.not_to permit(:index_xlsx)
 
@@ -320,6 +430,7 @@ describe IdeaPolicy do
       is_expected.to permit(:by_slug)
       is_expected.to permit(:create)
       is_expected.to permit(:update)
+      expect(editing_idea_disabled_reason).to be_nil
       is_expected.to permit(:destroy)
       is_expected.to permit(:index_xlsx)
 
@@ -340,6 +451,7 @@ describe IdeaPolicy do
         is_expected.not_to permit(:by_slug)
         is_expected.not_to permit(:create)
         is_expected.not_to permit(:update)
+        expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)
         is_expected.not_to permit(:index_xlsx)
 
@@ -355,6 +467,7 @@ describe IdeaPolicy do
         is_expected.not_to permit(:by_slug)
         expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
         is_expected.not_to permit(:update)
+        expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)
         is_expected.not_to permit(:index_xlsx)
 
@@ -370,6 +483,7 @@ describe IdeaPolicy do
         is_expected.to permit(:by_slug)
         is_expected.to permit(:create)
         is_expected.to permit(:update)
+        expect(editing_idea_disabled_reason).to be_nil
         is_expected.to permit(:destroy)
         is_expected.to permit(:index_xlsx)
 
@@ -391,6 +505,8 @@ describe IdeaPolicy do
         is_expected.to permit(:by_slug)
         is_expected.not_to permit(:create)
         is_expected.not_to permit(:update)
+        expect(editing_idea_disabled_reason).to be_present
+
         is_expected.not_to permit(:destroy)
         is_expected.not_to permit(:index_xlsx)
 
@@ -421,6 +537,7 @@ describe IdeaPolicy do
         is_expected.to permit(:by_slug)
         is_expected.to permit(:create)
         is_expected.to permit(:update)
+        expect(editing_idea_disabled_reason).to be_nil
         is_expected.to permit(:destroy)
         is_expected.to permit(:index_xlsx)
 
@@ -446,6 +563,8 @@ describe IdeaPolicy do
         is_expected.to permit(:by_slug)
         is_expected.not_to permit(:create)
         is_expected.not_to permit(:update)
+        expect(editing_idea_disabled_reason).to be_present
+
         is_expected.not_to permit(:destroy)
         is_expected.not_to permit(:index_xlsx)
 
@@ -476,6 +595,7 @@ describe IdeaPolicy do
         is_expected.to permit(:by_slug)
         is_expected.to permit(:create)
         is_expected.to permit(:update)
+        expect(editing_idea_disabled_reason).to be_nil
         is_expected.to permit(:destroy)
         is_expected.to permit(:index_xlsx)
 
@@ -518,7 +638,7 @@ describe IdeaPolicy do
     let!(:idea) do
       create(:idea_status_proposed)
       phase = project.phases.first
-      create(:idea, project: project, author: author, creation_phase: phase.native_survey? ? phase : nil)
+      create(:idea, project: project, author: author, creation_phase: phase.pmethod.supports_survey_form? ? phase : nil)
     end
 
     context "for a visitor with posting permissions granted to 'everyone'" do
@@ -532,6 +652,7 @@ describe IdeaPolicy do
           is_expected.not_to permit(:show)
           is_expected.to permit(:create)
           is_expected.not_to permit(:update)
+          expect(editing_idea_disabled_reason).to be_present
           is_expected.not_to permit(:destroy)
           is_expected.not_to permit(:index_xlsx)
         end
@@ -544,6 +665,7 @@ describe IdeaPolicy do
           is_expected.to permit(:show)
           is_expected.not_to permit(:create)
           is_expected.not_to permit(:update)
+          expect(editing_idea_disabled_reason).to be_present
           is_expected.not_to permit(:destroy)
           is_expected.not_to permit(:index_xlsx)
 
@@ -560,8 +682,170 @@ describe IdeaPolicy do
         is_expected.to permit(:show)
         expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
         is_expected.to permit(:update)
+        expect(editing_idea_disabled_reason).to be_nil
         is_expected.to permit(:destroy)
         is_expected.not_to permit(:index_xlsx)
+
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+  end
+
+  context 'on a proposal that is in pre-screening' do
+    let(:project) { create(:single_phase_proposals_project, phase_attrs: { prescreening_enabled: true }) }
+    let(:idea) { create(:proposal, project: project, publication_status: 'submitted', idea_status: create(:proposals_status, code: 'prescreening')) }
+    let!(:cosponsorship) { create(:cosponsorship, idea:, status: 'pending') }
+
+    before do
+      settings = AppConfiguration.instance.settings
+      settings['input_cosponsorship'] = { 'allowed' => true, 'enabled' => true }
+      AppConfiguration.instance.update!(settings: settings)
+    end
+
+    context "for a normal user that's not the author" do
+      let(:user) { create(:user) }
+
+      it do
+        is_expected.not_to permit(:show)
+        expect(scope.resolve.size).to eq 0
+      end
+    end
+
+    context 'for a normal user invited as a cosponsor' do
+      let(:user) { cosponsorship.user }
+
+      it do
+        is_expected.to permit(:show)
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+  end
+
+  context 'on a common ground input in a public project' do
+    let(:phase) { create(:common_ground_phase, :ongoing, with_permissions: true) }
+    let(:project) { phase.project }
+    let!(:idea) { create(:common_ground_input, :with_author, phase: phase) }
+
+    context 'for a visitor' do
+      let(:user) { nil }
+
+      context 'when posting is permitted to everyone' do
+        before do
+          phase.permissions.find_by(action: 'posting_idea').update! permitted_by: 'everyone'
+        end
+
+        # Even when posting is permitted, common ground inputs cannot be created by
+        # visitors because the participation method do not allow inputs without an author.
+        it { is_expected.not_to permit(:create) }
+      end
+
+      it do
+        is_expected.to permit(:show)
+        is_expected.to permit(:by_slug)
+        is_expected.not_to permit(:update)
+        expect(editing_idea_disabled_reason).to eq('not_author')
+        is_expected.not_to permit(:destroy)
+        is_expected.not_to permit(:index_xlsx)
+
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context 'for a resident who is not the input author' do
+      let(:user) { create(:user) }
+
+      it do
+        is_expected.to permit(:show)
+        is_expected.to permit(:by_slug)
+        is_expected.not_to permit(:create)
+        is_expected.not_to permit(:update)
+        expect(editing_idea_disabled_reason).to eq('not_author')
+        is_expected.not_to permit(:destroy)
+        is_expected.not_to permit(:index_xlsx)
+
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context 'for a user who is the input author' do
+      let(:user) { idea.author }
+
+      context 'when the input has no reactions' do
+        it { is_expected.to permit(:update) }
+        it { expect(editing_idea_disabled_reason).to be_nil }
+      end
+
+      context 'when the input has reactions' do
+        before { create(:reaction, reactable: idea, mode: 'up') }
+
+        it { expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError) }
+        it { expect(editing_idea_disabled_reason).to eq('votes_exist') }
+      end
+
+      context 'when the inputs has only self-reactions' do
+        before { create(:reaction, reactable: idea, mode: 'up', user: idea.author) }
+
+        it { is_expected.to permit(:update) }
+        it { expect(editing_idea_disabled_reason).to be_nil }
+      end
+
+      it do
+        is_expected.to permit(:show)
+        is_expected.to permit(:by_slug)
+        is_expected.to permit(:create)
+        is_expected.to permit(:destroy)
+        is_expected.not_to permit(:index_xlsx)
+
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context 'for an admin' do
+      let(:user) { create(:admin) }
+
+      it do
+        is_expected.to permit(:show)
+        is_expected.to permit(:by_slug)
+        is_expected.to permit(:create)
+        is_expected.to permit(:update)
+        expect(editing_idea_disabled_reason).to be_nil
+        is_expected.to permit(:destroy)
+        is_expected.to permit(:index_xlsx)
+
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context 'for a moderator that moderates the project' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it do
+        is_expected.to permit(:show)
+        is_expected.to permit(:by_slug)
+        is_expected.to permit(:create)
+        is_expected.to permit(:update)
+        expect(editing_idea_disabled_reason).to be_nil
+        is_expected.to permit(:destroy)
+        is_expected.to permit(:index_xlsx)
+
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context 'for a moderator that does not moderate the project' do
+      let(:user) { create(:project_moderator, projects: [create(:project)]) }
+
+      it do
+        is_expected.to permit(:show)
+        is_expected.to permit(:by_slug)
+        is_expected.not_to permit(:create)
+        is_expected.not_to permit(:update)
+        expect(editing_idea_disabled_reason).to eq('not_author')
+        is_expected.not_to permit(:destroy)
+
+        # The `index_xlsx` action is allowed, but the ideas will be filtered by the
+        # policy scope.
+        is_expected.to permit(:index_xlsx)
 
         expect(scope.resolve.size).to eq 1
       end

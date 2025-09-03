@@ -84,7 +84,7 @@ module Analysis
     def classify_input_text(input_text, topics)
       prompt = LLM::Prompt.new.fetch('fully_automated_classifier', inputs_text: input_text, topics: topics)
       chosen_topic = begin
-        gpt3.chat(prompt)
+        gpt4mini.chat(prompt)
       rescue Faraday::BadRequestError => e # https://go.microsoft.com/fwlink/?linkid=2198766
         ErrorReporter.report(e)
         'Other'
@@ -95,11 +95,11 @@ module Analysis
     protected
 
     def gpt4
-      @gpt4 ||= LLM::GPT4Turbo.new
+      @gpt4 ||= LLM::GPT41.new
     end
 
-    def gpt3
-      @gpt3 ||= LLM::GPT35Turbo.new
+    def gpt4mini
+      @gpt4mini ||= LLM::GPT4oMini.new
     end
 
     def other_term?(tag_name)

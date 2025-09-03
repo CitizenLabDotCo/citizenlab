@@ -40,6 +40,8 @@ const CheckboxControl = ({
           id={sanitizeForClassname(id)}
           checked={Boolean(data)}
           onChange={() => handleChange(path, !data)}
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           disabled={uischema?.options?.readonly}
           mr="8px"
         />
@@ -50,6 +52,8 @@ const CheckboxControl = ({
           subtextValue={getSubtextElement(uischema.options?.description)}
           subtextSupportsHtml
         />
+        {/* TODO: Fix this the next time the file is edited. */}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
       <ErrorDisplay

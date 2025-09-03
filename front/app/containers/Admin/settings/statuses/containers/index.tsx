@@ -1,31 +1,32 @@
 import React from 'react';
 
-import { Spinner, Tooltip } from '@citizenlab/cl2-component-library';
+import { Spinner, Box, Tooltip } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { IIdeaStatusData } from 'api/idea_statuses/types';
+import {
+  IdeaStatusParticipationMethod,
+  IIdeaStatusData,
+} from 'api/idea_statuses/types';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import useReorderIdeaStatus from 'api/idea_statuses/useReorderIdeaStatus';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import {
-  LockedRow,
-  SortableList,
-  SortableRow,
-  TextCell,
-} from 'components/admin/ResourceList';
+import { TextCell } from 'components/admin/ResourceList';
+import LockedRow from 'components/admin/ResourceList/LockedRow';
+import SortableList from 'components/admin/ResourceList/SortableList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 import {
   Section,
   SectionTitle,
   SectionDescription,
 } from 'components/admin/Section';
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Warning from 'components/UI/Warning';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 import DeleteStatusButton from '../components/DeleteStatusButton';
 import EditStatusButton from '../components/EditStatusButton';
@@ -51,9 +52,13 @@ const FlexTextCell = styled(TextCell)`
   align-items: center;
 `;
 
-const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
+const IdeaStatuses = ({
+  variant,
+}: {
+  variant: IdeaStatusParticipationMethod;
+}) => {
   const { data: ideaStatuses, isLoading } = useIdeaStatuses({
-    participation_method: variant,
+    queryParams: { participation_method: variant },
   });
   const { mutate: reorderIdeaStatus } = useReorderIdeaStatus();
   const customIdeaStatusesAllowed = useFeatureFlag({
@@ -69,7 +74,7 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
   };
 
   const isRequired = (ideaStatus: IIdeaStatusData) => {
-    return ideaStatus.attributes.locked === false;
+    return ideaStatus.attributes.locked === true;
   };
 
   const isDeletable = (ideaStatus: IIdeaStatusData) => {
@@ -85,9 +90,24 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
   }
 
   if (ideaStatuses) {
-    const defaultStatuses = ideaStatuses?.data.filter(
+    const defaultStatuses = ideaStatuses.data.filter(
       (ideaStatus) => ideaStatus.attributes.locked === true
     );
+    const titleMessages: {
+      [key in IdeaStatusParticipationMethod]: MessageDescriptor;
+    } = {
+      ideation: messages.titleIdeaStatuses1,
+      proposals: messages.titleProposalStatuses,
+    };
+    const subtitleMessages: {
+      [key in IdeaStatusParticipationMethod]: MessageDescriptor;
+    } = {
+      ideation: messages.subtitleInputStatuses1,
+      proposals: messages.subtitleProposalStatuses,
+    };
+
+    const titleMessage = titleMessages[variant];
+    const subtitleMessage = subtitleMessages[variant];
 
     return (
       <Section>
@@ -97,10 +117,10 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
           </Warning>
         )}
         <SectionTitle>
-          <FormattedMessage {...messages.titleIdeaStatuses1} />
+          <FormattedMessage {...titleMessage} />
         </SectionTitle>
         <SectionDescription>
-          <FormattedMessage {...messages.subtitleInputStatuses1} />
+          <FormattedMessage {...subtitleMessage} />
         </SectionDescription>
         <ButtonWrapper>
           <Tooltip
@@ -110,14 +130,17 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
             content={<FormattedMessage {...messages.pricingPlanUpgrade} />}
             trigger="mouseenter"
           >
-            <Button
-              buttonStyle="admin-dark"
-              icon="plus-circle"
-              linkTo={`/admin/settings/${variant}/statuses/new`}
-              disabled={!customIdeaStatusesAllowed}
-            >
-              <FormattedMessage {...messages.addIdeaStatus} />
-            </Button>
+            <Box>
+              <ButtonWithLink
+                data-testid="e2e-add-status-button"
+                buttonStyle="admin-dark"
+                icon="plus-circle"
+                linkTo={`/admin/settings/statuses/${variant}/new`}
+                disabled={!customIdeaStatusesAllowed}
+              >
+                <FormattedMessage {...messages.addIdeaStatus} />
+              </ButtonWithLink>
+            </Box>
           </Tooltip>
         </ButtonWrapper>
 
@@ -145,7 +168,7 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
                       tooltipContent={
                         customIdeaStatusesAllowed ? (
                           <FormattedMessage
-                            {...messages.defaultStatusDeleteButtonTooltip}
+                            {...messages.defaultStatusDeleteButtonTooltip2}
                           />
                         ) : (
                           <FormattedMessage {...messages.pricingPlanUpgrade} />
@@ -158,7 +181,7 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
                       tooltipContent={
                         <FormattedMessage {...messages.pricingPlanUpgrade} />
                       }
-                      linkTo={`/admin/settings/${variant}/statuses/${defaultStatus.id}`}
+                      linkTo={`/admin/settings/statuses/${variant}/${defaultStatus.id}`}
                     />
                   </Buttons>
                 </LockedRow>
@@ -208,7 +231,7 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
                       tooltipContent={
                         <FormattedMessage {...messages.pricingPlanUpgrade} />
                       }
-                      linkTo={`/admin/settings/${variant}/statuses/${ideaStatus.id}`}
+                      linkTo={`/admin/settings/statuses/${variant}/${ideaStatus.id}`}
                     />
                   </Buttons>
                 </SortableRow>

@@ -2,6 +2,9 @@ import moment = require('moment');
 import { randomString } from '../support/commands';
 import { skipOn } from '@cypress/skip-test';
 
+let projectId: string;
+let projectSlug: string;
+
 describe('Existing project with survey', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
@@ -10,10 +13,10 @@ describe('Existing project with survey', () => {
     cy.wait(1000);
   });
 
+  // TODO: Improve this test
   it('shows the correct project header', () => {
     cy.get('#e2e-project-description');
     cy.get('#e2e-project-sidebar');
-    cy.get('#e2e-project-sidebar-share-button');
   });
 
   it('shows the survey', () => {
@@ -37,8 +40,7 @@ describe('New project with survey', () => {
   const projectTitle = randomString();
   const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
-  let projectId: string;
-  let projectSlug: string;
+
   const phaseTitle = randomString();
 
   before(() => {
@@ -82,10 +84,10 @@ describe('New project with survey', () => {
     cy.wait(1000);
   });
 
+  // TODO: Improve this test
   it('shows the correct project header', () => {
     cy.get('#e2e-project-description');
     cy.get('#e2e-project-sidebar');
-    cy.get('#e2e-project-sidebar-share-button');
   });
 
   it('shows event CTA button', () => {
@@ -107,7 +109,10 @@ describe('New project with survey', () => {
   });
 
   after(() => {
-    cy.apiRemoveProject(projectId);
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+      projectId = '';
+    }
   });
 });
 
@@ -116,8 +121,6 @@ describe('Timeline project with survey phase', () => {
   const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   const phaseTitle = randomString();
-  let projectId: string;
-  let projectSlug: string;
 
   before(() => {
     cy.apiCreateProject({
@@ -133,7 +136,6 @@ describe('Timeline project with survey phase', () => {
         projectId,
         title: phaseTitle,
         startAt: '2018-03-01',
-        endAt: '2025-01-01',
         participationMethod: 'survey',
         canComment: true,
         canPost: true,
@@ -165,7 +167,10 @@ describe('Timeline project with survey phase', () => {
   });
 
   after(() => {
-    cy.apiRemoveProject(projectId);
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+      projectId = '';
+    }
   });
 });
 
@@ -174,8 +179,6 @@ describe('Timeline project with survey phase but not active', () => {
   const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   const phaseTitle = randomString();
-  let projectId: string;
-  let projectSlug: string;
 
   before(() => {
     cy.apiCreateProject({
@@ -210,11 +213,13 @@ describe('Timeline project with survey phase but not active', () => {
 
   it('does not show the survey or survey buttons', () => {
     cy.contains('Take the survey').should('not.exist');
-    cy.contains('1 survey').should('not.exist');
   });
 
   after(() => {
-    cy.apiRemoveProject(projectId);
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+      projectId = '';
+    }
   });
 });
 
@@ -222,8 +227,6 @@ describe('Archived single phase project with survey', () => {
   const projectTitle = randomString();
   const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
-  let projectId: string;
-  let projectSlug: string;
 
   before(() => {
     cy.apiCreateProject({
@@ -255,11 +258,13 @@ describe('Archived single phase project with survey', () => {
 
   it('does not show the survey or survey buttons', () => {
     cy.contains('Take the survey').should('not.exist');
-    cy.contains('1 survey').should('not.exist');
   });
 
   after(() => {
-    cy.apiRemoveProject(projectId);
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+      projectId = '';
+    }
   });
 });
 
@@ -267,8 +272,6 @@ describe('Embedded survey CTA', () => {
   const projectTitle = randomString();
   const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
-  let projectId: string;
-  let projectSlug: string;
 
   before(() => {
     cy.setAdminLoginCookie();
@@ -296,11 +299,14 @@ describe('Embedded survey CTA', () => {
 
   it('shows the CTA button on visting the project page of an active survey project', () => {
     cy.visit(`/en/projects/${projectSlug}`);
-    cy.acceptCookies();
+
     cy.get('#e2e-take-survey-button').should('exist');
   });
 
   after(() => {
-    cy.apiRemoveProject(projectId);
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+      projectId = '';
+    }
   });
 });

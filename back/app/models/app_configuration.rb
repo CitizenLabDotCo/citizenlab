@@ -147,7 +147,7 @@ class AppConfiguration < ApplicationRecord
   end
 
   def public_settings
-    @public_settings ||= SettingsService.new.remove_private_settings(settings, Settings.json_schema)
+    @public_settings ||= SettingsService.new.format_for_front_end(settings, Settings.json_schema)
   end
 
   def location

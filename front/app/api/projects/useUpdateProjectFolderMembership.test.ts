@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { project1 } from './__mocks__/_mockServer';
 import useUpdateProjectFolderMembership from './useUpdateProjectFolderMembership';
@@ -19,12 +19,9 @@ describe('useUpdateProject', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(
-      () => useUpdateProjectFolderMembership(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useUpdateProjectFolderMembership(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({
@@ -44,12 +41,9 @@ describe('useUpdateProject', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
-      () => useUpdateProjectFolderMembership(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useUpdateProjectFolderMembership(), {
+      wrapper: createQueryClientWrapper(),
+    });
     act(() => {
       result.current.mutate({
         projectId: 'id',

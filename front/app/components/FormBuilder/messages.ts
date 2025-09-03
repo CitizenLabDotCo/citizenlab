@@ -5,11 +5,7 @@ export default defineMessages({
     id: 'app.components.formBuilder.emptyTitleError',
     defaultMessage: 'Provide a question title',
   },
-  errorMessage: {
-    id: 'app.components.formBuilder.errorMessage',
-    defaultMessage:
-      'There is a problem, please fix the issue to be able to save your changes',
-  },
+
   emptyOptionError: {
     id: 'app.components.formBuilder.emptyOptionError',
     defaultMessage: 'Provide at least 1 answer',
@@ -17,6 +13,14 @@ export default defineMessages({
   emptyTitleMessage: {
     id: 'app.components.formBuilder.emptyTitleMessage',
     defaultMessage: 'Provide a title for all the answers',
+  },
+  emptyStatementError: {
+    id: 'app.components.formBuilder.emptyStatementError',
+    defaultMessage: 'Provide at least 1 statement',
+  },
+  emptyTitleStatementMessage: {
+    id: 'app.components.formBuilder.emptyTitleStatementMessage',
+    defaultMessage: 'Provide a title for all the statements',
   },
   emptyImageOptionError: {
     id: 'app.components.formBuilder.emptyImageOptionError',
@@ -34,9 +38,5 @@ export default defineMessages({
   helmetTitle: {
     id: 'app.components.formBuilder.helmetTitle',
     defaultMessage: 'Form builder',
-  },
-  unsavedChanges: {
-    id: 'app.components.formBuilder.unsavedChanges',
-    defaultMessage: 'You have unsaved changes',
   },
 });

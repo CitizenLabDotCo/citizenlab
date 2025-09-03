@@ -14,6 +14,7 @@
 #  global_custom_fields               :boolean          default(FALSE), not null
 #  verification_expiry                :integer
 #  access_denied_explanation_multiloc :jsonb            not null
+#  everyone_tracking_enabled          :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -24,16 +25,18 @@ class Permission < ApplicationRecord
   PERMITTED_BIES = %w[everyone everyone_confirmed_email users admins_moderators verified].freeze
   ACTIONS = {
     # NOTE: Order of actions in each array is used when using :order_by_action
-    nil => %w[visiting following posting_initiative commenting_initiative reacting_initiative attending_event],
+    nil => %w[visiting following attending_event],
     'information' => %w[attending_event],
     'ideation' => %w[posting_idea commenting_idea reacting_idea attending_event],
     'proposals' => %w[posting_idea commenting_idea reacting_idea attending_event],
     'native_survey' => %w[posting_idea attending_event],
+    'community_monitor_survey' => %w[posting_idea],
     'survey' => %w[taking_survey attending_event],
     'poll' => %w[taking_poll attending_event],
     'voting' => %w[voting commenting_idea attending_event],
     'volunteering' => %w[volunteering attending_event],
-    'document_annotation' => %w[annotating_document attending_event]
+    'document_annotation' => %w[annotating_document attending_event],
+    'common_ground' => %w[posting_idea reacting_idea attending_event]
   }
   SCOPE_TYPES = [nil, 'Phase'].freeze
 
@@ -52,6 +55,8 @@ class Permission < ApplicationRecord
   validates :permitted_by, presence: true, inclusion: { in: PERMITTED_BIES }
   validates :action, uniqueness: { scope: %i[permission_scope_id permission_scope_type] }
   validates :permission_scope_type, inclusion: { in: SCOPE_TYPES }
+  validate :validate_verified_permitted_by
+  validate :validate_verification_expiry
 
   before_validation :set_permitted_by_and_global_custom_fields, on: :create
 
@@ -81,6 +86,10 @@ class Permission < ApplicationRecord
   end
 
   def verification_enabled?
+    # Verification can be enabled by permitted_by OR by a verification group
+    return true if permitted_by == 'verified'
+    return true if groups.any? && Verification::VerificationService.new.find_verification_group(groups)
+
     false
   end
 
@@ -88,6 +97,10 @@ class Permission < ApplicationRecord
     return true if %w[users verified].include? permitted_by
 
     false
+  end
+
+  def everyone_tracking_enabled?
+    permitted_by == 'everyone' && everyone_tracking_enabled
   end
 
   private
@@ -100,6 +113,25 @@ class Permission < ApplicationRecord
     end
     self.global_custom_fields ||= true
   end
-end
 
-Permission.include(Verification::Patches::Permission)
+  def validate_verified_permitted_by
+    return unless permitted_by == 'verified' && Verification::VerificationService.new.first_method_enabled_for_verified_actions.nil?
+
+    errors.add(
+      :permitted_by,
+      :verified_permitted_by_not_allowed,
+      message: 'Verified permitted_by is not allowed because there are no methods enabled for actions.'
+    )
+  end
+
+  def validate_verification_expiry
+    return if verification_expiry.nil?
+    return if permitted_by == 'verified' || !verification_expiry_changed?
+
+    errors.add(
+      :permitted_by,
+      :verification_expiry_cannot_be_set,
+      message: 'Verification expiry can only be set for a verified permitted_by.'
+    )
+  end
+end

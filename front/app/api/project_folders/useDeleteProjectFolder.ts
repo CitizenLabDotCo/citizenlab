@@ -2,6 +2,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import adminPublicationsKeys from 'api/admin_publications/keys';
 import adminPublicationsStatusCountsKeys from 'api/admin_publications_status_counts/keys';
+import homepageBuilderKeys from 'api/home_page_layout/keys';
+import projectFoldersMiniKeys from 'api/project_folders_mini/keys';
 import projectsKeys from 'api/projects/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -28,6 +30,9 @@ const useDeleteProjectFolder = () => {
         queryKey: projectFolderKeys.lists(),
       });
       queryClient.invalidateQueries({
+        queryKey: projectFoldersMiniKeys.lists(),
+      });
+      queryClient.invalidateQueries({
         queryKey: projectsKeys.lists(),
       });
       queryClient.invalidateQueries({
@@ -35,6 +40,9 @@ const useDeleteProjectFolder = () => {
       });
       queryClient.invalidateQueries({
         queryKey: adminPublicationsStatusCountsKeys.items(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: homepageBuilderKeys.all(),
       });
     },
   });

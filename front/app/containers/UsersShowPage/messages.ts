@@ -91,10 +91,6 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.seePost',
     defaultMessage: 'See post',
   },
-  seeInitiative: {
-    id: 'app.containers.UsersShowPage.seeInitiative',
-    defaultMessage: 'See initiative',
-  },
   loadMoreComments: {
     id: 'app.containers.UsersShowPage.loadMoreComments',
     defaultMessage: 'Load more comments',
@@ -120,13 +116,13 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.a11y_postCommentPostedIn',
     defaultMessage: 'Post in which this comment was posted: ',
   },
-  a11y_initiativePostedIn: {
-    id: 'app.containers.UsersShowPage.a11y_initiativePostedIn',
-    defaultMessage: 'Initiative in which this comment was posted: ',
-  },
   a11y_likesCount: {
     id: 'app.containers.UsersShowPage.a11y_likesCount',
     defaultMessage:
       '{likesCount, plural, =0 {no likes} one {1 like} other {# likes}}',
+  },
+  surveyResponses: {
+    id: 'app.containers.UsersShowPage.surveyResponses',
+    defaultMessage: 'Responses ({responses})',
   },
 });

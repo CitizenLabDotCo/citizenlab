@@ -325,6 +325,32 @@ RSpec.describe JsonSchemaGeneratorService do
     end
   end
 
+  describe '#visit_ranking' do
+    let(:field) { create(:custom_field_ranking, :with_options, key: field_key, required: true) }
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_ranking(field)).to eq({
+        type: 'array',
+        uniqueItems: true,
+        maxItems: 2,
+        minItems: 2,
+        items: {
+          type: 'string',
+          oneOf: [
+            {
+              const: 'by_train',
+              title: 'By train'
+            },
+            {
+              const: 'by_bike',
+              title: 'By bike'
+            }
+          ]
+        }
+      })
+    end
+  end
+
   describe '#visit_multiselect_image' do
     context 'when there are images associated with options' do
       let(:field) { create(:custom_field_select, input_type: 'multiselect_image', key: 'field_key', required: true) }
@@ -344,10 +370,10 @@ RSpec.describe JsonSchemaGeneratorService do
                 const: 'image_option',
                 title: 'Image option',
                 image: hash_including(
-                  fb: end_with('.png'),
-                  small: end_with('.png'),
-                  medium: end_with('.png'),
-                  large: end_with('.png')
+                  fb: end_with('.jpg'),
+                  small: end_with('.jpg'),
+                  medium: end_with('.jpg'),
+                  large: end_with('.jpg')
                 )
               }
             ]
@@ -539,6 +565,18 @@ RSpec.describe JsonSchemaGeneratorService do
     end
   end
 
+  describe '#visit_rating' do
+    let(:field) { create(:custom_field_linear_scale, key: field_key) }
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_rating(field)).to eq({
+        type: 'number',
+        minimum: 1,
+        maximum: field.maximum
+      })
+    end
+  end
+
   describe '#visit_page' do
     let(:field) { create(:custom_field_page) }
 
@@ -583,6 +621,44 @@ RSpec.describe JsonSchemaGeneratorService do
           },
           name: {
             type: 'string'
+          }
+        }
+      })
+    end
+  end
+
+  describe '#visit_sentiment_linear_scale' do
+    let(:field) { create(:custom_field_sentiment_linear_scale, key: field_key) }
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_sentiment_linear_scale(field)).to eq({
+        type: 'number',
+        minimum: 1,
+        maximum: 5
+      })
+    end
+  end
+
+  describe '#visit_matrix_linear_scale' do
+    let(:field) do
+      create(:custom_field_matrix_linear_scale, required: true, maximum: 5, key: field_key)
+    end
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_matrix_linear_scale(field)).to eq({
+        type: 'object',
+        minProperties: 2,
+        maxProperties: 2,
+        properties: {
+          send_more_animals_to_space: {
+            type: 'number',
+            minimum: 1,
+            maximum: 5
+          },
+          ride_bicycles_more_often: {
+            type: 'number',
+            minimum: 1,
+            maximum: 5
           }
         }
       })

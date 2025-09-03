@@ -1,8 +1,6 @@
 import React from 'react';
 
 import {
-  colors,
-  fontSizes,
   Label,
   IconTooltip,
   Box,
@@ -15,28 +13,27 @@ import { Multiloc } from 'typings';
 import { string, object } from 'yup';
 
 import {
-  automatedInputStatusCodes,
-  inputStatusCodes,
-  TIdeaStatusCode,
+  IdeaStatusParticipationMethod,
+  InputStatusCode,
 } from 'api/idea_statuses/types';
 
 import { Section, SectionField } from 'components/admin/Section';
 import ColorPicker from 'components/HookForm/ColorPicker';
 import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import RadioGroup from 'components/HookForm/RadioGroup';
-import Radio from 'components/HookForm/RadioGroup/Radio';
 import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
+import IdeationStatusCategories from './IdeationStatusCategories';
 import messages from './messages';
+import ProposalStatusCategories from './ProposalStatusCategories';
 
 export interface FormValues {
   color: string;
-  code: TIdeaStatusCode;
+  code: InputStatusCode;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
 }
@@ -45,34 +42,11 @@ export type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: Partial<FormValues>;
   showCategorySelector?: boolean;
-  variant: 'ideation' | 'proposals';
+  variant: IdeaStatusParticipationMethod;
 };
 
 const StyledSection = styled(Section)`
   margin-bottom: 40px;
-`;
-
-const LabelText = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: -2px;
-
-  &.disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
-
-  .header {
-    padding: 0;
-    margin: 0;
-    margin-bottom: 3px;
-    font-weight: 600;
-    font-size: ${fontSizes.base}px;
-  }
-
-  .description {
-    color: ${colors.textSecondary};
-  }
 `;
 
 const StyledLabel = styled(Label)`
@@ -110,12 +84,6 @@ const IdeaStatusForm = ({
       handleHookFormSubmissionError(error, methods.setError);
     }
   };
-
-  const codes = inputStatusCodes[variant];
-  const allowedCodes = codes.filter(
-    (code) => !automatedInputStatusCodes.has(code)
-  );
-  const dedupedCodes = [...new Set(allowedCodes)];
 
   return (
     <FormProvider {...methods}>
@@ -159,61 +127,8 @@ const IdeaStatusForm = ({
                   }
                 />
               </StyledLabel>
-              <RadioGroup name="code">
-                {dedupedCodes.map((code, i) => (
-                  <Radio
-                    key={`code-input-${i}`}
-                    label={
-                      <LabelText>
-                        <span className="header">
-                          {formatMessage(
-                            {
-                              proposed: messages.proposedFieldCodeTitle,
-                              viewed: messages.viewedFieldCodeTitle,
-                              under_consideration:
-                                messages.under_considerationFieldCodeTitle,
-                              accepted: messages.acceptedFieldCodeTitle,
-                              implemented: messages.implementedFieldCodeTitle,
-                              rejected: messages.rejectedFieldCodeTitle,
-                              custom: messages.customFieldCodeTitle,
-                              threshold_reached:
-                                messages.thresholdReachedFieldCodeTitle,
-                              expired: messages.expiredFieldCodeTitle,
-                              answered: messages.answeredFieldCodeTitle,
-                              ineligible: messages.ineligibleFieldCodeTitle,
-                            }[code]
-                          )}
-                        </span>
-                        {code !== 'custom' && (
-                          <span className="description">
-                            {formatMessage(
-                              {
-                                proposed: messages.proposedFieldCodeDescription,
-                                viewed: messages.viewedFieldCodeDescription,
-                                under_consideration:
-                                  messages.under_considerationFieldCodeDescription,
-                                accepted: messages.acceptedFieldCodeDescription,
-                                implemented:
-                                  messages.implementedFieldCodeDescription,
-                                rejected: messages.rejectedFieldCodeDescription,
-                                threshold_reached:
-                                  messages.thresholdReachedFieldCodeDescription,
-                                expired: messages.expiredFieldCodeDescription,
-                                answered: messages.answeredFieldCodeDescription,
-                                ineligible:
-                                  messages.ineligibleFieldCodeDescription,
-                              }[code]
-                            )}
-                          </span>
-                        )}
-                      </LabelText>
-                    }
-                    id={`${code}-input`}
-                    name="code"
-                    value={code}
-                  />
-                ))}
-              </RadioGroup>
+              {variant === 'ideation' && <IdeationStatusCategories />}
+              {variant === 'proposals' && <ProposalStatusCategories />}
             </SectionField>
           </StyledSection>
         )}

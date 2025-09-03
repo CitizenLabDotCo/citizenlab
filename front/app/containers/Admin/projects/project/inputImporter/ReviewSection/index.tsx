@@ -18,7 +18,7 @@ import useApproveOfflineIdeas from 'api/import_ideas/useApproveOfflineIdeas';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
 
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -106,7 +106,9 @@ const ReviewSection = ({
 
   const pages =
     ideaMetadata?.data.attributes.import_type === 'pdf'
-      ? ideaMetadata?.data.attributes.page_range.map((page) => Number(page))
+      ? // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        ideaMetadata?.data.attributes.page_range.map((page) => Number(page))
       : null;
 
   const goToNextPage = () => setCurrentPageIndex((index) => index + 1);
@@ -143,7 +145,7 @@ const ReviewSection = ({
           {approvals.not_approved === 0 ? (
             <>
               <Box px="15px" py="10px">
-                <Button
+                <ButtonWithLink
                   bgColor={colors.primary}
                   icon="check"
                   processing={isApproving}
@@ -151,7 +153,7 @@ const ReviewSection = ({
                   onClick={handleApproveAll}
                 >
                   <FormattedMessage {...messages.approveAllInputs} />
-                </Button>
+                </ButtonWithLink>
               </Box>
               <Box>
                 <Text>
@@ -183,6 +185,8 @@ const ReviewSection = ({
           {pages && (
             <PDFPageControl
               currentPageNumber={currentPageIndex + 1}
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               numberOfPages={pages?.length}
               goToNextPage={goToNextPage}
               goToPreviousPage={goToPreviousPage}
@@ -203,6 +207,8 @@ const ReviewSection = ({
           pr="8px"
           overflowY="scroll"
         >
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           {(importing || importFailed || isLoadingIdeas) && (
             <Box
               py="8px"

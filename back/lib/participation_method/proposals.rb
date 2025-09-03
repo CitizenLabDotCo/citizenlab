@@ -2,6 +2,8 @@
 
 module ParticipationMethod
   class Proposals < Ideation
+    SUPPORTED_REACTION_MODES = %w[up].freeze
+
     def self.method_str
       'proposals'
     end
@@ -16,6 +18,14 @@ module ParticipationMethod
 
     def budget_in_form?(_)
       false
+    end
+
+    def cosponsors_in_form?
+      true
+    end
+
+    def supported_email_campaigns
+      super + %w[cosponsor_of_your_idea invitation_to_cosponsor_idea]
     end
 
     def supports_automated_statuses?
@@ -36,6 +46,14 @@ module ParticipationMethod
 
     def use_reactions_as_votes?
       true
+    end
+
+    def add_autoreaction_to_inputs?
+      true
+    end
+
+    def default_input_term
+      'proposal'
     end
 
     private

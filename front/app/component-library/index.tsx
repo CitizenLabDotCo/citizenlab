@@ -24,9 +24,12 @@ import Button, {
 import CardButton from './components/CardButton';
 import Checkbox from './components/Checkbox';
 import CheckboxWithLabel from './components/CheckboxWithLabel';
+import CollapsibleContainer from './components/CollapsibleContainer';
+import ColorIndicator from './components/ColorIndicator';
 import ColorPickerInput, {
   Props as ColorPickerInputProps,
 } from './components/ColorPickerInput';
+import Divider from './components/Divider';
 import Dropdown, { DropdownListItem } from './components/Dropdown';
 import Error from './components/Error';
 import Icon, { IconProps, IconNames } from './components/Icon';
@@ -43,6 +46,10 @@ import InputMultilocWithLocaleSwitcher, {
 import Label from './components/Label';
 import ListItem from './components/ListItem';
 import LocaleSwitcher from './components/LocaleSwitcher';
+import MultiSelect, {
+  Props as MultiSelectProps,
+} from './components/MultiSelect';
+import Quote from './components/Quote';
 import Radio, { Props as RadioProps } from './components/Radio';
 import SearchInput, {
   Props as SearchInputProps,
@@ -52,6 +59,7 @@ import Select, {
   SelectIcon,
   SelectWrapper,
 } from './components/Select';
+import Shimmer from './components/Shimmer';
 import Spinner from './components/Spinner';
 import StatusLabel from './components/StatusLabel';
 import Success from './components/Success';
@@ -71,6 +79,7 @@ import Toggle from './components/Toggle';
 import Tooltip, { TooltipProps } from './components/Tooltip';
 import useBreakpoint from './hooks/useBreakpoint';
 import useWindowSize from './hooks/useWindowSize';
+import InputContainer from './utils/containers/InputContainer';
 import {
   viewportWidths,
   media,
@@ -91,6 +100,7 @@ import {
   Color,
   isRtl,
 } from './utils/styleUtils';
+import { truncate } from './utils/textUtils';
 import { IGraphPoint, IOption, Locale } from './utils/typings';
 
 export type {
@@ -121,6 +131,7 @@ export type {
   Color,
   InputMultilocWithLocaleSwitcherProps,
   InputProps,
+  MultiSelectProps,
   SelectProps,
   SearchInputProps,
   ColorPickerInputProps,
@@ -150,6 +161,8 @@ export {
   ColorPickerInput,
   Badge,
   Accordion,
+  CollapsibleContainer,
+  ColorIndicator,
   CardButton,
   Dropdown,
   DropdownListItem,
@@ -173,6 +186,7 @@ export {
   remCalc,
   calculateContrastRatio,
   hexToRgb,
+  truncate,
   Table,
   Thead,
   Tbody,
@@ -191,4 +205,11 @@ export {
   Title,
   ListItem,
   Tooltip,
+  Shimmer,
+  Divider,
+  Quote,
+  InputContainer,
+
+  /** @deprecated Please use components/UI/MultiSelect instead */
+  MultiSelect,
 };

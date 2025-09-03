@@ -36,14 +36,14 @@ resource 'R-scores (Representativeness scores)' do
                 reference_distribution: {
                   data: {
                     id: ref_distribution.id,
-                    type: ref_distribution.type.demodulize.snakecase
+                    type: Utils.snakecase(ref_distribution.type.demodulize)
                   }
                 }
               }
             },
             included: [hash_including(
               id: ref_distribution.id,
-              type: ref_distribution.type.demodulize.snakecase
+              type: Utils.snakecase(ref_distribution.type.demodulize)
             )]
           }
         end

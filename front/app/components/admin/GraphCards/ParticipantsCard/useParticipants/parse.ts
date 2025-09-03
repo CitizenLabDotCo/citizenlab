@@ -5,12 +5,13 @@ import {
   TimeSeriesResponseRow,
 } from 'api/graph_data_units/responseTypes/ParticipantsWidget';
 
-import { getConversionRate } from 'components/admin/GraphCards/_utils/parse';
 import { RESOLUTION_TO_MESSAGE_KEY } from 'components/admin/GraphCards/_utils/resolution';
 import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 import { keys, get } from 'utils/helperUtils';
+
+import { formatPercentage } from '../../_utils/format';
 
 import { Translations } from './translations';
 import { TimeSeries, TimeSeriesRow, Stats } from './typings';
@@ -24,19 +25,19 @@ const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
   if (!row) return getEmptyRow(date);
 
   return {
-    participants: row.count_participant_id,
+    participants: row.participants,
     date: date.format('YYYY-MM-DD'),
   };
 };
 
 const getDate = (row: TimeSeriesResponseRow) => {
-  return moment(get(row, 'first_dimension_date_created_date'));
+  return moment(get(row, 'date_group'));
 };
 
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (
-  responseTimeSeries: ParticipantsResponse['data']['attributes'][0],
+  responseTimeSeries: ParticipantsResponse['data']['attributes']['participants_timeseries'],
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null,
   resolution: IResolution
@@ -52,35 +53,21 @@ export const parseTimeSeries = (
 export const parseStats = (
   data: ParticipantsResponse['data']['attributes']
 ): Stats => {
-  const participantsWholePeriod = data[1][0];
-  const participantsLastPeriod = data[4]?.[0];
-
-  const visitorsWholePeriod = data[2][0];
-  const visitorsLastPeriod = data[5]?.[0];
-
-  const activeVisitorUsersWholePeriod = data[3][0];
-  const activeVisitorUsersLastPeriod = data[6]?.[0];
-
-  const participationRateWholePeriod = getConversionRate(
-    activeVisitorUsersWholePeriod?.count_participant_id ?? 0,
-    visitorsWholePeriod?.count_visitor_id ?? 0
-  );
-
-  const participationRateRateLastPeriod = getConversionRate(
-    activeVisitorUsersLastPeriod?.count_participant_id ?? 0,
-    visitorsLastPeriod?.count_visitor_id ?? 0
-  );
+  const {
+    participants_whole_period,
+    participation_rate_whole_period,
+    participants_compared_period,
+    participation_rate_compared_period,
+  } = data;
 
   return {
     participants: {
-      value: (participantsWholePeriod?.count_participant_id ?? 0).toString(),
-      lastPeriod: (
-        participantsLastPeriod?.count_participant_id ?? 0
-      ).toString(),
+      value: participants_whole_period.toString(),
+      lastPeriod: (participants_compared_period ?? 0).toString(),
     },
     participationRate: {
-      value: participationRateWholePeriod,
-      lastPeriod: participationRateRateLastPeriod,
+      value: formatPercentage(participation_rate_whole_period),
+      lastPeriod: formatPercentage(participation_rate_compared_period),
     },
   };
 };

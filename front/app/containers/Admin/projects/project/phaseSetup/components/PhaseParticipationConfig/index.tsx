@@ -9,25 +9,31 @@ import {
 import { CLErrors, Multiloc } from 'typings';
 
 import {
-  IdeaDefaultSortMethod,
+  IdeaSortMethod,
   InputTerm,
   IPhase,
   IUpdatedPhaseProperties,
   ParticipationMethod,
   TSurveyService,
+  VoteTerm,
   VotingMethod,
 } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import projectMessages from 'containers/Admin/projects/project/general/messages';
+
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
+import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 import { anyIsDefined } from 'utils/helperUtils';
 
 import { ValidationErrors } from '../../typings';
 
+import UserActions from './components/inputs/_shared/UserActions';
 import IdeationInputs from './components/inputs/IdeationInputs';
 import NativeSurveyInputs from './components/inputs/NativeSurveyInputs';
 import PollInputs from './components/inputs/PollInputs';
@@ -86,6 +92,8 @@ const PhaseParticipationConfig = ({
     name: 'microsoft_forms_surveys',
   });
 
+  const project_library_enabled = useFeatureFlag({ name: 'project_library' });
+
   const { formatMessage } = useIntl();
 
   const updateFormData = (fn: SetFn) => {
@@ -103,9 +111,11 @@ const PhaseParticipationConfig = ({
     const proposals = participation_method === 'proposals';
 
     updateFormData(() => ({
+      // These two lines should not be needed as we use defaultParticipationConfig
+      // already in the participationMethodConfigs.ts file for each specific config
+      // as its starting point.
       ...defaultParticipationConfig,
       participation_method,
-
       ...(ideation ? ideationDefaultConfig : {}),
       ...(voting ? votingDefaultConfig : {}),
       ...(survey ? surveyDefaultConfig : {}),
@@ -148,6 +158,13 @@ const PhaseParticipationConfig = ({
     updateFormData((state) => ({
       ...state,
       commenting_enabled: !state.commenting_enabled,
+    }));
+  };
+
+  const toggleAutoshareResultsEnabled = () => {
+    updateFormData((state) => ({
+      ...state,
+      autoshare_results_enabled: !state.autoshare_results_enabled,
     }));
   };
 
@@ -198,6 +215,13 @@ const PhaseParticipationConfig = ({
     }));
   };
 
+  const handleUserFieldsInFormOnChange = (user_fields_in_form: boolean) => {
+    updateFormData((state) => ({
+      ...state,
+      user_fields_in_form,
+    }));
+  };
+
   const handleVotingMethodOnChange = (voting_method: VotingMethod) => {
     const maxVotes = MAX_VOTES_PER_VOTING_METHOD[voting_method];
 
@@ -241,9 +265,7 @@ const PhaseParticipationConfig = ({
     }));
   };
 
-  const handleIdeaDefaultSortMethodChange = (
-    ideas_order: IdeaDefaultSortMethod
-  ) => {
+  const handleIdeaDefaultSortMethodChange = (ideas_order: IdeaSortMethod) => {
     updateFormData((state) => ({
       ...state,
       ideas_order,
@@ -288,32 +310,21 @@ const PhaseParticipationConfig = ({
     }));
   };
 
-  const handleVoteTermPluralChange = (
-    voting_term_plural_multiloc: Multiloc
-  ) => {
-    updateFormData((state) => ({
-      ...state,
-      voting_term_plural_multiloc,
-    }));
-    setValidationErrors((errors) => ({ ...errors, voteTermError: undefined }));
-  };
-
-  const handleVoteTermSingularChange = (
-    voting_term_singular_multiloc: Multiloc
-  ) => {
-    updateFormData((state) => ({
-      ...state,
-      voting_term_singular_multiloc,
-    }));
-    setValidationErrors((errors) => ({ ...errors, voteTermError: undefined }));
-  };
-
   const handleInputTermChange = (option: IOption) => {
     const input_term: InputTerm = option.value;
 
     updateFormData((state) => ({
       ...state,
       input_term,
+    }));
+  };
+
+  const handleVoteTermChange = (option: IOption) => {
+    const voteTerm: VoteTerm = option.value;
+
+    updateFormData((state) => ({
+      ...state,
+      vote_term: voteTerm,
     }));
   };
 
@@ -338,7 +349,7 @@ const PhaseParticipationConfig = ({
     }));
   };
 
-  const toggleReviewingEnabled = (prescreening_enabled: boolean) => {
+  const togglePrescreeningEnabled = (prescreening_enabled: boolean) => {
     updateFormData((state) => ({
       ...state,
       prescreening_enabled,
@@ -359,6 +370,23 @@ const PhaseParticipationConfig = ({
     }));
   };
 
+  const handleSimilarityEnabledChange = (value: boolean) => {
+    updateFormData((state) => ({
+      ...state,
+      similarity_enabled: value,
+    }));
+  };
+
+  const handleThresholdChange = (
+    field: 'similarity_threshold_title' | 'similarity_threshold_body',
+    value: number
+  ) => {
+    updateFormData((state) => ({
+      ...state,
+      [field]: value,
+    }));
+  };
+
   const surveyProviders = {
     typeform: typeform_enabled,
     enalyzer: enalyzer_enabled,
@@ -375,6 +403,7 @@ const PhaseParticipationConfig = ({
     participation_method,
     submission_enabled,
     commenting_enabled,
+    autoshare_results_enabled,
     reacting_enabled,
     reacting_like_method,
     reacting_like_limited_max,
@@ -386,8 +415,6 @@ const PhaseParticipationConfig = ({
     voting_min_total,
     voting_max_total,
     voting_max_votes_per_idea,
-    voting_term_singular_multiloc,
-    voting_term_plural_multiloc,
     survey_service,
     survey_embed_url,
     poll_anonymous,
@@ -398,6 +425,11 @@ const PhaseParticipationConfig = ({
     expire_days_limit,
     reacting_threshold,
     prescreening_enabled,
+    similarity_enabled,
+    similarity_threshold_title,
+    similarity_threshold_body,
+    user_fields_in_form,
+    vote_term: voteTerm,
   } = formData;
 
   const showSurveys =
@@ -418,6 +450,40 @@ const PhaseParticipationConfig = ({
           apiErrors={apiErrors}
           handleParticipationMethodOnChange={handleParticipationMethodOnChange}
         />
+        {project_library_enabled && (
+          <Box mb="20px">
+            <Warning>
+              <FormattedMessage
+                {...projectMessages.needInspiration}
+                values={{
+                  inspirationHubLink: (
+                    <Link to="/admin/inspiration-hub" target="_blank">
+                      <FormattedMessage {...projectMessages.inspirationHub} />
+                    </Link>
+                  ),
+                }}
+              />
+            </Warning>
+          </Box>
+        )}
+        {participation_method === 'common_ground' && (
+          <UserActions
+            submission_enabled={submission_enabled || false}
+            commenting_enabled={commenting_enabled || false}
+            reacting_enabled={false} // The ability to configure number of likes is irrelevant for common ground
+            togglePostingEnabled={togglePostingEnabled}
+            toggleCommentingEnabled={toggleCommentingEnabled}
+            toggleReactingEnabled={toggleReactingEnabled}
+            apiErrors={apiErrors}
+            reacting_like_method={reacting_like_method}
+            reacting_like_limited_max={reacting_like_limited_max}
+            noLikingLimitError={validationErrors.noLikingLimitError}
+            handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
+            handleLikingLimitOnChange={handleLikingLimitOnChange}
+            showCommentingToggle={false}
+            showReactingToggle={false}
+          />
+        )}
 
         {participation_method === 'voting' && (
           <VotingInputs
@@ -425,20 +491,25 @@ const PhaseParticipationConfig = ({
             voting_min_total={voting_min_total}
             voting_max_total={voting_max_total}
             commenting_enabled={commenting_enabled}
+            autoshare_results_enabled={autoshare_results_enabled}
             handleVotingMinTotalChange={handleVotingMinTotalChange}
             handleVotingMaxTotalChange={handleVotingMaxTotalChange}
-            handleVoteTermPluralChange={handleVoteTermPluralChange}
-            handleVoteTermSingularChange={handleVoteTermSingularChange}
             toggleCommentingEnabled={toggleCommentingEnabled}
+            toggleAutoshareResultsEnabled={toggleAutoshareResultsEnabled}
             apiErrors={apiErrors}
             validationErrors={validationErrors}
             presentation_mode={presentation_mode}
             handleIdeasDisplayChange={handleIdeasDisplayChange}
             handleVotingMethodOnChange={handleVotingMethodOnChange}
             voting_max_votes_per_idea={voting_max_votes_per_idea}
-            voting_term_plural_multiloc={voting_term_plural_multiloc}
-            voting_term_singular_multiloc={voting_term_singular_multiloc}
             handleMaxVotesPerOptionAmountChange={handleVotingMaxPerIdeaChange}
+            similarity_enabled={similarity_enabled}
+            similarity_threshold_title={similarity_threshold_title}
+            similarity_threshold_body={similarity_threshold_body}
+            handleSimilarityEnabledChange={handleSimilarityEnabledChange}
+            handleThresholdChange={handleThresholdChange}
+            handleVoteTermChange={handleVoteTermChange}
+            voteTerm={voteTerm}
           />
         )}
 
@@ -479,6 +550,13 @@ const PhaseParticipationConfig = ({
             handleIdeaDefaultSortMethodChange={
               handleIdeaDefaultSortMethodChange
             }
+            prescreening_enabled={prescreening_enabled}
+            togglePrescreeningEnabled={togglePrescreeningEnabled}
+            similarity_enabled={similarity_enabled}
+            similarity_threshold_title={similarity_threshold_title}
+            similarity_threshold_body={similarity_threshold_body}
+            handleSimilarityEnabledChange={handleSimilarityEnabledChange}
+            handleThresholdChange={handleThresholdChange}
           />
         )}
 
@@ -515,7 +593,12 @@ const PhaseParticipationConfig = ({
             handleReactingThresholdChange={handleReactingThresholdChange}
             reactingThresholdError={validationErrors.reactingThresholdError}
             prescreening_enabled={prescreening_enabled}
-            toggleReviewingEnabled={toggleReviewingEnabled}
+            togglePrescreeningEnabled={togglePrescreeningEnabled}
+            similarity_enabled={similarity_enabled}
+            similarity_threshold_title={similarity_threshold_title}
+            similarity_threshold_body={similarity_threshold_body}
+            handleSimilarityEnabledChange={handleSimilarityEnabledChange}
+            handleThresholdChange={handleThresholdChange}
           />
         )}
 
@@ -568,12 +651,14 @@ const PhaseParticipationConfig = ({
         {participation_method === 'native_survey' && (
           <NativeSurveyInputs
             allow_anonymous_participation={allow_anonymous_participation}
+            user_fields_in_form={user_fields_in_form}
             apiErrors={apiErrors}
             phase={phase}
             formData={formData}
             handleAllowAnonymousParticipationOnChange={
               handleAllowAnonymousParticipationOnChange
             }
+            handleUserFieldsInFormOnChange={handleUserFieldsInFormOnChange}
             handleSurveyTitleChange={handleSurveyTitleChange}
             handleSurveyCTAChange={handleSurveyCTAChange}
           />

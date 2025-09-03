@@ -2,10 +2,9 @@ import { randomString, randomEmail } from '../../support/commands';
 
 describe('Cookie consent form for not-signed-in users', () => {
   it('Shows the correct options when not signed in', () => {
+    cy.clearCookies();
     cy.visit('/');
-    cy.get('#e2e-landing-page').should('exist');
-    cy.get('#e2e-cookie-banner').should('exist');
-    cy.get('#e2e-cookie-banner').find('.integration-open-modal').click();
+    cy.dataCy('e2e-manage-preferences-btn').should('be.visible').click();
     cy.get('#e2e-preference-dialog').contains('Matomo');
     cy.get('#e2e-preference-dialog').should('not.contain.text', 'SatisMeter');
   });
@@ -17,7 +16,8 @@ describe('Cookie consent form for signed-in users', () => {
   const email = randomEmail();
   const password = randomString();
 
-  before(() => {
+  beforeEach(() => {
+    cy.clearCookies();
     cy.apiSignup(firstName, lastName, email, password).then((user) => {
       cy.setLoginCookie(email, password);
     });
@@ -25,24 +25,21 @@ describe('Cookie consent form for signed-in users', () => {
 
   it('Shows the correct options when signed up as normal user', () => {
     cy.visit('/');
-    cy.get('#e2e-landing-page').should('exist');
-    cy.get('#e2e-cookie-banner').should('exist');
-    cy.get('#e2e-cookie-banner').find('.integration-open-modal').click();
+    cy.dataCy('e2e-manage-preferences-btn').should('be.visible').click();
     cy.get('#e2e-preference-dialog').contains('Matomo');
     cy.get('#e2e-preference-dialog').should('not.contain.text', 'SatisMeter');
   });
 });
 
 describe('Cookie consent form for signed-in admins', () => {
-  before(() => {
-    cy.setAdminLoginCookie();
+  beforeEach(() => {
+    cy.clearCookies();
+    cy.setLoginCookie('admin@govocal.com', 'democracy2.0');
   });
 
   it('Shows the correct options when signed up as admin user', () => {
     cy.visit('/');
-    cy.get('#e2e-landing-page').should('exist');
-    cy.get('#e2e-cookie-banner').should('exist');
-    cy.get('#e2e-cookie-banner').find('.integration-open-modal').click();
+    cy.dataCy('e2e-manage-preferences-btn').should('be.visible').click();
     cy.get('#e2e-preference-dialog').contains('Matomo');
   });
 });

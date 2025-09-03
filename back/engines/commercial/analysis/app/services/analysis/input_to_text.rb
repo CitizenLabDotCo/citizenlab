@@ -3,32 +3,35 @@
 module Analysis
   # Convert an input to a simple string hash of {label => value} entries, based on the
   # passed list of custom fields
-  class InputToText
+  class InputToText < ModelToText
     def initialize(custom_fields, app_configuration = AppConfiguration.instance)
+      super()
       @custom_fields = custom_fields
       @app_configuration = app_configuration
       @multiloc_service = MultilocService.new(app_configuration: @app_configuration)
       @memoized_field_values = Hash.new { |h, k| h[k] = {} } # Hash with empty hash as default values
+      @comments_to_text = CommentsToText.new
     end
 
     def execute(input, include_id: false, truncate_values: nil, override_field_labels: {})
-      initial_object = if include_id
-        { 'ID' => input.id }
-      else
-        {}
-      end
-      @custom_fields.each_with_object(initial_object) do |field, obj|
+      @custom_fields.each_with_object(super) do |field, obj|
         add_field(field, input, obj, truncate_values: truncate_values, override_field_labels: override_field_labels)
         if field.other_option_text_field
           add_field(field.other_option_text_field, input, obj, truncate_values: truncate_values, override_field_labels: override_field_labels)
+        end
+        if field.input_type == 'sentiment_linear_scale'
+          add_field(field.follow_up_text_field, input, obj, truncate_values: truncate_values, override_field_labels: override_field_labels)
         end
       end
     end
 
     def formatted(input, **options)
-      execute(input, **options).map do |label, value|
-        "### #{label}\n#{value}\n"
-      end.join("\n")
+      output = super(input, **options.except(:include_comments))
+      if options[:include_comments]
+        comments = @comments_to_text.execute(input, truncate_values: options[:truncate_values], separator: '+++', include_author: false)
+        output += "### Comments by other users\n#{comments}" if comments.present?
+      end
+      output
     end
 
     def format_all(inputs, shorten_labels: false, **options)
@@ -47,7 +50,7 @@ module Analysis
       end
 
       formatted_inputs = inputs
-        .map { |input| formatted(input, **options.merge(override_field_labels: override_field_labels)) }
+        .map { |input| formatted(input, **options, override_field_labels: override_field_labels) }
         .reject { |text| text.strip.blank? }
         .join("\n---\n")
 
@@ -57,7 +60,7 @@ module Analysis
           #{override_field_labels.map do |field_id, abbreviation|
               "#{abbreviation}: #{@multiloc_service.t(@custom_fields.find { |cf| cf.id == field_id }.title_multiloc)}\n"
             end.join}
-          
+
           #{formatted_inputs}
         __OUTPUT__
       else
@@ -81,8 +84,17 @@ module Analysis
       # input to a plaintext representation suitable for a LLM), so we are
       # reusing this. Probably this should be changed to its own implementation
       # once we optimize further for the LLM use case.
-      vv = Export::Xlsx::ValueVisitor.new(input, custom_field.options.index_by(&:key), app_configuration: @app_configuration)
-      @memoized_field_values[input.id][custom_field.id] = custom_field.accept(vv)
+      options_by_key = custom_field.options.index_by(&:key)
+      value_for_llm = case custom_field.input_type
+      when 'ranking'
+        ranking_field_value(input, custom_field, options_by_key)
+      when 'matrix_linear_scale'
+        matrix_linear_scale_field_value(input, custom_field)
+      else
+        xlsx_field_value(input, custom_field, options_by_key)
+      end
+
+      @memoized_field_values[input.id][custom_field.id] = value_for_llm
     end
 
     def add_field(field, input, obj, truncate_values: nil, override_field_labels: {})
@@ -92,6 +104,34 @@ module Analysis
 
       value = truncate_values ? full_value&.truncate(truncate_values) : full_value
       obj[label] = value
+    end
+
+    def ranking_field_value(input, custom_field, options_by_key)
+      stored_value = input.custom_field_values[custom_field.key]
+      (stored_value || []).map.with_index do |option_key, index|
+        title_multiloc = options_by_key[option_key]&.title_multiloc
+        option_title = title_multiloc ? @multiloc_service.t(title_multiloc) : ''
+        "#{index + 1}. #{option_title}"
+      end.join("\n")
+    end
+
+    def matrix_linear_scale_field_value(input, custom_field)
+      stored_values = input.custom_field_values[custom_field.key]
+      return '' if !stored_values
+
+      statements_by_key = custom_field.matrix_statements.index_by(&:key)
+      stored_values.map do |statement_key, value|
+        title_multiloc = statements_by_key[statement_key]&.title_multiloc
+        statement_title = title_multiloc ? @multiloc_service.t(title_multiloc) : ''
+        label_multiloc = custom_field.nth_linear_scale_multiloc(value)
+        value_str = label_multiloc.present? ? "#{value} (#{@multiloc_service.t(label_multiloc)})" : value.to_s
+        "#{statement_title} - #{value_str}"
+      end.join("\n")
+    end
+
+    def xlsx_field_value(input, custom_field, options_by_key)
+      vv = Export::Xlsx::ValueVisitor.new(input, options_by_key, app_configuration: @app_configuration)
+      custom_field.accept(vv)
     end
   end
 end

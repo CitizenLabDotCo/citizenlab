@@ -7,20 +7,24 @@ import { ErrorObject } from 'ajv';
 import { CLErrors, SupportedLocale } from 'typings';
 
 import { parseRequiredMultilocsSchema } from 'components/Form/parseRequiredMultilocs';
-import { customAjv } from 'components/Form/utils';
+import customAjv from 'components/Form/utils/customAjv';
 
 import { useIntl } from 'utils/cl-intl';
 import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
 
 import { APIErrorsContext, FormContext } from '../../contexts';
-import { ApiErrorGetter, AjvErrorGetter, FormData } from '../../typings';
-import { ExtendedUISchema } from '../Controls/visibilityUtils';
+import {
+  ApiErrorGetter,
+  AjvErrorGetter,
+  ExtendedUISchema,
+  FormValues,
+} from '../../typings';
 
 import { ErrorToReadProvider } from './ErrorToReadContext';
 import { selectRenderers } from './formConfig';
 
 interface Props {
-  data: FormData;
+  data: FormValues;
   apiErrors?: CLErrors;
   showAllErrors: boolean;
   setShowAllErrors?: (showAllErrors: boolean) => void;
@@ -31,8 +35,8 @@ interface Props {
   inputId?: string;
   config?: 'default' | 'input' | 'survey';
   locale: SupportedLocale;
-  onChange: (formData: FormData) => void;
-  onSubmit?: (formData: FormData) => Promise<any>;
+  onChange: (formData: FormValues) => void;
+  onSubmit?: (formData: { data?: FormValues }) => Promise<any>;
 }
 
 const Fields = ({
@@ -71,7 +75,11 @@ const Fields = ({
         getAjvErrorMessage?.(error, uischema) ||
         getDefaultAjvErrorMessage({
           keyword: error.keyword,
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           format: error?.parentSchema?.format,
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           type: error?.parentSchema?.type,
         });
       return formatMessage(message, {

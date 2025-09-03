@@ -1,9 +1,8 @@
 module Permissions
   class BasePermissionsService
     SUPPORTED_ACTIONS = %w[
-      posting_initiative
-      commenting_initiative
-      reacting_initiative
+      following
+      visiting
       posting_idea
       commenting_idea
       reacting_idea
@@ -32,6 +31,8 @@ module Permissions
     end
 
     def denied_reason_for_action(action, scope: nil)
+      return unless supported_action? action
+
       permission = find_permission(action, scope: scope)
       user_denied_reason(permission)
     end
@@ -41,9 +42,7 @@ module Permissions
     attr_reader :user, :user_requirements_service
 
     def supported_action?(action)
-      return true if SUPPORTED_ACTIONS.include? action
-
-      raise "Unsupported action: #{action}"
+      SUPPORTED_ACTIONS.include? action
     end
 
     def find_permission(action, scope: nil)
@@ -57,8 +56,6 @@ module Permissions
           permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
         end
       end
-
-      raise "Unknown action '#{action}' for scope: #{scope}" if !permission
 
       permission
     end

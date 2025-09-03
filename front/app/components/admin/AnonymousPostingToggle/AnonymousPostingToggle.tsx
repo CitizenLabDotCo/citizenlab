@@ -5,8 +5,6 @@ import {
   Text,
   Box,
   IconTooltip,
-  StatusLabel,
-  colors,
 } from '@citizenlab/cl2-component-library';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -65,11 +63,6 @@ const AnonymousPostingToggle = ({
               }}
             />
           }
-        />
-        <StatusLabel
-          text={formatMessage(messages.betaLabel)}
-          backgroundColor={colors.background}
-          variant="outlined"
         />
       </SubSectionTitle>
       <Toggle

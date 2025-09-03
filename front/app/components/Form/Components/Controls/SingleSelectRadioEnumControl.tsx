@@ -12,6 +12,7 @@ import styled, { useTheme } from 'styled-components';
 
 import { FormLabel } from 'components/UI/FormComponents';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
@@ -66,7 +67,13 @@ const SingleSelectRadioEnumControl = ({
         display="block"
         id="e2e-single-select-control"
         onBlur={() => setDidBlur(true)}
+        as="fieldset"
+        border="none"
+        p="0px"
       >
+        <ScreenReaderOnly>
+          <legend>{getLabel(uischema, schema, path)}</legend>
+        </ScreenReaderOnly>
         {options?.map((option, index: number) => (
           <StyledBox
             background={theme.colors.tenantPrimaryLighten95}
@@ -81,11 +88,11 @@ const SingleSelectRadioEnumControl = ({
             borderRadius="3px"
           >
             <Radio
-              padding="20px 20px 4px 20px"
+              padding="20px 20px 8px 20px"
               buttonColor={theme.colors.tenantPrimary}
               usePrimaryBorder={true}
               id={`${path}-radio-${index}`}
-              name="name-temp"
+              name={path}
               label={
                 // TODO: Find better solution for styling the Radio label. Requires small offset for alignment.
                 <Text color={'tenantPrimary'} p="0px" m="0px" mt="-1px">
@@ -106,6 +113,8 @@ const SingleSelectRadioEnumControl = ({
             />
           </StyledBox>
         ))}
+        {/* TODO: Fix this the next time the file is edited. */}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
       <ErrorDisplay

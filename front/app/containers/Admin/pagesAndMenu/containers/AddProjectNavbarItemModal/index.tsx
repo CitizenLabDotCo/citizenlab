@@ -15,12 +15,13 @@ import useLocalize from 'hooks/useLocalize';
 
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import Select from 'components/HookForm/Select';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { IItemNotInNavbar } from 'utils/navbar';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
 import messages from './messages';
@@ -60,7 +61,10 @@ const AddProjectNavbarItemModal = ({ opened, onClose }: Props) => {
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
-      await addNavbarItem({ ...formValues, type: 'project' });
+      await addNavbarItem({
+        ...formValues,
+        type: 'project',
+      } as IItemNotInNavbar);
       handleOnClose();
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
@@ -121,12 +125,12 @@ const AddProjectNavbarItemModal = ({ opened, onClose }: Props) => {
               </Box>
               <Warning>{formatMessage(messages.warning)}</Warning>
               <Box display="flex">
-                <Button
+                <ButtonWithLink
                   type="submit"
                   processing={methods.formState.isSubmitting}
                 >
                   {formatMessage(messages.savePage)}
-                </Button>
+                </ButtonWithLink>
               </Box>
             </Box>
           </form>

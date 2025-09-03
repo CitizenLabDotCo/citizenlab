@@ -7,19 +7,29 @@ class IdeaCustomFieldsService
   end
 
   def all_fields
-    if @custom_form.custom_field_ids.empty?
-      @participation_method.default_fields @custom_form
+    fields = if @custom_form.custom_field_ids.empty?
+      @participation_method.default_fields(@custom_form)
     else
-      @custom_form.custom_fields.includes(%i[options])
+      @custom_form.custom_fields.includes(:map_config, options: [:image])
     end
+
+    fields = fields.to_a
+
+    form_end_field = fields.find(&:form_end_page?)
+    if form_end_field
+      fields.delete(form_end_field)
+      fields << form_end_field
+    end
+
+    fields
   end
 
-  def reportable_fields
-    # idea_images_attributes is not supported by XlsxService.
-    # Page and section fields do not capture data, so they are excluded.
-    all_fields.select do |field|
-      field.code != 'idea_images_attributes' && field.input_type != 'page' && field.input_type != 'section'
-    end
+  def xlsx_exportable_fields
+    add_user_fields(all_fields).filter(&:supports_xlsx_export?)
+  end
+
+  def geojson_supported_fields
+    all_fields.filter(&:supports_geojson?)
   end
 
   def visible_fields
@@ -27,8 +37,7 @@ class IdeaCustomFieldsService
   end
 
   def submittable_fields
-    unsubmittable_input_types = %w[page section]
-    enabled_fields.reject { |field| unsubmittable_input_types.include? field.input_type }
+    enabled_fields.select(&:submittable?)
   end
 
   def submittable_fields_with_other_options
@@ -37,38 +46,78 @@ class IdeaCustomFieldsService
 
   # Used in the printable PDF export
   def printable_fields
-    ignore_field_types = %w[section page date files image_files point file_upload shapefile_upload topic_ids]
-    fields = enabled_fields.reject { |field| ignore_field_types.include? field.input_type }
-    insert_other_option_text_fields(fields)
+    enabled_fields_with_other_options(print_version: true).select(&:printable?)
   end
 
-  def importable_fields
-    ignore_field_types = %w[page section date files image_files file_upload shapefile_upload point line polygon]
-    enabled_fields_with_other_options.reject { |field| ignore_field_types.include? field.input_type }
+  # This supports the deprecated prawn based PDF export/import that did not support all field types
+  def printable_fields_legacy
+    enabled_fields_with_other_options.select(&:printable_legacy?)
+  end
+
+  def xlsx_importable_fields
+    enabled_fields_with_other_options.select(&:xlsx_importable?)
   end
 
   def enabled_fields
-    all_fields.select(&:enabled?)
+    fields = all_fields.select(&:enabled?)
+    add_user_fields(fields)
   end
 
-  def enabled_fields_with_other_options
-    insert_other_option_text_fields(enabled_fields)
+  def enabled_fields_with_other_options(print_version: false)
+    insert_other_option_text_fields(enabled_fields, print_version:)
   end
 
   def enabled_public_fields
-    enabled_fields.select { |field| field.answer_visible_to == CustomField::VISIBLE_TO_PUBLIC }
+    enabled_fields.select(&:visible_to_public?)
   end
 
   def extra_visible_fields
     visible_fields.reject(&:built_in?)
   end
 
+  def survey_results_fields(structure_by_category: false)
+    return enabled_fields unless structure_by_category && @participation_method.supports_custom_field_categories?
+
+    # Restructure the results to order by category with each category as a page
+
+    # Remove the original pages
+    fields = enabled_fields.reject { |field| field.input_type == 'page' }
+
+    # Order fields by the order of categories in custom field
+    categories = CustomField::QUESTION_CATEGORIES
+    sorted_fields = fields.sort_by do |field|
+      [categories.index(field.question_category) || categories.size, field.ordering]
+    end
+
+    # Add a page per category
+    categorised_fields = []
+    current_category = nil
+    sorted_fields.each do |field|
+      if field.question_category != current_category
+        categorised_fields << CustomField.new(
+          id: SecureRandom.uuid,
+          input_type: 'page',
+          key: "category_#{field.question_category}",
+          title_multiloc: field.question_category_multiloc
+        )
+      end
+      current_category = field.question_category
+      categorised_fields << field
+    end
+    categorised_fields
+  end
+
   def validate_constraints_against_updates(field, field_params)
     constraints = @participation_method.constraints[field.code&.to_sym]
     return unless constraints
 
+    # Convert ActionController::Parameters to a hash before making comparisons, as equality
+    # between ActionController::Parameters and Hash has been deprecated and will always
+    # return false.
+    field_params = field_params.to_h if field_params.is_a?(ActionController::Parameters)
+
     constraints[:locks]&.each do |attribute, value|
-      if value == true && field_params[attribute] != field[attribute] && !section1_title?(field, attribute)
+      if value == true && field_params[attribute] != field[attribute] && !page1_title?(field, attribute)
         field.errors.add :constraints, "Cannot change #{attribute}. It is locked."
       end
     end
@@ -82,7 +131,7 @@ class IdeaCustomFieldsService
     default_field = default_fields.find { |f| f.code == field.code }
 
     constraints[:locks]&.each do |attribute, value|
-      if value == true && field[attribute] != default_field[attribute] && !section1_title?(field, attribute)
+      if value == true && field[attribute] != default_field[attribute] && !page1_title?(field, attribute)
         field.errors.add :constraints, "Cannot change #{attribute} from default value. It is locked."
       end
     end
@@ -93,30 +142,9 @@ class IdeaCustomFieldsService
     field_params.except(:code, :input_type)
   end
 
-  def check_form_structure(fields, errors)
-    return if fields.empty?
-
-    first_field_type = @participation_method.supports_pages_in_form? ? 'page' : 'section'
-    cannot_have_type = @participation_method.supports_pages_in_form? ? 'section' : 'page'
-    if fields[0][:input_type] != first_field_type
-      error = { error: "First field must be of type '#{first_field_type}'" }
-      errors['0'] = { structure: [error] }
-    end
-    fields.each_with_index do |field, index|
-      next unless field[:input_type] == cannot_have_type
-
-      error = { error: "Method '#{participation_method}' cannot contain fields with an input_type of '#{cannot_have_type}'" }
-      if errors[index.to_s] && errors[index.to_s][:structure]
-        errors[index.to_s][:structure] << error
-      else
-        errors[index.to_s] = { structure: [error] }
-      end
-    end
-  end
-
   def duplicate_all_fields
     fields = all_fields
-    logic_id_map = { survey_end: 'survey_end' }
+    logic_id_map = {}
     copied_fields = fields.map do |field|
       # Duplicate fields to return with a new id
       copied_field = field.dup
@@ -132,6 +160,13 @@ class IdeaCustomFieldsService
         copied_option
       end
       copied_field.options = copied_options
+
+      # Duplicate statements
+      copied_field.matrix_statements = field.matrix_statements.map do |statement|
+        copied_statement = statement.dup
+        copied_statement.id = SecureRandom.uuid
+        copied_statement
+      end
 
       # Duplicate and persist map config for custom_fields that can have an associated map_config
       if CustomField::MAP_CONFIG_INPUT_TYPES.include?(copied_field.input_type) && field.map_config
@@ -160,7 +195,7 @@ class IdeaCustomFieldsService
           rule
         end
       elsif field.logic['next_page_id']
-        field.logic['next_page_id'] = logic_id_map[field.logic['next_page_id']] unless field.logic['next_page_id'] == 'survey_end'
+        field.logic['next_page_id'] = logic_id_map[field.logic['next_page_id']]
       end
       field
     end
@@ -168,19 +203,70 @@ class IdeaCustomFieldsService
 
   private
 
-  def insert_other_option_text_fields(fields)
+  # @param fields [Enumerable<CustomField>]
+  # @return [Array<CustomField>]
+  def insert_other_option_text_fields(fields, print_version: false)
     all_fields = []
     fields.each do |field|
       all_fields << field
-      all_fields << field.other_option_text_field if field.other_option_text_field
+      all_fields << field.other_option_text_field(print_version:) if field.other_option_text_field(print_version:)
+      all_fields << field.follow_up_text_field if field.follow_up_text_field && !print_version # NOTE: Currently not supported in print version
     end
     all_fields
   end
 
-  # Check required as it doesn't matter what is saved in title for section 1
+  # Check required as it doesn't matter what is saved in title for page 1
   # Constraints required for the front-end but response will always return input specific method
-  def section1_title?(field, attribute)
-    field.code == 'ideation_section1' && attribute == :title_multiloc
+  def page1_title?(field, attribute)
+    field.code == 'title_page' && attribute == :title_multiloc
+  end
+
+  def add_user_fields(fields)
+    return fields unless @participation_method.user_fields_in_form?
+
+    phase = @custom_form.participation_context
+    permission = phase.permissions.find_by(action: 'posting_idea')
+    user_fields = Permissions::UserRequirementsService.new.requirements_custom_fields(permission)
+
+    return fields unless user_fields.any?
+
+    fields = fields.to_a # sometimes array passed in, sometimes active record relations
+
+    # Remove the last page so we can add it back later
+    last_page = fields.pop if fields.last.form_end_page?
+
+    # TODO: Hide any user fields that are locked for the user through the verification method
+
+    # Transform the user fields to pretend to be idea fields
+    user_fields.each do |field|
+      field.dropdown_layout = true if field.dropdown_layout_type?
+      field.code = nil # Remove the code so it doesn't appear as built in
+      field.key = "u_#{field.key}" # Change the key so we cans clearly identify user data in the saved data
+      field.resource = custom_form # User field pretend to be part of the form
+    end
+
+    user_page = CustomField.new(
+      id: SecureRandom.uuid,
+      key: 'user_page',
+      title_multiloc: MultilocService.new.i18n_to_multiloc('form_builder.form_user_page.title_text'),
+      resource: custom_form,
+      input_type: 'page',
+      page_layout: 'default'
+    )
+
+    # Change any logic end pages to reference the user page instead
+    fields.each do |field|
+      if field.logic['rules']
+        field.logic['rules'].map! do |rule|
+          rule['goto_page_id'] = user_page.id if rule['goto_page_id'] == last_page.id
+          rule
+        end
+      elsif field.logic['next_page_id'] == last_page.id
+        field.logic['next_page_id'] = user_page.id
+      end
+    end
+
+    fields + [user_page] + user_fields + [last_page]
   end
 
   attr_reader :custom_form, :participation_method

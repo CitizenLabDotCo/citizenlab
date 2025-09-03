@@ -1,68 +1,28 @@
-import { UseQueryOptions, useQueries } from '@tanstack/react-query';
-
-import { ICustomFields } from 'api/custom_fields/types';
+import { useQuery } from '@tanstack/react-query';
+import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import customFieldsOptionKeys from './keys';
-import { IFormCustomFieldOption, ICustomFieldOptionParameters } from './types';
+import customFieldOptionsKeys from './keys';
+import { ICustomFieldOptions, CustomFieldOptionsKeys } from './types';
 
-const fetchCustomFieldOptions = ({
-  projectId,
-  phaseId,
-  customFieldId,
-  id,
-}: ICustomFieldOptionParameters) => {
-  const apiEndpoint = phaseId
-    ? `admin/phases/${phaseId}/custom_fields/${customFieldId}/custom_field_options/${id}`
-    : `admin/projects/${projectId}/custom_fields/${customFieldId}/custom_field_options/${id}`;
-
-  return fetcher<IFormCustomFieldOption>({
-    path: `/${apiEndpoint}`,
+const fetchOptions = ({ customFieldId }: { customFieldId?: string }) =>
+  fetcher<ICustomFieldOptions>({
+    path: `/custom_fields/${customFieldId}/custom_field_options`,
     action: 'get',
   });
-};
 
-type CustomFieldOptions = Omit<ICustomFieldOptionParameters, 'id'> & {
-  customFields?: ICustomFields;
-};
-
-type CustomFieldsOptionsReturnType = UseQueryOptions<IFormCustomFieldOption>[];
-
-const useCustomFieldOptions = ({
-  projectId,
-  phaseId,
-  customFields,
-}: CustomFieldOptions) => {
-  const customFieldsOptionsIds =
-    customFields?.data.flatMap((customField) =>
-      customField.relationships.options.data.map((option) => option.id)
-    ) || [];
-
-  const getCustomFieldIdBasedOnOptionId = (optionId: string) => {
-    const customField = customFields?.data.find((customField) =>
-      customField.relationships.options.data.find(
-        (option) => option.id === optionId
-      )
-    );
-    return customField?.id;
-  };
-
-  const queries = customFieldsOptionsIds.map((id) => {
-    return {
-      queryKey: customFieldsOptionKeys.item({
-        id,
-      }),
-      queryFn: () =>
-        fetchCustomFieldOptions({
-          projectId,
-          phaseId,
-          id,
-          customFieldId: getCustomFieldIdBasedOnOptionId(id),
-        }),
-    };
+const useCustomFieldOptions = (customFieldId?: string) => {
+  return useQuery<
+    ICustomFieldOptions,
+    CLErrors,
+    ICustomFieldOptions,
+    CustomFieldOptionsKeys
+  >({
+    queryKey: customFieldOptionsKeys.list({ customFieldId }),
+    queryFn: () => fetchOptions({ customFieldId }),
+    enabled: !!customFieldId,
   });
-  return useQueries<CustomFieldsOptionsReturnType>({ queries });
 };
 
 export default useCustomFieldOptions;

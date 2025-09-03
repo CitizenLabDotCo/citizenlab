@@ -10,9 +10,9 @@ import {
 import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
 import styled from 'styled-components';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
 
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -32,8 +32,7 @@ interface Props {
 }
 
 const EmptyState = ({ onOpenModal }: Props) => {
-  const isReportBuilderAllowed = useFeatureFlag({
-    name: 'report_builder',
+  const isReportBuilderAllowed = useReportBuilderEnabled({
     onlyCheckAllowed: true,
   });
 
@@ -62,7 +61,7 @@ const EmptyState = ({ onOpenModal }: Props) => {
             disabled={isReportBuilderAllowed}
           >
             <div>
-              <Button
+              <ButtonWithLink
                 onClick={onOpenModal}
                 icon="plus-circle"
                 buttonStyle="admin-dark"
@@ -70,7 +69,7 @@ const EmptyState = ({ onOpenModal }: Props) => {
                 id="e2e-create-report-button"
               >
                 <FormattedMessage {...messages.emptyStateButtonText} />
-              </Button>
+              </ButtonWithLink>
             </div>
           </Tooltip>
         </Box>

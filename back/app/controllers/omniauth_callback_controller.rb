@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
 class OmniauthCallbackController < ApplicationController
-  include ActionController::Cookies
   skip_before_action :authenticate_user
   skip_after_action :verify_authorized
 
   def create
     if auth_method && verification_method
       # If token is present, the user is already logged in, which means they try to verify not authenticate.
-      if request.env['omniauth.params']['token'].present? && auth_method.verification_prioritized?
+      if omniauth_params['token'].present? && auth_method.verification_prioritized?
         # We need it only for providers that support both auth and ver except FC.
         # For FC, we never verify, only authenticate (even when user clicks "verify"). Not sure why.
         verification_callback(verification_method)
@@ -38,6 +37,10 @@ class OmniauthCallbackController < ApplicationController
 
   private
 
+  def omniauth_params
+    request.env['omniauth.params']
+  end
+
   def find_existing_user(authver_method, auth, user_attrs, verify:)
     user = User.find_by_cimail(user_attrs.fetch(:email)) if user_attrs.key?(:email) # some providers don't return email
     return user if user
@@ -52,7 +55,6 @@ class OmniauthCallbackController < ApplicationController
 
   def auth_callback(verify: false, authver_method: nil)
     auth = request.env['omniauth.auth']
-    omniauth_params = request.env['omniauth.params']
     user_attrs = authver_method.profile_to_user_attrs(auth)
 
     @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
@@ -79,8 +81,9 @@ class OmniauthCallbackController < ApplicationController
         ActiveRecord::Base.transaction do
           SideFxInviteService.new.before_accept @invite
           @user.save!
+          SideFxUserService.new.after_update(@user, nil) # Logs 'registration_completed' activity Job`
           @invite.save!
-          SideFxInviteService.new.after_accept @invite
+          SideFxInviteService.new.after_accept @invite # Logs 'accepted' activity Job
           verify_and_sign_in(auth, @user, verify, sign_up: true)
         rescue ActiveRecord::RecordInvalid => e
           ErrorReporter.report(e)
@@ -90,6 +93,7 @@ class OmniauthCallbackController < ApplicationController
       else # !@user.invite_pending?
         begin
           update_user!(auth, @user, authver_method)
+          SideFxUserService.new.after_update(@user, nil)
         rescue ActiveRecord::RecordInvalid => e
           ErrorReporter.report(e)
           signin_failure_redirect
@@ -128,10 +132,10 @@ class OmniauthCallbackController < ApplicationController
     end
   end
 
-  # NOTE: sso_flow params corrected as sometimes an sso user may start from signin but actually signup and vice versa
   def signin_success_redirect
     omniauth_params = filter_omniauth_params
-    omniauth_params['sso_flow'] = 'signin' if omniauth_params['sso_flow']
+    omniauth_params['sso_flow'] = 'signin'
+    omniauth_params['sso_success'] = true
     redirect_to(
       add_uri_params(
         Frontend::UrlService.new.sso_return_url(pathname: sso_redirect_path, locale: Locale.new(@user.locale)),
@@ -142,7 +146,8 @@ class OmniauthCallbackController < ApplicationController
 
   def signup_success_redirect
     omniauth_params = filter_omniauth_params
-    omniauth_params['sso_flow'] = 'signup' if omniauth_params['sso_flow']
+    omniauth_params['sso_flow'] = 'signup'
+    omniauth_params['sso_success'] = true
     redirect_to(
       add_uri_params(
         Frontend::UrlService.new.sso_return_url(pathname: sso_redirect_path, locale: Locale.new(@user.locale)),
@@ -162,12 +167,12 @@ class OmniauthCallbackController < ApplicationController
   end
 
   def sso_redirect_path
-    request.env['omniauth.params']&.dig('sso_pathname') || '/'
+    omniauth_params&.dig('sso_pathname') || '/'
   end
 
   # Reject any parameters we don't need to be passed to the frontend in the URL
   def filter_omniauth_params
-    request.env['omniauth.params']&.except('token', 'pathname', 'sso_pathname') || {}
+    omniauth_params&.except('token', 'verification_pathname', 'sso_pathname') || {}
   end
 
   def add_uri_params(uri, params = {})
@@ -196,7 +201,9 @@ class OmniauthCallbackController < ApplicationController
   def set_auth_cookie(provider: nil)
     cookies[:cl2_jwt] = {
       value: auth_token(@user, provider).token,
-      expires: 1.month.from_now
+      expires: 1.month.from_now,
+      secure: false, # Unfortunately, we can't use secure cookies in production yet (probably some HTTP steps somewhere)
+      same_site: 'Lax' # Strict won't work due to SSO redirect, so we explicitly document use of Lax
     }
   end
 
@@ -248,21 +255,68 @@ class OmniauthCallbackController < ApplicationController
     @auth_method ||= authentication_service.method_by_provider(auth_provider)
   end
 
+  def handle_verification(auth, user)
+    configuration = AppConfiguration.instance
+    return unless configuration.feature_activated?('verification')
+    return unless verification_service.active?(configuration, auth.provider)
+
+    verification_service.verify_omniauth(auth: auth, user: user)
+  end
+
+  def verification_callback(verification_method)
+    auth = request.env['omniauth.auth']
+
+    begin
+      @user = AuthToken::AuthToken.new(token: omniauth_params['token']).entity_for(::User)
+      if @user&.invite_not_pending?
+        begin
+          handle_verification(auth, @user)
+          update_user!(auth, @user, verification_method)
+          url = add_uri_params(
+            Frontend::UrlService.new.verification_return_url(locale: Locale.new(@user.locale), pathname: omniauth_params['verification_pathname']),
+            filter_omniauth_params.merge(verification_success: true)
+          )
+          redirect_to url
+        rescue Verification::VerificationService::VerificationTakenError
+          verification_failure_redirect('taken')
+        rescue Verification::VerificationService::NotEntitledError => e
+          verification_failure_redirect(not_entitled_error(e))
+        end
+      end
+    rescue ActiveRecord::RecordNotFound
+      verification_failure_redirect('no_token_passed')
+    end
+  end
+
+  def verified_for_sso?(auth, user, user_created)
+    handle_verification(auth, user)
+    true
+  rescue Verification::VerificationService::NotEntitledError => e
+    # In some cases, it may be fine not to verify during SSO, so we enable this specifically in the method
+    return true unless verification_method.respond_to?(:check_entitled_on_sso?) && verification_method.check_entitled_on_sso?
+
+    user.destroy if user_created # TODO: Probably should not be created in the first place, but bigger refactor required to fix
+    signin_failure_redirect(error_code: not_entitled_error(e))
+    false
+  end
+
+  def not_entitled_error(error)
+    error.why ? "not_entitled_#{error.why}" : 'not_entitled'
+  end
+
+  def verification_failure_redirect(error)
+    url = add_uri_params(
+      Frontend::UrlService.new.verification_return_url(pathname: omniauth_params['verification_pathname']),
+      filter_omniauth_params.merge(verification_error: true, error_code: error)
+    )
+    redirect_to url
+  end
+
   def verification_method
-    nil # overridden
+    @verification_method ||= verification_service.method_by_name(auth_provider)
   end
 
-  def verified_for_sso?(_auth, _user, _user_created)
-    true # overridden
-  end
-
-  def handle_verification(_auth, _user)
-    # overridden
-  end
-
-  def verification_callback(_verification_method)
-    # overridden
+  def verification_service
+    @verification_service ||= Verification::VerificationService.new
   end
 end
-
-OmniauthCallbackController.prepend(Verification::Patches::OmniauthCallbackController)

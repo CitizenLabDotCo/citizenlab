@@ -6,9 +6,12 @@ import { Outlet as RouterOutlet } from 'react-router-dom';
 import useNavbarItems from 'api/navbar/useNavbarItems';
 import { MAX_NAVBAR_ITEMS } from 'api/navbar/util';
 
-import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import Button from 'components/UI/Button';
+import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
+import customPageMessages from 'containers/Admin/pagesAndMenu/containers/CustomPages/messages';
+
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -20,6 +23,10 @@ const PagesMenu = () => {
   const { data: navbarItems } = useNavbarItems();
   const { formatMessage } = useIntl();
   const [addProjectModalIsOpen, setAddProjectModalIsOpen] = useState(false);
+  const canCreateCustomPages = useFeatureFlag({
+    name: 'pages',
+    onlyCheckAllowed: true,
+  });
 
   if (!navbarItems) {
     return null;
@@ -38,24 +45,36 @@ const PagesMenu = () => {
             content={formatMessage(messages.navBarMaxItems)}
             disabled={!disabledAddProjectToNavbarButton}
           >
-            <Button
-              icon="link"
-              buttonStyle="text"
-              onClick={() => setAddProjectModalIsOpen(true)}
-              disabled={disabledAddProjectToNavbarButton}
-            >
-              {formatMessage(messages.addProject)}
-            </Button>
+            <Box>
+              <ButtonWithLink
+                icon="link"
+                buttonStyle="text"
+                onClick={() => setAddProjectModalIsOpen(true)}
+                disabled={disabledAddProjectToNavbarButton}
+              >
+                {formatMessage(messages.addProject)}
+              </ButtonWithLink>
+            </Box>
           </Tooltip>
-          <Button
-            buttonStyle="admin-dark"
-            icon="plus-circle"
-            id="create-custom-page"
-            linkTo={'/admin/pages-menu/pages/new'}
-            className="intercom-admin-pages-menu-add-page"
+          <Tooltip
+            content={formatMessage(
+              customPageMessages.contactGovSuccessToAccessPages
+            )}
+            disabled={canCreateCustomPages}
           >
-            {formatMessage(messages.createCustomPageButton)}
-          </Button>
+            <Box>
+              <ButtonWithLink
+                buttonStyle="admin-dark"
+                icon="plus-circle"
+                id="create-custom-page"
+                linkTo={'/admin/pages-menu/pages/new'}
+                className="intercom-admin-pages-menu-add-page"
+                disabled={!canCreateCustomPages}
+              >
+                {formatMessage(messages.createCustomPageButton)}
+              </ButtonWithLink>
+            </Box>
+          </Tooltip>
         </Box>
       }
     >

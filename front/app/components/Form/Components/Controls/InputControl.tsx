@@ -15,7 +15,7 @@ import {
 } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 
-import { getOtherControlKey } from 'components/Form/utils';
+import getOtherControlKey from 'components/Form/utils/getOtherControlKey';
 import { FormLabel } from 'components/UI/FormComponents';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -58,6 +58,8 @@ export const InputControl = ({
     return (
       <Box display="flex">
         {label}
+        {/* TODO: Fix this the next time the file is edited. */}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         {uischema?.options?.isAdminField && (
           <IconTooltip
             iconColor={colors.grey800}
@@ -109,18 +111,18 @@ export const InputControl = ({
           type={schema.type === 'number' ? 'number' : 'text'}
           value={data}
           onChange={onChange}
-          maxCharCount={schema?.maxLength}
+          maxCharCount={schema.maxLength}
           onBlur={() => {
-            uischema?.options?.transform === 'trim_on_blur' &&
+            uischema.options?.transform === 'trim_on_blur' &&
               isString(data) &&
               onChange(data.trim());
             setDidBlur(true);
           }}
-          disabled={uischema?.options?.readonly}
+          disabled={uischema.options?.readonly}
           placeholder={isOtherField ? label : undefined}
           onKeyDown={handleKeyDown}
         />
-        <VerificationIcon show={uischema?.options?.verificationLocked} />
+        <VerificationIcon show={uischema.options?.verificationLocked} />
       </Box>
       <ErrorDisplay
         inputId={sanitizeForClassname(id)}

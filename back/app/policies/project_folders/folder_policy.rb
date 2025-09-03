@@ -2,14 +2,7 @@
 
 module ProjectFolders
   class FolderPolicy < ApplicationPolicy
-    class Scope
-      attr_reader :user, :scope
-
-      def initialize(user, scope)
-        @user = user
-        @scope = scope
-      end
-
+    class Scope < ApplicationPolicy::Scope
       def resolve
         if user&.admin? || user&.project_folder_moderator? || user&.project_moderator?
           scope.all
@@ -23,13 +16,17 @@ module ProjectFolders
       end
     end
 
+    def index_for_admin?
+      user&.admin? || user&.project_folder_moderator?
+    end
+
     def show?
       return true if user && UserRoleService.new.can_moderate?(record, user)
       return false if record.admin_publication.publication_status == 'draft'
       return true if record.projects.empty?
 
       # We check if the user has access to at least one of the projects in the folder
-      ProjectPolicy::Scope.new(user, record.projects).resolve.exists?
+      scope_for(record.projects).exists?
     end
 
     def by_slug?

@@ -3,43 +3,19 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <% if (process.env.NODE_ENV==="production") { %>
-    <link
-      rel="preload"
-      crossorigin="anonymous"
-      href="/PublicSans-Light.woff2"
-      as="font"
-      type="font/woff2"
-    />
-    <link
-      rel="preload"
-      crossorigin="anonymous"
-      href="/PublicSans-Regular.woff2"
-      as="font"
-      type="font/woff2"
-    />
-    <link
-      rel="preload"
-      crossorigin="anonymous"
-      href="/PublicSans-Medium.woff2"
-      as="font"
-      type="font/woff2"
-    />
-    <link
-      rel="preload"
-      crossorigin="anonymous"
-      href="/PublicSans-SemiBold.woff2"
-      as="font"
-      type="font/woff2"
-    />
-    <link
-      rel="preload"
-      crossorigin="anonymous"
-      href="/PublicSans-Bold.woff2"
-      as="font"
-      type="font/woff2"
-    />
-    <% } %>
+
+    <script type="module">
+      if (import.meta.env.MODE === 'production') {
+        document.write(`
+          <link rel="preload" crossorigin="anonymous" href="/PublicSans-Light.woff2" as="font" type="font/woff2" />
+          <link rel="preload" crossorigin="anonymous" href="/PublicSans-Regular.woff2" as="font" type="font/woff2" />
+          <link rel="preload" crossorigin="anonymous" href="/PublicSans-Medium.woff2" as="font" type="font/woff2" />
+          <link rel="preload" crossorigin="anonymous" href="/PublicSans-SemiBold.woff2" as="font" type="font/woff2" />
+          <link rel="preload" crossorigin="anonymous" href="/PublicSans-Bold.woff2" as="font" type="font/woff2" />
+        `);
+      }
+    </script>
+
     <style>
       html,
       body {
@@ -96,5 +72,7 @@
         <div class="app-loading-spinner"></div>
       </div>
     </div>
+    <!-- Vite injects scripts automatically -->
+    <script type="module" src="/root.tsx"></script>
   </body>
 </html>

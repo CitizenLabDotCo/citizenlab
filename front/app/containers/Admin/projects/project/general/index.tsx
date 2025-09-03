@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
-import { isEmpty, isString } from 'lodash-es';
+import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
+import { isEmpty } from 'lodash-es';
 import { useParams, useLocation } from 'react-router-dom';
 import { Multiloc, UploadFile, CLErrors } from 'typings';
 
-import useAddProjectFile from 'api/project_files/useAddProjectFile';
-import useDeleteProjectFile from 'api/project_files/useDeleteProjectFile';
 import useProjectFiles from 'api/project_files/useProjectFiles';
 import useAddProjectImage from 'api/project_images/useAddProjectImage';
 import useDeleteProjectImage from 'api/project_images/useDeleteProjectImage';
@@ -14,17 +12,15 @@ import useProjectImages, {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
 } from 'api/project_images/useProjectImages';
+import useUpdateProjectImage from 'api/project_images/useUpdateProjectImage';
 import projectPermissionKeys from 'api/project_permissions/keys';
 import projectsKeys from 'api/projects/keys';
-import {
-  IUpdatedProjectProperties,
-  IProjectData,
-  PublicationStatus,
-} from 'api/projects/types';
+import { IUpdatedProjectProperties, IProjectData } from 'api/projects/types';
 import useAddProject from 'api/projects/useAddProject';
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
+import { useSyncProjectFiles } from 'hooks/files/useSyncProjectFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -42,24 +38,35 @@ import {
 } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
+import Highlighter from 'components/Highlighter';
+import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
+import Link from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { usePermission } from 'utils/permissions';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
+
+import { fragmentId } from '../projectHeader';
+import { fragmentId as folderFragmentId } from '../projectHeader/LinkToFolderSettings';
 
 import AttachmentsDropzone from './components/AttachmentsDropzone';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
 import ProjectCardImageDropzone from './components/ProjectCardImageDropzone';
 import ProjectCardImageTooltip from './components/ProjectCardImageTooltip';
+import ProjectDiscoverabilityRadios from './components/ProjectDiscoverabilityRadios';
 import ProjectFolderSelect from './components/ProjectFolderSelect';
 import ProjectHeaderImageTooltip from './components/ProjectHeaderImageTooltip';
 import ProjectNameInput from './components/ProjectNameInput';
-import ProjectStatusPicker from './components/ProjectStatusPicker';
-import { StyledForm, StyledSectionField } from './components/styling';
+import {
+  StyledForm,
+  StyledInputMultiloc,
+  StyledSectionField,
+} from './components/styling';
 import TopicInputs from './components/TopicInputs';
 import messages from './messages';
 import validateTitle from './utils/validateTitle';
@@ -69,11 +76,17 @@ export type TOnProjectAttributesDiffChangeFunction = (
   submitState?: ISubmitState
 ) => void;
 
+type FileOrdering = {
+  [id: string]: number | undefined;
+};
+
 const AdminProjectsProjectGeneral = () => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams();
   const { data: project } = useProjectById(projectId);
+
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
+  const isProjectLibraryEnabled = useFeatureFlag({ name: 'project_library' });
   const appConfigLocales = useAppConfigurationLocales();
   const { width, containerRef } = useContainerWidthAndHeight();
   const { pathname } = useLocation();
@@ -83,13 +96,14 @@ const AdminProjectsProjectGeneral = () => {
 
   const { data: remoteProjectImages } = useProjectImages(projectId || null);
   const { mutateAsync: addProjectImage } = useAddProjectImage();
+  const { mutateAsync: updateProjectImage } = useUpdateProjectImage();
   const { mutateAsync: deleteProjectImage } = useDeleteProjectImage();
   const { mutateAsync: updateProject } = useUpdateProject();
   const { mutateAsync: addProject } = useAddProject();
 
   const { data: remoteProjectFiles } = useProjectFiles(projectId || null);
-  const { mutateAsync: addProjectFile } = useAddProjectFile();
-  const { mutateAsync: deleteProjectFile } = useDeleteProjectFile();
+  const syncProjectFiles = useSyncProjectFiles();
+
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
 
   const [processing, setProcessing] = useState(false);
@@ -100,12 +114,16 @@ const AdminProjectsProjectGeneral = () => {
   // We should probably not have slug, publicationStatus, etc.
   // both in projectAttributesDiff and as separate state.
   const [projectFiles, setProjectFiles] = useState<UploadFile[]>([]);
+  const [initialProjectFilesOrdering, setInitialProjectFilesOrdering] =
+    useState<FileOrdering>({});
   const [projectFilesToRemove, setProjectFilesToRemove] = useState<
     UploadFile[]
   >([]);
   const [projectCardImage, setProjectCardImage] = useState<UploadFile | null>(
     null
   );
+  const [projectCardImageAltText, setProjectCardImageAltText] =
+    useState<Multiloc | null>(null);
   // project_images should always store one record, but in practice it was (or is?) different (maybe because of a bug)
   // https://citizenlabco.slack.com/archives/C015M14HYSF/p1674228018666059
   const [projectCardImageToRemove, setProjectCardImageToRemove] =
@@ -118,13 +136,16 @@ const AdminProjectsProjectGeneral = () => {
 
   const [slug, setSlug] = useState<string | null>(null);
   const [showSlugErrorMessage, setShowSlugErrorMessage] = useState(false);
-  const [publicationStatus, setPublicationStatus] =
-    useState<PublicationStatus>('draft');
+
+  const showProjectFolderSelect =
+    usePermission({
+      item: 'project_folder',
+      action: 'create_project_in_folder',
+    }) && isProjectFoldersEnabled;
 
   useEffect(() => {
     (async () => {
       if (project) {
-        setPublicationStatus(project.data.attributes.publication_status);
         setSlug(project.data.attributes.slug);
       }
     })();
@@ -152,6 +173,22 @@ const AdminProjectsProjectGeneral = () => {
         ).filter(isUploadFile);
 
         setProjectFiles(nextProjectFiles);
+        /*
+         * Alternative deep copy methods like deepClone, structuredClone, and JSON.parse(JSON.stringify(obj))
+         * have inconsistencies, so we create an object with only the necessary properties for ordering.
+         * This approach is fine for now as the number of files is expected to be small. We can optimize if performance becomes an issue.
+         * We are also using an object here so lookup is O(1).
+         */
+        setInitialProjectFilesOrdering(
+          nextProjectFiles.reduce((acc, file) => {
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            if (file?.id) {
+              acc[file.id] = file.ordering;
+            }
+            return acc;
+          }, {})
+        );
       }
     })();
   }, [remoteProjectFiles]);
@@ -159,23 +196,23 @@ const AdminProjectsProjectGeneral = () => {
   useEffect(() => {
     (async () => {
       if (!isNilOrError(remoteProjectImages)) {
-        const nextProjectImagesPromises = remoteProjectImages.data.map(
-          (projectImage) => {
-            const url = projectImage.attributes.versions.large;
+        for (const projectImage of remoteProjectImages.data) {
+          const url = projectImage.attributes.versions.large;
+          const altTextValue = projectImage.attributes.alt_text_multiloc;
 
-            if (url) {
-              return convertUrlToUploadFile(url, projectImage.id, null);
+          if (url) {
+            const uploadFile = await convertUrlToUploadFile(
+              url,
+              projectImage.id,
+              null
+            );
+            if (isUploadFile(uploadFile)) {
+              setProjectCardImage(uploadFile);
+              setProjectCardImageAltText(altTextValue);
+              break;
             }
-
-            return;
           }
-        );
-
-        const nextProjectImages = (
-          await Promise.all(nextProjectImagesPromises)
-        ).filter(isUploadFile);
-
-        setProjectCardImage(nextProjectImages[0]);
+        }
       }
     })();
   }, [remoteProjectImages]);
@@ -189,10 +226,23 @@ const AdminProjectsProjectGeneral = () => {
     setTitleError(null);
   };
 
+  const handleAltTextMultilocOnChange = (altTextMultiloc: Multiloc) => {
+    setSubmitState('enabled');
+    setProjectCardImageAltText(altTextMultiloc);
+  };
+
   const handleHeaderBgChange = (newImageBase64: string | null) => {
     setProjectAttributesDiff((projectAttributesDiff) => ({
       ...projectAttributesDiff,
       header_bg: newImageBase64,
+    }));
+    setSubmitState('enabled');
+  };
+
+  const handleHeaderBgAltTextChange = (altText: Multiloc) => {
+    setProjectAttributesDiff((projectAttributesDiff) => ({
+      ...projectAttributesDiff,
+      header_bg_alt_text_multiloc: altText,
     }));
     setSubmitState('enabled');
   };
@@ -292,7 +342,27 @@ const AdminProjectsProjectGeneral = () => {
           croppedProjectCardBase64 && latestProjectId
             ? addProjectImage({
                 projectId: latestProjectId,
-                image: { image: croppedProjectCardBase64 },
+                image: {
+                  image: croppedProjectCardBase64,
+                  ...(projectCardImageAltText
+                    ? { alt_text_multiloc: projectCardImageAltText }
+                    : {}),
+                },
+              })
+            : null;
+
+        const cardImageToUpdatePromise =
+          projectCardImage &&
+          projectCardImage.id &&
+          projectCardImageAltText &&
+          latestProjectId
+            ? updateProjectImage({
+                projectId: latestProjectId,
+                imageId: projectCardImage.id,
+                image: {
+                  image: projectCardImage.base64,
+                  alt_text_multiloc: projectCardImageAltText,
+                },
               })
             : null;
 
@@ -304,36 +374,20 @@ const AdminProjectsProjectGeneral = () => {
               })
             : null;
 
-        const filesToAddPromises = projectFiles
-          .filter((file) => !file.remote)
-          .map((file) => {
-            if (latestProjectId) {
-              return addProjectFile({
-                projectId: latestProjectId,
-                file: { file: file.base64, name: file.name },
-              });
-            }
-
-            return;
-          });
-        const filesToRemovePromises = projectFilesToRemove
-          .filter((file) => file.remote === true && isString(file.id))
-          .map((file) => {
-            if (latestProjectId && file.id) {
-              return deleteProjectFile({
-                projectId: latestProjectId,
-                fileId: file.id,
-              });
-            }
-
-            return;
-          });
+        const projectFilesPromise = latestProjectId
+          ? syncProjectFiles({
+              projectId: latestProjectId,
+              projectFiles,
+              filesToRemove: projectFilesToRemove,
+              fileOrdering: initialProjectFilesOrdering,
+            })
+          : undefined;
 
         await Promise.all([
           cardImageToAddPromise,
+          cardImageToUpdatePromise,
           cardImageToRemovePromise,
-          ...filesToAddPromises,
-          ...filesToRemovePromises,
+          projectFilesPromise,
         ] as Promise<any>[]);
 
         setSubmitState('success');
@@ -363,17 +417,6 @@ const AdminProjectsProjectGeneral = () => {
   const onSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     saveForm();
-  };
-
-  const handleStatusChange = (publicationStatus: PublicationStatus) => {
-    setSubmitState('enabled');
-    setPublicationStatus(publicationStatus);
-    setProjectAttributesDiff((projectAttributesDiff) => ({
-      ...projectAttributesDiff,
-      admin_publication_attributes: {
-        publication_status: publicationStatus,
-      },
-    }));
   };
 
   const handleSlugOnChange = (slug: string) => {
@@ -422,6 +465,14 @@ const AdminProjectsProjectGeneral = () => {
       setSubmitState(submitState);
     };
 
+  const handleUnlistedOnChange = () => {
+    setProjectAttributesDiff((projectAttributesDiff) => ({
+      ...projectAttributesDiff,
+      listed: !projectAttrs.listed,
+    }));
+    setSubmitState('enabled');
+  };
+
   const projectAttrs = {
     ...(!isNilOrError(project) ? project.data.attributes : {}),
     ...projectAttributesDiff,
@@ -436,9 +487,20 @@ const AdminProjectsProjectGeneral = () => {
     ? !projectCardImage.remote
     : false;
 
+  const handleFilesReorder = (updatedFiles: UploadFile[]) => {
+    setProjectFiles(updatedFiles);
+    setSubmitState('enabled');
+  };
+
+  const isNewProject = !projectId;
+
   return (
     <Box ref={containerRef}>
-      <StyledForm className="e2e-project-general-form" onSubmit={onSubmit}>
+      <StyledForm
+        className="e2e-project-general-form intercom-projects-new-project-form"
+        onSubmit={onSubmit}
+        showStickySaveButton={showStickySaveButton}
+      >
         <Section>
           {projectId && (
             <>
@@ -451,17 +513,36 @@ const AdminProjectsProjectGeneral = () => {
             </>
           )}
 
-          <ProjectStatusPicker
-            publicationStatus={publicationStatus}
-            handleStatusChange={handleStatusChange}
-          />
+          {!isNewProject && (
+            <Warning>
+              {formatMessage(messages.publicationStatusWarning)}
+            </Warning>
+          )}
 
-          <ProjectNameInput
-            titleMultiloc={projectAttrs.title_multiloc}
-            titleError={titleError}
-            apiErrors={apiErrors}
-            handleTitleMultilocOnChange={handleTitleMultilocOnChange}
-          />
+          <Highlighter fragmentId={fragmentId}>
+            <ProjectNameInput
+              titleMultiloc={projectAttrs.title_multiloc}
+              titleError={titleError}
+              apiErrors={apiErrors}
+              handleTitleMultilocOnChange={handleTitleMultilocOnChange}
+            />
+          </Highlighter>
+          {isProjectLibraryEnabled && (
+            <Box mb="20px">
+              <Warning>
+                <FormattedMessage
+                  {...messages.needInspiration}
+                  values={{
+                    inspirationHubLink: (
+                      <Link to="/admin/inspiration-hub" target="_blank">
+                        <FormattedMessage {...messages.inspirationHub} />
+                      </Link>
+                    ),
+                  }}
+                />
+              </Warning>
+            </Box>
+          )}
 
           {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
           {!isNilOrError(project) && slug && (
@@ -470,6 +551,7 @@ const AdminProjectsProjectGeneral = () => {
                 <FormattedMessage {...messages.url} />
               </SubSectionTitle>
               <SlugInput
+                intercomLabelClassname="intercom-product-tour-project-slug-label"
                 slug={slug}
                 pathnameWithoutSlug={'projects'}
                 apiErrors={apiErrors}
@@ -485,27 +567,44 @@ const AdminProjectsProjectGeneral = () => {
             onChange={handleTopicsChange}
           />
 
+          {isNewProject && (
+            <Box mt="40px">
+              <ProjectDiscoverabilityRadios
+                listed={
+                  projectAttrs.listed === undefined ? true : projectAttrs.listed
+                }
+                onChange={handleUnlistedOnChange}
+              />
+            </Box>
+          )}
+
           <GeographicAreaInputs
             areaIds={projectAttrs.area_ids}
             onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
           />
 
-          {isProjectFoldersEnabled && (
-            <ProjectFolderSelect
-              projectAttrs={projectAttrs}
-              onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
-              isNewProject={!projectId}
-            />
+          {showProjectFolderSelect && (
+            <Highlighter fragmentId={folderFragmentId}>
+              <ProjectFolderSelect
+                projectAttrs={projectAttrs}
+                onProjectAttributesDiffChange={
+                  handleProjectAttributeDiffOnChange
+                }
+                isNewProject={isNewProject}
+              />
+            </Highlighter>
           )}
 
-          <SectionField>
+          <SectionField className="intercom-product-tour-project-header-image-field">
             <SubSectionTitle>
               <FormattedMessage {...messages.headerImageInputLabel} />
               <ProjectHeaderImageTooltip />
             </SubSectionTitle>
             <HeaderBgUploader
               imageUrl={project?.data.attributes.header_bg.large}
+              headerImageAltText={projectAttrs.header_bg_alt_text_multiloc}
               onImageChange={handleHeaderBgChange}
+              onHeaderImageAltTextChange={handleHeaderBgAltTextChange}
             />
           </SectionField>
 
@@ -532,45 +631,61 @@ const AdminProjectsProjectGeneral = () => {
               />
             )}
           </StyledSectionField>
+          {projectCardImage && (
+            <StyledSectionField>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.projectImageAltTextTitle} />
+                <IconTooltip
+                  content={
+                    <FormattedMessage
+                      {...messages.projectImageAltTextTooltip}
+                    />
+                  }
+                />
+              </SubSectionTitle>
+              <StyledInputMultiloc
+                type="text"
+                valueMultiloc={projectCardImageAltText}
+                label={<FormattedMessage {...messages.altText} />}
+                onChange={handleAltTextMultilocOnChange}
+              />
+            </StyledSectionField>
+          )}
 
           <AttachmentsDropzone
             projectFiles={projectFiles}
             apiErrors={apiErrors}
             handleProjectFileOnAdd={handleProjectFileOnAdd}
             handleProjectFileOnRemove={handleProjectFileOnRemove}
+            onFileReorder={handleFilesReorder}
           />
-
-          {/* 
-            The sticky save button is only shown when you edit a form so that the user 
-            is not forced to scroll to the bottom of the page to save it.
-          */}
-
-          <Box
-            {...(showStickySaveButton && {
-              position: 'fixed',
-              borderTop: `1px solid ${colors.divider}`,
-              bottom: '0',
-              w: `calc(${width}px + ${defaultAdminCardPadding * 2}px)`,
-              ml: `-${defaultAdminCardPadding}px`,
-              background: colors.white,
-              display: 'flex',
-              justifyContent: 'flex-start',
-              px: `${defaultAdminCardPadding}px`,
-            })}
-            py="8px"
-          >
-            <SubmitWrapper
-              loading={processing}
-              status={submitState}
-              messages={{
-                buttonSave: messages.saveProject,
-                buttonSuccess: messages.saveSuccess,
-                messageError: messages.saveErrorMessage,
-                messageSuccess: messages.saveSuccessMessage,
-              }}
-            />
-          </Box>
         </Section>
+        <Box
+          {...(showStickySaveButton && {
+            position: 'fixed',
+            borderTop: `1px solid ${colors.divider}`,
+            bottom: '0',
+            w: `calc(${width}px + ${defaultAdminCardPadding * 2}px)`,
+            ml: `-${defaultAdminCardPadding}px`,
+            background: colors.white,
+            display: 'flex',
+            justifyContent: 'flex-start',
+            px: `${defaultAdminCardPadding}px`,
+          })}
+          py="8px"
+        >
+          <SubmitWrapper
+            className="intercom-projects-new-project-save-button"
+            loading={processing}
+            status={submitState}
+            messages={{
+              buttonSave: messages.saveProject,
+              buttonSuccess: messages.saveSuccess,
+              messageError: messages.saveErrorMessage,
+              messageSuccess: messages.saveSuccessMessage,
+            }}
+          />
+        </Box>
       </StyledForm>
     </Box>
   );

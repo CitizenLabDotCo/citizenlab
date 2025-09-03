@@ -70,6 +70,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
                 <Box display="flex" gap="8px">
                   {formatMessage(messages.fullWidthBannerLayout)}
                   <IconTooltip
+                    placement="bottom-start"
                     content={
                       <FormattedMessage
                         {...messages.fullWidthBannerTooltip}
@@ -79,6 +80,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
                               href={formatMessage(messages.imageSupportPageURL)}
                               target="_blank"
                               rel="noreferrer"
+                              onClick={(e) => e.stopPropagation()}
                             >
                               <FormattedMessage
                                 {...messages.fullWidthBannerTooltipLink}
@@ -116,6 +118,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
             </LayoutOptionTop>
             <LayoutPreview
               src={
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 bannerLayout === 'two_column_layout'
                   ? TwoColumnLayoutActive
                   : TwoColumnLayoutInactive
@@ -136,6 +139,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
                 <Box display="flex" gap="8px">
                   {formatMessage(messages.twoRowLayout)}
                   <IconTooltip
+                    placement="bottom-start"
                     content={
                       <FormattedMessage
                         {...messages.twoRowBannerTooltip}
@@ -145,6 +149,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
                               href={formatMessage(messages.imageSupportPageURL)}
                               target="_blank"
                               rel="noreferrer"
+                              onClick={(e) => e.stopPropagation()}
                             >
                               <FormattedMessage
                                 {...messages.twoRowBannerTooltipLink}
@@ -179,6 +184,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
                 <Box display="flex" gap="8px">
                   {formatMessage(messages.fixedRatioLayout)}
                   <IconTooltip
+                    placement="bottom-start"
                     content={
                       <FormattedMessage
                         {...messages.fixedRatioBannerTooltip}
@@ -188,6 +194,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
                               href={formatMessage(messages.imageSupportPageURL)}
                               target="_blank"
                               rel="noreferrer"
+                              onClick={(e) => e.stopPropagation()}
                             >
                               <FormattedMessage
                                 {...messages.fixedRatioBannerTooltipLink}

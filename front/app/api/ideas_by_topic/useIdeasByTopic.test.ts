@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { IIdeasByTopic } from './types';
 import useIdeasByTopic from './useIdeasByTopic';
@@ -42,7 +42,7 @@ describe('useIdeasByTopic', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () =>
         useIdeasByTopic({
           project: 'project',
@@ -69,7 +69,7 @@ describe('useIdeasByTopic', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () =>
         useIdeasByTopic({
           project: 'project',

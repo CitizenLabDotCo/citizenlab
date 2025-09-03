@@ -30,7 +30,8 @@ const TopicsControl = ({
   visible,
 }: ControlProps) => {
   const availableTopics =
-    (!Array.isArray(schema.items) &&
+    (!Array.isArray(schema.items) && // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       (schema.items?.oneOf as { const: string; title: string }[])) ||
     [];
 

@@ -13,33 +13,62 @@ import ImageCropper, { ImageCropperProps } from '.';
 const Container = ({
   aspectRatioWidth,
   aspectRatioHeight,
+  show3x1MobileCropLines = false,
   ...otherProps
 }: ImageCropperProps) => {
   const { formatMessage } = useIntl();
   return (
     <Box>
       <ImageCropper
-        {...{ aspectRatioWidth, aspectRatioHeight }}
+        {...{ aspectRatioWidth, aspectRatioHeight, show3x1MobileCropLines }}
         {...otherProps}
       />
       <Warning>
-        <Text>
-          <FormattedMessage
-            {...messages.info}
-            values={{
-              link: (
-                <a
-                  href={formatMessage(messages.imageSupportPageURL)}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <FormattedMessage {...messages.infoLinkText} />
-                </a>
-              ),
-              aspect: `${aspectRatioWidth}:${aspectRatioHeight}`,
-            }}
-          />
-        </Text>
+        <Box>
+          <Text>
+            <FormattedMessage {...messages.cropSentenceOne} />
+          </Text>
+          <ul>
+            <li>
+              <Text>
+                <FormattedMessage
+                  {...messages.cropSentenceTwo}
+                  values={{
+                    aspect: `${aspectRatioWidth}:${aspectRatioHeight}`,
+                  }}
+                />
+              </Text>
+            </li>
+            {show3x1MobileCropLines && (
+              <li>
+                <Text>
+                  <FormattedMessage {...messages.cropSentenceMobileRatio} />
+                </Text>
+              </li>
+            )}
+          </ul>
+          {show3x1MobileCropLines && (
+            <Text>
+              <FormattedMessage {...messages.cropSentenceMobileCrop} />
+            </Text>
+          )}
+          <Text>
+            <FormattedMessage
+              {...messages.cropFinalSentence}
+              values={{
+                link: (
+                  <a
+                    href={formatMessage(messages.imageSupportPageURL)}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <FormattedMessage {...messages.infoLinkText} />
+                  </a>
+                ),
+              }}
+            />
+          </Text>
+        </Box>
       </Warning>
     </Box>
   );

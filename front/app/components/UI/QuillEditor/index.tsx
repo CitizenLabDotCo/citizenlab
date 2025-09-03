@@ -6,7 +6,7 @@ import React, {
   useLayoutEffect,
 } from 'react';
 
-import { Label, IconTooltip } from '@citizenlab/cl2-component-library';
+import { Label, IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import Quill, { RangeStatic } from 'quill';
 
@@ -19,17 +19,22 @@ import { createQuill } from './createQuill';
 import messages from './messages';
 import StyleContainer from './StyleContainer';
 import Toolbar from './Toolbar';
-import { getHTML, setHTML, syncPlaceHolder } from './utils';
+import {
+  getHTML,
+  setHTML,
+  syncPlaceHolder,
+  getQuillPlainTextLength,
+} from './utils';
 
 export interface Props {
   id: string;
   value?: string;
   label?: string | JSX.Element | null;
   labelTooltipText?: string | JSX.Element | null;
-  noToolbar?: boolean;
   noImages?: boolean;
   noVideos?: boolean;
   noAlign?: boolean;
+  noLinks?: boolean;
   limitedTextFormatting?: boolean;
   maxHeight?: string;
   minHeight?: string;
@@ -37,6 +42,8 @@ export interface Props {
   onChange?: (html: string) => void;
   onFocus?: () => void;
   onBlur?: () => void;
+  maxCharCount?: number;
+  minCharCount?: number;
 }
 
 configureQuill();
@@ -46,10 +53,10 @@ const QuillEditor = ({
   value,
   label,
   labelTooltipText,
-  noAlign,
-  noToolbar,
-  noImages,
-  noVideos,
+  noAlign = false,
+  noImages = false,
+  noVideos = false,
+  noLinks = false,
   limitedTextFormatting,
   maxHeight,
   minHeight,
@@ -57,6 +64,8 @@ const QuillEditor = ({
   onChange,
   onBlur,
   onFocus,
+  maxCharCount,
+  minCharCount,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [editor, setEditor] = useState<Quill | null>(null);
@@ -76,7 +85,7 @@ const QuillEditor = ({
     onFocusRef.current = onFocus;
   });
 
-  const toolbarId = !noToolbar ? `ql-editor-toolbar-${id}` : undefined;
+  const toolbarId = `ql-editor-toolbar-${id}`;
 
   // Initialize Quill
   // https://quilljs.com/playground/react
@@ -94,6 +103,7 @@ const QuillEditor = ({
       noImages,
       noVideos,
       noAlign,
+      noLinks,
       limitedTextFormatting,
       withCTAButton,
       onBlur: onBlurRef.current,
@@ -126,9 +136,13 @@ const QuillEditor = ({
 
     // Not sure why we handle focus like this, but seems to work
     const focusHandler = (range: RangeStatic, oldRange: RangeStatic) => {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (range === null && oldRange !== null) {
         setFocussed(false);
         onBlurRef.current?.();
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       } else if (range !== null && oldRange === null) {
         setFocussed(true);
         onFocusRef.current?.();
@@ -193,22 +207,38 @@ const QuillEditor = ({
           {labelTooltipText && <IconTooltip content={labelTooltipText} />}
         </Label>
       )}
-      {toolbarId && (
-        <Toolbar
-          id={toolbarId}
-          limitedTextFormatting={limitedTextFormatting}
-          withCTAButton={withCTAButton}
-          isButtonsMenuVisible={isButtonsMenuVisible}
-          noImages={noImages}
-          noVideos={noVideos}
-          noAlign={noAlign}
-          editor={editor}
-          setIsButtonsMenuVisible={setIsButtonsMenuVisible}
-        />
-      )}
+      <Toolbar
+        id={toolbarId}
+        limitedTextFormatting={limitedTextFormatting}
+        withCTAButton={withCTAButton}
+        isButtonsMenuVisible={isButtonsMenuVisible}
+        noImages={noImages}
+        noVideos={noVideos}
+        noAlign={noAlign}
+        noLinks={noLinks}
+        editor={editor}
+        setIsButtonsMenuVisible={setIsButtonsMenuVisible}
+      />
       <div>
         <div ref={containerRef} />
       </div>
+      {(maxCharCount || minCharCount) && editor && (
+        <Box
+          display="flex"
+          justifyContent="flex-end"
+          mt="8px"
+          color={
+            (maxCharCount && getQuillPlainTextLength(editor) > maxCharCount) ||
+            (minCharCount && getQuillPlainTextLength(editor) < minCharCount)
+              ? 'red600'
+              : 'textSecondary'
+          }
+        >
+          {getQuillPlainTextLength(editor)}
+          {maxCharCount && ` / ${maxCharCount}`}
+          {minCharCount && ` (≥ ${minCharCount})`}
+        </Box>
+      )}
     </StyleContainer>
   );
 };

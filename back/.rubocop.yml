@@ -17,6 +17,7 @@ AllCops:
     - "**/bin/**/*"
     - "engines/ee/**/*"
     - "vendor/**/*"
+    - "**/create_tenant.rake"
 
 Layout/HashAlignment:
   EnforcedColonStyle: [key, table]

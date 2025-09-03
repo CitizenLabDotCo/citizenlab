@@ -16,13 +16,15 @@ interface Props {
   apiErrors: CLErrors;
   handleProjectFileOnAdd: (newProjectFile: UploadFile) => void;
   handleProjectFileOnRemove: (projectFileToRemove: UploadFile) => void;
+  onFileReorder: (updatedFiles: UploadFile[]) => void;
 }
 
-export default ({
+const AttachmentsDropzone = ({
   projectFiles,
   apiErrors,
   handleProjectFileOnAdd,
   handleProjectFileOnRemove,
+  onFileReorder,
 }: Props) => (
   <StyledSectionField>
     <SubSectionTitle>
@@ -33,10 +35,16 @@ export default ({
     </SubSectionTitle>
     <StyledFileUploader
       id="e2e-project-file-uploader"
+      dataCy={'e2e-project-file-uploader'}
       onFileAdd={handleProjectFileOnAdd}
       onFileRemove={handleProjectFileOnRemove}
       files={projectFiles}
       apiErrors={apiErrors}
+      onFileReorder={onFileReorder}
+      enableDragAndDrop
+      multiple
     />
   </StyledSectionField>
 );
+
+export default AttachmentsDropzone;

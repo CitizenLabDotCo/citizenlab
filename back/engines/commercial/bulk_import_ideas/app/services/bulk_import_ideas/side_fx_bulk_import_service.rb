@@ -4,11 +4,18 @@ module BulkImportIdeas
   class SideFxBulkImportService
     def after_success(user, phase, model, format, items, users)
       options = { payload: { model: model, format: format, items_created: items.count, users_created: users.count } }
-      activity_object = phase
+
+      project_analyses = Analysis::Analysis.where(project: phase.project)
+      phase_analyses = Analysis::Analysis.where(phase: phase)
+      analyses = (project_analyses + phase_analyses).uniq
+
       if items.count == 0
-        LogActivityJob.perform_later activity_object, 'bulk_import_started', user, Time.now.to_i, options
+        LogActivityJob.perform_later phase, 'bulk_import_started', user, Time.now.to_i, options
       else
-        LogActivityJob.perform_later activity_object, 'bulk_import_succeeded', user, items.last&.created_at, options
+        LogActivityJob.perform_later phase, 'bulk_import_succeeded', user, items.last&.created_at, options
+        analyses.each do |analysis|
+          Analysis::HeatmapGenerationJob.perform_later(analysis)
+        end
       end
     end
 

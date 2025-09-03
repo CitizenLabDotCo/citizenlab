@@ -2,6 +2,7 @@ import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 
 import { parse } from 'qs';
 import { useLocation } from 'react-router-dom';
+import { RouteType } from 'routes';
 
 import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
 import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
@@ -10,9 +11,11 @@ import { AuthenticationContext } from 'api/authentication/authentication_require
 import { SSOParams } from 'api/authentication/singleSignOn';
 import useAuthUser from 'api/me/useAuthUser';
 
+import { useModalQueue } from 'containers/App/ModalQueue';
 import { invalidateAllActionDescriptors } from 'containers/Authentication/useSteps/invalidateAllActionDescriptors';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
+import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
 import {
@@ -36,6 +39,7 @@ export default function useSteps() {
   const anySSOEnabled = useAnySSOEnabled();
   const { pathname, search } = useLocation();
   const { data: authUser } = useAuthUser();
+  const { queueModal, removeModal } = useModalQueue();
 
   // The authentication data will be initialized with the global sign up flow.
   // In practice, this will be overwritten before firing the flow (see event
@@ -52,14 +56,20 @@ export default function useSteps() {
 
   const [currentStep, _setCurrentStep] = useState<Step>('closed');
 
-  const setCurrentStep = useCallback((step: Step) => {
-    if (step === 'closed') {
-      invalidateAllActionDescriptors();
-      queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
-    }
+  const setCurrentStep = useCallback(
+    (step: Step) => {
+      if (step === 'closed') {
+        invalidateAllActionDescriptors();
+        queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
+        removeModal('authentication');
+      } else {
+        queueModal('authentication');
+      }
 
-    _setCurrentStep(step);
-  }, []);
+      _setCurrentStep(step);
+    },
+    [queueModal, removeModal]
+  );
 
   const [state, setState] = useState<State>({
     flow: 'signup',
@@ -268,7 +278,7 @@ export default function useSteps() {
     // authentication method through an URL param, and launch the corresponding
     // flow
     if (
-      urlSearchParams.sso_response === 'true' ||
+      urlSearchParams.sso_success === 'true' ||
       urlSearchParams.verification_success === 'true'
     ) {
       const {
@@ -288,6 +298,12 @@ export default function useSteps() {
       const contextFromLocalStorage = localStorage.getItem('auth_context');
       localStorage.removeItem('auth_context');
 
+      // Check if there is a path in local storage
+      const pathFromLocalStorage = localStorage.getItem(
+        'auth_path'
+      ) as RouteType;
+      localStorage.removeItem('auth_path');
+
       const context = contextFromLocalStorage
         ? JSON.parse(contextFromLocalStorage)
         : {
@@ -306,8 +322,13 @@ export default function useSteps() {
       updateState({ flow });
       transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(flow);
 
-      // Remove query string from URL as params already been captured
-      window.history.replaceState(null, '', pathname);
+      // Check that the path is the same as the one stored in local storage
+      if (pathFromLocalStorage && pathname !== pathFromLocalStorage) {
+        clHistory.push(pathFromLocalStorage);
+      } else {
+        // Remove query string from URL as params already been captured
+        window.history.replaceState(null, '', pathname);
+      }
     }
   }, [
     pathname,

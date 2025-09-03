@@ -10,13 +10,11 @@ interface Props {
   postId: string;
   body: string;
   translateButtonClicked?: boolean;
-  postType: 'idea' | 'initiative';
 }
 
 const PostShowTranslatedBody = ({
   translateButtonClicked,
   postId,
-  postType,
   body,
 }: Props) => {
   const locale = useLocale();
@@ -25,7 +23,7 @@ const PostShowTranslatedBody = ({
     attributeName: 'body_multiloc',
     localeTo: locale,
     id: postId,
-    context: postType,
+    context: 'idea',
     machineTranslationButtonClicked: translateButtonClicked || false,
   });
 

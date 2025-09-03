@@ -13,9 +13,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Project.settings.description',
     defaultMessage: 'Description',
   },
-  projectTags: {
-    id: 'app.containers.AdminPage.Project.settings.projectTags',
-    defaultMessage: 'Project tags',
+  inputTags: {
+    id: 'app.containers.AdminPage.Project.settings.inputTags',
+    defaultMessage: 'Input tags',
   },
   accessRights: {
     id: 'app.containers.AdminPage.Project.settings.accessRights',
@@ -24,5 +24,9 @@ export default defineMessages({
   events: {
     id: 'app.containers.AdminPage.Project.settings.events',
     defaultMessage: 'Events',
+  },
+  data: {
+    id: 'app.containers.AdminPage.Project.settings.data',
+    defaultMessage: 'Data',
   },
 });

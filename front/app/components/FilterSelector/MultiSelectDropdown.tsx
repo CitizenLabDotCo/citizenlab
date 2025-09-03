@@ -8,6 +8,7 @@ import {
   Button,
   useBreakpoint,
   Icon,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
 import { includes, isNil } from 'lodash-es';
 import styled from 'styled-components';
@@ -85,6 +86,7 @@ export interface SelectorProps {
   textColor?: string;
   currentTitle: string | JSX.Element;
   handleKeyDown?: (event: KeyboardEvent) => void;
+  isLoading?: boolean;
 }
 
 interface Props extends SelectorProps {
@@ -117,6 +119,7 @@ const MultiSelectDropdown = ({
   textColor,
   currentTitle,
   handleKeyDown,
+  isLoading,
 }: Props) => {
   const tabsRef = useRef<(HTMLLIElement | null)[]>([]);
   const [focusedIndex, setFocusedIndex] = useState(-1);
@@ -142,7 +145,6 @@ const MultiSelectDropdown = ({
           nextIndex = focusedIndex === totalItems - 1 ? 0 : focusedIndex + 1;
         }
         setFocusedIndex(nextIndex);
-        // tabsRef.current[nextIndex]?.focus();
       } else if (
         event.type === 'click' ||
         (event.type === 'keydown' && event.code === 'Space')
@@ -167,7 +169,7 @@ const MultiSelectDropdown = ({
             minWidth={minWidth}
             onKeyDown={handleKeyDown}
             ariaExpanded={opened}
-            aria-controls={baseID}
+            ariaControls={baseID}
           >
             <Box display="flex" gap="8px">
               {currentTitle}
@@ -205,43 +207,43 @@ const MultiSelectDropdown = ({
         content={
           <Box role="group" aria-labelledby={selectorId}>
             <List className="e2e-sort-items">
-              {values &&
-                values.map((entry, index) => {
-                  const checked = includes(selected, entry.value);
-                  const last = index === values.length - 1;
-                  const classNames = [
-                    `e2e-sort-item-${
-                      entry.value !== '-new' ? entry.value : 'old'
-                    }`,
-                    last ? 'last' : '',
-                  ]
-                    .filter((item) => !isNil(item))
-                    .join(' ');
+              {values.map((entry, index) => {
+                const checked = includes(selected, entry.value);
+                const last = index === values.length - 1;
+                const classNames = [
+                  `e2e-sort-item-${
+                    entry.value !== '-new' ? entry.value : 'old'
+                  }`,
+                  last ? 'last' : '',
+                ]
+                  .filter((item) => !isNil(item))
+                  .join(' ');
 
-                  return (
-                    <CheckboxListItem
-                      id={`${baseID}-${index}`}
-                      key={entry.value}
-                      onMouseDown={removeFocusAfterMouseClick}
-                      onKeyDown={handleOnSelectSingleValue(entry)}
-                      className={classNames}
-                      ref={(el) => (tabsRef.current[index] = el)}
-                      role="checkbox"
-                      aria-checked={checked}
-                      tabIndex={0}
-                    >
-                      <Checkbox
-                        checked={checked}
-                        onChange={handleOnToggleCheckbox(entry)}
-                        label={<CheckboxLabel>{entry.text}</CheckboxLabel>}
-                        name={name}
-                        selectedBorderColor={colors.white}
-                        checkBoxTabIndex={-1}
-                      />
-                    </CheckboxListItem>
-                  );
-                })}
+                return (
+                  <CheckboxListItem
+                    id={`${baseID}-${index}`}
+                    key={entry.value}
+                    onMouseDown={removeFocusAfterMouseClick}
+                    onKeyDown={handleOnSelectSingleValue(entry)}
+                    className={classNames}
+                    ref={(el) => (tabsRef.current[index] = el)}
+                    role="checkbox"
+                    aria-checked={checked}
+                    tabIndex={0}
+                  >
+                    <Checkbox
+                      checked={checked}
+                      onChange={handleOnToggleCheckbox(entry)}
+                      label={<CheckboxLabel>{entry.text}</CheckboxLabel>}
+                      name={name}
+                      selectedBorderColor={colors.white}
+                      checkBoxTabIndex={-1}
+                    />
+                  </CheckboxListItem>
+                );
+              })}
             </List>
+            {isLoading && <Spinner />}
           </Box>
         }
       />
@@ -250,5 +252,3 @@ const MultiSelectDropdown = ({
 };
 
 export default MultiSelectDropdown;
-
-// TODO: page jump on landing page (doesn't happen on projects page)

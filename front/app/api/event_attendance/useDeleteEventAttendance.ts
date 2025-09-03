@@ -25,6 +25,9 @@ const useDeleteEventAttendance = (eventId: string, userId?: string) => {
       queryClient.invalidateQueries({
         queryKey: eventsKeys.item({ id: eventId }),
       });
+      queryClient.invalidateQueries({
+        queryKey: eventsKeys.list({}),
+      });
       if (userId) {
         queryClient.invalidateQueries({
           queryKey: eventsKeys.list({ attendeeId: userId }),

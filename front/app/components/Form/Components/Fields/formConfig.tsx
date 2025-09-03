@@ -2,6 +2,8 @@
 import {
   linearScaleControlTester,
   LinearScaleControl,
+  ratingControlTester,
+  RatingControl,
   MapControl,
   mapControlTester,
   inputControlTester,
@@ -28,10 +30,8 @@ import {
   ImageControl,
   attachmentsControlTester,
   AttachmentsControl,
-  clCategoryTester,
   clPageTester,
-  CLCategoryLayout,
-  CLSurveyPageLayout,
+  CLPageLayout,
   locationControlTester,
   LocationControl,
   dateControlTester,
@@ -54,30 +54,45 @@ import {
   SingleAttachmentControl,
   shapefileUploadControlTester,
   ShapefileUploadControl,
+  CosponsorsControl,
+  cosponsorsControlTester,
+  rankingControlTester,
+  MatrixControl,
+  matrixControlTester,
+  RankingControl,
+  SentimentLinearScaleControl,
+  sentimentLinearScaleControlTester,
 } from 'components/Form/Components/Controls';
 
 const commonRenderers = [
   { tester: linearScaleControlTester, renderer: LinearScaleControl },
+  { tester: ratingControlTester, renderer: RatingControl },
   { tester: inputControlTester, renderer: InputControl },
   { tester: textAreaControlTester, renderer: TextAreaControl },
   { tester: checkboxControlTester, renderer: CheckboxControl },
   { tester: singleSelectControlTester, renderer: SingleSelectControl },
   { tester: SingleSelectEnumControlTester, renderer: SingleSelectEnumControl },
   { tester: multiSelectControlTester, renderer: MultiSelectControl },
+  { tester: rankingControlTester, renderer: RankingControl },
+  { tester: matrixControlTester, renderer: MatrixControl },
   { tester: WYSIWYGControlTester, renderer: WYSIWYGControl },
   { tester: descriptionControlTester, renderer: DescriptionControl },
   { tester: topicsControlTester, renderer: TopicsControl },
   { tester: titleControlTester, renderer: TitleControl },
   { tester: imageControlTester, renderer: ImageControl },
   { tester: attachmentsControlTester, renderer: AttachmentsControl },
-  { tester: clCategoryTester, renderer: CLCategoryLayout },
-  { tester: clPageTester, renderer: CLSurveyPageLayout },
+  { tester: clPageTester, renderer: CLPageLayout },
   { tester: orderedLayoutTester, renderer: OrderedLayout },
   { tester: locationControlTester, renderer: LocationControl },
   { tester: dateControlTester, renderer: DateControl },
   { tester: userPickerControlTester, renderer: UserPickerControl },
   { tester: multilocInputTester, renderer: MultilocInputLayout },
   { tester: orderedLayoutTester, renderer: OrderedLayout },
+  { tester: cosponsorsControlTester, renderer: CosponsorsControl },
+  {
+    tester: sentimentLinearScaleControlTester,
+    renderer: SentimentLinearScaleControl,
+  },
 ];
 
 export const selectRenderers = (formType: 'default' | 'input' | 'survey') => {
@@ -85,6 +100,7 @@ export const selectRenderers = (formType: 'default' | 'input' | 'survey') => {
 
   return [
     { tester: linearScaleControlTester, renderer: LinearScaleControl },
+    { tester: ratingControlTester, renderer: RatingControl },
     {
       tester: multiSelectCheckboxControlTester,
       renderer: MultiSelectCheckboxControl,

@@ -43,6 +43,8 @@ export const itemsMatch = (
 export const getJustifyContent = (position: Position) => {
   if (position === 'bottom-center') return 'center';
   if (position === 'bottom-left') return 'flex-start';
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (position?.includes('right')) return 'flex-start';
   return 'flex-end';
 };

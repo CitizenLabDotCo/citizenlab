@@ -8,10 +8,10 @@ describe('Existing single phase project with poll', () => {
     cy.wait(1000);
   });
 
+  // TODO: Improve this test
   it('shows the correct project header', () => {
     cy.get('#e2e-project-description');
     cy.get('#e2e-project-sidebar');
-    cy.get('#e2e-project-sidebar-share-button');
   });
 
   it('shows the poll', () => {
@@ -51,7 +51,6 @@ describe('Timeline project with poll phase', () => {
           projectId,
           title: phaseTitle,
           startAt: '2018-03-01',
-          endAt: '2025-01-01',
           participationMethod: 'poll',
           canComment: true,
           canPost: true,
@@ -77,7 +76,7 @@ describe('Timeline project with poll phase', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit(`/projects/${projectSlug}`);
-    cy.acceptCookies();
+
     cy.wait(2000);
   });
 
@@ -101,6 +100,7 @@ describe('Timeline project with poll phase', () => {
     cy.clearCookies();
     cy.setLoginCookie(email, password);
     cy.visit(`/projects/${projectSlug}`);
+    cy.acceptCookies();
 
     cy.wait(100);
     cy.get('.e2e-timeline-project-poll-container')

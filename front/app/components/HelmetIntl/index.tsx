@@ -1,16 +1,18 @@
 import React from 'react';
 
-import { Helmet } from 'react-helmet';
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
+import { Helmet } from 'react-helmet-async';
+import { MessageDescriptor } from 'react-intl';
 
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 
 type Props = {
   title: MessageDescriptor;
   description?: MessageDescriptor;
-} & WrappedComponentProps;
+};
 
-const HelmetIntl = ({ title, description, intl: { formatMessage } }: Props) => {
+const HelmetIntl = ({ title, description }: Props) => {
+  const { formatMessage } = useIntl();
+
   return (
     <>
       <Helmet
@@ -25,4 +27,4 @@ const HelmetIntl = ({ title, description, intl: { formatMessage } }: Props) => {
   );
 };
 
-export default injectIntl(HelmetIntl);
+export default HelmetIntl;

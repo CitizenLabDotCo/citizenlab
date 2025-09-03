@@ -1,6 +1,11 @@
 import { randomString } from '../../support/commands';
 import moment = require('moment');
 
+/* 
+  This test only works locally when you run the fake SSO server on the same docker network (see the bit where it navigates to http://host.docker.internal:8081/oauth/authorize). 
+  
+  To make this work with our e2e tests on CircleCI requires some devops work.
+*/
 describe.skip('Verified action', () => {
   let projectId: string;
   let projectSlug: string;
@@ -80,7 +85,7 @@ describe.skip('Verified action', () => {
     // by manually doing the redirect another time.
     // No idea why it works like this, but it does.
     cy.visit(
-      `http://localhost:3000/en/projects/${projectSlug}?sso_response=true&sso_flow=signup&sso_verification_action=posting_idea&sso_verification_id=${phaseId}&sso_verification_type=phase`
+      `http://localhost:3000/en/projects/${projectSlug}?sso_success=true&sso_flow=signup&sso_verification_action=posting_idea&sso_verification_id=${phaseId}&sso_verification_type=phase`
     );
 
     // Make sure that custom fields window is opened

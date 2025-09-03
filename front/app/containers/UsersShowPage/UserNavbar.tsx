@@ -16,6 +16,7 @@ import useEventsByUserId from 'api/events/useEventsByUserId';
 import useAuthUser from 'api/me/useAuthUser';
 import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
 import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
+import useUserSurveySubmissions from 'api/user_survey_submissions/useUserSurveySubmissions';
 import { IUserData } from 'api/users/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -114,7 +115,7 @@ interface Props {
 
 interface TabData
   extends Omit<ITab, 'name' | 'url' | 'feature' | 'statusLabel' | 'active'> {
-  path: 'submissions' | 'comments' | 'following' | 'events';
+  path: 'submissions' | 'surveys' | 'comments' | 'following' | 'events';
   className?: string;
   icon: IconNames;
   active: boolean;
@@ -131,13 +132,21 @@ const UserNavbar = memo<Props>(({ user }) => {
   });
   const { data: events } = useEventsByUserId(user.id);
   const { data: authUser } = useAuthUser();
+  const { data: surveySubmissions } = useUserSurveySubmissions();
 
   const eventsCount = events?.data.length;
-  const showEventTab = authUser?.data?.id === user.id;
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+
   const isFollowingEnabled = useFeatureFlag({
     name: 'follow',
   });
-  const showFollowingTab = isFollowingEnabled && authUser?.data?.id === user.id;
+
+  const isAuthUser = authUser?.data.id === user.id;
+  const showEventTab = isAuthUser;
+  const showSurveySubmissionsTab = isAuthUser;
+  const showFollowingTab = isFollowingEnabled && isAuthUser;
+  const surveySubmissionsCount = surveySubmissions?.data.length;
 
   const followingTab: TabData = {
     label: formatMessage(messages.followingWithCount, {
@@ -167,6 +176,18 @@ const UserNavbar = memo<Props>(({ user }) => {
       path: 'submissions',
       icon: 'idea',
     },
+    ...(showSurveySubmissionsTab
+      ? [
+          {
+            label: formatMessage(messages.surveyResponses, {
+              responses: surveySubmissionsCount ?? 0,
+            }),
+            active: pathname.endsWith('surveys'),
+            path: 'surveys',
+            icon: 'survey',
+          } as const,
+        ]
+      : []),
     {
       label: formatMessage(messages.commentsWithCount, {
         commentsCount: commentsCount?.data.attributes.count || 0,

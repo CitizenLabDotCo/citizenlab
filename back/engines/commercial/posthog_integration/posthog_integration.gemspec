@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.version     = PosthogIntegration::VERSION
   s.authors     = ['CitizenLab']
   s.licenses    = [Gem::Licenses::NONSTANDARD] # ['CitizenLab Commercial License V2']
-  s.summary     = 'Sending usage events to PostHog, a product analytics tools. Only for admins.'
+  s.summary     = 'This integration enables sending usage events to PostHog, a product analytics tools. It applies only to admin and moderator users.'
 
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 

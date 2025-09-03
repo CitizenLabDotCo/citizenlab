@@ -1,0 +1,66 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://bedrock-runtime.eu-central-1.amazonaws.com/model/eu.anthropic.claude-sonnet-4-20250514-v1:0/invoke
+    body:
+      encoding: UTF-8
+      string: '{"anthropic_version":"bedrock-2023-05-31","messages":[{"role":"user","content":[{"type":"text","text":"Analyze
+        the provided document and generate a concise description or abstract (2-3
+        sentences) that accurately summarizes its nature, main purpose, key content,
+        and relevant context. \nThe description should be informative and capture
+        the essential meaning of the document. As extra context, the filename is:
+        \"david.docx\"\n\nOutput the results as a properly formatted JSON object with
+        the following requirements:\n- Avoid starting the summary with \"The document
+        is...\" or similar generic introductions.\n- Keys must be the following locale
+        codes: en, fr-FR, nl-NL\n- Values must be the description text accurately
+        translated for each respective locale\n- All translations should maintain
+        the same meaning and level of detail\n- Use proper JSON formatting with double
+        quotes around all keys and string values\n- Ensure the JSON is valid and parseable\n\nThe
+        response must contain ONLY the JSON object - no additional text, explanations,
+        code blocks, or formatting outside the JSON structure.\n\nExample format:\n{\n  \"en\":
+        \"... (description in en) ...\",\n  \"fr-FR\": \"... (description in fr-FR)
+        ...\",\n  \"nl-NL\": \"... (description in nl-NL) ...\"\n}\n"},{"type":"document","source":{"type":"base64","media_type":"application/pdf","data":"JVBERi0xLgoxIDAgb2JqPDwvUGFnZXMgMiAwIFI+PmVuZG9iagoyIDAgb2JqPDwvS2lkc1szIDAgUl0vQ291bnQgMT4+ZW5kb2JqCjMgMCBvYmo8PC9QYXJlbnQgMiAwIFI+PmVuZG9iagp0cmFpbGVyIDw8L1Jvb3QgMSAwIFI+Pg=="}}]},{"role":"assistant","content":[{"type":"text","text":"{"}]}],"max_tokens":4096,"temperature":0.7}'
+    headers:
+      User-Agent:
+      - Faraday v2.12.2
+      X-Amz-Date:
+      - 20250820T101524Z
+      X-Amz-Content-Sha256:
+      - 0275b6832255c62ff809346d80ec65093c07ef95315e3b6b06f2d3ef8914c716
+      Authorization:
+      - AWS4-HMAC-SHA256 Credential=AKIAVVRDDPNZZGMDU2VU/20250820/eu-central-1/bedrock/aws4_request,
+        SignedHeaders=host;x-amz-content-sha256;x-amz-date, Signature=e30d33c314dac46034c7f5707cfd28c2a24a4df826679453ab8575b0bdd1e9a0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Wed, 20 Aug 2025 10:15:27 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '923'
+      Connection:
+      - keep-alive
+      X-Amzn-Requestid:
+      - 2f6da45a-201d-48cf-9e87-8f86a60e1155
+      X-Amzn-Bedrock-Invocation-Latency:
+      - '2991'
+      X-Amzn-Bedrock-Output-Token-Count:
+      - '177'
+      X-Amzn-Bedrock-Input-Token-Count:
+      - '1846'
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        eyJpZCI6Im1zZ19iZHJrXzAxS1JHbzZLZ1ZBenpnNVZZYUxaaDVDdiIsInR5cGUiOiJtZXNzYWdlIiwicm9sZSI6ImFzc2lzdGFudCIsIm1vZGVsIjoiY2xhdWRlLXNvbm5ldC00LTIwMjUwNTE0IiwiY29udGVudCI6W3sidHlwZSI6InRleHQiLCJ0ZXh0IjoiXG4gIFwiZW5cIjogXCJBIGJsYW5rIGRvY3VtZW50IHdpdGggbm8gdmlzaWJsZSBjb250ZW50LCB0ZXh0LCBvciBmb3JtYXR0aW5nIGVsZW1lbnRzLiBUaGUgZmlsZSBuYW1lZCAnZGF2aWQuZG9jeCcgYXBwZWFycyB0byBiZSBhbiBlbXB0eSBvciBjb3JydXB0ZWQgZG9jdW1lbnQgdGhhdCBjb250YWlucyBubyByZWFkYWJsZSBpbmZvcm1hdGlvbi5cIixcbiAgXCJmci1GUlwiOiBcIlVuIGRvY3VtZW50IHZpZXJnZSBzYW5zIGNvbnRlbnUgdmlzaWJsZSwgdGV4dGUgb3Ugw6lsw6ltZW50cyBkZSBmb3JtYXRhZ2UuIExlIGZpY2hpZXIgbm9tbcOpICdkYXZpZC5kb2N4JyBzZW1ibGUgw6p0cmUgdW4gZG9jdW1lbnQgdmlkZSBvdSBjb3Jyb21wdSBxdWkgbmUgY29udGllbnQgYXVjdW5lIGluZm9ybWF0aW9uIGxpc2libGUuXCIsXG4gIFwibmwtTkxcIjogXCJFZW4gbGVlZyBkb2N1bWVudCB6b25kZXIgemljaHRiYXJlIGluaG91ZCwgdGVrc3Qgb2Ygb3BtYWFrZWxlbWVudGVuLiBIZXQgYmVzdGFuZCBnZW5hYW1kICdkYXZpZC5kb2N4JyBsaWprdCBlZW4gbGVlZyBvZiBiZXNjaGFkaWdkIGRvY3VtZW50IHRlIHppam4gZGF0IGdlZW4gbGVlc2JhcmUgaW5mb3JtYXRpZSBiZXZhdC5cIlxufSJ9XSwic3RvcF9yZWFzb24iOiJlbmRfdHVybiIsInN0b3Bfc2VxdWVuY2UiOm51bGwsInVzYWdlIjp7ImlucHV0X3Rva2VucyI6MTg0NiwiY2FjaGVfY3JlYXRpb25faW5wdXRfdG9rZW5zIjowLCJjYWNoZV9yZWFkX2lucHV0X3Rva2VucyI6MCwib3V0cHV0X3Rva2VucyI6MTc3fX0=
+  recorded_at: Wed, 20 Aug 2025 10:15:27 GMT
+recorded_with: VCR 6.2.0

@@ -1,4 +1,4 @@
-FROM ruby:3.3.1-slim
+FROM ruby:3.3.4-slim
 
 RUN apt-get update && apt-get install -qq -y --no-install-recommends \
       lsb-release          \
@@ -6,23 +6,21 @@ RUN apt-get update && apt-get install -qq -y --no-install-recommends \
       libpq-dev            \
       file                 \
       imagemagick          \
+      ca-certificates      \
       curl                 \
       git                  \
       optipng              \
       jpegoptim            \
       pngquant             \
+      libimage-exiftool-perl \
+      libjemalloc2         \
       libgeos-dev          \
       libgmp3-dev          \
       netcat-openbsd       \
       shared-mime-info     \
       less                 \
-      clang
-
-RUN curl -sL https://deb.nodesource.com/setup_18.x  | bash -
-RUN apt-get -y install nodejs
-
-# Install MJML parser required by email engine.
-RUN npm install -g mjml@4.4.1
+      clang                \
+      gnupg
 
 # Install Postgres client:
 # Import the PostgreSQL repository signing key, add the repository, and install the package.
@@ -41,8 +39,6 @@ ENV PATH="$PATH:/cl2_back/bin"
 COPY back/Gemfile back/Gemfile.* back/.ruby-version ./
 COPY back/engines ./engines
 COPY back/lib/citizen_lab.rb ./lib/
-
-RUN gem install bundler:2.4.20
 
 COPY back/. .
 

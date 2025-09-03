@@ -10,7 +10,7 @@ import {
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import styled from 'styled-components';
 
-import { dropdownLayoutTester } from 'components/Form/utils';
+import dropdownLayoutTester from 'components/Form/utils/dropdownLayoutTester';
 import { FormLabel } from 'components/UI/FormComponents';
 
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
@@ -57,14 +57,20 @@ const SingleSelectEnumControl = ({
           options={options as IOption[]}
           onChange={(val) => {
             setDidBlur(true);
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             handleChange(path, val?.value);
           }}
           key={sanitizeForClassname(id)}
           id={sanitizeForClassname(id)}
           aria-label={getLabel(uischema, schema, path)}
           canBeEmpty // see Select component for more info
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           disabled={uischema?.options?.readonly}
         />
+        {/* TODO: Fix this the next time the file is edited. */}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
       <ErrorDisplay
@@ -84,11 +90,21 @@ export const SingleSelectEnumControlTester = (
   jsonSchema: JsonSchema
 ) => {
   if (
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     uiSchema?.options?.input_type === 'select' &&
-    dropdownLayoutTester(uiSchema, jsonSchema)
+    dropdownLayoutTester(uiSchema, jsonSchema, {
+      rootSchema: jsonSchema,
+      config: {},
+    })
   ) {
     return 1000;
-  } else if (isEnumControl(uiSchema, jsonSchema)) {
+  } else if (
+    isEnumControl(uiSchema, jsonSchema, {
+      rootSchema: jsonSchema,
+      config: {},
+    })
+  ) {
     return 4;
   }
   return -1;

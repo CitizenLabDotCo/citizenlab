@@ -4,19 +4,23 @@
 #
 # Table name: email_campaigns_campaigns
 #
-#  id               :uuid             not null, primary key
-#  type             :string           not null
-#  author_id        :uuid
-#  enabled          :boolean
-#  sender           :string
-#  reply_to         :string
-#  schedule         :jsonb
-#  subject_multiloc :jsonb
-#  body_multiloc    :jsonb
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  deliveries_count :integer          default(0), not null
-#  context_id       :uuid
+#  id                   :uuid             not null, primary key
+#  type                 :string           not null
+#  author_id            :uuid
+#  enabled              :boolean
+#  sender               :string
+#  reply_to             :string
+#  schedule             :jsonb
+#  subject_multiloc     :jsonb
+#  body_multiloc        :jsonb
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  deliveries_count     :integer          default(0), not null
+#  context_id           :uuid
+#  title_multiloc       :jsonb
+#  intro_multiloc       :jsonb
+#  button_text_multiloc :jsonb
+#  context_type         :string
 #
 # Indexes
 #
@@ -36,6 +40,7 @@ module EmailCampaigns
     include Disableable
     include LifecycleStageRestrictable
     include Trackable
+    include ContentConfigurable
     allow_lifecycle_stages only: %w[trial active]
 
     recipient_filter :filter_notification_recipient
@@ -78,8 +83,7 @@ module EmailCampaigns
         event_payload: {
           initiating_user_first_name: notification.initiating_user&.first_name,
           initiating_user_last_name: notification.initiating_user&.last_name,
-          post_title_multiloc: notification.post.title_multiloc,
-          post_type: notification.post_type,
+          idea_title_multiloc: notification.idea.title_multiloc,
           comment_author_name: notification.comment.author_name,
           comment_body_multiloc: notification.comment.body_multiloc,
           comment_url: Frontend::UrlService.new.model_to_url(notification.comment, locale: Locale.new(recipient.locale)),

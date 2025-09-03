@@ -2,10 +2,10 @@ import React from 'react';
 
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import FormattedCurrency from 'utils/currency/FormattedCurrency';
+import messages from 'containers/Admin/projects/project/messages';
 
-import messages from '../../../../messages';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import FormattedCurrency from 'utils/currency/FormattedCurrency';
 
 import { LabelText, LabelWrapper } from './styling';
 
@@ -24,18 +24,33 @@ export const LabelHeaderDescription = ({
   </LabelText>
 );
 
+type Header = 'minimum' | 'maximum';
+type Tooltip = 'minimumTooltip' | 'maximumTooltip';
+
+const HEADER_MESSAGES: Record<Header, MessageDescriptor> = {
+  minimum: messages.minimum,
+  maximum: messages.maximum,
+};
+
+const TOOLTIP_MESSAGES: Record<Tooltip, MessageDescriptor> = {
+  minimumTooltip: messages.minimumTooltip,
+  maximumTooltip: messages.maximumTooltip,
+};
+
 export const LabelBudgetingInput = ({
   header,
   tooltip,
 }: {
-  header: string;
-  tooltip: string;
+  header: Header;
+  tooltip: Tooltip;
 }) => (
   <LabelWrapper>
-    <FormattedMessage {...messages[header]} />
+    <FormattedMessage {...HEADER_MESSAGES[header]} />
     &nbsp;(
     <FormattedCurrency />
     )&nbsp;
-    <IconTooltip content={<FormattedMessage {...messages[tooltip]} />} />
+    <IconTooltip
+      content={<FormattedMessage {...TOOLTIP_MESSAGES[tooltip]} />}
+    />
   </LabelWrapper>
 );

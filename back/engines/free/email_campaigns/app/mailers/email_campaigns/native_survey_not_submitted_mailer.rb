@@ -2,33 +2,40 @@
 
 module EmailCampaigns
   class NativeSurveyNotSubmittedMailer < ApplicationMailer
-    protected
+    include EditableWithPreview
 
-    def subject
-      format_message('subject', values: { organizationName: organization_name })
+    def editable
+      %i[subject_multiloc title_multiloc intro_multiloc button_text_multiloc]
+    end
+
+    def substitution_variables
+      {
+        organizationName: organization_name,
+        phaseTitle: localize_for_recipient(event&.phase_title_multiloc)
+      }
+    end
+
+    def preview_command(recipient)
+      data = preview_service.preview_data(recipient)
+      {
+        recipient: recipient,
+        event_payload: {
+          survey_url: data.phase.url,
+          phase_title_multiloc: data.phase.title_multiloc,
+          phase_end_at: Time.now + 10.days
+        }
+      }
     end
 
     private
 
-    def header_title
-      format_message('title_native_survey_not_submitted')
-    end
+    helper_method :survey_end_date
 
-    def header_message
-      if event.phase_end_at
-        format_message('body_native_survey_not_submitted', values: {
-          phaseTitle: localize_for_recipient(event.phase_title_multiloc),
-          phaseEndDate: event.phase_end_at ? I18n.l(event.phase_end_at, format: '%B %d', locale: locale.locale_sym) : 'NOWT'
-        })
-      else
-        format_message('body_native_survey_not_submitted_no_date', values: {
-          phaseTitle: localize_for_recipient(event.phase_title_multiloc)
-        })
-      end
-    end
+    def survey_end_date
+      end_date = event&.phase_end_at ? I18n.l(event.phase_end_at, format: '%B %d', locale: locale.locale_sym) : nil
+      return unless end_date
 
-    def preheader
-      format_message('preheader', values: { organizationName: organization_name })
+      format_message('submissions_close', values: { phaseEndDate: end_date })
     end
   end
 end

@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { customFieldOptionImageData } from './__mocks__/customFieldOptionImage';
 import useAddCustomFieldOptionImage from './useAddCustomFieldOptionImage';
@@ -23,12 +23,9 @@ describe('useAddCustomFieldOptionImage', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(
-      () => useAddCustomFieldOptionImage(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useAddCustomFieldOptionImage(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate('test_base64');
@@ -45,12 +42,9 @@ describe('useAddCustomFieldOptionImage', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
-      () => useAddCustomFieldOptionImage(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useAddCustomFieldOptionImage(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate('test_base64');

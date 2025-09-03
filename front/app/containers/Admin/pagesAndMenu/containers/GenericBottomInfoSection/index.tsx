@@ -14,7 +14,7 @@ import { ICustomPageData } from 'api/custom_pages/types';
 import Feedback from 'components/HookForm/Feedback';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { injectIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
@@ -65,6 +65,7 @@ const GenericBottomInfoSection = ({
   };
 
   const onFormSubmitAndEnable = async (formValues: FormValues) => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!updatePageAndEnableSection) return;
 
     try {
@@ -122,15 +123,15 @@ const GenericBottomInfoSection = ({
             />
           </Box>
           <Box display="flex">
-            <Button
+            <ButtonWithLink
               type="submit"
               processing={methods.formState.isSubmitting}
               data-cy={`e2e-bottom-info-section-submit`}
             >
               {formatMessage(messages.saveButton)}
-            </Button>
+            </ButtonWithLink>
             {!pageData.attributes.bottom_info_section_enabled && (
-              <Button
+              <ButtonWithLink
                 ml="30px"
                 type="button"
                 buttonStyle="primary-outlined"
@@ -139,7 +140,7 @@ const GenericBottomInfoSection = ({
                 data-cy={`e2e-bottom-info-section-secondary-submit`}
               >
                 {formatMessage(messages.saveAndEnableButton)}
-              </Button>
+              </ButtonWithLink>
             )}
           </Box>
         </SectionFormWrapper>

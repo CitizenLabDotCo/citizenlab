@@ -17,7 +17,9 @@ const IdeaFormBuilder = lazy(
 const SurveyFormBuilder = lazy(
   () => import('./project/nativeSurvey/SurveyFormBuilder')
 );
-const ProjectParticipation = lazy(() => import('./project/participation'));
+const ProjectParticipation = lazy(
+  () => import('../../../components/admin/participation')
+);
 const ProjectTraffic = lazy(() => import('./project/traffic'));
 const ProjectMessaging = lazy(() => import('./project/messaging/All'));
 const ProjectMessagingNew = lazy(() => import('./project/messaging/New'));
@@ -31,18 +33,25 @@ const AdminProjectPhaseIndex = lazy(() => import('./project/phase'));
 const AdminProjectsProjectSettings = lazy(() => import('./project/settings'));
 const AdminProjectsProjectGeneral = lazy(() => import('./project/general'));
 const AdminPhaseNewAndEdit = lazy(() => import('./project/phaseSetup'));
+const AdminProjectFiles = lazy(() => import('./project/files'));
 const AdminProjectEvents = lazy(() => import('./project/events'));
 const AdminProjectEventsEdit = lazy(() => import('./project/events/edit'));
 const AdminProjectPermissions = lazy(
   () => import('./project/permissions/Project')
 );
 const AdminPhasePermissions = lazy(() => import('./project/permissions/Phase'));
+const AdminPhaseEmails = lazy(
+  () => import('./project/admin_phase_email_wrapper')
+);
 const AdminProjectSurveyResults = lazy(() => import('./project/surveyResults'));
 const AdminProjectPoll = lazy(() => import('./project/poll'));
 const AdminProjectsSurvey = lazy(() => import('./project/nativeSurvey'));
 
 const AdminProjectDescription = lazy(() => import('./project/description'));
 const AdminProjectIdeaForm = lazy(() => import('./project/inputForm'));
+const AdminPhaseSurveyFormTabPanel = lazy(
+  () => import('./project/surveyForm/TabPanel')
+);
 
 const AdminProjectIdeas = lazy(() => import('./project/ideas'));
 const InputImporter = lazy(() => import('./project/inputImporter'));
@@ -54,10 +63,8 @@ const AdminProjectVolunteeringNew = lazy(
 const AdminProjectVolunteeringEdit = lazy(
   () => import('./project/volunteering/EditCause')
 );
-const AdminAllowedTopicsComponent = React.lazy(
-  () => import('./project/topics')
-);
-const AdminCustomMapConfigComponent = React.lazy(
+const AdminAllowedTopicsComponent = lazy(() => import('./project/topics'));
+const AdminCustomMapConfigComponent = lazy(
   () => import('containers/Admin/CustomMapConfigPage')
 );
 
@@ -66,6 +73,10 @@ const ReportTab = lazy(() => import('./project/information/ReportTab'));
 
 const AdminProjectProposals = lazy(() => import('./project/proposals'));
 
+const AdminProjectsData = lazy(() => import('./project/data'));
+
+const EmailsEdit = lazy(() => import('../messaging/Edit'));
+
 export function adminProjectsProjectPath(projectId: string): RouteType {
   return `/admin/projects/${projectId}`;
 }
@@ -73,10 +84,6 @@ export function adminProjectsProjectPath(projectId: string): RouteType {
 export enum projectsRoutes {
   projects = 'projects',
   new = 'new',
-  allProjects = 'all',
-  published = 'published',
-  draft = 'draft',
-  archived = 'archived',
   projectIdeaId = ':projectId/ideas/:ideaId',
   projectSettings = ':projectId/settings',
   projectTraffic = 'traffic',
@@ -86,28 +93,32 @@ export enum projectsRoutes {
   projectMessagingNew = 'messaging/new',
   projectMessagingEdit = 'messaging/:campaignId/edit',
   projectMessagingShow = 'messaging/:campaignId',
+  projectFiles = 'files',
   projectEvents = 'events',
   projectEventsNew = 'events/new',
   projectEventsId = 'events/:id',
   projectSettingsTags = 'tags',
   projectSettingsAccessRights = 'access-rights',
+  projectSettingsData = 'data',
   projectId = ':projectId',
   projectIdPhases = 'phases',
   projectPhasesSetup = 'setup',
   projectPhaseSetup = ':phaseId/setup',
   projectPhase = ':phaseId',
-  projectPhaseSurveyResults = ':phaseId/survey-results',
+  projectPhaseExternalSurveyResults = ':phaseId/survey-results',
   projectPhasePolls = ':phaseId/polls',
   projectPhaseAccessRights = ':phaseId/access-rights',
+  projectPhaseEmails = ':phaseId/emails',
   projectPhaseIdeas = ':phaseId/ideas',
   projectPhaseProposals = ':phaseId/proposals',
   projectPhaseIdeaForm = ':phaseId/form',
   projectPhaseVolunteering = ':phaseId/volunteering',
   projectPhaseMap = ':phaseId/map',
-  projectPhaseNativeSurvey = ':phaseId/native-survey',
+  projectPhaseNativeSurveyResults = ':phaseId/results',
+  projectPhaseSurveyForm = ':phaseId/survey-form',
+  projectPhaseNativeSurveyFormEdit = ':phaseId/survey-form/edit',
   projectPhaseVolunteeringNewCause = ':phaseId/volunteering/causes/new',
   projectPhaseIdeaFormEdit = ':phaseId/form/edit',
-  projectPhaseNativeSurveyEdit = ':phaseId/native-survey/edit',
   projectPhaseVolunteeringCause = ':phaseId/volunteering/causes/:causeId',
   projectPhaseInputImporter = ':phaseId/input-importer',
   projectPhaseReport = ':phaseId/report',
@@ -116,14 +127,11 @@ export enum projectsRoutes {
 
 export type projectsRouteTypes =
   | AdminRoute<projectsRoutes.projects>
-  | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.allProjects}`>
-  | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.published}`>
-  | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.draft}`>
-  | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.archived}`>
   | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.new}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/ideas/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/settings`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectEvents}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectFiles}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectSettingsDescription}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectEvents}/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectMessaging}`>
@@ -149,9 +157,12 @@ export type projectsRouteTypes =
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/new`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/new`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/form/edit`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/native-survey/edit`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/native-survey/edit?${string}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/results`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-form`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-form/edit`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-form/edit?${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/${string}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/emails`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/analysis/${string}`>;
 
 const createAdminProjectsRoutes = () => {
@@ -171,38 +182,7 @@ const createAdminProjectsRoutes = () => {
           </PageLoading>
         ),
       },
-      {
-        path: projectsRoutes.allProjects,
-        element: (
-          <PageLoading>
-            <AdminProjectsList />
-          </PageLoading>
-        ),
-      },
-      {
-        path: projectsRoutes.published,
-        element: (
-          <PageLoading>
-            <AdminProjectsList />
-          </PageLoading>
-        ),
-      },
-      {
-        path: projectsRoutes.draft,
-        element: (
-          <PageLoading>
-            <AdminProjectsList />
-          </PageLoading>
-        ),
-      },
-      {
-        path: projectsRoutes.archived,
-        element: (
-          <PageLoading>
-            <AdminProjectsList />
-          </PageLoading>
-        ),
-      },
+
       ...moduleConfiguration.routes['admin.project_templates'],
       ...moduleConfiguration.routes['admin.projects'],
       {
@@ -254,6 +234,14 @@ const createAdminProjectsRoutes = () => {
             element: (
               <PageLoading>
                 <AdminProjectPermissions />
+              </PageLoading>
+            ),
+          },
+          {
+            path: projectsRoutes.projectSettingsData,
+            element: (
+              <PageLoading>
+                <AdminProjectsData />
               </PageLoading>
             ),
           },
@@ -337,6 +325,14 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
+            path: projectsRoutes.projectFiles,
+            element: (
+              <PageLoading>
+                <AdminProjectFiles />
+              </PageLoading>
+            ),
+          },
+          {
             path: projectsRoutes.projectEvents,
             element: (
               <PageLoading>
@@ -412,7 +408,7 @@ const createAdminProjectsRoutes = () => {
                 ),
               },
               {
-                path: projectsRoutes.projectPhaseSurveyResults,
+                path: projectsRoutes.projectPhaseExternalSurveyResults,
                 element: (
                   <PageLoading>
                     <AdminProjectSurveyResults />
@@ -434,6 +430,18 @@ const createAdminProjectsRoutes = () => {
                     <AdminPhasePermissions />
                   </PageLoading>
                 ),
+              },
+              {
+                path: projectsRoutes.projectPhaseEmails,
+                element: (
+                  <PageLoading>
+                    <AdminPhaseEmails />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: ':phaseId/emails/:campaignId/edit',
+                element: <EmailsEdit campaignType="automated" />,
               },
               {
                 path: projectsRoutes.projectPhaseIdeas,
@@ -484,10 +492,18 @@ const createAdminProjectsRoutes = () => {
                 ),
               },
               {
-                path: projectsRoutes.projectPhaseNativeSurvey,
+                path: projectsRoutes.projectPhaseNativeSurveyResults,
                 element: (
                   <PageLoading>
                     <AdminProjectsSurvey />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: projectsRoutes.projectPhaseSurveyForm,
+                element: (
+                  <PageLoading>
+                    <AdminPhaseSurveyFormTabPanel />
                   </PageLoading>
                 ),
               },
@@ -500,7 +516,7 @@ const createAdminProjectsRoutes = () => {
                 ),
               },
               {
-                path: projectsRoutes.projectPhaseNativeSurveyEdit,
+                path: projectsRoutes.projectPhaseNativeSurveyFormEdit,
                 element: (
                   <PageLoading>
                     <SurveyFormBuilder />

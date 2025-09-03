@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { object, string } from 'yup';
 
@@ -119,7 +119,6 @@ const EmailChange = () => {
           )}
         </StyledContentContainer>
         <Modal
-          fullScreen={false}
           width="580px"
           opened={openConfirmationModal}
           close={() => {

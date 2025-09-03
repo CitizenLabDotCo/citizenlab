@@ -2,6 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
+import { IdeaStatusParticipationMethod } from 'api/idea_statuses/types';
 import useAddIdeaStatus from 'api/idea_statuses/useAddIdeaStatus';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 
@@ -21,9 +22,13 @@ const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom: 20px;
 `;
 
-const NewIdeaStatus = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
+const NewIdeaStatus = ({
+  variant,
+}: {
+  variant: IdeaStatusParticipationMethod;
+}) => {
   const { data: ideaStatuses } = useIdeaStatuses({
-    participation_method: variant,
+    queryParams: { participation_method: variant },
   });
   const { mutateAsync: addIdeaStatus } = useAddIdeaStatus();
   const tenantLocales = useAppConfigurationLocales();
@@ -33,26 +38,28 @@ const NewIdeaStatus = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
   };
 
   const goBack = () => {
-    clHistory.push(`/admin/settings/${variant}/statuses`);
+    clHistory.push(`/admin/settings/statuses/${variant}`);
   };
 
   if (tenantLocales && ideaStatuses) {
     return (
-      <Section>
+      <div data-testid="e2e-new-status-page">
         <GoBackButton onClick={goBack} />
-        <StyledSectionTitle>
-          <FormattedMessage {...messages.addIdeaStatus} />
-        </StyledSectionTitle>
-        <IdeaStatusForm
-          defaultValues={{
-            color: '#b5b5b5',
-            code: 'custom',
-          }}
-          onSubmit={handleSubmit}
-          showCategorySelector
-          variant={variant}
-        />
-      </Section>
+        <Section>
+          <StyledSectionTitle>
+            <FormattedMessage {...messages.addIdeaStatus} />
+          </StyledSectionTitle>
+          <IdeaStatusForm
+            defaultValues={{
+              color: '#b5b5b5',
+              code: 'custom',
+            }}
+            onSubmit={handleSubmit}
+            showCategorySelector
+            variant={variant}
+          />
+        </Section>
+      </div>
     );
   }
 

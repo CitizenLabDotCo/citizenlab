@@ -8,6 +8,7 @@ import {
   Text,
   Button,
   Tooltip,
+  Divider,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -19,8 +20,6 @@ import useDeleteProjectModerator from 'api/project_moderators/useDeleteProjectMo
 import { IUserData } from 'api/users/types';
 
 import useLocalize from 'hooks/useLocalize';
-
-import Divider from 'components/admin/Divider';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -50,6 +49,8 @@ const RemoveButton = ({
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { data: folder } = useAdminPublication(
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     item.relationships.parent?.data?.id || null
   );
   const {
@@ -111,6 +112,8 @@ const UserAssignedItems = ({ user }: { user: IUserData }) => {
   const { data: assignedItems } = useAdminPublications({
     filter_user_is_moderator_of: user.id,
   });
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const flatAssignedItems = assignedItems?.pages?.flatMap((page) => page.data);
 
   const isFolder = (item: IAdminPublicationData) =>
@@ -133,6 +136,8 @@ const UserAssignedItems = ({ user }: { user: IUserData }) => {
     Boolean(
       item.relationships.parent.data?.id &&
         moderatedAdminPublicationFolderIds?.includes(
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           item.relationships.parent.data?.id
         )
     );

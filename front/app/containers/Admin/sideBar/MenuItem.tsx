@@ -1,13 +1,10 @@
 import React from 'react';
 
-import {
-  media,
-  colors,
-  fontSizes,
-  Icon,
-  Box,
-} from '@citizenlab/cl2-component-library';
+import { media, colors, Icon, Box } from '@citizenlab/cl2-component-library';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+
+import useAuthUser from 'api/me/useAuthUser';
 
 import useFeatureFlags from 'hooks/useFeatureFlags';
 
@@ -16,6 +13,7 @@ import CountBadge from 'components/UI/CountBadge';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { usePermission } from 'utils/permissions';
+import { isSuperAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
 import { NavItem } from './navItems';
@@ -23,9 +21,8 @@ import { NavItem } from './navItems';
 const Text = styled.div`
   flex: 1;
   color: #fff;
-  font-size: ${fontSizes.base}px;
+  font-size: 15px;
   font-weight: 400;
-  line-height: 19px;
   margin-left: 15px;
   display: flex;
   align-items: center;
@@ -36,9 +33,9 @@ const Text = styled.div`
   `}
 `;
 
-const MenuItemLink = styled(Link)`
+const MenuItemLink = styled(Link)<{ active: boolean }>`
   flex: 0 0 auto;
-  width: 210px;
+  width: 224px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -51,6 +48,10 @@ const MenuItemLink = styled(Link)`
   &.active,
   &.focus-visible {
     background: rgba(0, 0, 0, 0.7);
+  }
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
   }
 
   &:not(.active) {
@@ -75,6 +76,21 @@ const MenuItemLink = styled(Link)`
     }
   }
 
+  ${({ active }) =>
+    active
+      ? `
+    background: rgba(0, 0, 0, 0.7);
+    .cl-icon {
+      .cl-icon-primary {
+        fill: ${colors.teal400};
+      }
+      .cl-icon-accent {
+        fill: ${colors.blue400};
+      }
+    }
+  `
+      : ''}
+
   ${media.tablet`
     width: 56px;
     padding-right: 5px;
@@ -90,32 +106,50 @@ const MenuItem = ({ navItem }: Props) => {
     names: navItem.featureNames ?? [],
     onlyCheckAllowed: navItem.onlyCheckAllowed,
   });
+  const { data: user } = useAuthUser();
+  const { pathname } = useLocation();
 
   const hasPermission = usePermission({
     action: 'access',
     item: { type: 'route', path: navItem.link },
   });
 
-  if (!featuresEnabled || !hasPermission) return null;
+  const enabledAndHasPermission = featuresEnabled && hasPermission;
+
+  if (navItem.name === 'reporting') {
+    if (!isSuperAdmin(user) && !enabledAndHasPermission) {
+      // Super admins need to have access to the global report builder
+      return null;
+    }
+  } else {
+    if (!enabledAndHasPermission) return null;
+  }
+
+  const inspirationHubActive =
+    navItem.link.startsWith('/admin/inspiration-hub') &&
+    pathname.includes('/admin/inspiration-hub');
 
   return (
     <MenuItemLink
       to={navItem.link}
       className={`intercom-admin-menu-item-${navItem.name}`}
+      active={inspirationHubActive}
     >
-      <Box
-        display="flex"
-        flex="0 0 auto"
-        alignItems="center"
-        justifyContent="center"
-        className={navItem.iconName}
-      >
-        <Icon name={navItem.iconName} />
-      </Box>
-      <Text>
-        <FormattedMessage {...messages[navItem.message]} />
-        {!!navItem.count && <CountBadge count={navItem.count} />}
-      </Text>
+      <>
+        <Box
+          display="flex"
+          flex="0 0 auto"
+          alignItems="center"
+          justifyContent="center"
+          className={navItem.iconName}
+        >
+          <Icon name={navItem.iconName} height="20px" />
+        </Box>
+        <Text>
+          <FormattedMessage {...messages[navItem.message]} />
+          {!!navItem.count && <CountBadge count={navItem.count} />}
+        </Text>
+      </>
     </MenuItemLink>
   );
 };

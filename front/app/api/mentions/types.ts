@@ -10,8 +10,7 @@ export type MentionRoles = 'admin' | 'moderator';
 
 export type IQueryParameters = {
   mention: string;
-  post_id?: string;
-  post_type?: 'Idea' | 'Initiative';
+  idea_id?: string;
   roles?: MentionRoles[];
 };
 

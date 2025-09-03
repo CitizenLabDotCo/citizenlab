@@ -21,7 +21,7 @@ describe('Project description builder Info & Accordions section', () => {
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
-        cy.apiEnableProjectDescriptionBuilder({ projectId }).then(() => {
+        cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
           cy.visit(
             `/admin/project-description-builder/projects/${projectId}/description`
           );
@@ -65,7 +65,7 @@ describe('Project description builder Info & Accordions section', () => {
     cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.acceptCookies();
+
     cy.contains('Edited text.').should('be.visible');
     cy.contains('Accordion text.').should('be.visible');
     cy.contains('About').should('be.visible');

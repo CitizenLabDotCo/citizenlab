@@ -8,8 +8,8 @@ describe WebApi::V1::IdeaSerializer do
       let(:project) { create(:project) }
       let(:form) { create(:custom_form, participation_context: project) }
 
-      let(:visible_public_field) { create(:custom_field, :for_custom_form, resource: form, enabled: true, input_type: 'number', answer_visible_to: 'public') }
-      let(:visible_admin_field) { create(:custom_field, :for_custom_form, resource: form, enabled: true, input_type: 'number', answer_visible_to: 'admins') }
+      let(:visible_public_field) { create(:custom_field, :for_custom_form, resource: form, enabled: true, input_type: 'number', code: 'proposed_budget') }
+      let(:visible_admin_field) { create(:custom_field, :for_custom_form, resource: form, enabled: true, input_type: 'number') }
       let(:disabled_field) { create(:custom_field, :for_custom_form, resource: form, enabled: false, input_type: 'number') }
 
       let(:visible_public_value) { 1 }

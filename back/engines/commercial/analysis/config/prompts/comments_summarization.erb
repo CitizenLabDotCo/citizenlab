@@ -1,0 +1,16 @@
+On an online participation project titled '<%= project_title %>', a user posted the following input:
+
+<%= input_text%>
+
+Above is the original input, and at the end of this message are the comments that users have left in response. Comments are separated by lines. Subcomments are indented.
+
+Your goal is to summarize the comments thread in a way that is concise and informative. The goal for the reader is to save time and understand at a glance what is being discussed in the comments. Don't reference any of the author names in your summary, as they are pseudomized and meaningless to the reader.
+Make sure to not summarize the original input, as the reader already knows what it is. Focus on the comments only.
+
+Do NOT start your summary with any kind of introduction, start right away with the content, because the reader already knows the project context and the fact that this is a summary.
+
+Write the summary in <%= language || 'the same language as the majority of the comments' %>.
+
+---
+<%= comments_text %>
+---

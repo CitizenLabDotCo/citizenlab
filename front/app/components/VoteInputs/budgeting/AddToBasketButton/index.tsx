@@ -9,7 +9,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -27,8 +26,10 @@ import {
 } from 'utils/actionDescriptors';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import useFormatCurrency from 'utils/currency/useFormatCurrency';
 import eventEmitter from 'utils/eventEmitter';
 import { isNil } from 'utils/helperUtils';
+import { isPhaseActive } from 'utils/projectUtils';
 
 import messages from './messages';
 import tracks from './tracks';
@@ -47,22 +48,23 @@ const AddToBasketButton = ({
   phase,
   onIdeaPage,
 }: Props) => {
-  const { data: appConfig } = useAppConfiguration();
   const { data: idea } = useIdeaById(ideaId);
   const { getVotes, setVotes, numberOfVotesCast } = useVoting();
   const { formatMessage } = useIntl();
+  const formatCurrency = useFormatCurrency();
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const basketId = phase.relationships?.user_basket?.data?.id;
   const { data: basket } = useBasket(basketId);
   const ideaBudget = idea?.data.attributes.budget;
-  const currency = appConfig?.data.attributes.settings.core.currency;
 
   const ideaInBasket = !!getVotes?.(ideaId);
 
   const [searchParams] = useSearchParams();
   const isProcessing = searchParams.get('processing_vote') === ideaId;
 
-  if (!idea || !ideaBudget || !currency) {
+  if (!idea || !ideaBudget) {
     return null;
   }
 
@@ -138,13 +140,17 @@ const AddToBasketButton = ({
     true
   );
 
-  const disabledMessage =
-    permissionsDisabledMessage ||
-    (basket?.data.attributes.submitted_at
-      ? onIdeaPage
-        ? messages.basketAlreadySubmittedIdeaPage
-        : messages.basketAlreadySubmitted
-      : undefined);
+  let disabledMessage = permissionsDisabledMessage || undefined;
+
+  if (basket?.data.attributes.submitted_at) {
+    disabledMessage = onIdeaPage
+      ? messages.basketAlreadySubmittedIdeaPage1
+      : messages.basketAlreadySubmitted1;
+  }
+
+  if (!isPhaseActive(phase)) {
+    disabledMessage = messages.phaseNotActive;
+  }
 
   const disabledExplanation = disabledMessage
     ? formatMessage(disabledMessage)
@@ -175,11 +181,8 @@ const AddToBasketButton = ({
           >
             {ideaInBasket && <Icon mb="4px" fill="white" name="check" />}
             <FormattedMessage {...buttonMessage} />
-            <span aria-hidden>{` (${ideaBudget} ${currency})`}</span>
-            <ScreenReaderCurrencyValue
-              amount={ideaBudget}
-              currency={currency}
-            />
+            <span aria-hidden>{` (${formatCurrency(ideaBudget)})`}</span>
+            <ScreenReaderCurrencyValue amount={ideaBudget} />
           </Button>
         </div>
       </Tooltip>

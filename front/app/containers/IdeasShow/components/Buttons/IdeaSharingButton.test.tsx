@@ -19,6 +19,23 @@ const mockProjectData = {
   },
 };
 
+const mockAppConfiguration = {
+  data: {
+    id: '1',
+    attributes: {
+      settings: {
+        core: {
+          allow_sharing: true,
+        },
+      },
+    },
+  },
+};
+
+jest.mock('api/app_configuration/useAppConfiguration', () => () => {
+  return { data: mockAppConfiguration };
+});
+
 const ideaId = '5';
 
 jest.mock('api/me/useAuthUser');

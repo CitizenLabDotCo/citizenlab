@@ -34,7 +34,7 @@ import MultipleSelect from 'components/HookForm/MultipleSelect';
 import Select from 'components/HookForm/Select';
 import SlugInput from 'components/HookForm/SlugInput';
 import Tabs from 'components/HookForm/Tabs';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
@@ -208,14 +208,14 @@ const CustomPageSettingsForm = ({
         <SectionFormWrapper
           stickyMenuContents={
             <Box display="flex">
-              <Button
+              <ButtonWithLink
                 data-cy="e2e-submit-custom-page"
                 type="submit"
                 processing={methods.formState.isSubmitting}
                 bgColor={colors.blue500}
               >
                 {formatMessage(messages.saveButton)}
-              </Button>
+              </ButtonWithLink>
             </Box>
           }
           flatTopBorder
@@ -304,6 +304,7 @@ const CustomPageSettingsForm = ({
                         <SelectContainer mb="20px">
                           <Select
                             name="area_id"
+                            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                             options={mapFilterEntityToOptions(areas?.data)}
                             label={formatMessage(messages.selectedAreasLabel)}
                           />

@@ -87,6 +87,12 @@ FactoryBot.define do
       end
     end
 
+    factory :project_with_past_information_phase do
+      after(:create) do |project, _evaluator|
+        project.phases << create(:past_phase, project: project, participation_method: 'information')
+      end
+    end
+
     factory :project_with_past_ideation_and_active_budgeting_phase do
       after(:create) do |project, _evaluator|
         project.phases << create(
@@ -321,21 +327,21 @@ FactoryBot.define do
         end_at = active_phase.start_at
         phases_before.to_s.chars.map(&:to_sym).reverse_each do |sequence_char|
           phase_config = evaluator.phases_config[sequence_char].clone || {}
-          project.phases << create(:phase,
+          project.phases << create(phase_config[:factory] || :phase,
             end_at: end_at - 1,
             start_at: end_at -= rand(1..120).days,
             project: project,
-            **phase_config)
+            **phase_config.except(:factory))
         end
 
         start_at = active_phase.end_at
         phases_after.to_s.chars.map(&:to_sym).each do |sequence_char|
           phase_config = evaluator.phases_config[sequence_char].clone || {}
-          project.phases << create(:phase,
+          project.phases << create(phase_config[:factory] || :phase,
             start_at: start_at + 1,
             end_at: start_at += rand(1..120).days,
             project: project,
-            **phase_config)
+            **phase_config.except(:factory))
         end
       end
     end
@@ -604,6 +610,32 @@ FactoryBot.define do
             end_at: nil,
             **evaluator.phase_attrs
           )
+        end
+      end
+
+      factory :community_monitor_project do
+        transient do
+          with_phase { true }
+        end
+
+        slug { 'community-monitor' }
+        internal_role { 'community_monitor' }
+        hidden { true }
+
+        after(:create) do |project, evaluator|
+          # Add the phase
+          if evaluator.with_phase
+            project.phases << create(
+              :community_monitor_survey_phase,
+              project: project,
+              **evaluator.phase_attrs
+            )
+          end
+
+          # Enable the feature
+          settings = AppConfiguration.instance.settings
+          settings['community_monitor'] = { 'enabled' => true, 'allowed' => true, 'project_id' => project.id }
+          AppConfiguration.instance.update!(settings:)
         end
       end
     end

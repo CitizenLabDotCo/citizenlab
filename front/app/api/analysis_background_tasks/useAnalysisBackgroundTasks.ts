@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import commentsSummariesKeys from 'api/analysis_comments_summaries/keys';
 import insightsKeys from 'api/analysis_insights/keys';
 import taggingKeys from 'api/analysis_taggings/keys';
 import tagsKeys from 'api/analysis_tags/keys';
@@ -31,6 +32,7 @@ const useAnalysisBackgroundTasks = (analysisId?: string) => {
       queryClient.invalidateQueries({ queryKey: tagsKeys.lists() });
       queryClient.invalidateQueries({ queryKey: taggingKeys.lists() });
       queryClient.invalidateQueries({ queryKey: insightsKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: commentsSummariesKeys.all() });
     },
     // Refetch every 2 seconds when tasks are active
     refetchInterval: (data) => {

@@ -1,10 +1,11 @@
 class ScriptReporter
-  attr_reader :creates, :changes, :errors
+  attr_reader :creates, :changes, :errors, :tenants
 
   def initialize
     @creates = []
     @changes = []
     @errors = []
+    @tenants = []
   end
 
   def add_create(model_name, attributes, context: {})
@@ -19,8 +20,13 @@ class ScriptReporter
     @errors << { error: error, context: context }
   end
 
+  def add_processed_tenant(tenant)
+    @tenants << tenant.host
+  end
+
   def report!(filestr, verbose: false)
     if verbose
+      Rails.logger.info "Processed tenants: #{tenants}"
       Rails.logger.info 'Creates:'
       creates.each do |create|
         Rails.logger.info "  #{create[:model_name]}: #{create[:attributes]} (#{create[:context].map { |k, v| "#{k}: #{v}" }.join(', ')})"
@@ -39,6 +45,6 @@ class ScriptReporter
       end
     end
 
-    File.write(filestr, JSON.pretty_generate(creates: creates, changes: changes, errors: errors))
+    File.write(filestr, JSON.pretty_generate(processed_tenants: tenants, creates: creates, changes: changes, errors: errors))
   end
 end

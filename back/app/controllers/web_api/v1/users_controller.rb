@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 class WebApi::V1::UsersController < ApplicationController
-  before_action :set_user, only: %i[show update destroy ideas_count initiatives_count comments_count block unblock]
-  skip_before_action :authenticate_user, only: %i[create show check by_slug by_invite ideas_count initiatives_count comments_count]
+  include BlockingProfanity
+
+  before_action :set_user, only: %i[show update destroy ideas_count comments_count block unblock]
+  skip_before_action :authenticate_user, only: %i[create show check by_slug by_invite ideas_count comments_count]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -21,6 +23,8 @@ class WebApi::V1::UsersController < ApplicationController
     @users = @users.admin.or(@users.project_moderator).or(@users.project_folder_moderator) if params[:can_moderate].present?
     @users = @users.not_project_folder_moderator(params[:is_not_folder_moderator]) if params[:is_not_folder_moderator].present?
     @users = @users.not_citizenlab_member if params[:not_citizenlab_member].present?
+
+    @users = @users.project_reviewers(Utils.to_bool(params[:project_reviewer])) if params.key?(:project_reviewer)
 
     case params[:can_admin]&.downcase
     when 'true' then @users = @users.admin
@@ -111,6 +115,7 @@ class WebApi::V1::UsersController < ApplicationController
   def create
     @user = User.new
     saved = UserService.upsert_in_web_api(@user, permitted_attributes(@user)) do
+      verify_profanity @user
       authorize @user
     end
     if saved
@@ -132,6 +137,7 @@ class WebApi::V1::UsersController < ApplicationController
 
   def update
     saved = UserService.upsert_in_web_api(@user, update_params) do
+      verify_profanity @user
       remove_image_if_requested!(@user, update_params, :avatar)
       authorize(@user)
     end
@@ -190,25 +196,8 @@ class WebApi::V1::UsersController < ApplicationController
     render json: raw_json({ count: User.all.blocked.count }, type: 'blocked_users_count'), status: :ok
   end
 
-  def initiatives_count
-    render json: raw_json({ count: policy_scope(@user.initiatives.published).count }), status: :ok
-  end
-
   def comments_count
-    count = 0
-    published_comments = @user.comments.published
-    if !params[:post_type] || params[:post_type] == 'Idea'
-      count += policy_scope(
-        published_comments.where(post_type: 'Idea'),
-        policy_scope_class: IdeaCommentPolicy::Scope
-      ).count
-    end
-    if !params[:post_type] || params[:post_type] == 'Initiative'
-      count += policy_scope(
-        published_comments.where(post_type: 'Initiative'),
-        policy_scope_class: InitiativeCommentPolicy::Scope
-      ).count
-    end
+    count = policy_scope(@user.comments.published).count
     render json: raw_json({ count: count }), status: :ok
   end
 
@@ -290,7 +279,7 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def view_private_attributes?
-    Pundit.policy!(current_user, (@user || User)).view_private_attributes?
+    policy(@user || User).view_private_attributes?
   end
 
   def update_params

@@ -4,19 +4,23 @@
 #
 # Table name: email_campaigns_campaigns
 #
-#  id               :uuid             not null, primary key
-#  type             :string           not null
-#  author_id        :uuid
-#  enabled          :boolean
-#  sender           :string
-#  reply_to         :string
-#  schedule         :jsonb
-#  subject_multiloc :jsonb
-#  body_multiloc    :jsonb
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  deliveries_count :integer          default(0), not null
-#  context_id       :uuid
+#  id                   :uuid             not null, primary key
+#  type                 :string           not null
+#  author_id            :uuid
+#  enabled              :boolean
+#  sender               :string
+#  reply_to             :string
+#  schedule             :jsonb
+#  subject_multiloc     :jsonb
+#  body_multiloc        :jsonb
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  deliveries_count     :integer          default(0), not null
+#  context_id           :uuid
+#  title_multiloc       :jsonb
+#  intro_multiloc       :jsonb
+#  button_text_multiloc :jsonb
+#  context_type         :string
 #
 # Indexes
 #
@@ -34,6 +38,8 @@ module EmailCampaigns
     include ActivityTriggerable
     include Disableable
     include Trackable
+    include ContentConfigurable
+    include ContextConfigurable
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: %w[trial active]
 
@@ -44,11 +50,17 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      { 'Notifications::VotingResults' => { 'created' => true } }
+      { 'Notifications::VotingResultsPublished' => { 'created' => true } }
     end
 
     def filter_recipient(users_scope, activity:, time: nil)
       users_scope.where(id: activity.item.recipient.id)
+    end
+
+    def activity_context(activity)
+      return nil unless activity.item.is_a?(::Notification)
+
+      activity.item.phase
     end
 
     def self.recipient_role_multiloc_key
@@ -67,13 +79,21 @@ module EmailCampaigns
       'email_campaigns.admin_labels.trigger.voting_phase_ended'
     end
 
+    def self.supported_context_class
+      Phase
+    end
+
+    def self.supports_context?(context)
+      supports_phase_participation_method?(context)
+    end
+
     def generate_commands(recipient:, activity:)
-      basket = activity.item
+      notification = activity.item
       [{
         event_payload: {
-          project_url: Frontend::UrlService.new.model_to_url(project, locale: Locale.new(recipient.locale)),
-          phase_title_multiloc: basket.participation_context.title_multiloc,
-          project_title_multiloc: basket.participation_context.project.title_multiloc
+          project_url: Frontend::UrlService.new.model_to_url(notification.project, locale: Locale.new(recipient.locale)),
+          phase_title_multiloc: notification.phase.title_multiloc,
+          project_title_multiloc: notification.phase.project.title_multiloc
         }
       }]
     end

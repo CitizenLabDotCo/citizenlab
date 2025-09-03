@@ -98,7 +98,8 @@ const ideaPostingDisabledReason = (
         disabledReason: backendReason,
         authenticationRequirements: null,
       };
-    case 'user_not_permitted' || 'user_blocked':
+    case 'user_blocked':
+    case 'user_not_permitted':
       return {
         disabledReason: backendReason,
         authenticationRequirements: null,
@@ -149,14 +150,12 @@ export const getIdeaPostingRules = ({
 
     // timeline
     if (phase) {
-      // not an enabled ideation or native survey phase
+      // not an enabled ideation or native survey or proposals phase
       if (
-        !(
-          (phase.attributes.participation_method === 'ideation' ||
-            phase.attributes.participation_method === 'native_survey') &&
-          phase.attributes.submission_enabled &&
-          disabled_reason !== 'posting_not_supported'
-        )
+        (phase.attributes.participation_method === 'ideation' ||
+          phase.attributes.participation_method === 'proposals') &&
+        !phase.attributes.submission_enabled &&
+        disabled_reason !== 'posting_not_supported'
       ) {
         return {
           show: false,

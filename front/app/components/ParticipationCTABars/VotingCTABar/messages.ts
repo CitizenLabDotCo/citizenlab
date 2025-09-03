@@ -9,8 +9,9 @@ export default defineMessages({
       'You cast {votesCast} votes, which exceeds the limit of {votesLimit}. Please remove some votes and try again.',
   },
   noVotesCast: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.noVotesCast2',
-    defaultMessage: 'You need to vote before you can submit your {votesTerm}.',
+    id: 'app.components.ParticipationCTABars.VotingCTABar.noVotesCast4',
+    defaultMessage:
+      'You need to select at least one option before you can submit.',
   },
 
   // budgeting disabled explanations
@@ -24,39 +25,41 @@ export default defineMessages({
     defaultMessage:
       'You need to add something to your basket before you can submit it.',
   },
-  minBudgetNotReached: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached2',
+  minBudgetNotReached1: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached1',
     defaultMessage:
-      'You need to spend a minimum of {votesMinimum} {currency} before you can submit your basket.',
+      'You need to spend a minimum of {votesMinimum} before you can submit your basket.',
   },
 
   // votes count
-  currencyLeft: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.currencyLeft',
-    defaultMessage: '{budgetLeft} / {totalBudget} {currency} left',
+  currencyLeft1: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.currencyLeft1',
+    defaultMessage: '{budgetLeft} / {totalBudget} left',
   },
-  votesLeft: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.votesLeft2',
+  numberOfVotesLeft: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.numberOfVotesLeft',
     defaultMessage:
-      '{votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} left',
+      '{votesLeft, plural, =0 {No votes left} other {# out of {totalNumberOfVotes, plural, one {1 vote} other {# votes}} left}}',
   },
+  numberOfPointsLeft: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.numberOfPointsLeft',
+    defaultMessage:
+      '{votesLeft, plural, =0 {No points left} other {# out of {totalNumberOfVotes, plural, one {1 point} other {# points}} left}}',
+  },
+  numberOfTokensLeft: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.numberOfTokensLeft',
+    defaultMessage:
+      '{votesLeft, plural, =0 {No tokens left} other {# out of {totalNumberOfVotes, plural, one {1 token} other {# tokens}} left}}',
+  },
+  numberOfCreditsLeft: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.numberOfCreditsLeft',
+    defaultMessage:
+      '{votesLeft, plural, =0 {No credits left} other {# out of {totalNumberOfVotes, plural, one {1 credit} other {# credits}} left}}',
+  },
+  // Only used for single voting (no vote term config available)
   votesCast: {
     id: 'app.components.ParticipationCTABars.VotingCTABar.votesCast',
     defaultMessage:
       '{votes, plural, =0 {# votes} one {# vote} other {# votes}} cast',
-  },
-  stillHaveVotesLeft: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.stillHaveVotesLeft',
-    defaultMessage:
-      'You still have {votesLeft} {votesTerm} left to distribute.',
-  },
-  stillHaveVotesLeftDescription: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.stillHaveVotesLeftDescription',
-    defaultMessage:
-      'You can still distribute more {votesTerm} amongst different options, are you sure you want to submit?',
-  },
-  seeOtherOptions: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.seeOtherOptions2',
-    defaultMessage: 'See options',
   },
 });

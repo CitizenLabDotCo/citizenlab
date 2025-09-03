@@ -19,7 +19,10 @@ class IdeaStatus < ApplicationRecord
   CODES = %w[prescreening proposed threshold_reached expired viewed under_consideration accepted implemented rejected answered ineligible custom].freeze
   LOCKED_CODES = %w[prescreening proposed threshold_reached expired].freeze
   MANUAL_TRANSITION_NOT_ALLOWED_CODES = %w[prescreening threshold_reached expired].freeze
+  REACTING_NOT_ALLOWED_CODES = %w[prescreening expired ineligible].freeze
   NON_PUBLIC_CODES = %w[prescreening].freeze
+
+  scope :for_public_posts, -> { where.not(code: NON_PUBLIC_CODES) }
 
   acts_as_list column: :ordering, top_of_list: 0, scope: [:participation_method]
 
@@ -29,7 +32,7 @@ class IdeaStatus < ApplicationRecord
 
   before_validation :strip_title
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
-  has_many :notifications, foreign_key: :post_status_id, dependent: :nullify
+  has_many :notifications, dependent: :nullify
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, presence: true, multiloc: { presence: true }
@@ -52,12 +55,14 @@ class IdeaStatus < ApplicationRecord
   private
 
   def strip_title
+    return unless title_multiloc&.any?
+
     title_multiloc.each { |key, value| title_multiloc[key] = value.strip }
   end
 
   def remove_notifications
     notifications.each do |notification|
-      unless notification.update post_status: nil
+      unless notification.update idea_status: nil
         notification.destroy!
       end
     end

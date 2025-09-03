@@ -1,7 +1,5 @@
 import { IRelationship, Multiloc } from 'typings';
 
-import { CampaignName } from 'api/campaigns/types';
-
 import { Keys } from 'utils/cl-react-query/types';
 
 import phasesKeys from './keys';
@@ -24,6 +22,9 @@ export interface IPhaseData {
     user_basket?: {
       data: IRelationship | null;
     };
+    manual_voters_last_updated_by?: {
+      data: IRelationship | null;
+    };
     report?: {
       data: IRelationship | null;
     };
@@ -35,12 +36,12 @@ export interface IPhaseAttributes {
   description_multiloc: Multiloc;
   start_at: string;
   end_at: string | null;
-  campaigns_settings: { [key in CampaignName]?: boolean };
   input_term: InputTerm;
   created_at: string;
   updated_at: string;
   participation_method: ParticipationMethod;
   submission_enabled: boolean;
+  autoshare_results_enabled?: boolean;
   commenting_enabled: boolean;
   reacting_enabled: boolean;
   reacting_like_method: 'limited' | 'unlimited';
@@ -52,13 +53,13 @@ export interface IPhaseAttributes {
   presentation_mode: PresentationMode;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
+  survey_popup_frequency?: number | null;
   poll_anonymous?: boolean;
-  ideas_order?: IdeaDefaultSortMethod;
+  ideas_order?: IdeaSortMethod;
   document_annotation_embed_url?: string | null;
   custom_form_persisted?: boolean;
   voting_method?: VotingMethod | null;
-  voting_term_singular_multiloc?: Multiloc | null;
-  voting_term_plural_multiloc?: Multiloc | null;
+  vote_term: VoteTerm;
   voting_min_total?: number | null;
   voting_max_total?: number | null;
   voting_max_votes_per_idea?: number | null;
@@ -67,10 +68,16 @@ export interface IPhaseAttributes {
   /** For budgeting it's: for each idea multiply price of the idea
    * with the idea's baskets_count, then sum all those to get the total idea votes for the phase  */
   votes_count: number;
+  total_votes_amount: number;
   report_public: boolean;
   native_survey_title_multiloc?: Multiloc;
   native_survey_button_multiloc?: Multiloc;
   prescreening_enabled?: boolean;
+  manual_voters_amount?: number;
+  similarity_enabled?: boolean;
+  similarity_threshold_title?: number | null;
+  similarity_threshold_body?: number | null;
+  user_fields_in_form?: boolean;
 }
 
 export interface IPhases {
@@ -92,6 +99,7 @@ export interface IUpdatedPhaseProperties {
   voting_method?: VotingMethod | null;
   submission_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
+  autoshare_results_enabled?: boolean | null;
   reacting_enabled?: boolean | null;
   reacting_like_method?: 'limited' | 'unlimited' | null;
   reacting_dislike_method?: 'limited' | 'unlimited' | null;
@@ -103,21 +111,23 @@ export interface IUpdatedPhaseProperties {
   voting_min_total?: number | null;
   voting_max_total?: number | null;
   voting_max_votes_per_idea?: number | null;
-  voting_term_singular_multiloc?: Multiloc | null;
-  voting_term_plural_multiloc?: Multiloc | null;
+  vote_term?: VoteTerm;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
+  survey_popup_frequency?: number | null;
   poll_anonymous?: boolean;
-  ideas_order?: IdeaDefaultSortMethod;
+  ideas_order?: IdeaSortMethod;
   document_annotation_embed_url?: string | null;
-  campaigns_settings?: {
-    [key in CampaignName]?: boolean;
-  };
   native_survey_title_multiloc?: Multiloc;
   native_survey_button_multiloc?: Multiloc;
   prescreening_enabled?: boolean | null;
   allow_anonymous_participation?: boolean;
   expire_days_limit?: number;
+  manual_voters_amount?: number;
+  similarity_enabled?: boolean | null;
+  similarity_threshold_title?: number | null;
+  similarity_threshold_body?: number | null;
+  user_fields_in_form?: boolean;
 }
 
 export interface AddPhaseObject extends IUpdatedPhaseProperties {
@@ -141,8 +151,10 @@ export type TSurveyService =
 
 export type ParticipationMethod =
   | 'ideation'
+  | 'common_ground'
   | 'information'
   | 'native_survey'
+  | 'community_monitor_survey'
   | 'survey'
   | 'voting'
   | 'poll'
@@ -152,13 +164,15 @@ export type ParticipationMethod =
 
 export type VotingMethod = 'budgeting' | 'multiple_voting' | 'single_voting';
 
-export type IdeaDefaultSortMethod =
+export type VoteTerm = 'vote' | 'point' | 'token' | 'credit';
+
+export type IdeaSortMethod =
   | 'trending'
+  | 'comments_count'
   | 'random'
   | 'popular'
   | 'new'
-  | '-new'
-  | null;
+  | '-new';
 
 export type InputTerm =
   | 'idea'
@@ -166,6 +180,9 @@ export type InputTerm =
   | 'project'
   | 'question'
   | 'issue'
-  | 'contribution';
+  | 'contribution'
+  | 'proposal'
+  | 'initiative'
+  | 'petition';
 
 export type PresentationMode = 'card' | 'map';

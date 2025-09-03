@@ -6,19 +6,19 @@ module EmailCampaigns
 
     def before_create(campaign, user); end
 
-    def before_update(campaign, user); end
+    def after_update(campaign, user)
+      super
 
-    def after_update(campaign, _user)
-      # This is a special case for the project_phase_started campaign, the only
-      # campaign that's currently configurable on a phase level.
-      # We turn off all phase email toggles for this campaign when the platform-wide
-      # setting is turned off.
-      # attribute_before_last_save:
-      # https://apidock.com/rails/v6.0.0/ActiveRecord/AttributeMethods/Dirty/attribute_before_last_save
-      if campaign.enabled_before_last_save &&
-         !campaign.enabled &&
-         campaign.instance_of?(EmailCampaigns::Campaigns::ProjectPhaseStarted)
-        toggle_project_phase_started(campaign)
+      %i[enabled reply_to body_multiloc subject_multiloc title_multiloc intro_multiloc button_text_multiloc].each do |attr|
+        next if !campaign.public_send(:"saved_change_to_#{attr}?")
+
+        LogActivityJob.perform_later(
+          campaign,
+          "changed_#{attr}",
+          user,
+          campaign.updated_at.to_i,
+          payload: { change: campaign.saved_changes[attr] }
+        )
       end
     end
 
@@ -34,13 +34,6 @@ module EmailCampaigns
 
     def resource_name
       :campaign
-    end
-
-    def toggle_project_phase_started(campaign)
-      Phase.update_all(
-        "campaigns_settings = jsonb_set(campaigns_settings, array['project_phase_started']," \
-        "to_jsonb(#{campaign.enabled}));"
-      )
     end
   end
 end

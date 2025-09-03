@@ -5,11 +5,19 @@ export interface IPhaseFileData {
     file: {
       url: string;
     };
-    ordering: string | null;
+    ordering: number | null;
     name: string;
     size: number;
     created_at: string;
     updated_at: string;
+  };
+}
+
+export interface UpdatePhaseFileObject {
+  phaseId: string;
+  fileId: string;
+  file: {
+    ordering?: number;
   };
 }
 

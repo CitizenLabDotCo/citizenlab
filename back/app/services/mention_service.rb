@@ -63,12 +63,12 @@ class MentionService
   end
 
   # @param [String] query
-  # @param [Post] post
+  # @param [idea] idea
   # @param [Integer] limit
   # @return [Array<User>]
-  def users_from_post(query, post, limit)
-    user_ids = User.joins(:comments).where(comments: { post_id: post.id }).ids.uniq # Commenters' IDs
-    user_ids << post.author_id if post.author_id
+  def users_from_idea(query, idea, limit)
+    user_ids = User.joins(:comments).where(comments: { idea_id: idea.id }).ids.uniq # Commenters' IDs
+    user_ids << idea.author_id if idea.author_id
     User.where(id: user_ids).by_username(query).limit(limit).to_a
   end
 
@@ -78,8 +78,6 @@ class MentionService
   def user_mentioned?(text, user)
     extract_expanded_mention_users(text).include?(user)
   end
-
-  private
 
   # @param [String] text
   # @return [String] text without mention tags
@@ -105,6 +103,8 @@ class MentionService
       mention_to_slug(fm)
     end
   end
+
+  private
 
   # @param [String] mention
   # @return [String] slug

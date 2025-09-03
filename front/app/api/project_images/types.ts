@@ -1,4 +1,4 @@
-import { ImageSizes } from 'typings';
+import { ImageSizes, Multiloc } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -14,6 +14,7 @@ export interface IProjectImageData {
     ordering: number;
     created_at: string;
     updated_at: string;
+    alt_text_multiloc: Multiloc;
   };
 }
 
@@ -27,5 +28,11 @@ export interface IProjectImages {
 
 export interface AddProjectImageObject {
   projectId: string;
-  image: { image: string };
+  image: { image: string; alt_text_multiloc?: Multiloc };
+}
+
+export interface UpdateProjectImageObject {
+  projectId: string;
+  imageId: string;
+  image: { image: string; alt_text_multiloc?: Multiloc };
 }

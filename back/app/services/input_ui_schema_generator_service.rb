@@ -3,18 +3,18 @@
 class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   def initialize(input_term, supports_answer_visible_to)
     super()
-    @input_term = input_term || Phase::DEFAULT_INPUT_TERM
+    @input_term = input_term || Phase::FALLBACK_INPUT_TERM
     @supports_answer_visible_to = supports_answer_visible_to
   end
 
   def visit_html_multiloc(field)
-    super.tap do |ui_field|
-      if field.code == 'body_multiloc'
-        ui_field[:elements].each do |element|
-          element[:options].delete :trim_on_blur
-        end
-      end
-    end
+    ui_field = super
+
+    return ui_field unless field.code == 'body_multiloc'
+
+    ui_field[:options]&.delete(:trim_on_blur) if ui_field.is_a?(Hash) && ui_field[:options].is_a?(Hash)
+
+    ui_field
   end
 
   def generate_for(fields)
@@ -28,8 +28,12 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     default field
   end
 
+  def visit_cosponsor_ids(field)
+    default field
+  end
+
   def visit_page(field)
-    {
+    page_data = {
       type: 'Page',
       options: {
         input_type: field.input_type,
@@ -43,6 +47,14 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
         # No elements yet. They will be added after invoking this method.
       ]
     }
+
+    # Add these attributes only if the page key is "form_end"
+    if field.form_end_page?
+      page_data[:options][:page_button_label_multiloc] = field.page_button_label_multiloc
+      page_data[:options][:page_button_link] = field.page_button_link
+    end
+
+    page_data
   end
 
   protected
@@ -53,7 +65,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
       hasRule: field.logic?
     }
     if @supports_answer_visible_to
-      defaults[:answer_visible_to] = field.answer_visible_to
+      defaults[:answer_visible_to] = field.visible_to_public? ? 'public' : 'admins'
     end
     defaults[:otherField] = field.other_option_text_field&.key if field.other_option_text_field
     defaults[:dropdown_layout] = field.dropdown_layout if field.dropdown_layout_type?
@@ -74,33 +86,31 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     form_logic = FormLogicService.new(fields)
     current_page_schema = nil
     field_schemas = []
+    form_end_page = nil
+
     fields.each do |field|
       field_schema = visit field
       if field.page?
         rules = form_logic.ui_schema_rules_for(field)
         field_schema[:ruleArray] = rules if rules.present?
-        field_schemas << field_schema
-        current_page_schema = field_schema
+
+        if field.form_end_page?
+          form_end_page = field_schema
+        else
+          field_schemas << field_schema
+          current_page_schema = field_schema
+        end
       elsif current_page_schema
         current_page_schema[:elements] << field_schema
       else
         field_schemas << field_schema
       end
     end
-    field_schemas << end_page_schema
-    field_schemas
-  end
 
-  def end_page_schema
-    {
-      type: 'Page',
-      options: {
-        id: 'survey_end',
-        title: I18n.t('form_builder.form_end_page.title_text'),
-        description: I18n.t('form_builder.form_end_page.description_text_2')
-      },
-      elements: []
-    }
+    # Ensure form_end page is always last
+    field_schemas << form_end_page if form_end_page
+
+    field_schemas
   end
 
   def categorization_schema_with(input_term, elements)
@@ -115,41 +125,12 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   end
 
   def generate_pages_for_current_locale(fields)
-    categorization_schema_with(fields.first.input_term, schema_elements_for(fields))
+    categorization_schema_with(input_term, schema_elements_for(fields))
   end
 
   def generate_for_current_locale(fields)
-    # Case for native surveys
-    return generate_for_current_locale_without_sections fields if fields.none?(&:section?)
-
-    current_section = nil
-    section_fields = []
-    elements = []
-    fields.each do |field|
-      if field.section?
-        elements += [generate_section(current_section, section_fields)] if current_section
-        current_section = field
-        section_fields = []
-      else
-        section_fields += [field]
-      end
-    end
-    elements += [generate_section(current_section, section_fields)] if current_section
-    categorization_schema_with input_term, elements
-  end
-
-  def generate_section(current_section, section_fields)
-    {
-      type: 'Category',
-      label: (MultilocService.new.t(current_section.title_multiloc) if current_section.title_multiloc),
-      options: { id: current_section.id, description: description_option(current_section) },
-      elements: section_fields.filter_map { |field| visit field }
-    }
-  end
-
-  def generate_for_current_locale_without_sections(fields)
     category = {
-      type: 'Category',
+      type: 'Page',
       label: nil,
       options: { id: 'extra' },
       elements: fields.filter_map { |field| visit field }

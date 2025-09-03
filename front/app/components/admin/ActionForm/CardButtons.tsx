@@ -46,6 +46,7 @@ const CardButtons = ({ showAnyone, permittedBy, onUpdate }: Props) => {
         <Box>
           <CardButton
             className="e2e-permission-anyone"
+            id="e2e-permission-anyone"
             icon={
               <Icon
                 name="user-circle"
@@ -65,6 +66,7 @@ const CardButtons = ({ showAnyone, permittedBy, onUpdate }: Props) => {
       <Box>
         <CardButton
           className="e2e-permission-email-confirmed-users"
+          id="e2e-permission-email-confirmed-users"
           icon={
             <Box display="flex" flexDirection="row">
               <Icon

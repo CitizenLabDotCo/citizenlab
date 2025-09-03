@@ -29,8 +29,8 @@ export const getDateFilter = (
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null | undefined
 ): DateFilter | EmptyObject => {
-  const startAt = startAtMoment?.toISOString();
-  const endAt = endAtMoment?.toISOString();
+  const startAt = startAtMoment?.local().format('YYYY-MM-DD');
+  const endAt = endAtMoment?.local().format('YYYY-MM-DD');
 
   if (!startAt && !endAt) return {};
 
@@ -65,10 +65,7 @@ const getLastPeriod = (resolution: IResolution) => {
   return moment().subtract({ days: 1 }).format('YYYY-MM-DD');
 };
 
-export const getComparedTimeRange = (
-  startAt: string | Moment,
-  endAt: string | Moment
-) => {
+export const getComparedTimeRange = (startAt?: string, endAt?: string) => {
   if (!startAt || !endAt) return {};
 
   const startAtMoment = moment(startAt, 'YYYY-MM-DD');

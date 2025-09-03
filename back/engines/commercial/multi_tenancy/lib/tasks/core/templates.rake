@@ -125,13 +125,6 @@ namespace :templates do
       lifecycle_stage: 'demo'
     ) }.with_indifferent_access
 
-    # Required for verified actions
-    config_attrs[:settings][:verification] = {
-      enabled: true,
-      allowed: true,
-      verification_methods: [{ name: 'fake_sso' }]
-    }
-
     _success, tenant, _app_config = MultiTenancy::TenantService.new.initialize_tenant(
       tenant_attrs, config_attrs
     )

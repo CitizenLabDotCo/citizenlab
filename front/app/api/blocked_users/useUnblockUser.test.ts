@@ -1,4 +1,3 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -6,6 +5,7 @@ import { makeUser } from 'api/users/__mocks__/useUsers';
 import { IUser } from 'api/users/types';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import useUnblockUser from './useUnblockUser';
 
@@ -23,7 +23,7 @@ describe('useUnblockUser', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useUnblockUser(), {
+    const { result } = renderHook(() => useUnblockUser(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -41,7 +41,7 @@ describe('useUnblockUser', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useUnblockUser(), {
+    const { result } = renderHook(() => useUnblockUser(), {
       wrapper: createQueryClientWrapper(),
     });
     act(() => {

@@ -20,7 +20,7 @@ export async function saveIdeaFormAsPDF({
   try {
     const blob = await requestBlob(
       `${API_PATH}/phases/${phaseId}/importer/export_form/idea/pdf`,
-      'application/pdf' as any,
+      'application/pdf',
       { locale, personal_data, phaseId }
     );
 

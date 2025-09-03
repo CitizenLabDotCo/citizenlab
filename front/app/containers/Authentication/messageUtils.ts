@@ -1,5 +1,4 @@
 import { IFollowingAction } from 'api/authentication/authentication_requirements/types';
-import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
 import { IPhasePermissionAction } from 'api/phase_permissions/types';
 
 import errorMessages from 'components/UI/Error/messages';
@@ -55,11 +54,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
 
 export const getHeaderMessage = (
   step: Step,
-  action:
-    | 'visiting'
-    | IInitiativeAction
-    | IPhasePermissionAction
-    | IFollowingAction
+  action: 'visiting' | IPhasePermissionAction | IFollowingAction
 ) => {
   if (
     action === 'following' &&
@@ -90,9 +85,13 @@ export const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
   verification_taken: errorMessages.verification_taken,
 };
 
-type HelperTextKey = 'signup_helper_text' | 'custom_fields_signup_helper_text';
+type HelperTextKey =
+  | 'signup_helper_text'
+  | 'custom_fields_signup_helper_text'
+  | 'login_helper_text';
 
 export const HELPER_TEXT_KEYS: Partial<Record<Step, HelperTextKey>> = {
+  'sign-in:email-password': 'login_helper_text',
   'sign-up:auth-providers': 'signup_helper_text',
   'sign-up:email-password': 'signup_helper_text',
   'missing-data:custom-fields': 'custom_fields_signup_helper_text',

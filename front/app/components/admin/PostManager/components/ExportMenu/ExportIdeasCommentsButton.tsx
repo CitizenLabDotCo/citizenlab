@@ -7,7 +7,7 @@ import { WrappedComponentProps } from 'react-intl';
 
 import { API_PATH } from 'containers/App/constants';
 
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -69,14 +69,14 @@ class ExportCommentsButton extends React.PureComponent<
     }
 
     // track this click for user analytics
-    trackEventByName(tracks.clickExportComments.name);
+    trackEventByName(tracks.clickExportComments);
   };
 
   render() {
     const { exportType } = this.props;
     const { exporting } = this.state;
     return (
-      <Button
+      <ButtonWithLink
         buttonStyle="text"
         onClick={this.handleExportComments}
         processing={exporting}
@@ -92,7 +92,7 @@ class ExportCommentsButton extends React.PureComponent<
         {exportType === 'selected_posts' && (
           <FormattedMessage {...messages.exportSelectedInputsComments} />
         )}
-      </Button>
+      </ButtonWithLink>
     );
   }
 }

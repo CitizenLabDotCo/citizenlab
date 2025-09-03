@@ -7,7 +7,8 @@ import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
 import useReorderPermissionsCustomField from 'api/permissions_custom_fields/useReorderPermissionsCustomField';
 
-import { SortableList, SortableRow } from 'components/admin/ResourceList';
+import SortableList from 'components/admin/ResourceList/SortableList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -51,6 +52,8 @@ const FieldsList = ({ phaseId, action }: Props) => {
 
   return (
     <>
+      {/* TODO: Fix this the next time the file is edited. */}
+      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
       {permissionFields && (
         <SortableList
           items={permissionFields.data}

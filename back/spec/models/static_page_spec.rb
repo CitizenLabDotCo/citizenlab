@@ -10,18 +10,28 @@ RSpec.describe StaticPage do
   end
 
   describe 'validations' do
+    it { is_expected.to validate_presence_of(:title_multiloc) }
+
+    it 'validates presence of slug' do
+      page = build(:static_page)
+      allow(page).to receive(:generate_slug) # Stub to do nothing
+      page.slug = nil
+      expect(page).to be_invalid
+      expect(page.errors[:slug]).to include("can't be blank")
+    end
+
     context 'when code is not \'custom\'' do
       subject { described_class.new(code: 'faq') }
 
       it { is_expected.to validate_uniqueness_of(:code) }
-      it { is_expected.to validate_inclusion_of(:code).in_array(%w[about terms-and-conditions privacy-policy faq proposals custom]) }
+      it { is_expected.to validate_inclusion_of(:code).in_array(%w[about terms-and-conditions privacy-policy faq custom]) }
     end
 
     context 'when code is \'custom\'' do
       subject { described_class.new(code: 'custom') }
 
       it { is_expected.not_to validate_uniqueness_of(:code) }
-      it { is_expected.to validate_inclusion_of(:code).in_array(%w[about terms-and-conditions privacy-policy faq proposals custom]) }
+      it { is_expected.to validate_inclusion_of(:code).in_array(%w[about terms-and-conditions privacy-policy faq custom]) }
     end
 
     context 'when banner_cta_button_type is set to \'customized_button\'' do
@@ -95,9 +105,19 @@ RSpec.describe StaticPage do
   end
 
   describe 'before destroy' do
-    subject(:static_page) { build(:static_page, code: 'faq') }
+    subject(:static_page) { build(:static_page) }
 
-    it 'prevents destruction of static page with :code other than \'custom\'' do
+    it "allows destruction of static page with :code 'custom'" do
+      expect { static_page.destroy! }.not_to raise_error
+    end
+
+    it "allows destruction of static page with :code 'cookie-policy'" do
+      static_page.update!(code: 'cookie-policy', slug: 'cookie-policy')
+      expect { static_page.destroy! }.not_to raise_error
+    end
+
+    it 'prevents destruction of static page with any other :code' do
+      static_page.update!(code: 'faq', slug: 'faq')
       expect { static_page.destroy! }.to raise_error ActiveRecord::RecordNotDestroyed
     end
   end

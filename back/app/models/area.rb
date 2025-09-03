@@ -28,8 +28,6 @@ class Area < ApplicationRecord
 
   has_many :areas_projects, dependent: :destroy
   has_many :projects, through: :areas_projects
-  has_many :areas_initiatives, dependent: :destroy
-  has_many :initiatives, through: :areas_initiatives
   has_many :followers, as: :followable, dependent: :destroy
 
   has_many :areas_static_pages, dependent: :restrict_with_error
@@ -88,6 +86,8 @@ class Area < ApplicationRecord
   end
 
   def strip_title
+    return unless title_multiloc&.any?
+
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end
@@ -120,9 +120,7 @@ class Area < ApplicationRecord
     return unless custom_field_option
 
     # TODO: (tech debt) Rework to log the user responsible for the deletion.
-    SideFxCustomFieldOptionService.new.before_destroy(custom_field_option, nil)
-    custom_field_option.destroy
-    SideFxCustomFieldOptionService.new.after_destroy(custom_field_option, nil)
+    CustomFields::Options::DestroyService.new.destroy!(custom_field_option, nil)
   end
 
   class << self

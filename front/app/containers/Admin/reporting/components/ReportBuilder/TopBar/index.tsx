@@ -4,7 +4,6 @@ import {
   Box,
   Text,
   colors,
-  IconButton,
   TooltipContentWrapper,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
@@ -12,6 +11,7 @@ import { useEditor } from '@craftjs/core';
 import { RouteType } from 'routes';
 import { SupportedLocale } from 'typings';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateReportLayout from 'api/report_layout/useUpdateReportLayout';
@@ -22,21 +22,25 @@ import { useReportContext } from 'containers/Admin/reporting/context/ReportConte
 
 import { CONTENT_BUILDER_Z_INDEX } from 'components/admin/ContentBuilder/constants';
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
+import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
+import LocaleSelect from 'components/admin/ContentBuilder/TopBar/LocaleSelect';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { isCommunityMonitorProject } from 'utils/projectUtils';
 
 import { PLATFORM_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE } from '../Templates/PlatformTemplate/constants';
 import { PROJECT_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE } from '../Templates/ProjectTemplate/constants';
 import { View } from '../ViewContainer/typings';
 import ViewPicker from '../ViewContainer/ViewPicker';
 
-import LocaleSelect from './LocaleSelect';
 import messages from './messages';
 import QuitModal from './QuitModal';
 import ReportTitle from './ReportTitle';
+import tracks from './tracks';
 
 type ContentBuilderTopBarProps = {
   hasPendingState: boolean;
@@ -72,6 +76,7 @@ const ContentBuilderTopBar = ({
   setSaved,
   setSelectedLocale,
 }: ContentBuilderTopBarProps) => {
+  const { data: appConfig } = useAppConfiguration();
   const [initialized, setInitialized] = useState(false);
   const [showQuitModal, setShowQuitModal] = useState(false);
   const { query } = useEditor();
@@ -100,6 +105,11 @@ const ContentBuilderTopBar = ({
     }
   };
   const doGoBack = () => {
+    if (projectId && isCommunityMonitorProject(projectId, appConfig)) {
+      clHistory.push('/admin/community-monitor/reports');
+      return;
+    }
+
     const goBackUrl: RouteType =
       projectId && phaseId
         ? `/admin/projects/${projectId}/phases/${phaseId}/report`
@@ -145,9 +155,13 @@ const ContentBuilderTopBar = ({
 
     const interval = setInterval(() => {
       const nodes = query.getSerializedNodes();
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const firstNode = nodes.ROOT?.nodes[0];
       if (!firstNode) return;
 
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const type = nodes?.[firstNode].type;
       const resolvedName =
         typeof type === 'object' ? type.resolvedName : undefined;
@@ -214,16 +228,7 @@ const ContentBuilderTopBar = ({
         onCloseModal={closeModal}
         onGoBack={doGoBack}
       />
-      <IconButton
-        iconName="arrow-left"
-        onClick={goBack}
-        buttonType="button"
-        iconColor={colors.textSecondary}
-        iconColorOnHover={colors.primary}
-        iconWidth="20px"
-        a11y_buttonActionMessage={formatMessage(messages.goBackButtonMessage)}
-        ml="8px"
-      />
+      <GoBackButton onClick={goBack} />
       <Box display="flex" p="15px" pl="8px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
           <ReportTitle reportId={reportId} />
@@ -257,14 +262,26 @@ const ContentBuilderTopBar = ({
             }
           >
             <div>
-              <Button
+              <ButtonWithLink
                 icon="print"
                 buttonStyle="secondary-outlined"
                 iconColor={colors.textPrimary}
                 iconSize="16px"
                 px="12px"
                 py="8px"
-                linkTo={`/admin/reporting/report-builder/${reportId}/print`}
+                onClick={() => {
+                  // track any community monitor report print for user analytics
+                  if (
+                    projectId &&
+                    isCommunityMonitorProject(projectId, appConfig)
+                  ) {
+                    trackEventByName(tracks.communinityMonitorReportPrinted);
+                  }
+
+                  clHistory.push(
+                    `/admin/reporting/report-builder/${reportId}/print`
+                  );
+                }}
                 openLinkInNewTab
                 disabled={disablePrint}
               />
@@ -272,16 +289,10 @@ const ContentBuilderTopBar = ({
           </Tooltip>
         </Box>
         <SaveButton
-          disabled={disableSave}
-          processing={isLoading}
-          bgColor={saved ? colors.success : undefined}
-          icon={saved ? 'check' : undefined}
-          onClick={handleSave}
-          fontSize="14px"
-          ml="8px"
-          px="12px"
-          pb="3px"
-          pt="4px"
+          isDisabled={disableSave}
+          isLoading={isLoading}
+          isSaved={saved}
+          onSave={handleSave}
         />
       </Box>
     </Container>

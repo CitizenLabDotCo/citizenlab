@@ -25,19 +25,18 @@ describe('Follow area', () => {
     cy.setLoginCookie(email, password);
 
     cy.visit(`/profile/${userSlug}/following`);
-    cy.acceptCookies();
 
     cy.get('#tab-Areas').click();
 
     // Follow the first area
-    cy.get('[data-cy="e2e-follow-area-button"]').should('exist');
-    cy.get('[data-cy="e2e-follow-area-button"]').eq(0).click();
+    cy.dataCy('e2e-follow-area-button').should('exist');
+    cy.dataCy('e2e-follow-area-button').eq(0).click();
 
     // Unfollow the area
-    cy.get('[data-cy="e2e-unfollow-area-button"]').should('exist');
-    cy.get('[data-cy="e2e-unfollow-area-button"]').eq(0).click();
+    cy.dataCy('e2e-unfollow-area-button').should('exist');
+    cy.dataCy('e2e-unfollow-area-button').eq(0).click();
 
-    cy.get('[data-cy="e2e-unfollow-area-button"]').should('not.exist');
-    cy.get('[data-cy="e2e-follow-area-button"]').should('exist');
+    cy.dataCy('e2e-unfollow-area-button').should('not.exist');
+    cy.dataCy('e2e-follow-area-button').should('exist');
   });
 });

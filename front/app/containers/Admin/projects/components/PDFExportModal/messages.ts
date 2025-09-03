@@ -9,19 +9,19 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.notes',
     defaultMessage: 'Notes',
   },
-  askPersonalData: {
-    id: 'app.containers.Admin.projects.all.askPersonalData',
-    defaultMessage: 'Ask personal data',
+  askPersonalData3: {
+    id: 'app.containers.Admin.projects.all.askPersonalData3',
+    defaultMessage: 'Add fields for name and email',
   },
   clickExportToPDFIdeaForm: {
-    id: 'app.containers.Admin.projects.all.clickExportToPDFIdeaForm',
+    id: 'app.containers.Admin.projects.all.clickExportToPDFIdeaForm2',
     defaultMessage:
-      'Questions not currently supported: Images, Tags and File Upload.',
+      'All questions are shown on the PDF. However, the following are not currently supported for import via FormSync: Images, Tags and File Upload.',
   },
   clickExportToPDFSurvey: {
-    id: 'app.containers.Admin.projects.all.clickExportToPDFSurvey2',
+    id: 'app.containers.Admin.projects.all.clickExportToPDFSurvey6',
     defaultMessage:
-      'Questions not currently supported: Mapping questions (drop pin, draw route and draw area), and file upload questions.',
+      'All questions are shown on the PDF. However, the following are not currently supported for import via FormSync: Mapping questions (drop pin, draw route and draw area), ranking questions, matrix questions and file upload questions.',
   },
   itIsAlsoPossibleIdeation: {
     id: 'app.containers.Admin.projects.all.itIsAlsoPossible1',
@@ -33,27 +33,30 @@ export default defineMessages({
     defaultMessage:
       "You can combine online and offline responses. To upload offline responses, go to the 'Survey' tab of this project, and click 'Import'.",
   },
-  notIncludedInYourPlan: {
-    id: 'app.containers.Admin.projects.all.notIncludedInYourPlan',
-    defaultMessage:
-      'However, this is not included in your current plan. Reach out to your Government Success Manager or admin to unlock it.',
-  },
   logicNotInPDF: {
     id: 'app.containers.Admin.projects.all.logicNotInPDF',
     defaultMessage:
       'Survey logic will not be reflected in the downloaded PDF. Paper respondents will see all survey questions.',
   },
-  personalDataExplanation: {
-    id: 'app.containers.Admin.projects.all.personalDataExplanation2',
+  personalDataExplanation5: {
+    id: 'app.containers.Admin.projects.all.personalDataExplanation5',
     defaultMessage:
-      'Check the box below, if you want your downloaded PDF to contain name, last name, and email fields. Upon upload of the paper form, we will use that user data, to auto-generate an account for the offline survey respondent.',
+      'This option will add the first name, last name, and email fields to the exported PDF. Upon uploading the paper form, we will use that data to auto-generate an account for the offline survey respondent.',
   },
-  phase: {
-    id: 'app.containers.Admin.projects.all.PDFExportModal.phase',
-    defaultMessage: 'Phase',
+  collapsibleInstructionsStartTitle: {
+    id: 'app.containers.Admin.projects.all.collapsibleInstructionsStartTitle',
+    defaultMessage: 'Start of the form',
   },
-  selectIdeationPhase: {
-    id: 'app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase',
-    defaultMessage: 'Please select an ideation phase.',
+  collapsibleInstructionsEndTitle: {
+    id: 'app.containers.Admin.projects.all.collapsibleInstructionsEndTitle',
+    defaultMessage: 'End of the form',
+  },
+  customiseStart: {
+    id: 'app.containers.Admin.projects.all.customiseStart',
+    defaultMessage: 'Customise the start of the form.',
+  },
+  customiseEnd: {
+    id: 'app.containers.Admin.projects.all.customiseEnd',
+    defaultMessage: 'Customise the end of the form.',
   },
 });

@@ -1,4 +1,4 @@
-import React, { MouseEvent, ButtonHTMLAttributes } from 'react';
+import React, { MouseEvent, ButtonHTMLAttributes, forwardRef } from 'react';
 
 import { isNil, get } from 'lodash-es';
 import { darken, transparentize, opacify, rgba } from 'polished';
@@ -192,12 +192,16 @@ function getButtonStyle(
     darken(0.12, backgroundColor);
   const backgroundActiveColor =
     backgroundHoverColor !== 'transparent'
-      ? backgroundHoverColor?.startsWith('rgba')
+      ? // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        backgroundHoverColor?.startsWith('rgba')
         ? opacify(0.12, backgroundHoverColor)
         : darken(0.12, backgroundHoverColor)
       : 'inherit';
   const backgroundDisabledColor =
     props.bgDisabledColor ||
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     get(defaultStyleValues, `${props.buttonStyle}.bgDisabledColor`) ||
     backgroundColor;
   const textColor =
@@ -217,6 +221,8 @@ function getButtonStyle(
     darken(0.2, iconColor);
   const textDisabledColor =
     props.textDisabledColor ||
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     get(defaultStyleValues, `${props.buttonStyle}.textDisabledColor`) ||
     textColor;
   const borderColor =
@@ -229,6 +235,8 @@ function getButtonStyle(
     darken(0.2, borderColor);
   const borderDisabledColor =
     props.borderDisabledColor ||
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     get(defaultStyleValues, `${props.buttonStyle}.borderDisabledColor`) ||
     borderColor;
   const boxShadow =
@@ -241,14 +249,20 @@ function getButtonStyle(
     'none';
   const borderRadius =
     props.borderRadius ||
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     get(defaultStyleValues, `${props.buttonStyle}.borderRadius`) ||
     props.theme.borderRadius;
   const textDecoration =
     props.textDecoration ||
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     get(defaultStyleValues, `${props.buttonStyle}.textDecoration`) ||
     'none';
   const textDecorationHover =
     props.textDecorationHover ||
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     get(defaultStyleValues, `${props.buttonStyle}.textDecorationHover`) ||
     'none';
   const padding =
@@ -371,7 +385,6 @@ function getButtonStyle(
       border-color: ${borderDisabledColor};
       opacity: ${opacityDisabled};
       cursor: not-allowed;
-      pointer-events: none;
 
       ${ButtonText} {
         color: ${textDisabledColor};
@@ -492,7 +505,8 @@ export type ButtonContainerProps = {
   BoxPositionProps &
   BoxWidthProps &
   BoxHeightProps &
-  React.HTMLAttributes<HTMLDivElement>;
+  React.HTMLAttributes<HTMLDivElement> &
+  React.HTMLAttributes<HTMLElement>;
 
 export interface Props extends ButtonContainerProps {
   children?: React.ReactNode;
@@ -501,7 +515,6 @@ export interface Props extends ButtonContainerProps {
   hiddenText?: string | JSX.Element;
   icon?: IconProps['name'];
   iconPos?: 'left' | 'right';
-  setSubmitButtonRef?: (value: any) => void;
   text?: string | JSX.Element;
   theme?: MainThemeProps | undefined;
   type?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
@@ -513,12 +526,15 @@ export interface Props extends ButtonContainerProps {
   ariaExpanded?: boolean;
   ariaPressed?: boolean;
   ariaDescribedby?: string;
+  ariaControls?: string;
   as?: React.ElementType;
   tabIndex?: number;
+  dataCy?: string;
 }
+export type Ref = HTMLButtonElement;
 
-const Button = (props: Props) => {
-  const handleOnClick = (event: MouseEvent<HTMLDivElement>) => {
+const Button = forwardRef<Ref, Props>((props, ref) => {
+  const handleOnClick = (event: MouseEvent<HTMLElement>) => {
     const { onClick, processing, disabled } = props;
 
     if (onClick) {
@@ -581,6 +597,7 @@ const Button = (props: Props) => {
     ariaExpanded,
     ariaPressed,
     ariaDescribedby,
+    ariaControls,
     opacityDisabled,
     className,
     onClick: _onClick,
@@ -588,6 +605,7 @@ const Button = (props: Props) => {
     disabled = false,
     tabIndex,
     as,
+    dataCy,
     ...rest
   } = props;
 
@@ -597,6 +615,8 @@ const Button = (props: Props) => {
   const iconPos = props.iconPos || 'left';
   const spinnerSize = getSpinnerSize(size);
   const hasText = !isNil(text) || !isNil(children);
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const buttonType = type && !as ? type : undefined;
   const containerClassNames = [
     className,
@@ -683,8 +703,8 @@ const Button = (props: Props) => {
         aria-expanded={ariaExpanded}
         aria-pressed={ariaPressed}
         aria-describedby={ariaDescribedby}
+        aria-controls={ariaControls}
         aria-disabled={disabled || processing}
-        ref={props.setSubmitButtonRef}
         className={buttonClassNames}
         form={form}
         type={buttonType}
@@ -692,11 +712,13 @@ const Button = (props: Props) => {
         autoFocus={autoFocus}
         as={as}
         tabIndex={tabIndex}
+        ref={ref}
+        data-cy={dataCy}
       >
         {childContent}
       </StyledButton>
     </Container>
   );
-};
+});
 
 export default Button;

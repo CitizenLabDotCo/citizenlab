@@ -1,3 +1,20 @@
 tr:
   analysis:
     example_tag_n: Örnek etiket %{n}
+    cell_statement:
+      percent_more: "%{percent}daha fazla"
+      percent_less: "%{percent}daha az"
+      range_min_max: "%{min} %{max}adresine"
+      range_min: "%{min} veya daha fazlası"
+      range_max: "%{max} veya daha az"
+      tag_vs_bin:
+        inputs: "'%{question}' adresine '%{answer}' yanıtını veren kişiler ortalamadan daha fazla '%{tag}' adresine %{percent_more_less} gönderir."
+        likes: "'%{answer}' yanıtını '%{question}' yanıtına veren kişiler, '%{tag}' adresindeki %{percent_more_less} girdilerini ortalamadan daha fazla beğenmektedir."
+        dislikes: "'%{question}' adresine '%{answer}' yanıtını veren kişiler, '%{tag}' adresindeki %{percent_more_less} girdilerini ortalamadan daha fazla sevmemektedir."
+        participants: "'%{answer}' yanıtını '%{question}' yanıtına veren kişiler %{percent_more_less} '%{tag}' yanıtına ortalamadan daha fazla katılmaktadır."
+      bin_vs_bin:
+        inputs: "'%{answer1}' ile '%{question1}' arasında yanıt verenler '%{answer2}' ile '%{question2}' arasında yanıt verenler %{percent_more_less} ortalamadan daha yüksektir."
+        likes: "'%{answer1}' ile '%{question1}' arasında yanıt veren kişiler, '%{answer2}' ile '%{question2}' arasında yanıt verdiklerinde %{percent_more_less} girdilerini ortalamadan daha fazla beğenirler."
+        dislikes: "'%{answer1}' ile '%{question1}' arasında yanıt veren kişiler, '%{answer2}' ile '%{question2}' arasında yanıt verdiklerinde %{percent_more_less} girdilerini ortalamadan daha fazla sevmezler."
+        participants: "'%{answer1}' ile '%{question1}' arasında yanıt veren kişiler, '%{answer2}' ile '%{question2}' arasında yanıt verdiklerinde ortalamadan daha fazla %{percent_more_less} katılırlar."
+

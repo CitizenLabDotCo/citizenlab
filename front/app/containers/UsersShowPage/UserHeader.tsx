@@ -21,7 +21,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import blockUserMessages from 'components/admin/UserBlockModals/messages';
 import Avatar from 'components/Avatar';
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
@@ -79,6 +79,8 @@ const UserHeader = ({ userSlug }: Props) => {
     }
   });
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const isBlocked = user.data.attributes?.blocked;
   const isCurrentUserAdmin = isAdmin(authUser);
   const canBlock = isCurrentUserAdmin && user.data.id !== authUser?.data.id;
@@ -147,9 +149,13 @@ const UserHeader = ({ userSlug }: Props) => {
         </Text>
         {!hideBio &&
           !isEmpty(user.data.attributes.bio_multiloc) &&
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           hasDescription && (
             <Bio data-testid="userHeaderBio">
               <QuillEditedContent>
+                {/* TODO: Fix this the next time the file is edited. */}
+                {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
                 {user.data.attributes.bio_multiloc && (
                   <T
                     value={user.data.attributes.bio_multiloc}
@@ -160,7 +166,7 @@ const UserHeader = ({ userSlug }: Props) => {
             </Bio>
           )}
         {!isNilOrError(authUser) && authUser.data.id === user.data.id && (
-          <Button
+          <ButtonWithLink
             linkTo="/profile/edit"
             buttonStyle="text"
             icon="edit"
@@ -169,7 +175,7 @@ const UserHeader = ({ userSlug }: Props) => {
             scrollToTop
           >
             {formatMessage(messages.editProfile)}
-          </Button>
+          </ButtonWithLink>
         )}
         {isCurrentUserAdmin && (
           <>

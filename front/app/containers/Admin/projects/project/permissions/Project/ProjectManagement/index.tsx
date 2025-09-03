@@ -8,13 +8,12 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import ModeratorList from 'components/admin/ModeratorList/ModeratorList';
+import UserSearch from 'components/admin/ModeratorUserSearch';
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import { Section } from 'components/admin/Section';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-import ModeratorList from './ModeratorList';
-import UserSearch from './UserSearch';
 
 import messages from './messages';
 

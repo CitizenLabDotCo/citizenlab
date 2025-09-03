@@ -8,42 +8,35 @@ pt:
       "comment_marked_as_spam": Comente o relatório do lixo eletrônico
       "comment_on_your_comment": Uma resposta ao meu comentário
       "comment_on_idea_you_follow": Um comentário sobre uma ideia que segue
-      "comment_on_initiative_you_follow": Um comentário sobre uma proposta que está a seguir
-      "cosponsor_of_your_initiative": Um utilizador aceita o meu convite para co-patrocinar a minha proposta
+      "community_monitor_report": Relatório do monitor comunitário
+      "cosponsor_of_your_idea": Um usuário aceita meu convite para co-patrocinar minha proposta
       "event_registration_confirmation": Confirmação da inscrição no evento
-      "first_idea_published": Publicação da minha primeira ideia
       "idea_marked_as_spam": Relatório de ideias spam
       "idea_published": Publicação da minha ideia
-      "initiative_assigned_to_you": Atribuição de uma ideia para mim
-      "initiative_marked_as_spam": Relatório de propostas spam
-      "initiative_published": Publicação da minha proposta
-      "invitation_to_cosponsor_initiative": Convite para co-patrocinar uma proposta
-      "initiative_resubmitted_for_review": Proposta reapresentada para revisão
+      "invitation_to_cosponsor_idea": Convite para co-patrocinar uma proposta
       "invite_received": Convite
       "invite_reminder": Lembrete do convite
       "internal_comment_on_idea_assigned_to_you": Comentário interno sobre os dados que me foram atribuídos
       "internal_comment_on_idea_you_commented_internally_on": Comentário interno sobre a entrada comentei dentro
       "internal_comment_on_idea_you_moderate": Comentário interno sobre a introdução de dados num projeto ou pasta que eu administro
-      "internal_comment_on_initiative_assigned_to_you": Comentário interno sobre a proposta que me foi atribuída
-      "internal_comment_on_initiative_you_commented_internally_on": Comentário interno sobre a proposta comentei dentro
-      "internal_comment_on_unassigned_initiative": Comentário interno sobre proposta não atribuída
       "internal_comment_on_unassigned_unmoderated_idea": Comentário interno sobre entrada não atribuída em projeto não gerenciado
       "internal_comment_on_your_internal_comment": Comentário interno sobre o meu comentário interno
       "mention_in_official_feedback": Menção em uma atualização
       "mention_in_internal_comment": Menção num comentário interno
       "new_comment_for_admin": Novo comentário em um projeto que eu sou moderador
-      "new_idea_for_admin": Nova idéia em um projeto que eu dirigi
-      "new_initiative_for_admin": Nova proposta
+      "new_idea_for_admin_published": Nova entrada publicada em um projeto que eu moderei
+      "new_idea_for_admin_prescreening": Nova entrada que requer aprovação em um projeto I moderado
       "official_feedback_on_idea_you_follow": Atualizar uma ideia que você segue
-      "official_feedback_on_initiative_you_follow": Atualização sobre uma proposta que você segue
       "password_reset": Redefinir a senha
       "project_moderation_rights_received": Direitos de moderação de projetos recebidos
       "project_folder_moderation_rights_received": Direitos de moderação da pasta de projetos recebidos
       "project_phase_started": Nova fase do projeto
       "project_phase_upcoming": Próxima nova fase do projeto
       "project_published": Projeto publicado
+      "project_review_request": Solicitação de revisão do projeto
+      "project_review_state_change": Projeto aprovado
       "status_change_on_idea_you_follow": Mudança de status de uma ideia que você segue
-      "status_change_on_initiative_you_follow": Mudança de status de uma proposta que você segue
+      "survey_submitted": Pesquisa enviada
       "threshold_reached_for_admin": Proposta atingiu o limite de votação
       "welcome": Após o cadastro
       "admin_digest": Resumo semanal para gestores
@@ -56,11 +49,30 @@ pt:
       "voting_last_chance": Última chance de votar
       "voting_phase_started": Nova fase do projeto com votação
       "voting_results": Resultados da votação
-      "your_proposed_initiatives_digest": Resumo semanal das suas propostas
+      "your_input_in_screening": Minha contribuição aguarda a triagem
     general:
       by_author: 'por %{authorName}'
       author_wrote: '%{authorName} escreveu:'
       cta_goto_idea: 'Ir para esta ideia'
+      cta_goto_input: 'Ir para esta entrada'
+      cta_goto:
+        idea: 'Ir para esta ideia'
+        question: 'Ir para esta pergunta'
+        contribution: 'Ir para esta contribuição'
+        project: 'Ir para este projeto'
+        issue: 'Ir para esta edição'
+        option: 'Vá para esta opção'
+        proposal: 'Ir para esta proposta'
+        petition: 'Vá para esta petição'
+      cta_goto_your:
+        idea: 'Vá para a sua ideia'
+        question: 'Vá para sua pergunta'
+        contribution: 'Vá para sua contribuição'
+        project: 'Vá para o seu projeto'
+        issue: 'Vá para o seu problema'
+        option: 'Vá para sua opção'
+        proposal: 'Vá para sua proposta'
+        petition: 'Vá para sua petição'
       cta_goto_proposal: 'Ir para esta proposta'
       cta_goto_project: 'Ir para este projeto'
     schedules:
@@ -72,6 +84,29 @@ pt:
         "4": "Semanalmente, às quintas-feiras às %{hourOfDay}"
         "5": "Semanalmente, às sextas-feiras às %{hourOfDay}"
         "6": "Semanalmente, aos sábados às %{hourOfDay}"
+      quarterly: "Trimestralmente, no primeiro dia do trimestre"
+    preview_data:
+      author_first_name: 'Jane'
+      author_last_name: 'Doe'
+      author_display_name: 'Jane Doe'
+      initiator_first_name: 'Bob'
+      initiator_last_name: 'Smith'
+      initiator_display_name: 'Bob Smith'
+      project_title: 'Exemplo de projeto'
+      project_description_preview: 'Este é um exemplo de conteúdo de fase usado para visualizar o conteúdo de e-mails. Não se trata de conteúdo real.'
+      phase_title: 'Fase de exemplo'
+      folder_title: 'Exemplo de pasta'
+      comment_body: 'Este é um exemplo de comentário usado para visualizar o conteúdo de e-mails. Não se trata de conteúdo real.'
+      comment_deleted_reason: 'Seu comentário de exemplo foi considerado inadequado.'
+      idea_title: 'Ideia de exemplo'
+      idea_body: 'Este é um exemplo de conteúdo de ideia usado para visualizar o conteúdo de e-mails. Não se trata de conteúdo real.'
+      event_title: 'Exemplo de evento'
+      event_address1: '10 Example Street, Exampleton, Exampleshire'
+      event_address2: 'Sala 3a, no andar de cima'
+      proposal_title: 'Exemplo de proposta'
+      input_status_title: 'Exemplo de status'
+      input_status_description: 'Um exemplo de status para uma entrada (por exemplo, aceito, rejeitado, implementado...)'
+      official_feedback_body: 'Exemplo de feedback oficial'
     footer:
       "link_privacy_policy": "Política de Privacidade"
       "link_terms_conditions": "Termos e condições"
@@ -85,37 +120,37 @@ pt:
     manual:
       preheader: 'Você tem uma correspondência de %{organizationName}'
     comment_deleted_by_admin:
-      reason: 'A razão pela qual o seu comentário foi excluido:'
-      cta_view: 'Veja essa idéia'
+      subject: 'O seu comentário foi excluido na plataforma de %{organizationName}'
+      preheader: 'O seu comentário foi excluido'
+      title: '%{organizationName} Excluiu seu comentário'
       event_description: '%{organizationName} apagou o comentário que você escreveu sobre uma idéia.'
-      main_header: '%{organizationName} excluiu o seu comentário'
+      cta_button: 'Ver esta ideia'
+      reason: 'A razão pela qual o seu comentário foi excluido:'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'O seu comentário foi considerado inapropriado.'
       irrelevant_reason: 'O seu comentário foi considerado irrelevante para esse contexto.'
       no_reason: 'Nenhuma razão foi especificada'
-      subject: 'O seu comentário foi excluido na plataforma de %{organizationName}'
-      preheader: 'O seu comentário foi excluido'
     admin_digest:
       subject: 'Seu relatório semanal de administrador de %{time}'
       preheader: 'Resumo administrativo %{organizationName}'
-      title_your_weekly_report: '%{firstName}, o seu relatório semanal'
-      text_introduction: 'Nós editamos para você a listagem de idéias que geraram mais atividade na semana passada. Descubra o que está acontecendo na sua plataforma!'
-      cta_visit_the_platform: 'Visite a sua plataforma'
+      title: '%{firstName}Você pode ver o relatório semanal'
+      event_description: 'Selecionamos para você as entradas que geraram mais atividade na última semana. Descubra o que está acontecendo na sua plataforma!'
+      cta_button: 'Visite sua plataforma'
       new_users: 'Novos usuários'
-      new_ideas: 'Novas idéias'
+      new_inputs: 'Novas entradas'
       new_comments: 'Novos comentários'
       title_activity_past_week: 'Atividade da semana passada'
       title_no_activity_past_week: 'Não houve actividade na semana passada.'
-      title_initiatives_past_week: 'Novas propostas da semana passada'
-      title_successful_initiatives_past_week: 'Propostas atribuídas a você que estouraram o limite na semana passada'
+      reached_threshold: 'Atingiu o limite'
       yesterday_by_author: 'Ontem por %{author}'
       today_by_author: 'Hoje por %{author}'
       x_days_ago_by_author: '%{x} días atrás por %{author}'
     admin_rights_received:
-      cta_manage_platform: 'Gerencie sua plataforma'
-      message_you_became_administrator: 'Foram-lhe concedidos direitos de administrador para a plataforma de participação de %{organizationName}.'
-      preheader: 'Foram-lhe concedidos direitos de administrador para a plataforma de participação de %{organizationName}.'
       subject: 'Você se tornou um administrador na plataforma de %{organizationName}'
+      preheader: 'Foram-lhe concedidos direitos de administrador para a plataforma de participação de %{organizationName}.'
+      title: 'Você se tornou um administrador'
+      event_description: 'Você recebeu direitos de administrador para a plataforma de participação de %{organizationName}.'
+      cta_button: 'Gerencie sua plataforma'
       text_create_participatory_process: 'Como administrador, você pode criar e configurar novos projetos de participação. Você pode adicionar novas fases usando a linha do tempo. Cada uma destas fases pode ter o seu próprio comportamento no que diz respeito ao lançamento de idéias, comentários e votação.'
       text_moderate_analyse_input: 'Uma vez que os projetos sejam lançados, as primeiras idéias chegarão. Você receberá relatórios semanais com todas as atividades necessárias para que você fique ciente de tudo. A visão geral das idéias o ajudará a moderar a entrada e a colaborar no processamento das mesmas.'
       text_platform_setup: 'Como administrador, você pode configurar sua plataforma de participação. Escolha um logotipo, imagens e cores, escreva uma mensagem pessoal na sua página inicial, envie convites, defina o que quer saber dos seus usuários, ...'
@@ -123,108 +158,76 @@ pt:
       title_moderate_analyse_input: 'Dirigir e analisar os dados introduzidos'
       title_platform_setup: 'Configure a sua plataforma'
       title_what_can_you_do_administrator: 'O que você pode fazer como administrador?'
-      title_you_became_administrator: 'Você se tornou um administrador'
     comment_marked_as_spam:
+      subject: '%{organizationName}: %{firstName} %{lastName} denunciou este comentário como spam'
+      preheader: 'Ação sobre o comentário reportado como spam'
+      title: '%{firstName} %{lastName} Você denunciou este comentário como spam'
+      cta_button: 'Comentário de revisão'
       by_author: 'por %{authorName}'
       commented: '%{authorName} comentado:'
-      cta_review_comment: 'Verificar o comentario'
       days_ago: '%{numberOfDays} dias atrás'
       event_description: 'O seguinte comentário postado em <strong>''%{post}''</strong> foi reportado:'
       inappropriate_content: 'Esse comentário é inapropriado ou ofensivo.'
-      preheader: 'Ação sobre o comentário reportado como spam'
       reported_this_because: '%{reporterFirstName} denunciou isto porque:'
-      subject: '%{organizationName}: %{firstName} %{lastName} denunciou este comentário como spam'
-      title_comment_spam_report: '%{firstName} %{lastName} denunciou este comentário como spam'
       today: Hoje
       wrong_content: 'Esse comentário não é relevante.'
       yesterday: Ontem
-    cosponsor_of_your_initiative:
-      cta_reply_to: 'Ver a sua proposta'
-      event_description_initiative: 'Parabéns! %{cosponsorName} aceitou o seu convite para co-patrocinar a sua proposta.'
-      main_header: '%{cosponsorName} aceitou o seu convite para co-patrocinar a sua proposta'
+    community_monitor_report:
+      subject: 'Um novo relatório do monitor comunitário está disponível'
+      preheader: 'Um novo relatório do monitor comunitário está disponível'
+      title: 'Um novo relatório do monitor comunitário está disponível'
+      event_description: 'Você pode acessá-lo clicando no botão abaixo e fazendo login. Você pode acessá-lo clicando no botão abaixo e fazendo login.'
+      cta_button: 'Ver relatório'
+      report_name: 'Relatório do monitor comunitário'
+    cosponsor_of_your_idea:
       subject: '%{cosponsorName} aceitou o seu convite para co-patrocinar a sua proposta'
-      preheader_initiative: '%{cosponsorName} aceitou o seu convite para co-patrocinar a sua proposta'
+      preheader: '%{cosponsorName} aceitou o seu convite para co-patrocinar a sua proposta'
+      title: '%{cosponsorName} aceitou o seu convite para co-patrocinar a sua proposta'
+      event_description: 'Parabéns! O site %{cosponsorName} aceitou o seu convite para co-patrocinar a sua proposta.'
+      cta_button: 'Ver sua proposta'
     assignee_digest:
       subject: 'idéias que requerem a sua opinião: %{numberIdeas}'
       preheader: 'Resumo do proprietario %{organizationName}'
-      title_your_weekly_report: '%{firstName}, a entrada dos usuários está à espera da sua opinião'
-      cta_manage_your_input: 'Administrar o acesso dos usuários'
-      assigned_ideas: 'As ideias precisam da sua opinião'
+      title: '%{firstName}A contribuição dos cidadãos está aguardando o seu feedback'
+      cta_button: 'Gerencie sua entrada'
+      x_inputs_need_your_feedback: 'entradas precisam do seu feedback'
       title_assignment_past_week: 'Últimas ideias atribuídas a você'
       title_no_assignment_past_week: 'Nenhuma nova ideia foi atribuída a você na semana passada'
       yesterday_by_author: 'Ontem por %{author}'
       today_by_author: 'Hoje por %{author}'
       x_days_ago_by_author: '%{x} días atrás por %{author}'
-      idea_section: Idéias
-      initiative_section: Propostas
-      title_initiatives_past_week: 'Novas propostas atribuídas a você'
-      title_successful_initiatives_past_week: 'Propostas atribuídas a você que estouraram o limite'
+      title_successful_past_week: 'Atribuído a você que atingiu o limite'
     idea_marked_as_spam:
-      cta_review_idea: 'Verificar a idéia'
-      report_inappropriate_offensive_content: 'Conteúdo inapropriado ou ofensivo.'
-      report_not_an_idea: 'Este conteúdo não é uma idéia e não pertence a este espaço.'
       subject: 'Você tem um relatório como spam na plataforma de %{organizationName}'
       preheader: 'Ação a ser realizada no relatório de spam'
+      title: '%{firstName} %{lastName} spam denunciado'
+      cta_button: 'Revisão'
+      report_inappropriate_offensive_content: 'Conteúdo inapropriado ou ofensivo.'
+      report_not_an_idea: 'Este conteúdo não é uma idéia e não pertence a este espaço.'
       reported_this_because: '%{reporterFirstName} denunciou isto porque:'
-      title_spam_report: '%{firstName} %{lastName} spam reportado'
-    initiative_marked_as_spam:
-      cta_review_initiative: 'Verificar a proposta'
-      report_inappropriate_offensive_content: 'Acho este conteúdo é inapropriado ou ofensivo.'
-      report_not_an_initiative: 'Este conteúdo não é uma proposta e não pertence a este espaço.'
-      subject: 'Você tem um relatório como spam na plataforma de %{organizationName}'
-      preheader: 'Ação no relatório identificado no spam'
-      reported_this_because: '%{reporterFirstName} denunciou isto porque:'
-      title_spam_report: '%{firstName} %{lastName} spam reportado'
-    initiative_assigned_to_you:
-      cta_reply_to: 'Dê uma opinião a %{authorName}'
-      event_description_initiative: 'Uma ideia foi atribuída a você. Dê sua opinião escrevendo uma atualização ou alterando o seu status.'
-      main_header: '%{firstName}, você tem uma nova tarefa'
-      subject: 'Você tem uma atribuição na plataforma de %{organizationName}'
-      preheader_initiative: 'A proposta de %{authorName} foi atribuída a você'
-    invitation_to_cosponsor_initiative:
-      cta_reply_to: 'Co-patrocinar esta proposta'
-      event_description_initiative: '%{authorName} criou uma nova proposta e gostaria de contar com o seu co-patrocínio.'
-      event_description_cosponsoring: 'Co-patrocinar uma proposta significa que <strong>o seu nome será apresentado</strong> juntamente com os nomes dos outros co-patrocinadores da proposta.'
-      event_description_before_action: 'Para ver a proposta e aceitar o convite, é necessário iniciar sessão na sua conta.'
+    invitation_to_cosponsor_idea:
+      subject: 'Você foi convidado a co-patrocinar uma proposta'
+      preheader: 'Você foi convidado a co-patrocinar a proposta do site %{authorName}'
+      title: 'Você foi convidado a co-patrocinar uma proposta'
+      event_description: '%{authorName} criou uma nova proposta e gostaria que você a co-patrocinasse.'
+      event_description_cosponsoring: 'Co-patrocinar uma proposta significa que <strong>seu nome será exibido</strong> com os nomes de outros co-patrocinadores da proposta.'
+      event_description_before_action: 'Para ver a proposta e aceitar o convite, você deve estar conectado à sua conta.'
       event_description_action: 'Clique abaixo para ler a proposta.'
-      main_header: 'Foi convidado a co-patrocinar uma proposta'
-      subject: 'Foi convidado a co-patrocinar uma proposta'
-      preheader_initiative: 'Foi convidado a co-patrocinar a proposta de %{authorName}'
-    initiative_resubmitted_for_review:
-      by_author: 'por %{authorName}'
-      cta_reply_to: 'Dar feedback a %{authorName}'
-      event_description_initiative: 'Uma proposta foi novamente apresentada para revisão. Dê a sua opinião escrevendo uma atualização oficial ou alterando o seu estado.'
-      main_header: '%{firstName}Tem uma proposta para analisar'
-      subject: 'Tem uma proposta para analisar na plataforma de %{organizationName}'
-      preheader_initiative: 'A proposta de %{authorName} foi novamente apresentada para revisão'
+      cta_button: 'Co-patrocinar esta proposta'
     invite_reminder:
-      cta_accept_invitation: 'Aceite o seu convite'
-      invitation_header: 'O seu convite está pendente'
-      preheader: '%{organizationName} enviou-lhe um convite para se juntar à sua plataforma de participação há alguns dias.'
-      invitation_expiry_message: 'Este convite expira aproximadamente em %{expiryDaysRemaining} dias.'
       subject: 'Você tem pendente um convite para a plataforma de participação de %{organizationName}'
+      preheader: '%{organizationName} enviou-lhe um convite para se juntar à sua plataforma de participação há alguns dias.'
+      title: 'Seu convite está pendente'
+      cta_button: 'Aceite seu convite'
+      invitation_expiry_message: 'Este convite expira aproximadamente em %{expiryDaysRemaining} dias.'
     invite_received:
-      added_a_message: '%{organizationName} escreveu a seguinte mensagem:'
-      cta_accept_invitation: 'Aceite o seu convite'
-      invitation_header: 'Você está convidado!'
-      invitation_header_message: '%{organizationName} convidou-o para a sua plataforma de participação.'
-      invitation_expiry_message: 'Este convite expira em %{expiryDays} dias.'
       preheader: '%{organizationName} Convidou você para se juntar à sua plataforma de participação.'
       subject: 'Está convidado a juntar-se à plataforma de %{organizationName}'
-    initiative_published:
-      action_add_image: '%{addImageLink} aumentar a visibilidade'
-      action_published_initiative: 'Proposta posteada'
-      action_send_email: 'Envie para seus contactos um %{sendEmailLink}'
-      action_share_fb: 'Avise seus amigos em %{fbLink}'
-      action_share_link: 'Compartilhar através de qualquer canal, copiando o %{link}'
-      action_share_twitter: 'Informe para os seus seguidores em %{twitterLink}'
-      link: Link
-      main_header: 'Você postou uma proposta! Vamos reunir apoio para ela.'
-      message_next_steps: '%{userFirstName}, a sua proposta foi publicada com sucesso na plataforma de participação de %{organizationName}. Você será notificado quando as pessoas interagirem com a sua proposta. Descubra os próximos passos que você pode dar embaixo.'
-      message_get_votes: 'alcançar o numero disponivel de votos'
-      preheader: 'Obrigado por partilhar a sua proposta %{initiativeTitle} por %{organizationName}. O próximo passo é obter apoio para a sua proposta, compartilhando-a através da sua rede.'
-      send_email: e-mail
-      subject: 'A sua proposta foi postada na plataforma de %{organizationName}'
+      title: 'Você está convidado!'
+      event_description: '%{organizationName} convidou você para a plataforma de participação deles.'
+      cta_button: 'Aceite seu convite'
+      added_a_message: '%{organizationName} escreveu a seguinte mensagem:'
+      invitation_expiry_message: 'Este convite expira em %{expiryDays} dias.'
     mention_in_comment:
       cta_reply_to: 'Responder a %{commentAuthor}'
       event_description: '%{commentAuthorFull} mencionou você no seu comentário sobre a idéia ''%{post}''. Clique no link embaixo para entrar na conversa com '' %{commentAuthor}'
@@ -232,137 +235,122 @@ pt:
       subject: 'Alguém mencionou você na plataforma de %{organizationName}'
       preheader: '%{commentAuthor} mencionou você em um comentário'
     mention_in_internal_comment:
-      cta_reply_to: 'Ver comentário de %{firstName}'
+      cta_button: 'Ver comentário de %{firstName}'
       event_description: '%{authorNameFull} mencionou você em um comentário interno.'
       subject: '%{firstName} mencionou você em um comentário interno.'
-      main_header: '%{firstName} mencionou você em um comentário interno.'
+      title: '%{firstName} mencionei você em um comentário interno.'
       preheader: '%{authorNameFull} mencionou você em um comentário interno.'
     moderator_digest:
-      subject: 'Seu relatório semanal como gerente do projeto de %{time}'
+      subject: 'Seu relatório semanal como gerente do projeto de %{project_title}'
       preheader: 'Resumo de gerente do projeto de %{organizationName}'
-      title_your_weekly_report: '%{firstName}, o seu relatório semanal'
-      text_introduction: 'Nós editamos para você a listagem de idéias que geraram mais atividade na semana passada. Descubra o que está acontecendo com o seu projeto!'
-      cta_manage: 'Gerencie seu projeto'
+      title: '%{firstName}Você pode ver o relatório semanal'
+      event_description: 'Selecionamos para você as entradas que geraram mais atividades na última semana. Descubra o que está acontecendo com o seu projeto!'
+      cta_button: 'Gerencie seu projeto'
       new_users: 'Novos usuários'
       new_ideas: 'Novas idéias'
       new_comments: 'Novos comentários'
       title_inputs_past_week: 'Novas entradas na última semana'
       title_no_inputs_past_week: 'Nenhuma entrada nova na última semana'
+      title_threshold_reached: Limite atingido na última semana
       yesterday_by_author: 'Ontem por %{author}'
       today_by_author: 'Hoje por %{author}'
       x_days_ago_by_author: '%{x} días atrás por %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} comentado:'
-      cta_reply_to: 'Checar o comentário de %{commentAuthor}'
+      cta_button: 'Veja o comentário de %{authorFirstName}'
       days_ago: '%{numberOfDays} dias atrás'
       event_description: '%{authorName} escreveu um comentário sobre a sua plataforma. Não hesite em juntar-se à discussão e mantenha a conversa ativa!'
-      main_header: '%{firstName}, um novo comentário foi postado na sua plataforma'
+      title: '%{firstName}Se você não tiver uma conta, um novo comentário foi publicado em sua plataforma'
       subject: 'Há um novo comentário sobre a plataforma em %{organizationName}'
       preheader: '%{authorName} deixou um comentário'
       today: Hoje
       yesterday: Ontem
     comment_on_idea_you_follow:
-      cta_reply_to: 'Responder a %{commentAuthor}'
-      event_description: '%{authorNameFull} colocou uma reação na ideia ''%{ideaTitle}''. Clique no botão abaixo para continuar a conversa com %{authorName}.'
-      main_header: '%{authorName} comentou uma ideia que segue'
-      subject: 'Há um novo comentário sobre uma ideia que segue'
+      subject: 'There''s a new comment on "%{input_title}"'
       preheader: '%{authorName} deixou um comentário sobre uma ideia para %{organizationName}'
-    comment_on_initiative_you_follow:
-      cta_reply_to: 'Responder a %{commentAuthor}'
-      event_description: '%{authorNameFull} colocou uma reação na iniciativa ''%{initiativeTitle}''. Clique no botão abaixo para continuar a conversa com %{authorName}.'
-      main_header: '%{commentAuthor} comentou uma iniciativa que segue'
-      subject: 'Há um novo comentário sobre a proposta que está a seguir'
-      preheader: '%{authorName} deixou um comentário sobre uma iniciativa para %{organizationName}'
-    new_initiative_for_admin:
-      cta_reply_to: 'Dar opinião a %{authorName}'
-      event_description: '%{authorName} Postou uma nova proposta na sua plataforma. Descubra-a agora, dê alguma opinião ou mude o seu status!'
-      main_header: '%{firstName}, uma nova proposta foi postada na sua plataforma'
-      subject: 'Alguém postou uma nova proposta na plataforma de %{organizationName}'
-      preheader: '%{authorName} postou uma nova proposta na sua plataforma'
-    new_idea_for_admin:
-      commented: '%{authorFirstName} comentado:'
-      cta_reply_to: 'Dar opinião a %{authorName}'
+      title: '%{authorName} comentou sobre uma entrada que você segue'
+      event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      cta_button: 'Responder a %{commentAuthor}'
+      main_header:
+        idea: '%{authorName} comentou sobre uma ideia que você segue'
+        question: '%{authorName} comentou sobre uma pergunta que você segue'
+        contribution: '%{authorName} comentou em uma contribuição que você segue'
+        project: '%{authorName} comentou sobre um projeto que você segue'
+        issue: '%{authorName} comentou sobre um assunto que você acompanha'
+        option: '%{authorName} comentou sobre uma opção que você segue'
+        proposal: '%{authorName} comentou sobre uma proposta que você segue'
+        petition: '%{authorName} comentou em uma petição que você segue'
+    new_idea_for_admin_published:
+      subject: 'Uma nova entrada foi publicada em sua plataforma'
+      preheader: '%{authorName} publicou uma nova entrada em sua plataforma'
+      title: 'Uma nova entrada foi publicada em sua plataforma'
+      event_description: '%{authorName} enviou uma nova entrada em sua plataforma. Descubra-a agora, dê um feedback ou altere seu status!'
+      cta_button: 'Dê feedback para %{authorName}'
       days_ago: '%{numberOfDays} dias atrás'
-      event_description: '%{authorName} publicou uma nova idéia na sua plataforma. Descubra-a agora, dê alguma opinião ou mude o seu status!'
-      main_header: '%{firstName}, uma nova idéia foi postada na sua plataforma'
-      subject: 'Alguém postou uma nova idéia na plataforma de %{organizationName}'
-      preheader: '%{authorName} postou uma nova idéia na sua plataforma'
+      today: Hoje
+      yesterday: Ontem
+    new_idea_for_admin_prescreening:
+      subject: 'Uma entrada requer sua revisão'
+      preheader: '%{authorName} publicou uma nova entrada em sua plataforma'
+      title: 'Uma entrada requer sua revisão'
+      cta_button: 'Revisar a entrada'
+      event_description: '%{authorName} enviou uma nova entrada em sua plataforma.'
+      input_not_visible: '<b>A entrada não ficará visível</b> até que você modifique seu status.'
+      days_ago: '%{numberOfDays} dias atrás'
       today: Hoje
       yesterday: Ontem
     comment_on_your_comment:
-      cta_reply_to: 'Responder a %{firstName}'
-      event_description: '%{authorNameFull} escreveu uma resposta ao seu comentário sobre ''%{post}'' na plataforma de participação. Clique no botão embaixo para continuar a conversa com '' %{authorName}.'
       subject: 'Você recebeu uma resposta ao seu comentário sobre a plataforma de %{organizationName}'
-      main_header: '%{authorName} respondeu ao seu comentário'
       preheader: '%{authorName} respondeu ao seu comentário sobre a plataforma de %{organizationName}'
+      title: '%{authorName} respondeu ao seu comentário'
+      event_description: '%{authorNameFull} escreveu uma resposta ao seu comentário sobre ''%{post}'' na plataforma de participação. Clique no botão embaixo para continuar a conversa com '' %{authorName}.'
+      cta_button: 'Responder a %{authorFirstName}'
       replied: '%{authorFirstName} respondeu:'
     internal_comment_on_your_internal_comment:
-      cta_reply_to: 'Ver comentário de %{firstName}'
+      cta_button: 'Ver comentário de %{firstName}'
       event_description: '%{authorNameFull} comentou o seu comentário interno.'
       subject: 'Recebeu um comentário sobre o seu comentário interno em ''%{post}'''
-      main_header: 'Recebeu um comentário sobre o seu comentário interno em ''%{post}'''
+      title: 'Você recebeu um comentário sobre seu comentário interno em ''%{post}'''
       preheader: '%{authorName} respondeu ao seu comentário interno sobre ''%{post}'''
     internal_comment_on_idea_assigned_to_you:
-      cta_reply_to: 'Ver comentário de %{firstName}'
+      cta_button: 'Ver comentário de %{firstName}'
       event_description: '%{authorNameFull} comentou dentro de uma entrada que lhe foi atribuída.'
       subject: '''%{post}'' tem um novo comentário interno'
-      main_header: '''%{post}'' tem um novo comentário interno'
+      title: 'Novo comentário interno sobre ''%{post}'''
       preheader: '''%{post}'' tem um novo comentário interno'
     internal_comment_on_idea_you_commented_internally_on:
-      cta_reply_to: 'Ver comentário de %{firstName}'
+      cta_button: 'Ver comentário de %{firstName}'
       event_description: '%{authorNameFull} comentou dentro de uma entrada que também comentou dentro.'
       subject: '''%{post}'' tem um novo comentário interno'
-      main_header: '''%{post}'' tem um novo comentário interno'
+      title: 'Novo comentário interno sobre ''%{post}'''
       preheader: '''%{post}'' tem um novo comentário interno'
     internal_comment_on_idea_you_moderate:
-      cta_reply_to: 'Ver comentário de %{firstName}'
+      cta_button: 'Ver comentário de %{firstName}'
       event_description: '%{authorNameFull} comentou dentro de uma entrada num projeto ou pasta que gerencia.'
       subject: '''%{post}'' tem um novo comentário interno'
-      main_header: '''%{post}'' tem um novo comentário interno'
-      preheader: '''%{post}'' tem um novo comentário interno'
-    internal_comment_on_initiative_assigned_to_you:
-      cta_reply_to: 'Ver comentário de %{firstName}'
-      event_description: '%{authorNameFull} comentou dentro de uma proposta que lhe foi atribuída.'
-      subject: '''%{post}'' tem um novo comentário interno'
-      main_header: '''%{post}'' tem um novo comentário interno'
-      preheader: '''%{post}'' tem um novo comentário interno'
-    internal_comment_on_initiative_you_commented_internally_on:
-      cta_reply_to: 'Ver comentário de %{firstName}'
-      event_description: '%{authorNameFull} comentou dentro de uma proposta que também comentou dentro.'
-      subject: '''%{post}'' tem um novo comentário interno'
-      main_header: '''%{post}'' tem um novo comentário interno'
-      preheader: '''%{post}'' tem um novo comentário interno'
-    internal_comment_on_unassigned_initiative:
-      cta_reply_to: 'Ver comentário de %{firstName}'
-      event_description: '%{authorNameFull} comentou dentro de uma proposta não atribuída.'
-      subject: '''%{post}'' tem um novo comentário interno'
-      main_header: '''%{post}'' tem um novo comentário interno'
+      title: 'Novo comentário interno sobre ''%{post}'''
       preheader: '''%{post}'' tem um novo comentário interno'
     internal_comment_on_unassigned_unmoderated_idea:
-      cta_reply_to: 'Ver comentário de %{firstName}'
+      cta_button: 'Ver comentário de %{firstName}'
       event_description: '%{authorNameFull} comentou internamente sobre uma entrada não atribuída num projeto não gerido.'
       subject: '''%{post}'' tem um novo comentário interno'
-      main_header: '''%{post}'' tem um novo comentário interno'
+      title: 'Novo comentário interno sobre ''%{post}'''
       preheader: '''%{post}'' tem um novo comentário interno'
     official_feedback_on_idea_you_follow:
-      header_message: '%{officialName} fez uma atualização da ideia ''%{ideaTitle}''. Clique no botão abaixo para entrar na conversa com %{officialName}.'
-      header_title: 'Há uma atualização sobre uma ideia que você segue'
-      subject: 'Uma ideia que você segue recebeu uma atualização oficial na plataforma %{organizationName}'
-      preheader: 'Há uma atualização sobre uma ideia que você segue'
-    official_feedback_on_initiative_you_follow:
-      header_message: '%{officialName} deu uma atualização sobre a proposta ''%{initiativeTitle}''. Clique no botão abaixo para entrar na conversa com %{organizationName}.'
-      header_title: 'Há uma atualização sobre uma proposta que você segue'
-      subject: 'Uma proposta que você segue recebeu uma atualização oficial na plataforma %{organizationName}'
-      preheader: 'Há uma atualização sobre uma proposta que você segue'
+      event_description: '%{feedback_author_name} apresentou uma atualização sobre o ''%{input_title}''.'
+      title: 'Há uma atualização em "%{input_title}"'
+      subject: 'Official feedback was posted on "%{input_title}"'
+      preheader: 'There''s an update on an input you follow'
+      cta_button: Ir para esta entrada
     mention_in_official_feedback:
-      cta_reply_to: 'Responder a %{organizationName}'
+      cta_button: 'Responder a %{organizationName}'
       event_description: '%{organizationName} mencionaram-no na sua opinião sobre a idéia ''%{post}''. Clique no link embaixo para entrar na conversa com '' %{organizationName}'
-      main_header: 'Você foi mencionado'
+      title: 'Você foi mencionado'
       subject: '%{organizationName} mencionou você na sua opinião'
       preheader: '%{commentAuthor} mencionou você na opinião'
     project_moderation_rights_received:
-      cta_manage_project: 'Gerenciar este projeto'
-      message_you_became_moderator: 'Um administrador da plataforma de %{organizationName} acabou de fazer você gerente do seguinte projeto:'
+      cta_button: 'Gerenciar este projeto'
+      event_description: 'Um administrador da plataforma de participação de %{organizationName} acabou de nomear você gerente de projeto do seguinte projeto:'
       no_ideas: 'Nenhuma idéia até o momento'
       preheader: 'Um administrador da plataforma %{organizationName} acabou de fazer você gestor do seguinte projeto'
       subject: 'Você se tornou o gestor de projeto da plataforma de %{organizationName}'
@@ -373,11 +361,11 @@ pt:
       title_moderate_analyse_input: 'Moderar e analisar os dados introduzidos'
       title_share_project_information: 'Fornecer informações sobre o projeto'
       title_what_can_you_do_moderator: 'O que você pode fazer como administrador do projeto?'
-      title_you_became_moderator: 'Você se tornou um administrador de projeto'
+      title: 'Você se tornou um gerente de projetos'
       x_ideas: '%{numberOfIdeas} ideias'
     project_folder_moderation_rights_received:
-      cta_view_folder_button: 'Visualizar essa pasta'
-      message_added_as_folderadmin: 'Você recebeu direitos de administrador na plataforma de participação de %{organizationName} para a seguinte pasta:'
+      cta_button: 'Exibir esta pasta'
+      event_description: 'Você recebeu direitos de gerenciador de pastas na plataforma de participação %{organizationName}para a seguinte pasta:'
       no_projects: 'Nenhum projeto por enquanto'
       preheader: 'Este é o link que você solicitou para redefinir sua senha'
       subject: '%{organizationName}: Redefina sua senha'
@@ -388,162 +376,156 @@ pt:
       title_moderate_analyse_input: 'Dirigir e analisar os dados introduzidos'
       title_manage_folder: 'Gerencie as configurações de pasta e crie novos projetos.'
       title_what_can_you_do_folderadmin: 'O que você pode fazer como administrador de pasta?'
-      title_added_as_folderadmin: 'Você foi adicionado como administrador de pasta'
+      title: 'Você foi adicionado como um gerenciador de pastas'
       x_projects: '%{numberOfProjects} projetos'
     project_phase_started:
-      cta_view_phase: 'Descobrir esta nova fase'
+      cta_button: 'Descubra essa nova fase'
       event_description: 'Este projeto entrou numa nova fase na plataforma de %{organizationName}. Clique no link embaixo para saber mais!'
-      main_header: 'Uma nova fase foi iniciada para o projeto ''%{projectName}'''
+      title: 'Uma nova fase começou para o projeto ''%{projectName}'''
       subtitle: 'Sobre ''%{projectName}'''
       new_phase: 'Este projeto entrou na fase ''%{phaseTitle}'''
       subject: '%{projectName} entrou numa nova fase'
       preheader: 'Foi iniciada uma nova fase para %{projectName}'
     project_phase_upcoming:
-      cta_view_phase: 'Configurar esta nova fase'
+      cta_button: 'Configure essa nova fase'
       event_description: 'O projeto ''%{projectName}'' estará entrando em uma nova fase em breve. Certifique-se de que todo está preparado para esta fase: Existe uma descrição adequada? As idéias seleccionadas são transferidas para esta fase? Você quer informar para seus usuários sobre as carateristicas desta fase através de uma campanha de e-mail personalizada?'
-      main_header: '%{firstName}, um projeto entrará numa nova fase em breve'
+      title: '%{firstName}Se você estiver interessado em um projeto, ele entrará em uma nova fase em breve'
       subtitle: 'Sobre ''%{projectName}'''
       new_phase: 'O projeto entrará na fase ''%{phaseTitle}'''
       subject: 'Prepare tudo para a nova fase de %{projectName}'
       preheader: 'Uma nova fase começará em breve para %{projectName}'
     project_published:
       subject: 'Um novo projeto foi publicado na plataforma do %{organizationName}'
-      header_title: 'Um novo projeto foi publicado'
-      header_message: 'A plataforma de participação %{organizationName} acaba de publicar o seguinte projeto:'
+      title: 'Um novo projeto foi publicado'
+      event_description: 'A plataforma de participação do %{organizationName} acaba de publicar o seguinte projeto:'
       preheader: 'Um novo projeto foi publicado'
+      cta_button: 'Ir para este projeto'
+    project_review_request:
+      subject: 'Solicitação de revisão: Um projeto está aguardando aprovação.'
+      title: '%{requesterName} convidou você para avaliar o projeto "%{projectTitle}"'
+      event_description: "No momento, o projeto está em modo de rascunho e não está visível para os usuários. Depois que você o revisar e aprovar, o moderador poderá publicá-lo."
+      cta_button: "Revisar o projeto"
+    project_review_state_change:
+      subject: '"%{projectTitle}" " foi aprovado'
+      title: '%{reviewerName} aprovou o projeto "%{projectTitle}"'
+      event_description: "Agora o projeto está pronto para ser lançado. Você pode publicá-lo quando estiver pronto!"
+      cta_button: "Vá para as configurações do projeto"
     status_change_on_idea_you_follow:
-      status_change: 'O novo status desta ideia é ''%{ideaStatus}'''
-      header_message: '%{organizationName} atualizou o status da ideia ‘%{ideaTitle}’ em sua plataforma digital de participação.'
-      header_title: 'Uma ideia que você segue tem um novo status'
-      subject: 'O status de uma ideia que você segue foi alterado'
-      preheader: 'Uma ideia que você segue tem um novo status'
-    status_change_on_initiative_you_follow:
-      status_change: 'O novo status desta proposta é ''%{initiativeStatus}'''
-      header_message: 'O status da proposta ''%{initiativeTitle}'' foi atualizado na plataforma digital de participação de %{organizationName}.'
-      header_title: 'Uma proposta que você segue tem um novo status'
-      subject: 'O status de uma proposta que você segue mudou'
-      preheader: 'Uma proposta que você segue tem um novo status'
+      status_change: 'The new status of this input is ''%{status}'''
+      event_description: '%{organizationName} atualizou o status da entrada ''%{input_title}'' em sua plataforma de participação digital.'
+      title: 'Uma entrada que você segue tem um novo status'
+      subject: 'The status of "%{input_title}" has changed'
+      preheader: 'An input you follow has a new status'
+      cta_button: Ir para esta entrada
     user_digest:
       subject: "Sua atividade na plataforma de participação de %{organizationName}"
       commented: "%{authorFirstName} comentado:"
       preheader: "Visão geral da semana de %{organizationName}"
-      title_your_weekly_report: "Descubra o que aconteceu na semana passada"
-      intro_text: "Aqui está um resumo do que está acontecendo na plataforma de participação de %{organizationName}."
-      cta_go_to_the_platform: "Ir para a plataforma"
+      title: "Descubra o que aconteceu na semana passada"
+      event_description: "Aqui está um resumo do que aconteceu na plataforma de participação de %{organizationName}."
+      cta_button: "Vá para a plataforma"
       title_no_activity_past_week: "Nenhuma atividade na última semana"
-      title_proposals: "Propostas iniciadas"
-      proposals_started_text: "Propostas são ideias que precisam ganhar adesão e apoio de outras pessoas (pessoas como você!) para avançar. Abaixo está uma lista de propostas que foram apresentadas na última semana. Clique em qualquer uma delas, dê uma olhada e ofereça seu apoio e feedback!"
-      title_successful_proposals: "Descobrir propostas"
+      successful_proposals_title: "Atingiu o limite"
       successful_proposals_text: "Essas propostas receberam apoio suficiente para avançar para a próxima fase! Clique na proposta para saber mais sobre o que acontece a seguir."
       today_by_author: "Hoje por %{author}"
       yesterday_by_author: "Ontem por %{author}"
       x_days_ago_by_author: "%{x} dias atrás por %{author}"
-      trending_ideas: "Ideias populares"
-      trending_ideas_text: "Interessado no que está acontecendo na plataforma? Confira as três principais ideias em alta, veja o que as pessoas estão dizendo sobre elas e participe da conversa."
+      trending_title: "Tendências"
+      trending_text: "Você tem interesse em saber o que está acontecendo na plataforma? Aqui estão as três contribuições mais populares e o que as pessoas estão dizendo sobre elas."
       no_notifications: "Sem notificações"
       one_notification: "1 notificação"
       multiple_notifications: "%{notifCount} notificações"
       no_unread_notifications: "É hora de gerar alguma nova atividade! Visite a plataforma para descobrir o que está acontecendo."
       unread_notifications: "Você tem novas notificações! Visite a plataforma para descobrir o que está acontecendo."
     threshold_reached_for_admin:
-      cta_process_initiative: 'Leve esta iniciativa para os próximos passos'
-      event_description: 'Uma iniciativa estourou o limite de votação na sua plataforma. Clique no botão embaixo para passar para os próximos passos!'
-      main_header: 'Uma iniciativa estourou o limite de votação!'
+      cta_button: 'Leve essa proposta para as próximas etapas'
+      title: 'Uma proposta atingiu o limite de votação!'
       subject: 'Uma iniciativa estourou o limite de votação na sua plataforma!'
       preheader: 'Garantir de dar próximos passos'
-    first_idea_published:
-      action_add_image: '%{addImageLink} aumentar a visibilidade'
-      action_comment: '%{textComment} sobre ideias existentes'
-      action_published_idea: 'Idea posteada'
-      action_send_email: 'Envie para seus contatos um %{sendEmailLink}'
-      action_share_fb: 'Aceitar seus amigos agora em %{fbLink}'
-      action_share_link: 'Compartilhar através de qualquer canal, copiando o %{link}'
-      action_share_twitter: 'Informe os seus seguidores em %{twitterLink}'
-      add_image: 'Adicionar uma imagem'
-      cta_view_idea: 'Ir para a sua proposta'
-      event_description: '%{firstName}, parabéns sobre a sua primeira ideia sobre a plataforma de participação de %{organizationName}. Você será notificado quando as pessoas interagirem com a sua ideia. Descubra abaixo os próximos passos que você pode realizar.'
-      link: link
-      main_header: '%{firstName}, você postou a sua primeira ideia!'
-      message_get_votes: 'Alcance mais pessoas com a sua ideia:'
-      preheader: '%{firstName}, parabéns por postar a sua primeira ideia na plataforma de %{organizationName}. Agora mobilize apoio para ela'
-      see_you: 'Te vejo em breve na plataforma!'
-      send_email: e-mail
-      subject: 'A sua primeira ideia na plataforma de %{organizationName}'
     welcome:
-      cta_join_platform: 'Explorar a plataforma'
+      cta_button: 'Descubra a plataforma'
       subject: 'Bem-vindo à plataforma de %{organizationName}'
-      main_header: Bem-vindo!
-      message_welcome: 'Parabéns, você se cadastrou com sucesso na plataforma de participação da (e) %{organizationName}. Agora você pode descobrir a plataforma e fazer ouvir a sua voz. Você também pode adicionar uma foto do perfil e uma breve descrição para dizer aos outros quem você é.'
+      title: Você é bem-vindo!
+      event_description: 'Parabéns, você se inscreveu com sucesso na plataforma de participação do %{organizationName}. Agora você pode descobrir a plataforma e fazer com que sua voz seja ouvida. Você também pode adicionar uma foto de perfil e uma breve descrição para dizer aos outros quem você é.'
       preheader: 'Aqui esta o que você pode fazer na plataforma de %{organizationName}'
     idea_published:
-      action_add_image: '%{addImageLink} aumentar a visibilidade'
-      action_published_idea: 'Idea postada'
-      action_send_email: 'Envie seus contactos para %{sendEmailLink}'
-      action_share_fb: 'Aceite seus amigos agora em %{fbLink}'
-      action_share_link: 'Compartilhar através de qualquer canal, copiando o %{link}'
-      action_share_twitter: 'Informe os seus seguidores em %{twitterLink}'
-      add_image: 'Adicionar uma imagem'
-      cta_view_idea: 'Ir para a sua proposta'
-      event_description: '%{firstName}, a sua idéia foi postada com sucesso na plataforma de participação de %{organizationName}. Você será notificado quando as pessoas interagirem com a sua idéia. Descubra os próximos passos de interação com a plataforma abaixo.'
-      link: Link
-      main_header: 'Você postou uma idéia! Vamos garantir que ela seja lida.'
-      message_get_votes: 'Alcance mais pessoas com a sua idéia:'
+      subject: 'Sua ideia foi publicada'
       preheader: '%{firstName}, parabéns por postar a sua idéia na plataforma de %{organizationName}. Agora mobilize apoio.'
-      see_you: 'Te vejo em breve na plataforma!'
+      title: 'Você postou "%{input_title}"'
+      input_type_subject:
+        idea: 'Sua ideia foi publicada'
+        question: 'Sua pergunta foi publicada'
+        contribution: 'Sua contribuição foi publicada'
+        project: 'Seu projeto foi publicado'
+        issue: 'Sua edição foi publicada'
+        option: 'Sua opção foi publicada'
+        proposal: 'Sua proposta foi publicada'
+        petition: 'Sua petição foi publicada'
+      header_message: 'Vamos garantir que você o leia.'
+      message_get_votes: 'Alcance mais pessoas com a sua idéia:'
+      action_published_idea: 'Idea postada'
+      action_add_image: '%{addImageLink} aumentar a visibilidade'
+      add_image: 'Adicionar uma imagem'
+      action_share_fb: 'Aceite seus amigos agora em %{fbLink}'
+      action_share_twitter: 'Informe os seus seguidores em %{twitterLink}'
+      action_send_email: 'Envie seus contactos para %{sendEmailLink}'
       send_email: e-mail
-      subject: 'A sua idéia na plataforma de %{organizationName}'
-      message_next_steps: ""
-    your_proposed_initiatives_digest:
-      subject: 'Atualização semanal da sua proposta'
-      preheader: 'O que aconteceu à sua proposta da semana passada?'
-      title_your_weekly_report: 'Como tem sido a sua proposta?'
-      text_introduction: 'Encontre os números-chave abaixo e vá para a página da sua proposta para agir e reunir apoio suficiente a tempo.'
-      cta_see_your_initiative: 'Ir para a sua proposta'
-      total_votes: 'Total dos votos'
-      new_votes: 'Novos Votos'
-      remaining_votes: 'Votos restantes'
-      remaining_days: 'Dias restantes'
+      action_share_link: 'Compartilhar através de qualquer canal, copiando o %{link}'
+      link: Link
+    your_input_in_screening:
+      main_header:
+        idea: 'Sua ideia está em "%{prescreening_status_title}"'
+        question: 'Sua pergunta está em "%{prescreening_status_title}"'
+        contribution: 'Sua contribuição está em "%{prescreening_status_title}"'
+        project: 'Seu projeto está em "%{prescreening_status_title}"'
+        issue: 'Seu problema está em "%{prescreening_status_title}"'
+        option: 'Sua opção está em "%{prescreening_status_title}"'
+        proposal: 'Sua proposta está em "%{prescreening_status_title}"'
+        petition: 'Sua petição está em "%{prescreening_status_title}"'
+      event_description: '"%{input_title}" se tornará visível para os outros quando for revisado e aprovado.'
+      subject: '"%{input_title}" está quase publicado'
+      preheader: 'No momento, você está em %{prescreening_status_title}'
     voting_basket_submitted:
       subject: '%{organizationName}: Votou com sucesso'
       preheader: 'Você votou com sucesso na plataforma de participação de %{organizationName}'
-      title_basket_submitted: 'Você votou com sucesso'
+      title: 'Você votou com sucesso'
       event_description: 'Obrigado por participar. Os seus votos foram registados. Visite a plataforma de %{organizationName} para ver e gerenciar os seus votos.'
-      cta_see_votes_submitted: 'Veja os votos enviados'
+      cta_button: 'Ver votos enviados'
       cta_message: 'Clique no botão abaixo para participar'
     native_survey_not_submitted:
       subject: '%{organizationName}: Quase lá! Envie suas respostas'
       preheader: 'Você não concluiu a resposta da pesquisa na plataforma de participação de %{organizationName}'
-      title_native_survey_not_submitted: 'Quase lá! Envie suas respostas'
-      body_native_survey_not_submitted: 'Você começou a compartilhar suas respostas em %{phaseTitle} , mas não as enviou. Os envios serão encerrados em %{phaseEndDate}. Clique no botão abaixo para continuar de onde você parou.'
-      body_native_survey_not_submitted_no_date: 'Você começou a compartilhar suas respostas em %{phaseTitle} , mas não as enviou. Clique no botão abaixo para continuar de onde você parou.'
-      cta_complete_your_survey_response: 'Retomar sua resposta à pesquisa'
+      title: 'Você está quase lá! Envie suas respostas'
+      event_description: 'Você começou a compartilhar suas respostas em %{phaseTitle} , mas não as enviou. Clique no botão abaixo para continuar de onde você parou.'
+      cta_button: 'Retome a resposta à sua pesquisa'
+      submissions_close: 'As inscrições serão encerradas em %{phaseEndDate}.'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Você não enviou seus votos'
       preheader: 'Você não enviou os seus votos na plataforma de participação de %{organizationName}'
-      title_basket_not_submitted: 'Você não enviou seus votos'
+      title: 'Você não enviou seus votos'
       event_description: 'Você selecionou algumas opções para %{contextTitle}, mas não enviou sua seleção.'
-      cta_view_options_and_vote: 'Ver opções e votar'
+      cta_button: 'Exibir opções e votar'
       cta_message: 'Clique no botão abaixo para enviar as opções selecionadas'
     voting_last_chance:
       subject: '%{organizationName}: Última oportunidade para votar em %{phaseTitle}'
       preheader: 'Última oportunidade para votar em %{phaseTitle} na plataforma de participação de %{organizationName}'
-      title_last_chance: 'Última oportunidade para votar em %{phaseTitle}'
+      title: 'Última chance para você votar em %{phaseTitle}'
       body_1: 'A fase de votação do projeto %{projectTitle} termina amanhã, à meia-noite.'
       body_2: 'O tempo está acabando e notamos que você ainda não votou! Faça isso agora simplesmente clicando no botão abaixo para participar.'
       body_3: 'Ao fazê-lo, terá acesso a uma série de opções e terá a oportunidade de dar a sua contribuição, que é crucial para decidir o futuro deste projeto.'
-      cta_vote: 'Voto'
+      cta_button: 'Votação'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} resultados da votação revelados!'
       preheader: '%{phaseTitle} resultados da votação revelados na plataforma de participação de %{organizationName}'
-      title_results: '%{phaseTitle} resultados da votação revelados!'
+      title: '%{phaseTitle} resultados da votação revelados!'
       body_1: 'Os resultados já chegaram!'
       body_2: 'Os resultados da votação %{phaseTitle} na plataforma %{organizationName} foram publicados!'
       body_3: 'Recomendamos que você analise os resultados e fique atento para mais atualizações sobre as próximas etapas.'
-      cta_see_results: 'Veja os resultados na plataforma'
+      cta_button: 'Veja os resultados na plataforma'
     event_registration_confirmation:
       subject: "Você está dentro! Sua inscrição para \"%{eventTitle}\" está confirmada"
       preheader: "%{firstName}Obrigado por se registrar em %{eventTitle}"
-      header_message: "%{firstName}, obrigado por registrar-se para"
+      title: "%{firstName}Obrigado por se registrar no"
       event_details:
         labels:
           date: 'Data'
@@ -551,14 +533,24 @@ pt:
           online_link: 'Link on-line'
           description: 'Descrição'
           project: 'Projeto'
-      cta_go_to_event: 'Ver o evento'
+      cta_button: 'Veja o evento'
       cta_add_to_calendar: 'Adicionar ao seu calendário'
     voting_phase_started:
       subject: '%{organizationName}: A fase de votação começou em %{projectName}'
       preheader: 'Começou a fase de votação para %{projectName} na plataforma de participação de %{organizationName}'
+      title: '%{projectName}'
       event_description: 'O projeto "%{projectName}" está pedindo para você votar entre %{numIdeas} opções:'
       cta_message: 'Clique no botão abaixo para participar'
-      cta_vote: 'Acesse a plataforma para votar'
+      cta_button: 'Vá até a plataforma para votar'
+    survey_submitted:
+      subject: '%{organizationName}: Obrigado por sua resposta! 🎉'
+      preheader: 'Aqui estão os detalhes do seu envio.'
+      title: 'Obrigado por compartilhar o que você pensa sobre "%{projectName}"!'
+      event_description: 'Sua entrada para "%{projectName}" foi enviada com sucesso.'
+      if_you_would_like_to_review: 'Se quiser revisar seu envio, você pode fazer o download das respostas abaixo.'
+      your_submission_has_id: 'Seu envio tem o seguinte identificador exclusivo:'
+      you_can_use_this_id: 'Você pode usar esse identificador para entrar em contato com os administradores da plataforma, caso queira que seu envio seja removido.'
+      cta_button: 'Baixe suas respostas'
     admin_labels:
       recipient_role:
         admins: 'Aos administradores'
@@ -569,32 +561,35 @@ pt:
       recipient_segment:
         admins: 'Administradores'
         admins_and_managers: 'Administradores e gestores'
+        admins_and_managers_assigned_to_the_input: 'Administradores e gestores atribuídos à entrada'
         admins_and_managers_managing_the_project: 'Administradores e gestores que gerenciam o projeto'
-        managers_managing_the_project: 'Gestores que gerem o projeto'
+        admins_assigned_to_a_proposal: 'Administradores atribuídos a uma proposta'
         all_users: 'Todos os usuários'
         all_users_who_uploaded_proposals: 'Todos os usuários que enviaram propostas'
         managers: 'Gestores'
-        admins_assigned_to_a_proposal: 'Administradores atribuídos a uma proposta'
-        admins_and_managers_assigned_to_the_input: 'Administradores e gestores atribuídos à entrada'
+        managers_managing_the_project: 'Gestores que gerem o projeto'
         new_attendee: 'Usuário recém-registrado'
+        project_reviewers: 'Revisores de projetos e gerentes de pastas'
+        project_review_requester: 'Usuário que solicitou a revisão do projeto'
+        user_who_commented: 'Usuário que comentou'
         user_who_is_invited_to_cosponsor_a_proposal: 'Utilizador que é convidado a co-patrocinar uma proposta'
+        user_who_is_mentioned: 'Usuário mencionado'
         user_who_is_receiving_admin_rights: 'Usuário que está recebendo direitos de administrador'
         user_who_is_receiving_folder_moderator_rights: 'Usuário que está recebendo direitos de moderador de pasta'
         user_who_is_receiving_project_moderator_rights: 'Usuário que está recebendo direitos de moderador de projeto'
-        user_who_commented: 'Usuário que comentou'
-        user_who_is_mentioned: 'Usuário mencionado'
-        user_who_published_the_proposal: 'Usuário que publicou a proposta'
         user_who_published_the_input: 'Usuário que publicou a ideia'
+        user_who_published_the_proposal: 'Usuário que publicou a proposta'
         user_who_registers: 'Usuário que se cadastra'
-        user_who_was_invited: 'Usuário que foi convidado'
-        users_who_engaged_with_the_project: 'Usuários engajados com o projeto'
-        users_who_follow_the_proposal: 'Usuários que seguem a proposta'
-        users_who_follow_the_input: 'Usuários que seguem a entrada'
-        users_who_follow_the_project: 'Usuários que seguem o projeto'
+        user_who_submitted_the_input: 'Usuário que enviou a entrada'
         user_who_voted: 'Usuário que votou'
+        user_who_was_invited: 'Usuário que foi convidado'
+        user_with_unsubmitted_survey: 'Usuário que iniciou, mas não enviou a pesquisa'
         user_with_unsubmitted_votes: 'Usuário que não enviou seus votos'
         users_who_engaged_but_not_voted: 'Usuários que se engajaram com o projeto, mas não votaram'
-        user_with_unsubmitted_survey: 'Usuário que iniciou, mas não enviou a pesquisa'
+        users_who_engaged_with_the_project: 'Usuários engajados com o projeto'
+        users_who_follow_the_input: 'Usuários que seguem a entrada'
+        users_who_follow_the_project: 'Usuários que seguem o projeto'
+        users_who_follow_the_proposal: 'Usuários que seguem a proposta'
       content_type:
         comments: 'Comentários'
         content_moderation: 'Moderação de conteúdo'
@@ -609,51 +604,51 @@ pt:
         voting: 'Votação'
         surveys: 'Pesquisas'
       trigger:
+        7_days_after_invite_is_sent: '7 dias após o envio do convite'
+        7_days_before_the_project_changes_phase: '7 dias antes da fase de mudanças do projeto'
         comment_is_deleted: 'Comentário excluído'
         comment_is_flagged_as_spam: 'O comentário foi sinalizado como spam'
         content_gets_flagged_as_innapropiate: 'O conteúdo é sinalizado como impróprio'
+        initiative_resubmitted_for_review: 'Proposta reapresentada para revisão'
         input_is_assigned: 'A entrada é atribuída'
         input_is_flagged_as_spam: 'A entrada é sinalizada como spam'
+        input_is_published: 'A entrada foi publicada'
         input_is_updated: 'A entrada é atualizada'
         input_status_changes: 'Alterações do status da entrada'
-        initiative_resubmitted_for_review: 'Proposta reapresentada para revisão'
         internal_comment_is_posted_on_idea_assigned_to_user: 'O comentário interno é lançado na entrada atribuída ao utilizador'''
-        internal_comment_is_posted_on_initiative_assigned_to_user: 'O comentário interno é publicado na proposta atribuída ao utilizador'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'O comentário interno é publicado na entrada do projeto ou pasta que o utilizador gere'
         internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'O comentário interno é lançado na entrada que o utilizador comentou internamente'''
         internal_comment_is_posted_on_idea_user_moderates: 'O comentário interno é publicado na entrada que o usuário modera'
-        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'O comentário interno é publicado na proposta que o utilizador comentou internamente'
-        internal_comment_is_posted_on_unassigned_initiative: 'Comentário interno é publicado sobre proposta não atribuída'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Comentário interno é lançado em entrada não atribuída em projeto não gerido'
-        user_accepts_invitation_to_cosponsor_a_proposal: 'O utilizador aceita o convite para co-patrocinar uma proposta'
-        user_is_invited_to_cosponsor_a_proposal: 'O usuário é convidado a co-patrocinar uma proposta'
-        user_is_mentioned_in_internal_comment: 'O usuário é mencionado num comentário interno'
+        project_review_request: 'O moderador solicitou uma revisão do projeto'
+        project_review_state_change: 'O revisor aprovou o projeto'
+        new_input_awaits_screening: 'Novas informações aguardam a triagem'
         new_input_is_published: 'Nova entrada é publicada'
         new_proposal_is_posted: 'Nova proposta foi postada'
         project_phase_changes: 'Alterações na fase do projeto'
         project_published: 'Projeto publicado'
         proposal_gets_reported_as_spam: 'A proposta foi denunciada como spam'
         proposal_is_assigned_to_admin: 'A proposta está atribuída ao administrador'
+        proposal_is_published: 'A proposta foi publicada'
         proposal_is_updated: 'A proposta está atualizada'
         proposal_is_upvoted_above_threshold: 'A proposta foi votada positivamente acima do limiar'
         proposal_status_changes: 'Alterações no status da proposta'
+        registration_to_event: 'Inscrição em um evento'
+        survey_1_day_after_draft_saved: '1 dia após o usuário ter salvo o questionário pela última vez em rascunho'
+        user_accepts_invitation_to_cosponsor_a_proposal: 'O utilizador aceita o convite para co-patrocinar uma proposta'
         user_comments: 'Comentários do usuário'
         user_comments_on_input: 'Comentários dos usuários na entrada'
         user_comments_on_proposal: 'Comentários do usuário sobre a proposta'
         user_is_given_admin_rights: 'Usuário recebendo direitos de administrador'
         user_is_given_folder_moderator_rights: 'Usuário recebendo direitos de moderador de pasta'
         user_is_given_project_moderator_rights: 'Usuário recebendo direitos de moderador de projeto'
+        user_is_invited_to_cosponsor_a_proposal: 'O usuário é convidado a co-patrocinar uma proposta'
         user_is_mentioned: 'Usuário mencionado'
-        input_is_published: 'A entrada foi publicada'
-        proposal_is_published: 'A proposta foi publicada'
+        user_is_mentioned_in_internal_comment: 'O usuário é mencionado num comentário interno'
         user_registers_for_the_first_time: 'Usuário se cadastra pela primeira vez'
         user_replies_to_comment: 'Usuário responde ao comentário'
         user_replies_to_internal_comment: 'Respostas do usuário ao comentário interno'
-        voting_2_days_before_phase_closes: '2 dias antes do encerramento da fase de votação'
         voting_1_day_after_last_votes: '1 dia após o último voto do usuário'
-        voting_phase_ended: 'Fim da fase de votação'
+        voting_2_days_before_phase_closes: '2 dias antes do encerramento da fase de votação'
         voting_basket_submitted: 'Os votos são enviados'
-        7_days_after_invite_is_sent: '7 dias após o envio do convite'
-        7_days_before_the_project_changes_phase: '7 dias antes da fase de mudanças do projeto'
-        registration_to_event: 'Inscrição em um evento'
-        survey_1_day_after_draft_saved: '1 dia após o usuário ter salvo o questionário pela última vez em rascunho'
+        voting_phase_ended: 'Fim da fase de votação'

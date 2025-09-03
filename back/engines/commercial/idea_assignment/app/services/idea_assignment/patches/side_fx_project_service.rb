@@ -3,9 +3,14 @@
 module IdeaAssignment
   module Patches
     module SideFxProjectService
-      def before_create(project, current_user)
+      def after_create(project, current_user)
         super
-        set_default_assignee(project, current_user)
+        set_default_assignee!(project, current_user)
+      end
+
+      def after_copy(source_project, copied_project, current_user, start_time)
+        super
+        set_default_assignee!(copied_project, current_user)
       end
 
       private
@@ -18,12 +23,11 @@ module IdeaAssignment
         IdeaAssignmentService.new.clean_assignees_for_project! project
       end
 
-      def set_default_assignee(project, current_user)
-        project.default_assignee ||= if current_user&.super_admin?
-          ::User.oldest_admin
-        else
-          current_user
-        end
+      def set_default_assignee!(project, current_user)
+        return if project.default_assignee
+
+        project.default_assignee = current_user&.super_admin? ? ::User.oldest_admin : current_user
+        project.save!
       end
     end
   end

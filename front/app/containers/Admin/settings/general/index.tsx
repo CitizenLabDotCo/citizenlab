@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 
-import { Success, Error, Toggle } from '@citizenlab/cl2-component-library';
+import {
+  Success,
+  Error,
+  Toggle,
+  Text,
+} from '@citizenlab/cl2-component-library';
+import Box from 'component-library/components/Box';
+import Radio from 'component-library/components/Radio';
 import styled from 'styled-components';
 
 import {
@@ -10,6 +17,8 @@ import {
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { Section, SubSectionTitle } from 'components/admin/Section';
 import Outlet from 'components/Outlet';
 
@@ -17,6 +26,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
+import ProjectReview from '../projectReview';
 
 import Form from './Form';
 
@@ -66,6 +76,8 @@ const SettingsGeneralTab = () => {
 
   const { formatMessage } = useIntl();
 
+  const projectReviewEnabled = useFeatureFlag({ name: 'project_review' });
+
   const handleOnSubmit = async (formValues: FormValues) => {
     await updateAppConfigurationAsync({ settings: { core: formValues } });
   };
@@ -84,6 +96,19 @@ const SettingsGeneralTab = () => {
             blocking_profanity: {
               enabled: !oldProfanityBlockerEnabled,
             },
+          },
+        },
+        { onSuccess: () => setSettingsUpdatedSuccessFully(true) }
+      );
+    }
+  };
+
+  const onChangeAnonymousNameScheme = (scheme: string) => {
+    if (!isNilOrError(appConfiguration)) {
+      updateAppConfiguration(
+        {
+          settings: {
+            core: { anonymous_name_scheme: scheme },
           },
         },
         { onSuccess: () => setSettingsUpdatedSuccessFully(true) }
@@ -116,6 +141,11 @@ const SettingsGeneralTab = () => {
 
     const { organization_name, organization_site, locales, population } =
       appConfiguration.data.attributes.settings.core;
+
+    const anomymousNameSchemes = ['user', 'animal'];
+    const currentAnonymousNameScheme =
+      appConfiguration.data.attributes.settings.core.anonymous_name_scheme ||
+      'user';
 
     return (
       <>
@@ -150,10 +180,34 @@ const SettingsGeneralTab = () => {
               </ToggleLabel>
             </Setting>
           )}
+
           <Outlet
             id="app.containers.Admin.settings.general.form"
             onSettingChange={handleSettingChange}
           />
+
+          <Box mt="30px" mb="20px">
+            <SubSectionTitle>
+              <FormattedMessage {...messages.userNameDisplayTitle} />
+            </SubSectionTitle>
+            <Text mt="-10px">
+              <FormattedMessage {...messages.userNameDisplayDescription} />
+            </Text>
+            {anomymousNameSchemes.map((scheme) => (
+              <Radio
+                key={scheme}
+                onChange={() => {
+                  onChangeAnonymousNameScheme(scheme);
+                }}
+                currentValue={currentAnonymousNameScheme}
+                value={scheme}
+                name={scheme}
+                id={scheme}
+                label={formatMessage(messages[`anonymousNameScheme_${scheme}`])}
+              />
+            ))}
+          </Box>
+
           {settingsUpdatedSuccessFully && (
             <Success
               showBackground
@@ -164,6 +218,8 @@ const SettingsGeneralTab = () => {
             <Error text={formatMessage(messages.settingsSavingError)} />
           )}
         </StyledSection>
+
+        {projectReviewEnabled && <ProjectReview />}
       </>
     );
   }

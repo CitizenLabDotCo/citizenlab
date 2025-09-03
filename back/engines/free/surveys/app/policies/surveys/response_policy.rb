@@ -2,14 +2,7 @@
 
 module Surveys
   class ResponsePolicy < ApplicationPolicy
-    class Scope
-      attr_reader :user, :scope
-
-      def initialize(user, scope)
-        @user  = user
-        @scope = scope
-      end
-
+    class Scope < ApplicationPolicy::Scope
       def resolve
         return scope.none unless user
 
@@ -21,7 +14,7 @@ module Surveys
     end
 
     def index_xlsx?
-      user&.active? && user&.admin?
+      user&.active? && user.admin?
     end
   end
 end

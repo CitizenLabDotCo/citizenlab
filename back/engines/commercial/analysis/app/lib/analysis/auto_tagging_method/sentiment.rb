@@ -2,11 +2,7 @@
 
 module Analysis
   class AutoTaggingMethod::Sentiment < AutoTaggingMethod::Base
-    include NLPCloudHelpers
-
     TAG_TYPE = 'sentiment'
-    POSITIVE_THRESHOLD = 0.8
-    NEGATIVE_THRESHOLD = 0.95
     POSITIVE_NAME = 'sentiment +'
     NEGATIVE_NAME = 'sentiment -'
 
@@ -21,24 +17,13 @@ module Analysis
       filtered_inputs.includes(:author).each_with_index do |input, i|
         update_progress(i / total_inputs.to_f) if i % 5 == 0
 
-        locale = deduct_locale(input)
-        nlp = nlp_cloud_client_for(
-          'distilbert-base-uncased-finetuned-sst-2-english',
-          locale
-        )
-
         text = input_to_text.execute(input).values.join("\n").truncate(1500)
         next if text.strip.empty?
 
-        # We retry 10 times due to rate limiting
-        result = retry_rate_limit(10, 2) do
-          nlp.sentiment(text)
-        end
-
-        tag = case response_sentiment(result)
-        when :positive
+        tag = case sentiment_for_text(text)
+        when 'POSITIVE'
           positive_tag
-        when :negative
+        when 'NEGATIVE'
           negative_tag
         end
         find_or_create_tagging!(input_id: input.id, tag_id: tag.id) if tag
@@ -49,18 +34,9 @@ module Analysis
 
     private
 
-    def response_sentiment(response)
-      if response && response['scored_labels'].find do |item|
-           item['label'] == 'POSITIVE' && item['score'] >= POSITIVE_THRESHOLD
-         end
-        return :positive
-      end
-
-      if response && response['scored_labels'].find do |item|
-           item['label'] == 'NEGATIVE' && item['score'] >= NEGATIVE_THRESHOLD
-         end
-        :negative
-      end
+    def sentiment_for_text(input_text)
+      prompt = LLM::Prompt.new.fetch('sentiment_analysis', input_text:)
+      gpt4mini.chat(prompt).strip
     end
 
     def sentiment_tags

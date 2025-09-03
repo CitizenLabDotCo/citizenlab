@@ -1,4 +1,4 @@
-import { Sort, IQueryParameters } from 'api/ideas/types';
+import { Sort, IIdeaQueryParameters } from 'api/ideas/types';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -25,6 +25,6 @@ export interface IIdeasFilterCounts {
 }
 
 export interface IIdeasFilterCountsQueryParameters
-  extends Omit<IQueryParameters, 'page[number]' | 'page[size]' | 'sort'> {
+  extends Omit<IIdeaQueryParameters, 'page[number]' | 'page[size]' | 'sort'> {
   sort?: Sort;
 }

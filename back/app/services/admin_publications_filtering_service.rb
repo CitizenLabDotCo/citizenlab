@@ -25,7 +25,7 @@ class AdminPublicationsFilteringService
   add_filter('remove_not_allowed_parents') do |scope, options|
     next scope unless ['true', true, '1'].include? options[:remove_not_allowed_parents]
 
-    # We remove parents that have only draft projects
+    # Remove folders (parents) that contain only draft children (projects) &/or children (projects) the user cannot see
     parents_with_visible_children = scope.where(id: scope.not_draft.filter_map(&:parent_id).uniq)
     parents_without_any_children  = scope.where(children_allowed: true, children_count: 0)
     non_parents                   = scope.where(children_allowed: false)
@@ -99,6 +99,16 @@ class AdminPublicationsFilteringService
     unmoderated_parents = scope.where(children_allowed: true).where.not(publication_id: moderated_folder_ids)
 
     scope.where.not(id: unmoderated_parents)
+  end
+
+  # This filter excludes AdminPublications that are for projects in folders that are still included in the scope.
+  # This is used by the BO 'your projects' list to avoid duplicates when a moderated project is in a moderated folder.
+  add_filter('exclude_projects_in_included_folders') do |scope, options|
+    next scope unless ['true', true, '1'].include? options[:exclude_projects_in_included_folders]
+
+    filtered_folders = scope.where(children_allowed: true)
+
+    scope.where(parent_id: nil).or(scope.where.not(parent_id: filtered_folders))
   end
 
   add_filter('top_level_only') do |scope, options|

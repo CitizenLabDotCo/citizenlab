@@ -2,58 +2,103 @@
 
 require 'rails_helper'
 
-# TODO: move-old-proposals-test
 RSpec.describe EmailCampaigns::ThresholdReachedForAdminMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
-    let_it_be(:assignee) { create(:admin, locale: 'en') }
-    let_it_be(:campaign) { EmailCampaigns::Campaigns::ThresholdReachedForAdmin.create! }
-    let_it_be(:initiative) { create(:initiative, assignee: assignee) }
-    let_it_be(:notification) { create(:threshold_reached_for_admin, recipient: recipient, post: initiative) }
     let_it_be(:command) do
       {
         recipient: recipient,
         event_payload: {
-          post_title_multiloc: notification.post.title_multiloc,
-          post_body_multiloc: notification.post.body_multiloc,
-          post_published_at: notification.post.published_at.iso8601,
-          post_author_name: notification.post.author_name,
-          post_url: Frontend::UrlService.new.model_to_url(notification.post, locale: Locale.new(recipient.locale)),
-          post_likes_count: notification.post.likes_count,
-          post_comments_count: notification.post.comments_count,
-          post_images: notification.post.initiative_images.map do |image|
-            {
-              ordering: image.ordering,
-              versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
-            }
-          end,
-          initiative_header_bg: {
-            versions: notification.post.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
-          },
-          assignee_first_name: notification.post.assignee.first_name,
-          assignee_last_name: notification.post.assignee.last_name
+          idea_title_multiloc: { 'en' => 'Example idea title' },
+          idea_author_name: 'Hodor',
+          idea_url: 'https://example.com/ideas/1',
+          assignee_first_name: 'Hans',
+          assignee_last_name: 'Annee'
         }
       }
     end
 
-    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let(:campaign) { create(:threshold_reached_for_admin_campaign) }
+    let(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let(:mail) { mailer.campaign_mail.deliver_now }
+    let(:body) { mail_body(mail) }
 
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
+    include_examples 'campaign delivery tracking'
+
     it 'renders the subject' do
-      expect(mail.subject).to start_with('An initiative reached the voting threshold on your platform')
+      expect(mail.subject).to eq('"Example idea title" reached the voting threshold')
+    end
+
+    it 'renders the receiver email' do
+      expect(mail.to).to eq([recipient.email])
     end
 
     it 'renders the sender email' do
       expect(mail.from).to all(end_with('@citizenlab.co'))
     end
 
-    it 'assigns organisation name' do
-      expect(mail.body.encoded).to match(AppConfiguration.instance.settings('core', 'organization_name', 'en'))
+    it 'includes the header' do
+      expect(body).to have_tag('div') do
+        with_tag 'h1' do
+          with_text(/A proposal reached the voting threshold!/)
+        end
+      end
     end
 
-    it 'assigns cta url' do
-      expect(mail.body.encoded).to match(command.dig(:event_payload, :post_url))
+    it 'includes the idea box' do
+      expect(body).to have_tag('table') do
+        with_tag 'h2' do
+          with_text(/Example idea title/)
+        end
+        with_tag 'p' do
+          with_text(/by Hodor/)
+        end
+      end
+    end
+
+    it 'includes the CTA' do
+      expect(body).to have_tag('a', with: { href: 'https://example.com/ideas/1' }) do
+        with_text(/Take this proposal to the next steps/)
+      end
+    end
+
+    context 'with custom text' do
+      let!(:global_campaign) do
+        create(
+          :threshold_reached_for_admin_campaign,
+          subject_multiloc: { 'en' => 'Custom Global Subject - {{ organizationName }}' },
+          title_multiloc: { 'en' => 'NEW TITLE FOR {{ input_title }}' },
+          button_text_multiloc: { 'en' => 'CLICK THE GLOBAL BUTTON' }
+        )
+      end
+
+      context 'on a global campaign' do
+        let(:campaign) { global_campaign }
+
+        it 'can customise the subject' do
+          expect(mail.subject).to eq 'Custom Global Subject - Liege'
+        end
+
+        it 'renders the reply to email' do
+          expect(mail.reply_to).to eq [ENV.fetch('DEFAULT_FROM_EMAIL', 'hello@citizenlab.co')]
+        end
+
+        it 'can customize the header' do
+          expect(body).to have_tag('div') do
+            with_tag 'h1' do
+              with_text(/NEW TITLE FOR Example idea title/)
+            end
+          end
+        end
+
+        it 'includes the CTA' do
+          expect(body).to have_tag('a', with: { href: 'https://example.com/ideas/1' }) do
+            with_text(/CLICK THE GLOBAL BUTTON/)
+          end
+        end
+      end
     end
   end
 end

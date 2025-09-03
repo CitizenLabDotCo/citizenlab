@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import React, { useCallback, useMemo, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
@@ -100,6 +101,8 @@ const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
         });
       };
 
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const projectMapConfigId = projectMapConfig?.data?.id;
       if (projectMapConfigId) {
         // Duplicate the project map config if it exists
@@ -134,6 +137,8 @@ const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
     createMapConfig,
     appConfig?.data,
     mapConfigId,
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     projectMapConfig?.data?.id,
     duplicateMapConfig,
     mapConfigIdName,
@@ -149,7 +154,11 @@ const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
     });
 
     // Get attributes from the map config
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const centerPoint = mapConfig?.data?.attributes?.center_geojson;
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const zoom = Number(mapConfig?.data?.attributes?.zoom_level);
 
     // Go to current map extent
@@ -160,7 +169,11 @@ const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
   }, [
     projectId,
     phaseId,
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     mapConfig?.data?.attributes?.center_geojson,
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     mapConfig?.data?.attributes?.zoom_level,
     mapView,
   ]);
@@ -193,7 +206,11 @@ const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
           height="400px"
           layers={mapLayers}
           initialData={{
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             zoom: Number(mapConfig?.data?.attributes?.zoom_level),
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             center: mapConfig?.data?.attributes?.center_geojson,
             showLayerVisibilityControl: true,
             showLegend: true,
@@ -201,6 +218,8 @@ const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
           }}
           webMapId={mapConfig?.data.attributes.esri_web_map_id}
         />
+        {/* TODO: Fix this the next time the file is edited. */}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         {(field?.input_type === 'line' || field?.input_type === 'polygon') && (
           <Box my="8px">
             <Warning>

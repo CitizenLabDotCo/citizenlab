@@ -1,150 +1,133 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 
-import { Text, CheckboxWithLabel } from '@citizenlab/cl2-component-library';
-import moment, { Moment } from 'moment';
+import { Box } from '@citizenlab/cl2-component-library';
+import { format, parseISO, startOfDay } from 'date-fns';
 import { useParams } from 'react-router-dom';
 import { CLErrors } from 'typings';
 
 import { IUpdatedPhaseProperties } from 'api/phases/types';
-import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 
-import DateRangePicker from 'components/admin/DateRangePicker';
+import DatePhasePicker from 'components/admin/DatePickers/DatePhasePicker';
+import { rangesValid } from 'components/admin/DatePickers/DatePhasePicker/Calendar/utils/rangesValid';
+import { isSelectedRangeOpenEnded } from 'components/admin/DatePickers/DatePhasePicker/isSelectedRangeOpenEnded';
+import { patchDisabledRanges } from 'components/admin/DatePickers/DatePhasePicker/patchDisabledRanges';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
-import { SubmitStateType } from '../typings';
-import { getStartDate, getExcludedDates, getMaxEndDate } from '../utils';
+import { SubmitStateType, ValidationErrors } from '../typings';
+
+import { getDefaultMonth } from './utils';
 
 interface Props {
   formData: IUpdatedPhaseProperties;
   errors: CLErrors | null;
+  validationErrors: ValidationErrors;
   setSubmitState: React.Dispatch<React.SetStateAction<SubmitStateType>>;
   setFormData: React.Dispatch<React.SetStateAction<IUpdatedPhaseProperties>>;
+  setValidationErrors: React.Dispatch<React.SetStateAction<ValidationErrors>>;
 }
 
 const DateSetup = ({
   formData,
   errors,
-  setSubmitState,
+  validationErrors,
   setFormData,
+  setSubmitState,
+  setValidationErrors,
 }: Props) => {
-  const { formatMessage } = useIntl();
-  const { projectId, phaseId } = useParams() as {
-    projectId: string;
-    phaseId?: string;
-  };
-  const { data: phase } = usePhase(phaseId);
+  const { projectId, phaseId } = useParams();
   const { data: phases } = usePhases(projectId);
-  const [hasEndDate, setHasEndDate] = useState(false);
-  const [disableNoEndDate, setDisableNoEndDate] = useState(false);
 
-  useEffect(() => {
-    setHasEndDate(!!phase?.data.attributes.end_at);
-  }, [phase?.data.attributes.end_at]);
+  const { start_at, end_at } = formData;
 
-  const startDate = getStartDate({
-    phase: phase?.data,
-    phases,
-    formData,
-  });
+  const selectedRange = useMemo(() => {
+    return {
+      from: start_at ? startOfDay(parseISO(start_at)) : undefined,
+      to: end_at ? startOfDay(parseISO(end_at)) : undefined,
+    };
+  }, [start_at, end_at]);
 
-  const endAt = formData.end_at ?? phase?.data.attributes.end_at;
-  const endDate = endAt ? moment(endAt) : null;
+  const disabledRanges = useMemo(() => {
+    if (!phases) return undefined;
 
-  const phasesWithOutCurrentPhase = phases
-    ? phases.data.filter((iteratedPhase) => iteratedPhase.id !== phase?.data.id)
-    : [];
-  const excludeDates = getExcludedDates(phasesWithOutCurrentPhase);
-  const maxEndDate = getMaxEndDate(phasesWithOutCurrentPhase, startDate, phase);
+    const otherPhases = phases.data.filter((phase) => phase.id !== phaseId);
+    const disabledRanges = otherPhases.map(
+      ({ attributes: { start_at, end_at } }) => ({
+        from: startOfDay(parseISO(start_at)),
+        to: end_at ? startOfDay(parseISO(end_at)) : undefined,
+      })
+    );
 
-  const handleDateUpdate = ({
-    startDate,
-    endDate,
-  }: {
-    startDate: Moment | null;
-    endDate: Moment | null;
-  }) => {
-    setSubmitState('enabled');
-    setFormData({
-      ...formData,
-      start_at: startDate ? startDate.locale('en').format('YYYY-MM-DD') : '',
-      end_at: endDate ? endDate.locale('en').format('YYYY-MM-DD') : '',
-    });
-    setHasEndDate(!!endDate);
+    return patchDisabledRanges(selectedRange, disabledRanges);
+  }, [phases, phaseId, selectedRange]);
 
-    if (startDate && phases) {
-      const hasPhaseWithLaterStartDate = phases.data.some((iteratedPhase) => {
-        const iteratedPhaseStartDate = moment(
-          iteratedPhase.attributes.start_at
-        );
-        return iteratedPhaseStartDate.isAfter(startDate);
-      });
+  if (!phases || !disabledRanges) return null;
 
-      setDisableNoEndDate(hasPhaseWithLaterStartDate);
+  const selectedRangeIsOpenEnded = isSelectedRangeOpenEnded(
+    selectedRange,
+    disabledRanges
+  );
 
-      if (hasPhaseWithLaterStartDate) {
-        setHasEndDate(true);
-      }
-    }
-  };
+  const { valid } = rangesValid(selectedRange, disabledRanges);
 
-  const setNoEndDate = () => {
-    if (endDate) {
-      setSubmitState('enabled');
-      setFormData({
-        ...formData,
-        end_at: '',
-      });
-    }
-    setHasEndDate((prevValue) => !prevValue);
-  };
+  if (!valid) {
+    // Sometimes, in between switching phases, the ranges
+    // might become temporarily invalid. In this case,
+    // we wait for them to become valid first.
+    return null;
+  }
+
+  const defaultMonth = getDefaultMonth(selectedRange, disabledRanges);
 
   return (
     <SectionField>
       <SubSectionTitle>
         <FormattedMessage {...messages.datesLabel} />
       </SubSectionTitle>
-      <DateRangePicker
-        startDate={startDate}
-        endDate={endDate}
-        onDatesChange={handleDateUpdate}
-        startDatePlaceholderText={formatMessage(messages.startDate)}
-        endDatePlaceholderText={formatMessage(messages.endDate)}
-        excludeDates={excludeDates}
-        maxDate={maxEndDate}
+      <DatePhasePicker
+        selectedRange={selectedRange}
+        disabledRanges={disabledRanges}
+        defaultMonth={defaultMonth ?? undefined}
+        startMonth={new Date(1900, 1, 1)}
+        onUpdateRange={({ from, to }) => {
+          setSubmitState('enabled');
+          setValidationErrors((prevState) => ({
+            ...prevState,
+            phaseDateError: undefined,
+          }));
+          setFormData({
+            ...formData,
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            start_at: from ? format(from, 'yyyy-MM-dd') : '',
+            end_at: to ? format(to, 'yyyy-MM-dd') : '',
+          });
+        }}
       />
       <Error apiErrors={errors && errors.start_at} />
       <Error apiErrors={errors && errors.end_at} />
-      <CheckboxWithLabel
-        checked={!hasEndDate}
-        onChange={setNoEndDate}
-        disabled={disableNoEndDate}
-        size="21px"
-        label={
-          <Text>
-            <FormattedMessage {...messages.noEndDateCheckbox} />
-          </Text>
-        }
-      />
-      {!hasEndDate && (
-        <Warning>
-          <>
-            <FormattedMessage {...messages.noEndDateWarningTitle} />
-            <ul>
-              <li>
-                <FormattedMessage {...messages.noEndDateWarningBullet1} />
-              </li>
-              <li>
-                <FormattedMessage {...messages.noEndDateWarningBullet2} />
-              </li>
-            </ul>
-          </>
-        </Warning>
+      <Error text={validationErrors.phaseDateError} />
+      {selectedRangeIsOpenEnded && (
+        <Box mt="24px">
+          <Warning>
+            <>
+              <FormattedMessage {...messages.noEndDateWarningTitle} />
+              <ul>
+                <li>
+                  <FormattedMessage {...messages.noEndDateWarningBullet1} />
+                </li>
+                <li>
+                  <FormattedMessage {...messages.noEndDateWarningBullet2} />
+                </li>
+              </ul>
+            </>
+          </Warning>
+        </Box>
       )}
     </SectionField>
   );

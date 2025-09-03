@@ -30,7 +30,6 @@ describe('Project selection page', () => {
           descriptionPreview: randomString(30),
           description: folderDescription,
           publicationStatus: 'published',
-          projectIds: [projectOneId, projectTwoId],
         }).then((folder) => {
           folderId = folder.body.data.id;
           folderSlug = folder.body.data.attributes.slug;
@@ -44,7 +43,7 @@ describe('Project selection page', () => {
   beforeEach(() => {
     cy.visit(`/folders/${folderSlug}`);
     cy.get('#e2e-folder-page');
-    cy.acceptCookies();
+
     cy.wait(500);
   });
 

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
-import useAuthUser from 'api/me/useAuthUser';
+import { IProject } from 'api/projects/types';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
@@ -10,40 +10,32 @@ import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
-import ideationMessages from '../IdeasNewPage/messages';
-
 import messages from './messages';
 
-const IdeasNewSurveyMeta = () => {
+interface Props {
+  surveyTitle: string;
+  project: IProject;
+}
+
+const IdeasNewSurveyMeta = ({ project, surveyTitle }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: authUser } = useAuthUser();
   const locales = useAppConfigurationLocales();
   const { location } = window;
-
-  const ideasIndexTitle = formatMessage(messages.surveyNewMetaTitle1);
-  const ideasIndexDescription = formatMessage(
-    ideationMessages.ideaNewMetaDescription
-  );
+  const title = formatMessage(messages.surveyNewMetaTitle, {
+    surveyTitle,
+  });
 
   return (
     <Helmet>
-      <title>
-        {`
-            ${
-              authUser && authUser.data.attributes.unread_notifications
-                ? `(${authUser.data.attributes.unread_notifications}) `
-                : ''
-            }
-            ${ideasIndexTitle}
-          `}
-      </title>
+      <title>{title}</title>
       {getAlternateLinks(locales)}
       {getCanonicalLink()}
-      <meta name="title" content={ideasIndexTitle} />
-      <meta name="description" content={ideasIndexDescription} />
-      <meta property="og:title" content={ideasIndexTitle} />
-      <meta property="og:description" content={ideasIndexDescription} />
+      <meta name="title" content={title} />
+      <meta property="og:title" content={title} />
       <meta property="og:url" content={location.href} />
+      {project.data.attributes.listed && (
+        <meta name="robots" content="noindex" />
+      )}
     </Helmet>
   );
 };

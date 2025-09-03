@@ -12,7 +12,7 @@ resource 'Phases' do
     header 'Content-Type', 'application/json'
     create(:idea_status_proposed)
     @project = create(:project)
-    @project.phases = create_list(:phase_sequence, 2, project: @project)
+    @project.phases = create_list(:phase_sequence, 2, project: @project, participation_method: 'voting', voting_method: 'single_voting')
   end
 
   get 'web_api/v1/projects/:project_id/phases' do
@@ -22,12 +22,89 @@ resource 'Phases' do
     end
     let(:project_id) { @project.id }
 
-    example 'List all phases of a project' do
-      Permissions::PermissionsUpdateService.new.update_all_permissions
+    context 'when visitor' do
+      example 'List all phases of a project' do
+        Permissions::PermissionsUpdateService.new.update_all_permissions
+        do_request
+        assert_status 200
+        expect(json_response[:data].size).to eq 2
+        expect(json_response[:included].pluck(:type)).to include 'permission'
+      end
+
+      example 'List all phases of a project which is hidden (internal_role: community_monitor)' do
+        @project.update!(internal_role: 'community_monitor')
+        Permissions::PermissionsUpdateService.new.update_all_permissions
+        do_request
+        assert_status 200
+        expect(json_response[:data].size).to eq 2
+      end
+
+      example 'List all phases of unlisted project', document: false do
+        @project.update!(listed: false)
+        Permissions::PermissionsUpdateService.new.update_all_permissions
+        do_request
+        assert_status 200
+        expect(json_response[:data].size).to eq 2
+      end
+    end
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      example 'See the manual votes attributes' do
+        admin = create(:admin)
+        phase1, phase2 = @project.phases
+        phase1.set_manual_voters(10, admin)
+        phase1.save!
+        create(:idea, project: @project, phases: [phase1], manual_votes_amount: 5)
+        idea2 = create(:idea, project: @project, phases: [phase1, phase2], manual_votes_amount: 3)
+        @project.phases.each(&:update_manual_votes_count!)
+        create(:baskets_idea, basket: create(:basket, phase: phase1), idea: idea2, votes: 2)
+        Basket.update_counts(phase1)
+
+        do_request
+        assert_status 200
+
+        phase1_response = json_response_body[:data].find { |i| i[:id] == phase1.id }
+        expect(phase1_response.dig(:attributes, :manual_voters_amount)).to eq 10
+        expect(phase1_response.dig(:attributes, :manual_votes_count)).to eq 8
+        expect(phase1_response.dig(:attributes, :votes_count)).to eq 2
+        expect(phase1_response.dig(:attributes, :total_votes_amount)).to eq 10
+        expect(phase1_response.dig(:relationships, :manual_voters_last_updated_by, :data, :id)).to eq admin.id
+        expect(json_response_body[:included].find { |i| i[:id] == admin.id }&.dig(:attributes, :slug)).to eq admin.slug
+        expect(phase1_response.dig(:attributes, :manual_voters_last_updated_at)).to be_present
+
+        phase2_response = json_response_body[:data].find { |i| i[:id] == phase2.id }
+        expect(phase2_response.dig(:attributes, :manual_voters_amount)).to be_nil
+        expect(phase2_response.dig(:attributes, :manual_votes_count)).to eq 3
+        expect(phase2_response.dig(:attributes, :votes_count)).to eq 0
+        expect(phase2_response.dig(:attributes, :total_votes_amount)).to eq 3
+        expect(phase2_response.dig(:relationships, :manual_voters_last_updated_by, :data, :id)).to be_nil
+        expect(phase2_response.dig(:attributes, :manual_voters_last_updated_at)).to be_nil
+      end
+    end
+  end
+
+  get 'web_api/v1/phases/:id/mini' do
+    before { @phase = @project.phases.first }
+
+    let(:id) { @phase.id }
+
+    example 'Get a phase by id' do
+      @phase.update!(report: build(:report))
       do_request
       assert_status 200
-      expect(json_response[:data].size).to eq 2
-      expect(json_response[:included].pluck(:type)).to include 'permission'
+
+      expect(json_response.dig(:data, :id)).to eq @phase.id
+      expect(json_response.dig(:data, :type)).to eq 'phase_mini'
+
+      expect(json_response.dig(:data, :relationships, :project)).to match({
+        data: { id: @phase.project_id, type: 'project' }
+      })
+
+      expect(json_response.dig(:data, :relationships, :report)).to match({
+        data: { id: @phase.report.id, type: 'report' }
+      })
     end
   end
 
@@ -103,6 +180,62 @@ resource 'Phases' do
     end
   end
 
+  get 'web_api/v1/phases/:id/progress' do
+    explanation 'Get progress of the current user in a Common Ground phase'
+
+    let_it_be(:phase) { create(:common_ground_phase) }
+    let(:id) { phase.id }
+
+    context 'when visitor' do
+      example 'Unauthorized (401)', document: false do
+        do_request
+        assert_status 401
+      end
+    end
+
+    context 'when logged in' do
+      before do
+        current_user = create(:user)
+        header_token_for(current_user)
+
+        i1, @i2 = create_pair(:idea, project: phase.project, phases: [phase])
+        create(:reaction, reactable: i1, user: current_user)
+      end
+
+      # The next idea is necessarily the one that doesn't have a reaction
+      let(:next_idea) { @i2 }
+
+      example_request 'Get user progress' do
+        assert_status 200
+
+        expect(response_data).to match(
+          id: phase.id,
+          type: 'common_ground_progress',
+          attributes: {
+            num_ideas: 2,
+            num_reacted_ideas: 1
+          },
+          relationships: {
+            next_idea: { data: { id: next_idea.id, type: 'idea' } }
+          }
+        )
+
+        expect(json_response_body[:included]).to include(
+          hash_including(id: next_idea.id, type: 'idea')
+        )
+      end
+
+      context 'when the phase is not "common ground"' do
+        let(:id) { create(:phase).id }
+
+        example 'Not found (404)', document: false do
+          do_request
+          assert_status 404
+        end
+      end
+    end
+  end
+
   delete 'web_api/v1/phases/:id/inputs' do
     let(:project) { create(:project_with_active_native_survey_phase) }
     let(:active_phase) { project.phases.first }
@@ -140,17 +273,18 @@ resource 'Phases' do
         parameter :voting_min_total, 'The minimum value a basket can have.', required: false
         parameter :voting_max_total, 'The maximal value a basket can have during voting. Required when the voting method is budgeting.', required: false
         parameter :voting_max_votes_per_idea, 'The maximum amount of votes that can be assigned on the same idea.', required: false
-        parameter :voting_term_singular_multiloc, 'A multiloc term that is used to refer to the voting in singular form', required: false
-        parameter :voting_term_plural_multiloc, 'A multiloc term that is used to refer to the voting in plural form', required: false
         parameter :start_at, 'The start date of the phase', required: true
         parameter :end_at, 'The end date of the phase', required: true
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
         parameter :ideas_order, 'The default order of ideas.'
-        parameter :input_term, 'The input term for something.'
-        parameter :campaigns_settings, "A hash, only including keys in #{Phase::CAMPAIGNS} and with only boolean values", required: true
+        parameter :input_term, 'The term used to describe an input. One of #{Phase::INPUT_TERMS.join(', ')}. Defaults to "idea".', required: false
+        parameter :vote_term, "The term used to describe the concept of a vote (noun). One of #{Phase::VOTE_TERMS.join(', ')}. Defaults to 'vote'.", required: false
         parameter :native_survey_title_multiloc, 'A title for the native survey.'
         parameter :native_survey_button_multiloc, 'Text for native survey call to action button.'
         parameter :prescreening_enabled, 'Do inputs need to go through pre-screening before being published? Defaults to false', required: false
+        parameter :similarity_enabled, 'Enable searching for similar inputs during submission. Defaults to false.', required: false
+        parameter :similarity_threshold_title, 'The similarity threshold for the title of the input. Defaults to 0.3', required: false
+        parameter :similarity_threshold_body, 'The similarity threshold for the body of the input. Defaults to 0.4', required: false
       end
 
       ValidationErrorHelper.new.error_fields(self, Phase)
@@ -164,7 +298,7 @@ resource 'Phases' do
       let(:participation_method) { phase.participation_method }
       let(:start_at) { phase.start_at }
       let(:end_at) { phase.end_at }
-      let(:campaigns_settings) { phase.campaigns_settings }
+      let(:vote_term) { 'token' }
 
       example_request 'Create a phase for a project' do
         assert_status 201
@@ -180,9 +314,10 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :submission_enabled)).to be true
         expect(json_response.dig(:data, :attributes, :commenting_enabled)).to be true
         expect(json_response.dig(:data, :attributes, :reacting_enabled)).to be true
-        expect(json_response.dig(:data, :attributes, :reacting_dislike_enabled)).to be true
+        expect(json_response.dig(:data, :attributes, :reacting_dislike_enabled)).to be false
         expect(json_response.dig(:data, :attributes, :reacting_like_method)).to eq 'unlimited'
         expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq 10
+        expect(json_response.dig(:data, :attributes, :vote_term)).to eq 'token'
         expect(json_response.dig(:data, :attributes, :start_at)).to eq start_at.to_s
         expect(json_response.dig(:data, :attributes, :end_at)).to eq end_at.to_s
         expect(json_response.dig(:data, :attributes, :previous_phase_end_at_updated)).to be false
@@ -258,8 +393,7 @@ resource 'Phases' do
           let(:voting_method) { 'multiple_voting' }
           let(:voting_max_total) { 10 }
           let(:voting_max_votes_per_idea) { 5 }
-          let(:voting_term_singular_multiloc) { { 'en' => 'bean' } }
-          let(:voting_term_plural_multiloc) { { 'en' => 'beans' } }
+          let(:vote_term) { 'point' }
 
           example_request 'Create a voting (multiple voting) phase' do
             assert_status 201
@@ -268,8 +402,7 @@ resource 'Phases' do
             expect(response_data.dig(:attributes, :voting_max_total)).to eq 10
             expect(response_data.dig(:attributes, :voting_min_total)).to eq 0
             expect(response_data.dig(:attributes, :voting_max_votes_per_idea)).to eq 5
-            expect(response_data.dig(:attributes, :voting_term_singular_multiloc, :en)).to eq 'bean'
-            expect(response_data.dig(:attributes, :voting_term_plural_multiloc, :en)).to eq 'beans'
+            expect(response_data.dig(:attributes, :vote_term)).to eq 'point'
             expect(response_data.dig(:attributes, :ideas_order)).to eq 'random'
           end
         end
@@ -319,9 +452,26 @@ resource 'Phases' do
           expect(json_response.dig(:data, :attributes, :submission_enabled)).to be true
           expect(json_response.dig(:data, :attributes, :commenting_enabled)).to be true
           expect(json_response.dig(:data, :attributes, :reacting_enabled)).to be true
-          expect(json_response.dig(:data, :attributes, :reacting_dislike_enabled)).to be true
+          expect(json_response.dig(:data, :attributes, :reacting_dislike_enabled)).to be false
           expect(json_response.dig(:data, :attributes, :reacting_like_method)).to eq 'unlimited'
           expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq 10
+        end
+      end
+
+      describe 'common ground' do
+        let(:participation_method) { 'common_ground' }
+        let(:input_term) { 'idea' }
+
+        example_request 'Create a common ground phase', document: false do
+          assert_status 201
+          expect(response_data.dig(:attributes, :participation_method)).to eq('common_ground')
+
+          phase = Phase.find(response_data[:id])
+          expect(phase.participation_method).to eq('common_ground')
+
+          expect(phase.reacting_enabled).to be(true)
+          expect(phase.reacting_dislike_enabled).to be(true)
+          expect(phase.input_term).to eq('contribution')
         end
       end
 
@@ -406,7 +556,7 @@ resource 'Phases' do
     patch 'web_api/v1/phases/:id' do
       with_options scope: :phase do
         parameter :project_id, 'The id of the project this phase belongs to'
-        parameter :title_multiloc, 'The title of the phase in nultiple locales'
+        parameter :title_multiloc, 'The title of the phase in multiple locales'
         parameter :description_multiloc, 'The description of the phase in multiple languages. Supports basic HTML.'
         parameter :participation_method, "The participation method of the project, either #{Phase::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
         parameter :submission_enabled, 'Can citizens post ideas in this phase?', required: false
@@ -425,13 +575,16 @@ resource 'Phases' do
         parameter :voting_min_total, 'The minimum value a basket can have.', required: false
         parameter :voting_max_total, 'The maximal value a basket can have during voting', required: false
         parameter :voting_max_votes_per_idea, 'The maximum amount of votes that can be assigned on the same idea.', required: false
-        parameter :voting_term_singular_multiloc, 'A multiloc term that is used to refer to the voting in singular form', required: false
-        parameter :voting_term_plural_multiloc, 'A multiloc term that is used to refer to the voting in plural form', required: false
+        parameter :manual_voters_amount, 'The number of voters from collected offline votes.', required: false
+        parameter :vote_term, "The term used to describe the concept of a vote (noun). One of #{Phase::VOTE_TERMS.join(', ')}. Defaults to 'vote'.", required: false
         parameter :start_at, 'The start date of the phase'
         parameter :end_at, 'The end date of the phase'
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
         parameter :ideas_order, 'The default order of ideas.'
         parameter :prescreening_enabled, 'Do inputs need to go through pre-screening before being published?', required: false
+        parameter :similarity_enabled, 'Enable searching for similar inputs during submission.', required: false
+        parameter :similarity_threshold_title, 'The similarity threshold for the title of the input.', required: false
+        parameter :similarity_threshold_body, 'The similarity threshold for the body of the input.', required: false
       end
       ValidationErrorHelper.new.error_fields(self, Phase)
       response_field :project, "Array containing objects with signature {error: 'is_not_timeline_project'}", scope: :errors
@@ -449,6 +602,8 @@ resource 'Phases' do
       let(:presentation_mode) { 'map' }
       let(:allow_anonymous_participation) { true }
       let(:prescreening_enabled) { true }
+      let(:similarity_enabled) { true }
+      let(:similarity_threshold_body) { 0.2 }
 
       example_request 'Update a phase' do
         expect(response_status).to eq 200
@@ -462,6 +617,8 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :presentation_mode)).to eq presentation_mode
         expect(json_response.dig(:data, :attributes, :allow_anonymous_participation)).to eq allow_anonymous_participation
         expect(json_response.dig(:data, :attributes, :prescreening_enabled)).to eq prescreening_enabled
+        expect(json_response.dig(:data, :attributes, :similarity_enabled)).to eq similarity_enabled
+        expect(json_response.dig(:data, :attributes, :similarity_threshold_body)).to eq similarity_threshold_body
       end
 
       describe do
@@ -483,13 +640,13 @@ resource 'Phases' do
       end
 
       describe do
-        let(:id) { create(:budgeting_phase).id }
+        let(:phase) { create(:budgeting_phase) }
+        let(:id) { phase.id }
         let(:participation_method) { 'voting' }
         let(:voting_min_total) { 3 }
         let(:voting_max_total) { 15 }
         let(:voting_max_votes_per_idea) { 1 } # Should ignore this
-        let(:voting_term_singular_multiloc) { { 'en' => 'Grocery shopping' } }
-        let(:voting_term_plural_multiloc) { { 'en' => 'Groceries shoppings' } }
+        let(:vote_term) { 'token' }
 
         example_request 'Update a voting phase' do
           assert_status 200
@@ -497,8 +654,28 @@ resource 'Phases' do
           expect(json_response.dig(:data, :attributes, :voting_min_total)).to eq 3
           expect(json_response.dig(:data, :attributes, :voting_max_total)).to eq 15
           expect(json_response.dig(:data, :attributes, :voting_max_votes_per_idea)).to be_nil
-          expect(json_response.dig(:data, :attributes, :voting_term_singular_multiloc, :en)).to eq 'Grocery shopping'
-          expect(json_response.dig(:data, :attributes, :voting_term_plural_multiloc, :en)).to eq 'Groceries shoppings'
+          expect(json_response.dig(:data, :attributes, :vote_term)).to eq 'token'
+        end
+
+        describe do
+          let(:manual_voters_amount) { 4 }
+
+          example 'Set offline voters' do
+            expect { do_request }
+              .to enqueue_job(LogActivityJob).with(
+                phase,
+                'changed_manual_voters_amount',
+                User.admin.first,
+                anything,
+                payload: { change: [nil, manual_voters_amount] },
+                project_id: phase.project_id
+              ).exactly(1).times
+
+            phase.reload
+            expect(phase.manual_voters_amount).to eq manual_voters_amount
+            expect(phase.manual_voters_last_updated_by_id).to eq User.admin.first.id
+            expect(phase.manual_voters_last_updated_at).to be_present
+          end
         end
       end
 
@@ -584,6 +761,10 @@ resource 'Phases' do
     end
 
     get 'web_api/v1/phases/:id/survey_results' do
+      parameter :logic_ids, 'Array of page or option ids to filter the results by logic', required: false
+      parameter :year, 'First month to include in the survey results', required: false
+      parameter :quarter, 'Last month to include in the survey results', required: false
+
       let(:project) { create(:project_with_active_native_survey_phase) }
       let(:active_phase) { project.phases.first }
       let(:form) { create(:custom_form, participation_context: active_phase) }
@@ -634,8 +815,14 @@ resource 'Phases' do
             customFieldId: multiselect_field.id,
             inputType: 'multiselect',
             question: { en: 'What are your favourite pets?' },
+            description: {},
             required: true,
             grouped: false,
+            hidden: false,
+            pageNumber: nil,
+            questionNumber: 1,
+            questionCategory: nil,
+            logic: {},
             totalResponseCount: 2,
             questionResponseCount: 2,
             totalPickCount: 3,
@@ -652,6 +839,132 @@ resource 'Phases' do
             }
           }
         )
+      end
+    end
+
+    get 'web_api/v1/phases/:id/common_ground_results' do
+      let(:phase) { create(:common_ground_phase) }
+      let(:id) { phase.id }
+
+      context 'when not logged in' do
+        def create_idea(phase, downvotes, neutral, upvotes)
+          idea = create(:idea, project: phase.project, phases: [phase])
+          create_list(:reaction, downvotes, reactable: idea, mode: 'down')
+          create_list(:reaction, neutral, reactable: idea, mode: 'neutral')
+          create_list(:reaction, upvotes, reactable: idea, mode: 'up')
+          idea
+        end
+
+        let!(:i1) { create_idea(phase, 1, 0, 2) }
+        let!(:i2) { create_idea(phase, 1, 1, 0) }
+        let!(:i3) { create_idea(phase, 1, 1, 1) }
+
+        before do
+          # idea with only neutral reactions that should not be included in results
+          create_idea(phase, 0, 1, 0)
+        end
+
+        example_request 'Get common ground results' do
+          assert_status 200
+
+          expect(response_data).to match(
+            id: phase.id,
+            type: 'common_ground_results',
+            attributes: {
+              top_consensus_ideas: be_an(Array),
+              top_controversial_ideas: be_an(Array),
+              stats: {
+                num_participants: 9, # each reaction is from a different user
+                num_ideas: 4,
+                votes: { up: 3, down: 3, neutral: 3 }
+              }
+            }
+          )
+
+          expect(response_data.dig(:attributes, :top_consensus_ideas).pluck(:id)).to eq [i2.id, i1.id, i3.id]
+          expect(response_data.dig(:attributes, :top_controversial_ideas).pluck(:id)).to eq [i3.id, i1.id, i2.id]
+
+          top_controversial_idea = response_data.dig(:attributes, :top_controversial_ideas, 0)
+          expect(top_controversial_idea.with_indifferent_access).to match(
+            id: i3.id,
+            title_multiloc: i3.title_multiloc,
+            votes: { down: 1, neutral: 1, up: 1 }
+          )
+
+          top_consensus_idea = response_data.dig(:attributes, :top_consensus_ideas, 0)
+          expect(top_consensus_idea.with_indifferent_access).to match(
+            id: i2.id,
+            title_multiloc: i2.title_multiloc,
+            votes: { down: 1, neutral: 1, up: 0 }
+          )
+        end
+
+        context 'when the phase is not "common ground"' do
+          let(:id) { create(:phase).id }
+
+          example 'Not found (404)', document: false do
+            do_request
+            assert_status 400
+          end
+        end
+      end
+    end
+
+    get 'web_api/v1/phases/:id/sentiment_by_quarter' do
+      let(:project) { create(:community_monitor_project) }
+      let(:active_phase) { project.phases.first }
+      let(:form) { create(:custom_form, participation_context: active_phase) }
+      let(:sentiment_question1) { create(:custom_field_sentiment_linear_scale, resource: form, question_category: 'quality_of_life') }
+      let(:sentiment_question2) { create(:custom_field_sentiment_linear_scale, resource: form, question_category: 'service_delivery') }
+
+      let!(:survey_response1) do
+        create(
+          :native_survey_response,
+          project: project,
+          creation_phase: active_phase,
+          custom_field_values: { sentiment_question1.key => 2, sentiment_question2.key => 4 },
+          created_at: Time.new(2025, 1, 1)
+        )
+      end
+      let!(:survey_response2) do
+        create(
+          :native_survey_response,
+          project: project,
+          creation_phase: active_phase,
+          custom_field_values: { sentiment_question1.key => 3, sentiment_question2.key => 1 },
+          created_at: Time.new(2025, 4, 1)
+        )
+      end
+
+      let(:id) { active_phase.id }
+
+      example 'Get survey sentiment by quarter' do
+        do_request
+        expect(status).to eq 200
+        expect(response_data[:type]).to eq 'sentiment_by_quarter'
+        expect(response_data[:attributes]).to eq({
+          overall: {
+            averages: { '2025-1': 3.0, '2025-2': 2.0 },
+            totals: {
+              '2025-1': { '1': 0, '2': 1, '3': 0, '4': 1, '5': 0 },
+              '2025-2': { '1': 1, '2': 0, '3': 1, '4': 0, '5': 0 }
+            }
+          },
+          categories: {
+            averages: {
+              quality_of_life: { '2025-2': 3.0, '2025-1': 2.0 },
+              service_delivery: { '2025-2': 1.0, '2025-1': 4.0 },
+              governance_and_trust: {},
+              other: {}
+            },
+            multilocs: {
+              quality_of_life: { en: 'Quality of life', 'fr-FR': 'Qualité de vie', 'nl-NL': 'Kwaliteit van leven' },
+              service_delivery: { en: 'Service delivery', 'fr-FR': 'Prestation de services', 'nl-NL': 'Dienstverlening' },
+              governance_and_trust: { en: 'Governance and trust', 'fr-FR': 'Gouvernance et confiance', 'nl-NL': 'Bestuur en vertrouwen' },
+              other: { en: 'Other', 'fr-FR': 'Autre', 'nl-NL': 'Ander' }
+            }
+          }
+        })
       end
     end
 
@@ -734,6 +1047,12 @@ resource 'Phases' do
           create(:custom_field_option, custom_field: multiselect_field, key: 'dog', title_multiloc: { 'en' => 'Dog' })
         end
 
+        before do
+          config = AppConfiguration.instance
+          config.settings['core']['private_attributes_in_export'] = true
+          config.save!
+        end
+
         context 'when there are inputs in the phase' do
           let!(:survey_response1) do
             create(
@@ -755,7 +1074,7 @@ resource 'Phases' do
           end
 
           example 'Download native survey phase inputs in one sheet' do
-            expected_params = [[survey_response1, survey_response2], active_phase, { view_private_attributes: true }]
+            expected_params = [[survey_response1, survey_response2], active_phase]
             allow(Export::Xlsx::InputSheetGenerator).to receive(:new).and_return(Export::Xlsx::InputSheetGenerator.new(*expected_params))
             do_request
             expect(Export::Xlsx::InputSheetGenerator).to have_received(:new).with(*expected_params)
@@ -776,7 +1095,7 @@ resource 'Phases' do
                 rows: [
                   [
                     survey_response1.id,
-                    'Cat, Dog',
+                    'Cat;Dog',
                     survey_response1.author_name,
                     survey_response1.author.email,
                     survey_response1.author_id,
@@ -810,6 +1129,19 @@ resource 'Phases' do
             assert_status 200
             xlsx = xlsx_contents(response_body)
             expect(xlsx.first[:rows].size).to eq 2
+          end
+
+          # NOTE: Typically, survey responses have no displayable content.
+          example 'Responses with no displayable content are included' do
+            survey_response1.title_multiloc = {}
+            survey_response1.body_multiloc = {}
+            survey_response1.save!(validate: false)
+
+            do_request
+            assert_status 200
+            xlsx = xlsx_contents(response_body)
+            all_values = xlsx.flat_map { |sheet| sheet[:rows].flatten }
+            expect(all_values).to include(survey_response1.id)
           end
         end
       end
@@ -876,7 +1208,10 @@ resource 'Phases' do
       end
 
       example 'Download phase inputs WITH private user data', document: false do
-        expected_params = [[survey_response], active_phase, { view_private_attributes: true }]
+        config = AppConfiguration.instance
+        config.settings['core']['private_attributes_in_export'] = true
+        config.save!
+        expected_params = [[survey_response], active_phase]
         allow(Export::Xlsx::InputSheetGenerator).to receive(:new).and_return(Export::Xlsx::InputSheetGenerator.new(*expected_params))
         do_request
         expect(Export::Xlsx::InputSheetGenerator).to have_received(:new).with(*expected_params)
@@ -896,7 +1231,7 @@ resource 'Phases' do
             rows: [
               [
                 survey_response.id,
-                'Cat, Dog',
+                'Cat;Dog',
                 survey_response.author_name,
                 survey_response.author.email,
                 survey_response.author_id,

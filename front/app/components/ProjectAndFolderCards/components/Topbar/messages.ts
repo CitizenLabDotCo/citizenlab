@@ -2,8 +2,8 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   published: {
-    id: 'app.components.ProjectFolderCards.components.Topbar.published',
-    defaultMessage: 'Active',
+    id: 'app.components.ProjectFolderCards.components.Topbar.published2',
+    defaultMessage: 'Published',
   },
   archived: {
     id: 'app.components.ProjectFolderCards.components.Topbar.archived',
@@ -21,10 +21,6 @@ export default defineMessages({
     id: 'app.components.ProjectFolderCards.components.Topbar.a11y_projectFilterTabInfo',
     defaultMessage:
       '{count, plural, no {# projects} one {# project} other {# projects}}',
-  },
-  areaTitle: {
-    id: 'app.components.ProjectFolderCards.components.Topbar.areaTitle',
-    defaultMessage: 'Area',
   },
   topicTitle: {
     id: 'app.components.ProjectFolderCards.components.Topbar.topicTitle',

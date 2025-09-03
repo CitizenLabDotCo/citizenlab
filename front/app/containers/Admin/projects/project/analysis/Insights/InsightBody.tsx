@@ -14,6 +14,8 @@ import {
   replaceIdRefsWithLinks,
 } from 'containers/Admin/projects/project/analysis/Insights/util';
 
+import FileItem from '../FileItem';
+
 const StyledInsightsText = styled(Text)`
   white-space: pre-wrap;
   word-break: break-word;
@@ -22,6 +24,7 @@ const StyledInsightsText = styled(Text)`
 const InsightBody = ({
   text,
   filters,
+  fileIds,
   analysisId,
   projectId,
   phaseId,
@@ -29,6 +32,7 @@ const InsightBody = ({
 }: {
   text: string | null;
   filters?: IInputsFilterParams;
+  fileIds?: string[];
   analysisId: string;
   projectId: string;
   phaseId?: string;
@@ -58,6 +62,14 @@ const InsightBody = ({
               isEditable={false}
               analysisId={analysisId}
             />
+          </Box>
+        )}
+
+        {fileIds && fileIds.length > 0 && (
+          <Box mb="16px" display="flex" gap="4px">
+            {fileIds.map((fileId) => (
+              <FileItem key={fileId} fileId={fileId} />
+            ))}
           </Box>
         )}
 

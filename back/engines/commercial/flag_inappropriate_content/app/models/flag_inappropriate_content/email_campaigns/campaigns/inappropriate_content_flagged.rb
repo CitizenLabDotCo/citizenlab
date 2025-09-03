@@ -4,19 +4,23 @@
 #
 # Table name: email_campaigns_campaigns
 #
-#  id               :uuid             not null, primary key
-#  type             :string           not null
-#  author_id        :uuid
-#  enabled          :boolean
-#  sender           :string
-#  reply_to         :string
-#  schedule         :jsonb
-#  subject_multiloc :jsonb
-#  body_multiloc    :jsonb
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  deliveries_count :integer          default(0), not null
-#  context_id       :uuid
+#  id                   :uuid             not null, primary key
+#  type                 :string           not null
+#  author_id            :uuid
+#  enabled              :boolean
+#  sender               :string
+#  reply_to             :string
+#  schedule             :jsonb
+#  subject_multiloc     :jsonb
+#  body_multiloc        :jsonb
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  deliveries_count     :integer          default(0), not null
+#  context_id           :uuid
+#  title_multiloc       :jsonb
+#  intro_multiloc       :jsonb
+#  button_text_multiloc :jsonb
+#  context_type         :string
 #
 # Indexes
 #
@@ -35,6 +39,7 @@ module FlagInappropriateContent
       include ::EmailCampaigns::ActivityTriggerable
       include ::EmailCampaigns::Disableable
       include ::EmailCampaigns::Trackable
+      include ::EmailCampaigns::ContentConfigurable
       include ::EmailCampaigns::LifecycleStageRestrictable
 
       allow_lifecycle_stages only: %w[trial active]
@@ -82,7 +87,6 @@ module FlagInappropriateContent
 
           {
             flaggable_author: flaggable.author,
-            flaggable: flaggable,
             flaggable_type: flag.flaggable_type,
             flag_automatically_detected: flag.automatically_detected?
           }
@@ -96,7 +100,7 @@ module FlagInappropriateContent
         }
 
         case data[:flaggable_type]
-        when Idea.name, Initiative.name
+        when Idea.name
           payload[:flaggable_title_multiloc] = data[:flaggable].title_multiloc
           payload[:flaggable_body_multiloc] = data[:flaggable].body_multiloc
         when Comment.name

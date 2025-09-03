@@ -8,15 +8,6 @@ import { colors, fontSizes, media, isRtl } from '../../utils/styleUtils';
 
 const timeout = 200;
 
-interface ContainerProps {
-  top: string;
-  left: string;
-  right: string;
-  mobileLeft: string;
-  mobileRight: string;
-  zIndex: string;
-}
-
 const Container = styled(clickOutside)<ContainerProps>`
   border-radius: ${(props) => props.theme.borderRadius};
   background-color: #fff;
@@ -54,11 +45,6 @@ const Container = styled(clickOutside)<ContainerProps>`
   }
 `;
 
-interface ContainerInnerProps {
-  width: string;
-  mobileWidth: string;
-}
-
 const ContainerInner = styled.div<ContainerInnerProps>`
   width: ${(props) => props.width};
 
@@ -67,28 +53,29 @@ const ContainerInner = styled.div<ContainerInnerProps>`
   `}
 `;
 
-interface ContentProps {
-  maxHeight: string;
-  mobileMaxHeight: string;
-}
-
 const Content = styled.div<ContentProps>`
   max-height: ${(props) => props.maxHeight};
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-left: 5px;
-  margin-right: 5px;
-  padding-left: 5px;
-  padding-right: 5px;
+  margin: 10px 5px;
+  padding: 0 5px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 
   ${media.phone`
     max-height: ${(props: ContentProps) => props.mobileMaxHeight};
   `}
+
+  ::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+  }
 `;
 
 export const DropdownListItem = styled.button`
@@ -97,7 +84,7 @@ export const DropdownListItem = styled.button`
   font-weight: 400;
   display: flex;
   align-items: center;
-  margin: 0px;
+  margin: 0;
   margin-bottom: 4px;
   padding: 10px;
   border-radius: ${(props) => props.theme.borderRadius};
@@ -107,13 +94,42 @@ export const DropdownListItem = styled.button`
   &:hover,
   &:focus,
   &.selected {
-    background: ${colors.grey300};
+    background: ${colors.grey200};
+  }
+
+  &:disabled {
+    color: ${colors.grey400};
+    cursor: not-allowed;
+
+    &:hover {
+      background: transparent;
+    }
   }
 `;
 
 const Footer = styled.div`
   display: flex;
 `;
+
+// Props interfaces
+interface ContainerProps {
+  top: string;
+  left: string;
+  right: string;
+  mobileLeft: string;
+  mobileRight: string;
+  zIndex: string;
+}
+
+interface ContainerInnerProps {
+  width: string;
+  mobileWidth: string;
+}
+
+interface ContentProps {
+  maxHeight: string;
+  mobileMaxHeight: string;
+}
 
 interface Props {
   opened: boolean;
@@ -152,44 +168,91 @@ const Dropdown: React.FC<Props> = ({
   onClickOutside,
   className,
 }) => {
-  const dropdownElement = useRef<HTMLDivElement | null>(null);
+  const dropdownContentRef = useRef<HTMLDivElement | null>(null);
+  const nodeRef = useRef(null); // Needed to fix React StrictMode warning
+  const footerRef = useRef<HTMLDivElement | null>(null);
   const triggerElement = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    const scrolling = (event: WheelEvent) => {
-      if (dropdownElement.current) {
+    const getFocusableElements = () => {
+      const contentElements =
+        dropdownContentRef.current?.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+      const footerElements = footerRef.current?.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+
+      const allElements = [
+        ...(contentElements ? Array.from(contentElements) : []),
+        ...(footerElements ? Array.from(footerElements) : []),
+      ];
+
+      return allElements.filter(
+        (el) =>
+          el.tabIndex !== -1 && // Exclude elements with tabIndex=-1
+          el.offsetWidth > 0 && // Visible in DOM
+          el.offsetHeight > 0 && // Visible in DOM
+          window.getComputedStyle(el).visibility !== 'hidden' && // Not hidden
+          window.getComputedStyle(el).display !== 'none' // Not display:none
+      );
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const focusableElements = getFocusableElements();
+      if (focusableElements.length === 0) return;
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (event.key === 'Tab') {
+        if (event.shiftKey) {
+          // Shift + Tab: Focus last element if on the first
+          if (document.activeElement === firstElement) {
+            event.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          // Tab: Focus first element if on the last
+          if (document.activeElement === lastElement) {
+            event.preventDefault();
+            firstElement.focus();
+          }
+        }
+      }
+    };
+
+    const handleScroll = (event: WheelEvent) => {
+      if (dropdownContentRef.current) {
         const deltaY = event.deltaMode === 1 ? event.deltaY * 20 : event.deltaY;
-        dropdownElement.current.scrollTop += deltaY;
+        dropdownContentRef.current.scrollTop += deltaY;
         event.preventDefault();
       }
     };
 
-    const currentElement = dropdownElement.current;
-    if (currentElement) {
-      currentElement.addEventListener('wheel', scrolling);
+    const dropdownContent = dropdownContentRef.current;
+
+    if (opened) {
+      document.addEventListener('keydown', handleKeyDown);
+      dropdownContent?.addEventListener('wheel', handleScroll);
     }
 
     return () => {
-      if (currentElement) {
-        currentElement.removeEventListener('wheel', scrolling);
-      }
+      document.removeEventListener('keydown', handleKeyDown);
+      dropdownContent?.removeEventListener('wheel', handleScroll);
     };
-  }, []); // No dependencies, so it runs only on mount and unmount
+  }, [opened, footer]);
 
   useEffect(() => {
-    if (opened && dropdownElement.current) {
+    if (opened) {
       const focusableElements =
-        dropdownElement.current.querySelectorAll<HTMLElement>(
+        dropdownContentRef.current?.querySelectorAll<HTMLElement>(
           'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
         );
-      if (focusableElements.length > 0) {
-        // Move focus to the first focusable element in the dropdown
+      if (focusableElements?.length) {
         focusableElements[0].focus();
       }
-    }
-
-    if (!opened && triggerElement.current) {
-      // Move focus back to the trigger element
+    } else if (triggerElement.current) {
       triggerElement.current.focus();
     }
   }, [opened]);
@@ -205,6 +268,9 @@ const Dropdown: React.FC<Props> = ({
     <CSSTransition
       in={opened}
       timeout={timeout}
+      // nodeRef used to fix React strict mode warning.
+      // See: https://github.com/reactjs/react-transition-group/issues/668#issuecomment-695162879
+      nodeRef={nodeRef}
       mountOnEnter
       unmountOnExit
       exit={false}
@@ -231,11 +297,11 @@ const Dropdown: React.FC<Props> = ({
           <Content
             maxHeight={maxHeight}
             mobileMaxHeight={mobileMaxHeight}
-            ref={dropdownElement}
+            ref={dropdownContentRef}
           >
             {content}
           </Content>
-          {footer && <Footer>{footer}</Footer>}
+          {footer && <Footer ref={footerRef}>{footer}</Footer>}
         </ContainerInner>
       </Container>
     </CSSTransition>

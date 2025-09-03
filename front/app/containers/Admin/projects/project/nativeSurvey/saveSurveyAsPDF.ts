@@ -1,26 +1,31 @@
 import { saveAs } from 'file-saver';
 import { SupportedLocale } from 'typings';
 
+import { API_PATH } from 'containers/App/constants';
+
 import { reportError } from 'utils/loggingUtils';
 import { requestBlob } from 'utils/requestBlob';
 
 interface Params {
-  downloadPdfLink: string;
   locale: SupportedLocale;
   personal_data: boolean;
-  phase_id?: string;
+  phaseId: string;
 }
 
 export async function saveSurveyAsPDF({
-  downloadPdfLink,
+  phaseId,
   locale,
   personal_data,
 }: Params) {
   try {
-    const blob = await requestBlob(downloadPdfLink, 'application/pdf' as any, {
-      locale,
-      personal_data,
-    });
+    const blob = await requestBlob(
+      `${API_PATH}/phases/${phaseId}/importer/export_form/idea/pdf`,
+      'application/pdf',
+      {
+        locale,
+        personal_data,
+      }
+    );
 
     saveAs(blob, 'survey.pdf');
   } catch (error) {

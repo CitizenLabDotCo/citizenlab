@@ -4,19 +4,23 @@
 #
 # Table name: email_campaigns_campaigns
 #
-#  id               :uuid             not null, primary key
-#  type             :string           not null
-#  author_id        :uuid
-#  enabled          :boolean
-#  sender           :string
-#  reply_to         :string
-#  schedule         :jsonb
-#  subject_multiloc :jsonb
-#  body_multiloc    :jsonb
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  deliveries_count :integer          default(0), not null
-#  context_id       :uuid
+#  id                   :uuid             not null, primary key
+#  type                 :string           not null
+#  author_id            :uuid
+#  enabled              :boolean
+#  sender               :string
+#  reply_to             :string
+#  schedule             :jsonb
+#  subject_multiloc     :jsonb
+#  body_multiloc        :jsonb
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  deliveries_count     :integer          default(0), not null
+#  context_id           :uuid
+#  title_multiloc       :jsonb
+#  intro_multiloc       :jsonb
+#  button_text_multiloc :jsonb
+#  context_type         :string
 #
 # Indexes
 #
@@ -34,8 +38,9 @@ module EmailCampaigns
     include ActivityTriggerable
     include RecipientConfigurable
     include Disableable
-    include LifecycleStageRestrictable
     include Trackable
+    include ContentConfigurable
+    include LifecycleStageRestrictable
     allow_lifecycle_stages only: %w[trial active]
 
     recipient_filter :filter_notification_recipient
@@ -45,7 +50,7 @@ module EmailCampaigns
     end
 
     def self.consentable_roles
-      ['admin']
+      %w[admin project_moderator project_folder_moderator]
     end
 
     def activity_triggers
@@ -61,7 +66,7 @@ module EmailCampaigns
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.admins'
+      'email_campaigns.admin_labels.recipient_segment.admins_and_managers_managing_the_project'
     end
 
     def self.content_type_multiloc_key
@@ -75,28 +80,15 @@ module EmailCampaigns
     def generate_commands(recipient:, activity:, time: nil)
       notification = activity.item
       assignee_attributes = {}
-      if notification.post.assignee_id
-        assignee_attributes[:assignee_first_name] = notification.post.assignee.first_name
-        assignee_attributes[:assignee_last_name] = notification.post.assignee.last_name
+      if notification.idea.assignee_id
+        assignee_attributes[:assignee_first_name] = notification.idea.assignee.first_name
+        assignee_attributes[:assignee_last_name] = notification.idea.assignee.last_name
       end
       [{
         event_payload: {
-          post_title_multiloc: notification.post.title_multiloc,
-          post_body_multiloc: notification.post.body_multiloc,
-          post_published_at: notification.post.published_at.iso8601,
-          post_author_name: notification.post.author_name,
-          post_url: Frontend::UrlService.new.model_to_url(notification.post, locale: Locale.new(recipient.locale)),
-          post_likes_count: notification.post.likes_count,
-          post_comments_count: notification.post.comments_count,
-          post_images: notification.post.initiative_images.map do |image|
-            {
-              ordering: image.ordering,
-              versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
-            }
-          end,
-          initiative_header_bg: {
-            versions: notification.post.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
-          },
+          idea_title_multiloc: notification.idea.title_multiloc,
+          idea_author_name: notification.idea.author_name,
+          idea_url: Frontend::UrlService.new.model_to_url(notification.idea, locale: Locale.new(recipient.locale)),
           **assignee_attributes
         }
       }]

@@ -22,7 +22,8 @@ module MultiTenancy
           logo: Rails.root.join('spec/fixtures/logo.png').open,
           settings: SettingsService.new.minimal_required_settings(
             locales: runner.seed_locales,
-            lifecycle_stage: 'active'
+            lifecycle_stage: 'active',
+            country_code: 'BE'
           ).deep_merge({
             core: {
               organization_type: "#{runner.seed_size}_city",
@@ -33,6 +34,7 @@ module MultiTenancy
               additional_admins_number: 1,
               additional_moderators_number: 1,
               population: 27_500,
+              allow_sharing: true,
               google_search_console_meta_attribute: 'fake_meta_attribute'
             },
             password_login: {
@@ -60,7 +62,7 @@ module MultiTenancy
               client_id: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_CLIENT_ID'),
               logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
               login_mechanism_name: 'Azure Active Directory',
-              admin_only: false
+              visibility: 'show'
             },
             azure_ad_b2c_login: {
               allowed: true,
@@ -72,7 +74,15 @@ module MultiTenancy
               logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
               login_mechanism_name: 'Azure AD B2C'
             },
+            id_austria_login: {
+              allowed: true,
+              enabled: true
+            },
             criipto_login: {
+              allowed: true,
+              enabled: true
+            },
+            twoday_login: {
               allowed: true,
               enabled: true
             },
@@ -257,29 +267,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            initiatives: {
-              enabled: true,
-              allowed: true,
-              require_review: false,
-              reacting_threshold: 20,
-              days_limit: 5,
-              threshold_reached_message: MultilocService.new.i18n_to_multiloc(
-                'initiatives.default_threshold_reached_message',
-                locales: runner.seed_locales
-              ),
-              eligibility_criteria: MultilocService.new.i18n_to_multiloc(
-                'initiatives.default_eligibility_criteria',
-                locales: runner.seed_locales
-              ),
-              posting_tips: MultilocService.new.i18n_to_multiloc(
-                'initiatives.default_posting_tips',
-                locales: runner.seed_locales
-              )
-            },
-            initiative_review: {
-              enabled: true,
-              allowed: true
-            },
             polls: {
               enabled: true,
               allowed: true
@@ -346,10 +333,29 @@ module MultiTenancy
                   client_secret: ENV.fetch('DEFAULT_CRIIPTO_CLIENT_SECRET', 'fake secret'),
                   identity_source: 'DK MitID',
                   ui_method_name: 'MitID (Criipto)'
+                },
+                {
+                  name: 'id_austria',
+                  client_id: ENV.fetch('DEFAULT_ID_AUSTRIA_CLIENT_ID', 'fake id'),
+                  client_secret: ENV.fetch('DEFAULT_ID_AUSTRIA_CLIENT_SECRET', 'fake secret'),
+                  ui_method_name: 'ID Austria',
+                  enabled_for_verified_actions: true
+                },
+                {
+                  name: 'twoday',
+                  client_id: ENV.fetch('DEFAULT_ID_TWODAY_CLIENT_ID', 'fake id'),
+                  client_secret: ENV.fetch('DEFAULT_ID_TWODAY_CLIENT_SECRET', 'fake secret'),
+                  domain: ENV.fetch('DEFAULT_ID_TWODAY_DOMAIN', 'fake domain'),
+                  ui_method_name: 'Bank ID',
+                  enabled_for_verified_actions: true
                 }
               ]
             },
             project_folders: {
+              enabled: true,
+              allowed: true
+            },
+            project_preview_link: {
               enabled: true,
               allowed: true
             },
@@ -382,6 +388,10 @@ module MultiTenancy
               allowed: true
             },
             posthog_integration: {
+              enabled: false,
+              allowed: true
+            },
+            posthog_user_tracking: {
               enabled: false,
               allowed: true
             },
@@ -422,9 +432,14 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            user_session_recording: {
+            html_pdfs: {
               enabled: true,
               allowed: true
+            },
+            user_session_recording: {
+              # Disable for E2E tests on localhost
+              enabled: false,
+              allowed: false
             },
             analysis: {
               enabled: true,
@@ -442,6 +457,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            auto_insights: {
+              enabled: true,
+              allowed: true
+            },
             multi_language_platform: {
               enabled: true,
               allowed: true
@@ -451,6 +470,10 @@ module MultiTenancy
               allowed: true
             },
             proposals_participation_method: {
+              enabled: true,
+              allowed: true
+            },
+            input_cosponsorship: {
               enabled: true,
               allowed: true
             },
@@ -466,6 +489,55 @@ module MultiTenancy
               enabled: true,
               allowed: true,
               issuer: '' # Change this value to 'https://fake-sso.onrender.com' to test with the deployed version of the Fake SSO
+            },
+            project_review: {
+              enabled: true,
+              allowed: true
+            },
+            platform_templates: {
+              enabled: false,
+              allowed: false
+            },
+            project_library: {
+              enabled: false,
+              allowed: false
+            },
+            community_monitor: {
+              enabled: true,
+              allowed: true,
+              project_id: ''
+            },
+            user_fields_in_surveys: {
+              enabled: true,
+              allowed: true
+            },
+            common_ground: {
+              enabled: true,
+              allowed: true
+            },
+            data_repository: {
+              enabled: true,
+              allowed: true
+            },
+            data_repository_ai_analysis: {
+              enabled: true,
+              allowed: true
+            },
+            project_planning_calendar: {
+              enabled: true,
+              allowed: true
+            },
+            customised_automated_emails: {
+              enabled: true,
+              allowed: true
+            },
+            customised_automated_context_emails: {
+              enabled: true,
+              allowed: true
+            },
+            project_importer: {
+              enabled: true,
+              allowed: true
             }
           })
         )

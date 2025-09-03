@@ -19,4 +19,10 @@ FactoryBot.define do
     state { 'in_progress' }
     started_at { Time.now }
   end
+
+  factory :comments_summarization_task, class: 'Analysis::CommentsSummarizationTask' do
+    association :analysis, factory: :analysis
+    state { 'in_progress' }
+    started_at { Time.now }
+  end
 end

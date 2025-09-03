@@ -21,7 +21,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { List, Row, HeadRow } from 'components/admin/ResourceList';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -34,7 +34,7 @@ const ListWrapper = styled.div`
   flex-direction: column;
 `;
 
-const AddButton = styled(Button)`
+const AddButton = styled(ButtonWithLink)`
   align-self: flex-start;
 `;
 
@@ -96,7 +96,6 @@ const AdminProjectEventsIndex = () => {
           >
             <FormattedMessage {...messages.addEventButton} />
           </AddButton>
-
           <Box maxWidth="600px" mt="24px">
             <Warning>
               <FormattedMessage
@@ -129,6 +128,8 @@ const AdminProjectEventsIndex = () => {
             </Warning>
           </Box>
 
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           {events && events?.data.length > 0 && (
             <StyledList>
               <>
@@ -164,35 +165,35 @@ const AdminProjectEventsIndex = () => {
                         </Title>
                         <Text m="0px">
                           {event.attributes.attendees_count === 1 ? (
-                            <FormattedMessage {...messages.attendee} />
+                            <FormattedMessage {...messages.registrant} />
                           ) : (
-                            <FormattedMessage {...messages.attendees} />
+                            <FormattedMessage {...messages.registrants} />
                           )}
                         </Text>
                       </Box>
-                      <Button
+                      <ButtonWithLink
                         buttonStyle="text"
                         icon="delete"
                         onClick={createDeleteClickHandler(event.id)}
                         processing={isLoading}
                       >
                         <FormattedMessage {...messages.deleteButtonLabel} />
-                      </Button>
-                      <Button
+                      </ButtonWithLink>
+                      <ButtonWithLink
                         buttonStyle="secondary-outlined"
                         disabled={event.attributes.attendees_count === 0}
                         icon="download"
                         onClick={() => handleAttendeesExport(event)}
                       >
-                        <FormattedMessage {...messages.exportAttendees} />
-                      </Button>
-                      <Button
+                        <FormattedMessage {...messages.exportRegistrants} />
+                      </ButtonWithLink>
+                      <ButtonWithLink
                         buttonStyle="secondary-outlined"
                         icon="edit"
                         linkTo={`/admin/projects/${projectId}/events/${event.id}`}
                       >
                         <FormattedMessage {...messages.editButtonLabel} />
-                      </Button>
+                      </ButtonWithLink>
                     </Row>
                   );
                 })}

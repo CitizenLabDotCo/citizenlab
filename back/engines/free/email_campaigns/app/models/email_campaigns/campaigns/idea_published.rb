@@ -4,19 +4,23 @@
 #
 # Table name: email_campaigns_campaigns
 #
-#  id               :uuid             not null, primary key
-#  type             :string           not null
-#  author_id        :uuid
-#  enabled          :boolean
-#  sender           :string
-#  reply_to         :string
-#  schedule         :jsonb
-#  subject_multiloc :jsonb
-#  body_multiloc    :jsonb
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  deliveries_count :integer          default(0), not null
-#  context_id       :uuid
+#  id                   :uuid             not null, primary key
+#  type                 :string           not null
+#  author_id            :uuid
+#  enabled              :boolean
+#  sender               :string
+#  reply_to             :string
+#  schedule             :jsonb
+#  subject_multiloc     :jsonb
+#  body_multiloc        :jsonb
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  deliveries_count     :integer          default(0), not null
+#  context_id           :uuid
+#  title_multiloc       :jsonb
+#  intro_multiloc       :jsonb
+#  button_text_multiloc :jsonb
+#  context_type         :string
 #
 # Indexes
 #
@@ -35,6 +39,8 @@ module EmailCampaigns
     include RecipientConfigurable
     include Disableable
     include Trackable
+    include ContentConfigurable
+    include ContextConfigurable
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: %w[trial active]
 
@@ -50,6 +56,12 @@ module EmailCampaigns
 
     def filter_recipient(users_scope, activity:, time: nil)
       users_scope.where(id: activity.item.author_id)
+    end
+
+    def activity_context(activity)
+      return nil unless activity.item.is_a?(::Idea)
+
+      activity.item && TimelineService.new.current_phase(activity.item.project)
     end
 
     def self.recipient_role_multiloc_key
@@ -68,22 +80,32 @@ module EmailCampaigns
       'email_campaigns.admin_labels.trigger.input_is_published'
     end
 
+    def self.supported_context_class
+      Phase
+    end
+
+    def self.supports_context?(context)
+      supports_phase_participation_method?(context)
+    end
+
     def generate_commands(recipient:, activity:)
       idea = activity.item
       return [] if !idea.participation_method_on_creation.supports_public_visibility?
 
       [{
         event_payload: {
-          post_id: idea.id,
-          post_title_multiloc: idea.title_multiloc,
-          post_body_multiloc: idea.body_multiloc,
-          post_url: Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient.locale)),
-          post_images: idea.idea_images.map do |image|
+          idea_id: idea.id,
+          idea_title_multiloc: idea.title_multiloc,
+          idea_body_multiloc: idea.body_multiloc,
+          idea_url: Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient.locale)),
+          idea_images: idea.idea_images.map do |image|
             {
               ordering: image.ordering,
               versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
             }
-          end
+          end,
+          input_term: idea.input_term,
+          project_title_multiloc: idea.project.title_multiloc
         }
       }]
     end

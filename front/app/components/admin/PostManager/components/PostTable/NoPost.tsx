@@ -3,11 +3,10 @@ import React from 'react';
 import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import { ManagerType } from '../..';
 import messages from '../../messages';
 
 export const NoPostPage = styled.div`
@@ -71,7 +70,6 @@ export const NoPostDescription = styled.p`
 `;
 
 interface Props {
-  type: ManagerType;
   handleSeeAll: () => void;
 }
 
@@ -79,17 +77,13 @@ export default (props: Props) => (
   <NoPostPage>
     <Icon name="sidebar-pages-menu" />
     <NoPostHeader>
-      {props.type === 'Initiatives' ? (
-        <FormattedMessage {...messages.noInitiativesHere} />
-      ) : (
-        <FormattedMessage {...messages.noFilteredResults} />
-      )}
+      <FormattedMessage {...messages.noFilteredResults} />
     </NoPostHeader>
     <NoPostDescription>
       <FormattedMessage {...messages.resetInputFiltersDescription} />
     </NoPostDescription>
-    <Button buttonStyle="admin-dark" onClick={props.handleSeeAll}>
+    <ButtonWithLink buttonStyle="admin-dark" onClick={props.handleSeeAll}>
       <FormattedMessage {...messages.resetFiltersButton} />
-    </Button>
+    </ButtonWithLink>
   </NoPostPage>
 );

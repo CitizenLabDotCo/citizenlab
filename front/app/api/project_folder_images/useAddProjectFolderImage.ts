@@ -9,11 +9,12 @@ import { IProjectFolderImage, addProjectFolderImageObject } from './types';
 const addProjectFolderImage = async ({
   folderId,
   base64,
+  alt_text_multiloc,
 }: addProjectFolderImageObject) =>
   fetcher<IProjectFolderImage>({
     path: `/project_folders/${folderId}/images`,
     action: 'post',
-    body: { image: { image: base64 } },
+    body: { image: { image: base64, alt_text_multiloc } },
   });
 
 const useAddProjectFolderImage = () => {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import React, {
   memo,
   useCallback,
@@ -42,11 +43,13 @@ import {
   parseLayers,
   getShapeSymbol,
 } from 'components/EsriMap/utils';
+import { InputFiltersProps } from 'components/IdeaCards/IdeasWithFiltersSidebar/InputFilters';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { projectPointToWebMercator } from 'utils/mapUtils/map';
 import { isAdmin } from 'utils/permissions/roles';
 
 import IdeaMapOverlay from './desktop/IdeaMapOverlay';
@@ -106,10 +109,17 @@ export interface Props {
   phaseId?: string;
   mapConfig?: IMapConfig | null;
   ideaMarkers?: IIdeaMarkers;
+  inputFiltersProps?: InputFiltersProps;
 }
 
 const IdeasMap = memo<Props>(
-  ({ projectId, phaseId, mapConfig, ideaMarkers }: Props) => {
+  ({
+    projectId,
+    phaseId,
+    mapConfig,
+    ideaMarkers,
+    inputFiltersProps,
+  }: Props) => {
     const theme = useTheme();
     const localize = useLocalize();
     const { formatMessage } = useIntl();
@@ -133,9 +143,11 @@ const IdeasMap = memo<Props>(
     const [clickedMapLocation, setClickedMapLocation] =
       useState<GeoJSON.Point | null>(null);
 
-    const selectedIdea = searchParams.get('idea_map_id');
+    const selectedIdeaId = searchParams.get('idea_map_id');
 
-    const ideaData = ideaMarkers?.data.find((idea) => idea.id === selectedIdea);
+    const ideaData = ideaMarkers?.data.find(
+      (idea) => idea.id === selectedIdeaId
+    );
 
     const setSelectedIdea = useCallback((ideaId: string | null) => {
       if (ideaId) {
@@ -205,11 +217,17 @@ const IdeasMap = memo<Props>(
 
     // Create a point graphics layer for idea pins
     const graphics = useMemo(() => {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const ideasWithLocations = ideaMarkers?.data?.filter(
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         (idea) => idea?.attributes?.location_point_geojson
       );
       return ideasWithLocations?.map((idea) => {
         const coordinates =
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           idea?.attributes?.location_point_geojson?.coordinates;
         return new Graphic({
           geometry: new Point({
@@ -217,6 +235,8 @@ const IdeasMap = memo<Props>(
             latitude: coordinates?.[1],
           }),
           attributes: {
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             ideaId: idea?.id,
           },
         });
@@ -278,9 +298,11 @@ const IdeasMap = memo<Props>(
           setEsriMapview(mapView);
 
           // If an idea was selected in the URL params, move map to that idea
-          if (selectedIdea) {
+          if (selectedIdeaId) {
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             const point = ideaMarkers?.data?.find(
-              (idea) => idea.id === selectedIdea
+              (idea) => idea.id === selectedIdeaId
             )?.attributes.location_point_geojson;
 
             if (!point) return;
@@ -291,13 +313,28 @@ const IdeasMap = memo<Props>(
           }
         }
       },
-      [esriMapView, selectedIdea, ideaMarkers]
+      [esriMapView, selectedIdeaId, ideaMarkers]
     );
 
     const onMapClick = useCallback(
       (event: any, mapView: MapView) => {
+        // Function to trigger the "Submit an idea" popup
+        const triggerShowInputPopup = () => {
+          if (ideaPostingEnabled) {
+            showAddInputPopup({
+              event,
+              mapView,
+              setSelectedInput: setSelectedIdea,
+              popupContentNode: startIdeaButtonNode,
+              popupTitle: formatMessage(messages.submitIdea),
+            });
+          }
+        };
+
         // Save clicked location
-        setClickedMapLocation(esriPointToGeoJson(event.mapPoint));
+        // First, project the point to Web Mercator to guarantee the correct coordinate system
+        const clickedPointProjected = projectPointToWebMercator(event.mapPoint);
+        setClickedMapLocation(esriPointToGeoJson(clickedPointProjected));
 
         const ideaPostingEnabled =
           (phase?.data.attributes.submission_enabled && authUser) ||
@@ -313,8 +350,12 @@ const IdeasMap = memo<Props>(
             const topElement = elements[0];
 
             if (topElement.type === 'graphic') {
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               const graphicId = topElement?.graphic?.attributes?.ID;
               const clusterCount =
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 topElement?.graphic?.attributes?.cluster_count;
               if (clusterCount) {
                 // User clicked a cluster. Zoom in on the cluster.
@@ -325,11 +366,15 @@ const IdeasMap = memo<Props>(
                 );
               } else if (graphicId) {
                 // User clicked an idea pin or layer.
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 const ideaId = topElement?.graphic?.attributes?.ideaId;
 
                 const ideasAtClickCount = elements.filter(
                   (element) =>
                     element.type === 'graphic' &&
+                    // TODO: Fix this the next time the file is edited.
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                     element?.graphic?.layer.id === 'ideasLayer'
                 ).length;
 
@@ -342,7 +387,11 @@ const IdeasMap = memo<Props>(
                     const ideaIds = elements.map((element) => {
                       // Get list of idea ids at this location
                       if (element.type === 'graphic') {
+                        // TODO: Fix this the next time the file is edited.
+                        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                         const layerId = element?.graphic?.layer?.id;
+                        // TODO: Fix this the next time the file is edited.
+                        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                         const ideaId = element?.graphic?.attributes?.ideaId;
                         if (ideaId && layerId === 'ideasLayer') {
                           return ideaId;
@@ -384,28 +433,15 @@ const IdeasMap = memo<Props>(
                 }
               } else {
                 // Show the "Submit an idea" popup
-                if (ideaPostingEnabled) {
-                  showAddInputPopup({
-                    event,
-                    mapView,
-                    setSelectedInput: setSelectedIdea,
-                    popupContentNode: startIdeaButtonNode,
-                    popupTitle: formatMessage(messages.submitIdea),
-                  });
-                }
+                triggerShowInputPopup();
               }
+            } else if (topElement.type === 'media') {
+              // If the user clicked on a media layer (E.g. image overlay), show the idea popup
+              triggerShowInputPopup();
             }
           } else {
             // If the user clicked elsewhere on the map, show the "Submit an idea" popup
-            if (ideaPostingEnabled) {
-              showAddInputPopup({
-                event,
-                mapView,
-                setSelectedInput: setSelectedIdea,
-                popupContentNode: startIdeaButtonNode,
-                popupTitle: formatMessage(messages.submitIdea),
-              });
-            }
+            triggerShowInputPopup();
           }
         });
       },
@@ -432,6 +468,8 @@ const IdeasMap = memo<Props>(
           if (topElement.type === 'graphic') {
             // Set the hovered layer id
             const customParameters =
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               topElement.layer && topElement.layer['customParameters'];
             setHoveredLayerId(customParameters?.layerId || null);
           }
@@ -443,6 +481,8 @@ const IdeasMap = memo<Props>(
 
     const onSelectIdeaFromList = useCallback(
       (selectedIdeaId: string | null) => {
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         const ideaPoint = ideaMarkers?.data?.find(
           (idea) => idea.id === selectedIdeaId
         )?.attributes?.location_point_geojson;
@@ -490,6 +530,8 @@ const IdeasMap = memo<Props>(
                 zoomWidgetLocation: 'right',
                 onInit: onMapInit,
               }}
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               webMapId={mapConfig?.data?.attributes?.esri_web_map_id}
               height={isMobileOrSmaller ? '68vh' : '80vh'}
               layers={layers}
@@ -513,6 +555,8 @@ const IdeasMap = memo<Props>(
             <IdeasAtLocationPopup
               setSelectedIdea={setSelectedIdea}
               portalElement={ideasAtLocationNode}
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               ideas={ideaMarkers?.data?.filter((idea) =>
                 ideasSharingLocation?.includes(idea.id)
               )}
@@ -521,7 +565,7 @@ const IdeasMap = memo<Props>(
             {isMobileOrSmaller && (
               <CSSTransition
                 classNames="animation"
-                in={!!selectedIdea}
+                in={!!selectedIdeaId}
                 timeout={300}
               >
                 <Box>
@@ -562,7 +606,8 @@ const IdeasMap = memo<Props>(
                   projectId={projectId}
                   phaseId={phaseId}
                   onSelectIdea={onSelectIdeaFromList}
-                  selectedIdea={selectedIdea}
+                  selectedIdeaId={selectedIdeaId}
+                  inputFiltersProps={inputFiltersProps}
                 />
               </Box>
             )}
@@ -575,7 +620,7 @@ const IdeasMap = memo<Props>(
               projectId={projectId}
               phaseId={phaseId}
               onSelectIdea={onSelectIdeaFromList}
-              selectedIdea={selectedIdea}
+              selectedIdeaId={selectedIdeaId}
             />
           </Box>
         )}

@@ -112,9 +112,7 @@ describe('<ReportBuilderPage />', () => {
       render(<ReportBuilderPage />);
 
       document.body.innerHTML;
-      expect(
-        screen.getByText('Create your first project report')
-      ).toBeInTheDocument();
+      expect(screen.getByText('Create your first report')).toBeInTheDocument();
     });
 
     it('opens modal if button is clicked', () => {
@@ -139,7 +137,7 @@ describe('<ReportBuilderPage />', () => {
       fireEvent.click(screen.getByTestId('create-report-button'));
       expect(mockCreateReport).toHaveBeenCalledTimes(1);
       expect(mockCreateReport).toHaveBeenCalledWith(
-        { name: 'Test project' },
+        { name: 'Test project', community_monitor: false },
         expect.anything()
       );
     });
@@ -151,7 +149,7 @@ describe('<ReportBuilderPage />', () => {
       render(<ReportBuilderPage />);
 
       expect(
-        screen.queryByText('Create your first project report')
+        screen.queryByText('Create your first report')
       ).not.toBeInTheDocument();
     });
 

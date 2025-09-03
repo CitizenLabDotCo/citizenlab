@@ -1,3 +1,20 @@
 da:
   analysis:
     example_tag_n: Eksempel på emne %{n}
+    cell_statement:
+      percent_more: "%{percent}% mere"
+      percent_less: "%{percent}% mindre"
+      range_min_max: "%{min} til %{max}"
+      range_min: "%{min} eller mere"
+      range_max: "%{max} eller mindre"
+      tag_vs_bin:
+        inputs: "Folk, der svarer '%{answer}' på '%{question}', skriver %{percent_more_less} i '%{tag}' end gennemsnittet."
+        likes: "Folk, der svarer '%{answer}' til '%{question}', kan lide %{percent_more_less} inputs i '%{tag}' end gennemsnittet."
+        dislikes: "Folk, der svarer '%{answer}' til '%{question}', kan ikke lide %{percent_more_less} inputs i '%{tag}' end gennemsnittet."
+        participants: "Folk, der svarer '%{answer}' på '%{question}', deltager %{percent_more_less} i '%{tag}' end gennemsnittet."
+      bin_vs_bin:
+        inputs: "Folk, der svarer '%{answer1}' til '%{question1}', svarer '%{answer2}' til '%{question2}' %{percent_more_less} end gennemsnittet."
+        likes: "Folk der svarer '%{answer1}' til '%{question1}', kan bedre lide %{percent_more_less} inputs, når de svarer '%{answer2}' til '%{question2}' end gennemsnittet."
+        dislikes: "Folk, der svarer '%{answer1}' til '%{question1}', kan ikke lide %{percent_more_less} inputs, når de svarer '%{answer2}' til '%{question2}' end gennemsnittet."
+        participants: "Folk, der svarer '%{answer1}' til '%{question1}', deltager %{percent_more_less} , når de svarer '%{answer2}' til '%{question2}', end gennemsnittet."
+

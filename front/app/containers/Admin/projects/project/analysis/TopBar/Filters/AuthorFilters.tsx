@@ -9,8 +9,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
+import useUserCustomFieldsOptions from 'api/custom_field_options/useCustomFieldOptions';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
-import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -115,10 +115,8 @@ const AuthorFilters = () => {
                   option.attributes.key
                 ),
               });
-              trackEventByName(tracks.authorFilterUsed.name, {
-                extra: {
-                  type: 'gender',
-                },
+              trackEventByName(tracks.authorFilterUsed, {
+                type: 'gender',
               });
             }}
             p="4px 8px"
@@ -160,10 +158,8 @@ const AuthorFilters = () => {
                   option.attributes.key
                 ),
               });
-              trackEventByName(tracks.authorFilterUsed.name, {
-                extra: {
-                  type: 'domicile',
-                },
+              trackEventByName(tracks.authorFilterUsed, {
+                type: 'domicile',
               });
             }}
             p="4px 8px"
@@ -185,10 +181,8 @@ const AuthorFilters = () => {
                   updateSearchParams({
                     [birthyearUrlQueryParamFromKey]: option.value,
                   });
-                  trackEventByName(tracks.authorFilterUsed.name, {
-                    extra: {
-                      type: 'birthyear',
-                    },
+                  trackEventByName(tracks.authorFilterUsed, {
+                    type: 'birthyear',
                   });
                 }}
                 value={searchParams.get(birthyearUrlQueryParamFromKey)}
@@ -203,10 +197,8 @@ const AuthorFilters = () => {
                   updateSearchParams({
                     [birthyearUrlQueryParamToKey]: option.value,
                   });
-                  trackEventByName(tracks.authorFilterUsed.name, {
-                    extra: {
-                      type: 'birthyear',
-                    },
+                  trackEventByName(tracks.authorFilterUsed, {
+                    type: 'birthyear',
                   });
                 }}
                 value={searchParams.get(birthyearUrlQueryParamToKey)}

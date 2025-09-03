@@ -124,7 +124,7 @@ export function getLanguage(locale: SupportedLocale) {
   return locale.indexOf('-') > -1 ? locale.split('-')[0] : locale;
 }
 
-function findSimilarLocale(
+export function findSimilarLocale(
   locale: SupportedLocale,
   candidateLocales: SupportedLocale[]
 ) {

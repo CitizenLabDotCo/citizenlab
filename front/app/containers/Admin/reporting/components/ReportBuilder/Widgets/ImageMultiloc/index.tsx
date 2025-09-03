@@ -37,6 +37,8 @@ const ImageMultiloc = ({ alt = {}, image, stretch = true }: Props) => {
 
   const emitImageLoaded = useCallback(() => {
     if (!image?.imageUrl) return;
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     eventEmitter.emit(IMAGE_LOADED_EVENT, image?.imageUrl);
   }, [image?.imageUrl]);
 
@@ -54,8 +56,12 @@ const ImageMultiloc = ({ alt = {}, image, stretch = true }: Props) => {
       {image?.imageUrl && (
         <ImageComponent
           width={stretch ? '100%' : undefined}
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           src={image?.imageUrl}
           alt={localize(alt) || ''}
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           data-code={image?.dataCode}
           onLoad={emitImageLoaded}
         />

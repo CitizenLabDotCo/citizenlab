@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import useDeletePhaseFile from './useDeletePhaseFile';
 const apiPath = '*phases/:phaseId/files/:fileId';
@@ -18,7 +18,7 @@ describe('useDeletePhaseFile', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useDeletePhaseFile(), {
+    const { result } = renderHook(() => useDeletePhaseFile(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -39,7 +39,7 @@ describe('useDeletePhaseFile', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useDeletePhaseFile(), {
+    const { result } = renderHook(() => useDeletePhaseFile(), {
       wrapper: createQueryClientWrapper(),
     });
 

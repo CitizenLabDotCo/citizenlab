@@ -58,7 +58,7 @@ class WebApi::V1::NotificationsController < ApplicationController
   end
 
   def include_load_resources
-    %i[recipient initiating_user post post_status comment project phase official_feedback spam_report invite]
+    %i[recipient initiating_user idea idea_status comment project phase official_feedback spam_report invite]
   end
 
   def serializers_classes

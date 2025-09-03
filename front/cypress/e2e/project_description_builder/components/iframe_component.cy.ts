@@ -21,7 +21,7 @@ describe('Project description builder Iframe component', () => {
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
-        cy.apiEnableProjectDescriptionBuilder({ projectId }).then(() => {
+        cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
           cy.visit(
             `/admin/project-description-builder/projects/${projectId}/description`
           );
@@ -67,14 +67,15 @@ describe('Project description builder Iframe component', () => {
     cy.visit(
       `/admin/project-description-builder/projects/${projectId}/description`
     );
-    cy.get('.e2e-content-builder-iframe-component').click('center', {
+    cy.get('.e2e-content-builder-iframe-component').wait(1000).click('center', {
       force: true,
     });
 
     // Try invalid URL
     cy.get('#e2e-content-builder-iframe-url-input')
       .clear()
-      .type('https://citizen');
+      .type('https://citizen')
+      .blur();
     cy.get('.e2e-error-message').should('be.visible');
     // Check that save is disabled
     cy.contains('Save').should('have.attr', 'aria-disabled', 'true');
@@ -86,7 +87,8 @@ describe('Project description builder Iframe component', () => {
     // Type valid URL
     cy.get('#e2e-content-builder-iframe-url-input')
       .clear()
-      .type('https://citizenlabco.typeform.com/to/cZtXQzTf');
+      .type('https://citizenlabco.typeform.com/to/cZtXQzTf')
+      .blur();
     // Check that save is enabled
     cy.contains('Save').should('be.enabled');
     // Check that red border is gone

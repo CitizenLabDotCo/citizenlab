@@ -1,9 +1,14 @@
 # frozen_string_literal: true
 
+require 'open3'
+
 class BaseImageUploader < BaseUploader
   include CarrierWave::MiniMagick
 
-  ALLOWED_TYPES = %w[jpg jpeg gif png webp svg]
+  ALLOWED_TYPES = %w[jpg jpeg gif png webp avif]
+
+  # Using process at the class level applies it to all versions, including the original.
+  process :strip
 
   # We're not caching, since the external image optimization process will
   # quickly generate a new version that should replace this one asap
@@ -47,7 +52,7 @@ class BaseImageUploader < BaseUploader
   end
 
   def gif_safe_transform!
-    MiniMagick::Tool::Convert.new do |image| # Calls imagemagick's "convert" command
+    MiniMagick::Tool::Convert.new do |image| # Calls imagemagick's 'convert' command
       image << @file.path
       image.coalesce # Remove optimizations so each layer shows the full image.
 
@@ -77,5 +82,36 @@ class BaseImageUploader < BaseUploader
     img.gravity gravity
     img.background 'rgba(255,255,255,0.0)'
     img.extent "#{target_width}x#{target_height}" if current_width != target_width || current_height != target_height
+  end
+
+  # Strip the image of EXIF metadata, except ICC color profile, orientation,
+  # and essential technical/structural metadata.
+  def strip
+    command = 'exiftool'
+    args = [
+      '-all=',
+      '-tagsFromFile', '@',
+      '-icc_profile',
+      '-orientation',
+      '-overwrite_original',
+      @file.path
+    ]
+
+    stdout, stderr, status = Open3.capture3(command, *args)
+
+    unless status.success?
+      ErrorReporter.report_msg(
+        'Exiftool command failed during image stripping.',
+        extra: {
+          file_path: @file.path,
+          exiftool_command: "#{command} #{args.join(' ')}",
+          exiftool_stdout: stdout,
+          exiftool_stderr: stderr,
+          exiftool_exit_status: status.exitstatus,
+          exiftool_error_signal: status.termsig
+        }
+      )
+      raise "Image stripping failed for #{@file.path}: #{stderr}"
+    end
   end
 end

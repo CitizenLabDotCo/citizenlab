@@ -38,21 +38,22 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     new_slug = SlugService.new.generate_slug(nil, new_slug) if new_slug
 
     # TODO: deal with linking idea_statuses, topics, custom field values and maybe areas and groups
-    @template['models']['project']                    = yml_projects new_slug: new_slug, new_publication_status: new_publication_status, new_title_multiloc: new_title_multiloc, shift_timestamps: shift_timestamps
-    @template['models']['project_file']               = yml_project_files shift_timestamps: shift_timestamps
-    @template['models']['project_image']              = yml_project_images shift_timestamps: shift_timestamps
-    @template['models']['phase']                      = yml_phases timeline_start_at: timeline_start_at, shift_timestamps: shift_timestamps
-    @template['models']['phase_file']                 = yml_phase_files shift_timestamps: shift_timestamps
-    @template['models']['custom_form']                = yml_custom_forms shift_timestamps: shift_timestamps
-    @template['models']['custom_field']               = yml_custom_fields shift_timestamps: shift_timestamps
-    @template['models']['custom_field_option']        = yml_custom_field_options shift_timestamps: shift_timestamps
-    @template['models']['custom_field_option_image']  = yml_custom_field_option_images shift_timestamps: shift_timestamps
-    @template['models']['permission']                 = yml_permissions shift_timestamps: shift_timestamps
-    @template['models']['polls/question']             = yml_poll_questions shift_timestamps: shift_timestamps
-    @template['models']['polls/option']               = yml_poll_options shift_timestamps: shift_timestamps
-    @template['models']['volunteering/cause']         = yml_volunteering_causes shift_timestamps: shift_timestamps
-    @template['models']['custom_maps/map_config']     = yml_maps_map_configs shift_timestamps: shift_timestamps
-    @template['models']['custom_maps/layer']          = yml_maps_layers shift_timestamps: shift_timestamps
+    @template['models']['project']                       = yml_projects new_slug: new_slug, new_publication_status: new_publication_status, new_title_multiloc: new_title_multiloc, shift_timestamps: shift_timestamps
+    @template['models']['project_file']                  = yml_project_files shift_timestamps: shift_timestamps
+    @template['models']['project_image']                 = yml_project_images shift_timestamps: shift_timestamps
+    @template['models']['phase']                         = yml_phases timeline_start_at: timeline_start_at, shift_timestamps: shift_timestamps
+    @template['models']['phase_file']                    = yml_phase_files shift_timestamps: shift_timestamps
+    @template['models']['custom_form']                   = yml_custom_forms shift_timestamps: shift_timestamps
+    @template['models']['custom_field']                  = yml_custom_fields shift_timestamps: shift_timestamps
+    @template['models']['custom_field_option']           = yml_custom_field_options shift_timestamps: shift_timestamps
+    @template['models']['custom_field_option_image']     = yml_custom_field_option_images shift_timestamps: shift_timestamps
+    @template['models']['custom_field_matrix_statement'] = yml_custom_field_statements shift_timestamps: shift_timestamps
+    @template['models']['permission']                    = yml_permissions shift_timestamps: shift_timestamps
+    @template['models']['polls/question']                = yml_poll_questions shift_timestamps: shift_timestamps
+    @template['models']['polls/option']                  = yml_poll_options shift_timestamps: shift_timestamps
+    @template['models']['volunteering/cause']            = yml_volunteering_causes shift_timestamps: shift_timestamps
+    @template['models']['custom_maps/map_config']        = yml_maps_map_configs shift_timestamps: shift_timestamps
+    @template['models']['custom_maps/layer']             = yml_maps_layers shift_timestamps: shift_timestamps
 
     @template['models']['content_builder/layout'], layout_images_mapping = yml_content_builder_layouts shift_timestamps: shift_timestamps
     @template['models']['content_builder/layout_image'] = yml_content_builder_layout_images layout_images_mapping, shift_timestamps: shift_timestamps
@@ -157,9 +158,11 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'enabled' => field.enabled,
         'required' => field.required,
         'code' => field.code,
-        'answer_visible_to' => field.answer_visible_to,
         'hidden' => field.hidden,
         'maximum' => field.maximum,
+        'ask_follow_up' => field.ask_follow_up,
+        'question_category' => field.question_category,
+        'include_in_printed_form' => field.include_in_printed_form,
         'linear_scale_label_1_multiloc' => field.linear_scale_label_1_multiloc,
         'linear_scale_label_2_multiloc' => field.linear_scale_label_2_multiloc,
         'linear_scale_label_3_multiloc' => field.linear_scale_label_3_multiloc,
@@ -167,12 +170,18 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'linear_scale_label_5_multiloc' => field.linear_scale_label_5_multiloc,
         'linear_scale_label_6_multiloc' => field.linear_scale_label_6_multiloc,
         'linear_scale_label_7_multiloc' => field.linear_scale_label_7_multiloc,
+        'linear_scale_label_8_multiloc' => field.linear_scale_label_8_multiloc,
+        'linear_scale_label_9_multiloc' => field.linear_scale_label_9_multiloc,
+        'linear_scale_label_10_multiloc' => field.linear_scale_label_10_multiloc,
+        'linear_scale_label_11_multiloc' => field.linear_scale_label_11_multiloc,
         'select_count_enabled' => field.select_count_enabled,
         'maximum_select_count' => field.maximum_select_count,
         'minimum_select_count' => field.minimum_select_count,
         'random_option_ordering' => field.random_option_ordering,
         'dropdown_layout' => field.dropdown_layout,
         'page_layout' => field.page_layout,
+        'page_button_link' => field.page_button_link,
+        'page_button_label_multiloc' => field.page_button_label_multiloc,
         'text_images_attributes' => field.text_images.map do |text_image|
           {
             'imageable_field' => text_image.imageable_field,
@@ -219,6 +228,20 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     end
   end
 
+  def yml_custom_field_statements(shift_timestamps: 0)
+    custom_form_ids = ([@project.custom_form_id] + @project.phases.map(&:custom_form_id)).compact
+    CustomFieldMatrixStatement.where(custom_field: CustomField.where(resource: custom_form_ids)).map do |statement|
+      {
+        'custom_field_ref' => lookup_ref(statement.custom_field_id, :custom_field),
+        'title_multiloc' => statement.title_multiloc,
+        'key' => statement.key,
+        'ordering' => statement.ordering,
+        'created_at' => shift_timestamp(statement.created_at, shift_timestamps)&.iso8601,
+        'updated_at' => shift_timestamp(statement.updated_at, shift_timestamps)&.iso8601
+      }
+    end
+  end
+
   def yml_projects(shift_timestamps: 0, new_slug: nil, new_title_multiloc: nil, new_publication_status: nil)
     yml_project = {
       'title_multiloc' => new_title_multiloc || @project.title_multiloc,
@@ -238,7 +261,8 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
           'updated_at' => ti.updated_at.to_s
         }
       end,
-      'include_all_areas' => @project.include_all_areas
+      'include_all_areas' => @project.include_all_areas,
+      'hidden' => @project.hidden
     }
     yml_project['slug'] = new_slug if new_slug.present?
     store_ref yml_project, @project.id, :project
@@ -280,7 +304,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'project_ref' => lookup_ref(phase.project_id, :project),
         'title_multiloc' => phase.title_multiloc,
         'description_multiloc' => phase.description_multiloc,
-        'campaigns_settings' => phase.campaigns_settings,
         'start_at' => shift_timestamp(phase.start_at, shift_timestamps, leave_blank: false)&.iso8601,
         'end_at' => shift_timestamp(phase.end_at, shift_timestamps, leave_blank: false)&.iso8601,
         'created_at' => shift_timestamp(phase.created_at, shift_timestamps)&.iso8601,
@@ -309,28 +332,32 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'input_term' => phase.input_term,
         'baskets_count' => @local_copy || !@include_ideas ? 0 : phase.baskets_count,
         'votes_count' => @local_copy || !@include_ideas ? 0 : phase.votes_count,
-        'prescreening_enabled' => phase.prescreening_enabled
+        'prescreening_enabled' => phase.prescreening_enabled,
+        'expire_days_limit' => phase.expire_days_limit,
+        'reacting_threshold' => phase.reacting_threshold
       }
       if yml_phase['participation_method'] == 'voting'
         yml_phase['voting_method'] = phase.voting_method
         yml_phase['voting_max_total'] = phase.voting_max_total
         yml_phase['voting_min_total'] = phase.voting_min_total
         yml_phase['voting_max_votes_per_idea'] = phase.voting_max_votes_per_idea
-        yml_phase['voting_term_singular_multiloc'] = phase.voting_term_singular_multiloc
-        yml_phase['voting_term_plural_multiloc'] = phase.voting_term_plural_multiloc
+        yml_phase['vote_term'] = phase.vote_term
+        yml_phase['autoshare_results_enabled'] = phase.autoshare_results_enabled
       end
       if yml_phase['participation_method'] == 'survey'
         yml_phase['survey_embed_url'] = phase.survey_embed_url
         yml_phase['survey_service'] = phase.survey_service
+        yml_phase['survey_popup_frequency'] = phase.survey_popup_frequency
       end
 
       if yml_phase['participation_method'] == 'document_annotation'
         yml_phase['document_annotation_embed_url'] = phase.document_annotation_embed_url
       end
 
-      if yml_phase['participation_method'] == 'native_survey'
+      if phase.pmethod.supports_survey_form?
         yml_phase['native_survey_title_multiloc'] = phase.native_survey_title_multiloc
         yml_phase['native_survey_button_multiloc'] = phase.native_survey_button_multiloc
+        yml_phase['user_fields_in_form'] = phase.user_fields_in_form
       end
 
       store_ref yml_phase, phase.id, :phase
@@ -439,12 +466,12 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     user_ids = []
     idea_ids = exported_ideas.ids
     user_ids += Idea.where(id: idea_ids).pluck(:author_id)
-    comment_ids = Comment.where(post_id: idea_ids, post_type: 'Idea').ids
+    comment_ids = Comment.where(idea_id: idea_ids).ids
     user_ids += Comment.where(id: comment_ids).pluck(:author_id)
     reaction_ids = Reaction.where(reactable_id: [idea_ids + comment_ids]).ids
     user_ids += Reaction.where(id: reaction_ids).pluck(:user_id)
     user_ids += Basket.where(phase: Phase.where(project: @project)).pluck(:user_id)
-    user_ids += OfficialFeedback.where(post_id: idea_ids, post_type: 'Idea').pluck(:user_id)
+    user_ids += OfficialFeedback.where(idea_id: idea_ids).pluck(:user_id)
     user_ids += Follower.where(followable_id: ([@project.id] + idea_ids)).pluck(:user_id)
     user_ids += Volunteering::Volunteer.where(cause: Volunteering::Cause.where(phase: Phase.where(project: @project))).pluck :user_id
     user_ids += Events::Attendance.where(event: @project.events).pluck :attendee_id
@@ -563,7 +590,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       yml_permission = {
         'action' => p.action,
         'permitted_by' => p.permitted_by,
-        'permission_scope_ref' => lookup_ref(p.permission_scope_id, %i[project phase]),
+        'permission_scope_ref' => lookup_ref(p.permission_scope_id, :phase),
         'global_custom_fields' => p.global_custom_fields,
         'created_at' => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601
@@ -664,12 +691,12 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   end
 
   def yml_comments(exported_ideas, shift_timestamps: 0)
-    Comment.where(post: exported_ideas).map do |c|
+    Comment.where(idea: exported_ideas).order(parent_id: :desc).map do |c|
       yml_comment = {
         'author_ref' => lookup_ref(c.author_id, :user),
         'author_hash' => c.author_hash,
         'anonymous' => c.anonymous,
-        'post_ref' => lookup_ref(c.post_id, :idea),
+        'idea_ref' => lookup_ref(c.idea_id, :idea),
         'body_multiloc' => c.body_multiloc,
         'created_at' => shift_timestamp(c.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(c.updated_at, shift_timestamps)&.iso8601,
@@ -683,9 +710,9 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   end
 
   def yml_official_feedback(exported_ideas, shift_timestamps: 0)
-    OfficialFeedback.where(post: exported_ideas).map do |o|
+    OfficialFeedback.where(idea: exported_ideas).map do |o|
       yml_official_feedback = {
-        'post_ref' => lookup_ref(o.post_id, :idea),
+        'idea_ref' => lookup_ref(o.idea_id, :idea),
         'user_ref' => lookup_ref(o.user_id, :user),
         'body_multiloc' => o.body_multiloc,
         'author_multiloc' => o.author_multiloc,
@@ -699,7 +726,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
 
   def yml_reactions(exported_ideas, shift_timestamps: 0)
     idea_ids = exported_ideas.ids
-    comment_ids = Comment.where(post_id: idea_ids, post_type: 'Idea')
+    comment_ids = Comment.where(idea_id: idea_ids)
     Reaction.where.not(user_id: nil).where(reactable_id: idea_ids + comment_ids).map do |v|
       yml_reaction = {
         'reactable_ref' => lookup_ref(v.reactable_id, %i[idea comment]),

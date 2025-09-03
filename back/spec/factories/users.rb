@@ -21,17 +21,21 @@ FactoryBot.define do
 
     factory :admin do
       roles { [{ type: 'admin' }] }
+
       factory :super_admin do
         sequence(:email) do |n|
           "#{Faker::Name.first_name}.#{Faker::Name.last_name}-#{n}@govocal.com"
         end
+      end
+
+      trait :project_reviewer do
+        roles { [{ type: 'admin', project_reviewer: true }] }
       end
     end
 
     factory :user_with_demographics do
       gender { ['male', 'female', 'unspecified', nil][rand(4)] }
       birthyear { rand(2) == 0 ? (Time.now.year - 12 - rand(100)) : nil }
-      education { rand(2) == 0 ? rand(3..8).to_s : nil }
     end
 
     factory :invited_user do

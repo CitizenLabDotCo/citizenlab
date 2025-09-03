@@ -2,8 +2,8 @@ import React from 'react';
 
 import { useParams } from 'react-router-dom';
 
-import useUpdateUserCustomFieldsOption from 'api/user_custom_fields_options/useUpdateUserCustomFieldsOption';
-import useUserCustomFieldsOption from 'api/user_custom_fields_options/useUserCustomFieldsOption';
+import useCustomFieldOption from 'api/custom_field_options/useCustomFieldOption';
+import useUpdateCustomFieldOption from 'api/custom_field_options/useUpdateCustomFieldOption';
 
 import { Section, SectionTitle } from 'components/admin/Section';
 
@@ -22,17 +22,14 @@ const RegistrationCustomFieldOptionsEdit = () => {
     userCustomFieldOptionId: string;
   };
 
-  const { mutate: updateUserCustomFieldOption } =
-    useUpdateUserCustomFieldsOption();
-  const { data: userCustomFieldOption } = useUserCustomFieldsOption({
-    customFieldId: userCustomFieldId,
+  const { mutate: updateCustomFieldOption } = useUpdateCustomFieldOption();
+  const { data: userCustomFieldOption } = useCustomFieldOption({
     optionId: userCustomFieldOptionId,
   });
 
   const handleSubmit = (values: FormValues) => {
-    updateUserCustomFieldOption(
+    updateCustomFieldOption(
       {
-        customFieldId: userCustomFieldId,
         optionId: userCustomFieldOptionId,
         title_multiloc: values.title_multiloc,
       },

@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 import useLocalize from 'hooks/useLocalize';
 
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Centerer from 'components/UI/Centerer';
 import SearchInput from 'components/UI/SearchInput';
 
@@ -71,7 +71,7 @@ const LoadMoreButtonWrapper = styled.div`
   margin-top: 25px;
 `;
 
-const LoadMoreButton = styled(Button)``;
+const LoadMoreButton = styled(ButtonWithLink)``;
 
 const NoTemplates = styled.div`
   width: 100%;
@@ -138,17 +138,20 @@ const ProjectTemplateCards = memo<Props & WrappedComponentProps>(
               placeholder={searchPlaceholder}
               ariaLabel={searchAriaLabel}
               onChange={onSearchChange}
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               a11y_numberOfSearchResults={templates?.edges.length || 0}
             />
           </Right>
         </Filters>
-
         {loading && !templates && (
           <Centerer height="500px">
             <Spinner />
           </Centerer>
         )}
 
+        {/* TODO: Fix this the next time the file is edited. */}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         {templates && templates.edges && templates.edges.length > 0 && (
           <>
             <Cards>
@@ -183,6 +186,8 @@ const ProjectTemplateCards = memo<Props & WrappedComponentProps>(
           </>
         )}
 
+        {/* TODO: Fix this the next time the file is edited. */}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         {templates && templates.edges && templates.edges.length === 0 && (
           <NoTemplates>
             <FormattedMessage {...messages.noTemplatesFound} />

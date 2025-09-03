@@ -3,7 +3,7 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import initiativesCountKeys from './keys';
+import blockedUsersCountKeys from './keys';
 import { BlockedUsersCountKeys, IBlockedUsersCount } from './types';
 
 const fetchBlockedUsersCount = () =>
@@ -19,7 +19,7 @@ const useBlockedUsersCount = () => {
     IBlockedUsersCount,
     BlockedUsersCountKeys
   >({
-    queryKey: initiativesCountKeys.items(),
+    queryKey: blockedUsersCountKeys.items(),
     queryFn: () => fetchBlockedUsersCount(),
   });
 };

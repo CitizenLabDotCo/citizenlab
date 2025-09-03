@@ -72,7 +72,7 @@ export default defineMessages({
   supportArticleLink: {
     id: 'app.containers.AdminPage.projects.project.analysis.supportArticleLink',
     defaultMessage:
-      'https://support.citizenlab.co/en/articles/8316692-ai-analysis',
+      'https://support.govocal.com/en/articles/8316692-ai-analysis',
   },
   emptyCustomFields: {
     id: 'app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsLabel',

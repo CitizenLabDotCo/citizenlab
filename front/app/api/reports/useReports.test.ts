@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import endpoints, {
   reportsData,
@@ -17,7 +17,7 @@ describe('useReports', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useReports(), {
+    const { result } = renderHook(() => useReports(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -36,7 +36,7 @@ describe('useReports', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useReports(), {
+    const { result } = renderHook(() => useReports(), {
       wrapper: createQueryClientWrapper(),
     });
 

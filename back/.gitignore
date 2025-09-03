@@ -16,10 +16,9 @@
 .byebug_history
 
 spec/reports/rspec.xml
+spec/examples.txt
 coverage
 public/uploads
-
-*.DS_Store
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
@@ -36,10 +35,3 @@ attractor_output/
 
 secrets/*
 !secrets/*.sample
-
-# JetBrains settings files
-.idea/
-
-# VSCode settings files
-.vscode/
-.devcontainer/

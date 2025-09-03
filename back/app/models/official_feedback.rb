@@ -8,24 +8,23 @@
 #  body_multiloc   :jsonb
 #  author_multiloc :jsonb
 #  user_id         :uuid
-#  post_id         :uuid
+#  idea_id         :uuid
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  post_type       :string
 #
 # Indexes
 #
-#  index_official_feedbacks_on_post     (post_id,post_type)
-#  index_official_feedbacks_on_post_id  (post_id)
+#  index_official_feedbacks_on_idea_id  (idea_id)
 #  index_official_feedbacks_on_user_id  (user_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (idea_id => ideas.id)
 #  fk_rails_...  (user_id => users.id)
 #
 class OfficialFeedback < ApplicationRecord
-  belongs_to :post, polymorphic: true
-  counter_culture :post
+  belongs_to :idea
+  counter_culture :idea
 
   belongs_to :user, optional: true
 
@@ -33,19 +32,17 @@ class OfficialFeedback < ApplicationRecord
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
-  has_many :initiative_status_changes, dependent: :nullify
-
   validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
   validates :author_multiloc, presence: true, multiloc: { presence: true }
-  validates :post, presence: true
+  validates :idea, presence: true
 
-  def project_id
-    post.try(:project_id)
-  end
+  delegate :project_id, to: :idea
 
   private
 
   def sanitize_body_multiloc
+    return if body_multiloc.nil?
+
     service = SanitizationService.new
     self.body_multiloc = service.sanitize_multiloc body_multiloc, %i[mention]
     self.body_multiloc = service.remove_multiloc_empty_trailing_tags body_multiloc

@@ -300,6 +300,8 @@ const Timeline = ({
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
   useEffect(() => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const showTooltip = phases?.data?.length === 1;
     setTooltipVisible(showTooltip);
 
@@ -483,13 +485,13 @@ const Timeline = ({
                 </Box>
               )}
             </RtlBox>
-            {!isBackoffice && selectedPhaseId && (
-              <PhaseDescription
-                projectId={projectId}
-                selectedPhaseId={selectedPhaseId}
-              />
-            )}
           </Phases>
+          {!isBackoffice && selectedPhaseId && (
+            <PhaseDescription
+              projectId={projectId}
+              selectedPhaseId={selectedPhaseId}
+            />
+          )}
         </ContainerInner>
       </Container>
     );

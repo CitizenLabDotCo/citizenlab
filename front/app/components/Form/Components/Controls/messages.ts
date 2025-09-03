@@ -108,4 +108,36 @@ export default defineMessages({
     id: 'app.components.form.controls.valueOutOfTotal',
     defaultMessage: '{value} out of {total}',
   },
+  cosponsorsPlaceholder: {
+    id: 'app.components.form.controls.cosponsorsPlaceholder',
+    defaultMessage: 'Start typing a name to search',
+  },
+  clearAll: {
+    id: 'app.components.form.controls.clearAll',
+    defaultMessage: 'Clear all',
+  },
+  clearAllScreenreader: {
+    id: 'app.components.form.controls.clearAllScreenreader',
+    defaultMessage: 'Clear all answers from above matrix question',
+  },
+  noRankSelected: {
+    id: 'app.components.form.controls.noRankSelected',
+    defaultMessage: 'No rank selected',
+  },
+  currentRank: {
+    id: 'app.components.form.controls.currentRank',
+    defaultMessage: 'Current rank: ',
+  },
+  rankingInstructions: {
+    id: 'app.components.form.controls.rankingInstructions',
+    defaultMessage: 'Drag and drop to rank options.',
+  },
+  allStatementsError: {
+    id: 'app.components.form.controls.allStatementsError',
+    defaultMessage: 'An answer must be selected for all statements.',
+  },
+  optionalParentheses: {
+    id: 'app.components.form.controls.optionalParentheses',
+    defaultMessage: '(optional)',
+  },
 });

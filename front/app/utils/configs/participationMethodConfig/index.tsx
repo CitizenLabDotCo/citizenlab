@@ -1,10 +1,10 @@
 import React, { ReactNode } from 'react';
 
-import { IIdea } from 'api/ideas/types';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import { getCurrentPhase, getInputTerm } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
 
+import CommonGroundCTABar from 'components/ParticipationCTABars/CommonGroundCTABar';
 import DocumentAnnotationCTABar from 'components/ParticipationCTABars/DocumentAnnotationCTABar';
 import EmbeddedSurveyCTABar from 'components/ParticipationCTABars/EmbeddedSurveyCTABar';
 import EventsCTABar from 'components/ParticipationCTABars/EventsCTABar';
@@ -16,29 +16,24 @@ import VolunteeringCTABar from 'components/ParticipationCTABars/VolunteeringCTAB
 import VotingCTABar from 'components/ParticipationCTABars/VotingCTABar';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 
-import clHistory from 'utils/cl-router/history';
-
 import { FormattedMessage } from '../../cl-intl';
 import { isNilOrError, NilOrError } from '../../helperUtils';
 import messages from '../../messages';
 
 export const defaultSortingOptions = [
   { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
+  {
+    text: <FormattedMessage {...messages.mostDiscussed} />,
+    value: 'comments_count',
+  },
   { text: <FormattedMessage {...messages.random} />, value: 'random' },
   { text: <FormattedMessage {...messages.mostReacted} />, value: 'popular' },
   { text: <FormattedMessage {...messages.newest} />, value: 'new' },
   { text: <FormattedMessage {...messages.oldest} />, value: '-new' },
 ];
 
-type FormSubmissionMethodProps = {
-  project?: IProjectData;
-  ideaId?: string;
-  idea?: IIdea;
-  phaseId?: string;
-};
-
 type ModalContentMethodProps = {
-  ideaIdForSocialSharing?: string;
+  ideaId?: string;
   title?: string;
   subtitle?: string;
 };
@@ -55,7 +50,6 @@ type PostSortingOptionType = { text: JSX.Element; value: string };
 Configuration Description
 ---------------------------------
 formEditor: We currently have 2 UIs for admins to edit the form definition. This defines which UI, if any, the method uses.
-onFormSubmission: Called after input form submission.
 getFormTitle?:  Gets the title of the input form
 getModalContent: Returns modal content to be displayed on project page.
 showInputManager: Returns whether the input manager should be shown in the admin view.
@@ -69,10 +63,9 @@ inputsPageSize?: Returns the page size the ideas endpoint should use.
 export type ParticipationMethodConfig = {
   /** When adding a new property, please add a description in the above comment */
   formEditor: 'simpleFormEditor' | 'surveyEditor' | null;
-  onFormSubmission: (props: FormSubmissionMethodProps) => void;
-  getModalContent: (
-    props: ModalContentMethodProps
-  ) => ReactNode | JSX.Element | null;
+  getModalContent:
+    | null
+    | ((props: ModalContentMethodProps) => ReactNode | JSX.Element | null);
   getFormTitle?: (props: FormTitleMethodProps) => React.ReactNode;
   showInputManager: boolean;
   inputManagerName?: string;
@@ -83,6 +76,14 @@ export type ParticipationMethodConfig = {
   hideAuthorOnIdeas?: boolean; // Hides the author on the idea pages/cards
   showIdeaFilters?: boolean; // Shows filters on the idea list
   inputsPageSize?: number;
+  /** Does this method support the reactions (likes, maybe dislikes) mechanism? */
+  supportsReactions: boolean;
+  /** Does this method support the voting mechanism? */
+  supportsVotes: boolean;
+  /** Does this method support commenting? */
+  supportsComments: boolean;
+  /** Does this method support having the topic field in its form? */
+  supportsTopicsCustomField: boolean;
 };
 
 const ideationConfig: ParticipationMethodConfig = {
@@ -90,26 +91,16 @@ const ideationConfig: ParticipationMethodConfig = {
   showIdeaFilters: true,
   formEditor: 'simpleFormEditor',
   inputsPageSize: 24,
-  onFormSubmission: (props: FormSubmissionMethodProps) => {
-    if (props.ideaId && props.idea) {
-      const urlParameters = `?new_idea_id=${props.ideaId}`;
-      if (props.idea) {
-        clHistory.push({
-          pathname: `/ideas/${props.idea.data.attributes.slug}`,
-          search: urlParameters.concat(
-            props.phaseId ? `&phase_id=${props.phaseId}` : ''
-          ),
-        });
-      }
-    }
-  },
+  supportsReactions: true,
+  supportsVotes: true,
+  supportsComments: true,
+  supportsTopicsCustomField: true,
   postType: 'defaultInput',
   getModalContent: (props: ModalContentMethodProps) => {
-    if (props.ideaIdForSocialSharing && props.title && props.subtitle) {
+    if (props.ideaId && props.title && props.subtitle) {
       return (
         <SharingModalContent
-          postType="idea"
-          postId={props.ideaIdForSocialSharing}
+          postId={props.ideaId}
           title={props.title}
           subtitle={props.subtitle}
         />
@@ -127,6 +118,9 @@ const ideationConfig: ParticipationMethodConfig = {
           question: messages.questionFormTitle,
           issue: messages.issueFormTitle1,
           contribution: messages.contributionFormTitle,
+          proposal: messages.proposalFormTitle,
+          petition: messages.petitionFormTitle,
+          initiative: messages.initiativeFormTitle,
         }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />
     );
@@ -140,31 +134,40 @@ const ideationConfig: ParticipationMethodConfig = {
   hideAuthorOnIdeas: false,
 };
 
+const commonGroundConfig: ParticipationMethodConfig = {
+  showInputCount: true,
+  showIdeaFilters: true,
+  formEditor: null,
+  inputsPageSize: 24,
+  supportsReactions: true,
+  supportsVotes: false, // Check analysis if we need to support them
+  supportsComments: false,
+  supportsTopicsCustomField: false,
+  postType: 'defaultInput',
+  getModalContent: null,
+  showInputManager: true,
+  inputManagerName: 'ideas',
+  renderCTABar: (props: CTABarProps) => {
+    return <CommonGroundCTABar project={props.project} phases={props.phases} />;
+  },
+  hideAuthorOnIdeas: true,
+};
+
 const proposalsConfig: ParticipationMethodConfig = {
   showInputCount: true,
   showIdeaFilters: true,
   formEditor: 'simpleFormEditor',
   inputsPageSize: 24,
-  onFormSubmission: (props: FormSubmissionMethodProps) => {
-    if (props.ideaId && props.idea) {
-      const urlParameters = `?new_idea_id=${props.ideaId}`;
-      if (props.idea) {
-        clHistory.push({
-          pathname: `/projects/${props.project?.attributes.slug}/ideas/${props.idea.data.attributes.slug}`,
-          search: urlParameters.concat(
-            props.phaseId ? `&phase_id=${props.phaseId}` : ''
-          ),
-        });
-      }
-    }
-  },
+  supportsReactions: true,
+  supportsVotes: false,
+  supportsComments: true,
+  supportsTopicsCustomField: true,
   postType: 'defaultInput',
   getModalContent: (props: ModalContentMethodProps) => {
-    if (props.ideaIdForSocialSharing && props.title && props.subtitle) {
+    if (props.ideaId && props.title && props.subtitle) {
       return (
         <SharingModalContent
-          postType="idea"
-          postId={props.ideaIdForSocialSharing}
+          postId={props.ideaId}
           title={props.title}
           subtitle={props.subtitle}
         />
@@ -182,6 +185,9 @@ const proposalsConfig: ParticipationMethodConfig = {
           question: messages.questionFormTitle,
           issue: messages.issueFormTitle1,
           contribution: messages.contributionFormTitle,
+          proposal: messages.proposalFormTitle,
+          petition: messages.petitionFormTitle,
+          initiative: messages.initiativeFormTitle,
         }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />
     );
@@ -198,30 +204,16 @@ const proposalsConfig: ParticipationMethodConfig = {
 const nativeSurveyConfig: ParticipationMethodConfig = {
   showInputCount: true,
   formEditor: 'surveyEditor',
-  onFormSubmission: (props: FormSubmissionMethodProps) => {
-    if (props.project) {
-      clHistory.push({
-        pathname: `/projects/${props.project?.attributes.slug}`,
-        search: `?show_modal=true`.concat(
-          props.phaseId ? `&phase_id=${props.phaseId}` : ''
-        ),
-      });
-    }
-  },
   postType: 'nativeSurvey',
-  getModalContent: (props: ModalContentMethodProps) => {
-    return (
-      <FormattedMessage
-        {...messages.onSurveySubmission}
-        {...props}
-        data-cy="e2e-survey-success-message"
-      />
-    );
-  },
+  getModalContent: null,
   showInputManager: false,
   renderCTABar: (props: CTABarProps) => {
     return <NativeSurveyCTABar project={props.project} phases={props.phases} />;
   },
+  supportsReactions: false,
+  supportsVotes: false,
+  supportsComments: false,
+  supportsTopicsCustomField: false,
 };
 
 const informationConfig: ParticipationMethodConfig = {
@@ -230,14 +222,16 @@ const informationConfig: ParticipationMethodConfig = {
   getModalContent: () => {
     return null;
   },
-  onFormSubmission: () => {
-    return;
-  },
+
   postType: 'defaultInput',
   showInputManager: false,
   renderCTABar: (props: CTABarProps) => (
     <EventsCTABar project={props.project} phases={props.phases} />
   ),
+  supportsReactions: false,
+  supportsVotes: false,
+  supportsComments: false,
+  supportsTopicsCustomField: false,
 };
 
 const surveyConfig: ParticipationMethodConfig = {
@@ -246,9 +240,6 @@ const surveyConfig: ParticipationMethodConfig = {
   getModalContent: () => {
     return null;
   },
-  onFormSubmission: () => {
-    return;
-  },
   postType: 'defaultInput',
   showInputManager: false,
   renderCTABar: (props: CTABarProps) => {
@@ -256,6 +247,10 @@ const surveyConfig: ParticipationMethodConfig = {
       <EmbeddedSurveyCTABar project={props.project} phases={props.phases} />
     );
   },
+  supportsReactions: false,
+  supportsVotes: false,
+  supportsComments: false,
+  supportsTopicsCustomField: false,
 };
 
 const documentAnnotationConfig: ParticipationMethodConfig = {
@@ -264,9 +259,7 @@ const documentAnnotationConfig: ParticipationMethodConfig = {
   getModalContent: () => {
     return null;
   },
-  onFormSubmission: () => {
-    return;
-  },
+
   postType: 'defaultInput',
   showInputManager: false,
   renderCTABar: (props: CTABarProps) => {
@@ -274,6 +267,10 @@ const documentAnnotationConfig: ParticipationMethodConfig = {
       <DocumentAnnotationCTABar project={props.project} phases={props.phases} />
     );
   },
+  supportsReactions: false,
+  supportsVotes: false,
+  supportsComments: false,
+  supportsTopicsCustomField: false,
 };
 
 const votingConfig: ParticipationMethodConfig = {
@@ -281,23 +278,13 @@ const votingConfig: ParticipationMethodConfig = {
   formEditor: 'simpleFormEditor',
   showIdeaFilters: false,
   inputsPageSize: 100,
+  supportsReactions: false,
+  supportsVotes: true,
+  supportsComments: true,
   getModalContent: () => {
     return null;
   },
   postType: 'defaultInput',
-  onFormSubmission: (props: FormSubmissionMethodProps) => {
-    if (props.ideaId && props.idea) {
-      const urlParameters = `?new_idea_id=${props.ideaId}`;
-      if (props.idea) {
-        clHistory.push({
-          pathname: `/ideas/${props.idea.data.attributes.slug}`,
-          search: urlParameters.concat(
-            props.phaseId ? `&phase_id=${props.phaseId}` : ''
-          ),
-        });
-      }
-    }
-  },
   getFormTitle: (props: FormTitleMethodProps) => {
     return (
       <FormattedMessage
@@ -321,6 +308,7 @@ const votingConfig: ParticipationMethodConfig = {
     (option) => option.value !== 'trending' && option.value !== 'popular'
   ),
   hideAuthorOnIdeas: true,
+  supportsTopicsCustomField: true,
 };
 
 const pollConfig: ParticipationMethodConfig = {
@@ -329,14 +317,16 @@ const pollConfig: ParticipationMethodConfig = {
   getModalContent: () => {
     return null;
   },
-  onFormSubmission: () => {
-    return;
-  },
+
   postType: 'defaultInput',
   showInputManager: false,
   renderCTABar: (props: CTABarProps) => {
     return <PollCTABar project={props.project} phases={props.phases} />;
   },
+  supportsReactions: false,
+  supportsVotes: false,
+  supportsComments: false,
+  supportsTopicsCustomField: false,
 };
 
 const volunteeringConfig: ParticipationMethodConfig = {
@@ -345,22 +335,25 @@ const volunteeringConfig: ParticipationMethodConfig = {
   getModalContent: () => {
     return null;
   },
-  onFormSubmission: () => {
-    return;
-  },
   postType: 'defaultInput',
   showInputManager: false,
   renderCTABar: (props: CTABarProps) => {
     return <VolunteeringCTABar project={props.project} phases={props.phases} />;
   },
+  supportsReactions: false,
+  supportsVotes: false,
+  supportsComments: false,
+  supportsTopicsCustomField: false,
 };
 
 const methodToConfig: {
   [method in ParticipationMethod]: ParticipationMethodConfig;
 } = {
   ideation: ideationConfig,
+  common_ground: commonGroundConfig,
   proposals: proposalsConfig,
   native_survey: nativeSurveyConfig,
+  community_monitor_survey: nativeSurveyConfig,
   information: informationConfig,
   survey: surveyConfig,
   voting: votingConfig,

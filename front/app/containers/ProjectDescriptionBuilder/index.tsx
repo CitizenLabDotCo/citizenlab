@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
@@ -17,7 +17,6 @@ import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
-import ContentBuilderSettings from 'components/admin/ContentBuilder/Settings';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import Editor from 'components/ProjectDescriptionBuilder/Editor';
 
@@ -26,12 +25,12 @@ import { isNilOrError } from 'utils/helperUtils';
 import ProjectDescriptionBuilderEditModePreview from '../../components/ProjectDescriptionBuilder/ProjectDescriptionBuilderEditModePreview';
 import ProjectDescriptionBuilderToolbox from '../../components/ProjectDescriptionBuilder/ProjectDescriptionBuilderToolbox';
 import ProjectDescriptionBuilderTopBar from '../../components/ProjectDescriptionBuilder/ProjectDescriptionBuilderTopBar';
+import ContentBuilderSettings from '../../components/ProjectDescriptionBuilder/Settings';
 
 const ProjectDescriptionBuilderPage = () => {
+  const locale = useLocale();
   const [previewEnabled, setPreviewEnabled] = useState(false);
-  const [selectedLocale, setSelectedLocale] = useState<
-    SupportedLocale | undefined
-  >();
+  const [selectedLocale, setSelectedLocale] = useState(locale);
   const [draftData, setDraftData] = useState<Record<string, SerializedNodes>>();
   const { pathname } = useLocation();
   const { projectId } = useParams() as { projectId: string };
@@ -41,17 +40,10 @@ const ProjectDescriptionBuilderPage = () => {
   const featureEnabled = useFeatureFlag({
     name: 'project_description_builder',
   });
-  const locale = useLocale();
   const locales = useAppConfigurationLocales();
   const { data: projectDescriptionBuilderLayout } =
     useProjectDescriptionBuilderLayout(projectId);
   const { data: project } = useProjectById(projectId);
-
-  useEffect(() => {
-    if (!isNilOrError(locale)) {
-      setSelectedLocale(locale);
-    }
-  }, [locale]);
 
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});
@@ -61,6 +53,22 @@ const ProjectDescriptionBuilderPage = () => {
   const projectDescriptionBuilderVisible =
     featureEnabled && pathname.includes('admin/project-description-builder');
 
+  // DO NOT REMOVE THESE useCallbacks, without them the content builder
+  // becomes horribly slow
+  const handleErrors = useCallback((newErrors: ContentBuilderErrors) => {
+    setContentBuilderErrors((contentBuilderErrors) => ({
+      ...contentBuilderErrors,
+      ...newErrors,
+    }));
+  }, []);
+
+  const handleDeleteElement = useCallback((id: string) => {
+    setContentBuilderErrors((contentBuilderErrors) => {
+      const { [id]: _id, ...rest } = contentBuilderErrors;
+      return rest;
+    });
+  }, []);
+
   if (isNilOrError(locales) && projectDescriptionBuilderVisible) {
     return null;
   }
@@ -68,20 +76,6 @@ const ProjectDescriptionBuilderPage = () => {
   const hasError =
     Object.values(contentBuilderErrors).filter((node) => node.hasError).length >
     0;
-
-  const handleErrors = (newErrors: ContentBuilderErrors) => {
-    setContentBuilderErrors((contentBuilderErrors) => ({
-      ...contentBuilderErrors,
-      ...newErrors,
-    }));
-  };
-
-  const handleDeleteElement = (id: string) => {
-    setContentBuilderErrors((contentBuilderErrors) => {
-      const { [id]: _id, ...rest } = contentBuilderErrors;
-      return rest;
-    });
-  };
 
   const getEditorData = () => {
     if (
@@ -107,7 +101,7 @@ const ProjectDescriptionBuilderPage = () => {
     locale: SupportedLocale;
     editorData: SerializedNodes;
   }) => {
-    if (selectedLocale && selectedLocale !== locale) {
+    if (selectedLocale !== locale) {
       setDraftData({ ...draftData, [selectedLocale]: editorData });
     }
 
@@ -121,6 +115,8 @@ const ProjectDescriptionBuilderPage = () => {
     setSelectedLocale(locale);
   };
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!project || (project && !project.data.attributes.uses_content_builder)) {
     return null;
   }
@@ -143,10 +139,9 @@ const ProjectDescriptionBuilderPage = () => {
         <Box
           mt={`${stylingConsts.menuHeight}px`}
           display={previewEnabled ? 'none' : 'flex'}
+          id="e2e-project-description-content-builder-page"
         >
-          {selectedLocale && (
-            <ProjectDescriptionBuilderToolbox selectedLocale={selectedLocale} />
-          )}
+          <ProjectDescriptionBuilderToolbox selectedLocale={selectedLocale} />
           <LanguageProvider
             contentBuilderLocale={selectedLocale}
             platformLocale={locale}

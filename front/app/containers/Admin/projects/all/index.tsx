@@ -1,297 +1,77 @@
-import React, { memo, Suspense, useEffect, useState } from 'react';
+import React, { Suspense } from 'react';
 
-import {
-  Box,
-  colors,
-  Spinner,
-  stylingConsts,
-  Title,
-  Tooltip,
-} from '@citizenlab/cl2-component-library';
-import { InfiniteData } from '@tanstack/react-query';
-import { useLocation } from 'react-router-dom';
-import styled from 'styled-components';
-
-import {
-  IAdminPublicationData,
-  IAdminPublications,
-} from 'api/admin_publications/types';
-import useAdminPublications from 'api/admin_publications/useAdminPublications';
-import useAuthUser from 'api/me/useAuthUser';
+import { Box, colors } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import NavigationTabs from 'components/admin/NavigationTabs';
-import Tab from 'components/admin/NavigationTabs/Tab';
-import Button from 'components/UI/Button';
-import SearchInput from 'components/UI/SearchInput';
+import { useIntl } from 'utils/cl-intl';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
-import { isAdmin } from 'utils/permissions/roles';
-import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderPermissions';
-
-import NonSortableProjectList from './Lists/NonSortableProjectList';
-import SortableProjectList from './Lists/SortableProjectList';
+import Search from './_shared/FilterBar/Filters/Search';
+import Folders from './Folders';
+import Header from './Header';
 import messages from './messages';
+import Ordering from './Ordering';
+import Projects from './Projects';
+import Tabs from './Tabs';
 
-const Container = styled.div``;
+const Calendar = React.lazy(() => import('./Calendar'));
 
-const ListsContainer = styled.div`
-  min-height: 80vh;
-  padding-left: 36px;
-  padding-right: 36px;
-  padding-bottom: 36px;
-  border: 1px solid ${colors.divider};
-  border-radius: ${stylingConsts.borderRadius};
-  background: ${colors.white};
-`;
-
-export interface Props {
-  className?: string;
-}
-
-export type ActiveTab =
-  | 'your-projects'
-  | 'published'
-  | 'draft'
-  | 'archived'
-  | 'all';
-
-const getActiveTab = (pathname: string): ActiveTab => {
-  if (pathname.includes('/admin/projects/all')) {
-    return 'all';
-  } else if (pathname.includes('/admin/projects/published')) {
-    return 'published';
-  } else if (pathname.includes('/admin/projects/draft')) {
-    return 'draft';
-  } else if (pathname.includes('/admin/projects/archived')) {
-    return 'archived';
-  } else {
-    return 'your-projects';
-  }
-};
-
-const flattenPagesData = (
-  data: InfiniteData<IAdminPublications> | undefined
-): IAdminPublicationData[] | undefined => {
-  return data?.pages
-    .map((page: { data: IAdminPublicationData[] }) => page.data)
-    .flat();
-};
-
-const AdminProjectsList = memo(({ className }: Props) => {
+const AdminProjectsListNew = () => {
+  const [searchParams] = useSearchParams();
   const { formatMessage } = useIntl();
-  const [search, setSearch] = useState<string>('');
-  const { data: authUser } = useAuthUser();
-  const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
-
-  const userIsAdmin = isAdmin(authUser);
-
-  const userIsFolderModerator =
-    (authUser &&
-      isProjectFoldersEnabled &&
-      isProjectFolderModerator(authUser)) ??
-    false;
-  const userCanCreateProject = userIsAdmin || userIsFolderModerator;
-
-  const { data: moderatedAdminPublications } = useAdminPublications({
-    publicationStatusFilter: ['published', 'draft', 'archived'],
-    onlyProjects: true,
-    filter_is_moderator_of: true,
-    search,
+  const tab = searchParams.get('tab');
+  const calendarViewEnabled = useFeatureFlag({
+    name: 'project_planning_calendar',
   });
 
-  const { data: publishedAdminPublications } = useAdminPublications({
-    publicationStatusFilter: ['published'],
-    onlyProjects: true,
-    rootLevelOnly: false,
-    search,
-  });
-
-  const { data: draftAdminPublications } = useAdminPublications({
-    publicationStatusFilter: ['draft'],
-    onlyProjects: true,
-    rootLevelOnly: false,
-    search,
-  });
-
-  const { data: archivedAdminPublications } = useAdminPublications({
-    publicationStatusFilter: ['archived'],
-    onlyProjects: true,
-    rootLevelOnly: false,
-    search,
-  });
-
-  const { data: allAdminPublications } = useAdminPublications({
-    publicationStatusFilter: ['published', 'draft', 'archived'],
-    // Admin publications in the "All" tab are shown in a flat list when there is a search query
-    rootLevelOnly: !search || search.length === 0,
-    search,
-  });
-
-  useEffect(() => {
-    if (userIsAdmin) {
-      clHistory.push('/admin/projects/all');
-    }
-  }, [userIsAdmin]);
-
-  const { pathname } = useLocation();
-
-  const activeTab = getActiveTab(pathname);
-
-  const flatPublishedAdminPublications = flattenPagesData(
-    publishedAdminPublications
-  );
-  const flatDraftAdminPublications = flattenPagesData(draftAdminPublications);
-  const flatArchivedAdminPublications = flattenPagesData(
-    archivedAdminPublications
-  );
-  const flatAllAdminPublications = flattenPagesData(allAdminPublications);
-
-  const flatModeratedAdminPublications = flattenPagesData(
-    moderatedAdminPublications
-  );
+  const showProjectSearch =
+    tab === null || (tab === 'calendar' && calendarViewEnabled);
 
   return (
-    <Container className={className}>
-      <Box>
-        <Box display="flex" justifyContent="space-between" mb="24px">
-          <Box>
-            <Title color="primary">
-              <FormattedMessage {...messages.overviewPageTitle} />
-            </Title>
-          </Box>
-          <Box
-            display="flex"
-            justifyContent="flex-end"
-            gap="12px"
-            alignItems="center"
-          >
-            {isProjectFoldersEnabled && (
-              <Tooltip
-                content={
-                  <FormattedMessage {...messages.onlyAdminsCanCreateFolders} />
-                }
-                disabled={userIsAdmin}
-              >
-                <Box>
-                  <Button
-                    data-cy="e2e-new-project-folder-button"
-                    linkTo={'/admin/projects/folders/new'}
-                    buttonStyle="secondary-outlined"
-                    icon="folder-add"
-                    disabled={!userIsAdmin}
-                  >
-                    <FormattedMessage {...messages.createProjectFolder} />
-                  </Button>
-                </Box>
-              </Tooltip>
-            )}
-            <Tooltip
-              content={
-                <FormattedMessage {...messages.onlyAdminsCanCreateProjects} />
-              }
-              disabled={userCanCreateProject}
-            >
-              <Box>
-                <Button
-                  data-cy="e2e-new-project-button"
-                  linkTo={'/admin/projects/new'}
-                  icon="plus-circle"
-                  buttonStyle="admin-dark"
-                  disabled={!userCanCreateProject}
-                >
-                  <FormattedMessage {...messages.newProject} />
-                </Button>
-              </Box>
-            </Tooltip>
-          </Box>
-        </Box>
-        <Box my="24px" w="fit-content">
-          <SearchInput
-            defaultValue={search}
-            onChange={(search) => setSearch(search || '')}
-            a11y_numberOfSearchResults={0}
-            placeholder={formatMessage(messages.searchProjects)}
-          />
-        </Box>
-
+    <Box
+      bgColor={colors.white}
+      w="100%"
+      h="100vh"
+      py="45px"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+    >
+      <Box px="51px" maxWidth="1400px" w="100%">
+        <Header />
         <Box
-          w="100%"
-          overflow="hidden"
-          borderBottom={`1px solid ${colors.divider}`}
-          position="relative"
-          zIndex="1"
-          mb="-2px"
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          borderBottom={`1px solid ${colors.grey200}`}
+          height="44px"
         >
-          <NavigationTabs position="relative">
-            <Tab
-              url="/admin/projects"
-              label={`${formatMessage(messages.yourProjects)} (${
-                flatModeratedAdminPublications?.length || 0
-              })`}
-              active={activeTab === 'your-projects'}
-            />
-            <Tab
-              label={`${formatMessage(messages.active)} (${
-                flatPublishedAdminPublications?.length || 0
-              })`}
-              active={activeTab === 'published'}
-              url="/admin/projects/published"
-            />
-            <Tab
-              label={`
-                ${formatMessage(messages.draft)} (${
-                flatDraftAdminPublications?.length || 0
-              })`}
-              active={activeTab === 'draft'}
-              url="/admin/projects/draft"
-            />
-            <Tab
-              label={`
-                ${formatMessage(messages.archived)} (${
-                flatArchivedAdminPublications?.length || 0
-              })`}
-              active={activeTab === 'archived'}
-              url="/admin/projects/archived"
-            />
-            <Tab
-              label={formatMessage(messages.all)}
-              active={activeTab === 'all'}
-              url="/admin/projects/all"
-            />
-          </NavigationTabs>
+          <Tabs />
+          {showProjectSearch && (
+            <Search placeholder={formatMessage(messages.searchProjects)} />
+          )}
+          {tab === 'folders' && (
+            <Search placeholder={formatMessage(messages.searchFolders)} />
+          )}
         </Box>
-
-        <ListsContainer>
-          <Suspense fallback={<Spinner />}>
-            {userIsAdmin && activeTab === 'all' && !search ? (
-              <SortableProjectList
-                adminPublications={flatAllAdminPublications}
-              />
-            ) : (
-              <NonSortableProjectList
-                search={search}
-                activeTab={activeTab}
-                adminPublications={
-                  activeTab === 'your-projects'
-                    ? flatModeratedAdminPublications
-                    : activeTab === 'published'
-                    ? flatPublishedAdminPublications
-                    : activeTab === 'draft'
-                    ? flatDraftAdminPublications
-                    : activeTab === 'archived'
-                    ? flatArchivedAdminPublications
-                    : flatAllAdminPublications
-                }
-              />
-            )}
-          </Suspense>
-        </ListsContainer>
+        <Box mt="20px">
+          {tab === null && <Projects />}
+          {tab === 'folders' && <Folders />}
+          {tab === 'calendar' && (
+            <Suspense>
+              <Calendar />
+            </Suspense>
+          )}
+          {tab === 'ordering' && (
+            <Box>
+              <Ordering />
+            </Box>
+          )}
+        </Box>
       </Box>
-    </Container>
+    </Box>
   );
-});
+};
 
-export default AdminProjectsList;
+export default AdminProjectsListNew;

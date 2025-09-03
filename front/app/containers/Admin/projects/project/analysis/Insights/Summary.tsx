@@ -5,6 +5,7 @@ import {
   IconButton,
   colors,
   IconTooltip,
+  Divider,
 } from '@citizenlab/cl2-component-library';
 import { useParams, useSearchParams } from 'react-router-dom';
 
@@ -13,8 +14,6 @@ import useDeleteAnalysisInsight from 'api/analysis_insights/useDeleteAnalysisIns
 import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
-
-import Divider from 'components/admin/Divider';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -45,6 +44,10 @@ const Summary = ({ insight }: Props) => {
     id: insight.relationships.insightable.data.id,
   });
 
+  const fileIds = summary?.data.relationships.files?.data.map(
+    (file) => file.id
+  );
+
   const handleSummaryDelete = (id: string) => {
     if (window.confirm(formatMessage(messages.deleteSummaryConfirmation))) {
       deleteSummary(
@@ -54,8 +57,8 @@ const Summary = ({ insight }: Props) => {
         },
         {
           onSuccess: () => {
-            trackEventByName(tracks.summaryDeleted.name, {
-              extra: { analysisId },
+            trackEventByName(tracks.summaryDeleted, {
+              analysisId,
             });
           },
         }
@@ -102,6 +105,7 @@ const Summary = ({ insight }: Props) => {
         <InsightBody
           text={summaryText}
           filters={summary.data.attributes.filters}
+          fileIds={fileIds}
           analysisId={analysisId}
           projectId={projectId}
           phaseId={phaseId}

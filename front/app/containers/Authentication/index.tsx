@@ -3,15 +3,11 @@ import React from 'react';
 import Modal from './Modal';
 import SuccessActions from './SuccessActions';
 
-export interface Props {
-  setModalOpen: (bool: boolean) => void;
-}
-
-const Authentication = ({ setModalOpen }: Props) => {
+const Authentication = () => {
   return (
     <>
       <SuccessActions />
-      <Modal setModalOpen={setModalOpen} />
+      <Modal />
     </>
   );
 };

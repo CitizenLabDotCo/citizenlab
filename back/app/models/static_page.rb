@@ -35,11 +35,14 @@
 #  index_static_pages_on_slug  (slug) UNIQUE
 #
 class StaticPage < ApplicationRecord
-  CODES = %w[about terms-and-conditions privacy-policy faq proposals custom].freeze
+  include Files::FileAttachable
 
-  slug from: proc { |page| page.title_multiloc.values.find(&:present?) }
+  CODES = %w[about cookie-policy terms-and-conditions privacy-policy faq custom].freeze
+  RESERVED_SLUGS = (CODES - %w[custom]).freeze
 
-  enum projects_filter_type: { no_filter: 'no_filter', areas: 'areas', topics: 'topics' }
+  slug from: proc { |page| page.title_multiloc&.values&.find(&:present?) }, except: RESERVED_SLUGS
+
+  enum :projects_filter_type, { no_filter: 'no_filter', areas: 'areas', topics: 'topics' }
 
   has_one :nav_bar_item, dependent: :destroy
   has_many :static_page_files, -> { order(:ordering) }, dependent: :destroy
@@ -55,17 +58,17 @@ class StaticPage < ApplicationRecord
   accepts_nested_attributes_for :text_images
 
   before_validation :set_code, on: :create
-
   before_validation :strip_title
   before_validation :sanitize_top_info_section_multiloc
   before_validation :sanitize_bottom_info_section_multiloc
   before_validation :destroy_obsolete_associations
 
-  before_destroy :confirm_is_custom, prepend: true
+  before_destroy :check_if_destroyable, prepend: true
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :code, inclusion: { in: CODES }
   validates :code, uniqueness: true, unless: :custom?
+  validate :validate_slug
 
   validates :banner_enabled, inclusion: [true, false]
   validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout fixed_ratio_layout]
@@ -91,7 +94,17 @@ class StaticPage < ApplicationRecord
 
   validates :bottom_info_section_enabled, inclusion: [true, false]
   validates :bottom_info_section_multiloc, multiloc: { presence: false, html: true }
-  validates :areas, length: { is: 1 }, if: -> { projects_filter_type == self.class.projects_filter_types.fetch(:areas) }
+  validates(
+    :areas, length: { is: 1 },
+    if: lambda do
+      # The validation is skipped when loading a tenant template because it assumes the
+      # existence of AreasStaticPage records that are not created yet. (When loading a
+      # tenant template, AreasStaticPage records are created after StaticPage records
+      # because of their `belongs_to :static_page` association that references StaticPage
+      # records.)
+      projects_filter_type == self.class.projects_filter_types.fetch(:areas) && !Current.loading_tenant_template
+    end
+  )
   validates(
     :topics, length: { minimum: 1 },
     if: lambda do
@@ -133,11 +146,17 @@ class StaticPage < ApplicationRecord
 
   private
 
-  def confirm_is_custom
-    return if custom?
+  def check_if_destroyable
+    # The cookie policy page can be deleted because the frontend will automatically fall
+    # back to the default policy if it's missing (which is the usual case).
+    return if custom? || code == 'cookie-policy'
 
-    errors.add(:base, 'Cannot destroy static_page that does not have code: \'custom\'')
+    errors.add(:base, 'Only custom pages and the cookie policy page can be deleted')
     throw :abort
+  end
+
+  def validate_slug
+    errors.add(:slug, 'reserved') if custom? && slug.in?(RESERVED_SLUGS)
   end
 
   def set_code
@@ -145,6 +164,8 @@ class StaticPage < ApplicationRecord
   end
 
   def strip_title
+    return unless title_multiloc&.any?
+
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end
@@ -167,7 +188,7 @@ class StaticPage < ApplicationRecord
 
     @service ||= SanitizationService.new
 
-    self[attribute] = @service.sanitize_multiloc(self[attribute], %i[title alignment list decoration link image video])
+    self[attribute] = @service.sanitize_multiloc(self[attribute], %i[title alignment list decoration link image video table])
     self[attribute] = @service.remove_multiloc_empty_trailing_tags(self[attribute])
     self[attribute] = @service.linkify_multiloc(self[attribute])
   end

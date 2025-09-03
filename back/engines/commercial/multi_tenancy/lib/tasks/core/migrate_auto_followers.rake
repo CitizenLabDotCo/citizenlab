@@ -9,9 +9,6 @@ namespace :fix_existing_tenants do
         Idea.all.each do |idea|
           remove_reacted_post_followers idea
         end
-        Initiative.all.each do |initiative|
-          remove_reacted_post_followers initiative
-        end
       rescue StandardError => e
         puts "An error occurred: #{e.message}"
       end
@@ -25,7 +22,6 @@ namespace :fix_existing_tenants do
       Apartment::Tenant.switch(tenant.schema_name) do
         migrate_project_followers!
         migrate_idea_followers!
-        migrate_initiative_followers!
         migrate_folder_followers!
         migrate_area_followers!
       rescue StandardError => e
@@ -47,17 +43,6 @@ namespace :fix_existing_tenants do
       participants_service.ideas_participants(Idea.where(id: idea)).each do |participant|
         Follower.find_or_create_by(followable: idea, user: participant)
       end
-    end
-  end
-
-  def migrate_initiative_followers!
-    Initiative.all.each do |initiative|
-      participants_service.initiatives_participants(Initiative.where(id: initiative)).each do |participant|
-        Follower.find_or_create_by(followable: initiative, user: participant)
-      end
-    end
-    CosponsorsInitiative.includes(:initiative, :user).where(status: 'accepted').each do |cosponsor|
-      Follower.find_or_create_by(followable: cosponsor.initiative, user: cosponsor.user)
     end
   end
 

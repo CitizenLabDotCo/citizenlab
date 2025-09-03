@@ -2,9 +2,9 @@ import React from 'react';
 
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
 import { Multiloc } from 'typings';
 
+import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
 import useProjectFiles from 'api/project_files/useProjectFiles';
 import useProjectById from 'api/projects/useProjectById';
 
@@ -55,12 +55,15 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
           <Title color="tenantText" variant="h1">
             {localize(projectTitle)}
           </Title>
-          <Editor isPreview={true}>
-            <ContentBuilderFrame
-              editorData={editorData}
-              onLoadImages={handleLoadImages}
-            />
-          </Editor>
+          <Box id={`project-description-${projectId}`}>
+            <Editor isPreview={true}>
+              <ContentBuilderFrame
+                editorData={editorData}
+                onLoadImages={handleLoadImages}
+              />
+            </Editor>
+          </Box>
+
           {projectFiles && (
             <Box maxWidth="750px" mb="25px">
               <FileAttachments files={projectFiles.data} />

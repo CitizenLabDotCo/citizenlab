@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import useDeletePageFile from './useDeletePageFile';
 const apiPath = '*static_pages/:pageId/files/:fileId';
@@ -18,7 +18,7 @@ describe('useDeletePageFile', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useDeletePageFile(), {
+    const { result } = renderHook(() => useDeletePageFile(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -39,7 +39,7 @@ describe('useDeletePageFile', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useDeletePageFile(), {
+    const { result } = renderHook(() => useDeletePageFile(), {
       wrapper: createQueryClientWrapper(),
     });
 

@@ -14,7 +14,7 @@ COPY back/engines ./engines
 RUN find engines -type f -not -name "*.gemspec" -not -name "version.rb" -print0 | xargs -0 rm -rf \
    && find engines -type d -empty -delete
 
-FROM ruby:3.3.1-slim
+FROM ruby:3.3.4-slim
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN apt-get update                                        \
@@ -22,6 +22,8 @@ RUN apt-get update                                        \
    build-essential                                        \
    curl                                                   \
    lsb-release                                            \
+   # Ensure a recent and comprehensive set of CA certificates is installed
+   ca-certificates                                        \
    # Required to install git dependencies in Gemfile and by bundle-audit
    git                                                    \
    libgeos-dev                                            \
@@ -37,13 +39,14 @@ RUN apt-get update                                        \
    jpegoptim                                              \
    optipng                                                \
    pngquant                                               \
+   # Used to selectively strip EXIF metadata from images
+   libimage-exiftool-perl                                 \
+   # jemalloc
+   libjemalloc2                                           \
    # tiktoken_ruby
    clang                                                  \
-   && curl -sL https://deb.nodesource.com/setup_18.x  | bash - \
-   && apt-get -y --no-install-recommends install nodejs        \
-   # Install MJML parser required by email engine.
-   && npm install -g mjml@4.4.1                                \
-   && apt-get clean                                            \
+   gnupg                                                  \
+   && apt-get clean                                       \
    && rm -rf /var/lib/apt/lists/*
 
 # Install Postgres client:
@@ -55,8 +58,6 @@ RUN curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --yes --
     && apt-get update && apt-get install -y postgresql-client-16
 
 WORKDIR /cl2_back
-
-RUN gem install bundler:2.4.20
 
 COPY --from=dependency_files /app .
 

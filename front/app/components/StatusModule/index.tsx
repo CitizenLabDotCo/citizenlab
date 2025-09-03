@@ -12,20 +12,16 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useBasket from 'api/baskets/useBasket';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';
 import { IPhaseData, VotingMethod } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
-import useLocalize from 'hooks/useLocalize';
-
-import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
-
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
+import useFormatCurrency from 'utils/currency/useFormatCurrency';
 import { getLocalisedDateString, pastPresentOrFuture } from 'utils/dateUtils';
 
 import ConfettiSvg from './ConfettiSvg';
@@ -48,12 +44,11 @@ const unsubmitBasket = async (
 };
 
 const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
-  const { data: appConfig } = useAppConfiguration();
+  const formatCurrency = useFormatCurrency();
 
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
 
-  const localize = useLocalize();
   const { formatMessage } = useIntl();
 
   // phase
@@ -69,7 +64,9 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
   const { mutate: updateBasket } = useUpdateBasket();
   const basketStatus = phaseHasEnded
     ? 'submissionEnded'
-    : basket?.data.attributes?.submitted_at
+    : // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    basket?.data.attributes?.submitted_at
     ? 'hasSubmitted'
     : 'hasNotSubmitted';
   const showDate = !phaseHasEnded && basketStatus === 'hasNotSubmitted';
@@ -85,10 +82,10 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
           </Warning>
         </Box>
       )}
-      <ProjectPageSectionTitle>
+      <Title variant="h2" color="tenantText">
         {config?.getStatusTitle &&
           formatMessage(config.getStatusHeader(basketStatus))}
-      </ProjectPageSectionTitle>
+      </Title>
       <Box
         mb="16px"
         p="20px"
@@ -111,9 +108,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
                 project,
                 phase,
                 submissionState: basketStatus,
-                appConfig,
-                localize,
-                formatMessage,
+                formatCurrency,
               })}
           </Box>
           {showDate && phase.attributes.end_at && (
@@ -131,6 +126,8 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
             <Text m="0px">
               {config?.getStatusSubmissionCountCopy &&
                 formatMessage(
+                  // TODO: Fix this the next time the file is edited.
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                   config?.getStatusSubmissionCountCopy(basketCount)
                 )}
             </Text>
@@ -150,12 +147,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
                 unsubmitBasket(basket.data.id, updateBasket);
               }}
             >
-              {config &&
-                formatMessage(messages.modifyYourSubmission, {
-                  submissionTerm: formatMessage(
-                    config.getSubmissionTerm('singular')
-                  ).toLowerCase(),
-                })}
+              {formatMessage(messages.modifyYourSubmission)}
             </Button>
           </Box>
         )}

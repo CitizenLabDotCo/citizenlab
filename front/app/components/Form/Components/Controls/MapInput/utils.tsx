@@ -5,8 +5,7 @@ import { JsonSchema } from '@jsonforms/core';
 
 import { IMapConfig } from 'api/map_config/types';
 
-import { FormData } from 'components/Form/typings';
-import { customAjv } from 'components/Form/utils';
+import customAjv from 'components/Form/utils/customAjv';
 import { Option } from 'components/UI/LocationInput';
 
 import { geocode, reverseGeocode } from 'utils/locationTools';
@@ -21,7 +20,6 @@ import {
 import { updatePointDataAndDisplay } from './pointUtils';
 
 export type MapInputType = 'point' | 'line' | 'polygon';
-export const MapInputTypeArray = ['point', 'line', 'polygon'];
 export type EsriGeometryType = 'point' | 'polygon' | 'polyline' | 'multipoint';
 
 // reverseGeocodeAndSave
@@ -48,6 +46,8 @@ export const geocodeAndSaveLocation = (
   location: Option,
   handlePointChange: (point: GeoJSON.Point) => void
 ) => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   location?.value &&
     geocode(location.value).then((point) => {
       point && handlePointChange(point);
@@ -65,6 +65,8 @@ export const getUserInputPoints = (
   // We store all user input data in it's own graphics layer
   const userGraphicsLayer = getUserInputGraphicsLayer(mapView);
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   userGraphicsLayer?.graphics?.forEach((graphic) => {
     if (graphic.geometry.type === 'point') {
       // We want just a list of the points
@@ -105,7 +107,7 @@ export const checkCoordinateErrors = ({
 };
 
 type CheckCoordinateErrorsProps = {
-  data: FormData;
+  data: any;
   inputType: MapInputType;
   schema: JsonSchema;
   formatMessage: (message: any, values?: any) => string;
@@ -142,7 +144,7 @@ export const updateDataAndDisplay = ({
 };
 
 type UpdateDataAndDisplayProps = {
-  data: FormData;
+  data: any;
   mapView: MapView | null | undefined;
   inputType: MapInputType;
   locale: string;
@@ -155,6 +157,8 @@ type UpdateDataAndDisplayProps = {
 // Description: Gets the user input graphics layer
 export const getUserInputGraphicsLayer = (mapView?: MapView | null) => {
   if (mapView) {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     return mapView?.map?.layers?.find(
       (layer) => layer.title === 'User Input'
     ) as GraphicsLayer;

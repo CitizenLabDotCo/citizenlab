@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { topicsData } from './__mocks__/useTopics';
 import { ITopicsQueryParams } from './types';
@@ -23,7 +23,7 @@ describe('useTopics', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useTopics(params), {
+    const { result } = renderHook(() => useTopics(params), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -42,7 +42,7 @@ describe('useTopics', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useTopics(params), {
+    const { result } = renderHook(() => useTopics(params), {
       wrapper: createQueryClientWrapper(),
     });
 

@@ -28,7 +28,7 @@ interface Props {
 
 const InputAssignment = ({ projectId }: Props) => {
   return (
-    <InputAssignmentSection>
+    <InputAssignmentSection className="intercom-product-tour-project-input-assignee-section">
       <SubSectionTitle>
         <FormattedMessage {...messages.inputAssignmentSectionTitle} />
         <IconTooltip
@@ -36,9 +36,11 @@ const InputAssignment = ({ projectId }: Props) => {
             <FormattedMessage
               {...messages.inputAssignmentTooltipText}
               values={{
-                ideaManagerLink: (
-                  <StyledLink to={`/admin/projects/${projectId}/ideas`}>
-                    <FormattedMessage {...messages.inputManagerLinkText} />
+                globalInputManagerLink: (
+                  <StyledLink to={`/admin/ideas`}>
+                    <FormattedMessage
+                      {...messages.globalInputManagerLinkText}
+                    />
                   </StyledLink>
                 ),
               }}

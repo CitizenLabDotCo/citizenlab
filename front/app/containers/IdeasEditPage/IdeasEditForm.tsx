@@ -1,266 +1,198 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
-import { PreviousPathnameContext } from 'context';
-import { omit } from 'lodash-es';
-import { Multiloc } from 'typings';
+import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
 
-import useIdeaFiles from 'api/idea_files/useIdeaFiles';
-import useDeleteIdeaImage from 'api/idea_images/useDeleteIdeaImage';
-import useIdeaImages from 'api/idea_images/useIdeaImages';
-import { IIdeaUpdate } from 'api/ideas/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useUpdateIdea from 'api/ideas/useUpdateIdea';
-import useAuthUser from 'api/me/useAuthUser';
+import usePhase from 'api/phases/usePhase';
+import useProjectById from 'api/projects/useProjectById';
 
-import useInputSchema from 'hooks/useInputSchema';
+import EditIdeaHeading from 'containers/IdeaHeading/EditIdeaHeading';
+import InputDetailView from 'containers/IdeasNewPage/SimilarInputs/InputDetailView';
+import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/utils';
 
-import GoBackToIdeaPage from 'containers/IdeasEditPage/GoBackToIdeaPage';
-import ideaFormMessages from 'containers/IdeasNewPage/messages';
-
-import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
-import Form from 'components/Form';
-import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
-import FullPageSpinner from 'components/UI/FullPageSpinner';
-import PageContainer from 'components/UI/PageContainer';
+import { FORM_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
-import { getFieldNameFromPath } from 'utils/JSONFormUtils';
-import { usePermission } from 'utils/permissions';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import eventEmitter from 'utils/eventEmitter';
 
 import IdeasEditMeta from './IdeasEditMeta';
 import messages from './messages';
-import { getLocationGeojson, getFormValues } from './utils';
 
-interface FormValues {
-  title_multiloc: Multiloc;
-  body_multiloc: Multiloc;
-  author_id?: string;
-  idea_images_attributes?: { image: string }[];
-  idea_files_attributes?: {
-    file_by_content: { content: string };
-    name: string;
-  };
-  location_description?: string;
-  location_point_geojson?: GeoJSON.Point;
-  topic_ids?: string[];
-}
+const IdeationForm = React.lazy(
+  () => import('components/CustomFieldsForm/IdeationForm')
+);
+
 interface Props {
   ideaId: string;
 }
 
 const IdeasEditForm = ({ ideaId }: Props) => {
-  const previousPathName = useContext(PreviousPathnameContext);
-  const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
-  const [formData, setFormData] = useState<FormValues | null>(null);
-
-  const { data: authUser } = useAuthUser();
   const { data: idea } = useIdeaById(ideaId);
-  const { mutate: deleteIdeaImage } = useDeleteIdeaImage();
-  const granted = usePermission({
-    item: idea?.data || null,
-    action: 'edit',
-    context: idea?.data || null,
-  });
+  const isSmallerThanPhone = useBreakpoint('phone');
+  const [searchParams] = useSearchParams();
+  const selectedIdeaId = searchParams.get('selected_idea_id');
 
-  const { mutateAsync: updateIdea } = useUpdateIdea();
-  const { data: remoteImages } = useIdeaImages(ideaId);
-  const { data: remoteFiles } = useIdeaFiles(ideaId);
   const projectId = idea?.data.relationships.project.data.id;
+  const [usingMapView, setUsingMapView] = useState(false);
 
-  const {
-    schema,
-    uiSchema,
-    inputSchemaError,
-    isLoading: isLoadingInputSchema,
-  } = useInputSchema({
-    projectId,
-    inputId: ideaId,
-  });
+  const phaseId = idea?.data.relationships.phases.data[0].id;
+  const { data: phase } = usePhase(phaseId);
+  const { data: project } = useProjectById(projectId);
 
   useEffect(() => {
-    if (idea && authUser !== undefined && !granted) {
-      clHistory.replace(previousPathName || (!authUser ? '/sign-up' : '/'));
-    }
-  }, [idea, granted, previousPathName, authUser]);
-
-  const getApiErrorMessage: ApiErrorGetter = useCallback(
-    (error) => {
-      return (
-        ideaFormMessages[
-          `api_error_${uiSchema?.options?.inputTerm}_${error}`
-        ] ||
-        ideaFormMessages[`api_error_${error}`] ||
-        ideaFormMessages[`api_error_invalid`]
-      );
-    },
-    [uiSchema]
-  );
-
-  const getAjvErrorMessage: AjvErrorGetter = useCallback(
-    (error) => {
-      return (
-        messages[
-          `ajv_error_${uiSchema?.options?.inputTerm}_${
-            getFieldNameFromPath(error.instancePath) ||
-            error?.params?.missingProperty
-          }_${error.keyword}`
-        ] ||
-        messages[
-          `ajv_error_${
-            getFieldNameFromPath(error.instancePath) ||
-            error?.params?.missingProperty
-          }_${error.keyword}`
-        ] ||
-        undefined
-      );
-    },
-    [uiSchema]
-  );
-
-  if (isLoadingInputSchema) return <FullPageSpinner />;
-  if (
-    // inputSchemaError should display an error page instead
-    inputSchemaError ||
-    !schema ||
-    !uiSchema ||
-    !projectId ||
-    !idea
-  ) {
-    return null;
-  }
-
-  const initialFormData = getFormValues(
-    idea,
-    schema,
-    remoteImages,
-    remoteFiles
-  );
-
-  // Set initial location point if exists
-  if (initialFormData && idea.data.attributes.location_point_geojson) {
-    initialFormData['location_point_geojson'] =
-      idea.data.attributes.location_point_geojson;
-  }
-
-  const handleDisclaimer = (data: FormValues) => {
-    const disclamerNeeded =
-      data.idea_files_attributes ||
-      data.idea_images_attributes ||
-      Object.values(data.body_multiloc).some((value) => value.includes('<img'));
-
-    setFormData(data);
-    if (disclamerNeeded) {
-      return setIsDisclaimerOpened(true);
-    } else {
-      return onSubmit(data);
-    }
-  };
-
-  const onAcceptDisclaimer = (data: FormValues | null) => {
-    if (!data) return;
-    onSubmit(data);
-    setIsDisclaimerOpened(false);
-  };
-
-  const onCancelDisclaimer = () => {
-    setIsDisclaimerOpened(false);
-  };
-
-  const onSubmit = async (data: FormValues) => {
-    const { idea_images_attributes, ...ideaWithoutImages } = data;
-
-    const location_point_geojson = await getLocationGeojson(
-      initialFormData,
-      data
-    );
-
-    const isImageNew =
-      idea_images_attributes !== initialFormData?.idea_images_attributes;
-
-    // Delete a remote image only on submission
-    if (isImageNew && initialFormData?.idea_images_attributes[0]?.id) {
-      deleteIdeaImage({
-        ideaId,
-        imageId: initialFormData.idea_images_attributes[0].id,
+    const subscription = eventEmitter
+      .observeEvent(FORM_PAGE_CHANGE_EVENT)
+      .subscribe(() => {
+        setUsingMapView(!!document.getElementById('map_page'));
       });
-    }
 
-    const payload: IIdeaUpdate = {
-      ...ideaWithoutImages,
-      idea_images_attributes,
-      location_point_geojson,
-      project_id: projectId,
-      publication_status: 'published',
+    return () => {
+      subscription.unsubscribe();
     };
+  }, []);
 
-    const idea = await updateIdea({
-      id: ideaId,
-      requestBody: isImageNew
-        ? omit(payload, 'idea_files_attributes')
-        : omit(payload, ['idea_images_attributes', 'idea_files_attributes']),
-    });
+  const { data: appConfiguration } = useAppConfiguration();
+  const tenantTimezone =
+    appConfiguration?.data.attributes.settings.core.timezone;
+  if (!tenantTimezone) return null;
 
-    clHistory.push(
-      {
-        pathname: `/ideas/${idea.data.attributes.slug}`,
-      },
-      { scrollToTop: true }
-    );
+  const titleText = (
+    <FormattedMessage
+      {...{
+        idea: messages.formTitle,
+        option: messages.optionFormTitle,
+        project: messages.projectFormTitle,
+        question: messages.questionFormTitle,
+        issue: messages.issueFormTitle,
+        contribution: messages.contributionFormTitle,
+        initiative: messages.initiativeFormTitle,
+        petition: messages.petitionFormTitle,
+        proposal: messages.proposalFormTitle,
+      }[phase?.data.attributes.input_term || 'idea']}
+    />
+  );
+  const maxWidth = usingMapView ? '1100px' : '700px';
+
+  const handleCloseDetail = () => {
+    updateSearchParams({ selected_idea_id: null });
   };
 
   return (
     <>
-      <IdeasEditMeta ideaId={ideaId} projectId={projectId} />
-      <Box bg={colors.grey100}>
-        <Box p="32px">
-          <GoBackToIdeaPage idea={idea.data} />
-        </Box>
-        <main id="e2e-idea-edit-page">
-          <PageContainer>
-            <Form
-              schema={schema}
-              uiSchema={uiSchema}
-              onSubmit={handleDisclaimer}
-              initialFormData={initialFormData}
-              inputId={idea.data.id}
-              getAjvErrorMessage={getAjvErrorMessage}
-              getApiErrorMessage={getApiErrorMessage}
-              config={'input'}
-              title={
-                <Box
-                  width="100%"
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="center"
-                  alignItems="center"
-                  mb="40px"
-                >
-                  <FormattedMessage
-                    {...{
-                      idea: messages.formTitle,
-                      option: messages.optionFormTitle,
-                      project: messages.projectFormTitle,
-                      question: messages.questionFormTitle,
-                      issue: messages.issueFormTitle,
-                      contribution: messages.contributionFormTitle,
-                    }[
-                      uiSchema && uiSchema?.options?.inputTerm
-                        ? uiSchema.options.inputTerm
-                        : 'idea'
-                    ]}
+      {projectId && <IdeasEditMeta ideaId={ideaId} projectId={projectId} />}
+      <Box
+        w="100%"
+        bgColor={colors.grey100}
+        h="100vh"
+        position="fixed"
+        zIndex="1010"
+        overflow="hidden"
+      >
+        <Box display="flex" flexDirection="row" h="100%" w="100%">
+          <Box
+            flex="1"
+            display="flex"
+            mx="auto"
+            justifyContent="center"
+            w="100%"
+          >
+            <Box w="100%" maxWidth={maxWidth}>
+              <Box
+                w="100%"
+                position="relative"
+                top={isSmallerThanPhone ? '0' : '40px'}
+              >
+                {idea && projectId && (
+                  <EditIdeaHeading
+                    idea={idea.data}
+                    titleText={titleText}
+                    projectId={projectId}
                   />
+                )}
+              </Box>
+              <main id="e2e-idea-edit-page">
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  pt={isSmallerThanPhone ? '0' : '40px'}
+                >
+                  <Box
+                    background={colors.white}
+                    maxWidth={maxWidth}
+                    w="100%"
+                    // Height is recalculated on window resize via useWindowSize hook
+                    h={calculateDynamicHeight(isSmallerThanPhone)}
+                    pb={isSmallerThanPhone ? '0' : '80px'}
+                    overflowY="auto"
+                    display="flex"
+                  >
+                    {project && (
+                      <Suspense>
+                        <IdeationForm
+                          projectId={project.data.id}
+                          phaseId={phaseId}
+                          participationMethod={
+                            phase?.data.attributes.participation_method
+                          }
+                          idea={idea?.data}
+                        />
+                      </Suspense>
+                    )}
+                  </Box>
                 </Box>
-              }
-            />
-          </PageContainer>
-          <ContentUploadDisclaimer
-            isDisclaimerOpened={isDisclaimerOpened}
-            onAcceptDisclaimer={() => onAcceptDisclaimer(formData)}
-            onCancelDisclaimer={onCancelDisclaimer}
-          />
-        </main>
+              </main>
+            </Box>
+            {selectedIdeaId &&
+              (isSmallerThanPhone ? (
+                <Box
+                  position="fixed"
+                  top="0"
+                  left="0"
+                  width="100%"
+                  height="100%"
+                  bg="rgba(0,0,0,0.4)"
+                  zIndex="2000"
+                  onClick={handleCloseDetail}
+                >
+                  <Box
+                    position="absolute"
+                    bottom="0"
+                    width="100%"
+                    height="75%"
+                    bgColor={colors.white}
+                    borderRadius="16px 16px 0 0"
+                    overflowY="auto"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <Box
+                      width="40px"
+                      height="4px"
+                      bgColor={colors.grey300}
+                      borderRadius="2px"
+                      m="8px auto"
+                    />
+                    <InputDetailView ideaId={selectedIdeaId} />
+                  </Box>
+                </Box>
+              ) : (
+                <Box
+                  top="40px"
+                  width="375px"
+                  minWidth="375px"
+                  borderLeft={`1px solid ${colors.grey300}`}
+                  overflowY="auto"
+                  bgColor={colors.white}
+                  position="relative"
+                  mb="80px"
+                >
+                  <InputDetailView ideaId={selectedIdeaId} />
+                </Box>
+              ))}
+          </Box>
+        </Box>
       </Box>
     </>
   );

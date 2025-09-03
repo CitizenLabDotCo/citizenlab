@@ -1,11 +1,7 @@
 import { randomString } from '../../../support/commands';
-import moment = require('moment');
 
 describe('Form builder long text field', () => {
-  const projectTitle = randomString();
-  const projectDescription = randomString();
   const questionTitle = randomString();
-  const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
   let phaseId: string;
@@ -15,30 +11,11 @@ describe('Form builder long text field', () => {
       cy.apiRemoveProject(projectId);
     }
 
-    cy.apiCreateProject({
-      title: projectTitle,
-      descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
-      publicationStatus: 'published',
-    })
-      .then((project) => {
-        projectId = project.body.data.id;
-        projectSlug = project.body.data.attributes.slug;
-        return cy.apiCreatePhase({
-          projectId,
-          title: 'firstPhaseTitle',
-          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
-          participationMethod: 'native_survey',
-          nativeSurveyButtonMultiloc: { en: 'Take the survey' },
-          nativeSurveyTitleMultiloc: { en: 'Survey' },
-          canPost: true,
-          canComment: true,
-          canReact: true,
-        });
-      })
-      .then((phase) => {
-        phaseId = phase.body.data.id;
-      });
+    cy.createProjectWithNativeSurveyPhase().then((result) => {
+      projectId = result.projectId;
+      projectSlug = result.projectSlug;
+      phaseId = result.phaseId;
+    });
 
     cy.setAdminLoginCookie();
   });
@@ -51,10 +28,10 @@ describe('Form builder long text field', () => {
 
   it('adds long text field and user can fill in data in the field', () => {
     const testText = randomString(400);
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
-    cy.get('[data-cy="e2e-long-answer"]').click();
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
+    cy.dataCy('e2e-long-answer');
+    cy.wait(2000);
+    cy.dataCy('e2e-long-answer').click();
 
     // Save the survey
     cy.get('form').submit();
@@ -71,11 +48,12 @@ describe('Form builder long text field', () => {
 
     // Try filling in the survey
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
-    cy.acceptCookies();
+
     cy.contains(questionTitle).should('exist');
 
-    // Try going to the next page without entering data for required field
-    cy.get('[data-cy="e2e-next-page"]').click();
+    // Try submitting without entering data for required field
+    cy.dataCy('e2e-submit-form').click();
+
     // verify that an error is shown and that we stay on the page
     cy.get('.e2e-error-message');
     cy.url().should(
@@ -86,21 +64,20 @@ describe('Form builder long text field', () => {
     );
 
     // Enter text
-    cy.get(`*[id^="properties${questionTitle}"]`).type(testText, {
+    cy.get(`*[id^="${questionTitle}"]`).type(testText, {
       force: true,
     });
     cy.get('.e2e-error-message').should('have.length', 0);
 
-    cy.get('[data-cy="e2e-next-page"]').click();
     // Save survey response
-    cy.get('[data-cy="e2e-submit-form"]').should('exist');
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').should('exist');
+    cy.dataCy('e2e-submit-form').click();
 
-    // Check that we show a success message
-    cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
-    // close modal
-    cy.get('.e2e-modal-close-button').click();
-    // check that the modal is no longer on the page
-    cy.get('#e2e-modal-container').should('have.length', 0);
+    // Check that we're on final page and return to project
+    cy.dataCy('e2e-after-submission').should('exist');
+    cy.dataCy('e2e-after-submission').click();
+
+    // Make sure we're back at the project
+    cy.url().should('include', `projects/${projectSlug}`);
   });
 });

@@ -19,10 +19,10 @@ export const getSubtextElement = (description: string) => {
 // Given a schema and field type, returns the options for a given array field
 export const getOptions = (
   schema: JsonSchema,
-  fieldType: 'singleEnum' | 'single' | 'multi',
+  fieldType: 'singleEnum' | 'single' | 'multi' | 'ranking',
   uiSchema?: ControlElement
 ) => {
-  if (fieldType === 'multi') {
+  if (fieldType === 'multi' || fieldType === 'ranking') {
     return (
       (!Array.isArray(schema.items) &&
         schema.items?.oneOf?.map((option) => ({
@@ -34,6 +34,8 @@ export const getOptions = (
     );
   } else if (fieldType === 'singleEnum') {
     return (
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       schema?.enum
         ?.map((option, index) => ({
           value: option.toString(),
@@ -43,6 +45,8 @@ export const getOptions = (
     );
   } else {
     return (
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       schema?.oneOf
         ?.map((option) => ({
           value: option.const,

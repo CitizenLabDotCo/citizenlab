@@ -5,13 +5,8 @@ module BulkImportIdeas
     self.priority = 60
     perform_retries false
 
-    FILE_PARSERS = {
-      'xlsx' => BulkImportIdeas::Parsers::IdeaXlsxFileParser,
-      'pdf' => BulkImportIdeas::Parsers::IdeaPdfFileParser
-    }
-
-    def run(format, idea_import_files, import_user, locale, phase, personal_data_enabled, first_idea_index)
-      file_parser = FILE_PARSERS.fetch(format).new(import_user, locale, phase.id, personal_data_enabled)
+    def run(file_parser_class, idea_import_files, import_user, locale, phase, personal_data_enabled, first_idea_index)
+      file_parser = file_parser_class.new(import_user, locale, phase.id, personal_data_enabled)
       import_service = BulkImportIdeas::Importers::IdeaImporter.new(import_user, locale)
 
       idea_rows = []
@@ -19,7 +14,10 @@ module BulkImportIdeas
         idea_rows += file_parser.parse_rows file
       end
 
+      # Correct jumbled up text fields with GPT if importing PDF
+      format = file_parser_class == BulkImportIdeas::Parsers::IdeaXlsxFileParser ? 'xlsx' : 'pdf'
       idea_rows = idea_rows_with_corrected_texts(phase, idea_rows) if format == 'pdf'
+
       ideas = import_service.import(idea_rows)
       users = import_service.imported_users
 

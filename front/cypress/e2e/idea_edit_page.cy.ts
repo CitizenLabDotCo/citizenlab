@@ -48,30 +48,76 @@ describe('Idea edit page', () => {
 
     // check original values
     cy.visit(`/ideas/${ideaSlug}`);
+
     cy.get('#e2e-idea-show');
-    cy.get('#e2e-idea-title').contains(ideaTitle);
-    cy.get('#e2e-idea-description').contains(ideaContent);
+    cy.get('#e2e-idea-title').should('exist').contains(ideaTitle);
+    cy.get('#e2e-idea-description').should('exist').contains(ideaContent);
 
     // go to form
     cy.visit(`/ideas/edit/${ideaId}`);
-    cy.acceptCookies();
 
     cy.get('#e2e-idea-edit-page');
-    cy.get('#idea-form', { timeout: 100000 });
-    cy.get('#e2e-idea-title-input input').as('titleInput');
-    cy.get('#e2e-idea-description-input .ql-editor').as('descriptionInput');
+    cy.get('#idea-form').should('exist');
+    cy.get('#title_multiloc').as('titleInput');
 
     // check initial form values
-    cy.get('@titleInput').should('contain.value', ideaTitle);
-    cy.get('@descriptionInput').contains(ideaContent);
+    cy.get('@titleInput').should('exist');
+    cy.get('@titleInput').should('have.value', ideaTitle);
 
-    // edit title and description
-    cy.get('@titleInput').clear().type(newIdeaTitle);
-    cy.get('@descriptionInput').clear().type(newIdeaContent);
+    // So typing the title doesn't get interrupted
+    cy.wait(1000);
+
+    // Edit title and description
+    cy.get('@titleInput')
+      .clear()
+      .should('exist')
+      .should('not.be.disabled')
+      .type(newIdeaTitle, { delay: 0 });
 
     // verify the new values
+    cy.get('@titleInput').should('exist');
     cy.get('@titleInput').should('contain.value', newIdeaTitle);
+
+    // Go to the next page of the idea form
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+
+    cy.get('#body_multiloc .ql-editor').as('descriptionInput');
+
+    cy.wait(1000);
+
+    // check initial form values
+    cy.get('@descriptionInput').should('exist');
+    cy.get('@descriptionInput').contains(ideaContent);
+
+    // So typing the description doesn't get interrupted
+    cy.wait(1000);
+
+    // Edit title and description
+    cy.get('@descriptionInput')
+      .clear()
+      .should('exist')
+      .should('not.be.disabled')
+      .type(newIdeaContent);
+
+    // verify the new values
+    cy.get('@descriptionInput').should('exist');
     cy.get('@descriptionInput').contains(newIdeaContent);
+
+    // Go to the next page of the idea form
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+
+    // verify that image and file upload components are present
+    cy.get('#e2e-idea-image-upload');
+    cy.get('[data-cy="e2e-idea-file-upload"]');
+
+    // add an image
+    cy.get('#e2e-idea-image-upload input').attachFile('icon.png');
+    cy.wait(1000);
+    // check that the base64 image was added to the dropzone component
+    cy.get('#e2e-idea-image-upload input').should('have.length', 0);
+
+    // Go to the page with topics
+    cy.dataCy('e2e-next-page').should('be.visible').click();
 
     cy.get('.e2e-topics-picker')
       .find('button.selected')
@@ -86,34 +132,37 @@ describe('Idea edit page', () => {
       .should('have.length', 1);
 
     // add a location
-    cy.get('.e2e-idea-form-location-input-field input').type(
+    cy.get('.e2e-idea-form-location-input-field').type(
       'Boulevard Anspach Brussels'
     );
-    cy.wait(5000);
-    cy.get('.e2e-idea-form-location-input-field input').type('{enter}');
+    cy.wait(10000);
+    cy.get('.e2e-idea-form-location-input-field input')
+      .first()
+      .focus()
+      .type('{enter}');
 
-    // verify that image and file upload components are present
-    cy.get('#e2e-idea-image-upload');
-    cy.get('#e2e-idea-file-upload');
-
-    // add an image
-    cy.get('#e2e-idea-image-upload input').attachFile('icon.png');
-
-    // check that the base64 image was added to the dropzone component
-    cy.get('#e2e-idea-image-upload input').should('have.length', 0);
+    cy.intercept('PATCH', `**/ideas/${ideaId}**`).as('patchIdea');
 
     // save the form
-    cy.get('.e2e-submit-idea-form').click();
+    cy.dataCy('e2e-submit-form').click();
+
     cy.get('#e2e-accept-disclaimer').click();
-    cy.intercept(`**/ideas/${ideaId}`).as('ideaPostRequest');
-    cy.wait('@ideaPostRequest');
+
+    cy.wait('@patchIdea');
+
+    cy.dataCy('e2e-after-submission').should('exist');
+    cy.dataCy('e2e-after-submission').click();
 
     // verify updated idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaSlug}`);
 
     cy.get('#e2e-idea-show');
-    cy.get('#e2e-idea-show #e2e-idea-title').contains(newIdeaTitle);
-    cy.get('#e2e-idea-show #e2e-idea-description').contains(newIdeaContent);
+    cy.get('#e2e-idea-show #e2e-idea-title')
+      .should('exist')
+      .contains(newIdeaTitle);
+    cy.get('#e2e-idea-show #e2e-idea-description')
+      .should('exist')
+      .contains(newIdeaContent);
     cy.get('#e2e-idea-show').should('exist');
     cy.get('#e2e-idea-topics').should('exist');
     cy.get('.e2e-idea-topic').should('exist');
@@ -126,10 +175,15 @@ describe('Idea edit page', () => {
 
   it('has a working idea edit form for author field', () => {
     cy.setAdminLoginCookie();
+
+    cy.intercept('GET', `**/projects/${projectId}/phases`).as('getPhases');
     // Visit idea edit page as Admin
     cy.visit(`/ideas/edit/${ideaId}`);
+    cy.wait('@getPhases', { timeout: 10000 });
+
     // Search and select an author
-    cy.get('[data-cy="e2e-user-select"]')
+    cy.get('[data-cy="e2e-user-select"]').should('be.visible');
+    cy.dataCy('e2e-user-select')
       .click()
       .type(`${lastName}, ${firstName} {enter}`);
     // Save
@@ -140,13 +194,14 @@ describe('Idea edit page', () => {
     cy.contains(`${lastName}, ${firstName}`).should('exist');
   });
 
-  it('has a go back link that redirects the user to the edit page when clicked', () => {
+  it('has a close button that redirects the user to the edit page when clicked', () => {
     cy.setAdminLoginCookie();
     // Go to idea edit page
     cy.visit(`/ideas/edit/${ideaId}`);
 
-    // Click the back button
-    cy.get('[data-cy="e2e-back-to-idea-page-button"]').click();
+    cy.dataCy('e2e-leave-edit-idea-button').click();
+    cy.dataCy('e2e-confirm-leave-edit-idea-button').should('exist');
+    cy.dataCy('e2e-confirm-leave-edit-idea-button').click();
 
     // Check to see that the user is redirected to the idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaSlug}`);

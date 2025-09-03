@@ -2,16 +2,9 @@
 
 module Moderation
   class ModerationPolicy < ApplicationPolicy
-    class Scope
-      attr_reader :user, :scope
-
-      def initialize(user, scope)
-        @user  = user
-        @scope = scope
-      end
-
+    class Scope < ApplicationPolicy::Scope
       def resolve
-        if user&.active? && user&.admin?
+        if user&.active? && user.admin?
           scope.all
         elsif user&.active?
           scope.where(project_id: ::UserRoleService.new.moderatable_projects(user))

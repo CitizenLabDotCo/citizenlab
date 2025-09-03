@@ -387,14 +387,20 @@ const Invitations = () => {
     onSubmit({ save: false });
   };
 
-  const invitationTabs: { name: TInviteTabName; label: string }[] = [
+  const invitationTabs: {
+    name: TInviteTabName;
+    label: string;
+    className: string;
+  }[] = [
     {
       name: 'template',
       label: formatMessage(messages.importTab),
+      className: 'intercom-users-invite-users-tab-import',
     },
     {
       name: 'manual',
       label: formatMessage(messages.textTab),
+      className: 'intercom-users-invite-users-tab-manual',
     },
   ];
 
@@ -408,7 +414,7 @@ const Invitations = () => {
         <Section>
           <StyledTabs
             items={invitationTabs}
-            selectedValue={selectedView || 'import'}
+            selectedValue={selectedView}
             onClick={resetWithView}
           />
           <Box mb={selectedView === 'template' ? '16px' : '36px'}>

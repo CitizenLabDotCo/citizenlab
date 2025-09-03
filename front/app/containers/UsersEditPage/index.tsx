@@ -13,11 +13,11 @@ import Unauthorized from 'components/Unauthorized';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 
-import FragmentForm from './FragmentForm';
 import LoginCredentials from './LoginCredentials';
 import messages from './messages';
 import ProfileDeletion from './ProfileDeletion';
 import ProfileForm from './ProfileForm';
+import tracks from './tracks';
 import UsersEditPageMeta from './UsersEditPageMeta';
 import VerificationStatus from './VerificationStatus';
 
@@ -59,10 +59,11 @@ const UsersEditPage = () => {
           <div>
             <VerificationStatus />
             <ProfileForm />
-            <FragmentForm />
             {passwordLoginActive && <LoginCredentials user={authUser.data} />}
             <ProfileDeletion />
-            <CampaignsConsentForm />
+            <CampaignsConsentForm
+              trackEventName={tracks.defaultSettingsChanged}
+            />
           </div>
         </Container>
       </main>

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe EmailCampaigns::NewCommentForAdminMailer do
   describe 'NewCommentForAdmin' do
-    let_it_be(:recipient) { create(:user, locale: 'en') }
+    let_it_be(:recipient) { create(:user, locale: 'en', first_name: 'Homer') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::NewCommentForAdmin.create! }
     let_it_be(:command) do
       {
@@ -16,20 +16,22 @@ RSpec.describe EmailCampaigns::NewCommentForAdminMailer do
           comment_body_multiloc: {
             en: 'Ruh roooarrgh yrroonn wyaaaaaa ahuma hnn-rowr ma'
           },
-          comment_url: 'http://localhost:3000/en/initiatives/wiki-roulette',
-          post_published_at: 2.weeks.ago.iso8601,
-          post_title_multiloc: {
+          comment_url: 'http://localhost:3000/en/ideas/wiki-roulette',
+          idea_published_at: 2.weeks.ago.iso8601,
+          idea_title_multiloc: {
             en: 'Wiki Roulette'
           },
-          post_author_name: "K\u00c3\u00bcn Gremmelpret",
-          post_type: 'Initiative'
+          idea_author_name: "K\u00c3\u00bcn Gremmelpret"
         }
       }
     end
 
-    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let_it_be(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let_it_be(:mail) { mailer.campaign_mail.deliver_now }
 
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
+
+    include_examples 'campaign delivery tracking'
 
     it 'renders the subject' do
       expect(mail.subject).to be_present
@@ -57,6 +59,35 @@ RSpec.describe EmailCampaigns::NewCommentForAdminMailer do
 
     it 'includes the time when it was posted' do
       expect(mail.body.encoded).to include('14')
+    end
+
+    context 'with custom text' do
+      let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+      before do
+        campaign.update!(
+          subject_multiloc: { 'en' => 'Custom Subject - {{ organizationName }}' },
+          title_multiloc: { 'en' => 'NEW TITLE - {{ firstName }}' },
+          intro_multiloc: { 'en' => '<b>NEW BODY TEXT - {{ authorName }}</b>' },
+          button_text_multiloc: { 'en' => 'CLICK THE BUTTON' }
+        )
+      end
+
+      it 'can customise the subject' do
+        expect(mail.subject).to eq 'Custom Subject - Liege'
+      end
+
+      it 'can customise the title' do
+        expect(mail_body(mail)).to include('NEW TITLE - Homer')
+      end
+
+      it 'can customise the body including HTML' do
+        expect(mail_body(mail)).to include('<b>NEW BODY TEXT - Chewbacca</b>')
+      end
+
+      it 'can customise the cta button' do
+        expect(mail_body(mail)).to include('CLICK THE BUTTON')
+      end
     end
   end
 end

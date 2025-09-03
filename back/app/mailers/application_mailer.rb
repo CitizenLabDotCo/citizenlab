@@ -9,12 +9,12 @@ class ApplicationMailer < ActionMailer::Base
   alias recipient user
 
   delegate :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, to: :url_service
-  delegate :first_name, to: :recipient, prefix: true
 
   helper_method :app_configuration, :app_settings, :header_title, :header_message,
-    :show_header?, :preheader, :subject, :user, :recipient, :locale, :count_from, :days_since_publishing
+    :show_header?, :preheader, :subject, :user, :recipient, :locale, :count_from, :days_since_publishing,
+    :align_direction
 
-  helper_method :organization_name, :recipient_name, :url_service, :multiloc_service, :organization_name,
+  helper_method :organization_name, :recipient_name, :url_service, :multiloc_service,
     :loc, :localize_for_recipient, :localize_for_recipient_and_truncate, :recipient_first_name
 
   helper_method :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :gv_gray_logo_url,
@@ -38,6 +38,10 @@ class ApplicationMailer < ActionMailer::Base
 
   def locale
     @locale ||= recipient&.locale ? Locale.new(recipient.locale) : Locale.default
+  end
+
+  def align_direction
+    @align_direction ||= locale.text_direction == 'ltr' ? 'left' : 'right'
   end
 
   def subject
@@ -115,8 +119,7 @@ class ApplicationMailer < ActionMailer::Base
 
   def mailgun_variables
     {
-      'cl_tenant_id' => app_configuration.id,
-      'cl_user_id' => recipient.id
+      'cl_tenant_id' => app_configuration.id
     }
   end
 
@@ -190,6 +193,10 @@ class ApplicationMailer < ActionMailer::Base
 
   def formatted_todays_date
     I18n.l(Time.zone.today, format: :long)
+  end
+
+  def recipient_first_name
+    recipient&.first_name
   end
 
   def days_since_publishing(resource)

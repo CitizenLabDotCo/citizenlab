@@ -13,6 +13,7 @@ resource 'Campaign consents' do
 
   get '/web_api/v1/consents' do
     before do
+      SettingsService.new.activate_feature! 'community_monitor' # Turn on optional campaigns (only community monitor for now)
       @campaigns = EmailCampaigns::DeliveryService.new.campaign_classes.select do |klaz|
         klaz.ancestors.include?(EmailCampaigns::Consentable) && klaz.consentable_for?(@user)
       end.map do |klaz|
@@ -26,7 +27,7 @@ resource 'Campaign consents' do
     end
 
     parameter :unsubscription_token, 'A token passed through by e-mail unsubscribe links, giving unauthenticated access', required: false
-    parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService.new.campaign_classes.map(&:campaign_name).join(', ')}", required: false
+    parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: false
 
     context 'when authenticated' do
       before { header_token_for @user }
@@ -155,6 +156,19 @@ resource 'Campaign consents' do
       let(:unsubscription_token) { create(:email_campaigns_unsubscription_token, user: @user).token }
 
       example_request 'Update a campaign consent by campaign id using an unsubscription token' do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :id)).to eq consent.id
+        expect(json_response.dig(:data, :attributes, :consented)).to eq consented
+      end
+    end
+
+    context 'when using an unsubscription token and the user is not active' do
+      let(:unsubscription_token) { create(:email_campaigns_unsubscription_token, user: @user).token }
+
+      example 'Update a campaign consent by campaign id using an unsubscription token is allowed' do
+        @user.update!(registration_completed_at: nil)
+        do_request
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq consent.id

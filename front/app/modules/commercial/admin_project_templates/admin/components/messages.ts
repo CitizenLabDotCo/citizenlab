@@ -95,8 +95,9 @@ export default defineMessages({
     defaultMessage: 'projects overview page',
   },
   createProjectBasedOn: {
-    id: 'app.components.ProjectTemplatePreview.createProjectBasedOn',
-    defaultMessage: "Create a project based on the template '{templateTitle}'",
+    id: 'app.components.ProjectTemplatePreview.createProjectBasedOn2',
+    defaultMessage:
+      "Create a project based on the template ''{templateTitle}''",
   },
   participationLevels: {
     id: 'app.containers.AdminPage.ProjectEdit.participationLevels',

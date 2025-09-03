@@ -8,23 +8,21 @@ import {
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 
-import useLocale from 'hooks/useLocale';
-
 import {
   builtInFieldKeys,
   FormBuilderConfig,
 } from 'components/FormBuilder/utils';
 
-import { isNilOrError } from 'utils/helperUtils';
-
-import { DragAndDropResult, NestedGroupingStructure } from '../../edit/utils';
+import {
+  detectConflictsByPage,
+  DragAndDropResult,
+  NestedGroupingStructure,
+} from '../../edit/utils';
 import { DragAndDrop, Drag, Drop } from '../DragAndDrop';
 import { getFieldNumbers } from '../utils';
 
+import { pageDNDType, questionDNDType } from './constants';
 import { FormField } from './FormField';
-
-export const pageDNDType = 'droppable-page';
-export const questionDNDType = 'droppable-question';
 
 interface FormFieldsProps {
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
@@ -37,6 +35,8 @@ interface FormFieldsProps {
   closeSettings: (triggerAutosave?: boolean) => void;
 }
 
+const individualPageFieldCodes = ['title_multiloc', 'body_multiloc'];
+
 const FormFields = ({
   onEditField,
   selectedFieldId,
@@ -45,12 +45,7 @@ const FormFields = ({
   closeSettings,
 }: FormFieldsProps) => {
   const { watch, trigger } = useFormContext();
-  const locale = useLocale();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
-
-  if (isNilOrError(locale)) {
-    return null;
-  }
 
   const shouldShowField = (field: IFlatCustomField) => {
     if (builtInFieldKeys.includes(field.key)) {
@@ -59,10 +54,12 @@ const FormFields = ({
     return true;
   };
 
+  const lastPage = formCustomFields[formCustomFields.length - 1];
+
   const nestedGroupData: NestedGroupingStructure[] = [];
 
   formCustomFields.forEach((field) => {
-    if (['page', 'section'].includes(field.input_type)) {
+    if (field.input_type === 'page') {
       nestedGroupData.push({
         groupElement: field,
         questions: [],
@@ -70,74 +67,131 @@ const FormFields = ({
       });
     } else {
       const lastGroupElement = nestedGroupData[nestedGroupData.length - 1];
-      lastGroupElement?.questions.push({
+      lastGroupElement.questions.push({
         ...field,
       });
     }
   });
 
+  const conflictsByPage = detectConflictsByPage(nestedGroupData);
   const fieldNumbers = getFieldNumbers(formCustomFields);
+  const userFieldsInFormNotice = builderConfig.getUserFieldsNotice;
 
   return (
-    <Box height="100%" data-cy="e2e-form-fields">
-      <DragAndDrop
-        onDragEnd={(result: DragAndDropResult) => {
-          handleDragEnd(result, nestedGroupData);
-          trigger();
-        }}
+    <>
+      <Box
+        borderRadius="3px"
+        boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"
+        bgColor="white"
+        minHeight="300px"
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
       >
-        <Drop id="droppable" type={pageDNDType}>
-          {nestedGroupData.map((grouping, pageIndex) => {
-            return (
-              <Drag key={grouping.id} id={grouping.id} index={pageIndex}>
-                <FormField
-                  field={grouping.groupElement}
-                  selectedFieldId={selectedFieldId}
-                  onEditField={onEditField}
-                  builderConfig={builderConfig}
-                  fieldNumbers={fieldNumbers}
-                  closeSettings={closeSettings}
-                />
-                <Drop key={grouping.id} id={grouping.id} type={questionDNDType}>
-                  <Box height="100%">
-                    {grouping.questions.length === 0 ? (
-                      <Box height="0.5px" />
-                    ) : (
-                      <>
-                        {grouping.questions.map((question, index) => {
-                          return shouldShowField(question) ? (
-                            <Drag
-                              key={question.id}
-                              id={question.id}
-                              index={index}
-                            >
-                              <FormField
-                                key={question.id}
-                                field={question}
-                                selectedFieldId={selectedFieldId}
-                                onEditField={onEditField}
-                                builderConfig={builderConfig}
-                                fieldNumbers={fieldNumbers}
-                                closeSettings={closeSettings}
-                              />
-                            </Drag>
-                          ) : (
-                            <Box key={question.id} height="1px" />
-                          );
-                        })}
-                      </>
-                    )}
-                  </Box>
-                </Drop>
-              </Drag>
-            );
-          })}
-        </Drop>
-      </DragAndDrop>
-      {formCustomFields.length > 0 && (
-        <Box height="1px" borderTop={`1px solid ${colors.divider}`} />
-      )}
-    </Box>
+        <Box height="100%" data-cy="e2e-form-fields">
+          <DragAndDrop
+            onDragEnd={(result: DragAndDropResult) => {
+              handleDragEnd(result, nestedGroupData);
+              trigger();
+            }}
+          >
+            <Drop id="droppable" type={pageDNDType}>
+              {nestedGroupData.map((grouping, pageIndex) => {
+                if (
+                  lastPage.key === 'form_end' &&
+                  grouping.id === lastPage.id
+                ) {
+                  // Skip rendering FormField for last page, as it's rendered separately
+                  // (see below)
+                  return null;
+                }
+                // We don't want to allow dropping on the grouping (page) with individualPageFieldCodes
+                // fields (e.g. title, description for now). These should be on their own pages
+                const isDropDisabled = grouping.questions.some((question) =>
+                  individualPageFieldCodes.includes(question.code || '')
+                );
+
+                return (
+                  <Drag key={grouping.id} id={grouping.id} index={pageIndex}>
+                    <FormField
+                      field={grouping.groupElement}
+                      selectedFieldId={selectedFieldId}
+                      onEditField={onEditField}
+                      builderConfig={builderConfig}
+                      fieldNumbers={fieldNumbers}
+                      closeSettings={closeSettings}
+                      conflicts={conflictsByPage[grouping.groupElement.id]}
+                      hasFullPageRestriction={isDropDisabled}
+                    />
+                    <Drop
+                      key={grouping.id}
+                      id={grouping.id}
+                      type={questionDNDType}
+                      isDropDisabled={isDropDisabled}
+                    >
+                      <Box height="100%">
+                        {grouping.questions.length === 0 ? (
+                          <Box height="0.5px" />
+                        ) : (
+                          <>
+                            {grouping.questions.map((question, index) => {
+                              const isDragDisabled =
+                                individualPageFieldCodes.includes(
+                                  question.code || ''
+                                );
+                              return shouldShowField(question) ? (
+                                <Drag
+                                  key={question.id}
+                                  id={question.id}
+                                  index={index}
+                                  isDragDisabled={isDragDisabled}
+                                >
+                                  <FormField
+                                    key={question.id}
+                                    field={question}
+                                    selectedFieldId={selectedFieldId}
+                                    onEditField={onEditField}
+                                    builderConfig={builderConfig}
+                                    fieldNumbers={fieldNumbers}
+                                    closeSettings={closeSettings}
+                                    hasFullPageRestriction={isDragDisabled}
+                                  />
+                                </Drag>
+                              ) : (
+                                <Box key={question.id} height="1px" />
+                              );
+                            })}
+                          </>
+                        )}
+                      </Box>
+                    </Drop>
+                  </Drag>
+                );
+              })}
+            </Drop>
+          </DragAndDrop>
+          {formCustomFields.length > 0 && (
+            <Box height="1px" borderTop={`1px solid ${colors.divider}`} />
+          )}
+        </Box>
+        {lastPage.key === 'form_end' && (
+          <>
+            {userFieldsInFormNotice && userFieldsInFormNotice()}
+            <Box mt={userFieldsInFormNotice ? '0' : '40px'}>
+              <FormField
+                field={lastPage}
+                selectedFieldId={selectedFieldId}
+                onEditField={onEditField}
+                builderConfig={builderConfig}
+                fieldNumbers={fieldNumbers}
+                closeSettings={closeSettings}
+                hasFullPageRestriction={false}
+              />
+            </Box>
+          </>
+        )}
+      </Box>
+    </>
   );
 };
 

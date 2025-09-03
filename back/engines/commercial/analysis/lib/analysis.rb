@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-require 'nlpcloud'
-
+require 'distribution'
 require 'analysis/engine'
 
 module Analysis

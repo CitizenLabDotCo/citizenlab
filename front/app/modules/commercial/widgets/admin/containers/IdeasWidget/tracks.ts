@@ -1,5 +1,3 @@
 export default {
-  clickAdminExportHTML: {
-    name: 'Widget HTML exported by admin',
-  },
+  clickAdminExportHTML: 'Widget HTML exported by admin',
 };

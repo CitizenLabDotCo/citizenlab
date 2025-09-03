@@ -14,7 +14,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Outlet from 'components/Outlet';
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
@@ -68,7 +68,7 @@ const ButtonWrapper = styled.div`
   margin-right: 0px;
 `;
 
-const AddGroupButton = styled(Button)``;
+const AddGroupButton = styled(ButtonWithLink)``;
 
 const GroupsList = styled.div`
   overflow-x: hidden;
@@ -177,7 +177,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
 
   const handleCreateGroup = (event) => {
     event.preventDefault();
-    trackEventByName(tracks.createGroup.name);
+    trackEventByName(tracks.createGroup);
     onCreateGroup();
   };
 
@@ -226,7 +226,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
         </MenuLink>
       )}
       <Separator />
-      <MenuTitle>
+      <MenuTitle className="intercom-users-groups-sidebar-section">
         <FormattedMessage tagName="h2" {...messages.groupsTitle} />
         <ButtonWrapper>
           <AddGroupButton
@@ -267,9 +267,13 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
           ))}
       </GroupsList>
       <Box display="flex" flexGrow={1} />
-      <Button linkTo="/admin/users/invitations" icon="email">
+      <ButtonWithLink
+        linkTo="/admin/users/invitations"
+        icon="email"
+        className="intercom-users-invite-users-button"
+      >
         <FormattedMessage {...messages.inviteUsers} />
-      </Button>
+      </ButtonWithLink>
     </Container>
   );
 };

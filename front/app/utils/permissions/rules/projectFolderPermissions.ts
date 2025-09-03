@@ -27,9 +27,9 @@ export function userModeratesFolder(
  */
 export function isProjectFolderModerator(
   user?: IUser,
-  folderId?: string
+  folderId?: string | null
 ): boolean {
-  const roles = user?.data.attributes?.roles;
+  const roles = user?.data.attributes.roles;
   if (!roles) return false;
 
   if (folderId) {
@@ -96,10 +96,19 @@ definePermissionRule(
   }
 );
 
+// Permission to add or remove projects from folders
 definePermissionRule(
   'project_folder',
-  'create_project_in_folder_only',
-  (_folder, user) => {
-    return !isAdmin(user) && isProjectFolderModerator(user);
+  'manage_projects',
+  (_folder: IProjectFolderData, user) => {
+    return isAdmin(user);
+  }
+);
+
+definePermissionRule(
+  'project_folder',
+  'create_project_in_folder',
+  (_folder: IProjectFolderData, user) => {
+    return isAdmin(user) || isProjectFolderModerator(user);
   }
 );

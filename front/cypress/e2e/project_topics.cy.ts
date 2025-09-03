@@ -135,6 +135,9 @@ describe('Project topics', () => {
   });
 
   describe('Project topic settings', () => {
+    const title = randomString(12);
+    const description = randomString(42);
+
     it('Adding a topic to a project makes it available in the idea form', () => {
       const topicTitle = randomString();
 
@@ -156,8 +159,26 @@ describe('Project topics', () => {
       cy.wait(1000);
       cy.get('.e2e-admin-list-row').contains(topicTitle);
 
+      // Visit the project page and accept cookies. This is needed because the cookie banner is not interactive on the input form
+      cy.visit(`/projects/${projectSlug}`);
+
       // Go to idea form for our project
       cy.visit(`projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+
+      // Fill in the title and description since these are required
+      cy.get('#title_multiloc ').type(title, { delay: 0 });
+      cy.get('#title_multiloc ').should('contain.value', title);
+
+      cy.dataCy('e2e-next-page').should('be.visible').click();
+
+      cy.get('#body_multiloc .ql-editor').type(description);
+      cy.get('#body_multiloc .ql-editor').contains(description);
+
+      // Go to the next page of the idea form
+      cy.dataCy('e2e-next-page').should('be.visible').click();
+
+      // Go to the page with topics
+      cy.dataCy('e2e-next-page').should('be.visible').click();
 
       // Verify the topic is selectable in the topic selector
       cy.get('.e2e-topics-picker');
@@ -185,8 +206,28 @@ describe('Project topics', () => {
       cy.wait(1000);
       cy.get('.e2e-admin-list-row').contains(topicTitle);
 
+      // Visit the project page and accept cookies. This is needed because the cookie banner is not interactive on the input form
+      cy.visit(`/projects/${projectSlug}`);
+
       // Go to idea form for our project
       cy.visit(`projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+
+      // Fill in the title and description since these are required
+      cy.get('#title_multiloc ').type(title, { delay: 0 });
+      cy.get('#title_multiloc ').should('contain.value', title);
+
+      cy.dataCy('e2e-next-page').should('be.visible').click();
+
+      cy.get('#body_multiloc .ql-editor').type(description);
+      cy.get('#body_multiloc .ql-editor').contains(description);
+
+      cy.wait(500);
+
+      // Go to the next page of the idea form
+      cy.dataCy('e2e-next-page').should('be.visible').click();
+
+      // Go to the page with topics (Page 3 for now)
+      cy.dataCy('e2e-next-page').should('be.visible').click();
 
       // Verify the topic is selectable in the topic selector
       cy.get('.e2e-topics-picker');
@@ -208,6 +249,22 @@ describe('Project topics', () => {
 
       // Go to idea form for our project
       cy.visit(`projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+
+      cy.get('#title_multiloc ').type(title, { delay: 0 });
+      cy.get('#title_multiloc ').should('contain.value', title);
+
+      cy.dataCy('e2e-next-page').should('be.visible').click();
+
+      cy.get('#body_multiloc .ql-editor').type(description);
+      cy.get('#body_multiloc .ql-editor').contains(description);
+
+      cy.wait(500);
+
+      // Go to the next page of the idea form
+      cy.dataCy('e2e-next-page').should('be.visible').click();
+
+      // Go to the page with topics
+      cy.dataCy('e2e-next-page').should('be.visible').click();
 
       // Verify the topic is not available in the topic selector
       cy.get('.e2e-topics-picker');

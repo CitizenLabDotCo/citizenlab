@@ -1,0 +1,15 @@
+<mj-section padding="12px 25px" css-class="successful-proposals">
+  <mj-column>
+    <mj-text>
+      <h3>
+        <%= format_message('reached_threshold') %>
+      </h3>
+    </mj-text>
+
+    <mj-table cellpadding="15">
+      <mj-raw><% event.successful_proposals.each do |serialized_proposal| %></mj-raw>
+        <%= render 'email_campaigns/ideas/idea-minimal', serialized_idea: serialized_proposal %>
+      <mj-raw><% end %></mj-raw>
+    </mj-table>
+  </mj-column>
+</mj-section>

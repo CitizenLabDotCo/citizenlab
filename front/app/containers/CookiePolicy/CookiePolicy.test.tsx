@@ -7,9 +7,12 @@ import CookiePolicy from '../CookiePolicy';
 
 jest.mock('utils/eventEmitter');
 
-jest.mock('components/Fragment', () => ({ children }) => {
-  return <div>{children}</div>;
-});
+// We need to mock useCustomPageBySlug but this is only used
+// when we use a custom cookie policy page. For most platforms,
+// This will return undefined. Hence, we mock it to return undefined.
+jest.mock('api/custom_pages/useCustomPageBySlug', () =>
+  jest.fn(() => ({ data: undefined }))
+);
 
 describe('CookiePolicy', () => {
   it('renders correctly', () => {

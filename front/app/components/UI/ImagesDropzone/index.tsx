@@ -7,7 +7,7 @@ import {
   defaultOutline,
 } from '@citizenlab/cl2-component-library';
 import { size, isEmpty, uniqBy, forEach } from 'lodash-es';
-import Dropzone, { Accept } from 'react-dropzone';
+import Dropzone, { Accept, FileRejection } from 'react-dropzone';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 import { UploadFile } from 'typings';
@@ -15,7 +15,7 @@ import { UploadFile } from 'typings';
 import Error from 'components/UI/Error';
 
 import { injectIntl } from 'utils/cl-intl';
-import { getBase64FromFile } from 'utils/fileUtils';
+import { base64ToBlob, getBase64FromFile } from 'utils/fileUtils';
 import { reportError } from 'utils/loggingUtils';
 
 import RemoveImageButton from '../RemoveImageButton';
@@ -214,6 +214,10 @@ class ImagesDropzone extends PureComponent<
   }
 
   componentDidMount() {
+    forEach(this.state.urlObjects, (urlObject) =>
+      window.URL.revokeObjectURL(urlObject)
+    );
+
     this.setUrlObjects();
     this.removeExcessImages();
 
@@ -258,21 +262,24 @@ class ImagesDropzone extends PureComponent<
     }
   };
 
-  UNSAFE_componentWillMount() {
-    forEach(this.state.urlObjects, (urlObject) =>
-      window.URL.revokeObjectURL(urlObject)
-    );
-  }
-
   setUrlObjects = () => {
     const images = this.props.images || [];
     const { urlObjects } = this.state;
     const newUrlObjects = {};
 
     images
-      .filter((image) => !urlObjects[image.base64])
+      .filter((image) => image.base64 && !urlObjects[image.base64])
       .forEach((image) => {
-        newUrlObjects[image.base64] = window.URL.createObjectURL(image);
+        if (image.base64.startsWith('data:')) {
+          // Handle base64 strings
+          const blob = base64ToBlob(image.base64);
+          if (blob) {
+            newUrlObjects[image.base64] = window.URL.createObjectURL(blob);
+          }
+        } else {
+          // Handle File or Blob objects
+          newUrlObjects[image.base64] = window.URL.createObjectURL(image);
+        }
       });
 
     forEach(urlObjects, (urlObject, key) => {
@@ -308,6 +315,8 @@ class ImagesDropzone extends PureComponent<
           : formatMessage(messages.onlyXImages, { maxItemsCount });
       this.setState({ errorMessage });
       setTimeout(() => this.setState({ errorMessage: null }), 6000);
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     } else if (images && images.length > 0) {
       for (let i = 0; i < images.length; i += 1) {
         if (!images[i].base64) {
@@ -325,18 +334,23 @@ class ImagesDropzone extends PureComponent<
     }
   };
 
-  onDropRejected = (images: UploadFile[]) => {
+  onDropRejected = (fileRejections: FileRejection[]) => {
     const { formatMessage } = this.props.intl;
     const maxImageSizeInMb = this.getMaxImageSizeInMb();
 
-    if (images.some((image) => image.size / 1000000 > maxImageSizeInMb)) {
-      const maxSizeExceededErrorMessage =
-        images.length === 1 || this.props.maxNumberOfImages === 1
-          ? messages.errorImageMaxSizeExceeded
-          : messages.errorImagesMaxSizeExceeded;
-      const errorMessage = formatMessage(maxSizeExceededErrorMessage, {
-        maxFileSize: maxImageSizeInMb,
-      });
+    if (
+      fileRejections.some((file) =>
+        file.errors.some((e) => e.code === 'file-too-large')
+      )
+    ) {
+      const errorMessage = formatMessage(
+        this.props.images?.length && this.props.images.length > 1
+          ? messages.errorImagesMaxSizeExceeded
+          : messages.errorImageMaxSizeExceeded,
+        {
+          maxFileSize: maxImageSizeInMb,
+        }
+      );
       this.setState({ errorMessage });
       setTimeout(() => this.setState({ errorMessage: null }), 6000);
     }
@@ -444,6 +458,8 @@ class ImagesDropzone extends PureComponent<
                 maxWidth={maxImagePreviewWidth}
                 ratio={imagePreviewRatio}
                 className={
+                  // TODO: Fix this the next time the file is edited.
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                   images && maxNumberOfImages > 1 && index !== images.length - 1
                     ? 'hasRightMargin'
                     : ''

@@ -30,10 +30,6 @@ export default defineMessages({
   userAnonymitySupportTooltipLinkUrl: {
     id: 'app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl',
     defaultMessage:
-      'https://support.citizenlab.co/en/articles/7946486-enabling-anonymous-participation',
-  },
-  betaLabel: {
-    id: 'app.components.AnonymousPostingToggle.betaLabel',
-    defaultMessage: 'BETA',
+      'https://support.govocal.com/en/articles/7946486-enabling-anonymous-participation',
   },
 });

@@ -2,8 +2,22 @@
 
 module ParticipationMethod
   class Base
+    SUPPORTED_REACTION_MODES = [].freeze
+
     def self.all_methods
-      [DocumentAnnotation, Ideation, Information, NativeSurvey, Poll, Proposals, Survey, Volunteering, Voting]
+      [
+        CommonGround,
+        CommunityMonitorSurvey,
+        DocumentAnnotation,
+        Ideation,
+        Information,
+        NativeSurvey,
+        Poll,
+        Proposals,
+        Survey,
+        Volunteering,
+        Voting
+      ]
     end
 
     def initialize(phase)
@@ -51,8 +65,16 @@ module ParticipationMethod
       context.custom_form || CustomForm.new(participation_context: context)
     end
 
+    def form_logic_enabled?
+      false
+    end
+
     def default_fields(_custom_form)
       []
+    end
+
+    def everyone_tracking_enabled?
+      false
     end
 
     def generate_slug(input)
@@ -70,6 +92,14 @@ module ParticipationMethod
       false
     end
 
+    def supported_email_campaigns
+      campaigns = %w[project_phase_started]
+      campaigns += %w[comment_deleted_by_admin comment_on_idea_you_follow comment_on_your_comment] if supports_commenting?
+      campaigns += %w[idea_published mention_in_official_feedback official_feedback_on_idea_you_follow] if supports_public_visibility?
+      campaigns += %w[status_change_on_idea_you_follow] if supports_status?
+      campaigns
+    end
+
     def supports_answer_visible_to?
       false
     end
@@ -82,7 +112,11 @@ module ParticipationMethod
       false
     end
 
-    def supports_built_in_fields?
+    def built_in_title_required?
+      false
+    end
+
+    def built_in_body_required?
       false
     end
 
@@ -98,7 +132,15 @@ module ParticipationMethod
       false
     end
 
+    def supports_private_attributes_in_export?
+      false
+    end
+
     def supports_input_term?
+      false
+    end
+
+    def supports_vote_term?
       false
     end
 
@@ -106,12 +148,8 @@ module ParticipationMethod
       true
     end
 
-    def supports_multiple_posts?
-      true
-    end
-
-    def supports_pages_in_form?
-      false
+    def allow_posting_again_after
+      0.seconds
     end
 
     def supports_permitted_by_everyone?
@@ -122,8 +160,14 @@ module ParticipationMethod
       false
     end
 
-    def supports_reacting?
-      false
+    # @param mode [String, nil] One of the values in Reaction::MODES. If nil, checks
+    #   whether any reaction modes are supported.
+    def supports_reacting?(mode = nil)
+      if mode
+        self.class::SUPPORTED_REACTION_MODES.include?(mode)
+      else
+        self.class::SUPPORTED_REACTION_MODES.present?
+      end
     end
 
     def supports_serializing?(_attribute)
@@ -134,10 +178,13 @@ module ParticipationMethod
       false
     end
 
+    # Returns whether this participation method supports idea statuses?
     def supports_status?
       false
     end
 
+    # Returns whether this participation method supports new input submissions from
+    # end-users.
     def supports_submission?
       false
     end
@@ -150,11 +197,56 @@ module ParticipationMethod
       true
     end
 
+    # Returns whether inputs in this participation method can be moved to another phase.
     def transitive?
       false
     end
 
     def use_reactions_as_votes?
+      false
+    end
+
+    def follow_idea_on_idea_submission?
+      false
+    end
+
+    def validate_phase
+      # Default is to do nothing.
+    end
+
+    def automatically_assign_idea?
+      false
+    end
+
+    def supports_event_attendance?
+      true
+    end
+
+    def supports_custom_field_categories?
+      false
+    end
+
+    def user_fields_in_form?
+      false
+    end
+
+    def supports_multiple_phase_reports?
+      false
+    end
+
+    # Whether to add a reaction to inputs when they are submitted.
+    # See +Idea::SUBMISSION_STATUSES+ for what it means for an input to be considered
+    # submitted.
+    #
+    # One issue with this is that reactions aren’t scoped to a specific phase, and an
+    # input can be associated with multiple phases. In practice, though, ideas are
+    # typically associated with only one phase before submission, even if this isn’t
+    # enforced.
+    #
+    # Currently, a reaction will be added only if at least one of the input’s phases has
+    # +add_autoreaction_to_inputs?+ set to true — which, in principle, should be just one
+    # phase.
+    def add_autoreaction_to_inputs?
       false
     end
 

@@ -92,9 +92,13 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
   end
 
   def apply_index_filters
-    return if params[:participation_method].blank?
+    if params[:participation_method].present?
+      @idea_statuses = @idea_statuses.where(participation_method: params[:participation_method])
+    end
 
-    @idea_statuses = @idea_statuses.where(participation_method: params[:participation_method])
+    if params[:exclude_codes].present?
+      @idea_statuses = @idea_statuses.where.not(code: params[:exclude_codes])
+    end
   end
 
   def idea_status_params_for_create
@@ -114,3 +118,5 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
     IdeaStatus.where(code: IdeaStatus::LOCKED_CODES, participation_method: @idea_status.participation_method).maximum(:ordering) || -1
   end
 end
+
+WebApi::V1::IdeaStatusesController.include(AggressiveCaching::Patches::WebApi::V1::IdeaStatusesController)

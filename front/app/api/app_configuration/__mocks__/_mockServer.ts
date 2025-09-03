@@ -18,6 +18,7 @@ export const getAppConfigurationData = (
     settings: {
       core: {
         allowed: true,
+        country_code: 'BE',
         enabled: true,
         locales: ['en'],
         population: 12500,
@@ -40,17 +41,14 @@ export const getAppConfigurationData = (
         maximum_moderators_number: 14,
         additional_admins_number: 0,
         additional_moderators_number: 0,
-      },
-      initiatives: {
-        allowed: true,
-        enabled: true,
-        days_limit: 50,
-        eligibility_criteria: {},
-        posting_tips: {},
-        threshold_reached_message: {},
-        reacting_threshold: 1,
+        allow_sharing: true,
+        private_attributes_in_export: true,
       },
       advanced_custom_pages: {
+        allowed: true,
+        enabled: true,
+      },
+      pages: {
         allowed: true,
         enabled: true,
       },

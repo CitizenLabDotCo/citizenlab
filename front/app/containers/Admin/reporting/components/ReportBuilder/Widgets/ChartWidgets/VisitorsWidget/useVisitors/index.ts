@@ -13,6 +13,7 @@ import { parseStats } from './parse';
 export default function useVisitors({
   startAt,
   endAt,
+  projectId,
   compareStartAt,
   compareEndAt,
   resolution = 'month',
@@ -23,6 +24,7 @@ export default function useVisitors({
     {
       start_at: startAt,
       end_at: endAt,
+      project_id: projectId,
       resolution,
       compare_start_at: compareStartAt,
       compare_end_at: compareEndAt,
@@ -38,10 +40,10 @@ export default function useVisitors({
     () =>
       analytics?.data
         ? parseTimeSeries(
-            analytics.data.attributes[0],
+            analytics.data.attributes.visitors_timeseries,
             startAt ? moment(startAt) : null,
             endAt ? moment(endAt) : null,
-            currentResolution ?? 'month'
+            currentResolution
           )
         : null,
     [analytics?.data, startAt, endAt, currentResolution]

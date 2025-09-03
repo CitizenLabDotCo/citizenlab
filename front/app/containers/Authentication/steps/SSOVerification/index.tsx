@@ -3,19 +3,19 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import { SSOProvider } from 'api/authentication/singleSignOn';
+import { TVerificationMethodName } from 'api/verification_methods/types';
 import useVerificationMethodVerifiedActions from 'api/verification_methods/useVerificationMethodVerifiedActions';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import SSOVerificationButton from 'containers/Authentication/steps/_components/SSOVerificationButton';
 
 import ClaveUnicaButton from 'components/UI/ClaveUnicaButton/ClaveUnicaButton';
 import claveUnicaButtonMessages from 'components/UI/ClaveUnicaButton/messages';
+import FranceConnectButton from 'components/UI/FranceConnectButton';
+import franceConnectButtonMessages from 'components/UI/FranceConnectButton/messages';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import NemlogInButton from '../_components/NemLogInButton';
 import TextButton from '../_components/TextButton';
-import AuthProviderButton from '../AuthProviders/AuthProviderButton';
-import authProviderMessages from '../AuthProviders/messages';
 
 import messages from './messages';
 
@@ -25,28 +25,16 @@ interface Props {
 }
 
 const SSOVerification = ({ onClickSSO, onClickLogin }: Props) => {
-  const fakeSsoEnabled = useFeatureFlag({ name: 'fake_sso' });
   const { data: verificationMethod } = useVerificationMethodVerifiedActions();
+  const { formatMessage } = useIntl();
 
   if (!verificationMethod) return null;
 
-  const isNemLogIn = verificationMethod.data.attributes.name === 'nemlog_in';
-  const isClaveUnica =
-    verificationMethod.data.attributes.name === 'clave_unica';
+  const methodName = verificationMethod.data.attributes.name;
 
-  return (
-    <Box>
-      {isNemLogIn && (
-        <NemlogInButton
-          last={false}
-          grayBorder
-          standardSSOBehavior
-          onClickStandardSSO={() => {
-            onClickSSO('nemlog_in');
-          }}
-        />
-      )}
-      {isClaveUnica && (
+  const methodButton = (methodName: TVerificationMethodName) => {
+    if (methodName === 'clave_unica') {
+      return (
         <ClaveUnicaButton
           disabled={false}
           message={
@@ -56,19 +44,36 @@ const SSOVerification = ({ onClickSSO, onClickLogin }: Props) => {
             onClickSSO('clave_unica');
           }}
         />
-      )}
-      {fakeSsoEnabled && (
-        <AuthProviderButton
-          icon="bullseye"
-          flow="signup"
-          showConsentOnFlow="signin"
-          authProvider="fake_sso"
-          id="e2e-verified-action-fake-sso-button"
-          onContinue={onClickSSO}
-        >
-          <FormattedMessage {...authProviderMessages.continueWithFakeSSO} />
-        </AuthProviderButton>
-      )}
+      );
+    } else if (methodName === 'franceconnect') {
+      return (
+        <FranceConnectButton
+          onClick={() => {
+            onClickSSO('franceconnect');
+          }}
+          logoAlt={formatMessage(
+            franceConnectButtonMessages.franceConnectVerificationButtonAltText
+          )}
+        />
+      );
+    } else {
+      return (
+        <SSOVerificationButton
+          verificationMethodName={methodName}
+          last={false}
+          grayBorder
+          standardSSOBehavior
+          onClickStandardSSO={() => {
+            onClickSSO(methodName as SSOProvider);
+          }}
+        />
+      );
+    }
+  };
+
+  return (
+    <Box>
+      {methodButton(methodName)}
       <Text mt="20px" mb="0">
         <FormattedMessage
           {...messages.alreadyHaveAnAccount}

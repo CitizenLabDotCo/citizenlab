@@ -6,15 +6,19 @@ import {
   defaultCardStyle,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
+import useAccessDeniedExplanation from 'api/access_denied_explanation/useAccessDeniedExplanation';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPollQuestionData } from 'api/poll_questions/types';
 import useAddPollResponse from 'api/poll_responses/useAddPollResponse';
 
+import useLocalize from 'hooks/useLocalize';
+
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
@@ -88,11 +92,28 @@ const PollForm = ({
   const { mutate: addPollResponse } = useAddPollResponse();
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
+  const theme = useTheme();
+
+  // Is there a custom access denied explanation for the phase?
+  const { data: accessDenied } = useAccessDeniedExplanation({
+    type: 'phase',
+    action: 'taking_poll',
+    id: phaseId,
+  });
+  const accessDeniedExplanation: string | undefined = localize(
+    accessDenied?.data.attributes.access_denied_explanation_multiloc
+  );
+  const outputCustomDeniedMessage =
+    accessDeniedExplanation && accessDeniedExplanation.length >= 0;
+
   const changeAnswerSingle = (questionId: string, optionId: string) => () => {
     setAnswers({ ...answers, [questionId]: [optionId] });
   };
 
   const changeAnswerMultiple = (questionId: string, optionId: string) => () => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const oldAnswer = answers[questionId] || [];
 
     toggleElementInArray(oldAnswer, optionId);
@@ -133,6 +154,8 @@ const PollForm = ({
     return (
       // each question has at least one answer, and this answer is a string (representing the option) and...
       questions.every(
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         (question) => typeof (answers[question.id] || [])[0] === 'string'
       ) &&
       // for multiple options questions...
@@ -158,7 +181,19 @@ const PollForm = ({
           !isNilOrError(disabledMessage) &&
           actionDisabledAndNotFixable && (
             <Box mb="16px">
-              <Warning>{formatMessage(disabledMessage)}</Warning>
+              <Warning>
+                {outputCustomDeniedMessage ? (
+                  <QuillEditedContent textColor={theme.colors.tenantText}>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: accessDeniedExplanation,
+                      }}
+                    />
+                  </QuillEditedContent>
+                ) : (
+                  formatMessage(disabledMessage)
+                )}
+              </Warning>
             </Box>
           )}
         <PollContainer id="project-poll" className="e2e-poll-form">
@@ -168,6 +203,8 @@ const PollForm = ({
                 key={questionIndex}
                 question={question}
                 index={questionIndex}
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 value={(answers[question.id] || [])[0]}
                 disabled={actionDisabledAndNotFixable}
                 onChange={changeAnswerSingle}
@@ -190,7 +227,7 @@ const PollForm = ({
           content={disabledMessage && formatMessage(disabledMessage)}
         >
           <div>
-            <Button
+            <ButtonWithLink
               onClick={sendAnswer}
               size="m"
               fullWidth={true}
@@ -198,7 +235,7 @@ const PollForm = ({
               className="e2e-send-poll"
             >
               <FormattedMessage {...messages.sendAnswer} />
-            </Button>
+            </ButtonWithLink>
           </div>
         </Tooltip>
       </>

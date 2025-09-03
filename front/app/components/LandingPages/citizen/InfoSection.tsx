@@ -1,30 +1,15 @@
 import React from 'react';
 
-import { colors, media, fontSizes } from '@citizenlab/cl2-component-library';
+import { media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
 import ContentContainer from 'components/ContentContainer';
-import Fragment from 'components/Fragment';
 import ResolveTextVariables from 'components/ResolveTextVariables';
 import T from 'components/T';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { isEmptyMultiloc } from 'utils/helperUtils';
-
-const StyledQuillEditedContent = styled(QuillEditedContent)`
-  h1,
-  h2 {
-    font-weight: 500;
-    color: ${(props) => props.theme.colors.tenantText};
-    font-size: ${fontSizes.xl}px;
-  }
-
-  p,
-  li {
-    color: ${colors.textSecondary};
-  }
-`;
 
 const StyledContentContainer = styled(ContentContainer)`
   width: 100%;
@@ -42,14 +27,11 @@ const StyledContentContainer = styled(ContentContainer)`
 
 interface Props {
   multilocContent: Multiloc;
-  // pages/homepage_info/content was the previous bottom info section fragment key,
-  // leaving it as such for backwards compatibility
-  fragmentName?:
-    | 'pages/homepage_info/content'
-    | 'pages/homepage_info/top-content';
 }
 
-const InfoSection = ({ multilocContent, fragmentName }: Props) => {
+const InfoSection = ({ multilocContent }: Props) => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!multilocContent || isEmptyMultiloc(multilocContent)) {
     return null;
   }
@@ -65,13 +47,7 @@ const InfoSection = ({ multilocContent, fragmentName }: Props) => {
 
   return (
     <StyledContentContainer>
-      <StyledQuillEditedContent>
-        {fragmentName ? (
-          <Fragment name={fragmentName}>{pageContent}</Fragment>
-        ) : (
-          pageContent
-        )}
-      </StyledQuillEditedContent>
+      <QuillEditedContent>{pageContent}</QuillEditedContent>
     </StyledContentContainer>
   );
 };

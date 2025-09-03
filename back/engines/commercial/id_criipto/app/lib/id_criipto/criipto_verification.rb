@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module IdCriipto
-  module CriiptoVerification
+  module CriiptoVerification # rubocop:disable Metrics/ModuleLength
     include Verification::VerificationMethod
 
     DK_MIT_ID = 'DK MitID'
@@ -19,6 +19,10 @@ module IdCriipto
       'criipto'
     end
 
+    def ui_method_name
+      config[:ui_method_name].presence || name
+    end
+
     def name_for_hashing
       config[:method_name_for_hashing].presence || config[:identity_source].presence || super
     end
@@ -29,6 +33,7 @@ module IdCriipto
         birthday_custom_field_key
         birthyear_custom_field_key
         municipality_code_custom_field_key
+        postal_code_custom_field_key
         domain
         client_id
         client_secret
@@ -36,6 +41,7 @@ module IdCriipto
         uid_field_pattern
         method_name_for_hashing
         minimum_age
+        enabled_for_verified_actions
       ]
     end
 
@@ -67,6 +73,11 @@ module IdCriipto
           type: 'string',
           description: 'Only for MitID: The `key` attribute of the custom field where the municipality_key should be stored. Leave empty to not store the municipality_key. We don\'t lock this field, assuming it is a hidden field.'
         },
+        postal_code_custom_field_key: {
+          private: true,
+          type: 'string',
+          description: 'Only for MitID: The `key` attribute of the custom field where the postal code should be stored. Leave empty to not store the postal code. We don\'t lock this field, assuming it is a hidden field.'
+        },
         uid_field_pattern: {
           private: true,
           type: 'string',
@@ -82,6 +93,11 @@ module IdCriipto
           private: true,
           type: 'integer',
           description: 'Minimum age required to verify (in years). No value means no age minimum.'
+        },
+        enabled_for_verified_actions: {
+          private: true,
+          type: 'boolean',
+          description: 'Whether this verification method should be enabled for verified actions.'
         }
       }
     end

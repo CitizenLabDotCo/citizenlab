@@ -1,43 +1,29 @@
-import React, { useEffect, useState, useCallback, lazy, Suspense } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
-import { parse } from 'qs';
-import { Multiloc } from 'typings';
+import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
 
-import { IdeaPublicationStatus } from 'api/ideas/types';
-import useAddIdea from 'api/ideas/useAddIdea';
-import useAuthUser from 'api/me/useAuthUser';
-import { IPhases, IPhaseData } from 'api/phases/types';
+import { IPhases, IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import { IProject } from 'api/projects/types';
 
-import useInputSchema from 'hooks/useInputSchema';
-import useLocale from 'hooks/useLocale';
-import useLocalize from 'hooks/useLocalize';
+import NewIdeaHeading from 'containers/IdeaHeading/NewIdeaHeading';
+import InputDetailView from 'containers/IdeasNewPage/SimilarInputs/InputDetailView';
+import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/utils';
 
-import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
-import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
-import Form from 'components/Form';
-import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
-import FullPageSpinner from 'components/UI/FullPageSpinner';
-import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
-import PageContainer from 'components/UI/PageContainer';
+import { FORM_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
 
-import clHistory from 'utils/cl-router/history';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import { isNilOrError } from 'utils/helperUtils';
-import { getFieldNameFromPath } from 'utils/JSONFormUtils';
-import { reverseGeocode } from 'utils/locationTools';
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import eventEmitter from 'utils/eventEmitter';
 
 import IdeasNewMeta from '../IdeasNewMeta';
-import messages from '../messages';
-import NewIdeaHeading from '../NewIdeaHeading';
-import { getLocationGeojson } from '../utils';
 
-const ProfileVisiblity = lazy(() => import('./ProfileVisibility'));
+const IdeationForm = React.lazy(
+  () => import('components/CustomFieldsForm/IdeationForm')
+);
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
@@ -51,254 +37,157 @@ const getConfig = (
   return getMethodConfig(participationMethod);
 };
 
-interface FormValues {
-  title_multiloc: Multiloc;
-  body_multiloc: Multiloc;
-  author_id?: string;
-  idea_images_attributes?: { image: string }[];
-  idea_files_attributes?: {
-    file_by_content: { content: string };
-    name: string;
-  };
-  location_description?: string;
-  location_point_geojson?: GeoJSON.Point;
-  topic_ids?: string[];
-  publication_status?: IdeaPublicationStatus;
-}
-
 interface Props {
   project: IProject;
   phaseId: string | undefined;
+  participationMethod?: ParticipationMethod;
 }
 
-const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
-  const localize = useLocalize();
-  const locale = useLocale();
-  const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
-  const [formData, setFormData] = useState<FormValues | null>(null);
-  const { mutateAsync: addIdea } = useAddIdea();
-  const { data: authUser } = useAuthUser();
+const IdeasNewIdeationForm = ({
+  project,
+  phaseId,
+  participationMethod,
+}: Props) => {
   const { data: phases } = usePhases(project.data.id);
-  const { data: phaseFromUrl } = usePhase(phaseId);
-  const {
-    schema,
-    uiSchema,
-    inputSchemaError,
-    isLoading: isLoadingInputSchema,
-  } = useInputSchema({
-    projectId: project.data.id,
-    phaseId,
-  });
-  const search = location.search;
+  const { data: phase } = usePhase(phaseId);
+  const isSmallerThanPhone = useBreakpoint('phone');
+  const [usingMapView, setUsingMapView] = useState(false);
+  const [searchParams] = useSearchParams();
+  const selectedIdeaId = searchParams.get('selected_idea_id');
+  const participationMethodConfig = getConfig(phase?.data, phases);
 
-  const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
-    useState(false);
-  const [processingLocation, setProcessingLocation] = useState(false);
-  const [initialFormData, setInitialFormData] = useState({});
-  const [postAnonymously, setPostAnonymously] = useState(false);
-  const participationContext = getCurrentPhase(phases?.data);
-  const participationMethodConfig = getConfig(phaseFromUrl?.data, phases);
-  const allowAnonymousPosting =
-    participationContext?.attributes.allow_anonymous_participation;
+  const handleCloseDetail = () => {
+    updateSearchParams({ selected_idea_id: null });
+  };
 
-  // Click on map flow : Reverse geocode the location if it's in the url params
   useEffect(() => {
-    const { lat, lng } = parse(search, {
-      ignoreQueryPrefix: true,
-      decoder: (str, _defaultEncoder, _charset, type) => {
-        return type === 'value' ? parseFloat(str) : str;
-      },
-    }) as { [key: string]: string | number };
-
-    if (
-      typeof lat === 'number' &&
-      typeof lng === 'number' &&
-      !isNilOrError(locale)
-    ) {
-      setProcessingLocation(true);
-      reverseGeocode(lat, lng, locale).then((address) => {
-        setInitialFormData((initialFormData) => ({
-          ...initialFormData,
-          location_description: address,
-          location_point_geojson: {
-            type: 'Point',
-            coordinates: [lng, lat],
-          },
-        }));
-        setProcessingLocation(false);
+    const subscription = eventEmitter
+      .observeEvent(FORM_PAGE_CHANGE_EVENT)
+      .subscribe(() => {
+        setUsingMapView(!!document.getElementById('map_page'));
       });
-    }
-  }, [search, locale]);
 
-  // Handle image disclaimer
-  const handleDisclaimer = (data: FormValues) => {
-    const disclaimerNeeded =
-      data.idea_files_attributes ||
-      data.idea_images_attributes ||
-      Object.values(data.body_multiloc).some((value) => value.includes('<img'));
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
-    setFormData(data);
-    if (disclaimerNeeded) {
-      return setIsDisclaimerOpened(true);
-    } else {
-      return onSubmit(data);
-    }
-  };
-
-  const onAcceptDisclaimer = () => {
-    if (!formData) return;
-    onSubmit(formData);
-    setIsDisclaimerOpened(false);
-  };
-
-  const onCancelDisclaimer = () => {
-    setIsDisclaimerOpened(false);
-  };
-
-  const onSubmit = async (data: FormValues) => {
-    const location_point_geojson = await getLocationGeojson(
-      initialFormData,
-      data
-    );
-
-    // If the user is an admin or project moderator, we allow them to post to a specific phase
-    const phase_ids =
-      phaseId && canModerateProject(project.data, authUser) ? [phaseId] : null;
-
-    const idea = await addIdea({
-      ...data,
-      location_point_geojson,
-      project_id: project.data.id,
-      phase_ids,
-      anonymous: postAnonymously ? true : undefined,
-    });
-
-    const ideaId = idea.data.id;
-    participationMethodConfig?.onFormSubmission({
-      project: project.data,
-      ideaId,
-      idea,
-    });
-  };
-
-  const getApiErrorMessage: ApiErrorGetter = useCallback(
-    (error) => {
-      return (
-        messages[`api_error_${uiSchema?.options?.inputTerm}_${error}`] ||
-        messages[`api_error_${error}`] ||
-        messages[`api_error_invalid`]
-      );
-    },
-    [uiSchema]
-  );
-
-  const getAjvErrorMessage: AjvErrorGetter = useCallback(
-    (error, uischema) => {
-      return (
-        messages[
-          `ajv_error_${uiSchema?.options?.inputTerm}_${
-            getFieldNameFromPath(error.instancePath) ||
-            error?.params?.missingProperty
-          }_${error.keyword}`
-        ] ||
-        messages[
-          `ajv_error_${
-            getFieldNameFromPath(error.instancePath) ||
-            error?.params?.missingProperty
-          }_${error.keyword}`
-        ] ||
-        messages[
-          `ajv_error_${uischema?.options?.input_type}_${error.keyword}`
-        ] ||
-        undefined
-      );
-    },
-    [uiSchema]
-  );
-
-  const handleOnChangeAnonymousPosting = () => {
-    if (!postAnonymously) {
-      setShowAnonymousConfirmationModal(true);
-    }
-
-    setPostAnonymously((postAnonymously) => !postAnonymously);
-  };
-
-  const goBackToProject = useCallback(() => {
-    clHistory.push(`/projects/${project.data.attributes.slug}`);
-  }, [project]);
-
-  if (isLoadingInputSchema) return <FullPageSpinner />;
-  if (
-    // inputSchemaError should display an error page instead
-    inputSchemaError ||
-    !participationMethodConfig ||
-    !schema ||
-    !uiSchema ||
-    processingLocation
-  ) {
+  if (!participationMethodConfig || !phase) {
     return null;
   }
 
+  const titleText = participationMethodConfig.getFormTitle?.({
+    project: project.data,
+    phases: phases?.data,
+    phaseFromUrl: phase.data,
+  });
+  const maxWidth = usingMapView ? '1100px' : '700px';
+
   return (
     <>
-      <IdeasNewMeta />
-      <Box bg={colors.grey100}>
-        <Box p="32px" display="flex" justifyContent="flex-start">
-          <GoBackButtonSolid
-            text={localize(project.data.attributes.title_multiloc)}
-            onClick={goBackToProject}
-          />
-        </Box>
-        <main id="e2e-idea-new-page">
-          <PageContainer overflow="hidden">
-            <Form
-              schema={schema}
-              uiSchema={uiSchema}
-              onSubmit={handleDisclaimer}
-              initialFormData={initialFormData}
-              getAjvErrorMessage={getAjvErrorMessage}
-              getApiErrorMessage={getApiErrorMessage}
-              title={
-                participationMethodConfig.getFormTitle ? (
-                  <Box mb="40px">
-                    <NewIdeaHeading
-                      titleText={participationMethodConfig.getFormTitle({
-                        project: project.data,
-                        phases: phases?.data,
-                        phaseFromUrl: phaseFromUrl?.data,
-                      })}
-                    />
+      <main id="e2e-idea-new-page">
+        <IdeasNewMeta />
+        <Box
+          w="100%"
+          bgColor={colors.grey100}
+          h="100vh"
+          position="fixed"
+          zIndex="1010"
+          overflow="hidden"
+        >
+          <Box display="flex" flexDirection="row" h="100%" w="100%">
+            <Box
+              flex="1"
+              display="flex"
+              mx="auto"
+              justifyContent="center"
+              w="100%"
+            >
+              <Box w="100%" maxWidth={maxWidth}>
+                <Box
+                  w="100%"
+                  position="relative"
+                  top={isSmallerThanPhone ? '0' : '40px'}
+                >
+                  {phaseId && (
+                    <NewIdeaHeading phase={phase.data} titleText={titleText} />
+                  )}
+                </Box>
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  pt={isSmallerThanPhone ? '0' : '40px'}
+                  w="100%"
+                >
+                  <Box
+                    background={colors.white}
+                    maxWidth={maxWidth}
+                    w="100%"
+                    h={calculateDynamicHeight(isSmallerThanPhone)}
+                    pb={isSmallerThanPhone ? '0' : '80px'}
+                    display="flex"
+                  >
+                    <Suspense>
+                      <IdeationForm
+                        projectId={project.data.id}
+                        phaseId={phaseId}
+                        participationMethod={participationMethod}
+                      />
+                    </Suspense>
                   </Box>
-                ) : undefined
-              }
-              config={'input'}
-              footer={
-                allowAnonymousPosting ? (
-                  <Suspense fallback={null}>
-                    <ProfileVisiblity
-                      postAnonymously={postAnonymously}
-                      onChange={handleOnChangeAnonymousPosting}
-                    />
-                  </Suspense>
-                ) : undefined
-              }
-            />
-          </PageContainer>
-          {showAnonymousConfirmationModal && (
-            <AnonymousParticipationConfirmationModal
-              onCloseModal={() => {
-                setShowAnonymousConfirmationModal(false);
-              }}
-            />
-          )}
-          <ContentUploadDisclaimer
-            isDisclaimerOpened={isDisclaimerOpened}
-            onAcceptDisclaimer={onAcceptDisclaimer}
-            onCancelDisclaimer={onCancelDisclaimer}
-          />
-        </main>
-      </Box>
+                </Box>
+              </Box>
+
+              {selectedIdeaId &&
+                (isSmallerThanPhone ? (
+                  <Box
+                    position="fixed"
+                    top="0"
+                    left="0"
+                    width="100%"
+                    height="100%"
+                    bg="rgba(0,0,0,0.4)"
+                    zIndex="2000"
+                    onClick={handleCloseDetail}
+                  >
+                    <Box
+                      position="absolute"
+                      bottom="0"
+                      width="100%"
+                      height="75%"
+                      bgColor={colors.white}
+                      borderRadius="16px 16px 0 0"
+                      overflowY="auto"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Box
+                        width="40px"
+                        height="4px"
+                        bgColor={colors.grey300}
+                        borderRadius="2px"
+                        m="8px auto"
+                      />
+                      <InputDetailView ideaId={selectedIdeaId} />
+                    </Box>
+                  </Box>
+                ) : (
+                  <Box
+                    top="40px"
+                    width="375px"
+                    minWidth="375px"
+                    borderLeft={`1px solid ${colors.grey300}`}
+                    overflowY="auto"
+                    bgColor={colors.white}
+                    position="relative"
+                    mb="80px"
+                  >
+                    <InputDetailView ideaId={selectedIdeaId} />
+                  </Box>
+                ))}
+            </Box>
+          </Box>
+        </Box>
+      </main>
     </>
   );
 };

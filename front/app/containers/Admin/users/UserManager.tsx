@@ -177,12 +177,16 @@ const UserManager = ({
         usersDataLength={users.data.length}
       />
 
+      {/* TODO: Fix this the next time the file is edited. */}
+      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
       {errors &&
         errors.length > 0 &&
         errors.map((err) => (
           <Error text={err.errorElement} key={err.errorName} />
         ))}
 
+      {/* TODO: Fix this the next time the file is edited. */}
+      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
       {users?.data && users.data.length > 0 ? (
         <UserTable
           selectedUsers={selectedUsers}

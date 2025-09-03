@@ -24,7 +24,7 @@ export const mockCommentData1: ICommentData = {
   type: 'comment',
   attributes: mockCommentDataAttributes1,
   relationships: {
-    post: {
+    idea: {
       data: {
         id: 'postId',
         type: 'post',
@@ -60,7 +60,7 @@ export const commentsData: ICommentData[] = [
       updated_at: 'updated_at',
     },
     relationships: {
-      post: {
+      idea: {
         data: {
           id: 'postId2',
           type: 'post',

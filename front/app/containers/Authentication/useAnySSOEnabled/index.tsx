@@ -21,8 +21,20 @@ export default function useAnySSOEnabled() {
     name: 'hoplr_login',
   });
 
+  const idAustriaLoginEnabled = useFeatureFlag({
+    name: 'id_austria_login',
+  });
+
   const criiptoLoginEnabled = useFeatureFlag({
     name: 'criipto_login',
+  });
+
+  const keycloakLoginEnabled = useFeatureFlag({
+    name: 'keycloak_login',
+  });
+
+  const twodayLoginEnabled = useFeatureFlag({
+    name: 'twoday_login',
   });
 
   const anySSOEnabled =
@@ -35,7 +47,10 @@ export default function useAnySSOEnabled() {
     viennaCitizenLoginEnabled ||
     claveUnicaLoginEnabled ||
     hoplrLoginEnabled ||
-    criiptoLoginEnabled;
+    criiptoLoginEnabled ||
+    keycloakLoginEnabled ||
+    twodayLoginEnabled ||
+    idAustriaLoginEnabled;
 
   return anySSOEnabled;
 }

@@ -9,14 +9,14 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
-import useProjectCampaigns from 'api/campaigns/useProjectCampaigns';
+import useCampaigns from 'api/campaigns/useCampaigns';
 import { isDraft } from 'api/campaigns/util';
 
 import DraftCampaignRow from 'components/admin/Email/DraftCampaignRow';
 import SentCampaignRow from 'components/admin/Email/SentCampaignRow';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import Pagination from 'components/admin/Pagination';
 import { List } from 'components/admin/ResourceList';
+import Pagination from 'components/Pagination';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
@@ -28,8 +28,8 @@ import NewCampaignButton from './NewCampaignButton';
 const CustomEmails = () => {
   const { projectId } = useParams() as { projectId: string };
   const [currentPage, setCurrentPage] = useState(1);
-  const { data: campaigns, fetchNextPage } = useProjectCampaigns({
-    projectId,
+  const { data: campaigns, fetchNextPage } = useCampaigns({
+    context: { projectId },
     pageSize: 10,
   });
 
@@ -37,6 +37,8 @@ const CustomEmails = () => {
 
   if (!campaignsList) return null;
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const lastPage = getPageNumberFromUrl(campaigns?.pages[0].links.last) || 1;
 
   const goToPage = (page: number) => {
@@ -55,12 +57,7 @@ const CustomEmails = () => {
             padding="80px 0 100px"
           >
             <Icon name="email-2" width="80px" height="80px" />
-            <Title
-              fontSize="xl"
-              fontWeight="bold"
-              marginBottom="10px"
-              color="primary"
-            >
+            <Title fontSize="xl" marginBottom="10px" color="primary">
               <FormattedMessage {...messages.noCampaignsHeader} />
             </Title>
             <Text color="textSecondary" mb="30px" maxWidth="450px">

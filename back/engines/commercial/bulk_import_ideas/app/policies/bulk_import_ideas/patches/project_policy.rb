@@ -8,7 +8,7 @@ module BulkImportIdeas
       end
 
       def export_form?
-        active_moderator?
+        show?
       end
 
       def draft_records?
@@ -25,6 +25,15 @@ module BulkImportIdeas
 
       def create_user?
         active_moderator?
+      end
+
+      # Bulk create projects is only allowed for super admins
+      def bulk_create_projects?
+        user.super_admin?
+      end
+
+      def show_project_import?
+        user.super_admin?
       end
     end
   end

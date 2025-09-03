@@ -1,0 +1,13 @@
+pa:
+  email_campaigns:
+    campaign_type_description:
+      "idea_assigned_to_you": ਮੈਨੂੰ ਇੱਕ ਵਿਚਾਰ ਦੀ ਨਿਯੁਕਤੀ
+    admin_campaign_type_description:
+      "idea_assigned_to_you": ਇੱਕ ਵਿਚਾਰ ਦੀ ਅਸਾਈਨਮੈਂਟ - ਪ੍ਰਸ਼ਾਸਕ ਅਤੇ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ
+    idea_assigned_to_you:
+      by_author: '%{authorName}ਦੁਆਰਾ'
+      cta_button: '%{authorName}ਨੂੰ ਫੀਡਬੈਕ ਦਿਓ'
+      event_description: 'ਤੁਹਾਨੂੰ ਇੱਕ ਇਨਪੁੱਟ ਦਿੱਤਾ ਗਿਆ ਹੈ। ਇੱਕ ਅਧਿਕਾਰਤ ਅੱਪਡੇਟ ਲਿਖ ਕੇ ਜਾਂ ਇਸਦੀ ਸਥਿਤੀ ਬਦਲ ਕੇ ਫੀਡਬੈਕ ਦਿਓ।'
+      title: '%{firstName}, ਤੁਹਾਨੂੰ ਇੱਕ ਇਨਪੁੱਟ ਦਿੱਤਾ ਗਿਆ ਸੀ'
+      subject: 'ਤੁਹਾਡੇ ਕੋਲ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਅਸਾਈਨਮੈਂਟ ਹੈ'
+      preheader_idea: '%{authorName} ਦਾ ਵਿਚਾਰ ਤੁਹਾਨੂੰ ਸੌਂਪਿਆ ਗਿਆ ਹੈ'

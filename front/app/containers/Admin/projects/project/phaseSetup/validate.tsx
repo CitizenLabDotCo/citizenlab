@@ -1,16 +1,18 @@
 import { isFinite, isNaN } from 'lodash-es';
-import { FormatMessage, SupportedLocale } from 'typings';
+import { FormatMessage } from 'typings';
 
-import { IUpdatedPhaseProperties } from 'api/phases/types';
+import { IUpdatedPhaseProperties, IPhases } from 'api/phases/types';
 
 import messages from '../messages';
 
 const validate = (
   state: IUpdatedPhaseProperties,
-  formatMessage: FormatMessage,
-  locales?: SupportedLocale[]
+  phases: IPhases | undefined,
+  formatMessage: FormatMessage
 ) => {
   const {
+    start_at,
+    end_at,
     reacting_like_method,
     reacting_dislike_method,
     reacting_like_limited_max,
@@ -20,36 +22,41 @@ const validate = (
     voting_min_total,
     voting_max_total,
     voting_max_votes_per_idea,
-    voting_term_plural_multiloc,
-    voting_term_singular_multiloc,
     reacting_threshold,
     expire_days_limit,
   } = state;
 
   let isValidated = true;
+  let phaseDateError: string | undefined;
   let noLikingLimitError: string | undefined;
   let noDislikingLimitError: string | undefined;
   let minTotalVotesError: string | undefined;
   let maxTotalVotesError: string | undefined;
   let maxVotesPerOptionError: string | undefined;
-  let voteTermError: string | undefined;
   let expireDateLimitError: string | undefined;
   let reactingThresholdError: string | undefined;
 
-  if (
-    participation_method === 'voting' &&
-    voting_method === 'multiple_voting'
-  ) {
-    locales?.map((locale) => {
-      if (
-        (voting_term_plural_multiloc && !voting_term_plural_multiloc[locale]) ||
-        (voting_term_singular_multiloc &&
-          !voting_term_singular_multiloc[locale])
-      ) {
-        voteTermError = formatMessage(messages.voteTermError);
-        isValidated = false;
+  if (!phases || phases.data.length === 0) {
+    if (!start_at) {
+      phaseDateError = formatMessage(messages.missingStartDateError);
+      isValidated = false;
+    }
+  } else {
+    if (!start_at) {
+      phaseDateError = formatMessage(messages.missingStartDateError);
+      isValidated = false;
+    } else {
+      if (!end_at) {
+        const startAtDates = phases.data.map((phase) =>
+          new Date(phase.attributes.start_at).getTime()
+        );
+        const maxStartAt = Math.max(...startAtDates);
+        if (new Date(start_at).getTime() < maxStartAt) {
+          phaseDateError = formatMessage(messages.missingEndDateError);
+          isValidated = false;
+        }
       }
-    });
+    }
   }
 
   if (
@@ -153,12 +160,12 @@ const validate = (
   return {
     isValidated,
     errors: {
+      phaseDateError,
       noLikingLimitError,
       noDislikingLimitError,
       minTotalVotesError,
       maxTotalVotesError,
       maxVotesPerOptionError,
-      voteTermError,
       expireDateLimitError,
       reactingThresholdError,
     },
