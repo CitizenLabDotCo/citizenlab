@@ -33,8 +33,8 @@ const DataCollection = ({ allow_anonymous_participation, onChange }: Props) => {
         currentValue={allow_anonymous_participation}
         label={
           <Text color="primary" m="0">
-            <span style={{ fontWeight: 'bold' }}>Anonymous:</span> No data will
-            be collected. Responses will not be linked to user accounts.
+            <span style={{ fontWeight: 'bold' }}>Anonymous:</span> No user data
+            will be collected. Responses will not be linked to user accounts.
           </Text>
         }
         onChange={onChange}
