@@ -1,10 +1,16 @@
 import React from 'react';
 
+import { ParticipationMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 
 import ActionFormDefault from './ActionFormDefault';
 import ActionFormSurvey from './ActionFormSurvey';
 import { Props } from './types';
+
+const SURVEY_METHODS: ParticipationMethod[] = [
+  'native_survey',
+  'community_monitor_survey',
+];
 
 const ActionForm = ({ permissionData, phaseId, ...props }: Props) => {
   const { data: phase } = usePhase(phaseId);
@@ -15,9 +21,7 @@ const ActionForm = ({ permissionData, phaseId, ...props }: Props) => {
   const { action } = permissionData.attributes;
 
   const showSurveyForm =
-    (participation_method === 'native_survey' ||
-      participation_method === 'community_monitor_survey') &&
-    action === 'posting_idea';
+    SURVEY_METHODS.includes(participation_method) && action === 'posting_idea';
 
   if (showSurveyForm) {
     return (
