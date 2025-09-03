@@ -17,12 +17,9 @@ import usePhase from 'api/phases/usePhase';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import AdminCollaboratorToggle from '../ActionForm/AdminCollaboratorToggle';
-import CardButtons from '../ActionForm/CardButtons';
-import CustomizeErrorMessage from '../ActionForm/CustomizeErrorMessage';
+import AccessRestrictions from '../ActionForm/AccessRestrictions';
 import Fields from '../ActionForm/Fields';
 import FlowVisualization from '../ActionForm/FlowVisualization';
-import GroupSelect from '../ActionForm/GroupSelect';
 import messages from '../ActionForm/messages';
 import { showResetButton } from '../ActionForm/utils';
 
@@ -43,7 +40,6 @@ interface Props {
 
 const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
   const {
-    id: permissionId,
     attributes: {
       permitted_by,
       action,
@@ -63,10 +59,6 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
     action,
   });
 
-  const handlePermittedByUpdate = (permitted_by: PermittedBy) => {
-    onChange({ permitted_by });
-  };
-
   const participation_method = phase?.data.attributes.participation_method;
 
   const userFieldsInForm = !!phase?.data.attributes.user_fields_in_form;
@@ -85,57 +77,9 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
 
   return (
     <form className={`e2e-action-form-${action}`}>
-      <AdminCollaboratorToggle
-        checked={permitted_by === 'admins_moderators'}
-        id={`participation-permission-admins-${permissionId}`}
-        onChange={() => {
-          handlePermittedByUpdate(
-            permitted_by === 'admins_moderators' ? 'users' : 'admins_moderators'
-          );
-        }}
-      />
+      <AccessRestrictions permissionData={permissionData} onChange={onChange} />
       {permitted_by !== 'admins_moderators' && (
         <>
-          <Box my="20px">
-            <Title variant="h4" m="0" color="primary">
-              <FormattedMessage {...messages.authentication} />
-            </Title>
-          </Box>
-          <Box display="flex" gap="16px">
-            <CardButtons
-              showAnyone
-              permittedBy={permitted_by}
-              onUpdate={handlePermittedByUpdate}
-            />
-          </Box>
-          {permitted_by !== 'everyone' && (
-            <>
-              <Box mt="28px">
-                <Title variant="h4" color="primary">
-                  <FormattedMessage {...messages.restrictParticipation} />
-                </Title>
-                {/* For some reason this tooltip doesn't work properly unless I put it in
-                 * a Box of exactly the same size as the child component
-                 */}
-                <Box w="300px">
-                  <GroupSelect
-                    groupIds={groupIds}
-                    onChange={(group_ids) => {
-                      onChange({ group_ids });
-                    }}
-                  />
-                </Box>
-              </Box>
-              <CustomizeErrorMessage
-                access_denied_explanation_multiloc={
-                  permissionData.attributes.access_denied_explanation_multiloc
-                }
-                onUpdate={async (access_denied_explanation_multiloc) => {
-                  await onChange({ access_denied_explanation_multiloc });
-                }}
-              />
-            </>
-          )}
           <Box mt="24px">
             <Fields
               phaseId={phaseId}

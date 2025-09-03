@@ -1,35 +1,18 @@
 import React from 'react';
 
-import {
-  Box,
-  Button,
-  Title,
-  fontSizes,
-} from '@citizenlab/cl2-component-library';
-import { Multiloc } from 'typings';
+import { Box, Button, fontSizes } from '@citizenlab/cl2-component-library';
 
 import { IPermissionData } from 'api/permissions/types';
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
-import { PermittedBy } from 'api/phase_permissions/types';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import AdminCollaboratorToggle from './AdminCollaboratorToggle';
-import CardButtons from './CardButtons';
-import CustomizeErrorMessage from './CustomizeErrorMessage';
+import AccessRestrictions from './AccessRestrictions';
 import Fields from './Fields';
 import FlowVisualization from './FlowVisualization';
-import GroupSelect from './GroupSelect';
 import messages from './messages';
+import { Changes } from './types';
 import { showResetButton } from './utils';
-
-type Changes = {
-  permitted_by?: PermittedBy;
-  group_ids?: string[];
-  verification_expiry?: number | null;
-  access_denied_explanation_multiloc?: Multiloc;
-  everyone_tracking_enabled?: boolean;
-};
 
 interface Props {
   phaseId?: string;
@@ -40,7 +23,6 @@ interface Props {
 
 const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
   const {
-    id: permissionId,
     attributes: {
       permitted_by,
       action,
@@ -57,65 +39,13 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
     action,
   });
 
-  const handlePermittedByUpdate = (permitted_by: PermittedBy) => {
-    onChange({ permitted_by });
-  };
-
   if (!permissionsCustomFields) return null;
 
   return (
     <form className={`e2e-action-form-${action}`}>
-      <AdminCollaboratorToggle
-        checked={permitted_by === 'admins_moderators'}
-        id={`participation-permission-admins-${permissionId}`}
-        onChange={() => {
-          handlePermittedByUpdate(
-            permitted_by === 'admins_moderators' ? 'users' : 'admins_moderators'
-          );
-        }}
-      />
+      <AccessRestrictions permissionData={permissionData} onChange={onChange} />
       {permitted_by !== 'admins_moderators' && (
         <>
-          <Box my="20px">
-            <Title variant="h4" m="0" color="primary">
-              <FormattedMessage {...messages.authentication} />
-            </Title>
-          </Box>
-          <Box display="flex" gap="16px">
-            <CardButtons
-              showAnyone={false}
-              permittedBy={permitted_by}
-              onUpdate={handlePermittedByUpdate}
-            />
-          </Box>
-          {permitted_by !== 'everyone' && (
-            <>
-              <Box mt="28px">
-                <Title variant="h4" color="primary">
-                  <FormattedMessage {...messages.restrictParticipation} />
-                </Title>
-                {/* For some reason this tooltip doesn't work properly unless I put it in
-                 * a Box of exactly the same size as the child component
-                 */}
-                <Box w="300px">
-                  <GroupSelect
-                    groupIds={groupIds}
-                    onChange={(group_ids) => {
-                      onChange({ group_ids });
-                    }}
-                  />
-                </Box>
-              </Box>
-              <CustomizeErrorMessage
-                access_denied_explanation_multiloc={
-                  permissionData.attributes.access_denied_explanation_multiloc
-                }
-                onUpdate={async (access_denied_explanation_multiloc) => {
-                  await onChange({ access_denied_explanation_multiloc });
-                }}
-              />
-            </>
-          )}
           <Box mt="24px">
             <Fields
               phaseId={phaseId}
