@@ -85,6 +85,11 @@ const FormBuilderToolbox = ({
       title_multiloc: {
         [locale]: '',
       },
+      // Set default character limits for text-supporting fields (excluding html_multiloc)
+      ...(['text', 'multiline_text', 'text_multiloc'].includes(type) && {
+        min_characters: 3,
+        max_characters: type === 'text_multiloc' ? 120 : undefined,
+      }),
       linear_scale_label_1_multiloc: getInitialLinearScaleLabel({
         value: 1,
         inputType: type,

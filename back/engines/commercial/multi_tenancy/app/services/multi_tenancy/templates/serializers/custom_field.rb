@@ -37,6 +37,8 @@ module MultiTenancy
           ask_follow_up
           question_category
           include_in_printed_form
+          min_characters
+          max_characters
         ]
 
         # Enigmatic comment from the previous implementation:
