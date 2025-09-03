@@ -24,7 +24,7 @@ const CustomizeErrorMessage = ({
       <Box mt="4px">
         <Box display="flex" alignItems="center" mt="12px">
           <Button
-            buttonStyle="admin-dark"
+            buttonStyle="secondary"
             w="auto"
             onClick={(e) => {
               e.preventDefault();
