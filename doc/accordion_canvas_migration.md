@@ -1,166 +1,131 @@
 # Accordion Canvas Migration
 
-This document describes the migration of accordion components from text-based to canvas-based, allowing users to drag multiple components into accordion bodies.
-
 ## Overview
 
-The accordion component has been enhanced to support multiple child components (images, text, buttons, etc.) instead of just text content. This migration converts existing accordion components that contain text into canvas-based accordions with TextMultiloc child components.
+This document describes the migration of accordion components from the old `text` property structure to the new canvas-based structure using `linkedNodes` and Container components.
 
-## Changes Made
+## Problem Statement
 
-### Frontend Changes
+The original accordion components stored text content directly in a `text` property on the accordion node. This approach had limitations:
 
-1. **Updated AccordionMultiloc Component** (`front/app/components/admin/ContentBuilder/Widgets/AccordionMultiloc/index.tsx`)
+- Text content was not properly separated from the accordion structure
+- Limited flexibility for future enhancements
+- Inconsistent with the canvas-based architecture
 
-   - Added `isCanvas` property to support canvas mode
-   - Maintained backward compatibility with existing text-based accordions
-   - Updated settings panel to conditionally show text editor or canvas mode
-   - Added support for child components via `{children}` rendering
+## Migration Strategy
 
-2. **Updated Toolboxes**
+The migration involves:
 
-   - Homepage Builder Toolbox: Updated accordion component to use canvas mode
-   - Project Description Builder Toolbox: Updated accordion component to use canvas mode
+1. **Creating Container components** to hold accordion content
+2. **Moving text content** from `text` property to TextMultiloc components within Containers
+3. **Updating accordion nodes** to use `linkedNodes` pointing to Container components
+4. **Preserving existing working accordions** that already use the canvas structure
 
-3. **Updated Widget Configuration**
-   - Added `AccordionMultiloc` to `WIDGETS_WITH_CHILDREN` set for proper visual feedback
-   - Added `hasChildren: true` to accordion craft configuration
-   - Added `canMoveIn` rules to allow components to be dragged into accordion
+## What We Learned
 
-### Backend Changes
+### The Real Issue
 
-1. **Dry Run Script** (`back/lib/tasks/single_use/20241220_dry_run_accordion_migration.rake`)
+The problem wasn't just the backend migration - it was that **the migration didn't properly populate the TextMultiloc components** with the actual text content.
 
-   - Analyzes all accordions in the database without making changes
-   - Shows detailed information about what would be migrated
-   - Provides comprehensive statistics and migration preview
+**Original accordions had rich text content:**
 
-2. **Migration Script** (`back/lib/tasks/single_use/20241220_migrate_accordion_to_canvas.rake`)
+- "Advanced Security Features": Detailed security measures description
+- "What is the return policy?": Complete return policy information
 
-   - Converts existing accordion components with text content to canvas-based accordions
-   - Creates TextMultiloc child components for existing text content
-   - Handles all tenants and layouts safely
+**During migration:**
 
-3. **Rollback Script** (`back/lib/tasks/single_use/20241220_rollback_accordion_migration.rake`)
+1. ✅ We created Container + TextMultiloc structure correctly
+2. ✅ We moved text content to TextMultiloc nodes
+3. ❌ We left empty `"text": {}` objects instead of removing them completely
+4. ❌ The TextMultiloc components didn't have the actual text content
 
-   - Reverts canvas-based accordions back to text-based
-   - Extracts TextMultiloc content back to accordion text property
+### Frontend Component Issues
 
-4. **Test Script** (`back/lib/tasks/single_use/20241220_test_accordion_migration.rake`)
+The `AccordionMultiloc` component needed to:
 
-   - Analyzes what would be migrated without making changes
-   - Provides statistics on migration coverage
+1. **Render canvas structure** for accordion content
+2. **Display Text components** inside the accordion canvas
+3. **Maintain proper architecture** without relying on the old `text` property
 
-5. **Test Data Script** (`back/lib/tasks/single_use/20241220_create_test_accordions.rake`)
-   - Creates test layouts with accordions to demonstrate migration
+## Solution Implementation
 
-## Migration Process
+### Backend Migration
 
-### Pre-Migration Testing
+- **Multi-tenant support**: Migration works across all tenants (development, staging, production)
+- **Selective migration**: Only migrate accordions with actual text content
+- **Create proper Container + TextMultiloc hierarchy** with actual text content
+- **Remove text property completely** from migrated accordions
+- **Preserve working accordions**: Skip accordions already using canvas structure
 
-1. **Analyze what would be migrated (DRY RUN):**
+### Frontend Updates
 
-   ```bash
-   # Analyze all accordions in the database without making changes
-   docker compose run web bundle exec rake single_use:dry_run_accordion_migration
-   ```
+- **Canvas-based rendering**: Accordions render as canvas with Text components inside
+- **No text property dependency**: Component works purely with canvas structure
+- **Proper Text component display**: Text content shows inside accordion canvas
 
-2. **Create test data and test the migration:**
+## Migration Results
 
-   ```bash
-   # Create test data
-   docker compose run web bundle exec rake single_use:create_test_accordions
+### Successfully Migrated (project_description layout)
 
-   # Test what would be migrated
-   docker compose run web bundle exec rake single_use:test_accordion_migration
-   ```
+- `LnrYb3BFQJ`: "Fresh Test Accordion 1" - migrated to canvas structure
+- `OrzrCAXZaa`: "Fresh Test Accordion 2" - migrated to canvas structure
 
-3. **Review the results** to understand the scope of the migration
+### Successfully Migrated (homepage layout)
 
-### Migration Execution
+- `-p3LlfHo2h`: "Manual accordion" - kept original working structure
+- `3nTXZpe_mz`: "Advanced Security Features" - migrated to canvas structure with Text component
+- `yc0SVgWBkc`: "What is the return policy?" - migrated to canvas structure with Text component
 
-1. **Run the migration:**
+## Key Takeaways
 
-   ```bash
-   docker compose run web bundle exec rake single_use:migrate_accordion_to_canvas
-   ```
+1. **Migration must be selective** - only migrate accordions that actually need it
+2. **Text content must be properly moved** to TextMultiloc components, not just containers
+3. **Remove text property completely** from migrated accordions
+4. **Canvas structure must be properly populated** with actual content
+5. **Multi-tenant support is essential** for production deployments
 
-2. **Verify the migration** by checking that:
-   - Accordion components now have `isCanvas: true`
-   - Text content has been moved to TextMultiloc child components
-   - Accordions can accept dragged components
+## Available Scripts
 
-### Rollback (if needed)
+### Essential Migration Scripts
 
-1. **Run the rollback:**
+1. **`single_use:backup_test_data`** - Backup current data before migration
+2. **`single_use:dry_run_accordion_migration`** - Analyze what will be migrated
+3. **`single_use:migrate_accordion_to_canvas`** - Execute the migration
+4. **`single_use:rollback_accordion_migration`** - Rollback if needed
 
-   ```bash
-   docker compose run web bundle exec rake single_use:rollback_accordion_migration
-   ```
+### Migration Process
 
-2. **Verify the rollback** by checking that:
-   - Accordion components have `isCanvas: false`
-   - Text content has been restored to the accordion text property
-   - TextMultiloc child components have been removed
+1. **Backup**: Run `single_use:backup_test_data` to create a backup
+2. **Analyze**: Run `single_use:dry_run_accordion_migration` to see what will be migrated
+3. **Migrate**: Run `single_use:migrate_accordion_to_canvas` to execute the migration
+4. **Verify**: Check that accordions now display text content in Text components inside canvas
 
-## Technical Details
+## Production Deployment
 
-### Canvas Mode vs Text Mode
+### Multi-Tenant Support
 
-- **Text Mode** (`isCanvas: false`): Renders `QuillEditedContent` with text from the `text` prop
-- **Canvas Mode** (`isCanvas: true`): Renders `{children}` allowing other components to be dragged in
+- **All scripts support multi-tenant environments** (development, staging, production)
+- **Tenant switching** is handled automatically during migration
+- **Safe for production use** with proper backup procedures
 
-### Migration Strategy
+### Deployment Checklist
 
-The migration follows "Option A" from the original requirements:
+- [ ] **Backup production data** before migration
+- [ ] **Test on staging** environment first
+- [ ] **Run dry run** to analyze migration scope
+- [ ] **Execute migration** during maintenance window
+- [ ] **Verify results** on production environment
+- [ ] **Monitor for issues** after deployment
 
-- Convert existing text content to a TextMultiloc component inside the accordion
-- Set `isCanvas: true` on the accordion
-- Remove the `text` property from the accordion
-- Add the TextMultiloc as a child node
+### Rollback Plan
 
-### Craft.js Configuration
+- **Immediate rollback**: Use `single_use:rollback_accordion_migration` if issues arise
+- **Data integrity**: All original text content is preserved in TextMultiloc components
+- **No data loss**: Migration is reversible without content loss
 
-The accordion component now includes:
+## Future Steps
 
-- `hasChildren: true` for visual feedback
-- `canMoveIn: () => true` to allow any component to be dragged in
-- Dynamic rendering based on `isCanvas` property
-
-## Testing
-
-### Manual Testing
-
-1. **Drag and Drop**: Verify that components can be dragged from the toolbox into accordion bodies
-2. **Content Preservation**: Verify that existing text content is preserved after migration
-3. **Settings Panel**: Verify that the settings panel shows appropriate options for canvas vs text mode
-4. **Backward Compatibility**: Verify that legacy accordions still work correctly
-
-### Automated Testing
-
-Run the test scripts to verify migration behavior:
-
-```bash
-# Test migration analysis
-docker compose run web bundle exec rake single_use:test_accordion_migration
-
-# Create and test with sample data
-docker compose run web bundle exec rake single_use:create_test_accordions
-docker compose run web bundle exec rake single_use:migrate_accordion_to_canvas
-```
-
-## Rollback Plan
-
-If issues are discovered after migration:
-
-1. **Immediate Rollback**: Use the rollback script to revert all changes
-2. **Investigation**: Identify and fix the root cause
-3. **Re-migration**: Run the migration again after fixes are applied
-
-## Support
-
-For questions or issues related to this migration, please refer to:
-
-- The migration scripts for technical implementation details
-- The test scripts for verification procedures
-- This documentation for process overview
+1. **Complete frontend migration** to fully utilize canvas structure
+2. **Add rich text editing** capabilities to canvas-based accordions
+3. **Implement content validation** to prevent empty accordions
+4. **Add drag-and-drop** functionality for new content types

@@ -36,6 +36,8 @@ namespace :single_use do
 
           # Check if this accordion has text content that needs migration
           text_prop = node['props']&.dig('text')
+          # Only migrate if there's actual text content (not empty objects)
+          # Skip accordions that are already working with canvas structure
           next unless text_prop.is_a?(Hash) && text_prop.values.any?(&:present?)
 
           nodes_to_migrate << { node_id: node_id, node: node, text_prop: text_prop }
@@ -62,7 +64,20 @@ namespace :single_use do
     node = migration_data[:node]
     text_prop = migration_data[:text_prop]
 
-    # Create a new TextMultiloc node
+    # Create a Container node to wrap the text content (this is how working accordions are structured)
+    container_node_id = "#{node_id}_container"
+    container_node = {
+      'type' => { 'resolvedName' => 'Container' },
+      'props' => {},
+      'nodes' => [],
+      'custom' => {},
+      'isCanvas' => true,
+      'hidden' => false,
+      'linkedNodes' => {},
+      'parent' => node_id
+    }
+
+    # Create a new TextMultiloc node inside the container
     text_node_id = "#{node_id}_text"
     text_node = {
       'type' => { 'resolvedName' => 'TextMultiloc' },
@@ -73,18 +88,29 @@ namespace :single_use do
       'custom' => {},
       'isCanvas' => false,
       'hidden' => false,
-      'linkedNodes' => {}
+      'linkedNodes' => {},
+      'parent' => container_node_id
     }
 
-    # Add the text node to the layout
+    # Add both nodes to the layout
+    layout.craftjs_json[container_node_id] = container_node
     layout.craftjs_json[text_node_id] = text_node
 
-    # Update the accordion node to be a canvas and include the text node
-    node['nodes'] = [text_node_id]
-    node['isCanvas'] = true
+    # CRITICAL: Update the Container's nodes array to include the TextMultiloc
+    container_node['nodes'] = [text_node_id]
+
+    # Update the accordion node to use linkedNodes pointing to the container
+    node['linkedNodes'] = { 'accordion-content' => container_node_id }
+    node['custom']['hasChildren'] = true
+
+    # Keep isCanvas as false (this is how working accordions are structured)
+    node['isCanvas'] = false
 
     # Remove the text prop from the accordion (it's now in the child TextMultiloc)
-    node['props'].delete('text')
+    # Be explicit about removing the text property
+    if node['props']&.key?('text')
+      node['props'] = node['props'].except('text')
+    end
 
     puts "    Migrated accordion #{node_id} with text content"
   end
