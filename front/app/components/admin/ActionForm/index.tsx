@@ -1,16 +1,14 @@
 import React from 'react';
 
-import { Box, Button, fontSizes } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import { IPermissionData } from 'api/permissions/types';
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
 
-import { FormattedMessage } from 'utils/cl-intl';
-
 import AccessRestrictions from './AccessRestrictions';
 import Fields from './Fields';
 import FlowVisualization from './FlowVisualization';
-import messages from './messages';
+import ResetButton from './ResetButton';
 import { Changes } from './types';
 import { showResetButton } from './utils';
 
@@ -70,23 +68,7 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
             permitted_by,
             permissionsCustomFields.data,
             groupIds
-          ) && (
-            <Box mt="28px" w="100%" display="flex">
-              <Button
-                width="auto"
-                buttonStyle="text"
-                onClick={onReset}
-                padding="0px"
-                fontSize={`${fontSizes.m}px`}
-              >
-                <span style={{ textDecorationLine: 'underline' }}>
-                  <FormattedMessage
-                    {...messages.resetDemographicQuestionsAndGroups}
-                  />
-                </span>
-              </Button>
-            </Box>
-          )}
+          ) && <ResetButton onClick={onReset} />}
         </>
       )}
     </form>

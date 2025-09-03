@@ -1,13 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  Button,
-  Title,
-  fontSizes,
-  Text,
-  Toggle,
-} from '@citizenlab/cl2-component-library';
+import { Box, Title, Text, Toggle } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import { IPermissionData } from 'api/permissions/types';
@@ -21,6 +14,7 @@ import AccessRestrictions from '../ActionForm/AccessRestrictions';
 import Fields from '../ActionForm/Fields';
 import FlowVisualization from '../ActionForm/FlowVisualization';
 import messages from '../ActionForm/messages';
+import ResetButton from '../ActionForm/ResetButton';
 import { showResetButton } from '../ActionForm/utils';
 
 type Changes = {
@@ -104,23 +98,7 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
             permitted_by,
             permissionsCustomFields.data,
             groupIds
-          ) && (
-            <Box mt="28px" w="100%" display="flex">
-              <Button
-                width="auto"
-                buttonStyle="text"
-                onClick={onReset}
-                padding="0px"
-                fontSize={`${fontSizes.m}px`}
-              >
-                <span style={{ textDecorationLine: 'underline' }}>
-                  <FormattedMessage
-                    {...messages.resetDemographicQuestionsAndGroups}
-                  />
-                </span>
-              </Button>
-            </Box>
-          )}
+          ) && <ResetButton onClick={onReset} />}
           {canUseEveryoneTracking && (
             <Box mt="28px" width="90%">
               <Title variant="h4" color="primary" mb={'8px'}>
