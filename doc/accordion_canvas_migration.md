@@ -29,30 +29,43 @@ The accordion component has been enhanced to support multiple child components (
 
 ### Backend Changes
 
-1. **Migration Script** (`back/lib/tasks/single_use/20241220_migrate_accordion_to_canvas.rake`)
+1. **Dry Run Script** (`back/lib/tasks/single_use/20241220_dry_run_accordion_migration.rake`)
+
+   - Analyzes all accordions in the database without making changes
+   - Shows detailed information about what would be migrated
+   - Provides comprehensive statistics and migration preview
+
+2. **Migration Script** (`back/lib/tasks/single_use/20241220_migrate_accordion_to_canvas.rake`)
 
    - Converts existing accordion components with text content to canvas-based accordions
    - Creates TextMultiloc child components for existing text content
    - Handles all tenants and layouts safely
 
-2. **Rollback Script** (`back/lib/tasks/single_use/20241220_rollback_accordion_migration.rake`)
+3. **Rollback Script** (`back/lib/tasks/single_use/20241220_rollback_accordion_migration.rake`)
 
    - Reverts canvas-based accordions back to text-based
    - Extracts TextMultiloc content back to accordion text property
 
-3. **Test Script** (`back/lib/tasks/single_use/20241220_test_accordion_migration.rake`)
+4. **Test Script** (`back/lib/tasks/single_use/20241220_test_accordion_migration.rake`)
 
    - Analyzes what would be migrated without making changes
    - Provides statistics on migration coverage
 
-4. **Test Data Script** (`back/lib/tasks/single_use/20241220_create_test_accordions.rake`)
+5. **Test Data Script** (`back/lib/tasks/single_use/20241220_create_test_accordions.rake`)
    - Creates test layouts with accordions to demonstrate migration
 
 ## Migration Process
 
 ### Pre-Migration Testing
 
-1. **Test the migration on a staging environment:**
+1. **Analyze what would be migrated (DRY RUN):**
+
+   ```bash
+   # Analyze all accordions in the database without making changes
+   docker compose run web bundle exec rake single_use:dry_run_accordion_migration
+   ```
+
+2. **Create test data and test the migration:**
 
    ```bash
    # Create test data
@@ -62,7 +75,7 @@ The accordion component has been enhanced to support multiple child components (
    docker compose run web bundle exec rake single_use:test_accordion_migration
    ```
 
-2. **Review the test results** to understand the scope of the migration
+3. **Review the results** to understand the scope of the migration
 
 ### Migration Execution
 
