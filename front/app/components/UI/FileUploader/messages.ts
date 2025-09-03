@@ -5,6 +5,14 @@ export default defineMessages({
     id: 'app.components.FileUploader.fileUploadLabel',
     defaultMessage: 'Add files',
   },
+  chooseFromExistingFiles: {
+    id: 'app.components.FileUploader.chooseFromExistingFiles',
+    defaultMessage: 'Choose from existing files',
+  },
+  selectFile: {
+    id: 'app.components.FileUploader.selectFile',
+    defaultMessage: 'Select file',
+  },
   fileInputDescription: {
     id: 'app.components.FileUploader.fileInputDescription',
     defaultMessage: 'Select a file',
