@@ -11,9 +11,15 @@ export type Changes = {
   everyone_tracking_enabled?: boolean;
 };
 
+type PhaseSettings = {
+  allow_anonymous_participation?: boolean;
+  // TODO: the last page survey thing
+};
+
 export type Props = {
   phaseId?: string;
   permissionData: IPermissionData;
   onChange: (changes: Changes) => Promise<void>;
   onReset: () => void;
+  onChangePhaseSetting?: (settings: PhaseSettings) => void;
 };

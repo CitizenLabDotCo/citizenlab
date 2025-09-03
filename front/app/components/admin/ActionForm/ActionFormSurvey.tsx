@@ -1,11 +1,8 @@
 import React from 'react';
 
 import { Box, Title, Text, Toggle } from '@citizenlab/cl2-component-library';
-import { Multiloc } from 'typings';
 
-import { IPermissionData } from 'api/permissions/types';
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
-import { PermittedBy } from 'api/phase_permissions/types';
 import usePhase from 'api/phases/usePhase';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -16,27 +13,16 @@ import FlowVisualization from '../ActionForm/FlowVisualization';
 import messages from '../ActionForm/messages';
 import ResetButton from '../ActionForm/ResetButton';
 import { showResetButton } from '../ActionForm/utils';
+import AnonymousPostingToggle from '../AnonymousPostingToggle';
 
-type Changes = {
-  permitted_by?: PermittedBy;
-  group_ids?: string[];
-  verification_expiry?: number | null;
-  access_denied_explanation_multiloc?: Multiloc;
-  everyone_tracking_enabled?: boolean;
-};
-
-interface Props {
-  phaseId?: string;
-  permissionData: IPermissionData;
-  onChange: (changes: Changes) => Promise<void>;
-  onReset: () => void;
-}
+import { Props } from './types';
 
 const ActionFormSurvey = ({
   phaseId,
   permissionData,
   onChange,
   onReset,
+  onChangePhaseSetting,
 }: Props) => {
   const {
     attributes: {
@@ -74,6 +60,10 @@ const ActionFormSurvey = ({
 
   if (!permissionsCustomFields) return null;
 
+  const allow_anonymous_participation =
+    phase?.data.attributes.allow_anonymous_participation;
+  if (allow_anonymous_participation === undefined) return null;
+
   return (
     <form className={`e2e-action-form-${action}`}>
       <AccessRestrictions
@@ -81,6 +71,18 @@ const ActionFormSurvey = ({
         permissionData={permissionData}
         onChange={onChange}
       />
+      <Box mt="20px">
+        {phase && (
+          <AnonymousPostingToggle
+            allow_anonymous_participation={allow_anonymous_participation}
+            handleAllowAnonymousParticipationOnChange={() => {
+              onChangePhaseSetting?.({
+                allow_anonymous_participation: !allow_anonymous_participation,
+              });
+            }}
+          />
+        )}
+      </Box>
       {permitted_by !== 'admins_moderators' && (
         <>
           <Box mt="24px">
