@@ -18,7 +18,8 @@ export interface ICampaignData {
     campaign_name: CampaignName;
     campaign_description_multiloc: Multiloc;
     // Only undefined for invite_received?
-    enabled?: boolean;
+    enabled: boolean;
+    lock_enabled: boolean;
     subject_multiloc: Multiloc;
     body_multiloc: Multiloc;
     title_multiloc?: Multiloc;

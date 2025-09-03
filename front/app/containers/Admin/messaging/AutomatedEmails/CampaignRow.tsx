@@ -69,6 +69,7 @@ const CampaignRow = ({ campaign, context, onClickViewExample }: Props) => {
   const isOutsidePlan =
     !globalFeatureActivated || (context && !contextFeatureActivated);
   const isEditable = !isComingSoon && !isContextDisabled && !isOutsidePlan;
+  const lockEnabled = campaign.attributes.lock_enabled;
   const handleEditClick = () => {
     if (unpersistedContextCampaign) {
       addCampaign(
@@ -109,6 +110,7 @@ const CampaignRow = ({ campaign, context, onClickViewExample }: Props) => {
         <Toggle
           checked={!!campaign.attributes.enabled}
           onChange={toggleEnabled}
+          disabled={lockEnabled}
         />
         <CampaignDescription campaign={campaign} />
         <Box display="flex" justifyContent="flex-end" flexGrow={1}>

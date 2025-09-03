@@ -38,6 +38,7 @@ module EmailCampaigns
     include Trackable
     include LifecycleStageRestrictable
     include ContentConfigurable
+    include Disableable # Not technically disableable, but this ensures that it is locked to enabled.
     allow_lifecycle_stages except: ['churned']
 
     filter :check_send_invite_email_toggle
@@ -87,6 +88,16 @@ module EmailCampaigns
     def self.recipient_segment_multiloc_key
       'email_campaigns.admin_labels.recipient_segment.user_who_was_invited'
     end
+
+    def self.trigger_multiloc_key
+      'email_campaigns.admin_labels.trigger.user_is_invited_to_platform'
+    end
+
+    def lock_enabled?
+      true
+    end
+
+    private
 
     def format_invite_text(invite)
       return unless invite.invite_text

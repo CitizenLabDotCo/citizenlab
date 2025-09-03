@@ -6,6 +6,7 @@ export const campaignsData: ICampaignData[] = [
     type: 'campaign',
     attributes: {
       enabled: true,
+      lock_enabled: false,
       sender: 'author',
       reply_to: 'author',
       subject_multiloc: {
@@ -47,6 +48,7 @@ export const campaignsData: ICampaignData[] = [
     type: 'campaign',
     attributes: {
       enabled: true,
+      lock_enabled: false,
       sender: 'author',
       reply_to: 'author',
       subject_multiloc: {

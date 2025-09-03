@@ -186,6 +186,10 @@ module EmailCampaigns
       super || {}
     end
 
+    def lock_enabled?
+      false
+    end
+
     protected
 
     def set_enabled
