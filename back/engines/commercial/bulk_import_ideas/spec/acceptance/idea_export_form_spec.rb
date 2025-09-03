@@ -106,6 +106,9 @@ resource 'Idea form exports' do
           let(:format) { 'pdf' }
 
           example 'Get a pdf version of the idea form', document: false do
+            expect_any_instance_of(BulkImportIdeas::Exporters::IdeaPdfFormExporter).to receive(:export).and_return(
+              Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').read
+            )
             do_request
             assert_status 200
           end
@@ -129,6 +132,9 @@ resource 'Idea form exports' do
           let(:format) { 'pdf' }
 
           example 'Get a pdf version of the idea form', document: false do
+            expect_any_instance_of(BulkImportIdeas::Exporters::IdeaPdfFormExporter).to receive(:export).and_return(
+              Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').read
+            )
             do_request
             assert_status 200
           end
