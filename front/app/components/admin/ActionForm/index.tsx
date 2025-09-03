@@ -177,7 +177,7 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
               >
                 <span style={{ textDecorationLine: 'underline' }}>
                   <FormattedMessage
-                    {...messages.resetExtraQuestionsAndGroups}
+                    {...messages.resetDemographicQuestionsAndGroups}
                   />
                 </span>
               </Button>
