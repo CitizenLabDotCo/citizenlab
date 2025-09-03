@@ -32,7 +32,12 @@ interface Props {
   onReset: () => void;
 }
 
-const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
+const ActionFormSurvey = ({
+  phaseId,
+  permissionData,
+  onChange,
+  onReset,
+}: Props) => {
   const {
     attributes: {
       permitted_by,
@@ -143,4 +148,4 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
   );
 };
 
-export default ActionForm;
+export default ActionFormSurvey;

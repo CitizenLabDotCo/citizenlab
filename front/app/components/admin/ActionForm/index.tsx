@@ -1,77 +1,40 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import usePhase from 'api/phases/usePhase';
 
-import { IPermissionData } from 'api/permissions/types';
-import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
+import ActionFormDefault from './ActionFormDefault';
+import ActionFormSurvey from './ActionFormSurvey';
+import { Props } from './types';
 
-import AccessRestrictions from './AccessRestrictions';
-import Fields from './Fields';
-import FlowVisualization from './FlowVisualization';
-import ResetButton from './ResetButton';
-import { Changes } from './types';
-import { showResetButton } from './utils';
+const ActionForm = ({ permissionData, phaseId, ...props }: Props) => {
+  const { data: phase } = usePhase(phaseId);
+  const participation_method = phase?.data.attributes.participation_method;
 
-interface Props {
-  phaseId?: string;
-  permissionData: IPermissionData;
-  onChange: (changes: Changes) => Promise<void>;
-  onReset: () => void;
-}
+  if (!participation_method) return null;
 
-const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
-  const {
-    attributes: {
-      permitted_by,
-      action,
-      verification_enabled,
-      verification_expiry,
-    },
-    relationships,
-  } = permissionData;
+  const { action } = permissionData.attributes;
 
-  const groupIds = relationships.groups.data.map((p) => p.id);
+  const showSurveyForm =
+    (participation_method === 'native_survey' ||
+      participation_method === 'community_monitor_survey') &&
+    action === 'posting_idea';
 
-  const { data: permissionsCustomFields } = usePermissionsCustomFields({
-    phaseId,
-    action,
-  });
-
-  if (!permissionsCustomFields) return null;
+  if (showSurveyForm) {
+    return (
+      <ActionFormSurvey
+        permissionData={permissionData}
+        phaseId={phaseId}
+        {...props}
+      />
+    );
+  }
 
   return (
-    <form className={`e2e-action-form-${action}`}>
-      <AccessRestrictions permissionData={permissionData} onChange={onChange} />
-      {permitted_by !== 'admins_moderators' && (
-        <>
-          <Box mt="24px">
-            <Fields
-              phaseId={phaseId}
-              action={action}
-              showAddQuestion={permitted_by !== 'everyone'}
-              userFieldsInForm={false}
-            />
-          </Box>
-          <Box mt="20px">
-            <FlowVisualization
-              permittedBy={permitted_by}
-              verificationEnabled={verification_enabled}
-              verificationExpiry={verification_expiry}
-              permissionsCustomFields={permissionsCustomFields.data}
-              onChangeVerificationExpiry={(verification_expiry) => {
-                onChange({ verification_expiry });
-              }}
-              userFieldsInForm={false}
-            />
-          </Box>
-          {showResetButton(
-            permitted_by,
-            permissionsCustomFields.data,
-            groupIds
-          ) && <ResetButton onClick={onReset} />}
-        </>
-      )}
-    </form>
+    <ActionFormDefault
+      permissionData={permissionData}
+      phaseId={phaseId}
+      {...props}
+    />
   );
 };
 
