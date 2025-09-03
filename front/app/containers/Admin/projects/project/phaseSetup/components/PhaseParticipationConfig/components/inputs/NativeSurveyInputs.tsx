@@ -8,7 +8,7 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
-import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
+import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import UserFieldsInSurveyToggle from 'components/admin/UserFieldsInSurveyToggle/UserFieldsInSurveyToggle';
 import ButtonWithLink from 'components/UI/ButtonWithLink';

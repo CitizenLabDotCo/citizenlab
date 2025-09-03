@@ -5,7 +5,7 @@ import { Box, Text, IconTooltip } from '@citizenlab/cl2-component-library';
 import usePhase from 'api/phases/usePhase';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
-import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
+import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
