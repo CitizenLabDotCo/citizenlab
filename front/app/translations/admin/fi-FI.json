@@ -1291,7 +1291,7 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.removeField": "Poista kenttä",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.requiredGroup1": "Pakollinen - aina käytössä, koska ryhmä viittaa siihen",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.authenticateWithVerificationProvider2": "Todennus komennolla {verificationMethod}",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.completeTheDemographicQuestionsBelow": "Vastaa alla oleviin demografisiin kysymyksiin",
+  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.completeTheDemographicQuestionsAbove": "Vastaa yllä oleviin demografisiin kysymyksiin",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.confirmYourEmail": "Vahvista sähköpostiosoitteesi",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.dataReturned": "Vahvistusmenetelmästä palautetut tiedot:",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterNameLastNameEmailAndPassword1": "Anna etunimi, sukunimi, sähköpostiosoite ja salasana",
