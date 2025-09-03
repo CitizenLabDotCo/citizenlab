@@ -11,7 +11,7 @@ const DataCollection = ({ allow_anonymous_participation, onChange }: Props) => {
   return (
     <Box mt="32px">
       <Title variant="h4" color="primary">
-        Data collection
+        User data collection
       </Title>
       <Radio
         name="anonymous"
