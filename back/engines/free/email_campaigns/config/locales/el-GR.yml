@@ -108,8 +108,8 @@ el:
       "link_terms_conditions": "Όροι & Προϋποθέσεις"
       "link_unsubscribe": "Διαγραφή"
       "powered_by": "Υποστηρίζεται από"
-      "recipient_statement": "Αυτό το e-mail σας εστάλη από την Go Vocal εκ μέρους του %{organizationName}, επειδή είστε εγγεγραμμένος χρήστης του %{organizationLink}."
-      "unsubscribe_statement": "Σε περίπτωση που δεν επιθυμείτε να λαμβάνετε πλέον αυτά τα μηνύματα ηλεκτρονικού ταχυδρομείου, μπορείτε να επισκεφθείτε τη διεύθυνση %{unsubscribeLink}."
+      "recipient_statement": "Αυτό το e-mail σας εστάλη από την Go Vocal εκ μέρους του Οργανισμού \"%{organizationName}\" καθώς είστε εγγεγραμμένος χρήστης του %{organizationLink}."
+      "unsubscribe_statement": "Σε περίπτωση που δεν επιθυμείτε να λαμβάνετε πλέον αυτά τα μηνύματα ηλεκτρονικού ταχυδρομείου, μπορείτε να επιλέξετε %{unsubscribeLink}."
       "unsubscribe_text": "διαγραφή"
     follow:
       "unfollow_here": "Λάβατε αυτή την ειδοποίηση εξαιτίας ενός στοιχείου που ακολουθείτε. <a href=\"%{unfollow_url}\">Μπορείτε να το ακυρώσετε εδώ.</a>"
@@ -455,7 +455,7 @@ el:
         proposal: 'Η πρότασή σας έχει δημοσιευθεί'
         petition: 'Το αίτημά σας έχει δημοσιευτεί'
       header_message: 'Ας βεβαιωθούμε ότι θα διαβαστεί.'
-      message_get_votes: 'Προσεγγίστε περισσότερους ανθρώπους με την ιδέα σας:'
+      message_get_votes: 'Μοιραστείτε την ιδέα σας με περισσότερους ανθρώπους'
       action_published_idea: 'Δημοσιευμένη ιδέα'
       action_add_image: '%{addImageLink} για να αυξηθεί η ορατότητα'
       add_image: 'Προσθήκη εικόνας'
@@ -463,7 +463,7 @@ el:
       action_share_twitter: 'Ενημερώστε τους οπαδούς σας στο %{twitterLink}'
       action_send_email: 'Στείλτε στις επαφές σας ένα %{sendEmailLink}'
       send_email: email
-      action_share_link: 'Μοιραστείτε το μέσω οποιουδήποτε καναλιού αντιγράφοντας το %{link}'
+      action_share_link: 'Μοιραστείτε το μέσω οποιουδήποτε καναλιού με χρήση του ακόλουθου link. "%{link}"'
       link: σύνδεσμος
     your_input_in_screening:
       main_header:
