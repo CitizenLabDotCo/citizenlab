@@ -537,7 +537,7 @@ module BulkImportIdeas::Importers
       elsif phase[:idea_rows]
         log "NEW IDEAS TO IMPORT: #{phase[:idea_rows].count} ideas will be imported"
       else
-        log "NO IDEAS TO IMPORT"
+        log 'NO IDEAS TO IMPORT'
       end
     end
 
