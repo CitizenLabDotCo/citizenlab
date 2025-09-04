@@ -17,7 +17,7 @@ const useFileAttachments = ({
   attachable_id,
   attachable_type,
 }: {
-  attachable_id: string;
+  attachable_id?: string;
   attachable_type: 'Phase' | 'Project' | 'Event';
 }) => {
   const queryParameters: QueryParameters = {
@@ -33,6 +33,7 @@ const useFileAttachments = ({
   >({
     queryKey: fileAttachmentsKeys.list(queryParameters),
     queryFn: () => fetchFileAttachments(queryParameters),
+    enabled: !!attachable_id,
   });
 };
 

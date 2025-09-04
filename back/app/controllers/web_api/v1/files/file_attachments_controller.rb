@@ -14,6 +14,7 @@ class WebApi::V1::Files::FileAttachmentsController < ApplicationController
     file_attachments = policy_scope(Files::FileAttachment)
       .includes(:file, :attachable)
       .where(where_conditions)
+      .order(:position)
 
     render json: WebApi::V1::Files::FileAttachmentSerializer.new(
       file_attachments,

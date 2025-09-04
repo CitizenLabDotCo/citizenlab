@@ -10,15 +10,21 @@ const deleteFileAttachment = (id: string) =>
     action: 'delete',
   });
 
-const useDeleteFileAttachment = () => {
+const useDeleteFileAttachment = ({
+  invalidateCache = true,
+}: {
+  invalidateCache?: boolean;
+}) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: deleteFileAttachment,
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: fileAttachmentsKeys.lists(),
-      });
+      if (invalidateCache) {
+        queryClient.invalidateQueries({
+          queryKey: fileAttachmentsKeys.lists(),
+        });
+      }
     },
   });
 };

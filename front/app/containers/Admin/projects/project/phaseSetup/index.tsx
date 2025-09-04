@@ -7,10 +7,11 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
-import { CLErrors, UploadFile, Multiloc } from 'typings';
+import { CLErrors, Multiloc, UploadFile } from 'typings';
 
-import { IPhaseFiles } from 'api/phase_files/types';
-import usePhaseFiles from 'api/phase_files/usePhaseFiles';
+import { IFileAttachmentData } from 'api/file_attachments/types';
+import useFileAttachments from 'api/file_attachments/useFileAttachments';
+import useAddFile from 'api/files/useAddFile';
 import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';
 import useAddPhase from 'api/phases/useAddPhase';
 import usePhase from 'api/phases/usePhase';
@@ -28,8 +29,7 @@ import {
 } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Error from 'components/UI/Error';
-import FileUploader from 'components/UI/FileUploader';
-import { FileType } from 'components/UI/FileUploader/FileDisplay';
+import FileRepositorySelectAndUpload from 'components/UI/FileRepositorySelectAndUpload';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
@@ -41,7 +41,6 @@ import {
 import clHistory from 'utils/cl-router/history';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
-// import DateSetup from './components/DateSetup';
 import DateSetup from './components/DateSetup';
 import PhaseParticipationConfig from './components/PhaseParticipationConfig';
 import { ideationDefaultConfig } from './components/PhaseParticipationConfig/utils/participationMethodConfigs';
@@ -50,23 +49,6 @@ import { SubmitStateType, ValidationErrors } from './typings';
 import { getTimelineTab } from './utils';
 import validate from './validate';
 
-const convertToFileType = (phaseFiles: IPhaseFiles | undefined) => {
-  if (phaseFiles) {
-    const convertedFiles: FileType[] = [];
-    phaseFiles.data.map((phaseFile) => {
-      convertedFiles.push({
-        id: phaseFile.id,
-        url: phaseFile.attributes.file.url,
-        name: phaseFile.attributes.name,
-        size: phaseFile.attributes.size,
-        remote: true,
-      });
-    });
-    return convertedFiles;
-  }
-  return [];
-};
-
 interface Props {
   projectId: string;
   phase: IPhase | undefined;
@@ -74,17 +56,22 @@ interface Props {
 
 const AdminPhaseEdit = ({ projectId, phase }: Props) => {
   const phaseId = phase?.data.id;
-  const { data: phaseFiles } = usePhaseFiles(phaseId || null);
+  const { data: phaseFileAttachments } = useFileAttachments({
+    attachable_id: phaseId,
+    attachable_type: 'Phase',
+  });
   const { data: phases } = usePhases(projectId);
   const { mutate: addPhase } = useAddPhase();
   const { mutate: updatePhase } = useUpdatePhase();
+  const { mutate: addFile } = useAddFile();
   const syncPhaseFiles = useSyncPhaseFiles();
   const [errors, setErrors] = useState<CLErrors | null>(null);
   const [processing, setProcessing] = useState<boolean>(false);
-  const [inStatePhaseFiles, setInStatePhaseFiles] = useState<FileType[]>(
-    convertToFileType(phaseFiles)
-  );
-  const [phaseFilesToRemove, setPhaseFilesToRemove] = useState<FileType[]>([]);
+  const [inStatePhaseFileAttachments, setInStatePhaseFileAttachments] =
+    useState<IFileAttachmentData[] | undefined>(phaseFileAttachments?.data);
+  const [phaseFileAttachmentsToRemove, setPhaseFileAttachmentsToRemove] =
+    useState<IFileAttachmentData[]>([]);
+
   const [submitState, setSubmitState] = useState<SubmitStateType>('disabled');
   const [formData, setFormData] = useState<IUpdatedPhaseProperties>();
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
@@ -103,10 +90,10 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
   }, [phase]);
 
   useEffect(() => {
-    if (phaseFiles) {
-      setInStatePhaseFiles(convertToFileType(phaseFiles));
+    if (phaseFileAttachments) {
+      setInStatePhaseFileAttachments(phaseFileAttachments.data);
     }
-  }, [phaseFiles]);
+  }, [phaseFileAttachments]);
 
   if (!formatMessageWithLocale) return null;
 
@@ -163,43 +150,97 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
     updateFormData({ description_multiloc });
   };
 
-  const handlePhaseFileOnAdd = (newFile: UploadFile) => {
-    const modifiedNewFile = {
-      name: newFile.name || newFile.filename,
-      size: newFile.size,
-      remote: false,
-      base64: newFile.base64,
-    };
+  const handlePhaseFileOnAdd = (fileToAdd: UploadFile) => {
+    // Upload the file to the Data Repository, so we can make the attachment later.
+    addFile(
+      {
+        content: fileToAdd.base64,
+        project: projectId,
+        name: fileToAdd.name,
+        category: 'other', // Default to 'other' when added from phase setup
+        ai_processing_allowed: false, // Default to false when added from phase setup
+      },
+      {
+        onSuccess: (newFile) => {
+          // Create a temporary file attachment to add to the state, so the user sees it in the list.
+          const temporaryFileAttachment: IFileAttachmentData = {
+            id: `TEMP-${Math.random()}`, // Temporary ID, to mark it as a newly added file attachment.
+            attributes: {
+              position: inStatePhaseFileAttachments
+                ? inStatePhaseFileAttachments.length + 1
+                : 0,
+            },
+            relationships: {
+              attachable: {
+                data: {
+                  type: 'Phase',
+                  id: phaseId || '',
+                },
+              },
+              file: {
+                data: {
+                  id: newFile.data.id,
+                  type: 'files',
+                },
+              },
+            },
+            type: 'file_attachment',
+          };
 
-    const isDuplicate = inStatePhaseFiles.some((file) => {
-      if (file.base64 && newFile.base64) {
-        return file.base64 === newFile.base64;
+          const isDuplicate = inStatePhaseFileAttachments?.some(
+            (fileAttachment) => {
+              return (
+                fileAttachment.relationships.file.data.id ===
+                temporaryFileAttachment.relationships.file.data.id
+              );
+            }
+          );
+
+          setInStatePhaseFileAttachments(
+            isDuplicate
+              ? inStatePhaseFileAttachments
+              : [
+                  ...(inStatePhaseFileAttachments || []),
+                  temporaryFileAttachment,
+                ]
+          );
+
+          setSubmitState(isDuplicate ? submitState : 'enabled');
+        },
       }
-      return file.name === newFile.name;
-    });
-
-    setInStatePhaseFiles(
-      isDuplicate
-        ? inStatePhaseFiles
-        : // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          [...(inStatePhaseFiles || []), modifiedNewFile]
     );
-    setSubmitState(isDuplicate ? submitState : 'enabled');
   };
 
-  const handlePhaseFileOnRemove = (fileToRemove: FileType) => {
-    setInStatePhaseFiles(
-      inStatePhaseFiles.filter((file) => file.name !== fileToRemove.name)
+  const handlePhaseFileOnRemove = (
+    fileAttachmentToRemove: IFileAttachmentData
+  ) => {
+    setInStatePhaseFileAttachments(
+      inStatePhaseFileAttachments?.filter(
+        (fileAttachment) => fileAttachment.id !== fileAttachmentToRemove.id
+      )
     );
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    setPhaseFilesToRemove([...(phaseFilesToRemove || []), fileToRemove]);
+    setPhaseFileAttachmentsToRemove([
+      ...phaseFileAttachmentsToRemove,
+      fileAttachmentToRemove,
+    ]);
     setSubmitState('enabled');
   };
 
-  const handleFilesReorder = (updatedFiles: UploadFile[]) => {
-    setInStatePhaseFiles(updatedFiles);
+  const handleFilesReorder = (
+    updatedFileAttachments: IFileAttachmentData[]
+  ) => {
+    // Update the position of the updated file attachments
+    const updatedFileAttachmentsWithPosition = updatedFileAttachments.map(
+      (fileAttachment, index) => ({
+        ...fileAttachment,
+        attributes: {
+          ...fileAttachment.attributes,
+          position: index,
+        },
+      })
+    );
+
+    setInStatePhaseFileAttachments(updatedFileAttachmentsWithPosition);
     setSubmitState('enabled');
   };
 
@@ -231,21 +272,24 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
     const phaseResponse = response.data;
     const phaseId = phaseResponse.id;
 
-    const initialFileOrdering = phaseFiles?.data.reduce((acc, file) => {
-      if (file.id) {
-        acc[file.id] = file.attributes.ordering;
-      }
-      return acc;
-    }, {});
+    const initialFileAttachmentOrdering = phaseFileAttachments?.data.reduce(
+      (acc, file) => {
+        if (file.id) {
+          acc[file.id] = file.attributes.position;
+        }
+        return acc;
+      },
+      {}
+    );
 
     await syncPhaseFiles({
       phaseId,
-      phaseFiles: inStatePhaseFiles,
-      filesToRemove: phaseFilesToRemove,
-      fileOrdering: initialFileOrdering || {},
+      phaseFileAttachments: inStatePhaseFileAttachments || [],
+      fileAttachmentsToRemove: phaseFileAttachmentsToRemove,
+      fileAttachmentOrdering: initialFileAttachmentOrdering || {},
     })
       .then(() => {
-        setPhaseFilesToRemove([]);
+        setPhaseFileAttachmentsToRemove([]);
         setProcessing(false);
         setErrors(null);
         setSubmitState('success');
@@ -375,16 +419,18 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
             <SubSectionTitle>
               <FormattedMessage {...messages.uploadAttachments} />
             </SubSectionTitle>
-            <FileUploader
-              id="project-timeline-edit-form-file-uploader"
-              onFileAdd={handlePhaseFileOnAdd}
-              onFileRemove={handlePhaseFileOnRemove}
-              onFileReorder={handleFilesReorder}
-              files={inStatePhaseFiles}
-              enableDragAndDrop
-              multiple
-              apiErrors={errors}
-            />
+            {phaseId && ( // TODO: Check if this still workes with new phases
+              <FileRepositorySelectAndUpload
+                id="project-timeline-edit-form-file-uploader"
+                onFileAdd={handlePhaseFileOnAdd}
+                onFileRemove={handlePhaseFileOnRemove}
+                onFileReorder={handleFilesReorder}
+                fileAttachments={inStatePhaseFileAttachments}
+                enableDragAndDrop
+                multiple
+                apiErrors={errors}
+              />
+            )}
           </SectionField>
 
           {/* TODO: Fix this the next time the file is edited. */}

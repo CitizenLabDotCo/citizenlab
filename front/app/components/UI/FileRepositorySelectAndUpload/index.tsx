@@ -1,0 +1,162 @@
+import React, { useState, useEffect, useRef } from 'react';
+
+import { Box } from '@citizenlab/cl2-component-library';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { CLErrors, UploadFile } from 'typings';
+
+import { IFileAttachmentData } from 'api/file_attachments/types';
+
+import { List } from 'components/admin/ResourceList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
+import Error from 'components/UI/Error';
+
+import FileAttachmentDisplay from './FileAttachmentDisplay';
+import FileInput from './FileInput';
+
+export interface Props {
+  id: string;
+  className?: string;
+  onFileAdd: (fileToAdd: UploadFile) => void;
+  onFileRemove?: (fileAttachmentToRemove: IFileAttachmentData) => void;
+  onFileReorder?: (updatedFiles: IFileAttachmentData[]) => void;
+  fileAttachments?: IFileAttachmentData[] | undefined;
+  apiErrors?: CLErrors | null;
+  enableDragAndDrop?: boolean;
+  multiple?: boolean;
+  maxSizeMb?: number;
+  dataCy?: string;
+}
+
+const FileRepositorySelectAndUpload = ({
+  onFileAdd,
+  onFileRemove,
+  onFileReorder,
+  fileAttachments: initialFileAttachments,
+  apiErrors,
+  id,
+  className,
+  enableDragAndDrop = false,
+  multiple = false,
+  maxSizeMb,
+  dataCy,
+}: Props) => {
+  const [fileAttachments, setFileAttachments] = useState(
+    initialFileAttachments
+  );
+
+  // Track if we're currently dragging to prevent conflicts
+  const isDragging = useRef(false);
+
+  useEffect(() => {
+    if (initialFileAttachments && !isDragging.current) {
+      setFileAttachments(initialFileAttachments);
+    }
+  }, [initialFileAttachments]);
+
+  const handleFileOnAdd = (fileToAdd: UploadFile) => {
+    onFileAdd(fileToAdd);
+  };
+
+  const handleFileOnRemove =
+    (fileAttachmentToRemove: IFileAttachmentData) =>
+    (event: React.FormEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+      onFileRemove?.(fileAttachmentToRemove);
+    };
+
+  const handleDragRow = (fromIndex: number, toIndex: number) => {
+    isDragging.current = true;
+
+    setFileAttachments((prevFileAttachments) => {
+      if (!prevFileAttachments) return prevFileAttachments;
+
+      // Create a copy of the file attachments array
+      const fileAttachmentsCopy = [...prevFileAttachments];
+
+      // Remove the file attachment from its original position and store it
+      const [movedFileAttachment] = fileAttachmentsCopy.splice(fromIndex, 1);
+
+      // Insert the file attachment at its new position
+      fileAttachmentsCopy.splice(toIndex, 0, movedFileAttachment);
+
+      // Notify parent component about the change
+      onFileReorder?.(fileAttachmentsCopy);
+      return fileAttachmentsCopy;
+    });
+  };
+
+  // Reset dragging flag when drag ends
+  const handleDragEnd = () => {
+    isDragging.current = false;
+  };
+
+  // TODO: Fix a11y messages using fileAttachments instead of files
+  //   const fileNames = files.map((file) => file.name).join(', ');
+  const content = (
+    <Box
+      className={className}
+      key={id}
+      data-cy="e2e-file-uploader-container"
+      w="100%"
+    >
+      <FileInput
+        onAdd={handleFileOnAdd}
+        id={id}
+        multiple={multiple}
+        maxSizeMb={maxSizeMb}
+        dataCy={dataCy}
+      />
+      <Error fieldName="file" apiErrors={apiErrors?.file} />
+
+      <List key={fileAttachments?.length} className="files-list e2e-files-list">
+        {fileAttachments?.map(
+          (fileAttachment: IFileAttachmentData, index: number) =>
+            enableDragAndDrop ? (
+              <SortableRow
+                key={`item-${fileAttachment.id}-row`}
+                id={fileAttachment.id}
+                index={index}
+                moveRow={handleDragRow}
+                dropRow={handleDragEnd}
+                isLastItem={index === fileAttachments.length - 1}
+              >
+                <Box w="100%">
+                  <FileAttachmentDisplay
+                    key={`item-${fileAttachment.id}-display`}
+                    onDeleteClick={handleFileOnRemove(fileAttachment)}
+                    fileAttachment={fileAttachment}
+                  />
+                </Box>
+              </SortableRow>
+            ) : (
+              <Box key={`item-${fileAttachment.id}-display`} w="100%">
+                <FileAttachmentDisplay
+                  onDeleteClick={handleFileOnRemove(fileAttachment)}
+                  fileAttachment={fileAttachment}
+                />
+              </Box>
+            )
+        )}
+      </List>
+
+      {/* <ScreenReaderOnly aria-live="polite">
+        <FormattedMessage
+          {...(files.length > 0
+            ? messages.a11y_filesToBeUploaded
+            : messages.a11y_noFiles)}
+          values={{ fileNames }}
+        />
+      </ScreenReaderOnly> */}
+    </Box>
+  );
+
+  return enableDragAndDrop ? (
+    <DndProvider backend={HTML5Backend}>{content}</DndProvider>
+  ) : (
+    content
+  );
+};
+
+export default FileRepositorySelectAndUpload;
