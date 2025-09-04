@@ -12,8 +12,6 @@ import { downloadSurveyResults } from 'api/survey_results/utils';
 
 import useLocale from 'hooks/useLocale';
 
-import UserFieldsToggle from 'containers/Admin/communityMonitor/components/Settings/components/UserFieldsToggle';
-
 import DeleteModal from 'components/admin/SurveyDeleteModal/SurveyDeleteModal';
 import DropdownSettings from 'components/admin/SurveyDropdownSettings/DropdownSettings';
 import EditWarningModal from 'components/admin/SurveyEditWarningModal';
@@ -172,12 +170,6 @@ const SurveySettings = () => {
         closeDeleteModal={closeDeleteModal}
         deleteResults={deleteResults}
       />
-
-      {phaseId && (
-        <Box mt="20px">
-          <UserFieldsToggle phaseId={phaseId} />
-        </Box>
-      )}
     </Box>
   );
 };

@@ -8,7 +8,6 @@ import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import UserFieldsInSurveyToggle from 'components/admin/UserFieldsInSurveyToggle/UserFieldsInSurveyToggle';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
@@ -18,11 +17,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 import parentMessages from '../../../../messages';
 
 interface Props {
-  user_fields_in_form: boolean | null | undefined;
   apiErrors: CLErrors | null;
   phase?: IPhase;
   formData: IUpdatedPhaseProperties;
-  handleUserFieldsInFormOnChange: (user_fields_in_survey: boolean) => void;
   handleSurveyTitleChange: (
     value: Multiloc,
     locale: string | undefined
@@ -31,11 +28,9 @@ interface Props {
 }
 
 const NativeSurveyInputs = ({
-  user_fields_in_form,
   apiErrors,
   phase,
   formData,
-  handleUserFieldsInFormOnChange,
   handleSurveyTitleChange,
   handleSurveyCTAChange,
 }: Props) => {
@@ -46,11 +41,6 @@ const NativeSurveyInputs = ({
 
   return (
     <>
-      <UserFieldsInSurveyToggle
-        userFieldsInForm={user_fields_in_form}
-        handleUserFieldsInFormOnChange={handleUserFieldsInFormOnChange}
-      />
-
       <SectionField>
         <SubSectionTitle>
           <FormattedMessage {...parentMessages.surveyTitleLabel} />
