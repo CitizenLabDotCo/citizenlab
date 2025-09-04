@@ -16,13 +16,12 @@ import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import UserFieldsInSurveyToggle from 'components/admin/UserFieldsInSurveyToggle/UserFieldsInSurveyToggle';
-
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import FieldSelectionModal from './FieldSelectionModal';
 import FieldsList from './FieldsList';
 import messages from './messages';
+import UserFieldsInFormRadio from './UserFieldsInFormRadio';
 
 interface Props {
   phaseId?: string;
@@ -102,9 +101,9 @@ const Fields = ({
       </Box>
       {onChangeUserFieldsInForm && (
         <Box>
-          <UserFieldsInSurveyToggle
+          <UserFieldsInFormRadio
             userFieldsInForm={userFieldsInForm}
-            handleUserFieldsInFormOnChange={onChangeUserFieldsInForm}
+            onChange={onChangeUserFieldsInForm}
           />
         </Box>
       )}
