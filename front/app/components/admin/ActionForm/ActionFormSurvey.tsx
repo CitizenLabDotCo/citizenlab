@@ -88,6 +88,9 @@ const ActionFormSurvey = ({
               action={action}
               showAddQuestion={permitted_by !== 'everyone' || userFieldsInForm}
               userFieldsInForm={userFieldsInForm}
+              onChangeUserFieldsInForm={(value) => {
+                onChangePhaseSetting?.({ user_fields_in_form: value });
+              }}
             />
           </Box>
           <Box mt="20px">

@@ -16,6 +16,8 @@ import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import UserFieldsInSurveyToggle from 'components/admin/UserFieldsInSurveyToggle/UserFieldsInSurveyToggle';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import FieldSelectionModal from './FieldSelectionModal';
@@ -27,6 +29,7 @@ interface Props {
   action: Action;
   showAddQuestion: boolean;
   userFieldsInForm: boolean;
+  onChangeUserFieldsInForm?: (value: boolean) => void;
 }
 
 const Fields = ({
@@ -34,6 +37,7 @@ const Fields = ({
   action,
   showAddQuestion,
   userFieldsInForm,
+  onChangeUserFieldsInForm,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [showSelectionModal, setShowSelectionModal] = useState(false);
@@ -96,6 +100,14 @@ const Fields = ({
           </Tooltip>
         )}
       </Box>
+      {onChangeUserFieldsInForm && (
+        <Box>
+          <UserFieldsInSurveyToggle
+            userFieldsInForm={userFieldsInForm}
+            handleUserFieldsInFormOnChange={onChangeUserFieldsInForm}
+          />
+        </Box>
+      )}
       {userFieldsInForm && (
         <Box>
           <Text color="primary" mb="0px" fontSize="m" fontStyle={'italic'}>

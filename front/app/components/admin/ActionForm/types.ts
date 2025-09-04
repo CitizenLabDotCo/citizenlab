@@ -13,7 +13,7 @@ export type Changes = {
 
 type PhaseSettings = {
   allow_anonymous_participation?: boolean;
-  // TODO: the last page survey thing
+  user_fields_in_form?: boolean;
 };
 
 export type Props = {
