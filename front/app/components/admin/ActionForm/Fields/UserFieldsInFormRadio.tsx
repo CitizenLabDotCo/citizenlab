@@ -2,12 +2,19 @@ import React from 'react';
 
 import { Box, Radio, Text } from '@citizenlab/cl2-component-library';
 
+import { PermittedBy } from 'api/phase_permissions/types';
+
 interface Props {
   userFieldsInForm: boolean;
+  permitted_by: PermittedBy;
   onChange: (userFieldsInForm: boolean) => void;
 }
 
-const UserFieldsInFormRadio = ({ userFieldsInForm, onChange }: Props) => {
+const UserFieldsInFormRadio = ({
+  userFieldsInForm,
+  permitted_by,
+  onChange,
+}: Props) => {
   return (
     <Box pt="16px">
       <Radio
@@ -21,6 +28,7 @@ const UserFieldsInFormRadio = ({ userFieldsInForm, onChange }: Props) => {
           </Text>
         }
         onChange={onChange}
+        disabled={permitted_by === 'everyone'}
       />
       <Radio
         name="user_fields_in_form"

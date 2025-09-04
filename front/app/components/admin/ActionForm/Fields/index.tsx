@@ -107,6 +107,7 @@ const Fields = ({
         <Box>
           <UserFieldsInFormRadio
             userFieldsInForm={userFieldsInForm}
+            permitted_by={permitted_by}
             onChange={onChangeUserFieldsInForm}
           />
         </Box>
