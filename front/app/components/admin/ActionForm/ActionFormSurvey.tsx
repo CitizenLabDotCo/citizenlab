@@ -88,6 +88,7 @@ const ActionFormSurvey = ({
               action={action}
               showAddQuestion={permitted_by !== 'everyone' || userFieldsInForm}
               userFieldsInForm={userFieldsInForm}
+              permitted_by={permitted_by}
               onChangeUserFieldsInForm={(value) => {
                 onChangePhaseSetting?.({ user_fields_in_form: value });
               }}

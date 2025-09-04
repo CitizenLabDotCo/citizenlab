@@ -47,6 +47,7 @@ const ActionFormDefault = ({
               action={action}
               showAddQuestion={permitted_by !== 'everyone'}
               userFieldsInForm={false}
+              permitted_by={permitted_by}
             />
           </Box>
           <Box mt="20px">
