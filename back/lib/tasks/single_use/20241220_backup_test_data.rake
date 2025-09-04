@@ -7,10 +7,10 @@ namespace :single_use do
     puts '=' * 80
 
     backup_data = {}
-    
+
     ContentBuilder::Layout.find_each do |layout|
       puts "📋 Backing up layout: #{layout.code} (ID: #{layout.id})"
-      
+
       backup_data[layout.id] = {
         'id' => layout.id,
         'code' => layout.code,
@@ -24,18 +24,16 @@ namespace :single_use do
     end
 
     # Save backup to a file
-    backup_file = Rails.root.join('tmp', 'accordion_migration_backup.json')
+    backup_file = Rails.root.join('tmp/accordion_migration_backup.json')
     FileUtils.mkdir_p(File.dirname(backup_file))
-    
-    File.open(backup_file, 'w') do |f|
-      f.write(JSON.pretty_generate(backup_data))
-    end
+
+    File.write(backup_file, JSON.pretty_generate(backup_data))
 
     puts "\n✅ Backup completed!"
     puts "📁 Backup saved to: #{backup_file}"
     puts "📊 Total layouts backed up: #{backup_data.keys.length}"
     puts "\n💡 To restore this backup, run:"
-    puts "   docker compose run web bundle exec rake single_use:restore_test_data"
+    puts '   docker compose run web bundle exec rake single_use:restore_test_data'
   end
 
   desc 'Restore test data from backup'
@@ -43,28 +41,28 @@ namespace :single_use do
     puts '🔄 RESTORING TEST DATA FROM BACKUP...'
     puts '=' * 80
 
-    backup_file = Rails.root.join('tmp', 'accordion_migration_backup.json')
-    
+    backup_file = Rails.root.join('tmp/accordion_migration_backup.json')
+
     unless File.exist?(backup_file)
       puts "❌ Backup file not found: #{backup_file}"
-      puts "💡 Run backup first: docker compose run web bundle exec rake single_use:backup_test_data"
+      puts '💡 Run backup first: docker compose run web bundle exec rake single_use:backup_test_data'
       return
     end
 
     # Read backup data
     backup_data = JSON.parse(File.read(backup_file))
-    
+
     puts "📁 Loading backup from: #{backup_file}"
     puts "📊 Total layouts to restore: #{backup_data.keys.length}"
 
     # Clear existing layouts
     ContentBuilder::Layout.delete_all
-    puts "🗑️  Cleared existing layouts"
+    puts '🗑️  Cleared existing layouts'
 
     # Restore layouts
     backup_data.each do |layout_id, layout_data|
       puts "🔄 Restoring layout: #{layout_data['code']} (ID: #{layout_id})"
-      
+
       ContentBuilder::Layout.create!(
         id: layout_data['id'],
         code: layout_data['code'],
