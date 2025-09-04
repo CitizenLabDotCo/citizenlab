@@ -7,9 +7,11 @@ namespace :single_use do
     dry_run = ENV['DRY_RUN']&.downcase == 'true'
 
     if dry_run
-      puts 'DRY RUN: Analyzing accordion migration without making changes...'
+      puts '🔍 DRY RUN MODE: Analyzing accordion migration without making any changes...'
+      puts '⚠️  NO DATABASE WRITES WILL BE PERFORMED'
     else
-      puts 'Starting accordion migration to canvas mode...'
+      puts '🚀 MIGRATION MODE: Starting accordion migration to canvas mode...'
+      puts '⚠️  THIS WILL MODIFY THE DATABASE'
     end
     puts '=' * 80
 
@@ -22,9 +24,36 @@ namespace :single_use do
     migrated_count = 0
 
     # Process all tenants
+    tenant_reports = []
     Tenant.all.each do |tenant|
-      puts "\nProcessing tenant: #{tenant.host}"
+      puts "\n🏢 Processing tenant: #{tenant.host}"
       tenant_stats = process_tenant_accordions(tenant, dry_run)
+
+      # Store detailed tenant report
+      tenant_reports << {
+        host: tenant.host,
+        stats: tenant_stats
+      }
+
+      # Log per-tenant summary
+      if dry_run
+        if tenant_stats[:accordions_to_migrate] > 0
+          puts "   📊 WOULD MIGRATE: #{tenant_stats[:accordions_to_migrate]} accordions"
+        else
+          puts '   ✅ No accordions need migration'
+        end
+      else
+        if tenant_stats[:migrated_count] > 0
+          puts "   ✅ MIGRATED: #{tenant_stats[:migrated_count]} accordions"
+        elsif tenant_stats[:total_accordions] > 0
+          puts '   ℹ️  No accordions needed migration (already processed)'
+        else
+          puts '   📭 No accordions found'
+        end
+        if tenant_stats[:errors] > 0
+          puts "   ⚠️  ERRORS: #{tenant_stats[:errors]} accordions failed"
+        end
+      end
 
       total_accordions += tenant_stats[:total_accordions]
       text_based_accordions += tenant_stats[:text_based_accordions]
@@ -49,10 +78,32 @@ namespace :single_use do
 
     if dry_run
       puts "   Accordions that WOULD BE migrated: #{accordions_to_migrate}"
+
+      # Show detailed per-tenant dry run analysis
+      puts "\n📋 DETAILED DRY RUN ANALYSIS:"
+      tenant_reports.each do |report|
+        stats = report[:stats]
+        if stats[:accordions_to_migrate] > 0
+          puts "   🔄 #{report[:host]}: #{stats[:accordions_to_migrate]} accordions to migrate"
+        end
+      end
+
       puts "\n💡 To run the actual migration:"
       puts '   docker compose run web bundle exec rake single_use:accordion_migration'
     else
       puts "   Accordions migrated: #{migrated_count}"
+
+      # Show detailed per-tenant migration results
+      puts "\n📋 DETAILED MIGRATION RESULTS:"
+      tenant_reports.each do |report|
+        stats = report[:stats]
+        if stats[:migrated_count] > 0
+          puts "   ✅ #{report[:host]}: #{stats[:migrated_count]} accordions migrated"
+        elsif stats[:errors] > 0
+          puts "   ❌ #{report[:host]}: #{stats[:errors]} errors occurred"
+        end
+      end
+
       puts "\n✅ Migration completed successfully!"
     end
     puts '=' * 80
@@ -68,23 +119,31 @@ namespace :single_use do
       accordions_with_content: 0,
       accordions_to_migrate: 0,
       layouts_with_accordions: 0,
-      migrated_count: 0
+      migrated_count: 0,
+      errors: 0
     }
 
     tenant.switch do
       ContentBuilder::Layout.find_each do |layout|
         next unless layout.craftjs_json.is_a?(Hash)
 
-        layout_stats = process_layout_accordions(layout, dry_run)
+        begin
+          layout_stats = process_layout_accordions(layout, dry_run)
 
-        # Aggregate stats
-        stats[:total_accordions] += layout_stats[:total_accordions]
-        stats[:text_based_accordions] += layout_stats[:text_based_accordions]
-        stats[:already_canvas_accordions] += layout_stats[:already_canvas_accordions]
-        stats[:accordions_with_content] += layout_stats[:accordions_with_content]
-        stats[:accordions_to_migrate] += layout_stats[:accordions_to_migrate]
-        stats[:layouts_with_accordions] += 1 if layout_stats[:total_accordions] > 0
-        stats[:migrated_count] += layout_stats[:migrated_count] unless dry_run
+          # Aggregate stats
+          stats[:total_accordions] += layout_stats[:total_accordions]
+          stats[:text_based_accordions] += layout_stats[:text_based_accordions]
+          stats[:already_canvas_accordions] += layout_stats[:already_canvas_accordions]
+          stats[:accordions_with_content] += layout_stats[:accordions_with_content]
+          stats[:accordions_to_migrate] += layout_stats[:accordions_to_migrate]
+          stats[:layouts_with_accordions] += 1 if layout_stats[:total_accordions] > 0
+          stats[:migrated_count] += layout_stats[:migrated_count] unless dry_run
+          stats[:errors] += layout_stats[:errors]
+        rescue StandardError => e
+          puts "  ❌ Error processing layout #{layout.code || layout.id}: #{e.message}"
+          stats[:errors] += 1
+          puts "     Stack trace: #{e.backtrace.first(3).join(' <- ')}" if dry_run
+        end
       end
     end
 
@@ -92,76 +151,107 @@ namespace :single_use do
   end
 
   def process_layout_accordions(layout, dry_run)
-    layout_stats = {
+    layout_stats = initialize_layout_stats
+    accordion_nodes = find_accordion_nodes(layout.craftjs_json)
+    return layout_stats if accordion_nodes.empty?
+
+    layout_stats[:total_accordions] = accordion_nodes.count
+    nodes_to_migrate = analyze_accordion_nodes(accordion_nodes, layout, dry_run, layout_stats)
+    execute_migrations(nodes_to_migrate, layout, dry_run, layout_stats) unless dry_run
+
+    layout_stats
+  end
+
+  def initialize_layout_stats
+    {
       total_accordions: 0,
       text_based_accordions: 0,
       already_canvas_accordions: 0,
       accordions_with_content: 0,
       accordions_to_migrate: 0,
-      migrated_count: 0
+      migrated_count: 0,
+      errors: 0
     }
+  end
 
-    # Collect nodes to migrate first to avoid modification during iteration
-    accordion_nodes = find_accordion_nodes(layout.craftjs_json)
-    return layout_stats if accordion_nodes.empty?
-
-    layout_stats[:total_accordions] = accordion_nodes.count
+  def analyze_accordion_nodes(accordion_nodes, layout, dry_run, layout_stats)
     nodes_to_migrate = []
 
     accordion_nodes.each do |node_id, node|
-      # Check if already in canvas mode
       if node.dig('craft', 'props', 'isCanvas') == true
-        layout_stats[:already_canvas_accordions] += 1
-        if dry_run
-          puts "  📋 Layout: #{layout.code || layout.id}"
-          puts "     └─ Accordion Node: #{node_id}"
-          puts '        Already in canvas mode'
-        end
+        handle_canvas_accordion(node_id, layout, dry_run, layout_stats)
         next
       end
 
-      # Check for text content in the correct location
       text_content = node.dig('props', 'text') || node.dig('craft', 'props', 'text')
       layout_stats[:text_based_accordions] += 1
 
       if text_content.present? && text_content.values.any?(&:present?)
-        layout_stats[:accordions_with_content] += 1
-        layout_stats[:accordions_to_migrate] += 1
+        handle_migratable_accordion(node_id, node, text_content, layout, dry_run, layout_stats)
         nodes_to_migrate << { node_id: node_id, node: node, text_prop: text_content }
-
-        if dry_run
-          puts "  📋 Layout: #{layout.code || layout.id}"
-          puts "     └─ Accordion Node: #{node_id}"
-          puts '        Has text content - WOULD BE MIGRATED'
-          puts "           Text locales: #{text_content.keys.join(', ')}"
-          puts "           Sample text: #{text_content.values.first&.truncate(100)}"
-          puts '           Would create TextMultiloc child component'
-          puts '           Would create Container wrapper'
-          puts '           Would update accordion to use linkedNodes'
-          puts '           Would remove text property from accordion'
-        end
       elsif dry_run && text_content.present?
-        puts "  📋 Layout: #{layout.code || layout.id}"
-        puts "     └─ Accordion Node: #{node_id}"
-        puts '        Has empty text property - WOULD BE CLEANED UP'
-        puts '         Would remove empty text property'
+        handle_empty_accordion(node_id, layout)
       end
     end
 
-    # Process migrations if not dry run
-    if !dry_run && nodes_to_migrate.any?
-      puts "  Processing layout: #{layout.code || layout.id}"
+    nodes_to_migrate
+  end
 
-      nodes_to_migrate.each do |migration_data|
-        migrate_accordion_node(layout, migration_data)
-      end
+  def handle_canvas_accordion(node_id, layout, dry_run, layout_stats)
+    layout_stats[:already_canvas_accordions] += 1
+    return unless dry_run
 
-      layout.save!
-      layout_stats[:migrated_count] = nodes_to_migrate.length
-      puts "    Migrated #{nodes_to_migrate.length} accordion(s)"
+    puts "  📋 Layout: #{layout.code || layout.id}"
+    puts "     └─ Accordion Node: #{node_id}"
+    puts '        Already in canvas mode'
+  end
+
+  def handle_migratable_accordion(node_id, _node, text_content, layout, dry_run, layout_stats)
+    layout_stats[:accordions_with_content] += 1
+    layout_stats[:accordions_to_migrate] += 1
+    return unless dry_run
+
+    puts "  📋 Layout: #{layout.code || layout.id}"
+    puts "     └─ Accordion Node: #{node_id}"
+    puts '        Has text content - WOULD BE MIGRATED'
+    puts "           Text locales: #{text_content.keys.join(', ')}"
+    puts "           Sample text: #{text_content.values.first&.truncate(100)}"
+    puts '           Would create TextMultiloc child component'
+    puts '           Would create Container wrapper'
+    puts '           Would update accordion to use linkedNodes'
+    puts '           Would remove text property from accordion'
+  end
+
+  def handle_empty_accordion(node_id, layout)
+    puts "  📋 Layout: #{layout.code || layout.id}"
+    puts "     └─ Accordion Node: #{node_id}"
+    puts '        Has empty text property - WOULD BE CLEANED UP'
+    puts '         Would remove empty text property'
+  end
+
+  def execute_migrations(nodes_to_migrate, layout, _dry_run, layout_stats)
+    return if nodes_to_migrate.empty?
+
+    puts "  Processing layout: #{layout.code || layout.id}"
+
+    nodes_to_migrate.each do |migration_data|
+      migrate_accordion_node(layout, migration_data)
+      layout_stats[:migrated_count] += 1
+    rescue StandardError => e
+      puts "    ❌ Error migrating accordion #{migration_data[:node_id]}: #{e.message}"
+      layout_stats[:errors] += 1
     end
 
-    layout_stats
+    save_migrated_layout(layout, layout_stats) if layout_stats[:migrated_count] > 0
+  end
+
+  def save_migrated_layout(layout, layout_stats)
+    layout.save!
+    puts "    ✅ Migrated #{layout_stats[:migrated_count]} accordion(s)"
+  rescue StandardError => e
+    puts "    ❌ Error saving layout: #{e.message}"
+    layout_stats[:errors] += layout_stats[:migrated_count]
+    layout_stats[:migrated_count] = 0
   end
 
   def find_accordion_nodes(craftjs_json)
