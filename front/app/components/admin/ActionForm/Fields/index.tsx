@@ -5,7 +5,6 @@ import {
   Box,
   Button,
   Tooltip,
-  Text,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 
@@ -105,13 +104,6 @@ const Fields = ({
             userFieldsInForm={userFieldsInForm}
             onChange={onChangeUserFieldsInForm}
           />
-        </Box>
-      )}
-      {userFieldsInForm && (
-        <Box>
-          <Text color="primary" mb="0px" fontSize="m" fontStyle={'italic'}>
-            <FormattedMessage {...messages.fieldsShownInSurveyForm} />
-          </Text>
         </Box>
       )}
       <Box mt="20px">
