@@ -98,16 +98,16 @@ const LocationInput = ({
   ]);
 
   useEffect(() => {
-    if (locationDescription) {
+    // If the location input is changed but no lat/lng have been provided in the URL params,
+    // we geocode the location description to get the geojson.
+    if (locationDescription && !latitude && !longitude) {
       getLocationGeojson(locationDescription).then((location_point_geojson) => {
         setValue('location_point_geojson', {
           ...location_point_geojson,
         });
       });
-    } else {
-      setValue('location_point_geojson', {});
     }
-  }, [locationDescription, setValue]);
+  }, [latitude, locationDescription, longitude, setValue]);
 
   const value = locationDescription
     ? {
@@ -135,6 +135,11 @@ const LocationInput = ({
                 shouldTouch: true,
               });
               trigger(name);
+
+              // Address has been manually changed.
+              // Clear any latitude/longitude from the searchParams.
+              searchParams.delete('lat');
+              searchParams.delete('lng');
             }}
           />
         )}
