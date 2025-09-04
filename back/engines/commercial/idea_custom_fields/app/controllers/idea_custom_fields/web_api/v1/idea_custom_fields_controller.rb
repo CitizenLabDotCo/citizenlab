@@ -474,6 +474,8 @@ module IdeaCustomFields
         :ask_follow_up,
         :question_category,
         :include_in_printed_form,
+        :min_characters,
+        :max_characters,
         { title_multiloc: CL2_SUPPORTED_LOCALES,
           description_multiloc: CL2_SUPPORTED_LOCALES,
           page_button_label_multiloc: CL2_SUPPORTED_LOCALES,

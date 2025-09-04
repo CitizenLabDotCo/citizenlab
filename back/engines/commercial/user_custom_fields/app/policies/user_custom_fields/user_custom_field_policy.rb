@@ -28,6 +28,8 @@ module UserCustomFields
         :input_type,
         :required,
         :enabled,
+        :min_characters,
+        :max_characters,
         { title_multiloc: CL2_SUPPORTED_LOCALES,
           description_multiloc: CL2_SUPPORTED_LOCALES }
       ]
@@ -43,6 +45,8 @@ module UserCustomFields
         [
           :required,
           :enabled,
+          :min_characters,
+          :max_characters,
           { title_multiloc: CL2_SUPPORTED_LOCALES,
             description_multiloc: CL2_SUPPORTED_LOCALES }
         ]

@@ -54,8 +54,6 @@ resource 'Idea form exports' do
           let(:format) { 'pdf' }
 
           context 'feature flag enabled' do
-            before { SettingsService.new.activate_feature! 'html_pdfs' }
-
             example 'Get an PDF version of the idea form', document: false do
               # Expect the HTML PDF generator to be invoked
               expect_any_instance_of(BulkImportIdeas::Exporters::IdeaPdfFormExporter).to receive(:export).and_return(
@@ -76,6 +74,8 @@ resource 'Idea form exports' do
           end
 
           context 'feature flag is not enabled' do
+            before { SettingsService.new.deactivate_feature! 'html_pdfs' }
+
             example 'Get the legacy PDF version of the idea form', document: false do
               # Expect the Legacy PDF generator to be invoked
               expect_any_instance_of(BulkImportIdeas::Legacy::IdeaPdfFormExporter).to receive(:export).and_return(
@@ -106,6 +106,9 @@ resource 'Idea form exports' do
           let(:format) { 'pdf' }
 
           example 'Get a pdf version of the idea form', document: false do
+            expect_any_instance_of(BulkImportIdeas::Exporters::IdeaPdfFormExporter).to receive(:export).and_return(
+              Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').read
+            )
             do_request
             assert_status 200
           end
@@ -129,6 +132,9 @@ resource 'Idea form exports' do
           let(:format) { 'pdf' }
 
           example 'Get a pdf version of the idea form', document: false do
+            expect_any_instance_of(BulkImportIdeas::Exporters::IdeaPdfFormExporter).to receive(:export).and_return(
+              Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').read
+            )
             do_request
             assert_status 200
           end
