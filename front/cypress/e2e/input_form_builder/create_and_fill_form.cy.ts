@@ -139,6 +139,9 @@ describe('Input form builder', () => {
   });
 
   it('can create input form with custom field, save form and user can respond to the form created', () => {
+    // Intercept for the form submission
+    cy.intercept('POST', '**/web_api/v1/ideas').as('ideaSubmission');
+
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form`);
     cy.dataCy('e2e-edit-input-form').click();
     cy.dataCy('e2e-short-answer').should('exist');
@@ -158,8 +161,10 @@ describe('Input form builder', () => {
     // Should show success message on saving
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
-    // Fill in the form
-    cy.visit(`/projects/${projectSlug}/ideas/new`);
+    // Fill in the form, and include a lat and long in the URL
+    cy.visit(
+      `/projects/${projectSlug}/ideas/new?lat=51.692888988476945&lng=5.678635184096174`
+    );
 
     cy.get('#e2e-idea-new-page');
     cy.get('#idea-form');
@@ -186,20 +191,8 @@ describe('Input form builder', () => {
     // Go to the next page of the idea form
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
-    cy.intercept(
-      `**/location/autocomplete?input=Boulevard%20Anspach%20Brussels&language=en`
-    ).as('locationSearch');
-
-    // add a location
-    cy.get('.e2e-idea-form-location-input-field input')
-      .first()
-      .type('Boulevard Anspach Brussels');
-
-    cy.wait('@locationSearch', { timeout: 10000 });
-
-    cy.get('.e2e-idea-form-location-input-field input')
-      .first()
-      .type('{downArrow}{enter}');
+    // Veryify location is present and properly geocoded (from the lat long in URL)
+    cy.contains('Steenakker 36, 5411').should('exist');
 
     // Cannot proceed to the next page without filling in the required custom field
     cy.dataCy('e2e-submit-form').click();
@@ -207,7 +200,9 @@ describe('Input form builder', () => {
     cy.get('.e2e-error-message');
     cy.url().should(
       'eq',
-      `${Cypress.config().baseUrl}/en/projects/${projectSlug}/ideas/new`
+      `${
+        Cypress.config().baseUrl
+      }/en/projects/${projectSlug}/ideas/new?lat=51.692888988476945&lng=5.678635184096174`
     );
 
     // Fill in required custom field
@@ -216,6 +211,19 @@ describe('Input form builder', () => {
 
     // save the form
     cy.dataCy('e2e-submit-form').click();
+
+    // Confirm that location_geojson is correct lat and long
+    cy.wait('@ideaSubmission').then((interception) => {
+      expect(
+        interception.response?.body.data.attributes.location_point_geojson
+          .coordinates[0]
+      ).to.be.closeTo(5.678635184096174, 0.01);
+      expect(
+        interception.response?.body.data.attributes.location_point_geojson
+          .coordinates[1]
+      ).to.be.closeTo(51.692888988476945, 0.01);
+    });
+
     cy.wait(3000);
 
     // Close with the cross button
