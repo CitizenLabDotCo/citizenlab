@@ -32,6 +32,7 @@ export interface IAddFileAttachmentProperties {
 export interface IFileAttachment {
   type: 'file_attachment';
   data: {
+    type: 'file_attachment';
     id: string;
     attributes: {
       position: number;
