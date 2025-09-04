@@ -12,7 +12,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import messages from './messages';
+import messages from '../messages';
 
 interface Props {
   checked: boolean;

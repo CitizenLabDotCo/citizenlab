@@ -5,13 +5,13 @@ import {
   Box,
   Button,
   Tooltip,
-  Text,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 
 import { Action } from 'api/permissions/types';
 import useAddPermissionsCustomField from 'api/permissions_custom_fields/useAddPermissionsCustomField';
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
+import { PermittedBy } from 'api/phase_permissions/types';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -21,12 +21,15 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import FieldSelectionModal from './FieldSelectionModal';
 import FieldsList from './FieldsList';
 import messages from './messages';
+import UserFieldsInFormRadio from './UserFieldsInFormRadio';
 
 interface Props {
   phaseId?: string;
   action: Action;
   showAddQuestion: boolean;
   userFieldsInForm: boolean;
+  permitted_by: PermittedBy;
+  onChangeUserFieldsInForm?: (value: boolean) => void;
 }
 
 const Fields = ({
@@ -34,6 +37,8 @@ const Fields = ({
   action,
   showAddQuestion,
   userFieldsInForm,
+  permitted_by,
+  onChangeUserFieldsInForm,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [showSelectionModal, setShowSelectionModal] = useState(false);
@@ -44,12 +49,14 @@ const Fields = ({
   const { data: permissions } = usePhasePermissions({ phaseId });
   const globalCustomFieldsSetting =
     permissions?.data[0].attributes.global_custom_fields;
+
   // We check if globalCustomFieldsSetting is false to allow users who edited the fields before the feature flag was enforced to still access the functionality
   const isPermissionsCustomFieldsAllowed =
     useFeatureFlag({
       name: 'permissions_custom_fields',
       onlyCheckAllowed: true,
     }) || globalCustomFieldsSetting === false;
+
   const { mutate: addPermissionsCustomField, isLoading } =
     useAddPermissionsCustomField({
       phaseId,
@@ -96,15 +103,22 @@ const Fields = ({
           </Tooltip>
         )}
       </Box>
-      {userFieldsInForm && (
+      {onChangeUserFieldsInForm && (
         <Box>
-          <Text color="primary" mb="0px" fontSize="m" fontStyle={'italic'}>
-            <FormattedMessage {...messages.fieldsShownInSurveyForm} />
-          </Text>
+          <UserFieldsInFormRadio
+            userFieldsInForm={userFieldsInForm}
+            permitted_by={permitted_by}
+            onChange={onChangeUserFieldsInForm}
+          />
         </Box>
       )}
-      <Box mt="20px">
-        <FieldsList phaseId={phaseId} action={action} />
+      <Box mt="8px">
+        <FieldsList
+          phaseId={phaseId}
+          action={action}
+          permitted_by={permitted_by}
+          userFieldsInForm={userFieldsInForm}
+        />
       </Box>
       {selectedCustomFields && (
         <FieldSelectionModal

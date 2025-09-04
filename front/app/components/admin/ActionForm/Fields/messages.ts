@@ -50,9 +50,14 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.noDemographicQuestions',
     defaultMessage: 'No demographic questions will be asked.',
   },
-  fieldsShownInSurveyForm: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldsShownInSurveyForm',
+  noDemographicQuestionsYet: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.noDemographicQuestionsYet',
     defaultMessage:
-      "These questions will be added as the last page of the survey form, because 'Show fields in survey?' has been selected in phase settings.",
+      "No demographic questions have been added yet. Click 'Add a question' to add one.",
+  },
+  notAllowed: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.notAllowed',
+    defaultMessage:
+      "When authentication is set to 'None', it is not allowed to ask demographic questions in the registration flow. Please select 'Include demographic questions as last page of the survey' in order to add demographic questions.",
   },
 });
