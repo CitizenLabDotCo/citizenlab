@@ -68,23 +68,39 @@ RSpec.describe Rake::Task do
         # Reload the layout
         homepage_layout.reload
 
-        # Check that accordions are now in canvas mode
+        # Check that accordions remain with isCanvas false but have linkedNodes
         accordion_one = homepage_layout.craftjs_json['ACCORDION_1']
         accordion_two = homepage_layout.craftjs_json['ACCORDION_2']
 
-        expect(accordion_one['isCanvas']).to be true
-        expect(accordion_two['isCanvas']).to be true
+        expect(accordion_one['isCanvas']).to be false
+        expect(accordion_two['isCanvas']).to be false
 
         # Check that text props were removed from accordions
         expect(accordion_one['props']).not_to have_key('text')
         expect(accordion_two['props']).not_to have_key('text')
 
-        # Check that TextMultiloc nodes were created
-        expect(accordion_one['nodes'].length).to eq(1)
-        expect(accordion_two['nodes'].length).to eq(1)
+        # Check that linkedNodes were created
+        expect(accordion_one['linkedNodes']).to have_key('accordion-content')
+        expect(accordion_two['linkedNodes']).to have_key('accordion-content')
 
-        text_node_one_id = accordion_one['nodes'].first
-        text_node_two_id = accordion_two['nodes'].first
+        # Check that Container nodes were created
+        container_one_id = accordion_one['linkedNodes']['accordion-content']
+        container_two_id = accordion_two['linkedNodes']['accordion-content']
+
+        container_one = homepage_layout.craftjs_json[container_one_id]
+        container_two = homepage_layout.craftjs_json[container_two_id]
+
+        expect(container_one['type']['resolvedName']).to eq('Container')
+        expect(container_two['type']['resolvedName']).to eq('Container')
+        expect(container_one['isCanvas']).to be true
+        expect(container_two['isCanvas']).to be true
+
+        # Check that TextMultiloc nodes were created
+        expect(container_one['nodes'].length).to eq(1)
+        expect(container_two['nodes'].length).to eq(1)
+
+        text_node_one_id = container_one['nodes'].first
+        text_node_two_id = container_two['nodes'].first
 
         text_node_one = homepage_layout.craftjs_json[text_node_one_id]
         text_node_two = homepage_layout.craftjs_json[text_node_two_id]
@@ -125,7 +141,7 @@ RSpec.describe Rake::Task do
 
         # Should remain unchanged (no text to migrate)
         expect(accordion_three['isCanvas']).to be false
-        expect(accordion_three['nodes']).to be_empty
+        expect(accordion_three['linkedNodes']).to be_empty
       end
     end
   end
@@ -139,7 +155,7 @@ RSpec.describe Rake::Task do
       let!(:homepage_layout) { create(:homepage_layout, content_buildable: project) }
 
       before do
-        # Create a layout with migrated accordion components
+        # Create a layout with migrated accordion components (using new linkedNodes structure)
         craftjs_json = {
           'ROOT' => {
             'type' => 'div',
@@ -153,17 +169,27 @@ RSpec.describe Rake::Task do
           },
           'ACCORDION_1' => {
             'type' => { 'resolvedName' => 'AccordionMultiloc' },
-            'isCanvas' => true,
+            'isCanvas' => false,
             'props' => {
               'title' => { 'en' => 'Test Accordion' },
               'openByDefault' => true
             },
             'displayName' => 'AccordionMultiloc',
-            'custom' => {},
+            'custom' => { 'hasChildren' => true },
             'parent' => 'ROOT',
             'hidden' => false,
+            'nodes' => [],
+            'linkedNodes' => { 'accordion-content' => 'ACCORDION_1_CONTAINER' }
+          },
+          'ACCORDION_1_CONTAINER' => {
+            'type' => { 'resolvedName' => 'Container' },
+            'isCanvas' => true,
+            'props' => {},
             'nodes' => ['ACCORDION_1_TEXT'],
-            'linkedNodes' => {}
+            'custom' => {},
+            'hidden' => false,
+            'linkedNodes' => {},
+            'parent' => 'ACCORDION_1'
           },
           'ACCORDION_1_TEXT' => {
             'type' => { 'resolvedName' => 'TextMultiloc' },
@@ -173,7 +199,7 @@ RSpec.describe Rake::Task do
             },
             'displayName' => 'TextMultiloc',
             'custom' => {},
-            'parent' => 'ACCORDION_1',
+            'parent' => 'ACCORDION_1_CONTAINER',
             'hidden' => false,
             'nodes' => [],
             'linkedNodes' => {}
@@ -194,22 +220,24 @@ RSpec.describe Rake::Task do
         accordion_one = homepage_layout.craftjs_json['ACCORDION_1']
 
         expect(accordion_one['isCanvas']).to be false
-        expect(accordion_one['nodes']).to be_empty
+        expect(accordion_one['linkedNodes']).to be_empty
+        expect(accordion_one['custom']['hasChildren']).to be_falsy
 
         # Check that text prop was restored
         expect(accordion_one['props']['text']['en']).to eq('This is test content.')
 
-        # Check that TextMultiloc node was removed
+        # Check that Container and TextMultiloc nodes were removed
+        expect(homepage_layout.craftjs_json).not_to have_key('ACCORDION_1_CONTAINER')
         expect(homepage_layout.craftjs_json).not_to have_key('ACCORDION_1_TEXT')
       end
     end
   end
 
-  describe ':test_accordion_migration' do
-    let(:task_name) { 'single_use:test_accordion_migration' }
+  describe ':dry_run_accordion_migration' do
+    let(:task_name) { 'single_use:dry_run_accordion_migration' }
     let(:task) { described_class[task_name] }
 
-    describe 'test functionality' do
+    describe 'dry run functionality' do
       let!(:project) { create(:project) }
       let!(:homepage_layout) { create(:homepage_layout, content_buildable: project) }
 
