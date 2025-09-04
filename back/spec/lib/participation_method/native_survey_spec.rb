@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe ParticipationMethod::NativeSurvey do
   subject(:participation_method) { described_class.new phase }
 
-  let(:phase) { create(:native_survey_phase) }
+  let(:phase) { create(:native_survey_phase, with_permissions: true) }
 
   describe '#method_str' do
     it 'returns native_survey' do
@@ -182,6 +182,27 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     it 'returns true when enabled' do
       phase.user_fields_in_form = true
       expect(participation_method.user_fields_in_form?).to be true
+    end
+
+    context 'when permission permitted_by is \'everyone\'' do
+      before do
+        permission = Permission.find_by(
+          permission_scope_id: phase.id,
+          action: 'posting_idea'
+          )
+
+        permission.permitted_by = 'everyone'
+      end
+
+      it 'returns true even when not enabled' do
+        phase.user_fields_in_form = false
+        expect(participation_method.user_fields_in_form?).to be true
+      end
+
+      it 'returns true when enabled' do
+        phase.user_fields_in_form = true
+        expect(participation_method.user_fields_in_form?).to be true
+      end
     end
   end
 
