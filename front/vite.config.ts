@@ -36,7 +36,7 @@ export default defineConfig(({ mode }) => {
   // Determine if HTTPS should be used based on the presence of a HTTPS_HOST
   const HTTPS_HOST = process.env.HTTPS_HOST;
   const USE_HTTPS = HTTPS_HOST !== undefined;
-  console.log('Secure local dev URL: https://' + HTTPS_HOST);
+  if (USE_HTTPS) console.log('\nSecure local dev URL: https://' + HTTPS_HOST);
 
   return {
     root: path.resolve(__dirname, 'app'), // Root directory
