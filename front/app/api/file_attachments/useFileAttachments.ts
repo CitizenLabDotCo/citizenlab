@@ -4,7 +4,12 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import fileAttachmentsKeys from './keys';
-import { QueryParameters, IFileAttachments, FileAttachmentKeys } from './types';
+import {
+  QueryParameters,
+  IFileAttachments,
+  FileAttachmentKeys,
+  AttachableType,
+} from './types';
 
 const fetchFileAttachments = (queryParams: QueryParameters) =>
   fetcher<IFileAttachments>({
@@ -18,7 +23,7 @@ const useFileAttachments = ({
   attachable_type,
 }: {
   attachable_id: string;
-  attachable_type: 'Phase' | 'Project' | 'Event';
+  attachable_type: AttachableType;
 }) => {
   const queryParameters: QueryParameters = {
     attachable_id,

@@ -4,7 +4,7 @@ import { Keys } from 'utils/cl-react-query/types';
 
 import fileAttachmentsKeys from './keys';
 
-type AttachableType = 'Phase' | 'Project' | 'Event';
+export type AttachableType = 'Phase' | 'Project' | 'Event';
 
 export type FileAttachmentKeys = Keys<typeof fileAttachmentsKeys>;
 
@@ -33,7 +33,6 @@ export interface IFileAttachment {
   type: 'file_attachment';
   data: {
     id: string;
-    type: 'file_attachment';
     attributes: {
       position: number;
     };
