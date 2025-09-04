@@ -34,9 +34,8 @@ namespace :single_use do
           next unless node.is_a?(Hash)
           next unless node['type'].is_a?(Hash) && node['type']['resolvedName'] == 'AccordionMultiloc'
 
-          # Check if this accordion is in canvas mode and has TextMultiloc children
-          next unless node['isCanvas'] == true
-          next unless node['nodes'].is_a?(Array) && node['nodes'].any?
+          # Check if this accordion has linkedNodes (new migration structure)
+          next unless node['linkedNodes'].is_a?(Hash) && node['linkedNodes']['accordion-content']
 
           nodes_to_rollback << { node_id: node_id, node: node }
         end
@@ -61,31 +60,38 @@ namespace :single_use do
     node_id = rollback_data[:node_id]
     node = rollback_data[:node]
 
-    # Find the first TextMultiloc child node
-    text_node_id = node['nodes'].find do |child_id|
-      child_node = layout.craftjs_json[child_id]
-      child_node&.dig('type', 'resolvedName') == 'TextMultiloc'
-    end
+    # Get the container node from linkedNodes
+    container_id = node['linkedNodes']['accordion-content']
+    container_node = layout.craftjs_json[container_id]
 
-    if text_node_id
-      text_node = layout.craftjs_json[text_node_id]
-      text_prop = text_node&.dig('props', 'text') || {}
+    if container_node&.dig('type', 'resolvedName') == 'Container'
+      # Find the TextMultiloc child in the container
+      text_node_id = container_node['nodes']&.find do |child_id|
+        child_node = layout.craftjs_json[child_id]
+        child_node&.dig('type', 'resolvedName') == 'TextMultiloc'
+      end
 
-      # Restore the text prop to the accordion
-      node['props']['text'] = text_prop
+      if text_node_id
+        text_node = layout.craftjs_json[text_node_id]
+        text_prop = text_node&.dig('props', 'text') || {}
 
-      # Remove the text node from the layout
-      layout.craftjs_json.delete(text_node_id)
+        # Restore the text prop to the accordion
+        node['props']['text'] = text_prop
 
-      # Remove the text node from the accordion's nodes array
-      node['nodes'].delete(text_node_id)
+        # Remove the container and text nodes from the layout
+        layout.craftjs_json.delete(container_id)
+        layout.craftjs_json.delete(text_node_id)
 
-      # If no more children, set isCanvas to false
-      node['isCanvas'] = false if node['nodes'].empty?
+        # Clear linkedNodes and hasChildren
+        node['linkedNodes'] = {}
+        node['custom']&.delete('hasChildren')
 
-      puts "    Rolled back accordion #{node_id} with text content"
+        puts "    Rolled back accordion #{node_id} with text content"
+      else
+        puts "    Warning: No TextMultiloc child found in container for accordion #{node_id}"
+      end
     else
-      puts "    Warning: No TextMultiloc child found for accordion #{node_id}"
+      puts "    Warning: No Container found for accordion #{node_id}"
     end
   end
 end
