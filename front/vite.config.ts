@@ -7,6 +7,7 @@ import { defineConfig } from 'vite';
 import checker from 'vite-plugin-checker';
 import commonjs from 'vite-plugin-commonjs';
 import tsconfigPaths from 'vite-plugin-tsconfig-paths';
+import mkcert from 'vite-plugin-mkcert';
 
 // Load environment variables using dotenv
 dotenv.config({
@@ -32,11 +33,16 @@ export default defineConfig(({ mode }) => {
   const DEV_LIBRARY_HOST = process.env.DEV_LIBRARY_HOST || 'localhost';
   const DEV_LIBRARY_PORT = process.env.DEV_LIBRARY_PORT || '5005';
 
+  // Determine if HTTPS should be used based on the presence of a HTTPS_HOST
+  const HTTPS_HOST = process.env.HTTPS_HOST;
+  const USE_HTTPS = HTTPS_HOST !== undefined;
+  if (USE_HTTPS) console.log('\nSecure local dev URL: https://' + HTTPS_HOST);
+
   return {
     root: path.resolve(__dirname, 'app'), // Root directory
     base: '/', // Base path for public assets
     server: {
-      port: 3000,
+      port: USE_HTTPS ? 443 : 3000,
       host: '0.0.0.0',
       allowedHosts: true,
       proxy: {
@@ -91,6 +97,7 @@ export default defineConfig(({ mode }) => {
               name: process.env.CIRCLE_BUILD_NUM,
             },
           }),
+        USE_HTTPS && mkcert({ hosts: [HTTPS_HOST] }), // HTTPS in development
       ],
     ],
     build: {

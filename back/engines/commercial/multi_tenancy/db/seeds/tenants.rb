@@ -82,13 +82,25 @@ module MultiTenancy
               allowed: true,
               enabled: true
             },
+            clave_unica_login: {
+              allowed: true,
+              enabled: true
+            },
+            nemlog_in_login: {
+              allowed: true,
+              enabled: true
+            },
+            keycloak_login: {
+              allowed: true,
+              enabled: true
+            },
             twoday_login: {
               allowed: true,
               enabled: true
             },
             franceconnect_login: {
               allowed: true,
-              enabled: false,
+              enabled: true,
               environment: 'integration',
               identifier: ENV.fetch('DEFAULT_FRANCECONNECT_LOGIN_IDENTIFIER'),
               secret: ENV.fetch('DEFAULT_FRANCECONNECT_LOGIN_SECRET')
@@ -295,8 +307,8 @@ module MultiTenancy
                 },
                 {
                   name: 'clave_unica',
-                  client_id: 'fake_identifier',
-                  client_secret: 'fake_secret'
+                  client_id: ENV.fetch('DEFAULT_CLAVE_UNICA_CLIENT_ID', 'fake id'),
+                  client_secret: ENV.fetch('DEFAULT_CLAVE_UNICA_CLIENT_SECRET', 'fake secret'),
                 },
                 {
                   name: 'bogus'
@@ -339,6 +351,14 @@ module MultiTenancy
                   client_id: ENV.fetch('DEFAULT_ID_AUSTRIA_CLIENT_ID', 'fake id'),
                   client_secret: ENV.fetch('DEFAULT_ID_AUSTRIA_CLIENT_SECRET', 'fake secret'),
                   ui_method_name: 'ID Austria',
+                  enabled_for_verified_actions: true
+                },
+                {
+                  name: 'keycloak',
+                  client_id: ENV.fetch('DEFAULT_ID_KEYCLOAK_CLIENT_ID', 'fake id'),
+                  client_secret: ENV.fetch('DEFAULT_ID_KEYCLOAK_CLIENT_SECRET', 'fake secret'),
+                  domain: ENV.fetch('DEFAULT_ID_KEYCLOAK_DOMAIN', 'fake domain'),
+                  ui_method_name: 'Bank ID',
                   enabled_for_verified_actions: true
                 },
                 {
