@@ -76,17 +76,6 @@ const FileSize = styled.span<{ error: boolean }>`
 
 const DeleteIconButton = styled(IconButton)``;
 
-export interface FileType {
-  id?: string;
-  url?: string;
-  remote?: boolean;
-  base64?: string;
-  name: string;
-  size: number;
-  error?: string[];
-  ordering?: number;
-}
-
 interface Props {
   fileAttachment: IFileAttachmentData;
   onDeleteClick: (event: React.MouseEvent) => void;
