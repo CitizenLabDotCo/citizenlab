@@ -507,7 +507,7 @@ module BulkImportIdeas::Importers
     def preview_phase(phase)
       phase_exists = phase[:id] ? !!Phase.find(phase[:id]) : false # Check if the project exists
       if phase_exists
-        log "EXISTING PHASE: #{project[:title_multiloc][@locale]} (#{phase[:id]})"
+        log "EXISTING PHASE: #{phase[:title_multiloc][@locale]} (#{phase[:id]})"
       else
         log "NEW PHASE: #{phase[:title_multiloc][@locale]}"
         log " - Start: #{phase[:start_at]}"
@@ -534,8 +534,10 @@ module BulkImportIdeas::Importers
       ideas_exist = phase[:id] ? !!Phase.find(phase[:id])&.ideas&.any? : false
       if ideas_exist
         log "EXISTING IDEAS FOR PHASE: #{phase[:id]}"
-      else
+      elsif phase[:idea_rows]
         log "NEW IDEAS TO IMPORT: #{phase[:idea_rows].count} ideas will be imported"
+      else
+        log "NO IDEAS TO IMPORT"
       end
     end
 
