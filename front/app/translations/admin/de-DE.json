@@ -1312,7 +1312,7 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreationSubtitle": "Die Teilnehmenden müssen ein vollständiges Konto mit ihrem Namen, ihrer bestätigten E-Mail-Adresse und ihrem Passwort erstellen.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreationSubtitle_confirmationOff": "Die Teilnehmenden müssen ein vollständiges Konto mit ihrem Namen, ihrer E-Mail-Adresse und ihrem Passwort erstellen.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.authentication": "Beteiligungsvoraussetzung",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.demographicQuestions": "Demografische Fragen an die Teilnehmer",
+  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.demographicQuestions": "Demografische Fragen, die den Teilnehmenden gestellt wurden",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.edit": "Bearbeiten",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.emailConfirmation": "E-Mail-Bestätigung",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.emailConfirmationSubtitle": "Die Teilnehmenden müssen ihre E-Mail-Adresse mit einem einmaligen Code bestätigen.",
