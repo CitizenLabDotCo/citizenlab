@@ -9,14 +9,15 @@ interface Props {
 
 const UserFieldsInFormRadio = ({ userFieldsInForm, onChange }: Props) => {
   return (
-    <Box display="flex" pt="16px">
+    <Box pt="16px">
       <Radio
         name="user_fields_in_registration_flow"
         value={false}
         currentValue={userFieldsInForm}
         label={
           <Text color="primary" m="0">
-            Test
+            Include demographic questions in{' '}
+            <span style={{ fontWeight: 'bold' }}>registration flow</span>
           </Text>
         }
         onChange={onChange}
@@ -27,7 +28,8 @@ const UserFieldsInFormRadio = ({ userFieldsInForm, onChange }: Props) => {
         currentValue={userFieldsInForm}
         label={
           <Text color="primary" m="0">
-            Test 2
+            Include demographic questions as{' '}
+            <span style={{ fontWeight: 'bold' }}>last page of the survey</span>
           </Text>
         }
         onChange={onChange}
