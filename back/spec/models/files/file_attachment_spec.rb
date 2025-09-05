@@ -80,14 +80,15 @@ RSpec.describe Files::FileAttachment do
       end
 
       it 'is valid when the file and resource belong to the same project' do
-        project = create(:project)
+        project = create(:single_phase_ideation_project)
         file = create(:file, projects: [project])
 
         attachables = [
           project,
           create(:event, project: project),
           create(:idea, project: project),
-          create(:phase, project: project)
+          create(:phase, project: project),
+          create(:analysis, project: project)
         ]
 
         attachables.each do |attachable|
