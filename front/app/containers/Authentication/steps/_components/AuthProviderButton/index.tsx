@@ -5,22 +5,16 @@ import { darken } from 'polished';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled, { useTheme } from 'styled-components';
 
-import { SignUpInFlow } from 'containers/Authentication/typings';
-
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 
+import { AuthProvider } from '../../AuthProviders';
+import messages from '../../AuthProviders/messages';
+
 import Consent from './Consent';
-import messages from './messages';
-
-import { AuthProvider } from '.';
-
-const tracks = {
-  signInWithSSOClicked: 'Sign in with SSO button clicked',
-  signUpWithSSOClicked: 'Sign up with SSO button clicked',
-};
+import tracks from './tracks';
 
 const timeout = 300;
 
@@ -102,25 +96,14 @@ export type TOnContinueFunction = (authProvider: AuthProvider) => void;
 export interface Props {
   id?: string;
   icon?: IconNames;
-  flow: SignUpInFlow;
   authProvider: AuthProvider;
-  className?: string;
+  showConsent: boolean;
   onContinue: TOnContinueFunction;
   children: React.ReactNode;
-  showConsentOnFlow?: SignUpInFlow;
 }
 
 const AuthProviderButton = memo<Props>(
-  ({
-    flow,
-    authProvider,
-    className,
-    onContinue,
-    children,
-    id,
-    icon,
-    showConsentOnFlow = 'signup',
-  }) => {
+  ({ id, icon, authProvider, showConsent, onContinue, children }) => {
     const [expanded, setExpanded] = useState(false);
     const [tacAccepted, setTacAccepted] = useState(false);
     const [tacError, setTacError] = useState(false);
@@ -139,14 +122,14 @@ const AuthProviderButton = memo<Props>(
       (event: React.FormEvent) => {
         event.preventDefault();
 
-        if (showConsentOnFlow === flow && authProvider !== 'email') {
+        if (showConsent && authProvider !== 'email') {
           setExpanded((prevExpanded) => !prevExpanded);
         } else {
           trackEventByName(tracks.signInWithSSOClicked, { authProvider });
           onContinue(authProvider);
         }
       },
-      [flow, authProvider, onContinue, showConsentOnFlow]
+      [showConsent, authProvider, onContinue]
     );
 
     const handleContinueClicked = useCallback(() => {
@@ -184,7 +167,7 @@ const AuthProviderButton = memo<Props>(
       authProvider === 'id_vienna_saml' || (tacAccepted && privacyAccepted);
 
     return (
-      <Container className={className} id={id}>
+      <Container id={id}>
         <ButtonWithLink
           icon={icon}
           iconSize="22px"
@@ -204,7 +187,7 @@ const AuthProviderButton = memo<Props>(
           {children}
         </ButtonWithLink>
 
-        {showConsentOnFlow === flow && (
+        {showConsent && (
           <CSSTransition
             classNames="consent"
             in={expanded}

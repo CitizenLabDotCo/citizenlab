@@ -10,7 +10,7 @@ import { Parameters as CreateAccountParameters } from 'api/authentication/sign_u
 import useLocale from 'hooks/useLocale';
 
 import { SetError, State } from 'containers/Authentication/typings';
-import useAnySSOEnabled from 'containers/Authentication/useAnySSOEnabled';
+import useAuthConfig from 'containers/Authentication/useAuthConfig';
 
 import { SectionField } from 'components/admin/Section';
 import Input from 'components/HookForm/Input';
@@ -56,7 +56,7 @@ const EmailAndPasswordSignUp = ({
   onGoBack,
   onSubmit,
 }: Props) => {
-  const anySSOEnabled = useAnySSOEnabled();
+  const { anySSOProviderEnabled } = useAuthConfig();
   const { data: appConfiguration } = useAppConfiguration();
   const locale = useLocale();
   const { formatMessage } = useIntl();
@@ -199,7 +199,7 @@ const EmailAndPasswordSignUp = ({
           </Box>
         </form>
         <Text mt="24px">
-          {anySSOEnabled ? (
+          {anySSOProviderEnabled ? (
             <TextButton onClick={onGoBack} className="link">
               {formatMessage(messages.backToSignUpOptions)}
             </TextButton>
