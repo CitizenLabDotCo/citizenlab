@@ -1,12 +1,4 @@
 class CustomFieldsValidationService
-  class UpdateAllFailedError < StandardError
-    def initialize(errors)
-      super()
-      @errors = errors
-    end
-    attr_reader :errors
-  end
-
   def validate(fields, participation_method)
     validate_non_empty_form!(fields) ||
       validate_end_page!(fields) ||
@@ -89,7 +81,7 @@ class CustomFieldsValidationService
 
     constraints[:locks]&.each do |attribute, value|
       if value == true && field[attribute] != default_field[attribute] && !page1_title?(field, attribute)
-        field.errors.add :constraints, "Cannot change #{attribute} from default value. It is locked."
+        field.errors.add :constraints, "Cannot change #{attribute} from default value. It is locked." # TODO: Return error instead
       end
     end
   end

@@ -1,7 +1,16 @@
 # frozen_string_literal: true
 
 module IdeaCustomFields
-  class UpdatingFormWithInputError < StandardError; end
+  class UpdateAllFailedError < RuntimeError
+    attr_reader :errors
+
+    def initialize(errors)
+      super()
+      @errors = errors
+    end
+  end
+
+  class UpdatingFormWithInputError < RuntimeError; end
 
   class WebApi::V1::IdeaCustomFieldsController < ApplicationController
     CONSTANTIZER = {
@@ -88,7 +97,7 @@ module IdeaCustomFields
         params: serializer_params(@custom_form),
         include: include_in_index_response
       ).serializable_hash
-    rescue CustomFieldsValidationService::UpdateAllFailedError => e
+    rescue UpdateAllFailedError => e
       render json: { errors: e.errors }, status: :unprocessable_entity
     end
 
@@ -123,7 +132,7 @@ module IdeaCustomFields
                     @custom_form.persisted? &&
                     @custom_form.fields_last_updated_at.to_i > update_all_params[:fields_last_updated_at].to_datetime.to_i
 
-      raise CustomFieldsValidationService::UpdateAllFailedError, { form: [{ error: 'stale_data' }] }
+      raise UpdateAllFailedError, { form: [{ error: 'stale_data' }] }
     end
 
     def update_fields!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors)
@@ -155,7 +164,7 @@ module IdeaCustomFields
           field.set_list_position(index)
           count_fields(field)
         end
-        raise CustomFieldsValidationService::UpdateAllFailedError, errors if errors.present?
+        raise UpdateAllFailedError, errors if errors.present?
       end
     end
 
@@ -363,7 +372,7 @@ module IdeaCustomFields
           errors[index.to_s] = field.errors.details
         end
       end
-      raise CustomFieldsValidationService::UpdateAllFailedError, errors if errors.present?
+      raise UpdateAllFailedError, errors if errors.present?
     end
 
     # Update the timestamp that the fields were last updated (to avoid editing of old forms)
