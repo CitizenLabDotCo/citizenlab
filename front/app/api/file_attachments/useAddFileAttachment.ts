@@ -18,12 +18,20 @@ export const addFileAttachment = async (
   });
 };
 
-const useAddFileAttachment = () => {
+const useAddFileAttachment = ({
+  invalidateCache = true,
+}: {
+  invalidateCache?: boolean;
+}) => {
   const queryClient = useQueryClient();
   return useMutation<IFileAttachment, CLErrors, IAddFileAttachmentProperties>({
     mutationFn: addFileAttachment,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: fileAttachmentsKeys.lists() });
+      if (invalidateCache) {
+        queryClient.invalidateQueries({
+          queryKey: fileAttachmentsKeys.lists(),
+        });
+      }
     },
   });
 };

@@ -17,7 +17,11 @@ const updateFileAttachment = async (
   });
 };
 
-const useUpdateFileAttachment = () => {
+const useUpdateFileAttachment = ({
+  invalidateCache = true,
+}: {
+  invalidateCache?: boolean;
+}) => {
   const queryClient = useQueryClient();
   return useMutation<
     IFileAttachment,
@@ -26,7 +30,9 @@ const useUpdateFileAttachment = () => {
   >({
     mutationFn: updateFileAttachment,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: fileAttachmentKeys.lists() });
+      if (invalidateCache) {
+        queryClient.invalidateQueries({ queryKey: fileAttachmentKeys.lists() });
+      }
     },
   });
 };
