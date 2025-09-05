@@ -390,7 +390,7 @@ resource 'Ideas' do
     end
 
     get 'web_api/v1/ideas/draft/:phase_id' do
-      let(:phase) { create(:native_survey_phase) }
+      let(:phase) { create(:native_survey_phase, with_permissions: true) }
       let(:phase_id) { phase.id }
 
       context 'idea authored by user' do
@@ -420,9 +420,9 @@ resource 'Ideas' do
 
         context 'when permitted_by is \'everyone\'' do
           example 'Get a single draft idea by phase including user data' do
-            phase.update!(user_fields_in_form: false, permitted_by: 'everyone')
+            phase.update!(user_fields_in_form: false)
 
-            ermission = Permission.find_by(
+            permission = Permission.find_by(
               permission_scope_id: phase.id,
               action: 'posting_idea'
             )
@@ -434,6 +434,7 @@ resource 'Ideas' do
             assert_status 200
             expect(response_data[:id]).to eq idea.id
             expect(response_data[:attributes]).to include(field: 'value', u_gender: 'male')
+          end
         end
       end
 

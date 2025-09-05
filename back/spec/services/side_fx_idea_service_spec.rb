@@ -391,7 +391,7 @@ describe SideFxIdeaService do
     end
 
     context 'user fields in survey form' do
-      let(:phase) { create(:native_survey_phase) }
+      let(:phase) { create(:native_survey_phase, with_permissions: true) }
       let(:idea) do
         create(
           :native_survey_response,
@@ -416,6 +416,21 @@ describe SideFxIdeaService do
         idea.update!(publication_status: 'published')
         service.after_update(idea, user)
         expect(user.custom_field_values).to be_empty
+      end
+
+      it "updates the user profile from the survey input fields when permitted_by = 'everyone'" do
+        phase.update!(user_fields_in_form: false)
+
+        permission = Permission.find_by(
+          permission_scope_id: phase.id,
+          action: 'posting_idea'
+        )
+
+        permission.permitted_by = 'everyone'
+
+        idea.update!(publication_status: 'published')
+        service.after_update(idea, user)
+        expect(user.custom_field_values).to eq({ 'gender' => 'female' })
       end
     end
 
