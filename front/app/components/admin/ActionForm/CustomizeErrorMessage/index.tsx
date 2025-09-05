@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 
-import {
-  Box,
-  Title,
-  Button,
-  IconTooltip,
-} from '@citizenlab/cl2-component-library';
+import { Box, Button, IconTooltip } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -27,17 +22,7 @@ const CustomizeErrorMessage = ({
   return (
     <>
       <Box mt="4px">
-        <Box display="flex" flexDirection="row" alignItems="center">
-          <Title variant="h4" color="primary">
-            <FormattedMessage {...messages.errorMessage} />
-          </Title>
-          <IconTooltip
-            ml="4px"
-            transform="translate(0,4px)"
-            content={<FormattedMessage {...messages.errorMessageTooltip} />}
-          />
-        </Box>
-        <Box display="flex">
+        <Box display="flex" alignItems="center" mt="12px">
           <Button
             buttonStyle="admin-dark"
             w="auto"
@@ -48,6 +33,10 @@ const CustomizeErrorMessage = ({
           >
             <FormattedMessage {...messages.customizeErrorMessage} />
           </Button>
+          <IconTooltip
+            ml="4px"
+            content={<FormattedMessage {...messages.errorMessageTooltip} />}
+          />
         </Box>
       </Box>
       <ErrorMessageModal

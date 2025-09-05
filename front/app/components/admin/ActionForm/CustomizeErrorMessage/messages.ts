@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  errorMessage: {
-    id: 'app.components.admin.ActionForm.CustomizeErrorMessage.errorMessage',
-    defaultMessage: 'Error message',
-  },
   customizeErrorMessage: {
     id: 'app.components.admin.ActionForm.CustomizeErrorMessage.customizeErrorMessage',
     defaultMessage: 'Customize error message',

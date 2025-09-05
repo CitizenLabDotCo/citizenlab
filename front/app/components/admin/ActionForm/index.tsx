@@ -114,26 +114,6 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
               onUpdate={handlePermittedByUpdate}
             />
           </Box>
-          <Box mt="20px">
-            <FlowVisualization
-              permittedBy={permitted_by}
-              verificationEnabled={verification_enabled}
-              verificationExpiry={verification_expiry}
-              permissionsCustomFields={permissionsCustomFields.data}
-              onChangeVerificationExpiry={(verification_expiry) => {
-                onChange({ verification_expiry });
-              }}
-              userFieldsInForm={userFieldsInForm}
-            />
-          </Box>
-          <Box mt="20px">
-            <Fields
-              phaseId={phaseId}
-              action={action}
-              showAddQuestion={permitted_by !== 'everyone' || userFieldsInForm}
-              userFieldsInForm={userFieldsInForm}
-            />
-          </Box>
           {permitted_by !== 'everyone' && (
             <>
               <Box mt="28px">
@@ -162,6 +142,26 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
               />
             </>
           )}
+          <Box mt="24px">
+            <Fields
+              phaseId={phaseId}
+              action={action}
+              showAddQuestion={permitted_by !== 'everyone' || userFieldsInForm}
+              userFieldsInForm={userFieldsInForm}
+            />
+          </Box>
+          <Box mt="20px">
+            <FlowVisualization
+              permittedBy={permitted_by}
+              verificationEnabled={verification_enabled}
+              verificationExpiry={verification_expiry}
+              permissionsCustomFields={permissionsCustomFields.data}
+              onChangeVerificationExpiry={(verification_expiry) => {
+                onChange({ verification_expiry });
+              }}
+              userFieldsInForm={userFieldsInForm}
+            />
+          </Box>
           {showResetButton(
             permitted_by,
             permissionsCustomFields.data,
@@ -177,7 +177,7 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
               >
                 <span style={{ textDecorationLine: 'underline' }}>
                   <FormattedMessage
-                    {...messages.resetExtraQuestionsAndGroups}
+                    {...messages.resetDemographicQuestionsAndGroups}
                   />
                 </span>
               </Button>

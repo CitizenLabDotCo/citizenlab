@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  extraQuestions: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.extraQuestions',
-    defaultMessage: 'Extra questions asked to participants',
+  demographicQuestions: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.demographicQuestions',
+    defaultMessage: 'Demographic questions asked to participants',
   },
   edit: {
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.edit',
@@ -46,9 +46,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optionalGroup1',
     defaultMessage: 'Optional - always enabled because referenced by group',
   },
-  noExtraQuestions: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.noExtraQuestions',
-    defaultMessage: 'No extra questions will be asked.',
+  noDemographicQuestions: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.noDemographicQuestions',
+    defaultMessage: 'No demographic questions will be asked.',
   },
   fieldsShownInSurveyForm: {
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldsShownInSurveyForm',

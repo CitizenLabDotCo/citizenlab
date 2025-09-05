@@ -67,7 +67,7 @@ const Fields = ({
         alignItems="center"
       >
         <Title variant="h4" color="primary" mt="0px" mb="0px">
-          <FormattedMessage {...messages.extraQuestions} />
+          <FormattedMessage {...messages.demographicQuestions} />
         </Title>
         {showAddQuestion && (
           <Tooltip
