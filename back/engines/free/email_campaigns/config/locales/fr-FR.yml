@@ -642,6 +642,7 @@ fr:
         user_is_given_admin_rights: 'L''utilisateur reçoit des droits d''administrateur'
         user_is_given_folder_moderator_rights: 'L''utilisateur se voit attribuer des droits de gestionnaire de dossier'
         user_is_given_project_moderator_rights: 'L''utilisateur se voit attribuer des droits de gestionnaire de projet'
+        user_is_invited_to_platform: 'L''utilisateur est invité à se rendre sur la plate-forme'
         user_is_invited_to_cosponsor_a_proposal: 'Un utilisateur est invité à soutenir une proposition'
         user_is_mentioned: 'L''utilisateur est mentionné'
         user_is_mentioned_in_internal_comment: 'L''utilisateur est mentionné dans un commentaire interne'
