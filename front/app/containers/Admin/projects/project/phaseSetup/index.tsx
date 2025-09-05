@@ -11,6 +11,7 @@ import { CLErrors, Multiloc, UploadFile } from 'typings';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import useFileAttachments from 'api/file_attachments/useFileAttachments';
+import { IFileData } from 'api/files/types';
 import useAddFile from 'api/files/useAddFile';
 import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';
 import useAddPhase from 'api/phases/useAddPhase';
@@ -150,6 +151,44 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
     updateFormData({ description_multiloc });
   };
 
+  const handlePhaseFileOnAttach = (file: IFileData) => {
+    const isDuplicate = inStatePhaseFileAttachments?.some((fileAttachment) => {
+      return fileAttachment.relationships.file.data.id === file.id;
+    });
+
+    if (isDuplicate) return;
+
+    const temporaryFileAttachment: IFileAttachmentData = {
+      id: `TEMP-${Math.random().toString(12)}`, // Temporary ID, to mark it as a newly added file attachment.
+      attributes: {
+        position: inStatePhaseFileAttachments
+          ? inStatePhaseFileAttachments.length + 1
+          : 0,
+      },
+      relationships: {
+        attachable: {
+          data: {
+            type: 'Phase',
+            id: phaseId || '',
+          },
+        },
+        file: {
+          data: {
+            id: file.id,
+            type: 'files',
+          },
+        },
+      },
+      type: 'file_attachment',
+    };
+
+    setInStatePhaseFileAttachments((inStatePhaseFileAttachments) => [
+      ...(inStatePhaseFileAttachments || []),
+      temporaryFileAttachment,
+    ]);
+    setSubmitState('enabled');
+  };
+
   const handlePhaseFileOnAdd = (fileToAdd: UploadFile) => {
     // Upload the file to the Data Repository, so we can make the attachment later.
     addFile(
@@ -164,7 +203,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
         onSuccess: (newFile) => {
           // Create a temporary file attachment to add to the state, so the user sees it in the list.
           const temporaryFileAttachment: IFileAttachmentData = {
-            id: `TEMP-${Math.random()}`, // Temporary ID, to mark it as a newly added file attachment.
+            id: `TEMP-${Math.random().toString(12)}`, // Temporary ID, to mark it as a newly added file attachment.
             attributes: {
               position: inStatePhaseFileAttachments
                 ? inStatePhaseFileAttachments.length + 1
@@ -419,18 +458,16 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
             <SubSectionTitle>
               <FormattedMessage {...messages.uploadAttachments} />
             </SubSectionTitle>
-            {phaseId && ( // TODO: Check if this still workes with new phases
-              <FileRepositorySelectAndUpload
-                id="project-timeline-edit-form-file-uploader"
-                onFileAdd={handlePhaseFileOnAdd}
-                onFileRemove={handlePhaseFileOnRemove}
-                onFileReorder={handleFilesReorder}
-                fileAttachments={inStatePhaseFileAttachments}
-                enableDragAndDrop
-                multiple
-                apiErrors={errors}
-              />
-            )}
+            <FileRepositorySelectAndUpload
+              id="project-timeline-edit-form-file-uploader"
+              onFileAdd={handlePhaseFileOnAdd}
+              onFileRemove={handlePhaseFileOnRemove}
+              onFileReorder={handleFilesReorder}
+              onFileAttach={handlePhaseFileOnAttach}
+              fileAttachments={inStatePhaseFileAttachments}
+              enableDragAndDrop
+              apiErrors={errors}
+            />
           </SectionField>
 
           {/* TODO: Fix this the next time the file is edited. */}

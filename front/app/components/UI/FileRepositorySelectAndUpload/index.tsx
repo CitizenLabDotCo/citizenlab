@@ -25,7 +25,6 @@ export interface Props {
   fileAttachments?: IFileAttachmentData[] | undefined;
   apiErrors?: CLErrors | null;
   enableDragAndDrop?: boolean;
-  multiple?: boolean;
   maxSizeMb?: number;
   dataCy?: string;
 }
@@ -40,7 +39,6 @@ const FileRepositorySelectAndUpload = ({
   id,
   className,
   enableDragAndDrop = false,
-  multiple = false,
   maxSizeMb,
   dataCy,
 }: Props) => {
@@ -112,7 +110,9 @@ const FileRepositorySelectAndUpload = ({
         fileAttachments={fileAttachments}
         id={id}
         onFileAdd={handleFileOnAdd}
-        handleFileOnAttach={handleFileOnAttach}
+        onFileAttach={handleFileOnAttach}
+        maxSizeMb={maxSizeMb}
+        dataCy={dataCy}
       />
 
       <Error fieldName="file" apiErrors={apiErrors?.file} />
