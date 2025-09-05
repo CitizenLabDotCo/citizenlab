@@ -382,3 +382,6 @@ pa:
     default_voting_term_plural: "ਵੋਟਾਂ"
   ics_calendar_event:
     event_details: "ਘਟਨਾ ਦੇ ਵੇਰਵੇ"
+  errors:
+    messages:
+      max_must_be_greater_than_min_characters: "ਵੱਧ ਤੋਂ ਵੱਧ ਘੱਟੋ-ਘੱਟ ਤੋਂ ਵੱਡਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।"

@@ -53,6 +53,21 @@ import {
   getQuestionCategory,
 } from './utils';
 
+const nullableNumber = number()
+  .transform((value, originalValue) => {
+    // If the original input is null or an empty string, transform it to null.
+    if (
+      originalValue === null ||
+      (typeof originalValue === 'string' && originalValue.trim() === '')
+    ) {
+      return null;
+    }
+
+    // The 'value' is already cast by Yup. If it's not a valid number (NaN), return null.
+    return isNaN(value) ? null : value;
+  })
+  .nullable();
+
 interface FormValues {
   customFields: IFlatCustomField[];
 }
@@ -131,6 +146,8 @@ const FormEdit = ({
         required: boolean(),
         ask_follow_up: boolean(),
         include_in_printed_form: boolean(),
+        min_characters: nullableNumber,
+        max_characters: nullableNumber,
         temp_id: string(),
         logic: validateLogic(formatMessage(messages.logicValidationError)),
       })
@@ -314,6 +331,15 @@ const FormEdit = ({
         }),
         ...(field.input_type === 'rating' && {
           maximum: field.maximum?.toString() || '5',
+        }),
+        ...([
+          'text',
+          'multiline_text',
+          'text_multiloc',
+          'html_multiloc',
+        ].includes(field.input_type) && {
+          min_characters: field.min_characters,
+          max_characters: field.max_characters,
         }),
       }));
 
