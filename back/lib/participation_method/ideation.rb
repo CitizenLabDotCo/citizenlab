@@ -56,25 +56,16 @@ module ParticipationMethod
     # Locks mirror the name of the fields whose default values cannot be changed (ie are locked)
     def constraints
       result = {
-        title_page: { locks: { enabled: true, title_multiloc: true } },
-        title_multiloc: { locks: { enabled: true, required: true, title_multiloc: true } },
-        body_multiloc: { locks: { enabled: true, required: true, title_multiloc: true } },
-        idea_images_attributes: { locks: { title_multiloc: true } },
-        idea_files_attributes: { locks: { title_multiloc: true } },
-        topic_ids: { locks: { title_multiloc: true } },
-        location_description: { locks: { title_multiloc: true } }
-
-        # Proposal:
-        # title_page: { locks: { attributes: %i[title_multiloc], deletion: true, children: true } },
-        # title_multiloc: { locks: { attributes: %i[title_multiloc required], deletion: true, children: true } },
-        # body_page: { locks: { children: true } },
-        # body_multiloc: { locks: { attributes: %i[title_multiloc required] } },
-        # idea_images_attributes: { locks: { attributes: %i[title_multiloc] } },
-        # idea_files_attributes: { locks: { attributes: %i[title_multiloc] } },
-        # topic_ids: { locks: { attributes: %i[title_multiloc] } },
-        # location_description: { locks: { attributes: %i[title_multiloc] } }
+        title_page: { locks: { attributes: %i[title_multiloc], deletion: true, children: true } },
+        title_multiloc: { locks: { attributes: %i[title_multiloc required], deletion: true } },
+        body_page: { locks: { children: true } },
+        body_multiloc: { locks: { attributes: %i[title_multiloc required] } },
+        idea_images_attributes: { locks: { attributes: %i[title_multiloc] } },
+        idea_files_attributes: { locks: { attributes: %i[title_multiloc] } },
+        topic_ids: { locks: { attributes: %i[title_multiloc] } },
+        location_description: { locks: { attributes: %i[title_multiloc] } }
       }
-      result[:proposed_budget] = { locks: { title_multiloc: true } } if proposed_budget_in_form?
+      result[:proposed_budget] = { locks: { attributes: %i[title_multiloc] } } if proposed_budget_in_form?
       result
     end
 
