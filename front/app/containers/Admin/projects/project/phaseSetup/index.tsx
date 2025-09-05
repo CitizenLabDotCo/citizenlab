@@ -175,7 +175,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
         file: {
           data: {
             id: file.id,
-            type: 'files',
+            type: 'file',
           },
         },
       },
@@ -219,7 +219,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
               file: {
                 data: {
                   id: newFile.data.id,
-                  type: 'files',
+                  type: 'file',
                 },
               },
             },
