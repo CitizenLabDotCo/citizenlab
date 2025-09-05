@@ -427,6 +427,7 @@ describe SideFxIdeaService do
         )
 
         permission.permitted_by = 'everyone'
+        permission.save!
 
         idea.update!(publication_status: 'published')
         service.after_update(idea, user)

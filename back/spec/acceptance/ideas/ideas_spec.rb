@@ -428,6 +428,7 @@ resource 'Ideas' do
             )
 
             permission.permitted_by = 'everyone'
+            permission.save!
 
             @user.update!(custom_field_values: { 'gender' => 'male' })
             do_request
