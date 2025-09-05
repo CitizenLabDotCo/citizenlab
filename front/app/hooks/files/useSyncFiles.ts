@@ -7,9 +7,9 @@ import useUpdateFileAttachment from 'api/file_attachments/useUpdateFileAttachmen
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
-import { SyncPhaseFilesArguments } from './types';
+import { SyncFilesArguments } from './types';
 
-export function useSyncPhaseFiles() {
+export function useSyncFiles() {
   const { mutateAsync: addFileAttachment } = useAddFileAttachment({
     invalidateCache: false,
   });
@@ -22,32 +22,28 @@ export function useSyncPhaseFiles() {
 
   return useCallback(
     async ({
-      phaseId,
-      phaseFileAttachments,
+      attachableId,
+      attachableType,
+      fileAttachments,
       fileAttachmentsToRemove,
       fileAttachmentOrdering,
-    }: SyncPhaseFilesArguments) => {
+    }: SyncFilesArguments) => {
       // Add any new file attachments
-      const fileAttachmentsToAddPromises = phaseFileAttachments
+      const fileAttachmentsToAddPromises = fileAttachments
         .filter((file) => file.id.startsWith('TEMP-'))
-        .map((fileAttachment) =>
-          addFileAttachment(
-            {
-              file_id: fileAttachment.relationships.file.data.id,
-              attachable_type: 'Phase',
-              attachable_id: phaseId,
-            },
-            {
-              onSuccess: (newFileAttachment) => {
-                // Update their positions
-                updateFileAttachments({
-                  id: newFileAttachment.data.id,
-                  position: fileAttachment.attributes.position,
-                });
-              },
-            }
-          )
-        );
+        .map((fileAttachment) => {
+          addFileAttachment({
+            file_id: fileAttachment.relationships.file.data.id,
+            attachable_type: attachableType,
+            attachable_id: attachableId,
+          }).then(async (newFileAttachment) => {
+            // Update their positions
+            await updateFileAttachments({
+              id: newFileAttachment.data.id,
+              position: fileAttachment.attributes.position,
+            });
+          });
+        });
 
       // Return a single promise that resolves when all mutations are done
       await Promise.all([...fileAttachmentsToAddPromises]);
@@ -61,7 +57,7 @@ export function useSyncPhaseFiles() {
         .map((fileAttachment) => deleteFileAttachment(fileAttachment.id));
 
       // Update the ordering of any file attachments that were reordered
-      const reorderedFileAttachments = phaseFileAttachments.filter(
+      const reorderedFileAttachments = fileAttachments.filter(
         (fileAttachment) => {
           const initialOrdering = fileAttachmentOrdering[fileAttachment.id];
 
@@ -91,8 +87,8 @@ export function useSyncPhaseFiles() {
 
       await queryClient.invalidateQueries({
         queryKey: fileAttachmentsKeys.list({
-          attachable_type: 'Phase',
-          attachable_id: phaseId,
+          attachable_type: attachableType,
+          attachable_id: attachableId,
         }),
       });
     },

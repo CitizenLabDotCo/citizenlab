@@ -8,6 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import { CLErrors, Multiloc, UploadFile } from 'typings';
+import { v4 as uuidv4 } from 'uuid';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import useFileAttachments from 'api/file_attachments/useFileAttachments';
@@ -19,7 +20,7 @@ import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
-import { useSyncPhaseFiles } from 'hooks/files/useSyncPhaseFiles';
+import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
@@ -65,7 +66,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
   const { mutate: addPhase } = useAddPhase();
   const { mutate: updatePhase } = useUpdatePhase();
   const { mutate: addFile } = useAddFile();
-  const syncPhaseFiles = useSyncPhaseFiles();
+  const syncPhaseFiles = useSyncFiles();
   const [errors, setErrors] = useState<CLErrors | null>(null);
   const [processing, setProcessing] = useState<boolean>(false);
   const [inStatePhaseFileAttachments, setInStatePhaseFileAttachments] =
@@ -159,7 +160,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
     if (isDuplicate) return;
 
     const temporaryFileAttachment: IFileAttachmentData = {
-      id: `TEMP-${Math.random().toString(12)}`, // Temporary ID, to mark it as a newly added file attachment.
+      id: `TEMP-${uuidv4()}`, // Temporary ID, to mark it as a newly added file attachment.
       attributes: {
         position: inStatePhaseFileAttachments
           ? inStatePhaseFileAttachments.length + 1
@@ -203,7 +204,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
         onSuccess: (newFile) => {
           // Create a temporary file attachment to add to the state, so the user sees it in the list.
           const temporaryFileAttachment: IFileAttachmentData = {
-            id: `TEMP-${Math.random().toString(12)}`, // Temporary ID, to mark it as a newly added file attachment.
+            id: `TEMP-${uuidv4()}`, // Temporary ID, to mark it as a newly added file attachment.
             attributes: {
               position: inStatePhaseFileAttachments
                 ? inStatePhaseFileAttachments.length + 1
@@ -322,8 +323,9 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
     );
 
     await syncPhaseFiles({
-      phaseId,
-      phaseFileAttachments: inStatePhaseFileAttachments || [],
+      attachableId: phaseId,
+      attachableType: 'Phase',
+      fileAttachments: inStatePhaseFileAttachments || [],
       fileAttachmentsToRemove: phaseFileAttachmentsToRemove,
       fileAttachmentOrdering: initialFileAttachmentOrdering || {},
     })
