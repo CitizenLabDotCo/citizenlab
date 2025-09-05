@@ -642,6 +642,7 @@ sv:
         user_is_given_admin_rights: 'Användaren får administratörsrättigheter'
         user_is_given_folder_moderator_rights: 'Användaren har fått rättigheter som mappmoderator'
         user_is_given_project_moderator_rights: 'Användaren har fått rättigheter som projektledare'
+        user_is_invited_to_platform: 'Användaren bjuds in till plattformen'
         user_is_invited_to_cosponsor_a_proposal: 'Användaren inbjuds att vara medsponsor för ett förslag'
         user_is_mentioned: 'Användaren nämns'
         user_is_mentioned_in_internal_comment: 'Användaren nämns i intern kommentar'
