@@ -70,7 +70,11 @@ module IdeaCustomFields
 
     def update_all
       authorize CustomField.new(resource: @custom_form), :update_all?, policy_class: IdeaCustomFieldPolicy
-      validate!
+      errors = validate_update_all
+      if errors
+        render json: { errors: }, status: :unprocessable_entity
+        return
+      end
 
       page_temp_ids_to_ids_mapping = {}
       option_temp_ids_to_ids_mapping = {}
@@ -101,14 +105,17 @@ module IdeaCustomFields
       raise "Custom field with input_type: '#{@custom_field.input_type}' is not a geographic type"
     end
 
-    def validate!
+    def validate_update_all
       validate_stale_form_data!
       fields = update_all_params.fetch(:custom_fields).map do |field|
-        CustomField.new(field.slice(:code, :key, :input_type, :title_multiloc, :description_multiloc, :required, :enabled, :ordering))
+        CustomField.new(
+          field.slice(:code, :key, :input_type, :title_multiloc, :description_multiloc, :required, :enabled, :ordering)
+        ).tap(&:readonly!)
       end
       CustomFieldsValidationService.new.validate(fields, @custom_form.participation_context.pmethod)
     end
 
+    # TODO: Move to validation service?
     # To try and avoid forms being overwritten with stale data, we check if the form has been updated since the form editor last loaded it
     # But ONLY if the FE sends the fields_last_updated_at param
     def validate_stale_form_data!
@@ -186,7 +193,7 @@ module IdeaCustomFields
 
     def update_field!(field, field_params, errors, index)
       idea_custom_field_service = IdeaCustomFieldsService.new(@custom_form)
-      idea_custom_field_service.validate_constraints_against_updates field, field_params
+      idea_custom_field_service.validate_constraints_against_updates field, field_params # TODO: Move to validation service?
       field_params = idea_custom_field_service.remove_ignored_update_params field_params
       if field.errors.errors.empty?
         field.assign_attributes field_params
@@ -356,7 +363,7 @@ module IdeaCustomFields
           errors[index.to_s] = field.errors.details
         end
       end
-      raise UpdateAllFailedError, errors if errors.present?
+      raise CustomFieldsValidationService::UpdateAllFailedError, errors if errors.present?
     end
 
     # Update the timestamp that the fields were last updated (to avoid editing of old forms)

@@ -74,6 +74,7 @@ class CustomFieldsValidationService
     fields.each do |field|
       validate_constraints_against_defaults(field, participation_method)
     end
+    nil
   end
 
   def validate_constraints_against_defaults(field, participation_method)
