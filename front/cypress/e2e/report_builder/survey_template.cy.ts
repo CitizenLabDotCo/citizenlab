@@ -6,6 +6,7 @@ import { base64 } from '../../fixtures/base64img';
 
 describe('Survey template', () => {
   let projectId: string;
+  const projectTitle = randomString();
   let phaseId: string;
   let surveyFields: ICustomFieldResponse[];
   let surveySchema: IIdeaJsonFormSchemas;
@@ -16,7 +17,7 @@ describe('Survey template', () => {
     cy.apiRemoveAllReports();
 
     cy.apiCreateProject({
-      title: randomString(),
+      title: projectTitle,
       descriptionPreview: randomString(),
       description: randomString(),
       publicationStatus: 'published',
@@ -147,7 +148,7 @@ describe('Survey template', () => {
 
       cy.get('.e2e-create-report-modal-title-input').type(randomString());
       cy.get('#project-template-radio').click({ force: true });
-      cy.get('#projectFilter').select(projectId);
+      cy.selectReactSelectOption('#e2e-project-filter', projectTitle);
 
       cy.get('div[data-testid="create-report-button"] > button').click();
 
