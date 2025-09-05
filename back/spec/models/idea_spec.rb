@@ -31,23 +31,8 @@ RSpec.describe Idea do
   end
 
   describe 'body validation' do
-    it 'requires title_multiloc when body_multiloc_required? is true' do
-      idea = build(:idea, publication_status: 'published')
-      allow(idea).to receive(:body_multiloc_required?).and_return(true)
-
-      idea.body_multiloc = nil
-
-      expect(idea).to be_invalid
-      expect(idea.errors[:body_multiloc]).to include("can't be blank")
-    end
-
-    it 'does not require body_multiloc when body_multiloc_required? is false' do
-      idea = build(:idea)
-      allow(idea).to receive(:body_multiloc_required?).and_return(false)
-
-      idea.body_multiloc = nil
-
-      expect(idea).to be_valid
+    it 'does not require body_multiloc' do
+      expect(build(:idea, body_multiloc: nil)).to be_valid
     end
   end
 
@@ -665,15 +650,6 @@ RSpec.describe Idea do
     it 'is stripped from spaces at beginning and ending' do
       idea = create(:idea, title_multiloc: { 'en' => ' my fantastic idea  ' })
       expect(idea.title_multiloc['en']).to eq 'my fantastic idea'
-    end
-  end
-
-  describe 'body' do
-    let(:idea) { build(:idea) }
-
-    it 'is invalid if it has no true content' do
-      idea.body_multiloc = { 'en' => '<p> </p>' }
-      expect(idea).to be_invalid
     end
   end
 
