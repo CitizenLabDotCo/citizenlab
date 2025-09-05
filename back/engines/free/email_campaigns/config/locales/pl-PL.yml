@@ -642,6 +642,7 @@ pl:
         user_is_given_admin_rights: 'Użytkownik otrzymuje prawa administratora'
         user_is_given_folder_moderator_rights: 'Użytkownik otrzymuje prawa moderatora folderu'
         user_is_given_project_moderator_rights: 'Użytkownik otrzymuje uprawnienia moderatora projektu'
+        user_is_invited_to_platform: 'Użytkownik jest zapraszany na platformę'
         user_is_invited_to_cosponsor_a_proposal: 'Użytkownik jest zaproszony do współsponsorowania propozycji'
         user_is_mentioned: 'Użytkownik jest wymieniony'
         user_is_mentioned_in_internal_comment: 'Użytkownik jest wymieniony w komentarzu wewnętrznym'
