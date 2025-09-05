@@ -38,7 +38,7 @@ module EmailCampaigns
     include Trackable
     include LifecycleStageRestrictable
     include ContentConfigurable
-    include Disableable # Not technically disableable, but this ensures that it is locked to enabled.
+    include Disableable # This campaign is not actually disableable, but this concern ensures that we are able to see it in the editable campaigns list in the admin panel
     allow_lifecycle_stages except: ['churned']
 
     filter :check_send_invite_email_toggle
@@ -93,8 +93,8 @@ module EmailCampaigns
       'email_campaigns.admin_labels.trigger.user_is_invited_to_platform'
     end
 
-    def lock_enabled?
-      true
+    def can_be_disabled?
+      false
     end
 
     private

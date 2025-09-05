@@ -53,8 +53,8 @@ module EmailCampaigns
       end
     end
 
-    attribute :lock_enabled do |object|
-      object.lock_enabled?
+    attribute :can_be_disabled do |object|
+      object.can_be_disabled?
     end
 
     attribute :schedule, if: proc { |object|
