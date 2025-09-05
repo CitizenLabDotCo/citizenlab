@@ -153,22 +153,30 @@ const generateYupValidationSchema = ({
         }
 
         if (min_characters) {
-          fieldSchema = fieldSchema.min(
-            min_characters,
+          fieldSchema = fieldSchema.test(
+            'min-characters',
             formatMessage(messages.fieldMinLength, {
               min: min_characters,
               fieldName: title,
-            })
+            }),
+            (value: string) => {
+              if (!value) return true; // Let required validation handle empty values
+              return value.length >= min_characters;
+            }
           );
         }
 
         if (max_characters) {
-          fieldSchema = fieldSchema.max(
-            max_characters,
+          fieldSchema = fieldSchema.test(
+            'max-characters',
             formatMessage(messages.fieldMaxLength, {
               max: max_characters,
               fieldName: title,
-            })
+            }),
+            (value: string) => {
+              if (!value) return true; // Let required validation handle empty values
+              return value.length <= max_characters;
+            }
           );
         }
 
