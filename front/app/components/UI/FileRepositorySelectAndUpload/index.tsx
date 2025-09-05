@@ -13,6 +13,7 @@ import SortableRow from 'components/admin/ResourceList/SortableRow';
 import Error from 'components/UI/Error';
 
 import FileSelectOrUploadModal from './components/FileSelectOrUploadModal';
+import ScreenReaderFilesList from './components/ScreenReaderFilesList';
 import FileAttachmentDisplay from './FileAttachmentDisplay';
 
 export interface Props {
@@ -97,8 +98,6 @@ const FileRepositorySelectAndUpload = ({
     isDragging.current = false;
   };
 
-  // TODO: Fix a11y messages using fileAttachments instead of files
-  //   const fileNames = files.map((file) => file.name).join(', ');
   const content = (
     <Box
       className={className}
@@ -148,14 +147,7 @@ const FileRepositorySelectAndUpload = ({
         )}
       </List>
 
-      {/* <ScreenReaderOnly aria-live="polite">
-        <FormattedMessage
-          {...(files.length > 0
-            ? messages.a11y_filesToBeUploaded
-            : messages.a11y_noFiles)}
-          values={{ fileNames }}
-        />
-      </ScreenReaderOnly> */}
+      <ScreenReaderFilesList fileAttachments={fileAttachments} />
     </Box>
   );
 
