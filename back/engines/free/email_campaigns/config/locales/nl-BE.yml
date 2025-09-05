@@ -642,6 +642,7 @@ nl-BE:
         user_is_given_admin_rights: 'Gebruiker krijgt platformbeheerdersrechten'
         user_is_given_folder_moderator_rights: 'Gebruiker krijgt mapbeheerdersrechten'
         user_is_given_project_moderator_rights: 'Gebruiker krijgt projectbeheerdersrechten'
+        user_is_invited_to_platform: 'Gebruiker wordt uitgenodigd op platform'
         user_is_invited_to_cosponsor_a_proposal: 'Gebruiker is uitgenodigd om een voorstel te steunen'
         user_is_mentioned: 'Gebruiker wordt genoemd'
         user_is_mentioned_in_internal_comment: 'Gebruiker wordt genoemd in interne reactie'
