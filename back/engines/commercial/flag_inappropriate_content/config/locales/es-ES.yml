@@ -6,7 +6,7 @@ es:
       "inappropriate_content_flagged": Marcado contenido inapropiado - administradores/as
     inappropriate_content_flagged:
       subject: 'Una publicación ha sido marcada para tu revisión en la plataforma'
-      title: 'Se ha marcado un aporte para revisión'
+      title: 'Una publicación ha sido marcada para revisión'
       author_wrote: '%{authorName} escribió:'
       preheader: 'Una publicación ha sido marcada para tu revisión en la plataforma'
       automatically_flagged: >

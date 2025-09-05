@@ -51,6 +51,8 @@ export interface Props
   labelTooltipText?: string | JSX.Element | null;
   onChange: (value: Multiloc, locale: SupportedLocale) => void;
   hideLocaleSwitcher?: boolean;
+  maxCharCount?: number;
+  minCharCount?: number;
 }
 
 const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
@@ -60,6 +62,8 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
     label,
     labelTooltipText,
     hideLocaleSwitcher,
+    maxCharCount,
+    minCharCount,
     ...quillProps
   } = props;
 
@@ -122,6 +126,8 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
         id={id}
         value={valueMultiloc?.[selectedLocale]}
         onChange={handleValueOnChange}
+        maxCharCount={maxCharCount}
+        minCharCount={minCharCount}
       />
     </Container>
   );

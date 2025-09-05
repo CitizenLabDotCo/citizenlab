@@ -26,10 +26,63 @@ resource 'User Token' do
         allow(Time).to receive(:now).and_return(Time.now)
       end
 
+      example_request 'Create JWT token creates expected payload' do
+        assert_status 201
+
+        jwt = JWT.decode(json_response_body[:jwt], nil, false).first
+
+        expect(jwt['sub']).to eq(user.id)
+        expect(jwt['highest_role']).to eq('user')
+        expect(jwt['roles']).to eq([])
+        expect(jwt['cluster']).to eq('local')
+        expect(jwt['tenant']).to eq(Tenant.current.id)
+        expect(jwt['exp']).to eq((Time.now + 1.day).to_i)
+      end
+
+      context 'when the user is an admin' do
+        let!(:user) { create(:admin, email: email, password: password) }
+
+        example_request 'Create JWT token for admin' do
+          assert_status 201
+
+          jwt = JWT.decode(json_response_body[:jwt], nil, false).first
+
+          expect(jwt['sub']).to eq(user.id)
+          expect(jwt['highest_role']).to eq('admin')
+        end
+      end
+
+      context 'when the user is a project moderator' do
+        let!(:user) { create(:project_moderator, email: email, password: password) }
+
+        example_request 'Create JWT token for project moderator' do
+          assert_status 201
+
+          jwt = JWT.decode(json_response_body[:jwt], nil, false).first
+
+          expect(jwt['sub']).to eq(user.id)
+          expect(jwt['highest_role']).to eq('project_moderator')
+        end
+      end
+
+      context 'when the user is a folder moderator' do
+        let!(:user) { create(:project_folder_moderator, email: email, password: password) }
+
+        example_request 'Create JWT token for project folder moderator' do
+          assert_status 201
+
+          jwt = JWT.decode(json_response_body[:jwt], nil, false).first
+
+          expect(jwt['sub']).to eq(user.id)
+          expect(jwt['highest_role']).to eq('project_folder_moderator')
+        end
+      end
+
       example_request 'Create JWT token with 1 day expiration' do
         assert_status 201
 
         jwt = JWT.decode(json_response_body[:jwt], nil, false).first
+
         expect(jwt['exp']).to eq((Time.now + 1.day).to_i)
       end
 
