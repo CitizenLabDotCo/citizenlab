@@ -575,7 +575,7 @@ nl:
         user_who_submitted_the_input: 'Gebruiker die de bijdrage heeft ingestuurd'
         user_who_voted: 'Gebruiker die heeft gestemd'
         user_who_was_invited: 'Gebruiker die werd uitgenodigd'
-        user_with_unsubmitted_survey: 'Gebruiker die zijn vragenlijst is begonnen, maar nog niet heeft ingediend'
+        user_with_unsubmitted_survey: 'Gebruiker met een niet-ingediende vragenlijst'
         user_with_unsubmitted_votes: 'Gebruiker die nog geen stem heeft uitgebracht'
         users_who_engaged_but_not_voted: 'Gebruikers die betrokken waren bij het project maar niet hebben gestemd'
         users_who_engaged_with_the_project: 'Gebruikers die zich met het project bezighielden'
