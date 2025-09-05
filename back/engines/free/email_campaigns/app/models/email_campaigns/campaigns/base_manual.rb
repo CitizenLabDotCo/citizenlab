@@ -67,6 +67,10 @@ module EmailCampaigns
       true
     end
 
+    def can_be_disabled?
+      false
+    end
+
     protected
 
     def unique_campaigns_per_context?

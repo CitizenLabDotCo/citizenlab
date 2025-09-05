@@ -70,7 +70,7 @@ class TextImageService < ContentImageService
     html_string.include? code_attribute_for_element
   end
 
-  def precompute_for_rendering_multiloc(_multiloc, imageable, _field)
+  def precompute_for_rendering(imageable)
     @precomputed_text_images = imageable.text_images.index_by do |ti|
       ti[code_attribute_for_model]
     end

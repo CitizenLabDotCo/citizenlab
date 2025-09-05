@@ -73,7 +73,6 @@
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Tak, fordi du gennemførte undersøgelsen! Du er velkommen til at tage den igen næste kvartal.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Download som pdf",
   "app.components.FormSync.downloadExcelTemplate": "Download en Excel-skabelon",
-  "app.components.FormSync.downloadExcelTemplateTooltip2": "Excel-skabeloner vil ikke indeholde rangordningsspørgsmål, matrixspørgsmål, spørgsmål om filupload og spørgsmål om kortlægningsinput (Drop Pin, Draw Route, Draw Area, ESRI-filupload), da disse ikke understøttes til bulkimport på nuværende tidspunkt.",
   "app.components.ProjectTemplatePreview.close": "Luk",
   "app.components.ProjectTemplatePreview.createProject": "Opret projekt",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Opret et projekt baseret på skabelonen ''{templateTitle}''.",

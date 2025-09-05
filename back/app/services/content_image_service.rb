@@ -62,7 +62,7 @@ class ContentImageService
     return multiloc if multiloc.blank?
     return multiloc if multiloc.values.none? { |encoded_content| could_include_images?(encoded_content) }
 
-    precompute_for_rendering_multiloc multiloc, imageable, field
+    precompute_for_rendering imageable
 
     multiloc.transform_values do |encoded_content|
       render_data_images encoded_content, imageable: imageable, field: field
@@ -72,7 +72,7 @@ class ContentImageService
   # Replaces references to image models in the content by actual image data.
   def render_data_images(encoded_content, imageable: nil, field: nil)
     content = decode_content encoded_content
-    precompute_for_rendering content, imageable, field
+    precompute_for_rendering imageable
 
     image_elements(content).each do |img_elt|
       next if !attribute? img_elt, code_attribute_for_element
@@ -161,9 +161,7 @@ class ContentImageService
     true
   end
 
-  def precompute_for_rendering_multiloc(_multiloc, _imageable, _field); end
-
-  def precompute_for_rendering(content, imageable, field); end
+  def precompute_for_rendering(_imageable); end
 
   def fetch_content_image(code)
     content_image_class.find_by code_attribute_for_model => code

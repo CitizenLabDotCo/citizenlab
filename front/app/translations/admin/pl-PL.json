@@ -73,7 +73,6 @@
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Dziękujemy za wypełnienie ankiety! Możesz wziąć w niej udział ponownie w przyszłym kwartale.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Pobierz jako pdf",
   "app.components.FormSync.downloadExcelTemplate": "Pobierz szablon Excel",
-  "app.components.FormSync.downloadExcelTemplateTooltip2": "Szablony Excel nie będą zawierać pytań rankingowych, pytań dotyczących macierzy, pytań dotyczących przesyłania plików ani żadnych pytań dotyczących mapowania (Drop Pin, Draw Route, Draw Area, ESRI file upload), ponieważ nie są one obecnie obsługiwane w przypadku importu zbiorczego.",
   "app.components.ProjectTemplatePreview.close": "Zamknij",
   "app.components.ProjectTemplatePreview.createProject": "Stwórz projekt",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Utwórz projekt na podstawie szablonu ''{templateTitle}''",
