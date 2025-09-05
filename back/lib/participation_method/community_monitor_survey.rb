@@ -37,9 +37,9 @@ module ParticipationMethod
     # Default category names are locked
     def constraints
       {
-        page_quality_of_life: { locks: { title_multiloc: true } },
-        page_service_delivery: { locks: { title_multiloc: true } },
-        page_governance_and_trust: { locks: { title_multiloc: true } }
+        page_quality_of_life: { locks: { attributes: %i[title_multiloc] } },
+        page_service_delivery: { locks: { attributes: %i[title_multiloc] } },
+        page_governance_and_trust: { locks: { attributes: %i[title_multiloc] } }
       }
     end
 

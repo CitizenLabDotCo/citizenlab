@@ -1,15 +1,16 @@
 # frozen_string_literal: true
 
 module IdeaCustomFields
-  class UpdateAllFailedError < StandardError
+  class UpdateAllFailedError < RuntimeError
+    attr_reader :errors
+
     def initialize(errors)
       super()
       @errors = errors
     end
-    attr_reader :errors
   end
 
-  class UpdatingFormWithInputError < StandardError; end
+  class UpdatingFormWithInputError < RuntimeError; end
 
   class WebApi::V1::IdeaCustomFieldsController < ApplicationController
     CONSTANTIZER = {
@@ -78,7 +79,11 @@ module IdeaCustomFields
 
     def update_all
       authorize CustomField.new(resource: @custom_form), :update_all?, policy_class: IdeaCustomFieldPolicy
-      validate!
+      errors = validate_update_all
+      if errors
+        render json: { errors: }, status: :unprocessable_entity
+        return
+      end
 
       page_temp_ids_to_ids_mapping = {}
       option_temp_ids_to_ids_mapping = {}
@@ -109,23 +114,17 @@ module IdeaCustomFields
       raise "Custom field with input_type: '#{@custom_field.input_type}' is not a geographic type"
     end
 
-    def validate!
-      fields = update_all_params.fetch(:custom_fields).map do |field|
-        CustomField.new(field.slice(:code, :key, :input_type, :title_multiloc, :description_multiloc, :required, :enabled, :ordering))
-      end
-      validate_non_empty_form!(fields)
+    def validate_update_all
       validate_stale_form_data!
-      validate_end_page!(fields)
-      validate_first_page!(fields)
-      validate_separate_title_body_pages!(fields)
+      fields = update_all_params.fetch(:custom_fields).map do |field|
+        CustomField.new(
+          field.slice(:code, :key, :input_type, :title_multiloc, :description_multiloc, :required, :enabled, :ordering)
+        ).tap(&:readonly!)
+      end
+      CustomFieldsValidationService.new.validate(fields, @custom_form.participation_context.pmethod)
     end
 
-    def validate_non_empty_form!(fields)
-      return if !fields.empty?
-
-      raise UpdateAllFailedError, { form: [{ error: 'empty' }] }
-    end
-
+    # TODO: Move to validation service?
     # To try and avoid forms being overwritten with stale data, we check if the form has been updated since the form editor last loaded it
     # But ONLY if the FE sends the fields_last_updated_at param
     def validate_stale_form_data!
@@ -134,53 +133,6 @@ module IdeaCustomFields
                     @custom_form.fields_last_updated_at.to_i > update_all_params[:fields_last_updated_at].to_datetime.to_i
 
       raise UpdateAllFailedError, { form: [{ error: 'stale_data' }] }
-    end
-
-    def validate_end_page!(fields)
-      return if fields.last.form_end_page?
-
-      raise UpdateAllFailedError, { form: [{ error: 'no_end_page' }] }
-    end
-
-    def validate_first_page!(fields)
-      return if fields.first.page?
-
-      raise UpdateAllFailedError, { form: [{ error: 'no_first_page' }] }
-    end
-
-    def validate_separate_title_body_pages!(fields)
-      title_page = nil
-      body_page = nil
-      fields_per_page = {}
-      prev_page = nil
-      fields.each do |field|
-        if field.page?
-          break if title_page && body_page
-
-          prev_page = field
-        else
-          fields_per_page[prev_page] ||= []
-          fields_per_page[prev_page] << field
-
-          if field.code == 'title_multiloc'
-            title_page = prev_page
-          elsif field.code == 'body_multiloc'
-            body_page = prev_page
-          end
-        end
-      end
-
-      if title_page && body_page && title_page == body_page
-        raise UpdateAllFailedError, { form: [{ error: 'title_and_body_on_same_page' }] }
-      end
-
-      if title_page && fields_per_page[title_page].count { |field| field[:enabled] } > 1
-        raise UpdateAllFailedError, { form: [{ error: 'title_page_with_other_fields' }] }
-      end
-
-      if body_page && fields_per_page[body_page].count { |field| field[:enabled] } > 1
-        raise UpdateAllFailedError, { form: [{ error: 'body_page_with_other_fields' }] }
-      end
     end
 
     def update_fields!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors)
@@ -232,7 +184,6 @@ module IdeaCustomFields
       end
       field = CustomField.new create_params.merge(resource: @custom_form)
 
-      IdeaCustomFieldsService.new(@custom_form).validate_constraints_against_defaults(field)
       if field.errors.errors.empty?
         SideFxCustomFieldService.new.before_create field, current_user
         if field.save
@@ -251,7 +202,7 @@ module IdeaCustomFields
 
     def update_field!(field, field_params, errors, index)
       idea_custom_field_service = IdeaCustomFieldsService.new(@custom_form)
-      idea_custom_field_service.validate_constraints_against_updates field, field_params
+      idea_custom_field_service.validate_constraints_against_updates field, field_params # TODO: Move to validation service?
       field_params = idea_custom_field_service.remove_ignored_update_params field_params
       if field.errors.errors.empty?
         field.assign_attributes field_params

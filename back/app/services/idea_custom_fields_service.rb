@@ -107,6 +107,7 @@ class IdeaCustomFieldsService
     categorised_fields
   end
 
+  # TODO: Move to validation service?
   def validate_constraints_against_updates(field, field_params)
     constraints = @participation_method.constraints[field.code&.to_sym]
     return unless constraints
@@ -119,20 +120,6 @@ class IdeaCustomFieldsService
     constraints[:locks]&.each do |attribute, value|
       if value == true && field_params[attribute] != field[attribute] && !page1_title?(field, attribute)
         field.errors.add :constraints, "Cannot change #{attribute}. It is locked."
-      end
-    end
-  end
-
-  def validate_constraints_against_defaults(field)
-    constraints = @participation_method.constraints[field.code&.to_sym]
-    return unless constraints
-
-    default_fields = @participation_method.default_fields @custom_form
-    default_field = default_fields.find { |f| f.code == field.code }
-
-    constraints[:locks]&.each do |attribute, value|
-      if value == true && field[attribute] != default_field[attribute] && !page1_title?(field, attribute)
-        field.errors.add :constraints, "Cannot change #{attribute} from default value. It is locked."
       end
     end
   end
