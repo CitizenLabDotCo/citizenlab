@@ -6,13 +6,14 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { CLErrors, UploadFile } from 'typings';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
+import { IFileData } from 'api/files/types';
 
 import { List } from 'components/admin/ResourceList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
 import Error from 'components/UI/Error';
 
+import FileSelectOrUploadModal from './components/FileSelectOrUploadModal';
 import FileAttachmentDisplay from './FileAttachmentDisplay';
-import FileInput from './FileInput';
 
 export interface Props {
   id: string;
@@ -20,6 +21,7 @@ export interface Props {
   onFileAdd: (fileToAdd: UploadFile) => void;
   onFileRemove?: (fileAttachmentToRemove: IFileAttachmentData) => void;
   onFileReorder?: (updatedFiles: IFileAttachmentData[]) => void;
+  onFileAttach?: (fileToAttach: IFileData) => void;
   fileAttachments?: IFileAttachmentData[] | undefined;
   apiErrors?: CLErrors | null;
   enableDragAndDrop?: boolean;
@@ -32,6 +34,7 @@ const FileRepositorySelectAndUpload = ({
   onFileAdd,
   onFileRemove,
   onFileReorder,
+  onFileAttach,
   fileAttachments: initialFileAttachments,
   apiErrors,
   id,
@@ -56,6 +59,10 @@ const FileRepositorySelectAndUpload = ({
 
   const handleFileOnAdd = (fileToAdd: UploadFile) => {
     onFileAdd(fileToAdd);
+  };
+
+  const handleFileOnAttach = (fileToAttach: IFileData) => {
+    onFileAttach?.(fileToAttach);
   };
 
   const handleFileOnRemove =
@@ -101,13 +108,13 @@ const FileRepositorySelectAndUpload = ({
       data-cy="e2e-file-uploader-container"
       w="100%"
     >
-      <FileInput
-        onAdd={handleFileOnAdd}
+      <FileSelectOrUploadModal
+        fileAttachments={fileAttachments}
         id={id}
-        multiple={multiple}
-        maxSizeMb={maxSizeMb}
-        dataCy={dataCy}
+        onFileAdd={handleFileOnAdd}
+        handleFileOnAttach={handleFileOnAttach}
       />
+
       <Error fieldName="file" apiErrors={apiErrors?.file} />
 
       <List key={fileAttachments?.length} className="files-list e2e-files-list">
