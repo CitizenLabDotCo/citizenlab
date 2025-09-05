@@ -17,7 +17,7 @@ module CitizenLab
       raise MissingConfigurationError
     end
 
-    def sign_url(url, expires_in: 1.day)
+    def sign_url(url, expires_in: 1.month)
       expires_at = Time.now + expires_in
       @signer.signed_url(url, expires: expires_at)
     end

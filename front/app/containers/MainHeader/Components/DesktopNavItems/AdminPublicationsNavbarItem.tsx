@@ -139,11 +139,13 @@ const ProjectsListFooter = styled(Link)`
 interface Props {
   linkTo: RouteType;
   navigationItemTitle: Multiloc;
+  onDropdownStateChange?: (isOpen: boolean) => void;
 }
 
 const AdminPublicationsNavbarItem = ({
   linkTo,
   navigationItemTitle,
+  onDropdownStateChange,
   location,
 }: Props & WithRouterProps) => {
   const [projectsDropdownOpened, setProjectsDropdownOpened] = useState(false);
@@ -176,7 +178,12 @@ const AdminPublicationsNavbarItem = ({
 
   useEffect(() => {
     setProjectsDropdownOpened(false);
-  }, [location, setProjectsDropdownOpened]);
+  }, [location.pathname]);
+
+  // Notify parent component of dropdown state changes
+  useEffect(() => {
+    onDropdownStateChange?.(projectsDropdownOpened);
+  }, [projectsDropdownOpened, onDropdownStateChange]);
 
   const toggleProjectsDropdown = (event: FormEvent) => {
     event.preventDefault();
@@ -207,7 +214,7 @@ const AdminPublicationsNavbarItem = ({
         top="68px"
         left="10px"
         opened={projectsDropdownOpened}
-        onClickOutside={toggleProjectsDropdown}
+        onClickOutside={() => setProjectsDropdownOpened(false)}
         zIndex="500"
         content={
           <ProjectsList id="e2e-projects-dropdown-content">

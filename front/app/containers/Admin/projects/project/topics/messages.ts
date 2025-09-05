@@ -2,8 +2,8 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   title: {
-    id: 'app.containers.AdminPage.Topics.title',
-    defaultMessage: 'Allowed input tags',
+    id: 'app.containers.AdminPage.Topics.inputTags',
+    defaultMessage: 'Input tags',
   },
   browseTopics: {
     id: 'app.containers.AdminPage.Topics.browseTopics',
@@ -38,14 +38,14 @@ export default defineMessages({
     defaultMessage: 'Delete',
   },
   topicManagerInfo: {
-    id: 'app.containers.AdminPage.Topics.topicManagerInfo',
+    id: 'app.containers.AdminPage.Topics.tagManagerInfo',
     defaultMessage:
-      'If you would like to add additional project topics, you can do so in the {topicManagerLink}.',
+      'If you would like to add additional tags, you can do so in the {topicManagerLink}.',
   },
   projectTopicsDescription: {
-    id: 'app.containers.AdminPage.Topics.projectTopicsDescription',
+    id: 'app.containers.AdminPage.Topics.inputTagsDescription',
     defaultMessage:
-      'You can add and delete the topics that can be assigned to inputs in this project.',
+      'You can add and delete the tags that can be assigned to inputs in this project. ',
   },
   topicManager: {
     id: 'app.containers.AdminPage.Topics.topicManager',
