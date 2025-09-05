@@ -192,6 +192,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
           )
 
         permission.permitted_by = 'everyone'
+        permission.save!
       end
 
       it 'returns true even when not enabled' do
