@@ -642,6 +642,7 @@ cy:
         user_is_given_admin_rights: 'Rhoddir hawliau gweinyddol i''r defnyddiwr'
         user_is_given_folder_moderator_rights: 'Rhoddir hawliau cymedrolwr ffolder i''r defnyddiwr'
         user_is_given_project_moderator_rights: 'Rhoddir hawliau cymedrolwr prosiect i''r defnyddiwr'
+        user_is_invited_to_platform: 'Mae''r defnyddiwr wedi''i wahodd i''r platfform'
         user_is_invited_to_cosponsor_a_proposal: 'Gwahoddir defnyddiwr i gyd-noddi cynnig'
         user_is_mentioned: 'Sonnir am y defnyddiwr'
         user_is_mentioned_in_internal_comment: 'Sonnir am y defnyddiwr yn y sylw mewnol'

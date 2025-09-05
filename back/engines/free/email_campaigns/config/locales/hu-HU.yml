@@ -642,6 +642,7 @@ hu:
         user_is_given_admin_rights: 'A felhasználó rendszergazdai jogokat kap'
         user_is_given_folder_moderator_rights: 'A felhasználó mappamoderátori jogokat kap'
         user_is_given_project_moderator_rights: 'A felhasználó projektmoderátori jogokat kap'
+        user_is_invited_to_platform: 'Felhasználó meghívást kapott a platformra'
         user_is_invited_to_cosponsor_a_proposal: 'A felhasználót felkérik, hogy társszponzoráljon egy javaslatot'
         user_is_mentioned: 'A felhasználó meg van említve'
         user_is_mentioned_in_internal_comment: 'A felhasználó meg van említve a belső megjegyzésben'
