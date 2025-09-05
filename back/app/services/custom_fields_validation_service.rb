@@ -8,11 +8,11 @@ class CustomFieldsValidationService
   end
 
   def validate(fields, participation_method)
-    validate_non_empty_form!(fields)
-    validate_end_page!(fields)
-    validate_first_page!(fields)
-    validate_separate_title_body_pages!(fields)
-    validate_lock_constraints!(fields, participation_method)
+    validate_non_empty_form!(fields) ||
+      validate_end_page!(fields) ||
+      validate_first_page!(fields) ||
+      validate_separate_title_body_pages!(fields) ||
+      validate_lock_constraints!(fields, participation_method)
   end
 
   private
@@ -20,21 +20,22 @@ class CustomFieldsValidationService
   def validate_non_empty_form!(fields)
     return if !fields.empty?
 
-    raise UpdateAllFailedError, { form: [{ error: 'empty' }] }
+    { form: [{ error: 'empty' }] }
   end
 
   def validate_end_page!(fields)
     return if fields.last.form_end_page?
 
-    raise UpdateAllFailedError, { form: [{ error: 'no_end_page' }] }
+    { form: [{ error: 'no_end_page' }] }
   end
 
   def validate_first_page!(fields)
     return if fields.first.page?
 
-    raise UpdateAllFailedError, { form: [{ error: 'no_first_page' }] }
+    { form: [{ error: 'no_first_page' }] }
   end
 
+  # TODO: Replace by locked children logic
   def validate_separate_title_body_pages!(fields)
     title_page = nil
     body_page = nil
@@ -58,16 +59,18 @@ class CustomFieldsValidationService
     end
 
     if title_page && body_page && title_page == body_page
-      raise UpdateAllFailedError, { form: [{ error: 'title_and_body_on_same_page' }] }
+      return { form: [{ error: 'title_and_body_on_same_page' }] }
     end
 
     if title_page && fields_per_page[title_page].count { |field| field[:enabled] } > 1
-      raise UpdateAllFailedError, { form: [{ error: 'title_page_with_other_fields' }] }
+      return { form: [{ error: 'title_page_with_other_fields' }] }
     end
 
     if body_page && fields_per_page[body_page].count { |field| field[:enabled] } > 1
-      raise UpdateAllFailedError, { form: [{ error: 'body_page_with_other_fields' }] }
+      return { form: [{ error: 'body_page_with_other_fields' }] }
     end
+
+    nil
   end
 
   def validate_lock_constraints!(fields, participation_method)
