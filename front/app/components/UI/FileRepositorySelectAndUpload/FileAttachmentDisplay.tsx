@@ -17,7 +17,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { returnFileSize } from 'utils/fileUtils';
 
-import messages from './messages';
+import messages from '../FileUploader/messages';
 
 const Container = styled.div<{ error: boolean }>`
   display: flex;

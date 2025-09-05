@@ -14,7 +14,7 @@ import { UploadFile } from 'typings';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getBase64FromFile } from 'utils/fileUtils';
 
-import messages from './messages';
+import messages from '../FileUploader/messages';
 
 const Container = styled.div`
   margin-bottom: 10px;
