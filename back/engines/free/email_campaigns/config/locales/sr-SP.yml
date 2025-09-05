@@ -642,6 +642,7 @@ sr-Cyrl:
         user_is_given_admin_rights: 'Корисник добија администраторска права'
         user_is_given_folder_moderator_rights: 'Корисник добија права модератора фолдера'
         user_is_given_project_moderator_rights: 'Корисник добија права модератора пројекта'
+        user_is_invited_to_platform: 'User is invited to platform'
         user_is_invited_to_cosponsor_a_proposal: 'Корисник је позван да буде ко-спонзор предлога'
         user_is_mentioned: 'Корисник се помиње'
         user_is_mentioned_in_internal_comment: 'Корисник је поменут у интерном коментару'
