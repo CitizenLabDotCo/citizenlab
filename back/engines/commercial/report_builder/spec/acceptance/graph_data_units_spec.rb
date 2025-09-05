@@ -80,6 +80,21 @@ resource 'Graph data units' do
       end
     end
 
+    describe 'when project moderator accesses ProjectsTimelineWidget' do
+      before do
+        project_moderator = create(:project_moderator, projects: [project])
+        header_token_for(project_moderator)
+      end
+
+      let(:resolved_name) { 'ProjectsTimelineWidget' }
+      let(:props) { { status: ['published'], sort: 'phase_starting_or_ending_soon', no_of_projects: 10 } }
+
+      example_request 'Project moderator can access ProjectsTimelineWidget data' do
+        assert_status 200
+        expect(json_response_body.dig(:data, :attributes, :timeline_items)).to be_an(Array)
+      end
+    end
+
     include_examples 'not authorized to visitors'
     include_examples 'not authorized to normal users'
   end

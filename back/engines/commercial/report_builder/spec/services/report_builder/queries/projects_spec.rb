@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe ReportBuilder::Queries::Projects do
-  subject(:query) { described_class.new(build(:user)) }
+  subject(:query) { described_class.new(build(:admin)) }
 
   describe '#run_query' do
     before_all do
@@ -149,8 +149,32 @@ RSpec.describe ReportBuilder::Queries::Projects do
         )
 
         expect(result[:projects].count).to eq(5)
-        expect(result[:projects].pluck(:id))
-          .to match_array [@project1.id, @project2.id, @project3.id, @project5.id, @past_project.id]
+
+        expect(
+          result[:projects].pluck(:id).sort
+        ).to eq([@past_project.id, @project1.id, @project2.id, @project3.id, @project5.id].sort)
+      end
+    end
+
+    context 'when user is a project moderator' do
+      subject(:moderator_query) { described_class.new(project_moderator) }
+
+      let!(:project_moderator) do
+        create(:user, roles: [
+          { 'type' => 'project_moderator', 'project_id' => @project1.id }
+        ])
+      end
+
+      it 'only returns projects the moderator can access' do
+        result = moderator_query.run_query(
+          start_at: Date.new(2020, 1, 1),
+          end_at: Date.new(2022, 12, 31),
+          publication_statuses: %w[published]
+        )
+
+        # Should only see @project1 which they can moderate
+        expect(result[:projects].count).to eq(1)
+        expect(result[:projects].pluck(:id)).to eq([@project1.id])
       end
     end
   end

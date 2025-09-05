@@ -10,7 +10,9 @@ module ReportBuilder
         project = Project.find(props[:project_id])
         policy_for(project).active_moderator?
       else
-        active_admin?
+        # For global project widgets (like ProjectsTimelineWidget, ProjectsWidget),
+        # allow access if user is admin or project moderator
+        active_admin? || user&.project_moderator? || user&.project_folder_moderator?
       end
     end
   end
