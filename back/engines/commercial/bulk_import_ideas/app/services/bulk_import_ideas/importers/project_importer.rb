@@ -44,9 +44,9 @@ module BulkImportIdeas::Importers
       if users.empty?
         log 'No users found. users.xlsx is either empty, does not exist and there are no users found as input authors.'
       else
-        existing_user_count = User.where(email: users.pluck("Email address")).count
+        existing_user_count = User.where(email: users.pluck('Email address')).count
         if existing_user_count == users.count
-          log "ALL USERS EXIST: No new users will be created."
+          log 'ALL USERS EXIST: No new users will be created.'
         else
           log "Found #{user_custom_fields.count} user custom fields to import"
 
@@ -473,9 +473,9 @@ module BulkImportIdeas::Importers
       if users.empty?
         log 'NO USERS FOUND: users.xlsx is either empty or does not exist.'
       else
-        existing_user_count = User.where(email: users.pluck("Email address")).count
+        existing_user_count = User.where(email: users.pluck('Email address')).count
         if existing_user_count == users.count
-          log "EXISTING USERS FOUND: No new users will be created."
+          log 'EXISTING USERS FOUND: No new users will be created.'
         else
           log "FOUND NEW USERS: #{users.count - existing_user_count} users to import"
           preview_user_custom_fields(user_custom_fields)
