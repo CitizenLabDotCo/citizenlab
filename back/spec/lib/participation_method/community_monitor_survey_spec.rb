@@ -197,7 +197,7 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
         permission = Permission.find_by(
           permission_scope_id: phase.id,
           action: 'posting_idea'
-          )
+        )
 
         permission.permitted_by = 'everyone'
       end

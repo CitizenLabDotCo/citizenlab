@@ -417,6 +417,24 @@ resource 'Ideas' do
             expect(response_data[:attributes]).to include(field: 'value', u_gender: 'male')
           end
         end
+
+        context 'when permitted_by is \'everyone\'' do
+          example 'Get a single draft idea by phase including user data' do
+            phase.update!(user_fields_in_form: false, permitted_by: 'everyone')
+
+            ermission = Permission.find_by(
+              permission_scope_id: phase.id,
+              action: 'posting_idea'
+            )
+
+            permission.permitted_by = 'everyone'
+
+            @user.update!(custom_field_values: { 'gender' => 'male' })
+            do_request
+            assert_status 200
+            expect(response_data[:id]).to eq idea.id
+            expect(response_data[:attributes]).to include(field: 'value', u_gender: 'male')
+        end
       end
 
       context 'Idea authored by another user' do
