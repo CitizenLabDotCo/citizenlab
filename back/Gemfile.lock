@@ -1336,7 +1336,6 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers (~> 0.10.15)
-  activerecord (~> 7.1.5.2)
   activerecord-import (~> 1.7)
   activerecord-postgis-adapter (~> 9.0.2)
   acts_as_list (~> 1.2)
