@@ -765,6 +765,7 @@
   "app.components.formBuilder.aiUpsellText1": "If you have access to our AI package, you will be able to summarise and categorise text responses with AI",
   "app.components.formBuilder.askFollowUpToggleLabel": "Ask follow up",
   "app.components.formBuilder.bad": "Bad",
+  "app.components.formBuilder.bodyMultiloc": "Description",
   "app.components.formBuilder.buttonLabel": "Button label",
   "app.components.formBuilder.buttonLink": "Button link",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Cancel",
