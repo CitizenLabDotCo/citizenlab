@@ -84,7 +84,7 @@ RSpec.describe Files::DescriptionGenerator do
           file = create_ai_file(name: 'david.docx')
 
           expect { service.generate_descriptions!(file) }
-            .to raise_error(Files::DescriptionGenerator::PreviewPendingError)
+            .to raise_error(Files::LLMPreparation::PreviewPendingError)
         end
       end
 
@@ -93,7 +93,7 @@ RSpec.describe Files::DescriptionGenerator do
           file = create_ai_file(name: 'david.docx')
           file.create_preview!(status: 'failed', content: nil)
 
-          expect(service) # rubocop:disable RSpec/SubjectStub
+          expect_any_instance_of(Files::LLMPreparation)
             .to receive(:docx_to_html)
             .with(satisfy { |f| f.id == file.id })
             .and_call_original
@@ -118,7 +118,7 @@ RSpec.describe Files::DescriptionGenerator do
           file = create_ai_file(name: 'header.jpg')
           allow(file).to receive(:size).and_return(1.megabyte) # Simulate a small image
 
-          expect(service).not_to receive(:resize_image) # rubocop:disable RSpec/SubjectStub
+          expect_any_instance_of(Files::LLMPreparation).not_to receive(:resize_image)
           service.generate_descriptions!(file)
           expect(file.description_multiloc).to be_present
         end
@@ -129,7 +129,7 @@ RSpec.describe Files::DescriptionGenerator do
           file = create_ai_file(name: 'header.jpg')
           allow(file).to receive(:size).and_return(15.megabytes) # Simulate a large image
 
-          expect(service) # rubocop:disable RSpec/SubjectStub
+          expect_any_instance_of(Files::LLMPreparation)
             .to receive(:resize_image)
             .with(satisfy { |f| f.id == file.id })
             .and_call_original
@@ -146,7 +146,7 @@ RSpec.describe Files::DescriptionGenerator do
           allow(file).to receive(:size).and_return(60.megabytes) # Simulate an oversized image
 
           expect { service.generate_descriptions!(file) }
-            .to raise_error(Files::DescriptionGenerator::ImageSizeLimitExceededError)
+            .to raise_error(Files::LLMPreparation::ImageSizeLimitExceededError)
         end
       end
     end
