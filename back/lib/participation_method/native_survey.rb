@@ -128,6 +128,13 @@ module ParticipationMethod
     end
 
     def user_fields_in_form?
+      permission = Permission.find_by(
+        permission_scope_id: phase.id,
+        action: 'posting_idea'
+      )
+
+      return true if permission&.permitted_by == 'everyone'
+
       phase.user_fields_in_form
     end
 
