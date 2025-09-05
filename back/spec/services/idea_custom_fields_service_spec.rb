@@ -424,11 +424,10 @@ describe IdeaCustomFieldsService do
 
       it 'returns errors if images locked attributes are different from default' do
         images_field = custom_form.custom_fields.find_by(code: 'idea_images_attributes')
-        images_field.enabled = false
         images_field.title_multiloc = { en: 'Changed value' }
         service.validate_constraints_against_defaults(images_field)
 
-        expect(images_field.errors.errors.length).to eq 2
+        expect(images_field.errors.errors.length).to eq 1
       end
 
       it 'returns errors if files locked attributes are different from default' do
@@ -503,10 +502,10 @@ describe IdeaCustomFieldsService do
 
       it 'returns errors if images locked attributes are changed from previous values' do
         images_field = custom_form.custom_fields.find_by(code: 'idea_images_attributes')
-        bad_params = { enabled: false, title_multiloc: { en: 'Changed value' } }
+        bad_params = { title_multiloc: { en: 'Changed value' } }
         service.validate_constraints_against_updates(images_field, bad_params)
 
-        expect(images_field.errors.errors.length).to eq 2
+        expect(images_field.errors.errors.length).to eq 1
       end
 
       it 'returns errors if files locked attributes are changed from previous values' do

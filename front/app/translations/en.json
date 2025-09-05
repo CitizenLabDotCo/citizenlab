@@ -825,6 +825,7 @@
   "app.components.formBuilder.good": "Good",
   "app.components.formBuilder.helmetTitle": "Form builder",
   "app.components.formBuilder.imageFileUpload": "Image upload",
+  "app.components.formBuilder.inputImages": "Images",
   "app.components.formBuilder.inputTagManager": "Input tags page",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Invalid logic",
   "app.components.formBuilder.labels2": "Labels (optional)",
