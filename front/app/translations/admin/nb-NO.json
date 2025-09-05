@@ -73,7 +73,6 @@
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Takk for at du fullførte undersøkelsen! Du er velkommen til å svare på den igjen neste kvartal.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Last ned som pdf",
   "app.components.FormSync.downloadExcelTemplate": "Last ned en Excel-mal",
-  "app.components.FormSync.downloadExcelTemplateTooltip2": "Excel-maler inkluderer ikke rangeringsspørsmål, matrisespørsmål, filopplastingsspørsmål og eventuelle kartleggingsspørsmål (Drop Pin, Draw Route, Draw Area, ESRI-filopplasting), ettersom disse ikke støttes for masseimport på nåværende tidspunkt.",
   "app.components.ProjectTemplatePreview.close": "Lukk",
   "app.components.ProjectTemplatePreview.createProject": "Opprett prosjekt",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Opprett et prosjekt basert på malen ''{templateTitle}''",

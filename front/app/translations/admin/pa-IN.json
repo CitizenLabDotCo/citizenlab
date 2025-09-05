@@ -73,7 +73,6 @@
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "ਸਰਵੇਖਣ ਨੂੰ ਪੂਰਾ ਕਰਨ ਲਈ ਤੁਹਾਡਾ ਧੰਨਵਾਦ! ਅਗਲੀ ਤਿਮਾਹੀ ਵਿੱਚ ਇਸਨੂੰ ਦੁਬਾਰਾ ਲੈਣ ਲਈ ਤੁਹਾਡਾ ਸਵਾਗਤ ਹੈ।",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "ਪੀਡੀਐਫ ਦੇ ਤੌਰ ਤੇ ਡਾਊਨਲੋਡ ਕਰੋ",
   "app.components.FormSync.downloadExcelTemplate": "ਇੱਕ ਐਕਸਲ ਟੈਂਪਲੇਟ ਡਾਊਨਲੋਡ ਕਰੋ",
-  "app.components.FormSync.downloadExcelTemplateTooltip2": "ਐਕਸਲ ਟੈਂਪਲੇਟਸ ਵਿੱਚ ਰੈਂਕਿੰਗ ਸਵਾਲ, ਮੈਟ੍ਰਿਕਸ ਸਵਾਲ, ਫਾਈਲ ਅਪਲੋਡ ਸਵਾਲ ਅਤੇ ਕੋਈ ਵੀ ਮੈਪਿੰਗ ਇਨਪੁੱਟ ਸਵਾਲ (ਡ੍ਰੌਪ ਪਿੰਨ, ਡਰਾਅ ਰੂਟ, ਡਰਾਅ ਏਰੀਆ, ESRI ਫਾਈਲ ਅਪਲੋਡ) ਸ਼ਾਮਲ ਨਹੀਂ ਹੋਣਗੇ ਕਿਉਂਕਿ ਇਹ ਇਸ ਸਮੇਂ ਥੋਕ ਆਯਾਤ ਲਈ ਸਮਰਥਿਤ ਨਹੀਂ ਹਨ।",
   "app.components.ProjectTemplatePreview.close": "ਬੰਦ ਕਰੋ",
   "app.components.ProjectTemplatePreview.createProject": "ਪ੍ਰੋਜੈਕਟ ਬਣਾਓ",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "''{templateTitle}'' ਟੈਂਪਲੇਟ ਦੇ ਆਧਾਰ 'ਤੇ ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਬਣਾਓ।",
