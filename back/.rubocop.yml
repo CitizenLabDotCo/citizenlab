@@ -107,12 +107,6 @@ Performance/Casecmp:
 Style/NegatedIf:
   Enabled: false
 
-Style/BlockDelimiters:
-  EnforcedStyle: braces_for_chaining
-
-Style/MultilineBlockChain:
-  Enabled: false
-
 Rails/DynamicFindBy:
   AllowedMethods:
     - find_by_cimail
