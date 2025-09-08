@@ -35,7 +35,7 @@ resource 'Idea Custom Fields' do
       IdeaCustomFieldsService.new(custom_form).all_fields.reject(&:form_end_page?).map do |field|
         {}.tap do |field_param|
           attributes.each do |attribute|
-            field_param[attribute] = field.send attribute
+            field_param[attribute] = field[attribute]
           end
         end
       end
@@ -127,12 +127,7 @@ resource 'Idea Custom Fields' do
                 created_at: an_instance_of(String),
                 updated_at: an_instance_of(String),
                 logic: {},
-                constraints: {
-                  locks: {
-                    enabled: true,
-                    title_multiloc: true
-                  }
-                },
+                constraints: { locks: { attributes: %w[title_multiloc], deletion: true, children: true } },
                 page_layout: 'default',
                 random_option_ordering: false
               ),
@@ -153,13 +148,7 @@ resource 'Idea Custom Fields' do
                 created_at: an_instance_of(String),
                 updated_at: an_instance_of(String),
                 logic: {},
-                constraints: {
-                  locks: {
-                    enabled: true,
-                    title_multiloc: true,
-                    required: true
-                  }
-                },
+                constraints: { locks: { attributes: %w[title_multiloc required], deletion: true } },
                 random_option_ordering: false
               ),
               id: an_instance_of(String),
@@ -179,7 +168,7 @@ resource 'Idea Custom Fields' do
                 created_at: an_instance_of(String),
                 updated_at: an_instance_of(String),
                 logic: {},
-                constraints: {},
+                constraints: { locks: { children: true } },
                 page_layout: 'default',
                 random_option_ordering: false
               ),
@@ -200,13 +189,7 @@ resource 'Idea Custom Fields' do
                 created_at: an_instance_of(String),
                 updated_at: an_instance_of(String),
                 logic: {},
-                constraints: {
-                  locks: {
-                    enabled: true,
-                    required: true,
-                    title_multiloc: true
-                  }
-                },
+                constraints: { locks: { attributes: %w[title_multiloc required] } },
                 random_option_ordering: false
               ),
               id: an_instance_of(String),
@@ -299,139 +282,14 @@ resource 'Idea Custom Fields' do
           expect(json_response).to eq({ errors: { '12': { input_type: [{ error: 'inclusion', value: 'html_multiloc' }] } } })
         end
 
-        example '[error] Submitting an empty form' do
-          do_request custom_fields: []
-
-          assert_status 422
-          json_response = json_parse response_body
-          expect(json_response).to eq({ errors: { form: [{ error: 'empty' }] } })
-        end
-
-        example '[error] Put the title and body fields on the same page' do
-          title_field, body_field = default_fields_param.select { |field| field[:code].in? %w[title_multiloc body_multiloc] }
-          fields_param = [
-            {
-              input_type: 'page',
-              page_layout: 'default'
-            },
-            title_field,
-            body_field,
-            final_page
-          ]
+        example '[error] Lock constraints (remove the body field from the body page)' do
+          fields_param = default_fields_param.reject { |field| field[:code] == 'body_multiloc' } + [final_page]
 
           do_request custom_fields: fields_param
 
           assert_status 422
           json_response = json_parse response_body
-          expect(json_response).to eq({ errors: { form: [{ error: 'title_and_body_on_same_page' }] } })
-        end
-
-        example '[error] Put other fields on the title page' do
-          title_field, body_field = default_fields_param.select { |field| field[:code].in? %w[title_multiloc body_multiloc] }
-          fields_param = [
-            {
-              input_type: 'page',
-              page_layout: 'default'
-            },
-            title_field,
-            {
-              input_type: 'number',
-              title_multiloc: { 'en' => 'How many?' }
-            },
-            {
-              input_type: 'page',
-              page_layout: 'default'
-            },
-            body_field,
-            final_page
-          ]
-
-          do_request custom_fields: fields_param
-
-          assert_status 422
-          json_response = json_parse response_body
-          expect(json_response).to eq({ errors: { form: [{ error: 'title_page_with_other_fields' }] } })
-        end
-
-        example 'Put other disabled fields on the title page', document: false do
-          title_field, body_field = default_fields_param.select { |field| field[:code].in? %w[title_multiloc body_multiloc] }
-          fields_param = [
-            {
-              input_type: 'page',
-              page_layout: 'default'
-            },
-            title_field,
-            {
-              input_type: 'number',
-              enabled: false,
-              title_multiloc: { 'en' => 'How many?' }
-            },
-            {
-              input_type: 'page',
-              page_layout: 'default'
-            },
-            body_field,
-            final_page
-          ]
-
-          do_request custom_fields: fields_param
-
-          assert_status 200
-        end
-
-        example '[error] Put other fields on the body page' do
-          title_field, body_field, topics_field = default_fields_param.select { |field| field[:code].in? %w[title_multiloc body_multiloc topic_ids] }
-          fields_param = [
-            {
-              input_type: 'page',
-              page_layout: 'default'
-            },
-            title_field,
-            {
-              input_type: 'page',
-              page_layout: 'default'
-            },
-            topics_field,
-            body_field,
-            final_page
-          ]
-
-          do_request custom_fields: fields_param
-
-          assert_status 422
-          json_response = json_parse response_body
-          expect(json_response).to eq({ errors: { form: [{ error: 'body_page_with_other_fields' }] } })
-        end
-
-        example 'Put other disabled fields on the body page', document: false do
-          title_field, body_field = default_fields_param.select { |field| field[:code].in? %w[title_multiloc body_multiloc] }
-          fields_param = [
-            {
-              input_type: 'page',
-              page_layout: 'default'
-            },
-            title_field,
-            {
-              input_type: 'page',
-              page_layout: 'default'
-            },
-            {
-              input_type: 'number',
-              enabled: false,
-              title_multiloc: { 'en' => 'How many?' }
-            },
-            body_field,
-            {
-              input_type: 'number',
-              enabled: false,
-              title_multiloc: { 'en' => 'How many?' }
-            },
-            final_page
-          ]
-
-          do_request custom_fields: fields_param
-
-          assert_status 200
+          expect(json_response).to eq({ errors: { form: [{ error: 'locked_children' }] } })
         end
 
         example 'Updating custom fields when there are responses', document: false do
