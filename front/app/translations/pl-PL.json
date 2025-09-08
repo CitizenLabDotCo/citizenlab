@@ -920,7 +920,7 @@
   "app.components.ideas.similarIdeas.similarSubmissionsDescription": "Znaleźliśmy podobne podwładne - angażowanie się w nie może pomóc je wzmocnić!",
   "app.components.ideas.similarIdeas.similarSubmissionsPosted": "Podobne zgłoszenia zostały już opublikowane:",
   "app.components.ideas.similarIdeas.similarSubmissionsSearch": "Szukasz podobnych zgłoszeń ...",
-  "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Mniej niż dzień} one {# dzień} other {# dni}} lewo",
+  "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Mniej niż dzień} one {# dzień} other {# dni}} zostało",
   "app.components.phaseTimeLeft.xWeeksLeft": "{timeLeft}  tygodnie",
   "app.components.screenReaderCurrency.AED": "Zjednoczone Emiraty Arabskie Dirham",
   "app.components.screenReaderCurrency.AFN": "Afgańczyk",
