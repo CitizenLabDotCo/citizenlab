@@ -382,3 +382,6 @@ ach:
     default_voting_term_plural: "crwdns5116423:0crwdne5116423:0"
   ics_calendar_event:
     event_details: "crwdns5116425:0crwdne5116425:0"
+  errors:
+    messages:
+      max_must_be_greater_than_min_characters: "crwdns5265255:0crwdne5265255:0"
