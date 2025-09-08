@@ -307,9 +307,8 @@ const UserTableRow = ({
                 fontSize={`${fontSizes.s}px`}
                 p="0px"
                 iconSize="18px"
+                disabled={!authUserIsAdmin}
                 onClick={() => {
-                  // Only allow admins to see assigned items
-                  if (!authUserIsAdmin) return;
                   setIsAssignedItemsOpened(true);
                 }}
               >
