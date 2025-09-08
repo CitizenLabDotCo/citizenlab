@@ -14,7 +14,7 @@ import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
-import FileInput from '../FileInput';
+import FileInput from '../../FileUploader/FileInput';
 
 import messages from './messages';
 

@@ -8,7 +8,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import { CLErrors, Multiloc, UploadFile } from 'typings';
-import { v4 as uuidv4 } from 'uuid';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import useFileAttachments from 'api/file_attachments/useFileAttachments';
@@ -48,7 +47,7 @@ import PhaseParticipationConfig from './components/PhaseParticipationConfig';
 import { ideationDefaultConfig } from './components/PhaseParticipationConfig/utils/participationMethodConfigs';
 import messages from './messages';
 import { SubmitStateType, ValidationErrors } from './typings';
-import { getTimelineTab } from './utils';
+import { generateTemporaryFileAttachment, getTimelineTab } from './utils';
 import validate from './validate';
 
 interface Props {
@@ -159,29 +158,13 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
 
     if (isDuplicate) return;
 
-    const temporaryFileAttachment: IFileAttachmentData = {
-      id: `TEMP-${uuidv4()}`, // Temporary ID, to mark it as a newly added file attachment.
-      attributes: {
-        position: inStatePhaseFileAttachments
-          ? inStatePhaseFileAttachments.length + 1
-          : 0,
-      },
-      relationships: {
-        attachable: {
-          data: {
-            type: 'Phase',
-            id: phaseId || '',
-          },
-        },
-        file: {
-          data: {
-            id: file.id,
-            type: 'file',
-          },
-        },
-      },
-      type: 'file_attachment',
-    };
+    const temporaryFileAttachment = generateTemporaryFileAttachment({
+      fileId: file.id,
+      phaseId,
+      position: inStatePhaseFileAttachments
+        ? inStatePhaseFileAttachments.length
+        : 0,
+    });
 
     setInStatePhaseFileAttachments((inStatePhaseFileAttachments) => [
       ...(inStatePhaseFileAttachments || []),
@@ -203,29 +186,13 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
       {
         onSuccess: (newFile) => {
           // Create a temporary file attachment to add to the state, so the user sees it in the list.
-          const temporaryFileAttachment: IFileAttachmentData = {
-            id: `TEMP-${uuidv4()}`, // Temporary ID, to mark it as a newly added file attachment.
-            attributes: {
-              position: inStatePhaseFileAttachments
-                ? inStatePhaseFileAttachments.length + 1
-                : 0,
-            },
-            relationships: {
-              attachable: {
-                data: {
-                  type: 'Phase',
-                  id: phaseId || '',
-                },
-              },
-              file: {
-                data: {
-                  id: newFile.data.id,
-                  type: 'file',
-                },
-              },
-            },
-            type: 'file_attachment',
-          };
+          const temporaryFileAttachment = generateTemporaryFileAttachment({
+            fileId: newFile.data.id,
+            phaseId,
+            position: inStatePhaseFileAttachments
+              ? inStatePhaseFileAttachments.length
+              : 0,
+          });
 
           const isDuplicate = inStatePhaseFileAttachments?.some(
             (fileAttachment) => {

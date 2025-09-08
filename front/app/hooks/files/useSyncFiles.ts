@@ -45,7 +45,6 @@ export function useSyncFiles() {
           });
         });
 
-      // Return a single promise that resolves when all mutations are done
       await Promise.all([...fileAttachmentsToAddPromises]);
 
       // Delete any file attachments that were removed
