@@ -95,6 +95,7 @@ lb:
       project_title: 'Beispillprojet'
       project_description_preview: 'Dëst ass e Beispill vun engem Phaseninhalt, deen benotzt gëtt fir den Inhalt vun E-Maile virzekucken. Dëst ass keen echten Inhalt.'
       phase_title: 'Beispillphase'
+      folder_title: 'Beispill-Dossier'
       comment_body: 'Dëst ass e Beispillkommentar, deen benotzt gëtt fir den Inhalt vun E-Maile virzekucken. Dëst ass keen echten Inhalt.'
       comment_deleted_reason: 'Äre Beispillkommentar gouf als onpassend ugesinn.'
       idea_title: 'Beispill Iddi'
@@ -103,6 +104,9 @@ lb:
       event_address1: '10 Example Street, Exampleton, Exampleshire'
       event_address2: 'Zëmmer 3a, iewescht Stack'
       proposal_title: 'Beispillvirschlag'
+      input_status_title: 'Beispill Status'
+      input_status_description: 'E Beispill vun engem Status fir en Input (z.B. akzeptéiert, refuséiert, ëmgesat...)'
+      official_feedback_body: 'Beispill vun offiziellem Feedback'
     footer:
       "link_privacy_policy": "Dateschutzrichtlinn"
       "link_terms_conditions": "Geschäftsbedéngungen"
@@ -333,10 +337,11 @@ lb:
       title: 'Neien internen Kommentar zu ''%{post}'''
       preheader: '''%{post}'' huet en neien internen Kommentar'
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} huet en Update iwwer ''%{input_title}'' ginn.'
-      header_title: 'Et gëtt en Update iwwer "%{input_title}"'
+      event_description: '%{feedback_author_name} huet en Update zu ''%{input_title}'' ginn.'
+      title: 'Et gëtt en Update op "%{input_title}"'
       subject: 'Offiziell Feedback gouf op "%{input_title}" gepost'
       preheader: 'Et gëtt en Update op engem Input deen Dir verfollegt'
+      cta_button: Gitt op dësen Input
     mention_in_official_feedback:
       cta_button: 'Äntwert op %{organizationName}'
       event_description: '%{organizationName} hunn Iech an hirem Feedback zu der Iddi ''%{post}‘ ernimmt. Klickt op de Link hei ënnendrënner, fir Iech mat %{organizationName} z’ënnerhalen'
@@ -344,8 +349,8 @@ lb:
       subject: '%{organizationName} hunn Iech an hirem Feedback ernimmmt'
       preheader: '%{commentAuthor} huet Iech am Feedback ernimmt'
     project_moderation_rights_received:
-      cta_manage_project: 'Verwalten dëse Projet'
-      message_you_became_moderator: 'En Administrateur vun der participativer Plattform %{organizationName} huet Iech grad zum Projetsmanager vum folgende Projet gemaach:'
+      cta_button: 'Dëse Projet verwalten'
+      event_description: 'En Administrateur vun der Participatiounsplattform vun %{organizationName} huet dech grad zum Projetmanager fir folgend Projet ernannt:'
       no_ideas: 'Nach keng Iddien'
       preheader: 'En Administrateur vun der participativer Plattform %{organizationName} huet Iech grad zum Projetsmanager vum folgende Projet gemaach'
       subject: 'Dir sidd en Administrateur vun der Bedeelegungsplattform vun %{organizationName} ginn'
@@ -356,11 +361,11 @@ lb:
       title_moderate_analyse_input: 'Moderéiert an analyséiert d’Bäiträg'
       title_share_project_information: 'Gitt Informatiounen iwwer de Projet'
       title_what_can_you_do_moderator: 'Wat kënnt Dir als Projetsmanager maachen?'
-      title_you_became_moderator: 'Dir sidd ab elo Projetsmanager'
+      title: 'Dir sidd Projetmanager ginn'
       x_ideas: '%{numberOfIdeas} Iddien'
     project_folder_moderation_rights_received:
-      cta_view_folder_button: 'Dësen Dossier ukucken'
-      message_added_as_folderadmin: 'Dir hutt Administratorrechter op der participativer Plattform vum %{organizationName} fir folgenden Dossier kritt:'
+      cta_button: 'Dësen Dossier ukucken'
+      event_description: 'Dir hutt Rechter fir d''Ordnerverwaltung op der Participatiounsplattform vun %{organizationName}fir de folgende Ordner kritt:'
       no_projects: 'Nach keng Projeten'
       preheader: 'En Administrateur vun der participativer Plattform %{organizationName} huet Iech zum Administrateur vu folgendem Dossier gemaach'
       subject: 'Dir sidd en Administrateur vun engem Dossier op der participativer Plattform %{organizationName} ginn'
@@ -371,7 +376,7 @@ lb:
       title_moderate_analyse_input: 'Moderéiert an analyséiert d’Bäiträg'
       title_manage_folder: 'Leet d''Astellunge vum Dossier fest an erstellt nei Projeten.'
       title_what_can_you_do_folderadmin: 'Wat kënnt Dir als Administrateur vun Dossiere maachen?'
-      title_added_as_folderadmin: 'Dir sidd als Administrateur vun engem Dossier bäigefüügt ginn'
+      title: 'Dir sidd als Dossiermanager bäigefüügt ginn'
       x_projects: '%{numberOfProjects} Projeten'
     project_phase_started:
       cta_button: 'Entdeckt dës nei Phase'
@@ -382,41 +387,43 @@ lb:
       subject: '%{projectName} ass an eng nei Phas gangen'
       preheader: 'Eng nei Phas gouf fir %{projectName} ugefaangen'
     project_phase_upcoming:
-      cta_view_phase: 'Preparéiert dës nei Phas'
+      cta_button: 'Setzt dës nei Phase op'
       event_description: 'De Projet ''%{projectName}'' geet geschwënn an eng nei Phas. Vergewëssert Iech, datt alles fir dës nei Phas preparéiert ass: Gëtt et eng ugemiess Beschreiwung? Ginn zeréckbehalen Iddien an dës Phas iwwerholl? Wëllt Dir d''Participanten iwwer d’Detailer vun dëser Phas mat enger moossgeschneiderter E-Mail-Campagne informéieren?'
-      main_header: '%{firstName}, e Projet geet geschwënn an eng nei Phas'
+      title: '%{firstName}, e Projet geet geschwënn an eng nei Phase'
       subtitle: 'Iwwer ''%{projectName}'''
       new_phase: 'De Projet geet an d’Phas ''%{phaseTitle}'''
       subject: 'Preparéiert alles fir déi nei Phas vu(n) %{projectName}'
       preheader: 'Geschwë fänkt eng nei Phas fir %{projectName} un'
     project_published:
       subject: 'En neie Projet gouf op der Plattform vum %{organizationName}publizéiert'
-      header_title: 'En neie Projet gouf publizéiert'
-      header_message: 'D''Participatiounsplattform vun %{organizationName} huet just de folgende Projet publizéiert:'
+      title: 'En neit Projet gouf publizéiert'
+      event_description: 'D''Participatiounsplattform vun %{organizationName} huet just folgend Projet publizéiert:'
       preheader: 'En neie Projet gouf publizéiert'
+      cta_button: 'Gitt op dëst Projet'
     project_review_request:
       subject: 'Iwwerpréiwung Ufro: E Projet waart op Genehmegung.'
-      header: '%{requesterName} huet Iech invitéiert de Projet ze iwwerpréiwen "%{projectTitle}"'
-      header_message: "De Moment ass de Projet am Entworfmodus an ass net fir Benotzer ze gesinn. Wann Dir et iwwerpréift an guttgeheescht hutt, kann de Moderator et verëffentlechen."
-      cta_review_project: "Iwwerpréift de Projet"
+      title: '%{requesterName} huet Iech invitéiert, de Projet "%{projectTitle}" ze iwwerpréiwen'
+      event_description: "De Projet ass am Moment am Entworfmodus a kann net fir d'Benotzer gesi ginn. Soubal Dir en iwwerpréift an approuvéiert hutt, kann de Moderator en publizéieren."
+      cta_button: "Iwwerpréift de Projet"
     project_review_state_change:
       subject: '"%{projectTitle}" gouf guttgeheescht'
-      header: '%{reviewerName} de Projet guttgeheescht "%{projectTitle}"'
-      header_message: "De Projet ass elo prett fir live ze goen. Dir kënnt et publizéieren wann Dir prett sidd!"
-      cta_go_to_project: "Gitt op de Projet Astellungen"
+      title: '%{reviewerName} huet de Projet "%{projectTitle}" guttgeheescht'
+      event_description: "De Projet ass elo prett fir online ze goen. Dir kënnt en publizéieren, wann Dir prett sidd!"
+      cta_button: "Gitt op d'Projetastellungen"
     status_change_on_idea_you_follow:
       status_change: 'Den neie Status vun dësem Input ass ''%{status}'''
-      header_message: '%{organizationName} huet de Status vum Input ''%{input_title}'' op hirer digitaler Participatiounsplattform aktualiséiert.'
-      header_title: 'En Input deen Dir verfollegt huet en neie Status'
+      event_description: '%{organizationName} huet de Status vum Input ''%{input_title}'' op hirer digitaler Participatiounsplattform aktualiséiert.'
+      title: 'En Input, deen Dir verfollegt, huet en neie Status'
       subject: 'De Status vun "%{input_title}" ass geännert'
       preheader: 'En Input deen Dir verfollegt huet en neie Status'
+      cta_button: Gitt op dësen Input
     user_digest:
       subject: "Är wéchentlech Aktivitéit op der participativer Plattform %{organizationName}"
       commented: "%{authorFirstName} huet kommentéiert:"
       preheader: "Wéchentlechen Iwwerbléck vun %{organizationName}"
-      title_your_weekly_report: "Fannt eraus wat d'lescht Woch geschitt ass"
-      intro_text: "Hei ass eng Zesummefaassung vun deem, wat sech op der participativer Plattform %{organizationName} gedoen huet."
-      cta_go_to_the_platform: "D'Plattform besichen"
+      title: "Entdeckt wat lescht Woch geschitt ass"
+      event_description: "Hei ass eng Zesummefassung vun deem wat op der Participatiounsplattform vun %{organizationName}geschitt ass."
+      cta_button: "Gitt op d'Plattform"
       title_no_activity_past_week: "Keng Aktivitéit an der leschter Woch"
       successful_proposals_title: "D'Schwell erreecht"
       successful_proposals_text: "Dëse Virschlag huet genuch Ënnerstëtzung kritt fir an déi nächst Etapp ze kommen!! Klickt op de Virschlag fir méi gewuer ze ginn, wat als nächst geschitt."
@@ -431,15 +438,15 @@ lb:
       no_unread_notifications: "Dir hutt keng ongelies Benoriichtegungen. Besicht d’Plattform fir erauszefannen wat sech deet a fir bäizedroen!"
       unread_notifications: "Dir hutt Benoriichtegungen, déi Dir nach net gelies hutt. Besicht d’Plattform fir erauszefanne wat leeft!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Bréngt dës Initiativ an déi nächst Etapp'
-      main_header: 'E Virschlag huet d''Schwell vun den Ofstëmmungen erreecht!'
+      cta_button: 'Bréngt dëse Virschlag op déi nächst Schrëtt'
+      title: 'E Virschlag huet d''Walschwell erreecht!'
       subject: 'E Virschlag op Ärer Plattform huet d''Schwell vun den Ofstëmmungen erreecht'
       preheader: 'Stellt sécher, datt Dir déi nächst Schrëtter maacht'
     welcome:
-      cta_join_platform: 'Entdeckt d’Plattform'
+      cta_button: 'Entdeckt d''Plattform'
       subject: 'Wëllkomm op der Plattform vum %{organizationName}'
-      main_header: Wëllkomm!
-      message_welcome: 'Gléckwonsch, Dir hutt Iech erfollegräich op der participativer Plattform vum %{organizationName} ugemellt. Dir kënnt elo d’Plattform entdecken an Ärer Stëmm Gehéier verschafen. Dir kënnt och e Profilbild  an eng kuerz Beschreiwung afüge fir Iech deenen anere Benotzer virzestellen.'
+      title: Wëllkomm!
+      event_description: 'Gratulatioun, Dir hutt Iech erfollegräich op der Participatiounsplattform vun %{organizationName}ugemellt. Dir kënnt d''Plattform elo entdecken a Är Stëmm héieren loossen. Dir kënnt och e Profilbild an eng kuerz Beschreiwung derbäisetzen, fir aneren ze soen, wien Dir sidd.'
       preheader: 'Dar hei kënnt Dir op der Plattform vun %{organizationName} maachen'
     idea_published:
       subject: 'Är Iddi gouf publizéiert'
@@ -475,15 +482,15 @@ lb:
         option: 'Är Optioun ass an "%{prescreening_status_title}"'
         proposal: 'Är Propositioun ass an "%{prescreening_status_title}"'
         petition: 'Är Petitioun ass an "%{prescreening_status_title}"'
-      message: '"%{input_title}" gëtt fir anerer siichtbar wann et iwwerpréift an guttgeheescht gouf.'
+      event_description: '"%{input_title}" gëtt fir anerer sichtbar, soubal et iwwerpréift a guttgeheescht gouf.'
       subject: '"%{input_title}" ass bal publizéiert'
       preheader: 'Et ass de Moment an %{prescreening_status_title}'
     voting_basket_submitted:
       subject: '%{organizationName}: Dir hutt erfollegräich gestëmmt'
       preheader: 'Dir hutt erfollegräich op der Participatiounsplattform vun %{organizationName}gestëmmt'
-      title_basket_submitted: 'Dir hutt erfollegräich gestëmmt'
+      title: 'Dir hutt erfollegräich gestëmmt'
       event_description: 'Merci fir d''Matmaachen. Är Stëmmen goufen opgeholl. Besicht d''Plattform vun %{organizationName} fir Är Stëmmen ze gesinn an ze managen.'
-      cta_see_votes_submitted: 'Gesinn Stëmmen presentéiert'
+      cta_button: 'Kuckt d''Stëmmen, déi agereecht goufen'
       cta_message: 'Klickt op de Knäppchen hei ënnen fir matzemaachen'
     native_survey_not_submitted:
       subject: '%{organizationName}: Bal do! Gitt Är Äntwerten of'
@@ -495,26 +502,26 @@ lb:
     voting_basket_not_submitted:
       subject: '%{organizationName}: Dir hutt Är Stëmmen net ofginn'
       preheader: 'Dir hutt Är Stëmmen net op der Participatiounsplattform vun %{organizationName}ofginn'
-      title_basket_not_submitted: 'Dir hutt Är Stëmmen net ofginn'
+      title: 'Dir hutt Är Stëmmen net ofginn'
       event_description: 'Dir hutt e puer Optiounen fir %{contextTitle} ausgewielt, awer Dir hutt Är Auswiel net ofginn.'
-      cta_view_options_and_vote: 'View Optiounen a Vote'
+      cta_button: 'Optiounen ukucken a stëmmen of'
       cta_message: 'Klickt op de Knäppchen hei ënnen fir Är gewielte Optiounen ofzeginn'
     voting_last_chance:
       subject: '%{organizationName}: Lescht Chance fir %{phaseTitle}ze wielen'
       preheader: 'Lescht Chance fir %{phaseTitle} op der Participatiounsplattform vun %{organizationName}ze wielen'
-      title_last_chance: 'Déi lescht Chance fir %{phaseTitle}ze wielen'
+      title: 'Lescht Chance fir ze wielen fir %{phaseTitle}'
       body_1: 'D''Stëmmphase fir den %{projectTitle} Projet geet muer um Mëtternuecht op en Enn.'
       body_2: 'D''Zäit leeft aus, a mir hu gemierkt datt Dir Är Stëmm nach net ofginn hutt! Akt elo andeems Dir einfach op de Knäppchen hei ënnen klickt fir matzemaachen.'
       body_3: 'Wann Dir dëst maacht, kritt Dir Zougang zu enger Rei vun Optiounen an hutt d''Chance Ären Input ze ginn, wat entscheedend ass fir d''Zukunft vun dësem Projet ze entscheeden.'
-      cta_vote: 'Stëmmen'
+      cta_button: 'Wiel'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} Stëmmen Resultater opgedeckt!'
       preheader: '%{phaseTitle} Stëmme Resultater opgedeckt op der Participatioun Plattform vun %{organizationName}'
-      title_results: '%{phaseTitle} Stëmmen Resultater opgedeckt!'
+      title: '%{phaseTitle} Ofstëmmungsresultater bekannt!'
       body_1: 'Resultater sinn an!'
       body_2: 'D''Resultater vum %{phaseTitle} Vote an der %{organizationName} Plattform sinn publizéiert ginn!'
       body_3: 'Mir encouragéieren Iech d''Resultater z''iwwerpréiwen a bleiwen ofgeschloss fir weider Updates iwwer déi nächst Schrëtt.'
-      cta_see_results: 'Gesinn Resultater an der Plattform'
+      cta_button: 'Resultater op der Plattform kucken'
     event_registration_confirmation:
       subject: "Dir sidd an! Dir sidd ageschriwwen fir \"%{eventTitle}\""
       preheader: "%{firstName}, Merci fir Är Aschreiwung fir %{eventTitle}"
@@ -531,18 +538,19 @@ lb:
     voting_phase_started:
       subject: '%{organizationName}: D''Stëmmphase huet fir den %{projectName}ugefaangen'
       preheader: 'D''Stëmmphase huet fir %{projectName} op der Participatiounsplattform vun %{organizationName}ugefaang'
+      title: '%{projectName}'
       event_description: 'De Projet "%{projectName}" freet Iech tëscht %{numIdeas} Optiounen ze stëmmen:'
       cta_message: 'Klickt op de Knäppchen hei ënnen fir matzemaachen'
-      cta_vote: 'Gitt op d''Plattform fir ze wielen'
+      cta_button: 'Gitt op d''Plattform fir ze wielen'
     survey_submitted:
       subject: '%{organizationName}: Merci fir Är Äntwert! 🎉'
       preheader: 'Hei sinn d''Detailer vun Ärer Soumissioun.'
-      main_header: 'Merci fir Är Gedanken iwwer "%{projectName}" ze deelen!'
-      your_input_submitted: 'Ären Input fir "%{projectName}" gouf erfollegräich ofginn.'
+      title: 'Merci datt Dir Är Gedanken zu "%{projectName}" gedeelt hutt!'
+      event_description: 'Ären Input fir "%{projectName}" gouf erfollegräich ofginn.'
       if_you_would_like_to_review: 'Wann Dir Är Soumissioun wëllt iwwerpréiwen, kënnt Dir Är Äntwerten hei ënnen eroflueden.'
       your_submission_has_id: 'Är Soumissioun huet de folgenden eenzegaartegen Identifizéierer:'
       you_can_use_this_id: 'Dir kënnt dësen Identifizéierer benotze fir d''Plattformadministrateuren ze kontaktéieren am Fall wou Dir wëllt datt Är Soumissioun ewechgeholl gëtt.'
-      download_responses: 'Luet Är Äntwerten erof'
+      cta_button: 'Luet Är Äntwerten erof'
     admin_labels:
       recipient_role:
         admins: 'An den Admins'
