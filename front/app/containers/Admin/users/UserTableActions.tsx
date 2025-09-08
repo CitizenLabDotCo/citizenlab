@@ -137,6 +137,7 @@ interface Props {
   deleteUsersFromGroup?: (userIds: string[]) => void;
   onSearch: (newValue: string) => void;
   usersDataLength: number;
+  projectId?: string;
 }
 
 const UserTableActions = ({
@@ -149,6 +150,7 @@ const UserTableActions = ({
   groupType,
   onSearch,
   usersDataLength,
+  projectId,
 }: Props) => {
   const queryClient = useQueryClient();
   const { formatDate, formatMessage } = useIntl();
@@ -171,8 +173,9 @@ const UserTableActions = ({
     const fileType =
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
     const group = groupId;
+    const project = projectId;
     const users = isArray(usersIds) ? usersIds : null;
-    const queryParameters = omitBy({ group, users }, isNil);
+    const queryParameters = omitBy({ group, project, users }, isNil);
     const blob = await requestBlob(apiPath, fileType, queryParameters);
     saveAs(
       blob,
