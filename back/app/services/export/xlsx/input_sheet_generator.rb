@@ -55,7 +55,17 @@ module Export
 
         locales.map do |locale|
           column_header = locales.size > 1 ? "#{title_header} (#{locale})" : title_header
-          ComputedFieldForReport.new(column_header, ->(input) { multiloc_service.t(input.title_multiloc, locale) })
+          
+          ComputedFieldForReport.new(
+            column_header, 
+            lambda do |input|
+              if input.title_multiloc&.key?(locale.to_s)
+                multiloc_service.t(input.title_multiloc, locale)
+              else
+                nil
+              end
+            end
+          )
         end
       end
 
@@ -178,6 +188,7 @@ module Export
             end
 
             input_fields.concat(title_multiloc_report_fields) if field.code == 'title_multiloc'
+            input_fields << Export::CustomFieldForExport.new(field, @value_visitor) unless field.code == 'title_multiloc'
             input_fields << Export::CustomFieldForExport.new(field.other_option_text_field, @value_visitor) if field.other_option_text_field
             input_fields << Export::CustomFieldForExport.new(field.follow_up_text_field, @value_visitor) if field.follow_up_text_field
           end

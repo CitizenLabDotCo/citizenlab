@@ -26,7 +26,9 @@ describe Export::Xlsx::InputSheetGenerator do
               sheet_name: 'My sheet',
               column_headers: [
                 'ID',
-                'Title',
+                'Title (en)',
+                'Title (fr-FR)',
+                'Title (nl-NL)',
                 'Description',
                 'Attachments',
                 'Tags',
@@ -79,7 +81,9 @@ describe Export::Xlsx::InputSheetGenerator do
               sheet_name: 'My sheet',
               column_headers: [
                 'ID',
-                'Title',
+                'Title (en)',
+                'Title (fr-FR)',
+                'Title (nl-NL)',
                 'Description',
                 'Attachments',
                 'Tags',
@@ -107,6 +111,8 @@ describe Export::Xlsx::InputSheetGenerator do
                 [
                   ideation_response1.id,
                   ideation_response1.title_multiloc['en'],
+                  nil,
+                  nil,
                   'It would improve the air quality!', # html tags are removed
                   %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\Z},
                   "#{ideation_response1.topics[0].title_multiloc['en']};#{ideation_response1.topics[1].title_multiloc['en']}",
@@ -169,7 +175,9 @@ describe Export::Xlsx::InputSheetGenerator do
               sheet_name: 'My sheet',
               column_headers: [
                 'ID',
-                'Title',
+                'Title (en)',
+                'Title (fr-FR)',
+                'Title (nl-NL)',
                 'Description',
                 'Attachments',
                 'Tags',
@@ -197,6 +205,8 @@ describe Export::Xlsx::InputSheetGenerator do
                 [
                   ideation_response1.id,
                   ideation_response1.title_multiloc['en'],
+                  nil,
+                  nil,
                   'It would improve the air quality!', # html tags are removed
                   %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\n/uploads/.+/idea_file/file/#{attachment2.id}/#{attachment2.name}\Z},
                   "#{ideation_response1.topics[0].title_multiloc['en']};#{ideation_response1.topics[1].title_multiloc['en']}",
@@ -567,7 +577,9 @@ describe Export::Xlsx::InputSheetGenerator do
                 sheet_name: 'My sheet',
                 column_headers: [
                   'ID',
-                  'Title',
+                  'Title (en)',
+                  'Title (fr-FR)',
+                  'Title (nl-NL)',
                   'Description',
                   'Attachments',
                   'Tags',
@@ -604,7 +616,9 @@ describe Export::Xlsx::InputSheetGenerator do
                 sheet_name: 'My sheet',
                 column_headers: [
                   'ID',
-                  'Title',
+                  'Title (en)',
+                  'Title (fr-FR)',
+                  'Title (nl-NL)',
                   'Description',
                   'Attachments',
                   'Tags',
@@ -642,7 +656,9 @@ describe Export::Xlsx::InputSheetGenerator do
                 sheet_name: 'My sheet',
                 column_headers: [
                   'ID',
-                  'Title',
+                  'Title (en)',
+                  'Title (fr-FR)',
+                  'Title (nl-NL)',
                   'Description',
                   'Attachments',
                   'Tags',
@@ -698,7 +714,9 @@ describe Export::Xlsx::InputSheetGenerator do
               sheet_name: 'My sheet',
               column_headers: [
                 'ID',
-                'Title',
+                'Title (en)',
+                'Title (fr-FR)',
+                'Title (nl-NL)',
                 'Description',
                 'Attachments',
                 'Tags',
@@ -725,6 +743,8 @@ describe Export::Xlsx::InputSheetGenerator do
                 [
                   ideation_response1.id,
                   ideation_response1.title_multiloc['en'],
+                  nil,
+                  nil,
                   'It would improve the air quality!', # html tags are removed
                   %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\Z},
                   "#{ideation_response1.topics[0].title_multiloc['en']};#{ideation_response1.topics[1].title_multiloc['en']}",
@@ -800,7 +820,9 @@ describe Export::Xlsx::InputSheetGenerator do
                 sheet_name: 'My sheet',
                 column_headers: [
                   'ID',
-                  'Title',
+                  'Title (en)',
+                  'Title (fr-FR)',
+                  'Title (nl-NL)',
                   'Description',
                   'Attachments',
                   'Tags',
@@ -827,6 +849,8 @@ describe Export::Xlsx::InputSheetGenerator do
                   [
                     ideation_response1.id,
                     ideation_response1.title_multiloc['en'],
+                    nil,
+                    nil,
                     'It would improve the air quality!', # html tags are removed
                     %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\n/uploads/.+/idea_file/file/#{attachment2.id}/#{attachment2.name}\Z},
                     "#{ideation_response1.topics[0].title_multiloc['en']};#{ideation_response1.topics[1].title_multiloc['en']}",
@@ -859,12 +883,15 @@ describe Export::Xlsx::InputSheetGenerator do
           let(:include_private_attributes) { true }
 
           it 'Generates an sheet with the phase inputs' do
+            puts ideation_response1.topics[0].inspect
             expect(xlsx).to match([
               {
                 sheet_name: 'My sheet',
                 column_headers: [
                   'ID',
-                  'Title',
+                  'Title (en)',
+                  'Title (fr-FR)',
+                  'Title (nl-NL)',
                   'Description',
                   'Attachments',
                   'Tags',
@@ -891,6 +918,8 @@ describe Export::Xlsx::InputSheetGenerator do
                   [
                     ideation_response1.id,
                     ideation_response1.title_multiloc['en'],
+                    nil,
+                    nil,
                     'It would improve the air quality!', # html tags are removed
                     %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\n/uploads/.+/idea_file/file/#{attachment2.id}/#{attachment2.name}\Z},
                     "#{ideation_response1.topics[0].title_multiloc['en']};#{ideation_response1.topics[1].title_multiloc['en']}",
@@ -933,7 +962,9 @@ describe Export::Xlsx::InputSheetGenerator do
               sheet_name: 'My sheet',
               column_headers: [
                 'ID',
-                'Title',
+                'Title (en)',
+                'Title (fr-FR)',
+                'Title (nl-NL)',
                 'Author name',
                 'Author email',
                 'Author ID',
@@ -952,7 +983,14 @@ describe Export::Xlsx::InputSheetGenerator do
       end
 
       context 'with inputs and reactions' do
-        let!(:idea) { create(:idea, project: phase.project, phases: [phase]) }
+        let!(:idea) do
+          create(
+            :idea,
+            title_multiloc: { 'en' => 'My idea', 'fr-FR' => 'Mon idée', 'nl-NL' => 'Mijn idee' },
+            project: phase.project,
+            phases: [phase]
+          )
+        end
         let!(:likes) { create_list(:reaction, 2, reactable: idea, mode: 'up') }
         let!(:dislikes) { create_list(:reaction, 1, reactable: idea, mode: 'down') }
         let!(:neutral_reactions) { create_list(:reaction, 3, reactable: idea, mode: 'neutral') }
@@ -964,7 +1002,9 @@ describe Export::Xlsx::InputSheetGenerator do
               sheet_name: 'My sheet',
               column_headers: [
                 'ID',
-                'Title',
+                'Title (en)',
+                'Title (fr-FR)',
+                'Title (nl-NL)',
                 'Author name',
                 'Author email',
                 'Author ID',
@@ -980,6 +1020,8 @@ describe Export::Xlsx::InputSheetGenerator do
                 [
                   idea.id,
                   idea.title_multiloc['en'],
+                  idea.title_multiloc['fr-FR'],
+                  idea.title_multiloc['nl-NL'],
                   idea.author.full_name,
                   idea.author.email,
                   idea.author_id,
