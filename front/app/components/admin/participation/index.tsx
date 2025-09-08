@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useLocation, useParams } from 'react-router-dom';
 
 import usePhases from 'api/phases/usePhases';
@@ -10,6 +11,7 @@ import NavigationTabs, {
 } from 'components/admin/NavigationTabs';
 
 import { useIntl } from 'utils/cl-intl';
+import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import Demographics from './Demographics';
 import messages from './messages';
@@ -44,15 +46,17 @@ const ProjectParticipation = () => {
         />
       </NavigationTabs>
 
-      <TabsPageLayout>
-        {isDemographicsTab ? (
-          <Demographics
-            defaultStartDate={startOfFirstPhase}
-            defaultEndDate={endOfLastPhase ?? undefined}
-          />
-        ) : (
-          <Users />
-        )}
+      <TabsPageLayout paddingTop={42}>
+        <Box background={colors.white} p={`${defaultAdminCardPadding}px`}>
+          {isDemographicsTab ? (
+            <Demographics
+              defaultStartDate={startOfFirstPhase}
+              defaultEndDate={endOfLastPhase ?? undefined}
+            />
+          ) : (
+            <Users />
+          )}
+        </Box>
       </TabsPageLayout>
     </>
   );
