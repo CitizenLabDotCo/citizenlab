@@ -31,7 +31,7 @@ const ProjectParticipation = () => {
 
   return (
     <>
-      <NavigationTabs>
+      <NavigationTabs position="relative">
         <Tab
           label={formatMessage(messages.usersTab)}
           url={`/admin/projects/${projectId}/participation`}
