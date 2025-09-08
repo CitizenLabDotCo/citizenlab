@@ -150,4 +150,47 @@ describe CustomFieldsValidationService do
       end
     end
   end
+
+  describe 'validate_attributes' do
+    it 'accepts the default fields' do
+      expect(result).to be_nil
+    end
+
+    context do
+      let(:fields) do
+        participation_method.default_fields(custom_form).tap do |fields|
+          fields.find { |f| f.code == 'body_page' }.title_multiloc = { 'en' => 'Changed title' }
+          fields.find { |f| f.code == 'topic_ids' }.required = true
+        end
+      end
+
+      it 'accepts a form with a changed unlocked title and required attribute' do
+        expect(result).to be_nil
+      end
+    end
+
+    context do
+      let(:fields) do
+        participation_method.default_fields(custom_form).tap do |fields|
+          fields.find { |f| f.code == 'location_description' }.title_multiloc = { 'en' => 'Changed title' }
+        end
+      end
+
+      it 'rejects a form with a changed locked title' do
+        expect(result).to eq({ form: [{ error: 'locked_attribute' }] })
+      end
+    end
+
+    context do
+      let(:fields) do
+        participation_method.default_fields(custom_form).tap do |fields|
+          fields.find { |f| f.code == 'title_multiloc' }.required = false
+        end
+      end
+
+      it 'rejects a form with a changed locked required attribute' do
+        expect(result).to eq({ form: [{ error: 'locked_attribute' }] })
+      end
+    end
+  end
 end
