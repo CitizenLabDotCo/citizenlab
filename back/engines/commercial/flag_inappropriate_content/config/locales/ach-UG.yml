@@ -6,11 +6,11 @@ ach:
       "inappropriate_content_flagged": crwdns5117599:0crwdne5117599:0
     inappropriate_content_flagged:
       subject: 'crwdns5117601:0crwdne5117601:0'
-      header_title: 'crwdns5117603:0crwdne5117603:0'
+      title: 'crwdns5265263:0crwdne5265263:0'
       author_wrote: 'crwdns5117605:0%{authorName}crwdne5117605:0'
       preheader: 'crwdns5117607:0crwdne5117607:0'
       automatically_flagged: >
         crwdns5117609:0crwdne5117609:0
       how_to_review: >
         crwdns5117611:0crwdne5117611:0
-      cta_review: 'crwdns5117613:0crwdne5117613:0'
+      cta_button: 'crwdns5265265:0crwdne5265265:0'
