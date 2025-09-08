@@ -825,6 +825,7 @@
   "app.components.formBuilder.good": "Bra",
   "app.components.formBuilder.helmetTitle": "Skjemabygger",
   "app.components.formBuilder.imageFileUpload": "Bildeopplasting",
+  "app.components.formBuilder.inputImages": "Bilder",
   "app.components.formBuilder.inputTagManager": "Inndatakoder-siden",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Ugyldig logikk",
   "app.components.formBuilder.labels2": "Etiketter (valgfritt)",

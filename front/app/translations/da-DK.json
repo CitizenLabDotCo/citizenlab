@@ -825,6 +825,7 @@
   "app.components.formBuilder.good": "God",
   "app.components.formBuilder.helmetTitle": "Formularbygger",
   "app.components.formBuilder.imageFileUpload": "Upload af billede",
+  "app.components.formBuilder.inputImages": "Billeder",
   "app.components.formBuilder.inputTagManager": "Side med input-tags",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Ugyldig logik",
   "app.components.formBuilder.labels2": "Etiketter (valgfrit)",
