@@ -51,11 +51,11 @@ module Export
 
       def title_multiloc_report_fields
         locales = platform_locales
-        title_for_locale = column_header_for('title')
+        title_header = column_header_for('title')
 
         locales.map do |locale|
-          column_header = locales.size > 1 ? "#{title_for_locale} (#{locale})" : title_for_locale
-          ComputedFieldForReport.new(column_header, ->(input) { multiloc_service.t(input.title_multiloc, locale: locale) })
+          column_header = locales.size > 1 ? "#{title_header} (#{locale})" : title_header
+          ComputedFieldForReport.new(column_header, ->(input) { multiloc_service.t(input.title_multiloc, locale) })
         end
       end
 
@@ -163,7 +163,6 @@ module Export
       def input_report_fields
         [input_id_report_field].tap do |input_fields|
           fields_in_form.each do |field|
-            puts field.code
             next if field.code == 'author_id' # Never included, because the user fields include it
 
             if field.code == 'location_description'
