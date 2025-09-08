@@ -88,7 +88,7 @@ describe('Input form builder', () => {
     // Title should not be present or editable
     cy.get('#e2e-title-multiloc').should('not.exist');
 
-    cy.dataCy('e2e-more-field-actions').eq(1).click({ force: true });
+    cy.dataCy('e2e-more-field-actions').eq(2).click({ force: true });
     cy.get('.e2e-more-actions-list button').contains('Delete').click();
 
     // The Attachments tool box item should be enabled as it has been removed from the canvas
