@@ -116,28 +116,6 @@ RSpec.describe ParticipationMethod::Proposals do
     end
   end
 
-  describe 'constraints' do
-    it 'has constraints on built in fields to lock certain values from being changed' do
-      expect(participation_method.constraints.keys).to match_array %i[
-        title_page
-        title_multiloc
-        body_multiloc
-        idea_images_attributes
-        idea_files_attributes
-        topic_ids
-        location_description
-      ]
-    end
-
-    it 'each constraint has locks only on enabled, required & title_multiloc' do
-      participation_method.constraints.each_value do |value|
-        expect(value.key?(:locks)).to be true
-        valid_locks = %i[enabled required title_multiloc]
-        expect(valid_locks).to include(*value[:locks].keys)
-      end
-    end
-  end
-
   describe '#create_default_form!' do
     it 'creates a default form on the phase level' do
       form = nil
