@@ -44,7 +44,7 @@ up:
 # Clave Unica
 be-up-claveunica:
 	docker compose down
-	BASE_DEV_URI=https://claveunica-h2dkc.loca.lt docker compose up
+	BASE_DEV_URI=https://claveunica-h2dkc.loca.lt ASSET_HOST_URI=https://claveunica-h2dkc.loca.lt docker compose up
 
 fe-up-claveunica:
 	cd front && npm run start:sso:claveunica
@@ -52,7 +52,9 @@ fe-up-claveunica:
 # MitID (via NemLogin)
 be-up-nemlogin:
 	docker compose down
+# 	BASE_DEV_URI=https://nemlogin-k3kd.loca.lt ASSET_HOST_URI=https://nemlogin-k3kd.loca.lt docker compose up
 	BASE_DEV_URI=https://nemlogin-k3kd.loca.lt docker compose up
+
 
 fe-up-nemlogin:
 	cd front && npm run start:sso:nemlogin
@@ -60,7 +62,7 @@ fe-up-nemlogin:
 # ID Austria
 be-up-idaustria:
 	docker compose down
-	BASE_DEV_URI=https://idaustria-g3fy.loca.lt docker compose up
+	BASE_DEV_URI=https://idaustria-g3fy.loca.lt ASSET_HOST_URI=https://idaustria-g3fy.loca.lt docker compose up
 
 fe-up-idaustria:
 	cd front && npm run start:sso:idaustria
@@ -68,7 +70,7 @@ fe-up-idaustria:
 # Keycloak (Oslo ID-Porten)
 be-up-keycloak:
 	docker compose down
-	BASE_DEV_URI=https://keycloak-r3tyu.loca.lt docker compose up
+	BASE_DEV_URI=https://keycloak-r3tyu.loca.lt ASSET_HOST_URI=https://keycloak-r3tyu.loca.lt docker compose up
 
 fe-up-keycloak:
 	cd front && npm run start:sso:keycloak
@@ -76,7 +78,7 @@ fe-up-keycloak:
 # Twoday (Helsingborg BankID & Freja eID)
 be-up-twoday:
 	docker compose down
-	BASE_DEV_URI=https://twoday-h5jkg.loca.lt docker compose up -d
+	BASE_DEV_URI=https://twoday-h5jkg.loca.lt ASSET_HOST_URI=https://twoday-h5jkg.loca.lt docker compose up
 
 fe-up-twoday:
 	cd front && npm run start:sso:twoday
