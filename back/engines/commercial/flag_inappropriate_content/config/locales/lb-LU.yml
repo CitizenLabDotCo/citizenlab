@@ -6,11 +6,11 @@ lb:
       "inappropriate_content_flagged": Net ugemiessen Inhalter geellt - Verwalteren
     inappropriate_content_flagged:
       subject: 'E Post op Ärer Plattform gouf fir ze iwwerpréiwe gemellt'
-      header_title: 'E Post op Ärer Plattform gouf fir ze iwwerpréiwe gemellt'
+      title: 'A post has been flagged for review'
       author_wrote: '%{authorName} huet geschriwwen:'
       preheader: 'E Post op Ärer Plattform gouf fir Iwwerpréiwung markéiert'
       automatically_flagged: >
         Dëse Post gouf automatesch festgestallt als potenziell onpassend Inhalt. Mir schécken Iech dës Notifikatioun fir datt Dir de Post am Aklang mat Ären eegene Moderatiounsrichtlinnen iwwerpréift.
       how_to_review: >
         Wann de Post keen onpassend Inhalt enthält, kënnt Dir d'Warnung iwwer Är Plattform an der Aktivitéit Tab an der Admin Panel ewechhuelen.
-      cta_review: 'Iwwerpréiwung'
+      cta_button: 'Review'
