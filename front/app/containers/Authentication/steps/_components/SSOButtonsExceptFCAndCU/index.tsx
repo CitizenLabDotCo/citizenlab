@@ -141,7 +141,9 @@ const SSOButtonsExceptFCAndCU = ({
           />
         </WrappedAuthProviderButton>
       )}
-      <ViennaSamlButton flow={flow} onContinue={onSelectAuthProvider} />
+      {ssoProviders.viennaCitizen && (
+        <ViennaSamlButton flow={flow} onContinue={onSelectAuthProvider} />
+      )}
       {ssoProviders.google && (
         <WrappedAuthProviderButton
           showConsent={showConsent}
