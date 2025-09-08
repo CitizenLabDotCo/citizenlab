@@ -657,11 +657,11 @@ resource 'Users' do
             @normal_user = create(:user)
             @participant1 = create(:user)
             @participant2 = create(:user)
-            
+
             # Create participation data
             create(:idea, project: @project, author: @participant1)
             create(:idea, project: @other_project, author: @participant2)
-            
+
             # Mock ParticipantsService for both projects
             allow_any_instance_of(ParticipantsService).to receive(:project_participants)
               .with(@project)
@@ -918,11 +918,11 @@ resource 'Users' do
             @normal_user = create(:user)
             @participant1 = create(:user)
             @participant2 = create(:user)
-            
+
             # Create participation data for both projects
             create(:idea, project: @project, author: @participant1)
             create(:idea, project: @other_project, author: @participant2)
-            
+
             # Mock ParticipantsService for both projects
             allow_any_instance_of(ParticipantsService).to receive(:project_participants)
               .with(@project)
