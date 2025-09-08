@@ -18,6 +18,13 @@ class WebApi::V1::UsersController < ApplicationController
     @users = @users.blocked if params[:only_blocked]
     @users = @users.search_by_all(params[:search]) if params[:search].present?
 
+    # Filter by project participants
+    if params[:project].present?
+      project = Project.find(params[:project])
+      participant_ids = ParticipantsService.new.project_participants(project).pluck(:id)
+      @users = @users.where(id: participant_ids)
+    end
+
     @users = @users.admin.or(@users.project_moderator(params[:can_moderate_project])) if params[:can_moderate_project].present?
     @users = @users.not_project_moderator(params[:is_not_project_moderator]) if params[:is_not_project_moderator].present?
     @users = @users.admin.or(@users.project_moderator).or(@users.project_folder_moderator) if params[:can_moderate].present?
@@ -57,6 +64,13 @@ class WebApi::V1::UsersController < ApplicationController
     @users = @users.registered unless params[:include_inactive]
 
     @users = @users.in_group(Group.find(params[:group])) if params[:group]
+
+    # Filter by project participants for export
+    if params[:project].present?
+      project = Project.find(params[:project])
+      participant_ids = ParticipantsService.new.project_participants(project).pluck(:id)
+      @users = @users.where(id: participant_ids)
+    end
     @users = @users.where(id: params[:users]) if params[:users]
     xlsx = XlsxService.new.generate_users_xlsx @users, view_private_attributes: view_private_attributes?
 
