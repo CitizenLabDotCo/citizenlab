@@ -25,6 +25,7 @@ resource 'Users' do
 
       parameter :search, 'Filter by searching in first_name, last_name and email', required: false
       parameter :group, 'Filter by group_id', required: false
+      parameter :project, 'Filter by users who participated in the project (by project id)', required: false
       parameter :project_reviewer, 'When true, return only project reviewers. When false, exclude project reviewers.', required: false
       parameter :can_admin, 'Return only admins', required: false
       parameter :can_moderate, 'Return only admins and moderators', required: false
@@ -56,6 +57,7 @@ resource 'Users' do
 
     get 'web_api/v1/users/as_xlsx' do
       parameter :group, 'Filter by group_id', required: false
+      parameter :project, 'Filter by users who participated in the project (by project id)', required: false
       parameter :users, 'Filter out only users with the provided user ids', required: false
 
       example_request '[error] XLSX export' do
@@ -379,6 +381,7 @@ resource 'Users' do
         parameter :search, 'Filter by searching in first_name, last_name and email', required: false
         parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', '-email', 'role', '-role'", required: false
         parameter :group, 'Filter by group_id', required: false
+        parameter :project, 'Filter by users who participated in the project (by project id)', required: false
         parameter :can_moderate_project, 'Filter by users (and admins) who can moderate the project (by id)', required: false
         parameter :can_moderate, 'Return only admins and moderators', required: false
         parameter :can_admin, 'Return only admins if value is true, only non-admins if value is false', required: false
@@ -569,6 +572,83 @@ resource 'Users' do
           end
         end
 
+        example 'List all users who participated in a project' do
+          project = create(:project)
+
+          # Create participants: users who participated in the project
+          participant1 = create(:user)
+          participant2 = create(:user)
+
+          # Create non-participants: users who didn't participate
+          _non_participant1 = create(:user)
+          _non_participant2 = create(:user)
+
+          # Create participation data
+          create(:idea, project: project, author: participant1)
+          create(:comment, idea: create(:idea), author: participant2)
+
+          # Ensure ParticipantsService finds the participants
+          allow_any_instance_of(ParticipantsService).to receive(:project_participants)
+            .with(project)
+            .and_return(User.where(id: [participant1.id, participant2.id]))
+
+          do_request(project: project.id)
+          json_response = json_parse(response_body)
+
+          expect(json_response[:data].size).to eq 2
+          expect(json_response[:data].pluck(:id)).to match_array [participant1.id, participant2.id]
+        end
+
+        example 'List users who participated in a project with search' do
+          project = create(:project)
+
+          participant1 = create(:user, first_name: 'ProjectUser')
+          participant2 = create(:user, first_name: 'AnotherParticipant')
+          _non_participant = create(:user, first_name: 'ProjectUser')
+
+          # Create participation data
+          create(:idea, project: project, author: participant1)
+          create(:idea, project: project, author: participant2)
+
+          # Mock ParticipantsService to return only project participants
+          allow_any_instance_of(ParticipantsService).to receive(:project_participants)
+            .with(project)
+            .and_return(User.where(id: [participant1.id, participant2.id]))
+
+          do_request(project: project.id, search: 'ProjectUser')
+          json_response = json_parse(response_body)
+
+          expect(json_response[:data].size).to eq 1
+          expect(json_response[:data][0][:id]).to eq participant1.id
+        end
+
+        example 'Integration test: List users who participated in a project using real ParticipantsService', document: false do
+          # This test uses real participation data without mocking ParticipantsService
+          project = create(:project)
+
+          participant1 = create(:user)
+          participant2 = create(:user) 
+          non_participant = create(:user)
+
+          # Create real participation data that ParticipantsService will detect
+          idea1 = create(:idea, project: project, author: participant1)
+          _idea2 = create(:idea, project: project, author: participant2)
+
+          # Also test comment participation
+          _comment = create(:comment, idea: idea1, author: participant2)
+
+          # Ensure analytics data is populated if needed
+          Analytics::PopulateDimensionsService.populate_types if defined?(Analytics::PopulateDimensionsService)
+
+          do_request(project: project.id)
+          json_response = json_parse(response_body)
+
+          # Verify that only participants are returned
+          returned_user_ids = json_response[:data].pluck(:id)
+          expect(returned_user_ids).to include(participant1.id, participant2.id)
+          expect(returned_user_ids).not_to include(non_participant.id)
+        end
+
         describe 'Not moderator filters' do
           before do
             @user                       = create(:user)
@@ -687,6 +767,7 @@ resource 'Users' do
 
       get 'web_api/v1/users/as_xlsx' do
         parameter :group, 'Filter by group_id', required: false
+        parameter :project, 'Filter by users who participated in the project (by project id)', required: false
         parameter :users, 'Filter out only users with the provided user ids', required: false
 
         example_request 'XLSX export' do
@@ -709,6 +790,32 @@ resource 'Users' do
             expect(status).to eq 200
             xlsx_hash = XlsxService.new.xlsx_to_hash_array RubyXL::Parser.parse_buffer(response_body).stream
             expect(xlsx_hash.pluck('id')).to match_array @members.map(&:id)
+          end
+        end
+
+        describe do
+          before do
+            @project = create(:project)
+            @participant1 = create(:user)
+            @participant2 = create(:user)
+            @non_participant = create(:user)
+
+            # Create participation data
+            create(:idea, project: @project, author: @participant1)
+            create(:idea, project: @project, author: @participant2)
+
+            # Mock ParticipantsService to return project participants
+            allow_any_instance_of(ParticipantsService).to receive(:project_participants)
+              .with(@project)
+              .and_return(User.where(id: [@participant1.id, @participant2.id]))
+          end
+
+          let(:project) { @project.id }
+
+          example_request 'XLSX export all users who participated in a project' do
+            expect(status).to eq 200
+            xlsx_hash = XlsxService.new.xlsx_to_hash_array RubyXL::Parser.parse_buffer(response_body).stream
+            expect(xlsx_hash.pluck('id')).to match_array [@participant1.id, @participant2.id]
           end
         end
 
