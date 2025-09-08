@@ -1,32 +1,32 @@
 class CustomFieldsValidationService
   def validate(fields, participation_method)
-    validate_non_empty_form!(fields) ||
-      validate_first_page!(fields) ||
-      validate_end_page!(fields) ||
-      validate_lock_constraints!(fields, participation_method)
+    validate_non_empty_form(fields) ||
+      validate_first_page(fields) ||
+      validate_end_page(fields) ||
+      validate_lock_constraints(fields, participation_method)
   end
 
   private
 
-  def validate_non_empty_form!(fields)
+  def validate_non_empty_form(fields)
     return if !fields.empty?
 
     { form: [{ error: 'empty' }] }
   end
 
-  def validate_end_page!(fields)
-    return if fields.last.form_end_page?
-
-    { form: [{ error: 'no_end_page' }] }
-  end
-
-  def validate_first_page!(fields)
+  def validate_first_page(fields)
     return if fields.first.page?
 
     { form: [{ error: 'no_first_page' }] }
   end
 
-  def validate_lock_constraints!(fields, participation_method)
+  def validate_end_page(fields)
+    return if fields.last.form_end_page?
+
+    { form: [{ error: 'no_end_page' }] }
+  end
+
+  def validate_lock_constraints(fields, participation_method)
     constraints = participation_method.constraints
     default_fields = participation_method.default_fields(participation_method.custom_form)
 
@@ -53,10 +53,10 @@ class CustomFieldsValidationService
     constraints.each do |code, constraint|
       next if !constraint[:locks][:children]
 
-      _page, *children = pages.find { |page_with_children| page_with_children.first.code == code.to_s }
+      page, *children = pages.find { |page_with_children| page_with_children.first.code == code.to_s }
       default_children = default_pages.find { |page_with_children| page_with_children.first.code == code.to_s }&.drop(1) || []
 
-      if children.map(&:code) != default_children.map(&:code)
+      if page.present? && children.select(&:enabled).map(&:code) != default_children.map(&:code)
         return { form: [{ error: 'locked_children' }] }
       end
     end

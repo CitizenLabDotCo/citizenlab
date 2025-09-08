@@ -87,10 +87,9 @@ module IdeaCustomFields
 
       page_temp_ids_to_ids_mapping = {}
       option_temp_ids_to_ids_mapping = {}
-      errors = {}
-      update_fields! page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors
+      update_fields! page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping
       @custom_form.reload if @custom_form.persisted?
-      update_logic! page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors
+      update_logic! page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping
       update_form!
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         IdeaCustomFieldsService.new(@custom_form).all_fields,
@@ -135,7 +134,8 @@ module IdeaCustomFields
       raise UpdateAllFailedError, { form: [{ error: 'stale_data' }] }
     end
 
-    def update_fields!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors)
+    def update_fields!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping)
+      errors = {}
       idea_custom_fields_service = IdeaCustomFieldsService.new(@custom_form)
       fields = idea_custom_fields_service.all_fields
       fields_by_id = fields.index_by(&:id)
@@ -353,7 +353,8 @@ module IdeaCustomFields
       errors[field_index.to_s][:statements][statement_index.to_s] = statements_errors
     end
 
-    def update_logic!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors)
+    def update_logic!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping)
+      errors = {}
       fields = IdeaCustomFieldsService.new(@custom_form).all_fields
       form_logic = FormLogicService.new fields
       form_logic.replace_temp_ids! page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping
