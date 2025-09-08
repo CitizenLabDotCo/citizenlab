@@ -627,7 +627,7 @@ resource 'Users' do
           project = create(:project)
 
           participant1 = create(:user)
-          participant2 = create(:user) 
+          participant2 = create(:user)
           non_participant = create(:user)
 
           # Create real participation data that ParticipantsService will detect
