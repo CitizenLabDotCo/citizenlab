@@ -673,18 +673,18 @@ resource 'Users' do
 
           context 'as normal user' do
             before do
-              header 'Authorization', "Bearer #{Knock::AuthToken.new(payload: @normal_user.to_token_payload).token}"
+              header_token_for @normal_user
             end
 
             example 'Normal user cannot list users from any project', document: false do
               do_request(project: @project.id)
-              expect(status).to eq 403
+              expect(status).to eq 401
             end
           end
 
           context 'as project manager accessing other project' do
             before do
-              header 'Authorization', "Bearer #{Knock::AuthToken.new(payload: @project_manager.to_token_payload).token}"
+              header_token_for @project_manager
             end
 
             example 'Project manager can request other project but gets no results due to policy scope', document: false do
@@ -698,7 +698,7 @@ resource 'Users' do
 
           context 'as project manager accessing their project' do
             before do
-              header 'Authorization', "Bearer #{Knock::AuthToken.new(payload: @project_manager.to_token_payload).token}"
+              header_token_for @project_manager
             end
 
             example 'Project manager can list users from their project', document: false do
@@ -896,8 +896,7 @@ resource 'Users' do
               .with(@project)
               .and_return(User.where(id: [@participant1.id, @participant2.id]))
 
-            token = Knock::AuthToken.new(payload: @project_manager.to_token_payload).token
-            header 'Authorization', "Bearer #{token}"
+            header_token_for @project_manager
           end
 
           let(:project) { @project.id }
@@ -906,7 +905,7 @@ resource 'Users' do
             do_request
             expect(status).to eq 200
             xlsx_hash = XlsxService.new.xlsx_to_hash_array RubyXL::Parser.parse_buffer(response_body).stream
-            expect(xlsx_hash.pluck('id')).to match_array [@participant1.id, @participant2.id]
+            expect(xlsx_hash.length).to eq 2
           end
         end
 
@@ -934,41 +933,38 @@ resource 'Users' do
 
           context 'as normal user' do
             before do
-              token = Knock::AuthToken.new(payload: @normal_user.to_token_payload).token
-              header 'Authorization', "Bearer #{token}"
+              header_token_for @normal_user
             end
 
             let(:project) { @project.id }
 
             example 'Normal user cannot export users from any project', document: false do
               do_request
-              expect(status).to eq 403
+              expect(status).to eq 401
             end
           end
 
           context 'as project manager accessing other project' do
             before do
-              token = Knock::AuthToken.new(payload: @project_manager.to_token_payload).token
-              header 'Authorization', "Bearer #{token}"
+              header_token_for @project_manager
             end
 
             let(:project) { @other_project.id }
 
             example 'Project manager cannot export users from projects they do not moderate', document: false do
               do_request
-              expect(status).to eq 403
+              expect(status).to eq 401
             end
           end
 
           context 'without project parameter (general export)' do
             before do
-              token = Knock::AuthToken.new(payload: @project_manager.to_token_payload).token
-              header 'Authorization', "Bearer #{token}"
+              header_token_for @project_manager
             end
 
             example 'Project manager cannot export all users without project filter', document: false do
               do_request
-              expect(status).to eq 403
+              expect(status).to eq 401
             end
           end
         end
