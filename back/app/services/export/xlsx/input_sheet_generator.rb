@@ -55,14 +55,12 @@ module Export
 
         locales.map do |locale|
           column_header = locales.size > 1 ? "#{title_header} (#{locale})" : title_header
-          
+
           ComputedFieldForReport.new(
-            column_header, 
+            column_header,
             lambda do |input|
               if input.title_multiloc&.key?(locale.to_s)
                 multiloc_service.t(input.title_multiloc, locale)
-              else
-                nil
               end
             end
           )
