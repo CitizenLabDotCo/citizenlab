@@ -652,7 +652,7 @@ resource 'Users' do
         describe 'Security tests for project filtering' do
           before do
             @project = create(:project)
-            @other_project = create(:project) 
+            @other_project = create(:project)
             @project_manager = create(:project_moderator, projects: [@project])
             @normal_user = create(:user)
             @participant1 = create(:user)
