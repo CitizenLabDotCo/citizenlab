@@ -33,7 +33,7 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import { timeAgo } from 'utils/dateUtils';
 import eventEmitter from 'utils/eventEmitter';
-import { isAdmin, isRegularUser, isModerator } from 'utils/permissions/roles';
+import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
 
 import events from './events';
