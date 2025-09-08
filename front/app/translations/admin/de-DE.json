@@ -1281,7 +1281,7 @@
   "app.containers.Admin.projects.project.participation.selectPeriod": "Zeitraum auswählen",
   "app.containers.Admin.projects.project.participation.usersByAge": "Nutzer*innen nach Alter",
   "app.containers.Admin.projects.project.participation.usersByGender": "Nutzer*innen nach Geschlecht",
-  "app.containers.Admin.projects.project.participation.usersSubtitle": "Verschaffen Sie sich einen Überblick über die Teilnehmer an diesem Projekt, die ein Konto haben. Die anonyme Teilnahme wird nicht berücksichtigt.",
+  "app.containers.Admin.projects.project.participation.usersSubtitle": "Verschaffen Sie sich einen Überblick über die Teilnehmenden an diesem Projekt, die ein Konto haben. Die anonyme Teilnahme wird nicht berücksichtigt.",
   "app.containers.Admin.projects.project.participation.usersTab": "Nutzer*innen",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.EmailModal.required": "Erforderlich",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.addAQuestion": "Frage hinzufügen",
