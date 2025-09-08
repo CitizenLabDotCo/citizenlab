@@ -396,7 +396,7 @@ cy:
       preheader: 'Cyhoeddwyd prosiect newydd'
     project_review_request:
       subject: 'Cais am adolygiad: Mae prosiect yn aros am gymeradwyaeth.'
-      header: '%{requesterName} has invited you to review the project "%{projectTitle}"'
+      header: 'Mae %{requesterName} wedi eich gwahodd i adolygu''r prosiect "%{projectTitle}"'
       header_message: "Ar hyn o bryd, mae'r prosiect mewn modd drafft ac nid yw'n weladwy i ddefnyddwyr. Unwaith y byddwch wedi ei adolygu a'i gymeradwyo, bydd y safonwr yn gallu ei gyhoeddi."
       cta_review_project: "Adolygu'r prosiect"
     project_review_state_change:
