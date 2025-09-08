@@ -66,22 +66,32 @@ class CustomFieldsValidationService
   end
 
   def validate_lock_constraints!(fields, participation_method)
-    fields.each do |field|
-      validate_constraints_against_defaults(field, participation_method)
-    end
+    validate_deletions(fields, participation_method) ||
+      validate_children(fields, participation_method) ||
+      validate_attributes(fields, participation_method)
     nil
   end
 
-  def validate_constraints_against_defaults(field, participation_method)
-    constraints = participation_method.constraints[field.code&.to_sym]
-    return unless constraints
+  def validate_deletions(fields, participation_method)
+    nil
+  end
 
-    default_fields = participation_method.default_fields @custom_form
-    default_field = default_fields.find { |f| f.code == field.code }
+  def validate_children(fields, participation_method)
+    nil
+  end
 
-    constraints[:locks]&.each do |attribute, value|
-      if value == true && field[attribute] != default_field[attribute] && !page1_title?(field, attribute)
-        field.errors.add :constraints, "Cannot change #{attribute} from default value. It is locked." # TODO: Return error instead
+  def validate_attributes(fields, participation_method)
+    fields.each do |field|
+      constraints = participation_method.constraints[field.code&.to_sym]
+      next if !constraints
+
+      default_fields = participation_method.default_fields @custom_form
+      default_field = default_fields.find { |f| f.code == field.code }
+
+      constraints.dig(:locks, :attributes)&.each do |attribute, locked|
+        if locked && field[attribute] != default_field[attribute]
+          return { form: [{ error: 'locked_attribute' }] }
+        end
       end
     end
   end
