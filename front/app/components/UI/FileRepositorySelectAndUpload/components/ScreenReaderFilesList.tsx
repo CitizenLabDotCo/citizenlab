@@ -21,7 +21,8 @@ const ScreenReaderFilesList = ({ fileAttachments }: Props) => {
 
   if (!files) return null;
 
-  const attachedFiles = fileAttachments?.map((fa) => fa.id) || [];
+  const attachedFiles =
+    fileAttachments?.map((fileAttachment) => fileAttachment.id) || [];
   const filesToAnnounce = files.data
     .filter((file) => attachedFiles.includes(file.id))
     .map((file) => ({

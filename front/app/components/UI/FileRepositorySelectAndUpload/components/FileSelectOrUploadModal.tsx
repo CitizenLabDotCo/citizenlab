@@ -91,7 +91,7 @@ const FileSelectOrUploadModal = ({
           {isDataRepositoryEnabled && (
             <Box>
               <Select
-                value={''}
+                value={''} // Since onChange we close the modal, we don't need to worry about setting this value.
                 onChange={(option) => {
                   // Get the selected file from the files list
                   const selectedFile = files?.data.find(
