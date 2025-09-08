@@ -1291,7 +1291,7 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.removeField": "Feld entfernen",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.requiredGroup1": "Erforderlich - immer aktiviert, da von der Gruppe genannt",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.authenticateWithVerificationProvider2": "Authentifizierung mit {verificationMethod}",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.completeTheDemographicQuestionsAbove": "Füllen Sie die obigen demografischen Fragen aus",
+  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.completeTheDemographicQuestionsAbove": "Demografische Fragen oben ausfüllen",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.confirmYourEmail": "E-Mail-Adresse bestätigen",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.dataReturned": "Von der Verifizierungsmethode zurückgegebene Daten:",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterNameLastNameEmailAndPassword1": "Vorname, Nachname, E-Mail und Passwort eingeben",
