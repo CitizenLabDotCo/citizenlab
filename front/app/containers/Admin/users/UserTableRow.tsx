@@ -307,7 +307,11 @@ const UserTableRow = ({
                 fontSize={`${fontSizes.s}px`}
                 p="0px"
                 iconSize="18px"
-                onClick={() => setIsAssignedItemsOpened(true)}
+                onClick={() => {
+                  // Only allow admins to see assigned items
+                  if (!authUserIsAdmin) return;
+                  setIsAssignedItemsOpened(true);
+                }}
               >
                 <FormattedMessage {...messages.seeAssignedItems} />
               </Button>
