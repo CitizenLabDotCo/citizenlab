@@ -45,6 +45,23 @@ module Export
 
       attr_reader :inputs, :phase, :fields_in_form, :participation_method, :include_private_attributes, :multiloc_service, :url_service
 
+      def platform_locales
+        AppConfiguration.instance.settings['core']['locales']
+      end
+
+      def title_multiloc_report_fields
+        platform_locales.map do |locale|
+          title_for_locale = column_header_for('title')
+
+          ComputedFieldForReport.new(
+            "#{title_for_locale} (#{locale.to_s})", # Column header like "Mi Título (es)"
+            ->(input) {
+              "#{multiloc_service.t(input.title_multiloc, locale: locale)} (#{locale.to_s})"
+            }
+          )
+        end
+      end
+
       def input_id_report_field
         ComputedFieldForReport.new(column_header_for('input_id'), ->(input) { input.id })
       end
@@ -214,7 +231,13 @@ module Export
       end
 
       def all_report_fields
-        @all_report_fields ||= input_report_fields + author_report_fields + meta_report_fields + user_report_fields
+        @all_report_fields ||= [
+          *title_multiloc_report_fields, # Add the new fields here
+          *input_report_fields,
+          *author_report_fields,
+          *meta_report_fields,
+          *user_report_fields
+        ]
       end
 
       def all_column_headers
