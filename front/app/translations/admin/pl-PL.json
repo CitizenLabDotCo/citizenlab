@@ -1141,7 +1141,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.anyone": "Ktokolwiek",
   "app.containers.Admin.projects.all.new.Projects.Table.archived": "Zarchiwizowane",
   "app.containers.Admin.projects.all.new.Projects.Table.currentPhase": "Faza bieżąca",
-  "app.containers.Admin.projects.all.new.Projects.Table.daysLeft2": "{days, plural, no {{days} dni} one {{days} dzień} other {{days} dni}} lewo",
+  "app.containers.Admin.projects.all.new.Projects.Table.daysLeft2": "{days, plural, no {{days} dni} one {{days} dzień} other {{days} dni}} zostało",
   "app.containers.Admin.projects.all.new.Projects.Table.daysToStart2": "{days, plural, no {{days} dni} one {{days} dzień} other {{days} dni}} do startu",
   "app.containers.Admin.projects.all.new.Projects.Table.discoverability": "Odkrywczość:",
   "app.containers.Admin.projects.all.new.Projects.Table.draft": "Wersja robocza",
