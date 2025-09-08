@@ -58,7 +58,11 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def index_xlsx
-    authorize :user, :index_xlsx?
+    if params[:project].present?
+      authorize Project.find(params[:project]), :index_xlsx?
+    else
+      authorize :user, :index_xlsx?
+    end
 
     @users = policy_scope User
     @users = @users.registered unless params[:include_inactive]
