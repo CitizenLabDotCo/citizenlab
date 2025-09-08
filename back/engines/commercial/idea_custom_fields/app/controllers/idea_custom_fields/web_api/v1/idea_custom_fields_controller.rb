@@ -184,16 +184,11 @@ module IdeaCustomFields
       end
       field = CustomField.new create_params.merge(resource: @custom_form)
 
-      if field.errors.errors.empty?
-        SideFxCustomFieldService.new.before_create field, current_user
-        if field.save
-          page_temp_ids_to_ids_mapping[field_params[:temp_id]] = field.id if field_params[:temp_id]
-          SideFxCustomFieldService.new.after_create field, current_user
-          field
-        else
-          errors[index.to_s] = field.errors.details
-          false
-        end
+      SideFxCustomFieldService.new.before_create field, current_user
+      if field.save
+        page_temp_ids_to_ids_mapping[field_params[:temp_id]] = field.id if field_params[:temp_id]
+        SideFxCustomFieldService.new.after_create field, current_user
+        field
       else
         errors[index.to_s] = field.errors.details
         false
@@ -202,20 +197,15 @@ module IdeaCustomFields
 
     def update_field!(field, field_params, errors, index)
       idea_custom_field_service = IdeaCustomFieldsService.new(@custom_form)
-      idea_custom_field_service.validate_constraints_against_updates field, field_params # TODO: Move to validation service?
       field_params = idea_custom_field_service.remove_ignored_update_params field_params
-      if field.errors.errors.empty?
-        field.assign_attributes field_params
-        return true unless field.changed?
 
-        SideFxCustomFieldService.new.before_update field, current_user
-        if field.save
-          SideFxCustomFieldService.new.after_update field, current_user
-          field
-        else
-          errors[index.to_s] = field.errors.details
-          false
-        end
+      field.assign_attributes field_params
+      return true unless field.changed?
+
+      SideFxCustomFieldService.new.before_update field, current_user
+      if field.save
+        SideFxCustomFieldService.new.after_update field, current_user
+        field
       else
         errors[index.to_s] = field.errors.details
         false

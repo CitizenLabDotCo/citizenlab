@@ -107,23 +107,6 @@ class IdeaCustomFieldsService
     categorised_fields
   end
 
-  # TODO: Move to validation service?
-  def validate_constraints_against_updates(field, field_params)
-    constraints = @participation_method.constraints[field.code&.to_sym]
-    return unless constraints
-
-    # Convert ActionController::Parameters to a hash before making comparisons, as equality
-    # between ActionController::Parameters and Hash has been deprecated and will always
-    # return false.
-    field_params = field_params.to_h if field_params.is_a?(ActionController::Parameters)
-
-    constraints[:locks]&.each do |attribute, value|
-      if value == true && field_params[attribute] != field[attribute] && !page1_title?(field, attribute)
-        field.errors.add :constraints, "Cannot change #{attribute}. It is locked."
-      end
-    end
-  end
-
   # The following params should not be editable after they have been created
   def remove_ignored_update_params(field_params)
     field_params.except(:code, :input_type)
@@ -200,12 +183,6 @@ class IdeaCustomFieldsService
       all_fields << field.follow_up_text_field if field.follow_up_text_field && !print_version # NOTE: Currently not supported in print version
     end
     all_fields
-  end
-
-  # Check required as it doesn't matter what is saved in title for page 1
-  # Constraints required for the front-end but response will always return input specific method
-  def page1_title?(field, attribute)
-    field.code == 'title_page' && attribute == :title_multiloc
   end
 
   def add_user_fields(fields)

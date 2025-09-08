@@ -1,9 +1,8 @@
 class CustomFieldsValidationService
   def validate(fields, participation_method)
     validate_non_empty_form!(fields) ||
-      validate_end_page!(fields) ||
       validate_first_page!(fields) ||
-      validate_separate_title_body_pages!(fields) ||
+      validate_end_page!(fields) ||
       validate_lock_constraints!(fields, participation_method)
   end
 
@@ -27,72 +26,58 @@ class CustomFieldsValidationService
     { form: [{ error: 'no_first_page' }] }
   end
 
-  # TODO: Replace by locked children logic
-  def validate_separate_title_body_pages!(fields)
-    title_page = nil
-    body_page = nil
-    fields_per_page = {}
-    prev_page = nil
-    fields.each do |field|
-      if field.page?
-        break if title_page && body_page
+  def validate_lock_constraints!(fields, participation_method)
+    constraints = participation_method.constraints
+    default_fields = participation_method.default_fields(participation_method.custom_form)
 
-        prev_page = field
-      else
-        fields_per_page[prev_page] ||= []
-        fields_per_page[prev_page] << field
+    validate_deletions(fields, constraints) ||
+      validate_children(fields, default_fields, constraints) ||
+      validate_attributes(fields, default_fields, constraints)
+  end
 
-        if field.code == 'title_multiloc'
-          title_page = prev_page
-        elsif field.code == 'body_multiloc'
-          body_page = prev_page
-        end
+  def validate_deletions(fields, constraints)
+    constraints.each do |code, constraint|
+      next if !constraint.dig(:locks, :deletion)
+
+      if !fields.find { |f| f.code == code.to_s && f.enabled? }
+        return { form: [{ error: 'locked_deletion' }] }
       end
     end
 
-    if title_page && body_page && title_page == body_page
-      return { form: [{ error: 'title_and_body_on_same_page' }] }
+    nil
+  end
+
+  def validate_children(fields, default_fields, constraints)
+    pages = CustomFieldService.new.pages(fields)
+    default_pages = CustomFieldService.new.pages(default_fields)
+    constraints.each do |code, constraint|
+      next if !constraint[:locks][:children]
+
+      _page, *children = pages.find { |page_with_children| page_with_children.first.code == code.to_s }
+      default_children = default_pages.find { |page_with_children| page_with_children.first.code == code.to_s }&.drop(1) || []
+
+      if children.map(&:code) != default_children.map(&:code)
+        return { form: [{ error: 'locked_children' }] }
+      end
     end
 
-    if title_page && fields_per_page[title_page].count { |field| field[:enabled] } > 1
-      return { form: [{ error: 'title_page_with_other_fields' }] }
-    end
-
-    if body_page && fields_per_page[body_page].count { |field| field[:enabled] } > 1
-      return { form: [{ error: 'body_page_with_other_fields' }] }
-    end
-
     nil
   end
 
-  def validate_lock_constraints!(fields, participation_method)
-    validate_deletions(fields, participation_method) ||
-      validate_children(fields, participation_method) ||
-      validate_attributes(fields, participation_method)
-    nil
-  end
-
-  def validate_deletions(fields, participation_method)
-    nil
-  end
-
-  def validate_children(fields, participation_method)
-    nil
-  end
-
-  def validate_attributes(fields, participation_method)
+  def validate_attributes(fields, default_fields, constraints)
     fields.each do |field|
-      constraints = participation_method.constraints[field.code&.to_sym]
-      next if !constraints
+      field_constraints = constraints[field.code&.to_sym]
+      next if !field_constraints
 
-      default_fields = participation_method.default_fields @custom_form
       default_field = default_fields.find { |f| f.code == field.code }
 
-      constraints.dig(:locks, :attributes)&.each do |attribute, locked|
+      field_constraints.dig(:locks, :attributes)&.each do |attribute, locked|
         if locked && field[attribute] != default_field[attribute]
           return { form: [{ error: 'locked_attribute' }] }
         end
       end
     end
+
+    nil
   end
 end
