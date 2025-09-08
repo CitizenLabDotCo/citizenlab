@@ -27,7 +27,7 @@ export const getPermissionActionSectionSubtitle = ({
       : messages.permissionAction_submit_input_subtitle,
     reacting_idea:
       participationMethod === 'common_ground'
-        ? messages.permissionAction_vote_input_subtitle
+        ? messages.permissionAction_vote_on_input_subtitle
         : messages.permissionAction_reaction_input_subtitle,
     commenting_idea: messages.permissionAction_comment_input_subtitle,
     taking_survey: messages.permissionAction_take_survey_subtitle,

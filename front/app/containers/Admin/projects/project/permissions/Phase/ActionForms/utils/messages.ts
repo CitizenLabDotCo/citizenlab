@@ -13,8 +13,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_reaction_input_subtitle',
     defaultMessage: 'Who can react to inputs?',
   },
-  permissionAction_vote_input_subtitle: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_input_subtitle',
+  permissionAction_vote_on_input_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_on_input_subtitle',
     defaultMessage: 'Who can vote on inputs?',
   },
   permissionAction_comment_input_subtitle: {
