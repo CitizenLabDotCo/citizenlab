@@ -48,6 +48,7 @@ const VisibilityFilter = ({ onClear }: Props) => {
       title={formatMessage(messages.visibilityLabel)}
       options={options}
       selected={visibilities}
+      openedDefaultValue={visibilities.length === 0}
       onChange={(visibilities) => {
         setParam('visibility', visibilities as Visibility[]);
         trackEventByName(tracks.setVisibility, {

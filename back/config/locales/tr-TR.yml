@@ -382,3 +382,6 @@ tr:
     default_voting_term_plural: "oylar"
   ics_calendar_event:
     event_details: "Etkinlik detayları"
+  errors:
+    messages:
+      max_must_be_greater_than_min_characters: "Maksimum değer minimum değerden büyük olmalıdır."

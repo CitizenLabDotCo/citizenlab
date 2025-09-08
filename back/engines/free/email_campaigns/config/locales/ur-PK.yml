@@ -95,6 +95,7 @@ ur:
       project_title: 'مثال پروجیکٹ'
       project_description_preview: 'ای میلز کے مواد کا پیش نظارہ کرنے کے لیے استعمال ہونے والا یہ کچھ مثالی فیز مواد ہے۔ یہ حقیقی مواد نہیں ہے۔'
       phase_title: 'مثال کا مرحلہ'
+      folder_title: 'مثال فولڈر'
       comment_body: 'یہ ایک مثالی تبصرہ ہے جسے ای میلز کے مواد کا جائزہ لینے کے لیے استعمال کیا جاتا ہے۔ یہ حقیقی مواد نہیں ہے۔'
       comment_deleted_reason: 'آپ کا مثالی تبصرہ نامناسب سمجھا گیا۔'
       idea_title: 'مثال آئیڈیا۔'
@@ -103,6 +104,9 @@ ur:
       event_address1: '10 مثال کی گلی، مثال کے طور پر، مثال شائر'
       event_address2: 'کمرہ 3a، اوپر'
       proposal_title: 'مثال کی تجویز'
+      input_status_title: 'مثال کی حیثیت'
+      input_status_description: 'ان پٹ کی حیثیت کی ایک مثال (مثلاً قبول، مسترد، لاگو...)'
+      official_feedback_body: 'سرکاری تاثرات کی مثال'
     footer:
       "link_privacy_policy": "رازداری کی پالیسی"
       "link_terms_conditions": "شرائط و ضوابط"
@@ -333,10 +337,11 @@ ur:
       title: '''%{post}'' پر نیا داخلی تبصرہ'
       preheader: '''%{post}'' میں ایک نیا داخلی تبصرہ ہے۔'
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
-      header_title: 'There''s an update on "%{input_title}"'
+      event_description: '%{feedback_author_name} نے ''%{input_title}'' پر ایک اپ ڈیٹ دیا۔'
+      title: '"%{input_title}" پر ایک اپ ڈیٹ ہے'
       subject: 'Official feedback was posted on "%{input_title}"'
       preheader: 'There''s an update on an input you follow'
+      cta_button: اس ان پٹ پر جائیں۔
     mention_in_official_feedback:
       cta_button: '%{organizationName}کو جواب دیں۔'
       event_description: '%{organizationName} نے ''%{post}'' خیال پر اپنے تاثرات میں آپ کا ذکر کیا۔ %{organizationName}کے ساتھ گفتگو میں داخل ہونے کے لیے نیچے دیے گئے لنک پر کلک کریں۔'
@@ -344,8 +349,8 @@ ur:
       subject: '%{organizationName} نے اپنے تاثرات میں آپ کا ذکر کیا۔'
       preheader: '%{commentAuthor} نے تاثرات میں آپ کا ذکر کیا۔'
     project_moderation_rights_received:
-      cta_manage_project: 'اس پروجیکٹ کا انتظام کریں۔'
-      message_you_became_moderator: '%{organizationName} کے شرکت کے پلیٹ فارم کے منتظم نے ابھی آپ کو درج ذیل پروجیکٹ کا پروجیکٹ مینیجر بنایا ہے:'
+      cta_button: 'اس پروجیکٹ کا انتظام کریں۔'
+      event_description: '%{organizationName} کے شرکت کے پلیٹ فارم کے منتظم نے ابھی آپ کو درج ذیل پروجیکٹ کا پروجیکٹ مینیجر بنایا ہے:'
       no_ideas: 'ابھی تک کوئی خیال نہیں ہے۔'
       preheader: '%{organizationName} کے شرکت کے پلیٹ فارم کے منتظم نے ابھی آپ کو درج ذیل پروجیکٹ کا پروجیکٹ مینیجر بنایا ہے'
       subject: 'آپ %{organizationName}کے پلیٹ فارم پر پروجیکٹ مینیجر بن گئے۔'
@@ -356,11 +361,11 @@ ur:
       title_moderate_analyse_input: 'ان پٹ کو معتدل اور تجزیہ کریں۔'
       title_share_project_information: 'پروجیکٹ کی معلومات فراہم کریں۔'
       title_what_can_you_do_moderator: 'پروجیکٹ مینیجر کے طور پر آپ کیا کر سکتے ہیں؟'
-      title_you_became_moderator: 'آپ پروجیکٹ مینیجر بن گئے۔'
+      title: 'آپ پروجیکٹ مینیجر بن گئے۔'
       x_ideas: '%{numberOfIdeas} خیالات'
     project_folder_moderation_rights_received:
-      cta_view_folder_button: 'اس فولڈر کو دیکھیں'
-      message_added_as_folderadmin: 'آپ کو درج ذیل فولڈر کے لیے %{organizationName}کے شرکت کے پلیٹ فارم پر فولڈر مینیجر کے حقوق دیے گئے ہیں:'
+      cta_button: 'اس فولڈر کو دیکھیں'
+      event_description: 'آپ کو درج ذیل فولڈر کے لیے %{organizationName}کے شرکت کے پلیٹ فارم پر فولڈر مینیجر کے حقوق دیے گئے ہیں:'
       no_projects: 'ابھی تک کوئی پروجیکٹ نہیں ہے۔'
       preheader: '%{organizationName} کے شرکت پلیٹ فارم کے منتظم نے ابھی آپ کو درج ذیل فولڈر کا مینیجر بنایا ہے'
       subject: 'آپ %{organizationName}کے شرکت کے پلیٹ فارم پر پروجیکٹ فولڈر مینیجر بن گئے۔'
@@ -371,7 +376,7 @@ ur:
       title_moderate_analyse_input: 'ان پٹ کو معتدل اور تجزیہ کریں۔'
       title_manage_folder: 'فولڈر کی ترتیبات کا نظم کریں اور نئے پروجیکٹس بنائیں۔'
       title_what_can_you_do_folderadmin: 'آپ فولڈر مینیجر کے طور پر کیا کر سکتے ہیں؟'
-      title_added_as_folderadmin: 'آپ کو فولڈر مینیجر کے طور پر شامل کیا گیا ہے۔'
+      title: 'آپ کو فولڈر مینیجر کے طور پر شامل کیا گیا ہے۔'
       x_projects: '%{numberOfProjects} پروجیکٹس'
     project_phase_started:
       cta_button: 'اس نئے مرحلے کو دریافت کریں۔'
@@ -382,41 +387,43 @@ ur:
       subject: '%{projectName} ایک نئے مرحلے میں داخل ہوا۔'
       preheader: '%{projectName}کے لیے ایک نیا مرحلہ شروع ہو گیا ہے۔'
     project_phase_upcoming:
-      cta_view_phase: 'اس نئے مرحلے کو ترتیب دیں۔'
+      cta_button: 'اس نئے مرحلے کو ترتیب دیں۔'
       event_description: 'پروجیکٹ ''%{projectName}'' جلد ہی ایک نئے مرحلے میں داخل ہو گا۔ یقینی بنائیں کہ اس مرحلے کے لیے سب کچھ ترتیب دیا گیا ہے: کیا کوئی مناسب تفصیل ہے؟ کیا منتخب خیالات کو اس مرحلے میں منتقل کیا گیا ہے؟ کیا آپ اپنی مرضی کے مطابق ای میل مہم کے ذریعے اپنے شہریوں کو اس مرحلے کی تفصیلات سے آگاہ کرنا چاہتے ہیں؟'
-      main_header: '%{firstName}، ایک پروجیکٹ جلد ہی ایک نئے مرحلے میں داخل ہوگا۔'
+      title: '%{firstName}، ایک پروجیکٹ جلد ہی ایک نئے مرحلے میں داخل ہوگا۔'
       subtitle: '''%{projectName}'' کے بارے میں'
       new_phase: 'پروجیکٹ ''%{phaseTitle}'' مرحلے میں داخل ہو جائے گا۔'
       subject: '%{projectName}کے نئے مرحلے کے لیے سب کچھ ترتیب دیں۔'
       preheader: '%{projectName}کے لیے جلد ہی ایک نیا مرحلہ شروع ہو گا۔'
     project_published:
       subject: '%{organizationName}کے پلیٹ فارم پر ایک نیا پروجیکٹ شائع کیا گیا تھا۔'
-      header_title: 'ایک نیا پروجیکٹ شائع ہوا۔'
-      header_message: '%{organizationName} کے شرکت کے پلیٹ فارم نے ابھی درج ذیل پروجیکٹ کو شائع کیا ہے:'
+      title: 'ایک نیا پروجیکٹ شائع ہوا۔'
+      event_description: '%{organizationName} کے شرکت کے پلیٹ فارم نے ابھی درج ذیل پروجیکٹ کو شائع کیا ہے:'
       preheader: 'ایک نیا پروجیکٹ شائع ہوا۔'
+      cta_button: 'اس پروجیکٹ پر جائیں۔'
     project_review_request:
       subject: 'جائزہ لینے کی درخواست: ایک پروجیکٹ منظوری کا انتظار کر رہا ہے۔'
-      header: '%{requesterName} نے آپ کو پروجیکٹ کا جائزہ لینے کے لیے مدعو کیا ہے "%{projectTitle}"'
-      header_message: "فی الحال، پروجیکٹ ڈرافٹ موڈ میں ہے اور صارفین کو دکھائی نہیں دے رہا ہے۔ ایک بار جب آپ اس کا جائزہ لے لیں اور اسے منظور کر لیں تو ماڈریٹر اسے شائع کر سکے گا۔"
-      cta_review_project: "پروجیکٹ کا جائزہ لیں۔"
+      title: '%{requesterName} نے آپ کو پروجیکٹ کا جائزہ لینے کے لیے مدعو کیا ہے "%{projectTitle}"'
+      event_description: "فی الحال، پروجیکٹ ڈرافٹ موڈ میں ہے اور صارفین کو دکھائی نہیں دے رہا ہے۔ ایک بار جب آپ اس کا جائزہ لے لیں اور اسے منظور کر لیں تو ماڈریٹر اسے شائع کر سکے گا۔"
+      cta_button: "پروجیکٹ کا جائزہ لیں۔"
     project_review_state_change:
       subject: '"%{projectTitle}" کو منظور کر لیا گیا ہے۔'
-      header: '%{reviewerName} نے پروجیکٹ کی منظوری دی "%{projectTitle}"'
-      header_message: "پروجیکٹ اب لائیو جانے کے لیے تیار ہے۔ جب بھی آپ تیار ہوں آپ اسے شائع کر سکتے ہیں!"
-      cta_go_to_project: "پروجیکٹ کی ترتیبات پر جائیں۔"
+      title: '%{reviewerName} نے پروجیکٹ کی منظوری دی "%{projectTitle}"'
+      event_description: "پروجیکٹ اب لائیو جانے کے لیے تیار ہے۔ جب بھی آپ تیار ہوں آپ اسے شائع کر سکتے ہیں!"
+      cta_button: "پروجیکٹ کی ترتیبات پر جائیں۔"
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
-      header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
-      header_title: 'An input you follow has a new status'
+      event_description: '%{organizationName} نے اپنے ڈیجیٹل شرکت کے پلیٹ فارم پر ان پٹ ''%{input_title}'' کی حیثیت کو اپ ڈیٹ کیا۔'
+      title: 'آپ جس ان پٹ کی پیروی کرتے ہیں اس کی نئی حیثیت ہوتی ہے۔'
       subject: 'The status of "%{input_title}" has changed'
       preheader: 'An input you follow has a new status'
+      cta_button: اس ان پٹ پر جائیں۔
     user_digest:
       subject: "%{organizationName}کے شرکت کے پلیٹ فارم پر آپ کی سرگرمی"
       commented: "%{authorFirstName} تبصرہ کیا:"
       preheader: "%{organizationName}کا ہفتہ وار جائزہ"
-      title_your_weekly_report: "دریافت کریں کہ پچھلے ہفتے کیا ہوا تھا۔"
-      intro_text: "%{organizationName}کے شرکت کے پلیٹ فارم پر کیا ہوا اس کا خلاصہ یہ ہے۔"
-      cta_go_to_the_platform: "پلیٹ فارم پر جائیں۔"
+      title: "دریافت کریں کہ پچھلے ہفتے کیا ہوا تھا۔"
+      event_description: "%{organizationName}کے شرکت کے پلیٹ فارم پر کیا ہوا اس کا خلاصہ یہ ہے۔"
+      cta_button: "پلیٹ فارم پر جائیں۔"
       title_no_activity_past_week: "پچھلے ہفتے میں کوئی سرگرمی نہیں ہوئی۔"
       successful_proposals_title: "دہلیز پر پہنچ گیا۔"
       successful_proposals_text: "ان تجاویز کو اگلے مرحلے میں جانے کے لیے کافی حمایت حاصل ہو گئی ہے! آگے کیا ہوتا ہے اس کے بارے میں مزید جاننے کے لیے تجویز پر کلک کریں۔"
@@ -431,15 +438,15 @@ ur:
       no_unread_notifications: "آپ کے پاس کوئی غیر پڑھی ہوئی اطلاعات نہیں ہیں۔ اپنا ان پٹ دینے اور نئی اطلاعات پیدا کرنے کے لیے پلیٹ فارم پر جائیں!"
       unread_notifications: "آپ کے پاس بغیر پڑھی ہوئی اطلاعات ہیں۔ یہ جاننے کے لیے پلیٹ فارم پر جائیں کہ کیا ہو رہا ہے!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'اس تجویز کو اگلے مراحل تک لے جائیں۔'
-      main_header: 'ایک تجویز ووٹنگ کی حد تک پہنچ گئی!'
+      cta_button: 'اس تجویز کو اگلے مراحل تک لے جائیں۔'
+      title: 'ایک تجویز ووٹنگ کی حد تک پہنچ گئی!'
       subject: 'آپ کے پلیٹ فارم پر ایک تجویز ووٹنگ کی حد تک پہنچ گئی۔'
       preheader: 'اگلے اقدامات کو یقینی بنائیں'
     welcome:
-      cta_join_platform: 'پلیٹ فارم دریافت کریں۔'
+      cta_button: 'پلیٹ فارم دریافت کریں۔'
       subject: '%{organizationName}کے پلیٹ فارم میں خوش آمدید'
-      main_header: خوش آمدید!
-      message_welcome: 'مبارک ہو، آپ نے %{organizationName}کے شرکت کے پلیٹ فارم پر کامیابی سے سائن اپ کر لیا ہے۔ اب آپ پلیٹ فارم دریافت کر سکتے ہیں اور اپنی آواز سن سکتے ہیں۔ آپ دوسروں کو بتانے کے لیے ایک پروفائل تصویر اور ایک مختصر تفصیل بھی شامل کر سکتے ہیں کہ آپ کون ہیں۔'
+      title: خوش آمدید!
+      event_description: 'مبارک ہو، آپ نے %{organizationName}کے شرکت کے پلیٹ فارم پر کامیابی سے سائن اپ کر لیا ہے۔ اب آپ پلیٹ فارم دریافت کر سکتے ہیں اور اپنی آواز سن سکتے ہیں۔ دوسروں کو بتانے کے لیے کہ آپ کون ہیں آپ پروفائل تصویر اور ایک مختصر تفصیل بھی شامل کر سکتے ہیں۔'
       preheader: 'یہ ہے آپ %{organizationName}کے پلیٹ فارم پر کیا کر سکتے ہیں۔'
     idea_published:
       subject: 'آپ کا خیال شائع ہو چکا ہے۔'
@@ -475,15 +482,15 @@ ur:
         option: 'آپ کا اختیار "%{prescreening_status_title}" میں ہے'
         proposal: 'آپ کی تجویز "%{prescreening_status_title}" میں ہے'
         petition: 'آپ کی درخواست "%{prescreening_status_title}" میں ہے'
-      message: '"%{input_title}" ایک بار نظرثانی اور منظوری کے بعد دوسروں کے لیے مرئی ہو جائے گا۔'
+      event_description: '"%{input_title}" ایک بار نظرثانی اور منظوری کے بعد دوسروں کے لیے مرئی ہو جائے گا۔'
       subject: '"%{input_title}" تقریباً شائع ہو چکا ہے۔'
       preheader: 'یہ فی الحال %{prescreening_status_title}میں ہے۔'
     voting_basket_submitted:
       subject: '%{organizationName}: آپ نے کامیابی سے ووٹ دیا۔'
       preheader: 'آپ نے %{organizationName}کے شرکت کے پلیٹ فارم پر کامیابی سے ووٹ دیا۔'
-      title_basket_submitted: 'آپ نے کامیابی سے ووٹ دیا۔'
+      title: 'آپ نے کامیابی سے ووٹ دیا۔'
       event_description: 'شرکت کرنے کا شکریہ۔ آپ کے ووٹ ریکارڈ کیے گئے ہیں۔ اپنے ووٹوں کو دیکھنے اور ان کا نظم کرنے کے لیے %{organizationName} کے پلیٹ فارم پر جائیں۔'
-      cta_see_votes_submitted: 'جمع کرائے گئے ووٹ دیکھیں'
+      cta_button: 'جمع کرائے گئے ووٹ دیکھیں'
       cta_message: 'حصہ لینے کے لیے نیچے دیئے گئے بٹن پر کلک کریں۔'
     native_survey_not_submitted:
       subject: '%{organizationName}: قریب قریب! اپنے جوابات جمع کروائیں۔'
@@ -495,26 +502,26 @@ ur:
     voting_basket_not_submitted:
       subject: '%{organizationName}: آپ نے اپنا ووٹ جمع نہیں کرایا'
       preheader: 'آپ نے اپنا ووٹ %{organizationName}کے شرکت کے پلیٹ فارم پر جمع نہیں کرایا'
-      title_basket_not_submitted: 'آپ نے اپنا ووٹ جمع نہیں کرایا'
+      title: 'آپ نے اپنا ووٹ جمع نہیں کرایا'
       event_description: 'آپ نے %{contextTitle} کے لیے چند اختیارات منتخب کیے لیکن آپ نے اپنا انتخاب جمع نہیں کرایا۔'
-      cta_view_options_and_vote: 'اختیارات دیکھیں اور ووٹ دیں۔'
+      cta_button: 'اختیارات دیکھیں اور ووٹ دیں۔'
       cta_message: 'اپنے منتخب کردہ اختیارات جمع کرانے کے لیے نیچے دیئے گئے بٹن پر کلک کریں۔'
     voting_last_chance:
       subject: '%{organizationName}: %{phaseTitle}کو ووٹ دینے کا آخری موقع'
       preheader: '%{organizationName}کے شرکت کے پلیٹ فارم پر %{phaseTitle} کو ووٹ دینے کا آخری موقع'
-      title_last_chance: '%{phaseTitle}کو ووٹ دینے کا آخری موقع'
+      title: '%{phaseTitle}کو ووٹ دینے کا آخری موقع'
       body_1: '%{projectTitle} پروجیکٹ کے لیے ووٹنگ کا مرحلہ کل آدھی رات کو ختم ہو رہا ہے۔'
       body_2: 'وقت ختم ہو رہا ہے، اور ہم نے محسوس کیا کہ آپ نے ابھی تک اپنا ووٹ نہیں ڈالا ہے! حصہ لینے کے لیے نیچے دیئے گئے بٹن پر کلک کرکے ابھی عمل کریں۔'
       body_3: 'ایسا کرنے سے، آپ کو اختیارات کی ایک حد تک رسائی حاصل ہو جائے گی اور آپ کو اپنا ان پٹ فراہم کرنے کا موقع ملے گا، جو اس پروجیکٹ کے مستقبل کا فیصلہ کرنے میں اہم ہے۔'
-      cta_vote: 'ووٹ'
+      cta_button: 'ووٹ'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} ووٹ کے نتائج سامنے آ گئے!'
       preheader: '%{phaseTitle} ووٹ کے نتائج %{organizationName}کے شرکت کے پلیٹ فارم پر ظاہر ہوئے'
-      title_results: '%{phaseTitle} ووٹ کے نتائج سامنے آ گئے!'
+      title: '%{phaseTitle} ووٹ کے نتائج سامنے آ گئے!'
       body_1: 'نتائج میں ہیں!'
       body_2: '%{organizationName} پلیٹ فارم میں %{phaseTitle} ووٹ کے نتائج شائع ہو چکے ہیں!'
       body_3: 'ہم آپ کی حوصلہ افزائی کرتے ہیں کہ آپ نتائج کا جائزہ لیں اور اگلے مراحل کے بارے میں مزید اپ ڈیٹس کے لیے دیکھتے رہیں۔'
-      cta_see_results: 'پلیٹ فارم میں نتائج دیکھیں'
+      cta_button: 'پلیٹ فارم میں نتائج دیکھیں'
     event_registration_confirmation:
       subject: "آپ اندر ہیں! \"%{eventTitle}\" کے لیے آپ کی رجسٹریشن کی تصدیق ہو گئی ہے۔"
       preheader: "%{firstName}، %{eventTitle}کے لیے رجسٹر کرنے کا شکریہ"
@@ -531,18 +538,19 @@ ur:
     voting_phase_started:
       subject: '%{organizationName}: %{projectName}کے لیے ووٹنگ کا مرحلہ شروع ہو گیا'
       preheader: '%{organizationName}کے شرکت کے پلیٹ فارم پر %{projectName} کے لیے ووٹنگ کا مرحلہ شروع ہوا'
+      title: '%{projectName}'
       event_description: 'پروجیکٹ "%{projectName}" آپ کو %{numIdeas} اختیارات کے درمیان ووٹ دینے کے لیے کہہ رہا ہے:'
       cta_message: 'حصہ لینے کے لیے نیچے دیئے گئے بٹن پر کلک کریں۔'
-      cta_vote: 'ووٹ دینے کے لیے پلیٹ فارم پر جائیں۔'
+      cta_button: 'ووٹ دینے کے لیے پلیٹ فارم پر جائیں۔'
     survey_submitted:
       subject: '%{organizationName}: آپ کے جواب کا شکریہ! 🎉'
       preheader: 'آپ کی جمع کرانے کی تفصیلات یہ ہیں۔'
-      main_header: '"%{projectName}" پر اپنے خیالات بانٹنے کے لیے آپ کا شکریہ!'
-      your_input_submitted: '"%{projectName}" کے لیے آپ کا ان پٹ کامیابی کے ساتھ جمع کر دیا گیا ہے۔'
+      title: '"%{projectName}" پر اپنے خیالات بانٹنے کے لیے آپ کا شکریہ!'
+      event_description: '"%{projectName}" کے لیے آپ کا ان پٹ کامیابی کے ساتھ جمع کر دیا گیا ہے۔'
       if_you_would_like_to_review: 'اگر آپ اپنی جمع آوری کا جائزہ لینا چاہتے ہیں، تو آپ نیچے اپنے جوابات ڈاؤن لوڈ کر سکتے ہیں۔'
       your_submission_has_id: 'آپ کی جمع آوری میں درج ذیل منفرد شناخت کنندہ ہے:'
       you_can_use_this_id: 'آپ اس شناخت کنندہ کو پلیٹ فارم کے منتظمین سے رابطہ کرنے کے لیے استعمال کر سکتے ہیں اگر آپ چاہتے ہیں کہ آپ کی جمع آوری ہٹا دی جائے۔'
-      download_responses: 'اپنے جوابات ڈاؤن لوڈ کریں۔'
+      cta_button: 'اپنے جوابات ڈاؤن لوڈ کریں۔'
     admin_labels:
       recipient_role:
         admins: 'ایڈمنز کو'

@@ -13,6 +13,7 @@ import { parseStats } from './parse';
 export default function useVisitors({
   startAt,
   endAt,
+  projectId,
   compareStartAt,
   compareEndAt,
   resolution = 'month',
@@ -23,6 +24,7 @@ export default function useVisitors({
     {
       start_at: startAt,
       end_at: endAt,
+      project_id: projectId,
       resolution,
       compare_start_at: compareStartAt,
       compare_end_at: compareEndAt,
@@ -41,9 +43,7 @@ export default function useVisitors({
             analytics.data.attributes.visitors_timeseries,
             startAt ? moment(startAt) : null,
             endAt ? moment(endAt) : null,
-            // TODO: Fix this the next time the file is edited.
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            currentResolution ?? 'month'
+            currentResolution
           )
         : null,
     [analytics?.data, startAt, endAt, currentResolution]

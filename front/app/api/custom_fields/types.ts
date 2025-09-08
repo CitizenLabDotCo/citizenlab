@@ -115,6 +115,8 @@ export interface IAttributes {
   dropdown_layout?: boolean;
   question_category?: string;
   include_in_printed_form?: boolean;
+  min_characters?: number;
+  max_characters?: number;
 }
 
 export interface ICustomFieldResponse {

@@ -2,44 +2,31 @@
 
 module EmailCampaigns
   class ProjectReviewStateChangeMailer < ApplicationMailer
-    helper_method :project_title, :project_description, :admin_project_url
+    include EditableWithPreview
 
-    private
-
-    def project_review
-      ProjectReview.find(event.project_review_id)
+    def editable
+      %i[subject_multiloc title_multiloc intro_multiloc button_text_multiloc]
     end
 
-    def subject
-      format_message('subject', values: { projectTitle: project_title })
+    def substitution_variables
+      {
+        reviewerName: event&.reviewer_name,
+        projectTitle: localize_for_recipient(event&.project_title_multiloc),
+        organizationName: organization_name
+      }
     end
 
-    def header_title
-      format_message('header', values: {
-        reviewerName: reviewer_name,
-        projectTitle: project_title
-      })
-    end
-
-    def preheader
-      header_title
-    end
-
-    def reviewer_name
-      project_review.reviewer.full_name
-    end
-
-    def project_title
-      localize_for_recipient(project_review.project.title_multiloc)
-    end
-
-    def project_description
-      localize_for_recipient(project_review.project.description_preview_multiloc)
-    end
-
-    def admin_project_url
-      @admin_project_url ||=
-        Frontend::UrlService.new.admin_project_url(project_review.project_id)
+    def preview_command(recipient)
+      data = preview_service.preview_data(recipient)
+      {
+        recipient: recipient,
+        event_payload: {
+          project_title_multiloc: data.project.title_multiloc,
+          project_description_multiloc: data.project.description_preview_multiloc,
+          admin_project_url: data.project.url,
+          reviewer_name: data.initiator.display_name
+        }
+      }
     end
   end
 end

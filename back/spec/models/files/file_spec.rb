@@ -265,6 +265,34 @@ RSpec.describe Files::File do
     end
   end
 
+  describe 'description_generation_status', :active_job_que_adapter do
+    it 'is nil when there is no job' do
+      file = create(:file)
+      expect(file.description_generation_status).to be_nil
+    end
+
+    it 'is "pending" when the job is pending' do
+      file = create(:file, ai_processing_allowed: true)
+      expect(file.description_generation_status).to eq(:pending)
+    end
+
+    it 'is "completed" when the job is completed' do
+      file = create(:file, ai_processing_allowed: true)
+      file.desc_generation_job.complete!
+      expect(file.description_generation_status).to eq(:completed)
+    end
+
+    it 'is "failed" when the job is completed with errors' do
+      file = create(:file, ai_processing_allowed: true)
+
+      tracker = file.desc_generation_job
+      tracker.increment_progress(1, 1)
+      tracker.complete!
+
+      expect(file.description_generation_status).to eq(:failed)
+    end
+  end
+
   it 'category defaults to "other" when no category is specified' do
     file = build(:file)
     expect(file.category).to eq('other')

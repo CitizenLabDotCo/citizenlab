@@ -95,6 +95,7 @@ fi:
       project_title: 'Esimerkkiprojekti'
       project_description_preview: 'Tämä on esimerkki sähköpostien sisällön esikatseluun käytettävästä vaihesisällöstä. Tämä ei ole oikeaa sisältöä.'
       phase_title: 'Esimerkkivaihe'
+      folder_title: 'Esimerkkikansio'
       comment_body: 'Tämä on esimerkkikommentti, jota käytetään sähköpostien sisällön esikatseluun. Tämä ei ole oikeaa sisältöä.'
       comment_deleted_reason: 'Esimerkkikommenttiasi pidettiin sopimattomana.'
       idea_title: 'Esimerkki-idea'
@@ -103,6 +104,9 @@ fi:
       event_address1: '10 Example Street, Exampleton, Exampleshire'
       event_address2: 'Huone 3a, yläkerta'
       proposal_title: 'Esimerkkiehdotus'
+      input_status_title: 'Esimerkkitila'
+      input_status_description: 'Esimerkki syötteen tilasta (esim. hyväksytty, hylätty, toteutettu...)'
+      official_feedback_body: 'Esimerkki virallisesta palautteesta'
     footer:
       "link_privacy_policy": "Tietosuojakäytäntö"
       "link_terms_conditions": "käyttöehdot"
@@ -333,10 +337,11 @@ fi:
       title: 'Uusi sisäinen kommentti viestiin ''%{post}'''
       preheader: 'Kohteessa%{post}on uusi sisäinen kommentti'
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} antoi päivityksen aiheesta ''%{input_title}''.'
-      header_title: '"%{input_title}" on päivitetty'
+      event_description: '%{feedback_author_name} antoi päivityksen kohteesta ''%{input_title}''.'
+      title: 'Päivitys aiheesta "%{input_title}"'
       subject: 'Virallinen palaute on lähetetty "%{input_title}"'
       preheader: 'Seuraamasi syötteessä on päivitys'
+      cta_button: Siirry tähän syötteeseen
     mention_in_official_feedback:
       cta_button: 'Vastaus käyttäjälle %{organizationName}'
       event_description: '%{organizationName} mainitsi sinut palautteessaan ideasta ''%{post}''. Napsauta alla olevaa linkkiä päästäksesi keskusteluun %{organizationName}:n kanssa'
@@ -344,8 +349,8 @@ fi:
       subject: '%{organizationName} mainitsi sinut palautteessaan'
       preheader: '%{commentAuthor} mainitsi sinut palautteessa'
     project_moderation_rights_received:
-      cta_manage_project: 'Hallinnoi tätä projektia'
-      message_you_became_moderator: 'Osallistumisalustan %{organizationName} ylläpitäjä teki sinusta juuri seuraavan projektin projektipäällikön:'
+      cta_button: 'Hallinnoi tätä projektia'
+      event_description: '%{organizationName} -sivuston osallistumisalustan ylläpitäjä nimitti sinut juuri seuraavan projektin projektipäälliköksi:'
       no_ideas: 'Ei vielä ideoita'
       preheader: '%{organizationName} osallistumisalustan ylläpitäjä teki sinusta juuri seuraavan projektin projektipäällikön'
       subject: 'Sinusta tuli projektipäällikkö alustalla %{organizationName}'
@@ -356,11 +361,11 @@ fi:
       title_moderate_analyse_input: 'Moderoi ja analysoi syötettä'
       title_share_project_information: 'Anna projektitiedot'
       title_what_can_you_do_moderator: 'Mitä voit tehdä projektipäällikkönä?'
-      title_you_became_moderator: 'Sinusta tuli projektipäällikkö'
+      title: 'Sinusta tuli projektipäällikkö'
       x_ideas: '%{numberOfIdeas} ideoita'
     project_folder_moderation_rights_received:
-      cta_view_folder_button: 'Näytä tämä kansio'
-      message_added_as_folderadmin: 'Sinulle on annettu kansionhallintaoikeudet käyttäjän %{organizationName}osallistumisalustalla seuraavaan kansioon:'
+      cta_button: 'Näytä tämä kansio'
+      event_description: 'Sinulle on annettu kansion hallintaoikeudet %{organizationName}:n osallistumisalustalla seuraavaan kansioon:'
       no_projects: 'Ei vielä projekteja'
       preheader: 'Osallistumisalustan %{organizationName} ylläpitäjä teki sinusta juuri seuraavan kansion ylläpitäjän'
       subject: 'Sinusta tuli projektikansion johtaja osallistumisalustalla %{organizationName}'
@@ -371,7 +376,7 @@ fi:
       title_moderate_analyse_input: 'Moderoi ja analysoi syötettä'
       title_manage_folder: 'Muokkaa kansion asetuksia ja luo uusia projekteja.'
       title_what_can_you_do_folderadmin: 'Mitä voit tehdä kansioiden ylläpitäjänä?'
-      title_added_as_folderadmin: 'Sinut on lisätty kansion ylläpitäjäksi'
+      title: 'Sinut on lisätty kansioiden hallinnoijaksi'
       x_projects: '%{numberOfProjects} projekteja'
     project_phase_started:
       cta_button: 'Tutustu tähän uuteen vaiheeseen'
@@ -382,41 +387,43 @@ fi:
       subject: '%{projectName} siirtyi uuteen vaiheeseen'
       preheader: 'Uusi vaihe on aloitettu kohteelle %{projectName}'
     project_phase_upcoming:
-      cta_view_phase: 'Aseta tämä uusi vaihe'
+      cta_button: 'Aseta tämä uusi vaihe käyttöön'
       event_description: 'Projekti ''%{projectName}'' siirtyy pian uuteen vaiheeseen. Varmista, että kaikki on asetettu tähän vaiheeseen: Onko riittävä kuvaus? Siirretäänkö valitut ideat tähän vaiheeseen? Haluatko tiedottaa kansalaisillesi tämän vaiheen yksityiskohdista mukautetun sähköpostikampanjan avulla?'
-      main_header: '%{firstName}, projekti siirtyy pian uuteen vaiheeseen'
+      title: '%{firstName}, projekti siirtyy pian uuteen vaiheeseen'
       subtitle: 'Tietoja ''%{projectName}'''
       new_phase: 'Projekti siirtyy vaiheeseen%{phaseTitle}'
       subject: 'Valmistele kaikki %{projectName}uutta vaihetta varten'
       preheader: 'Uusi vaihe alkaa pian %{projectName}'
     project_published:
       subject: 'Uusi projekti julkaistiin alustalla %{organizationName}'
-      header_title: 'Uusi projekti julkaistiin'
-      header_message: 'Osallistumisalusta %{organizationName} julkaisi juuri seuraavan projektin:'
+      title: 'Uusi projekti julkaistiin'
+      event_description: '%{organizationName} :n osallistumisalusta julkaisi juuri seuraavan projektin:'
       preheader: 'Uusi projekti julkaistiin'
+      cta_button: 'Siirry tähän projektiin'
     project_review_request:
       subject: 'Tarkastuspyyntö: Projekti odottaa hyväksyntää.'
-      header: '%{requesterName} on kutsunut sinut arvostelemaan projektia "%{projectTitle}"'
-      header_message: "Tällä hetkellä projekti on luonnostilassa, eikä se näy käyttäjille. Kun olet tarkistanut ja hyväksynyt sen, valvoja voi julkaise sen."
-      cta_review_project: "Tarkista projekti"
+      title: '%{requesterName} on kutsunut sinut arvostelemaan projektin "%{projectTitle}"'
+      event_description: "Projekti on tällä hetkellä luonnostilassa eikä se ole käyttäjien nähtävissä. Kun olet tarkistanut ja hyväksynyt sen, moderaattori voi julkaista sen."
+      cta_button: "Tarkista projekti"
     project_review_state_change:
       subject: '"%{projectTitle}" on hyväksytty'
-      header: '%{reviewerName} hyväksyi projektin "%{projectTitle}"'
-      header_message: "Projekti on nyt valmis julkaistavaksi. Voit julkaise sen aina, kun olet valmis!"
-      cta_go_to_project: "Siirry projektiasetuksiin"
+      title: '%{reviewerName} hyväksyi projektin "%{projectTitle}"'
+      event_description: "Projekti on nyt valmis julkaistavaksi. Voit julkaista sen milloin tahansa!"
+      cta_button: "Siirry projektin asetuksiin"
     status_change_on_idea_you_follow:
       status_change: 'Tämän syötteen uusi tila on%{status}'
-      header_message: '%{organizationName} päivitti syötteen ''%{input_title}'' tilan digitaalisella osallistumisalustallaan.'
-      header_title: 'Seuraamallasi syötteellä on uusi tila'
+      event_description: '%{organizationName} päivitti syötteen ''%{input_title}'' tilan digitaalisella osallistumisalustallaan.'
+      title: 'Seuraamallasi syötteellä on uusi tila'
       subject: 'Kohteen "%{input_title}" tila on muuttunut'
       preheader: 'Seuraamallasi syötteellä on uusi tila'
+      cta_button: Siirry tähän syötteeseen
     user_digest:
       subject: "Toimintasi osallistumisalustalla %{organizationName}"
       commented: "%{authorFirstName} kommentoi:"
       preheader: "Viikoittainen yleiskatsaus %{organizationName}"
-      title_your_weekly_report: "Ota selvää mitä tapahtui viime viikolla"
-      intro_text: "Tässä on yhteenveto siitä, mitä tapahtui %{organizationName}osallistumisalustalla."
-      cta_go_to_the_platform: "Mene alustalle"
+      title: "Ota selvää, mitä viime viikolla tapahtui"
+      event_description: "Tässä on yhteenveto siitä, mitä %{organizationName}:n osallistumisalustalla tapahtui."
+      cta_button: "Mene laiturille"
       title_no_activity_past_week: "Ei toimintaa kuluneen viikon aikana"
       successful_proposals_title: "Saavutti kynnyksen"
       successful_proposals_text: "Nämä ehdotukset ovat saaneet tarpeeksi tukea siirtyäkseen seuraavaan vaiheeseen! Napsauta ehdotusta saadaksesi lisätietoja siitä, mitä tapahtuu seuraavaksi."
@@ -431,15 +438,15 @@ fi:
       no_unread_notifications: "Sinulla ei ole lukemattomia ilmoituksia. Vieraile alustalla ja anna palautettasi ja luo uusia ilmoituksia!"
       unread_notifications: "Sinulla on lukemattomia ilmoituksia. Vieraile alustalla nähdäksesi mitä tapahtuu!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Siirrä tämä ehdotus seuraaviin vaiheisiin'
-      main_header: 'Ehdotus saavutti äänestyskynnyksen!'
+      cta_button: 'Vie tämä ehdotus seuraaviin vaiheisiin'
+      title: 'Ehdotus saavutti äänikynnyksen!'
       subject: 'Ehdotus saavutti äänestyskynnyksen alustallasi'
       preheader: 'Muista ottaa seuraavat vaiheet'
     welcome:
-      cta_join_platform: 'Tutustu alustaan'
+      cta_button: 'Tutustu alustaan'
       subject: 'Tervetuloa %{organizationName}-alustalle'
-      main_header: Tervetuloa!
-      message_welcome: 'Onnittelut, rekisteröidyit onnistuneesti %{organizationName}osallistumisalustalle. Nyt voit löytää alustan ja saada äänesi kuuluviin. Voit myös lisätä profiilikuvan ja lyhyen kuvauksen kertoaksesi muille, kuka olet.'
+      title: Tervetuloa!
+      event_description: 'Onnittelut, olet rekisteröitynyt onnistuneesti %{organizationName}:n osallistumisalustalle. Voit nyt tutustua alustaan ja saada äänesi kuuluviin. Voit myös lisätä profiilikuvan ja lyhyen kuvauksen kertoaksesi muille kuka olet.'
       preheader: 'Tässä on mitä voit tehdä alustalla %{organizationName}'
     idea_published:
       subject: 'Ideasi on julkaistu'
@@ -475,15 +482,15 @@ fi:
         option: 'Vaihtoehtosi on "%{prescreening_status_title}"'
         proposal: 'Ehdotuksesi on "%{prescreening_status_title}"'
         petition: 'Vetoomuksesi on "%{prescreening_status_title}"'
-      message: '"%{input_title}" näkyy muille, kun se on tarkistettu ja hyväksytty.'
+      event_description: '"%{input_title}" tulee näkyviin muille, kun se on tarkistettu ja hyväksytty.'
       subject: '"%{input_title}" on melkein julkaistu'
       preheader: 'Se on tällä hetkellä paikassa %{prescreening_status_title}'
     voting_basket_submitted:
       subject: '%{organizationName}: Äänestit onnistuneesti'
       preheader: 'Äänestit onnistuneesti %{organizationName}osallistumisalustalla'
-      title_basket_submitted: 'Äänestit onnistuneesti'
+      title: 'Äänestit onnistuneesti'
       event_description: 'Kiitos osallistumisesta. Äänesi on tallennettu. Vieraile %{organizationName} -alustalla nähdäksesi ja hallitaksesi ääniäsi.'
-      cta_see_votes_submitted: 'Katso lähetetyt äänet'
+      cta_button: 'Katso lähetetyt äänet'
       cta_message: 'Napsauta alla olevaa painiketta osallistuaksesi'
     native_survey_not_submitted:
       subject: '%{organizationName}: Melkein perillä! Lähetä vastauksesi'
@@ -495,26 +502,26 @@ fi:
     voting_basket_not_submitted:
       subject: '%{organizationName}: Et antanut ääniäsi'
       preheader: 'Et lähettänyt ääntäsi osallistumisalustalla %{organizationName}'
-      title_basket_not_submitted: 'Et antanut ääniäsi'
+      title: 'Et lähettänyt ääniäsi'
       event_description: 'Valitsit muutaman vaihtoehdon kohteelle %{contextTitle} , mutta et lähettänyt valintaasi.'
-      cta_view_options_and_vote: 'Katso vaihtoehdot ja äänestä'
+      cta_button: 'Katso vaihtoehdot ja äänestä'
       cta_message: 'Napsauta alla olevaa painiketta lähettääksesi valitsemasi vaihtoehdot'
     voting_last_chance:
       subject: '%{organizationName}: Viimeinen mahdollisuus äänestää %{phaseTitle}'
       preheader: 'Viimeinen mahdollisuus äänestää %{phaseTitle} osallistumisalustalla %{organizationName}'
-      title_last_chance: 'Viimeinen mahdollisuus äänestää %{phaseTitle}'
+      title: 'Viimeinen mahdollisuus äänestää %{phaseTitle}'
       body_1: '%{projectTitle} -projektin äänestysvaihe päättyy huomenna keskiyöllä.'
       body_2: 'Aika on loppumassa, ja huomasimme, että et ole vielä äänestänyt! Toimi nyt klikkaamalla alla olevaa painiketta osallistuaksesi.'
       body_3: 'Näin toimimalla saat käyttöösi useita vaihtoehtoja ja sinulla on mahdollisuus antaa mielipiteesi, mikä on ratkaisevan tärkeää tämän projektin tulevaisuudesta päätettäessä.'
-      cta_vote: 'Äänestys'
+      cta_button: 'Äänestää'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} äänestystulokset paljastettiin!'
       preheader: '%{phaseTitle} äänestystulokset paljastettiin %{organizationName}osallistumisalustalla'
-      title_results: '%{phaseTitle} äänestystulokset paljastettiin!'
+      title: '%{phaseTitle} Äänestystulokset julkistettu!'
       body_1: 'Tulokset ovat tulleet!'
       body_2: '%{phaseTitle} äänestyksen tulokset %{organizationName} alustalla on julkaistu!'
       body_3: 'Suosittelemme, että tarkistat tulokset ja pysyt kuulolla tulevista vaiheista.'
-      cta_see_results: 'Katso tulokset alustalta'
+      cta_button: 'Katso tulokset alustalla'
     event_registration_confirmation:
       subject: "Olet mukana! Rekisteröitymisesi kohteelle \"%{eventTitle}\" on vahvistettu"
       preheader: "%{firstName}, kiitos rekisteröitymisestä %{eventTitle}"
@@ -531,18 +538,19 @@ fi:
     voting_phase_started:
       subject: '%{organizationName}: Äänestysvaihe alkoi %{projectName}'
       preheader: 'Äänestysvaihe alkoi %{projectName} osallistumisalustalla %{organizationName}'
+      title: '%{projectName}'
       event_description: 'Projekti "%{projectName}" pyytää sinua äänestämään %{numIdeas} vaihtoehdon välillä:'
       cta_message: 'Klikkaa alla olevaa painiketta osallistuaksesi'
-      cta_vote: 'Mene foorumille äänestämään'
+      cta_button: 'Mene äänestysalustalle äänestämään'
     survey_submitted:
       subject: '%{organizationName}: Kiitos vastauksestasi! 🎉'
       preheader: 'Tässä ovat lähetyksesi tiedot.'
-      main_header: 'Kiitos, että jaoit ajatuksesi aiheesta "%{projectName}"!'
-      your_input_submitted: 'Syötteesi "%{projectName}" on lähetetty onnistuneesti.'
+      title: 'Kiitos ajatustesi jakamisesta aiheesta "%{projectName}"!'
+      event_description: 'Syöte "%{projectName}" on lähetetty onnistuneesti.'
       if_you_would_like_to_review: 'Jos haluat tarkistaa lähetyksesi, voit ladata vastauksesi alta.'
       your_submission_has_id: 'Lähetykselläsi on seuraava yksilöllinen tunniste:'
       you_can_use_this_id: 'Tämän tunnuksen avulla voit ottaa yhteyttä alustan ylläpitäjiin, jos haluat, että lähetyksesi poistetaan.'
-      download_responses: 'Lataa vastauksesi'
+      cta_button: 'Lataa vastauksesi'
     admin_labels:
       recipient_role:
         admins: 'järjestelmänvalvojille'

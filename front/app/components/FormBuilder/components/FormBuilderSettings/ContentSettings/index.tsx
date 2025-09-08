@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 
@@ -15,6 +16,7 @@ import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWi
 import Toggle from 'components/HookForm/Toggle';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 
 import messages from '../../messages';
 import FieldTypeSwitcher from '../FieldTypeSwitcher';
@@ -24,6 +26,8 @@ type ContentSettingsProps = {
 };
 
 const ContentSettings = ({ field }: ContentSettingsProps) => {
+  const { projectId } = useParams();
+
   const locales = useAppConfigurationLocales();
   const { watch } = useFormContext();
   const lockedAttributes = field.constraints?.locks;
@@ -59,6 +63,23 @@ const ContentSettings = ({ field }: ContentSettingsProps) => {
                 onKeyDown={handleKeyDown}
               />
             </SectionField>
+          )}
+          {field.input_type === 'topic_ids' && (
+            <Text>
+              <FormattedMessage
+                {...messages.manageTagsExplanation}
+                values={{
+                  inputTagsLink: (
+                    <Link
+                      to={`/admin/projects/${projectId ?? ''}/settings/tags`}
+                      target="_blank"
+                    >
+                      <FormattedMessage {...messages.inputTagsPage} />
+                    </Link>
+                  ),
+                }}
+              />
+            </Text>
           )}
           <SectionField>
             <QuillMultilocWithLocaleSwitcher

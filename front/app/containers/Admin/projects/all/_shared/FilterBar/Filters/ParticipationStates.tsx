@@ -49,6 +49,7 @@ const ParticipationStates = ({ onClear }: Props) => {
       selected={participationStates}
       options={options}
       title={formatMessage(messages.participationStates)}
+      openedDefaultValue={participationStates.length === 0}
       onChange={(participationStates) => {
         setParam(
           'participation_states',

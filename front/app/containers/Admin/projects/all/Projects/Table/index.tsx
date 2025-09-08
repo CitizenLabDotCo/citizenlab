@@ -24,6 +24,7 @@ import { useIntl } from 'utils/cl-intl';
 import ColHeader from '../../_shared/ColHeader';
 import sharedMessages from '../../_shared/messages';
 import { useParams } from '../../_shared/params';
+import { getParticipationMethods } from '../../_shared/utils';
 
 import EmptyRow from './EmptyRow';
 import messages from './messages';
@@ -33,11 +34,12 @@ const PAGE_SIZE = 10;
 
 const Table = () => {
   const { formatMessage } = useIntl();
-  const { sort, ...params } = useParams();
+  const { sort, participation_methods, ...params } = useParams();
 
   const {
     data,
     isLoading,
+    isFetching,
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
@@ -45,6 +47,7 @@ const Table = () => {
   } = useInfiniteProjectsMiniAdmin(
     {
       ...params,
+      participation_methods: getParticipationMethods(participation_methods),
       sort: sort ?? 'recently_viewed',
     },
     PAGE_SIZE
@@ -83,7 +86,7 @@ const Table = () => {
   const sentinelMessage = getSentinelMessage();
 
   return (
-    <Box position="relative" w="100%" h="100%">
+    <Box position="relative" w="100%" h="100%" minHeight="300px">
       <TableComponent
         border={`1px solid ${colors.grey300}`}
         borderRadius={stylingConsts.borderRadius}
@@ -131,7 +134,7 @@ const Table = () => {
         {sentinelMessage && formatMessage(sentinelMessage)}
       </Box>
 
-      {(isLoading || isFetchingNextPage) && (
+      {isFetchingNextPage && (
         <Box
           w="100%"
           p="4px"
@@ -142,6 +145,25 @@ const Table = () => {
           <Spinner />
         </Box>
       )}
+
+      {isLoading ||
+        (isFetching && !isFetchingNextPage && (
+          <Box
+            position="absolute"
+            left="0"
+            top="0"
+            minHeight="300px"
+            w="100%"
+            h="100%"
+            display="flex"
+            justifyContent="center"
+            pt="200px"
+            bgColor={colors.white}
+            opacity={0.5}
+          >
+            <Spinner />
+          </Box>
+        ))}
     </Box>
   );
 };

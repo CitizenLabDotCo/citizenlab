@@ -5,48 +5,105 @@ require 'rails_helper'
 RSpec.describe EmailCampaigns::ProjectPublishedMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
-    let_it_be(:campaign) { EmailCampaigns::Campaigns::ProjectPublished.create! }
-    let_it_be(:project) { create(:project) }
     let_it_be(:command) do
-      activity = create(:activity, item: project, action: 'published')
-      campaign.generate_commands(
-        activity: activity,
-        recipient: recipient
-      ).first.merge({ recipient: recipient })
+      {
+        recipient: recipient,
+        event_payload: {
+          project_url: 'https://govocal.com/projects/example',
+          project_title_multiloc: { 'en' => 'Example project title' },
+          unfollow_url: 'https://govocal.com/unfollow'
+        }
+      }
     end
 
-    let_it_be(:mailer) { described_class.with(command: command, campaign: campaign) }
-    let_it_be(:mail) { mailer.campaign_mail.deliver_now }
+    let(:campaign) { create(:project_published_campaign) }
+    let(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let(:mail) { mailer.campaign_mail.deliver_now }
+    let(:body) { mail_body(mail) }
 
     before { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
     include_examples 'campaign delivery tracking'
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('A new project was published on')
+      expect(mail.subject).to eq 'A new project was published on the platform of Liege'
+    end
+
+    it 'renders the receiver email' do
+      expect(mail.to).to eq([recipient.email])
     end
 
     it 'renders the sender email' do
       expect(mail.from).to all(end_with('@citizenlab.co'))
     end
 
-    it 'assigns organisation name' do
-      expect(mail.body.encoded).to match(AppConfiguration.instance.settings('core', 'organization_name', 'en'))
+    it 'includes the header' do
+      expect(body).to have_tag('div') do
+        with_tag 'h1' do
+          with_text(/A new project was published/)
+        end
+        with_tag 'p' do
+          with_text(/The participation platform of Liege just published the following project:/)
+        end
+      end
     end
 
-    it 'assigns cta url' do
-      project_url = command.dig(:event_payload, :project_url)
-      expect(project_url).to be_present
-      expect(project_url).to match('http://example.org')
-      expect(mail.body.encoded).to match(project_url)
+    it 'includes the new project box' do
+      expect(body).to have_tag('table') do
+        with_tag 'div' do
+          with_text(/Example project title/)
+        end
+      end
     end
 
-    it 'includes the project title' do
-      expect(mail.body.encoded).to match(project.title_multiloc['en'])
+    it 'includes the CTA' do
+      expect(body).to have_tag('a', with: { href: 'https://govocal.com/projects/example' }) do
+        with_text(/Go to this project/)
+      end
     end
 
     it 'includes the unfollow url' do
-      expect(mail.body.encoded).to match(Frontend::UrlService.new.unfollow_url(Follower.new(user: recipient)))
+      expect(body).to match('https://govocal.com/unfollow')
+    end
+
+    context 'with custom text' do
+      let!(:global_campaign) do
+        create(
+          :project_published_campaign,
+          subject_multiloc: { 'en' => 'Custom Global Subject - {{ organizationName }}' },
+          title_multiloc: { 'en' => 'NEW TITLE FOR {{ projectName }}' },
+          button_text_multiloc: { 'en' => 'CLICK THE GLOBAL BUTTON' }
+        )
+      end
+
+      context 'on a global campaign' do
+        let(:campaign) { global_campaign }
+
+        it 'can customise the subject' do
+          expect(mail.subject).to eq 'Custom Global Subject - Liege'
+        end
+
+        it 'renders the reply to email' do
+          expect(mail.reply_to).to eq [ENV.fetch('DEFAULT_FROM_EMAIL', 'hello@citizenlab.co')]
+        end
+
+        it 'can customize the header' do
+          expect(body).to have_tag('div') do
+            with_tag 'h1' do
+              with_text(/NEW TITLE FOR Example project title/)
+            end
+            with_tag 'p' do
+              with_text(/The participation platform of Liege just published the following project:/)
+            end
+          end
+        end
+
+        it 'includes the CTA' do
+          expect(body).to have_tag('a', with: { href: 'https://govocal.com/projects/example' }) do
+            with_text(/CLICK THE GLOBAL BUTTON/)
+          end
+        end
+      end
     end
   end
 end

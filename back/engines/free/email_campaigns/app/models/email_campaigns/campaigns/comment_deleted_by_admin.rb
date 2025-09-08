@@ -39,6 +39,7 @@ module EmailCampaigns
     include LifecycleStageRestrictable
     include Trackable
     include ContentConfigurable
+    include ContextConfigurable
     allow_lifecycle_stages only: %w[trial active]
 
     recipient_filter :filter_notification_recipient
@@ -66,6 +67,20 @@ module EmailCampaigns
           idea_url: Frontend::UrlService.new.model_to_url(notification.idea, locale: Locale.new(recipient.locale))
         }
       }]
+    end
+
+    def activity_context(activity)
+      return nil unless activity.item.is_a?(::Notification)
+
+      activity.item.idea && TimelineService.new.current_phase(activity.item.idea.project)
+    end
+
+    def self.supported_context_class
+      Phase
+    end
+
+    def self.supports_context?(context)
+      supports_phase_participation_method?(context)
     end
 
     def self.recipient_role_multiloc_key

@@ -1,12 +1,10 @@
 import { ImageSizes, Multiloc, SupportedLocale, UploadFile } from 'typings';
 
 import { TCategory } from 'components/ConsentManager/destinations';
-import { API_PATH } from 'containers/App/constants';
 
 import { Keys } from 'utils/cl-react-query/types';
 
 import appConfigurationKeys from './keys';
-export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
 
 export type AppConfigurationKeys = Keys<typeof appConfigurationKeys>;
 
@@ -35,6 +33,7 @@ export type IAppConfigurationSettingsCore = {
   meta_title?: Multiloc | null;
   meta_description?: Multiloc | null;
   google_search_console_meta_attribute?: string | null;
+  login_helper_text?: Multiloc | null;
   signup_helper_text?: Multiloc | null;
   custom_fields_signup_helper_text?: Multiloc | null;
   color_main: string | null;
@@ -62,20 +61,6 @@ export type IAppConfigurationSettingsCore = {
 };
 
 export type TSeatNumber = number | null | undefined;
-
-export type ProposalsSettings = {
-  allowed: boolean;
-  enabled: boolean;
-  require_review?: boolean;
-  require_cosponsors?: boolean;
-  cosponsors_number?: number;
-  days_limit: number;
-  allow_anonymous_participation?: boolean;
-  eligibility_criteria: Multiloc;
-  posting_tips: Multiloc;
-  threshold_reached_message: Multiloc;
-  reacting_threshold: number;
-};
 
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
@@ -152,6 +137,10 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
   };
   nemlog_in_login?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
+  vienna_citizen_login?: {
     allowed: boolean;
     enabled: boolean;
   };
@@ -276,6 +265,7 @@ export interface IAppConfigurationSettings {
   project_planning_calendar?: AppConfigurationFeature;
   common_ground?: AppConfigurationFeature;
   customised_automated_emails?: AppConfigurationFeature;
+  customised_automated_context_emails?: AppConfigurationFeature;
   project_importer?: AppConfigurationFeature;
 }
 

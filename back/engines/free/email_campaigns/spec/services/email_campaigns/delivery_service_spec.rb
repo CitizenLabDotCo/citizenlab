@@ -76,6 +76,14 @@ describe EmailCampaigns::DeliveryService do
         })
       end
     end
+
+    it 'doesn\'t raise errors while processing all types of campaigns' do
+      service.campaign_classes.each do |klaz|
+        factory_type = :"#{klaz.name.demodulize.underscore}_campaign"
+        create(factory_type)
+      end
+      expect { service.send_on_schedule(Time.now) }.not_to raise_error
+    end
   end
 
   describe 'send_on_activity' do

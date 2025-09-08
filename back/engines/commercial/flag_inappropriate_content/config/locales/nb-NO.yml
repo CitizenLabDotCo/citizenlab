@@ -6,11 +6,11 @@ nb:
       "inappropriate_content_flagged": Upassende innhold flagget - administratorer
     inappropriate_content_flagged:
       subject: 'Et innlegg har blitt flagget for gjennomgang'
-      header_title: 'Et innlegg har blitt flagget for gjennomgang'
+      title: 'Et innlegg har blitt flagget for gjennomgang'
       author_wrote: '%{authorName} skrev:'
       preheader: 'Et innlegg på plattformen din har blitt flagget for gjennomgang'
       automatically_flagged: >
         Dette innlegget ble automatisk oppdaget som potensielt upassende innhold. Vi sender deg dette varselet slik at du kan gå gjennom innlegget i samsvar med dine egne retningslinjer for moderering.
       how_to_review: >
         Hvis innlegget ikke inneholder upassende innhold, kan du fjerne advarselen via plattformen din under fanen Aktivitet i administratorpanelet.
-      cta_review: 'Anmeldelse'
+      cta_button: 'Anmeldelse'

@@ -46,6 +46,7 @@ import Published, { publishedTitle } from './Published';
 import Selection, { selectionTitle } from './Selection';
 import Spotlight, { spotlightTitle } from './Spotlight';
 import TextMultiloc, { textMultilocTitle } from './TextMultiloc';
+import VideoEmbed, { videoEmbedTitle } from './VideoEmbed';
 
 export const WIDGETS = {
   // Shared widgets
@@ -71,6 +72,7 @@ export const WIDGETS = {
   Selection,
   Spotlight,
   TextMultiloc,
+  VideoEmbed,
 
   // RENAMED (TODO rename in migration)
   Highlight: CallToAction,
@@ -106,6 +108,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   Selection: selectionTitle,
   Spotlight: spotlightTitle,
   TextMultiloc: textMultilocTitle,
+  VideoEmbed: videoEmbedTitle,
 
   // RENAMED
   Highlight: callToActionTitle,
@@ -142,6 +145,7 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'Published',
   'Selection',
   'Spotlight',
+  'VideoEmbed',
 
   // RENAMED
   'Projects',

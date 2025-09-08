@@ -131,6 +131,12 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
+  describe '#supported_email_campaigns' do
+    it 'returns campaigns supported for native surveys' do
+      expect(participation_method.supported_email_campaigns).to match_array %w[native_survey_not_submitted project_phase_started survey_submitted]
+    end
+  end
+
   describe '#supports_serializing?' do
     it 'returns true for native survey attributes' do
       %i[native_survey_title_multiloc native_survey_button_multiloc].each do |attribute|

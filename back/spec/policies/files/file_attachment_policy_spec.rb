@@ -6,18 +6,18 @@ RSpec.describe Files::FileAttachmentPolicy do
   describe 'policy' do
     subject(:policy) { described_class.new(user, file_attachment) }
 
-    let(:user) { create(:user) }
-    let(:file_attachment) { create(:file_attachment) }
-    let(:attachable_policy) { instance_double(ApplicationPolicy) }
-
-    before do
-      allow(policy) # rubocop:disable RSpec/SubjectStub
-        .to receive(:policy_for)
-        .with(file_attachment.attachable)
-        .and_return(attachable_policy)
-    end
-
     shared_examples 'delegates to attachable policy' do |method, delegated_method|
+      let(:user) { create(:user) }
+      let(:file_attachment) { create(:file_attachment) }
+      let(:attachable_policy) { instance_double(ApplicationPolicy) }
+
+      before do
+        allow(policy) # rubocop:disable RSpec/SubjectStub
+          .to receive(:policy_for)
+          .with(file_attachment.attachable)
+          .and_return(attachable_policy)
+      end
+
       describe "##{method}?" do
         it "permits when the attachable policy allows #{delegated_method}" do
           expect(attachable_policy).to receive(:"#{delegated_method}?").and_return(true)
@@ -32,9 +32,71 @@ RSpec.describe Files::FileAttachmentPolicy do
     end
 
     it_behaves_like 'delegates to attachable policy', :show, :show
-    it_behaves_like 'delegates to attachable policy', :create, :update
     it_behaves_like 'delegates to attachable policy', :update, :update
     it_behaves_like 'delegates to attachable policy', :destroy, :update
+
+    describe '#create?' do
+      context 'when admin' do
+        let_it_be(:user) { create(:admin) }
+
+        context 'when the attachable is an idea' do
+          context 'and the file is new' do
+            let(:file_attachment) { build(:file_attachment, attachable: create(:idea), file: build(:file)) }
+            let(:user) { create(:admin) }
+
+            it { is_expected.to permit(:create) }
+          end
+
+          context 'and the file is not new' do
+            let(:file_attachment) { build(:file_attachment, attachable: create(:idea), file: create(:file)) }
+
+            it { is_expected.not_to permit(:create) }
+          end
+        end
+
+        context 'when the attachable is not an idea' do
+          let(:file_attachment) { build(:file_attachment) }
+
+          it { is_expected.to permit(:create) }
+        end
+      end
+
+      context 'when normal user' do
+        let_it_be(:user) { create(:user) }
+
+        context 'when the attachable is an idea of the user' do
+          let(:idea) { create(:idea, author: user) }
+
+          context 'and the file is new' do
+            let(:file_attachment) { build(:file_attachment, attachable: idea, file: build(:file)) }
+
+            it { is_expected.to permit(:create) }
+          end
+
+          context 'and the file is not new' do
+            let(:file_attachment) { build(:file_attachment, attachable: idea, file: create(:file)) }
+
+            it { is_expected.not_to permit(:create) }
+          end
+        end
+
+        context 'when the attachable is not a idea of another user' do
+          let_it_be(:idea) { create(:idea) }
+
+          context 'and the file is new' do
+            let(:file_attachment) { build(:file_attachment, attachable: idea, file: build(:file)) }
+
+            it { is_expected.not_to permit(:create) }
+          end
+        end
+
+        context 'when the attachable is not an idea' do
+          let(:file_attachment) { build(:file_attachment) }
+
+          it { is_expected.not_to permit(:create) }
+        end
+      end
+    end
   end
 
   describe 'scope' do

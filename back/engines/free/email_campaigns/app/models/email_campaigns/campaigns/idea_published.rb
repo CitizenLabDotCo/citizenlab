@@ -39,8 +39,9 @@ module EmailCampaigns
     include RecipientConfigurable
     include Disableable
     include Trackable
-    include LifecycleStageRestrictable
     include ContentConfigurable
+    include ContextConfigurable
+    include LifecycleStageRestrictable
     allow_lifecycle_stages only: %w[trial active]
 
     recipient_filter :filter_recipient
@@ -55,6 +56,12 @@ module EmailCampaigns
 
     def filter_recipient(users_scope, activity:, time: nil)
       users_scope.where(id: activity.item.author_id)
+    end
+
+    def activity_context(activity)
+      return nil unless activity.item.is_a?(::Idea)
+
+      activity.item && TimelineService.new.current_phase(activity.item.project)
     end
 
     def self.recipient_role_multiloc_key
@@ -73,6 +80,14 @@ module EmailCampaigns
       'email_campaigns.admin_labels.trigger.input_is_published'
     end
 
+    def self.supported_context_class
+      Phase
+    end
+
+    def self.supports_context?(context)
+      supports_phase_participation_method?(context)
+    end
+
     def generate_commands(recipient:, activity:)
       idea = activity.item
       return [] if !idea.participation_method_on_creation.supports_public_visibility?
@@ -89,7 +104,8 @@ module EmailCampaigns
               versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
             }
           end,
-          input_term: idea.input_term
+          input_term: idea.input_term,
+          project_title_multiloc: idea.project.title_multiloc
         }
       }]
     end

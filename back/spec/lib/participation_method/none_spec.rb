@@ -57,6 +57,12 @@ RSpec.describe ParticipationMethod::None do
     end
   end
 
+  describe '#supported_email_campaigns' do
+    it 'returns campaigns supported for none' do
+      expect(participation_method.supported_email_campaigns).to match_array %w[project_phase_started]
+    end
+  end
+
   describe '#supports_serializing?' do
     it 'returns false for all attributes' do
       %i[

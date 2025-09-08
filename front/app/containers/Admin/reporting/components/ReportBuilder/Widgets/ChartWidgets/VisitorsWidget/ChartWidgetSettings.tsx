@@ -2,7 +2,11 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import { TitleInput, DateRangeInput } from '../_shared/ChartWidgetSettings';
+import {
+  TitleInput,
+  DateRangeInput,
+  ProjectInput,
+} from '../_shared/ChartWidgetSettings';
 import {
   ComparisonToggle,
   HideStatisticsToggle,
@@ -14,6 +18,7 @@ const ChartWidgetSettings = () => {
     <Box>
       <TitleInput />
       <DateRangeInput resetComparePeriod />
+      <ProjectInput />
       <ResolutionInput />
       <ComparisonToggle />
       <HideStatisticsToggle />

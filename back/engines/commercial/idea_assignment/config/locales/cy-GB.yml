@@ -6,8 +6,8 @@ cy:
       "idea_assigned_to_you": Neilltuo syniad - gweinyddwyr a rheolwyr prosiect
     idea_assigned_to_you:
       by_author: 'gan %{authorName}'
-      cta_reply_to: 'Rhowch adborth i %{authorName}'
-      event_description_idea: 'Mae syniad wedi''i neilltuo i chi. Rhowch adborth trwy ysgrifennu diweddariad swyddogol neu trwy newid ei statws.'
-      main_header: '%{firstName}, mae gennych aseiniad newydd'
+      cta_button: 'Rhoi adborth i %{authorName}'
+      event_description: 'Mae mewnbwn wedi''i aseinio i chi. Rhowch adborth drwy ysgrifennu diweddariad swyddogol neu drwy newid ei statws.'
+      title: '%{firstName}, aseiniwyd mewnbwn i chi'
       subject: 'Mae gennych aseiniad ar y platfform o %{organizationName}'
       preheader_idea: 'Mae''r syniad o %{authorName} wedi''i neilltuo i chi'

@@ -6,11 +6,11 @@ pl:
       "inappropriate_content_flagged": Nieodpowiednie treści zostały oznaczone - administratorzy
     inappropriate_content_flagged:
       subject: 'Post na Twojej platformie został oznaczony do przeglądu'
-      header_title: 'Post na Twojej platformie został oznaczony do przeglądu'
+      title: 'Post został oznaczony do sprawdzenia'
       author_wrote: '%{authorName} napisał:'
       preheader: 'Post na Twojej platformie został oznaczony do sprawdzenia'
       automatically_flagged: >
         Ten post został automatycznie wykryty jako potencjalnie zawierający nieodpowiednie treści. Wysyłamy Ci to powiadomienie, abyś mógł sprawdzić post zgodnie z własnymi wytycznymi dotyczącymi moderacji.
       how_to_review: >
         Jeśli post nie zawiera nieodpowiednich treści, możesz usunąć ostrzeżenie za pośrednictwem swojej platformy w zakładce Aktywność w panelu administracyjnym.
-      cta_review: 'Recenzja'
+      cta_button: 'Recenzja'

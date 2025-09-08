@@ -27,6 +27,7 @@ export type Props = {
   isLoading?: boolean;
   searchValue?: string;
   searchPlaceholder?: string;
+  openedDefaultValue?: boolean;
   onChange: (values: string[]) => void;
   onSearch?: (searchTerm: string) => void;
   onClear?: () => void;
@@ -44,6 +45,7 @@ const MultiSelect = ({
   isLoading = false,
   searchValue,
   searchPlaceholder,
+  openedDefaultValue = false,
   onChange,
   onSearch,
   onClear,
@@ -53,7 +55,7 @@ const MultiSelect = ({
   dataCy,
   ...boxProps
 }: Props) => {
-  const [opened, setOpened] = useState(false);
+  const [opened, setOpened] = useState(openedDefaultValue);
   const [hover, setHover] = useState<'trigger' | 'clear'>();
   const [focused, setFocused] = useState(false);
 

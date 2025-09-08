@@ -23,7 +23,10 @@ RSpec.describe EmailCampaigns::Campaigns::ProjectReviewRequest do
       expect(commands).to be_an(Array)
       expect(commands.size).to eq(1)
       expect(commands[0][:event_payload]).to eq(
-        project_review_id: notification.project_review_id
+        admin_project_url: "http://example.org/admin/projects/#{notification.project_review.project_id}",
+        project_description_multiloc: notification.project_review.project.description_preview_multiloc,
+        project_title_multiloc: notification.project_review.project.title_multiloc,
+        requester_name: notification.project_review.requester.first_name
       )
     end
   end

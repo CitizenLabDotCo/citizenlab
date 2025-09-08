@@ -38,6 +38,7 @@ module EmailCampaigns
     include RecipientConfigurable
     include Disableable
     include Trackable
+    include ContentConfigurable
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: %w[trial active]
 
@@ -62,7 +63,7 @@ module EmailCampaigns
           project_id: notification.project.id,
           project_title_multiloc: notification.project.title_multiloc,
           project_ideas_count: notification.project.ideas_count,
-          project_url: Frontend::UrlService.new.model_to_url(notification.project, locale: Locale.new(recipient.locale))
+          project_url: Frontend::UrlService.new.admin_project_url(notification.project_id)
         }
       }]
     end

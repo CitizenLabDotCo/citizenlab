@@ -100,7 +100,6 @@ const CauseForm = ({ onSubmit, defaultValues, imageUrl }: PageFormProps) => {
           <SectionField>
             <QuillMultilocWithLocaleSwitcher
               name="description_multiloc"
-              noImages
               noVideos
               limitedTextFormatting
               label={formatMessage(messages.causeDescriptionLabel)}

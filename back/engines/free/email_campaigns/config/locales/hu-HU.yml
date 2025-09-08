@@ -95,6 +95,7 @@ hu:
       project_title: 'Példaprojekt'
       project_description_preview: 'Ez egy példa egy fázistartalomra, amelyet e-mailek tartalmának előnézetére használnak. Ez nem valódi tartalom.'
       phase_title: 'Példa fázis'
+      folder_title: 'Példa mappa'
       comment_body: 'Ez egy példa a hozzászólásra, amelyet e-mailek tartalmának előnézetére használnak. Ez nem valós tartalom.'
       comment_deleted_reason: 'A példaként említett hozzászólásodat nem megfelelőnek ítélték.'
       idea_title: 'Példaötlet'
@@ -103,6 +104,9 @@ hu:
       event_address1: '10 Example utca, Exampleton, Exampleshire'
       event_address2: '3a szoba, emelet'
       proposal_title: 'Példaajánlat'
+      input_status_title: 'Példa állapot'
+      input_status_description: 'Példa egy bemenet állapotára (pl. elfogadva, elutasítva, megvalósítva...)'
+      official_feedback_body: 'Példa hivatalos visszajelzésre'
     footer:
       "link_privacy_policy": "Adatvédelmi szabályzat"
       "link_terms_conditions": "Általános Szerződési Feltételek"
@@ -333,10 +337,11 @@ hu:
       title: 'Új belső hozzászólás a következőhöz: ''%{post}'''
       preheader: 'Új belső megjegyzés a következőhöz: ''%{post}'''
     official_feedback_on_idea_you_follow:
-      header_message: 'A %{feedback_author_name} frissítést adott a következőhöz: ''%{input_title}''.'
-      header_title: 'Frissítés érkezett a következőhöz: "%{input_title}"'
+      event_description: '%{feedback_author_name} frissítést adott a(z) ''%{input_title}'' témában.'
+      title: 'Frissítés érkezett a(z) "%{input_title}" témában'
       subject: 'A hivatalos visszajelzés a következő helyen jelent meg: "%{input_title}"'
       preheader: 'Frissítés érkezett az Ön által követett bemenethez'
+      cta_button: Ugrás erre a bemenetre
     mention_in_official_feedback:
       cta_button: 'Válasz %{organizationName}-nak'
       event_description: '%{organizationName} megemlített téged a „%{post}” ötlettel kapcsolatos visszajelzésében. Kattintson az alábbi linkre, hogy belépjen a beszélgetésbe %{organizationName}-vel'
@@ -344,8 +349,8 @@ hu:
       subject: '%{organizationName} megemlítette Önt visszajelzésében'
       preheader: '%{commentAuthor} megemlítette Önt visszajelzésében'
     project_moderation_rights_received:
-      cta_manage_project: 'A projekt kezelése'
-      message_you_became_moderator: 'A %{organizationName} részvételi platformjának adminisztrátora éppen a következő projekt projektvezetőjévé tette:'
+      cta_button: 'A projekt kezelése'
+      event_description: 'A %{organizationName} részvételi platformjának egyik adminisztrátora kinevezett téged a következő projekt projektmenedzserévé:'
       no_ideas: 'Még nincsenek ötletek'
       preheader: 'A %{organizationName} részvételi platformjának adminisztrátora éppen a következő projekt projektvezetőjévé tett téged'
       subject: 'Ön projektmenedzser lett a %{organizationName}platformon'
@@ -356,11 +361,11 @@ hu:
       title_moderate_analyse_input: 'Moderálja és elemezze a bemenetet'
       title_share_project_information: 'Adja meg a projekt adatait'
       title_what_can_you_do_moderator: 'Mit tehet projektmenedzserként?'
-      title_you_became_moderator: 'Projektmenedzser lettél'
+      title: 'Projektmenedzser lettél'
       x_ideas: '%{numberOfIdeas} ötletek'
     project_folder_moderation_rights_received:
-      cta_view_folder_button: 'Tekintse meg ezt a mappát'
-      message_added_as_folderadmin: 'Mappakezelői jogokat kapott a %{organizationName}részvételi platformján a következő mappához:'
+      cta_button: 'Mappa megtekintése'
+      event_description: 'Mappakezelői jogokat kaptál %{organizationName}részvételi platformján a következő mappához:'
       no_projects: 'Még nincsenek projektek'
       preheader: 'A %{organizationName} részvételi platformjának adminisztrátora éppen a következő mappa kezelőjévé tett'
       subject: 'Projektmappakezelő lettél a %{organizationName}részvételi platformján'
@@ -371,7 +376,7 @@ hu:
       title_moderate_analyse_input: 'Moderálja és elemezze a bemenetet'
       title_manage_folder: 'Kezelje a mappabeállításokat és hozzon létre új projekteket.'
       title_what_can_you_do_folderadmin: 'Mit tehet mappakezelőként?'
-      title_added_as_folderadmin: 'Mappakezelőként adták hozzá'
+      title: 'Hozzáadtak mappakezelőként'
       x_projects: '%{numberOfProjects} projektek'
     project_phase_started:
       cta_button: 'Fedezd fel ezt az új fázist'
@@ -382,41 +387,43 @@ hu:
       subject: '%{projectName} új szakaszba lépett'
       preheader: 'Új szakasz kezdődött a %{projectName}számára'
     project_phase_upcoming:
-      cta_view_phase: 'Állítsa be ezt az új szakaszt'
+      cta_button: 'Állítsa be ezt az új fázist'
       event_description: 'A ''%{projectName}'' projekt hamarosan új szakaszba lép. Győződjön meg arról, hogy minden be van állítva ehhez a fázishoz: Van megfelelő leírás? A kiválasztott ötletek átkerülnek ebbe a fázisba? Egyéni e-mail kampányon keresztül szeretné tájékoztatni polgárait ennek a szakasznak a sajátosságairól?'
-      main_header: '%{firstName}, egy projekt hamarosan új szakaszba lép'
+      title: '%{firstName}, egy projekt hamarosan új fázisba lép'
       subtitle: 'Körülbelül ''%{projectName}'''
       new_phase: 'A projekt a ''%{phaseTitle}'' fázisba lép'
       subject: 'Mindent beállíthat a %{projectName}új szakaszához'
       preheader: 'Hamarosan új szakasz kezdődik a %{projectName}számára'
     project_published:
       subject: 'Egy új projektet tettek közzé a %{organizationName}platformon'
-      header_title: 'Egy új projektet tettek közzé'
-      header_message: 'A %{organizationName} részvételi platformja nemrég tette közzé a következő projektet:'
+      title: 'Megjelent egy új projekt'
+      event_description: 'A %{organizationName} részvételi platformja nemrég tette közzé a következő projektet:'
       preheader: 'Egy új projektet tettek közzé'
+      cta_button: 'Ugrás erre a projektre'
     project_review_request:
       subject: 'Felülvizsgálati kérelem: Egy projekt jóváhagyásra vár.'
-      header: '%{requesterName} meghívta Önt a "%{projectTitle}" projekt áttekintésére'
-      header_message: "Jelenleg a projekt vázlat módban van, és a felhasználók nem láthatják. Miután áttekintette és jóváhagyta, a moderátor közzéteheti."
-      cta_review_project: "Tekintse át a projektet"
+      title: '%{requesterName} meghívott téged a(z) "%{projectTitle}" projekt értékelésére'
+      event_description: "Jelenleg a projekt vázlat módban van, és a felhasználók nem láthatják. Miután áttekintetted és jóváhagytad, a moderátor közzéteheti."
+      cta_button: "Tekintse át a projektet"
     project_review_state_change:
       subject: '"%{projectTitle}" jóváhagyva'
-      header: '%{reviewerName} jóváhagyta a "%{projectTitle}" projektet'
-      header_message: "A projekt készen áll az éles indításra. Bármikor közzéteheti, amikor készen áll!"
-      cta_go_to_project: "Lépjen a projektbeállításokhoz"
+      title: '%{reviewerName} jóváhagyta a(z) "%{projectTitle}" projektet'
+      event_description: "A projekt most már készen áll az élő közzétételre. Bármikor közzéteheted!"
+      cta_button: "Ugrás a projektbeállításokhoz"
     status_change_on_idea_you_follow:
       status_change: 'Ennek a bemenetnek az új állapota ''%{status}'''
-      header_message: 'A %{organizationName} frissítette a ''%{input_title}'' bemenet állapotát a digitális részvételi platformjukon.'
-      header_title: 'A követett bemenetnek új állapota van'
+      event_description: '%{organizationName} frissítette a(z) „%{input_title}” bemenet állapotát a digitális részvételi platformján.'
+      title: 'Egy általad követett bemenet új állapotot kapott'
       subject: 'A "%{input_title}" állapota megváltozott'
       preheader: 'A követett bemenetnek új állapota van'
+      cta_button: Ugrás erre a bemenetre
     user_digest:
       subject: "Ezen a héten a %{organizationName}részvételi platformján"
       commented: "%{authorFirstName} hozzászólt:"
       preheader: "A %{organizationName}heti áttekintése"
-      title_your_weekly_report: "Fedezze fel, mi történt a múlt héten"
-      intro_text: "Íme egy összefoglaló a %{organizationName}részvételi platformján történtekről."
-      cta_go_to_the_platform: "Menj a platformra"
+      title: "Fedezd fel, mi történt a múlt héten"
+      event_description: "Íme egy összefoglaló arról, hogy mi történt a %{organizationName}részvételi platformján."
+      cta_button: "Menj a peronra"
       title_no_activity_past_week: "Nem volt tevékenység az elmúlt héten"
       successful_proposals_title: "Elérte a küszöböt"
       successful_proposals_text: "Az elmúlt héten ezek elegendő támogatást kaptak ahhoz, hogy továbbléphessenek a következő szakaszba."
@@ -431,15 +438,15 @@ hu:
       no_unread_notifications: "Nincsenek olvasatlan értesítései."
       unread_notifications: "Olvasatlan értesítései vannak. Látogassa meg a platformot, és fedezze fel, mi történik!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Tegye ezt a javaslatot a következő lépésekhez'
-      main_header: 'Egy javaslat elérte a szavazati küszöböt!'
+      cta_button: 'Vigye ezt a javaslatot a következő lépésekbe'
+      title: 'Egy javaslat elérte a szavazati küszöböt!'
       subject: '"%{input_title}" elérte a szavazati küszöböt'
       preheader: 'Mindenképpen tegye meg a következő lépéseket'
     welcome:
-      cta_join_platform: 'Fedezze fel a platformot'
+      cta_button: 'Fedezze fel a platformot'
       subject: 'Üdvözöljük a %{organizationName}platformján'
-      main_header: Üdvözöljük!
-      message_welcome: 'Gratulálunk, sikeresen regisztráltál a %{organizationName}részvételi platformjára. Most már felfedezheti a platformot, és hallathatja hangját. Profilképet és rövid leírást is hozzáadhat, hogy elmondhassa másoknak, ki vagy.'
+      title: Üdvözöljük!
+      event_description: 'Gratulálunk, sikeresen regisztráltál a %{organizationName}részvételi platformján. Most már felfedezheted a platformot és hallathatod a hangod. Hozzáadhatsz egy profilképet és egy rövid leírást is, hogy másoknak is elmondd, ki vagy.'
       preheader: 'Íme, mit tehet a %{organizationName}platformon'
     idea_published:
       subject: 'Az ötleted megjelent'
@@ -475,15 +482,15 @@ hu:
         option: 'Az Ön beállítása a következőben található: "%{prescreening_status_title}"'
         proposal: 'Az Ön ajánlata a következőben található: "%{prescreening_status_title}"'
         petition: 'Az Ön petíciója itt található: "%{prescreening_status_title}"'
-      message: 'A(z) "%{input_title}" a felülvizsgálat és jóváhagyás után mások számára látható lesz.'
+      event_description: 'A(z) „%{input_title}” a felülvizsgálat és jóváhagyás után mások számára is láthatóvá válik.'
       subject: '"%{input_title}" majdnem megjelent'
       preheader: 'Jelenleg %{prescreening_status_title}helyen van'
     voting_basket_submitted:
       subject: '%{organizationName}: Sikeresen szavaztál'
       preheader: 'Sikeresen szavaztál a %{organizationName}részvételi platformján'
-      title_basket_submitted: 'Sikeresen szavaztál'
+      title: 'Sikeresen szavazott'
       event_description: 'Köszönjük a részvételt. A szavazatait rögzítettük. Látogassa meg a %{organizationName} platformot szavazatainak megtekintéséhez és kezeléséhez.'
-      cta_see_votes_submitted: 'Lásd a leadott szavazatokat'
+      cta_button: 'Tekintse meg a leadott szavazatokat'
       cta_message: 'A részvételhez kattintson az alábbi gombra'
     native_survey_not_submitted:
       subject: '%{organizationName}: Majdnem kész! Nyújtsa be válaszait'
@@ -495,26 +502,26 @@ hu:
     voting_basket_not_submitted:
       subject: '%{organizationName}: Ön nem adta le szavazatát'
       preheader: 'Nem adtad le szavazatodat a %{organizationName}részvételi platformján'
-      title_basket_not_submitted: 'Nem adtad le a szavazataidat'
+      title: 'Nem adtad le a szavazataidat'
       event_description: 'Kiválasztott néhány lehetőséget a %{contextTitle} számára, de nem küldte el a választását.'
-      cta_view_options_and_vote: 'Tekintse meg a lehetőségeket és szavazzon'
+      cta_button: 'Opciók megtekintése és szavazás'
       cta_message: 'Kattintson az alábbi gombra a kiválasztott opciók elküldéséhez'
     voting_last_chance:
       subject: '%{organizationName}: Utolsó lehetőség, hogy %{phaseTitle}-ra szavazz'
       preheader: 'Utolsó lehetőség szavazni %{phaseTitle} -ra a %{organizationName}részvételi platformján'
-      title_last_chance: 'Utolsó lehetőség szavazni %{phaseTitle}-ra'
+      title: 'Utolsó esély szavazni %{phaseTitle}-ra'
       body_1: 'A %{projectTitle} projekt szavazási szakasza holnap, éjfélkor véget ér.'
       body_2: 'Fogy az idő, és észrevettük, hogy még nem adtad le a szavazatodat! Cselekedjen most, egyszerűen kattintson az alábbi gombra a részvételhez.'
       body_3: 'Ezáltal számos lehetőséghez juthat hozzá, és megadhatja véleményét, ami kulcsfontosságú a projekt jövőjének eldöntésében.'
-      cta_vote: 'Szavazás'
+      cta_button: 'Szavazás'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} szavazás eredménye kiderült!'
       preheader: '%{phaseTitle} szavazási eredmények derültek ki a %{organizationName}részvételi platformján'
-      title_results: '%{phaseTitle} szavazás eredménye kiderült!'
+      title: '%{phaseTitle} Szavazási eredmények nyilvánosságra hozva!'
       body_1: 'Megvannak az eredmények!'
       body_2: 'Megjelent a %{phaseTitle} szavazás eredménye a %{organizationName} platformon!'
       body_3: 'Javasoljuk, hogy tekintse át az eredményeket, és kövesse a következő lépésekkel kapcsolatos további frissítéseket.'
-      cta_see_results: 'Lásd az eredményeket a platformon'
+      cta_button: 'Eredmények megtekintése a platformon'
     event_registration_confirmation:
       subject: "Benne vagy! Regisztrációját a(z) \"%{eventTitle}\" számára megerősítették"
       preheader: "%{firstName}, köszönjük, hogy regisztráltál a %{eventTitle}számára"
@@ -531,18 +538,19 @@ hu:
     voting_phase_started:
       subject: '%{organizationName}: A szavazási szakasz elkezdődött a %{projectName}számára'
       preheader: 'A %{projectName} szavazási szakasz elkezdődött a %{organizationName}részvételi platformján'
+      title: '%{projectName}'
       event_description: 'A "%{projectName}" projekt arra kér, hogy szavazzon a %{numIdeas} opciók között:'
       cta_message: 'A részvételhez kattintson az alábbi gombra'
-      cta_vote: 'Menjen a platformra szavazni'
+      cta_button: 'Menj a platformra szavazni'
     survey_submitted:
       subject: '%{organizationName}: Köszönöm válaszát! 🎉'
       preheader: 'Íme a beadvány részletei.'
-      main_header: 'Köszönjük, hogy megosztotta gondolatait a következővel kapcsolatban: "%{projectName}"!'
-      your_input_submitted: 'A "%{projectName}" beírása sikeresen elküldve.'
+      title: 'Köszönöm, hogy megosztottad a gondolataidat a(z) "%{projectName}" témában!'
+      event_description: 'A(z) „%{projectName}” értékre vonatkozó beviteli értékét sikeresen elküldtük.'
       if_you_would_like_to_review: 'Ha szeretné felülvizsgálni beadványát, lentebb letöltheti válaszait.'
       your_submission_has_id: 'Beadványának a következő egyedi azonosítója van:'
       you_can_use_this_id: 'Ezzel az azonosítóval kapcsolatba léphet a platform adminisztrátoraival abban az esetben, ha el szeretné távolítani a beküldött anyagot.'
-      download_responses: 'Töltse le válaszait'
+      cta_button: 'Válaszok letöltése'
     admin_labels:
       recipient_role:
         admins: 'Az adminoknak'

@@ -5,24 +5,7 @@ module EmailCampaigns
     include EmailCampaigns::MailerPreview
 
     def campaign_mail
-      campaign = EmailCampaigns::Campaigns::OfficialFeedbackOnIdeaYouFollow.first
-
-      # TODO: generate commands with campaign#generate_commands method
-      command = {
-        recipient: recipient_user,
-        event_payload: {
-          official_feedback_author_multiloc: { 'en' => 'City of Plattsburgh Official' },
-          official_feedback_body_multiloc: { 'en' => 'Thank you for taking the time to comment on our parks. We value your feedback and will be looking at improving the dog park in the same way the one at the city beach has been improved.' },
-          official_feedback_url: 'https://demo.stg.govocal.com',
-          idea_published_at: Time.zone.today.prev_week.iso8601,
-          idea_title_multiloc: { 'en' => 'Fence around the park' },
-          idea_body_multiloc: { 'en' => 'Build a fence around the park and give the key to me, so I can have the park for me alone.' },
-          idea_author_name: 'Julia Langer',
-          input_term: 'idea'
-        }
-      }
-
-      campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
+      preview_campaign_mail(EmailCampaigns::Campaigns::OfficialFeedbackOnIdeaYouFollow)
     end
   end
 end

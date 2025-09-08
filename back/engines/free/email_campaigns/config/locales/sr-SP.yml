@@ -95,6 +95,7 @@ sr-Cyrl:
       project_title: 'Example project'
       project_description_preview: 'This is some example phase content used for previewing the content of emails. This is not real content.'
       phase_title: 'Example phase'
+      folder_title: 'Example folder'
       comment_body: 'This is an example comment used for previewing the content of emails. This is not real content.'
       comment_deleted_reason: 'Your example comment was considered inappropriate.'
       idea_title: 'Example Idea'
@@ -103,6 +104,9 @@ sr-Cyrl:
       event_address1: '10 Example Street, Exampleton, Exampleshire'
       event_address2: 'Room 3a, Upstairs'
       proposal_title: 'Example Proposal'
+      input_status_title: 'Example Status'
+      input_status_description: 'An example of a status for an input (e.g. accepted, rejected, implemented...)'
+      official_feedback_body: 'Example official feedback'
     footer:
       "link_privacy_policy": "Правила приватности"
       "link_terms_conditions": "Услови коришћења"
@@ -333,10 +337,11 @@ sr-Cyrl:
       title: 'New internal comment on ''%{post}'''
       preheader: '''%{post}'' има нови интерни коментар'
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
-      header_title: 'There''s an update on "%{input_title}"'
+      event_description: '%{feedback_author_name} gave an update on ''%{input_title}''.'
+      title: 'There''s an update on "%{input_title}"'
       subject: 'Official feedback was posted on "%{input_title}"'
       preheader: 'There''s an update on an input you follow'
+      cta_button: Go to this input
     mention_in_official_feedback:
       cta_button: 'Reply to %{organizationName}'
       event_description: '%{organizationName} вас је поменуо у својим повратним информацијама о идеји ''%{post}''. Кликните на везу испод да бисте ушли у разговор са %{organizationName}'
@@ -344,8 +349,8 @@ sr-Cyrl:
       subject: '%{organizationName} вас је поменуо у својим повратним информацијама'
       preheader: '%{commentAuthor} вас је поменуо у повратним информацијама'
     project_moderation_rights_received:
-      cta_manage_project: 'Управљајте овим пројектом'
-      message_you_became_moderator: 'Администратор платформе за учешће %{organizationName} управо вас је поставио за менаџера пројекта следећег пројекта:'
+      cta_button: 'Manage this project'
+      event_description: 'An adminstrator of the participation platform of %{organizationName} just made you project manager of the following project:'
       no_ideas: 'Још нема идеја'
       preheader: 'Администратор платформе за учешће %{organizationName} управо вас је поставио за менаџера пројекта следећег пројекта'
       subject: 'Постали сте менаџер пројекта на платформи %{organizationName}'
@@ -356,11 +361,11 @@ sr-Cyrl:
       title_moderate_analyse_input: 'Модерирајте и анализирајте унос'
       title_share_project_information: 'Обезбедите информације о пројекту'
       title_what_can_you_do_moderator: 'Шта можете да урадите као менаџер пројекта?'
-      title_you_became_moderator: 'Постали сте менаџер пројекта'
+      title: 'You became a project manager'
       x_ideas: '%{numberOfIdeas} идеја'
     project_folder_moderation_rights_received:
-      cta_view_folder_button: 'Погледајте овај фолдер'
-      message_added_as_folderadmin: 'Добили сте права менаџера фолдера на платформи за учешће %{organizationName}за следећу фасциклу:'
+      cta_button: 'View this folder'
+      event_description: 'You''ve been given folder manager rights on %{organizationName}''s participation platform for the following folder:'
       no_projects: 'Још нема пројеката'
       preheader: 'Администратор платформе за учешће %{organizationName} управо вас је поставио за менаџера следеће фасцикле'
       subject: 'Постали сте менаџер фасцикли пројекта на платформи за учешће %{organizationName}'
@@ -371,7 +376,7 @@ sr-Cyrl:
       title_moderate_analyse_input: 'Модерирајте и анализирајте унос'
       title_manage_folder: 'Управљајте поставкама фасцикле и креирајте нове пројекте.'
       title_what_can_you_do_folderadmin: 'Шта можете да урадите као менаџер фасцикли?'
-      title_added_as_folderadmin: 'Додати сте као менаџер фолдера'
+      title: 'You''ve been added as a folder manager'
       x_projects: '%{numberOfProjects} пројеката'
     project_phase_started:
       cta_button: 'Discover this new phase'
@@ -382,41 +387,43 @@ sr-Cyrl:
       subject: '%{projectName} је ушло у нову фазу'
       preheader: 'Нова фаза је започета за %{projectName}'
     project_phase_upcoming:
-      cta_view_phase: 'Поставите ову нову фазу'
+      cta_button: 'Set this new phase up'
       event_description: 'Пројекат ''%{projectName}'' ускоро улази у нову фазу. Уверите се да је све подешено за ову фазу: Да ли постоји адекватан опис? Да ли се одабране идеје преносе у ову фазу? Да ли желите да обавестите своје грађане о специфичностима ове фазе путем прилагођене емаил кампање?'
-      main_header: '%{firstName}, пројекат ће ускоро ући у нову фазу'
+      title: '%{firstName}, a project will enter a new phase soon'
       subtitle: 'О ''%{projectName}'''
       new_phase: 'Пројекат ће ући у фазу ''%{phaseTitle}'''
       subject: 'Подесите све за нову фазу %{projectName}'
       preheader: 'Нова фаза ће ускоро почети за %{projectName}'
     project_published:
       subject: 'Нови пројекат је објављен на платформи %{organizationName}'
-      header_title: 'Објављен је нови пројекат'
-      header_message: 'Платформа за учешће %{organizationName} управо је објавила следећи пројекат:'
+      title: 'A new project was published'
+      event_description: 'The participation platform of %{organizationName} just published the following project:'
       preheader: 'Објављен је нови пројекат'
+      cta_button: 'Go to this project'
     project_review_request:
       subject: 'Review request: A project is waiting for approval.'
-      header: '%{requesterName} has invited you to review the project "%{projectTitle}"'
-      header_message: "Currently, the project is in draft mode and isn't visible to users. Once you've reviewed and approved it, the moderator will be able to publish it."
-      cta_review_project: "Review the project"
+      title: '%{requesterName} has invited you to review the project "%{projectTitle}"'
+      event_description: "Currently, the project is in draft mode and isn't visible to users. Once you've reviewed and approved it, the moderator will be able to publish it."
+      cta_button: "Review the project"
     project_review_state_change:
       subject: '"%{projectTitle}" has been approved'
-      header: '%{reviewerName} approved the project "%{projectTitle}"'
-      header_message: "The project is now ready to go live. You can publish it whenever you're ready!"
-      cta_go_to_project: "Go to project settings"
+      title: '%{reviewerName} approved the project "%{projectTitle}"'
+      event_description: "The project is now ready to go live. You can publish it whenever you're ready!"
+      cta_button: "Go to project settings"
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
-      header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
-      header_title: 'An input you follow has a new status'
+      event_description: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
+      title: 'An input you follow has a new status'
       subject: 'The status of "%{input_title}" has changed'
       preheader: 'An input you follow has a new status'
+      cta_button: Go to this input
     user_digest:
       subject: "Ваша активност на платформи за учешће од %{organizationName}"
       commented: "%{authorFirstName} је коментарисало:"
       preheader: "Недељни преглед %{organizationName}"
-      title_your_weekly_report: "Откријте шта се догодило прошле недеље"
-      intro_text: "Ево резимеа онога што се догодило на платформи за учешће %{organizationName}."
-      cta_go_to_the_platform: "Иди на платформу"
+      title: "Discover what happened last week"
+      event_description: "Here's a summary of what happened on the participation platform of %{organizationName}."
+      cta_button: "Go to the platform"
       title_no_activity_past_week: "Нема активности у протеклој недељи"
       successful_proposals_title: "Reached the threshold"
       successful_proposals_text: "Ови предлози су добили довољно подршке да пређу у следећу фазу! Кликните на предлог да сазнате више о томе шта се даље дешава."
@@ -431,15 +438,15 @@ sr-Cyrl:
       no_unread_notifications: "Немате ниједно непрочитано обавештење. Посетите платформу да дате свој допринос и генеришете нова обавештења!"
       unread_notifications: "Имате непрочитана обавештења. Посетите платформу да бисте открили шта се дешава!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Пренесите ову иницијативу на следеће кораке'
-      main_header: 'Иницијатива је стигла до гласачког цензуса!'
+      cta_button: 'Take this proposal to the next steps'
+      title: 'A proposal reached the voting threshold!'
       subject: 'Иницијатива је достигла праг за гласање на вашој платформи'
       preheader: 'Обавезно предузмите следеће кораке'
     welcome:
-      cta_join_platform: 'Откријте платформу'
+      cta_button: 'Discover the platform'
       subject: 'Добродошли на платформу %{organizationName}'
-      main_header: Добродошли!
-      message_welcome: 'Честитамо, успешно сте се пријавили на платформу за учешће %{organizationName}. Сада можете да откријете платформу и да чујете свој глас. Такође можете додати слику профила и кратак опис да бисте другима рекли ко сте.'
+      title: Welcome!
+      event_description: 'Congratulations, you successfully signed up on the participation platform of %{organizationName}. You can now discover the platform and make your voice heard. You can also add a profile picture and a short description to tell others who you are.'
       preheader: 'Ево шта можете да урадите на платформи %{organizationName}'
     idea_published:
       subject: 'Your idea has been published'
@@ -475,15 +482,15 @@ sr-Cyrl:
         option: 'Your option is in "%{prescreening_status_title}"'
         proposal: 'Your proposal is in "%{prescreening_status_title}"'
         petition: 'Your petition is in "%{prescreening_status_title}"'
-      message: '"%{input_title}" will become visible to others once it has been reviewed and approved.'
+      event_description: '"%{input_title}" will become visible to others once it has been reviewed and approved.'
       subject: '"%{input_title}" is almost published'
       preheader: 'It''s currently in %{prescreening_status_title}'
     voting_basket_submitted:
       subject: '%{organizationName}: Успешно сте гласали'
       preheader: 'Успешно сте гласали на платформи за учешће %{organizationName}'
-      title_basket_submitted: 'Успешно сте гласали'
+      title: 'You voted successfully'
       event_description: 'Хвала на учешћу. Ваши гласови су забележени. Посетите платформу %{organizationName} да бисте видели и управљали својим гласовима.'
-      cta_see_votes_submitted: 'Погледајте достављене гласове'
+      cta_button: 'See votes submitted'
       cta_message: 'Кликните на дугме испод да бисте учествовали'
     native_survey_not_submitted:
       subject: '%{organizationName}: Almost there! Submit your answers'
@@ -495,26 +502,26 @@ sr-Cyrl:
     voting_basket_not_submitted:
       subject: '%{organizationName}: Нисте послали своје гласове'
       preheader: 'Нисте послали своје гласове на платформи за учешће %{organizationName}'
-      title_basket_not_submitted: 'Нисте предали своје гласове'
+      title: 'You didn''t submit your votes'
       event_description: 'Изабрали сте неколико опција за %{contextTitle} , али нисте послали свој избор.'
-      cta_view_options_and_vote: 'Погледајте опције и гласајте'
+      cta_button: 'View options and vote'
       cta_message: 'Кликните на дугме испод да бисте послали изабране опције'
     voting_last_chance:
       subject: '%{organizationName}: Последња прилика да гласате за %{phaseTitle}'
       preheader: 'Последња прилика да гласате за %{phaseTitle} на платформи за учешће од %{organizationName}'
-      title_last_chance: 'Последња прилика да гласате за %{phaseTitle}'
+      title: 'Last chance to vote for %{phaseTitle}'
       body_1: 'Фаза гласања за пројекат %{projectTitle} завршава се сутра, у поноћ.'
       body_2: 'Време истиче, а приметили смо да још нисте дали свој глас! Делујте сада једноставним кликом на дугме испод да бисте учествовали.'
       body_3: 'На тај начин ћете добити приступ низу опција и имати прилику да дате свој допринос, што је кључно за одлучивање о будућности овог пројекта.'
-      cta_vote: 'Гласајте'
+      cta_button: 'Vote'
     voting_results:
       subject: 'Откривени резултати гласања %{organizationName}: %{phaseTitle}!'
       preheader: '%{phaseTitle} резултата гласања откривено је на платформи за учешће од %{organizationName}'
-      title_results: 'Откривено %{phaseTitle} резултата гласања!'
+      title: '%{phaseTitle} vote results revealed!'
       body_1: 'Резултати су у!'
       body_2: 'Објављени су резултати %{phaseTitle} гласања на платформи %{organizationName}!'
       body_3: 'Препоручујемо вам да прегледате резултате и останите са нама за даља ажурирања о наредним корацима.'
-      cta_see_results: 'Погледајте резултате на платформи'
+      cta_button: 'See results in the platform'
     event_registration_confirmation:
       subject: "Ти си у! Ваша регистрација за \"%{eventTitle}\" је потврђена"
       preheader: "%{firstName}, thanks for registering for %{eventTitle}"
@@ -531,18 +538,19 @@ sr-Cyrl:
     voting_phase_started:
       subject: '%{organizationName}: Фаза гласања је почела за %{projectName}'
       preheader: 'Фаза гласања је почела за %{projectName} на платформи за учешће од %{organizationName}'
+      title: '%{projectName}'
       event_description: 'Пројекат "%{projectName}" тражи од вас да гласате између %{numIdeas} опције:'
       cta_message: 'Кликните на дугме испод да бисте учествовали'
-      cta_vote: 'Идите на платформу да гласате'
+      cta_button: 'Go to the platform to vote'
     survey_submitted:
       subject: '%{organizationName}: Thank you for your response! 🎉'
       preheader: 'Here are the details of your submission.'
-      main_header: 'Thank you for sharing your thoughts on "%{projectName}"!'
-      your_input_submitted: 'Your input for "%{projectName}" has been submitted successfully.'
+      title: 'Thank you for sharing your thoughts on "%{projectName}"!'
+      event_description: 'Your input for "%{projectName}" has been submitted successfully.'
       if_you_would_like_to_review: 'If you would like to review your submission, you can download your responses below.'
       your_submission_has_id: 'Your submission has the following unique identifier:'
       you_can_use_this_id: 'You can use this identifier to contact the platform administrators in case you want your submission to be removed.'
-      download_responses: 'Download your responses'
+      cta_button: 'Download your responses'
     admin_labels:
       recipient_role:
         admins: 'За администраторе'

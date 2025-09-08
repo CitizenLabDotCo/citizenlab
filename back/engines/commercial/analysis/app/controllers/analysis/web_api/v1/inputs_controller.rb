@@ -13,7 +13,7 @@ module Analysis
           @inputs = InputsFinder.new(@analysis, filters).execute
           filtered_count = @inputs.count
           @inputs = @inputs.order(published_at: :asc)
-          @inputs = @inputs.includes(:author, :idea_files)
+          @inputs = @inputs.includes(:author)
           @inputs = paginate @inputs
 
           render json: linked_json(
@@ -24,7 +24,7 @@ module Analysis
               view_private_attributes: view_private_attributes?,
               **jsonapi_serializer_params
             },
-            include: %i[author idea_files],
+            include: %i[author],
             meta: {
               filtered_count: filtered_count
             }
