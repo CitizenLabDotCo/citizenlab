@@ -49,10 +49,7 @@ export function useSyncFiles() {
 
       // Delete any file attachments that were removed
       const fileAttachmentsToRemovePromises = fileAttachmentsToRemove
-        .filter(
-          (fileAttachment) =>
-            !fileAttachment.relationships.file.data.id.startsWith('TEMP-')
-        )
+        .filter((fileAttachment) => !fileAttachment.id.startsWith('TEMP-'))
         .map((fileAttachment) => deleteFileAttachment(fileAttachment.id));
 
       // Update the ordering of any file attachments that were reordered

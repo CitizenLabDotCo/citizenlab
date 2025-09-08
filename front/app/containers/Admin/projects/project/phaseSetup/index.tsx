@@ -436,6 +436,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
               fileAttachments={inStatePhaseFileAttachments}
               enableDragAndDrop
               apiErrors={errors}
+              maxSizeMb={10}
             />
           </SectionField>
 
