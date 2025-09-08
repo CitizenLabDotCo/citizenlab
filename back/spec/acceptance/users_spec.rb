@@ -649,6 +649,67 @@ resource 'Users' do
           expect(returned_user_ids).not_to include(non_participant.id)
         end
 
+        describe 'Security tests for project filtering' do
+          before do
+            @project = create(:project)
+            @other_project = create(:project) 
+            @project_manager = create(:project_moderator, projects: [@project])
+            @normal_user = create(:user)
+            @participant1 = create(:user)
+            @participant2 = create(:user)
+            
+            # Create participation data
+            create(:idea, project: @project, author: @participant1)
+            create(:idea, project: @other_project, author: @participant2)
+            
+            # Mock ParticipantsService for both projects
+            allow_any_instance_of(ParticipantsService).to receive(:project_participants)
+              .with(@project)
+              .and_return(User.where(id: [@participant1.id]))
+            allow_any_instance_of(ParticipantsService).to receive(:project_participants)
+              .with(@other_project)
+              .and_return(User.where(id: [@participant2.id]))
+          end
+
+          context 'as normal user' do
+            before do
+              header 'Authorization', "Bearer #{Knock::AuthToken.new(payload: @normal_user.to_token_payload).token}"
+            end
+
+            example 'Normal user cannot list users from any project', document: false do
+              do_request(project: @project.id)
+              expect(status).to eq 403
+            end
+          end
+
+          context 'as project manager accessing other project' do
+            before do
+              header 'Authorization', "Bearer #{Knock::AuthToken.new(payload: @project_manager.to_token_payload).token}"
+            end
+
+            example 'Project manager can request other project but gets no results due to policy scope', document: false do
+              do_request(project: @other_project.id)
+              expect(status).to eq 200
+              json_response = json_parse(response_body)
+              # Policy scope filters out users from projects they don't moderate
+              expect(json_response[:data]).to be_empty
+            end
+          end
+
+          context 'as project manager accessing their project' do
+            before do
+              header 'Authorization', "Bearer #{Knock::AuthToken.new(payload: @project_manager.to_token_payload).token}"
+            end
+
+            example 'Project manager can list users from their project', document: false do
+              do_request(project: @project.id)
+              expect(status).to eq 200
+              json_response = json_parse(response_body)
+              expect(json_response[:data].pluck(:id)).to match_array [@participant1.id]
+            end
+          end
+        end
+
         describe 'Not moderator filters' do
           before do
             @user                       = create(:user)
@@ -816,6 +877,99 @@ resource 'Users' do
             expect(status).to eq 200
             xlsx_hash = XlsxService.new.xlsx_to_hash_array RubyXL::Parser.parse_buffer(response_body).stream
             expect(xlsx_hash.pluck('id')).to match_array [@participant1.id, @participant2.id]
+          end
+        end
+
+        describe 'as project manager' do
+          before do
+            @project = create(:project)
+            @project_manager = create(:project_moderator, projects: [@project])
+            @participant1 = create(:user)
+            @participant2 = create(:user)
+
+            # Create participation data
+            create(:idea, project: @project, author: @participant1)
+            create(:idea, project: @project, author: @participant2)
+
+            # Mock ParticipantsService to return project participants
+            allow_any_instance_of(ParticipantsService).to receive(:project_participants)
+              .with(@project)
+              .and_return(User.where(id: [@participant1.id, @participant2.id]))
+
+            token = Knock::AuthToken.new(payload: @project_manager.to_token_payload).token
+            header 'Authorization', "Bearer #{token}"
+          end
+
+          let(:project) { @project.id }
+
+          example 'Project manager can export users from their project', document: false do
+            do_request
+            expect(status).to eq 200
+            xlsx_hash = XlsxService.new.xlsx_to_hash_array RubyXL::Parser.parse_buffer(response_body).stream
+            expect(xlsx_hash.pluck('id')).to match_array [@participant1.id, @participant2.id]
+          end
+        end
+
+        describe 'security tests' do
+          before do
+            @project = create(:project)
+            @other_project = create(:project)
+            @project_manager = create(:project_moderator, projects: [@project])
+            @normal_user = create(:user)
+            @participant1 = create(:user)
+            @participant2 = create(:user)
+            
+            # Create participation data for both projects
+            create(:idea, project: @project, author: @participant1)
+            create(:idea, project: @other_project, author: @participant2)
+            
+            # Mock ParticipantsService for both projects
+            allow_any_instance_of(ParticipantsService).to receive(:project_participants)
+              .with(@project)
+              .and_return(User.where(id: [@participant1.id]))
+            allow_any_instance_of(ParticipantsService).to receive(:project_participants)
+              .with(@other_project)
+              .and_return(User.where(id: [@participant2.id]))
+          end
+
+          context 'as normal user' do
+            before do
+              token = Knock::AuthToken.new(payload: @normal_user.to_token_payload).token
+              header 'Authorization', "Bearer #{token}"
+            end
+
+            let(:project) { @project.id }
+
+            example 'Normal user cannot export users from any project', document: false do
+              do_request
+              expect(status).to eq 403
+            end
+          end
+
+          context 'as project manager accessing other project' do
+            before do
+              token = Knock::AuthToken.new(payload: @project_manager.to_token_payload).token
+              header 'Authorization', "Bearer #{token}"
+            end
+
+            let(:project) { @other_project.id }
+
+            example 'Project manager cannot export users from projects they do not moderate', document: false do
+              do_request
+              expect(status).to eq 403
+            end
+          end
+
+          context 'without project parameter (general export)' do
+            before do
+              token = Knock::AuthToken.new(payload: @project_manager.to_token_payload).token
+              header 'Authorization', "Bearer #{token}"
+            end
+
+            example 'Project manager cannot export all users without project filter', document: false do
+              do_request
+              expect(status).to eq 403
+            end
           end
         end
 
