@@ -33,7 +33,7 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import { timeAgo } from 'utils/dateUtils';
 import eventEmitter from 'utils/eventEmitter';
-import { isAdmin, isRegularUser } from 'utils/permissions/roles';
+import { isAdmin, isRegularUser, isModerator } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
 
 import events from './events';
@@ -104,6 +104,7 @@ const UserTableRow = ({
   const userInRowHasRegistered =
     userInRow.attributes.invite_status !== 'pending';
   const userInRowIsCurrentUser = userInRow.id === authUser.id;
+  const authUserIsAdmin = isAdmin({ data: authUser });
 
   const [showBlockUserModal, setShowBlockUserModal] = useState(false);
   const [showUnblockUserModal, setShowUnblockUserModal] = useState(false);
@@ -251,6 +252,21 @@ const UserTableRow = ({
     icon: 'delete' as const,
   };
 
+  const getActions = () => {
+    if (userInRowHasRegistered) {
+      return authUserIsAdmin
+        ? [
+            showProfileAction,
+            ...getSeatChangeActions(),
+            deleteUserAction,
+            ...userBlockingRelatedActions,
+          ]
+        : [showProfileAction]; // Project/folder managers can only see profile
+    }
+
+    return authUserIsAdmin ? [deleteUserAction] : []; // Project/folder managers cannot delete anyone
+  };
+
   /*
   ===========
   Actions end
@@ -325,16 +341,7 @@ const UserTableRow = ({
           <MoreActionsMenu
             showLabel={false}
             ref={moreActionsButtonRef}
-            actions={
-              userInRowHasRegistered
-                ? [
-                    showProfileAction,
-                    ...getSeatChangeActions(),
-                    deleteUserAction,
-                    ...userBlockingRelatedActions,
-                  ]
-                : [deleteUserAction]
-            }
+            actions={getActions()}
           />
         </Td>
         <BlockUser
