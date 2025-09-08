@@ -309,6 +309,7 @@ module MultiTenancy
                   name: 'clave_unica',
                   client_id: ENV.fetch('DEFAULT_CLAVE_UNICA_CLIENT_ID', 'fake id'),
                   client_secret: ENV.fetch('DEFAULT_CLAVE_UNICA_CLIENT_SECRET', 'fake secret'),
+                  enabled_for_verified_actions: true
                 },
                 {
                   name: 'bogus'
@@ -344,12 +345,13 @@ module MultiTenancy
                   client_id: ENV.fetch('DEFAULT_CRIIPTO_CLIENT_ID', 'fake id'),
                   client_secret: ENV.fetch('DEFAULT_CRIIPTO_CLIENT_SECRET', 'fake secret'),
                   identity_source: 'DK MitID',
-                  ui_method_name: 'MitID (Criipto)'
+                  ui_method_name: 'MitID (Criipto)',
+                  enabled_for_verified_actions: true
                 },
                 {
                   name: 'id_austria',
-                  client_id: ENV.fetch('DEFAULT_ID_AUSTRIA_CLIENT_ID', 'fake id'),
-                  client_secret: ENV.fetch('DEFAULT_ID_AUSTRIA_CLIENT_SECRET', 'fake secret'),
+                  client_id: ENV.fetch('DEFAULT_ID_IDAUSTRIA_CLIENT_ID', 'fake id'),
+                  client_secret: ENV.fetch('DEFAULT_ID_IDAUSTRIA_CLIENT_SECRET', 'fake secret'),
                   ui_method_name: 'ID Austria',
                   enabled_for_verified_actions: true
                 },
