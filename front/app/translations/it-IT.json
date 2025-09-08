@@ -825,6 +825,7 @@
   "app.components.formBuilder.good": "Buono",
   "app.components.formBuilder.helmetTitle": "Costruttore di moduli",
   "app.components.formBuilder.imageFileUpload": "Caricamento dell'immagine",
+  "app.components.formBuilder.inputImages": "Immagini",
   "app.components.formBuilder.inputTagManager": "Pagina dei tag di input",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Logica non valida",
   "app.components.formBuilder.labels2": "Etichette (facoltative)",
