@@ -46,19 +46,31 @@ module IdFranceconnect
       # TODO: add discovery endpoint
       if version == 'v2'
         env['omniauth.strategy'].options.merge!(
-          scope: %w[openid] + configuration.settings('franceconnect_login', 'scope'),
-
+          # NOTE: Cannot use auto discovery as .well-known/openid-configuration is not on the root of the domain
+          # https://fcp-low.sbx.dev-franceconnect.fr/api/v2/.well-known/openid-configuration
           # get configuration from /.well-known/openid-configuration
           # TODO: JS - This failed why?
-          discovery: true,
+          # discovery: true,
+
+          scope: %w[openid] + configuration.settings('franceconnect_login', 'scope'),
           response_type: :code,
+          state: true, # required by France connect
+          nonce: true, # required by France connect
+          issuer: issuer, # the integration env is now using 'https'
+          client_auth_method: 'Custom', # France connect does not use BASIC authentication
           acr_values: 'eidas1',
-          issuer: issuer,
+          client_signing_alg: :HS256, # hashing function of France Connect
           client_options: {
-            identifier: config[:client_id],
-            secret: config[:client_secret],
-            host: config[:domain],
-            redirect_uri: "#{configuration.base_backend_uri}/auth/criipto/callback"
+            identifier: configuration.settings('franceconnect_login', 'identifier'),
+            secret: configuration.settings('franceconnect_login', 'secret'),
+            scheme: 'https',
+            host: host,
+            port: 443,
+            authorization_endpoint: "/api/v2/authorize",
+            token_endpoint: "/api/v2/token",
+            userinfo_endpoint: "/api/v2/userinfo",
+            jwks_uri: "/api/v2/jwks",
+            redirect_uri: "#{configuration.base_backend_uri}/auth/franceconnect/callback"
           }
         )
       else
@@ -78,9 +90,9 @@ module IdFranceconnect
             host: host,
             port: 443,
             redirect_uri: redirect_uri(configuration, env),
-            authorization_endpoint: "/api/#{version}/authorize",
-            token_endpoint: "/api/#{version}/token",
-            userinfo_endpoint: "/api/#{version}/userinfo",
+            authorization_endpoint: "/api/v1/authorize",
+            token_endpoint: "/api/v1/token",
+            userinfo_endpoint: "/api/v1/userinfo",
           }
         )
       end
@@ -149,7 +161,8 @@ module IdFranceconnect
         },
         integration: {
           v1: 'fcp.integ01.dev-franceconnect.fr',
-          v2: 'fcp-low.integ01.dev-franceconnect.fr'
+          # v2: 'fcp-low.integ01.dev-franceconnect.fr'
+        v2: 'fcp-low.sbx.dev-franceconnect.fr'
         }
       }
       urls[env.to_sym][version.to_sym]
