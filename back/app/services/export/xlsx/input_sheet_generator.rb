@@ -50,15 +50,12 @@ module Export
       end
 
       def title_multiloc_report_fields
-        platform_locales.map do |locale|
-          title_for_locale = column_header_for('title')
+        locales = platform_locales
+        title_for_locale = column_header_for('title')
 
-          ComputedFieldForReport.new(
-            "#{title_for_locale} (#{locale.to_s})", # Column header like "Mi Título (es)"
-            ->(input) {
-              "#{multiloc_service.t(input.title_multiloc, locale: locale)} (#{locale.to_s})"
-            }
-          )
+        locales.map do |locale|
+          column_header = locales.size > 1 ? "#{title_for_locale} (#{locale})" : title_for_locale
+          ComputedFieldForReport.new(column_header, ->(input) { multiloc_service.t(input.title_multiloc, locale: locale) })
         end
       end
 
@@ -166,19 +163,22 @@ module Export
       def input_report_fields
         [input_id_report_field].tap do |input_fields|
           fields_in_form.each do |field|
+            puts field.code
             next if field.code == 'author_id' # Never included, because the user fields include it
 
             if field.code == 'location_description'
               input_fields << latitude_report_field
               input_fields << longitude_report_field
             end
+
             if field.input_type == 'matrix_linear_scale'
               field.matrix_statements.each do |statement|
                 input_fields << matrix_statement_report_field(statement)
               end
               next
             end
-            input_fields << Export::CustomFieldForExport.new(field, @value_visitor)
+
+            input_fields.concat(title_multiloc_report_fields) if field.code == 'title_multiloc'
             input_fields << Export::CustomFieldForExport.new(field.other_option_text_field, @value_visitor) if field.other_option_text_field
             input_fields << Export::CustomFieldForExport.new(field.follow_up_text_field, @value_visitor) if field.follow_up_text_field
           end
@@ -231,13 +231,7 @@ module Export
       end
 
       def all_report_fields
-        @all_report_fields ||= [
-          *title_multiloc_report_fields, # Add the new fields here
-          *input_report_fields,
-          *author_report_fields,
-          *meta_report_fields,
-          *user_report_fields
-        ]
+        @all_report_fields ||= input_report_fields + author_report_fields + meta_report_fields + user_report_fields
       end
 
       def all_column_headers
