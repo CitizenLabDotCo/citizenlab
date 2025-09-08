@@ -726,6 +726,16 @@ Style/HashSyntax:
     - 'spec/acceptance/verification/verification_methods_spec.rb'
     - 'spec/services/permissions/permissions_custom_fields_service_spec.rb'
 
+# Offense count: 8
+Style/MultilineBlockChain:
+  Exclude:
+    - 'app/services/custom_field_service.rb'
+    - 'app/services/profanity_service.rb'
+    - 'app/services/user_reduce_service.rb'
+    - 'engines/free/email_campaigns/spec/acceptance/consents_spec.rb'
+    - 'lib/tasks/tenant_template_csv_to_yml.rake'
+    - 'spec/services/profanity_service_spec.rb'
+
 # Offense count: 127
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: EnforcedStyle.

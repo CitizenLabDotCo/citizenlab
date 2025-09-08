@@ -167,15 +167,6 @@ class CustomFieldService
   end
 
   def pages(fields)
-    # result = []
-    # fields.each do |field|
-    #   if field.page?
-    #     result << [field]
-    #   else
-    #     result.last << field
-    #   end
-    # end
-    # result
     fields.chunk_while { |_, field| !field.page? }
   end
 
