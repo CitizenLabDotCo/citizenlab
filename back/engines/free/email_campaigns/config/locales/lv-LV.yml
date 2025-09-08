@@ -95,6 +95,7 @@ lv:
       project_title: 'Projekta piemērs'
       project_description_preview: 'Šis ir daži fāzes satura piemēri, ko izmanto e-pasta vēstuļu satura priekšskatīšanai. Tas nav īsts saturs.'
       phase_title: 'Piemērs fāze'
+      folder_title: 'Piemērs mape'
       comment_body: 'Šis ir komentāra piemērs, ko izmanto e-pasta vēstuļu satura priekšskatīšanai. Tas nav īsts saturs.'
       comment_deleted_reason: 'Jūsu komentārs par piemēru tika uzskatīts par nepiemērotu.'
       idea_title: 'Piemērs Ideja'
@@ -103,6 +104,9 @@ lv:
       event_address1: '10 Example Street, Exampleton, Exampleshire'
       event_address2: '3.a telpa, augšstāvā'
       proposal_title: 'Priekšlikuma piemērs'
+      input_status_title: 'Piemērs Statuss'
+      input_status_description: 'Ievades statusa piemērs (piemēram, pieņemts, noraidīts, īstenots...)'
+      official_feedback_body: 'Piemērs oficiālai atsauksmei'
     footer:
       "link_privacy_policy": "Privātuma politika"
       "link_terms_conditions": "Noteikumi un nosacījumi"
@@ -333,10 +337,11 @@ lv:
       title: 'Jauns iekšējais komentārs par "%{post}'
       preheader: '''%{post}'' ir jauns iekšējais komentārs'
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} sniedza atjauninātu informāciju par "%{input_title}".'
-      header_title: 'Ir atjauninājums par "%{input_title}"'
+      event_description: '%{feedback_author_name} sniedza atjauninātu informāciju par "%{input_title}".'
+      title: 'Ir atjauninājums par "%{input_title}"'
       subject: 'Official feedback was posted on "%{input_title}"'
       preheader: 'There''s an update on an input you follow'
+      cta_button: Dodieties uz šo ievades
     mention_in_official_feedback:
       cta_button: 'Atbildēt %{organizationName}'
       event_description: '%{organizationName} pieminēja jūs atsauksmēs par ideju ''%{post}''. Noklikšķiniet uz zemāk redzamās saites, lai iesaistītos sarunā ar %{organizationName}'
@@ -344,8 +349,8 @@ lv:
       subject: '%{organizationName} pieminēja jūs savā atsauksmē'
       preheader: '%{commentAuthor} pieminēja jūs atsauksmē'
     project_moderation_rights_received:
-      cta_manage_project: 'Šī projekta pārvaldība'
-      message_you_became_moderator: '%{organizationName} līdzdalības platformas administrators tikko iecēla jūs par šā projekta vadītāju:'
+      cta_button: 'Šī projekta pārvaldība'
+      event_description: 'Līdzdalības platformas %{organizationName} administrators tikko iecēla jūs par šāda projekta vadītāju:'
       no_ideas: 'Vēl nav ideju'
       preheader: '%{organizationName} līdzdalības platformas administrators tikko iecēla jūs par šā projekta vadītāju'
       subject: 'Jūs kļuvāt par projektu vadītāju %{organizationName} platformā.'
@@ -356,11 +361,11 @@ lv:
       title_moderate_analyse_input: 'Moderēt un analizēt ievadītos datus'
       title_share_project_information: 'Sniegt informāciju par projektu'
       title_what_can_you_do_moderator: 'Ko jūs varat darīt kā projektu vadītājs?'
-      title_you_became_moderator: 'Jūs kļuvāt par projektu vadītāju'
+      title: 'Jūs kļuvāt par projektu vadītāju'
       x_ideas: '%{numberOfIdeas} idejas'
     project_folder_moderation_rights_received:
-      cta_view_folder_button: 'Skatīt šo mapi'
-      message_added_as_folderadmin: 'Jums ir piešķirtas mapju pārvaldnieka tiesības %{organizationName} līdzdalības platformā attiecībā uz šādu mapi:'
+      cta_button: 'Apskatīt šo mapi'
+      event_description: 'Jums ir piešķirtas mapju pārvaldnieka tiesības %{organizationName}''s līdzdalības platformā attiecībā uz šādu mapi:'
       no_projects: 'Projektu vēl nav'
       preheader: '%{organizationName} līdzdalības platformas administrators tikko padarīja jūs par šādas mapes pārvaldnieku'
       subject: 'Jūs kļuvāt par projekta mapes pārvaldnieku %{organizationName} līdzdalības platformā.'
@@ -371,7 +376,7 @@ lv:
       title_moderate_analyse_input: 'Moderēt un analizēt ievadītos datus'
       title_manage_folder: 'Pārvaldiet mapes iestatījumus un veidojiet jaunus projektus.'
       title_what_can_you_do_folderadmin: 'Ko jūs varat darīt kā mapju pārvaldnieks?'
-      title_added_as_folderadmin: 'Jūs esat pievienots kā mapju pārvaldnieks'
+      title: 'Jūs esat pievienots kā mapju pārvaldnieks'
       x_projects: '%{numberOfProjects} projekti'
     project_phase_started:
       cta_button: 'Atklājiet šo jauno posmu'
@@ -382,41 +387,43 @@ lv:
       subject: '%{projectName} ir sācies jauns posms'
       preheader: 'Projektam ''%{projectName}'' ir sācies jauns posms.'
     project_phase_upcoming:
-      cta_view_phase: 'Iestatiet šo jauno posmu'
+      cta_button: 'Iestatiet šo jauno posmu'
       event_description: 'Projektam ''%{projectName}'' drīzumā sāksies jauns posms. Pārliecinieties, ka viss ir sagatavots šim posmam: Vai ir atbilstošs apraksts? Vai atlasītās idejas ir pārnestas uz šo posmu? Vai vēlaties informēt iedzīvotājus par šī posma specifiku, izmantojot pielāgotu e-pasta kampaņu?'
-      main_header: '%{firstName}, projektam drīzumā sāksies jauns posms'
+      title: '%{firstName}, drīzumā sāksies jauns projekta posms'
       subtitle: 'Par ''%{projectName}'''
       new_phase: 'Projektam sāksies ''%{phaseTitle}'' posms.'
       subject: 'Sagatavojiet visu %{projectName} jaunajam posmam'
       preheader: 'Drīz sāksies %{projectName} jauns posms'
     project_published:
       subject: 'Platformā %{organizationName}tika publicēts jauns projekts.'
-      header_title: 'Publicēts jauns projekts'
-      header_message: 'Dalības platformā %{organizationName} tikko publicēts šāds projekts:'
+      title: 'Publicēts jauns projekts'
+      event_description: 'Dalības platformā %{organizationName} tikko publicēts šāds projekts:'
       preheader: 'Publicēts jauns projekts'
+      cta_button: 'Dodieties uz šo projektu'
     project_review_request:
       subject: 'Pārskata pieprasījums: Projekts gaida apstiprinājumu.'
-      header: '%{requesterName} ir aicinājusi jūs pārskatīt projektu "%{projectTitle}"'
-      header_message: "Pašlaik projekts ir darba režīmā un nav redzams lietotājiem. Kad to būsiet pārskatījuši un apstiprinājuši, moderators varēs to publicēt."
-      cta_review_project: "Projekta pārskatīšana"
+      title: '%{requesterName} ir aicinājusi jūs pārskatīt projektu "%{projectTitle}"'
+      event_description: "Pašlaik projekts ir darba režīmā un nav redzams lietotājiem. Kad to būsiet pārskatījis un apstiprinājis, moderators varēs to publicēt."
+      cta_button: "Projekta pārskatīšana"
     project_review_state_change:
       subject: '"%{projectTitle}" ir apstiprināts'
-      header: '%{reviewerName} apstiprināja projektu "%{projectTitle}"'
-      header_message: "Tagad projekts ir gatavs palaišanai. Jūs varat to publicēt, kad vien būsiet gatavs!"
-      cta_go_to_project: "Dodieties uz projekta iestatījumiem"
+      title: '%{reviewerName} apstiprināja projektu "%{projectTitle}"'
+      event_description: "Tagad projekts ir gatavs palaišanai. Jūs varat to publicēt, kad vien būsiet gatavs!"
+      cta_button: "Dodieties uz projekta iestatījumiem"
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
-      header_message: '%{organizationName} savā digitālās līdzdalības platformā atjaunināja ievades statusu "%{input_title}".'
-      header_title: 'Ievadam, kuram sekojat, ir jauns statuss'
+      event_description: '%{organizationName} savā digitālās līdzdalības platformā atjaunināja ievades statusu "%{input_title}".'
+      title: 'Ievadam, kuram sekojat, ir jauns statuss'
       subject: 'The status of "%{input_title}" has changed'
       preheader: 'An input you follow has a new status'
+      cta_button: Dodieties uz šo ievades
     user_digest:
       subject: "Jūsu aktivitāte %{organizationName} līdzdalības platformā"
       commented: "%{authorFirstName} komentēja:"
       preheader: "Nedēļas pārskats par %{organizationName}"
-      title_your_weekly_report: "Uzziniet, kas notika pagājušajā nedēļā"
-      intro_text: "Šeit ir kopsavilkums par to, kas notika %{organizationName} līdzdalības platformā."
-      cta_go_to_the_platform: "Dodieties uz platformu"
+      title: "Uzziniet, kas notika pagājušajā nedēļā"
+      event_description: "Lūk, kopsavilkums par to, kas notika %{organizationName}dalības platformā."
+      cta_button: "Dodieties uz platformu"
       title_no_activity_past_week: "Pagājušajā nedēļā nav veiktas nekādas darbības"
       successful_proposals_title: "Sasniegts slieksnis"
       successful_proposals_text: "Šie priekšlikumi ir guvuši pietiekamu atbalstu, lai pārietu uz nākamo posmu! Noklikšķiniet uz priekšlikuma, lai uzzinātu vairāk par to, kas notiek tālāk."
@@ -431,15 +438,15 @@ lv:
       no_unread_notifications: "Jums nav neviena nelasīta paziņojuma. Apmeklējiet platformu, lai ievadītu datus un veidotu jaunus paziņojumus!"
       unread_notifications: "Jums ir nelasīti paziņojumi. Apmeklējiet platformu, lai uzzinātu, kas notiek!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Īstenojiet šo iniciatīvu nākamajos posmos'
-      main_header: 'Iniciatīva sasniedza balsošanas slieksni!'
+      cta_button: 'Pabeigt šā priekšlikuma izstrādi.'
+      title: 'Priekšlikums sasniedza balsošanas slieksni!'
       subject: 'Iniciatīva ir sasniegusi balsošanas slieksni jūsu platformā'
       preheader: 'Pārliecinieties, ka veicat nākamos soļus'
     welcome:
-      cta_join_platform: 'Atklājiet platformu'
+      cta_button: 'Atklājiet platformu'
       subject: 'Laipni lūgti %{organizationName} platformā'
-      main_header: Laipni lūdzam!
-      message_welcome: 'Apsveicam, jūs veiksmīgi reģistrējāties %{organizationName} līdzdalības platformā. Tagad jūs varat iepazīties ar platformu un paust savu viedokli. Jūs varat arī pievienot profila attēlu un īsu aprakstu, lai citiem pastāstītu par sevi.'
+      title: Laipni lūdzam!
+      event_description: 'Apsveicam, jūs veiksmīgi reģistrējāties %{organizationName}dalības platformā. Tagad varat iepazīties ar platformu un paust savu viedokli. Varat arī pievienot profila attēlu un īsu aprakstu, lai citiem pastāstītu, kas jūs esat.'
       preheader: 'Lūk, ko jūs varat darīt %{organizationName} platformā.'
     idea_published:
       subject: 'Jūsu ideja ir publicēta'
@@ -475,15 +482,15 @@ lv:
         option: 'Jūsu iespēja ir "%{prescreening_status_title}"'
         proposal: 'Jūsu priekšlikums ir "%{prescreening_status_title}"'
         petition: 'Jūsu lūgumraksts ir "%{prescreening_status_title}"'
-      message: '"%{input_title}" kļūs redzams citiem, kad tas būs pārskatīts un apstiprināts.'
+      event_description: '"%{input_title}" kļūs redzams citiem, kad tas būs pārskatīts un apstiprināts.'
       subject: '"%{input_title}" ir gandrīz publicēts'
       preheader: 'Pašlaik tas ir %{prescreening_status_title}'
     voting_basket_submitted:
       subject: '%{organizationName}: Jūs veiksmīgi nobalsojāt'
       preheader: 'Jūs veiksmīgi balsojāt %{organizationName}līdzdalības platformā.'
-      title_basket_submitted: 'Jūs veiksmīgi nobalsojāt'
+      title: 'Jūs veiksmīgi nobalsojāt'
       event_description: 'Paldies par dalību. Jūsu balsis ir reģistrētas. Apmeklējiet %{organizationName} platformu, lai redzētu un pārvaldītu savas balsis.'
-      cta_see_votes_submitted: 'Skatīt iesniegtos balsojumus'
+      cta_button: 'Skatīt iesniegtos balsojumus'
       cta_message: 'Noklikšķiniet uz pogas zemāk, lai piedalītos'
     native_survey_not_submitted:
       subject: '%{organizationName}: Gandrīz ir! Nosūtiet savas atbildes'
@@ -495,26 +502,26 @@ lv:
     voting_basket_not_submitted:
       subject: '%{organizationName}: Jūs neiesūtījāt savas balsis'
       preheader: 'Jūs neiesniedzāt savas balsis %{organizationName}dalības platformā.'
-      title_basket_not_submitted: 'Jūs neiesniedzāt savas balsis'
+      title: 'Jūs neiesniedzāt savas balsis'
       event_description: 'Izvēlējāties vairākas iespējas vietnē %{contextTitle} , bet atlasi neiesūtījāt.'
-      cta_view_options_and_vote: 'Skatiet opcijas un balsojiet'
+      cta_button: 'Skatiet opcijas un balsojiet'
       cta_message: 'Noklikšķiniet uz pogas zemāk, lai iesniegtu atlasītās opcijas'
     voting_last_chance:
       subject: '%{organizationName}: Pēdējā iespēja balsot par %{phaseTitle}'
       preheader: 'Pēdējā iespēja balsot par %{phaseTitle} %{organizationName}dalības platformā'
-      title_last_chance: 'Pēdējā iespēja balsot par %{phaseTitle}'
+      title: 'Pēdējā iespēja balsot par %{phaseTitle}'
       body_1: 'Rīt pusnaktī noslēgsies balsošana par projektu %{projectTitle} .'
       body_2: 'Laiks iet uz beigām, un mēs pamanījām, ka jūs vēl neesat nobalsojis! Lai piedalītos balsošanā, vienkārši nospiediet zemāk redzamo pogu.'
       body_3: 'Tādējādi jūs iegūsiet piekļuvi dažādām iespējām un iespēju sniegt savu ieguldījumu, kas ir ļoti svarīgs, lai lemtu par šī projekta nākotni.'
-      cta_vote: 'Balsojums'
+      cta_button: 'Balsojums'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} atklāti balsošanas rezultāti!'
       preheader: '%{phaseTitle} balsošanas rezultāti atklāti %{organizationName}līdzdalības platformā.'
-      title_results: '%{phaseTitle} atklāti balsošanas rezultāti!'
+      title: '%{phaseTitle} atklāti balsošanas rezultāti!'
       body_1: 'Rezultāti ir zināmi!'
       body_2: 'Ir publicēti %{phaseTitle} platformas %{organizationName} balsojuma rezultāti!'
       body_3: 'Aicinām iepazīties ar rezultātiem un sekot līdzi turpmākai informācijai par nākamajiem soļiem.'
-      cta_see_results: 'Skatiet rezultātus platformā'
+      cta_button: 'Skatiet rezultātus platformā'
     event_registration_confirmation:
       subject: "Jūs esat iekļauts! Jūsu reģistrācija \"%{eventTitle}\" ir apstiprināta"
       preheader: "%{firstName}, paldies par reģistrēšanos %{eventTitle}"
@@ -531,18 +538,19 @@ lv:
     voting_phase_started:
       subject: '%{organizationName}: Sācies %{projectName}balsošanas posms'
       preheader: 'Sākās balsošanas posms par %{projectName} dalības platformā %{organizationName}.'
+      title: '%{projectName}'
       event_description: 'Projekts "%{projectName}" aicina jūs balsot starp %{numIdeas} iespējām:'
       cta_message: 'Noklikšķiniet uz pogas zemāk, lai piedalītos'
-      cta_vote: 'Dodieties uz platformu, lai balsotu'
+      cta_button: 'Dodieties uz platformu, lai balsotu'
     survey_submitted:
       subject: '%{organizationName}: Paldies par atbildi! 🎉'
       preheader: 'Šeit ir sniegta informācija par jūsu iesniegumu.'
-      main_header: 'Paldies, ka dalījāties savās pārdomās par "%{projectName}"!'
-      your_input_submitted: 'Jūsu dati par "%{projectName}" ir veiksmīgi iesniegti.'
+      title: 'Paldies, ka dalījāties savās pārdomās par "%{projectName}"!'
+      event_description: 'Jūsu dati par "%{projectName}" ir veiksmīgi iesniegti.'
       if_you_would_like_to_review: 'Ja vēlaties pārskatīt savu iesniegumu, atbildes varat lejupielādēt zemāk.'
       your_submission_has_id: 'Jūsu iesniegumam ir šāds unikāls identifikators:'
       you_can_use_this_id: 'Šo identifikatoru varat izmantot, lai sazinātos ar platformas administratoriem, ja vēlaties, lai jūsu iesniegums tiktu dzēsts.'
-      download_responses: 'Lejupielādējiet savas atbildes'
+      cta_button: 'Lejupielādējiet savas atbildes'
     admin_labels:
       recipient_role:
         admins: 'Administratoriem'
