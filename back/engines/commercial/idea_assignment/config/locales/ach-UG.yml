@@ -6,8 +6,8 @@ ach:
       "idea_assigned_to_you": crwdns5117583:0crwdne5117583:0
     idea_assigned_to_you:
       by_author: 'crwdns5117585:0%{authorName}crwdne5117585:0'
-      cta_reply_to: 'crwdns5117587:0%{authorName}crwdne5117587:0'
-      event_description_idea: 'crwdns5117589:0crwdne5117589:0'
-      main_header: 'crwdns5117591:0%{firstName}crwdne5117591:0'
+      cta_button: 'crwdns5265257:0%{authorName}crwdne5265257:0'
+      event_description: 'crwdns5265259:0crwdne5265259:0'
+      title: 'crwdns5265261:0%{firstName}crwdne5265261:0'
       subject: 'crwdns5117593:0%{organizationName}crwdne5117593:0'
       preheader_idea: 'crwdns5117595:0%{authorName}crwdne5117595:0'
