@@ -58,19 +58,7 @@ module Export
       end
 
       def input_multiloc_report_fields(attribute_name, column_header)
-        ComputedFieldForReport.new(
-          column_header,
-          lambda do |input|
-            attribute = input.send(attribute_name)
-            value = multiloc_service.t(attribute)
-
-            if value.blank? && attribute&.values
-              value = attribute.values.compact_blank.first || ''
-            end
-
-            Utils.new.convert_to_text_long_lines(value)
-          end
-        )
+        ComputedFieldForReport.new(column_header, ->(input) { Utils.new.multiloc_with_fallback_locale(input, attribute_name) })
       end
 
       def author_name_report_field

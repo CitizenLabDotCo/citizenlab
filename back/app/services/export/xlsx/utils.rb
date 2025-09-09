@@ -69,6 +69,17 @@ module Export
         column_name.gsub(/__[0-9]*$/, '')
       end
 
+      def multiloc_with_fallback_locale(record, attribute_name)
+        attribute = record.send(attribute_name)
+        value = multiloc_service.t(attribute)
+
+        if value.blank? && attribute&.values
+          value = attribute.values.compact_blank.first || ''
+        end
+
+        Export::Xlsx::Utils.new.convert_to_text_long_lines(value)
+      end
+
       private
 
       # Return a copy of the string with the leading and trailing +char+ removed.
@@ -76,6 +87,10 @@ module Export
       # @param [String] char a single character
       def strip_char(string, char)
         string.gsub(/^#{char}+|#{char}+$/, '')
+      end
+
+      def multiloc_service
+        @multiloc_service ||= MultilocService.new app_configuration: AppConfiguration.instance
       end
     end
   end
