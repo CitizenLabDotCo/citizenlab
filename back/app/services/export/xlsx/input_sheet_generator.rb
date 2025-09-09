@@ -65,7 +65,7 @@ module Export
             value = multiloc_service.t(attribute)
 
             if value.blank? && attribute&.values
-              value = attribute.values.reject(&:blank?).first || ''
+              value = attribute.values.compact_blank.first || ''
             end
 
             Utils.new.convert_to_text_long_lines(value)
