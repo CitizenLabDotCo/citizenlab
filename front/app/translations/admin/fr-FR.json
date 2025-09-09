@@ -1142,7 +1142,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.anyone": "Tout le monde",
   "app.containers.Admin.projects.all.new.Projects.Table.archived": "Archivé",
   "app.containers.Admin.projects.all.new.Projects.Table.currentPhase": "Phase en cours",
-  "app.containers.Admin.projects.all.new.Projects.Table.daysLeft2": "{jours, pluriel, aucun {{jours} jours} un {{jour} jour} autres {{jours} jours}} gauche",
+  "app.containers.Admin.projects.all.new.Projects.Table.daysLeft2": "{jours, pluriel, aucun {{days} jours} un {{days} jour} autres {{days} jours}} gauche",
   "app.containers.Admin.projects.all.new.Projects.Table.daysToStart2": "{days, plural, no {{days} jours} one {{days} jour} other {{days} jours}} pour commencer",
   "app.containers.Admin.projects.all.new.Projects.Table.discoverability": "Découvrabilité :",
   "app.containers.Admin.projects.all.new.Projects.Table.draft": "Brouillon",
