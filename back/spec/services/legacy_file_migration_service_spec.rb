@@ -131,6 +131,7 @@ describe Files::LegacyFileMigrationService do
           container_id: project_file.project.id,
           legacy_file_type: 'ProjectFile',
           legacy_file_id: project_file.id,
+          legacy_file_path: project_file.file.path,
           error_class: 'StandardError',
           error_msg: error_msg
         )

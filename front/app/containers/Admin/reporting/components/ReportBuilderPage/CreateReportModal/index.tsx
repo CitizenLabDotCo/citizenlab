@@ -11,7 +11,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
-import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 import useAddReport, { AddReport } from 'api/reports/useAddReport';
 
 import { generateYearSelectOptions } from 'containers/Admin/reporting/utils/generateYearSelectOptions';
@@ -40,9 +39,6 @@ interface Props {
 
 const CreateReportModal = ({ open, onClose }: Props) => {
   const { mutate: createReport, isLoading } = useAddReport();
-  const { data: project } = useCommunityMonitorProject({});
-  const communityMonitorPhaseId =
-    project?.data.relationships.current_phase?.data?.id;
 
   const [reportTitle, setReportTitle] = useState('');
   const [template, setTemplate] = useState<Template>('blank');
@@ -72,8 +68,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
     setErrorMessage(undefined);
 
     const createReportParams: AddReport = {
-      phase_id:
-        template === 'community-monitor' ? communityMonitorPhaseId : undefined,
+      community_monitor: template === 'community-monitor',
       name: reportTitle,
     };
 

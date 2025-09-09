@@ -8,7 +8,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 7.1.5.1'
+gem 'rails', '~> 7.1.5.2'
 gem 'pg', '~> 1.5.6'
 gem 'puma', '~> 6.4.3'
 gem 'bcrypt', '~> 3.1.20' # Use ActiveModel has_secure_password
@@ -81,7 +81,6 @@ gem 'active_model_serializers', '~> 0.10.15'
 gem 'jwt', '~> 2.8.1'
 gem 'que', '~> 2.3.0'
 
-gem 'activerecord', '~> 7.1.5.2'
 gem 'activerecord-import', '~> 1.7'
 gem 'json-schema', '~> 4.3'
 gem 'activerecord-postgis-adapter', '~> 9.0.2'
@@ -149,6 +148,7 @@ gem 'ruby_llm', '~> 1.6.2'
 # exception.
 gem 'aws-sdk-s3', '~> 1'
 gem 'aws-sdk-bedrockruntime', '~> 1'
+gem 'aws-sdk-cloudfront', '~> 1.118.0'
 gem 'bootsnap', '~> 1', require: false
 gem 'dalli', '~> 3.2.8'
 gem 'mailgun-ruby', '~>1.2.16'

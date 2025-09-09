@@ -11,6 +11,8 @@ import { ReportResponse } from './types';
 export type AddReport =
   | {
       name: string;
+      // phase_id is the phase where the report will be published in
+      // not the phase that the report is about
       phase_id?: null;
     }
   | {
@@ -18,9 +20,8 @@ export type AddReport =
       phase_id: string;
     }
   | {
-      // For the Community Monitor, we want to send both.
       name: string;
-      phase_id: string;
+      community_monitor: boolean;
     };
 
 const addReport = async (requestBody: AddReport) =>

@@ -36,9 +36,10 @@ module EmailCampaigns
     include ActivityTriggerable
     include RecipientConfigurable
     include Disableable
-    include LifecycleStageRestrictable
     include Trackable
+    include ContentConfigurable
     include ContextConfigurable
+    include LifecycleStageRestrictable
     allow_lifecycle_stages only: %w[trial active]
 
     recipient_filter :filter_input_author

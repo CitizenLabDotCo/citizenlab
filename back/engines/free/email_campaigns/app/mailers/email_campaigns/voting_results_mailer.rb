@@ -2,30 +2,35 @@
 
 module EmailCampaigns
   class VotingResultsMailer < ApplicationMailer
-    protected
+    include EditableWithPreview
 
-    def subject
-      format_message('subject', values: {
+    def editable
+      %i[subject_multiloc title_multiloc button_text_multiloc]
+    end
+
+    def substitution_variables
+      {
         organizationName: organization_name,
-        phaseTitle: localize_for_recipient(event.phase_title_multiloc)
-      })
+        phaseTitle: localize_for_recipient(event&.phase_title_multiloc)
+      }
+    end
+
+    def preview_command(recipient)
+      data = preview_service.preview_data(recipient)
+      {
+        recipient: recipient,
+        event_payload: {
+          project_url: data.project.url,
+          phase_title_multiloc: data.phase.title_multiloc,
+          project_title_multiloc: data.project.title_multiloc
+        }
+      }
     end
 
     private
 
-    def header_title
-      format_message('title_results', values: { phaseTitle: localize_for_recipient(event.phase_title_multiloc) })
-    end
-
     def header_message
       nil
-    end
-
-    def preheader
-      format_message('preheader', values: {
-        organizationName: organization_name,
-        phaseTitle: localize_for_recipient(event.phase_title_multiloc)
-      })
     end
   end
 end

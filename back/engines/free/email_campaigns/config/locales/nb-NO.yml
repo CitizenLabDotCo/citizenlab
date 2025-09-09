@@ -95,6 +95,7 @@ nb:
       project_title: 'Eksempel på prosjekt'
       project_description_preview: 'Dette er et eksempel på faseinnhold som brukes til forhåndsvisning av innholdet i e-poster. Dette er ikke ekte innhold.'
       phase_title: 'Eksempel på fase'
+      folder_title: 'Eksempel på mappe'
       comment_body: 'Dette er et eksempel på en kommentar som brukes til forhåndsvisning av innholdet i e-poster. Dette er ikke ekte innhold.'
       comment_deleted_reason: 'Kommentaren din ble vurdert som upassende.'
       idea_title: 'Eksempel på idé'
@@ -103,6 +104,9 @@ nb:
       event_address1: '10 Example Street, Exampleton, Exampleshire'
       event_address2: 'Rom 3a, ovenpå'
       proposal_title: 'Eksempel på forslag'
+      input_status_title: 'Eksempel Status'
+      input_status_description: 'Et eksempel på en status for en inngang (f.eks. akseptert, avvist, implementert ...)'
+      official_feedback_body: 'Eksempel på offisiell tilbakemelding'
     footer:
       "link_privacy_policy": "Personvernerklæring"
       "link_terms_conditions": "Vilkår og betingelser"
@@ -333,10 +337,11 @@ nb:
       title: 'Ny intern kommentar på ''%{post}'''
       preheader: 'Ny intern kommentar på ''%{post}'''
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} ga en oppdatering på ''%{input_title}''.'
-      header_title: 'Det er en oppdatering på "%{input_title}"'
+      event_description: '%{feedback_author_name} ga en oppdatering på ''%{input_title}''.'
+      title: 'Det er en oppdatering på "%{input_title}"'
       subject: 'Offisiell tilbakemelding ble lagt ut på "%{input_title}"'
       preheader: 'Det er en oppdatering på et innspill du følger'
+      cta_button: Gå til denne inngangen
     mention_in_official_feedback:
       cta_button: 'Svar til %{organizationName}'
       event_description: '%{organizationName} nevnte deg i sin tilbakemelding på ideen ''%{post}''. Klikk på lenken nedenfor for å delta i samtalen med %{organizationName}'
@@ -344,8 +349,8 @@ nb:
       subject: '%{organizationName} nevnte deg i tilbakemeldingen sin'
       preheader: '%{commentAuthor} nevnte deg i tilbakemeldingen'
     project_moderation_rights_received:
-      cta_manage_project: 'Administrer dette prosjektet'
-      message_you_became_moderator: 'En administrator av medvirkningsplattformen til %{organizationName} har nettopp gjort deg til prosjektleder for følgende prosjekt:'
+      cta_button: 'Administrer dette prosjektet'
+      event_description: 'En administrator av deltakelsesplattformen på %{organizationName} har nettopp gjort deg til prosjektleder for følgende prosjekt:'
       no_ideas: 'Ingen ideer ennå'
       preheader: 'En administrator av medvirkningsplattformen til %{organizationName} har nettopp gjort deg til prosjektleder for følgende prosjekt'
       subject: 'Du ble prosjektleder på plattformen %{organizationName}'
@@ -356,11 +361,11 @@ nb:
       title_moderate_analyse_input: 'Moderer og analyser innspillene'
       title_share_project_information: 'Oppgi prosjektinformasjon'
       title_what_can_you_do_moderator: 'Hva kan du gjøre som prosjektleder?'
-      title_you_became_moderator: 'Du ble prosjektleder'
+      title: 'Du ble prosjektleder'
       x_ideas: '%{numberOfIdeas} ideer'
     project_folder_moderation_rights_received:
-      cta_view_folder_button: 'Vis denne mappen'
-      message_added_as_folderadmin: 'Du har fått mappeadministratorrettigheter på %{organizationName} for følgende mappe:'
+      cta_button: 'Vis denne mappen'
+      event_description: 'Du har fått rettigheter som mappeadministrator på %{organizationName}''s deltakelsesplattform for følgende mappe:'
       no_projects: 'Ingen prosjekter ennå'
       preheader: 'En administrator av deltakerplattformen på %{organizationName} har nettopp gjort deg til administrator for følgende mappe'
       subject: 'Du ble prosjektmappeansvarlig på medvirkningsplattformen %{organizationName}'
@@ -371,7 +376,7 @@ nb:
       title_moderate_analyse_input: 'Moderere og analysere innspillene'
       title_manage_folder: 'Administrer mappeinnstillingene og opprett nye prosjekter.'
       title_what_can_you_do_folderadmin: 'Hva kan du gjøre som mappeansvarlig?'
-      title_added_as_folderadmin: 'Du har blitt lagt til som mappeadministrator'
+      title: 'Du har blitt lagt til som mappeadministrator'
       x_projects: '%{numberOfProjects} prosjekter'
     project_phase_started:
       cta_button: 'Oppdag denne nye fasen'
@@ -382,41 +387,43 @@ nb:
       subject: '%{projectName} gikk inn i en ny fase'
       preheader: 'En ny fase har startet for %{projectName}'
     project_phase_upcoming:
-      cta_view_phase: 'Sett opp denne nye fasen'
+      cta_button: 'Sett opp denne nye fasen'
       event_description: 'Prosjektet%{projectName} går snart over i en ny fase. Sørg for at alt er klart for denne fasen: Finnes det en tilstrekkelig beskrivelse? Er utvalgte ideer overført til denne fasen? Ønsker du å informere innbyggerne om detaljene i denne fasen gjennom en tilpasset e-postkampanje?'
-      main_header: '%{firstName}, et prosjekt går snart inn i en ny fase'
+      title: '%{firstName}, et prosjekt går snart inn i en ny fase'
       subtitle: 'Om ''%{projectName}'''
       new_phase: 'Prosjektet vil gå inn i fasen ''%{phaseTitle}'''
       subject: 'Gjør alt klart for den nye fasen av %{projectName}'
       preheader: 'Snart starter en ny fase for %{projectName}'
     project_published:
       subject: 'Et nytt prosjekt ble publisert på plattformen %{organizationName}'
-      header_title: 'Et nytt prosjekt ble publisert'
-      header_message: 'Medvirkningsplattformen %{organizationName} har nettopp publisert følgende prosjekt:'
+      title: 'Et nytt prosjekt ble publisert'
+      event_description: 'Deltakelsesplattformen %{organizationName} har nettopp publisert følgende prosjekt:'
       preheader: 'Et nytt prosjekt ble publisert'
+      cta_button: 'Gå til dette prosjektet'
     project_review_request:
       subject: 'Forespørsel om gjennomgang: Et prosjekt venter på godkjenning.'
-      header: '%{requesterName} har invitert deg til å vurdere prosjektet "%{projectTitle}"'
-      header_message: "For øyeblikket er prosjektet i utkastmodus og er ikke synlig for brukerne. Når du har gjennomgått og godkjent det, vil moderatoren kunne publisere det."
-      cta_review_project: "Gjennomgå prosjektet"
+      title: '%{requesterName} har invitert deg til å vurdere prosjektet "%{projectTitle}"'
+      event_description: "For øyeblikket er prosjektet i utkastmodus og er ikke synlig for brukerne. Når du har gjennomgått og godkjent det, vil moderatoren kunne publisere det."
+      cta_button: "Gjennomgå prosjektet"
     project_review_state_change:
       subject: '"%{projectTitle}" har blitt godkjent'
-      header: '%{reviewerName} godkjente prosjektet "%{projectTitle}"'
-      header_message: "Prosjektet er nå klart til å gå live. Du kan publisere det når du er klar!"
-      cta_go_to_project: "Gå til prosjektinnstillinger"
+      title: '%{reviewerName} godkjente prosjektet "%{projectTitle}"'
+      event_description: "Prosjektet er nå klart til å gå live. Du kan publisere det når du er klar!"
+      cta_button: "Gå til prosjektinnstillinger"
     status_change_on_idea_you_follow:
       status_change: 'Den nye statusen for dette innspillet er ''%{status}'''
-      header_message: '%{organizationName} oppdaterte statusen for innspillet "%{input_title}" på sin digitale medvirkningsplattform.'
-      header_title: 'Et innspill du følger har fått ny status'
+      event_description: '%{organizationName} oppdaterte statusen for innspillet "%{input_title}" på sin digitale medvirkningsplattform.'
+      title: 'En inngang du følger, har fått ny status'
       subject: 'Statusen til "%{input_title}" har endret seg'
       preheader: 'Et innspill du følger har fått ny status'
+      cta_button: Gå til denne inngangen
     user_digest:
       subject: "Denne uken på medvirkningsplattformen %{organizationName}"
       commented: "%{authorFirstName} kommenterte:"
       preheader: "Ukentlig oversikt over %{organizationName}"
-      title_your_weekly_report: "Oppdag hva som skjedde forrige uke"
-      intro_text: "Her er en oppsummering av hva som skjedde på medvirkningsplattformen til %{organizationName}."
-      cta_go_to_the_platform: "Gå til plattformen"
+      title: "Oppdag hva som skjedde forrige uke"
+      event_description: "Her er en oppsummering av hva som skjedde på deltakelsesplattformen på %{organizationName}."
+      cta_button: "Gå til plattformen"
       title_no_activity_past_week: "Ingen aktivitet i løpet av den siste uken"
       successful_proposals_title: "Nådde terskelen"
       successful_proposals_text: "I løpet av den siste uken har disse fått nok støtte til å gå videre til neste trinn."
@@ -431,15 +438,15 @@ nb:
       no_unread_notifications: "Du har ingen uleste varsler."
       unread_notifications: "Du har uleste varsler. Besøk plattformen for å finne ut hva som skjer!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Ta dette forslaget videre til neste trinn'
-      main_header: 'Et forslag nådde terskelen for avstemning!'
+      cta_button: 'Ta dette forslaget videre til neste trinn'
+      title: 'Et forslag nådde terskelen for avstemning!'
       subject: '"%{input_title}" nådde terskelen for stemmegivning'
       preheader: 'Sørg for å ta de neste trinnene'
     welcome:
-      cta_join_platform: 'Oppdag plattformen'
+      cta_button: 'Oppdag plattformen'
       subject: 'Velkommen til plattformen %{organizationName}'
-      main_header: Velkommen!
-      message_welcome: 'Gratulerer, du har registrert deg på medvirkningsplattformen %{organizationName}. Du kan nå oppdage plattformen og gjøre din stemme hørt. Du kan også legge til et profilbilde og en kort beskrivelse for å fortelle andre hvem du er.'
+      title: Velkommen!
+      event_description: 'Gratulerer, du har registrert deg på medvirkningsplattformen %{organizationName}. Du kan nå oppdage plattformen og gjøre din stemme hørt. Du kan også legge til et profilbilde og en kort beskrivelse for å fortelle andre hvem du er.'
       preheader: 'Her er hva du kan gjøre på plattformen %{organizationName}'
     idea_published:
       subject: 'Ideen din har blitt publisert'
@@ -475,15 +482,15 @@ nb:
         option: 'Ditt valg er i "%{prescreening_status_title}"'
         proposal: 'Forslaget ditt ligger i "%{prescreening_status_title}"'
         petition: 'Din begjæring er i "%{prescreening_status_title}"'
-      message: '"%{input_title}" blir synlig for andre når den er gjennomgått og godkjent.'
+      event_description: '"%{input_title}" blir synlig for andre når den er gjennomgått og godkjent.'
       subject: '"%{input_title}" er nesten publisert'
       preheader: 'Den ligger for tiden på %{prescreening_status_title}'
     voting_basket_submitted:
       subject: '%{organizationName}: Du stemte vellykket'
       preheader: 'Du har stemt på medvirkningsplattformen til %{organizationName}'
-      title_basket_submitted: 'Du stemte vellykket'
+      title: 'Du stemte vellykket'
       event_description: 'Takk for at du deltok. Stemmene dine har blitt registrert. Besøk plattformen %{organizationName} for å se og administrere stemmene dine.'
-      cta_see_votes_submitted: 'Se innsendte stemmer'
+      cta_button: 'Se innsendte stemmer'
       cta_message: 'Klikk på knappen nedenfor for å delta'
     native_survey_not_submitted:
       subject: '%{organizationName}: Nesten i mål! Send inn svarene dine'
@@ -495,26 +502,26 @@ nb:
     voting_basket_not_submitted:
       subject: '%{organizationName}: Du har ikke sendt inn dine stemmer'
       preheader: 'Du har ikke avgitt stemme på medvirkningsplattformen til %{organizationName}'
-      title_basket_not_submitted: 'Du har ikke sendt inn dine stemmer'
+      title: 'Du har ikke sendt inn dine stemmer'
       event_description: 'Du valgte noen alternativer for %{contextTitle}, men du sendte ikke inn valget ditt.'
-      cta_view_options_and_vote: 'Se alternativer og stem'
+      cta_button: 'Se alternativer og stem'
       cta_message: 'Klikk på knappen nedenfor for å sende inn de valgte alternativene'
     voting_last_chance:
       subject: '%{organizationName}: Siste sjanse til å stemme på %{phaseTitle}'
       preheader: 'Siste sjanse til å stemme på %{phaseTitle} på medvirkningsplattformen til %{organizationName}'
-      title_last_chance: 'Siste sjanse til å stemme på %{phaseTitle}'
+      title: 'Siste sjanse til å stemme på %{phaseTitle}'
       body_1: 'Avstemningsfasen for %{projectTitle} -prosjektet avsluttes i morgen ved midnatt.'
       body_2: 'Tiden renner ut, og vi har lagt merke til at du ikke har avgitt din stemme ennå! Gjør det nå ved å klikke på knappen nedenfor for å delta.'
       body_3: 'På den måten får du tilgang til en rekke alternativer og muligheten til å komme med innspill, noe som er avgjørende for prosjektets fremtid.'
-      cta_vote: 'Stemme'
+      cta_button: 'Stemme'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} avstemningsresultater avslørt!'
       preheader: '%{phaseTitle} avstemningsresultatene avslørt på medvirkningsplattformen til %{organizationName}'
-      title_results: '%{phaseTitle} avstemningsresultatene avslørt!'
+      title: '%{phaseTitle} avstemningsresultatene avslørt!'
       body_1: 'Resultatene er klare!'
       body_2: 'Resultatet av avstemningen på %{phaseTitle} i plattformen %{organizationName} er publisert!'
       body_3: 'Vi oppfordrer deg til å lese resultatene og holde deg oppdatert om hva som skjer videre.'
-      cta_see_results: 'Se resultater i plattformen'
+      cta_button: 'Se resultater i plattformen'
     event_registration_confirmation:
       subject: "Du er inne! Din registrering for \"%{eventTitle}\" er bekreftet"
       preheader: "%{firstName}, takk for at du registrerte deg for %{eventTitle}"
@@ -531,18 +538,19 @@ nb:
     voting_phase_started:
       subject: '%{organizationName}: Avstemningsfasen startet for %{projectName}'
       preheader: 'Avstemningsfasen startet for %{projectName} på medvirkningsplattformen til %{organizationName}'
+      title: '%{projectName}'
       event_description: 'Prosjektet "%{projectName}" ber deg om å stemme mellom %{numIdeas} alternativer:'
       cta_message: 'Klikk på knappen nedenfor for å delta'
-      cta_vote: 'Gå til plattformen for å stemme'
+      cta_button: 'Gå til plattformen for å stemme'
     survey_submitted:
       subject: '%{organizationName}: Takk for svaret ditt! 🎉'
       preheader: 'Her er detaljene for innleveringen din.'
-      main_header: 'Takk for at du deler dine tanker om "%{projectName}"!'
-      your_input_submitted: 'Ditt innspill for "%{projectName}" har blitt sendt inn.'
+      title: 'Takk for at du deler dine tanker om "%{projectName}"!'
+      event_description: 'Ditt innspill for "%{projectName}" har blitt sendt inn.'
       if_you_would_like_to_review: 'Hvis du ønsker å se gjennom det du har sendt inn, kan du laste ned svarene nedenfor.'
       your_submission_has_id: 'Din innsending har følgende unike identifikator:'
       you_can_use_this_id: 'Du kan bruke denne identifikatoren til å kontakte plattformadministratorene hvis du vil at innsendingen din skal fjernes.'
-      download_responses: 'Last ned svarene dine'
+      cta_button: 'Last ned svarene dine'
     admin_labels:
       recipient_role:
         admins: 'Til administratorer'

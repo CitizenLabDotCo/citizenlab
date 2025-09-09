@@ -148,7 +148,10 @@ class ProjectsFinderAdminService
 
     case review_state
     when 'pending'
-      scope.where(project_reviews: { approved_at: nil })
+      filter_status(
+        scope.where(project_reviews: { approved_at: nil }),
+        { status: ['draft'] }
+      )
     when 'approved'
       scope.where.not(project_reviews: { approved_at: nil })
     else

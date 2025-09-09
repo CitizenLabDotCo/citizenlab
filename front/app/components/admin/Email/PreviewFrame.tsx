@@ -70,7 +70,7 @@ const PreviewFrame = ({
 const HeaderField = ({ labelKey, value, bold = false }) => {
   return (
     <Box display="flex" alignItems="center" gap="8px">
-      <Text fontWeight="bold" my="0" color="grey600" width="70px">
+      <Text fontWeight="bold" my="0" color="grey600" width="120px">
         <FormattedMessage {...messages[labelKey]} />
       </Text>
       <Text my="0" fontWeight={bold ? 'bold' : 'normal'}>

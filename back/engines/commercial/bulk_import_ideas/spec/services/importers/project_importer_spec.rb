@@ -43,7 +43,6 @@ describe BulkImportIdeas::Importers::ProjectImporter do
       {
         title_multiloc: { 'en' => 'Test Phase' },
         description_multiloc: { 'en' => 'This is a test phase.' },
-        campaigns_settings: { project_phase_started: true },
         start_at: '2025-01-01',
         end_at: '2025-02-01'
       }

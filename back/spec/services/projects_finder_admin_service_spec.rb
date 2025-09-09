@@ -99,8 +99,17 @@ describe ProjectsFinderAdminService do
 
   describe 'self.filter_review_state' do
     let!(:regular_project) { create(:project) }
-    let!(:pending_review_project) do
+    let!(:pending_review_draft_project) do
       project = create(:project)
+      admin_publication = AdminPublication.find_by(publication_id: project.id)
+      admin_publication.update!(publication_status: 'draft')
+      create(:project_review, project: project)
+      project
+    end
+    let!(:pending_review_published_project) do
+      project = create(:project)
+      admin_publication = AdminPublication.find_by(publication_id: project.id)
+      admin_publication.update!(publication_status: 'published')
       create(:project_review, project: project)
       project
     end
@@ -114,14 +123,15 @@ describe ProjectsFinderAdminService do
       result = described_class.filter_review_state(Project.all, {})
       expect(result.pluck(:id).sort).to match_array([
         regular_project.id,
-        pending_review_project.id,
+        pending_review_draft_project.id,
+        pending_review_published_project.id,
         approved_project.id
       ].sort)
     end
 
-    it 'filters by review_state = pending' do
+    it 'filters by review_state = pending (only includes draft projects)' do
       result = described_class.filter_review_state(Project.all, { review_state: 'pending' })
-      expect(result.pluck(:id)).to eq([pending_review_project.id])
+      expect(result.pluck(:id)).to eq([pending_review_draft_project.id])
     end
 
     it 'filters by review_state = approved' do

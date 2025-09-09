@@ -12,4 +12,4 @@
 <!-- TODO: RESULTS TO APPEAR HERE -->
 
 <!-- CTA button -->
-<%= render partial: 'application/cta_button', locals: { href: event.project_url, message: format_message('cta_see_results') } %>
+<%= render partial: 'application/cta_button', locals: { href: event.project_url, message: cta_button_text } %>

@@ -24,7 +24,7 @@ module BulkImportIdeas::Exporters
         value = case field.input_type
         when 'select'
           custom_field_service.handle_title(field.options.first, @locale)
-        when 'multiselect', 'multiselect_image'
+        when 'multiselect', 'multiselect_image', 'ranking'
           field.options.map { |o| custom_field_service.handle_title(o, @locale) }.join '; '
         when 'topic_ids'
           @project.allowed_input_topics.map { |t| t.title_multiloc[@locale] }.join '; '
