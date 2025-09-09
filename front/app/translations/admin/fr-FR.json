@@ -2062,7 +2062,7 @@
   "app.containers.AdminPage.ProjectEdit.inputAndFeedback": "Recueillir des contributions et des commentaires",
   "app.containers.AdminPage.ProjectEdit.inputAndFeedbackDescription2": "Créez ou collectez des contributions, des votes et/ou des commentaires. Choisissez entre différents types de contributions : collecte d'idées, analyse d'options, questions et réponses, identification des problèmes, etc.",
   "app.containers.AdminPage.ProjectEdit.inputAssignmentSectionTitle": "Qui est responsable du traitement des contributions ?",
-  "app.containers.AdminPage.ProjectEdit.inputAssignmentTooltipText2": "Tous les nouveaux intrants de ce projet seront attribués à cette personne. Le destinataire peut être modifié sur le site {globalInputManagerLink} ou par le gestionnaire d'intrants au niveau de la phase (phases d'idéation et de proposition uniquement).",
+  "app.containers.AdminPage.ProjectEdit.inputAssignmentTooltipText2": "Tous les nouvelles contributions de ce projet seront attribuées à cette personne. Le destinataire peut être modifié sur le site {globalInputManagerLink} ou dans l'onglet de gestion de contribution au niveau de la phase (phases d'idéation et de proposition uniquement).",
   "app.containers.AdminPage.ProjectEdit.inputCommentingEnabled": "Commenter les contributions",
   "app.containers.AdminPage.ProjectEdit.inputFormTab": "Formulaire de contribution",
   "app.containers.AdminPage.ProjectEdit.inputManagerTab": "Gestion des contributions",
