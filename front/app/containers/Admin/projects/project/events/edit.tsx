@@ -20,7 +20,6 @@ import { Multiloc, UploadFile } from 'typings';
 
 import useAddEventFile from 'api/event_files/useAddEventFile';
 import useDeleteEventFile from 'api/event_files/useDeleteEventFile';
-import useEventFiles from 'api/event_files/useEventFiles';
 import useAddEventImage from 'api/event_images/useAddEventImage';
 import useDeleteEventImage from 'api/event_images/useDeleteEventImage';
 import useEventImage from 'api/event_images/useEventImage';
@@ -29,7 +28,12 @@ import { IEvent, IEventProperties } from 'api/events/types';
 import useAddEvent from 'api/events/useAddEvent';
 import useEvent from 'api/events/useEvent';
 import useUpdateEvent from 'api/events/useUpdateEvent';
+import { IFileAttachmentData } from 'api/file_attachments/types';
+import useFileAttachments from 'api/file_attachments/useFileAttachments';
+import { IFileData } from 'api/files/types';
+import useAddFile from 'api/files/useAddFile';
 
+import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useLocale from 'hooks/useLocale';
 
@@ -40,7 +44,7 @@ import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import ErrorComponent from 'components/UI/Error';
-import FileUploader from 'components/UI/FileUploader';
+import FileRepositorySelectAndUpload from 'components/UI/FileRepositorySelectAndUpload';
 import GoBackButton from 'components/UI/GoBackButton';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
@@ -49,7 +53,10 @@ import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMult
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
+import {
+  convertUrlToUploadFile,
+  generateTemporaryFileAttachment,
+} from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { geocode } from 'utils/locationTools';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
@@ -76,14 +83,19 @@ const AdminProjectEventEdit = () => {
   const { mutate: updateEvent } = useUpdateEvent();
 
   // event files
+  const syncEventFiles = useSyncFiles();
   const { mutate: addEventFile } = useAddEventFile();
   const { mutate: deleteEventFile } = useDeleteEventFile();
-  const { data: remoteEventFiles } = useEventFiles(eventId);
+  const { data: remoteEventFileAttachments } = useFileAttachments({
+    attachable_id: event?.data.id,
+    attachable_type: 'Event',
+  });
 
   // event image
   const { mutate: addEventImage } = useAddEventImage();
   const { mutate: updateEventImage } = useUpdateEventImage();
   const { mutate: deleteEventImage } = useDeleteEventImage();
+  const { mutate: addFile } = useAddFile();
   const { data: remoteEventImage } = useEventImage(event?.data);
 
   // state
@@ -92,6 +104,9 @@ const AdminProjectEventEdit = () => {
   const [saving, setSaving] = useState<boolean>(false);
   const [submitState, setSubmitState] = useState<SubmitState>('disabled');
   const [eventFiles, setEventFiles] = useState<UploadFile[]>([]);
+  const [eventFileAttachments, setEventFileAttachments] = useState<
+    IFileAttachmentData[]
+  >(remoteEventFileAttachments?.data || []);
   const [croppedImgBase64, setCroppedImgBase64] = useState<string | null>(null);
 
   const [attributeDiff, setAttributeDiff] = useState<IEventProperties>(
@@ -189,20 +204,12 @@ const AdminProjectEventEdit = () => {
     return;
   }, [eventAttrs.address_1, event]);
 
-  // Set event files to remote event files
+  // Set event file attachments to remote event file attachments
   useEffect(() => {
-    if (!isNilOrError(remoteEventFiles)) {
-      (async () => {
-        const files = await Promise.all(
-          remoteEventFiles.data.map(
-            async (file) =>
-              await convertUrlToUploadFile(file.attributes.file.url, file.id)
-          )
-        );
-        setEventFiles(files as UploadFile[]);
-      })();
+    if (!isNilOrError(remoteEventFileAttachments)) {
+      setEventFileAttachments(remoteEventFileAttachments.data);
     }
-  }, [remoteEventFiles]);
+  }, [remoteEventFileAttachments]);
 
   const handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
     setSubmitState('enabled');
@@ -310,19 +317,92 @@ const AdminProjectEventEdit = () => {
     setUploadedImage(null);
   };
 
-  const handleEventFileOnAdd = (newFile: UploadFile) => {
-    setSubmitState('enabled');
-    setEventFiles([...eventFiles, newFile]);
+  const handleEventFileOnAdd = (fileToAdd: UploadFile) => {
+    // Upload the file to the Data Repository, so we can make the attachment later.
+    addFile(
+      {
+        content: fileToAdd.base64,
+        project: eventId,
+        name: fileToAdd.name,
+        category: 'other', // Default to 'other' when added from phase setup
+        ai_processing_allowed: false, // Default to false when added from phase setup
+      },
+      {
+        onSuccess: (newFile) => {
+          // Create a temporary file attachment to add to the state, so the user sees it in the list.
+          const temporaryFileAttachment = generateTemporaryFileAttachment({
+            fileId: newFile.data.id,
+            attachableId: eventId,
+            attachableType: 'Event',
+            position: eventFileAttachments.length,
+          });
+
+          const isDuplicate = eventFileAttachments.some((fileAttachment) => {
+            return (
+              fileAttachment.relationships.file.data.id ===
+              temporaryFileAttachment.relationships.file.data.id
+            );
+          });
+
+          setEventFileAttachments(
+            isDuplicate
+              ? eventFileAttachments
+              : [...eventFileAttachments, temporaryFileAttachment]
+          );
+
+          setSubmitState(isDuplicate ? submitState : 'enabled');
+        },
+      }
+    );
   };
 
-  const handleEventFileOnRemove = (eventFileToRemove: UploadFile) => {
+  const handleEventFileOnRemove = (eventFileToRemove: IFileAttachmentData) => {
     setSubmitState('enabled');
-    setEventFilesToRemove([...eventFilesToRemove, eventFileToRemove]);
-    setEventFiles(
-      eventFiles.filter(
-        (eventFile) => eventFile.base64 !== eventFileToRemove.base64
-      )
+    // setEventFilesToRemove([...eventFilesToRemove, eventFileToRemove]);
+    // setEventFiles(
+    //   eventFiles.filter(
+    //     (eventFile) => eventFile.base64 !== eventFileToRemove.base64
+    //   )
+    // );
+  };
+
+  const handleFilesReorder = (
+    updatedFileAttachments: IFileAttachmentData[]
+  ) => {
+    // Update the position of the updated file attachments
+    const updatedFileAttachmentsWithPosition = updatedFileAttachments.map(
+      (fileAttachment, index) => ({
+        ...fileAttachment,
+        attributes: {
+          ...fileAttachment.attributes,
+          position: index,
+        },
+      })
     );
+
+    setEventFileAttachments(updatedFileAttachmentsWithPosition);
+    setSubmitState('enabled');
+  };
+
+  const handleEventFileOnAttach = (file: IFileData) => {
+    const isDuplicate = eventFileAttachments.some((fileAttachment) => {
+      return fileAttachment.relationships.file.data.id === file.id;
+    });
+
+    if (isDuplicate) return;
+
+    const temporaryFileAttachment = generateTemporaryFileAttachment({
+      fileId: file.id,
+      attachableId: eventId,
+      attachableType: 'Phase',
+      position: eventFileAttachments.length,
+    });
+
+    setEventFileAttachments((eventFileAttachments) => [
+      ...eventFileAttachments,
+      temporaryFileAttachment,
+    ]);
+    setSubmitState('enabled');
   };
 
   const addOrDeleteEventImage = async (data: IEvent) => {
@@ -884,12 +964,16 @@ const AdminProjectEventEdit = () => {
                     }
                   />
                 </Label>
-                <FileUploader
+                <FileRepositorySelectAndUpload
                   id="project-events-edit-form-file-uploader"
                   onFileAdd={handleEventFileOnAdd}
                   onFileRemove={handleEventFileOnRemove}
-                  files={eventFiles}
+                  onFileReorder={handleFilesReorder}
+                  onFileAttach={handleEventFileOnAttach}
+                  fileAttachments={eventFileAttachments}
+                  enableDragAndDrop
                   apiErrors={isError(apiErrors) ? undefined : apiErrors}
+                  maxSizeMb={10}
                 />
               </SectionField>
             </Section>
