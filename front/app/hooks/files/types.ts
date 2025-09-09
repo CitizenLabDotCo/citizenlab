@@ -12,13 +12,6 @@ export type SyncFolderFilesArguments = {
   fileOrdering: Record<string, number | undefined>;
 };
 
-export type SyncProjectFilesArguments = {
-  projectId: string;
-  projectFiles: UploadFile[];
-  filesToRemove: any[];
-  fileOrdering: Record<string, number | undefined>;
-};
-
 export type SyncFilesArguments = {
   attachableId: string;
   attachableType: AttachableType;
