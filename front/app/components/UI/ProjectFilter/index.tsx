@@ -12,7 +12,8 @@ import { IOption } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { IProjectData, PublicationStatus } from 'api/projects/types';
-import useProjects from 'api/projects/useProjects';
+import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
+import useInfiniteProjectsMiniAdmin from 'api/projects_mini_admin/useInfiniteProjectsMiniAdmin';
 
 import useDebouncedValue from 'hooks/useDebouncedValue';
 import useLocalize, { Localize } from 'hooks/useLocalize';
@@ -45,7 +46,7 @@ interface Props {
 }
 
 const generateProjectOptions = (
-  projects: IProjectData[],
+  projects: (IProjectData | ProjectMiniAdminData)[],
   localize: Localize,
   emptyOption: IOption | null
 ): IOption[] => {
@@ -79,11 +80,26 @@ const ProjectFilter = ({
   const [searchValue, setSearchValue] = useState('');
   const debouncedSearchValue = useDebouncedValue(searchValue, 300);
 
-  const { data: projects } = useProjects({
-    publicationStatuses: PUBLICATION_STATUSES,
-    canModerate: true,
-    includeHidden: includeHiddenProjects,
-  });
+  const { data: projectsData } = useInfiniteProjectsMiniAdmin(
+    {
+      status: PUBLICATION_STATUSES,
+      sort: 'alphabetically_asc',
+      search: debouncedSearchValue,
+      discoverability: includeHiddenProjects
+        ? ['listed', 'unlisted']
+        : ['listed'],
+    },
+    1000 // Large page size to get all projects
+  );
+
+  // Flatten paginated data and use mini admin data directly
+  const projects = useMemo(() => {
+    if (!projectsData?.pages) return null;
+
+    const flattenedProjects = projectsData.pages.flatMap((page) => page.data);
+
+    return flattenedProjects;
+  }, [projectsData?.pages]);
   const { data: authUser } = useAuthUser();
 
   const allProjectOptions = useMemo(() => {
@@ -96,29 +112,21 @@ const ProjectFilter = ({
         }
       : null;
 
-    const filteredProjects = excludeProjectId
-      ? projects.data.filter((project) => project.id !== excludeProjectId)
-      : projects.data;
+    return generateProjectOptions(projects, localize, emptyOption);
+  }, [projects, authUser, emptyOptionMessage, formatMessage, localize]);
 
-    return generateProjectOptions(filteredProjects, localize, emptyOption);
-  }, [
-    projects,
-    authUser,
-    emptyOptionMessage,
-    formatMessage,
-    excludeProjectId,
-    localize,
-  ]);
-
-  // Filter options based on debounced search value
+  // Apply client-side filtering for excludeProjectId (search is handled server-side)
   const filteredOptions = useMemo(() => {
     if (!allProjectOptions) return [];
-    if (!debouncedSearchValue) return allProjectOptions;
 
-    return allProjectOptions.filter((option) =>
-      option.label.toLowerCase().includes(debouncedSearchValue.toLowerCase())
-    );
-  }, [allProjectOptions, debouncedSearchValue]);
+    if (excludeProjectId) {
+      return allProjectOptions.filter(
+        (option) => option.value !== excludeProjectId
+      );
+    }
+
+    return allProjectOptions;
+  }, [allProjectOptions, excludeProjectId]);
 
   const handleInputChange = useCallback((searchTerm: string) => {
     setSearchValue(searchTerm);
