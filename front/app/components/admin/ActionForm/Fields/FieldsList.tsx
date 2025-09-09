@@ -45,7 +45,7 @@ const FieldsList = ({ phaseId, action }: Props) => {
   if (permissionFields.data.length === numberOfVerificatiomLockedItems) {
     return (
       <Text mb="24px">
-        <FormattedMessage {...messages.noExtraQuestions} />
+        <FormattedMessage {...messages.noDemographicQuestions} />
       </Text>
     );
   }
