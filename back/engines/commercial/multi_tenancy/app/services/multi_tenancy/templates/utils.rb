@@ -197,10 +197,13 @@ module MultiTenancy
         def translate_and_fix_locales(serialized_models)
           translator = MachineTranslations::MachineTranslationService.new
           locales_to = AppConfiguration.instance.settings('core', 'locales')
-          return serialized_models if Set.new(template_locales(serialized_models)).subset? Set.new(locales_to)
+
+          # Do the locales in the template already match the target locales?
+          return serialized_models if Set.new(locales_to) == Set.new(template_locales(serialized_models))
 
           locales_from = user_locales(serialized_models)
           # Change unsupported user locales to first target tenant locale.
+          # TODO: Does this need changing too?
           unless Set.new(locales_from).subset? Set.new(locales_to)
             serialized_models['models']['user']&.each do |attributes|
               unless locales_to.include? attributes['locale']
@@ -208,34 +211,36 @@ module MultiTenancy
               end
             end
           end
+
           # Determine if translation needs to happen.
-          translate_from = locales_from.first
-          translate_to = locales_to.include?(translate_from) ? nil : locales_to.first
+          # translate_from = locales_from.first
+          # translate_to = locales_to.include?(translate_from) ? nil : locales_to.first
           # Change multiloc fields, applying translation and removing
           # unsupported locales.
+
           serialized_models['models'].each_value do |fields|
             fields.each do |attributes|
               attributes.each do |field_name, field_value|
                 if multiloc?(field_name) && field_value.is_a?(Hash)
-                  if (field_value.keys & locales_to).blank? && !field_value.key?(translate_from) && field_value.present?
-                    other_translate_from = field_value.keys.first
-                    other_translate_to = translate_to || locales_to.first
-                    translation = translator.translate field_value[other_translate_from], other_translate_from,
-                      other_translate_to, retries: 10
-                    attributes[field_name] = { translate_to => translation }
-                  else
-                    field_value.each_key do |locale|
-                      if locale == translate_from && translate_to
-                        field_value[locale] = translator.translate field_value[locale], locale, translate_to, retries: 10
-                      elsif locales_to.exclude?(locale)
-                        field_value.delete locale
-                      end
-                    end
+                  source_locale = field_value.keys.first
+                  source_text = field_value[source_locale]
+                  next if source_text.blank?
+
+                  locales_to.each do |locale|
+                    next if field_value.key?(locale) && field_value[locale].present?
+
+                    field_value[locale] = translator.translate source_text, source_locale, locale, retries: 10
                   end
+
+                  # Only keep the target locales
+                  field_value.select! { |key, _| locales_to.include?(key) }
+
+                  attributes[field_name] = field_value
                 end
               end
             end
           end
+
           # Cut off translations that are too long.
           {
             'project' => { 'description_preview_multiloc' => 280 },

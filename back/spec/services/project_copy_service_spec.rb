@@ -5,7 +5,7 @@ require 'rails_helper'
 describe ProjectCopyService do
   let(:service) { described_class.new }
 
-  before { stub_easy_translate! }
+  before { stub_translations }
 
   describe 'project copy' do
     it 'works' do
@@ -350,16 +350,72 @@ describe ProjectCopyService do
     end
   end
 
+  context 'with machine translations' do
+    it 'translates from a single locale to a single locale' do
+      # Set config to single locale
+      settings = AppConfiguration.instance.settings
+      settings['core']['locales'] = ['en']
+      AppConfiguration.instance.update!(settings: settings)
+
+      project = create(:project, title_multiloc: { en: 'ORIGINAL STRING' }, description_multiloc: {})
+      template = service.export project, anonymize_users: false, include_ideas: true
+
+      # Change the platform locale
+      settings['core']['locales'] = ['fr-FR']
+      AppConfiguration.instance.update!(settings: settings)
+
+      copied_project = service.import template
+      expect(copied_project.title_multiloc).to eq({ 'fr-FR' => 'TRANSLATED STRING' })
+    end
+
+    it 'translates from a single locale to multiple locales' do
+      # Set config to single locale
+      settings = AppConfiguration.instance.settings
+      settings['core']['locales'] = ['en']
+      AppConfiguration.instance.update!(settings: settings)
+
+      project = create(:project, title_multiloc: { en: 'ORIGINAL STRING' }, description_multiloc: {})
+      template = service.export project, anonymize_users: false, include_ideas: true
+
+      # Change the platform locale to multiple locales
+      settings['core']['locales'] = %w[en fr-FR]
+      AppConfiguration.instance.update!(settings: settings)
+
+      copied_project = service.import template
+      expect(copied_project.title_multiloc).to eq({ 'en' => 'ORIGINAL STRING', 'fr-FR' => 'TRANSLATED STRING' })
+
+      # Ignores existing translations
+      project.update!(title_multiloc: { en: 'ORIGINAL STRING', 'fr-FR' => 'ANOTHER ORIGINAL STRING' })
+      template = service.export project, anonymize_users: false, include_ideas: true
+      copied_project = service.import template
+      expect(copied_project.title_multiloc).to eq({ 'en' => 'ORIGINAL STRING', 'fr-FR' => 'ANOTHER ORIGINAL STRING' })
+    end
+
+    it 'translates from a multiple locales (first found locale) to multiple locales' do
+      # Set config to two locales
+      settings = AppConfiguration.instance.settings
+      settings['core']['locales'] = %w[en fr-FR]
+      AppConfiguration.instance.update!(settings: settings)
+
+      project = create(:project, title_multiloc: { en: 'ENGLISH PROJECT', 'fr-FR': 'FRENCH PROJECT' }, description_multiloc: {})
+      create(:phase, project: project, title_multiloc: { 'fr-FR': 'FRENCH PHASE' })
+      template = service.export project, anonymize_users: false, include_ideas: true
+
+      # Change the platform locale to different locales
+      settings['core']['locales'] = %w[en de-DE]
+      AppConfiguration.instance.update!(settings: settings)
+
+      copied_project = service.import template
+      expect(copied_project.title_multiloc).to eq({ 'en' => 'ENGLISH PROJECT', 'de-DE' => 'TRANSLATED STRING' })
+      expect(copied_project.phases.first.title_multiloc).to eq({ 'en' => 'TRANSLATED STRING', 'de-DE' => 'TRANSLATED STRING' })
+    end
+
+    # TODO: Test for users with different locales in the copy
+  end
+
   private
 
-  def stub_easy_translate!
-    allow(EasyTranslate).to receive(:translate) do |_, options|
-      translation = {
-        'en' => '<strong>Health & Wellness</strong>',
-        'fr' => '<strong>Santé &amp; Bien-être</strong>',
-        'nl' => ''
-      }[options[:to]]
-      translation || raise(EasyTranslate::EasyTranslateException, 'Locale not supported!')
-    end
+  def stub_translations
+    allow_any_instance_of(MachineTranslations::MachineTranslationService).to receive(:translate).and_return('TRANSLATED STRING')
   end
 end
