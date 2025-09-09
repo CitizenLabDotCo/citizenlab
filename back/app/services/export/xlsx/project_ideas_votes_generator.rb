@@ -25,7 +25,7 @@ module Export
         columns = [
           { header: I18n.t('input_id', scope: t_scope),    f: ->(i) { i.id }, skip_sanitization: true },
           { header: I18n.t('title', scope: t_scope),       f: ->(i) { multiloc_service.t(i.title_multiloc) } },
-          { header: I18n.t('description', scope: t_scope), f: ->(i) { multiloc_service.t(i.body_multiloc) } }
+          { header: I18n.t('description', scope: t_scope), f: ->(i) { Utils.new.convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) } }
         ]
 
         Factory.instance.voting_method_for(phase).additional_export_columns.each do |column|
