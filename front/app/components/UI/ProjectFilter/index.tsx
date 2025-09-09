@@ -6,7 +6,6 @@ import {
   Spinner,
   BoxProps,
 } from '@citizenlab/cl2-component-library';
-import { debounce } from 'lodash-es';
 import ReactSelect from 'react-select';
 import { useTheme } from 'styled-components';
 import { IOption } from 'typings';
@@ -15,6 +14,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import { IProjectData, PublicationStatus } from 'api/projects/types';
 import useProjects from 'api/projects/useProjects';
 
+import useDebouncedValue from 'hooks/useDebouncedValue';
 import useLocalize, { Localize } from 'hooks/useLocalize';
 
 import selectStyles from 'components/UI/MultipleSelect/styles';
@@ -77,6 +77,7 @@ const ProjectFilter = ({
   const { formatMessage } = useIntl();
   const theme = useTheme();
   const [searchValue, setSearchValue] = useState('');
+  const debouncedSearchValue = useDebouncedValue(searchValue, 300);
 
   const { data: projects } = useProjects({
     publicationStatuses: PUBLICATION_STATUSES,
@@ -109,20 +110,18 @@ const ProjectFilter = ({
     localize,
   ]);
 
-  // Filter options based on search value
+  // Filter options based on debounced search value
   const filteredOptions = useMemo(() => {
     if (!allProjectOptions) return [];
-    if (!searchValue) return allProjectOptions;
+    if (!debouncedSearchValue) return allProjectOptions;
 
     return allProjectOptions.filter((option) =>
-      option.label.toLowerCase().includes(searchValue.toLowerCase())
+      option.label.toLowerCase().includes(debouncedSearchValue.toLowerCase())
     );
-  }, [allProjectOptions, searchValue]);
+  }, [allProjectOptions, debouncedSearchValue]);
 
-  const handleInputChange = useMemo(() => {
-    return debounce((searchTerm: string) => {
-      setSearchValue(searchTerm);
-    }, 300);
+  const handleInputChange = useCallback((searchTerm: string) => {
+    setSearchValue(searchTerm);
   }, []);
 
   const handleChange = useCallback(
