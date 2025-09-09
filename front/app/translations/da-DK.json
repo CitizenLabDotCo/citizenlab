@@ -1149,7 +1149,6 @@
   "app.containers.AccessibilityStatement.title": "Tilgængelighedserklæring",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Brugergenereret indhold",
   "app.containers.AccessibilityStatement.workshops": "Værksted",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Vælg projekt",
   "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Hvis du bruger Content Builder, kan du bruge mere avancerede layoutmuligheder. På sprog, hvor der ikke er noget indhold tilgængeligt i content builderen, vises den almindelige projektbeskrivelse i stedet.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Rediger beskrivelse i Content Builder",
   "app.containers.AdminPage.ProjectDescription.saveError": "Noget gik galt, da jeg gemte projektbeskrivelsen.",

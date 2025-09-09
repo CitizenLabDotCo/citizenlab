@@ -1716,7 +1716,6 @@
   "app.containers.AdminPage.DashboardPage.resolutionday": "dienās",
   "app.containers.AdminPage.DashboardPage.resolutionmonth": "mēnešos",
   "app.containers.AdminPage.DashboardPage.resolutionweek": "nedēļās",
-  "app.containers.AdminPage.DashboardPage.selectProject": "Izvēlēties projektu",
   "app.containers.AdminPage.DashboardPage.selectedProject": "pašreizējo projektu filtrs",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "pašreizējo tagu filtrs",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Uzziniet, kas notiek jūsu platformā.",

@@ -1149,7 +1149,6 @@
   "app.containers.AccessibilityStatement.title": "بيان إمكانية الوصول",
   "app.containers.AccessibilityStatement.userGeneratedContent": "محتوى من إنشاء المستخدم",
   "app.containers.AccessibilityStatement.workshops": "ورشات العمل",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "حدد المشروع",
   "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "سيسمح لك استخدام Content Builder باستخدام خيارات تخطيط أكثر تقدمًا. بالنسبة للغات التي لا يتوفر فيها محتوى في Content Builder، سيتم عرض محتوى وصف المشروع العادي بدلاً من ذلك.",
   "app.containers.AdminPage.ProjectDescription.linkText": "تعديل الوصف في Content Builder",
   "app.containers.AdminPage.ProjectDescription.saveError": "حدث خطأ ما أثناء حفظ وصف المشروع.",

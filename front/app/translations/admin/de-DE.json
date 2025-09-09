@@ -1716,7 +1716,6 @@
   "app.containers.AdminPage.DashboardPage.resolutionday": "in Tagen",
   "app.containers.AdminPage.DashboardPage.resolutionmonth": "in Monaten",
   "app.containers.AdminPage.DashboardPage.resolutionweek": "in Wochen",
-  "app.containers.AdminPage.DashboardPage.selectProject": "Projekt auswählen",
   "app.containers.AdminPage.DashboardPage.selectedProject": "aktueller Projektfilter",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "aktueller Themenfilter",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Entdecken Sie, was auf Ihrer Plattform passiert.",

@@ -1716,7 +1716,6 @@
   "app.containers.AdminPage.DashboardPage.resolutionday": "dienomis",
   "app.containers.AdminPage.DashboardPage.resolutionmonth": "mėnesiais",
   "app.containers.AdminPage.DashboardPage.resolutionweek": "savaitėmis",
-  "app.containers.AdminPage.DashboardPage.selectProject": "Pasirinkite projektą",
   "app.containers.AdminPage.DashboardPage.selectedProject": "dabartinio projekto filtras",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "dabartinis žymių filtras",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Sužinokite, kas vyksta jūsų platformoje.",

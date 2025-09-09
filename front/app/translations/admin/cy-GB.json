@@ -1716,7 +1716,6 @@
   "app.containers.AdminPage.DashboardPage.resolutionday": "mewn Dyddiau",
   "app.containers.AdminPage.DashboardPage.resolutionmonth": "mewn Misoedd",
   "app.containers.AdminPage.DashboardPage.resolutionweek": "mewn Wythnosau",
-  "app.containers.AdminPage.DashboardPage.selectProject": "Dewiswch brosiect",
   "app.containers.AdminPage.DashboardPage.selectedProject": "hidlydd prosiect cyfredol",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "hidlydd tag cyfredol",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Darganfyddwch beth sy'n digwydd ar eich platfform.",

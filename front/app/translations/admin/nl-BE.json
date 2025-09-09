@@ -1716,7 +1716,6 @@
   "app.containers.AdminPage.DashboardPage.resolutionday": "per dag",
   "app.containers.AdminPage.DashboardPage.resolutionmonth": "per maand",
   "app.containers.AdminPage.DashboardPage.resolutionweek": "per week",
-  "app.containers.AdminPage.DashboardPage.selectProject": "Selecteer project",
   "app.containers.AdminPage.DashboardPage.selectedProject": "huidige projectfilter",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "huidige tag-filter",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Ontdek wat er gebeurt op je platform.",

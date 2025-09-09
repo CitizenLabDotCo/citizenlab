@@ -1149,7 +1149,6 @@
   "app.containers.AccessibilityStatement.title": "Saavutettavuusseloste",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Käyttäjien luoma sisältö",
   "app.containers.AccessibilityStatement.workshops": "Työpajat",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Valitse projekti",
   "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Content Builderin avulla voit käyttää kehittyneempiä asetteluvaihtoehtoja. Niissä kielissä, joissa sisältöä ei ole saatavilla sisällönrakennusohjelmassa, tavallinen projektin kuvaussisältö näytetään sen sijaan.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Muokkaa kuvausta Content Builderissa",
   "app.containers.AdminPage.ProjectDescription.saveError": "Jotain meni pieleen projektin kuvausta tallennettaessa.",

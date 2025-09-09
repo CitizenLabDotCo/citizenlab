@@ -1716,7 +1716,6 @@
   "app.containers.AdminPage.DashboardPage.resolutionday": "u danima",
   "app.containers.AdminPage.DashboardPage.resolutionmonth": "u Mjesecima",
   "app.containers.AdminPage.DashboardPage.resolutionweek": "u Tjednima",
-  "app.containers.AdminPage.DashboardPage.selectProject": "Odaberite projekt",
   "app.containers.AdminPage.DashboardPage.selectedProject": "filtar trenutnog projekta",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "trenutni filtar oznake",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Saznajte što se događa na vašoj platformi.",

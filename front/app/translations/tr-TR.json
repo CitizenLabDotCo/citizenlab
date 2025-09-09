@@ -1149,7 +1149,6 @@
   "app.containers.AccessibilityStatement.title": "Erişilebilirlik Beyanı",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Kullanıcılar tarafından oluşturulan içerikler",
   "app.containers.AccessibilityStatement.workshops": "Atölyeler",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Proje seçiniz",
   "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "İçerik Oluşturucuyu kullanmak daha gelişmiş düzen seçeneklerini kullanmanızı sağlayacaktır. İçerik oluşturucuda içerik bulunmayan diller için bunun yerine normal proje açıklaması içeriği görüntülenecektir.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Content Builder'da açıklamayı düzenleme",
   "app.containers.AdminPage.ProjectDescription.saveError": "Proje açıklamasını kaydederken bir şeyler ters gitti.",

@@ -1149,7 +1149,6 @@
   "app.containers.AccessibilityStatement.title": "Izjava o pristupačnosti",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Sadržaj koji generiše korisnik",
   "app.containers.AccessibilityStatement.workshops": "Radionice",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Select project",
   "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Using the Content Builder will let you use more advanced layout options. For languages where no content is available in the content builder, the regular project description content will be displayed instead.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Edit description in Content Builder",
   "app.containers.AdminPage.ProjectDescription.saveError": "Something went wrong while saving the project description.",

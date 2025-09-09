@@ -1716,7 +1716,6 @@
   "app.containers.AdminPage.DashboardPage.resolutionday": "i dage",
   "app.containers.AdminPage.DashboardPage.resolutionmonth": "i måneder",
   "app.containers.AdminPage.DashboardPage.resolutionweek": "i uger",
-  "app.containers.AdminPage.DashboardPage.selectProject": "Vælg projekt",
   "app.containers.AdminPage.DashboardPage.selectedProject": "nuværende projektfilter",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "aktuelt tag-filter",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Find ud af, hvad der sker på din platform.",
