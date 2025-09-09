@@ -10,7 +10,7 @@ de:
       "comment_on_idea_you_follow": Ein Kommentar zu einer Idee, der Sie folgen
       "community_monitor_report": Gemeinschaftspuls-Bericht
       "cosponsor_of_your_idea": Nutzer*in nimmt meine Einladung an, meinen Vorschlag zu unterstützen
-      "event_registration_confirmation": Anmeldebestätigung für die Veranstaltung
+      "event_registration_confirmation": Anmeldebestätigung für Veranstaltungen
       "idea_marked_as_spam": Beitrag wird als Spam gekennzeichnet
       "idea_published": Veröffentlichung des Beitrags
       "invitation_to_cosponsor_idea": Einladung zur Unterstützung eines Vorschlags
@@ -467,7 +467,7 @@ de:
       link: Link
     your_input_in_screening:
       main_header:
-        idea: 'Ihre Idee ist in "%{prescreening_status_title}"'
+        idea: 'Ihr Beitrag ist in "%{prescreening_status_title}"'
         question: 'Ihre Frage ist in "%{prescreening_status_title}"'
         contribution: 'Ihr Beitrag ist in "%{prescreening_status_title}"'
         project: 'Ihr Projekt ist in "%{prescreening_status_title}"'
@@ -488,7 +488,7 @@ de:
     native_survey_not_submitted:
       subject: '%{organizationName}: Fast geschafft! Reichen Sie Ihre Antworten ein'
       preheader: 'Sie haben Ihre Umfrageantwort nicht auf der Teilnahmeplattform von %{organizationName}ausgefüllt.'
-      title: 'Fast geschafft! Reichen Sie Ihre Antworten ein'
+      title: 'Fast fertig! Antwort einsenden nicht vergessen'
       event_description: 'Sie haben begonnen, Ihre Antworten zu %{phaseTitle} zu teilen, haben sie aber nicht abgeschickt. Klicken Sie auf den Button unten, um dort fortzufahren, wo Sie aufgehört haben.'
       cta_button: 'Beantwortung der Umfrage fortsetzen'
       submissions_close: 'Einsendeschluss ist %{phaseEndDate}.'
@@ -527,7 +527,7 @@ de:
           description: 'Beschreibung'
           project: 'Projekt'
       cta_button: 'Veranstaltung ansehen'
-      cta_add_to_calendar: 'Zu Ihrem Kalender hinzufügen'
+      cta_add_to_calendar: 'Zum Kalender hinzufügen'
     voting_phase_started:
       subject: '%{organizationName}: Die Abstimmungsphase für %{projectName} hat begonnen'
       preheader: 'Die Abstimmungsphase für %{projectName} hat auf der Teilnahme-Plattform %{organizationName} begonnen'
@@ -575,7 +575,7 @@ de:
         user_who_submitted_the_input: 'Nutzende, die*der den Beitrag veröffentlicht hat'
         user_who_voted: 'Nutzer*innen, die abgestimmt haben'
         user_who_was_invited: 'Eingeladene*r Nutzer*in'
-        user_with_unsubmitted_survey: 'Nutzer*innen, die ihre Umfrage begonnen, aber noch nicht abgeschickt haben'
+        user_with_unsubmitted_survey: 'Nutzer*innen mit einer nicht eingereichten Umfrage'
         user_with_unsubmitted_votes: 'Nutzer*innen, die Ihre Stimme(n) nicht abgeschickt haben'
         users_who_engaged_but_not_voted: 'Nutzer*innen, die sich mit dem Projekt beschäftigt, aber nicht abgestimmt haben'
         users_who_engaged_with_the_project: 'Nutzer*in interagiert mit Beitrag'
