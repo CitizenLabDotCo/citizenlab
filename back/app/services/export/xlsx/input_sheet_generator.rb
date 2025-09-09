@@ -50,21 +50,23 @@ module Export
       end
 
       def title_multiloc_report_fields
-        locales = AppConfiguration.instance.settings['core']['locales']
-        title_header = column_header_for('title')
+        input_multiloc_report_fields('title_multiloc', column_header_for('title'))
+      end
 
-        locales.map do |locale|
-          column_header = locales.size > 1 ? "#{title_header} (#{locale})" : title_header
+      def body_multiloc_report_fields
+        input_multiloc_report_fields('body_multiloc', column_header_for('description'))
+      end
 
-          ComputedFieldForReport.new(
-            column_header,
-            lambda do |input|
-              if input.title_multiloc&.key?(locale.to_s)
-                multiloc_service.t(input.title_multiloc, locale)
-              end
-            end
-          )
-        end
+      def input_multiloc_report_fields(attribute_name, column_header)
+        ComputedFieldForReport.new(
+          column_header,
+          lambda do |input|
+            attribute = input.send(attribute_name)
+            value = multiloc_service.t(attribute)
+            value = attribute&.values&.reject(&:blank?)&.first if value.blank?
+            Utils.new.convert_to_text_long_lines(value)
+          end
+        )
       end
 
       def author_name_report_field
@@ -181,8 +183,9 @@ module Export
               next
             end
 
-            input_fields.concat(title_multiloc_report_fields) if field.code == 'title_multiloc'
-            input_fields << Export::CustomFieldForExport.new(field, @value_visitor) unless field.code == 'title_multiloc'
+            input_fields << title_multiloc_report_fields if field.code == 'title_multiloc'
+            input_fields << body_multiloc_report_fields if field.code == 'body_multiloc'
+            input_fields << Export::CustomFieldForExport.new(field, @value_visitor) unless field.code == 'title_multiloc' || field.code == 'body_multiloc'
             input_fields << Export::CustomFieldForExport.new(field.other_option_text_field, @value_visitor) if field.other_option_text_field
             input_fields << Export::CustomFieldForExport.new(field.follow_up_text_field, @value_visitor) if field.follow_up_text_field
           end
