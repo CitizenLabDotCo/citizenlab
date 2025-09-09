@@ -35,9 +35,10 @@ class XlsxService
     workbook = RubyXL::Parser.parse_buffer(xlsx)
     worksheet = workbook.worksheets[0]
     worksheet.drop(1).map do |row|
+      xlsx_utils = Export::Xlsx::Utils.new
       (row&.cells || []).compact.filter_map do |cell|
         if cell.value
-          column_header = utils.add_duplicate_column_name_suffix(worksheet[0][cell.column]&.value)
+          column_header = xlsx_utils.add_duplicate_column_name_suffix(worksheet[0][cell.column]&.value)
           [column_header, cell.value]
         end
       end.to_h
