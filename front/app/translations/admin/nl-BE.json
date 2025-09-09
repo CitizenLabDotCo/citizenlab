@@ -1281,7 +1281,7 @@
   "app.containers.Admin.projects.project.participation.selectPeriod": "Selecteer periode",
   "app.containers.Admin.projects.project.participation.usersByAge": "Gebruikers per leeftijd",
   "app.containers.Admin.projects.project.participation.usersByGender": "Gebruikers per geslacht",
-  "app.containers.Admin.projects.project.participation.usersSubtitle": "Krijg een overzicht van de deelnemers aan dit project die een account hebben. Anonieme deelname wordt niet in rekening gebracht.",
+  "app.containers.Admin.projects.project.participation.usersSubtitle": "Krijg een overzicht van de deelnemers aan dit project die een account hebben. Anonieme deelname wordt niet meegerekend.",
   "app.containers.Admin.projects.project.participation.usersTab": "Gebruikers",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.EmailModal.required": "Vereist",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.addAQuestion": "Voeg een vraag toe",
