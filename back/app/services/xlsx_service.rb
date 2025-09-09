@@ -141,8 +141,8 @@ class XlsxService
 
     columns = [
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },
-      { header: 'title',                f: ->(i) { multiloc_service.t(i.title_multiloc) } },
-      { header: 'description',          f: ->(i) { Export::Xlsx::Utils.new.convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) }, width: 10 },
+      { header: 'title',                f: ->(i) { multiloc_with_fallback_locale(i, :title_multiloc) } },
+      { header: 'description',          f: ->(i) { multiloc_with_fallback_locale(i, :body_multiloc) }, width: 10 },
       { header: 'author_name',          f: ->(i) { format_author_name i } },
       { header: 'author_email',         f: ->(i) { i.author&.email } },
       { header: 'author_id',            f: ->(i) { i.author_id } },
@@ -239,6 +239,17 @@ class XlsxService
 
   def multiloc_service
     @multiloc_service ||= MultilocService.new app_configuration: AppConfiguration.instance
+  end
+
+  def multiloc_with_fallback_locale(record, attribute_name)
+    attribute = record.send(attribute_name)
+    value = multiloc_service.t(attribute)
+
+    if value.blank? && attribute&.values
+      value = attribute.values.compact_blank.first || ''
+    end
+
+    Export::Xlsx::Utils.new.convert_to_text_long_lines(value)
   end
 
   def title_multiloc_for(record, field, options)
