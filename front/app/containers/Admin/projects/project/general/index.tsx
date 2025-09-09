@@ -5,7 +5,10 @@ import { isEmpty } from 'lodash-es';
 import { useParams, useLocation } from 'react-router-dom';
 import { Multiloc, UploadFile, CLErrors } from 'typings';
 
-import useProjectFiles from 'api/project_files/useProjectFiles';
+import { IFileAttachmentData } from 'api/file_attachments/types';
+import useFileAttachments from 'api/file_attachments/useFileAttachments';
+import { IFileData } from 'api/files/types';
+import useAddFile from 'api/files/useAddFile';
 import useAddProjectImage from 'api/project_images/useAddProjectImage';
 import useDeleteProjectImage from 'api/project_images/useDeleteProjectImage';
 import useProjectImages, {
@@ -20,7 +23,7 @@ import useAddProject from 'api/projects/useAddProject';
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
-import { useSyncProjectFiles } from 'hooks/files/useSyncProjectFiles';
+import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -39,13 +42,18 @@ import {
 import SlugInput from 'components/admin/SlugInput';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import Highlighter from 'components/Highlighter';
+import FileRepositorySelectAndUpload from 'components/UI/FileRepositorySelectAndUpload';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import Link from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
-import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
+import {
+  convertUrlToUploadFile,
+  generateTemporaryFileAttachment,
+  isUploadFile,
+} from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { usePermission } from 'utils/permissions';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
@@ -54,7 +62,6 @@ import { validateSlug } from 'utils/textUtils';
 import { fragmentId } from '../projectHeader';
 import { fragmentId as folderFragmentId } from '../projectHeader/LinkToFolderSettings';
 
-import AttachmentsDropzone from './components/AttachmentsDropzone';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
 import ProjectCardImageDropzone from './components/ProjectCardImageDropzone';
 import ProjectCardImageTooltip from './components/ProjectCardImageTooltip';
@@ -75,10 +82,6 @@ export type TOnProjectAttributesDiffChangeFunction = (
   projectAttributesDiff: IUpdatedProjectProperties,
   submitState?: ISubmitState
 ) => void;
-
-type FileOrdering = {
-  [id: string]: number | undefined;
-};
 
 const AdminProjectsProjectGeneral = () => {
   const { formatMessage } = useIntl();
@@ -101,8 +104,19 @@ const AdminProjectsProjectGeneral = () => {
   const { mutateAsync: updateProject } = useUpdateProject();
   const { mutateAsync: addProject } = useAddProject();
 
-  const { data: remoteProjectFiles } = useProjectFiles(projectId || null);
-  const syncProjectFiles = useSyncProjectFiles();
+  const syncProjectFiles = useSyncFiles();
+
+  // File Attachments
+  const { mutate: addFile } = useAddFile();
+  const { data: remoteProjectFileAttachments } = useFileAttachments({
+    attachable_id: projectId,
+    attachable_type: 'Project',
+  });
+  const [projectFileAttachments, setProjectFileAttachments] = useState<
+    IFileAttachmentData[] | undefined
+  >(remoteProjectFileAttachments?.data);
+  const [projectFileAttachmentsToRemove, setProjectFileAttachmentsToRemove] =
+    useState<IFileAttachmentData[]>([]);
 
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
 
@@ -113,12 +127,6 @@ const AdminProjectsProjectGeneral = () => {
   const [titleError, setTitleError] = useState<Multiloc | null>(null);
   // We should probably not have slug, publicationStatus, etc.
   // both in projectAttributesDiff and as separate state.
-  const [projectFiles, setProjectFiles] = useState<UploadFile[]>([]);
-  const [initialProjectFilesOrdering, setInitialProjectFilesOrdering] =
-    useState<FileOrdering>({});
-  const [projectFilesToRemove, setProjectFilesToRemove] = useState<
-    UploadFile[]
-  >([]);
   const [projectCardImage, setProjectCardImage] = useState<UploadFile | null>(
     null
   );
@@ -152,46 +160,10 @@ const AdminProjectsProjectGeneral = () => {
   }, [project]);
 
   useEffect(() => {
-    (async () => {
-      if (remoteProjectFiles) {
-        const nextProjectFilesPromises = remoteProjectFiles.data.map(
-          (projectFile) => {
-            const url = projectFile.attributes.file.url;
-            const filename = projectFile.attributes.name;
-            const id = projectFile.id;
-            const projectUploadFilePromise = convertUrlToUploadFile(
-              url,
-              id,
-              filename
-            );
-            return projectUploadFilePromise;
-          }
-        );
-
-        const nextProjectFiles = (
-          await Promise.all(nextProjectFilesPromises)
-        ).filter(isUploadFile);
-
-        setProjectFiles(nextProjectFiles);
-        /*
-         * Alternative deep copy methods like deepClone, structuredClone, and JSON.parse(JSON.stringify(obj))
-         * have inconsistencies, so we create an object with only the necessary properties for ordering.
-         * This approach is fine for now as the number of files is expected to be small. We can optimize if performance becomes an issue.
-         * We are also using an object here so lookup is O(1).
-         */
-        setInitialProjectFilesOrdering(
-          nextProjectFiles.reduce((acc, file) => {
-            // TODO: Fix this the next time the file is edited.
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            if (file?.id) {
-              acc[file.id] = file.ordering;
-            }
-            return acc;
-          }, {})
-        );
-      }
-    })();
-  }, [remoteProjectFiles]);
+    if (remoteProjectFileAttachments) {
+      setProjectFileAttachments(remoteProjectFileAttachments.data);
+    }
+  }, [remoteProjectFileAttachments]);
 
   useEffect(() => {
     (async () => {
@@ -272,27 +244,79 @@ const AdminProjectsProjectGeneral = () => {
     setCroppedProjectCardBase64(base64);
   };
 
-  const handleProjectFileOnAdd = (newProjectFile: UploadFile) => {
-    let isDuplicate = false;
+  const handleProjectFileOnAdd = (fileToAdd: UploadFile) => {
+    // Upload the file to the Data Repository, so we can make the attachment later.
+    addFile(
+      {
+        content: fileToAdd.base64,
+        project: projectId,
+        name: fileToAdd.name,
+        category: 'other', // Default to 'other' when added from phase setup
+        ai_processing_allowed: false, // Default to false when added from phase setup
+      },
+      {
+        onSuccess: (newFile) => {
+          // Create a temporary file attachment to add to the state, so the user sees it in the list.
+          const temporaryFileAttachment = generateTemporaryFileAttachment({
+            fileId: newFile.data.id,
+            attachableId: projectId,
+            attachableType: 'Project',
+            position: projectFileAttachments
+              ? projectFileAttachments.length
+              : 0,
+          });
 
-    setProjectFiles((projectFiles) => {
-      isDuplicate = projectFiles.some(
-        (file) => file.base64 === newProjectFile.base64
-      );
+          const isDuplicate = projectFileAttachments?.some((fileAttachment) => {
+            return (
+              fileAttachment.relationships.file.data.id ===
+              temporaryFileAttachment.relationships.file.data.id
+            );
+          });
 
-      return isDuplicate ? projectFiles : [...projectFiles, newProjectFile];
-    });
-    setSubmitState((submitState) => (isDuplicate ? submitState : 'enabled'));
-  };
-  const handleProjectFileOnRemove = (projectFileToRemove: UploadFile) => {
-    setSubmitState('enabled');
-    setProjectFiles((projectFiles) =>
-      projectFiles.filter((file) => file.base64 !== projectFileToRemove.base64)
+          setProjectFileAttachments(
+            isDuplicate
+              ? projectFileAttachments
+              : [...(projectFileAttachments || []), temporaryFileAttachment]
+          );
+
+          setSubmitState(isDuplicate ? submitState : 'enabled');
+        },
+      }
     );
-    setProjectFilesToRemove((projectFilesToRemove) => [
-      ...projectFilesToRemove,
+  };
+
+  const handleProjectFileOnRemove = (
+    projectFileToRemove: IFileAttachmentData
+  ) => {
+    setProjectFileAttachments((projectFileAttachments) =>
+      projectFileAttachments?.filter(
+        (fileAttachment) => fileAttachment.id !== projectFileToRemove.id
+      )
+    );
+    setProjectFileAttachmentsToRemove((projectFileAttachmentsToRemove) => [
+      ...projectFileAttachmentsToRemove,
       projectFileToRemove,
     ]);
+  };
+
+  const handleFilesReorder = (updatedFiles: IFileAttachmentData[]) => {
+    setProjectFileAttachments(updatedFiles);
+    setSubmitState('enabled');
+  };
+
+  const handleProjectFileOnAttach = (fileToAttach: IFileData) => {
+    const temporaryFileAttachment = generateTemporaryFileAttachment({
+      fileId: fileToAttach.id,
+      attachableId: projectId,
+      attachableType: 'Project',
+      position: projectFileAttachments ? projectFileAttachments.length : 0,
+    });
+
+    setProjectFileAttachments((projectFileAttachments) => [
+      ...(projectFileAttachments || []),
+      temporaryFileAttachment,
+    ]);
+    setSubmitState('enabled');
   };
 
   const handleTopicsChange = (topicIds: string[]) => {
@@ -374,14 +398,27 @@ const AdminProjectsProjectGeneral = () => {
               })
             : null;
 
-        const projectFilesPromise = latestProjectId
-          ? syncProjectFiles({
-              projectId: latestProjectId,
-              projectFiles,
-              filesToRemove: projectFilesToRemove,
-              fileOrdering: initialProjectFilesOrdering,
-            })
-          : undefined;
+        const initialFileAttachmentOrdering: Record<
+          string,
+          number | undefined
+        > =
+          remoteProjectFileAttachments?.data.reduce((acc, file) => {
+            if (file.id) {
+              acc[file.id] = file.attributes.position;
+            }
+            return acc;
+          }, {} as Record<string, number | undefined>) || {};
+
+        const projectFilesPromise =
+          latestProjectId && projectFileAttachments
+            ? syncProjectFiles({
+                attachableId: latestProjectId,
+                attachableType: 'Project',
+                fileAttachments: projectFileAttachments,
+                fileAttachmentsToRemove: projectFileAttachmentsToRemove,
+                fileAttachmentOrdering: initialFileAttachmentOrdering,
+              })
+            : undefined;
 
         await Promise.all([
           cardImageToAddPromise,
@@ -392,7 +429,7 @@ const AdminProjectsProjectGeneral = () => {
 
         setSubmitState('success');
         setProjectCardImageToRemove(null);
-        setProjectFilesToRemove([]);
+        // setProjectFilesToRemove([]);
         setProcessing(false);
 
         if (isNewProject && latestProjectId) {
@@ -487,10 +524,10 @@ const AdminProjectsProjectGeneral = () => {
     ? !projectCardImage.remote
     : false;
 
-  const handleFilesReorder = (updatedFiles: UploadFile[]) => {
-    setProjectFiles(updatedFiles);
-    setSubmitState('enabled');
-  };
+  // const handleFilesReorder = (updatedFiles: UploadFile[]) => {
+  //   setProjectFiles(updatedFiles);
+  //   setSubmitState('enabled');
+  // };
 
   const isNewProject = !projectId;
 
@@ -651,14 +688,27 @@ const AdminProjectsProjectGeneral = () => {
               />
             </StyledSectionField>
           )}
-
-          <AttachmentsDropzone
-            projectFiles={projectFiles}
-            apiErrors={apiErrors}
-            handleProjectFileOnAdd={handleProjectFileOnAdd}
-            handleProjectFileOnRemove={handleProjectFileOnRemove}
-            onFileReorder={handleFilesReorder}
-          />
+          <StyledSectionField>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.fileUploadLabel} />
+              <IconTooltip
+                content={
+                  <FormattedMessage {...messages.fileUploadLabelTooltip} />
+                }
+              />
+            </SubSectionTitle>
+            <FileRepositorySelectAndUpload
+              id="project-edit-form-file-uploader"
+              onFileAdd={handleProjectFileOnAdd}
+              onFileRemove={handleProjectFileOnRemove}
+              onFileReorder={handleFilesReorder}
+              onFileAttach={handleProjectFileOnAttach}
+              fileAttachments={projectFileAttachments}
+              enableDragAndDrop
+              apiErrors={apiErrors}
+              maxSizeMb={10}
+            />
+          </StyledSectionField>
         </Section>
         <Box
           {...(showStickySaveButton && {
