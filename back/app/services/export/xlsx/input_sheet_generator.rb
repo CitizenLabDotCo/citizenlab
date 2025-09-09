@@ -48,15 +48,15 @@ module Export
         ComputedFieldForReport.new(column_header_for('input_id'), ->(input) { input.id })
       end
 
-      def title_multiloc_report_fields
-        input_multiloc_report_fields('title_multiloc', column_header_for('title'))
+      def title_multiloc_report_field
+        input_multiloc_report_field('title_multiloc', column_header_for('title'))
       end
 
-      def body_multiloc_report_fields
-        input_multiloc_report_fields('body_multiloc', column_header_for('description'))
+      def body_multiloc_report_field
+        input_multiloc_report_field('body_multiloc', column_header_for('description'))
       end
 
-      def input_multiloc_report_fields(attribute_name, column_header)
+      def input_multiloc_report_field(attribute_name, column_header)
         ComputedFieldForReport.new(column_header, ->(input) { utils.multiloc_with_fallback_locale(input, attribute_name) })
       end
 
@@ -174,8 +174,8 @@ module Export
               next
             end
 
-            input_fields << title_multiloc_report_fields if field.code == 'title_multiloc'
-            input_fields << body_multiloc_report_fields if field.code == 'body_multiloc'
+            input_fields << title_multiloc_report_field if field.code == 'title_multiloc'
+            input_fields << body_multiloc_report_field if field.code == 'body_multiloc'
             input_fields << Export::CustomFieldForExport.new(field, @value_visitor) unless field.code == 'title_multiloc' || field.code == 'body_multiloc'
             input_fields << Export::CustomFieldForExport.new(field.other_option_text_field, @value_visitor) if field.other_option_text_field
             input_fields << Export::CustomFieldForExport.new(field.follow_up_text_field, @value_visitor) if field.follow_up_text_field
