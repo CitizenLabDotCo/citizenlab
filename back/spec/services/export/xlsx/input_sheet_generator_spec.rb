@@ -953,14 +953,7 @@ describe Export::Xlsx::InputSheetGenerator do
       end
 
       context 'with inputs and reactions' do
-        let!(:idea) do
-          create(
-            :idea,
-            title_multiloc: { 'en' => 'My idea', 'fr-FR' => 'Mon idée', 'nl-NL' => 'Mijn idee' },
-            project: phase.project,
-            phases: [phase]
-          )
-        end
+        let!(:idea) { create(:idea, project: phase.project, phases: [phase]) }
         let!(:likes) { create_list(:reaction, 2, reactable: idea, mode: 'up') }
         let!(:dislikes) { create_list(:reaction, 1, reactable: idea, mode: 'down') }
         let!(:neutral_reactions) { create_list(:reaction, 3, reactable: idea, mode: 'neutral') }
