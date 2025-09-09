@@ -70,7 +70,6 @@ const ChartFilters = ({
             <ProjectFilter
               projectId={projectId}
               hideLabel
-              placeholder={formatMessage(messages.selectProject)}
               onProjectFilter={onProjectFilter}
             />
           </Box>
