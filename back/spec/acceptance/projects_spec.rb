@@ -782,9 +782,7 @@ resource 'Projects' do
             sheet_name: 'Phase 1 Ideation',
             column_headers: [
               'ID',
-              'Title (en)',
-              'Title (fr-FR)',
-              'Title (nl-NL)',
+              'Title',
               'Description',
               'Attachments',
               'Tags',
@@ -812,8 +810,6 @@ resource 'Projects' do
               [
                 ideation_response.id,
                 ideation_response.title_multiloc['en'],
-                nil,
-                nil,
                 'It would improve the air quality!', # html tags are removed
                 '',
                 '',
@@ -867,9 +863,7 @@ resource 'Projects' do
             sheet_name: 'Phase 4 Voting',
             column_headers: [
               'ID',
-              'Title (en)',
-              'Title (fr-FR)',
-              'Title (nl-NL)',
+              'Title',
               'Description',
               'Attachments',
               'Tags',
@@ -896,8 +890,6 @@ resource 'Projects' do
               [
                 ideation_response.id,
                 ideation_response.title_multiloc['en'],
-                nil,
-                nil,
                 'It would improve the air quality!', # html tags are removed
                 '',
                 '',
@@ -1383,9 +1375,7 @@ resource 'Projects' do
               sheet_name: phase.title_multiloc['en'],
               column_headers: [
                 'ID',
-                'Title (en)',
-                'Title (fr-FR)',
-                'Title (nl-NL)',
+                'Title',
                 'Description',
                 'Attachments',
                 'Tags',
@@ -1412,8 +1402,6 @@ resource 'Projects' do
                 [
                   idea.id,
                   idea.title_multiloc['en'],
-                  nil,
-                  nil,
                   'It would improve the air quality!', # html tags are removed
                   '',
                   '',

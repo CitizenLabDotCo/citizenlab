@@ -63,7 +63,11 @@ module Export
           lambda do |input|
             attribute = input.send(attribute_name)
             value = multiloc_service.t(attribute)
-            value = attribute&.values&.reject(&:blank?)&.first if value.blank?
+
+            if value.blank? && attribute&.values
+              value = attribute.values.reject(&:blank?).first || ''
+            end
+
             Utils.new.convert_to_text_long_lines(value)
           end
         )
