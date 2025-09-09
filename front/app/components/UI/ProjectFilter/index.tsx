@@ -136,7 +136,7 @@ const ProjectFilter = ({
     [onProjectFilter]
   );
 
-  const label = formatMessage(messages.labelProjectFilter);
+  const label = formatMessage(messages.typeToSearchProjects);
 
   if (!allProjectOptions) {
     return (
@@ -169,6 +169,10 @@ const ProjectFilter = ({
           menuPortal: (base) => ({
             ...base,
             zIndex: 1001,
+          }),
+          control: (base) => ({
+            ...base,
+            minWidth: '300px',
           }),
         }}
         menuPosition="fixed"
