@@ -87,9 +87,19 @@ const FileRepositorySelectAndUpload = ({
       // Insert the file attachment at its new position
       fileAttachmentsCopy.splice(toIndex, 0, movedFileAttachment);
 
-      // Notify parent component about the change
-      onFileReorder?.(fileAttachmentsCopy);
-      return fileAttachmentsCopy;
+      // Create new objects with updated positions instead of mutating
+      const updatedFileAttachments = fileAttachmentsCopy.map(
+        (fileAttachment, index) => ({
+          ...fileAttachment,
+          attributes: {
+            ...fileAttachment.attributes,
+            position: index,
+          },
+        })
+      );
+
+      onFileReorder?.(updatedFileAttachments);
+      return updatedFileAttachments;
     });
   };
 

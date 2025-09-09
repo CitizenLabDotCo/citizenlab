@@ -297,6 +297,8 @@ const AdminProjectsProjectGeneral = () => {
       ...projectFileAttachmentsToRemove,
       projectFileToRemove,
     ]);
+
+    setSubmitState('enabled');
   };
 
   const handleFilesReorder = (updatedFiles: IFileAttachmentData[]) => {
