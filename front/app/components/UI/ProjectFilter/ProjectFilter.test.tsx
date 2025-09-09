@@ -63,11 +63,11 @@ describe('<ProjectFilter />', () => {
     render(
       <ProjectFilter
         onProjectFilter={mockOnProjectFilter}
-        placeholder="Select Project"
+        placeholder="Type to search projects"
       />
     );
 
-    expect(screen.getByText('Select Project')).toBeInTheDocument();
+    expect(screen.getByText('Type to search projects')).toBeInTheDocument();
   });
 
   it('displays the currently selected project', () => {
@@ -75,7 +75,7 @@ describe('<ProjectFilter />', () => {
       <ProjectFilter
         selectedProjectId="project-2"
         onProjectFilter={mockOnProjectFilter}
-        placeholder="Select Project"
+        placeholder="Type to search projects"
       />
     );
 
@@ -87,10 +87,10 @@ describe('<ProjectFilter />', () => {
     render(
       <ProjectFilter
         onProjectFilter={mockOnProjectFilter}
-        placeholder="Select Project"
+        placeholder="Type to search projects"
       />
     );
 
-    expect(screen.getByText('Select Project')).toBeInTheDocument();
+    expect(screen.getByText('Type to search projects')).toBeInTheDocument();
   });
 });
