@@ -84,7 +84,7 @@
   "app.components.Comments.seeTranslation": "Voir la traduction",
   "app.components.Comments.yourComment": "Votre commentaire",
   "app.components.CommonGroundResults.closeCallsDescription": "Ces affirmations ont suscité le plus de désaccords, les votes d'accord ou de désaccord étant les plus proches d'une répartition 50/50.",
-  "app.components.CommonGroundResults.closeCallsTitle": "Des appels évités de justesse",
+  "app.components.CommonGroundResults.closeCallsTitle": "Divergences",
   "app.components.CommonGroundResults.highestConsensusDescription": "Déclarations faisant l'objet d'un accord clair - la majorité des votants, qu'ils soient d'accord ou non, ont choisi la même position.",
   "app.components.CommonGroundResults.highestConsensusTitle": "Consensus le plus élevé",
   "app.components.CommonGroundResults.participantLabel": "participant",
