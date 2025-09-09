@@ -401,13 +401,11 @@ const AdminProjectsProjectGeneral = () => {
         const initialFileAttachmentOrdering: Record<
           string,
           number | undefined
-        > =
-          remoteProjectFileAttachments?.data.reduce((acc, file) => {
-            if (file.id) {
-              acc[file.id] = file.attributes.position;
-            }
-            return acc;
-          }, {} as Record<string, number | undefined>) || {};
+        > = Object.fromEntries(
+          remoteProjectFileAttachments?.data
+            .filter((file) => file.id)
+            .map((file) => [file.id!, file.attributes.position]) ?? []
+        );
 
         const projectFilesPromise =
           latestProjectId && projectFileAttachments
@@ -429,7 +427,7 @@ const AdminProjectsProjectGeneral = () => {
 
         setSubmitState('success');
         setProjectCardImageToRemove(null);
-        // setProjectFilesToRemove([]);
+        setProjectFileAttachmentsToRemove([]);
         setProcessing(false);
 
         if (isNewProject && latestProjectId) {
@@ -523,11 +521,6 @@ const AdminProjectsProjectGeneral = () => {
   const projectCardImageShouldBeSaved = projectCardImage
     ? !projectCardImage.remote
     : false;
-
-  // const handleFilesReorder = (updatedFiles: UploadFile[]) => {
-  //   setProjectFiles(updatedFiles);
-  //   setSubmitState('enabled');
-  // };
 
   const isNewProject = !projectId;
 
