@@ -84,7 +84,7 @@
   "app.components.Comments.seeTranslation": "Toon de vertaling",
   "app.components.Comments.yourComment": "Jouw reactie",
   "app.components.CommonGroundResults.closeCallsDescription": "Deze stellingen leidden tot de meeste onenigheid, met stemmen voor eens of oneens die het dichtst bij een 50/50 verdeling lagen.",
-  "app.components.CommonGroundResults.closeCallsTitle": "Bijna-ongelukken",
+  "app.components.CommonGroundResults.closeCallsTitle": "Nek-aan-nek",
   "app.components.CommonGroundResults.highestConsensusDescription": "Stellingen met duidelijke overeenstemming - de meerderheid van degenen die hebben gestemd is het eens of oneens en koos voor hetzelfde standpunt.",
   "app.components.CommonGroundResults.highestConsensusTitle": "Hoogste consensus",
   "app.components.CommonGroundResults.participantLabel": "deelnemer",
