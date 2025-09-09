@@ -15,7 +15,6 @@ module Export
       end
 
       def generate_sheet(workbook, sheetname)
-        utils = Utils.new
         sheetname = utils.sanitize_sheetname sheetname
         workbook.styles do |styles|
           column_header = styles.add_style(
@@ -58,7 +57,7 @@ module Export
       end
 
       def input_multiloc_report_fields(attribute_name, column_header)
-        ComputedFieldForReport.new(column_header, ->(input) { Utils.new.multiloc_with_fallback_locale(input, attribute_name) })
+        ComputedFieldForReport.new(column_header, ->(input) { utils.multiloc_with_fallback_locale(input, attribute_name) })
       end
 
       def author_name_report_field
@@ -238,7 +237,6 @@ module Export
       end
 
       def all_report_field_values_for(input)
-        utils = Utils.new
         all_report_fields.map do |field|
           utils.escape_formula field.value_from(input)
         end
@@ -260,6 +258,10 @@ module Export
         return input.author_name unless input.anonymous?
 
         I18n.t 'xlsx_export.anonymous'
+      end
+
+      def utils
+        @utils ||= Utils.new
       end
     end
   end

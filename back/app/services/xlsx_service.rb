@@ -35,10 +35,9 @@ class XlsxService
     workbook = RubyXL::Parser.parse_buffer(xlsx)
     worksheet = workbook.worksheets[0]
     worksheet.drop(1).map do |row|
-      xlsx_utils = Export::Xlsx::Utils.new
       (row&.cells || []).compact.filter_map do |cell|
         if cell.value
-          column_header = xlsx_utils.add_duplicate_column_name_suffix(worksheet[0][cell.column]&.value)
+          column_header = utils.add_duplicate_column_name_suffix(worksheet[0][cell.column]&.value)
           [column_header, cell.value]
         end
       end.to_h
@@ -70,7 +69,6 @@ class XlsxService
   end
 
   def generate_sheet(workbook, sheetname, columns, instances)
-    utils = Export::Xlsx::Utils.new
     sheetname = utils.sanitize_sheetname sheetname
     columns = columns.uniq { |c| c[:header] }
     workbook.styles do |s|
@@ -141,8 +139,8 @@ class XlsxService
 
     columns = [
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },
-      { header: 'title',                f: ->(i) { Export::Xlsx::Utils.new.multiloc_with_fallback_locale(i, :title_multiloc) } },
-      { header: 'description',          f: ->(i) { Export::Xlsx::Utils.new.multiloc_with_fallback_locale(i, :body_multiloc) }, width: 10 },
+      { header: 'title',                f: ->(i) { utils.multiloc_with_fallback_locale(i, :title_multiloc) } },
+      { header: 'description',          f: ->(i) { utils.multiloc_with_fallback_locale(i, :body_multiloc) }, width: 10 },
       { header: 'author_name',          f: ->(i) { format_author_name i } },
       { header: 'author_email',         f: ->(i) { i.author&.email } },
       { header: 'author_id',            f: ->(i) { i.author_id } },
@@ -187,7 +185,7 @@ class XlsxService
       { header: 'id',                 f: ->(c) { c.id }, skip_sanitization: true },
       { header: 'input',              f: ->(c) { multiloc_service.t(c.idea.title_multiloc) } },
       { header: 'input_id',           f: ->(c) { c.idea.id } },
-      { header: 'comment',            f: ->(c) { Export::Xlsx::Utils.new.convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10 },
+      { header: 'comment',            f: ->(c) { utils.convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10 },
       { header: 'likes_count', f: ->(c) { c.likes_count }, skip_sanitization: true },
       { header: 'author_name',        f: ->(c) { format_author_name c } },
       { header: 'author_email',       f: ->(c) { c.author&.email } },
@@ -297,8 +295,12 @@ class XlsxService
   # Remove any suffixes added for duplicate column names
   def remove_duplicate_header_suffix(headers)
     headers.map do |header|
-      Export::Xlsx::Utils.new.remove_duplicate_column_name_suffix header
+      utils.remove_duplicate_column_name_suffix header
     end
+  end
+
+  def utils
+    @utils ||= Export::Xlsx::Utils.new
   end
 end
 
