@@ -18,21 +18,27 @@ jest.mock('api/me/useAuthUser', () =>
   }))
 );
 
-jest.mock('api/projects/useProjects', () =>
+jest.mock('api/projects_mini_admin/useInfiniteProjectsMiniAdmin', () =>
   jest.fn(() => ({
     data: {
-      data: [
+      pages: [
         {
-          id: 'project-1',
-          attributes: {
-            title_multiloc: { en: 'Test Project 1' },
-          },
-        },
-        {
-          id: 'project-2',
-          attributes: {
-            title_multiloc: { en: 'Test Project 2' },
-          },
+          data: [
+            {
+              id: 'project-1',
+              attributes: {
+                title_multiloc: { en: 'Test Project 1' },
+                publication_status: 'published',
+              },
+            },
+            {
+              id: 'project-2',
+              attributes: {
+                title_multiloc: { en: 'Test Project 2' },
+                publication_status: 'published',
+              },
+            },
+          ],
         },
       ],
     },
