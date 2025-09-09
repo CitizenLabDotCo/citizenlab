@@ -87,19 +87,22 @@ const FileRepositorySelectAndUpload = ({
       // Insert the file attachment at its new position
       fileAttachmentsCopy.splice(toIndex, 0, movedFileAttachment);
 
-      // Create new objects with updated positions instead of mutating
-      const updatedFileAttachments = fileAttachmentsCopy.map(
-        (fileAttachment, index) => ({
-          ...fileAttachment,
-          attributes: {
-            ...fileAttachment.attributes,
-            position: index,
-          },
-        })
+      // Update positions (order values) for the file attachments
+      const fileAttachmentsUpdatedPositions = fileAttachmentsCopy.map(
+        (fileAttachment, index) =>
+          fileAttachment.attributes.position !== index
+            ? {
+                ...fileAttachment,
+                attributes: {
+                  ...fileAttachment.attributes,
+                  position: index,
+                },
+              }
+            : fileAttachment
       );
 
-      onFileReorder?.(updatedFileAttachments);
-      return updatedFileAttachments;
+      onFileReorder?.(fileAttachmentsUpdatedPositions);
+      return fileAttachmentsUpdatedPositions;
     });
   };
 
