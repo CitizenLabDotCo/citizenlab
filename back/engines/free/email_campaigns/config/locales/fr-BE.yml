@@ -438,7 +438,7 @@ fr-BE:
       no_unread_notifications: "Il est temps de recréer de l'activité ! Visitez la plateforme pour découvrir ce qu'il s'y passe."
       unread_notifications: "Vous avez de nouvelles notifications ! Visitez la plate-forme pour découvrir ce qu'il s'y passe."
     threshold_reached_for_admin:
-      cta_button: 'Passez cette proposition à l''étape suivante'
+      cta_button: 'Passez cette proposition aux étapes suivantes'
       title: 'Une proposition a atteint le nombre de voix requis !'
       subject: '"%{input_title}" a atteint le nombre de voix requis sur votre plateforme'
       preheader: 'Assurez-vous de passer aux étapes suivantes'
@@ -488,7 +488,7 @@ fr-BE:
     voting_basket_submitted:
       subject: '%{organizationName}: Vous avez voté avec succès'
       preheader: 'Votre vote a bien été enregistré sur la plateforme de participation de %{organizationName}'
-      title: 'Vous avez voté avec succès'
+      title: 'Votre vote a bien été pris en compte.'
       event_description: 'Merci de votre participation. Vos votes ont bien été enregistrés. Vous pouvez consulter et gérer vos votes sur la plateforme %{organizationName}.'
       cta_button: 'Voir les votes soumis'
       cta_message: 'Cliquez sur le bouton ci-dessous pour participer'
@@ -642,7 +642,7 @@ fr-BE:
         user_is_given_admin_rights: 'L''utilisateur reçoit des droits d''administrateur'
         user_is_given_folder_moderator_rights: 'L''utilisateur se voit attribuer des droits de gestionnaire de dossier'
         user_is_given_project_moderator_rights: 'L''utilisateur se voit attribuer des droits de gestionnaire de projet'
-        user_is_invited_to_platform: 'L''utilisateur est invité à se rendre sur la plate-forme'
+        user_is_invited_to_platform: 'L''utilisateur est invité à se rendre sur la plateforme'
         user_is_invited_to_cosponsor_a_proposal: 'Un utilisateur est invité à soutenir une proposition'
         user_is_mentioned: 'L''utilisateur est mentionné'
         user_is_mentioned_in_internal_comment: 'L''utilisateur est mentionné dans un commentaire interne'
