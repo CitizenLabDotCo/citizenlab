@@ -45,12 +45,12 @@ module Export
 
       attr_reader :inputs, :phase, :fields_in_form, :participation_method, :include_private_attributes, :multiloc_service, :url_service
 
-      def platform_locales
-        AppConfiguration.instance.settings['core']['locales']
+      def input_id_report_field
+        ComputedFieldForReport.new(column_header_for('input_id'), ->(input) { input.id })
       end
 
       def title_multiloc_report_fields
-        locales = platform_locales
+        locales = AppConfiguration.instance.settings['core']['locales']
         title_header = column_header_for('title')
 
         locales.map do |locale|
@@ -65,10 +65,6 @@ module Export
             end
           )
         end
-      end
-
-      def input_id_report_field
-        ComputedFieldForReport.new(column_header_for('input_id'), ->(input) { input.id })
       end
 
       def author_name_report_field
