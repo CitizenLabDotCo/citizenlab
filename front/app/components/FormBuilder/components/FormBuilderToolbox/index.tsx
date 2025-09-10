@@ -28,9 +28,11 @@ import { generateTempId, isNilOrError } from 'utils/helperUtils';
 import messages from '../messages';
 
 import BuiltInFields from './BuiltInFields';
+import DraggableToolboxItem from './DraggableToolboxItem';
 import LayoutFields from './LayoutFields';
-import ToolboxItem from './ToolboxItem';
 import { getInitialLinearScaleLabel } from './utils';
+import { Drop } from '../DragAndDrop';
+import { fieldAreaDNDType } from '../FormFields/constants';
 
 interface FormBuilderToolboxProps {
   onAddField: (field: IFlatCreateCustomField, index: number) => void;
@@ -177,7 +179,7 @@ const FormBuilderToolbox = ({
       data-cy="e2e-form-builder-toolbox"
     >
       <Box overflowY="auto" w="100%" display="inline">
-        <LayoutFields addField={addField} builderConfig={builderConfig} />
+        <LayoutFields builderConfig={builderConfig} />
         {builderConfig.displayBuiltInFields && (
           <BuiltInFields
             move={move}
@@ -216,117 +218,119 @@ const FormBuilderToolbox = ({
             />
           )}
         </Box>
-        <ToolboxItem
-          icon="survey-short-answer-2"
-          label={formatMessage(messages.shortAnswer)}
-          onClick={() => addField('text')}
-          data-cy="e2e-short-answer"
-          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
-          inputType="text"
-          disabled={isCustomFieldsDisabled}
-          showAIUpsell
-        />
-        <ToolboxItem
-          icon="survey-long-answer-2"
-          label={formatMessage(messages.longAnswer)}
-          onClick={() => addField('multiline_text')}
-          data-cy="e2e-long-answer"
-          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
-          inputType="multiline_text"
-          disabled={isCustomFieldsDisabled}
-          showAIUpsell
-        />
-        <ToolboxItem
-          icon="survey-single-choice"
-          label={formatMessage(messages.singleChoice)}
-          onClick={() => addField('select')}
-          data-cy="e2e-single-choice"
-          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
-          inputType="select"
-          disabled={isCustomFieldsDisabled}
-        />
-        <ToolboxItem
-          icon="survey-multiple-choice-2"
-          label={formatMessage(messages.multipleChoice)}
-          onClick={() => addField('multiselect')}
-          data-cy="e2e-multiple-choice"
-          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
-          inputType="multiselect"
-          disabled={isCustomFieldsDisabled}
-        />
-        <ToolboxItem
-          icon="image"
-          label={formatMessage(messages.multipleChoiceImage)}
-          onClick={() => addField('multiselect_image')}
-          data-cy="e2e-image-choice"
-          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
-          inputType="multiselect_image"
-          disabled={isCustomFieldsDisabled}
-        />
-        <ToolboxItem
-          icon="survey-linear-scale"
-          label={formatMessage(messages.linearScale)}
-          onClick={() => addField('linear_scale')}
-          data-cy="e2e-linear-scale"
-          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
-          inputType="linear_scale"
-          disabled={isCustomFieldsDisabled}
-        />
-        <ToolboxItem
-          icon="survey-ranking"
-          label={formatMessage(messages.ranking)}
-          onClick={() => addField('ranking')}
-          data-cy="e2e-ranking"
-          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
-          inputType="ranking"
-          disabled={isCustomFieldsDisabled}
-        />
-        <ToolboxItem
-          icon="rating"
-          label={formatMessage(messages.rating)}
-          onClick={() => addField('rating')}
-          data-cy="e2e-rating"
-          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
-          inputType="rating"
-          disabled={isCustomFieldsDisabled}
-        />
-        <ToolboxItem
-          icon="survey-sentiment"
-          label={formatMessage(messages.sentiment)}
-          onClick={() => addField('sentiment_linear_scale')}
-          data-cy="e2e-sentiment"
-          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
-          inputType="sentiment_linear_scale"
-          disabled={isCustomFieldsDisabled}
-        />
-        <ToolboxItem
-          icon="survey-matrix"
-          label={formatMessage(messages.matrix)}
-          onClick={() => addField('matrix_linear_scale')}
-          data-cy="e2e-matrix"
-          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
-          inputType="matrix_linear_scale"
-          disabled={isCustomFieldsDisabled}
-        />
+        <Drop id="toolbox" type={fieldAreaDNDType}>
+          <DraggableToolboxItem
+            index={0}
+            icon="survey-short-answer-2"
+            label={formatMessage(messages.shortAnswer)}
+            data-cy="e2e-short-answer"
+            fieldsToInclude={builderConfig.toolboxFieldsToInclude}
+            inputType="text"
+            disabled={isCustomFieldsDisabled}
+            showAIUpsell
+          />
+          <DraggableToolboxItem
+            index={1}
+            icon="survey-long-answer-2"
+            label={formatMessage(messages.longAnswer)}
+            data-cy="e2e-long-answer"
+            fieldsToInclude={builderConfig.toolboxFieldsToInclude}
+            inputType="multiline_text"
+            disabled={isCustomFieldsDisabled}
+            showAIUpsell
+          />
+          <DraggableToolboxItem
+            index={2}
+            icon="survey-single-choice"
+            label={formatMessage(messages.singleChoice)}
+            data-cy="e2e-single-choice"
+            fieldsToInclude={builderConfig.toolboxFieldsToInclude}
+            inputType="select"
+            disabled={isCustomFieldsDisabled}
+          />
+          <DraggableToolboxItem
+            index={3}
+            icon="survey-multiple-choice-2"
+            label={formatMessage(messages.multipleChoice)}
+            data-cy="e2e-multiple-choice"
+            fieldsToInclude={builderConfig.toolboxFieldsToInclude}
+            inputType="multiselect"
+            disabled={isCustomFieldsDisabled}
+          />
+          <DraggableToolboxItem
+            index={4}
+            icon="image"
+            label={formatMessage(messages.multipleChoiceImage)}
+            data-cy="e2e-image-choice"
+            fieldsToInclude={builderConfig.toolboxFieldsToInclude}
+            inputType="multiselect_image"
+            disabled={isCustomFieldsDisabled}
+          />
+          <DraggableToolboxItem
+            index={5}
+            icon="survey-linear-scale"
+            label={formatMessage(messages.linearScale)}
+            data-cy="e2e-linear-scale"
+            fieldsToInclude={builderConfig.toolboxFieldsToInclude}
+            inputType="linear_scale"
+            disabled={isCustomFieldsDisabled}
+          />
+          <DraggableToolboxItem
+            index={6}
+            icon="survey-ranking"
+            label={formatMessage(messages.ranking)}
+            data-cy="e2e-ranking"
+            fieldsToInclude={builderConfig.toolboxFieldsToInclude}
+            inputType="ranking"
+            disabled={isCustomFieldsDisabled}
+          />
+          <DraggableToolboxItem
+            index={7}
+            icon="rating"
+            label={formatMessage(messages.rating)}
+            data-cy="e2e-rating"
+            fieldsToInclude={builderConfig.toolboxFieldsToInclude}
+            inputType="rating"
+            disabled={isCustomFieldsDisabled}
+          />
+          <DraggableToolboxItem
+            index={8}
+            icon="survey-sentiment"
+            label={formatMessage(messages.sentiment)}
+            data-cy="e2e-sentiment"
+            fieldsToInclude={builderConfig.toolboxFieldsToInclude}
+            inputType="sentiment_linear_scale"
+            disabled={isCustomFieldsDisabled}
+          />
+          <DraggableToolboxItem
+            index={9}
+            icon="survey-matrix"
+            label={formatMessage(messages.matrix)}
+            data-cy="e2e-matrix"
+            fieldsToInclude={builderConfig.toolboxFieldsToInclude}
+            inputType="matrix_linear_scale"
+            disabled={isCustomFieldsDisabled}
+          />
 
-        <ToolboxItem
-          icon="survey-number-field"
-          label={formatMessage(messages.number)}
-          onClick={() => addField('number')}
-          data-cy="e2e-number-field"
-          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
-          inputType="number"
-          disabled={isCustomFieldsDisabled}
-        />
-        <ToolboxItem
-          icon="upload-file"
-          label={formatMessage(messages.fileUpload)}
-          onClick={() => addField('file_upload')}
-          data-cy="e2e-file-upload-field"
-          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
-          inputType="file_upload"
-          disabled={isCustomFieldsDisabled}
-        />
+          <DraggableToolboxItem
+            index={10}
+            icon="survey-number-field"
+            label={formatMessage(messages.number)}
+            data-cy="e2e-number-field"
+            fieldsToInclude={builderConfig.toolboxFieldsToInclude}
+            inputType="number"
+            disabled={isCustomFieldsDisabled}
+          />
+          <DraggableToolboxItem
+            index={11}
+            icon="upload-file"
+            label={formatMessage(messages.fileUpload)}
+            data-cy="e2e-file-upload-field"
+            fieldsToInclude={builderConfig.toolboxFieldsToInclude}
+            inputType="file_upload"
+            disabled={isCustomFieldsDisabled}
+          />
+        </Drop>
         <Box>
           {builderConfig.toolboxFieldsToInclude.includes('point') && ( // We want to show the mapping section
             <>
@@ -341,48 +345,50 @@ const FormBuilderToolbox = ({
               >
                 {formatMessage(messages.mapping)}
               </Title>
-              <ToolboxItem
-                icon="dropPin"
-                label={formatMessage(messages.dropPin)}
-                onClick={() => addField('point')}
-                data-cy="e2e-point-field"
-                fieldsToInclude={builderConfig.toolboxFieldsToInclude}
-                inputType="point"
-                disabled={!isFormMappingEnabled}
-                disabledTooltipMessage={messages.mappingNotInCurrentLicense}
-              />
-              <>
-                <ToolboxItem
-                  icon="drawRoute"
-                  label={formatMessage(messages.drawRoute)}
-                  onClick={() => addField('line')}
-                  data-cy="e2e-line-field"
+              <Drop id="toolbox-mapping" type={fieldAreaDNDType}>
+                <DraggableToolboxItem
+                  index={0}
+                  icon="dropPin"
+                  label={formatMessage(messages.dropPin)}
+                  data-cy="e2e-point-field"
                   fieldsToInclude={builderConfig.toolboxFieldsToInclude}
-                  inputType="line"
+                  inputType="point"
                   disabled={!isFormMappingEnabled}
                   disabledTooltipMessage={messages.mappingNotInCurrentLicense}
                 />
-                <ToolboxItem
-                  icon="drawPolygon"
-                  label={formatMessage(messages.drawArea)}
-                  onClick={() => addField('polygon')}
-                  data-cy="e2e-polygon-field"
-                  fieldsToInclude={builderConfig.toolboxFieldsToInclude}
-                  inputType="polygon"
-                  disabled={!isFormMappingEnabled}
-                  disabledTooltipMessage={messages.mappingNotInCurrentLicense}
-                />
-                <ToolboxItem
-                  icon="upload-file"
-                  label={formatMessage(messages.shapefileUpload)}
-                  onClick={() => addField('shapefile_upload')}
-                  data-cy="e2e-file-shapefile-field"
-                  fieldsToInclude={builderConfig.toolboxFieldsToInclude}
-                  inputType="shapefile_upload"
-                  disabled={!isFormMappingEnabled}
-                  disabledTooltipMessage={messages.mappingNotInCurrentLicense}
-                />
-              </>
+                <>
+                  <DraggableToolboxItem
+                    index={1}
+                    icon="drawRoute"
+                    label={formatMessage(messages.drawRoute)}
+                    data-cy="e2e-line-field"
+                    fieldsToInclude={builderConfig.toolboxFieldsToInclude}
+                    inputType="line"
+                    disabled={!isFormMappingEnabled}
+                    disabledTooltipMessage={messages.mappingNotInCurrentLicense}
+                  />
+                  <DraggableToolboxItem
+                    index={2}
+                    icon="drawPolygon"
+                    label={formatMessage(messages.drawArea)}
+                    data-cy="e2e-polygon-field"
+                    fieldsToInclude={builderConfig.toolboxFieldsToInclude}
+                    inputType="polygon"
+                    disabled={!isFormMappingEnabled}
+                    disabledTooltipMessage={messages.mappingNotInCurrentLicense}
+                  />
+                  <DraggableToolboxItem
+                    index={3}
+                    icon="upload-file"
+                    label={formatMessage(messages.shapefileUpload)}
+                    data-cy="e2e-file-shapefile-field"
+                    fieldsToInclude={builderConfig.toolboxFieldsToInclude}
+                    inputType="shapefile_upload"
+                    disabled={!isFormMappingEnabled}
+                    disabledTooltipMessage={messages.mappingNotInCurrentLicense}
+                  />
+                </>
+              </Drop>
             </>
           )}
         </Box>

@@ -3,7 +3,10 @@ import {
   IFlatCustomField,
 } from 'api/custom_fields/types';
 
-import { questionDNDType } from 'components/FormBuilder/components/FormFields/constants';
+import {
+  questionDNDType,
+  fieldAreaDNDType,
+} from 'components/FormBuilder/components/FormFields/constants';
 
 const reorder = <ListType>(
   list: ListType[],
@@ -109,7 +112,7 @@ export const getReorderedFields = (
   const destinationGroupId = destination.droppableId;
 
   // REODERING QUESTION
-  if (type === questionDNDType) {
+  if (type === questionDNDType || type === fieldAreaDNDType) {
     if (sourceGroupId === destinationGroupId) {
       // REORDERING QUESTION WITHIN SAME GROUP
       const updatedOrder = reorder<IFlatCustomField>(

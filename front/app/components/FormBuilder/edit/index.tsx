@@ -18,6 +18,7 @@ import {
   IFlatCreateCustomField,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
+  ICustomFieldInputType,
 } from 'api/custom_fields/types';
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import useUpdateCustomField from 'api/custom_fields/useUpdateCustomFields';
@@ -29,13 +30,16 @@ import useSubmissionsCount from 'api/submission_count/useSubmissionCount';
 
 import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSettings';
 import FormBuilderToolbox from 'components/FormBuilder/components/FormBuilderToolbox';
+import { getInitialLinearScaleLabel } from 'components/FormBuilder/components/FormBuilderToolbox/utils';
 import FormBuilderTopBar from 'components/FormBuilder/components/FormBuilderTopBar';
 import FormFields from 'components/FormBuilder/components/FormFields';
 import HelmetIntl from 'components/HelmetIntl';
 
+import useLocale from 'hooks/useLocale';
+
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import { isNilOrError } from 'utils/helperUtils';
+import { generateTempId, isNilOrError } from 'utils/helperUtils';
 import validateElementTitle from 'utils/yup/validateElementTitle';
 import validateLogic from 'utils/yup/validateLogic';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
@@ -94,6 +98,7 @@ const FormEdit = ({
   const phaseId = phase.id;
   const projectId = phase.relationships.project.data.id;
   const { formatMessage } = useIntl();
+  const locale = useLocale();
   const [selectedField, setSelectedField] = useState<
     IFlatCustomFieldWithIndex | undefined
   >(undefined);
@@ -115,6 +120,80 @@ const FormEdit = ({
       setFormOpenedAt(customForm.data.attributes.opened_at);
     }
   }, [formOpenedAt, customForm]);
+
+  // Helper function to create new fields (extracted from toolbox logic)
+  const createField = (type: ICustomFieldInputType) => {
+    if (isNilOrError(locale)) return null;
+
+    return {
+      id: `${Math.floor(Date.now() * Math.random())}`,
+      temp_id: generateTempId(),
+      logic: {
+        ...(type !== 'page' ? { rules: [] } : undefined),
+      },
+      isLocalOnly: true,
+      description_multiloc: {},
+      input_type: type,
+      required: false,
+      title_multiloc: {
+        [locale]: '',
+      },
+      // Set default character limits for text-supporting fields (excluding html_multiloc)
+      ...(['text', 'multiline_text', 'text_multiloc'].includes(type) && {
+        min_characters: 3,
+        max_characters: type === 'text_multiloc' ? 120 : undefined,
+      }),
+      linear_scale_label_1_multiloc: getInitialLinearScaleLabel({
+        value: 1,
+        inputType: type,
+        formatMessage,
+        locale,
+      }),
+      linear_scale_label_2_multiloc: getInitialLinearScaleLabel({
+        value: 2,
+        inputType: type,
+        formatMessage,
+        locale,
+      }),
+      linear_scale_label_3_multiloc: getInitialLinearScaleLabel({
+        value: 3,
+        inputType: type,
+        formatMessage,
+        locale,
+      }),
+      linear_scale_label_4_multiloc: getInitialLinearScaleLabel({
+        value: 4,
+        inputType: type,
+        formatMessage,
+        locale,
+      }),
+      linear_scale_label_5_multiloc: getInitialLinearScaleLabel({
+        value: 5,
+        inputType: type,
+        formatMessage,
+        locale,
+      }),
+      linear_scale_label_6_multiloc: {},
+      linear_scale_label_7_multiloc: {},
+      linear_scale_label_8_multiloc: {},
+      linear_scale_label_9_multiloc: {},
+      linear_scale_label_10_multiloc: {},
+      linear_scale_label_11_multiloc: {},
+      maximum: 5,
+      ask_follow_up: false,
+      options: [
+        {
+          title_multiloc: {},
+        },
+      ],
+      matrix_statements: [
+        {
+          title_multiloc: {},
+        },
+      ],
+      enabled: true,
+    };
+  };
 
   const schema = object().shape({
     customFields: array().of(
@@ -382,6 +461,66 @@ const FormEdit = ({
   const reorderFields = (result: DragAndDropResult) => {
     const formCustomFields = watch('customFields');
     const nestedGroupData = getNestedGroupData(formCustomFields);
+
+    // Temporary debugging
+    console.log('🔥 Drag and drop result:', result);
+
+    // Handle toolbox drags (creating new fields)
+    if (result.draggableId.startsWith('toolbox-')) {
+      // Extract input type from draggable ID
+      const inputType = result.draggableId.replace(
+        'toolbox-',
+        ''
+      ) as ICustomFieldInputType;
+
+      // Find the target index based on the destination
+      const destinationGroupId = result.destination?.droppableId;
+      const destinationIndex = result.destination?.index || 0;
+
+      if (!destinationGroupId) return;
+
+      // Create the field
+      const newField = createField(inputType);
+      if (!newField) return;
+
+      let targetIndex = 0;
+
+      // If dropping at the top level (page reordering area)
+      if (destinationGroupId === 'droppable') {
+        // Insert before the last element (form_end page)
+        targetIndex = formCustomFields.length - 1;
+      } else {
+        // Dropping into a specific group/page
+        // Find the target group
+        const targetGroup = nestedGroupData.find(
+          (group) => group.id === destinationGroupId
+        );
+
+        if (targetGroup) {
+          // Get the absolute index of the group element in the flat array
+          const groupElementIndex = formCustomFields.findIndex(
+            (field) => field.id === targetGroup.groupElement.id
+          );
+
+          if (groupElementIndex !== -1) {
+            // The target index is: group element position + 1 (to skip the group element) + destination index within the group
+            targetIndex = groupElementIndex + 1 + destinationIndex;
+          } else {
+            // Fallback: insert before form_end
+            targetIndex = formCustomFields.length - 1;
+          }
+        } else {
+          // Group not found, default to end
+          targetIndex = formCustomFields.length - 1;
+        }
+      }
+
+      console.log('🎯 Adding field at index:', targetIndex);
+      onAddField(newField, targetIndex);
+      return;
+    }
+
+    // Handle regular reordering
     const reorderedFields = getReorderedFields(result, nestedGroupData);
     if (reorderedFields) {
       replace(reorderedFields);

@@ -84,17 +84,10 @@ const ToolboxItem = ({
         )
       }
     >
-      <Box
-        as="button"
-        minWidth={!disabled ? '100%' : 'auto'}
-        p="0px"
-        type="button"
-        role="button"
-      >
+      <Box minWidth={!disabled ? '100%' : 'auto'} p="0px">
         <StyledBox
           display="flex"
           p="18px"
-          onClick={disabled ? () => {} : onClick}
           width="100%"
           m="0px"
           alignItems="center"

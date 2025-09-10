@@ -22,7 +22,7 @@ import {
 import { Drag, Drop } from '../DragAndDrop';
 import { getFieldNumbers } from '../utils';
 
-import { questionDNDType } from './constants';
+import { fieldAreaDNDType } from './constants';
 import { FormField } from './FormField';
 
 interface FormFieldsProps {
@@ -101,7 +101,7 @@ const FormFields = ({
                 <Drop
                   key={grouping.id}
                   id={grouping.id}
-                  type={questionDNDType}
+                  type={fieldAreaDNDType}
                   isDropDisabled={isDropDisabled}
                 >
                   <Box height="100%">
