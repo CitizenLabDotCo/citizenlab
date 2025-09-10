@@ -497,6 +497,7 @@ FactoryBot.define do
             project: project,
             start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
             end_at: nil,
+            with_permissions: true,
             **evaluator.phase_attrs
           )
         end
