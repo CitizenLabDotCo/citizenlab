@@ -825,6 +825,7 @@
   "app.components.formBuilder.good": "Dobro",
   "app.components.formBuilder.helmetTitle": "Program za izradu obrazaca",
   "app.components.formBuilder.imageFileUpload": "Prijenos slike",
+  "app.components.formBuilder.inputImages": "Slike",
   "app.components.formBuilder.inputTagManager": "Stranica za unos oznaka",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Nevaljana logika",
   "app.components.formBuilder.labels2": "Oznake (neobavezno)",
