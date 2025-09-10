@@ -528,6 +528,8 @@ class WebApi::V1::IdeasController < ApplicationController
     end
   end
 
+  # Only relevant for allow_anonymous_participation in the context of ideation
+  # Not relevant for 'anonymity' in the context of surveys
   def anonymous_not_allowed?(phase)
     params.dig('idea', 'anonymous') && !phase.allow_anonymous_participation
   end
