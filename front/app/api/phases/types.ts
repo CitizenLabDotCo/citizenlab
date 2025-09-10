@@ -31,7 +31,7 @@ export interface IPhaseData {
   };
 }
 
-type Anonymity =
+export type Anonymity =
   | 'collect_all_data_available'
   | 'demographics_only'
   | 'full_anonymity';

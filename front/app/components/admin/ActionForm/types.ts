@@ -2,6 +2,7 @@ import { Multiloc } from 'typings';
 
 import { IPermissionData } from 'api/permissions/types';
 import { PermittedBy } from 'api/phase_permissions/types';
+import { Anonymity } from 'api/phases/types';
 
 export type Changes = {
   permitted_by?: PermittedBy;
@@ -12,7 +13,7 @@ export type Changes = {
 };
 
 type PhaseSettings = {
-  allow_anonymous_participation?: boolean;
+  anonymity?: Anonymity;
   user_fields_in_form?: boolean;
 };
 

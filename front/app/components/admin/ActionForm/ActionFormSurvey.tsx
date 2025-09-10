@@ -59,10 +59,7 @@ const ActionFormSurvey = ({
   };
 
   if (!permissionsCustomFields) return null;
-
-  const allow_anonymous_participation =
-    phase?.data.attributes.allow_anonymous_participation;
-  if (allow_anonymous_participation === undefined) return null;
+  if (!phase) return null;
 
   return (
     <form className={`e2e-action-form-${action}`}>
@@ -72,12 +69,10 @@ const ActionFormSurvey = ({
         onChange={onChange}
       />
       <DataCollection
-        allow_anonymous_participation={allow_anonymous_participation}
+        anonymity={phase.data.attributes.anonymity}
         permitted_by={permitted_by}
-        onChange={() => {
-          onChangePhaseSetting?.({
-            allow_anonymous_participation: !allow_anonymous_participation,
-          });
+        onChange={(anonymity) => {
+          onChangePhaseSetting?.({ anonymity });
         }}
       />
       {permitted_by !== 'admins_moderators' && (
