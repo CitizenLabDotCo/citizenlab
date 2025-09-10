@@ -26,7 +26,7 @@ class IdeaCustomFieldsService
 
   def xlsx_exportable_fields
     UserFieldsInSurveyService
-      .add_user_fields_to_form(all_fields)
+      .add_user_fields_to_form(all_fields, participation_method, custom_form)
       .filter(&:supports_xlsx_export?)
   end
 
@@ -62,7 +62,7 @@ class IdeaCustomFieldsService
 
   def enabled_fields
     fields = all_fields.select(&:enabled?)
-    UserFieldsInSurveyService.add_user_fields_to_form(fields)
+    UserFieldsInSurveyService.add_user_fields_to_form(fields, participation_method, custom_form)
   end
 
   def enabled_fields_with_other_options(print_version: false)

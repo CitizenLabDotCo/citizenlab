@@ -86,7 +86,7 @@ describe SideFxIdeaService do
       end
 
       it 'creates only creates project and folder followers for native_survey responses' do
-        idea.update!(creation_phase: create(:native_survey_phase, project: project))
+        idea.update!(creation_phase: create(:native_survey_phase, project: project, with_permissions: true))
         expect do
           service.after_create idea.reload, user
         end.to change(Follower, :count).from(0).to(2)
@@ -141,7 +141,15 @@ describe SideFxIdeaService do
     it "doesn't enqueue an upsert embedding job for survey responses" do
       SettingsService.new.activate_feature! 'input_iq'
       create(:idea_status_proposed)
-      idea = create(:native_survey_response, author: user)
+      phase = create(:native_survey_phase, with_permissions: true)
+
+      idea = create(
+        :native_survey_response, 
+        author: user, 
+        creation_phase: phase,
+        project: phase.project
+      )
+
       expect { service.after_create(idea, user) }
         .not_to enqueue_job(UpsertEmbeddingJob)
         .with(idea)
@@ -384,7 +392,15 @@ describe SideFxIdeaService do
     it "doesn't enqueue an upsert embedding job for survey responses" do
       SettingsService.new.activate_feature! 'input_iq'
       create(:idea_status_proposed)
-      idea = create(:native_survey_response, author: user)
+      phase = create(:native_survey_phase, with_permissions: true)
+
+      idea = create(
+        :native_survey_response, 
+        author: user, 
+        creation_phase: phase,
+        project: phase.project
+      )
+
       expect { service.after_update(idea, user) }
         .not_to enqueue_job(UpsertEmbeddingJob)
         .with(idea)
@@ -418,7 +434,7 @@ describe SideFxIdeaService do
         expect(user.custom_field_values).to be_empty
       end
 
-      it "updates the user profile from the survey input fields when permitted_by = 'everyone'" do
+      it "updates the user profile from the survey input fields when permitted_by = 'everyone' and there are permissions_custom_fields" do
         phase.update!(user_fields_in_form: false)
 
         permission = Permission.find_by(
@@ -427,6 +443,7 @@ describe SideFxIdeaService do
         )
 
         permission.permitted_by = 'everyone'
+        permission.permissions_custom_fields = [create(:permissions_custom_field)]
         permission.save!
 
         idea.update!(publication_status: 'published')
