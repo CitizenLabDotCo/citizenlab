@@ -18,7 +18,7 @@ class UserFieldsInSurveyService
   end
 
   def self.add_user_fields_to_form(fields, participation_method, custom_form)
-    return fields unless participation_method.user_fields_in_form?
+    return fields unless participation_method.user_fields_in_form? && phase.anonymity != 'full_anonymity'
 
     phase = custom_form.participation_context
     permission = phase.permissions.find_by(action: 'posting_idea')
