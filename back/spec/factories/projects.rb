@@ -113,7 +113,7 @@ FactoryBot.define do
 
     factory :project_with_active_native_survey_phase do
       after(:create) do |project, _evaluator|
-        project.phases << create(:active_native_survey_phase, project: project)
+        project.phases << create(:active_native_survey_phase, project: project, with_permissions: true)
       end
     end
 
