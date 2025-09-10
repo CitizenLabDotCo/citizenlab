@@ -73,7 +73,6 @@
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "شكرًا لك على إكمال الاستبيان! نرحب بك للمشاركة فيه مجددًا في الربع القادم.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "تحميل بصيغة pdf",
   "app.components.FormSync.downloadExcelTemplate": "تنزيل قالب Excel",
-  "app.components.FormSync.downloadExcelTemplateTooltip2": "لن تتضمن قوالب Excel أسئلة التصنيف، وأسئلة المصفوفة، وأسئلة تحميل الملفات وأي أسئلة إدخال تعيين (دبوس الإسقاط، مسار الرسم، منطقة الرسم، تحميل ملف ESRI) حيث لا يتم دعم هذه الأسئلة للاستيراد بالجملة في هذا الوقت.",
   "app.components.ProjectTemplatePreview.close": "إغلاق",
   "app.components.ProjectTemplatePreview.createProject": "أنشئ مشروعًا",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "إنشاء مشروع بناءً على القالب ''{templateTitle}''",

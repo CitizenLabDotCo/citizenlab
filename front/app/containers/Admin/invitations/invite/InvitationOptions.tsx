@@ -262,7 +262,6 @@ const InvitationOptions = ({
             value={selectedInviteText || ''}
             onChange={handleInviteTextOnChange}
             limitedTextFormatting
-            noImages
             noVideos
             withCTAButton
           />
