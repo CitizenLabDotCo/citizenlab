@@ -35,7 +35,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     new_publication_status: nil
   )
     include_ideas = false if local_copy
-    max_ideas = max_ideas&.match?(/\A\d+\z/) && max_ideas.to_i.positive? ? max_ideas.to_i : nil
+    max_ideas = max_ideas&.to_i
     @include_ideas = include_ideas
     @local_copy = local_copy
     @project = project
