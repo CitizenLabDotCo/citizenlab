@@ -10,7 +10,7 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from './messages';
+import messages from '../messages';
 
 const StyledMultipleSelect = styled(MultipleSelect)`
   width: 300px;
