@@ -165,7 +165,12 @@ class Phase < ApplicationRecord
   end
 
   validates :ideas_order, inclusion: { in: ->(phase) { phase.pmethod.allowed_ideas_orders } }, allow_nil: true
+  
+  # ONLY USED FOR IDEATION
   validates :allow_anonymous_participation, inclusion: { in: [true, false] }
+
+  # ONLY USED FOR NATIVE SURVEY AND COMMUNITY MONITOR
+  validates :anonymity, inclusion: { in: %w[full_anonymity demographics_only collect_all_data_available] }
 
   # voting?
   with_options if: :voting? do
