@@ -152,7 +152,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
     # Merge custom field values from the user's profile if user fields are presented in the idea form
     # AND the anonymity setting allows it
-    draft_idea = UserFieldsInSurveyService.merge_idea_and_user_fields(
+    draft_idea = UserFieldsInSurveyService.merge_idea_and_user_field_values(
       current_user, 
       phase, 
       draft_idea

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UserFieldsInSurveyService
-  def self.merge_idea_and_user_fields(
+  def self.merge_idea_and_user_field_values(
     current_user,
     phase,
     draft_idea
@@ -15,6 +15,54 @@ class UserFieldsInSurveyService
     end
 
     draft_idea
+  end
+
+  def self.add_user_fields_to_form(fields, participation_method, custom_form)
+    return fields unless participation_method.user_fields_in_form?
+
+    phase = custom_form.participation_context
+    permission = phase.permissions.find_by(action: 'posting_idea')
+    user_fields = Permissions::UserRequirementsService.new.requirements_custom_fields(permission)
+
+    return fields unless user_fields.any?
+
+    fields = fields.to_a # sometimes array passed in, sometimes active record relations
+
+    # Remove the last page so we can add it back later
+    last_page = fields.pop if fields.last.form_end_page?
+
+    # TODO: Hide any user fields that are locked for the user through the verification method
+
+    # Transform the user fields to pretend to be idea fields
+    user_fields.each do |field|
+      field.dropdown_layout = true if field.dropdown_layout_type?
+      field.code = nil # Remove the code so it doesn't appear as built in
+      field.key = prefix_key(field.key) # Change the key so we cans clearly identify user data in the saved data
+      field.resource = custom_form # User field pretend to be part of the form
+    end
+
+    user_page = CustomField.new(
+      id: SecureRandom.uuid,
+      key: 'user_page',
+      title_multiloc: MultilocService.new.i18n_to_multiloc('form_builder.form_user_page.title_text'),
+      resource: custom_form,
+      input_type: 'page',
+      page_layout: 'default'
+    )
+
+    # Change any logic end pages to reference the user page instead
+    fields.each do |field|
+      if field.logic['rules']
+        field.logic['rules'].map! do |rule|
+          rule['goto_page_id'] = user_page.id if rule['goto_page_id'] == last_page.id
+          rule
+        end
+      elsif field.logic['next_page_id'] == last_page.id
+        field.logic['next_page_id'] = user_page.id
+      end
+    end
+
+    fields + [user_page] + user_fields + [last_page]
   end
 
   private

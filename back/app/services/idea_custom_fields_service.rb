@@ -25,7 +25,9 @@ class IdeaCustomFieldsService
   end
 
   def xlsx_exportable_fields
-    add_user_fields(all_fields).filter(&:supports_xlsx_export?)
+    UserFieldsInSurveyService
+      .add_user_fields_to_form(all_fields)
+      .filter(&:supports_xlsx_export?)
   end
 
   def geojson_supported_fields
@@ -60,7 +62,7 @@ class IdeaCustomFieldsService
 
   def enabled_fields
     fields = all_fields.select(&:enabled?)
-    add_user_fields(fields)
+    UserFieldsInSurveyService.add_user_fields_to_form(fields)
   end
 
   def enabled_fields_with_other_options(print_version: false)
@@ -219,54 +221,6 @@ class IdeaCustomFieldsService
   # Constraints required for the front-end but response will always return input specific method
   def page1_title?(field, attribute)
     field.code == 'title_page' && attribute == :title_multiloc
-  end
-
-  def add_user_fields(fields)
-    return fields unless @participation_method.user_fields_in_form?
-
-    phase = @custom_form.participation_context
-    permission = phase.permissions.find_by(action: 'posting_idea')
-    user_fields = Permissions::UserRequirementsService.new.requirements_custom_fields(permission)
-
-    return fields unless user_fields.any?
-
-    fields = fields.to_a # sometimes array passed in, sometimes active record relations
-
-    # Remove the last page so we can add it back later
-    last_page = fields.pop if fields.last.form_end_page?
-
-    # TODO: Hide any user fields that are locked for the user through the verification method
-
-    # Transform the user fields to pretend to be idea fields
-    user_fields.each do |field|
-      field.dropdown_layout = true if field.dropdown_layout_type?
-      field.code = nil # Remove the code so it doesn't appear as built in
-      field.key = "u_#{field.key}" # Change the key so we cans clearly identify user data in the saved data
-      field.resource = custom_form # User field pretend to be part of the form
-    end
-
-    user_page = CustomField.new(
-      id: SecureRandom.uuid,
-      key: 'user_page',
-      title_multiloc: MultilocService.new.i18n_to_multiloc('form_builder.form_user_page.title_text'),
-      resource: custom_form,
-      input_type: 'page',
-      page_layout: 'default'
-    )
-
-    # Change any logic end pages to reference the user page instead
-    fields.each do |field|
-      if field.logic['rules']
-        field.logic['rules'].map! do |rule|
-          rule['goto_page_id'] = user_page.id if rule['goto_page_id'] == last_page.id
-          rule
-        end
-      elsif field.logic['next_page_id'] == last_page.id
-        field.logic['next_page_id'] = user_page.id
-      end
-    end
-
-    fields + [user_page] + user_fields + [last_page]
   end
 
   attr_reader :custom_form, :participation_method
