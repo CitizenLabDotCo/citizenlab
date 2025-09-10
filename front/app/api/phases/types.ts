@@ -31,6 +31,11 @@ export interface IPhaseData {
   };
 }
 
+type Anonymity =
+  | 'collect_all_data_available'
+  | 'demographics_only'
+  | 'full_anonymity';
+
 export interface IPhaseAttributes {
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
@@ -78,6 +83,7 @@ export interface IPhaseAttributes {
   similarity_threshold_title?: number | null;
   similarity_threshold_body?: number | null;
   user_fields_in_form?: boolean;
+  anonymity: Anonymity;
 }
 
 export interface IPhases {
@@ -128,6 +134,7 @@ export interface IUpdatedPhaseProperties {
   similarity_threshold_title?: number | null;
   similarity_threshold_body?: number | null;
   user_fields_in_form?: boolean;
+  anonymity?: Anonymity;
 }
 
 export interface AddPhaseObject extends IUpdatedPhaseProperties {
