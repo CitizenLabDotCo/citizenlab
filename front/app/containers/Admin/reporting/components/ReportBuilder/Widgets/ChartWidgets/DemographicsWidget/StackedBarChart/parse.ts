@@ -40,6 +40,7 @@ export const parseResponse = (
     );
   }
 
+  // If no options are available and it's not a number field, return null
   if (!options) {
     return null;
   }
@@ -96,7 +97,7 @@ const parseBirthyearResponse = (
   };
 };
 
-const parseNumberFieldResponse = (
+export const parseNumberFieldResponse = (
   series: DemographicsResponse['data']['attributes']['series'],
   blankLabel: string
 ) => {
@@ -129,19 +130,39 @@ const parseNumberFieldResponse = (
   // Create bins for the numeric values
   const min = Math.min(...numericValues);
   const max = Math.max(...numericValues);
+  const range = max - min;
 
   // Create bins based on the range
   const bins: Record<string, number> = {};
 
-  // If range is small (like 1-6 for household size), create individual bins
-  if (max - min <= 10) {
+  // Determine binning strategy based on data characteristics
+  if (range <= 10 && numericValues.length <= 20) {
+    // Small range with few unique values: create individual bins
     for (let i = min; i <= max; i++) {
       const key = i.toString();
       bins[key] = series[key] || 0;
     }
+  } else if (range <= 50) {
+    // Medium range: create bins of size 5
+    const binSize = 5;
+    for (let i = min; i <= max; i += binSize) {
+      const binEnd = Math.min(i + binSize - 1, max);
+      const binKey = `${i}-${binEnd}`;
+      bins[binKey] = 0;
+
+      // Sum values in this range
+      for (let j = i; j <= binEnd; j++) {
+        bins[binKey] += series[j.toString()] || 0;
+      }
+    }
   } else {
-    // For larger ranges, create grouped bins
-    const binSize = Math.ceil((max - min) / 5); // Create ~5 bins
+    // Large range: create ~5-7 bins
+    const numBins = Math.min(
+      7,
+      Math.max(5, Math.ceil(numericValues.length / 10))
+    );
+    const binSize = Math.ceil(range / numBins);
+
     for (let i = min; i <= max; i += binSize) {
       const binEnd = Math.min(i + binSize - 1, max);
       const binKey = binSize === 1 ? i.toString() : `${i}-${binEnd}`;
