@@ -1284,7 +1284,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.contactGovSuccessToAccessAddingAQuestion": "Muligheden for at tilføje eller redigere brugerfelter på faseniveau er ikke inkluderet i din nuværende licens. Kontakt Søren Kielgast for at få mere at vide om det.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.customFieldNameOptions": "{customFieldName} muligheder",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldStatus": "Feltstatus",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldsShownInSurveyForm": "Disse spørgsmål vil blive tilføjet som den sidste side i undersøgelsesformularen, fordi \"Vis felter i undersøgelsen?\" er valgt i faseindstillingerne.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.noDemographicQuestions": "Der vil ikke blive stillet demografiske spørgsmål.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optional": "Valgfrit",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optionalGroup1": "Valgfrit - altid aktiveret, fordi der henvises til gruppen",

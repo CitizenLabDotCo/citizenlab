@@ -1284,7 +1284,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.contactGovSuccessToAccessAddingAQuestion": "Mahdollisuus lisätä tai muokata käyttäjäkenttiä vaihetasolla ei sisälly nykyiseen lisenssiisi. Ota yhteyttä GovSuccess Manageriin saadaksesi lisätietoja siitä.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.customFieldNameOptions": "{customFieldName} vaihtoehdot",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldStatus": "Kentän tila",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldsShownInSurveyForm": "Nämä kysymykset lisätään kyselylomakkeen viimeiseksi sivuksi, koska 'Näytä kentät kyselyssä?' on valittu vaiheasetuksissa.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.noDemographicQuestions": "Demografisia kysymyksiä ei kysytä.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optional": "Valinnainen",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optionalGroup1": "Valinnainen - aina käytössä, koska ryhmä viittaa siihen",

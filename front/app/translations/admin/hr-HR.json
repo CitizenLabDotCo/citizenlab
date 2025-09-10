@@ -1284,7 +1284,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.contactGovSuccessToAccessAddingAQuestion": "Mogućnost dodavanja ili uređivanja korisničkih polja na razini faze nije uključena u vašu trenutnu licencu. Obratite se svom GovSuccess Manageru da saznate više o tome.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.customFieldNameOptions": "{customFieldName} opcije",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldStatus": "Status polja",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldsShownInSurveyForm": "Ova će pitanja biti dodana kao zadnja stranica anketnog obrasca, jer 'Prikaži polja u anketi?' je odabran u postavkama faze.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.noDemographicQuestions": "Neće se postavljati demografska pitanja.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optional": "Neobavezno",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optionalGroup1": "Neobavezno - uvijek omogućeno jer je navedeno u grupi",

@@ -1284,7 +1284,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.contactGovSuccessToAccessAddingAQuestion": "La capacidad de añadir o editar campos de usuario a nivel de fase no está incluida en tu licencia actual. Ponte en contacto con tu Gestor de GovSuccess para obtener más información al respecto.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.customFieldNameOptions": "{customFieldName} opciones",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldStatus": "Estado del campo",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldsShownInSurveyForm": "Estas preguntas se añadirán como última página del formulario de la encuesta, porque se ha seleccionado \"¿Mostrar campos en la encuesta?\" en la configuración de la fase.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.noDemographicQuestions": "No se harán preguntas demográficas.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optional": "Opcional",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optionalGroup1": "Opcional - siempre activado porque está referenciado por el grupo",

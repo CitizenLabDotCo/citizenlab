@@ -1284,7 +1284,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.contactGovSuccessToAccessAddingAQuestion": "فیز لیول پر یوزر فیلڈز کو شامل کرنے یا ان میں ترمیم کرنے کی صلاحیت آپ کے موجودہ لائسنس میں شامل نہیں ہے۔ اس کے بارے میں مزید جاننے کے لیے اپنے GovSuccess مینیجر سے رابطہ کریں۔",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.customFieldNameOptions": "{customFieldName} اختیارات",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldStatus": "فیلڈ کی حیثیت",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldsShownInSurveyForm": "یہ سوالات سروے فارم کے آخری صفحے کے طور پر شامل کیے جائیں گے، کیونکہ 'سروے میں فیلڈز دکھائیں؟' مرحلے کی ترتیبات میں منتخب کیا گیا ہے۔",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.noDemographicQuestions": "آبادیاتی سوالات نہیں پوچھے جائیں گے۔",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optional": "اختیاری",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optionalGroup1": "اختیاری - ہمیشہ فعال ہوتا ہے کیونکہ گروپ کے ذریعہ حوالہ دیا جاتا ہے۔",

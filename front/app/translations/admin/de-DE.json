@@ -1284,7 +1284,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.contactGovSuccessToAccessAddingAQuestion": "Die Möglichkeit, Nutzer*innenfelder auf Phasenebene hinzuzufügen oder zu bearbeiten, ist in Ihrer aktuellen Lizenz nicht enthalten. Wenden Sie sich an Ihre Kundenbetreuerin, um mehr darüber zu erfahren.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.customFieldNameOptions": "{customFieldName} Optionen",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldStatus": "Feldstatus",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldsShownInSurveyForm": "Diese Fragen werden als letzte Seite des Umfrageformulars hinzugefügt, da in den Phaseneinstellungen „Felder in Umfrage anzeigen?“ ausgewählt wurde.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.noDemographicQuestions": "Es werden keine demografischen Fragen gestellt.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optional": "Optional",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optionalGroup1": "Optional - immer aktiviert, da von der Gruppe genannt",

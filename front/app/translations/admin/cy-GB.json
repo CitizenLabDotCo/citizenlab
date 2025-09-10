@@ -1284,7 +1284,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.contactGovSuccessToAccessAddingAQuestion": "Nid yw'r gallu i ychwanegu neu olygu meysydd defnyddiwr ar lefel cyfnod wedi'i gynnwys yn eich trwydded gyfredol. Cysylltwch â'ch Rheolwr GovSuccess i ddysgu mwy amdano.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.customFieldNameOptions": "{customFieldName} opsiynau",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldStatus": "Statws maes",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldsShownInSurveyForm": "Bydd y cwestiynau hyn yn cael eu hychwanegu fel tudalen olaf y ffurflen arolwg, oherwydd 'Dangos meysydd yn yr arolwg?' wedi'i ddewis mewn gosodiadau cyfnod.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.noDemographicQuestions": "Ni ofynnir unrhyw gwestiynau demograffig.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optional": "Dewisol",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optionalGroup1": "Dewisol - wedi'i alluogi bob amser oherwydd bod cyfeiriad yn ôl grŵp",

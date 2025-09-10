@@ -1284,7 +1284,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.contactGovSuccessToAccessAddingAQuestion": "Galimybė pridėti arba redaguoti naudotojo laukus etapo lygmeniu nėra įtraukta į dabartinę licenciją. Susisiekite su savo \"GovSuccess\" vadybininku ir sužinokite apie tai daugiau.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.customFieldNameOptions": "{customFieldName} parinktys",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldStatus": "Lauko būklė",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldsShownInSurveyForm": "Šie klausimai bus įtraukti į paskutinį apklausos formos puslapį, nes fazės nustatymuose pasirinkta \"Rodyti apklausos laukus?\".",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.noDemographicQuestions": "Demografiniai klausimai nebus užduodami.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optional": "Pasirinktinai",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optionalGroup1": "Neprivalomas - visada įjungtas, nes į jį nurodo grupė",
