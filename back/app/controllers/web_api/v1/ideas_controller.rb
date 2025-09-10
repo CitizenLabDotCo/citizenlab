@@ -153,8 +153,8 @@ class WebApi::V1::IdeasController < ApplicationController
     # Merge custom field values from the user's profile if user fields are presented in the idea form
     # AND the anonymity setting allows it
     draft_idea = UserFieldsInSurveyService.merge_idea_and_user_field_values(
-      current_user, 
-      phase, 
+      current_user,
+      phase,
       draft_idea
     )
 
@@ -191,7 +191,7 @@ class WebApi::V1::IdeasController < ApplicationController
       input.anonymous = true
     end
 
-    # TODO not sure why we are still doing this, regardless of the anonymity setting?
+    # TODO: not sure why we are still doing this, regardless of the anonymity setting?
     input.author ||= current_user
 
     phase_for_input.pmethod.assign_defaults(input)

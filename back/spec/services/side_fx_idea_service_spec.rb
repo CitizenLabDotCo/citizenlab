@@ -144,8 +144,8 @@ describe SideFxIdeaService do
       phase = create(:native_survey_phase, with_permissions: true)
 
       idea = create(
-        :native_survey_response, 
-        author: user, 
+        :native_survey_response,
+        author: user,
         creation_phase: phase,
         project: phase.project
       )
@@ -395,8 +395,8 @@ describe SideFxIdeaService do
       phase = create(:native_survey_phase, with_permissions: true)
 
       idea = create(
-        :native_survey_response, 
-        author: user, 
+        :native_survey_response,
+        author: user,
         creation_phase: phase,
         project: phase.project
       )

@@ -7,7 +7,7 @@ class UserFieldsInSurveyService
     draft_idea
   )
     if current_user && phase.pmethod.user_fields_in_form?
-      user_values = current_user.custom_field_values&.transform_keys do |key| 
+      user_values = current_user.custom_field_values&.transform_keys do |key|
         prefix_key(key)
       end
 
@@ -68,8 +68,6 @@ class UserFieldsInSurveyService
   def self.prefix
     'u_'
   end
-
-  private
 
   def self.prefix_key(key)
     "#{prefix}#{key}"

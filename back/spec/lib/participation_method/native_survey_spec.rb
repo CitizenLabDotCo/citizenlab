@@ -185,7 +185,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
         permission = Permission.find_by(
           permission_scope_id: phase.id,
           action: 'posting_idea'
-          )
+        )
 
         permission.permitted_by = 'everyone'
         permission.save!
@@ -195,7 +195,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
         permission = Permission.find_by(
           permission_scope_id: phase.id,
           action: 'posting_idea'
-          )
+        )
 
         permission.permissions_custom_fields = []
         permission.save!
@@ -207,7 +207,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
         permission = Permission.find_by(
           permission_scope_id: phase.id,
           action: 'posting_idea'
-          )
+        )
 
         permission.permissions_custom_fields = [create(:permissions_custom_field)]
         permission.save!
@@ -221,7 +221,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
         permission = Permission.find_by(
           permission_scope_id: phase.id,
           action: 'posting_idea'
-          )
+        )
 
         permission.permitted_by = 'everyone_confirmed_email'
         permission.save!
@@ -234,7 +234,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
         permission = Permission.find_by(
           permission_scope_id: phase.id,
           action: 'posting_idea'
-          )
+        )
 
         permission.permissions_custom_fields = [create(:permissions_custom_field)]
         permission.save!
@@ -249,7 +249,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
         permission = Permission.find_by(
           permission_scope_id: phase.id,
           action: 'posting_idea'
-          )
+        )
 
         permission.permissions_custom_fields = []
         permission.save!
@@ -264,7 +264,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
         permission = Permission.find_by(
           permission_scope_id: phase.id,
           action: 'posting_idea'
-          )
+        )
 
         permission.permissions_custom_fields = [create(:permissions_custom_field)]
         permission.save!
@@ -278,7 +278,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
         permission = Permission.find_by(
           permission_scope_id: phase.id,
           action: 'posting_idea'
-          )
+        )
 
         permission.permitted_by = 'users'
         permission.save!
@@ -291,7 +291,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
         permission = Permission.find_by(
           permission_scope_id: phase.id,
           action: 'posting_idea'
-          )
+        )
 
         permission.permissions_custom_fields = []
         permission.global_custom_fields = true
@@ -307,7 +307,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
         permission = Permission.find_by(
           permission_scope_id: phase.id,
           action: 'posting_idea'
-          )
+        )
 
         permission.permissions_custom_fields = [create(:permissions_custom_field)]
         permission.global_custom_fields = false
