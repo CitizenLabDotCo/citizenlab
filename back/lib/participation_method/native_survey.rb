@@ -137,14 +137,14 @@ module ParticipationMethod
 
       case permission&.permitted_by
       when 'everyone'
-        return !permission.permissions_custom_fields.empty?
+        !permission.permissions_custom_fields.empty?
       when 'everyone_confirmed_email'
-        return phase.user_fields_in_form && !permission.permissions_custom_fields.empty?
+        phase.user_fields_in_form && !permission.permissions_custom_fields.empty?
       else
         if permission.global_custom_fields == true
-          return phase.user_fields_in_form
+          phase.user_fields_in_form
         else
-          return phase.user_fields_in_form && !permission.permissions_custom_fields.empty?
+          phase.user_fields_in_form && !permission.permissions_custom_fields.empty?
         end
       end
     end
