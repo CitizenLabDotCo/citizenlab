@@ -50,6 +50,7 @@
 #  manual_voters_last_updated_by_id :uuid
 #  manual_voters_last_updated_at    :datetime
 #  vote_term                        :string           default("vote")
+#  anonymity                        :string           default("collect_all_data_available"), not null
 #
 # Indexes
 #
