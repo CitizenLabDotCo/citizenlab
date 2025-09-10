@@ -23,8 +23,13 @@ module Files
 
       # For idea files, the attachment should be created at the same time as the file.
       # Attaching the file to other resources is not allowed.
-      if record.attachable_type == 'Idea'
+      case record.attachable_type
+      when 'Idea'
         record.file.new_record?
+      when 'Project'
+        active_moderator?(record.attachable)
+      when 'Phase', 'Event'
+        active_moderator?(record.attachable.project)
       else
         policy_for(record.file).update?
       end
@@ -36,6 +41,14 @@ module Files
 
     def destroy?
       policy_for(record.attachable).update?
+    end
+
+    private
+
+    def active_moderator?(project)
+      return unless active?
+
+      UserRoleService.new.can_moderate_project? project, user
     end
   end
 end
