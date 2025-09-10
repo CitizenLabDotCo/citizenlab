@@ -19,7 +19,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     project
   end
 
-  # rubocop:disable Metrics/AbcSize
   def export(
     project,
     local_copy: false,
@@ -89,7 +88,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
 
     @template
   end
-  # rubocop:enable Metrics/AbcSize
 
   private
 
