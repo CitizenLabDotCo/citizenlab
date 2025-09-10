@@ -28,7 +28,7 @@ import { generateTempId, isNilOrError } from 'utils/helperUtils';
 import messages from '../messages';
 
 import BuiltInFields from './BuiltInFields';
-import DraggableToolboxItem from './DraggableToolboxItem';
+import ToolboxItem from './ToolboxItem';
 import LayoutFields from './LayoutFields';
 import { getInitialLinearScaleLabel } from './utils';
 import { Drop } from '../DragAndDrop';
@@ -219,8 +219,8 @@ const FormBuilderToolbox = ({
           )}
         </Box>
         <Drop id="toolbox" type={fieldAreaDNDType}>
-          <DraggableToolboxItem
-            index={0}
+          <ToolboxItem
+            dragIndex={0}
             icon="survey-short-answer-2"
             label={formatMessage(messages.shortAnswer)}
             data-cy="e2e-short-answer"
@@ -228,9 +228,11 @@ const FormBuilderToolbox = ({
             inputType="text"
             disabled={isCustomFieldsDisabled}
             showAIUpsell
+            isDraggable={true}
+            dragId="toolbox-text"
           />
-          <DraggableToolboxItem
-            index={1}
+          <ToolboxItem
+            dragIndex={1}
             icon="survey-long-answer-2"
             label={formatMessage(messages.longAnswer)}
             data-cy="e2e-long-answer"
@@ -238,97 +240,119 @@ const FormBuilderToolbox = ({
             inputType="multiline_text"
             disabled={isCustomFieldsDisabled}
             showAIUpsell
+            isDraggable={true}
+            dragId="toolbox-multiline_text"
           />
-          <DraggableToolboxItem
-            index={2}
+          <ToolboxItem
+            dragIndex={2}
             icon="survey-single-choice"
             label={formatMessage(messages.singleChoice)}
             data-cy="e2e-single-choice"
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="select"
             disabled={isCustomFieldsDisabled}
+            isDraggable={true}
+            dragId="toolbox-select"
           />
-          <DraggableToolboxItem
-            index={3}
+          <ToolboxItem
+            dragIndex={3}
             icon="survey-multiple-choice-2"
             label={formatMessage(messages.multipleChoice)}
             data-cy="e2e-multiple-choice"
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="multiselect"
             disabled={isCustomFieldsDisabled}
+            isDraggable={true}
+            dragId="toolbox-multiselect"
           />
-          <DraggableToolboxItem
-            index={4}
+          <ToolboxItem
+            dragIndex={4}
             icon="image"
             label={formatMessage(messages.multipleChoiceImage)}
             data-cy="e2e-image-choice"
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="multiselect_image"
             disabled={isCustomFieldsDisabled}
+            isDraggable={true}
+            dragId="toolbox-multiselect_image"
           />
-          <DraggableToolboxItem
-            index={5}
+          <ToolboxItem
+            dragIndex={5}
             icon="survey-linear-scale"
             label={formatMessage(messages.linearScale)}
             data-cy="e2e-linear-scale"
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="linear_scale"
             disabled={isCustomFieldsDisabled}
+            isDraggable={true}
+            dragId="toolbox-linear_scale"
           />
-          <DraggableToolboxItem
-            index={6}
+          <ToolboxItem
+            dragIndex={6}
             icon="survey-ranking"
             label={formatMessage(messages.ranking)}
             data-cy="e2e-ranking"
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="ranking"
             disabled={isCustomFieldsDisabled}
+            isDraggable={true}
+            dragId="toolbox-ranking"
           />
-          <DraggableToolboxItem
-            index={7}
+          <ToolboxItem
+            dragIndex={7}
             icon="rating"
             label={formatMessage(messages.rating)}
             data-cy="e2e-rating"
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="rating"
             disabled={isCustomFieldsDisabled}
+            isDraggable={true}
+            dragId="toolbox-rating"
           />
-          <DraggableToolboxItem
-            index={8}
+          <ToolboxItem
+            dragIndex={8}
             icon="survey-sentiment"
             label={formatMessage(messages.sentiment)}
             data-cy="e2e-sentiment"
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="sentiment_linear_scale"
             disabled={isCustomFieldsDisabled}
+            isDraggable={true}
+            dragId="toolbox-sentiment_linear_scale"
           />
-          <DraggableToolboxItem
-            index={9}
+          <ToolboxItem
+            dragIndex={9}
             icon="survey-matrix"
             label={formatMessage(messages.matrix)}
             data-cy="e2e-matrix"
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="matrix_linear_scale"
             disabled={isCustomFieldsDisabled}
+            isDraggable={true}
+            dragId="toolbox-matrix_linear_scale"
           />
 
-          <DraggableToolboxItem
-            index={10}
+          <ToolboxItem
+            dragIndex={10}
             icon="survey-number-field"
             label={formatMessage(messages.number)}
             data-cy="e2e-number-field"
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="number"
             disabled={isCustomFieldsDisabled}
+            isDraggable={true}
+            dragId="toolbox-number"
           />
-          <DraggableToolboxItem
-            index={11}
+          <ToolboxItem
+            dragIndex={11}
             icon="upload-file"
             label={formatMessage(messages.fileUpload)}
             data-cy="e2e-file-upload-field"
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="file_upload"
             disabled={isCustomFieldsDisabled}
+            isDraggable={true}
+            dragId="toolbox-file_upload"
           />
         </Drop>
         <Box>
@@ -346,8 +370,8 @@ const FormBuilderToolbox = ({
                 {formatMessage(messages.mapping)}
               </Title>
               <Drop id="toolbox-mapping" type={fieldAreaDNDType}>
-                <DraggableToolboxItem
-                  index={0}
+                <ToolboxItem
+                  dragIndex={0}
                   icon="dropPin"
                   label={formatMessage(messages.dropPin)}
                   data-cy="e2e-point-field"
@@ -355,10 +379,12 @@ const FormBuilderToolbox = ({
                   inputType="point"
                   disabled={!isFormMappingEnabled}
                   disabledTooltipMessage={messages.mappingNotInCurrentLicense}
+                  isDraggable={true}
+                  dragId="toolbox-point"
                 />
                 <>
-                  <DraggableToolboxItem
-                    index={1}
+                  <ToolboxItem
+                    dragIndex={1}
                     icon="drawRoute"
                     label={formatMessage(messages.drawRoute)}
                     data-cy="e2e-line-field"
@@ -366,9 +392,11 @@ const FormBuilderToolbox = ({
                     inputType="line"
                     disabled={!isFormMappingEnabled}
                     disabledTooltipMessage={messages.mappingNotInCurrentLicense}
+                    isDraggable={true}
+                    dragId="toolbox-line"
                   />
-                  <DraggableToolboxItem
-                    index={2}
+                  <ToolboxItem
+                    dragIndex={2}
                     icon="drawPolygon"
                     label={formatMessage(messages.drawArea)}
                     data-cy="e2e-polygon-field"
@@ -376,9 +404,11 @@ const FormBuilderToolbox = ({
                     inputType="polygon"
                     disabled={!isFormMappingEnabled}
                     disabledTooltipMessage={messages.mappingNotInCurrentLicense}
+                    isDraggable={true}
+                    dragId="toolbox-polygon"
                   />
-                  <DraggableToolboxItem
-                    index={3}
+                  <ToolboxItem
+                    dragIndex={3}
                     icon="upload-file"
                     label={formatMessage(messages.shapefileUpload)}
                     data-cy="e2e-file-shapefile-field"
@@ -386,6 +416,8 @@ const FormBuilderToolbox = ({
                     inputType="shapefile_upload"
                     disabled={!isFormMappingEnabled}
                     disabledTooltipMessage={messages.mappingNotInCurrentLicense}
+                    isDraggable={true}
+                    dragId="toolbox-shapefile_upload"
                   />
                 </>
               </Drop>

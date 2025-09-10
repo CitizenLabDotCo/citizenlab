@@ -15,18 +15,24 @@ import { ICustomFieldInputType } from 'api/custom_fields/types';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
+import { Drag } from '../DragAndDrop';
+
 import messages from '../messages';
 
 interface Props {
   label: string;
   icon: IconNames;
-  onClick: () => void;
+  onClick?: () => void;
   'data-cy'?: string;
   fieldsToInclude?: ICustomFieldInputType[];
   inputType?: ICustomFieldInputType;
   disabled?: boolean;
   disabledTooltipMessage?: MessageDescriptor;
   showAIUpsell?: boolean;
+  // Drag-related props
+  isDraggable?: boolean;
+  dragId?: string;
+  dragIndex?: number;
 }
 
 const AddIcon = styled(Icon).attrs({ name: 'plus' })`
@@ -61,6 +67,9 @@ const ToolboxItem = ({
   disabled,
   disabledTooltipMessage,
   showAIUpsell,
+  isDraggable = false,
+  dragId,
+  dragIndex = 0,
   ...rest
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -69,7 +78,7 @@ const ToolboxItem = ({
     return null;
   }
 
-  return (
+  const toolboxContent = (
     <Tooltip
       placement={'left-start'}
       disabled={!disabled || !disabledTooltipMessage}
@@ -93,6 +102,7 @@ const ToolboxItem = ({
           alignItems="center"
           data-cy={rest['data-cy']}
           disabled={!!disabled}
+          onClick={!isDraggable ? onClick : undefined}
         >
           <Icon
             fill={disabled ? colors.disabled : colors.primary}
@@ -131,11 +141,26 @@ const ToolboxItem = ({
               </Box>
             </Tooltip>
           )}
-          {!disabled && <AddIcon />}
+          {!disabled && !isDraggable && <AddIcon />}
         </StyledBox>
       </Box>
     </Tooltip>
   );
+
+  if (isDraggable && dragId) {
+    return (
+      <Drag
+        id={dragId}
+        index={dragIndex}
+        useBorder={false}
+        isDragDisabled={disabled}
+      >
+        {toolboxContent}
+      </Drag>
+    );
+  }
+
+  return toolboxContent;
 };
 
 export default ToolboxItem;

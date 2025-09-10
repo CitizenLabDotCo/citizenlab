@@ -8,7 +8,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-import DraggableToolboxItem from './DraggableToolboxItem';
+import ToolboxItem from './ToolboxItem';
 
 interface BuiltInFieldsProps {
   builderConfig: FormBuilderConfig;
@@ -29,12 +29,15 @@ const LayoutFields = ({ builderConfig }: BuiltInFieldsProps) => {
       >
         <FormattedMessage {...messages.layout} />
       </Title>
-      <DraggableToolboxItem
+      <ToolboxItem
         icon="page"
         label={formatMessage(messages.page)}
         data-cy="e2e-page"
         fieldsToInclude={builderConfig.toolboxFieldsToInclude}
         inputType="page"
+        isDraggable={true}
+        dragId="toolbox-page"
+        dragIndex={0}
       />
     </Box>
   );
