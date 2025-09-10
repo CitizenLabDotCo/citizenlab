@@ -2596,7 +2596,7 @@
   "app.containers.AdminPage.SideBar.inspirationHub": "Inspirationscenter",
   "app.containers.AdminPage.SideBar.knowledgeBase": "Vidensbase",
   "app.containers.AdminPage.SideBar.language": "Sprog",
-  "app.containers.AdminPage.SideBar.linkToChangelog": "{tenantName, select,  {https://matomo.org/} other {https://support.govocal.com/en/articles/12082845-changelog}}",
+  "app.containers.AdminPage.SideBar.linkToChangelog": "https://support.govocal.com/da/articles/12082845-changelog",
   "app.containers.AdminPage.SideBar.linkToCommunityPlatform2": "https://community.govocal.com",
   "app.containers.AdminPage.SideBar.linkToSupport2": "https://support.govocal.com",
   "app.containers.AdminPage.SideBar.menu": "Sider og menu",
