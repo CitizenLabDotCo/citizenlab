@@ -71,7 +71,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     end
 
     if include_ideas
-      limit_num_ideas = max_ideas.is_a?(Integer) && @project.ideas.published.count > max_ideas
+      limit_num_ideas = max_ideas && @project.ideas.published.count > max_ideas
       exported_ideas = limit_num_ideas ? @project.ideas.published.sample(max_ideas) : @project.ideas.published
 
       @template['models']['user']                   = yml_users anonymize_users, exported_ideas, shift_timestamps: shift_timestamps
