@@ -80,8 +80,9 @@ const AdminProjectEventEdit = () => {
   const { data: event, isInitialLoading } = useEvent(eventId);
   const { mutate: updateEvent } = useUpdateEvent();
 
-  // event files
+  // event file attachments
   const syncEventFiles = useSyncFiles();
+  const { mutate: addFile } = useAddFile();
   const { data: remoteEventFileAttachments } = useFileAttachments({
     attachable_id: event?.data.id,
     attachable_type: 'Event',
@@ -91,7 +92,6 @@ const AdminProjectEventEdit = () => {
   const { mutate: addEventImage } = useAddEventImage();
   const { mutate: updateEventImage } = useUpdateEventImage();
   const { mutate: deleteEventImage } = useDeleteEventImage();
-  const { mutate: addFile } = useAddFile();
   const { data: remoteEventImage } = useEventImage(event?.data);
 
   // state
