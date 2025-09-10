@@ -46,7 +46,7 @@ module Files
     private
 
     def active_moderator?(project)
-      return unless active?
+      return false unless active?
 
       UserRoleService.new.can_moderate_project? project, user
     end
