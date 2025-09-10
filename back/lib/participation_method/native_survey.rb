@@ -135,7 +135,21 @@ module ParticipationMethod
         action: 'posting_idea'
       )
 
-      return false if permission.permission_custom_fields.length == 0
+      case permission&.permitted_by
+      when 'everyone'
+        return permission.permissions_custom_fields.length > 0
+      when 'everyone_confirmed_email'
+        return phase.user_fields_in_form && permission.permissions_custom_fields.length > 0
+      else
+        if permission.global_custom_fields == true
+          return phase.user_fields_in_form 
+        else
+          return phase.user_fields_in_form && permission.permissions_custom_fields.length > 0
+        end
+      end
+
+
+      return false if permission.permissions_custom_fields.length == 0
       return true if permission&.permitted_by == 'everyone'
 
       phase.user_fields_in_form
