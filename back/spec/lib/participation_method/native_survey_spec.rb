@@ -184,6 +184,12 @@ RSpec.describe ParticipationMethod::NativeSurvey do
       expect(participation_method.user_fields_in_form?).to be true
     end
 
+    it 'returns false when anonymity is full_anonymity' do
+      phase.anonymity = 'full_anonymity'
+      phase.user_fields_in_form = true
+      expect(participation_method.user_fields_in_form?).to be false
+    end
+
     context 'when permission permitted_by is \'everyone\'' do
       before do
         permission = Permission.find_by(
