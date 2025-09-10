@@ -93,6 +93,18 @@ export const SupportMenu = () => {
               </Box>
             </ItemMenu>
             <ItemMenu
+              linkTo={formatMessage(messages.linkToChangelog) as RouteType}
+              buttonStyle="text"
+              openLinkInNewTab
+            >
+              <Box display="flex" justifyContent="space-between" width="100%">
+                <Text my="0px" color="coolGrey600">
+                  {formatMessage({ ...messages.productChangelog })}
+                </Text>
+                <Icon name="survey-long-answer" fill={colors.grey600} />
+              </Box>
+            </ItemMenu>
+            <ItemMenu
               linkTo={
                 formatMessage(messages.linkToCommunityPlatform) as RouteType
               }
