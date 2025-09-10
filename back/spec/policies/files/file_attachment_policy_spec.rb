@@ -66,7 +66,7 @@ RSpec.describe Files::FileAttachmentPolicy do
         let_it_be(:user) do
           create(
             :user,
-            roles: [{'type'=>'project_moderator', 'project_id'=>project.id}]
+            roles: [{ 'type' => 'project_moderator', 'project_id' => project.id }]
           )
         end
 
