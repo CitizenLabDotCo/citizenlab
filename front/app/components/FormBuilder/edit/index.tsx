@@ -46,7 +46,6 @@ import messages from '../messages';
 import { FormBuilderConfig } from '../utils';
 
 import {
-  NestedGroupingStructure,
   getReorderedFields,
   DragAndDropResult,
   supportsLinearScaleLabels,
@@ -171,6 +170,7 @@ const FormEdit = ({
     getValues,
     reset,
     trigger,
+    watch,
   } = methods;
 
   const { move, replace, insert } = useFieldArray({
@@ -379,10 +379,9 @@ const FormEdit = ({
     }
   };
 
-  const reorderFields = (
-    result: DragAndDropResult,
-    nestedGroupData: NestedGroupingStructure[]
-  ) => {
+  const reorderFields = (result: DragAndDropResult) => {
+    const formCustomFields = watch('customFields');
+    const nestedGroupData = getNestedGroupData(formCustomFields);
     const reorderedFields = getReorderedFields(result, nestedGroupData);
     if (reorderedFields) {
       replace(reorderedFields);
@@ -394,6 +393,7 @@ const FormEdit = ({
       );
       setSelectedField({ ...selectedField, index: newSelectedFieldIndex });
     }
+    trigger();
   };
 
   return (
@@ -419,12 +419,7 @@ const FormEdit = ({
               setAutosaveEnabled={setAutosaveEnabled}
               phaseId={phaseId}
             />
-            <DragAndDrop
-              onDragEnd={(result: DragAndDropResult) => {
-                reorderFields(result, getNestedGroupData(formCustomFields));
-                trigger();
-              }}
-            >
+            <DragAndDrop onDragEnd={reorderFields}>
               <Drop id="droppable" type={pageDNDType}>
                 <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
                   <Box width="210px">
