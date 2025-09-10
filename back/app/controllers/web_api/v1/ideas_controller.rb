@@ -181,11 +181,16 @@ class WebApi::V1::IdeasController < ApplicationController
     # Non persisted attribute needed by policy & anonymous_participation concern for 'everyone' participation only
     input.request = request if phase_for_input.pmethod.everyone_tracking_enabled?
 
-    # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force
-    if phase_for_input.pmethod.supports_survey_form? && phase_for_input.allow_anonymous_participation?
+    # If native survey or community monitor:
+    # Do not store user ID if anonymity it set to "full_anonymity" or "demographics_only"
+    # (anonymous = true on the input just means "do not store user ID")
+    if phase_for_input.pmethod.supports_survey_form? && phase_for_input.anonymity !== 'collect_all_data_available'
       input.anonymous = true
     end
+
+    # TODO not sure why we are still doing this, regardless of the anonymity setting?
     input.author ||= current_user
+    
     phase_for_input.pmethod.assign_defaults(input)
 
     sidefx.before_create(input, current_user)
