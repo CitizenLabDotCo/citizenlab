@@ -51,7 +51,10 @@ import {
   DragAndDropResult,
   supportsLinearScaleLabels,
   getQuestionCategory,
+  getNestedGroupData,
 } from './utils';
+import { DragAndDrop, Drop } from '../components/DragAndDrop';
+import { pageDNDType } from '../components/FormFields/constants';
 
 const nullableNumber = number()
   .transform((value, originalValue) => {
@@ -167,6 +170,7 @@ const FormEdit = ({
     formState: { isDirty },
     getValues,
     reset,
+    trigger,
   } = methods;
 
   const { move, replace, insert } = useFieldArray({
@@ -415,56 +419,65 @@ const FormEdit = ({
               setAutosaveEnabled={setAutosaveEnabled}
               phaseId={phaseId}
             />
-            <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
-              <Box width="210px">
-                <FormBuilderToolbox
-                  onAddField={onAddField}
-                  builderConfig={builderConfig}
-                  move={move}
-                  onSelectField={setSelectedField}
-                />
-              </Box>
-              <Box
-                flex="1.8"
-                border="1px solid #ccc"
-                overflowY="auto"
-                zIndex="2"
-                margin="0px"
-                paddingBottom="100px"
-                height={`calc(100vh - ${stylingConsts.menuHeight}px)`}
-                px="30px"
-              >
-                <Box mt="16px">
-                  <FormStatus
-                    successMessageIsVisible={successMessageIsVisible}
-                    setSuccessMessageIsVisible={setSuccessMessageIsVisible}
-                    isSubmitting={isSubmitting}
-                    builderConfig={builderConfig}
-                    projectId={projectId}
-                    phaseId={phaseId}
-                  />
-                  <FormFields
-                    onEditField={setSelectedField}
-                    selectedFieldId={selectedField?.id}
-                    handleDragEnd={reorderFields}
-                    builderConfig={builderConfig}
-                    closeSettings={closeSettings}
-                  />
-                </Box>
-              </Box>
-              <Box flex={!isNilOrError(selectedField) ? '1' : '0'}>
-                {!isNilOrError(selectedField) && (
-                  <Box>
-                    <FormBuilderSettings
-                      key={selectedField.id}
-                      field={selectedField}
-                      closeSettings={closeSettings}
+            <DragAndDrop
+              onDragEnd={(result: DragAndDropResult) => {
+                reorderFields(result, getNestedGroupData(formCustomFields));
+                trigger();
+              }}
+            >
+              <Drop id="droppable" type={pageDNDType}>
+                <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
+                  <Box width="210px">
+                    <FormBuilderToolbox
+                      onAddField={onAddField}
                       builderConfig={builderConfig}
+                      move={move}
+                      onSelectField={setSelectedField}
                     />
                   </Box>
-                )}
-              </Box>
-            </Box>
+                  <Box
+                    flex="1.8"
+                    border="1px solid #ccc"
+                    overflowY="auto"
+                    zIndex="2"
+                    margin="0px"
+                    paddingBottom="100px"
+                    height={`calc(100vh - ${stylingConsts.menuHeight}px)`}
+                    px="30px"
+                  >
+                    <Box mt="16px">
+                      <FormStatus
+                        successMessageIsVisible={successMessageIsVisible}
+                        setSuccessMessageIsVisible={setSuccessMessageIsVisible}
+                        isSubmitting={isSubmitting}
+                        builderConfig={builderConfig}
+                        projectId={projectId}
+                        phaseId={phaseId}
+                      />
+                      <FormFields
+                        onEditField={setSelectedField}
+                        selectedFieldId={selectedField?.id}
+                        handleDragEnd={reorderFields}
+                        builderConfig={builderConfig}
+                        closeSettings={closeSettings}
+                      />
+                    </Box>
+                  </Box>
+                  <Box flex={!isNilOrError(selectedField) ? '1' : '0'}>
+                    {!isNilOrError(selectedField) && (
+                      <Box>
+                        <FormBuilderSettings
+                          key={selectedField.id}
+                          field={selectedField}
+                          closeSettings={closeSettings}
+                          builderConfig={builderConfig}
+                        />
+                      </Box>
+                    )}
+                  </Box>
+                </Box>
+              </Drop>
+            </DragAndDrop>
           </form>
         </FormProvider>
       </FocusOn>

@@ -249,3 +249,25 @@ export function detectConflictsByPage(
 
   return conflictsByPage;
 }
+
+export const getNestedGroupData = (
+  formCustomFields?: IFlatCustomField[]
+): NestedGroupingStructure[] => {
+  return (
+    formCustomFields?.reduce((groups, field) => {
+      if (field.input_type === 'page') {
+        groups.push({
+          groupElement: field,
+          questions: [],
+          id: field.id,
+        });
+      } else {
+        const lastGroup = groups[groups.length - 1];
+        if (lastGroup) {
+          lastGroup.questions.push({ ...field });
+        }
+      }
+      return groups;
+    }, [] as NestedGroupingStructure[]) || []
+  );
+};

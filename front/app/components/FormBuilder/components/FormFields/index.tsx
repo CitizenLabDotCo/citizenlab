@@ -16,6 +16,7 @@ import {
 import {
   detectConflictsByPage,
   DragAndDropResult,
+  getNestedGroupData,
   NestedGroupingStructure,
 } from '../../edit/utils';
 import { DragAndDrop, Drag, Drop } from '../DragAndDrop';
@@ -56,22 +57,7 @@ const FormFields = ({
 
   const lastPage = formCustomFields[formCustomFields.length - 1];
 
-  const nestedGroupData: NestedGroupingStructure[] = [];
-
-  formCustomFields.forEach((field) => {
-    if (field.input_type === 'page') {
-      nestedGroupData.push({
-        groupElement: field,
-        questions: [],
-        id: field.id,
-      });
-    } else {
-      const lastGroupElement = nestedGroupData[nestedGroupData.length - 1];
-      lastGroupElement.questions.push({
-        ...field,
-      });
-    }
-  });
+  const nestedGroupData = getNestedGroupData(formCustomFields);
 
   const conflictsByPage = detectConflictsByPage(nestedGroupData);
   const fieldNumbers = getFieldNumbers(formCustomFields);
