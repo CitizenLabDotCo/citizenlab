@@ -478,7 +478,7 @@ const AdminProjectEventEdit = () => {
         attachableId: eventId || '',
         attachableType: 'Event',
         fileAttachments: eventFileAttachments,
-        fileAttachmentsToRemove: [], // eventFilesToRemove --- IGNORE ---
+        fileAttachmentsToRemove: eventFileAttachmentsToRemove,
         fileAttachmentOrdering: initialFileAttachmentOrdering,
       });
 
