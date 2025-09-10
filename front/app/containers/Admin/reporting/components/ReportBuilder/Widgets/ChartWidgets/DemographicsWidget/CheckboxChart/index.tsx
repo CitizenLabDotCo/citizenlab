@@ -34,12 +34,32 @@ const CheckboxChart = ({ response }: Props) => {
   const convertToCheckboxFormat = (data: DemographicsResponse) => {
     const { series } = data.data.attributes;
 
-    // For checkbox fields, we expect '_blank', 'true', 'false' keys
-    const res = ['_blank', 'true', 'false'].map((key) => ({
-      value: series[key] || 0,
-      name: formatMessage(dashboardMessages[key]),
-      code: key,
-    }));
+    // Get all keys from the series data (universal approach)
+    const allKeys = Object.keys(series);
+
+    // Map each key to a display format
+    const res = allKeys.map((key) => {
+      let displayName: string;
+
+      // Handle special cases with proper internationalization
+      if (key === '_blank') {
+        displayName = formatMessage(dashboardMessages._blank);
+      } else if (key === 'true') {
+        displayName = formatMessage(dashboardMessages.true);
+      } else if (key === 'false') {
+        displayName = formatMessage(dashboardMessages.false);
+      } else {
+        // For any other keys, use the key as display name
+        // This handles custom checkbox values or other boolean representations
+        displayName = key;
+      }
+
+      return {
+        value: series[key] || 0,
+        name: displayName,
+        code: key,
+      };
+    });
 
     return res.length > 0 ? res : null;
   };
