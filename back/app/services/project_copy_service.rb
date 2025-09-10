@@ -9,8 +9,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       tenant_deserializer.deserialize(same_template, validate: false, local_copy: local_copy)
     end
 
-    # TODO: Update basket counts etc?
-
     project = Project.find(created_objects_ids['Project'].first)
     unless local_copy
       project.update!(slug: SlugService.new.generate_slug(project, project.slug))
