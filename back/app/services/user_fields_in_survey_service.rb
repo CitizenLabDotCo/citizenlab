@@ -65,9 +65,13 @@ class UserFieldsInSurveyService
     fields + [user_page] + user_fields + [last_page]
   end
 
+  def self.prefix
+    'u_'
+  end
+
   private
 
   def self.prefix_key(key)
-    "u_#{key}"
+    "#{prefix}#{key}"
   end
 end
