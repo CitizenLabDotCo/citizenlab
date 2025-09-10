@@ -825,6 +825,7 @@
   "app.components.formBuilder.good": "Gut",
   "app.components.formBuilder.helmetTitle": "Eingabeformular erstellen",
   "app.components.formBuilder.imageFileUpload": "Bild-Upload",
+  "app.components.formBuilder.inputImages": "Bilder",
   "app.components.formBuilder.inputTagManager": "Seite der Beitrags-Tags",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Ungültige Logik",
   "app.components.formBuilder.labels2": "Bezeichnungen (optional)",

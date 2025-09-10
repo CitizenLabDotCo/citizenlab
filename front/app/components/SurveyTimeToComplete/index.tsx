@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { colors, Icon, Text } from '@citizenlab/cl2-component-library';
+import { Icon, Text } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import useCustomFields from 'api/custom_fields/useCustomFields';
@@ -35,6 +36,7 @@ const SurveyTimeToComplete = ({
   projectId: string;
   phaseId: string;
 }) => {
+  const theme = useTheme();
   const { formatMessage } = useIntl();
   const { data: customFields } = useCustomFields({
     projectId,
@@ -54,11 +56,17 @@ const SurveyTimeToComplete = ({
       <Icon
         my="auto"
         height="14px"
-        fill={colors.teal}
+        fill={theme.colors.tenantPrimary}
         m="0px"
         name="clock-circle"
       />
-      <Text fontSize="s" color="teal" textAlign="center" lineHeight="1" m="0px">
+      <Text
+        fontSize="s"
+        color="tenantPrimary"
+        textAlign="center"
+        lineHeight="1"
+        m="0px"
+      >
         {formatMessage(messages.xMinutesToComplete, {
           minutes: estimatedMinutesToComplete,
         })}
