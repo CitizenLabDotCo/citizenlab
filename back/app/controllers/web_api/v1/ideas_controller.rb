@@ -151,6 +151,7 @@ class WebApi::V1::IdeasController < ApplicationController
       Idea.new(project: phase.project, author: current_user, publication_status: 'draft')
 
     # Merge custom field values from the user's profile if user fields are presented in the idea form
+    # AND the anonymity setting allows it
     draft_idea = UserFieldsInSurveyService.merge_idea_and_user_fields(
       current_user, 
       phase, 
