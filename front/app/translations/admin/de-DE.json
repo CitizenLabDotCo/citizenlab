@@ -2596,7 +2596,7 @@
   "app.containers.AdminPage.SideBar.inspirationHub": "Ideenecke",
   "app.containers.AdminPage.SideBar.knowledgeBase": "Wissensdatenbank",
   "app.containers.AdminPage.SideBar.language": "Sprache",
-  "app.containers.AdminPage.SideBar.linkToChangelog": "https://support.govocal.com/en/articles/12082845-changelog/de-DE",
+  "app.containers.AdminPage.SideBar.linkToChangelog": "https://support.govocal.com/de/articles/12082845-changelog",
   "app.containers.AdminPage.SideBar.linkToCommunityPlatform2": "https://community.govocal.com",
   "app.containers.AdminPage.SideBar.linkToSupport2": "https://support.govocal.com/de/",
   "app.containers.AdminPage.SideBar.menu": "Seiten & Menü",
