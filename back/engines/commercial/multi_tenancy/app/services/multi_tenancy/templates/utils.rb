@@ -201,10 +201,8 @@ module MultiTenancy
           # Do the locales in the template already match the target locales?
           return serialized_models if Set.new(locales_to) == Set.new(template_locales(serialized_models))
 
-          locales_from = user_locales(serialized_models)
           # Change unsupported user locales to first target tenant locale.
-          # TODO: Does this need changing too?
-          unless Set.new(locales_from).subset? Set.new(locales_to)
+          unless Set.new(locales_to) == Set.new(user_locales(serialized_models))
             serialized_models['models']['user']&.each do |attributes|
               unless locales_to.include? attributes['locale']
                 attributes['locale'] = locales_to.first
@@ -212,24 +210,23 @@ module MultiTenancy
             end
           end
 
-          # Determine if translation needs to happen.
-          # translate_from = locales_from.first
-          # translate_to = locales_to.include?(translate_from) ? nil : locales_to.first
-          # Change multiloc fields, applying translation and removing
-          # unsupported locales.
-
+          # Translate any missing locales from the first locale found .
           serialized_models['models'].each_value do |fields|
             fields.each do |attributes|
               attributes.each do |field_name, field_value|
                 if multiloc?(field_name) && field_value.is_a?(Hash)
                   source_locale = field_value.keys.first
-                  source_text = field_value[source_locale]
-                  next if source_text.blank?
+                  next unless source_locale
 
+                  source_text = field_value[source_locale]
                   locales_to.each do |locale|
                     next if field_value.key?(locale) && field_value[locale].present?
 
-                    field_value[locale] = translator.translate source_text, source_locale, locale, retries: 10
+                    field_value[locale] = if source_text.blank?
+                      source_text
+                    else
+                      translator.translate source_text, source_locale, locale, retries: 10
+                    end
                   end
 
                   # Only keep the target locales

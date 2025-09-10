@@ -2,7 +2,8 @@
 
 class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   def import(template, folder: nil, local_copy: false)
-    same_template = MultiTenancy::Templates::Utils.translate_and_fix_locales(template)
+    # No translation required if it's a local copy
+    same_template = local_copy ? template : MultiTenancy::Templates::Utils.translate_and_fix_locales(template)
 
     created_objects_ids = ActiveRecord::Base.transaction do
       tenant_deserializer.deserialize(same_template, validate: false, local_copy: local_copy)
