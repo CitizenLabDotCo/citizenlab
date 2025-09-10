@@ -184,13 +184,13 @@ class WebApi::V1::IdeasController < ApplicationController
     # If native survey or community monitor:
     # Do not store user ID if anonymity it set to "full_anonymity" or "demographics_only"
     # (anonymous = true on the input just means "do not store user ID")
-    if phase_for_input.pmethod.supports_survey_form? && phase_for_input.anonymity !== 'collect_all_data_available'
+    if phase_for_input.pmethod.supports_survey_form? && phase_for_input.anonymity != 'collect_all_data_available'
       input.anonymous = true
     end
 
     # TODO not sure why we are still doing this, regardless of the anonymity setting?
     input.author ||= current_user
-    
+
     phase_for_input.pmethod.assign_defaults(input)
 
     sidefx.before_create(input, current_user)
