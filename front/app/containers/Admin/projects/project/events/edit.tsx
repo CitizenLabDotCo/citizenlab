@@ -18,8 +18,6 @@ import { RouteType } from 'routes';
 import { useTheme } from 'styled-components';
 import { Multiloc, UploadFile } from 'typings';
 
-import useAddEventFile from 'api/event_files/useAddEventFile';
-import useDeleteEventFile from 'api/event_files/useDeleteEventFile';
 import useAddEventImage from 'api/event_images/useAddEventImage';
 import useDeleteEventImage from 'api/event_images/useDeleteEventImage';
 import useEventImage from 'api/event_images/useEventImage';
@@ -84,8 +82,6 @@ const AdminProjectEventEdit = () => {
 
   // event files
   const syncEventFiles = useSyncFiles();
-  const { mutate: addEventFile } = useAddEventFile();
-  const { mutate: deleteEventFile } = useDeleteEventFile();
   const { data: remoteEventFileAttachments } = useFileAttachments({
     attachable_id: event?.data.id,
     attachable_type: 'Event',
@@ -103,7 +99,6 @@ const AdminProjectEventEdit = () => {
   const [apiErrors, setApiErrors] = useState<ApiErrorType>({});
   const [saving, setSaving] = useState<boolean>(false);
   const [submitState, setSubmitState] = useState<SubmitState>('disabled');
-  const [eventFiles, setEventFiles] = useState<UploadFile[]>([]);
   const [eventFileAttachments, setEventFileAttachments] = useState<
     IFileAttachmentData[]
   >(remoteEventFileAttachments?.data || []);
@@ -124,9 +119,8 @@ const AdminProjectEventEdit = () => {
   const [geocodedPoint, setGeocodedPoint] = useState<GeoJSON.Point | null>(
     null
   );
-  const [eventFilesToRemove, setEventFilesToRemove] = useState<UploadFile[]>(
-    []
-  );
+  const [eventFileAttachmentsToRemove, setEventFileAttachmentsToRemove] =
+    useState<IFileAttachmentData[]>([]);
   const [successfulGeocode, setSuccessfulGeocode] = useState(false);
   const [eventImageAltText, setEventImagealtText] = useState<Multiloc | null>(
     null
@@ -322,7 +316,7 @@ const AdminProjectEventEdit = () => {
     addFile(
       {
         content: fileToAdd.base64,
-        project: eventId,
+        project: projectId,
         name: fileToAdd.name,
         category: 'other', // Default to 'other' when added from phase setup
         ai_processing_allowed: false, // Default to false when added from phase setup
@@ -356,14 +350,20 @@ const AdminProjectEventEdit = () => {
     );
   };
 
-  const handleEventFileOnRemove = (eventFileToRemove: IFileAttachmentData) => {
+  const handleEventFileOnRemove = (
+    eventFileAttachmentToRemove: IFileAttachmentData
+  ) => {
     setSubmitState('enabled');
-    // setEventFilesToRemove([...eventFilesToRemove, eventFileToRemove]);
-    // setEventFiles(
-    //   eventFiles.filter(
-    //     (eventFile) => eventFile.base64 !== eventFileToRemove.base64
-    //   )
-    // );
+    setEventFileAttachmentsToRemove([
+      ...eventFileAttachmentsToRemove,
+      eventFileAttachmentToRemove,
+    ]);
+    setEventFileAttachments(
+      eventFileAttachments.filter(
+        (eventFileAttachment) =>
+          eventFileAttachment.id !== eventFileAttachmentToRemove.id
+      )
+    );
   };
 
   const handleFilesReorder = (
@@ -452,54 +452,6 @@ const AdminProjectEventEdit = () => {
     }
   };
 
-  const handleEventFiles = async (data: IEvent) => {
-    setSubmitState('success');
-
-    const { id: eventId } = data.data;
-    eventFiles
-      .filter((file) => !file.remote)
-      .map((file) =>
-        addEventFile(
-          {
-            eventId,
-            file: file.base64,
-            name: file.name,
-            ordering: null,
-          },
-          {
-            onSuccess: () => {
-              setSubmitState('success');
-            },
-            onError: () => {
-              setSubmitState('error');
-            },
-          }
-        )
-      );
-    eventFilesToRemove
-      .filter((file) => !!file.remote)
-      .map((file) => {
-        if (file.id) {
-          deleteEventFile(
-            { eventId, fileId: file.id },
-            {
-              onSuccess: () => {
-                setEventFilesToRemove(
-                  eventFilesToRemove.filter(
-                    (fileToRemove) => fileToRemove.id !== file.id
-                  )
-                );
-                setSubmitState('success');
-              },
-              onError: () => {
-                setSubmitState('error');
-              },
-            }
-          );
-        }
-      });
-  };
-
   const handleOnSubmit = async (e: FormEvent) => {
     const locationPointChanged =
       locationPoint !== event?.data.attributes.location_point_geojson;
@@ -514,10 +466,21 @@ const AdminProjectEventEdit = () => {
     try {
       setSaving(true);
 
-      // If only files have changed
-      if (isEmpty(attributeDiff) && event) {
-        handleEventFiles(event);
-      }
+      // Handle event file attachments
+      const initialFileAttachmentOrdering: Record<string, number | undefined> =
+        Object.fromEntries(
+          remoteEventFileAttachments?.data
+            .filter((file) => file.id)
+            .map((file) => [file.id!, file.attributes.position]) ?? []
+        );
+
+      syncEventFiles({
+        attachableId: eventId || '',
+        attachableType: 'Event',
+        fileAttachments: eventFileAttachments,
+        fileAttachmentsToRemove: [], // eventFilesToRemove --- IGNORE ---
+        fileAttachmentOrdering: initialFileAttachmentOrdering,
+      });
 
       // If only image has changed
       if (isEmpty(attributeDiff) && imageChanged && event) {
@@ -549,7 +512,6 @@ const AdminProjectEventEdit = () => {
             {
               onSuccess: async (data) => {
                 addOrDeleteEventImage(data);
-                handleEventFiles(data);
                 setSubmitState('success');
               },
               onError: async (errors) => {
@@ -572,7 +534,6 @@ const AdminProjectEventEdit = () => {
             {
               onSuccess: async (data) => {
                 setSubmitState('success');
-                handleEventFiles(data);
                 addOrDeleteEventImage(data);
                 clHistory.push(`/admin/projects/${projectId}/events`);
               },
