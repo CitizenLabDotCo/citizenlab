@@ -128,11 +128,14 @@ module ParticipationMethod
     end
 
     def user_fields_in_form?
+      return false if phase.anonymity == 'full_anonymity'
+
       permission = Permission.find_by(
         permission_scope_id: phase.id,
         action: 'posting_idea'
       )
 
+      return false if permission.permission_custom_fields.length == 0
       return true if permission&.permitted_by == 'everyone'
 
       phase.user_fields_in_form

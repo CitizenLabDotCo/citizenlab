@@ -6,7 +6,7 @@ class UserFieldsInSurveyService
     phase,
     draft_idea
   )
-    if current_user && phase.pmethod.user_fields_in_form? && phase.anonymity != 'full_anonymity'
+    if current_user && phase.pmethod.user_fields_in_form?
       user_values = current_user.custom_field_values&.transform_keys do |key| 
         prefix_key(key)
       end
@@ -18,7 +18,7 @@ class UserFieldsInSurveyService
   end
 
   def self.add_user_fields_to_form(fields, participation_method, custom_form)
-    return fields unless participation_method.user_fields_in_form? && phase.anonymity != 'full_anonymity'
+    return fields unless participation_method.user_fields_in_form?
 
     phase = custom_form.participation_context
     permission = phase.permissions.find_by(action: 'posting_idea')
