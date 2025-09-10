@@ -9,6 +9,8 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       tenant_deserializer.deserialize(same_template, validate: false, local_copy: local_copy)
     end
 
+    # TODO: Update basket counts etc?
+
     project = Project.find(created_objects_ids['Project'].first)
     unless local_copy
       project.update!(slug: SlugService.new.generate_slug(project, project.slug))
@@ -19,10 +21,12 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     project
   end
 
+  # rubocop:disable Metrics/AbcSize
   def export(
     project,
     local_copy: false,
     include_ideas: false,
+    max_ideas: nil,
     anonymize_users: true,
     shift_timestamps: 0,
     new_slug: nil,
@@ -31,6 +35,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     new_publication_status: nil
   )
     include_ideas = false if local_copy
+    max_ideas = max_ideas&.match?(/\A\d+\z/) && max_ideas.to_i.positive? ? max_ideas.to_i : nil
     @include_ideas = include_ideas
     @local_copy = local_copy
     @project = project
@@ -66,7 +71,8 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     end
 
     if include_ideas
-      exported_ideas = @project.ideas.published
+      limit_num_ideas = max_ideas.is_a?(Integer) && @project.ideas.published.count > max_ideas
+      exported_ideas = limit_num_ideas ? @project.ideas.published.sample(max_ideas) : @project.ideas.published
 
       @template['models']['user']                   = yml_users anonymize_users, exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['idea']                   = yml_ideas exported_ideas, shift_timestamps: shift_timestamps
@@ -85,6 +91,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
 
     @template
   end
+  # rubocop:enable Metrics/AbcSize
 
   private
 
@@ -465,7 +472,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   def yml_users(anonymize_users, exported_ideas, shift_timestamps: 0)
     service = AnonymizeUserService.new
     user_ids = []
-    idea_ids = exported_ideas.ids
+    idea_ids = exported_ideas.pluck(:id)
     user_ids += Idea.where(id: idea_ids).pluck(:author_id)
     comment_ids = Comment.where(idea_id: idea_ids).ids
     user_ids += Comment.where(id: comment_ids).pluck(:author_id)
@@ -726,7 +733,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   end
 
   def yml_reactions(exported_ideas, shift_timestamps: 0)
-    idea_ids = exported_ideas.ids
+    idea_ids = exported_ideas.pluck(:id)
     comment_ids = Comment.where(idea_id: idea_ids)
     Reaction.where.not(user_id: nil).where(reactable_id: idea_ids + comment_ids).map do |v|
       yml_reaction = {
