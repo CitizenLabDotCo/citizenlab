@@ -825,6 +825,7 @@
   "app.components.formBuilder.good": "Καλή",
   "app.components.formBuilder.helmetTitle": "Κατασκευαστής φορμών",
   "app.components.formBuilder.imageFileUpload": "Ανέβασμα εικόνας",
+  "app.components.formBuilder.inputImages": "Εικόνες",
   "app.components.formBuilder.inputTagManager": "Σελίδα ετικετών εισόδου",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Άκυρη λογική",
   "app.components.formBuilder.labels2": "Ετικέτες (προαιρετικά)",
