@@ -8,14 +8,6 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
-import { useFormContext } from 'react-hook-form';
-
-import {
-  ICustomFieldInputType,
-  IFlatCreateCustomField,
-  IFlatCustomField,
-  IFlatCustomFieldWithIndex,
-} from 'api/custom_fields/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
@@ -23,31 +15,21 @@ import useLocale from 'hooks/useLocale';
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { generateTempId, isNilOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 
 import BuiltInFields from './BuiltInFields';
 import ToolboxItem from './ToolboxItem';
 import LayoutFields from './LayoutFields';
-import { getInitialLinearScaleLabel } from './utils';
 import { Drop } from '../DragAndDrop';
 import { fieldAreaDNDType } from '../FormFields/constants';
 
 interface FormBuilderToolboxProps {
-  onAddField: (field: IFlatCreateCustomField, index: number) => void;
   builderConfig: FormBuilderConfig;
-  move: (indexA: number, indexB: number) => void;
-  // Callback to focus a field in the right-hand settings pane
-  onSelectField: (field: IFlatCustomFieldWithIndex) => void;
 }
 
-const FormBuilderToolbox = ({
-  onAddField,
-  builderConfig,
-  move,
-  onSelectField,
-}: FormBuilderToolboxProps) => {
+const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
   const isInputFormCustomFieldsFlagEnabled = useFeatureFlag({
     name: 'input_form_custom_fields',
   });
@@ -55,9 +37,6 @@ const FormBuilderToolbox = ({
   const isFormMappingEnabled = useFeatureFlag({
     name: 'form_mapping',
   });
-
-  const { watch } = useFormContext();
-  const formCustomFields: IFlatCustomField[] = watch('customFields');
 
   const isCustomFieldsDisabled =
     !isInputFormCustomFieldsFlagEnabled &&
@@ -72,95 +51,6 @@ const FormBuilderToolbox = ({
   );
 
   if (isNilOrError(locale)) return null;
-
-  const addField = (inputType: ICustomFieldInputType) => {
-    const createField = (type: ICustomFieldInputType) => ({
-      id: `${Math.floor(Date.now() * Math.random())}`,
-      temp_id: generateTempId(),
-      logic: {
-        ...(type !== 'page' ? { rules: [] } : undefined),
-      },
-      isLocalOnly: true,
-      description_multiloc: {},
-      input_type: type,
-      required: false,
-      title_multiloc: {
-        [locale]: '',
-      },
-      // Set default character limits for text-supporting fields (excluding html_multiloc)
-      ...(['text', 'multiline_text', 'text_multiloc'].includes(type) && {
-        min_characters: 3,
-        max_characters: type === 'text_multiloc' ? 120 : undefined,
-      }),
-      linear_scale_label_1_multiloc: getInitialLinearScaleLabel({
-        value: 1,
-        inputType: type,
-        formatMessage,
-        locale,
-      }),
-      linear_scale_label_2_multiloc: getInitialLinearScaleLabel({
-        value: 2,
-        inputType: type,
-        formatMessage,
-        locale,
-      }),
-      linear_scale_label_3_multiloc: getInitialLinearScaleLabel({
-        value: 3,
-        inputType: type,
-        formatMessage,
-        locale,
-      }),
-      linear_scale_label_4_multiloc: getInitialLinearScaleLabel({
-        value: 4,
-        inputType: type,
-        formatMessage,
-        locale,
-      }),
-      linear_scale_label_5_multiloc: getInitialLinearScaleLabel({
-        value: 5,
-        inputType: type,
-        formatMessage,
-        locale,
-      }),
-      linear_scale_label_6_multiloc: {},
-      linear_scale_label_7_multiloc: {},
-      linear_scale_label_8_multiloc: {},
-      linear_scale_label_9_multiloc: {},
-      linear_scale_label_10_multiloc: {},
-      linear_scale_label_11_multiloc: {},
-      maximum: 5,
-      ask_follow_up: false,
-      options: [
-        {
-          title_multiloc: {},
-        },
-      ],
-      matrix_statements: [
-        {
-          title_multiloc: {},
-        },
-      ],
-      enabled: true,
-    });
-
-    const previousField = formCustomFields[formCustomFields.length - 2];
-    const isLastFieldTitleOrBody =
-      previousField.key === 'title_multiloc' ||
-      previousField.key === 'body_multiloc';
-
-    // If the field before the last is a title or body field, we add a new page and add it to the new page
-    // This is because the title and description pages should only have those fields
-    if (isLastFieldTitleOrBody && inputType !== 'page') {
-      const indexForPage = formCustomFields.length - 1;
-      onAddField(createField('page'), indexForPage);
-
-      const indexForInputField = indexForPage + 1;
-      onAddField(createField(inputType), indexForInputField);
-    } else {
-      const indexForInputField = formCustomFields.length - 1;
-      onAddField(createField(inputType), indexForInputField);
-    }
-  };
 
   return (
     <Box
@@ -181,12 +71,7 @@ const FormBuilderToolbox = ({
       <Box overflowY="auto" w="100%" display="inline">
         <LayoutFields builderConfig={builderConfig} />
         {builderConfig.displayBuiltInFields && (
-          <BuiltInFields
-            move={move}
-            builderConfig={builderConfig}
-            addField={addField}
-            onSelectField={onSelectField}
-          />
+          <BuiltInFields builderConfig={builderConfig} />
         )}
         <Box display="flex" alignItems="center" ml="16px" mt="16px">
           <Title
@@ -228,7 +113,6 @@ const FormBuilderToolbox = ({
             inputType="text"
             disabled={isCustomFieldsDisabled}
             showAIUpsell
-            isDraggable={true}
             dragId="toolbox-text"
           />
           <ToolboxItem
@@ -240,7 +124,6 @@ const FormBuilderToolbox = ({
             inputType="multiline_text"
             disabled={isCustomFieldsDisabled}
             showAIUpsell
-            isDraggable={true}
             dragId="toolbox-multiline_text"
           />
           <ToolboxItem
@@ -251,7 +134,6 @@ const FormBuilderToolbox = ({
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="select"
             disabled={isCustomFieldsDisabled}
-            isDraggable={true}
             dragId="toolbox-select"
           />
           <ToolboxItem
@@ -262,7 +144,6 @@ const FormBuilderToolbox = ({
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="multiselect"
             disabled={isCustomFieldsDisabled}
-            isDraggable={true}
             dragId="toolbox-multiselect"
           />
           <ToolboxItem
@@ -273,7 +154,6 @@ const FormBuilderToolbox = ({
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="multiselect_image"
             disabled={isCustomFieldsDisabled}
-            isDraggable={true}
             dragId="toolbox-multiselect_image"
           />
           <ToolboxItem
@@ -284,7 +164,6 @@ const FormBuilderToolbox = ({
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="linear_scale"
             disabled={isCustomFieldsDisabled}
-            isDraggable={true}
             dragId="toolbox-linear_scale"
           />
           <ToolboxItem
@@ -295,7 +174,6 @@ const FormBuilderToolbox = ({
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="ranking"
             disabled={isCustomFieldsDisabled}
-            isDraggable={true}
             dragId="toolbox-ranking"
           />
           <ToolboxItem
@@ -306,7 +184,6 @@ const FormBuilderToolbox = ({
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="rating"
             disabled={isCustomFieldsDisabled}
-            isDraggable={true}
             dragId="toolbox-rating"
           />
           <ToolboxItem
@@ -317,7 +194,6 @@ const FormBuilderToolbox = ({
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="sentiment_linear_scale"
             disabled={isCustomFieldsDisabled}
-            isDraggable={true}
             dragId="toolbox-sentiment_linear_scale"
           />
           <ToolboxItem
@@ -328,7 +204,6 @@ const FormBuilderToolbox = ({
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="matrix_linear_scale"
             disabled={isCustomFieldsDisabled}
-            isDraggable={true}
             dragId="toolbox-matrix_linear_scale"
           />
 
@@ -340,7 +215,6 @@ const FormBuilderToolbox = ({
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="number"
             disabled={isCustomFieldsDisabled}
-            isDraggable={true}
             dragId="toolbox-number"
           />
           <ToolboxItem
@@ -351,7 +225,6 @@ const FormBuilderToolbox = ({
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="file_upload"
             disabled={isCustomFieldsDisabled}
-            isDraggable={true}
             dragId="toolbox-file_upload"
           />
         </Drop>
@@ -379,7 +252,6 @@ const FormBuilderToolbox = ({
                   inputType="point"
                   disabled={!isFormMappingEnabled}
                   disabledTooltipMessage={messages.mappingNotInCurrentLicense}
-                  isDraggable={true}
                   dragId="toolbox-point"
                 />
                 <>
@@ -392,7 +264,6 @@ const FormBuilderToolbox = ({
                     inputType="line"
                     disabled={!isFormMappingEnabled}
                     disabledTooltipMessage={messages.mappingNotInCurrentLicense}
-                    isDraggable={true}
                     dragId="toolbox-line"
                   />
                   <ToolboxItem
@@ -404,7 +275,6 @@ const FormBuilderToolbox = ({
                     inputType="polygon"
                     disabled={!isFormMappingEnabled}
                     disabledTooltipMessage={messages.mappingNotInCurrentLicense}
-                    isDraggable={true}
                     dragId="toolbox-polygon"
                   />
                   <ToolboxItem
@@ -416,7 +286,6 @@ const FormBuilderToolbox = ({
                     inputType="shapefile_upload"
                     disabled={!isFormMappingEnabled}
                     disabledTooltipMessage={messages.mappingNotInCurrentLicense}
-                    isDraggable={true}
                     dragId="toolbox-shapefile_upload"
                   />
                 </>

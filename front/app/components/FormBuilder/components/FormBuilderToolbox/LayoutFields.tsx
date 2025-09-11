@@ -35,7 +35,6 @@ const LayoutFields = ({ builderConfig }: BuiltInFieldsProps) => {
         data-cy="e2e-page"
         fieldsToInclude={builderConfig.toolboxFieldsToInclude}
         inputType="page"
-        isDraggable={true}
         dragId="toolbox-page"
         dragIndex={0}
       />

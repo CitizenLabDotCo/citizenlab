@@ -326,12 +326,7 @@ const FormEdit = ({
               <Drop id="droppable" type={pageDNDType}>
                 <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
                   <Box width="210px">
-                    <FormBuilderToolbox
-                      onAddField={onAddField}
-                      builderConfig={builderConfig}
-                      move={move}
-                      onSelectField={setSelectedField}
-                    />
+                    <FormBuilderToolbox builderConfig={builderConfig} />
                   </Box>
                   <Box
                     flex="1.8"
