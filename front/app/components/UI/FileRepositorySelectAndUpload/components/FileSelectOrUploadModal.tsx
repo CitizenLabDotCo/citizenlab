@@ -91,7 +91,7 @@ const FileSelectOrUploadModal = ({
         header={formatMessage(messages.selectFile)}
       >
         <Box mt="0px" p="24px">
-          {isDataRepositoryEnabled && (
+          {isDataRepositoryEnabled && filteredFileOptions.length > 0 && (
             <Box>
               <Select
                 value={''} // Since onChange we close the modal, we don't need to worry about setting this value.
