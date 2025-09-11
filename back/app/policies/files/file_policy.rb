@@ -23,29 +23,22 @@ module Files
     def create?
       return false unless active?
       return false unless record.uploader_id == user.id # cannot upload file on behalf of another user
-      return true if admin?
 
-      # Allow creation only if the user moderates all associated projects.
-      #
-      # Note: Getting the projects by querying `Project` directly instead of using
-      # `record.projects` because +record.files_projects+ may not be persisted yet
-      # (since this is a `create` action), which can cause issues with some SQL queries.
-      projects = Project.where(id: record.project_ids)
-      return false if projects.empty?
-
-      UserRoleService.new.moderatable_projects(user, projects).count == projects.count
+      admin_or_moderator?
     end
 
     def update?
       return false unless active?
-      return true if admin?
 
-      # Allow update if the user moderates at least one of the associated projects.
-      UserRoleService.new.moderatable_projects(user, record.projects).exists?
+      admin_or_moderator?
     end
 
     def destroy?
-      active_admin?
+      update?
+    end
+
+    def admin_or_moderator?
+      user.highest_role != 'user'
     end
   end
 end
