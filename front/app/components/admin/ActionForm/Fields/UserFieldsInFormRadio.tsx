@@ -4,6 +4,8 @@ import { Box, Radio, Text } from '@citizenlab/cl2-component-library';
 
 import { UserFieldsInFormFrontendDescriptor } from 'api/phases/types';
 
+import Warning from 'components/UI/Warning';
+
 interface Props {
   user_fields_in_form_frontend_descriptor: UserFieldsInFormFrontendDescriptor;
   onChange: (userFieldsInForm: boolean) => void;
@@ -50,8 +52,8 @@ const UserFieldsInFormRadio = ({
         />
       </Box>
       {explanation && (
-        <Box mt="16px">
-          <Text color="textSecondary">{explanation}</Text>
+        <Box mb="16px">
+          <Warning>{explanation}</Warning>
         </Box>
       )}
     </>
