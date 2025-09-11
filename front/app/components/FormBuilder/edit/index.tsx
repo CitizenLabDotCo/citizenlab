@@ -12,7 +12,6 @@ import { FocusOn } from 'react-focus-on';
 import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { RouteType } from 'routes';
-import { object, boolean, array, string, number } from 'yup';
 
 import {
   IFlatCreateCustomField,
@@ -30,7 +29,6 @@ import useSubmissionsCount from 'api/submission_count/useSubmissionCount';
 
 import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSettings';
 import FormBuilderToolbox from 'components/FormBuilder/components/FormBuilderToolbox';
-import { getInitialLinearScaleLabel } from 'components/FormBuilder/components/FormBuilderToolbox/utils';
 import FormBuilderTopBar from 'components/FormBuilder/components/FormBuilderTopBar';
 import FormFields from 'components/FormBuilder/components/FormFields';
 import HelmetIntl from 'components/HelmetIntl';
@@ -39,11 +37,7 @@ import useLocale from 'hooks/useLocale';
 
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import { generateTempId, isNilOrError } from 'utils/helperUtils';
-import validateElementTitle from 'utils/yup/validateElementTitle';
-import validateLogic from 'utils/yup/validateLogic';
-import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
-import validateOneStatementForMatrix from 'utils/yup/validateOneStatementForMatrix';
+import { isNilOrError } from 'utils/helperUtils';
 
 import FormStatus from '../components/FormStatus';
 import messages from '../messages';
@@ -52,27 +46,14 @@ import { FormBuilderConfig } from '../utils';
 import {
   getReorderedFields,
   DragAndDropResult,
-  supportsLinearScaleLabels,
-  getQuestionCategory,
   getNestedGroupData,
+  createValidationSchema,
+  createNewField,
+  transformFieldForSubmission,
+  calculateDropTargetIndex,
 } from './utils';
 import { DragAndDrop, Drop } from '../components/DragAndDrop';
 import { pageDNDType } from '../components/FormFields/constants';
-
-const nullableNumber = number()
-  .transform((value, originalValue) => {
-    // If the original input is null or an empty string, transform it to null.
-    if (
-      originalValue === null ||
-      (typeof originalValue === 'string' && originalValue.trim() === '')
-    ) {
-      return null;
-    }
-
-    // The 'value' is already cast by Yup. If it's not a valid number (NaN), return null.
-    return isNaN(value) ? null : value;
-  })
-  .nullable();
 
 interface FormValues {
   customFields: IFlatCustomField[];
@@ -124,116 +105,10 @@ const FormEdit = ({
   // Helper function to create new fields (extracted from toolbox logic)
   const createField = (type: ICustomFieldInputType) => {
     if (isNilOrError(locale)) return null;
-
-    return {
-      id: `${Math.floor(Date.now() * Math.random())}`,
-      temp_id: generateTempId(),
-      logic: {
-        ...(type !== 'page' ? { rules: [] } : undefined),
-      },
-      isLocalOnly: true,
-      description_multiloc: {},
-      input_type: type,
-      required: false,
-      title_multiloc: {
-        [locale]: '',
-      },
-      // Set default character limits for text-supporting fields (excluding html_multiloc)
-      ...(['text', 'multiline_text', 'text_multiloc'].includes(type) && {
-        min_characters: 3,
-        max_characters: type === 'text_multiloc' ? 120 : undefined,
-      }),
-      linear_scale_label_1_multiloc: getInitialLinearScaleLabel({
-        value: 1,
-        inputType: type,
-        formatMessage,
-        locale,
-      }),
-      linear_scale_label_2_multiloc: getInitialLinearScaleLabel({
-        value: 2,
-        inputType: type,
-        formatMessage,
-        locale,
-      }),
-      linear_scale_label_3_multiloc: getInitialLinearScaleLabel({
-        value: 3,
-        inputType: type,
-        formatMessage,
-        locale,
-      }),
-      linear_scale_label_4_multiloc: getInitialLinearScaleLabel({
-        value: 4,
-        inputType: type,
-        formatMessage,
-        locale,
-      }),
-      linear_scale_label_5_multiloc: getInitialLinearScaleLabel({
-        value: 5,
-        inputType: type,
-        formatMessage,
-        locale,
-      }),
-      linear_scale_label_6_multiloc: {},
-      linear_scale_label_7_multiloc: {},
-      linear_scale_label_8_multiloc: {},
-      linear_scale_label_9_multiloc: {},
-      linear_scale_label_10_multiloc: {},
-      linear_scale_label_11_multiloc: {},
-      maximum: 5,
-      ask_follow_up: false,
-      options: [
-        {
-          title_multiloc: {},
-        },
-      ],
-      matrix_statements: [
-        {
-          title_multiloc: {},
-        },
-      ],
-      enabled: true,
-    };
+    return createNewField(type, locale, formatMessage);
   };
 
-  const schema = object().shape({
-    customFields: array().of(
-      object().shape({
-        title_multiloc: validateElementTitle(
-          formatMessage(messages.emptyTitleError)
-        ),
-        description_multiloc: object(),
-        input_type: string(),
-        options: validateOneOptionForMultiSelect(
-          formatMessage(messages.emptyOptionError),
-          formatMessage(messages.emptyTitleMessage),
-          { multiselect_image: formatMessage(messages.emptyImageOptionError) }
-        ),
-        matrix_statements: validateOneStatementForMatrix(
-          formatMessage(messages.emptyStatementError),
-          formatMessage(messages.emptyTitleStatementMessage)
-        ),
-        maximum: number(),
-        linear_scale_label_1_multiloc: object(),
-        linear_scale_label_2_multiloc: object(),
-        linear_scale_label_3_multiloc: object(),
-        linear_scale_label_4_multiloc: object(),
-        linear_scale_label_5_multiloc: object(),
-        linear_scale_label_6_multiloc: object(),
-        linear_scale_label_7_multiloc: object(),
-        linear_scale_label_8_multiloc: object(),
-        linear_scale_label_9_multiloc: object(),
-        linear_scale_label_10_multiloc: object(),
-        linear_scale_label_11_multiloc: object(),
-        required: boolean(),
-        ask_follow_up: boolean(),
-        include_in_printed_form: boolean(),
-        min_characters: nullableNumber,
-        max_characters: nullableNumber,
-        temp_id: string(),
-        logic: validateLogic(formatMessage(messages.logicValidationError)),
-      })
-    ),
-  });
+  const schema = createValidationSchema(formatMessage);
 
   const methods = useForm({
     mode: 'onBlur',
@@ -316,115 +191,9 @@ const FormEdit = ({
     setSuccessMessageIsVisible(false);
     try {
       setIsSubmitting(true);
-      const finalResponseArray = customFields.map((field) => ({
-        ...(!field.isLocalOnly && { id: field.id }),
-        input_type: field.input_type,
-        ...(field.input_type === 'page' && {
-          temp_id: field.temp_id,
-        }),
-        ...([
-          'multiselect',
-          'linear_scale',
-          'select',
-          'page',
-          'rating',
-          'multiselect_image',
-        ].includes(field.input_type)
-          ? {
-              logic: field.logic,
-            }
-          : {
-              logic: [],
-            }),
-        required: field.required,
-        enabled: field.enabled,
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        title_multiloc: field.title_multiloc || {},
-        key: field.key,
-        code: field.code,
-        question_category: getQuestionCategory(field, customFields),
-        ...(field.page_layout || field.input_type === 'page'
-          ? {
-              page_layout: field.page_layout || 'default',
-              page_button_label_multiloc:
-                field.page_button_label_multiloc || {},
-              page_button_link: field.page_button_link || '',
-              include_in_printed_form:
-                field.include_in_printed_form === undefined
-                  ? true
-                  : field.include_in_printed_form,
-            }
-          : {}),
-        ...(field.map_config_id && {
-          map_config_id: field.map_config_id,
-        }),
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        description_multiloc: field.description_multiloc || {},
-        ...(['select', 'multiselect', 'multiselect_image'].includes(
-          field.input_type
-        ) && {
-          // TODO: This will get messy with more field types, abstract this in some way
-          options: field.options || {},
-          maximum_select_count: field.select_count_enabled
-            ? field.maximum_select_count
-            : null,
-          minimum_select_count: field.select_count_enabled
-            ? field.minimum_select_count || '0'
-            : null,
-          select_count_enabled: field.select_count_enabled,
-          random_option_ordering: field.random_option_ordering,
-          dropdown_layout: field.dropdown_layout,
-        }),
-        ...(field.input_type === 'ranking' && {
-          options: field.options || {},
-          random_option_ordering: field.random_option_ordering,
-        }),
-        ...(field.input_type === 'matrix_linear_scale' && {
-          matrix_statements: field.matrix_statements || {},
-        }),
-        ...(field.input_type === 'sentiment_linear_scale' && {
-          ask_follow_up: field.ask_follow_up || false,
-        }),
-        ...(supportsLinearScaleLabels(field.input_type) && {
-          linear_scale_label_1_multiloc:
-            field.linear_scale_label_1_multiloc || {},
-          linear_scale_label_2_multiloc:
-            field.linear_scale_label_2_multiloc || {},
-          linear_scale_label_3_multiloc:
-            field.linear_scale_label_3_multiloc || {},
-          linear_scale_label_4_multiloc:
-            field.linear_scale_label_4_multiloc || {},
-          linear_scale_label_5_multiloc:
-            field.linear_scale_label_5_multiloc || {},
-          linear_scale_label_6_multiloc:
-            field.linear_scale_label_6_multiloc || {},
-          linear_scale_label_7_multiloc:
-            field.linear_scale_label_7_multiloc || {},
-          linear_scale_label_8_multiloc:
-            field.linear_scale_label_8_multiloc || {},
-          linear_scale_label_9_multiloc:
-            field.linear_scale_label_9_multiloc || {},
-          linear_scale_label_10_multiloc:
-            field.linear_scale_label_10_multiloc || {},
-          linear_scale_label_11_multiloc:
-            field.linear_scale_label_11_multiloc || {},
-          maximum: field.maximum?.toString() || '5',
-        }),
-        ...(field.input_type === 'rating' && {
-          maximum: field.maximum?.toString() || '5',
-        }),
-        ...([
-          'text',
-          'multiline_text',
-          'text_multiloc',
-          'html_multiloc',
-        ].includes(field.input_type) && {
-          min_characters: field.min_characters,
-          max_characters: field.max_characters,
-        }),
-      }));
+      const finalResponseArray = customFields.map((field) =>
+        transformFieldForSubmission(field, customFields)
+      );
 
       await updateFormCustomFields(
         {
@@ -470,83 +239,22 @@ const FormEdit = ({
         ''
       ) as ICustomFieldInputType;
 
-      // Find the target index based on the destination
-      const destinationGroupId = result.destination?.droppableId;
-      const destinationIndex = result.destination?.index || 0;
-
-      if (!destinationGroupId) return;
-
       // Create the field
       const newField = createField(inputType);
       if (!newField) return;
 
-      let targetIndex = 0;
-
-      // If dropping at the top level (page reordering area)
-      if (destinationGroupId === 'droppable') {
-        // Calculate the correct position based on the destination index
-        // We need to convert from page-level index to flat field index
-        // Note: form_end page is not draggable, so we exclude it from calculations
-        const draggablePages = nestedGroupData.filter(
-          (group) =>
-            !(
-              formCustomFields.find((f) => f.id === group.id)?.key ===
-              'form_end'
-            )
-        );
-
-        if (destinationIndex === 0) {
-          // Insert at the very beginning
-          targetIndex = 0;
-        } else if (destinationIndex >= draggablePages.length) {
-          // Insert before the last element (form_end page)
-          targetIndex = formCustomFields.length - 1;
-        } else {
-          // Insert at the position where the destination page starts
-          const targetPageGroup = draggablePages[destinationIndex];
-          if (targetPageGroup) {
-            const pageElementIndex = formCustomFields.findIndex(
-              (field) => field.id === targetPageGroup.groupElement.id
-            );
-            targetIndex =
-              pageElementIndex !== -1
-                ? pageElementIndex
-                : formCustomFields.length - 1;
-          } else {
-            targetIndex = formCustomFields.length - 1;
-          }
-        }
-      } else {
-        // Dropping into a specific group/page
-        // Find the target group
-        const targetGroup = nestedGroupData.find(
-          (group) => group.id === destinationGroupId
-        );
-
-        if (targetGroup) {
-          // Get the absolute index of the group element in the flat array
-          const groupElementIndex = formCustomFields.findIndex(
-            (field) => field.id === targetGroup.groupElement.id
-          );
-
-          if (groupElementIndex !== -1) {
-            // The target index is: group element position + 1 (to skip the group element) + destination index within the group
-            targetIndex = groupElementIndex + 1 + destinationIndex;
-          } else {
-            // Fallback: insert before form_end
-            targetIndex = formCustomFields.length - 1;
-          }
-        } else {
-          // Group not found, default to end
-          targetIndex = formCustomFields.length - 1;
-        }
+      const targetIndex = calculateDropTargetIndex(
+        result,
+        formCustomFields,
+        nestedGroupData
+      );
+      if (targetIndex !== null) {
+        onAddField(newField, targetIndex);
       }
-
-      onAddField(newField, targetIndex);
       return;
     }
 
-    // Handle regular reordering (including existing pages)
+    // Handle regular reordering
     const reorderedFields = getReorderedFields(result, nestedGroupData);
     if (reorderedFields) {
       replace(reorderedFields);
@@ -624,7 +332,7 @@ const FormEdit = ({
                     </Box>
                   </Box>
                   <Box flex={!isNilOrError(selectedField) ? '1' : '0'}>
-                    {!isNilOrError(selectedField) && (
+                    {!isNilOrError(selectedField) && selectedField && (
                       <Box>
                         <FormBuilderSettings
                           key={selectedField.id}

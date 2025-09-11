@@ -1,12 +1,22 @@
+import { object, boolean, array, string, number } from 'yup';
+
 import {
   ICustomFieldInputType,
   IFlatCustomField,
 } from 'api/custom_fields/types';
+import { generateTempId } from 'utils/helperUtils';
+import validateElementTitle from 'utils/yup/validateElementTitle';
+import validateLogic from 'utils/yup/validateLogic';
+import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
+import validateOneStatementForMatrix from 'utils/yup/validateOneStatementForMatrix';
+import { getInitialLinearScaleLabel } from 'components/FormBuilder/components/FormBuilderToolbox/utils';
 
 import {
   questionDNDType,
   fieldAreaDNDType,
 } from 'components/FormBuilder/components/FormFields/constants';
+import { FormatMessage } from 'typings';
+import messages from '../messages';
 
 const reorder = <ListType>(
   list: ListType[],
@@ -273,4 +283,279 @@ export const getNestedGroupData = (
       return groups;
     }, [] as NestedGroupingStructure[]) || []
   );
+};
+
+const nullableNumber = number()
+  .transform((value, originalValue) => {
+    // If the original input is null or an empty string, transform it to null.
+    if (
+      originalValue === null ||
+      (typeof originalValue === 'string' && originalValue.trim() === '')
+    ) {
+      return null;
+    }
+
+    // The 'value' is already cast by Yup. If it's not a valid number (NaN), return null.
+    return isNaN(value) ? null : value;
+  })
+  .nullable();
+
+export const createValidationSchema = (formatMessage: FormatMessage) => {
+  return object().shape({
+    customFields: array().of(
+      object().shape({
+        title_multiloc: validateElementTitle(
+          formatMessage(messages.emptyTitleError)
+        ),
+        description_multiloc: object(),
+        input_type: string(),
+        options: validateOneOptionForMultiSelect(
+          formatMessage(messages.emptyOptionError),
+          formatMessage(messages.emptyTitleMessage),
+          { multiselect_image: formatMessage(messages.emptyImageOptionError) }
+        ),
+        matrix_statements: validateOneStatementForMatrix(
+          formatMessage(messages.emptyStatementError),
+          formatMessage(messages.emptyTitleStatementMessage)
+        ),
+        maximum: number(),
+        linear_scale_label_1_multiloc: object(),
+        linear_scale_label_2_multiloc: object(),
+        linear_scale_label_3_multiloc: object(),
+        linear_scale_label_4_multiloc: object(),
+        linear_scale_label_5_multiloc: object(),
+        linear_scale_label_6_multiloc: object(),
+        linear_scale_label_7_multiloc: object(),
+        linear_scale_label_8_multiloc: object(),
+        linear_scale_label_9_multiloc: object(),
+        linear_scale_label_10_multiloc: object(),
+        linear_scale_label_11_multiloc: object(),
+        required: boolean(),
+        ask_follow_up: boolean(),
+        include_in_printed_form: boolean(),
+        min_characters: nullableNumber,
+        max_characters: nullableNumber,
+        temp_id: string(),
+        logic: validateLogic(formatMessage(messages.logicValidationError)),
+      })
+    ),
+  });
+};
+
+export const createNewField = (
+  type: ICustomFieldInputType,
+  locale: string,
+  formatMessage: FormatMessage
+) => {
+  return {
+    id: `${Math.floor(Date.now() * Math.random())}`,
+    temp_id: generateTempId(),
+    logic: {
+      ...(type !== 'page' ? { rules: [] } : undefined),
+    },
+    isLocalOnly: true,
+    description_multiloc: {},
+    input_type: type,
+    required: false,
+    title_multiloc: {
+      [locale]: '',
+    },
+    // Set default character limits for text-supporting fields (excluding html_multiloc)
+    ...(['text', 'multiline_text', 'text_multiloc'].includes(type) && {
+      min_characters: 3,
+      max_characters: type === 'text_multiloc' ? 120 : undefined,
+    }),
+    linear_scale_label_1_multiloc: getInitialLinearScaleLabel({
+      value: 1,
+      inputType: type,
+      formatMessage,
+      locale,
+    }),
+    linear_scale_label_2_multiloc: getInitialLinearScaleLabel({
+      value: 2,
+      inputType: type,
+      formatMessage,
+      locale,
+    }),
+    linear_scale_label_3_multiloc: getInitialLinearScaleLabel({
+      value: 3,
+      inputType: type,
+      formatMessage,
+      locale,
+    }),
+    linear_scale_label_4_multiloc: getInitialLinearScaleLabel({
+      value: 4,
+      inputType: type,
+      formatMessage,
+      locale,
+    }),
+    linear_scale_label_5_multiloc: getInitialLinearScaleLabel({
+      value: 5,
+      inputType: type,
+      formatMessage,
+      locale,
+    }),
+    linear_scale_label_6_multiloc: {},
+    linear_scale_label_7_multiloc: {},
+    linear_scale_label_8_multiloc: {},
+    linear_scale_label_9_multiloc: {},
+    linear_scale_label_10_multiloc: {},
+    linear_scale_label_11_multiloc: {},
+    maximum: 5,
+    ask_follow_up: false,
+    options: [
+      {
+        title_multiloc: {},
+      },
+    ],
+    matrix_statements: [
+      {
+        title_multiloc: {},
+      },
+    ],
+    enabled: true,
+  };
+};
+
+export const transformFieldForSubmission = (
+  field: IFlatCustomField,
+  customFields: IFlatCustomField[]
+) => {
+  return {
+    ...(!field.isLocalOnly && { id: field.id }),
+    input_type: field.input_type,
+    ...(field.input_type === 'page' && {
+      temp_id: field.temp_id,
+    }),
+    ...([
+      'multiselect',
+      'linear_scale',
+      'select',
+      'page',
+      'rating',
+      'multiselect_image',
+    ].includes(field.input_type)
+      ? {
+          logic: field.logic,
+        }
+      : {
+          logic: [],
+        }),
+    required: field.required,
+    enabled: field.enabled,
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    title_multiloc: field.title_multiloc || {},
+    key: field.key,
+    code: field.code,
+    question_category: getQuestionCategory(field, customFields),
+    ...(field.page_layout || field.input_type === 'page'
+      ? {
+          page_layout: field.page_layout || 'default',
+          page_button_label_multiloc: field.page_button_label_multiloc || {},
+          page_button_link: field.page_button_link || '',
+          include_in_printed_form:
+            field.include_in_printed_form === undefined
+              ? true
+              : field.include_in_printed_form,
+        }
+      : {}),
+    ...(field.map_config_id && {
+      map_config_id: field.map_config_id,
+    }),
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    description_multiloc: field.description_multiloc || {},
+    ...(['select', 'multiselect', 'multiselect_image'].includes(
+      field.input_type
+    ) && {
+      // TODO: This will get messy with more field types, abstract this in some way
+      options: field.options || {},
+      maximum_select_count: field.select_count_enabled
+        ? field.maximum_select_count
+        : null,
+      minimum_select_count: field.select_count_enabled
+        ? field.minimum_select_count || '0'
+        : null,
+      select_count_enabled: field.select_count_enabled,
+      random_option_ordering: field.random_option_ordering,
+      dropdown_layout: field.dropdown_layout,
+    }),
+    ...(field.input_type === 'ranking' && {
+      options: field.options || {},
+      random_option_ordering: field.random_option_ordering,
+    }),
+    ...(field.input_type === 'matrix_linear_scale' && {
+      matrix_statements: field.matrix_statements || {},
+    }),
+    ...(field.input_type === 'sentiment_linear_scale' && {
+      ask_follow_up: field.ask_follow_up || false,
+    }),
+    ...(supportsLinearScaleLabels(field.input_type) && {
+      linear_scale_label_1_multiloc: field.linear_scale_label_1_multiloc || {},
+      linear_scale_label_2_multiloc: field.linear_scale_label_2_multiloc || {},
+      linear_scale_label_3_multiloc: field.linear_scale_label_3_multiloc || {},
+      linear_scale_label_4_multiloc: field.linear_scale_label_4_multiloc || {},
+      linear_scale_label_5_multiloc: field.linear_scale_label_5_multiloc || {},
+      linear_scale_label_6_multiloc: field.linear_scale_label_6_multiloc || {},
+      linear_scale_label_7_multiloc: field.linear_scale_label_7_multiloc || {},
+      linear_scale_label_8_multiloc: field.linear_scale_label_8_multiloc || {},
+      linear_scale_label_9_multiloc: field.linear_scale_label_9_multiloc || {},
+      linear_scale_label_10_multiloc:
+        field.linear_scale_label_10_multiloc || {},
+      linear_scale_label_11_multiloc:
+        field.linear_scale_label_11_multiloc || {},
+      maximum: field.maximum?.toString() || '5',
+    }),
+    ...(field.input_type === 'rating' && {
+      maximum: field.maximum?.toString() || '5',
+    }),
+    ...(['text', 'multiline_text', 'text_multiloc', 'html_multiloc'].includes(
+      field.input_type
+    ) && {
+      min_characters: field.min_characters,
+      max_characters: field.max_characters,
+    }),
+  };
+};
+
+export const calculateDropTargetIndex = (
+  result: DragAndDropResult,
+  formCustomFields: IFlatCustomField[],
+  nestedGroupData: NestedGroupingStructure[]
+) => {
+  const destinationGroupId = result.destination?.droppableId;
+  const destinationIndex = result.destination?.index || 0;
+
+  if (!destinationGroupId) return null;
+
+  // If dropping at the top level (page reordering area)
+  if (destinationGroupId === 'droppable') {
+    // Insert before the last element (form_end page)
+    return formCustomFields.length - 1;
+  }
+
+  // Dropping into a specific group/page
+  // Find the target group
+  const targetGroup = nestedGroupData.find(
+    (group) => group.id === destinationGroupId
+  );
+
+  if (targetGroup) {
+    // Get the absolute index of the group element in the flat array
+    const groupElementIndex = formCustomFields.findIndex(
+      (field) => field.id === targetGroup.groupElement.id
+    );
+
+    if (groupElementIndex !== -1) {
+      // The target index is: group element position + 1 (to skip the group element) + destination index within the group
+      return groupElementIndex + 1 + destinationIndex;
+    } else {
+      // Fallback: insert before form_end
+      return formCustomFields.length - 1;
+    }
+  }
+
+  // Group not found, default to end
+  return formCustomFields.length - 1;
 };
