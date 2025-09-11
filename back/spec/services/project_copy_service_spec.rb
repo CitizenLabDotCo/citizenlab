@@ -355,6 +355,22 @@ describe ProjectCopyService do
       end
     end
 
+    it 'can limit the number of ideas copied' do
+      project = create(:project_with_active_ideation_phase, title_multiloc: { en: 'ENGLISH PROJECT', 'fr-FR': 'FRENCH PROJECT' }, description_multiloc: {})
+      create_list(:idea, 5, project: project, phases: project.phases)
+
+      template = service.export project, anonymize_users: false, include_ideas: true, max_ideas: 2
+
+      # Switch to another platform with different multiple locales
+      tenant = create(:tenant)
+      tenant.switch do
+        create(:idea_status_proposed)
+
+        copied_project = service.import template
+        expect(copied_project.ideas.count).to eq 2
+      end
+    end
+
     context 'with machine translations' do
       before { create(:idea_status, code: 'proposed') }
 
