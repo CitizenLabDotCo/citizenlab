@@ -462,9 +462,6 @@ const FormEdit = ({
     const formCustomFields = watch('customFields');
     const nestedGroupData = getNestedGroupData(formCustomFields);
 
-    // Temporary debugging
-    console.log('🔥 Drag and drop result:', result);
-
     // Handle toolbox drags (creating new fields)
     if (result.draggableId.startsWith('toolbox-')) {
       // Extract input type from draggable ID
@@ -487,8 +484,38 @@ const FormEdit = ({
 
       // If dropping at the top level (page reordering area)
       if (destinationGroupId === 'droppable') {
-        // Insert before the last element (form_end page)
-        targetIndex = formCustomFields.length - 1;
+        // Calculate the correct position based on the destination index
+        // We need to convert from page-level index to flat field index
+        // Note: form_end page is not draggable, so we exclude it from calculations
+        const draggablePages = nestedGroupData.filter(
+          (group) =>
+            !(
+              formCustomFields.find((f) => f.id === group.id)?.key ===
+              'form_end'
+            )
+        );
+
+        if (destinationIndex === 0) {
+          // Insert at the very beginning
+          targetIndex = 0;
+        } else if (destinationIndex >= draggablePages.length) {
+          // Insert before the last element (form_end page)
+          targetIndex = formCustomFields.length - 1;
+        } else {
+          // Insert at the position where the destination page starts
+          const targetPageGroup = draggablePages[destinationIndex];
+          if (targetPageGroup) {
+            const pageElementIndex = formCustomFields.findIndex(
+              (field) => field.id === targetPageGroup.groupElement.id
+            );
+            targetIndex =
+              pageElementIndex !== -1
+                ? pageElementIndex
+                : formCustomFields.length - 1;
+          } else {
+            targetIndex = formCustomFields.length - 1;
+          }
+        }
       } else {
         // Dropping into a specific group/page
         // Find the target group
@@ -515,12 +542,11 @@ const FormEdit = ({
         }
       }
 
-      console.log('🎯 Adding field at index:', targetIndex);
       onAddField(newField, targetIndex);
       return;
     }
 
-    // Handle regular reordering
+    // Handle regular reordering (including existing pages)
     const reorderedFields = getReorderedFields(result, nestedGroupData);
     if (reorderedFields) {
       replace(reorderedFields);
