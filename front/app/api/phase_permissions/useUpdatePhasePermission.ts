@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import phasesKeys from 'api/phases/keys';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import permissionsCustomFieldsKeys from '../permissions_custom_fields/keys';
@@ -33,6 +35,13 @@ const useUpdatePhasePermission = () => {
           queryKey: phasePermissionKeys.list({ phaseId }),
         });
       }
+
+      queryClient.invalidateQueries({
+        queryKey: phasesKeys.items(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: phasesKeys.lists(),
+      });
 
       queryClient.invalidateQueries({
         queryKey: permissionsCustomFieldsKeys.list({
