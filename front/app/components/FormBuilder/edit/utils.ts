@@ -599,3 +599,58 @@ export const calculateDropTargetIndex = (
     nestedGroupData
   );
 };
+
+export const handleBuiltInFieldEnablement = (
+  fieldKey: string,
+  formCustomFields: IFlatCustomField[],
+  result: DragAndDropResult,
+  nestedGroupData: NestedGroupingStructure[],
+  setValue: (name: string, value: any) => void,
+  move: (fromIndex: number, toIndex: number) => void
+): {
+  success: boolean;
+  updatedField?: IFlatCustomField;
+  targetIndex?: number;
+} => {
+  // Find the built-in field
+  const fieldIndex = formCustomFields.findIndex((f) => f.key === fieldKey);
+
+  if (fieldIndex === -1) {
+    return { success: false };
+  }
+
+  const field = formCustomFields[fieldIndex];
+
+  // Check if already enabled
+  if (field.enabled) {
+    return { success: false };
+  }
+
+  // Calculate target index for positioning BEFORE enabling the field
+  const targetIndex = calculateDropTargetIndex(
+    result,
+    formCustomFields,
+    nestedGroupData
+  );
+
+  if (targetIndex === null) {
+    return { success: false };
+  }
+
+  // Enable the field
+  const updatedField = { ...field, enabled: true };
+  setValue(`customFields.${fieldIndex}`, updatedField);
+
+  // Adjust target index if we're moving the field to a position after its current position
+  const adjustedTargetIndex =
+    targetIndex > fieldIndex ? targetIndex - 1 : targetIndex;
+
+  // Move the enabled field to the target position
+  move(fieldIndex, adjustedTargetIndex);
+
+  return {
+    success: true,
+    updatedField,
+    targetIndex: adjustedTargetIndex,
+  };
+};

@@ -15,6 +15,8 @@ import {
   BuiltInKeyType,
   FormBuilderConfig,
 } from 'components/FormBuilder/utils';
+import { Drop } from 'components/FormBuilder/components/DragAndDrop';
+import { fieldAreaDNDType } from 'components/FormBuilder/components/FormFields/constants';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -92,69 +94,93 @@ const BuiltInFields = ({
       >
         <FormattedMessage {...messages.defaultContent} />
       </Title>
-      {builderConfig.builtInFields.includes('idea_images_attributes') && (
-        <ToolboxItem
-          icon="image"
-          label={formatMessage(messages.inputImages)}
-          onClick={() => enableField('idea_images_attributes')}
-          disabled={!enabledBuiltInFieldKeys.includes('idea_images_attributes')}
-          disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
-          data-cy="e2e-idea-images-attributes-item"
-        />
-      )}
-      {builderConfig.builtInFields.includes('proposed_budget') && (
-        <ToolboxItem
-          icon="money-bag"
-          label={formatMessage(messages.proposedBudget)}
-          onClick={() => enableField('proposed_budget')}
-          disabled={!enabledBuiltInFieldKeys.includes('proposed_budget')}
-          disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
-          data-cy="e2e-proposed-budget-item"
-        />
-      )}
-      {builderConfig.builtInFields.includes('idea_files_attributes') && (
-        <ToolboxItem
-          icon="upload-file"
-          label={formatMessage(messages.fileUpload)}
-          onClick={() => enableField('idea_files_attributes')}
-          disabled={!enabledBuiltInFieldKeys.includes('idea_files_attributes')}
-          disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
-          data-cy="e2e-attachments-item"
-        />
-      )}
-      {builderConfig.builtInFields.includes('location_description') && (
-        <ToolboxItem
-          icon="location-simple"
-          label={formatMessage(messages.locationDescription)}
-          onClick={() => enableField('location_description')}
-          disabled={!enabledBuiltInFieldKeys.includes('location_description')}
-          data-cy="e2e-location-item"
-          disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
-        />
-      )}
-      {builderConfig.builtInFields.includes('topic_ids') && (
-        <ToolboxItem
-          icon="label"
-          label={formatMessage(messages.tags)}
-          onClick={() => enableField('topic_ids')}
-          disabled={!enabledBuiltInFieldKeys.includes('topic_ids')}
-          disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
-          data-cy="e2e-tags-item"
-        />
-      )}
-      {builderConfig.builtInFields.includes('cosponsor_ids') &&
-        cosponsorsEnabled && (
+      <Drop id="toolbox-builtin" type={fieldAreaDNDType}>
+        {builderConfig.builtInFields.includes('idea_images_attributes') && (
           <ToolboxItem
-            icon="volunteer"
-            label={formatMessage(messages.cosponsors)}
-            onClick={() => enableField('cosponsor_ids')}
-            data-cy="e2e-cosponsors-field"
-            fieldsToInclude={builderConfig.toolboxFieldsToInclude}
-            inputType="cosponsor_ids"
-            disabled={!enabledBuiltInFieldKeys.includes('cosponsor_ids')}
+            icon="image"
+            label={formatMessage(messages.inputImages)}
+            onClick={() => enableField('idea_images_attributes')}
+            disabled={
+              !enabledBuiltInFieldKeys.includes('idea_images_attributes')
+            }
             disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
+            data-cy="e2e-idea-images-attributes-item"
+            isDraggable={true}
+            dragId="toolbox-idea_images_attributes"
+            dragIndex={0}
           />
         )}
+        {builderConfig.builtInFields.includes('proposed_budget') && (
+          <ToolboxItem
+            icon="money-bag"
+            label={formatMessage(messages.proposedBudget)}
+            onClick={() => enableField('proposed_budget')}
+            disabled={!enabledBuiltInFieldKeys.includes('proposed_budget')}
+            disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
+            data-cy="e2e-proposed-budget-item"
+            isDraggable={true}
+            dragId="toolbox-proposed_budget"
+            dragIndex={1}
+          />
+        )}
+        {builderConfig.builtInFields.includes('idea_files_attributes') && (
+          <ToolboxItem
+            icon="upload-file"
+            label={formatMessage(messages.fileUpload)}
+            onClick={() => enableField('idea_files_attributes')}
+            disabled={
+              !enabledBuiltInFieldKeys.includes('idea_files_attributes')
+            }
+            disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
+            data-cy="e2e-attachments-item"
+            isDraggable={true}
+            dragId="toolbox-idea_files_attributes"
+            dragIndex={2}
+          />
+        )}
+        {builderConfig.builtInFields.includes('location_description') && (
+          <ToolboxItem
+            icon="location-simple"
+            label={formatMessage(messages.locationDescription)}
+            onClick={() => enableField('location_description')}
+            disabled={!enabledBuiltInFieldKeys.includes('location_description')}
+            data-cy="e2e-location-item"
+            disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
+            isDraggable={true}
+            dragId="toolbox-location_description"
+            dragIndex={3}
+          />
+        )}
+        {builderConfig.builtInFields.includes('topic_ids') && (
+          <ToolboxItem
+            icon="label"
+            label={formatMessage(messages.tags)}
+            onClick={() => enableField('topic_ids')}
+            disabled={!enabledBuiltInFieldKeys.includes('topic_ids')}
+            disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
+            data-cy="e2e-tags-item"
+            isDraggable={true}
+            dragId="toolbox-topic_ids"
+            dragIndex={4}
+          />
+        )}
+        {builderConfig.builtInFields.includes('cosponsor_ids') &&
+          cosponsorsEnabled && (
+            <ToolboxItem
+              icon="volunteer"
+              label={formatMessage(messages.cosponsors)}
+              onClick={() => enableField('cosponsor_ids')}
+              data-cy="e2e-cosponsors-field"
+              fieldsToInclude={builderConfig.toolboxFieldsToInclude}
+              inputType="cosponsor_ids"
+              disabled={!enabledBuiltInFieldKeys.includes('cosponsor_ids')}
+              disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
+              isDraggable={true}
+              dragId="toolbox-cosponsor_ids"
+              dragIndex={5}
+            />
+          )}
+      </Drop>
     </Box>
   );
 };

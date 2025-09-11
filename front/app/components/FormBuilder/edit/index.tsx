@@ -51,6 +51,7 @@ import {
   createNewField,
   transformFieldForSubmission,
   calculateDropTargetIndex,
+  handleBuiltInFieldEnablement,
 } from './utils';
 import { DragAndDrop, Drop } from '../components/DragAndDrop';
 import { pageDNDType } from '../components/FormFields/constants';
@@ -125,6 +126,7 @@ const FormEdit = ({
     reset,
     trigger,
     watch,
+    setValue,
   } = methods;
 
   const { move, replace, insert } = useFieldArray({
@@ -231,27 +233,55 @@ const FormEdit = ({
     const formCustomFields = watch('customFields');
     const nestedGroupData = getNestedGroupData(formCustomFields);
 
-    // Handle toolbox drags (creating new fields)
+    // Handle toolbox drags (creating new fields or enabling built-in fields)
     if (result.draggableId.startsWith('toolbox-')) {
-      // Extract input type from draggable ID
-      const inputType = result.draggableId.replace(
-        'toolbox-',
-        ''
-      ) as ICustomFieldInputType;
+      // Extract field type/key from draggable ID
+      const fieldTypeOrKey = result.draggableId.replace('toolbox-', '');
 
-      // Create the field
-      const newField = createField(inputType);
-      if (!newField) return;
+      // Check if this is a built-in field
+      const builtInFieldKeys = builderConfig.builtInFields;
+      const isBuiltInField = builtInFieldKeys.includes(fieldTypeOrKey as any);
 
-      const targetIndex = calculateDropTargetIndex(
-        result,
-        formCustomFields,
-        nestedGroupData
-      );
-      if (targetIndex !== null) {
-        onAddField(newField, targetIndex);
+      if (isBuiltInField) {
+        // Handle built-in field enablement using utility function
+        const enablementResult = handleBuiltInFieldEnablement(
+          fieldTypeOrKey,
+          formCustomFields,
+          result,
+          nestedGroupData,
+          setValue,
+          move
+        );
+
+        if (
+          enablementResult.success &&
+          enablementResult.updatedField &&
+          enablementResult.targetIndex !== undefined
+        ) {
+          setSelectedField({
+            ...enablementResult.updatedField,
+            index: enablementResult.targetIndex,
+          });
+        }
+
+        trigger();
+        return;
+      } else {
+        // Handle regular custom field creation
+        const inputType = fieldTypeOrKey as ICustomFieldInputType;
+        const newField = createField(inputType);
+        if (!newField) return;
+
+        const targetIndex = calculateDropTargetIndex(
+          result,
+          formCustomFields,
+          nestedGroupData
+        );
+        if (targetIndex !== null) {
+          onAddField(newField, targetIndex);
+        }
+        return;
       }
-      return;
     }
 
     // Handle regular reordering
