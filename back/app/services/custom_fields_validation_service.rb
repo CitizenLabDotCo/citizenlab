@@ -72,8 +72,8 @@ class CustomFieldsValidationService
       default_field = default_fields.find { |f| f.code == field.code }
 
       field_constraints.dig(:locks, :attributes)&.each do |attribute|
-        if field[attribute] != default_field[attribute]
-          return { form: [{ error: 'locked_attribute' }] }
+        if field[attribute] != default_field.send(attribute)
+          return { form: [{ error: 'locked_attribute', field: field.code, attribute: }] }
         end
       end
     end
