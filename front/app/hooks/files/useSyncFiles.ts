@@ -28,6 +28,8 @@ export function useSyncFiles() {
       fileAttachmentsToRemove,
       fileAttachmentOrdering,
     }: SyncFilesArguments) => {
+      if (!attachableId) return;
+
       // Add any new file attachments
       const fileAttachmentsToAddPromises = fileAttachments
         .filter((file) => file.id.startsWith('TEMP-'))

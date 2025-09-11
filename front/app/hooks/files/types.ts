@@ -13,7 +13,7 @@ export type SyncFolderFilesArguments = {
 };
 
 export type SyncFilesArguments = {
-  attachableId: string;
+  attachableId?: string;
   attachableType: AttachableType;
   fileAttachments: IFileAttachmentData[];
   fileAttachmentsToRemove: IFileAttachmentData[];

@@ -82,7 +82,7 @@ const AdminProjectEventEdit = () => {
 
   // event file attachments
   const syncEventFiles = useSyncFiles();
-  const { mutate: addFile } = useAddFile();
+  const { mutate: addFile, isLoading: isAddingFile } = useAddFile();
   const { data: remoteEventFileAttachments } = useFileAttachments({
     attachable_id: event?.data.id,
     attachable_type: 'Event',
@@ -463,10 +463,15 @@ const AdminProjectEventEdit = () => {
       (uploadedImage === null && remoteEventImage !== undefined);
 
     e.preventDefault();
-    try {
-      setSaving(true);
 
-      // Handle event file attachments
+    // Set saving to true and reset submit state
+    setSaving(true);
+    setSubmitState('disabled'); // Prevent multiple submissions
+    setErrors({});
+    setApiErrors({});
+
+    try {
+      // Handle event file attachments first
       const initialFileAttachmentOrdering: Record<string, number | undefined> =
         Object.fromEntries(
           remoteEventFileAttachments?.data
@@ -474,45 +479,57 @@ const AdminProjectEventEdit = () => {
             .map((file) => [file.id!, file.attributes.position]) ?? []
         );
 
-      syncEventFiles({
-        attachableId: eventId || '',
-        attachableType: 'Event',
-        fileAttachments: eventFileAttachments,
-        fileAttachmentsToRemove: eventFileAttachmentsToRemove,
-        fileAttachmentOrdering: initialFileAttachmentOrdering,
-      });
-
       // If only image has changed
       if (isEmpty(attributeDiff) && imageChanged && event) {
-        addOrDeleteEventImage(event);
+        await addOrDeleteEventImage(event);
+        setSaving(false);
+        setSubmitState('success');
+        return;
       }
 
       if (hasAltTextChanged && !imageChanged && event) {
-        updateImage(event);
+        await updateImage(event);
+        setSaving(false);
+        setSubmitState('success');
+        return;
       }
 
       // non-file input fields have changed
       if (!isEmpty(attributeDiff) || locationPointChanged) {
         // event already exists (in the state)
         if (event) {
+          // Sync files
+          await syncEventFiles({
+            attachableId: eventId,
+            attachableType: 'Event',
+            fileAttachments: eventFileAttachments,
+            fileAttachmentsToRemove: eventFileAttachmentsToRemove,
+            fileAttachmentOrdering: initialFileAttachmentOrdering,
+          });
+
+          setEventFileAttachmentsToRemove([]);
+
           updateEvent(
             {
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              eventId: event?.data.id,
+              eventId: event.data.id,
               event: {
                 ...attributeDiff,
                 location_point_geojson: locationPointChanged
                   ? locationPointUpdated
-                  : // TODO: Fix this the next time the file is edited.
-                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                    event?.data.attributes.location_point_geojson,
+                  : event.data.attributes.location_point_geojson,
               },
             },
             {
               onSuccess: async (data) => {
-                addOrDeleteEventImage(data);
-                setSubmitState('success');
+                try {
+                  await addOrDeleteEventImage(data);
+                  setSaving(false);
+                  setSubmitState('success');
+                } catch (error) {
+                  console.error('Error handling image:', error);
+                  setSaving(false);
+                  setSubmitState('error');
+                }
               },
               onError: async (errors) => {
                 setSaving(false);
@@ -533,9 +550,30 @@ const AdminProjectEventEdit = () => {
             },
             {
               onSuccess: async (data) => {
-                setSubmitState('success');
-                addOrDeleteEventImage(data);
-                clHistory.push(`/admin/projects/${projectId}/events`);
+                try {
+                  await addOrDeleteEventImage(data);
+
+                  // Sync files
+                  await syncEventFiles({
+                    attachableId: data.data.id,
+                    attachableType: 'Event',
+                    fileAttachments: eventFileAttachments,
+                    fileAttachmentsToRemove: eventFileAttachmentsToRemove,
+                    fileAttachmentOrdering: initialFileAttachmentOrdering,
+                  });
+
+                  setSubmitState('success');
+                  setSaving(false);
+
+                  // Navigate after a short delay to show success state
+                  setTimeout(() => {
+                    clHistory.push(`/admin/projects/${projectId}/events`);
+                  }, 1000);
+                } catch (error) {
+                  console.error('Error handling image:', error);
+                  setSaving(false);
+                  setSubmitState('error');
+                }
               },
               onError: async (errors) => {
                 setSaving(false);
@@ -545,17 +583,17 @@ const AdminProjectEventEdit = () => {
             }
           );
         }
-      }
-      setSaving(false);
-    } catch (errors) {
-      if (errors?.errors) {
-        setSaving(false);
-        setApiErrors(errors.errors);
-        setSubmitState('error');
       } else {
+        // No changes to save
         setSaving(false);
-        setSubmitState('error');
+        setSubmitState('disabled');
       }
+    } catch (errors) {
+      setSaving(false);
+      if (errors?.errors) {
+        setApiErrors(errors.errors);
+      }
+      setSubmitState('error');
     }
   };
 
@@ -935,6 +973,7 @@ const AdminProjectEventEdit = () => {
                   enableDragAndDrop
                   apiErrors={isError(apiErrors) ? undefined : apiErrors}
                   maxSizeMb={10}
+                  isUploadingFile={isAddingFile}
                 />
               </SectionField>
             </Section>

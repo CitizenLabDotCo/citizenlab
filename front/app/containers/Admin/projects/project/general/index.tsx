@@ -107,7 +107,7 @@ const AdminProjectsProjectGeneral = () => {
   const syncProjectFiles = useSyncFiles();
 
   // File Attachments
-  const { mutate: addFile } = useAddFile();
+  const { mutate: addFile, isLoading: isAddingFile } = useAddFile();
   const { data: remoteProjectFileAttachments } = useFileAttachments({
     attachable_id: projectId,
     attachable_type: 'Project',
@@ -702,6 +702,7 @@ const AdminProjectsProjectGeneral = () => {
               enableDragAndDrop
               apiErrors={apiErrors}
               maxSizeMb={10}
+              isUploadingFile={isAddingFile}
             />
           </StyledSectionField>
         </Section>

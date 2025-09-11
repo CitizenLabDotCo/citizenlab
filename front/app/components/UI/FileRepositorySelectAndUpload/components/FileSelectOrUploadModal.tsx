@@ -25,6 +25,7 @@ type Props = {
   fileAttachments?: IFileAttachmentData[];
   maxSizeMb?: number;
   dataCy?: string;
+  isDisabled?: boolean;
 };
 
 const FileSelectOrUploadModal = ({
@@ -33,6 +34,7 @@ const FileSelectOrUploadModal = ({
   onFileAttach,
   maxSizeMb,
   fileAttachments,
+  isDisabled,
   dataCy,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -78,6 +80,7 @@ const FileSelectOrUploadModal = ({
         onClick={() => setModalOpen(true)}
         buttonStyle="secondary"
         icon="file-add"
+        disabled={isDisabled}
       >
         {formatMessage(messages.addFile)}
       </Button>
