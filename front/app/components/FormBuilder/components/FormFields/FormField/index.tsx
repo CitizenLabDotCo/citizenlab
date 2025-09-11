@@ -198,8 +198,7 @@ export const FormField = ({
   const onDelete = (fieldIndex: number) => {
     if (!!field.code) {
       if (field.code === 'body_page') {
-        // When deleting the body page, delete the page and also delete its body_multiloc field
-        // remove(fieldIndex);
+        // When deleting the body page, delete the page and also disable its body_multiloc field
         const newPage = { ...formCustomFields[index], enabled: false };
         setValue(`customFields.${index}`, newPage);
         const newField = { ...formCustomFields[index + 1], enabled: false };
@@ -208,6 +207,7 @@ export const FormField = ({
         const newField = { ...field, enabled: false };
         setValue(`customFields.${index}`, newField);
       }
+      remove(fieldIndex);
     } else {
       const field = formCustomFields[fieldIndex];
 
