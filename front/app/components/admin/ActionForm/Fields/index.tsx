@@ -27,7 +27,7 @@ import UserFieldsInFormRadio from './UserFieldsInFormRadio';
 interface Props {
   phaseId?: string;
   action: Action;
-  showAddQuestion: boolean;
+  allowAddingFields: boolean;
   permitted_by: PermittedBy;
   user_fields_in_form_frontend_descriptor?: UserFieldsInFormFrontendDescriptor;
   onChangeUserFieldsInForm?: (value: boolean) => void;
@@ -36,7 +36,7 @@ interface Props {
 const Fields = ({
   phaseId,
   action,
-  showAddQuestion,
+  allowAddingFields,
   user_fields_in_form_frontend_descriptor,
   permitted_by,
   onChangeUserFieldsInForm,
@@ -78,7 +78,7 @@ const Fields = ({
         <Title variant="h4" color="primary" mt="0px" mb="0px">
           <FormattedMessage {...messages.demographicQuestions} />
         </Title>
-        {showAddQuestion && (
+        {allowAddingFields && (
           <Tooltip
             content={formatMessage(
               messages.contactGovSuccessToAccessAddingAQuestion
@@ -115,16 +115,18 @@ const Fields = ({
           />
         </Box>
       )}
-      <Box mt="8px">
-        <FieldsList
-          phaseId={phaseId}
-          action={action}
-          permitted_by={permitted_by}
-          userFieldsInForm={
-            user_fields_in_form_frontend_descriptor?.value ?? false
-          }
-        />
-      </Box>
+      {allowAddingFields && (
+        <Box mt="8px">
+          <FieldsList
+            phaseId={phaseId}
+            action={action}
+            permitted_by={permitted_by}
+            userFieldsInForm={
+              user_fields_in_form_frontend_descriptor?.value ?? false
+            }
+          />
+        </Box>
+      )}
       {selectedCustomFields && (
         <FieldSelectionModal
           showSelectionModal={showSelectionModal}

@@ -45,7 +45,7 @@ const ActionFormDefault = ({
             <Fields
               phaseId={phaseId}
               action={action}
-              showAddQuestion={permitted_by !== 'everyone'}
+              allowAddingFields={permitted_by !== 'everyone'}
               permitted_by={permitted_by}
             />
           </Box>

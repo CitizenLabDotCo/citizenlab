@@ -12,7 +12,7 @@ import Fields from '../ActionForm/Fields';
 import FlowVisualization from '../ActionForm/FlowVisualization';
 import messages from '../ActionForm/messages';
 import ResetButton from '../ActionForm/ResetButton';
-import { allowAskQuestion, showResetButton } from '../ActionForm/utils';
+import { allowAddingFields, showResetButton } from '../ActionForm/utils';
 
 import DataCollection from './DataCollection';
 import { Props } from './types';
@@ -83,7 +83,7 @@ const ActionFormSurvey = ({
             <Fields
               phaseId={phaseId}
               action={action}
-              showAddQuestion={allowAskQuestion(explanation)}
+              allowAddingFields={allowAddingFields(explanation)}
               user_fields_in_form_frontend_descriptor={
                 user_fields_in_form_frontend_descriptor
               }

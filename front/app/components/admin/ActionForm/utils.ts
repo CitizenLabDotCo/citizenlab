@@ -23,7 +23,7 @@ export const showResetButton = (
   return fields.some((field) => field.attributes.persisted);
 };
 
-export const allowAskQuestion = (
+export const allowAddingFields = (
   explanation: UserFieldsInFormFrontendDescriptor['explanation']
 ) => {
   return (
