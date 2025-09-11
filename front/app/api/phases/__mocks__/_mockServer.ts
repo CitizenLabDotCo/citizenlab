@@ -10,6 +10,10 @@ export const phasesData: IPhaseData[] = [
     attributes: {
       allow_anonymous_participation: false,
       anonymity: 'collect_all_data_available',
+      user_fields_in_form_frontend_descriptor: {
+        value: false,
+        disabled_explanation: null,
+      },
       title_multiloc: { en: 'A Mock Information phase' },
       description_multiloc: { en: 'For testing purposes' },
       start_at: 'today',
@@ -55,6 +59,10 @@ export const phasesData: IPhaseData[] = [
     attributes: {
       allow_anonymous_participation: false,
       anonymity: 'collect_all_data_available',
+      user_fields_in_form_frontend_descriptor: {
+        value: false,
+        disabled_explanation: null,
+      },
       title_multiloc: { en: 'A Mock Poll phase' },
       description_multiloc: { en: 'For testing purposes' },
       start_at: 'today',
@@ -98,6 +106,10 @@ export const phasesData: IPhaseData[] = [
     attributes: {
       allow_anonymous_participation: false,
       anonymity: 'collect_all_data_available',
+      user_fields_in_form_frontend_descriptor: {
+        value: false,
+        disabled_explanation: null,
+      },
       title_multiloc: { en: 'A Mock Information phase' },
       description_multiloc: { en: 'For testing purposes' },
       start_at: 'today',
@@ -145,6 +157,10 @@ export const mockPhaseInformationData: IPhaseData = {
   attributes: {
     allow_anonymous_participation: false,
     anonymity: 'collect_all_data_available',
+    user_fields_in_form_frontend_descriptor: {
+      value: false,
+      disabled_explanation: null,
+    },
     title_multiloc: { en: 'A Mock Information phase' },
     description_multiloc: { en: 'For testing purposes' },
     start_at: 'today',
@@ -191,6 +207,10 @@ export const mockPhaseIdeationData: IPhaseData = {
   attributes: {
     allow_anonymous_participation: false,
     anonymity: 'collect_all_data_available',
+    user_fields_in_form_frontend_descriptor: {
+      value: false,
+      disabled_explanation: null,
+    },
     title_multiloc: { en: 'A Mock Information phase' },
     description_multiloc: { en: 'For testing purposes' },
     start_at: 'today',
@@ -237,6 +257,10 @@ export const mockPhaseSurveyTypeformData: IPhaseData = {
   attributes: {
     allow_anonymous_participation: false,
     anonymity: 'collect_all_data_available',
+    user_fields_in_form_frontend_descriptor: {
+      value: false,
+      disabled_explanation: null,
+    },
     title_multiloc: { en: 'A Mock Information phase' },
     description_multiloc: { en: 'For testing purposes' },
     start_at: 'today',
@@ -285,6 +309,10 @@ export const mockPhaseSurveyGoogleFormData: IPhaseData = {
   attributes: {
     allow_anonymous_participation: false,
     anonymity: 'collect_all_data_available',
+    user_fields_in_form_frontend_descriptor: {
+      value: false,
+      disabled_explanation: null,
+    },
     title_multiloc: { en: 'A Mock Information phase' },
     description_multiloc: { en: 'For testing purposes' },
     start_at: 'today',
@@ -345,6 +373,10 @@ const votingPhase: IPhaseData = {
   attributes: {
     allow_anonymous_participation: false,
     anonymity: 'collect_all_data_available',
+    user_fields_in_form_frontend_descriptor: {
+      value: false,
+      disabled_explanation: null,
+    },
     title_multiloc: { en: 'A Mock voting phase' },
     description_multiloc: { en: 'For testing purposes' },
     participation_method: 'voting',

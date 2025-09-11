@@ -28,8 +28,8 @@ interface Props {
   phaseId?: string;
   action: Action;
   showAddQuestion: boolean;
-  user_fields_in_form_frontend_descriptor: UserFieldsInFormFrontendDescriptor;
   permitted_by: PermittedBy;
+  user_fields_in_form_frontend_descriptor?: UserFieldsInFormFrontendDescriptor;
   onChangeUserFieldsInForm?: (value: boolean) => void;
 }
 
@@ -105,7 +105,7 @@ const Fields = ({
           </Tooltip>
         )}
       </Box>
-      {onChangeUserFieldsInForm && (
+      {onChangeUserFieldsInForm && user_fields_in_form_frontend_descriptor && (
         <Box>
           <UserFieldsInFormRadio
             user_fields_in_form_frontend_descriptor={
@@ -120,7 +120,9 @@ const Fields = ({
           phaseId={phaseId}
           action={action}
           permitted_by={permitted_by}
-          userFieldsInForm={user_fields_in_form_frontend_descriptor.value}
+          userFieldsInForm={
+            user_fields_in_form_frontend_descriptor?.value ?? false
+          }
         />
       </Box>
       {selectedCustomFields && (
