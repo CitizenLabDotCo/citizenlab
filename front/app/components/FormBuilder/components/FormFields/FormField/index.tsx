@@ -9,7 +9,6 @@ import {
   Badge,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { get } from 'lodash-es';
 import { rgba } from 'polished';
 import { useFormContext, useFieldArray } from 'react-hook-form';
 import styled from 'styled-components';
@@ -205,7 +204,6 @@ export const FormField = ({
       // When deleting the body page, also delete its body_multiloc field
       if (field.code === 'body_page') {
         const newBody = { ...formCustomFields[index + 1], enabled: false };
-        console.log(newBody);
         setValue(`customFields.${index + 1}`, newBody);
       }
     } else {
