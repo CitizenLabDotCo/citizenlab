@@ -47,35 +47,25 @@ const BuiltInFields = ({
       return builtInField.key;
     });
 
-  const enableField = (key: BuiltInKeyType) => {
-    if (!enabledBuiltInFieldKeys.includes(key)) {
-      return;
-    }
+  const enableField = (key: String) => {
+    // TODO: Default codes type for method arg type?
+    // TODO: Use code
+    // if (!enabledBuiltInFieldKeys.includes(key)) {
+    //   return;
+    // }
 
     const fields = formCustomFields;
     const fieldsLength = fields.length;
-    const fieldIndex = fields.findIndex((f) => f.key === key);
+    const fieldIndex = fields.findIndex((f) => f.code === key);
     if (fieldIndex === -1) return;
     const field = fields[fieldIndex];
     const updatedField = { ...field, enabled: true };
     setValue(`customFields.${fieldIndex}`, updatedField);
 
     const previousField = fields[fieldsLength - 2];
-    const isLastFieldTitleOrBody =
-      previousField.key === 'title_multiloc' ||
-      previousField.key === 'body_multiloc';
-
-    if (isLastFieldTitleOrBody) {
-      // We add a page and the move the enabled field to the end
-      addField('page');
-      const targetIndex = fieldsLength - 1;
-      move(fieldIndex, targetIndex);
-      onSelectField({ ...updatedField, index: targetIndex });
-    } else {
-      const targetIndex = fieldsLength - 2;
-      move(fieldIndex, targetIndex);
-      onSelectField({ ...updatedField, index: targetIndex });
-    }
+    const targetIndex = fieldsLength - 2;
+    move(fieldIndex, targetIndex);
+    onSelectField({ ...updatedField, index: targetIndex });
 
     trigger();
   };
@@ -96,7 +86,10 @@ const BuiltInFields = ({
         <ToolboxItem
           icon="survey-long-answer-2"
           label={formatMessage(messages.bodyMultiloc)}
-          onClick={() => enableField('body_multiloc')} // TODO: Also add body_page
+          onClick={() => {
+            enableField('body_page');
+            enableField('body_multiloc');
+          }}
           disabled={!enabledBuiltInFieldKeys.includes('body_multiloc')}
           disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
           data-cy="e2e-body-multiloc-item"

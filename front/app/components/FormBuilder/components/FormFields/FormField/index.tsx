@@ -290,7 +290,6 @@ export const FormField = ({
 
     onDelete(index);
   };
-  console.log('formCustomFields', formCustomFields);
 
   const actions = [
     ...(field.input_type !== 'page' && !field.code // Do not copy built-in fields
