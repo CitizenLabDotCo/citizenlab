@@ -200,14 +200,14 @@ module Export
 
       def add_standard_field(field, input_fields)
         return if %w[title_multiloc body_multiloc].include?(field.code)
-        
+
         input_fields << Export::CustomFieldForExport.new(field, @value_visitor)
       end
 
       def add_supplementary_fields(field, input_fields)
         # Skip for matrix fields which are handled differently
         return if field.input_type == 'matrix_linear_scale'
-        
+
         input_fields << Export::CustomFieldForExport.new(field.other_option_text_field, @value_visitor) if field.other_option_text_field
         input_fields << Export::CustomFieldForExport.new(field.follow_up_text_field, @value_visitor) if field.follow_up_text_field
       end
