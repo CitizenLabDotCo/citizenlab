@@ -46,12 +46,6 @@ module IdFranceconnect
       # TODO: add discovery endpoint
       if version == 'v2'
         env['omniauth.strategy'].options.merge!(
-          # NOTE: Cannot use auto discovery as .well-known/openid-configuration is not on the root of the domain
-          # https://fcp-low.sbx.dev-franceconnect.fr/api/v2/.well-known/openid-configuration
-          # get configuration from /.well-known/openid-configuration
-          # TODO: JS - This failed why?
-          # discovery: true,
-
           scope: %w[openid] + configuration.settings('franceconnect_login', 'scope'),
 
           # https://fcp-low.sbx.dev-franceconnect.fr/api/v2/.well-known/openid-configuration
@@ -62,8 +56,10 @@ module IdFranceconnect
           issuer: issuer, # the integration env is now using 'https'
           client_auth_method: 'jwks', # France connect does not use BASIC authentication
           acr_values: 'eidas1',
-          # client_signing_alg: :HS256, # hashing function of France Connect
+          client_signing_alg: :ES256, # hashing function of France Connect
           client_options: {
+
+
             identifier: configuration.settings('franceconnect_login', 'identifier'),
             secret: configuration.settings('franceconnect_login', 'secret'),
             # scheme: 'https',
@@ -72,6 +68,7 @@ module IdFranceconnect
           }
         )
       else
+        # Version 1 - Will not work after Sept 2025
         env['omniauth.strategy'].options.merge!(
           scope: %w[openid] + configuration.settings('franceconnect_login', 'scope'),
           response_type: :code,
@@ -96,6 +93,7 @@ module IdFranceconnect
       end
     end
 
+    # TODO: Logout does not work
     def logout_url(user)
       last_identity = user.identities
         .where(provider: 'franceconnect')
@@ -106,6 +104,7 @@ module IdFranceconnect
 
       url_params = {
         id_token_hint: id_token,
+        state: SecureRandom.hex(16),
         post_logout_redirect_uri: Frontend::UrlService.new.home_url
       }
 
