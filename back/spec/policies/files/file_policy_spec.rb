@@ -57,7 +57,7 @@ RSpec.describe Files::FilePolicy do
 
           it { is_expected.to permit(:show) }
           it { is_expected.to permit(:update) }
-          it { is_expected.not_to permit(:destroy) }
+          it { is_expected.to permit(:destroy) }
         end
       end
 
@@ -71,7 +71,7 @@ RSpec.describe Files::FilePolicy do
           before { file.save! }
 
           it { is_expected.to permit(:show) }
-          it { is_expected.to permit(:update) }
+          it { is_expected.not_to permit(:update) }
           it { is_expected.not_to permit(:destroy) }
         end
       end
