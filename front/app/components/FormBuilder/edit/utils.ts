@@ -519,6 +519,59 @@ export const transformFieldForSubmission = (
   };
 };
 
+const handlePageReordering = (
+  destinationIndex: number,
+  formCustomFields: IFlatCustomField[],
+  nestedGroupData: NestedGroupingStructure[]
+) => {
+  // If dropping beyond the available pages, place before the form_end page
+  if (destinationIndex >= nestedGroupData.length) {
+    return formCustomFields.length - 1;
+  }
+
+  // Find the target page at the destination index
+  const targetPage = nestedGroupData[destinationIndex];
+  if (targetPage) {
+    // Get the index of this page in the flat array
+    const pageIndex = formCustomFields.findIndex(
+      (field) => field.id === targetPage.groupElement.id
+    );
+
+    if (pageIndex !== -1) {
+      return pageIndex;
+    }
+  }
+
+  // Fallback: insert before form_end
+  return formCustomFields.length - 1;
+};
+
+const handleCustomFieldReordering = (
+  destinationGroupId: string,
+  destinationIndex: number,
+  formCustomFields: IFlatCustomField[],
+  nestedGroupData: NestedGroupingStructure[]
+) => {
+  const targetPage = nestedGroupData.find(
+    (group) => group.id === destinationGroupId
+  );
+
+  if (targetPage) {
+    // Get the index of the page element in the flat array
+    const pageIndex = formCustomFields.findIndex(
+      (field) => field.id === targetPage.groupElement.id
+    );
+
+    if (pageIndex !== -1) {
+      // Calculate target index: page position + 1 (to skip the page element) + field position within the page
+      return pageIndex + 1 + destinationIndex;
+    }
+  }
+
+  // Fallback: insert before form_end
+  return formCustomFields.length - 1;
+};
+
 export const calculateDropTargetIndex = (
   result: DragAndDropResult,
   formCustomFields: IFlatCustomField[],
@@ -529,33 +582,20 @@ export const calculateDropTargetIndex = (
 
   if (!destinationGroupId) return null;
 
-  // If dropping at the top level (page reordering area)
+  if (!destinationGroupId) return null;
+
   if (destinationGroupId === 'droppable') {
-    // Insert before the last element (form_end page)
-    return formCustomFields.length - 1;
-  }
-
-  // Dropping into a specific group/page
-  // Find the target group
-  const targetGroup = nestedGroupData.find(
-    (group) => group.id === destinationGroupId
-  );
-
-  if (targetGroup) {
-    // Get the absolute index of the group element in the flat array
-    const groupElementIndex = formCustomFields.findIndex(
-      (field) => field.id === targetGroup.groupElement.id
+    return handlePageReordering(
+      destinationIndex,
+      formCustomFields,
+      nestedGroupData
     );
-
-    if (groupElementIndex !== -1) {
-      // The target index is: group element position + 1 (to skip the group element) + destination index within the group
-      return groupElementIndex + 1 + destinationIndex;
-    } else {
-      // Fallback: insert before form_end
-      return formCustomFields.length - 1;
-    }
   }
 
-  // Group not found, default to end
-  return formCustomFields.length - 1;
+  return handleCustomFieldReordering(
+    destinationGroupId,
+    destinationIndex,
+    formCustomFields,
+    nestedGroupData
+  );
 };
