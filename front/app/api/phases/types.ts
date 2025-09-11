@@ -95,6 +95,7 @@ export interface IPhaseAttributes {
   similarity_threshold_title?: number | null;
   similarity_threshold_body?: number | null;
   user_fields_in_form_frontend_descriptor: UserFieldsInFormFrontendDescriptor;
+  user_fields_in_form: boolean;
   anonymity: Anonymity;
 }
 
