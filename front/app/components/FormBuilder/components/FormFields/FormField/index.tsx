@@ -75,8 +75,6 @@ export const FormField = ({
   } = useFormContext();
   const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
   const { formatMessage } = useIntl();
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const deletionLocked = field?.constraints?.locks?.deletion;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const formCustomFields: IFlatCustomField[] = watch('customFields');
@@ -199,12 +197,16 @@ export const FormField = ({
 
   const onDelete = (fieldIndex: number) => {
     if (!!field.code) {
-      const newField = { ...field, enabled: false }; // Setting `enabled: false` doesn't seem to work well for pages.
-      setValue(`customFields.${index}`, newField);
-      // When deleting the body page, also delete its body_multiloc field
       if (field.code === 'body_page') {
-        const newBody = { ...formCustomFields[index + 1], enabled: false };
-        setValue(`customFields.${index + 1}`, newBody);
+        // When deleting the body page, delete the page and also delete its body_multiloc field
+        // remove(fieldIndex);
+        const newPage = { ...formCustomFields[index], enabled: false };
+        setValue(`customFields.${index}`, newPage);
+        const newField = { ...formCustomFields[index + 1], enabled: false };
+        setValue(`customFields.${index + 1}`, newField);
+      } else {
+        const newField = { ...field, enabled: false };
+        setValue(`customFields.${index}`, newField);
       }
     } else {
       const field = formCustomFields[fieldIndex];
@@ -288,6 +290,7 @@ export const FormField = ({
 
     onDelete(index);
   };
+  console.log('formCustomFields', formCustomFields);
 
   const actions = [
     ...(field.input_type !== 'page' && !field.code // Do not copy built-in fields
