@@ -123,7 +123,6 @@ module IdeaCustomFields
       CustomFieldsValidationService.new.validate(fields, @custom_form.participation_context.pmethod)
     end
 
-    # TODO: Move to validation service?
     # To try and avoid forms being overwritten with stale data, we check if the form has been updated since the form editor last loaded it
     # But ONLY if the FE sends the fields_last_updated_at param
     def validate_stale_form_data!
