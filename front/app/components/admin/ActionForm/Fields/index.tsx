@@ -13,6 +13,7 @@ import useAddPermissionsCustomField from 'api/permissions_custom_fields/useAddPe
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
 import { PermittedBy } from 'api/phase_permissions/types';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
+import { UserFieldsInFormFrontendDescriptor } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -27,7 +28,7 @@ interface Props {
   phaseId?: string;
   action: Action;
   showAddQuestion: boolean;
-  userFieldsInForm: boolean;
+  user_fields_in_form_frontend_descriptor: UserFieldsInFormFrontendDescriptor;
   permitted_by: PermittedBy;
   onChangeUserFieldsInForm?: (value: boolean) => void;
 }
@@ -36,7 +37,7 @@ const Fields = ({
   phaseId,
   action,
   showAddQuestion,
-  userFieldsInForm,
+  user_fields_in_form_frontend_descriptor,
   permitted_by,
   onChangeUserFieldsInForm,
 }: Props) => {
@@ -50,7 +51,8 @@ const Fields = ({
   const globalCustomFieldsSetting =
     permissions?.data[0].attributes.global_custom_fields;
 
-  // We check if globalCustomFieldsSetting is false to allow users who edited the fields before the feature flag was enforced to still access the functionality
+  // We check if globalCustomFieldsSetting is false to allow users who
+  // edited the fields before the feature flag was enforced to still access the functionality
   const isPermissionsCustomFieldsAllowed =
     useFeatureFlag({
       name: 'permissions_custom_fields',
@@ -106,8 +108,9 @@ const Fields = ({
       {onChangeUserFieldsInForm && (
         <Box>
           <UserFieldsInFormRadio
-            userFieldsInForm={userFieldsInForm}
-            permitted_by={permitted_by}
+            user_fields_in_form_frontend_descriptor={
+              user_fields_in_form_frontend_descriptor
+            }
             onChange={onChangeUserFieldsInForm}
           />
         </Box>
@@ -117,7 +120,7 @@ const Fields = ({
           phaseId={phaseId}
           action={action}
           permitted_by={permitted_by}
-          userFieldsInForm={userFieldsInForm}
+          userFieldsInForm={user_fields_in_form_frontend_descriptor.value}
         />
       </Box>
       {selectedCustomFields && (

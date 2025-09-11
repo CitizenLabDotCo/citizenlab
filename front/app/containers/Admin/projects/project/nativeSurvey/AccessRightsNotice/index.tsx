@@ -72,7 +72,8 @@ const AccessRightsNotice = ({
     </Link>
   );
 
-  const userFieldsInForm = phase?.data.attributes.user_fields_in_form;
+  const userFieldsInForm =
+    phase?.data.attributes.user_fields_in_form_frontend_descriptor.value;
 
   if (userFieldsInForm && permittedBySetting !== 'everyone') return null;
 

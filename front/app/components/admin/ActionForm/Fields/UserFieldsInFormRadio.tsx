@@ -2,25 +2,30 @@ import React from 'react';
 
 import { Box, Radio, Text } from '@citizenlab/cl2-component-library';
 
-import { PermittedBy } from 'api/phase_permissions/types';
+import { UserFieldsInFormFrontendDescriptor } from 'api/phases/types';
 
 interface Props {
-  userFieldsInForm: boolean;
-  permitted_by: PermittedBy;
+  user_fields_in_form_frontend_descriptor: UserFieldsInFormFrontendDescriptor;
   onChange: (userFieldsInForm: boolean) => void;
 }
 
 const UserFieldsInFormRadio = ({
-  userFieldsInForm,
-  permitted_by,
+  user_fields_in_form_frontend_descriptor,
   onChange,
 }: Props) => {
+  const { value, disabled_explanation } =
+    user_fields_in_form_frontend_descriptor;
+
+  if (disabled_explanation === 'not_supported_participation_method') {
+    return null;
+  }
+
   return (
     <Box pt="16px">
       <Radio
         name="user_fields_in_registration_flow"
         value={false}
-        currentValue={userFieldsInForm}
+        currentValue={value}
         label={
           <Text color="primary" m="0">
             Include demographic questions in{' '}
@@ -28,12 +33,12 @@ const UserFieldsInFormRadio = ({
           </Text>
         }
         onChange={onChange}
-        disabled={permitted_by === 'everyone'}
+        disabled={!!disabled_explanation}
       />
       <Radio
         name="user_fields_in_form"
         value={true}
-        currentValue={userFieldsInForm}
+        currentValue={value}
         label={
           <Text color="primary" m="0">
             Include demographic questions as{' '}
@@ -42,6 +47,7 @@ const UserFieldsInFormRadio = ({
         }
         onChange={onChange}
         mr="8px"
+        disabled={!!disabled_explanation}
       />
     </Box>
   );

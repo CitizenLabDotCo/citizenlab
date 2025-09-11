@@ -44,9 +44,15 @@ const ActionFormSurvey = ({
     action,
   });
 
-  const participation_method = phase?.data.attributes.participation_method;
+  const handleEveryoneTrackingUpdate = (everyone_tracking_enabled: boolean) => {
+    onChange({ everyone_tracking_enabled });
+  };
 
-  const userFieldsInForm = !!phase?.data.attributes.user_fields_in_form;
+  if (!permissionsCustomFields) return null;
+  if (!phase) return null;
+
+  const { participation_method, user_fields_in_form_frontend_descriptor } =
+    phase.data.attributes;
 
   // Currently only community monitor supports everyone tracking
   const canUseEveryoneTracking =
@@ -54,12 +60,7 @@ const ActionFormSurvey = ({
     action === 'posting_idea' &&
     permitted_by === 'everyone';
 
-  const handleEveryoneTrackingUpdate = (everyone_tracking_enabled: boolean) => {
-    onChange({ everyone_tracking_enabled });
-  };
-
-  if (!permissionsCustomFields) return null;
-  if (!phase) return null;
+  const userFieldsInForm = user_fields_in_form_frontend_descriptor.value;
 
   return (
     <form className={`e2e-action-form-${action}`}>
@@ -82,7 +83,9 @@ const ActionFormSurvey = ({
               phaseId={phaseId}
               action={action}
               showAddQuestion={permitted_by !== 'everyone' || userFieldsInForm}
-              userFieldsInForm={userFieldsInForm}
+              user_fields_in_form_frontend_descriptor={
+                user_fields_in_form_frontend_descriptor
+              }
               permitted_by={permitted_by}
               onChangeUserFieldsInForm={(value) => {
                 onChangePhaseSetting?.({ user_fields_in_form: value });
