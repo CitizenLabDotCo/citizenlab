@@ -23,8 +23,12 @@ module Files
     def create?
       return false unless active?
       return false unless record.uploader_id == user.id # cannot upload file on behalf of another user
+      return true if admin?
 
-      admin_or_moderator?
+      # A files_project record is built in the controller #create action, but not yet persisted.
+      project_ids = record.files_projects.map(&:project_id).compact
+      projects = Project.where(id: project_ids)
+      moderates_all_projects?(projects)
     end
 
     def update?
@@ -38,12 +42,9 @@ module Files
       update?
     end
 
-    def admin_or_moderator?
-      user.highest_role != 'user'
-    end
-
-    def moderates_all_projects?
-      return false if record.projects.empty?
+    def moderates_all_projects?(projects = nil)
+      projects ||= record.projects
+      return false if projects.empty?
 
       (record.projects - UserRoleService.new.moderatable_projects(user)).empty?
     end
