@@ -113,7 +113,7 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
             inputType="text"
             disabled={isCustomFieldsDisabled}
             showAIUpsell
-            dragId="toolbox-text"
+            dragId="toolbox_text"
           />
           <ToolboxItem
             dragIndex={1}
@@ -124,7 +124,7 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
             inputType="multiline_text"
             disabled={isCustomFieldsDisabled}
             showAIUpsell
-            dragId="toolbox-multiline_text"
+            dragId="toolbox_multiline_text"
           />
           <ToolboxItem
             dragIndex={2}
@@ -134,7 +134,7 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="select"
             disabled={isCustomFieldsDisabled}
-            dragId="toolbox-select"
+            dragId="toolbox_select"
           />
           <ToolboxItem
             dragIndex={3}
@@ -144,7 +144,7 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="multiselect"
             disabled={isCustomFieldsDisabled}
-            dragId="toolbox-multiselect"
+            dragId="toolbox_multiselect"
           />
           <ToolboxItem
             dragIndex={4}
@@ -154,7 +154,7 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="multiselect_image"
             disabled={isCustomFieldsDisabled}
-            dragId="toolbox-multiselect_image"
+            dragId="toolbox_multiselect_image"
           />
           <ToolboxItem
             dragIndex={5}
@@ -164,7 +164,7 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="linear_scale"
             disabled={isCustomFieldsDisabled}
-            dragId="toolbox-linear_scale"
+            dragId="toolbox_linear_scale"
           />
           <ToolboxItem
             dragIndex={6}
@@ -174,7 +174,7 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="ranking"
             disabled={isCustomFieldsDisabled}
-            dragId="toolbox-ranking"
+            dragId="toolbox_ranking"
           />
           <ToolboxItem
             dragIndex={7}
@@ -184,7 +184,7 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="rating"
             disabled={isCustomFieldsDisabled}
-            dragId="toolbox-rating"
+            dragId="toolbox_rating"
           />
           <ToolboxItem
             dragIndex={8}
@@ -194,7 +194,7 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="sentiment_linear_scale"
             disabled={isCustomFieldsDisabled}
-            dragId="toolbox-sentiment_linear_scale"
+            dragId="toolbox_sentiment_linear_scale"
           />
           <ToolboxItem
             dragIndex={9}
@@ -204,7 +204,7 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="matrix_linear_scale"
             disabled={isCustomFieldsDisabled}
-            dragId="toolbox-matrix_linear_scale"
+            dragId="toolbox_matrix_linear_scale"
           />
 
           <ToolboxItem
@@ -215,7 +215,7 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="number"
             disabled={isCustomFieldsDisabled}
-            dragId="toolbox-number"
+            dragId="toolbox_number"
           />
           <ToolboxItem
             dragIndex={11}
@@ -225,7 +225,7 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
             fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="file_upload"
             disabled={isCustomFieldsDisabled}
-            dragId="toolbox-file_upload"
+            dragId="toolbox_file_upload"
           />
         </Drop>
         <Box>
@@ -242,7 +242,7 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
               >
                 {formatMessage(messages.mapping)}
               </Title>
-              <Drop id="toolbox-mapping" type={fieldAreaDNDType}>
+              <Drop id="toolbox_mapping" type={fieldAreaDNDType}>
                 <ToolboxItem
                   dragIndex={0}
                   icon="dropPin"
@@ -252,7 +252,7 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
                   inputType="point"
                   disabled={!isFormMappingEnabled}
                   disabledTooltipMessage={messages.mappingNotInCurrentLicense}
-                  dragId="toolbox-point"
+                  dragId="toolbox_point"
                 />
                 <>
                   <ToolboxItem
@@ -264,7 +264,7 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
                     inputType="line"
                     disabled={!isFormMappingEnabled}
                     disabledTooltipMessage={messages.mappingNotInCurrentLicense}
-                    dragId="toolbox-line"
+                    dragId="toolbox_line"
                   />
                   <ToolboxItem
                     dragIndex={2}
@@ -275,7 +275,7 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
                     inputType="polygon"
                     disabled={!isFormMappingEnabled}
                     disabledTooltipMessage={messages.mappingNotInCurrentLicense}
-                    dragId="toolbox-polygon"
+                    dragId="toolbox_polygon"
                   />
                   <ToolboxItem
                     dragIndex={3}
@@ -286,7 +286,7 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
                     inputType="shapefile_upload"
                     disabled={!isFormMappingEnabled}
                     disabledTooltipMessage={messages.mappingNotInCurrentLicense}
-                    dragId="toolbox-shapefile_upload"
+                    dragId="toolbox_shapefile_upload"
                   />
                 </>
               </Drop>

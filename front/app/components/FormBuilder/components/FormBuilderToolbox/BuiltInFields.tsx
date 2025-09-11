@@ -46,7 +46,7 @@ const BuiltInFields = ({ builderConfig }: BuiltInFieldsProps) => {
       >
         <FormattedMessage {...messages.defaultContent} />
       </Title>
-      <Drop id="toolbox-builtin" type={fieldAreaDNDType}>
+      <Drop id="toolbox_builtin" type={fieldAreaDNDType}>
         {builderConfig.builtInFields.includes('idea_images_attributes') && (
           <ToolboxItem
             icon="image"
@@ -56,7 +56,7 @@ const BuiltInFields = ({ builderConfig }: BuiltInFieldsProps) => {
             }
             disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
             data-cy="e2e-idea-images-attributes-item"
-            dragId="toolbox-idea_images_attributes"
+            dragId="toolbox_idea_images_attributes"
             dragIndex={0}
           />
         )}
@@ -67,7 +67,7 @@ const BuiltInFields = ({ builderConfig }: BuiltInFieldsProps) => {
             disabled={!enabledBuiltInFieldKeys.includes('proposed_budget')}
             disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
             data-cy="e2e-proposed-budget-item"
-            dragId="toolbox-proposed_budget"
+            dragId="toolbox_proposed_budget"
             dragIndex={1}
           />
         )}
@@ -80,7 +80,7 @@ const BuiltInFields = ({ builderConfig }: BuiltInFieldsProps) => {
             }
             disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
             data-cy="e2e-attachments-item"
-            dragId="toolbox-idea_files_attributes"
+            dragId="toolbox_idea_files_attributes"
             dragIndex={2}
           />
         )}
@@ -91,7 +91,7 @@ const BuiltInFields = ({ builderConfig }: BuiltInFieldsProps) => {
             disabled={!enabledBuiltInFieldKeys.includes('location_description')}
             data-cy="e2e-location_description-item"
             disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
-            dragId="toolbox-location_description"
+            dragId="toolbox_location_description"
             dragIndex={3}
           />
         )}
@@ -102,7 +102,7 @@ const BuiltInFields = ({ builderConfig }: BuiltInFieldsProps) => {
             disabled={!enabledBuiltInFieldKeys.includes('topic_ids')}
             disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
             data-cy="e2e-topic_ids-item"
-            dragId="toolbox-topic_ids"
+            dragId="toolbox_topic_ids"
             dragIndex={4}
           />
         )}
@@ -116,7 +116,7 @@ const BuiltInFields = ({ builderConfig }: BuiltInFieldsProps) => {
               inputType="cosponsor_ids"
               disabled={!enabledBuiltInFieldKeys.includes('cosponsor_ids')}
               disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
-              dragId="toolbox-cosponsor_ids"
+              dragId="toolbox_cosponsor_ids"
               dragIndex={5}
             />
           )}

@@ -234,9 +234,9 @@ const FormEdit = ({
     const nestedGroupData = getNestedGroupData(formCustomFields);
 
     // Handle toolbox drags (creating new fields or enabling built-in fields)
-    if (result.draggableId.startsWith('toolbox-')) {
+    if (result.draggableId.startsWith('toolbox_')) {
       // Extract field type/key from draggable ID
-      const fieldTypeOrKey = result.draggableId.replace('toolbox-', '');
+      const fieldTypeOrKey = result.draggableId.replace('toolbox_', '');
 
       // Check if this is a built-in field
       const builtInFieldKeys = builderConfig.builtInFields;
