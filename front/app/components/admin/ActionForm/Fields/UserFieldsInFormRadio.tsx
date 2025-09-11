@@ -6,6 +6,10 @@ import { UserFieldsInFormFrontendDescriptor } from 'api/phases/types';
 
 import Warning from 'components/UI/Warning';
 
+import { useIntl } from 'utils/cl-intl';
+
+import { EXPLANATION_MESSAGES } from './constants';
+
 interface Props {
   user_fields_in_form_frontend_descriptor: UserFieldsInFormFrontendDescriptor;
   onChange: (userFieldsInForm: boolean) => void;
@@ -15,6 +19,8 @@ const UserFieldsInFormRadio = ({
   user_fields_in_form_frontend_descriptor,
   onChange,
 }: Props) => {
+  const { formatMessage } = useIntl();
+
   const { value, locked, explanation } =
     user_fields_in_form_frontend_descriptor;
 
@@ -53,7 +59,7 @@ const UserFieldsInFormRadio = ({
       </Box>
       {explanation && (
         <Box mb="16px">
-          <Warning>{explanation}</Warning>
+          <Warning>{formatMessage(EXPLANATION_MESSAGES[explanation])}</Warning>
         </Box>
       )}
     </>
