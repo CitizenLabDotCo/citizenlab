@@ -13,16 +13,7 @@ const UserFieldsInFormRadio = ({
   user_fields_in_form_frontend_descriptor,
   onChange,
 }: Props) => {
-  const { value, disabled_explanation } =
-    user_fields_in_form_frontend_descriptor;
-
-  if (disabled_explanation === 'not_supported_participation_method') {
-    return null;
-  }
-
-  if (disabled_explanation === 'not_possible_with_full_anonymity') {
-    return null;
-  }
+  const { value, locked } = user_fields_in_form_frontend_descriptor;
 
   return (
     <Box pt="16px">
@@ -37,7 +28,7 @@ const UserFieldsInFormRadio = ({
           </Text>
         }
         onChange={onChange}
-        disabled={!!disabled_explanation}
+        disabled={!!locked}
       />
       <Radio
         name="user_fields_in_form"
@@ -51,7 +42,7 @@ const UserFieldsInFormRadio = ({
         }
         onChange={onChange}
         mr="8px"
-        disabled={!!disabled_explanation}
+        disabled={!!locked}
       />
     </Box>
   );

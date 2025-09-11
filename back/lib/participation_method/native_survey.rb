@@ -152,19 +152,39 @@ module ParticipationMethod
 
     # Attribute used in frontend to render UI
     def user_fields_in_form_frontend_descriptor
-      if phase.anonymity == 'full_anonymity'
-        return { value: false, disabled_explanation: 'not_possible_with_full_anonymity' }
-      end
-
       permission = Permission.find_by(
         permission_scope_id: phase.id,
         action: 'posting_idea'
       )
 
       if permission&.permitted_by == 'everyone'
-        { value: true, disabled_explanation: 'only_possibility_for_permitted_by_everyone' }
+        if phase.anonymity == 'full_anonymity'
+          return {
+            value: nil,
+            locked: true,
+            explanation: 'cannot_ask_demographic_fields_with_this_combination_of_permitted_by_and_anonymity'
+          }
+        else
+          return {
+            value: true,
+            locked: true,
+            explanation: 'cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone'
+          }
+        end
       else
-        { value: phase.user_fields_in_form, disabled_explanation: nil }
+        if phase.anonymity == 'full_anonymity'
+          return {
+            value: false,
+            locked: true,
+            explanation: 'with_these_settings_can_only_ask_demographic_fields_in_registration_flow_and_they_wont_be_stored'
+          }
+        else
+          return {
+            value: phase.user_fields_in_form,
+            locked: false,
+            explanation: nil
+          }
+        end
       end
     end
 

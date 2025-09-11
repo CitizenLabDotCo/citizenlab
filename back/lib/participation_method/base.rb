@@ -233,7 +233,11 @@ module ParticipationMethod
 
     # Attribute used in frontend to render UI
     def user_fields_in_form_frontend_descriptor
-      { value: false, disabled_explanation: 'not_supported_participation_method' }
+      { 
+        value: false,
+        locked: true,
+        explanation: 'user_fields_in_survey_not_supported_for_participation_method' 
+      }
     end
 
     def supports_multiple_phase_reports?

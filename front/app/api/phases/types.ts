@@ -37,11 +37,13 @@ export type Anonymity =
   | 'full_anonymity';
 
 export type UserFieldsInFormFrontendDescriptor = {
-  value: boolean;
-  disabled_explanation:
-    | 'not_possible_with_full_anonymity'
-    | 'only_possibility_for_permitted_by_everyone'
-    | 'not_supported_participation_method'
+  value: boolean | null;
+  locked: boolean;
+  explanation:
+    | 'user_fields_in_survey_not_supported_for_participation_method'
+    | 'cannot_ask_demographic_fields_with_this_combination_of_permitted_by_and_anonymity'
+    | 'cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone'
+    | 'with_these_settings_can_only_ask_demographic_fields_in_registration_flow_and_they_wont_be_stored'
     | null;
 };
 
