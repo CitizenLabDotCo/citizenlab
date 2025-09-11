@@ -162,25 +162,54 @@ module Export
           fields_in_form.each do |field|
             next if field.code == 'author_id' # Never included, because the user fields include it
 
-            if field.code == 'location_description'
-              input_fields << latitude_report_field
-              input_fields << longitude_report_field
-            end
-
-            if field.input_type == 'matrix_linear_scale'
-              field.matrix_statements.each do |statement|
-                input_fields << matrix_statement_report_field(statement)
-              end
-              next
-            end
-
-            input_fields << title_multiloc_report_field if field.code == 'title_multiloc'
-            input_fields << body_multiloc_report_field if field.code == 'body_multiloc'
-            input_fields << Export::CustomFieldForExport.new(field, @value_visitor) unless field.code == 'title_multiloc' || field.code == 'body_multiloc'
-            input_fields << Export::CustomFieldForExport.new(field.other_option_text_field, @value_visitor) if field.other_option_text_field
-            input_fields << Export::CustomFieldForExport.new(field.follow_up_text_field, @value_visitor) if field.follow_up_text_field
+            process_input_report_field(field, input_fields)
           end
         end
+      end
+
+      def process_input_report_field(field, input_fields)
+        case field.code
+        when 'title_multiloc'
+          input_fields << title_multiloc_report_field
+        when 'body_multiloc'
+          input_fields << body_multiloc_report_field
+        when 'location_description'
+          add_location_fields(input_fields)
+          add_standard_field(field, input_fields)
+        else
+          if field.input_type == 'matrix_linear_scale'
+            add_matrix_fields(field, input_fields)
+          else
+            add_standard_field(field, input_fields)
+          end
+        end
+
+        add_supplementary_fields(field, input_fields)
+      end
+
+      def add_location_fields(input_fields)
+        input_fields << latitude_report_field
+        input_fields << longitude_report_field
+      end
+
+      def add_matrix_fields(field, input_fields)
+        field.matrix_statements.each do |statement|
+          input_fields << matrix_statement_report_field(statement)
+        end
+      end
+
+      def add_standard_field(field, input_fields)
+        return if %w[title_multiloc body_multiloc].include?(field.code)
+        
+        input_fields << Export::CustomFieldForExport.new(field, @value_visitor)
+      end
+
+      def add_supplementary_fields(field, input_fields)
+        # Skip for matrix fields which are handled differently
+        return if field.input_type == 'matrix_linear_scale'
+        
+        input_fields << Export::CustomFieldForExport.new(field.other_option_text_field, @value_visitor) if field.other_option_text_field
+        input_fields << Export::CustomFieldForExport.new(field.follow_up_text_field, @value_visitor) if field.follow_up_text_field
       end
 
       def author_report_fields
