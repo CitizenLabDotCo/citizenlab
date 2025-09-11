@@ -41,7 +41,7 @@ const FieldTitle = ({
     }
   }
 
-  const lockedAttributes = field.constraints?.locks;
+  const deletionLocked = field.constraints?.locks?.deletion;
   const titleColor = field.input_type === 'page' ? 'blue500' : 'teal400';
   const getLockMessage = () => {
     if (field.input_type === 'page') {
@@ -52,12 +52,12 @@ const FieldTitle = ({
           return formatMessage(messages.pageCannotBeDeletedNorNewFieldsAdded);
         }
       }
-      if (lockedAttributes?.enabled) {
+      if (deletionLocked) {
         return formatMessage(messages.pageCannotBeDeleted);
       }
     }
 
-    if (lockedAttributes?.enabled && field.code != 'body_multiloc') {
+    if (deletionLocked) {
       return formatMessage(messages.questionCannotBeDeleted);
     }
 

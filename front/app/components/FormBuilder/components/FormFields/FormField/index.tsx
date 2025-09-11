@@ -78,7 +78,7 @@ export const FormField = ({
   const { formatMessage } = useIntl();
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const lockedAttributes = field?.constraints?.locks;
+  const deletionLocked = field?.constraints?.locks?.deletion;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const formCustomFields: IFlatCustomField[] = watch('customFields');
   const index = formCustomFields.findIndex((f) => f.id === field.id);
@@ -109,7 +109,7 @@ export const FormField = ({
   const isGroupDeletable = getGroupDeletable();
   const shouldShowDelete = !(
     (field.input_type === 'page' && !isGroupDeletable) ||
-    get(lockedAttributes, 'enabled', false)
+    deletionLocked
   );
 
   const editFieldAndValidate = (defaultTab: ICustomFieldSettingsTab) => {
