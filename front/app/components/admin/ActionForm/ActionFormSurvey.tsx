@@ -12,7 +12,7 @@ import Fields from '../ActionForm/Fields';
 import FlowVisualization from '../ActionForm/FlowVisualization';
 import messages from '../ActionForm/messages';
 import ResetButton from '../ActionForm/ResetButton';
-import { showResetButton } from '../ActionForm/utils';
+import { allowAskQuestion, showResetButton } from '../ActionForm/utils';
 
 import DataCollection from './DataCollection';
 import { Props } from './types';
@@ -61,6 +61,7 @@ const ActionFormSurvey = ({
     permitted_by === 'everyone';
 
   const userFieldsInForm = user_fields_in_form_frontend_descriptor.value;
+  const { explanation } = user_fields_in_form_frontend_descriptor;
 
   return (
     <form className={`e2e-action-form-${action}`}>
@@ -82,7 +83,7 @@ const ActionFormSurvey = ({
             <Fields
               phaseId={phaseId}
               action={action}
-              showAddQuestion={permitted_by !== 'everyone' || userFieldsInForm}
+              showAddQuestion={allowAskQuestion(explanation)}
               user_fields_in_form_frontend_descriptor={
                 user_fields_in_form_frontend_descriptor
               }
