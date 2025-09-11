@@ -5,9 +5,11 @@ require 'rails_helper'
 describe ProjectCopyService do
   let(:service) { described_class.new }
 
-  before { stub_easy_translate! }
-
   describe 'project copy' do
+    before do
+      stub_translations
+    end
+
     it 'works' do
       load Rails.root.join('db/seeds.rb')
       Apartment::Tenant.switch('localhost') do
@@ -52,6 +54,7 @@ describe ProjectCopyService do
 
       tenant = create(:tenant)
       tenant.switch do
+        configure_platform_locales ['en']
         create(:idea_status_proposed)
         expect(Project.count).to eq 0
 
@@ -188,6 +191,7 @@ describe ProjectCopyService do
 
       tenant = create(:tenant)
       tenant.switch do
+        configure_platform_locales ['en']
         expect(CustomMaps::MapConfig.count).to eq 0
         expect(CustomMaps::Layer.count).to eq 0
 
@@ -218,6 +222,7 @@ describe ProjectCopyService do
 
       tenant = create(:tenant)
       tenant.switch do
+        configure_platform_locales ['en']
         expect(CustomMaps::MapConfig.count).to eq 0
         expect(CustomMaps::Layer.count).to eq 0
 
@@ -244,6 +249,7 @@ describe ProjectCopyService do
 
       tenant = create(:tenant)
       tenant.switch do
+        configure_platform_locales ['en']
         expect(CustomMaps::MapConfig.count).to eq 0
         expect(CustomMaps::Layer.count).to eq 0
 
@@ -348,18 +354,92 @@ describe ProjectCopyService do
           .to eq(project.custom_form.custom_fields.order(:key).pluck(:ordering))
       end
     end
+
+    context 'with machine translations' do
+      before { create(:idea_status, code: 'proposed') }
+
+      it 'translates from a single locale to a single locale' do
+        # Single locale setup
+        configure_platform_locales ['en']
+
+        project = create(:project_with_active_ideation_phase, title_multiloc: { en: 'ENGLISH PROJECT' }, description_multiloc: { en: '' })
+        create(:idea, project: project, phases: project.phases, author: create(:user, locale: 'en'))
+        template = service.export project, anonymize_users: false, include_ideas: true
+
+        # Switch to a platform with a different locale
+        tenant = create(:tenant)
+        tenant.switch do
+          create(:idea_status_proposed)
+          configure_platform_locales ['fr-FR']
+
+          copied_project = service.import template
+          expect(copied_project.title_multiloc).to eq({ 'fr-FR' => 'TRANSLATED: ENGLISH PROJECT' })
+
+          # Does nothing with empty multiloc values
+          expect(copied_project.description_multiloc).to eq({ 'fr-FR' => '' })
+
+          # Changes the locale of users too
+          expect(copied_project.ideas.first.author.locale).to eq 'fr-FR'
+        end
+      end
+
+      it 'translates from a single locale to multiple locales' do
+        # Single locale setup
+        configure_platform_locales ['en']
+
+        project = create(:project_with_active_ideation_phase, title_multiloc: { en: 'ENGLISH PROJECT' }, description_multiloc: {})
+        create(:idea, project: project, phases: project.phases, author: create(:user, locale: 'en'))
+        template = service.export project, anonymize_users: false, include_ideas: true
+
+        # Switch to a platform with multiple locales
+        tenant = create(:tenant)
+        tenant.switch do
+          create(:idea_status_proposed)
+          configure_platform_locales %w[en fr-FR]
+
+          copied_project = service.import template
+          expect(copied_project.title_multiloc).to eq({ 'en' => 'ENGLISH PROJECT', 'fr-FR' => 'TRANSLATED: ENGLISH PROJECT' })
+
+          # Does not change the locale of users
+          expect(copied_project.ideas.first.author.locale).to eq 'en'
+        end
+      end
+
+      it 'translates from a multiple locales to multiple locales' do
+        # Set config to two locales
+        configure_platform_locales %w[en fr-FR]
+
+        project = create(:project_with_active_ideation_phase, title_multiloc: { en: 'ENGLISH PROJECT', 'fr-FR': 'FRENCH PROJECT' }, description_multiloc: {})
+        create(:idea, title_multiloc: { 'fr-FR' => 'FRENCH IDEA' }, author: create(:user, locale: 'en'), project: project, phases: project.phases)
+
+        template = service.export project, anonymize_users: false, include_ideas: true
+
+        # Switch to another platform with different multiple locales
+        tenant = create(:tenant)
+        tenant.switch do
+          create(:idea_status_proposed)
+          configure_platform_locales %w[en fr-FR de-DE]
+
+          copied_project = service.import template
+          expect(copied_project.title_multiloc).to eq({ 'en' => 'ENGLISH PROJECT', 'fr-FR' => 'FRENCH PROJECT', 'de-DE' => 'TRANSLATED: ENGLISH PROJECT' })
+          expect(copied_project.ideas.first.title_multiloc).to eq({ 'en' => 'TRANSLATED: FRENCH IDEA', 'fr-FR' => 'FRENCH IDEA', 'de-DE' => 'TRANSLATED: FRENCH IDEA' })
+        end
+      end
+    end
   end
 
   private
 
-  def stub_easy_translate!
-    allow(EasyTranslate).to receive(:translate) do |_, options|
-      translation = {
-        'en' => '<strong>Health & Wellness</strong>',
-        'fr' => '<strong>Santé &amp; Bien-être</strong>',
-        'nl' => ''
-      }[options[:to]]
-      translation || raise(EasyTranslate::EasyTranslateException, 'Locale not supported!')
+  # Stubbed to avoid hitting Google API in tests & also helps understand which language was the source for translation
+  def stub_translations
+    allow_any_instance_of(MachineTranslations::MachineTranslationService).to receive(:translate) do |_, text, _from, _to|
+      "TRANSLATED: #{text}"
     end
+  end
+
+  def configure_platform_locales(locales)
+    settings = AppConfiguration.instance.settings
+    settings['core']['locales'] = locales
+    AppConfiguration.instance.update!(settings: settings)
   end
 end
