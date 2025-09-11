@@ -24,10 +24,7 @@ import {
 import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
 
 import { Conflict } from 'components/FormBuilder/edit/utils';
-import {
-  FormBuilderConfig,
-  builtInFieldKeys,
-} from 'components/FormBuilder/utils';
+import { FormBuilderConfig } from 'components/FormBuilder/utils';
 import Modal from 'components/UI/Modal';
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 
