@@ -29,8 +29,9 @@ module Files
 
     def update?
       return false unless active?
+      return true if admin?
 
-      admin_or_moderator?
+      moderates_all_projects?
     end
 
     def destroy?
@@ -39,6 +40,12 @@ module Files
 
     def admin_or_moderator?
       user.highest_role != 'user'
+    end
+
+    def moderates_all_projects?
+      return false if record.projects.empty?
+
+      (record.projects - UserRoleService.new.moderatable_projects(user)).empty?
     end
   end
 end
