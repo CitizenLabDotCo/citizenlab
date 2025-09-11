@@ -5,12 +5,14 @@ import { Title, Box, Accordion } from '@citizenlab/cl2-component-library';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import useResetPhasePermission from 'api/phase_permissions/useResetPhasePermission';
 import useUpdatePhasePermission from 'api/phase_permissions/useUpdatePhasePermission';
+import phasesKeys from 'api/phases/keys';
 import usePhase from 'api/phases/usePhase';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
 import ActionForm from 'components/admin/ActionForm';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import messages from './messages';
 import { getPermissionActionSectionSubtitle } from './utils';
@@ -59,6 +61,15 @@ const ActionForms = ({ phaseId }: Props) => {
           phaseId={phaseId}
           permissionData={permission}
           onChange={async (permissionChanges) => {
+            await queryClient.invalidateQueries({
+              queryKey: phasesKeys.items(),
+            });
+            await queryClient.invalidateQueries({
+              queryKey: phasesKeys.list({
+                projectId: phase.data.relationships.project.data.id,
+              }),
+            });
+
             await updatePhasePermission({
               permissionId: permission.id,
               phaseId,
@@ -113,6 +124,15 @@ const ActionForms = ({ phaseId }: Props) => {
               phaseId={phaseId}
               permissionData={permission}
               onChange={async (permissionChanges) => {
+                await queryClient.invalidateQueries({
+                  queryKey: phasesKeys.items(),
+                });
+                await queryClient.invalidateQueries({
+                  queryKey: phasesKeys.list({
+                    projectId: phase.data.relationships.project.data.id,
+                  }),
+                });
+
                 await updatePhasePermission({
                   permissionId: permission.id,
                   phaseId,

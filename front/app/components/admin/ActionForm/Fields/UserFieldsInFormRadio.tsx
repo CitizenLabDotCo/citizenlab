@@ -20,6 +20,10 @@ const UserFieldsInFormRadio = ({
     return null;
   }
 
+  if (disabled_explanation === 'not_possible_with_full_anonymity') {
+    return null;
+  }
+
   return (
     <Box pt="16px">
       <Radio
