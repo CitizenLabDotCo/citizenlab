@@ -35,7 +35,7 @@ resource 'Idea Custom Fields' do
       IdeaCustomFieldsService.new(custom_form).all_fields.reject(&:form_end_page?).map do |field|
         {}.tap do |field_param|
           attributes.each do |attribute|
-            field_param[attribute] = field[attribute]
+            field_param[attribute] = field.send(attribute)
           end
         end
       end

@@ -4,7 +4,11 @@ describe CustomFieldsValidationService do
   let(:service) { described_class.new }
   let(:custom_form) { create(:custom_form) }
   let(:participation_method) { custom_form.participation_context.pmethod }
-  let(:fields) { participation_method.default_fields(custom_form) }
+  let(:default_fields) do
+    # Deal with title page default title being nil (not the case during API call)
+    participation_method.default_fields(custom_form).each { |field| field[:title_multiloc] = field.title_multiloc }
+  end
+  let(:fields) { default_fields }
   let(:result) { service.validate(fields, participation_method) }
 
   describe 'validate_non_empty_form' do
@@ -68,7 +72,7 @@ describe CustomFieldsValidationService do
   describe 'validate_deletions' do
     let(:excluded_codes) { [] }
     let(:fields) do
-      participation_method.default_fields(custom_form).reject { |f| excluded_codes.include?(f.code) }
+      default_fields.reject { |f| excluded_codes.include?(f.code) }
     end
 
     it 'accepts the default fields' do
@@ -107,7 +111,7 @@ describe CustomFieldsValidationService do
 
     context do
       let(:fields) do
-        participation_method.default_fields(custom_form)
+        default_fields
           .insert(5, build(:custom_field_number))
           .reject { |f| f.code == 'idea_images_attributes' }
           .tap { |fields| fields.find { |f| f.code == 'idea_files_attributes' }.enabled = false }
@@ -120,7 +124,7 @@ describe CustomFieldsValidationService do
 
     context do
       let(:fields) do
-        participation_method.default_fields(custom_form).insert(2, build(:custom_field_number))
+        default_fields.insert(2, build(:custom_field_number))
       end
 
       it 'rejects a form with an added locked child' do
@@ -130,7 +134,7 @@ describe CustomFieldsValidationService do
 
     context do
       let(:fields) do
-        participation_method.default_fields(custom_form).reject { |f| f.code == 'body_multiloc' }
+        default_fields.reject { |f| f.code == 'body_multiloc' }
       end
 
       it 'rejects a form without a deleted locked child' do
@@ -140,7 +144,7 @@ describe CustomFieldsValidationService do
 
     context do
       let(:fields) do
-        participation_method.default_fields(custom_form).tap do |fields|
+        default_fields.tap do |fields|
           fields.find { |f| f.code == 'body_multiloc' }.enabled = false
         end
       end
@@ -158,7 +162,7 @@ describe CustomFieldsValidationService do
 
     context do
       let(:fields) do
-        participation_method.default_fields(custom_form).tap do |fields|
+        default_fields.tap do |fields|
           fields.find { |f| f.code == 'body_page' }.title_multiloc = { 'en' => 'Changed title' }
           fields.find { |f| f.code == 'topic_ids' }.required = true
         end
@@ -171,7 +175,7 @@ describe CustomFieldsValidationService do
 
     context do
       let(:fields) do
-        participation_method.default_fields(custom_form).tap do |fields|
+        default_fields.tap do |fields|
           fields.find { |f| f.code == 'location_description' }.title_multiloc = { 'en' => 'Changed title' }
         end
       end
@@ -183,7 +187,7 @@ describe CustomFieldsValidationService do
 
     context do
       let(:fields) do
-        participation_method.default_fields(custom_form).tap do |fields|
+        default_fields.tap do |fields|
           fields.find { |f| f.code == 'title_multiloc' }.required = false
         end
       end
