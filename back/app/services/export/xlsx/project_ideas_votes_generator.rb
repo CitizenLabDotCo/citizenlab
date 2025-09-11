@@ -21,6 +21,7 @@ module Export
         url_service = Frontend::UrlService.new
         ideas = phase.ideas.includes(:author, :idea_status, :topics, :idea_files, :attached_files, :project, :ideas_phases, [baskets_ideas: :basket])
         t_scope = 'xlsx_export.column_headers'
+        utils = Utils.new
 
         columns = [
           { header: I18n.t('input_id', scope: t_scope),    f: ->(i) { i.id }, skip_sanitization: true },
@@ -86,10 +87,6 @@ module Export
             baskets_idea.basket[:phase_id] == phase.id && baskets_idea.basket[:submitted_at].present?
           end.size
         }
-      end
-
-      def utils
-        @utils ||= Utils.new
       end
     end
   end

@@ -859,7 +859,6 @@ describe Export::Xlsx::InputSheetGenerator do
           let(:include_private_attributes) { true }
 
           it 'Generates an sheet with the phase inputs' do
-            puts ideation_response1.topics[0].inspect
             expect(xlsx).to match([
               {
                 sheet_name: 'My sheet',

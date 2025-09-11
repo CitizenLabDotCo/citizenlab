@@ -71,6 +71,7 @@ module Export
 
       def multiloc_with_fallback_locale(record, attribute_name)
         attribute = record.send(attribute_name)
+        multiloc_service = MultilocService.new app_configuration: AppConfiguration.instance
         value = multiloc_service.t(attribute)
 
         if value.blank? && attribute&.values
@@ -87,10 +88,6 @@ module Export
       # @param [String] char a single character
       def strip_char(string, char)
         string.gsub(/^#{char}+|#{char}+$/, '')
-      end
-
-      def multiloc_service
-        @multiloc_service ||= MultilocService.new app_configuration: AppConfiguration.instance
       end
     end
   end
