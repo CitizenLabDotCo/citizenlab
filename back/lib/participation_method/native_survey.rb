@@ -127,6 +127,7 @@ module ParticipationMethod
       false
     end
 
+    # Attribute used interally by backend to determine if user fields should be shown in the form
     def user_fields_in_form?
       return false if phase.anonymity == 'full_anonymity'
 
@@ -146,6 +147,24 @@ module ParticipationMethod
         else
           phase.user_fields_in_form && !permission.permissions_custom_fields.empty?
         end
+      end
+    end
+
+    # Attribute used in frontend to render UI
+    def user_fields_in_form_frontend_descriptor
+      if phase.anonymity == 'full_anonymity'
+        return { value: false, disabled_explanation: 'not_possible_with_full_anonymity' }
+      end
+
+      permission = Permission.find_by(
+        permission_scope_id: phase.id,
+        action: 'posting_idea'
+      )
+
+      if permission&.permitted_by == 'everyone'
+        { value: true, disabled_explanation: 'only_possibility_for_permitted_by_everyone' }
+      else
+        { value: phase.user_fields_in_form, disabled_explanation: nil }
       end
     end
 

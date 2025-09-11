@@ -36,6 +36,15 @@ export type Anonymity =
   | 'demographics_only'
   | 'full_anonymity';
 
+export type UserFieldsInFormFrontendDescriptor = {
+  value: boolean;
+  disabled_explanation:
+    | 'not_possible_with_full_anonymity'
+    | 'only_possibility_for_permitted_by_everyone'
+    | 'not_supported_participation_method'
+    | null;
+};
+
 export interface IPhaseAttributes {
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
@@ -82,7 +91,7 @@ export interface IPhaseAttributes {
   similarity_enabled?: boolean;
   similarity_threshold_title?: number | null;
   similarity_threshold_body?: number | null;
-  user_fields_in_form?: boolean;
+  user_fields_in_form_frontend_descriptor: UserFieldsInFormFrontendDescriptor;
   anonymity: Anonymity;
 }
 
