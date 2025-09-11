@@ -13,38 +13,48 @@ const UserFieldsInFormRadio = ({
   user_fields_in_form_frontend_descriptor,
   onChange,
 }: Props) => {
-  const { value, locked } = user_fields_in_form_frontend_descriptor;
+  const { value, locked, explanation } =
+    user_fields_in_form_frontend_descriptor;
 
   return (
-    <Box pt="16px">
-      <Radio
-        name="user_fields_in_registration_flow"
-        value={false}
-        currentValue={value}
-        label={
-          <Text color="primary" m="0">
-            Include demographic questions in{' '}
-            <span style={{ fontWeight: 'bold' }}>registration flow</span>
-          </Text>
-        }
-        onChange={onChange}
-        disabled={!!locked}
-      />
-      <Radio
-        name="user_fields_in_form"
-        value={true}
-        currentValue={value}
-        label={
-          <Text color="primary" m="0">
-            Include demographic questions as{' '}
-            <span style={{ fontWeight: 'bold' }}>last page of the survey</span>
-          </Text>
-        }
-        onChange={onChange}
-        mr="8px"
-        disabled={!!locked}
-      />
-    </Box>
+    <>
+      <Box pt="16px">
+        <Radio
+          name="user_fields_in_registration_flow"
+          value={false}
+          currentValue={value}
+          label={
+            <Text color="primary" m="0">
+              Include demographic questions in{' '}
+              <span style={{ fontWeight: 'bold' }}>registration flow</span>
+            </Text>
+          }
+          onChange={onChange}
+          disabled={!!locked}
+        />
+        <Radio
+          name="user_fields_in_form"
+          value={true}
+          currentValue={value}
+          label={
+            <Text color="primary" m="0">
+              Include demographic questions as{' '}
+              <span style={{ fontWeight: 'bold' }}>
+                last page of the survey
+              </span>
+            </Text>
+          }
+          onChange={onChange}
+          mr="8px"
+          disabled={!!locked}
+        />
+      </Box>
+      {explanation && (
+        <Box mt="16px">
+          <Text color="textSecondary">{explanation}</Text>
+        </Box>
+      )}
+    </>
   );
 };
 
