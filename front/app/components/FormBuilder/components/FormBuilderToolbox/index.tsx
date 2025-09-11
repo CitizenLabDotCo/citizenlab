@@ -103,7 +103,7 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
             />
           )}
         </Box>
-        <Drop id="toolbox" type={fieldAreaDNDType}>
+        <Drop id="toolbox" type={fieldAreaDNDType} isDropDisabled={true}>
           <ToolboxItem
             dragIndex={0}
             icon="survey-short-answer-2"

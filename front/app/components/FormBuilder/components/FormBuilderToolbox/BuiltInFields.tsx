@@ -46,7 +46,7 @@ const BuiltInFields = ({ builderConfig }: BuiltInFieldsProps) => {
       >
         <FormattedMessage {...messages.defaultContent} />
       </Title>
-      <Drop id="toolbox_builtin" type={fieldAreaDNDType}>
+      <Drop id="toolbox_builtin" type={fieldAreaDNDType} isDropDisabled={true}>
         {builderConfig.builtInFields.includes('idea_images_attributes') && (
           <ToolboxItem
             icon="image"
