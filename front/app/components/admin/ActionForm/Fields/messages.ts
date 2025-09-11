@@ -55,9 +55,4 @@ export default defineMessages({
     defaultMessage:
       "No demographic questions have been added yet. Click 'Add a question' to add one.",
   },
-  notAllowed: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.notAllowed',
-    defaultMessage:
-      "When authentication is set to 'None', it is not allowed to ask demographic questions in the registration flow. Please select 'Include demographic questions as last page of the survey' in order to add demographic questions.",
-  },
 });
