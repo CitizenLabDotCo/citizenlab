@@ -9,6 +9,7 @@ import {
   Dropdown,
 } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
+import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
@@ -18,6 +19,12 @@ import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
 import { ItemMenu, StyledBox, StyledText } from './styles';
+
+const StyledIcon = styled(Icon)`
+  flex-shrink: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+`;
 
 export const SupportMenu = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -77,7 +84,7 @@ export const SupportMenu = () => {
         onClickOutside={() => setIsDropdownOpen(false)}
         left={isSmallerThanTablet ? '60px' : '200px'}
         mobileLeft="60px"
-        top="-100px"
+        top="-140px"
         content={
           <Box>
             <ItemMenu
@@ -89,7 +96,7 @@ export const SupportMenu = () => {
                 <Text my="0px" color="coolGrey600">
                   {formatMessage({ ...messages.knowledgeBase })}
                 </Text>
-                <Icon name="book" fill={colors.grey600} />
+                <StyledIcon name="book" fill={colors.grey600} />
               </Box>
             </ItemMenu>
             <ItemMenu
@@ -101,7 +108,7 @@ export const SupportMenu = () => {
                 <Text my="0px" color="coolGrey600">
                   {formatMessage({ ...messages.productChangelog })}
                 </Text>
-                <Icon name="survey-long-answer" fill={colors.grey600} />
+                <StyledIcon name="survey-long-answer" fill={colors.grey600} />
               </Box>
             </ItemMenu>
             <ItemMenu
@@ -115,9 +122,10 @@ export const SupportMenu = () => {
                 <Text my="0px" color="coolGrey600">
                   {formatMessage({ ...messages.communityPlatform })}
                 </Text>
-                <Icon name="community" fill={colors.grey600} />
+                <StyledIcon name="community" fill={colors.grey600} />
               </Box>
             </ItemMenu>
+
             {customerPortalUrl && isAdmin(authUser) && (
               <ItemMenu
                 linkTo={customerPortalUrl}
