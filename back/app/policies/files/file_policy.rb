@@ -38,8 +38,11 @@ module Files
       update?
     end
 
+    private
+
     def moderates_all_projects?
-      return false if record.projects.blank?
+      project_ids = record.files_projects.filter_map(&:project_id)
+      projects = Project.where(id: project_ids)
 
       (projects - UserRoleService.new.moderatable_projects(user)).empty?
     end

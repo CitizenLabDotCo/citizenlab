@@ -36,7 +36,7 @@ class WebApi::V1::Files::FileAttachmentsController < ApplicationController
     # So we create the association here, by creating a files_projects record, if it doesn't already exist.
     if file_attachment.attachable_type == 'Project' && file_attachment.attachable_id.present?
       Files::FilesProject.find_or_create_by!(
-        file: file_attachment.file, 
+        file: file_attachment.file,
         project_id: file_attachment.attachable_id
       )
 

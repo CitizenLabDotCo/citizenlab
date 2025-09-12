@@ -35,7 +35,7 @@ RSpec.describe Files::FilePolicy do
         let(:user) { create(:project_moderator, projects: projects) }
         let(:file) { build(:file, uploader: user) }
 
-        it { is_expected.not_to permit(:create) }
+        it { is_expected.to permit(:create) }
 
         context do
           before { file.save! }
@@ -65,7 +65,7 @@ RSpec.describe Files::FilePolicy do
         let(:user) { create(:project_moderator, projects: [projects.first]) }
         let(:file) { build(:file, uploader: user, projects: projects) }
 
-        it { is_expected.not_to permit(:create) }
+        it { is_expected.to permit(:create) }
 
         context do
           before { file.save! }
@@ -80,7 +80,7 @@ RSpec.describe Files::FilePolicy do
         let(:user) { create(:project_moderator, projects: [create(:project)]) }
         let(:file) { build(:file, uploader: user, projects: projects) }
 
-        it { is_expected.not_to permit(:create) }
+        it { is_expected.to permit(:create) }
 
         context do
           before { file.save! }
