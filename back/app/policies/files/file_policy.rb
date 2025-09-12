@@ -46,7 +46,7 @@ module Files
       projects ||= record.projects
       return false if projects.empty?
 
-      (record.projects - UserRoleService.new.moderatable_projects(user)).empty?
+      (projects - UserRoleService.new.moderatable_projects(user)).empty?
     end
   end
 end
