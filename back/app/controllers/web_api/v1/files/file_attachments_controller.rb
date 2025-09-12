@@ -33,9 +33,16 @@ class WebApi::V1::Files::FileAttachmentsController < ApplicationController
     file_attachment = Files::FileAttachment.new(create_params)
     authorize(file_attachment)
 
-    side_fx.before_create(file_attachment, current_user)
-    if file_attachment.save
+    ActiveRecord::Base.transaction do
+      side_fx.before_create(file_attachment, current_user)
+      unless file_attachment.save
+        # If save fails, raise an error to trigger transaction rollback
+        raise ActiveRecord::Rollback, file_attachment.errors.full_messages.join(", ")
+      end
       side_fx.after_create(file_attachment, current_user)
+    end
+
+    if file_attachment.persisted?
       render json: WebApi::V1::Files::FileAttachmentSerializer.new(
         file_attachment,
         params: jsonapi_serializer_params
