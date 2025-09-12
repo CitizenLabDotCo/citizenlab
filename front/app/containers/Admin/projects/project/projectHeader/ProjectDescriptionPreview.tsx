@@ -52,7 +52,7 @@ const ProjectDescriptionPreview = ({ project }: Props) => {
     <Link
       data-cy="e2e-project-description-preview-link-to-multiloc-settings"
       to={createHighlighterLink(
-        `/admin/projects/${projectId}/settings/description#${fragmentId}`
+        `/admin/projects/${projectId}/general#${fragmentId}`
       )}
     >
       <EditDescriptionLinkContent />
