@@ -825,6 +825,7 @@
   "app.components.formBuilder.good": "Gutt",
   "app.components.formBuilder.helmetTitle": "Form Builder",
   "app.components.formBuilder.imageFileUpload": "Bild-Upload",
+  "app.components.formBuilder.inputImages": "Biller",
   "app.components.formBuilder.inputTagManager": "Säit mat Input-Tags",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Ongëlteg Logik",
   "app.components.formBuilder.labels2": "Etiketten (optional)",
