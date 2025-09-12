@@ -629,7 +629,8 @@ FactoryBot.define do
             project.phases << create(
               :community_monitor_survey_phase,
               project: project,
-              **evaluator.phase_attrs
+              **evaluator.phase_attrs,
+              with_permissions: true
             )
           end
 
