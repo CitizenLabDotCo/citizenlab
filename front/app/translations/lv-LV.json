@@ -825,6 +825,7 @@
   "app.components.formBuilder.good": "Labi",
   "app.components.formBuilder.helmetTitle": "Veidlapas veidotājs",
   "app.components.formBuilder.imageFileUpload": "Attēlu augšupielāde",
+  "app.components.formBuilder.inputImages": "Attēli",
   "app.components.formBuilder.inputTagManager": "Ievades tagu lapa",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Nederīga loģika",
   "app.components.formBuilder.labels2": "Etiķetes (pēc izvēles)",
