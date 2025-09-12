@@ -102,8 +102,9 @@ module MultiTenancy
               allowed: true,
               enabled: true,
               environment: 'integration',
-              identifier: ENV.fetch('DEFAULT_FRANCECONNECT_LOGIN_IDENTIFIER'),
-              secret: ENV.fetch('DEFAULT_FRANCECONNECT_LOGIN_SECRET')
+              version: 'v2',
+              identifier: ENV.fetch('DEFAULT_FRANCECONNECT_LOGIN_IDENTIFIER', 'fake id'),
+              secret: ENV.fetch('DEFAULT_FRANCECONNECT_LOGIN_SECRET', 'fake secret')
             },
             hoplr_login: {
               allowed: true,
