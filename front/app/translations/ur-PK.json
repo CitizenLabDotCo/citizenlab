@@ -825,6 +825,7 @@
   "app.components.formBuilder.good": "اچھا",
   "app.components.formBuilder.helmetTitle": "فارم بنانے والا",
   "app.components.formBuilder.imageFileUpload": "تصویر اپ لوڈ کریں۔",
+  "app.components.formBuilder.inputImages": "امیجز",
   "app.components.formBuilder.inputTagManager": "ان پٹ ٹیگز کا صفحہ",
   "app.components.formBuilder.invalidLogicBadgeMessage": "غلط منطق",
   "app.components.formBuilder.labels2": "لیبلز (اختیاری)",
