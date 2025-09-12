@@ -106,7 +106,7 @@ const ProjectHeader = ({ projectId }: Props) => {
             )}
             <Link
               to={createHighlighterLink(
-                `/admin/projects/${project.data.id}/settings#${fragmentId}`
+                `/admin/projects/${project.data.id}/general#${fragmentId}`
               )}
               data-cy="e2e-project-title-preview-link-to-settings"
             >
@@ -141,7 +141,7 @@ const ProjectHeader = ({ projectId }: Props) => {
               className="intercom-product-tour-project-sharing-dropdown"
             />
             <ButtonWithLink
-              linkTo={`/admin/projects/${project.data.id}/settings`}
+              linkTo={`/admin/projects/${project.data.id}/general`}
               buttonStyle="admin-dark"
               size="s"
               padding="4px 8px"
@@ -157,7 +157,7 @@ const ProjectHeader = ({ projectId }: Props) => {
         </Box>
         <Box display="flex" gap="8px">
           <ButtonWithLink
-            linkTo={`/admin/projects/${project.data.id}/settings/access-rights`}
+            linkTo={`/admin/projects/${project.data.id}/general/access-rights`}
             buttonStyle="text"
             size="s"
             padding="0px"
@@ -177,7 +177,7 @@ const ProjectHeader = ({ projectId }: Props) => {
             ·
           </Text>
           <ButtonWithLink
-            linkTo={`/admin/projects/${project.data.id}/settings/access-rights`}
+            linkTo={`/admin/projects/${project.data.id}/general/access-rights`}
             buttonStyle="text"
             size="s"
             padding="0px"
