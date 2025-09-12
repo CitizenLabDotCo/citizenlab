@@ -41,6 +41,7 @@ import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import Highlighter from 'components/Highlighter';
 import ProjectDescriptionBuilderToggle from 'components/ProjectDescriptionBuilder/ProjectDescriptionBuilderToggle';
 import Error from 'components/UI/Error';
+import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -141,6 +142,8 @@ const AdminProjectsProjectGeneralSetUp = () => {
   // Description state
   const [descriptionMultiloc, setDescriptionMultiloc] =
     useState<Multiloc | null>(null);
+  const [descriptionPreviewMultiloc, setDescriptionPreviewMultiloc] =
+    useState<Multiloc | null>(null);
 
   const showProjectFolderSelect =
     usePermission({
@@ -153,6 +156,9 @@ const AdminProjectsProjectGeneralSetUp = () => {
       if (project) {
         setSlug(project.data.attributes.slug);
         setDescriptionMultiloc(project.data.attributes.description_multiloc);
+        setDescriptionPreviewMultiloc(
+          project.data.attributes.description_preview_multiloc
+        );
       }
     })();
   }, [project]);
@@ -315,6 +321,17 @@ const AdminProjectsProjectGeneralSetUp = () => {
     setProjectAttributesDiff((projectAttributesDiff) => ({
       ...projectAttributesDiff,
       description_multiloc,
+    }));
+  };
+
+  const handleDescriptionPreviewChange = (
+    description_preview_multiloc: Multiloc
+  ) => {
+    setSubmitState('enabled');
+    setDescriptionPreviewMultiloc(description_preview_multiloc);
+    setProjectAttributesDiff((projectAttributesDiff) => ({
+      ...projectAttributesDiff,
+      description_preview_multiloc,
     }));
   };
 
@@ -543,7 +560,19 @@ const AdminProjectsProjectGeneralSetUp = () => {
             />
           </Highlighter>
 
-          {/* Description fields */}
+          {/* Project Description Section */}
+          <Section>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.projectDescriptionSectionTitle} />
+            </SubSectionTitle>
+            <SectionDescription>
+              <FormattedMessage
+                {...messages.projectDescriptionSectionDescription}
+              />
+            </SectionDescription>
+          </Section>
+
+          {/* Main Description */}
           <SectionField>
             <Highlighter fragmentId="description-multiloc">
               <ProjectDescriptionBuilderToggle
@@ -558,6 +587,25 @@ const AdminProjectsProjectGeneralSetUp = () => {
               apiErrors={apiErrors.description_multiloc}
             />
           </SectionField>
+
+          {/* Homepage Description */}
+          <SectionField>
+            <Highlighter fragmentId="description-preview-multiloc">
+              <TextAreaMultilocWithLocaleSwitcher
+                valueMultiloc={descriptionPreviewMultiloc}
+                onChange={handleDescriptionPreviewChange}
+                label={formatMessage(messages.homepageDescriptionLabel)}
+                labelTooltipText={formatMessage(
+                  messages.homepageDescriptionTooltip
+                )}
+              />
+            </Highlighter>
+            <Error
+              fieldName="description_preview_multiloc"
+              apiErrors={apiErrors.description_preview_multiloc}
+            />
+          </SectionField>
+
           {isProjectLibraryEnabled && (
             <Box mb="20px">
               <Warning>

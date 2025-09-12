@@ -26,6 +26,24 @@ export default defineMessages({
     defaultMessage:
       'Provide a clear description of your project to help participants understand what it is about.',
   },
+  homepageDescriptionLabel: {
+    id: 'app.containers.AdminPage.Project.general.homepageDescriptionLabel',
+    defaultMessage: 'Homepage description',
+  },
+  homepageDescriptionTooltip: {
+    id: 'app.containers.AdminPage.Project.general.homepageDescriptionTooltip',
+    defaultMessage:
+      'This short description will be shown on the project card on the homepage. Keep it concise and engaging.',
+  },
+  projectDescriptionSectionTitle: {
+    id: 'app.containers.AdminPage.Project.general.projectDescriptionSectionTitle',
+    defaultMessage: 'Project description',
+  },
+  projectDescriptionSectionDescription: {
+    id: 'app.containers.AdminPage.Project.general.projectDescriptionSectionDescription',
+    defaultMessage:
+      'Decide on which message you want to give to your audience. Edit your project and enrich it with images, videos, file attachments,... This information helps visitors to understand what your project is about.',
+  },
   titleGeneral: {
     id: 'app.containers.AdminPage.ProjectEdit.titleGeneral',
     defaultMessage: 'General settings for the project',
