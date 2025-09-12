@@ -41,9 +41,7 @@ module Files
     private
 
     def moderates_all_projects?
-      project_ids = record.files_projects.filter_map(&:project_id)
-      projects = Project.where(id: project_ids)
-
+      projects = Project.where(id: record.project_ids)
       (projects - UserRoleService.new.moderatable_projects(user)).empty?
     end
   end
