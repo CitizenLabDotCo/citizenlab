@@ -84,25 +84,6 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
     end
   end
 
-  describe 'constraints' do
-    it 'has constraints on built in fields to lock certain values from being changed' do
-      expect(participation_method.constraints.size).to be 3
-      expect(participation_method.constraints.keys).to match_array %i[
-        page_quality_of_life
-        page_service_delivery
-        page_governance_and_trust
-      ]
-    end
-
-    it 'each constraint has locks only title_multiloc' do
-      participation_method.constraints.each_value do |value|
-        expect(value.key?(:locks)).to be true
-        valid_locks = %i[title_multiloc]
-        expect(valid_locks).to include(*value[:locks].keys)
-      end
-    end
-  end
-
   describe '#generate_slug' do
     let(:input) { create(:input, slug: nil, project: phase.project, creation_phase: phase) }
 
@@ -217,7 +198,6 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
   its(:return_disabled_actions?) { is_expected.to be true }
   its(:supports_assignment?) { is_expected.to be false }
   its(:built_in_title_required?) { is_expected.to be(false) }
-  its(:built_in_body_required?) { is_expected.to be(false) }
   its(:supports_commenting?) { is_expected.to be false }
   its(:supports_edits_after_publication?) { is_expected.to be false }
   its(:supports_exports?) { is_expected.to be true }

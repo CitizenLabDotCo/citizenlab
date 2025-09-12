@@ -86,9 +86,9 @@ export interface IAttributes {
   ask_follow_up?: boolean;
   constraints?: {
     locks: {
-      title_multiloc?: boolean;
-      enabled?: boolean;
-      required?: boolean;
+      attributes?: ('title_multiloc' | 'required')[];
+      deletion?: boolean;
+      children?: boolean;
     };
   };
   enabled: boolean;

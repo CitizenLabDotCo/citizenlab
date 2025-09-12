@@ -48,7 +48,9 @@ const FormFields = ({
   const formCustomFields: IFlatCustomField[] = watch('customFields');
 
   const shouldShowField = (field: IFlatCustomField) => {
-    if (builtInFieldKeys.includes(field.key)) {
+    console.log('field', field.code);
+    if (!!field.code) {
+      console.log('enabled', field.enabled);
       return field.enabled;
     }
     return true;
@@ -59,7 +61,7 @@ const FormFields = ({
   const nestedGroupData: NestedGroupingStructure[] = [];
 
   formCustomFields.forEach((field) => {
-    if (field.input_type === 'page') {
+    if (field.input_type === 'page' && field.enabled) {
       nestedGroupData.push({
         groupElement: field,
         questions: [],

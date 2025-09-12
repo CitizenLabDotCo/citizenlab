@@ -39,7 +39,7 @@ const BuiltInFields = ({
   const { watch, trigger, setValue } = useFormContext();
   const { formatMessage } = useIntl();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
-  const enabledBuiltInFieldKeys = formCustomFields
+  const enabledBuiltInFieldKeys = formCustomFields // TODO: Use code
     .filter((field) => {
       return builderConfig.builtInFields.includes(field.key) && !field.enabled;
     })
@@ -47,35 +47,17 @@ const BuiltInFields = ({
       return builtInField.key;
     });
 
-  const enableField = (key: BuiltInKeyType) => {
-    if (!enabledBuiltInFieldKeys.includes(key)) {
-      return;
-    }
+  const enableField = (key: String) => {
+    // TODO: Default codes type for method arg type?
+    // TODO: Use code
 
     const fields = formCustomFields;
     const fieldsLength = fields.length;
-    const fieldIndex = fields.findIndex((f) => f.key === key);
+    const fieldIndex = fields.findIndex((f) => f.code === key);
     if (fieldIndex === -1) return;
     const field = fields[fieldIndex];
     const updatedField = { ...field, enabled: true };
     setValue(`customFields.${fieldIndex}`, updatedField);
-
-    const previousField = fields[fieldsLength - 2];
-    const isLastFieldTitleOrBody =
-      previousField.key === 'title_multiloc' ||
-      previousField.key === 'body_multiloc';
-
-    if (isLastFieldTitleOrBody) {
-      // We add a page and the move the enabled field to the end
-      addField('page');
-      const targetIndex = fieldsLength - 1;
-      move(fieldIndex, targetIndex);
-      onSelectField({ ...updatedField, index: targetIndex });
-    } else {
-      const targetIndex = fieldsLength - 2;
-      move(fieldIndex, targetIndex);
-      onSelectField({ ...updatedField, index: targetIndex });
-    }
 
     trigger();
   };
@@ -92,6 +74,19 @@ const BuiltInFields = ({
       >
         <FormattedMessage {...messages.defaultContent} />
       </Title>
+      {builderConfig.builtInFields.includes('body_multiloc') && (
+        <ToolboxItem
+          icon="survey-long-answer-2"
+          label={formatMessage(messages.bodyMultiloc)}
+          onClick={() => {
+            enableField('body_page');
+            enableField('body_multiloc');
+          }}
+          disabled={!enabledBuiltInFieldKeys.includes('body_multiloc')}
+          disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
+          data-cy="e2e-body-multiloc-item"
+        />
+      )}
       {builderConfig.builtInFields.includes('idea_images_attributes') && (
         <ToolboxItem
           icon="image"

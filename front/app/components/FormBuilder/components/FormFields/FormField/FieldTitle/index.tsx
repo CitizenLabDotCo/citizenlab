@@ -41,19 +41,23 @@ const FieldTitle = ({
     }
   }
 
-  const lockedAttributes = field.constraints?.locks;
+  const deletionLocked = field.constraints?.locks?.deletion;
   const titleColor = field.input_type === 'page' ? 'blue500' : 'teal400';
   const getLockMessage = () => {
     if (field.input_type === 'page') {
       if (hasFullPageRestriction) {
-        return formatMessage(messages.pageCannotBeDeletedNorNewFieldsAdded);
+        if (field.code === 'body_page') {
+          return formatMessage(messages.pageCannotNewFieldsAdded);
+        } else {
+          return formatMessage(messages.pageCannotBeDeletedNorNewFieldsAdded);
+        }
       }
-      if (lockedAttributes?.enabled) {
+      if (deletionLocked) {
         return formatMessage(messages.pageCannotBeDeleted);
       }
     }
 
-    if (lockedAttributes?.enabled) {
+    if (deletionLocked) {
       return formatMessage(messages.questionCannotBeDeleted);
     }
 

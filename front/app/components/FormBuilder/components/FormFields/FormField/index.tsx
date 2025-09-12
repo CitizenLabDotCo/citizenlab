@@ -9,7 +9,6 @@ import {
   Badge,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { get } from 'lodash-es';
 import { rgba } from 'polished';
 import { useFormContext, useFieldArray } from 'react-hook-form';
 import styled from 'styled-components';
@@ -24,10 +23,7 @@ import {
 import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
 
 import { Conflict } from 'components/FormBuilder/edit/utils';
-import {
-  FormBuilderConfig,
-  builtInFieldKeys,
-} from 'components/FormBuilder/utils';
+import { FormBuilderConfig } from 'components/FormBuilder/utils';
 import Modal from 'components/UI/Modal';
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 
@@ -79,9 +75,7 @@ export const FormField = ({
   } = useFormContext();
   const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
   const { formatMessage } = useIntl();
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const lockedAttributes = field?.constraints?.locks;
+  const deletionLocked = field?.constraints?.locks?.deletion;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const formCustomFields: IFlatCustomField[] = watch('customFields');
   const index = formCustomFields.findIndex((f) => f.id === field.id);
@@ -112,8 +106,7 @@ export const FormField = ({
   const isGroupDeletable = getGroupDeletable();
   const shouldShowDelete = !(
     (field.input_type === 'page' && !isGroupDeletable) ||
-    get(lockedAttributes, 'enabled', false) ||
-    hasFullPageRestriction
+    deletionLocked
   );
 
   const editFieldAndValidate = (defaultTab: ICustomFieldSettingsTab) => {
@@ -203,9 +196,18 @@ export const FormField = ({
   };
 
   const onDelete = (fieldIndex: number) => {
-    if (builtInFieldKeys.includes(field.key)) {
-      const newField = { ...field, enabled: false };
-      setValue(`customFields.${index}`, newField);
+    if (!!field.code) {
+      if (field.code === 'body_page') {
+        // When deleting the body page, delete the page and also disable its body_multiloc field
+        const newPage = { ...formCustomFields[index], enabled: false };
+        setValue(`customFields.${index}`, newPage);
+        const newField = { ...formCustomFields[index + 1], enabled: false };
+        setValue(`customFields.${index + 1}`, newField);
+      } else {
+        const newField = { ...field, enabled: false };
+        setValue(`customFields.${index}`, newField);
+        remove(fieldIndex);
+      }
     } else {
       const field = formCustomFields[fieldIndex];
 
