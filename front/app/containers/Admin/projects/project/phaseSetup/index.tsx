@@ -65,7 +65,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
   const { data: phases } = usePhases(projectId);
   const { mutate: addPhase } = useAddPhase();
   const { mutate: updatePhase } = useUpdatePhase();
-  const { mutate: addFile } = useAddFile();
+  const { mutate: addFile, isLoading: isAddingFile } = useAddFile();
   const syncPhaseFiles = useSyncFiles();
   const [errors, setErrors] = useState<CLErrors | null>(null);
   const [processing, setProcessing] = useState<boolean>(false);
@@ -440,6 +440,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
               enableDragAndDrop
               apiErrors={errors}
               maxSizeMb={10}
+              isUploadingFile={isAddingFile}
             />
           </SectionField>
 
