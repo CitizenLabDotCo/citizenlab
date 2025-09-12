@@ -119,12 +119,17 @@ FactoryBot.define do
 
     factory :project_with_active_and_future_native_survey_phase do
       after(:create) do |project, _evaluator|
-        active_phase = create(:active_native_survey_phase, project: project)
+        active_phase = create(
+          :active_native_survey_phase, 
+          project: project, 
+          with_permissions: true
+        )
         future_phase = create(
           :native_survey_phase,
           project: project,
           start_at: active_phase.end_at + 30.days,
-          end_at: active_phase.end_at + 60.days
+          end_at: active_phase.end_at + 60.days,
+          with_permissions: true
         )
         project.phases << active_phase
         project.phases << future_phase
@@ -266,7 +271,8 @@ FactoryBot.define do
           :native_survey_phase,
           project: project,
           start_at: 10.days.from_now,
-          end_at: 40.days.from_now
+          end_at: 40.days.from_now,
+          with_permissions: true
         )
         project.phases << future_phase
       end
