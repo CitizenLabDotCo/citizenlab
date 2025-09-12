@@ -2289,7 +2289,9 @@ CREATE TABLE public.custom_fields (
     page_button_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     page_button_link character varying,
     question_category character varying,
-    include_in_printed_form boolean DEFAULT true NOT NULL
+    include_in_printed_form boolean DEFAULT true NOT NULL,
+    min_characters integer,
+    max_characters integer
 );
 
 
@@ -3240,7 +3242,6 @@ CREATE TABLE public.project_imports (
     import_id uuid,
     log character varying[] DEFAULT '{}'::character varying[],
     locale character varying,
-    string character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     import_type character varying
@@ -3381,7 +3382,8 @@ CREATE TABLE public.report_builder_reports (
     visible boolean DEFAULT false NOT NULL,
     name_tsvector tsvector GENERATED ALWAYS AS (to_tsvector('simple'::regconfig, (name)::text)) STORED,
     year integer,
-    quarter integer
+    quarter integer,
+    community_monitor boolean DEFAULT false NOT NULL
 );
 
 
@@ -7809,6 +7811,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250829154300'),
 ('20250808071349'),
 ('20250807120354'),
 ('20250807000000'),
@@ -7870,6 +7873,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250204143605'),
 ('20250120125531'),
 ('20250117121004'),
+('20250101000000'),
 ('20241230172612'),
 ('20241230165518'),
 ('20241230165323'),

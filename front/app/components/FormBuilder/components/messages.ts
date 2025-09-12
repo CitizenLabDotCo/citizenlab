@@ -111,6 +111,10 @@ export default defineMessages({
     id: 'app.components.formBuilder.drawArea',
     defaultMessage: 'Draw area',
   },
+  inputImages: {
+    id: 'app.components.formBuilder.inputImages',
+    defaultMessage: 'Images',
+  },
   proposedBudget: {
     id: 'app.components.formBuilder.proposedBudget',
     defaultMessage: 'Proposed budget',
@@ -366,5 +370,14 @@ export default defineMessages({
   veryGood: {
     id: 'app.components.formBuilder.veryGood',
     defaultMessage: 'Very good',
+  },
+  manageTagsExplanation: {
+    id: 'app.components.formBuilder.manageTagsExplanation',
+    defaultMessage:
+      'You can manage the tags shown in this question on the {inputTagsLink} of the project.',
+  },
+  inputTagsPage: {
+    id: 'app.components.formBuilder.inputTagManager',
+    defaultMessage: 'Input tags page',
   },
 });

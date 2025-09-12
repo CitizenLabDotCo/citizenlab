@@ -50,8 +50,8 @@ module EmailCampaigns
       @editable_regions ||= empty_mailer.editable_regions
     end
 
-    def preview_command(recipient)
-      @preview_command ||= empty_mailer.preview_command(recipient)
+    def preview_command(recipient, context)
+      @preview_command ||= empty_mailer.preview_command(recipient, context)
     end
 
     def substitution_variables

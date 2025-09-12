@@ -194,12 +194,29 @@ const AdminProjectEventEdit = () => {
     if (!isNilOrError(remoteEventFiles)) {
       (async () => {
         const files = await Promise.all(
-          remoteEventFiles.data.map(
-            async (file) =>
-              await convertUrlToUploadFile(file.attributes.file.url, file.id)
-          )
+          remoteEventFiles.data.map(async (file) => {
+            // Get the original filename from the API
+            const originalFilename = file.attributes.name;
+
+            // Create the uploadFile
+            const uploadFile = await convertUrlToUploadFile(
+              file.attributes.file.url,
+              file.id
+            );
+
+            if (uploadFile && originalFilename) {
+              // Create a new object with all properties from uploadFile,
+              // but override the name property
+              return {
+                ...uploadFile,
+                name: originalFilename,
+              };
+            }
+
+            return uploadFile;
+          })
         );
-        setEventFiles(files as UploadFile[]);
+        setEventFiles(files.filter(Boolean) as UploadFile[]);
       })();
     }
   }, [remoteEventFiles]);

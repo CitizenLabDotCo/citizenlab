@@ -131,7 +131,7 @@ module ReportBuilder
               'enabled' => true,
               'code' => 'report'
             }
-          }.deep_merge(params.require(:report).permit(:phase_id))
+          }.deep_merge(params.require(:report).permit(:phase_id, :community_monitor))
             .deep_merge(shared_params.to_h)
         end
 
