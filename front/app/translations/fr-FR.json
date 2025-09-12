@@ -1149,6 +1149,7 @@
   "app.containers.AccessibilityStatement.title": "Standards d'accessibilité",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Contenu généré par les utilisateurs",
   "app.containers.AccessibilityStatement.workshops": "Ateliers",
+  "app.containers.AdminPage.DashboardPage.typeToSearchProjects": "Tapez pour rechercher des projets",
   "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "L'utilisation de l'éditeur sur-mesure vous permettra d'utiliser des options de mise en page plus avancées. Si aucun contenu n'est enregistré dans l'éditeur pour certaines langues, la description standard du projet sera affichée à la place pour ces langues.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Modifier la description dans l'éditeur sur-mesure",
   "app.containers.AdminPage.ProjectDescription.saveError": "Un problème s'est produit lors de l'enregistrement de la description du projet.",
