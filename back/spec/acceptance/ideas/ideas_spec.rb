@@ -428,6 +428,7 @@ resource 'Ideas' do
             )
 
             permission.permitted_by = 'everyone'
+            permission.permissions_custom_fields = [create(:permissions_custom_field)]
             permission.save!
 
             @user.update!(custom_field_values: { 'gender' => 'male' })
