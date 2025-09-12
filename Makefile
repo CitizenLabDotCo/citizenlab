@@ -39,7 +39,15 @@ fe-up:
 up:
 	make -j 2 be-up fe-up
 
-# For testing different SSO methods in dev
+# For testing different SSO methods using https in dev
+
+# Generic
+be-up-sso:
+	docker compose down
+	BASE_DEV_URI=https://sso.dev.govocal.com ASSET_HOST_URI=https://sso.dev.govocal.com docker compose up
+
+fe-up-sso:
+	cd front && npm run start:sso
 
 # Clave Unica
 be-up-claveunica:
@@ -52,9 +60,7 @@ fe-up-claveunica:
 # MitID (via NemLogin)
 be-up-nemlogin:
 	docker compose down
-# 	BASE_DEV_URI=https://nemlogin-k3kd.loca.lt ASSET_HOST_URI=https://nemlogin-k3kd.loca.lt docker compose up
-	BASE_DEV_URI=https://nemlogin-k3kd.loca.lt docker compose up
-
+ 	BASE_DEV_URI=https://nemlogin-k3kd.loca.lt ASSET_HOST_URI=https://nemlogin-k3kd.loca.lt docker compose up
 
 fe-up-nemlogin:
 	cd front && npm run start:sso:nemlogin

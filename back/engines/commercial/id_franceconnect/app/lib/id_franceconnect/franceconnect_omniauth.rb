@@ -20,7 +20,6 @@ module IdFranceconnect
     SSO_VERIFICATION_PARAM_VALUE = 'true'
 
     def profile_to_user_attrs(auth)
-      # TODO: Do something smart with the address auth.extra.raw_info.address.formatted
       {
         first_name: auth.info['first_name'],
         email: auth.info['email'],
@@ -43,56 +42,64 @@ module IdFranceconnect
     def omniauth_setup(configuration, env)
       return unless configuration.feature_activated?('franceconnect_login')
 
-      env['omniauth.strategy'].options.merge!(
-        scope: %w[openid] + configuration.settings('franceconnect_login', 'scope'),
-        response_type: :code,
-        state: true, # required by France connect
-        nonce: true, # required by France connect
-        issuer: issuer, # the integration env is now using 'https'
-        client_auth_method: 'Custom', # France connect does not use BASIC authentication
-        acr_values: 'eidas1',
-        client_signing_alg: :HS256, # hashing function of France Connect
-        client_options: {
-          identifier: configuration.settings('franceconnect_login', 'identifier'),
-          secret: configuration.settings('franceconnect_login', 'secret'),
-          scheme: 'https',
-          host: host,
-          port: 443,
-          redirect_uri: redirect_uri(configuration, env),
-          authorization_endpoint: '/api/v1/authorize',
-          token_endpoint: '/api/v1/token',
-          userinfo_endpoint: '/api/v1/userinfo'
-        }
-      )
+      if version == 'v2'
+        env['omniauth.strategy'].options.merge!(
+          discovery: true, # https://fcp-low.sbx.dev-franceconnect.fr/api/v2/.well-known/openid-configuration
+          scope: %w[openid] + configuration.settings('franceconnect_login', 'scope'),
+          issuer: issuer, # the integration env is now using 'https'
+          client_auth_method: 'jwks', # France connect does not use BASIC authentication
+          acr_values: 'eidas1',
+          client_signing_alg: :ES256, # hashing function of France Connect
+          client_options: {
+            identifier: configuration.settings('franceconnect_login', 'identifier'),
+            secret: configuration.settings('franceconnect_login', 'secret'),
+            redirect_uri: redirect_uri(configuration)
+          }
+        )
+      else
+        # Version 1 - Will not work after Sept 2025
+        env['omniauth.strategy'].options.merge!(
+          scope: %w[openid] + configuration.settings('franceconnect_login', 'scope'),
+          response_type: :code,
+          state: true, # required by France connect
+          nonce: true, # required by France connect
+          issuer: issuer, # the integration env is now using 'https'
+          client_auth_method: 'Custom', # France connect does not use BASIC authentication
+          acr_values: 'eidas1',
+          client_signing_alg: :HS256, # hashing function of France Connect
+          client_options: {
+            identifier: configuration.settings('franceconnect_login', 'identifier'),
+            secret: configuration.settings('franceconnect_login', 'secret'),
+            scheme: 'https',
+            host: host,
+            port: 443,
+            redirect_uri: redirect_uri(configuration),
+            authorization_endpoint: '/api/v1/authorize',
+            token_endpoint: '/api/v1/token',
+            userinfo_endpoint: '/api/v1/userinfo'
+          }
+        )
+      end
     end
 
     def logout_url(user)
       last_identity = user.identities
         .where(provider: 'franceconnect')
         .order(created_at: :desc)
-        .limit(1)
-                        &.first
+        .limit(1)&.first
       id_token = last_identity.auth_hash.dig('credentials', 'id_token')
 
       url_params = {
         id_token_hint: id_token,
+        state: SecureRandom.hex(12),
         post_logout_redirect_uri: Frontend::UrlService.new.home_url
       }
 
-      "https://#{host}/api/v1/logout?#{url_params.to_query}"
-    end
-
-    def host
-      case AppConfiguration.instance.settings('franceconnect_login', 'environment')
-      when 'integration'
-        'fcp.integ01.dev-franceconnect.fr'
-      when 'production'
-        'app.franceconnect.gouv.fr'
+      if version == 'v1'
+        "https://#{host}/api/v1/logout?#{url_params.to_query}"
+      else
+        "https://#{host}/api/v2/session/end?#{url_params.to_query}"
       end
-    end
-
-    def issuer
-      "https://#{host}"
     end
 
     def updateable_user_attrs
@@ -122,20 +129,45 @@ module IdFranceconnect
     end
 
     def verification_prioritized?
-      false
+      true
     end
 
     private
 
-    # @param [AppConfiguration] configuration
-    def redirect_uri(configuration, env)
-      result = "#{configuration.base_backend_uri}/auth/franceconnect/callback"
+    def version
+      @version ||= auth_config['version'] == 'v2' ? 'v2' : 'v1'
+    end
 
-      if env.dig('rack.request.query_hash', SSO_VERIFICATION_PARAM_NAME) == SSO_VERIFICATION_PARAM_VALUE
-        result += "?#{SSO_VERIFICATION_PARAM_NAME}=#{SSO_VERIFICATION_PARAM_VALUE}"
+    def host
+      env = auth_config['environment'] || 'integration'
+      urls = {
+        production: {
+          v1: 'app.franceconnect.gouv.fr',
+          v2: 'oidc.franceconnect.gouv.fr'
+        },
+        integration: {
+          v1: 'fcp.integ01.dev-franceconnect.fr',
+          v2: 'fcp-low.sbx.dev-franceconnect.fr'
+        }
+      }
+      urls[env.to_sym][version.to_sym]
+    end
+
+    def issuer
+      if version == 'v1'
+        "https://#{host}"
+      else
+        "https://#{host}/api/v2"
       end
+    end
 
-      result
+    # @param [AppConfiguration] configuration
+    def redirect_uri(configuration)
+      "#{configuration.base_backend_uri}/auth/franceconnect/callback"
+    end
+
+    def auth_config
+      @auth_config ||= AppConfiguration.instance.settings('franceconnect_login')
     end
   end
 end
