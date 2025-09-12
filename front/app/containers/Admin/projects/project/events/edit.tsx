@@ -526,7 +526,6 @@ const AdminProjectEventEdit = () => {
                   setSaving(false);
                   setSubmitState('success');
                 } catch (error) {
-                  console.error('Error handling image:', error);
                   setSaving(false);
                   setSubmitState('error');
                 }
@@ -570,7 +569,6 @@ const AdminProjectEventEdit = () => {
                     clHistory.push(`/admin/projects/${projectId}/events`);
                   }, 1000);
                 } catch (error) {
-                  console.error('Error handling image:', error);
                   setSaving(false);
                   setSubmitState('error');
                 }
