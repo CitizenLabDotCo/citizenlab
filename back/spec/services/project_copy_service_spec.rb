@@ -396,6 +396,15 @@ describe ProjectCopyService do
 
           # Changes the locale of users too
           expect(copied_project.ideas.first.author.locale).to eq 'fr-FR'
+
+          # Adds a project import record
+          project_import = BulkImportIdeas::ProjectImport.last
+          expect(project_import.import_type).to eq 'project_copy'
+          expect(project_import.log).to eq [
+            'Copied project: TRANSLATED: ENGLISH PROJECT',
+            'Translated strings: 6',
+            'Translated chars: 248'
+          ]
         end
       end
 
@@ -425,8 +434,8 @@ describe ProjectCopyService do
         # Set config to two locales
         configure_platform_locales %w[en fr-FR]
 
-        project = create(:project_with_active_ideation_phase, title_multiloc: { en: 'ENGLISH PROJECT', 'fr-FR': 'FRENCH PROJECT' }, description_multiloc: {})
-        create(:idea, title_multiloc: { 'fr-FR' => 'FRENCH IDEA' }, author: create(:user, locale: 'en'), project: project, phases: project.phases)
+        project = create(:project_with_active_ideation_phase, title_multiloc: { en: 'How about creating a program that would help employ people?', 'fr-FR': 'FRENCH PROJECT' }, description_multiloc: {})
+        create(:idea, title_multiloc: { 'fr-FR' => 'How about creating a program that would help employ people?' }, author: create(:user, locale: 'en'), project: project, phases: project.phases)
 
         template = service.export project, anonymize_users: false, include_ideas: true
 

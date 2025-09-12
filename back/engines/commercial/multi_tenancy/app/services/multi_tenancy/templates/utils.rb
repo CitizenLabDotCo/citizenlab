@@ -210,7 +210,8 @@ module MultiTenancy
             end
           end
 
-          # Translate any missing locales from the first locale found .
+          # Translate any missing locales from the first locale found.
+          translate_logs = { strings: 0, chars: 0 }
           serialized_models['models'].each_value do |fields|
             fields.each do |attributes|
               attributes.each do |field_name, field_value|
@@ -225,6 +226,8 @@ module MultiTenancy
                     field_value[locale] = if source_text.blank?
                       source_text
                     else
+                      translate_logs[:strings] += 1
+                      translate_logs[:chars] += source_text.length
                       translator.translate source_text, source_locale, locale, retries: 10
                     end
                   end
@@ -252,7 +255,7 @@ module MultiTenancy
               end
             end
           end
-          serialized_models
+          [serialized_models, translate_logs]
         end
 
         def user_locales(serialized_models)

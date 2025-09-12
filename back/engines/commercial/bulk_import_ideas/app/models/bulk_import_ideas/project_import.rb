@@ -29,7 +29,7 @@ module BulkImportIdeas
   class ProjectImport < ApplicationRecord
     self.table_name = 'project_imports'
 
-    IMPORT_TYPES = %w[project user preview].freeze
+    IMPORT_TYPES = %w[project user preview project_copy].freeze
 
     belongs_to :project, optional: true
     belongs_to :import_user, class_name: 'User', optional: true
