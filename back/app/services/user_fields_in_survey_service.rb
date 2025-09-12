@@ -69,6 +69,33 @@ class UserFieldsInSurveyService
     'u_'
   end
 
+  # This function is used in the case where demographic
+  # fields are collected during the registration process,
+  # but we want to merge them into the idea.
+  def self.should_merge_user_fields_into_idea?(
+    current_user, 
+    phase,
+    idea
+  )
+    return false unless current_user
+
+    # Confirm that user fields are asked in registration process
+    # If they are asked in the form, we know that they won't be asked
+    # in the registration process
+    return false if phase.pmethod.user_fields_in_form?
+
+    # Confirm that anonymity = 'collect_all_data_available' or 'demographics_only'
+    # TODO
+
+    # Use permissions service to check if user fields are asked
+    # TODO
+
+    # Finally, confirm that the idea doesn't already have user fields
+    # TODO
+
+    true
+  end
+
   def self.prefix_key(key)
     "#{prefix}#{key}"
   end
