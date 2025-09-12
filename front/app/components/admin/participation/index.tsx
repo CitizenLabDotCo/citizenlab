@@ -1,13 +1,27 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
+import { Box, colors } from '@citizenlab/cl2-component-library';
+import { useLocation, useParams } from 'react-router-dom';
 
 import usePhases from 'api/phases/usePhases';
 
-import ParticipationDatesRange from './ParticipationDateRange';
+import NavigationTabs, {
+  Tab,
+  TabsPageLayout,
+} from 'components/admin/NavigationTabs';
+
+import { useIntl } from 'utils/cl-intl';
+import { isTopBarNavActive } from 'utils/helperUtils';
+import { defaultAdminCardPadding } from 'utils/styleConstants';
+
+import Demographics from './Demographics';
+import messages from './messages';
+import Users from './Users';
 
 const ProjectParticipation = () => {
   const { projectId } = useParams() as { projectId: string };
+  const { pathname } = useLocation();
+  const { formatMessage } = useIntl();
   const { data: phases } = usePhases(projectId);
 
   const startOfFirstPhase = phases?.data[0]?.attributes.start_at;
@@ -15,11 +29,46 @@ const ProjectParticipation = () => {
     phases?.data[phases.data.length - 1]?.attributes.end_at;
 
   if (!phases) return null;
+
+  const basePath = `/admin/projects/${projectId}/participation`;
+  const isDemographicsTab = pathname.includes('/demographics');
+
   return (
-    <ParticipationDatesRange
-      defaultStartDate={startOfFirstPhase}
-      defaultEndDate={endOfLastPhase ?? undefined}
-    />
+    <>
+      <NavigationTabs position="relative">
+        <Tab
+          label={formatMessage(messages.usersTab)}
+          url={`/admin/projects/${projectId}/participation`}
+          active={isTopBarNavActive(
+            basePath,
+            pathname,
+            `/admin/projects/${projectId}/participation`
+          )}
+        />
+        <Tab
+          label={formatMessage(messages.demographicsTab)}
+          url={`/admin/projects/${projectId}/participation/demographics`}
+          active={isTopBarNavActive(
+            basePath,
+            pathname,
+            `/admin/projects/${projectId}/participation/demographics`
+          )}
+        />
+      </NavigationTabs>
+
+      <TabsPageLayout paddingTop={42}>
+        <Box background={colors.white} p={`${defaultAdminCardPadding}px`}>
+          {isDemographicsTab ? (
+            <Demographics
+              defaultStartDate={startOfFirstPhase}
+              defaultEndDate={endOfLastPhase ?? undefined}
+            />
+          ) : (
+            <Users />
+          )}
+        </Box>
+      </TabsPageLayout>
+    </>
   );
 };
 

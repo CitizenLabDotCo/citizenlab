@@ -29,4 +29,17 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.participation.inputs',
     defaultMessage: 'Inputs',
   },
+  usersTab: {
+    id: 'app.containers.Admin.projects.project.participation.usersTab',
+    defaultMessage: 'Users',
+  },
+  demographicsTab: {
+    id: 'app.containers.Admin.projects.project.participation.demographicsTab',
+    defaultMessage: 'Demographics',
+  },
+  usersSubtitle: {
+    id: 'app.containers.Admin.projects.project.participation.usersSubtitle',
+    defaultMessage:
+      'Get an overview of the participants on this project that have an account. Anonymous participation is not accounted.',
+  },
 });
