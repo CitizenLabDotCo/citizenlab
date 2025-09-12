@@ -32,6 +32,9 @@ const AdminProjectsProjectIndex = lazy(() => import('./project'));
 const AdminProjectPhaseIndex = lazy(() => import('./project/phase'));
 const AdminProjectsProjectSettings = lazy(() => import('./project/settings'));
 const AdminProjectsProjectGeneral = lazy(() => import('./project/general'));
+const AdminProjectsProjectGeneralSetUp = lazy(
+  () => import('./project/general/setUp')
+);
 const AdminPhaseNewAndEdit = lazy(() => import('./project/phaseSetup'));
 const AdminProjectFiles = lazy(() => import('./project/files'));
 const AdminProjectEvents = lazy(() => import('./project/events'));
@@ -86,6 +89,11 @@ export enum projectsRoutes {
   new = 'new',
   projectIdeaId = ':projectId/ideas/:ideaId',
   projectSettings = ':projectId/settings',
+  projectGeneral = 'general',
+  projectGeneralSetUp = 'set-up',
+  projectGeneralInputTags = 'input-tags',
+  projectGeneralAccessRights = 'access-rights',
+  projectGeneralData = 'data',
   projectTraffic = 'traffic',
   projectParticipation = 'participation',
   projectParticipationDemographics = 'participation/demographics',
@@ -131,6 +139,11 @@ export type projectsRouteTypes =
   | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.new}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/ideas/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/settings`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/general`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/general/set-up`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/general/input-tags`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/general/access-rights`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/general/data`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectEvents}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectFiles}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectSettingsDescription}`>
@@ -269,6 +282,44 @@ const createAdminProjectsRoutes = () => {
                 <ProjectTraffic />
               </PageLoading>
             ),
+          },
+          {
+            path: projectsRoutes.projectGeneral,
+            element: (
+              <PageLoading>
+                <AdminProjectsProjectGeneral />
+              </PageLoading>
+            ),
+            children: [
+              {
+                index: true,
+                element: (
+                  <PageLoading>
+                    <AdminProjectsProjectGeneralSetUp />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: projectsRoutes.projectGeneralInputTags,
+                element: <AdminAllowedTopicsComponent />,
+              },
+              {
+                path: projectsRoutes.projectGeneralAccessRights,
+                element: (
+                  <PageLoading>
+                    <AdminProjectPermissions />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: projectsRoutes.projectGeneralData,
+                element: (
+                  <PageLoading>
+                    <AdminProjectsData />
+                  </PageLoading>
+                ),
+              },
+            ],
           },
           {
             path: projectsRoutes.projectMessaging,
