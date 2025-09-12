@@ -32,6 +32,12 @@ const AdminProjectsProjectIndex = () => {
       <ProjectHeader projectId={projectId} />
       <NavigationTabs position="relative">
         <Tab
+          className="intercom-admin-project-general-tab"
+          label={formatMessage(messages.generalTab)}
+          url={`/admin/projects/${projectId}/general`}
+          active={pathname.includes(`/admin/projects/${projectId}/general`)}
+        />
+        <Tab
           className="intercom-admin-project-timeline-tab"
           label={formatMessage(messages.timelineTab)}
           url={`/admin/projects/${projectId}/phases/setup`}
