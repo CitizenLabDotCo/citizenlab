@@ -206,8 +206,8 @@ export const FormField = ({
       } else {
         const newField = { ...field, enabled: false };
         setValue(`customFields.${index}`, newField);
+        remove(fieldIndex);
       }
-      remove(fieldIndex);
     } else {
       const field = formCustomFields[fieldIndex];
 
