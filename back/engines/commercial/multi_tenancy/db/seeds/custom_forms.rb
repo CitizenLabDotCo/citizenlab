@@ -34,7 +34,7 @@ module MultiTenancy
         CustomField.create!(
           resource: custom_form,
           input_type: 'point',
-          title_multiloc: { 'en' => 'Where do want a new bike park?' },
+          title_multiloc: { 'en' => 'Where do you want a new bike park?' },
           description_multiloc: { 'en' => 'Click on the map to indicate your preferred location' },
           required: false
         )

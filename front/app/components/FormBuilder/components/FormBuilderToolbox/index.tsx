@@ -142,7 +142,7 @@ const FormBuilderToolbox = ({
     });
 
     const previousField = formCustomFields[formCustomFields.length - 2];
-    const isLastFieldTitleOrBody =
+    const isLastFieldTitleOrBody = // TODO: Don't check this
       previousField.key === 'title_multiloc' ||
       previousField.key === 'body_multiloc';
 

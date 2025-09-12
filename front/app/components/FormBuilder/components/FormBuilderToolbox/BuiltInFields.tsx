@@ -39,7 +39,7 @@ const BuiltInFields = ({
   const { watch, trigger, setValue } = useFormContext();
   const { formatMessage } = useIntl();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
-  const enabledBuiltInFieldKeys = formCustomFields
+  const enabledBuiltInFieldKeys = formCustomFields // TODO: Use code
     .filter((field) => {
       return builderConfig.builtInFields.includes(field.key) && !field.enabled;
     })
@@ -50,9 +50,6 @@ const BuiltInFields = ({
   const enableField = (key: String) => {
     // TODO: Default codes type for method arg type?
     // TODO: Use code
-    // if (!enabledBuiltInFieldKeys.includes(key)) {
-    //   return;
-    // }
 
     const fields = formCustomFields;
     const fieldsLength = fields.length;
@@ -61,11 +58,6 @@ const BuiltInFields = ({
     const field = fields[fieldIndex];
     const updatedField = { ...field, enabled: true };
     setValue(`customFields.${fieldIndex}`, updatedField);
-
-    const previousField = fields[fieldsLength - 2];
-    const targetIndex = fieldsLength - 2;
-    move(fieldIndex, targetIndex);
-    onSelectField({ ...updatedField, index: targetIndex });
 
     trigger();
   };
