@@ -31,7 +31,7 @@ FactoryBot.define do
     voting_max_total { 10_000 }
 
     transient do
-      with_permissions { false }
+      with_permissions { true }
       permissions_config { {} }
     end
 
