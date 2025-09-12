@@ -22,7 +22,7 @@ const useFileAttachments = ({
   attachable_id,
   attachable_type,
 }: {
-  attachable_id: string;
+  attachable_id?: string;
   attachable_type: AttachableType;
 }) => {
   const queryParameters: QueryParameters = {
@@ -38,6 +38,7 @@ const useFileAttachments = ({
   >({
     queryKey: fileAttachmentsKeys.list(queryParameters),
     queryFn: () => fetchFileAttachments(queryParameters),
+    enabled: !!attachable_id,
   });
 };
 

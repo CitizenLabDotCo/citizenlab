@@ -15,7 +15,19 @@ export type QueryParameters = {
 };
 
 export type IFileAttachments = {
-  data: IFileAttachment[];
+  data: IFileAttachmentData[];
+};
+
+export type IFileAttachmentData = {
+  id: string;
+  type: 'file_attachment';
+  attributes: {
+    position: number;
+  };
+  relationships: {
+    attachable: { data: IRelationship };
+    file: { data: IRelationship };
+  };
 };
 
 export interface IUpdateFileAttachmentProperties {
@@ -30,7 +42,6 @@ export interface IAddFileAttachmentProperties {
 }
 
 export interface IFileAttachment {
-  type: 'file_attachment';
   data: {
     type: 'file_attachment';
     id: string;
