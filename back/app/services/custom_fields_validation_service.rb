@@ -56,7 +56,7 @@ class CustomFieldsValidationService
       page, *children = pages.find { |page_with_children| page_with_children.first.code == code.to_s }
       default_children = default_pages.find { |page_with_children| page_with_children.first.code == code.to_s }&.drop(1) || []
 
-      if page.present? && children.select(&:enabled).map(&:code) != default_children.map(&:code)
+      if page&.enabled && children.select(&:enabled).map(&:code) != default_children.map(&:code)
         return { form: [{ error: 'locked_children' }] }
       end
     end

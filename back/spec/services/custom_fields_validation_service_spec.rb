@@ -11,11 +11,11 @@ describe CustomFieldsValidationService do
   let(:fields) { default_fields }
   let(:result) { service.validate(fields, participation_method) }
 
-  describe 'validate_non_empty_form' do
-    it 'accepts the default fields' do
-      expect(result).to be_nil
-    end
+  it 'accepts the default fields' do
+    expect(result).to be_nil
+  end
 
+  describe 'validate_non_empty_form' do
     context do
       let(:fields) { [] }
 
@@ -26,10 +26,6 @@ describe CustomFieldsValidationService do
   end
 
   describe 'validate_first_page' do
-    it 'accepts the default fields' do
-      expect(result).to be_nil
-    end
-
     context do
       let(:fields) { [build(:custom_field_number), build(:custom_field_page)] }
 
@@ -40,10 +36,6 @@ describe CustomFieldsValidationService do
   end
 
   describe 'validate_end_page' do
-    it 'accepts the default fields' do
-      expect(result).to be_nil
-    end
-
     context do
       let(:fields) { [build(:custom_field_page), build(:custom_field_number)] }
 
@@ -70,13 +62,8 @@ describe CustomFieldsValidationService do
   end
 
   describe 'validate_deletions' do
-    let(:excluded_codes) { [] }
     let(:fields) do
       default_fields.reject { |f| excluded_codes.include?(f.code) }
-    end
-
-    it 'accepts the default fields' do
-      expect(result).to be_nil
     end
 
     context do
@@ -105,10 +92,6 @@ describe CustomFieldsValidationService do
   end
 
   describe 'validate_children' do
-    it 'accepts the default fields' do
-      expect(result).to be_nil
-    end
-
     context do
       let(:fields) do
         default_fields
@@ -118,6 +101,31 @@ describe CustomFieldsValidationService do
       end
 
       it 'accepts a form with a added and deleted unlocked children' do
+        expect(result).to be_nil
+      end
+    end
+
+    context do
+      let(:fields) do
+        default_fields
+          .reject { |f| f.code == 'body_page' }
+          .tap { |fields| fields.find { |f| f.code == 'body_multiloc' }.enabled = false }
+      end
+
+      it 'accepts a form with deleted page and disabled locked children' do
+        expect(result).to be_nil
+      end
+    end
+
+    context do
+      let(:fields) do
+        default_fields.tap do |fields|
+          disable_codes = %w[body_page body_multiloc]
+          fields.select { |f| disable_codes.include?(f.code) }.each { |f| f.enabled = false }
+        end
+      end
+
+      it 'accepts a form with disabled page and locked children' do
         expect(result).to be_nil
       end
     end
@@ -156,10 +164,6 @@ describe CustomFieldsValidationService do
   end
 
   describe 'validate_attributes' do
-    it 'accepts the default fields' do
-      expect(result).to be_nil
-    end
-
     context do
       let(:fields) do
         default_fields.tap do |fields|
