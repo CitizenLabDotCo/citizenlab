@@ -85,7 +85,7 @@ describe Permissions::ProjectPermissionsService do
       let(:project) do
         create(:single_phase_native_survey_project, phase_attrs: {
           submission_enabled: true,
-          anonymity: 'full_anonymity',
+          anonymity: 'full_anonymity'
         })
       end
 
