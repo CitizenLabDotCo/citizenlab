@@ -11,6 +11,7 @@ import NavigationTabs, {
 } from 'components/admin/NavigationTabs';
 
 import { useIntl } from 'utils/cl-intl';
+import { isTopBarNavActive } from 'utils/helperUtils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import Demographics from './Demographics';
@@ -29,6 +30,7 @@ const ProjectParticipation = () => {
 
   if (!phases) return null;
 
+  const basePath = `/admin/projects/${projectId}/participation`;
   const isDemographicsTab = pathname.includes('/demographics');
 
   return (
@@ -37,12 +39,20 @@ const ProjectParticipation = () => {
         <Tab
           label={formatMessage(messages.usersTab)}
           url={`/admin/projects/${projectId}/participation`}
-          active={!isDemographicsTab}
+          active={isTopBarNavActive(
+            basePath,
+            pathname,
+            `/admin/projects/${projectId}/participation`
+          )}
         />
         <Tab
           label={formatMessage(messages.demographicsTab)}
           url={`/admin/projects/${projectId}/participation/demographics`}
-          active={isDemographicsTab}
+          active={isTopBarNavActive(
+            basePath,
+            pathname,
+            `/admin/projects/${projectId}/participation/demographics`
+          )}
         />
       </NavigationTabs>
 
