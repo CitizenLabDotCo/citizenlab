@@ -39,31 +39,49 @@ fe-up:
 up:
 	make -j 2 be-up fe-up
 
-# For testing different SSO methods
+# For testing different SSO methods in dev
+
+# Clave Unica
 be-up-claveunica:
 	docker compose down
-	BASE_DEV_URI=https://claveunica-h2dkc.loca.lt docker compose up -d
-	lt --print-requests --port 3000 --subdomain claveunica-h2dkc
+	BASE_DEV_URI=https://claveunica-h2dkc.loca.lt ASSET_HOST_URI=https://claveunica-h2dkc.loca.lt docker compose up
 
+fe-up-claveunica:
+	cd front && npm run start:sso:claveunica
+
+# MitID (via NemLogin)
 be-up-nemlogin:
 	docker compose down
-	BASE_DEV_URI=https://nemlogin-k3kd.loca.lt docker compose up -d
-	lt --print-requests --port 3000 --subdomain nemlogin-k3kd
+# 	BASE_DEV_URI=https://nemlogin-k3kd.loca.lt ASSET_HOST_URI=https://nemlogin-k3kd.loca.lt docker compose up
+	BASE_DEV_URI=https://nemlogin-k3kd.loca.lt docker compose up
 
+
+fe-up-nemlogin:
+	cd front && npm run start:sso:nemlogin
+
+# ID Austria
 be-up-idaustria:
 	docker compose down
-	BASE_DEV_URI=https://idaustria-g3fy.loca.lt docker compose up -d
-	lt --print-requests --port 3000 --subdomain idaustria-g3fy
+	BASE_DEV_URI=https://idaustria-g3fy.loca.lt ASSET_HOST_URI=https://idaustria-g3fy.loca.lt docker compose up
 
+fe-up-idaustria:
+	cd front && npm run start:sso:idaustria
+
+# Keycloak (Oslo ID-Porten)
 be-up-keycloak:
 	docker compose down
-	BASE_DEV_URI=https://keycloak-r3tyu.loca.lt docker compose up -d
-	lt --print-requests --port 3000 --subdomain keycloak-r3tyu
+	BASE_DEV_URI=https://keycloak-r3tyu.loca.lt ASSET_HOST_URI=https://keycloak-r3tyu.loca.lt docker compose up
 
+fe-up-keycloak:
+	cd front && npm run start:sso:keycloak
+
+# Twoday (Helsingborg BankID & Freja eID)
 be-up-twoday:
 	docker compose down
-	BASE_DEV_URI=https://twoday-h5jkg.loca.lt docker compose up -d
-	lt --print-requests --port 3000 --subdomain twoday-h5jkg
+	BASE_DEV_URI=https://twoday-h5jkg.loca.lt ASSET_HOST_URI=https://twoday-h5jkg.loca.lt docker compose up
+
+fe-up-twoday:
+	cd front && npm run start:sso:twoday
 
 # Run it with:
 # make c

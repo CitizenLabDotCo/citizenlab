@@ -36,6 +36,7 @@ services:
     environment:
       - BUNDLE_PATH=/bundle
       - BASE_DEV_URI
+      - ASSET_HOST_URI
     tty: true
     stdin_open: true
 
