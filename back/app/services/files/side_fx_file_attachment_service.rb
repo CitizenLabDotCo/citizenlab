@@ -2,6 +2,8 @@
 
 module Files
   class SideFxFileAttachmentService < BaseSideFxService
+    private
+
     def resource_name
       :'files/file_attachment'
     end
