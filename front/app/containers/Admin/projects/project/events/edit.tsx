@@ -102,6 +102,7 @@ const AdminProjectEventEdit = () => {
   const [eventFileAttachments, setEventFileAttachments] = useState<
     IFileAttachmentData[]
   >(remoteEventFileAttachments?.data || []);
+  const [fileAttachmentsChanged, setFileAttachmentsChanged] = useState(false);
   const [croppedImgBase64, setCroppedImgBase64] = useState<string | null>(null);
 
   const [attributeDiff, setAttributeDiff] = useState<IEventProperties>(
@@ -345,6 +346,7 @@ const AdminProjectEventEdit = () => {
           );
 
           setSubmitState(isDuplicate ? submitState : 'enabled');
+          setFileAttachmentsChanged(true);
         },
       }
     );
@@ -364,6 +366,7 @@ const AdminProjectEventEdit = () => {
           eventFileAttachment.id !== eventFileAttachmentToRemove.id
       )
     );
+    setFileAttachmentsChanged(true);
   };
 
   const handleFilesReorder = (
@@ -382,6 +385,7 @@ const AdminProjectEventEdit = () => {
 
     setEventFileAttachments(updatedFileAttachmentsWithPosition);
     setSubmitState('enabled');
+    setFileAttachmentsChanged(true);
   };
 
   const handleEventFileOnAttach = (file: IFileData) => {
@@ -403,6 +407,7 @@ const AdminProjectEventEdit = () => {
       temporaryFileAttachment,
     ]);
     setSubmitState('enabled');
+    setFileAttachmentsChanged(true);
   };
 
   const addOrDeleteEventImage = async (data: IEvent) => {
@@ -495,7 +500,11 @@ const AdminProjectEventEdit = () => {
       }
 
       // non-file input fields have changed
-      if (!isEmpty(attributeDiff) || locationPointChanged) {
+      if (
+        !isEmpty(attributeDiff) ||
+        locationPointChanged ||
+        fileAttachmentsChanged
+      ) {
         // event already exists (in the state)
         if (event) {
           // Sync files
@@ -525,6 +534,7 @@ const AdminProjectEventEdit = () => {
                   await addOrDeleteEventImage(data);
                   setSaving(false);
                   setSubmitState('success');
+                  setFileAttachmentsChanged(false);
                 } catch (error) {
                   setSaving(false);
                   setSubmitState('error');
@@ -563,6 +573,7 @@ const AdminProjectEventEdit = () => {
 
                   setSubmitState('success');
                   setSaving(false);
+                  setFileAttachmentsChanged(false);
 
                   // Navigate after a short delay to show success state
                   setTimeout(() => {
