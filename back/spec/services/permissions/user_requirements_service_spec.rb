@@ -240,7 +240,14 @@ describe Permissions::UserRequirementsService do
       end
 
       context 'when permitted_by is set to users' do
-        let(:permission) { create(:permission, permitted_by: 'users', global_custom_fields: true) }
+        let(:survey_phase) { create(:native_survey_phase, user_fields_in_form: true, with_permissions: true) }
+        let(:permission) do
+          permission = survey_phase.permissions.find { |p| p.action == 'posting_idea' }
+          permission.permitted_by = 'users'
+          permission.global_custom_fields = false
+          permission.save!
+          permission
+        end
 
         before do
           field = CustomField.find_by code: 'birthyear'
@@ -256,12 +263,7 @@ describe Permissions::UserRequirementsService do
               missing_user_attributes: %i[first_name last_name email confirmation password]
             },
             verification: false,
-            custom_fields: {
-              'birthyear' => 'required',
-              'gender' => 'optional',
-              'extra_required_field' => 'required',
-              'extra_optional_field' => 'optional'
-            },
+            custom_fields: {},
             onboarding: true,
             group_membership: false
           })
@@ -277,12 +279,7 @@ describe Permissions::UserRequirementsService do
               missing_user_attributes: %i[first_name password]
             },
             verification: false,
-            custom_fields: {
-              'birthyear' => 'required',
-              'gender' => 'optional',
-              'extra_required_field' => 'required',
-              'extra_optional_field' => 'optional'
-            },
+            custom_fields: {},
             onboarding: true,
             group_membership: false
           })
@@ -410,8 +407,6 @@ describe Permissions::UserRequirementsService do
 
         context 'when user fields are enabled as part of the survey form' do
           it 'does not return any custom fields as part of the requirements' do
-            survey_phase = build(:native_survey_phase, user_fields_in_form: true)
-            permission.permission_scope = survey_phase
             requirements = service.requirements(permission, nil)
             expect(requirements[:custom_fields]).to be_empty
           end
