@@ -26,7 +26,7 @@ const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
   const { mutate: updateAnalysis } = useUpdateAnalysis();
 
   const { data: files } = useFiles({
-    project: [projectId || ''],
+    project: projectId ? [projectId] : [],
     enabled: !!projectId,
   }); // TODO: Add a whitelisting mechanism to only fetch files that can be added to an analysis.
 
