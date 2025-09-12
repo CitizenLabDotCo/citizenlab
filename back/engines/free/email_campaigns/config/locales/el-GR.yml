@@ -112,8 +112,8 @@ el:
       "link_terms_conditions": "Όροι & Προϋποθέσεις"
       "link_unsubscribe": "Διαγραφή"
       "powered_by": "Υποστηρίζεται από"
-      "recipient_statement": "Αυτό το e-mail σας εστάλη από την Go Vocal εκ μέρους του %{organizationName}, επειδή είστε εγγεγραμμένος χρήστης του %{organizationLink}."
-      "unsubscribe_statement": "Σε περίπτωση που δεν επιθυμείτε να λαμβάνετε πλέον αυτά τα μηνύματα ηλεκτρονικού ταχυδρομείου, μπορείτε να επισκεφθείτε τη διεύθυνση %{unsubscribeLink}."
+      "recipient_statement": "Αυτό το e-mail σας εστάλη από την Go Vocal εκ μέρους του Οργανισμού \"%{organizationName}\" καθώς είστε εγγεγραμμένος χρήστης του %{organizationLink}."
+      "unsubscribe_statement": "Σε περίπτωση που δεν επιθυμείτε να λαμβάνετε πλέον αυτά τα μηνύματα ηλεκτρονικού ταχυδρομείου, μπορείτε να επιλέξετε %{unsubscribeLink}."
       "unsubscribe_text": "διαγραφή"
     follow:
       "unfollow_here": "Λάβατε αυτή την ειδοποίηση εξαιτίας ενός στοιχείου που ακολουθείτε. <a href=\"%{unfollow_url}\">Μπορείτε να το ακυρώσετε εδώ.</a>"
@@ -462,7 +462,7 @@ el:
         proposal: 'Η πρότασή σας έχει δημοσιευθεί'
         petition: 'Το αίτημά σας έχει δημοσιευτεί'
       header_message: 'Ας βεβαιωθούμε ότι θα διαβαστεί.'
-      message_get_votes: 'Προσεγγίστε περισσότερους ανθρώπους με την ιδέα σας:'
+      message_get_votes: 'Μοιραστείτε την ιδέα σας με περισσότερους ανθρώπους'
       action_published_idea: 'Δημοσιευμένη ιδέα'
       action_add_image: '%{addImageLink} για να αυξηθεί η ορατότητα'
       add_image: 'Προσθήκη εικόνας'
@@ -470,7 +470,7 @@ el:
       action_share_twitter: 'Ενημερώστε τους οπαδούς σας στο %{twitterLink}'
       action_send_email: 'Στείλτε στις επαφές σας ένα %{sendEmailLink}'
       send_email: email
-      action_share_link: 'Μοιραστείτε το μέσω οποιουδήποτε καναλιού αντιγράφοντας το %{link}'
+      action_share_link: 'Μοιραστείτε το μέσω οποιουδήποτε καναλιού με χρήση του ακόλουθου link. "%{link}"'
       link: σύνδεσμος
     your_input_in_screening:
       main_header:
@@ -498,7 +498,7 @@ el:
       title: 'Σχεδόν φτάσαμε! Υποβάλετε τις απαντήσεις σας'
       event_description: 'Αρχίσατε να μοιράζεστε τις απαντήσεις σας στο %{phaseTitle} αλλά δεν τις υποβάλατε. Κάντε κλικ στο παρακάτω κουμπί για να συνεχίσετε από εκεί που σταματήσατε.'
       cta_button: 'Συνεχίστε την απάντησή σας στην έρευνα'
-      submissions_close: 'Οι υποβολές θα ολοκληρωθούν στις %{phaseEndDate}.'
+      submissions_close: 'Ημερομηνία ολοκλήρωσης υποβολών: %{phaseEndDate}.'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Δεν υποβάλατε τις ψήφους σας'
       preheader: 'Δεν καταθέσατε την ψήφο σας στην πλατφόρμα συμμετοχής του %{organizationName}'
@@ -642,6 +642,7 @@ el:
         user_is_given_admin_rights: 'Ο χρήστης αποκτά δικαιώματα διαχειριστή'
         user_is_given_folder_moderator_rights: 'Ο χρήστης αποκτά δικαιώματα συντονιστή φακέλου'
         user_is_given_project_moderator_rights: 'Ο χρήστης αποκτά δικαιώματα συντονιστή έργου'
+        user_is_invited_to_platform: 'Ο χρήστης καλείται στην πλατφόρμα'
         user_is_invited_to_cosponsor_a_proposal: 'Ο χρήστης καλείται να συν-χορηγήσει μια πρόταση'
         user_is_mentioned: 'Αναφέρεται ο χρήστης'
         user_is_mentioned_in_internal_comment: 'Ο χρήστης αναφέρεται σε εσωτερικό σχόλιο'

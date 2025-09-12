@@ -642,6 +642,7 @@ es:
         user_is_given_admin_rights: 'El usuario tiene derechos de administrador'
         user_is_given_folder_moderator_rights: 'El usuario tiene derechos de moderador de carpeta'
         user_is_given_project_moderator_rights: 'El usuario tiene derechos de moderador del proyecto'
+        user_is_invited_to_platform: 'Se invita al usuario a la plataforma'
         user_is_invited_to_cosponsor_a_proposal: 'Se invita al usuario a co-patrocinar una propuesta'
         user_is_mentioned: 'El usuario ha sido mencionado'
         user_is_mentioned_in_internal_comment: 'El usuario es mencionado en el comentario interno'
