@@ -192,7 +192,7 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
       expect(participation_method.user_fields_in_form?).to be true
     end
 
-    context 'when permission permitted_by is \'everyone\'' do
+    context 'when permission permitted_by is \'everyone\' and there is at least one demographic field' do
       before do
         permission = Permission.find_by(
           permission_scope_id: phase.id,
@@ -200,6 +200,7 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
         )
 
         permission.permitted_by = 'everyone'
+        permission.permissions_custom_fields = [create(:permissions_custom_field)]
         permission.save!
       end
 
