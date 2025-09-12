@@ -13,9 +13,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.confirmYourEmail',
     defaultMessage: 'Confirm your email',
   },
-  completeTheExtraQuestionsBelow: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.completeTheExtraQuestionsBelow',
-    defaultMessage: 'Complete the extra questions below',
+  completeTheDemographicQuestionsAbove: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.completeTheDemographicQuestionsAbove',
+    defaultMessage: 'Complete the demographic questions above',
   },
   enterNameLastNameEmailAndPassword: {
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterNameLastNameEmailAndPassword1',

@@ -28,6 +28,7 @@ interface Props {
   canAdmin?: IQueryParameters['can_admin'];
   notCitizenlabMember?: IQueryParameters['not_citizenlab_member'];
   includeInactive?: IQueryParameters['include_inactive'];
+  projectId?: string;
 }
 
 type error = {
@@ -46,6 +47,7 @@ const UserManager = ({
   canModerate,
   canAdmin,
   onlyBlocked,
+  projectId,
 }: Props) => {
   const [sort, setSort] = useState<IQueryParameters['sort']>('-created_at');
   const [pageNumber, setPageNumber] =
@@ -67,6 +69,7 @@ const UserManager = ({
     pageNumber,
     not_citizenlab_member: notCitizenlabMember,
     can_admin: canAdmin,
+    project: projectId,
   });
 
   useEffect(() => {
@@ -175,6 +178,7 @@ const UserManager = ({
         deleteUsersFromGroup={deleteUsersFromGroup}
         onSearch={searchUser}
         usersDataLength={users.data.length}
+        projectId={projectId}
       />
 
       {/* TODO: Fix this the next time the file is edited. */}
