@@ -12,7 +12,7 @@ import Fields from '../ActionForm/Fields';
 import FlowVisualization from '../ActionForm/FlowVisualization';
 import messages from '../ActionForm/messages';
 import ResetButton from '../ActionForm/ResetButton';
-import { showResetButton } from '../ActionForm/utils';
+import { allowAddingFields, showResetButton } from '../ActionForm/utils';
 
 import DataCollection from './DataCollection';
 import { Props } from './types';
@@ -44,9 +44,15 @@ const ActionFormSurvey = ({
     action,
   });
 
-  const participation_method = phase?.data.attributes.participation_method;
+  const handleEveryoneTrackingUpdate = (everyone_tracking_enabled: boolean) => {
+    onChange({ everyone_tracking_enabled });
+  };
 
-  const userFieldsInForm = !!phase?.data.attributes.user_fields_in_form;
+  if (!permissionsCustomFields) return null;
+  if (!phase) return null;
+
+  const { participation_method, user_fields_in_form_frontend_descriptor } =
+    phase.data.attributes;
 
   // Currently only community monitor supports everyone tracking
   const canUseEveryoneTracking =
@@ -54,15 +60,8 @@ const ActionFormSurvey = ({
     action === 'posting_idea' &&
     permitted_by === 'everyone';
 
-  const handleEveryoneTrackingUpdate = (everyone_tracking_enabled: boolean) => {
-    onChange({ everyone_tracking_enabled });
-  };
-
-  if (!permissionsCustomFields) return null;
-
-  const allow_anonymous_participation =
-    phase?.data.attributes.allow_anonymous_participation;
-  if (allow_anonymous_participation === undefined) return null;
+  const userFieldsInForm = user_fields_in_form_frontend_descriptor.value;
+  const { explanation } = user_fields_in_form_frontend_descriptor;
 
   return (
     <form className={`e2e-action-form-${action}`}>
@@ -72,12 +71,10 @@ const ActionFormSurvey = ({
         onChange={onChange}
       />
       <DataCollection
-        allow_anonymous_participation={allow_anonymous_participation}
+        anonymity={phase.data.attributes.anonymity}
         permitted_by={permitted_by}
-        onChange={() => {
-          onChangePhaseSetting?.({
-            allow_anonymous_participation: !allow_anonymous_participation,
-          });
+        onChange={(anonymity) => {
+          onChangePhaseSetting?.({ anonymity });
         }}
       />
       {permitted_by !== 'admins_moderators' && (
@@ -86,8 +83,10 @@ const ActionFormSurvey = ({
             <Fields
               phaseId={phaseId}
               action={action}
-              showAddQuestion={permitted_by !== 'everyone' || userFieldsInForm}
-              userFieldsInForm={userFieldsInForm}
+              allowAddingFields={allowAddingFields(explanation)}
+              user_fields_in_form_frontend_descriptor={
+                user_fields_in_form_frontend_descriptor
+              }
               permitted_by={permitted_by}
               onChangeUserFieldsInForm={(value) => {
                 onChangePhaseSetting?.({ user_fields_in_form: value });

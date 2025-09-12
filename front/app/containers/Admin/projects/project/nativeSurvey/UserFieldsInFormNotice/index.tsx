@@ -25,7 +25,9 @@ const UserFieldsInFormNotice = ({
   };
   const { data: phase } = usePhase(phaseId);
 
-  if (!phase?.data.attributes.user_fields_in_form) return null;
+  if (!phase || !phase.data.attributes.user_fields_in_form) {
+    return null;
+  }
 
   const accessRightsPath: RouteType = communityMonitor
     ? `/admin/community-monitor/settings/access-rights`

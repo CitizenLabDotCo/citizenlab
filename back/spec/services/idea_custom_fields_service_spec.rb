@@ -112,7 +112,7 @@ describe IdeaCustomFieldsService do
     describe 'survey_results_fields' do
       context 'commmunity monitor survey' do
         let(:custom_form) do
-          phase = create(:community_monitor_survey_phase)
+          phase = create(:community_monitor_survey_phase, with_permissions: true)
           phase.pmethod.create_default_form!
           phase.custom_form.custom_fields[2].update!(question_category: 'governance_and_trust')
           phase.custom_form.custom_fields[3].update!(question_category: nil)

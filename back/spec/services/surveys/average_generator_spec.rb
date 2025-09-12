@@ -88,7 +88,7 @@ RSpec.describe Surveys::AverageGenerator do
   end
 
   context 'community monitor survey' do
-    let_it_be(:survey_phase) { create(:community_monitor_survey_phase) }
+    let_it_be(:survey_phase) { create(:community_monitor_survey_phase, with_permissions: true) }
 
     before do
       survey_phase.pmethod.create_default_form!

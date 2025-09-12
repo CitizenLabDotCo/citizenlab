@@ -151,10 +151,13 @@ class WebApi::V1::IdeasController < ApplicationController
       Idea.new(project: phase.project, author: current_user, publication_status: 'draft')
 
     # Merge custom field values from the user's profile if user fields are presented in the idea form
-    if current_user && phase.pmethod.user_fields_in_form?
-      user_values = current_user.custom_field_values&.transform_keys { |key| "u_#{key}" }
-      draft_idea.custom_field_values = user_values.merge(draft_idea.custom_field_values) if current_user
-    end
+    # AND the anonymity setting allows it
+    draft_idea = UserFieldsInSurveyService.merge_idea_and_user_field_values(
+      current_user,
+      phase,
+      draft_idea
+    )
+
     render_show draft_idea, check_auth: false
   end
 
@@ -181,11 +184,16 @@ class WebApi::V1::IdeasController < ApplicationController
     # Non persisted attribute needed by policy & anonymous_participation concern for 'everyone' participation only
     input.request = request if phase_for_input.pmethod.everyone_tracking_enabled?
 
-    # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force
-    if phase_for_input.pmethod.supports_survey_form? && phase_for_input.allow_anonymous_participation?
+    # If native survey or community monitor:
+    # Do not store user ID if anonymity it set to "full_anonymity" or "demographics_only"
+    # (anonymous = true on the input just means "do not store user ID")
+    if phase_for_input.pmethod.supports_survey_form? && phase_for_input.anonymity != 'collect_all_data_available'
       input.anonymous = true
     end
+
+    # TODO: not sure why we are still doing this, regardless of the anonymity setting?
     input.author ||= current_user
+
     phase_for_input.pmethod.assign_defaults(input)
 
     sidefx.before_create(input, current_user)
@@ -523,6 +531,8 @@ class WebApi::V1::IdeasController < ApplicationController
     end
   end
 
+  # Only relevant for allow_anonymous_participation in the context of ideation
+  # Not relevant for 'anonymity' in the context of surveys
   def anonymous_not_allowed?(phase)
     params.dig('idea', 'anonymous') && !phase.allow_anonymous_participation
   end

@@ -127,8 +127,63 @@ module ParticipationMethod
       false
     end
 
+    # Attribute used interally by backend to determine if user fields should be shown in the form
     def user_fields_in_form?
-      phase.user_fields_in_form
+      return false if phase.anonymity == 'full_anonymity'
+
+      permission = Permission.find_by(
+        permission_scope_id: phase.id,
+        action: 'posting_idea'
+      )
+
+      case permission&.permitted_by
+      when 'everyone'
+        !permission.permissions_custom_fields.empty?
+      when 'everyone_confirmed_email'
+        phase.user_fields_in_form && !permission.permissions_custom_fields.empty?
+      else
+        if permission.global_custom_fields == true
+          phase.user_fields_in_form
+        else
+          phase.user_fields_in_form && !permission.permissions_custom_fields.empty?
+        end
+      end
+    end
+
+    # Attribute used in frontend to render UI
+    def user_fields_in_form_frontend_descriptor
+      permission = Permission.find_by(
+        permission_scope_id: phase.id,
+        action: 'posting_idea'
+      )
+
+      if permission&.permitted_by == 'everyone'
+        if phase.anonymity == 'full_anonymity'
+          {
+            value: nil,
+            locked: true,
+            explanation: 'cannot_ask_demographic_fields_with_this_combination_of_permitted_by_and_anonymity'
+          }
+        else
+          {
+            value: true,
+            locked: true,
+            explanation: 'cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone'
+          }
+        end
+      elsif phase.anonymity == 'full_anonymity'
+        {
+          value: false,
+          locked: true,
+          explanation: 'with_these_settings_can_only_ask_demographic_fields_in_registration_flow_and_they_wont_be_stored'
+        }
+      else
+        {
+          value: phase.user_fields_in_form,
+          locked: false,
+          explanation: nil
+        }
+      end
     end
 
     private

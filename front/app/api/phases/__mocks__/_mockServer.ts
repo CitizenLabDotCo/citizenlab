@@ -9,6 +9,13 @@ export const phasesData: IPhaseData[] = [
     type: 'phase',
     attributes: {
       allow_anonymous_participation: false,
+      anonymity: 'collect_all_data_available',
+      user_fields_in_form_frontend_descriptor: {
+        value: false,
+        locked: false,
+        explanation: null,
+      },
+      user_fields_in_form: false,
       title_multiloc: { en: 'A Mock Information phase' },
       description_multiloc: { en: 'For testing purposes' },
       start_at: 'today',
@@ -53,6 +60,13 @@ export const phasesData: IPhaseData[] = [
     type: 'phase',
     attributes: {
       allow_anonymous_participation: false,
+      anonymity: 'collect_all_data_available',
+      user_fields_in_form_frontend_descriptor: {
+        value: false,
+        locked: false,
+        explanation: null,
+      },
+      user_fields_in_form: false,
       title_multiloc: { en: 'A Mock Poll phase' },
       description_multiloc: { en: 'For testing purposes' },
       start_at: 'today',
@@ -95,6 +109,13 @@ export const phasesData: IPhaseData[] = [
     type: 'phase',
     attributes: {
       allow_anonymous_participation: false,
+      anonymity: 'collect_all_data_available',
+      user_fields_in_form_frontend_descriptor: {
+        value: false,
+        locked: false,
+        explanation: null,
+      },
+      user_fields_in_form: false,
       title_multiloc: { en: 'A Mock Information phase' },
       description_multiloc: { en: 'For testing purposes' },
       start_at: 'today',
@@ -141,6 +162,13 @@ export const mockPhaseInformationData: IPhaseData = {
   type: 'phase',
   attributes: {
     allow_anonymous_participation: false,
+    anonymity: 'collect_all_data_available',
+    user_fields_in_form_frontend_descriptor: {
+      value: false,
+      locked: false,
+      explanation: null,
+    },
+    user_fields_in_form: false,
     title_multiloc: { en: 'A Mock Information phase' },
     description_multiloc: { en: 'For testing purposes' },
     start_at: 'today',
@@ -186,6 +214,13 @@ export const mockPhaseIdeationData: IPhaseData = {
   type: 'phase',
   attributes: {
     allow_anonymous_participation: false,
+    anonymity: 'collect_all_data_available',
+    user_fields_in_form_frontend_descriptor: {
+      value: false,
+      locked: false,
+      explanation: null,
+    },
+    user_fields_in_form: false,
     title_multiloc: { en: 'A Mock Information phase' },
     description_multiloc: { en: 'For testing purposes' },
     start_at: 'today',
@@ -231,6 +266,13 @@ export const mockPhaseSurveyTypeformData: IPhaseData = {
   type: 'phase',
   attributes: {
     allow_anonymous_participation: false,
+    anonymity: 'collect_all_data_available',
+    user_fields_in_form_frontend_descriptor: {
+      value: false,
+      locked: false,
+      explanation: null,
+    },
+    user_fields_in_form: false,
     title_multiloc: { en: 'A Mock Information phase' },
     description_multiloc: { en: 'For testing purposes' },
     start_at: 'today',
@@ -278,6 +320,13 @@ export const mockPhaseSurveyGoogleFormData: IPhaseData = {
   type: 'phase',
   attributes: {
     allow_anonymous_participation: false,
+    anonymity: 'collect_all_data_available',
+    user_fields_in_form_frontend_descriptor: {
+      value: false,
+      locked: false,
+      explanation: null,
+    },
+    user_fields_in_form: false,
     title_multiloc: { en: 'A Mock Information phase' },
     description_multiloc: { en: 'For testing purposes' },
     start_at: 'today',
@@ -337,6 +386,13 @@ const votingPhase: IPhaseData = {
   type: 'phase',
   attributes: {
     allow_anonymous_participation: false,
+    anonymity: 'collect_all_data_available',
+    user_fields_in_form_frontend_descriptor: {
+      value: false,
+      locked: false,
+      explanation: null,
+    },
+    user_fields_in_form: false,
     title_multiloc: { en: 'A Mock voting phase' },
     description_multiloc: { en: 'For testing purposes' },
     participation_method: 'voting',

@@ -14,7 +14,7 @@ interface Props {
   verificationExpiry: number | null;
   permissionsCustomFields: IPermissionsCustomFieldData[];
   onChangeVerificationExpiry: (value: number | null) => void;
-  userFieldsInForm: boolean;
+  userFieldsInForm: boolean | null;
 }
 
 const FlowVisualization = ({

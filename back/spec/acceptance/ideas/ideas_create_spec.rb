@@ -538,7 +538,7 @@ resource 'Ideas' do
         end
 
         describe 'Creating a native survey response when posting anonymously is enabled' do
-          let(:project) { create(:single_phase_native_survey_project, phase_attrs: { allow_anonymous_participation: true }) }
+          let(:project) { create(:single_phase_native_survey_project, phase_attrs: { anonymity: 'full_anonymity' }) }
 
           example_request 'Posting a survey automatically sets anonymous to true' do
             assert_status 201
@@ -549,7 +549,7 @@ resource 'Ideas' do
         end
 
         describe 'Creating a native survey response when posting anonymously is not enabled' do
-          let(:project) { create(:single_phase_native_survey_project, phase_attrs: { allow_anonymous_participation: false }) }
+          let(:project) { create(:single_phase_native_survey_project, phase_attrs: { anonymity: 'collect_all_data_available' }) }
 
           example_request 'Posting a survey does not set the survey to anonymous' do
             assert_status 201
@@ -700,7 +700,7 @@ resource 'Ideas' do
         end
 
         context 'Creating a community monitor survey response when posting anonymously is enabled' do
-          before { phase.update! allow_anonymous_participation: true }
+          before { phase.update! anonymity: 'full_anonymity' }
 
           example_request 'Posting a survey automatically sets anonymous to true' do
             assert_status 201

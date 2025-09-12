@@ -25,12 +25,7 @@ interface Props {
   action: Action;
 }
 
-const FieldsList = ({
-  userFieldsInForm,
-  permitted_by,
-  phaseId,
-  action,
-}: Props) => {
+const FieldsList = ({ phaseId, action }: Props) => {
   const { data: permissionFields } = usePermissionsCustomFields({
     phaseId,
     action,
@@ -41,14 +36,6 @@ const FieldsList = ({
 
   if (!permissionFields) {
     return null;
-  }
-
-  if (permitted_by === 'everyone' && !userFieldsInForm) {
-    return (
-      <Text mb="24px" mt="0">
-        <FormattedMessage {...messages.notAllowed} />
-      </Text>
-    );
   }
 
   if (permissionFields.data.length === 0) {

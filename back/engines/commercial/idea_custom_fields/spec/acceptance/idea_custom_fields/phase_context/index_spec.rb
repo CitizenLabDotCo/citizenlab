@@ -74,7 +74,7 @@ resource 'Idea Custom Fields' do
     parameter :input_types, 'Filter custom fields by input types', type: :array, items: { type: :string }, required: false
     parameter :public_fields, 'Only return custom fields that are visible to the public', type: :boolean, required: false
 
-    let(:survey_phase) { create(:native_survey_phase) }
+    let(:survey_phase) { create(:native_survey_phase, with_permissions: true) }
     let(:phase_id) { survey_phase.id }
     let(:form) { create(:custom_form, participation_context: survey_phase) }
     let!(:custom_field1) { create(:custom_field_text, resource: form, key: 'extra_field1') }
