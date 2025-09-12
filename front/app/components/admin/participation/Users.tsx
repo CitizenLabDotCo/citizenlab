@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import UserManager from 'containers/Admin/users/UserManager';
@@ -11,13 +12,13 @@ const Users = () => {
   const { projectId } = useParams() as { projectId: string };
 
   return (
-    <div className="intercom-project-participants-users">
+    <Box className="intercom-project-participants-users">
       <UsersHeader
         title={messages.usersTab}
         subtitle={messages.usersSubtitle}
       />
       <UserManager projectId={projectId} />
-    </div>
+    </Box>
   );
 };
 

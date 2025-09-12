@@ -33,7 +33,7 @@ const Demographics = ({
   const [endAt, setEndAt] = useState(defaultEndDate);
 
   return (
-    <div>
+    <Box>
       <Box mb="20px">
         <Text variant="bodyM" color="textSecondary" mb="5px">
           {formatMessage(messages.selectPeriod)}
@@ -58,7 +58,7 @@ const Demographics = ({
           endAt={endAt}
         />
       </Box>
-    </div>
+    </Box>
   );
 };
 
