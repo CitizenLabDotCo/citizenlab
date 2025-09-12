@@ -64,7 +64,7 @@ module IdFranceconnect
             secret: configuration.settings('franceconnect_login', 'secret'),
             # scheme: 'https',
             # host: host,
-            redirect_uri: "http://localhost:3000/auth/franceconnect/callback"
+            redirect_uri: redirect_uri(configuration, env)
           }
         )
       else
@@ -98,13 +98,12 @@ module IdFranceconnect
       last_identity = user.identities
         .where(provider: 'franceconnect')
         .order(created_at: :desc)
-        .limit(1)
-                        &.first
+        .limit(1)&.first
       id_token = last_identity.auth_hash.dig('credentials', 'id_token')
 
       url_params = {
         id_token_hint: id_token,
-        state: SecureRandom.hex(16),
+        state: SecureRandom.hex(12),
         post_logout_redirect_uri: Frontend::UrlService.new.home_url
       }
 
@@ -158,7 +157,7 @@ module IdFranceconnect
         },
         integration: {
           v1: 'fcp.integ01.dev-franceconnect.fr',
-          v2: 'fcp-low.integ01.dev-franceconnect.fr'
+          v2: 'fcp-low.sbx.dev-franceconnect.fr'
         }
       }
       urls[env.to_sym][version.to_sym]
