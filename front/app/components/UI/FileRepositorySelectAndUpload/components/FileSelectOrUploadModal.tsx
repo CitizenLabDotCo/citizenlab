@@ -46,7 +46,7 @@ const FileSelectOrUploadModal = ({
   const { projectId } = useParams();
 
   const { data: files } = useFiles({
-    project: [projectId || ''],
+    project: projectId ? [projectId] : [],
     enabled: !!projectId,
   });
 
