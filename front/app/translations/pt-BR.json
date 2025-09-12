@@ -825,6 +825,7 @@
   "app.components.formBuilder.good": "Bom",
   "app.components.formBuilder.helmetTitle": "Construtor de formulários",
   "app.components.formBuilder.imageFileUpload": "Carregamento de imagens",
+  "app.components.formBuilder.inputImages": "Imagens",
   "app.components.formBuilder.inputTagManager": "Página de tags de entrada",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Lógica inválida",
   "app.components.formBuilder.labels2": "Rótulos (opcional)",
