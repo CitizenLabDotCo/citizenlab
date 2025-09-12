@@ -159,32 +159,30 @@ module ParticipationMethod
 
       if permission&.permitted_by == 'everyone'
         if phase.anonymity == 'full_anonymity'
-          return {
+          {
             value: nil,
             locked: true,
             explanation: 'cannot_ask_demographic_fields_with_this_combination_of_permitted_by_and_anonymity'
           }
         else
-          return {
+          {
             value: true,
             locked: true,
             explanation: 'cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone'
           }
         end
+      elsif phase.anonymity == 'full_anonymity'
+        {
+          value: false,
+          locked: true,
+          explanation: 'with_these_settings_can_only_ask_demographic_fields_in_registration_flow_and_they_wont_be_stored'
+        }
       else
-        if phase.anonymity == 'full_anonymity'
-          return {
-            value: false,
-            locked: true,
-            explanation: 'with_these_settings_can_only_ask_demographic_fields_in_registration_flow_and_they_wont_be_stored'
-          }
-        else
-          return {
-            value: phase.user_fields_in_form,
-            locked: false,
-            explanation: nil
-          }
-        end
+        {
+          value: phase.user_fields_in_form,
+          locked: false,
+          explanation: nil
+        }
       end
     end
 
