@@ -51,6 +51,7 @@ module IdFranceconnect
       title: 'Version of FranceConnect API',
       type: 'string',
       enum: %w[v1 v2],
+      default: 'v1',
       private: true
     }
 

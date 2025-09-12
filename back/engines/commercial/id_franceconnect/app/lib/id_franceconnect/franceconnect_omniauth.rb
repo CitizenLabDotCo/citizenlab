@@ -20,7 +20,6 @@ module IdFranceconnect
     SSO_VERIFICATION_PARAM_VALUE = 'true'
 
     def profile_to_user_attrs(auth)
-      # TODO: Do something smart with the address auth.extra.raw_info.address.formatted
       {
         first_name: auth.info['first_name'],
         email: auth.info['email'],
@@ -43,28 +42,18 @@ module IdFranceconnect
     def omniauth_setup(configuration, env)
       return unless configuration.feature_activated?('franceconnect_login')
 
-      # TODO: add discovery endpoint
       if version == 'v2'
         env['omniauth.strategy'].options.merge!(
+          discovery: true, # https://fcp-low.sbx.dev-franceconnect.fr/api/v2/.well-known/openid-configuration
           scope: %w[openid] + configuration.settings('franceconnect_login', 'scope'),
-
-          # https://fcp-low.sbx.dev-franceconnect.fr/api/v2/.well-known/openid-configuration
-          discovery: true,
-          # response_type: :code,
-          # state: true, # required by France connect
-          # nonce: true, # required by France connect
           issuer: issuer, # the integration env is now using 'https'
           client_auth_method: 'jwks', # France connect does not use BASIC authentication
           acr_values: 'eidas1',
           client_signing_alg: :ES256, # hashing function of France Connect
           client_options: {
-
-
             identifier: configuration.settings('franceconnect_login', 'identifier'),
             secret: configuration.settings('franceconnect_login', 'secret'),
-            # scheme: 'https',
-            # host: host,
-            redirect_uri: redirect_uri(configuration, env)
+            redirect_uri: redirect_uri(configuration)
           }
         )
       else
@@ -84,16 +73,15 @@ module IdFranceconnect
             scheme: 'https',
             host: host,
             port: 443,
-            redirect_uri: redirect_uri(configuration, env),
-            authorization_endpoint: "/authorize",
-            token_endpoint: "/token",
-            userinfo_endpoint: "/userinfo",
+            redirect_uri: redirect_uri(configuration),
+            authorization_endpoint: '/api/v1/authorize',
+            token_endpoint: '/api/v1/token',
+            userinfo_endpoint: '/api/v1/userinfo'
           }
         )
       end
     end
 
-    # TODO: Logout does not work
     def logout_url(user)
       last_identity = user.identities
         .where(provider: 'franceconnect')
@@ -107,10 +95,12 @@ module IdFranceconnect
         post_logout_redirect_uri: Frontend::UrlService.new.home_url
       }
 
-      "https://#{host}/api/#{version}/logout?#{url_params.to_query}"
+      if version == 'v1'
+        "https://#{host}/api/v1/logout?#{url_params.to_query}"
+      else
+        "https://#{host}/api/v2/session/end?#{url_params.to_query}"
+      end
     end
-
-
 
     def updateable_user_attrs
       super + %i[first_name last_name birthyear gender remote_avatar_url]
@@ -139,7 +129,7 @@ module IdFranceconnect
     end
 
     def verification_prioritized?
-      false
+      true
     end
 
     private
@@ -164,18 +154,16 @@ module IdFranceconnect
     end
 
     def issuer
-      "https://#{host}/api/#{version}"
+      if version == 'v1'
+        "https://#{host}"
+      else
+        "https://#{host}/api/v2"
+      end
     end
 
     # @param [AppConfiguration] configuration
-    def redirect_uri(configuration, env)
-      result = "#{configuration.base_backend_uri}/auth/franceconnect/callback"
-
-      if env.dig('rack.request.query_hash', SSO_VERIFICATION_PARAM_NAME) == SSO_VERIFICATION_PARAM_VALUE
-        result += "?#{SSO_VERIFICATION_PARAM_NAME}=#{SSO_VERIFICATION_PARAM_VALUE}"
-      end
-
-      result
+    def redirect_uri(configuration)
+      "#{configuration.base_backend_uri}/auth/franceconnect/callback"
     end
 
     def auth_config
