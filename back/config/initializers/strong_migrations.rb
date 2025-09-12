@@ -1,3 +1,6 @@
+# Exit unless the gem is loaded (i.e. not in development)
+return unless defined?(StrongMigrations)
+
 # Mark existing migrations as safe
 StrongMigrations.start_after = 20250912152550 # rubocop:disable Style/NumericLiterals
 
