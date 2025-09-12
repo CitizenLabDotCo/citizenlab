@@ -31,18 +31,23 @@ class WebApi::V1::Files::FileAttachmentsController < ApplicationController
 
   def create
     file_attachment = Files::FileAttachment.new(create_params)
-    authorize(file_attachment)
 
-    ActiveRecord::Base.transaction do
-      side_fx.before_create(file_attachment, current_user)
-      unless file_attachment.save
-        # If save fails, raise an error to trigger transaction rollback
-        raise ActiveRecord::Rollback, file_attachment.errors.full_messages.join(", ")
-      end
-      side_fx.after_create(file_attachment, current_user)
+    # We permit creation of files_files records before creation of an associated project (i.e. in project create/edit form).
+    # So we create the association here, by creating a files_projects record, if it doesn't already exist.
+    if file_attachment.attachable_type == 'Project' && file_attachment.attachable_id.present?
+      Files::FilesProject.find_or_create_by!(
+        file: file_attachment.file, 
+        project_id: file_attachment.attachable_id
+      )
+
+      file_attachment.file.reload
     end
 
-    if file_attachment.persisted?
+    authorize(file_attachment)
+
+    side_fx.before_create(file_attachment, current_user)
+    if file_attachment.save
+      side_fx.after_create(file_attachment, current_user)
       render json: WebApi::V1::Files::FileAttachmentSerializer.new(
         file_attachment,
         params: jsonapi_serializer_params

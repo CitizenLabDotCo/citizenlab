@@ -45,6 +45,8 @@ module Files
 
     def moderates_all_projects?(projects = nil)
       projects ||= record.projects
+
+      puts "Moderates all projects check for user #{user&.id} on projects #{projects.pluck(:id)}"
       return false if projects.blank?
 
       (projects - UserRoleService.new.moderatable_projects(user)).empty?
