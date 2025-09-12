@@ -825,6 +825,7 @@
   "app.components.formBuilder.good": "İyi",
   "app.components.formBuilder.helmetTitle": "Form oluşturucu",
   "app.components.formBuilder.imageFileUpload": "Resim yükleme",
+  "app.components.formBuilder.inputImages": "Görüntüler",
   "app.components.formBuilder.inputTagManager": "Giriş etiketleri sayfası",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Geçersiz mantık",
   "app.components.formBuilder.labels2": "Etiketler (isteğe bağlı)",

@@ -825,6 +825,7 @@
   "app.components.formBuilder.good": "Hyvä",
   "app.components.formBuilder.helmetTitle": "Lomakkeen muokkaus",
   "app.components.formBuilder.imageFileUpload": "Kuvan lataus",
+  "app.components.formBuilder.inputImages": "Kuvat",
   "app.components.formBuilder.inputTagManager": "Syöttötunnisteiden sivu",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Virheellinen logiikka",
   "app.components.formBuilder.labels2": "Tunnisteet (valinnainen)",

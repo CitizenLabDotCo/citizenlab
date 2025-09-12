@@ -77,10 +77,18 @@ describe('Proposal edit page', () => {
     // Edit input form
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form/edit`);
     // Delete the Details page
-    cy.dataCy('e2e-more-field-actions').eq(2).click({ force: true });
+    cy.dataCy('e2e-form-fields')
+      .contains('Details')
+      .parents('[data-cy="e2e-field-row"]')
+      .find('[data-cy="e2e-more-field-actions"]')
+      .click();
     cy.get('.e2e-more-actions-list button').contains('Delete').click();
     // Delete the Location field
-    cy.dataCy('e2e-more-field-actions').eq(3).click({ force: true });
+    cy.dataCy('e2e-form-fields')
+      .contains('Location')
+      .parents('[data-cy="e2e-field-row"]')
+      .find('[data-cy="e2e-more-field-actions"]')
+      .click();
     cy.get('.e2e-more-actions-list button').contains('Delete').click();
     // Add an extra field
     cy.dataCy('e2e-short-answer').click();

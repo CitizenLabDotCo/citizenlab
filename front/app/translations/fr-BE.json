@@ -825,6 +825,7 @@
   "app.components.formBuilder.good": "Bon",
   "app.components.formBuilder.helmetTitle": "Générateur de formulaires",
   "app.components.formBuilder.imageFileUpload": "Téléchargement d’image",
+  "app.components.formBuilder.inputImages": "Images",
   "app.components.formBuilder.inputTagManager": "gestionnaire d'étiquettes",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Logique invalide",
   "app.components.formBuilder.labels2": "Étiquettes (optionnel)",
