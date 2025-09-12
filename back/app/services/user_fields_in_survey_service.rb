@@ -4,17 +4,17 @@ class UserFieldsInSurveyService
   def self.merge_idea_and_user_field_values(
     current_user,
     phase,
-    draft_idea
+    idea
   )
     if current_user && phase.pmethod.user_fields_in_form?
       user_values = current_user.custom_field_values&.transform_keys do |key|
         prefix_key(key)
       end
 
-      draft_idea.custom_field_values = user_values.merge(draft_idea.custom_field_values)
+      idea.custom_field_values = user_values.merge(idea.custom_field_values)
     end
 
-    draft_idea
+    idea
   end
 
   def self.add_user_fields_to_form(fields, participation_method, custom_form)
