@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { CLErrors, UploadFile } from 'typings';
@@ -28,6 +28,7 @@ export interface Props {
   enableDragAndDrop?: boolean;
   maxSizeMb?: number;
   dataCy?: string;
+  isUploadingFile?: boolean;
 }
 
 const FileRepositorySelectAndUpload = ({
@@ -42,6 +43,7 @@ const FileRepositorySelectAndUpload = ({
   enableDragAndDrop = false,
   maxSizeMb,
   dataCy,
+  isUploadingFile,
 }: Props) => {
   const [fileAttachments, setFileAttachments] = useState(
     initialFileAttachments
@@ -87,9 +89,22 @@ const FileRepositorySelectAndUpload = ({
       // Insert the file attachment at its new position
       fileAttachmentsCopy.splice(toIndex, 0, movedFileAttachment);
 
-      // Notify parent component about the change
-      onFileReorder?.(fileAttachmentsCopy);
-      return fileAttachmentsCopy;
+      // Update positions (order values) for the file attachments
+      const fileAttachmentsUpdatedPositions = fileAttachmentsCopy.map(
+        (fileAttachment, index) =>
+          fileAttachment.attributes.position !== index
+            ? {
+                ...fileAttachment,
+                attributes: {
+                  ...fileAttachment.attributes,
+                  position: index,
+                },
+              }
+            : fileAttachment
+      );
+
+      onFileReorder?.(fileAttachmentsUpdatedPositions);
+      return fileAttachmentsUpdatedPositions;
     });
   };
 
@@ -112,6 +127,7 @@ const FileRepositorySelectAndUpload = ({
         onFileAttach={handleFileOnAttach}
         maxSizeMb={maxSizeMb}
         dataCy={dataCy}
+        isDisabled={isUploadingFile}
       />
 
       <Error fieldName="file" apiErrors={apiErrors?.file} />
@@ -146,6 +162,7 @@ const FileRepositorySelectAndUpload = ({
             )
         )}
       </List>
+      {isUploadingFile && <Spinner />}
 
       <ScreenReaderFilesList fileAttachments={fileAttachments} />
     </Box>

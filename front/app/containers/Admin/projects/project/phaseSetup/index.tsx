@@ -40,6 +40,7 @@ import {
   useIntl,
 } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { generateTemporaryFileAttachment } from 'utils/fileUtils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import DateSetup from './components/DateSetup';
@@ -47,7 +48,7 @@ import PhaseParticipationConfig from './components/PhaseParticipationConfig';
 import { ideationDefaultConfig } from './components/PhaseParticipationConfig/utils/participationMethodConfigs';
 import messages from './messages';
 import { SubmitStateType, ValidationErrors } from './typings';
-import { generateTemporaryFileAttachment, getTimelineTab } from './utils';
+import { getTimelineTab } from './utils';
 import validate from './validate';
 
 interface Props {
@@ -64,7 +65,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
   const { data: phases } = usePhases(projectId);
   const { mutate: addPhase } = useAddPhase();
   const { mutate: updatePhase } = useUpdatePhase();
-  const { mutate: addFile } = useAddFile();
+  const { mutate: addFile, isLoading: isAddingFile } = useAddFile();
   const syncPhaseFiles = useSyncFiles();
   const [errors, setErrors] = useState<CLErrors | null>(null);
   const [processing, setProcessing] = useState<boolean>(false);
@@ -160,7 +161,8 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
 
     const temporaryFileAttachment = generateTemporaryFileAttachment({
       fileId: file.id,
-      phaseId,
+      attachableId: phaseId,
+      attachableType: 'Phase',
       position: inStatePhaseFileAttachments
         ? inStatePhaseFileAttachments.length
         : 0,
@@ -188,7 +190,8 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
           // Create a temporary file attachment to add to the state, so the user sees it in the list.
           const temporaryFileAttachment = generateTemporaryFileAttachment({
             fileId: newFile.data.id,
-            phaseId,
+            attachableId: phaseId,
+            attachableType: 'Phase',
             position: inStatePhaseFileAttachments
               ? inStatePhaseFileAttachments.length
               : 0,
@@ -437,6 +440,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
               enableDragAndDrop
               apiErrors={errors}
               maxSizeMb={10}
+              isUploadingFile={isAddingFile}
             />
           </SectionField>
 

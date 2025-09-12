@@ -25,6 +25,7 @@ type Props = {
   fileAttachments?: IFileAttachmentData[];
   maxSizeMb?: number;
   dataCy?: string;
+  isDisabled?: boolean;
 };
 
 const FileSelectOrUploadModal = ({
@@ -33,6 +34,7 @@ const FileSelectOrUploadModal = ({
   onFileAttach,
   maxSizeMb,
   fileAttachments,
+  isDisabled,
   dataCy,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -78,6 +80,7 @@ const FileSelectOrUploadModal = ({
         onClick={() => setModalOpen(true)}
         buttonStyle="secondary"
         icon="file-add"
+        disabled={isDisabled}
       >
         {formatMessage(messages.addFile)}
       </Button>
@@ -88,7 +91,7 @@ const FileSelectOrUploadModal = ({
         header={formatMessage(messages.selectFile)}
       >
         <Box mt="0px" p="24px">
-          {isDataRepositoryEnabled && (
+          {isDataRepositoryEnabled && filteredFileOptions.length > 0 && (
             <Box>
               <Select
                 value={''} // Since onChange we close the modal, we don't need to worry about setting this value.

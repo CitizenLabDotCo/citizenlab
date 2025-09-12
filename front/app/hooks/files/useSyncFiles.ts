@@ -28,16 +28,17 @@ export function useSyncFiles() {
       fileAttachmentsToRemove,
       fileAttachmentOrdering,
     }: SyncFilesArguments) => {
+      if (!attachableId) return;
+
       // Add any new file attachments
       const fileAttachmentsToAddPromises = fileAttachments
         .filter((file) => file.id.startsWith('TEMP-'))
         .map((fileAttachment) => {
-          addFileAttachment({
+          return addFileAttachment({
             file_id: fileAttachment.relationships.file.data.id,
             attachable_type: attachableType,
             attachable_id: attachableId,
           }).then(async (newFileAttachment) => {
-            // Update their positions
             await updateFileAttachments({
               id: newFileAttachment.data.id,
               position: fileAttachment.attributes.position,
@@ -53,10 +54,10 @@ export function useSyncFiles() {
         .map((fileAttachment) => deleteFileAttachment(fileAttachment.id));
 
       // Update the ordering of any file attachments that were reordered
+
       const reorderedFileAttachments = fileAttachments.filter(
         (fileAttachment) => {
           const initialOrdering = fileAttachmentOrdering[fileAttachment.id];
-
           return (
             fileAttachment.id &&
             !fileAttachment.id.startsWith('TEMP-') &&
