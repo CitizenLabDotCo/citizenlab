@@ -44,7 +44,7 @@ module Files
 
     def moderates_all_projects?(projects = nil)
       projects ||= record.projects
-      return false if projects.empty?
+      return false if projects.blank?
 
       (projects - UserRoleService.new.moderatable_projects(user)).empty?
     end
