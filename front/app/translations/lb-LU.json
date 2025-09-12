@@ -1149,7 +1149,6 @@
   "app.containers.AccessibilityStatement.title": "Zougänglechkeetserklärung",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Benotzergeneréiert Inhalter",
   "app.containers.AccessibilityStatement.workshops": "Workshoppen",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Wielt Projet",
   "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "D'Benotzung vum Inhalt Builder léisst Iech méi fortgeschratt Layoutoptiounen benotzen. Fir Sprooche wou keen Inhalt am Inhalt Builder verfügbar ass, gëtt de reguläre Projetbeschreiwungsinhalt amplaz ugewisen.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Änneren Beschreiwung am Inhalt Builder",
   "app.containers.AdminPage.ProjectDescription.saveError": "Eppes ass falsch gaangen beim Späicheren vun der Projektbeschreiwung.",

@@ -1149,7 +1149,6 @@
   "app.containers.AccessibilityStatement.title": "Prieinamumo pareiškimas",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Vartotojo sukurtas turinys",
   "app.containers.AccessibilityStatement.workshops": "Seminarai",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Pasirinkite projektą",
   "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Naudodami turinio konstruktorių galėsite naudoti pažangesnes išdėstymo parinktis. Kalbų, kurių turinio kūrimo įrankyje nėra turinio, atveju vietoj jo bus rodomas įprastas projekto aprašymo turinys.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Redaguoti aprašymą Turinio kūrimo įrankyje",
   "app.containers.AdminPage.ProjectDescription.saveError": "Išsaugant projekto aprašymą kažkas nutiko ne taip.",

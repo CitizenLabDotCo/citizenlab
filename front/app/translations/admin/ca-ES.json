@@ -714,7 +714,6 @@
   "app.containers.AdminPage.DashboardPage.resolutionday": "en dies",
   "app.containers.AdminPage.DashboardPage.resolutionmonth": "en Mesos",
   "app.containers.AdminPage.DashboardPage.resolutionweek": "en Setmanes",
-  "app.containers.AdminPage.DashboardPage.selectProject": "Select project",
   "app.containers.AdminPage.DashboardPage.selectedProject": "filtre actual del projecte",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "filtre d'etiquetes actual",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Descobrir què passa a la vostra plataforma.",

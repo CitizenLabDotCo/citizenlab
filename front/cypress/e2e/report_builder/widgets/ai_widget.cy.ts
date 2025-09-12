@@ -17,6 +17,7 @@ const surveyQuestionResponses = [
 ];
 let reportId: string;
 let projectId = '';
+let projectTitle: string;
 let surveyPhaseId: string;
 let ideationPhaseId: string;
 let surveyFields: any;
@@ -26,7 +27,7 @@ describe('Report builder: AI widget', () => {
   });
 
   before(() => {
-    const projectTitle = randomString();
+    projectTitle = randomString();
     const projectDescriptionPreview = randomString();
     const projectDescription = randomString();
     cy.apiCreateProject({
@@ -122,8 +123,9 @@ describe('Report builder: AI widget', () => {
     cy.get('#e2e-report-builder-ai-tab').click();
 
     // Select project, phase and question
-    cy.get('#e2e-report-builder-analysis-project-filter-box select').select(
-      projectId
+    cy.selectReactSelectOption(
+      '#e2e-report-builder-analysis-project-filter-box',
+      projectTitle
     );
     cy.get('#e2e-report-builder-analysis-phase-filter-box').select(
       surveyPhaseId
@@ -142,8 +144,9 @@ describe('Report builder: AI widget', () => {
     cy.get('#e2e-report-builder-ai-tab').click();
 
     // Select project, phase and question
-    cy.get('#e2e-report-builder-analysis-project-filter-box select').select(
-      projectId
+    cy.selectReactSelectOption(
+      '#e2e-report-builder-analysis-project-filter-box',
+      projectTitle
     );
     cy.get('#e2e-report-builder-analysis-phase-filter-box').select(
       surveyPhaseId
@@ -179,8 +182,9 @@ describe('Report builder: AI widget', () => {
     cy.get('#e2e-report-builder-ai-tab').click();
 
     // Select project, phase and question
-    cy.get('#e2e-report-builder-analysis-project-filter-box select').select(
-      projectId
+    cy.selectReactSelectOption(
+      '#e2e-report-builder-analysis-project-filter-box',
+      projectTitle
     );
     cy.get('#e2e-report-builder-analysis-phase-filter-box').select(
       ideationPhaseId
@@ -199,8 +203,9 @@ describe('Report builder: AI widget', () => {
     cy.get('#e2e-report-builder-ai-tab').click();
 
     // Select project, phase and question
-    cy.get('#e2e-report-builder-analysis-project-filter-box select').select(
-      projectId
+    cy.selectReactSelectOption(
+      '#e2e-report-builder-analysis-project-filter-box',
+      projectTitle
     );
     cy.get('#e2e-report-builder-analysis-phase-filter-box').select(
       ideationPhaseId
