@@ -23,13 +23,8 @@ module Files
     def create?
       return false unless active?
       return false unless record.uploader_id == user.id # cannot upload file on behalf of another user
-      return true if admin?
 
-      # A files_project record is built in the controller #create action, but not yet persisted.
-      # project_ids = record.files_projects.filter_map(&:project_id)
-      # projects = Project.where(id: project_ids)
-      # moderates_all_projects?(projects)
-      true
+      !user.normal_user? # Any elevated role can create
     end
 
     def update?
