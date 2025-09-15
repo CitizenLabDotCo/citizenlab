@@ -5,6 +5,10 @@ import { Box, Text, Radio, Title } from '@citizenlab/cl2-component-library';
 import { PermittedBy } from 'api/phase_permissions/types';
 import { Anonymity } from 'api/phases/types';
 
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
+
 interface Props {
   anonymity: Anonymity;
   permitted_by: PermittedBy;
@@ -12,10 +16,12 @@ interface Props {
 }
 
 const DataCollection = ({ anonymity, permitted_by, onChange }: Props) => {
+  const { formatMessage } = useIntl();
+
   return (
     <Box mt="32px">
       <Title variant="h4" color="primary">
-        User data collection
+        {formatMessage(messages.userDataCollection)}
       </Title>
       <Radio
         name="collect_all_data_available"
@@ -25,17 +31,20 @@ const DataCollection = ({ anonymity, permitted_by, onChange }: Props) => {
           permitted_by === 'everyone' ? (
             <Text color="primary" m="0">
               <span style={{ fontWeight: 'bold' }}>
-                Collect demographics and link user account:
-              </span>{' '}
-              collect demographics. Link response to user account if participant
-              is logged in.
+                {formatMessage(
+                  messages.collectionDemographicsAndLinkUserAccount
+                )}
+              </span>
+              {` ${formatMessage(messages.collectAndLink1)}`}
             </Text>
           ) : (
             <Text color="primary" m="0">
               <span style={{ fontWeight: 'bold' }}>
-                Collect demographics and link user account:
-              </span>{' '}
-              collect demographics. Link response to user account.
+                {formatMessage(
+                  messages.collectionDemographicsAndLinkUserAccount
+                )}
+              </span>
+              {` ${formatMessage(messages.collectAndLink2)}`}
             </Text>
           )
         }
@@ -47,8 +56,10 @@ const DataCollection = ({ anonymity, permitted_by, onChange }: Props) => {
         currentValue={anonymity}
         label={
           <Text color="primary" m="0">
-            <span style={{ fontWeight: 'bold' }}>Demographics only:</span>{' '}
-            collect demographics. Responses will not be linked to user accounts.
+            <span style={{ fontWeight: 'bold' }}>
+              {formatMessage(messages.demographicsOnly)}
+            </span>
+            {` ${formatMessage(messages.collectAndNotLink)}`}
           </Text>
         }
         onChange={onChange}
@@ -59,8 +70,10 @@ const DataCollection = ({ anonymity, permitted_by, onChange }: Props) => {
         currentValue={anonymity}
         label={
           <Text color="primary" m="0">
-            <span style={{ fontWeight: 'bold' }}>Full anonymity:</span> do not
-            collect demographics. Responses will not be linked to user accounts.
+            <span style={{ fontWeight: 'bold' }}>
+              {formatMessage(messages.fullAnonymity)}
+            </span>
+            {` ${formatMessage(messages.notCollectAndNotLink)}`}
           </Text>
         }
         onChange={onChange}
