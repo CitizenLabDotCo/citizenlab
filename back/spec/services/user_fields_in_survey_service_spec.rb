@@ -17,4 +17,49 @@ describe UserFieldsInSurveyService do
       })
     end
   end
+
+  describe '#add_user_fields_to_form' do
+    it 'adds user custom fields to the form with prefixed keys' do
+      project = create(:single_phase_native_survey_project, phase_attrs: {
+        with_permissions: true,
+        user_fields_in_form: true
+      })
+      phase = project.phases.first
+
+      # Create permission with user custom field
+      permission = phase.permissions.find_by(action: 'posting_idea')
+      permission.update!(global_custom_fields: false)
+      create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field, key: 'age'))
+
+      # Create survey form
+      custom_form = create(:custom_form, :with_default_fields, participation_context: phase)
+      create(:custom_field_page, resource: custom_form)
+      select_field = create(:custom_field_select, resource: custom_form)
+      create(:custom_field_option, custom_field: select_field)
+      create(:custom_field_page, resource: custom_form)
+      create(:custom_field_text, resource: custom_form)
+      create(:custom_field_matrix_linear_scale, resource: custom_form)
+      create(:custom_field_form_end_page, resource: custom_form)
+
+      fields = custom_form.custom_fields
+      participation_method = phase.pmethod
+
+      updated_fields = UserFieldsInSurveyService.add_user_fields_to_form(
+        fields, 
+        participation_method, 
+        custom_form
+      )
+
+      expect(updated_fields.pluck(:key)).to eq([
+        "field_1",
+        "field_2",
+        "field_3",
+        "field_4",
+        "field_5",
+        "user_page",
+        "u_age",
+        "form_end"
+      ])
+    end
+  end
 end
