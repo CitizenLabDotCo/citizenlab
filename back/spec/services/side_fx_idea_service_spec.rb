@@ -434,7 +434,10 @@ describe SideFxIdeaService do
         expect(user.custom_field_values).to be_empty
       end
 
-      it "updates the user profile from the survey input fields when permitted_by = 'everyone' and there are permissions_custom_fields" do
+      it "updates the user profile from the survey data when permitted_by = 'everyone' and there are permissions_custom_fields" do
+        # Even though user_fields_in_form = false, we update the user
+        # because when permitted_by = 'everyone' and there are permissions_custom_fields,
+        # the fields always shown in the form
         phase.update!(user_fields_in_form: false)
 
         permission = Permission.find_by(
@@ -449,6 +452,40 @@ describe SideFxIdeaService do
         idea.update!(publication_status: 'published')
         service.after_update(idea, user)
         expect(user.custom_field_values).to eq({ 'gender' => 'female' })
+      end
+
+      it 'updates user profile from the survey data when permitted_by = users and there are permissions_custom_fields' do
+        phase.update!(user_fields_in_form: true)
+
+        permission = Permission.find_by(
+          permission_scope_id: phase.id,
+          action: 'posting_idea'
+        )
+
+        permission.permitted_by = 'users'
+        permission.permissions_custom_fields = [create(:permissions_custom_field)]
+        permission.save!
+
+        idea.update!(publication_status: 'published')
+        service.after_update(idea, user)
+        expect(user.custom_field_values).to eq({ 'gender' => 'female' })
+      end
+
+      it 'does not update user profile if not user_fields_in_form?' do
+        phase.update!(user_fields_in_form: false)
+
+        permission = Permission.find_by(
+          permission_scope_id: phase.id,
+          action: 'posting_idea'
+        )
+
+        permission.permitted_by = 'users'
+        permission.permissions_custom_fields = [create(:permissions_custom_field)]
+        permission.save!
+
+        idea.update!(publication_status: 'published')
+        service.after_update(idea, user)
+        expect(user.custom_field_values).to eq({})
       end
     end
 
