@@ -103,7 +103,11 @@ const FileRepositorySelectAndUpload = ({
             : fileAttachment
       );
 
-      onFileReorder?.(fileAttachmentsUpdatedPositions);
+      // Delay the parent callback to break the circular update
+      setTimeout(() => {
+        onFileReorder?.(fileAttachmentsUpdatedPositions);
+      }, 0);
+
       return fileAttachmentsUpdatedPositions;
     });
   };
