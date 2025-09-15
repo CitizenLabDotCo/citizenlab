@@ -1,20 +1,17 @@
 # frozen_string_literal: true
 
 class UserFieldsInSurveyService
-  def self.merge_idea_and_user_field_values(
+  def self.merge_user_fields_into_idea(
     current_user,
-    phase,
     idea
   )
-    if current_user && phase.pmethod.user_fields_in_form?
-      user_values = current_user.custom_field_values&.transform_keys do |key|
-        prefix_key(key)
-      end
+    return idea.custom_field_values unless current_user
 
-      idea.custom_field_values = user_values.merge(idea.custom_field_values)
+    user_values = current_user.custom_field_values&.transform_keys do |key|
+      prefix_key(key)
     end
 
-    idea
+    (user_values || {}).merge(idea.custom_field_values || {})
   end
 
   def self.add_user_fields_to_form(fields, participation_method, custom_form)
