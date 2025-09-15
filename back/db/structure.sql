@@ -1,3 +1,8 @@
+\restrict e5Xf66d3Xyvsx1N5mBkXZpjc8dToEg0rIyg7zQOmFkfSU0ZuqrbIDOXRklNZ3M2
+
+-- Dumped from database version 16.9 (Debian 16.9-1.pgdg110+1)
+-- Dumped by pg_dump version 16.10 (Debian 16.10-1.pgdg12+1)
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -51,6 +56,7 @@ ALTER TABLE IF EXISTS ONLY public.reactions DROP CONSTRAINT IF EXISTS fk_rails_c
 ALTER TABLE IF EXISTS ONLY public.idea_import_files DROP CONSTRAINT IF EXISTS fk_rails_c93392afae;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_deliveries DROP CONSTRAINT IF EXISTS fk_rails_c87ec11171;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_c76d81b062;
+ALTER TABLE IF EXISTS ONLY public.invites_imports DROP CONSTRAINT IF EXISTS fk_rails_c5f42488d1;
 ALTER TABLE IF EXISTS ONLY public.custom_field_matrix_statements DROP CONSTRAINT IF EXISTS fk_rails_c379cdcd80;
 ALTER TABLE IF EXISTS ONLY public.idea_images DROP CONSTRAINT IF EXISTS fk_rails_c349bb4ac3;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_c32c787647;
@@ -270,6 +276,7 @@ DROP INDEX IF EXISTS public.index_jobs_trackers_on_completed_at;
 DROP INDEX IF EXISTS public.index_invites_on_token;
 DROP INDEX IF EXISTS public.index_invites_on_inviter_id;
 DROP INDEX IF EXISTS public.index_invites_on_invitee_id;
+DROP INDEX IF EXISTS public.index_invites_imports_on_importer_id;
 DROP INDEX IF EXISTS public.index_internal_comments_on_rgt;
 DROP INDEX IF EXISTS public.index_internal_comments_on_parent_id;
 DROP INDEX IF EXISTS public.index_internal_comments_on_lft;
@@ -498,6 +505,7 @@ ALTER TABLE IF EXISTS ONLY public.maps_layers DROP CONSTRAINT IF EXISTS maps_lay
 ALTER TABLE IF EXISTS ONLY public.machine_translations_machine_translations DROP CONSTRAINT IF EXISTS machine_translations_machine_translations_pkey;
 ALTER TABLE IF EXISTS ONLY public.jobs_trackers DROP CONSTRAINT IF EXISTS jobs_trackers_pkey;
 ALTER TABLE IF EXISTS ONLY public.invites DROP CONSTRAINT IF EXISTS invites_pkey;
+ALTER TABLE IF EXISTS ONLY public.invites_imports DROP CONSTRAINT IF EXISTS invites_imports_pkey;
 ALTER TABLE IF EXISTS ONLY public.internal_comments DROP CONSTRAINT IF EXISTS internal_comments_pkey;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_sessions DROP CONSTRAINT IF EXISTS impact_tracking_sessions_pkey;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_salts DROP CONSTRAINT IF EXISTS impact_tracking_salts_pkey;
@@ -615,6 +623,7 @@ DROP TABLE IF EXISTS public.maps_map_configs;
 DROP TABLE IF EXISTS public.maps_layers;
 DROP TABLE IF EXISTS public.machine_translations_machine_translations;
 DROP TABLE IF EXISTS public.jobs_trackers;
+DROP TABLE IF EXISTS public.invites_imports;
 DROP TABLE IF EXISTS public.internal_comments;
 DROP TABLE IF EXISTS public.impact_tracking_salts;
 DROP TABLE IF EXISTS public.impact_tracking_pageviews;
@@ -2831,6 +2840,21 @@ CREATE TABLE public.internal_comments (
 
 
 --
+-- Name: invites_imports; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.invites_imports (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    job_type character varying,
+    result jsonb DEFAULT '{}'::jsonb,
+    completed_at timestamp(6) without time zone,
+    importer_id uuid,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: jobs_trackers; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4179,6 +4203,14 @@ ALTER TABLE ONLY public.impact_tracking_sessions
 
 ALTER TABLE ONLY public.internal_comments
     ADD CONSTRAINT internal_comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: invites_imports invites_imports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invites_imports
+    ADD CONSTRAINT invites_imports_pkey PRIMARY KEY (id);
 
 
 --
@@ -5830,6 +5862,13 @@ CREATE INDEX index_internal_comments_on_rgt ON public.internal_comments USING bt
 
 
 --
+-- Name: index_invites_imports_on_importer_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_invites_imports_on_importer_id ON public.invites_imports USING btree (importer_id);
+
+
+--
 -- Name: index_invites_on_invitee_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7469,6 +7508,14 @@ ALTER TABLE ONLY public.custom_field_matrix_statements
 
 
 --
+-- Name: invites_imports fk_rails_c5f42488d1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invites_imports
+    ADD CONSTRAINT fk_rails_c5f42488d1 FOREIGN KEY (importer_id) REFERENCES public.users(id);
+
+
+--
 -- Name: notifications fk_rails_c76d81b062; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7808,9 +7855,12 @@ ALTER TABLE ONLY public.ideas_topics
 -- PostgreSQL database dump complete
 --
 
+\unrestrict e5Xf66d3Xyvsx1N5mBkXZpjc8dToEg0rIyg7zQOmFkfSU0ZuqrbIDOXRklNZ3M2
+
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250915151900'),
 ('20250829154300'),
 ('20250808071349'),
 ('20250807120354'),
