@@ -3,18 +3,11 @@ import React from 'react';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
 
-import {
-  IFlatCustomField,
-  ICustomFieldInputType,
-  IFlatCustomFieldWithIndex,
-} from 'api/custom_fields/types';
+import { IFlatCustomField } from 'api/custom_fields/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import {
-  BuiltInKeyType,
-  FormBuilderConfig,
-} from 'components/FormBuilder/utils';
+import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -23,18 +16,10 @@ import messages from '../messages';
 import ToolboxItem from './ToolboxItem';
 
 interface BuiltInFieldsProps {
-  move: (indexA: number, indexB: number) => void;
   builderConfig: FormBuilderConfig;
-  addField: (inputType: ICustomFieldInputType) => void;
-  onSelectField: (field: IFlatCustomFieldWithIndex) => void;
 }
 
-const BuiltInFields = ({
-  move,
-  builderConfig,
-  addField,
-  onSelectField,
-}: BuiltInFieldsProps) => {
+const BuiltInFields = ({ builderConfig }: BuiltInFieldsProps) => {
   const cosponsorsEnabled = useFeatureFlag({ name: 'input_cosponsorship' });
   const { watch, trigger, setValue } = useFormContext();
   const { formatMessage } = useIntl();
@@ -52,7 +37,6 @@ const BuiltInFields = ({
     // TODO: Use code
 
     const fields = formCustomFields;
-    const fieldsLength = fields.length;
     const fieldIndex = fields.findIndex((f) => f.code === key);
     if (fieldIndex === -1) return;
     const field = fields[fieldIndex];

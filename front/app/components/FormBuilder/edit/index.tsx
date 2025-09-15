@@ -169,7 +169,7 @@ const FormEdit = ({
     reset,
   } = methods;
 
-  const { move, replace, insert } = useFieldArray({
+  const { replace, insert } = useFieldArray({
     name: 'customFields',
     control,
   });
@@ -420,8 +420,6 @@ const FormEdit = ({
                 <FormBuilderToolbox
                   onAddField={onAddField}
                   builderConfig={builderConfig}
-                  move={move}
-                  onSelectField={setSelectedField}
                 />
               </Box>
               <Box
