@@ -238,9 +238,11 @@ class SideFxIdeaService
   def update_user_profile(idea, user)
     return unless user && idea.participation_method_on_creation.user_fields_in_form?
 
+    user_prefix = UserFieldsInSurveyService.prefix
+
     user_values_from_idea = idea.custom_field_values
-      .select { |key, _value| key.start_with?(UserFieldsInSurveyService.prefix) }
-      .transform_keys { |key| key[2..] }
+      .select { |key, _value| key.start_with?(user_prefix) }
+      .transform_keys { |key| key[user_prefix.length..] }
 
     user.update!(custom_field_values: user.custom_field_values.merge(user_values_from_idea))
   end
