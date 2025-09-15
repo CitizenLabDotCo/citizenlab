@@ -1287,7 +1287,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.contactGovSuccessToAccessAddingAQuestion": "Możliwość dodawania lub edytowania pól użytkownika na poziomie fazy nie jest objęta Twoją obecną licencją. Skontaktuj się ze swoim GovSuccess Managerem, aby dowiedzieć się więcej na ten temat.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.customFieldNameOptions": "{customFieldName} opcje",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldStatus": "Status pola",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldsShownInSurveyForm": "Pytania te zostaną dodane jako ostatnia strona formularza ankiety, ponieważ opcja \"Pokaż pola w ankiecie?\" została wybrana w ustawieniach fazy.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.noDemographicQuestions": "Nie będą zadawane żadne pytania demograficzne.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optional": "Opcjonalnie",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optionalGroup1": "Opcjonalne - zawsze włączone, ponieważ odwołuje się do niego grupa",

@@ -1287,7 +1287,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.contactGovSuccessToAccessAddingAQuestion": "Muligheten til å legge til eller redigere brukerfelt på fasenivå er ikke inkludert i din nåværende lisens. Ta kontakt med din GovSuccess Manager for å lære mer om dette.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.customFieldNameOptions": "{customFieldName} alternativer",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldStatus": "Feltstatus",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldsShownInSurveyForm": "Disse spørsmålene legges til som siste side i undersøkelsesskjemaet, fordi \"Vis felt i undersøkelsen?\" er valgt i faseinnstillingene.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.noDemographicQuestions": "Ingen demografiske spørsmål vil bli stilt.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optional": "Valgfritt",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optionalGroup1": "Valgfritt - alltid aktivert fordi det refereres til av gruppen",

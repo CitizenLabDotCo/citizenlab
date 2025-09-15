@@ -1287,7 +1287,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.contactGovSuccessToAccessAddingAQuestion": "ਪੜਾਅ ਪੱਧਰ 'ਤੇ ਉਪਭੋਗਤਾ ਖੇਤਰਾਂ ਨੂੰ ਜੋੜਨ ਜਾਂ ਸੰਪਾਦਿਤ ਕਰਨ ਦੀ ਯੋਗਤਾ ਤੁਹਾਡੇ ਮੌਜੂਦਾ ਲਾਇਸੈਂਸ ਵਿੱਚ ਸ਼ਾਮਲ ਨਹੀਂ ਹੈ। ਇਸ ਬਾਰੇ ਹੋਰ ਜਾਣਨ ਲਈ ਆਪਣੇ GovSuccess ਮੈਨੇਜਰ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.customFieldNameOptions": "{customFieldName} ਵਿਕਲਪ",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldStatus": "ਖੇਤਰ ਦੀ ਸਥਿਤੀ",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldsShownInSurveyForm": "ਇਹਨਾਂ ਸਵਾਲਾਂ ਨੂੰ ਸਰਵੇਖਣ ਫਾਰਮ ਦੇ ਆਖਰੀ ਪੰਨੇ ਵਜੋਂ ਜੋੜਿਆ ਜਾਵੇਗਾ, ਕਿਉਂਕਿ 'ਸਰਵੇਖਣ ਵਿੱਚ ਖੇਤਰ ਦਿਖਾਓ?' ਨੂੰ ਪੜਾਅ ਸੈਟਿੰਗਾਂ ਵਿੱਚ ਚੁਣਿਆ ਗਿਆ ਹੈ।",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.noDemographicQuestions": "ਕੋਈ ਜਨਸੰਖਿਆ ਸੰਬੰਧੀ ਸਵਾਲ ਨਹੀਂ ਪੁੱਛੇ ਜਾਣਗੇ।",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optional": "ਵਿਕਲਪਿਕ",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optionalGroup1": "ਵਿਕਲਪਿਕ - ਹਮੇਸ਼ਾ ਸਮਰਥਿਤ ਹੈ ਕਿਉਂਕਿ ਸਮੂਹ ਦੁਆਰਾ ਹਵਾਲਾ ਦਿੱਤਾ ਗਿਆ ਹੈ",

@@ -1287,7 +1287,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.contactGovSuccessToAccessAddingAQuestion": "Iespēja pievienot vai rediģēt lietotāja laukus fāzes līmenī nav iekļauta jūsu pašreizējā licencē. Sazinieties ar savu GovSuccess menedžeri, lai uzzinātu vairāk par to.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.customFieldNameOptions": "{customFieldName} iespējas",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldStatus": "Lauka statuss",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldsShownInSurveyForm": "Šie jautājumi tiks pievienoti kā aptaujas veidlapas pēdējā lappuse, jo fāzes iestatījumos ir atlasīta opcija \"Rādīt laukus aptaujā?\".",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.noDemographicQuestions": "Demogrāfiskie jautājumi netiks uzdoti.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optional": "Pēc izvēles",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optionalGroup1": "Pēc izvēles - vienmēr iespējots, jo uz to atsaucas grupa.",

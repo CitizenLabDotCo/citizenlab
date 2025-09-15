@@ -1287,7 +1287,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.contactGovSuccessToAccessAddingAQuestion": "لا يتضمن ترخيصك الحالي إمكانية إضافة أو تحرير حقول المستخدم على مستوى المرحلة. تواصل مع مدير GovSuccess الخاص بك لمعرفة المزيد حول هذا الأمر.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.customFieldNameOptions": "{customFieldName} الخيارات",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldStatus": "حالة الحقل",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldsShownInSurveyForm": "سيتم إضافة هذه الأسئلة كصفحة أخيرة من نموذج الاستبيان، لأنه تم تحديد \"إظهار الحقول في الاستبيان؟\" في إعدادات المرحلة.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.noDemographicQuestions": "لن يتم طرح أي أسئلة ديموغرافية.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optional": "خياري",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optionalGroup1": "اختياري - يتم تمكينه دائمًا لأنه يتم الإشارة إليه بواسطة المجموعة",

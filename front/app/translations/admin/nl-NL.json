@@ -1287,7 +1287,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.contactGovSuccessToAccessAddingAQuestion": "De mogelijkheid om gebruikersvelden toe te voegen of te bewerken op faseniveau is niet inbegrepen in je huidige licentie. Neem contact op met je GovSuccess Manager voor meer informatie.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.customFieldNameOptions": "{customFieldName} opties",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldStatus": "Veldstatus",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldsShownInSurveyForm": "Deze vragen worden toegevoegd als laatste pagina van het vragenlijstformulier, omdat 'Toon velden in enquête?' is geselecteerd in de fase-instellingen.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.noDemographicQuestions": "Er worden geen demografische vragen gesteld.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optional": "Optioneel",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optionalGroup1": "Optioneel - altijd ingeschakeld omdat hiernaar wordt verwezen door groep",
