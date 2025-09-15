@@ -390,7 +390,7 @@ resource 'Ideas' do
     end
 
     get 'web_api/v1/ideas/draft/:phase_id' do
-      let(:phase) do 
+      let(:phase) do
         phase = create(:native_survey_phase, with_permissions: true)
         permission = phase.permissions.find_by(action: 'posting_idea')
         permission.global_custom_fields = false
