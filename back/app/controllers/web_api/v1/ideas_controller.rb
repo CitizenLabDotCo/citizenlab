@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::IdeasController < ApplicationController
+class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metrics/ClassLength
   include BlockingProfanity
 
   SIMILARITIES_LIMIT = 5
@@ -150,7 +150,7 @@ class WebApi::V1::IdeasController < ApplicationController
       (current_user && Idea.find_by(creation_phase_id: params[:phase_id], author: current_user, publication_status: 'draft')) ||
       Idea.new(project: phase.project, author: current_user, publication_status: 'draft')
 
-    # Merge custom field values from the user's profile 
+    # Merge custom field values from the user's profile
     # if user fields are presented in the idea form
     # AND the anonymity setting allows it
     if phase.pmethod.user_fields_in_form?
@@ -275,17 +275,15 @@ class WebApi::V1::IdeasController < ApplicationController
     CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
     input.set_manual_votes(update_params[:manual_votes_amount], current_user) if update_params[:manual_votes_amount]
 
-    if input.publication_status === 'published' || update_params[:publication_status] == 'published'
-      if UserFieldsInSurveyService.should_merge_user_fields_into_idea?(
+    if (input.publication_status == 'published' || update_params[:publication_status] == 'published') && UserFieldsInSurveyService.should_merge_user_fields_into_idea?(
+      current_user,
+      input.creation_phase,
+      input
+    )
+      update_params[:custom_field_values] = UserFieldsInSurveyService.merge_user_fields_into_idea(
         current_user,
-        input.creation_phase,
         input
       )
-        update_params[:custom_field_values] = UserFieldsInSurveyService.merge_user_fields_into_idea(
-          current_user,
-          input
-        )
-      end
     end
 
     update_errors = nil

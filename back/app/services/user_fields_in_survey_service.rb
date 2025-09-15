@@ -70,7 +70,7 @@ class UserFieldsInSurveyService
   # fields are collected during the registration process,
   # and if so, if we want to merge them into the idea.
   def self.should_merge_user_fields_into_idea?(
-    current_user, 
+    current_user,
     phase,
     idea
   )
