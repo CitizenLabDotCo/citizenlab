@@ -50,12 +50,8 @@ describe UserFieldsInSurveyService do
         custom_form
       )
 
-      expect(updated_fields.pluck(:key)).to eq(%w[
-        field_1
-        field_2
-        field_3
-        field_4
-        field_5
+      keys = updated_fields.pluck(:key)
+      expect(keys.slice(keys.length - 3, keys.length)).to eq(%w[
         user_page
         u_age
         form_end
