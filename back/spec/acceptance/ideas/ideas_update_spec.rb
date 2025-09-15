@@ -577,7 +577,6 @@ resource 'Ideas' do
     context 'in a native survey phase' do
       before_all { create(:idea_status_proposed) }
 
-      # let(:project) { create(:single_phase_native_survey_project) }
       let(:project) do
         project = create(:single_phase_native_survey_project, phase_attrs: {
           with_permissions: true,
