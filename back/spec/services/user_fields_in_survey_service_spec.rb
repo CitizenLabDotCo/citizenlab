@@ -17,7 +17,7 @@ describe UserFieldsInSurveyService do
       idea = build(:idea, custom_field_values: { 'satisfaction' => 'high' })
 
       merged_values = described_class.merge_user_fields_into_idea(
-        user, 
+        user,
         @phase,
         idea.custom_field_values
       )
@@ -34,7 +34,7 @@ describe UserFieldsInSurveyService do
       idea = build(:idea, custom_field_values: { 'satisfaction' => 'high' })
 
       merged_values = described_class.merge_user_fields_into_idea(
-        user, 
+        user,
         @phase,
         idea.custom_field_values
       )
