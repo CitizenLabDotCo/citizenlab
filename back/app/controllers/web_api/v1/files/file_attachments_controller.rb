@@ -31,6 +31,18 @@ class WebApi::V1::Files::FileAttachmentsController < ApplicationController
 
   def create
     file_attachment = Files::FileAttachment.new(create_params)
+
+    # We permit creation of files_files records before creation of an associated project (i.e. in project create/edit form).
+    # So we create the association here, by creating a files_projects record, if it doesn't already exist.
+    if file_attachment.attachable_type == 'Project' && file_attachment.attachable_id.present?
+      Files::FilesProject.find_or_create_by!(
+        file: file_attachment.file,
+        project_id: file_attachment.attachable_id
+      )
+
+      file_attachment.file.reload
+    end
+
     authorize(file_attachment)
 
     side_fx.before_create(file_attachment, current_user)

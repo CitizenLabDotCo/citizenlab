@@ -31,7 +31,9 @@ class WebApi::V1::Files::FilesController < ApplicationController
 
   def create
     file = Files::File.new(create_params)
-    file.files_projects.build(project_id: params[:file][:project])
+    project_id = params.dig(:file, :project)
+
+    file.files_projects.build(project_id: project_id) if project_id.present?
     authorize(file)
 
     side_fx.before_create(file, current_user)
