@@ -6,9 +6,10 @@ import { UserFieldsInFormFrontendDescriptor } from 'api/phases/types';
 
 import Warning from 'components/UI/Warning';
 
-import { useIntl } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
 import { EXPLANATION_MESSAGES } from './constants';
+import messages from './messages';
 
 interface Props {
   user_fields_in_form_frontend_descriptor: UserFieldsInFormFrontendDescriptor;
@@ -33,8 +34,14 @@ const UserFieldsInFormRadio = ({
           currentValue={value}
           label={
             <Text color="primary" m="0">
-              Include demographic questions in{' '}
-              <span style={{ fontWeight: 'bold' }}>registration flow</span>
+              <FormattedMessage
+                {...messages.includeDemographicQuestionsInRegFlow}
+                values={{
+                  b: (chunks) => (
+                    <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+                  ),
+                }}
+              />
             </Text>
           }
           onChange={onChange}
@@ -46,10 +53,14 @@ const UserFieldsInFormRadio = ({
           currentValue={value}
           label={
             <Text color="primary" m="0">
-              Include demographic questions as{' '}
-              <span style={{ fontWeight: 'bold' }}>
-                last page of the survey
-              </span>
+              <FormattedMessage
+                {...messages.includeDemographicQuestionsAsLastPageOfSurvey}
+                values={{
+                  b: (chunks) => (
+                    <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+                  ),
+                }}
+              />
             </Text>
           }
           onChange={onChange}
