@@ -4,11 +4,40 @@ require 'rails_helper'
 
 describe UserFieldsInSurveyService do
   describe '#merge_user_fields_into_idea' do
+    before do
+      @phase = create(:native_survey_phase, with_permissions: true)
+      permission = @phase.permissions.find_by(action: 'posting_idea')
+      permission.update!(global_custom_fields: false)
+      create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field, key: 'age'))
+      create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field, key: 'city'))
+    end
+
     it 'merges user custom fields into idea custom fields with prefixed keys' do
       user = build(:user, custom_field_values: { 'age' => 30, 'city' => 'New York' })
       idea = build(:idea, custom_field_values: { 'satisfaction' => 'high' })
 
-      merged_values = described_class.merge_user_fields_into_idea(user, idea.custom_field_values)
+      merged_values = described_class.merge_user_fields_into_idea(
+        user, 
+        @phase,
+        idea.custom_field_values
+      )
+
+      expect(merged_values).to eq({
+        'u_age' => 30,
+        'u_city' => 'New York',
+        'satisfaction' => 'high'
+      })
+    end
+
+    it 'does not include user fields that are not explicitly asked' do
+      user = build(:user, custom_field_values: { 'age' => 30, 'city' => 'New York', 'gender' => 'female' })
+      idea = build(:idea, custom_field_values: { 'satisfaction' => 'high' })
+
+      merged_values = described_class.merge_user_fields_into_idea(
+        user, 
+        @phase,
+        idea.custom_field_values
+      )
 
       expect(merged_values).to eq({
         'u_age' => 30,

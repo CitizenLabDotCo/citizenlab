@@ -3,15 +3,26 @@
 class UserFieldsInSurveyService
   def self.merge_user_fields_into_idea(
     current_user,
-    idea_custom_fields_values
+    phase,
+    idea_custom_field_values
   )
-    return idea_custom_fields_values unless current_user
+    return idea_custom_field_values unless current_user
+    return idea_custom_field_values if phase.blank?
 
-    user_values = current_user.custom_field_values&.transform_keys do |key|
-      prefix_key(key)
-    end
+    permission = phase.permissions.find_by(action: 'posting_idea')
+    permissions_custom_fields = permission.permissions_custom_fields
+    custom_fields = CustomField.where(id: permissions_custom_fields.select(:custom_field_id))
 
-    (user_values || {}).merge(idea_custom_fields_values || {})
+    allowed_keys = custom_fields.pluck(:key).uniq
+
+    user_values = current_user
+      .custom_field_values
+      .select { |key, _value| allowed_keys.include?(key) }
+      .transform_keys do |key|
+        prefix_key(key)
+      end
+
+    (user_values || {}).merge(idea_custom_field_values || {})
   end
 
   def self.add_user_fields_to_form(fields, participation_method, custom_form)

@@ -156,6 +156,7 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
     if phase.pmethod.user_fields_in_form?
       draft_idea.custom_field_values = UserFieldsInSurveyService.merge_user_fields_into_idea(
         current_user,
+        phase,
         draft_idea.custom_field_values
       )
     end
@@ -223,6 +224,7 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
       )
         input.custom_field_values = UserFieldsInSurveyService.merge_user_fields_into_idea(
           current_user,
+          phase_for_input,
           input.custom_field_values
         )
       end
@@ -275,13 +277,16 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
     CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
     input.set_manual_votes(update_params[:manual_votes_amount], current_user) if update_params[:manual_votes_amount]
 
+    creation_phase = input.creation_phase
+
     if (input.publication_status == 'published' || update_params[:publication_status] == 'published') && UserFieldsInSurveyService.should_merge_user_fields_into_idea?(
       current_user,
-      input.creation_phase,
+      creation_phase,
       input
     )
       update_params[:custom_field_values] = UserFieldsInSurveyService.merge_user_fields_into_idea(
         current_user,
+        creation_phase,
         update_params[:custom_field_values]
       )
     end
