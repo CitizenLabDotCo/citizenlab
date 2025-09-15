@@ -77,10 +77,7 @@ class UserFieldsInSurveyService
     return false unless current_user
 
     # Confirm that phase is survey phase
-    return false unless phase.participation_method == 'survey'
-
-    # Confirm that phase is active
-    return false unless phase.active?
+    return false unless phase.participation_method == 'native_survey'
 
     # Confirm that the idea belongs to the current user
     return false unless idea.author_id == current_user.id

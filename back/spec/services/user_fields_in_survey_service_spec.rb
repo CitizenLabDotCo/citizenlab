@@ -62,4 +62,24 @@ describe UserFieldsInSurveyService do
       ])
     end
   end
+
+  describe '#should_merge_user_fields_into_idea?' do
+    it 'returns true when all conditions are met' do
+      user = build(:user)
+      project = create(:single_phase_native_survey_project, phase_attrs: {
+        with_permissions: true,
+        user_fields_in_form: false,
+        anonymity: 'collect_all_data_available'
+      })
+      phase = project.phases.first
+
+      idea = build(:idea, author: user, custom_field_values: {})
+
+      permission = phase.permissions.find_by(action: 'posting_idea')
+      permission.update!(global_custom_fields: false)
+      create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field, key: 'age'))
+
+      expect(UserFieldsInSurveyService.should_merge_user_fields_into_idea?(user, phase, idea)).to be true
+    end
+  end
 end
