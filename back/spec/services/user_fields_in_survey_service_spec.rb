@@ -8,7 +8,7 @@ describe UserFieldsInSurveyService do
       user = build(:user, custom_field_values: { 'age' => 30, 'city' => 'New York' })
       idea = build(:idea, custom_field_values: { 'satisfaction' => 'high' })
 
-      merged_values = UserFieldsInSurveyService.merge_user_fields_into_idea(user, idea.custom_field_values)
+      merged_values = described_class.merge_user_fields_into_idea(user, idea.custom_field_values)
 
       expect(merged_values).to eq({
         'u_age' => 30,
@@ -44,21 +44,21 @@ describe UserFieldsInSurveyService do
       fields = custom_form.custom_fields
       participation_method = phase.pmethod
 
-      updated_fields = UserFieldsInSurveyService.add_user_fields_to_form(
-        fields, 
-        participation_method, 
+      updated_fields = described_class.add_user_fields_to_form(
+        fields,
+        participation_method,
         custom_form
       )
 
-      expect(updated_fields.pluck(:key)).to eq([
-        "field_1",
-        "field_2",
-        "field_3",
-        "field_4",
-        "field_5",
-        "user_page",
-        "u_age",
-        "form_end"
+      expect(updated_fields.pluck(:key)).to eq(%w[
+        field_1
+        field_2
+        field_3
+        field_4
+        field_5
+        user_page
+        u_age
+        form_end
       ])
     end
   end
@@ -79,7 +79,7 @@ describe UserFieldsInSurveyService do
       permission.update!(global_custom_fields: false)
       create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field, key: 'age'))
 
-      expect(UserFieldsInSurveyService.should_merge_user_fields_into_idea?(user, phase, idea)).to be true
+      expect(described_class.should_merge_user_fields_into_idea?(user, phase, idea)).to be true
     end
   end
 end

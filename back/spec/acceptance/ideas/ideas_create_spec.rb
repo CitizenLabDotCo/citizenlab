@@ -549,10 +549,10 @@ resource 'Ideas' do
         end
 
         describe 'Creating a native survey response when posting anonymously is not enabled' do
-          let(:project) do 
+          let(:project) do
             project = create(:single_phase_native_survey_project, phase_attrs: {
               with_permissions: true,
-              anonymity: 'collect_all_data_available' 
+              anonymity: 'collect_all_data_available'
             })
 
             phase = project.phases.first
@@ -560,7 +560,7 @@ resource 'Ideas' do
             permission = phase.permissions.find_by(action: 'posting_idea')
             permission.update!(global_custom_fields: false)
             permission.permissions_custom_fields = [
-              create(:permissions_custom_field, custom_field: create(:custom_field, key: 'age')),
+              create(:permissions_custom_field, custom_field: create(:custom_field, key: 'age'))
             ]
 
             project
