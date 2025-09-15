@@ -69,9 +69,9 @@ class UserFieldsInSurveyService
     'u_'
   end
 
-  # This function is used in the case where demographic
+  # This function is used to check if demographic
   # fields are collected during the registration process,
-  # but we want to merge them into the idea.
+  # and if so, if we want to merge them into the idea.
   def self.should_merge_user_fields_into_idea?(
     current_user, 
     phase,
@@ -79,19 +79,33 @@ class UserFieldsInSurveyService
   )
     return false unless current_user
 
+    # Confirm that phase is survey phase
+    return false unless phase.participation_method == 'survey'
+
+    # Confirm that phase is active
+    return false unless phase.active?
+
+    # Confirm that the idea belongs to the current user
+    return false unless idea.author_id == current_user.id
+
+    permission = phase.permissions.find_by(action: 'posting_idea')
+    return false unless permission
+
     # Confirm that user fields are asked in registration process
     # If they are asked in the form, we know that they won't be asked
     # in the registration process
     return false if phase.pmethod.user_fields_in_form?
 
-    # Confirm that anonymity = 'collect_all_data_available' or 'demographics_only'
-    # TODO
+    # Confirm that user fields are asked at all
+    requirements = Permissions::UserRequirementsService.new.requirements(permission, current_user)
+    return false unless requirements[:custom_fields]
+    return false if requirements[:custom_fields].empty?
 
-    # Use permissions service to check if user fields are asked
-    # TODO
+    # Confirm that anonymity = 'collect_all_data_available' or 'demographics_only'
+    return false if phase.anonymity == 'full_anonymity'
 
     # Finally, confirm that the idea doesn't already have user fields
-    # TODO
+    return false if idea.custom_field_values&.keys&.any? { |key| key.start_with?(prefix) }
 
     true
   end
