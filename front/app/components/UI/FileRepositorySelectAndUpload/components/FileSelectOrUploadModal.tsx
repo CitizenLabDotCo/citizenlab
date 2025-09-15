@@ -47,7 +47,6 @@ const FileSelectOrUploadModal = ({
 
   const { data: files } = useFiles({
     project: projectId ? [projectId] : [],
-    enabled: !!projectId,
   });
 
   // Generate options for the file select dropdown

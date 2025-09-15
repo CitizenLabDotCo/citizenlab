@@ -26,7 +26,6 @@ const useFiles = ({
   sort,
   search,
   deleted,
-  enabled = true,
 }: GetFilesParameters) => {
   const queryParameters: QueryParameters = {
     'page[number]': pageNumber ?? 1,
@@ -41,7 +40,7 @@ const useFiles = ({
   return useQuery<IFiles, CLErrors, IFiles, FilesKeys>({
     queryKey: filesKeys.list(queryParameters),
     queryFn: () => fetchFiles(queryParameters),
-    enabled,
+    enabled: project?.length !== 0, // only run if project array is non-empty
   });
 };
 

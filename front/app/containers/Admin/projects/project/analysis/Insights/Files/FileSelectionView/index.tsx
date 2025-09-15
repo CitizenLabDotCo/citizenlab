@@ -27,7 +27,6 @@ const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
 
   const { data: files } = useFiles({
     project: projectId ? [projectId] : [],
-    enabled: !!projectId,
   }); // TODO: Add a whitelisting mechanism to only fetch files that can be added to an analysis.
 
   const { formatMessage } = useIntl();
