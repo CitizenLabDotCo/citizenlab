@@ -156,7 +156,7 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
     if phase.pmethod.user_fields_in_form?
       draft_idea.custom_field_values = UserFieldsInSurveyService.merge_user_fields_into_idea(
         current_user,
-        draft_idea
+        draft_idea.custom_field_values
       )
     end
 
@@ -223,7 +223,7 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
       )
         input.custom_field_values = UserFieldsInSurveyService.merge_user_fields_into_idea(
           current_user,
-          input
+          input.custom_field_values
         )
       end
     end
@@ -282,7 +282,7 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
     )
       update_params[:custom_field_values] = UserFieldsInSurveyService.merge_user_fields_into_idea(
         current_user,
-        input
+        update_params[:custom_field_values]
       )
     end
 

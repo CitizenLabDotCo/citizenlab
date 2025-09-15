@@ -8,7 +8,7 @@ describe UserFieldsInSurveyService do
       user = build(:user, custom_field_values: { 'age' => 30, 'city' => 'New York' })
       idea = build(:idea, custom_field_values: { 'satisfaction' => 'high' })
 
-      merged_values = UserFieldsInSurveyService.merge_user_fields_into_idea(user, idea)
+      merged_values = UserFieldsInSurveyService.merge_user_fields_into_idea(user, idea.custom_field_values)
 
       expect(merged_values).to eq({
         'u_age' => 30,

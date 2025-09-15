@@ -3,15 +3,15 @@
 class UserFieldsInSurveyService
   def self.merge_user_fields_into_idea(
     current_user,
-    idea
+    idea_custom_fields_values
   )
-    return idea.custom_field_values unless current_user
+    return idea_custom_fields_values unless current_user
 
     user_values = current_user.custom_field_values&.transform_keys do |key|
       prefix_key(key)
     end
 
-    (user_values || {}).merge(idea.custom_field_values || {})
+    (user_values || {}).merge(idea_custom_fields_values || {})
   end
 
   def self.add_user_fields_to_form(fields, participation_method, custom_form)
