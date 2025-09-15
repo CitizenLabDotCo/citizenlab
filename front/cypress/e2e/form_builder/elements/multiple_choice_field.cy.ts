@@ -46,7 +46,7 @@ describe('Form builder multiple choice choose multiple component', () => {
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.dataCy('e2e-multiple-choice');
     cy.wait(2000);
-    cy.dataCy('e2e-multiple-choice').click();
+    cy.addItemToFormBuilder('#toolbox_multiselect');
     cy.get('#e2e-title-multiloc').type('Question title 2', { force: true });
     cy.get('#e2e-option-input-0').type('Option 1 question 2', { force: true });
     cy.get('form').submit();
@@ -62,7 +62,7 @@ describe('Form builder multiple choice choose multiple component', () => {
 
     cy.dataCy('e2e-multiple-choice');
     cy.wait(2000);
-    cy.dataCy('e2e-multiple-choice').click();
+    cy.addItemToFormBuilder('#toolbox_multiselect');
 
     cy.dataCy('e2e-other-option-toggle').find('input').click({ force: true });
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
@@ -94,7 +94,7 @@ describe('Form builder multiple choice choose multiple component', () => {
 
     cy.dataCy('e2e-multiple-choice');
     cy.wait(2000);
-    cy.dataCy('e2e-multiple-choice').click();
+    cy.addItemToFormBuilder('#toolbox_multiselect');
 
     cy.dataCy('e2e-other-option-toggle').find('input').click({ force: true });
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });

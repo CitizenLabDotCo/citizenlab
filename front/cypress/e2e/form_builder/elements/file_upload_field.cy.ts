@@ -52,7 +52,7 @@ describe('Form builder file upload field', () => {
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.dataCy('e2e-file-upload-field');
     cy.wait(2000);
-    cy.dataCy('e2e-file-upload-field').click({ force: true });
+    cy.addItemToFormBuilder('#toolbox_file_upload');
 
     // Save the survey
     cy.get('form').submit();
