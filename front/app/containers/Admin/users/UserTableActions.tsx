@@ -18,6 +18,7 @@ import { IGroupMemberships } from 'api/group_memberships/types';
 import useAddMembership from 'api/group_memberships/useAddMembership';
 import { MembershipType } from 'api/groups/types';
 import useGroups from 'api/groups/useGroups';
+import useAuthUser from 'api/me/useAuthUser';
 import usersKeys from 'api/users/keys';
 
 import { API_PATH } from 'containers/App/constants';
@@ -30,6 +31,7 @@ import SearchInput from 'components/UI/SearchInput';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
+import { isAdmin } from 'utils/permissions/roles';
 import { requestBlob } from 'utils/requestBlob';
 
 import events, { MembershipAdd } from './events';
@@ -137,6 +139,7 @@ interface Props {
   deleteUsersFromGroup?: (userIds: string[]) => void;
   onSearch: (newValue: string) => void;
   usersDataLength: number;
+  projectId?: string;
 }
 
 const UserTableActions = ({
@@ -149,15 +152,18 @@ const UserTableActions = ({
   groupType,
   onSearch,
   usersDataLength,
+  projectId,
 }: Props) => {
   const queryClient = useQueryClient();
   const { formatDate, formatMessage } = useIntl();
   const { data: manualGroups } = useGroups({ membershipType: 'manual' });
   const { mutateAsync: addGroupMembership } = useAddMembership();
+  const { data: authUser } = useAuthUser();
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const [selectedGroupIds, setSelectedGroupIds] = useState<string[]>([]);
   const [processing, setProcessing] = useState(false);
   const showSelectAndExport = usersDataLength !== 0;
+  const authUserIsAdmin = authUser ? isAdmin(authUser) : false;
 
   const toggleAllUsers = () => {
     trackEventByName(tracks.toggleAllUsers);
@@ -171,8 +177,9 @@ const UserTableActions = ({
     const fileType =
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
     const group = groupId;
+    const project = projectId;
     const users = isArray(usersIds) ? usersIds : null;
-    const queryParameters = omitBy({ group, users }, isNil);
+    const queryParameters = omitBy({ group, project, users }, isNil);
     const blob = await requestBlob(apiPath, fileType, queryParameters);
     saveAs(
       blob,
@@ -333,7 +340,7 @@ const UserTableActions = ({
             >
               <FormattedMessage {...messages[exportType]} />
             </ButtonWithLink>
-            {selectedUsers !== 'none' && manualGroups && (
+            {selectedUsers !== 'none' && manualGroups && authUserIsAdmin && (
               <ActionButtonWrapper>
                 <ButtonWithLink
                   className="e2e-move-users"
@@ -394,19 +401,21 @@ const UserTableActions = ({
               </ActionButtonWrapper>
             )}
 
-            {groupType === 'manual' && selectedUsers !== 'none' && (
-              <ButtonWithLink
-                onClick={handleGroupsDeleteClick}
-                className="hasLeftMargin"
-                buttonStyle="admin-dark-text"
-                whiteSpace="wrap"
-                icon="delete"
-                iconColor={colors.textPrimary}
-                fontSize={`${fontSizes.s}px`}
-              >
-                <FormattedMessage {...messages.membershipDelete} />
-              </ButtonWithLink>
-            )}
+            {groupType === 'manual' &&
+              selectedUsers !== 'none' &&
+              authUserIsAdmin && (
+                <ButtonWithLink
+                  onClick={handleGroupsDeleteClick}
+                  className="hasLeftMargin"
+                  buttonStyle="admin-dark-text"
+                  whiteSpace="wrap"
+                  icon="delete"
+                  iconColor={colors.textPrimary}
+                  fontSize={`${fontSizes.s}px`}
+                >
+                  <FormattedMessage {...messages.membershipDelete} />
+                </ButtonWithLink>
+              )}
           </>
         )}
         <SearchInput

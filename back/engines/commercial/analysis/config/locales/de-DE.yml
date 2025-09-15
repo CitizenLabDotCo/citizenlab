@@ -9,7 +9,7 @@ de:
       range_max: "%{max} oder weniger"
       tag_vs_bin:
         inputs: "Personen, die auf „%{question}“ mit „%{answer}“ antworten, posten %{percent_more_less} häufiger in „%{tag}“."
-        likes: "Personen, die mit „%{answer}“ auf „%{question}“ antworten, mögen %{percent_more_less} -Beiträge in „%{tag}“ überdurchschnittlich."
+        likes: "Personen, die mit „%{answer}“ auf „%{question}“ antworten, mögen %{percent_more_less} Beiträge getaggt mit „%{tag}“ als der Durchschnitt."
         dislikes: "Personen, die mit „%{answer}“ auf „%{question}“ antworten, mögen %{percent_more_less} Beiträge in „%{tag}“ als der Durchschnitt."
         participants: "Personen, die mit „%{answer}“ auf „%{question}“ antworten, nehmen %{percent_more_less} häufiger an „%{tag}“ teil als der Durchschnitt."
       bin_vs_bin:
