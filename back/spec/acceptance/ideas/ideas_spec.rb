@@ -390,7 +390,16 @@ resource 'Ideas' do
     end
 
     get 'web_api/v1/ideas/draft/:phase_id' do
-      let(:phase) { create(:native_survey_phase, with_permissions: true) }
+      let(:phase) do 
+        phase = create(:native_survey_phase, with_permissions: true)
+        permission = phase.permissions.find_by(action: 'posting_idea')
+        permission.global_custom_fields = false
+        permission.permissions_custom_fields = [
+          create(:permissions_custom_field, custom_field: create(:custom_field, key: 'gender'))
+        ]
+
+        phase
+      end
       let(:phase_id) { phase.id }
 
       context 'idea authored by user' do
@@ -428,7 +437,6 @@ resource 'Ideas' do
             )
 
             permission.permitted_by = 'everyone'
-            permission.permissions_custom_fields = [create(:permissions_custom_field)]
             permission.save!
 
             @user.update!(custom_field_values: { 'gender' => 'male' })
