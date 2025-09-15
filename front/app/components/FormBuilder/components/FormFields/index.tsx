@@ -8,10 +8,7 @@ import {
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 
-import {
-  builtInFieldKeys,
-  FormBuilderConfig,
-} from 'components/FormBuilder/utils';
+import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 import {
   detectConflictsByPage,
@@ -48,9 +45,7 @@ const FormFields = ({
   const formCustomFields: IFlatCustomField[] = watch('customFields');
 
   const shouldShowField = (field: IFlatCustomField) => {
-    console.log('field', field.code);
     if (!!field.code) {
-      console.log('enabled', field.enabled);
       return field.enabled;
     }
     return true;
@@ -109,6 +104,7 @@ const FormFields = ({
                 }
                 // We don't want to allow dropping on the grouping (page) with individualPageFieldCodes
                 // fields (e.g. title, description for now). These should be on their own pages
+                // TODO: User constraints?
                 const isDropDisabled = grouping.questions.some((question) =>
                   individualPageFieldCodes.includes(question.code || '')
                 );
