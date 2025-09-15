@@ -577,7 +577,23 @@ resource 'Ideas' do
     context 'in a native survey phase' do
       before_all { create(:idea_status_proposed) }
 
-      let(:project) { create(:single_phase_native_survey_project) }
+      # let(:project) { create(:single_phase_native_survey_project) }
+      let(:project) do 
+          project = create(:single_phase_native_survey_project, phase_attrs: {
+            with_permissions: true,
+            anonymity: 'collect_all_data_available' 
+          })
+
+          phase = project.phases.first
+
+          permission = phase.permissions.find_by(action: 'posting_idea')
+          permission.update!(global_custom_fields: false)
+          permission.permissions_custom_fields = [
+            create(:permissions_custom_field, custom_field: create(:custom_field, key: 'age')),
+          ]
+
+          project
+        end
       let(:author) { create(:user) }
       let(:input) { create(:native_survey_response, project: project, author: author) }
 
