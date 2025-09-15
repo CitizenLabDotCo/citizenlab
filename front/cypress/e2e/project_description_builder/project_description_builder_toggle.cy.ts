@@ -64,9 +64,11 @@ describe('Project description builder toggle', () => {
     cy.wait(2000);
     cy.scrollTo('bottom');
 
-    cy.get('#e2e-project-file-uploader').selectFile(
-      'cypress/fixtures/example.pdf'
-    );
+    // Open the file upload modal
+    cy.get('#e2e-open-file-upload-modal-button').click();
+    cy.get('#e2e-file-upload-input').should('exist');
+
+    cy.get('#e2e-file-upload-input').selectFile('cypress/fixtures/example.pdf');
     cy.wait(2000);
 
     // Submit project
@@ -106,8 +108,11 @@ describe('Project description builder toggle', () => {
     cy.wait(2000);
     cy.scrollTo('bottom');
 
-    cy.dataCy('e2e-project-file-uploader').should('exist');
-    cy.dataCy('e2e-project-file-uploader').selectFile(
+    // Open the file upload modal
+    cy.get('#e2e-open-file-upload-modal-button').click();
+    cy.get('#e2e-file-upload-input').should('exist');
+
+    cy.dataCy('e2e-file-upload-input').selectFile(
       'cypress/fixtures/example.pdf'
     );
     cy.contains('example.pdf').should('exist');

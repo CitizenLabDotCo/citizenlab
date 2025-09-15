@@ -19,7 +19,6 @@ import FileInput from '../../FileUploader/FileInput';
 import messages from './messages';
 
 type Props = {
-  id: string;
   onFileAdd: (fileToAdd: UploadFile) => void;
   onFileAttach?: (fileToAttach: IFileData) => void;
   fileAttachments?: IFileAttachmentData[];
@@ -29,7 +28,6 @@ type Props = {
 };
 
 const FileSelectOrUploadModal = ({
-  id,
   onFileAdd,
   onFileAttach,
   maxSizeMb,
@@ -77,6 +75,7 @@ const FileSelectOrUploadModal = ({
     <>
       <Button
         onClick={() => setModalOpen(true)}
+        id={'e2e-open-file-upload-modal-button'}
         buttonStyle="secondary"
         icon="file-add"
         disabled={isDisabled}
@@ -121,7 +120,7 @@ const FileSelectOrUploadModal = ({
 
           <FileInput
             onAdd={handleFileOnAdd}
-            id={id}
+            id={'e2e-file-upload-input'}
             multiple={false}
             maxSizeMb={maxSizeMb}
             dataCy={dataCy}

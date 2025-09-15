@@ -122,7 +122,6 @@ const FileRepositorySelectAndUpload = ({
     >
       <FileSelectOrUploadModal
         fileAttachments={fileAttachments}
-        id={id}
         onFileAdd={handleFileOnAdd}
         onFileAttach={handleFileOnAttach}
         maxSizeMb={maxSizeMb}

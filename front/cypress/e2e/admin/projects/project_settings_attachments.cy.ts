@@ -24,7 +24,7 @@ describe('Project attachments settings', () => {
     it('File attachments can be added, reordered, and saved correctly', () => {
       cy.setConsentAndAdminLoginCookies();
 
-      cy.intercept(`**/projects/${projectId}/files`).as('saveProjectFiles');
+      cy.intercept(`**/files`).as('saveProjectFiles');
 
       // Visit the project settings page
       cy.visit(`admin/projects/${projectId}/settings`);
@@ -34,15 +34,20 @@ describe('Project attachments settings', () => {
       cy.wait(4000);
       cy.scrollTo('bottom');
 
+      // Open the file upload modal
+      cy.get('#e2e-open-file-upload-modal-button').click();
+      cy.get('#e2e-file-upload-input').should('exist');
       // Attach a project file
-      cy.get('#e2e-project-file-uploader').selectFile(
+      cy.get('#e2e-file-upload-input').selectFile(
         'cypress/fixtures/example.pdf'
       );
       // Wait for the file to be visible
       cy.contains('example.pdf').should('be.visible');
 
       // Attach another project file
-      cy.get('#e2e-project-file-uploader').selectFile(
+      cy.get('#e2e-open-file-upload-modal-button').click();
+      cy.get('#e2e-file-upload-input').should('exist');
+      cy.get('#e2e-file-upload-input').selectFile(
         'cypress/fixtures/example.txt'
       );
       // Wait for the file to be visible
