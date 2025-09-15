@@ -65,7 +65,7 @@ describe UserFieldsInSurveyService do
 
   describe '#should_merge_user_fields_into_idea?' do
     it 'returns true when all conditions are met' do
-      user = build(:user)
+      user = build(:user, { custom_field_values: { age: 30 } })
       project = create(:single_phase_native_survey_project, phase_attrs: {
         with_permissions: true,
         user_fields_in_form: false,

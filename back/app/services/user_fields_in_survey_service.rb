@@ -91,8 +91,9 @@ class UserFieldsInSurveyService
     permission = phase.permissions.find_by(action: 'posting_idea')
     return false unless permission
 
-    requirements = Permissions::UserRequirementsService.new.requirements(permission, current_user)
+    requirements = Permissions::UserRequirementsService.new.requirements(permission, nil)
     return false unless requirements[:custom_fields]
+
     return false if requirements[:custom_fields].empty?
 
     # Confirm that anonymity = 'collect_all_data_available' or 'demographics_only'
