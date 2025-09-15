@@ -175,7 +175,7 @@ module ParticipationMethod
         {
           value: false,
           locked: true,
-          explanation: 'with_these_settings_can_only_ask_demographic_fields_in_registration_flow_and_they_wont_be_stored'
+          explanation: 'with_these_settings_can_only_ask_demographic_fields_in_registration_flow'
         }
       else
         {

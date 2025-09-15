@@ -72,12 +72,11 @@ export default defineMessages({
       defaultMessage:
         'When "Authentication" is set to "None", demographic questions can only be asked as the last page of the survey.',
     },
-  with_these_settings_can_only_ask_demographic_fields_in_registration_flow_and_they_wont_be_stored:
-    {
-      id: 'app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow_and_they_wont_be_stored',
-      defaultMessage:
-        'With the current settings, demographic questions can only be asked in the registration flow and the answers will not be stored in any way!',
-    },
+  with_these_settings_can_only_ask_demographic_fields_in_registration_flow: {
+    id: 'app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow',
+    defaultMessage:
+      'With the current combination of "Authentication" and "User data collection" settings, demographic questions can only be asked in the registration flow.',
+  },
   includeDemographicQuestionsInRegFlow: {
     id: 'app.components.admin.ActionForm.Fields.includeDemographicQuestionsIn1',
     defaultMessage: 'Include demographic questions in <b>registration flow</b>',
