@@ -57,7 +57,7 @@ describe('Project description builder toggle', () => {
 
   it('shows original description by default along with any attachments if project description builder is not used', () => {
     cy.intercept(`**/projects/${projectId}`).as('saveProject');
-    cy.intercept(`**/projects/${projectId}/files`).as('saveProjectFiles');
+    cy.intercept(`**/files`).as('saveProjectFiles');
 
     // Attach a project file
     cy.visit(`admin/projects/${projectId}/settings`);
@@ -98,7 +98,7 @@ describe('Project description builder toggle', () => {
 
   it('shows attachments added to the project after description added using project description builder', () => {
     cy.intercept(`**/projects/${projectId}`).as('saveProject');
-    cy.intercept(`**/projects/${projectId}/files`).as('saveProjectFiles');
+    cy.intercept(`**/files`).as('saveProjectFiles');
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveProjectDescriptionBuilder'
     );
@@ -109,12 +109,11 @@ describe('Project description builder toggle', () => {
     cy.scrollTo('bottom');
 
     // Open the file upload modal
+    cy.get('#e2e-open-file-upload-modal-button').should('exist');
     cy.get('#e2e-open-file-upload-modal-button').click();
     cy.get('#e2e-file-upload-input').should('exist');
 
-    cy.dataCy('e2e-file-upload-input').selectFile(
-      'cypress/fixtures/example.pdf'
-    );
+    cy.get('#e2e-file-upload-input').selectFile('cypress/fixtures/example.pdf');
     cy.contains('example.pdf').should('exist');
     cy.wait(2000);
 
