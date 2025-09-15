@@ -79,12 +79,12 @@ export default defineMessages({
         'With the current settings, demographic questions can only be asked in the registration flow and the answers will not be stored in any way!',
     },
   includeDemographicQuestionsInRegFlow: {
-    id: 'app.components.admin.ActionForm.Fields.includeDemographicQuestionsIn',
-    defaultMessage: 'Include demographic questions in <>registration flow<>',
+    id: 'app.components.admin.ActionForm.Fields.includeDemographicQuestionsIn1',
+    defaultMessage: 'Include demographic questions in <b>registration flow</b>',
   },
   includeDemographicQuestionsAsLastPageOfSurvey: {
-    id: 'app.components.admin.ActionForm.Fields.includeDemographicQuestionsAsLastPageOfSurvey',
+    id: 'app.components.admin.ActionForm.Fields.includeDemographicQuestionsAsLastPageOfSurvey1',
     defaultMessage:
-      'Include demographic questions as <>last page of the survey<>',
+      'Include demographic questions as <b>last page of the survey</b>',
   },
 });

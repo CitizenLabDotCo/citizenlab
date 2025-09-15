@@ -6,8 +6,8 @@ export default defineMessages({
     defaultMessage: 'User data collection',
   },
   collectionDemographicsAndLinkUserAccount: {
-    id: 'app.components.admin.ActionForm.DataCollection.collectionDemographicsAndLinkUserAccount',
-    defaultMessage: 'collect demographics and link user account:',
+    id: 'app.components.admin.ActionForm.DataCollection.collectionDemographicsAndLinkUserAccount1',
+    defaultMessage: 'Collect demographics and link user account:',
   },
   collectAndLink1: {
     id: 'app.components.admin.ActionForm.DataCollection.collectAndLink1',
