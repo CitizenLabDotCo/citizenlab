@@ -30,7 +30,7 @@ export const Drag = ({
     <Draggable draggableId={id} index={index} isDragDisabled={isDragDisabled}>
       {(provided, snapshot) => {
         return (
-          <div ref={provided.innerRef} {...provided.draggableProps}>
+          <div id={id} ref={provided.innerRef} {...provided.draggableProps}>
             <div ref={draggableRef} {...provided.dragHandleProps}>
               <Box
                 border={
