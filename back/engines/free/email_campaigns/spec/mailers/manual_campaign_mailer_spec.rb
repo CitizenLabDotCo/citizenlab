@@ -18,16 +18,16 @@ RSpec.describe EmailCampaigns::ManualCampaignMailer do
     context 'for a global manual campaign' do
       let(:campaign) do
         EmailCampaigns::Campaigns::Manual.create!(
-        subject_multiloc: { 'en' => 'Title' },
-        body_multiloc: {
-          'en' => '
+          subject_multiloc: { 'en' => 'Title' },
+          body_multiloc: {
+            'en' => '
             <h2>{{ first_name }} {{ last_name }}</h2>
             <p> Here\'s your test email</p>
           '
-        },
-        sender: 'organization'
-      )
-    end
+          },
+          sender: 'organization'
+        )
+      end
 
       include_examples 'campaign delivery tracking'
 
