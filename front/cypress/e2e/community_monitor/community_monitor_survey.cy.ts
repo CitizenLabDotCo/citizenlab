@@ -143,9 +143,9 @@ describe('Edit community monitor survey', () => {
     cy.visit(communityMonitorEditSurveyUrl);
 
     // Add a sentiment question
-    cy.dataCy('e2e-sentiment');
+    cy.addItemToFormBuilder('#toolbox_sentiment_linear_scale');
     cy.wait(2000);
-    cy.dataCy('e2e-sentiment').click();
+    cy.addItemToFormBuilder('#toolbox_sentiment_linear_scale');
 
     cy.get('#e2e-title-multiloc').type('New custom question', { force: true });
 
@@ -179,7 +179,7 @@ describe('Edit community monitor survey', () => {
     // Add a sentiment question
     cy.dataCy('e2e-sentiment');
     cy.wait(2000);
-    cy.dataCy('e2e-sentiment').click();
+    cy.addItemToFormBuilder('#toolbox_sentiment_linear_scale');
 
     cy.get('#e2e-title-multiloc').type('New custom question', { force: true });
 

@@ -9,6 +9,7 @@ type DragProps = {
   children: React.ReactNode;
   useBorder?: boolean;
   isDragDisabled?: boolean;
+  keepElementsWhileDragging?: boolean;
 };
 
 export const Drag = ({
@@ -17,7 +18,9 @@ export const Drag = ({
   useBorder = true,
   children,
   isDragDisabled = false,
+  keepElementsWhileDragging = false,
 }: DragProps) => {
+  const [isDragging, setIsDragging] = React.useState(false);
   const draggableRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -27,24 +30,32 @@ export const Drag = ({
   }, []);
 
   return (
-    <Draggable draggableId={id} index={index} isDragDisabled={isDragDisabled}>
-      {(provided, snapshot) => {
-        return (
-          <div id={id} ref={provided.innerRef} {...provided.draggableProps}>
-            <div ref={draggableRef} {...provided.dragHandleProps}>
-              <Box
-                border={
-                  snapshot.isDragging && useBorder
-                    ? `1px solid ${colors.teal}`
-                    : undefined
-                }
-              >
-                {children}
-              </Box>
+    <>
+      {isDragging && keepElementsWhileDragging && <>{children}</>}
+      <Draggable draggableId={id} index={index} isDragDisabled={isDragDisabled}>
+        {(provided, snapshot) => {
+          // Update isDragging state based on the actual drag status
+          React.useEffect(() => {
+            setIsDragging(snapshot.isDragging);
+          }, [snapshot.isDragging]);
+
+          return (
+            <div id={id} ref={provided.innerRef} {...provided.draggableProps}>
+              <div ref={draggableRef} {...provided.dragHandleProps}>
+                <Box
+                  border={
+                    snapshot.isDragging && useBorder
+                      ? `1px solid ${colors.teal}`
+                      : undefined
+                  }
+                >
+                  {children}
+                </Box>
+              </div>
             </div>
-          </div>
-        );
-      }}
-    </Draggable>
+          );
+        }}
+      </Draggable>
+    </>
   );
 };

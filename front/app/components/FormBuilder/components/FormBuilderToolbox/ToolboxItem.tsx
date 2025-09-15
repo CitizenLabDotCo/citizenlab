@@ -67,6 +67,7 @@ const ToolboxItem = ({
       index={dragIndex}
       useBorder={false}
       isDragDisabled={disabled}
+      keepElementsWhileDragging={true}
     >
       <Tooltip
         placement={'left-start'}
