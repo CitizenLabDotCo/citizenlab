@@ -97,7 +97,7 @@ module EmailCampaigns
       commands = if campaign.manual?
         generate_commands(campaign, recipient)
       else
-        [campaign.preview_command(recipient)].compact
+        [campaign.preview_command(recipient, campaign.context)].compact
       end
       return unless commands.any?
 
@@ -110,7 +110,7 @@ module EmailCampaigns
       command = if campaign.manual?
         generate_commands(campaign, recipient).first
       else
-        campaign.preview_command(recipient)
+        campaign.preview_command(recipient, campaign.context)
       end
       return {} unless command
 

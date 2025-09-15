@@ -8,16 +8,21 @@ import {
   wrapperPadding,
 } from './tabsStyleConstants';
 
-const TabsPageLayout = styled.div`
+const TabsPageLayout = styled.div<{ paddingTop?: number }>`
   width: 100%;
   margin-bottom: 60px;
   padding: ${wrapperPadding}px;
-  padding-top: ${wrapperPadding +
-  tabLineHeight +
-  tabPadding +
-  tabPadding +
-  tabBorderSize +
-  activeBorderSize}px;
+  padding-top: ${({ paddingTop }) =>
+    paddingTop !== undefined
+      ? `${paddingTop}px`
+      : `${
+          wrapperPadding +
+          tabLineHeight +
+          tabPadding +
+          tabPadding +
+          tabBorderSize +
+          activeBorderSize
+        }px`};
   max-width: 1400px;
   margin: 0 auto;
 

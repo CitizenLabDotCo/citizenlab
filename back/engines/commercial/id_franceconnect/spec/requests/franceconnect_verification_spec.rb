@@ -5,7 +5,6 @@ require 'rspec_api_documentation/dsl'
 
 describe 'franceconnect verification' do
   before do
-    @user = create(:user)
     OmniAuth.config.test_mode = true
     OmniAuth.config.mock_auth[:franceconnect] = OmniAuth::AuthHash.new(
       { 'provider' => 'franceconnect',
@@ -51,6 +50,7 @@ describe 'franceconnect verification' do
       allowed: true,
       enabled: true,
       environment: 'integration',
+      version: 'v2',
       identifier: 'fakeid',
       secret: 'fakesecret',
       scope: %w[given_name family_name email]
@@ -92,5 +92,24 @@ describe 'franceconnect verification' do
       hashed_uid: '84d610ebae19b5e09aa5621e006746c4cd568bec352e1d98d48643e6765a82e7'
     })
     expect(cookies[:cl2_jwt]).to be_present
+  end
+
+  it 'successfully verifies an existing user' do
+    user = create(:user, first_name: 'Jean', last_name: 'Dupont')
+    token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
+    get "/auth/franceconnect?sso_verification=true&token=#{token}&random-passthrough-param=somevalue&verification_pathname=/yipie"
+    follow_redirect!
+
+    expect(response).to redirect_to('/en/yipie?sso_verification=true&random-passthrough-param=somevalue&verification_success=true')
+    expect(user.reload).to have_attributes({
+      verified: true,
+      first_name: 'Angela Claire Louise',
+      last_name: 'Dubois'
+    })
+    expect(user.verifications.first).to have_attributes({
+      method_name: 'franceconnect',
+      user_id: user.id,
+      active: true
+    })
   end
 end
