@@ -24,7 +24,7 @@ module Files
       return false unless active?
       return false unless record.uploader_id == user.id # cannot upload file on behalf of another user
 
-      !user.normal_user? # Any elevated role can create
+      admin? || user.project_or_folder_moderator? # Any elevated role can create
     end
 
     def update?
