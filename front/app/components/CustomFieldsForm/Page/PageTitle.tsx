@@ -13,29 +13,37 @@ const PageTitle = ({ page }: { page: IFlatCustomField }) => {
   const localize = useLocalize();
   const isMobileOrSmaller = useBreakpoint('phone');
   const theme = useTheme();
+
+  const title = localize(page.title_multiloc);
+  const description = localize(page.description_multiloc);
+
   return (
     <>
-      <Title
-        as="h1"
-        variant={isMobileOrSmaller ? 'h2' : 'h1'}
-        m="0"
-        mb="20px"
-        color="tenantPrimary"
-      >
-        {localize(page.title_multiloc)}
-      </Title>
-      <Box mb="48px">
-        <QuillEditedContent
-          fontWeight={400}
-          textColor={theme.colors.tenantText}
+      {title !== '' && (
+        <Title
+          as="h1"
+          variant={isMobileOrSmaller ? 'h2' : 'h1'}
+          m="0"
+          mb="20px"
+          color="tenantPrimary"
         >
-          <div
-            dangerouslySetInnerHTML={{
-              __html: localize(page.description_multiloc),
-            }}
-          />
-        </QuillEditedContent>
-      </Box>
+          {localize(page.title_multiloc)}
+        </Title>
+      )}
+      {description !== '' && (
+        <Box mb="48px">
+          <QuillEditedContent
+            fontWeight={400}
+            textColor={theme.colors.tenantText}
+          >
+            <div
+              dangerouslySetInnerHTML={{
+                __html: localize(page.description_multiloc),
+              }}
+            />
+          </QuillEditedContent>
+        </Box>
+      )}
     </>
   );
 };
