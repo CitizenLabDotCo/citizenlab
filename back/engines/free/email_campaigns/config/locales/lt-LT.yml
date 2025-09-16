@@ -119,6 +119,8 @@ lt:
       "unfollow_here": "Šį pranešimą gavote dėl elemento, kurį sekate. <a href=\"%{unfollow_url}\">Čia galite jį atšaukti.</a>"
     manual:
       preheader: 'Jūs turite laišką iš %{organizationName}'
+    manual_project_participants:
+      preheader: 'Jūs turite laišką iš %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Jūsų komentaras buvo ištrintas iš %{organizationName}platformos'
       preheader: 'Jūsų komentaras buvo ištrintas'
