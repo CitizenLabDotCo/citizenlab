@@ -162,7 +162,7 @@ module ParticipationMethod
           {
             value: nil,
             locked: true,
-            explanation: 'cannot_ask_demographic_fields_with_this_combination_of_permitted_by_and_anonymity'
+            explanation: 'with_these_settings_cannot_ask_demographic_fields'
           }
         else
           {

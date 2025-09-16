@@ -60,12 +60,11 @@ export default defineMessages({
     defaultMessage:
       'Asking demographic questions as the last page of the survey is not supported for the selected participation method.',
   },
-  cannot_ask_demographic_fields_with_this_combination_of_permitted_by_and_anonymity:
-    {
-      id: 'app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_with_this_combination_of_permitted_by_and_anonymity',
-      defaultMessage:
-        'With the current combination of "Authentication" and "User data collection" settings, it is not possible to ask demographic questions to users.',
-    },
+  with_these_settings_cannot_ask_demographic_fields: {
+    id: 'app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields',
+    defaultMessage:
+      'With the current combination of "Authentication" and "User data collection" settings, it is not possible to ask demographic questions to users.',
+  },
   cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone:
     {
       id: 'app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone',

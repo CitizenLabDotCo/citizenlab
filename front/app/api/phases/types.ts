@@ -38,7 +38,7 @@ export type Anonymity =
 
 export type UserFieldsInFormExplanation =
   | 'user_fields_in_survey_not_supported_for_participation_method'
-  | 'cannot_ask_demographic_fields_with_this_combination_of_permitted_by_and_anonymity'
+  | 'with_these_settings_cannot_ask_demographic_fields'
   | 'cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone'
   | 'with_these_settings_can_only_ask_demographic_fields_in_registration_flow';
 
