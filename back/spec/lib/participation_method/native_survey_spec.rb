@@ -175,8 +175,8 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   end
 
   describe '#user_fields_in_form?' do
-    it 'returns false if anonymity == \'full_anonymity\'' do
-      phase.anonymity = 'full_anonymity'
+    it 'returns false if user_data_collection == \'anonymous\'' do
+      phase.permissions.find_by(action: 'posting_idea').update!(user_data_collection: 'anonymous')
       expect(participation_method.user_fields_in_form?).to be false
     end
 

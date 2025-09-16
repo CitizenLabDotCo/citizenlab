@@ -538,7 +538,16 @@ resource 'Ideas' do
         end
 
         describe 'Creating a native survey response when posting anonymously is enabled' do
-          let(:project) { create(:single_phase_native_survey_project, phase_attrs: { anonymity: 'full_anonymity' }) }
+          let(:project) do
+            project = create(
+              :single_phase_native_survey_project, 
+              phase_attrs: { with_permissions: true }
+            )
+
+            project.phase.permissions.find_by(action: 'posting_idea').update!(user_data_collection: 'anonymous')
+
+            project
+          end
 
           example_request 'Posting a survey automatically sets anonymous to true' do
             assert_status 201
@@ -551,14 +560,13 @@ resource 'Ideas' do
         describe 'Creating a native survey response when posting anonymously is not enabled' do
           let(:project) do
             project = create(:single_phase_native_survey_project, phase_attrs: {
-              with_permissions: true,
-              anonymity: 'collect_all_data_available'
+              with_permissions: true
             })
 
             phase = project.phases.first
 
             permission = phase.permissions.find_by(action: 'posting_idea')
-            permission.update!(global_custom_fields: false)
+            permission.update!(global_custom_fields: false, user_data_collection: 'all_data')
             permission.permissions_custom_fields = [
               create(:permissions_custom_field, custom_field: create(:custom_field, key: 'age'))
             ]
@@ -721,7 +729,9 @@ resource 'Ideas' do
         end
 
         context 'Creating a community monitor survey response when posting anonymously is enabled' do
-          before { phase.update! anonymity: 'full_anonymity' }
+          before do 
+            phase.permissions.find_by(action: 'posting_idea').update!(user_data_collection: 'anonymous')
+          end
 
           example_request 'Posting a survey automatically sets anonymous to true' do
             assert_status 201

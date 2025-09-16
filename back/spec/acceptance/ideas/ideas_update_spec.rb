@@ -579,8 +579,7 @@ resource 'Ideas' do
 
       let(:project) do
         project = create(:single_phase_native_survey_project, phase_attrs: {
-          with_permissions: true,
-          anonymity: 'collect_all_data_available'
+          with_permissions: true
         })
 
         phase = project.phases.first

@@ -83,10 +83,13 @@ describe Permissions::ProjectPermissionsService do
 
     context 'when the author posted a survey anonymously and the limit was reached' do
       let(:project) do
-        create(:single_phase_native_survey_project, phase_attrs: {
-          submission_enabled: true,
-          anonymity: 'full_anonymity'
+        project = create(:single_phase_native_survey_project, phase_attrs: {
+          submission_enabled: true
         })
+
+        project.phase.permissions.find_by(action: 'posting_idea').update!(user_data_collection: 'anonymous')
+
+        project
       end
 
       it 'returns `posting_limited_max_reached`' do
