@@ -2,20 +2,23 @@ import React from 'react';
 
 import { Box, Text, Radio, Title } from '@citizenlab/cl2-component-library';
 
-import { PermittedBy } from 'api/phase_permissions/types';
-import { Anonymity } from 'api/phases/types';
+import { PermittedBy, UserDataCollection } from 'api/phase_permissions/types';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
 interface Props {
-  anonymity: Anonymity;
+  user_data_collection: UserDataCollection;
   permitted_by: PermittedBy;
-  onChange: (anonymity: Anonymity) => void;
+  onChange: (user_data_collection: UserDataCollection) => void;
 }
 
-const DataCollection = ({ anonymity, permitted_by, onChange }: Props) => {
+const DataCollection = ({
+  user_data_collection,
+  permitted_by,
+  onChange,
+}: Props) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -24,9 +27,9 @@ const DataCollection = ({ anonymity, permitted_by, onChange }: Props) => {
         {formatMessage(messages.userDataCollection)}
       </Title>
       <Radio
-        name="collect_all_data_available"
-        value="collect_all_data_available"
-        currentValue={anonymity}
+        name="all_data"
+        value="all_data"
+        currentValue={user_data_collection}
         label={
           permitted_by === 'everyone' ? (
             <Text color="primary" m="0">
@@ -53,7 +56,7 @@ const DataCollection = ({ anonymity, permitted_by, onChange }: Props) => {
       <Radio
         name="demographics_only"
         value="demographics_only"
-        currentValue={anonymity}
+        currentValue={user_data_collection}
         label={
           <Text color="primary" m="0">
             <span style={{ fontWeight: 'bold' }}>
@@ -65,9 +68,9 @@ const DataCollection = ({ anonymity, permitted_by, onChange }: Props) => {
         onChange={onChange}
       />
       <Radio
-        name="full_anonymity"
-        value="full_anonymity"
-        currentValue={anonymity}
+        name="anonymous"
+        value="anonymous"
+        currentValue={user_data_collection}
         label={
           <Text color="primary" m="0">
             <span style={{ fontWeight: 'bold' }}>

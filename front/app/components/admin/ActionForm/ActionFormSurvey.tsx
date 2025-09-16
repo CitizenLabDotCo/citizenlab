@@ -3,6 +3,7 @@ import React from 'react';
 import { Box, Title, Text, Toggle } from '@citizenlab/cl2-component-library';
 
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
+import { isPhasePermission } from 'api/phase_permissions/utils';
 import usePhase from 'api/phases/usePhase';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -22,8 +23,18 @@ const ActionFormSurvey = ({
   permissionData,
   onChange,
   onReset,
-  onChangePhaseSetting,
 }: Props) => {
+  const { data: phase } = usePhase(phaseId);
+
+  const { data: permissionsCustomFields } = usePermissionsCustomFields({
+    phaseId,
+    action: permissionData.attributes.action,
+  });
+
+  if (!isPhasePermission(permissionData)) {
+    return null;
+  }
+
   const {
     attributes: {
       permitted_by,
@@ -31,18 +42,13 @@ const ActionFormSurvey = ({
       verification_enabled,
       verification_expiry,
       everyone_tracking_enabled,
+      user_fields_in_form_frontend_descriptor,
+      user_data_collection,
     },
     relationships,
   } = permissionData;
 
   const groupIds = relationships.groups.data.map((p) => p.id);
-
-  const { data: phase } = usePhase(phaseId);
-
-  const { data: permissionsCustomFields } = usePermissionsCustomFields({
-    phaseId,
-    action,
-  });
 
   const handleEveryoneTrackingUpdate = (everyone_tracking_enabled: boolean) => {
     onChange({ everyone_tracking_enabled });
@@ -51,8 +57,7 @@ const ActionFormSurvey = ({
   if (!permissionsCustomFields) return null;
   if (!phase) return null;
 
-  const { participation_method, user_fields_in_form_frontend_descriptor } =
-    phase.data.attributes;
+  const { participation_method } = phase.data.attributes;
 
   // Currently only community monitor supports everyone tracking
   const canUseEveryoneTracking =
@@ -71,10 +76,10 @@ const ActionFormSurvey = ({
         onChange={onChange}
       />
       <DataCollection
-        anonymity={phase.data.attributes.anonymity}
+        user_data_collection={user_data_collection}
         permitted_by={permitted_by}
-        onChange={(anonymity) => {
-          onChangePhaseSetting?.({ anonymity });
+        onChange={(user_data_collection) => {
+          onChange({ user_data_collection });
         }}
       />
       {permitted_by !== 'admins_moderators' && (
@@ -88,8 +93,8 @@ const ActionFormSurvey = ({
                 user_fields_in_form_frontend_descriptor
               }
               permitted_by={permitted_by}
-              onChangeUserFieldsInForm={(value) => {
-                onChangePhaseSetting?.({ user_fields_in_form: value });
+              onChangeUserFieldsInForm={(user_fields_in_form) => {
+                onChange({ user_fields_in_form });
               }}
             />
           </Box>
