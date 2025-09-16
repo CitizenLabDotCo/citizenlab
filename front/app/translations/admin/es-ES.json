@@ -443,7 +443,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.regenerateYes": "Sí, actualizar enlace",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApproval": "Solicitar aprobación",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription2": "El proyecto debe ser aprobado por un administrador{inFolder, select, true { o uno de los Gestores de Carpetas} other {}} antes de que puedas publicarlo. Haz clic en el botón de abajo para solicitar la aprobación.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.settings": "Ajustes",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "Compartir",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink": "Copiar el enlace",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied": "Link copied",
