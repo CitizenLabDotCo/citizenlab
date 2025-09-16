@@ -10,7 +10,7 @@ import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
 import useFiles from 'api/files/useFiles';
 
 import MultipleSelect from 'components/HookForm/MultipleSelect';
-import { ButtonWithLink } from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { useIntl } from 'utils/cl-intl';
