@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  Text,
+  colors,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
@@ -9,9 +15,8 @@ import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import useLocalize from 'hooks/useLocalize';
 
 import CloseIconButton from 'components/UI/CloseIconButton';
-import Warning from 'components/UI/Warning';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
 import messages from './messages';
@@ -36,8 +41,6 @@ const AccessRightsNotice = ({
     action: 'posting_idea',
   });
 
-  // NOTE: There should only ever one permission for a survey phase
-  // const permittedBySetting = permissions?.data[0].attributes.permitted_by;
   const postingPermission = permissions?.data.find((permission) => {
     return permission.attributes.action === 'posting_idea';
   });
@@ -77,55 +80,23 @@ const AccessRightsNotice = ({
 
   return (
     <Box id="e2e-warning-notice" mb="16px">
-      <Warning>
-        <Box display="flex">
-          <Box>
-            {permittedBySetting === 'everyone' ? (
-              <>
-                <p>{formatMessage(messages.anyoneIntro)}</p>
-                <ul>
-                  <li>{formatMessage(messages.anyoneBullet1)}</li>
-                  {!userFieldsInForm && (
-                    <li>{formatMessage(messages.anyoneBullet2)}</li>
-                  )}
-                </ul>
-                <p>
-                  <FormattedMessage
-                    {...messages.anyoneOutro}
-                    values={{
-                      accessRightsSettingsLink,
-                    }}
-                  />
-                </p>
-              </>
-            ) : (
-              <>
-                {surveyUserFields && !userFieldsInForm && (
-                  <>
-                    {surveyUserFields.length > 0 && (
-                      <>
-                        <p>{formatMessage(messages.userFieldsIntro)}</p>
-                        <ul>
-                          <li>{surveyUserFields.join(', ')}</li>
-                        </ul>
-                      </>
-                    )}
-                    <p>
-                      <FormattedMessage
-                        {...messages.userFieldsOutro}
-                        values={{
-                          accessRightsSettingsLink,
-                        }}
-                      />
-                    </p>
-                  </>
-                )}
-              </>
-            )}
-          </Box>
-          <CloseIconButton onClick={handleClose} />
+      <Box
+        w="100%"
+        display="flex"
+        justifyContent="space-between"
+        flexDirection="row"
+        borderRadius={stylingConsts.borderRadius}
+        bgColor={colors.teal100}
+        p="12px"
+      >
+        <Box display="flex" alignItems="center">
+          <Icon name="info-outline" height="24px" fill={colors.teal700} />
+          <Text m="0" ml="12px" color="teal700">
+            Whatever
+          </Text>
         </Box>
-      </Warning>
+        <CloseIconButton onClick={handleClose} />
+      </Box>
     </Box>
   );
 };
