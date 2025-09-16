@@ -231,15 +231,6 @@ module ParticipationMethod
       false
     end
 
-    # Attribute used in frontend to render UI
-    def user_fields_in_form_frontend_descriptor
-      {
-        value: false,
-        locked: true,
-        explanation: 'user_fields_in_survey_not_supported_for_participation_method'
-      }
-    end
-
     # Only implemented in native_survey and community monitor
     def user_data_collection
       'all_data'

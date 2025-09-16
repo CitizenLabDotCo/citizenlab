@@ -42,6 +42,7 @@ export interface IGlobalPermissionData {
     verification_expiry: number | null;
     everyone_tracking_enabled: boolean;
     user_data_collection: UserDataCollection;
+    user_fields_in_form: boolean;
     user_fields_in_form_frontend_descriptor: UserFieldsInFormFrontendDescriptor;
   };
   relationships: {
