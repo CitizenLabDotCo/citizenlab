@@ -119,6 +119,8 @@ fi:
       "unfollow_here": "Sait tämän ilmoituksen seuraamasi kohteen takia. <a href=\"%{unfollow_url}\">Voit lopettaa sen seuraamisen täällä.</a>"
     manual:
       preheader: 'Sinulla on postia osoitteesta %{organizationName}'
+    manual_project_participants:
+      preheader: 'Sinulla on postia lähettäjältä %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Kommenttisi on poistettu alustalta %{organizationName}'
       preheader: 'Kommenttisi on poistettu'

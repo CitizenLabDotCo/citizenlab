@@ -119,6 +119,8 @@ hr:
       "unfollow_here": "Primili ste ovu obavijest zbog stavke koju pratite. <a href=\"%{unfollow_url}\">Ovdje ga možete prestati pratiti.</a>"
     manual:
       preheader: 'Imate poštu od %{organizationName}'
+    manual_project_participants:
+      preheader: 'Imate poštu od %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Vaš komentar je izbrisan s platforme %{organizationName}'
       preheader: 'Vaš je komentar izbrisan'

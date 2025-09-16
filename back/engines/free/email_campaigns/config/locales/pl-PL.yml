@@ -119,6 +119,8 @@ pl:
       "unfollow_here": "Otrzymałeś to powiadomienie z powodu elementu, który obserwujesz. <a href=\"%{unfollow_url}\">Możesz przestać go obserwować tutaj.</a>"
     manual:
       preheader: 'Masz pocztę od %{organizationName}'
+    manual_project_participants:
+      preheader: 'Masz pocztę od %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Twój komentarz na platformie %{organizationName} został usunięty'
       preheader: 'Twój komentarz został usunięty'

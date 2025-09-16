@@ -119,6 +119,8 @@ hu:
       "unfollow_here": "Ezt az értesítést egy általad követett elem miatt kaptad. <a href=\"%{unfollow_url}\">Itt leállíthatod a követést.</a>"
     manual:
       preheader: 'Önnek levelei vannak a %{organizationName}feladótól'
+    manual_project_participants:
+      preheader: '%{organizationName}-tól kapott levelet'
     comment_deleted_by_admin:
       subject: 'Megjegyzését töröltük a %{organizationName}platformjáról'
       preheader: 'A hozzászólásod törölve lett'
