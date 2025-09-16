@@ -161,6 +161,7 @@ resource 'Files' do
             updated_at: file.updated_at.iso8601(3)
           },
           relationships: {
+            attachments: { data: [] },
             uploader: { data: { id: file.uploader_id, type: 'user' } },
             projects: { data: [{ id: project.id, type: 'project' }] },
             preview: { data: nil }
@@ -238,6 +239,7 @@ resource 'Files' do
             updated_at: be_present
           },
           relationships: {
+            attachments: { data: [] },
             uploader: { data: { id: admin.id, type: 'user' } },
             projects: { data: [{ id: project, type: 'project' }] },
             preview: { data: nil } # pdf file doesn't generate a preview
