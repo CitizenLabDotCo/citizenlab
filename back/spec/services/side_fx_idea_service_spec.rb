@@ -422,7 +422,7 @@ describe SideFxIdeaService do
       before { create(:idea_status_proposed) }
 
       it "updates the user profile from the survey input fields when 'user_fields_in_form' is turned on" do
-        phase.update!(user_fields_in_form: true)
+        phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
         idea.update!(publication_status: 'published')
         service.after_update(idea, user)
         expect(user.custom_field_values).to eq({ 'gender' => 'female' })
@@ -438,13 +438,12 @@ describe SideFxIdeaService do
         # Even though user_fields_in_form = false, we update the user
         # because when permitted_by = 'everyone' and there are permissions_custom_fields,
         # the fields always shown in the form
-        phase.update!(user_fields_in_form: false)
-
         permission = Permission.find_by(
           permission_scope_id: phase.id,
           action: 'posting_idea'
         )
 
+        permission.user_fields_in_form = false
         permission.permitted_by = 'everyone'
         permission.permissions_custom_fields = [create(:permissions_custom_field)]
         permission.save!
@@ -455,13 +454,12 @@ describe SideFxIdeaService do
       end
 
       it 'updates user profile from the survey data when permitted_by = users and there are permissions_custom_fields' do
-        phase.update!(user_fields_in_form: true)
-
         permission = Permission.find_by(
           permission_scope_id: phase.id,
           action: 'posting_idea'
         )
 
+        permission.user_fields_in_form = true
         permission.permitted_by = 'users'
         permission.permissions_custom_fields = [create(:permissions_custom_field)]
         permission.save!
@@ -472,13 +470,12 @@ describe SideFxIdeaService do
       end
 
       it 'does not update user profile if not user_fields_in_form?' do
-        phase.update!(user_fields_in_form: false)
-
         permission = Permission.find_by(
           permission_scope_id: phase.id,
           action: 'posting_idea'
         )
 
+        permission.user_fields_in_form = false
         permission.permitted_by = 'users'
         permission.permissions_custom_fields = [create(:permissions_custom_field)]
         permission.save!

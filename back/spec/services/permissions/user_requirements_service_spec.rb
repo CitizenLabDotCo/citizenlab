@@ -240,11 +240,12 @@ describe Permissions::UserRequirementsService do
       end
 
       context 'when permitted_by is set to users' do
-        let(:survey_phase) { create(:native_survey_phase, user_fields_in_form: true, with_permissions: true) }
+        let(:survey_phase) { create(:native_survey_phase, with_permissions: true) }
         let(:permission) do
           permission = survey_phase.permissions.find { |p| p.action == 'posting_idea' }
           permission.permitted_by = 'users'
           permission.global_custom_fields = false
+          permission.user_fields_in_form = true
           permission.save!
           permission
         end

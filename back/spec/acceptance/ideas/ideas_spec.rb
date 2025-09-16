@@ -404,7 +404,13 @@ resource 'Ideas' do
 
       context 'idea authored by user' do
         let!(:idea) do
-          create(:native_survey_response, project: phase.project, author: @user, publication_status: 'draft', custom_field_values: { 'field' => 'value' })
+          create(
+            :native_survey_response, 
+            project: phase.project, 
+            author: @user, publication_status: 
+            'draft', 
+            custom_field_values: { 'field' => 'value' },
+          )
         end
 
         before { @user.update!(custom_field_values: { 'gender' => 'male' }) }
@@ -418,7 +424,7 @@ resource 'Ideas' do
 
         context 'when user data in the survey form is enabled' do
           example 'Get a single draft idea by phase including user data' do
-            phase.update!(user_fields_in_form: true)
+            pphase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
             @user.update!(custom_field_values: { 'gender' => 'male' })
             do_request
             assert_status 200
@@ -429,7 +435,7 @@ resource 'Ideas' do
 
         context 'when permitted_by is \'everyone\'' do
           example 'Get a single draft idea by phase including user data' do
-            phase.update!(user_fields_in_form: false)
+            phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: false)
 
             permission = Permission.find_by(
               permission_scope_id: phase.id,

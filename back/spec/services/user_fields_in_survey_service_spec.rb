@@ -50,14 +50,13 @@ describe UserFieldsInSurveyService do
   describe '#add_user_fields_to_form' do
     it 'adds user custom fields to the form with prefixed keys' do
       project = create(:single_phase_native_survey_project, phase_attrs: {
-        with_permissions: true,
-        user_fields_in_form: true
+        with_permissions: true
       })
       phase = project.phases.first
 
       # Create permission with user custom field
       permission = phase.permissions.find_by(action: 'posting_idea')
-      permission.update!(global_custom_fields: false)
+      permission.update!(global_custom_fields: false, user_fields_in_form: true)
       create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field, key: 'age'))
 
       # Create survey form
@@ -93,7 +92,6 @@ describe UserFieldsInSurveyService do
       user = build(:user, { custom_field_values: { age: 30 } })
       project = create(:single_phase_native_survey_project, phase_attrs: {
         with_permissions: true,
-        user_fields_in_form: false,
         anonymity: 'collect_all_data_available'
       })
       phase = project.phases.first
@@ -101,7 +99,7 @@ describe UserFieldsInSurveyService do
       idea = build(:idea, author: user, custom_field_values: {})
 
       permission = phase.permissions.find_by(action: 'posting_idea')
-      permission.update!(global_custom_fields: false)
+      permission.update!(global_custom_fields: false, user_fields_in_form: false)
       create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field, key: 'age'))
 
       expect(described_class.should_merge_user_fields_into_idea?(user, phase, idea)).to be true

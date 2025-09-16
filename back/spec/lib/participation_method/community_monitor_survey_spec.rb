@@ -184,11 +184,12 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
 
   describe '#user_fields_in_form?' do
     it 'returns false when not enabled' do
+      phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: false)
       expect(participation_method.user_fields_in_form?).to be false
     end
 
     it 'returns true when enabled' do
-      phase.user_fields_in_form = true
+      phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
       expect(participation_method.user_fields_in_form?).to be true
     end
 
@@ -205,12 +206,12 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
       end
 
       it 'returns true even when not enabled' do
-        phase.user_fields_in_form = false
+        phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: false)
         expect(participation_method.user_fields_in_form?).to be true
       end
 
       it 'returns true when enabled' do
-        phase.user_fields_in_form = true
+        phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
         expect(participation_method.user_fields_in_form?).to be true
       end
     end
