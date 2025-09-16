@@ -30,7 +30,8 @@ describe Permissions::ProjectPermissionsService do
         {
           participation_method: 'native_survey',
           native_survey_title_multiloc: { 'en' => 'Survey', 'nl-BE' => 'Vragenlijst' },
-          native_survey_button_multiloc: { 'en' => 'Take the survey', 'nl-BE' => 'De enquete invullen' }
+          native_survey_button_multiloc: { 'en' => 'Take the survey', 'nl-BE' => 'De enquete invullen' },
+          with_permissions: true
         }
       end
 
@@ -87,7 +88,7 @@ describe Permissions::ProjectPermissionsService do
           submission_enabled: true
         })
 
-        project.phase.permissions.find_by(action: 'posting_idea').update!(user_data_collection: 'anonymous')
+        project.phases.first.permissions.find_by(action: 'posting_idea').update!(user_data_collection: 'anonymous')
 
         project
       end

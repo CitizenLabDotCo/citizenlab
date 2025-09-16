@@ -424,7 +424,7 @@ resource 'Ideas' do
 
         context 'when user data in the survey form is enabled' do
           example 'Get a single draft idea by phase including user data' do
-            pphase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
+            phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
             @user.update!(custom_field_values: { 'gender' => 'male' })
             do_request
             assert_status 200

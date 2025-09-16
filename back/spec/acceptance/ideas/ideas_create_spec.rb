@@ -544,7 +544,7 @@ resource 'Ideas' do
               phase_attrs: { with_permissions: true }
             )
 
-            project.phase.permissions.find_by(action: 'posting_idea').update!(user_data_collection: 'anonymous')
+            project.phases.first.permissions.find_by(action: 'posting_idea').update!(user_data_collection: 'anonymous')
 
             project
           end
