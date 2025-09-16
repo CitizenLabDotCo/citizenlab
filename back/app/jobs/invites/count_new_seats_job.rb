@@ -4,10 +4,14 @@ module Invites
   class CountNewSeatsJob < ApplicationJob
     perform_retries false
 
-    def perform(current_user, params, import_id)
+    def perform(current_user, params, import_id, xlsx_import: false)
       import = InvitesImport.find(import_id)
 
-      seat_numbers = count_new_seats_xlsx(current_user, params)
+      if xlsx_import
+        seat_numbers = count_new_seats_xlsx(current_user, params)
+      else
+        seat_numbers = count_new_seats(current_user, params)
+      end
 
       result = {
         data: {
@@ -22,6 +26,15 @@ module Invites
     end
 
     private
+
+    def count_new_seats(current_user, params)
+      Invites::SeatsCounter.new.count_in_transaction do
+        Invites::Service.new(current_user, run_side_fx: false).bulk_create(
+          params[:emails].map { |e| { 'email' => e } },
+          params.except(:emails).stringify_keys
+        )
+      end
+    end
 
     def count_new_seats_xlsx(current_user, params)
       Invites::SeatsCounter.new.count_in_transaction do
