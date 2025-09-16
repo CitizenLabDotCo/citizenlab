@@ -443,7 +443,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.regenerateYes": "ਹਾਂ, ਲਿੰਕ ਨੂੰ ਤਾਜ਼ਾ ਕਰੋ",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApproval": "ਮਨਜ਼ੂਰੀ ਲਈ ਬੇਨਤੀ ਕਰੋ",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription2": "ਇਸ ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ, ਇਸਨੂੰ ਕਿਸੇ ਐਡਮਿਨ{inFolder, select, true { ਜਾਂ ਫੋਲਡਰ ਮੈਨੇਜਰਾਂ ਵਿੱਚੋਂ ਕਿਸੇ ਇੱਕ} other {}} ਦੁਆਰਾ ਮਨਜ਼ੂਰ ਕੀਤਾ ਜਾਣਾ ਚਾਹੀਦਾ ਹੈ। ਪ੍ਰਵਾਨਗੀ ਦੀ ਬੇਨਤੀ ਕਰਨ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.settings": "ਸੈਟਿੰਗਾਂ",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "ਸ਼ੇਅਰ ਕਰੋ",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink": "ਲਿੰਕ ਕਾਪੀ ਕਰੋ",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied": "ਲਿੰਕ ਕਾਪੀ ਕੀਤਾ ਗਿਆ",
