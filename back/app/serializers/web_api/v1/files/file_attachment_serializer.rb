@@ -11,6 +11,7 @@ class WebApi::V1::Files::FileAttachmentSerializer < WebApi::V1::BaseSerializer
     when Event then WebApi::V1::EventSerializer
     when Idea then WebApi::V1::IdeaSerializer
     when StaticPage then WebApi::V1::StaticPageSerializer
+    when ContentBuilder::Layout then ContentBuilder::WebApi::V1::LayoutSerializer
     end
   }
 end

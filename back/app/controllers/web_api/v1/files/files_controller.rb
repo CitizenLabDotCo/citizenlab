@@ -2,6 +2,7 @@
 
 class WebApi::V1::Files::FilesController < ApplicationController
   include CarrierwaveErrorDetailsTransformation
+  skip_before_action :authenticate_user, only: %i[index show]
 
   def index
     files =

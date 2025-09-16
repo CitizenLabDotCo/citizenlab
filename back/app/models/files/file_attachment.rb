@@ -29,6 +29,7 @@ module Files
       Event
       Idea
       StaticPage
+      ContentBuilder::Layout
     ].freeze
 
     belongs_to :file, class_name: 'Files::File', inverse_of: :attachments

@@ -10,6 +10,10 @@ module ContentBuilder
       moderator?
     end
 
+    def update?
+      moderator?
+    end
+
     def destroy?
       moderator?
     end
