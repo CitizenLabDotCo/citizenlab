@@ -2,6 +2,7 @@
 
 module Invites
   class CountNewSeatsJob < ApplicationJob
+    self.priority = 40
     perform_retries false
 
     def perform(current_user, params, import_id, xlsx_import: false)
@@ -13,14 +14,7 @@ module Invites
         count_new_seats(current_user, params)
       end
 
-      result = {
-        data: {
-          type: 'invites_import',
-          attributes: seat_numbers
-        }
-      }
-
-      import.update!(result: result, completed_at: Time.current)
+      import.update!(result: seat_numbers, completed_at: Time.current)
     rescue Invites::FailedError => e
       import.update!(result: { errors: e.to_h }, completed_at: Time.current)
     end

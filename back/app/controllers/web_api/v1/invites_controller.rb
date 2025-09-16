@@ -73,7 +73,7 @@ class WebApi::V1::InvitesController < ApplicationController
       importer: current_user
     )
 
-    Invites::CountNewSeatsJob.perform_now(
+    Invites::CountNewSeatsJob.perform_later(
       current_user,
       bulk_create_params,
       import.id,
@@ -94,7 +94,7 @@ class WebApi::V1::InvitesController < ApplicationController
       importer: current_user
     )
 
-    Invites::CountNewSeatsJob.perform_now(
+    Invites::CountNewSeatsJob.perform_later(
       current_user,
       bulk_create_xlsx_params,
       import.id,
