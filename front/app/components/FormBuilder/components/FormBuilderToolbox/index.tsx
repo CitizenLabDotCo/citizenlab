@@ -17,13 +17,13 @@ import { FormBuilderConfig } from 'components/FormBuilder/utils';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
+import { Drop } from '../DragAndDrop';
+import { fieldAreaDNDType } from '../FormFields/constants';
 import messages from '../messages';
 
 import BuiltInFields from './BuiltInFields';
-import ToolboxItem from './ToolboxItem';
 import LayoutFields from './LayoutFields';
-import { Drop } from '../DragAndDrop';
-import { fieldAreaDNDType } from '../FormFields/constants';
+import ToolboxItem from './ToolboxItem';
 
 interface FormBuilderToolboxProps {
   builderConfig: FormBuilderConfig;

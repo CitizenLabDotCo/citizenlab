@@ -1,21 +1,23 @@
+import { FormatMessage } from 'typings';
 import { object, boolean, array, string, number } from 'yup';
 
 import {
   ICustomFieldInputType,
   IFlatCustomField,
 } from 'api/custom_fields/types';
+
+import { getInitialLinearScaleLabel } from 'components/FormBuilder/components/FormBuilderToolbox/utils';
+import {
+  questionDNDType,
+  fieldAreaDNDType,
+} from 'components/FormBuilder/components/FormFields/constants';
+
 import { generateTempId } from 'utils/helperUtils';
 import validateElementTitle from 'utils/yup/validateElementTitle';
 import validateLogic from 'utils/yup/validateLogic';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
 import validateOneStatementForMatrix from 'utils/yup/validateOneStatementForMatrix';
-import { getInitialLinearScaleLabel } from 'components/FormBuilder/components/FormBuilderToolbox/utils';
 
-import {
-  questionDNDType,
-  fieldAreaDNDType,
-} from 'components/FormBuilder/components/FormFields/constants';
-import { FormatMessage } from 'typings';
 import messages from '../messages';
 
 const reorder = <ListType>(
@@ -276,9 +278,7 @@ export const getNestedGroupData = (
         });
       } else {
         const lastGroup = groups[groups.length - 1];
-        if (lastGroup) {
-          lastGroup.questions.push({ ...field });
-        }
+        lastGroup.questions.push({ ...field });
       }
       return groups;
     }, [] as NestedGroupingStructure[]) || []
@@ -531,15 +531,13 @@ const handlePageReordering = (
 
   // Find the target page at the destination index
   const targetPage = nestedGroupData[destinationIndex];
-  if (targetPage) {
-    // Get the index of this page in the flat array
-    const pageIndex = formCustomFields.findIndex(
-      (field) => field.id === targetPage.groupElement.id
-    );
+  // Get the index of this page in the flat array
+  const pageIndex = formCustomFields.findIndex(
+    (field) => field.id === targetPage.groupElement.id
+  );
 
-    if (pageIndex !== -1) {
-      return pageIndex;
-    }
+  if (pageIndex !== -1) {
+    return pageIndex;
   }
 
   // Fallback: insert before form_end

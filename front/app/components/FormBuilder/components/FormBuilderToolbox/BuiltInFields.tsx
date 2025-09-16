@@ -7,9 +7,9 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
 import { Drop } from 'components/FormBuilder/components/DragAndDrop';
 import { fieldAreaDNDType } from 'components/FormBuilder/components/FormFields/constants';
+import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 

@@ -34,10 +34,10 @@ export const Drag = ({
       {isDragging && keepElementsWhileDragging && <>{children}</>}
       <Draggable draggableId={id} index={index} isDragDisabled={isDragDisabled}>
         {(provided, snapshot) => {
-          // Update isDragging state based on the actual drag status
-          React.useEffect(() => {
-            setIsDragging(snapshot.isDragging);
-          }, [snapshot.isDragging]);
+          const currentIsDragging = snapshot.isDragging;
+          if (currentIsDragging !== isDragging) {
+            setIsDragging(currentIsDragging);
+          }
 
           return (
             <div id={id} ref={provided.innerRef} {...provided.draggableProps}>

@@ -27,18 +27,20 @@ import { IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import useSubmissionsCount from 'api/submission_count/useSubmissionCount';
 
+import useLocale from 'hooks/useLocale';
+
 import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSettings';
 import FormBuilderToolbox from 'components/FormBuilder/components/FormBuilderToolbox';
 import FormBuilderTopBar from 'components/FormBuilder/components/FormBuilderTopBar';
 import FormFields from 'components/FormBuilder/components/FormFields';
 import HelmetIntl from 'components/HelmetIntl';
 
-import useLocale from 'hooks/useLocale';
-
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
+import { DragAndDrop, Drop } from '../components/DragAndDrop';
+import { pageDNDType } from '../components/FormFields/constants';
 import FormStatus from '../components/FormStatus';
 import messages from '../messages';
 import { FormBuilderConfig } from '../utils';
@@ -53,8 +55,6 @@ import {
   calculateDropTargetIndex,
   handleBuiltInFieldEnablement,
 } from './utils';
-import { DragAndDrop, Drop } from '../components/DragAndDrop';
-import { pageDNDType } from '../components/FormFields/constants';
 
 interface FormValues {
   customFields: IFlatCustomField[];
