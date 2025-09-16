@@ -119,6 +119,8 @@ el:
       "unfollow_here": "Λάβατε αυτή την ειδοποίηση εξαιτίας ενός στοιχείου που ακολουθείτε. <a href=\"%{unfollow_url}\">Μπορείτε να το ακυρώσετε εδώ.</a>"
     manual:
       preheader: 'Λάβατε μια ενημέρωση από το %{organizationName}'
+    manual_project_participants:
+      preheader: 'Έχετε αλληλογραφία από το %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Το σχόλιό σας έχει διαγραφεί από την πλατφόρμα του %{organizationName}'
       preheader: 'Το σχόλιό σας έχει διαγραφεί'

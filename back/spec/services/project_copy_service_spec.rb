@@ -396,6 +396,15 @@ describe ProjectCopyService do
 
           # Changes the locale of users too
           expect(copied_project.ideas.first.author.locale).to eq 'fr-FR'
+
+          # Adds a project import record
+          project_import = BulkImportIdeas::ProjectImport.last
+          expect(project_import.import_type).to eq 'project_copy'
+          expect(project_import.log).to eq [
+            'Copied project: TRANSLATED: ENGLISH PROJECT',
+            'Translated strings: 6',
+            'Translated chars: 248'
+          ]
         end
       end
 

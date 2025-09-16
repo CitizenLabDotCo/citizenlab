@@ -3,10 +3,10 @@
 class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   def import(template, folder: nil, local_copy: false)
     # No translation required if it's a local copy
-    same_template = local_copy ? template : MultiTenancy::Templates::Utils.translate_and_fix_locales(template)
+    template, translate_logs = MultiTenancy::Templates::Utils.translate_and_fix_locales(template) unless local_copy
 
     created_objects_ids = ActiveRecord::Base.transaction do
-      tenant_deserializer.deserialize(same_template, validate: false, local_copy: local_copy)
+      tenant_deserializer.deserialize(template, validate: false, local_copy: local_copy)
     end
 
     project = Project.find(created_objects_ids['Project'].first)
@@ -15,6 +15,14 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       project.set_default_topics!
     end
     project.update! folder: folder if folder
+
+    # Log to a project import if this is a copy from another platform
+    unless local_copy
+      import_log = ["Copied project: #{project.title_multiloc.values.first}"]
+      import_log << "Translated strings: #{translate_logs[:strings]}"
+      import_log << "Translated chars: #{translate_logs[:chars]}"
+      BulkImportIdeas::ProjectImport.create!(project: project, log: import_log, import_type: 'project_copy')
+    end
 
     project
   end
@@ -85,7 +93,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       @template['models']['volunteering/volunteer'] = yml_volunteers shift_timestamps: shift_timestamps
       @template['models']['events/attendance']      = yml_attendances shift_timestamps: shift_timestamps
     end
-
     @template
   end
 

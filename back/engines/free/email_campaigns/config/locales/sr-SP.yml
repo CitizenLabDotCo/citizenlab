@@ -119,6 +119,8 @@ sr-Cyrl:
       "unfollow_here": "Примили сте ово обавештење због ставке коју пратите. <a href=\"%{unfollow_url}\">Можете га опозвати овде.</a>"
     manual:
       preheader: 'You have mail from %{organizationName}'
+    manual_project_participants:
+      preheader: 'You have mail from %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Ваш коментар је обрисан са платформе %{organizationName}'
       preheader: 'Ваш коментар је обрисан'

@@ -119,6 +119,8 @@ sr-Latn:
       "unfollow_here": "You have received this notification because of an item that you follow. <a href=\"%{unfollow_url}\">You can unfollow it here.</a>"
     manual:
       preheader: 'You have mail from %{organizationName}'
+    manual_project_participants:
+      preheader: 'You have mail from %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Vaš komentar je izbrisan sa platforme %{organizationName}'
       preheader: 'Vaš komentar je izbrisan'

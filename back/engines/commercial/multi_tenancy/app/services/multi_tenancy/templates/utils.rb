@@ -198,8 +198,11 @@ module MultiTenancy
           translator = MachineTranslations::MachineTranslationService.new
           locales_to = AppConfiguration.instance.settings('core', 'locales')
 
+          # Log number of translations to help monitor costs.
+          translate_logs = { strings: 0, chars: 0 }
+
           # Do the locales in the template already match the target locales?
-          return serialized_models if Set.new(locales_to) == Set.new(template_locales(serialized_models))
+          return [serialized_models, translate_logs] if Set.new(locales_to) == Set.new(template_locales(serialized_models))
 
           # Change unsupported user locales to first target tenant locale.
           unless Set.new(locales_to) == Set.new(user_locales(serialized_models))
@@ -210,7 +213,7 @@ module MultiTenancy
             end
           end
 
-          # Translate any missing locales from the first locale found .
+          # Translate any missing locales from the first locale found.
           serialized_models['models'].each_value do |fields|
             fields.each do |attributes|
               attributes.each do |field_name, field_value|
@@ -225,6 +228,8 @@ module MultiTenancy
                     field_value[locale] = if source_text.blank?
                       source_text
                     else
+                      translate_logs[:strings] += 1
+                      translate_logs[:chars] += source_text.length
                       translator.translate source_text, source_locale, locale, retries: 10
                     end
                   end
@@ -252,7 +257,7 @@ module MultiTenancy
               end
             end
           end
-          serialized_models
+          [serialized_models, translate_logs]
         end
 
         def user_locales(serialized_models)
