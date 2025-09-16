@@ -291,6 +291,8 @@ Rails.application.routes.draw do
         get :as_xlsx, on: :collection, action: 'index_xlsx'
       end
 
+      resources :invites_imports, only: :show, controller: 'invites/invites_imports', defaults: { container_type: 'InvitesImport' }
+
       resources :custom_field_option_images, only: %i[show create update destroy], controller: :images, defaults: { container_type: 'CustomFieldOption' }
 
       resources :experiments, only: %i[index create]
