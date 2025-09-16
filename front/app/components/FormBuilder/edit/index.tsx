@@ -357,7 +357,7 @@ const FormEdit = ({
                     </Box>
                   </Box>
                   <Box flex={!isNilOrError(selectedField) ? '1' : '0'}>
-                    {!isNilOrError(selectedField) && selectedField && (
+                    {selectedField && (
                       <Box>
                         <FormBuilderSettings
                           key={selectedField.id}
