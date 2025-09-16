@@ -38,9 +38,9 @@ describe Permissions::PermissionsCustomFieldsService do
       it 'returns no permissions fields when permitted_by "everyone" and user fields are allowed in survey form' do
         phase = create(:native_survey_phase)
         permission = create(
-          :permission, 
-          permission_scope: phase, 
-          permitted_by: 'everyone', 
+          :permission,
+          permission_scope: phase,
+          permitted_by: 'everyone',
           global_custom_fields: true,
           user_fields_in_form: true
         )
@@ -154,8 +154,8 @@ describe Permissions::PermissionsCustomFieldsService do
         domicile_field = create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field_birthyear))
         phase = create(:native_survey_phase)
         permission.update!(
-          permitted_by: 'everyone', 
-          permission_scope: phase, 
+          permitted_by: 'everyone',
+          permission_scope: phase,
           global_custom_fields: false,
           user_fields_in_form: true
         )

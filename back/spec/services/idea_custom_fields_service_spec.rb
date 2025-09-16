@@ -354,7 +354,7 @@ describe IdeaCustomFieldsService do
       let!(:user_field_birthyear) { create(:custom_field_birthyear) }
 
       context 'when phase is a native survey phase' do
-        let(:form_context) do 
+        let(:form_context) do
           phase = create(:native_survey_phase, with_permissions: true)
           phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
           phase

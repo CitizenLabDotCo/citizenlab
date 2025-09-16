@@ -405,11 +405,11 @@ resource 'Ideas' do
       context 'idea authored by user' do
         let!(:idea) do
           create(
-            :native_survey_response, 
-            project: phase.project, 
-            author: @user, publication_status: 
-            'draft', 
-            custom_field_values: { 'field' => 'value' },
+            :native_survey_response,
+            project: phase.project,
+            author: @user, publication_status:
+            'draft',
+            custom_field_values: { 'field' => 'value' }
           )
         end
 

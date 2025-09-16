@@ -8,7 +8,7 @@ class MoveUserDataCollectionLogicToPermission < ActiveRecord::Migration[7.1]
 
       dir.up do
         Permission.reset_column_information
-        
+
         # STEP 1: move user_fields_in_form from phases to permissions
         Permission
           .where(permission_scope_type: 'Phase')
@@ -24,8 +24,8 @@ class MoveUserDataCollectionLogicToPermission < ActiveRecord::Migration[7.1]
         Permission
           .where(permission_scope_type: 'Phase')
           .joins('LEFT JOIN phases ON phases.id = permissions.permission_scope_id')
-          .where(phases: { 
-            participation_method: 'native_survey', 
+          .where(phases: {
+            participation_method: 'native_survey',
             allow_anonymous_participation: true,
             user_fields_in_form: false
           })
@@ -37,8 +37,8 @@ class MoveUserDataCollectionLogicToPermission < ActiveRecord::Migration[7.1]
         Permission
           .where(permission_scope_type: 'Phase')
           .joins('LEFT JOIN phases ON phases.id = permissions.permission_scope_id')
-          .where(phases: { 
-            participation_method: 'native_survey', 
+          .where(phases: {
+            participation_method: 'native_survey',
             allow_anonymous_participation: true,
             user_fields_in_form: true
           })

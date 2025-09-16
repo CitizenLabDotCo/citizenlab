@@ -540,7 +540,7 @@ resource 'Ideas' do
         describe 'Creating a native survey response when posting anonymously is enabled' do
           let(:project) do
             project = create(
-              :single_phase_native_survey_project, 
+              :single_phase_native_survey_project,
               phase_attrs: { with_permissions: true }
             )
 
@@ -729,7 +729,7 @@ resource 'Ideas' do
         end
 
         context 'Creating a community monitor survey response when posting anonymously is enabled' do
-          before do 
+          before do
             phase.permissions.find_by(action: 'posting_idea').update!(user_data_collection: 'anonymous')
           end
 

@@ -61,7 +61,7 @@ module ReportBuilder
 
       phase_ids = Permission
         .where(
-          action: 'posting_idea', 
+          action: 'posting_idea',
           permission_scope_type: 'Phase',
           user_fields_in_form: true
         )
@@ -69,7 +69,7 @@ module ReportBuilder
 
       phases = Phase.where(
         project_id: project_id,
-        id: phase_ids, 
+        id: phase_ids,
         participation_method: 'native_survey'
       )
 
