@@ -15,7 +15,7 @@ class WebApi::V1::PermissionSerializer < WebApi::V1::BaseSerializer
 
   attribute :user_fields_in_form do |permission|
     phase = permission.permission_scope
-    
+
     unless phase.is_a?(Phase)
       false
     end
@@ -44,6 +44,7 @@ class WebApi::V1::PermissionSerializer < WebApi::V1::BaseSerializer
     unless has_survey_form
       return unsupported_descriptor
     end
+
     if permission.permitted_by == 'everyone'
       if permission.user_data_collection == 'anonymous'
         {
