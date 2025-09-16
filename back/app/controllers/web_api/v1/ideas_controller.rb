@@ -152,7 +152,7 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
 
     # Merge custom field values from the user's profile
     # if user fields are presented in the idea form
-    # AND the anonymity setting allows it
+    # AND the user_data_collection setting allows it
     if phase.pmethod.user_fields_in_form?
       draft_idea.custom_field_values = UserFieldsInSurveyService.merge_user_fields_into_idea(
         current_user,
@@ -188,9 +188,9 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
     input.request = request if phase_for_input.pmethod.everyone_tracking_enabled?
 
     # If native survey or community monitor:
-    # Do not store user ID if anonymity it set to "full_anonymity" or "demographics_only"
+    # Do not store user ID if user_data_collection it set to "anonymous" or "demographics_only"
     # (anonymous = true on the input just means "do not store user ID")
-    if phase_for_input.pmethod.supports_survey_form? && phase_for_input.anonymity != 'collect_all_data_available'
+    if phase_for_input.pmethod.supports_survey_form? && phase_for_input.pmethod.user_data_collection != 'all_data'
       input.anonymous = true
     end
 
