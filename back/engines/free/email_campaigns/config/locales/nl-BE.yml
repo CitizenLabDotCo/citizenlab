@@ -119,6 +119,8 @@ nl-BE:
       "unfollow_here": "Je hebt deze melding ontvangen vanwege een item dat je volgt. <a href=\"%{unfollow_url}\">Je kunt het hier ontvolgen.</a>"
     manual:
       preheader: 'Je hebt mail van %{organizationName}'
+    manual_project_participants:
+      preheader: 'Je hebt mail van %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Je reactie werd verwijderd op het platform van %{organizationName}'
       preheader: 'Je reactie werd verwijderd'
