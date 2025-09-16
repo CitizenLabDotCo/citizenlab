@@ -140,18 +140,6 @@ const ProjectHeader = ({ projectId }: Props) => {
               token={project.data.attributes.preview_token}
               className="intercom-product-tour-project-sharing-dropdown"
             />
-            <ButtonWithLink
-              linkTo={`/admin/projects/${project.data.id}/general`}
-              buttonStyle="admin-dark"
-              size="s"
-              padding="4px 8px"
-              icon="settings"
-              iconSize="18px"
-              className="intercom-product-tour-project-settings-link"
-            >
-              {formatMessage(messages.settings)}
-            </ButtonWithLink>
-
             <PublicationButtons project={project.data} />
           </Box>
         </Box>
