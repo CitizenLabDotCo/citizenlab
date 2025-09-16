@@ -443,7 +443,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.regenerateYes": "ہاں، لنک ریفریش کریں۔",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApproval": "منظوری کی درخواست کریں۔",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription2": "پروجیکٹ کو شائع کرنے سے پہلے منتظم{inFolder, select, true { یا فولڈر مینیجر} other {}} سے منظور شدہ ہونا ضروری ہے۔ منظوری کی درخواست کرنے کے لیے نیچے دیئے گئے بٹن پر کلک کریں۔",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.settings": "ترتیبات",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "شیئر کریں۔",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink": "لنک کاپی کریں۔",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied": "لنک کاپی ہو گیا۔",
