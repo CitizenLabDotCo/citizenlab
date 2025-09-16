@@ -1279,6 +1279,7 @@
   "app.containers.Admin.projects.project.participation.participantsTimeline": "Participants timeline",
   "app.containers.Admin.projects.project.participation.reactions": "Reactions",
   "app.containers.Admin.projects.project.participation.selectPeriod": "Select period",
+  "app.containers.Admin.projects.project.participation.trafficTab": "Traffic",
   "app.containers.Admin.projects.project.participation.usersByAge": "Users by age",
   "app.containers.Admin.projects.project.participation.usersByGender": "Users by gender",
   "app.containers.Admin.projects.project.participation.usersSubtitle": "Get an overview of the participants on this project that have an account. Anonymous participation is not accounted.",
