@@ -17,7 +17,7 @@ class WebApi::V1::PermissionSerializer < WebApi::V1::BaseSerializer
     phase = permission.permission_scope
 
     unless phase.is_a?(Phase)
-      false
+      next false
     end
 
     phase.pmethod.user_fields_in_form?
