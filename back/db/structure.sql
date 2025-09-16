@@ -7850,8 +7850,6 @@ ALTER TABLE ONLY public.ideas_topics
 -- PostgreSQL database dump complete
 --
 
-\unrestrict e5Xf66d3Xyvsx1N5mBkXZpjc8dToEg0rIyg7zQOmFkfSU0ZuqrbIDOXRklNZ3M2
-
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
