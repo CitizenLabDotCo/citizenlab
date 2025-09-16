@@ -18,6 +18,11 @@ module Files
     def show?
       return true if admin?
 
+      if user&.project_or_folder_moderator?
+        # Can the user moderate at least one of the associated projects
+        return UserRoleService.new.moderatable_projects(user, record.projects).exists?
+      end
+
       # Can the user see whatever the file is attached to
       record.attachments.any? do |attachment|
         policy_for(attachment.attachable).show?
