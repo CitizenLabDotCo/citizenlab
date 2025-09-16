@@ -443,7 +443,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.regenerateYes": "Yes, refresh link",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApproval": "Request approval",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription2": "De Projet muss vun engem Administrateur{inFolder, select, true { oder engem vun de Foldermanager} other {}} guttgeheescht ginn ier Dir et verëffentleche kënnt. Klickt op de Knäppchen hei ënnen fir eng Genehmegung ze froen.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.settings": "Settings",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "Share",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink": "Copy link",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied": "Link copied",
