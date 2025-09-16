@@ -29,9 +29,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.participation.inputs',
     defaultMessage: 'Inputs',
   },
-  usersTab: {
-    id: 'app.containers.Admin.projects.project.participation.usersTab',
-    defaultMessage: 'Users',
+  participantsTab: {
+    id: 'app.containers.Admin.projects.project.participation.participantsTab',
+    defaultMessage: 'Participants',
   },
   demographicsTab: {
     id: 'app.containers.Admin.projects.project.participation.demographicsTab',

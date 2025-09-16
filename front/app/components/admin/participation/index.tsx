@@ -27,7 +27,7 @@ const ProjectParticipation = () => {
 
   if (!phases) return null;
 
-  const basePath = `/admin/projects/${projectId}/participation`;
+  const basePath = `/admin/projects/${projectId}/audience`;
   const isDemographicsTab = pathname.includes('/demographics');
 
   return (
@@ -36,21 +36,21 @@ const ProjectParticipation = () => {
         <Box position="sticky" top="0" background={colors.white} zIndex="1">
           <NavigationTabs position="relative">
             <Tab
-              label={formatMessage(messages.usersTab)}
-              url={`/admin/projects/${projectId}/participation`}
+              label={formatMessage(messages.participantsTab)}
+              url={`/admin/projects/${projectId}/audience`}
               active={isTopBarNavActive(
                 basePath,
                 pathname,
-                `/admin/projects/${projectId}/participation`
+                `/admin/projects/${projectId}/audience`
               )}
             />
             <Tab
               label={formatMessage(messages.demographicsTab)}
-              url={`/admin/projects/${projectId}/participation/demographics`}
+              url={`/admin/projects/${projectId}/audience/demographics`}
               active={isTopBarNavActive(
                 basePath,
                 pathname,
-                `/admin/projects/${projectId}/participation/demographics`
+                `/admin/projects/${projectId}/audience/demographics`
               )}
             />
           </NavigationTabs>

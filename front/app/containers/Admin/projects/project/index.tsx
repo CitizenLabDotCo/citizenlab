@@ -45,11 +45,9 @@ const AdminProjectsProjectIndex = () => {
         />
         <Tab
           className="intercom-admin-project-participants-tab"
-          label={formatMessage(messages.participationTab)}
-          url={`/admin/projects/${projectId}/participation`}
-          active={pathname.includes(
-            `/admin/projects/${projectId}/participation`
-          )}
+          label={formatMessage(messages.audienceTab)}
+          url={`/admin/projects/${projectId}/audience`}
+          active={pathname.includes(`/admin/projects/${projectId}/audience`)}
         />
         <Tab
           className="intercom-admin-project-traffic-tab"

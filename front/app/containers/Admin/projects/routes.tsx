@@ -95,8 +95,8 @@ export enum projectsRoutes {
   projectGeneralAccessRights = 'access-rights',
   projectGeneralData = 'data',
   projectTraffic = 'traffic',
-  projectParticipation = 'participation',
-  projectParticipationDemographics = 'participation/demographics',
+  projectParticipation = 'audience',
+  projectParticipationDemographics = 'audience/demographics',
   projectSettingsDescription = 'description',
   projectMessaging = 'messaging',
   projectMessagingNew = 'messaging/new',
@@ -107,8 +107,6 @@ export enum projectsRoutes {
   projectEventsNew = 'events/new',
   projectEventsId = 'events/:id',
   projectSettingsTags = 'tags',
-  projectSettingsAccessRights = 'access-rights',
-  projectSettingsData = 'data',
   projectId = ':projectId',
   projectIdPhases = 'phases',
   projectPhasesSetup = 'setup',
@@ -243,22 +241,6 @@ const createAdminProjectsRoutes = () => {
           {
             path: projectsRoutes.projectSettingsTags,
             element: <AdminAllowedTopicsComponent />,
-          },
-          {
-            path: projectsRoutes.projectSettingsAccessRights,
-            element: (
-              <PageLoading>
-                <AdminProjectPermissions />
-              </PageLoading>
-            ),
-          },
-          {
-            path: projectsRoutes.projectSettingsData,
-            element: (
-              <PageLoading>
-                <AdminProjectsData />
-              </PageLoading>
-            ),
           },
         ],
       },
