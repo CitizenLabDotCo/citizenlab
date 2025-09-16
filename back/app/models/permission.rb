@@ -15,6 +15,8 @@
 #  verification_expiry                :integer
 #  access_denied_explanation_multiloc :jsonb            not null
 #  everyone_tracking_enabled          :boolean          default(FALSE), not null
+#  user_fields_in_form                :boolean          default(FALSE), not null
+#  user_data_collection               :string           default("all_data"), not null
 #
 # Indexes
 #
