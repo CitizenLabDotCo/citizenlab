@@ -443,7 +443,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.regenerateYes": "Oui, rafraîchir le lien",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApproval": "Demander l'approbation",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription2": "Le projet doit être approuvé par un administrateur{inFolder, select, true { ou l'un des gestionnaires du dossier} other {}} avant de pouvoir le publier.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.settings": "Paramètres",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "Partager",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink": "Copier le lien",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied": "Lien copié",
