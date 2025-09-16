@@ -59,6 +59,7 @@ class Permission < ApplicationRecord
   validates :permission_scope_type, inclusion: { in: SCOPE_TYPES }
   validate :validate_verified_permitted_by
   validate :validate_verification_expiry
+  validates :user_data_collection, inclusion: { in: %w[all_data demographics_only anonymous] }
 
   before_validation :set_permitted_by_and_global_custom_fields, on: :create
 

@@ -50,7 +50,6 @@
 #  manual_voters_last_updated_by_id :uuid
 #  manual_voters_last_updated_at    :datetime
 #  vote_term                        :string           default("vote")
-#  anonymity                        :string           default("collect_all_data_available"), not null
 #
 # Indexes
 #
@@ -168,9 +167,6 @@ class Phase < ApplicationRecord
 
   # ONLY USED FOR IDEATION
   validates :allow_anonymous_participation, inclusion: { in: [true, false] }
-
-  # ONLY USED FOR NATIVE SURVEY AND COMMUNITY MONITOR
-  validates :anonymity, inclusion: { in: %w[full_anonymity demographics_only collect_all_data_available] }
 
   # voting?
   with_options if: :voting? do
