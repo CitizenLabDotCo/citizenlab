@@ -4,15 +4,10 @@ module Invites
   class CountNewSeatsJob < ApplicationJob
     perform_retries false
 
-    def perform(current_user, bulk_create_xlsx_params, import_id)
+    def perform(current_user, params, import_id)
       import = InvitesImport.find(import_id)
 
-      seat_numbers = Invites::SeatsCounter.new.count_in_transaction do
-        Invites::Service.new(current_user, run_side_fx: false).bulk_create_xlsx(
-          bulk_create_xlsx_params[:xlsx],
-          bulk_create_xlsx_params.except(:xlsx).stringify_keys
-        )
-      end
+      seat_numbers = count_new_seats_xlsx(current_user, params)
 
       result = {
         data: {
@@ -23,8 +18,18 @@ module Invites
 
       import.update!(result: result)
     rescue Invites::FailedError => e
-      # render json: { errors: e.to_h }, status: :unprocessable_entity
       import.update!(result: { errors: e.to_h })
+    end
+
+    private
+
+    def count_new_seats_xlsx(current_user, params)
+      Invites::SeatsCounter.new.count_in_transaction do
+        Invites::Service.new(current_user, run_side_fx: false).bulk_create_xlsx(
+          params[:xlsx],
+          params.except(:xlsx).stringify_keys
+        )
+      end
     end
   end
 end

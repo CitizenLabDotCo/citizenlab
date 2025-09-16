@@ -86,8 +86,6 @@ class WebApi::V1::InvitesController < ApplicationController
       importer: current_user
     )
 
-    puts "HERE1"
-
     Invites::CountNewSeatsJob.perform_now(current_user, bulk_create_xlsx_params, import.id)
 
     render json: WebApi::V1::Invites::InvitesImportSerializer.new(
