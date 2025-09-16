@@ -37,6 +37,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.participation.demographicsTab',
     defaultMessage: 'Demographics',
   },
+  trafficTab: {
+    id: 'app.containers.Admin.projects.project.participation.trafficTab',
+    defaultMessage: 'Traffic',
+  },
   usersSubtitle: {
     id: 'app.containers.Admin.projects.project.participation.usersSubtitle',
     defaultMessage:

@@ -5,6 +5,8 @@ import { useLocation, useParams } from 'react-router-dom';
 
 import usePhases from 'api/phases/usePhases';
 
+import ProjectTraffic from 'containers/Admin/projects/project/traffic';
+
 import NavigationTabs, { Tab } from 'components/admin/NavigationTabs';
 
 import { useIntl } from 'utils/cl-intl';
@@ -29,6 +31,7 @@ const ProjectParticipation = () => {
 
   const basePath = `/admin/projects/${projectId}/audience`;
   const isDemographicsTab = pathname.includes('/demographics');
+  const isTrafficTab = pathname.includes('/traffic');
 
   return (
     <Box p="8px 24px 24px 24px">
@@ -53,6 +56,15 @@ const ProjectParticipation = () => {
                 `/admin/projects/${projectId}/audience/demographics`
               )}
             />
+            <Tab
+              label={formatMessage(messages.trafficTab)}
+              url={`/admin/projects/${projectId}/audience/traffic`}
+              active={isTopBarNavActive(
+                basePath,
+                pathname,
+                `/admin/projects/${projectId}/audience/traffic`
+              )}
+            />
           </NavigationTabs>
         </Box>
         <Box p={`${defaultAdminCardPadding}px`}>
@@ -61,6 +73,8 @@ const ProjectParticipation = () => {
               defaultStartDate={startOfFirstPhase}
               defaultEndDate={endOfLastPhase ?? undefined}
             />
+          ) : isTrafficTab ? (
+            <ProjectTraffic />
           ) : (
             <Users />
           )}

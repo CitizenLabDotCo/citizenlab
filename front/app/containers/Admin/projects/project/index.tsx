@@ -50,12 +50,6 @@ const AdminProjectsProjectIndex = () => {
           active={pathname.includes(`/admin/projects/${projectId}/audience`)}
         />
         <Tab
-          className="intercom-admin-project-traffic-tab"
-          label={formatMessage(messages.trafficTab)}
-          url={`/admin/projects/${projectId}/traffic`}
-          active={pathname.includes(`/admin/projects/${projectId}/traffic`)}
-        />
-        <Tab
           className="intercom-admin-project-messaging-tab"
           label={formatMessage(messages.messagingTab)}
           url={`/admin/projects/${projectId}/messaging`}
