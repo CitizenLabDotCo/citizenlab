@@ -443,7 +443,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.regenerateYes": "Da, osvježi vezu",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApproval": "Zatražite odobrenje",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription2": "Projekt mora odobriti administrator{inFolder, select, true { ili jedan od Upravitelja mapa} other {}} prije nego što ga možete objaviti. Pritisnite donji gumb da biste zatražili odobrenje.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.settings": "postavke",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "Udio",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink": "Kopiraj vezu",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied": "Veza je kopirana",
