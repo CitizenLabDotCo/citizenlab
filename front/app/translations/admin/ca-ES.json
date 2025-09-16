@@ -443,7 +443,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.regenerateYes": "Yes, refresh link",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApproval": "Request approval",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription2": "El projecte ha de ser aprovat per un administrador{inFolder, select, true { o un dels gestors de carpetes} other {}} abans de poder publicar-lo. Feu clic al botó següent per sol·licitar l'aprovació.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.settings": "Settings",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "Comparteix",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink": "Copia l'enllaç",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied": "S'ha copiat l'enllaç",
