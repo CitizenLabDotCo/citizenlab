@@ -107,8 +107,8 @@ class UserFieldsInSurveyService
 
     return false if requirements[:custom_fields].empty?
 
-    # Confirm that anonymity = 'collect_all_data_available' or 'demographics_only'
-    return false if phase.anonymity == 'full_anonymity'
+    # Confirm that user_data_collection = 'all_data' or 'demographics_only'
+    return false if permission.user_data_collection == 'anonymous'
 
     # Finally, confirm that the idea doesn't already have user fields
     return false if idea.custom_field_values&.keys&.any? { |key| key.start_with?(prefix) }

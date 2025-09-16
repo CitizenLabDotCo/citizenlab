@@ -129,12 +129,12 @@ module ParticipationMethod
 
     # Attribute used interally by backend to determine if user fields should be shown in the form
     def user_fields_in_form?
-      return false if phase.anonymity == 'full_anonymity'
-
       permission = Permission.find_by(
         permission_scope_id: phase.id,
         action: 'posting_idea'
       )
+
+      return false if permission.user_data_collection == 'anonymous'
 
       case permission&.permitted_by
       when 'everyone'
@@ -158,7 +158,7 @@ module ParticipationMethod
       )
 
       if permission&.permitted_by == 'everyone'
-        if phase.anonymity == 'full_anonymity'
+        if permission.user_data_collection == 'anonymous'
           {
             value: nil,
             locked: true,
@@ -171,7 +171,7 @@ module ParticipationMethod
             explanation: 'cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone'
           }
         end
-      elsif phase.anonymity == 'full_anonymity'
+      elsif permission.user_data_collection == 'anonymous'
         {
           value: false,
           locked: true,

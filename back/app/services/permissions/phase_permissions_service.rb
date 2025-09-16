@@ -183,7 +183,7 @@ module Permissions
       if user
         return true if phase.ideas.published_after(allow_posting_again_after.ago).exists?(author: user)
 
-        if phase.anonymity != 'collect_all_data_available'
+        if phase.pmethod.user_data_collection != 'all_data'
           author_hash = Idea.create_author_hash(user.id, phase.project.id, true)
           return true if phase.ideas.published_after(allow_posting_again_after.ago).exists?(author_hash: author_hash)
         end
