@@ -1,6 +1,8 @@
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
-import { PermittedBy } from 'api/phase_permissions/types';
-import { UserFieldsInFormFrontendDescriptor } from 'api/phases/types';
+import {
+  PermittedBy,
+  UserFieldsInFormFrontendDescriptor,
+} from 'api/phase_permissions/types';
 
 export const getNumberOfVerificationLockedItems = (
   fields: IPermissionsCustomFieldData[]
@@ -26,8 +28,5 @@ export const showResetButton = (
 export const allowAddingFields = (
   explanation: UserFieldsInFormFrontendDescriptor['explanation']
 ) => {
-  return (
-    explanation !==
-    'cannot_ask_demographic_fields_with_this_combination_of_permitted_by_and_anonymity'
-  );
+  return explanation !== 'with_these_settings_cannot_ask_demographic_fields';
 };

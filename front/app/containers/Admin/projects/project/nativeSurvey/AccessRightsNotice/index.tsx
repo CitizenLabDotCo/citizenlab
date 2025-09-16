@@ -1,11 +1,9 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
-import usePhase from 'api/phases/usePhase';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 import useLocalize from 'hooks/useLocalize';
@@ -16,9 +14,6 @@ import Warning from 'components/UI/Warning';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
-// hooks
-
-// intl
 import messages from './messages';
 
 type AccessRightsNoticeProps = {
@@ -40,10 +35,16 @@ const AccessRightsNotice = ({
     phaseId,
     action: 'posting_idea',
   });
-  const { data: phase } = usePhase(phaseId);
 
   // NOTE: There should only ever one permission for a survey phase
-  const permittedBySetting = permissions?.data[0].attributes.permitted_by;
+  // const permittedBySetting = permissions?.data[0].attributes.permitted_by;
+  const postingPermission = permissions?.data.find((permission) => {
+    return permission.attributes.action === 'posting_idea';
+  });
+
+  const permittedBySetting = postingPermission?.attributes.permitted_by;
+  const userFieldsInForm = postingPermission?.attributes.user_fields_in_form;
+
   const globalCustomFieldsSetting =
     permissions?.data[0].attributes.global_custom_fields;
 
@@ -71,9 +72,6 @@ const AccessRightsNotice = ({
       {formatMessage(messages.accessRightsSettings)}
     </Link>
   );
-
-  const userFieldsInForm =
-    phase?.data.attributes.user_fields_in_form_frontend_descriptor.value;
 
   if (userFieldsInForm && permittedBySetting !== 'everyone') return null;
 

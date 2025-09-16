@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Radio, Text } from '@citizenlab/cl2-component-library';
 
-import { UserFieldsInFormFrontendDescriptor } from 'api/phases/types';
+import { UserFieldsInFormFrontendDescriptor } from 'api/phase_permissions/types';
 
 import Warning from 'components/UI/Warning';
 
