@@ -13,6 +13,52 @@ class WebApi::V1::PermissionSerializer < WebApi::V1::BaseSerializer
     object.everyone_tracking_enabled?
   end
 
+  # Attribute used in frontend to render access rights UI
+  attribute :user_fields_in_form_frontend_descriptor do |permission|
+    phase = permission.permission_scope
+    has_survey_form = phase.is_a?(Phase) && phase.supports_survey_form?
+
+    # If the permission is not about posting an idea in a native survey phase
+    # or community monitor phase,
+    # we don't support this attribute
+    unless permission.action == 'posting_idea' && has_survey_form
+      return {
+        value: nil,
+        locked: true,
+        explanation: 'user_fields_in_survey_not_supported_for_participation_method'
+      }
+    end
+
+    if permission.permitted_by == 'everyone'
+        if permission.user_data_collection == 'anonymous'
+          {
+            value: nil,
+            locked: true,
+            explanation: 'with_these_settings_cannot_ask_demographic_fields'
+          }
+        else
+          {
+            value: true,
+            locked: true,
+            explanation: 'cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone'
+          }
+        end
+      elsif permission.user_data_collection == 'anonymous'
+        {
+          value: false,
+          locked: true,
+          explanation: 'with_these_settings_can_only_ask_demographic_fields_in_registration_flow'
+        }
+      else
+        {
+          value: permission.user_fields_in_form,
+          locked: false,
+          explanation: nil
+        }
+      end
+    end
+  end
+
   belongs_to :permission_scope, polymorphic: true
   has_many :groups
   has_many :permissions_custom_fields

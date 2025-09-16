@@ -31,23 +31,6 @@ export interface IPhaseData {
   };
 }
 
-export type Anonymity =
-  | 'collect_all_data_available'
-  | 'demographics_only'
-  | 'full_anonymity';
-
-export type UserFieldsInFormExplanation =
-  | 'user_fields_in_survey_not_supported_for_participation_method'
-  | 'with_these_settings_cannot_ask_demographic_fields'
-  | 'cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone'
-  | 'with_these_settings_can_only_ask_demographic_fields_in_registration_flow';
-
-export type UserFieldsInFormFrontendDescriptor = {
-  value: boolean | null;
-  locked: boolean;
-  explanation: UserFieldsInFormExplanation | null;
-};
-
 export interface IPhaseAttributes {
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
@@ -94,9 +77,6 @@ export interface IPhaseAttributes {
   similarity_enabled?: boolean;
   similarity_threshold_title?: number | null;
   similarity_threshold_body?: number | null;
-  user_fields_in_form_frontend_descriptor: UserFieldsInFormFrontendDescriptor;
-  user_fields_in_form: boolean;
-  anonymity: Anonymity;
 }
 
 export interface IPhases {
@@ -146,8 +126,6 @@ export interface IUpdatedPhaseProperties {
   similarity_enabled?: boolean | null;
   similarity_threshold_title?: number | null;
   similarity_threshold_body?: number | null;
-  user_fields_in_form?: boolean;
-  anonymity?: Anonymity;
 }
 
 export interface AddPhaseObject extends IUpdatedPhaseProperties {

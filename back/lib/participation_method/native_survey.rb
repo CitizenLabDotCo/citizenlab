@@ -150,42 +150,6 @@ module ParticipationMethod
       end
     end
 
-    # Attribute used in frontend to render UI
-    def user_fields_in_form_frontend_descriptor
-      permission = Permission.find_by(
-        permission_scope_id: phase.id,
-        action: 'posting_idea'
-      )
-
-      if permission&.permitted_by == 'everyone'
-        if permission.user_data_collection == 'anonymous'
-          {
-            value: nil,
-            locked: true,
-            explanation: 'with_these_settings_cannot_ask_demographic_fields'
-          }
-        else
-          {
-            value: true,
-            locked: true,
-            explanation: 'cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone'
-          }
-        end
-      elsif permission.user_data_collection == 'anonymous'
-        {
-          value: false,
-          locked: true,
-          explanation: 'with_these_settings_can_only_ask_demographic_fields_in_registration_flow'
-        }
-      else
-        {
-          value: permission.user_fields_in_form,
-          locked: false,
-          explanation: nil
-        }
-      end
-    end
-
     def user_data_collection
       permission = Permission.find_by(
         permission_scope_id: phase.id,
