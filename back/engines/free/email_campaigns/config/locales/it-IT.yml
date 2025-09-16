@@ -119,6 +119,8 @@ it:
       "unfollow_here": "Hai ricevuto questa notifica a causa di un articolo che segui. <a href=\"%{unfollow_url}\">Puoi disiscriverlo qui.</a>"
     manual:
       preheader: 'Hai ricevuto una mail da %{organizationName}'
+    manual_project_participants:
+      preheader: 'Hai ricevuto una mail da %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Il tuo commento è stato cancellato dalla piattaforma di %{organizationName}'
       preheader: 'Il tuo commento è stato cancellato'

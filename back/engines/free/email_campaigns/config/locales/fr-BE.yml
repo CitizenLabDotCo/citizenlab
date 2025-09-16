@@ -119,6 +119,8 @@ fr-BE:
       "unfollow_here": "Vous avez reçu cette notification parce que vous suivez ce sujet. <a href=\"%{unfollow_url}\">Vous pouvez vous désabonner ici.</a>"
     manual:
       preheader: 'Vous avez reçu un e-mail de la part de %{organizationName}'
+    manual_project_participants:
+      preheader: 'Vous avez reçu un e-mail de la part de %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Votre commentaire a été supprimé de la plateforme de %{organizationName}'
       preheader: 'Votre commentaire a été supprimé'

@@ -119,6 +119,8 @@ pt:
       "unfollow_here": "Você recebeu esta notificação por causa de um item que você segue. <a href=\"%{unfollow_url}\">Você pode parar de segui-lo aqui.</a>"
     manual:
       preheader: 'Você tem uma correspondência de %{organizationName}'
+    manual_project_participants:
+      preheader: 'Você tem uma correspondência de %{organizationName}'
     comment_deleted_by_admin:
       subject: 'O seu comentário foi excluido na plataforma de %{organizationName}'
       preheader: 'O seu comentário foi excluido'
