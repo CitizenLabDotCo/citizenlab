@@ -194,32 +194,43 @@ module MultiTenancy
           serialized_models
         end
 
+        # rubocop:disable Metrics/CyclomaticComplexity
         def translate_and_fix_locales(serialized_models)
           translator = MachineTranslations::MachineTranslationService.new
           locales_to = AppConfiguration.instance.settings('core', 'locales')
 
           # Log number of translations to help monitor costs.
-          translate_logs = { strings: 0, chars: 0 }
+          translate_logs = { models: {}, strings: 0, chars: 0 }
 
           # Do the locales in the template already match the target locales?
           return [serialized_models, translate_logs] if Set.new(locales_to) == Set.new(template_locales(serialized_models))
 
           # Change unsupported user locales to first target tenant locale.
+          # Only keep the bio if the locale is supported
           unless Set.new(locales_to) == Set.new(user_locales(serialized_models))
             serialized_models['models']['user']&.each do |attributes|
               unless locales_to.include? attributes['locale']
                 attributes['locale'] = locales_to.first
+                attributes['bio_multiloc'].select! { |key, _| locales_to.include?(key) }
               end
             end
           end
 
           # Translate any missing locales from the first locale found.
-          serialized_models['models'].each_value do |fields|
-            fields.each do |attributes|
+          serialized_models['models'].each do |model_name, model|
+            next if model_name == 'user' # Users have been handled above and do not translations
+
+            model.each do |attributes|
+              model_has_been_logged = false
               attributes.each do |field_name, field_value|
                 if multiloc?(field_name) && field_value.is_a?(Hash)
                   source_locale = field_value.keys.first
                   next unless source_locale
+
+                  # log the model being translated
+                  translate_logs[:models][model_name] ||= 0
+                  translate_logs[:models][model_name] += 1 unless model_has_been_logged
+                  model_has_been_logged = true
 
                   source_text = field_value[source_locale]
                   locales_to.each do |locale|
@@ -259,6 +270,7 @@ module MultiTenancy
           end
           [serialized_models, translate_logs]
         end
+        # rubocop:enable Metrics/CyclomaticComplexity
 
         def user_locales(serialized_models)
           serialized_models = serialized_models.with_indifferent_access
