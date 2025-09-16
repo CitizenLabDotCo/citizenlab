@@ -1,6 +1,6 @@
 import { MessageDescriptor } from 'react-intl';
 
-import { UserFieldsInFormExplanation } from 'api/phases/types';
+import { UserFieldsInFormExplanation } from 'api/phase_permissions/types';
 
 import messages from './messages';
 

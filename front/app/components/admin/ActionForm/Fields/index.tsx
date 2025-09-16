@@ -11,9 +11,11 @@ import {
 import { Action } from 'api/permissions/types';
 import useAddPermissionsCustomField from 'api/permissions_custom_fields/useAddPermissionsCustomField';
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
-import { PermittedBy } from 'api/phase_permissions/types';
+import {
+  PermittedBy,
+  UserFieldsInFormFrontendDescriptor,
+} from 'api/phase_permissions/types';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
-import { UserFieldsInFormFrontendDescriptor } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 

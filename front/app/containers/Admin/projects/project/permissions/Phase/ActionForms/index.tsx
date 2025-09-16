@@ -6,7 +6,6 @@ import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import useResetPhasePermission from 'api/phase_permissions/useResetPhasePermission';
 import useUpdatePhasePermission from 'api/phase_permissions/useUpdatePhasePermission';
 import usePhase from 'api/phases/usePhase';
-import useUpdatePhase from 'api/phases/useUpdatePhase';
 
 import ActionForm from 'components/admin/ActionForm';
 
@@ -24,7 +23,6 @@ const ActionForms = ({ phaseId }: Props) => {
   const { data: permissions } = usePhasePermissions({ phaseId });
   const { mutateAsync: updatePhasePermission } = useUpdatePhasePermission();
   const { mutate: resetPhasePermission } = useResetPhasePermission();
-  const { mutate: updatePhase } = useUpdatePhase();
 
   if (!permissions || !phase) return null;
 
@@ -73,9 +71,6 @@ const ActionForms = ({ phaseId }: Props) => {
               action: permission.attributes.action,
             })
           }
-          onChangePhaseSetting={(settings) => {
-            updatePhase({ phaseId, ...settings });
-          }}
         />
       </Box>
     );
@@ -127,9 +122,6 @@ const ActionForms = ({ phaseId }: Props) => {
                   action: permission.attributes.action,
                 })
               }
-              onChangePhaseSetting={(settings) => {
-                updatePhase({ phaseId, ...settings });
-              }}
             />
           </Accordion>
         );
