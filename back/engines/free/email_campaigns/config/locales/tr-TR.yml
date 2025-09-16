@@ -119,6 +119,8 @@ tr:
       "unfollow_here": "Takip ettiğiniz bir öğe nedeniyle bu bildirimi aldınız. <a href=\"%{unfollow_url}\">Buradan takibi bırakabilirsiniz.</a>"
     manual:
       preheader: '%{organizationName}adresinden postanız var.'
+    manual_project_participants:
+      preheader: '%{organizationName}adresinden postanız var.'
     comment_deleted_by_admin:
       subject: 'Yorumunuz %{organizationName} platformundan silindi'
       preheader: 'Yorumunuz silindi'
