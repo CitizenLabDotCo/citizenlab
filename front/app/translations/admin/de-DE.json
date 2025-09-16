@@ -442,7 +442,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.regenerateYes": "Ja, Link aktualisieren",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApproval": "Freigabe anfordern",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription2": "Das Projekt muss von einem Admins{inFolder, select, true { oder einem der Ordner-Manager*innen} other {}} freigegeben werden, bevor Sie es veröffentlichen können. Klicken Sie auf den Button unten, um die Freigabe zu beantragen.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.settings": "Einstellungen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "Teilen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink": "Link kopieren",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied": "Link kopiert",

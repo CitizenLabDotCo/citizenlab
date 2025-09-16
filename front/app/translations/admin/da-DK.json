@@ -442,7 +442,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.regenerateYes": "Ja, opdater link",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApproval": "Anmod om godkendelse",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription2": "Projektet skal godkendes af en administrator{inFolder, select, true { eller en af Folder Managers} other {}} , før du kan udgive det. Klik på knappen nedenfor for at anmode om godkendelse.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.settings": "Indstillinger",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "Del",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink": "Kopier link",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied": "Link kopieret",

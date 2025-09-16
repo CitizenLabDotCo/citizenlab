@@ -442,7 +442,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.regenerateYes": "Ie, adnewyddu'r ddolen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApproval": "Gofyn am gymeradwyaeth",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription2": "Rhaid i'r prosiect gael ei gymeradwyo gan weinyddwr{inFolder, select, true { neu un o'r Rheolwyr Ffolder} other {}} cyn y gallwch ei gyhoeddi. Cliciwch ar y botwm isod i ofyn am gymeradwyaeth.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.settings": "Gosodiadau",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "Rhannu",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink": "Copïo dolen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied": "Dolen wedi'i chopïo",

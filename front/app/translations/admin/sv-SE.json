@@ -442,7 +442,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.regenerateYes": "Ja, uppdatera länken",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApproval": "Begär godkännande",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription2": "Projektet måste godkännas av en administratör{inFolder, select, true { eller en av mapphanterarna} other {}} innan du kan publicera det. Klicka på knappen nedan för att begära godkännande.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.settings": "Inställningar",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "Dela",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink": "Kopiera länk",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied": "Länk kopierad",

@@ -442,7 +442,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.regenerateYes": "نعم، تحديث الرابط",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApproval": "طلب الموافقة",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription2": "يجب موافقة أحد المشرفين{inFolder, select, true { أو أحد مديري المجلدات} other {}} على المشروع قبل نشره. انقر على الزر أدناه لطلب الموافقة.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.settings": "إعدادات",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "يشارك",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink": "نسخ الوصلة",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied": "تم نسخ الرابط",

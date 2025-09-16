@@ -442,7 +442,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.regenerateYes": "Ja, oppdater lenken",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApproval": "Be om godkjenning",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription2": "Prosjektet må godkjennes av en administrator{inFolder, select, true { eller en av mappeadministratorene} other {}} før du kan publisere det. Klikk på knappen nedenfor for å be om godkjenning.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.settings": "Innstillinger",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "Del",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink": "Kopier lenke",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied": "Kopiert lenke",

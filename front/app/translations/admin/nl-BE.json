@@ -442,7 +442,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.regenerateYes": "Ja, link vernieuwen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApproval": "Goedkeuring aanvragen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription2": "Het project moet worden goedgekeurd door een beheerder{inFolder, select, true { of een van de Mapbeheerders} other {}} voordat je het kunt publiceren. Klik op de knop hieronder om goedkeuring aan te vragen.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.settings": "Instellingen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "Delen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink": "Kopieer de link",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied": "Link gekopieerd",

@@ -442,7 +442,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.regenerateYes": "Jā, atsvaidziniet saiti",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApproval": "Apstiprinājuma pieprasījums",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription2": "Pirms projekta publicēšanas tas ir jāapstiprina administratoram{inFolder, select, true { vai kādam no mapju pārvaldniekiem} other {}} . Lai pieprasītu apstiprinājumu, noklikšķiniet uz pogas zemāk.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.settings": "Iestatījumi",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "Dalīties",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink": "Kopēt saiti",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied": "Kopēta saite",

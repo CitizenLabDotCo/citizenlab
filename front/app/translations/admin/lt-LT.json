@@ -442,7 +442,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.regenerateYes": "Taip, atnaujinkite nuorodą",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApproval": "Prašymas patvirtinti",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription2": "Prieš paskelbdami projektą, jį turi patvirtinti administratorius{inFolder, select, true { arba vienas iš aplankų tvarkytojų} other {}} . Norėdami paprašyti patvirtinimo, spustelėkite toliau esantį mygtuką.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.settings": "Nustatymai",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "Dalintis",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink": "Kopijuoti nuorodą",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied": "Nukopijuota nuoroda",

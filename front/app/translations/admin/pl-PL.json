@@ -442,7 +442,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.regenerateYes": "Tak, odśwież link",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApproval": "Poproś o zatwierdzenie",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription2": "Projekt musi zostać zatwierdzony przez administratora{inFolder, select, true { lub jednego z menedżerów folderów} other {}} zanim będziesz mógł go opublikować. Kliknij poniższy przycisk, aby poprosić o zatwierdzenie.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.settings": "Ustawienia",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "Udostępnij",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink": "Skopiuj link",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied": "Link skopiowany",

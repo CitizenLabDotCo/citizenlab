@@ -442,7 +442,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.regenerateYes": "Kyllä, päivitä linkki",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApproval": "Pyydä hyväksyntää",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription2": "Järjestelmänvalvojan{inFolder, select, true { tai jonkin kansion ylläpitäjistä} other {}} on hyväksyttävä projekti ennen kuin voit julkaista sen. Pyydä hyväksyntää napsauttamalla alla olevaa painiketta.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.settings": "Asetukset",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "Jaa",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink": "Kopioi linkki",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied": "Linkki kopioitu",
