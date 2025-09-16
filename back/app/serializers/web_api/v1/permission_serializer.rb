@@ -35,32 +35,32 @@ class WebApi::V1::PermissionSerializer < WebApi::V1::BaseSerializer
     }
 
     unless permission.action == 'posting_idea'
-      return unsupported_descriptor
+      next unsupported_descriptor
     end
 
     phase = permission.permission_scope
-    has_survey_form = phase.is_a?(Phase) && phase.supports_survey_form?
+    has_survey_form = phase.is_a?(Phase) && phase.pmethod.supports_survey_form?
 
     unless has_survey_form
-      return unsupported_descriptor
+      next unsupported_descriptor
     end
 
     if permission.permitted_by == 'everyone'
       if permission.user_data_collection == 'anonymous'
-        {
+        next {
           value: nil,
           locked: true,
           explanation: 'with_these_settings_cannot_ask_demographic_fields'
         }
       else
-        {
+        next {
           value: true,
           locked: true,
           explanation: 'cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone'
         }
       end
     elsif permission.user_data_collection == 'anonymous'
-      {
+      next {
         value: false,
         locked: true,
         explanation: 'with_these_settings_can_only_ask_demographic_fields_in_registration_flow'
