@@ -7,10 +7,10 @@ module Invites
     def perform(current_user, params, import_id, xlsx_import: false)
       import = InvitesImport.find(import_id)
 
-      if xlsx_import
-        seat_numbers = count_new_seats_xlsx(current_user, params)
+      seat_numbers = if xlsx_import
+        count_new_seats_xlsx(current_user, params)
       else
-        seat_numbers = count_new_seats(current_user, params)
+        count_new_seats(current_user, params)
       end
 
       result = {
