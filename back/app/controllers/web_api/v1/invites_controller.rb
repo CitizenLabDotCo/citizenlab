@@ -81,15 +81,19 @@ class WebApi::V1::InvitesController < ApplicationController
   def count_new_seats_xlsx
     authorize :invite
 
-    seat_numbers = Invites::SeatsCounter.new.count_in_transaction do
-      Invites::Service.new(current_user, run_side_fx: false).bulk_create_xlsx(
-        bulk_create_xlsx_params[:xlsx],
-        bulk_create_xlsx_params.except(:xlsx).stringify_keys
-      )
-    end
-    render json: raw_json(seat_numbers)
-  rescue Invites::FailedError => e
-    render json: { errors: e.to_h }, status: :unprocessable_entity
+    import = InvitesImport.create!(
+      job_type: 'count_new_seats',
+      importer: current_user
+    )
+
+    puts "HERE1"
+
+    Invites::CountNewSeatsJob.perform_now(current_user, bulk_create_xlsx_params, import.id)
+
+    render json: WebApi::V1::Invites::InvitesImportSerializer.new(
+      import,
+      params: jsonapi_serializer_params
+    ).serializable_hash
   end
 
   def bulk_create
