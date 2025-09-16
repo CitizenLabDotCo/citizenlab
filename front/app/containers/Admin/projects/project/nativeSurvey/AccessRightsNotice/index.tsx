@@ -92,7 +92,8 @@ const AccessRightsNotice = ({
         <Box display="flex" alignItems="center">
           <Icon name="info-outline" height="24px" fill={colors.teal700} />
           <Text m="0" ml="12px" color="teal700">
-            Whatever
+            {surveyUserFields?.join(' ')}
+            {accessRightsSettingsLink}
           </Text>
         </Box>
         <CloseIconButton onClick={handleClose} />
