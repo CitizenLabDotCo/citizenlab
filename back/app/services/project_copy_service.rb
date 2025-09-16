@@ -604,7 +604,8 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'global_custom_fields' => p.global_custom_fields,
         'created_at' => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601,
-        'user_fields_in_form' => p.user_fields_in_form
+        'user_fields_in_form' => p.user_fields_in_form,
+        'user_data_collection' => p.user_data_collection
       }
       store_ref yml_permission, p.id, :permission
       yml_permission
