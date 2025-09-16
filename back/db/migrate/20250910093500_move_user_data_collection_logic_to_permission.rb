@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AddAnonymityColumnToPhase < ActiveRecord::Migration[7.1]
+class MoveUserDataCollectionLogicToPermission < ActiveRecord::Migration[7.1]
   def change
     reversible do |dir|
       add_column :permissions, :user_fields_in_form, :boolean, default: false, null: false
