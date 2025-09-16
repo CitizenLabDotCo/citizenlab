@@ -156,6 +156,20 @@ RSpec.describe EmailCampaigns::EventRegistrationConfirmationMailer do
         end
       end
 
+      context 'when the event has no first address but has a second address' do
+        before do
+          event_attributes['address_1'] = nil
+          event_attributes['address_2_multiloc'] = { 'en' => 'Democracy centre' }
+        end
+
+        it 'contains location details' do
+          label_div = page.find('div', exact_text: /\s*Location\s*/)
+          location_div = label_div.find('+ div')
+
+          expect(location_div).to have_text('Democracy centre')
+        end
+      end
+
       context 'when the event has no description' do
         before do
           event_attributes['description_multiloc'] = {}
