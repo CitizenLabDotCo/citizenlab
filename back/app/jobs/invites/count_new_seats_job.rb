@@ -20,9 +20,9 @@ module Invites
         }
       }
 
-      import.update!(result: result)
+      import.update!(result: result, completed_at: Time.current)
     rescue Invites::FailedError => e
-      import.update!(result: { errors: e.to_h })
+      import.update!(result: { errors: e.to_h }, completed_at: Time.current)
     end
 
     private

@@ -90,7 +90,7 @@ class WebApi::V1::InvitesController < ApplicationController
     authorize :invite
 
     import = InvitesImport.create!(
-      job_type: 'count_new_seats',
+      job_type: 'count_new_seats_xlsx',
       importer: current_user
     )
 

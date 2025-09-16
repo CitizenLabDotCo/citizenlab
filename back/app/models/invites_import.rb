@@ -19,7 +19,7 @@
 #  fk_rails_...  (importer_id => users.id)
 #
 class InvitesImport < ApplicationRecord
-  JOB_TYPES = %w[count_new_seats bulk_create_xlsx].freeze
+  JOB_TYPES = %w[count_new_seats count_new_seats_xlsx bulk_create_xlsx].freeze
 
   belongs_to :importer, class_name: 'User', optional: true
 
