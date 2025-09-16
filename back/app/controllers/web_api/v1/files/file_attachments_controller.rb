@@ -18,7 +18,8 @@ class WebApi::V1::Files::FileAttachmentsController < ApplicationController
 
     render json: WebApi::V1::Files::FileAttachmentSerializer.new(
       file_attachments,
-      params: jsonapi_serializer_params
+      params: jsonapi_serializer_params,
+      include: [:file]
     ).serializable_hash
   end
 
