@@ -119,6 +119,8 @@ lv:
       "unfollow_here": "Jūs esat saņēmis šo paziņojumu, jo jums ir sekots līdzi. <a href=\"%{unfollow_url}\">Jūs varat to atcelt šeit.</a>"
     manual:
       preheader: 'Jums ir pasts no %{organizationName}'
+    manual_project_participants:
+      preheader: 'Jums ir pasts no %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Jūsu komentārs ir dzēsts no %{organizationName} platformas.'
       preheader: 'Jūsu komentārs ir dzēsts'
