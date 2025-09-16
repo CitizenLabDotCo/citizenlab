@@ -140,12 +140,12 @@ module ParticipationMethod
       when 'everyone'
         !permission.permissions_custom_fields.empty?
       when 'everyone_confirmed_email'
-        phase.user_fields_in_form && !permission.permissions_custom_fields.empty?
+        permission.user_fields_in_form && !permission.permissions_custom_fields.empty?
       else
         if permission.global_custom_fields == true
-          phase.user_fields_in_form
+          permission.user_fields_in_form
         else
-          phase.user_fields_in_form && !permission.permissions_custom_fields.empty?
+          permission.user_fields_in_form && !permission.permissions_custom_fields.empty?
         end
       end
     end
@@ -179,7 +179,7 @@ module ParticipationMethod
         }
       else
         {
-          value: phase.user_fields_in_form,
+          value: permission.user_fields_in_form,
           locked: false,
           explanation: nil
         }
