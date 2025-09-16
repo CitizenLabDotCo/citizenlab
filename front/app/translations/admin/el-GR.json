@@ -443,7 +443,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.regenerateYes": "Yes, refresh link",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApproval": "Request approval",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription2": "Το έργο πρέπει να εγκριθεί από έναν διαχειριστή{inFolder, select, true { ή έναν από τους Διαχειριστές φακέλων} other {}} πριν μπορέσετε να το δημοσιεύσετε. Κάντε κλικ στο παρακάτω κουμπί για να ζητήσετε έγκριση.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.settings": "Settings",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "Μοιραστείτε το",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink": "Αντιγραφή συνδέσμου",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied": "Σύνδεσμος που αντιγράφηκε",
