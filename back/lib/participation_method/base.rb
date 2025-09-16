@@ -240,6 +240,11 @@ module ParticipationMethod
       }
     end
 
+    # Only implemented in native_survey and community monitor
+    def user_data_collection
+      'all_data'
+    end
+
     def supports_multiple_phase_reports?
       false
     end

@@ -186,6 +186,15 @@ module ParticipationMethod
       end
     end
 
+    def user_data_collection
+      permission = Permission.find_by(
+        permission_scope_id: phase.id,
+        action: 'posting_idea'
+      )
+
+      permission.user_data_collection
+    end
+
     private
 
     def start_page_field(custom_form)
