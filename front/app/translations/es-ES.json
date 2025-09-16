@@ -822,7 +822,7 @@
   "app.components.formBuilder.good": "Bien",
   "app.components.formBuilder.helmetTitle": "Creador de formularios",
   "app.components.formBuilder.imageFileUpload": "Cargar imagen",
-  "app.components.formBuilder.inputTagManager": "Página de etiquetas de entrada",
+  "app.components.formBuilder.inputTagManager": "Página de etiquetas de entradas",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Lógica inválida",
   "app.components.formBuilder.labels2": "Etiquetas (opcional)",
   "app.components.formBuilder.labelsTooltipContent2": "Elige etiquetas opcionales para cualquiera de los valores de la escala lineal.",
