@@ -6,7 +6,7 @@ import { Multiloc } from 'typings';
 import { IPhaseData, IPhases } from 'api/phases/types';
 import { IProject } from 'api/projects/types';
 
-import PageControlButtons from 'components/Form/Components/Layouts/PageControlButtons';
+import SmartStickyButton from 'components/Form/Components/Layouts/SmartStickyButton';
 
 import ProgressBar from '../ProgressBar';
 
@@ -24,6 +24,7 @@ const PageFooter = ({
   isLoading,
   isAdminPage,
   isMapPage,
+  triggerElementId,
 }: {
   variant: 'other' | 'after-submission' | 'submission';
   hasPreviousPage: boolean;
@@ -38,6 +39,7 @@ const PageFooter = ({
   isLoading: boolean;
   isAdminPage?: boolean;
   isMapPage?: boolean;
+  triggerElementId?: string;
 }) => {
   const isMobileOrSmaller = useBreakpoint('phone');
   return (
@@ -53,7 +55,7 @@ const PageFooter = ({
       <ProgressBar formCompletionPercentage={formCompletionPercentage} />
 
       <Box w="100%">
-        <PageControlButtons
+        <SmartStickyButton
           handleNextAndSubmit={handleNextAndSubmit}
           handlePrevious={handlePrevious}
           hasPreviousPage={hasPreviousPage}
@@ -64,6 +66,7 @@ const PageFooter = ({
           pageButtonLabelMultiloc={pageButtonLabelMultiloc}
           pageButtonLink={pageButtonLink}
           project={project}
+          triggerElementId={triggerElementId}
         />
       </Box>
     </Box>
