@@ -753,8 +753,6 @@
   "app.components.form.error": "ਗਲਤੀ",
   "app.components.form.locationGoogleUnavailable": "ਗੂਗਲ ਮੈਪਸ ਦੁਆਰਾ ਪ੍ਰਦਾਨ ਕੀਤੇ ਗਏ ਸਥਾਨ ਖੇਤਰ ਨੂੰ ਲੋਡ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ।",
   "app.components.form.progressBarLabel": "ਸਰਵੇਖਣ ਦੀ ਪ੍ਰਗਤੀ",
-  "app.components.form.scrollToContinue": "ਜਾਰੀ ਰੱਖਣ ਲਈ ਹੇਠਾਂ ਸਕ੍ਰੌਲ ਕਰੋ",
-  "app.components.form.scrollToContinueTooltip": "ਜਾਰੀ ਰੱਖਣ ਲਈ ਕਿਰਪਾ ਕਰਕੇ ਫਾਰਮ ਦੇ ਹੇਠਾਂ ਸਕ੍ਰੌਲ ਕਰੋ।",
   "app.components.form.submit": "ਜਮ੍ਹਾਂ ਕਰੋ",
   "app.components.form.submitApiError": "ਫਾਰਮ ਸਪੁਰਦ ਕਰਨ ਵਿੱਚ ਇੱਕ ਸਮੱਸਿਆ ਆਈ ਸੀ। ਕਿਰਪਾ ਕਰਕੇ ਕਿਸੇ ਵੀ ਤਰੁੱਟੀ ਦੀ ਜਾਂਚ ਕਰੋ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
   "app.components.form.verifiedBlocked": "ਤੁਸੀਂ ਇਸ ਖੇਤਰ ਨੂੰ ਸੰਪਾਦਿਤ ਨਹੀਂ ਕਰ ਸਕਦੇ ਕਿਉਂਕਿ ਇਸ ਵਿੱਚ ਪ੍ਰਮਾਣਿਤ ਜਾਣਕਾਰੀ ਸ਼ਾਮਲ ਹੈ",
