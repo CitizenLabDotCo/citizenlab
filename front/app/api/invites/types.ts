@@ -57,12 +57,17 @@ export interface IInviteData {
   };
 }
 
+// TODO: change the name of this interface
 export interface IInvitesNewSeats {
   data: {
+    id: string;
     type: 'invite_new_seats';
     attributes: {
-      newly_added_admins_number: number;
-      newly_added_moderators_number: number;
+      completed_at: string | null;
+      result: {
+        newly_added_admins_number?: number;
+        newly_added_moderators_number?: number;
+      };
     };
   };
 }

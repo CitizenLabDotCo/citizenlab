@@ -39,6 +39,7 @@ import messages from '../messages';
 
 import ManualTab from './ManualTab';
 import TemplateTab from './TemplateTab';
+import useInviteImport from 'api/invites/useInviteImport';
 
 const InviteUsersWithSeatsModal = lazy(
   () => import('components/admin/SeatBasedBilling/InviteUsersWithSeatsModal')
@@ -89,6 +90,20 @@ const Invitations = () => {
   const [showModal, setShowModal] = useState(false);
   const [newSeatsResponse, setNewSeatsResponse] =
     useState<IInvitesNewSeats | null>(null);
+
+  // waiting for seats check import to complete
+  const [importId, setImportId] = useState<string | null>(null);
+  const { data: inviteImport } = useInviteImport(
+    { importId },
+    { pollingEnabled: importId !== null }
+  );
+  useEffect(() => {
+    const seatsImportComplete = inviteImport?.data?.attributes?.completed_at;
+    if (seatsImportComplete) {
+      setImportId(null);
+      checkNewSeatsResponse(inviteImport);
+    }
+  }, [inviteImport]);
 
   const exceedsSeats = useExceedsSeats();
 
@@ -237,16 +252,18 @@ const Invitations = () => {
     const {
       newly_added_admins_number: newlyAddedAdminsNumber,
       newly_added_moderators_number: newlyAddedModeratorsNumber,
-    } = newSeatsResponse.data.attributes;
+    } = newSeatsResponse.data.attributes.result;
     if (
       exceedsSeats({
         newlyAddedAdminsNumber,
         newlyAddedModeratorsNumber,
       }).any
     ) {
+      console.log('open modal');
       setShowModal(true);
     } else {
-      onSubmit({ save: true });
+      // onSubmit({ save: true });
+      console.log('proceed to save');
     }
   };
 
@@ -294,7 +311,7 @@ const Invitations = () => {
             await bulkInviteXLSX(inviteOptions);
           } else {
             const newSeats = await bulkInviteCountNewSeatsXLSX(inviteOptions);
-            checkNewSeatsResponse(newSeats);
+            setImportId(newSeats.data.id);
           }
         }
 

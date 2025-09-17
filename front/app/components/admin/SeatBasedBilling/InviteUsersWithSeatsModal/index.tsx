@@ -44,8 +44,8 @@ const InviteUsersWithSeatsModal = ({
   const newSeats = newSeatsResponse.data.attributes;
 
   const exceedsSeats = useExceedsSeats()({
-    newlyAddedAdminsNumber: newSeats.newly_added_admins_number,
-    newlyAddedModeratorsNumber: newSeats.newly_added_moderators_number,
+    newlyAddedAdminsNumber: newSeats.result.newly_added_admins_number,
+    newlyAddedModeratorsNumber: newSeats.result.newly_added_moderators_number,
   });
 
   const handleConfirmClick = () => {
@@ -63,21 +63,22 @@ const InviteUsersWithSeatsModal = ({
 
   let additionalSeatsMessage: string;
 
+  // TODO JS: fix the || 0 in types below. this is a fudge to avoid errors right now!
   if (exceedsSeats.all) {
     additionalSeatsMessage = formatMessage(
       messages.additionalAdminAndManagerSeats,
       {
-        adminSeats: newSeats.newly_added_admins_number,
-        managerSeats: newSeats.newly_added_moderators_number,
+        adminSeats: newSeats.result.newly_added_admins_number || 0,
+        managerSeats: newSeats.result.newly_added_moderators_number || 0,
       }
     );
   } else if (exceedsSeats.admin) {
     additionalSeatsMessage = formatMessage(messages.additionalAdminSeats, {
-      seats: newSeats.newly_added_admins_number,
+      seats: newSeats.result.newly_added_admins_number || 0,
     });
   } else {
     additionalSeatsMessage = formatMessage(messages.additionalManagerSeats, {
-      seats: newSeats.newly_added_moderators_number,
+      seats: newSeats.result.newly_added_moderators_number || 0,
     });
   }
 

@@ -3261,6 +3261,7 @@ CREATE TABLE public.project_imports (
     import_id uuid,
     log character varying[] DEFAULT '{}'::character varying[],
     locale character varying,
+    string character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     import_type character varying
