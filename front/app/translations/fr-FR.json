@@ -753,6 +753,8 @@
   "app.components.form.error": "Erreur",
   "app.components.form.locationGoogleUnavailable": "Impossible de charger le champ de localisation fourni par Google Maps.",
   "app.components.form.progressBarLabel": "Progression de l'enquête",
+  "app.components.form.scrollToContinue": "Faites défiler vers le bas pour continuer",
+  "app.components.form.scrollToContinueTooltip": "Veuillez faire défiler la page jusqu'au bas du formulaire pour continuer.",
   "app.components.form.submit": "Envoyer",
   "app.components.form.submitApiError": "Un problème est survenu lors de la soumission du formulaire. Veuillez vérifier s'il y a des erreurs et réessayer.",
   "app.components.form.verifiedBlocked": "Vous ne pouvez pas modifier ce champ car il contient des informations vérifiées",
