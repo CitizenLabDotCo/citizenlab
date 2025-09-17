@@ -551,33 +551,41 @@ const AdminProjectsProjectGeneralSetUp = () => {
             />
           </Highlighter>
 
-          {/* Project Description Section */}
-          <Section>
-            <SubSectionTitle>
-              <FormattedMessage {...messages.projectDescriptionSectionTitle} />
-            </SubSectionTitle>
-            <SectionDescription>
-              <FormattedMessage
-                {...messages.projectDescriptionSectionDescription}
-              />
-            </SectionDescription>
-          </Section>
+          {!isNewProject && (
+            <>
+              {/* Project Description Section */}
+              <Section>
+                <SubSectionTitle>
+                  <FormattedMessage
+                    {...messages.projectDescriptionSectionTitle}
+                  />
+                </SubSectionTitle>
+                <SectionDescription>
+                  <FormattedMessage
+                    {...messages.projectDescriptionSectionDescription}
+                  />
+                </SectionDescription>
+              </Section>
 
-          {/* Main Description */}
-          <SectionField>
-            <Highlighter fragmentId="description-multiloc">
-              <ProjectDescriptionBuilderToggle
-                valueMultiloc={descriptionMultiloc}
-                onChange={handleDescriptionChange}
-                label={formatMessage(messages.descriptionLabel)}
-                labelTooltipText={formatMessage(messages.descriptionTooltip)}
-              />
-            </Highlighter>
-            <Error
-              fieldName="description_multiloc"
-              apiErrors={apiErrors.description_multiloc}
-            />
-          </SectionField>
+              {/* Main Description */}
+              <SectionField>
+                <Highlighter fragmentId="description-multiloc">
+                  <ProjectDescriptionBuilderToggle
+                    valueMultiloc={descriptionMultiloc}
+                    onChange={handleDescriptionChange}
+                    label={formatMessage(messages.descriptionLabel)}
+                    labelTooltipText={formatMessage(
+                      messages.descriptionTooltip
+                    )}
+                  />
+                </Highlighter>
+                <Error
+                  fieldName="description_multiloc"
+                  apiErrors={apiErrors.description_multiloc}
+                />
+              </SectionField>
+            </>
+          )}
 
           {/* Homepage Description */}
           <SectionField>
