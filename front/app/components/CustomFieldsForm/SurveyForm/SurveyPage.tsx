@@ -13,6 +13,7 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
+import ScrollTrigger from 'components/Form/Components/Layouts/ScrollTrigger';
 import SubmissionReference from 'components/Form/Components/Layouts/SubmissionReference';
 import Feedback from 'components/HookForm/Feedback';
 import Warning from 'components/UI/Warning';
@@ -252,6 +253,8 @@ const SurveyPage = ({
                   </Box>
                 </Box>
               </Box>
+              {/* Scroll trigger for smart sticky button */}
+              <ScrollTrigger id="survey-bottom-trigger" />
             </Box>
           </Box>
           <PageFooter
@@ -274,6 +277,7 @@ const SurveyPage = ({
             isLoading={methods.formState.isSubmitting}
             isAdminPage={isAdminPage}
             isMapPage={isMapPage}
+            triggerElementId="survey-bottom-trigger"
           />
         </Box>
       </StyledForm>
