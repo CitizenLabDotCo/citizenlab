@@ -119,6 +119,8 @@ ca:
       "unfollow_here": "Heu rebut aquesta notificació a causa d'un element que seguiu. <a href=\"%{unfollow_url}\">Pots deixar de seguir-lo aquí.</a>"
     manual:
       preheader: 'Tens correu de %{organizationName}'
+    manual_project_participants:
+      preheader: 'Tens correu de %{organizationName}'
     comment_deleted_by_admin:
       subject: 'El teu comentari s''ha eliminat de la plataforma de %{organizationName}'
       preheader: 'El teu comentari s''ha suprimit'
