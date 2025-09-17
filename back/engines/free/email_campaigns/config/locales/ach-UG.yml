@@ -119,6 +119,8 @@ ach:
       "unfollow_here": "crwdns5304133:0%{unfollow_url}crwdne5304133:0"
     manual:
       preheader: 'crwdns5304135:0%{organizationName}crwdne5304135:0'
+    manual_project_participants:
+      preheader: 'crwdns5345333:0%{organizationName}crwdne5345333:0'
     comment_deleted_by_admin:
       subject: 'crwdns5304137:0%{organizationName}crwdne5304137:0'
       preheader: 'crwdns5304139:0crwdne5304139:0'
