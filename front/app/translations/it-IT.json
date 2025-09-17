@@ -753,8 +753,6 @@
   "app.components.form.error": "Errore",
   "app.components.form.locationGoogleUnavailable": "Impossibile caricare il campo posizione fornito da google maps.",
   "app.components.form.progressBarLabel": "Progressi dell'indagine",
-  "app.components.form.scrollToContinue": "Scorri verso il basso per continuare",
-  "app.components.form.scrollToContinueTooltip": "Scorri fino in fondo al modulo per proseguire",
   "app.components.form.submit": "Invia",
   "app.components.form.submitApiError": "C'è stato un problema nell'invio del modulo. Si prega di controllare eventuali errori e riprovare.",
   "app.components.form.verifiedBlocked": "Non è possibile modificare questo campo perché contiene informazioni verificate.",
