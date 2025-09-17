@@ -2,7 +2,7 @@ import moment = require('moment');
 import { randomString, randomEmail } from '../../support/commands';
 
 describe('Native survey permissions', () => {
-  describe('Native survey for smart group (question defining smart group asked in flow)', () => {
+  describe('Native survey for smart group (question defining smart group asked in registration flow)', () => {
     let customFieldId = '';
     let customFieldOptionId = '';
     let smartGroupId = '';
