@@ -120,7 +120,9 @@ class Permissions::UserRequirementsService
 
       if required_or_optional == 'required'
         # If the field is required, it has actually have a non-nil value to be considered satisfied
-        requirements[:custom_fields].delete(key) if user.custom_field_values.key?(key) && !user.custom_field_values[key].nil?
+        if user.custom_field_values.key?(key) && !user.custom_field_values[key].nil?
+          requirements[:custom_fields].delete(key)
+        end
       else
         # If the field is optional, we only check if the key exists.
         # If the field was skipped, it will have a key with a nil value.
