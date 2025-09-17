@@ -252,12 +252,24 @@ const Invitations = () => {
     return roles;
   };
 
-  const checkNewSeatsResponse = (newSeatsResponse: IInvitesNewSeats) => {
-    setNewSeatsResponse(newSeatsResponse);
-    const {
-      newly_added_admins_number: newlyAddedAdminsNumber,
-      newly_added_moderators_number: newlyAddedModeratorsNumber,
-    } = newSeatsResponse.data.attributes.result;
+  const checkNewSeatsResponse = (response: any) => {
+    setNewSeatsResponse(response);
+
+    let newlyAddedAdminsNumber = 0;
+    let newlyAddedModeratorsNumber = 0;
+
+    // Extract seat numbers from import response
+    if (response?.data?.attributes?.result) {
+      // The result might be a JSON string or an object
+      const result =
+        typeof response.data.attributes.result === 'string'
+          ? JSON.parse(response.data.attributes.result)
+          : response.data.attributes.result;
+
+      newlyAddedAdminsNumber = result.newly_added_admins_number || 0;
+      newlyAddedModeratorsNumber = result.newly_added_moderators_number || 0;
+    }
+
     if (
       exceedsSeats({
         newlyAddedAdminsNumber,
@@ -267,8 +279,8 @@ const Invitations = () => {
       console.log('open modal');
       setShowModal(true);
     } else {
-      // onSubmit({ save: true });
       console.log('proceed to save');
+      onSubmit({ save: true });
     }
   };
 
@@ -366,8 +378,11 @@ const Invitations = () => {
           if (save) {
             await bulkInviteEmails(inviteOptions);
           } else {
+            // Use the same pattern as for XLSX uploads
             const newSeats = await bulkInviteCountNewSeatsEmails(inviteOptions);
-            checkNewSeatsResponse(newSeats);
+            setImportId(newSeats.data.id);
+            // Remove the direct call to checkNewSeatsResponse
+            // Instead, the useEffect hook monitoring inviteImport will handle this
           }
         }
 
