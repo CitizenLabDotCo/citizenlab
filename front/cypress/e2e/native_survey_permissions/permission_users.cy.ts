@@ -107,8 +107,7 @@ describe('Native survey permission: users', () => {
     const userEmail = randomEmail();
 
     cy.apiSignup(userFirstName, userLastName, userEmail, userPassword).then(
-      (response) => {
-        const userId = (response as any).body.data.id;
+      () => {
         cy.setLoginCookie(userEmail, userPassword);
       }
     );
