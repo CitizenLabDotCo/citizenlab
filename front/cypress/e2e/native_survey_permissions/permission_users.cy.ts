@@ -12,6 +12,26 @@ describe('Native survey permission: users', () => {
   const twoDaysAgo = moment().subtract(2, 'days').format('DD/MM/YYYY');
   const inTwoMonths = moment().add(2, 'month').format('DD/MM/YYYY');
 
+  const updatePermission = ({
+    adminJwt,
+    permitted_by,
+  }: {
+    adminJwt: string;
+    permitted_by?: string;
+  }) => {
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/phases/${phaseId}/permissions/posting_idea`,
+      body: {
+        permitted_by,
+      },
+    });
+  };
+
   before(() => {
     // Create custom field
     cy.apiCreateCustomField(fieldName, true, false).then((response) => {
@@ -41,23 +61,38 @@ describe('Native survey permission: users', () => {
         }).then((phase) => {
           phaseId = phase.body.data.id;
 
-          // Add custom field as permissions_custom_field
+          // Temporarily set permission to everyone_confirmed_email
+          // to make sure we clear out the global settings
           return cy
             .apiLogin('admin@govocal.com', 'democracy2.0')
             .then((response) => {
               const adminJwt = response.body.jwt;
 
-              return cy.request({
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${adminJwt}`,
-                },
-                method: 'POST',
-                url: `web_api/v1/phases/${phaseId}/permissions/posting_idea/permissions_custom_fields`,
-                body: {
-                  custom_field_id: customFieldId,
-                  required: false,
-                },
+              return updatePermission({
+                adminJwt,
+                permitted_by: 'everyone_confirmed_email',
+              }).then(() => {
+                // Add one permissions custom field
+                return cy
+                  .request({
+                    headers: {
+                      'Content-Type': 'application/json',
+                      Authorization: `Bearer ${adminJwt}`,
+                    },
+                    method: 'POST',
+                    url: `web_api/v1/phases/${phaseId}/permissions/posting_idea/permissions_custom_fields`,
+                    body: {
+                      custom_field_id: customFieldId,
+                      required: false,
+                    },
+                  })
+                  .then(() => {
+                    // Set permission back to users
+                    return updatePermission({
+                      adminJwt,
+                      permitted_by: 'users',
+                    });
+                  });
               });
             });
         });
@@ -87,7 +122,9 @@ describe('Native survey permission: users', () => {
     it.only('Ask demographic questions in registration flow', () => {
       cy.visit(`/projects/${projectSlug}`);
 
-      // TODO
+      // Click take survey button
+      cy.get('.e2e-idea-button').first().find('button').click({ force: true });
+      cy.get('#e2e-authentication-modal').should('exist');
     });
 
     it('Ask demographic questions in survey', () => {
