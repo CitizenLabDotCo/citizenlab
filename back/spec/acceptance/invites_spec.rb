@@ -198,142 +198,234 @@ resource 'Invites' do
       end
     end
 
-    post 'web_api/v1/invites/bulk_create' do
-      with_options scope: :invites do
-        parameter :emails, 'Array of e-mail addresses of invitees. E-mails can be null for anonymous invites', required: true
-        parameter :locale, 'Locale for all invitees, defaults to first tenant locale', required: false
-        parameter :roles, 'Roles for all invitees, defaults to normal user', required: false
-        parameter :group_ids, 'Array of group ids that the invitees will be member of, defaults to none', required: false
-        parameter :invite_text, 'Optional text that will be included in the outgoing e-mail to the invitee. Supports limited HTML', required: false
-      end
-      with_options scope: :errors do
-        response_field 'error', "One of #{Invites::ErrorStorage::INVITE_ERRORS.except(:unparseable_excel, :malformed_admin_value, :malformed_groups_value).values.join(', ')}"
-        response_field 'row', 'The index of the emails value that caused the error, starting from 0'
-        response_field 'rows', 'The indexes of the emails that caused the errors, if applicable'
-        response_field 'value', 'The value that caused the error, if applicable'
-        response_field 'raw_error', 'Extra internal error information, if available'
-      end
-
-      describe do
+    describe 'bulk_create' do
+      shared_examples 'a request that triggers the BulkCreateJob' do
         let(:emails) { Array.new(5) { Faker::Internet.email }.push(nil) }
-        let(:group_ids) { [create(:group).id] }
-        let(:project) { create(:project) }
-        let(:locale) { 'nl-NL' }
-        let(:invite_text) { 'Welcome, my friend!' }
-
         let(:roles) do
+          # only the highest role is actually used
           [
             { 'type' => 'admin' },
-            { 'type' => 'project_moderator', 'project_id' => project.id }
+            { 'type' => 'project_moderator', 'project_id' => @project.id }
           ]
         end
 
-        example_request 'Bulk invite multiple users' do
-          aggregate_failures 'testing response' do
-            assert_status 200
-            expect(Invite.count).to eq 6
-            expect(Invite.all.map { |i| i.invitee.email }).to match_array emails
-            expect(Invite.all.map { |i| i.invitee.groups.map(&:id) }.uniq).to match_array [group_ids]
-            expect(Invite.all.map { |i| i.invitee.admin? }.uniq).to eq [true]
-            expect(Invite.all.map { |i| i.invitee.locale }.uniq).to eq [locale]
-            expect(Invite.all.map { |i| i.invitee.project_moderator?(project.id) }.all?).to be true
-          end
-        end
-      end
-
-      describe do
-        let(:emails) do
-          [
-            'someemail@somedomain.net',
-            'someemail@somedomain.net',
-            'user_at_domain.com',
-            create(:user).email,
-            create(:invite).invitee.email
-          ]
+        before do
+          @project = create(:project)
+          create(:project_moderator, projects: [@project])
+          create(:admin)
+          create(:project_moderator, email: emails[0], projects: [@project])
+          create(:admin, email: emails[1])
         end
 
-        example_request '[error] Bulk invite multiple users' do
-          assert_status 422
-          json_response = json_parse(response_body)
-          expect(json_response[:errors].pluck(:error).uniq).to match_array %w[emails_duplicate invalid_email]
-        end
-      end
-    end
-
-    post 'web_api/v1/invites/bulk_create_xlsx' do
-      with_options scope: :invites do
-        parameter :xlsx, 'Base64 encoded xlsx file with invite details. See web_api/v1/invites/example_xlsx for the format', required: true
-        parameter :locale, 'Locale for invitees without a specified locale in xlsx, defaults to first tenant locale', required: false
-        parameter :roles, 'Roles for invitees without a specified admin column in xlsx, default to no roles', required: false
-        parameter :group_ids, 'Group ids for invitiees without a specified groups column in xlsx, defaults to none', required: false
-        parameter :invite_text, 'Optional text that will be included in the outgoing e-mail to the invitee. Supports limited HTML', required: false
-      end
-
-      with_options scope: :errors do
-        response_field 'error', "One of #{Invites::ErrorStorage::INVITE_ERRORS.values.join(', ')}"
-        response_field 'row', 'The row number of the error, if applicable'
-        response_field 'rows', 'The row numbers of the error, if applicable'
-        response_field 'value', 'The value that appeared in the excel file and caused the error, if applicable'
-        response_field 'raw_error', 'Extra internal error information, if available'
-      end
-
-      let(:xlsx) do
-        xlsx_stringio = XlsxService.new.hash_array_to_xlsx(hash_array)
-
-        "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{Base64.encode64(xlsx_stringio.read)}"
-      end
-
-      describe do
-        let(:users) { build_list(:user, 6) }
-        let(:hash_array) do
-          users.map.with_index do |user, i|
-            {
-              email: user.email,
-              first_name: rand(3) == 0 ? user.first_name : nil,
-              last_name: rand(3) == 0 ? user.last_name : nil,
-              language: i == 0 ? 'nl-NL' : nil,
-              admin: i == 0 ? true : nil,
-              groups: i == 0 ? create(:group).title_multiloc.values.first : nil
-            }
-          end
-        end
-        let(:group_ids) { [create(:group).id] }
-        let(:roles) { [{ 'type' => 'admin' }] }
-        let(:locale) { 'en' }
-        let(:invite_text) { 'Welcome, my friend!' }
-
-        example_request 'Bulk invite multiple users with xlsx file' do
+        example 'Returns details of a newly created invites_import record' do
+          invites_imports_count = InvitesImport.count
+          do_request
           assert_status 200
-          expect(Invite.count).to eq 6
-          expect(Invite.all.map { |i| i.invitee.email }).to match_array hash_array.pluck(:email)
-          expect(Invite.all.map { |i| i.invitee.groups.map(&:id) }.flatten.uniq).to match_array Group.all.map(&:id)
-          expect(Invite.all.map { |i| i.invitee.admin? }.uniq).to eq [true]
-          expect(Invite.all.map { |i| i.invitee.locale }.uniq).to match_array ['nl-NL', locale]
+
+          expect(response_data[:attributes][:completed_at]).to be_nil
+          expect(response_data[:attributes][:result]).to eq({})
+          expect(response_data[:attributes][:created_at]).to be_present
+          expect(response_data[:attributes][:updated_at]).to be_present
+          expect(InvitesImport.count).to eq(invites_imports_count + 1)
+
+          invites_import = InvitesImport.find(response_data[:id])
+          expect(invites_import).to be_present
+          expect(invites_import.importer).to eq(@user)
+        end
+
+        example 'Results in the expected BulkCreateJob' do
+          expect { do_request }.to have_enqueued_job(Invites::BulkCreateJob)
+            .with(
+              @user,
+              satisfy { |params|
+                # For XLSX invites endpoint
+                if defined?(xlsx)
+                  expect(params).to include(:xlsx)
+                  expect(params[:xlsx]).to start_with('data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,')
+                  expect(params[:roles]).to eq(roles) if params[:roles].present?
+                # For regular invites endpoint
+                else
+                  expect(params).to include(:emails, :roles)
+                  expect(params[:emails]).to match_array(emails)
+                  expect(params[:roles]).to eq(roles)
+                end
+                true # Return true for the matcher to pass
+              },
+              kind_of(String), # Match any string ID
+              defined?(xlsx) ? { xlsx_import: true } : { xlsx_import: false }
+            )
+            .on_queue('default')
+
+          assert_status 200
+
+          # For extra verification, check that the last enqueued job has the correct import ID
+          job = ActiveJob::Base.queue_adapter.enqueued_jobs.last
+          expect(job['arguments'][2]).to eq(response_data[:id])
         end
       end
 
-      describe do
-        let(:hash_array) do
-          [
-            { email: 'someemail@somedomain.net' },
-            { email: 'someemail@somedomain.net' },
-            { email: 'user_at_domain.com' },
-            { email: create(:user).email },
-            { email: create(:invite).invitee.email },
-            { locale: 'qq' },
-            { groups: 'A positive' },
-            { groups: 24 },
-            { admin: 'nope' }
-          ]
+      post 'web_api/v1/invites/bulk_create' do
+        with_options scope: :invites do
+          parameter :emails, 'Array of e-mail addresses of invitees. E-mails can be null for anonymous invites', required: true
+          parameter :roles, 'Roles for all invitees, defaults to normal user', required: false
         end
 
-        example_request '[error] Bulk invite users with xlsx file' do
-          assert_status 422
-          json_response = json_parse(response_body)
-          expect(json_response[:errors].pluck(:error).uniq).to match_array %w[unknown_group malformed_groups_value malformed_admin_value emails_duplicate invalid_email unknown_locale]
+        it_behaves_like 'a request that triggers the BulkCreateJob'
+      end
+
+      post 'web_api/v1/invites/bulk_create_xlsx' do
+        with_options scope: :invites do
+          parameter :xlsx, 'Base64 encoded xlsx file with invite details. See web_api/v1/invites/example_xlsx for the format', required: true
+          parameter :roles, 'Roles for invitees without a specified admin column in xlsx, default to no roles', required: false
         end
+
+        let(:xlsx) do
+          hash_array = emails.map { |email| { email: email, admin: true } }
+          xlsx_stringio = XlsxService.new.hash_array_to_xlsx(hash_array)
+
+          "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{Base64.encode64(xlsx_stringio.read)}"
+        end
+
+        it_behaves_like 'a request that triggers the BulkCreateJob'
       end
     end
+
+    # post 'web_api/v1/invites/bulk_create' do
+    #   with_options scope: :invites do
+    #     parameter :emails, 'Array of e-mail addresses of invitees. E-mails can be null for anonymous invites', required: true
+    #     parameter :locale, 'Locale for all invitees, defaults to first tenant locale', required: false
+    #     parameter :roles, 'Roles for all invitees, defaults to normal user', required: false
+    #     parameter :group_ids, 'Array of group ids that the invitees will be member of, defaults to none', required: false
+    #     parameter :invite_text, 'Optional text that will be included in the outgoing e-mail to the invitee. Supports limited HTML', required: false
+    #   end
+    #   with_options scope: :errors do
+    #     response_field 'error', "One of #{Invites::ErrorStorage::INVITE_ERRORS.except(:unparseable_excel, :malformed_admin_value, :malformed_groups_value).values.join(', ')}"
+    #     response_field 'row', 'The index of the emails value that caused the error, starting from 0'
+    #     response_field 'rows', 'The indexes of the emails that caused the errors, if applicable'
+    #     response_field 'value', 'The value that caused the error, if applicable'
+    #     response_field 'raw_error', 'Extra internal error information, if available'
+    #   end
+
+    #   describe do
+    #     let(:emails) { Array.new(5) { Faker::Internet.email }.push(nil) }
+    #     let(:group_ids) { [create(:group).id] }
+    #     let(:project) { create(:project) }
+    #     let(:locale) { 'nl-NL' }
+    #     let(:invite_text) { 'Welcome, my friend!' }
+
+    #     let(:roles) do
+    #       [
+    #         { 'type' => 'admin' },
+    #         { 'type' => 'project_moderator', 'project_id' => project.id }
+    #       ]
+    #     end
+
+    #     example_request 'Bulk invite multiple users' do
+    #       aggregate_failures 'testing response' do
+    #         assert_status 200
+    #         expect(Invite.count).to eq 6
+    #         expect(Invite.all.map { |i| i.invitee.email }).to match_array emails
+    #         expect(Invite.all.map { |i| i.invitee.groups.map(&:id) }.uniq).to match_array [group_ids]
+    #         expect(Invite.all.map { |i| i.invitee.admin? }.uniq).to eq [true]
+    #         expect(Invite.all.map { |i| i.invitee.locale }.uniq).to eq [locale]
+    #         expect(Invite.all.map { |i| i.invitee.project_moderator?(project.id) }.all?).to be true
+    #       end
+    #     end
+    #   end
+
+    #   describe do
+    #     let(:emails) do
+    #       [
+    #         'someemail@somedomain.net',
+    #         'someemail@somedomain.net',
+    #         'user_at_domain.com',
+    #         create(:user).email,
+    #         create(:invite).invitee.email
+    #       ]
+    #     end
+
+    #     example_request '[error] Bulk invite multiple users' do
+    #       assert_status 422
+    #       json_response = json_parse(response_body)
+    #       expect(json_response[:errors].pluck(:error).uniq).to match_array %w[emails_duplicate invalid_email]
+    #     end
+    #   end
+    # end
+
+    # post 'web_api/v1/invites/bulk_create_xlsx' do
+    #   with_options scope: :invites do
+    #     parameter :xlsx, 'Base64 encoded xlsx file with invite details. See web_api/v1/invites/example_xlsx for the format', required: true
+    #     parameter :locale, 'Locale for invitees without a specified locale in xlsx, defaults to first tenant locale', required: false
+    #     parameter :roles, 'Roles for invitees without a specified admin column in xlsx, default to no roles', required: false
+    #     parameter :group_ids, 'Group ids for invitiees without a specified groups column in xlsx, defaults to none', required: false
+    #     parameter :invite_text, 'Optional text that will be included in the outgoing e-mail to the invitee. Supports limited HTML', required: false
+    #   end
+
+    #   with_options scope: :errors do
+    #     response_field 'error', "One of #{Invites::ErrorStorage::INVITE_ERRORS.values.join(', ')}"
+    #     response_field 'row', 'The row number of the error, if applicable'
+    #     response_field 'rows', 'The row numbers of the error, if applicable'
+    #     response_field 'value', 'The value that appeared in the excel file and caused the error, if applicable'
+    #     response_field 'raw_error', 'Extra internal error information, if available'
+    #   end
+
+    #   let(:xlsx) do
+    #     xlsx_stringio = XlsxService.new.hash_array_to_xlsx(hash_array)
+
+    #     "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{Base64.encode64(xlsx_stringio.read)}"
+    #   end
+
+    #   describe do
+    #     let(:users) { build_list(:user, 6) }
+    #     let(:hash_array) do
+    #       users.map.with_index do |user, i|
+    #         {
+    #           email: user.email,
+    #           first_name: rand(3) == 0 ? user.first_name : nil,
+    #           last_name: rand(3) == 0 ? user.last_name : nil,
+    #           language: i == 0 ? 'nl-NL' : nil,
+    #           admin: i == 0 ? true : nil,
+    #           groups: i == 0 ? create(:group).title_multiloc.values.first : nil
+    #         }
+    #       end
+    #     end
+    #     let(:group_ids) { [create(:group).id] }
+    #     let(:roles) { [{ 'type' => 'admin' }] }
+    #     let(:locale) { 'en' }
+    #     let(:invite_text) { 'Welcome, my friend!' }
+
+    #     example_request 'Bulk invite multiple users with xlsx file' do
+    #       assert_status 200
+    #       expect(Invite.count).to eq 6
+    #       expect(Invite.all.map { |i| i.invitee.email }).to match_array hash_array.pluck(:email)
+    #       expect(Invite.all.map { |i| i.invitee.groups.map(&:id) }.flatten.uniq).to match_array Group.all.map(&:id)
+    #       expect(Invite.all.map { |i| i.invitee.admin? }.uniq).to eq [true]
+    #       expect(Invite.all.map { |i| i.invitee.locale }.uniq).to match_array ['nl-NL', locale]
+    #     end
+    #   end
+
+    #   describe do
+    #     let(:hash_array) do
+    #       [
+    #         { email: 'someemail@somedomain.net' },
+    #         { email: 'someemail@somedomain.net' },
+    #         { email: 'user_at_domain.com' },
+    #         { email: create(:user).email },
+    #         { email: create(:invite).invitee.email },
+    #         { locale: 'qq' },
+    #         { groups: 'A positive' },
+    #         { groups: 24 },
+    #         { admin: 'nope' }
+    #       ]
+    #     end
+
+    #     example_request '[error] Bulk invite users with xlsx file' do
+    #       assert_status 422
+    #       json_response = json_parse(response_body)
+    #       expect(json_response[:errors].pluck(:error).uniq).to match_array %w[unknown_group malformed_groups_value malformed_admin_value emails_duplicate invalid_email unknown_locale]
+    #     end
+    #   end
+    # end
 
     get 'web_api/v1/invites/example_xlsx' do
       example_request 'Get the example xlsx' do
