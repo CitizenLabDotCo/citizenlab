@@ -8,7 +8,10 @@ import {
 } from 'react-router-dom';
 import { ITab } from 'typings';
 
+import { IUpdatedProjectProperties } from 'api/projects/types';
+
 import NavigationTabs, { Tab } from 'components/admin/NavigationTabs';
+import { ISubmitState } from 'components/admin/SubmitWrapper';
 
 import { useIntl } from 'utils/cl-intl';
 import { isTopBarNavActive } from 'utils/helperUtils';
@@ -17,8 +20,8 @@ import { defaultAdminCardPadding } from 'utils/styleConstants';
 import messages from './messages';
 
 export type TOnProjectAttributesDiffChangeFunction = (
-  projectAttributesDiff: any,
-  submitState?: any
+  projectAttributesDiff: IUpdatedProjectProperties,
+  submitState?: ISubmitState
 ) => void;
 
 const General = () => {
