@@ -4,10 +4,7 @@ FactoryBot.define do
   factory :custom_field, aliases: [:custom_field_text] do
     for_registration
 
-    sequence(:key) { |n| "field_#{n}" }
-
-    after(:build) { FactoryBot.sequences[:key]&.rewind }
-    after(:create) { FactoryBot.sequences[:key]&.rewind }
+    key { |n| "field_#{rand(1000000..9999999)}" }
 
     title_multiloc do
       {
