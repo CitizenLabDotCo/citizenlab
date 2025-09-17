@@ -753,8 +753,6 @@
   "app.components.form.error": "Kļūda",
   "app.components.form.locationGoogleUnavailable": "Nevarēja ielādēt google maps norādīto atrašanās vietas lauku.",
   "app.components.form.progressBarLabel": "Apsekojuma norise",
-  "app.components.form.scrollToContinue": "Ritiniet uz leju, lai turpinātu",
-  "app.components.form.scrollToContinueTooltip": "Lūdzu, ritiniet līdz veidlapas apakšai, lai turpinātu.",
   "app.components.form.submit": "Iesniegt",
   "app.components.form.submitApiError": "Iesniedzot veidlapu, radās kļūda. Lūdzu, pārbaudiet, vai nav kļūdu, un mēģiniet vēlreiz.",
   "app.components.form.verifiedBlocked": "Šo lauku nevar rediģēt, jo tajā ir iekļauta pārbaudīta informācija.",
