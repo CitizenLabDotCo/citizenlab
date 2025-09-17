@@ -753,8 +753,6 @@
   "app.components.form.error": "خطأ",
   "app.components.form.locationGoogleUnavailable": "تعذر تعبئة حقل الموقع المتوفر من خرائط google.",
   "app.components.form.progressBarLabel": "تقدم المسح",
-  "app.components.form.scrollToContinue": "قم بالتمرير لأسفل للمتابعة",
-  "app.components.form.scrollToContinueTooltip": "يرجى التمرير إلى أسفل النموذج للمتابعة",
   "app.components.form.submit": "إرسال",
   "app.components.form.submitApiError": "حدثت مشكلة أثناء إرسال النموذج. يرجى التحقق بحثًا عن أي أخطاء وإعادة المحاولة.",
   "app.components.form.verifiedBlocked": "لا يمكنك تعديل هذا الحقل لأنه يحتوي على معلومات تم التحقق منها",
