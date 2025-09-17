@@ -11,6 +11,7 @@ import {
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
+import { IFlatCustomField } from 'api/custom_fields/types';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
 import { getInputTerm } from 'api/phases/utils';
@@ -70,7 +71,7 @@ interface Props {
   pageButtonLabelMultiloc?: Multiloc;
   pageButtonLink?: string;
   project: IProject | undefined;
-  pageQuestions?: Array<{ id: string; key: string }>;
+  pageQuestions?: IFlatCustomField[];
   currentPageNumber?: number;
 }
 

@@ -3,6 +3,7 @@ import React from 'react';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
+import { IFlatCustomField } from 'api/custom_fields/types';
 import { IPhaseData, IPhases } from 'api/phases/types';
 import { IProject } from 'api/projects/types';
 
@@ -40,7 +41,7 @@ const PageFooter = ({
   isLoading: boolean;
   isAdminPage?: boolean;
   isMapPage?: boolean;
-  pageQuestions?: Array<{ id: string; key: string }>;
+  pageQuestions?: IFlatCustomField[];
   currentPageNumber?: number;
 }) => {
   const isMobileOrSmaller = useBreakpoint('phone');
