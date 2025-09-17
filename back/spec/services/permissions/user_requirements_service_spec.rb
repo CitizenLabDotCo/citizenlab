@@ -722,6 +722,60 @@ describe Permissions::UserRequirementsService do
         end
       end
     end
+
+    context 'when there are only optional custom fields' do
+      before do
+        @permission = create(:permission, permitted_by: 'users', global_custom_fields: false)
+        @permission.update!(global_custom_fields: false) # Why the hell is this necessary??
+
+        2.times do |n|
+          create(
+            :permissions_custom_field, 
+            permission: @permission, 
+            custom_field: create(
+              :custom_field_checkbox, 
+              required: false,
+              key: "optional_key_#{n}"
+            )
+          )
+        end
+      end
+
+      it 'does not permit a user missing any optional custom fields' do
+        user = create(:user, custom_field_values: { optional_key_0: true })
+        requirements = service.requirements(@permission, user)
+        expect(service.permitted?(requirements)).to be false
+        expect(requirements[:custom_fields]).to eq({ "optional_key_1" => 'optional' })
+      end
+
+      it 'permits a user who skipped all optional custom fields previously' do
+        user = create(:user, custom_field_values: { optional_key_0: nil, optional_key_1: nil })
+        requirements = service.requirements(@permission, user)
+        expect(service.permitted?(requirements)).to be true
+        expect(requirements[:custom_fields]).to eq({})
+      end
+
+      it 'permits a user who filled in all optional custom fields previously' do
+        user = create(:user, custom_field_values: { optional_key_0: true, optional_key_1: false })
+        requirements = service.requirements(@permission, user)
+        expect(service.permitted?(requirements)).to be true
+        expect(requirements[:custom_fields]).to eq({})
+      end
+    end
+
+    # context 'when there are both optional and required custom fields' do
+    #   it 'does not permit a user missing any required custom fields' do
+    #     # TODO
+    #   end
+
+    #   it 'permits a user who filled in all required custom fields previously, but skipped all optional ones' do
+    #     # TODO
+    #   end
+
+    #   it 'permits a user who filled in all required and all optional custom fields previously' do
+    #     # TODO
+    #   end
+    # end
   end
 
   describe '#requirements_fields' do
