@@ -753,8 +753,6 @@
   "app.components.form.error": "Hata",
   "app.components.form.locationGoogleUnavailable": "Google Maps tarafından sağlanan konum alanı yüklenemedi.",
   "app.components.form.progressBarLabel": "Anket ilerlemesi",
-  "app.components.form.scrollToContinue": "Devam etmek için aşağı kaydırın",
-  "app.components.form.scrollToContinueTooltip": "Devam etmek için lütfen formun en altına kaydırın",
   "app.components.form.submit": "Gönder",
   "app.components.form.submitApiError": "Form gönderilirken bir sorun oluştu. Lütfen olası hataları düzeltip tekrar deneyin.",
   "app.components.form.verifiedBlocked": "Doğrulanmış bilgiler içerdiği için bu alanı düzenleyemezsiniz",
