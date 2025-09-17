@@ -3,13 +3,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   Box,
   Button,
-  Text,
   defaultStyles,
   useBreakpoint,
   colors,
   IconNames,
 } from '@citizenlab/cl2-component-library';
-import styled, { keyframes, useTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -27,36 +26,6 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import messages from '../../messages';
-
-// Styled components for animations
-const bounceAnimation = keyframes`
-  0%, 20%, 50%, 80%, 100% {
-    transform: translateX(-50%) translateY(0);
-  }
-  40% {
-    transform: translateX(-50%) translateY(-10px);
-  }
-  60% {
-    transform: translateX(-50%) translateY(-5px);
-  }
-`;
-
-const pulseAnimation = keyframes`
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-`;
-
-const ScrollIndicatorContainer = styled(Box)`
-  animation: ${bounceAnimation} 2s infinite;
-`;
-
-const ScrollIcon = styled(Box)`
-  animation: ${pulseAnimation} 1.5s infinite;
-`;
 
 type PageVariant = 'other' | 'submission' | 'after-submission';
 
@@ -129,25 +98,11 @@ const SmartStickyButton = ({
     : false;
 
   const [hasReachedBottom, setHasReachedBottom] = useState(false);
-  const [showScrollIndicator, setShowScrollIndicator] = useState(false);
-  const [hasScrolled, setHasScrolled] = useState(false);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
     setHasReachedBottom(false);
-    setShowScrollIndicator(false);
-    setHasScrolled(false);
   }, [currentPageNumber]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!hasReachedBottom) {
-        setShowScrollIndicator(true);
-      }
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, [hasReachedBottom]);
 
   useEffect(() => {
     const enabledQuestions = pageQuestions.filter((q) => q.id && q.key);
@@ -158,7 +113,6 @@ const SmartStickyButton = ({
 
     if (!lastQuestion) {
       setHasReachedBottom(true);
-      setShowScrollIndicator(false);
       return;
     }
 
@@ -168,7 +122,6 @@ const SmartStickyButton = ({
 
     if (!lastQuestionElement) {
       setHasReachedBottom(true);
-      setShowScrollIndicator(false);
       return;
     }
 
@@ -177,7 +130,6 @@ const SmartStickyButton = ({
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setHasReachedBottom(true);
-            setShowScrollIndicator(false);
           }
         });
       },
@@ -195,18 +147,6 @@ const SmartStickyButton = ({
       }
     };
   }, [pageQuestions, currentPageNumber]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!hasScrolled) {
-        setHasScrolled(true);
-        setShowScrollIndicator(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [hasScrolled]);
 
   const getButtonMessage = () => {
     if (pageVariant !== 'after-submission') {
@@ -251,27 +191,6 @@ const SmartStickyButton = ({
       py={'16px'}
       position="relative"
     >
-      {showScrollIndicator && (
-        <ScrollIndicatorContainer
-          position="absolute"
-          top="-50px"
-          left="50%"
-          transform="translateX(-50%)"
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          role="alert"
-          aria-live="polite"
-        >
-          <Text color="tenantPrimary" fontSize="s" mb="4px" textAlign="center">
-            <FormattedMessage {...messages.scrollToContinue} />
-          </Text>
-          <ScrollIcon color={theme.colors.tenantPrimary} aria-hidden="true">
-            <Text fontSize="l">↓</Text>
-          </ScrollIcon>
-        </ScrollIndicatorContainer>
-      )}
-
       <Box>
         <LanguageSelector
           dropdownClassName={'open-upwards'}
