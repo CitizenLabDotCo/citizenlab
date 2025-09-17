@@ -25,7 +25,7 @@ const useInviteImports = (
   queryParams: QueryParams,
   { pollingEnabled, enabled }: UseInviteImportOptions = {}
 ) => {
-  // Skip the query if importId is missing or if query isexplicitly disabled
+  // Skip the query if importId is missing or if query is explicitly disabled
   const isEnabled = enabled !== false && !!queryParams.importId;
 
   return useQuery<any, CLErrors, any, any>({

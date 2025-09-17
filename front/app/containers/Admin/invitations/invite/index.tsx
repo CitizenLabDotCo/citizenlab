@@ -155,7 +155,7 @@ const Invitations = () => {
     [exceedsSeats, setNewSeatsResponse, setShowModal, onSubmit]
   );
 
-  // Add a state to track processed imports
+  // State to track processed imports
   const [processedImportIds, setProcessedImportIds] = useState<Set<string>>(
     new Set()
   );
