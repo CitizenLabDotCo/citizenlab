@@ -753,6 +753,8 @@
   "app.components.form.error": "Fehler",
   "app.components.form.locationGoogleUnavailable": "Das von Google Maps zur Verfügung gestellte Standort-Feld konnte nicht geladen werden.",
   "app.components.form.progressBarLabel": "Umfrage-Fortschritt",
+  "app.components.form.scrollToContinue": "Scrollen Sie nach unten, um fortzufahren",
+  "app.components.form.scrollToContinueTooltip": "Bitte scrollen Sie zum Ende des Formulars, um fortzufahren",
   "app.components.form.submit": "Einreichen",
   "app.components.form.submitApiError": "Es gab ein Problem beim Absenden des Formulars. Bitte prüfe auf Fehler und versuche es erneut.",
   "app.components.form.verifiedBlocked": "Sie können dieses Feld nicht bearbeiten, da es verifizierte Informationen enthält",
