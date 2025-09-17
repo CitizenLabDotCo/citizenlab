@@ -753,8 +753,6 @@
   "app.components.form.error": "Σφάλμα",
   "app.components.form.locationGoogleUnavailable": "Δεν ήταν δυνατή η φόρτωση του πεδίου τοποθεσίας που παρέχεται από τους χάρτες Google.",
   "app.components.form.progressBarLabel": "Πρόοδος της έρευνας",
-  "app.components.form.scrollToContinue": "Μετακινηθείτε προς τα κάτω για να συνεχίσετε",
-  "app.components.form.scrollToContinueTooltip": "Παρακαλώ μετακινηθείτε στο κάτω μέρος της φόρμας για να συνεχίσετε",
   "app.components.form.submit": "Υποβολή",
   "app.components.form.submitApiError": "Υπήρξε πρόβλημα με την υποβολή της φόρμας. Ελέγξτε για τυχόν σφάλματα και προσπαθήστε ξανά.",
   "app.components.form.verifiedBlocked": "Δεν μπορείτε να επεξεργαστείτε αυτό το πεδίο επειδή περιέχει επαληθευμένες πληροφορίες.",
