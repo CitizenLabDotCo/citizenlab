@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -25,16 +25,25 @@ const useInviteImports = (
   queryParams: QueryParams,
   { pollingEnabled, enabled }: UseInviteImportOptions = {}
 ) => {
-  // Skip the query if importId is missing or if query is explicitly disabled
+  const queryClient = useQueryClient();
   const isEnabled = enabled !== false && !!queryParams.importId;
 
-  return useQuery<any, CLErrors, any, any>({
+  const result = useQuery<any, CLErrors, any, any>({
     queryKey: invitesKeys.lists(),
     queryFn: () => fetchInviteImports(queryParams),
     refetchInterval: pollingEnabled ? 5000 : false,
-    // Enabled option to control when the query executes
     enabled: isEnabled,
   });
+
+  // Reset the query data, preventing stale data when revisiting the component
+  const resetQueryData = () => {
+    queryClient.resetQueries({ queryKey: invitesKeys.lists() });
+  };
+
+  return {
+    ...result,
+    resetQueryData,
+  };
 };
 
 export default useInviteImports;

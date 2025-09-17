@@ -94,11 +94,10 @@ const Invitations = () => {
 
   // waiting for seats check import to complete
   const [importId, setImportId] = useState<string | null>(null);
-  const { data: inviteImport } = useInviteImport(
+  const { data: inviteImport, resetQueryData } = useInviteImport(
     { importId: importId || '' }, // Use empty string as fallback
     {
       pollingEnabled: importId !== null,
-      // If available, add an 'enabled' option:
       enabled: importId !== null,
     }
   );
@@ -183,6 +182,7 @@ const Invitations = () => {
     setShowModal(false);
     setProcessing(false);
     setNewSeatsResponse(null);
+    resetQueryData();
   };
 
   const fileInputElement = useRef<HTMLInputElement | null>(null);
