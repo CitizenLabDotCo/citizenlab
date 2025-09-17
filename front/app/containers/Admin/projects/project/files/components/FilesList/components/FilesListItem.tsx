@@ -67,7 +67,7 @@ const FilesListItem = ({
     saveFileToDisk(file);
   };
 
-  const deleteFileHandler = (_fileId: string) => () => {
+  const deleteFileHandler = () => () => {
     setIsDeleteModalOpen(true);
   };
 
@@ -84,7 +84,7 @@ const FilesListItem = ({
     },
     {
       label: <FormattedMessage {...messages.deleteFile} />,
-      handler: deleteFileHandler(file.id),
+      handler: deleteFileHandler(),
       name: 'delete',
     },
   ];
