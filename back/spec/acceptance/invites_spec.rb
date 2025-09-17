@@ -135,21 +135,32 @@ resource 'Invites' do
           expect(response_data[:attributes][:created_at]).to be_present
           expect(response_data[:attributes][:updated_at]).to be_present
           expect(InvitesImport.count).to eq(invites_imports_count + 1)
-          
+
           invites_import = InvitesImport.find(response_data[:id])
           expect(invites_import).to be_present
           expect(invites_import.importer).to eq(@user)
         end
 
         example 'Results in the initiation of a CountNewSeatsJob' do
-          expect {
-            do_request
-          }.to have_enqueued_job(Invites::CountNewSeatsJob)
+          expect { do_request }.to have_enqueued_job(Invites::CountNewSeatsJob)
             .with(
               @user,
-              kind_of(Hash), 
-              kind_of(String), # Match any string ID instead of the specific response_data[:id]
-              defined?(xlsx) ? {xlsx_import: true} : {xlsx_import: false}
+              satisfy { |params|
+                # For regular invites endpoint
+                if !defined?(xlsx)
+                  expect(params).to include(:emails, :roles)
+                  expect(params[:emails]).to match_array(emails)
+                  expect(params[:roles]).to eq(roles)
+                # For XLSX invites endpoint
+                else
+                  expect(params).to include(:xlsx)
+                  expect(params[:xlsx]).to start_with("data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,")
+                  expect(params[:roles]).to eq(roles) if params[:roles].present?
+                end
+                true # Return true for the matcher to pass
+              },
+              kind_of(String), # Match any string ID
+              defined?(xlsx) ? { xlsx_import: true } : { xlsx_import: false }
             )
             .on_queue('default')
 
