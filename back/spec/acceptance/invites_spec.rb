@@ -141,21 +141,21 @@ resource 'Invites' do
           expect(invites_import.importer).to eq(@user)
         end
 
-        example 'Results in the initiation of a CountNewSeatsJob' do
+        example 'Results in the expected CountNewSeatsJob' do
           expect { do_request }.to have_enqueued_job(Invites::CountNewSeatsJob)
             .with(
               @user,
               satisfy { |params|
+                # For XLSX invites endpoint
+                if defined?(xlsx)
+                  expect(params).to include(:xlsx)
+                  expect(params[:xlsx]).to start_with('data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,')
+                  expect(params[:roles]).to eq(roles) if params[:roles].present?
                 # For regular invites endpoint
-                if !defined?(xlsx)
+                else
                   expect(params).to include(:emails, :roles)
                   expect(params[:emails]).to match_array(emails)
                   expect(params[:roles]).to eq(roles)
-                # For XLSX invites endpoint
-                else
-                  expect(params).to include(:xlsx)
-                  expect(params[:xlsx]).to start_with("data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,")
-                  expect(params[:roles]).to eq(roles) if params[:roles].present?
                 end
                 true # Return true for the matcher to pass
               },
@@ -165,7 +165,7 @@ resource 'Invites' do
             .on_queue('default')
 
           assert_status 200
-          
+
           # For extra verification, check that the last enqueued job has the correct import ID
           job = ActiveJob::Base.queue_adapter.enqueued_jobs.last
           expect(job['arguments'][2]).to eq(response_data[:id])
