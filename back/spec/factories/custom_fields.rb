@@ -5,6 +5,10 @@ FactoryBot.define do
     for_registration
 
     sequence(:key) { |n| "field_#{n}" }
+
+    after(:build) { FactoryBot.sequences[:key]&.rewind }
+    after(:create) { FactoryBot.sequences[:key]&.rewind }
+
     title_multiloc do
       {
         'en' => 'Did you attend'
