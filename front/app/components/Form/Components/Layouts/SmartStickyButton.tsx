@@ -301,9 +301,6 @@ const SmartStickyButton = ({
             data-cy={CY_DATA_VALUES[pageVariant]}
             icon={ICON_VALUES[pageVariant]}
             iconPos="right"
-            bgColor={
-              isButtonDisabled ? colors.grey300 : theme.colors.tenantPrimary
-            }
             boxShadow={defaultStyles.boxShadow}
             processing={isLoading}
             linkTo={pageButtonLink}
@@ -322,9 +319,6 @@ const SmartStickyButton = ({
             data-cy={CY_DATA_VALUES[pageVariant]}
             icon={ICON_VALUES[pageVariant]}
             iconPos="right"
-            bgColor={
-              isButtonDisabled ? colors.grey300 : theme.colors.tenantPrimary
-            }
             boxShadow={defaultStyles.boxShadow}
             processing={isLoading}
             disabled={isButtonDisabled}
