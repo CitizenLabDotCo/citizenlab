@@ -48,7 +48,6 @@ const AdminProjectSurveyResults = lazy(() => import('./project/surveyResults'));
 const AdminProjectPoll = lazy(() => import('./project/poll'));
 const AdminProjectsSurvey = lazy(() => import('./project/nativeSurvey'));
 
-const AdminProjectDescription = lazy(() => import('./project/description'));
 const AdminProjectIdeaForm = lazy(() => import('./project/inputForm'));
 const AdminPhaseSurveyFormTabPanel = lazy(
   () => import('./project/surveyForm/TabPanel')
