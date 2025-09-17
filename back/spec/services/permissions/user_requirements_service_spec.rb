@@ -122,8 +122,31 @@ describe Permissions::UserRequirementsService do
           })
         end
 
-        it 'permits a light confirmed resident' do
+        it 'does not permit a light confirmed resident who has not yet answered or skipped the optional custom field' do
           user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
+          requirements = service.requirements(permission, user)
+          expect(service.permitted?(requirements)).to be false
+          expect(requirements).to eq({
+            authentication: {
+              permitted_by: 'everyone_confirmed_email',
+              missing_user_attributes: []
+            },
+            verification: false,
+            custom_fields: { 'birthyear' => 'optional' },
+            onboarding: false,
+            group_membership: false
+          })
+        end
+
+        it 'permits a light confirmed resident who has skipped the optional custom field' do
+          user.update!(
+            password_digest: nil, 
+            identity_ids: [], 
+            first_name: nil, 
+            custom_field_values: {
+              'birthyear' => nil
+            }
+          )
           requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be true
           expect(requirements).to eq({
@@ -132,7 +155,30 @@ describe Permissions::UserRequirementsService do
               missing_user_attributes: []
             },
             verification: false,
-            custom_fields: { 'birthyear' => 'optional' },
+            custom_fields: {},
+            onboarding: false,
+            group_membership: false
+          })
+        end
+
+        it 'permits a light confirmed resident who has answered the optional custo field' do
+          user.update!(
+            password_digest: nil, 
+            identity_ids: [], 
+            first_name: nil, 
+            custom_field_values: {
+              'birthyear' => 1992
+            }
+          )
+          requirements = service.requirements(permission, user)
+          expect(service.permitted?(requirements)).to be true
+          expect(requirements).to eq({
+            authentication: {
+              permitted_by: 'everyone_confirmed_email',
+              missing_user_attributes: []
+            },
+            verification: false,
+            custom_fields: {},
             onboarding: false,
             group_membership: false
           })
@@ -291,6 +337,7 @@ describe Permissions::UserRequirementsService do
         it 'does not permit a fully registered unconfirmed resident' do
           user.reset_confirmation_and_counts
           requirements = service.requirements(permission, user)
+          binding.pry
           expect(service.permitted?(requirements)).to be false
           expect(requirements).to eq({
             authentication: {
@@ -727,8 +774,8 @@ describe Permissions::UserRequirementsService do
       before do
         @permission = create(:permission, permitted_by: 'users')
 
-        # We cannot pass global_custom_fields: false in the create above because of a
-        # some weird stuff happening in the model's before_validation hook
+        # We cannot pass global_custom_fields: false in the create above because of
+        # some stuff happening in the model's before_validation hook
         @permission.update!(global_custom_fields: false)
 
         2.times do |n|
@@ -766,19 +813,55 @@ describe Permissions::UserRequirementsService do
       end
     end
 
-    # context 'when there are both optional and required custom fields' do
-    #   it 'does not permit a user missing any required custom fields' do
-    #     # TODO
-    #   end
+    context 'when there are both optional and required custom fields' do
+      before do
+        @permission = create(:permission, permitted_by: 'users')
 
-    #   it 'permits a user who filled in all required custom fields previously, but skipped all optional ones' do
-    #     # TODO
-    #   end
+        # We cannot pass global_custom_fields: false in the create above because of
+        # some stuff happening in the model's before_validation hook
+        @permission.update!(global_custom_fields: false)
 
-    #   it 'permits a user who filled in all required and all optional custom fields previously' do
-    #     # TODO
-    #   end
-    # end
+        2.times do |n|
+          create(
+            :permissions_custom_field, 
+            permission: @permission, 
+            required: n == 0,
+            custom_field: create(
+              :custom_field_checkbox, 
+              key: "field_key_#{n}"
+            )
+          )
+        end
+      end
+
+      it 'does not permit a user missing a required custom field' do
+        user = create(:user, custom_field_values: { field_key_1: true })
+        requirements = service.requirements(@permission, user)
+        expect(service.permitted?(requirements)).to be false
+        expect(requirements[:custom_fields]).to eq({ "field_key_0" => 'required' })
+      end
+
+      it 'does not permit a user who skipped a field that is now required' do
+        user = create(:user, custom_field_values: { field_key_0: nil, field_key_1: true })
+        requirements = service.requirements(@permission, user)
+        expect(service.permitted?(requirements)).to be false
+        expect(requirements[:custom_fields]).to eq({ "field_key_0" => 'required' })
+      end
+
+      it 'permits a user who filled in all required custom fields previously, but skipped all optional ones' do
+        user = create(:user, custom_field_values: { field_key_0: true, field_key_1: nil })
+        requirements = service.requirements(@permission, user)
+        expect(service.permitted?(requirements)).to be true
+        expect(requirements[:custom_fields]).to eq({})
+      end
+
+      it 'permits a user who filled in all required and all optional custom fields previously' do
+        user = create(:user, custom_field_values: { field_key_0: true, field_key_1: false })
+        requirements = service.requirements(@permission, user)
+        expect(service.permitted?(requirements)).to be true
+        expect(requirements[:custom_fields]).to eq({})
+      end
+    end
   end
 
   describe '#requirements_fields' do

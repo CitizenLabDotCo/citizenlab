@@ -116,7 +116,16 @@ class Permissions::UserRequirementsService
     requirements[:authentication][:missing_user_attributes].delete(:confirmation) unless user.confirmation_required?
 
     requirements[:custom_fields]&.each_key do |key|
-      requirements[:custom_fields].delete(key) if user.custom_field_values.key?(key)
+      required_or_optional = requirements[:custom_fields][key]
+
+      if required_or_optional == 'required'
+        # If the field is required, it has actually have a non-nil value to be considered satisfied
+        requirements[:custom_fields].delete(key) if user.custom_field_values.key?(key) && !user.custom_field_values[key].nil?
+      else
+        # If the field is optional, we only check if the key exists.
+        # If the field was skipped, it will have a key with a nil value.
+        requirements[:custom_fields].delete(key) if user.custom_field_values.key?(key)
+      end
     end
 
     if requirements[:onboarding]
