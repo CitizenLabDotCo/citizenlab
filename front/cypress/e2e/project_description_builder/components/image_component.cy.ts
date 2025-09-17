@@ -41,11 +41,15 @@ describe('Project description builder Image component', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveProjectDescriptionBuilder'
     );
+
+    cy.get('#e2e-draggable-image').should('exist');
     cy.get('#e2e-draggable-image').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
     });
 
+    cy.get('.e2e-image').should('exist');
     cy.get('.e2e-image').parent().click();
+
     cy.get('input[type="file"]').attachFile('icon.png');
     cy.get('#imageAltTextInput')
       .click()
@@ -54,7 +58,11 @@ describe('Project description builder Image component', () => {
       .type('Image alt text.');
 
     cy.get('[alt="Image alt text."]').should('exist');
+
+    cy.wait(1000);
     cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait(1000);
+
     cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
