@@ -753,8 +753,6 @@
   "app.components.form.error": "خرابی",
   "app.components.form.locationGoogleUnavailable": "گوگل میپس کے ذریعہ فراہم کردہ لوکیشن فیلڈ کو لوڈ نہیں کیا جا سکا۔",
   "app.components.form.progressBarLabel": "سروے کی پیشرفت",
-  "app.components.form.scrollToContinue": "جاری رکھنے کے لیے نیچے سکرول کریں۔",
-  "app.components.form.scrollToContinueTooltip": "جاری رکھنے کے لیے براہ کرم فارم کے نیچے تک سکرول کریں۔",
   "app.components.form.submit": "جمع کروائیں۔",
   "app.components.form.submitApiError": "فارم جمع کرانے میں ایک مسئلہ تھا۔ براہ کرم کسی خامی کی جانچ کریں اور دوبارہ کوشش کریں۔",
   "app.components.form.verifiedBlocked": "آپ اس فیلڈ میں ترمیم نہیں کر سکتے کیونکہ یہ تصدیق شدہ معلومات پر مشتمل ہے۔",
