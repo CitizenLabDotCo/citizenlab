@@ -8,7 +8,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 7.1.5.1'
+gem 'rails', '~> 7.1.5.2'
 gem 'pg', '~> 1.5.6'
 gem 'puma', '~> 6.4.3'
 gem 'bcrypt', '~> 3.1.20' # Use ActiveModel has_secure_password
@@ -63,6 +63,7 @@ group :development do
   gem 'spring-commands-rspec'
   gem 'spring-watcher-listen', '~> 2.1'
   gem 'annotate'
+  gem 'strong_migrations', '~> 2.5'
 end
 
 group :test do
@@ -81,7 +82,6 @@ gem 'active_model_serializers', '~> 0.10.15'
 gem 'jwt', '~> 2.8.1'
 gem 'que', '~> 2.3.0'
 
-gem 'activerecord', '~> 7.1.5.2'
 gem 'activerecord-import', '~> 1.7'
 gem 'json-schema', '~> 4.3'
 gem 'activerecord-postgis-adapter', '~> 9.0.2'

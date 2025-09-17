@@ -119,6 +119,8 @@ el:
       "unfollow_here": "Λάβατε αυτή την ειδοποίηση εξαιτίας ενός στοιχείου που ακολουθείτε. <a href=\"%{unfollow_url}\">Μπορείτε να το ακυρώσετε εδώ.</a>"
     manual:
       preheader: 'Λάβατε μια ενημέρωση από το %{organizationName}'
+    manual_project_participants:
+      preheader: 'Έχετε αλληλογραφία από το %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Το σχόλιό σας έχει διαγραφεί από την πλατφόρμα του %{organizationName}'
       preheader: 'Το σχόλιό σας έχει διαγραφεί'
@@ -498,7 +500,7 @@ el:
       title: 'Σχεδόν φτάσαμε! Υποβάλετε τις απαντήσεις σας'
       event_description: 'Αρχίσατε να μοιράζεστε τις απαντήσεις σας στο %{phaseTitle} αλλά δεν τις υποβάλατε. Κάντε κλικ στο παρακάτω κουμπί για να συνεχίσετε από εκεί που σταματήσατε.'
       cta_button: 'Συνεχίστε την απάντησή σας στην έρευνα'
-      submissions_close: 'Οι υποβολές θα ολοκληρωθούν στις %{phaseEndDate}.'
+      submissions_close: 'Ημερομηνία ολοκλήρωσης υποβολών: %{phaseEndDate}.'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Δεν υποβάλατε τις ψήφους σας'
       preheader: 'Δεν καταθέσατε την ψήφο σας στην πλατφόρμα συμμετοχής του %{organizationName}'

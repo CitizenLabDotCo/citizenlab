@@ -1266,6 +1266,8 @@ GEM
     ssrf_filter (1.2.0)
     stackprof (0.2.26)
     stringio (3.1.2)
+    strong_migrations (2.5.0)
+      activerecord (>= 7.1)
     swd (2.0.2)
       activesupport (>= 3)
       attr_required (>= 0.0.5)
@@ -1336,7 +1338,6 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers (~> 0.10.15)
-  activerecord (~> 7.1.5.2)
   activerecord-import (~> 1.7)
   activerecord-postgis-adapter (~> 9.0.2)
   acts_as_list (~> 1.2)
@@ -1458,7 +1459,7 @@ DEPENDENCIES
   rack-attack (~> 6)
   rack-cors (= 2.0.0)
   rack-mini-profiler
-  rails (~> 7.1.5.1)
+  rails (~> 7.1.5.2)
   rails-i18n (~> 7.0.9)
   rails_semantic_logger
   redcarpet
@@ -1499,6 +1500,7 @@ DEPENDENCIES
   spring-commands-rspec
   spring-watcher-listen (~> 2.1)
   stackprof (~> 0.2.26)
+  strong_migrations (~> 2.5)
   surveys!
   test-prof (~> 1.3)
   user_custom_fields!

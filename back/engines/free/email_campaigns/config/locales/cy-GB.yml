@@ -119,6 +119,8 @@ cy:
       "unfollow_here": "Rydych chi wedi derbyn yr hysbysiad hwn oherwydd eitem rydych chi'n ei dilyn. <a href=\"%{unfollow_url}\">Gallwch chi ei ddad-ddilyn yma.</a>"
     manual:
       preheader: 'Mae gennych bost gan %{organizationName}'
+    manual_project_participants:
+      preheader: 'Mae gennych chi e-bost gan %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Mae eich sylw wedi''i ddileu o''r platfform o %{organizationName}'
       preheader: 'Mae eich sylw wedi''i ddileu'
