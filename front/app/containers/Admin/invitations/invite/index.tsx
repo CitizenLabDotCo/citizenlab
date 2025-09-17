@@ -94,9 +94,14 @@ const Invitations = () => {
   // waiting for seats check import to complete
   const [importId, setImportId] = useState<string | null>(null);
   const { data: inviteImport } = useInviteImport(
-    { importId },
-    { pollingEnabled: importId !== null }
+    { importId: importId || '' }, // Use empty string as fallback
+    {
+      pollingEnabled: importId !== null,
+      // If available, add an 'enabled' option:
+      enabled: importId !== null,
+    }
   );
+
   useEffect(() => {
     const seatsImportComplete = inviteImport?.data?.attributes?.completed_at;
     if (seatsImportComplete) {

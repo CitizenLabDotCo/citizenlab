@@ -9,6 +9,11 @@ export interface QueryParams {
   importId?: string | null;
 }
 
+export interface UseInviteImportOptions {
+  pollingEnabled?: boolean;
+  enabled?: boolean;
+}
+
 // TODO: SORT OUT THE TYPES
 const fetchInviteImports = ({ importId }: QueryParams) =>
   fetcher<any>({
@@ -18,12 +23,17 @@ const fetchInviteImports = ({ importId }: QueryParams) =>
 
 const useInviteImports = (
   queryParams: QueryParams,
-  { pollingEnabled }: { pollingEnabled?: boolean } = {}
+  { pollingEnabled, enabled }: UseInviteImportOptions = {}
 ) => {
+  // Skip the query if importId is missing or if query isexplicitly disabled
+  const isEnabled = enabled !== false && !!queryParams.importId;
+
   return useQuery<any, CLErrors, any, any>({
     queryKey: invitesKeys.lists(),
     queryFn: () => fetchInviteImports(queryParams),
     refetchInterval: pollingEnabled ? 5000 : false,
+    // Enabled option to control when the query executes
+    enabled: isEnabled,
   });
 };
 
