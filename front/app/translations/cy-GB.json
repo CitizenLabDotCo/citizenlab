@@ -753,8 +753,6 @@
   "app.components.form.error": "Gwall",
   "app.components.form.locationGoogleUnavailable": "Methu â llwytho maes lleoliad a ddarparwyd gan google maps.",
   "app.components.form.progressBarLabel": "Cynnydd yr arolwg",
-  "app.components.form.scrollToContinue": "Sgroliwch i lawr i barhau",
-  "app.components.form.scrollToContinueTooltip": "Sgroliwch i waelod y ffurflen i barhau",
   "app.components.form.submit": "Cyflwyno",
   "app.components.form.submitApiError": "Roedd problem wrth gyflwyno'r ffurflen. Gwiriwch am unrhyw wallau a cheisiwch eto.",
   "app.components.form.verifiedBlocked": "Ni allwch olygu'r maes hwn oherwydd ei fod yn cynnwys gwybodaeth wedi'i gwirio",
