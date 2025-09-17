@@ -26,7 +26,6 @@ const AdminProjectsList = lazy(() => import('./all'));
 const AdminProjectNew = lazy(() => import('./new'));
 const AdminProjectsProjectIndex = lazy(() => import('./project'));
 const AdminProjectPhaseIndex = lazy(() => import('./project/phase'));
-const AdminProjectsProjectSettings = lazy(() => import('./project/settings'));
 const AdminProjectsProjectGeneral = lazy(() => import('./project/general'));
 const AdminProjectsProjectGeneralSetUp = lazy(
   () => import('./project/general/setUp')
@@ -210,36 +209,6 @@ const createAdminProjectsRoutes = () => {
             <AdminProjectIdeaPreviewIndex />
           </PageLoading>
         ),
-      },
-      {
-        path: projectsRoutes.projectSettings,
-        element: (
-          <PageLoading>
-            <AdminProjectsProjectSettings />
-          </PageLoading>
-        ),
-        children: [
-          {
-            index: true,
-            element: (
-              <PageLoading>
-                <AdminProjectsProjectGeneral />
-              </PageLoading>
-            ),
-          },
-          {
-            path: projectsRoutes.projectSettingsDescription,
-            element: (
-              <PageLoading>
-                <AdminProjectDescription />
-              </PageLoading>
-            ),
-          },
-          {
-            path: projectsRoutes.projectSettingsTags,
-            element: <AdminAllowedTopicsComponent />,
-          },
-        ],
       },
       {
         path: projectsRoutes.projectId,
