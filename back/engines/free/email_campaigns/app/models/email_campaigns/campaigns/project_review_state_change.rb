@@ -38,6 +38,7 @@ module EmailCampaigns
     include ActivityTriggerable
     include Trackable
     include ContentConfigurable
+    include Disableable
 
     recipient_filter :notification_recipient
 

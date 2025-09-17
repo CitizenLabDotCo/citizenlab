@@ -119,6 +119,8 @@ fr-BE:
       "unfollow_here": "Vous avez reçu cette notification parce que vous suivez ce sujet. <a href=\"%{unfollow_url}\">Vous pouvez vous désabonner ici.</a>"
     manual:
       preheader: 'Vous avez reçu un e-mail de la part de %{organizationName}'
+    manual_project_participants:
+      preheader: 'Vous avez reçu un e-mail de la part de %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Votre commentaire a été supprimé de la plateforme de %{organizationName}'
       preheader: 'Votre commentaire a été supprimé'
@@ -438,7 +440,7 @@ fr-BE:
       no_unread_notifications: "Il est temps de recréer de l'activité ! Visitez la plateforme pour découvrir ce qu'il s'y passe."
       unread_notifications: "Vous avez de nouvelles notifications ! Visitez la plate-forme pour découvrir ce qu'il s'y passe."
     threshold_reached_for_admin:
-      cta_button: 'Passez cette proposition à l''étape suivante'
+      cta_button: 'Passez cette proposition aux étapes suivantes'
       title: 'Une proposition a atteint le nombre de voix requis !'
       subject: '"%{input_title}" a atteint le nombre de voix requis sur votre plateforme'
       preheader: 'Assurez-vous de passer aux étapes suivantes'
@@ -488,7 +490,7 @@ fr-BE:
     voting_basket_submitted:
       subject: '%{organizationName}: Vous avez voté avec succès'
       preheader: 'Votre vote a bien été enregistré sur la plateforme de participation de %{organizationName}'
-      title: 'Vous avez voté avec succès'
+      title: 'Votre vote a bien été pris en compte.'
       event_description: 'Merci de votre participation. Vos votes ont bien été enregistrés. Vous pouvez consulter et gérer vos votes sur la plateforme %{organizationName}.'
       cta_button: 'Voir les votes soumis'
       cta_message: 'Cliquez sur le bouton ci-dessous pour participer'

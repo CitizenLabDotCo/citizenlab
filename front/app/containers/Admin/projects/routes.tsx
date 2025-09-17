@@ -88,6 +88,7 @@ export enum projectsRoutes {
   projectSettings = ':projectId/settings',
   projectTraffic = 'traffic',
   projectParticipation = 'participation',
+  projectParticipationDemographics = 'participation/demographics',
   projectSettingsDescription = 'description',
   projectMessaging = 'messaging',
   projectMessagingNew = 'messaging/new',
@@ -143,6 +144,7 @@ export type projectsRouteTypes =
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectTraffic}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectParticipation}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectParticipationDemographics}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectPhasesSetup}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/setup`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${projectsRoutes.new}`>
@@ -310,6 +312,14 @@ const createAdminProjectsRoutes = () => {
           },
           {
             path: projectsRoutes.projectParticipation,
+            element: (
+              <PageLoading>
+                <ProjectParticipation />
+              </PageLoading>
+            ),
+          },
+          {
+            path: projectsRoutes.projectParticipationDemographics,
             element: (
               <PageLoading>
                 <ProjectParticipation />
