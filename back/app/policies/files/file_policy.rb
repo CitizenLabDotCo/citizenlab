@@ -3,6 +3,8 @@
 module Files
   class FilePolicy < ApplicationPolicy
     class Scope < ApplicationPolicy::Scope
+      # TODO: Need to update this method with the same logic as the show method,
+      # as signed out users now have access to some files (those attached to public content).
       def resolve
         if active_admin?
           scope.all
@@ -14,10 +16,17 @@ module Files
     end
 
     def show?
-      return false unless active?
       return true if admin?
 
-      UserRoleService.new.moderatable_projects(user, record.projects).exists?
+      if user&.project_or_folder_moderator?
+        # Can the user moderate at least one of the associated projects
+        return UserRoleService.new.moderatable_projects(user, record.projects).exists?
+      end
+
+      # Can the user see whatever the file is attached to
+      record.attachments.any? do |attachment|
+        policy_for(attachment.attachable).show?
+      end
     end
 
     def create?

@@ -4,7 +4,11 @@ import { Keys } from 'utils/cl-react-query/types';
 
 import fileAttachmentsKeys from './keys';
 
-export type AttachableType = 'Phase' | 'Project' | 'Event';
+export type AttachableType =
+  | 'Phase'
+  | 'Project'
+  | 'Event'
+  | 'ContentBuilder::Layout';
 
 export type FileAttachmentKeys = Keys<typeof fileAttachmentsKeys>;
 

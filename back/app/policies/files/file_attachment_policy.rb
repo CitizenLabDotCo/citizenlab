@@ -29,6 +29,8 @@ module Files
         active_moderator?(record.attachable)
       when 'Phase', 'Event'
         active_moderator?(record.attachable.project)
+      when 'ContentBuilder::Layout'
+        active_moderator?(Project.find(record.attachable.project_id))
       else
         policy_for(record.file).update?
       end
