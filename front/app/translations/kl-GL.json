@@ -753,8 +753,6 @@
   "app.components.form.error": "Error",
   "app.components.form.locationGoogleUnavailable": "Sumiiffik google mapsikkut nanineqanngilaq.",
   "app.components.form.progressBarLabel": "Survey progress",
-  "app.components.form.scrollToContinue": "Scroll down to continue",
-  "app.components.form.scrollToContinueTooltip": "Please scroll to the bottom of the form to continue",
   "app.components.form.submit": "Submit",
   "app.components.form.submitApiError": "There was an issue submitting the form. Please check for any errors and try again.",
   "app.components.form.verifiedBlocked": "You can't edit this field because it contains verified information",
