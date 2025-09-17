@@ -18,7 +18,6 @@ import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/Profi
 
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
-import ScrollTrigger from 'components/Form/Components/Layouts/ScrollTrigger';
 import SubmissionReference from 'components/Form/Components/Layouts/SubmissionReference';
 import Feedback from 'components/HookForm/Feedback';
 
@@ -289,8 +288,6 @@ const IdeationPage = ({
                   </Box>
                 </Box>
               </Box>
-              {/* Scroll trigger for smart sticky button */}
-              <ScrollTrigger id="ideation-bottom-trigger" />
             </Box>
           </Box>
           {showAnonymousConfirmationModal && (
@@ -323,7 +320,8 @@ const IdeationPage = ({
             isLoading={methods.formState.isSubmitting}
             isAdminPage={isAdminPage}
             isMapPage={isMapPage}
-            triggerElementId="ideation-bottom-trigger"
+            pageQuestions={pageQuestions}
+            currentPageNumber={currentPageNumber}
           />
         </Box>
         <ContentUploadDisclaimer
