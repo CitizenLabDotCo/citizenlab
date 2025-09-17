@@ -753,6 +753,8 @@
   "app.components.form.error": "Feeler",
   "app.components.form.locationGoogleUnavailable": "Konnt d’Standuertfeld, dat vu Google Maps zur Verfügung gestallt gouf, net lueden.",
   "app.components.form.progressBarLabel": "Ëmfro Fortschrëtter",
+  "app.components.form.scrollToContinue": "Scrollt no ënnen fir weiderzemaachen",
+  "app.components.form.scrollToContinueTooltip": "Scrollt w.e.g. bis ënnen am Formulaire fir weiderzemaachen.",
   "app.components.form.submit": "Schécken",
   "app.components.form.submitApiError": "Et gouf e Problem beim Ofschécken vum Formulaire. Préift dësen wgl. ob  Feeler a probéiert et nach eng Kéier.",
   "app.components.form.verifiedBlocked": "Dir kënnt dëst Feld net änneren well et verifizéiert Informatioun enthält",
