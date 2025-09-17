@@ -18,7 +18,7 @@ class Permissions::UserRequirementsService
   def permitted?(requirements)
     return false if requirements[:authentication][:missing_user_attributes].any?
     return false if requirements[:verification]
-    return false if requirements[:custom_fields].values.any?('required')
+    return false unless requirements[:custom_fields].empty?
     return false if requirements[:group_membership]
 
     true
@@ -72,7 +72,6 @@ class Permissions::UserRequirementsService
     }
 
     unless permission.permission_scope&.pmethod&.user_fields_in_form?
-      binding.pry
       users_requirements[:custom_fields] = requirements_custom_fields(permission).to_h { |field| [field.key, (field.required ? 'required' : 'optional')] }
     end
 

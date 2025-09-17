@@ -725,16 +725,19 @@ describe Permissions::UserRequirementsService do
 
     context 'when there are only optional custom fields' do
       before do
-        @permission = create(:permission, permitted_by: 'users', global_custom_fields: false)
-        @permission.update!(global_custom_fields: false) # Why the hell is this necessary??
+        @permission = create(:permission, permitted_by: 'users')
+
+        # We cannot pass global_custom_fields: false in the create above because of a
+        # some weird stuff happening in the model's before_validation hook
+        @permission.update!(global_custom_fields: false)
 
         2.times do |n|
           create(
             :permissions_custom_field, 
             permission: @permission, 
+            required: false,
             custom_field: create(
               :custom_field_checkbox, 
-              required: false,
               key: "optional_key_#{n}"
             )
           )
