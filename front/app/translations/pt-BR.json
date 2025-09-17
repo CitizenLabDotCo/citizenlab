@@ -753,8 +753,6 @@
   "app.components.form.error": "Erro",
   "app.components.form.locationGoogleUnavailable": "Não foi possível carregar o campo de localização fornecido pelo google maps.",
   "app.components.form.progressBarLabel": "Progresso da pesquisa",
-  "app.components.form.scrollToContinue": "Role a tela para baixo para continuar",
-  "app.components.form.scrollToContinueTooltip": "Role a tela até o final do formulário para continuar",
   "app.components.form.submit": "Enviar",
   "app.components.form.submitApiError": "Houve um problema com o envio do formulário. Por favor, verifique se há algum erro e tente novamente.",
   "app.components.form.verifiedBlocked": "Você não pode editar esse campo porque ele contém informações verificadas",
