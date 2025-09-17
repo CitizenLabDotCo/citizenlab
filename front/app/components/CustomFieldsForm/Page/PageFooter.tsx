@@ -24,7 +24,8 @@ const PageFooter = ({
   isLoading,
   isAdminPage,
   isMapPage,
-  triggerElementId,
+  pageQuestions,
+  currentPageNumber,
 }: {
   variant: 'other' | 'after-submission' | 'submission';
   hasPreviousPage: boolean;
@@ -39,7 +40,8 @@ const PageFooter = ({
   isLoading: boolean;
   isAdminPage?: boolean;
   isMapPage?: boolean;
-  triggerElementId?: string;
+  pageQuestions?: Array<{ id: string; key: string }>;
+  currentPageNumber?: number;
 }) => {
   const isMobileOrSmaller = useBreakpoint('phone');
   return (
@@ -66,7 +68,8 @@ const PageFooter = ({
           pageButtonLabelMultiloc={pageButtonLabelMultiloc}
           pageButtonLink={pageButtonLink}
           project={project}
-          triggerElementId={triggerElementId}
+          pageQuestions={pageQuestions}
+          currentPageNumber={currentPageNumber}
         />
       </Box>
     </Box>
