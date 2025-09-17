@@ -101,7 +101,8 @@ interface Props {
   pageButtonLabelMultiloc?: Multiloc;
   pageButtonLink?: string;
   project: IProject | undefined;
-  triggerElementId?: string;
+  pageQuestions?: Array<{ id: string; key: string }>;
+  currentPageNumber?: number;
 }
 
 const SmartStickyButton = ({
@@ -115,7 +116,8 @@ const SmartStickyButton = ({
   pageButtonLink,
   currentPhase,
   project,
-  triggerElementId = 'bottom-trigger',
+  pageQuestions = [],
+  currentPageNumber,
 }: Props) => {
   const theme = useTheme();
   const localize = useLocalize();
@@ -127,16 +129,44 @@ const SmartStickyButton = ({
     : false;
 
   const [hasReachedBottom, setHasReachedBottom] = useState(false);
-  const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+  const [showScrollIndicator, setShowScrollIndicator] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
-  // Create intersection observer to detect when user reaches bottom
   useEffect(() => {
-    const triggerElement = document.getElementById(triggerElementId);
+    setHasReachedBottom(false);
+    setShowScrollIndicator(false);
+    setHasScrolled(false);
+  }, [currentPageNumber]);
 
-    if (!triggerElement) {
-      // If no trigger element exists, enable the button immediately
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!hasReachedBottom) {
+        setShowScrollIndicator(true);
+      }
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [hasReachedBottom]);
+
+  useEffect(() => {
+    const enabledQuestions = pageQuestions.filter((q) => q.id && q.key);
+    const lastQuestion =
+      enabledQuestions.length > 0
+        ? enabledQuestions[enabledQuestions.length - 1]
+        : undefined;
+
+    if (!lastQuestion) {
+      setHasReachedBottom(true);
+      setShowScrollIndicator(false);
+      return;
+    }
+
+    const lastQuestionElement = document.querySelector(
+      `[data-question-id="${lastQuestion.id}"]`
+    );
+
+    if (!lastQuestionElement) {
       setHasReachedBottom(true);
       setShowScrollIndicator(false);
       return;
@@ -152,21 +182,20 @@ const SmartStickyButton = ({
         });
       },
       {
-        threshold: 0.1, // Trigger when 10% of the element is visible
-        rootMargin: '0px 0px -50px 0px', // Trigger slightly before reaching the exact bottom
+        threshold: 0,
+        rootMargin: '0px 0px 0px 0px',
       }
     );
 
-    observerRef.current.observe(triggerElement);
+    observerRef.current.observe(lastQuestionElement);
 
     return () => {
       if (observerRef.current) {
         observerRef.current.disconnect();
       }
     };
-  }, [triggerElementId]);
+  }, [pageQuestions, currentPageNumber]);
 
-  // Hide scroll indicator when user starts scrolling
   useEffect(() => {
     const handleScroll = () => {
       if (!hasScrolled) {
@@ -222,7 +251,6 @@ const SmartStickyButton = ({
       py={'16px'}
       position="relative"
     >
-      {/* Scroll indicator */}
       {showScrollIndicator && (
         <ScrollIndicatorContainer
           position="absolute"
@@ -245,7 +273,6 @@ const SmartStickyButton = ({
       )}
 
       <Box>
-        {/* We wrap it in a Box here to maintain the spacing and keep the next buttons right-aligned when the language selector is empty, preventing the need to move the locale check logic here. */}
         <LanguageSelector
           dropdownClassName={'open-upwards'}
           useDefaultTop={false}
