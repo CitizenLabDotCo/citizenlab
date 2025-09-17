@@ -104,7 +104,7 @@ const Invitations = () => {
 
   const exceedsSeats = useExceedsSeats();
 
-  const getRoles = () => {
+  const getRoles = useCallback(() => {
     const roles: INewBulkInvite['roles'] = [];
 
     if (inviteesWillHaveAdminRights) {
@@ -122,106 +122,140 @@ const Invitations = () => {
     }
 
     return roles;
-  };
-  const onSubmitTemplateTab = async (
-    bulkInvite: INewBulkInvite,
-    save: boolean
-  ) => {
-    const hasCorrectSelection = isString(selectedFileBase64);
+  }, [
+    inviteesWillHaveAdminRights,
+    inviteesWillHaveModeratorRights,
+    selectedProjects,
+  ]);
 
-    if (hasCorrectSelection) {
-      try {
-        setProcessing(true);
-        setProcessed(false);
-        setApiErrors(null);
-        setFiletypeError(null);
-        setUnknownError(null);
+  const fileInputElement = useRef<HTMLInputElement | null>(null);
 
-        if (isString(selectedFileBase64)) {
-          const inviteOptions = {
-            xlsx: selectedFileBase64,
-            ...bulkInvite,
-          };
-          if (save) {
-            await bulkInviteXLSX(inviteOptions);
-          } else {
-            const newSeats = await bulkInviteCountNewSeatsXLSX(inviteOptions);
-            setImportId(newSeats.data.id);
+  const onSubmitTemplateTab = useCallback(
+    async (bulkInvite: INewBulkInvite, save: boolean) => {
+      const hasCorrectSelection = isString(selectedFileBase64);
+
+      if (hasCorrectSelection) {
+        try {
+          setProcessing(true);
+          setProcessed(false);
+          setApiErrors(null);
+          setFiletypeError(null);
+          setUnknownError(null);
+
+          if (isString(selectedFileBase64)) {
+            const inviteOptions = {
+              xlsx: selectedFileBase64,
+              ...bulkInvite,
+            };
+            if (save) {
+              await bulkInviteXLSX(inviteOptions);
+            } else {
+              const newSeats = await bulkInviteCountNewSeatsXLSX(inviteOptions);
+              setImportId(newSeats.data.id);
+            }
           }
-        }
-
-        if (save) {
-          // reset file input
-          if (fileInputElement.current) {
-            fileInputElement.current.value = '';
-          }
-
-          // reset state
-          setProcessing(false);
-          setProcessed(true);
-          setSelectedFileBase64(null);
-        }
-      } catch (errors) {
-        const apiErrors = errors.errors;
-
-        setApiErrors(apiErrors);
-        setUnknownError(
-          !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
-        );
-        setProcessing(false);
-      }
-    }
-  };
-
-  const onSubmitManualTab = async (
-    bulkInvite: INewBulkInvite,
-    save: boolean
-  ) => {
-    const hasCorrectSelection = isString(selectedEmails);
-
-    if (hasCorrectSelection) {
-      try {
-        setProcessing(true);
-        setProcessed(false);
-        setApiErrors(null);
-        setFiletypeError(null);
-        setUnknownError(null);
-
-        if (selectedView === 'manual' && isString(selectedEmails)) {
-          const inviteOptions = {
-            emails: selectedEmails.split(',').map((item) => item.trim()),
-            ...bulkInvite,
-          };
 
           if (save) {
-            await bulkInviteEmails(inviteOptions);
-          } else {
-            const newSeats = await bulkInviteCountNewSeatsEmails(inviteOptions);
-            setImportId(newSeats.data.id);
-          }
-        }
+            // reset file input
+            if (fileInputElement.current) {
+              fileInputElement.current.value = '';
+            }
 
-        if (save) {
-          // reset file input
-          if (fileInputElement.current) {
-            fileInputElement.current.value = '';
+            // reset state
+            setProcessing(false);
+            setProcessed(true);
+            setSelectedFileBase64(null);
           }
+        } catch (errors) {
+          const apiErrors = errors.errors;
 
-          // reset state
+          setApiErrors(apiErrors);
+          setUnknownError(
+            !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
+          );
           setProcessing(false);
-          setProcessed(true);
-          setSelectedEmails(null);
         }
-      } catch (errors) {
-        const apiErrors = errors.errors;
-        setApiErrors(apiErrors);
-        setUnknownError(
-          !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
-        );
-        setProcessing(false);
       }
-    }
-  };
+    },
+    [
+      selectedFileBase64,
+      setProcessing,
+      setProcessed,
+      setApiErrors,
+      setFiletypeError,
+      setUnknownError,
+      bulkInviteXLSX,
+      bulkInviteCountNewSeatsXLSX,
+      setImportId,
+      fileInputElement,
+      setSelectedFileBase64,
+    ]
+  );
+
+  const onSubmitManualTab = useCallback(
+    async (bulkInvite: INewBulkInvite, save: boolean) => {
+      const hasCorrectSelection = isString(selectedEmails);
+
+      if (hasCorrectSelection) {
+        try {
+          setProcessing(true);
+          setProcessed(false);
+          setApiErrors(null);
+          setFiletypeError(null);
+          setUnknownError(null);
+
+          if (selectedView === 'manual' && isString(selectedEmails)) {
+            const inviteOptions = {
+              emails: selectedEmails.split(',').map((item) => item.trim()),
+              ...bulkInvite,
+            };
+
+            if (save) {
+              await bulkInviteEmails(inviteOptions);
+            } else {
+              const newSeats = await bulkInviteCountNewSeatsEmails(
+                inviteOptions
+              );
+              setImportId(newSeats.data.id);
+            }
+          }
+
+          if (save) {
+            // reset file input
+            if (fileInputElement.current) {
+              fileInputElement.current.value = '';
+            }
+
+            // reset state
+            setProcessing(false);
+            setProcessed(true);
+            setSelectedEmails(null);
+          }
+        } catch (errors) {
+          const apiErrors = errors.errors;
+          setApiErrors(apiErrors);
+          setUnknownError(
+            !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
+          );
+          setProcessing(false);
+        }
+      }
+    },
+    [
+      selectedEmails,
+      selectedView,
+      setProcessing,
+      setProcessed,
+      setApiErrors,
+      setFiletypeError,
+      setUnknownError,
+      bulkInviteEmails,
+      bulkInviteCountNewSeatsEmails,
+      setImportId,
+      fileInputElement,
+      setSelectedEmails,
+    ]
+  );
 
   // `save` parameter is used to avoid duplication of import/text and error handling logic
   const onSubmit = useCallback(
@@ -314,8 +348,6 @@ const Invitations = () => {
     setNewSeatsResponse(null);
     resetQueryData();
   };
-
-  const fileInputElement = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     if (tenantLocales && !selectedLocale) {
