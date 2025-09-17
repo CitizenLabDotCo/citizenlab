@@ -753,8 +753,6 @@
   "app.components.form.error": "Virhe",
   "app.components.form.locationGoogleUnavailable": "Google Mapsin toimittamaa sijaintikenttää ei voitu ladata.",
   "app.components.form.progressBarLabel": "Kyselyn edistyminen",
-  "app.components.form.scrollToContinue": "Vieritä alas jatkaaksesi",
-  "app.components.form.scrollToContinueTooltip": "Jatka vierittämällä lomakkeen alaosaan",
   "app.components.form.submit": "Lähetä",
   "app.components.form.submitApiError": "Lomakkeen lähettämisessä oli ongelma. Tarkista mahdolliset virheet ja yritä uudelleen.",
   "app.components.form.verifiedBlocked": "Et voi muokata tätä kenttää, koska se sisältää vahvistettuja tietoja",
