@@ -104,26 +104,156 @@ const Invitations = () => {
 
   const exceedsSeats = useExceedsSeats();
 
-  // `save` parameter is used to avoid duplication of import/text and error handling logic
-  const onSubmit = ({ save }: { save: boolean }) => {
-    const bulkInvite: INewBulkInvite = {
-      locale: selectedLocale,
-      roles: getRoles(),
-      group_ids:
-        selectedGroups && selectedGroups.length > 0
-          ? selectedGroups.map((group) => group.value)
-          : null,
-      invite_text: selectedInviteText,
-    };
+  const getRoles = () => {
+    const roles: INewBulkInvite['roles'] = [];
 
-    if (selectedView === 'template') {
-      onSubmitTemplateTab(bulkInvite, save);
+    if (inviteesWillHaveAdminRights) {
+      roles.push({ type: 'admin' });
     }
 
-    if (selectedView === 'manual') {
-      onSubmitManualTab(bulkInvite, save);
+    if (
+      inviteesWillHaveModeratorRights &&
+      selectedProjects &&
+      selectedProjects.length > 0
+    ) {
+      selectedProjects.forEach((project) => {
+        roles.push({ type: 'project_moderator', project_id: project.value });
+      });
+    }
+
+    return roles;
+  };
+  const onSubmitTemplateTab = async (
+    bulkInvite: INewBulkInvite,
+    save: boolean
+  ) => {
+    const hasCorrectSelection = isString(selectedFileBase64);
+
+    if (hasCorrectSelection) {
+      try {
+        setProcessing(true);
+        setProcessed(false);
+        setApiErrors(null);
+        setFiletypeError(null);
+        setUnknownError(null);
+
+        if (isString(selectedFileBase64)) {
+          const inviteOptions = {
+            xlsx: selectedFileBase64,
+            ...bulkInvite,
+          };
+          if (save) {
+            await bulkInviteXLSX(inviteOptions);
+          } else {
+            const newSeats = await bulkInviteCountNewSeatsXLSX(inviteOptions);
+            setImportId(newSeats.data.id);
+          }
+        }
+
+        if (save) {
+          // reset file input
+          if (fileInputElement.current) {
+            fileInputElement.current.value = '';
+          }
+
+          // reset state
+          setProcessing(false);
+          setProcessed(true);
+          setSelectedFileBase64(null);
+        }
+      } catch (errors) {
+        const apiErrors = errors.errors;
+
+        setApiErrors(apiErrors);
+        setUnknownError(
+          !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
+        );
+        setProcessing(false);
+      }
     }
   };
+
+  const onSubmitManualTab = async (
+    bulkInvite: INewBulkInvite,
+    save: boolean
+  ) => {
+    const hasCorrectSelection = isString(selectedEmails);
+
+    if (hasCorrectSelection) {
+      try {
+        setProcessing(true);
+        setProcessed(false);
+        setApiErrors(null);
+        setFiletypeError(null);
+        setUnknownError(null);
+
+        if (selectedView === 'manual' && isString(selectedEmails)) {
+          const inviteOptions = {
+            emails: selectedEmails.split(',').map((item) => item.trim()),
+            ...bulkInvite,
+          };
+
+          if (save) {
+            await bulkInviteEmails(inviteOptions);
+          } else {
+            const newSeats = await bulkInviteCountNewSeatsEmails(inviteOptions);
+            setImportId(newSeats.data.id);
+          }
+        }
+
+        if (save) {
+          // reset file input
+          if (fileInputElement.current) {
+            fileInputElement.current.value = '';
+          }
+
+          // reset state
+          setProcessing(false);
+          setProcessed(true);
+          setSelectedEmails(null);
+        }
+      } catch (errors) {
+        const apiErrors = errors.errors;
+        setApiErrors(apiErrors);
+        setUnknownError(
+          !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
+        );
+        setProcessing(false);
+      }
+    }
+  };
+
+  // `save` parameter is used to avoid duplication of import/text and error handling logic
+  const onSubmit = useCallback(
+    ({ save }: { save: boolean }) => {
+      const bulkInvite: INewBulkInvite = {
+        locale: selectedLocale,
+        roles: getRoles(),
+        group_ids:
+          selectedGroups && selectedGroups.length > 0
+            ? selectedGroups.map((group) => group.value)
+            : null,
+        invite_text: selectedInviteText,
+      };
+
+      if (selectedView === 'template') {
+        onSubmitTemplateTab(bulkInvite, save);
+      }
+
+      if (selectedView === 'manual') {
+        onSubmitManualTab(bulkInvite, save);
+      }
+    },
+    [
+      selectedLocale,
+      getRoles,
+      selectedGroups,
+      selectedInviteText,
+      selectedView,
+      onSubmitTemplateTab,
+      onSubmitManualTab,
+    ]
+  );
 
   const checkNewSeatsResponse = useCallback(
     (response: any) => {
@@ -298,126 +428,6 @@ const Invitations = () => {
     setApiErrors(null);
     setFiletypeError(null);
     setUnknownError(null);
-  };
-
-  const getRoles = () => {
-    const roles: INewBulkInvite['roles'] = [];
-
-    if (inviteesWillHaveAdminRights) {
-      roles.push({ type: 'admin' });
-    }
-
-    if (
-      inviteesWillHaveModeratorRights &&
-      selectedProjects &&
-      selectedProjects.length > 0
-    ) {
-      selectedProjects.forEach((project) => {
-        roles.push({ type: 'project_moderator', project_id: project.value });
-      });
-    }
-
-    return roles;
-  };
-
-  const onSubmitTemplateTab = async (
-    bulkInvite: INewBulkInvite,
-    save: boolean
-  ) => {
-    const hasCorrectSelection = isString(selectedFileBase64);
-
-    if (hasCorrectSelection) {
-      try {
-        setProcessing(true);
-        setProcessed(false);
-        setApiErrors(null);
-        setFiletypeError(null);
-        setUnknownError(null);
-
-        if (isString(selectedFileBase64)) {
-          const inviteOptions = {
-            xlsx: selectedFileBase64,
-            ...bulkInvite,
-          };
-          if (save) {
-            await bulkInviteXLSX(inviteOptions);
-          } else {
-            const newSeats = await bulkInviteCountNewSeatsXLSX(inviteOptions);
-            setImportId(newSeats.data.id);
-          }
-        }
-
-        if (save) {
-          // reset file input
-          if (fileInputElement.current) {
-            fileInputElement.current.value = '';
-          }
-
-          // reset state
-          setProcessing(false);
-          setProcessed(true);
-          setSelectedFileBase64(null);
-        }
-      } catch (errors) {
-        const apiErrors = errors.errors;
-
-        setApiErrors(apiErrors);
-        setUnknownError(
-          !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
-        );
-        setProcessing(false);
-      }
-    }
-  };
-
-  const onSubmitManualTab = async (
-    bulkInvite: INewBulkInvite,
-    save: boolean
-  ) => {
-    const hasCorrectSelection = isString(selectedEmails);
-
-    if (hasCorrectSelection) {
-      try {
-        setProcessing(true);
-        setProcessed(false);
-        setApiErrors(null);
-        setFiletypeError(null);
-        setUnknownError(null);
-
-        if (selectedView === 'manual' && isString(selectedEmails)) {
-          const inviteOptions = {
-            emails: selectedEmails.split(',').map((item) => item.trim()),
-            ...bulkInvite,
-          };
-
-          if (save) {
-            await bulkInviteEmails(inviteOptions);
-          } else {
-            const newSeats = await bulkInviteCountNewSeatsEmails(inviteOptions);
-            setImportId(newSeats.data.id);
-          }
-        }
-
-        if (save) {
-          // reset file input
-          if (fileInputElement.current) {
-            fileInputElement.current.value = '';
-          }
-
-          // reset state
-          setProcessing(false);
-          setProcessed(true);
-          setSelectedEmails(null);
-        }
-      } catch (errors) {
-        const apiErrors = errors.errors;
-        setApiErrors(apiErrors);
-        setUnknownError(
-          !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
-        );
-        setProcessing(false);
-      }
-    }
   };
 
   const validateInvitation = () => {
