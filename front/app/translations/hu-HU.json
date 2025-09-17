@@ -753,6 +753,8 @@
   "app.components.form.error": "Hiba",
   "app.components.form.locationGoogleUnavailable": "Nem sikerült betölteni a google maps által biztosított helymezőt.",
   "app.components.form.progressBarLabel": "A felmérés előrehaladása",
+  "app.components.form.scrollToContinue": "Görgessen lejjebb a folytatáshoz",
+  "app.components.form.scrollToContinueTooltip": "A folytatáshoz görgessen az űrlap aljára",
   "app.components.form.submit": "Beküld",
   "app.components.form.submitApiError": "Hiba történt az űrlap elküldésekor. Kérjük, ellenőrizze az esetleges hibákat, és próbálja újra.",
   "app.components.form.verifiedBlocked": "Ezt a mezőt nem szerkesztheti, mert ellenőrzött információkat tartalmaz",
