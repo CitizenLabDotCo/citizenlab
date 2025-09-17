@@ -753,6 +753,8 @@
   "app.components.form.error": "Error",
   "app.components.form.locationGoogleUnavailable": "No s'ha pogut carregar el camp d'ubicació proporcionat per Google Maps.",
   "app.components.form.progressBarLabel": "Progrés de l'enquesta",
+  "app.components.form.scrollToContinue": "Desplaça't cap avall per continuar",
+  "app.components.form.scrollToContinueTooltip": "Si us plau, desplaceu-vos fins al final del formulari per continuar",
   "app.components.form.submit": "Presentar",
   "app.components.form.submitApiError": "Hi ha hagut un problema en enviar el formulari. Comproveu si hi ha errors i torneu-ho a provar.",
   "app.components.form.verifiedBlocked": "No podeu editar aquest camp perquè conté informació verificada",
