@@ -1,5 +1,5 @@
 import moment = require('moment');
-import { randomString } from '../support/commands';
+import { randomString } from '../../support/commands';
 
 describe('Native survey: no authentication requirements', () => {
   let projectId: string | undefined;
