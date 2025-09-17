@@ -65,32 +65,48 @@ describe('Native survey permission: users', () => {
     });
   });
 
-  describe('Collect all data', () => {
-    describe('Ask demographic questions in registration flow', () => {
-      // Create user without custom field, set as logged in
+  const createUser = () => {
+    const userFirstName = randomString(10);
+    const userLastName = randomString(10);
+    const userPassword = randomString(10);
+    const userEmail = randomEmail();
 
+    cy.apiSignup(userFirstName, userLastName, userEmail, userPassword).then(
+      (response) => {
+        const userId = (response as any).body.data.id;
+        cy.setLoginCookie(userEmail, userPassword);
+      }
+    );
+  };
+
+  describe('Collect all data', () => {
+    beforeEach(() => {
+      createUser();
+    });
+
+    it.only('Ask demographic questions in registration flow', () => {
       cy.visit(`/projects/${projectSlug}`);
 
       // TODO
     });
 
-    describe('Ask demographic questions in survey', () => {
+    it('Ask demographic questions in survey', () => {
       // TODO
     });
   });
 
   describe('Collect demographics only', () => {
-    describe('Ask demographic questions in registration flow', () => {
+    it('Ask demographic questions in registration flow', () => {
       // TODO
     });
 
-    describe('Ask demographic questions in survey', () => {
+    it('Ask demographic questions in survey', () => {
       // TODO
     });
   });
 
   describe('Full anonymity', () => {
-    describe('Ask demographic questions in registration flow', () => {
+    it('Ask demographic questions in registration flow', () => {
       // TODO
     });
   });
