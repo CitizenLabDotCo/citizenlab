@@ -753,6 +753,8 @@
   "app.components.form.error": "Klaida",
   "app.components.form.locationGoogleUnavailable": "Nepavyko įkelti \"Google Maps\" pateikto vietos lauko.",
   "app.components.form.progressBarLabel": "Apklausos pažanga",
+  "app.components.form.scrollToContinue": "Norėdami tęsti, slinkite žemyn",
+  "app.components.form.scrollToContinueTooltip": "Norėdami tęsti, slinkite į formos apačią",
   "app.components.form.submit": "Pateikti",
   "app.components.form.submitApiError": "Kilo problema pateikiant formą. Patikrinkite, ar nėra klaidų, ir bandykite dar kartą.",
   "app.components.form.verifiedBlocked": "Šio lauko redaguoti negalima, nes jame yra patikrinta informacija.",
