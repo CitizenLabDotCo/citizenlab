@@ -26,6 +26,7 @@ const DataCollection = ({
       <Title variant="h4" color="primary">
         {formatMessage(messages.userDataCollection)}
       </Title>
+      <Text>{formatMessage(messages.userDataCollectionDescription_users)}</Text>
       <Radio
         name="all_data"
         value="all_data"
