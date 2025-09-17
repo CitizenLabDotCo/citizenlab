@@ -753,8 +753,6 @@
   "app.components.form.error": "Fout",
   "app.components.form.locationGoogleUnavailable": "Kan locatieveld geleverd door google maps niet laden.",
   "app.components.form.progressBarLabel": "Voortgang onderzoek",
-  "app.components.form.scrollToContinue": "Scroll naar beneden om verder te gaan",
-  "app.components.form.scrollToContinueTooltip": "Scroll naar de onderkant van het formulier om verder te gaan",
   "app.components.form.submit": "Verzenden",
   "app.components.form.submitApiError": "Er was een probleem met het verzenden van het formulier. Controleer op eventuele fouten en probeer het opnieuw.",
   "app.components.form.verifiedBlocked": "Je kan dit veld niet aanpassen omdat het geverifieerde informatie bevat",
