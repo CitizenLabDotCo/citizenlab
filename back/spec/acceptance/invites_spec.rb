@@ -122,19 +122,18 @@ resource 'Invites' do
           create(:admin, email: emails[1])
         end
 
-        example 'Returns newly added admin and moderator counts' do
-          expect { do_request }.to not_change(Invite, :count)
-            .and not_change(User, :count)
-            .and not_change(User.billed_admins, :count)
-            .and not_change(User.billed_moderators, :count)
+        example 'Returns details of a newly created invites_import record' do
+          invites_imports_count = InvitesImport.count
+          invites_imports_ids = InvitesImport.pluck(:id)
           do_request
           assert_status 200
 
-          expect(response_data[:attributes]).to eq(
-            newly_added_admins_number: 4,
-            # When a moderator is promoted to admin, moderator count is decreased
-            newly_added_moderators_number: -1
-          )
+          expect(response_data[:attributes][:completed_at]).to be_nil
+          expect(response_data[:attributes][:result]).to eq({})
+          expect(response_data[:attributes][:created_at]).to be_present
+          expect(response_data[:attributes][:updated_at]).to be_present
+          expect(InvitesImport.count).to eq(invites_imports_count + 1)
+          expect(InvitesImport.pluck(:id) - invites_imports_ids).to contain_exactly(response_data[:id])
         end
       end
 
