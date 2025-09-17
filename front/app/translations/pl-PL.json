@@ -753,6 +753,8 @@
   "app.components.form.error": "Błąd",
   "app.components.form.locationGoogleUnavailable": "Nie można załadować pola lokalizacji dostarczonego przez mapy google.",
   "app.components.form.progressBarLabel": "Postęp ankiety",
+  "app.components.form.scrollToContinue": "Przewiń w dół, aby kontynuować",
+  "app.components.form.scrollToContinueTooltip": "Przewiń do dołu formularza, aby kontynuować",
   "app.components.form.submit": "Prześlij",
   "app.components.form.submitApiError": "Wystąpił problem przy przesyłaniu formularza. Sprawdź, czy nie wystąpiły błędy i spróbuj ponownie.",
   "app.components.form.verifiedBlocked": "Nie możesz edytować tego pola, ponieważ zawiera ono zweryfikowane informacje",
