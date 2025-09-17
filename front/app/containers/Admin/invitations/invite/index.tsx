@@ -5,6 +5,7 @@ import React, {
   lazy,
   Suspense,
   ChangeEvent,
+  useCallback,
 } from 'react';
 
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
@@ -102,45 +103,86 @@ const Invitations = () => {
     }
   );
 
-  const checkNewSeatsResponse = (response: any) => {
-    setNewSeatsResponse(response);
+  const exceedsSeats = useExceedsSeats();
 
-    let newlyAddedAdminsNumber = 0;
-    let newlyAddedModeratorsNumber = 0;
+  // `save` parameter is used to avoid duplication of import/text and error handling logic
+  const onSubmit = ({ save }: { save: boolean }) => {
+    const bulkInvite: INewBulkInvite = {
+      locale: selectedLocale,
+      roles: getRoles(),
+      group_ids:
+        selectedGroups && selectedGroups.length > 0
+          ? selectedGroups.map((group) => group.value)
+          : null,
+      invite_text: selectedInviteText,
+    };
 
-    if (response?.data?.attributes?.result) {
-      const result = response.data.attributes.result;
-      newlyAddedAdminsNumber = result.newly_added_admins_number || 0;
-      newlyAddedModeratorsNumber = result.newly_added_moderators_number || 0;
+    if (selectedView === 'template') {
+      onSubmitTemplateTab(bulkInvite, save);
     }
 
-    if (
-      exceedsSeats({
-        newlyAddedAdminsNumber,
-        newlyAddedModeratorsNumber,
-      }).any
-    ) {
-      // console.log('open modal');
-      setShowModal(true);
-    } else {
-      // console.log('proceed to save');
-      onSubmit({ save: true });
+    if (selectedView === 'manual') {
+      onSubmitManualTab(bulkInvite, save);
     }
   };
 
-  useEffect(() => {
-    const seatsImportComplete = inviteImport?.data?.attributes?.completed_at;
-    if (seatsImportComplete) {
-      setImportId(null);
-      checkNewSeatsResponse(inviteImport);
-    }
-  }, [inviteImport, checkNewSeatsResponse]);
+  const checkNewSeatsResponse = useCallback(
+    (response: any) => {
+      setNewSeatsResponse(response);
 
-  const exceedsSeats = useExceedsSeats();
+      let newlyAddedAdminsNumber = 0;
+      let newlyAddedModeratorsNumber = 0;
+
+      if (response?.data?.attributes?.result) {
+        const result = response.data.attributes.result;
+        newlyAddedAdminsNumber = result.newly_added_admins_number || 0;
+        newlyAddedModeratorsNumber = result.newly_added_moderators_number || 0;
+      }
+
+      if (
+        exceedsSeats({
+          newlyAddedAdminsNumber,
+          newlyAddedModeratorsNumber,
+        }).any
+      ) {
+        // console.log('open modal');
+        setShowModal(true);
+      } else {
+        // console.log('proceed to save');
+        onSubmit({ save: true });
+      }
+    },
+    [exceedsSeats, setNewSeatsResponse, setShowModal, onSubmit]
+  );
+
+  // Add a state to track processed imports
+  const [processedImportIds, setProcessedImportIds] = useState<Set<string>>(
+    new Set()
+  );
+
+  useEffect(() => {
+    if (!inviteImport) return;
+
+    const importId = inviteImport?.data?.id;
+    const seatsImportComplete = inviteImport?.data?.attributes?.completed_at;
+
+    // Skip if we've already processed this import or if it's not complete
+    if (!seatsImportComplete || !importId || processedImportIds.has(importId)) {
+      return;
+    }
+
+    // Mark this import as processed
+    setProcessedImportIds((prev) => new Set([...prev, importId]));
+
+    // Process the import
+    setImportId(null);
+    checkNewSeatsResponse(inviteImport);
+  }, [inviteImport, checkNewSeatsResponse, processedImportIds]);
 
   const closeModal = () => {
     setShowModal(false);
     setProcessing(false);
+    setNewSeatsResponse(null);
   };
 
   const fileInputElement = useRef<HTMLInputElement | null>(null);
@@ -276,27 +318,6 @@ const Invitations = () => {
     }
 
     return roles;
-  };
-
-  // `save` parameter is used to avoid duplication of import/text and error handling logic
-  const onSubmit = ({ save }: { save: boolean }) => {
-    const bulkInvite: INewBulkInvite = {
-      locale: selectedLocale,
-      roles: getRoles(),
-      group_ids:
-        selectedGroups && selectedGroups.length > 0
-          ? selectedGroups.map((group) => group.value)
-          : null,
-      invite_text: selectedInviteText,
-    };
-
-    if (selectedView === 'template') {
-      onSubmitTemplateTab(bulkInvite, save);
-    }
-
-    if (selectedView === 'manual') {
-      onSubmitManualTab(bulkInvite, save);
-    }
   };
 
   const onSubmitTemplateTab = async (
