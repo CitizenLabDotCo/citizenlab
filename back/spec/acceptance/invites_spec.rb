@@ -11,7 +11,10 @@ resource 'Invites' do
   end
 
   context 'when admin' do
-    before { admin_header_token }
+    before do
+      @user = create(:admin)
+      header_token_for @user
+    end
 
     get 'web_api/v1/invites' do
       with_options scope: :page do
@@ -124,7 +127,6 @@ resource 'Invites' do
 
         example 'Returns details of a newly created invites_import record' do
           invites_imports_count = InvitesImport.count
-          invites_imports_ids = InvitesImport.pluck(:id)
           do_request
           assert_status 200
 
@@ -133,7 +135,29 @@ resource 'Invites' do
           expect(response_data[:attributes][:created_at]).to be_present
           expect(response_data[:attributes][:updated_at]).to be_present
           expect(InvitesImport.count).to eq(invites_imports_count + 1)
-          expect(InvitesImport.pluck(:id) - invites_imports_ids).to contain_exactly(response_data[:id])
+          
+          invites_import = InvitesImport.find(response_data[:id])
+          expect(invites_import).to be_present
+          expect(invites_import.importer).to eq(@user)
+        end
+
+        example 'Results in the initiation of a CountNewSeatsJob' do
+          expect {
+            do_request
+          }.to have_enqueued_job(Invites::CountNewSeatsJob)
+            .with(
+              @user,
+              kind_of(Hash), 
+              kind_of(String), # Match any string ID instead of the specific response_data[:id]
+              defined?(xlsx) ? {xlsx_import: true} : {xlsx_import: false}
+            )
+            .on_queue('default')
+
+          assert_status 200
+          
+          # For extra verification, check that the last enqueued job has the correct import ID
+          job = ActiveJob::Base.queue_adapter.enqueued_jobs.last
+          expect(job['arguments'][2]).to eq(response_data[:id])
         end
       end
 
