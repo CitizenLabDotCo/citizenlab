@@ -753,6 +753,8 @@
   "app.components.form.error": "Fejl",
   "app.components.form.locationGoogleUnavailable": "Kunne ikke indlæse feltet for placering leveret af Google Maps.",
   "app.components.form.progressBarLabel": "Fremdrift i undersøgelsen",
+  "app.components.form.scrollToContinue": "Rul ned for at fortsætte",
+  "app.components.form.scrollToContinueTooltip": "Rul venligst til bunden af formularen for at fortsætte",
   "app.components.form.submit": "Indsend",
   "app.components.form.submitApiError": "Der opstod et problem med at indsende formularen. Kontroller for eventuelle fejl, og prøv igen.",
   "app.components.form.verifiedBlocked": "Du kan ikke redigere dette felt da det indeholder verificerede informationer",
