@@ -2344,7 +2344,7 @@
   "app.containers.AdminPage.ProjectFiles.upload": "Upload",
   "app.containers.AdminPage.ProjectFiles.uploadSummary": "{numberOfFiles, plural, one {# file} other {# files}} uploaded successfully, {numberOfErrors, plural, one {# error} other {# errors}}.",
   "app.containers.AdminPage.ProjectFiles.viewFile": "Vis fil",
-  "app.containers.AdminPage.ProjectFiles.willRemoveFromAllLocations": "Det vil fjerne den fra alle steder, hvor den bruges.",
+  "app.containers.AdminPage.ProjectFiles.willRemoveFromAllLocations": "Dette vil fjerne den fra alle steder, hvor den bruges.",
   "app.containers.AdminPage.ProjectIdeaForm.collapseAll": "Luk alle felter",
   "app.containers.AdminPage.ProjectIdeaForm.descriptionLabel": "Beskrivelse af feltet",
   "app.containers.AdminPage.ProjectIdeaForm.editInputForm": "Rediger input-formularen",
