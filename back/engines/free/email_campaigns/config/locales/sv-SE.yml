@@ -119,6 +119,8 @@ sv:
       "unfollow_here": "Du har fått detta meddelande på grund av ett objekt som du följer. <a href=\"%{unfollow_url}\">Du kan avfölja det här.</a>"
     manual:
       preheader: 'Du har e-post från %{organizationName}'
+    manual_project_participants:
+      preheader: 'Du har e-post från %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Din kommentar har tagits bort från plattformen för %{organizationName}'
       preheader: 'Din kommentar har tagits bort'

@@ -21,11 +21,12 @@ module Export
         url_service = Frontend::UrlService.new
         ideas = phase.ideas.includes(:author, :idea_status, :topics, :idea_files, :attached_files, :project, :ideas_phases, [baskets_ideas: :basket])
         t_scope = 'xlsx_export.column_headers'
+        utils = Utils.new
 
         columns = [
           { header: I18n.t('input_id', scope: t_scope),    f: ->(i) { i.id }, skip_sanitization: true },
-          { header: I18n.t('title', scope: t_scope),       f: ->(i) { multiloc_service.t(i.title_multiloc) } },
-          { header: I18n.t('description', scope: t_scope), f: ->(i) { multiloc_service.t(i.body_multiloc) } }
+          { header: I18n.t('title', scope: t_scope),       f: ->(i) { utils.multiloc_with_fallback_locale(i, :title_multiloc) } },
+          { header: I18n.t('description', scope: t_scope), f: ->(i) { utils.multiloc_with_fallback_locale(i, :body_multiloc) } }
         ]
 
         Factory.instance.voting_method_for(phase).additional_export_columns.each do |column|

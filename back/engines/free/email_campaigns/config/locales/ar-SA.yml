@@ -119,6 +119,8 @@ ar:
       "unfollow_here": "لقد تلقيت هذا الإشعار بسبب عنصر تتابعه. <a href=\"%{unfollow_url}\">يمكنك إلغاء متابعته هنا.</a>"
     manual:
       preheader: 'لديك بريد من %{organizationName}'
+    manual_project_participants:
+      preheader: 'لديك بريد من %{organizationName}'
     comment_deleted_by_admin:
       subject: 'تم حذف تعليقك على المنصة الخاصة بـ %{organizationName}'
       preheader: 'تم حذف تعليقك'

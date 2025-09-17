@@ -119,6 +119,8 @@ de:
       "unfollow_here": "Sie haben diese Benachrichtigung wegen eines Elementes erhalten, dem Sie folgen. <a href=\"%{unfollow_url}\">Sie können hier aufhören diesem zu folgen.</a>"
     manual:
       preheader: 'Sie haben Post von %{organizationName}'
+    manual_project_participants:
+      preheader: 'Sie haben Post von %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Ihr Kommentar wurde von der Plattform von %{organizationName} gelöscht'
       preheader: 'Ihr Kommentar wurde gelöscht'

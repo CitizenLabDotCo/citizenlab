@@ -34,6 +34,7 @@ resource 'Project', admin_api: true do
     parameter :tenant_id, 'The tenant id from which to export the project', required: true
     with_options scope: :project do
       parameter :include_ideas, "Whether to also include the project's ideas, comments, reactions and participants", required: false
+      parameter :max_ideas, 'Maximum number of inputs to export from the project - if used will take a random sample up to the limit', required: false
       parameter :anonymize_users, 'Generate new first and last name, email etc.', required: false
       parameter :translate_content, 'Translate the content to other languages', required: false
       parameter :shift_timestamps, 'Change the timestamps by the specified number of days', required: false
