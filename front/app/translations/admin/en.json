@@ -133,6 +133,7 @@
   "app.components.admin.ActionForm.DataCollection.fullAnonymity": "Full anonymity:",
   "app.components.admin.ActionForm.DataCollection.notCollectAndNotLink": "do not collect demographics. Responses will not be linked to user accounts.",
   "app.components.admin.ActionForm.DataCollection.userDataCollection": "User data collection",
+  "app.components.admin.ActionForm.DataCollection.userDataCollectionDescription": "Personal information (e.g. name, email) and demographic data (see below) will always be saved to the user's profile. Here, you can choose if it should also be linked to survey responses. \"Linking a response to a user account\" means we store name and email of the person who filled out the survey. \"Collecting demographics\" means we store answers to demographic questions in the survey, and not just to the user profile.",
   "app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone": "When \"Authentication\" is set to \"None\", demographic questions can only be asked as the last page of the survey.",
   "app.components.admin.ActionForm.Fields.includeDemographicQuestionsAsLastPageOfSurvey1": "Include demographic questions as <b>last page of the survey</b>",
   "app.components.admin.ActionForm.Fields.includeDemographicQuestionsIn1": "Include demographic questions in <b>registration flow</b>",
