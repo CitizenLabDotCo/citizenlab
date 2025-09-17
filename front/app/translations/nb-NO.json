@@ -753,6 +753,8 @@
   "app.components.form.error": "Feil",
   "app.components.form.locationGoogleUnavailable": "Kunne ikke laste inn stedsfeltet fra Google Maps.",
   "app.components.form.progressBarLabel": "Fremdrift i undersøkelsen",
+  "app.components.form.scrollToContinue": "Bla nedover for å fortsette",
+  "app.components.form.scrollToContinueTooltip": "Vennligst bla til bunnen av skjemaet for å fortsette",
   "app.components.form.submit": "Send inn",
   "app.components.form.submitApiError": "Det oppstod et problem med å sende inn skjemaet. Vennligst se etter eventuelle feil og prøv igjen.",
   "app.components.form.verifiedBlocked": "Du kan ikke redigere dette feltet fordi det inneholder verifisert informasjon",
