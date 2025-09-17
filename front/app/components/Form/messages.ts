@@ -95,4 +95,12 @@ export default defineMessages({
     id: 'app.utils.IdeasNewPage.viewYourIssue',
     defaultMessage: 'View your issue',
   },
+  scrollToContinue: {
+    id: 'app.components.form.scrollToContinue',
+    defaultMessage: 'Scroll down to continue',
+  },
+  scrollToContinueTooltip: {
+    id: 'app.components.form.scrollToContinueTooltip',
+    defaultMessage: 'Please scroll to the bottom of the form to continue',
+  },
 });
