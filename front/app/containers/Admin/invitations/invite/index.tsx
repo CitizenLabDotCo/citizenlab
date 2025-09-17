@@ -102,13 +102,39 @@ const Invitations = () => {
     }
   );
 
+  const checkNewSeatsResponse = (response: any) => {
+    setNewSeatsResponse(response);
+
+    let newlyAddedAdminsNumber = 0;
+    let newlyAddedModeratorsNumber = 0;
+
+    if (response?.data?.attributes?.result) {
+      const result = response.data.attributes.result;
+      newlyAddedAdminsNumber = result.newly_added_admins_number || 0;
+      newlyAddedModeratorsNumber = result.newly_added_moderators_number || 0;
+    }
+
+    if (
+      exceedsSeats({
+        newlyAddedAdminsNumber,
+        newlyAddedModeratorsNumber,
+      }).any
+    ) {
+      // console.log('open modal');
+      setShowModal(true);
+    } else {
+      // console.log('proceed to save');
+      onSubmit({ save: true });
+    }
+  };
+
   useEffect(() => {
     const seatsImportComplete = inviteImport?.data?.attributes?.completed_at;
     if (seatsImportComplete) {
       setImportId(null);
       checkNewSeatsResponse(inviteImport);
     }
-  }, [inviteImport]);
+  }, [inviteImport, checkNewSeatsResponse]);
 
   const exceedsSeats = useExceedsSeats();
 
@@ -252,38 +278,6 @@ const Invitations = () => {
     return roles;
   };
 
-  const checkNewSeatsResponse = (response: any) => {
-    setNewSeatsResponse(response);
-
-    let newlyAddedAdminsNumber = 0;
-    let newlyAddedModeratorsNumber = 0;
-
-    // Extract seat numbers from import response
-    if (response?.data?.attributes?.result) {
-      // The result might be a JSON string or an object
-      const result =
-        typeof response.data.attributes.result === 'string'
-          ? JSON.parse(response.data.attributes.result)
-          : response.data.attributes.result;
-
-      newlyAddedAdminsNumber = result.newly_added_admins_number || 0;
-      newlyAddedModeratorsNumber = result.newly_added_moderators_number || 0;
-    }
-
-    if (
-      exceedsSeats({
-        newlyAddedAdminsNumber,
-        newlyAddedModeratorsNumber,
-      }).any
-    ) {
-      console.log('open modal');
-      setShowModal(true);
-    } else {
-      console.log('proceed to save');
-      onSubmit({ save: true });
-    }
-  };
-
   // `save` parameter is used to avoid duplication of import/text and error handling logic
   const onSubmit = ({ save }: { save: boolean }) => {
     const bulkInvite: INewBulkInvite = {
@@ -378,11 +372,8 @@ const Invitations = () => {
           if (save) {
             await bulkInviteEmails(inviteOptions);
           } else {
-            // Use the same pattern as for XLSX uploads
             const newSeats = await bulkInviteCountNewSeatsEmails(inviteOptions);
             setImportId(newSeats.data.id);
-            // Remove the direct call to checkNewSeatsResponse
-            // Instead, the useEffect hook monitoring inviteImport will handle this
           }
         }
 
