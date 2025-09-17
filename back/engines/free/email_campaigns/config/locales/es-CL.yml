@@ -119,6 +119,8 @@ es-CL:
       "unfollow_here": "Has recibido esta notificación debido a un artículo que sigues. <a href=\"%{unfollow_url}\">Puedes dejar de seguirla aquí.</a>"
     manual:
       preheader: 'Tienes un correo electrónico de %{organizationName}'
+    manual_project_participants:
+      preheader: 'Tienes un correo electrónico de %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Su comentario ha sido eliminado en la plataforma %{organizationName}'
       preheader: 'Tu comentario ha sido eliminado'

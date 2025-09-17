@@ -22,12 +22,12 @@ export default defineMessages({
     defaultMessage: 'Remove',
   },
   confirmHeader: {
-    id: 'app.containers.AdminPage.Topics.confirmHeader',
-    defaultMessage: 'Are you sure you want to delete this project topic?',
+    id: 'app.containers.AdminPage.Topics.confirmHeader1',
+    defaultMessage: 'Are you sure you want to delete this project tag?',
   },
   generalTopicDeletionWarning: {
-    id: 'app.containers.AdminPage.Topics.generalTopicDeletionWarning',
-    defaultMessage: 'This topic will no longer be able to used in projects.',
+    id: 'app.containers.AdminPage.Topics.generalTopicDeletionWarning1',
+    defaultMessage: 'This tag will no longer be able to used in projects.',
   },
   cancel: {
     id: 'app.containers.AdminPage.Topics.cancel',
@@ -38,23 +38,23 @@ export default defineMessages({
     defaultMessage: 'Delete',
   },
   topicManagerInfo: {
-    id: 'app.containers.AdminPage.Topics.tagManagerInfo',
+    id: 'app.containers.AdminPage.Topics.tagManagerInfo1',
     defaultMessage:
-      'If you would like to add additional tags, you can do so in the {topicManagerLink}.',
+      'If you would like to add additional project tags, you can do so in the {topicManagerLink}.',
   },
   projectTopicsDescription: {
-    id: 'app.containers.AdminPage.Topics.inputTagsDescription',
+    id: 'app.containers.AdminPage.Topics.projectTopicsDescription1',
     defaultMessage:
-      'You can add and delete the tags that can be assigned to inputs in this project. ',
+      'You can add and delete the tags that can be assigned to inputs in this project.',
   },
   topicManager: {
-    id: 'app.containers.AdminPage.Topics.topicManager',
-    defaultMessage: 'Topic Manager',
+    id: 'app.containers.AdminPage.Topics.topicManager1',
+    defaultMessage: 'Tag Manager',
   },
   lastTopicWarning: {
-    id: 'app.containers.AdminPage.Topics.lastTopicWarning',
+    id: 'app.containers.AdminPage.Topics.lastTopicWarning3',
     defaultMessage:
-      'At least one topic is required. If you do not want to use topics, they can be disabled in the {ideaFormLink} tab.',
+      'At least one tag is required. If you do not wish to use tags, the ‘Tags’ item can be deleted from any phase’s input form (if present).',
   },
   inputForm: {
     id: 'app.containers.AdminPage.Topics.inputForm',

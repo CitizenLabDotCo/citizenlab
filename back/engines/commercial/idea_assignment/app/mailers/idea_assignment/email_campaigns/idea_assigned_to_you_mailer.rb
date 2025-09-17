@@ -17,7 +17,7 @@ module IdeaAssignment
         }
       end
 
-      def preview_command(recipient)
+      def preview_command(recipient, _context)
         data = preview_service.preview_data(recipient)
         {
           recipient: recipient,

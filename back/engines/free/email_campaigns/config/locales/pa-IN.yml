@@ -119,6 +119,8 @@ pa:
       "unfollow_here": "ਤੁਹਾਨੂੰ ਇਹ ਸੂਚਨਾ ਉਸ ਆਈਟਮ ਦੇ ਕਾਰਨ ਪ੍ਰਾਪਤ ਹੋਈ ਹੈ ਜਿਸਦਾ ਤੁਸੀਂ ਅਨੁਸਰਣ ਕਰਦੇ ਹੋ। <a href=\"%{unfollow_url}\">ਤੁਸੀਂ ਇਸਨੂੰ ਇੱਥੇ ਅਨਫਾਲੋ ਕਰ ਸਕਦੇ ਹੋ।</a>"
     manual:
       preheader: 'ਤੁਹਾਡੇ ਕੋਲ %{organizationName}ਤੋਂ ਮੇਲ ਹੈ'
+    manual_project_participants:
+      preheader: 'ਤੁਹਾਡੇ ਕੋਲ %{organizationName}ਤੋਂ ਮੇਲ ਹੈ।'
     comment_deleted_by_admin:
       subject: 'ਤੁਹਾਡੀ ਟਿੱਪਣੀ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ਤੋਂ ਮਿਟਾ ਦਿੱਤੀ ਗਈ ਹੈ'
       preheader: 'ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਮਿਟਾ ਦਿੱਤੀ ਗਈ ਹੈ'

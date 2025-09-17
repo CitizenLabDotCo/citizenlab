@@ -3,9 +3,12 @@ import React, { memo } from 'react';
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useAuthUser from 'api/me/useAuthUser';
+
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
 
@@ -50,6 +53,8 @@ interface Props {
 }
 
 const UsersHeader = memo(({ title, subtitle }: Props) => {
+  const { data: authUser } = useAuthUser();
+  const authUserIsAdmin = authUser ? isAdmin(authUser) : false;
   return (
     <TitleWrapper>
       <FirstRow>
@@ -57,12 +62,14 @@ const UsersHeader = memo(({ title, subtitle }: Props) => {
           <FormattedMessage tagName="h1" {...title} />
         </TextAndButtons>
         <Spacer />
-        <ButtonWithLink
-          linkTo="/admin/dashboard/users"
-          text={<FormattedMessage {...messages.userInsights} />}
-          icon="chart-bar"
-          buttonStyle="secondary-outlined"
-        />
+        {authUserIsAdmin && (
+          <ButtonWithLink
+            linkTo="/admin/dashboard/users"
+            text={<FormattedMessage {...messages.userInsights} />}
+            icon="chart-bar"
+            buttonStyle="secondary-outlined"
+          />
+        )}
       </FirstRow>
       {subtitle && <FormattedMessage tagName="h2" {...subtitle} />}
     </TitleWrapper>

@@ -119,6 +119,8 @@ da:
       "unfollow_here": "Du har modtaget denne meddelelse på grund af et emne, du følger. <a href=\"%{unfollow_url}\">Du kan fjerne den her.</a>"
     manual:
       preheader: 'Du har fået en mail fra %{organizationName}'
+    manual_project_participants:
+      preheader: 'Du har fået en mail fra %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Din kommentar er blevet slettet på %{organizationName}s platform'
       preheader: 'Din kommentar er blevet slettet'

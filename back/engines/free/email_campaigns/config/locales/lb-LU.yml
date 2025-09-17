@@ -119,6 +119,8 @@ lb:
       "unfollow_here": "Dir hutt dës Notifikatioun kritt wéinst engem Artikel deen Dir verfollegt. <a href=\"%{unfollow_url}\">Dir kënnt et hei ofschléissen.</a>"
     manual:
       preheader: 'Dir hutt Mail vun %{organizationName}'
+    manual_project_participants:
+      preheader: 'Dir hutt E-Mail vun %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Äre Kommentar gouf vun der Plattform vun %{organizationName} geläscht'
       preheader: 'Äre Kommentar gouf geläscht'

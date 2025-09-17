@@ -113,6 +113,7 @@ RSpec.describe AppConfiguration do
         allowed: true,
         enabled: true,
         environment: 'production',
+        version: 'v2',
         identifier: 'id',
         secret: 'secret',
         scope: %w[email given_name family_name]
