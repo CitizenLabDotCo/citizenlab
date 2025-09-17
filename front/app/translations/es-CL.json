@@ -753,8 +753,6 @@
   "app.components.form.error": "Error",
   "app.components.form.locationGoogleUnavailable": "No se ha podido cargar el campo de ubicación proporcionado por google maps.",
   "app.components.form.progressBarLabel": "Progreso de la encuesta",
-  "app.components.form.scrollToContinue": "Desplázate hacia abajo para continuar",
-  "app.components.form.scrollToContinueTooltip": "Por favor, desplázate hasta el final del formulario para continuar",
   "app.components.form.submit": "Enviar",
   "app.components.form.submitApiError": "Ha habido un problema al enviar el formulario. Por favor, compruebe si hay algún error y vuelva a intentarlo.",
   "app.components.form.verifiedBlocked": "No puede editar este campo porque contiene información verificada",
