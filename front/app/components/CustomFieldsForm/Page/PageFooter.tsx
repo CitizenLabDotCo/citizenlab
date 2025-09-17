@@ -6,7 +6,7 @@ import { Multiloc } from 'typings';
 import { IPhaseData, IPhases } from 'api/phases/types';
 import { IProject } from 'api/projects/types';
 
-import SmartStickyButton from 'components/Form/Components/Layouts/SmartStickyButton';
+import PageControlButtons from 'components/Form/Components/Layouts/PageControlButtons';
 
 import ProgressBar from '../ProgressBar';
 
@@ -57,7 +57,7 @@ const PageFooter = ({
       <ProgressBar formCompletionPercentage={formCompletionPercentage} />
 
       <Box w="100%">
-        <SmartStickyButton
+        <PageControlButtons
           handleNextAndSubmit={handleNextAndSubmit}
           handlePrevious={handlePrevious}
           hasPreviousPage={hasPreviousPage}
