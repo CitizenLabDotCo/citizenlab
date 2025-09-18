@@ -8,6 +8,7 @@ import {
 } from '@hello-pangea/dnd';
 
 type DraggableItemProps = {
+  id: string;
   children: React.ReactNode;
   provided: DraggableProvided;
   snapshot: DraggableStateSnapshot;
@@ -16,6 +17,7 @@ type DraggableItemProps = {
 };
 
 const DraggableItem = ({
+  id,
   children,
   provided,
   snapshot,
@@ -35,7 +37,7 @@ const DraggableItem = ({
   }, []);
 
   return (
-    <div ref={provided.innerRef} {...provided.draggableProps}>
+    <div ref={provided.innerRef} id={id} {...provided.draggableProps}>
       <div ref={draggableRef} {...provided.dragHandleProps}>
         <Box
           border={
@@ -77,6 +79,7 @@ export const Drag = ({
       <Draggable draggableId={id} index={index} isDragDisabled={isDragDisabled}>
         {(provided, snapshot) => (
           <DraggableItem
+            id={id}
             provided={provided}
             snapshot={snapshot}
             useBorder={useBorder}
