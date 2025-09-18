@@ -104,6 +104,21 @@ const Invitations = () => {
     }
   );
 
+  // State variables for invite creation
+  const [createInviteImportId, setCreateInviteImportId] = useState<
+    string | null
+  >(null);
+  const {
+    data: createInviteImport,
+    resetQueryData: resetCreateInviteQueryData,
+  } = useInviteImport(
+    { importId: createInviteImportId || '' },
+    {
+      pollingEnabled: createInviteImportId !== null,
+      enabled: createInviteImportId !== null,
+    }
+  );
+
   const exceedsSeats = useExceedsSeats();
 
   const getRoles = useCallback(() => {
@@ -132,8 +147,29 @@ const Invitations = () => {
 
   const fileInputElement = useRef<HTMLInputElement | null>(null);
 
+  const [savedInviteOptions, setSavedInviteOptions] = useState<any>(null);
+
   const onSubmitTemplateTab = useCallback(
     async (bulkInvite: INewBulkInvite, save: boolean) => {
+      // If we're saving and have saved options from a previous count operation
+      if (save && savedInviteOptions) {
+        try {
+          setProcessing(true);
+          const createJob = await bulkInviteXLSX(savedInviteOptions);
+          setCreateInviteImportId((createJob as any).data.id);
+          setSavedInviteOptions(null);
+        } catch (errors) {
+          const apiErrors = errors.errors;
+          setApiErrors(apiErrors);
+          setUnknownError(
+            !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
+          );
+          setProcessing(false);
+        }
+        return; // Exit early, don't continue with validation checks
+      }
+
+      // Original logic for initial submission (counting seats)
       const hasCorrectSelection = isString(selectedFileBase64);
 
       if (hasCorrectSelection) {
@@ -145,28 +181,18 @@ const Invitations = () => {
           setUnknownError(null);
 
           if (isString(selectedFileBase64)) {
+            setSavedInviteOptions(null);
+
             const inviteOptions = {
               xlsx: selectedFileBase64,
               ...bulkInvite,
             };
-            if (save) {
-              await bulkInviteXLSX(inviteOptions);
-            } else {
-              const newSeats = await bulkInviteCountNewSeatsXLSX(inviteOptions);
-              setImportId(newSeats.data.id);
-            }
-          }
 
-          if (save) {
-            // reset file input
-            if (fileInputElement.current) {
-              fileInputElement.current.value = '';
-            }
+            // Save options for later use when creating invites after modal confirmation
+            setSavedInviteOptions(inviteOptions);
 
-            // reset state
-            setProcessing(false);
-            setProcessed(true);
-            setSelectedFileBase64(null);
+            const newSeats = await bulkInviteCountNewSeatsXLSX(inviteOptions);
+            setImportId(newSeats.data.id);
           }
         } catch (errors) {
           const apiErrors = errors.errors;
@@ -191,11 +217,35 @@ const Invitations = () => {
       setImportId,
       fileInputElement,
       setSelectedFileBase64,
+      setCreateInviteImportId,
+      savedInviteOptions,
+      setSavedInviteOptions,
     ]
   );
 
+  const [savedEmailOptions, setSavedEmailOptions] = useState<any>(null);
+
   const onSubmitManualTab = useCallback(
     async (bulkInvite: INewBulkInvite, save: boolean) => {
+      // If we're saving and have saved options from a previous count operation
+      if (save && savedEmailOptions) {
+        try {
+          setProcessing(true);
+          const createJob = await bulkInviteEmails(savedEmailOptions);
+          setCreateInviteImportId((createJob as any).data.id);
+          setSavedEmailOptions(null);
+        } catch (errors) {
+          const apiErrors = errors.errors;
+          setApiErrors(apiErrors);
+          setUnknownError(
+            !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
+          );
+          setProcessing(false);
+        }
+        return; // Exit early, don't continue with validation checks
+      }
+
+      // Original logic for initial submission (counting seats)
       const hasCorrectSelection = isString(selectedEmails);
 
       if (hasCorrectSelection) {
@@ -207,31 +257,18 @@ const Invitations = () => {
           setUnknownError(null);
 
           if (selectedView === 'manual' && isString(selectedEmails)) {
+            setSavedEmailOptions(null);
+
             const inviteOptions = {
               emails: selectedEmails.split(',').map((item) => item.trim()),
               ...bulkInvite,
             };
 
-            if (save) {
-              await bulkInviteEmails(inviteOptions);
-            } else {
-              const newSeats = await bulkInviteCountNewSeatsEmails(
-                inviteOptions
-              );
-              setImportId(newSeats.data.id);
-            }
-          }
+            // Save options for later use when creating invites after modal confirmation
+            setSavedEmailOptions(inviteOptions);
 
-          if (save) {
-            // reset file input
-            if (fileInputElement.current) {
-              fileInputElement.current.value = '';
-            }
-
-            // reset state
-            setProcessing(false);
-            setProcessed(true);
-            setSelectedEmails(null);
+            const newSeats = await bulkInviteCountNewSeatsEmails(inviteOptions);
+            setImportId(newSeats.data.id);
           }
         } catch (errors) {
           const apiErrors = errors.errors;
@@ -256,12 +293,15 @@ const Invitations = () => {
       setImportId,
       fileInputElement,
       setSelectedEmails,
+      setCreateInviteImportId,
+      savedEmailOptions,
+      setSavedEmailOptions,
     ]
   );
 
   // `save` parameter is used to avoid duplication of import/text and error handling logic
   const onSubmit = useCallback(
-    ({ save }: { save: boolean }) => {
+    async ({ save }: { save: boolean }) => {
       const bulkInvite: INewBulkInvite = {
         locale: selectedLocale,
         roles: getRoles(),
@@ -273,11 +313,11 @@ const Invitations = () => {
       };
 
       if (selectedView === 'template') {
-        onSubmitTemplateTab(bulkInvite, save);
+        await onSubmitTemplateTab(bulkInvite, save);
       }
 
       if (selectedView === 'manual') {
-        onSubmitManualTab(bulkInvite, save);
+        await onSubmitManualTab(bulkInvite, save);
       }
     },
     [
@@ -288,11 +328,12 @@ const Invitations = () => {
       selectedView,
       onSubmitTemplateTab,
       onSubmitManualTab,
+      setCreateInviteImportId,
     ]
   );
 
   const checkNewSeatsResponse = useCallback(
-    (response: any) => {
+    async (response: any) => {
       setNewSeatsResponse(response);
 
       let newlyAddedAdminsNumber = 0;
@@ -310,11 +351,9 @@ const Invitations = () => {
           newlyAddedModeratorsNumber,
         }).any
       ) {
-        // console.log('open modal');
         setShowModal(true);
       } else {
-        // console.log('proceed to save');
-        onSubmit({ save: true });
+        await onSubmit({ save: true }); // <-- add await here
       }
     },
     [exceedsSeats, setNewSeatsResponse, setShowModal, onSubmit]
@@ -343,6 +382,42 @@ const Invitations = () => {
     setImportId(null);
     checkNewSeatsResponse(inviteImport);
   }, [inviteImport, checkNewSeatsResponse, processedImportIds]);
+
+  // Effect to monitor invite creation
+  useEffect(() => {
+    if (!createInviteImport) return;
+
+    const jobId = createInviteImport?.data?.id;
+    const jobComplete = createInviteImport?.data?.attributes?.completed_at;
+
+    // Skip if job isn't complete
+    if (!jobComplete || !jobId) {
+      return;
+    }
+
+    // Process completed invite creation
+    setCreateInviteImportId(null);
+
+    // Check for any errors in the response
+    if (createInviteImport?.data?.attributes?.errors?.length > 0) {
+      setApiErrors(createInviteImport.data.attributes.errors);
+      setProcessing(false);
+    } else {
+      // Success - reset UI state
+      if (fileInputElement.current) {
+        fileInputElement.current.value = '';
+      }
+      setProcessing(false);
+      setProcessed(true);
+      setSelectedFileBase64(null);
+      setSelectedEmails(null);
+      // setSavedInviteOptions(null);
+      // setSavedEmailOptions(null);
+    }
+
+    // Reset the query to prevent issues if we navigate away/back
+    resetCreateInviteQueryData();
+  }, [createInviteImport, resetCreateInviteQueryData]);
 
   const closeModal = () => {
     setShowModal(false);
@@ -474,10 +549,9 @@ const Invitations = () => {
     return (isValidEmails || isValidInvitationTemplate) && hasValidRights;
   };
 
-  const handleSubmitAction = (event: React.FormEvent) => {
+  const handleSubmitAction = async (event: React.FormEvent) => {
     event.preventDefault();
-
-    onSubmit({ save: false });
+    await onSubmit({ save: false });
   };
 
   const invitationTabs: {
@@ -563,7 +637,7 @@ const Invitations = () => {
                 }}
               />
 
-              {processing && (
+              {(processing || createInviteImportId !== null) && (
                 <Box color={colors.textSecondary} marginLeft="15px">
                   <FormattedMessage {...messages.processing} />
                 </Box>
@@ -584,7 +658,9 @@ const Invitations = () => {
       {newSeatsResponse && (
         <Suspense fallback={null}>
           <InviteUsersWithSeatsModal
-            inviteUsers={() => onSubmit({ save: true })}
+            inviteUsers={async () => {
+              await onSubmit({ save: true }); // <-- add await here
+            }}
             showModal={showModal}
             closeModal={closeModal}
             newSeatsResponse={newSeatsResponse}
