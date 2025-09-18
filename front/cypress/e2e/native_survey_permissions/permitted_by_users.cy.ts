@@ -8,6 +8,8 @@ describe('Native survey permitted by: users', () => {
   let projectSlug = '';
   let phaseId = '';
   let userId: string | undefined;
+  let ideaId: string | undefined;
+  let answer: string | undefined;
 
   const fieldName = randomString(10);
 
@@ -160,7 +162,7 @@ describe('Native survey permitted by: users', () => {
     cy.get('#e2e-authentication-modal').contains(fieldName);
 
     // Fill in demographic question
-    const answer = randomString(10);
+    answer = randomString(10);
     cy.get('#e2e-authentication-modal').find('input').first().type(answer);
 
     // Click submit and 'continue'
@@ -176,8 +178,14 @@ describe('Native survey permitted by: users', () => {
     // Answer question
     cy.get('fieldset').first().find('input').first().check({ force: true });
 
+    // Intercept submit request
+    cy.intercept('POST', '/web_api/v1/ideas').as('submitSurvey');
+
     // Submit survey
     cy.dataCy('e2e-submit-form').click();
+    cy.wait('@submitSurvey').then((interception) => {
+      ideaId = interception.response?.body.data.id;
+    });
 
     // Now we should be on last page
     cy.dataCy('e2e-after-submission').should('exist');
@@ -203,11 +211,17 @@ describe('Native survey permitted by: users', () => {
     cy.get('form').contains(fieldName);
 
     // Fill in demographic question
-    const answer = randomString(10);
+    answer = randomString(10);
     cy.get('form').find('input').first().type(answer);
+
+    // Intercept submit request
+    cy.intercept('PATCH', '/web_api/v1/ideas/**').as('submitSurvey');
 
     // Submit survey
     cy.dataCy('e2e-submit-form').click();
+    cy.wait('@submitSurvey').then((interception) => {
+      ideaId = interception.response?.body.data.id;
+    });
 
     // Now we should be on last page
     cy.dataCy('e2e-after-submission').should('exist');
@@ -222,7 +236,28 @@ describe('Native survey permitted by: users', () => {
         interception.response?.body.data.attributes.custom_field_values[
           customFieldKey
         ]
-      ).to.be.a('string');
+      ).to.eq(answer);
+    });
+  };
+
+  const confirmSavedToIdea = () => {
+    cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+      const adminJwt = response.body.jwt;
+
+      return cy
+        .request({
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${adminJwt}`,
+          },
+          method: 'GET',
+          url: `web_api/v1/ideas/${ideaId}`,
+        })
+        .then((response) => {
+          const attributes = response.body.data.attributes;
+          throw new Error(JSON.stringify(response.body.data.attributes));
+          // expect(attributes[`u_${customFieldKey}`]).to.eq(answer)
+        });
     });
   };
 
@@ -231,6 +266,7 @@ describe('Native survey permitted by: users', () => {
       it('works', () => {
         fieldsInRegFlow();
         confirmSavedToProfile();
+        confirmSavedToIdea();
       });
     });
 
@@ -249,6 +285,7 @@ describe('Native survey permitted by: users', () => {
       it('works', () => {
         fieldsInSurvey();
         confirmSavedToProfile();
+        confirmSavedToIdea();
       });
     });
   });
@@ -270,6 +307,7 @@ describe('Native survey permitted by: users', () => {
       it('works', () => {
         fieldsInRegFlow();
         confirmSavedToProfile();
+        confirmSavedToIdea();
       });
     });
 
@@ -288,6 +326,7 @@ describe('Native survey permitted by: users', () => {
       it('works', () => {
         fieldsInSurvey();
         confirmSavedToProfile();
+        confirmSavedToIdea();
       });
     });
   });
