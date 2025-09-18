@@ -43,20 +43,27 @@ const LinkToFolderProjectsDropdown = ({ folderId }: Props) => {
             maxHeight="200px"
             overflow="auto"
           >
-            {siblingProjects?.pages[0].data.map((project) => (
-              <ButtonWithLink
-                key={project.id}
-                linkTo={`/admin/projects/${project.relationships.publication.data.id}`}
-                openLinkInNewTab={true}
-                buttonStyle="text"
-                p="4px"
-                justify="left"
-              >
-                <Text fontSize="s" m="0px" color="coolGrey600" textAlign="left">
-                  {localize(project.attributes.publication_title_multiloc)}
-                </Text>
-              </ButtonWithLink>
-            ))}
+            {siblingProjects?.pages.map((page) =>
+              page.data.map((project) => (
+                <ButtonWithLink
+                  key={project.id}
+                  linkTo={`/admin/projects/${project.relationships.publication.data.id}`}
+                  openLinkInNewTab={true}
+                  buttonStyle="text"
+                  p="4px"
+                  justify="left"
+                >
+                  <Text
+                    fontSize="s"
+                    m="0px"
+                    color="coolGrey600"
+                    textAlign="left"
+                  >
+                    {localize(project.attributes.publication_title_multiloc)}
+                  </Text>
+                </ButtonWithLink>
+              ))
+            )}
           </Box>
         }
         top="36px"
