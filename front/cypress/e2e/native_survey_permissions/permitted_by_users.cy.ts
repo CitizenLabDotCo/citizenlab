@@ -17,10 +17,12 @@ describe('Native survey permitted by: users', () => {
     adminJwt,
     permitted_by,
     user_fields_in_form,
+    user_data_collection,
   }: {
     adminJwt: string;
     permitted_by?: string;
     user_fields_in_form?: boolean;
+    user_data_collection?: string;
   }) => {
     return cy.request({
       headers: {
@@ -32,6 +34,7 @@ describe('Native survey permitted by: users', () => {
       body: {
         permitted_by,
         user_fields_in_form,
+        user_data_collection,
       },
     });
   };
@@ -123,6 +126,7 @@ describe('Native survey permitted by: users', () => {
 
   const createUser = () => {
     if (userId) {
+      cy.logout();
       cy.apiRemoveUser(userId);
     }
 
@@ -134,47 +138,84 @@ describe('Native survey permitted by: users', () => {
     cy.apiSignup(userFirstName, userLastName, userEmail, userPassword).then(
       (response) => {
         cy.setLoginCookie(userEmail, userPassword);
+        cy.setConsentCookie();
         userId = response.body.data.id;
       }
     );
   };
 
+  beforeEach(() => {
+    createUser();
+  });
+
+  const fieldsInRegFlow = () => {
+    cy.visit(`/projects/${projectSlug}`);
+
+    // Click take survey button
+    cy.get('.e2e-idea-button').first().find('button').click({ force: true });
+
+    // Modal should show demographic question
+    cy.get('#e2e-authentication-modal').contains(fieldName);
+
+    // Fill in demographic question
+    const answer = randomString(10);
+    cy.get('#e2e-authentication-modal').find('input').first().type(answer);
+
+    // Click submit and 'continue'
+    cy.get('#e2e-signup-custom-fields-submit-btn').click();
+    cy.get('#e2e-success-continue-button').click();
+
+    // Confirm we're in the survey now
+    cy.location('pathname').should(
+      'eq',
+      `/en/projects/${projectSlug}/surveys/new`
+    );
+
+    // Answer question
+    cy.get('fieldset').first().find('input').first().check({ force: true });
+
+    // Submit survey
+    cy.dataCy('e2e-submit-form').click();
+
+    // Now we should be on last page
+    cy.dataCy('e2e-after-submission').should('exist');
+  };
+
+  const fieldsInSurvey = () => {
+    cy.visit(`/projects/${projectSlug}`);
+
+    // Click take survey button
+    cy.get('.e2e-idea-button').first().find('button').click({ force: true });
+
+    // Confirm we're in the survey now
+    cy.location('pathname').should(
+      'eq',
+      `/en/projects/${projectSlug}/surveys/new`
+    );
+
+    // Answer question and go to next page
+    cy.get('fieldset').first().find('input').first().check({ force: true });
+    cy.dataCy('e2e-next-page').click();
+
+    // Confirm we are on demographic question page
+    cy.get('form').contains(fieldName);
+
+    // Fill in demographic question
+    const answer = randomString(10);
+    cy.get('form').find('input').first().type(answer);
+
+    // Submit survey
+    cy.dataCy('e2e-submit-form').click();
+
+    // Now we should be on last page
+    cy.dataCy('e2e-after-submission').should('exist');
+  };
+
   describe('Collect all data', () => {
-    beforeEach(() => {
-      createUser();
-    });
-
-    it('Ask demographic questions in registration flow', () => {
-      cy.visit(`/projects/${projectSlug}`);
-
-      // Click take survey button
-      cy.get('.e2e-idea-button').first().find('button').click({ force: true });
-
-      // Modal should show demographic question
-      cy.get('#e2e-authentication-modal').contains(fieldName);
-
-      // Fill in demographic question
-      const answer = randomString(10);
-      cy.get('#e2e-authentication-modal').find('input').first().type(answer);
-
-      // Click submit and 'continue'
-      cy.get('#e2e-signup-custom-fields-submit-btn').click();
-      cy.get('#e2e-success-continue-button').click();
-
-      // Confirm we're in the survey now
-      cy.location('pathname').should(
-        'eq',
-        `/en/projects/${projectSlug}/surveys/new`
-      );
-
-      // Answer question
-      cy.get('fieldset').first().find('input').first().check({ force: true });
-
-      // Submit survey
-      cy.dataCy('e2e-submit-form').click();
-
-      // Now we should be on last page
-      cy.dataCy('e2e-after-submission').should('exist');
+    describe('Ask demographic questions in registration flow', () => {
+      it('works', () => {
+        fieldsInRegFlow();
+      });
     });
 
     describe('Ask demographic questions in survey', async () => {
@@ -190,53 +231,65 @@ describe('Native survey permitted by: users', () => {
       });
 
       it('works', () => {
-        cy.visit(`/projects/${projectSlug}`);
-
-        // Click take survey button
-        cy.get('.e2e-idea-button')
-          .first()
-          .find('button')
-          .click({ force: true });
-
-        // Confirm we're in the survey now
-        cy.location('pathname').should(
-          'eq',
-          `/en/projects/${projectSlug}/surveys/new`
-        );
-
-        // Answer question and go to next page
-        cy.get('fieldset').first().find('input').first().check({ force: true });
-        cy.dataCy('e2e-next-page').click();
-
-        // Confirm we are on demographic question page
-        cy.get('form').contains(fieldName);
-
-        // Fill in demographic question
-        const answer = randomString(10);
-        cy.get('form').find('input').first().type(answer);
-
-        // Submit survey
-        cy.dataCy('e2e-submit-form').click();
-
-        // Now we should be on last page
-        cy.dataCy('e2e-after-submission').should('exist');
+        fieldsInSurvey();
       });
     });
   });
 
-  // describe('Collect demographics only', () => {
-  //   it('Ask demographic questions in registration flow', () => {
-  //     // TODO
-  //   });
+  describe('Collect demographics only', () => {
+    describe('Ask demographic questions in registration flow', () => {
+      before(() => {
+        cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+          const adminJwt = response.body.jwt;
 
-  //   it('Ask demographic questions in survey', () => {
-  //     // TODO
-  //   });
-  // });
+          return updatePermission({
+            adminJwt,
+            user_fields_in_form: false,
+            user_data_collection: 'demographics_only',
+          });
+        });
+      });
 
-  // describe('Full anonymity', () => {
-  //   it('Ask demographic questions in registration flow', () => {
-  //     // TODO
-  //   });
-  // });
+      it('works', () => {
+        fieldsInRegFlow();
+      });
+    });
+
+    describe('Ask demographic questions in survey', () => {
+      before(() => {
+        cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+          const adminJwt = response.body.jwt;
+
+          return updatePermission({
+            adminJwt,
+            user_fields_in_form: true,
+          });
+        });
+      });
+
+      it('works', () => {
+        fieldsInSurvey();
+      });
+    });
+  });
+
+  describe('Full anonymity', () => {
+    describe('Ask demographic questions in registration flow', () => {
+      before(() => {
+        cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+          const adminJwt = response.body.jwt;
+
+          return updatePermission({
+            adminJwt,
+            user_fields_in_form: false,
+            user_data_collection: 'anonymous',
+          });
+        });
+      });
+
+      it('works', () => {
+        fieldsInRegFlow();
+      });
+    });
+  });
 });
