@@ -44,10 +44,10 @@ const LinkToFolderProjectsDropdown = ({ folderId }: Props) => {
             overflow="auto"
           >
             {siblingProjects?.pages.map((page) =>
-              page.data.map((project) => (
+              page.data.map((adminPublication) => (
                 <ButtonWithLink
-                  key={project.id}
-                  linkTo={`/admin/projects/${project.relationships.publication.data.id}`}
+                  key={adminPublication.id}
+                  linkTo={`/admin/projects/${adminPublication.relationships.publication.data.id}`}
                   openLinkInNewTab={true}
                   buttonStyle="text"
                   p="4px"
@@ -59,7 +59,9 @@ const LinkToFolderProjectsDropdown = ({ folderId }: Props) => {
                     color="coolGrey600"
                     textAlign="left"
                   >
-                    {localize(project.attributes.publication_title_multiloc)}
+                    {localize(
+                      adminPublication.attributes.publication_title_multiloc
+                    )}
                   </Text>
                 </ButtonWithLink>
               ))
