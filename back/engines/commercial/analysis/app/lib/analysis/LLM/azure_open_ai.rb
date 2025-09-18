@@ -36,7 +36,7 @@ module Analysis
       end
 
       def self.gpt_model
-        'gpt-4' # raise NotImplementedError Temporarily because sometimes AzureOpenAI is used directly
+        raise NotImplementedError
       end
 
       def self.headroom_ratio

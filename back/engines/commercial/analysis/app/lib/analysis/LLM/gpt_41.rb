@@ -4,7 +4,7 @@ module Analysis
   module LLM
     class GPT41 < AzureOpenAI
       def context_window
-        1_000_000 # TODO: Apply 0.9 ratio to summary, qanda, and tagging
+        1_000_000
       end
 
       def enabled?
