@@ -73,6 +73,7 @@
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Paldies, ka aizpildījāt aptauju! Esiet laipni aicināti to darīt arī nākamajā ceturksnī.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Lejupielādēt kā pdf",
   "app.components.FormSync.downloadExcelTemplate": "Lejupielādēt Excel veidni",
+  "app.components.FormSync.downloadExcelTemplateTooltip3": "Excel veidnēs netiks iekļauti failu augšupielādes jautājumi un kartēšanas ievades jautājumi (Drop Pin, Draw Route, Draw Area, ESRI failu augšupielāde), jo pašlaik tie netiek atbalstīti masveida importēšanai.",
   "app.components.ProjectTemplatePreview.close": "Aizvērt",
   "app.components.ProjectTemplatePreview.createProject": "Izveidot projektu",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Izveidojiet projektu, pamatojoties uz veidni ''{templateTitle}''",
