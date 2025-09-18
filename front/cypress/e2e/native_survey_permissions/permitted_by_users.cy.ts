@@ -92,6 +92,14 @@ describe('Native survey permitted by: users', () => {
                     return updatePermission({
                       adminJwt,
                       permitted_by: 'users',
+                    }).then(() => {
+                      // Finally: go into the survey and save it
+                      cy.setAdminLoginCookie();
+                      cy.visit(
+                        `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`
+                      );
+                      cy.get('form').submit();
+                      cy.get('[data-testid="feedbackSuccessMessage"]');
                     });
                   });
               });
@@ -138,7 +146,36 @@ describe('Native survey permitted by: users', () => {
 
       // Click take survey button
       cy.get('.e2e-idea-button').first().find('button').click({ force: true });
-      cy.get('#e2e-authentication-modal').should('exist');
+
+      // Modal should show demographic question
+      cy.get('#e2e-authentication-modal').contains(fieldName);
+
+      // Fill in demographic question
+      const answer = randomString(10);
+      cy.get('#e2e-authentication-modal').find('input').first().type(answer);
+
+      // Click submit and 'continue'
+      cy.get('#e2e-signup-custom-fields-submit-btn').click();
+      cy.get('#e2e-success-continue-button').click();
+
+      // Confirm we're in the survey now
+      cy.location('pathname').should(
+        'eq',
+        `/en/projects/${projectSlug}/surveys/new`
+      );
+
+      // Answer question
+      cy.get('fieldset').first().find('input').first().check({ force: true });
+
+      // Intercept response
+      cy.intercept('POST', '/web_api/v1/ideas').as('submitSurvey');
+      cy.dataCy('e2e-submit-form').click();
+
+      cy.wait('@submitSurvey').then((interception) => {
+        expect(interception.response?.statusCode).to.eq(201);
+        const attributes = interception.response?.body.data.attributes;
+        expect(attributes.custom_field_values[`u_${fieldName}`]).to.eq(answer);
+      });
     });
 
     it('Ask demographic questions in survey', () => {
