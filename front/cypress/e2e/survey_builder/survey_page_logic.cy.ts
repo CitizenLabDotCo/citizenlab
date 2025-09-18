@@ -5,14 +5,6 @@ describe('Survey page logic', () => {
   let projectSlug: string | undefined;
   let phaseId: string | undefined;
 
-  before(() => {
-    createSurveyProject(cy).then((res: any) => {
-      projectId = res.projectId;
-      projectSlug = res.projectSlug;
-      phaseId = res.phaseId;
-    });
-  });
-
   after(() => {
     if (projectId) {
       cy.apiRemoveProject(projectId);
@@ -20,20 +12,28 @@ describe('Survey page logic', () => {
   });
 
   beforeEach(() => {
-    cy.setAdminLoginCookie();
-    cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
-    cy.dataCy('e2e-field-row').should('have.length', 3);
+    createSurveyProject(cy).then((res: any) => {
+      projectId = res.projectId;
+      projectSlug = res.projectSlug;
+      phaseId = res.phaseId;
 
-    // Make sure first page references "Ending"
-    cy.dataCy('e2e-field-row')
-      .first()
-      .find('[data-cy="e2e-field-rule-display"]')
-      .contains('Ending');
+      cy.setAdminLoginCookie();
+      cy.visit(
+        `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`
+      );
+      cy.dataCy('e2e-field-row').should('have.length', 3);
 
-    // Add a new page
-    cy.wait(1000);
-    cy.dataCy('e2e-page').click();
-    cy.dataCy('e2e-field-row').should('have.length', 4);
+      // Make sure first page references "Ending"
+      cy.dataCy('e2e-field-row')
+        .first()
+        .find('[data-cy="e2e-field-rule-display"]')
+        .contains('Ending');
+
+      // Add a new page
+      cy.wait(1000);
+      cy.dataCy('e2e-page').click();
+      cy.dataCy('e2e-field-row').should('have.length', 4);
+    });
   });
 
   it('correctly adds new page', () => {
