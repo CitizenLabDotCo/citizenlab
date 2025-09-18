@@ -3,22 +3,21 @@ import React, { useState } from 'react';
 import {
   Box,
   Button,
-  Dropdown,
   Icon,
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
 
-import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 import useLocalize from 'hooks/useLocalize';
 
 import { createHighlighterLink } from 'components/Highlighter';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import Link from 'utils/cl-router/Link';
 import { truncate } from 'utils/textUtils';
+
+import LinkToFolderProjectDropdown from './LinkToFolderProjectDropdown';
 
 interface Props {
   folderId: string;
@@ -29,9 +28,7 @@ export const fragmentId = 'folder';
 const LinkToFolderSettings = ({ folderId, projectId }: Props) => {
   const { data: projectFolder } = useProjectFolderById(folderId);
   const [isProjectListOpen, setIsProjectListOpen] = useState(false);
-  const { data: siblingProjects } = useAdminPublications({
-    childrenOfId: folderId,
-  });
+
   const localize = useLocalize();
 
   if (!projectFolder) return null;
@@ -66,41 +63,10 @@ const LinkToFolderSettings = ({ folderId, projectId }: Props) => {
           ml="4px"
           icon={isProjectListOpen ? 'chevron-up' : 'chevron-down'}
         />
-        <Dropdown
-          opened={isProjectListOpen}
-          content={
-            <Box
-              display="flex"
-              flexDirection="column"
-              gap="8px"
-              maxHeight="200px"
-              overflow="auto"
-            >
-              {siblingProjects?.pages[0].data.map((project) => (
-                <ButtonWithLink
-                  key={project.id}
-                  linkTo={`/admin/projects/${project.relationships.publication.data.id}`}
-                  openLinkInNewTab={true}
-                  buttonStyle="text"
-                  p="4px"
-                  justify="left"
-                >
-                  <Text
-                    fontSize="s"
-                    m="0px"
-                    color="coolGrey600"
-                    textAlign="left"
-                  >
-                    {localize(project.attributes.publication_title_multiloc)}
-                  </Text>
-                </ButtonWithLink>
-              ))}
-            </Box>
-          }
-          top="36px"
-          maxHeight="400px"
-          zIndex="10000"
-          width="300px"
+        <LinkToFolderProjectDropdown
+          folderId={folderId}
+          isProjectListOpen={isProjectListOpen}
+          setIsProjectListOpen={setIsProjectListOpen}
         />
       </Box>
     </Box>
