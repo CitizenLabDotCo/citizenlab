@@ -6,7 +6,7 @@ require 'tiktoken_ruby'
 module Analysis
   module LLM
     class AzureOpenAI < Base
-      MAX_RETRIES = 2 # 20 Temporarily to make debugging faster
+      MAX_RETRIES = 20
 
       def initialize(**params)
         super
