@@ -3,6 +3,7 @@ import { randomString, randomEmail } from '../../support/commands';
 
 describe('Native survey permitted by: users', () => {
   let customFieldId = '';
+  let customFieldKey = '';
   let projectId = '';
   let projectSlug = '';
   let phaseId = '';
@@ -43,6 +44,7 @@ describe('Native survey permitted by: users', () => {
     // Create custom field
     cy.apiCreateCustomField(fieldName, true, false).then((response) => {
       customFieldId = response.body.data.id;
+      customFieldKey = response.body.data.attributes.key;
 
       // Create project with active native survey phase
       cy.apiCreateProject({
@@ -211,10 +213,24 @@ describe('Native survey permitted by: users', () => {
     cy.dataCy('e2e-after-submission').should('exist');
   };
 
+  const confirmSavedToProfile = () => {
+    cy.intercept('GET', `/web_api/v1/users/me`).as('getMe');
+    cy.visit('/');
+    cy.wait('@getMe').then((interception) => {
+      expect(interception.response?.statusCode).to.equal(200);
+      expect(
+        interception.response?.body.data.attributes.custom_field_values[
+          customFieldKey
+        ]
+      ).to.be.a('string');
+    });
+  };
+
   describe('Collect all data', () => {
     describe('Ask demographic questions in registration flow', () => {
       it('works', () => {
         fieldsInRegFlow();
+        confirmSavedToProfile();
       });
     });
 
@@ -232,6 +248,7 @@ describe('Native survey permitted by: users', () => {
 
       it('works', () => {
         fieldsInSurvey();
+        confirmSavedToProfile();
       });
     });
   });
@@ -252,6 +269,7 @@ describe('Native survey permitted by: users', () => {
 
       it('works', () => {
         fieldsInRegFlow();
+        confirmSavedToProfile();
       });
     });
 
@@ -269,6 +287,7 @@ describe('Native survey permitted by: users', () => {
 
       it('works', () => {
         fieldsInSurvey();
+        confirmSavedToProfile();
       });
     });
   });
@@ -289,6 +308,7 @@ describe('Native survey permitted by: users', () => {
 
       it('works', () => {
         fieldsInRegFlow();
+        confirmSavedToProfile();
       });
     });
   });
