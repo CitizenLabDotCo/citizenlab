@@ -11,7 +11,7 @@ import { createHighlighterLink } from 'components/Highlighter';
 import Link from 'utils/cl-router/Link';
 import { truncate } from 'utils/textUtils';
 
-import LinkToFolderProjectDropdown from './LinkToFolderProjectDropdown';
+import LinkToFolderProjectsDropdown from './LinkToFolderProjectsDropdown';
 
 interface Props {
   folderId: string;
@@ -45,7 +45,7 @@ const LinkToFolderSettings = ({ folderId, projectId }: Props) => {
             </Text>
           </Box>
         </Link>
-        <LinkToFolderProjectDropdown folderId={folderId} />
+        <LinkToFolderProjectsDropdown folderId={folderId} />
       </Box>
     </Box>
   );

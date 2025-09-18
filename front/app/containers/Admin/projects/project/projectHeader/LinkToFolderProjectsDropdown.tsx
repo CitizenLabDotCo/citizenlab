@@ -12,7 +12,7 @@ type Props = {
   folderId: string;
 };
 
-const LinkToFolderProjectDropdown = ({ folderId }: Props) => {
+const LinkToFolderProjectsDropdown = ({ folderId }: Props) => {
   const localize = useLocalize();
   const [isProjectListOpen, setIsProjectListOpen] = useState(false);
 
@@ -68,4 +68,4 @@ const LinkToFolderProjectDropdown = ({ folderId }: Props) => {
   );
 };
 
-export default LinkToFolderProjectDropdown;
+export default LinkToFolderProjectsDropdown;
