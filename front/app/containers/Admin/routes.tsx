@@ -44,8 +44,14 @@ const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
 const ProjectDescriptionBuilderComponent = React.lazy(
   () => import('containers/ProjectDescriptionBuilder')
 );
-const FullscreenPreview = React.lazy(
+const ProjectFullscreenPreview = React.lazy(
   () => import('containers/ProjectDescriptionBuilder/FullscreenPreview')
+);
+const FolderDescriptionBuilderComponent = React.lazy(
+  () => import('containers/FolderDescriptionBuilder')
+);
+const FolderFullscreenPreview = React.lazy(
+  () => import('containers/FolderDescriptionBuilder/FullscreenPreview')
 );
 
 const ProjectImporter = React.lazy(
@@ -136,8 +142,10 @@ const IndexElement = () => {
 
 export enum descriptionBuilderRoutes {
   projectdescriptionBuilder = 'project-description-builder',
-  description = `project-description-builder/projects/:projectId/description`,
-  preview = `project-description-builder/projects/:projectId/preview`,
+  projectDescription = `${projectdescriptionBuilder}/projects/:projectId/description`,
+  projectPreview = `${projectdescriptionBuilder}/projects/:projectId/preview`,
+  folderDescription = `${projectdescriptionBuilder}/folders/:folderId/description`,
+  folderPreview = `${projectdescriptionBuilder}/folders/:folderId/preview`,
 }
 
 const createAdminRoutes = () => {
@@ -176,12 +184,20 @@ const createAdminRoutes = () => {
         ),
       },
       {
-        path: descriptionBuilderRoutes.description,
+        path: descriptionBuilderRoutes.projectDescription,
         element: <ProjectDescriptionBuilderComponent />,
       },
       {
-        path: descriptionBuilderRoutes.preview,
-        element: <FullscreenPreview />,
+        path: descriptionBuilderRoutes.projectPreview,
+        element: <ProjectFullscreenPreview />,
+      },
+      {
+        path: descriptionBuilderRoutes.folderDescription,
+        element: <FolderDescriptionBuilderComponent />,
+      },
+      {
+        path: descriptionBuilderRoutes.folderPreview,
+        element: <FolderFullscreenPreview />,
       },
       ...moduleConfiguration.routes.admin,
       {

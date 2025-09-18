@@ -23,7 +23,10 @@ export interface IProjectDescriptionBuilderLayout {
 }
 
 export interface IAddProjectDescriptionBuilderLayout {
-  projectId: string;
+  modelId: string;
+  modelType?: ProjectDescriptionModelType;
   craftjs_json?: CraftJson;
   enabled?: boolean;
 }
+
+export type ProjectDescriptionModelType = 'project' | 'folder';

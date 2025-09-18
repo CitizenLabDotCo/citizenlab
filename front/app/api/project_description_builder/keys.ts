@@ -5,11 +5,11 @@ const baseKey = { type: 'project_description_builder' };
 const projectDescriptionBuilderKeys = {
   all: () => [baseKey],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ projectId }: { projectId: string }) => [
+  item: ({ modelId }: { modelId: string }) => [
     {
       ...baseKey,
       operation: 'item',
-      parameters: { projectId },
+      parameters: { modelId },
     },
   ],
 } satisfies QueryKeys;

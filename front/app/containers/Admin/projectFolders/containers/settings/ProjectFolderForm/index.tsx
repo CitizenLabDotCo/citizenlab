@@ -49,6 +49,11 @@ import messages from '../../messages';
 import FolderCardImageTooltip from './FolderCardImageTooltip';
 import FolderHeaderImageTooltip from './FolderHeaderImageTooltip';
 import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
+// import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import Highlighter from 'components/Highlighter';
+import { fragmentId } from 'containers/Admin/projects/project/projectHeader/ProjectDescriptionPreview';
+import ProjectDescriptionBuilderToggle from 'components/ProjectDescriptionBuilder/ProjectDescriptionBuilderToggle';
+// import Error from 'components/UI/Error';
 
 type IProjectFolderSubmitState =
   | 'disabled'
@@ -512,6 +517,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     ? !folderCardImage.remote
     : false;
 
+  const showProjectDescriptionBuilder = true;
+
   return (
     <form onSubmit={saveForm}>
       <Section>
@@ -586,6 +593,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           </SectionField>
         )}
         <SectionField data-cy="e2e-project-folder-short-description">
+          {/* SHOULD probably change this to homepage desciption like on projects */}
           <SubSectionTitle>
             <FormattedMessage {...messages.folderDescriptions} />
           </SubSectionTitle>
@@ -605,15 +613,33 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               }
             />
           </Box>
-          <Box data-cy="e2e-project-folder-description">
-            <QuillMutilocWithLocaleSwitcher
-              id="description"
-              valueMultiloc={descriptionMultiloc}
-              onChange={getHandler(setDescriptionMultiloc)}
-              label={<FormattedMessage {...messages.descriptionInputLabel} />}
-              withCTAButton
+          {!showProjectDescriptionBuilder && (
+            <Box data-cy="e2e-project-folder-description">
+              <QuillMutilocWithLocaleSwitcher
+                id="description"
+                valueMultiloc={descriptionMultiloc}
+                onChange={getHandler(setDescriptionMultiloc)}
+                label={<FormattedMessage {...messages.descriptionInputLabel} />}
+                withCTAButton
+              />
+            </Box>
+          )}
+          <Highlighter fragmentId={fragmentId}>
+            <ProjectDescriptionBuilderToggle
+              valueMultiloc={{ en: 'hello' }} //{formValues.description_multiloc}
+              onChange={() => {}} // {handleDescriptionOnChange}
+              modelType="folder"
+              label="content builder toggle" // {formatMessage(messages.descriptionLabel)}
+              labelTooltipText="tooltip" // {formatMessage(messages.descriptionTooltip)}
             />
-          </Box>
+          </Highlighter>
+
+          {/*<Error*/}
+          {/*  fieldName="description_multiloc"*/}
+          {/*  // TODO: Fix this the next time the file is edited.*/}
+          {/*  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition*/}
+          {/*  apiErrors={apiError?.description_multiloc}*/}
+          {/*/>*/}
         </SectionField>
 
         <SectionField>

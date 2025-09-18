@@ -22,7 +22,7 @@ jest.mock('api/projects/useProjectById', () => {
 describe('ProjectDescriptionBuilderEditModePreview', () => {
   it('renders iframe with the correct src', () => {
     const { container } = render(
-      <ProjectDescriptionBuilderEditModePreview projectId="id" />
+      <ProjectDescriptionBuilderEditModePreview modelId="id" />
     );
     expect(container.querySelector('iframe')).toHaveAttribute(
       'src',

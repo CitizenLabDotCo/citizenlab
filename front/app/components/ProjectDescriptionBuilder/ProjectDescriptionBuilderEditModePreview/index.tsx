@@ -5,22 +5,24 @@ import { SupportedLocale } from 'typings';
 import useLocale from 'hooks/useLocale';
 
 import EditModePreview from 'components/admin/ContentBuilder/EditModePreview';
+import { ProjectDescriptionModelType } from 'api/project_description_builder/types';
 
 type ProjectDescriptionBuilderPreviewProps = {
-  projectId: string;
+  modelId: string;
+  modelType?: ProjectDescriptionModelType;
   selectedLocale?: SupportedLocale | null;
 };
 
 const ProjectDescriptionBuilderEditModePreview = React.forwardRef<
   HTMLIFrameElement,
   ProjectDescriptionBuilderPreviewProps
->(({ projectId, selectedLocale }, ref) => {
+>(({ modelId, modelType = 'project', selectedLocale }, ref) => {
   const platformLocale = useLocale();
   const locale = selectedLocale || platformLocale;
 
   return (
     <EditModePreview
-      iframeSrc={`/${locale}/admin/project-description-builder/projects/${projectId}/preview?selected_locale=${locale}`}
+      iframeSrc={`/${locale}/admin/project-description-builder/${modelType}s/${modelId}/preview?selected_locale=${locale}`}
       ref={ref}
     />
   );

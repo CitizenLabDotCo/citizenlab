@@ -7,7 +7,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { SupportedLocale } from 'typings';
 
 import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
-import useProjectById from 'api/projects/useProjectById';
+// import useProjectById from 'api/projects/useProjectById';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -27,13 +27,13 @@ import ProjectDescriptionBuilderToolbox from '../../components/ProjectDescriptio
 import ProjectDescriptionBuilderTopBar from '../../components/ProjectDescriptionBuilder/ProjectDescriptionBuilderTopBar';
 import ContentBuilderSettings from '../../components/ProjectDescriptionBuilder/Settings';
 
-const ProjectDescriptionBuilderPage = () => {
+const FolderDescriptionBuilderPage = () => {
   const locale = useLocale();
   const [previewEnabled, setPreviewEnabled] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState(locale);
   const [draftData, setDraftData] = useState<Record<string, SerializedNodes>>();
   const { pathname } = useLocation();
-  const { projectId } = useParams() as { projectId: string };
+  const { folderId } = useParams() as { folderId: string };
 
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
@@ -42,8 +42,8 @@ const ProjectDescriptionBuilderPage = () => {
   });
   const locales = useAppConfigurationLocales();
   const { data: projectDescriptionBuilderLayout } =
-    useProjectDescriptionBuilderLayout(projectId);
-  const { data: project } = useProjectById(projectId);
+    useProjectDescriptionBuilderLayout(folderId, 'folder');
+  // const { data: project } = useProjectById(projectId);
 
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});
@@ -115,9 +115,10 @@ const ProjectDescriptionBuilderPage = () => {
     setSelectedLocale(locale);
   };
 
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (!project || (project && !project.data.attributes.uses_content_builder)) {
+  if (
+    !projectDescriptionBuilderLayout ||
+    !projectDescriptionBuilderLayout.data.attributes.enabled
+  ) {
     return null;
   }
 
@@ -157,7 +158,8 @@ const ProjectDescriptionBuilderPage = () => {
       </Editor>
       <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>
         <ProjectDescriptionBuilderEditModePreview
-          modelId={projectId}
+          modelId={folderId}
+          modelType="folder"
           ref={iframeRef}
           selectedLocale={selectedLocale}
         />
@@ -166,4 +168,4 @@ const ProjectDescriptionBuilderPage = () => {
   );
 };
 
-export default ProjectDescriptionBuilderPage;
+export default FolderDescriptionBuilderPage;

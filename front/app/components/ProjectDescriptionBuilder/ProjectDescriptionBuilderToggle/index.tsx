@@ -30,6 +30,7 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 type ProjectDescriptionBuilderToggleProps = {
   valueMultiloc: Multiloc | undefined | null;
   onChange: (description_multiloc: Multiloc, _locale: SupportedLocale) => void;
+  modelType?: 'project' | 'folder';
   label: string;
   labelTooltipText: string;
 } & WithRouterProps &
@@ -53,17 +54,24 @@ const ProjectDescriptionBuilderToggle = ({
   intl: { formatMessage },
   valueMultiloc,
   onChange,
+  modelType = 'project',
   label,
   labelTooltipText,
 }: ProjectDescriptionBuilderToggleProps) => {
   const featureEnabled = useFeatureFlag({
     name: 'project_description_builder',
   });
+
+  const modelId =
+    modelType === 'folder' ? params.projectFolderId : params.projectId;
   const { data: projectDescriptionBuilderLayout } =
-    useProjectDescriptionBuilderLayout(params.projectId);
+    useProjectDescriptionBuilderLayout(modelId, modelType);
 
   const route =
-    `/admin/project-description-builder/projects/${params.projectId}/description` as RouteType;
+    modelType === 'folder'
+      ? (`/admin/project-description-builder/folders/${modelId}/description` as RouteType)
+      : (`/admin/project-description-builder/projects/${modelId}/description` as RouteType);
+
   const [
     projectDescriptionBuilderLinkVisible,
     setProjectDescriptionBuilderLinkVisible,
@@ -92,7 +100,8 @@ const ProjectDescriptionBuilderToggle = ({
 
   const toggleLayoutEnabledStatus = async (enabled: boolean) => {
     await addProjectDescriptionBuilderLayout({
-      projectId: params.projectId,
+      modelId,
+      modelType,
       enabled,
     });
   };

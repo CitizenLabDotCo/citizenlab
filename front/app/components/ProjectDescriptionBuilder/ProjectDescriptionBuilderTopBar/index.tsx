@@ -67,7 +67,7 @@ const ProjectDescriptionBuilderTopBar = ({
 
   const handleSave = async () => {
     addProjectDescriptionBuilderLayout({
-      projectId,
+      modelId: projectId,
       craftjs_json: query.getSerializedNodes(),
     });
   };
