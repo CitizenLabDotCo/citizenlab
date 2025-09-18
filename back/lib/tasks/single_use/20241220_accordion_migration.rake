@@ -7,13 +7,13 @@ namespace :single_use do
     dry_run = ENV['DRY_RUN']&.downcase == 'true'
 
     if dry_run
-      puts '🔍 DRY RUN MODE: Analyzing accordion migration without making any changes...'
-      puts '⚠️  NO DATABASE WRITES WILL BE PERFORMED'
+      Rails.logger.info '🔍 DRY RUN MODE: Analyzing accordion migration without making any changes...'
+      Rails.logger.info '⚠️  NO DATABASE WRITES WILL BE PERFORMED'
     else
-      puts '🚀 MIGRATION MODE: Starting accordion migration to canvas mode...'
-      puts '⚠️  THIS WILL MODIFY THE DATABASE'
+      Rails.logger.info '🚀 MIGRATION MODE: Starting accordion migration to canvas mode...'
+      Rails.logger.info '⚠️  THIS WILL MODIFY THE DATABASE'
     end
-    puts '=' * 80
+    Rails.logger.info '=' * 80
 
     total_accordions = 0
     text_based_accordions = 0
@@ -26,7 +26,7 @@ namespace :single_use do
     # Process all tenants
     tenant_reports = []
     Tenant.all.each do |tenant|
-      puts "\n🏢 Processing tenant: #{tenant.host}"
+      Rails.logger.info "\n🏢 Processing tenant: #{tenant.host}"
       tenant_stats = process_tenant_accordions(tenant, dry_run)
 
       # Store detailed tenant report
@@ -38,20 +38,20 @@ namespace :single_use do
       # Log per-tenant summary
       if dry_run
         if tenant_stats[:accordions_to_migrate] > 0
-          puts "   📊 WOULD MIGRATE: #{tenant_stats[:accordions_to_migrate]} accordions"
+          Rails.logger.info "   📊 WOULD MIGRATE: #{tenant_stats[:accordions_to_migrate]} accordions"
         else
-          puts '   ✅ No accordions need migration'
+          Rails.logger.info '   ✅ No accordions need migration'
         end
       else
         if tenant_stats[:migrated_count] > 0
-          puts "   ✅ MIGRATED: #{tenant_stats[:migrated_count]} accordions"
+          Rails.logger.info "   ✅ MIGRATED: #{tenant_stats[:migrated_count]} accordions"
         elsif tenant_stats[:total_accordions] > 0
-          puts '   ℹ️  No accordions needed migration (already processed)'
+          Rails.logger.info '   ℹ️  No accordions needed migration (already processed)'
         else
-          puts '   📭 No accordions found'
+          Rails.logger.info '   📭 No accordions found'
         end
         if tenant_stats[:errors] > 0
-          puts "   ⚠️  ERRORS: #{tenant_stats[:errors]} accordions failed"
+          Rails.logger.info "   ⚠️  ERRORS: #{tenant_stats[:errors]} accordions failed"
         end
       end
 
@@ -64,49 +64,49 @@ namespace :single_use do
       migrated_count += tenant_stats[:migrated_count] unless dry_run
     end
 
-    puts "\n#{'=' * 80}"
+    Rails.logger.info "\n#{'=' * 80}"
     if dry_run
-      puts '📊 DRY RUN SUMMARY (All Tenants):'
+      Rails.logger.info '📊 DRY RUN SUMMARY (All Tenants):'
     else
-      puts '📊 MIGRATION SUMMARY (All Tenants):'
+      Rails.logger.info '📊 MIGRATION SUMMARY (All Tenants):'
     end
-    puts "   Total accordions found: #{total_accordions}"
-    puts "   Text-based accordions: #{text_based_accordions}"
-    puts "   Already canvas accordions: #{already_canvas_accordions}"
-    puts "   Accordions with content: #{accordions_with_content}"
-    puts "   Layouts with accordions: #{layouts_with_accordions}"
+    Rails.logger.info "   Total accordions found: #{total_accordions}"
+    Rails.logger.info "   Text-based accordions: #{text_based_accordions}"
+    Rails.logger.info "   Already canvas accordions: #{already_canvas_accordions}"
+    Rails.logger.info "   Accordions with content: #{accordions_with_content}"
+    Rails.logger.info "   Layouts with accordions: #{layouts_with_accordions}"
 
     if dry_run
-      puts "   Accordions that WOULD BE migrated: #{accordions_to_migrate}"
+      Rails.logger.info "   Accordions that WOULD BE migrated: #{accordions_to_migrate}"
 
       # Show detailed per-tenant dry run analysis
-      puts "\n📋 DETAILED DRY RUN ANALYSIS:"
+      Rails.logger.info "\n📋 DETAILED DRY RUN ANALYSIS:"
       tenant_reports.each do |report|
         stats = report[:stats]
         if stats[:accordions_to_migrate] > 0
-          puts "   🔄 #{report[:host]}: #{stats[:accordions_to_migrate]} accordions to migrate"
+          Rails.logger.info "   🔄 #{report[:host]}: #{stats[:accordions_to_migrate]} accordions to migrate"
         end
       end
 
-      puts "\n💡 To run the actual migration:"
-      puts '   docker compose run web bundle exec rake single_use:accordion_migration'
+      Rails.logger.info "\n💡 To run the actual migration:"
+      Rails.logger.info '   docker compose run web bundle exec rake single_use:accordion_migration'
     else
-      puts "   Accordions migrated: #{migrated_count}"
+      Rails.logger.info "   Accordions migrated: #{migrated_count}"
 
       # Show detailed per-tenant migration results
-      puts "\n📋 DETAILED MIGRATION RESULTS:"
+      Rails.logger.info "\n📋 DETAILED MIGRATION RESULTS:"
       tenant_reports.each do |report|
         stats = report[:stats]
         if stats[:migrated_count] > 0
-          puts "   ✅ #{report[:host]}: #{stats[:migrated_count]} accordions migrated"
+          Rails.logger.info "   ✅ #{report[:host]}: #{stats[:migrated_count]} accordions migrated"
         elsif stats[:errors] > 0
-          puts "   ❌ #{report[:host]}: #{stats[:errors]} errors occurred"
+          Rails.logger.info "   ❌ #{report[:host]}: #{stats[:errors]} errors occurred"
         end
       end
 
-      puts "\n✅ Migration completed successfully!"
+      Rails.logger.info "\n✅ Migration completed successfully!"
     end
-    puts '=' * 80
+    Rails.logger.info '=' * 80
   end
 
   private
@@ -140,9 +140,9 @@ namespace :single_use do
           stats[:migrated_count] += layout_stats[:migrated_count] unless dry_run
           stats[:errors] += layout_stats[:errors]
         rescue StandardError => e
-          puts "  ❌ Error processing layout #{layout.code || layout.id}: #{e.message}"
+          Rails.logger.info "  ❌ Error processing layout #{layout.code || layout.id}: #{e.message}"
           stats[:errors] += 1
-          puts "     Stack trace: #{e.backtrace.first(3).join(' <- ')}" if dry_run
+          Rails.logger.info "     Stack trace: #{e.backtrace.first(3).join(' <- ')}" if dry_run
         end
       end
     end
@@ -201,9 +201,9 @@ namespace :single_use do
     layout_stats[:already_canvas_accordions] += 1
     return unless dry_run
 
-    puts "  📋 Layout: #{layout.code || layout.id}"
-    puts "     └─ Accordion Node: #{node_id}"
-    puts '        Already in canvas mode'
+    Rails.logger.info "  📋 Layout: #{layout.code || layout.id}"
+    Rails.logger.info "     └─ Accordion Node: #{node_id}"
+    Rails.logger.info '        Already in canvas mode'
   end
 
   def handle_migratable_accordion(node_id, _node, text_content, layout, dry_run, layout_stats)
@@ -211,34 +211,34 @@ namespace :single_use do
     layout_stats[:accordions_to_migrate] += 1
     return unless dry_run
 
-    puts "  📋 Layout: #{layout.code || layout.id}"
-    puts "     └─ Accordion Node: #{node_id}"
-    puts '        Has text content - WOULD BE MIGRATED'
-    puts "           Text locales: #{text_content.keys.join(', ')}"
-    puts "           Sample text: #{text_content.values.first&.truncate(100)}"
-    puts '           Would create TextMultiloc child component'
-    puts '           Would create Container wrapper'
-    puts '           Would update accordion to use linkedNodes'
-    puts '           Would remove text property from accordion'
+    Rails.logger.info "  📋 Layout: #{layout.code || layout.id}"
+    Rails.logger.info "     └─ Accordion Node: #{node_id}"
+    Rails.logger.info '        Has text content - WOULD BE MIGRATED'
+    Rails.logger.info "           Text locales: #{text_content.keys.join(', ')}"
+    Rails.logger.info "           Sample text: #{text_content.values.first&.truncate(100)}"
+    Rails.logger.info '           Would create TextMultiloc child component'
+    Rails.logger.info '           Would create Container wrapper'
+    Rails.logger.info '           Would update accordion to use linkedNodes'
+    Rails.logger.info '           Would remove text property from accordion'
   end
 
   def handle_empty_accordion(node_id, layout)
-    puts "  📋 Layout: #{layout.code || layout.id}"
-    puts "     └─ Accordion Node: #{node_id}"
-    puts '        Has empty text property - WOULD BE CLEANED UP'
-    puts '         Would remove empty text property'
+    Rails.logger.info "  📋 Layout: #{layout.code || layout.id}"
+    Rails.logger.info "     └─ Accordion Node: #{node_id}"
+    Rails.logger.info '        Has empty text property - WOULD BE CLEANED UP'
+    Rails.logger.info '         Would remove empty text property'
   end
 
   def execute_migrations(nodes_to_migrate, layout, _dry_run, layout_stats)
     return if nodes_to_migrate.empty?
 
-    puts "  Processing layout: #{layout.code || layout.id}"
+    Rails.logger.info "  Processing layout: #{layout.code || layout.id}"
 
     nodes_to_migrate.each do |migration_data|
       migrate_accordion_node(layout, migration_data)
       layout_stats[:migrated_count] += 1
     rescue StandardError => e
-      puts "    ❌ Error migrating accordion #{migration_data[:node_id]}: #{e.message}"
+      Rails.logger.info "    ❌ Error migrating accordion #{migration_data[:node_id]}: #{e.message}"
       layout_stats[:errors] += 1
     end
 
@@ -247,9 +247,9 @@ namespace :single_use do
 
   def save_migrated_layout(layout, layout_stats)
     layout.save!
-    puts "    ✅ Migrated #{layout_stats[:migrated_count]} accordion(s)"
+    Rails.logger.info "    ✅ Migrated #{layout_stats[:migrated_count]} accordion(s)"
   rescue StandardError => e
-    puts "    ❌ Error saving layout: #{e.message}"
+    Rails.logger.info "    ❌ Error saving layout: #{e.message}"
     layout_stats[:errors] += layout_stats[:migrated_count]
     layout_stats[:migrated_count] = 0
   end
@@ -320,6 +320,6 @@ namespace :single_use do
       node['props'] = node['props'].except('text')
     end
 
-    puts "    Migrated accordion #{node_id} with text content"
+    Rails.logger.info "    Migrated accordion #{node_id} with text content"
   end
 end
