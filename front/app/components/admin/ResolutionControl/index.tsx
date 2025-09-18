@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 
 import styled from 'styled-components';
 
@@ -18,38 +18,33 @@ interface Props {
   className?: string;
 }
 
-export default class ResolutionControl extends PureComponent<Props> {
-  handleOnResolutionChange = (resolution: IResolution) => {
-    this.props.onChange(resolution);
-  };
+const ResolutionControl = ({ value, onChange, className }: Props) => {
+  const resOptions = [
+    {
+      name: 'day',
+      label: <FormattedMessage {...messages.resolutionday} />,
+    },
+    {
+      name: 'week',
+      label: <FormattedMessage {...messages.resolutionweek} />,
+    },
+    {
+      name: 'month',
+      label: <FormattedMessage {...messages.resolutionmonth} />,
+    },
+  ];
 
-  render() {
-    const { value, className } = this.props;
-    const resOptions = [
-      {
-        name: 'day',
-        label: <FormattedMessage {...messages.resolutionday} />,
-      },
-      {
-        name: 'week',
-        label: <FormattedMessage {...messages.resolutionweek} />,
-      },
-      {
-        name: 'month',
-        label: <FormattedMessage {...messages.resolutionmonth} />,
-      },
-    ];
+  return (
+    <Container className={className}>
+      <Tabs
+        items={resOptions}
+        selectedValue={
+          resOptions.find((item) => item.name === value)?.name as string
+        }
+        onClick={onChange}
+      />
+    </Container>
+  );
+};
 
-    return (
-      <Container className={className}>
-        <Tabs
-          items={resOptions}
-          selectedValue={
-            resOptions.find((item) => item.name === value)?.name as string
-          }
-          onClick={this.handleOnResolutionChange}
-        />
-      </Container>
-    );
-  }
-}
+export default ResolutionControl;
