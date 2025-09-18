@@ -1,12 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import {
-  Box,
-  Button,
-  Icon,
-  Text,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
 
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
@@ -27,7 +21,6 @@ interface Props {
 export const fragmentId = 'folder';
 const LinkToFolderSettings = ({ folderId, projectId }: Props) => {
   const { data: projectFolder } = useProjectFolderById(folderId);
-  const [isProjectListOpen, setIsProjectListOpen] = useState(false);
 
   const localize = useLocalize();
 
@@ -52,22 +45,7 @@ const LinkToFolderSettings = ({ folderId, projectId }: Props) => {
             </Text>
           </Box>
         </Link>
-        <Button
-          onClick={() => {
-            setIsProjectListOpen(!isProjectListOpen);
-          }}
-          data-cy="e2e-folder-preview-button"
-          buttonStyle="text"
-          iconSize="20px"
-          p="0px"
-          ml="4px"
-          icon={isProjectListOpen ? 'chevron-up' : 'chevron-down'}
-        />
-        <LinkToFolderProjectDropdown
-          folderId={folderId}
-          isProjectListOpen={isProjectListOpen}
-          setIsProjectListOpen={setIsProjectListOpen}
-        />
+        <LinkToFolderProjectDropdown folderId={folderId} />
       </Box>
     </Box>
   );
