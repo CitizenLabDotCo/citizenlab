@@ -38,6 +38,7 @@ module EmailCampaigns
     include Trackable
     include LifecycleStageRestrictable
     include ContentConfigurable
+    include Disableable # This campaign is not actually disableable, but this concern ensures that we are able to see it in the editable campaigns list in the admin panel
     allow_lifecycle_stages except: ['churned']
 
     filter :check_send_invite_email_toggle
@@ -66,7 +67,7 @@ module EmailCampaigns
           inviter_last_name: activity.item.inviter&.last_name,
           invitee_first_name: activity.item.invitee.first_name,
           invitee_last_name: activity.item.invitee.last_name,
-          invite_text: activity.item.invite_text,
+          invite_text: format_invite_text(activity.item),
           activate_invite_url: Frontend::UrlService.new.invite_url(activity.item.token, locale: Locale.new(activity.item.invitee.locale))
         }
       }]
@@ -86,6 +87,35 @@ module EmailCampaigns
 
     def self.recipient_segment_multiloc_key
       'email_campaigns.admin_labels.recipient_segment.user_who_was_invited'
+    end
+
+    def self.trigger_multiloc_key
+      'email_campaigns.admin_labels.trigger.user_is_invited_to_platform'
+    end
+
+    def can_be_disabled?
+      false
+    end
+
+    private
+
+    def format_invite_text(invite)
+      return unless invite.invite_text
+
+      html = TextImageService.new.render_data_images(invite.invite_text, field: :invite_text, imageable: invite)
+      fix_image_widths(html)
+    end
+
+    # NOTE: Copied from EmailCampaigns::EditableWithPreview
+    def fix_image_widths(html)
+      doc = Nokogiri::HTML.fragment(html)
+      doc.css('img').each do |img|
+        # Set the width to 100% if it's not set.
+        # Otherwise, the image will be displayed at its original size.
+        # This can mess up the layout if the original image is e.g. 4000px wide.
+        img['width'] = '100%' if img['width'].blank?
+      end
+      doc.to_s
     end
   end
 end

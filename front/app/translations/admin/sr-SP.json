@@ -73,7 +73,6 @@
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Thank you for completing the survey! You're welcome to take it again next quarter.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Download as pdf",
   "app.components.FormSync.downloadExcelTemplate": "Download an Excel template",
-  "app.components.FormSync.downloadExcelTemplateTooltip2": "Excel templates will not include Ranking questions, Matrix questions, File upload questions and any mapping input questions (Drop Pin, Draw Route, Draw Area, ESRI file upload) as these are not supported for bulk importing at this time.",
   "app.components.ProjectTemplatePreview.close": "Близу",
   "app.components.ProjectTemplatePreview.createProject": "Креирајте пројекат",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Create a project based on the template ''{templateTitle}''",
