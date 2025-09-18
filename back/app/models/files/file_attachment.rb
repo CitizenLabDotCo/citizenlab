@@ -29,6 +29,7 @@ module Files
       Event
       Idea
       StaticPage
+      Analysis::Analysis
     ].freeze
 
     belongs_to :file, class_name: 'Files::File', inverse_of: :attachments
@@ -67,14 +68,14 @@ module Files
 
     # Prevent files from being attached to resources in other projects.
     def validate_file_belongs_to_project
-      return unless attachable_type.in?(%w[Project Phase Event Idea])
+      return unless attachable_type.in?(%w[Project Phase Event Idea Analysis::Analysis])
       return unless file.present? && attachable.present?
 
       # Using `files_projects` instead of `projects` because `projects` does not include
       # projects whose corresponding `files_project` records have not yet been saved.
       project_ids = file.files_projects.map(&:project_id)
 
-      if project_ids.exclude?(attachable.project_id)
+      if project_ids.exclude?(attachable.source_project.id)
         errors.add(:file, :does_not_belong_to_project, message: 'does not belong to the project')
       end
     end
