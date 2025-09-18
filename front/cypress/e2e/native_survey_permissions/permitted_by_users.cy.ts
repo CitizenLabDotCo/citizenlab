@@ -1,11 +1,12 @@
 import moment = require('moment');
 import { randomString, randomEmail } from '../../support/commands';
 
-describe('Native survey permission: users', () => {
+describe('Native survey permitted by: users', () => {
   let customFieldId = '';
   let projectId = '';
   let projectSlug = '';
   let phaseId = '';
+  let userId: string | undefined;
 
   const fieldName = randomString(10);
 
@@ -83,7 +84,7 @@ describe('Native survey permission: users', () => {
                     url: `web_api/v1/phases/${phaseId}/permissions/posting_idea/permissions_custom_fields`,
                     body: {
                       custom_field_id: customFieldId,
-                      required: false,
+                      required: true,
                     },
                   })
                   .then(() => {
@@ -100,15 +101,29 @@ describe('Native survey permission: users', () => {
     });
   });
 
+  after(() => {
+    cy.apiRemoveProject(projectId);
+    cy.apiRemoveCustomField(customFieldId);
+
+    if (userId) {
+      cy.apiRemoveUser(userId);
+    }
+  });
+
   const createUser = () => {
+    if (userId) {
+      cy.apiRemoveUser(userId);
+    }
+
     const userFirstName = randomString(10);
     const userLastName = randomString(10);
     const userPassword = randomString(10);
     const userEmail = randomEmail();
 
     cy.apiSignup(userFirstName, userLastName, userEmail, userPassword).then(
-      () => {
+      (response) => {
         cy.setLoginCookie(userEmail, userPassword);
+        userId = response.body.data.id;
       }
     );
   };
