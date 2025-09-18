@@ -169,7 +169,6 @@ const Invitations = () => {
         return; // Exit early, don't continue with validation checks
       }
 
-      // Original logic for initial submission (counting seats)
       const hasCorrectSelection = isString(selectedFileBase64);
 
       if (hasCorrectSelection) {
@@ -215,8 +214,6 @@ const Invitations = () => {
       bulkInviteXLSX,
       bulkInviteCountNewSeatsXLSX,
       setImportId,
-      fileInputElement,
-      setSelectedFileBase64,
       setCreateInviteImportId,
       savedInviteOptions,
       setSavedInviteOptions,
@@ -245,7 +242,6 @@ const Invitations = () => {
         return; // Exit early, don't continue with validation checks
       }
 
-      // Original logic for initial submission (counting seats)
       const hasCorrectSelection = isString(selectedEmails);
 
       if (hasCorrectSelection) {
@@ -291,8 +287,6 @@ const Invitations = () => {
       bulkInviteEmails,
       bulkInviteCountNewSeatsEmails,
       setImportId,
-      fileInputElement,
-      setSelectedEmails,
       setCreateInviteImportId,
       savedEmailOptions,
       setSavedEmailOptions,
@@ -328,7 +322,6 @@ const Invitations = () => {
       selectedView,
       onSubmitTemplateTab,
       onSubmitManualTab,
-      setCreateInviteImportId,
     ]
   );
 
@@ -411,8 +404,6 @@ const Invitations = () => {
       setProcessed(true);
       setSelectedFileBase64(null);
       setSelectedEmails(null);
-      // setSavedInviteOptions(null);
-      // setSavedEmailOptions(null);
     }
 
     // Reset the query to prevent issues if we navigate away/back
