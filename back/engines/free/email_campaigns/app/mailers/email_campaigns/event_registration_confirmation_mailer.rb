@@ -78,14 +78,12 @@ module EmailCampaigns
     end
 
     def event_location
-      location = event_details&.address_1&.to_s
-
+      location = event_details&.address_1
       address_details = localize_for_recipient(event_details&.address_2_multiloc)
-      if address_details.present?
-        location += location.present? ? "\n(#{address_details})" : address_details
-      end
+      return address_details if !location
+      return location if !address_details
 
-      location.presence
+      "#{location}\n(#{address_details})"
     end
 
     def project_title

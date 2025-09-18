@@ -73,7 +73,7 @@
     "boring-avatars": "1.7.0",
     "canvg": "4.0.3",
     "clipboard-polyfill": "4.1.0",
-    "compression": "1.7.4",
+    "compression": "1.8.1",
     "cross-env": "7.0.3",
     "date-fns": "2.30.0",
     "dnd-core": "16.0.1",
