@@ -7,7 +7,7 @@ RSpec.describe Analysis::LLM::AzureOpenAI do
 
   let(:subclass) do
     Class.new(described_class) do
-      def gpt_model
+      def self.gpt_model
         'gpt-vocal'
       end
     end

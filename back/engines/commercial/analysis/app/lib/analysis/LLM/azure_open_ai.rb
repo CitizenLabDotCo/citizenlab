@@ -6,14 +6,14 @@ require 'tiktoken_ruby'
 module Analysis
   module LLM
     class AzureOpenAI < Base
-      MAX_RETRIES = 20
+      MAX_RETRIES = 2 # 20 Temporarily to make debugging faster
 
       def initialize(**params)
         super
 
         @client = OpenAI::Client.new(
           access_token: ENV.fetch('AZURE_OPENAI_API_KEY'),
-          uri_base: [ENV.fetch('AZURE_OPENAI_URI'), '/openai/deployments/', azure_deployment_name].join,
+          uri_base: [ENV.fetch('AZURE_OPENAI_URI'), '/openai/deployments/', self.class.azure_deployment_name].join,
           api_type: :azure,
           api_version: '2025-01-01-preview',
           request_timeout: 900,
@@ -35,8 +35,8 @@ module Analysis
         chat_with_retry(**params_with_stream.deep_merge(params))
       end
 
-      def gpt_model
-        raise NotImplementedError
+      def self.gpt_model
+        'gpt-4' # raise NotImplementedError Temporarily because sometimes AzureOpenAI is used directly
       end
 
       # On Azure, each model needs to be deployed separately and given its own
@@ -44,19 +44,19 @@ module Analysis
       # per model in our configuration, we derive the deployment name from the
       # model name, stripping out any characters that are not allowed in Azure
       # deployment names.
-      def azure_deployment_name
+      def self.azure_deployment_name
         gpt_model.gsub(/[^a-zA-Z0-9-]\./, '')
       end
 
       def self.token_count(str)
-        enc = Tiktoken.encoding_for_model('gpt-4') # same as gpt-3
+        enc = Tiktoken.encoding_for_model(gpt_model)
         enc.encode(str).size
       end
 
       def default_prompt_params(prompt)
         {
           parameters: {
-            model: gpt_model,
+            model: self.class.gpt_model,
             messages: [{ role: 'user', content: prompt }],
             temperature: 0.2,
             top_p: 0.5,
