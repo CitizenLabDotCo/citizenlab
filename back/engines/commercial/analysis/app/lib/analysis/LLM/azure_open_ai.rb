@@ -39,6 +39,10 @@ module Analysis
         'gpt-4' # raise NotImplementedError Temporarily because sometimes AzureOpenAI is used directly
       end
 
+      def self.headroom_ratio
+        0.85
+      end
+
       # On Azure, each model needs to be deployed separately and given its own
       # name. To avoid having to introduce an extra deployment_name parameter
       # per model in our configuration, we derive the deployment name from the
@@ -48,8 +52,8 @@ module Analysis
         gpt_model.gsub(/[^a-zA-Z0-9-]\./, '')
       end
 
-      def self.token_count(str)
-        enc = Tiktoken.encoding_for_model(gpt_model)
+      def token_count(str)
+        enc = Tiktoken.encoding_for_model(self.class.gpt_model)
         enc.encode(str).size
       end
 
