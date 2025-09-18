@@ -7,7 +7,7 @@ module Analysis
     SUMMARIZATION_METHOD = 'one_pass_llm'
 
     # The number of tokens we reserve for the LLM response containing the summary
-    TOKENS_FOR_RESPONSE = 3000 # 1926
+    TOKENS_FOR_RESPONSE = 3000
 
     def generate_plan
       plan = nil
