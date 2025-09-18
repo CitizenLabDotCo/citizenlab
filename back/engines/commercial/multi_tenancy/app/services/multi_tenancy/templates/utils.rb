@@ -206,7 +206,7 @@ module MultiTenancy
           return [serialized_models, translate_logs] if Set.new(locales_to) == Set.new(template_locales(serialized_models))
 
           # Change unsupported user locales to first target tenant locale.
-          # Only keep the bio if the locale is supported
+          # Only keep the bio if the locale is supported by the target - to reduce translation costs.
           unless Set.new(locales_to) == Set.new(user_locales(serialized_models))
             serialized_models['models']['user']&.each do |attributes|
               unless locales_to.include? attributes['locale']
@@ -218,7 +218,7 @@ module MultiTenancy
 
           # Translate any missing locales from the first locale found.
           serialized_models['models'].each do |model_name, model|
-            next if model_name == 'user' # Users have been handled above and do not translations
+            next if model_name == 'user' # Users have been handled above and do not have translations
 
             model.each do |attributes|
               model_has_been_logged = false
