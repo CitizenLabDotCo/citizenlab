@@ -580,8 +580,6 @@ export const calculateDropTargetIndex = (
 
   if (!destinationGroupId) return null;
 
-  if (!destinationGroupId) return null;
-
   if (destinationGroupId === 'droppable') {
     return handlePageReordering(
       destinationIndex,
@@ -603,7 +601,7 @@ export const handleBuiltInFieldEnablement = (
   formCustomFields: IFlatCustomField[],
   result: DragAndDropResult,
   nestedGroupData: NestedGroupingStructure[],
-  setValue: (name: string, value: any) => void,
+  setValue: (name: string, value: IFlatCustomField) => void,
   move: (fromIndex: number, toIndex: number) => void
 ): {
   success: boolean;
