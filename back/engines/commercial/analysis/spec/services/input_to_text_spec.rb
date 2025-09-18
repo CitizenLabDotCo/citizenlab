@@ -104,6 +104,22 @@ describe Analysis::InputToText do
         'Type your answer' => 'Because none of the above'
       })
     end
+
+    it 'works with a sentiment linear scale field that has no follow-up field' do
+      custom_fields = [
+        build(:custom_field_sentiment_linear_scale, title_multiloc: { en: 'How do you feel about our service?' })
+      ]
+      service = described_class.new(custom_fields)
+      input = build(
+        :idea,
+        custom_field_values: {
+          custom_fields[0].key => 3
+        }
+      )
+      expect(service.execute(input)).to eq({
+        'How do you feel about our service?' => 3
+      })
+    end
   end
 
   describe '#formatted' do
