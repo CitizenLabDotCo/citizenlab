@@ -415,7 +415,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Approved by {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Archived",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Draft",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.editDescription": "Leírás szerkesztése",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Everyone",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Groups",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Hidden",
