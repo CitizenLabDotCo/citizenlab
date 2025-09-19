@@ -66,6 +66,9 @@ resource 'FileAttachments' do
           type: 'file_attachment',
           attributes: {
             position: file_attachment.position,
+            file_url: file_attachment.file.content.url,
+            file_name: file_attachment.file.name,
+            file_size: file_attachment.file.size,
             created_at: anything,
             updated_at: anything
           },
@@ -125,6 +128,9 @@ resource 'FileAttachments' do
           type: 'file_attachment',
           attributes: {
             position: 2,
+            file_url: file.content.url,
+            file_name: file.name,
+            file_size: file.size,
             created_at: anything,
             updated_at: anything
           },

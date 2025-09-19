@@ -3,8 +3,8 @@
 module Files
   class FilePolicy < ApplicationPolicy
     class Scope < ApplicationPolicy::Scope
-      # TODO: Need to update this method with the same logic as the show method,
-      # as signed out users now have access to some files (those attached to public content).
+      # NOTE: Normal users or visitors do not need to list files, only file attachments,
+      # as they contain all the file details relevant for the front-office.
       def resolve
         if active_admin?
           scope.all
