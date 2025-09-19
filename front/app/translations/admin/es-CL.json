@@ -415,7 +415,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Aprobado por {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Archivado",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Borrador",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.editDescription": "Editar descripción",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Todo el mundo",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Grupos",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Oculto",
