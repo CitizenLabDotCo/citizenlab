@@ -2125,7 +2125,6 @@
   "app.containers.AdminPage.ProjectEdit.projectName": "ਪ੍ਰੋਜੈਕਟ ਦਾ ਨਾਮ",
   "app.containers.AdminPage.ProjectEdit.projectVisibilitySubtitle": "ਤੁਸੀਂ ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਕੁਝ ਉਪਭੋਗਤਾਵਾਂ ਲਈ ਅਦਿੱਖ ਹੋਣ ਲਈ ਸੈੱਟ ਕਰ ਸਕਦੇ ਹੋ।",
   "app.containers.AdminPage.ProjectEdit.projectVisibilityTitle": "ਪ੍ਰੋਜੈਕਟ ਦੀ ਦਿੱਖ",
-  "app.containers.AdminPage.ProjectEdit.publicationStatusWarningMessage": "ਪ੍ਰੋਜੈਕਟ ਸਥਿਤੀ ਦੀ ਭਾਲ ਕਰ ਰਹੇ ਹੋ? ਹੁਣ ਤੁਸੀਂ ਇਸਨੂੰ ਕਿਸੇ ਵੀ ਸਮੇਂ ਸਿੱਧੇ ਪ੍ਰੋਜੈਕਟ ਪੇਜ ਹੈਡਰ ਤੋਂ ਬਦਲ ਸਕਦੇ ਹੋ।",
   "app.containers.AdminPage.ProjectEdit.publishedExplanationText": "ਪ੍ਰਕਾਸ਼ਿਤ ਪ੍ਰੋਜੈਕਟਾਂ ਨੂੰ ਚੁਣੇ ਜਾਣ 'ਤੇ ਹਰ ਕਿਸੇ ਜਾਂ ਸਮੂਹ ਉਪ-ਸੈੱਟ ਨੂੰ ਦਿਖਾਈ ਦਿੰਦੇ ਹਨ।",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "ਪ੍ਰਕਾਸ਼ਿਤ",
   "app.containers.AdminPage.ProjectEdit.purposes": "ਉਦੇਸ਼",
