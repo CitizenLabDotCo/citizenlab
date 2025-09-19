@@ -415,7 +415,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Cymeradwywyd gan {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Wedi'i archifo",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Drafft",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.editDescription": "Golygu disgrifiad",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Pawb",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Grwpiau",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Cudd",
