@@ -57,7 +57,7 @@ const CreateProject = () => {
         if (projectId) {
           setTimeout(() => {
             clHistory.push({
-              pathname: `${adminProjectsProjectPath(projectId)}/phases/new`,
+              pathname: `${adminProjectsProjectPath(projectId)}/general`,
             });
           }, 1000);
         }
