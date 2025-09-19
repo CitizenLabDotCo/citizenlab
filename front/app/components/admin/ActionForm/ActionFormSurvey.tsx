@@ -77,7 +77,6 @@ const ActionFormSurvey = ({
       />
       <DataCollection
         user_data_collection={user_data_collection}
-        permitted_by={permitted_by}
         onChange={(user_data_collection) => {
           onChange({ user_data_collection });
         }}
