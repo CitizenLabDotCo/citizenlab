@@ -2125,7 +2125,6 @@
   "app.containers.AdminPage.ProjectEdit.projectName": "Име пројекта",
   "app.containers.AdminPage.ProjectEdit.projectVisibilitySubtitle": "Можете подесити да пројекат буде невидљив одређеним корисницима.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilityTitle": "Видљивост пројекта",
-  "app.containers.AdminPage.ProjectEdit.publicationStatusWarningMessage": "Looking for the project status? Now you can change it at any time directly from the project page header.",
   "app.containers.AdminPage.ProjectEdit.publishedExplanationText": "Published projects are visible to everyone or a group subset if selected.",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Објављено",
   "app.containers.AdminPage.ProjectEdit.purposes": "сврхе",
