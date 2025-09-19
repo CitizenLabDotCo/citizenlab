@@ -63,6 +63,10 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     phase.pmethod.supports_survey_form?
   end
 
+  attribute :user_data_collection do |phase|
+    phase.pmethod.user_data_collection
+  end
+
   belongs_to :project
 
   has_one :user_basket, if: proc { |object, params|
