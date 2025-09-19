@@ -63,7 +63,7 @@ describe('Project settings', () => {
 
     describe('when the content builder toggle is enabled', () => {
       it('links to the content builder', () => {
-        cy.visit(`admin/projects/${globalProjectId}/settings/description`);
+        cy.visit(`admin/projects/${globalProjectId}/general`);
         cy.get('#e2e-toggle-enable-project-description-builder').click({
           force: true,
         });
