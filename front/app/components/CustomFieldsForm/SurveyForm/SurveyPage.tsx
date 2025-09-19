@@ -274,6 +274,8 @@ const SurveyPage = ({
             isLoading={methods.formState.isSubmitting}
             isAdminPage={isAdminPage}
             isMapPage={isMapPage}
+            pageQuestions={pageQuestions}
+            currentPageNumber={currentPageNumber}
           />
         </Box>
       </StyledForm>
