@@ -98,6 +98,40 @@ RSpec.describe Invites::BulkCreateJob do
         expect(existing_admin.roles).to include({ 'type' => 'project_moderator', 'project_id' => project.id })
         expect(existing_admin.groups).to include(*Group.where(id: group_ids))
       end
+
+      it 'sets the expected errors in the invites_import result attribute' do
+        emails[0] = 'invalid_email_1'
+        emails[3] = 'invalid_email_2'
+        emails[4] = emails[1]
+
+        described_class.perform_now(user, create_params, invites_import.id)
+        invites_import.reload
+
+        expect(invites_import.result).to eq(
+          'errors' => [
+            { 'error' => 'emails_duplicate', 'ignore' => false, 'rows' => [1, 4], 'value' => emails[1] },
+            { 'error' => 'invalid_email', 'ignore' => false, 'raw_error' => 'Validation failed: Email is invalid', 'row' => 0, 'value' => 'invalid_email_1' },
+            { 'error' => 'invalid_email', 'ignore' => false, 'raw_error' => 'Validation failed: Email is invalid', 'row' => 3, 'value' => 'invalid_email_2' }
+          ]
+        )
+      end
+
+      it 'does not create any invites if error(s) encountered' do
+        emails[3] = 'invalid_email'
+
+        described_class.perform_now(user, create_params, invites_import.id)
+
+        expect(Invite.count).to eq(0)
+      end
+
+      it 'does not change existing users if error(s) encountered' do
+        emails[3] = 'invalid_email'
+        original_users = User.all.to_a
+
+        described_class.perform_now(user, create_params, invites_import.id)
+
+        expect(User.all.to_a).to eq(original_users)
+      end
     end
   end
 end
