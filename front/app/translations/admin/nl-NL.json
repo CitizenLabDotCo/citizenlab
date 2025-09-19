@@ -2125,7 +2125,6 @@
   "app.containers.AdminPage.ProjectEdit.projectName": "Projectnaam",
   "app.containers.AdminPage.ProjectEdit.projectVisibilitySubtitle": "Je kunt het project zo instellen dat het onzichtbaar is voor bepaalde gebruikers.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilityTitle": "Zichtbaarheid van het project",
-  "app.containers.AdminPage.ProjectEdit.publicationStatusWarningMessage": "Op zoek naar de projectstatus? Nu kun je die op elk moment direct vanuit de bovenkant van de projectpagina wijzigen.",
   "app.containers.AdminPage.ProjectEdit.publishedExplanationText": "Gepubliceerde projecten zijn zichtbaar voor iedereen of voor een subset van een groep als die geselecteerd is.",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Gepubliceerd",
   "app.containers.AdminPage.ProjectEdit.purposes": "Doelstellingen",
