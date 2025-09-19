@@ -205,7 +205,12 @@ describe('Native survey permitted by: users', () => {
 
     // Answer question and go to next page
     cy.get('fieldset').first().find('input').first().check({ force: true });
+    cy.intercept('GET', '/web_api/v1/ideas/draft/**').as('getDraftIdea');
     cy.dataCy('e2e-next-page').click();
+
+    // Wait for draft idea request to complete
+    cy.wait('@getDraftIdea');
+    cy.wait(2000);
 
     // Confirm we are on demographic question page
     cy.get('form').contains(fieldName);
@@ -255,8 +260,7 @@ describe('Native survey permitted by: users', () => {
         })
         .then((response) => {
           const attributes = response.body.data.attributes;
-          throw new Error(JSON.stringify(response.body.data.attributes));
-          // expect(attributes[`u_${customFieldKey}`]).to.eq(answer)
+          expect(attributes[`u_${customFieldKey}`]).to.eq(answer);
         });
     });
   };
