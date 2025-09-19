@@ -415,7 +415,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Approved by {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Архивирано",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Нацрт",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.editDescription": "Edit description",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Сви",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Групе",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Hidden",
