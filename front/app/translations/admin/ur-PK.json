@@ -73,6 +73,7 @@
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "سروے مکمل کرنے کے لیے آپ کا شکریہ! اگلی سہ ماہی میں اسے دوبارہ لینے کے لیے آپ کا استقبال ہے۔",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "پی ڈی ایف کے طور پر ڈاؤن لوڈ کریں۔",
   "app.components.FormSync.downloadExcelTemplate": "ایکسل ٹیمپلیٹ ڈاؤن لوڈ کریں۔",
+  "app.components.FormSync.downloadExcelTemplateTooltip3": "ایکسل ٹیمپلیٹس میں فائل اپ لوڈ کے سوالات اور کوئی میپنگ ان پٹ سوالات (ڈراپ پن، ڈرا روٹ، ڈرا ایریا، ESRI فائل اپ لوڈ) شامل نہیں ہوں گے کیونکہ یہ اس وقت بلک امپورٹنگ کے لیے تعاون یافتہ نہیں ہیں۔",
   "app.components.ProjectTemplatePreview.close": "بند",
   "app.components.ProjectTemplatePreview.createProject": "پروجیکٹ بنائیں",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "ٹیمپلیٹ ''{templateTitle}'' کی بنیاد پر ایک پروجیکٹ بنائیں",

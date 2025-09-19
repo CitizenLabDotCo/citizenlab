@@ -73,6 +73,7 @@
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Hvala što ste ispunili anketu! Slobodno ga ponovite sljedećeg kvartala.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Preuzmi kao pdf",
   "app.components.FormSync.downloadExcelTemplate": "Preuzmite Excel predložak",
+  "app.components.FormSync.downloadExcelTemplateTooltip3": "Excel predlošci neće uključivati pitanja za prijenos datoteka i bilo koja pitanja za unos mapiranja (Ispuštanje pribadače, Crtanje rute, Crtanje područja, Prijenos ESRI datoteke) jer trenutno nisu podržani za skupni uvoz.",
   "app.components.ProjectTemplatePreview.close": "Zatvori",
   "app.components.ProjectTemplatePreview.createProject": "Kreiraj projekt",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Izradite projekt na temelju predloška ''{templateTitle}''",

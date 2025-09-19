@@ -644,6 +644,7 @@ ur:
         user_is_given_admin_rights: 'صارف کو منتظم کے حقوق دیے جاتے ہیں۔'
         user_is_given_folder_moderator_rights: 'صارف کو فولڈر ماڈریٹر کے حقوق دیئے گئے ہیں۔'
         user_is_given_project_moderator_rights: 'صارف کو پروجیکٹ ماڈریٹر کے حقوق دیئے گئے ہیں۔'
+        user_is_invited_to_platform: 'صارف کو پلیٹ فارم پر مدعو کیا جاتا ہے۔'
         user_is_invited_to_cosponsor_a_proposal: 'صارف کو ایک تجویز کو شریک سپانسر کرنے کے لیے مدعو کیا جاتا ہے۔'
         user_is_mentioned: 'صارف کا ذکر ہے۔'
         user_is_mentioned_in_internal_comment: 'صارف کا تذکرہ اندرونی تبصرے میں کیا گیا ہے۔'

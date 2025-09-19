@@ -73,6 +73,7 @@
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Kiitos kyselyn täyttämisestä! Voit ottaa sen uudelleen ensi vuosineljänneksellä.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Lataa pdf-tiedostona",
   "app.components.FormSync.downloadExcelTemplate": "Lataa Excel-malli",
+  "app.components.FormSync.downloadExcelTemplateTooltip3": "Excel-malleissa ei ole tiedostojen latauskysymyksiä eikä kartoitussyötteitä (Poista nasta, Piirrä reitti, Piirrä alue, ESRI-tiedostojen lataus), koska niitä ei tällä hetkellä tueta joukkotuonnissa.",
   "app.components.ProjectTemplatePreview.close": "kiinni",
   "app.components.ProjectTemplatePreview.createProject": "Luo projekti",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Luo projekti mallin ''{templateTitle}'' pohjalta",
