@@ -2125,7 +2125,6 @@
   "app.containers.AdminPage.ProjectEdit.projectName": "Proje adı",
   "app.containers.AdminPage.ProjectEdit.projectVisibilitySubtitle": "Projeyi belirli kullanıcılara görünmez olacak şekilde ayarlayabilirsiniz.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilityTitle": "Proje görünürlüğü",
-  "app.containers.AdminPage.ProjectEdit.publicationStatusWarningMessage": "Proje durumunu mu arıyorsunuz? Artık istediğiniz zaman doğrudan proje sayfası başlığından değiştirebilirsiniz.",
   "app.containers.AdminPage.ProjectEdit.publishedExplanationText": "Yayınlanan projeler herkes veya seçildiyse bir grup alt kümesi tarafından görülebilir.",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Yayımlandı",
   "app.containers.AdminPage.ProjectEdit.purposes": "Amaçlar",
