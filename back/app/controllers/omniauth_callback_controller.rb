@@ -93,7 +93,7 @@ class OmniauthCallbackController < ApplicationController
       else # !@user.invite_pending?
         begin
           update_user!(auth, @user, authver_method)
-          @identity.update_auth_hash!(auth, authver_method)
+          update_identity!(auth, @identity, authver_method)
           SideFxUserService.new.after_update(@user, nil)
         rescue ActiveRecord::RecordInvalid => e
           ErrorReporter.report(e)
@@ -223,6 +223,13 @@ class OmniauthCallbackController < ApplicationController
 
     UserService.update_in_sso!(user, user_params, confirm_user)
   end
+
+  # Updates the auth_hash in a users identity to ensure tokens are up to date for logout (mainly for FranceConnect)
+  def update_identity!(auth, identity, authver_method)
+    identity.update_auth_hash!(auth, authver_method)
+  end
+
+  # Determines the locale to set for a user upon signup via SSO.
 
   # Return locale if a locale can be parsed from pathname which matches an app locale
   # and is not the default locale.
