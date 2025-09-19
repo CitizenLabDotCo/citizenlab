@@ -65,12 +65,13 @@ RSpec.describe EmailCampaigns::InviteReceivedMailer do
 
     context 'with custom text' do
       let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+      let(:intro_image) { create(:text_image) }
 
       before do
         campaign.update!(
           subject_multiloc: { 'en' => 'Custom Subject - {{ organizationName }}' },
           title_multiloc: { 'en' => 'NEW TITLE - {{ organizationName }}' },
-          intro_multiloc: { 'en' => '<b>NEW BODY TEXT</b>' },
+          intro_multiloc: { 'en' => "<b>NEW BODY TEXT</b><img data-cl2-text-image-text-reference=\"#{intro_image.text_reference}\">" },
           button_text_multiloc: { 'en' => 'CLICK THE BUTTON' }
         )
       end
@@ -83,8 +84,12 @@ RSpec.describe EmailCampaigns::InviteReceivedMailer do
         expect(mail_body(mail)).to include('NEW TITLE - Liege')
       end
 
-      it 'can customise the body including HTML' do
+      it 'can customise the body including HTML with images' do
         expect(mail_body(mail)).to include('<b>NEW BODY TEXT</b>')
+
+        doc = Nokogiri::HTML.fragment(mail_body(mail))
+        image = doc.css("img[data-cl2-text-image-text-reference=\"#{intro_image.text_reference}\"]").first
+        expect(image['src']).to eq intro_image.image.url
       end
 
       it 'can customise the cta button' do
