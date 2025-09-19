@@ -415,7 +415,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Godkendt af {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Arkiveret",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Udkast",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.editDescription": "Rediger beskrivelse",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Alle",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Grupper",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Skjult",
