@@ -76,6 +76,7 @@ describe('InviteUsersWithSeatsModal', () => {
             id: '1',
             type: 'invite_new_seats',
             attributes: {
+              job_type: 'bulk_invite',
               completed_at: null,
               result: {
                 newly_added_admins_number: 1,
@@ -114,6 +115,7 @@ describe('InviteUsersWithSeatsModal', () => {
             id: '1',
             type: 'invite_new_seats',
             attributes: {
+              job_type: 'bulk_create',
               completed_at: null,
               result: {
                 newly_added_admins_number: 0,

@@ -378,10 +378,15 @@ const Invitations = () => {
 
   // Effect to monitor invite creation
   useEffect(() => {
+    console.log('useEffect', createInviteImport);
+
     if (!createInviteImport) return;
 
     const jobId = createInviteImport?.data?.id;
     const jobComplete = createInviteImport?.data?.attributes?.completed_at;
+    const jobType = createInviteImport?.data?.attributes?.job_type;
+
+    console.log('jobType', jobType);
 
     // Skip if job isn't complete
     if (!jobComplete || !jobId) {
@@ -395,13 +400,18 @@ const Invitations = () => {
     if (createInviteImport?.data?.attributes?.errors?.length > 0) {
       setApiErrors(createInviteImport.data.attributes.errors);
       setProcessing(false);
+      setProcessed(false);
     } else {
       // Success - reset UI state
       if (fileInputElement.current) {
         fileInputElement.current.value = '';
       }
-      setProcessing(false);
-      setProcessed(true);
+
+      if (jobType === 'bulk_create' || jobType === 'bulk_create_xlsx') {
+        setProcessing(false);
+        setProcessed(true);
+      }
+
       setSelectedFileBase64(null);
       setSelectedEmails(null);
     }
@@ -561,6 +571,10 @@ const Invitations = () => {
       className: 'intercom-users-invite-users-tab-manual',
     },
   ];
+
+  console.log('getSubmitState', getSubmitState(apiErrors, processed));
+  console.log('apiErrors', apiErrors);
+  console.log('processed', processed);
 
   return (
     <>
