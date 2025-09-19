@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Box, Radio, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconTooltip,
+  Radio,
+  Text,
+} from '@citizenlab/cl2-component-library';
 
 import { UserFieldsInFormFrontendDescriptor } from 'api/phase_permissions/types';
 
@@ -33,16 +38,19 @@ const UserFieldsInFormRadio = ({
           value={false}
           currentValue={value}
           label={
-            <Text color="primary" m="0">
-              <FormattedMessage
-                {...messages.includeDemographicQuestionsInRegFlow}
-                values={{
-                  b: (chunks) => (
-                    <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-                  ),
-                }}
+            <Box display="flex" alignItems="center">
+              <Text color="primary" m="0">
+                <FormattedMessage {...messages.appendDemographicAnswers} />
+              </Text>
+              <IconTooltip
+                ml="4px"
+                content={
+                  <FormattedMessage
+                    {...messages.appendDemographicAnswersTooltip}
+                  />
+                }
               />
-            </Text>
+            </Box>
           }
           onChange={onChange}
           disabled={!!locked}
@@ -52,16 +60,30 @@ const UserFieldsInFormRadio = ({
           value={true}
           currentValue={value}
           label={
-            <Text color="primary" m="0">
-              <FormattedMessage
-                {...messages.includeDemographicQuestionsAsLastPageOfSurvey}
-                values={{
-                  b: (chunks) => (
-                    <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-                  ),
-                }}
+            <Box display="flex" alignItems="center">
+              <Text color="primary" m="0">
+                <FormattedMessage
+                  {...messages.collectDemographicsByAddingNewPage}
+                />
+              </Text>
+              <IconTooltip
+                ml="4px"
+                content={
+                  <ul>
+                    <li>
+                      <FormattedMessage
+                        {...messages.collectDemographicsByAddingNewPageTooltip1}
+                      />
+                    </li>
+                    <li>
+                      <FormattedMessage
+                        {...messages.collectDemographicsByAddingNewPageTooltip2}
+                      />
+                    </li>
+                  </ul>
+                }
               />
-            </Text>
+            </Box>
           }
           onChange={onChange}
           mr="8px"

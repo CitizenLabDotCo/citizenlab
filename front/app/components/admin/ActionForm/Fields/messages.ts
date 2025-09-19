@@ -2,8 +2,8 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   demographicQuestions: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.demographicQuestions',
-    defaultMessage: 'Demographic questions asked to participants',
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.demographicQuestions2',
+    defaultMessage: 'Demographic questions asked to users',
   },
   edit: {
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.edit',
@@ -61,9 +61,9 @@ export default defineMessages({
       'Asking demographic questions as the last page of the survey is not supported for the selected participation method.',
   },
   with_these_settings_cannot_ask_demographic_fields: {
-    id: 'app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields',
+    id: 'app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2',
     defaultMessage:
-      'With the current combination of "Authentication" and "User data collection" settings, it is not possible to ask demographic questions to users.',
+      'Choosing how demographic questions are asked to participants is not applicable as you have disabled authentication and selected full anonymity',
   },
   cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone:
     {
@@ -76,13 +76,29 @@ export default defineMessages({
     defaultMessage:
       'With the current combination of "Authentication" and "User data collection" settings, demographic questions can only be asked in the registration flow.',
   },
-  includeDemographicQuestionsInRegFlow: {
-    id: 'app.components.admin.ActionForm.Fields.includeDemographicQuestionsIn1',
-    defaultMessage: 'Include demographic questions in <b>registration flow</b>',
-  },
-  includeDemographicQuestionsAsLastPageOfSurvey: {
-    id: 'app.components.admin.ActionForm.Fields.includeDemographicQuestionsAsLastPageOfSurvey1',
+  appendDemographicAnswers: {
+    id: 'app.components.admin.ActionForm.Fields.appendDemographicAnswers',
     defaultMessage:
-      'Include demographic questions as <b>last page of the survey</b>',
+      'Automatically append demographic answers from registered user profiles to the results',
+  },
+  appendDemographicAnswersTooltip: {
+    id: 'app.components.admin.ActionForm.Fields.appendDemographicAnswersTooltip',
+    defaultMessage:
+      "If this information is not yet in the user's profile, the user will be prompted to fill it out before the survey.",
+  },
+  collectDemographicsByAddingNewPage: {
+    id: 'app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPage',
+    defaultMessage:
+      'Collect demographic questions by adding a new page to the end of the survey',
+  },
+  collectDemographicsByAddingNewPageTooltip1: {
+    id: 'app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPageTooltip1',
+    defaultMessage:
+      "If this information is already in the user's profile, it will be used to pre-fill these questions.",
+  },
+  collectDemographicsByAddingNewPageTooltip2: {
+    id: 'app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPageTooltip2',
+    defaultMessage:
+      'Besides being stored in the survey, the answers will be used to update the profile of registered users.',
   },
 });
