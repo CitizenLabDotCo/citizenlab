@@ -143,9 +143,30 @@ describe('Project description builder Accordion component', () => {
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
 
+    cy.visit(`/projects/${projectSlug}`);
+
+    cy.get('.e2e-accordion').should('be.visible');
+    cy.contains('Accordion to delete').should('be.visible');
+    cy.contains('Text to be deleted').should('be.visible');
+
+    cy.visit(
+      `/admin/project-description-builder/projects/${projectId}/description`
+    );
+    cy.wait(1000);
+
     // Now delete the accordion
-    cy.get('.e2e-accordion').wait(1000).click({ force: true });
-    cy.get('#e2e-delete-button').click();
+    cy.get('.e2e-accordion').should('be.visible');
+
+    // Try clicking multiple times to ensure selection. Temporarily fix for flakiness.
+    cy.get('.e2e-accordion').click({ force: true });
+    cy.wait(500);
+    cy.get('.e2e-accordion').click({ force: true });
+
+    // Wait for the sidebar/delete button to appear
+    cy.get('#e2e-delete-button', { timeout: 10000 })
+      .should('exist')
+      .and('be.visible');
+    cy.get('#e2e-delete-button').click({ force: true });
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
 
