@@ -415,7 +415,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Approved by {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Archivéiert",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Entworf",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.editDescription": "Beschreiwung änneren",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Jiddereen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Gruppen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Hidden",
