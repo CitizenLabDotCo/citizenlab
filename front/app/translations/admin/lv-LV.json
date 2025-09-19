@@ -2125,7 +2125,6 @@
   "app.containers.AdminPage.ProjectEdit.projectName": "Projekta nosaukums",
   "app.containers.AdminPage.ProjectEdit.projectVisibilitySubtitle": "Varat iestatīt, lai projekts būtu neredzams noteiktiem lietotājiem.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilityTitle": "Projekta redzamība",
-  "app.containers.AdminPage.ProjectEdit.publicationStatusWarningMessage": "Vai meklējat projekta statusu? Tagad to jebkurā laikā varat mainīt tieši no projekta lapas galvenes.",
   "app.containers.AdminPage.ProjectEdit.publishedExplanationText": "Publicētie projekti ir redzami visiem vai grupas apakšgrupai, ja tā ir izvēlēta.",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Publicēts",
   "app.containers.AdminPage.ProjectEdit.purposes": "Mērķi",
