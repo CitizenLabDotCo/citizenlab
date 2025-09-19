@@ -85,7 +85,6 @@ export enum projectsRoutes {
   projects = 'projects',
   new = 'new',
   projectIdeaId = ':projectId/ideas/:ideaId',
-  projectSettings = ':projectId/settings',
   projectGeneral = 'general',
   projectGeneralSetUp = 'set-up',
   projectGeneralInputTags = 'input-tags',
@@ -131,7 +130,6 @@ export type projectsRouteTypes =
   | AdminRoute<projectsRoutes.projects>
   | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.new}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/ideas/${string}`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/settings`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/general`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/general/set-up`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/general/input-tags`>
