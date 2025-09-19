@@ -38,6 +38,7 @@ const AdminProjectsProjectIndex = () => {
           active={pathname.includes(`/admin/projects/${projectId}/general`)}
         />
         <Tab
+          data-cy="e2e-admin-project-timeline-tab"
           className="intercom-admin-project-timeline-tab"
           label={formatMessage(messages.timelineTab)}
           url={`/admin/projects/${projectId}/phases/setup`}
