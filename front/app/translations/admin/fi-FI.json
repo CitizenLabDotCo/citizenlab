@@ -2125,7 +2125,6 @@
   "app.containers.AdminPage.ProjectEdit.projectName": "Projektin nimi",
   "app.containers.AdminPage.ProjectEdit.projectVisibilitySubtitle": "Voit asettaa projektin näkymättömäksi tietyille käyttäjille.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilityTitle": "Projektin näkyvyys",
-  "app.containers.AdminPage.ProjectEdit.publicationStatusWarningMessage": "Etsitkö projektin tilaa? Nyt voit muuttaa sitä milloin tahansa suoraan projektisivun otsikosta.",
   "app.containers.AdminPage.ProjectEdit.publishedExplanationText": "Julkaistut projektit näkyvät kaikille tai ryhmän alajoukolle, jos ne on valittu.",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Julkaistu",
   "app.containers.AdminPage.ProjectEdit.purposes": "Tarkoitukset",
