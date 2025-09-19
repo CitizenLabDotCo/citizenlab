@@ -210,7 +210,6 @@ describe('Native survey permitted by: users', () => {
 
     // Wait for draft idea request to complete
     cy.wait('@getDraftIdea');
-    cy.wait(2000);
 
     // Confirm we are on demographic question page
     cy.get('form').contains(fieldName);
