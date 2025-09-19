@@ -27,7 +27,7 @@ describe('Project attachments settings', () => {
       cy.intercept(`**/projects/${projectId}/files`).as('saveProjectFiles');
 
       // Visit the project settings page
-      cy.visit(`admin/projects/${projectId}/settings`);
+      cy.visit(`admin/projects/${projectId}/general`);
 
       // This 4s wait is necesssary. I tried waiting in a number of other ways,
       // but this was the only consistent solution.
