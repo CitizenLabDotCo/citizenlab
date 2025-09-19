@@ -95,12 +95,14 @@ const Invitations = () => {
     useState<IInvitesNewSeats | null>(null);
 
   // waiting for seats check import to complete
-  const [importId, setImportId] = useState<string | null>(null);
-  const { data: inviteImport, resetQueryData } = useInviteImport(
-    { importId: importId || '' }, // Use empty string as fallback
+  const [seatsInviteImportId, setSeatsInviteImportId] = useState<string | null>(
+    null
+  );
+  const { data: seatsInviteImport, resetQueryData } = useInviteImport(
+    { importId: seatsInviteImportId || '' }, // Use empty string as fallback
     {
-      pollingEnabled: importId !== null,
-      enabled: importId !== null,
+      pollingEnabled: seatsInviteImportId !== null,
+      enabled: seatsInviteImportId !== null,
     }
   );
 
@@ -191,7 +193,7 @@ const Invitations = () => {
             setSavedInviteOptions(inviteOptions);
 
             const newSeats = await bulkInviteCountNewSeatsXLSX(inviteOptions);
-            setImportId(newSeats.data.id);
+            setSeatsInviteImportId(newSeats.data.id);
           }
         } catch (errors) {
           const apiErrors = errors.errors;
@@ -213,7 +215,7 @@ const Invitations = () => {
       setUnknownError,
       bulkInviteXLSX,
       bulkInviteCountNewSeatsXLSX,
-      setImportId,
+      setSeatsInviteImportId,
       setCreateInviteImportId,
       savedInviteOptions,
       setSavedInviteOptions,
@@ -264,7 +266,7 @@ const Invitations = () => {
             setSavedEmailOptions(inviteOptions);
 
             const newSeats = await bulkInviteCountNewSeatsEmails(inviteOptions);
-            setImportId(newSeats.data.id);
+            setSeatsInviteImportId(newSeats.data.id);
           }
         } catch (errors) {
           const apiErrors = errors.errors;
@@ -286,7 +288,7 @@ const Invitations = () => {
       setUnknownError,
       bulkInviteEmails,
       bulkInviteCountNewSeatsEmails,
-      setImportId,
+      setSeatsInviteImportId,
       setCreateInviteImportId,
       savedEmailOptions,
       setSavedEmailOptions,
@@ -357,24 +359,32 @@ const Invitations = () => {
     new Set()
   );
 
+  // NOTE: You may see two requests with a completed_at response for each process.
+  // This is due to React state updates being asynchronous: the polling hook may fire
+  // one extra request before the importId is cleared. This is expected and harmless.
   useEffect(() => {
-    if (!inviteImport) return;
+    if (!seatsInviteImport) return;
 
-    const importId = inviteImport?.data?.id;
-    const seatsImportComplete = inviteImport?.data?.attributes?.completed_at;
+    const seatsImportIdValue = seatsInviteImport?.data?.id;
+    const seatsImportComplete =
+      seatsInviteImport?.data?.attributes?.completed_at;
 
     // Skip if we've already processed this import or if it's not complete
-    if (!seatsImportComplete || !importId || processedImportIds.has(importId)) {
+    if (
+      !seatsImportComplete ||
+      !seatsImportIdValue ||
+      processedImportIds.has(seatsImportIdValue)
+    ) {
       return;
     }
 
     // Mark this import as processed
-    setProcessedImportIds((prev) => new Set([...prev, importId]));
+    setProcessedImportIds((prev) => new Set([...prev, seatsImportIdValue]));
 
     // Process the import
-    setImportId(null);
-    checkNewSeatsResponse(inviteImport);
-  }, [inviteImport, checkNewSeatsResponse, processedImportIds]);
+    setSeatsInviteImportId(null);
+    checkNewSeatsResponse(seatsInviteImport);
+  }, [seatsInviteImport, checkNewSeatsResponse, processedImportIds]);
 
   // Effect to monitor invite creation
   useEffect(() => {
