@@ -584,26 +584,26 @@ const AdminProjectsProjectGeneralSetUp = () => {
                   apiErrors={apiErrors.description_multiloc}
                 />
               </SectionField>
+
+              {/* Homepage Description */}
+              <SectionField>
+                <Highlighter fragmentId="description-preview-multiloc">
+                  <TextAreaMultilocWithLocaleSwitcher
+                    valueMultiloc={descriptionPreviewMultiloc}
+                    onChange={handleDescriptionPreviewChange}
+                    label={formatMessage(messages.homepageDescriptionLabel)}
+                    labelTooltipText={formatMessage(
+                      messages.homepageDescriptionTooltip
+                    )}
+                  />
+                </Highlighter>
+                <Error
+                  fieldName="description_preview_multiloc"
+                  apiErrors={apiErrors.description_preview_multiloc}
+                />
+              </SectionField>
             </>
           )}
-
-          {/* Homepage Description */}
-          <SectionField>
-            <Highlighter fragmentId="description-preview-multiloc">
-              <TextAreaMultilocWithLocaleSwitcher
-                valueMultiloc={descriptionPreviewMultiloc}
-                onChange={handleDescriptionPreviewChange}
-                label={formatMessage(messages.homepageDescriptionLabel)}
-                labelTooltipText={formatMessage(
-                  messages.homepageDescriptionTooltip
-                )}
-              />
-            </Highlighter>
-            <Error
-              fieldName="description_preview_multiloc"
-              apiErrors={apiErrors.description_preview_multiloc}
-            />
-          </SectionField>
 
           {isProjectLibraryEnabled && (
             <Box mb="20px">
