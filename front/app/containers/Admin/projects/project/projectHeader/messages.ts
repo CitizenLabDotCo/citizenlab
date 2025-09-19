@@ -157,10 +157,6 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy',
     defaultMessage: 'Approved by {name}',
   },
-  editDescription: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.editDescription',
-    defaultMessage: 'Edit description',
-  },
   public: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.public',
     defaultMessage: 'Public',
