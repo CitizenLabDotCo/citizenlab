@@ -777,7 +777,6 @@
   "app.containers.AdminPage.ProjectEdit.participationLevels": "مستويات المشاركة",
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "ماذا تريد أن تفعل؟",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "اختر كيف يمكن للمستخدمين المشاركة.",
-  "app.containers.AdminPage.ProjectEdit.permissionsTab": "حقوق الوصول",
   "app.containers.AdminPage.ProjectEdit.pollTab": "الاستطلاع",
   "app.containers.AdminPage.ProjectEdit.projectCardImageLabelText": "صورة بطاقة المشروع",
   "app.containers.AdminPage.ProjectEdit.projectCardImageTooltip": "هذه الصورة جزء من بطاقة المشروع؛ وهي البطاقة التي تلخص المشروع وتظهر في الصفحة الرئيسية على سبيل المثال.\n\n    لمزيد من المعلومات حول مستويات الدقة الموصى بها للصور، {supportPageLink}.",
