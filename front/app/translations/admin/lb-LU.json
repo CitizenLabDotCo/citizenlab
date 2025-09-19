@@ -2125,7 +2125,6 @@
   "app.containers.AdminPage.ProjectEdit.projectName": "Project name",
   "app.containers.AdminPage.ProjectEdit.projectVisibilitySubtitle": "Dir kënnt de Projet fir verschidde Benotzer onsichtbar setzen.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilityTitle": "Projet Visibilitéit",
-  "app.containers.AdminPage.ProjectEdit.publicationStatusWarningMessage": "Looking for the project status? Now you can change it at any time directly from the project page header.",
   "app.containers.AdminPage.ProjectEdit.publishedExplanationText": "Published projects are visible to everyone or a group subset if selected.",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Published",
   "app.containers.AdminPage.ProjectEdit.purposes": "Purposes",
