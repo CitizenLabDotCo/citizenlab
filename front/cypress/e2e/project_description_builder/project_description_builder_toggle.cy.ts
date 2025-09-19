@@ -60,7 +60,7 @@ describe('Project description builder toggle', () => {
     cy.intercept(`**/projects/${projectId}/files`).as('saveProjectFiles');
 
     // Attach a project file
-    cy.visit(`admin/projects/${projectId}/settings`);
+    cy.visit(`admin/projects/${projectId}/general`);
     cy.wait(2000);
     cy.scrollTo('bottom');
 
@@ -102,7 +102,7 @@ describe('Project description builder toggle', () => {
     );
 
     // Attach a project file
-    cy.visit(`admin/projects/${projectId}/settings`);
+    cy.visit(`admin/projects/${projectId}/general`);
     cy.wait(2000);
     cy.scrollTo('bottom');
 
