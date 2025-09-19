@@ -153,6 +153,7 @@ resource 'Invites' do
                   expect(params[:roles]).to eq(roles) if params[:roles].present?
                 # For regular invites endpoint
                 else
+                  pp params
                   expect(params).to include(:emails, :roles)
                   expect(params[:emails]).to match_array(emails)
                   expect(params[:roles]).to eq(roles)
