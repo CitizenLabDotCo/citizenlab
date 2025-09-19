@@ -415,7 +415,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Approuvé par {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Archivé",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Brouillon",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.editDescription": "Modifier la description",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Tous les utilisateurs",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Groupes",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Caché",
