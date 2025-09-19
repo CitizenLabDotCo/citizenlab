@@ -88,12 +88,11 @@ RSpec.describe Invites::CountNewSeatsJob do
       end
 
       it 'sets the expected errors in the invites_import result attribute' do
-        emails[0] = 'invalid_email_1'
-        emails[3] = 'invalid_email_2'
+        emails[0] = 'invalid_email_a'
+        emails[3] = 'invalid_email_b'
         emails[4] = emails[1]
         hash_array = emails.map { |email| { email: email, admin: true } }
         xlsx_stringio = XlsxService.new.hash_array_to_xlsx(hash_array)
-        "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{Base64.encode64(xlsx_stringio.read)}"
 
         described_class.perform_now(user, create_params, invites_import.id, xlsx_import: true)
         invites_import.reload
@@ -101,8 +100,8 @@ RSpec.describe Invites::CountNewSeatsJob do
         expect(invites_import.result).to eq(
           'errors' => [
             { 'error' => 'emails_duplicate', 'ignore' => false, 'rows' => [3, 6], 'value' => emails[1] },
-            { 'error' => 'invalid_email', 'ignore' => false, 'raw_error' => 'Validation failed: Email is invalid', 'row' => 2, 'value' => 'invalid_email_1' },
-            { 'error' => 'invalid_email', 'ignore' => false, 'raw_error' => 'Validation failed: Email is invalid', 'row' => 5, 'value' => 'invalid_email_2' }
+            { 'error' => 'invalid_email', 'ignore' => false, 'raw_error' => 'Validation failed: Email is invalid', 'row' => 2, 'value' => 'invalid_email_a' },
+            { 'error' => 'invalid_email', 'ignore' => false, 'raw_error' => 'Validation failed: Email is invalid', 'row' => 5, 'value' => 'invalid_email_b' }
           ]
         )
       end
