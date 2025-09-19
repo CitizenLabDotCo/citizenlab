@@ -644,6 +644,7 @@ ach:
         user_is_given_admin_rights: 'crwdns5318565:0crwdne5318565:0'
         user_is_given_folder_moderator_rights: 'crwdns5318567:0crwdne5318567:0'
         user_is_given_project_moderator_rights: 'crwdns5318569:0crwdne5318569:0'
+        user_is_invited_to_platform: 'crwdns5345339:0crwdne5345339:0'
         user_is_invited_to_cosponsor_a_proposal: 'crwdns5318571:0crwdne5318571:0'
         user_is_mentioned: 'crwdns5318573:0crwdne5318573:0'
         user_is_mentioned_in_internal_comment: 'crwdns5318575:0crwdne5318575:0'
