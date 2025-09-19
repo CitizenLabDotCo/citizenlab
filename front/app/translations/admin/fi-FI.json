@@ -415,7 +415,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Hyväksytty {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Arkistoitu",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Luonnos",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.editDescription": "Muokkaa kuvausta",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Kaikki",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Ryhmät",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Piilotettu",
