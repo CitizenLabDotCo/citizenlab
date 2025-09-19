@@ -415,7 +415,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Odobrio {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Arhivirano",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Nacrt",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.editDescription": "Uredi opis",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Svatko",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "grupe",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Skriven",
