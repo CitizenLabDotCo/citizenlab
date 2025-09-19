@@ -415,7 +415,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Patvirtinta {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Archyvuota",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Projektas",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.editDescription": "Redaguoti aprašymą",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Visi",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Grupės",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Paslėptas",
