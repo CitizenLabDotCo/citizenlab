@@ -29,7 +29,7 @@ describe('Admin: project input manager', () => {
 
         cy.location('pathname').should(
           'eq',
-          `/en/admin/projects/${projectId}/settings/tags`
+          `/en/admin/projects/${projectId}/general/input-tags`
         );
       });
     });
