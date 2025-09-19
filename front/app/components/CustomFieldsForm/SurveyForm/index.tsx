@@ -61,7 +61,7 @@ const SurveyForm = ({
     isSubmitPage: boolean;
   }) => {
     const userWillNotBeLinkedToSurvey =
-      phase.data.attributes.user_data_collection !== 'all_data';
+      !authUser || phase.data.attributes.user_data_collection !== 'all_data';
 
     // The draft idea endpoint relies on the idea having a user id / being linked to a user
     // If the user is not linked to the survey, we cannot use draft ideas
