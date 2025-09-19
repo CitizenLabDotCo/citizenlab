@@ -204,7 +204,7 @@ describe('Native survey permitted by: users', () => {
     });
   };
 
-  const confirmSavedToIdea = () => {
+  const confirmSavedToIdea = ({ expectUserId }: { expectUserId: boolean }) => {
     cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
       const adminJwt = response.body.jwt;
 
@@ -220,6 +220,16 @@ describe('Native survey permitted by: users', () => {
         .then((response) => {
           const attributes = response.body.data.attributes;
           expect(attributes[`u_${customFieldKey}`]).to.eq(answer);
+
+          if (expectUserId) {
+            expect(response.body.data.relationships.author.data.id).to.eq(
+              userId
+            );
+          } else {
+            expect(response.body.data.relationships.author?.data?.id).to.eq(
+              undefined
+            );
+          }
         });
     });
   };
@@ -229,7 +239,7 @@ describe('Native survey permitted by: users', () => {
       it('works', () => {
         fieldsInRegFlow();
         confirmSavedToProfile();
-        confirmSavedToIdea();
+        confirmSavedToIdea({ expectUserId: true });
       });
     });
 
@@ -287,7 +297,7 @@ describe('Native survey permitted by: users', () => {
         // Now we should be on last page
         cy.dataCy('e2e-after-submission').should('exist');
         confirmSavedToProfile();
-        confirmSavedToIdea();
+        confirmSavedToIdea({ expectUserId: true });
       });
     });
   });
@@ -309,7 +319,7 @@ describe('Native survey permitted by: users', () => {
       it('works', () => {
         fieldsInRegFlow();
         confirmSavedToProfile();
-        confirmSavedToIdea();
+        confirmSavedToIdea({ expectUserId: false });
       });
     });
 
@@ -364,7 +374,7 @@ describe('Native survey permitted by: users', () => {
         // Now we should be on last page
         cy.dataCy('e2e-after-submission').should('exist');
         confirmSavedToProfile();
-        confirmSavedToIdea();
+        confirmSavedToIdea({ expectUserId: false });
       });
     });
   });
@@ -386,6 +396,31 @@ describe('Native survey permitted by: users', () => {
       it('works', () => {
         fieldsInRegFlow();
         confirmSavedToProfile();
+
+        cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+          const adminJwt = response.body.jwt;
+
+          return cy
+            .request({
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${adminJwt}`,
+              },
+              method: 'GET',
+              url: `web_api/v1/ideas/${ideaId}`,
+            })
+            .then((response) => {
+              // Make it clear the idea has no demographic data saved,
+              // since anonymity was selected
+              const attributes = response.body.data.attributes;
+              expect(attributes[`u_${customFieldKey}`]).to.eq(undefined);
+
+              // And of course there should also be no user linked
+              expect(response.body.data.relationships.author?.data?.id).to.eq(
+                undefined
+              );
+            });
+        });
       });
     });
   });
