@@ -415,7 +415,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Approved by {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Arxivat",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Esborrany",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.editDescription": "Edita la descripció",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Tothom",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Grups",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Hidden",
