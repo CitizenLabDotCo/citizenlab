@@ -415,7 +415,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Goedgekeurd door {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Gearchiveerd",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Concept",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.editDescription": "Beschrijving bewerken",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Iedereen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Groepen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Verborgen",
