@@ -415,7 +415,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Godkänt av {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Arkiverad",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Utkast",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.editDescription": "Redigera beskrivning",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Alla",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Grupper",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Dolda",
