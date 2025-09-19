@@ -104,5 +104,13 @@ resource 'SEO' do
       expect(response_status).to eq 200
       expect(response_body).to include 'sitemap.xml'
     end
+
+    example 'is protected against web cache poisoning (ignores injected Host)', document: false do
+      header 'Host', 'malicious.com'
+      do_request
+      expect(response_status).to eq 200
+      expect(response_body).to include 'SITEMAP: https://'
+      expect(response_body).not_to include 'malicious.com'
+    end
   end
 end
