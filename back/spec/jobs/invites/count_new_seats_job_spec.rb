@@ -16,7 +16,7 @@ RSpec.describe Invites::CountNewSeatsJob do
         { 'type' => 'project_moderator', 'project_id' => @project.id }
       ]
     end
-    let(:user) { create(:admin) }
+    let!(:user) { create(:admin) }
 
     describe 'with manually specified emails' do
       let(:invites_import) { create(:invites_import, job_type: 'count_new_seats', importer: user) }
@@ -38,6 +38,15 @@ RSpec.describe Invites::CountNewSeatsJob do
           'newly_added_admins_number' => 4,
           'newly_added_moderators_number' => -1
         )
+      end
+
+      it 'does not create any users or invites' do
+        original_users = User.all.to_a
+
+        described_class.perform_now(user, create_params, invites_import.id)
+
+        expect(User.all.to_a).to eq(original_users)
+        expect(Invite.count).to eq(0)
       end
 
       it 'sets the expected errors in the invites_import result attribute' do
@@ -85,6 +94,15 @@ RSpec.describe Invites::CountNewSeatsJob do
           'newly_added_admins_number' => 4,
           'newly_added_moderators_number' => -1
         )
+      end
+
+      it 'does not create any users or invites' do
+        original_users = User.all.to_a
+
+        described_class.perform_now(user, create_params, invites_import.id, xlsx_import: true)
+
+        expect(User.all.to_a).to eq(original_users)
+        expect(Invite.count).to eq(0)
       end
 
       it 'sets the expected errors in the invites_import result attribute' do
