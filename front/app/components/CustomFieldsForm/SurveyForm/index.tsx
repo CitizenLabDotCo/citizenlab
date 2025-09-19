@@ -9,7 +9,6 @@ import useDraftIdeaByPhaseId, {
 } from 'api/ideas/useDraftIdeaByPhaseId';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useAuthUser from 'api/me/useAuthUser';
-import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import { ParticipationMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
@@ -47,17 +46,12 @@ const SurveyForm = ({
     phaseId,
     publicFields: true,
   });
-  const { data: permissions } = usePhasePermissions({ phaseId });
 
   const nestedPagesData = convertCustomFieldsToNestedPages(customFields || []);
 
   const lastPageNumber = nestedPagesData.length - 1;
 
-  const postingPermission = permissions?.data.find((permission) => {
-    return permission.attributes.action === 'posting_idea';
-  });
-
-  if (!postingPermission) return null;
+  if (!phase) return null;
 
   const onSubmit = async ({
     formValues,
@@ -67,7 +61,7 @@ const SurveyForm = ({
     isSubmitPage: boolean;
   }) => {
     const userWillNotBeLinkedToSurvey =
-      postingPermission.attributes.user_data_collection !== 'all_data';
+      phase.data.attributes.user_data_collection !== 'all_data';
 
     // The draft idea endpoint relies on the idea having a user id / being linked to a user
     // If the user is not linked to the survey, we cannot use draft ideas
@@ -131,7 +125,7 @@ const SurveyForm = ({
           participationMethod={participationMethod}
           projectId={projectId}
           onSubmit={onSubmit}
-          phase={phase?.data}
+          phase={phase.data}
           defaultValues={initialFormData}
           customFields={customFields ?? []}
         />

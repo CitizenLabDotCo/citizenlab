@@ -1,5 +1,7 @@
 import { IRelationship, Multiloc } from 'typings';
 
+import { UserDataCollection } from 'api/phase_permissions/types';
+
 import { Keys } from 'utils/cl-react-query/types';
 
 import phasesKeys from './keys';
@@ -77,6 +79,7 @@ export interface IPhaseAttributes {
   similarity_enabled?: boolean;
   similarity_threshold_title?: number | null;
   similarity_threshold_body?: number | null;
+  user_data_collection: UserDataCollection;
 }
 
 export interface IPhases {
