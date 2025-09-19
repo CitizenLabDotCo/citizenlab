@@ -415,7 +415,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Apstiprināts ar {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Arhivēts",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Projekts",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.editDescription": "Rediģēt aprakstu",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Ikviens",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Grupas",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Slēptais",
