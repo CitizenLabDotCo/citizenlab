@@ -359,9 +359,13 @@ const Invitations = () => {
     new Set()
   );
 
-  // NOTE: You may see two requests with a completed_at response for each process.
+  // NOTE: You may see two invites_import responses with a completed_at value
+  // for each process, (the count seats and create invites processes),
+  // even though a completed_at value is the signal to use the response's result.
   // This is due to React state updates being asynchronous: the polling hook may fire
   // one extra request before the importId is cleared. This is expected and harmless.
+
+  // Effect to monitor invite creation
   useEffect(() => {
     if (!seatsInviteImport) return;
 
