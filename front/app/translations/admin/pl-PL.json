@@ -2125,7 +2125,6 @@
   "app.containers.AdminPage.ProjectEdit.projectName": "Nazwa projektu",
   "app.containers.AdminPage.ProjectEdit.projectVisibilitySubtitle": "Możesz ustawić projekt tak, aby był niewidoczny dla niektórych użytkowników.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilityTitle": "Widoczność projektu",
-  "app.containers.AdminPage.ProjectEdit.publicationStatusWarningMessage": "Szukasz statusu projektu? Teraz możesz go zmienić w dowolnym momencie bezpośrednio z nagłówka strony projektu.",
   "app.containers.AdminPage.ProjectEdit.publishedExplanationText": "Opublikowane projekty są widoczne dla wszystkich lub dla wybranej grupy.",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Opublikowany",
   "app.containers.AdminPage.ProjectEdit.purposes": "Sprawy",
