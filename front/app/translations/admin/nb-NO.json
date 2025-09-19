@@ -2125,7 +2125,6 @@
   "app.containers.AdminPage.ProjectEdit.projectName": "Prosjektets navn",
   "app.containers.AdminPage.ProjectEdit.projectVisibilitySubtitle": "Du kan angi at prosjektet skal være usynlig for visse brukere.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilityTitle": "Prosjektets synlighet",
-  "app.containers.AdminPage.ProjectEdit.publicationStatusWarningMessage": "Leter du etter prosjektstatus? Nå kan du når som helst endre den direkte fra prosjektsidens topptekst.",
   "app.containers.AdminPage.ProjectEdit.publishedExplanationText": "Publiserte prosjekter er synlige for alle eller en undergruppe hvis de er valgt.",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Publisert",
   "app.containers.AdminPage.ProjectEdit.purposes": "Formål",
