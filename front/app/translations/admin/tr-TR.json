@@ -415,7 +415,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "{name}tarafından onaylanmıştır.",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Arşivlendi",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Taslak",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.editDescription": "Açıklama düzenle",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Herkes",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Gruplar",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Gizli",
