@@ -1024,7 +1024,6 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Επιλέξτε τον τρόπο με τον οποίο μπορούν να συμμετέχουν οι χρήστες.",
   "app.containers.AdminPage.ProjectEdit.participationRequirementsSubtitle": "Μπορείτε να καθορίσετε ποιος μπορεί να εκτελέσει κάθε ενέργεια και να κάνετε πρόσθετες ερωτήσεις στους συμμετέχοντες για να συλλέξετε περισσότερες πληροφορίες.",
   "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Απαιτήσεις & ερωτήσεις συμμετεχόντων",
-  "app.containers.AdminPage.ProjectEdit.permissionsTab": "Δικαιώματα πρόσβασης",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Poll",
   "app.containers.AdminPage.ProjectEdit.popularSortingMethod2": "Οι περισσότερες αντιδράσεις",
   "app.containers.AdminPage.ProjectEdit.projectCardImageLabelText": "Εικόνα κάρτας έργου",
