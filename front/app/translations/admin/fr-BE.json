@@ -2344,7 +2344,7 @@
   "app.containers.AdminPage.ProjectFiles.upload": "Téléverser",
   "app.containers.AdminPage.ProjectFiles.uploadSummary": "{numberOfFiles, plural, one {# fichier téléchargé} other {# fichiers téléchargés}} avec succès, {numberOfErrors, plural, one {# erreur} other {# erreurs}}.",
   "app.containers.AdminPage.ProjectFiles.viewFile": "Voir le fichier",
-  "app.containers.AdminPage.ProjectFiles.willRemoveFromAllLocations": "Cela le supprimera de tous les endroits où il est utilisé.",
+  "app.containers.AdminPage.ProjectFiles.willRemoveFromAllLocations": "Cette action le supprimera de tous les endroits où il est utilisé.",
   "app.containers.AdminPage.ProjectIdeaForm.collapseAll": "Réduire tous les champs",
   "app.containers.AdminPage.ProjectIdeaForm.descriptionLabel": "Description du champ",
   "app.containers.AdminPage.ProjectIdeaForm.editInputForm": "Modifier le formulaire de saisie",
