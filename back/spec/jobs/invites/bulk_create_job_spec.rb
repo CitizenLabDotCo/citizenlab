@@ -11,7 +11,6 @@ RSpec.describe Invites::BulkCreateJob do
     let!(:_admin) { create(:admin) }
     let!(:project_moderator2) { create(:project_moderator, email: emails[0], projects: [project], locale: 'en') }
     let!(:admin2) { create(:admin, email: emails[1], locale: 'fr-FR') }
-    # existing_invitee_emails = [project_moderator2.email, admin2.email]
     let(:existing_invitee_emails) { [project_moderator2.email, admin2.email] }
 
     let(:roles) do
@@ -80,6 +79,7 @@ RSpec.describe Invites::BulkCreateJob do
         expect(new_users.map(&:email)).to match_array(emails - existing_invitee_emails)
         new_users.each do |new_user|
           expect(new_user.groups.pluck(:id)).to match_array(group_ids)
+          expect(new_user.locale).to eq(locale)
           expect(new_user.roles).to include({ 'type' => 'admin' })
           expect(new_user.roles).to include({ 'type' => 'project_moderator', 'project_id' => project.id })
         end
@@ -92,11 +92,13 @@ RSpec.describe Invites::BulkCreateJob do
         expect(existing_project_moderator.roles).to include({ 'type' => 'admin' })
         expect(existing_project_moderator.roles).to include({ 'type' => 'project_moderator', 'project_id' => project.id })
         expect(existing_project_moderator.groups).to include(*Group.where(id: group_ids))
+        expect(existing_project_moderator.locale).to eq('en') # does not change existing locale
 
         existing_admin = User.find_by(email: admin2.email)
         expect(existing_admin.roles).to include({ 'type' => 'admin' })
         expect(existing_admin.roles).to include({ 'type' => 'project_moderator', 'project_id' => project.id })
         expect(existing_admin.groups).to include(*Group.where(id: group_ids))
+        expect(existing_admin.locale).to eq('fr-FR') # does not change existing locale
       end
 
       it 'sets the expected errors in the invites_import result attribute' do
