@@ -415,7 +415,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Freigegeben von {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Archiviert",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Entwurf",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.editDescription": "Beschreibung bearbeiten",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Jede Person",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Gruppen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Versteckt",
