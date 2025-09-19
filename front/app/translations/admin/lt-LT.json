@@ -2125,7 +2125,6 @@
   "app.containers.AdminPage.ProjectEdit.projectName": "Projekto pavadinimas",
   "app.containers.AdminPage.ProjectEdit.projectVisibilitySubtitle": "Galite nustatyti, kad projektas būtų nematomas tam tikriems naudotojams.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilityTitle": "Projekto matomumas",
-  "app.containers.AdminPage.ProjectEdit.publicationStatusWarningMessage": "Ieškote projekto būsenos? Dabar ją bet kada galite pakeisti tiesiai iš projekto puslapio antraštės.",
   "app.containers.AdminPage.ProjectEdit.publishedExplanationText": "Paskelbti projektai yra matomi visiems arba grupės pogrupiui, jei jis pasirinktas.",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Paskelbta",
   "app.containers.AdminPage.ProjectEdit.purposes": "Tikslai",
