@@ -101,6 +101,8 @@ describe('Survey page logic', () => {
 
     // Expect submit button to be there, proving that page 1 goes straight to the end
     // of the survey (and not to page 2)
+    cy.dataCy('e2e-submit-form').should('exist');
+    cy.wait(2000);
     cy.dataCy('e2e-submit-form').click();
     cy.wait(1000);
 
