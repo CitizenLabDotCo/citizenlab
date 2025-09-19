@@ -2125,7 +2125,6 @@
   "app.containers.AdminPage.ProjectEdit.projectName": "Nom del projecte",
   "app.containers.AdminPage.ProjectEdit.projectVisibilitySubtitle": "Podeu configurar el projecte perquè sigui invisible per a determinats usuaris.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilityTitle": "Visibilitat del projecte",
-  "app.containers.AdminPage.ProjectEdit.publicationStatusWarningMessage": "Esteu buscant l'estat del projecte? Ara podeu canviar-lo en qualsevol moment directament des de la capçalera de la pàgina del projecte.",
   "app.containers.AdminPage.ProjectEdit.publishedExplanationText": "Els projectes publicats són visibles per a tothom o per a un subconjunt del grup si se selecciona.",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Published",
   "app.containers.AdminPage.ProjectEdit.purposes": "Propòsits",
