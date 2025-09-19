@@ -35,7 +35,7 @@ module Files
       return false unless active?
       return true if admin?
 
-      moderates_all_projects?
+      user_moderates_all_projects?(record.projects)
     end
 
     def destroy?
@@ -44,9 +44,8 @@ module Files
 
     private
 
-    def moderates_all_projects?
-      projects = Project.where(id: record.project_ids)
-      (projects - UserRoleService.new.moderatable_projects(user)).empty?
+    def user_moderates_all_projects?(projects)
+      UserRoleService.new.moderatable_projects(user, projects).count == projects.count
     end
   end
 end
