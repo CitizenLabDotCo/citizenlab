@@ -644,6 +644,7 @@ fi:
         user_is_given_admin_rights: 'Käyttäjälle annetaan järjestelmänvalvojan oikeudet'
         user_is_given_folder_moderator_rights: 'Käyttäjälle annetaan kansion valvojan oikeudet'
         user_is_given_project_moderator_rights: 'Käyttäjä saa projektin moderaattorin oikeudet'
+        user_is_invited_to_platform: 'Käyttäjä on kutsuttu alustalle'
         user_is_invited_to_cosponsor_a_proposal: 'Käyttäjää pyydetään tukemaan ehdotusta'
         user_is_mentioned: 'Käyttäjä mainitaan'
         user_is_mentioned_in_internal_comment: 'Käyttäjä mainitaan sisäisessä kommentissa'
