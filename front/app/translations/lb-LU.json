@@ -145,7 +145,6 @@
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Adresseingabe",
   "app.components.CustomFieldsForm.addressInputPlaceholder6": "Gitt eng Adress an...",
   "app.components.CustomFieldsForm.adminFieldTooltip": "Feld nëmme fir Administrateuren sichtbar",
-  "app.components.CustomFieldsForm.anonymousSurveyMessage2": "All Äntwerten op dës Ëmfro ginn anonymiséiert.",
   "app.components.CustomFieldsForm.atLeastThreePointsRequired": "Fir e Polygon sinn op d'mannst dräi Punkte noutwendeg.",
   "app.components.CustomFieldsForm.atLeastTwoPointsRequired": "Fir eng Linn sinn op d'mannst zwee Punkten noutwendeg.",
   "app.components.CustomFieldsForm.attachmentRequired": "Mindestens een Uschloss ass erfuerderlech",
