@@ -644,6 +644,7 @@ lv:
         user_is_given_admin_rights: 'Lietotājam tiek piešķirtas administratora tiesības'
         user_is_given_folder_moderator_rights: 'Lietotājam tiek piešķirtas mapes moderatora tiesības'
         user_is_given_project_moderator_rights: 'Lietotājam tiek piešķirtas projekta moderatora tiesības'
+        user_is_invited_to_platform: 'Lietotājs tiek aicināts uz platformu'
         user_is_invited_to_cosponsor_a_proposal: 'Lietotājs ir aicināts līdzfinansēt priekšlikumu.'
         user_is_mentioned: 'Lietotājs ir minēts'
         user_is_mentioned_in_internal_comment: 'Lietotājs ir minēts iekšējā komentārā'

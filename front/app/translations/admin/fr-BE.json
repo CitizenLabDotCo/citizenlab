@@ -73,6 +73,7 @@
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Merci d'avoir complété l'enquête ! N'hésitez pas à y participer à nouveau au prochain trimestre.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Télécharger au format PDF",
   "app.components.FormSync.downloadExcelTemplate": "Télécharger un modèle Excel",
+  "app.components.FormSync.downloadExcelTemplateTooltip3": "Les modèles Excel n'incluront pas les questions relatives au téléchargement de fichiers ni les questions relatives aux données cartographiques (Drop Pin, Draw Route, Draw Area, ESRI file upload), car elles ne sont pas encore prises en charge pour l'importation en masse.",
   "app.components.ProjectTemplatePreview.close": "Fermer",
   "app.components.ProjectTemplatePreview.createProject": "Créer un projet",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Créer un projet basé sur le modèle ''{templateTitle}''.",

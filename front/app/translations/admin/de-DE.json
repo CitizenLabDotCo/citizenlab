@@ -73,6 +73,7 @@
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Vielen Dank für die Teilnahme an der Umfrage! Gerne können Sie im nächsten Quartal erneut teilnehmen.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Als PDF herunterladen",
   "app.components.FormSync.downloadExcelTemplate": "Download einer Excel-Vorlage",
+  "app.components.FormSync.downloadExcelTemplateTooltip3": "Excel-Vorlagen enthalten keine Fragen zum Datei-Upload und keine Karteneingabefragen (Pin setzen, Route zeichnen, Bereich zeichnen, ESRI-Datei-Upload), da diese derzeit nicht für den Massenimport unterstützt werden.",
   "app.components.ProjectTemplatePreview.close": "Schließen",
   "app.components.ProjectTemplatePreview.createProject": "Projekt erstellen",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Erstellen Sie ein Projekt auf der Grundlage der Vorlage ''{templateTitle}''",
