@@ -2125,7 +2125,6 @@
   "app.containers.AdminPage.ProjectEdit.projectName": "Naziv projekta",
   "app.containers.AdminPage.ProjectEdit.projectVisibilitySubtitle": "Projekt možete postaviti tako da bude nevidljiv određenim korisnicima.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilityTitle": "Vidljivost projekta",
-  "app.containers.AdminPage.ProjectEdit.publicationStatusWarningMessage": "Tražite status projekta? Sada ga možete promijeniti u bilo kojem trenutku izravno iz zaglavlja stranice projekta.",
   "app.containers.AdminPage.ProjectEdit.publishedExplanationText": "Objavljeni projekti vidljivi su svima ili podskupu grupe ako je odabrano.",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Objavljeno",
   "app.containers.AdminPage.ProjectEdit.purposes": "Namjene",
