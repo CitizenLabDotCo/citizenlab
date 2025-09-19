@@ -3,8 +3,8 @@
 module Files
   class FilePolicy < ApplicationPolicy
     class Scope < ApplicationPolicy::Scope
-      # NOTE: Normal users or visitors do not need to list files, only file attachments,
-      # as they contain all the file details relevant for the front-office.
+      # NOTE: Normal users or visitors do not need to be able to list files, only file
+      # attachments, as they contain all the file details relevant for the front-office.
       def resolve
         if active_admin?
           scope.all
@@ -15,18 +15,13 @@ module Files
       end
     end
 
+    # NOTE: Normal users or visitors do not need to be able to show files, only file
+    # attachments, as they contain all the file details relevant for the front-office.
     def show?
+      return false unless active?
       return true if admin?
 
-      if user&.project_or_folder_moderator?
-        # Can the user moderate at least one of the associated projects
-        return UserRoleService.new.moderatable_projects(user, record.projects).exists?
-      end
-
-      # Can the user see whatever the file is attached to
-      record.attachments.any? do |attachment|
-        policy_for(attachment.attachable).show?
-      end
+      UserRoleService.new.moderatable_projects(user, record.projects).exists?
     end
 
     def create?
