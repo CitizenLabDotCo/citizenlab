@@ -415,7 +415,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Approved by {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Αρχειοθετημένο",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Σχέδιο",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.editDescription": "Επεξεργασία περιγραφής",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Όλοι",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Ομάδες",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Hidden",
