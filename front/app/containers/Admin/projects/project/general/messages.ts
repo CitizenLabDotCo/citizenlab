@@ -197,11 +197,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.headerImageAltText',
     defaultMessage: 'Header image alt text',
   },
-  publicationStatusWarning: {
-    id: 'app.containers.AdminPage.ProjectEdit.publicationStatusWarningMessage',
-    defaultMessage:
-      'Looking for the project status? Now you can change it at any time directly from the project page header.',
-  },
   needInspiration: {
     id: 'app.containers.AdminPage.ProjectEdit.needInspiration',
     defaultMessage:

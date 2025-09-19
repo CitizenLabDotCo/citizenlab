@@ -536,12 +536,6 @@ const AdminProjectsProjectGeneralSetUp = () => {
             </>
           )}
 
-          {!isNewProject && (
-            <Warning>
-              {formatMessage(messages.publicationStatusWarning)}
-            </Warning>
-          )}
-
           <Highlighter fragmentId={fragmentId}>
             <ProjectNameInput
               titleMultiloc={projectAttrs.title_multiloc}
