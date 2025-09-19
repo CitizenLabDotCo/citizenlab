@@ -2125,7 +2125,6 @@
   "app.containers.AdminPage.ProjectEdit.projectName": "Όνομα έργου",
   "app.containers.AdminPage.ProjectEdit.projectVisibilitySubtitle": "Μπορείτε να ορίσετε το έργο να είναι αόρατο σε ορισμένους χρήστες.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilityTitle": "Ορατότητα του έργου",
-  "app.containers.AdminPage.ProjectEdit.publicationStatusWarningMessage": "Ψάχνετε για την κατάσταση του έργου; Τώρα μπορείτε να την αλλάξετε ανά πάσα στιγμή απευθείας από την επικεφαλίδα της σελίδας του έργου.",
   "app.containers.AdminPage.ProjectEdit.publishedExplanationText": "Τα δημοσιευμένα έργα είναι ορατά σε όλους ή σε ένα υποσύνολο ομάδων, εάν είναι επιλεγμένα.",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Published",
   "app.containers.AdminPage.ProjectEdit.purposes": "Σκοποί",
