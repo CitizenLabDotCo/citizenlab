@@ -91,8 +91,6 @@ RSpec.describe Invites::CountNewSeatsJob do
         emails[0] = 'invalid_email_a'
         emails[3] = 'invalid_email_b'
         emails[4] = emails[1]
-        hash_array = emails.map { |email| { email: email, admin: true } }
-        xlsx_stringio = XlsxService.new.hash_array_to_xlsx(hash_array)
 
         described_class.perform_now(user, create_params, invites_import.id, xlsx_import: true)
         invites_import.reload
