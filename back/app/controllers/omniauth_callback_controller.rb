@@ -229,8 +229,6 @@ class OmniauthCallbackController < ApplicationController
     identity.update_auth_hash!(auth, authver_method)
   end
 
-  # Determines the locale to set for a user upon signup via SSO.
-
   # Return locale if a locale can be parsed from pathname which matches an app locale
   # and is not the default locale.
   # If that fails, return the locale returned by the SSO provider.
