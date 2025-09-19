@@ -93,6 +93,7 @@ class OmniauthCallbackController < ApplicationController
       else # !@user.invite_pending?
         begin
           update_user!(auth, @user, authver_method)
+          @identity.update_auth_hash!(auth, authver_method)
           SideFxUserService.new.after_update(@user, nil)
         rescue ActiveRecord::RecordInvalid => e
           ErrorReporter.report(e)
