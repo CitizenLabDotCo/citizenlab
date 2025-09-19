@@ -25,7 +25,7 @@ describe('Project description builder navigation', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.apiToggleProjectDescriptionBuilder({ projectId, enabled: false });
-    cy.visit(`/admin/projects/${projectId}/settings/description`);
+    cy.visit(`/admin/projects/${projectId}/general`);
   });
 
   after(() => {
@@ -71,9 +71,7 @@ describe('Project description builder navigation', () => {
     cy.get('#e2e-go-back-button').should('be.visible').click();
     cy.url().should(
       'eq',
-      `${
-        Cypress.config().baseUrl
-      }/en/admin/projects/${projectId}/settings/description`
+      `${Cypress.config().baseUrl}/en/admin/projects/${projectId}/general`
     );
   });
 });
