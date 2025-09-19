@@ -2125,7 +2125,6 @@
   "app.containers.AdminPage.ProjectEdit.projectName": "Enw'r prosiect",
   "app.containers.AdminPage.ProjectEdit.projectVisibilitySubtitle": "Gallwch chi osod y prosiect i fod yn anweledig i ddefnyddwyr penodol.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilityTitle": "Gwelededd y prosiect",
-  "app.containers.AdminPage.ProjectEdit.publicationStatusWarningMessage": "Chwilio am statws y prosiect? Nawr gallwch chi ei newid ar unrhyw adeg yn uniongyrchol o bennyn tudalen y prosiect.",
   "app.containers.AdminPage.ProjectEdit.publishedExplanationText": "Mae prosiectau cyhoeddedig yn weladwy i bawb neu is-set grŵp os cânt eu dewis.",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Cyhoeddwyd",
   "app.containers.AdminPage.ProjectEdit.purposes": "Dibenion",
