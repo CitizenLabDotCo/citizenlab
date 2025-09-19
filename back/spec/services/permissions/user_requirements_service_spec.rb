@@ -244,8 +244,7 @@ describe Permissions::UserRequirementsService do
         let(:permission) do
           permission = survey_phase.permissions.find { |p| p.action == 'posting_idea' }
           permission.permitted_by = 'users'
-          permission.global_custom_fields = false
-          permission.user_fields_in_form = true
+          permission.global_custom_fields = true
           permission.save!
           permission
         end
@@ -264,7 +263,12 @@ describe Permissions::UserRequirementsService do
               missing_user_attributes: %i[first_name last_name email confirmation password]
             },
             verification: false,
-            custom_fields: {},
+            custom_fields: {
+              'birthyear' => 'required',
+              'gender' => 'optional',
+              'extra_required_field' => 'required',
+              'extra_optional_field' => 'optional'
+            },
             onboarding: true,
             group_membership: false
           })
@@ -280,7 +284,12 @@ describe Permissions::UserRequirementsService do
               missing_user_attributes: %i[first_name password]
             },
             verification: false,
-            custom_fields: {},
+            custom_fields: {
+              'birthyear' => 'required',
+              'gender' => 'optional',
+              'extra_required_field' => 'required',
+              'extra_optional_field' => 'optional'
+            },
             onboarding: true,
             group_membership: false
           })
@@ -408,6 +417,8 @@ describe Permissions::UserRequirementsService do
 
         context 'when user fields are enabled as part of the survey form' do
           it 'does not return any custom fields as part of the requirements' do
+            permission.user_fields_in_form = true
+            permission.save!
             requirements = service.requirements(permission, nil)
             expect(requirements[:custom_fields]).to be_empty
           end
