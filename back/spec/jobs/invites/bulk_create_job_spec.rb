@@ -70,7 +70,7 @@ RSpec.describe Invites::BulkCreateJob do
         expected_emails = emails - existing_invitee_emails
         expect(Invite.all.map { |i| i.invitee.email }).to match_array(expected_emails)
         expect(Invite.all.map { |i| i.invitee.groups.map(&:id) }.uniq).to match_array [group_ids]
-        expect(Invite.all.map { |i| i.invite_text }.uniq).to match_array [invite_text]
+        expect(Invite.all.map(&:invite_text).uniq).to match_array [invite_text]
         expect(Invite.all.map { |i| i.invitee.locale }.uniq).to eq [locale]
         expect(Invite.all.map { |i| i.invitee.admin? }.uniq).to eq [true]
         expect(Invite.all.map { |i| i.invitee.project_moderator?(project.id) }.all?).to be true
