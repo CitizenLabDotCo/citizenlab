@@ -10,7 +10,7 @@ RSpec.describe Invites::CountNewSeatsJob do
     let!(:_admin2) { create(:admin, email: emails[1]) }
     let!(:user) { create(:admin) }
 
-    shared_examples 'count new seats job' do |params_key:, invalid_email_1:, invalid_email_2:, duplicate_rows:, invalid_rows:, extra_args: {}|
+    shared_examples 'count new seats job' do |params_key:, duplicate_rows:, invalid_rows:, extra_args: {}|
       let(:invites_import) { create(:invites_import, job_type: extra_args[:job_type], importer: user) }
       let(:create_params) do
         params = {
@@ -49,8 +49,8 @@ RSpec.describe Invites::CountNewSeatsJob do
       end
 
       it 'sets the expected errors in the invites_import result attribute' do
-        emails[0] = invalid_email_1
-        emails[3] = invalid_email_2
+        emails[0] = 'invalid_email_a'
+        emails[3] = 'invalid_email_b'
         emails[4] = emails[1]
 
         described_class.perform_now(user, create_params, invites_import.id, **extra_args.except(:job_type))
@@ -59,8 +59,8 @@ RSpec.describe Invites::CountNewSeatsJob do
         expect(invites_import.result).to eq(
           'errors' => [
             { 'error' => 'emails_duplicate', 'ignore' => false, 'rows' => duplicate_rows, 'value' => emails[1] },
-            { 'error' => 'invalid_email', 'ignore' => false, 'raw_error' => 'Validation failed: Email is invalid', 'row' => invalid_rows[0], 'value' => invalid_email_1 },
-            { 'error' => 'invalid_email', 'ignore' => false, 'raw_error' => 'Validation failed: Email is invalid', 'row' => invalid_rows[1], 'value' => invalid_email_2 }
+            { 'error' => 'invalid_email', 'ignore' => false, 'raw_error' => 'Validation failed: Email is invalid', 'row' => invalid_rows[0], 'value' => 'invalid_email_a' },
+            { 'error' => 'invalid_email', 'ignore' => false, 'raw_error' => 'Validation failed: Email is invalid', 'row' => invalid_rows[1], 'value' => 'invalid_email_b' }
           ]
         )
       end
@@ -69,8 +69,6 @@ RSpec.describe Invites::CountNewSeatsJob do
     describe 'with manually specified emails' do
       it_behaves_like 'count new seats job',
         params_key: :emails,
-        invalid_email_1: 'invalid_email_1',
-        invalid_email_2: 'invalid_email_2',
         duplicate_rows: [1, 4],
         invalid_rows: [0, 3],
         extra_args: { job_type: 'count_new_seats' }
@@ -79,8 +77,6 @@ RSpec.describe Invites::CountNewSeatsJob do
     describe 'with xlsx import' do
       it_behaves_like 'count new seats job',
         params_key: :xlsx,
-        invalid_email_1: 'invalid_email_a',
-        invalid_email_2: 'invalid_email_b',
         duplicate_rows: [3, 6],
         invalid_rows: [2, 5],
         extra_args: { job_type: 'count_new_seats_xlsx', xlsx_import: true }
