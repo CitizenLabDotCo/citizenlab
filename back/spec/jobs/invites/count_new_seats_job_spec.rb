@@ -29,7 +29,7 @@ RSpec.describe Invites::CountNewSeatsJob do
         params
       end
 
-      it 'sets the correct result in the invites_import result attribute' do
+      it 'updates the invites_import with correct value for result attribute' do
         described_class.perform_now(user, create_params, invites_import.id, **extra_args.except(:job_type))
         invites_import.reload
 
@@ -48,7 +48,7 @@ RSpec.describe Invites::CountNewSeatsJob do
         expect(Invite.count).to eq(0)
       end
 
-      it 'sets the expected errors in the invites_import result attribute' do
+      it 'updates the invites_import with the expected errors in the result attribute value' do
         emails[0] = 'invalid_email_a'
         emails[3] = 'invalid_email_b'
         emails[4] = emails[1]
