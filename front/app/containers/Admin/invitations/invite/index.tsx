@@ -10,6 +10,10 @@ import React, {
   useCallback,
 } from 'react';
 
+import { useQueryClient } from '@tanstack/react-query';
+import seatsKeys from 'api/seats/keys';
+import appConfigurationKeys from 'api/app_configuration/keys';
+
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import { isString, isEmpty } from 'lodash-es';
 import styled from 'styled-components';
@@ -56,6 +60,7 @@ const StyledTabs = styled(Tabs)`
 export type TInviteTabName = 'template' | 'manual';
 
 const Invitations = () => {
+  const queryClient = useQueryClient();
   const { formatMessage } = useIntl();
   const { mutateAsync: bulkInviteEmails } = useBulkInviteEmails();
   const { mutateAsync: bulkInviteCountNewSeatsEmails } =
@@ -419,6 +424,10 @@ const Invitations = () => {
 
       if (jobType === 'bulk_create' || jobType === 'bulk_create_xlsx') {
         setProcessed(true);
+        // Invalidate seats & app_configuration queries to trigger refetch,
+        // to ensure correct seat counts displayed after invites are created.
+        queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
+        queryClient.invalidateQueries({ queryKey: appConfigurationKeys.all() });
       }
 
       setProcessing(false);
