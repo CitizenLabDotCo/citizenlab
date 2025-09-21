@@ -638,7 +638,7 @@ const Invitations = () => {
           <SectionField>
             <Box display="flex" alignItems="center" paddingTop="30px">
               <SubmitWrapper
-                loading={processing}
+                loading={processing || createInviteImportId !== null}
                 status={getSubmitState(apiErrors, processed)}
                 messages={{
                   buttonSave: messages.save,
