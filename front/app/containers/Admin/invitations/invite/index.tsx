@@ -99,7 +99,7 @@ const Invitations = () => {
   const [newSeatsResponse, setNewSeatsResponse] =
     useState<IInvitesNewSeats | null>(null);
 
-  // waiting for seats check import to complete
+  // State variables for count seats invites_import polling
   const [seatsInviteImportId, setSeatsInviteImportId] = useState<string | null>(
     null
   );
@@ -111,7 +111,7 @@ const Invitations = () => {
     }
   );
 
-  // State variables for invite creation
+  // State variables for bulk invite creation invites_import polling
   const [createInviteImportId, setCreateInviteImportId] = useState<
     string | null
   >(null);
@@ -364,7 +364,7 @@ const Invitations = () => {
     new Set()
   );
 
-  // NOTE: You may see two invites_import responses with a completed_at value
+  // NOTE: You will probably see two invites_import responses with a completed_at value
   // for each process, (the count seats and create invites processes),
   // even though a completed_at value is the signal to use the response's result.
   // This is due to React state updates being asynchronous: the polling hook may fire
@@ -425,7 +425,7 @@ const Invitations = () => {
       if (jobType === 'bulk_create' || jobType === 'bulk_create_xlsx') {
         setProcessed(true);
         // Invalidate seats & app_configuration queries to trigger refetch,
-        // to ensure correct seat counts displayed after invites are created.
+        // to ensure correct seat counts displayed in form after invites are created.
         queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
         queryClient.invalidateQueries({ queryKey: appConfigurationKeys.all() });
       }
