@@ -11,6 +11,7 @@ import React, {
 } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
+import useInviteImport from 'api/invites/useInviteImport';
 import seatsKeys from 'api/seats/keys';
 import appConfigurationKeys from 'api/app_configuration/keys';
 
@@ -46,7 +47,6 @@ import messages from '../messages';
 
 import ManualTab from './ManualTab';
 import TemplateTab from './TemplateTab';
-import useInviteImport from 'api/invites/useInviteImport';
 
 const InviteUsersWithSeatsModal = lazy(
   () => import('components/admin/SeatBasedBilling/InviteUsersWithSeatsModal')
@@ -437,7 +437,7 @@ const Invitations = () => {
 
     // Reset the query to prevent issues if we navigate away/back
     resetCreateInviteQueryData();
-  }, [createInviteImport, resetCreateInviteQueryData]);
+  }, [createInviteImport, resetCreateInviteQueryData, queryClient]);
 
   const closeModal = () => {
     setShowModal(false);
