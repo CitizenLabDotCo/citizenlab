@@ -892,6 +892,7 @@
   "app.components.formBuilder.printSupportTooltip.topics2": "Tags are shown as unsupported on the downloaded PDF and are not supported for import via FormSync.",
   "app.components.formBuilder.proposedBudget": "Proposed budget",
   "app.components.formBuilder.question": "Question",
+  "app.components.formBuilder.questionCannotBeDeleted": "This question can't be deleted.",
   "app.components.formBuilder.questionDescriptionOptional": "Question description (optional)",
   "app.components.formBuilder.questionTitle": "Question title",
   "app.components.formBuilder.randomize": "Randomize",
