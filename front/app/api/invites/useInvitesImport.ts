@@ -9,28 +9,27 @@ export interface QueryParams {
   importId?: string | null;
 }
 
-export interface UseInviteImportOptions {
+export interface UseInvitesImportOptions {
   pollingEnabled?: boolean;
   enabled?: boolean;
 }
 
-// TODO: SORT OUT THE TYPES
-const fetchInviteImports = ({ importId }: QueryParams) =>
+const fetchInvitesImport = ({ importId }: QueryParams) =>
   fetcher<any>({
     path: `/invites_imports/${importId}`,
     action: 'get',
   });
 
-const useInviteImports = (
+const useInvitesImport = (
   queryParams: QueryParams,
-  { pollingEnabled, enabled }: UseInviteImportOptions = {}
+  { pollingEnabled, enabled }: UseInvitesImportOptions = {}
 ) => {
   const queryClient = useQueryClient();
   const isEnabled = enabled !== false && !!queryParams.importId;
 
   const result = useQuery<any, CLErrors, any, any>({
     queryKey: invitesKeys.lists(),
-    queryFn: () => fetchInviteImports(queryParams),
+    queryFn: () => fetchInvitesImport(queryParams),
     refetchInterval: pollingEnabled ? 5000 : false,
     enabled: isEnabled,
   });
@@ -46,4 +45,4 @@ const useInviteImports = (
   };
 };
 
-export default useInviteImports;
+export default useInvitesImport;

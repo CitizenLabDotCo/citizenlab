@@ -4,7 +4,7 @@ import { setupServer } from 'msw/node';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
-import useInviteImport from './useInviteImport';
+import useInvitesImport from './useInvitesImport';
 
 const importId = '123';
 const apiPath = `*/invites_imports/${importId}`;
@@ -29,14 +29,14 @@ const server = setupServer(
   })
 );
 
-describe('useInviteImport', () => {
+describe('useInvitesImport', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
   afterEach(() => server.resetHandlers());
 
   it('returns data correctly', async () => {
     const { result } = renderHook(
-      () => useInviteImport({ importId }, { enabled: true }),
+      () => useInvitesImport({ importId }, { enabled: true }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -58,7 +58,7 @@ describe('useInviteImport', () => {
     );
 
     const { result } = renderHook(
-      () => useInviteImport({ importId }, { enabled: true }),
+      () => useInvitesImport({ importId }, { enabled: true }),
       {
         wrapper: createQueryClientWrapper(),
       }

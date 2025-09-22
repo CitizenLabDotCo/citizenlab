@@ -11,7 +11,7 @@ import React, {
 } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
-import useInviteImport from 'api/invites/useInviteImport';
+import useInvitesImport from 'api/invites/useInvitesImport';
 import seatsKeys from 'api/seats/keys';
 import appConfigurationKeys from 'api/app_configuration/keys';
 
@@ -100,29 +100,29 @@ const Invitations = () => {
     useState<IInvitesImport | null>(null);
 
   // State variables for count seats invites_import polling
-  const [seatsInviteImportId, setSeatsInviteImportId] = useState<string | null>(
-    null
-  );
-  const { data: seatsInviteImport, resetQueryData } = useInviteImport(
-    { importId: seatsInviteImportId || '' }, // Use empty string as fallback
+  const [seatsInvitesImportId, setSeatsInvitesImportId] = useState<
+    string | null
+  >(null);
+  const { data: seatsInvitesImport, resetQueryData } = useInvitesImport(
+    { importId: seatsInvitesImportId || '' }, // Use empty string as fallback
     {
-      pollingEnabled: seatsInviteImportId !== null,
-      enabled: seatsInviteImportId !== null,
+      pollingEnabled: seatsInvitesImportId !== null,
+      enabled: seatsInvitesImportId !== null,
     }
   );
 
   // State variables for bulk invite creation invites_import polling
-  const [createInviteImportId, setCreateInviteImportId] = useState<
+  const [createInvitesImportId, setCreateInvitesImportId] = useState<
     string | null
   >(null);
   const {
-    data: createInviteImport,
+    data: createInvitesImport,
     resetQueryData: resetCreateInviteQueryData,
-  } = useInviteImport(
-    { importId: createInviteImportId || '' },
+  } = useInvitesImport(
+    { importId: createInvitesImportId || '' },
     {
-      pollingEnabled: createInviteImportId !== null,
-      enabled: createInviteImportId !== null,
+      pollingEnabled: createInvitesImportId !== null,
+      enabled: createInvitesImportId !== null,
     }
   );
 
@@ -163,7 +163,7 @@ const Invitations = () => {
         try {
           setProcessing(true);
           const createJob = await bulkInviteXLSX(savedInviteOptions);
-          setCreateInviteImportId((createJob as any).data.id);
+          setCreateInvitesImportId((createJob as any).data.id);
           setSavedInviteOptions(null);
         } catch (errors) {
           const apiErrors = errors.errors;
@@ -198,7 +198,7 @@ const Invitations = () => {
             setSavedInviteOptions(inviteOptions);
 
             const newSeats = await bulkInviteCountNewSeatsXLSX(inviteOptions);
-            setSeatsInviteImportId(newSeats.data.id);
+            setSeatsInvitesImportId(newSeats.data.id);
           }
         } catch (errors) {
           const apiErrors = errors.errors;
@@ -220,8 +220,8 @@ const Invitations = () => {
       setUnknownError,
       bulkInviteXLSX,
       bulkInviteCountNewSeatsXLSX,
-      setSeatsInviteImportId,
-      setCreateInviteImportId,
+      setSeatsInvitesImportId,
+      setCreateInvitesImportId,
       savedInviteOptions,
       setSavedInviteOptions,
     ]
@@ -236,7 +236,7 @@ const Invitations = () => {
         try {
           setProcessing(true);
           const createJob = await bulkInviteEmails(savedEmailOptions);
-          setCreateInviteImportId((createJob as any).data.id);
+          setCreateInvitesImportId((createJob as any).data.id);
           setSavedEmailOptions(null);
         } catch (errors) {
           const apiErrors = errors.errors;
@@ -271,7 +271,7 @@ const Invitations = () => {
             setSavedEmailOptions(inviteOptions);
 
             const newSeats = await bulkInviteCountNewSeatsEmails(inviteOptions);
-            setSeatsInviteImportId(newSeats.data.id);
+            setSeatsInvitesImportId(newSeats.data.id);
           }
         } catch (errors) {
           const apiErrors = errors.errors;
@@ -293,8 +293,8 @@ const Invitations = () => {
       setUnknownError,
       bulkInviteEmails,
       bulkInviteCountNewSeatsEmails,
-      setSeatsInviteImportId,
-      setCreateInviteImportId,
+      setSeatsInvitesImportId,
+      setCreateInvitesImportId,
       savedEmailOptions,
       setSavedEmailOptions,
     ]
@@ -372,11 +372,11 @@ const Invitations = () => {
 
   // Effect to monitor invite creation
   useEffect(() => {
-    if (!seatsInviteImport) return;
+    if (!seatsInvitesImport) return;
 
-    const seatsImportIdValue = seatsInviteImport?.data?.id;
+    const seatsImportIdValue = seatsInvitesImport?.data?.id;
     const seatsImportComplete =
-      seatsInviteImport?.data?.attributes?.completed_at;
+      seatsInvitesImport?.data?.attributes?.completed_at;
 
     // Skip if we've already processed this import or if it's not complete
     if (
@@ -391,17 +391,17 @@ const Invitations = () => {
     setProcessedImportIds((prev) => new Set([...prev, seatsImportIdValue]));
 
     // Process the import
-    setSeatsInviteImportId(null);
-    checkNewSeatsResponse(seatsInviteImport);
-  }, [seatsInviteImport, checkNewSeatsResponse, processedImportIds]);
+    setSeatsInvitesImportId(null);
+    checkNewSeatsResponse(seatsInvitesImport);
+  }, [seatsInvitesImport, checkNewSeatsResponse, processedImportIds]);
 
   // Effect to monitor invite creation
   useEffect(() => {
-    if (!createInviteImport) return;
+    if (!createInvitesImport) return;
 
-    const jobId = createInviteImport?.data?.id;
-    const jobComplete = createInviteImport?.data?.attributes?.completed_at;
-    const jobType = createInviteImport?.data?.attributes?.job_type;
+    const jobId = createInvitesImport?.data?.id;
+    const jobComplete = createInvitesImport?.data?.attributes?.completed_at;
+    const jobType = createInvitesImport?.data?.attributes?.job_type;
 
     // Skip if job isn't complete
     if (!jobComplete || !jobId) {
@@ -409,11 +409,11 @@ const Invitations = () => {
     }
 
     // Process completed invite creation
-    setCreateInviteImportId(null);
+    setCreateInvitesImportId(null);
 
     // Check for any errors in the response
-    if (createInviteImport?.data?.attributes?.result?.errors?.length > 0) {
-      setApiErrors(createInviteImport.data.attributes.result.errors);
+    if (createInvitesImport?.data?.attributes?.result?.errors?.length > 0) {
+      setApiErrors(createInvitesImport.data.attributes.result.errors);
       setProcessing(false);
       setProcessed(false);
     } else {
@@ -437,7 +437,7 @@ const Invitations = () => {
 
     // Reset the query to prevent issues if we navigate away/back
     resetCreateInviteQueryData();
-  }, [createInviteImport, resetCreateInviteQueryData, queryClient]);
+  }, [createInvitesImport, resetCreateInviteQueryData, queryClient]);
 
   const closeModal = () => {
     setShowModal(false);
@@ -647,7 +647,7 @@ const Invitations = () => {
           <SectionField>
             <Box display="flex" alignItems="center" paddingTop="30px">
               <SubmitWrapper
-                loading={processing || createInviteImportId !== null}
+                loading={processing || createInvitesImportId !== null}
                 status={getSubmitState(apiErrors, processed)}
                 messages={{
                   buttonSave: messages.save,
@@ -657,7 +657,7 @@ const Invitations = () => {
                 }}
               />
 
-              {(processing || createInviteImportId !== null) && (
+              {(processing || createInvitesImportId !== null) && (
                 <Box color={colors.textSecondary} marginLeft="15px">
                   <FormattedMessage {...messages.processing} />
                 </Box>
