@@ -1,12 +1,18 @@
 import React from 'react';
 
-import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  IconTooltip,
+  Text,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 
 import T from 'components/T';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../../messages';
 
@@ -17,6 +23,8 @@ interface Props {
 }
 
 const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
+  const { formatMessage } = useIntl();
+
   let rowTitle = messages.question;
 
   if (field.input_type === 'page') {
@@ -28,6 +36,9 @@ const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
   }
 
   const titleColor = field.input_type === 'page' ? 'blue500' : 'teal400';
+  const lockMessage =
+    field.constraints?.locks?.deletion &&
+    formatMessage(messages.questionCannotBeDeleted);
 
   return (
     <Box
@@ -73,6 +84,16 @@ const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
         >
           <Box display="flex" alignItems="center">
             <T value={field.title_multiloc} />
+            {lockMessage && (
+              <IconTooltip
+                placement="top-start"
+                iconColor={colors.coolGrey500}
+                iconSize="16px"
+                ml="4px"
+                icon="lock"
+                content={lockMessage}
+              />
+            )}
           </Box>
         </Text>
       </Box>

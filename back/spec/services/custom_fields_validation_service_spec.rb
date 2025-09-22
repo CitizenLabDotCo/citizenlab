@@ -61,6 +61,36 @@ describe CustomFieldsValidationService do
     end
   end
 
+  describe 'validate_deletions' do
+    let(:fields) do
+      default_fields.reject { |f| excluded_codes.include?(f.code) }
+    end
+
+    context do
+      let(:excluded_codes) { %w[body_page body_multiloc] }
+
+      it 'accepts a form without the body page and field' do
+        expect(result).to be_nil
+      end
+    end
+
+    context do
+      let(:excluded_codes) { %w[title_multiloc] }
+
+      it 'rejects a form without the title field' do
+        expect(result).to eq({ form: [{ error: 'locked_deletion' }] })
+      end
+    end
+
+    context do
+      let(:excluded_codes) { %w[title_page title_multiloc] }
+
+      it 'rejects a form without the title page and field' do
+        expect(result).to eq({ form: [{ error: 'locked_deletion' }] })
+      end
+    end
+  end
+
   describe 'validate_attributes' do
     context do
       let(:fields) do

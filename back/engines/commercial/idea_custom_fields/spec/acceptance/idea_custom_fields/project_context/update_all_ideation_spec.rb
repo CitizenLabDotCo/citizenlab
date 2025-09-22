@@ -127,7 +127,7 @@ resource 'Idea Custom Fields' do
                 created_at: an_instance_of(String),
                 updated_at: an_instance_of(String),
                 logic: {},
-                constraints: { locks: { attributes: %w[title_multiloc], deletion: true, children: true } },
+                constraints: { locks: { attributes: %w[title_multiloc] } },
                 page_layout: 'default',
                 random_option_ordering: false
               ),
@@ -148,7 +148,7 @@ resource 'Idea Custom Fields' do
                 created_at: an_instance_of(String),
                 updated_at: an_instance_of(String),
                 logic: {},
-                constraints: { locks: { attributes: %w[title_multiloc required], deletion: true } },
+                constraints: { locks: { attributes: %w[title_multiloc required] } },
                 random_option_ordering: false
               ),
               id: an_instance_of(String),
@@ -168,7 +168,7 @@ resource 'Idea Custom Fields' do
                 created_at: an_instance_of(String),
                 updated_at: an_instance_of(String),
                 logic: {},
-                constraints: { locks: { children: true } },
+                constraints: nil,
                 page_layout: 'default',
                 random_option_ordering: false
               ),

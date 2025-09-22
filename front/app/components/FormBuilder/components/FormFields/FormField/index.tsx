@@ -279,14 +279,18 @@ export const FormField = ({
           },
         ]
       : []),
-    {
-      handler: (event: React.MouseEvent) => {
-        event.stopPropagation();
-        deleteField(index);
-      },
-      label: formatMessage(messages.delete),
-      icon: 'delete' as const,
-    },
+    ...(!field?.constraints?.locks?.deletion
+      ? [
+          {
+            handler: (event: React.MouseEvent) => {
+              event.stopPropagation();
+              deleteField(index);
+            },
+            label: formatMessage(messages.delete),
+            icon: 'delete' as const,
+          },
+        ]
+      : []),
   ];
 
   return (

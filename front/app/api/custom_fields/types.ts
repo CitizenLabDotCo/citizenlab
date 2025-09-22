@@ -87,6 +87,7 @@ export interface IAttributes {
   constraints?: {
     locks: {
       attributes?: ('title_multiloc' | 'required')[];
+      deletion?: boolean;
     };
   };
   enabled: boolean;
