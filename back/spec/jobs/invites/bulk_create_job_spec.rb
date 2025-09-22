@@ -7,11 +7,10 @@ RSpec.describe Invites::BulkCreateJob do
     let(:locale) { 'nl-NL' }
     let(:invite_text) { 'Welcome, my friend!' }
     let(:project) { create(:project) }
-    let!(:_project_moderator1) { create(:project_moderator, projects: [project]) }
     let!(:_admin) { create(:admin) }
-    let!(:project_moderator2) { create(:project_moderator, email: emails[0], projects: [project], locale: 'en') }
+    let!(:project_moderator) { create(:project_moderator, email: emails[0], projects: [project], locale: 'en') }
     let!(:admin2) { create(:admin, email: emails[1], locale: 'fr-FR') }
-    let(:existing_invitee_emails) { [project_moderator2.email, admin2.email] }
+    let(:existing_invitee_emails) { [project_moderator.email, admin2.email] }
     let(:roles) do
       [
         { 'type' => 'admin' },
@@ -19,11 +18,6 @@ RSpec.describe Invites::BulkCreateJob do
       ]
     end
     let!(:user) { create(:admin) }
-
-    before do
-      project_moderator2
-      admin2
-    end
 
     shared_examples 'bulk create job' do |params_key:, duplicate_rows:, invalid_rows:, extra_args: {}|
       let(:invites_import) { create(:invites_import, job_type: extra_args[:job_type], importer: user) }
@@ -94,7 +88,7 @@ RSpec.describe Invites::BulkCreateJob do
       it 'updates existing users as expected' do
         described_class.perform_now(user, create_params, invites_import.id, **extra_args.except(:job_type))
 
-        existing_project_moderator = User.find_by(email: project_moderator2.email)
+        existing_project_moderator = User.find_by(email: project_moderator.email)
         expect(existing_project_moderator.roles).to include({ 'type' => 'admin' })
         expect(existing_project_moderator.roles).to include({ 'type' => 'project_moderator', 'project_id' => project.id })
         expect(existing_project_moderator.groups).to include(*Group.where(id: group_ids))
@@ -105,6 +99,40 @@ RSpec.describe Invites::BulkCreateJob do
         expect(existing_admin.roles).to include({ 'type' => 'project_moderator', 'project_id' => project.id })
         expect(existing_admin.groups).to include(*Group.where(id: group_ids))
         expect(existing_admin.locale).to eq('fr-FR')
+      end
+
+      it 'results in the expected changes to seats in app_configuration' do
+        config = AppConfiguration.instance
+        config.settings['core']['maximum_admins_number'] = 2
+        config.settings['core']['additional_admins_number'] = 1
+        config.settings['core']['maximum_moderators_number'] = 2
+        config.settings['core']['additional_moderators_number'] = 0
+        config.save!
+
+        expect(User.billed_admins.count).to eq(3) # 2 + 1 additional seats
+
+        described_class.perform_now(user, create_params, invites_import.id, **extra_args.except(:job_type))
+
+        config.reload
+        maximum_admins = config.settings['core']['maximum_admins_number']
+        additional_admins = config.settings['core']['additional_admins_number']
+        maximum_moderators = config.settings['core']['maximum_moderators_number']
+        additional_moderators = config.settings['core']['additional_moderators_number']
+
+        expect(maximum_admins).to eq(2)
+        expect(additional_admins).to eq(5)
+        expect(maximum_moderators).to eq(2)
+        expect(additional_moderators).to eq(0)
+        expect(User.billed_admins.count).to eq(7) # 2 + 5 additional seats
+        # Observant devs may notice that although we added 5 admins through the invites,
+        # (6 invites, but one was for an existing admin user),
+        # the additional_admins seats recorded in app_configuration only increased by 4.
+        # This is because we invited one user with `email: nil` and we currently exclude
+        # admins with `email: nil` from the billed_admins scope we use to count admins
+        # for billing purposes.
+        # This is probably a bug, but not one I am addressing right now,
+        # as fixing it might require some careful handling on platforms where
+        # the fix might suddenly increase billed seats. See TAN-5537.
       end
 
       it 'updates the invites_import with the expected errors in the result attribute value' do
