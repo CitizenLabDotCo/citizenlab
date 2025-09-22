@@ -13,7 +13,6 @@ import { useParams } from 'react-router-dom';
 import useAddFileAttachment from 'api/file_attachments/useAddFileAttachment';
 import useDeleteFileAttachment from 'api/file_attachments/useDeleteFileAttachment';
 import useFileAttachmentById from 'api/file_attachments/useFileAttachmentById';
-import useFileAttachments from 'api/file_attachments/useFileAttachments';
 import useFiles from 'api/files/useFiles';
 import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
 
@@ -63,6 +62,7 @@ const FileAttachmentSettings = () => {
   const {
     actions: { setProp },
     fileId,
+    fileAttachmentId,
   } = useNode((node) => ({
     fileId: node.data.props.fileId,
     fileAttachmentId: node.data.props.fileAttachmentId,
@@ -79,13 +79,6 @@ const FileAttachmentSettings = () => {
   const { data: projectDescriptionLayout } = useProjectDescriptionBuilderLayout(
     projectId || ''
   );
-
-  const { data: fileAttachments } = useFileAttachments({
-    attachable_type: 'ContentBuilder::Layout',
-    attachable_id: projectDescriptionLayout?.data.id,
-  });
-
-  console.log({ fileAttachments });
 
   // Get files for project
   const { data: files, isFetching: isFetchingFiles } = useFiles({
@@ -120,8 +113,8 @@ const FileAttachmentSettings = () => {
           onChange={(option) => {
             setProp((props: FileAttachmentProps) => {
               // Remove any current file attachment.
-              if (props.fileAttachmentId) {
-                deleteFileAttachment(props.fileAttachmentId);
+              if (fileAttachmentId) {
+                deleteFileAttachment(fileAttachmentId);
               }
               // Set the new selected file ID.
               props.fileId = option.value;
