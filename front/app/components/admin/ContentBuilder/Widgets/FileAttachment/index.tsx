@@ -13,6 +13,7 @@ import { useParams } from 'react-router-dom';
 import useAddFileAttachment from 'api/file_attachments/useAddFileAttachment';
 import useDeleteFileAttachment from 'api/file_attachments/useDeleteFileAttachment';
 import useFileAttachmentById from 'api/file_attachments/useFileAttachmentById';
+import useFileAttachments from 'api/file_attachments/useFileAttachments';
 import useFiles from 'api/files/useFiles';
 import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
 
@@ -79,6 +80,13 @@ const FileAttachmentSettings = () => {
     projectId || ''
   );
 
+  const { data: fileAttachments } = useFileAttachments({
+    attachable_type: 'ContentBuilder::Layout',
+    attachable_id: projectDescriptionLayout?.data.id,
+  });
+
+  console.log({ fileAttachments });
+
   // Get files for project
   const { data: files, isFetching: isFetchingFiles } = useFiles({
     project: projectId ? [projectId] : [],
@@ -132,6 +140,13 @@ const FileAttachmentSettings = () => {
                       setProp((props: FileAttachmentProps) => {
                         props.fileAttachmentId = data.data.id;
                       });
+                    },
+                    onError: (errors) => {
+                      if (errors.file_id[0].value === 'taken') {
+                        // Handle the case where the file is already attached
+                        // by setting the fileAttachmentId prop to the existing attachment's ID.
+                        const existingAttachment = projectDescriptionLayout;
+                      }
                     },
                   }
                 );
