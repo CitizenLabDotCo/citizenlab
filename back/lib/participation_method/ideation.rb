@@ -56,9 +56,8 @@ module ParticipationMethod
     # Locks mirror the name of the fields whose default values cannot be changed (ie are locked)
     def constraints
       result = {
-        title_page: { locks: { attributes: %i[title_multiloc], deletion: true, children: true } },
-        title_multiloc: { locks: { attributes: %i[title_multiloc required], deletion: true } },
-        body_page: { locks: { children: true } },
+        title_page: { locks: { attributes: %i[title_multiloc] } },
+        title_multiloc: { locks: { attributes: %i[title_multiloc required] } },
         body_multiloc: { locks: { attributes: %i[title_multiloc required] } },
         idea_images_attributes: { locks: { attributes: %i[title_multiloc] } },
         idea_files_attributes: { locks: { attributes: %i[title_multiloc] } },
