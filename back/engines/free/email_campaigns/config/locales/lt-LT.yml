@@ -644,6 +644,7 @@ lt:
         user_is_given_admin_rights: 'Naudotojui suteikiamos administratoriaus teisės'
         user_is_given_folder_moderator_rights: 'Naudotojui suteiktos aplanko moderatoriaus teisės'
         user_is_given_project_moderator_rights: 'Naudotojui suteikiamos projekto moderatoriaus teisės'
+        user_is_invited_to_platform: 'Naudotojas kviečiamas į platformą'
         user_is_invited_to_cosponsor_a_proposal: 'Naudotojas kviečiamas tapti vienu iš pasiūlymo rėmėjų'
         user_is_mentioned: 'Vartotojas paminėtas'
         user_is_mentioned_in_internal_comment: 'Vartotojas paminėtas vidiniame komentare'
