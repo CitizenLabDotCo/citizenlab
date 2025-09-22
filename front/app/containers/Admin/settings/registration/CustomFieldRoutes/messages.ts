@@ -100,13 +100,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab',
     defaultMessage: 'Answer options',
   },
-  defaultField: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultField',
-    defaultMessage: 'Default field',
+  defaultQuestion: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultQuestion',
+    defaultMessage: 'Default question',
   },
-  hiddenField: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.hiddenField',
-    defaultMessage: 'Hidden field',
+  hiddenQuestion: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.hiddenQuestion',
+    defaultMessage: 'Hidden question',
   },
   required: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.required',

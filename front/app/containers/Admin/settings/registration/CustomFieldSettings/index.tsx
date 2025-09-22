@@ -211,14 +211,14 @@ const CustomFieldSettings = () => {
                     {isBuiltInField(field) && (
                       <div>
                         <FormattedMessage
-                          {...customfieldMessages.defaultField}
+                          {...customfieldMessages.defaultQuestion}
                         />
                       </div>
                     )}
                     {isHiddenField(field) && (
                       <div>
                         <FormattedMessage
-                          {...customfieldMessages.hiddenField}
+                          {...customfieldMessages.hiddenQuestion}
                         />
                       </div>
                     )}

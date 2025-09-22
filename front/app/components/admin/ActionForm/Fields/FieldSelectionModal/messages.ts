@@ -17,9 +17,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.select',
     defaultMessage: 'Select',
   },
-  defaultField: {
-    id: 'app.containers.AdminPage.groups.permissions.defaultField',
-    defaultMessage: 'Default field',
+  defaultQuestion: {
+    id: 'app.containers.AdminPage.groups.permissions.defaultQuestion',
+    defaultMessage: 'Default question',
   },
   createANewQuestion: {
     id: 'app.containers.AdminPage.groups.permissions.createANewQuestion',
