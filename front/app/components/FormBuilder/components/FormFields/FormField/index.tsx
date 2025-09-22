@@ -65,7 +65,6 @@ export const FormField = ({
   fieldNumbers,
   closeSettings,
   conflicts,
-  hasFullPageRestriction,
 }: Props) => {
   const {
     watch,
@@ -75,7 +74,6 @@ export const FormField = ({
   } = useFormContext();
   const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
   const { formatMessage } = useIntl();
-  let deletionLocked = field?.constraints?.locks?.deletion;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const formCustomFields: IFlatCustomField[] = watch('customFields');
   const index = formCustomFields.findIndex((f) => f.id === field.id);
@@ -91,23 +89,6 @@ export const FormField = ({
   // NOTE: We always show the default page logic on a page field
   const showLogicOnRow = field.input_type !== 'page' ? field.logic.rules : true;
   const isFieldGrouping = field.input_type === 'page';
-
-  // Group is only deletable when we have more than one group
-  const getGroupDeletable = () => {
-    const groupFields = formCustomFields.filter(
-      (field) => field.input_type === 'page'
-    );
-
-    return builderConfig.type === 'survey'
-      ? groupFields.length > 2
-      : groupFields.length > 1;
-  };
-
-  const isGroupDeletable = getGroupDeletable();
-  const shouldShowDelete = !(
-    (field.input_type === 'page' && !isGroupDeletable) ||
-    deletionLocked
-  );
 
   const editFieldAndValidate = (defaultTab: ICustomFieldSettingsTab) => {
     onEditField({ ...field, index, defaultTab });
@@ -298,18 +279,14 @@ export const FormField = ({
           },
         ]
       : []),
-    ...(shouldShowDelete
-      ? [
-          {
-            handler: (event: React.MouseEvent) => {
-              event.stopPropagation();
-              deleteField(index);
-            },
-            label: formatMessage(messages.delete),
-            icon: 'delete' as const,
-          },
-        ]
-      : []),
+    {
+      handler: (event: React.MouseEvent) => {
+        event.stopPropagation();
+        deleteField(index);
+      },
+      label: formatMessage(messages.delete),
+      icon: 'delete' as const,
+    },
   ];
 
   return (
@@ -340,7 +317,6 @@ export const FormField = ({
                   hasErrors={hasErrors}
                   field={field}
                   fieldNumber={fieldNumbers[field.id]}
-                  hasFullPageRestriction={hasFullPageRestriction}
                 />
               </Box>
             </Box>

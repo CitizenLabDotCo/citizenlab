@@ -1,18 +1,12 @@
 import React from 'react';
 
-import {
-  Box,
-  Icon,
-  Text,
-  IconTooltip,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 
 import T from 'components/T';
 
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../../messages';
 
@@ -20,17 +14,9 @@ interface Props {
   hasErrors: boolean;
   field: IFlatCustomField;
   fieldNumber?: number;
-  hasFullPageRestriction: boolean;
 }
 
-const FieldTitle = ({
-  hasErrors,
-  field,
-  fieldNumber,
-  hasFullPageRestriction,
-}: Props) => {
-  const { formatMessage } = useIntl();
-
+const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
   let rowTitle = messages.question;
 
   if (field.input_type === 'page') {
@@ -41,26 +27,7 @@ const FieldTitle = ({
     }
   }
 
-  const deletionLocked = field.constraints?.locks?.deletion;
   const titleColor = field.input_type === 'page' ? 'blue500' : 'teal400';
-  const getLockMessage = () => {
-    if (field.input_type === 'page') {
-      if (hasFullPageRestriction) {
-        return formatMessage(messages.pageCannotBeDeletedNorNewFieldsAdded);
-      }
-      if (deletionLocked) {
-        return formatMessage(messages.pageCannotBeDeleted);
-      }
-    }
-
-    if (deletionLocked) {
-      return formatMessage(messages.questionCannotBeDeleted);
-    }
-
-    return undefined;
-  };
-
-  const lockMessage = getLockMessage();
 
   return (
     <Box
@@ -106,16 +73,6 @@ const FieldTitle = ({
         >
           <Box display="flex" alignItems="center">
             <T value={field.title_multiloc} />
-            {lockMessage && (
-              <IconTooltip
-                placement="top-start"
-                iconColor={colors.coolGrey500}
-                iconSize="16px"
-                ml="4px"
-                icon="lock"
-                content={lockMessage}
-              />
-            )}
           </Box>
         </Text>
       </Box>
