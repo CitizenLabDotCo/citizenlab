@@ -1,29 +1,41 @@
 import React from 'react';
 
-import useProjectBySlug from 'api/projects/useProjectBySlug';
-
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import ProjectViewer from './Viewer/ProjectViewer';
+import { IProjectData } from 'api/projects/types';
+import { IProjectFolderData } from 'api/project_folders/types';
+import { ProjectDescriptionModelType } from 'api/project_description_builder/types';
+import FolderViewer from 'components/ProjectDescriptionBuilder/ContentViewer/Viewer/FolderViewer';
 
-import Viewer from './Viewer';
+interface Props {
+  model: IProjectData | IProjectFolderData;
+  modelType: ProjectDescriptionModelType;
+}
 
-const ContentViewer = ({ params: { slug } }: WithRouterProps) => {
-  const { data: project } = useProjectBySlug(slug);
+const ContentViewer = ({ model, modelType }: Props) => {
   const featureEnabled = useFeatureFlag({
     name: 'project_description_builder',
   });
 
-  if (!featureEnabled || !project) {
+  if (!featureEnabled || !model) {
     return null;
   }
 
+  if (modelType == 'folder') {
+    return (
+      <FolderViewer
+        folderId={model.id}
+        folderTitle={model.attributes.title_multiloc}
+      />
+    );
+  }
   return (
-    <Viewer
-      projectId={project.data.id}
-      projectTitle={project.data.attributes.title_multiloc}
+    <ProjectViewer
+      projectId={model.id}
+      projectTitle={model.attributes.title_multiloc}
     />
   );
 };
 
-export default withRouter(ContentViewer);
+export default ContentViewer;

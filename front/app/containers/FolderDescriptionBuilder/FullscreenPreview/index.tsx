@@ -6,7 +6,6 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import { SupportedLocale } from 'typings';
 
 import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
-import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
@@ -17,6 +16,7 @@ import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import Editor from 'components/ProjectDescriptionBuilder/Editor';
 
 import { isNilOrError } from 'utils/helperUtils';
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 export const FullScreenPreview = () => {
   const [search] = useSearchParams();
@@ -27,14 +27,14 @@ export const FullScreenPreview = () => {
   const localize = useLocalize();
 
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
-  const { projectId } = useParams() as { projectId: string };
+  const { folderId } = useParams() as { folderId: string };
   const platformLocale = useLocale();
 
-  const { data: project } = useProjectById(projectId);
+  const { data: folder } = useProjectFolderById(folderId);
   const { data: projectDescriptionBuilderLayout } =
-    useProjectDescriptionBuilderLayout(projectId);
+    useProjectDescriptionBuilderLayout(folderId, 'folder');
 
-  if (isNilOrError(platformLocale) || !project) {
+  if (isNilOrError(platformLocale) || !folder) {
     return null;
   }
 
@@ -57,7 +57,7 @@ export const FullScreenPreview = () => {
     >
       <FullScreenWrapper onUpdateDraftData={setDraftData} padding="0px">
         <Title color="tenantText" variant="h1" px="20px">
-          {localize(project.data.attributes.title_multiloc)}
+          {localize(folder.data.attributes.title_multiloc)}
         </Title>
         {isLoadingProjectDescriptionBuilderLayout && <Spinner />}
         {!isLoadingProjectDescriptionBuilderLayout && editorData && (

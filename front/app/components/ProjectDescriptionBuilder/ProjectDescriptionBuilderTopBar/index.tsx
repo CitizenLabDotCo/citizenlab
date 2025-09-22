@@ -8,11 +8,9 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
-import { useParams } from 'react-router-dom';
-import { SupportedLocale } from 'typings';
+import { Multiloc, SupportedLocale } from 'typings';
 
 import useAddProjectDescriptionBuilderLayout from 'api/project_description_builder/useAddProjectDescriptionBuilderLayout';
-import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -27,6 +25,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import messages from './messages';
+import { RouteType } from 'routes';
+import { ProjectDescriptionModelType } from 'api/project_description_builder/types';
 
 type ProjectDescriptionBuilderTopBarProps = {
   hasPendingState?: boolean;
@@ -38,6 +38,11 @@ type ProjectDescriptionBuilderTopBarProps = {
     locale: SupportedLocale;
     editorData: SerializedNodes;
   }) => void;
+  modelId: string;
+  modelType: ProjectDescriptionModelType;
+  backPath: RouteType;
+  previewPath: RouteType;
+  titleMultiloc: Multiloc;
 };
 
 const ProjectDescriptionBuilderTopBar = ({
@@ -47,12 +52,14 @@ const ProjectDescriptionBuilderTopBar = ({
   onSelectLocale,
   hasError,
   hasPendingState,
+  modelId,
+  modelType,
+  backPath,
+  previewPath,
+  titleMultiloc,
 }: ProjectDescriptionBuilderTopBarProps) => {
-  const { projectId } = useParams() as { projectId: string };
-
   const { query } = useEditor();
   const localize = useLocalize();
-  const { data: project } = useProjectById(projectId);
   const {
     mutate: addProjectDescriptionBuilderLayout,
     isLoading,
@@ -62,12 +69,13 @@ const ProjectDescriptionBuilderTopBar = ({
   const disableSave = !!hasError || !!hasPendingState;
 
   const goBack = () => {
-    clHistory.push(`/admin/projects/${projectId}/settings/description`);
+    clHistory.push(backPath);
   };
 
   const handleSave = async () => {
     addProjectDescriptionBuilderLayout({
-      modelId: projectId,
+      modelId: modelId,
+      modelType: modelType,
       craftjs_json: query.getSerializedNodes(),
     });
   };
@@ -86,15 +94,19 @@ const ProjectDescriptionBuilderTopBar = ({
       <GoBackButton onClick={goBack} />
       <Box display="flex" p="15px" pl="8px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
-          {!project ? (
+          {!titleMultiloc ? (
             <Spinner />
           ) : (
             <>
               <Title variant="h3" as="h1" mb="0px" mt="0px">
-                <FormattedMessage {...messages.descriptionTopicManagerText} />
+                <FormattedMessage
+                  {...(modelType == 'project'
+                    ? messages.descriptionProjectHeading
+                    : messages.descriptionFolderHeading)}
+                />
               </Title>
               <Text m="0" color="textSecondary">
-                {localize(project.data.attributes.title_multiloc)}
+                {localize(titleMultiloc)}
               </Text>
             </>
           )}
@@ -114,9 +126,9 @@ const ProjectDescriptionBuilderTopBar = ({
           px="11px"
           py="6px"
           ml="32px"
-          disabled={!project}
+          disabled={!titleMultiloc}
           openLinkInNewTab
-          linkTo={`/projects/${project?.data.attributes.slug}`}
+          linkTo={previewPath}
         />
         <SaveButton
           isDisabled={disableSave}

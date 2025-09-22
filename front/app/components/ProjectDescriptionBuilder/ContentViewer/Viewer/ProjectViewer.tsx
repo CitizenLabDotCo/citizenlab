@@ -30,7 +30,7 @@ const handleLoadImages = () => {
   eventEmitter.emit(IMAGES_LOADED_EVENT);
 };
 
-const Preview = ({ projectId, projectTitle }: PreviewProps) => {
+const ProjectViewer = ({ projectId, projectTitle }: PreviewProps) => {
   const localize = useLocalize();
   const { data: projectFiles } = useProjectFiles(projectId);
   const { data: project } = useProjectById(projectId);
@@ -80,4 +80,4 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
   );
 };
 
-export default Preview;
+export default ProjectViewer;

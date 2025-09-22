@@ -1,8 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-// import useProjectById from 'api/projects/useProjectById';
-
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import projectDescriptionBuilderKeys from './keys';
@@ -29,10 +27,6 @@ const useProjectDescriptionBuilderLayout = (
   modelId: string,
   modelType: ProjectDescriptionModelType = 'project'
 ) => {
-  // TODO: Can we rmeove this? The layout will tell us if enabled or not
-  // const { data: project } = useProjectById(projectId);
-  console.log(modelId, modelType);
-
   return useQuery<
     IProjectDescriptionBuilderLayout,
     CLErrors,

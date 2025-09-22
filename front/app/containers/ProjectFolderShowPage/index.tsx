@@ -31,6 +31,8 @@ import ProjectFolderHeader from './ProjectFolderHeader';
 import ProjectFolderProjectCards from './ProjectFolderProjectCards';
 import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
 import { maxPageWidth } from './styles';
+import ContentViewer from 'components/ProjectDescriptionBuilder/ContentViewer';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const StyledContentContainer = styled(ContentContainer)`
   padding-top: 30px;
@@ -101,6 +103,15 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
   const isSmallerThanSmallDesktop = useBreakpoint('smallDesktop');
 
   const userCanEditFolder = userModeratesFolder(authUser, projectFolder.id);
+  const projectDescriptionBuilderEnabled = useFeatureFlag({
+    name: 'project_description_builder',
+  });
+
+  const description = projectDescriptionBuilderEnabled ? (
+    <ContentViewer model={projectFolder} modelType="folder" />
+  ) : (
+    <StyledProjectFolderDescription projectFolder={projectFolder} />
+  );
 
   return (
     <>
@@ -147,11 +158,11 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
           <ProjectFolderHeader projectFolder={projectFolder} />
           {!isSmallerThanSmallDesktop ? (
             <Content>
-              <StyledProjectFolderDescription projectFolder={projectFolder} />
+              {description}
               <StyledProjectFolderProjectCards folderId={projectFolder.id} />
             </Content>
           ) : (
-            <StyledProjectFolderDescription projectFolder={projectFolder} />
+            description
           )}
         </StyledContentContainer>
         {isSmallerThanSmallDesktop && (

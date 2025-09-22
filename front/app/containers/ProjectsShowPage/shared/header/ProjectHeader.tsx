@@ -161,7 +161,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
           {!projectDescriptionBuilderEnabled && (
             <ProjectInfo projectId={projectId} />
           )}
-          <ContentViewer />
+          <ContentViewer model={project.data} modelType="project" />
         </ContentContainer>
       </Container>
     );

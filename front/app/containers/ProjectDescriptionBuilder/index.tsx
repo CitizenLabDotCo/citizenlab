@@ -135,6 +135,11 @@ const ProjectDescriptionBuilderPage = () => {
           setPreviewEnabled={setPreviewEnabled}
           selectedLocale={selectedLocale}
           onSelectLocale={handleSelectedLocaleChange}
+          modelId={projectId}
+          modelType="project"
+          backPath={`/admin/projects/${projectId}/settings/description`}
+          previewPath={`/projects/${project.data.attributes.slug}`}
+          titleMultiloc={project.data.attributes.title_multiloc}
         />
         <Box
           mt={`${stylingConsts.menuHeight}px`}

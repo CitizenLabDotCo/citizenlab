@@ -1,9 +1,13 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  descriptionTopicManagerText: {
+  descriptionProjectHeading: {
     id: 'app.containers.ContentBuilder.PageTitle',
     defaultMessage: 'Project description',
+  },
+  descriptionFolderHeading: {
+    id: 'app.containers.ContentBuilder.PageTitleFolder',
+    defaultMessage: 'Folder description',
   },
   viewPublicProject: {
     id: 'app.containers.AdminPage.ProjectDescription.viewPublicProject',

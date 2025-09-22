@@ -107,6 +107,11 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
+          modelId="2"
+          modelType="project"
+          backPath="/projects"
+          titleMultiloc={{ en: 'Test Project' }}
+          previewPath="/projects/preview"
         />
       </Editor>
     );
@@ -121,6 +126,11 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
+          modelId="2"
+          modelType="project"
+          backPath="/projects"
+          titleMultiloc={{ en: 'Test Project' }}
+          previewPath="/projects/preview"
         />
       </Editor>
     );
@@ -136,6 +146,11 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
+          modelId="2"
+          modelType="project"
+          backPath="/projects"
+          titleMultiloc={{ en: 'Test Project' }}
+          previewPath="/projects/preview"
         />
       </Editor>
     );
@@ -158,6 +173,11 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
+          modelId="2"
+          modelType="project"
+          backPath="/projects"
+          titleMultiloc={{ en: 'Test Project' }}
+          previewPath="/projects/preview"
         />
       </Editor>
     );
@@ -175,6 +195,11 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
+          modelId="2"
+          modelType="project"
+          backPath="/projects"
+          titleMultiloc={{ en: 'Test Project' }}
+          previewPath="/projects/preview"
         />
       </Editor>
     );
@@ -192,6 +217,11 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={setPreviewEnabled}
+          modelId="2"
+          modelType="project"
+          backPath="/projects"
+          titleMultiloc={{ en: 'Test Project' }}
+          previewPath="/projects/preview"
         />
       </Editor>
     );
@@ -212,6 +242,11 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           onSelectLocale={() => {}}
           previewEnabled={true}
           setPreviewEnabled={setPreviewEnabled}
+          modelId="2"
+          modelType="project"
+          backPath="/projects"
+          titleMultiloc={{ en: 'Test Project' }}
+          previewPath="/projects/preview"
         />
       </Editor>
     );
@@ -231,6 +266,11 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
+          modelId="2"
+          modelType="project"
+          backPath="/projects"
+          titleMultiloc={{ en: 'Test Project' }}
+          previewPath="/projects/preview"
         />
       </Editor>
     );
@@ -247,6 +287,11 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
+          modelId="2"
+          modelType="project"
+          backPath="/projects"
+          titleMultiloc={{ en: 'Test Project' }}
+          previewPath="/projects/preview"
         />
       </Editor>
     );
@@ -264,6 +309,11 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           onSelectLocale={onSelectLocale}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
+          modelId="2"
+          modelType="project"
+          backPath="/projects"
+          titleMultiloc={{ en: 'Test Project' }}
+          previewPath="/projects/preview"
         />
       </Editor>
     );
@@ -290,6 +340,11 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           onSelectLocale={onSelectLocale}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
+          modelId="2"
+          modelType="project"
+          backPath="/projects"
+          titleMultiloc={{ en: 'Test Project' }}
+          previewPath="/projects/preview"
         />
       </Editor>
     );
