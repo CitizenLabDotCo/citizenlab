@@ -26,7 +26,7 @@ const Fields = () => {
       {supportedUserCustomFields.length === 0 && (
         <Box mt="40px" mb="48px">
           <Warning>
-            <FormattedMessage {...messages.noEnabledFieldsSupported} />
+            <FormattedMessage {...messages.noEnabledQuestionsSupported} />
           </Warning>
         </Box>
       )}

@@ -18,9 +18,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.representativeness.referenceDataInterface.userRegistrationLink',
     defaultMessage: 'user registration',
   },
-  noEnabledFieldsSupported: {
-    id: 'app.containers.AdminPage.DashboardPage.representativeness.referenceDataInterface.noEnabledFieldsSupported',
+  noEnabledQuestionsSupported: {
+    id: 'app.containers.AdminPage.DashboardPage.representativeness.referenceDataInterface.noEnabledQuestionsSupported',
     defaultMessage:
-      'None of the enabled registration fields are supported at the moment.',
+      'None of the enabled demographic questions are supported at the moment.',
   },
 });
