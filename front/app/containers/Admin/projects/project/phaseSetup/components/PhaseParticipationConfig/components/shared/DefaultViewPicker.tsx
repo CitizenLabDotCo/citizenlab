@@ -1,10 +1,12 @@
 import React from 'react';
 
 import { Radio, IconTooltip } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
 import { CLErrors } from 'typings';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
+import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
@@ -22,25 +24,47 @@ export default ({
   apiErrors,
   handleIdeasDisplayChange,
   title,
-}: Props) => (
-  <SectionField>
-    <SubSectionTitle>
-      <FormattedMessage {...(title || messages.inputsDefaultView)} />
-      <IconTooltip
-        content={<FormattedMessage {...messages.inputsDefaultViewTooltip} />}
-      />
-    </SubSectionTitle>
-    {['card', 'map'].map((key) => (
-      <Radio
-        key={key}
-        onChange={handleIdeasDisplayChange}
-        currentValue={presentation_mode}
-        value={key}
-        name="presentation_mode"
-        id={`presentation_mode-${key}`}
-        label={<FormattedMessage {...messages[`${key}Display`]} />}
-      />
-    ))}
-    <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
-  </SectionField>
-);
+}: Props) => {
+  const { projectId, phaseId } = useParams<{
+    projectId: string;
+    phaseId: string;
+  }>();
+
+  const inputFormUrl = `/admin/projects/${projectId}/phases/${phaseId}/form/edit`;
+
+  const inputFormLink = (
+    <a href={inputFormUrl} target="_blank" rel="noreferrer">
+      <FormattedMessage {...messages.locationFieldWarningLink} />
+    </a>
+  );
+  return (
+    <SectionField>
+      <SubSectionTitle>
+        <FormattedMessage {...(title || messages.inputsDefaultView)} />
+        <IconTooltip
+          content={<FormattedMessage {...messages.inputsDefaultViewTooltip} />}
+        />
+      </SubSectionTitle>
+      {['card', 'map'].map((key) => (
+        <Radio
+          key={key}
+          onChange={handleIdeasDisplayChange}
+          currentValue={presentation_mode}
+          value={key}
+          name="presentation_mode"
+          id={`presentation_mode-${key}`}
+          label={<FormattedMessage {...messages[`${key}Display`]} />}
+        />
+      ))}
+      <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
+      {projectId && phaseId && (
+        <Warning>
+          <FormattedMessage
+            {...messages.locationFieldWarning}
+            values={{ inputFormLink }}
+          />
+        </Warning>
+      )}
+    </SectionField>
+  );
+};
