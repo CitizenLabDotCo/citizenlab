@@ -628,13 +628,13 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             </Box>
           )}
           <Highlighter fragmentId={fragmentId}>
-            <ProjectDescriptionBuilderToggle
-              valueMultiloc={formValues.description_multiloc}
-              onChange={() => {}} // {handleDescriptionOnChange}
-              modelType="folder"
-              label={formatMessage(messages.descriptionLabel)}
-              labelTooltipText={formatMessage(messages.descriptionTooltip)}
-            />
+            {/*<ProjectDescriptionBuilderToggle*/}
+            {/*  valueMultiloc={formValues.description_multiloc}*/}
+            {/*  onChange={() => {}} // {handleDescriptionOnChange}*/}
+            {/*  modelType="folder"*/}
+            {/*  label={formatMessage(messages.descriptionLabel)}*/}
+            {/*  labelTooltipText={formatMessage(messages.descriptionTooltip)}*/}
+            {/*/>*/}
           </Highlighter>
 
           {/* <Error*/}
