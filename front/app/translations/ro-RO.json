@@ -419,7 +419,6 @@
   "app.components.formBuilder.pageRuleLabel": "Pagina următoare este:",
   "app.components.formBuilder.proposedBudget": "Buget propus",
   "app.components.formBuilder.question": "Întrebare",
-  "app.components.formBuilder.questionCannotBeDeleted": "Această întrebare nu poate fi ștearsă.",
   "app.components.formBuilder.questionDescriptionOptional": "Descrierea întrebării (opțional)",
   "app.components.formBuilder.questionTitle": "Titlul întrebării",
   "app.components.formBuilder.range": "Gama",
