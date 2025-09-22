@@ -75,7 +75,7 @@ const CustomFieldSettings = () => {
     (customFieldId: string) => (event: MouseEvent) => {
       if (!isProcessing) {
         const deleteMessage = formatMessage(
-          messages.registrationQuestionDeletionConfirmation
+          messages.demographicQuestionDeletionConfirmation
         );
         event.preventDefault();
 
@@ -126,7 +126,7 @@ const CustomFieldSettings = () => {
   return (
     <Section className="intercom-settings-tab-registration-fields">
       <SectionTitle>
-        <FormattedMessage {...messages.registrationFields} />
+        <FormattedMessage {...messages.demographicQuestion} />
       </SectionTitle>
       <SectionDescription>
         <FormattedMessage {...messages.subtitleRegistration} />
@@ -134,10 +134,12 @@ const CustomFieldSettings = () => {
 
       <SubSectionTitle>
         <Box mr="10px">
-          <FormattedMessage {...messages.customFieldsSubSectionTitle} />
+          <FormattedMessage {...messages.demographicQuestionsSubSectionTitle} />
         </Box>
         <IconTooltip
-          content={<FormattedMessage {...messages.customFieldsTooltip} />}
+          content={
+            <FormattedMessage {...messages.demographicQuestionsTooltip} />
+          }
         />
       </SubSectionTitle>
       <Box mb="20px">
@@ -247,7 +249,7 @@ const CustomFieldSettings = () => {
         linkTo="/admin/settings/registration/custom-fields/new"
         className="intercom-settings-tab-registration-fields-new"
       >
-        <FormattedMessage {...messages.addAFieldButton} />
+        <FormattedMessage {...messages.addAQuestionButton} />
       </ButtonWithLink>
     </Section>
   );

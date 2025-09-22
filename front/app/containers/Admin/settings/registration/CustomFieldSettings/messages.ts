@@ -1,18 +1,18 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  registrationFields: {
-    id: 'app.containers.AdminPage.SettingsPage.registrationFields',
-    defaultMessage: 'Registration fields',
+  demographicQuestion: {
+    id: 'app.containers.AdminPage.SettingsPage.demographicQuestions',
+    defaultMessage: 'Demographic questions',
   },
   subtitleRegistration: {
     id: 'app.containers.AdminPage.SettingsPage.subtitleRegistration',
     defaultMessage:
       'Specify what information people are asked to provide when signing up.',
   },
-  addAFieldButton: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.addAFieldButton',
-    defaultMessage: 'Add field',
+  addAQuestionButton: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.addAQuestionButton',
+    defaultMessage: 'Add question',
   },
   domicileManagementInfo: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.domicileManagementInfo',
@@ -23,18 +23,18 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.geographicAreasTabLinkText',
     defaultMessage: 'Geographic areas tab',
   },
-  registrationQuestionDeletionConfirmation: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionDeletionConfirmation3',
+  demographicQuestionDeletionConfirmation: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionDeletionConfirmation3',
     defaultMessage:
-      'Are you sure you want to delete this registration question? All answers that users have given to this question will be permanently deleted, and it will no longer be asked in projects or proposals. This action cannot be undone.',
+      'Are you sure you want to delete this demographic question? All answers that users have given to this question will be permanently deleted, and it will no longer be asked in projects or proposals. This action cannot be undone.',
   },
-  customFieldsTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsTooltip',
+  demographicQuestionsTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsTooltip',
     defaultMessage:
-      'Drag and drop the fields to determine the order in which they appear in the sign-up form.',
+      'Drag and drop the questions to determine the order in which they appear in the global sign-up process.',
   },
-  customFieldsSubSectionTitle: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsSubSectionTitle',
-    defaultMessage: 'Fields',
+  demographicQuestionsSubSectionTitle: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsSubSectionTitle',
+    defaultMessage: 'Questions',
   },
 });

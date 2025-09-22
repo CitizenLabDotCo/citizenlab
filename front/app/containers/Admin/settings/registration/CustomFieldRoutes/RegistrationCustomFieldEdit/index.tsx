@@ -52,7 +52,7 @@ const RegistrationCustomFieldEdit = memo(
     const getTabs = (customField: IUserCustomFieldData) => {
       const tabs: TabType[] = [
         {
-          label: formatMessage(messages.fieldSettingsTab),
+          label: formatMessage(messages.questionSettingsTab),
           url: `/admin/settings/registration/custom-fields/${customField.id}/field-settings`,
           className: 'field-settings',
           name: 'fieldSettings',

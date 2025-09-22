@@ -15,34 +15,34 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.answerFormatError',
     defaultMessage: 'Provide an answer format',
   },
-  fieldName: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldName',
-    defaultMessage: 'Field name',
+  questionName: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.questionName',
+    defaultMessage: 'Question name',
   },
-  fieldNameError: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldNameErrorMessage',
-    defaultMessage: 'Provide a field name for all languages',
+  questionNameError: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.questionNameErrorMessage',
+    defaultMessage: 'Provide a question name for all languages',
   },
-  saveField: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.saveField',
-    defaultMessage: 'Save field',
+  saveQuestion: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.saveQuestion',
+    defaultMessage: 'Save question',
   },
-  saveFieldSuccess: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.saveFieldSuccess',
-    defaultMessage: 'Field successfully saved',
+  saveQuestionSuccess: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.saveQuestionSuccess',
+    defaultMessage: 'Question successfully saved',
   },
   fieldDescription: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldDescription',
     defaultMessage: 'Description',
   },
   descriptionTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.descriptionTooltip',
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.descriptionTooltip1',
     defaultMessage:
-      'Optional text shown under the field name on the signup form.',
+      'Optional text shown under the question name on the signup form.',
   },
-  isFieldRequired: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.isFieldRequired',
-    defaultMessage: 'Make answering this field required?',
+  isQuestionRequired: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.isQuestionRequired',
+    defaultMessage: 'Make answering this question required?',
   },
   fieldType_text: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldType_text',
@@ -80,15 +80,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.editButtonLabel',
     defaultMessage: 'Edit',
   },
-
-  listTitle: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.listTitle',
-    defaultMessage: 'Custom fields',
-  },
-
-  addANewRegistrationField: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.addANewRegistrationField',
-    defaultMessage: 'Add a new registration field',
+  addANewDemographicQuestion: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.addANewDemographicQuestion',
+    defaultMessage: 'Add a new demographic question',
   },
   optionDeleteButton: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionDeleteButton',
@@ -98,9 +92,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionCancelButton',
     defaultMessage: 'Cancel',
   },
-  fieldSettingsTab: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldSettingsTab',
-    defaultMessage: 'Field settings',
+  questionSettingsTab: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.questionSettingsTab',
+    defaultMessage: 'Question settings',
   },
   answerOptionsTab: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab',
@@ -118,10 +112,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.required',
     defaultMessage: 'Required',
   },
-  registrationQuestionAnswerOptionDeletionConfirmation: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionAnswerOptionDeletionConfirmation',
+  demographicQuestionAnswerOptionDeletionConfirmation: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation',
     defaultMessage:
-      'Are you sure you want to delete this registration question answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.',
+      'Are you sure you want to delete this demograhpic question answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.',
   },
   editCustomFieldAnswerOptionFormTitle: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.editCustomFieldAnswerOptionFormTitle',
