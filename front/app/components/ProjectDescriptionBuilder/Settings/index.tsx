@@ -46,8 +46,6 @@ const ContentBuilderSettings = () => {
   };
 
   const cleanupFileAttachment = () => {
-    // If we're deleting a file widget,
-    // we should also delete the associated file attachment.
     deleteFileAttachment(selectedNode?.props.fileAttachmentId);
   };
 
