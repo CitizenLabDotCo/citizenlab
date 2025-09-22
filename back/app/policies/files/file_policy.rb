@@ -27,8 +27,30 @@ module Files
     def create?
       return false unless active?
       return false unless record.uploader_id == user.id # cannot upload file on behalf of another user
+      return true if admin?
+      # TODO: Rework to allow regular users to upload idea files.
+      #   Currently, idea files are still uploaded via the legacy endpoint/controller
+      #   (+WebApi::V1::FilesController+) which relies on Files::FileAttachmentPolicy.
+      return false unless user.project_or_folder_moderator?
 
-      admin? || user.project_or_folder_moderator? # Any elevated role can create
+      # Moderators are allowed to upload files only if they moderate all the projects
+      # the file belongs to, or *if the file does not belong to any project* (a top-level
+      # file). In the latter case, there is currently no way to browse or manage top-level
+      # files in the application (this could be added in the future), but we needed to
+      # allow their creation as a temporary state for new projects with files. In the
+      # current implementation, the front end uploads any attached files before creating
+      # the project itself. This means that at the time of upload, those files cannot yet
+      # be linked to their destination project and remain in "limbo" until the project is
+      # saved. At that point, the front end creates the project-file association. Note
+      # that if the project creation is not completed, the files become inaccessible and
+      # are not automatically cleaned up. That's the compromise we settled on for the time
+      # being.
+      #
+      # Note: Getting the projects by querying `Project` directly instead of using
+      # `record.projects` because +record.files_projects+ may not be persisted yet
+      # (since this is a `create` action), which can cause issues with some SQL queries.
+      projects = Project.where(id: record.project_ids)
+      user_moderates_all_projects?(projects)
     end
 
     def update?
