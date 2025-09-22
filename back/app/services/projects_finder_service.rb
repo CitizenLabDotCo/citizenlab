@@ -189,9 +189,12 @@ class ProjectsFinderService
   end
 
   def order_by_created_at_and_id_with_distinct_on(projects)
-    projects
-      .select('DISTINCT ON (last_phase_end_at, projects.created_at, projects.id) projects.*')
-      .order('last_phase_end_at DESC, projects.created_at ASC, projects.id ASC') # secondary ordering by ID prevents duplicates when paginating
+    subquery = projects
+      .select('DISTINCT ON (last_phase_end_at, projects.created_at, projects.id) projects.*, last_phase_end_at')
+      .order('last_phase_end_at DESC, projects.created_at ASC, projects.id ASC')
+
+    Project.from("(#{subquery.to_sql}) AS projects")
+      .order('last_phase_end_at DESC, created_at ASC, id ASC')
   end
 
   def joins_last_phases_with_reports(projects)
