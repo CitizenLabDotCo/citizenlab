@@ -8,8 +8,10 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
+import { RouteType } from 'routes';
 import { Multiloc, SupportedLocale } from 'typings';
 
+import { ProjectDescriptionModelType } from 'api/project_description_builder/types';
 import useAddProjectDescriptionBuilderLayout from 'api/project_description_builder/useAddProjectDescriptionBuilderLayout';
 
 import useLocalize from 'hooks/useLocalize';
@@ -25,8 +27,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import messages from './messages';
-import { RouteType } from 'routes';
-import { ProjectDescriptionModelType } from 'api/project_description_builder/types';
 
 type ProjectDescriptionBuilderTopBarProps = {
   hasPendingState?: boolean;
@@ -74,8 +74,8 @@ const ProjectDescriptionBuilderTopBar = ({
 
   const handleSave = async () => {
     addProjectDescriptionBuilderLayout({
-      modelId: modelId,
-      modelType: modelType,
+      modelId,
+      modelType,
       craftjs_json: query.getSerializedNodes(),
     });
   };
@@ -100,7 +100,7 @@ const ProjectDescriptionBuilderTopBar = ({
             <>
               <Title variant="h3" as="h1" mb="0px" mt="0px">
                 <FormattedMessage
-                  {...(modelType == 'project'
+                  {...(modelType === 'project'
                     ? messages.descriptionProjectHeading
                     : messages.descriptionFolderHeading)}
                 />

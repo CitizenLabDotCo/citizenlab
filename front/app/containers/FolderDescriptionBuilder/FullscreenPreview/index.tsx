@@ -6,6 +6,7 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import { SupportedLocale } from 'typings';
 
 import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
@@ -16,7 +17,6 @@ import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import Editor from 'components/ProjectDescriptionBuilder/Editor';
 
 import { isNilOrError } from 'utils/helperUtils';
-import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 export const FullScreenPreview = () => {
   const [search] = useSearchParams();

@@ -5,20 +5,21 @@ import { isEmpty } from 'lodash-es';
 import { Multiloc } from 'typings';
 
 import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
+import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 import useLocalize from 'hooks/useLocalize';
 
+import ProjectFolderDescription from 'containers/ProjectFolderShowPage/ProjectFolderDescription';
+
 import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
+import FileAttachments from 'components/UI/FileAttachments';
 
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
 import Editor from '../../Editor';
-import FileAttachments from 'components/UI/FileAttachments';
-import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
-import ProjectFolderDescription from 'containers/ProjectFolderShowPage/ProjectFolderDescription';
-import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 type PreviewProps = {
   folderId: string;

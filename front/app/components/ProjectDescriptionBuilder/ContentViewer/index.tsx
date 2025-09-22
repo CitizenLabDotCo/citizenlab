@@ -1,12 +1,14 @@
 import React from 'react';
 
+import { ProjectDescriptionModelType } from 'api/project_description_builder/types';
+import { IProjectFolderData } from 'api/project_folders/types';
+import { IProjectData } from 'api/projects/types';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import ProjectViewer from './Viewer/ProjectViewer';
-import { IProjectData } from 'api/projects/types';
-import { IProjectFolderData } from 'api/project_folders/types';
-import { ProjectDescriptionModelType } from 'api/project_description_builder/types';
 import FolderViewer from 'components/ProjectDescriptionBuilder/ContentViewer/Viewer/FolderViewer';
+
+import ProjectViewer from './Viewer/ProjectViewer';
 
 interface Props {
   model: IProjectData | IProjectFolderData;
@@ -22,7 +24,7 @@ const ContentViewer = ({ model, modelType }: Props) => {
     return null;
   }
 
-  if (modelType == 'folder') {
+  if (modelType === 'folder') {
     return (
       <FolderViewer
         folderId={model.id}

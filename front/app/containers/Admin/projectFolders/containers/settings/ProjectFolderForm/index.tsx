@@ -23,6 +23,7 @@ import { useSyncFolderFiles } from 'hooks/files/useSyncFolderFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import projectMessages from 'containers/Admin/projects/project/general/messages';
+import { fragmentId } from 'containers/Admin/projects/project/projectHeader/ProjectDescriptionPreview';
 
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
@@ -33,6 +34,8 @@ import {
 } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import Highlighter from 'components/Highlighter';
+import ProjectDescriptionBuilderToggle from 'components/ProjectDescriptionBuilder/ProjectDescriptionBuilderToggle';
 import FileUploader from 'components/UI/FileUploader';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
@@ -49,10 +52,8 @@ import messages from '../../messages';
 import FolderCardImageTooltip from './FolderCardImageTooltip';
 import FolderHeaderImageTooltip from './FolderHeaderImageTooltip';
 import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 // import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import Highlighter from 'components/Highlighter';
-import { fragmentId } from 'containers/Admin/projects/project/projectHeader/ProjectDescriptionPreview';
-import ProjectDescriptionBuilderToggle from 'components/ProjectDescriptionBuilder/ProjectDescriptionBuilderToggle';
 // import Error from 'components/UI/Error';
 
 type IProjectFolderSubmitState =
@@ -101,6 +102,10 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const { mutate: addProjectFolder, isLoading: isAddProjectFolderLoading } =
     useAddProjectFolder();
   const { mutate: updateProjectFolder } = useUpdateProjectFolder();
+
+  const showProjectDescriptionBuilder = useFeatureFlag({
+    name: 'project_description_builder',
+  });
 
   /*
     ==============
@@ -517,8 +522,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     ? !folderCardImage.remote
     : false;
 
-  const showProjectDescriptionBuilder = true;
-
   return (
     <form onSubmit={saveForm}>
       <Section>
@@ -626,20 +629,20 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           )}
           <Highlighter fragmentId={fragmentId}>
             <ProjectDescriptionBuilderToggle
-              valueMultiloc={{ en: 'hello' }} //{formValues.description_multiloc}
+              valueMultiloc={formValues.description_multiloc}
               onChange={() => {}} // {handleDescriptionOnChange}
               modelType="folder"
-              label="content builder toggle" // {formatMessage(messages.descriptionLabel)}
-              labelTooltipText="tooltip" // {formatMessage(messages.descriptionTooltip)}
+              label={formatMessage(messages.descriptionLabel)}
+              labelTooltipText={formatMessage(messages.descriptionTooltip)}
             />
           </Highlighter>
 
-          {/*<Error*/}
+          {/* <Error*/}
           {/*  fieldName="description_multiloc"*/}
           {/*  // TODO: Fix this the next time the file is edited.*/}
           {/*  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition*/}
           {/*  apiErrors={apiError?.description_multiloc}*/}
-          {/*/>*/}
+          {/*/ >*/}
         </SectionField>
 
         <SectionField>

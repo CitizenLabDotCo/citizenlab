@@ -14,9 +14,12 @@ import useAuthUser from 'api/me/useAuthUser';
 import { IProjectFolderData } from 'api/project_folders/types';
 import useProjectFolderBySlug from 'api/project_folders/useProjectFolderBySlug';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import ContentContainer from 'components/ContentContainer';
 import FollowUnfollow from 'components/FollowUnfollow';
 import PageNotFound from 'components/PageNotFound';
+import ContentViewer from 'components/ProjectDescriptionBuilder/ContentViewer';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
@@ -31,8 +34,6 @@ import ProjectFolderHeader from './ProjectFolderHeader';
 import ProjectFolderProjectCards from './ProjectFolderProjectCards';
 import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
 import { maxPageWidth } from './styles';
-import ContentViewer from 'components/ProjectDescriptionBuilder/ContentViewer';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const StyledContentContainer = styled(ContentContainer)`
   padding-top: 30px;

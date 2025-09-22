@@ -7,6 +7,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { SupportedLocale } from 'typings';
 
 import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -25,7 +26,6 @@ import ProjectDescriptionBuilderEditModePreview from '../../components/ProjectDe
 import ProjectDescriptionBuilderToolbox from '../../components/ProjectDescriptionBuilder/ProjectDescriptionBuilderToolbox';
 import ProjectDescriptionBuilderTopBar from '../../components/ProjectDescriptionBuilder/ProjectDescriptionBuilderTopBar';
 import ContentBuilderSettings from '../../components/ProjectDescriptionBuilder/Settings';
-import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 const FolderDescriptionBuilderPage = () => {
   const locale = useLocale();
