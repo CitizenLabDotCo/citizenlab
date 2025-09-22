@@ -74,7 +74,7 @@ describe('InviteUsersWithSeatsModal', () => {
         newSeatsResponse={{
           data: {
             id: '1',
-            type: 'invite_new_seats',
+            type: 'invites_import',
             attributes: {
               job_type: 'count_new_seats',
               completed_at: null,
@@ -113,7 +113,7 @@ describe('InviteUsersWithSeatsModal', () => {
         newSeatsResponse={{
           data: {
             id: '1',
-            type: 'invite_new_seats',
+            type: 'invites_import',
             attributes: {
               job_type: 'count_new_seats',
               completed_at: null,
