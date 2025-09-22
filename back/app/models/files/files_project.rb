@@ -12,7 +12,7 @@
 #
 # Indexes
 #
-#  index_files_projects_on_file_id                 (file_id)
+#  index_files_projects_on_file_id                 (file_id) UNIQUE
 #  index_files_projects_on_file_id_and_project_id  (file_id,project_id) UNIQUE
 #  index_files_projects_on_project_id              (project_id)
 #
