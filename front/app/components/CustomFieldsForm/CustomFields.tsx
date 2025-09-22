@@ -230,8 +230,10 @@ const CustomFields = ({
                 </Text>
               )}
               {renderField({ question, projectId, ideaId })}
-              {(question.key === 'title_multiloc' ||
-                question.key === 'body_multiloc') && <InputIQ phase={phase} />}
+              {question?.code &&
+                ['title_multiloc', 'body_multiloc'].includes(question.code) && (
+                  <InputIQ phase={phase} field={question} />
+                )}
             </Box>
           );
         })}

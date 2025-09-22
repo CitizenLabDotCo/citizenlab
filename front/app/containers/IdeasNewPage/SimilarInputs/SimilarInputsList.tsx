@@ -26,6 +26,7 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import messages from './messages';
 
 const SimilarIdeasList = ({
+  // TODO: Can be simplified?
   titleMultiloc,
   bodyMultiloc,
 }: {
