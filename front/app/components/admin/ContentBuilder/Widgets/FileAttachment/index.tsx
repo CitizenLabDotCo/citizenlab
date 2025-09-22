@@ -134,13 +134,6 @@ const FileAttachmentSettings = () => {
                         props.fileAttachmentId = data.data.id;
                       });
                     },
-                    onError: (errors) => {
-                      if (errors.file_id[0].value === 'taken') {
-                        // Handle the case where the file is already attached
-                        // by setting the fileAttachmentId prop to the existing attachment's ID.
-                        const existingAttachment = projectDescriptionLayout;
-                      }
-                    },
                   }
                 );
             });
