@@ -525,7 +525,7 @@ cy:
       body_3: 'Rydym yn eich annog i adolygu’r canlyniadau ac chadw golwg am ddiweddariadau pellach ar y camau nesaf.'
       cta_button: 'Gweler canlyniadau yn y platfform'
     event_registration_confirmation:
-      subject: "Rydych chi i mewn! Mae eich cofrestriad ar gyfer \"%{eventTitle}\" wedi ei gadarnhau"
+      subject: "Rydych chi yna! Mae eich cofrestriad ar gyfer \"%{eventTitle}\" wedi ei gadarnhau"
       preheader: "%{firstName}, diolch am gofrestru ar gyfer %{eventTitle}"
       title: "%{firstName}, diolch am gofrestru ar gyfer"
       event_details:
