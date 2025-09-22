@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
 import { TSeatNumber } from 'api/app_configuration/types';
-import { IInvitesNewSeats } from 'api/invites/types';
+import { IInvitesImport } from 'api/invites/types';
 
 import useExceedsSeats from 'hooks/useExceedsSeats';
 
@@ -30,7 +30,7 @@ interface InviteUsersWithSeatsModalProps {
   showModal: boolean;
   closeModal: () => void;
   inviteUsers: () => void;
-  newSeatsResponse: IInvitesNewSeats;
+  newSeatsResponse: IInvitesImport;
 }
 
 const InviteUsersWithSeatsModal = ({

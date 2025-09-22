@@ -57,11 +57,10 @@ export interface IInviteData {
   };
 }
 
-// TODO: change the name of this interface
-export interface IInvitesNewSeats {
+export interface IInvitesImport {
   data: {
     id: string;
-    type: 'invite_new_seats';
+    type: 'invites_import';
     attributes: {
       completed_at: string | null;
       job_type: string;

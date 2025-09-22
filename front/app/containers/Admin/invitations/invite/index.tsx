@@ -23,7 +23,7 @@ import { SupportedLocale, IOption } from 'typings';
 import {
   IInviteError,
   INewBulkInvite,
-  IInvitesNewSeats,
+  IInvitesImport,
 } from 'api/invites/types';
 import useBulkInviteCountNewSeatsEmails from 'api/invites/useBulkInviteCountNewSeatsEmails';
 import useBulkInviteCountNewSeatsXLSX from 'api/invites/useBulkInviteCountNewSeatsXLSX';
@@ -97,7 +97,7 @@ const Invitations = () => {
   const [unknownError, setUnknownError] = useState<JSX.Element | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [newSeatsResponse, setNewSeatsResponse] =
-    useState<IInvitesNewSeats | null>(null);
+    useState<IInvitesImport | null>(null);
 
   // State variables for count seats invites_import polling
   const [seatsInviteImportId, setSeatsInviteImportId] = useState<string | null>(
