@@ -194,7 +194,7 @@ class ProjectsFinderService
       .order('last_phase_end_at DESC, projects.created_at ASC, projects.id ASC')
 
     Project.from("(#{subquery.to_sql}) AS projects")
-      .order('last_phase_end_at DESC, created_at ASC, id ASC')
+      .order('last_phase_end_at DESC, created_at ASC, id ASC') # secondary ordering by ID prevents duplicates when paginating
   end
 
   def joins_last_phases_with_reports(projects)
