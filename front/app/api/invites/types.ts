@@ -66,8 +66,8 @@ export interface IInvitesNewSeats {
       completed_at: string | null;
       job_type: string;
       result: {
-        newly_added_admins_number?: number;
-        newly_added_moderators_number?: number;
+        newly_added_admins_number: number;
+        newly_added_moderators_number: number;
       };
     };
   };

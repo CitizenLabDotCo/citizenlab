@@ -63,22 +63,21 @@ const InviteUsersWithSeatsModal = ({
 
   let additionalSeatsMessage: string;
 
-  // TODO JS: fix the || 0 in types below. this is a fudge to avoid errors right now!
   if (exceedsSeats.all) {
     additionalSeatsMessage = formatMessage(
       messages.additionalAdminAndManagerSeats,
       {
-        adminSeats: newSeats.result.newly_added_admins_number || 0,
-        managerSeats: newSeats.result.newly_added_moderators_number || 0,
+        adminSeats: newSeats.result.newly_added_admins_number,
+        managerSeats: newSeats.result.newly_added_moderators_number,
       }
     );
   } else if (exceedsSeats.admin) {
     additionalSeatsMessage = formatMessage(messages.additionalAdminSeats, {
-      seats: newSeats.result.newly_added_admins_number || 0,
+      seats: newSeats.result.newly_added_admins_number,
     });
   } else {
     additionalSeatsMessage = formatMessage(messages.additionalManagerSeats, {
-      seats: newSeats.result.newly_added_moderators_number || 0,
+      seats: newSeats.result.newly_added_moderators_number,
     });
   }
 
