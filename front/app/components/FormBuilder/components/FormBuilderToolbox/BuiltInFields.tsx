@@ -58,14 +58,21 @@ const BuiltInFields = ({ builderConfig }: BuiltInFieldsProps) => {
       >
         <FormattedMessage {...messages.defaultContent} />
       </Title>
+      {builderConfig.builtInFields.includes('title_multiloc') && (
+        <ToolboxItem
+          icon="survey-short-answer-2" // TODO: Use getBuiltinFieldIcon for all built-in fields?
+          label={formatMessage(messages.titleMultiloc)}
+          onClick={() => enableField('title_multiloc')}
+          disabled={!enabledBuiltInFieldKeys.includes('title_multiloc')}
+          disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
+          data-cy="e2e-title-multiloc-item"
+        />
+      )}
       {builderConfig.builtInFields.includes('body_multiloc') && (
         <ToolboxItem
           icon="survey-long-answer-2"
           label={formatMessage(messages.bodyMultiloc)}
-          onClick={() => {
-            enableField('body_page');
-            enableField('body_multiloc');
-          }}
+          onClick={() => enableField('body_multiloc')}
           disabled={!enabledBuiltInFieldKeys.includes('body_multiloc')}
           disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
           data-cy="e2e-body-multiloc-item"

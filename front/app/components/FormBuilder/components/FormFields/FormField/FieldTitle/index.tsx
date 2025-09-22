@@ -46,11 +46,7 @@ const FieldTitle = ({
   const getLockMessage = () => {
     if (field.input_type === 'page') {
       if (hasFullPageRestriction) {
-        if (field.code === 'body_page') {
-          return formatMessage(messages.pageCannotNewFieldsAdded);
-        } else {
-          return formatMessage(messages.pageCannotBeDeletedNorNewFieldsAdded);
-        }
+        return formatMessage(messages.pageCannotBeDeletedNorNewFieldsAdded);
       }
       if (deletionLocked) {
         return formatMessage(messages.pageCannotBeDeleted);

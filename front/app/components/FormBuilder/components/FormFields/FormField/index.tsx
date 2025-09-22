@@ -75,8 +75,7 @@ export const FormField = ({
   } = useFormContext();
   const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
   const { formatMessage } = useIntl();
-  let deletionLocked =
-    field?.constraints?.locks?.deletion || field.code === 'body_multiloc'; // || (field.input_type !== 'page' && page?.constraints?.locks?.children);
+  let deletionLocked = field?.constraints?.locks?.deletion;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const formCustomFields: IFlatCustomField[] = watch('customFields');
   const index = formCustomFields.findIndex((f) => f.id === field.id);
@@ -197,18 +196,10 @@ export const FormField = ({
   };
 
   const onDelete = (fieldIndex: number) => {
-    if (!!field.code) {
-      if (field.code === 'body_page') {
-        // When deleting the body page, disable the page and also disable its body_multiloc field
-        const newPage = { ...formCustomFields[index], enabled: false };
-        setValue(`customFields.${index}`, newPage);
-        const newField = { ...formCustomFields[index + 1], enabled: false };
-        setValue(`customFields.${index + 1}`, newField);
-      } else {
-        const newField = { ...field, enabled: false };
-        setValue(`customFields.${index}`, newField);
-        remove(fieldIndex);
-      }
+    if (!!field.code && field.input_type !== 'page') {
+      const newField = { ...field, enabled: false };
+      setValue(`customFields.${index}`, newField);
+      remove(fieldIndex);
     } else {
       const field = formCustomFields[fieldIndex];
 

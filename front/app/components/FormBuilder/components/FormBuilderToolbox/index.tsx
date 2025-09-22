@@ -135,23 +135,8 @@ const FormBuilderToolbox = ({
       enabled: true,
     });
 
-    const previousField = formCustomFields[formCustomFields.length - 2];
-    const isLastFieldTitleOrBody = // TODO: Don't check this
-      previousField.key === 'title_multiloc' ||
-      previousField.key === 'body_multiloc';
-
-    // If the field before the last is a title or body field, we add a new page and add it to the new page
-    // This is because the title and description pages should only have those fields
-    if (isLastFieldTitleOrBody && inputType !== 'page') {
-      const indexForPage = formCustomFields.length - 1;
-      onAddField(createField('page'), indexForPage);
-
-      const indexForInputField = indexForPage + 1;
-      onAddField(createField(inputType), indexForInputField);
-    } else {
-      const indexForInputField = formCustomFields.length - 1;
-      onAddField(createField(inputType), indexForInputField);
-    }
+    const indexForInputField = formCustomFields.length - 1;
+    onAddField(createField(inputType), indexForInputField);
   };
 
   return (

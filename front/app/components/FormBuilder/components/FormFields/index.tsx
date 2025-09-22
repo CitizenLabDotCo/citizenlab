@@ -32,8 +32,6 @@ interface FormFieldsProps {
   closeSettings: (triggerAutosave?: boolean) => void;
 }
 
-const individualPageFieldCodes = ['title_multiloc', 'body_multiloc'];
-
 const FormFields = ({
   onEditField,
   selectedFieldId,
@@ -102,12 +100,6 @@ const FormFields = ({
                   // (see below)
                   return null;
                 }
-                // We don't want to allow dropping on the grouping (page) with individualPageFieldCodes
-                // fields (e.g. title, description for now). These should be on their own pages
-                // TODO: User constraints?
-                const isDropDisabled = grouping.questions.some((question) =>
-                  individualPageFieldCodes.includes(question.code || '')
-                );
 
                 return (
                   <Drag key={grouping.id} id={grouping.id} index={pageIndex}>
@@ -119,13 +111,13 @@ const FormFields = ({
                       fieldNumbers={fieldNumbers}
                       closeSettings={closeSettings}
                       conflicts={conflictsByPage[grouping.groupElement.id]}
-                      hasFullPageRestriction={isDropDisabled}
+                      hasFullPageRestriction={false} // TODO: Do we still need this prop?
                     />
                     <Drop
                       key={grouping.id}
                       id={grouping.id}
                       type={questionDNDType}
-                      isDropDisabled={isDropDisabled}
+                      isDropDisabled={false} // TODO: Do we still need this prop?
                     >
                       <Box height="100%">
                         {grouping.questions.length === 0 ? (
@@ -133,16 +125,12 @@ const FormFields = ({
                         ) : (
                           <>
                             {grouping.questions.map((question, index) => {
-                              const isDragDisabled =
-                                individualPageFieldCodes.includes(
-                                  question.code || ''
-                                );
                               return shouldShowField(question) ? (
                                 <Drag
                                   key={question.id}
                                   id={question.id}
                                   index={index}
-                                  isDragDisabled={isDragDisabled}
+                                  isDragDisabled={false} // TODO: Do we still need this prop?
                                 >
                                   <FormField
                                     key={question.id}
@@ -152,7 +140,7 @@ const FormFields = ({
                                     builderConfig={builderConfig}
                                     fieldNumbers={fieldNumbers}
                                     closeSettings={closeSettings}
-                                    hasFullPageRestriction={isDragDisabled}
+                                    hasFullPageRestriction={false} // TODO: Do we still need this prop?
                                   />
                                 </Drag>
                               ) : (
