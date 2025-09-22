@@ -129,7 +129,19 @@ const CustomFieldSettings = () => {
         <FormattedMessage {...messages.demographicQuestion} />
       </SectionTitle>
       <SectionDescription>
-        <FormattedMessage {...messages.subtitleRegistration} />
+        <FormattedMessage {...messages.subtitleRegistration1} />
+        <ul>
+          <li>
+            <FormattedMessage {...messages.subtitleBullet1} />
+          </li>
+          <li>
+            <FormattedMessage
+              {...messages.subtitleBullet2}
+              values={{ b: (chunks) => <b>{chunks}</b> }}
+            />
+          </li>
+        </ul>
+        <FormattedMessage {...messages.subtitleRegistration2} />
       </SectionDescription>
 
       <SubSectionTitle>

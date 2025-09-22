@@ -5,10 +5,25 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.demographicQuestions',
     defaultMessage: 'Demographic questions',
   },
-  subtitleRegistration: {
-    id: 'app.containers.AdminPage.SettingsPage.subtitleRegistration',
+  subtitleRegistration1: {
+    id: 'app.containers.AdminPage.SettingsPage.subtitleRegistration1',
     defaultMessage:
-      'Specify what information people are asked to provide when signing up.',
+      'Manage the demographic questions used on this platform. Enabling a question here will do two things:',
+  },
+  subtitleBullet1: {
+    id: 'app.containers.AdminPage.SettingsPage.subtitleBullet1',
+    defaultMessage:
+      'The question will be asked in the global sign-up process (e.g. when people click "Sign up" on the homepage).',
+  },
+  subtitleBullet2: {
+    id: 'app.containers.AdminPage.SettingsPage.subtitleBullet2',
+    defaultMessage:
+      'The question will be asked <b>by default</b> when people sign up for a specific phase or event. However: <b>admins and project moderators can override this per phase</b>- see the "Phase access and user data" tab on each phase.',
+  },
+  subtitleRegistration2: {
+    id: 'app.containers.AdminPage.SettingsPage.subtitleRegistration2',
+    defaultMessage:
+      'The same applies to the "required" setting that you see when you click "Edit" on a question.',
   },
   addAQuestionButton: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.addAQuestionButton',
