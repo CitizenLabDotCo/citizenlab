@@ -51,6 +51,11 @@ export interface IFileAttachment {
     id: string;
     attributes: {
       position: number;
+      file_name: string;
+      file_size: number;
+      file_url: string;
+      created_at: string;
+      updated_at: string;
     };
     relationships: {
       attachable: { data: IRelationship };

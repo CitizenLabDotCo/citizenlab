@@ -12,7 +12,7 @@ import { useParams } from 'react-router-dom';
 
 import useAddFileAttachment from 'api/file_attachments/useAddFileAttachment';
 import useDeleteFileAttachment from 'api/file_attachments/useDeleteFileAttachment';
-import useFileById from 'api/files/useFileById';
+import useFileAttachmentById from 'api/file_attachments/useFileAttachmentById';
 import useFiles from 'api/files/useFiles';
 import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
 
@@ -28,10 +28,10 @@ type FileAttachmentProps = {
   fileAttachmentId?: string;
 };
 
-const FileAttachment = ({ fileId }: FileAttachmentProps) => {
-  const { data: file } = useFileById(fileId);
+const FileAttachment = ({ fileAttachmentId }: FileAttachmentProps) => {
+  const { data: fileAttachment } = useFileAttachmentById(fileAttachmentId);
 
-  if (!file) {
+  if (!fileAttachment) {
     return null;
   }
 
@@ -41,13 +41,16 @@ const FileAttachment = ({ fileId }: FileAttachmentProps) => {
         file={{
           // Transform the file data to match the current expected type structure.
           // TODO: In the future, once we remove the old files structure/api, we can simplify this.
-          ...file.data,
+          ...fileAttachment.data,
           attributes: {
-            ...file.data.attributes,
+            ordering: fileAttachment.data.attributes.position,
+            name: fileAttachment.data.attributes.file_name,
+            size: fileAttachment.data.attributes.file_size,
+            created_at: fileAttachment.data.attributes.created_at,
+            updated_at: fileAttachment.data.attributes.updated_at,
             file: {
-              url: file.data.attributes.content.url,
+              url: fileAttachment.data.attributes.file_url,
             },
-            ordering: null,
           },
         }}
       />
@@ -61,6 +64,7 @@ const FileAttachmentSettings = () => {
     fileId,
   } = useNode((node) => ({
     fileId: node.data.props.fileId,
+    fileAttachmentId: node.data.props.fileAttachmentId,
     id: node.id,
   }));
 
@@ -125,7 +129,9 @@ const FileAttachmentSettings = () => {
                   {
                     onSuccess: (data) => {
                       // Update the node's fileId prop with the newly created attachment.
-                      props.fileAttachmentId = data.data.id;
+                      setProp((props: FileAttachmentProps) => {
+                        props.fileAttachmentId = data.data.id;
+                      });
                     },
                   }
                 );
