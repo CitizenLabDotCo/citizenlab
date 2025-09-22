@@ -90,6 +90,17 @@ export const FormField = ({
   const showLogicOnRow = field.input_type !== 'page' ? field.logic.rules : true;
   const isFieldGrouping = field.input_type === 'page';
 
+  // A page cannot be deleted if it's the last one
+  const getPageDeletable = () => {
+    const pages = formCustomFields.filter(
+      (field) => field.input_type === 'page'
+    ).length;
+
+    return pages > 2;
+  };
+  const shouldShowDelete =
+    getPageDeletable() && !field?.constraints?.locks?.deletion;
+
   const editFieldAndValidate = (defaultTab: ICustomFieldSettingsTab) => {
     onEditField({ ...field, index, defaultTab });
     trigger();
@@ -279,7 +290,7 @@ export const FormField = ({
           },
         ]
       : []),
-    ...(!field?.constraints?.locks?.deletion
+    ...(shouldShowDelete
       ? [
           {
             handler: (event: React.MouseEvent) => {
