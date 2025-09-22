@@ -76,7 +76,7 @@ describe('InviteUsersWithSeatsModal', () => {
             id: '1',
             type: 'invite_new_seats',
             attributes: {
-              job_type: 'bulk_invite',
+              job_type: 'count_new_seats',
               completed_at: null,
               result: {
                 newly_added_admins_number: 1,
