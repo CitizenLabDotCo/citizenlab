@@ -920,6 +920,7 @@
   "app.components.formBuilder.supportArticleLinkText": "this page",
   "app.components.formBuilder.tags": "Tags",
   "app.components.formBuilder.title": "Title",
+  "app.components.formBuilder.titleMultiloc": "Title",
   "app.components.formBuilder.toLabel": "to",
   "app.components.formBuilder.unsavedChanges": "You have unsaved changes",
   "app.components.formBuilder.useCustomButton2": "Use custom page button",
