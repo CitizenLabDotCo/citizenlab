@@ -2058,6 +2058,8 @@
   "app.containers.AdminPage.ProjectEdit.headerImageAltText": "Header image alt text",
   "app.containers.AdminPage.ProjectEdit.headerImageInputLabel": "Header image",
   "app.containers.AdminPage.ProjectEdit.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarning1": "If you allow users to submit ideas through the map, make sure that the Location field is included in the {inputFormLink}.",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarningLink1": "Input Form",
   "app.containers.AdminPage.ProjectEdit.information.new1": "NEW",
   "app.containers.AdminPage.ProjectEdit.information.provideInformation": "Provide information to users, or use the report builder to share results on past phases.",
   "app.containers.AdminPage.ProjectEdit.information.shareInformationOrResults": "Share information or results",
