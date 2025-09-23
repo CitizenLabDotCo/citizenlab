@@ -2701,6 +2701,7 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_take_poll_subtitle": "Wie kan deelnemen aan de peiling?",
   "app.containers.AdminPage.groups.permissions.permissionAction_take_survey_subtitle": "Wie kan de vragenlijst invullen?",
   "app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle": "Wie kan vrijwilliger worden?",
+  "app.containers.AdminPage.groups.permissions.permissionAction_vote_on_input_subtitle": "Wie kan stemmen op bijdragen?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "Wie kan stemmen op voorstellen?",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "Wie mag stemmen?",
   "app.containers.AdminPage.groups.permissions.questionDescription": "Beschrijving van de vraag",

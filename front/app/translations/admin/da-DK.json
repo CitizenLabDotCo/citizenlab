@@ -2701,6 +2701,7 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_take_poll_subtitle": "Hvem kan deltage i afstemningen?",
   "app.containers.AdminPage.groups.permissions.permissionAction_take_survey_subtitle": "Hvem kan deltage i undersøgelsen?",
   "app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle": "Hvem kan melde sig som frivillig?",
+  "app.containers.AdminPage.groups.permissions.permissionAction_vote_on_input_subtitle": "Hvem kan stemme om input?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "Hvem kan stemme om forslag?",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "Hvem kan stemme?",
   "app.containers.AdminPage.groups.permissions.questionDescription": "Beskrivelse af spørgsmålet",
