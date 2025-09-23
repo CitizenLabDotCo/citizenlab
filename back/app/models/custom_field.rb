@@ -96,7 +96,8 @@ class CustomField < ApplicationRecord
   validates :title_multiloc, presence: true, multiloc: { presence: true }, unless: :page?
   validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :required, inclusion: { in: [true, false] }
-  validates :enabled, inclusion: { in: [true, false] }
+  validates :enabled, inclusion: { in: [true, false] }, if: ->(field) { field.built_in? || field.user_type? }
+  validates :enabled, inclusion: { in: [true] }, if: ->(field) { !field.built_in? && !field.user_type? }
   validates :hidden, inclusion: { in: [true, false] }
   validates :select_count_enabled, inclusion: { in: [true, false] }
   validates :code, inclusion: { in: CODES }, uniqueness: { scope: %i[resource_type resource_id] }, allow_nil: true
