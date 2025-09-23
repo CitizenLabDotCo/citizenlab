@@ -3030,7 +3030,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioLabel": "Relación de aspecto personalizada",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioTooltip": "Introduce la relación anchura:altura (por ejemplo, 5:3, 16:10, 21:9). Relaciones habituales: 5:3 (1.67:1), 16:10 (1.6:1), 21:9 (2.33:1).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabel": "Altura del escritorio (píxeles)",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "Altura a la que quiere que aparezca su contenido incrustado en la página (en píxeles).",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabelTooltip": "Altura para la vista de escritorio (en píxeles).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Breve descripción del contenido que está incrustando",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Es útil proporcionar esta información para los usuarios que dependen de un lector de pantalla u otra tecnología de asistencia.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Añada su URL",
