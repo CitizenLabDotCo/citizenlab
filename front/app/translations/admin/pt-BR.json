@@ -3030,7 +3030,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioLabel": "Proporção de aspecto personalizada",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioTooltip": "Insira a proporção largura:altura (por exemplo, 5:3, 16:10, 21:9). Proporções comuns: 5:3 (1.67:1), 16:10 (1.6:1), 21:9 (2.33:1).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabel": "Altura da área de trabalho (pixels)",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "Altura que você deseja que seu conteúdo incorporado apareça na página (em pixels).",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabelTooltip": "Altura para visualização na área de trabalho (em pixels).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Breve descrição do conteúdo que você está incorporando",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "É útil fornecer essas informações aos usuários que dependem de um leitor de tela ou de outra tecnologia de assistência.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Endereço do site",
