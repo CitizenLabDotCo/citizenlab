@@ -2663,6 +2663,7 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_take_poll_subtitle": "Tko može sudjelovati u anketi?",
   "app.containers.AdminPage.groups.permissions.permissionAction_take_survey_subtitle": "Tko može ispuniti anketu?",
   "app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle": "Tko može volontirati?",
+  "app.containers.AdminPage.groups.permissions.permissionAction_vote_on_input_subtitle": "Tko može glasati o unesenim informacijama?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "Tko može glasovati o prijedlozima?",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "Tko može glasati?",
   "app.containers.AdminPage.groups.permissions.questionDescription": "Opis pitanja",

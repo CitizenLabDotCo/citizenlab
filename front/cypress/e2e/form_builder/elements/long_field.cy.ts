@@ -31,8 +31,7 @@ describe('Form builder long text field', () => {
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.dataCy('e2e-long-answer');
     cy.wait(2000);
-    cy.dataCy('e2e-long-answer').click();
-
+    cy.addItemToFormBuilder('#toolbox_multiline_text');
     // Save the survey
     cy.get('form').submit();
     // Should show error if no title is entered
