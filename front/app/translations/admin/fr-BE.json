@@ -3030,7 +3030,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioLabel": "Ratio d'aspect personnalisé",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioTooltip": "Saisissez le rapport largeur/hauteur (par exemple, 5:3, 16:10, 21:9). Ratios courants : 5:3 (1.67:1), 16:10 (1.6:1), 21:9 (2.33:1).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabel": "Hauteur du bureau (pixels)",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "La hauteur du contenu qui sera intégré à la page (en pixels).",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabelTooltip": "Hauteur pour l'affichage sur le bureau (en pixels).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Brève description du contenu que vous intégrez",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Ces informations sont utiles pour les utilisateurs qui utilisent un lecteur d'écran ou une autre technologie d'assistance.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "URL du site web",
