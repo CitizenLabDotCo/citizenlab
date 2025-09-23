@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -14,17 +13,6 @@ import {
   getResponsiveHeight,
 } from 'components/admin/ContentBuilder/Widgets/IframeMultiloc/utils';
 
-export interface Props {
-  url: string;
-  height: number;
-  title?: Multiloc;
-  embedMode?: IframeProps['embedMode'];
-  tabletHeight?: number;
-  mobileHeight?: number;
-  aspectRatio?: IframeProps['aspectRatio'];
-  customAspectRatio?: string;
-}
-
 const IframeMultiloc = ({
   url,
   height,
@@ -34,7 +22,7 @@ const IframeMultiloc = ({
   mobileHeight,
   aspectRatio = '16:9',
   customAspectRatio,
-}: Props) => {
+}: IframeProps) => {
   const localize = useLocalize();
   const isMobile = useBreakpoint('phone');
   const isTablet = useBreakpoint('tablet');

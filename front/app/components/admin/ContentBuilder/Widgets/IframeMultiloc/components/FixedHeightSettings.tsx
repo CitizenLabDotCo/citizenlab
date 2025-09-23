@@ -47,7 +47,7 @@ const FixedHeightSettings = () => {
           label={formatMessage(messages.embedTabletHeightLabel)}
           placeholder="600"
           type="number"
-          value={tabletHeight || ''}
+          value={tabletHeight}
           onChange={(value) => {
             setProp(
               (props: IframeProps) =>
@@ -63,7 +63,7 @@ const FixedHeightSettings = () => {
           labelTooltipPlacement="top"
           placeholder="400"
           type="number"
-          value={mobileHeight || ''}
+          value={mobileHeight}
           onChange={(value) => {
             setProp(
               (props: IframeProps) =>

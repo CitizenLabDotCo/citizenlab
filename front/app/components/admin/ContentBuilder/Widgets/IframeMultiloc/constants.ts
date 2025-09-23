@@ -3,7 +3,7 @@ import { AspectRatioType } from './utils';
 
 export const DEFAULT_PROPS = {
   url: '',
-  height: '400',
+  height: 400,
   embedMode: 'fixed' as const,
   tabletHeight: undefined,
   mobileHeight: undefined,
