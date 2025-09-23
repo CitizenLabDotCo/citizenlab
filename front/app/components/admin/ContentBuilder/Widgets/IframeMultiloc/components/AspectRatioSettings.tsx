@@ -37,7 +37,7 @@ const AspectRatioSettings = () => {
 
   const aspectRatioOptions = ASPECT_RATIO_OPTIONS.map((option) => ({
     value: option.value,
-    label: formatMessage(messages[option.labelKey as keyof typeof messages]),
+    label: formatMessage(messages[option.labelKey]),
   }));
 
   return (
