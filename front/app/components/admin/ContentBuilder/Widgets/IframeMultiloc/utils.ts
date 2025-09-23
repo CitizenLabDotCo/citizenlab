@@ -1,7 +1,3 @@
-/**
- * Utility functions for IframeMultiloc component
- */
-
 export type AspectRatioType = '16:9' | '4:3' | '3:4' | '1:1' | 'custom';
 
 /**
@@ -53,21 +49,3 @@ export const getResponsiveHeight = (
   // Aspect ratio mode - height will be handled by CSS
   return 'auto';
 };
-
-/**
- * Create aspect ratio container styles
- */
-export const createAspectRatioStyles = (percentage: number) => ({
-  overflow: 'hidden',
-  paddingBottom: `${percentage}%`,
-  position: 'relative' as const,
-  height: '0',
-
-  '& iframe': {
-    left: '0',
-    top: '0',
-    width: '100%',
-    height: '100%',
-    position: 'absolute' as const,
-  },
-});
