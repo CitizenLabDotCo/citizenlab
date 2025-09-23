@@ -6,13 +6,13 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import fileAttachmentsKeys from './keys';
 import { FileAttachmentKeys, IFileAttachment } from './types';
 
-const fetchFileAttachmentById = (id?: string | null) =>
+const fetchFileAttachmentById = (id?: string) =>
   fetcher<IFileAttachment>({
     path: `/file_attachments/${id}`,
     action: 'get',
   });
 
-const useFileAttachmentById = (id?: string | null) => {
+const useFileAttachmentById = (id?: string) => {
   return useQuery<
     IFileAttachment,
     CLErrors,
