@@ -2686,6 +2686,7 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_take_poll_subtitle": "Quem pode fazer a sondagem?",
   "app.containers.AdminPage.groups.permissions.permissionAction_take_survey_subtitle": "Quem pode responder ao inquérito?",
   "app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle": "Quem pode ser voluntário?",
+  "app.containers.AdminPage.groups.permissions.permissionAction_vote_on_input_subtitle": "Quem pode votar nos insumos?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "Quem pode votar nas propostas?",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "Quem pode votar?",
   "app.containers.AdminPage.groups.permissions.questionDescription": "Descrição da pergunta",

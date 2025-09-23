@@ -2686,6 +2686,7 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_take_poll_subtitle": "¿Quién puede rellenar la encuesta/consulta ciudadana?",
   "app.containers.AdminPage.groups.permissions.permissionAction_take_survey_subtitle": "¿Quién puede hacer la encuesta?",
   "app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle": "¿Quién puede ser voluntario?",
+  "app.containers.AdminPage.groups.permissions.permissionAction_vote_on_input_subtitle": "¿Quién puede votar?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "¿Quién puede votar las propuestas?",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "¿Quién puede votar?",
   "app.containers.AdminPage.groups.permissions.questionDescription": "Descripción de la pregunta",

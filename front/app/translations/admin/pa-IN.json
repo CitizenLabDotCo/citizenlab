@@ -2686,6 +2686,7 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_take_poll_subtitle": "ਵੋਟ ਕੌਣ ਲੈ ਸਕਦਾ ਹੈ?",
   "app.containers.AdminPage.groups.permissions.permissionAction_take_survey_subtitle": "ਸਰਵੇਖਣ ਕੌਣ ਲੈ ਸਕਦਾ ਹੈ?",
   "app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle": "ਕੌਣ ਵਲੰਟੀਅਰ ਕਰ ਸਕਦਾ ਹੈ?",
+  "app.containers.AdminPage.groups.permissions.permissionAction_vote_on_input_subtitle": "ਇਨਪੁਟਸ 'ਤੇ ਕੌਣ ਵੋਟ ਪਾ ਸਕਦਾ ਹੈ?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "ਪ੍ਰਸਤਾਵਾਂ 'ਤੇ ਕੌਣ ਵੋਟ ਪਾ ਸਕਦਾ ਹੈ?",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "ਕੌਣ ਵੋਟ ਪਾ ਸਕਦਾ ਹੈ?",
   "app.containers.AdminPage.groups.permissions.questionDescription": "ਸਵਾਲ ਦਾ ਵੇਰਵਾ",

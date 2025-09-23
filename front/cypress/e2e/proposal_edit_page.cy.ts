@@ -91,7 +91,7 @@ describe('Proposal edit page', () => {
       .click();
     cy.get('.e2e-more-actions-list button').contains('Delete').click();
     // Add an extra field
-    cy.dataCy('e2e-short-answer').click();
+    cy.addItemToFormBuilder('#toolbox_text');
     cy.get('#e2e-title-multiloc').type(extraFieldTitle, {
       force: true,
       delay: 0,

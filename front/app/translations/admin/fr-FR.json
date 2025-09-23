@@ -2686,6 +2686,7 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_take_poll_subtitle": "Qui peut participer au sondage ?",
   "app.containers.AdminPage.groups.permissions.permissionAction_take_survey_subtitle": "Qui peut participer à l'enquête ?",
   "app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle": "Qui peut se porter volontaire ?",
+  "app.containers.AdminPage.groups.permissions.permissionAction_vote_on_input_subtitle": "Qui peut voter pour des contributions ?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "Qui peut voter pour des propositions ?",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "Qui peut voter ?",
   "app.containers.AdminPage.groups.permissions.questionDescription": "Description",

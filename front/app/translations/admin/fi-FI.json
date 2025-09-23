@@ -2686,6 +2686,7 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_take_poll_subtitle": "Kuka voi osallistua kyselyyn?",
   "app.containers.AdminPage.groups.permissions.permissionAction_take_survey_subtitle": "Kuka voi osallistua kyselyyn?",
   "app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle": "Kuka voi tehdä vapaaehtoistyötä?",
+  "app.containers.AdminPage.groups.permissions.permissionAction_vote_on_input_subtitle": "Ketkä voivat äänestää syötteistä?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "Kuka voi äänestää ehdotuksista?",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "Kuka voi äänestää?",
   "app.containers.AdminPage.groups.permissions.questionDescription": "Kysymyksen kuvaus",

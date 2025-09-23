@@ -2686,6 +2686,7 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_take_poll_subtitle": "Kto może wziąć udział w ankiecie?",
   "app.containers.AdminPage.groups.permissions.permissionAction_take_survey_subtitle": "Kto może wziąć udział w badaniu?",
   "app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle": "Kto może zostać wolontariuszem?",
+  "app.containers.AdminPage.groups.permissions.permissionAction_vote_on_input_subtitle": "Kto może głosować w sprawie danych wejściowych?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "Kto może głosować nad propozycjami?",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "Kto może głosować?",
   "app.containers.AdminPage.groups.permissions.questionDescription": "Opis pytania",

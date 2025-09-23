@@ -46,7 +46,7 @@ describe('Form builder ranking component', () => {
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.dataCy('e2e-ranking');
     cy.wait(2000);
-    cy.dataCy('e2e-ranking').click();
+    cy.addItemToFormBuilder('#toolbox_ranking');
     cy.get('#e2e-title-multiloc').type('Question title 2', { force: true });
     cy.get('#e2e-option-input-0').type('Option 1 question 2', { force: true });
 

@@ -30,7 +30,9 @@ describe('Form builder point field', () => {
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.dataCy('e2e-point-field');
     cy.wait(2000);
-    cy.dataCy('e2e-point-field').click();
+
+    // Add point field using the custom command
+    cy.addItemToFormBuilder('#toolbox_point');
 
     // Save the survey
     cy.get('form').submit();

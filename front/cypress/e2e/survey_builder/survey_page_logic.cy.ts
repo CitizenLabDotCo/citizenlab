@@ -5,7 +5,7 @@ describe('Survey page logic', () => {
   let projectSlug: string | undefined;
   let phaseId: string | undefined;
 
-  after(() => {
+  afterEach(() => {
     if (projectId) {
       cy.apiRemoveProject(projectId);
     }
@@ -31,7 +31,7 @@ describe('Survey page logic', () => {
 
       // Add a new page
       cy.wait(1000);
-      cy.dataCy('e2e-page').click();
+      cy.addItemToFormBuilder('#toolbox_page');
       cy.dataCy('e2e-field-row').should('have.length', 4);
     });
   });
@@ -53,7 +53,7 @@ describe('Survey page logic', () => {
   it('correctly updates page logic when removing pages', () => {
     // Create another age
     cy.wait(1000);
-    cy.dataCy('e2e-page').click();
+    cy.addItemToFormBuilder('#toolbox_page');
 
     // Make sure first page references page 2
     cy.dataCy('e2e-field-row')
