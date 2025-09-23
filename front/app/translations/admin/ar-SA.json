@@ -2701,6 +2701,7 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_take_poll_subtitle": "من يمكنه إجراء الاستطلاع؟",
   "app.containers.AdminPage.groups.permissions.permissionAction_take_survey_subtitle": "من يمكنه إجراء الاستطلاع؟",
   "app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle": "من يمكنه التطوع؟",
+  "app.containers.AdminPage.groups.permissions.permissionAction_vote_on_input_subtitle": "من يمكنه التصويت على المدخلات؟",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "من يمكنه التصويت على المقترحات؟",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "من يستطيع التصويت؟",
   "app.containers.AdminPage.groups.permissions.questionDescription": "وصف السؤال",
