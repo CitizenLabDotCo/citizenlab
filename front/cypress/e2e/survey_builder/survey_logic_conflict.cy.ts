@@ -31,12 +31,12 @@ describe('Survey logic conflict', () => {
 
     // Add a new page
     cy.wait(1000);
-    cy.dataCy('e2e-page').click();
+    cy.addItemToFormBuilder('#toolbox_page');
     cy.dataCy('e2e-field-row').should('have.length', 4);
 
     // Add another page
     cy.wait(1000);
-    cy.dataCy('e2e-page').click();
+    cy.addItemToFormBuilder('#toolbox_page');
     cy.dataCy('e2e-field-row').should('have.length', 5);
 
     // Save

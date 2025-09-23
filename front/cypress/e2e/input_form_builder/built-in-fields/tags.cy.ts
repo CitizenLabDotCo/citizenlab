@@ -75,7 +75,7 @@ describe('Input form builder', () => {
     cy.dataCy('e2e-edit-input-form').click();
 
     // The tags tool box item should be disabled as it is already on the canvas
-    cy.dataCy('e2e-tags-item').as('tagsToolboxItem');
+    cy.dataCy('e2e-topic_ids-item').as('tagsToolboxItem');
     cy.get('@tagsToolboxItem').should('exist');
     cy.get('@tagsToolboxItem').should('have.attr', 'disabled');
 
