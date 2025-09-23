@@ -3030,7 +3030,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioLabel": "نسبة العرض إلى الارتفاع المخصصة",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioTooltip": "أدخل نسبة العرض إلى الارتفاع (مثلاً: ٥:٣، ١٦:١٠، ٢١:٩). النسب الشائعة: ٥:٣ (١.٦٧:١)، ١٦:١٠ (١.٦:١)، ٢١:٩ (٢.٣٣:١).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabel": "ارتفاع سطح المكتب (بكسل)",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "الارتفاع الذي تريد أن يظهر المحتوى المضمن فيه على الصفحة (بالبكسل).",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabelTooltip": "ارتفاع عرض سطح المكتب (بالبكسل).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "وصف موجز للمحتوى الذي تقوم بتضمينه",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "ومن المفيد توفير هذه المعلومات للمستخدمين الذين يعتمدون على قارئ الشاشة أو أي تقنية مساعدة أخرى.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "عنوان موقع ويب",
