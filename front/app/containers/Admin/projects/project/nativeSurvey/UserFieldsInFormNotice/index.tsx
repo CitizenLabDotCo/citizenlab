@@ -4,7 +4,7 @@ import { Box, colors, Icon, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 
-import usePhase from 'api/phases/usePhase';
+import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -23,9 +23,18 @@ const UserFieldsInFormNotice = ({
     projectId: string;
     phaseId: string;
   };
-  const { data: phase } = usePhase(phaseId);
 
-  if (!phase?.data.attributes.user_fields_in_form) return null;
+  const { data: phasePermissions } = usePhasePermissions({ phaseId });
+
+  if (!phasePermissions) return null;
+
+  const postingPermission = phasePermissions.data.find(
+    (permission) => permission.attributes.action === 'posting_idea'
+  );
+
+  if (!postingPermission || !postingPermission.attributes.user_fields_in_form) {
+    return null;
+  }
 
   const accessRightsPath: RouteType = communityMonitor
     ? `/admin/community-monitor/settings/access-rights`
