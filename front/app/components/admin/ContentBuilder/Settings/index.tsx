@@ -58,9 +58,9 @@ const SettingsWrapper = ({ titles }: Props) => {
       onClose={closeSettings}
       onDelete={() => {
         actions.delete(selectedNode.id);
-        eventEmitter.emit(
+        eventEmitter.emit<SelectedNode>(
           CONTENT_BUILDER_DELETE_ELEMENT_EVENT,
-          selectedNode.id
+          selectedNode
         );
       }}
     />

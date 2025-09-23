@@ -2,8 +2,6 @@ import React from 'react';
 
 import { useEditor, ROOT_NODE } from '@craftjs/core';
 
-import useDeleteFileAttachment from 'api/file_attachments/useDeleteFileAttachment';
-
 import { CONTENT_BUILDER_DELETE_ELEMENT_EVENT } from 'components/admin/ContentBuilder/constants';
 
 import { MessageDescriptor } from 'utils/cl-intl';
@@ -39,14 +37,8 @@ const ContentBuilderSettings = () => {
     };
   });
 
-  const { mutate: deleteFileAttachment } = useDeleteFileAttachment({});
-
   const closeSettings = () => {
     actions.selectNode();
-  };
-
-  const cleanupFileAttachment = () => {
-    deleteFileAttachment(selectedNode?.props.fileAttachmentId);
   };
 
   return selectedNode &&
@@ -58,15 +50,9 @@ const ContentBuilderSettings = () => {
       onClose={closeSettings}
       onDelete={() => {
         actions.delete(selectedNode.id);
-
-        // If the deleted node is a file attachment, also clean up the associated file attachment data.
-        if (selectedNode.custom?.title.defaultMessage === 'File Attachment') {
-          cleanupFileAttachment();
-        }
-
-        eventEmitter.emit(
+        eventEmitter.emit<SelectedNode>(
           CONTENT_BUILDER_DELETE_ELEMENT_EVENT,
-          selectedNode.id
+          selectedNode
         );
       }}
     />
