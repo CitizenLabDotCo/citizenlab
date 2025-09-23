@@ -3020,7 +3020,6 @@
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltip1": "Tämä banneri on erityisen hyödyllinen kuvissa, jotka eivät toimi hyvin otsikon, alaotsikon tai painikkeen tekstin kanssa. Nämä kohteet työnnetään bannerin alle. Lisätietoja suositellusta kuvien käytöstä löytyy osoitteesta {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "tietopohja",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "Kaksi riviä",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabel": "Upotuskorkeus (pikseliä)",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "Korkeus, jolla haluat upotetun sisällön näkyvän sivulla (pikseleinä).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Lyhyt kuvaus upotettavasta sisällöstä",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "On hyödyllistä antaa nämä tiedot käyttäjille, jotka käyttävät näytönlukuohjelmaa tai muuta aputekniikkaa.",

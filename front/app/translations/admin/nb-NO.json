@@ -3020,7 +3020,6 @@
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltip1": "Dette banneret er spesielt nyttig med bilder som ikke fungerer godt sammen med tekst fra tittelen, undertittelen eller knappen. Disse elementene vil bli skjøvet under banneret. Du finner mer informasjon om anbefalt bildebruk på {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "kunnskapsbase",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "To rader",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabel": "Innebygd høyde (piksler)",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "Høyden du vil at det innebygde innholdet skal vises på siden (i piksler).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Kort beskrivelse av innholdet du legger inn",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Det er nyttig å gi denne informasjonen til brukere som er avhengige av skjermleser eller andre hjelpemidler.",

@@ -3020,7 +3020,6 @@
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltip1": "Mae'r faner hon yn arbennig o ddefnyddiol gyda delweddau nad ydynt yn gweithio'n dda gyda thestun o'r teitl, yr is-deitl neu'r botwm. Bydd yr eitemau hyn yn cael eu gwthio o dan y faner. Gellir dod o hyd i ragor o wybodaeth am y defnydd a argymhellir o ddelweddau ar ein {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "sylfaen wybodaeth",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "Dwy res",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabel": "Uchder mewnosod (picsel)",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "Uchder rydych chi am i'ch cynnwys wedi'i fewnosod ymddangos ar y dudalen (mewn picseli).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Disgrifiad byr o'r cynnwys yr ydych yn ei fewnosod",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Mae'n ddefnyddiol darparu'r wybodaeth hon i ddefnyddwyr sy'n dibynnu ar ddarllenydd sgrin neu dechnoleg gynorthwyol arall.",

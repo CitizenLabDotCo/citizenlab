@@ -3020,7 +3020,6 @@
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltip1": "يعد هذا الشعار مفيدًا بشكل خاص مع الصور التي لا تعمل بشكل جيد مع النص من العنوان أو العنوان الفرعي أو الزر. سيتم دفع هذه العناصر أسفل الشعار. يمكن العثور على مزيد من المعلومات حول استخدام الصورة الموصى به على {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "قاعدة المعرفة",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "صفين",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabel": "ارتفاع التضمين (بكسل)",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "الارتفاع الذي تريد أن يظهر المحتوى المضمن فيه على الصفحة (بالبكسل).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "وصف موجز للمحتوى الذي تقوم بتضمينه",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "ومن المفيد توفير هذه المعلومات للمستخدمين الذين يعتمدون على قارئ الشاشة أو أي تقنية مساعدة أخرى.",

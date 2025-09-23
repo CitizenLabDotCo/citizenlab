@@ -3020,7 +3020,6 @@
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltip1": "ਇਹ ਬੈਨਰ ਖਾਸ ਤੌਰ 'ਤੇ ਉਹਨਾਂ ਚਿੱਤਰਾਂ ਲਈ ਲਾਭਦਾਇਕ ਹੈ ਜੋ ਸਿਰਲੇਖ, ਉਪਸਿਰਲੇਖ ਜਾਂ ਬਟਨ ਦੇ ਟੈਕਸਟ ਨਾਲ ਚੰਗੀ ਤਰ੍ਹਾਂ ਕੰਮ ਨਹੀਂ ਕਰਦੇ ਹਨ। ਇਹ ਆਈਟਮਾਂ ਬੈਨਰ ਦੇ ਹੇਠਾਂ ਧੱਕ ਦਿੱਤੀਆਂ ਜਾਣਗੀਆਂ। ਸਿਫ਼ਾਰਿਸ਼ ਕੀਤੇ ਚਿੱਤਰ ਦੀ ਵਰਤੋਂ ਬਾਰੇ ਹੋਰ ਜਾਣਕਾਰੀ ਸਾਡੇ {link}'ਤੇ ਮਿਲ ਸਕਦੀ ਹੈ।",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "ਗਿਆਨ ਅਧਾਰ",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "ਦੋ ਕਤਾਰਾਂ",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabel": "ਏਮਬੇਡ ਉਚਾਈ (ਪਿਕਸਲ)",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "ਉਚਾਈ ਤੁਸੀਂ ਚਾਹੁੰਦੇ ਹੋ ਕਿ ਤੁਹਾਡੀ ਏਮਬੈਡ ਕੀਤੀ ਸਮੱਗਰੀ ਪੰਨੇ 'ਤੇ ਦਿਖਾਈ ਦੇਵੇ (ਪਿਕਸਲ ਵਿੱਚ)।",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "ਤੁਹਾਡੇ ਦੁਆਰਾ ਏਮਬੈਡ ਕਰ ਰਹੇ ਸਮਗਰੀ ਦਾ ਛੋਟਾ ਵੇਰਵਾ",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "ਇਹ ਜਾਣਕਾਰੀ ਉਹਨਾਂ ਉਪਭੋਗਤਾਵਾਂ ਲਈ ਪ੍ਰਦਾਨ ਕਰਨਾ ਲਾਭਦਾਇਕ ਹੈ ਜੋ ਸਕ੍ਰੀਨ ਰੀਡਰ ਜਾਂ ਹੋਰ ਸਹਾਇਕ ਤਕਨਾਲੋਜੀ 'ਤੇ ਭਰੋਸਾ ਕਰਦੇ ਹਨ।",

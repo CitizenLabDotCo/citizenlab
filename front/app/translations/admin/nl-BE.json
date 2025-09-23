@@ -3020,7 +3020,6 @@
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltip1": "Deze banner is vooral handig bij afbeeldingen die niet goed werken met tekst uit de titel, ondertitel of knop. Deze items worden onder de banner geschoven. Meer informatie over het aanbevolen gebruik van afbeeldingen kun je vinden op onze {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "kennisbank",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "Twee rijen",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabel": "Hoogte van de insluiting (pixels)",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "Hoogte waarop je je ingesloten inhoud op de pagina wilt weergeven (in pixels).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Korte omschrijving van de inhoud die je insluit",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Het is nuttig om deze informatie te verstrekken aan gebruikers die afhankelijk zijn van een schermlezer of andere ondersteunende technologie.",

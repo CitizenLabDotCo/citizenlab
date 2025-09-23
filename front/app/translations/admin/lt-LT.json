@@ -3020,7 +3020,6 @@
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltip1": "Šis baneris ypač naudingas naudojant paveikslėlius, kurie netinkamai dera su antraštės, paantraštės ar mygtuko tekstu. Šie elementai bus nustumti po baneriu. Daugiau informacijos apie rekomenduojamą vaizdų naudojimą rasite mūsų svetainėje {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "žinių bazė",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "Dvi eilės",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabel": "Įterpties aukštis (pikseliai)",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "aukštis, kurį norite, kad įterptasis turinys būtų rodomas puslapyje (pikseliais).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Trumpas įterpiamo turinio aprašymas",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Naudotojams, kurie naudojasi ekrano skaitytuvu ar kita pagalbine technologija, naudinga pateikti šią informaciją.",

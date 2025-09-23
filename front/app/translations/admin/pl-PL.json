@@ -3020,7 +3020,6 @@
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltip1": "Baner ten jest szczególnie przydatny w przypadku obrazów, które nie współgrają dobrze z tekstem tytułu, podtytułu lub przycisku. Elementy te zostaną przesunięte poniżej banera. Więcej informacji na temat zalecanego użycia obrazów można znaleźć na naszej stronie {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "baza wiedzy",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "Dwa rzędy",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabel": "Wysokość osadzenia (piksele)",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "Wysokość, na jakiej osadzona zawartość ma być wyświetlana na stronie (w pikselach).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Krótki opis treści, którą osadzasz",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Podanie tych informacji jest przydatne dla użytkowników korzystających z czytnika ekranu lub innych technologii wspomagających.",

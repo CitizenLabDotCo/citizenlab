@@ -3020,7 +3020,6 @@
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltip1": "Ovaj natpis je posebno koristan sa slikama koje ne funkcioniraju dobro s tekstom iz naslova, podnaslova ili gumba. Ove stavke bit će gurnute ispod natpisa. Više informacija o preporučenoj upotrebi slika možete pronaći na našem {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "baza znanja",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "Dva reda",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabel": "Visina ugradnje (pikseli)",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "Visina na kojoj želite da se vaš ugrađeni sadržaj pojavi na stranici (u pikselima).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Kratak opis sadržaja koji ugrađujete",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Korisno je pružiti ove informacije korisnicima koji se oslanjaju na čitač zaslona ili drugu pomoćnu tehnologiju.",
