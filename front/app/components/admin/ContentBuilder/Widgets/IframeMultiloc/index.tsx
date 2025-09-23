@@ -11,7 +11,11 @@ import AspectRatioContainer from './components/AspectRatioContainer';
 import EmbedSettings from './components/EmbedSettings';
 import { DEFAULT_PROPS } from './constants';
 import messages from './messages';
-import { getAspectRatioPercentage, getResponsiveHeight } from './utils';
+import {
+  AspectRatioType,
+  getAspectRatioPercentage,
+  getResponsiveHeight,
+} from './utils';
 
 interface Props {
   url: string;
@@ -20,11 +24,10 @@ interface Props {
   errorType?: string;
   title?: Multiloc;
   selectedLocale: SupportedLocale;
-  // New hybrid mode properties
   embedMode?: 'fixed' | 'aspectRatio';
   tabletHeight?: number;
   mobileHeight?: number;
-  aspectRatio?: '16:9' | '4:3' | '3:4' | '1:1' | 'custom';
+  aspectRatio?: AspectRatioType;
   customAspectRatio?: string;
 }
 
