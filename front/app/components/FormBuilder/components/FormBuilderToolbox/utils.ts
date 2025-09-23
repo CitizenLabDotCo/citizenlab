@@ -1,15 +1,9 @@
-import styled from 'styled-components';
-
 import { ICustomFieldInputType } from 'api/custom_fields/types';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 import { FormatMessageValues } from 'utils/cl-intl/useIntl';
 
 import messages from '../messages';
-
-export const DraggableElement = styled.div`
-  cursor: move;
-`;
 
 type InitialLinearScaleLabelProps = {
   value: number;

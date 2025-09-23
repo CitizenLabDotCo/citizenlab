@@ -37,7 +37,7 @@ describe('Survey builder', () => {
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form`);
     cy.dataCy('e2e-edit-survey-form').click();
     waitForCustomFormFields();
-    cy.dataCy('e2e-short-answer').click();
+    cy.addItemToFormBuilder('#toolbox_text');
 
     // Save the survey
     cy.get('form').submit();
@@ -96,7 +96,7 @@ describe('Survey builder', () => {
 
     cy.dataCy('e2e-linear-scale');
     cy.wait(2000);
-    cy.dataCy('e2e-linear-scale').click();
+    cy.addItemToFormBuilder('#toolbox_linear_scale');
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
 
     // Save the survey
@@ -135,7 +135,7 @@ describe('Survey builder', () => {
     waitForCustomFormFields();
 
     // Multiple choice choose one
-    cy.dataCy('e2e-single-choice').click();
+    cy.addItemToFormBuilder('#toolbox_select');
     cy.get('#e2e-title-multiloc').type(multipleChoiceChooseOneTitle, {
       force: true,
     });
@@ -144,7 +144,7 @@ describe('Survey builder', () => {
     cy.get('#e2e-option-input-1').type(chooseOneOption2, { force: true });
 
     // Multiple choice choose multiple
-    cy.dataCy('e2e-multiple-choice').click();
+    cy.addItemToFormBuilder('#toolbox_select');
     cy.get('#e2e-title-multiloc').type(multipleChoiceChooseManyTitle, {
       force: true,
     });
@@ -153,7 +153,7 @@ describe('Survey builder', () => {
     cy.get('#e2e-option-input-1').type(chooseManyOption2, { force: true });
 
     // Linear scale
-    cy.dataCy('e2e-linear-scale').click();
+    cy.addItemToFormBuilder('#toolbox_linear_scale');
     cy.get('#e2e-title-multiloc').type(linearScaleTitle, { force: true });
 
     // Save the survey
@@ -219,7 +219,7 @@ describe('Survey builder', () => {
     cy.dataCy('e2e-edit-survey-form').click();
     waitForCustomFormFields();
 
-    cy.dataCy('e2e-number-field').click();
+    cy.addItemToFormBuilder('#toolbox_number');
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
     cy.get('form').submit();
 
@@ -244,7 +244,7 @@ describe('Survey builder', () => {
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     waitForCustomFormFields();
-    cy.dataCy('e2e-number-field').click();
+    cy.addItemToFormBuilder('#toolbox_number');
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
 
     // Save the survey
@@ -286,7 +286,7 @@ describe('Survey builder', () => {
   it('allows export of survey results', () => {
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     waitForCustomFormFields();
-    cy.dataCy('e2e-long-answer').click();
+    cy.addItemToFormBuilder('#toolbox_multiline_text');
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
 
     // Save the survey
@@ -340,7 +340,7 @@ describe('Survey builder', () => {
     cy.dataCy('e2e-edit-survey-form').click();
     waitForCustomFormFields();
 
-    cy.dataCy('e2e-short-answer').click();
+    cy.addItemToFormBuilder('#toolbox_text');
 
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
 
@@ -386,10 +386,10 @@ describe('Survey builder', () => {
     waitForCustomFormFields();
 
     // First page
-    cy.dataCy('e2e-short-answer').click();
+    cy.addItemToFormBuilder('#toolbox_text');
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
 
-    cy.dataCy('e2e-single-choice').click();
+    cy.addItemToFormBuilder('#toolbox_select');
     cy.get('#e2e-title-multiloc').type(multipleChoiceChooseOneTitle, {
       force: true,
     });
@@ -398,15 +398,16 @@ describe('Survey builder', () => {
     cy.get('#e2e-option-input-1').type(chooseOneOption2, { force: true });
 
     // Add second page
-    cy.dataCy('e2e-page').click();
+    cy.addItemToFormBuilder('#toolbox_page');
+
     cy.get('#e2e-field-group-title-multiloc').type(page2Title, { force: true });
-    cy.dataCy('e2e-short-answer').click();
+    cy.addItemToFormBuilder('#toolbox_text');
     cy.get('#e2e-title-multiloc').type(question2Title, { force: true });
 
     // Add third page
-    cy.dataCy('e2e-page').click();
+    cy.addItemToFormBuilder('#toolbox_page');
     cy.get('#e2e-field-group-title-multiloc').type(page3Title, { force: true });
-    cy.dataCy('e2e-short-answer').click();
+    cy.addItemToFormBuilder('#toolbox_text');
     cy.get('#e2e-title-multiloc').type(question3Title, { force: true });
 
     // Add logic to the multiple choice question
@@ -465,7 +466,7 @@ describe('Survey builder', () => {
     cy.dataCy('e2e-after-submission').should('exist');
   });
 
-  it.only('creates survey with logic and the user can navigate back and forth without previous logic options changing the order of pages', () => {
+  it('creates survey with logic and the user can navigate back and forth without previous logic options changing the order of pages', () => {
     const firstLogicQnOption1 = randomString();
     const firstLogicQnOption2 = randomString();
     const secondLogicQnOption1 = randomString();
@@ -482,10 +483,10 @@ describe('Survey builder', () => {
     cy.dataCy('e2e-edit-survey-form').click();
     waitForCustomFormFields();
 
-    cy.dataCy('e2e-short-answer').click();
+    cy.addItemToFormBuilder('#toolbox_text');
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
 
-    cy.dataCy('e2e-single-choice').click();
+    cy.addItemToFormBuilder('#toolbox_select');
     cy.get('#e2e-title-multiloc').type(firstSingleChoiceTitle, {
       force: true,
     });
@@ -494,9 +495,9 @@ describe('Survey builder', () => {
     cy.get('#e2e-option-input-1').type(firstLogicQnOption2, { force: true });
 
     // Add second page
-    cy.dataCy('e2e-page').click();
+    cy.addItemToFormBuilder('#toolbox_page');
     cy.get('#e2e-field-group-title-multiloc').type(page2Title, { force: true });
-    cy.dataCy('e2e-single-choice').click();
+    cy.addItemToFormBuilder('#toolbox_select');
     cy.get('#e2e-title-multiloc').type(secondSingleChoiceTitle, {
       force: true,
     });
@@ -505,16 +506,16 @@ describe('Survey builder', () => {
     cy.get('#e2e-option-input-1').type(secondLogicQnOption2, { force: true });
 
     // Add third page
-    cy.dataCy('e2e-page').click();
+    cy.addItemToFormBuilder('#toolbox_page');
     cy.get('#e2e-field-group-title-multiloc').type(page3Title, { force: true });
-    cy.dataCy('e2e-short-answer').click();
+    cy.addItemToFormBuilder('#toolbox_text');
     cy.get('#e2e-title-multiloc').type(page3QnTitle, { force: true });
     cy.get('#e2e-required-toggle').find('input').click({ force: true });
 
     // Add fourth page
-    cy.dataCy('e2e-page').click();
+    cy.addItemToFormBuilder('#toolbox_page');
     cy.get('#e2e-field-group-title-multiloc').type(page4Title, { force: true });
-    cy.dataCy('e2e-short-answer').click();
+    cy.addItemToFormBuilder('#toolbox_text');
     cy.get('#e2e-title-multiloc').type(page4QnTitle, { force: true });
 
     // Save the survey and reload the page before adding logic (bug with adding logic)
@@ -631,7 +632,7 @@ describe('Survey builder', () => {
     waitForCustomFormFields();
 
     // Add a required single-select
-    cy.dataCy('e2e-short-answer').click();
+    cy.addItemToFormBuilder('#toolbox_text');
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
     cy.get('#e2e-required-toggle').find('input').click({ force: true });
 
@@ -643,6 +644,7 @@ describe('Survey builder', () => {
     cy.logout();
     cy.apiSignup(firstName, lastName, email, password);
     cy.setLoginCookie(email, password);
+    cy.acceptCookies();
 
     // Take the survey
     cy.visit(`/projects/${projectSlug}`);
@@ -684,17 +686,17 @@ describe('Survey builder', () => {
     cy.dataCy('e2e-edit-survey-form').click();
     waitForCustomFormFields();
 
-    cy.dataCy('e2e-short-answer').click();
+    cy.addItemToFormBuilder('#toolbox_text');
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
 
     // Add second page
-    cy.dataCy('e2e-page').click();
+    cy.addItemToFormBuilder('#toolbox_page');
     cy.get('#e2e-field-group-title-multiloc').type(page2Title, { force: true });
-    cy.dataCy('e2e-short-answer').click();
+    cy.addItemToFormBuilder('#toolbox_text');
     cy.get('#e2e-title-multiloc').type(question2Title, { force: true });
 
     // Add multiple choice question to the second page
-    cy.dataCy('e2e-single-choice').click();
+    cy.addItemToFormBuilder('#toolbox_select');
     cy.get('#e2e-title-multiloc').type(multipleChoiceChooseOneTitle, {
       force: true,
     });
@@ -703,9 +705,9 @@ describe('Survey builder', () => {
     cy.get('#e2e-option-input-1').type(chooseOneOption2, { force: true });
 
     // Add third page
-    cy.dataCy('e2e-page').click();
+    cy.addItemToFormBuilder('#toolbox_page');
     cy.get('#e2e-field-group-title-multiloc').type(page3Title, { force: true });
-    cy.dataCy('e2e-short-answer').click();
+    cy.addItemToFormBuilder('#toolbox_text');
     cy.get('#e2e-title-multiloc').type(question3Title, { force: true });
 
     // Save the survey and reload the page before adding logic (bug with adding logic)
@@ -768,13 +770,13 @@ describe('Survey builder', () => {
     cy.dataCy('e2e-edit-survey-form').click();
     waitForCustomFormFields();
 
-    cy.dataCy('e2e-short-answer').click();
+    cy.addItemToFormBuilder('#toolbox_text');
     cy.get('#e2e-title-multiloc').type(questionTitle, {
       force: true,
       delay: 0,
     });
 
-    cy.dataCy('e2e-single-choice').click();
+    cy.addItemToFormBuilder('#toolbox_select');
     cy.get('#e2e-title-multiloc').type(multipleChoiceChooseOneTitle, {
       force: true,
       delay: 0,
@@ -792,36 +794,36 @@ describe('Survey builder', () => {
       .should('have.value', chooseOneOption2);
 
     // Add second page
-    cy.dataCy('e2e-page').click();
+    cy.addItemToFormBuilder('#toolbox_page');
     cy.get('#e2e-field-group-title-multiloc').type(page2Title, {
       force: true,
       delay: 0,
     });
-    cy.dataCy('e2e-short-answer').click();
+    cy.addItemToFormBuilder('#toolbox_text');
     cy.get('#e2e-title-multiloc').type(question2Title, {
       force: true,
       delay: 0,
     });
 
     // Add third page
-    cy.dataCy('e2e-page').click();
+    cy.addItemToFormBuilder('#toolbox_page');
     cy.get('#e2e-field-group-title-multiloc').type(page3Title, {
       force: true,
       delay: 0,
     });
-    cy.dataCy('e2e-short-answer').click();
+    cy.addItemToFormBuilder('#toolbox_text');
     cy.get('#e2e-title-multiloc').type(question3Title, {
       force: true,
       delay: 0,
     });
 
     // Add fourth page
-    cy.dataCy('e2e-page').click();
+    cy.addItemToFormBuilder('#toolbox_page');
     cy.get('#e2e-field-group-title-multiloc').type(page4Title, {
       force: true,
       delay: 0,
     });
-    cy.dataCy('e2e-short-answer').click();
+    cy.addItemToFormBuilder('#toolbox_text');
     cy.get('#e2e-title-multiloc').type(question4Title, {
       force: true,
       delay: 0,
@@ -892,17 +894,17 @@ describe('Survey builder', () => {
     cy.dataCy('e2e-edit-survey-form').click();
     waitForCustomFormFields();
 
-    cy.dataCy('e2e-short-answer').click();
+    cy.addItemToFormBuilder('#toolbox_text');
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
 
     // Add second page
-    cy.dataCy('e2e-page').click();
+    cy.addItemToFormBuilder('#toolbox_page');
     cy.get('#e2e-field-group-title-multiloc').type(page2Title, { force: true });
-    cy.dataCy('e2e-short-answer').click();
+    cy.addItemToFormBuilder('#toolbox_text');
     cy.get('#e2e-title-multiloc').type(question2Title, { force: true });
 
     // Add multiple choice question to the second page
-    cy.dataCy('e2e-single-choice').click();
+    cy.addItemToFormBuilder('#toolbox_select');
     cy.get('#e2e-title-multiloc').type(multipleChoiceChooseOneTitle, {
       force: true,
     });
@@ -911,15 +913,15 @@ describe('Survey builder', () => {
     cy.get('#e2e-option-input-1').type(chooseOneOption2, { force: true });
 
     // Add third page
-    cy.dataCy('e2e-page').click();
+    cy.addItemToFormBuilder('#toolbox_page');
     cy.get('#e2e-field-group-title-multiloc').type(page3Title, { force: true });
-    cy.dataCy('e2e-short-answer').click();
+    cy.addItemToFormBuilder('#toolbox_text');
     cy.get('#e2e-title-multiloc').type(question3Title, { force: true });
 
     // Add fourth page
-    cy.dataCy('e2e-page').click();
+    cy.addItemToFormBuilder('#toolbox_page');
     cy.get('#e2e-field-group-title-multiloc').type(page4Title, { force: true });
-    cy.dataCy('e2e-short-answer').click();
+    cy.addItemToFormBuilder('#toolbox_text');
     cy.get('#e2e-title-multiloc').type(question4Title, { force: true });
 
     // Save the survey and reload the page before adding logic (bug with adding logic)
@@ -961,8 +963,7 @@ describe('Survey builder', () => {
     cy.contains(chooseOneOption2).should('be.visible').click({ force: true });
     cy.dataCy('e2e-next-page').should('be.visible').click();
     cy.contains(page3Title).should('exist');
-    cy.contains(question3Title).should('exist');
-    cy.get(`[data-testid="inputControl"]`).click().type('question3');
+    cy.contains(question3Title).should('exist').click().type('question3');
 
     // Go back to page 2
     cy.dataCy('e2e-previous-page').click();
