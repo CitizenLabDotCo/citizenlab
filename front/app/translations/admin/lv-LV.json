@@ -3030,7 +3030,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioLabel": "Pielāgota malu attiecība",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioTooltip": "Ievadiet platuma un augstuma attiecību (piemēram, 5:3, 16:10, 21:9). Bieži sastopamie attiecinājumi: 5:3 (1.67:1), 16:10 (1.6:1), 21:9 (2.33:1).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabel": "Darbvirsmas augstums (pikseļi)",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "Augstums, kādā vēlaties, lai iegultais saturs tiktu attēlots lapā (pikseļos).",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabelTooltip": "Augstums darbvirsmas skatam (pikseļos).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Īss ievietotā satura apraksts",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Šo informāciju ir lietderīgi sniegt lietotājiem, kuri izmanto ekrāna lasītāju vai citu palīgtehnoloģiju.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Tīmekļa vietnes adrese",
