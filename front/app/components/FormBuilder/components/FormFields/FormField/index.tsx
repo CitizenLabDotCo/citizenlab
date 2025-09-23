@@ -191,7 +191,6 @@ export const FormField = ({
     if (!!field.code && field.input_type !== 'page') {
       const newField = { ...field, enabled: false };
       setValue(`customFields.${index}`, newField);
-      remove(fieldIndex);
     } else {
       const field = formCustomFields[fieldIndex];
 
