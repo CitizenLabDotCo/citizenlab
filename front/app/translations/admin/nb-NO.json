@@ -3030,7 +3030,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioLabel": "Tilpasset sideforhold",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioTooltip": "Angi bredde:høyde-forholdet (f.eks. 5:3, 16:10, 21:9). Vanlige forhold: 5:3 (1.67:1), 16:10 (1.6:1), 21:9 (2.33:1).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabel": "Skrivebordshøyde (piksler)",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "Høyden du vil at det innebygde innholdet skal vises på siden (i piksler).",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabelTooltip": "Høyde for skrivebordsvisning (i piksler).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Kort beskrivelse av innholdet du legger inn",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Det er nyttig å gi denne informasjonen til brukere som er avhengige av skjermleser eller andre hjelpemidler.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Nettadresse",
