@@ -13,6 +13,7 @@ import { DEFAULT_PROPS } from './constants';
 import messages from './messages';
 import {
   AspectRatioType,
+  EmbedModeType,
   getAspectRatioPercentage,
   getResponsiveHeight,
 } from './utils';
@@ -24,7 +25,7 @@ interface Props {
   errorType?: string;
   title?: Multiloc;
   selectedLocale: SupportedLocale;
-  embedMode?: 'fixed' | 'aspectRatio';
+  embedMode?: EmbedModeType;
   tabletHeight?: number;
   mobileHeight?: number;
   aspectRatio?: AspectRatioType;

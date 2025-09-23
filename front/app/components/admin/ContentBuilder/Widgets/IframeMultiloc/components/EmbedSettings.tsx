@@ -21,7 +21,7 @@ import { isValidUrl } from 'utils/validate';
 
 import sharedMessages from '../../../messages';
 import messages from '../messages';
-import { AspectRatioType } from '../utils';
+import { AspectRatioType, EmbedModeType } from '../utils';
 
 import AspectRatioSettings from './AspectRatioSettings';
 import FixedHeightSettings from './FixedHeightSettings';
@@ -33,7 +33,7 @@ interface Props {
   errorType?: string;
   title?: Multiloc;
   selectedLocale: SupportedLocale;
-  embedMode?: 'fixed' | 'aspectRatio';
+  embedMode?: EmbedModeType;
   tabletHeight?: number;
   mobileHeight?: number;
   aspectRatio?: AspectRatioType;

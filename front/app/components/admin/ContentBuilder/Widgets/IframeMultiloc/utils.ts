@@ -1,4 +1,5 @@
 export type AspectRatioType = '16:9' | '4:3' | '3:4' | '1:1' | 'custom';
+export type EmbedModeType = 'fixed' | 'aspectRatio';
 
 /**
  * Calculate CSS padding-bottom percentage for aspect ratios

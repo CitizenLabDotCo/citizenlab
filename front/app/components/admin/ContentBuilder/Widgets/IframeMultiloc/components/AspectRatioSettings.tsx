@@ -8,7 +8,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import { ASPECT_RATIO_OPTIONS } from '../constants';
 import messages from '../messages';
-import { AspectRatioType } from '../utils';
+import { AspectRatioType, EmbedModeType } from '../utils';
 
 interface Props {
   url: string;
@@ -17,7 +17,7 @@ interface Props {
   errorType?: string;
   title?: Multiloc;
   selectedLocale: SupportedLocale;
-  embedMode?: 'fixed' | 'aspectRatio';
+  embedMode?: EmbedModeType;
   tabletHeight?: number;
   mobileHeight?: number;
   aspectRatio?: AspectRatioType;
