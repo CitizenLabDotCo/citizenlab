@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import styled from 'styled-components';
 
 interface Props {
   aspectRatioPercentage: number;
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 const Container = styled.div<{ aspectRatioPercentage: number }>`
