@@ -146,9 +146,7 @@ module ParticipationMethod
       end
     end
 
-    def user_data_collection
-      posting_permission.user_data_collection
-    end
+    delegate :user_data_collection, to: :posting_permission
 
     private
 

@@ -124,20 +124,20 @@ class Permission < ApplicationRecord
 
     if permitted_by == 'everyone'
       if user_data_collection == 'anonymous'
-        return {
+        {
           value: nil,
           locked: true,
           explanation: 'with_these_settings_cannot_ask_demographic_fields'
         }
       else
-        return {
+        {
           value: true,
           locked: true,
           explanation: 'cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone'
         }
       end
     elsif user_data_collection == 'anonymous'
-      return {
+      {
         value: false,
         locked: true,
         explanation: 'with_these_settings_can_only_ask_demographic_fields_in_registration_flow'
