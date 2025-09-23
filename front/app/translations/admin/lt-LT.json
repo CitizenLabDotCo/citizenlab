@@ -3030,7 +3030,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioLabel": "Pasirinktinis kraštinių santykis",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioTooltip": "Įveskite pločio ir aukščio santykį (pvz., 5:3, 16:10, 21:9). Įprasti santykiai: 5:3 (1.67:1), 16:10 (1.6:1), 21:9 (2.33:1).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabel": "Darbalaukio aukštis (pikseliai)",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "aukštis, kurį norite, kad įterptasis turinys būtų rodomas puslapyje (pikseliais).",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabelTooltip": "Darbalaukio vaizdo aukštis (pikseliais).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Trumpas įterpiamo turinio aprašymas",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Naudotojams, kurie naudojasi ekrano skaitytuvu ar kita pagalbine technologija, naudinga pateikti šią informaciją.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Svetainės adresas",
