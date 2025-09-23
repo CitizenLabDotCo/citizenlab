@@ -4,7 +4,7 @@ import { setTranslations } from 'components/admin/ContentBuilder/LanguageProvide
 
 import { render, screen, waitFor } from 'utils/testUtils/rtl';
 
-import FullScreenPreview from '.';
+import FullScreenPreview from 'containers/DescriptionBuilder/ProjectDescriptionBuilder/FullscreenPreview/index';
 
 jest.mock('components/admin/ContentBuilder/LanguageProvider/i18nLoader');
 

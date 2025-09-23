@@ -4,7 +4,7 @@ import { SupportedLocale } from 'typings';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import messages from 'containers/ProjectDescriptionBuilder/messages';
+import messages from 'containers/DescriptionBuilder/messages';
 
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';

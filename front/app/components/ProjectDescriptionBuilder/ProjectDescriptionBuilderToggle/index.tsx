@@ -16,7 +16,7 @@ import useProjectDescriptionBuilderLayout from 'api/project_description_builder/
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import messages from 'containers/ProjectDescriptionBuilder/messages';
+import messages from 'containers/DescriptionBuilder/messages';
 
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import Warning from 'components/UI/Warning';

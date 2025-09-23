@@ -12,7 +12,7 @@ import Selection from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/c
 import Spotlight, {
   spotlightTitle,
 } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Spotlight';
-import messages from 'containers/ProjectDescriptionBuilder/messages';
+import messages from 'containers/DescriptionBuilder/messages';
 
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';

@@ -42,16 +42,22 @@ import createAdminUsersRoutes, { userRouteTypes } from './users/routes';
 const AdminContainer = lazy(() => import('containers/Admin'));
 const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
 const ProjectDescriptionBuilderComponent = React.lazy(
-  () => import('containers/ProjectDescriptionBuilder')
+  () => import('containers/DescriptionBuilder/ProjectDescriptionBuilder')
 );
 const ProjectFullscreenPreview = React.lazy(
-  () => import('containers/ProjectDescriptionBuilder/FullscreenPreview')
+  () =>
+    import(
+      'containers/DescriptionBuilder/ProjectDescriptionBuilder/FullscreenPreview'
+    )
 );
 const FolderDescriptionBuilderComponent = React.lazy(
-  () => import('containers/FolderDescriptionBuilder')
+  () => import('containers/DescriptionBuilder/FolderDescriptionBuilder')
 );
 const FolderFullscreenPreview = React.lazy(
-  () => import('containers/FolderDescriptionBuilder/FullscreenPreview')
+  () =>
+    import(
+      'containers/DescriptionBuilder/FolderDescriptionBuilder/FullscreenPreview'
+    )
 );
 
 const ProjectImporter = React.lazy(

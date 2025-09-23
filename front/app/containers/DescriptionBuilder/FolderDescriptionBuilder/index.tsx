@@ -7,7 +7,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { SupportedLocale } from 'typings';
 
 import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
-import useProjectById from 'api/projects/useProjectById';
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -22,18 +22,18 @@ import Editor from 'components/ProjectDescriptionBuilder/Editor';
 
 import { isNilOrError } from 'utils/helperUtils';
 
-import ProjectDescriptionBuilderEditModePreview from '../../components/ProjectDescriptionBuilder/ProjectDescriptionBuilderEditModePreview';
-import ProjectDescriptionBuilderToolbox from '../../components/ProjectDescriptionBuilder/ProjectDescriptionBuilderToolbox';
-import ProjectDescriptionBuilderTopBar from '../../components/ProjectDescriptionBuilder/ProjectDescriptionBuilderTopBar';
-import ContentBuilderSettings from '../../components/ProjectDescriptionBuilder/Settings';
+import FolderDescriptionBuilderToolbox from 'components/ProjectDescriptionBuilder/FolderDescriptionBuilderToolbox';
+import ProjectDescriptionBuilderEditModePreview from 'components/ProjectDescriptionBuilder/ProjectDescriptionBuilderEditModePreview';
+import ProjectDescriptionBuilderTopBar from 'components/ProjectDescriptionBuilder/ProjectDescriptionBuilderTopBar';
+import ContentBuilderSettings from 'components/ProjectDescriptionBuilder/Settings';
 
-const ProjectDescriptionBuilderPage = () => {
+const FolderDescriptionBuilderPage = () => {
   const locale = useLocale();
   const [previewEnabled, setPreviewEnabled] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState(locale);
   const [draftData, setDraftData] = useState<Record<string, SerializedNodes>>();
   const { pathname } = useLocation();
-  const { projectId } = useParams() as { projectId: string };
+  const { folderId } = useParams() as { folderId: string };
 
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
@@ -42,8 +42,8 @@ const ProjectDescriptionBuilderPage = () => {
   });
   const locales = useAppConfigurationLocales();
   const { data: projectDescriptionBuilderLayout } =
-    useProjectDescriptionBuilderLayout(projectId);
-  const { data: project } = useProjectById(projectId);
+    useProjectDescriptionBuilderLayout(folderId, 'folder');
+  const { data: folder } = useProjectFolderById(folderId); // to ensure the folder exists
 
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});
@@ -115,9 +115,11 @@ const ProjectDescriptionBuilderPage = () => {
     setSelectedLocale(locale);
   };
 
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (!project || (project && !project.data.attributes.uses_content_builder)) {
+  if (
+    !folder ||
+    !projectDescriptionBuilderLayout ||
+    !projectDescriptionBuilderLayout.data.attributes.enabled
+  ) {
     return null;
   }
 
@@ -135,18 +137,22 @@ const ProjectDescriptionBuilderPage = () => {
           setPreviewEnabled={setPreviewEnabled}
           selectedLocale={selectedLocale}
           onSelectLocale={handleSelectedLocaleChange}
-          modelId={projectId}
-          modelType="project"
-          backPath={`/admin/projects/${projectId}/general`}
-          previewPath={`/projects/${project.data.attributes.slug}`}
-          titleMultiloc={project.data.attributes.title_multiloc}
+          // TODO: Change to model: {id: folderId, type: 'folder'}?
+          modelId={folderId}
+          modelType="folder"
+          backPath={`/admin/projects/folders/${folderId}/settings`}
+          previewPath={`/folders/${folder.data.attributes.slug}`}
+          titleMultiloc={folder.data.attributes.title_multiloc}
         />
         <Box
           mt={`${stylingConsts.menuHeight}px`}
           display={previewEnabled ? 'none' : 'flex'}
           id="e2e-project-description-content-builder-page"
         >
-          <ProjectDescriptionBuilderToolbox selectedLocale={selectedLocale} />
+          <FolderDescriptionBuilderToolbox
+            selectedLocale={selectedLocale}
+            folderId={folderId}
+          />
           <LanguageProvider
             contentBuilderLocale={selectedLocale}
             platformLocale={locale}
@@ -162,7 +168,8 @@ const ProjectDescriptionBuilderPage = () => {
       </Editor>
       <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>
         <ProjectDescriptionBuilderEditModePreview
-          modelId={projectId}
+          modelId={folderId}
+          modelType="folder"
           ref={iframeRef}
           selectedLocale={selectedLocale}
         />
@@ -171,4 +178,4 @@ const ProjectDescriptionBuilderPage = () => {
   );
 };
 
-export default ProjectDescriptionBuilderPage;
+export default FolderDescriptionBuilderPage;
