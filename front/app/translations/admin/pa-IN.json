@@ -3030,7 +3030,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioLabel": "ਕਸਟਮ ਆਕਾਰ ਅਨੁਪਾਤ",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioTooltip": "ਚੌੜਾਈ:ਉਚਾਈ ਅਨੁਪਾਤ ਦਰਜ ਕਰੋ (ਜਿਵੇਂ ਕਿ, 5:3, 16:10, 21:9)। ਆਮ ਅਨੁਪਾਤ: 5:3 (1.67:1), 16:10 (1.6:1), 21:9 (2.33:1)।",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabel": "ਡੈਸਕਟਾਪ ਦੀ ਉਚਾਈ (ਪਿਕਸਲ)",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "ਉਚਾਈ ਤੁਸੀਂ ਚਾਹੁੰਦੇ ਹੋ ਕਿ ਤੁਹਾਡੀ ਏਮਬੈਡ ਕੀਤੀ ਸਮੱਗਰੀ ਪੰਨੇ 'ਤੇ ਦਿਖਾਈ ਦੇਵੇ (ਪਿਕਸਲ ਵਿੱਚ)।",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabelTooltip": "ਡੈਸਕਟਾਪ ਦ੍ਰਿਸ਼ ਲਈ ਉਚਾਈ (ਪਿਕਸਲ ਵਿੱਚ)।",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "ਤੁਹਾਡੇ ਦੁਆਰਾ ਏਮਬੈਡ ਕਰ ਰਹੇ ਸਮਗਰੀ ਦਾ ਛੋਟਾ ਵੇਰਵਾ",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "ਇਹ ਜਾਣਕਾਰੀ ਉਹਨਾਂ ਉਪਭੋਗਤਾਵਾਂ ਲਈ ਪ੍ਰਦਾਨ ਕਰਨਾ ਲਾਭਦਾਇਕ ਹੈ ਜੋ ਸਕ੍ਰੀਨ ਰੀਡਰ ਜਾਂ ਹੋਰ ਸਹਾਇਕ ਤਕਨਾਲੋਜੀ 'ਤੇ ਭਰੋਸਾ ਕਰਦੇ ਹਨ।",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "ਵੈੱਬਸਾਈਟ ਦਾ ਪਤਾ",
