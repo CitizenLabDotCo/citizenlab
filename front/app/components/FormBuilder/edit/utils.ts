@@ -582,7 +582,7 @@ export const calculateDropTargetIndex = (
 
   if (destinationGroupId === 'droppable') {
     return handlePageReordering(
-      destinationIndex,
+      destinationIndex + 1,
       formCustomFields,
       nestedGroupData
     );
