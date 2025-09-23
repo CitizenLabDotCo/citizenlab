@@ -1,5 +1,21 @@
+import { SupportedLocale, Multiloc } from 'typings';
+
 export type AspectRatioType = '16:9' | '4:3' | '3:4' | '1:1' | 'custom';
 export type EmbedModeType = 'fixed' | 'aspectRatio';
+
+export interface IframeProps {
+  url: string;
+  height: number;
+  hasError: boolean;
+  errorType?: string;
+  title?: Multiloc;
+  selectedLocale: SupportedLocale;
+  embedMode?: EmbedModeType;
+  tabletHeight?: number;
+  mobileHeight?: number;
+  aspectRatio?: AspectRatioType;
+  customAspectRatio?: string;
+}
 
 /**
  * Calculate responsive height based on mode and breakpoint

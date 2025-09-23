@@ -10,8 +10,7 @@ import EmbedSettings from 'components/admin/ContentBuilder/Widgets/IframeMultilo
 import { DEFAULT_PROPS } from 'components/admin/ContentBuilder/Widgets/IframeMultiloc/constants';
 import messages from 'components/admin/ContentBuilder/Widgets/IframeMultiloc/messages';
 import {
-  AspectRatioType,
-  EmbedModeType,
+  IframeProps,
   getResponsiveHeight,
 } from 'components/admin/ContentBuilder/Widgets/IframeMultiloc/utils';
 
@@ -19,10 +18,10 @@ export interface Props {
   url: string;
   height: number;
   title?: Multiloc;
-  embedMode?: EmbedModeType;
+  embedMode?: IframeProps['embedMode'];
   tabletHeight?: number;
   mobileHeight?: number;
-  aspectRatio?: AspectRatioType;
+  aspectRatio?: IframeProps['aspectRatio'];
   customAspectRatio?: string;
 }
 

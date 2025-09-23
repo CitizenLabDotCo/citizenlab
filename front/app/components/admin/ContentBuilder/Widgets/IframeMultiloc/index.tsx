@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { SupportedLocale, Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -11,21 +10,7 @@ import AspectRatioContainer from './components/AspectRatioContainer';
 import EmbedSettings from './components/EmbedSettings';
 import { DEFAULT_PROPS } from './constants';
 import messages from './messages';
-import { AspectRatioType, EmbedModeType, getResponsiveHeight } from './utils';
-
-interface Props {
-  url: string;
-  height: number;
-  hasError: boolean;
-  errorType?: string;
-  title?: Multiloc;
-  selectedLocale: SupportedLocale;
-  embedMode?: EmbedModeType;
-  tabletHeight?: number;
-  mobileHeight?: number;
-  aspectRatio?: AspectRatioType;
-  customAspectRatio?: string;
-}
+import { IframeProps, getResponsiveHeight } from './utils';
 
 const IframeMultiloc = ({
   url,
@@ -37,7 +22,7 @@ const IframeMultiloc = ({
   mobileHeight,
   aspectRatio = '16:9',
   customAspectRatio,
-}: Props) => {
+}: IframeProps) => {
   const localize = useLocalize();
   const isMobile = useBreakpoint('phone');
   const isTablet = useBreakpoint('tablet');

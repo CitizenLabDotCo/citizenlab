@@ -2,27 +2,12 @@ import React from 'react';
 
 import { Box, Input, Select } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
-import { SupportedLocale, Multiloc } from 'typings';
 
 import { useIntl } from 'utils/cl-intl';
 
 import { ASPECT_RATIO_OPTIONS } from '../constants';
 import messages from '../messages';
-import { AspectRatioType, EmbedModeType } from '../utils';
-
-interface Props {
-  url: string;
-  height: number;
-  hasError: boolean;
-  errorType?: string;
-  title?: Multiloc;
-  selectedLocale: SupportedLocale;
-  embedMode?: EmbedModeType;
-  tabletHeight?: number;
-  mobileHeight?: number;
-  aspectRatio?: AspectRatioType;
-  customAspectRatio?: string;
-}
+import { IframeProps } from '../utils';
 
 const AspectRatioSettings = () => {
   const { formatMessage } = useIntl();
@@ -49,7 +34,7 @@ const AspectRatioSettings = () => {
           options={aspectRatioOptions}
           value={aspectRatio}
           onChange={(option) => {
-            setProp((props: Props) => {
+            setProp((props: IframeProps) => {
               props.aspectRatio = option.value;
               if (option.value !== 'custom') {
                 props.customAspectRatio = '';
@@ -69,7 +54,7 @@ const AspectRatioSettings = () => {
             type="text"
             value={customAspectRatio || ''}
             onChange={(value) => {
-              setProp((props: Props) => {
+              setProp((props: IframeProps) => {
                 props.customAspectRatio = value;
               });
             }}

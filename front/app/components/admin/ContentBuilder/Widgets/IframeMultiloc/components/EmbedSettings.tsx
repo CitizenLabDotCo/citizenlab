@@ -9,7 +9,6 @@ import {
   Radio,
 } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
-import { SupportedLocale, Multiloc } from 'typings';
 
 import { CONTENT_BUILDER_ERROR_EVENT } from 'components/admin/ContentBuilder/constants';
 import Error from 'components/UI/Error';
@@ -21,24 +20,10 @@ import { isValidUrl } from 'utils/validate';
 
 import sharedMessages from '../../../messages';
 import messages from '../messages';
-import { AspectRatioType, EmbedModeType } from '../utils';
+import { IframeProps } from '../utils';
 
 import AspectRatioSettings from './AspectRatioSettings';
 import FixedHeightSettings from './FixedHeightSettings';
-
-interface Props {
-  url: string;
-  height: number;
-  hasError: boolean;
-  errorType?: string;
-  title?: Multiloc;
-  selectedLocale: SupportedLocale;
-  embedMode?: EmbedModeType;
-  tabletHeight?: number;
-  mobileHeight?: number;
-  aspectRatio?: AspectRatioType;
-  customAspectRatio?: string;
-}
 
 const EmbedSettings = () => {
   const { formatMessage } = useIntl();
@@ -62,7 +47,7 @@ const EmbedSettings = () => {
   }));
 
   const handleUrlChange = (value: string) => {
-    setProp((props: Props) => {
+    setProp((props: IframeProps) => {
       props.url = value;
     });
   };
@@ -70,7 +55,7 @@ const EmbedSettings = () => {
   const handleUrlBlur = () => {
     const validation = isValidUrl(url);
 
-    setProp((props: Props) => {
+    setProp((props: IframeProps) => {
       props.errorType = 'invalidUrl';
       props.hasError = !validation;
     });
@@ -123,7 +108,7 @@ const EmbedSettings = () => {
             value="fixed"
             currentValue={embedMode}
             onChange={() =>
-              setProp((props: Props) => (props.embedMode = 'fixed'))
+              setProp((props: IframeProps) => (props.embedMode = 'fixed'))
             }
             label={formatMessage(messages.embedModeFixedHeight)}
           />
@@ -133,7 +118,7 @@ const EmbedSettings = () => {
             value="aspectRatio"
             currentValue={embedMode}
             onChange={() =>
-              setProp((props: Props) => (props.embedMode = 'aspectRatio'))
+              setProp((props: IframeProps) => (props.embedMode = 'aspectRatio'))
             }
             label={formatMessage(messages.embedModeAspectRatio)}
           />
@@ -162,7 +147,7 @@ const EmbedSettings = () => {
           type="text"
           id="e2e-content-builder-iframe-title-input"
           onChange={(value) => {
-            setProp((props: Props) => (props.title = value));
+            setProp((props: IframeProps) => (props.title = value));
           }}
           valueMultiloc={title}
         />

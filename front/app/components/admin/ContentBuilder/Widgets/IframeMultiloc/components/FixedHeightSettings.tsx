@@ -2,26 +2,11 @@ import React from 'react';
 
 import { Box, Input } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
-import { SupportedLocale, Multiloc } from 'typings';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
-import { AspectRatioType, EmbedModeType } from '../utils';
-
-interface Props {
-  url: string;
-  height: number;
-  hasError: boolean;
-  errorType?: string;
-  title?: Multiloc;
-  selectedLocale: SupportedLocale;
-  embedMode?: EmbedModeType;
-  tabletHeight?: number;
-  mobileHeight?: number;
-  aspectRatio?: AspectRatioType;
-  customAspectRatio?: string;
-}
+import { IframeProps } from '../utils';
 
 const FixedHeightSettings = () => {
   const { formatMessage } = useIntl();
@@ -49,7 +34,7 @@ const FixedHeightSettings = () => {
           value={height}
           onChange={(value) => {
             setProp(
-              (props: Props) => (props.height = parseInt(value, 10) || 0)
+              (props: IframeProps) => (props.height = parseInt(value, 10) || 0)
             );
           }}
         />
@@ -63,7 +48,7 @@ const FixedHeightSettings = () => {
           value={tabletHeight || ''}
           onChange={(value) => {
             setProp(
-              (props: Props) =>
+              (props: IframeProps) =>
                 (props.tabletHeight = value ? parseInt(value, 10) : undefined)
             );
           }}
@@ -78,7 +63,7 @@ const FixedHeightSettings = () => {
           value={mobileHeight || ''}
           onChange={(value) => {
             setProp(
-              (props: Props) =>
+              (props: IframeProps) =>
                 (props.mobileHeight = value ? parseInt(value, 10) : undefined)
             );
           }}
