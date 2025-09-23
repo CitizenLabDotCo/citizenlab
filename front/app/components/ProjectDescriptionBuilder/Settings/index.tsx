@@ -19,6 +19,7 @@ const ContentBuilderSettings = () => {
       selectedNode = {
         id: currentNodeId,
         name: state.nodes[currentNodeId].data.name,
+        props: state.nodes[currentNodeId].data.props,
         title: state.nodes[currentNodeId].data.custom?.title as
           | MessageDescriptor
           | undefined,
@@ -49,9 +50,9 @@ const ContentBuilderSettings = () => {
       onClose={closeSettings}
       onDelete={() => {
         actions.delete(selectedNode.id);
-        eventEmitter.emit(
+        eventEmitter.emit<SelectedNode>(
           CONTENT_BUILDER_DELETE_ELEMENT_EVENT,
-          selectedNode.id
+          selectedNode
         );
       }}
     />

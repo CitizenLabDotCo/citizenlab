@@ -5,6 +5,8 @@ import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { SupportedLocale } from 'typings';
 
+import useDeleteFileAttachment from 'api/file_attachments/useDeleteFileAttachment';
+
 import eventEmitter from 'utils/eventEmitter';
 
 import {
@@ -13,6 +15,7 @@ import {
   IMAGE_UPLOADING_EVENT,
   CONTENT_BUILDER_Z_INDEX,
 } from '../constants';
+import { SelectedNode } from '../Settings/typings';
 
 type ContentBuilderErrors = Record<
   string,
@@ -32,6 +35,8 @@ export const ContentBuilder = ({
   onUploadImage,
   children,
 }: Props) => {
+  const { mutate: deleteFileAttachment } = useDeleteFileAttachment({});
+
   useEffect(() => {
     if (!onErrors) return;
 
@@ -48,16 +53,30 @@ export const ContentBuilder = ({
   useEffect(() => {
     if (!onDeleteElement) return;
 
+    const cleanUpElementAfterDeletion = (deletedElement: SelectedNode) => {
+      // Add additional cleanup logic below for other element types as needed.
+
+      // File Attachment
+      if (deletedElement.custom?.title.defaultMessage === 'File Attachment') {
+        const fileAttachmentId = deletedElement.props.fileAttachmentId;
+        deleteFileAttachment(fileAttachmentId);
+      }
+    };
+
     const subscription = eventEmitter
       .observeEvent(CONTENT_BUILDER_DELETE_ELEMENT_EVENT)
       .subscribe(({ eventValue }) => {
-        const deletedElementId = eventValue as string;
+        const deletedElement = eventValue as SelectedNode;
+
+        cleanUpElementAfterDeletion(deletedElement);
+
+        const deletedElementId = deletedElement.id;
         onDeleteElement(deletedElementId);
       });
     return () => {
       subscription.unsubscribe();
     };
-  }, [onDeleteElement]);
+  }, [deleteFileAttachment, onDeleteElement]);
 
   useEffect(() => {
     const subscription = eventEmitter

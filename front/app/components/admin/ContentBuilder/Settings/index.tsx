@@ -25,6 +25,7 @@ const SettingsWrapper = ({ titles }: Props) => {
         id: currentNodeId,
         name,
         title: titles[name],
+        props: state.nodes[currentNodeId].data.props,
         // TODO: Fix this the next time the file is edited.
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         settings: state.nodes[currentNodeId].related?.settings,
@@ -57,9 +58,9 @@ const SettingsWrapper = ({ titles }: Props) => {
       onClose={closeSettings}
       onDelete={() => {
         actions.delete(selectedNode.id);
-        eventEmitter.emit(
+        eventEmitter.emit<SelectedNode>(
           CONTENT_BUILDER_DELETE_ELEMENT_EVENT,
-          selectedNode.id
+          selectedNode
         );
       }}
     />
