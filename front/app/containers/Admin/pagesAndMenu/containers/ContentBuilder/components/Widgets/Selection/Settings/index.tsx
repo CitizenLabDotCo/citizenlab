@@ -13,8 +13,12 @@ import messages from '../messages';
 import AdminPublicationSearchInput from './AdminPublicationSearchInput';
 import AdminPublicationsList from './AdminPublicationsList';
 import { LoadMore, getNewIdsOnDrop, isAdminPublication } from './utils';
+import { useParams } from 'react-router-dom';
 
 const Settings = () => {
+  const { folderId } = useParams() as {
+    folderId: string; // We only return projects from the folder if folderId is defined
+  };
   const {
     actions: { setProp },
     adminPublicationIds,
@@ -54,7 +58,12 @@ const Settings = () => {
   return (
     <Box my="20px">
       <Text mb="32px" color="textSecondary">
-        <FormattedMessage {...messages.withThisWidget} formatBold />
+        <FormattedMessage
+          {...(folderId
+            ? messages.withThisWidgetFolder
+            : messages.withThisWidget)}
+          formatBold
+        />
       </Text>
       <Box mb="40px">
         <TitleMultilocInput name="selection_title" />
@@ -65,6 +74,7 @@ const Settings = () => {
         </Label>
         <AdminPublicationSearchInput
           adminPublicationIds={adminPublicationIds}
+          folderId={folderId}
           onChange={handleAdd}
         />
       </Box>

@@ -23,7 +23,7 @@ import Editor from 'components/ProjectDescriptionBuilder/Editor';
 import { isNilOrError } from 'utils/helperUtils';
 
 import ProjectDescriptionBuilderEditModePreview from '../../components/ProjectDescriptionBuilder/ProjectDescriptionBuilderEditModePreview';
-import ProjectDescriptionBuilderToolbox from '../../components/ProjectDescriptionBuilder/ProjectDescriptionBuilderToolbox';
+import FolderDescriptionBuilderToolbox from '../../components/ProjectDescriptionBuilder/FolderDescriptionBuilderToolbox';
 import ProjectDescriptionBuilderTopBar from '../../components/ProjectDescriptionBuilder/ProjectDescriptionBuilderTopBar';
 import ContentBuilderSettings from '../../components/ProjectDescriptionBuilder/Settings';
 
@@ -149,7 +149,10 @@ const FolderDescriptionBuilderPage = () => {
           display={previewEnabled ? 'none' : 'flex'}
           id="e2e-project-description-content-builder-page"
         >
-          <ProjectDescriptionBuilderToolbox selectedLocale={selectedLocale} />
+          <FolderDescriptionBuilderToolbox
+            selectedLocale={selectedLocale}
+            folderId={folderId}
+          />
           <LanguageProvider
             contentBuilderLocale={selectedLocale}
             platformLocale={locale}

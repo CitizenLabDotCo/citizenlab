@@ -14,11 +14,13 @@ import { LoadMore, getOptionId, getOptions } from './utils';
 
 interface Props {
   adminPublicationIds: string[];
+  folderId?: string;
   onChange: (option?: IAdminPublicationData | LoadMore) => void;
 }
 
 const AdminPublicationSearchInput = ({
   adminPublicationIds,
+  folderId,
   onChange,
 }: Props) => {
   const [search, setSearch] = useState('');
@@ -32,6 +34,7 @@ const AdminPublicationSearchInput = ({
   } = useAdminPublications({
     search,
     publicationStatusFilter: ['published', 'archived'],
+    childrenOfId: folderId,
     pageSize: 6,
   });
 

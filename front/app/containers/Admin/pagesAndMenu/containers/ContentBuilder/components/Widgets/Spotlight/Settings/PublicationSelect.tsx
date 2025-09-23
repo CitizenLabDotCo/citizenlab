@@ -17,6 +17,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 import { flattenPagesData, getLabel } from './utils';
+import { useParams } from 'react-router-dom';
 
 interface Props {
   publicationId?: string;
@@ -24,8 +25,12 @@ interface Props {
 }
 
 const PublicationSelect = ({ publicationId, onSelect }: Props) => {
+  const { folderId } = useParams() as {
+    folderId: string; // We only return projects from the folder if folderId is defined
+  };
   const { data: adminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'archived'],
+    childrenOfId: folderId,
   });
   const localize = useLocalize();
   const { formatMessage } = useIntl();

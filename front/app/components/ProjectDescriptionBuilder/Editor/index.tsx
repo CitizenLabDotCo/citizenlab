@@ -20,6 +20,8 @@ import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 
 import BaseEditor from './Editor';
 import Published from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Published';
+import Spotlight from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Spotlight';
+import Selection from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Selection';
 
 type EditorProps = {
   children?: React.ReactNode;
@@ -32,7 +34,6 @@ const Editor: React.FC<EditorProps> = ({
   isPreview,
   children,
 }) => {
-  console.log('EDITOR');
   return (
     <BaseEditor
       resolver={{
@@ -51,6 +52,8 @@ const Editor: React.FC<EditorProps> = ({
         ImageTextCards,
         ButtonMultiloc,
         Published,
+        Spotlight,
+        Selection,
       }}
       isPreview={isPreview}
       onNodesChange={onNodesChange}

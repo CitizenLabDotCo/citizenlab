@@ -137,7 +137,7 @@ const ProjectDescriptionBuilderPage = () => {
           onSelectLocale={handleSelectedLocaleChange}
           modelId={projectId}
           modelType="project"
-          backPath={`/admin/projects/${projectId}/settings/description`}
+          backPath={`/admin/projects/${projectId}/general`}
           previewPath={`/projects/${project.data.attributes.slug}`}
           titleMultiloc={project.data.attributes.title_multiloc}
         />

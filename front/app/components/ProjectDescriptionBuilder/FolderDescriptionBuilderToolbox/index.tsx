@@ -9,7 +9,6 @@ import messages from 'containers/ProjectDescriptionBuilder/messages';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
-import AboutBox from 'components/admin/ContentBuilder/Widgets/AboutBox';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import FileAttachment from 'components/admin/ContentBuilder/Widgets/FileAttachment';
@@ -22,20 +21,45 @@ import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
-import { useIntl } from 'utils/cl-intl';
+import Published from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Published';
+import {
+  MessageDescriptor,
+  useFormatMessageWithLocale,
+  useIntl,
+} from 'utils/cl-intl';
+import Selection from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Selection';
+import Spotlight, {
+  spotlightTitle,
+} from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Spotlight';
+import useAppConfigurationLocales, {
+  createMultiloc,
+} from 'hooks/useAppConfigurationLocales';
 
-type ProjectDescriptionBuilderToolboxProps = {
+type FolderDescriptionBuilderToolboxProps = {
   selectedLocale: SupportedLocale;
+  folderId: string;
 };
 
-const ProjectDescriptionBuilderToolbox = ({
+const FolderDescriptionBuilderToolbox = ({
   selectedLocale,
-}: ProjectDescriptionBuilderToolboxProps) => {
+  folderId,
+}: FolderDescriptionBuilderToolboxProps) => {
   const { formatMessage } = useIntl();
-
+  const formatMessageWithLocale = useFormatMessageWithLocale();
+  const appConfigurationLocales = useAppConfigurationLocales();
   const isDataRepositoryEnabled = useFeatureFlag({
     name: 'data_repository',
   });
+
+  if (!appConfigurationLocales || !formatMessageWithLocale) {
+    return null;
+  }
+
+  const toMultiloc = (message: MessageDescriptor) => {
+    return createMultiloc(appConfigurationLocales, (locale) => {
+      return formatMessageWithLocale(locale, message);
+    });
+  };
 
   return (
     <Container
@@ -43,6 +67,41 @@ const ProjectDescriptionBuilderToolbox = ({
     intercom-product-tour-project-description-content-builder-building-blocks-sidebar
     "
     >
+      <Section>
+        <DraggableElement
+          id="e2e-draggable-published"
+          component={
+            <Published
+              titleMultiloc={toMultiloc(messages.publishedProjects)}
+              folderId={folderId}
+            />
+          }
+          icon="check-circle"
+          label={formatMessage(messages.publishedProjects)}
+        />
+        <DraggableElement
+          id="e2e-draggable-selection"
+          component={
+            <Selection
+              titleMultiloc={toMultiloc(messages.selectedProjects)}
+              adminPublicationIds={[]}
+            />
+          }
+          icon="folder-outline"
+          label={formatMessage(messages.selectedProjects)}
+        />
+        <DraggableElement
+          id="e2e-draggable-spotlight"
+          component={
+            <Spotlight
+              buttonTextMultiloc={toMultiloc(spotlightTitle)}
+              hideAvatars={false}
+            />
+          }
+          icon="flash"
+          label={formatMessage(spotlightTitle)}
+        />
+      </Section>
       <Section>
         <DraggableElement
           id="e2e-draggable-image-text-cards"
@@ -125,12 +184,6 @@ const ProjectDescriptionBuilderToolbox = ({
           label={formatMessage(IframeMultiloc.craft.custom.title)}
         />
         <DraggableElement
-          id="e2e-draggable-about-box"
-          component={<AboutBox />}
-          icon="info-solid"
-          label={formatMessage(AboutBox.craft.custom.title)}
-        />
-        <DraggableElement
           id="e2e-draggable-accordion"
           component={<AccordionMultiloc title={{}} text={{}} />}
           icon="accordion"
@@ -141,4 +194,4 @@ const ProjectDescriptionBuilderToolbox = ({
   );
 };
 
-export default ProjectDescriptionBuilderToolbox;
+export default FolderDescriptionBuilderToolbox;

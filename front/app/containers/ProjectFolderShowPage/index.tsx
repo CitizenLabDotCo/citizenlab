@@ -108,12 +108,6 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
     name: 'project_description_builder',
   });
 
-  const description = projectDescriptionBuilderEnabled ? (
-    <ContentViewer model={projectFolder} modelType="folder" />
-  ) : (
-    <StyledProjectFolderDescription projectFolder={projectFolder} />
-  );
-
   return (
     <>
       <StyledContentContainer maxWidth={maxPageWidth}>
@@ -155,23 +149,38 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
         </Box>
       </StyledContentContainer>
       <main id="e2e-folder-page">
-        <StyledContentContainer maxWidth={maxPageWidth}>
-          <ProjectFolderHeader projectFolder={projectFolder} />
-          {!isSmallerThanSmallDesktop ? (
-            <Content>
-              {description}
-              <StyledProjectFolderProjectCards folderId={projectFolder.id} />
-            </Content>
-          ) : (
-            description
-          )}
-        </StyledContentContainer>
-        {isSmallerThanSmallDesktop && (
-          <CardsWrapper>
-            <ContentContainer maxWidth={maxPageWidth}>
-              <StyledProjectFolderProjectCards folderId={projectFolder.id} />
-            </ContentContainer>
-          </CardsWrapper>
+        {projectDescriptionBuilderEnabled ? (
+          <StyledContentContainer maxWidth={maxPageWidth}>
+            <ProjectFolderHeader projectFolder={projectFolder} />
+            <ContentViewer model={projectFolder} modelType="folder" />
+          </StyledContentContainer>
+        ) : (
+          <>
+            <StyledContentContainer maxWidth={maxPageWidth}>
+              <ProjectFolderHeader projectFolder={projectFolder} />
+              {!isSmallerThanSmallDesktop ? (
+                <Content>
+                  <StyledProjectFolderDescription
+                    projectFolder={projectFolder}
+                  />
+                  <StyledProjectFolderProjectCards
+                    folderId={projectFolder.id}
+                  />
+                </Content>
+              ) : (
+                <StyledProjectFolderDescription projectFolder={projectFolder} />
+              )}
+            </StyledContentContainer>
+            {isSmallerThanSmallDesktop && (
+              <CardsWrapper>
+                <ContentContainer maxWidth={maxPageWidth}>
+                  <StyledProjectFolderProjectCards
+                    folderId={projectFolder.id}
+                  />
+                </ContentContainer>
+              </CardsWrapper>
+            )}
+          </>
         )}
       </main>
     </>

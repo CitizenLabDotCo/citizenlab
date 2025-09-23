@@ -23,7 +23,6 @@ import { useSyncFolderFiles } from 'hooks/files/useSyncFolderFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import projectMessages from 'containers/Admin/projects/project/general/messages';
-import { fragmentId } from 'containers/Admin/projects/project/projectHeader/ProjectDescriptionPreview';
 
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
@@ -628,7 +627,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               />
             </Box>
           )}
-          <Highlighter fragmentId={fragmentId}>
+          <Highlighter fragmentId="description-multiloc">
             <ProjectDescriptionBuilderToggle
               valueMultiloc={descriptionMultiloc}
               onChange={getHandler(setDescriptionMultiloc)}
