@@ -34,8 +34,8 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabel',
     defaultMessage: 'Desktop height (pixels)',
   },
-  embedIframeHeightLabelTooltip: {
-    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip',
+  embedDesktopIframeHeightLabelTooltip: {
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabelTooltip',
     defaultMessage: 'Height for desktop view (in pixels).',
   },
   embedTabletHeightLabel: {
