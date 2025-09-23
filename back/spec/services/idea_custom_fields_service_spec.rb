@@ -112,7 +112,7 @@ describe IdeaCustomFieldsService do
     describe 'survey_results_fields' do
       context 'commmunity monitor survey' do
         let(:custom_form) do
-          phase = create(:community_monitor_survey_phase)
+          phase = create(:community_monitor_survey_phase, with_permissions: true)
           phase.pmethod.create_default_form!
           phase.custom_form.custom_fields[2].update!(question_category: 'governance_and_trust')
           phase.custom_form.custom_fields[3].update!(question_category: nil)
@@ -354,7 +354,11 @@ describe IdeaCustomFieldsService do
       let!(:user_field_birthyear) { create(:custom_field_birthyear) }
 
       context 'when phase is a native survey phase' do
-        let(:form_context) { create(:native_survey_phase, user_fields_in_form: true, with_permissions: true) }
+        let(:form_context) do
+          phase = create(:native_survey_phase, with_permissions: true)
+          phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
+          phase
+        end
 
         it 'returns form fields with an additional page of demographics' do
           output = service.enabled_fields
