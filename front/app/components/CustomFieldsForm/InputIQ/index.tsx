@@ -56,6 +56,7 @@ const InputIQ = ({
       <SimilarIdeasList
         titleMultiloc={debouncedTitleMultiloc}
         bodyMultiloc={debouncedBodyMultiloc}
+        phase={phase}
       />
     </div>
   );

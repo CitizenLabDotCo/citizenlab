@@ -305,8 +305,9 @@ class WebApi::V1::IdeasController < ApplicationController
     idea = Idea.new idea_params_for_similarities
     service = SimilarIdeasService.new(idea)
 
-    title_threshold = phase_for_input.similarity_threshold_title
-    body_threshold = phase_for_input.similarity_threshold_body
+    phase_for_similarity = params[:phase_id] ? Phase.find(params[:phase_id]) : phase_for_input
+    title_threshold = phase_for_similarity.similarity_threshold_title
+    body_threshold = phase_for_similarity.similarity_threshold_body
     cache_key = "similar_ideas/#{{ id: idea.id, title_multiloc: idea.title_multiloc, body_multiloc: idea.body_multiloc, project_id: idea.project_id, title_threshold:, body_threshold: }}"
 
     json_result = Rails.cache.fetch(cache_key, expires_in: 10.minutes) do

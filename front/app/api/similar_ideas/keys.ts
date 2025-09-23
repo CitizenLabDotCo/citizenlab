@@ -9,16 +9,11 @@ const baseKey = {
 const similarIdeasKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
-  list: (payload: ISimilarityRequestPayload) => [
+  list: (ideaPayload: ISimilarityRequestPayload) => [
     {
       ...baseKey,
       operation: 'list',
-      parameters: {
-        projectId: payload.idea.project_id,
-        title: payload.idea.title_multiloc ?? '',
-        body: payload.idea.body_multiloc ?? '',
-        phaseIds: payload.idea.phase_ids ?? [],
-      },
+      parameters: ideaPayload,
     },
   ],
 } satisfies QueryKeys;

@@ -24,14 +24,17 @@ import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import messages from './messages';
+import { IPhaseData } from 'api/phases/types';
 
 const SimilarIdeasList = ({
   // TODO: Can be simplified?
   titleMultiloc,
   bodyMultiloc,
+  phase,
 }: {
   titleMultiloc?: Multiloc;
   bodyMultiloc?: Multiloc;
+  phase: IPhaseData | undefined;
 }) => {
   const { formatMessage } = useIntl();
   const currentLocale = useLocale();
@@ -64,6 +67,7 @@ const SimilarIdeasList = ({
           body_multiloc: { [currentLocale]: body },
         }),
       },
+      phase_id: phase?.id,
     },
     { enabled: !!project?.data.id }
   );
