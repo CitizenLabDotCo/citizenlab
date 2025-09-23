@@ -3030,7 +3030,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioLabel": "Cymhareb agwedd bersonol",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioTooltip": "Nodwch gymhareb lled:uchder (e.e., 5:3, 16:10, 21:9). Cymharebau cyffredin: 5:3 (1.67:1), 16:10 (1.6:1), 21:9 (2.33:1).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabel": "Uchder y bwrdd gwaith (picseli)",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "Uchder rydych chi am i'ch cynnwys wedi'i fewnosod ymddangos ar y dudalen (mewn picseli).",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabelTooltip": "Uchder ar gyfer golygfa bwrdd gwaith (mewn picseli).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Disgrifiad byr o'r cynnwys yr ydych yn ei fewnosod",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Mae'n ddefnyddiol darparu'r wybodaeth hon i ddefnyddwyr sy'n dibynnu ar ddarllenydd sgrin neu dechnoleg gynorthwyol arall.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Cyfeiriad gwefan",
