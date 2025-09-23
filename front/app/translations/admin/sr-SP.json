@@ -3030,7 +3030,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioLabel": "Custom aspect ratio",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioTooltip": "Enter width:height ratio (e.g., 5:3, 16:10, 21:9). Common ratios: 5:3 (1.67:1), 16:10 (1.6:1), 21:9 (2.33:1).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabel": "Desktop height (pixels)",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "Висина на којој желите да се ваш уграђени садржај појави на страници (у пикселима).",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabelTooltip": "Height for desktop view (in pixels).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Кратак опис садржаја који уграђујете",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Корисно је пружити ове информације корисницима који се ослањају на читач екрана или другу помоћну технологију.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Сајт адреса",
