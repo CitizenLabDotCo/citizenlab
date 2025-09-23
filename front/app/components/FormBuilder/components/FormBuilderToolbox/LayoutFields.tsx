@@ -36,7 +36,7 @@ const LayoutFields = ({ builderConfig }: BuiltInFieldsProps) => {
         fieldsToInclude={builderConfig.toolboxFieldsToInclude}
         inputType="page"
         dragId="toolbox_page"
-        dragIndex={0}
+        dragIndex={-1}
       />
     </Box>
   );

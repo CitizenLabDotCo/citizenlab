@@ -87,7 +87,7 @@ const FormFields = ({
             );
 
             return (
-              <Drag key={grouping.id} id={grouping.id} index={pageIndex + 1}>
+              <Drag key={grouping.id} id={grouping.id} index={pageIndex}>
                 <FormField
                   field={grouping.groupElement}
                   selectedFieldId={selectedFieldId}
