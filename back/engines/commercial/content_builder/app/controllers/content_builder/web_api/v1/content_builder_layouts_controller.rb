@@ -34,7 +34,7 @@ module ContentBuilder
           @content_buildable ||= case params[:content_buildable]
           when 'Project'
             Project.find params[:project_id]
-         when 'ProjectFolder'
+          when 'ProjectFolder'
             ProjectFolders::Folder.find params[:project_folder_id]
           when 'HomePage'
             nil
