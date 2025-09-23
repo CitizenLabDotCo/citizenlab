@@ -140,7 +140,7 @@
   "app.components.admin.ActionForm.Fields.globalRegFlow": "Aktiveret i det globale registreringsflow",
   "app.components.admin.ActionForm.Fields.globalRegFlowLink": "globalt registreringsflow",
   "app.components.admin.ActionForm.Fields.globalRegFlowTooltip": "Dette spørgsmål er aktiveret på {globalRegFlowLink}. Du kan deaktivere det for denne handling.",
-  "app.components.admin.ActionForm.Fields.user_fields_in_survey_not_supported_for_participation_method": "At stille demografiske spørgsmål på undersøgelsens sidste side understøttes ikke af den valgte deltagelsesmetode.",
+  "app.components.admin.ActionForm.Fields.user_fields_in_survey_not_supported_for_participation_method": "At stille demografiske spørgsmål på undersøgelsens sidste side understøttes ikke af den valgte inddragelsesmetode.",
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow": "Med den nuværende kombination af indstillingerne \"Authentication\" og \"User data collection\" kan demografiske spørgsmål kun stilles i registreringsflowet.",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "Valg af, hvordan demografiske spørgsmål stilles til deltagerne, er ikke relevant, da du har deaktiveret godkendelse og valgt fuld anonymitet.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Intet spørgsmål valgt. Vælg venligst et spørgsmål først.",
