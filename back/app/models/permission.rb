@@ -41,6 +41,11 @@ class Permission < ApplicationRecord
     'common_ground' => %w[posting_idea reacting_idea attending_event]
   }
   SCOPE_TYPES = [nil, 'Phase'].freeze
+  UNSUPPORTED_DESCRIPTOR = {
+    value: nil,
+    locked: true,
+    explanation: 'user_fields_in_survey_not_supported_for_participation_method'
+  }
 
   scope :filter_enabled_actions, ->(permission_scope) { where(action: enabled_actions(permission_scope)) }
   scope :order_by_action, lambda { |permission_scope|
@@ -104,6 +109,50 @@ class Permission < ApplicationRecord
 
   def everyone_tracking_enabled?
     permitted_by == 'everyone' && everyone_tracking_enabled
+  end
+
+  def user_fields_in_form_frontend_descriptor
+    # If the permission is not about posting an idea in a native survey phase
+    # or community monitor phase,
+    # we don't support this attribute
+    unless action == 'posting_idea'
+      return UNSUPPORTED_DESCRIPTOR
+    end
+
+    phase = permission_scope
+    has_survey_form = phase.is_a?(Phase) && phase.pmethod.supports_survey_form?
+
+    unless has_survey_form
+      return UNSUPPORTED_DESCRIPTOR
+    end
+
+    if permitted_by == 'everyone'
+      if user_data_collection == 'anonymous'
+        return {
+          value: nil,
+          locked: true,
+          explanation: 'with_these_settings_cannot_ask_demographic_fields'
+        }
+      else
+        return {
+          value: true,
+          locked: true,
+          explanation: 'cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone'
+        }
+      end
+    elsif user_data_collection == 'anonymous'
+      return {
+        value: false,
+        locked: true,
+        explanation: 'with_these_settings_can_only_ask_demographic_fields_in_registration_flow'
+      }
+    else
+      {
+        value: user_fields_in_form,
+        locked: false,
+        explanation: nil
+      }
+    end
   end
 
   private
