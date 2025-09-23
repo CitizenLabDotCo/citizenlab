@@ -41,7 +41,7 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError, isError } from 'utils/helperUtils';
@@ -76,6 +76,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     Resource hooks
     ==============
   */
+  const { formatMessage } = useIntl();
   const { mutateAsync: addProjectFolderFile } = useAddProjectFolderFile();
   const syncProjectFolderFiles = useSyncFolderFiles();
 
@@ -628,21 +629,20 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             </Box>
           )}
           <Highlighter fragmentId={fragmentId}>
-            {/*<ProjectDescriptionBuilderToggle*/}
-            {/*  valueMultiloc={formValues.description_multiloc}*/}
-            {/*  onChange={() => {}} // {handleDescriptionOnChange}*/}
-            {/*  modelType="folder"*/}
-            {/*  label={formatMessage(messages.descriptionLabel)}*/}
-            {/*  labelTooltipText={formatMessage(messages.descriptionTooltip)}*/}
-            {/*/>*/}
+            <ProjectDescriptionBuilderToggle
+              valueMultiloc={descriptionMultiloc}
+              onChange={getHandler(setDescriptionMultiloc)}
+              label={formatMessage(messages.descriptionInputLabel)}
+              modelType="folder"
+              labelTooltipText={formatMessage(messages.descriptionInputLabel)}
+            />
           </Highlighter>
-
-          {/* <Error*/}
+          {/*  // TODO: JS - Fix this to show the errors.*/}
+          {/*<Error*/}
           {/*  fieldName="description_multiloc"*/}
-          {/*  // TODO: Fix this the next time the file is edited.*/}
           {/*  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition*/}
           {/*  apiErrors={apiError?.description_multiloc}*/}
-          {/*/ >*/}
+          {/*/>*/}
         </SectionField>
 
         <SectionField>

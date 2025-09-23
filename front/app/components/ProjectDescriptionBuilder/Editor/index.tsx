@@ -19,6 +19,7 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 
 import BaseEditor from './Editor';
+import Published from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Published';
 
 type EditorProps = {
   children?: React.ReactNode;
@@ -31,6 +32,7 @@ const Editor: React.FC<EditorProps> = ({
   isPreview,
   children,
 }) => {
+  console.log('EDITOR');
   return (
     <BaseEditor
       resolver={{
@@ -48,6 +50,7 @@ const Editor: React.FC<EditorProps> = ({
         InfoWithAccordions,
         ImageTextCards,
         ButtonMultiloc,
+        Published,
       }}
       isPreview={isPreview}
       onNodesChange={onNodesChange}

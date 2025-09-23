@@ -68,9 +68,7 @@ const ProjectDescriptionBuilderToggle = ({
     useProjectDescriptionBuilderLayout(modelId, modelType);
 
   const route =
-    modelType === 'folder'
-      ? (`/admin/project-description-builder/folders/${modelId}/description` as RouteType)
-      : (`/admin/project-description-builder/projects/${modelId}/description` as RouteType);
+    `/admin/project-description-builder/${modelType}s/${modelId}/description` as RouteType;
 
   const [
     projectDescriptionBuilderLinkVisible,

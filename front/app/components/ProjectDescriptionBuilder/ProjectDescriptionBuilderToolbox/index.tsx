@@ -21,9 +21,11 @@ import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
-import { useIntl } from 'utils/cl-intl';
-
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
+import Published, {
+  publishedTitle,
+} from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Published';
+import { useIntl } from 'utils/cl-intl';
 
 type ProjectDescriptionBuilderToolboxProps = {
   selectedLocale: SupportedLocale;
@@ -44,6 +46,14 @@ const ProjectDescriptionBuilderToolbox = ({
     intercom-product-tour-project-description-content-builder-building-blocks-sidebar
     "
     >
+      <Section>
+        <DraggableElement
+          id="e2e-draggable-published"
+          component={<Published titleMultiloc={{ en: 'TODO' }} />}
+          icon="check-circle"
+          label={formatMessage(publishedTitle)}
+        />
+      </Section>
       <Section>
         <DraggableElement
           id="e2e-draggable-image-text-cards"
