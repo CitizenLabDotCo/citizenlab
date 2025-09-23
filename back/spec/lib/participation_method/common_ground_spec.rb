@@ -63,6 +63,12 @@ RSpec.describe ParticipationMethod::CommonGround do
     end
   end
 
+  describe 'constraints' do
+    it 'has constraints on built in fields to lock certain values from being changed' do
+      expect(participation_method.constraints).to eq({})
+    end
+  end
+
   describe '#supported_email_campaigns' do
     it 'returns campaigns supported for common ground' do
       expect(participation_method.supported_email_campaigns).to match_array %w[idea_published mention_in_official_feedback official_feedback_on_idea_you_follow project_phase_started]

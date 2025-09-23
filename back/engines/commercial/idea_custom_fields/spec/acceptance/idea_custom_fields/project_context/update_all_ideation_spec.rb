@@ -148,7 +148,7 @@ resource 'Idea Custom Fields' do
                 created_at: an_instance_of(String),
                 updated_at: an_instance_of(String),
                 logic: {},
-                constraints: { locks: { attributes: %w[title_multiloc required] } },
+                constraints: { locks: { attributes: %w[title_multiloc required], deletion: true } },
                 random_option_ordering: false
               ),
               id: an_instance_of(String),
@@ -168,7 +168,7 @@ resource 'Idea Custom Fields' do
                 created_at: an_instance_of(String),
                 updated_at: an_instance_of(String),
                 logic: {},
-                constraints: nil,
+                constraints: {},
                 page_layout: 'default',
                 random_option_ordering: false
               ),
@@ -282,14 +282,14 @@ resource 'Idea Custom Fields' do
           expect(json_response).to eq({ errors: { '12': { input_type: [{ error: 'inclusion', value: 'html_multiloc' }] } } })
         end
 
-        example '[error] Lock constraints (remove the body field from the body page)' do
-          fields_param = default_fields_param.reject { |field| field[:code] == 'body_multiloc' } + [final_page]
+        example '[error] Lock constraints (remove the title field)' do
+          fields_param = default_fields_param.reject { |field| field[:code] == 'title_multiloc' } + [final_page]
 
           do_request custom_fields: fields_param
 
           assert_status 422
           json_response = json_parse response_body
-          expect(json_response).to eq({ errors: { form: [{ error: 'locked_children' }] } })
+          expect(json_response).to eq({ errors: { form: [{ error: 'locked_deletion' }] } })
         end
 
         example 'Updating custom fields when there are responses', document: false do

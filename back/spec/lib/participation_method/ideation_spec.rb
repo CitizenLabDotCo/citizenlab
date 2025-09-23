@@ -162,6 +162,21 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
+  describe 'constraints' do
+    it 'has constraints on built in fields to lock certain values from being changed' do
+      expect(participation_method.constraints).to eq({
+        title_page: { locks: { attributes: %i[title_multiloc] } },
+        title_multiloc: { locks: { attributes: %i[title_multiloc required], deletion: true } },
+        body_multiloc: { locks: { attributes: %i[title_multiloc required] } },
+        idea_images_attributes: { locks: { attributes: %i[title_multiloc] } },
+        idea_files_attributes: { locks: { attributes: %i[title_multiloc] } },
+        topic_ids: { locks: { attributes: %i[title_multiloc] } },
+        location_description: { locks: { attributes: %i[title_multiloc] } },
+        proposed_budget: { locks: { attributes: %i[title_multiloc] } }
+      })
+    end
+  end
+
   describe '#custom_form' do
     let(:project) { create(:project_with_active_ideation_phase) }
     let(:project_form) { create(:custom_form, participation_context: project) }

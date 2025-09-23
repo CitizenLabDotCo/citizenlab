@@ -64,6 +64,12 @@ RSpec.describe ParticipationMethod::Information do
     end
   end
 
+  describe 'constraints' do
+    it 'has constraints on built in fields to lock certain values from being changed' do
+      expect(participation_method.constraints).to eq({})
+    end
+  end
+
   describe '#custom_form' do
     let(:project) { create(:project_with_past_ideation_and_current_information_phase) }
     let(:project_form) { create(:custom_form, participation_context: project) }

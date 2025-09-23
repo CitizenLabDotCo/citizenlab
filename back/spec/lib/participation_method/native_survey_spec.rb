@@ -44,6 +44,20 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
+  describe '#generate_slug' do
+    let(:input) { create(:input, slug: nil, project: phase.project, creation_phase: phase) }
+
+    before { create(:idea_status_proposed) }
+
+    it 'sets and persists the id as the slug of the input' do
+      expect(input.slug).to eq input.id
+
+      input.update_column :slug, nil
+      input.reload
+      expect(participation_method.generate_slug(input)).to eq input.id
+    end
+  end
+
   describe '#create_default_form!' do
     it 'persists a default form with a page for the participation context' do
       expect(phase.custom_form).to be_nil
@@ -95,20 +109,6 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
-  describe '#generate_slug' do
-    let(:input) { create(:input, slug: nil, project: phase.project, creation_phase: phase) }
-
-    before { create(:idea_status_proposed) }
-
-    it 'sets and persists the id as the slug of the input' do
-      expect(input.slug).to eq input.id
-
-      input.update_column :slug, nil
-      input.reload
-      expect(participation_method.generate_slug(input)).to eq input.id
-    end
-  end
-
   describe '#author_in_form?' do
     it 'returns false for a moderator when idea_author_change is activated' do
       SettingsService.new.activate_feature! 'idea_author_change'
@@ -119,6 +119,12 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   describe '#budget_in_form?' do
     it 'returns false for a moderator' do
       expect(participation_method.budget_in_form?(create(:admin))).to be false
+    end
+  end
+
+  describe 'constraints' do
+    it 'has constraints on built in fields to lock certain values from being changed' do
+      expect(participation_method.constraints).to eq({})
     end
   end
 
