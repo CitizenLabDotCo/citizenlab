@@ -21,6 +21,7 @@ import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
 
 import { useSyncFolderFiles } from 'hooks/files/useSyncFolderFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import projectMessages from 'containers/Admin/projects/project/general/messages';
 
@@ -51,7 +52,6 @@ import messages from '../../messages';
 import FolderCardImageTooltip from './FolderCardImageTooltip';
 import FolderHeaderImageTooltip from './FolderHeaderImageTooltip';
 import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 // import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 // import Error from 'components/UI/Error';
 
@@ -637,11 +637,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             />
           </Highlighter>
           {/*  // TODO: JS - Fix this to show the errors.*/}
-          {/*<Error*/}
+          {/* <Error*/}
           {/*  fieldName="description_multiloc"*/}
           {/*  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition*/}
           {/*  apiErrors={apiError?.description_multiloc}*/}
-          {/*/>*/}
+          {/*/ >*/}
         </SectionField>
 
         <SectionField>

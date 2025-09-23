@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Box, Label, Text } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
+import { useParams } from 'react-router-dom';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 
@@ -13,7 +14,6 @@ import messages from '../messages';
 import AdminPublicationSearchInput from './AdminPublicationSearchInput';
 import AdminPublicationsList from './AdminPublicationsList';
 import { LoadMore, getNewIdsOnDrop, isAdminPublication } from './utils';
-import { useParams } from 'react-router-dom';
 
 const Settings = () => {
   const { folderId } = useParams() as {

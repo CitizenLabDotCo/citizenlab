@@ -42,7 +42,6 @@ const Published = ({ titleMultiloc, folderId }: Props) => {
 
   if (!adminPublications) return null;
   if (adminPublications.length === 0) {
-    console.log('NO DATA - where is the empty state?');
     return <EmptyState title={title} explanation={messages.noData} />;
   }
 

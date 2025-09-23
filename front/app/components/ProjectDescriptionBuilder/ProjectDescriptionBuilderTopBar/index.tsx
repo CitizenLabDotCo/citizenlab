@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  Spinner,
-  Text,
-  Title,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
 import { RouteType } from 'routes';
 import { Multiloc, SupportedLocale } from 'typings';
@@ -94,22 +88,16 @@ const ProjectDescriptionBuilderTopBar = ({
       <GoBackButton onClick={goBack} />
       <Box display="flex" p="15px" pl="8px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
-          {!titleMultiloc ? (
-            <Spinner />
-          ) : (
-            <>
-              <Title variant="h3" as="h1" mb="0px" mt="0px">
-                <FormattedMessage
-                  {...(modelType === 'project'
-                    ? messages.descriptionProjectHeading
-                    : messages.descriptionFolderHeading)}
-                />
-              </Title>
-              <Text m="0" color="textSecondary">
-                {localize(titleMultiloc)}
-              </Text>
-            </>
-          )}
+          <Title variant="h3" as="h1" mb="0px" mt="0px">
+            <FormattedMessage
+              {...(modelType === 'project'
+                ? messages.descriptionProjectHeading
+                : messages.descriptionFolderHeading)}
+            />
+          </Title>
+          <Text m="0" color="textSecondary">
+            {localize(titleMultiloc)}
+          </Text>
         </Box>
         <LocaleSelect locale={selectedLocale} setLocale={handleSelectLocale} />
         <Box ml="24px" />

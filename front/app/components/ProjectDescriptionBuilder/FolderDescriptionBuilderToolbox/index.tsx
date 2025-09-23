@@ -2,8 +2,16 @@ import React from 'react';
 
 import { SupportedLocale } from 'typings';
 
+import useAppConfigurationLocales, {
+  createMultiloc,
+} from 'hooks/useAppConfigurationLocales';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import Published from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Published';
+import Selection from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Selection';
+import Spotlight, {
+  spotlightTitle,
+} from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Spotlight';
 import messages from 'containers/ProjectDescriptionBuilder/messages';
 
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
@@ -20,20 +28,13 @@ import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
-import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
-import Published from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Published';
 import {
   MessageDescriptor,
   useFormatMessageWithLocale,
   useIntl,
 } from 'utils/cl-intl';
-import Selection from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Selection';
-import Spotlight, {
-  spotlightTitle,
-} from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Spotlight';
-import useAppConfigurationLocales, {
-  createMultiloc,
-} from 'hooks/useAppConfigurationLocales';
+
+import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 
 type FolderDescriptionBuilderToolboxProps = {
   selectedLocale: SupportedLocale;

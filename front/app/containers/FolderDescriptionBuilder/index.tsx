@@ -22,8 +22,8 @@ import Editor from 'components/ProjectDescriptionBuilder/Editor';
 
 import { isNilOrError } from 'utils/helperUtils';
 
-import ProjectDescriptionBuilderEditModePreview from '../../components/ProjectDescriptionBuilder/ProjectDescriptionBuilderEditModePreview';
 import FolderDescriptionBuilderToolbox from '../../components/ProjectDescriptionBuilder/FolderDescriptionBuilderToolbox';
+import ProjectDescriptionBuilderEditModePreview from '../../components/ProjectDescriptionBuilder/ProjectDescriptionBuilderEditModePreview';
 import ProjectDescriptionBuilderTopBar from '../../components/ProjectDescriptionBuilder/ProjectDescriptionBuilderTopBar';
 import ContentBuilderSettings from '../../components/ProjectDescriptionBuilder/Settings';
 

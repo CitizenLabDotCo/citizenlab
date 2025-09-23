@@ -20,9 +20,7 @@ const ContentViewer = ({ model, modelType }: Props) => {
     name: 'project_description_builder',
   });
 
-  if (!featureEnabled || !model) {
-    return null;
-  }
+  if (!featureEnabled) return null;
 
   if (modelType === 'folder') {
     return (

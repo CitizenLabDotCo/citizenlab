@@ -1,6 +1,7 @@
 import React, { KeyboardEvent } from 'react';
 
 import { Box, Label, Spinner } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
 import ReactSelect from 'react-select';
 import { useTheme } from 'styled-components';
 import { IOption } from 'typings';
@@ -17,7 +18,6 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 import { flattenPagesData, getLabel } from './utils';
-import { useParams } from 'react-router-dom';
 
 interface Props {
   publicationId?: string;
