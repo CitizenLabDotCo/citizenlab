@@ -1,0 +1,91 @@
+import React from 'react';
+
+import { Box, Input } from '@citizenlab/cl2-component-library';
+import { useNode } from '@craftjs/core';
+import { SupportedLocale, Multiloc } from 'typings';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
+import { AspectRatioType } from '../utils';
+
+interface Props {
+  url: string;
+  height: number;
+  hasError: boolean;
+  errorType?: string;
+  title?: Multiloc;
+  selectedLocale: SupportedLocale;
+  embedMode?: 'fixed' | 'aspectRatio';
+  tabletHeight?: number;
+  mobileHeight?: number;
+  aspectRatio?: AspectRatioType;
+  customAspectRatio?: string;
+}
+
+const FixedHeightSettings = () => {
+  const { formatMessage } = useIntl();
+  const {
+    actions: { setProp },
+    height,
+    tabletHeight,
+    mobileHeight,
+  } = useNode((node) => ({
+    height: node.data.props.height,
+    tabletHeight: node.data.props.tabletHeight,
+    mobileHeight: node.data.props.mobileHeight,
+  }));
+
+  return (
+    <>
+      <Box flex="0 0 100%">
+        <Input
+          labelTooltipText={formatMessage(
+            messages.embedDesktopIframeHeightLabelTooltip
+          )}
+          label={formatMessage(messages.embedDesktopIframeHeightLabel)}
+          placeholder={formatMessage(messages.iframeHeightPlaceholder)}
+          type="number"
+          value={height}
+          onChange={(value) => {
+            setProp(
+              (props: Props) => (props.height = parseInt(value, 10) || 0)
+            );
+          }}
+        />
+      </Box>
+      <Box flex="0 0 48%">
+        <Input
+          labelTooltipText={formatMessage(messages.embedTabletHeightTooltip)}
+          label={formatMessage(messages.embedTabletHeightLabel)}
+          placeholder="600"
+          type="number"
+          value={tabletHeight || ''}
+          onChange={(value) => {
+            setProp(
+              (props: Props) =>
+                (props.tabletHeight = value ? parseInt(value, 10) : undefined)
+            );
+          }}
+        />
+      </Box>
+      <Box flex="0 0 48%">
+        <Input
+          labelTooltipText={formatMessage(messages.embedMobileHeightTooltip)}
+          label={formatMessage(messages.embedMobileHeightLabel)}
+          placeholder="400"
+          type="number"
+          value={mobileHeight || ''}
+          onChange={(value) => {
+            setProp(
+              (props: Props) =>
+                (props.mobileHeight = value ? parseInt(value, 10) : undefined)
+            );
+          }}
+        />
+      </Box>
+    </>
+  );
+};
+
+export default FixedHeightSettings;
