@@ -36,26 +36,11 @@ const IframeMultiloc = ({
     mobileHeight
   );
 
-  const renderIframe = () => {
-    const iframeProps = {
-      src: url,
-      title: localize(title),
-      width: '100%',
-      style: { border: '0px' },
-    };
-
-    if (embedMode === 'aspectRatio') {
-      return (
-        <AspectRatioContainer
-          aspectRatio={aspectRatio}
-          customAspectRatio={customAspectRatio}
-        >
-          <iframe {...iframeProps} height="100%" />
-        </AspectRatioContainer>
-      );
-    }
-
-    return <iframe {...iframeProps} height={responsiveHeight} />;
+  const iframeProps = {
+    src: url,
+    title: localize(title),
+    width: '100%',
+    style: { border: '0px' },
   };
 
   return (
@@ -65,7 +50,17 @@ const IframeMultiloc = ({
       maxWidth="1200px"
       margin="0 auto"
     >
-      {url && renderIframe()}
+      {url &&
+        (embedMode === 'aspectRatio' ? (
+          <AspectRatioContainer
+            aspectRatio={aspectRatio}
+            customAspectRatio={customAspectRatio}
+          >
+            <iframe {...iframeProps} height="100%" />
+          </AspectRatioContainer>
+        ) : (
+          <iframe {...iframeProps} height={responsiveHeight} />
+        ))}
     </Box>
   );
 };
