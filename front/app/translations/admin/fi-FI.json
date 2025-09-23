@@ -3030,7 +3030,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioLabel": "Mukautettu kuvasuhde",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioTooltip": "Syötä leveys:korkeus-suhde (esim. 5:3, 16:10, 21:9). Yleisiä suhteita: 5:3 (1,67:1), 16:10 (1,6:1), 21:9 (2,33:1).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabel": "Työpöydän korkeus (pikseleinä)",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "Korkeus, jolla haluat upotetun sisällön näkyvän sivulla (pikseleinä).",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabelTooltip": "Korkeus työpöytänäkymässä (pikseleinä).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Lyhyt kuvaus upotettavasta sisällöstä",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "On hyödyllistä antaa nämä tiedot käyttäjille, jotka käyttävät näytönlukuohjelmaa tai muuta aputekniikkaa.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Verkkosivuston osoite",
