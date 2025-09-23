@@ -449,7 +449,7 @@
   "app.components.ProjectCard.finished": "Valmis",
   "app.components.ProjectCard.joinDiscussion": "Liity keskusteluun",
   "app.components.ProjectCard.learnMore": "Lue lisää",
-  "app.components.ProjectCard.reaction": "Reaktio",
+  "app.components.ProjectCard.reaction": "Katso kommentit",
   "app.components.ProjectCard.readTheReport": "Lue raportti",
   "app.components.ProjectCard.reviewDocument": "Tarkista asiakirja",
   "app.components.ProjectCard.submitAnIssue": "Lähetä kommentti",
