@@ -175,14 +175,14 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   end
 
   describe '#user_fields_in_form?' do
+    let(:permission) { phase.permissions.find_by(action: 'posting_idea') }
+
     it 'returns false if user_data_collection == \'anonymous\'' do
-      phase.permissions.find_by(action: 'posting_idea').update!(user_data_collection: 'anonymous')
+      permission.update!(user_data_collection: 'anonymous')
       expect(participation_method.user_fields_in_form?).to be false
     end
 
     context 'when permission permitted_by is \'everyone\'' do
-      let(:permission) { phase.permissions.find_by(action: 'posting_idea') }
-
       before do
         permission.update!(permitted_by: 'everyone')
       end
