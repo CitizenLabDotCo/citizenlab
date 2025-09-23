@@ -3020,7 +3020,6 @@
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltip1": "Bu banner özellikle başlık, altyazı veya düğmedeki metinle iyi çalışmayan görüntülerde kullanışlıdır. Bu öğeler banner'ın altına itilecektir. Önerilen görsel kullanımı hakkında daha fazla bilgiyi {link}adresimizde bulabilirsiniz.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "BİLGİ TABANI",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "İki sıra",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "Gömülü içeriğinizin sayfada görünmesini istediğiniz yükseklik (piksel cinsinden).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Yerleştirdiğiniz içeriğin kısa açıklaması",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Ekran okuyucu veya başka bir yardımcı teknoloji kullanan kullanıcılar için bu bilgilerin sağlanması yararlıdır.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Web sitesi adresi",

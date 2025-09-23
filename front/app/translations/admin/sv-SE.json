@@ -3020,7 +3020,6 @@
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltip1": "Denna banner är särskilt användbar med bilder som inte fungerar bra med text från titeln, undertexten eller knappen. Dessa objekt kommer att skjutas in under bannern. Mer information om rekommenderad bildanvändning finns på vår {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "kunskapsbas",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "Två rader",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "Höjd som du vill att det inbäddade innehållet ska visas på sidan (i pixlar).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Kort beskrivning av det innehåll du bäddar in",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Det är användbart att tillhandahålla denna information för användare som förlitar sig på en skärmläsare eller annan hjälpteknik.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Adress till webbplatsen",

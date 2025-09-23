@@ -3020,7 +3020,6 @@
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltip1": "This banner is in particular useful with images that don't work well with text from the title, subtitle or button. These items will be pushed below the banner. More info on the recommended image usage can be found on our {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "база знања",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "Два реда",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "Висина на којој желите да се ваш уграђени садржај појави на страници (у пикселима).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Кратак опис садржаја који уграђујете",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Корисно је пружити ове информације корисницима који се ослањају на читач екрана или другу помоћну технологију.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Сајт адреса",

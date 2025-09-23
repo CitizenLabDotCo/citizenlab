@@ -3020,7 +3020,6 @@
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltip1": "Šis baneris ir īpaši noderīgs, ja attēli nav labi savienoti ar virsraksta, apakšvirsraksta vai pogas tekstu. Šie elementi tiks izstumti zem banera. Vairāk informācijas par ieteicamo attēlu izmantošanu var atrast mūsu vietnē {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "zināšanu bāze",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "Divas rindas",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "Augstums, kādā vēlaties, lai iegultais saturs tiktu attēlots lapā (pikseļos).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Īss ievietotā satura apraksts",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Šo informāciju ir lietderīgi sniegt lietotājiem, kuri izmanto ekrāna lasītāju vai citu palīgtehnoloģiju.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Tīmekļa vietnes adrese",

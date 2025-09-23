@@ -3020,7 +3020,6 @@
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltip1": "Dette banner er især nyttigt med billeder, der ikke fungerer godt sammen med tekst fra titlen, undertitlen eller knappen. Disse elementer vil blive skubbet under banneret. Du kan finde flere oplysninger om den anbefalede billedanvendelse på vores {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "vidensbase",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "To rækker",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "Højden hvor du ønsker, at dit indlejrede indhold skal vises på siden (i pixel).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Kort beskrivelse af det indhold, du indlejrer",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Det er nyttigt at give disse oplysninger til brugere, der er afhængige af en skærmlæser eller anden hjælpeteknologi.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Tilføj din URL",

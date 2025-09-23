@@ -3020,7 +3020,6 @@
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltip1": "Esse banner é particularmente útil com imagens que não funcionam bem com o texto do título, subtítulo ou botão. Esses itens serão colocados abaixo do banner. Mais informações sobre o uso recomendado de imagens podem ser encontradas em nosso site {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "Base de conhecimento",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "Duas linhas",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "Altura que você deseja que seu conteúdo incorporado apareça na página (em pixels).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Breve descrição do conteúdo que você está incorporando",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "É útil fornecer essas informações aos usuários que dependem de um leitor de tela ou de outra tecnologia de assistência.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Endereço do site",

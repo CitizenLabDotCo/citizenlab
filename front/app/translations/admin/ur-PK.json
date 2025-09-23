@@ -3020,7 +3020,6 @@
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltip1": "یہ بینر خاص طور پر ان تصاویر کے لیے مفید ہے جو ٹائٹل، سب ٹائٹل یا بٹن کے متن کے ساتھ اچھی طرح کام نہیں کرتی ہیں۔ ان اشیاء کو بینر کے نیچے دھکیل دیا جائے گا۔ تجویز کردہ تصویر کے استعمال کے بارے میں مزید معلومات ہمارے {link}پر مل سکتی ہیں۔",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "علم کی بنیاد",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "دو قطاریں۔",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "اونچائی آپ چاہتے ہیں کہ آپ کا سرایت شدہ مواد صفحہ پر ظاہر ہو (پکسلز میں)۔",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "آپ جس مواد کو سرایت کر رہے ہیں اس کی مختصر تفصیل",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "یہ معلومات ان صارفین کے لیے فراہم کرنا مفید ہے جو اسکرین ریڈر یا دیگر معاون ٹیکنالوجی پر انحصار کرتے ہیں۔",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "ویب سائٹ کا پتہ",
