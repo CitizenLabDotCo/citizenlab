@@ -145,7 +145,6 @@
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Mewnbwn cyfeiriad",
   "app.components.CustomFieldsForm.addressInputPlaceholder6": "Rhowch gyfeiriad...",
   "app.components.CustomFieldsForm.adminFieldTooltip": "Maes yn weladwy i weinyddwyr yn unig",
-  "app.components.CustomFieldsForm.anonymousSurveyMessage2": "Mae pob ymateb i'r arolwg hwn wedi'i ddienweiddio.",
   "app.components.CustomFieldsForm.atLeastThreePointsRequired": "Mae angen o leiaf dri phwynt ar gyfer polygon.",
   "app.components.CustomFieldsForm.atLeastTwoPointsRequired": "Mae angen o leiaf ddau bwynt ar gyfer llinell.",
   "app.components.CustomFieldsForm.attachmentRequired": "Mae angen o leiaf un atodiad",

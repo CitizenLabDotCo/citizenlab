@@ -145,7 +145,6 @@
   "app.components.CustomFieldsForm.addressInputAriaLabel": "إدخال العنوان",
   "app.components.CustomFieldsForm.addressInputPlaceholder6": "أدخل عنوانًا...",
   "app.components.CustomFieldsForm.adminFieldTooltip": "الحقل مرئي فقط للمسؤولين",
-  "app.components.CustomFieldsForm.anonymousSurveyMessage2": "جميع الردود على هذا الاستطلاع مجهولة المصدر.",
   "app.components.CustomFieldsForm.atLeastThreePointsRequired": "يجب أن يكون هناك ثلاث نقاط على الأقل للمضلع.",
   "app.components.CustomFieldsForm.atLeastTwoPointsRequired": "يجب أن يكون هناك نقطتين على الأقل للخط.",
   "app.components.CustomFieldsForm.attachmentRequired": "يجب أن يكون هناك مرفق واحد على الأقل",
