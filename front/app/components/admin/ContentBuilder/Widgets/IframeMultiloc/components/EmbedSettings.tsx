@@ -93,7 +93,7 @@ const EmbedSettings = () => {
       <Box flex="0 0 100%">
         <Label>
           <span>
-            {formatMessage(messages.embedModeLabel)}{' '}
+            {formatMessage(messages.embedModeLabel)}
             <IconTooltip
               display="inline"
               icon="info-solid"
@@ -135,10 +135,11 @@ const EmbedSettings = () => {
       <Box flex="0 0 100%">
         <Label htmlFor="e2e-content-builder-iframe-title-input">
           <span>
-            {formatMessage(messages.embedIframeTitleLabel)}{' '}
+            {formatMessage(messages.embedIframeTitleLabel)}
             <IconTooltip
               display="inline"
               icon="info-solid"
+              placement="left-start"
               content={formatMessage(messages.embedIframeTitleTooltip)}
             />
           </span>

@@ -28,6 +28,7 @@ const FixedHeightSettings = () => {
           labelTooltipText={formatMessage(
             messages.embedDesktopIframeHeightLabelTooltip
           )}
+          labelTooltipPlacement="top"
           label={formatMessage(messages.embedDesktopIframeHeightLabel)}
           placeholder={formatMessage(messages.iframeHeightPlaceholder)}
           type="number"
@@ -39,9 +40,10 @@ const FixedHeightSettings = () => {
           }}
         />
       </Box>
-      <Box flex="0 0 48%">
+      <Box flex="0 0 100%">
         <Input
           labelTooltipText={formatMessage(messages.embedTabletHeightTooltip)}
+          labelTooltipPlacement="top"
           label={formatMessage(messages.embedTabletHeightLabel)}
           placeholder="600"
           type="number"
@@ -54,10 +56,11 @@ const FixedHeightSettings = () => {
           }}
         />
       </Box>
-      <Box flex="0 0 48%">
+      <Box flex="0 0 100%">
         <Input
           labelTooltipText={formatMessage(messages.embedMobileHeightTooltip)}
           label={formatMessage(messages.embedMobileHeightLabel)}
+          labelTooltipPlacement="top"
           placeholder="400"
           type="number"
           value={mobileHeight || ''}

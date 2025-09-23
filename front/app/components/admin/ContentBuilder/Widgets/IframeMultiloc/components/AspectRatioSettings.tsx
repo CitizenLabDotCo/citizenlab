@@ -30,6 +30,7 @@ const AspectRatioSettings = () => {
       <Box flex="0 0 100%">
         <Select
           labelTooltipText={formatMessage(messages.embedAspectRatioTooltip)}
+          labelTooltipPlacement="top"
           label={formatMessage(messages.embedAspectRatioLabel)}
           options={aspectRatioOptions}
           value={aspectRatio}
@@ -49,6 +50,7 @@ const AspectRatioSettings = () => {
             labelTooltipText={formatMessage(
               messages.embedCustomAspectRatioTooltip
             )}
+            labelTooltipPlacement="top"
             label={formatMessage(messages.embedCustomAspectRatioLabel)}
             placeholder="16:10"
             type="text"

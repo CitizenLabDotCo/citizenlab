@@ -2,6 +2,7 @@ import React, { PureComponent, FormEvent, KeyboardEvent } from 'react';
 
 import { isNil, isEmpty, size as lodashSize, isBoolean } from 'lodash-es';
 import styled from 'styled-components';
+import { Placement } from 'tippy.js';
 
 import { ScreenReaderOnly } from '../../utils/a11y';
 import {
@@ -70,6 +71,7 @@ export interface InputProps {
   id?: string;
   label?: string | JSX.Element | null;
   labelTooltipText?: string | JSX.Element | null;
+  labelTooltipPlacement?: Placement;
   value?: string | null;
   locale?: Locale;
   type: 'text' | 'email' | 'password' | 'number' | 'date';
@@ -135,6 +137,7 @@ class Input extends PureComponent<InputProps> {
     const {
       label,
       labelTooltipText,
+      labelTooltipPlacement,
       ariaLabel,
       a11yCharactersLeftMessage,
       className,
@@ -181,7 +184,12 @@ class Input extends PureComponent<InputProps> {
         {label && (
           <Label htmlFor={id}>
             <span>{label}</span>
-            {labelTooltipText && <IconTooltip content={labelTooltipText} />}
+            {labelTooltipText && (
+              <IconTooltip
+                content={labelTooltipText}
+                placement={labelTooltipPlacement}
+              />
+            )}
           </Label>
         )}
 
