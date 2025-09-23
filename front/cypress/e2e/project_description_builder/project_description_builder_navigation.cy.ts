@@ -25,7 +25,7 @@ describe('Project description builder navigation', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.apiToggleProjectDescriptionBuilder({ projectId, enabled: false });
-    cy.visit(`/admin/projects/${projectId}/settings/description`);
+    cy.visit(`/admin/projects/${projectId}/general`);
   });
 
   after(() => {
@@ -49,13 +49,6 @@ describe('Project description builder navigation', () => {
     );
   });
 
-  it('navigates to projects list when project settings goBack clicked', () => {
-    cy.get('#e2e-go-back-button').should('be.visible').click();
-    // Seeing this component means we're back at the project index page (and navigated back).
-    // With our instable redirecting (because of tabs), it's hard to check for exactly the previous URL.
-    cy.dataCy('e2e-admin-projects-project-index').should('be.visible');
-  });
-
   it('navigates to project settings when content builder goBack clicked', () => {
     cy.dataCy('e2e-toggle-enable-project-description-builder').click();
     // When the toggle is clicked, the project description builder is enabled and the link should appear.
@@ -71,9 +64,7 @@ describe('Project description builder navigation', () => {
     cy.get('#e2e-go-back-button').should('be.visible').click();
     cy.url().should(
       'eq',
-      `${
-        Cypress.config().baseUrl
-      }/en/admin/projects/${projectId}/settings/description`
+      `${Cypress.config().baseUrl}/en/admin/projects/${projectId}/general`
     );
   });
 });
