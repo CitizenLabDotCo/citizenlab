@@ -443,6 +443,29 @@ describe ProjectsFinderService do
         expect(result).not_to include(archived_project)
       end
     end
+
+    describe 'SQL syntax fixes' do
+      it 'can count results without SQL syntax error' do
+        # This test specifically verifies the fix for the COUNT(DISTINCT ON (...)) SQL error
+        # We use .count because it forces Rails to wrap the query in a COUNT(*) statement,
+        # which exposes SQL syntax issues that wouldn't appear when just iterating through results.
+        # This is important because Rails uses COUNT internally for pagination.
+        result = service.new(Project.all, user, { filter_by: 'finished_and_archived' }).finished_or_archived
+
+        # This should not raise a SQL syntax error
+        expect { result.count }.not_to raise_error
+        expect(result.count).to be >= 0
+      end
+
+      it 'can access individual projects without SQL syntax error' do
+        # This test verifies that accessing individual projects works after the subquery fix
+        result = service.new(Project.all, user, { filter_by: 'finished_and_archived' }).finished_or_archived
+
+        # This should not raise a column "last_phase_end_at" does not exist error
+        expect { result.first }.not_to raise_error
+        expect { result.to_a }.not_to raise_error
+      end
+    end
   end
 
   describe 'projects_for_areas' do
