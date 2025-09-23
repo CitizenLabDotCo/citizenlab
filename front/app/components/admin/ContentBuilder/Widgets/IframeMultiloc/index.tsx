@@ -11,12 +11,7 @@ import AspectRatioContainer from './components/AspectRatioContainer';
 import EmbedSettings from './components/EmbedSettings';
 import { DEFAULT_PROPS } from './constants';
 import messages from './messages';
-import {
-  AspectRatioType,
-  EmbedModeType,
-  getAspectRatioPercentage,
-  getResponsiveHeight,
-} from './utils';
+import { AspectRatioType, EmbedModeType, getResponsiveHeight } from './utils';
 
 interface Props {
   url: string;
@@ -57,11 +52,6 @@ const IframeMultiloc = ({
     mobileHeight
   );
 
-  const aspectRatioPercentage =
-    embedMode === 'aspectRatio'
-      ? getAspectRatioPercentage(aspectRatio, customAspectRatio)
-      : null;
-
   const renderIframe = () => {
     const iframeProps = {
       src: url,
@@ -70,9 +60,12 @@ const IframeMultiloc = ({
       style: { border: '0px' },
     };
 
-    if (embedMode === 'aspectRatio' && aspectRatioPercentage) {
+    if (embedMode === 'aspectRatio') {
       return (
-        <AspectRatioContainer aspectRatioPercentage={aspectRatioPercentage}>
+        <AspectRatioContainer
+          aspectRatio={aspectRatio}
+          customAspectRatio={customAspectRatio}
+        >
           <iframe {...iframeProps} height="100%" />
         </AspectRatioContainer>
       );

@@ -12,7 +12,6 @@ import messages from 'components/admin/ContentBuilder/Widgets/IframeMultiloc/mes
 import {
   AspectRatioType,
   EmbedModeType,
-  getAspectRatioPercentage,
   getResponsiveHeight,
 } from 'components/admin/ContentBuilder/Widgets/IframeMultiloc/utils';
 
@@ -50,11 +49,6 @@ const IframeMultiloc = ({
     mobileHeight
   );
 
-  const aspectRatioPercentage =
-    embedMode === 'aspectRatio'
-      ? getAspectRatioPercentage(aspectRatio, customAspectRatio)
-      : null;
-
   const renderIframe = () => {
     const iframeProps = {
       src: url,
@@ -63,9 +57,12 @@ const IframeMultiloc = ({
       style: { border: '0px' },
     };
 
-    if (embedMode === 'aspectRatio' && aspectRatioPercentage) {
+    if (embedMode === 'aspectRatio') {
       return (
-        <AspectRatioContainer aspectRatioPercentage={aspectRatioPercentage}>
+        <AspectRatioContainer
+          aspectRatio={aspectRatio}
+          customAspectRatio={customAspectRatio}
+        >
           <iframe {...iframeProps} height="100%" />
         </AspectRatioContainer>
       );
