@@ -181,22 +181,13 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
 
     context 'when permission permitted_by is \'everyone\'' do
-      before do
-        permission = Permission.find_by(
-          permission_scope_id: phase.id,
-          action: 'posting_idea'
-        )
+      let(:permission) { phase.permissions.find_by(action: 'posting_idea') }
 
-        permission.permitted_by = 'everyone'
-        permission.save!
+      before do
+        permission.update!(permitted_by: 'everyone')
       end
 
       it 'returns false if no permissions_custom_fields' do
-        permission = Permission.find_by(
-          permission_scope_id: phase.id,
-          action: 'posting_idea'
-        )
-
         permission.permissions_custom_fields = []
         permission.save!
 
@@ -204,11 +195,6 @@ RSpec.describe ParticipationMethod::NativeSurvey do
       end
 
       it 'returns true if any permissions_custom_fields' do
-        permission = Permission.find_by(
-          permission_scope_id: phase.id,
-          action: 'posting_idea'
-        )
-
         permission.permissions_custom_fields = [create(:permissions_custom_field)]
         permission.save!
 
@@ -218,21 +204,11 @@ RSpec.describe ParticipationMethod::NativeSurvey do
 
     context 'when permission permitted_by is \'everyone_confirmed_email\'' do
       before do
-        permission = Permission.find_by(
-          permission_scope_id: phase.id,
-          action: 'posting_idea'
-        )
-
         permission.permitted_by = 'everyone_confirmed_email'
         permission.save!
       end
 
       it 'returns true if any permissions_custom_fields and user_fields_in_form selected' do
-        permission = Permission.find_by(
-          permission_scope_id: phase.id,
-          action: 'posting_idea'
-        )
-
         permission.permissions_custom_fields = [create(:permissions_custom_field)]
         permission.user_fields_in_form = true
         permission.save!
@@ -241,11 +217,6 @@ RSpec.describe ParticipationMethod::NativeSurvey do
       end
 
       it 'returns false if no permissions_custom_fields' do
-        permission = Permission.find_by(
-          permission_scope_id: phase.id,
-          action: 'posting_idea'
-        )
-
         permission.permissions_custom_fields = []
         permission.user_fields_in_form = true
         permission.save!
@@ -254,11 +225,6 @@ RSpec.describe ParticipationMethod::NativeSurvey do
       end
 
       it 'returns false if no user_fields_in_form' do
-        permission = Permission.find_by(
-          permission_scope_id: phase.id,
-          action: 'posting_idea'
-        )
-
         permission.permissions_custom_fields = [create(:permissions_custom_field)]
         permission.user_fields_in_form = false
         permission.save!
@@ -269,21 +235,11 @@ RSpec.describe ParticipationMethod::NativeSurvey do
 
     context 'when permission permitted_by is \'users\'' do
       before do
-        permission = Permission.find_by(
-          permission_scope_id: phase.id,
-          action: 'posting_idea'
-        )
-
         permission.permitted_by = 'users'
         permission.save!
       end
 
       it 'returns true if global_custom_fields and user_fields_in_form' do
-        permission = Permission.find_by(
-          permission_scope_id: phase.id,
-          action: 'posting_idea'
-        )
-
         permission.permissions_custom_fields = []
         permission.global_custom_fields = true
         permission.user_fields_in_form = true
@@ -293,11 +249,6 @@ RSpec.describe ParticipationMethod::NativeSurvey do
       end
 
       it 'returns true if global_custom_fields = false but there are permissions_custom_fields and user_fields_in_form' do
-        permission = Permission.find_by(
-          permission_scope_id: phase.id,
-          action: 'posting_idea'
-        )
-
         permission.permissions_custom_fields = [create(:permissions_custom_field)]
         permission.global_custom_fields = false
         permission.user_fields_in_form = true
