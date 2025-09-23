@@ -3030,7 +3030,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioLabel": "Anpassat bildförhållande",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioTooltip": "Ange förhållandet bredd:höjd (t.ex. 5:3, 16:10, 21:9). Vanliga proportioner: 5:3 (1.67:1), 16:10 (1.6:1), 21:9 (2.33:1).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabel": "Skrivbordets höjd (pixlar)",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "Höjd som du vill att det inbäddade innehållet ska visas på sidan (i pixlar).",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabelTooltip": "Höjd för skrivbordsvyn (i pixlar).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Kort beskrivning av det innehåll du bäddar in",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Det är användbart att tillhandahålla denna information för användare som förlitar sig på en skärmläsare eller annan hjälpteknik.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Adress till webbplatsen",
