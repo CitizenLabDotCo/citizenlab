@@ -129,34 +129,25 @@ module ParticipationMethod
 
     # Attribute used interally by backend to determine if user fields should be shown in the form
     def user_fields_in_form?
-      permission = Permission.find_by(
-        permission_scope_id: phase.id,
-        action: 'posting_idea'
-      )
+      return false if posting_permission.nil?
+      return false if posting_permission.user_data_collection == 'anonymous'
 
-      return false if permission.user_data_collection == 'anonymous'
-
-      case permission&.permitted_by
+      case posting_permission.permitted_by
       when 'everyone'
-        !permission.permissions_custom_fields.empty?
+        !posting_permission.permissions_custom_fields.empty?
       when 'everyone_confirmed_email'
-        permission.user_fields_in_form && !permission.permissions_custom_fields.empty?
+        posting_permission.user_fields_in_form && !posting_permission.permissions_custom_fields.empty?
       else
-        if permission.global_custom_fields == true
-          permission.user_fields_in_form
+        if posting_permission.global_custom_fields == true
+          posting_permission.user_fields_in_form
         else
-          permission.user_fields_in_form && !permission.permissions_custom_fields.empty?
+          posting_permission.user_fields_in_form && !posting_permission.permissions_custom_fields.empty?
         end
       end
     end
 
     def user_data_collection
-      permission = Permission.find_by(
-        permission_scope_id: phase.id,
-        action: 'posting_idea'
-      )
-
-      permission.user_data_collection
+      posting_permission.user_data_collection
     end
 
     private
@@ -181,6 +172,13 @@ module ParticipationMethod
         title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.title_text_3'),
         description_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.description_text_3'),
         include_in_printed_form: false
+      )
+    end
+
+    def posting_permission
+      @posting_permission ||= Permission.find_by(
+        permission_scope_id: phase.id,
+        action: 'posting_idea'
       )
     end
   end
