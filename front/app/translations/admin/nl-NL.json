@@ -3030,7 +3030,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioLabel": "Aangepaste beeldverhouding",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioTooltip": "Voer de verhouding breedte:hoogte in (bijvoorbeeld 5:3, 16:10, 21:9). Gebruikelijke verhoudingen: 5:3 (1.67:1), 16:10 (1.6:1), 21:9 (2.33:1).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabel": "Desktop hoogte (pixels)",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "Hoogte waarop je je ingesloten content op de pagina wilt weergeven (in pixels).",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabelTooltip": "Hoogte voor bureaubladweergave (in pixels).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Korte omschrijving van de content die je insluit",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Het is nuttig om deze informatie te verstrekken aan gebruikers die afhankelijk zijn van een schermlezer of andere ondersteunende technologie.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Website adres",
