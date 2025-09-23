@@ -2701,6 +2701,7 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_take_poll_subtitle": "Ankete kim katılabilir?",
   "app.containers.AdminPage.groups.permissions.permissionAction_take_survey_subtitle": "Ankete kimler katılabilir?",
   "app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle": "Kimler gönüllü olabilir?",
+  "app.containers.AdminPage.groups.permissions.permissionAction_vote_on_input_subtitle": "Girdileri kim oylayabilir?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "Teklifler için kimler oy kullanabilir?",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "Kimler oy kullanabilir?",
   "app.containers.AdminPage.groups.permissions.questionDescription": "Soru açıklaması",

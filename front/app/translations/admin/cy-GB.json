@@ -2701,6 +2701,7 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_take_poll_subtitle": "Pwy all gymryd y bleidlais?",
   "app.containers.AdminPage.groups.permissions.permissionAction_take_survey_subtitle": "Pwy all gymryd yr arolwg?",
   "app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle": "Pwy all wirfoddoli?",
+  "app.containers.AdminPage.groups.permissions.permissionAction_vote_on_input_subtitle": "Pwy all bleidleisio ar fewnbynnau?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "Pwy all bleidleisio ar gynigion?",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "Pwy all bleidleisio?",
   "app.containers.AdminPage.groups.permissions.questionDescription": "Disgrifiad o'r cwestiwn",
