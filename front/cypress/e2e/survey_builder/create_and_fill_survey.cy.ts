@@ -58,6 +58,7 @@ describe('Survey builder', () => {
     cy.contains(questionTitle).should('exist');
 
     // Try going to the next page without filling in the survey
+    cy.wait(1000);
     cy.dataCy('e2e-submit-form').should('be.visible').click();
 
     // verify that an error is shown and that we stay on the page
@@ -72,6 +73,7 @@ describe('Survey builder', () => {
     cy.get(`*[id^="${questionTitle}"]`).type(answer, { force: true });
 
     // Submit the survey response
+    cy.wait(1000);
     cy.dataCy('e2e-submit-form').should('be.visible').click();
 
     // Check that submission was successful
@@ -174,23 +176,27 @@ describe('Survey builder', () => {
     cy.contains(chooseManyOption2).should('exist');
 
     // Enter some data and save
-    cy.contains(chooseOneOption1).click({ force: true });
+    cy.contains(chooseOneOption1).click();
     cy.contains(chooseManyOption1).click({
       force: true,
     });
-    cy.get(`#linear-scale-option-1`).click({ force: true });
+    cy.get(`#linear-scale-option-1`).click();
     cy.dataCy('e2e-submit-form').should('exist');
+
+    cy.wait(1000);
     cy.dataCy('e2e-submit-form').click();
     cy.dataCy('e2e-page-number-1').should('exist');
     cy.dataCy('e2e-after-submission').should('exist');
 
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
-    cy.contains(chooseOneOption2).click({ force: true });
+    cy.contains(chooseOneOption2).click();
     cy.contains(chooseManyOption1).click({
       force: true,
     });
-    cy.get(`#linear-scale-option-3`).click({ force: true });
+    cy.get(`#linear-scale-option-3`).click();
     cy.dataCy('e2e-submit-form').should('exist');
+
+    cy.wait(1000);
     cy.dataCy('e2e-submit-form').click();
     cy.dataCy('e2e-page-number-1').should('exist');
     cy.dataCy('e2e-after-submission').should('exist');
@@ -267,6 +273,8 @@ describe('Survey builder', () => {
 
     // Save survey response
     cy.dataCy('e2e-submit-form').should('exist');
+
+    cy.wait(1000);
     cy.dataCy('e2e-submit-form').click();
     cy.dataCy('e2e-page-number-1').should('exist');
     cy.dataCy('e2e-after-submission').should('exist');
@@ -307,6 +315,8 @@ describe('Survey builder', () => {
 
     // Save survey response
     cy.dataCy('e2e-submit-form').should('be.visible');
+
+    cy.wait(1000);
     cy.dataCy('e2e-submit-form').click();
     cy.dataCy('e2e-page-number-1').should('be.visible');
     cy.dataCy('e2e-after-submission').should('be.visible');
@@ -356,6 +366,8 @@ describe('Survey builder', () => {
       .should('not.have.attr', 'disabled');
     cy.get('#project-survey-button').find('button').click({ force: true });
     cy.contains(questionTitle).should('exist');
+
+    cy.wait(1000);
     cy.dataCy('e2e-submit-form').click();
     cy.dataCy('e2e-page-number-1').should('exist');
     cy.dataCy('e2e-after-submission').should('exist');
@@ -367,6 +379,8 @@ describe('Survey builder', () => {
       .should('not.have.attr', 'disabled');
     cy.get('#project-survey-button').find('button').click({ force: true });
     cy.contains(questionTitle).should('exist');
+
+    cy.wait(1000);
     cy.dataCy('e2e-submit-form').click();
     cy.dataCy('e2e-page-number-1').should('exist');
     cy.dataCy('e2e-after-submission').should('exist');
@@ -442,6 +456,7 @@ describe('Survey builder', () => {
 
     // Selecting the first option results in a submit button
     cy.contains(chooseOneOption1).click({ force: true });
+    cy.wait(1000);
     cy.dataCy('e2e-submit-form').should('be.visible').click();
 
     // Check to see that the user is on the submit page
@@ -461,6 +476,7 @@ describe('Survey builder', () => {
     cy.contains(page3Title).should('exist');
 
     // Submit
+    cy.wait(1000);
     cy.dataCy('e2e-submit-form').should('be.visible').click();
     cy.dataCy('e2e-page-number-4').should('exist');
     cy.dataCy('e2e-after-submission').should('exist');
@@ -609,6 +625,7 @@ describe('Survey builder', () => {
     cy.contains(page4Title).should('exist');
 
     // Submit
+    cy.wait(1000);
     cy.dataCy('e2e-submit-form').should('be.visible').click();
     cy.dataCy('e2e-page-number-5').should('exist');
     cy.dataCy('e2e-after-submission').should('exist');
@@ -658,6 +675,7 @@ describe('Survey builder', () => {
     cy.get(`*[id^="${questionTitle}"]`).type(answer, { force: true });
 
     // Submit
+    cy.wait(1000);
     cy.dataCy('e2e-submit-form').should('be.visible').click();
     cy.dataCy('e2e-page-number-2').should('exist');
     cy.dataCy('e2e-after-submission').should('exist');
@@ -859,6 +877,7 @@ describe('Survey builder', () => {
     cy.contains(page2Title).should('exist');
 
     // Submit
+    cy.wait(1000);
     cy.dataCy('e2e-submit-form').should('be.visible').click();
 
     cy.wait('@saveSurvey').then((interception) => {
@@ -977,6 +996,7 @@ describe('Survey builder', () => {
     cy.contains(question4Title).should('exist');
 
     // Submit and check that page 3 answer (not in final page path) is not sent to server
+    cy.wait(1000);
     cy.dataCy('e2e-submit-form').should('be.visible').click();
 
     cy.wait('@saveSurvey').then((interception) => {

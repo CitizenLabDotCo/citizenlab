@@ -77,6 +77,7 @@ describe('Native survey: anonymous toggle on', () => {
     );
 
     // Submit survey
+    cy.wait(1000);
     cy.dataCy('e2e-submit-form').click();
 
     // Check that we're on final page and return to project
