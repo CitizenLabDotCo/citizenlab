@@ -3029,7 +3029,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedAspectRatioTooltip": "Vælg et størrelsesforhold, der skalerer responsivt på alle enheder.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioLabel": "Brugerdefineret billedformat",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioTooltip": "Indtast forholdet mellem bredde og højde (f.eks. 5:3, 16:10, 21:9). Almindelige forhold: 5:3 (1.67:1), 16:10 (1.6:1), 21:9 (2.33:1).",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabel": "Skrivebordshøjde (pixels)",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabel": "Skærmhøjde (pixels)",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabelTooltip": "Højde for skrivebordsvisning (i pixel).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Kort beskrivelse af det indhold, du indlejrer",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Det er nyttigt at give disse oplysninger til brugere, der er afhængige af en skærmlæser eller anden hjælpeteknologi.",
