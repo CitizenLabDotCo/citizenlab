@@ -7,7 +7,6 @@ import {
   Text,
   Label,
   Radio,
-  Select,
 } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { SupportedLocale, Multiloc } from 'typings';
@@ -16,14 +15,16 @@ import { CONTENT_BUILDER_ERROR_EVENT } from 'components/admin/ContentBuilder/con
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcherWrapper from 'components/UI/InputMultilocWithLocaleSwitcher';
 
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 import { isValidUrl } from 'utils/validate';
 
 import sharedMessages from '../../../messages';
-import { ASPECT_RATIO_OPTIONS } from '../constants';
 import messages from '../messages';
 import { AspectRatioType } from '../utils';
+
+import AspectRatioSettings from './AspectRatioSettings';
+import FixedHeightSettings from './FixedHeightSettings';
 
 interface Props {
   url: string;
@@ -39,34 +40,25 @@ interface Props {
   customAspectRatio?: string;
 }
 
-const EmbedSettings = injectIntl(({ intl: { formatMessage } }) => {
+const EmbedSettings = () => {
+  const { formatMessage } = useIntl();
   const {
     actions: { setProp },
     url,
-    height,
     id,
     hasError,
     errorType,
     title,
     selectedLocale,
     embedMode = 'fixed',
-    tabletHeight,
-    mobileHeight,
-    aspectRatio = '16:9',
-    customAspectRatio,
   } = useNode((node) => ({
     url: node.data.props.url,
-    height: node.data.props.height,
     id: node.id,
     title: node.data.props.title,
     hasError: node.data.props.hasError,
     errorType: node.data.props.errorType,
     selectedLocale: node.data.props.selectedLocale,
     embedMode: node.data.props.embedMode || 'fixed',
-    tabletHeight: node.data.props.tabletHeight,
-    mobileHeight: node.data.props.mobileHeight,
-    aspectRatio: node.data.props.aspectRatio || '16:9',
-    customAspectRatio: node.data.props.customAspectRatio,
   }));
 
   const handleUrlChange = (value: string) => {
@@ -87,11 +79,6 @@ const EmbedSettings = injectIntl(({ intl: { formatMessage } }) => {
       [id]: { hasError: !validation, selectedLocale },
     });
   };
-
-  const aspectRatioOptions = ASPECT_RATIO_OPTIONS.map((option) => ({
-    value: option.value,
-    label: formatMessage(messages[option.labelKey]),
-  }));
 
   return (
     <Box flexWrap="wrap" display="flex" gap="16px" marginBottom="20px">
@@ -135,7 +122,9 @@ const EmbedSettings = injectIntl(({ intl: { formatMessage } }) => {
             name="embedMode"
             value="fixed"
             currentValue={embedMode}
-            onChange={() => setProp((props) => (props.embedMode = 'fixed'))}
+            onChange={() =>
+              setProp((props: Props) => (props.embedMode = 'fixed'))
+            }
             label={formatMessage(messages.embedModeFixedHeight)}
           />
           <Radio
@@ -144,7 +133,7 @@ const EmbedSettings = injectIntl(({ intl: { formatMessage } }) => {
             value="aspectRatio"
             currentValue={embedMode}
             onChange={() =>
-              setProp((props) => (props.embedMode = 'aspectRatio'))
+              setProp((props: Props) => (props.embedMode = 'aspectRatio'))
             }
             label={formatMessage(messages.embedModeAspectRatio)}
           />
@@ -152,102 +141,10 @@ const EmbedSettings = injectIntl(({ intl: { formatMessage } }) => {
       </Box>
 
       {/* Fixed Height Mode Settings */}
-      {embedMode === 'fixed' && (
-        <>
-          <Box flex="0 0 100%">
-            <Input
-              labelTooltipText={formatMessage(
-                messages.embedIframeHeightLabelTooltip
-              )}
-              label={formatMessage(messages.embedDesktopIframeHeightLabel)}
-              placeholder={formatMessage(messages.iframeHeightPlaceholder)}
-              type="number"
-              value={height}
-              onChange={(value) => {
-                setProp((props) => (props.height = value));
-              }}
-            />
-          </Box>
-          <Box flex="0 0 48%">
-            <Input
-              labelTooltipText={formatMessage(
-                messages.embedTabletHeightTooltip
-              )}
-              label={formatMessage(messages.embedTabletHeightLabel)}
-              placeholder="600"
-              type="number"
-              value={tabletHeight || ''}
-              onChange={(value) => {
-                setProp(
-                  (props) =>
-                    (props.tabletHeight = value
-                      ? parseInt(value, 10)
-                      : undefined)
-                );
-              }}
-            />
-          </Box>
-          <Box flex="0 0 48%">
-            <Input
-              labelTooltipText={formatMessage(
-                messages.embedMobileHeightTooltip
-              )}
-              label={formatMessage(messages.embedMobileHeightLabel)}
-              placeholder="400"
-              type="number"
-              value={mobileHeight || ''}
-              onChange={(value) => {
-                setProp(
-                  (props) =>
-                    (props.mobileHeight = value
-                      ? parseInt(value, 10)
-                      : undefined)
-                );
-              }}
-            />
-          </Box>
-        </>
-      )}
+      {embedMode === 'fixed' && <FixedHeightSettings />}
 
       {/* Aspect Ratio Mode Settings */}
-      {embedMode === 'aspectRatio' && (
-        <>
-          <Box flex="0 0 100%">
-            <Select
-              labelTooltipText={formatMessage(messages.embedAspectRatioTooltip)}
-              label={formatMessage(messages.embedAspectRatioLabel)}
-              options={aspectRatioOptions}
-              value={aspectRatio}
-              onChange={(option) => {
-                setProp((props) => {
-                  props.aspectRatio = option.value as any;
-                  if (option.value !== 'custom') {
-                    props.customAspectRatio = '';
-                  }
-                });
-              }}
-            />
-          </Box>
-          {aspectRatio === 'custom' && (
-            <Box flex="0 0 100%">
-              <Input
-                labelTooltipText={formatMessage(
-                  messages.embedCustomAspectRatioTooltip
-                )}
-                label={formatMessage(messages.embedCustomAspectRatioLabel)}
-                placeholder="16:10"
-                type="text"
-                value={customAspectRatio || ''}
-                onChange={(value) => {
-                  setProp((props) => {
-                    props.customAspectRatio = value;
-                  });
-                }}
-              />
-            </Box>
-          )}
-        </>
-      )}
+      {embedMode === 'aspectRatio' && <AspectRatioSettings />}
 
       {/* Title Input */}
       <Box flex="0 0 100%">
@@ -272,6 +169,6 @@ const EmbedSettings = injectIntl(({ intl: { formatMessage } }) => {
       </Box>
     </Box>
   );
-});
+};
 
 export default EmbedSettings;
