@@ -115,16 +115,12 @@ class Permission < ApplicationRecord
     # If the permission is not about posting an idea in a native survey phase
     # or community monitor phase,
     # we don't support this attribute
-    unless action == 'posting_idea'
-      return UNSUPPORTED_DESCRIPTOR
-    end
+    return UNSUPPORTED_DESCRIPTOR unless action == 'posting_idea'
 
     phase = permission_scope
     has_survey_form = phase.is_a?(Phase) && phase.pmethod.supports_survey_form?
 
-    unless has_survey_form
-      return UNSUPPORTED_DESCRIPTOR
-    end
+    return UNSUPPORTED_DESCRIPTOR unless has_survey_form
 
     if permitted_by == 'everyone'
       if user_data_collection == 'anonymous'
