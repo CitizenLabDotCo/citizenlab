@@ -3030,7 +3030,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioLabel": "Rapporto d'aspetto personalizzato",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioTooltip": "Inserisci il rapporto larghezza/altezza (ad esempio, 5:3, 16:10, 21:9). Rapporti comuni: 5:3 (1.67:1), 16:10 (1.6:1), 21:9 (2.33:1).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabel": "Altezza del desktop (pixel)",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "Height you want your embedded content to appear on the page (in pixels).",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabelTooltip": "Altezza per la visualizzazione desktop (in pixel).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Short description of the content you are embedding",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "It is useful to provide this information for users who rely on a screen reader or other assistive technology.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Website address",
