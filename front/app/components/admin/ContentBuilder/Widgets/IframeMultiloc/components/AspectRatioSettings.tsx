@@ -50,7 +50,7 @@ const AspectRatioSettings = () => {
           value={aspectRatio}
           onChange={(option) => {
             setProp((props: Props) => {
-              props.aspectRatio = option.value as any;
+              props.aspectRatio = option.value;
               if (option.value !== 'custom') {
                 props.customAspectRatio = '';
               }
