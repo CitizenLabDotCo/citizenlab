@@ -1,33 +1,77 @@
 import React from 'react';
 
-import {
-  Box,
-  IconTooltip,
-  Input,
-  Text,
-  Label,
-} from '@citizenlab/cl2-component-library';
-import { useNode } from '@craftjs/core';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 
-import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
+import AspectRatioContainer from 'components/admin/ContentBuilder/Widgets/IframeMultiloc/components/AspectRatioContainer';
+import EmbedSettings from 'components/admin/ContentBuilder/Widgets/IframeMultiloc/components/EmbedSettings';
+import { DEFAULT_PROPS } from 'components/admin/ContentBuilder/Widgets/IframeMultiloc/constants';
 import messages from 'components/admin/ContentBuilder/Widgets/IframeMultiloc/messages';
-import Error from 'components/UI/Error';
-import InputMultilocWithLocaleSwitcherWrapper from 'components/UI/InputMultilocWithLocaleSwitcher';
-
-import { useIntl } from 'utils/cl-intl';
-import { isValidUrl } from 'utils/validate';
+import {
+  getAspectRatioPercentage,
+  getResponsiveHeight,
+} from 'components/admin/ContentBuilder/Widgets/IframeMultiloc/utils';
 
 export interface Props {
   url: string;
   height: number;
   title?: Multiloc;
+  // New hybrid mode properties
+  embedMode?: 'fixed' | 'aspectRatio';
+  tabletHeight?: number;
+  mobileHeight?: number;
+  aspectRatio?: '16:9' | '4:3' | '3:4' | '1:1' | 'custom';
+  customAspectRatio?: string;
 }
 
-const IframeMultiloc = ({ url, height, title }: Props) => {
+const IframeMultiloc = ({
+  url,
+  height,
+  title,
+  embedMode = 'fixed',
+  tabletHeight,
+  mobileHeight,
+  aspectRatio = '16:9',
+  customAspectRatio,
+}: Props) => {
   const localize = useLocalize();
+  const isMobile = useBreakpoint('phone');
+  const isTablet = useBreakpoint('tablet');
+
+  const responsiveHeight = getResponsiveHeight(
+    embedMode,
+    height,
+    isMobile,
+    isTablet,
+    tabletHeight,
+    mobileHeight
+  );
+
+  const aspectRatioPercentage =
+    embedMode === 'aspectRatio'
+      ? getAspectRatioPercentage(aspectRatio, customAspectRatio)
+      : null;
+
+  const renderIframe = () => {
+    const iframeProps = {
+      src: url,
+      title: localize(title),
+      width: '100%',
+      style: { border: '0px' },
+    };
+
+    if (embedMode === 'aspectRatio' && aspectRatioPercentage) {
+      return (
+        <AspectRatioContainer aspectRatioPercentage={aspectRatioPercentage}>
+          <iframe {...iframeProps} height="100%" />
+        </AspectRatioContainer>
+      );
+    }
+
+    return <iframe {...iframeProps} height={responsiveHeight} />;
+  };
 
   return (
     <Box
@@ -36,108 +80,15 @@ const IframeMultiloc = ({ url, height, title }: Props) => {
       maxWidth="1200px"
       margin="0 auto"
     >
-      {url && (
-        <iframe
-          src={url}
-          title={localize(title)}
-          width="100%"
-          height={height}
-          style={{
-            border: '0px',
-          }}
-        />
-      )}
-    </Box>
-  );
-};
-
-const IframeSettings = () => {
-  const { formatMessage } = useIntl();
-
-  const {
-    actions: { setProp },
-    url,
-    height,
-    title,
-  } = useNode((node) => ({
-    url: node.data.props.url,
-    height: node.data.props.height,
-    id: node.id,
-    title: node.data.props.title,
-  }));
-
-  const handleChange = (value: string) => {
-    setProp((props: Props) => (props.url = value));
-  };
-
-  return (
-    <Box flexWrap="wrap" display="flex" gap="16px" marginBottom="20px">
-      <Text variant="bodyM">{formatMessage(messages.iframeDescription)}</Text>
-      <Box flex="0 0 100%">
-        <Input
-          id="e2e-content-builder-iframe-url-input"
-          labelTooltipText={formatMessage(messages.embedIframeUrlLabelTooltip)}
-          label={formatMessage(messages.embedIframeUrlLabel)}
-          placeholder={formatMessage(contentBuilderMessages.urlPlaceholder)}
-          type="text"
-          value={url}
-          onChange={(value) => {
-            handleChange(value);
-          }}
-        />
-        {!isValidUrl(url) && (
-          <Error
-            marginTop="4px"
-            text={formatMessage(messages.iframeInvalidUrlErrorMessage)}
-          />
-        )}
-      </Box>
-      <Box flex="0 0 100%">
-        <Input
-          labelTooltipText={formatMessage(
-            messages.embedIframeHeightLabelTooltip
-          )}
-          label={formatMessage(messages.embedIframeHeightLabel)}
-          placeholder={formatMessage(messages.iframeHeightPlaceholder)}
-          type="number"
-          value={height}
-          onChange={(value) => {
-            setProp((props) => (props.height = value));
-          }}
-        />
-      </Box>
-      <Box flex="0 0 100%">
-        <Label htmlFor="e2e-content-builder-iframe-title-input">
-          <span>
-            {formatMessage(messages.embedIframeTitleLabel)}{' '}
-            <IconTooltip
-              display="inline"
-              icon="info-solid"
-              content={formatMessage(messages.embedIframeTitleTooltip)}
-            />
-          </span>
-        </Label>
-        <InputMultilocWithLocaleSwitcherWrapper
-          type="text"
-          id="e2e-content-builder-iframe-title-input"
-          onChange={(value) => {
-            setProp((props: Props) => (props.title = value));
-          }}
-          valueMultiloc={title}
-        />
-      </Box>
+      {url && renderIframe()}
     </Box>
   );
 };
 
 IframeMultiloc.craft = {
-  props: {
-    url: '',
-    height: '',
-    title: undefined,
-  },
+  props: DEFAULT_PROPS,
   related: {
-    settings: IframeSettings,
+    settings: EmbedSettings,
   },
 };
 
