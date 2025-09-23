@@ -104,8 +104,7 @@ module BulkImportIdeas::Extractors
       {
         participation_method: 'native_survey',
         native_survey_title_multiloc: { en: 'Survey' },
-        native_survey_button_multiloc: { en: 'Take the Survey' },
-        user_fields_in_form: true
+        native_survey_button_multiloc: { en: 'Take the Survey' }
       }
     end
   end

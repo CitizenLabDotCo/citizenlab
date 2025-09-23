@@ -818,7 +818,6 @@
   "app.containers.AdminPage.ProjectEdit.participationLevels": "Peqataanerup annertussusii",
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "Sulererusuppit?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Atuisut qanoq peqataasinnaanersut toqqaruk.",
-  "app.containers.AdminPage.ProjectEdit.permissionsTab": "Iserfigisinnaasanut pisinnaatitaaffiit",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Poll",
   "app.containers.AdminPage.ProjectEdit.projectCardImageLabelText": "Suliniummut kortip assiliartaa",
   "app.containers.AdminPage.ProjectEdit.projectCardImageTooltip": "This image is part of the project card; the card that summarizes the project and is shown on the homepage for example.\n\n    For more information on recommended image resolutions, {supportPageLink}.",

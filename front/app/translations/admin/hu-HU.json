@@ -493,7 +493,6 @@
   "app.containers.AdminPage.ProjectEdit.participationLevels": "Participation levels",
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "What do you want to do?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Choose how users can participate.",
-  "app.containers.AdminPage.ProjectEdit.permissionsTab": "Access rights",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Poll",
   "app.containers.AdminPage.ProjectEdit.projectCardImageLabelText": "Project card image",
   "app.containers.AdminPage.ProjectEdit.projectManagerTooltipContent": "Project managers can edit projects, manage posts and email participants. You can {moderationInfoCenterLink} to find more information about the rights assigned to project managers.",
