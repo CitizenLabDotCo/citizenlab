@@ -45,9 +45,9 @@ de:
     under_consideration: unter Berücksichtigung
     under_consideration_description: Diese Idee wird von der Stadtverwaltung berücksichtigt
     accepted: akzeptiert
-    accepted_description: Diese Idee wurde angenommen und wird von der Stadt umgesetzt.
+    accepted_description: Dieser Beitrag wurde angenommen und wird umgesetzt.
     implemented: umgesetzt
-    implemented_description: Diese Idee wurde von der Stadtverwaltung umgesetzt
+    implemented_description: Dieser Beitrag wurde umgesetzt.
     rejected: abgelehnt
     rejected_description: Diese Idee wurde abgelehnt
     expired: abgelaufen
