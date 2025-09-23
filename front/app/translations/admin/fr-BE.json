@@ -2893,7 +2893,7 @@
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesTooltip": "Joignez des fichiers pour fournir un contexte supplémentaire à l'IA afin d'étayer l'analyse.",
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesWithCurrentCount": "Ajouter des fichiers ({numberAttachedFiles})",
   "app.containers.AdminPage.projects.project.analysis.files.save": "Enregistrer",
-  "app.containers.AdminPage.projects.project.analysis.files.uploadFiles": "Téléverser de nouveaux fichiers",
+  "app.containers.AdminPage.projects.project.analysis.files.uploadFiles": "Téléverser des fichiers",
   "app.containers.AdminPage.projects.project.analysis.filter": "Afficher uniquement les contributions ayant cette valeur",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Cacher les réponses vides",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Analyses croisées",
