@@ -3030,7 +3030,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioLabel": "Özel en boy oranı",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioTooltip": "Genişlik:yükseklik oranını girin (örneğin, 5:3, 16:10, 21:9). Yaygın oranlar: 5:3 (1.67:1), 16:10 (1.6:1), 21:9 (2.33:1).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabel": "Masaüstü yüksekliği (piksel)",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "Gömülü içeriğinizin sayfada görünmesini istediğiniz yükseklik (piksel cinsinden).",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabelTooltip": "Masaüstü görünümü için yükseklik (piksel cinsinden).",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "Yerleştirdiğiniz içeriğin kısa açıklaması",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Ekran okuyucu veya başka bir yardımcı teknoloji kullanan kullanıcılar için bu bilgilerin sağlanması yararlıdır.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Web sitesi adresi",
