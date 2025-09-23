@@ -3030,7 +3030,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioLabel": "حسب ضرورت پہلو تناسب",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioTooltip": "چوڑائی درج کریں: اونچائی کا تناسب (مثال کے طور پر، 5:3، 16:10، 21:9)۔ عام تناسب: 5:3 (1.67:1)، 16:10 (1.6:1)، 21:9 (2.33:1)۔",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabel": "ڈیسک ٹاپ کی اونچائی (پکسل)",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip": "اونچائی آپ چاہتے ہیں کہ آپ کا سرایت شدہ مواد صفحہ پر ظاہر ہو (پکسلز میں)۔",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabelTooltip": "ڈیسک ٹاپ ویو کے لیے اونچائی (پکسلز میں)۔",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleLabel": "آپ جس مواد کو سرایت کر رہے ہیں اس کی مختصر تفصیل",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "یہ معلومات ان صارفین کے لیے فراہم کرنا مفید ہے جو اسکرین ریڈر یا دیگر معاون ٹیکنالوجی پر انحصار کرتے ہیں۔",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "ویب سائٹ کا پتہ",
