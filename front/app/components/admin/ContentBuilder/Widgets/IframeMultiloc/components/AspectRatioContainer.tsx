@@ -22,10 +22,7 @@ const Container = styled.div<{ aspectRatioPercentage: number }>`
   }
 `;
 
-const AspectRatioContainer: React.FC<Props> = ({
-  aspectRatioPercentage,
-  children,
-}) => {
+const AspectRatioContainer = ({ aspectRatioPercentage, children }: Props) => {
   return (
     <Container aspectRatioPercentage={aspectRatioPercentage}>
       {children}
