@@ -23,7 +23,7 @@ const fetchProjectDescriptionBuilderLayout = (
   });
 };
 
-const useProjectDescriptionBuilderLayout = (
+const useDescriptionBuilderLayout = (
   modelId: string,
   modelType: ProjectDescriptionModelType = 'project'
 ) => {
@@ -35,8 +35,8 @@ const useProjectDescriptionBuilderLayout = (
   >({
     queryKey: projectDescriptionBuilderKeys.item({ modelId }),
     queryFn: () => fetchProjectDescriptionBuilderLayout(modelId, modelType),
-    // enabled: !!project && project.data.attributes.uses_content_builder,
+    enabled: true, // TODO: JS - pass this in
   });
 };
 
-export default useProjectDescriptionBuilderLayout;
+export default useDescriptionBuilderLayout;

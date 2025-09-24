@@ -1,0 +1,21 @@
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import useProjectById from 'api/projects/useProjectById';
+import FullScreenPreview from 'containers/DescriptionBuilder/FullScreenPreview';
+
+export const ProjectFullScreenPreview = () => {
+  const { projectId } = useParams() as { projectId: string };
+  const { data: project } = useProjectById(projectId);
+
+  if (!project) return null;
+
+  return (
+    <FullScreenPreview
+      modelId={projectId}
+      modelType="project"
+      titleMultiloc={project.data.attributes.title_multiloc}
+    />
+  );
+};
+
+export default ProjectFullScreenPreview;

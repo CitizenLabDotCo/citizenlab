@@ -6,7 +6,7 @@ import { IProjectData } from 'api/projects/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import FolderViewer from 'components/ProjectDescriptionBuilder/ContentViewer/Viewer/FolderViewer';
+import FolderViewer from 'components/DescriptionBuilder/ContentViewer/Viewer/FolderViewer';
 
 import ProjectViewer from './Viewer/ProjectViewer';
 

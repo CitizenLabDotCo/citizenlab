@@ -22,7 +22,7 @@ import clHistory from 'utils/cl-router/history';
 
 import messages from './messages';
 
-type ProjectDescriptionBuilderTopBarProps = {
+type DescriptionBuilderTopBarProps = {
   hasPendingState?: boolean;
   hasError?: boolean;
   previewEnabled: boolean;
@@ -39,7 +39,7 @@ type ProjectDescriptionBuilderTopBarProps = {
   titleMultiloc: Multiloc;
 };
 
-const ProjectDescriptionBuilderTopBar = ({
+const DescriptionBuilderTopBar = ({
   previewEnabled,
   setPreviewEnabled,
   selectedLocale,
@@ -51,7 +51,7 @@ const ProjectDescriptionBuilderTopBar = ({
   backPath,
   previewPath,
   titleMultiloc,
-}: ProjectDescriptionBuilderTopBarProps) => {
+}: DescriptionBuilderTopBarProps) => {
   const { query } = useEditor();
   const localize = useLocalize();
   const {
@@ -140,4 +140,4 @@ const ProjectDescriptionBuilderTopBar = ({
   );
 };
 
-export default ProjectDescriptionBuilderTopBar;
+export default DescriptionBuilderTopBar;

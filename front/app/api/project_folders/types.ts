@@ -47,6 +47,7 @@ export interface IProjectFolderData {
     header_bg_alt_text_multiloc: Multiloc;
     publication_status: PublicationStatus;
     followers_count: number;
+    uses_content_builder: boolean;
   };
   relationships: {
     admin_publication: {

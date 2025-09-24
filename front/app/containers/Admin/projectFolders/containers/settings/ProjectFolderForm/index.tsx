@@ -35,7 +35,7 @@ import {
 import SlugInput from 'components/admin/SlugInput';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Highlighter from 'components/Highlighter';
-import ProjectDescriptionBuilderToggle from 'components/ProjectDescriptionBuilder/ProjectDescriptionBuilderToggle';
+import ProjectDescriptionBuilderToggle from 'components/DescriptionBuilder/DescriptionBuilderToggle';
 import FileUploader from 'components/UI/FileUploader';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';

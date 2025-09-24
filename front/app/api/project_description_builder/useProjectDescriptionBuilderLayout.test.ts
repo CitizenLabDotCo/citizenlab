@@ -5,7 +5,7 @@ import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { projectDescriptionBuilderLayoutData } from './__mocks__/projectDescriptionBuilderLayout';
-import useProjectDescriptionBuilderLayout from './useProjectDescriptionBuilderLayout';
+import useDescriptionBuilderLayout from 'api/project_description_builder/useDescriptionBuilderLayout';
 
 const mockProjectData = {
   id: '2',
@@ -40,7 +40,7 @@ describe('useProjectDescriptionBuilderLayout', () => {
   it('returns data correctly', async () => {
     const spy = jest.spyOn(global, 'fetch');
     const { result } = renderHook(
-      () => useProjectDescriptionBuilderLayout('projectId'),
+      () => useDescriptionBuilderLayout('projectId'),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -65,7 +65,7 @@ describe('useProjectDescriptionBuilderLayout', () => {
     );
 
     const { result } = renderHook(
-      () => useProjectDescriptionBuilderLayout('projectId'),
+      () => useDescriptionBuilderLayout('projectId'),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -81,7 +81,7 @@ describe('useProjectDescriptionBuilderLayout', () => {
     const spy = jest.spyOn(global, 'fetch');
     mockProjectData.attributes.uses_content_builder = false;
 
-    renderHook(() => useProjectDescriptionBuilderLayout('projectId'), {
+    renderHook(() => useDescriptionBuilderLayout('projectId'), {
       wrapper: createQueryClientWrapper(),
     });
 

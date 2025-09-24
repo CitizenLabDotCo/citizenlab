@@ -47,7 +47,7 @@ const ProjectDescriptionBuilderComponent = React.lazy(
 const ProjectFullscreenPreview = React.lazy(
   () =>
     import(
-      'containers/DescriptionBuilder/ProjectDescriptionBuilder/FullscreenPreview'
+      'containers/DescriptionBuilder/ProjectDescriptionBuilder/ProjectFullScreenPreview'
     )
 );
 const FolderDescriptionBuilderComponent = React.lazy(
@@ -56,7 +56,7 @@ const FolderDescriptionBuilderComponent = React.lazy(
 const FolderFullscreenPreview = React.lazy(
   () =>
     import(
-      'containers/DescriptionBuilder/FolderDescriptionBuilder/FullscreenPreview'
+      'containers/DescriptionBuilder/FolderDescriptionBuilder/FolderFullScreenPreview'
     )
 );
 

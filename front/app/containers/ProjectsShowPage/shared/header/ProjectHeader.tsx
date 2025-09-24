@@ -24,7 +24,7 @@ import {
   HeaderImage,
   HeaderImageContainer,
 } from 'components/ProjectableHeader';
-import ContentViewer from 'components/ProjectDescriptionBuilder/ContentViewer';
+import ContentViewer from 'components/DescriptionBuilder/ContentViewer';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';

@@ -62,7 +62,7 @@ const mockProjectDescriptionBuilderLayoutData:
   | Error = DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA;
 
 jest.mock(
-  'api/project_description_builder/useProjectDescriptionBuilderLayout',
+  'api/project_description_builder/useDescriptionBuilderLayout',
   () => () => {
     return {
       data: mockProjectDescriptionBuilderLayoutData,

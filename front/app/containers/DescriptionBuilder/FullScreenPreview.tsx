@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
-import { useParams, useSearchParams } from 'react-router-dom';
-import { SupportedLocale } from 'typings';
+import { useSearchParams } from 'react-router-dom';
+import { Multiloc, SupportedLocale } from 'typings';
 
-import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
-import useProjectById from 'api/projects/useProjectById';
+import useDescriptionBuilderLayout from 'api/project_description_builder/useDescriptionBuilderLayout';
 
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
@@ -14,11 +13,22 @@ import useLocalize from 'hooks/useLocalize';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
-import Editor from 'components/ProjectDescriptionBuilder/Editor';
+import Editor from 'components/DescriptionBuilder/Editor';
 
 import { isNilOrError } from 'utils/helperUtils';
+import { ProjectDescriptionModelType } from 'api/project_description_builder/types';
 
-export const FullScreenPreview = () => {
+type Props = {
+  modelId: string;
+  modelType: ProjectDescriptionModelType;
+  titleMultiloc: Multiloc;
+};
+
+export const FullScreenPreview = ({
+  modelId,
+  modelType,
+  titleMultiloc,
+}: Props) => {
   const [search] = useSearchParams();
   const selectedLocale =
     // TODO: Fix this the next time the file is edited.
@@ -27,14 +37,14 @@ export const FullScreenPreview = () => {
   const localize = useLocalize();
 
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
-  const { projectId } = useParams() as { projectId: string };
   const platformLocale = useLocale();
 
-  const { data: project } = useProjectById(projectId);
-  const { data: projectDescriptionBuilderLayout } =
-    useProjectDescriptionBuilderLayout(projectId);
+  const { data: projectDescriptionBuilderLayout } = useDescriptionBuilderLayout(
+    modelId,
+    modelType
+  );
 
-  if (isNilOrError(platformLocale) || !project) {
+  if (isNilOrError(platformLocale)) {
     return null;
   }
 
@@ -57,7 +67,7 @@ export const FullScreenPreview = () => {
     >
       <FullScreenWrapper onUpdateDraftData={setDraftData} padding="0px">
         <Title color="tenantText" variant="h1" px="20px">
-          {localize(project.data.attributes.title_multiloc)}
+          {localize(titleMultiloc)}
         </Title>
         {isLoadingProjectDescriptionBuilderLayout && <Spinner />}
         {!isLoadingProjectDescriptionBuilderLayout && editorData && (

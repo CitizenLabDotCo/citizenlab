@@ -39,7 +39,7 @@ import {
 import SlugInput from 'components/admin/SlugInput';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import Highlighter from 'components/Highlighter';
-import ProjectDescriptionBuilderToggle from 'components/ProjectDescriptionBuilder/ProjectDescriptionBuilderToggle';
+import ProjectDescriptionBuilderToggle from 'components/DescriptionBuilder/DescriptionBuilderToggle';
 import Error from 'components/UI/Error';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 import Warning from 'components/UI/Warning';

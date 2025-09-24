@@ -12,7 +12,7 @@ import styled from 'styled-components';
 import { SupportedLocale, Multiloc } from 'typings';
 
 import useAddProjectDescriptionBuilderLayout from 'api/project_description_builder/useAddProjectDescriptionBuilderLayout';
-import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
+import useDescriptionBuilderLayout from 'api/project_description_builder/useDescriptionBuilderLayout';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -27,7 +27,7 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // Messages
 
-type ProjectDescriptionBuilderToggleProps = {
+type DescriptionBuilderToggleProps = {
   valueMultiloc: Multiloc | undefined | null;
   onChange: (description_multiloc: Multiloc, _locale: SupportedLocale) => void;
   modelType?: 'project' | 'folder';
@@ -49,7 +49,7 @@ const StyledLink = styled(Link)`
   font-size: ${fontSizes.base}px;
 `;
 
-const ProjectDescriptionBuilderToggle = ({
+const DescriptionBuilderToggle = ({
   params,
   intl: { formatMessage },
   valueMultiloc,
@@ -57,15 +57,17 @@ const ProjectDescriptionBuilderToggle = ({
   modelType = 'project',
   label,
   labelTooltipText,
-}: ProjectDescriptionBuilderToggleProps) => {
+}: DescriptionBuilderToggleProps) => {
   const featureEnabled = useFeatureFlag({
     name: 'project_description_builder',
   });
 
   const modelId =
     modelType === 'folder' ? params.projectFolderId : params.projectId;
-  const { data: projectDescriptionBuilderLayout } =
-    useProjectDescriptionBuilderLayout(modelId, modelType);
+  const { data: projectDescriptionBuilderLayout } = useDescriptionBuilderLayout(
+    modelId,
+    modelType
+  );
 
   const route =
     `/admin/project-description-builder/${modelType}s/${modelId}/description` as RouteType;
@@ -144,4 +146,4 @@ const ProjectDescriptionBuilderToggle = ({
   );
 };
 
-export default injectIntl(withRouter(ProjectDescriptionBuilderToggle));
+export default injectIntl(withRouter(DescriptionBuilderToggle));

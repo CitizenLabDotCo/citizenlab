@@ -19,7 +19,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import ContentContainer from 'components/ContentContainer';
 import FollowUnfollow from 'components/FollowUnfollow';
 import PageNotFound from 'components/PageNotFound';
-import ContentViewer from 'components/ProjectDescriptionBuilder/ContentViewer';
+import ContentViewer from 'components/DescriptionBuilder/ContentViewer';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';

@@ -32,7 +32,7 @@ const mockEditorData: IProjectDescriptionBuilderData = {
 };
 
 jest.mock(
-  'api/project_description_builder/useProjectDescriptionBuilderLayout',
+  'api/project_description_builder/useDescriptionBuilderLayout',
   () => () => {
     return {
       data: mockEditorData,

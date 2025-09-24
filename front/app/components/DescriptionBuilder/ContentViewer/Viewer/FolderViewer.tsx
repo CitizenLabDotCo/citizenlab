@@ -4,7 +4,7 @@ import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { Multiloc } from 'typings';
 
-import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
+import useDescriptionBuilderLayout from 'api/project_description_builder/useDescriptionBuilderLayout';
 import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
@@ -34,7 +34,7 @@ const FolderViewer = ({ folderId, folderTitle }: PreviewProps) => {
   const localize = useLocalize();
   const { data: folder } = useProjectFolderById(folderId);
   const { data: projectDescriptionBuilderLayout, isInitialLoading } =
-    useProjectDescriptionBuilderLayout(folderId, 'folder');
+    useDescriptionBuilderLayout(folderId, 'folder');
   const { data: projectFolderFiles } = useProjectFolderFiles({
     projectFolderId: folderId,
   });

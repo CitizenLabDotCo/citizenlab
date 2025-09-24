@@ -4,7 +4,7 @@ import { setTranslations } from 'components/admin/ContentBuilder/LanguageProvide
 
 import { render, screen, waitFor } from 'utils/testUtils/rtl';
 
-import FullScreenPreview from 'containers/DescriptionBuilder/ProjectDescriptionBuilder/FullscreenPreview/index';
+import ProjectFullScreenPreview from 'containers/DescriptionBuilder/ProjectDescriptionBuilder/ProjectFullScreenPreview';
 
 jest.mock('components/admin/ContentBuilder/LanguageProvider/i18nLoader');
 
@@ -31,7 +31,7 @@ let mockProjectDescriptionBuilderLayoutData:
   | Error = DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA;
 
 jest.mock(
-  'api/project_description_builder/useProjectDescriptionBuilderLayout',
+  'api/project_description_builder/useDescriptionBuilderLayout',
   () => () => {
     return {
       data: mockProjectDescriptionBuilderLayoutData,
@@ -90,7 +90,7 @@ describe('Preview Content', () => {
   });
 
   it('should render', async () => {
-    render(<FullScreenPreview />);
+    render(<ProjectFullScreenPreview />);
     await waitFor(() => {
       expect(
         screen.getByTestId('contentBuilderEditModePreviewContent')
@@ -101,7 +101,7 @@ describe('Preview Content', () => {
 
   it('should show correct title with a different locale', async () => {
     mockLocale = 'fr-FR';
-    render(<FullScreenPreview />);
+    render(<ProjectFullScreenPreview />);
 
     await waitFor(() => {
       expect(screen.getByText('Test Projet')).toBeInTheDocument();
@@ -110,7 +110,7 @@ describe('Preview Content', () => {
 
   it('shows loading state correctly', async () => {
     mockProjectDescriptionBuilderLayoutData = undefined;
-    render(<FullScreenPreview />);
+    render(<ProjectFullScreenPreview />);
 
     await waitFor(() => {
       expect(screen.getByTestId('spinner')).toBeInTheDocument();

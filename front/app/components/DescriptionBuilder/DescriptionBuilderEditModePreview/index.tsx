@@ -8,15 +8,15 @@ import useLocale from 'hooks/useLocale';
 
 import EditModePreview from 'components/admin/ContentBuilder/EditModePreview';
 
-type ProjectDescriptionBuilderPreviewProps = {
+type DescriptionBuilderPreviewProps = {
   modelId: string;
   modelType?: ProjectDescriptionModelType;
   selectedLocale?: SupportedLocale | null;
 };
 
-const ProjectDescriptionBuilderEditModePreview = React.forwardRef<
+const DescriptionBuilderEditModePreview = React.forwardRef<
   HTMLIFrameElement,
-  ProjectDescriptionBuilderPreviewProps
+  DescriptionBuilderPreviewProps
 >(({ modelId, modelType = 'project', selectedLocale }, ref) => {
   const platformLocale = useLocale();
   const locale = selectedLocale || platformLocale;
@@ -29,4 +29,4 @@ const ProjectDescriptionBuilderEditModePreview = React.forwardRef<
   );
 });
 
-export default memo(ProjectDescriptionBuilderEditModePreview);
+export default memo(DescriptionBuilderEditModePreview);
