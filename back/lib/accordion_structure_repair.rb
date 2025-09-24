@@ -86,10 +86,10 @@ class AccordionStructureRepair
 
   def find_broken_accordions(accordion_nodes)
     accordion_nodes.select do |_, node|
-      # Check for broken Type A accordions (missing or empty linkedNodes)
+      # Check for broken container-based accordions (missing linkedNodes structure)
       if node['isCanvas'] == true
         node['linkedNodes'].blank?
-      # Check for Type B accordions that need migration
+      # Check for legacy text-based accordions that need migration
       else
         node.dig('props', 'text').present?
       end
@@ -107,12 +107,12 @@ class AccordionStructureRepair
   end
 
   def fix_accordion_node(layout, node_id, node)
-    # For Type A accordions with missing linkedNodes
+    # For broken container-based accordions with missing linkedNodes
     if node['isCanvas'] == true
-      fix_type_a_accordion(layout, node_id, node)
-    # For Type B accordions with text property
+      fix_container_based_accordion(layout, node_id, node)
+    # For legacy text-based accordions that need migration
     elsif node.dig('props', 'text').present?
-      fix_type_b_accordion(layout, node_id, node)
+      migrate_text_based_accordion(layout, node_id, node)
     end
 
     true
@@ -121,7 +121,7 @@ class AccordionStructureRepair
     false
   end
 
-  def fix_type_a_accordion(layout, node_id, node)
+  def fix_container_based_accordion(layout, node_id, node)
     container_node_id = "#{node_id}_container"
     text_node_id = "#{node_id}_text"
 
@@ -141,7 +141,7 @@ class AccordionStructureRepair
     node['custom']['hasChildren'] = true
   end
 
-  def fix_type_b_accordion(layout, node_id, node)
+  def migrate_text_based_accordion(layout, node_id, node)
     text_content = node['props']['text']
     return false unless text_content.is_a?(Hash) && text_content.values.any?(&:present?)
 

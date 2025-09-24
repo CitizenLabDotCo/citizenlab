@@ -24,7 +24,7 @@ RSpec.describe 'single_use:repair_broken_accordions' do # rubocop:disable RSpec/
         'accordion1' => {
           'type' => { 'resolvedName' => 'AccordionMultiloc' },
           'props' => { 'title' => { 'en' => 'Test Accordion' } },
-          'isCanvas' => true, # Incorrectly true
+          'isCanvas' => true, # Incorrectly marked as container
           'linkedNodes' => {}
         }
       }
@@ -38,13 +38,13 @@ RSpec.describe 'single_use:repair_broken_accordions' do # rubocop:disable RSpec/
   end
 
   context 'when run in fix mode' do
-    it 'fixes Type A accordions by adding proper container structure' do
+    it 'fixes broken container-based accordions by adding proper structure' do
       layout.craftjs_json = {
         'ROOT' => { 'type' => 'div', 'nodes' => %w[accordion1], 'props' => { 'id' => 'e2e-content-builder-frame' }, 'custom' => {}, 'hidden' => false, 'isCanvas' => true, 'displayName' => 'div', 'linkedNodes' => {} },
         'accordion1' => {
           'type' => { 'resolvedName' => 'AccordionMultiloc' },
           'props' => { 'title' => { 'en' => 'Test Accordion' } },
-          'isCanvas' => true, # Incorrectly true
+          'isCanvas' => true, # Missing container structure
           'linkedNodes' => {}
         }
       }
@@ -61,7 +61,7 @@ RSpec.describe 'single_use:repair_broken_accordions' do # rubocop:disable RSpec/
       end
     end
 
-    it 'fixes Type B accordions by migrating text content' do
+    it 'migrates legacy text-based accordions to container structure' do
       layout.craftjs_json = {
         'ROOT' => { 'type' => 'div', 'nodes' => %w[accordion1], 'props' => { 'id' => 'e2e-content-builder-frame' }, 'custom' => {}, 'hidden' => false, 'isCanvas' => true, 'displayName' => 'div', 'linkedNodes' => {} },
         'accordion1' => {
