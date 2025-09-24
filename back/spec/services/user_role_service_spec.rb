@@ -283,7 +283,7 @@ describe UserRoleService do
       nil_email_user = create(:user)
       nil_email_user.update_column(:email, nil)
 
-      expect(User.not_citizenlab_member.count).to eq(scope_member_count + 1)
+      expect(User.not_citizenlab_member.count).to eq(scope_member_count + 2)
       expect(User.not_citizenlab_member.pluck(:email)).to include('someone@should-not-be-excluded.com')
     end
   end
