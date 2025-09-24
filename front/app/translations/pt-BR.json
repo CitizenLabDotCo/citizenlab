@@ -145,7 +145,6 @@
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Entrada de endereço",
   "app.components.CustomFieldsForm.addressInputPlaceholder6": "Digite um endereço...",
   "app.components.CustomFieldsForm.adminFieldTooltip": "Campo visível apenas para administradores",
-  "app.components.CustomFieldsForm.anonymousSurveyMessage2": "Todas as respostas a esta pesquisa são anônimas.",
   "app.components.CustomFieldsForm.atLeastThreePointsRequired": "São necessários pelo menos três pontos para um polígono.",
   "app.components.CustomFieldsForm.atLeastTwoPointsRequired": "Pelo menos dois pontos são necessários para uma linha.",
   "app.components.CustomFieldsForm.attachmentRequired": "É necessário pelo menos um anexo",
