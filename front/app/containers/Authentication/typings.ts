@@ -28,6 +28,7 @@ export interface State {
     first_name?: string;
     last_name?: string;
     email?: string;
+    password?: string;
   } | null;
   ssoProvider: SSOProvider | null;
 }
