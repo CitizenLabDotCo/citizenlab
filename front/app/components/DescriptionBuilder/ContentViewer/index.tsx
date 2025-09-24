@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ProjectDescriptionModelType } from 'api/project_description_builder/types';
+import { DescriptionModelType } from 'api/content_builder/types';
 import { IProjectFolderData } from 'api/project_folders/types';
 import { IProjectData } from 'api/projects/types';
 
@@ -12,7 +12,7 @@ import ProjectViewer from './Viewer/ProjectViewer';
 
 interface Props {
   model: IProjectData | IProjectFolderData;
-  modelType: ProjectDescriptionModelType;
+  modelType: DescriptionModelType;
 }
 
 const ContentViewer = ({ model, modelType }: Props) => {

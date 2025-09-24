@@ -1,8 +1,8 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
-const baseKey = { type: 'project_description_builder' };
+const baseKey = { type: 'content_builder' };
 
-const projectDescriptionBuilderKeys = {
+const contentBuilderKeys = {
   all: () => [baseKey],
   items: () => [{ ...baseKey, operation: 'item' }],
   item: ({ modelId }: { modelId: string }) => [
@@ -14,4 +14,4 @@ const projectDescriptionBuilderKeys = {
   ],
 } satisfies QueryKeys;
 
-export default projectDescriptionBuilderKeys;
+export default contentBuilderKeys;

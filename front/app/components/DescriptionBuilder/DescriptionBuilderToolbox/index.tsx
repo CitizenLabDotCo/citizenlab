@@ -2,14 +2,14 @@ import React from 'react';
 
 import { SupportedLocale } from 'typings';
 
-import { ProjectDescriptionModelType } from 'api/project_description_builder/types';
+import { DescriptionModelType } from 'api/content_builder/types';
 import FolderDescriptionBuilderToolbox from 'components/DescriptionBuilder/DescriptionBuilderToolbox/FolderDescriptionBuilderToolbox';
 import ProjectDescriptionBuilderToolbox from 'components/DescriptionBuilder/DescriptionBuilderToolbox/ProjectDescriptionBuilderToolbox';
 
 type DescriptionBuilderToolboxProps = {
   selectedLocale: SupportedLocale;
   modelId: string;
-  modelType: ProjectDescriptionModelType;
+  modelType: DescriptionModelType;
 };
 
 const DescriptionBuilderToolbox = ({

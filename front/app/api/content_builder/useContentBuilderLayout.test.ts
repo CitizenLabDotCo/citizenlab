@@ -4,8 +4,8 @@ import { setupServer } from 'msw/node';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
-import { projectDescriptionBuilderLayoutData } from './__mocks__/projectDescriptionBuilderLayout';
-import useDescriptionBuilderLayout from 'api/project_description_builder/useDescriptionBuilderLayout';
+import { contentBuilderLayoutData } from './__mocks__/contentBuilderLayout';
+import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 
 const mockProjectData = {
   id: '2',
@@ -27,7 +27,7 @@ const apiPath =
 const server = setupServer(
   http.get(apiPath, () => {
     return HttpResponse.json(
-      { data: projectDescriptionBuilderLayoutData },
+      { data: contentBuilderLayoutData },
       { status: 200 }
     );
   })
@@ -39,21 +39,16 @@ describe('useProjectDescriptionBuilderLayout', () => {
 
   it('returns data correctly', async () => {
     const spy = jest.spyOn(global, 'fetch');
-    const { result } = renderHook(
-      () => useDescriptionBuilderLayout('projectId'),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useContentBuilderLayout('projectId'), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     expect(result.current.isLoading).toBe(true);
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(
-      projectDescriptionBuilderLayoutData
-    );
+    expect(result.current.data?.data).toEqual(contentBuilderLayoutData);
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
@@ -64,12 +59,9 @@ describe('useProjectDescriptionBuilderLayout', () => {
       })
     );
 
-    const { result } = renderHook(
-      () => useDescriptionBuilderLayout('projectId'),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useContentBuilderLayout('projectId'), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     expect(result.current.isLoading).toBe(true);
     await waitFor(() => expect(result.current.isError).toBe(true));
@@ -81,7 +73,7 @@ describe('useProjectDescriptionBuilderLayout', () => {
     const spy = jest.spyOn(global, 'fetch');
     mockProjectData.attributes.uses_content_builder = false;
 
-    renderHook(() => useDescriptionBuilderLayout('projectId'), {
+    renderHook(() => useContentBuilderLayout('projectId'), {
       wrapper: createQueryClientWrapper(),
     });
 

@@ -4,8 +4,8 @@ import { setupServer } from 'msw/node';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
-import { projectDescriptionBuilderLayoutData } from './__mocks__/projectDescriptionBuilderLayout';
-import useAddProjectDescriptionBuilderLayout from './useAddProjectDescriptionBuilderLayout';
+import { contentBuilderLayoutData } from './__mocks__/contentBuilderLayout';
+import useAddContentBuilderLayout from 'api/content_builder/useAddContentBuilderLayout';
 
 const apiPath =
   '*projects/:projectId/content_builder_layouts/project_description/upsert';
@@ -13,23 +13,20 @@ const apiPath =
 const server = setupServer(
   http.post(apiPath, () => {
     return HttpResponse.json(
-      { data: projectDescriptionBuilderLayoutData },
+      { data: contentBuilderLayoutData },
       { status: 200 }
     );
   })
 );
 
-describe('useAddProjectDescriptionBuilderLayout', () => {
+describe('useAddContentBuilderLayout', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result } = renderHook(
-      () => useAddProjectDescriptionBuilderLayout(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useAddContentBuilderLayout(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({
@@ -39,9 +36,7 @@ describe('useAddProjectDescriptionBuilderLayout', () => {
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data?.data).toEqual(
-      projectDescriptionBuilderLayoutData
-    );
+    expect(result.current.data?.data).toEqual(contentBuilderLayoutData);
   });
 
   it('returns error correctly', async () => {
@@ -51,12 +46,9 @@ describe('useAddProjectDescriptionBuilderLayout', () => {
       })
     );
 
-    const { result } = renderHook(
-      () => useAddProjectDescriptionBuilderLayout(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useAddContentBuilderLayout(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({

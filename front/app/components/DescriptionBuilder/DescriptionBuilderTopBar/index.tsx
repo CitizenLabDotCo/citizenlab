@@ -5,8 +5,8 @@ import { useEditor, SerializedNodes } from '@craftjs/core';
 import { RouteType } from 'routes';
 import { Multiloc, SupportedLocale } from 'typings';
 
-import { ProjectDescriptionModelType } from 'api/project_description_builder/types';
-import useAddProjectDescriptionBuilderLayout from 'api/project_description_builder/useAddProjectDescriptionBuilderLayout';
+import { DescriptionModelType } from 'api/content_builder/types';
+import useAddContentBuilderLayout from 'api/content_builder/useAddContentBuilderLayout';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -33,7 +33,7 @@ type DescriptionBuilderTopBarProps = {
     editorData: SerializedNodes;
   }) => void;
   modelId: string;
-  modelType: ProjectDescriptionModelType;
+  modelType: DescriptionModelType;
   backPath: RouteType;
   previewPath: RouteType;
   titleMultiloc: Multiloc;
@@ -58,7 +58,7 @@ const DescriptionBuilderTopBar = ({
     mutate: addProjectDescriptionBuilderLayout,
     isLoading,
     isError,
-  } = useAddProjectDescriptionBuilderLayout();
+  } = useAddContentBuilderLayout();
 
   const disableSave = !!hasError || !!hasPendingState;
 

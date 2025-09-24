@@ -17,19 +17,15 @@ const DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA = {
 const mockProjectDescriptionBuilderLayoutData: typeof DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA =
   DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA;
 
-jest.mock(
-  'api/project_description_builder/useDescriptionBuilderLayout',
-  () => () => {
-    return {
-      data: mockProjectDescriptionBuilderLayoutData,
-    };
-  }
-);
+jest.mock('api/content_builder/useContentBuilderLayout', () => () => {
+  return {
+    data: mockProjectDescriptionBuilderLayoutData,
+  };
+});
 
 const mockAddProjectDescriptionBuilderLayout = jest.fn();
-jest.mock(
-  'api/project_description_builder/useAddProjectDescriptionBuilderLayout',
-  () => jest.fn(() => ({ mutateAsync: mockAddProjectDescriptionBuilderLayout }))
+jest.mock('api/content_builder/useAddContentBuilderLayout', () =>
+  jest.fn(() => ({ mutateAsync: mockAddProjectDescriptionBuilderLayout }))
 );
 
 jest.mock('utils/cl-router/withRouter', () => {

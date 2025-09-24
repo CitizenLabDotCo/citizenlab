@@ -30,14 +30,11 @@ let mockProjectDescriptionBuilderLayoutData:
   | undefined
   | Error = DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA;
 
-jest.mock(
-  'api/project_description_builder/useDescriptionBuilderLayout',
-  () => () => {
-    return {
-      data: mockProjectDescriptionBuilderLayoutData,
-    };
-  }
-);
+jest.mock('api/content_builder/useContentBuilderLayout', () => () => {
+  return {
+    data: mockProjectDescriptionBuilderLayoutData,
+  };
+});
 
 jest.mock('react-router-dom', () => {
   const originalModule = jest.requireActual('react-router-dom');

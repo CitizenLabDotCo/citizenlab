@@ -11,8 +11,8 @@ import { RouteType } from 'routes';
 import styled from 'styled-components';
 import { SupportedLocale, Multiloc } from 'typings';
 
-import useAddProjectDescriptionBuilderLayout from 'api/project_description_builder/useAddProjectDescriptionBuilderLayout';
-import useDescriptionBuilderLayout from 'api/project_description_builder/useDescriptionBuilderLayout';
+import useAddContentBuilderLayout from 'api/content_builder/useAddContentBuilderLayout';
+import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -64,7 +64,7 @@ const DescriptionBuilderToggle = ({
 
   const modelId =
     modelType === 'folder' ? params.projectFolderId : params.projectId;
-  const { data: projectDescriptionBuilderLayout } = useDescriptionBuilderLayout(
+  const { data: projectDescriptionBuilderLayout } = useContentBuilderLayout(
     modelId,
     modelType
   );
@@ -77,7 +77,7 @@ const DescriptionBuilderToggle = ({
     setProjectDescriptionBuilderLinkVisible,
   ] = useState<boolean | null>(null);
   const { mutateAsync: addProjectDescriptionBuilderLayout } =
-    useAddProjectDescriptionBuilderLayout();
+    useAddContentBuilderLayout();
 
   useEffect(() => {
     if (projectDescriptionBuilderLayout) {

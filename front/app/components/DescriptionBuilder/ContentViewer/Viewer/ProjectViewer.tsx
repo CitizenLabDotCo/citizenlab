@@ -4,7 +4,7 @@ import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { Multiloc } from 'typings';
 
-import useDescriptionBuilderLayout from 'api/project_description_builder/useDescriptionBuilderLayout';
+import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 import useProjectFiles from 'api/project_files/useProjectFiles';
 import useProjectById from 'api/projects/useProjectById';
 
@@ -35,7 +35,7 @@ const ProjectViewer = ({ projectId, projectTitle }: PreviewProps) => {
   const { data: projectFiles } = useProjectFiles(projectId);
   const { data: project } = useProjectById(projectId);
   const { data: projectDescriptionBuilderLayout, isInitialLoading } =
-    useDescriptionBuilderLayout(projectId);
+    useContentBuilderLayout(projectId);
 
   const projectDescriptionBuilderContent =
     projectDescriptionBuilderLayout &&

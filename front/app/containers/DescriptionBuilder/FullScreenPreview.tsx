@@ -5,7 +5,7 @@ import { SerializedNodes } from '@craftjs/core';
 import { useSearchParams } from 'react-router-dom';
 import { Multiloc, SupportedLocale } from 'typings';
 
-import useDescriptionBuilderLayout from 'api/project_description_builder/useDescriptionBuilderLayout';
+import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
@@ -16,11 +16,11 @@ import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import Editor from 'components/DescriptionBuilder/Editor';
 
 import { isNilOrError } from 'utils/helperUtils';
-import { ProjectDescriptionModelType } from 'api/project_description_builder/types';
+import { DescriptionModelType } from 'api/content_builder/types';
 
 type Props = {
   modelId: string;
-  modelType: ProjectDescriptionModelType;
+  modelType: DescriptionModelType;
   titleMultiloc: Multiloc;
 };
 
@@ -39,7 +39,7 @@ export const FullScreenPreview = ({
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
   const platformLocale = useLocale();
 
-  const { data: projectDescriptionBuilderLayout } = useDescriptionBuilderLayout(
+  const { data: projectDescriptionBuilderLayout } = useContentBuilderLayout(
     modelId,
     modelType
   );

@@ -6,7 +6,7 @@ import { isEmpty } from 'lodash-es';
 import { useLocation } from 'react-router-dom';
 import { Multiloc, SupportedLocale } from 'typings';
 
-import useDescriptionBuilderLayout from 'api/project_description_builder/useDescriptionBuilderLayout';
+import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -24,13 +24,13 @@ import { isNilOrError } from 'utils/helperUtils';
 import ProjectDescriptionBuilderEditModePreview from 'components/DescriptionBuilder/DescriptionBuilderEditModePreview';
 import DescriptionBuilderTopBar from 'components/DescriptionBuilder/DescriptionBuilderTopBar';
 import ContentBuilderSettings from 'components/DescriptionBuilder/Settings';
-import { ProjectDescriptionModelType } from 'api/project_description_builder/types';
+import { DescriptionModelType } from 'api/content_builder/types';
 import DescriptionBuilderToolbox from 'components/DescriptionBuilder/DescriptionBuilderToolbox';
 import { RouteType } from 'routes';
 
 type Props = {
   modelId: string;
-  modelType: ProjectDescriptionModelType;
+  modelType: DescriptionModelType;
   backPath: RouteType;
   previewPath: RouteType;
   titleMultiloc: Multiloc;
@@ -57,7 +57,7 @@ const DescriptionBuilderPage = ({
   const locales = useAppConfigurationLocales();
 
   // const enabled = !!folder?.data.attributes.uses_content_builder;
-  const { data: projectDescriptionBuilderLayout } = useDescriptionBuilderLayout(
+  const { data: projectDescriptionBuilderLayout } = useContentBuilderLayout(
     modelId,
     modelType
   );

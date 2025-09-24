@@ -2,14 +2,14 @@ import React from 'react';
 
 import { Editor } from '@craftjs/core';
 
-import { IProjectDescriptionBuilderData } from 'api/project_description_builder/types';
+import { IContentBuilderData } from 'api/content_builder/types';
 
 import clHistory from 'utils/cl-router/history';
 import { render, screen, act, within, fireEvent } from 'utils/testUtils/rtl';
 
 import ProjectDescriptionBuilderTopBar from '.';
 
-const mockEditorData: IProjectDescriptionBuilderData = {
+const mockEditorData: IContentBuilderData = {
   id: '2',
   type: 'content_builder_layout',
   attributes: {
@@ -31,19 +31,15 @@ const mockEditorData: IProjectDescriptionBuilderData = {
   },
 };
 
-jest.mock(
-  'api/project_description_builder/useDescriptionBuilderLayout',
-  () => () => {
-    return {
-      data: mockEditorData,
-    };
-  }
-);
+jest.mock('api/content_builder/useContentBuilderLayout', () => () => {
+  return {
+    data: mockEditorData,
+  };
+});
 
 const mockAddProjectDescriptionBuilderLayout = jest.fn();
-jest.mock(
-  'api/project_description_builder/useAddProjectDescriptionBuilderLayout',
-  () => jest.fn(() => ({ mutate: mockAddProjectDescriptionBuilderLayout }))
+jest.mock('api/content_builder/useAddContentBuilderLayout', () =>
+  jest.fn(() => ({ mutate: mockAddProjectDescriptionBuilderLayout }))
 );
 
 let mockLocalesData = ['en'];
