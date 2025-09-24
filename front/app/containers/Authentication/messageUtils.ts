@@ -52,7 +52,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'sso-verification:email-password': messages.logIn,
 
   // invite taken flow
-  'invitation-resent': null,
+  'invitation-resent': messages.signUp,
 };
 
 export const getHeaderMessage = (

@@ -90,7 +90,7 @@ export const signUpFlow = (
 
           setCurrentStep('success');
         } catch (e) {
-          if (e.errors?.email?.[0]?.error === 'taken_by_invitee') {
+          if (e.errors?.email?.[0]?.error === 'taken_by_invite') {
             // If the invitation is already taken:
             // Store provided information
             updateState({
