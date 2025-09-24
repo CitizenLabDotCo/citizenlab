@@ -568,6 +568,7 @@ const AdminProjectsProjectGeneralSetUp = () => {
                     valueMultiloc={descriptionMultiloc}
                     onChange={handleDescriptionChange}
                     label={formatMessage(messages.descriptionLabel)}
+                    modelType="project"
                     labelTooltipText={formatMessage(
                       messages.descriptionTooltip
                     )}

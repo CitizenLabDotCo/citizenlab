@@ -54,7 +54,7 @@ const DescriptionBuilderToggle = ({
   intl: { formatMessage },
   valueMultiloc,
   onChange,
-  modelType = 'project',
+  modelType,
   label,
   labelTooltipText,
 }: DescriptionBuilderToggleProps) => {
@@ -66,11 +66,9 @@ const DescriptionBuilderToggle = ({
     modelType === 'folder' ? params.projectFolderId : params.projectId;
   const { data: DescriptionBuilderLayout } = useContentBuilderLayout(
     modelId,
-    modelType
+    modelType,
+    featureEnabled
   );
-
-  const route =
-    `/admin/description-builder/${modelType}/${modelId}/description` as RouteType;
 
   const [DescriptionBuilderLinkVisible, setDescriptionBuilderLinkVisible] =
     useState<boolean | null>(null);
@@ -101,6 +99,9 @@ const DescriptionBuilderToggle = ({
       enabled,
     });
   };
+
+  const route =
+    `/admin/description-builder/${modelType}/${modelId}/description` as RouteType;
 
   return (
     <Box data-testid="DescriptionBuilderToggle">

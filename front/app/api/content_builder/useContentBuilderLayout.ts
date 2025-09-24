@@ -25,7 +25,8 @@ const fetchContentBuilderLayout = (
 
 const useContentBuilderLayout = (
   modelId: string,
-  modelType: DescriptionModelType = 'project'
+  modelType: DescriptionModelType = 'project',
+  enabled: boolean = true
 ) => {
   return useQuery<
     IContentBuilderLayout,
@@ -35,7 +36,7 @@ const useContentBuilderLayout = (
   >({
     queryKey: contentBuilderKeys.item({ modelId }),
     queryFn: () => fetchContentBuilderLayout(modelId, modelType),
-    enabled: true, // TODO: JS - pass this in
+    enabled: enabled,
   });
 };
 

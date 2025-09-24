@@ -93,10 +93,7 @@ const DescriptionBuilderPage = ({
     0;
 
   const getEditorData = () => {
-    if (
-      descriptionBuilderLayout &&
-      !isEmpty(descriptionBuilderLayout.data.attributes.craftjs_json)
-    ) {
+    if (!isEmpty(descriptionBuilderLayout.data.attributes.craftjs_json)) {
       return descriptionBuilderLayout.data.attributes.craftjs_json;
     } else {
       return undefined;

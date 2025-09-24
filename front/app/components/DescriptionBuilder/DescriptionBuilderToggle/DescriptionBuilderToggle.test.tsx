@@ -62,6 +62,7 @@ describe('ProjectDescriptionBuilderToggle', () => {
         onChange={dummyFunction}
         label={'QuillLabel'}
         labelTooltipText={'LabelTooltipText'}
+        modelType="project"
         {...routerProps}
       />
     );
@@ -86,6 +87,7 @@ describe('ProjectDescriptionBuilderToggle', () => {
         onChange={dummyFunction}
         label={'QuillLabel'}
         labelTooltipText={'LabelTooltipText'}
+        modelType="project"
         {...routerProps}
       />
     );
@@ -107,6 +109,7 @@ describe('ProjectDescriptionBuilderToggle', () => {
         onChange={dummyFunction}
         label={'QuillLabel'}
         labelTooltipText={'LabelTooltipText'}
+        modelType="project"
         {...routerProps}
       />
     );
