@@ -788,7 +788,7 @@
   "app.components.formBuilder.displayAsDropdown": "Vis som dropdown",
   "app.components.formBuilder.displayAsDropdownTooltip": "Vis mulighederne i en dropdown. Hvis du har mange muligheder, anbefales dette.",
   "app.components.formBuilder.done": "Færdig",
-  "app.components.formBuilder.dragAndDrop": "For at tilføje spørgsmål til formularen DRAG og DROP de elementer, der findes i menuen til venstre, ind i formularen.",
+  "app.components.formBuilder.dragAndDrop": "For at tilføje spørgsmål til formularen TRÆK og SLIP de elementer, der findes i menuen til venstre, ind i formularen.",
   "app.components.formBuilder.drawArea": "Tegn område",
   "app.components.formBuilder.drawRoute": "Tegn en rute",
   "app.components.formBuilder.dropPin": "Drop pin",
