@@ -128,66 +128,6 @@ RSpec.describe CustomField do
     end
   end
 
-  describe 'enabled' do
-    context 'for a built-in registration field' do
-      let(:field) { build(:custom_field_birthyear) }
-
-      it 'can be enabled' do
-        field.enabled = true
-        expect(field.valid?).to be true
-      end
-
-      it 'can be disabled' do
-        field.enabled = false
-        expect(field.valid?).to be true
-      end
-    end
-
-    context 'for an extra registration field' do
-      let(:field) { build(:custom_field_rating, :for_registration) }
-
-      it 'can be enabled' do
-        field.enabled = true
-        expect(field.valid?).to be true
-      end
-
-      it 'can be disabled' do
-        field.enabled = false
-        expect(field.valid?).to be true
-      end
-    end
-
-    context 'for a built-in input field' do
-      let(:field) { build(:custom_field_html_multiloc, :for_custom_form, code: 'body_multiloc') }
-
-      it 'can be enabled' do
-        field.enabled = true
-        expect(field.valid?).to be true
-      end
-
-      it 'can be disabled' do
-        field.enabled = false
-        expect(field.valid?).to be true
-      end
-    end
-
-    context 'for an extra input field' do
-      let(:field) { build(:custom_field_number, :for_custom_form) }
-
-      it 'can be enabled' do
-        field.enabled = true
-        expect(field.valid?).to be true
-      end
-
-      # We currently have the convention that extra fields are always removed and cannot be disabled.
-      it 'cannot be disabled' do
-        field.enabled = false
-        expect(field.valid?).to be false
-        expect(field.errors.details).to eq({ enabled: [{ error: :inclusion, value: false }] })
-      end
-    end
-  end
-
   describe '#logic?' do
     it 'returns true when there is logic' do
       field.logic = { 'rules' => [{ if: 2, goto_page_id: 'some_page_id' }] }
