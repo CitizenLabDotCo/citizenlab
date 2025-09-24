@@ -34,7 +34,7 @@ import {
 } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import ProjectDescriptionBuilderToggle from 'components/DescriptionBuilder/DescriptionBuilderToggle';
+import DescriptionBuilderToggle from 'components/DescriptionBuilder/DescriptionBuilderToggle';
 import Highlighter from 'components/Highlighter';
 import FileUploader from 'components/UI/FileUploader';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
@@ -103,7 +103,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     useAddProjectFolder();
   const { mutate: updateProjectFolder } = useUpdateProjectFolder();
 
-  const showProjectDescriptionBuilder = useFeatureFlag({
+  const showDescriptionBuilder = useFeatureFlag({
     name: 'project_description_builder',
   });
 
@@ -616,7 +616,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               }
             />
           </Box>
-          {!showProjectDescriptionBuilder && (
+          {!showDescriptionBuilder && (
             <Box data-cy="e2e-project-folder-description">
               <QuillMutilocWithLocaleSwitcher
                 id="description"
@@ -628,7 +628,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             </Box>
           )}
           <Highlighter fragmentId="description-multiloc">
-            <ProjectDescriptionBuilderToggle
+            <DescriptionBuilderToggle
               valueMultiloc={descriptionMultiloc}
               onChange={getHandler(setDescriptionMultiloc)}
               label={formatMessage(messages.descriptionInputLabel)}

@@ -55,7 +55,7 @@ const DescriptionBuilderTopBar = ({
   const { query } = useEditor();
   const localize = useLocalize();
   const {
-    mutate: addProjectDescriptionBuilderLayout,
+    mutate: upsertContentBuilderLayout,
     isLoading,
     isError,
   } = useAddContentBuilderLayout();
@@ -67,7 +67,7 @@ const DescriptionBuilderTopBar = ({
   };
 
   const handleSave = async () => {
-    addProjectDescriptionBuilderLayout({
+    upsertContentBuilderLayout({
       modelId,
       modelType,
       craftjs_json: query.getSerializedNodes(),

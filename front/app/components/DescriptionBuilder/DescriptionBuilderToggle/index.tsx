@@ -64,42 +64,38 @@ const DescriptionBuilderToggle = ({
 
   const modelId =
     modelType === 'folder' ? params.projectFolderId : params.projectId;
-  const { data: projectDescriptionBuilderLayout } = useContentBuilderLayout(
+  const { data: DescriptionBuilderLayout } = useContentBuilderLayout(
     modelId,
     modelType
   );
 
   const route =
-    `/admin/project-description-builder/${modelType}s/${modelId}/description` as RouteType;
+    `/admin/description-builder/${modelType}/${modelId}/description` as RouteType;
 
-  const [
-    projectDescriptionBuilderLinkVisible,
-    setProjectDescriptionBuilderLinkVisible,
-  ] = useState<boolean | null>(null);
-  const { mutateAsync: addProjectDescriptionBuilderLayout } =
+  const [DescriptionBuilderLinkVisible, setDescriptionBuilderLinkVisible] =
+    useState<boolean | null>(null);
+  const { mutateAsync: addDescriptionBuilderLayout } =
     useAddContentBuilderLayout();
 
   useEffect(() => {
-    if (projectDescriptionBuilderLayout) {
-      const projectDescriptionBuilderEnabled =
-        projectDescriptionBuilderLayout.data.attributes.enabled;
-      setProjectDescriptionBuilderLinkVisible(projectDescriptionBuilderEnabled);
+    if (DescriptionBuilderLayout) {
+      const DescriptionBuilderEnabled =
+        DescriptionBuilderLayout.data.attributes.enabled;
+      setDescriptionBuilderLinkVisible(DescriptionBuilderEnabled);
     }
-  }, [projectDescriptionBuilderLayout]);
+  }, [DescriptionBuilderLayout]);
 
   if (!featureEnabled) {
     return null;
   }
 
-  const toggleProjectDescriptionBuilderLinkVisible = () => {
-    toggleLayoutEnabledStatus(!projectDescriptionBuilderLinkVisible);
-    setProjectDescriptionBuilderLinkVisible(
-      !projectDescriptionBuilderLinkVisible
-    );
+  const toggleDescriptionBuilderLinkVisible = () => {
+    toggleLayoutEnabledStatus(!DescriptionBuilderLinkVisible);
+    setDescriptionBuilderLinkVisible(!DescriptionBuilderLinkVisible);
   };
 
   const toggleLayoutEnabledStatus = async (enabled: boolean) => {
-    await addProjectDescriptionBuilderLayout({
+    await addDescriptionBuilderLayout({
       modelId,
       modelType,
       enabled,
@@ -107,7 +103,7 @@ const DescriptionBuilderToggle = ({
   };
 
   return (
-    <Box data-testid="projectDescriptionBuilderToggle">
+    <Box data-testid="DescriptionBuilderToggle">
       <Box
         className="intercom-product-tour-project-description-builder-toggle"
         display="flex"
@@ -115,14 +111,14 @@ const DescriptionBuilderToggle = ({
       >
         <StyledToggle
           id="e2e-toggle-enable-project-description-builder"
-          checked={!!projectDescriptionBuilderLinkVisible}
+          checked={!!DescriptionBuilderLinkVisible}
           label={formatMessage(messages.toggleLabel)}
-          onChange={toggleProjectDescriptionBuilderLinkVisible}
+          onChange={toggleDescriptionBuilderLinkVisible}
         />
         <StyledIconTooltip content={formatMessage(messages.toggleTooltip)} />
       </Box>
 
-      {projectDescriptionBuilderLinkVisible && (
+      {DescriptionBuilderLinkVisible && (
         <>
           <StyledLink id="e2e-project-description-builder-link" to={route}>
             {formatMessage(messages.linkText)}
@@ -132,7 +128,7 @@ const DescriptionBuilderToggle = ({
           </Box>
         </>
       )}
-      {!projectDescriptionBuilderLinkVisible && (
+      {!DescriptionBuilderLinkVisible && (
         <QuillMultilocWithLocaleSwitcher
           id="e2e-project-description-multiloc-module-active"
           valueMultiloc={valueMultiloc}

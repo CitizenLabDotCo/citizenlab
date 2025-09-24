@@ -38,7 +38,7 @@ import {
 } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
-import ProjectDescriptionBuilderToggle from 'components/DescriptionBuilder/DescriptionBuilderToggle';
+import DescriptionBuilderToggle from 'components/DescriptionBuilder/DescriptionBuilderToggle';
 import Highlighter from 'components/Highlighter';
 import Error from 'components/UI/Error';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
@@ -564,7 +564,7 @@ const AdminProjectsProjectGeneralSetUp = () => {
               {/* Main Description */}
               <SectionField>
                 <Highlighter fragmentId="description-multiloc">
-                  <ProjectDescriptionBuilderToggle
+                  <DescriptionBuilderToggle
                     valueMultiloc={descriptionMultiloc}
                     onChange={handleDescriptionChange}
                     label={formatMessage(messages.descriptionLabel)}

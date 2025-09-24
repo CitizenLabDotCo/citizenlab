@@ -19,7 +19,7 @@ import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWr
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
-import ProjectDescriptionBuilderEditModePreview from 'components/DescriptionBuilder/DescriptionBuilderEditModePreview';
+import DescriptionBuilderEditModePreview from 'components/DescriptionBuilder/DescriptionBuilderEditModePreview';
 import DescriptionBuilderToolbox from 'components/DescriptionBuilder/DescriptionBuilderToolbox';
 import DescriptionBuilderTopBar from 'components/DescriptionBuilder/DescriptionBuilderTopBar';
 import Editor from 'components/DescriptionBuilder/Editor';
@@ -55,8 +55,7 @@ const DescriptionBuilderPage = ({
   });
   const locales = useAppConfigurationLocales();
 
-  // const enabled = !!folder?.data.attributes.uses_content_builder;
-  const { data: projectDescriptionBuilderLayout } = useContentBuilderLayout(
+  const { data: descriptionBuilderLayout } = useContentBuilderLayout(
     modelId,
     modelType
   );
@@ -66,8 +65,8 @@ const DescriptionBuilderPage = ({
 
   const [imageUploading, setImageUploading] = useState(false);
 
-  const projectDescriptionBuilderVisible =
-    featureEnabled && pathname.includes('admin/project-description-builder');
+  const descriptionBuilderVisible =
+    featureEnabled && pathname.includes('admin/description-builder');
 
   // DO NOT REMOVE THESE useCallbacks, without them the content builder
   // becomes horribly slow
@@ -85,9 +84,9 @@ const DescriptionBuilderPage = ({
     });
   }, []);
 
-  if (isNilOrError(locales) && projectDescriptionBuilderVisible) {
-    return null;
-  }
+  if (isNilOrError(locales)) return null;
+  if (!descriptionBuilderVisible) return null;
+  if (!descriptionBuilderLayout) return null;
 
   const hasError =
     Object.values(contentBuilderErrors).filter((node) => node.hasError).length >
@@ -95,10 +94,10 @@ const DescriptionBuilderPage = ({
 
   const getEditorData = () => {
     if (
-      projectDescriptionBuilderLayout &&
-      !isEmpty(projectDescriptionBuilderLayout.data.attributes.craftjs_json)
+      descriptionBuilderLayout &&
+      !isEmpty(descriptionBuilderLayout.data.attributes.craftjs_json)
     ) {
-      return projectDescriptionBuilderLayout.data.attributes.craftjs_json;
+      return descriptionBuilderLayout.data.attributes.craftjs_json;
     } else {
       return undefined;
     }
@@ -130,13 +129,6 @@ const DescriptionBuilderPage = ({
 
     setSelectedLocale(locale);
   };
-
-  if (
-    !projectDescriptionBuilderLayout ||
-    !projectDescriptionBuilderLayout.data.attributes.enabled
-  ) {
-    return null;
-  }
 
   return (
     <FullscreenContentBuilder
@@ -182,7 +174,7 @@ const DescriptionBuilderPage = ({
         </Box>
       </Editor>
       <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>
-        <ProjectDescriptionBuilderEditModePreview
+        <DescriptionBuilderEditModePreview
           modelId={modelId}
           modelType={modelType}
           ref={iframeRef}

@@ -6,13 +6,12 @@ import useProjectById from 'api/projects/useProjectById';
 
 import DescriptionBuilderPage from 'containers/DescriptionBuilder/index';
 
-import { isNilOrError } from 'utils/helperUtils';
-
 const ProjectDescriptionBuilderPage = () => {
   const { projectId } = useParams() as { projectId: string };
   const { data: project } = useProjectById(projectId);
 
-  if (isNilOrError(project)) return null;
+  if (!project) return null;
+  if (!project.data.attributes.uses_content_builder) return null;
 
   return (
     <DescriptionBuilderPage

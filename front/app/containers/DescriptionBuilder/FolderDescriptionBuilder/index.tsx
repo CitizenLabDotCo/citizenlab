@@ -6,13 +6,12 @@ import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 import DescriptionBuilderPage from 'containers/DescriptionBuilder/index';
 
-import { isNilOrError } from 'utils/helperUtils';
-
 const FolderDescriptionBuilderPage = () => {
   const { folderId } = useParams() as { folderId: string };
   const { data: folder } = useProjectFolderById(folderId);
 
-  if (isNilOrError(folder)) return null;
+  if (!folder) return null;
+  if (!folder.data.attributes.uses_content_builder) return null;
 
   return (
     <DescriptionBuilderPage
