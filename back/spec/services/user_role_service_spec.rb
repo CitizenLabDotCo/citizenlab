@@ -273,12 +273,13 @@ describe UserRoleService do
   end
 
   describe 'not_citizenlab_member scope' do
-    it 'includes only users that do not have CitizenLab or Govocal emails' do
+    it 'includes only users that do not have Citizenlab or Govocal emails' do
       scope_member_count = User.citizenlab_member.count
 
       create(:user, email: 'someone@citizenlab.co')
       create(:user, email: 'someone@govocal.com')
       create(:user, email: 'someone@should-not-be-excluded.com')
+      # Users with email: nil can be created via bulk invite import
       nil_email_user = create(:user)
       nil_email_user.update_column(:email, nil)
 
