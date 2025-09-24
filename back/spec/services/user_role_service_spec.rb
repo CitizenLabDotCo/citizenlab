@@ -274,8 +274,6 @@ describe UserRoleService do
 
   describe 'not_citizenlab_member scope' do
     it 'includes only users that do not have Citizenlab or Govocal emails' do
-      scope_member_count = User.citizenlab_member.count
-
       create(:user, email: 'someone@citizenlab.co')
       create(:user, email: 'someone@govocal.com')
       create(:user, email: 'someone@should-not-be-excluded.com')
@@ -283,8 +281,10 @@ describe UserRoleService do
       nil_email_user = create(:user)
       nil_email_user.update_column(:email, nil)
 
-      expect(User.not_citizenlab_member.count).to eq(scope_member_count + 2)
-      expect(User.not_citizenlab_member.pluck(:email)).to include('someone@should-not-be-excluded.com')
+      expect(User.not_citizenlab_member.pluck(:email))
+        .to include('someone@should-not-be-excluded.com', nil)
+      expect(User.not_citizenlab_member.pluck(:email))
+        .not_to include('someone@citizenlab.co', 'someone@govocal.com')
     end
   end
 end
