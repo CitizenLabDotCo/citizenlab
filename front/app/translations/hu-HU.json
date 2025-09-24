@@ -788,6 +788,7 @@
   "app.components.formBuilder.displayAsDropdown": "Megjelenítés legördülő menüként",
   "app.components.formBuilder.displayAsDropdownTooltip": "Jelenítse meg a lehetőségeket egy legördülő menüben. Ha sok lehetőséged van, ez ajánlott.",
   "app.components.formBuilder.done": "Kész",
+  "app.components.formBuilder.dragAndDrop": "Kérdések űrlaphoz adásához HÚZZA ÉS DOBJA át a bal oldali menüben található elemeket az űrlapra.",
   "app.components.formBuilder.drawArea": "Rajzolj területet",
   "app.components.formBuilder.drawRoute": "Útvonal rajzolása",
   "app.components.formBuilder.dropPin": "Csepp tű",
