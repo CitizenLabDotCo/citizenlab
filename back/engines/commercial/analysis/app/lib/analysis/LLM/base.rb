@@ -15,6 +15,9 @@ module Analysis
         raise NotImplementedError
       end
 
+      # Returns the practical context window size after applying a safety margin.
+      # This prevents hitting rate limits and accounts for system overhead, response tokens,
+      # and tokenization variance that aren't captured in our initial token estimates.
       def usable_context_window
         (context_window * self.class.headroom_ratio).to_i
       end

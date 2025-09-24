@@ -8,6 +8,25 @@ module Analysis
     class AzureOpenAI < Base
       MAX_RETRIES = 20
 
+      class << self
+        def gpt_model
+          raise NotImplementedError
+        end
+
+        def headroom_ratio
+          0.85
+        end
+
+        # On Azure, each model needs to be deployed separately and given its own
+        # name. To avoid having to introduce an extra deployment_name parameter
+        # per model in our configuration, we derive the deployment name from the
+        # model name, stripping out any characters that are not allowed in Azure
+        # deployment names.
+        def azure_deployment_name
+          gpt_model.gsub(/[^a-zA-Z0-9-]/, '')
+        end
+      end
+
       def initialize(**params)
         super
 
@@ -33,23 +52,6 @@ module Analysis
           yield new_text
         end
         chat_with_retry(**params_with_stream.deep_merge(params))
-      end
-
-      def self.gpt_model
-        raise NotImplementedError
-      end
-
-      def self.headroom_ratio
-        0.85
-      end
-
-      # On Azure, each model needs to be deployed separately and given its own
-      # name. To avoid having to introduce an extra deployment_name parameter
-      # per model in our configuration, we derive the deployment name from the
-      # model name, stripping out any characters that are not allowed in Azure
-      # deployment names.
-      def self.azure_deployment_name
-        gpt_model.gsub(/[^a-zA-Z0-9-]\./, '')
       end
 
       def token_count(str)
