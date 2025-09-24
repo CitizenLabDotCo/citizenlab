@@ -6,6 +6,7 @@ class WebApi::V1::GroupsController < ApplicationController
   def index
     @groups = policy_scope(Group)
     @groups = @groups.where(membership_type: params[:membership_type]) if params[:membership_type]
+    @groups = @groups.search_by_title(params[:search]) if params[:search].present?
     @groups = @groups.order_new
     @groups = paginate @groups
     render json: linked_json(@groups, WebApi::V1::GroupSerializer, params: jsonapi_serializer_params)

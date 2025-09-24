@@ -18,6 +18,7 @@
 #  index_groups_on_slug  (slug)
 #
 class Group < ApplicationRecord
+  include PgSearch::Model
   include EmailCampaigns::GroupDecorator
 
   slug from: proc { |group| group.title_multiloc&.values&.find(&:present?) }
@@ -36,6 +37,10 @@ class Group < ApplicationRecord
 
   before_validation :set_membership_type, on: :create
   before_validation :strip_title
+
+  pg_search_scope :search_by_title,
+    against: :title_multiloc,
+    using: { tsearch: { prefix: true } }
 
   scope :order_new, ->(direction = :desc) { order(created_at: direction) }
   scope :with_user, ->(user) { Group._with_user(self, user) } # Delegating to class method makes it easier to patch.

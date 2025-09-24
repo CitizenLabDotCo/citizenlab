@@ -88,4 +88,35 @@ RSpec.describe Group do
       expect(group.slug).to eq 'titel'
     end
   end
+
+  describe 'search_by_title' do
+    let!(:engineering_group) { create(:group, title_multiloc: { 'en' => 'Engineering Team', 'fr' => 'Équipe d\'ingénierie' }) }
+    let!(:marketing_group) { create(:group, title_multiloc: { 'en' => 'Marketing Team', 'fr' => 'Équipe marketing' }) }
+    let!(:design_group) { create(:group, title_multiloc: { 'en' => 'Design Committee', 'fr' => 'Comité de design' }) }
+
+    it 'returns groups matching the search term in English' do
+      results = described_class.search_by_title('Team')
+      expect(results).to contain_exactly(engineering_group, marketing_group)
+    end
+
+    it 'returns groups matching the search term in French' do
+      results = described_class.search_by_title('Équipe')
+      expect(results).to contain_exactly(engineering_group, marketing_group)
+    end
+
+    it 'returns groups matching partial search terms' do
+      results = described_class.search_by_title('Engin')
+      expect(results).to contain_exactly(engineering_group)
+    end
+
+    it 'returns empty result when no groups match' do
+      results = described_class.search_by_title('NonExistentTerm')
+      expect(results).to be_empty
+    end
+
+    it 'returns all groups when search term is empty' do
+      results = described_class.search_by_title('')
+      expect(results).to contain_exactly(engineering_group, marketing_group, design_group)
+    end
+  end
 end

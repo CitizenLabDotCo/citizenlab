@@ -25,6 +25,7 @@ resource 'Groups' do
       end
       parameter :membership_type,
         "If set, only return groups of given membership_type. Either #{Group.membership_types.join(' or ')}", required: false
+      parameter :search, 'Return only groups that match the given search term', required: false
 
       example 'List all groups' do
         g1 = create(:group)
@@ -40,6 +41,19 @@ resource 'Groups' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 1
+      end
+
+      example 'List groups filtered by search term' do
+        create(:group, title_multiloc: { 'en' => 'Engineering Team', 'fr' => 'Équipe d\'ingénierie' })
+        create(:group, title_multiloc: { 'en' => 'Marketing Team', 'fr' => 'Équipe marketing' })
+        create(:group, title_multiloc: { 'en' => 'Design Committee', 'fr' => 'Comité de design' })
+        
+        do_request(search: 'team')
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 2
+        group_names = json_response[:data].map { |g| g.dig(:attributes, :title_multiloc, 'en') }
+        expect(group_names).to contain_exactly('Engineering Team', 'Marketing Team')
       end
     end
 
