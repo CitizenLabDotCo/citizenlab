@@ -145,7 +145,6 @@
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Introducció d'adreça",
   "app.components.CustomFieldsForm.addressInputPlaceholder6": "Introdueix una adreça...",
   "app.components.CustomFieldsForm.adminFieldTooltip": "Camp només visible per als administradors",
-  "app.components.CustomFieldsForm.anonymousSurveyMessage2": "Totes les respostes a aquesta enquesta són anonimitzades.",
   "app.components.CustomFieldsForm.atLeastThreePointsRequired": "Es necessiten com a mínim tres punts per a un polígon.",
   "app.components.CustomFieldsForm.atLeastTwoPointsRequired": "Calen com a mínim dos punts per a una línia.",
   "app.components.CustomFieldsForm.attachmentRequired": "Cal com a mínim un fitxer adjunt",
