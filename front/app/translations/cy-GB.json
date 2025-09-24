@@ -788,6 +788,7 @@
   "app.components.formBuilder.displayAsDropdown": "Arddangos fel cwymplen",
   "app.components.formBuilder.displayAsDropdownTooltip": "Dangoswch yr opsiynau mewn cwymplen. Os oes gennych lawer o opsiynau, argymhellir hyn.",
   "app.components.formBuilder.done": "Wedi'i wneud",
+  "app.components.formBuilder.dragAndDrop": "I ychwanegu cwestiynau at y ffurflen, LLUSGOWCH a GOLWNGWCH yr elfennau a geir yn y ddewislen ar yr ochr chwith i'r ffurflen.",
   "app.components.formBuilder.drawArea": "Man tynnu",
   "app.components.formBuilder.drawRoute": "Tynnu llwybr",
   "app.components.formBuilder.dropPin": "Gollwng pin",
