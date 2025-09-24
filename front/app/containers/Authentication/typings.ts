@@ -22,15 +22,12 @@ export type ErrorCode =
 
 export interface State {
   flow: 'signup' | 'signin';
-  email: string | null;
   token: string | null;
-  prefilledBuiltInFields: {
-    first_name?: string;
-    last_name?: string;
-    email?: string;
-    password?: string;
-  } | null;
   ssoProvider: SSOProvider | null;
+  email: string | null;
+  first_name: string | null;
+  last_name: string | null;
+  password: string | null;
 }
 
 export type UpdateState = (state: Partial<State>) => void;

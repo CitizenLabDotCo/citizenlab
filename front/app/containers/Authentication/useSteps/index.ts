@@ -73,11 +73,13 @@ export default function useSteps() {
 
   const [state, setState] = useState<State>({
     flow: 'signup',
-    email: null,
     /** the invite token, set in case the flow started with an invitation */
     token: null,
-    prefilledBuiltInFields: null,
     ssoProvider: null,
+    email: null,
+    first_name: null,
+    last_name: null,
+    password: null,
   });
   const [loading, setLoading] = useState(false);
   const [error, _setError] = useState<ErrorCode | null>(null);

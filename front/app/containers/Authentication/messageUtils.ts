@@ -50,6 +50,9 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'sso-verification:sso-providers': messages.verificationRequired,
   'sso-verification:sso-providers-policies': messages.verificationRequired,
   'sso-verification:email-password': messages.logIn,
+
+  // invite taken flow
+  'invitation-resent': null,
 };
 
 export const getHeaderMessage = (

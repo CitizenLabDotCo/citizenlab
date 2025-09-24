@@ -105,13 +105,14 @@ export const signUpFlow = (
       SUBMIT: async (token: string) => {
         const response = await getUserDataFromToken(token);
 
-        const prefilledBuiltInFields = {
-          first_name: response.data.attributes.first_name ?? undefined,
-          last_name: response.data.attributes.last_name ?? undefined,
-          email: response.data.attributes.email ?? undefined,
+        const updatedState = {
+          token,
+          first_name: response.data.attributes.first_name ?? null,
+          last_name: response.data.attributes.last_name ?? null,
+          email: response.data.attributes.email ?? null,
         };
 
-        updateState({ token, prefilledBuiltInFields });
+        updateState(updatedState);
 
         setCurrentStep('sign-up:email-password');
       },
