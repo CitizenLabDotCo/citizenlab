@@ -788,6 +788,7 @@
   "app.components.formBuilder.displayAsDropdown": "Als Dropdown anzeigen",
   "app.components.formBuilder.displayAsDropdownTooltip": "Zeigen Sie die Optionen in einem Dropdown-Menü an. Wenn Sie viele Optionen haben, ist dies empfehlenswert.",
   "app.components.formBuilder.done": "Fertig",
+  "app.components.formBuilder.dragAndDrop": "Um dem Formular Fragen hinzuzufügen, ZIEHEN Sie die Elemente aus dem Menü auf der linken Seite in das Formular und legen Sie sie dort ab.",
   "app.components.formBuilder.drawArea": "Fläche zeichnen",
   "app.components.formBuilder.drawRoute": "Route zeichnen",
   "app.components.formBuilder.dropPin": "Pin setzen",
