@@ -788,6 +788,7 @@
   "app.components.formBuilder.displayAsDropdown": "Näytä pudotusvalikkona",
   "app.components.formBuilder.displayAsDropdownTooltip": "Näytä vaihtoehdot avattavassa valikossa. Jos sinulla on monia vaihtoehtoja, tämä on suositeltavaa.",
   "app.components.formBuilder.done": "Tehty",
+  "app.components.formBuilder.dragAndDrop": "Lisää kysymyksiä lomakkeeseen VETÄMÄLLÄ ja PUDOTTAMALLA vasemmanpuoleisen valikon elementit lomakkeeseen.",
   "app.components.formBuilder.drawArea": "Piirrä alue",
   "app.components.formBuilder.drawRoute": "Piirrä reitti",
   "app.components.formBuilder.dropPin": "Pudotusneula",
