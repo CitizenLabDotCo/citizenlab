@@ -788,6 +788,7 @@
   "app.components.formBuilder.displayAsDropdown": "Weergeven als dropdown",
   "app.components.formBuilder.displayAsDropdownTooltip": "Geef de opties weer in een dropdown. Als je veel opties hebt, is dit aan te raden.",
   "app.components.formBuilder.done": "Klaar",
+  "app.components.formBuilder.dragAndDrop": "Om vragen aan het formulier toe te voegen sleep je de elementen uit het menu aan de linkerkant naar het formulier.",
   "app.components.formBuilder.drawArea": "Tekengebied",
   "app.components.formBuilder.drawRoute": "Route tekenen",
   "app.components.formBuilder.dropPin": "Prik een pin",
