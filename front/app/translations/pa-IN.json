@@ -145,7 +145,6 @@
   "app.components.CustomFieldsForm.addressInputAriaLabel": "ਪਤਾ ਇਨਪੁੱਟ",
   "app.components.CustomFieldsForm.addressInputPlaceholder6": "ਪਤਾ ਦਰਜ ਕਰੋ...",
   "app.components.CustomFieldsForm.adminFieldTooltip": "ਖੇਤਰ ਸਿਰਫ਼ ਪ੍ਰਸ਼ਾਸਕਾਂ ਨੂੰ ਦਿਖਾਈ ਦੇਵੇਗਾ",
-  "app.components.CustomFieldsForm.anonymousSurveyMessage2": "ਇਸ ਸਰਵੇਖਣ ਦੇ ਸਾਰੇ ਜਵਾਬ ਗੁਮਨਾਮ ਹਨ।",
   "app.components.CustomFieldsForm.atLeastThreePointsRequired": "ਇੱਕ ਬਹੁਭੁਜ ਲਈ ਘੱਟੋ-ਘੱਟ ਤਿੰਨ ਬਿੰਦੂਆਂ ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ।",
   "app.components.CustomFieldsForm.atLeastTwoPointsRequired": "ਇੱਕ ਲਾਈਨ ਲਈ ਘੱਟੋ-ਘੱਟ ਦੋ ਬਿੰਦੂਆਂ ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ।",
   "app.components.CustomFieldsForm.attachmentRequired": "ਘੱਟੋ-ਘੱਟ ਇੱਕ ਅਟੈਚਮੈਂਟ ਲੋੜੀਂਦੀ ਹੈ।",
