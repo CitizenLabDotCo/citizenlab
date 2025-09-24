@@ -788,6 +788,7 @@
   "app.components.formBuilder.displayAsDropdown": "Wyświetlaj jako listę rozwijaną",
   "app.components.formBuilder.displayAsDropdownTooltip": "Wyświetl opcje w formie listy rozwijanej. Jeśli masz wiele opcji, jest to zalecane.",
   "app.components.formBuilder.done": "Gotowe",
+  "app.components.formBuilder.dragAndDrop": "Aby dodać pytania do formularza, przeciągnij i upuść elementy znajdujące się w menu po lewej stronie do formularza.",
   "app.components.formBuilder.drawArea": "Obszar rysowania",
   "app.components.formBuilder.drawRoute": "Narysuj trasę",
   "app.components.formBuilder.dropPin": "Zawleczka",
