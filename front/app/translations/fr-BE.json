@@ -788,6 +788,7 @@
   "app.components.formBuilder.displayAsDropdown": "Afficher sous forme de menu déroulant",
   "app.components.formBuilder.displayAsDropdownTooltip": "Affiche les options dans un menu déroulant. Recommandé lorsqu'il y a beaucoup d'options.",
   "app.components.formBuilder.done": "Terminé",
+  "app.components.formBuilder.dragAndDrop": "Pour ajouter des questions au formulaire, Glissez-déposez les éléments figurant dans le menu de gauche dans le formulaire.",
   "app.components.formBuilder.drawArea": "Zone de dessin",
   "app.components.formBuilder.drawRoute": "Dessiner un tracé",
   "app.components.formBuilder.dropPin": "Placer un repère",
