@@ -35,6 +35,7 @@ const Paperclip = styled(Icon)`
   flex: 0 0 24px;
   fill: ${colors.textSecondary};
   margin-right: 15px;
+  flex-shrink: 0;
 `;
 
 const FileInfo = styled.div`
