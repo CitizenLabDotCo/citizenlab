@@ -788,6 +788,7 @@
   "app.components.formBuilder.displayAsDropdown": "ڈراپ ڈاؤن کے بطور ڈسپلے کریں۔",
   "app.components.formBuilder.displayAsDropdownTooltip": "ڈراپ ڈاؤن میں اختیارات ڈسپلے کریں۔ اگر آپ کے پاس بہت سے اختیارات ہیں، تو اس کی سفارش کی جاتی ہے۔",
   "app.components.formBuilder.done": "ہو گیا",
+  "app.components.formBuilder.dragAndDrop": "فارم میں سوالات شامل کرنے کے لیے ڈریگ کریں اور بائیں جانب کے مینو میں موجود عناصر کو فارم میں ڈراپ کریں۔",
   "app.components.formBuilder.drawArea": "علاقہ ڈرا کریں۔",
   "app.components.formBuilder.drawRoute": "راستہ کھینچنا",
   "app.components.formBuilder.dropPin": "ڈراپ پن",
