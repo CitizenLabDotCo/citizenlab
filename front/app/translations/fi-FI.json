@@ -145,7 +145,6 @@
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Osoitteen syöttö",
   "app.components.CustomFieldsForm.addressInputPlaceholder6": "Anna osoite...",
   "app.components.CustomFieldsForm.adminFieldTooltip": "Kenttä näkyy vain ylläpitäjille",
-  "app.components.CustomFieldsForm.anonymousSurveyMessage2": "Kaikki tämän kyselyn vastaukset anonymisoidaan.",
   "app.components.CustomFieldsForm.atLeastThreePointsRequired": "Monikulmioon tarvitaan vähintään kolme pistettä.",
   "app.components.CustomFieldsForm.atLeastTwoPointsRequired": "Suoraa varten tarvitaan vähintään kaksi pistettä.",
   "app.components.CustomFieldsForm.attachmentRequired": "Vähintään yksi liite vaaditaan",
