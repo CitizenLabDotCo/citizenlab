@@ -788,6 +788,7 @@
   "app.components.formBuilder.displayAsDropdown": "Açılır menü olarak görüntüle",
   "app.components.formBuilder.displayAsDropdownTooltip": "Seçenekleri bir açılır menüde görüntüleyin. Çok sayıda seçeneğiniz varsa, bu önerilir.",
   "app.components.formBuilder.done": "Tamamlandı",
+  "app.components.formBuilder.dragAndDrop": "Forma soru eklemek için sol taraftaki menüde bulunan öğeleri SÜRÜKLEYİN ve FORMA BIRAKIN.",
   "app.components.formBuilder.drawArea": "Çizim alanı",
   "app.components.formBuilder.drawRoute": "Rota çizin",
   "app.components.formBuilder.dropPin": "Damla pim",
