@@ -146,6 +146,23 @@ context 'id_austria verification' do
     expect(user2.reload).to have_attributes(verified: true)
   end
 
+  it 'successfully authenticates a user that was previously authenticated and updates the stored auth_hash' do
+    get '/auth/id_austria'
+    follow_redirect!
+    user = User.order(created_at: :asc).last
+    expect_user_to_be_verified_and_identified(user)
+    expect(user.identities.first.auth_hash['info']['gender']).to be_nil
+
+    # Change the auth hash so we can check that is is updated
+    auth_hash['info']['gender'] = 'female'
+    OmniAuth.config.mock_auth[:id_austria] = OmniAuth::AuthHash.new(auth_hash)
+
+    get '/auth/id_austria'
+    follow_redirect!
+    expect_user_to_be_verified_and_identified(user)
+    expect(user.identities.first.auth_hash['info']['gender']).to eq 'female'
+  end
+
   it 'fails when bpk has already been used' do
     create(
       :verification,
