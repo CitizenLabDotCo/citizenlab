@@ -38,7 +38,10 @@ const SimilarIdeasList = ({
 }) => {
   const { formatMessage } = useIntl();
   const currentLocale = useLocale();
-  const { slug: projectSlug } = useParams() as { slug: string };
+  const { slug: projectSlug, projectId: urlProjectId } = useParams() as {
+    slug?: string;
+    projectId?: string;
+  };
   const [searchParams] = useSearchParams();
   const { ideaId: idea_id } = useParams<{
     ideaId?: string;
@@ -46,7 +49,7 @@ const SimilarIdeasList = ({
   const ideaId = searchParams.get('idea_id') || idea_id;
   const selectedIdeaId = searchParams.get('selected_idea_id');
   const { data: idea } = useIdeaById(ideaId ?? undefined);
-  const projectId = idea?.data.relationships.project.data.id;
+  const projectId = idea?.data.relationships.project.data.id || urlProjectId;
   const projectById = useProjectById(projectId);
   // If we have the projectId, we can use it to fetch the project directly so we don't need to fetch it by slug
   const projectBySlug = useProjectBySlug(projectId ? undefined : projectSlug);
