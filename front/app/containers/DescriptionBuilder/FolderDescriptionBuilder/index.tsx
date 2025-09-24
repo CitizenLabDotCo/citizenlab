@@ -1,8 +1,12 @@
 import React from 'react';
-import useProjectFolderById from 'api/project_folders/useProjectFolderById';
-import { isNilOrError } from 'utils/helperUtils';
-import DescriptionBuilderPage from 'containers/DescriptionBuilder/index';
+
 import { useParams } from 'react-router-dom';
+
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
+
+import DescriptionBuilderPage from 'containers/DescriptionBuilder/index';
+
+import { isNilOrError } from 'utils/helperUtils';
 
 const FolderDescriptionBuilderPage = () => {
   const { folderId } = useParams() as { folderId: string };

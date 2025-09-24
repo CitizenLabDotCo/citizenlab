@@ -3,6 +3,7 @@ import React from 'react';
 import { SupportedLocale } from 'typings';
 
 import { DescriptionModelType } from 'api/content_builder/types';
+
 import FolderDescriptionBuilderToolbox from 'components/DescriptionBuilder/DescriptionBuilderToolbox/FolderDescriptionBuilderToolbox';
 import ProjectDescriptionBuilderToolbox from 'components/DescriptionBuilder/DescriptionBuilderToolbox/ProjectDescriptionBuilderToolbox';
 

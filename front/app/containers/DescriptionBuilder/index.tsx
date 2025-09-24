@@ -4,8 +4,10 @@ import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 import { isEmpty } from 'lodash-es';
 import { useLocation } from 'react-router-dom';
+import { RouteType } from 'routes';
 import { Multiloc, SupportedLocale } from 'typings';
 
+import { DescriptionModelType } from 'api/content_builder/types';
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -17,16 +19,13 @@ import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWr
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
+import ProjectDescriptionBuilderEditModePreview from 'components/DescriptionBuilder/DescriptionBuilderEditModePreview';
+import DescriptionBuilderToolbox from 'components/DescriptionBuilder/DescriptionBuilderToolbox';
+import DescriptionBuilderTopBar from 'components/DescriptionBuilder/DescriptionBuilderTopBar';
 import Editor from 'components/DescriptionBuilder/Editor';
+import ContentBuilderSettings from 'components/DescriptionBuilder/Settings';
 
 import { isNilOrError } from 'utils/helperUtils';
-
-import ProjectDescriptionBuilderEditModePreview from 'components/DescriptionBuilder/DescriptionBuilderEditModePreview';
-import DescriptionBuilderTopBar from 'components/DescriptionBuilder/DescriptionBuilderTopBar';
-import ContentBuilderSettings from 'components/DescriptionBuilder/Settings';
-import { DescriptionModelType } from 'api/content_builder/types';
-import DescriptionBuilderToolbox from 'components/DescriptionBuilder/DescriptionBuilderToolbox';
-import { RouteType } from 'routes';
 
 type Props = {
   modelId: string;

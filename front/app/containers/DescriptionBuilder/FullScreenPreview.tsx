@@ -5,6 +5,7 @@ import { SerializedNodes } from '@craftjs/core';
 import { useSearchParams } from 'react-router-dom';
 import { Multiloc, SupportedLocale } from 'typings';
 
+import { DescriptionModelType } from 'api/content_builder/types';
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 
 import useLocale from 'hooks/useLocale';
@@ -16,7 +17,6 @@ import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import Editor from 'components/DescriptionBuilder/Editor';
 
 import { isNilOrError } from 'utils/helperUtils';
-import { DescriptionModelType } from 'api/content_builder/types';
 
 type Props = {
   modelId: string;

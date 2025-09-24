@@ -1,6 +1,9 @@
 import React from 'react';
+
 import { useParams } from 'react-router-dom';
+
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
+
 import FullScreenPreview from 'containers/DescriptionBuilder/FullScreenPreview';
 
 export const FolderFullScreenPreview = () => {

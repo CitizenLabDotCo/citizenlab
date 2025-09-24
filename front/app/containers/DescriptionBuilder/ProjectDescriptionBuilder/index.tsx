@@ -1,8 +1,12 @@
 import React from 'react';
-import useProjectById from 'api/projects/useProjectById';
-import { isNilOrError } from 'utils/helperUtils';
-import DescriptionBuilderPage from 'containers/DescriptionBuilder/index';
+
 import { useParams } from 'react-router-dom';
+
+import useProjectById from 'api/projects/useProjectById';
+
+import DescriptionBuilderPage from 'containers/DescriptionBuilder/index';
+
+import { isNilOrError } from 'utils/helperUtils';
 
 const ProjectDescriptionBuilderPage = () => {
   const { projectId } = useParams() as { projectId: string };

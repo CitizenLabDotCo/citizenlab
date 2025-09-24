@@ -38,8 +38,8 @@ import {
 } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
-import Highlighter from 'components/Highlighter';
 import ProjectDescriptionBuilderToggle from 'components/DescriptionBuilder/DescriptionBuilderToggle';
+import Highlighter from 'components/Highlighter';
 import Error from 'components/UI/Error';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 import Warning from 'components/UI/Warning';

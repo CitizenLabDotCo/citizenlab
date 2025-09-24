@@ -20,10 +20,9 @@ import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import InfoWithAccordions from 'components/DescriptionBuilder/CraftSections/InfoWithAccordions';
 
 import { useIntl } from 'utils/cl-intl';
-
-import InfoWithAccordions from 'components/DescriptionBuilder/CraftSections/InfoWithAccordions';
 
 type ProjectDescriptionBuilderToolboxProps = {
   selectedLocale: SupportedLocale;

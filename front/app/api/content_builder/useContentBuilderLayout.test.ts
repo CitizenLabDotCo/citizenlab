@@ -1,11 +1,12 @@
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
+import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
+
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { contentBuilderLayoutData } from './__mocks__/contentBuilderLayout';
-import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 
 const mockProjectData = {
   id: '2',

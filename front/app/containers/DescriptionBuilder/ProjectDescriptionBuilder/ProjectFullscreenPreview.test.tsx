@@ -1,10 +1,10 @@
 import React from 'react';
 
+import ProjectFullScreenPreview from 'containers/DescriptionBuilder/ProjectDescriptionBuilder/ProjectFullScreenPreview';
+
 import { setTranslations } from 'components/admin/ContentBuilder/LanguageProvider/__mocks__/i18nLoader';
 
 import { render, screen, waitFor } from 'utils/testUtils/rtl';
-
-import ProjectFullScreenPreview from 'containers/DescriptionBuilder/ProjectDescriptionBuilder/ProjectFullScreenPreview';
 
 jest.mock('components/admin/ContentBuilder/LanguageProvider/i18nLoader');
 

@@ -1,11 +1,12 @@
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
+import useAddContentBuilderLayout from 'api/content_builder/useAddContentBuilderLayout';
+
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { contentBuilderLayoutData } from './__mocks__/contentBuilderLayout';
-import useAddContentBuilderLayout from 'api/content_builder/useAddContentBuilderLayout';
 
 const apiPath =
   '*projects/:projectId/content_builder_layouts/project_description/upsert';

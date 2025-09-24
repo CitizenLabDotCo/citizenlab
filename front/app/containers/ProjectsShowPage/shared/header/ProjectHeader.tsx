@@ -19,12 +19,12 @@ import messages from 'containers/ProjectsShowPage/messages';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 import ContentContainer from 'components/ContentContainer';
+import ContentViewer from 'components/DescriptionBuilder/ContentViewer';
 import FollowUnfollow from 'components/FollowUnfollow';
 import {
   HeaderImage,
   HeaderImageContainer,
 } from 'components/ProjectableHeader';
-import ContentViewer from 'components/DescriptionBuilder/ContentViewer';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
