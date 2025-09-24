@@ -788,6 +788,7 @@
   "app.components.formBuilder.displayAsDropdown": "Vis som nedtrekksmeny",
   "app.components.formBuilder.displayAsDropdownTooltip": "Vis alternativene i en rullegardinmeny. Dette anbefales hvis du har mange alternativer.",
   "app.components.formBuilder.done": "Ferdig",
+  "app.components.formBuilder.dragAndDrop": "For å legge til spørsmål i skjemaet DRAG og DROP elementene som finnes i menyen til venstre, inn i skjemaet.",
   "app.components.formBuilder.drawArea": "Tegn område",
   "app.components.formBuilder.drawRoute": "Tegn rute",
   "app.components.formBuilder.dropPin": "Slippnål",
