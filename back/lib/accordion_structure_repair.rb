@@ -70,20 +70,9 @@ class AccordionStructureRepair
 
     return stats if @dry_run
 
-    # Create backup before fixing
-    create_backup(layout)
-
     fix_broken_accordions(layout, broken_accordions, stats)
     layout.save! if stats[:fixed_accordions].positive?
     stats
-  end
-
-  def create_backup(layout)
-    backup = layout.dup
-    backup.code = "backup/#{layout.code}/#{layout.id}"
-    backup.content_buildable = nil
-    backup.craftjs_json = layout.craftjs_json.deep_dup
-    backup.save!
   end
 
   def find_accordion_nodes(craftjs_json)

@@ -1,154 +1,117 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require_relative '../../../lib/accordion_structure_repair'
 
-RSpec.describe AccordionStructureRepair do
-  let(:repair) { described_class.new(dry_run: true) }
+RSpec.describe 'single_use:repair_broken_accordions' do # rubocop:disable RSpec/DescribeClass
   let(:tenant) { create(:tenant) }
-  let(:layout) { create(:content_builder_layout) }
+  let(:layout) { create(:layout, code: 'project_description') }
+  let(:repair_service_dry_run) { AccordionStructureRepair.new(dry_run: true) }
+  let(:repair_service_fix) { AccordionStructureRepair.new(dry_run: false) }
 
-  describe '#find_broken_accordions' do
-    let(:type_a_broken) do
-      {
-        'type' => { 'resolvedName' => 'AccordionMultiloc' },
-        'isCanvas' => true,
-        'linkedNodes' => {}
-      }
-    end
+  before do
+    load_rake_tasks_if_not_loaded
+    Rake::Task['single_use:repair_broken_accordions'].reenable
+    allow(Tenant).to receive(:find_by!).and_return(tenant)
+    allow(tenant).to receive(:switch).and_yield
+    allow(ContentBuilder::Layout).to receive(:find_each).and_yield(layout)
+  end
 
-    let(:type_b_needs_migration) do
-      {
-        'type' => { 'resolvedName' => 'AccordionMultiloc' },
-        'isCanvas' => false,
-        'props' => {
-          'text' => {
-            'en' => 'Some text content'
-          }
+  context 'when run in dry run mode' do
+    it 'identifies broken accordions without modifying them' do
+      layout.craftjs_json = {
+        'ROOT' => { 'type' => 'div', 'nodes' => %w[accordion1], 'props' => { 'id' => 'e2e-content-builder-frame' }, 'custom' => {}, 'hidden' => false, 'isCanvas' => true, 'displayName' => 'div', 'linkedNodes' => {} },
+        'accordion1' => {
+          'type' => { 'resolvedName' => 'AccordionMultiloc' },
+          'props' => { 'title' => { 'en' => 'Test Accordion' } },
+          'isCanvas' => true, # Incorrectly true
+          'linkedNodes' => {}
         }
       }
-    end
 
-    let(:valid_accordion) do
-      {
-        'type' => { 'resolvedName' => 'AccordionMultiloc' },
-        'isCanvas' => false,
-        'linkedNodes' => {
-          'accordion-content' => 'container_id'
-        }
-      }
-    end
-
-    it 'identifies Type A accordions with missing linkedNodes' do
-      accordion_nodes = { 'node1' => type_a_broken }
-      broken = repair.send(:find_broken_accordions, accordion_nodes)
-      expect(broken).to include('node1' => type_a_broken)
-    end
-
-    it 'identifies Type B accordions with text property' do
-      accordion_nodes = { 'node1' => type_b_needs_migration }
-      broken = repair.send(:find_broken_accordions, accordion_nodes)
-      expect(broken).to include('node1' => type_b_needs_migration)
-    end
-
-    it 'ignores valid accordions' do
-      accordion_nodes = { 'node1' => valid_accordion }
-      broken = repair.send(:find_broken_accordions, accordion_nodes)
-      expect(broken).to be_empty
+      Apartment::Tenant.switch(tenant.host) do
+        expect do
+          Rake::Task['single_use:repair_broken_accordions'].invoke
+        end.not_to change { layout.reload.craftjs_json }
+      end
     end
   end
 
-  describe '#fix_accordion_node' do
-    let(:layout_json) { {} }
-    let(:layout) { create(:content_builder_layout, craftjs_json: layout_json) }
-
-    it 'fixes Type A accordions by adding proper container' do
-      node = {
-        'type' => { 'resolvedName' => 'AccordionMultiloc' },
-        'isCanvas' => true,
-        'props' => { 'title' => { 'en' => 'Title' } }
-      }
-
-      expect do
-        repair.send(:fix_accordion_node, layout, 'node1', node)
-      end.to change { node['isCanvas'] }.from(true).to(false)
-        .and change { node['linkedNodes'] }.from(nil)
-        .and change { node['custom'] }
-    end
-
-    it 'fixes Type B accordions by migrating text content' do
-      node = {
-        'type' => { 'resolvedName' => 'AccordionMultiloc' },
-        'isCanvas' => false,
-        'props' => {
-          'text' => { 'en' => 'Content' },
-          'title' => { 'en' => 'Title' }
+  context 'when run in fix mode' do
+    it 'fixes Type A accordions by adding proper container structure' do
+      layout.craftjs_json = {
+        'ROOT' => { 'type' => 'div', 'nodes' => %w[accordion1], 'props' => { 'id' => 'e2e-content-builder-frame' }, 'custom' => {}, 'hidden' => false, 'isCanvas' => true, 'displayName' => 'div', 'linkedNodes' => {} },
+        'accordion1' => {
+          'type' => { 'resolvedName' => 'AccordionMultiloc' },
+          'props' => { 'title' => { 'en' => 'Test Accordion' } },
+          'isCanvas' => true, # Incorrectly true
+          'linkedNodes' => {}
         }
       }
 
-      expect do
-        repair.send(:fix_accordion_node, layout, 'node1', node)
-      end.to change { node['linkedNodes'] }.from(nil)
-        .and change { node['props'] }
-    end
-
-    it 'maintains existing content when fixing Type B accordions' do
-      original_text = { 'en' => 'Original content' }
-      node = {
-        'type' => { 'resolvedName' => 'AccordionMultiloc' },
-        'isCanvas' => false,
-        'props' => {
-          'text' => original_text,
-          'title' => { 'en' => 'Title' }
-        }
-      }
-
-      repair.send(:fix_accordion_node, layout, 'node1', node)
-      container_id = node['linkedNodes']['accordion-content']
-      text_node_id = layout.craftjs_json[container_id]['nodes'].first
-      expect(layout.craftjs_json[text_node_id]['props']['text']).to eq(original_text)
-    end
-  end
-
-  describe '#run' do
-    before do
-      allow(Tenant).to receive(:find_by!).and_return(tenant)
-      allow(tenant).to receive(:switch).and_yield
-      allow(ContentBuilder::Layout).to receive(:find_each).and_yield(layout)
-    end
-
-    it 'processes all layouts in the tenant' do
-      expect(ContentBuilder::Layout).to receive(:find_each)
-      repair.run('test.tenant.com')
-    end
-
-    it 'returns accurate statistics' do
-      allow(repair).to receive(:process_layout).and_return(
-        total_accordions: 5,
-        broken_accordions: 2,
-        fixed_accordions: 2
-      )
-
-      stats = repair.run('test.tenant.com')
-      expect(stats[:total_accordions]).to eq(5)
-      expect(stats[:broken_accordions]).to eq(2)
-      expect(stats[:fixed_accordions]).to eq(2)
-      expect(stats[:layouts_affected]).to eq(1)
-    end
-
-    context 'when in dry run mode' do
-      it 'does not save layout changes' do
-        expect(layout).not_to receive(:save!)
-        repair.run('test.tenant.com')
+      Apartment::Tenant.switch(tenant.host) do
+        Rake::Task['single_use:repair_broken_accordions'].invoke
+        fixed_accordion = layout.reload.craftjs_json['accordion1']
+        expect(fixed_accordion['isCanvas']).to be false
+        expect(fixed_accordion['linkedNodes']).to have_key('accordion-content')
+        container_id = fixed_accordion['linkedNodes']['accordion-content']
+        expect(layout.craftjs_json[container_id]['isCanvas']).to be true
+        expect(layout.craftjs_json[container_id]['nodes']).not_to be_empty
+        expect(layout.craftjs_json[layout.craftjs_json[container_id]['nodes'].first]['props']['text']['es-CL']).to include('Contenido del acordeón')
       end
     end
 
-    context 'when not in dry run mode' do
-      let(:repair) { described_class.new(dry_run: false) }
+    it 'fixes Type B accordions by migrating text content' do
+      layout.craftjs_json = {
+        'ROOT' => { 'type' => 'div', 'nodes' => %w[accordion1], 'props' => { 'id' => 'e2e-content-builder-frame' }, 'custom' => {}, 'hidden' => false, 'isCanvas' => true, 'displayName' => 'div', 'linkedNodes' => {} },
+        'accordion1' => {
+          'type' => { 'resolvedName' => 'AccordionMultiloc' },
+          'props' => { 'title' => { 'en' => 'Test Accordion' }, 'text' => { 'en' => 'Original content' } },
+          'isCanvas' => false,
+          'linkedNodes' => {}
+        }
+      }
 
-      it 'saves layout changes when fixes are applied' do
-        allow(repair).to receive(:process_layout).and_return(fixed_accordions: 1)
-        expect(layout).to receive(:save!)
-        repair.run('test.tenant.com')
+      Apartment::Tenant.switch(tenant.host) do
+        Rake::Task['single_use:repair_broken_accordions'].invoke
+        fixed_accordion = layout.reload.craftjs_json['accordion1']
+        expect(fixed_accordion['isCanvas']).to be false
+        expect(fixed_accordion['props']).not_to have_key('text') # Text prop removed
+        expect(fixed_accordion['linkedNodes']).to have_key('accordion-content')
+        container_id = fixed_accordion['linkedNodes']['accordion-content']
+        expect(layout.craftjs_json[container_id]['isCanvas']).to be true
+        expect(layout.craftjs_json[container_id]['nodes']).not_to be_empty
+        expect(layout.craftjs_json[layout.craftjs_json[container_id]['nodes'].first]['props']['text']['en']).to eq('Original content')
+      end
+    end
+
+    it 'does not modify valid accordions' do
+      layout.craftjs_json = {
+        'ROOT' => { 'type' => 'div', 'nodes' => %w[accordion1], 'props' => { 'id' => 'e2e-content-builder-frame' }, 'custom' => {}, 'hidden' => false, 'isCanvas' => true, 'displayName' => 'div', 'linkedNodes' => {} },
+        'accordion1' => {
+          'type' => { 'resolvedName' => 'AccordionMultiloc' },
+          'props' => { 'title' => { 'en' => 'Valid Accordion' } },
+          'isCanvas' => false,
+          'linkedNodes' => { 'accordion-content' => 'container1' }
+        },
+        'container1' => {
+          'type' => { 'resolvedName' => 'Container' },
+          'isCanvas' => true,
+          'nodes' => %w[text1],
+          'parent' => 'accordion1'
+        },
+        'text1' => {
+          'type' => { 'resolvedName' => 'TextMultiloc' },
+          'props' => { 'text' => { 'en' => 'Valid content' } },
+          'isCanvas' => false,
+          'parent' => 'container1'
+        }
+      }
+      original_json = layout.craftjs_json.deep_dup
+
+      Apartment::Tenant.switch(tenant.host) do
+        Rake::Task['single_use:repair_broken_accordions'].invoke
+        expect(layout.reload.craftjs_json).to eq(original_json)
       end
     end
   end
