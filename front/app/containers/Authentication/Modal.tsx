@@ -309,6 +309,7 @@ const AuthModal = () => {
 
         {currentStep === 'invitation-resent' && (
           <InvitationResent
+            state={state}
             loading={loading}
             setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT_CODE')}

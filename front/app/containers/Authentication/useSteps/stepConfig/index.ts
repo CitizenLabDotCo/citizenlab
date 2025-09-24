@@ -1,4 +1,5 @@
-// flows
+import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
+
 import {
   GetRequirements,
   UpdateState,
@@ -84,11 +85,18 @@ export const getStepConfig = (
 
     'invitation-resent': {
       CLOSE: () => setCurrentStep('closed'),
-      SUBMIT_CODE: () => {
-        // TODO submit code
-        // TODO when succesful: immediately create account
-        // using data stored in state + whatever came back from invite
-        // and continue flow
+      SUBMIT_CODE: async (token: string) => {
+        const response = await getUserDataFromToken(token);
+        const { attributes } = response.data;
+
+        const updatedState = {
+          first_name: attributes.first_name ?? state.first_name ?? null,
+          last_name: attributes.last_name ?? state.last_name ?? null,
+        };
+
+        updateState(updatedState);
+
+        setCurrentStep('sign-up:email-password');
       },
     },
   };
