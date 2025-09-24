@@ -81,5 +81,15 @@ export const getStepConfig = (
     'verification-success': {
       CLOSE: () => setCurrentStep('closed'),
     },
+
+    'invitation-resent': {
+      CLOSE: () => setCurrentStep('closed'),
+      SUBMIT_CODE: () => {
+        // TODO submit code
+        // TODO when succesful: immediately create account
+        // using data stored in state + whatever came back from invite
+        // and continue flow
+      },
+    },
   };
 };

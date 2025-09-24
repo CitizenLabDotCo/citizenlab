@@ -90,8 +90,12 @@ export const signUpFlow = (
 
           setCurrentStep('success');
         } catch (e) {
-          trackEventByName(tracks.signInEmailPasswordFailed);
-          throw e;
+          if (e.errors?.email?.[0]?.error === 'taken_by_invitee') {
+            setCurrentStep('invitation-resent');
+          } else {
+            trackEventByName(tracks.signInEmailPasswordFailed);
+            throw e;
+          }
         }
       },
     },
