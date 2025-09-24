@@ -788,6 +788,7 @@
   "app.components.formBuilder.displayAsDropdown": "Exibir como menu suspenso",
   "app.components.formBuilder.displayAsDropdownTooltip": "Exiba as opções em um menu suspenso. Se você tiver muitas opções, isso é recomendado.",
   "app.components.formBuilder.done": "Feito",
+  "app.components.formBuilder.dragAndDrop": "Para adicionar perguntas ao formulário, você pode arrastar e soltar os elementos encontrados no menu do lado esquerdo no formulário.",
   "app.components.formBuilder.drawArea": "Área de desenho",
   "app.components.formBuilder.drawRoute": "Rota de sorteio",
   "app.components.formBuilder.dropPin": "Pino de queda",
