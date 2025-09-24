@@ -91,6 +91,16 @@ export const signUpFlow = (
           setCurrentStep('success');
         } catch (e) {
           if (e.errors?.email?.[0]?.error === 'taken_by_invitee') {
+            // If the invitation is already taken:
+            // Store provided information
+            updateState({
+              email: params.email,
+              first_name: params.firstName,
+              last_name: params.lastName,
+              password: params.password,
+            });
+
+            // Go to step where user can enter invitation token again
             setCurrentStep('invitation-resent');
           } else {
             trackEventByName(tracks.signInEmailPasswordFailed);
