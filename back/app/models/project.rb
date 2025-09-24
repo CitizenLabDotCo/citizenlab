@@ -329,7 +329,7 @@ end
 Project.include(SmartGroups::Concerns::ValueReferenceable)
 Project.include(CustomMaps::Extensions::Project)
 Project.include(IdeaAssignment::Extensions::Project)
-Project.include(ContentBuilder::Patches::Project)
+Project.include(ContentBuilder::Concerns::ContentBuildable)
 Project.include(Analysis::Patches::Project)
 Project.include(EmailCampaigns::Extensions::Project)
 Project.include(BulkImportIdeas::Patches::Project)

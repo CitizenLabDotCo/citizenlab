@@ -7,9 +7,8 @@ module ContentBuilder
         module FolderSerializer
           def self.included(base)
             base.class_eval do
-              attribute :uses_content_builder do |_folder|
-                true
-                # folder.uses_content_builder?
+              attribute :uses_content_builder do |folder|
+                folder.uses_content_builder?
               end
             end
           end
