@@ -788,6 +788,7 @@
   "app.components.formBuilder.displayAsDropdown": "Mostra com a menú desplegable",
   "app.components.formBuilder.displayAsDropdownTooltip": "Mostra les opcions en un desplegable. Si teniu moltes opcions, això és recomanable.",
   "app.components.formBuilder.done": "Fet",
+  "app.components.formBuilder.dragAndDrop": "Per afegir preguntes al formulari, ARROSSEGA i DEIXA SOLTAR els elements que es troben al menú de l'esquerra al formulari.",
   "app.components.formBuilder.drawArea": "Zona de dibuix",
   "app.components.formBuilder.drawRoute": "Dibuixa la ruta",
   "app.components.formBuilder.dropPin": "Caiguda de pin",
