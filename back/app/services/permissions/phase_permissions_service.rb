@@ -177,10 +177,13 @@ module Permissions
       allow_posting_again_after = phase.pmethod.allow_posting_again_after || 10.years
       return false if allow_posting_again_after == 0.seconds
 
+      # From here, this method is only relevant for native survey and community monitor,
+      # because all other participation methods have allow_posting_again_after = 0.seconds
+
       if user
         return true if phase.ideas.published_after(allow_posting_again_after.ago).exists?(author: user)
 
-        if phase.allow_anonymous_participation?
+        if phase.pmethod.user_data_collection != 'all_data'
           author_hash = Idea.create_author_hash(user.id, phase.project.id, true)
           return true if phase.ideas.published_after(allow_posting_again_after.ago).exists?(author_hash: author_hash)
         end

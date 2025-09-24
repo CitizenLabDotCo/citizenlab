@@ -72,7 +72,7 @@ export type FormBuilderConfig = {
     phaseId: string | undefined,
     handleClose: () => void
   ) => React.JSX.Element | null;
-  getUserFieldsNotice?: () => void;
+  getUserFieldsNotice?: () => React.ReactNode;
 };
 
 export const getIsPostingEnabled = (

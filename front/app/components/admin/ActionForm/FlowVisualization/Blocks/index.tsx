@@ -22,7 +22,7 @@ interface Props {
   verificationEnabled: boolean;
   verificationExpiry: number | null;
   onChangeVerificationExpiry: (value: number | null) => void;
-  userFieldsInForm: boolean;
+  userFieldsInForm: boolean | null;
 }
 
 const Blocks = ({
@@ -73,7 +73,7 @@ const Blocks = ({
             />
           </>
         )}
-        {showCustomFields && !userFieldsInForm && (
+        {showCustomFields && userFieldsInForm === false && (
           <>
             <Edge />
             <Block

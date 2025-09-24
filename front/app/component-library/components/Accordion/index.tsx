@@ -69,6 +69,10 @@ const CollapseContainer = styled(Box)<{
   opacity: 1;
   display: flex;
   flex-wrap: wrap;
+  & > * {
+    flex-grow: 1;
+    width: 100%;
+  }
   transition: ${(props) =>
     `all ${props.timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1)`};
   will-change: opacity, height;
@@ -100,7 +104,7 @@ const CollapseContainer = styled(Box)<{
     max-height: ${(props) => `${props.transitionHeight}px`};
     overflow: hidden;
 
-    &.collapsed-exit-active {
+    &.expanded-exit-active {
       opacity: 0;
       max-height: 0px;
       overflow: hidden;
