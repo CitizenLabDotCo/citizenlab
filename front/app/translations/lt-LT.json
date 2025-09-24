@@ -145,7 +145,6 @@
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Adreso įvedimas",
   "app.components.CustomFieldsForm.addressInputPlaceholder6": "Įveskite adresą...",
   "app.components.CustomFieldsForm.adminFieldTooltip": "Laukas matomas tik administratoriams",
-  "app.components.CustomFieldsForm.anonymousSurveyMessage2": "Visi šios apklausos atsakymai yra anoniminiai.",
   "app.components.CustomFieldsForm.atLeastThreePointsRequired": "Daugiakampiui reikia bent trijų taškų.",
   "app.components.CustomFieldsForm.atLeastTwoPointsRequired": "Linijai reikia bent dviejų taškų.",
   "app.components.CustomFieldsForm.attachmentRequired": "Būtina pridėti bent vieną priedą",
