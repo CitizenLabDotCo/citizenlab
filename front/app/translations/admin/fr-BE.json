@@ -220,7 +220,7 @@
   "app.components.admin.PostManager.exportSelectedInputsComments": "Exportez les commentaires pour les contributions sélectionnées (.xslx)",
   "app.components.admin.PostManager.exportVotesByInput": "Exporter les votes par contribution (.xslx)",
   "app.components.admin.PostManager.exportVotesByUser": "Exporter les votes par utilisateur (.xslx)",
-  "app.components.admin.PostManager.exports": "Exportations",
+  "app.components.admin.PostManager.exports": "Exporter",
   "app.components.admin.PostManager.featureLayerRemoveGeojsonTooltip": "Pour l'import des données cartographiques, vous devez choisir entre les couches GeoJSON ou l'import depuis ArcGIS Online. Veuillez supprimer toutes les couches GeoJSON existantes si vous souhaitez ajouter une couche d'entités depuis ArcGIS.",
   "app.components.admin.PostManager.featureLayerTooltop": "Vous pouvez trouver l'URL de la couche d'entités sur la page d'élément correspondante sur ArcGIS Online.",
   "app.components.admin.PostManager.feedbackAuthorPlaceholder": "Choisissez comment les autres voient votre nom",
