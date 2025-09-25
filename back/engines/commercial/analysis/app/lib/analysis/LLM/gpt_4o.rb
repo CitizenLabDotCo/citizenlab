@@ -15,7 +15,7 @@ module Analysis
         0.8
       end
 
-      def gpt_model
+      def self.gpt_model
         'gpt-4o'
       end
     end

@@ -55,6 +55,9 @@ class SideFxProjectService
 
   def after_update(project, user)
     change = project.saved_changes
+    if project.admin_publication.publication_status != @publication_status_was
+      change['publication_status'] = [@publication_status_was, project.admin_publication.publication_status]
+    end
     payload = { project: clean_time_attributes(project.attributes) }
     payload[:change] = sanitize_change(change) if change.present?
 
