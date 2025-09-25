@@ -2065,6 +2065,8 @@
   "app.containers.AdminPage.ProjectEdit.headerImageAltText": "Başlık resmi alt metni",
   "app.containers.AdminPage.ProjectEdit.headerImageInputLabel": "Başlık resmi",
   "app.containers.AdminPage.ProjectEdit.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarning1": "Kullanıcıların harita üzerinden fikir göndermesine izin veriyorsanız, Konum alanının {inputFormLink}adresine dahil edildiğinden emin olun.",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarningLink1": "Giriş Formu",
   "app.containers.AdminPage.ProjectEdit.information.new1": "YENİ",
   "app.containers.AdminPage.ProjectEdit.information.provideInformation": "Kullanıcılara bilgi verin veya geçmiş aşamalara ilişkin sonuçları paylaşmak için rapor oluşturucuyu kullanın.",
   "app.containers.AdminPage.ProjectEdit.information.shareInformationOrResults": "Bilgi veya sonuç paylaşımı",
