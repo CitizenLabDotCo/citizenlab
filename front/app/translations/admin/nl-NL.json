@@ -2065,6 +2065,8 @@
   "app.containers.AdminPage.ProjectEdit.headerImageAltText": "Header afbeelding alternatieve text",
   "app.containers.AdminPage.ProjectEdit.headerImageInputLabel": "Bannerafbeelding",
   "app.containers.AdminPage.ProjectEdit.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarning1": "Als je gebruikers toestaat ideeën in te dienen via de kaart, zorg er dan voor dat het veld Locatie wordt opgenomen in de {inputFormLink}.",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarningLink1": "Invoerformulier",
   "app.containers.AdminPage.ProjectEdit.information.new1": "NIEUW",
   "app.containers.AdminPage.ProjectEdit.information.provideInformation": "Informatie aan gebruikers geven of gebruik de rapport vormgever om resultaten van eerdere fases te delen.",
   "app.containers.AdminPage.ProjectEdit.information.shareInformationOrResults": "Informatie of resultaten delen",
