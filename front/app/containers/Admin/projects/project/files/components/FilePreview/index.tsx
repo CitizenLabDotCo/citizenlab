@@ -49,7 +49,8 @@ const FilePreview = ({ file }: Props) => {
     }
     if (
       filePreview?.data.attributes.content.url &&
-      !CSV_MIMETYPES.has(mimeType) // We use a specific component for CSV preview
+      !CSV_MIMETYPES.has(mimeType) && // We use a specific component for CSV preview
+      !IMAGE_MIMETYPES.has(mimeType) // We use a specific component for image preview
     ) {
       return (
         <Box mt="24px">

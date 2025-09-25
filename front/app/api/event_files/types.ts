@@ -19,22 +19,6 @@ export interface IEventFileData {
   };
 }
 
-export interface IEventFile {
-  data: IEventFileData;
-}
-
 export interface IEventFiles {
   data: IEventFileData[];
-}
-
-export interface IAddEventFileProperties {
-  eventId: string;
-  file: string;
-  name: string;
-  ordering?: number | null;
-}
-
-export interface IDeleteEventFileProperties {
-  eventId: string;
-  fileId?: string;
 }
