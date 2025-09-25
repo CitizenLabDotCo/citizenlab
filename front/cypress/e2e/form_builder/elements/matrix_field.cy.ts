@@ -47,7 +47,7 @@ describe('Form builder matrix component', () => {
 
     cy.dataCy('e2e-matrix');
     cy.wait(2000);
-    cy.dataCy('e2e-matrix').click();
+    cy.addItemToFormBuilder('#toolbox_matrix_linear_scale');
     cy.get('.e2e-linear-scale-label');
     cy.get('.e2e-linear-scale-label').first().should('exist');
     cy.get('#e2e-title-multiloc').type('Question title 2', { force: true });

@@ -295,7 +295,7 @@ const HomepageBuilderToolbox = ({
         />
         <DraggableElement
           id="e2e-draggable-accordion"
-          component={<AccordionMultiloc title={{}} text={{}} />}
+          component={<AccordionMultiloc title={{}} />}
           icon="accordion"
           label={formatMessage(accordionMultilocTitle)}
         />

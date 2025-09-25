@@ -145,7 +145,6 @@
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Adres invoer",
   "app.components.CustomFieldsForm.addressInputPlaceholder6": "Voer een adres in...",
   "app.components.CustomFieldsForm.adminFieldTooltip": "Veld alleen zichtbaar voor platformbeheerders",
-  "app.components.CustomFieldsForm.anonymousSurveyMessage2": "Alle antwoorden op deze vragenlijst zijn geanonimiseerd.",
   "app.components.CustomFieldsForm.atLeastThreePointsRequired": "Voor een gebied zijn minimaal drie punten nodig.",
   "app.components.CustomFieldsForm.atLeastTwoPointsRequired": "Voor een lijn zijn minimaal twee punten nodig.",
   "app.components.CustomFieldsForm.attachmentRequired": "Minstens één bijlage is vereist",

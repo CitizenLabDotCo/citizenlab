@@ -172,6 +172,13 @@ resource 'Invites' do
           # For extra verification, check that the last enqueued job has the correct import ID
           job = ActiveJob::Base.queue_adapter.enqueued_jobs.last
           expect(job['arguments'][2]).to eq(response_data[:id])
+
+          expect(response_data[:attributes]).to eq(
+            # 6 invited (including one with email: nil), 1 is already an admin
+            newly_added_admins_number: 5,
+            # When a moderator is promoted to admin, moderator count is decreased
+            newly_added_moderators_number: -1
+          )
         end
       end
 

@@ -1,5 +1,5 @@
 import moment = require('moment');
-import { randomEmail, randomString } from '../support/commands';
+import { randomEmail, randomString } from '../../support/commands';
 
 describe('Native survey project page actions', () => {
   const userFirstName = randomString(10);
