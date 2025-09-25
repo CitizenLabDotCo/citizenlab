@@ -173,8 +173,8 @@ class WebApi::V1::InvitesController < ApplicationController
     end
   end
 
-  def resend_invite
-    authorize :resend_invite
+  def resend
+    authorize :resend
     user = User.find_by(email: params[:email])
 
     unless user&.invite_status == 'pending'
@@ -182,7 +182,7 @@ class WebApi::V1::InvitesController < ApplicationController
       return
     end
 
-    InviteReminderMailer.with(user: user).resend_invite.deliver_now if user&.invite_status == 'pending'
+    InviteReminderMailer.with(user: user).resend_invite.deliver_now
 
     head :ok
   end

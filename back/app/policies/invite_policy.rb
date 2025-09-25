@@ -47,7 +47,7 @@ class InvitePolicy < ApplicationPolicy
     true
   end
 
-  def resend_invite?
+  def resend?
     true
   end
 end

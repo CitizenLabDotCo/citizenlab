@@ -289,6 +289,7 @@ Rails.application.routes.draw do
         post :count_new_seats, on: :collection # it is POST to make it similar to other bulk_create_ and count_new_ actions
         get :example_xlsx, on: :collection
         get :as_xlsx, on: :collection, action: 'index_xlsx'
+        post 'resend', on: :collection, to: 'invites#resend'
       end
 
       resources :custom_field_option_images, only: %i[show create update destroy], controller: :images, defaults: { container_type: 'CustomFieldOption' }
