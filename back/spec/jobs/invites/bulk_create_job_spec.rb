@@ -120,19 +120,14 @@ RSpec.describe Invites::BulkCreateJob do
         additional_moderators = config.settings['core']['additional_moderators_number']
 
         expect(maximum_admins).to eq(2)
-        expect(additional_admins).to eq(5)
+        expect(additional_admins).to eq(6)
         expect(maximum_moderators).to eq(2)
         expect(additional_moderators).to eq(0)
-        expect(User.billed_admins.count).to eq(7) # 2 + 5 additional seats
-        # Observant devs may notice that although we added 5 admins through the invites,
-        # (6 invites, but one was for an existing admin user),
-        # the additional_admins seats recorded in app_configuration only increased by 4.
-        # This is because we invited one user with `email: nil` and we currently exclude
-        # admins with `email: nil` from the billed_admins scope we use to count admins
-        # for billing purposes.
-        # This is probably a bug, but not one I am addressing right now,
-        # as fixing it might require some careful handling on platforms where
-        # the fix might suddenly increase billed seats. See TAN-5537.
+        # We added 5 admins through the invites, (6 invites, but one was for an existing admin user),
+        # and we had 1 additional admin seat before the invites were processed.
+        # 5 + 1 = 6 additional admin seats now.
+        # We had 2 maximum admin seats, so now the total is 8 billed admins.
+        expect(User.billed_admins.count).to eq(8) # 2 + 6 additional seats
       end
 
       it 'updates the invites_import with the expected errors in the result attribute value' do

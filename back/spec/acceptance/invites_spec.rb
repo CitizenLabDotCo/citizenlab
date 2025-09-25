@@ -173,12 +173,13 @@ resource 'Invites' do
           job = ActiveJob::Base.queue_adapter.enqueued_jobs.last
           expect(job['arguments'][2]).to eq(response_data[:id])
 
-          expect(response_data[:attributes]).to eq(
-            # 6 invited (including one with email: nil), 1 is already an admin
-            newly_added_admins_number: 5,
-            # When a moderator is promoted to admin, moderator count is decreased
-            newly_added_moderators_number: -1
-          )
+          expect(response_data[:attributes][:completed_at]).to be_nil
+          expect(response_data[:attributes][:result]).to eq({})
+          if defined?(xlsx)
+            expect(response_data[:attributes][:job_type]).to eq('count_new_seats_xlsx')
+          else
+            expect(response_data[:attributes][:job_type]).to eq('count_new_seats')
+          end
         end
       end
 

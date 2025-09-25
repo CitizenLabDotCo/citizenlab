@@ -34,7 +34,7 @@ RSpec.describe Invites::CountNewSeatsJob do
         invites_import.reload
 
         expect(invites_import.result).to include(
-          'newly_added_admins_number' => 4,
+          'newly_added_admins_number' => 5,
           'newly_added_moderators_number' => -1
         )
       end
