@@ -2065,6 +2065,8 @@
   "app.containers.AdminPage.ProjectEdit.headerImageAltText": "Alt-text för rubrikbild",
   "app.containers.AdminPage.ProjectEdit.headerImageInputLabel": "Rubrikbild",
   "app.containers.AdminPage.ProjectEdit.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarning1": "Om du låter användarna skicka in idéer via kartan ska du se till att fältet Location finns med i {inputFormLink}.",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarningLink1": "Inmatningsformulär",
   "app.containers.AdminPage.ProjectEdit.information.new1": "NY",
   "app.containers.AdminPage.ProjectEdit.information.provideInformation": "Ge information till användarna, eller använd rapportbyggaren för att dela resultat från tidigare faser.",
   "app.containers.AdminPage.ProjectEdit.information.shareInformationOrResults": "Dela information eller resultat",
