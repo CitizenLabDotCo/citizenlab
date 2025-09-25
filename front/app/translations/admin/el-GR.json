@@ -2415,7 +2415,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "Answer choices",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultQuestion": "Ερώτηση προεπιλογής",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.deleteButtonLabel": "Delete",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation2": "Are you sure you want to delete this answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation2": "Σίγουρα θέλετε να διαγράψετε αυτή την επιλογή απάντησης; Όλες οι εγγραφές που συγκεκριμένοι χρήστες απάντησαν με αυτή την επιλογή θα διαγραφούν οριστικά. Αυτή η ενέργεια δεν μπορεί να ανακληθεί.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionDeletionConfirmation3": "Σίγουρα θέλετε να διαγράψετε αυτή τη δημογραφική ερώτηση; Όλες οι απαντήσεις που έχουν δώσει οι χρήστες σε αυτή την ερώτηση θα διαγραφούν οριστικά και δεν θα τίθεται πλέον σε έργα ή προτάσεις. Αυτή η ενέργεια δεν μπορεί να ανακληθεί.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsSubSectionTitle": "Ερωτήσεις",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsTooltip": "Σύρετε και αφήστε τις ερωτήσεις για να καθορίσετε τη σειρά με την οποία θα εμφανιστούν στη συνολική διαδικασία εγγραφής.",
