@@ -62,7 +62,6 @@ export interface GetFilesParameters {
   sort?: FileSortOptions;
   search?: string;
   deleted?: boolean;
-  enabled?: boolean;
 }
 
 export interface IFiles {
@@ -85,7 +84,10 @@ export interface IFileData {
   type: string;
   attributes: IFileAttributes;
   relationships: {
-    uploader: { data: IRelationship };
+    preview?: { data: IRelationship | null };
+    uploader?: { data: IRelationship };
+    project?: { data: IRelationship };
+    attachments?: { data: IRelationship[] };
   };
 }
 

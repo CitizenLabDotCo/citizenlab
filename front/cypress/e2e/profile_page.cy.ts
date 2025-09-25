@@ -111,6 +111,7 @@ describe('Profile Page', () => {
     // RSVP to event
     cy.get('.e2e-event-attendance-button').should('exist');
     cy.get('.e2e-event-attendance-button').click();
+    cy.wait(1000);
 
     // Go to profile
     cy.visit(`/profile/${newUserName}-${newUserSurname}`);
