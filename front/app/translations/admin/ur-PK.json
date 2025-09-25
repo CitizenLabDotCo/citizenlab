@@ -2065,6 +2065,8 @@
   "app.containers.AdminPage.ProjectEdit.headerImageAltText": "ہیڈر امیج Alt ٹیکسٹ",
   "app.containers.AdminPage.ProjectEdit.headerImageInputLabel": "ہیڈر کی تصویر",
   "app.containers.AdminPage.ProjectEdit.imageSupportPageURL": "https://support.cizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarning1": "اگر آپ صارفین کو نقشے کے ذریعے خیالات پیش کرنے کی اجازت دیتے ہیں، تو یقینی بنائیں کہ مقام کا فیلڈ {inputFormLink}میں شامل ہے۔",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarningLink1": "ان پٹ فارم",
   "app.containers.AdminPage.ProjectEdit.information.new1": "نیا",
   "app.containers.AdminPage.ProjectEdit.information.provideInformation": "صارفین کو معلومات فراہم کریں، یا گزشتہ مراحل پر نتائج بانٹنے کے لیے رپورٹ بلڈر کا استعمال کریں۔",
   "app.containers.AdminPage.ProjectEdit.information.shareInformationOrResults": "معلومات یا نتائج کا اشتراک کریں۔",
