@@ -19,12 +19,12 @@ import messages from 'containers/ProjectsShowPage/messages';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 import ContentContainer from 'components/ContentContainer';
+import ProjectContentViewer from 'components/DescriptionBuilder/ContentViewer/ProjectContentViewer';
 import FollowUnfollow from 'components/FollowUnfollow';
 import {
   HeaderImage,
   HeaderImageContainer,
 } from 'components/ProjectableHeader';
-import ContentViewer from 'components/ProjectDescriptionBuilder/ContentViewer';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
@@ -161,7 +161,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
           {!projectDescriptionBuilderEnabled && (
             <ProjectInfo projectId={projectId} />
           )}
-          <ContentViewer />
+          <ProjectContentViewer project={project.data} />
         </ContentContainer>
       </Container>
     );

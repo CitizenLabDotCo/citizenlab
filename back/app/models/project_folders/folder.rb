@@ -60,6 +60,13 @@ module ProjectFolders
       against: :title_multiloc,
       using: { tsearch: { prefix: true } }
 
+    class << self
+      def search_ids_by_all_including_patches(term)
+        result = defined?(super) ? super : []
+        result + search_by_all(term).pluck(:id)
+      end
+    end
+
     def projects
       Project.joins(:admin_publication).where(admin_publication: admin_publication.children)
     end
@@ -134,3 +141,4 @@ module ProjectFolders
 end
 
 ProjectFolders::Folder.include(SmartGroups::Concerns::ValueReferenceable)
+ProjectFolders::Folder.include(ContentBuilder::Concerns::ContentBuildable)
