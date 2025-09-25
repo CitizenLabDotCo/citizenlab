@@ -85,7 +85,7 @@
   "app.components.Comments.yourComment": "Din kommentar",
   "app.components.CommonGroundResults.closeCallsDescription": "Disse udsagn udløste den største uenighed, hvor stemmerne for enig eller uenig var tættest på en 50/50-fordeling.",
   "app.components.CommonGroundResults.closeCallsTitle": "Tæt på",
-  "app.components.CommonGroundResults.highestConsensusDescription": "Udsagn med klar enighed - flertallet af dem, der stemte, var enten enige eller uenige og valgte den samme holdning.",
+  "app.components.CommonGroundResults.highestConsensusDescription": "Udsagn med klar enighed - størstedelen af dem, der stemte, valgte den samme holdning.",
   "app.components.CommonGroundResults.highestConsensusTitle": "Højeste konsensus",
   "app.components.CommonGroundResults.participantLabel": "deltager",
   "app.components.CommonGroundResults.participantsLabel1": "deltagere",
