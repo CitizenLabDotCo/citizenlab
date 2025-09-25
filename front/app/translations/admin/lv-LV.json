@@ -2415,7 +2415,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "Atbildes variantu izvēle",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultQuestion": "Noklusējuma jautājums",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.deleteButtonLabel": "Dzēst",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation": "Vai esat pārliecināts, ka vēlaties izdzēst šo demogrāfisko jautājumu atbildes opciju? Visi ieraksti, uz kuriem konkrēti lietotāji atbildēja ar šo opciju, tiks neatgriezeniski dzēsti. Šo darbību nevar atcelt.",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation1": "Are you sure you want to delete this demographic question answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionDeletionConfirmation3": "Vai esat pārliecināts, ka vēlaties dzēst šo demogrāfisko jautājumu? Visas atbildes, ko lietotāji ir snieguši uz šo jautājumu, tiks neatgriezeniski dzēstas, un tas vairs netiks uzdots projektos vai priekšlikumos. Šo darbību nevar atcelt.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsSubSectionTitle": "Jautājumi",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsTooltip": "Velciet un nometiet jautājumus, lai noteiktu, kādā secībā tie tiks parādīti vispārējā reģistrēšanās procesā.",
