@@ -2415,7 +2415,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "Svarsval",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultQuestion": "Standardfråga",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.deleteButtonLabel": "Radera",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation2": "Are you sure you want to delete this answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation2": "Är du säker på att du vill ta bort det här svarsalternativet? Alla poster som specifika användare har besvarat med det här alternativet raderas permanent. Denna åtgärd kan inte ångras.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionDeletionConfirmation3": "Är du säker på att du vill ta bort denna demografiska fråga? Alla svar som användare har gett på den här frågan kommer att raderas permanent och den kommer inte längre att ställas i projekt eller förslag. Denna åtgärd kan inte ångras.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsSubSectionTitle": "Frågor och svar",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsTooltip": "Dra och släpp frågorna för att bestämma i vilken ordning de ska visas i den globala registreringsprocessen.",
