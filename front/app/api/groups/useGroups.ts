@@ -10,6 +10,8 @@ const fetchGroups = ({
   pageNumber,
   pageSize,
   membershipType,
+  projectId,
+  search,
 }: GroupsQueryParameters) =>
   fetcher<IGroups>({
     path: `/groups`,
@@ -18,6 +20,8 @@ const fetchGroups = ({
       'page[number]': pageNumber,
       'page[size]': pageSize,
       membership_type: membershipType,
+      project_id: projectId,
+      search,
     },
   });
 

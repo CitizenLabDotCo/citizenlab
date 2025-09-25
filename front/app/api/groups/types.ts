@@ -48,4 +48,6 @@ export interface GroupsQueryParameters {
   pageNumber?: number;
   pageSize?: number;
   membershipType?: MembershipType;
+  projectId?: string;
+  search?: string;
 }
