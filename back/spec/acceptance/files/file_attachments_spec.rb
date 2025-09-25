@@ -114,7 +114,9 @@ resource 'FileAttachments' do
     let(:position) { 2 }
 
     context 'when admin' do
-      before { admin_header_token }
+      let(:admin) { create(:admin) }
+
+      before { header_token_for(admin) }
 
       example 'Create a file attachment' do
         expect { do_request }
@@ -139,6 +141,22 @@ resource 'FileAttachments' do
             attachable: { data: { id: attachable.id, type: 'project' } }
           }
         )
+      end
+
+      # top-level files are files that do not belong to a project
+      context 'when the file is a top-level file uploaded by the current user' do
+        let(:file) { create(:global_file, uploader: admin) }
+
+        example "Add the file to the attachable's project on the fly and create the attachment" do
+          expect { do_request }.to change { file.projects.count }.by(1)
+
+          assert_status 201
+          expect(file.projects.sole).to eq(attachable.project)
+
+          attachment = Files::FileAttachment.find(response_data[:id])
+          expect(attachment.file).to eq(file)
+          expect(attachment.attachable).to eq(attachable)
+        end
       end
     end
 

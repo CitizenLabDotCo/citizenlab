@@ -26,6 +26,11 @@ module Files
     belongs_to :file, class_name: 'Files::File', inverse_of: :files_projects
     belongs_to :project, inverse_of: :files_projects
 
-    validates :file_id, uniqueness: { scope: :project_id }
+    # The first specification for the file feature (360 Input) allowed files to be
+    # associated with multiple projects. That's the reason why we opted for a join table
+    # instead of a simple foreign key on the +files+ table. However, for the sake of
+    # simplicity (in terms of permission logic and product behavior), we decided that
+    # files should only belong to at most one project, at least for now.
+    validates :file_id, uniqueness: true
   end
 end

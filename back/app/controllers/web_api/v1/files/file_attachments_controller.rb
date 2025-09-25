@@ -44,7 +44,15 @@ class WebApi::V1::Files::FileAttachmentsController < ApplicationController
     end
 
     side_fx.before_create(file_attachment, current_user)
-    if file_attachment.save
+
+    saved = Files::FileAttachment.transaction do
+      file_project&.save!
+      file_attachment.save!
+    rescue ActiveRecord::RecordInvalid
+      false
+    end
+
+    if saved
       side_fx.after_create(file_attachment, current_user)
       render json: WebApi::V1::Files::FileAttachmentSerializer.new(
         file_attachment,
