@@ -123,7 +123,6 @@ const IdeationForm = ({
           onSubmit={onSubmit}
           phase={phase?.data}
           defaultValues={initialFormData}
-          customFields={customFields ?? []}
           pages={nestedPagesData}
         />
       )}

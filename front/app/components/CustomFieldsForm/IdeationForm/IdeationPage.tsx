@@ -56,7 +56,6 @@ type CustomFieldsPage = {
   onSubmit: (formValues: FormValues) => Promise<void>;
   phase?: IPhaseData;
   defaultValues?: FormValues;
-  customFields: IFlatCustomField[];
   pages: {
     page: IFlatCustomField;
     pageQuestions: IFlatCustomField[];
@@ -76,7 +75,6 @@ const IdeationPage = ({
   setCurrentPageNumber,
   phase,
   defaultValues,
-  customFields,
   pages,
 }: CustomFieldsPage) => {
   const pageRef = useRef<HTMLDivElement>(null);
@@ -181,10 +179,11 @@ const IdeationPage = ({
   const showIdeaId = idea ? !idea.data.relationships.author?.data : false;
 
   const formCompletionPercentage = getFormCompletionPercentage({
-    customFields,
+    pageQuestions,
+    currentPageNumber,
+    lastPageNumber,
     formValues: methods.getValues(),
     userIsEditing: isIdeaEditPage,
-    userIsOnLastPage: currentPageNumber === lastPageNumber,
   });
 
   const onAcceptDisclaimer = async () => {
