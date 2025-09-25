@@ -2065,6 +2065,8 @@
   "app.containers.AdminPage.ProjectEdit.headerImageAltText": "Virsraksta attēla alt teksts",
   "app.containers.AdminPage.ProjectEdit.headerImageInputLabel": "Virsraksta attēls",
   "app.containers.AdminPage.ProjectEdit.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarning1": "Ja ļaujat lietotājiem iesniegt idejas, izmantojot karti, pārliecinieties, vai laukā {inputFormLink}ir iekļauts lauks Atrašanās vieta .",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarningLink1": "Ievades veidlapa",
   "app.containers.AdminPage.ProjectEdit.information.new1": "JAUNUMS",
   "app.containers.AdminPage.ProjectEdit.information.provideInformation": "Sniedziet informāciju lietotājiem vai izmantojiet pārskatu veidotāju, lai kopīgotu iepriekšējo posmu rezultātus.",
   "app.containers.AdminPage.ProjectEdit.information.shareInformationOrResults": "Informācijas vai rezultātu kopīgošana",
