@@ -2065,6 +2065,8 @@
   "app.containers.AdminPage.ProjectEdit.headerImageAltText": "Alt-tekst til overskriftsbildet",
   "app.containers.AdminPage.ProjectEdit.headerImageInputLabel": "Topptekstbilde",
   "app.containers.AdminPage.ProjectEdit.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarning1": "Hvis du tillater brukere å sende inn ideer via kartet, må du sørge for at feltet Location er inkludert i {inputFormLink}.",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarningLink1": "Inndataskjema",
   "app.containers.AdminPage.ProjectEdit.information.new1": "NYHET",
   "app.containers.AdminPage.ProjectEdit.information.provideInformation": "Gi informasjon til brukerne, eller bruk rapportbyggeren til å dele resultater fra tidligere faser.",
   "app.containers.AdminPage.ProjectEdit.information.shareInformationOrResults": "Del informasjon eller resultater",
