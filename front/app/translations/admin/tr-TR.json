@@ -1728,7 +1728,6 @@
   "app.containers.AdminPage.DashboardPage.resolutionday": "Günler",
   "app.containers.AdminPage.DashboardPage.resolutionmonth": "Aylar",
   "app.containers.AdminPage.DashboardPage.resolutionweek": "Haftalar",
-  "app.containers.AdminPage.DashboardPage.selectProject": "Proje seçin",
   "app.containers.AdminPage.DashboardPage.selectedProject": "geçerli proje filtresi",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "geçerli etiket filtresi",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Platformunuzda neler olduğunu keşfedin.",
