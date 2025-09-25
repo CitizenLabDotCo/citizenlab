@@ -2415,7 +2415,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "Vastausvaihtoehdot",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultQuestion": "Oletuskysymys",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.deleteButtonLabel": "Poistaa",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation1": "Are you sure you want to delete this demographic question answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation2": "Are you sure you want to delete this answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionDeletionConfirmation3": "Haluatko varmasti poistaa tämän demografisen kysymyksen? Kaikki käyttäjien tähän kysymykseen antamat vastaukset poistetaan pysyvästi, eikä sitä enää kysytä projekteissa tai ehdotuksissa. Tätä toimintoa ei voi perua.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsSubSectionTitle": "Kysymykset",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsTooltip": "Vedä ja pudota kysymykset määrittääksesi järjestyksen, jossa ne näkyvät yleisessä rekisteröitymisprosessissa.",
