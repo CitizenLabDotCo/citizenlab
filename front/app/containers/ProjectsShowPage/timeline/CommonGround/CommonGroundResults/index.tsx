@@ -51,13 +51,13 @@ const CommonGroundResults = ({ phaseId }: Props) => {
         totalVotes={totalVotes}
       />
       <ResultList
-        title={formatMessage(messages.majority)}
-        description={formatMessage(messages.majorityDescription)}
+        title={formatMessage(messages.highestConsensusTitle)}
+        description={formatMessage(messages.highestConsensusDescription)}
         items={top_consensus_ideas}
       />
       <ResultList
-        title={formatMessage(messages.divisive)}
-        description={formatMessage(messages.divisiveDescription)}
+        title={formatMessage(messages.closeCallsTitle)}
+        description={formatMessage(messages.closeCallsDescription)}
         items={top_controversial_ideas}
       />
     </Box>

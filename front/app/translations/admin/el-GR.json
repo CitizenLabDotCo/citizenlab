@@ -714,7 +714,6 @@
   "app.containers.AdminPage.DashboardPage.resolutionday": "σε ημέρες",
   "app.containers.AdminPage.DashboardPage.resolutionmonth": "σε μήνες",
   "app.containers.AdminPage.DashboardPage.resolutionweek": "σε εβδομάδες",
-  "app.containers.AdminPage.DashboardPage.selectProject": "Select project",
   "app.containers.AdminPage.DashboardPage.selectedProject": "φίλτρο τρέχοντος έργου",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "φίλτρο τρέχουσας ετικέτας",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Ανακαλύψτε τι συμβαίνει στην πλατφόρμα σας.",

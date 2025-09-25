@@ -527,7 +527,6 @@
   "app.containers.AdminPage.DashboardPage.resolutionday": "بالأيام",
   "app.containers.AdminPage.DashboardPage.resolutionmonth": "بالأشهر",
   "app.containers.AdminPage.DashboardPage.resolutionweek": "بالأسابيع",
-  "app.containers.AdminPage.DashboardPage.selectProject": "تحديد مشروع",
   "app.containers.AdminPage.DashboardPage.selectedProject": "عامل تصفية المشروع الحالي",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "عامل تصفية الموضوع الحالي",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "اكتشف ما يحدث على منصتك.",
