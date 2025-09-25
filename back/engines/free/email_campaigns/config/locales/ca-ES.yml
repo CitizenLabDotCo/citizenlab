@@ -119,6 +119,8 @@ ca:
       "unfollow_here": "Heu rebut aquesta notificació a causa d'un element que seguiu. <a href=\"%{unfollow_url}\">Pots deixar de seguir-lo aquí.</a>"
     manual:
       preheader: 'Tens correu de %{organizationName}'
+    manual_project_participants:
+      preheader: 'Tens correu de %{organizationName}'
     comment_deleted_by_admin:
       subject: 'El teu comentari s''ha eliminat de la plataforma de %{organizationName}'
       preheader: 'El teu comentari s''ha suprimit'
@@ -642,6 +644,7 @@ ca:
         user_is_given_admin_rights: 'L''usuari té drets d''administrador'
         user_is_given_folder_moderator_rights: 'L''usuari té drets de moderador de carpetes'
         user_is_given_project_moderator_rights: 'L''usuari té drets de moderador del projecte'
+        user_is_invited_to_platform: 'L''usuari està convidat a la plataforma'
         user_is_invited_to_cosponsor_a_proposal: 'Es convida l''usuari a copatrocinar una proposta'
         user_is_mentioned: 'S''esmenta l''usuari'
         user_is_mentioned_in_internal_comment: 'L''usuari s''esmenta al comentari intern'

@@ -145,7 +145,6 @@
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Inmatning av adress",
   "app.components.CustomFieldsForm.addressInputPlaceholder6": "Ange en adress...",
   "app.components.CustomFieldsForm.adminFieldTooltip": "Fältet är endast synligt för administratörer",
-  "app.components.CustomFieldsForm.anonymousSurveyMessage2": "Alla svar på denna enkät är anonymiserade.",
   "app.components.CustomFieldsForm.atLeastThreePointsRequired": "Minst tre punkter krävs för en polygon.",
   "app.components.CustomFieldsForm.atLeastTwoPointsRequired": "För en linje krävs minst två punkter.",
   "app.components.CustomFieldsForm.attachmentRequired": "Minst en bifogad fil krävs",

@@ -119,6 +119,8 @@ sr-Latn:
       "unfollow_here": "You have received this notification because of an item that you follow. <a href=\"%{unfollow_url}\">You can unfollow it here.</a>"
     manual:
       preheader: 'You have mail from %{organizationName}'
+    manual_project_participants:
+      preheader: 'You have mail from %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Vaš komentar je izbrisan sa platforme %{organizationName}'
       preheader: 'Vaš komentar je izbrisan'
@@ -642,6 +644,7 @@ sr-Latn:
         user_is_given_admin_rights: 'Корисник добија администраторска права'
         user_is_given_folder_moderator_rights: 'Корисник добија права модератора фолдера'
         user_is_given_project_moderator_rights: 'Корисник добија права модератора пројекта'
+        user_is_invited_to_platform: 'User is invited to platform'
         user_is_invited_to_cosponsor_a_proposal: 'User is invited to co-sponsor a proposal'
         user_is_mentioned: 'Корисник се помиње'
         user_is_mentioned_in_internal_comment: 'Корисник је поменут у интерном коментару'

@@ -119,6 +119,8 @@ el:
       "unfollow_here": "Λάβατε αυτή την ειδοποίηση εξαιτίας ενός στοιχείου που ακολουθείτε. <a href=\"%{unfollow_url}\">Μπορείτε να το ακυρώσετε εδώ.</a>"
     manual:
       preheader: 'Λάβατε μια ενημέρωση από το %{organizationName}'
+    manual_project_participants:
+      preheader: 'Έχετε αλληλογραφία από το %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Το σχόλιό σας έχει διαγραφεί από την πλατφόρμα του %{organizationName}'
       preheader: 'Το σχόλιό σας έχει διαγραφεί'
@@ -642,6 +644,7 @@ el:
         user_is_given_admin_rights: 'Ο χρήστης αποκτά δικαιώματα διαχειριστή'
         user_is_given_folder_moderator_rights: 'Ο χρήστης αποκτά δικαιώματα συντονιστή φακέλου'
         user_is_given_project_moderator_rights: 'Ο χρήστης αποκτά δικαιώματα συντονιστή έργου'
+        user_is_invited_to_platform: 'Ο χρήστης καλείται στην πλατφόρμα'
         user_is_invited_to_cosponsor_a_proposal: 'Ο χρήστης καλείται να συν-χορηγήσει μια πρόταση'
         user_is_mentioned: 'Αναφέρεται ο χρήστης'
         user_is_mentioned_in_internal_comment: 'Ο χρήστης αναφέρεται σε εσωτερικό σχόλιο'

@@ -63,6 +63,7 @@ group :development do
   gem 'spring-commands-rspec'
   gem 'spring-watcher-listen', '~> 2.1'
   gem 'annotate'
+  gem 'strong_migrations', '~> 2.5'
 end
 
 group :test do

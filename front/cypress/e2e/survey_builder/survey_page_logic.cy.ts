@@ -5,35 +5,35 @@ describe('Survey page logic', () => {
   let projectSlug: string | undefined;
   let phaseId: string | undefined;
 
-  before(() => {
-    createSurveyProject(cy).then((res: any) => {
-      projectId = res.projectId;
-      projectSlug = res.projectSlug;
-      phaseId = res.phaseId;
-    });
-  });
-
-  after(() => {
+  afterEach(() => {
     if (projectId) {
       cy.apiRemoveProject(projectId);
     }
   });
 
   beforeEach(() => {
-    cy.setAdminLoginCookie();
-    cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
-    cy.dataCy('e2e-field-row').should('have.length', 3);
+    createSurveyProject(cy).then((res: any) => {
+      projectId = res.projectId;
+      projectSlug = res.projectSlug;
+      phaseId = res.phaseId;
 
-    // Make sure first page references "Ending"
-    cy.dataCy('e2e-field-row')
-      .first()
-      .find('[data-cy="e2e-field-rule-display"]')
-      .contains('Ending');
+      cy.setAdminLoginCookie();
+      cy.visit(
+        `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`
+      );
+      cy.dataCy('e2e-field-row').should('have.length', 3);
 
-    // Add a new page
-    cy.wait(1000);
-    cy.dataCy('e2e-page').click();
-    cy.dataCy('e2e-field-row').should('have.length', 4);
+      // Make sure first page references "Ending"
+      cy.dataCy('e2e-field-row')
+        .first()
+        .find('[data-cy="e2e-field-rule-display"]')
+        .contains('Ending');
+
+      // Add a new page
+      cy.wait(1000);
+      cy.addItemToFormBuilder('#toolbox_page');
+      cy.dataCy('e2e-field-row').should('have.length', 4);
+    });
   });
 
   it('correctly adds new page', () => {
@@ -53,7 +53,7 @@ describe('Survey page logic', () => {
   it('correctly updates page logic when removing pages', () => {
     // Create another age
     cy.wait(1000);
-    cy.dataCy('e2e-page').click();
+    cy.addItemToFormBuilder('#toolbox_page');
 
     // Make sure first page references page 2
     cy.dataCy('e2e-field-row')
@@ -101,10 +101,12 @@ describe('Survey page logic', () => {
 
     // Expect submit button to be there, proving that page 1 goes straight to the end
     // of the survey (and not to page 2)
+    cy.dataCy('e2e-submit-form').should('exist');
+    cy.wait(2000);
     cy.dataCy('e2e-submit-form').click();
-    cy.wait(1000);
 
     // Expect to be on success page and return to project
+    cy.wait(1000);
     cy.dataCy('e2e-after-submission').click();
     cy.location('pathname').should('eq', `/en/projects/${projectSlug}`);
   });

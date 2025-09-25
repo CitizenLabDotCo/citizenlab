@@ -119,6 +119,8 @@ de:
       "unfollow_here": "Sie haben diese Benachrichtigung wegen eines Elementes erhalten, dem Sie folgen. <a href=\"%{unfollow_url}\">Sie können hier aufhören diesem zu folgen.</a>"
     manual:
       preheader: 'Sie haben Post von %{organizationName}'
+    manual_project_participants:
+      preheader: 'Sie haben Post von %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Ihr Kommentar wurde von der Plattform von %{organizationName} gelöscht'
       preheader: 'Ihr Kommentar wurde gelöscht'
@@ -642,6 +644,7 @@ de:
         user_is_given_admin_rights: 'Nutzer*in erhält Admin-Rechte'
         user_is_given_folder_moderator_rights: 'Nutzer*in erhält Ordner-Moderationsrechte'
         user_is_given_project_moderator_rights: 'Nutzer*in erhält Projektmanagementrechte'
+        user_is_invited_to_platform: 'Benutzer ist zu Plattform eingeladen'
         user_is_invited_to_cosponsor_a_proposal: 'Nutzer*in ist eingeladen, einen Vorschlag zu unterstützen'
         user_is_mentioned: 'Nutzer*in wird erwähnt'
         user_is_mentioned_in_internal_comment: 'Nutzer*in wird in internem Kommentar erwähnt'

@@ -145,7 +145,6 @@
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Wprowadzanie adresu",
   "app.components.CustomFieldsForm.addressInputPlaceholder6": "Wprowadź adres...",
   "app.components.CustomFieldsForm.adminFieldTooltip": "Pole widoczne tylko dla administratorów",
-  "app.components.CustomFieldsForm.anonymousSurveyMessage2": "Wszystkie odpowiedzi udzielone w tej ankiecie są anonimowe.",
   "app.components.CustomFieldsForm.atLeastThreePointsRequired": "Do utworzenia wielokąta wymagane są co najmniej trzy punkty.",
   "app.components.CustomFieldsForm.atLeastTwoPointsRequired": "Dla linii wymagane są co najmniej dwa punkty.",
   "app.components.CustomFieldsForm.attachmentRequired": "Wymagany jest co najmniej jeden załącznik",

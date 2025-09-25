@@ -145,7 +145,6 @@
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Εισαγωγή διεύθυνσης",
   "app.components.CustomFieldsForm.addressInputPlaceholder6": "Εισάγετε μια διεύθυνση...",
   "app.components.CustomFieldsForm.adminFieldTooltip": "Πεδίο ορατό μόνο στους διαχειριστές",
-  "app.components.CustomFieldsForm.anonymousSurveyMessage2": "Όλες οι απαντήσεις σε αυτή την έρευνα είναι ανώνυμες.",
   "app.components.CustomFieldsForm.atLeastThreePointsRequired": "Για ένα πολύγωνο απαιτούνται τουλάχιστον τρία σημεία.",
   "app.components.CustomFieldsForm.atLeastTwoPointsRequired": "Για μια γραμμή απαιτούνται τουλάχιστον δύο σημεία.",
   "app.components.CustomFieldsForm.attachmentRequired": "Απαιτείται τουλάχιστον ένα συνημμένο",

@@ -145,7 +145,6 @@
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Adreses ievadīšana",
   "app.components.CustomFieldsForm.addressInputPlaceholder6": "Ievadiet adresi...",
   "app.components.CustomFieldsForm.adminFieldTooltip": "Lauks redzams tikai administratoriem",
-  "app.components.CustomFieldsForm.anonymousSurveyMessage2": "Visas šajā aptaujā sniegtās atbildes ir anonīmas.",
   "app.components.CustomFieldsForm.atLeastThreePointsRequired": "Daudzstūrim nepieciešami vismaz trīs punkti.",
   "app.components.CustomFieldsForm.atLeastTwoPointsRequired": "Lai izveidotu līniju, ir nepieciešami vismaz divi punkti.",
   "app.components.CustomFieldsForm.attachmentRequired": "Nepieciešams vismaz viens pielikums",

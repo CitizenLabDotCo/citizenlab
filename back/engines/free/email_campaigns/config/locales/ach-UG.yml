@@ -119,6 +119,8 @@ ach:
       "unfollow_here": "crwdns1081684:0%{unfollow_url}crwdne1081684:0"
     manual:
       preheader: 'crwdns3166239:0%{organizationName}crwdne3166239:0'
+    manual_project_participants:
+      preheader: 'crwdns5305355:0%{organizationName}crwdne5305355:0'
     comment_deleted_by_admin:
       subject: 'crwdns208274:0%{organizationName}crwdne208274:0'
       preheader: 'crwdns208276:0crwdne208276:0'
@@ -642,6 +644,7 @@ ach:
         user_is_given_admin_rights: 'crwdns522491:0crwdne522491:0'
         user_is_given_folder_moderator_rights: 'crwdns522493:0crwdne522493:0'
         user_is_given_project_moderator_rights: 'crwdns522495:0crwdne522495:0'
+        user_is_invited_to_platform: 'crwdns5345335:0crwdne5345335:0'
         user_is_invited_to_cosponsor_a_proposal: 'crwdns904405:0crwdne904405:0'
         user_is_mentioned: 'crwdns522497:0crwdne522497:0'
         user_is_mentioned_in_internal_comment: 'crwdns748821:0crwdne748821:0'

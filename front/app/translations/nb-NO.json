@@ -145,7 +145,6 @@
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Adresseinngang",
   "app.components.CustomFieldsForm.addressInputPlaceholder6": "Skriv inn en adresse...",
   "app.components.CustomFieldsForm.adminFieldTooltip": "Feltet er bare synlig for administratorer",
-  "app.components.CustomFieldsForm.anonymousSurveyMessage2": "Alle svar på denne undersøkelsen er anonymisert.",
   "app.components.CustomFieldsForm.atLeastThreePointsRequired": "Det kreves minst tre punkter for en polygon.",
   "app.components.CustomFieldsForm.atLeastTwoPointsRequired": "Det kreves minst to punkter for en linje.",
   "app.components.CustomFieldsForm.attachmentRequired": "Minst ett vedlegg er påkrevd",

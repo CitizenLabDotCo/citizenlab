@@ -145,7 +145,6 @@
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Cím megadása",
   "app.components.CustomFieldsForm.addressInputPlaceholder6": "Adjon meg egy címet...",
   "app.components.CustomFieldsForm.adminFieldTooltip": "Csak az adminok láthatják a mezőt",
-  "app.components.CustomFieldsForm.anonymousSurveyMessage2": "A felmérésre adott összes válasz anonimizált.",
   "app.components.CustomFieldsForm.atLeastThreePointsRequired": "Egy sokszöghöz legalább három pont szükséges.",
   "app.components.CustomFieldsForm.atLeastTwoPointsRequired": "Egy vonalhoz legalább két pont szükséges.",
   "app.components.CustomFieldsForm.attachmentRequired": "Legalább egy melléklet szükséges",

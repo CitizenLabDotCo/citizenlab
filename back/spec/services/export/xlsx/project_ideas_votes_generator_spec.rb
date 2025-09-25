@@ -160,7 +160,7 @@ describe Export::Xlsx::ProjectIdeasVotesGenerator do
 
       expect(idea_row[header_row.find_index 'ID']).to eq ideas[0].id
       expect(idea_row[header_row.find_index 'Title']).to eq ideas[0].title_multiloc['en']
-      expect(idea_row[header_row.find_index 'Description']).to eq ideas[0].body_multiloc['en']
+      expect(idea_row[header_row.find_index 'Description']).to eq Export::Xlsx::Utils.new.convert_to_text_long_lines(ideas[0].body_multiloc['en'])
       expect(idea_row[header_row.find_index 'URL']).to eq Frontend::UrlService.new.model_to_url(ideas[0])
       expect(idea_row[header_row.find_index 'Attachments'])
         .to match %r{\A/uploads/.+/idea_file/file/#{idea_file1.id}/#{idea_file1.name}\Z}

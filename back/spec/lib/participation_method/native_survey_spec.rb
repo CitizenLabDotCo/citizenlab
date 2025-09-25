@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe ParticipationMethod::NativeSurvey do
   subject(:participation_method) { described_class.new phase }
 
-  let(:phase) { create(:native_survey_phase) }
+  let(:phase) { create(:native_survey_phase, with_permissions: true) }
 
   describe '#method_str' do
     it 'returns native_survey' do
@@ -181,13 +181,87 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   end
 
   describe '#user_fields_in_form?' do
-    it 'returns false when not enabled' do
+    let(:permission) { phase.permissions.find_by(action: 'posting_idea') }
+
+    it 'returns false if user_data_collection == \'anonymous\'' do
+      permission.update!(user_data_collection: 'anonymous')
       expect(participation_method.user_fields_in_form?).to be false
     end
 
-    it 'returns true when enabled' do
-      phase.user_fields_in_form = true
-      expect(participation_method.user_fields_in_form?).to be true
+    context 'when permission permitted_by is \'everyone\'' do
+      before do
+        permission.update!(permitted_by: 'everyone')
+      end
+
+      it 'returns false if no permissions_custom_fields' do
+        permission.permissions_custom_fields = []
+        permission.save!
+
+        expect(participation_method.user_fields_in_form?).to be false
+      end
+
+      it 'returns true if any permissions_custom_fields' do
+        permission.permissions_custom_fields = [create(:permissions_custom_field)]
+        permission.save!
+
+        expect(participation_method.user_fields_in_form?).to be true
+      end
+    end
+
+    context 'when permission permitted_by is \'everyone_confirmed_email\'' do
+      before do
+        permission.permitted_by = 'everyone_confirmed_email'
+        permission.save!
+      end
+
+      it 'returns true if any permissions_custom_fields and user_fields_in_form selected' do
+        permission.permissions_custom_fields = [create(:permissions_custom_field)]
+        permission.user_fields_in_form = true
+        permission.save!
+
+        expect(participation_method.user_fields_in_form?).to be true
+      end
+
+      it 'returns false if no permissions_custom_fields' do
+        permission.permissions_custom_fields = []
+        permission.user_fields_in_form = true
+        permission.save!
+
+        expect(participation_method.user_fields_in_form?).to be false
+      end
+
+      it 'returns false if no user_fields_in_form' do
+        permission.permissions_custom_fields = [create(:permissions_custom_field)]
+        permission.user_fields_in_form = false
+        permission.save!
+
+        expect(participation_method.user_fields_in_form?).to be false
+      end
+    end
+
+    context 'when permission permitted_by is \'users\'' do
+      before do
+        permission.permitted_by = 'users'
+        permission.save!
+      end
+
+      it 'returns true if global_custom_fields and user_fields_in_form' do
+        permission.permissions_custom_fields = []
+        permission.global_custom_fields = true
+        permission.user_fields_in_form = true
+        permission.save!
+
+        expect(participation_method.user_fields_in_form?).to be true
+      end
+
+      it 'returns true if global_custom_fields = false but there are permissions_custom_fields and user_fields_in_form' do
+        permission.permissions_custom_fields = [create(:permissions_custom_field)]
+        permission.global_custom_fields = false
+        permission.user_fields_in_form = true
+        permission.save!
+
+        expect(participation_method.user_fields_in_form?).to be true
+      end
     end
   end
 

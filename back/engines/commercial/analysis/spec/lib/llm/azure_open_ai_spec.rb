@@ -7,7 +7,7 @@ RSpec.describe Analysis::LLM::AzureOpenAI do
 
   let(:subclass) do
     Class.new(described_class) do
-      def gpt_model
+      def self.gpt_model
         'gpt-vocal'
       end
     end
@@ -52,6 +52,24 @@ RSpec.describe Analysis::LLM::AzureOpenAI do
       )
       expect(service.chat('fake prompt')).to eq 'fake response'
       expect(ErrorReporter).not_to have_received :report_msg
+    end
+  end
+
+  describe 'usable_context_window' do
+    it 'applies headroom ratio to the context window for safety margin' do
+      raw_context_window = 1000
+      stubbed_headroom_ratio = 0.5 # 50% safety margin
+      expected_usable_window = 500
+
+      expect(service)
+        .to receive(:context_window)
+        .and_return(raw_context_window)
+
+      expect(subclass)
+        .to receive(:headroom_ratio)
+        .and_return(stubbed_headroom_ratio)
+
+      expect(service.usable_context_window).to eq(expected_usable_window)
     end
   end
 end

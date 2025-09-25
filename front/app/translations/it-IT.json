@@ -145,7 +145,6 @@
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Indirizzo di ingresso",
   "app.components.CustomFieldsForm.addressInputPlaceholder6": "Inserisci un indirizzo...",
   "app.components.CustomFieldsForm.adminFieldTooltip": "Campo visibile solo agli amministratori",
-  "app.components.CustomFieldsForm.anonymousSurveyMessage2": "Tutte le risposte a questo sondaggio sono anonime.",
   "app.components.CustomFieldsForm.atLeastThreePointsRequired": "Per un poligono sono necessari almeno tre punti.",
   "app.components.CustomFieldsForm.atLeastTwoPointsRequired": "Per una linea sono necessari almeno due punti.",
   "app.components.CustomFieldsForm.attachmentRequired": "È richiesto almeno un allegato",

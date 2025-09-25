@@ -119,6 +119,8 @@ pa:
       "unfollow_here": "ਤੁਹਾਨੂੰ ਇਹ ਸੂਚਨਾ ਉਸ ਆਈਟਮ ਦੇ ਕਾਰਨ ਪ੍ਰਾਪਤ ਹੋਈ ਹੈ ਜਿਸਦਾ ਤੁਸੀਂ ਅਨੁਸਰਣ ਕਰਦੇ ਹੋ। <a href=\"%{unfollow_url}\">ਤੁਸੀਂ ਇਸਨੂੰ ਇੱਥੇ ਅਨਫਾਲੋ ਕਰ ਸਕਦੇ ਹੋ।</a>"
     manual:
       preheader: 'ਤੁਹਾਡੇ ਕੋਲ %{organizationName}ਤੋਂ ਮੇਲ ਹੈ'
+    manual_project_participants:
+      preheader: 'ਤੁਹਾਡੇ ਕੋਲ %{organizationName}ਤੋਂ ਮੇਲ ਹੈ।'
     comment_deleted_by_admin:
       subject: 'ਤੁਹਾਡੀ ਟਿੱਪਣੀ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ਤੋਂ ਮਿਟਾ ਦਿੱਤੀ ਗਈ ਹੈ'
       preheader: 'ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਮਿਟਾ ਦਿੱਤੀ ਗਈ ਹੈ'
@@ -642,6 +644,7 @@ pa:
         user_is_given_admin_rights: 'ਉਪਭੋਗਤਾ ਨੂੰ ਐਡਮਿਨ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਹਨ'
         user_is_given_folder_moderator_rights: 'ਉਪਭੋਗਤਾ ਨੂੰ ਫੋਲਡਰ ਸੰਚਾਲਕ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਹਨ'
         user_is_given_project_moderator_rights: 'ਉਪਭੋਗਤਾ ਨੂੰ ਪ੍ਰੋਜੈਕਟ ਸੰਚਾਲਕ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਹਨ'
+        user_is_invited_to_platform: 'ਉਪਭੋਗਤਾ ਨੂੰ ਪਲੇਟਫਾਰਮ ''ਤੇ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਹੈ।'
         user_is_invited_to_cosponsor_a_proposal: 'ਉਪਭੋਗਤਾ ਨੂੰ ਇੱਕ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਜਾਂਦਾ ਹੈ'
         user_is_mentioned: 'ਉਪਭੋਗਤਾ ਦਾ ਜ਼ਿਕਰ ਕੀਤਾ ਗਿਆ ਹੈ'
         user_is_mentioned_in_internal_comment: 'ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਵਿੱਚ ਉਪਭੋਗਤਾ ਦਾ ਜ਼ਿਕਰ ਕੀਤਾ ਗਿਆ ਹੈ'

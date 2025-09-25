@@ -271,4 +271,20 @@ describe UserRoleService do
       expect(service.moderators_per_folder([f1.id])).to eq({})
     end
   end
+
+  describe 'not_citizenlab_member scope' do
+    it 'includes only users that do not have Citizenlab or Govocal emails' do
+      create(:user, email: 'someone@citizenlab.co')
+      create(:user, email: 'someone@govocal.com')
+      create(:user, email: 'someone@should-not-be-excluded.com')
+      # Users with email: nil can be created via bulk invite import
+      nil_email_user = create(:user)
+      nil_email_user.update_column(:email, nil)
+
+      expect(User.not_citizenlab_member.pluck(:email))
+        .to include('someone@should-not-be-excluded.com', nil)
+      expect(User.not_citizenlab_member.pluck(:email))
+        .not_to include('someone@citizenlab.co', 'someone@govocal.com')
+    end
+  end
 end

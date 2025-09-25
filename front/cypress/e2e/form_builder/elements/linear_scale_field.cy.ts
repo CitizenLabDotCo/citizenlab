@@ -53,7 +53,7 @@ describe('Form builder linear scale', () => {
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.dataCy('e2e-linear-scale');
     cy.wait(2000);
-    cy.dataCy('e2e-linear-scale').click();
+    cy.addItemToFormBuilder('#toolbox_linear_scale');
 
     // Save the survey
     cy.get('form').submit();

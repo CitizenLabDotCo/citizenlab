@@ -13,7 +13,12 @@ const similarIdeasKeys = {
     {
       ...baseKey,
       operation: 'list',
-      parameters: payload,
+      parameters: {
+        projectId: payload.idea.project_id,
+        title: payload.idea.title_multiloc ?? '',
+        body: payload.idea.body_multiloc ?? '',
+        phaseId: payload.phase_id,
+      },
     },
   ],
 } satisfies QueryKeys;

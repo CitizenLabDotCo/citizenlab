@@ -81,7 +81,7 @@ describe('Input form builder', () => {
       cy.contains('Proposed Budget').should('not.exist');
     });
 
-    cy.get('@proposedBudgetToolboxItem').click();
+    cy.addItemToFormBuilder('#toolbox_proposed_budget');
 
     // It should now be disabled as it is in the canvas
     cy.get('@proposedBudgetToolboxItem').should('have.attr', 'disabled');

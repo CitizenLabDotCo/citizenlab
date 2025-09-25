@@ -25,7 +25,9 @@ class IdeaCustomFieldsService
   end
 
   def xlsx_exportable_fields
-    add_user_fields(all_fields).filter(&:supports_xlsx_export?)
+    UserFieldsInSurveyService
+      .add_user_fields_to_form(all_fields, participation_method, custom_form)
+      .filter(&:supports_xlsx_export?)
   end
 
   def geojson_supported_fields
@@ -60,7 +62,7 @@ class IdeaCustomFieldsService
 
   def enabled_fields
     fields = all_fields.select(&:enabled?)
-    add_user_fields(fields)
+    UserFieldsInSurveyService.add_user_fields_to_form(fields, participation_method, custom_form)
   end
 
   def enabled_fields_with_other_options(print_version: false)
@@ -231,6 +233,12 @@ class IdeaCustomFieldsService
     end
 
     fields + [user_page] + user_fields + [last_page]
+  end
+
+  # Check required as it doesn't matter what is saved in title for page 1
+  # Constraints required for the front-end but response will always return input specific method
+  def page1_title?(field, attribute)
+    field.code == 'title_page' && attribute == :title_multiloc
   end
 
   attr_reader :custom_form, :participation_method

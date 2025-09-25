@@ -145,7 +145,6 @@
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Champ d'adresse",
   "app.components.CustomFieldsForm.addressInputPlaceholder6": "Entrez une adresse...",
   "app.components.CustomFieldsForm.adminFieldTooltip": "Champ visible uniquement pour les administrateurs",
-  "app.components.CustomFieldsForm.anonymousSurveyMessage2": "Les réponses à cette enquête sont anonymes.",
   "app.components.CustomFieldsForm.atLeastThreePointsRequired": "Un polygone doit comporter au moins trois points.",
   "app.components.CustomFieldsForm.atLeastTwoPointsRequired": "Au moins deux points sont requis pour une ligne.",
   "app.components.CustomFieldsForm.attachmentRequired": "Au moins un fichier joint est requis",

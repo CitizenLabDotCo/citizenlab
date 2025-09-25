@@ -145,7 +145,6 @@
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Unos adrese",
   "app.components.CustomFieldsForm.addressInputPlaceholder6": "Unesite adresu...",
   "app.components.CustomFieldsForm.adminFieldTooltip": "Polje vidljivo samo administratorima",
-  "app.components.CustomFieldsForm.anonymousSurveyMessage2": "Svi odgovori na ovu anketu su anonimizirani.",
   "app.components.CustomFieldsForm.atLeastThreePointsRequired": "Za poligon su potrebne najmanje tri točke.",
   "app.components.CustomFieldsForm.atLeastTwoPointsRequired": "Za liniju su potrebne najmanje dvije točke.",
   "app.components.CustomFieldsForm.attachmentRequired": "Potreban je barem jedan prilog",

@@ -71,6 +71,7 @@ const SSOButtonsExceptFCAndCU = ({
       )}
       {ssoProviders.nemlogIn && (
         <WrappedAuthProviderButton
+          icon="mitid"
           showConsent={showConsent}
           authProvider="nemlog_in"
           onContinue={onSelectAuthProvider}
