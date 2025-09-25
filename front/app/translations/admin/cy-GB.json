@@ -2065,6 +2065,8 @@
   "app.containers.AdminPage.ProjectEdit.headerImageAltText": "Delwedd pennyn testun alt",
   "app.containers.AdminPage.ProjectEdit.headerImageInputLabel": "Delwedd pennawd",
   "app.containers.AdminPage.ProjectEdit.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimenions-and-sizes-of-the-platform-images",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarning1": "Os ydych chi'n caniatáu i ddefnyddwyr gyflwyno syniadau drwy'r map, gwnewch yn siŵr bod y maes Lleoliad wedi'i gynnwys yn y {inputFormLink}.",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarningLink1": "Ffurflen Mewnbwn",
   "app.containers.AdminPage.ProjectEdit.information.new1": "NEWYDD",
   "app.containers.AdminPage.ProjectEdit.information.provideInformation": "Darparwch wybodaeth i ddefnyddwyr, neu defnyddiwch y lluniwr adroddiadau i rannu canlyniadau ar gamau blaenorol.",
   "app.containers.AdminPage.ProjectEdit.information.shareInformationOrResults": "Rhannu gwybodaeth neu ganlyniadau",
