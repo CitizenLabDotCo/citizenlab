@@ -5518,7 +5518,7 @@ CREATE INDEX index_files_previews_on_file_id ON public.files_previews USING btre
 -- Name: index_files_projects_on_file_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_files_projects_on_file_id ON public.files_projects USING btree (file_id);
+CREATE UNIQUE INDEX index_files_projects_on_file_id ON public.files_projects USING btree (file_id);
 
 
 --
@@ -7854,6 +7854,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250922131002'),
 ('20250915151900'),
 ('20250910093500'),
 ('20250829154300'),
