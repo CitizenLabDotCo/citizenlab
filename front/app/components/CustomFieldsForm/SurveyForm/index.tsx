@@ -127,7 +127,6 @@ const SurveyForm = ({
           onSubmit={onSubmit}
           phase={phase.data}
           defaultValues={initialFormData}
-          customFields={customFields ?? []}
         />
       )}
     </Box>

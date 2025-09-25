@@ -55,7 +55,6 @@ type SurveyPage = {
   }) => Promise<void>;
   phase?: IPhaseData;
   defaultValues?: FormValues;
-  customFields: IFlatCustomField[];
 };
 
 const SurveyPage = ({
@@ -71,7 +70,6 @@ const SurveyPage = ({
   setCurrentPageNumber,
   phase,
   defaultValues,
-  customFields,
 }: SurveyPage) => {
   const pageRef = useRef<HTMLDivElement>(null);
 
@@ -149,10 +147,11 @@ const SurveyPage = ({
   const showIdeaId = idea ? !idea.data.relationships.author?.data : false;
 
   const formCompletionPercentage = getFormCompletionPercentage({
-    customFields,
+    pageQuestions,
+    currentPageNumber,
+    lastPageNumber,
     formValues: methods.getValues(),
     userIsEditing: false,
-    userIsOnLastPage: currentPageNumber === lastPageNumber,
   });
 
   const handleNextAndSubmit = () => {
