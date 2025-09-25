@@ -37,6 +37,12 @@ export default ({
       <FormattedMessage {...messages.locationFieldWarningLink} />
     </a>
   );
+
+  const displayOptions = [
+    { value: 'card', label: messages.cardDisplay },
+    { value: 'map', label: messages.mapDisplay },
+  ];
+
   return (
     <SectionField>
       <SubSectionTitle>
@@ -45,15 +51,15 @@ export default ({
           content={<FormattedMessage {...messages.inputsDefaultViewTooltip} />}
         />
       </SubSectionTitle>
-      {['card', 'map'].map((key) => (
+      {displayOptions.map((option) => (
         <Radio
-          key={key}
+          key={option.value}
           onChange={handleIdeasDisplayChange}
           currentValue={presentation_mode}
-          value={key}
+          value={option.value}
           name="presentation_mode"
-          id={`presentation_mode-${key}`}
-          label={<FormattedMessage {...messages[`${key}Display`]} />}
+          id={`presentation_mode-${option.value}`}
+          label={<FormattedMessage {...option.label} />}
         />
       ))}
       <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
