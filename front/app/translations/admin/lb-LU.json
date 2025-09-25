@@ -2415,7 +2415,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "Answer choices",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultQuestion": "Standardfro",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.deleteButtonLabel": "Delete",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation2": "Are you sure you want to delete this answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation2": "Sidd Dir sécher, datt Dir dës Äntwertoptioun läschen wëllt? All Enregistrementer, op déi spezifesch Benotzer mat dëser Optioun geäntwert hunn, ginn permanent geläscht. Dës Aktioun kann net réckgängeg gemaach ginn.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionDeletionConfirmation3": "Sidd Dir sécher, datt Dir dës demographesch Fro läschen wëllt? All Äntwerten, déi d'Benotzer op dës Fro ginn hunn, ginn permanent geläscht, an si gëtt net méi a Projeten oder Offeren gefrot. Dës Aktioun kann net réckgängeg gemaach ginn.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsSubSectionTitle": "Froen",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsTooltip": "Zitt d'Froen a loosst se falen, fir d'Reiefolleg ze bestëmmen, an där se am globale Umeldungsprozess erschéngen.",
