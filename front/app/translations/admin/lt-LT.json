@@ -2415,7 +2415,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "Atsakymų variantai",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultQuestion": "Numatytasis klausimas",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.deleteButtonLabel": "Ištrinti",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation1": "Are you sure you want to delete this demographic question answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation2": "Are you sure you want to delete this answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionDeletionConfirmation3": "Ar tikrai norite ištrinti šį demografinį klausimą? Visi naudotojų atsakymai į šį klausimą bus visam laikui ištrinti ir jo nebebus galima užduoti projektuose ar pasiūlymuose. Šio veiksmo atšaukti neįmanoma.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsSubSectionTitle": "Klausimai",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsTooltip": "Vilkite ir nuleiskite klausimus, kad nustatytumėte, kokia tvarka jie bus rodomi visuotinės registracijos procese.",
