@@ -36,7 +36,7 @@ const useContentBuilderLayout = (
   >({
     queryKey: contentBuilderKeys.item({ modelId }),
     queryFn: () => fetchContentBuilderLayout(modelId, modelType),
-    enabled: enabled,
+    enabled,
   });
 };
 

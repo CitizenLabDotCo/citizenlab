@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { render, screen } from 'utils/testUtils/rtl';
+import ProjectContentViewer from 'components/DescriptionBuilder/ContentViewer/ProjectContentViewer';
 
-import ProjectViewer from './ProjectViewer';
+import { render, screen } from 'utils/testUtils/rtl';
 
 const projectId = 'id';
 const projectTitle = {
@@ -73,7 +73,9 @@ jest.mock('api/projects/useProjectById', () =>
 
 describe('Preview', () => {
   it('should shows project description builder content when project description builder is enabled', () => {
-    render(<ProjectViewer projectId={projectId} projectTitle={projectTitle} />);
+    render(
+      <ProjectContentViewer projectId={projectId} projectTitle={projectTitle} />
+    );
     expect(
       screen.getByTestId('projectDescriptionBuilderPreviewContent')
     ).toBeInTheDocument();
@@ -84,7 +86,9 @@ describe('Preview', () => {
   it('should show description when project description builder is not enabled', () => {
     DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA.data.attributes.enabled =
       false;
-    render(<ProjectViewer projectId={projectId} projectTitle={projectTitle} />);
+    render(
+      <ProjectContentViewer projectId={projectId} projectTitle={projectTitle} />
+    );
     expect(
       screen.getByTestId('projectDescriptionBuilderProjectDescription')
     ).toBeInTheDocument();

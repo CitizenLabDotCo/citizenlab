@@ -19,7 +19,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 import ContentContainer from 'components/ContentContainer';
-import ContentViewer from 'components/DescriptionBuilder/ContentViewer';
+import ProjectContentViewer from 'components/DescriptionBuilder/ContentViewer/ProjectContentViewer';
 import FollowUnfollow from 'components/FollowUnfollow';
 import {
   HeaderImage,
@@ -161,7 +161,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
           {!projectDescriptionBuilderEnabled && (
             <ProjectInfo projectId={projectId} />
           )}
-          <ContentViewer model={project.data} modelType="project" />
+          <ProjectContentViewer project={project.data} />
         </ContentContainer>
       </Container>
     );

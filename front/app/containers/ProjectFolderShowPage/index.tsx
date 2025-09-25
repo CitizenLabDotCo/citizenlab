@@ -17,7 +17,7 @@ import useProjectFolderBySlug from 'api/project_folders/useProjectFolderBySlug';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import ContentContainer from 'components/ContentContainer';
-import ContentViewer from 'components/DescriptionBuilder/ContentViewer';
+import FolderContentViewer from 'components/DescriptionBuilder/ContentViewer/FolderContentViewer';
 import FollowUnfollow from 'components/FollowUnfollow';
 import PageNotFound from 'components/PageNotFound';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -152,7 +152,7 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
         {projectDescriptionBuilderEnabled ? (
           <StyledContentContainer maxWidth={maxPageWidth}>
             <ProjectFolderHeader projectFolder={projectFolder} />
-            <ContentViewer model={projectFolder} modelType="folder" />
+            <FolderContentViewer folder={projectFolder} />
           </StyledContentContainer>
         ) : (
           <>
