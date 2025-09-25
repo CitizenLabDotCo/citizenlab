@@ -2415,7 +2415,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "Yanıt seçenekleri",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultQuestion": "Varsayılan soru",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.deleteButtonLabel": "Sil",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation1": "Are you sure you want to delete this demographic question answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation2": "Are you sure you want to delete this answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionDeletionConfirmation3": "Bu demografik soruyu silmek istediğinizden emin misiniz? Kullanıcıların bu soruya verdikleri tüm yanıtlar kalıcı olarak silinecek ve artık projelerde veya tekliflerde sorulmayacaktır. Bu işlem geri alınamaz.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsSubSectionTitle": "Sorular",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsTooltip": "Genel kayıt sürecinde görünecekleri sırayı belirlemek için soruları sürükleyip bırakın.",
