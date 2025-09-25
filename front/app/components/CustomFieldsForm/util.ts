@@ -9,6 +9,7 @@ import { FormatMessageValues } from 'utils/cl-intl/useIntl';
 import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 
 import messages from './messages';
+import { FormValues } from './Page/types';
 
 export type Pages = {
   page: IFlatCustomField;
@@ -48,39 +49,53 @@ const isNillish = (value: any) => {
 };
 
 type GetFormCompletionPercentageParams = {
-  customFields: IFlatCustomField[];
-  formValues: Record<string, any>;
-  userIsOnLastPage: boolean;
+  pageQuestions: IFlatCustomField[];
+  currentPageNumber: number;
+  lastPageNumber: number;
+  formValues: FormValues;
   userIsEditing: boolean;
 };
 
 export function getFormCompletionPercentage({
-  customFields,
+  pageQuestions,
+  currentPageNumber,
+  lastPageNumber,
   formValues,
-  userIsOnLastPage,
   userIsEditing,
 }: GetFormCompletionPercentageParams) {
+  const userIsOnLastPage = currentPageNumber === lastPageNumber;
+
   if (userIsOnLastPage || userIsEditing) {
     return 100;
   }
 
+  // We will calculate the completion percentage based on:
+  // 1. the page number the user is on
+  // 2. the number of questions answered on the current page
+
+  const numberOfPagesWithQuestions = lastPageNumber - 1;
+  const percentagePerPage = 100 / numberOfPagesWithQuestions;
+
+  // 1. Calculate the percentage based on the page number
+  const pageNumberPercentage = percentagePerPage * currentPageNumber;
+
+  // 2. Add a percentage based on the number of questions answered on the current page
+  const numberOfQuestionsOnPage = pageQuestions.length;
   let indexOfLastFilledOutQuestion = -1;
 
-  customFields.forEach((field, index) => {
+  pageQuestions.forEach((field, index) => {
     if (!isNillish(formValues[field.key])) {
       indexOfLastFilledOutQuestion = index;
     }
   });
 
-  return Math.round(
-    // We add 1 to the index, otherwise it doesn't look like it
-    // was filled out.
-    // e.g. if you have two questions, and you filled out the first one,
-    // the index will be 0. If you were to divide that by the length,
-    // you would get 0 percent. So instead we add 1- this way, the
-    // result is 1 / 2 = 50%.
-    ((indexOfLastFilledOutQuestion + 1) / customFields.length) * 100
-  );
+  const percentageOnPage =
+    ((indexOfLastFilledOutQuestion + 1) / numberOfQuestionsOnPage) *
+    percentagePerPage;
+
+  const percentage = pageNumberPercentage + percentageOnPage;
+
+  return Math.floor(percentage);
 }
 
 export const extractOptions = (
