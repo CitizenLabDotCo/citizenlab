@@ -2415,7 +2415,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "خيارات الإجابة",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultQuestion": "السؤال الافتراضي",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.deleteButtonLabel": "حذف",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation1": "Are you sure you want to delete this demographic question answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation2": "Are you sure you want to delete this answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionDeletionConfirmation3": "هل أنت متأكد من رغبتك في حذف هذا السؤال الديموغرافي؟ سيتم حذف جميع إجابات المستخدمين على هذا السؤال نهائيًا، ولن يُطلب منك طرحه في المشاريع أو المقترحات. لا يمكن التراجع عن هذا الإجراء.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsSubSectionTitle": "أسئلة",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsTooltip": "قم بسحب الأسئلة وإفلاتها لتحديد الترتيب الذي تظهر به في عملية التسجيل العالمية.",
