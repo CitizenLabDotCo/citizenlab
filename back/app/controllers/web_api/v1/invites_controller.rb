@@ -65,48 +65,6 @@ class WebApi::V1::InvitesController < ApplicationController
     end
   end
 
-  def count_new_seats
-    authorize :invite
-
-    import = InvitesImport.create!(
-      job_type: 'count_new_seats',
-      importer: current_user
-    )
-
-    Invites::CountNewSeatsJob.perform_later(
-      current_user,
-      bulk_create_params,
-      import.id,
-      xlsx_import: false
-    )
-
-    render json: WebApi::V1::Invites::InvitesImportSerializer.new(
-      import,
-      params: jsonapi_serializer_params
-    ).serializable_hash
-  end
-
-  def count_new_seats_xlsx
-    authorize :invite
-
-    import = InvitesImport.create!(
-      job_type: 'count_new_seats_xlsx',
-      importer: current_user
-    )
-
-    Invites::CountNewSeatsJob.perform_later(
-      current_user,
-      bulk_create_xlsx_params,
-      import.id,
-      xlsx_import: true
-    )
-
-    render json: WebApi::V1::Invites::InvitesImportSerializer.new(
-      import,
-      params: jsonapi_serializer_params
-    ).serializable_hash
-  end
-
   def bulk_create
     authorize :invite
 

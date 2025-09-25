@@ -285,13 +285,14 @@ Rails.application.routes.draw do
         post 'by_token/:token/accept', on: :collection, to: 'invites#accept'
         post :bulk_create, on: :collection
         post :bulk_create_xlsx, on: :collection
-        post :count_new_seats_xlsx, on: :collection # it is POST because we need to send a file in body
-        post :count_new_seats, on: :collection # it is POST to make it similar to other bulk_create_ and count_new_ actions
         get :example_xlsx, on: :collection
         get :as_xlsx, on: :collection, action: 'index_xlsx'
       end
 
-      resources :invites_imports, only: :show, controller: 'invites/invites_imports', defaults: { container_type: 'InvitesImport' }
+      resources :invites_imports, controller: 'invites/invites_imports', only: %i[show count_new_seats count_new_seats_xlsx] do
+        post :count_new_seats, on: :collection # it is POST to make it similar to other bulk_create_ and count_new_ actions
+        post :count_new_seats_xlsx, on: :collection # it is POST because we need to send a file in body
+      end
 
       resources :custom_field_option_images, only: %i[show create update destroy], controller: :images, defaults: { container_type: 'CustomFieldOption' }
 
