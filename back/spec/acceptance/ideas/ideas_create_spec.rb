@@ -516,7 +516,7 @@ resource 'Ideas' do
       context 'when resident' do
         before { header_token_for(resident) }
 
-        let(:resident) { create(:user) }
+        let(:resident) { create(:user, custom_field_values: { age: 30 }) }
 
         example 'does not assign anyone to the created idea', document: false do
           do_request
@@ -538,7 +538,16 @@ resource 'Ideas' do
         end
 
         describe 'Creating a native survey response when posting anonymously is enabled' do
-          let(:project) { create(:single_phase_native_survey_project, phase_attrs: { allow_anonymous_participation: true }) }
+          let(:project) do
+            project = create(
+              :single_phase_native_survey_project,
+              phase_attrs: { with_permissions: true }
+            )
+
+            project.phases.first.permissions.find_by(action: 'posting_idea').update!(user_data_collection: 'anonymous')
+
+            project
+          end
 
           example_request 'Posting a survey automatically sets anonymous to true' do
             assert_status 201
@@ -549,13 +558,33 @@ resource 'Ideas' do
         end
 
         describe 'Creating a native survey response when posting anonymously is not enabled' do
-          let(:project) { create(:single_phase_native_survey_project, phase_attrs: { allow_anonymous_participation: false }) }
+          let(:project) do
+            project = create(:single_phase_native_survey_project, phase_attrs: {
+              with_permissions: true
+            })
+
+            phase = project.phases.first
+
+            permission = phase.permissions.find_by(action: 'posting_idea')
+            permission.update!(global_custom_fields: false, user_data_collection: 'all_data')
+            permission.permissions_custom_fields = [
+              create(:permissions_custom_field, custom_field: create(:custom_field, key: 'age'))
+            ]
+
+            project
+          end
+
+          let(:publication_status) { 'published' }
 
           example_request 'Posting a survey does not set the survey to anonymous' do
             assert_status 201
             expect(response_data.dig(:attributes, :anonymous)).to be false
             expect(response_data.dig(:attributes, :author_name)).not_to be_nil
             expect(response_data.dig(:relationships, :author, :data)).not_to be_nil
+
+            # It also saves the custom field values into the idea
+            idea = Idea.find(response_data[:id])
+            expect(idea.custom_field_values['u_age']).to eq 30
           end
         end
       end
@@ -700,7 +729,9 @@ resource 'Ideas' do
         end
 
         context 'Creating a community monitor survey response when posting anonymously is enabled' do
-          before { phase.update! allow_anonymous_participation: true }
+          before do
+            phase.permissions.find_by(action: 'posting_idea').update!(user_data_collection: 'anonymous')
+          end
 
           example_request 'Posting a survey automatically sets anonymous to true' do
             assert_status 201

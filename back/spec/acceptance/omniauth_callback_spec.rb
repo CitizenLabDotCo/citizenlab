@@ -47,6 +47,7 @@ def mock_omniauth_callback_controller(auth_service_mock)
   # Mock other methods
   allow_any_instance_of(OmniauthCallbackController).to receive(:authentication_service).and_return(auth_service_mock)
   allow_any_instance_of(OmniauthCallbackController).to receive(:update_user!).and_return(true)
+  allow_any_instance_of(OmniauthCallbackController).to receive(:update_identity!).and_return(true)
   allow_any_instance_of(OmniauthCallbackController).to receive(:verified_for_sso?).and_return(true)
   allow_any_instance_of(OmniauthCallbackController).to receive(:signin_success_redirect)
 end

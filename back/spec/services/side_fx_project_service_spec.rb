@@ -52,6 +52,7 @@ describe SideFxProjectService do
 
   describe 'after_update' do
     it "logs a 'changed' action job when the project has changed" do
+      service.before_update(project, user)
       project.update!(title_multiloc: { en: 'changed' })
       expect { service.after_update(project, user) }
         .to have_enqueued_job(LogActivityJob)
@@ -62,7 +63,7 @@ describe SideFxProjectService do
           project.updated_at.to_i,
           project_id: project.id,
           payload: {
-            change: sanitize_change(project.saved_changes),
+            change: { 'title_multiloc' => [build(:project).title_multiloc, { 'en' => 'changed' }] },
             project: clean_time_attributes(project.attributes)
           }
         )
@@ -72,13 +73,25 @@ describe SideFxProjectService do
       project.admin_publication.update!(publication_status: 'draft')
 
       project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
-      service.before_update project, user
+      service.before_update(project, user)
 
       project.save!
 
       expect { service.after_update(project, user) }
         .to have_enqueued_job(LogActivityJob)
-        .with(project, 'published', user, project.updated_at.to_i, anything)
+        .with(project, 'published', user, project.updated_at.to_i, project_id: project.id)
+        .and have_enqueued_job(LogActivityJob)
+        .with(
+          project,
+          'changed',
+          user,
+          project.updated_at.to_i,
+          project_id: project.id,
+          payload: {
+            change: { 'publication_status' => %w[draft published] },
+            project: clean_time_attributes(project.attributes)
+          }
+        )
     end
 
     it "does not log a 'published' action when a archived project is republished" do

@@ -257,7 +257,7 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
 
     context 'user_fields_in_form is enabled' do
       let!(:parsed_html) do
-        phase.update!(user_fields_in_form: true)
+        phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
         Nokogiri::HTML(service.export)
       end
 

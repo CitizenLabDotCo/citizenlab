@@ -1,11 +1,11 @@
 import 'cypress-file-upload';
 import './dnd';
+import './form-builder';
 import * as moment from 'moment';
 import { IUserUpdate } from '../../app/api/users/types';
 import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configuration/types';
 import { IProjectAttributes } from '../../app/api/projects/types';
 import { ICustomFieldInputType } from '../../app/api/custom_fields/types';
-import { IProjectGroup } from '../../app/api/project_groups/types';
 import { IGroup } from '../../app/api/groups/types';
 import { Multiloc } from '../../app/typings';
 
@@ -97,6 +97,9 @@ declare global {
       createProjectWithNativeSurveyPhase: typeof createProjectWithNativeSurveyPhase;
       createProjectWithIdeationPhase: typeof createProjectWithIdeationPhase;
       selectReactSelectOption: typeof selectReactSelectOption;
+      addItemToFormBuilder(
+        toolboxSelector: string
+      ): Chainable<JQuery<HTMLElement>>;
     }
   }
 }

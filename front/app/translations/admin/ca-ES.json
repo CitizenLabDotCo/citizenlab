@@ -1023,7 +1023,6 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Trieu com poden participar els usuaris.",
   "app.containers.AdminPage.ProjectEdit.participationRequirementsSubtitle": "Podeu especificar qui pot fer cada acció i fer preguntes addicionals als participants per recollir més informació.",
   "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Requisits i preguntes dels participants",
-  "app.containers.AdminPage.ProjectEdit.permissionsTab": "Drets d'accés",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Poll",
   "app.containers.AdminPage.ProjectEdit.popularSortingMethod2": "La majoria de reaccions",
   "app.containers.AdminPage.ProjectEdit.projectCardImageLabelText": "Imatge de la targeta del projecte",

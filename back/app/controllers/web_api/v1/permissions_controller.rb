@@ -111,6 +111,8 @@ class WebApi::V1::PermissionsController < ApplicationController
       :global_custom_fields,
       :verification_expiry,
       :everyone_tracking_enabled,
+      :user_fields_in_form,
+      :user_data_collection,
       group_ids: [],
       access_denied_explanation_multiloc: CL2_SUPPORTED_LOCALES
     )

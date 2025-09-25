@@ -145,7 +145,6 @@
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Adres girişi",
   "app.components.CustomFieldsForm.addressInputPlaceholder6": "Bir adres girin...",
   "app.components.CustomFieldsForm.adminFieldTooltip": "Yalnızca yöneticilerin görebileceği alan",
-  "app.components.CustomFieldsForm.anonymousSurveyMessage2": "Bu ankete verilen tüm yanıtlar anonimleştirilmiştir.",
   "app.components.CustomFieldsForm.atLeastThreePointsRequired": "Bir çokgen için en az üç nokta gereklidir.",
   "app.components.CustomFieldsForm.atLeastTwoPointsRequired": "Bir çizgi için en az iki nokta gereklidir.",
   "app.components.CustomFieldsForm.attachmentRequired": "En az bir ek gereklidir",

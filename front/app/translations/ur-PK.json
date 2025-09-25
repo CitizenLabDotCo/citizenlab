@@ -145,7 +145,6 @@
   "app.components.CustomFieldsForm.addressInputAriaLabel": "ایڈریس ان پٹ",
   "app.components.CustomFieldsForm.addressInputPlaceholder6": "ایک پتہ درج کریں...",
   "app.components.CustomFieldsForm.adminFieldTooltip": "فیلڈ صرف ایڈمنز کے لیے مرئی ہے۔",
-  "app.components.CustomFieldsForm.anonymousSurveyMessage2": "اس سروے کے تمام جوابات گمنام ہیں۔",
   "app.components.CustomFieldsForm.atLeastThreePointsRequired": "کثیرالاضلاع کے لیے کم از کم تین پوائنٹس درکار ہیں۔",
   "app.components.CustomFieldsForm.atLeastTwoPointsRequired": "ایک لائن کے لیے کم از کم دو پوائنٹس درکار ہیں۔",
   "app.components.CustomFieldsForm.attachmentRequired": "کم از کم ایک منسلکہ درکار ہے۔",

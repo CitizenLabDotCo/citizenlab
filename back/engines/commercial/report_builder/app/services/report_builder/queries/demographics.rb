@@ -59,7 +59,20 @@ module ReportBuilder
     def find_demographics_in_ideas(start_at, end_at, project_id)
       return unless project_id # Only do this if filtered by project
 
-      phases = Phase.where(project_id: project_id, user_fields_in_form: true)
+      phase_ids = Permission
+        .where(
+          action: 'posting_idea',
+          permission_scope_type: 'Phase',
+          user_fields_in_form: true
+        )
+        .pluck(:permission_scope_id)
+
+      phases = Phase.where(
+        project_id: project_id,
+        id: phase_ids,
+        participation_method: 'native_survey'
+      )
+
       return if phases.blank?
 
       # Only find published ideas with null users, as any user demographics will already be included

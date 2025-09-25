@@ -11,7 +11,8 @@ RSpec.describe EmailCampaigns::Campaigns::InviteReceived do
 
   describe '#generate_commands' do
     let(:campaign) { create(:invite_received_campaign) }
-    let(:invite) { create(:invite) }
+    let(:invite_text_image) { create(:text_image) }
+    let(:invite) { create(:invite, invite_text: "<p>Some text</p><img data-cl2-text-image-text-reference=\"#{invite_text_image.text_reference}\">") }
     let(:activity) { create(:activity, item: invite, action: 'created', user: invite.inviter) }
 
     it 'generates a command with the desired payload and tracked content' do
@@ -26,9 +27,13 @@ RSpec.describe EmailCampaigns::Campaigns::InviteReceived do
       expect(
         command.dig(:event_payload, :invitee_last_name)
       ).to eq(invite.invitee.last_name)
-      expect(
-        command.dig(:event_payload, :invite_text)
-      ).to eq(invite.invite_text)
+
+      # Check that the invite text is processed for text images
+      invite_text_html = Nokogiri::HTML.fragment(command.dig(:event_payload, :invite_text))
+      text = invite_text_html.css('p').first
+      image = invite_text_html.css("img[data-cl2-text-image-text-reference=\"#{invite_text_image.text_reference}\"]").first
+      expect(text.inner_html).to eq('Some text')
+      expect(image['src']).to eq invite_text_image.image.url
     end
   end
 
