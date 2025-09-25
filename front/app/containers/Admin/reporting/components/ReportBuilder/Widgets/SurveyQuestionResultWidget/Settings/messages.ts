@@ -14,9 +14,9 @@ export default defineMessages({
     defaultMessage: 'Group mode',
   },
   groupModeTooltip: {
-    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupModeTooltip1',
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupModeTooltip2',
     defaultMessage:
-      'Group survey responses by registration fields (gender, location, age, etc) or other survey questions.',
+      'Group survey responses by demographic questions (gender, location, age, etc) or other survey questions.',
   },
   featureLockedReason: {
     id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.featureLockedReason1',
@@ -27,17 +27,17 @@ export default defineMessages({
     id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.none',
     defaultMessage: 'None',
   },
-  registrationField: {
-    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.registrationField',
-    defaultMessage: 'Registration field',
+  demographicQuestion: {
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.demographicQuestion',
+    defaultMessage: 'Demographic question',
   },
   surveyQuestion: {
     id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion',
     defaultMessage: 'Survey question',
   },
-  groupByRegistrationField: {
-    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupByRegistrationField',
-    defaultMessage: 'Group by registration field',
+  groupByDemographicQuestion: {
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupByDemographicQuestion',
+    defaultMessage: 'Group by demographic question',
   },
   groupBySurveyQuestion: {
     id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupBySurveyQuestion',

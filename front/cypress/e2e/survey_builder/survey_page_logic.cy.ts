@@ -104,9 +104,9 @@ describe('Survey page logic', () => {
     cy.dataCy('e2e-submit-form').should('exist');
     cy.wait(2000);
     cy.dataCy('e2e-submit-form').click();
-    cy.wait(1000);
 
     // Expect to be on success page and return to project
+    cy.wait(1000);
     cy.dataCy('e2e-after-submission').click();
     cy.location('pathname').should('eq', `/en/projects/${projectSlug}`);
   });

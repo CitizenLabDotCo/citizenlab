@@ -96,6 +96,7 @@ declare global {
       apiCreateNativeSurveyPhase: typeof apiCreateNativeSurveyPhase;
       createProjectWithNativeSurveyPhase: typeof createProjectWithNativeSurveyPhase;
       createProjectWithIdeationPhase: typeof createProjectWithIdeationPhase;
+      selectReactSelectOption: typeof selectReactSelectOption;
       addItemToFormBuilder(
         toolboxSelector: string
       ): Chainable<JQuery<HTMLElement>>;
@@ -2251,6 +2252,18 @@ Cypress.Commands.add(
 );
 Cypress.Commands.add('apiCreateManualGroup', apiCreateManualGroup);
 Cypress.Commands.add('apiAddMembership', apiAddMembership);
+
+// ReactSelect helper function
+const selectReactSelectOption = (selector: string, label: string) => {
+  cy.get(selector).click();
+  cy.get(`${selector} input[id$='-input']`).type(`${label}{enter}`, {
+    force: true,
+  });
+  cy.get(selector).should('contain.text', label);
+};
+
+Cypress.Commands.add('selectReactSelectOption', selectReactSelectOption);
+
 Cypress.Commands.add(
   'createProjectWithIdeationPhase',
   createProjectWithIdeationPhase

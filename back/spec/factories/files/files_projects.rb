@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :files_project, class: 'Files::FilesProject' do
-    file
+    file factory: :global_file
     project
   end
 end
