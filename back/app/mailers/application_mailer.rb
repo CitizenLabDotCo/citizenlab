@@ -140,6 +140,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def to_email
+    binding.pry
     email_address_with_name(recipient.email, "#{recipient.first_name} #{recipient.last_name}")
   end
 

@@ -182,7 +182,11 @@ class WebApi::V1::InvitesController < ApplicationController
       return
     end
 
-    EmailCampaigns::InviteReminderMailer.with(command: { recipient: user }).resend_invite.deliver_now
+    EmailCampaigns::InviteReminderMailer.with(
+      user: user,
+      command: { recipient: user },
+      campaign: EmailCampaigns::Campaigns::InviteReminder.new
+    ).resend_invite.deliver_now
 
     head :ok
   end
