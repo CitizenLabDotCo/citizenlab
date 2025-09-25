@@ -42,7 +42,12 @@ describe('Survey page logic', () => {
 
     // For the survey end page, set a custom button link + label
     cy.dataCy('e2e-field-row').last().click();
-    cy.contains('Use custom page button').click();
+    cy.contains('Description (optional)').should('be.visible');
+
+    cy.get('#e2e-custom-button-toggle')
+      .scrollIntoView()
+      .should('be.visible')
+      .click();
 
     cy.dataCy('e2e-custom-button-link').should('exist');
     cy.dataCy('e2e-custom-button-link').click().type('/events');
@@ -53,12 +58,22 @@ describe('Survey page logic', () => {
     // Save the survey
     cy.get('form').submit();
 
+    cy.intercept('GET', `/web_api/v1/phases/${phaseId}/custom_fields?**`).as(
+      'getCustomFields'
+    );
+
     // Visit survey front office
     cy.visit(`/projects/${projectSlug}/surveys/new`);
+
+    cy.wait('@getCustomFields', { timeout: 10000 });
+    cy.contains('Your question').should('exist');
 
     // Click next
     cy.dataCy('e2e-submit-form').should('exist');
     cy.dataCy('e2e-submit-form').click();
+
+    cy.wait(500);
+
     // Check if we are on the survey end page
     cy.dataCy('e2e-after-submission').should('exist');
     // Check if the button text + link is the custom one we set up
