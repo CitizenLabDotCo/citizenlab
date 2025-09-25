@@ -2065,6 +2065,8 @@
   "app.containers.AdminPage.ProjectEdit.headerImageAltText": "Zamjenski tekst slike zaglavlja",
   "app.containers.AdminPage.ProjectEdit.headerImageInputLabel": "Naslovna slika",
   "app.containers.AdminPage.ProjectEdit.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarning1": "Ako korisnicima dopuštate slanje ideja putem karte, provjerite je li polje Lokacija uključeno u {inputFormLink}.",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarningLink1": "Obrazac za unos",
   "app.containers.AdminPage.ProjectEdit.information.new1": "NOVI",
   "app.containers.AdminPage.ProjectEdit.information.provideInformation": "Pružite informacije korisnicima ili koristite alat za izradu izvješća za dijeljenje rezultata prošlih faza.",
   "app.containers.AdminPage.ProjectEdit.information.shareInformationOrResults": "Dijelite informacije ili rezultate",
