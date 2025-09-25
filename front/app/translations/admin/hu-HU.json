@@ -2415,7 +2415,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "Answer choices",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultQuestion": "Alapértelmezett kérdés",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.deleteButtonLabel": "Delete",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation2": "Are you sure you want to delete this answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation2": "Biztosan törölni szeretné ezt a válaszlehetőséget? Az összes olyan rekord véglegesen törlődik, amelyre az adott felhasználók ezzel a lehetőséggel válaszoltak. Ez a művelet nem vonható vissza.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionDeletionConfirmation3": "Biztosan törölni szeretné ezt a demográfiai kérdést? A felhasználók által erre a kérdésre adott összes válasz véglegesen törlődik, és a kérdés többé nem szerepelni fog a projektekben vagy ajánlatokban. Ez a művelet nem vonható vissza.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsSubSectionTitle": "Kérdések",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsTooltip": "Húzd a kérdéseket a megfelelő helyre, hogy meghatározd a globális regisztrációs folyamatban való megjelenésük sorrendjét.",
