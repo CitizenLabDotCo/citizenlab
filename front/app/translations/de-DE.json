@@ -145,7 +145,6 @@
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Adresseingabe",
   "app.components.CustomFieldsForm.addressInputPlaceholder6": "Adresse eingeben...",
   "app.components.CustomFieldsForm.adminFieldTooltip": "Feld nur für Admins sichtbar",
-  "app.components.CustomFieldsForm.anonymousSurveyMessage2": "Alle Antworten auf diese Umfrage sind anonymisiert.",
   "app.components.CustomFieldsForm.atLeastThreePointsRequired": "Für ein Polygon sind mindestens drei Punkte erforderlich.",
   "app.components.CustomFieldsForm.atLeastTwoPointsRequired": "Für eine Linie sind mindestens zwei Punkte erforderlich.",
   "app.components.CustomFieldsForm.attachmentRequired": "Mindestens ein Anhang ist erforderlich",

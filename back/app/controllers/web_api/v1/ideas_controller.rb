@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::IdeasController < ApplicationController
+class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metrics/ClassLength
   include BlockingProfanity
 
   SIMILARITIES_LIMIT = 5
@@ -150,11 +150,17 @@ class WebApi::V1::IdeasController < ApplicationController
       (current_user && Idea.find_by(creation_phase_id: params[:phase_id], author: current_user, publication_status: 'draft')) ||
       Idea.new(project: phase.project, author: current_user, publication_status: 'draft')
 
-    # Merge custom field values from the user's profile if user fields are presented in the idea form
-    if current_user && phase.pmethod.user_fields_in_form?
-      user_values = current_user.custom_field_values&.transform_keys { |key| "u_#{key}" }
-      draft_idea.custom_field_values = user_values.merge(draft_idea.custom_field_values) if current_user
+    # Merge custom field values from the user's profile
+    # if user fields are presented in the idea form
+    # AND the user_data_collection setting allows it
+    if phase.pmethod.user_fields_in_form?
+      draft_idea.custom_field_values = UserFieldsInSurveyService.merge_user_fields_into_idea(
+        current_user,
+        phase,
+        draft_idea.custom_field_values
+      )
     end
+
     render_show draft_idea, check_auth: false
   end
 
@@ -181,11 +187,15 @@ class WebApi::V1::IdeasController < ApplicationController
     # Non persisted attribute needed by policy & anonymous_participation concern for 'everyone' participation only
     input.request = request if phase_for_input.pmethod.everyone_tracking_enabled?
 
-    # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force
-    if phase_for_input.pmethod.supports_survey_form? && phase_for_input.allow_anonymous_participation?
+    # If native survey or community monitor:
+    # Do not store user ID if user_data_collection it set to "anonymous" or "demographics_only"
+    # (anonymous = true on the input just means "do not store user ID")
+    if phase_for_input.pmethod.supports_survey_form? && phase_for_input.pmethod.user_data_collection != 'all_data'
       input.anonymous = true
     end
+
     input.author ||= current_user
+
     phase_for_input.pmethod.assign_defaults(input)
 
     sidefx.before_create(input, current_user)
@@ -202,7 +212,24 @@ class WebApi::V1::IdeasController < ApplicationController
     verify_profanity input
 
     save_options = {}
-    save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
+    publication_status = params.dig(:idea, :publication_status)
+
+    if publication_status == 'published'
+      save_options[:context] = :publication
+
+      if UserFieldsInSurveyService.should_merge_user_fields_into_idea?(
+        current_user,
+        phase_for_input,
+        input
+      )
+        input.custom_field_values = UserFieldsInSurveyService.merge_user_fields_into_idea(
+          current_user,
+          phase_for_input,
+          input.custom_field_values
+        )
+      end
+    end
+
     ActiveRecord::Base.transaction do
       if input.save(**save_options)
         update_file_upload_fields input, form, params_for_create
@@ -249,6 +276,20 @@ class WebApi::V1::IdeasController < ApplicationController
     update_params[:custom_field_values] = params_service.updated_custom_field_values(input.custom_field_values, update_params[:custom_field_values])
     CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
     input.set_manual_votes(update_params[:manual_votes_amount], current_user) if update_params[:manual_votes_amount]
+
+    creation_phase = input.creation_phase
+
+    if (input.publication_status == 'published' || update_params[:publication_status] == 'published') && UserFieldsInSurveyService.should_merge_user_fields_into_idea?(
+      current_user,
+      creation_phase,
+      input
+    )
+      update_params[:custom_field_values] = UserFieldsInSurveyService.merge_user_fields_into_idea(
+        current_user,
+        creation_phase,
+        update_params[:custom_field_values]
+      )
+    end
 
     update_errors = nil
     ActiveRecord::Base.transaction do # Assigning relationships cause database changes
@@ -523,6 +564,8 @@ class WebApi::V1::IdeasController < ApplicationController
     end
   end
 
+  # Only relevant for allow_anonymous_participation in the context of ideation
+  # Not relevant for 'user_data_collection' in the context of surveys
   def anonymous_not_allowed?(phase)
     params.dig('idea', 'anonymous') && !phase.allow_anonymous_participation
   end

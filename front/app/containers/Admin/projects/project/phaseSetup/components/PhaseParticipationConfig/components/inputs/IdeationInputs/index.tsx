@@ -7,7 +7,7 @@ import { IdeaSortMethod, InputTerm } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
+import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import FeatureFlag from 'components/FeatureFlag';
 import Error from 'components/UI/Error';

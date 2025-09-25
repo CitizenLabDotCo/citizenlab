@@ -40,8 +40,8 @@ export default defineMessages({
     defaultMessage: 'Volunteering',
   },
   phaseAccessRights: {
-    id: 'app.containers.AdminPage.ProjectEdit.phaseAccessRights',
-    defaultMessage: 'Access rights',
+    id: 'app.containers.AdminPage.ProjectEdit.phaseAccessRights2',
+    defaultMessage: 'Phase access and user data',
   },
   phaseEmails: {
     id: 'app.containers.AdminPage.ProjectEdit.phaseEmails',
@@ -54,10 +54,6 @@ export default defineMessages({
   allowedInputTopicsTab: {
     id: 'app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab',
     defaultMessage: 'Allowed input tags',
-  },
-  permissionsTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.permissionsTab',
-    defaultMessage: 'Access rights',
   },
   eventsTab: {
     id: 'app.containers.AdminPage.ProjectEdit.eventsTab',

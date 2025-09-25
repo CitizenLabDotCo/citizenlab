@@ -1,5 +1,8 @@
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
-import { PermittedBy } from 'api/phase_permissions/types';
+import {
+  PermittedBy,
+  UserFieldsInFormFrontendDescriptor,
+} from 'api/phase_permissions/types';
 
 export const getNumberOfVerificationLockedItems = (
   fields: IPermissionsCustomFieldData[]
@@ -20,4 +23,10 @@ export const showResetButton = (
   }
 
   return fields.some((field) => field.attributes.persisted);
+};
+
+export const allowAddingFields = (
+  explanation: UserFieldsInFormFrontendDescriptor['explanation']
+) => {
+  return explanation !== 'with_these_settings_cannot_ask_demographic_fields';
 };

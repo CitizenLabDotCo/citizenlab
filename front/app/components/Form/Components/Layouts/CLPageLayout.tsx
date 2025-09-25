@@ -157,6 +157,9 @@ const CLPageLayout = memo(
     const allowAnonymousPosting =
       phase?.data.attributes.allow_anonymous_participation;
 
+    const storeUserIdInNativeSurvey =
+      phase?.data.attributes.user_data_collection !== 'all_data';
+
     /*
      * For native surveys, the admin enables anonymous posting for all responses,
      * so we display a message to the user. For other methods (e.g., ideation and proposals),
@@ -164,7 +167,7 @@ const CLPageLayout = memo(
      * to choose whether to post anonymously or not.
      */
     const allowsAnonymousPostingInNativeSurvey =
-      supportsNativeSurvey && allowAnonymousPosting;
+      supportsNativeSurvey && storeUserIdInNativeSurvey;
     const showTogglePostAnonymously =
       allowAnonymousPosting && !supportsNativeSurvey;
 
