@@ -45,45 +45,43 @@ resource 'Groups' do
       end
 
       example 'List groups filtered by search term' do
-        create(:group, title_multiloc: { 'en' => 'Engineering Team', 'fr' => 'Équipe d\'ingénierie' })
-        create(:group, title_multiloc: { 'en' => 'Marketing Team', 'fr' => 'Équipe marketing' })
-        create(:group, title_multiloc: { 'en' => 'Design Committee', 'fr' => 'Comité de design' })
-        
+        create(:group, title_multiloc: { 'en' => 'Engineering Team' })
+        create(:group, title_multiloc: { 'en' => 'Marketing Team' })
+        create(:group, title_multiloc: { 'en' => 'Design Committee' })
+
         do_request(search: 'team')
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
-        group_names = json_response[:data].map { |g| g.dig(:attributes, :title_multiloc, 'en') }
+        group_names = json_response[:data].map { |g| g.dig(:attributes, :title_multiloc, :en) }
         expect(group_names).to contain_exactly('Engineering Team', 'Marketing Team')
       end
 
       example 'List smart groups filtered by project_id' do
         project1 = create(:project)
         project2 = create(:project)
-        
+
         # Smart group with project1 in rules
-        smart_group1 = create(:group, 
+        smart_group1 = create(:group,
           title_multiloc: { 'en' => 'Project1 Participants' },
           membership_type: 'rules',
-          rules: [{ ruleType: 'participated_in_project', predicate: 'in', value: [project1.id] }]
-        )
-        
-        # Smart group with project2 in rules  
+          rules: [{ ruleType: 'participated_in_project', predicate: 'in', value: [project1.id] }])
+
+        # Smart group with project2 in rules
         create(:group,
           title_multiloc: { 'en' => 'Project2 Participants' },
-          membership_type: 'rules', 
-          rules: [{ ruleType: 'participated_in_project', predicate: 'posted_in', value: [project2.id] }]
-        )
-        
+          membership_type: 'rules',
+          rules: [{ ruleType: 'participated_in_project', predicate: 'posted_in', value: [project2.id] }])
+
         # Manual group (should not be included)
         create(:group, title_multiloc: { 'en' => 'Manual Group' }, membership_type: 'manual')
-        
+
         do_request(project_id: project1.id)
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 1
         expect(json_response[:data][0][:id]).to eq smart_group1.id
-        expect(json_response[:data][0].dig(:attributes, :title_multiloc, 'en')).to eq 'Project1 Participants'
+        expect(json_response[:data][0].dig(:attributes, :title_multiloc, :en)).to eq 'Project1 Participants'
       end
     end
 
