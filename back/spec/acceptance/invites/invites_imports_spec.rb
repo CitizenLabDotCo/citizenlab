@@ -4,9 +4,41 @@ require 'rspec_api_documentation/dsl'
 resource 'InvitesImports' do
   header 'Content-Type', 'application/json'
 
-  shared_examples 'a request by an unauthorized user' do
+  shared_examples 'a Show request by an unauthorized user' do
     get 'web_api/v1/invites_imports/:id' do
       example_request 'Unauthorized user cannot get an invites_import by id' do
+        expect(status).to eq 401
+      end
+    end
+  end
+
+  shared_examples 'a count_new_seats request by an unauthorized user' do
+    post 'web_api/v1/invites_imports/count_new_seats' do
+      example_request 'Unauthorized user cannot count new seats' do
+        expect(status).to eq 401
+      end
+    end
+  end
+
+  shared_examples 'a count_new_seats_xlsx request by an unauthorized user' do
+    post 'web_api/v1/invites_imports/count_new_seats_xlsx' do
+      example_request 'Unauthorized user cannot count new seats XLSX' do
+        expect(status).to eq 401
+      end
+    end
+  end
+
+  shared_examples 'a bulk_create request by an unauthorized user' do
+    post 'web_api/v1/invites_imports/bulk_create' do
+      example_request 'Unauthorized user cannot bulk create invites' do
+        expect(status).to eq 401
+      end
+    end
+  end
+
+  shared_examples 'a bulk_create_xlsx request by an unauthorized user' do
+    post 'web_api/v1/invites_imports/bulk_create_xlsx' do
+      example_request 'Unauthorized user cannot bulk create invites from XLSX' do
         expect(status).to eq 401
       end
     end
@@ -48,8 +80,8 @@ resource 'InvitesImports' do
       end
     end
 
-    describe 'count seats' do
-      shared_examples 'a request counting seats' do
+    describe 'count new seats' do
+      shared_examples 'a request counting new seats' do
         let(:project) { create(:project) }
 
         let(:emails) { Array.new(5) { Faker::Internet.email }.push(nil) }
@@ -134,7 +166,7 @@ resource 'InvitesImports' do
           parameter :invite_text, 'Optional text that will be included in the outgoing e-mail to the invitee. Supports limited HTML', required: false
         end
 
-        it_behaves_like 'a request counting seats'
+        it_behaves_like 'a request counting new seats'
       end
 
       post 'web_api/v1/invites_imports/count_new_seats_xlsx' do
@@ -153,7 +185,7 @@ resource 'InvitesImports' do
           "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{Base64.encode64(xlsx_stringio.read)}"
         end
 
-        it_behaves_like 'a request counting seats'
+        it_behaves_like 'a request counting new seats'
       end
     end
 
@@ -264,7 +296,11 @@ resource 'InvitesImports' do
       header_token_for(moderator)
     end
 
-    it_behaves_like 'a request by an unauthorized user'
+    it_behaves_like 'a Show request by an unauthorized user'
+    it_behaves_like 'a count_new_seats request by an unauthorized user'
+    it_behaves_like 'a count_new_seats_xlsx request by an unauthorized user'
+    it_behaves_like 'a bulk_create request by an unauthorized user'
+    it_behaves_like 'a bulk_create_xlsx request by an unauthorized user'
   end
 
   context 'when regular user' do
@@ -273,10 +309,18 @@ resource 'InvitesImports' do
       header_token_for(user)
     end
 
-    it_behaves_like 'a request by an unauthorized user'
+    it_behaves_like 'a Show request by an unauthorized user'
+    it_behaves_like 'a count_new_seats request by an unauthorized user'
+    it_behaves_like 'a count_new_seats_xlsx request by an unauthorized user'
+    it_behaves_like 'a bulk_create request by an unauthorized user'
+    it_behaves_like 'a bulk_create_xlsx request by an unauthorized user'
   end
 
   context 'when not logged in' do
-    it_behaves_like 'a request by an unauthorized user'
+    it_behaves_like 'a Show request by an unauthorized user'
+    it_behaves_like 'a count_new_seats request by an unauthorized user'
+    it_behaves_like 'a count_new_seats_xlsx request by an unauthorized user'
+    it_behaves_like 'a bulk_create request by an unauthorized user'
+    it_behaves_like 'a bulk_create_xlsx request by an unauthorized user'
   end
 end
