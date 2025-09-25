@@ -163,7 +163,7 @@ const Invitations = () => {
         try {
           setProcessing(true);
           const createJob = await bulkInviteXLSX(savedInviteOptions);
-          setCreateInvitesImportId((createJob as any).data.id);
+          setCreateInvitesImportId(createJob.data.id);
           setSavedInviteOptions(null);
         } catch (errors) {
           const apiErrors = errors.errors;
@@ -236,7 +236,7 @@ const Invitations = () => {
         try {
           setProcessing(true);
           const createJob = await bulkInviteEmails(savedEmailOptions);
-          setCreateInvitesImportId((createJob as any).data.id);
+          setCreateInvitesImportId(createJob.data.id);
           setSavedEmailOptions(null);
         } catch (errors) {
           const apiErrors = errors.errors;
