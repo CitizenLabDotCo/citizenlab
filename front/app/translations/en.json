@@ -1176,6 +1176,7 @@
   "app.containers.Authentication.steps.EmailAndPasswordVerifiedActions.goBackToSSOVerification": "Go back to single sign-on verification",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Please enter a token",
   "app.containers.Authentication.steps.Invitation.token": "Token",
+  "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken": "{email} is already taken by a pending invite. We have re-sent the invitation mail. Please enter the code in the email below.",
   "app.containers.Authentication.steps.SSOVerification.alreadyHaveAnAccount": "Already have an account? {loginLink}",
   "app.containers.Authentication.steps.SSOVerification.logIn": "Log in",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "Emails in this category",
