@@ -2415,7 +2415,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "Escolha da resposta",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultQuestion": "Pergunta padrão",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.deleteButtonLabel": "Deletar",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation1": "Are you sure you want to delete this demographic question answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation2": "Are you sure you want to delete this answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionDeletionConfirmation3": "Você tem certeza de que deseja excluir esta pergunta demográfica? Todas as respostas que os usuários deram a essa pergunta serão excluídas permanentemente, e ela não será mais solicitada em projetos ou propostas. Essa ação não pode ser desfeita.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsSubSectionTitle": "Perguntas",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsTooltip": "Arraste e solte as perguntas para determinar a ordem em que elas aparecerão no processo de inscrição global.",
