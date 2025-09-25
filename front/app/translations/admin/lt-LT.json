@@ -2065,6 +2065,8 @@
   "app.containers.AdminPage.ProjectEdit.headerImageAltText": "Antraštės paveikslėlio alt tekstas",
   "app.containers.AdminPage.ProjectEdit.headerImageInputLabel": "Antraštės paveikslėlis",
   "app.containers.AdminPage.ProjectEdit.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarning1": "Jei leidžiate naudotojams teikti idėjas per žemėlapį, įsitikinkite, kad laukas \"Vieta\" yra įtrauktas į {inputFormLink}.",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarningLink1": "Įvesties forma",
   "app.containers.AdminPage.ProjectEdit.information.new1": "NAUJIENA",
   "app.containers.AdminPage.ProjectEdit.information.provideInformation": "Pateikite informaciją naudotojams arba naudokite ataskaitų kūrimo įrankį, kad pasidalytumėte ankstesnių etapų rezultatais.",
   "app.containers.AdminPage.ProjectEdit.information.shareInformationOrResults": "Dalytis informacija ar rezultatais",
