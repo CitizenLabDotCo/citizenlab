@@ -1148,7 +1148,6 @@
   "app.containers.AccessibilityStatement.title": "Δήλωση προσβασιμότητας",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Περιεχόμενο που δημιουργείται από χρήστες",
   "app.containers.AccessibilityStatement.workshops": "Σεμινάρια",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Επιλέξτε έργο",
   "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Η χρήση του Content Builder θα σας επιτρέψει να χρησιμοποιήσετε πιο προηγμένες επιλογές διάταξης. Για τις γλώσσες στις οποίες δεν υπάρχει διαθέσιμο περιεχόμενο στον κατασκευαστή περιεχομένου, θα εμφανιστεί το κανονικό περιεχόμενο της περιγραφής του έργου.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Επεξεργασία περιγραφής στο Content Builder",
   "app.containers.AdminPage.ProjectDescription.saveError": "Κάτι πήγε στραβά κατά την αποθήκευση της περιγραφής του έργου.",

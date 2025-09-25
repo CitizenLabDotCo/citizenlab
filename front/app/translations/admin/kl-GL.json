@@ -567,7 +567,6 @@
   "app.containers.AdminPage.DashboardPage.resolutionday": "ullunngorlugit",
   "app.containers.AdminPage.DashboardPage.resolutionmonth": "qaammatinngorlugit",
   "app.containers.AdminPage.DashboardPage.resolutionweek": "sapaatit akunninngorlugit",
-  "app.containers.AdminPage.DashboardPage.selectProject": "Select project",
   "app.containers.AdminPage.DashboardPage.selectedProject": "suliniummut filteri atuuttoq",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "tag-inut filteri atuuttoq",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Qupperninni susoqarnersoq takuuk.",

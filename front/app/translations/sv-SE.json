@@ -1148,7 +1148,6 @@
   "app.containers.AccessibilityStatement.title": "Tillgänglighetsförklaring",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Användargenererat innehåll",
   "app.containers.AccessibilityStatement.workshops": "Workshops",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Välj projekt",
   "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Om du använder Content Builder kan du använda mer avancerade layoutalternativ. För språk där inget innehåll finns tillgängligt i innehållsbyggaren visas istället det vanliga innehållet i projektbeskrivningen.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Redigera beskrivning i Content Builder",
   "app.containers.AdminPage.ProjectDescription.saveError": "Något gick fel när du sparade projektbeskrivningen.",
