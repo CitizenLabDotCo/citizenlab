@@ -2065,6 +2065,8 @@
   "app.containers.AdminPage.ProjectEdit.headerImageAltText": "Otsikkokuvan vaihtoehtoinen teksti",
   "app.containers.AdminPage.ProjectEdit.headerImageInputLabel": "Otsikkokuva",
   "app.containers.AdminPage.ProjectEdit.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarning1": "Jos sallit käyttäjien lähettää ideoita kartan kautta, varmista, että Sijainti-kenttä on {inputFormLink}-metodissa.",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarningLink1": "Syöttölomake",
   "app.containers.AdminPage.ProjectEdit.information.new1": "UUSI",
   "app.containers.AdminPage.ProjectEdit.information.provideInformation": "Anna tietoja käyttäjille tai käytä raporttien rakennustyökalua tulosten jakamiseen menneistä vaiheista.",
   "app.containers.AdminPage.ProjectEdit.information.shareInformationOrResults": "Jaa tietoa tai tuloksia",
