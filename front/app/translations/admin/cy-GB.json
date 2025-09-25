@@ -2415,7 +2415,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "Ateb dewisiadau",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultQuestion": "Cwestiwn diofyn",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.deleteButtonLabel": "Dileu",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation2": "Are you sure you want to delete this answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation2": "Ydych chi'n siŵr eich bod chi eisiau dileu'r opsiwn ateb hwn? Bydd pob cofnod y mae defnyddwyr penodol wedi ateb gyda'r opsiwn hwn yn cael ei ddileu'n barhaol. Ni ellir dadwneud y weithred hon.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionDeletionConfirmation3": "Ydych chi'n siŵr eich bod chi eisiau dileu'r cwestiwn demograffig hwn? Bydd pob ateb y mae defnyddwyr wedi'i roi i'r cwestiwn hwn yn cael ei ddileu'n barhaol, ac ni fydd yn cael ei ofyn mewn prosiectau na chynigion mwyach. Ni ellir dadwneud y weithred hon.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsSubSectionTitle": "Cwestiynau",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsTooltip": "Llusgwch a gollwng y cwestiynau i bennu'r drefn y maent yn ymddangos ynddi yn y broses gofrestru fyd-eang.",
