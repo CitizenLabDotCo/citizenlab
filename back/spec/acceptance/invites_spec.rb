@@ -131,7 +131,8 @@ resource 'Invites' do
           assert_status 200
 
           expect(response_data[:attributes]).to eq(
-            newly_added_admins_number: 4,
+            # 6 invited (including one with email: nil), 1 is already an admin
+            newly_added_admins_number: 5,
             # When a moderator is promoted to admin, moderator count is decreased
             newly_added_moderators_number: -1
           )

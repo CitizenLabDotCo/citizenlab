@@ -104,7 +104,7 @@ describe BulkImportIdeas::Exporters::IdeaXlsxFormExporter do
         create(:custom_field_checkbox, resource_type: 'User')
         create(:custom_field_date, resource_type: 'User')
 
-        phase.update!(user_fields_in_form: true)
+        phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
         xlsx = service.export
         xlsx_hash = XlsxService.new.xlsx_to_hash_array xlsx
 

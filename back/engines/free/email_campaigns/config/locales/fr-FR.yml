@@ -120,7 +120,7 @@ fr:
     manual:
       preheader: 'Vous avez reçu un e-mail de la part de %{organizationName}'
     manual_project_participants:
-      preheader: 'Vous avez reçu un e-mail de la part de %{organizationName}'
+      preheader: 'Vous avez un message de %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Votre commentaire a été supprimé de la plateforme de %{organizationName}'
       preheader: 'Votre commentaire a été supprimé'

@@ -1,24 +1,18 @@
 import React from 'react';
 
-// components
-import { Box } from '@citizenlab/cl2-component-library';
-
-import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
-import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
-import usePhase from 'api/phases/usePhase';
-import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
-
-import useLocalize from 'hooks/useLocalize';
+import {
+  Box,
+  Icon,
+  Text,
+  colors,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 
 import CloseIconButton from 'components/UI/CloseIconButton';
-import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
-// hooks
-
-// intl
 import messages from './messages';
 
 type AccessRightsNoticeProps = {
@@ -32,39 +26,7 @@ const AccessRightsNotice = ({
   phaseId,
   handleClose,
 }: AccessRightsNoticeProps) => {
-  const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const { data: permissions } = usePhasePermissions({ phaseId });
-  const { data: userCustomFields } = useUserCustomFields();
-  const { data: permissionCustomFields } = usePermissionsCustomFields({
-    phaseId,
-    action: 'posting_idea',
-  });
-  const { data: phase } = usePhase(phaseId);
-
-  // NOTE: There should only ever one permission for a survey phase
-  const permittedBySetting = permissions?.data[0].attributes.permitted_by;
-  const globalCustomFieldsSetting =
-    permissions?.data[0].attributes.global_custom_fields;
-
-  const permissionCustomFieldIds = permissionCustomFields?.data.map(
-    (customField) => customField.relationships.custom_field.data.id
-  );
-
-  const surveyUserFields: Array<string | null> | undefined =
-    userCustomFields?.data
-      .filter((customField) => {
-        if (
-          !globalCustomFieldsSetting ||
-          permittedBySetting === 'everyone_confirmed_email'
-        ) {
-          return permissionCustomFieldIds?.includes(customField.id);
-        }
-        return customField.attributes.enabled;
-      })
-      .map((customField) => {
-        return localize(customField.attributes.title_multiloc);
-      });
 
   const accessRightsSettingsLink = (
     <Link to={`/admin/projects/${projectId}/phases/${phaseId}/access-rights`}>
@@ -72,61 +34,28 @@ const AccessRightsNotice = ({
     </Link>
   );
 
-  const userFieldsInForm = phase?.data.attributes.user_fields_in_form;
-
-  if (userFieldsInForm && permittedBySetting !== 'everyone') return null;
-
   return (
     <Box id="e2e-warning-notice" mb="16px">
-      <Warning>
-        <Box display="flex">
-          <Box>
-            {permittedBySetting === 'everyone' ? (
-              <>
-                <p>{formatMessage(messages.anyoneIntro)}</p>
-                <ul>
-                  <li>{formatMessage(messages.anyoneBullet1)}</li>
-                  {!userFieldsInForm && (
-                    <li>{formatMessage(messages.anyoneBullet2)}</li>
-                  )}
-                </ul>
-                <p>
-                  <FormattedMessage
-                    {...messages.anyoneOutro}
-                    values={{
-                      accessRightsSettingsLink,
-                    }}
-                  />
-                </p>
-              </>
-            ) : (
-              <>
-                {surveyUserFields && !userFieldsInForm && (
-                  <>
-                    {surveyUserFields.length > 0 && (
-                      <>
-                        <p>{formatMessage(messages.userFieldsIntro)}</p>
-                        <ul>
-                          <li>{surveyUserFields.join(', ')}</li>
-                        </ul>
-                      </>
-                    )}
-                    <p>
-                      <FormattedMessage
-                        {...messages.userFieldsOutro}
-                        values={{
-                          accessRightsSettingsLink,
-                        }}
-                      />
-                    </p>
-                  </>
-                )}
-              </>
-            )}
-          </Box>
-          <CloseIconButton onClick={handleClose} />
+      <Box
+        w="100%"
+        display="flex"
+        justifyContent="space-between"
+        flexDirection="row"
+        borderRadius={stylingConsts.borderRadius}
+        bgColor={colors.teal100}
+        p="12px"
+      >
+        <Box display="flex" alignItems="center">
+          <Icon name="info-outline" height="24px" fill={colors.teal700} />
+          <Text m="0" ml="12px" color="teal700" fontWeight="semi-bold">
+            <FormattedMessage
+              {...messages.checkTheAccessRights}
+              values={{ accessRightsSettings: accessRightsSettingsLink }}
+            />
+          </Text>
         </Box>
-      </Warning>
+        <CloseIconButton onClick={handleClose} />
+      </Box>
     </Box>
   );
 };

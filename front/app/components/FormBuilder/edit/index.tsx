@@ -12,12 +12,12 @@ import { FocusOn } from 'react-focus-on';
 import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { RouteType } from 'routes';
-import { object, boolean, array, string, number } from 'yup';
 
 import {
   IFlatCreateCustomField,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
+  ICustomFieldInputType,
 } from 'api/custom_fields/types';
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import useUpdateCustomField from 'api/custom_fields/useUpdateCustomFields';
@@ -26,6 +26,8 @@ import useCustomForm from 'api/custom_form/useCustomForm';
 import { IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import useSubmissionsCount from 'api/submission_count/useSubmissionCount';
+
+import useLocale from 'hooks/useLocale';
 
 import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSettings';
 import FormBuilderToolbox from 'components/FormBuilder/components/FormBuilderToolbox';
@@ -36,37 +38,23 @@ import HelmetIntl from 'components/HelmetIntl';
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import validateElementTitle from 'utils/yup/validateElementTitle';
-import validateLogic from 'utils/yup/validateLogic';
-import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
-import validateOneStatementForMatrix from 'utils/yup/validateOneStatementForMatrix';
 
+import { DragAndDrop, Drop } from '../components/DragAndDrop';
+import { pageDNDType } from '../components/FormFields/constants';
 import FormStatus from '../components/FormStatus';
 import messages from '../messages';
 import { FormBuilderConfig } from '../utils';
 
 import {
-  NestedGroupingStructure,
   getReorderedFields,
   DragAndDropResult,
-  supportsLinearScaleLabels,
-  getQuestionCategory,
+  getNestedGroupData,
+  createValidationSchema,
+  createNewField,
+  transformFieldForSubmission,
+  calculateDropTargetIndex,
+  handleBuiltInFieldEnablement,
 } from './utils';
-
-const nullableNumber = number()
-  .transform((value, originalValue) => {
-    // If the original input is null or an empty string, transform it to null.
-    if (
-      originalValue === null ||
-      (typeof originalValue === 'string' && originalValue.trim() === '')
-    ) {
-      return null;
-    }
-
-    // The 'value' is already cast by Yup. If it's not a valid number (NaN), return null.
-    return isNaN(value) ? null : value;
-  })
-  .nullable();
 
 interface FormValues {
   customFields: IFlatCustomField[];
@@ -92,6 +80,7 @@ const FormEdit = ({
   const phaseId = phase.id;
   const projectId = phase.relationships.project.data.id;
   const { formatMessage } = useIntl();
+  const locale = useLocale();
   const [selectedField, setSelectedField] = useState<
     IFlatCustomFieldWithIndex | undefined
   >(undefined);
@@ -114,45 +103,13 @@ const FormEdit = ({
     }
   }, [formOpenedAt, customForm]);
 
-  const schema = object().shape({
-    customFields: array().of(
-      object().shape({
-        title_multiloc: validateElementTitle(
-          formatMessage(messages.emptyTitleError)
-        ),
-        description_multiloc: object(),
-        input_type: string(),
-        options: validateOneOptionForMultiSelect(
-          formatMessage(messages.emptyOptionError),
-          formatMessage(messages.emptyTitleMessage),
-          { multiselect_image: formatMessage(messages.emptyImageOptionError) }
-        ),
-        matrix_statements: validateOneStatementForMatrix(
-          formatMessage(messages.emptyStatementError),
-          formatMessage(messages.emptyTitleStatementMessage)
-        ),
-        maximum: number(),
-        linear_scale_label_1_multiloc: object(),
-        linear_scale_label_2_multiloc: object(),
-        linear_scale_label_3_multiloc: object(),
-        linear_scale_label_4_multiloc: object(),
-        linear_scale_label_5_multiloc: object(),
-        linear_scale_label_6_multiloc: object(),
-        linear_scale_label_7_multiloc: object(),
-        linear_scale_label_8_multiloc: object(),
-        linear_scale_label_9_multiloc: object(),
-        linear_scale_label_10_multiloc: object(),
-        linear_scale_label_11_multiloc: object(),
-        required: boolean(),
-        ask_follow_up: boolean(),
-        include_in_printed_form: boolean(),
-        min_characters: nullableNumber,
-        max_characters: nullableNumber,
-        temp_id: string(),
-        logic: validateLogic(formatMessage(messages.logicValidationError)),
-      })
-    ),
-  });
+  // Helper function to create new fields (extracted from toolbox logic)
+  const createField = (type: ICustomFieldInputType) => {
+    if (isNilOrError(locale)) return null;
+    return createNewField(type, locale, formatMessage);
+  };
+
+  const schema = createValidationSchema(formatMessage);
 
   const methods = useForm({
     mode: 'onBlur',
@@ -167,6 +124,9 @@ const FormEdit = ({
     formState: { isDirty },
     getValues,
     reset,
+    trigger,
+    watch,
+    setValue,
   } = methods;
 
   const { move, replace, insert } = useFieldArray({
@@ -233,115 +193,9 @@ const FormEdit = ({
     setSuccessMessageIsVisible(false);
     try {
       setIsSubmitting(true);
-      const finalResponseArray = customFields.map((field) => ({
-        ...(!field.isLocalOnly && { id: field.id }),
-        input_type: field.input_type,
-        ...(field.input_type === 'page' && {
-          temp_id: field.temp_id,
-        }),
-        ...([
-          'multiselect',
-          'linear_scale',
-          'select',
-          'page',
-          'rating',
-          'multiselect_image',
-        ].includes(field.input_type)
-          ? {
-              logic: field.logic,
-            }
-          : {
-              logic: [],
-            }),
-        required: field.required,
-        enabled: field.enabled,
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        title_multiloc: field.title_multiloc || {},
-        key: field.key,
-        code: field.code,
-        question_category: getQuestionCategory(field, customFields),
-        ...(field.page_layout || field.input_type === 'page'
-          ? {
-              page_layout: field.page_layout || 'default',
-              page_button_label_multiloc:
-                field.page_button_label_multiloc || {},
-              page_button_link: field.page_button_link || '',
-              include_in_printed_form:
-                field.include_in_printed_form === undefined
-                  ? true
-                  : field.include_in_printed_form,
-            }
-          : {}),
-        ...(field.map_config_id && {
-          map_config_id: field.map_config_id,
-        }),
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        description_multiloc: field.description_multiloc || {},
-        ...(['select', 'multiselect', 'multiselect_image'].includes(
-          field.input_type
-        ) && {
-          // TODO: This will get messy with more field types, abstract this in some way
-          options: field.options || {},
-          maximum_select_count: field.select_count_enabled
-            ? field.maximum_select_count
-            : null,
-          minimum_select_count: field.select_count_enabled
-            ? field.minimum_select_count || '0'
-            : null,
-          select_count_enabled: field.select_count_enabled,
-          random_option_ordering: field.random_option_ordering,
-          dropdown_layout: field.dropdown_layout,
-        }),
-        ...(field.input_type === 'ranking' && {
-          options: field.options || {},
-          random_option_ordering: field.random_option_ordering,
-        }),
-        ...(field.input_type === 'matrix_linear_scale' && {
-          matrix_statements: field.matrix_statements || {},
-        }),
-        ...(field.input_type === 'sentiment_linear_scale' && {
-          ask_follow_up: field.ask_follow_up || false,
-        }),
-        ...(supportsLinearScaleLabels(field.input_type) && {
-          linear_scale_label_1_multiloc:
-            field.linear_scale_label_1_multiloc || {},
-          linear_scale_label_2_multiloc:
-            field.linear_scale_label_2_multiloc || {},
-          linear_scale_label_3_multiloc:
-            field.linear_scale_label_3_multiloc || {},
-          linear_scale_label_4_multiloc:
-            field.linear_scale_label_4_multiloc || {},
-          linear_scale_label_5_multiloc:
-            field.linear_scale_label_5_multiloc || {},
-          linear_scale_label_6_multiloc:
-            field.linear_scale_label_6_multiloc || {},
-          linear_scale_label_7_multiloc:
-            field.linear_scale_label_7_multiloc || {},
-          linear_scale_label_8_multiloc:
-            field.linear_scale_label_8_multiloc || {},
-          linear_scale_label_9_multiloc:
-            field.linear_scale_label_9_multiloc || {},
-          linear_scale_label_10_multiloc:
-            field.linear_scale_label_10_multiloc || {},
-          linear_scale_label_11_multiloc:
-            field.linear_scale_label_11_multiloc || {},
-          maximum: field.maximum?.toString() || '5',
-        }),
-        ...(field.input_type === 'rating' && {
-          maximum: field.maximum?.toString() || '5',
-        }),
-        ...([
-          'text',
-          'multiline_text',
-          'text_multiloc',
-          'html_multiloc',
-        ].includes(field.input_type) && {
-          min_characters: field.min_characters,
-          max_characters: field.max_characters,
-        }),
-      }));
+      const finalResponseArray = customFields.map((field) =>
+        transformFieldForSubmission(field, customFields)
+      );
 
       await updateFormCustomFields(
         {
@@ -375,10 +229,62 @@ const FormEdit = ({
     }
   };
 
-  const reorderFields = (
-    result: DragAndDropResult,
-    nestedGroupData: NestedGroupingStructure[]
-  ) => {
+  const reorderFields = (result: DragAndDropResult) => {
+    const formCustomFields = watch('customFields');
+    const nestedGroupData = getNestedGroupData(formCustomFields);
+
+    // Handle toolbox drags (creating new fields or enabling built-in fields)
+    if (result.draggableId.startsWith('toolbox_')) {
+      // Extract field type/key from draggable ID
+      const fieldTypeOrKey = result.draggableId.replace('toolbox_', '');
+
+      // Check if this is a built-in field
+      const builtInFieldKeys = builderConfig.builtInFields;
+      const isBuiltInField = builtInFieldKeys.includes(fieldTypeOrKey as any);
+
+      if (isBuiltInField) {
+        // Handle built-in field enablement using utility function
+        const enablementResult = handleBuiltInFieldEnablement(
+          fieldTypeOrKey,
+          formCustomFields,
+          result,
+          nestedGroupData,
+          setValue,
+          move
+        );
+
+        if (
+          enablementResult.success &&
+          enablementResult.updatedField &&
+          enablementResult.targetIndex !== undefined
+        ) {
+          setSelectedField({
+            ...enablementResult.updatedField,
+            index: enablementResult.targetIndex,
+          });
+        }
+
+        trigger();
+        return;
+      } else {
+        // Handle regular custom field creation
+        const inputType = fieldTypeOrKey as ICustomFieldInputType;
+        const newField = createField(inputType);
+        if (!newField) return;
+
+        const targetIndex = calculateDropTargetIndex(
+          result,
+          formCustomFields,
+          nestedGroupData
+        );
+        if (targetIndex !== null) {
+          onAddField(newField, targetIndex);
+        }
+        return;
+      }
+    }
+
+    // Handle regular reordering
     const reorderedFields = getReorderedFields(result, nestedGroupData);
     if (reorderedFields) {
       replace(reorderedFields);
@@ -390,6 +296,7 @@ const FormEdit = ({
       );
       setSelectedField({ ...selectedField, index: newSelectedFieldIndex });
     }
+    trigger();
   };
 
   return (
@@ -415,56 +322,55 @@ const FormEdit = ({
               setAutosaveEnabled={setAutosaveEnabled}
               phaseId={phaseId}
             />
-            <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
-              <Box width="210px">
-                <FormBuilderToolbox
-                  onAddField={onAddField}
-                  builderConfig={builderConfig}
-                  move={move}
-                  onSelectField={setSelectedField}
-                />
-              </Box>
-              <Box
-                flex="1.8"
-                border="1px solid #ccc"
-                overflowY="auto"
-                zIndex="2"
-                margin="0px"
-                paddingBottom="100px"
-                height={`calc(100vh - ${stylingConsts.menuHeight}px)`}
-                px="30px"
-              >
-                <Box mt="16px">
-                  <FormStatus
-                    successMessageIsVisible={successMessageIsVisible}
-                    setSuccessMessageIsVisible={setSuccessMessageIsVisible}
-                    isSubmitting={isSubmitting}
-                    builderConfig={builderConfig}
-                    projectId={projectId}
-                    phaseId={phaseId}
-                  />
-                  <FormFields
-                    onEditField={setSelectedField}
-                    selectedFieldId={selectedField?.id}
-                    handleDragEnd={reorderFields}
-                    builderConfig={builderConfig}
-                    closeSettings={closeSettings}
-                  />
-                </Box>
-              </Box>
-              <Box flex={!isNilOrError(selectedField) ? '1' : '0'}>
-                {!isNilOrError(selectedField) && (
-                  <Box>
-                    <FormBuilderSettings
-                      key={selectedField.id}
-                      field={selectedField}
-                      closeSettings={closeSettings}
-                      builderConfig={builderConfig}
-                    />
+            <DragAndDrop onDragEnd={reorderFields}>
+              <Drop id="droppable" type={pageDNDType}>
+                <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
+                  <Box width="210px">
+                    <FormBuilderToolbox builderConfig={builderConfig} />
                   </Box>
-                )}
-              </Box>
-            </Box>
+                  <Box
+                    flex="1.8"
+                    border="1px solid #ccc"
+                    overflowY="auto"
+                    zIndex="2"
+                    margin="0px"
+                    paddingBottom="100px"
+                    height={`calc(100vh - ${stylingConsts.menuHeight}px)`}
+                    px="30px"
+                  >
+                    <Box mt="16px">
+                      <FormStatus
+                        successMessageIsVisible={successMessageIsVisible}
+                        setSuccessMessageIsVisible={setSuccessMessageIsVisible}
+                        isSubmitting={isSubmitting}
+                        builderConfig={builderConfig}
+                        projectId={projectId}
+                        phaseId={phaseId}
+                      />
+                      <FormFields
+                        onEditField={setSelectedField}
+                        selectedFieldId={selectedField?.id}
+                        handleDragEnd={reorderFields}
+                        builderConfig={builderConfig}
+                        closeSettings={closeSettings}
+                      />
+                    </Box>
+                  </Box>
+                  <Box flex={!isNilOrError(selectedField) ? '1' : '0'}>
+                    {selectedField && (
+                      <Box>
+                        <FormBuilderSettings
+                          key={selectedField.id}
+                          field={selectedField}
+                          closeSettings={closeSettings}
+                          builderConfig={builderConfig}
+                        />
+                      </Box>
+                    )}
+                  </Box>
+                </Box>
+              </Drop>
+            </DragAndDrop>
           </form>
         </FormProvider>
       </FocusOn>

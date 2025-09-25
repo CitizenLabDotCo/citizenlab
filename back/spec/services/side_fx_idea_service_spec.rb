@@ -86,7 +86,7 @@ describe SideFxIdeaService do
       end
 
       it 'creates only creates project and folder followers for native_survey responses' do
-        idea.update!(creation_phase: create(:native_survey_phase, project: project))
+        idea.update!(creation_phase: create(:native_survey_phase, project: project, with_permissions: true))
         expect do
           service.after_create idea.reload, user
         end.to change(Follower, :count).from(0).to(2)
@@ -141,7 +141,15 @@ describe SideFxIdeaService do
     it "doesn't enqueue an upsert embedding job for survey responses" do
       SettingsService.new.activate_feature! 'input_iq'
       create(:idea_status_proposed)
-      idea = create(:native_survey_response, author: user)
+      phase = create(:native_survey_phase, with_permissions: true)
+
+      idea = create(
+        :native_survey_response,
+        author: user,
+        creation_phase: phase,
+        project: phase.project
+      )
+
       expect { service.after_create(idea, user) }
         .not_to enqueue_job(UpsertEmbeddingJob)
         .with(idea)
@@ -384,14 +392,22 @@ describe SideFxIdeaService do
     it "doesn't enqueue an upsert embedding job for survey responses" do
       SettingsService.new.activate_feature! 'input_iq'
       create(:idea_status_proposed)
-      idea = create(:native_survey_response, author: user)
+      phase = create(:native_survey_phase, with_permissions: true)
+
+      idea = create(
+        :native_survey_response,
+        author: user,
+        creation_phase: phase,
+        project: phase.project
+      )
+
       expect { service.after_update(idea, user) }
         .not_to enqueue_job(UpsertEmbeddingJob)
         .with(idea)
     end
 
     context 'user fields in survey form' do
-      let(:phase) { create(:native_survey_phase) }
+      let(:phase) { create(:native_survey_phase, with_permissions: true) }
       let(:idea) do
         create(
           :native_survey_response,
@@ -406,7 +422,7 @@ describe SideFxIdeaService do
       before { create(:idea_status_proposed) }
 
       it "updates the user profile from the survey input fields when 'user_fields_in_form' is turned on" do
-        phase.update!(user_fields_in_form: true)
+        phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
         idea.update!(publication_status: 'published')
         service.after_update(idea, user)
         expect(user.custom_field_values).to eq({ 'gender' => 'female' })
@@ -416,6 +432,57 @@ describe SideFxIdeaService do
         idea.update!(publication_status: 'published')
         service.after_update(idea, user)
         expect(user.custom_field_values).to be_empty
+      end
+
+      it "updates the user profile from the survey data when permitted_by = 'everyone' and there are permissions_custom_fields" do
+        # Even though user_fields_in_form = false, we update the user
+        # because when permitted_by = 'everyone' and there are permissions_custom_fields,
+        # the fields always shown in the form
+        permission = Permission.find_by(
+          permission_scope_id: phase.id,
+          action: 'posting_idea'
+        )
+
+        permission.user_fields_in_form = false
+        permission.permitted_by = 'everyone'
+        permission.permissions_custom_fields = [create(:permissions_custom_field)]
+        permission.save!
+
+        idea.update!(publication_status: 'published')
+        service.after_update(idea, user)
+        expect(user.custom_field_values).to eq({ 'gender' => 'female' })
+      end
+
+      it 'updates user profile from the survey data when permitted_by = users and there are permissions_custom_fields' do
+        permission = Permission.find_by(
+          permission_scope_id: phase.id,
+          action: 'posting_idea'
+        )
+
+        permission.user_fields_in_form = true
+        permission.permitted_by = 'users'
+        permission.permissions_custom_fields = [create(:permissions_custom_field)]
+        permission.save!
+
+        idea.update!(publication_status: 'published')
+        service.after_update(idea, user)
+        expect(user.custom_field_values).to eq({ 'gender' => 'female' })
+      end
+
+      it 'does not update user profile if not user_fields_in_form?' do
+        permission = Permission.find_by(
+          permission_scope_id: phase.id,
+          action: 'posting_idea'
+        )
+
+        permission.user_fields_in_form = false
+        permission.permitted_by = 'users'
+        permission.permissions_custom_fields = [create(:permissions_custom_field)]
+        permission.save!
+
+        idea.update!(publication_status: 'published')
+        service.after_update(idea, user)
+        expect(user.custom_field_values).to eq({})
       end
     end
 

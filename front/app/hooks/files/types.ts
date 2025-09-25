@@ -1,6 +1,9 @@
 import { UploadFile } from 'typings';
 
-import { FileType } from 'components/UI/FileUploader/FileDisplay';
+import {
+  AttachableType,
+  IFileAttachmentData,
+} from 'api/file_attachments/types';
 
 export type SyncFolderFilesArguments = {
   projectFolderId: string;
@@ -9,16 +12,10 @@ export type SyncFolderFilesArguments = {
   fileOrdering: Record<string, number | undefined>;
 };
 
-export type SyncProjectFilesArguments = {
-  projectId: string;
-  projectFiles: UploadFile[];
-  filesToRemove: any[];
-  fileOrdering: Record<string, number | undefined>;
-};
-
-export type SyncPhaseFilesArguments = {
-  phaseId: string;
-  phaseFiles: FileType[];
-  filesToRemove: any[];
-  fileOrdering: Record<string, number | undefined>;
+export type SyncFilesArguments = {
+  attachableId?: string;
+  attachableType: AttachableType;
+  fileAttachments: IFileAttachmentData[];
+  fileAttachmentsToRemove: IFileAttachmentData[];
+  fileAttachmentOrdering: Record<string, number | undefined>;
 };

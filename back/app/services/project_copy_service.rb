@@ -369,7 +369,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       if phase.pmethod.supports_survey_form?
         yml_phase['native_survey_title_multiloc'] = phase.native_survey_title_multiloc
         yml_phase['native_survey_button_multiloc'] = phase.native_survey_button_multiloc
-        yml_phase['user_fields_in_form'] = phase.user_fields_in_form
       end
 
       store_ref yml_phase, phase.id, :phase
@@ -606,7 +605,9 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'permission_scope_ref' => lookup_ref(p.permission_scope_id, :phase),
         'global_custom_fields' => p.global_custom_fields,
         'created_at' => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
-        'updated_at' => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601
+        'updated_at' => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601,
+        'user_fields_in_form' => p.user_fields_in_form,
+        'user_data_collection' => p.user_data_collection
       }
       store_ref yml_permission, p.id, :permission
       yml_permission

@@ -432,7 +432,7 @@ describe Export::Xlsx::InputSheetGenerator do
           end
 
           it 'Generates an sheet with user fields from the inputs' do
-            phase.update!(user_fields_in_form: true)
+            phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
             survey_response1.update!(custom_field_values: { multiselect_field.key => %w[cat dog], 'u_birthyear' => 1998, 'u_gender' => 'male' })
             expect(xlsx.first[:column_headers]).to match([
               'ID',

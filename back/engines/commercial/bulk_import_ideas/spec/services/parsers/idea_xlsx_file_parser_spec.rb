@@ -259,7 +259,8 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
 
     it 'parses user fields in surveys correctly' do
       # Basic survey
-      phase = create(:native_survey_phase, user_fields_in_form: true, with_permissions: true)
+      phase = create(:native_survey_phase, with_permissions: true)
+      phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
       custom_form = create(:custom_form, participation_context: phase)
       create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'First page' })
       create(:custom_field_text, resource: custom_form, key: 'text_field', title_multiloc: { 'en' => 'Text field' })
