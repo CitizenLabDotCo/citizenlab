@@ -815,7 +815,7 @@
   "app.components.formBuilder.formEnd": "Formular Ende",
   "app.components.formBuilder.formField.cancelDeleteButtonText": "Abbrechen",
   "app.components.formBuilder.formField.components.cancel": "Abbrechen",
-  "app.components.formBuilder.formField.components.confirmDeletion": "Bestätigen Sie die Löschung",
+  "app.components.formBuilder.formField.components.confirmDeletion": "Löschen bestätigen",
   "app.components.formBuilder.formField.components.delete": "Löschen",
   "app.components.formBuilder.formField.components.deleteLocationFieldExplanation1": "Wenn die Kartenansicht aktiviert ist, wird durch das Löschen des Ortsfeldes die Möglichkeit entfernt, Orte für alle über die Karte hinzugefügten Ideen zu speichern.",
   "app.components.formBuilder.formField.components.deleteLocationFieldExplanation2": "Sind Sie sicher, dass Sie dieses Feld löschen möchten?",
