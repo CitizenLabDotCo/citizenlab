@@ -2065,6 +2065,8 @@
   "app.containers.AdminPage.ProjectEdit.headerImageAltText": "Texte alternatif de l'image d'en-tête",
   "app.containers.AdminPage.ProjectEdit.headerImageInputLabel": "Image de couverture",
   "app.containers.AdminPage.ProjectEdit.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarning1": "Si vous autorisez les utilisateurs à soumettre des idées par l'intermédiaire de la carte, assurez-vous que le champ Emplacement est inclus dans le site {inputFormLink}.",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarningLink1": "Formulaire de saisie",
   "app.containers.AdminPage.ProjectEdit.information.new1": "NOUVEAU",
   "app.containers.AdminPage.ProjectEdit.information.provideInformation": "Fournissez des informations aux utilisateurs ou utilisez l'éditeur de rapports pour partager les résultats des phases précédentes.",
   "app.containers.AdminPage.ProjectEdit.information.shareInformationOrResults": "Communiquez des informations ou des résultats",
