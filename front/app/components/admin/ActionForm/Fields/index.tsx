@@ -5,13 +5,16 @@ import {
   Box,
   Button,
   Tooltip,
-  Text,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 
 import { Action } from 'api/permissions/types';
 import useAddPermissionsCustomField from 'api/permissions_custom_fields/useAddPermissionsCustomField';
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
+import {
+  PermittedBy,
+  UserFieldsInFormFrontendDescriptor,
+} from 'api/phase_permissions/types';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -21,19 +24,24 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import FieldSelectionModal from './FieldSelectionModal';
 import FieldsList from './FieldsList';
 import messages from './messages';
+import UserFieldsInFormRadio from './UserFieldsInFormRadio';
 
 interface Props {
   phaseId?: string;
   action: Action;
-  showAddQuestion: boolean;
-  userFieldsInForm: boolean;
+  allowAddingFields: boolean;
+  permitted_by: PermittedBy;
+  user_fields_in_form_frontend_descriptor?: UserFieldsInFormFrontendDescriptor;
+  onChangeUserFieldsInForm?: (value: boolean) => void;
 }
 
 const Fields = ({
   phaseId,
   action,
-  showAddQuestion,
-  userFieldsInForm,
+  allowAddingFields,
+  user_fields_in_form_frontend_descriptor,
+  permitted_by,
+  onChangeUserFieldsInForm,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [showSelectionModal, setShowSelectionModal] = useState(false);
@@ -44,12 +52,15 @@ const Fields = ({
   const { data: permissions } = usePhasePermissions({ phaseId });
   const globalCustomFieldsSetting =
     permissions?.data[0].attributes.global_custom_fields;
-  // We check if globalCustomFieldsSetting is false to allow users who edited the fields before the feature flag was enforced to still access the functionality
+
+  // We check if globalCustomFieldsSetting is false to allow users who
+  // edited the fields before the feature flag was enforced to still access the functionality
   const isPermissionsCustomFieldsAllowed =
     useFeatureFlag({
       name: 'permissions_custom_fields',
       onlyCheckAllowed: true,
     }) || globalCustomFieldsSetting === false;
+
   const { mutate: addPermissionsCustomField, isLoading } =
     useAddPermissionsCustomField({
       phaseId,
@@ -69,7 +80,7 @@ const Fields = ({
         <Title variant="h4" color="primary" mt="0px" mb="0px">
           <FormattedMessage {...messages.demographicQuestions} />
         </Title>
-        {showAddQuestion && (
+        {allowAddingFields && (
           <Tooltip
             content={formatMessage(
               messages.contactGovSuccessToAccessAddingAQuestion
@@ -96,16 +107,28 @@ const Fields = ({
           </Tooltip>
         )}
       </Box>
-      {userFieldsInForm && (
+      {onChangeUserFieldsInForm && user_fields_in_form_frontend_descriptor && (
         <Box>
-          <Text color="primary" mb="0px" fontSize="m" fontStyle={'italic'}>
-            <FormattedMessage {...messages.fieldsShownInSurveyForm} />
-          </Text>
+          <UserFieldsInFormRadio
+            user_fields_in_form_frontend_descriptor={
+              user_fields_in_form_frontend_descriptor
+            }
+            onChange={onChangeUserFieldsInForm}
+          />
         </Box>
       )}
-      <Box mt="20px">
-        <FieldsList phaseId={phaseId} action={action} />
-      </Box>
+      {allowAddingFields && (
+        <Box mt="8px">
+          <FieldsList
+            phaseId={phaseId}
+            action={action}
+            permitted_by={permitted_by}
+            userFieldsInForm={
+              user_fields_in_form_frontend_descriptor?.value ?? false
+            }
+          />
+        </Box>
+      )}
       {selectedCustomFields && (
         <FieldSelectionModal
           showSelectionModal={showSelectionModal}

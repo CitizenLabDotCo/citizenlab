@@ -43,6 +43,11 @@ class Identity < ApplicationRecord
     end
   end
 
+  def update_auth_hash!(auth, authver_method)
+    auth_to_persist = authver_method.filter_auth_to_persist(auth)
+    update!(auth_hash: auth_to_persist)
+  end
+
   def email_always_present?
     AuthenticationService.all_methods.fetch(provider).email_always_present?
   end

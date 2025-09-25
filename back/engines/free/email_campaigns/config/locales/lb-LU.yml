@@ -644,6 +644,7 @@ lb:
         user_is_given_admin_rights: 'De Benotzer gëtt Admin Rechter'
         user_is_given_folder_moderator_rights: 'Benotzer gëtt Dossier Moderator Rechter'
         user_is_given_project_moderator_rights: 'Benotzer gëtt Projet Moderator Rechter ginn'
+        user_is_invited_to_platform: 'Benotzer ass op d''Plattform invitéiert'
         user_is_invited_to_cosponsor_a_proposal: 'De Benotzer ass invitéiert fir eng Propositioun ze sponseren'
         user_is_mentioned: 'Benotzer gëtt ernimmt'
         user_is_mentioned_in_internal_comment: 'Benotzer gëtt am internen Kommentar ernimmt'

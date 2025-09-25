@@ -644,6 +644,7 @@ en:
         user_is_given_admin_rights: 'User is given admin rights'
         user_is_given_folder_moderator_rights: 'User is given folder moderator rights'
         user_is_given_project_moderator_rights: 'User is given project moderator rights'
+        user_is_invited_to_platform: 'User is invited to platform'
         user_is_invited_to_cosponsor_a_proposal: 'User is invited to co-sponsor a proposal'
         user_is_mentioned: 'User is mentioned'
         user_is_mentioned_in_internal_comment: 'User is mentioned in internal comment'

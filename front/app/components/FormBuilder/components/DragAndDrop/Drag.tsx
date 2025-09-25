@@ -1,24 +1,34 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { Draggable } from '@hello-pangea/dnd';
+import {
+  Draggable,
+  type DraggableProvided,
+  type DraggableStateSnapshot,
+} from '@hello-pangea/dnd';
 
-type DragProps = {
+type DraggableItemProps = {
   id: string;
-  index: number;
   children: React.ReactNode;
-  useBorder?: boolean;
-  isDragDisabled?: boolean;
+  provided: DraggableProvided;
+  snapshot: DraggableStateSnapshot;
+  useBorder: boolean;
+  onDraggingChange: (isDragging: boolean) => void;
 };
 
-export const Drag = ({
+const DraggableItem = ({
   id,
-  index,
-  useBorder = true,
   children,
-  isDragDisabled = false,
-}: DragProps) => {
-  const draggableRef = React.useRef<HTMLDivElement>(null);
+  provided,
+  snapshot,
+  useBorder,
+  onDraggingChange,
+}: DraggableItemProps) => {
+  const draggableRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    onDraggingChange(snapshot.isDragging);
+  }, [snapshot.isDragging, onDraggingChange]);
 
   useEffect(() => {
     // Since we provide an alternative way to reorder items using select dropdowns,
@@ -27,24 +37,58 @@ export const Drag = ({
   }, []);
 
   return (
-    <Draggable draggableId={id} index={index} isDragDisabled={isDragDisabled}>
-      {(provided, snapshot) => {
-        return (
-          <div ref={provided.innerRef} {...provided.draggableProps}>
-            <div ref={draggableRef} {...provided.dragHandleProps}>
-              <Box
-                border={
-                  snapshot.isDragging && useBorder
-                    ? `1px solid ${colors.teal}`
-                    : undefined
-                }
-              >
-                {children}
-              </Box>
-            </div>
-          </div>
-        );
-      }}
-    </Draggable>
+    <div ref={provided.innerRef} id={id} {...provided.draggableProps}>
+      <div ref={draggableRef} {...provided.dragHandleProps}>
+        <Box
+          border={
+            snapshot.isDragging && useBorder
+              ? `1px solid ${colors.teal}`
+              : undefined
+          }
+        >
+          {children}
+        </Box>
+      </div>
+    </div>
+  );
+};
+
+type DragProps = {
+  id: string;
+  index: number;
+  children: React.ReactNode;
+  useBorder?: boolean;
+  isDragDisabled?: boolean;
+  keepElementsWhileDragging?: boolean;
+};
+
+export const Drag = ({
+  id,
+  index,
+  children,
+  useBorder = true,
+  isDragDisabled = false,
+  keepElementsWhileDragging = false,
+}: DragProps) => {
+  const [isDragging, setIsDragging] = useState(false);
+
+  return (
+    <>
+      {isDragging && keepElementsWhileDragging && <>{children}</>}
+
+      <Draggable draggableId={id} index={index} isDragDisabled={isDragDisabled}>
+        {(provided, snapshot) => (
+          <DraggableItem
+            id={id}
+            provided={provided}
+            snapshot={snapshot}
+            useBorder={useBorder}
+            onDraggingChange={setIsDragging}
+          >
+            {children}
+          </DraggableItem>
+        )}
+      </Draggable>
+    </>
   );
 };

@@ -186,6 +186,10 @@ module EmailCampaigns
       super || {}
     end
 
+    def can_be_disabled?
+      true
+    end
+
     protected
 
     def set_enabled

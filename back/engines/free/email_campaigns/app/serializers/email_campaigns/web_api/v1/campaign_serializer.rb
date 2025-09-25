@@ -3,7 +3,7 @@
 module EmailCampaigns
   class WebApi::V1::CampaignSerializer < ::WebApi::V1::BaseSerializer
     extend GroupOrderingHelper
-    attributes :created_at, :updated_at
+    attributes :created_at, :updated_at, :enabled
 
     attribute :campaign_name do |object|
       object.class.campaign_name
@@ -53,9 +53,10 @@ module EmailCampaigns
       end
     end
 
-    attribute :enabled, if: proc { |object|
-      disableable? object
-    }
+    attribute :can_be_disabled do |object|
+      object.can_be_disabled?
+    end
+
     attribute :schedule, if: proc { |object|
       schedulable? object
     }
