@@ -2065,6 +2065,8 @@
   "app.containers.AdminPage.ProjectEdit.headerImageAltText": "Tekst alternatywny obrazu nagłówka",
   "app.containers.AdminPage.ProjectEdit.headerImageInputLabel": "Obrazek z nagłówka",
   "app.containers.AdminPage.ProjectEdit.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarning1": "Jeśli zezwalasz użytkownikom na przesyłanie pomysłów za pośrednictwem mapy, upewnij się, że pole Lokalizacja znajduje się na stronie {inputFormLink}.",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarningLink1": "Formularz wejściowy",
   "app.containers.AdminPage.ProjectEdit.information.new1": "NOWOŚĆ",
   "app.containers.AdminPage.ProjectEdit.information.provideInformation": "Przekazuj informacje użytkownikom lub korzystaj z narzędzia do tworzenia raportów, aby udostępniać wyniki poprzednich faz.",
   "app.containers.AdminPage.ProjectEdit.information.shareInformationOrResults": "Udostępniaj informacje lub wyniki",
