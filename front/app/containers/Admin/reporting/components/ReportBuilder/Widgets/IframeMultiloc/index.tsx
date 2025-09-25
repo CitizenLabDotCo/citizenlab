@@ -13,6 +13,18 @@ import {
   getResponsiveHeight,
 } from 'components/admin/ContentBuilder/Widgets/IframeMultiloc/utils';
 
+type IframeMultilocProps = Pick<
+  IframeProps,
+  | 'url'
+  | 'height'
+  | 'title'
+  | 'embedMode'
+  | 'tabletHeight'
+  | 'mobileHeight'
+  | 'aspectRatio'
+  | 'customAspectRatio'
+>;
+
 const IframeMultiloc = ({
   url,
   height,
@@ -22,7 +34,7 @@ const IframeMultiloc = ({
   mobileHeight,
   aspectRatio = '16:9',
   customAspectRatio,
-}: IframeProps) => {
+}: IframeMultilocProps) => {
   const localize = useLocalize();
   const isMobile = useBreakpoint('phone');
   const isTablet = useBreakpoint('tablet');
