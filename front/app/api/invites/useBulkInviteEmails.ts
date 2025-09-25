@@ -9,7 +9,7 @@ import { IInvites, INewBulkInviteEmails, IInviteError } from './types';
 
 const bulkInviteEmails = async (requestBody: INewBulkInviteEmails) =>
   fetcher<IInvites>({
-    path: `/invites/bulk_create`,
+    path: `/invites_imports/bulk_create`,
     action: 'post',
     body: { invites: requestBody },
   });

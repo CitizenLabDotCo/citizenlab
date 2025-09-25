@@ -9,7 +9,7 @@ const bulkInviteCountNewSeatsXLSX = async (
   requestBody: INewBulkXLSXInviteXLSX
 ) =>
   fetcher<IInvitesImport>({
-    path: `/invites/count_new_seats_xlsx`,
+    path: `/invites_imports/count_new_seats_xlsx`,
     action: 'post',
     body: { invites: requestBody },
   });

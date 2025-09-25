@@ -9,7 +9,7 @@ import { IInvites, INewBulkXLSXInviteXLSX, IInviteError } from './types';
 
 const bulkInviteXLSX = async (requestBody: INewBulkXLSXInviteXLSX) =>
   fetcher<IInvites>({
-    path: `/invites/bulk_create_xlsx`,
+    path: `/invites_imports/bulk_create_xlsx`,
     action: 'post',
     body: { invites: requestBody },
   });

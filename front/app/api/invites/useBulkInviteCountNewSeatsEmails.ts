@@ -9,7 +9,7 @@ const bulkInviteCountNewSeatsEmails = async (
   requestBody: INewBulkInviteEmails
 ) =>
   fetcher<IInvitesImport>({
-    path: `/invites/count_new_seats`,
+    path: `/invites_imports/count_new_seats`,
     action: 'post',
     body: { invites: requestBody },
   });
