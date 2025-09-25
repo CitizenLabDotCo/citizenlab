@@ -23,6 +23,7 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 
 import BaseEditor from './Editor';
+import FolderFiles from 'components/DescriptionBuilder/CraftSections/FolderFiles';
 
 type EditorProps = {
   children?: React.ReactNode;
@@ -55,6 +56,7 @@ const Editor: React.FC<EditorProps> = ({
         Published,
         Spotlight,
         Selection,
+        FolderFiles,
       }}
       isPreview={isPreview}
       onNodesChange={onNodesChange}

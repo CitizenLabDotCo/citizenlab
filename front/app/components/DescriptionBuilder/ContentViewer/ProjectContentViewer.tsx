@@ -5,7 +5,6 @@ import { isEmpty } from 'lodash-es';
 
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 import useProjectFiles from 'api/project_files/useProjectFiles';
-import { IProjectData } from 'api/projects/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
@@ -19,33 +18,35 @@ import FileAttachments from 'components/UI/FileAttachments';
 
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
+import { Multiloc } from 'typings';
 
 type ProjectContentViewerProps = {
-  project: IProjectData;
+  projectId: string;
+  projectTitle: Multiloc;
+  enabled: boolean;
 };
 
 const handleLoadImages = () => {
   eventEmitter.emit(IMAGES_LOADED_EVENT);
 };
 
-const ProjectContentViewer = ({ project }: ProjectContentViewerProps) => {
+const ProjectContentViewer = ({
+  projectId,
+  projectTitle,
+  enabled,
+}: ProjectContentViewerProps) => {
   const localize = useLocalize();
   const featureEnabled = useFeatureFlag({
     name: 'project_description_builder',
   });
-  const { data: projectFiles } = useProjectFiles(project.id);
+  const { data: projectFiles } = useProjectFiles(projectId);
   const { data: descriptionBuilderLayout, isInitialLoading } =
-    useContentBuilderLayout(
-      project.id,
-      'project',
-      featureEnabled && project.attributes.uses_content_builder
-    );
+    useContentBuilderLayout(projectId, 'project', featureEnabled && enabled);
 
   if (!featureEnabled) return null;
 
   const descriptionBuilderContent =
     descriptionBuilderLayout &&
-    project.attributes.uses_content_builder &&
     descriptionBuilderLayout.data.attributes.enabled &&
     !isEmpty(descriptionBuilderLayout.data.attributes.craftjs_json);
 
@@ -59,9 +60,9 @@ const ProjectContentViewer = ({ project }: ProjectContentViewerProps) => {
       {!isInitialLoading && descriptionBuilderContent && (
         <Box data-testid="descriptionBuilderPreviewContent">
           <Title color="tenantText" variant="h1">
-            {localize(project.attributes.title_multiloc)}
+            {localize(projectTitle)}
           </Title>
-          <Box id={`project-description-${project.id}`}>
+          <Box id={`project-description-${projectId}`}>
             <Editor isPreview={true}>
               <ContentBuilderFrame
                 editorData={editorData}
@@ -79,7 +80,7 @@ const ProjectContentViewer = ({ project }: ProjectContentViewerProps) => {
       )}
       {!isInitialLoading && !descriptionBuilderContent && (
         <Box data-testid="descriptionBuilderProjectDescription">
-          <ProjectInfo projectId={project.id} />
+          <ProjectInfo projectId={projectId} />
         </Box>
       )}
     </Box>

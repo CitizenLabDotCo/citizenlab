@@ -34,6 +34,7 @@ import {
   useFormatMessageWithLocale,
   useIntl,
 } from 'utils/cl-intl';
+import FolderFiles from 'components/DescriptionBuilder/CraftSections/FolderFiles';
 
 type FolderDescriptionBuilderToolboxProps = {
   selectedLocale: SupportedLocale;
@@ -100,6 +101,12 @@ const FolderDescriptionBuilderToolbox = ({
           }
           icon="flash"
           label={formatMessage(spotlightTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-folder-files"
+          component={<FolderFiles folderId={folderId} />}
+          icon="paperclip"
+          label={formatMessage(messages.folderFiles)}
         />
       </Section>
       <Section>

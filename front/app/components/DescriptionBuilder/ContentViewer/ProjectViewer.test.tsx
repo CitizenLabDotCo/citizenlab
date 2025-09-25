@@ -74,7 +74,11 @@ jest.mock('api/projects/useProjectById', () =>
 describe('Preview', () => {
   it('should shows project description builder content when project description builder is enabled', () => {
     render(
-      <ProjectContentViewer projectId={projectId} projectTitle={projectTitle} />
+      <ProjectContentViewer
+        projectId={projectId}
+        projectTitle={projectTitle}
+        enabled={true}
+      />
     );
     expect(
       screen.getByTestId('projectDescriptionBuilderPreviewContent')
@@ -87,7 +91,11 @@ describe('Preview', () => {
     DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA.data.attributes.enabled =
       false;
     render(
-      <ProjectContentViewer projectId={projectId} projectTitle={projectTitle} />
+      <ProjectContentViewer
+        projectId={projectId}
+        projectTitle={projectTitle}
+        enabled={true}
+      />
     );
     expect(
       screen.getByTestId('projectDescriptionBuilderProjectDescription')

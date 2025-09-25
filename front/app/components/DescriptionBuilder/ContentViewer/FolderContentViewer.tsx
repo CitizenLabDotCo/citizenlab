@@ -4,7 +4,6 @@ import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
-import { IProjectFolderData } from 'api/project_folders/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
@@ -17,26 +16,29 @@ import Editor from 'components/DescriptionBuilder/Editor';
 
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
+import { Multiloc } from 'typings';
 
 type FolderContentViewerProps = {
-  folder: IProjectFolderData;
+  folderId: string;
+  folderTitle: Multiloc;
+  enabled: boolean;
 };
 
 const handleLoadImages = () => {
   eventEmitter.emit(IMAGES_LOADED_EVENT);
 };
 
-const FolderContentViewer = ({ folder }: FolderContentViewerProps) => {
+const FolderContentViewer = ({
+  folderId,
+  folderTitle,
+  enabled,
+}: FolderContentViewerProps) => {
   const localize = useLocalize();
   const featureEnabled = useFeatureFlag({
     name: 'project_description_builder',
   });
   const { data: descriptionBuilderLayout, isInitialLoading } =
-    useContentBuilderLayout(
-      folder.id,
-      'folder',
-      featureEnabled && folder.attributes.uses_content_builder
-    );
+    useContentBuilderLayout(folderId, 'folder', featureEnabled && enabled);
 
   if (!featureEnabled) return null;
 
@@ -55,9 +57,9 @@ const FolderContentViewer = ({ folder }: FolderContentViewerProps) => {
       {!isInitialLoading && descriptionBuilderContent && (
         <Box data-testid="descriptionBuilderPreviewContent">
           <Title color="tenantText" variant="h1">
-            {localize(folder.attributes.title_multiloc)}
+            {localize(folderTitle)}
           </Title>
-          <Box id={`project-folder-description-${folder.id}`} mb="24px">
+          <Box id={`project-folder-description-${folderId}`} mb="24px">
             <Editor isPreview={true}>
               <ContentBuilderFrame
                 editorData={editorData}
@@ -69,7 +71,11 @@ const FolderContentViewer = ({ folder }: FolderContentViewerProps) => {
       )}
       {!isInitialLoading && !descriptionBuilderContent && (
         <Box data-testid="descriptionBuilderProjectDescription">
-          <ProjectFolderDescription projectFolder={folder} />
+          <ProjectFolderDescription
+            folderId={folderId}
+            folderTitle={folderTitle}
+            folderDescription={{}} // TODO: JS - this description is missing in the props + this repeats what happens in folder description
+          />
         </Box>
       )}
     </Box>

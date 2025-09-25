@@ -10,6 +10,7 @@ const FolderDescriptionBuilderPage = () => {
   const { folderId } = useParams() as { folderId: string };
   const { data: folder } = useProjectFolderById(folderId);
 
+  console.log(folder);
   if (!folder) return null;
   if (!folder.data.attributes.uses_content_builder) return null;
 

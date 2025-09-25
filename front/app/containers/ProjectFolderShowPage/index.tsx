@@ -152,7 +152,11 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
         {projectDescriptionBuilderEnabled ? (
           <StyledContentContainer maxWidth={maxPageWidth}>
             <ProjectFolderHeader projectFolder={projectFolder} />
-            <FolderContentViewer folder={projectFolder} />
+            <FolderContentViewer
+              folderId={projectFolder.id}
+              folderTitle={projectFolder.attributes.title_multiloc}
+              enabled={projectFolder.attributes.uses_content_builder}
+            />
           </StyledContentContainer>
         ) : (
           <>
@@ -161,14 +165,24 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
               {!isSmallerThanSmallDesktop ? (
                 <Content>
                   <StyledProjectFolderDescription
-                    projectFolder={projectFolder}
+                    folderId={projectFolder.id}
+                    folderTitle={projectFolder.attributes.title_multiloc}
+                    folderDescription={
+                      projectFolder.attributes.description_multiloc
+                    }
                   />
                   <StyledProjectFolderProjectCards
                     folderId={projectFolder.id}
                   />
                 </Content>
               ) : (
-                <StyledProjectFolderDescription projectFolder={projectFolder} />
+                <StyledProjectFolderDescription
+                  folderId={projectFolder.id}
+                  folderTitle={projectFolder.attributes.title_multiloc}
+                  folderDescription={
+                    projectFolder.attributes.description_multiloc
+                  }
+                />
               )}
             </StyledContentContainer>
             {isSmallerThanSmallDesktop && (
