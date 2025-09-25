@@ -2415,7 +2415,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "Svaralternativer",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultQuestion": "Standard spørsmål",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.deleteButtonLabel": "Slett",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation1": "Are you sure you want to delete this demographic question answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation2": "Are you sure you want to delete this answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionDeletionConfirmation3": "Er du sikker på at du vil slette dette demografiske spørsmålet? Alle svar som brukerne har gitt på dette spørsmålet, vil bli slettet permanent, og det vil ikke lenger bli stilt i prosjekter eller forslag. Denne handlingen kan ikke angres.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsSubSectionTitle": "Spørsmål",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsTooltip": "Dra og slipp spørsmålene for å bestemme rekkefølgen de skal vises i i den globale påmeldingsprosessen.",
