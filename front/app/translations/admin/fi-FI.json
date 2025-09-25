@@ -1728,7 +1728,6 @@
   "app.containers.AdminPage.DashboardPage.resolutionday": "Päivissä",
   "app.containers.AdminPage.DashboardPage.resolutionmonth": "kuukausina",
   "app.containers.AdminPage.DashboardPage.resolutionweek": "Viikoissa",
-  "app.containers.AdminPage.DashboardPage.selectProject": "Valitse projekti",
   "app.containers.AdminPage.DashboardPage.selectedProject": "nykyisen projektin suodatin",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "nykyinen tunnistesuodatin",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Ota selvää, mitä alustallasi tapahtuu.",
