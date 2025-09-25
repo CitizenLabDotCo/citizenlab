@@ -113,9 +113,9 @@ export default defineMessages({
     defaultMessage: 'Required',
   },
   demographicQuestionAnswerOptionDeletionConfirmation: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation1',
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation2',
     defaultMessage:
-      'Are you sure you want to delete this demographic question answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.',
+      'Are you sure you want to delete this answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.',
   },
   editCustomFieldAnswerOptionFormTitle: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.editCustomFieldAnswerOptionFormTitle',
