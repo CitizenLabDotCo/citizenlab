@@ -2065,6 +2065,8 @@
   "app.containers.AdminPage.ProjectEdit.headerImageAltText": "ਸਿਰਲੇਖ ਚਿੱਤਰ Alt ਟੈਕਸਟ",
   "app.containers.AdminPage.ProjectEdit.headerImageInputLabel": "ਸਿਰਲੇਖ ਚਿੱਤਰ",
   "app.containers.AdminPage.ProjectEdit.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarning1": "ਜੇਕਰ ਤੁਸੀਂ ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਨਕਸ਼ੇ ਰਾਹੀਂ ਵਿਚਾਰ ਜਮ੍ਹਾਂ ਕਰਨ ਦੀ ਇਜਾਜ਼ਤ ਦਿੰਦੇ ਹੋ, ਤਾਂ ਯਕੀਨੀ ਬਣਾਓ ਕਿ ਸਥਾਨ ਖੇਤਰ {inputFormLink}ਵਿੱਚ ਸ਼ਾਮਲ ਹੈ।",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarningLink1": "ਇਨਪੁੱਟ ਫਾਰਮ",
   "app.containers.AdminPage.ProjectEdit.information.new1": "ਨਵਾਂ",
   "app.containers.AdminPage.ProjectEdit.information.provideInformation": "ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਜਾਣਕਾਰੀ ਪ੍ਰਦਾਨ ਕਰੋ, ਜਾਂ ਪਿਛਲੇ ਪੜਾਵਾਂ 'ਤੇ ਨਤੀਜਿਆਂ ਨੂੰ ਸਾਂਝਾ ਕਰਨ ਲਈ ਰਿਪੋਰਟ ਬਿਲਡਰ ਦੀ ਵਰਤੋਂ ਕਰੋ।",
   "app.containers.AdminPage.ProjectEdit.information.shareInformationOrResults": "ਜਾਣਕਾਰੀ ਜਾਂ ਨਤੀਜੇ ਸਾਂਝੇ ਕਰੋ",
