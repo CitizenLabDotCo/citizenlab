@@ -2415,7 +2415,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "انتخاب کے جوابات دیں۔",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultQuestion": "پہلے سے طے شدہ سوال",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.deleteButtonLabel": "حذف کریں۔",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation1": "Are you sure you want to delete this demographic question answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation2": "Are you sure you want to delete this answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionDeletionConfirmation3": "کیا آپ واقعی اس آبادیاتی سوال کو حذف کرنا چاہتے ہیں؟ تمام جوابات جو صارفین نے اس سوال کے لیے دیے ہیں انہیں مستقل طور پر حذف کر دیا جائے گا، اور اب یہ پروجیکٹس یا تجاویز میں نہیں پوچھا جائے گا۔ اس کارروائی کو کالعدم نہیں کیا جا سکتا۔",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsSubSectionTitle": "سوالات",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsTooltip": "عالمی سائن اپ کے عمل میں جس ترتیب میں وہ ظاہر ہوتے ہیں اس کا تعین کرنے کے لیے سوالات کو گھسیٹیں اور چھوڑیں۔",
