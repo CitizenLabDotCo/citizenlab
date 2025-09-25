@@ -376,5 +376,20 @@ resource 'Invites' do
         expect(response_status).to eq 401 # unauthorized
       end
     end
+
+    post 'web_api/v1/invites/resend' do
+      with_options scope: :invite do
+        parameter :email, 'The email of the user to resend the invite to', required: true
+      end
+
+      let(:user) { create(:invited_user) }
+      let(:email) { user.email }
+
+      example_request 'Resend an invite' do
+        assert_status 200
+        expect(EmailCampaigns::InviteReminderMailer).to have_received(:with).with(user: user)
+          .and_return(double(resend_invite: double(deliver_now: true)))
+      end
+    end
   end
 end
