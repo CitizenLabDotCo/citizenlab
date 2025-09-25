@@ -2065,6 +2065,8 @@
   "app.containers.AdminPage.ProjectEdit.headerImageAltText": "نص بديل لصورة الرأس",
   "app.containers.AdminPage.ProjectEdit.headerImageInputLabel": "صورة الترويسة",
   "app.containers.AdminPage.ProjectEdit.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarning1": "إذا سمحت للمستخدمين بإرسال أفكارهم عبر الخريطة، فتأكد من تضمين حقل الموقع في {inputFormLink}.",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarningLink1": "نموذج الإدخال",
   "app.containers.AdminPage.ProjectEdit.information.new1": "جديد",
   "app.containers.AdminPage.ProjectEdit.information.provideInformation": "قم بتوفير المعلومات للمستخدمين، أو استخدم أداة إنشاء التقارير لمشاركة النتائج في المراحل السابقة.",
   "app.containers.AdminPage.ProjectEdit.information.shareInformationOrResults": "مشاركة المعلومات أو النتائج",
