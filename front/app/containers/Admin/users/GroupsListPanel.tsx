@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-import { Box, colors, fontSizes } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  fontSizes,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
 import { Subscription } from 'rxjs';
 import styled from 'styled-components';
@@ -11,6 +16,7 @@ import useGroups from 'api/groups/useGroups';
 import useUsersCount from 'api/users_count/useUsersCount';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocalize from 'hooks/useLocalize';
 
 import Outlet from 'components/Outlet';
 import T from 'components/T';
@@ -155,6 +161,7 @@ export interface Props {
 }
 
 export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
+  const localize = useLocalize();
   const [search, setSearch] = useState<string | undefined>(undefined);
   const [projectId, setProjectId] = useState<string | undefined>(undefined);
   const { data: groups } = useGroups({
@@ -273,24 +280,29 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
 
         {groups &&
           groups.data.map((group) => (
-            <MenuLink
+            <Tooltip
               key={group.id}
-              to={`/admin/users/${group.id}`}
-              className={() =>
-                `${highlightedGroups.has(group.id) ? 'highlight' : ''}`
-              }
+              content={localize(group.attributes.title_multiloc)}
             >
-              <Outlet
-                id="app.containers.Admin.users.GroupsListPanel.listitem.icon"
-                type={group.attributes.membership_type}
-              />
-              <GroupName>
-                <T value={group.attributes.title_multiloc} />
-              </GroupName>
-              <MembersCount className="e2e-group-user-count">
-                {group.attributes.memberships_count}
-              </MembersCount>
-            </MenuLink>
+              <MenuLink
+                key={group.id}
+                to={`/admin/users/${group.id}`}
+                className={() =>
+                  `${highlightedGroups.has(group.id) ? 'highlight' : ''}`
+                }
+              >
+                <Outlet
+                  id="app.containers.Admin.users.GroupsListPanel.listitem.icon"
+                  type={group.attributes.membership_type}
+                />
+                <GroupName>
+                  <T value={group.attributes.title_multiloc} />
+                </GroupName>
+                <MembersCount className="e2e-group-user-count">
+                  {group.attributes.memberships_count}
+                </MembersCount>
+              </MenuLink>
+            </Tooltip>
           ))}
       </GroupsList>
       <Box display="flex" flexGrow={1} />
