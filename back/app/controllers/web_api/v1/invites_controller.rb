@@ -173,6 +173,20 @@ class WebApi::V1::InvitesController < ApplicationController
     end
   end
 
+  def resend_invite
+    authorize :resend_invite
+    user = User.find_by(email: params[:email])
+
+    unless user&.invite_status == 'pending'
+      render json: { errors: { base: [{ error: 'no_pending_invite' }] } }, status: :unprocessable_entity
+      return
+    end
+
+    InviteReminderMailer.with(user: user).resend_invite.deliver_now if user&.invite_status == 'pending'
+
+    head :ok
+  end
+
   private
 
   def accept_params
