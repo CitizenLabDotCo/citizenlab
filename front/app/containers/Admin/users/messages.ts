@@ -311,4 +311,8 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.selectPublicationsPlaceholder',
     defaultMessage: 'Type to search',
   },
+  projects: {
+    id: 'app.containers.Admin.Users.projects',
+    defaultMessage: 'Projects',
+  },
 });

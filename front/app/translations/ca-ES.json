@@ -1148,7 +1148,6 @@
   "app.containers.AccessibilityStatement.title": "Declaració d'accessibilitat",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Contingut generat per l'usuari",
   "app.containers.AccessibilityStatement.workshops": "Tallers",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Seleccioneu el projecte",
   "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "L'ús del Content Builder us permetrà utilitzar opcions de disseny més avançades. Per als idiomes en què no hi ha contingut disponible al creador de contingut, es mostrarà el contingut normal de la descripció del projecte.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Editeu la descripció al Content Builder",
   "app.containers.AdminPage.ProjectDescription.saveError": "S'ha produït un error en desar la descripció del projecte.",

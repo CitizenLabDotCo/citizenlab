@@ -1148,7 +1148,6 @@
   "app.containers.AccessibilityStatement.title": "ਪਹੁੰਚਯੋਗਤਾ ਬਿਆਨ",
   "app.containers.AccessibilityStatement.userGeneratedContent": "ਉਪਭੋਗਤਾ ਦੁਆਰਾ ਤਿਆਰ ਕੀਤੀ ਸਮੱਗਰੀ",
   "app.containers.AccessibilityStatement.workshops": "ਵਰਕਸ਼ਾਪਾਂ",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "ਪ੍ਰੋਜੈਕਟ ਚੁਣੋ",
   "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "ਸਮਗਰੀ ਨਿਰਮਾਤਾ ਦੀ ਵਰਤੋਂ ਕਰਨ ਨਾਲ ਤੁਸੀਂ ਵਧੇਰੇ ਉੱਨਤ ਖਾਕਾ ਵਿਕਲਪਾਂ ਦੀ ਵਰਤੋਂ ਕਰ ਸਕੋਗੇ। ਉਹਨਾਂ ਭਾਸ਼ਾਵਾਂ ਲਈ ਜਿੱਥੇ ਸਮੱਗਰੀ ਬਿਲਡਰ ਵਿੱਚ ਕੋਈ ਸਮੱਗਰੀ ਉਪਲਬਧ ਨਹੀਂ ਹੈ, ਇਸਦੀ ਬਜਾਏ ਨਿਯਮਤ ਪ੍ਰੋਜੈਕਟ ਵਰਣਨ ਸਮੱਗਰੀ ਪ੍ਰਦਰਸ਼ਿਤ ਕੀਤੀ ਜਾਵੇਗੀ।",
   "app.containers.AdminPage.ProjectDescription.linkText": "ਸਮਗਰੀ ਨਿਰਮਾਤਾ ਵਿੱਚ ਵਰਣਨ ਦਾ ਸੰਪਾਦਨ ਕਰੋ",
   "app.containers.AdminPage.ProjectDescription.saveError": "ਪ੍ਰੋਜੈਕਟ ਵਰਣਨ ਨੂੰ ਰੱਖਿਅਤ ਕਰਨ ਦੌਰਾਨ ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ।",

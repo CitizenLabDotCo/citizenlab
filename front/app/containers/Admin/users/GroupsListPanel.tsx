@@ -12,11 +12,14 @@ import useUsersCount from 'api/users_count/useUsersCount';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import ProjectSelector from 'components/admin/ProjectSelector';
 import Outlet from 'components/Outlet';
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+import SearchInput from 'components/UI/SearchInput';
 
 import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import Link from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
@@ -147,8 +150,14 @@ export interface Props {
 }
 
 export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
-  const { data: groups } = useGroups({});
+  const [search, setSearch] = useState<string | undefined>(undefined);
+  const [selectedProjectIds, setSelectedProjects] = useState<string[]>([]);
+  const { data: groups } = useGroups({
+    search,
+    projectId: selectedProjectIds[0],
+  });
   const { data: usersCount } = useUsersCount();
+  const { formatMessage } = useIntl();
   const [highlightedGroups, setHighlightedGroups] = useState(
     new Set<IGroupData['id']>()
   );
@@ -244,6 +253,16 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
         </ButtonWrapper>
       </MenuTitle>
       <GroupsList className="e2e-groups-list">
+        <SearchInput
+          defaultValue={search}
+          onChange={(value) => setSearch(value ?? undefined)}
+          a11y_numberOfSearchResults={groups ? groups.data.length : 0}
+        />
+        <ProjectSelector
+          title={formatMessage(messages.projects)}
+          selectedProjectIds={selectedProjectIds}
+          onChange={(projectIds) => setSelectedProjects(projectIds)}
+        />
         {groups &&
           groups.data.map((group) => (
             <MenuLink

@@ -1148,7 +1148,6 @@
   "app.containers.AccessibilityStatement.title": "Richtlinie zur Barrierefreiheit",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Nutzer*innengenerierte Inhalte",
   "app.containers.AccessibilityStatement.workshops": "Workshops",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Projekt auswählen",
   "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Mit dem Content Builder können Sie erweiterte Layout-Optionen nutzen. Für Sprachen, für die im Content Builder kein Inhalt verfügbar ist, wird stattdessen der reguläre Inhalt der Projektbeschreibung angezeigt.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Beschreibung im Content Builder bearbeiten",
   "app.containers.AdminPage.ProjectDescription.saveError": "Beim Speichern der Projektbeschreibung ist ein Fehler aufgetreten.",

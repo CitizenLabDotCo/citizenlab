@@ -1148,7 +1148,6 @@
   "app.containers.AccessibilityStatement.title": "Datganiad Hygyrchedd",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Cynnwys a gynhyrchir gan ddefnyddwyr",
   "app.containers.AccessibilityStatement.workshops": "Gweithdai",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Dewiswch brosiect",
   "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Bydd defnyddio'r Content Builder yn caniatáu ichi ddefnyddio opsiynau cynllun mwy datblygedig. Ar gyfer ieithoedd lle nad oes cynnwys ar gael yn yr adeiladwr cynnwys, bydd y cynnwys disgrifiad prosiect rheolaidd yn cael ei arddangos yn lle hynny.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Golygu disgrifiad yn Content Builder",
   "app.containers.AdminPage.ProjectDescription.saveError": "Aeth rhywbeth o'i le wrth gadw disgrifiad y prosiect.",

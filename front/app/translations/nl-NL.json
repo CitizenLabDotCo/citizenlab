@@ -1148,7 +1148,6 @@
   "app.containers.AccessibilityStatement.title": "Toegankelijkheidsverklaring",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Inhoud gegenereerd door gebruikers",
   "app.containers.AccessibilityStatement.workshops": "Workshops",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Selecteer project",
   "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Met de content builder kun je geavanceerdere layout-opties gebruiken. Voor talen waarin geen inhoud beschikbaar is in de content builder, wordt in plaats daarvan de normale inhoud van de projectbeschrijving weergegeven.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Wijzig beschrijving in de content builder",
   "app.containers.AdminPage.ProjectDescription.saveError": "Er is iets misgegaan bij het opslaan van de projectbeschrijving.",

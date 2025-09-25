@@ -1148,7 +1148,6 @@
   "app.containers.AccessibilityStatement.title": "Dichiarazione di accessibilità",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Contenuto generato dall'utente",
   "app.containers.AccessibilityStatement.workshops": "Laboratori",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Seleziona il progetto",
   "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Utilizzando il Generatore di contenuti potrai utilizzare opzioni di layout più avanzate. Per le lingue in cui non è disponibile alcun contenuto nel Generatore di contenuti, verrà visualizzato il normale contenuto della descrizione del progetto.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Modifica la descrizione nel Generatore di contenuti",
   "app.containers.AdminPage.ProjectDescription.saveError": "Qualcosa è andato storto durante il salvataggio della descrizione del progetto.",

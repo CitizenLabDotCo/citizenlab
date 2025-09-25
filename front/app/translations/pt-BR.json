@@ -1148,7 +1148,6 @@
   "app.containers.AccessibilityStatement.title": "Declaração de Acessibilidade",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Conteúdo gerado pelo utilizador",
   "app.containers.AccessibilityStatement.workshops": "Seminário",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Selecione o projeto",
   "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Usar o Content Builder permitirá que você use opções de layout mais avançadas. Nos idiomas em que não houver conteúdo disponível no Content Builder, será exibido o conteúdo normal da descrição do projeto.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Editar descrição no Content Builder",
   "app.containers.AdminPage.ProjectDescription.saveError": "Algo deu errado ao salvar a descrição do projeto.",

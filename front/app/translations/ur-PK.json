@@ -1148,7 +1148,6 @@
   "app.containers.AccessibilityStatement.title": "رسائی کا بیان",
   "app.containers.AccessibilityStatement.userGeneratedContent": "صارف کا تیار کردہ مواد",
   "app.containers.AccessibilityStatement.workshops": "ورکشاپس",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "پروجیکٹ منتخب کریں۔",
   "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Content Builder کا استعمال آپ کو لے آؤٹ کے مزید جدید اختیارات استعمال کرنے دے گا۔ ان زبانوں کے لیے جہاں مواد بنانے والے میں کوئی مواد دستیاب نہیں ہے، اس کے بجائے باقاعدہ پروجیکٹ کی تفصیل کا مواد دکھایا جائے گا۔",
   "app.containers.AdminPage.ProjectDescription.linkText": "Content Builder میں تفصیل میں ترمیم کریں۔",
   "app.containers.AdminPage.ProjectDescription.saveError": "پروجیکٹ کی تفصیل محفوظ کرتے وقت کچھ غلط ہو گیا۔",

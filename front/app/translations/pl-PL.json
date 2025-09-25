@@ -1148,7 +1148,6 @@
   "app.containers.AccessibilityStatement.title": "Oświadczenie o dostępności",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Treści generowane przez użytkowników",
   "app.containers.AccessibilityStatement.workshops": "Warsztaty",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Wybierz projekt",
   "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Korzystanie z Content Builder pozwoli Ci korzystać z bardziej zaawansowanych opcji układu. W przypadku języków, dla których w kreatorze treści nie jest dostępna żadna treść, zamiast niej wyświetlana będzie zwykła treść opisu projektu.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Edytuj opis w kreatorze treści",
   "app.containers.AdminPage.ProjectDescription.saveError": "Coś poszło nie tak podczas zapisywania opisu projektu.",

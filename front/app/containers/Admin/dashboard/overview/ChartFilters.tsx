@@ -8,11 +8,8 @@ import ResolutionControl, {
   IResolution,
 } from 'components/admin/ResolutionControl';
 
-import { useIntl } from 'utils/cl-intl';
-
 import ProjectFilter from '../components/filters/ProjectFilter';
 import TimeControl from '../components/TimeControl';
-import messages from '../messages';
 
 interface Props {
   startAtMoment?: Moment | null | undefined;
@@ -44,7 +41,6 @@ const ChartFilters = ({
   showAllTime,
   showProjectFilter = true,
 }: Props) => {
-  const { formatMessage } = useIntl();
   const isSmallerThanSmallDesktop = useBreakpoint('smallDesktop');
 
   return (
@@ -70,7 +66,6 @@ const ChartFilters = ({
             <ProjectFilter
               projectId={projectId}
               hideLabel
-              placeholder={formatMessage(messages.selectProject)}
               onProjectFilter={onProjectFilter}
             />
           </Box>

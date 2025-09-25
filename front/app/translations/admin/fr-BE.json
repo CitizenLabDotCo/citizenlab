@@ -1728,7 +1728,6 @@
   "app.containers.AdminPage.DashboardPage.resolutionday": "par jour",
   "app.containers.AdminPage.DashboardPage.resolutionmonth": "par mois",
   "app.containers.AdminPage.DashboardPage.resolutionweek": "par semaine",
-  "app.containers.AdminPage.DashboardPage.selectProject": "Sélectionnez le projet",
   "app.containers.AdminPage.DashboardPage.selectedProject": "filtre actuel du projet",
   "app.containers.AdminPage.DashboardPage.selectedTopic": "filtre d'étiquettes actuel",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Découvrez ce qui se passe sur votre plateforme.",
