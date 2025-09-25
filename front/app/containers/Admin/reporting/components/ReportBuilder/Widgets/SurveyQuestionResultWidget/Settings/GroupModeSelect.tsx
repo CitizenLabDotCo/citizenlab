@@ -36,7 +36,7 @@ const GroupModeSelect = ({ mode, onChange }: Props) => {
 
   const options: Option[] = [
     { value: '', label: formatMessage(messages.none) },
-    { value: 'user_field', label: formatMessage(messages.registrationField) },
+    { value: 'user_field', label: formatMessage(messages.demographicQuestion) },
     { value: 'survey_question', label: formatMessage(messages.surveyQuestion) },
   ];
 

@@ -85,7 +85,7 @@ export interface IFileData {
   attributes: IFileAttributes;
   relationships: {
     preview?: { data: IRelationship | null };
-    uploader?: { data: IRelationship };
+    uploader?: { data?: IRelationship };
     project?: { data: IRelationship };
     attachments?: { data: IRelationship[] };
   };

@@ -104,7 +104,7 @@ const FilesListItem = ({
             <Text fontSize="s" color={'coolGrey500'} m="0px">
               {formatMessage(messages[file.attributes.category])}
             </Text>
-            {file.relationships.uploader?.data.id && (
+            {file.relationships.uploader?.data?.id && (
               <>
                 <Text fontSize="s" color={'coolGrey500'} m="0px">
                   •
