@@ -45,6 +45,9 @@ class Group < ApplicationRecord
   scope :order_new, ->(direction = :desc) { order(created_at: direction) }
   scope :with_user, ->(user) { Group._with_user(self, user) } # Delegating to class method makes it easier to patch.
   scope :by_custom_field, ->(custom_field_id) { where('rules::text ~ ?', custom_field_id) }
+  scope :by_project_id, ->(project_id) do
+    where("rules::text ~ ? AND rules::text ~ ?", 'participated_in_project', project_id)
+  end
 
   def self._with_user(groups, user)
     groups.left_outer_joins(:users).where(users: { id: user.id })

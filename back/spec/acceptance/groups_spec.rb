@@ -26,6 +26,7 @@ resource 'Groups' do
       parameter :membership_type,
         "If set, only return groups of given membership_type. Either #{Group.membership_types.join(' or ')}", required: false
       parameter :search, 'Return only groups that match the given search term', required: false
+      parameter :project_id, 'Return only smart groups that have rules referencing the given project_id', required: false
 
       example 'List all groups' do
         g1 = create(:group)
@@ -54,6 +55,35 @@ resource 'Groups' do
         expect(json_response[:data].size).to eq 2
         group_names = json_response[:data].map { |g| g.dig(:attributes, :title_multiloc, 'en') }
         expect(group_names).to contain_exactly('Engineering Team', 'Marketing Team')
+      end
+
+      example 'List smart groups filtered by project_id' do
+        project1 = create(:project)
+        project2 = create(:project)
+        
+        # Smart group with project1 in rules
+        smart_group1 = create(:group, 
+          title_multiloc: { 'en' => 'Project1 Participants' },
+          membership_type: 'rules',
+          rules: [{ ruleType: 'participated_in_project', predicate: 'in', value: [project1.id] }]
+        )
+        
+        # Smart group with project2 in rules  
+        create(:group,
+          title_multiloc: { 'en' => 'Project2 Participants' },
+          membership_type: 'rules', 
+          rules: [{ ruleType: 'participated_in_project', predicate: 'posted_in', value: [project2.id] }]
+        )
+        
+        # Manual group (should not be included)
+        create(:group, title_multiloc: { 'en' => 'Manual Group' }, membership_type: 'manual')
+        
+        do_request(project_id: project1.id)
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 1
+        expect(json_response[:data][0][:id]).to eq smart_group1.id
+        expect(json_response[:data][0].dig(:attributes, :title_multiloc, 'en')).to eq 'Project1 Participants'
       end
     end
 
