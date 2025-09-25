@@ -46,7 +46,26 @@ RSpec.describe Files::FilePolicy do
         end
       end
 
-      context 'when the user moderates the associated projects' do
+      context 'when the user moderates the project the file belongs to' do
+        let(:project) { projects.first }
+        let(:user) { create(:project_moderator, projects: [project]) }
+        let(:file) { build(:file, uploader: user, projects: [project]) }
+
+        it { is_expected.to permit(:create) }
+
+        context do
+          before { file.save! }
+
+          it { is_expected.to permit(:show) }
+          it { is_expected.to permit(:update) }
+          it { is_expected.to permit(:destroy) }
+        end
+      end
+
+      context 'when the user moderates the associated projects', skip: <<~SKIP do
+        For the sake of simplicity, we currently do not allow files to be associated with
+        multiple projects.
+      SKIP
         let(:user) { create(:project_moderator, projects: projects) }
         let(:file) { build(:file, uploader: user, projects: projects) }
 
@@ -61,11 +80,14 @@ RSpec.describe Files::FilePolicy do
         end
       end
 
-      context 'when the user moderates some of the associated projects' do
+      context 'when the user moderates some of the associated projects', skip: <<~SKIP do
+        For the sake of simplicity, we currently do not allow files to be associated with
+        multiple projects.
+      SKIP
         let(:user) { create(:project_moderator, projects: [projects.first]) }
         let(:file) { build(:file, uploader: user, projects: projects) }
 
-        it { is_expected.to permit(:create) }
+        it { is_expected.not_to permit(:create) }
 
         context do
           before { file.save! }
@@ -76,11 +98,14 @@ RSpec.describe Files::FilePolicy do
         end
       end
 
-      context 'when the user moderates none of the associated projects' do
+      context 'when the user moderates none of the associated projects', skip: <<~SKIP do
+        For the sake of simplicity, we currently do not allow files to be associated with
+        multiple projects.
+      SKIP
         let(:user) { create(:project_moderator, projects: [create(:project)]) }
         let(:file) { build(:file, uploader: user, projects: projects) }
 
-        it { is_expected.to permit(:create) }
+        it { is_expected.not_to permit(:create) }
 
         context do
           before { file.save! }
@@ -137,10 +162,10 @@ RSpec.describe Files::FilePolicy do
         it { is_expected.to be_empty }
       end
 
-      context 'when the user moderates some of the associated projects' do
-        let(:projects) { create_pair(:project) }
-        let(:user) { create(:project_moderator, projects: projects.take(1)) }
-        let!(:file) { create(:file, projects: projects) }
+      context 'when the user moderators the project the file belongs to' do
+        let(:project) { create(:project) }
+        let(:user) { create(:project_moderator, projects: [project]) }
+        let!(:file) { create(:file, projects: [project]) }
 
         it { is_expected.to contain_exactly(file) }
       end

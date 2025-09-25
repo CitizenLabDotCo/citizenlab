@@ -13,6 +13,6 @@ RSpec.describe Files::FilesProject do
   end
 
   describe 'validations' do
-    it { is_expected.to validate_uniqueness_of(:file_id).scoped_to(:project_id).case_insensitive }
+    it { is_expected.to validate_uniqueness_of(:file_id).case_insensitive }
   end
 end
