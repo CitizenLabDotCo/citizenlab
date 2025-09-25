@@ -2415,7 +2415,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "ਜਵਾਬ ਵਿਕਲਪ",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultQuestion": "ਡਿਫਾਲਟ ਸਵਾਲ",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.deleteButtonLabel": "ਮਿਟਾਓ",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation2": "Are you sure you want to delete this answer option? All records that specific users answered with this option will be permanently deleted. This action cannot be undone.",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation2": "ਕੀ ਤੁਸੀਂ ਪੱਕਾ ਇਸ ਜਵਾਬ ਵਿਕਲਪ ਨੂੰ ਮਿਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ? ਉਹ ਸਾਰੇ ਰਿਕਾਰਡ ਜਿਨ੍ਹਾਂ ਦਾ ਜਵਾਬ ਖਾਸ ਉਪਭੋਗਤਾਵਾਂ ਨੇ ਇਸ ਵਿਕਲਪ ਨਾਲ ਦਿੱਤਾ ਸੀ, ਸਥਾਈ ਤੌਰ 'ਤੇ ਮਿਟਾ ਦਿੱਤੇ ਜਾਣਗੇ। ਇਸ ਕਾਰਵਾਈ ਨੂੰ ਅਣਕੀਤਾ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ।",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionDeletionConfirmation3": "ਕੀ ਤੁਸੀਂ ਯਕੀਨਨ ਇਸ ਜਨਸੰਖਿਆ ਸੰਬੰਧੀ ਸਵਾਲ ਨੂੰ ਮਿਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ? ਇਸ ਸਵਾਲ ਲਈ ਉਪਭੋਗਤਾਵਾਂ ਦੁਆਰਾ ਦਿੱਤੇ ਗਏ ਸਾਰੇ ਜਵਾਬ ਸਥਾਈ ਤੌਰ 'ਤੇ ਮਿਟਾ ਦਿੱਤੇ ਜਾਣਗੇ, ਅਤੇ ਇਸਨੂੰ ਹੁਣ ਪ੍ਰੋਜੈਕਟਾਂ ਜਾਂ ਪ੍ਰਸਤਾਵਾਂ ਵਿੱਚ ਨਹੀਂ ਪੁੱਛਿਆ ਜਾਵੇਗਾ। ਇਸ ਕਾਰਵਾਈ ਨੂੰ ਅਣਡੂ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ।",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsSubSectionTitle": "ਸਵਾਲ",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsTooltip": "ਗਲੋਬਲ ਸਾਈਨ-ਅੱਪ ਪ੍ਰਕਿਰਿਆ ਵਿੱਚ ਪ੍ਰਸ਼ਨਾਂ ਦੇ ਦਿਖਾਈ ਦੇਣ ਦੇ ਕ੍ਰਮ ਨੂੰ ਨਿਰਧਾਰਤ ਕਰਨ ਲਈ ਉਹਨਾਂ ਨੂੰ ਖਿੱਚੋ ਅਤੇ ਛੱਡੋ।",
