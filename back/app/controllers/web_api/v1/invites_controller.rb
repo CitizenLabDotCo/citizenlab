@@ -174,7 +174,6 @@ class WebApi::V1::InvitesController < ApplicationController
   end
 
   def resend
-    authorize :invite, :resend?
     user = User.find_by(email: accept_params[:email])
 
     unless user&.invite_status == 'pending'
@@ -183,6 +182,7 @@ class WebApi::V1::InvitesController < ApplicationController
     end
 
     invite = user.invitee_invite
+    authorize invite
 
     LogActivityJob.perform_later(invite, 'resent', current_user, nil)
 
