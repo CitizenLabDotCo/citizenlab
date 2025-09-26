@@ -1817,7 +1817,6 @@
   "app.containers.AdminPage.Project.general.accessRights": "Access rights",
   "app.containers.AdminPage.Project.general.data": "Data",
   "app.containers.AdminPage.Project.general.descriptionLabel": "Description",
-  "app.containers.AdminPage.Project.general.descriptionTooltip": "Provide a clear description of your project to help participants understand what it is about.",
   "app.containers.AdminPage.Project.general.homepageDescriptionLabel": "Homepage description",
   "app.containers.AdminPage.Project.general.homepageDescriptionTooltip": "This short description will be shown on the project card on the homepage. Keep it concise and engaging.",
   "app.containers.AdminPage.Project.general.inputTags": "Input tags",
