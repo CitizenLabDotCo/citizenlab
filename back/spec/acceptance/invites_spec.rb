@@ -388,8 +388,9 @@ resource 'Invites' do
 
       example_request 'Resend an invite' do
         assert_status 200
-        expect(EmailCampaigns::InviteReminderMailer).to have_received(:with).with(user: user)
-          .and_return(double(resend_invite: double(deliver_now: true)))
+        expect(LogActivityJob).to have_been_enqueued.with(
+          user, 'invite_resend', anything, nil
+        ).exactly(1).times
       end
     end
   end
