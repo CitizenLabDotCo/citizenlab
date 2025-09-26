@@ -2065,6 +2065,8 @@
   "app.containers.AdminPage.ProjectEdit.headerImageAltText": "Header image alt text",
   "app.containers.AdminPage.ProjectEdit.headerImageInputLabel": "Слика заглавља",
   "app.containers.AdminPage.ProjectEdit.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarning1": "If you allow users to submit ideas through the map, make sure that the Location field is included in the {inputFormLink}.",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarningLink1": "Input Form",
   "app.containers.AdminPage.ProjectEdit.information.new1": "NEW",
   "app.containers.AdminPage.ProjectEdit.information.provideInformation": "Обезбедите информације корисницима или користите алатку за прављење извештаја да поделите резултате о прошлим фазама.",
   "app.containers.AdminPage.ProjectEdit.information.shareInformationOrResults": "Делите информације или резултате",
