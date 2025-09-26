@@ -788,6 +788,7 @@
   "app.components.formBuilder.displayAsDropdown": "Display as dropdown",
   "app.components.formBuilder.displayAsDropdownTooltip": "Display the options in a dropdown. If you have many options, this is recommended.",
   "app.components.formBuilder.done": "Done",
+  "app.components.formBuilder.dragAndDrop": "To add questions to the form DRAG and DROP the elements found in the left side menu into the form.",
   "app.components.formBuilder.drawArea": "Draw area",
   "app.components.formBuilder.drawRoute": "Draw route",
   "app.components.formBuilder.dropPin": "Drop pin",

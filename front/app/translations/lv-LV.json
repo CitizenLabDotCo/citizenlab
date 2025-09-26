@@ -788,6 +788,7 @@
   "app.components.formBuilder.displayAsDropdown": "Parādīt kā nolaižamo",
   "app.components.formBuilder.displayAsDropdownTooltip": "Izlaižamajā logā parādiet opcijas. Ja jums ir daudz iespēju, ieteicams izmantot šo iespēju.",
   "app.components.formBuilder.done": "Paveikts",
+  "app.components.formBuilder.dragAndDrop": "Lai veidlapai pievienotu jautājumus, DRAG un DROP elementus, kas atrodami kreisās puses izvēlnē, ievietojiet veidlapā.",
   "app.components.formBuilder.drawArea": "Zīmēšanas apgabals",
   "app.components.formBuilder.drawRoute": "Zīmēšanas maršruts",
   "app.components.formBuilder.dropPin": "Palikt pīne",

@@ -788,6 +788,7 @@
   "app.components.formBuilder.displayAsDropdown": "Prikaži kao padajući izbornik",
   "app.components.formBuilder.displayAsDropdownTooltip": "Prikažite opcije u padajućem izborniku. Ako imate mnogo opcija, ovo se preporučuje.",
   "app.components.formBuilder.done": "Gotovo",
+  "app.components.formBuilder.dragAndDrop": "Za dodavanje pitanja u obrazac, POVUCITE i ISPUSTITE elemente iz izbornika s lijeve strane u obrazac.",
   "app.components.formBuilder.drawArea": "Područje crtanja",
   "app.components.formBuilder.drawRoute": "Nacrtaj rutu",
   "app.components.formBuilder.dropPin": "Spustite iglu",

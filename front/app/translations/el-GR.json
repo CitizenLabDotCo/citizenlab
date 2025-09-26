@@ -788,6 +788,7 @@
   "app.components.formBuilder.displayAsDropdown": "Εμφάνιση ως dropdown",
   "app.components.formBuilder.displayAsDropdownTooltip": "Εμφανίστε τις επιλογές σε ένα αναπτυσσόμενο μενού. Εάν έχετε πολλές επιλογές, συνιστάται αυτή η επιλογή.",
   "app.components.formBuilder.done": "Έγινε",
+  "app.components.formBuilder.dragAndDrop": "Για να προσθέσετε ερωτήσεις στη φόρμα, σύρετε και αφήστε τα στοιχεία που βρίσκονται στο μενού της αριστερής πλευράς στη φόρμα.",
   "app.components.formBuilder.drawArea": "Περιοχή κλήρωσης",
   "app.components.formBuilder.drawRoute": "Διαδρομή κλήρωσης",
   "app.components.formBuilder.dropPin": "Καρφίτσα πτώσης",

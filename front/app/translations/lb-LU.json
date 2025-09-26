@@ -788,6 +788,7 @@
   "app.components.formBuilder.displayAsDropdown": "Weist als Dropdown",
   "app.components.formBuilder.displayAsDropdownTooltip": "Weist d'Optiounen an engem Dropdown-Menü. Wann Dir vill Méiglechkeeten hutt, ass dëst recommandéiert.",
   "app.components.formBuilder.done": "Erleedegt",
+  "app.components.formBuilder.dragAndDrop": "Fir Froen an de Formulaire bäizefügen, ZÉITT an OFLEET d'Elementer, déi Dir am Menü op der lénkser Säit fannt, an de Formulaire.",
   "app.components.formBuilder.drawArea": "Zeechnen Beräich",
   "app.components.formBuilder.drawRoute": "Streck zeechnen",
   "app.components.formBuilder.dropPin": "Drop Pin",
