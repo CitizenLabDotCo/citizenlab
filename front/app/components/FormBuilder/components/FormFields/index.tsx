@@ -8,10 +8,7 @@ import {
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 
-import {
-  builtInFieldKeys,
-  FormBuilderConfig,
-} from 'components/FormBuilder/utils';
+import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 import {
   detectConflictsByPage,
@@ -36,8 +33,6 @@ interface FormFieldsProps {
   closeSettings: (triggerAutosave?: boolean) => void;
 }
 
-const individualPageFieldCodes = ['title_multiloc', 'body_multiloc'];
-
 const FormFields = ({
   onEditField,
   selectedFieldId,
@@ -48,19 +43,19 @@ const FormFields = ({
   const formCustomFields: IFlatCustomField[] = watch('customFields');
 
   const shouldShowField = (field: IFlatCustomField) => {
-    if (builtInFieldKeys.includes(field.key)) {
+    if (!!field.code) {
       return field.enabled;
     }
     return true;
   };
 
   const lastPage = formCustomFields[formCustomFields.length - 1];
-
   const nestedGroupData = getNestedGroupData(formCustomFields);
 
   const conflictsByPage = detectConflictsByPage(nestedGroupData);
   const fieldNumbers = getFieldNumbers(formCustomFields);
   const userFieldsInFormNotice = builderConfig.getUserFieldsNotice;
+  const individualPageFieldCodes = ['title_multiloc', 'body_multiloc']; // TODO
 
   return (
     <>
@@ -143,7 +138,6 @@ const FormFields = ({
               </Drag>
             );
           })}
-
           {formCustomFields.length > 0 && (
             <Box height="1px" borderTop={`1px solid ${colors.divider}`} />
           )}
