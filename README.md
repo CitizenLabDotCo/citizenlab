@@ -8,7 +8,7 @@ Interested in the Open-Source version of Go Vocal, which you can host yourself? 
 
 To use the Commercial Edition or get professional support, consider [becoming a Go Vocal client](https://www.govocal.com/plans)
 
-# Go Vocal
+# Go Vocal!
 
 ![Go Vocal](https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/GovocalBluePink.png)
 
