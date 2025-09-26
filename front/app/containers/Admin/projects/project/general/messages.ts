@@ -21,11 +21,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Project.general.descriptionLabel',
     defaultMessage: 'Description',
   },
-  descriptionTooltip: {
-    id: 'app.containers.AdminPage.Project.general.descriptionTooltip',
-    defaultMessage:
-      'Provide a clear description of your project to help participants understand what it is about.',
-  },
   homepageDescriptionLabel: {
     id: 'app.containers.AdminPage.Project.general.homepageDescriptionLabel',
     defaultMessage: 'Homepage description',

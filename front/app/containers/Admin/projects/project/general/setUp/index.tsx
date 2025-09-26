@@ -599,9 +599,6 @@ const AdminProjectsProjectGeneral = () => {
                     valueMultiloc={descriptionMultiloc}
                     onChange={handleDescriptionChange}
                     label={formatMessage(messages.descriptionLabel)}
-                    labelTooltipText={formatMessage(
-                      messages.descriptionTooltip
-                    )}
                   />
                 </Highlighter>
                 <Error
