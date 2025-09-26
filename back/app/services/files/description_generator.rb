@@ -44,8 +44,8 @@ module Files
       prompt = build_prompt(file.name, locales)
       prefill_msg = '{' # Prefill the response to encourage the LLM to respond with a JSON object
 
-      llm_preparation_service = LLMPreparation.new
-      response = llm_preparation_service.with_preprocessed_file_content(file) do |source|
+      # @type [RubyLLM::Message]
+      response = file_preprocessor.with_preprocessed_file_content(file) do |source|
         chat.add_message(role: :user, content: RubyLLM::Content.new(prompt, source))
         chat.add_message(role: :assistant, content: prefill_msg)
         chat.complete
@@ -53,6 +53,10 @@ module Files
 
       content = prefill_msg + response.content
       parse_llm_response(content, locales)
+    end
+
+    def file_preprocessor
+      @file_preprocessor ||= LLMFilePreprocessor.new
     end
 
     # Selects the best available Claude model for the Bedrock provider.

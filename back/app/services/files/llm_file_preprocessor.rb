@@ -1,9 +1,8 @@
 module Files
-  # Service to prepare files for LLM processingx, converting them to formats
-  # that have better support, if possible. It's delegating most of the heavy
-  # lifting to the PreviewService, which converts most files to PDF, and takes
-  # care of monitoring the progress.
-  class LLMPreparation
+  # Service to preprocess files for use with LLMs, converting them into formats that are
+  # better supported whenever possible. Most of the heavy lifting is handled by the
+  # +PreviewService+ which converts the majority of files to PDF.
+  class LLMFilePreprocessor
     # Yields the preprocessed file content to the block. If no preprocessing is needed,
     # the original file content is passed. A block is used to ensure that any temporary
     # files are properly closed and deleted after the block exits.
