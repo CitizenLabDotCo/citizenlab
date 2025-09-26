@@ -57,12 +57,17 @@ export interface IInviteData {
   };
 }
 
-export interface IInvitesNewSeats {
+export interface IInvitesImport {
   data: {
-    type: 'invite_new_seats';
+    id: string;
+    type: 'invites_import';
     attributes: {
-      newly_added_admins_number: number;
-      newly_added_moderators_number: number;
+      completed_at: string | null;
+      job_type: string;
+      result: {
+        newly_added_admins_number: number;
+        newly_added_moderators_number: number;
+      };
     };
   };
 }

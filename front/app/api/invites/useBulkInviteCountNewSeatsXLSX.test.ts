@@ -6,7 +6,7 @@ import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import useBulkInviteCountNewSeatsXLSX from './useBulkInviteCountNewSeatsXLSX';
 
-const apiPath = '*/invites/count_new_seats_xlsx';
+const apiPath = '*/invites_imports/count_new_seats_xlsx';
 
 const server = setupServer(
   http.post(apiPath, () => {
