@@ -83,8 +83,12 @@ const FormStatus = ({
 
   return (
     <>
+      <Warning mb="8px">{formatMessage(messages.dragAndDrop)}</Warning>
+
+      {showWarnings()}
+
       {hasErrors && (
-        <Box mb="16px">
+        <Box mb="8px">
           <Error
             marginTop="8px"
             marginBottom="8px"
@@ -108,7 +112,6 @@ const FormStatus = ({
           closeSuccessMessage={() => setSuccessMessageIsVisible(false)}
         />
       )}
-      {showWarnings()}
     </>
   );
 };
