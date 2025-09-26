@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.titleLabel',
     defaultMessage: 'Title',
   },
+  phaseTitlePlaceholder: {
+    id: 'app.containers.AdminPage.ProjectTimeline.phaseTitlePlaceholder',
+    defaultMessage: 'New phase',
+  },
   surveyTitleLabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.surveyTitleLabel',
     defaultMessage: 'Survey title',

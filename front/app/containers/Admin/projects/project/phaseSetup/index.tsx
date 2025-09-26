@@ -385,6 +385,11 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
               id="title"
               type="text"
               valueMultiloc={formData.title_multiloc}
+              placeholder={
+                phaseId
+                  ? undefined
+                  : formatMessage(messages.phaseTitlePlaceholder)
+              }
               onChange={handleTitleMultilocOnChange}
             />
             <Error apiErrors={errors && errors.title_multiloc} />
