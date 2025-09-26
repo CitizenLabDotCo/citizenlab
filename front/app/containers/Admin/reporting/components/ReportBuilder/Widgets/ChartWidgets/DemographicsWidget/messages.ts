@@ -9,9 +9,9 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.demographics',
     defaultMessage: 'Demographics',
   },
-  registrationField: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.registrationField',
-    defaultMessage: 'Registration field',
+  demographicQuestion: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.demographicQuestion',
+    defaultMessage: 'Demographic question',
   },
   unknown: {
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.unknown',

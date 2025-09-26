@@ -73,7 +73,7 @@ describe WebApi::V1::PhaseSerializer do
 
   context 'for a native survey phase' do
     let(:user) { create(:user) }
-    let(:phase) { create(:native_survey_phase) }
+    let(:phase) { create(:native_survey_phase, with_permissions: true) }
 
     it 'includes survey attributes' do
       expect(result.dig(:data, :attributes).keys).to include(
@@ -86,7 +86,7 @@ describe WebApi::V1::PhaseSerializer do
 
   context 'for a community monitor phase' do
     let(:user) { create(:user) }
-    let(:phase) { create(:community_monitor_survey_phase) }
+    let(:phase) { create(:community_monitor_survey_phase, with_permissions: true) }
 
     it 'includes survey attributes' do
       expect(result.dig(:data, :attributes).keys).to include(

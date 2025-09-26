@@ -14,10 +14,12 @@ class WebApi::V1::Files::FileAttachmentsController < ApplicationController
     file_attachments = policy_scope(Files::FileAttachment)
       .includes(:file, :attachable)
       .where(where_conditions)
+      .order(:position)
 
     render json: WebApi::V1::Files::FileAttachmentSerializer.new(
       file_attachments,
-      params: jsonapi_serializer_params
+      params: jsonapi_serializer_params,
+      include: [:file]
     ).serializable_hash
   end
 
@@ -32,8 +34,25 @@ class WebApi::V1::Files::FileAttachmentsController < ApplicationController
     file_attachment = Files::FileAttachment.new(create_params)
     authorize(file_attachment)
 
+    # If the file does not yet belong to the attachable's project, add it on the fly.
+    # This mainly applies when creating a project, as project files are uploaded first
+    # and only added to the project once it's created.
+    project = file_attachment.attachable.try(:project)
+    if project && file_attachment.file.projects.exclude?(project)
+      file_project = file_attachment.file.files_projects.build(project: project)
+      authorize(file_project)
+    end
+
     side_fx.before_create(file_attachment, current_user)
-    if file_attachment.save
+
+    saved = Files::FileAttachment.transaction do
+      file_project&.save!
+      file_attachment.save!
+    rescue ActiveRecord::RecordInvalid
+      false
+    end
+
+    if saved
       side_fx.after_create(file_attachment, current_user)
       render json: WebApi::V1::Files::FileAttachmentSerializer.new(
         file_attachment,

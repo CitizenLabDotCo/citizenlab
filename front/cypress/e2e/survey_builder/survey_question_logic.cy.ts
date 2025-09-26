@@ -368,7 +368,7 @@ describe('Bug: ambiguity around missing values in survey logic', () => {
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
 
     // Go to next page
-    cy.wait(1000);
+    cy.wait(5000);
     cy.dataCy('e2e-next-page').click();
 
     // Expect to be on page 3

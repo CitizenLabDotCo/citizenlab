@@ -46,8 +46,8 @@ export default defineMessages({
     defaultMessage: 'Popup settings',
   },
   accessRights: {
-    id: 'app.containers.Admin.communityMonitor.settings.accessRights2',
-    defaultMessage: 'Access rights',
+    id: 'app.containers.Admin.communityMonitor.settings.accessRights3',
+    defaultMessage: 'Access and user data',
   },
   management: {
     id: 'app.containers.Admin.communityMonitor.settings.management2',

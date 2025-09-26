@@ -78,12 +78,7 @@ module Analysis
 
     # What is the maximum context window any of the LLMs support?
     def max_context_window
-      enabled_llms.map(&:context_window).max
-    end
-
-    # For now, we assume GPT tokenization for all llms
-    def token_count(str)
-      LLM::AzureOpenAI.token_count(str)
+      enabled_llms.map(&:usable_context_window).max
     end
   end
 end

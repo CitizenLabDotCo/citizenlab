@@ -106,7 +106,7 @@ const Settings = () => {
       <UserFieldSelect
         userFieldId={customFieldId}
         userFields={processedUserFields}
-        label={formatMessage(messages.registrationField)}
+        label={formatMessage(messages.demographicQuestion)}
         emptyOption={false}
         onChange={setCustomFieldId}
       />
