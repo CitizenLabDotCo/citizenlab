@@ -37,6 +37,7 @@ import { generateTempId } from 'utils/helperUtils';
 import { FlexibleRow } from '../../FlexibleRow';
 import { getFieldBackgroundColor } from '../utils';
 
+import LocationDeletionModal from './components/LocationDeletionModal';
 import FieldTitle from './FieldTitle';
 import IconsAndBadges from './IconsAndBadges';
 import Logic from './Logic';
@@ -83,6 +84,7 @@ export const FormField = ({
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const lockedAttributes = field?.constraints?.locks;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showLocationDeleteModal, setShowLocationDeleteModal] = useState(false);
   const formCustomFields: IFlatCustomField[] = watch('customFields');
   const index = formCustomFields.findIndex((f) => f.id === field.id);
   const { insert, move, remove } = useFieldArray({
@@ -259,6 +261,13 @@ export const FormField = ({
     if (doesPageHaveLinkedLogic) {
       openModal();
     } else {
+      // If field is a Location question, show warning about field deletion
+      // and that adding ideas from the map will not be possible anymore.
+      if (field.code === 'location_description') {
+        setShowLocationDeleteModal(true);
+        return;
+      }
+
       onDelete(fieldIndex);
     }
   };
@@ -401,6 +410,13 @@ export const FormField = ({
           />
         )}
       </FormFieldsContainer>
+      <LocationDeletionModal
+        opened={showLocationDeleteModal}
+        setModalOpen={setShowLocationDeleteModal}
+        onDelete={onDelete}
+        index={index}
+        returnFocusRef={moreActionsButtonRef}
+      />
       <Modal
         opened={showDeleteModal}
         close={closeModal}
