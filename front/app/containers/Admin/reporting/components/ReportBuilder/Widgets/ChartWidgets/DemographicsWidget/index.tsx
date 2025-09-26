@@ -3,6 +3,7 @@ import React from 'react';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 
 import { useDemographics } from 'api/graph_data_units';
+import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -12,9 +13,10 @@ import Card from '../../_shared/Card';
 import NoData from '../../_shared/NoData';
 import chartWidgetMessages from '../messages';
 
+import CheckboxChart from './CheckboxChart';
 import messages from './messages';
 import Settings from './Settings';
-import Chart from './StackedBarChart';
+import StackedBarChart from './StackedBarChart';
 import { Props } from './typings';
 
 const DemographicsWidget = ({
@@ -35,6 +37,8 @@ const DemographicsWidget = ({
     group_id: groupId,
   });
 
+  const { data: customField } = useUserCustomField(customFieldId);
+
   const layout = useLayout();
 
   if (isLoading) return null;
@@ -47,13 +51,23 @@ const DemographicsWidget = ({
     );
   }
 
+  const isCheckboxField =
+    customField?.data.attributes.input_type === 'checkbox';
+
   if (layout === 'narrow') {
     return (
       <Card pagebreak className="e2e-demographics-widget">
         <Title variant="h4" mt="1px">
           {localize(title)}
         </Title>
-        <Chart response={demographicsResponse} />
+        {isCheckboxField ? (
+          <CheckboxChart response={demographicsResponse} />
+        ) : (
+          <StackedBarChart
+            response={demographicsResponse}
+            customField={customField}
+          />
+        )}
       </Card>
     );
   }
@@ -66,7 +80,14 @@ const DemographicsWidget = ({
             {localize(title)}
           </Title>
         </Box>
-        <Chart response={demographicsResponse} />
+        {isCheckboxField ? (
+          <CheckboxChart response={demographicsResponse} />
+        ) : (
+          <StackedBarChart
+            response={demographicsResponse}
+            customField={customField}
+          />
+        )}
       </Box>
     </Card>
   );
