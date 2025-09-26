@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Box, Button } from '@citizenlab/cl2-component-library';
 
+import resendInvite from 'api/authentication/resendInvite';
+
 import { State } from 'containers/Authentication/typings';
 
 import Warning from 'components/UI/Warning';
@@ -16,18 +18,36 @@ type Props = {
 
 const InvitationResent = ({ state }: Props) => {
   const { formatMessage } = useIntl();
+  const [status, setStatus] = React.useState<'idle' | 'loading' | 'success'>(
+    'idle'
+  );
 
-  if (!state.email) return null;
+  const email = state.email;
+  if (!email) {
+    return null;
+  }
 
   return (
     <>
       <Box mb="24px">
         <Warning>
           {formatMessage(messages.emailAlreadyTaken, {
-            email: state.email,
+            email,
           })}
         </Warning>
-        <Button width="auto" mt="32px" icon="email">
+        <Button
+          width="auto"
+          mt="32px"
+          icon={status === 'success' ? 'check-circle' : 'email'}
+          processing={status === 'loading'}
+          disabled={status === 'success'}
+          bgColor={status === 'success' ? 'success' : 'primary'}
+          onClick={async () => {
+            setStatus('loading');
+            await resendInvite(email);
+            setStatus('success');
+          }}
+        >
           {formatMessage(messages.resendInvite)}
         </Button>
       </Box>
