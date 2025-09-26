@@ -27,7 +27,7 @@ const InvitationResent = ({ state }: Props) => {
             email: state.email,
           })}
         </Warning>
-        <Button width="auto" mt="16px" icon="email">
+        <Button width="auto" mt="32px" icon="email">
           {formatMessage(messages.resendInvite)}
         </Button>
       </Box>
