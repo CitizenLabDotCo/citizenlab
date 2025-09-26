@@ -71,7 +71,13 @@ const EmailAndPasswordSignUp = ({
 
   const methods = useForm({
     mode: 'onSubmit',
-    defaultValues: { ...DEFAULT_VALUES, ...state.prefilledBuiltInFields },
+    defaultValues: {
+      ...DEFAULT_VALUES,
+      first_name: state.first_name,
+      last_name: state.last_name,
+      email: state.email,
+      password: state.password,
+    },
     resolver: yupResolver(schema),
   });
 

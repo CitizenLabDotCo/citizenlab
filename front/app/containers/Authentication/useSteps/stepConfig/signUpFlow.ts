@@ -90,8 +90,22 @@ export const signUpFlow = (
 
           setCurrentStep('success');
         } catch (e) {
-          trackEventByName(tracks.signInEmailPasswordFailed);
-          throw e;
+          if (e.errors?.email?.[0]?.error === 'taken_by_invite') {
+            // If the invitation is already taken:
+            // Store provided information
+            updateState({
+              email: params.email,
+              first_name: params.firstName,
+              last_name: params.lastName,
+              password: params.password,
+            });
+
+            // Go to step where user can enter invitation token again
+            setCurrentStep('invitation-resent');
+          } else {
+            trackEventByName(tracks.signInEmailPasswordFailed);
+            throw e;
+          }
         }
       },
     },
@@ -101,13 +115,14 @@ export const signUpFlow = (
       SUBMIT: async (token: string) => {
         const response = await getUserDataFromToken(token);
 
-        const prefilledBuiltInFields = {
-          first_name: response.data.attributes.first_name ?? undefined,
-          last_name: response.data.attributes.last_name ?? undefined,
-          email: response.data.attributes.email ?? undefined,
+        const updatedState = {
+          token,
+          first_name: response.data.attributes.first_name ?? null,
+          last_name: response.data.attributes.last_name ?? null,
+          email: response.data.attributes.email ?? null,
         };
 
-        updateState({ token, prefilledBuiltInFields });
+        updateState(updatedState);
 
         setCurrentStep('sign-up:email-password');
       },

@@ -173,6 +173,22 @@ class WebApi::V1::InvitesController < ApplicationController
     end
   end
 
+  def resend
+    user = User.find_by(email: accept_params[:email])
+
+    unless user&.invite_status == 'pending'
+      render json: { errors: { base: [{ error: 'no_pending_invite' }] } }, status: :unprocessable_entity
+      return
+    end
+
+    invite = user.invitee_invite
+    authorize invite
+
+    LogActivityJob.perform_later(invite, 'resent', current_user, nil)
+
+    head :ok
+  end
+
   private
 
   def accept_params

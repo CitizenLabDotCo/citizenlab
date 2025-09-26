@@ -377,5 +377,22 @@ resource 'Invites' do
         expect(response_status).to eq 401 # unauthorized
       end
     end
+
+    post 'web_api/v1/invites/resend' do
+      with_options scope: :invite do
+        parameter :email, 'The email of the user to resend the invite to', required: true
+      end
+
+      let(:user) { create(:invited_user) }
+      let(:invite) { user.invitee_invite }
+      let(:email) { user.email }
+
+      example_request 'Resend an invite' do
+        assert_status 200
+        expect(LogActivityJob).to have_been_enqueued.with(
+          invite, 'resent', anything, nil
+        ).exactly(1).times
+      end
+    end
   end
 end

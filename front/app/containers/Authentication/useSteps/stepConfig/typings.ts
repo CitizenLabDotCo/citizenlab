@@ -38,7 +38,10 @@ export type Step =
   // sso verification flow
   | 'sso-verification:sso-providers'
   | 'sso-verification:sso-providers-policies'
-  | 'sso-verification:email-password';
+  | 'sso-verification:email-password'
+
+  // invite taken flow
+  | 'invitation-resent';
 
 export interface BuiltInFieldsUpdate {
   first_name?: string;

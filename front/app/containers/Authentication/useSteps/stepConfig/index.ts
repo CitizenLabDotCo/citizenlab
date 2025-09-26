@@ -1,4 +1,5 @@
-// flows
+import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
+
 import {
   GetRequirements,
   UpdateState,
@@ -80,6 +81,25 @@ export const getStepConfig = (
 
     'verification-success': {
       CLOSE: () => setCurrentStep('closed'),
+    },
+
+    'invitation-resent': {
+      CLOSE: () => setCurrentStep('closed'),
+      SUBMIT_CODE: async (token: string) => {
+        const response = await getUserDataFromToken(token);
+        const { attributes } = response.data;
+
+        const updatedState = {
+          token,
+          email: attributes.email ?? null,
+          first_name: attributes.first_name ?? state.first_name ?? null,
+          last_name: attributes.last_name ?? state.last_name ?? null,
+        };
+
+        updateState(updatedState);
+
+        setCurrentStep('sign-up:email-password');
+      },
     },
   };
 };
