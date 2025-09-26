@@ -1721,7 +1721,6 @@ CREATE TABLE public.phases (
     similarity_threshold_title double precision DEFAULT 0.3,
     similarity_threshold_body double precision DEFAULT 0.4,
     similarity_enabled boolean DEFAULT true NOT NULL,
-    user_fields_in_form boolean DEFAULT false NOT NULL,
     vote_term character varying DEFAULT 'vote'::character varying
 );
 
@@ -3049,7 +3048,9 @@ CREATE TABLE public.permissions (
     global_custom_fields boolean DEFAULT false NOT NULL,
     verification_expiry integer,
     access_denied_explanation_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    everyone_tracking_enabled boolean DEFAULT false NOT NULL
+    everyone_tracking_enabled boolean DEFAULT false NOT NULL,
+    user_fields_in_form boolean DEFAULT false NOT NULL,
+    user_data_collection character varying DEFAULT 'all_data'::character varying NOT NULL
 );
 
 
@@ -5490,7 +5491,7 @@ CREATE INDEX index_files_previews_on_file_id ON public.files_previews USING btre
 -- Name: index_files_projects_on_file_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_files_projects_on_file_id ON public.files_projects USING btree (file_id);
+CREATE UNIQUE INDEX index_files_projects_on_file_id ON public.files_projects USING btree (file_id);
 
 
 --
@@ -7811,6 +7812,8 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250922131002'),
+('20250910093500'),
 ('20250829154300'),
 ('20250808071349'),
 ('20250807120354'),

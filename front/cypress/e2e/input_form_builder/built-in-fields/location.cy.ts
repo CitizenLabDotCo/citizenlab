@@ -83,7 +83,7 @@ describe('Input form builder', () => {
     cy.dataCy('e2e-edit-input-form').click();
 
     // The location tool box item should be disabled as it is already on the canvas
-    cy.dataCy('e2e-location-item').as('locationToolboxItem');
+    cy.dataCy('e2e-location_description-item').as('locationToolboxItem');
     cy.get('@locationToolboxItem').should('exist');
     cy.get('@locationToolboxItem').should('have.attr', 'disabled');
 

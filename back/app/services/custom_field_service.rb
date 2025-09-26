@@ -125,6 +125,11 @@ class CustomFieldService
   def self.remove_not_visible_fields(idea, current_user)
     return idea.custom_field_values if idea.draft?
 
+    # If super admin, we return all custom fields.
+    # This is mostly for debugging purposes, and to allow checking
+    # this behavior in the e2e tests.
+    return idea.custom_field_values if current_user&.super_admin?
+
     fields = IdeaCustomFieldsService.new(idea.custom_form).enabled_public_fields
     if can_see_admin_answers?(idea, current_user)
       fields = IdeaCustomFieldsService.new(idea.custom_form).enabled_fields

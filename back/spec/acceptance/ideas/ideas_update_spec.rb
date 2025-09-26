@@ -577,8 +577,23 @@ resource 'Ideas' do
     context 'in a native survey phase' do
       before_all { create(:idea_status_proposed) }
 
-      let(:project) { create(:single_phase_native_survey_project) }
-      let(:author) { create(:user) }
+      let(:project) do
+        project = create(:single_phase_native_survey_project, phase_attrs: {
+          with_permissions: true
+        })
+
+        phase = project.phases.first
+
+        permission = phase.permissions.find_by(action: 'posting_idea')
+        permission.update!(global_custom_fields: false)
+        permission.permissions_custom_fields = [
+          create(:permissions_custom_field, custom_field: create(:custom_field, key: 'age'))
+        ]
+
+        project
+      end
+
+      let(:author) { create(:user, custom_field_values: { age: 30 }) }
       let(:input) { create(:native_survey_response, project: project, author: author) }
 
       context 'when author' do
@@ -592,6 +607,10 @@ resource 'Ideas' do
           example_request 'Can change a survey response from draft to published' do
             assert_status 200
             expect(response_data[:attributes][:publication_status]).to eq 'published'
+
+            # It also saves the custom field values into the idea
+            idea = Idea.find(response_data[:id])
+            expect(idea.custom_field_values['u_age']).to eq 30
           end
         end
       end

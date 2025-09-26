@@ -26,12 +26,7 @@ const ActionForms = ({ phaseId }: Props) => {
 
   if (!permissions || !phase) return null;
 
-  const postType = ['native_survey', 'community_monitor_survey'].includes(
-    phase.data.attributes.participation_method
-  )
-    ? 'nativeSurvey'
-    : 'defaultInput';
-
+  const participationMethod = phase.data.attributes.participation_method;
   if (permissions.data.length === 0) {
     return (
       <p>
@@ -49,7 +44,7 @@ const ActionForms = ({ phaseId }: Props) => {
           <FormattedMessage
             {...getPermissionActionSectionSubtitle({
               permissionAction,
-              postType,
+              participationMethod,
             })}
           />
         </Title>
@@ -98,7 +93,7 @@ const ActionForms = ({ phaseId }: Props) => {
                 <FormattedMessage
                   {...getPermissionActionSectionSubtitle({
                     permissionAction,
-                    postType,
+                    participationMethod,
                   })}
                 />
               </Title>

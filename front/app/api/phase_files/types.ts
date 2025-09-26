@@ -13,14 +13,6 @@ export interface IPhaseFileData {
   };
 }
 
-export interface UpdatePhaseFileObject {
-  phaseId: string;
-  fileId: string;
-  file: {
-    ordering?: number;
-  };
-}
-
 export interface IPhaseFile {
   data: IPhaseFileData;
 }

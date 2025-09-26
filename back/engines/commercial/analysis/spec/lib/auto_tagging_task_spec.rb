@@ -158,7 +158,7 @@ RSpec.describe Analysis::AutoTaggingTask do
       it 'recudes the inputs to fit in the context window' do
         stubbed_context_window = 1000
         expect_any_instance_of(Analysis::LLM::GPT41)
-          .to receive(:context_window)
+          .to receive(:usable_context_window)
           .at_least(:once)
           .and_return(stubbed_context_window)
 
@@ -167,11 +167,11 @@ RSpec.describe Analysis::AutoTaggingTask do
 
         # Take token size of the prompt with one input + one returned topic
         ideas = [create(:idea, project: project)]
-        min_size = Analysis::LLM::AzureOpenAI.token_count(model.send(:inputs_prompt, ideas, project.title_multiloc.values.first)) + Analysis::AutoTaggingMethod::NLPTopic::TOKENS_PER_TOPIC
+        min_size = Analysis::LLM::GPT41.new.token_count(model.send(:inputs_prompt, ideas, project.title_multiloc.values.first)) + Analysis::AutoTaggingMethod::NLPTopic::TOKENS_PER_TOPIC
 
         # Check how many more inputs can fit and triple that amount
         remaining_tokens = stubbed_context_window - min_size
-        tokens_per_input = Analysis::LLM::AzureOpenAI.token_count(Analysis::InputToText.new(analysis.associated_custom_fields).format_all(ideas))
+        tokens_per_input = Analysis::LLM::GPT41.new.token_count(Analysis::InputToText.new(analysis.associated_custom_fields).format_all(ideas))
         fit_ideas_count = (remaining_tokens / tokens_per_input.to_f).ceil
         ideas += create_list(:idea, (fit_ideas_count * 3), project: project)
 

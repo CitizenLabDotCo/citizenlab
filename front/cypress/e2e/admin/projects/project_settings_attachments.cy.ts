@@ -24,7 +24,7 @@ describe('Project attachments settings', () => {
     it('File attachments can be added, reordered, and saved correctly', () => {
       cy.setConsentAndAdminLoginCookies();
 
-      cy.intercept(`**/projects/${projectId}/files`).as('saveProjectFiles');
+      cy.intercept(`**/files`).as('saveProjectFiles');
 
       // Visit the project settings page
       cy.visit(`admin/projects/${projectId}/general`);
@@ -34,15 +34,20 @@ describe('Project attachments settings', () => {
       cy.wait(4000);
       cy.scrollTo('bottom');
 
+      // Open the file upload modal
+      cy.get('#e2e-open-file-upload-modal-button').click();
+      cy.get('#e2e-file-upload-input').should('exist');
       // Attach a project file
-      cy.get('#e2e-project-file-uploader').selectFile(
+      cy.get('#e2e-file-upload-input').selectFile(
         'cypress/fixtures/example.pdf'
       );
       // Wait for the file to be visible
       cy.contains('example.pdf').should('be.visible');
 
       // Attach another project file
-      cy.get('#e2e-project-file-uploader').selectFile(
+      cy.get('#e2e-open-file-upload-modal-button').click();
+      cy.get('#e2e-file-upload-input').should('exist');
+      cy.get('#e2e-file-upload-input').selectFile(
         'cypress/fixtures/example.txt'
       );
       // Wait for the file to be visible
@@ -67,19 +72,11 @@ describe('Project attachments settings', () => {
       // Drag "example.txt" (index 1) above "example.pdf" (index 0)
       const dataTransfer = new DataTransfer();
 
-      cy.get('[data-cy="e2e-file-uploader-container"] .files-list')
-        .children()
-        .children()
-        .eq(0)
-        .scrollIntoView()
-        .trigger('dragstart', { dataTransfer });
+      cy.contains('example.txt').trigger('dragstart', { dataTransfer });
 
       cy.wait(2000);
 
-      cy.get('[data-cy="e2e-file-uploader-container"] .files-list')
-        .children()
-        .children()
-        .eq(1)
+      cy.contains('example.pdf')
         .trigger('dragenter', { dataTransfer })
         .trigger('dragover', { dataTransfer })
         .trigger('drop', { dataTransfer });
@@ -103,9 +100,8 @@ describe('Project attachments settings', () => {
         });
 
       // Attach another new file, reorder to top of list and save
-      cy.get('#e2e-project-file-uploader').selectFile(
-        'cypress/fixtures/icon.png'
-      );
+      cy.get('#e2e-open-file-upload-modal-button').click();
+      cy.get('#e2e-file-upload-input').selectFile('cypress/fixtures/icon.png');
       // Wait for the file to be visible
       cy.contains('icon.png').should('be.visible');
 

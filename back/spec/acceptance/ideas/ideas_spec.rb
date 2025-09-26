@@ -390,12 +390,27 @@ resource 'Ideas' do
     end
 
     get 'web_api/v1/ideas/draft/:phase_id' do
-      let(:phase) { create(:native_survey_phase) }
+      let(:phase) do
+        phase = create(:native_survey_phase, with_permissions: true)
+        permission = phase.permissions.find_by(action: 'posting_idea')
+        permission.global_custom_fields = false
+        permission.permissions_custom_fields = [
+          create(:permissions_custom_field, custom_field: create(:custom_field, key: 'gender'))
+        ]
+
+        phase
+      end
       let(:phase_id) { phase.id }
 
       context 'idea authored by user' do
         let!(:idea) do
-          create(:native_survey_response, project: phase.project, author: @user, publication_status: 'draft', custom_field_values: { 'field' => 'value' })
+          create(
+            :native_survey_response,
+            project: phase.project,
+            author: @user, publication_status:
+            'draft',
+            custom_field_values: { 'field' => 'value' }
+          )
         end
 
         before { @user.update!(custom_field_values: { 'gender' => 'male' }) }
@@ -409,7 +424,27 @@ resource 'Ideas' do
 
         context 'when user data in the survey form is enabled' do
           example 'Get a single draft idea by phase including user data' do
-            phase.update!(user_fields_in_form: true)
+            phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
+            @user.update!(custom_field_values: { 'gender' => 'male' })
+            do_request
+            assert_status 200
+            expect(response_data[:id]).to eq idea.id
+            expect(response_data[:attributes]).to include(field: 'value', u_gender: 'male')
+          end
+        end
+
+        context 'when permitted_by is \'everyone\'' do
+          example 'Get a single draft idea by phase including user data' do
+            phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: false)
+
+            permission = Permission.find_by(
+              permission_scope_id: phase.id,
+              action: 'posting_idea'
+            )
+
+            permission.permitted_by = 'everyone'
+            permission.save!
+
             @user.update!(custom_field_values: { 'gender' => 'male' })
             do_request
             assert_status 200

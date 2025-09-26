@@ -59,11 +59,11 @@ module Analysis
     def fit_inputs_in_context_window(inputs, project_title)
       prompt = inputs_prompt(inputs, project_title)
       tokens_for_response = TOKENS_PER_TOPIC * max_topics(inputs.size)
-      tokens = LLM::AzureOpenAI.token_count(prompt) + tokens_for_response # The context window is an upper limit on the number of tokens in the prompt + response (the returned topics)
-      exceeded_tokens = tokens - gpt4.context_window
+      tokens = gpt4.token_count(prompt) + tokens_for_response # The context window is an upper limit on the number of tokens in the prompt + response (the returned topics)
+      exceeded_tokens = tokens - gpt4.usable_context_window
       return inputs if exceeded_tokens < 0
 
-      tokens_per_input = (LLM::AzureOpenAI.token_count(input_to_text.format_all(inputs)) / inputs.size.to_f).ceil
+      tokens_per_input = (gpt4.token_count(input_to_text.format_all(inputs)) / inputs.size.to_f).ceil
       inputs_excess = (exceeded_tokens / tokens_per_input.to_f).ceil
       inputs_excess = [inputs_excess, 1].max # Avoid infinite loop
       fit_inputs_in_context_window(inputs.shuffle.drop(inputs_excess), project_title)
