@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 
 import { State } from 'containers/Authentication/typings';
 
@@ -8,15 +8,13 @@ import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 
-import Invitation, { Props as InvitationProps } from '../Invitation';
-
 import messages from './messages';
 
-type Props = InvitationProps & {
+type Props = {
   state: State;
 };
 
-const InvitationResent = ({ state, ...props }: Props) => {
+const InvitationResent = ({ state }: Props) => {
   const { formatMessage } = useIntl();
 
   if (!state.email) return null;
@@ -29,8 +27,8 @@ const InvitationResent = ({ state, ...props }: Props) => {
             email: state.email,
           })}
         </Warning>
+        <Button>Resend invitation (TODO)</Button>
       </Box>
-      <Invitation {...props} />
     </>
   );
 };
