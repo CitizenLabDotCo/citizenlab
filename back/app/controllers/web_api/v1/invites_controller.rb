@@ -182,11 +182,7 @@ class WebApi::V1::InvitesController < ApplicationController
       return
     end
 
-    EmailCampaigns::InviteReminderMailer.with(
-      user: user,
-      command: { recipient: user },
-      campaign: EmailCampaigns::Campaigns::InviteReminder.new
-    ).resend_invite.deliver_now
+    LogActivityJob.perform_later(user, 'invite_resend', current_user, nil)
 
     head :ok
   end

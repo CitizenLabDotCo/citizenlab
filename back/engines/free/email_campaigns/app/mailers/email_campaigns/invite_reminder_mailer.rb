@@ -6,16 +6,6 @@ module EmailCampaigns
 
     helper_method :invite_expires_in_days
 
-    def resend_invite
-      @user = params[:user]
-
-      I18n.with_locale(locale.locale_sym) do
-        mail(default_config, &:mjml).tap do |message|
-          message.mailgun_headers = mailgun_headers if self.class.delivery_method == :mailgun
-        end
-      end
-    end
-
     def editable
       %i[subject_multiloc title_multiloc button_text_multiloc]
     end
