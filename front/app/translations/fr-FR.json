@@ -841,7 +841,7 @@
   "app.components.formBuilder.limitNumberAnswers": "Limiter le nombre de réponses",
   "app.components.formBuilder.linePolygonMapWarning2": "Les tracés linéaires et de polygones peuvent ne pas répondre aux normes d'accessibilité. Pour plus d'informations, consultez le site {accessibilityStatement}.",
   "app.components.formBuilder.linearScale": "Échelle linéaire",
-  "app.components.formBuilder.locationDescription": "Emplacement",
+  "app.components.formBuilder.locationDescription": "Localisation",
   "app.components.formBuilder.logic": "Logique",
   "app.components.formBuilder.logicAnyOtherAnswer": "Toute autre réponse",
   "app.components.formBuilder.logicConflicts.conflictingLogic": "Règles logiques incompatibles",
