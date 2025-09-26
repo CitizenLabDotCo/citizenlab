@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Box, Button, colors } from '@citizenlab/cl2-component-library';
 
 import resendInvite from 'api/authentication/resendInvite';
 
@@ -41,14 +41,18 @@ const InvitationResent = ({ state }: Props) => {
           icon={status === 'success' ? 'check-circle' : 'email'}
           processing={status === 'loading'}
           disabled={status === 'success'}
-          bgColor={status === 'success' ? 'success' : 'primary'}
+          bgColor={status === 'success' ? colors.success : undefined}
           onClick={async () => {
             setStatus('loading');
             await resendInvite(email);
             setStatus('success');
           }}
         >
-          {formatMessage(messages.resendInvite)}
+          {formatMessage(
+            status === 'success'
+              ? messages.invitationResent
+              : messages.resendInvite
+          )}
         </Button>
       </Box>
     </>
