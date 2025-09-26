@@ -82,7 +82,7 @@ const FilterSidebar = ({
       (type === 'ProjectIdeas' || type === 'ProjectProposals') &&
       typeof projectId === 'string'
     ) {
-      return `/admin/projects/${projectId}/settings/tags`;
+      return `/admin/projects/${projectId}/general/input-tags`;
     } else if (isAdmin(authUser)) {
       // For admins we show the link to the platform-wide tag manager
       return '/admin/settings/topics';

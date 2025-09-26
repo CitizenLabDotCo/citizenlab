@@ -108,7 +108,7 @@ const ProjectInfoSideBar = memo<Props>(
                             values={{
                               accessRightsLink: (
                                 <Link
-                                  to={`/admin/projects/${projectId}/settings/access-rights`}
+                                  to={`/admin/projects/${projectId}/general/access-rights`}
                                 >
                                   <FormattedMessage
                                     {...messages.accessRights}

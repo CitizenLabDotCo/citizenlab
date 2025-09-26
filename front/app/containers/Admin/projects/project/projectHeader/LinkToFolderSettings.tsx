@@ -26,7 +26,7 @@ const LinkToFolderSettings = ({ folderId, projectId }: Props) => {
   return (
     <Link
       to={createHighlighterLink(
-        `/admin/projects/${projectId}/settings#${fragmentId}`
+        `/admin/projects/${projectId}/general#${fragmentId}`
       )}
       data-cy="e2e-folder-preview-link-to-settings"
     >

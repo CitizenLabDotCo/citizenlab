@@ -27,7 +27,6 @@ import { getFullName } from 'utils/textUtils';
 
 import LinkToFolderSettings from './LinkToFolderSettings';
 import messages from './messages';
-import ProjectDescriptionPreview from './ProjectDescriptionPreview';
 import PublicationButtons from './PublicationButtons';
 import PublicationStatus from './PublicationStatus';
 import ShareLink from './ShareLink';
@@ -106,7 +105,7 @@ const ProjectHeader = ({ projectId }: Props) => {
             )}
             <Link
               to={createHighlighterLink(
-                `/admin/projects/${project.data.id}/settings#${fragmentId}`
+                `/admin/projects/${project.data.id}/general#${fragmentId}`
               )}
               data-cy="e2e-project-title-preview-link-to-settings"
             >
@@ -114,7 +113,6 @@ const ProjectHeader = ({ projectId }: Props) => {
                 {localize(project.data.attributes.title_multiloc)}
               </StyledTitle>
             </Link>
-            <ProjectDescriptionPreview project={project} />
           </Box>
           <Box
             display="flex"
@@ -140,24 +138,12 @@ const ProjectHeader = ({ projectId }: Props) => {
               token={project.data.attributes.preview_token}
               className="intercom-product-tour-project-sharing-dropdown"
             />
-            <ButtonWithLink
-              linkTo={`/admin/projects/${project.data.id}/settings`}
-              buttonStyle="admin-dark"
-              size="s"
-              padding="4px 8px"
-              icon="settings"
-              iconSize="18px"
-              className="intercom-product-tour-project-settings-link"
-            >
-              {formatMessage(messages.settings)}
-            </ButtonWithLink>
-
             <PublicationButtons project={project.data} />
           </Box>
         </Box>
         <Box display="flex" gap="8px">
           <ButtonWithLink
-            linkTo={`/admin/projects/${project.data.id}/settings/access-rights`}
+            linkTo={`/admin/projects/${project.data.id}/general/access-rights`}
             buttonStyle="text"
             size="s"
             padding="0px"
@@ -177,7 +163,7 @@ const ProjectHeader = ({ projectId }: Props) => {
             ·
           </Text>
           <ButtonWithLink
-            linkTo={`/admin/projects/${project.data.id}/settings/access-rights`}
+            linkTo={`/admin/projects/${project.data.id}/general/access-rights`}
             buttonStyle="text"
             size="s"
             padding="0px"

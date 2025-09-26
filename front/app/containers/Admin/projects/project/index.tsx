@@ -32,6 +32,13 @@ const AdminProjectsProjectIndex = () => {
       <ProjectHeader projectId={projectId} />
       <NavigationTabs position="relative">
         <Tab
+          className="intercom-admin-project-general-tab"
+          label={formatMessage(messages.generalTab)}
+          url={`/admin/projects/${projectId}/general`}
+          active={pathname.includes(`/admin/projects/${projectId}/general`)}
+        />
+        <Tab
+          data-cy="e2e-admin-project-timeline-tab"
           className="intercom-admin-project-timeline-tab"
           label={formatMessage(messages.timelineTab)}
           url={`/admin/projects/${projectId}/phases/setup`}
@@ -39,17 +46,9 @@ const AdminProjectsProjectIndex = () => {
         />
         <Tab
           className="intercom-admin-project-participants-tab"
-          label={formatMessage(messages.participationTab)}
-          url={`/admin/projects/${projectId}/participation`}
-          active={pathname.includes(
-            `/admin/projects/${projectId}/participation`
-          )}
-        />
-        <Tab
-          className="intercom-admin-project-traffic-tab"
-          label={formatMessage(messages.trafficTab)}
-          url={`/admin/projects/${projectId}/traffic`}
-          active={pathname.includes(`/admin/projects/${projectId}/traffic`)}
+          label={formatMessage(messages.audienceTab)}
+          url={`/admin/projects/${projectId}/audience`}
+          active={pathname.includes(`/admin/projects/${projectId}/audience`)}
         />
         <Tab
           className="intercom-admin-project-messaging-tab"
