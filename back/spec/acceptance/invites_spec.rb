@@ -384,12 +384,13 @@ resource 'Invites' do
       end
 
       let(:user) { create(:invited_user) }
+      let(:invite) { user.invitee_invite }
       let(:email) { user.email }
 
       example_request 'Resend an invite' do
         assert_status 200
         expect(LogActivityJob).to have_been_enqueued.with(
-          user, 'invite_resend', anything, nil
+          invite, 'resent', anything, nil
         ).exactly(1).times
       end
     end

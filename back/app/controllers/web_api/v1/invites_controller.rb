@@ -182,7 +182,9 @@ class WebApi::V1::InvitesController < ApplicationController
       return
     end
 
-    LogActivityJob.perform_later(user, 'invite_resend', current_user, nil)
+    invite = user.invitee_invite
+
+    LogActivityJob.perform_later(invite, 'resent', current_user, nil)
 
     head :ok
   end
