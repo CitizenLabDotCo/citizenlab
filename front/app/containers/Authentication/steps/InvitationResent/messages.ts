@@ -2,8 +2,12 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   emailAlreadyTaken: {
-    id: 'app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken',
+    id: 'app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken1',
     defaultMessage:
-      '{email} is already taken by a pending invite. We have re-sent the invitation mail. Please enter the token in the email below.',
+      "{email} is already taken by a pending invite. Please check your email and click on the link to accept the invitation. If you can't find the invitation email, click the button below to resend it.",
+  },
+  resendInvite: {
+    id: 'app.containers.Authentication.steps.InvitationResent.resendInvite',
+    defaultMessage: 'Resend invitation',
   },
 });

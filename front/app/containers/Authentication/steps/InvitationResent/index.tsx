@@ -27,7 +27,9 @@ const InvitationResent = ({ state }: Props) => {
             email: state.email,
           })}
         </Warning>
-        <Button>Resend invitation (TODO)</Button>
+        <Button width="auto" mt="16px" icon="email">
+          {formatMessage(messages.resendInvite)}
+        </Button>
       </Box>
     </>
   );
