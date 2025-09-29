@@ -209,6 +209,10 @@ export default defineMessages({
     id: 'app.errors.email_invalid',
     defaultMessage: 'Please use a valid email address.',
   },
+  email_domain_blacklisted: {
+    id: 'app.errors.email_domain_blacklisted',
+    defaultMessage: 'Please use a different email domain to register.',
+  },
   email_blank: {
     id: 'app.errors.email_blank',
     defaultMessage: 'Please enter your email address',
