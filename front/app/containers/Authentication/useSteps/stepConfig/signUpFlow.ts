@@ -92,13 +92,8 @@ export const signUpFlow = (
         } catch (e) {
           if (e.errors?.email?.[0]?.error === 'taken_by_invite') {
             // If the invitation is already taken:
-            // Store provided information
-            updateState({
-              email: params.email,
-              first_name: params.firstName,
-              last_name: params.lastName,
-              password: params.password,
-            });
+            // Store email in state to use in invitation-resent step
+            updateState({ email: params.email });
 
             // Go to step where user can enter invitation token again
             setCurrentStep('invitation-resent');
@@ -115,14 +110,13 @@ export const signUpFlow = (
       SUBMIT: async (token: string) => {
         const response = await getUserDataFromToken(token);
 
-        const updatedState = {
-          token,
-          first_name: response.data.attributes.first_name ?? null,
-          last_name: response.data.attributes.last_name ?? null,
-          email: response.data.attributes.email ?? null,
+        const prefilledBuiltInFields = {
+          first_name: response.data.attributes.first_name ?? undefined,
+          last_name: response.data.attributes.last_name ?? undefined,
+          email: response.data.attributes.email ?? undefined,
         };
 
-        updateState(updatedState);
+        updateState({ token, prefilledBuiltInFields });
 
         setCurrentStep('sign-up:email-password');
       },

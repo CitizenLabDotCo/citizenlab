@@ -139,11 +139,9 @@ const EmailChange = () => {
             <EmailConfirmation
               state={{
                 flow: 'signup',
-                token: null,
                 email: methods.watch('email'),
-                first_name: null,
-                last_name: null,
-                password: null,
+                token: null,
+                prefilledBuiltInFields: null,
                 ssoProvider: null,
               }}
               loading={loading}

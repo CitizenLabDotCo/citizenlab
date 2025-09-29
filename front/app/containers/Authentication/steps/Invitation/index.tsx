@@ -30,7 +30,7 @@ const DEFAULT_VALUES: Partial<FormValues> = {
   token: undefined,
 };
 
-export interface Props {
+interface Props {
   loading: boolean;
   setError: SetError;
   onSubmit: (token: string) => void;

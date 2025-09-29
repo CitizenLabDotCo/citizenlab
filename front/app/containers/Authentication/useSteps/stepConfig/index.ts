@@ -89,14 +89,7 @@ export const getStepConfig = (
         const response = await getUserDataFromToken(token);
         const { attributes } = response.data;
 
-        const updatedState = {
-          token,
-          email: attributes.email ?? null,
-          first_name: attributes.first_name ?? state.first_name ?? null,
-          last_name: attributes.last_name ?? state.last_name ?? null,
-        };
-
-        updateState(updatedState);
+        updateState({ email: attributes.email ?? null });
 
         setCurrentStep('sign-up:email-password');
       },

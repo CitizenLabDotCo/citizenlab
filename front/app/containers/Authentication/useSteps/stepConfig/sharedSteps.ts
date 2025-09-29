@@ -39,14 +39,13 @@ export const sharedSteps = (
           try {
             const response = await getUserDataFromToken(token);
 
-            const updatedState = {
-              token,
-              first_name: response.data.attributes.first_name ?? null,
-              last_name: response.data.attributes.last_name ?? null,
-              email: response.data.attributes.email ?? null,
+            const prefilledBuiltInFields = {
+              first_name: response.data.attributes.first_name ?? undefined,
+              last_name: response.data.attributes.last_name ?? undefined,
+              email: response.data.attributes.email ?? undefined,
             };
 
-            updateState(updatedState);
+            updateState({ token, prefilledBuiltInFields });
             setCurrentStep('sign-up:email-password');
           } catch {
             setCurrentStep('sign-up:email-password');
@@ -87,12 +86,10 @@ export const sharedSteps = (
       // done by the user
       TRIGGER_AUTHENTICATION_FLOW: async (flow: 'signup' | 'signin') => {
         updateState({
-          token: null,
-          ssoProvider: null,
           email: null,
-          first_name: null,
-          last_name: null,
-          password: null,
+          token: null,
+          prefilledBuiltInFields: null,
+          ssoProvider: null,
         });
 
         const { requirements, disabled_reason } = await getRequirements();
