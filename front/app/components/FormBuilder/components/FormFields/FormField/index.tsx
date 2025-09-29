@@ -90,16 +90,16 @@ export const FormField = ({
   const isFieldGrouping = field.input_type === 'page';
 
   // A page cannot be deleted if it's the last one
-  const getPageDeletable = () => {
+  const isLastPage = () => {
+    if (field.input_type !== 'page') return false;
+
     const pages = formCustomFields.filter(
       (field) => field.input_type === 'page'
     ).length;
-
-    return pages > 2;
+    return pages < 3;
   };
-  // TODO: Can't delete fields when only one page
   const shouldShowDelete =
-    getPageDeletable() && !field?.constraints?.locks?.deletion;
+    !isLastPage() && !field?.constraints?.locks?.deletion;
 
   const editFieldAndValidate = (defaultTab: ICustomFieldSettingsTab) => {
     onEditField({ ...field, index, defaultTab });
