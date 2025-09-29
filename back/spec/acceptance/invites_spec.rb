@@ -376,6 +376,19 @@ resource 'Invites' do
         do_request
         expect(response_status).to eq 401 # unauthorized
       end
+
+      example 'Accept an expired invitation', document: false do
+        invite.update!(created_at: 2.weeks.ago)
+        do_request
+        # You would expect this to be a 401 (unauthorized),
+        # but the way this works is that there is a job that cleans up
+        # expired invites. So the idea is that this invite
+        # would already have been deleted by that job.
+        # So the situation in this test should not really occur.
+        # Still, wanted to add this just as documentation of some
+        # potentially confusing behavior.
+        expect(response_status).to eq 200
+      end
     end
 
     post 'web_api/v1/invites/resend' do
