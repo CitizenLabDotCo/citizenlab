@@ -11,7 +11,7 @@ class WebApi::V1::InvitesController < ApplicationController
     already_accepted: 'already_accepted'
   }
 
-  skip_after_action :verify_authorized, only: :accept
+  skip_after_action :verify_authorized, only: %i[accept resend]
 
   def index
     @invites = policy_scope(Invite)
@@ -181,8 +181,7 @@ class WebApi::V1::InvitesController < ApplicationController
       return
     end
 
-    invite = user.invitee_invite
-    authorize invite
+    invite = user&.invitee_invite
 
     LogActivityJob.perform_later(invite, 'resent', current_user, nil)
 

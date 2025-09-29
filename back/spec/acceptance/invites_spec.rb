@@ -387,6 +387,8 @@ resource 'Invites' do
         # So the situation in this test should not really occur.
         # Still, wanted to add this just as documentation of some
         # potentially confusing behavior.
+        # Would be more robust if we would block acceptance of expired
+        # invites in the controller as well.
         expect(response_status).to eq 200
       end
     end
@@ -405,6 +407,18 @@ resource 'Invites' do
         expect(LogActivityJob).to have_been_enqueued.with(
           invite, 'resent', anything, nil
         ).exactly(1).times
+      end
+
+      example '[error] Resend an invite to a user without a pending invite', document: false do
+        user.update!(invite_status: 'accepted')
+        do_request
+        assert_status 422
+      end
+
+      example '[error] Resend an invite to a non-existing user', document: false do
+        user.destroy!
+        do_request
+        assert_status 422
       end
     end
   end
