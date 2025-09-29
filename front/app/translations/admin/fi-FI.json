@@ -2380,6 +2380,7 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet1": "Joidenkin menetelmien tulosten jakaminen (kuten äänestystulokset) ei käynnisty ennen kuin lopetuspäivä on valittu.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "Heti kun lisäät vaiheen tämän jälkeen, se lisää lopetuspäivän tähän vaiheeseen.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "Lopetuspäivämäärän valitsematta jättäminen tarkoittaa seuraavaa:",
+  "app.containers.AdminPage.ProjectTimeline.phaseTitlePlaceholder": "Uusi vaihe",
   "app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel": "Esikatselu",
   "app.containers.AdminPage.ProjectTimeline.saveChangesLabel": "Tallenna muutokset",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "Lomakkeen lähettämisessä tapahtui virhe. Yritä uudelleen.",
