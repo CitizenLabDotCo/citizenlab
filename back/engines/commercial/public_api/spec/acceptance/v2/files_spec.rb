@@ -16,18 +16,12 @@ resource 'Files' do
   let!(:project) { create(:project) }
   let!(:files) do
     [
-      create(:file, :meeting, uploader: user),
-      create(:file, :report, uploader: user),
+      create(:file, :meeting, uploader: user, projects: [project]),
+      create(:file, :report, uploader: user, projects: [project]),
       create(:file, :policy, uploader: nil),
       create(:file, :other, uploader: user),
       create(:file, :info_sheet, uploader: nil)
     ]
-  end
-
-  before do
-    # Create file-project associations
-    files[0].files_projects.create!(project: project)
-    files[1].files_projects.create!(project: project)
   end
 
   get '/api/v2/files/' do

@@ -7,17 +7,20 @@ import {
   colors,
   Tooltip,
   Button,
+  IconTooltip,
 } from '@citizenlab/cl2-component-library';
 
 import { Action } from 'api/permissions/types';
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 import useDeletePermissionsCustomField from 'api/permissions_custom_fields/useDeletePermissionsCustomField';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
+import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
-import { useIntl } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 
 import messages from '../messages';
 
@@ -35,6 +38,10 @@ const CustomField = ({ field, phaseId, action }: Props) => {
   const { formatMessage } = useIntl();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: permissions } = usePhasePermissions({ phaseId });
+  const { data: customField } = useUserCustomField(
+    field.relationships.custom_field.data.id
+  );
+
   const globalCustomFieldsSetting =
     permissions?.data[0].attributes.global_custom_fields;
   // We check if globalCustomFieldsSetting is false to allow users who edited the fields before the feature flag was enforced to still access the functionality
@@ -66,9 +73,36 @@ const CustomField = ({ field, phaseId, action }: Props) => {
           <Text m="0" mt="4px" fontSize="m" color={'primary'}>
             {fieldName}
           </Text>
-          <Text fontSize="s" m="0px" color={'grey800'}>
-            {formatMessage(getDescriptionMessage(field))}
-          </Text>
+          <Box display="flex">
+            <Text fontSize="s" m="0px" color={'grey800'}>
+              {formatMessage(getDescriptionMessage(field))}
+            </Text>
+            <Box display="flex">
+              <Text fontSize="s" m="0px" color={'grey800'}>
+                {customField?.data.attributes.enabled && (
+                  <>
+                    {' • '}
+                    <FormattedMessage {...messages.globalRegFlow} />
+                  </>
+                )}
+              </Text>
+              <IconTooltip
+                ml="4px"
+                content={
+                  <FormattedMessage
+                    {...messages.globalRegFlowTooltip}
+                    values={{
+                      globalRegFlowLink: (
+                        <Link to="/admin/settings/registration" target="_blank">
+                          <FormattedMessage {...messages.globalRegFlowLink} />
+                        </Link>
+                      ),
+                    }}
+                  />
+                }
+              />
+            </Box>
+          </Box>
         </Box>
         {!disableEditAndDelete && (
           <Box display="flex">

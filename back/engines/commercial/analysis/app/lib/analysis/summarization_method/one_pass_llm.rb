@@ -7,7 +7,7 @@ module Analysis
     SUMMARIZATION_METHOD = 'one_pass_llm'
 
     # The number of tokens we reserve for the LLM response containing the summary
-    TOKENS_FOR_RESPONSE = 600
+    TOKENS_FOR_RESPONSE = 3000
 
     def generate_plan
       plan = nil
@@ -33,12 +33,10 @@ module Analysis
         # 6 charachters/token
         next if prompt.size > (max_context_window * 6)
 
-        complete_token_count = token_count(prompt) + TOKENS_FOR_RESPONSE
-
         # Which LLM can handle the prompt size?
         selected_llm = enabled_llms
           .sort_by { |llm| -llm.accuracy }
-          .find { |llm| llm.context_window >= complete_token_count }
+          .find { |llm| llm.usable_context_window >= llm.token_count(prompt) + TOKENS_FOR_RESPONSE }
 
         # If any, let's define the plan
         if selected_llm

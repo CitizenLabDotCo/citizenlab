@@ -101,4 +101,17 @@ export default defineMessages({
     defaultMessage:
       'Besides being stored in the survey, the answers will be used to update the profile of registered users.',
   },
+  globalRegFlow: {
+    id: 'app.components.admin.ActionForm.Fields.globalRegFlow',
+    defaultMessage: 'Enabled in global registration flow',
+  },
+  globalRegFlowTooltip: {
+    id: 'app.components.admin.ActionForm.Fields.globalRegFlowTooltip',
+    defaultMessage:
+      'This question is enabled in the {globalRegFlowLink}. You can disable it for this action.',
+  },
+  globalRegFlowLink: {
+    id: 'app.components.admin.ActionForm.Fields.globalRegFlowLink',
+    defaultMessage: 'global registration flow',
+  },
 });

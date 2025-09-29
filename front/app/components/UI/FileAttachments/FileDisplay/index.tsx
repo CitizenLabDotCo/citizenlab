@@ -34,6 +34,7 @@ const Container = styled.div`
 const Paperclip = styled(Icon)`
   fill: ${colors.textSecondary};
   margin-right: 15px;
+  flex-shrink: 0;
   ${media.phone`
     width: 40px;
   `}
