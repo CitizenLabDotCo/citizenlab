@@ -362,7 +362,7 @@ class User < ApplicationRecord
     domain = email_field.split('@')&.last
     return unless domain
 
-    # Mild obfuscation of error message to make a spammers life a litle more difficult,
+    # Mild obfuscation of error message to make a spammers life a little more difficult,
     # especially avoiding leaking info about which domains are blacklisted
     errors.add(:email, :something_went_wrong, code: 'zrb-42') if EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
   end

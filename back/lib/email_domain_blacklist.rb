@@ -9,8 +9,8 @@
 module EmailDomainBlacklist
   def self.load
     domains = []
-    domains += Rails.root.join('config/our_domain_blacklist.txt').readlines.map(&:strip).map(&:downcase)
-    domains += Rails.root.join('config/common_spam_domains.txt').readlines.map(&:strip).map(&:downcase)
+    domains += Rails.root.join('config/our_domain_blacklist.txt').readlines.map { |x| x.strip.downcase }
+    domains += Rails.root.join('config/common_spam_domains.txt').readlines.map { |x| x.strip.downcase }
     domains.uniq.freeze
   end
 end
