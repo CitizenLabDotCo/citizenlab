@@ -26,7 +26,6 @@ const LinkToFolderProjectsDropdown = ({ folderId }: Props) => {
         onClick={() => {
           setIsProjectListOpen(!isProjectListOpen);
         }}
-        data-cy="e2e-folder-preview-button"
         buttonStyle="text"
         iconSize="20px"
         p="0px"
