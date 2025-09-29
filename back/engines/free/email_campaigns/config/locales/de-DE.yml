@@ -505,7 +505,7 @@ de:
       title: 'Sie haben Ihre Stimme nicht abgegeben'
       event_description: 'Sie haben ein paar Optionen für %{contextTitle} ausgewählt, aber Sie haben Ihre Auswahl nicht abgeschickt.'
       cta_button: 'Optionen ansehen und abstimmen'
-      cta_message: 'Klicken Sie auf den Button unten, um Ihre ausgewählten Optionen abzuschicken'
+      cta_message: 'Auf den Button unten klicken, um die ausgewählten Optionen abzuschicken'
     voting_last_chance:
       subject: '%{organizationName}: Letzte Chance, für %{phaseTitle} abzustimmen'
       preheader: 'Letzte Chance, für %{phaseTitle} auf der Beteiligungsplattform von %{organizationName} abzustimmen'
