@@ -35,10 +35,10 @@ export default defineMessages({
   },
   transportPublicTransit: {
     id: 'app.containers.Admin.inspirationHub.Topics.transportPublicTransit',
-    defaultMessage: 'Transport: Public Transit',
+    defaultMessage: 'Transport: Public transit',
   },
-  transportEvChargingStations: {
-    id: 'app.containers.Admin.inspirationHub.Topics.transportEvChargingStations',
+  transportEVChargingStations: {
+    id: 'app.containers.Admin.inspirationHub.Topics.transportEVChargingStations',
     defaultMessage: 'Transport: EV Charging Stations',
   },
   transportParkingFacilities: {
