@@ -58,7 +58,7 @@ const AuthProviders = memo<Props>(
 
     // Show link to the above hidden path
     const showAdminLoginLink =
-      flow === 'signin' &&
+      (flow === 'signin' || flow === 'signup') &&
       tenantSettings?.azure_ad_login?.visibility === 'link';
 
     const handleOnFranceConnectSelected = useCallback(
