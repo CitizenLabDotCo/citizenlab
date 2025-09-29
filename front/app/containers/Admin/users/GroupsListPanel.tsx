@@ -25,6 +25,7 @@ import ProjectFilter from 'components/UI/ProjectFilter';
 import SearchInput from 'components/UI/SearchInput';
 
 import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import Link from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
@@ -162,6 +163,7 @@ export interface Props {
 
 export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const [search, setSearch] = useState<string | undefined>(undefined);
   const [projectId, setProjectId] = useState<string | undefined>(undefined);
   const { data: groups } = useGroups({
@@ -275,6 +277,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
           <ProjectFilter
             onProjectFilter={(filter) => setProjectId(filter.value)}
             selectedProjectId={projectId}
+            placeholder={formatMessage(messages.projectFilterPlaceholder)}
           />
         </Box>
 
