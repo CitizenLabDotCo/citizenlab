@@ -2380,6 +2380,7 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet1": "Nogle metoders resultatdeling (såsom afstemningsresultater) vil ikke blive udløst, før der er valgt en slutdato.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "Så snart du tilføjer en fase efter denne, vil den tilføje en slutdato til denne fase.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "Ikke at vælge en slutdato for dette indebærer, at:",
+  "app.containers.AdminPage.ProjectTimeline.phaseTitlePlaceholder": "Ny fase",
   "app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel": "Eksempel",
   "app.containers.AdminPage.ProjectTimeline.saveChangesLabel": "Gem ændringer",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "Der opstod en fejl ved indsendelse af formularen, prøv venligst igen.",
