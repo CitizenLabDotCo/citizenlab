@@ -1,5 +1,3 @@
-import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
-
 import {
   GetRequirements,
   UpdateState,
@@ -85,14 +83,6 @@ export const getStepConfig = (
 
     'invitation-resent': {
       CLOSE: () => setCurrentStep('closed'),
-      SUBMIT_CODE: async (token: string) => {
-        const response = await getUserDataFromToken(token);
-        const { attributes } = response.data;
-
-        updateState({ email: attributes.email ?? null });
-
-        setCurrentStep('sign-up:email-password');
-      },
     },
   };
 };
