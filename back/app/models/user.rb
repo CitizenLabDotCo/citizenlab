@@ -364,7 +364,7 @@ class User < ApplicationRecord
 
     # Mild obfuscation of error message to make a spammers life a litle more difficult,
     # especially avoiding leaking info about which domains are blacklisted
-    errors.add(:email, :something_went_wrong, code: 'zrb-42')
+    errors.add(:email, :something_went_wrong, code: 'zrb-42') if EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
   end
 
   def remove_initiated_notifications
