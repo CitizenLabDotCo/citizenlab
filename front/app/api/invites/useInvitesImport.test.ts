@@ -36,7 +36,7 @@ describe('useInvitesImport', () => {
 
   it('returns data correctly', async () => {
     const { result } = renderHook(
-      () => useInvitesImport({ importId }, { enabled: true }),
+      () => useInvitesImport({ importId, enabled: true }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -58,7 +58,7 @@ describe('useInvitesImport', () => {
     );
 
     const { result } = renderHook(
-      () => useInvitesImport({ importId }, { enabled: true }),
+      () => useInvitesImport({ importId, enabled: true }),
       {
         wrapper: createQueryClientWrapper(),
       }

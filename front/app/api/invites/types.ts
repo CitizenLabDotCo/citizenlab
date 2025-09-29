@@ -1,8 +1,10 @@
 import { Keys } from 'utils/cl-react-query/types';
 
+import invitesImportKeys from './invitesImportKeys';
 import invitesKeys from './keys';
 
 export type InvitesKeys = Keys<typeof invitesKeys>;
+export type InvitesImportKeys = Keys<typeof invitesImportKeys>;
 
 export type Sort =
   | 'email'
@@ -57,17 +59,20 @@ export interface IInviteData {
   };
 }
 
+export type InvitesImportJobType =
+  | 'bulk_create'
+  | 'count_new_seats'
+  | 'bulk_create_xlsx'
+  | 'count_new_seats_xlsx';
+
 export interface IInvitesImport {
   data: {
     id: string;
     type: 'invites_import';
     attributes: {
       completed_at: string | null;
-      job_type: string;
-      result: {
-        newly_added_admins_number: number;
-        newly_added_moderators_number: number;
-      };
+      job_type: InvitesImportJobType;
+      result: any; // NOTE: The structure of result can vary based on job_type
     };
   };
 }

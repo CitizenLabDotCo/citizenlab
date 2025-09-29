@@ -10,25 +10,25 @@ import React, {
   useCallback,
 } from 'react';
 
-import { useQueryClient } from '@tanstack/react-query';
-import useInvitesImport from 'api/invites/useInvitesImport';
-import seatsKeys from 'api/seats/keys';
-import appConfigurationKeys from 'api/app_configuration/keys';
-
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import { useQueryClient } from '@tanstack/react-query';
 import { isString, isEmpty } from 'lodash-es';
 import styled from 'styled-components';
 import { SupportedLocale, IOption } from 'typings';
 
+import appConfigurationKeys from 'api/app_configuration/keys';
 import {
   IInviteError,
   INewBulkInvite,
   IInvitesImport,
+  InvitesImportJobType,
 } from 'api/invites/types';
 import useBulkInviteCountNewSeatsEmails from 'api/invites/useBulkInviteCountNewSeatsEmails';
 import useBulkInviteCountNewSeatsXLSX from 'api/invites/useBulkInviteCountNewSeatsXLSX';
 import useBulkInviteEmails from 'api/invites/useBulkInviteEmails';
 import useBulkInviteXLSX from 'api/invites/useBulkInviteXLSX';
+import useInvitesImport from 'api/invites/useInvitesImport';
+import seatsKeys from 'api/seats/keys';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useExceedsSeats from 'hooks/useExceedsSeats';
@@ -99,32 +99,12 @@ const Invitations = () => {
   const [newSeatsResponse, setNewSeatsResponse] =
     useState<IInvitesImport | null>(null);
 
-  // State variables for count seats invites_import polling
-  const [seatsInvitesImportId, setSeatsInvitesImportId] = useState<
-    string | null
-  >(null);
-  const { data: seatsInvitesImport, resetQueryData } = useInvitesImport(
-    { importId: seatsInvitesImportId || '' }, // Use empty string as fallback
-    {
-      pollingEnabled: seatsInvitesImportId !== null,
-      enabled: seatsInvitesImportId !== null,
-    }
-  );
-
-  // State variables for bulk invite creation invites_import polling
-  const [createInvitesImportId, setCreateInvitesImportId] = useState<
-    string | null
-  >(null);
-  const {
-    data: createInvitesImport,
-    resetQueryData: resetCreateInviteQueryData,
-  } = useInvitesImport(
-    { importId: createInvitesImportId || '' },
-    {
-      pollingEnabled: createInvitesImportId !== null,
-      enabled: createInvitesImportId !== null,
-    }
-  );
+  // Variables to poll for import job status
+  const [invitesImportId, setInvitesImportId] = useState<string | null>(null);
+  const { data: invitesImport, resetQueryData } = useInvitesImport({
+    importId: invitesImportId,
+    enabled: !!invitesImportId,
+  });
 
   const exceedsSeats = useExceedsSeats();
 
@@ -163,7 +143,7 @@ const Invitations = () => {
         try {
           setProcessing(true);
           const createJob = await bulkInviteXLSX(savedInviteOptions);
-          setCreateInvitesImportId(createJob.data.id);
+          setInvitesImportId(createJob.data.id);
           setSavedInviteOptions(null);
         } catch (errors) {
           const apiErrors = errors.errors;
@@ -198,7 +178,7 @@ const Invitations = () => {
             setSavedInviteOptions(inviteOptions);
 
             const newSeats = await bulkInviteCountNewSeatsXLSX(inviteOptions);
-            setSeatsInvitesImportId(newSeats.data.id);
+            setInvitesImportId(newSeats.data.id);
           }
         } catch (errors) {
           const apiErrors = errors.errors;
@@ -220,8 +200,7 @@ const Invitations = () => {
       setUnknownError,
       bulkInviteXLSX,
       bulkInviteCountNewSeatsXLSX,
-      setSeatsInvitesImportId,
-      setCreateInvitesImportId,
+      setInvitesImportId,
       savedInviteOptions,
       setSavedInviteOptions,
     ]
@@ -236,7 +215,7 @@ const Invitations = () => {
         try {
           setProcessing(true);
           const createJob = await bulkInviteEmails(savedEmailOptions);
-          setCreateInvitesImportId(createJob.data.id);
+          setInvitesImportId(createJob.data.id);
           setSavedEmailOptions(null);
         } catch (errors) {
           const apiErrors = errors.errors;
@@ -271,7 +250,7 @@ const Invitations = () => {
             setSavedEmailOptions(inviteOptions);
 
             const newSeats = await bulkInviteCountNewSeatsEmails(inviteOptions);
-            setSeatsInvitesImportId(newSeats.data.id);
+            setInvitesImportId(newSeats.data.id);
           }
         } catch (errors) {
           const apiErrors = errors.errors;
@@ -293,8 +272,7 @@ const Invitations = () => {
       setUnknownError,
       bulkInviteEmails,
       bulkInviteCountNewSeatsEmails,
-      setSeatsInvitesImportId,
-      setCreateInvitesImportId,
+      setInvitesImportId,
       savedEmailOptions,
       setSavedEmailOptions,
     ]
@@ -370,20 +348,24 @@ const Invitations = () => {
   // This is due to React state updates being asynchronous: the polling hook may fire
   // one extra request before the importId is cleared. This is expected and harmless.
 
-  // Effect to monitor invite creation
+  const importJobComplete = (
+    invitesImport: IInvitesImport | undefined,
+    jobType: InvitesImportJobType
+  ) => {
+    if (!invitesImport) return false;
+    if (!invitesImport.data.attributes.job_type.includes(jobType)) {
+      return false;
+    }
+    return !!invitesImport.data.attributes.completed_at;
+  };
+
+  // Effect to monitor seats check jobs
   useEffect(() => {
-    if (!seatsInvitesImport) return;
+    if (!importJobComplete(invitesImport, 'count_new_seats')) return;
 
-    const seatsImportIdValue = seatsInvitesImport?.data?.id;
-    const seatsImportComplete =
-      seatsInvitesImport?.data?.attributes?.completed_at;
-
-    // Skip if we've already processed this import or if it's not complete
-    if (
-      !seatsImportComplete ||
-      !seatsImportIdValue ||
-      processedImportIds.has(seatsImportIdValue)
-    ) {
+    // Skip if we've already processed this import
+    const seatsImportIdValue = invitesImport?.data.id;
+    if (!seatsImportIdValue || processedImportIds.has(seatsImportIdValue)) {
       return;
     }
 
@@ -391,29 +373,23 @@ const Invitations = () => {
     setProcessedImportIds((prev) => new Set([...prev, seatsImportIdValue]));
 
     // Process the import
-    setSeatsInvitesImportId(null);
-    checkNewSeatsResponse(seatsInvitesImport);
-  }, [seatsInvitesImport, checkNewSeatsResponse, processedImportIds]);
+    setInvitesImportId(null);
+    checkNewSeatsResponse(invitesImport);
+  }, [invitesImport, checkNewSeatsResponse, processedImportIds]);
 
   // Effect to monitor invite creation
   useEffect(() => {
-    if (!createInvitesImport) return;
-
-    const jobId = createInvitesImport?.data?.id;
-    const jobComplete = createInvitesImport?.data?.attributes?.completed_at;
-    const jobType = createInvitesImport?.data?.attributes?.job_type;
-
-    // Skip if job isn't complete
-    if (!jobComplete || !jobId) {
-      return;
-    }
+    if (!importJobComplete(invitesImport, 'bulk_create')) return;
 
     // Process completed invite creation
-    setCreateInvitesImportId(null);
+    setInvitesImportId(null);
 
     // Check for any errors in the response
-    if (createInvitesImport?.data?.attributes?.result?.errors?.length > 0) {
-      setApiErrors(createInvitesImport.data.attributes.result.errors);
+    if (
+      invitesImport &&
+      invitesImport.data.attributes.result.errors?.length > 0
+    ) {
+      setApiErrors(invitesImport.data.attributes.result.errors);
       setProcessing(false);
       setProcessed(false);
     } else {
@@ -422,13 +398,11 @@ const Invitations = () => {
         fileInputElement.current.value = '';
       }
 
-      if (jobType === 'bulk_create' || jobType === 'bulk_create_xlsx') {
-        setProcessed(true);
-        // Invalidate seats & app_configuration queries to trigger refetch,
-        // to ensure correct seat counts displayed in form after invites are created.
-        queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
-        queryClient.invalidateQueries({ queryKey: appConfigurationKeys.all() });
-      }
+      setProcessed(true);
+      // Invalidate seats & app_configuration queries to trigger refetch,
+      // to ensure correct seat counts displayed in form after invites are created.
+      queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
+      queryClient.invalidateQueries({ queryKey: appConfigurationKeys.all() });
 
       setProcessing(false);
       setSelectedFileBase64(null);
@@ -436,8 +410,8 @@ const Invitations = () => {
     }
 
     // Reset the query to prevent issues if we navigate away/back
-    resetCreateInviteQueryData();
-  }, [createInvitesImport, resetCreateInviteQueryData, queryClient]);
+    resetQueryData();
+  }, [invitesImport, resetQueryData, queryClient]);
 
   const closeModal = () => {
     setShowModal(false);
@@ -647,7 +621,7 @@ const Invitations = () => {
           <SectionField>
             <Box display="flex" alignItems="center" paddingTop="30px">
               <SubmitWrapper
-                loading={processing || createInvitesImportId !== null}
+                loading={processing || invitesImportId !== null}
                 status={getSubmitState(apiErrors, processed)}
                 messages={{
                   buttonSave: messages.save,
@@ -657,7 +631,7 @@ const Invitations = () => {
                 }}
               />
 
-              {(processing || createInvitesImportId !== null) && (
+              {(processing || invitesImportId !== null) && (
                 <Box color={colors.textSecondary} marginLeft="15px">
                   <FormattedMessage {...messages.processing} />
                 </Box>

@@ -1,41 +1,41 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import { IInvitesImport, InvitesImportKeys } from 'api/invites/types';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
+import invitesImportKeys from './invitesImportKeys';
 import invitesKeys from './keys';
 
 export interface QueryParams {
-  importId?: string | null;
-}
-
-export interface UseInvitesImportOptions {
-  pollingEnabled?: boolean;
+  importId: string | null;
   enabled?: boolean;
 }
 
 const fetchInvitesImport = ({ importId }: QueryParams) =>
-  fetcher<any>({
+  fetcher<IInvitesImport>({
     path: `/invites_imports/${importId}`,
     action: 'get',
   });
 
-const useInvitesImport = (
-  queryParams: QueryParams,
-  { pollingEnabled, enabled }: UseInvitesImportOptions = {}
-) => {
+const useInvitesImport = (queryParams: QueryParams) => {
   const queryClient = useQueryClient();
-  const isEnabled = enabled !== false && !!queryParams.importId;
-
-  const result = useQuery<any, CLErrors, any, any>({
-    queryKey: invitesKeys.lists(),
+  const result = useQuery<
+    IInvitesImport | null,
+    CLErrors,
+    IInvitesImport,
+    InvitesImportKeys
+  >({
+    queryKey: invitesImportKeys.item({ id: queryParams.importId }),
     queryFn: () => fetchInvitesImport(queryParams),
-    refetchInterval: pollingEnabled ? 5000 : false,
-    enabled: isEnabled,
+    refetchInterval: 5000, // Should always poll when enabled
+    enabled: queryParams.enabled,
   });
 
-  // Reset the query data, preventing stale data when revisiting the component
+  // Reset the invite data as well, preventing stale data when revisiting the component
   const resetQueryData = () => {
+    queryClient.resetQueries({ queryKey: invitesImportKeys.all() });
     queryClient.resetQueries({ queryKey: invitesKeys.lists() });
   };
 
