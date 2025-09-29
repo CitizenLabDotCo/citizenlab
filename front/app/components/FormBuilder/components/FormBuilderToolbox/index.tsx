@@ -8,13 +8,6 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
-import { useFormContext } from 'react-hook-form';
-
-import {
-  ICustomFieldInputType,
-  IFlatCreateCustomField,
-  IFlatCustomField,
-} from 'api/custom_fields/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
