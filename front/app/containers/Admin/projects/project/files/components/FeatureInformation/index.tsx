@@ -7,8 +7,6 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import FeatureInformationItem from './components/FeatureInformationItem';
 import messages from './messages';
 
@@ -25,19 +23,15 @@ const mainFeatures = [
     secondaryText: messages.addFilesToProjectDescription,
     name: 'addFilesToProject',
   },
-  {
-    iconName: 'stars',
-    mainText: messages.addFilesToSensemaking,
-    secondaryText: messages.addFilesToSensemakingDescription,
-    name: 'addFilesToSensemaking',
-  },
+  // { // TODO: Re-enable once sense-making feature is ready.
+  //   iconName: 'stars',
+  //   mainText: messages.addFilesToSensemaking,
+  //   secondaryText: messages.addFilesToSensemakingDescription,
+  //   name: 'addFilesToSensemaking',
+  // },
 ] as const;
 
 const FeatureInformation = () => {
-  const isDataRepositoryAIAnalysisEnabled = useFeatureFlag({
-    name: 'data_repository_ai_analysis',
-  });
-
   return (
     <Box
       p="20px"
@@ -54,10 +48,10 @@ const FeatureInformation = () => {
           iconName={feature.iconName}
           mainText={feature.mainText}
           secondaryText={feature.secondaryText}
-          disabled={
-            !isDataRepositoryAIAnalysisEnabled &&
-            feature.name === 'addFilesToSensemaking'
-          }
+          // disabled={ // TODO: Re-enable once sense-making feature is ready.
+          //   !isDataRepositoryAIAnalysisEnabled &&
+          //   feature.name === 'addFilesToSensemaking'
+          // }
         />
       ))}
       <Divider />
