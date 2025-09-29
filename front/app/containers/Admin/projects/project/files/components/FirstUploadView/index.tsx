@@ -4,8 +4,6 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import FilesUpload from '../FilesUpload';
 
-import FeatureDescription from './components/FeatureDescription';
-
 type Props = {
   setShowFirstUploadView?: (value: boolean) => void;
 };
@@ -22,9 +20,9 @@ const FirstUploadView = ({ setShowFirstUploadView }: Props) => {
         <Box>
           <FilesUpload setShowFirstUploadView={setShowFirstUploadView} />
         </Box>
-        <Box width="400px">
+        {/* <Box width="400px"> // TODO: Re-enable once sense-making feature is ready.
           <FeatureDescription />
-        </Box>
+        </Box> */}
       </Box>
     </Box>
   );
