@@ -968,7 +968,7 @@
   "app.containers.Admin.inspirationHub.Topics.technologySmartCity": "Technology: Smart City",
   "app.containers.Admin.inspirationHub.Topics.technologyTelecommunication": "Technology: Telecommunication",
   "app.containers.Admin.inspirationHub.Topics.transportBicycles": "Transport: Bicycles",
-  "app.containers.Admin.inspirationHub.Topics.transportEvChargingStations": "Transport: EV Charging Stations",
+  "app.containers.Admin.inspirationHub.Topics.transportEVChargingStations": "Transport: EV Charging Stations",
   "app.containers.Admin.inspirationHub.Topics.transportGeneral": "Transport: General",
   "app.containers.Admin.inspirationHub.Topics.transportParkingFacilities": "Transport: Parking Facilities",
   "app.containers.Admin.inspirationHub.Topics.transportPublicTransit": "Transport: Public Transit",
