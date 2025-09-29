@@ -55,7 +55,6 @@ const FormFields = ({
   const conflictsByPage = detectConflictsByPage(nestedGroupData);
   const fieldNumbers = getFieldNumbers(formCustomFields);
   const userFieldsInFormNotice = builderConfig.getUserFieldsNotice;
-  const individualPageFieldCodes = ['title_multiloc', 'body_multiloc']; // TODO
 
   return (
     <>
@@ -75,11 +74,6 @@ const FormFields = ({
               // (see below)
               return null;
             }
-            // We don't want to allow dropping on the grouping (page) with individualPageFieldCodes
-            // fields (e.g. title, description for now). These should be on their own pages
-            const isDropDisabled = grouping.questions.some((question) =>
-              individualPageFieldCodes.includes(question.code || '')
-            );
 
             return (
               <Drag key={grouping.id} id={grouping.id} index={pageIndex}>
@@ -91,13 +85,11 @@ const FormFields = ({
                   fieldNumbers={fieldNumbers}
                   closeSettings={closeSettings}
                   conflicts={conflictsByPage[grouping.groupElement.id]}
-                  hasFullPageRestriction={isDropDisabled}
                 />
                 <Drop
                   key={grouping.id}
                   id={grouping.id}
                   type={fieldAreaDNDType}
-                  isDropDisabled={isDropDisabled}
                 >
                   <Box height="100%">
                     {grouping.questions.length === 0 ? (
@@ -105,16 +97,11 @@ const FormFields = ({
                     ) : (
                       <>
                         {grouping.questions.map((question, index) => {
-                          const isDragDisabled =
-                            individualPageFieldCodes.includes(
-                              question.code || ''
-                            );
                           return shouldShowField(question) ? (
                             <Drag
                               key={question.id}
                               id={question.id}
                               index={index}
-                              isDragDisabled={isDragDisabled}
                             >
                               <FormField
                                 key={question.id}
@@ -124,7 +111,6 @@ const FormFields = ({
                                 builderConfig={builderConfig}
                                 fieldNumbers={fieldNumbers}
                                 closeSettings={closeSettings}
-                                hasFullPageRestriction={isDragDisabled}
                               />
                             </Drag>
                           ) : (
@@ -153,7 +139,6 @@ const FormFields = ({
                 builderConfig={builderConfig}
                 fieldNumbers={fieldNumbers}
                 closeSettings={closeSettings}
-                hasFullPageRestriction={false}
               />
             </Box>
           </>

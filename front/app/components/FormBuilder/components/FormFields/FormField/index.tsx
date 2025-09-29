@@ -54,7 +54,6 @@ type Props = {
   fieldNumbers: Record<string, number>;
   closeSettings: (triggerAutosave?: boolean) => void;
   conflicts?: Conflict[];
-  hasFullPageRestriction: boolean;
 };
 
 export const FormField = ({
@@ -98,6 +97,7 @@ export const FormField = ({
 
     return pages > 2;
   };
+  // TODO: Can't delete fields when only one page
   const shouldShowDelete =
     getPageDeletable() && !field?.constraints?.locks?.deletion;
 
