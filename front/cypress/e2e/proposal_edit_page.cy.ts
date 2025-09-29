@@ -126,6 +126,9 @@ describe('Proposal edit page', () => {
     // Go to uploads page and add an image
     cy.dataCy('e2e-next-page').should('be.visible').click();
     cy.get('#e2e-idea-image-upload input').attachFile('icon.png');
+    cy.wait(1000);
+    // check that the base64 image was added to the dropzone component
+    cy.get('#e2e-idea-image-upload input').should('have.length', 0);
     // Check that the tags field was not removed
     cy.get('.e2e-topics-picker').should('exist');
     // Answer the extra field
