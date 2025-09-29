@@ -2380,6 +2380,7 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet1": "La compartición de resultados de algunos métodos (como los resultados de las votaciones) no se activará hasta que se seleccione una fecha de finalización.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "En cuanto añadas una fase después de ésta, añadirá una fecha de finalización a esta fase.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "No seleccionar una fecha de finalización implica que:",
+  "app.containers.AdminPage.ProjectTimeline.phaseTitlePlaceholder": "Nueva fase",
   "app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel": "Vista previa",
   "app.containers.AdminPage.ProjectTimeline.saveChangesLabel": "Guardar cambios",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "Error al enviar el formulario, por favor, inténtelo de nuevo.",
