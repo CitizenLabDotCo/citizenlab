@@ -1010,7 +1010,6 @@
   "app.errors.email_already_active": "Adresa de e-mail {value} găsită în rândul {row} aparține deja unui utilizator înregistrat",
   "app.errors.email_already_invited": "Adresa de e-mail {value} găsită în rândul {row} i-a fost trimisă deja o invitație",
   "app.errors.email_blank": "Acest câmp nu poate fi gol",
-  "app.errors.email_domain_blacklisted": "Vă rugăm să utilizați un alt domeniu de e-mail pentru a vă înregistra.",
   "app.errors.email_invalid": "Vă rugăm să utilizați o adresă de e-mail validă.",
   "app.errors.email_taken": "Există deja un cont cu această adresă de e-mail. În consecință vă puteți conecta.",
   "app.errors.email_taken_by_invite": "{value} este deja luată de către o invitație aflată în așteptare. Verificați folderul spam iar dacă nu îl găsiți contactați {supportEmail}.",

@@ -2115,7 +2115,6 @@
   "app.errors.email_already_active": "Email adresa {value} u redu {row} pripada već registrovanom korisniku",
   "app.errors.email_already_invited": "Email adresa {value} u redu {row} je već pozvana",
   "app.errors.email_blank": "Ovo ne može biti prazno",
-  "app.errors.email_domain_blacklisted": "Molimo vas da koristite drugi email domen za registraciju.",
   "app.errors.email_invalid": "Molimo vas da koristite ispravnu email adresu.",
   "app.errors.email_taken": "Već postoji nalog sa ovom email adresom. Možete pokušati da pristupite.",
   "app.errors.email_taken_by_invite": "{value} je već zauzet sa pozivnicom koja je na čekanju. Proverite vaš spam folder ili kontaktirajte {supportEmail} ukoliko ne možete da je pronađete.",

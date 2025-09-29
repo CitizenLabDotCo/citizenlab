@@ -2115,7 +2115,6 @@
   "app.errors.email_already_active": "Mae'r cyfeiriad e-bost {value} a ddarganfuwyd yn rhes {row} eisoes yn perthyn i gyfranogwr cofrestredig",
   "app.errors.email_already_invited": "Mae'r cyfeiriad e-bost {value} a ddarganfuwyd yn rhes {row} eisoes wedi'i wahodd",
   "app.errors.email_blank": "Ni all hwn fod yn wag",
-  "app.errors.email_domain_blacklisted": "Defnyddiwch barth e-bost gwahanol i gofrestru.",
   "app.errors.email_invalid": "Defnyddiwch gyfeiriad e-bost dilys.",
   "app.errors.email_taken": "Mae cyfrif gyda'r e-bost hwn eisoes yn bodoli. Gallwch fewngofnodi yn lle hynny.",
   "app.errors.email_taken_by_invite": "{value} eisoes yn cael ei gymryd gan wahoddiad sydd ar y gweill. Gwiriwch eich ffolder sbam neu cysylltwch â {supportEmail} os na allwch ddod o hyd iddo.",

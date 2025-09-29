@@ -2115,7 +2115,6 @@
   "app.errors.email_already_active": "Het e-mailadres {value} in rij {row} behoort tot een geregistreerde gebruiker\n\n",
   "app.errors.email_already_invited": "Het e-mailadres {value} in rij {row} kreeg eerder al een uitnodiging",
   "app.errors.email_blank": "Dit mag niet leeg zijn",
-  "app.errors.email_domain_blacklisted": "Gelieve een ander e-maildomein te gebruiken om te registreren.",
   "app.errors.email_invalid": "Gelieve een geldig e-mailadres te gebruiken.",
   "app.errors.email_taken": "Er bestaat al een profiel met deze e-mail. Probeer je in te loggen.",
   "app.errors.email_taken_by_invite": "{value} wordt al gebruikt door een bestaande uitnodiging. Controleer je spamfolder of contacteer {supportEmail} als je je uitnodiging niet terugvindt.",

@@ -2115,7 +2115,6 @@
   "app.errors.email_already_active": "Eilutėje {row} rastas el. pašto adresas {value} jau priklauso registruotam dalyviui.",
   "app.errors.email_already_invited": "Eilutėje {row} rastas el. pašto adresas {value} jau buvo pakviestas",
   "app.errors.email_blank": "Ši reikšmė negali būti tuščia",
-  "app.errors.email_domain_blacklisted": "Registruodamiesi naudokite kitą el. pašto domeną.",
   "app.errors.email_invalid": "Naudokite galiojantį el. pašto adresą.",
   "app.errors.email_taken": "Paskyra su šiuo el. pašto adresu jau egzistuoja. Galite prisijungti vietoj jos.",
   "app.errors.email_taken_by_invite": "{value} jau užimtas laukiančiu kvietimu. Patikrinkite nepageidaujamų laiškų aplanką arba susisiekite su {supportEmail} , jei jo nerandate.",

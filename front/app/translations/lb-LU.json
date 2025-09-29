@@ -2115,7 +2115,6 @@
   "app.errors.email_already_active": "D’E-Mail-Adress {value}, aus der Rei {row}, gehéiert schonn engem ageschriwwene Benotzer",
   "app.errors.email_already_invited": "D’E-Mail-Adress {value}, aus der Rei {row}, gouf schonn invitéiert",
   "app.errors.email_blank": "Dëst dierf net eidel sinn",
-  "app.errors.email_domain_blacklisted": "Benotzt wgl. eng aner E-Mail-Domain, fir Iech anzeschreiwen.",
   "app.errors.email_invalid": "Benotzt wgl. eng gëlteg E-Mail-Adress.",
   "app.errors.email_taken": "E Kont mat där E-Mail-Adress existéiert schonn. Mellt Iech wgl domat un.",
   "app.errors.email_taken_by_invite": "{value} gëtt schonn vun enger ausstoender Invitatioun benotzt. Wann Dir de Mail net fannt kontaktéiert wgl.  {supportEmail} ",

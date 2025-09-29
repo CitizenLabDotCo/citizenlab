@@ -2115,7 +2115,6 @@
   "app.errors.email_already_active": "A {row} sorban található {value} e-mail cím már egy regisztrált résztvevőé",
   "app.errors.email_already_invited": "A {row} sorban található {value} e-mail cím már meghívást kapott",
   "app.errors.email_blank": "Ez nem lehet üres",
-  "app.errors.email_domain_blacklisted": "Kérjük, használjon másik e-mail domaint a regisztrációhoz.",
   "app.errors.email_invalid": "Kérjük, használjon érvényes e-mail címet.",
   "app.errors.email_taken": "Már létezik fiók ezzel az e-mail címmel. Helyette bejelentkezhet.",
   "app.errors.email_taken_by_invite": "A {value} egy függőben lévő meghívó már foglalt. Ellenőrizze a spam mappát, vagy lépjen kapcsolatba a {supportEmail} címmel, ha nem találja.",

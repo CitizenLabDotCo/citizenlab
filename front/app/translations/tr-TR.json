@@ -2115,7 +2115,6 @@
   "app.errors.email_already_active": "{row} satırında bulunan {value} e-posta adresi zaten kayıtlı olan bir katılımcıya ait",
   "app.errors.email_already_invited": "{row} satırında bulunan {value} e-posta adresi zaten davet edilmiş",
   "app.errors.email_blank": "Bu boş olamaz",
-  "app.errors.email_domain_blacklisted": "Lütfen kayıt olmak için farklı bir e-posta alan adı kullanın.",
   "app.errors.email_invalid": "Lütfen geçerli bir e-posta adresi kullanın.",
   "app.errors.email_taken": "Bu e-postaya sahip bir hesap zaten var. Oturum açmayı deneyin.",
   "app.errors.email_taken_by_invite": "{value} bekleyen bir davet tarafından alınmış. Spam klasörünüzü kontrol edin veya bulamazsanız {supportEmail} ile iletişime geçin.",

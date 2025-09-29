@@ -2115,7 +2115,6 @@
   "app.errors.email_already_active": "O e-mail {value} encontrado na linha {row} já pertence a um usuário registrado",
   "app.errors.email_already_invited": "O e-mail {value} encontrado na linha {row} já foi convidado",
   "app.errors.email_blank": "Não pode estar vazio",
-  "app.errors.email_domain_blacklisted": "Por favor, use um domínio de e-mail diferente para registrar.",
   "app.errors.email_invalid": "Por favor, use um endereço de e-mail válido.",
   "app.errors.email_taken": "Existe um cadastro com este e-mail. você pode fazer o login.",
   "app.errors.email_taken_by_invite": "{value} você já tem um convite pendente. Verifique sua pasta de spam ou contate support@govocal.com se você não conseguir encontrá-la.",

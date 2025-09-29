@@ -2115,7 +2115,6 @@
   "app.errors.email_already_active": "Die E-Mail-Adresse {value} in der Zeile {row} gehört bereits einem/r registrierten/m Benutzer/in.",
   "app.errors.email_already_invited": "An die E-Mail-Adresse {value} in der Zeile {row} wurde bereits eine Einladung versandt.",
   "app.errors.email_blank": "Dies kann nicht leer sein",
-  "app.errors.email_domain_blacklisted": "Bitte verwenden Sie zur Anmeldung eine andere E-Mail-Domain.",
   "app.errors.email_invalid": "Bitte verwenden Sie eine gültige E-Mail-Adresse.",
   "app.errors.email_taken": "Es existiert bereits ein Konto mit dieser E-Mail-Adresse. Sie können sich stattdessen anmelden.",
   "app.errors.email_taken_by_invite": "{value} wird bereits von einer ausstehenden Einladung in Anspruch genommen.",

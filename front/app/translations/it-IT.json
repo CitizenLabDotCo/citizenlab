@@ -2115,7 +2115,6 @@
   "app.errors.email_already_active": "L'indirizzo email {value} trovato nella riga {row} appartiene già ad un partecipante registrato",
   "app.errors.email_already_invited": "L'indirizzo email {value} trovato nella riga {row} è già stato invitato",
   "app.errors.email_blank": "Questo non può essere vuoto",
-  "app.errors.email_domain_blacklisted": "Si prega di utilizzare un dominio e-mail diverso per la registrazione.",
   "app.errors.email_invalid": "Si prega di utilizzare un indirizzo e-mail valido.",
   "app.errors.email_taken": "Esiste già un account con questa email. Puoi accedere al suo posto.",
   "app.errors.email_taken_by_invite": "{value} è già occupato da un invito in sospeso. Controlla la tua cartella spam o contatta {supportEmail} se non riesci a trovarlo.",

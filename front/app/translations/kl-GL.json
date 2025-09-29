@@ -2115,7 +2115,6 @@
   "app.errors.email_already_active": "E-mailadresse {value} titarnerni quleriiaani nassaaq {row} atuisup allap pigereerpaa",
   "app.errors.email_already_invited": "E-mailadresse {value} titarnerni quleriiaani nassaaq {row} qaaqquneqareersimavoq",
   "app.errors.email_blank": "Una allassimasoqassaaq",
-  "app.errors.email_domain_blacklisted": "E-mailip suminngaanneerfittut atuuffia alla atorlugu isertaatiliorit.",
   "app.errors.email_invalid": "E-mail atorsinnaasoq allalaaruk",
   "app.errors.email_taken": "Konto taama e-maililik pigineqareerpoq. Isiinnarsinnaavutit.",
   "app.errors.email_taken_by_invite": "{value} allamit ilanngutitinneqarnissaminik utaqqisumit atorneqareersimavoq. Spam-indbakkit takujuk, imaluunniit nassaarisinnaanngikkukku uunga attavigitigut support@citizenlab.co.",

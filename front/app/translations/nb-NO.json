@@ -2115,7 +2115,6 @@
   "app.errors.email_already_active": "E-postadressen {value} som finnes i rad {row} tilhører allerede en registrert deltaker",
   "app.errors.email_already_invited": "E-postadressen {value} som ble funnet i rad {row} var allerede invitert",
   "app.errors.email_blank": "Denne kan ikke være tom",
-  "app.errors.email_domain_blacklisted": "Bruk et annet e-postdomene for å registrere deg.",
   "app.errors.email_invalid": "Vennligst bruk en gyldig e-postadresse.",
   "app.errors.email_taken": "Det finnes allerede en konto med denne e-postadressen. Du kan logge inn i stedet.",
   "app.errors.email_taken_by_invite": "{value} er allerede opptatt av en ventende invitasjon. Sjekk søppelpostmappen din eller kontakt {supportEmail} hvis du ikke finner den.",

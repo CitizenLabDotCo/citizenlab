@@ -2115,7 +2115,6 @@
   "app.errors.email_already_active": "Adres e-mail {value} znajdujący się w wierszu {row} należy do zarejestrowanego już użytkownika",
   "app.errors.email_already_invited": "Wysłano już zaproszenia na adres e-mail {value} znajdujący się w rzędzie {row}",
   "app.errors.email_blank": "To pole nie może być puste",
-  "app.errors.email_domain_blacklisted": "Proszę użyć innej domeny e-mail do rejestracji.",
   "app.errors.email_invalid": "Proszę użyć poprawnego adresu e-mail.",
   "app.errors.email_taken": "Konto z tym emailem już istnieje. Zamiast tego można się zalogować.",
   "app.errors.email_taken_by_invite": "{value} jest już zajęte przez oczekujące zaproszenie. Sprawdź swój folder spamu lub skontaktuj się z support@govocal.com, jeśli nie możesz go znaleźć.",

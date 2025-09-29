@@ -2115,7 +2115,6 @@
   "app.errors.email_already_active": "ਕਤਾਰ {row} ਵਿੱਚ ਪਾਇਆ ਗਿਆ ਈਮੇਲ ਪਤਾ {value} ਪਹਿਲਾਂ ਹੀ ਇੱਕ ਰਜਿਸਟਰਡ ਭਾਗੀਦਾਰ ਦਾ ਹੈ",
   "app.errors.email_already_invited": "{row} ਕਤਾਰ ਵਿੱਚ ਮਿਲਿਆ ਈਮੇਲ ਪਤਾ {value} ਪਹਿਲਾਂ ਹੀ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਸੀ",
   "app.errors.email_blank": "ਇਹ ਖਾਲੀ ਨਹੀਂ ਹੋ ਸਕਦਾ",
-  "app.errors.email_domain_blacklisted": "ਕਿਰਪਾ ਕਰਕੇ ਰਜਿਸਟਰ ਕਰਨ ਲਈ ਇੱਕ ਵੱਖਰਾ ਈਮੇਲ ਡੋਮੇਨ ਵਰਤੋ।",
   "app.errors.email_invalid": "ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ ਵੈਧ ਈਮੇਲ ਪਤਾ ਵਰਤੋ।",
   "app.errors.email_taken": "ਇਸ ਈਮੇਲ ਵਾਲਾ ਖਾਤਾ ਪਹਿਲਾਂ ਹੀ ਮੌਜੂਦ ਹੈ। ਤੁਸੀਂ ਇਸ ਦੀ ਬਜਾਏ ਲੌਗਇਨ ਕਰ ਸਕਦੇ ਹੋ।",
   "app.errors.email_taken_by_invite": "{value} ਪਹਿਲਾਂ ਹੀ ਇੱਕ ਲੰਬਿਤ ਸੱਦਾ ਦੁਆਰਾ ਲਿਆ ਗਿਆ ਹੈ। ਆਪਣੇ ਸਪੈਮ ਫੋਲਡਰ ਦੀ ਜਾਂਚ ਕਰੋ ਜਾਂ ਜੇਕਰ ਤੁਹਾਨੂੰ ਇਹ ਨਹੀਂ ਮਿਲਦਾ ਤਾਂ {supportEmail} ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",

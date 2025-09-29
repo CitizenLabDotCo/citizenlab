@@ -2115,7 +2115,6 @@
   "app.errors.email_already_active": "La direccion de correo {value} encontrada en {row} ya pertenece a un usuario registrado",
   "app.errors.email_already_invited": "El correo electrónico {value} en fila {row} ya fue invitado",
   "app.errors.email_blank": "Esto no puede estar vacío",
-  "app.errors.email_domain_blacklisted": "Por favor, utilice un dominio de correo electrónico diferente para registrarse.",
   "app.errors.email_invalid": "Por favor ingrese una dirección válida de correo.",
   "app.errors.email_taken": "Ya existe una cuenta con este correo electrónico. Puede iniciar sesión.",
   "app.errors.email_taken_by_invite": "{value} ya está tomado por una invitación pendiente.",

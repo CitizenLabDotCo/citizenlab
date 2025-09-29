@@ -2115,7 +2115,6 @@
   "app.errors.email_already_active": "L'adreça de correu electrònic {value} que es troba a la fila {row} ja pertany a un participant registrat",
   "app.errors.email_already_invited": "L'adreça electrònica {value} que es troba a la fila {row} ja s'ha convidat",
   "app.errors.email_blank": "Això no pot estar buit",
-  "app.errors.email_domain_blacklisted": "Feu servir un domini de correu electrònic diferent per registrar-vos.",
   "app.errors.email_invalid": "Utilitzeu una adreça de correu electrònic vàlida.",
   "app.errors.email_taken": "Ja existeix un compte amb aquest correu electrònic. Enlloc, podeu iniciar sessió.",
   "app.errors.email_taken_by_invite": "{value} ja ha rebut una invitació pendent. Comproveu la vostra carpeta de correu brossa o contacteu amb {supportEmail} si no la trobeu.",

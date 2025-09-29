@@ -2115,7 +2115,6 @@
   "app.errors.email_already_active": "E-postadressen {value} som finns på rad {row} tillhör redan en registrerad deltagare",
   "app.errors.email_already_invited": "E-postadressen {value} som hittades på rad {row} var redan inbjuden",
   "app.errors.email_blank": "Det här får inte vara tomt",
-  "app.errors.email_domain_blacklisted": "Använd en annan e-postdomän för att registrera dig.",
   "app.errors.email_invalid": "Använd en giltig e-postadress.",
   "app.errors.email_taken": "Ett konto med den här e-postadressen finns redan. Du kan logga in istället.",
   "app.errors.email_taken_by_invite": "{value} har redan tagits av en väntande inbjudan. Kontrollera din skräppostmapp eller kontakta {supportEmail} om du inte kan hitta den.",

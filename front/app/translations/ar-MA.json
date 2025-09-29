@@ -2115,7 +2115,6 @@
   "app.errors.email_already_active": "عنوان البريد الإلكتروني {value} والموجود في الصف {row} ينتمي بالفعل إلى مستخدم مسجّل",
   "app.errors.email_already_invited": "عنوان البريد الإلكتروني {value} والموجود في الصف {row} تمت دعوته بالفعل",
   "app.errors.email_blank": "لا يمكن أن يكون هذا فارغًا",
-  "app.errors.email_domain_blacklisted": "يُرجى استخدام نطاق بريد إلكتروني مختلف للتسجيل.",
   "app.errors.email_invalid": "يُرجى استخدام عنوان بريد إلكتروني صالح.",
   "app.errors.email_taken": "يوجد حساب بهذا البريد الإلكتروني بالفعل. يمكنك تسجيل الدخول بدلًا من ذلك.",
   "app.errors.email_taken_by_invite": "{value} مأخوذ بالفعل بواسطة دعوة قيد الانتظار. تحقق من البريد المزعج لديك أو تواصل مع {supportEmail} للمساعدة.",

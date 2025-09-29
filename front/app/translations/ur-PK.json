@@ -2115,7 +2115,6 @@
   "app.errors.email_already_active": "ای میل ایڈریس {value} قطار میں پایا گیا {row} پہلے سے ہی ایک رجسٹرڈ شریک کا ہے",
   "app.errors.email_already_invited": "ای میل ایڈریس {value} قطار میں پایا گیا {row} پہلے ہی مدعو کیا گیا تھا",
   "app.errors.email_blank": "یہ خالی نہیں ہو سکتا",
-  "app.errors.email_domain_blacklisted": "رجسٹر کرنے کے لیے براہ کرم ایک مختلف ای میل ڈومین استعمال کریں۔",
   "app.errors.email_invalid": "براہ کرم ایک درست ای میل ایڈریس استعمال کریں۔",
   "app.errors.email_taken": "اس ای میل کے ساتھ ایک اکاؤنٹ پہلے سے موجود ہے۔ اس کے بجائے آپ لاگ ان کر سکتے ہیں۔",
   "app.errors.email_taken_by_invite": "{value} پہلے ہی زیر التواء دعوت کے ذریعہ لیا گیا ہے۔ اپنا سپیم فولڈر چیک کریں یا {supportEmail} سے رابطہ کریں اگر آپ اسے نہیں ڈھونڈ سکتے ہیں۔",

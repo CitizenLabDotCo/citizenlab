@@ -2115,7 +2115,6 @@
   "app.errors.email_already_active": "Rindā {row} atrodamā e-pasta adrese {value} jau pieder reģistrētam dalībniekam",
   "app.errors.email_already_invited": "Rindā {row} atrodamā e-pasta adrese {value} jau tika uzaicināta",
   "app.errors.email_blank": "Tas nevar būt tukšs",
-  "app.errors.email_domain_blacklisted": "Lūdzu, reģistrācijai izmantojiet citu e-pasta domēnu.",
   "app.errors.email_invalid": "Lūdzu, izmantojiet derīgu e-pasta adresi.",
   "app.errors.email_taken": "Konts ar šo e-pasta adresi jau pastāv. Tā vietā varat pierakstīties.",
   "app.errors.email_taken_by_invite": "{vērtība} jau ir aizņemta ar aktuālu uzaicinājumu. Ja nevarat to atrast, pārbaudiet savu surogātpasta mapi vai sazinieties ar {supportEmail}.",

@@ -2115,7 +2115,6 @@
   "app.errors.email_already_active": "L'adresse e-mail {value} trouvée ligne {row} du fichier appartient a un utilisateur déjà inscrit",
   "app.errors.email_already_invited": "L'adresse {value} trouvée à la ligne {row} du fichier a déjà reçu une invitation",
   "app.errors.email_blank": "Cela ne peut pas être vide",
-  "app.errors.email_domain_blacklisted": "Veuillez utiliser un domaine de messagerie différent pour vous inscrire.",
   "app.errors.email_invalid": "Veuillez entrer une adresse e-mail valide.",
   "app.errors.email_taken": "Un compte avec cette adresse électronique existe déjà. Vous pouvez vous connecter à la place.",
   "app.errors.email_taken_by_invite": "{value} est déjà pris par une invitation en attente.",

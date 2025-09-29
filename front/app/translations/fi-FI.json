@@ -2115,7 +2115,6 @@
   "app.errors.email_already_active": "Riviltä {row} löytynyt sähköpostiosoite {value} kuuluu jo rekisteröityneelle osallistujalle",
   "app.errors.email_already_invited": "Sähköpostiosoite {value} löytyi riviltä {row} on jo kutsuttu",
   "app.errors.email_blank": "Tämä ei voi olla tyhjä",
-  "app.errors.email_domain_blacklisted": "Käytä rekisteröitymiseen toista sähköpostiosoitetta.",
   "app.errors.email_invalid": "Käytä kelvollista sähköpostiosoitetta.",
   "app.errors.email_taken": "Tällä sähköpostiosoitteella on jo tili. Voit kirjautua sisään sen sijaan.",
   "app.errors.email_taken_by_invite": "{value} on jo varattu odottavaan kutsuun. Tarkista roskapostikansiosi tai ota yhteyttä {supportEmail} , jos et löydä sitä.",
