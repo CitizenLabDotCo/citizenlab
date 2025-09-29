@@ -16,6 +16,7 @@ gem 'csv', '~> 3.3.0'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors', '2.0.0'
+gem 'rack', '>= 2.2.18' # CVE-2025-59830
 
 group :development, :test do
   gem 'ricecream', '~> 0.2.1'
