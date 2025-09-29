@@ -362,7 +362,9 @@ class User < ApplicationRecord
     domain = email_field.split('@')&.last
     return unless domain
 
-    errors.add(:email, :domain_blacklisted, value: domain) if EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
+    # Mild obfuscation of error message to make a spammers life a litle more difficult,
+    # especially avoiding leaking info about which domains are blacklisted
+    errors.add(:email, :something_went_wrong, code: 'zrb-42')
   end
 
   def remove_initiated_notifications

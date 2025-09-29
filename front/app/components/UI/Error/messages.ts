@@ -209,10 +209,6 @@ export default defineMessages({
     id: 'app.errors.email_invalid',
     defaultMessage: 'Please use a valid email address.',
   },
-  email_domain_blacklisted: {
-    id: 'app.errors.email_domain_blacklisted',
-    defaultMessage: 'Please use a different email domain to register.',
-  },
   email_blank: {
     id: 'app.errors.email_blank',
     defaultMessage: 'Please enter your email address',
@@ -376,5 +372,9 @@ export default defineMessages({
     id: 'app.errors.base_includes_banned_words',
     defaultMessage:
       'You may have used one or more words that are considered profanity. Please alter your text to remove any profanities that might be present.',
+  },
+  something_went_wrong: {
+    id: 'app.errors.something_went_wrong',
+    defaultMessage: 'Something went wrong.',
   },
 });
