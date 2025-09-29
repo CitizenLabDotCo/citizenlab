@@ -4,6 +4,13 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 describe 'franceconnect verification' do
+  # The FranceConnect test users almost all use the yopmail.com domain,
+  # which is in our spam domain blacklist. So we stub out the email domain
+  # blacklist validation in these tests.
+  before do
+    allow_any_instance_of(User).to receive(:validate_email_domain_blacklist)
+  end
+
   let(:auth_hash) do
     { 'provider' => 'franceconnect',
       'uid' => 'cfdbc2447d7a579dd48bc67e43ef44a03c208cb8c218450168cfc3ba89f502f6v1',
