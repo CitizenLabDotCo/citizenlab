@@ -2417,7 +2417,7 @@
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.answerOptionsTab": "Antwortmöglichkeiten",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.defaultQuestion": "Standardfrage",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.deleteButtonLabel": "Löschen",
-  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation2": "Sind Sie sicher, dass Sie diese Antwortoption löschen möchten? Alle Datensätze, die bestimmte Benutzer mit dieser Option beantwortet haben, werden dauerhaft gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.",
+  "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionAnswerOptionDeletionConfirmation2": "Sind Sie sicher, dass Sie diese Antwortoption löschen möchten? Alle Datensätze, die bestimmte Nutzer*innen mit dieser Option beantwortet haben, werden dauerhaft gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionDeletionConfirmation3": "Sind Sie sicher, dass Sie diese Registrierungsfrage löschen möchten? Alle Antworten, die Nutzer*innen auf diese Frage gegeben haben, werden dauerhaft gelöscht, und sie wird in Projekten oder Vorschlägen nicht mehr gestellt. Diese Aktion kann nicht rückgängig gemacht werden.",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsSubSectionTitle": "Fragen",
   "app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsTooltip": "Ziehen Sie die Fragen per Drag & Drop, um die Reihenfolge zu bestimmen, in der sie im Registrierungsprozess erscheinen.",
