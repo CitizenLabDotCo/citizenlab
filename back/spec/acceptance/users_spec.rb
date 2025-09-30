@@ -1405,6 +1405,14 @@ resource 'Users' do
                 expect(@user.reload.email).to eq(email)
                 assert_status 200
               end
+
+              example 'is not allowed when there is already an invite associated with email' do
+                create(:invited_user, email: email)
+                do_request
+
+                expect(@user.reload.email).to be_nil
+                assert_status 422
+              end
             end
 
             context 'when new_email was set properly' do
