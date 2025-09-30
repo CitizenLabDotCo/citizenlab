@@ -758,6 +758,7 @@
   "app.containers.Admin.Users.options": "Iespējas",
   "app.containers.Admin.Users.permissionToBuy": "Lai piešķirtu {name} administratora tiesības, ir jāpērk 1 papildu vieta.",
   "app.containers.Admin.Users.platformAdmin": "Platformas administrators",
+  "app.containers.Admin.Users.projectFilterPlaceholder": "Filtrēt pēc projekta",
   "app.containers.Admin.Users.projectManager": "Projektu vadītājs",
   "app.containers.Admin.Users.reachedLimitMessage": "Jūsu plānā ir sasniegts sēdvietu limits, tiks pievienota 1 papildu sēdvieta {name} .",
   "app.containers.Admin.Users.registeredUser": "Reģistrēts lietotājs",
