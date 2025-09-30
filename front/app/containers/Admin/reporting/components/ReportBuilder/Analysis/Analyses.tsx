@@ -36,8 +36,6 @@ const Analyses = ({
   const relevantAnalyses = questionId
     ? analyses?.data.filter(
         (analysis) =>
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           analysis.relationships.main_custom_field?.data?.id === questionId
       )
     : analyses?.data;

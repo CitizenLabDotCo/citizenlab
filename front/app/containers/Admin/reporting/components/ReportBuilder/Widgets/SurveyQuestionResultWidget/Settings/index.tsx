@@ -11,9 +11,12 @@ import {
 import { useNode } from '@craftjs/core';
 import { IOption } from 'typings';
 
+import useAnalyses from 'api/analyses/useAnalyses';
 import { ICustomFields } from 'api/custom_fields/types';
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
 import { GroupMode } from 'api/graph_data_units/requestTypes';
+
+import useLocale from 'hooks/useLocale';
 
 import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey/messages';
 
@@ -22,6 +25,7 @@ import PhaseFilter from 'components/UI/PhaseFilter';
 
 import { useIntl } from 'utils/cl-intl';
 
+import Insights from '../../../Analysis/Insights';
 import {
   SURVEY_QUESTION_INPUT_TYPES,
   SLICE_SURVEY_QUESTION_INPUT_TYPES,
@@ -42,6 +46,7 @@ const findQuestion = (questions: ICustomFields, questionId: string) => {
 
 const Settings = () => {
   const { formatMessage } = useIntl();
+  const locale = useLocale();
 
   const {
     actions: { setProp },
@@ -62,6 +67,9 @@ const Settings = () => {
   }));
 
   const { data: questions } = useRawCustomFields({ phaseId });
+  const { data: analyses } = useAnalyses({
+    phaseId,
+  });
 
   const selectedQuestion =
     questions && questionId ? findQuestion(questions, questionId) : undefined;
@@ -133,6 +141,13 @@ const Settings = () => {
       props.heatmap = !heatmap;
     });
   }, [setProp, heatmap]);
+
+  const relevantAnalyses = questionId
+    ? analyses?.data.filter(
+        (analysis) =>
+          analysis.relationships.main_custom_field?.data?.id === questionId
+      )
+    : analyses?.data;
 
   return (
     <Box>
@@ -213,6 +228,16 @@ const Settings = () => {
               onChange={handleGroupField}
             />
           )}
+          {projectId &&
+            relevantAnalyses?.map((analysis) => (
+              <Insights
+                analysisId={analysis.id}
+                key={analysis.id}
+                projectId={projectId}
+                phaseId={phaseId}
+                selectedLocale={locale}
+              />
+            ))}
         </>
       )}
 
