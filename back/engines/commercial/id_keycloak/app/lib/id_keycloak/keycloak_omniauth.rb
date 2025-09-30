@@ -6,8 +6,8 @@ module IdKeycloak
 
     def profile_to_user_attrs(auth)
       {
-        first_name: auth.info.first_name,
-        last_name: auth.info.last_name,
+        first_name: auth.info.first_name&.downcase&.capitalize,
+        last_name: auth.info.last_name&.downcase&.capitalize,
         email: auth.info.email,
         locale: AppConfiguration.instance.closest_locale_to('nb-NO') # No need to get the locale from the provider
       }
