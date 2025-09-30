@@ -36,6 +36,7 @@ import SlugInput from 'components/admin/SlugInput';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import DescriptionBuilderToggle from 'components/DescriptionBuilder/DescriptionBuilderToggle';
 import Highlighter from 'components/Highlighter';
+import Error from 'components/UI/Error';
 import FileUploader from 'components/UI/FileUploader';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
@@ -635,12 +636,10 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               modelType="folder"
             />
           </Highlighter>
-          {/*  // TODO: JS - Fix this to show the errors.*/}
-          {/* <Error*/}
-          {/*  fieldName="description_multiloc"*/}
-          {/*  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition*/}
-          {/*  apiErrors={apiError?.description_multiloc}*/}
-          {/*/ >*/}
+          <Error
+            fieldName="description_multiloc"
+            apiErrors={errors.description_multiloc}
+          />
         </SectionField>
 
         <SectionField>
