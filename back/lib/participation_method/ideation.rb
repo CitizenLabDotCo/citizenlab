@@ -58,7 +58,7 @@ module ParticipationMethod
       result = {
         title_page: { locks: { attributes: %i[title_multiloc] } },
         title_multiloc: { locks: { attributes: %i[title_multiloc required], deletion: true } },
-        body_multiloc: { locks: { attributes: %i[title_multiloc required] } },
+        body_multiloc: { locks: { attributes: %i[title_multiloc] } },
         idea_images_attributes: { locks: { attributes: %i[title_multiloc] } },
         idea_files_attributes: { locks: { attributes: %i[title_multiloc] } },
         topic_ids: { locks: { attributes: %i[title_multiloc] } },
