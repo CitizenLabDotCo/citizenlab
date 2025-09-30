@@ -21,127 +21,127 @@ export default defineMessages({
     id: 'app.containers.Admin.inspirationHub.Filters.Topic',
     defaultMessage: 'Topic',
   },
-  transportGeneral: {
+  'Transport: General': {
     id: 'app.containers.Admin.inspirationHub.Topics.transportGeneral',
     defaultMessage: 'Transport: General',
   },
-  transportRoads: {
+  'Transport: Roads': {
     id: 'app.containers.Admin.inspirationHub.Topics.transportRoads',
     defaultMessage: 'Transport: Roads',
   },
-  transportBicycles: {
+  'Transport: Bicycles': {
     id: 'app.containers.Admin.inspirationHub.Topics.transportBicycles',
     defaultMessage: 'Transport: Bicycles',
   },
-  transportPublicTransit: {
+  'Transport: Public transit': {
     id: 'app.containers.Admin.inspirationHub.Topics.transportPublicTransit',
     defaultMessage: 'Transport: Public transit',
   },
-  transportEVChargingStations: {
+  'Transport: EV Charging Stations': {
     id: 'app.containers.Admin.inspirationHub.Topics.transportEVChargingStations',
     defaultMessage: 'Transport: EV Charging Stations',
   },
-  transportParkingFacilities: {
+  'Transport: Parking Facilities': {
     id: 'app.containers.Admin.inspirationHub.Topics.transportParkingFacilities',
     defaultMessage: 'Transport: Parking Facilities',
   },
-  environmentGeneral: {
+  'Environment: General': {
     id: 'app.containers.Admin.inspirationHub.Topics.environmentGeneral',
     defaultMessage: 'Environment: General',
   },
-  environmentParks: {
+  'Environment: Parks': {
     id: 'app.containers.Admin.inspirationHub.Topics.environmentParks',
     defaultMessage: 'Environment: Parks',
   },
-  environmentTrails: {
+  'Environment: Trails': {
     id: 'app.containers.Admin.inspirationHub.Topics.environmentTrails',
     defaultMessage: 'Environment: Trails',
   },
-  environmentRenewableEnergy: {
+  'Environment: Renewable Energy': {
     id: 'app.containers.Admin.inspirationHub.Topics.environmentRenewableEnergy',
     defaultMessage: 'Environment: Renewable Energy',
   },
-  environmentWaste: {
+  'Environment: Waste': {
     id: 'app.containers.Admin.inspirationHub.Topics.environmentWaste',
     defaultMessage: 'Environment: Waste',
   },
-  environmentWildlifeConservation: {
+  'Environment: Wildlife Conservation': {
     id: 'app.containers.Admin.inspirationHub.Topics.environmentWildlifeConservation',
     defaultMessage: 'Environment: Wildlife Conservation',
   },
-  urbanDevelopmentGeneral: {
+  'Urban Development: General': {
     id: 'app.containers.Admin.inspirationHub.Topics.urbanDevelopmentGeneral',
     defaultMessage: 'Urban Development: General',
   },
-  urbanDevelopmentAffordableHousing: {
+  'Urban Development: Affordable Housing': {
     id: 'app.containers.Admin.inspirationHub.Topics.urbanDevelopmentAffordableHousing',
     defaultMessage: 'Urban Development: Affordable Housing',
   },
-  urbanDevelopmentResidentialZoning: {
+  'Urban Development: Residential Zoning': {
     id: 'app.containers.Admin.inspirationHub.Topics.urbanDevelopmentResidentialZoning',
     defaultMessage: 'Urban Development: Residential Zoning',
   },
-  urbanDevelopmentShopping: {
+  'Urban Development: Shopping': {
     id: 'app.containers.Admin.inspirationHub.Topics.urbanDevelopmentShopping',
     defaultMessage: 'Urban Development: Shopping',
   },
-  urbanDevelopmentBusiness: {
+  'Urban Development: Business': {
     id: 'app.containers.Admin.inspirationHub.Topics.urbanDevelopmentBusiness',
     defaultMessage: 'Urban Development: Business',
   },
-  urbanDevelopmentPlazas: {
+  'Urban Development: Plazas': {
     id: 'app.containers.Admin.inspirationHub.Topics.urbanDevelopmentPlazas',
     defaultMessage: 'Urban Development: Plazas',
   },
-  urbanDevelopmentArt: {
+  'Urban Development: Art': {
     id: 'app.containers.Admin.inspirationHub.Topics.urbanDevelopmentArt',
     defaultMessage: 'Urban Development: Art',
   },
-  communityGeneral: {
+  'Community: General': {
     id: 'app.containers.Admin.inspirationHub.Topics.communityGeneral',
     defaultMessage: 'Community: General',
   },
-  communityPublicHealth: {
+  'Community: Public Health': {
     id: 'app.containers.Admin.inspirationHub.Topics.communityPublicHealth',
     defaultMessage: 'Community: Public Health',
   },
-  communityEmergencyServices: {
+  'Community: Emergency Services': {
     id: 'app.containers.Admin.inspirationHub.Topics.communityEmergencyServices',
     defaultMessage: 'Community: Emergency Services',
   },
-  communitySchool: {
+  'Community: School': {
     id: 'app.containers.Admin.inspirationHub.Topics.communitySchool',
     defaultMessage: 'Community: School',
   },
-  communityLibrary: {
+  'Community: Library': {
     id: 'app.containers.Admin.inspirationHub.Topics.communityLibrary',
     defaultMessage: 'Community: Library',
   },
-  communitySports: {
+  'Community: Sports': {
     id: 'app.containers.Admin.inspirationHub.Topics.communitySports',
     defaultMessage: 'Community: Sports',
   },
-  communityCommunityCenters: {
+  'Community: Community Centers': {
     id: 'app.containers.Admin.inspirationHub.Topics.communityCommunityCenters',
     defaultMessage: 'Community: Community Centers',
   },
-  communitySupportPrograms: {
+  'Community: Support Programs': {
     id: 'app.containers.Admin.inspirationHub.Topics.communitySupportPrograms',
     defaultMessage: 'Community: Support Programs',
   },
-  technologyGeneral: {
+  'Technology: General': {
     id: 'app.containers.Admin.inspirationHub.Topics.technologyGeneral',
     defaultMessage: 'Technology: General',
   },
-  technologySmartCity: {
+  'Technology: Smart City': {
     id: 'app.containers.Admin.inspirationHub.Topics.technologySmartCity',
     defaultMessage: 'Technology: Smart City',
   },
-  technologyTelecommunication: {
+  'Technology: Telecommunication': {
     id: 'app.containers.Admin.inspirationHub.Topics.technologyTelecommunication',
     defaultMessage: 'Technology: Telecommunication',
   },
-  technologyDigitalLiteracy: {
+  'Technology: Digital Literacy': {
     id: 'app.containers.Admin.inspirationHub.Topics.technologyDigitalLiteracy',
     defaultMessage: 'Technology: Digital Literacy',
   },
