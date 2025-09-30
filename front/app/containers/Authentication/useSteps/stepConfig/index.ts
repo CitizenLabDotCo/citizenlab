@@ -81,7 +81,7 @@ export const getStepConfig = (
       CLOSE: () => setCurrentStep('closed'),
     },
 
-    'invitation-resent': {
+    'taken-by-invite': {
       CLOSE: () => setCurrentStep('closed'),
     },
   };

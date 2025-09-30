@@ -307,7 +307,7 @@ const AuthModal = () => {
           />
         )}
 
-        {currentStep === 'invitation-resent' && (
+        {currentStep === 'taken-by-invite' && (
           <InvitationResent state={state} />
         )}
       </Box>
