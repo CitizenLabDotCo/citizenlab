@@ -51,7 +51,7 @@ const SingleVotingInputs = ({
               value={voting_min_selected_options?.toString()}
               onChange={handleMinVotingOptionsChange}
               type="number"
-              min="1"
+              min="0"
             />
           </Box>
         </Box>

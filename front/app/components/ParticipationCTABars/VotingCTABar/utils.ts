@@ -50,7 +50,7 @@ export const getVoteSubmissionDisabledExplanation = (
     }
 
     if (
-      numberOfOptionsSelected &&
+      !isNil(numberOfOptionsSelected) &&
       minimumSelectedOptions &&
       numberOfOptionsSelected < minimumSelectedOptions
     ) {
