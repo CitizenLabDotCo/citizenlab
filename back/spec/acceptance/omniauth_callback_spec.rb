@@ -192,6 +192,14 @@ resource 'Omniauth Callback', document: false do
         expect(user.email_confirmed_at).to be_nil
         # expect(user.verified).to be true
       end
+
+      example 'if there is a pending invite with this email: return error' do
+        user = create(:invited_user, email: 'billy_fixed@example.com')
+        do_request
+        expect(status).to eq(302) # Redirect code
+        expect(response_headers['Location']).to include('authentication_error=true')
+        expect(user.reload.invite_status).to eq('pending')
+      end
     end
   end
 end

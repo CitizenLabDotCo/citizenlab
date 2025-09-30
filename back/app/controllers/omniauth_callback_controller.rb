@@ -69,6 +69,12 @@ class OmniauthCallbackController < ApplicationController
     end
 
     if @user
+      if @user.invite_pending? && auth["info"]["email_verified"] == false
+        # If the user is invited but the SSO email is not verified, we cannot proceed
+        signin_failure_redirect
+        return
+      end
+
       @identity.update(user: @user) unless @identity.user
 
       if @user.invite_pending?
