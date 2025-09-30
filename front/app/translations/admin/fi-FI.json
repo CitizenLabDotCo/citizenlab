@@ -2173,7 +2173,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Mene takaisin",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "Tuonti",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs2": "Tuoda",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText4": "Tekoälyyhteenvedot lyhyitä vastauksia, pitkiä vastauksia ja mielipideasteikon seurantakysymyksiä varten ovat käytettävissä vasemman sivupalkin AI-välilehdellä.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Lineaarinen asteikko",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "Matrix",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Pitkä vastaus",

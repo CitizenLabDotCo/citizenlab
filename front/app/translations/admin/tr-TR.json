@@ -2173,7 +2173,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Geri dön",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "İthalat",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs2": "İthalat",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText4": "Kısa cevap, uzun cevap ve duyarlılık ölçeği takip soruları için yapay zeka özetlerine sol kenar çubuğundaki yapay zeka sekmesinden erişilebilir.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Doğrusal ölçek",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "Matris",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Uzun cevap",
