@@ -24,7 +24,7 @@ const addNavbarItem = (item: IItemNotInNavbar) => {
         }
       : {
           code: 'custom',
-          project_id: item.projectId, // project
+          project_id: item.itemId, // project
           title_multiloc: item.titleMultiloc,
         };
   return fetcher<INavbarItemResponse>({

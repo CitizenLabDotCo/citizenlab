@@ -28,7 +28,7 @@ import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLo
 import messages from './messages';
 
 export interface FormValues {
-  projectId: string;
+  itemId: string;
   titleMultiloc: Multiloc;
 }
 
@@ -50,7 +50,7 @@ const AddProjectNavbarItemModal = ({ opened, onClose }: Props) => {
   const locale = useLocale();
 
   const schema = object({
-    projectId: string().required(
+    itemId: string().required(
       formatMessage(messages.emptyProjectOrFolderError)
     ),
     titleMultiloc: validateMultilocForEveryLocale(
@@ -65,10 +65,34 @@ const AddProjectNavbarItemModal = ({ opened, onClose }: Props) => {
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
-      await addNavbarItem({
-        ...formValues,
-        type: 'project',
-      } as IItemNotInNavbar);
+      const selectedProject = projects?.data.find(
+        (project) => project.id === formValues.itemId
+      );
+      const selectedFolder = projectFolders?.data.find(
+        (folder) => folder.id === formValues.itemId
+      );
+
+      let payload: IItemNotInNavbar;
+
+      if (selectedProject) {
+        payload = {
+          ...formValues,
+          type: 'project',
+          itemId: selectedProject.id, // <-- send project_id
+          slug: selectedProject.attributes.slug ?? null,
+        };
+      } else if (selectedFolder) {
+        payload = {
+          ...formValues,
+          type: 'folder',
+          itemId: selectedFolder.id, // <-- send folder_id
+          slug: selectedFolder.attributes.slug ?? null,
+        };
+      } else {
+        throw new Error('Selected item is not a valid project or folder');
+      }
+
+      await addNavbarItem(payload);
       handleOnClose();
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
@@ -92,17 +116,26 @@ const AddProjectNavbarItemModal = ({ opened, onClose }: Props) => {
   };
 
   // Automatically fill out the title multiloc field when a project is selected
-  const projectId = methods.watch('projectId');
+  const itemId = methods.watch('itemId');
   useEffect(() => {
-    methods.setValue(
-      'titleMultiloc',
-      projects?.data.find((project) => project.id === projectId)?.attributes
-        .title_multiloc || {}
+    // Try to find the selected item in projects first, then in folders
+    const selectedProject = projects?.data.find(
+      (project) => project.id === itemId
     );
-  }, [projects, projectId, methods]);
+    const selectedFolder = projectFolders?.data.find(
+      (folder) => folder.id === itemId
+    );
+
+    const titleMultiloc =
+      selectedProject?.attributes.title_multiloc ||
+      selectedFolder?.attributes.title_multiloc ||
+      {};
+
+    methods.setValue('titleMultiloc', titleMultiloc);
+  }, [projects, projectFolders, itemId, methods]);
 
   const hostName = appConfig?.data.attributes.host;
-  const slug = projects?.data.find((project) => project.id === projectId)
+  const slug = projects?.data.find((project) => project.id === itemId)
     ?.attributes.slug;
   const previewUrl = `${hostName}/${locale}/projects/${slug}`;
 
@@ -117,7 +150,7 @@ const AddProjectNavbarItemModal = ({ opened, onClose }: Props) => {
           <form onSubmit={methods.handleSubmit(onFormSubmit)}>
             <Box display="flex" gap="32px" flexDirection="column">
               <Select
-                name="projectId"
+                name="itemId"
                 label={formatMessage(messages.projectOrFolder)}
                 options={projectAndFolderOptions}
               />
@@ -126,7 +159,7 @@ const AddProjectNavbarItemModal = ({ opened, onClose }: Props) => {
                   name="titleMultiloc"
                   label={formatMessage(messages.navbarItemName)}
                 />
-                {projectId && (
+                {itemId && (
                   <Text fontStyle="italic" mt="4px" mb="0px">
                     {formatMessage(messages.resultingUrl)}: {previewUrl}
                   </Text>
