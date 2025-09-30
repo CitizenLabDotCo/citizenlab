@@ -3,7 +3,7 @@
 RubyLLM.configure do |config|
   config.bedrock_secret_key = ENV.fetch('AWS_SECRET_ACCESS_KEY', nil)
   config.bedrock_api_key = ENV.fetch('AWS_ACCESS_KEY_ID', nil)
-  config.bedrock_region = ENV.fetch('AWS_REGION', nil)
+  config.bedrock_region = ENV.fetch('AWS_TOXICITY_DETECTION_REGION', nil)
 end
 
 module RubyLLM
