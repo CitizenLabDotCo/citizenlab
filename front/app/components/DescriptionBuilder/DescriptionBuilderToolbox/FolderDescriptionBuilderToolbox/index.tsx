@@ -27,6 +27,7 @@ import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import FolderFiles from 'components/DescriptionBuilder/CraftSections/FolderFiles';
 import InfoWithAccordions from 'components/DescriptionBuilder/CraftSections/InfoWithAccordions';
 
 import {
@@ -34,7 +35,6 @@ import {
   useFormatMessageWithLocale,
   useIntl,
 } from 'utils/cl-intl';
-import FolderFiles from 'components/DescriptionBuilder/CraftSections/FolderFiles';
 
 type FolderDescriptionBuilderToolboxProps = {
   selectedLocale: SupportedLocale;
@@ -192,7 +192,7 @@ const FolderDescriptionBuilderToolbox = ({
         />
         <DraggableElement
           id="e2e-draggable-accordion"
-          component={<AccordionMultiloc title={{}} text={{}} />}
+          component={<AccordionMultiloc title={{}} />}
           icon="accordion"
           label={formatMessage(AccordionMultiloc.craft.custom.title)}
         />

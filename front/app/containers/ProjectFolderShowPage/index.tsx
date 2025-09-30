@@ -33,13 +33,11 @@ import ProjectFolderDescription from './ProjectFolderDescription';
 import ProjectFolderHeader from './ProjectFolderHeader';
 import ProjectFolderProjectCards from './ProjectFolderProjectCards';
 import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
-import { maxPageWidth } from './styles';
 
 const StyledContentContainer = styled(ContentContainer)`
   padding-top: 30px;
   background: #fff;
-
-  @media (min-width: 1280px) {
+  @media (min-width: 1166px) {
     padding-left: 60px;
     padding-right: 60px;
   }
@@ -99,14 +97,17 @@ interface Props {
   projectFolder: IProjectFolderData;
 }
 
+const maxPageWidth = '1166px';
+
 const ProjectFolderShowPage = ({ projectFolder }: Props) => {
   const { data: authUser } = useAuthUser();
   const isSmallerThanSmallDesktop = useBreakpoint('smallDesktop');
 
   const userCanEditFolder = userModeratesFolder(authUser, projectFolder.id);
-  const projectDescriptionBuilderEnabled = useFeatureFlag({
-    name: 'project_description_builder',
-  });
+  const projectDescriptionBuilderEnabled =
+    useFeatureFlag({
+      name: 'project_description_builder',
+    }) && projectFolder.attributes.uses_content_builder;
 
   return (
     <>
@@ -135,9 +136,7 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
                 followableType="project_folders"
                 followableId={projectFolder.id}
                 followersCount={projectFolder.attributes.followers_count}
-                // TODO: Fix this the next time the file is edited.
-                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                followerId={projectFolder.relationships.user_follower?.data?.id}
+                followerId={projectFolder.relationships.user_follower.data.id}
                 followableSlug={projectFolder.attributes.slug}
                 w="auto"
                 py="6px"
@@ -155,7 +154,6 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
             <FolderContentViewer
               folderId={projectFolder.id}
               folderTitle={projectFolder.attributes.title_multiloc}
-              enabled={projectFolder.attributes.uses_content_builder}
             />
           </StyledContentContainer>
         ) : (

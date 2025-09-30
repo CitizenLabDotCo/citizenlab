@@ -633,7 +633,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               onChange={getHandler(setDescriptionMultiloc)}
               label={formatMessage(messages.descriptionInputLabel)}
               modelType="folder"
-              labelTooltipText={formatMessage(messages.descriptionInputLabel)}
             />
           </Highlighter>
           {/*  // TODO: JS - Fix this to show the errors.*/}

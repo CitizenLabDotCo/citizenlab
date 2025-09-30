@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
+import { Multiloc } from 'typings';
 
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 import useProjectFiles from 'api/project_files/useProjectFiles';
@@ -18,7 +19,6 @@ import FileAttachments from 'components/UI/FileAttachments';
 
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
-import { Multiloc } from 'typings';
 
 type ProjectContentViewerProps = {
   projectId: string;

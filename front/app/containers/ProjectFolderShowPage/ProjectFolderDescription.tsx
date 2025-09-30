@@ -11,6 +11,7 @@ import {
 import { WrappedComponentProps } from 'react-intl';
 import ReactResizeDetector from 'react-resize-detector';
 import styled, { useTheme } from 'styled-components';
+import { Multiloc } from 'typings';
 
 import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
 
@@ -23,7 +24,6 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
-import { Multiloc } from 'typings';
 
 const desktopCollapsedDescriptionMaxHeight = 99999;
 const mobileCollapsedDescriptionMaxHeight = 180;

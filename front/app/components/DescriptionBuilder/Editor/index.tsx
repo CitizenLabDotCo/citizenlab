@@ -19,11 +19,11 @@ import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import FolderFiles from 'components/DescriptionBuilder/CraftSections/FolderFiles';
 
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 
 import BaseEditor from './Editor';
-import FolderFiles from 'components/DescriptionBuilder/CraftSections/FolderFiles';
 
 type EditorProps = {
   children?: React.ReactNode;
