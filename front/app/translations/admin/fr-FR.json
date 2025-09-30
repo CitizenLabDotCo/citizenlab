@@ -758,6 +758,7 @@
   "app.containers.Admin.Users.options": "Options",
   "app.containers.Admin.Users.permissionToBuy": "Pour attribuer les droits d'administrateur à {name}, vous devez acheter 1 poste supplémentaire.",
   "app.containers.Admin.Users.platformAdmin": "Administrateur de la plate-forme",
+  "app.containers.Admin.Users.projectFilterPlaceholder": "Filtrer par projet",
   "app.containers.Admin.Users.projectManager": "Gestionnaire de projet",
   "app.containers.Admin.Users.reachedLimitMessage": "Vous avez atteint la limite de postes dans votre plan, 1 poste supplémentaire pour {name} sera ajouté.",
   "app.containers.Admin.Users.registeredUser": "Utilisateur inscrit",
