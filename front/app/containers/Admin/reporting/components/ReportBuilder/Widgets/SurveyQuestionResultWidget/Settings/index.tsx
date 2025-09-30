@@ -133,12 +133,10 @@ const Settings = () => {
     });
   }, [setProp, heatmap]);
 
-  const relevantAnalyses = questionId
-    ? analyses?.data.filter(
-        (analysis) =>
-          analysis.relationships.main_custom_field?.data?.id === questionId
-      )
-    : analyses?.data;
+  const relevantAnalyses = analyses?.data.filter(
+    (analysis) =>
+      analysis.relationships.main_custom_field?.data?.id === questionId
+  );
 
   return (
     <Box>
@@ -194,17 +192,18 @@ const Settings = () => {
               onChange={handleGroupField}
             />
           )}
-          {projectId &&
-            relevantAnalyses?.map((analysis) => (
-              <Insights
-                analysisId={analysis.id}
-                key={analysis.id}
-                projectId={projectId}
-                selectedLocale={locale}
-              />
-            ))}
         </>
       )}
+
+      {projectId &&
+        relevantAnalyses?.map((analysis) => (
+          <Insights
+            analysisId={analysis.id}
+            key={analysis.id}
+            projectId={projectId}
+            selectedLocale={locale}
+          />
+        ))}
 
       {showHeatmapSettings && (
         <Box my="32px">
