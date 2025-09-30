@@ -58,6 +58,7 @@ class OmniauthCallbackController < ApplicationController
     user_attrs = authver_method.profile_to_user_attrs(auth)
 
     @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
+
     @user = @identity.user || find_existing_user(authver_method, auth, user_attrs, verify: verify)
     @user = authentication_service.prevent_user_account_hijacking @user
 
@@ -84,6 +85,7 @@ class OmniauthCallbackController < ApplicationController
           return
         end
         UserService.assign_params_in_accept_invite(@user, user_attrs)
+
         ActiveRecord::Base.transaction do
           SideFxInviteService.new.before_accept @invite
           @user.save!

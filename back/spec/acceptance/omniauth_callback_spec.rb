@@ -178,6 +178,12 @@ resource 'Omniauth Callback', document: false do
 
   context 'when SSO method returns email and it is confirmed' do
     before do
+      AppConfiguration.instance.settings['verification'] = { 
+        'allowed' => true, 
+        'enabled' => true,
+        'verification_methods': [{ name: 'fake_sso' }]
+      }
+      AppConfiguration.instance.save!
       OmniAuth.config.test_mode = true
       OmniAuth.config.mock_auth[:fake_sso] = get_auth_hash(email_confirmed: true)
     end
@@ -194,7 +200,7 @@ resource 'Omniauth Callback', document: false do
         user = User.find_by(email: 'billy_fixed@example.com')
         expect(user).not_to be_nil
         expect(user.email_confirmed_at).to be_present
-        # expect(user.verified).to be true
+        expect(user.verified).to be true
       end
 
       example 'if there is a pending invite with this email: allow create account' do
@@ -212,6 +218,12 @@ resource 'Omniauth Callback', document: false do
 
   context 'when SSO method returns email but it is not confirmed' do
     before do
+      AppConfiguration.instance.settings['verification'] = { 
+        'allowed' => true, 
+        'enabled' => true,
+        'verification_methods': [{ name: 'fake_sso' }]
+      }
+      AppConfiguration.instance.save!
       OmniAuth.config.test_mode = true
       OmniAuth.config.mock_auth[:fake_sso] = get_auth_hash(email_confirmed: false)
     end
@@ -228,7 +240,7 @@ resource 'Omniauth Callback', document: false do
         user = User.find_by(email: 'billy_fixed@example.com')
         expect(user).not_to be_nil
         expect(user.email_confirmed_at).to be_nil
-        # expect(user.verified).to be true
+        expect(user.verified).to be true
       end
 
       example 'if there is a pending invite with this email: return error' do
