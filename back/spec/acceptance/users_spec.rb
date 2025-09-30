@@ -252,6 +252,8 @@ resource 'Users' do
             json_response = json_parse response_body
             expect(json_response).to include_response_error(:email, 'something_went_wrong', code: 'zrb-42')
 
+            # We pass AppConfiguration.instance as item (required)
+            # because the user is not saved and has no ID.
             expect(LogActivityJob).to have_been_enqueued.with(
               AppConfiguration.instance,
               'blacklisted_email_domain_used',
