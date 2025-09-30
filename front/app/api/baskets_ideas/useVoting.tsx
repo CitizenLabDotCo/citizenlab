@@ -27,6 +27,7 @@ interface VotingInterface {
   numberOfVotesCast?: number;
   userHasVotesLeft?: boolean;
   processing?: boolean;
+  numberOfOptionsSelected?: number;
 }
 
 const VotingInterfaceContext = createContext<VotingInterface | null>(null);
@@ -138,6 +139,25 @@ const useVotingInterface = ({
     return numberOfVotesCast;
   }, [getVotes, remoteVotesPerIdea, votesPerIdea]);
 
+  const numberOfOptionsSelected = useMemo(() => {
+    if (remoteVotesPerIdea === undefined) return undefined;
+
+    // Count the number of ideas with votes > 0
+    const ideaIdsSet = new Set([
+      ...Object.keys(votesPerIdea),
+      ...(remoteVotesPerIdea ? Object.keys(remoteVotesPerIdea) : []),
+    ]);
+
+    let count = 0;
+    ideaIdsSet.forEach((ideaId) => {
+      if ((getVotes(ideaId) ?? 0) > 0) {
+        count += 1;
+      }
+    });
+
+    return count;
+  }, [getVotes, remoteVotesPerIdea, votesPerIdea]);
+
   const userHasVotesLeft = useMemo(() => {
     if (numberOfVotesCast === undefined || isNil(numberOfVotesUserHas)) {
       return undefined;
@@ -153,6 +173,7 @@ const useVotingInterface = ({
     setVotes,
     numberOfVotesCast,
     userHasVotesLeft,
+    numberOfOptionsSelected,
     processing,
   };
 };
@@ -167,6 +188,7 @@ const useVoting = (): VotingInterface => {
       numberOfVotesCast: undefined,
       userHasVotesLeft: undefined,
       processing: undefined,
+      numberOfOptionsSelected: undefined,
     };
   }
 

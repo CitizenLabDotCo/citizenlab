@@ -59,6 +59,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.Voting.voteCalledPlaceholderPlural2',
     defaultMessage: 'E.g. tokens, points, carbon credits...',
   },
+  minimumOptions: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.minimumOptions',
+    defaultMessage: 'Minimum selected options',
+  },
+  minimumOptionsDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription',
+    defaultMessage:
+      'You can set a minimum number of options a user must assign votes to in order to submit their votes.',
+  },
   maximumVotes: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.maximumVotes',
     defaultMessage: 'Maximum amount of votes',

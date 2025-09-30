@@ -48,6 +48,8 @@ export interface VotingInputsProps {
   commenting_enabled: boolean | null | undefined;
   autoshare_results_enabled: boolean | null | undefined;
   voting_max_votes_per_idea?: number | null;
+  voting_min_selected_options?: number | null;
+  handleMinVotingOptionsChange: (newMinVotingOptions: string | null) => void;
   handleVotingMinTotalChange: (newVotingMinTotal: string) => void;
   handleVotingMaxTotalChange: (newVotingMaxTotal: string | null) => void;
   handleMaxVotesPerOptionAmountChange: (newMaxVotesPerOption: string) => void;
@@ -74,6 +76,7 @@ const VotingInputs = ({
   voting_method,
   voting_min_total,
   voting_max_total,
+  voting_min_selected_options,
   commenting_enabled,
   autoshare_results_enabled,
   voting_max_votes_per_idea,
@@ -82,6 +85,7 @@ const VotingInputs = ({
   toggleCommentingEnabled,
   toggleAutoshareResultsEnabled,
   handleMaxVotesPerOptionAmountChange,
+  handleMinVotingOptionsChange,
   apiErrors,
   validationErrors,
   presentation_mode,
@@ -194,9 +198,11 @@ const VotingInputs = ({
         {voting_method === 'single_voting' && (
           <SingleVotingInputs
             voting_max_total={voting_max_total}
+            voting_min_selected_options={voting_min_selected_options}
             apiErrors={apiErrors}
             maxTotalVotesError={validationErrors.maxTotalVotesError}
             handleMaxVotingAmountChange={handleVotingMaxTotalChange}
+            handleMinVotingOptionsChange={handleMinVotingOptionsChange}
           />
         )}
         <SectionField>

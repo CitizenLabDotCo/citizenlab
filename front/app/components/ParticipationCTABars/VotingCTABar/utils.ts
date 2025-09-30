@@ -17,10 +17,12 @@ export const getVoteSubmissionDisabledExplanation = (
   phase: IPhaseData,
   permissionsDisabledReason: DisabledReason | null,
   numberOfVotesCast: number,
-  formatCurrency: UseFormatCurrencyReturn
+  formatCurrency: UseFormatCurrencyReturn,
+  numberOfOptionsSelected: number | undefined
 ) => {
   const { voting_method } = phase.attributes;
   const maxVotes = phase.attributes.voting_max_total;
+  const minimumSelectedOptions = phase.attributes.voting_min_selected_options;
 
   const action =
     phase.attributes.voting_method === 'budgeting' ? 'budgeting' : 'voting';
@@ -44,6 +46,16 @@ export const getVoteSubmissionDisabledExplanation = (
       return formatMessage(messages.votesExceedLimit, {
         votesCast: numberOfVotesCast.toLocaleString(),
         votesLimit: maxVotes.toLocaleString(),
+      });
+    }
+
+    if (
+      numberOfOptionsSelected &&
+      minimumSelectedOptions &&
+      numberOfOptionsSelected < minimumSelectedOptions
+    ) {
+      return formatMessage(messages.selectMinXOptionsToVote, {
+        minSelectedOptions: minimumSelectedOptions,
       });
     }
 
@@ -155,4 +167,30 @@ export const getVotesCounter = (
   }
 
   return;
+};
+
+export const getOptionSelectionCounter = (
+  formatMessage: FormatMessage,
+  phase: IPhaseData,
+  numberOfOptionsSelected: number | undefined
+) => {
+  const { voting_min_selected_options } = phase.attributes;
+
+  if (
+    !numberOfOptionsSelected ||
+    !voting_min_selected_options ||
+    voting_min_selected_options === 1
+  ) {
+    return; // We don't show any message if min selected options is 1 or not set
+  }
+
+  const optionsLeft = voting_min_selected_options - numberOfOptionsSelected;
+
+  if (optionsLeft <= 0) {
+    return '';
+  }
+
+  return formatMessage(messages.selectMinXOptions, {
+    minSelectedOptions: voting_min_selected_options,
+  });
 };
