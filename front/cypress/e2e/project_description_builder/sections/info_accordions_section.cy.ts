@@ -26,7 +26,7 @@ describe('Project description builder Info & Accordions section', () => {
         projectSlug = projectTitle;
         cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
           cy.visit(
-            `/admin/project-description-builder/projects/${projectId}/description`
+            `/admin/description-builder/projects/${projectId}/description`
           );
         });
       });

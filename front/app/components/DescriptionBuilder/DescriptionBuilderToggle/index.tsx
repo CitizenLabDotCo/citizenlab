@@ -99,7 +99,7 @@ const DescriptionBuilderToggle = ({
   };
 
   const route =
-    `/admin/description-builder/${modelType}/${modelId}/description` as RouteType;
+    `/admin/description-builder/${modelType}s/${modelId}/description` as RouteType;
 
   return (
     <Box data-testid="DescriptionBuilderToggle">

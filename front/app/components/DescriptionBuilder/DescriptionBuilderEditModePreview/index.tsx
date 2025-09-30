@@ -23,7 +23,7 @@ const DescriptionBuilderEditModePreview = React.forwardRef<
 
   return (
     <EditModePreview
-      iframeSrc={`/${locale}/admin/project-description-builder/${modelType}s/${modelId}/preview?selected_locale=${locale}`}
+      iframeSrc={`/${locale}/admin/description-builder/${modelType}s/${modelId}/preview?selected_locale=${locale}`}
       ref={ref}
     />
   );

@@ -148,10 +148,10 @@ const IndexElement = () => {
 
 export enum descriptionBuilderRoutes {
   descriptionBuilder = 'description-builder',
-  projectDescription = `${descriptionBuilder}/project/:projectId/description`,
-  projectPreview = `${descriptionBuilder}/project/:projectId/preview`,
-  folderDescription = `${descriptionBuilder}/folder/:folderId/description`,
-  folderPreview = `${descriptionBuilder}/folder/:folderId/preview`,
+  projectDescription = `${descriptionBuilder}/projects/:projectId/description`,
+  projectPreview = `${descriptionBuilder}/projects/:projectId/preview`,
+  folderDescription = `${descriptionBuilder}/folders/:folderId/description`,
+  folderPreview = `${descriptionBuilder}/folders/:folderId/preview`,
 }
 
 const createAdminRoutes = () => {

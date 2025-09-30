@@ -26,7 +26,7 @@ describe('ProjectDescriptionBuilderEditModePreview', () => {
     );
     expect(container.querySelector('iframe')).toHaveAttribute(
       'src',
-      '/en/admin/project-description-builder/projects/id/preview?selected_locale=en'
+      '/en/admin/description-builder/projects/id/preview?selected_locale=en'
     );
   });
 });

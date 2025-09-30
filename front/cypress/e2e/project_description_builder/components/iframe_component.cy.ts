@@ -23,7 +23,7 @@ describe('Project description builder Iframe component', () => {
         projectSlug = projectTitle;
         cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
           cy.visit(
-            `/admin/project-description-builder/projects/${projectId}/description`
+            `/admin/description-builder/projects/${projectId}/description`
           );
         });
       });
@@ -31,9 +31,7 @@ describe('Project description builder Iframe component', () => {
   });
   beforeEach(() => {
     cy.setAdminLoginCookie();
-    cy.visit(
-      `/admin/project-description-builder/projects/${projectId}/description`
-    );
+    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
   });
 
   after(() => {
@@ -64,9 +62,7 @@ describe('Project description builder Iframe component', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveProjectDescriptionBuilder'
     );
-    cy.visit(
-      `/admin/project-description-builder/projects/${projectId}/description`
-    );
+    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
     cy.get('.e2e-content-builder-iframe-component').wait(1000).click('center', {
       force: true,
     });
