@@ -64,7 +64,7 @@ RSpec.describe ParticipationMethod::CommonGround do
   end
 
   describe 'constraints' do
-    it 'has constraints on built in fields to lock certain values from being changed' do
+    it 'has no constraints' do
       expect(participation_method.constraints).to eq({})
     end
   end

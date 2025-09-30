@@ -507,7 +507,7 @@ resource 'Ideas' do
         parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
         parameter :project_id, 'The identifier of the project that hosts the idea'
       end
-      parameter :phase_id, 'The phase the idea will be part of, defaults to the current only, only allowed by admins'
+      parameter :phase_id, 'The participation context to fetch the similarity thresholds from, if it cannot be inferred (e.g. when posting as admin before the timeline begins).'
       with_options scope: :page do
         parameter :number, 'Page number'
         parameter :size, 'Number of ideas per page'
@@ -593,7 +593,7 @@ resource 'Ideas' do
           let!(:future_phase) { create(:phase, project:, start_at: 1.week.from_now, end_at: 2.weeks.from_now, similarity_threshold_title: 0.5, similarity_threshold_body: 0.3) }
           let(:phase_id) { future_phase.id }
 
-          example 'Gets the thresholds from the next phase' do
+          example 'Gets the thresholds from the corresponding phase' do
             expect_any_instance_of(SimilarIdeasService).to receive(:similar_ideas).with(
               title_threshold: 0.5,
               body_threshold: 0.3,
