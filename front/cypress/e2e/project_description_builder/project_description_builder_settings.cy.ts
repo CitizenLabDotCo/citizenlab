@@ -39,7 +39,7 @@ describe('Settings panel options', () => {
         })
         .then((phase) => {
           phaseId = phase.body.data.id;
-          cy.visit(`/admin/projects/${projectId}/settings/description`);
+          cy.visit(`/admin/projects/${projectId}/general`);
           cy.get('#e2e-toggle-enable-project-description-builder').click({
             force: true,
           });

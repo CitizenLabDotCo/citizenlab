@@ -65,7 +65,6 @@ describe('ProjectDescriptionBuilderToggle', () => {
         valueMultiloc={multiloc}
         onChange={dummyFunction}
         label={'QuillLabel'}
-        labelTooltipText={'LabelTooltipText'}
         {...routerProps}
       />
     );
@@ -89,7 +88,6 @@ describe('ProjectDescriptionBuilderToggle', () => {
         valueMultiloc={multiloc}
         onChange={dummyFunction}
         label={'QuillLabel'}
-        labelTooltipText={'LabelTooltipText'}
         {...routerProps}
       />
     );
@@ -110,7 +108,6 @@ describe('ProjectDescriptionBuilderToggle', () => {
         valueMultiloc={multiloc}
         onChange={dummyFunction}
         label={'QuillLabel'}
-        labelTooltipText={'LabelTooltipText'}
         {...routerProps}
       />
     );

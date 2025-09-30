@@ -17,10 +17,6 @@ const IdeaFormBuilder = lazy(
 const SurveyFormBuilder = lazy(
   () => import('./project/nativeSurvey/SurveyFormBuilder')
 );
-const ProjectParticipation = lazy(
-  () => import('../../../components/admin/participation')
-);
-const ProjectTraffic = lazy(() => import('./project/traffic'));
 const ProjectMessaging = lazy(() => import('./project/messaging/All'));
 const ProjectMessagingNew = lazy(() => import('./project/messaging/New'));
 const ProjectMessagingEdit = lazy(() => import('./project/messaging/Edit'));
@@ -30,8 +26,13 @@ const AdminProjectsList = lazy(() => import('./all'));
 const AdminProjectNew = lazy(() => import('./new'));
 const AdminProjectsProjectIndex = lazy(() => import('./project'));
 const AdminProjectPhaseIndex = lazy(() => import('./project/phase'));
-const AdminProjectsProjectSettings = lazy(() => import('./project/settings'));
 const AdminProjectsProjectGeneral = lazy(() => import('./project/general'));
+const AdminProjectsProjectGeneralSetUp = lazy(
+  () => import('./project/general/setUp')
+);
+const AdminProjectsProjectAudience = lazy(
+  () => import('../../../components/admin/participation')
+);
 const AdminPhaseNewAndEdit = lazy(() => import('./project/phaseSetup'));
 const AdminProjectFiles = lazy(() => import('./project/files'));
 const AdminProjectEvents = lazy(() => import('./project/events'));
@@ -47,7 +48,6 @@ const AdminProjectSurveyResults = lazy(() => import('./project/surveyResults'));
 const AdminProjectPoll = lazy(() => import('./project/poll'));
 const AdminProjectsSurvey = lazy(() => import('./project/nativeSurvey'));
 
-const AdminProjectDescription = lazy(() => import('./project/description'));
 const AdminProjectIdeaForm = lazy(() => import('./project/inputForm'));
 const AdminPhaseSurveyFormTabPanel = lazy(
   () => import('./project/surveyForm/TabPanel')
@@ -85,10 +85,12 @@ export enum projectsRoutes {
   projects = 'projects',
   new = 'new',
   projectIdeaId = ':projectId/ideas/:ideaId',
-  projectSettings = ':projectId/settings',
-  projectTraffic = 'traffic',
-  projectParticipation = 'participation',
-  projectParticipationDemographics = 'participation/demographics',
+  projectGeneral = 'general',
+  projectGeneralSetUp = 'set-up',
+  projectGeneralInputTags = 'input-tags',
+  projectGeneralAccessRights = 'access-rights',
+  projectGeneralData = 'data',
+  projectAudience = 'audience',
   projectSettingsDescription = 'description',
   projectMessaging = 'messaging',
   projectMessagingNew = 'messaging/new',
@@ -99,8 +101,6 @@ export enum projectsRoutes {
   projectEventsNew = 'events/new',
   projectEventsId = 'events/:id',
   projectSettingsTags = 'tags',
-  projectSettingsAccessRights = 'access-rights',
-  projectSettingsData = 'data',
   projectId = ':projectId',
   projectIdPhases = 'phases',
   projectPhasesSetup = 'setup',
@@ -130,7 +130,14 @@ export type projectsRouteTypes =
   | AdminRoute<projectsRoutes.projects>
   | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.new}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/ideas/${string}`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/settings`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/general`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/general/set-up`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/general/input-tags`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/general/access-rights`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/general/data`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectAudience}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectAudience}/demographics`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectAudience}/traffic`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectEvents}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectFiles}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectSettingsDescription}`>
@@ -142,9 +149,6 @@ export type projectsRouteTypes =
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectSettingsTags}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectTraffic}`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectParticipation}`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectParticipationDemographics}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectPhasesSetup}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/setup`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${projectsRoutes.new}`>
@@ -204,52 +208,6 @@ const createAdminProjectsRoutes = () => {
         ),
       },
       {
-        path: projectsRoutes.projectSettings,
-        element: (
-          <PageLoading>
-            <AdminProjectsProjectSettings />
-          </PageLoading>
-        ),
-        children: [
-          {
-            index: true,
-            element: (
-              <PageLoading>
-                <AdminProjectsProjectGeneral />
-              </PageLoading>
-            ),
-          },
-          {
-            path: projectsRoutes.projectSettingsDescription,
-            element: (
-              <PageLoading>
-                <AdminProjectDescription />
-              </PageLoading>
-            ),
-          },
-          {
-            path: projectsRoutes.projectSettingsTags,
-            element: <AdminAllowedTopicsComponent />,
-          },
-          {
-            path: projectsRoutes.projectSettingsAccessRights,
-            element: (
-              <PageLoading>
-                <AdminProjectPermissions />
-              </PageLoading>
-            ),
-          },
-          {
-            path: projectsRoutes.projectSettingsData,
-            element: (
-              <PageLoading>
-                <AdminProjectsData />
-              </PageLoading>
-            ),
-          },
-        ],
-      },
-      {
         path: projectsRoutes.projectId,
         element: (
           <PageLoading>
@@ -263,12 +221,76 @@ const createAdminProjectsRoutes = () => {
             element: <Navigate to="phases/setup" replace />,
           },
           {
-            path: projectsRoutes.projectTraffic,
+            path: projectsRoutes.projectGeneral,
             element: (
               <PageLoading>
-                <ProjectTraffic />
+                <AdminProjectsProjectGeneral />
               </PageLoading>
             ),
+            children: [
+              {
+                index: true,
+                element: (
+                  <PageLoading>
+                    <AdminProjectsProjectGeneralSetUp />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: projectsRoutes.projectGeneralInputTags,
+                element: <AdminAllowedTopicsComponent />,
+              },
+              {
+                path: projectsRoutes.projectGeneralAccessRights,
+                element: (
+                  <PageLoading>
+                    <AdminProjectPermissions />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: projectsRoutes.projectGeneralData,
+                element: (
+                  <PageLoading>
+                    <AdminProjectsData />
+                  </PageLoading>
+                ),
+              },
+            ],
+          },
+          {
+            path: projectsRoutes.projectAudience,
+            element: (
+              <PageLoading>
+                <AdminProjectsProjectAudience />
+              </PageLoading>
+            ),
+            children: [
+              {
+                index: true,
+                element: (
+                  <PageLoading>
+                    <AdminProjectsProjectAudience />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: 'demographics',
+                element: (
+                  <PageLoading>
+                    <AdminProjectsProjectAudience />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: 'traffic',
+                element: (
+                  <PageLoading>
+                    <AdminProjectsProjectAudience />
+                  </PageLoading>
+                ),
+              },
+            ],
           },
           {
             path: projectsRoutes.projectMessaging,
@@ -299,30 +321,6 @@ const createAdminProjectsRoutes = () => {
             element: (
               <PageLoading>
                 <ProjectMessagingShow />
-              </PageLoading>
-            ),
-          },
-          {
-            path: projectsRoutes.projectTraffic,
-            element: (
-              <PageLoading>
-                <ProjectTraffic />
-              </PageLoading>
-            ),
-          },
-          {
-            path: projectsRoutes.projectParticipation,
-            element: (
-              <PageLoading>
-                <ProjectParticipation />
-              </PageLoading>
-            ),
-          },
-          {
-            path: projectsRoutes.projectParticipationDemographics,
-            element: (
-              <PageLoading>
-                <ProjectParticipation />
               </PageLoading>
             ),
           },
