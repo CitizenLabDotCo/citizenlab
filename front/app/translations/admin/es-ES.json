@@ -2173,7 +2173,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Volver",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "Importar",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs2": "Importar",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText4": "Puedes acceder a los resúmenes de IA de las preguntas de seguimiento de respuesta corta, respuesta larga y escala de sentimientos desde la pestaña IA de la barra lateral izquierda.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Escala lineal",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "Matriz",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Respuesta larga",

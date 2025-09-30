@@ -2173,7 +2173,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Atgriezties",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "Importēt",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs2": "Importēt",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText4": "AI kopsavilkumus īsās atbildes, garās atbildes un pēcaptaujas jautājumiem, kas saistīti ar noskaņojuma skalu, var apskatīt AI cilnē kreisajā sānjoslā.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Lineārā skala",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "Matrica",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Garā atbilde",
