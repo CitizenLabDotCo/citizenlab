@@ -1,13 +1,6 @@
 import React, { useCallback } from 'react';
 
-import {
-  Box,
-  Text,
-  Icon,
-  Toggle,
-  colors,
-  stylingConsts,
-} from '@citizenlab/cl2-component-library';
+import { Box, Toggle } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { IOption } from 'typings';
 
@@ -17,8 +10,6 @@ import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
 import { GroupMode } from 'api/graph_data_units/requestTypes';
 
 import useLocale from 'hooks/useLocale';
-
-import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey/messages';
 
 import HeatmapTooltipContent from 'components/admin/FormResults/FormResultsQuestion/MappingQuestions/PointLocationQuestion/HeatmapTooltipContent';
 import PhaseFilter from 'components/UI/PhaseFilter';
@@ -151,31 +142,6 @@ const Settings = () => {
 
   return (
     <Box>
-      <Box
-        bgColor={colors.teal100}
-        borderRadius={stylingConsts.borderRadius}
-        px="12px"
-        py="4px"
-        mt="0px"
-        mb="16px"
-        role="alert"
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <Text variant="bodyS" color="textSecondary">
-          <Icon
-            name="info-outline"
-            width="16px"
-            height="16px"
-            mr="4px"
-            fill="textSecondary"
-            display="inline"
-          />
-          {formatMessage(nativeSurveyMessages.informationText)}
-        </Text>
-      </Box>
-
       <ProjectFilter
         projectId={projectId}
         emptyOptionMessage={widgetMessages.noProject}
