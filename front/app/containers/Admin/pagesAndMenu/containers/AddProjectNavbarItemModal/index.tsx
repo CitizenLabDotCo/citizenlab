@@ -9,6 +9,7 @@ import { object, string } from 'yup';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddNavbarItem from 'api/navbar/useAddNavbarItem';
 import useProjects from 'api/projects/useProjects';
+import useProjectFolders from 'api/project_folders/useProjectFolders';
 
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
@@ -41,6 +42,7 @@ const AddProjectNavbarItemModal = ({ opened, onClose }: Props) => {
   const { data: projects } = useProjects({
     publicationStatuses: ['published', 'draft', 'archived'],
   });
+  const { data: projectFolders } = useProjectFolders({});
   const { data: appConfig } = useAppConfiguration();
 
   const { formatMessage } = useIntl();
@@ -73,11 +75,16 @@ const AddProjectNavbarItemModal = ({ opened, onClose }: Props) => {
     }
   };
 
-  const projectOptions =
-    projects?.data.map((project) => ({
+  const projectAndFolderOptions = [
+    ...(projects?.data.map((project) => ({
       value: project.id,
       label: localize(project.attributes.title_multiloc),
-    })) || [];
+    })) || []),
+    ...(projectFolders?.data.map((folder) => ({
+      value: folder.id,
+      label: localize(folder.attributes.title_multiloc),
+    })) || []),
+  ].sort((a, b) => a.label.localeCompare(b.label));
 
   const handleOnClose = () => {
     methods.reset();
@@ -112,7 +119,7 @@ const AddProjectNavbarItemModal = ({ opened, onClose }: Props) => {
               <Select
                 name="projectId"
                 label={formatMessage(messages.projectOrFolder)}
-                options={projectOptions}
+                options={projectAndFolderOptions}
               />
               <Box>
                 <InputMultilocWithLocaleSwitcher
