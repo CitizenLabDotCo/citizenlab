@@ -48,7 +48,9 @@ const AddProjectNavbarItemModal = ({ opened, onClose }: Props) => {
   const locale = useLocale();
 
   const schema = object({
-    projectId: string().required(formatMessage(messages.emptyProjectError)),
+    projectId: string().required(
+      formatMessage(messages.emptyProjectOrFolderError)
+    ),
     titleMultiloc: validateMultilocForEveryLocale(
       formatMessage(messages.emptyNameError)
     ),
@@ -109,7 +111,7 @@ const AddProjectNavbarItemModal = ({ opened, onClose }: Props) => {
             <Box display="flex" gap="32px" flexDirection="column">
               <Select
                 name="projectId"
-                label={formatMessage(messages.project)}
+                label={formatMessage(messages.projectOrFolder)}
                 options={projectOptions}
               />
               <Box>

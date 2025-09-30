@@ -52,7 +52,7 @@ const PagesMenu = () => {
                 onClick={() => setAddProjectModalIsOpen(true)}
                 disabled={disabledAddProjectToNavbarButton}
               >
-                {formatMessage(messages.addProject)}
+                {formatMessage(messages.addProjectOrFolder)}
               </ButtonWithLink>
             </Box>
           </Tooltip>
