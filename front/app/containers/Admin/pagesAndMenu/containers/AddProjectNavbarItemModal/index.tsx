@@ -79,14 +79,14 @@ const AddProjectNavbarItemModal = ({ opened, onClose }: Props) => {
           ...formValues,
           type: 'project',
           itemId: selectedProject.id, // <-- send project_id
-          slug: selectedProject.attributes.slug ?? null,
+          slug: selectedProject.attributes.slug,
         };
       } else if (selectedFolder) {
         payload = {
           ...formValues,
           type: 'folder',
           itemId: selectedFolder.id, // <-- send folder_id
-          slug: selectedFolder.attributes.slug ?? null,
+          slug: selectedFolder.attributes.slug,
         };
       } else {
         throw new Error('Selected item is not a valid project or folder');
