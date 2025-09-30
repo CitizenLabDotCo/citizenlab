@@ -37,5 +37,6 @@ end
 begin
   RubyLLM.models.refresh!
 rescue StandardError => e
+  require 'error_reporter'
   ErrorReporter.report(e)
 end
