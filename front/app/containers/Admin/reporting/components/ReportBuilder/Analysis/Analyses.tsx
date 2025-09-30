@@ -4,10 +4,8 @@ import { Box, Divider, Text } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 
 import useAnalyses from 'api/analyses/useAnalyses';
-import { ParticipationMethod } from 'api/phases/types';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
-import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -16,38 +14,21 @@ import messages from './messages';
 
 const Analyses = ({
   projectId,
-  phaseId,
-  questionId,
   selectedLocale,
-  participationMethod,
 }: {
   projectId?: string;
-  phaseId?: string;
-  questionId?: string;
   selectedLocale: string;
-  participationMethod?: ParticipationMethod;
 }) => {
   const { formatMessage } = useIntl();
   const { data: analyses, isLoading } = useAnalyses({
-    projectId: participationMethod === 'ideation' ? projectId : undefined,
-    phaseId: participationMethod === 'native_survey' ? phaseId : undefined,
+    projectId,
   });
 
-  const relevantAnalyses = questionId
-    ? analyses?.data.filter(
-        (analysis) =>
-          analysis.relationships.main_custom_field?.data?.id === questionId
-      )
-    : analyses?.data;
+  console.log({ analyses, isLoading });
 
-  const hasRelevantAnalyses = relevantAnalyses && relevantAnalyses.length > 0;
+  const projectLink: RouteType = `/admin/projects/${projectId}`;
 
-  const projectLink: RouteType =
-    participationMethod === 'ideation'
-      ? `/admin/projects/${projectId}/phases/${phaseId}/ideas`
-      : `/admin/projects/${projectId}/phases/${phaseId}/results`;
-
-  if (relevantAnalyses?.length === 0 && !isLoading) {
+  if (analyses?.data.length === 0 && !isLoading) {
     return (
       <Box id="e2e-report-buider-ai-no-analyses">
         <Divider />
@@ -67,23 +48,12 @@ const Analyses = ({
 
   return (
     <div>
-      {phaseId && hasRelevantAnalyses && (
-        <Box mb="16px">
-          <Warning>
-            <Text p="0px" m="0px" fontSize="s" color="teal700">
-              {formatMessage(messages.dragAiContentInfo)}
-            </Text>
-          </Warning>
-        </Box>
-      )}
-
       {projectId &&
-        relevantAnalyses?.map((analysis) => (
+        analyses?.data.map((analysis) => (
           <Insights
             analysisId={analysis.id}
             key={analysis.id}
             projectId={projectId}
-            phaseId={phaseId}
             selectedLocale={selectedLocale}
           />
         ))}

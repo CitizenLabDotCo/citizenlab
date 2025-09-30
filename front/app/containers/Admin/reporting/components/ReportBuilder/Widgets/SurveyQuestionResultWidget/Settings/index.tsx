@@ -200,7 +200,6 @@ const Settings = () => {
                 analysisId={analysis.id}
                 key={analysis.id}
                 projectId={projectId}
-                phaseId={phaseId}
                 selectedLocale={locale}
               />
             ))}

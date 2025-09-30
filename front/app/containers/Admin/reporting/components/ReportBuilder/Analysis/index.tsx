@@ -9,19 +9,13 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
-import usePhase from 'api/phases/usePhase';
-
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { supportsNativeSurvey } from 'containers/Admin/projects/project/inputImporter/ReviewSection/utils';
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
-
-import PhaseFilter from 'components/UI/PhaseFilter';
 
 import { useIntl } from 'utils/cl-intl';
 
 import ProjectFilter from '../Widgets/_shared/ProjectFilter';
-import QuestionSelect from '../Widgets/_shared/QuestionSelect';
 import widgetMessages from '../Widgets/messages';
 
 import Analyses from './Analyses';
@@ -32,44 +26,17 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
     name: 'analysis',
     onlyCheckAllowed: true,
   });
-  const { projectId: contextProjectId, phaseId: contextPhaseId } =
-    useReportContext();
+  const { projectId: contextProjectId } = useReportContext();
 
   const [projectId, setProjectId] = useState<string | undefined>(
     contextProjectId
   );
-  const [phaseId, setPhaseId] = useState<string | undefined>(contextPhaseId);
-  const [questionId, setQuestionId] = useState<string | undefined>(undefined);
-
-  const { data: phase } = usePhase(phaseId);
 
   const { formatMessage } = useIntl();
 
   const handleProjectFilter = useCallback(({ value }: IOption) => {
     setProjectId(value);
-    setPhaseId(undefined);
-    setQuestionId(undefined);
   }, []);
-
-  const handlePhaseFilter = useCallback(({ value }: IOption) => {
-    setPhaseId(value);
-    setQuestionId(undefined);
-  }, []);
-
-  const handleQuestion = useCallback((questionId: string) => {
-    setQuestionId(questionId);
-  }, []);
-
-  const supportsSurvey = supportsNativeSurvey(
-    phase?.data.attributes.participation_method
-  );
-
-  const showAnalyses = supportsSurvey
-    ? projectId && phaseId && questionId
-    : projectId && phaseId;
-
-  const isIdeationPhase =
-    phase?.data.attributes.participation_method === 'ideation';
 
   return (
     <>
@@ -95,45 +62,7 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
             onProjectFilter={handleProjectFilter}
           />
 
-          {projectId !== undefined && (
-            <PhaseFilter
-              id="e2e-report-builder-analysis-phase-filter-box"
-              label={formatMessage(messages.selectPhase)}
-              projectId={projectId}
-              phaseId={phaseId}
-              participationMethods={[
-                'native_survey',
-                'ideation',
-                'community_monitor_survey',
-              ]}
-              onPhaseFilter={handlePhaseFilter}
-            />
-          )}
-
-          {phaseId && (
-            <QuestionSelect
-              phaseId={phaseId}
-              questionId={questionId}
-              filterQuestion={({ attributes }) => {
-                return [
-                  'text',
-                  'multiline_text',
-                  'sentiment_linear_scale',
-                ].includes(attributes.input_type);
-              }}
-              label={formatMessage(messages.question)}
-              onChange={handleQuestion}
-            />
-          )}
-          {showAnalyses && (
-            <Analyses
-              projectId={projectId}
-              phaseId={supportsSurvey || isIdeationPhase ? phaseId : undefined}
-              questionId={questionId}
-              selectedLocale={selectedLocale}
-              participationMethod={phase?.data.attributes.participation_method}
-            />
-          )}
+          <Analyses projectId={projectId} selectedLocale={selectedLocale} />
         </Box>
       )}
     </>
