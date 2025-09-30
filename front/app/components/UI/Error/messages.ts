@@ -377,4 +377,9 @@ export default defineMessages({
     defaultMessage:
       'You may have used one or more words that are considered profanity. Please alter your text to remove any profanities that might be present.',
   },
+  something_went_wrong: {
+    id: 'app.errors.something_went_wrong',
+    defaultMessage:
+      'Something went wrong. Please contact us if the problem persists.',
+  },
 });

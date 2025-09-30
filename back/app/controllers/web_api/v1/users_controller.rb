@@ -150,7 +150,15 @@ class WebApi::V1::UsersController < ApplicationController
       ).serializable_hash, status: :ok
     else
       if @user.errors.details[:email].any? { |e| e[:code] == 'zrb-42' }
-        LogActivityJob.perform_later(AppConfiguration.instance, 'blacklisted_email_domain_used', nil, Time.current, payload: { email: @user.email })
+        # We pass AppConfiguration.instance as item (required)
+        # because the user is not saved and has no ID.
+        LogActivityJob.perform_later(
+          AppConfiguration.instance,
+          'blacklisted_email_domain_used',
+          nil,
+          Time.current,
+          payload: { email: @user.email }
+        )
       end
 
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
