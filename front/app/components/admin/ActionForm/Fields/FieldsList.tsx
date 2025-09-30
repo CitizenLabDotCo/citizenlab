@@ -6,6 +6,7 @@ import { Action } from 'api/permissions/types';
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
 import useReorderPermissionsCustomField from 'api/permissions_custom_fields/useReorderPermissionsCustomField';
+import { PermittedBy } from 'api/phase_permissions/types';
 
 import SortableList from 'components/admin/ResourceList/SortableList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
@@ -18,6 +19,8 @@ import CustomField from './CustomField';
 import messages from './messages';
 
 interface Props {
+  userFieldsInForm: boolean;
+  permitted_by: PermittedBy;
   phaseId?: string;
   action: Action;
 }
@@ -35,6 +38,14 @@ const FieldsList = ({ phaseId, action }: Props) => {
     return null;
   }
 
+  if (permissionFields.data.length === 0) {
+    return (
+      <Text mb="24px" mt="0">
+        <FormattedMessage {...messages.noDemographicQuestionsYet} />
+      </Text>
+    );
+  }
+
   // Hack to ignore the first verification-locked custom fields without breaking ordering.
   // It would be better to not return them from the BE at all and adjust the way the ordering is done.
   // Hopefully we can do that later.
@@ -44,7 +55,7 @@ const FieldsList = ({ phaseId, action }: Props) => {
 
   if (permissionFields.data.length === numberOfVerificatiomLockedItems) {
     return (
-      <Text mb="24px">
+      <Text mb="24px" mt="0">
         <FormattedMessage {...messages.noDemographicQuestions} />
       </Text>
     );

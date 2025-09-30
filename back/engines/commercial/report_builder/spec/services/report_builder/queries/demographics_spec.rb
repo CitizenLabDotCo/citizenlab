@@ -94,7 +94,8 @@ RSpec.describe ReportBuilder::Queries::Demographics do
       context 'user fields stored in ideas' do
         before do
           create(:idea_status_proposed)
-          phase = create(:native_survey_phase, project: @project, user_fields_in_form: true)
+          phase = create(:native_survey_phase, project: @project, with_permissions: true)
+          phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
           create(:native_survey_response, project: @project, creation_phase: phase, author: nil, created_at: now - 1.year, custom_field_values: { "u_#{@custom_field.key}" => @option1.key })
           create(:native_survey_response, project: @project, creation_phase: phase, author: nil, custom_field_values: { "u_#{@custom_field.key}" => @option2.key })
           create(:native_survey_response, project: @project, creation_phase: phase, author: nil, custom_field_values: {})

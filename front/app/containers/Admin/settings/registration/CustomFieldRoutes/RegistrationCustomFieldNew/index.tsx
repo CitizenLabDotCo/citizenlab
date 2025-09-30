@@ -54,7 +54,7 @@ const RegistrationCustomFieldNew = () => {
     <div>
       <GoBackButton onClick={goBack} />
       <PageTitle>
-        <FormattedMessage {...messages.addANewRegistrationField} />
+        <FormattedMessage {...messages.addANewDemographicQuestion} />
       </PageTitle>
       <PageWrapper>
         <RegistrationCustomFieldForm

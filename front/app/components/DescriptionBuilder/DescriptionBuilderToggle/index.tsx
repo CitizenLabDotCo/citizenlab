@@ -32,7 +32,6 @@ type DescriptionBuilderToggleProps = {
   onChange: (description_multiloc: Multiloc, _locale: SupportedLocale) => void;
   modelType?: 'project' | 'folder';
   label: string;
-  labelTooltipText: string;
 } & WithRouterProps &
   WrappedComponentProps;
 
@@ -56,7 +55,6 @@ const DescriptionBuilderToggle = ({
   onChange,
   modelType,
   label,
-  labelTooltipText,
 }: DescriptionBuilderToggleProps) => {
   const featureEnabled = useFeatureFlag({
     name: 'project_description_builder',
@@ -135,7 +133,6 @@ const DescriptionBuilderToggle = ({
           valueMultiloc={valueMultiloc}
           onChange={onChange}
           label={label}
-          labelTooltipText={labelTooltipText}
           withCTAButton
         />
       )}

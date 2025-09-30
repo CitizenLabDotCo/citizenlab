@@ -30,7 +30,8 @@ describe Permissions::ProjectPermissionsService do
         {
           participation_method: 'native_survey',
           native_survey_title_multiloc: { 'en' => 'Survey', 'nl-BE' => 'Vragenlijst' },
-          native_survey_button_multiloc: { 'en' => 'Take the survey', 'nl-BE' => 'De enquete invullen' }
+          native_survey_button_multiloc: { 'en' => 'Take the survey', 'nl-BE' => 'De enquete invullen' },
+          with_permissions: true
         }
       end
 
@@ -83,10 +84,13 @@ describe Permissions::ProjectPermissionsService do
 
     context 'when the author posted a survey anonymously and the limit was reached' do
       let(:project) do
-        create(:single_phase_native_survey_project, phase_attrs: {
-          submission_enabled: true,
-          allow_anonymous_participation: true
+        project = create(:single_phase_native_survey_project, phase_attrs: {
+          submission_enabled: true
         })
+
+        project.phases.first.permissions.find_by(action: 'posting_idea').update!(user_data_collection: 'anonymous')
+
+        project
       end
 
       it 'returns `posting_limited_max_reached`' do

@@ -1,11 +1,11 @@
 import 'cypress-file-upload';
 import './dnd';
+import './form-builder';
 import * as moment from 'moment';
 import { IUserUpdate } from '../../app/api/users/types';
 import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configuration/types';
 import { IProjectAttributes } from '../../app/api/projects/types';
 import { ICustomFieldInputType } from '../../app/api/custom_fields/types';
-import { IProjectGroup } from '../../app/api/project_groups/types';
 import { IGroup } from '../../app/api/groups/types';
 import { Multiloc } from '../../app/typings';
 
@@ -96,6 +96,10 @@ declare global {
       apiCreateNativeSurveyPhase: typeof apiCreateNativeSurveyPhase;
       createProjectWithNativeSurveyPhase: typeof createProjectWithNativeSurveyPhase;
       createProjectWithIdeationPhase: typeof createProjectWithIdeationPhase;
+      selectReactSelectOption: typeof selectReactSelectOption;
+      addItemToFormBuilder(
+        toolboxSelector: string
+      ): Chainable<JQuery<HTMLElement>>;
     }
   }
 }
@@ -2248,6 +2252,18 @@ Cypress.Commands.add(
 );
 Cypress.Commands.add('apiCreateManualGroup', apiCreateManualGroup);
 Cypress.Commands.add('apiAddMembership', apiAddMembership);
+
+// ReactSelect helper function
+const selectReactSelectOption = (selector: string, label: string) => {
+  cy.get(selector).click();
+  cy.get(`${selector} input[id$='-input']`).type(`${label}{enter}`, {
+    force: true,
+  });
+  cy.get(selector).should('contain.text', label);
+};
+
+Cypress.Commands.add('selectReactSelectOption', selectReactSelectOption);
+
 Cypress.Commands.add(
   'createProjectWithIdeationPhase',
   createProjectWithIdeationPhase
