@@ -426,11 +426,15 @@ const AdminProjectEventEdit = () => {
         imageId: remoteImageId,
       });
     }
-    if (uploadedImage && croppedImgBase64 && !uploadedImage.remote) {
+    if (
+      uploadedImage &&
+      (croppedImgBase64 || uploadedImage.base64) &&
+      !uploadedImage.remote
+    ) {
       addEventImage({
         eventId: data.data.id,
         image: {
-          image: croppedImgBase64 || '',
+          image: croppedImgBase64 || uploadedImage.base64,
           ...(eventImageAltText
             ? { alt_text_multiloc: eventImageAltText }
             : {}),
@@ -613,6 +617,7 @@ const AdminProjectEventEdit = () => {
   };
 
   const handleImageCropChange = (imgBase64: string) => {
+    setSubmitState('enabled');
     setCroppedImgBase64(imgBase64);
   };
 
