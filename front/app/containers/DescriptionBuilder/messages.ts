@@ -46,9 +46,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDescription.linkText',
     defaultMessage: 'Edit description in Content Builder',
   },
-  layoutBuilderWarning: {
+  projectLayoutBuilderWarning: {
     id: 'app.containers.AdminPage.ProjectDescription.layoutBuilderWarning',
     defaultMessage:
       'Using the Content Builder will let you use more advanced layout options. For languages where no content is available in the content builder, the regular project description content will be displayed instead.',
+  },
+  folderLayoutBuilderWarning: {
+    id: 'app.containers.AdminPage.ProjectDescription.folderLayoutBuilderWarning',
+    defaultMessage:
+      'Using the Content Builder will let you use more advanced layout options. For languages where no content is available in the content builder, the regular folder description content will be displayed instead.',
   },
 });

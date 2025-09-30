@@ -123,7 +123,13 @@ const DescriptionBuilderToggle = ({
             {formatMessage(messages.linkText)}
           </StyledLink>
           <Box mt="10px">
-            <Warning>{formatMessage(messages.layoutBuilderWarning)}</Warning>
+            <Warning>
+              {formatMessage(
+                modelType === 'folder'
+                  ? messages.folderLayoutBuilderWarning
+                  : messages.projectLayoutBuilderWarning
+              )}
+            </Warning>
           </Box>
         </>
       )}

@@ -136,7 +136,7 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
                 followableType="project_folders"
                 followableId={projectFolder.id}
                 followersCount={projectFolder.attributes.followers_count}
-                followerId={projectFolder.relationships.user_follower.data.id}
+                followerId={projectFolder.relationships.user_follower.data?.id}
                 followableSlug={projectFolder.attributes.slug}
                 w="auto"
                 py="6px"
