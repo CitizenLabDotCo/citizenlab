@@ -13,6 +13,18 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.deleteFile2',
     defaultMessage: 'Delete file',
   },
+  cancel: {
+    id: 'app.containers.AdminPage.ProjectFiles.cancel',
+    defaultMessage: 'Cancel',
+  },
+  fileBeingUsed: {
+    id: 'app.containers.AdminPage.ProjectFiles.fileBeingUsed',
+    defaultMessage: 'This file is currently being used as an attachment.',
+  },
+  willRemoveFromAllLocations: {
+    id: 'app.containers.AdminPage.ProjectFiles.willRemoveFromAllLocations',
+    defaultMessage: 'This will remove it from all locations where it is used.',
+  },
   chooseFiles: {
     id: 'app.containers.AdminPage.ProjectFiles.chooseFiles',
     defaultMessage: 'Choose files',

@@ -1,6 +1,11 @@
 import { isString } from 'lodash-es';
 import { UploadFile } from 'typings';
+import { v4 as uuidv4 } from 'uuid';
 
+import {
+  AttachableType,
+  IFileAttachmentData,
+} from 'api/file_attachments/types';
 import { IFileData } from 'api/files/types';
 
 import { reportError } from 'utils/loggingUtils';
@@ -174,4 +179,42 @@ export const saveFileToDisk = async (file: IFileData) => {
     // Log any download or fetch errors
     console.error('File download error:', e);
   }
+};
+
+type GenerateTemporaryFileAttachmentParams = {
+  fileId: string;
+  attachableId: string | undefined;
+  attachableType: AttachableType;
+  position: number;
+};
+
+export const generateTemporaryFileAttachment = ({
+  fileId,
+  attachableId,
+  attachableType,
+  position,
+}: GenerateTemporaryFileAttachmentParams): IFileAttachmentData => {
+  const temporaryFileAttachment: IFileAttachmentData = {
+    id: `TEMP-${uuidv4()}`, // Temporary ID, to mark it as a newly added file attachment.
+    attributes: {
+      position,
+    },
+    relationships: {
+      attachable: {
+        data: {
+          type: attachableType,
+          id: attachableId || '',
+        },
+      },
+      file: {
+        data: {
+          id: fileId,
+          type: 'file',
+        },
+      },
+    },
+    type: 'file_attachment',
+  };
+
+  return temporaryFileAttachment;
 };
