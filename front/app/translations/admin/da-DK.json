@@ -758,6 +758,7 @@
   "app.containers.Admin.Users.options": "Muligheder",
   "app.containers.Admin.Users.permissionToBuy": "Hvis du vil give {name} administratorrettigheder, skal du købe 1 ekstra plads.",
   "app.containers.Admin.Users.platformAdmin": "Platformsadministrator",
+  "app.containers.Admin.Users.projectFilterPlaceholder": "Filtrer efter projekt",
   "app.containers.Admin.Users.projectManager": "Projektleder",
   "app.containers.Admin.Users.reachedLimitMessage": "Du har nået grænsen for antal pladser i dit abonnement, 1 ekstra plads til {name} vil blive tilføjet.",
   "app.containers.Admin.Users.registeredUser": "Registreret bruger",

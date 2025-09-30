@@ -758,6 +758,7 @@
   "app.containers.Admin.Users.options": "ਵਿਕਲਪ",
   "app.containers.Admin.Users.permissionToBuy": "{name} ਪ੍ਰਬੰਧਕ ਅਧਿਕਾਰ ਦੇਣ ਲਈ, ਤੁਹਾਨੂੰ 1 ਵਾਧੂ ਸੀਟ ਖਰੀਦਣ ਦੀ ਲੋੜ ਹੈ।",
   "app.containers.Admin.Users.platformAdmin": "ਪਲੇਟਫਾਰਮ ਪ੍ਰਸ਼ਾਸਕ",
+  "app.containers.Admin.Users.projectFilterPlaceholder": "ਪ੍ਰੋਜੈਕਟ ਅਨੁਸਾਰ ਫਿਲਟਰ ਕਰੋ",
   "app.containers.Admin.Users.projectManager": "ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ",
   "app.containers.Admin.Users.reachedLimitMessage": "ਤੁਸੀਂ ਆਪਣੀ ਯੋਜਨਾ ਵਿੱਚ ਸੀਟਾਂ ਦੀ ਸੀਮਾ ਤੱਕ ਪਹੁੰਚ ਗਏ ਹੋ, {name} ਲਈ 1 ਵਾਧੂ ਸੀਟ ਜੋੜੀ ਜਾਵੇਗੀ।",
   "app.containers.Admin.Users.registeredUser": "ਰਜਿਸਟਰਡ ਉਪਭੋਗਤਾ",

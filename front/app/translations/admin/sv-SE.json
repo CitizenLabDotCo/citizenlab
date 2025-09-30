@@ -758,6 +758,7 @@
   "app.containers.Admin.Users.options": "Alternativ",
   "app.containers.Admin.Users.permissionToBuy": "Om du vill ge {name} administratörsrättigheter måste du köpa ytterligare 1 plats.",
   "app.containers.Admin.Users.platformAdmin": "Plattformsadministratör",
+  "app.containers.Admin.Users.projectFilterPlaceholder": "Filtrera efter projekt",
   "app.containers.Admin.Users.projectManager": "Projektledare",
   "app.containers.Admin.Users.reachedLimitMessage": "Du har nått gränsen för antalet platser inom din plan, 1 extra plats för {name} kommer att läggas till.",
   "app.containers.Admin.Users.registeredUser": "Registrerad användare",

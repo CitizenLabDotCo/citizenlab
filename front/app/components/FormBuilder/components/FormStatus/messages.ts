@@ -15,4 +15,9 @@ export default defineMessages({
     id: 'app.components.formBuilder.unsavedChanges',
     defaultMessage: 'You have unsaved changes',
   },
+  dragAndDrop: {
+    id: 'app.components.formBuilder.dragAndDrop',
+    defaultMessage:
+      'To add questions to the form DRAG and DROP the elements found in the left side menu into the form.',
+  },
 });

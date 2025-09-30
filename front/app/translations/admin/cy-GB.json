@@ -758,6 +758,7 @@
   "app.containers.Admin.Users.options": "Opsiynau",
   "app.containers.Admin.Users.permissionToBuy": "I roi {name} hawliau gweinyddol, mae angen i chi brynu 1 sedd ychwanegol.",
   "app.containers.Admin.Users.platformAdmin": "Gweinyddwr platfform",
+  "app.containers.Admin.Users.projectFilterPlaceholder": "Hidlo yn ôl prosiect",
   "app.containers.Admin.Users.projectManager": "Rheolwr Prosiect",
   "app.containers.Admin.Users.reachedLimitMessage": "Rydych chi wedi cyrraedd y terfyn o seddi yn eich cynllun, bydd 1 sedd ychwanegol ar gyfer {name} yn cael ei hychwanegu.",
   "app.containers.Admin.Users.registeredUser": "Defnyddiwr cofrestredig",
