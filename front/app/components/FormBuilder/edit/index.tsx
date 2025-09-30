@@ -129,7 +129,7 @@ const FormEdit = ({
     setValue,
   } = methods;
 
-  const { replace, insert, move } = useFieldArray({
+  const { move, replace, insert } = useFieldArray({
     name: 'customFields',
     control,
   });

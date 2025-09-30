@@ -27,7 +27,6 @@ import messages from './messages';
 import { IPhaseData } from 'api/phases/types';
 
 const SimilarIdeasList = ({
-  // TODO: Can be simplified?
   titleMultiloc,
   bodyMultiloc,
   phase,
