@@ -2356,6 +2356,7 @@
   "app.utils.votingMethodUtils.finalTally": "Résultat final",
   "app.utils.votingMethodUtils.howToParticipate": "Comment participer",
   "app.utils.votingMethodUtils.howToVote": "Comment voter ?",
+  "app.utils.votingMethodUtils.minSelectedOptionsMessage": "You must select a minimum of at least <b>{minSelectedOptions, plural, one {# option} other {# options}}</b>.",
   "app.utils.votingMethodUtils.multipleVotingEnded1": "Le vote a pris fin le <b>{endDate}</b>",
   "app.utils.votingMethodUtils.numberOfCredits": "{numberOfVotes, plural, =0 {# crédit} one {# crédit} other {# crédits}}",
   "app.utils.votingMethodUtils.numberOfPoints": "{numberOfVotes, plural, =0 {0 point} one {1 point} other {# points}}",
