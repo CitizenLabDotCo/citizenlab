@@ -2356,6 +2356,7 @@
   "app.utils.votingMethodUtils.finalTally": "Cyfrif terfynol",
   "app.utils.votingMethodUtils.howToParticipate": "Sut i gymryd rhan",
   "app.utils.votingMethodUtils.howToVote": "Sut i bleidleisio",
+  "app.utils.votingMethodUtils.minSelectedOptionsMessage": "Rhaid i chi ddewis o leiaf <b>{minSelectedOptions, plural, one {# opsiwn} other {# opsiynau}}</b>.",
   "app.utils.votingMethodUtils.multipleVotingEnded1": "Caeodd y pleidleisio ar <b>{endDate}.</b>",
   "app.utils.votingMethodUtils.numberOfCredits": "{numberOfVotes, plural, =0 {0 credyd} one {1 credyd} other {# credydau}}",
   "app.utils.votingMethodUtils.numberOfPoints": "{numberOfVotes, plural, =0 {0 pwynt} one {1 pwynt} other {# pwynt}}",
