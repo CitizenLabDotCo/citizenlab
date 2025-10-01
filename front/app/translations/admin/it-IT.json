@@ -1976,7 +1976,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotes": "Numero massimo di voti",
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotesDescription": "Puoi limitare il numero di voti che un utente può esprimere in totale (con un massimo di un voto per opzione).",
   "app.containers.AdminPage.ProjectEdit.Voting.minimumOptions": "Opzioni minime selezionate",
-  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription": "Puoi impostare un numero minimo di opzioni a cui un utente deve assegnare dei voti per poterli inviare.",
+  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription2": "Ad esempio, se scegli un minimo di 2 opzioni, gli utenti dovranno votare per almeno 2 opzioni diverse prima di poter inviare il messaggio.",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotesPerOption2": "voti multipli per opzione",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodSubtitle": "Gli utenti ricevono una quantità di gettoni da distribuire tra le varie opzioni",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodTitle": "Voti multipli per opzione",
