@@ -2356,6 +2356,7 @@
   "app.utils.votingMethodUtils.finalTally": "الحصيلة النهائية",
   "app.utils.votingMethodUtils.howToParticipate": "كيفية المشاركة",
   "app.utils.votingMethodUtils.howToVote": "كيفية التصويت",
+  "app.utils.votingMethodUtils.minSelectedOptionsMessage": "يجب عليك تحديد الحد الأدنى على الأقل <b>{minSelectedOptions, plural, one {# خيار} other {# خيارات}}</b>.",
   "app.utils.votingMethodUtils.multipleVotingEnded1": "تم إغلاق التصويت في <b>{endDate}.</b>",
   "app.utils.votingMethodUtils.numberOfCredits": "{numberOfVotes, plural, =0 {0 رصيد} one {1 رصيد} other {# رصيد}}",
   "app.utils.votingMethodUtils.numberOfPoints": "{numberOfVotes, plural, =0 {0 نقطة} one {1 نقطة} other {# نقاط}}",
