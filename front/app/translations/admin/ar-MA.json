@@ -3063,6 +3063,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "عذرًا، لا يمكن تضمين هذا المحتوى. {visitLinkMessage} لمعرفة المزيد.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.govocal.com/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "أدخل عنوان ويب صالحًا، على سبيل المثال https://example.com",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "أدخل نسبة العرض إلى الارتفاع صالحة، على سبيل المثال 16:10 أو 5:3.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "تضمين",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "الأكورديون",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "فتح افتراضيا",
