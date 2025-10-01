@@ -1976,7 +1976,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotes": "Maximalt antal röster",
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotesDescription": "Du kan begränsa antalet röster som en användare kan avge totalt (med högst en röst per alternativ).",
   "app.containers.AdminPage.ProjectEdit.Voting.minimumOptions": "Minsta valda alternativ",
-  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription": "Du kan ange ett minsta antal alternativ som en användare måste tilldela röster för att kunna skicka in sina röster.",
+  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription2": "Om du t.ex. väljer minst 2 alternativ måste användarna rösta på minst 2 olika alternativ innan de kan skicka in.",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotesPerOption2": "flera röster per alternativ",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodSubtitle": "Användarna får en mängd tokens att fördela mellan alternativen",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodTitle": "Flera röster per alternativ",
