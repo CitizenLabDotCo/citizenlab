@@ -1976,7 +1976,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotes": "Maksimalt antal stemmer",
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotesDescription": "Du kan begrænse antallet af stemmer, en bruger kan afgive i alt (med et maksimum på én stemme pr. mulighed).",
   "app.containers.AdminPage.ProjectEdit.Voting.minimumOptions": "Minimum valgte indstillinger",
-  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription": "Du kan indstille et minimumsantal af muligheder, som en bruger skal tildele stemmer for at kunne indsende sine stemmer.",
+  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription2": "Hvis du f.eks. vælger mindst 2 muligheder, skal brugerne stemme på mindst 2 forskellige muligheder, før de kan indsende.",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotesPerOption2": "flere stemmer pr. valgmulighed",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodSubtitle": "Brugerne får en mængde tokens, som de kan fordele mellem mulighederne",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodTitle": "Flere stemmer pr. mulighed",
