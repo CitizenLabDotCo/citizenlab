@@ -1976,7 +1976,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotes": "الحد الأقصى لعدد الأصوات",
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotesDescription": "يمكنك تحديد عدد الأصوات التي يمكن للمستخدم الإدلاء بها إجمالاً (بحد أقصى صوت واحد لكل خيار).",
   "app.containers.AdminPage.ProjectEdit.Voting.minimumOptions": "الحد الأدنى من الخيارات المحددة",
-  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription": "يمكنك تعيين الحد الأدنى لعدد الخيارات التي يجب على المستخدم تعيين الأصوات لها حتى يتمكن من إرسال أصواته.",
+  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription2": "على سبيل المثال، إذا اخترت حدًا أدنى من خيارين، فسيتعين على المستخدمين التصويت على خيارين مختلفين على الأقل قبل أن يتمكنوا من الإرسال.",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotesPerOption2": "أصوات متعددة لكل خيار",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodSubtitle": "يتم منح المستخدمين قدرًا من الرموز المميزة لتوزيعها بين الخيارات",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodTitle": "أصوات متعددة لكل خيار",
