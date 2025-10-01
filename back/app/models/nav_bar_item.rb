@@ -80,6 +80,7 @@ class NavBarItem < ApplicationRecord
 
   def item_slug
     return project.slug if project?
+    return project_folder.slug if project_folder?
 
     static_page.slug if page?
   end

@@ -37,6 +37,9 @@ export interface INavbarItem {
     project: {
       data: IRelationship | null;
     };
+    project_folder: {
+      data: IRelationship | null;
+    };
   };
 }
 
