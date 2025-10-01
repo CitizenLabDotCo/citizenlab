@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { Text, Box } from '@citizenlab/cl2-component-library';
+import { Text, Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
@@ -20,6 +20,7 @@ import CTAButton from './CTAButton';
 import { getOptionSelectionCounter, getVotesCounter } from './utils';
 
 const VotingCTABar = ({ phases, project }: CTABarProps) => {
+  const isMobileOrSmaller = useBreakpoint('phone');
   const { numberOfVotesCast, numberOfOptionsSelected } = useVoting();
   const { formatMessage } = useIntl();
   const formatCurrency = useFormatCurrency();
@@ -70,12 +71,19 @@ const VotingCTABar = ({ phases, project }: CTABarProps) => {
           hasUserParticipated={false}
           CTAButton={<CTAButton project={project} phase={currentPhase} />}
           participationState={
-            <Box>
-              <Text color="white" m="0px" fontSize="s" aria-live="polite">
+            <Box ml="21px" display={isMobileOrSmaller ? 'block' : 'flex'}>
+              <Text
+                color="white"
+                m="0px"
+                mr="4px"
+                fontSize="s"
+                aria-live="polite"
+              >
                 {votesCounter}
               </Text>
               {optionSelectionCounter && (
                 <Text color="white" m="0px" fontSize="s" aria-live="polite">
+                  {isMobileOrSmaller ? '' : ' • '}
                   {optionSelectionCounter}
                 </Text>
               )}
