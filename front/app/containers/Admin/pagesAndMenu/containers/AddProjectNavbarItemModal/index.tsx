@@ -115,29 +115,32 @@ const AddProjectNavbarItemModal = ({ opened, onClose }: Props) => {
     onClose();
   };
 
-  // Automatically fill out the title multiloc field when a project is selected
   const itemId = methods.watch('itemId');
+
+  const getSelectedItem = () => {
+    const project = projects?.data.find((project) => project.id === itemId);
+    if (project) return { ...project, type: 'project' };
+    const folder = projectFolders?.data.find((folder) => folder.id === itemId);
+    if (folder) return { ...folder, type: 'folder' };
+    return null;
+  };
+
+  const selectedItem = getSelectedItem();
+
+  // Automatically fill out the title multiloc field when a project is selected
   useEffect(() => {
-    // Try to find the selected item in projects first, then in folders
-    const selectedProject = projects?.data.find(
-      (project) => project.id === itemId
-    );
-    const selectedFolder = projectFolders?.data.find(
-      (folder) => folder.id === itemId
-    );
-
-    const titleMultiloc =
-      selectedProject?.attributes.title_multiloc ||
-      selectedFolder?.attributes.title_multiloc ||
-      {};
-
+    const titleMultiloc = selectedItem?.attributes.title_multiloc || {};
     methods.setValue('titleMultiloc', titleMultiloc);
   }, [projects, projectFolders, itemId, methods]);
 
   const hostName = appConfig?.data.attributes.host;
-  const slug = projects?.data.find((project) => project.id === itemId)
-    ?.attributes.slug;
-  const previewUrl = `${hostName}/${locale}/projects/${slug}`;
+
+  const slug = selectedItem?.attributes.slug;
+  const previewUrl = selectedItem
+    ? selectedItem.type === 'project'
+      ? `${hostName}/${locale}/projects/${slug}`
+      : `${hostName}/${locale}/folders/${slug}`
+    : '';
 
   return (
     <Modal
