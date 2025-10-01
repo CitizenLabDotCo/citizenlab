@@ -337,6 +337,8 @@
   "app.components.ParticipationCTABars.VotingCTABar.numberOfPointsLeft": "{votesLeft, plural, =0 {Inga poäng kvar} other {# ut ur {totalNumberOfVotes, plural, one {1 poäng} other {# poäng}} kvar}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfTokensLeft": "{votesLeft, plural, =0 {Inga polletter kvar} other {# ur {totalNumberOfVotes, plural, one {1 pollett} other {# polletter}} kvar}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfVotesLeft": "{votesLeft, plural, =0 {Inga röster kvar} other {# utav {totalNumberOfVotes, plural, one {1 röst} other {# röster}} kvar}}",
+  "app.components.ParticipationCTABars.VotingCTABar.selectMinXOptions": "Välj minst {minSelectedOptions} alternativ",
+  "app.components.ParticipationCTABars.VotingCTABar.selectMinXOptionsToVote": "Du måste välja minst {minSelectedOptions} alternativ innan du kan skicka in.",
   "app.components.ParticipationCTABars.VotingCTABar.votesCast": "{votes, plural, =0 {# röster} one {# röst} other {# röster}} röster",
   "app.components.ParticipationCTABars.VotingCTABar.votesExceedLimit": "Du har avgivit {votesCast} röster, vilket överskrider gränsen för {votesLimit}. Ta bort några röster och försök igen.",
   "app.components.ParticipationCTABars.addInput": "Lägg till input",
