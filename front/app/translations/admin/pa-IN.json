@@ -1976,7 +1976,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotes": "ਵੱਧ ਤੋਂ ਵੱਧ ਵੋਟਾਂ",
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotesDescription": "ਤੁਸੀਂ ਕੁੱਲ ਵੋਟਾਂ ਦੀ ਗਿਣਤੀ ਨੂੰ ਸੀਮਤ ਕਰ ਸਕਦੇ ਹੋ (ਪ੍ਰਤੀ ਵਿਕਲਪ ਵੱਧ ਤੋਂ ਵੱਧ ਇੱਕ ਵੋਟ ਦੇ ਨਾਲ)।",
   "app.containers.AdminPage.ProjectEdit.Voting.minimumOptions": "ਘੱਟੋ-ਘੱਟ ਚੁਣੇ ਗਏ ਵਿਕਲਪ",
-  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription": "ਤੁਸੀਂ ਘੱਟੋ-ਘੱਟ ਕਿੰਨੇ ਵਿਕਲਪ ਸੈੱਟ ਕਰ ਸਕਦੇ ਹੋ ਜਿਨ੍ਹਾਂ ਨੂੰ ਇੱਕ ਉਪਭੋਗਤਾ ਨੂੰ ਆਪਣੀਆਂ ਵੋਟਾਂ ਜਮ੍ਹਾਂ ਕਰਨ ਲਈ ਵੋਟਾਂ ਨਿਰਧਾਰਤ ਕਰਨੀਆਂ ਪੈਣਗੀਆਂ।",
+  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription2": "ਉਦਾਹਰਨ ਲਈ, ਜੇਕਰ ਤੁਸੀਂ ਘੱਟੋ-ਘੱਟ 2 ਵਿਕਲਪ ਚੁਣਦੇ ਹੋ, ਤਾਂ ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਜਮ੍ਹਾਂ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਘੱਟੋ-ਘੱਟ 2 ਵੱਖ-ਵੱਖ ਵਿਕਲਪਾਂ ਲਈ ਵੋਟ ਪਾਉਣੀ ਪਵੇਗੀ।",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotesPerOption2": "ਪ੍ਰਤੀ ਵਿਕਲਪ ਕਈ ਵੋਟਾਂ",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodSubtitle": "ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਵਿਕਲਪਾਂ ਵਿਚਕਾਰ ਵੰਡਣ ਲਈ ਟੋਕਨਾਂ ਦੀ ਇੱਕ ਮਾਤਰਾ ਦਿੱਤੀ ਜਾਂਦੀ ਹੈ",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodTitle": "ਪ੍ਰਤੀ ਵਿਕਲਪ ਕਈ ਵੋਟਾਂ",
