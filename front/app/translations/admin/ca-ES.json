@@ -1976,7 +1976,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotes": "Quantitat màxima de vots",
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotesDescription": "Podeu limitar el nombre de vots que un usuari pot emetre en total (amb un màxim d'un vot per opció).",
   "app.containers.AdminPage.ProjectEdit.Voting.minimumOptions": "Opcions mínimes seleccionades",
-  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription": "Podeu establir un nombre mínim d'opcions a les quals un usuari ha d'assignar vots per poder enviar els seus vots.",
+  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription2": "Per exemple, si trieu un mínim de 2 opcions, els usuaris hauran de votar per almenys 2 opcions diferents abans de poder enviar-les.",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotesPerOption2": "múltiples vots per opció",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodSubtitle": "Els usuaris reben una quantitat de fitxes per distribuir entre les opcions",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodTitle": "Múltiples vots per opció",
