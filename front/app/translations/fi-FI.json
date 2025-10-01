@@ -2356,6 +2356,7 @@
   "app.utils.votingMethodUtils.finalTally": "Lopputulos",
   "app.utils.votingMethodUtils.howToParticipate": "Näin äänestät",
   "app.utils.votingMethodUtils.howToVote": "Kuinka äänestää",
+  "app.utils.votingMethodUtils.minSelectedOptionsMessage": "Sinun on valittava vähintään <b>{minSelectedOptions, plural, one {# vaihtoehto} other {# vaihtoehtoa}}</b>.",
   "app.utils.votingMethodUtils.multipleVotingEnded1": "Äänestys päättyi <b>{endDate}.</b>",
   "app.utils.votingMethodUtils.numberOfCredits": "{numberOfVotes, plural, =0 {0 opintopistettä} one {1 opintopiste} other {# opintopistettä}}",
   "app.utils.votingMethodUtils.numberOfPoints": "{numberOfVotes, plural, =0 {0 pistettä} one {1 piste} other {# pistettä}}",
