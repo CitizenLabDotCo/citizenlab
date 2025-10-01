@@ -2356,6 +2356,7 @@
   "app.utils.votingMethodUtils.finalTally": "Τελικός απολογισμός",
   "app.utils.votingMethodUtils.howToParticipate": "Πώς να συμμετάσχετε",
   "app.utils.votingMethodUtils.howToVote": "Πώς να ψηφίσετε",
+  "app.utils.votingMethodUtils.minSelectedOptionsMessage": "You must select a minimum of at least <b>{minSelectedOptions, plural, one {# option} other {# options}}</b>.",
   "app.utils.votingMethodUtils.multipleVotingEnded1": "Η ψηφοφορία έκλεισε στο <b>{endDate}.</b>",
   "app.utils.votingMethodUtils.numberOfCredits": "{numberOfVotes, plural, =0 {0 μονάδες} one {1 μονάδα} other {# μονάδες}}",
   "app.utils.votingMethodUtils.numberOfPoints": "{numberOfVotes, plural, =0 {0 βαθμοί} one {1 βαθμός} other {# βαθμοί}}",
