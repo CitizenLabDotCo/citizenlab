@@ -378,7 +378,7 @@ resource 'Invites' do
       end
 
       example 'Accept an expired invitation', document: false do
-        invite.update!(created_at: 2.weeks.ago)
+        invite.update!(created_at: 2.months.ago)
         do_request
         # You would expect this to be a 401 (unauthorized),
         # but the way this works is that there is a job that cleans up
