@@ -3063,6 +3063,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Désolé, ce contenu n'a pas pu être intégré. {visitLinkMessage} pour en savoir plus.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.govocal.com/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Saisissez une URL valide, par exemple https://example.com",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "Saisissez un rapport d'aspect valide, par exemple 16:10 ou 5:3.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "URL",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Section accordéon",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Ouvrir par défaut",
