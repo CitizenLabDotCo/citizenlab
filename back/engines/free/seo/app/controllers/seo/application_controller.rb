@@ -28,10 +28,7 @@ module Seo
       @ideas = Pundit.policy_scope(nil, Idea).select(:slug, :updated_at, :project_id).where(project_id: @projects.map(&:id))
     end
 
-    def robots
-      # Disable caching as an extra measure to prevent web cache poisoning
-      response.headers['Cache-Control'] = 'no-store'
-    end
+    def robots; end
 
     private
 
