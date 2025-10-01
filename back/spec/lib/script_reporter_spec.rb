@@ -38,7 +38,8 @@ RSpec.describe ScriptReporter do
           creates: expected_creates,
           changes: expected_changes,
           deletes: expected_deletes,
-          errors: expected_errors })
+          errors: expected_errors
+        })
       )
     end
   end
