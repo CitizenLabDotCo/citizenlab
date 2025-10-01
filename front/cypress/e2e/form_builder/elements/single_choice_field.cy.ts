@@ -46,7 +46,7 @@ describe('Form builder single choice field', () => {
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.dataCy('e2e-single-choice');
     cy.wait(2000);
-    cy.dataCy('e2e-single-choice').click();
+    cy.addItemToFormBuilder('#toolbox_select');
     cy.get('form').submit();
     cy.contains('Provide a question title').should('exist');
     cy.contains('Provide at least 1 answer').should('exist');
@@ -65,7 +65,7 @@ describe('Form builder single choice field', () => {
 
     cy.dataCy('e2e-single-choice');
     cy.wait(2000);
-    cy.dataCy('e2e-single-choice').click();
+    cy.addItemToFormBuilder('#toolbox_select');
     cy.dataCy('e2e-other-option-toggle').find('input').click({ force: true });
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
     cy.get('#e2e-option-input-0').type('Car', { force: true });
@@ -95,7 +95,7 @@ describe('Form builder single choice field', () => {
 
     cy.dataCy('e2e-single-choice');
     cy.wait(2000);
-    cy.dataCy('e2e-single-choice').click();
+    cy.addItemToFormBuilder('#toolbox_select');
     cy.dataCy('e2e-other-option-toggle').find('input').click({ force: true });
     cy.get('#e2e-required-toggle').find('input').click({
       force: true,

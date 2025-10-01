@@ -81,7 +81,14 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
 
     # https://www.postgresql.org/docs/12/functions-matching.html#FUNCTIONS-POSIX-REGEXP
     scope :citizenlab_member, -> { where('email ~* ?', CITIZENLAB_MEMBER_REGEX_CONTENT).or(where('email ~* ?', GOVOCAL_MEMBER_REGEX_CONTENT)) }
-    scope :not_citizenlab_member, -> { where.not('email ~* ?', CITIZENLAB_MEMBER_REGEX_CONTENT).and(where.not('email ~* ?', GOVOCAL_MEMBER_REGEX_CONTENT)) }
+    scope :not_citizenlab_member, lambda {
+      where(
+        'email IS NULL OR (email IS NOT NULL AND email !~* ? AND email !~* ?)',
+        CITIZENLAB_MEMBER_REGEX_CONTENT,
+        GOVOCAL_MEMBER_REGEX_CONTENT
+      )
+    }
+
     scope :billed_admins, -> { admin.not_citizenlab_member }
     scope :billed_moderators, lambda {
       # use any conditions before `or` very carefully (inspect the generated SQL)

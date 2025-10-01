@@ -22,13 +22,10 @@ module Files
       return false unless policy_for(record.attachable).update?
 
       # For idea files, the attachment should be created at the same time as the file.
-      case record.attachable_type
-      when 'Idea'
+      # Attaching existing files to an idea or attaching an idea file to other resources
+      # is not allowed.
+      if record.attachable_type == 'Idea'
         record.file.new_record?
-      when 'Project'
-        active_moderator?(record.attachable)
-      when 'Phase', 'Event'
-        active_moderator?(record.attachable.project)
       else
         policy_for(record.file).update?
       end

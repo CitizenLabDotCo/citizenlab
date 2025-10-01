@@ -18,10 +18,15 @@ const Topic = () => {
 
   const { data: topics } = useProjectLibraryTopics();
 
-  const options = topics?.data.map(({ id, attributes: { l1, l2 } }) => ({
-    value: id,
-    text: `${l1}: ${l2}`,
-  }));
+  const options = topics?.data.map(({ id, attributes: { l1, l2 } }) => {
+    const topicKey = `${l1}: ${l2}`;
+    const message = messages[topicKey];
+
+    return {
+      value: id,
+      text: message ? formatMessage(message) : topicKey,
+    };
+  });
 
   return (
     <FilterSelector

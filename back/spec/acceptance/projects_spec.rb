@@ -722,7 +722,8 @@ resource 'Projects' do
           project: project,
           title_multiloc: { 'en' => 'Phase 2: Native survey' },
           start_at: (Time.zone.today - 30.days),
-          end_at: (Time.zone.today - 21.days)
+          end_at: (Time.zone.today - 21.days),
+          with_permissions: true
         )
       end
       let(:survey_form) { create(:custom_form, participation_context: native_survey_phase) }

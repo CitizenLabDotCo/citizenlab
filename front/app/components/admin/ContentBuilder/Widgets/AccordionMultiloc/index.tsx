@@ -6,30 +6,26 @@ import {
   Title,
   Toggle,
 } from '@citizenlab/cl2-component-library';
-import { useNode } from '@craftjs/core';
-import { useTheme } from 'styled-components';
+import { useNode, Element } from '@craftjs/core';
 import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
 import { useIntl } from 'utils/cl-intl';
 
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
+import Container from '../Container';
 
 import messages from './messages';
 
 interface AccordionProps {
-  text: Multiloc;
   title: Multiloc;
   openByDefault?: boolean;
 }
 
-const Accordion = ({ text, title, openByDefault = false }: AccordionProps) => {
-  const theme = useTheme();
+const Accordion = ({ title, openByDefault = false }: AccordionProps) => {
   const localize = useLocalize();
   const componentDefaultPadding = useCraftComponentDefaultPadding();
 
@@ -49,9 +45,7 @@ const Accordion = ({ text, title, openByDefault = false }: AccordionProps) => {
         </Box>
       }
     >
-      <QuillEditedContent textColor={theme.colors.tenantText}>
-        <div dangerouslySetInnerHTML={{ __html: localize(text) }} />
-      </QuillEditedContent>
+      <Element id="accordion-content" is={Container} canvas />
     </AccordionComponent>
   );
 };
@@ -60,7 +54,6 @@ const AccordionSettings = () => {
   const { formatMessage } = useIntl();
   const {
     actions: { setProp },
-    text,
     title,
     openByDefault,
   } = useNode((node) => ({
@@ -80,19 +73,6 @@ const AccordionSettings = () => {
           }}
           valueMultiloc={title}
           label={formatMessage(messages.accordionMultilocTitleLabel)}
-        />
-      </Box>
-      <Box flex="0 1 100%" background="#ffffff">
-        <QuillMutilocWithLocaleSwitcher
-          label={formatMessage(messages.accordionMultilocTextLabel)}
-          maxHeight="225px"
-          noImages
-          noVideos
-          id="quill-editor"
-          valueMultiloc={text}
-          onChange={(value) => {
-            setProp((props: AccordionProps) => (props.text = value));
-          }}
         />
       </Box>
       <Box marginBottom="20px">
@@ -121,6 +101,7 @@ Accordion.craft = {
   },
   custom: {
     title: messages.accordionMultiloc,
+    hasChildren: true,
   },
 };
 
