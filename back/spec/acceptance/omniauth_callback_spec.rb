@@ -5,46 +5,46 @@ require 'rspec_api_documentation/dsl'
 
 def get_auth_hash(email_confirmed: true)
   OmniAuth::AuthHash.new({
-    "provider": "fake_sso",
-    "uid": "billy_fixed",
-    "info": {
-      "name": "Billy Fixed",
-      "email": "billy_fixed@example.com",
-      "email_verified": email_confirmed,
-      "nickname": nil,
-      "first_name": "Billy",
-      "last_name": "Fixed",
-      "gender": "male",
-      "image": nil,
-      "phone": nil,
-      "urls": {
-        "website": nil
+    provider: 'fake_sso',
+    uid: 'billy_fixed',
+    info: {
+      name: 'Billy Fixed',
+      email: 'billy_fixed@example.com',
+      email_verified: email_confirmed,
+      nickname: nil,
+      first_name: 'Billy',
+      last_name: 'Fixed',
+      gender: 'male',
+      image: nil,
+      phone: nil,
+      urls: {
+        website: nil
       }
     },
-    "credentials": {
-      "id_token": "eyJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiJlODI0ZWQ1Ny0xN2RkLTQ3NDEtYTUxOS0wNjY0MGVmMzdmMjkiLCJzdWIiOiJiaWxseV9maXhlZCIsImF6cCI6Imdvdm9jYWxfY2xpZW50IiwiZW1haWwiOiJiaWxseV9maXhlZEBleGFtcGxlLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkJpbGx5IEZpeGVkIiwiZ2l2ZW5fbmFtZSI6IkJpbGx5IiwiZmFtaWx5X25hbWUiOiJGaXhlZCIsImdlbmRlciI6Im1hbGUiLCJiaXJ0aGRhdGUiOiIxOTgwLTAxLTAxIiwiaWF0IjoxNzU5MjQ4MTM0LCJpc3MiOiJodHRwOi8vaG9zdC5kb2NrZXIuaW50ZXJuYWwiLCJhdWQiOiJnb3ZvY2FsX2NsaWVudCIsImV4cCI6MTc1OTI1NTMzNH0.IrccEvOLjg-r0itQZ9whoWdKkthtKNnvy-P0X67hjgg",
-      "token": "access_token_abc123",
-      "refresh_token": nil,
-      "expires_in": nil,
-      "scope": nil
+    credentials: {
+      id_token: 'eyJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiJlODI0ZWQ1Ny0xN2RkLTQ3NDEtYTUxOS0wNjY0MGVmMzdmMjkiLCJzdWIiOiJiaWxseV9maXhlZCIsImF6cCI6Imdvdm9jYWxfY2xpZW50IiwiZW1haWwiOiJiaWxseV9maXhlZEBleGFtcGxlLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkJpbGx5IEZpeGVkIiwiZ2l2ZW5fbmFtZSI6IkJpbGx5IiwiZmFtaWx5X25hbWUiOiJGaXhlZCIsImdlbmRlciI6Im1hbGUiLCJiaXJ0aGRhdGUiOiIxOTgwLTAxLTAxIiwiaWF0IjoxNzU5MjQ4MTM0LCJpc3MiOiJodHRwOi8vaG9zdC5kb2NrZXIuaW50ZXJuYWwiLCJhdWQiOiJnb3ZvY2FsX2NsaWVudCIsImV4cCI6MTc1OTI1NTMzNH0.IrccEvOLjg-r0itQZ9whoWdKkthtKNnvy-P0X67hjgg',
+      token: 'access_token_abc123',
+      refresh_token: nil,
+      expires_in: nil,
+      scope: nil
     },
-    "extra": {
-      "raw_info": {
-        "some": "stuff",
-        "uid": "e824ed57-17dd-4741-a519-06640ef37f29",
-        "sub": "billy_fixed",
-        "azp": "govocal_client",
-        "email": "billy_fixed@example.com",
-        "email_verified": email_confirmed,
-        "name": "Billy Fixed",
-        "given_name": "Billy",
-        "family_name": "Fixed",
-        "gender": "male",
-        "birthdate": "1980-01-01",
-        "iat": 1759248134,
-        "iss": "http://host.docker.internal",
-        "aud": "govocal_client",
-        "exp": 1759255334
+    extra: {
+      raw_info: {
+        some: 'stuff',
+        uid: 'e824ed57-17dd-4741-a519-06640ef37f29',
+        sub: 'billy_fixed',
+        azp: 'govocal_client',
+        email: 'billy_fixed@example.com',
+        email_verified: email_confirmed,
+        name: 'Billy Fixed',
+        given_name: 'Billy',
+        family_name: 'Fixed',
+        gender: 'male',
+        birthdate: '1980-01-01',
+        iat: 1_759_248_134,
+        iss: 'http://host.docker.internal',
+        aud: 'govocal_client',
+        exp: 1_759_255_334
       }
     }
   })
@@ -178,10 +178,10 @@ resource 'Omniauth Callback', document: false do
 
   context 'when SSO method returns email and it is confirmed' do
     before do
-      AppConfiguration.instance.settings['verification'] = { 
-        'allowed' => true, 
+      AppConfiguration.instance.settings['verification'] = {
+        'allowed' => true,
         'enabled' => true,
-        'verification_methods': [{ name: 'fake_sso' }]
+        verification_methods: [{ name: 'fake_sso' }]
       }
       AppConfiguration.instance.save!
       OmniAuth.config.test_mode = true
@@ -204,8 +204,8 @@ resource 'Omniauth Callback', document: false do
       end
 
       example 'if there is a pending invite with this email: allow create account' do
-        user = create(:invited_user, email: 'billy_fixed@example.com')
-        
+        create(:invited_user, email: 'billy_fixed@example.com')
+
         do_request
 
         expect(status).to eq(302) # Redirect code
@@ -218,10 +218,10 @@ resource 'Omniauth Callback', document: false do
 
   context 'when SSO method returns email but it is not confirmed' do
     before do
-      AppConfiguration.instance.settings['verification'] = { 
-        'allowed' => true, 
+      AppConfiguration.instance.settings['verification'] = {
+        'allowed' => true,
         'enabled' => true,
-        'verification_methods': [{ name: 'fake_sso' }]
+        verification_methods: [{ name: 'fake_sso' }]
       }
       AppConfiguration.instance.save!
       OmniAuth.config.test_mode = true

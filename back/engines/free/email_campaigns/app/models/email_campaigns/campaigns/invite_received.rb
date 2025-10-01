@@ -49,9 +49,11 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      { 
-        'Invite' => { 'created' => true },
-        'Invite' => { 'resent' => true }
+      {
+        'Invite' => { 
+          'created' => true,
+          'resent' => true
+        }
       }
     end
 
