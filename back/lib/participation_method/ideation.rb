@@ -378,6 +378,12 @@ module ParticipationMethod
       SlugService.new.generate_slug input, title
     end
 
+    def validate_phase
+      if phase.id && Idea.exists?(creation_phase_id: phase.id)
+        phase.errors.add(:participation_method, :non_complying_inputs, message: 'some inputs do not comply with the participation method')
+      end
+    end
+
     def supported_email_campaigns
       super + %w[your_input_in_screening]
     end
