@@ -3063,6 +3063,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Valitettavasti tätä sisältöä ei voitu upottaa. {visitLinkMessage} saadaksesi lisätietoja.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.govocal.com/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Anna kelvollinen verkko-osoite, esimerkiksi https://example.com",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "Anna kelvollinen kuvasuhde, esimerkiksi 16:10 tai 5:3.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Upottaa",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Harmonikka",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Avaa oletuksena",
