@@ -3063,6 +3063,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Dieser Inhalt konnte leider nicht eingebettet werden. {visitLinkMessage} um mehr zu erfahren.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.govocal.com/de/articles/7025826-anpassen-von-projektbeschreibungen-mit-dem-content-builder",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Geben Sie eine gültige Webadresse ein, zum Beispiel https://beispiel.de",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "Geben Sie ein gültiges Seitenverhältnis ein, zum Beispiel 16:10 oder 5:3.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Einbetten",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Akkordeon",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Standardmäßig geöffnet",
