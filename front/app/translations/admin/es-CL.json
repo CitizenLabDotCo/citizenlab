@@ -3063,6 +3063,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Lo sentimos. Este contenido no pudo ser incrustado. {visitLinkMessage} para saber más.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.govocal.com/es/articles/7025826-personalizar-las-descripciones-de-los-proyectos-con-el-generador-de-contenidos#h_cf8a993642",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Introduce una dirección web válida, por ejemplo https://example.com",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "Introduce una relación de aspecto válida, por ejemplo 16:10 o 5:3.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Incrustar Url",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Acordeón",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Abierto por defecto",
