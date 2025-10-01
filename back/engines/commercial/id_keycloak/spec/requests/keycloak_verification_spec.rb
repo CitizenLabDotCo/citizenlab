@@ -91,8 +91,8 @@ context 'keycloak verification (ID-Porten - Oslo)' do
   def expect_user_to_be_verified(user)
     expect(user.reload).to have_attributes({
       verified: true,
-      first_name: 'UNØYAKTIG',
-      last_name: 'KOST',
+      first_name: 'Unøyaktig',
+      last_name: 'Kost',
       custom_field_values: {}
     })
     expect(user.verifications.first).to have_attributes({

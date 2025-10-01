@@ -33,7 +33,7 @@ module Seo
     private
 
     def set_host
-      @host = Rails.env.development? ? 'localhost' : request.host
+      @host = AppConfiguration.instance.host
     end
   end
 end
