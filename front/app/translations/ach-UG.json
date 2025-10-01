@@ -2356,6 +2356,7 @@
   "app.utils.votingMethodUtils.finalTally": "crwdns5458025:0crwdne5458025:0",
   "app.utils.votingMethodUtils.howToParticipate": "crwdns5458027:0crwdne5458027:0",
   "app.utils.votingMethodUtils.howToVote": "crwdns5458029:0crwdne5458029:0",
+  "app.utils.votingMethodUtils.minSelectedOptionsMessage": "crwdns5466673:0minSelectedOptions={minSelectedOptions}crwdne5466673:0",
   "app.utils.votingMethodUtils.multipleVotingEnded1": "crwdns5458031:0{endDate}crwdne5458031:0",
   "app.utils.votingMethodUtils.numberOfCredits": "crwdns5458033:0numberOfVotes={numberOfVotes}crwdne5458033:0",
   "app.utils.votingMethodUtils.numberOfPoints": "crwdns5458035:0numberOfVotes={numberOfVotes}crwdne5458035:0",
