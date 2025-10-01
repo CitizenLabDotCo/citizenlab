@@ -337,6 +337,8 @@
   "app.components.ParticipationCTABars.VotingCTABar.numberOfPointsLeft": "{votesLeft, plural, =0 {nav atlikuši punkti} other {# no {totalNumberOfVotes, plural, one {1 punkts} other {# punkti}} atlicis}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfTokensLeft": "{votesLeft, plural, =0 {žetonu vairs nav} other {# no {totalNumberOfVotes, plural, one {1 žetons} other {# žetonu}} atlicis}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfVotesLeft": "{votesLeft, plural, =0 {Nav atlikušo balsu} other {# no {totalNumberOfVotes, plural, one {1 balss} other {# balsis}} atlikušo}}",
+  "app.components.ParticipationCTABars.VotingCTABar.selectMinXOptions": "Izvēlieties vismaz {minSelectedOptions} iespējas",
+  "app.components.ParticipationCTABars.VotingCTABar.selectMinXOptionsToVote": "Pirms iesniegšanas ir jāizvēlas vismaz {minSelectedOptions} iespējas.",
   "app.components.ParticipationCTABars.VotingCTABar.votesCast": "{votes, plural, =0 {# balsis} one {# balsot} other {# balsis}} nodot",
   "app.components.ParticipationCTABars.VotingCTABar.votesExceedLimit": "Jūs nodevāt {votesCast} balsis, kas pārsniedz {votesLimit}noteikto limitu. Lūdzu, izņemiet dažas balsis un mēģiniet vēlreiz.",
   "app.components.ParticipationCTABars.addInput": "Pievienot ievades datus",
