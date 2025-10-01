@@ -2097,6 +2097,7 @@
   "app.containers.AdminPage.ProjectEdit.maximum": "Maksimums",
   "app.containers.AdminPage.ProjectEdit.maximumTooltip": "Iesniedzot savu grozu, dalībnieki nedrīkst pārsniegt šo budžetu.",
   "app.containers.AdminPage.ProjectEdit.microsoft_forms": "Microsoft Forms",
+  "app.containers.AdminPage.ProjectEdit.minSelectedOptionsError": "Izvēlēto iespēju minimālajam skaitam jābūt mazākam par kopējo balsu skaitu.",
   "app.containers.AdminPage.ProjectEdit.minimum": "Minimums",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Piemērot dalībniekiem prasību izpildīt minimālo budžetu sava groza iesniegšanai (ievadiet \"0\", ja nevēlaties noteikt minimālo budžetu).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "vērsieties mūsu palīdzības centrā",
