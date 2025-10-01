@@ -3063,6 +3063,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "معذرت، یہ مواد سرایت نہیں ہو سکا۔ مزید جاننے کے لیے {visitLinkMessage} ۔",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.govocal.com/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "ایک درست ویب ایڈریس درج کریں، مثال کے طور پر https://example.com",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "ایک درست پہلو تناسب درج کریں، مثال کے طور پر 16:10 یا 5:3۔",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "ایمبیڈ",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "ایکارڈین",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "بطور ڈیفالٹ کھولیں۔",
