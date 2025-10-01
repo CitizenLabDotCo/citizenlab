@@ -337,6 +337,8 @@
   "app.components.ParticipationCTABars.VotingCTABar.numberOfPointsLeft": "{votesLeft, plural, =0 {Brak punktów} other {# z {totalNumberOfVotes, plural, one {1 punkt} other {# punktów}} pozostało}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfTokensLeft": "{votesLeft, plural, =0 {Brak żetonów} other {# z {totalNumberOfVotes, plural, one {1 żeton} other {# żetonów}} pozostało}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfVotesLeft": "{votesLeft, plural, =0 {Brak głosów} other {# z {totalNumberOfVotes, plural, one {1 głos} other {# głosy}} pozostało}}",
+  "app.components.ParticipationCTABars.VotingCTABar.selectMinXOptions": "Wybierz co najmniej opcje {minSelectedOptions}",
+  "app.components.ParticipationCTABars.VotingCTABar.selectMinXOptionsToVote": "Przed wysłaniem musisz wybrać co najmniej {minSelectedOptions} opcji.",
   "app.components.ParticipationCTABars.VotingCTABar.votesCast": "{votes, plural, =0 {# votes} one {# vote} other {# votes}} cast",
   "app.components.ParticipationCTABars.VotingCTABar.votesExceedLimit": "Oddałeś {votesCast} głosów, co przekracza limit {votesLimit}. Usuń niektóre głosy i spróbuj ponownie.",
   "app.components.ParticipationCTABars.addInput": "Dodaj dane wejściowe",
