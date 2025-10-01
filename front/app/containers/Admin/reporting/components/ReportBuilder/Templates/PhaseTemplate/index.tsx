@@ -35,6 +35,7 @@ interface Props {
 }
 
 const PhaseTemplateContent = ({ phaseId, selectedLocale }: Props) => {
+  console.log({ selectedLocale });
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
   const { data: phase } = usePhase(phaseId);
