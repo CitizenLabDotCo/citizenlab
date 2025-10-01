@@ -337,6 +337,8 @@
   "app.components.ParticipationCTABars.VotingCTABar.numberOfPointsLeft": "{votesLeft, plural, =0 {Keine Punkte übrig} other {# von {totalNumberOfVotes, plural, one {einem Punkt} other {# Punkten}} übrig}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfTokensLeft": "{votesLeft, plural, =0 {Keine Token übrig} other {# out of {totalNumberOfVotes, plural, one {1 Token} other {# Token}} übrig}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfVotesLeft": "{votesLeft, plural, =0 {Keine Stimmen mehr} other {# von {totalNumberOfVotes, plural, one {1 Stimme} other {# Stimmen}} übrig}}",
+  "app.components.ParticipationCTABars.VotingCTABar.selectMinXOptions": "Wählen Sie mindestens {minSelectedOptions} Optionen",
+  "app.components.ParticipationCTABars.VotingCTABar.selectMinXOptionsToVote": "Sie müssen mindestens {minSelectedOptions} Optionen auswählen, bevor Sie abschicken können.",
   "app.components.ParticipationCTABars.VotingCTABar.votesCast": "{votes, plural, =0 {# Stimmen} one {# Stimme} other {# Stimmen}} abgegeben",
   "app.components.ParticipationCTABars.VotingCTABar.votesExceedLimit": "Sie haben {votesCast} Stimmen abgegeben, was das Limit von {votesLimit} überschreitet. Bitte entfernen Sie einige Stimmen und versuchen Sie es erneut.",
   "app.components.ParticipationCTABars.addInput": "Beitrag hinzufügen",
