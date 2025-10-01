@@ -3063,6 +3063,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "ਮਾਫ਼ ਕਰਨਾ, ਇਸ ਸਮੱਗਰੀ ਨੂੰ ਏਮਬੈਡ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ। ਹੋਰ ਜਾਣਨ ਲਈ {visitLinkMessage} ।",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.govocal.com/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "ਇੱਕ ਵੈਧ ਵੈੱਬ ਪਤਾ ਦਾਖਲ ਕਰੋ, ਉਦਾਹਰਨ ਲਈ https://example.com",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "ਇੱਕ ਵੈਧ ਆਕਾਰ ਅਨੁਪਾਤ ਦਾਖਲ ਕਰੋ, ਉਦਾਹਰਨ ਲਈ 16:10 ਜਾਂ 5:3।",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "ਏਮਬੇਡ ਕਰੋ",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "ਅਕਾਰਡੀਅਨ",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "ਮੂਲ ਰੂਪ ਵਿੱਚ ਖੋਲ੍ਹੋ",
