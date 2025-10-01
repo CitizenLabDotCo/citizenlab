@@ -41,10 +41,13 @@ const FolderContentViewer = ({
     ? descriptionBuilderLayout.data.attributes.craftjs_json
     : undefined;
 
+  if (!isInitialLoading && !descriptionBuilderContent) return null;
+
   return (
     <Box data-testid="descriptionBuilderPreview">
-      {isInitialLoading && <Spinner />}
-      {!isInitialLoading && descriptionBuilderContent && (
+      {isInitialLoading ? (
+        <Spinner />
+      ) : (
         <Box data-testid="descriptionBuilderFolderPreviewContent">
           <Title color="tenantText" variant="h1">
             {localize(folderTitle)}

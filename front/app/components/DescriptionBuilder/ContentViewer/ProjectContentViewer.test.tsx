@@ -31,31 +31,6 @@ const DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA = {
   },
 };
 
-const mockProjectData = {
-  id: '2',
-  type: 'project',
-  attributes: {
-    title_multiloc: { en: 'Test Project' },
-    slug: 'test',
-    input_term: 'idea',
-    uses_content_builder: true,
-  },
-  relationships: {
-    avatars: {
-      data: [
-        {
-          id: '1',
-          type: 'avatar',
-        },
-        {
-          id: '2',
-          type: 'avatar',
-        },
-      ],
-    },
-  },
-};
-
 const mockProjectDescriptionBuilderLayoutData:
   | typeof DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA
   | undefined
@@ -66,10 +41,6 @@ jest.mock('api/content_builder/useContentBuilderLayout', () => () => {
     data: mockProjectDescriptionBuilderLayoutData,
   };
 });
-
-jest.mock('api/projects/useProjectById', () =>
-  jest.fn(() => ({ data: { data: mockProjectData } }))
-);
 
 const mockFeatureFlagData = true;
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
@@ -90,6 +61,7 @@ describe('Preview', () => {
       screen.queryByTestId('descriptionBuilderProjectDescription')
     ).not.toBeInTheDocument();
   });
+
   it('should show description when project description builder is not enabled', () => {
     DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA.data.attributes.enabled =
       false;
