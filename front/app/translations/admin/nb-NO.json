@@ -3063,6 +3063,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Beklager, dette innholdet kunne ikke legges inn. {visitLinkMessage} for å lære mer.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.govocal.com/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Skriv inn en gyldig nettadresse, for eksempel https://example.com",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "Angi et gyldig sideforhold, for eksempel 16:10 eller 5:3.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Embed",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Trekkspill",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Åpne som standard",
