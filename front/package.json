@@ -65,7 +65,7 @@
     "@jsonforms/react": "3.5.1",
     "@jsonforms/vanilla-renderers": "3.5.1",
     "@segment/snippet": "5.2.1",
-    "@sentry/react": "8.48.0",
+    "@sentry/react": "10.17.0",
     "@tanstack/react-query": "4.22.4",
     "@tanstack/react-virtual": "3.0.0-beta.61",
     "@tippyjs/react": "4.2.6",
