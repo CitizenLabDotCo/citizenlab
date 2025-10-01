@@ -337,6 +337,8 @@
   "app.components.ParticipationCTABars.VotingCTABar.numberOfPointsLeft": "{votesLeft, plural, =0 {لم يتبقَّ أي نقاط} other {# من {totalNumberOfVotes, plural, one {نقطة واحدة} other {# نقاط}} متبقية}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfTokensLeft": "{votesLeft, plural, =0 {لم يتبق أي رموز} other {# من {totalNumberOfVotes, plural, one {رمز واحد} other {# رموز}} متبقية}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfVotesLeft": "{votesLeft, plural, =0 {لم يتبقَّ أيُّ تصويت} other {# من {totalNumberOfVotes, plural, one {1 صوت} other {# تصويت}} متبقي}}",
+  "app.components.ParticipationCTABars.VotingCTABar.selectMinXOptions": "حدد على الأقل {minSelectedOptions} خيارًا",
+  "app.components.ParticipationCTABars.VotingCTABar.selectMinXOptionsToVote": "يجب عليك تحديد ما لا يقل عن {minSelectedOptions} خيارًا قبل أن تتمكن من الإرسال.",
   "app.components.ParticipationCTABars.VotingCTABar.votesCast": "{votes, plural, =0 {# أصوات} one {# تصويت} other {# أصوات}} يقذف",
   "app.components.ParticipationCTABars.VotingCTABar.votesExceedLimit": "لقد أدليت بـ {votesCast} تصويتات ، وهو ما يتجاوز الحد المسموح به وهو {votesLimit}. الرجاء إزالة بعض الأصوات وحاول مرة أخرى.",
   "app.components.ParticipationCTABars.addInput": "إضافة المدخلات",
