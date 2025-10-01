@@ -2097,6 +2097,7 @@
   "app.containers.AdminPage.ProjectEdit.maximum": "Max",
   "app.containers.AdminPage.ProjectEdit.maximumTooltip": "Deltagare kan inte överskrida den här budgeten när de skickar in sin korg.",
   "app.containers.AdminPage.ProjectEdit.microsoft_forms": "Microsoft Forms",
+  "app.containers.AdminPage.ProjectEdit.minSelectedOptionsError": "Minsta antal valda alternativ måste vara mindre än det totala antalet röster",
   "app.containers.AdminPage.ProjectEdit.minimum": "Min",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Kräv att deltagare uppfyller en minimibudget för att skicka sin korg (ange 0 om du inte vill sätta ett minimum).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "besök vårt hjälpcenter",
