@@ -21,6 +21,7 @@ interface Props {
   apiErrors: CLErrors | null | undefined;
   maxTotalVotesError?: string;
   handleMaxVotingAmountChange: (newMaxTotalVote: string | null) => void;
+  minSelectedOptionsError?: string;
 }
 
 const SingleVotingInputs = ({
@@ -28,6 +29,7 @@ const SingleVotingInputs = ({
   handleMaxVotingAmountChange,
   voting_min_selected_options,
   handleMinVotingOptionsChange,
+  minSelectedOptionsError,
   apiErrors,
   maxTotalVotesError,
 }: Props) => {
@@ -54,6 +56,10 @@ const SingleVotingInputs = ({
               min="0"
             />
           </Box>
+          <VotingAmountInputError text={minSelectedOptionsError} />
+          <VotingAmountInputError
+            apiErrors={apiErrors && apiErrors.voting_min_selected_options}
+          />
         </Box>
       </SectionField>
       <SectionField>

@@ -89,6 +89,11 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.voteTermError',
     defaultMessage: 'Vote terms must be specified for all locales',
   },
+  minSelectedOptionsError: {
+    id: 'app.containers.AdminPage.ProjectEdit.minSelectedOptionsError',
+    defaultMessage:
+      'Minimum number of selected options must be less than total number of votes',
+  },
   noReactingLimitErrorMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage',
     defaultMessage: 'Not a valid number',

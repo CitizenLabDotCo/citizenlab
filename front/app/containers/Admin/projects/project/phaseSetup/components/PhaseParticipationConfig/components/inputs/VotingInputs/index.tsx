@@ -193,6 +193,9 @@ const VotingInputs = ({
             }
             handleVoteTermChange={handleVoteTermChange}
             voteTerm={voteTerm}
+            voting_min_selected_options={voting_min_selected_options}
+            handleMinVotingOptionsChange={handleMinVotingOptionsChange}
+            minSelectedOptionsError={validationErrors.minSelectedOptionsError}
           />
         )}
         {voting_method === 'single_voting' && (
@@ -203,6 +206,7 @@ const VotingInputs = ({
             maxTotalVotesError={validationErrors.maxTotalVotesError}
             handleMaxVotingAmountChange={handleVotingMaxTotalChange}
             handleMinVotingOptionsChange={handleMinVotingOptionsChange}
+            minSelectedOptionsError={validationErrors.minSelectedOptionsError}
           />
         )}
         <SectionField>

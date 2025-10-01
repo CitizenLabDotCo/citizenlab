@@ -76,6 +76,16 @@ export const getVoteSubmissionDisabledExplanation = (
       });
     }
 
+    if (
+      !isNil(numberOfOptionsSelected) &&
+      minimumSelectedOptions &&
+      numberOfOptionsSelected < minimumSelectedOptions
+    ) {
+      return formatMessage(messages.selectMinXOptionsToVote, {
+        minSelectedOptions: minimumSelectedOptions,
+      });
+    }
+
     if (numberOfVotesCast === 0) {
       return formatMessage(messages.noVotesCast);
     }
