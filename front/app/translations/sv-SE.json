@@ -2356,6 +2356,7 @@
   "app.utils.votingMethodUtils.finalTally": "Slutlig sammanräkning",
   "app.utils.votingMethodUtils.howToParticipate": "Hur man deltar",
   "app.utils.votingMethodUtils.howToVote": "Hur man röstar",
+  "app.utils.votingMethodUtils.minSelectedOptionsMessage": "You must select a minimum of at least <b>{minSelectedOptions, plural, one {# option} other {# options}}</b>.",
   "app.utils.votingMethodUtils.multipleVotingEnded1": "Omröstningen avslutades på <b>{endDate}.</b>",
   "app.utils.votingMethodUtils.numberOfCredits": "{numberOfVotes, plural, =0 {0 hp} one {1 hp} other {# hp}}",
   "app.utils.votingMethodUtils.numberOfPoints": "{numberOfVotes, plural, =0 {0 poäng} one {1 poäng} other {# poäng}}",
