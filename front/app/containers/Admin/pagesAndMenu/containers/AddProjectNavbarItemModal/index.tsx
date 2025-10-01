@@ -131,7 +131,7 @@ const AddProjectNavbarItemModal = ({ opened, onClose }: Props) => {
   useEffect(() => {
     const titleMultiloc = selectedItem?.attributes.title_multiloc || {};
     methods.setValue('titleMultiloc', titleMultiloc);
-  }, [projects, projectFolders, itemId, methods]);
+  }, [selectedItem?.attributes.title_multiloc, methods]);
 
   const hostName = appConfig?.data.attributes.host;
 
