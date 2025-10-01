@@ -3063,6 +3063,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Nažalost, ovaj sadržaj nije moguće ugraditi. {visitLinkMessage} da biste saznali više.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.govocal.com/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Unesite valjanu web adresu, na primjer https://example.com",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "Unesite valjani omjer slike, na primjer 16:10 ili 5:3.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Ugraditi",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Harmonika",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Otvoreno prema zadanim postavkama",
