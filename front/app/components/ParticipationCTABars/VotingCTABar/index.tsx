@@ -74,9 +74,11 @@ const VotingCTABar = ({ phases, project }: CTABarProps) => {
               <Text color="white" m="0px" fontSize="s" aria-live="polite">
                 {votesCounter}
               </Text>
-              <Text color="white" m="0px" fontSize="s" aria-live="polite">
-                {optionSelectionCounter}
-              </Text>
+              {optionSelectionCounter && (
+                <Text color="white" m="0px" fontSize="s" aria-live="polite">
+                  {optionSelectionCounter}
+                </Text>
+              )}
             </Box>
           }
         />

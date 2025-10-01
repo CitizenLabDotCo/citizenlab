@@ -84,6 +84,7 @@ ALTER TABLE IF EXISTS ONLY public.analytics_fact_visits DROP CONSTRAINT IF EXIST
 ALTER TABLE IF EXISTS ONLY public.memberships DROP CONSTRAINT IF EXISTS fk_rails_99326fb65d;
 ALTER TABLE IF EXISTS ONLY public.authoring_assistance_responses DROP CONSTRAINT IF EXISTS fk_rails_98155ccbce;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_97eb4c3a35;
+ALTER TABLE IF EXISTS ONLY public.files_transcripts DROP CONSTRAINT IF EXISTS fk_rails_94bf1dac11;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_9268535f02;
 ALTER TABLE IF EXISTS ONLY public.areas DROP CONSTRAINT IF EXISTS fk_rails_901fc7a65b;
 ALTER TABLE IF EXISTS ONLY public.areas_projects DROP CONSTRAINT IF EXISTS fk_rails_8fb43a173d;
@@ -316,6 +317,8 @@ DROP INDEX IF EXISTS public.index_followers_on_user_id;
 DROP INDEX IF EXISTS public.index_followers_on_followable_id_and_followable_type;
 DROP INDEX IF EXISTS public.index_followers_on_followable;
 DROP INDEX IF EXISTS public.index_followers_followable_type_id_user_id;
+DROP INDEX IF EXISTS public.index_files_transcripts_on_status;
+DROP INDEX IF EXISTS public.index_files_transcripts_on_file_id;
 DROP INDEX IF EXISTS public.index_files_projects_on_project_id;
 DROP INDEX IF EXISTS public.index_files_projects_on_file_id_and_project_id;
 DROP INDEX IF EXISTS public.index_files_projects_on_file_id;
@@ -324,7 +327,6 @@ DROP INDEX IF EXISTS public.index_files_on_uploader_id;
 DROP INDEX IF EXISTS public.index_files_on_tsvector;
 DROP INDEX IF EXISTS public.index_files_on_size;
 DROP INDEX IF EXISTS public.index_files_on_name_gin_trgm;
-DROP INDEX IF EXISTS public.index_files_on_mime_type;
 DROP INDEX IF EXISTS public.index_files_on_description_multiloc_text_gin_trgm_ops;
 DROP INDEX IF EXISTS public.index_files_on_category;
 DROP INDEX IF EXISTS public.index_file_attachments_on_file_id;
@@ -517,6 +519,7 @@ ALTER TABLE IF EXISTS ONLY public.groups DROP CONSTRAINT IF EXISTS groups_pkey;
 ALTER TABLE IF EXISTS ONLY public.groups_permissions DROP CONSTRAINT IF EXISTS groups_permissions_pkey;
 ALTER TABLE IF EXISTS ONLY public.followers DROP CONSTRAINT IF EXISTS followers_pkey;
 ALTER TABLE IF EXISTS ONLY public.flag_inappropriate_content_inappropriate_content_flags DROP CONSTRAINT IF EXISTS flag_inappropriate_content_inappropriate_content_flags_pkey;
+ALTER TABLE IF EXISTS ONLY public.files_transcripts DROP CONSTRAINT IF EXISTS files_transcripts_pkey;
 ALTER TABLE IF EXISTS ONLY public.files_projects DROP CONSTRAINT IF EXISTS files_projects_pkey;
 ALTER TABLE IF EXISTS ONLY public.files_previews DROP CONSTRAINT IF EXISTS files_previews_pkey;
 ALTER TABLE IF EXISTS ONLY public.files DROP CONSTRAINT IF EXISTS files_pkey;
@@ -633,6 +636,7 @@ DROP TABLE IF EXISTS public.groups_permissions;
 DROP TABLE IF EXISTS public.groups;
 DROP TABLE IF EXISTS public.followers;
 DROP TABLE IF EXISTS public.flag_inappropriate_content_inappropriate_content_flags;
+DROP TABLE IF EXISTS public.files_transcripts;
 DROP TABLE IF EXISTS public.files_projects;
 DROP TABLE IF EXISTS public.files_previews;
 DROP TABLE IF EXISTS public.files;
@@ -1721,7 +1725,8 @@ CREATE TABLE public.phases (
     similarity_threshold_title double precision DEFAULT 0.3,
     similarity_threshold_body double precision DEFAULT 0.4,
     similarity_enabled boolean DEFAULT true NOT NULL,
-    vote_term character varying DEFAULT 'vote'::character varying
+    vote_term character varying DEFAULT 'vote'::character varying,
+    voting_min_selected_options integer
 );
 
 
@@ -2547,6 +2552,22 @@ CREATE TABLE public.files_projects (
 
 
 --
+-- Name: files_transcripts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.files_transcripts (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    file_id uuid NOT NULL,
+    status character varying DEFAULT 'pending'::character varying NOT NULL,
+    assemblyai_id character varying,
+    assemblyai_transcript jsonb,
+    error_message character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: flag_inappropriate_content_inappropriate_content_flags; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3243,6 +3264,7 @@ CREATE TABLE public.project_imports (
     import_id uuid,
     log character varying[] DEFAULT '{}'::character varying[],
     locale character varying,
+    string character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     import_type character varying
@@ -4028,6 +4050,14 @@ ALTER TABLE ONLY public.files_previews
 
 ALTER TABLE ONLY public.files_projects
     ADD CONSTRAINT files_projects_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: files_transcripts files_transcripts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.files_transcripts
+    ADD CONSTRAINT files_transcripts_pkey PRIMARY KEY (id);
 
 
 --
@@ -5446,13 +5476,6 @@ CREATE INDEX index_files_on_description_multiloc_text_gin_trgm_ops ON public.fil
 
 
 --
--- Name: index_files_on_mime_type; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_files_on_mime_type ON public.files USING btree (mime_type);
-
-
---
 -- Name: index_files_on_name_gin_trgm; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5506,6 +5529,20 @@ CREATE UNIQUE INDEX index_files_projects_on_file_id_and_project_id ON public.fil
 --
 
 CREATE INDEX index_files_projects_on_project_id ON public.files_projects USING btree (project_id);
+
+
+--
+-- Name: index_files_transcripts_on_file_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_files_transcripts_on_file_id ON public.files_transcripts USING btree (file_id);
+
+
+--
+-- Name: index_files_transcripts_on_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_files_transcripts_on_status ON public.files_transcripts USING btree (status);
 
 
 --
@@ -7206,6 +7243,14 @@ ALTER TABLE ONLY public.notifications
 
 
 --
+-- Name: files_transcripts fk_rails_94bf1dac11; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.files_transcripts
+    ADD CONSTRAINT fk_rails_94bf1dac11 FOREIGN KEY (file_id) REFERENCES public.files(id);
+
+
+--
 -- Name: notifications fk_rails_97eb4c3a35; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7812,6 +7857,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250930942638'),
 ('20250922131002'),
 ('20250910093500'),
 ('20250829154300'),
@@ -7821,11 +7867,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250730150828'),
 ('20250730103628'),
 ('20250729181738'),
+('20250725204303'),
 ('20250724190507'),
 ('20250724074646'),
 ('20250716141100'),
 ('20250716102450'),
-('20250715075008'),
 ('20250714165020'),
 ('20250714155020'),
 ('20250714073201'),
@@ -7842,7 +7888,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250611110008'),
 ('20250610112901'),
 ('20250609151800'),
-('20250606074930'),
 ('20250605090517'),
 ('20250603161856'),
 ('20250528153448'),
