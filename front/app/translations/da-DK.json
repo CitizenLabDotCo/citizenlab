@@ -2356,6 +2356,7 @@
   "app.utils.votingMethodUtils.finalTally": "Endeligt regnskab",
   "app.utils.votingMethodUtils.howToParticipate": "Sådan deltager du",
   "app.utils.votingMethodUtils.howToVote": "Sådan stemmer du",
+  "app.utils.votingMethodUtils.minSelectedOptionsMessage": "Du skal vælge et minimum af mindst <b>{minSelectedOptions, plural, one {# option} other {# options}}. </b>",
   "app.utils.votingMethodUtils.multipleVotingEnded1": "Afstemningen sluttede på <b>{endDate}.</b>",
   "app.utils.votingMethodUtils.numberOfCredits": "{numberOfVotes, plural, =0 {0 kreditter} one {1 kredit} other {# kreditter}}",
   "app.utils.votingMethodUtils.numberOfPoints": "{numberOfVotes, plural, =0 {0 point} one {1 point} other {# point}}",
