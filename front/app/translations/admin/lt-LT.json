@@ -3063,6 +3063,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Atsiprašome, šio turinio nepavyko įterpti. {visitLinkMessage} sužinoti daugiau.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.govocal.com/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Įveskite galiojantį žiniatinklio adresą, pavyzdžiui, https://example.com.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "Įveskite galiojantį kraštinių santykį, pavyzdžiui, 16:10 arba 5:3.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Įterpti",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Akordeonas",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Atidaryti pagal numatytuosius nustatymus",
