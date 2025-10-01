@@ -2097,6 +2097,7 @@
   "app.containers.AdminPage.ProjectEdit.maximum": "Uchafswm",
   "app.containers.AdminPage.ProjectEdit.maximumTooltip": "Ni all cyfranogwyr fynd dros y gyllideb hon wrth gyflwyno eu basged.",
   "app.containers.AdminPage.ProjectEdit.microsoft_forms": "Ffurflenni Microsoft",
+  "app.containers.AdminPage.ProjectEdit.minSelectedOptionsError": "Rhaid i nifer lleiaf yr opsiynau a ddewisir fod yn llai na chyfanswm nifer y pleidleisiau",
   "app.containers.AdminPage.ProjectEdit.minimum": "Isafswm",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Ei gwneud yn ofynnol i gyfranogwyr gwrdd ag isafswm cyllideb i gyflwyno eu basged (nodwch '0' os nad ydych am osod isafswm).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "ewch i'n Canolfan Gymorth",
