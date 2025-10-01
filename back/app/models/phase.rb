@@ -181,6 +181,10 @@ class Phase < ApplicationRecord
     numericality: { greater_than_or_equal_to: :voting_min_total,
                     if: %i[voting? voting_min_total],
                     allow_nil: true }
+  validates :voting_min_selected_options,
+    numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :voting_max_total,
+                    if: %i[voting? voting_max_total],
+                    allow_nil: true }
   validates :voting_max_votes_per_idea,
     numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: :voting_max_total,
                     if: %i[voting? voting_max_total],
