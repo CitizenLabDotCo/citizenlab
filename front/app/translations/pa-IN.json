@@ -337,6 +337,8 @@
   "app.components.ParticipationCTABars.VotingCTABar.numberOfPointsLeft": "{votesLeft, plural, =0 {ਕੋਈ ਅੰਕ ਨਹੀਂ ਬਚੇ} other {# {totalNumberOfVotes, plural, one {ਵਿੱਚੋਂ 1 ਅੰਕ} other {# ਅੰਕ}} ਬਾਕੀ}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfTokensLeft": "{votesLeft, plural, =0 {ਕੋਈ ਟੋਕਨ ਨਹੀਂ ਬਚਿਆ} other {# {totalNumberOfVotes, plural, one {ਵਿੱਚੋਂ 1 ਟੋਕਨ} other {# ਟੋਕਨ}} ਬਾਕੀ}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfVotesLeft": "{votesLeft, plural, =0 {ਕੋਈ ਵੋਟ ਨਹੀਂ ਬਚੀ} other {# {totalNumberOfVotes, plural, one {ਵਿੱਚੋਂ 1 ਵੋਟ} other {# ਵੋਟਾਂ}} ਬਾਕੀ}}",
+  "app.components.ParticipationCTABars.VotingCTABar.selectMinXOptions": "ਘੱਟੋ-ਘੱਟ {minSelectedOptions} ਵਿਕਲਪ ਚੁਣੋ",
+  "app.components.ParticipationCTABars.VotingCTABar.selectMinXOptionsToVote": "ਸਪੁਰਦ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਤੁਹਾਨੂੰ ਘੱਟੋ-ਘੱਟ {minSelectedOptions} ਵਿਕਲਪ ਚੁਣਨ ਦੀ ਲੋੜ ਹੈ।",
   "app.components.ParticipationCTABars.VotingCTABar.votesCast": "{votes, plural, =0 {# ਵੋਟਾਂ} one {# ਵੋਟ} other {# ਵੋਟਾਂ}} ਕਾਸਟ",
   "app.components.ParticipationCTABars.VotingCTABar.votesExceedLimit": "ਤੁਸੀਂ {votesCast} ਵੋਟਾਂ ਪਾਈਆਂ, ਜੋ {votesLimit}ਦੀ ਸੀਮਾ ਤੋਂ ਵੱਧ ਗਈਆਂ। ਕਿਰਪਾ ਕਰਕੇ ਕੁਝ ਵੋਟਾਂ ਹਟਾਓ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
   "app.components.ParticipationCTABars.addInput": "ਇਨਪੁੱਟ ਸ਼ਾਮਲ ਕਰੋ",
