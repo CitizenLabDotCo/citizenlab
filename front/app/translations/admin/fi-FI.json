@@ -1976,7 +1976,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotes": "Äänten enimmäismäärä",
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotesDescription": "Voit rajoittaa käyttäjän antamien äänten kokonaismäärää (enintään yksi ääni vaihtoehtoa kohden).",
   "app.containers.AdminPage.ProjectEdit.Voting.minimumOptions": "Vähimmäisvalitut vaihtoehdot",
-  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription": "Voit asettaa vähimmäismäärän vaihtoehtoja, joille käyttäjän on annettava ääniä voidakseen lähettää äänensä.",
+  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription2": "Jos esimerkiksi valitset vähintään kaksi vaihtoehtoa, käyttäjien on äänestettävä vähintään kahdesta eri vaihtoehdosta ennen kuin he voivat lähettää ehdotuksen.",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotesPerOption2": "useita ääniä vaihtoehtoa kohden",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodSubtitle": "Käyttäjille annetaan tietty määrä tokeneita jaettavaksi vaihtoehtojen välillä",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodTitle": "Useita ääniä per vaihtoehto",
