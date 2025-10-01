@@ -45,7 +45,6 @@ const FixedHeightSettings = () => {
           labelTooltipText={formatMessage(messages.embedTabletHeightTooltip)}
           labelTooltipPlacement="top"
           label={formatMessage(messages.embedTabletHeightLabel)}
-          placeholder="600"
           type="number"
           value={tabletHeight}
           onChange={(value) => {
@@ -61,7 +60,6 @@ const FixedHeightSettings = () => {
           labelTooltipText={formatMessage(messages.embedMobileHeightTooltip)}
           label={formatMessage(messages.embedMobileHeightLabel)}
           labelTooltipPlacement="top"
-          placeholder="400"
           type="number"
           value={mobileHeight}
           onChange={(value) => {
