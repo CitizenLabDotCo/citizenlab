@@ -64,9 +64,9 @@ export default defineMessages({
     defaultMessage: 'Minimum selected options',
   },
   minimumOptionsDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription',
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription2',
     defaultMessage:
-      'You can set a minimum number of options a user must assign votes to in order to submit their votes.',
+      'For example, if you choose a minimum of 2 options, users will have to vote for at least 2 different options before they can submit.',
   },
   maximumVotes: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.maximumVotes',
