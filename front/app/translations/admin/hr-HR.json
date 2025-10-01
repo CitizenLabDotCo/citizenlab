@@ -1976,7 +1976,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotes": "Maksimalan broj glasova",
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotesDescription": "Možete ograničiti ukupan broj glasova koje korisnik može dati (s maksimalno jednim glasom po opciji).",
   "app.containers.AdminPage.ProjectEdit.Voting.minimumOptions": "Minimalno odabrane opcije",
-  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription": "Možete postaviti minimalni broj opcija kojima korisnik mora dodijeliti glasove kako bi poslao svoje glasove.",
+  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription2": "Na primjer, ako odaberete najmanje 2 opcije, korisnici će morati glasati za najmanje 2 različite opcije prije nego što mogu poslati prijedlog.",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotesPerOption2": "više glasova po opciji",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodSubtitle": "Korisnici dobivaju količinu tokena za raspodjelu između opcija",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodTitle": "Više glasova po opciji",
