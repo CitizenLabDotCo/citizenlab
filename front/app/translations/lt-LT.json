@@ -2356,6 +2356,7 @@
   "app.utils.votingMethodUtils.finalTally": "Galutinis rezultatas",
   "app.utils.votingMethodUtils.howToParticipate": "Kaip dalyvauti",
   "app.utils.votingMethodUtils.howToVote": "Kaip balsuoti",
+  "app.utils.votingMethodUtils.minSelectedOptionsMessage": "You must select a minimum of at least <b>{minSelectedOptions, plural, one {# option} other {# options}}</b>.",
   "app.utils.votingMethodUtils.multipleVotingEnded1": "Balsavimas baigtas <b>{endDate}.</b>",
   "app.utils.votingMethodUtils.numberOfCredits": "{numberOfVotes, plural, =0 {0 kreditų} one {1 kreditas} other {# kreditai}}",
   "app.utils.votingMethodUtils.numberOfPoints": "{numberOfVotes, plural, =0 {0 taškų} one {1 taškas} other {# taškai}}",
