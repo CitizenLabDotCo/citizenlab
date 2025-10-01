@@ -16,7 +16,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 
-import AddProjectNavbarItemModal from '../AddProjectNavbarItemModal';
+import AddProjectOrFolderNavbarItemModal from '../AddProjectOrFolderNavbarItemModal';
 
 import messages from './messages';
 
@@ -88,7 +88,7 @@ const PagesMenu = () => {
       }
     >
       <RouterOutlet />
-      <AddProjectNavbarItemModal
+      <AddProjectOrFolderNavbarItemModal
         opened={addProjectModalIsOpen}
         onClose={() => setAddProjectModalIsOpen(false)}
       />

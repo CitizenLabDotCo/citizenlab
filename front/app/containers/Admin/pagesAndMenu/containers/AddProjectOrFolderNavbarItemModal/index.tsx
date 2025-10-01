@@ -37,7 +37,7 @@ type Props = {
   onClose: () => void;
 };
 
-const AddProjectNavbarItemModal = ({ opened, onClose }: Props) => {
+const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
   const { mutateAsync: addNavbarItem } = useAddNavbarItem();
   const { data: projects } = useProjects({
     publicationStatuses: ['published', 'draft', 'archived'],
@@ -204,4 +204,4 @@ const AddProjectNavbarItemModal = ({ opened, onClose }: Props) => {
   );
 };
 
-export default AddProjectNavbarItemModal;
+export default AddProjectOrFolderNavbarItemModal;
