@@ -29,14 +29,12 @@ const addNavbarItem = (item: IItemNotInNavbar) => {
       project_id: item.itemId,
       title_multiloc: item.titleMultiloc,
     };
-  } else if (item.type === 'folder') {
+  } else {
     navbarItem = {
       code: 'custom',
       folder_id: item.itemId,
       title_multiloc: item.titleMultiloc,
     };
-  } else {
-    throw new Error('Unknown navbar item type');
   }
 
   return fetcher<INavbarItemResponse>({
