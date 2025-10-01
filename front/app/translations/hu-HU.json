@@ -2356,6 +2356,7 @@
   "app.utils.votingMethodUtils.finalTally": "Végső eredmény",
   "app.utils.votingMethodUtils.howToParticipate": "Hogyan vehet részt",
   "app.utils.votingMethodUtils.howToVote": "Hogyan kell szavazni",
+  "app.utils.votingMethodUtils.minSelectedOptionsMessage": "Legalább <b>{minSelectedOptions, plural, one {# opciót} other {# opciót}}</b>kell kiválasztani.",
   "app.utils.votingMethodUtils.multipleVotingEnded1": "A szavazás lezárult: <b>{endDate}.</b>",
   "app.utils.votingMethodUtils.numberOfCredits": "{numberOfVotes, plural, =0 {0 kredit} one {1 kredit} other {# kredit}}",
   "app.utils.votingMethodUtils.numberOfPoints": "{numberOfVotes, plural, =0 {0 pont} one {1 pont} other {# pont}}",
