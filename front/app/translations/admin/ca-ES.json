@@ -2097,6 +2097,7 @@
   "app.containers.AdminPage.ProjectEdit.maximum": "Màxim",
   "app.containers.AdminPage.ProjectEdit.maximumTooltip": "Els participants no poden superar aquest pressupost en presentar la seva cistella.",
   "app.containers.AdminPage.ProjectEdit.microsoft_forms": "Formularis de Microsoft",
+  "app.containers.AdminPage.ProjectEdit.minSelectedOptionsError": "El nombre mínim d'opcions seleccionades ha de ser inferior al nombre total de vots",
   "app.containers.AdminPage.ProjectEdit.minimum": "Mínim",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Exigir als participants que compleixin un pressupost mínim per enviar la seva cistella (introduïu \"0\" si no voleu establir un mínim).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "visit our Help Center",
