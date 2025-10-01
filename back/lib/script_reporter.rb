@@ -54,6 +54,6 @@ class ScriptReporter
       end
     end
 
-    File.write(filestr, JSON.pretty_generate(processed_tenants: tenants, creates: creates, changes: changes, errors: errors))
+    File.write(filestr, JSON.pretty_generate(processed_tenants: tenants, creates: creates, changes: changes, deletes: deletes, errors: errors))
   end
 end
