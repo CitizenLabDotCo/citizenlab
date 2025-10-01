@@ -2356,6 +2356,7 @@
   "app.utils.votingMethodUtils.finalTally": "حتمی تعداد",
   "app.utils.votingMethodUtils.howToParticipate": "حصہ لینے کا طریقہ",
   "app.utils.votingMethodUtils.howToVote": "ووٹ دینے کا طریقہ",
+  "app.utils.votingMethodUtils.minSelectedOptionsMessage": "آپ کو کم از کم <b>{minSelectedOptions, plural, one {# آپشن} other {# آپشنز}}</b>منتخب کرنا ہوں گے۔",
   "app.utils.votingMethodUtils.multipleVotingEnded1": "<b>{endDate}پر ووٹنگ بند ہو گئی۔</b>",
   "app.utils.votingMethodUtils.numberOfCredits": "{numberOfVotes, plural, =0 {0 کریڈٹ} one {1 کریڈٹ} other {# کریڈٹ}}",
   "app.utils.votingMethodUtils.numberOfPoints": "{numberOfVotes, plural, =0 {0 پوائنٹس} one {1 پوائنٹ} other {# پوائنٹس}}",
