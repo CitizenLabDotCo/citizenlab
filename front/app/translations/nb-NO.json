@@ -2356,6 +2356,7 @@
   "app.utils.votingMethodUtils.finalTally": "Endelig opptelling",
   "app.utils.votingMethodUtils.howToParticipate": "Hvordan delta",
   "app.utils.votingMethodUtils.howToVote": "Hvordan stemme",
+  "app.utils.votingMethodUtils.minSelectedOptionsMessage": "Du må velge minst minst <b>{minSelectedOptions, plural, one {# option} other {# options}}. </b>",
   "app.utils.votingMethodUtils.multipleVotingEnded1": "Avstemningen ble avsluttet på <b>{endDate}.</b>",
   "app.utils.votingMethodUtils.numberOfCredits": "{numberOfVotes, plural, =0 {0 studiepoeng} one {1 studiepoeng} other {# studiepoeng}}",
   "app.utils.votingMethodUtils.numberOfPoints": "{numberOfVotes, plural, =0 {0 poeng} one {1 poeng} other {# poeng}}",
