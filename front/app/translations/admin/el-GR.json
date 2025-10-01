@@ -2097,6 +2097,7 @@
   "app.containers.AdminPage.ProjectEdit.maximum": "Μέγιστο",
   "app.containers.AdminPage.ProjectEdit.maximumTooltip": "Οι συμμετέχοντες δεν μπορούν να υπερβούν αυτόν τον προϋπολογισμό κατά την υποβολή του καλαθιού τους.",
   "app.containers.AdminPage.ProjectEdit.microsoft_forms": "Φόρμες Microsoft",
+  "app.containers.AdminPage.ProjectEdit.minSelectedOptionsError": "Ο ελάχιστος αριθμός επιλεγμένων επιλογών πρέπει να είναι μικρότερος από τον συνολικό αριθμό ψήφων",
   "app.containers.AdminPage.ProjectEdit.minimum": "Ελάχιστο",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Απαιτήστε από τους συμμετέχοντες να πληρούν έναν ελάχιστο προϋπολογισμό για να υποβάλουν το καλάθι τους (πληκτρολογήστε \"0\" εάν δεν θέλετε να ορίσετε ελάχιστο).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "visit our Help Center",
