@@ -2097,6 +2097,7 @@
   "app.containers.AdminPage.ProjectEdit.maximum": "Maksimum",
   "app.containers.AdminPage.ProjectEdit.maximumTooltip": "Deltakerne kan ikke overskride dette budsjettet når de sender inn kurven sin.",
   "app.containers.AdminPage.ProjectEdit.microsoft_forms": "Microsoft-skjemaer",
+  "app.containers.AdminPage.ProjectEdit.minSelectedOptionsError": "Minimum antall valgte alternativer må være mindre enn totalt antall stemmer",
   "app.containers.AdminPage.ProjectEdit.minimum": "Minimum",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Krev at deltakerne har et minimumsbudsjett for å sende inn kurven sin (skriv inn \"0\" hvis du ikke ønsker å angi et minimum).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "besøk vårt hjelpesenter",
