@@ -32,7 +32,7 @@ const addNavbarItem = (item: IItemNotInNavbar) => {
   } else {
     navbarItem = {
       code: 'custom',
-      folder_id: item.itemId,
+      project_folder_id: item.itemId,
       title_multiloc: item.titleMultiloc,
     };
   }

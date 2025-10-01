@@ -53,7 +53,7 @@ export interface INavbarItemAdd {
   static_page_id?: string;
   title_multiloc?: Multiloc;
   project_id?: string;
-  folder_id?: string;
+  project_folder_id?: string;
 }
 
 export interface INavbarItemUpdate {
