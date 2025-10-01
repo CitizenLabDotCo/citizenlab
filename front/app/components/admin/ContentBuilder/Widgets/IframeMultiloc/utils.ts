@@ -52,8 +52,9 @@ export const validateAspectRatio = (aspectRatio: string) => {
   const [width, height] = split.map((num) => parseFloat(num));
   if (isNaN(width) || isNaN(height) || width <= 0 || height <= 0) return false;
 
-  if (widthStr !== width.toString() || heightStr !== height.toString())
+  if (widthStr !== width.toString() || heightStr !== height.toString()) {
     return false;
+  }
 
   return true;
 };
