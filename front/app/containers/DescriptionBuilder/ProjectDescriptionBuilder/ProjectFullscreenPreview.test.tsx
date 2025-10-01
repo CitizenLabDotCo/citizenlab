@@ -60,6 +60,7 @@ jest.mock('api/projects/useProjectById', () => {
         attributes: {
           title_multiloc: { en: 'Test Project', 'fr-FR': 'Test Projet' },
           slug: 'test',
+          uses_content_builder: true,
         },
       },
     },
