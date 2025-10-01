@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { Box, Input, Select } from '@citizenlab/cl2-component-library';
+import { Box, Error, Input, Select } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 
 import { useIntl } from 'utils/cl-intl';
 
 import { ASPECT_RATIO_OPTIONS } from '../constants';
 import messages from '../messages';
-import { IframeProps } from '../utils';
+import { IframeProps, validateAspectRatio } from '../utils';
 
 const AspectRatioSettings = () => {
   const { formatMessage } = useIntl();
@@ -61,6 +61,11 @@ const AspectRatioSettings = () => {
               });
             }}
           />
+          {customAspectRatio &&
+            customAspectRatio !== '' &&
+            !validateAspectRatio(customAspectRatio) && (
+              <Error text={formatMessage(messages.invalidAspectRatio)} />
+            )}
         </Box>
       )}
     </>

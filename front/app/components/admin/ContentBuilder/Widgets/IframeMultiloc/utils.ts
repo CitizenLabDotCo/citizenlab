@@ -43,3 +43,17 @@ export const getResponsiveHeight = (
   // Aspect ratio mode - height will be handled by CSS
   return 'auto';
 };
+
+export const validateAspectRatio = (aspectRatio: string) => {
+  const split = aspectRatio.split(':');
+  if (split.length !== 2) return false;
+
+  const [widthStr, heightStr] = split;
+  const [width, height] = split.map((num) => parseFloat(num));
+  if (isNaN(width) || isNaN(height) || width <= 0 || height <= 0) return false;
+
+  if (widthStr !== width.toString() || heightStr !== height.toString())
+    return false;
+
+  return true;
+};

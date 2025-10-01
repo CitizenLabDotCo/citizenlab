@@ -129,4 +129,8 @@ export default defineMessages({
     defaultMessage:
       'https://support.govocal.com/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions',
   },
+  invalidAspectRatio: {
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio',
+    defaultMessage: 'Enter a valid aspect ratio, for example 16:10 or 5:3.',
+  },
 });
