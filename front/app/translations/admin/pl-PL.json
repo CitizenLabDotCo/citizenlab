@@ -3063,6 +3063,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Przepraszamy, nie można osadzić tej treści. {visitLinkMessage} , aby dowiedzieć się więcej.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.govocal.com/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Wprowadź prawidłowy adres internetowy, na przykład https://example.com.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "Wprowadź prawidłowy współczynnik proporcji, na przykład 16:10 lub 5:3.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Osadzony",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Akordeon",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Otwórz domyślnie",
