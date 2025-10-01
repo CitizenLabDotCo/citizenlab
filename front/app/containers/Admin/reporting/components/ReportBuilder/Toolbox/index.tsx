@@ -219,8 +219,8 @@ const ReportBuilderToolbox = ({
                 <IframeMultiloc
                   url=""
                   height={500}
-                  tabletHeight={600}
-                  mobileHeight={400}
+                  tabletHeight={500}
+                  mobileHeight={500}
                 />
               }
               icon="code"
