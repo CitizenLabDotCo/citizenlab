@@ -2097,6 +2097,7 @@
   "app.containers.AdminPage.ProjectEdit.maximum": "Maximum",
   "app.containers.AdminPage.ProjectEdit.maximumTooltip": "Teilnehmende können dieses Budget nicht überschreiten, wenn sie ihren Warenkorb einreichen.",
   "app.containers.AdminPage.ProjectEdit.microsoft_forms": "Microsoft Forms",
+  "app.containers.AdminPage.ProjectEdit.minSelectedOptionsError": "Die Mindestanzahl der gewählten Optionen muss geringer sein als die Gesamtzahl der Stimmen",
   "app.containers.AdminPage.ProjectEdit.minimum": "Minimum",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Verlangen Sie von den Teilnehmenden ein Mindestbudget, damit diese ihren Warenkorb einreichen können (geben Sie \"0\" ein, wenn Sie keinen Mindestbetrag festlegen möchten).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "Besuchen Sie unsere Wissensdatenbank",
