@@ -2097,6 +2097,7 @@
   "app.containers.AdminPage.ProjectEdit.maximum": "Amerlanerpaaffik",
   "app.containers.AdminPage.ProjectEdit.maximumTooltip": "Peqataasut kooriminnik nassiussigaangamik missingiut qaangersinnaanngilaat.",
   "app.containers.AdminPage.ProjectEdit.microsoft_forms": "Microsoft Forms",
+  "app.containers.AdminPage.ProjectEdit.minSelectedOptionsError": "Minimum number of selected options must be less than total number of votes",
   "app.containers.AdminPage.ProjectEdit.minimum": "Minnerpaaffik",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Peqataasut koorimik nassiussissagunik missingiummik minnerpaaffimmik eqquutsitsinissaat piumasaqaatigiuk (minnerpaaffiliusserusunngikkuit '0' tooruk).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "visit our Help Center",
