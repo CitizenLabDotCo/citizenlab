@@ -2097,6 +2097,7 @@
   "app.containers.AdminPage.ProjectEdit.maximum": "ਅਧਿਕਤਮ",
   "app.containers.AdminPage.ProjectEdit.maximumTooltip": "ਭਾਗੀਦਾਰ ਆਪਣੀ ਟੋਕਰੀ ਜਮ੍ਹਾਂ ਕਰਦੇ ਸਮੇਂ ਇਸ ਬਜਟ ਤੋਂ ਵੱਧ ਨਹੀਂ ਹੋ ਸਕਦੇ।",
   "app.containers.AdminPage.ProjectEdit.microsoft_forms": "ਮਾਈਕ੍ਰੋਸਾੱਫਟ ਫਾਰਮ",
+  "app.containers.AdminPage.ProjectEdit.minSelectedOptionsError": "ਚੁਣੇ ਗਏ ਵਿਕਲਪਾਂ ਦੀ ਘੱਟੋ-ਘੱਟ ਗਿਣਤੀ ਕੁੱਲ ਵੋਟਾਂ ਦੀ ਗਿਣਤੀ ਤੋਂ ਘੱਟ ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ।",
   "app.containers.AdminPage.ProjectEdit.minimum": "ਘੱਟੋ-ਘੱਟ",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "ਭਾਗੀਦਾਰਾਂ ਨੂੰ ਆਪਣੀ ਟੋਕਰੀ ਜਮ੍ਹਾ ਕਰਨ ਲਈ ਘੱਟੋ-ਘੱਟ ਬਜਟ ਨੂੰ ਪੂਰਾ ਕਰਨ ਦੀ ਲੋੜ ਹੈ (ਜੇ ਤੁਸੀਂ ਘੱਟੋ-ਘੱਟ ਸੈੱਟ ਨਹੀਂ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ ਤਾਂ '0' ਦਰਜ ਕਰੋ)।",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "ਸਾਡੇ ਮਦਦ ਕੇਂਦਰ 'ਤੇ ਜਾਓ",
