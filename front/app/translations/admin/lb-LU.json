@@ -1976,7 +1976,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotes": "Maximum Betrag vun Stëmmen",
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotesDescription": "Dir kënnt d'Zuel vun de Stëmmen limitéieren, déi e Benotzer am Ganzen ofginn kann (mat engem Maximum vun engem Vote pro Optioun).",
   "app.containers.AdminPage.ProjectEdit.Voting.minimumOptions": "Minimum ausgewielten Optiounen",
-  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription": "Dir kënnt eng Mindestzuel vun Optiounen festleeën, deenen e Benotzer Stëmme muss zouweisen, fir seng Stëmm ofzeginn.",
+  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription2": "Zum Beispill, wann Dir mindestens 2 Optiounen auswielt, mussen d'Benotzer fir mindestens 2 verschidden Optiounen ofstëmmen, ier se hir Äntwert ofginn kënnen.",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotesPerOption2": "méi Stëmme pro Optioun",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodSubtitle": "D'Benotzer kréien e Betrag vun Tokens fir tëscht Optiounen ze verdeelen",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodTitle": "Multiple Stëmmen pro Optioun",
