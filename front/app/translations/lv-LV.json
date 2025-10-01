@@ -2356,6 +2356,7 @@
   "app.utils.votingMethodUtils.finalTally": "Galīgais saskaitījums",
   "app.utils.votingMethodUtils.howToParticipate": "Kā piedalīties",
   "app.utils.votingMethodUtils.howToVote": "Kā balsot",
+  "app.utils.votingMethodUtils.minSelectedOptionsMessage": "Jāizvēlas vismaz <b>{minSelectedOptions, plural, one {# opcija} other {# opcijas}}. </b>",
   "app.utils.votingMethodUtils.multipleVotingEnded1": "Balsošana tika slēgta <b> vietnē{endDate}.</b>",
   "app.utils.votingMethodUtils.numberOfCredits": "{numberOfVotes, plural, =0 {0 kredīti} one {1 kredīts} other {# kredīti}}",
   "app.utils.votingMethodUtils.numberOfPoints": "{numberOfVotes, plural, =0 {0 punktu} one {1 punkts} other {# punkti}}",
