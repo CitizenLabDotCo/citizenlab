@@ -68,7 +68,7 @@ const DescriptionBuilderToggle = ({
     featureEnabled
   );
 
-  const [DescriptionBuilderLinkVisible, setDescriptionBuilderLinkVisible] =
+  const [descriptionBuilderLinkVisible, setDescriptionBuilderLinkVisible] =
     useState<boolean | null>(null);
   const { mutateAsync: addDescriptionBuilderLayout } =
     useAddContentBuilderLayout();
@@ -85,9 +85,9 @@ const DescriptionBuilderToggle = ({
     return null;
   }
 
-  const toggleDescriptionBuilderLinkVisible = () => {
-    toggleLayoutEnabledStatus(!DescriptionBuilderLinkVisible);
-    setDescriptionBuilderLinkVisible(!DescriptionBuilderLinkVisible);
+  const toggledescriptionBuilderLinkVisible = () => {
+    toggleLayoutEnabledStatus(!descriptionBuilderLinkVisible);
+    setDescriptionBuilderLinkVisible(!descriptionBuilderLinkVisible);
   };
 
   const toggleLayoutEnabledStatus = async (enabled: boolean) => {
@@ -102,7 +102,7 @@ const DescriptionBuilderToggle = ({
     `/admin/description-builder/${modelType}s/${modelId}/description` as RouteType;
 
   return (
-    <Box data-testid="DescriptionBuilderToggle">
+    <Box data-testid="descriptionBuilderToggle">
       <Box
         className="intercom-product-tour-project-description-builder-toggle"
         display="flex"
@@ -110,14 +110,14 @@ const DescriptionBuilderToggle = ({
       >
         <StyledToggle
           id="e2e-toggle-enable-project-description-builder"
-          checked={!!DescriptionBuilderLinkVisible}
+          checked={!!descriptionBuilderLinkVisible}
           label={formatMessage(messages.toggleLabel)}
-          onChange={toggleDescriptionBuilderLinkVisible}
+          onChange={toggledescriptionBuilderLinkVisible}
         />
         <StyledIconTooltip content={formatMessage(messages.toggleTooltip)} />
       </Box>
 
-      {DescriptionBuilderLinkVisible && (
+      {descriptionBuilderLinkVisible && (
         <>
           <StyledLink id="e2e-project-description-builder-link" to={route}>
             {formatMessage(messages.linkText)}
@@ -133,7 +133,7 @@ const DescriptionBuilderToggle = ({
           </Box>
         </>
       )}
-      {!DescriptionBuilderLinkVisible && (
+      {!descriptionBuilderLinkVisible && (
         <QuillMultilocWithLocaleSwitcher
           id="e2e-project-description-multiloc-module-active"
           valueMultiloc={valueMultiloc}

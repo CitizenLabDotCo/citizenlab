@@ -39,7 +39,7 @@ jest.mock('utils/cl-router/withRouter', () => {
 });
 
 const dummyFunction = jest.fn();
-const multiloc = 'en' as Multiloc;
+const multiloc = { en: 'content' } as Multiloc;
 
 const routerProps = {
   location: {
@@ -51,7 +51,6 @@ const routerProps = {
 };
 
 let mockFeatureFlagData = true;
-
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
 
 describe('DescriptionBuilderToggle', () => {
@@ -73,8 +72,10 @@ describe('DescriptionBuilderToggle', () => {
     expect(
       screen.getByText('Edit description in Content Builder')
     ).toBeInTheDocument();
+
     expect(mockAddDescriptionBuilderLayout).toHaveBeenCalledWith({
-      projectId: 'projectId',
+      modelId: 'projectId',
+      modelType: 'project',
       enabled: true,
     });
   });
@@ -94,7 +95,8 @@ describe('DescriptionBuilderToggle', () => {
     toggle.click();
     expect(screen.queryByText('QuillLabel')).not.toBeInTheDocument();
     expect(mockAddDescriptionBuilderLayout).toHaveBeenCalledWith({
-      projectId: 'projectId',
+      modelId: 'projectId',
+      modelType: 'project',
       enabled: true,
     });
   });
