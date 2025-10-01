@@ -3063,6 +3063,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Tyvärr kunde detta innehåll inte bäddas in. {visitLinkMessage} för att få veta mer.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.govocal.com/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Ange en giltig webbadress, t.ex. https://example.com",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "Ange ett giltigt bildförhållande, t.ex. 16:10 eller 5:3.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Inbäddning",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Dragspel",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Öppet som standard",
