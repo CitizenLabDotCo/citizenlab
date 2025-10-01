@@ -2097,6 +2097,7 @@
   "app.containers.AdminPage.ProjectEdit.maximum": "زیادہ سے زیادہ",
   "app.containers.AdminPage.ProjectEdit.maximumTooltip": "اپنی ٹوکری جمع کرواتے وقت شرکاء اس بجٹ سے زیادہ نہیں ہو سکتے۔",
   "app.containers.AdminPage.ProjectEdit.microsoft_forms": "مائیکروسافٹ فارم",
+  "app.containers.AdminPage.ProjectEdit.minSelectedOptionsError": "منتخب کردہ اختیارات کی کم از کم تعداد ووٹوں کی کل تعداد سے کم ہونی چاہیے۔",
   "app.containers.AdminPage.ProjectEdit.minimum": "کم از کم",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "شرکاء سے مطالبہ کریں کہ وہ اپنی ٹوکری جمع کرانے کے لیے کم از کم بجٹ کو پورا کریں (اگر آپ کم از کم سیٹ نہیں کرنا چاہتے تو '0' درج کریں)۔",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "ہمارا امدادی مرکز ملاحظہ کریں۔",
