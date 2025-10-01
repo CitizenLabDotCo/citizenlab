@@ -1976,7 +1976,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotes": "Didžiausias balsų skaičius",
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotesDescription": "Galite apriboti bendrą naudotojo balsų skaičių (ne daugiau kaip vienas balsas už vieną parinktį).",
   "app.containers.AdminPage.ProjectEdit.Voting.minimumOptions": "Minimalios pasirinktos parinktys",
-  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription": "Galite nustatyti mažiausią parinkčių, kurioms naudotojas turi priskirti balsus, skaičių, kad galėtų pateikti savo balsus.",
+  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription2": "Pavyzdžiui, jei pasirinksite ne mažiau kaip 2 parinktis, prieš pateikdami paraišką naudotojai turės balsuoti už bent 2 skirtingas parinktis.",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotesPerOption2": "keli balsai už vieną parinktį",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodSubtitle": "Vartotojams suteikiama tam tikra žetonų suma, kurią jie gali paskirstyti tarp parinkčių.",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodTitle": "Keli balsai už vieną parinktį",
