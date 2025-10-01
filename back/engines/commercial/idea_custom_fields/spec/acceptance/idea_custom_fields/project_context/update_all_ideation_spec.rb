@@ -189,7 +189,7 @@ resource 'Idea Custom Fields' do
                 created_at: an_instance_of(String),
                 updated_at: an_instance_of(String),
                 logic: {},
-                constraints: { locks: { attributes: %w[title_multiloc required] } },
+                constraints: { locks: { attributes: %w[title_multiloc] } },
                 random_option_ordering: false
               ),
               id: an_instance_of(String),
