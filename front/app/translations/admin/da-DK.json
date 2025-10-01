@@ -3063,6 +3063,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Beklager, dette indhold kunne ikke indlejres. {visitLinkMessage} for at få mere at vide.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.govocal.com/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Indtast en gyldig webadresse, for eksempel https://example.com",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "Indtast et gyldigt billedformat, f.eks. 16:10 eller 5:3.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Indlejr",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Harmonika",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Åbnes som standard",
