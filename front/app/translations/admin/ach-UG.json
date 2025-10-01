@@ -3063,6 +3063,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "crwdns5369567:0{visitLinkMessage}crwdne5369567:0",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "crwdns5369569:0crwdne5369569:0",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "crwdns5369571:0crwdne5369571:0",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "crwdns5466675:0crwdne5466675:0",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "crwdns5369573:0crwdne5369573:0",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "crwdns5369575:0crwdne5369575:0",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "crwdns5369577:0crwdne5369577:0",
