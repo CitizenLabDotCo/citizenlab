@@ -44,7 +44,7 @@ const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
   });
   const { data: projectFolders } = useProjectFolders({});
 
-  const folderExists = !!(
+  const anyFolderExists = !!(
     projectFolders?.data && projectFolders.data.length > 0
   );
 
@@ -56,7 +56,7 @@ const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
 
   const schema = object({
     itemId: string().required(
-      folderExists
+      anyFolderExists
         ? formatMessage(messages.emptyProjectOrFolderError)
         : formatMessage(messages.emptyProjectError)
     ),
@@ -85,14 +85,14 @@ const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
         payload = {
           ...formValues,
           type: 'project',
-          itemId: selectedProject.id, // <-- send project_id
+          itemId: selectedProject.id,
           slug: selectedProject.attributes.slug,
         };
       } else if (selectedFolder) {
         payload = {
           ...formValues,
           type: 'folder',
-          itemId: selectedFolder.id, // <-- send folder_id
+          itemId: selectedFolder.id,
           slug: selectedFolder.attributes.slug,
         };
       } else {
@@ -127,8 +127,10 @@ const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
   const getSelectedItem = () => {
     const project = projects?.data.find((project) => project.id === itemId);
     if (project) return { ...project, type: 'project' };
+
     const folder = projectFolders?.data.find((folder) => folder.id === itemId);
     if (folder) return { ...folder, type: 'folder' };
+
     return null;
   };
 
@@ -154,7 +156,7 @@ const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
       opened={opened}
       close={handleOnClose}
       header={
-        folderExists
+        anyFolderExists
           ? formatMessage(messages.title)
           : formatMessage(messages.titleProjectOnly)
       }
@@ -166,7 +168,7 @@ const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
               <Select
                 name="itemId"
                 label={
-                  folderExists
+                  anyFolderExists
                     ? formatMessage(messages.projectOrFolder)
                     : formatMessage(messages.project)
                 }
@@ -184,7 +186,7 @@ const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
                 )}
               </Box>
               <Warning>
-                {folderExists
+                {anyFolderExists
                   ? formatMessage(messages.warning)
                   : formatMessage(messages.warningProjectOnly)}
               </Warning>

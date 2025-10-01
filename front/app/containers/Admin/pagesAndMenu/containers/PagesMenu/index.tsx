@@ -25,11 +25,11 @@ const PagesMenu = () => {
   const { formatMessage } = useIntl();
 
   const { data: projectFolders } = useProjectFolders({});
-  const folderExists = !!(
+  const anyFolderExists = !!(
     projectFolders?.data && projectFolders.data.length > 0
   );
 
-  const [addProjectModalIsOpen, setAddProjectModalIsOpen] = useState(false);
+  const [addModalIsOpen, setAddModalIsOpen] = useState(false);
   const canCreateCustomPages = useFeatureFlag({
     name: 'pages',
     onlyCheckAllowed: true,
@@ -39,7 +39,7 @@ const PagesMenu = () => {
     return null;
   }
 
-  const disabledAddProjectToNavbarButton =
+  const disabledAddProjectOrFolderToNavbarButton =
     navbarItems.data.length >= MAX_NAVBAR_ITEMS;
 
   return (
@@ -50,16 +50,16 @@ const PagesMenu = () => {
         <Box display="flex" gap="16px">
           <Tooltip
             content={formatMessage(messages.navBarMaxItems)}
-            disabled={!disabledAddProjectToNavbarButton}
+            disabled={!disabledAddProjectOrFolderToNavbarButton}
           >
             <Box>
               <ButtonWithLink
                 icon="link"
                 buttonStyle="text"
-                onClick={() => setAddProjectModalIsOpen(true)}
-                disabled={disabledAddProjectToNavbarButton}
+                onClick={() => setAddModalIsOpen(true)}
+                disabled={disabledAddProjectOrFolderToNavbarButton}
               >
-                {folderExists
+                {anyFolderExists
                   ? formatMessage(messages.addProjectOrFolder)
                   : formatMessage(messages.addProject)}
               </ButtonWithLink>
@@ -89,8 +89,8 @@ const PagesMenu = () => {
     >
       <RouterOutlet />
       <AddProjectOrFolderNavbarItemModal
-        opened={addProjectModalIsOpen}
-        onClose={() => setAddProjectModalIsOpen(false)}
+        opened={addModalIsOpen}
+        onClose={() => setAddModalIsOpen(false)}
       />
     </SectionFormWrapper>
   );
