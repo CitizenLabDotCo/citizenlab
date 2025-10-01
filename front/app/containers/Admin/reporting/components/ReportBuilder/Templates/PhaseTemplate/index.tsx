@@ -3,6 +3,9 @@ import React, { useContext } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { Element } from '@craftjs/core';
 
+import useAnalyses from 'api/analyses/useAnalyses';
+import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
+import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
 import usePhase from 'api/phases/usePhase';
 
@@ -10,6 +13,7 @@ import useAppConfigurationLocales, {
   createMultiloc,
 } from 'hooks/useAppConfigurationLocales';
 
+import { removeRefs } from 'containers/Admin/projects/project/analysis/Insights/util';
 import { WIDGET_TITLES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
 
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
@@ -25,12 +29,12 @@ import TextMultiloc from '../../Widgets/TextMultiloc';
 import { TemplateContext } from '../context';
 
 import messages from './messages';
-
 interface Props {
   phaseId: string;
+  selectedLocale: string;
 }
 
-const PhaseTemplateContent = ({ phaseId }: Props) => {
+const PhaseTemplateContent = ({ phaseId, selectedLocale }: Props) => {
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
   const { data: phase } = usePhase(phaseId);
@@ -90,6 +94,11 @@ const PhaseTemplateContent = ({ phaseId }: Props) => {
             phaseId={phaseId}
             questionId={question.id}
           />
+          <Insights
+            phaseId={phaseId}
+            questionId={question.id}
+            selectedLocale={selectedLocale}
+          />
           <WhiteSpace />
         </Element>
       ))}
@@ -106,14 +115,58 @@ const PhaseTemplateContent = ({ phaseId }: Props) => {
   );
 };
 
-const PhaseTemplate = ({ phaseId }: Props) => {
+const PhaseTemplate = ({ phaseId, selectedLocale }: Props) => {
   const enabled = useContext(TemplateContext);
 
   if (enabled) {
-    return <PhaseTemplateContent phaseId={phaseId} />;
+    return (
+      <PhaseTemplateContent phaseId={phaseId} selectedLocale={selectedLocale} />
+    );
   } else {
     return <Element id="phase-report-template" is={Box} canvas />;
   }
 };
 
 export default PhaseTemplate;
+
+export const Insights = ({ phaseId, questionId, selectedLocale }) => {
+  const { data: analyses } = useAnalyses({ phaseId });
+  const relevantAnalysis = analyses?.data.find(
+    (analysis) =>
+      analysis.relationships.main_custom_field?.data?.id === questionId
+  );
+  const { data: insights } = useAnalysisInsights({
+    analysisId: relevantAnalysis?.id,
+  });
+
+  if (!insights) return null;
+
+  return (
+    <div>
+      {insights.data.map((insight) => (
+        <Summary
+          summaryId={insight.relationships.insightable.data.id}
+          analysisId={relevantAnalysis?.id}
+          key={insight.id}
+          selectedLocale={selectedLocale}
+        />
+      ))}
+    </div>
+  );
+};
+
+const Summary = ({ summaryId, analysisId, selectedLocale }) => {
+  const { data: summary } = useAnalysisSummary({ id: summaryId, analysisId });
+  if (!summary?.data.attributes.summary) return null;
+  return (
+    <Element is={Container} canvas id={summaryId}>
+      <TextMultiloc
+        text={{
+          [selectedLocale]: `<p>${removeRefs(
+            summary.data.attributes.summary
+          ).replace(/(\r\n|\n|\r)/gm, '</p><p>')}</p>`,
+        }}
+      />
+    </Element>
+  );
+};

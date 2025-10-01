@@ -24,8 +24,6 @@ const Analyses = ({
     projectId,
   });
 
-  console.log({ analyses, isLoading });
-
   const projectLink: RouteType = `/admin/projects/${projectId}`;
 
   if (analyses?.data.length === 0 && !isLoading) {

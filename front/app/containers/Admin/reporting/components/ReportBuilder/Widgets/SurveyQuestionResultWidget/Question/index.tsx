@@ -117,7 +117,7 @@ const SurveyQuestionResult = ({
         );
       case 'text':
       case 'multiline_text':
-        return <></>;
+        return <div />;
       default:
         return (
           <>
