@@ -3063,6 +3063,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Sorry, deze inhoud kan niet worden ingesloten. {visitLinkMessage} voor meer informatie.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.govocal.com/en/articles/7025826-customizing-project-descriptions-with-the-content-builder",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Voer een geldig webadres in, bijvoorbeeld https://example.com",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "Voer een geldige beeldverhouding in, bijvoorbeeld 16:10 of 5:3.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Insluiten",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Accordeon",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Standaard openen",
