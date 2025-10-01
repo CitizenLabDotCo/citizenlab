@@ -2097,6 +2097,7 @@
   "app.containers.AdminPage.ProjectEdit.maximum": "Maksimum",
   "app.containers.AdminPage.ProjectEdit.maximumTooltip": "Sudionici ne mogu premašiti ovaj proračun prilikom prijave košarice.",
   "app.containers.AdminPage.ProjectEdit.microsoft_forms": "Microsoft Forms",
+  "app.containers.AdminPage.ProjectEdit.minSelectedOptionsError": "Minimalni broj odabranih opcija mora biti manji od ukupnog broja glasova",
   "app.containers.AdminPage.ProjectEdit.minimum": "Minimum",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Zatražite od sudionika da ispune minimalni proračun prilikom slanja košarice (unesite „0“ ako ne želite da postavite minimum).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "posjetite naš Centar za podršku",
