@@ -3063,6 +3063,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Жао нам је, овај садржај није могао да се угради. {visitLinkMessage} да бисте сазнали више.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.govocal.com/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Унесите важећу веб адресу, на пример https://example.com",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "Enter a valid aspect ratio, for example 16:10 or 5:3.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Уграђивање",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Хармоника",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Отвори подразумевано",
