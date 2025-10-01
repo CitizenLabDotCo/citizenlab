@@ -337,6 +337,8 @@
   "app.components.ParticipationCTABars.VotingCTABar.numberOfPointsLeft": "{votesLeft, plural, =0 {کوئی پوائنٹ باقی نہیں} other {# {totalNumberOfVotes, plural, one {1 پوائنٹ میں سے} other {# پوائنٹس}} باقی}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfTokensLeft": "{votesLeft, plural, =0 {کوئی ٹوکن باقی نہیں} other {# {totalNumberOfVotes, plural, one {1 ٹوکن میں سے} other {# ٹوکن}} بائیں}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfVotesLeft": "{votesLeft, plural, =0 {کوئی ووٹ باقی نہیں} other {# {totalNumberOfVotes, plural, one {1 ووٹ میں سے} other {# ووٹ}} باقی}}",
+  "app.components.ParticipationCTABars.VotingCTABar.selectMinXOptions": "کم از کم {minSelectedOptions} اختیارات منتخب کریں۔",
+  "app.components.ParticipationCTABars.VotingCTABar.selectMinXOptionsToVote": "جمع کرانے سے پہلے آپ کو کم از کم {minSelectedOptions} اختیارات منتخب کرنے کی ضرورت ہے۔",
   "app.components.ParticipationCTABars.VotingCTABar.votesCast": "{votes, plural, =0 {# ووٹ} one {# ووٹ} other {# ووٹ}} کاسٹ",
   "app.components.ParticipationCTABars.VotingCTABar.votesExceedLimit": "آپ {votesCast} ووٹ ڈالتے ہیں، جو {votesLimit}کی حد سے زیادہ ہے۔ براہ کرم کچھ ووٹ ہٹائیں اور دوبارہ کوشش کریں۔",
   "app.components.ParticipationCTABars.addInput": "ان پٹ شامل کریں۔",
