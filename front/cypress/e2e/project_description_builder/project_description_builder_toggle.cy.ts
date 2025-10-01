@@ -125,9 +125,7 @@ describe('Project description builder toggle', () => {
 
     cy.visit(`/admin/projects/${projectId}/general`);
     cy.apiToggleProjectDescriptionBuilder({ projectId, enabled: true });
-    cy.visit(
-      `/admin/project-description-builder/projects/${projectId}/description`
-    );
+    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
 
     // Add content using project description builder
     cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {

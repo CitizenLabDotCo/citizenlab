@@ -66,3 +66,5 @@ class WebApi::V1::FolderSerializer < WebApi::V1::BaseSerializer
     end
   end
 end
+
+WebApi::V1::FolderSerializer.include(ContentBuilder::Extensions::WebApi::V1::FolderSerializer)

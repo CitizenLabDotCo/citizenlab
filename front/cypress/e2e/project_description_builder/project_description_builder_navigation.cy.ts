@@ -36,16 +36,13 @@ describe('Project description builder navigation', () => {
     cy.dataCy('e2e-toggle-enable-project-description-builder').click();
     // When the toggle is clicked, the project description builder is enabled and the link should appear.
 
-    cy.get('#e2e-project-description-builder-link')
-      .wait(1000)
-
-      .should('be.visible')
-      .click();
+    cy.get('#e2e-project-description-builder-link').as('link').wait(1000);
+    cy.get('@link').should('be.visible').click();
     cy.url().should(
       'eq',
       `${
         Cypress.config().baseUrl
-      }/en/admin/project-description-builder/projects/${projectId}/description`
+      }/en/admin/description-builder/projects/${projectId}/description`
     );
   });
 
@@ -59,7 +56,7 @@ describe('Project description builder navigation', () => {
       'eq',
       `${
         Cypress.config().baseUrl
-      }/en/admin/project-description-builder/projects/${projectId}/description`
+      }/en/admin/description-builder/projects/${projectId}/description`
     );
     cy.get('#e2e-go-back-button').should('be.visible').click();
     cy.url().should(

@@ -21,6 +21,7 @@ import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
 
 import { useSyncFolderFiles } from 'hooks/files/useSyncFolderFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import projectMessages from 'containers/Admin/projects/project/general/messages';
 
@@ -33,12 +34,15 @@ import {
 } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import DescriptionBuilderToggle from 'components/DescriptionBuilder/DescriptionBuilderToggle';
+import Highlighter from 'components/Highlighter';
+import Error from 'components/UI/Error';
 import FileUploader from 'components/UI/FileUploader';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError, isError } from 'utils/helperUtils';
@@ -49,6 +53,8 @@ import messages from '../../messages';
 import FolderCardImageTooltip from './FolderCardImageTooltip';
 import FolderHeaderImageTooltip from './FolderHeaderImageTooltip';
 import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
+// import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+// import Error from 'components/UI/Error';
 
 type IProjectFolderSubmitState =
   | 'disabled'
@@ -70,6 +76,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     Resource hooks
     ==============
   */
+  const { formatMessage } = useIntl();
   const { mutateAsync: addProjectFolderFile } = useAddProjectFolderFile();
   const syncProjectFolderFiles = useSyncFolderFiles();
 
@@ -96,6 +103,10 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const { mutate: addProjectFolder, isLoading: isAddProjectFolderLoading } =
     useAddProjectFolder();
   const { mutate: updateProjectFolder } = useUpdateProjectFolder();
+
+  const showDescriptionBuilder = useFeatureFlag({
+    name: 'project_description_builder',
+  });
 
   /*
     ==============
@@ -586,6 +597,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           </SectionField>
         )}
         <SectionField data-cy="e2e-project-folder-short-description">
+          {/* SHOULD probably change this to homepage desciption like on projects */}
           <SubSectionTitle>
             <FormattedMessage {...messages.folderDescriptions} />
           </SubSectionTitle>
@@ -605,15 +617,29 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               }
             />
           </Box>
-          <Box data-cy="e2e-project-folder-description">
-            <QuillMutilocWithLocaleSwitcher
-              id="description"
+          {!showDescriptionBuilder && (
+            <Box data-cy="e2e-project-folder-description">
+              <QuillMutilocWithLocaleSwitcher
+                id="description"
+                valueMultiloc={descriptionMultiloc}
+                onChange={getHandler(setDescriptionMultiloc)}
+                label={<FormattedMessage {...messages.descriptionInputLabel} />}
+                withCTAButton
+              />
+            </Box>
+          )}
+          <Highlighter fragmentId="description-multiloc">
+            <DescriptionBuilderToggle
               valueMultiloc={descriptionMultiloc}
               onChange={getHandler(setDescriptionMultiloc)}
-              label={<FormattedMessage {...messages.descriptionInputLabel} />}
-              withCTAButton
+              label={formatMessage(messages.descriptionInputLabel)}
+              modelType="folder"
             />
-          </Box>
+          </Highlighter>
+          <Error
+            fieldName="description_multiloc"
+            apiErrors={errors.description_multiloc}
+          />
         </SectionField>
 
         <SectionField>
