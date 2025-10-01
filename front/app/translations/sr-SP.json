@@ -337,6 +337,8 @@
   "app.components.ParticipationCTABars.VotingCTABar.numberOfPointsLeft": "{votesLeft, plural, =0 {No points left} other {# out of {totalNumberOfVotes, plural, one {1 point} other {# points}} left}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfTokensLeft": "{votesLeft, plural, =0 {No tokens left} other {# out of {totalNumberOfVotes, plural, one {1 token} other {# tokens}} left}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfVotesLeft": "{votesLeft, plural, =0 {No votes left} other {# out of {totalNumberOfVotes, plural, one {1 vote} other {# votes}} left}}",
+  "app.components.ParticipationCTABars.VotingCTABar.selectMinXOptions": "Select at least {minSelectedOptions} options",
+  "app.components.ParticipationCTABars.VotingCTABar.selectMinXOptionsToVote": "You need to select at least {minSelectedOptions} options before you can submit.",
   "app.components.ParticipationCTABars.VotingCTABar.votesCast": "{votes, plural, =0 {# гласова} one {#глас} other {# гласова}} цаст",
   "app.components.ParticipationCTABars.VotingCTABar.votesExceedLimit": "Дали сте {votesCast} гласова, што премашује ограничење од {votesLimit}. Уклоните неке гласове и покушајте поново.",
   "app.components.ParticipationCTABars.addInput": "Add input",
