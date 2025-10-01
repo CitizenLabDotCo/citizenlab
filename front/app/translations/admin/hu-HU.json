@@ -1976,7 +1976,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotes": "Maximum amount of votes",
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotesDescription": "You can limit the number votes a user can cast in total (with a maximum of one vote per option).",
   "app.containers.AdminPage.ProjectEdit.Voting.minimumOptions": "Minimálisan kiválasztott opciók",
-  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription": "Beállíthat egy minimális számú opciót, amelyekhez a felhasználónak szavaznia kell ahhoz, hogy leadhassa szavazatát.",
+  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription2": "Például, ha legalább 2 lehetőséget választasz, a felhasználóknak legalább 2 különböző lehetőségre kell szavazniuk, mielőtt beküldhetnék a választ.",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotesPerOption2": "multiple votes per option",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodSubtitle": "Users are given an amount of tokens to distribute between options",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodTitle": "Multiple votes per option",
