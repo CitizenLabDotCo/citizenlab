@@ -3063,6 +3063,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Sorry, this content could not be embedded. {visitLinkMessage} to learn more.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.govocal.com/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Enter a valid web address, for example https://example.com",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "Adjon meg egy érvényes képarányt, például 16:10 vagy 5:3.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Embed",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Accordion",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Open by default",
