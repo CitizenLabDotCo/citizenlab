@@ -337,6 +337,8 @@
   "app.components.ParticipationCTABars.VotingCTABar.numberOfPointsLeft": "{votesLeft, plural, =0 {Nema preostalih bodova} other {# od {totalNumberOfVotes, plural, one {1 bod} other {# preostalih bodova}}}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfTokensLeft": "{votesLeft, plural, =0 {Nema preostalih žetona} other {# od {totalNumberOfVotes, plural, one {1 žeton} other {# preostalih žetona}}}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfVotesLeft": "{votesLeft, plural, =0 {Nema preostalih glasova} other {# od {totalNumberOfVotes, plural, one {1 glas} other {# preostalih glasova}}}}",
+  "app.components.ParticipationCTABars.VotingCTABar.selectMinXOptions": "Odaberite barem {minSelectedOptions} opcija",
+  "app.components.ParticipationCTABars.VotingCTABar.selectMinXOptionsToVote": "Morate odabrati barem {minSelectedOptions} opcija prije nego što možete poslati.",
   "app.components.ParticipationCTABars.VotingCTABar.votesCast": "{votes, plural, =0 {# glasova} one {# glas} other {# glasova}} cast",
   "app.components.ParticipationCTABars.VotingCTABar.votesExceedLimit": "Dali ste {votesCast} glasova, što premašuje ograničenje od {votesLimit}. Uklonite neke glasove i pokušajte ponovo.",
   "app.components.ParticipationCTABars.addInput": "Dodaj unos",
