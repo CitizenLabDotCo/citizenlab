@@ -1976,7 +1976,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotes": "Maksimum oy miktarı",
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotesDescription": "Bir kullanıcının toplamda verebileceği oy sayısını sınırlayabilirsiniz (seçenek başına en fazla bir oy olacak şekilde).",
   "app.containers.AdminPage.ProjectEdit.Voting.minimumOptions": "Minimum seçili seçenekler",
-  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription": "Bir kullanıcının oylarını gönderebilmesi için oy ataması gereken minimum seçenek sayısını belirleyebilirsiniz.",
+  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription2": "Örneğin, en az 2 seçenek seçerseniz, kullanıcılar göndermeden önce en az 2 farklı seçeneğe oy vermek zorunda kalacaklardır.",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotesPerOption2": "seçenek başına birden fazla oy",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodSubtitle": "Kullanıcılara seçenekler arasında dağıtmaları için bir miktar jeton verilir",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodTitle": "Seçenek başına birden fazla oy",
