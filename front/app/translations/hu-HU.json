@@ -337,6 +337,8 @@
   "app.components.ParticipationCTABars.VotingCTABar.numberOfPointsLeft": "{votesLeft, plural, =0 {Nincsenek pontok hátra} other {# / {totalNumberOfVotes, plural, one {1 pont} other {# pont}} van hátra}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfTokensLeft": "{votesLeft, plural, =0 {Nincsenek már zsetonok} other {# a {totalNumberOfVotes, plural, one {-ból 1 zseton} other {# zsetonok}} van}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfVotesLeft": "{votesLeft, plural, =0 {Nincsenek szavazatok} other {# / {totalNumberOfVotes, plural, one {1 szavazat} other {# szavazatok}} van}}",
+  "app.components.ParticipationCTABars.VotingCTABar.selectMinXOptions": "Válassz legalább {minSelectedOptions} lehetőséget",
+  "app.components.ParticipationCTABars.VotingCTABar.selectMinXOptionsToVote": "Legalább {minSelectedOptions} lehetőséget kell kiválasztanod a beküldés előtt.",
   "app.components.ParticipationCTABars.VotingCTABar.votesCast": "{votes, plural, =0 {# szavazat} one {# szavazat} other {# szavazat}} leadott",
   "app.components.ParticipationCTABars.VotingCTABar.votesExceedLimit": "{votesCast} szavazatot adott le, ami meghaladja a {votesLimit}korlátot. Kérjük, távolítson el néhány szavazatot, és próbálja újra.",
   "app.components.ParticipationCTABars.addInput": "Bevitel hozzáadása",
