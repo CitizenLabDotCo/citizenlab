@@ -2356,6 +2356,7 @@
   "app.utils.votingMethodUtils.finalTally": "Коначан број",
   "app.utils.votingMethodUtils.howToParticipate": "Како учествовати",
   "app.utils.votingMethodUtils.howToVote": "Како гласати",
+  "app.utils.votingMethodUtils.minSelectedOptionsMessage": "You must select a minimum of at least <b>{minSelectedOptions, plural, one {# option} other {# options}}</b>.",
   "app.utils.votingMethodUtils.multipleVotingEnded1": "Voting closed on <b>{endDate}.</b>",
   "app.utils.votingMethodUtils.numberOfCredits": "{numberOfVotes, plural, =0 {0 credits} one {1 credit} other {# credits}}",
   "app.utils.votingMethodUtils.numberOfPoints": "{numberOfVotes, plural, =0 {0 points} one {1 point} other {# points}}",
