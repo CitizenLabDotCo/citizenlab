@@ -337,6 +337,8 @@
   "app.components.ParticipationCTABars.VotingCTABar.numberOfPointsLeft": "{votesLeft, plural, =0 {Keng Punkten iwwreg} other {# vun {totalNumberOfVotes, plural, one {1 Punkt} other {# Punkten}} iwwreg}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfTokensLeft": "{votesLeft, plural, =0 {Keng Jetonen iwwreg} other {# vun {totalNumberOfVotes, plural, one {1 Jeton} other {# Jetonen}} iwwreg}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfVotesLeft": "{votesLeft, plural, =0 {Keng Stëmmen iwwreg} other {# vun {totalNumberOfVotes, plural, one {1 Stëmm} other {# Stëmmen}} iwwreg}}",
+  "app.components.ParticipationCTABars.VotingCTABar.selectMinXOptions": "Wielt op d'mannst {minSelectedOptions} Optiounen",
+  "app.components.ParticipationCTABars.VotingCTABar.selectMinXOptionsToVote": "Dir musst mindestens {minSelectedOptions} Optiounen auswielen, ier Dir ofschécke kënnt.",
   "app.components.ParticipationCTABars.VotingCTABar.votesCast": "{votes, plural, =0 {#Stëmmen} one {#vommen} other {#Stëmmen}} Besetzung",
   "app.components.ParticipationCTABars.VotingCTABar.votesExceedLimit": "Dir gitt {votesCast} Stëmmen, wat d'Limite vun {votesLimit}iwwerschreift. Huelt w.e.g. e puer Stëmmen ewech a probéiert nach eng Kéier.",
   "app.components.ParticipationCTABars.addInput": "Input derbäisetzen",
