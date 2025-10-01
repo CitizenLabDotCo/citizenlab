@@ -96,10 +96,10 @@ declare global {
       apiCreateNativeSurveyPhase: typeof apiCreateNativeSurveyPhase;
       createProjectWithNativeSurveyPhase: typeof createProjectWithNativeSurveyPhase;
       createProjectWithIdeationPhase: typeof createProjectWithIdeationPhase;
-      selectReactSelectOption: typeof selectReactSelectOption;
       addItemToFormBuilder(
         toolboxSelector: string
       ): Chainable<JQuery<HTMLElement>>;
+      selectReactSelectOption: typeof selectReactSelectOption;
     }
   }
 }

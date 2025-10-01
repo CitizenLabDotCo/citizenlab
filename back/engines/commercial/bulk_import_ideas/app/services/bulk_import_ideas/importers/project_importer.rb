@@ -44,7 +44,7 @@ module BulkImportIdeas::Importers
       if users.empty?
         log 'No users found. users.xlsx is either empty, does not exist and there are no users found as input authors.'
       else
-        existing_user_count = User.where(email: users.pluck('Email address')).count
+        existing_user_count = User.where(email: users.pluck(USER_EMAIL)).count
         if existing_user_count == users.count
           log 'ALL USERS EXIST: No new users will be created.'
         else
@@ -52,6 +52,9 @@ module BulkImportIdeas::Importers
 
           # Create any user fields for idea authors if they don't already exist
           create_user_fields(user_custom_fields)
+
+          # Now we need all the fields for the platform
+          platform_fields = CustomField.registration.enabled
 
           log "Found #{users.count} users - #{users.count - existing_user_count} new users to import"
           log 'Importing users'
@@ -63,10 +66,10 @@ module BulkImportIdeas::Importers
               num_existing += 1
               log "FOUND: User already exists with email: #{user_row[USER_EMAIL]}"
             else
-              custom_field_values = process_user_custom_field_values(user_custom_fields, user_row)
-
               # Assumption is that we only import active users who have confirmed their email
               # Though they have to reset their password by email after import anyway
+              custom_field_values = process_user_custom_field_values(platform_fields, user_row)
+
               user = User.create!(
                 email: user_row[USER_EMAIL],
                 first_name: user_row[USER_FIRST_NAME],
@@ -75,12 +78,19 @@ module BulkImportIdeas::Importers
                 created_at: user_row[USER_CREATED_AT] ? user_row[USER_CREATED_AT].to_time : Time.now,
                 last_active_at: user_row[USER_LAST_ACTIVE_AT] ? user_row[USER_LAST_ACTIVE_AT].to_time : Time.now,
                 registration_completed_at: user_row[USER_CREATED_AT] ? user_row[USER_CREATED_AT].to_time : Time.now,
-                email_confirmed_at: user_row[USER_CREATED_AT] ? user_row[USER_CREATED_AT].to_time : Time.now,
                 locale: @locale,
                 imported: true
               )
+
+              # Assume all imported users are confirmed and change date to created_at if it exists
+              user.confirm!
+              user.update!(email_confirmed_at: user_row[USER_CREATED_AT] ? user_row[USER_CREATED_AT].to_time : Time.now)
+
+              # Ensure the user can unsubscribe
+              user.create_email_campaigns_unsubscription_token
+
               num_created += 1
-              log "Imported user: #{user.email}"
+              log "Imported user: #{user.email} with custom field values: #{custom_field_values}"
             end
           rescue StandardError => e
             log "ERROR importing user '#{user_row[USER_EMAIL]}': #{e.message}"
@@ -103,7 +113,7 @@ module BulkImportIdeas::Importers
           split_values = value.to_s.split('; ')
           option_keys = []
           split_values.each do |option_title|
-            option = find_object_by_title(field[:options], option_title)
+            option = find_object_by_title(field.options, option_title)
             option_keys << option[:key] if option
           end
 
@@ -111,6 +121,13 @@ module BulkImportIdeas::Importers
           value = value.first if field[:input_type] == 'select' && value.is_a?(Array)
         elsif field[:input_type] == 'number'
           value = value.to_i
+        elsif field[:input_type] == 'date'
+          begin
+            value = Date.parse(value).to_s
+          rescue StandardError
+            log "WARNING: Could not parse date value '#{value}' for field '#{field_name}'"
+            next
+          end
         end
         custom_field_values[field[:key]] = value
       end
@@ -118,7 +135,9 @@ module BulkImportIdeas::Importers
     end
 
     def find_object_by_title(custom_fields, title)
-      custom_fields.find { |f| f[:title_multiloc][@locale] == title }
+      title = title.downcase
+      custom_fields.find { |f| f[:title_multiloc][@locale.to_s].downcase == title } ||
+        custom_fields.find { |f| f[:key].downcase == title }
     end
 
     # Import a single project
