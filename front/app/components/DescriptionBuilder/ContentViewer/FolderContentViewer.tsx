@@ -45,7 +45,7 @@ const FolderContentViewer = ({
     <Box data-testid="descriptionBuilderPreview">
       {isInitialLoading && <Spinner />}
       {!isInitialLoading && descriptionBuilderContent && (
-        <Box data-testid="descriptionBuilderPreviewContent">
+        <Box data-testid="descriptionBuilderFolderPreviewContent">
           <Title color="tenantText" variant="h1">
             {localize(folderTitle)}
           </Title>

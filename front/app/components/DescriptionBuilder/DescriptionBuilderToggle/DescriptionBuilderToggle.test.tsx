@@ -4,9 +4,9 @@ import { Multiloc } from 'typings';
 
 import { render, screen } from 'utils/testUtils/rtl';
 
-import ProjectDescriptionBuilderToggle from '.';
+import DescriptionBuilderToggle from '.';
 
-const DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA = {
+const DEFAULT_DESCRIPTION_BUILDER_LAYOUT_DATA = {
   data: {
     attributes: {
       enabled: false,
@@ -14,18 +14,18 @@ const DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA = {
   },
 };
 
-const mockProjectDescriptionBuilderLayoutData: typeof DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA =
-  DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA;
+const mockDescriptionBuilderLayoutData: typeof DEFAULT_DESCRIPTION_BUILDER_LAYOUT_DATA =
+  DEFAULT_DESCRIPTION_BUILDER_LAYOUT_DATA;
 
 jest.mock('api/content_builder/useContentBuilderLayout', () => () => {
   return {
-    data: mockProjectDescriptionBuilderLayoutData,
+    data: mockDescriptionBuilderLayoutData,
   };
 });
 
-const mockAddProjectDescriptionBuilderLayout = jest.fn();
+const mockAddDescriptionBuilderLayout = jest.fn();
 jest.mock('api/content_builder/useAddContentBuilderLayout', () =>
-  jest.fn(() => ({ mutateAsync: mockAddProjectDescriptionBuilderLayout }))
+  jest.fn(() => ({ mutateAsync: mockAddDescriptionBuilderLayout }))
 );
 
 jest.mock('utils/cl-router/withRouter', () => {
@@ -54,10 +54,10 @@ let mockFeatureFlagData = true;
 
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
 
-describe('ProjectDescriptionBuilderToggle', () => {
+describe('DescriptionBuilderToggle', () => {
   it('shows confirm link  appropriately when builder option toggled', () => {
     render(
-      <ProjectDescriptionBuilderToggle
+      <DescriptionBuilderToggle
         valueMultiloc={multiloc}
         onChange={dummyFunction}
         label={'QuillLabel'}
@@ -73,7 +73,7 @@ describe('ProjectDescriptionBuilderToggle', () => {
     expect(
       screen.getByText('Edit description in Content Builder')
     ).toBeInTheDocument();
-    expect(mockAddProjectDescriptionBuilderLayout).toHaveBeenCalledWith({
+    expect(mockAddDescriptionBuilderLayout).toHaveBeenCalledWith({
       projectId: 'projectId',
       enabled: true,
     });
@@ -81,7 +81,7 @@ describe('ProjectDescriptionBuilderToggle', () => {
 
   it('shows confirm Quill editor appropriately when builder option toggled', () => {
     render(
-      <ProjectDescriptionBuilderToggle
+      <DescriptionBuilderToggle
         valueMultiloc={multiloc}
         onChange={dummyFunction}
         label={'QuillLabel'}
@@ -93,7 +93,7 @@ describe('ProjectDescriptionBuilderToggle', () => {
     expect(screen.queryByText('QuillLabel')).toBeInTheDocument();
     toggle.click();
     expect(screen.queryByText('QuillLabel')).not.toBeInTheDocument();
-    expect(mockAddProjectDescriptionBuilderLayout).toHaveBeenCalledWith({
+    expect(mockAddDescriptionBuilderLayout).toHaveBeenCalledWith({
       projectId: 'projectId',
       enabled: true,
     });
@@ -102,7 +102,7 @@ describe('ProjectDescriptionBuilderToggle', () => {
   it('does not render component when feature flag is not active', () => {
     mockFeatureFlagData = false;
     render(
-      <ProjectDescriptionBuilderToggle
+      <DescriptionBuilderToggle
         valueMultiloc={multiloc}
         onChange={dummyFunction}
         label={'QuillLabel'}
@@ -111,7 +111,7 @@ describe('ProjectDescriptionBuilderToggle', () => {
       />
     );
     expect(
-      screen.queryByTestId('projectDescriptionBuilderToggle')
+      screen.queryByTestId('DescriptionBuilderToggle')
     ).not.toBeInTheDocument();
   });
 });

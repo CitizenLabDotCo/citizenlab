@@ -71,6 +71,9 @@ jest.mock('api/projects/useProjectById', () =>
   jest.fn(() => ({ data: { data: mockProjectData } }))
 );
 
+const mockFeatureFlagData = true;
+jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
+
 describe('Preview', () => {
   it('should shows project description builder content when project description builder is enabled', () => {
     render(
@@ -81,10 +84,10 @@ describe('Preview', () => {
       />
     );
     expect(
-      screen.getByTestId('projectDescriptionBuilderPreviewContent')
+      screen.getByTestId('descriptionBuilderProjectPreviewContent')
     ).toBeInTheDocument();
     expect(
-      screen.queryByTestId('projectDescriptionBuilderProjectDescription')
+      screen.queryByTestId('descriptionBuilderProjectDescription')
     ).not.toBeInTheDocument();
   });
   it('should show description when project description builder is not enabled', () => {
@@ -98,10 +101,10 @@ describe('Preview', () => {
       />
     );
     expect(
-      screen.getByTestId('projectDescriptionBuilderProjectDescription')
+      screen.getByTestId('descriptionBuilderProjectDescription')
     ).toBeInTheDocument();
     expect(
-      screen.queryByTestId('projectDescriptionBuilderPreviewContent')
+      screen.queryByTestId('descriptionBuilderProjectPreviewContent')
     ).not.toBeInTheDocument();
   });
 });

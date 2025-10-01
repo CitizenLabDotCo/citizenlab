@@ -58,7 +58,7 @@ const ProjectContentViewer = ({
     <Box data-testid="descriptionBuilderPreview">
       {isInitialLoading && <Spinner />}
       {!isInitialLoading && descriptionBuilderContent && (
-        <Box data-testid="descriptionBuilderPreviewContent">
+        <Box data-testid="descriptionBuilderProjectPreviewContent">
           <Title color="tenantText" variant="h1">
             {localize(projectTitle)}
           </Title>

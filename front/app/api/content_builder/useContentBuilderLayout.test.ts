@@ -8,25 +8,13 @@ import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { contentBuilderLayoutData } from './__mocks__/contentBuilderLayout';
 
-const mockProjectData = {
-  id: '2',
-  type: 'project',
-  attributes: {
-    title_multiloc: { en: 'Test Project' },
-    slug: 'test',
-    uses_content_builder: true,
-  },
-};
-
-jest.mock('api/projects/useProjectById', () =>
-  jest.fn(() => ({ data: { data: mockProjectData } }))
-);
-
-const apiPath =
-  '*projects/:projectId/content_builder_layouts/project_description';
+const projectApiPath =
+  '*/projects/:projectId/content_builder_layouts/project_description';
+const folderApiPath =
+  '*/project_folders/:folderId/content_builder_layouts/project_folder_description';
 
 const server = setupServer(
-  http.get(apiPath, () => {
+  http.get(projectApiPath, () => {
     return HttpResponse.json(
       { data: contentBuilderLayoutData },
       { status: 200 }
@@ -34,11 +22,11 @@ const server = setupServer(
   })
 );
 
-describe('useProjectDescriptionBuilderLayout', () => {
+describe('useContentBuilderLayout', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
-  it('returns data correctly', async () => {
+  it('returns data correctly for a project', async () => {
     const spy = jest.spyOn(global, 'fetch');
     const { result } = renderHook(() => useContentBuilderLayout('projectId'), {
       wrapper: createQueryClientWrapper(),
@@ -53,9 +41,36 @@ describe('useProjectDescriptionBuilderLayout', () => {
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
+  it('returns data correctly for a folder', async () => {
+    server.use(
+      http.get(folderApiPath, () => {
+        return HttpResponse.json(
+          { data: contentBuilderLayoutData },
+          { status: 200 }
+        );
+      })
+    );
+
+    const spy = jest.spyOn(global, 'fetch');
+    const { result } = renderHook(
+      () => useContentBuilderLayout('folderId', 'folder'),
+      {
+        wrapper: createQueryClientWrapper(),
+      }
+    );
+
+    expect(result.current.isLoading).toBe(true);
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.data?.data).toEqual(contentBuilderLayoutData);
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
   it('returns error correctly', async () => {
     server.use(
-      http.get(apiPath, () => {
+      http.get(projectApiPath, () => {
         return HttpResponse.json(null, { status: 500 });
       })
     );
@@ -70,11 +85,9 @@ describe('useProjectDescriptionBuilderLayout', () => {
     expect(result.current.isLoading).toBe(false);
   });
 
-  it('does not make API call when uses_content_builder is false', async () => {
+  it('does not make API call when enabled is false', async () => {
     const spy = jest.spyOn(global, 'fetch');
-    mockProjectData.attributes.uses_content_builder = false;
-
-    renderHook(() => useContentBuilderLayout('projectId'), {
+    renderHook(() => useContentBuilderLayout('projectId', 'project', false), {
       wrapper: createQueryClientWrapper(),
     });
 

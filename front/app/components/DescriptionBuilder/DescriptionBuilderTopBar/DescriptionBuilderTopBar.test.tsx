@@ -156,7 +156,8 @@ describe('ProjectDescriptionBuilderTopBar', () => {
     });
 
     expect(mockAddProjectDescriptionBuilderLayout).toHaveBeenCalledWith({
-      projectId: 'id',
+      modelId: '2',
+      modelType: 'project',
       craftjs_json: {},
     });
   });
