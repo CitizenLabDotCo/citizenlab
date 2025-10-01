@@ -5,6 +5,7 @@ import { Outlet as RouterOutlet } from 'react-router-dom';
 
 import useNavbarItems from 'api/navbar/useNavbarItems';
 import { MAX_NAVBAR_ITEMS } from 'api/navbar/util';
+import useProjectFolders from 'api/project_folders/useProjectFolders';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -22,6 +23,12 @@ import messages from './messages';
 const PagesMenu = () => {
   const { data: navbarItems } = useNavbarItems();
   const { formatMessage } = useIntl();
+
+  const { data: projectFolders } = useProjectFolders({});
+  const folderExists = !!(
+    projectFolders?.data && projectFolders.data.length > 0
+  );
+
   const [addProjectModalIsOpen, setAddProjectModalIsOpen] = useState(false);
   const canCreateCustomPages = useFeatureFlag({
     name: 'pages',
@@ -52,7 +59,9 @@ const PagesMenu = () => {
                 onClick={() => setAddProjectModalIsOpen(true)}
                 disabled={disabledAddProjectToNavbarButton}
               >
-                {formatMessage(messages.addProjectOrFolder)}
+                {folderExists
+                  ? formatMessage(messages.addProjectOrFolder)
+                  : formatMessage(messages.addProject)}
               </ButtonWithLink>
             </Box>
           </Tooltip>

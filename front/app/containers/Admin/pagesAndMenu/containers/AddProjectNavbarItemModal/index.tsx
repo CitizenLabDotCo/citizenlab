@@ -43,6 +43,11 @@ const AddProjectNavbarItemModal = ({ opened, onClose }: Props) => {
     publicationStatuses: ['published', 'draft', 'archived'],
   });
   const { data: projectFolders } = useProjectFolders({});
+
+  const folderExists = !!(
+    projectFolders?.data && projectFolders.data.length > 0
+  );
+
   const { data: appConfig } = useAppConfiguration();
 
   const { formatMessage } = useIntl();
@@ -51,7 +56,9 @@ const AddProjectNavbarItemModal = ({ opened, onClose }: Props) => {
 
   const schema = object({
     itemId: string().required(
-      formatMessage(messages.emptyProjectOrFolderError)
+      folderExists
+        ? formatMessage(messages.emptyProjectOrFolderError)
+        : formatMessage(messages.emptyProjectError)
     ),
     titleMultiloc: validateMultilocForEveryLocale(
       formatMessage(messages.emptyNameError)
@@ -146,7 +153,11 @@ const AddProjectNavbarItemModal = ({ opened, onClose }: Props) => {
     <Modal
       opened={opened}
       close={handleOnClose}
-      header={formatMessage(messages.title)}
+      header={
+        folderExists
+          ? formatMessage(messages.title)
+          : formatMessage(messages.titleProjectOnly)
+      }
     >
       <Box p="24px">
         <FormProvider {...methods}>
@@ -154,7 +165,11 @@ const AddProjectNavbarItemModal = ({ opened, onClose }: Props) => {
             <Box display="flex" gap="32px" flexDirection="column">
               <Select
                 name="itemId"
-                label={formatMessage(messages.projectOrFolder)}
+                label={
+                  folderExists
+                    ? formatMessage(messages.projectOrFolder)
+                    : formatMessage(messages.project)
+                }
                 options={projectAndFolderOptions}
               />
               <Box>
@@ -168,7 +183,11 @@ const AddProjectNavbarItemModal = ({ opened, onClose }: Props) => {
                   </Text>
                 )}
               </Box>
-              <Warning>{formatMessage(messages.warning)}</Warning>
+              <Warning>
+                {folderExists
+                  ? formatMessage(messages.warning)
+                  : formatMessage(messages.warningProjectOnly)}
+              </Warning>
               <Box display="flex">
                 <ButtonWithLink
                   type="submit"
