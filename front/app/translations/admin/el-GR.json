@@ -1976,7 +1976,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotes": "Μέγιστος αριθμός ψήφων",
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotesDescription": "Μπορείτε να περιορίσετε τον αριθμό των ψήφων που μπορεί να δώσει ένας χρήστης συνολικά (με μέγιστο όριο μία ψήφο ανά επιλογή).",
   "app.containers.AdminPage.ProjectEdit.Voting.minimumOptions": "Ελάχιστες επιλεγμένες επιλογές",
-  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription": "Μπορείτε να ορίσετε έναν ελάχιστο αριθμό επιλογών στις οποίες πρέπει να αντιστοιχίσει ψήφους ένας χρήστης για να υποβάλει τις ψήφους του.",
+  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription2": "Για παράδειγμα, αν επιλέξετε τουλάχιστον 2 επιλογές, οι χρήστες θα πρέπει να ψηφίσουν τουλάχιστον 2 διαφορετικές επιλογές πριν μπορέσουν να τις υποβάλουν.",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotesPerOption2": "πολλαπλές ψήφοι ανά επιλογή",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodSubtitle": "Στους χρήστες δίνεται ένα ποσό μάρκων για να το διανείμουν μεταξύ των επιλογών",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodTitle": "Πολλαπλές ψήφοι ανά επιλογή",
