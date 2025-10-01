@@ -215,7 +215,14 @@ const ReportBuilderToolbox = ({
             />
             <DraggableElement
               id="e2e-draggable-iframe"
-              component={<IframeMultiloc url="" height={500} />}
+              component={
+                <IframeMultiloc
+                  url=""
+                  height={500}
+                  tabletHeight={600}
+                  mobileHeight={400}
+                />
+              }
               icon="code"
               label={formatMessage(WIDGET_TITLES.IframeMultiloc)}
             />

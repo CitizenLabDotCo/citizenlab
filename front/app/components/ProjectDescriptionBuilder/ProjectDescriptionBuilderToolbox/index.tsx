@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { SupportedLocale } from 'typings';
-
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from 'containers/ProjectDescriptionBuilder/messages';
@@ -25,13 +23,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 
-type ProjectDescriptionBuilderToolboxProps = {
-  selectedLocale: SupportedLocale;
-};
-
-const ProjectDescriptionBuilderToolbox = ({
-  selectedLocale,
-}: ProjectDescriptionBuilderToolboxProps) => {
+const ProjectDescriptionBuilderToolbox = () => {
   const { formatMessage } = useIntl();
 
   const isDataRepositoryEnabled = useFeatureFlag({
@@ -118,8 +110,9 @@ const ProjectDescriptionBuilderToolbox = ({
             <IframeMultiloc
               url=""
               height={500}
+              tabletHeight={600}
+              mobileHeight={400}
               hasError={false}
-              selectedLocale={selectedLocale}
             />
           }
           icon="code"

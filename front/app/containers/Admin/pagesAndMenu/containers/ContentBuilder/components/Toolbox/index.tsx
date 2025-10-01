@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { useTheme } from 'styled-components';
-import { SupportedLocale } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
@@ -78,13 +77,7 @@ import VideoEmbed, { videoEmbedTitle } from '../Widgets/VideoEmbed';
 
 import { platformCreatedBeforeReleaseNewWidgets } from './utils';
 
-type HomepageBuilderToolboxProps = {
-  selectedLocale: SupportedLocale;
-};
-
-const HomepageBuilderToolbox = ({
-  selectedLocale,
-}: HomepageBuilderToolboxProps) => {
+const HomepageBuilderToolbox = () => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const formatMessageWithLocale = useFormatMessageWithLocale();
@@ -280,8 +273,9 @@ const HomepageBuilderToolbox = ({
             <IframeMultiloc
               url=""
               height={500}
+              tabletHeight={600}
+              mobileHeight={400}
               hasError={false}
-              selectedLocale={selectedLocale}
             />
           }
           icon="code"

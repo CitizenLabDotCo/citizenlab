@@ -8,13 +8,12 @@ import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPaddi
 
 import AspectRatioContainer from './components/AspectRatioContainer';
 import EmbedSettings from './components/EmbedSettings';
-import { DEFAULT_PROPS } from './constants';
 import messages from './messages';
 import { IframeProps, getResponsiveHeight } from './utils';
 
 const IframeMultiloc = ({
-  url,
-  height,
+  url = '',
+  height = 500,
   hasError,
   title,
   embedMode = 'fixed',
@@ -69,7 +68,6 @@ const IframeMultiloc = ({
 };
 
 IframeMultiloc.craft = {
-  props: DEFAULT_PROPS,
   related: {
     settings: EmbedSettings,
   },

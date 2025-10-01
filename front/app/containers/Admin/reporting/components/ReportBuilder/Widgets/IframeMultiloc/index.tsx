@@ -6,7 +6,6 @@ import useLocalize from 'hooks/useLocalize';
 
 import AspectRatioContainer from 'components/admin/ContentBuilder/Widgets/IframeMultiloc/components/AspectRatioContainer';
 import EmbedSettings from 'components/admin/ContentBuilder/Widgets/IframeMultiloc/components/EmbedSettings';
-import { DEFAULT_PROPS } from 'components/admin/ContentBuilder/Widgets/IframeMultiloc/constants';
 import messages from 'components/admin/ContentBuilder/Widgets/IframeMultiloc/messages';
 import {
   IframeProps,
@@ -78,7 +77,6 @@ const IframeMultiloc = ({
 };
 
 IframeMultiloc.craft = {
-  props: DEFAULT_PROPS,
   related: {
     settings: EmbedSettings,
   },
