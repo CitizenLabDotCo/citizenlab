@@ -3063,6 +3063,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Mae'n ddrwg gennym, ni allai'r cynnwys hwn gael ei fewnosod. {visitLinkMessage} i ddysgu mwy.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.govocal.com/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Rhowch gyfeiriad gwe dilys, er enghraifft https://example.com",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "Rhowch gymhareb agwedd ddilys, er enghraifft 16:10 neu 5:3.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Gwreiddio",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Acordion",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Agor yn ddiofyn",
