@@ -2097,6 +2097,7 @@
   "app.containers.AdminPage.ProjectEdit.maximum": "Maksimalus",
   "app.containers.AdminPage.ProjectEdit.maximumTooltip": "Pateikdami savo krepšelį dalyviai negali viršyti šio biudžeto.",
   "app.containers.AdminPage.ProjectEdit.microsoft_forms": "\"Microsoft\" formos",
+  "app.containers.AdminPage.ProjectEdit.minSelectedOptionsError": "Mažiausias pasirinktų variantų skaičius turi būti mažesnis už bendrą balsų skaičių",
   "app.containers.AdminPage.ProjectEdit.minimum": "Minimalus",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Reikalaukite, kad dalyviai atitiktų minimalų biudžetą, kad galėtų pateikti savo krepšelį (įveskite \"0\", jei nenorite nustatyti minimalaus biudžeto).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "apsilankykite mūsų pagalbos centre",
