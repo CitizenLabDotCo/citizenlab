@@ -52,6 +52,8 @@ class CustomFieldsValidationService
       next if !field_constraints
 
       default_field = default_fields.find { |f| f.code == field.code }
+      # TODO: Remove and check constraints for default community monitoring fields
+      next if !default_field
 
       field_constraints.dig(:locks, :attributes)&.each do |attribute|
         if field[attribute] != default_field.send(attribute)
