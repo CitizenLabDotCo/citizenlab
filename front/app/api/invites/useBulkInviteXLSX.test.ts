@@ -7,7 +7,7 @@ import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 import { invitesData } from './__mocks__/useInvites';
 import useBulkInviteXLSX from './useBulkInviteXLSX';
 
-const apiPath = '*/invites/bulk_create_xlsx';
+const apiPath = '*/invites_imports/bulk_create_xlsx';
 
 const server = setupServer(
   http.post(apiPath, () => {

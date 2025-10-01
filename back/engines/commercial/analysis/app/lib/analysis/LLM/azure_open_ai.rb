@@ -23,7 +23,7 @@ module Analysis
         # model name, stripping out any characters that are not allowed in Azure
         # deployment names.
         def azure_deployment_name
-          gpt_model.gsub(/[^a-zA-Z0-9-]/, '')
+          gpt_model.gsub(/[^a-zA-Z0-9-.]/, '')
         end
       end
 

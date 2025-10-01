@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
 import { TSeatNumber } from 'api/app_configuration/types';
-import { IInvitesNewSeats } from 'api/invites/types';
+import { IInvitesImport } from 'api/invites/types';
 
 import useExceedsSeats from 'hooks/useExceedsSeats';
 
@@ -30,7 +30,7 @@ interface InviteUsersWithSeatsModalProps {
   showModal: boolean;
   closeModal: () => void;
   inviteUsers: () => void;
-  newSeatsResponse: IInvitesNewSeats;
+  newSeatsResponse: IInvitesImport;
 }
 
 const InviteUsersWithSeatsModal = ({
@@ -44,8 +44,8 @@ const InviteUsersWithSeatsModal = ({
   const newSeats = newSeatsResponse.data.attributes;
 
   const exceedsSeats = useExceedsSeats()({
-    newlyAddedAdminsNumber: newSeats.newly_added_admins_number,
-    newlyAddedModeratorsNumber: newSeats.newly_added_moderators_number,
+    newlyAddedAdminsNumber: newSeats.result.newly_added_admins_number,
+    newlyAddedModeratorsNumber: newSeats.result.newly_added_moderators_number,
   });
 
   const handleConfirmClick = () => {
@@ -67,17 +67,17 @@ const InviteUsersWithSeatsModal = ({
     additionalSeatsMessage = formatMessage(
       messages.additionalAdminAndManagerSeats,
       {
-        adminSeats: newSeats.newly_added_admins_number,
-        managerSeats: newSeats.newly_added_moderators_number,
+        adminSeats: newSeats.result.newly_added_admins_number,
+        managerSeats: newSeats.result.newly_added_moderators_number,
       }
     );
   } else if (exceedsSeats.admin) {
     additionalSeatsMessage = formatMessage(messages.additionalAdminSeats, {
-      seats: newSeats.newly_added_admins_number,
+      seats: newSeats.result.newly_added_admins_number,
     });
   } else {
     additionalSeatsMessage = formatMessage(messages.additionalManagerSeats, {
-      seats: newSeats.newly_added_moderators_number,
+      seats: newSeats.result.newly_added_moderators_number,
     });
   }
 

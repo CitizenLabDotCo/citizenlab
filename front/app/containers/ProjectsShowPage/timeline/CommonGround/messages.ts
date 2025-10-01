@@ -54,21 +54,22 @@ export default defineMessages({
     id: 'app.components.CommonGroundResults.votesLabe',
     defaultMessage: 'vote',
   },
-  majority: {
-    id: 'app.components.CommonGroundResults.majorityTitle',
-    defaultMessage: 'Majority',
+  highestConsensusTitle: {
+    id: 'app.components.CommonGroundResults.highestConsensusTitle',
+    defaultMessage: 'Highest consensus',
   },
-  divisive: {
-    id: 'app.components.CommonGroundResults.divisiveTitle',
-    defaultMessage: 'Divisive',
+  closeCallsTitle: {
+    id: 'app.components.CommonGroundResults.closeCallsTitle',
+    defaultMessage: 'Close calls',
   },
-  majorityDescription: {
-    id: 'app.components.CommonGroundResults.majorityDescription',
+  highestConsensusDescription: {
+    id: 'app.components.CommonGroundResults.highestConsensusDescription',
     defaultMessage:
-      'More than 60% voted one way or the other on the following:',
+      'Statements with clear agreement - the majority of those who voted either agree or disagree chose the same position.',
   },
-  divisiveDescription: {
-    id: 'app.components.CommonGroundResults.divisiveDescription',
-    defaultMessage: 'Statements where people agree and disagree equally:',
+  closeCallsDescription: {
+    id: 'app.components.CommonGroundResults.closeCallsDescription',
+    defaultMessage:
+      'These statements sparked the most disagreement, with votes for agree or disagree closest to a 50/50 split.',
   },
 });
