@@ -43,16 +43,18 @@ export default defineMessages({
     defaultMessage: 'Tablet height (pixels)',
   },
   embedTabletHeightTooltip: {
-    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedTabletHeightTooltip',
-    defaultMessage: 'Height for tablet view (in pixels).',
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedTabletHeightTooltip1',
+    defaultMessage:
+      'Height for tablet view (in pixels). Will fall back to desktop height if not set.',
   },
   embedMobileHeightLabel: {
     id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedMobileHeightLabel',
     defaultMessage: 'Mobile height (pixels)',
   },
   embedMobileHeightTooltip: {
-    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedMobileHeightTooltip',
-    defaultMessage: 'Height for mobile view (in pixels).',
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedMobileHeightTooltip1',
+    defaultMessage:
+      'Height for mobile view (in pixels). Will fall back to desktop height if not set.',
   },
   embedAspectRatioLabel: {
     id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedAspectRatioLabel',
