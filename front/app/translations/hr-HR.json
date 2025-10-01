@@ -2356,6 +2356,7 @@
   "app.utils.votingMethodUtils.finalTally": "Konačni zbroj",
   "app.utils.votingMethodUtils.howToParticipate": "Kako sudjelovati",
   "app.utils.votingMethodUtils.howToVote": "Kako glasati",
+  "app.utils.votingMethodUtils.minSelectedOptionsMessage": "Morate odabrati minimalno barem <b>{minSelectedOptions, plural, one {# opcija} other {# opcije}}</b>.",
   "app.utils.votingMethodUtils.multipleVotingEnded1": "Glasanje je zatvoreno <b>{endDate}.</b>",
   "app.utils.votingMethodUtils.numberOfCredits": "{numberOfVotes, plural, =0 {0 kredita} one {1 kredit} other {# kredita}}",
   "app.utils.votingMethodUtils.numberOfPoints": "{numberOfVotes, plural, =0 {0 bodova} one {1 bod} other {# bodova}}",
