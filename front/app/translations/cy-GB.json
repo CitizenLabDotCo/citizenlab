@@ -337,6 +337,8 @@
   "app.components.ParticipationCTABars.VotingCTABar.numberOfPointsLeft": "{votesLeft, plural, =0 {Dim pwyntiau ar ôl} other {# allan o {totalNumberOfVotes, plural, one {1 pwynt} other {# pwyntiau}} ar ôl}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfTokensLeft": "{votesLeft, plural, =0 {Dim tocynnau ar ôl} other {# allan o {totalNumberOfVotes, plural, one {1 tocyn} other {# tocynnau}} ar ôl}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfVotesLeft": "{votesLeft, plural, =0 {Dim pleidleisiau ar ôl} other {# allan o {totalNumberOfVotes, plural, one {1 pleidlais} other {# pleidleisiau}} ar ôl}}",
+  "app.components.ParticipationCTABars.VotingCTABar.selectMinXOptions": "Dewiswch o leiaf {minSelectedOptions} opsiynau",
+  "app.components.ParticipationCTABars.VotingCTABar.selectMinXOptionsToVote": "Mae angen i chi ddewis o leiaf {minSelectedOptions} opsiynau cyn y gallwch gyflwyno.",
   "app.components.ParticipationCTABars.VotingCTABar.votesCast": "{votes, plural, =0 {# pleidlais} one {# pleidlais} other {# pleidlais}} a fwriwyd",
   "app.components.ParticipationCTABars.VotingCTABar.votesExceedLimit": "Rydych chi'n bwrw {votesCast} pleidleisiau, sy'n fwy na'r terfyn o {votesLimit}. Tynnwch rai pleidleisiau a cheisiwch eto.",
   "app.components.ParticipationCTABars.addInput": "Ychwanegu mewnbwn",
