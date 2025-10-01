@@ -59,7 +59,7 @@ export interface IProjectFolderData {
     images: {
       data: IRelationship[] | null;
     };
-    user_follower: {
+    user_follower?: {
       data: IRelationship | null;
     };
   };
