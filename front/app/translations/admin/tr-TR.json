@@ -2097,6 +2097,7 @@
   "app.containers.AdminPage.ProjectEdit.maximum": "Maksimum",
   "app.containers.AdminPage.ProjectEdit.maximumTooltip": "Katılımcılar sepetlerini gönderirken bu bütçeyi aşamazlar.",
   "app.containers.AdminPage.ProjectEdit.microsoft_forms": "Microsoft Forms",
+  "app.containers.AdminPage.ProjectEdit.minSelectedOptionsError": "Seçilen seçeneklerin minimum sayısı toplam oy sayısından az olmalıdır",
   "app.containers.AdminPage.ProjectEdit.minimum": "Minimum",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Katılımcıların sepetlerini göndermek için asgari bir bütçeyi karşılamalarını zorunlu kılın (asgari bir bütçe belirlemek istemiyorsanız '0' girin).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "Yardım Merkezimizi ziyaret edin",
