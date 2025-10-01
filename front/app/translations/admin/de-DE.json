@@ -1976,7 +1976,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotes": "Maximale Anzahl von Stimmen",
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotesDescription": "Sie können die Anzahl der Stimmen, die Nutzer*innen insgesamt abgeben können, begrenzen (mit maximal einer Stimme pro Option).",
   "app.containers.AdminPage.ProjectEdit.Voting.minimumOptions": "Mindestens ausgewählte Optionen",
-  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription2": "Wenn Sie zum Beispiel mindestens 2 Optionen auswählen, müssen die Benutzer für mindestens 2 verschiedene Optionen stimmen, bevor sie ihre Stimme abgeben können.",
+  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription2": "Wenn Sie zum Beispiel mindestens 2 Optionen auswählen, müssen die Nutzer*innen für mindestens 2 verschiedene Optionen stimmen, bevor sie ihre Stimme abgeben können.",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotesPerOption2": "mehrere Stimmen pro Option",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodSubtitle": "Die Nutzer*innen erhalten eine bestimmte Anzahl von Stimmen, die sie auf verschiedene Optionen verteilen können.",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodTitle": "Mehrere Stimmen pro Option",
