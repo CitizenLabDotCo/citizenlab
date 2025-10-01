@@ -1976,7 +1976,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotes": "Maksimālais balsu skaits",
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotesDescription": "Varat ierobežot lietotāju kopējo balsojumu skaitu (par katru opciju var nobalsot ne vairāk kā vienu reizi).",
   "app.containers.AdminPage.ProjectEdit.Voting.minimumOptions": "Minimālās atlasītās opcijas",
-  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription": "Varat iestatīt minimālo opciju skaitu, par kurām lietotājam jāpiešķir balsis, lai varētu iesniegt savu balsojumu.",
+  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription2": "Piemēram, ja izvēlaties vismaz 2 iespējas, lietotājiem pirms iesniegšanas būs jābalso par vismaz 2 dažādām iespējām.",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotesPerOption2": "vairākas balsis par katru iespēju",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodSubtitle": "Lietotājiem tiek piešķirts žetonu skaits, ko sadalīt starp iespējām.",
   "app.containers.AdminPage.ProjectEdit.Voting.multipleVotingMethodTitle": "Vairākas balsis par katru iespēju",
