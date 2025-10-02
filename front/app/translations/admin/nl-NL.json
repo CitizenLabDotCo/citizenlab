@@ -3088,7 +3088,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedModeLabel": "Insluitmodus",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedModeTooltip": "Kies tussen vaste hoogtes voor verschillende apparaten of responsieve beeldverhoudingen.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedTabletHeightLabel": "Tablethoogte (pixels)",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.embedTabletHeightTooltip1": "Hoogte voor tabletweergave (in pixels). Valt terug op bureaubladhoogte als deze niet is ingesteld.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.embedTabletHeightTooltip1": "Hoogte voor tabletweergave (in pixels). Valt terug op desktophoogte als deze niet is ingesteld.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription3": "Inhoud van een externe website op je pagina weergeven in een HTML iFrame. Niet elke pagina kan worden ingesloten. Als je problemen hebt met het insluiten van een pagina, controleer dan bij de eigenaar van de pagina of deze is geconfigureerd om insluiten toe te staan.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeEmbedVisitLinkMessage": "Bekijk onze supportpagina",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeHeightPlaceholder": "300",
