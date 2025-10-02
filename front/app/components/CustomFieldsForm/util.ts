@@ -68,12 +68,14 @@ export function getFormCompletionPercentage({
     return 100;
   }
 
-  const lastPageNumber = lastPageIndex + 1;
+  // The lastPageNumber is lastPageIndex + 1
+  // But the lastPageNumberWithQuestions is lastPageNumber - 1
+  const lastPageNumberWithQuestions = lastPageIndex;
 
   // We will calculate the completion percentage based on:
   // 1. the page number the user is on
   // 2. the number of questions answered on the current page
-  const percentagePerPage = 100 / lastPageNumber;
+  const percentagePerPage = 100 / lastPageNumberWithQuestions;
 
   // 1. Calculate the percentage based on the page number
   const pageNumberPercentage = percentagePerPage * currentPageIndex;
