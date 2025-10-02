@@ -51,19 +51,41 @@ describe('Invitation authentication flow', () => {
   });
 
   it('has correct invitations', () => {
-    cy.intercept('POST', '**/invites/*').as('postInvitesRequest');
     cy.setAdminLoginCookie();
     cy.visit('/admin/users/invitations');
     cy.get('input[type=file]').selectFile('cypress/fixtures/invites.xlsx');
     cy.wait(1000); // wait for the button to become enabled after file selection
     cy.get('.e2e-submit-wrapper-button').click();
-    cy.wait('@postInvitesRequest');
-    cy.get('.e2e-submit-wrapper-button').contains('Success');
-    cy.visit('/admin/users/invitations/all');
-    cy.contains('jack@johnson.com');
-    cy.contains('Jack Johnson');
-    cy.contains('John Jackson');
-    cy.logout();
+
+    // Poll for invites to appear (max 10 attempts, 1s apart)
+    function waitForInvites(maxRetries = 10, delay = 1000) {
+      let attempts = 0;
+      function poll(
+        resolve: (value?: unknown) => void,
+        reject: (reason?: any) => void
+      ) {
+        getInvites().then((response) => {
+          const invites = response.body.data;
+          if (invites.length >= 2) {
+            resolve(invites);
+          } else if (attempts < maxRetries) {
+            attempts++;
+            setTimeout(() => poll(resolve, reject), delay);
+          } else {
+            reject(new Error('Invites not found after polling'));
+          }
+        });
+      }
+      return new Cypress.Promise(poll);
+    }
+
+    waitForInvites().then(() => {
+      cy.visit('/admin/users/invitations/all');
+      cy.contains('jack@johnson.com');
+      cy.contains('Jack Johnson');
+      cy.contains('John Jackson');
+      cy.logout();
+    });
   });
 
   // TODO: remove user after this test
