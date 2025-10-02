@@ -31,6 +31,7 @@ const LinkToFolderProjectsDropdown = ({ folderId }: Props) => {
         p="0px"
         ml="4px"
         icon={isProjectListOpen ? 'chevron-up' : 'chevron-down'}
+        data-cy="e2e-folder-preview-open-projects-dropdown"
       />
       <Dropdown
         opened={isProjectListOpen}
