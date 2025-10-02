@@ -27,10 +27,10 @@ module Analysis
         inputs_text = input_to_text.format_all(filtered_inputs.includes(:comments), **input_to_text_options)
         prompt = prompt(@analysis.source_project, inputs_text, input_to_text_options[:include_comments])
 
-        # As a rule of thumb, 1 token corresponds to ~4 charachters in English.
+        # As a rule of thumb, 1 token corresponds to ~4 characters in English.
         # Since calculating the token_count is slow, as an optimization, we
         # don't even bother calculating the token count for a safe worst case of
-        # 6 charachters/token
+        # 6 characters/token
         next if prompt.size > (max_context_window * 6)
 
         # Is there an LLM that can handle the prompt size?
