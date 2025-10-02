@@ -96,14 +96,6 @@ const ProjectHeader = ({ projectId }: Props) => {
             mb="8px"
             maxWidth="600px"
           >
-            {typeof folderId === 'string' && (
-              <Box mb="4px">
-                <LinkToFolderSettings
-                  folderId={folderId}
-                  projectId={projectId}
-                />
-              </Box>
-            )}
             <Link
               to={createHighlighterLink(
                 `/admin/projects/${project.data.id}/settings#${fragmentId}`
@@ -151,7 +143,6 @@ const ProjectHeader = ({ projectId }: Props) => {
             >
               {formatMessage(messages.settings)}
             </ButtonWithLink>
-
             <PublicationButtons project={project.data} />
           </Box>
         </Box>
@@ -255,6 +246,14 @@ const ProjectHeader = ({ projectId }: Props) => {
               </Text>
             </Box>
           </Tooltip>
+          {typeof folderId === 'string' && (
+            <>
+              <Text color="coolGrey600" fontSize="s" mb="0px" mt="2px">
+                ·
+              </Text>
+              <LinkToFolderSettings folderId={folderId} projectId={projectId} />
+            </>
+          )}
           {approver && (
             <>
               <Text color="coolGrey600" fontSize="s" mb="0px" mt="2px">
