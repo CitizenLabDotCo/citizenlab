@@ -755,6 +755,7 @@
   "app.containers.Admin.Users.options": "اختیارات",
   "app.containers.Admin.Users.permissionToBuy": "{name} منتظم کے حقوق دینے کے لیے، آپ کو 1 اضافی سیٹ خریدنی ہوگی۔",
   "app.containers.Admin.Users.platformAdmin": "پلیٹ فارم ایڈمن",
+  "app.containers.Admin.Users.projectFilterPlaceholder": "پروجیکٹ کے لحاظ سے فلٹر کریں۔",
   "app.containers.Admin.Users.projectManager": "پروجیکٹ مینیجر",
   "app.containers.Admin.Users.reachedLimitMessage": "آپ اپنے پلان میں سیٹوں کی حد تک پہنچ گئے ہیں، {name} کے لیے 1 اضافی سیٹ شامل کی جائے گی۔",
   "app.containers.Admin.Users.registeredUser": "رجسٹرڈ صارف",
