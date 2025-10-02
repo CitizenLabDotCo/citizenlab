@@ -242,6 +242,28 @@ resource 'Users' do
           end
         end
 
+        context 'when email uses blacklisted email domain' do
+          let(:email) { 'xwrknecgyq_1542135485@039b1ee.netsolhost.com' }
+
+          example '[error] Create an invalid user with blacklisted email domain', document: false do
+            do_request(email: email)
+            assert_status 422
+
+            json_response = json_parse response_body
+            expect(json_response).to include_response_error(:email, 'something_went_wrong', code: 'zrb-42')
+
+            # We pass AppConfiguration.instance as item (required)
+            # because the user is not saved and has no ID.
+            expect(LogActivityJob).to have_been_enqueued.with(
+              AppConfiguration.instance,
+              'blacklisted_email_domain_used',
+              nil,
+              anything,
+              payload: { email: email }
+            )
+          end
+        end
+
         describe 'invited user creation error' do
           let!(:invitee) { create(:invited_user) }
           let(:email) { invitee.email }

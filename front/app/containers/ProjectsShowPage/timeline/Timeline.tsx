@@ -442,7 +442,7 @@ const Timeline = ({
                 );
               })}
               {isBackoffice && (
-                <Box width="44px" ml="8px">
+                <Box minWidth="44px" ml="8px">
                   <PhaseContainer
                     className="first"
                     key="new-phase"
@@ -473,12 +473,13 @@ const Timeline = ({
                         id="new-phase"
                         showArrow={false}
                       >
-                        <span aria-hidden>
+                        <span
+                          aria-hidden
+                          style={{ textWrap: 'nowrap', marginRight: '4px' }}
+                        >
                           <PlusIcon name="plus" height="16px" />
-                        </span>
-                        <ScreenReaderOnly>
                           <FormattedMessage {...messages.newPhase} />
-                        </ScreenReaderOnly>
+                        </span>
                       </PhaseBar>
                     </Tooltip>
                   </PhaseContainer>
