@@ -13,16 +13,25 @@ module Analysis
       @comments_to_text = CommentsToText.new
     end
 
+    # Convert an input to a hash representation that includes the values for the custom
+    # fields passed to the constructor. The resulting hash is used as an intermediate
+    # representation when converting a list of inputs to text.
+    #
+    # @return [Hash{String => String}] A representation of the input as a hash
     def execute(input, include_id: false, truncate_values: nil, override_field_labels: {})
-      @custom_fields.each_with_object(super) do |field, obj|
-        add_field(field, input, obj, truncate_values: truncate_values, override_field_labels: override_field_labels)
-        if field.other_option_text_field
-          add_field(field.other_option_text_field, input, obj, truncate_values: truncate_values, override_field_labels: override_field_labels)
-        end
-        if field.input_type == 'sentiment_linear_scale' && field.follow_up_text_field
-          add_field(field.follow_up_text_field, input, obj, truncate_values: truncate_values, override_field_labels: override_field_labels)
-        end
+      result = super
+
+      add_cf_to_result = lambda do |field|
+        add_field(field, input, result, truncate_values: truncate_values, override_field_labels: override_field_labels)
       end
+
+      @custom_fields.each do |field|
+        add_cf_to_result.call(field)
+        add_cf_to_result.call(field.other_option_text_field) if field.other_option_text_field
+        add_cf_to_result.call(field.follow_up_text_field) if field.sentiment_linear_scale? && field.follow_up_text_field
+      end
+
+      result
     end
 
     def formatted(input, **options)
@@ -58,8 +67,8 @@ module Analysis
         <<~__OUTPUT__
           To shorten the list of responses, some questions are abbreviated with following codes:
           #{override_field_labels.map do |field_id, abbreviation|
-              "#{abbreviation}: #{@multiloc_service.t(@custom_fields.find { |cf| cf.id == field_id }.title_multiloc)}\n"
-            end.join}
+            "#{abbreviation}: #{@multiloc_service.t(@custom_fields.find { |cf| cf.id == field_id }.title_multiloc)}\n"
+          end.join}
 
           #{formatted_inputs}
         __OUTPUT__
