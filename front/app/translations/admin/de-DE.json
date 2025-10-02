@@ -2419,6 +2419,7 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet1": "Bei einigen Methoden (z.B. bei Abstimmungsergebnissen) wird die Ergebnisfreigabe erst ausgelöst, wenn ein Enddatum ausgewählt wurde.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "Sobald Sie eine Phase nach dieser hinzufügen, wird dieser Phase ein Enddatum hinzugefügt.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "Kein Enddatum hinzufügen bedeutet:",
+  "app.containers.AdminPage.ProjectTimeline.phaseTitlePlaceholder": "Neue Phase",
   "app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel": "Vorschau",
   "app.containers.AdminPage.ProjectTimeline.saveChangesLabel": "Änderungen speichern",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "Beim Absenden des Formulars trat ein Fehler auf, bitte versuche es erneut.",
