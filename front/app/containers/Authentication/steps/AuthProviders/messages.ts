@@ -96,8 +96,4 @@ export default defineMessages({
     defaultMessage:
       'By signing up, you agree to receive emails from this platform. You can select which emails you wish to receive from your user settings.',
   },
-  adminOptions: {
-    id: 'app.containers.SignUp.adminOptions2',
-    defaultMessage: 'For admins and project managers',
-  },
 });
