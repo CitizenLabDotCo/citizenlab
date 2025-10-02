@@ -755,6 +755,7 @@
   "app.containers.Admin.Users.options": "Vaihtoehdot",
   "app.containers.Admin.Users.permissionToBuy": "Jotta voit antaa {name} järjestelmänvalvojan oikeudet, sinun on ostettava 1 lisäpaikka.",
   "app.containers.Admin.Users.platformAdmin": "Alustan järjestelmänvalvoja",
+  "app.containers.Admin.Users.projectFilterPlaceholder": "Suodata projektin mukaan",
   "app.containers.Admin.Users.projectManager": "Projektipäällikkö",
   "app.containers.Admin.Users.reachedLimitMessage": "Olet saavuttanut suunnitelmasi enimmäismäärän, 1 lisäpaikka {name} :lle lisätään.",
   "app.containers.Admin.Users.registeredUser": "Rekisteröitynyt käyttäjä",
