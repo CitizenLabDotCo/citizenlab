@@ -119,7 +119,7 @@ class Basket < ApplicationRecord
   def basket_submission
     return unless submitted?
 
-    if phase.voting_min_selected_options.to_i.positive? && (baskets_ideas.size < phase.voting_min_selected_options)
+    if baskets_ideas.size < phase.voting_min_selected_options
       errors.add(
         :baskets_ideas, :greater_than_or_equal_to, value: baskets_ideas.size, count: phase.voting_min_selected_options,
         message: "must be greater than or equal to #{phase.voting_min_selected_options}"
