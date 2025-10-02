@@ -755,6 +755,7 @@
   "app.containers.Admin.Users.options": "Options",
   "app.containers.Admin.Users.permissionToBuy": "Per donar {name} drets d'administrador, has de comprar 1 seient addicional.",
   "app.containers.Admin.Users.platformAdmin": "Administrador de la plataforma",
+  "app.containers.Admin.Users.projectFilterPlaceholder": "Filter by project",
   "app.containers.Admin.Users.projectManager": "Cap de projecte",
   "app.containers.Admin.Users.reachedLimitMessage": "Heu arribat al límit de seients del vostre pla, s'afegirà 1 seient addicional per a {name}.",
   "app.containers.Admin.Users.registeredUser": "Usuari registrat",
