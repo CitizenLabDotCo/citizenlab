@@ -755,6 +755,7 @@
   "app.containers.Admin.Users.options": "الخيارات",
   "app.containers.Admin.Users.permissionToBuy": "لمنح {name} حقوق المسؤول ، يلزمك شراء مقعد إضافي.",
   "app.containers.Admin.Users.platformAdmin": "مدير المنصة",
+  "app.containers.Admin.Users.projectFilterPlaceholder": "تصفية حسب المشروع",
   "app.containers.Admin.Users.projectManager": "مدير المشروع",
   "app.containers.Admin.Users.reachedLimitMessage": "لقد وصلت إلى الحد الأقصى من المقاعد ضمن خطتك ، ستتم إضافة مقعد إضافي واحد مقابل {name}.",
   "app.containers.Admin.Users.registeredUser": "مستخدم مسجل",
