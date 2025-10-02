@@ -755,6 +755,7 @@
   "app.containers.Admin.Users.options": "Solucije",
   "app.containers.Admin.Users.permissionToBuy": "Kako bi {name} dobio/la administratorska prava, treba da kupite 1 dodatno sedište.",
   "app.containers.Admin.Users.platformAdmin": "Administrator platforme",
+  "app.containers.Admin.Users.projectFilterPlaceholder": "Filter by project",
   "app.containers.Admin.Users.projectManager": "Menadžer projekta",
   "app.containers.Admin.Users.reachedLimitMessage": "Dostigli ste ograničenje broja sedišta za vaš plan, biće dodato 1 dodatno sedište za {name}.",
   "app.containers.Admin.Users.registeredUser": "Registrovani korisnik",
