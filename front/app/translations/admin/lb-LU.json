@@ -755,6 +755,7 @@
   "app.containers.Admin.Users.options": "Options",
   "app.containers.Admin.Users.permissionToBuy": "Fir {name} Verwalterrechter ze ginn, musst Dir 1 zousätzlech Plaz kafen.",
   "app.containers.Admin.Users.platformAdmin": "Plattform-Verwalter",
+  "app.containers.Admin.Users.projectFilterPlaceholder": "Filter by project",
   "app.containers.Admin.Users.projectManager": "Projetsmanager",
   "app.containers.Admin.Users.reachedLimitMessage": "Dir hutt d’Limite vu Plazen an Ärem Plang ereecht, 1 zousätzlech Plaz fir {name} gëtt dobäigefüügt.",
   "app.containers.Admin.Users.registeredUser": "Registréierte Benotzer",
