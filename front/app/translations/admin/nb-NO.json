@@ -755,6 +755,7 @@
   "app.containers.Admin.Users.options": "Alternativer",
   "app.containers.Admin.Users.permissionToBuy": "For å gi {name} administratorrettigheter må du kjøpe 1 ekstra sete.",
   "app.containers.Admin.Users.platformAdmin": "Plattformadministrator",
+  "app.containers.Admin.Users.projectFilterPlaceholder": "Filtrer etter prosjekt",
   "app.containers.Admin.Users.projectManager": "Prosjektleder",
   "app.containers.Admin.Users.reachedLimitMessage": "Du har nådd grensen for antall seter i abonnementet ditt, og 1 ekstra sete for {name} vil bli lagt til.",
   "app.containers.Admin.Users.registeredUser": "Registrert bruker",
