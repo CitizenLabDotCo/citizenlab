@@ -421,6 +421,7 @@ const UserTableActions = ({
         <SearchInput
           onChange={onSearch}
           a11y_numberOfSearchResults={usersDataLength}
+          dataCy="e2e-users-search-input"
         />
       </Box>
       <Divider />

@@ -14,7 +14,7 @@ describe('/admin/users/ page', () => {
     cy.get('.e2e-user-table')
       .find('.e2e-user-table-row')
       .should('not.have.length', 1);
-    cy.get('.e2e-search-input').type('Sylvester');
+    cy.dataCy('e2e-users-search-input').type('Sylvester');
     cy.get('.e2e-user-table')
       .find('.e2e-user-table-row')
       .should('have.length', 1);
