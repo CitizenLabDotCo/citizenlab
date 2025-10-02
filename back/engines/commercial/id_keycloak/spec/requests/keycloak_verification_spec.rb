@@ -9,12 +9,12 @@ context 'keycloak verification (ID-Porten - Oslo)' do
       'provider' => 'keycloak',
       'uid' => 'b045a9a9-cf7e-4add-acc7-1f606eb1e9e0',
       'info' => {
-        'name' => 'UNØYAKTIG KOST',
+        'name' => 'UNØY-AKTIG KOST NOST',
         'email' => 'test@govocal.com',
         'email_verified' => false,
         'nickname' => '21929974805',
-        'first_name' => 'UNØYAKTIG',
-        'last_name' => 'KOST',
+        'first_name' => 'UNØY-AKTIG',
+        'last_name' => 'KOST NOST',
         'gender' => nil,
         'image' => nil,
         'phone' => '+447780122122',
@@ -40,12 +40,12 @@ context 'keycloak verification (ID-Porten - Oslo)' do
           'amr' => 'TestID',
           'pid' => '21929974805',
           'preferred_username' => '21929974805',
-          'given_name' => 'UNØYAKTIG',
+          'given_name' => 'UNØY-AKTIG',
           'locale' => 'en',
           'acr_security_level' => 'idporten-loa-substantial',
-          'name' => 'UNØYAKTIG KOST',
+          'name' => 'UNØY-AKTIG KOST NOST',
           'phone_number' => '+447780122122',
-          'family_name' => 'KOST',
+          'family_name' => 'KOST NOST',
           'email' => 'test@govocal.com',
           'exp' => 1_728_307_270,
           'iat' => 1_728_306_970,
@@ -91,8 +91,8 @@ context 'keycloak verification (ID-Porten - Oslo)' do
   def expect_user_to_be_verified(user)
     expect(user.reload).to have_attributes({
       verified: true,
-      first_name: 'Unøyaktig',
-      last_name: 'Kost',
+      first_name: 'Unøy-Aktig',
+      last_name: 'Kost Nost',
       custom_field_values: {}
     })
     expect(user.verifications.first).to have_attributes({
