@@ -788,6 +788,7 @@
   "app.components.formBuilder.displayAsDropdown": "عرض كقائمة منسدلة",
   "app.components.formBuilder.displayAsDropdownTooltip": "عرض الخيارات في قائمة منسدلة. إذا كان لديك العديد من الخيارات، فمن المستحسن القيام بذلك.",
   "app.components.formBuilder.done": "تم",
+  "app.components.formBuilder.dragAndDrop": "لإضافة أسئلة إلى النموذج، اسحب وأفلِت العناصر الموجودة في القائمة الجانبية اليسرى داخل النموذج.",
   "app.components.formBuilder.drawArea": "منطقة الرسم",
   "app.components.formBuilder.drawRoute": "ارسم الطريق",
   "app.components.formBuilder.dropPin": "إسقاط دبوس",

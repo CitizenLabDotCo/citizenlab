@@ -788,6 +788,7 @@
   "app.components.formBuilder.displayAsDropdown": "Mostrar como desplegable",
   "app.components.formBuilder.displayAsDropdownTooltip": "Muestra las opciones en un desplegable. Si tienes muchas opciones, esto es lo recomendable.",
   "app.components.formBuilder.done": "Hecho",
+  "app.components.formBuilder.dragAndDrop": "Para añadir preguntas al formulario, arrastra y suelta los elementos del menú de la izquierda en el formulario.",
   "app.components.formBuilder.drawArea": "Área de dibujo",
   "app.components.formBuilder.drawRoute": "Trazar ruta",
   "app.components.formBuilder.dropPin": "Alfiler de caída",

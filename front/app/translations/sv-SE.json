@@ -788,6 +788,7 @@
   "app.components.formBuilder.displayAsDropdown": "Visa som rullgardinsmeny",
   "app.components.formBuilder.displayAsDropdownTooltip": "Visa alternativen i en rullgardinsmeny. Om du har många alternativ är detta att rekommendera.",
   "app.components.formBuilder.done": "Klart",
+  "app.components.formBuilder.dragAndDrop": "Lägg till frågor i formuläret genom att dra och släppa elementen i menyn till vänster i formuläret.",
   "app.components.formBuilder.drawArea": "Rita område",
   "app.components.formBuilder.drawRoute": "Rita rutt",
   "app.components.formBuilder.dropPin": "Släppstift",
