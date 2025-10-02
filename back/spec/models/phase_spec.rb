@@ -94,6 +94,7 @@ RSpec.describe Phase do
       phase.participation_method = 'voting'
       phase.voting_method = 'budgeting'
       phase.voting_max_total = 200
+      phase.input_term = 'idea'
       expect(phase.save).to be true
     end
   end

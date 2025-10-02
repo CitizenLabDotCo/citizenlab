@@ -925,7 +925,7 @@ resource 'Projects' do
         survey_response.body_multiloc = {}
         survey_response.save!(validate: false)
 
-        native_survey_phase.update!(participation_method: 'ideation')
+        native_survey_phase.update!(participation_method: 'ideation', input_term: 'idea')
 
         do_request
         assert_status 200

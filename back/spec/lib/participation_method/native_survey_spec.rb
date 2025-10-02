@@ -281,7 +281,6 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   its(:transitive?) { is_expected.to be false }
   its(:form_logic_enabled?) { is_expected.to be true }
   its(:follow_idea_on_idea_submission?) { is_expected.to be false }
-  its(:validate_phase) { is_expected.to be_nil }
   its(:supports_custom_field_categories?) { is_expected.to be false }
   its(:supports_multiple_phase_reports?) { is_expected.to be false }
   its(:add_autoreaction_to_inputs?) { is_expected.to be(false) }
