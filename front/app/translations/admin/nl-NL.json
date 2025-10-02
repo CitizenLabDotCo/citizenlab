@@ -755,6 +755,7 @@
   "app.containers.Admin.Users.options": "Opties",
   "app.containers.Admin.Users.permissionToBuy": "Om {name} platformbeheerdersrechten te geven, moet je 1 extra account kopen.",
   "app.containers.Admin.Users.platformAdmin": "Platformbeheerder",
+  "app.containers.Admin.Users.projectFilterPlaceholder": "Filter op project",
   "app.containers.Admin.Users.projectManager": "Projectbeheerder",
   "app.containers.Admin.Users.reachedLimitMessage": "Je hebt de limiet van het aantal account binnen je abonnement bereikt, 1 extra account voor {name} zal worden toegevoegd.",
   "app.containers.Admin.Users.registeredUser": "Geregistreerde gebruiker",
