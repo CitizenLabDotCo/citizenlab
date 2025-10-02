@@ -2960,7 +2960,7 @@
   "app.containers.AdminPage.projects.project.analysis.votes": "Stimmen",
   "app.containers.AdminPage.widgets.copied": "In die Zwischenablage kopieren",
   "app.containers.AdminPage.widgets.copyToClipboard": "Kopieren Sie diesen Code",
-  "app.containers.AdminPage.widgets.exportHtmlCodeButton": "Kopieren Sie den HTML-Code",
+  "app.containers.AdminPage.widgets.exportHtmlCodeButton": "HTML-Code kopieren",
   "app.containers.AdminPage.widgets.fieldAccentColor": "Akzentfarbe",
   "app.containers.AdminPage.widgets.fieldBackgroundColor": "Widget-Hintergrundfarbe",
   "app.containers.AdminPage.widgets.fieldButtonText": "Text des Buttons",
