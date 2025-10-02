@@ -755,6 +755,7 @@
   "app.containers.Admin.Users.options": "Parinktys",
   "app.containers.Admin.Users.permissionToBuy": "Norėdami suteikti {name} administratoriaus teises, turite įsigyti 1 papildomą vietą.",
   "app.containers.Admin.Users.platformAdmin": "Platformos administratorius",
+  "app.containers.Admin.Users.projectFilterPlaceholder": "Filtruoti pagal projektą",
   "app.containers.Admin.Users.projectManager": "Projektų vadovas",
   "app.containers.Admin.Users.reachedLimitMessage": "Pasiekėte savo plano vietų limitą, bus pridėta 1 papildoma vieta {name} .",
   "app.containers.Admin.Users.registeredUser": "Registruotas naudotojas",
