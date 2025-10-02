@@ -2149,6 +2149,7 @@
   "app.errors.password_too_short": "Лозинка мора имати најмање 8 знакова",
   "app.errors.resending_code_failed": "Нешто је пошло наопако при слању кода за потврду.",
   "app.errors.slug_taken": "УРЛ овог пројекта већ постоји. Молимо вас да промените ознаку пројекта у нешто друго.",
+  "app.errors.something_went_wrong": "Something went wrong. Please contact us if the problem persists.",
   "app.errors.tag_name_taken": "Ознака са овим именом већ постоји",
   "app.errors.title_multiloc_blank": "Наслов не може бити празан.",
   "app.errors.title_multiloc_includes_banned_words": "Наслов садржи речи које се сматрају неприкладним.",
