@@ -2155,6 +2155,7 @@
   "app.errors.password_too_short": "پاس ورڈ کم از کم 8 حروف کا ہونا چاہیے۔",
   "app.errors.resending_code_failed": "تصدیقی کوڈ بھیجتے وقت کچھ غلط ہو گیا۔",
   "app.errors.slug_taken": "یہ پروجیکٹ URL پہلے سے موجود ہے۔ براہ کرم پروجیکٹ سلگ کو کسی اور چیز میں تبدیل کریں۔",
+  "app.errors.something_went_wrong": "کچھ غلط ہو گیا۔ اگر مسئلہ برقرار رہتا ہے تو براہ کرم ہم سے رابطہ کریں۔",
   "app.errors.tag_name_taken": "اس نام کا ٹیگ پہلے سے موجود ہے۔",
   "app.errors.title_multiloc_blank": "عنوان خالی نہیں ہو سکتا۔",
   "app.errors.title_multiloc_includes_banned_words": "عنوان میں ایسے الفاظ ہیں جو نامناسب سمجھے جاتے ہیں۔",

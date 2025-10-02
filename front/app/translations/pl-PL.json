@@ -2155,6 +2155,7 @@
   "app.errors.password_too_short": "Hasło musi mieć długość co najmniej 8 znaków",
   "app.errors.resending_code_failed": "Coś poszło nie tak podczas wysyłania kodu potwierdzającego.",
   "app.errors.slug_taken": "Ten adres URL projektu już istnieje. Proszę zmienić URL.",
+  "app.errors.something_went_wrong": "Coś poszło nie tak. Skontaktuj się z nami, jeśli problem będzie się powtarzał.",
   "app.errors.tag_name_taken": "Tag o tej nazwie już istnieje",
   "app.errors.title_multiloc_blank": "Tytuł nie może być pusty.",
   "app.errors.title_multiloc_includes_banned_words": "Tytuł zawiera słowa, które są uważane za nieodpowiednie.",

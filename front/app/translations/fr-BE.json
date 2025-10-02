@@ -2155,6 +2155,7 @@
   "app.errors.password_too_short": "Le mot de passe doit comporter au moins 8 caractères",
   "app.errors.resending_code_failed": "Un problème s'est produit lors de l'envoi du code de confirmation.",
   "app.errors.slug_taken": "Cette URL de projet existe déjà. Merci de modifier le slug du projet.",
+  "app.errors.something_went_wrong": "Un problème s'est produit. Veuillez nous contacter si le problème persiste.",
   "app.errors.tag_name_taken": "Une étiquette portant ce nom existe déjà",
   "app.errors.title_multiloc_blank": "Le titre ne peut être vide.",
   "app.errors.title_multiloc_includes_banned_words": "Le titre contient des mots considérés comme inappropriés.",

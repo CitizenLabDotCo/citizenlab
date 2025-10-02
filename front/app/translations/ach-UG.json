@@ -2155,6 +2155,7 @@
   "app.errors.password_too_short": "crwdns215932:0crwdne215932:0",
   "app.errors.resending_code_failed": "crwdns1211600:0crwdne1211600:0",
   "app.errors.slug_taken": "crwdns215934:0crwdne215934:0",
+  "app.errors.something_went_wrong": "crwdns5480107:0crwdne5480107:0",
   "app.errors.tag_name_taken": "crwdns787433:0crwdne787433:0",
   "app.errors.title_multiloc_blank": "crwdns215936:0crwdne215936:0",
   "app.errors.title_multiloc_includes_banned_words": "crwdns1159864:0crwdne1159864:0",
