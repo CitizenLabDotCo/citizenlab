@@ -9,7 +9,6 @@ import { FormatMessageValues } from 'utils/cl-intl/useIntl';
 import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 
 import messages from './messages';
-import { FormValues } from './Page/types';
 
 export type Pages = {
   page: IFlatCustomField;
@@ -52,14 +51,14 @@ type GetFormCompletionPercentageParams = {
   pageQuestions: IFlatCustomField[];
   currentPageNumber: number;
   lastPageNumber: number;
-  formValues: FormValues;
+  formValues: Record<string, any>;
   userIsEditing: boolean;
 };
 
 export function getFormCompletionPercentage({
   pageQuestions,
-  currentPageNumber,
-  lastPageNumber,
+  currentPageNumber, // actually page index
+  lastPageNumber, // actually page index
   formValues,
   userIsEditing,
 }: GetFormCompletionPercentageParams) {
@@ -72,9 +71,7 @@ export function getFormCompletionPercentage({
   // We will calculate the completion percentage based on:
   // 1. the page number the user is on
   // 2. the number of questions answered on the current page
-
-  const numberOfPagesWithQuestions = lastPageNumber - 1;
-  const percentagePerPage = 100 / numberOfPagesWithQuestions;
+  const percentagePerPage = 100 / lastPageNumber + 1;
 
   // 1. Calculate the percentage based on the page number
   const pageNumberPercentage = percentagePerPage * currentPageNumber;
