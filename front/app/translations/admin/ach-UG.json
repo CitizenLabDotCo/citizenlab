@@ -2099,6 +2099,8 @@
   "app.containers.AdminPage.ProjectEdit.headerImageAltText": "crwdns3561677:0crwdne3561677:0",
   "app.containers.AdminPage.ProjectEdit.headerImageInputLabel": "crwdns211254:0crwdne211254:0",
   "app.containers.AdminPage.ProjectEdit.imageSupportPageURL": "crwdns211256:0crwdne211256:0",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarning1": "crwdns5480101:0{inputFormLink}crwdne5480101:0",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarningLink1": "crwdns5480103:0crwdne5480103:0",
   "app.containers.AdminPage.ProjectEdit.information.new1": "crwdns1962710:0crwdne1962710:0",
   "app.containers.AdminPage.ProjectEdit.information.provideInformation": "crwdns1326194:0crwdne1326194:0",
   "app.containers.AdminPage.ProjectEdit.information.shareInformationOrResults": "crwdns1326196:0crwdne1326196:0",
