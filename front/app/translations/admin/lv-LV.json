@@ -2419,6 +2419,7 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet1": "Dažu metožu rezultātu kopīgošana (piemēram, balsošanas rezultātu kopīgošana) netiks aktivizēta, kamēr nebūs izvēlēts beigu datums.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "Tiklīdz pievienosiet posmu pēc šī posma, tam tiks pievienots beigu datums.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "Ja nav izvēlēts beigu datums, tas nozīmē, ka:",
+  "app.containers.AdminPage.ProjectTimeline.phaseTitlePlaceholder": "Jauns posms",
   "app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel": "Priekšskatījums",
   "app.containers.AdminPage.ProjectTimeline.saveChangesLabel": "Izmaiņu saglabāšana",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "Veidlapas iesniegšanas brīdī radās kļūda, lūdzu, mēģiniet vēlreiz.",

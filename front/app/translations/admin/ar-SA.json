@@ -2419,6 +2419,7 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet1": "لن يتم تشغيل مشاركة نتائج بعض الطرق (مثل نتائج التصويت) حتى يتم تحديد تاريخ الانتهاء.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "بمجرد إضافة مرحلة بعد هذه المرحلة، سيتم إضافة تاريخ انتهاء لهذه المرحلة.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "عدم تحديد تاريخ انتهاء لذلك يعني ما يلي:",
+  "app.containers.AdminPage.ProjectTimeline.phaseTitlePlaceholder": "مرحلة جديدة",
   "app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel": "معاينة",
   "app.containers.AdminPage.ProjectTimeline.saveChangesLabel": "حفظ التغييرات",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "حدث خطأ أثناء إرسال النموذج، يُرجى المحاولة مجددًا.",

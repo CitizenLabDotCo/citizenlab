@@ -2419,6 +2419,7 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet1": "Ni fydd rhannu canlyniadau rhai dulliau (fel canlyniadau pleidleisio) yn cael ei sbarduno nes bod dyddiad gorffen yn cael ei ddewis.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "Cyn gynted ag y byddwch yn ychwanegu cam ar ôl yr un hwn, bydd yn ychwanegu dyddiad gorffen at y cam hwn.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "Mae peidio â dewis dyddiad gorffen ar gyfer hyn yn awgrymu:",
+  "app.containers.AdminPage.ProjectTimeline.phaseTitlePlaceholder": "Cyfnod newydd",
   "app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel": "Rhagolwg",
   "app.containers.AdminPage.ProjectTimeline.saveChangesLabel": "Cadw newidiadau",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "Bu gwall wrth gyflwyno'r ffurflen, ceisiwch eto.",

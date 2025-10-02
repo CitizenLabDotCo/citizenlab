@@ -2419,6 +2419,7 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet1": "ਕੁਝ ਤਰੀਕਿਆਂ ਦੇ ਨਤੀਜੇ ਸਾਂਝੇ ਕਰਨ (ਜਿਵੇਂ ਕਿ ਵੋਟਿੰਗ ਨਤੀਜੇ) ਨੂੰ ਉਦੋਂ ਤੱਕ ਚਾਲੂ ਨਹੀਂ ਕੀਤਾ ਜਾਵੇਗਾ ਜਦੋਂ ਤੱਕ ਇੱਕ ਸਮਾਪਤੀ ਮਿਤੀ ਨਹੀਂ ਚੁਣੀ ਜਾਂਦੀ।",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "ਜਿਵੇਂ ਹੀ ਤੁਸੀਂ ਇਸ ਤੋਂ ਬਾਅਦ ਇੱਕ ਪੜਾਅ ਜੋੜਦੇ ਹੋ, ਇਹ ਇਸ ਪੜਾਅ ਵਿੱਚ ਇੱਕ ਸਮਾਪਤੀ ਮਿਤੀ ਜੋੜ ਦੇਵੇਗਾ।",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "ਇਸਦੇ ਲਈ ਅੰਤਮ ਮਿਤੀ ਦੀ ਚੋਣ ਨਾ ਕਰਨ ਦਾ ਮਤਲਬ ਹੈ ਕਿ:",
+  "app.containers.AdminPage.ProjectTimeline.phaseTitlePlaceholder": "ਨਵਾਂ ਪੜਾਅ",
   "app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel": "ਝਲਕ",
   "app.containers.AdminPage.ProjectTimeline.saveChangesLabel": "ਤਬਦੀਲੀਆਂ ਨੂੰ ਸੁਰੱਖਿਅਤ ਕਰੋ",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "ਫਾਰਮ ਸਪੁਰਦ ਕਰਨ ਵਿੱਚ ਇੱਕ ਤਰੁੱਟੀ ਸੀ, ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",

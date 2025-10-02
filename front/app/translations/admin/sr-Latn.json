@@ -2419,6 +2419,7 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet1": "Some methods' results sharing (such as voting results) won't be triggered until an end date is selected.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "As soon as you add a phase after this one, it will add an end date to this phase.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "Not selecting an end date for this implies that:",
+  "app.containers.AdminPage.ProjectTimeline.phaseTitlePlaceholder": "New phase",
   "app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel": "Preview",
   "app.containers.AdminPage.ProjectTimeline.saveChangesLabel": "Save changes",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "Došlo je do greške prilikom slanja forme, molimo vas pokušajte ponovo.",

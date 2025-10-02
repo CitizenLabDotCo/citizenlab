@@ -2419,6 +2419,7 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet1": "Bazı yöntemlerin sonuç paylaşımı (oylama sonuçları gibi) bir bitiş tarihi seçilene kadar tetiklenmeyecektir.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "Bundan sonra bir aşama eklediğinizde, bu aşamaya bir bitiş tarihi ekleyecektir.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "Bunun için bir bitiş tarihi seçilmemesi şu anlama gelir:",
+  "app.containers.AdminPage.ProjectTimeline.phaseTitlePlaceholder": "Yeni aşama",
   "app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel": "Önizleme",
   "app.containers.AdminPage.ProjectTimeline.saveChangesLabel": "Değişiklikleri kaydet",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "Form gönderilirken bir hata oluştu, lütfen tekrar deneyin.",

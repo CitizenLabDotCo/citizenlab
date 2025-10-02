@@ -2419,6 +2419,7 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet1": "La publication des résultats de certaines méthodes (comme les résultats des votes) ne sera déclenchée qu'une fois qu'une date de fin aura été sélectionnée.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "Si vous ajoutez une nouvelle phase après celle-ci, une date de fin sera automatiquement ajoutée à cette phase.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "Le fait de ne pas sélectionner de date de fin implique que :",
+  "app.containers.AdminPage.ProjectTimeline.phaseTitlePlaceholder": "Nouvelle phase",
   "app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel": "Aperçu",
   "app.containers.AdminPage.ProjectTimeline.saveChangesLabel": "Enregistrer les modifications",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "Une erreur est survenue lors de la soumission du formulaire, veuillez réessayer.",

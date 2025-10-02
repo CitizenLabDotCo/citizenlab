@@ -2419,6 +2419,7 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet1": "Vissa metoders resultatdelning (t.ex. omröstningsresultat) kommer inte att aktiveras förrän ett slutdatum har valts.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "Så snart du lägger till en fas efter denna, kommer den att lägga till ett slutdatum för denna fas.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "Att inte välja ett slutdatum för detta innebär att:",
+  "app.containers.AdminPage.ProjectTimeline.phaseTitlePlaceholder": "Ny fas",
   "app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel": "Förhandsvisning",
   "app.containers.AdminPage.ProjectTimeline.saveChangesLabel": "Spara ändringar",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "Det uppstod ett fel när formuläret skickades, försök igen.",
