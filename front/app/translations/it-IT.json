@@ -2149,6 +2149,7 @@
   "app.errors.password_too_short": "La password deve essere lunga almeno 8 caratteri",
   "app.errors.resending_code_failed": "Qualcosa è andato storto durante l'invio del codice di conferma.",
   "app.errors.slug_taken": "Questo URL di progetto esiste già. Per favore cambia lo slug del progetto con qualcos'altro.",
+  "app.errors.something_went_wrong": "Qualcosa è andato storto. Contattaci se il problema persiste.",
   "app.errors.tag_name_taken": "Un tag con questo nome esiste già",
   "app.errors.title_multiloc_blank": "Il titolo non può essere vuoto.",
   "app.errors.title_multiloc_includes_banned_words": "Il titolo contiene parole considerate inappropriate.",

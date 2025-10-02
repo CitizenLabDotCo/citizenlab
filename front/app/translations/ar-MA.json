@@ -2149,6 +2149,7 @@
   "app.errors.password_too_short": "يجب ألّا يقل طول كلمة المرور عن 8 حروف",
   "app.errors.resending_code_failed": "حدث خطأ ما أثناء إرسال رمز التأكيد.",
   "app.errors.slug_taken": "عنوان URL للمشروع هذا موجود فعلاً. يرجى تغيير معرِّف صفحة المشروع إلى شيء آخر.",
+  "app.errors.something_went_wrong": "حدث خطأ ما. يُرجى التواصل معنا إذا استمرت المشكلة.",
   "app.errors.tag_name_taken": "توجد بالفعل علامة بهذا الاسم",
   "app.errors.title_multiloc_blank": "لا يمكن أن يكون العنوان فارغًا.",
   "app.errors.title_multiloc_includes_banned_words": "يحتوي العنوان على كلمات تعتبر غير مناسبة.",

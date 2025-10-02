@@ -2149,6 +2149,7 @@
   "app.errors.password_too_short": "Rhaid i'r cyfrinair fod o leiaf 8 nod",
   "app.errors.resending_code_failed": "Aeth rhywbeth o'i le wrth anfon y cod cadarnhau.",
   "app.errors.slug_taken": "Mae URL y prosiect hwn eisoes yn bodoli. Newidiwch wlithen y prosiect i rywbeth arall.",
+  "app.errors.something_went_wrong": "Aeth rhywbeth o'i le. Cysylltwch â ni os yw'r broblem yn parhau.",
   "app.errors.tag_name_taken": "Mae tag gyda'r enw hwn eisoes yn bodoli",
   "app.errors.title_multiloc_blank": "Ni all y teitl fod yn wag.",
   "app.errors.title_multiloc_includes_banned_words": "Mae'r teitl yn cynnwys geiriau sy'n cael eu hystyried yn amhriodol.",
