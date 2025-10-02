@@ -6,8 +6,6 @@ require 'tiktoken_ruby'
 module Analysis
   module LLM
     class AzureOpenAI < Base
-      MAX_RETRIES = 20
-
       class << self
         def gpt_model
           raise NotImplementedError
@@ -27,64 +25,52 @@ module Analysis
         end
       end
 
-      def initialize(**params)
+      attr_reader :response_client
+
+      def initialize(**client_config)
         super
 
-        @client = OpenAI::Client.new(
+        @response_client = OpenAI::Client.new(
           access_token: ENV.fetch('AZURE_OPENAI_API_KEY'),
-          uri_base: [ENV.fetch('AZURE_OPENAI_URI'), '/openai/deployments/', self.class.azure_deployment_name].join,
+          uri_base: "#{ENV.fetch('AZURE_OPENAI_URI')}/openai/v1/",
           api_type: :azure,
-          api_version: '2025-01-01-preview',
           request_timeout: 900,
-          **params
-        )
+          **client_config
+        ).responses
       end
 
-      def chat(prompt, **params)
-        response = chat_with_retry(**default_prompt_params(prompt).deep_merge(params))
-        response.dig('choices', 0, 'message', 'content')
-      end
+      def response(message, **params)
+        parameters = default_params.merge(input: message).deep_merge(params)
 
-      def chat_async(prompt, **params)
-        params_with_stream = default_prompt_params(prompt)
-        params_with_stream[:parameters][:stream] = proc do |chunk, _bytesize|
-          new_text = chunk.dig('choices', 0, 'delta', 'content')
-          yield new_text
+        if block_given?
+          parameters[:stream] = proc do |chunk, _event|
+            yield chunk['delta'] if chunk['type'] == 'response.output_text.delta'
+          end
         end
-        chat_with_retry(**params_with_stream.deep_merge(params))
+
+        response_client.create(parameters:)
       end
+
+      def chat(...)
+        # response returns "" if streaming is used
+        response(...).presence&.dig('output', 0, 'content', 0, 'text')
+      end
+      alias chat_async chat
 
       def token_count(str)
         enc = Tiktoken.encoding_for_model(self.class.gpt_model)
         enc.encode(str).size
       end
 
-      def default_prompt_params(prompt)
-        {
-          parameters: {
-            model: self.class.gpt_model,
-            messages: [{ role: 'user', content: prompt }],
-            temperature: 0.2,
-            top_p: 0.5,
-            frequency_penalty: 0.1
-          }
-        }
-      end
-
       private
 
-      def chat_with_retry(retries: MAX_RETRIES, **params)
-        @client.chat(**params)
-      rescue Faraday::TooManyRequestsError => e
-        if retries <= 1
-          ErrorReporter.report_msg('API request to Azure OpenAI failed', extra: { response: e.response })
-          raise
-        end
-
-        # Retry after waiting between 20 and 60 seconds
-        sleep_time = rand(20..60)
-        sleep(sleep_time)
-        chat_with_retry(retries: retries - 1, **params)
+      def default_params
+        {
+          model: self.class.azure_deployment_name,
+          temperature: 0.2,
+          top_p: 0.5,
+          store: false # prevent OpenAI from storing the prompts and responses
+        }
       end
     end
   end
