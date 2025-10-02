@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-import { Box, colors, fontSizes } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  fontSizes,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
 import { Subscription } from 'rxjs';
 import styled from 'styled-components';
@@ -11,12 +16,16 @@ import useGroups from 'api/groups/useGroups';
 import useUsersCount from 'api/users_count/useUsersCount';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocalize from 'hooks/useLocalize';
 
 import Outlet from 'components/Outlet';
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+import ProjectFilter from 'components/UI/ProjectFilter';
+import SearchInput from 'components/UI/SearchInput';
 
 import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import Link from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
@@ -141,13 +150,26 @@ const MembersCount = styled.span`
   margin-left: 12px;
 `;
 
+const StyledSearchInput = styled(SearchInput)`
+  input {
+    border-color: ${colors.borderLight};
+  }
+`;
+
 export interface Props {
   className?: string;
   onCreateGroup: () => void;
 }
 
 export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
-  const { data: groups } = useGroups({});
+  const localize = useLocalize();
+  const { formatMessage } = useIntl();
+  const [search, setSearch] = useState<string | undefined>(undefined);
+  const [projectId, setProjectId] = useState<string | undefined>(undefined);
+  const { data: groups } = useGroups({
+    search,
+    projectId,
+  });
   const { data: usersCount } = useUsersCount();
   const [highlightedGroups, setHighlightedGroups] = useState(
     new Set<IGroupData['id']>()
@@ -244,26 +266,46 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
         </ButtonWrapper>
       </MenuTitle>
       <GroupsList className="e2e-groups-list">
+        <Box display="flex" mb="16px" gap="8px" flexDirection="column">
+          <StyledSearchInput
+            defaultValue={search}
+            onChange={(value) => setSearch(value ?? undefined)}
+            a11y_numberOfSearchResults={groups ? groups.data.length : 0}
+            size="small"
+            placeholder=" "
+          />
+          <ProjectFilter
+            onProjectFilter={(filter) => setProjectId(filter.value)}
+            selectedProjectId={projectId}
+            placeholder={formatMessage(messages.projectFilterPlaceholder)}
+          />
+        </Box>
+
         {groups &&
           groups.data.map((group) => (
-            <MenuLink
+            <Tooltip
               key={group.id}
-              to={`/admin/users/${group.id}`}
-              className={() =>
-                `${highlightedGroups.has(group.id) ? 'highlight' : ''}`
-              }
+              content={localize(group.attributes.title_multiloc)}
             >
-              <Outlet
-                id="app.containers.Admin.users.GroupsListPanel.listitem.icon"
-                type={group.attributes.membership_type}
-              />
-              <GroupName>
-                <T value={group.attributes.title_multiloc} />
-              </GroupName>
-              <MembersCount className="e2e-group-user-count">
-                {group.attributes.memberships_count}
-              </MembersCount>
-            </MenuLink>
+              <MenuLink
+                key={group.id}
+                to={`/admin/users/${group.id}`}
+                className={() =>
+                  `${highlightedGroups.has(group.id) ? 'highlight' : ''}`
+                }
+              >
+                <Outlet
+                  id="app.containers.Admin.users.GroupsListPanel.listitem.icon"
+                  type={group.attributes.membership_type}
+                />
+                <GroupName>
+                  <T value={group.attributes.title_multiloc} />
+                </GroupName>
+                <MembersCount className="e2e-group-user-count">
+                  {group.attributes.memberships_count}
+                </MembersCount>
+              </MenuLink>
+            </Tooltip>
           ))}
       </GroupsList>
       <Box display="flex" flexGrow={1} />

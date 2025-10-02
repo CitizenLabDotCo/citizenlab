@@ -26,6 +26,7 @@ import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
 import EmailAndPasswordVerifiedActions from './steps/EmailAndPasswordVerifiedActions';
 import EmailConfirmation from './steps/EmailConfirmation';
 import Invitation from './steps/Invitation';
+import InvitationResent from './steps/InvitationResent';
 import LightFlowStart from './steps/LightFlowStart';
 import Onboarding from './steps/Onboarding';
 import Password from './steps/Password';
@@ -304,6 +305,10 @@ const AuthModal = () => {
             authenticationData={authenticationData}
             onClose={transition(currentStep, 'CLOSE')}
           />
+        )}
+
+        {currentStep === 'taken-by-invite' && (
+          <InvitationResent state={state} />
         )}
       </Box>
     </Modal>

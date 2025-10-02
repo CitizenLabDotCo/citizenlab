@@ -7,8 +7,6 @@ import {
   useParams,
 } from 'react-router-dom';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import NavigationTabs from 'components/admin/NavigationTabs';
 import Tab from 'components/admin/NavigationTabs/Tab';
 import NewLabel from 'components/UI/NewLabel';
@@ -22,10 +20,6 @@ const AdminProjectsProjectIndex = () => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
   const { projectId } = useParams() as { projectId: string };
-
-  const isDataRepositoryEnabled = useFeatureFlag({
-    name: 'data_repository',
-  });
 
   return (
     <div data-cy="e2e-admin-projects-project-index">
@@ -63,19 +57,17 @@ const AdminProjectsProjectIndex = () => {
           url={`/admin/projects/${projectId}/events`}
           active={pathname.includes(`/admin/projects/${projectId}/events`)}
         />
-        {isDataRepositoryEnabled && (
-          <Tab
-            className="intercom-admin-project-files-tab"
-            label={
-              <Box display="flex" alignItems="center" gap="8px">
-                {formatMessage(messages.filesTab)}
-                <NewLabel />
-              </Box>
-            }
-            url={`/admin/projects/${projectId}/files`}
-            active={pathname.includes(`/admin/projects/${projectId}/files`)}
-          />
-        )}
+        <Tab
+          className="intercom-admin-project-files-tab"
+          label={
+            <Box display="flex" alignItems="center" gap="8px">
+              {formatMessage(messages.filesTab)}
+              <NewLabel />
+            </Box>
+          }
+          url={`/admin/projects/${projectId}/files`}
+          active={pathname.includes(`/admin/projects/${projectId}/files`)}
+        />
       </NavigationTabs>
       <RouterOutlet />
     </div>

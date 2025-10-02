@@ -49,7 +49,12 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      { 'Invite' => { 'created' => true } }
+      {
+        'Invite' => {
+          'created' => true,
+          'resent' => true
+        }
+      }
     end
 
     def filter_recipient(users_scope, activity:, time: nil)

@@ -4,7 +4,7 @@ import { isNil } from 'utils/helperUtils';
 
 import useTotalSeats from './useTotalSeats';
 
-interface NewlyAddedSeats {
+export interface NewlyAddedSeats {
   newlyAddedAdminsNumber?: number;
   newlyAddedModeratorsNumber?: number;
 }

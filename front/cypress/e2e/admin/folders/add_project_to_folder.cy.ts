@@ -99,6 +99,18 @@ describe('Admin: add projects to folder', async () => {
         cy.get('#e2e-folder-page').contains(folderTitle).should('exist');
         cy.get('#e2e-folder-page').contains(projectTitle1).should('exist');
         cy.get('#e2e-folder-page').contains(projectTitle2).should('exist');
+
+        // Navigate to one of the projects in the folder
+        cy.visit(`/admin/projects/${projectId1}`);
+
+        // Open folder projects dropdown
+        cy.dataCy('e2e-folder-preview-open-projects-dropdown').should(
+          'be.visible'
+        );
+        cy.dataCy('e2e-folder-preview-open-projects-dropdown').click();
+
+        // Check that folder projects are visible in the dropdown
+        cy.contains(projectTitle2).should('exist');
       });
     });
   });

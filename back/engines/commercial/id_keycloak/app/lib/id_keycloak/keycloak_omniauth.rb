@@ -6,8 +6,8 @@ module IdKeycloak
 
     def profile_to_user_attrs(auth)
       {
-        first_name: auth.info.first_name,
-        last_name: auth.info.last_name,
+        first_name: format_name(auth.info.first_name),
+        last_name: format_name(auth.info.last_name),
         email: auth.info.email,
         locale: AppConfiguration.instance.closest_locale_to('nb-NO') # No need to get the locale from the provider
       }
@@ -61,6 +61,15 @@ module IdKeycloak
 
     def updateable_user_attrs
       super + %i[first_name last_name]
+    end
+
+    private
+
+    # Proper case the returned Captialised name - capitalize first letter of each part, lowercase the rest
+    def format_name(name)
+      return unless name
+
+      name.downcase.split(/[\s-]/).map(&:capitalize).join(name.include?('-') ? '-' : ' ')
     end
   end
 end
