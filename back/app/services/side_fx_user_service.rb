@@ -66,6 +66,20 @@ class SideFxUserService
     LogActivityJob.perform_later(user, 'unblocked', current_user, user.updated_at.to_i)
   end
 
+  def after_error(user)
+    return unless user.errors.details[:email].any? { |e| e[:code] == 'zrb-42' }
+
+    # We pass AppConfiguration.instance as item (required)
+    # because the user is not saved and has no ID.
+    LogActivityJob.perform_later(
+      AppConfiguration.instance,
+      'blacklisted_email_domain_used',
+      nil,
+      Time.current,
+      payload: { email: user.email }
+    )
+  end
+
   private
 
   def after_roles_changed(current_user, user)
