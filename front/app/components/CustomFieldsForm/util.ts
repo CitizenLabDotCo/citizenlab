@@ -49,32 +49,34 @@ const isNillish = (value: any) => {
 
 type GetFormCompletionPercentageParams = {
   pageQuestions: IFlatCustomField[];
-  currentPageNumber: number;
-  lastPageNumber: number;
+  currentPageIndex: number;
+  lastPageIndex: number;
   formValues: Record<string, any>;
   userIsEditing: boolean;
 };
 
 export function getFormCompletionPercentage({
   pageQuestions,
-  currentPageNumber, // actually page index
-  lastPageNumber, // actually page index
+  currentPageIndex, // actually page index
+  lastPageIndex, // actually page index
   formValues,
   userIsEditing,
 }: GetFormCompletionPercentageParams) {
-  const userIsOnLastPage = currentPageNumber === lastPageNumber;
+  const userIsOnLastPage = currentPageIndex === lastPageIndex;
 
   if (userIsOnLastPage || userIsEditing) {
     return 100;
   }
 
+  const lastPageNumber = lastPageIndex + 1;
+
   // We will calculate the completion percentage based on:
   // 1. the page number the user is on
   // 2. the number of questions answered on the current page
-  const percentagePerPage = 100 / lastPageNumber + 1;
+  const percentagePerPage = 100 / lastPageNumber;
 
   // 1. Calculate the percentage based on the page number
-  const pageNumberPercentage = percentagePerPage * currentPageNumber;
+  const pageNumberPercentage = percentagePerPage * currentPageIndex;
 
   // 2. Add a percentage based on the number of questions answered on the current page
   const numberOfQuestionsOnPage = pageQuestions.length;

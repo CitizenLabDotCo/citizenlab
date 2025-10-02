@@ -40,9 +40,9 @@ type SurveyPage = {
   page: IFlatCustomField;
   pages: Pages;
   pageQuestions: IFlatCustomField[];
-  currentPageNumber: number;
-  setCurrentPageNumber: React.Dispatch<React.SetStateAction<number>>;
-  lastPageNumber: number;
+  currentPageIndex: number;
+  setCurrentPageIndex: React.Dispatch<React.SetStateAction<number>>;
+  lastPageIndex: number;
   participationMethod?: ParticipationMethod;
   ideaId?: string;
   projectId: string;
@@ -61,13 +61,13 @@ const SurveyPage = ({
   page,
   pages,
   pageQuestions,
-  lastPageNumber,
+  lastPageIndex,
   participationMethod,
   ideaId: initialIdeaId,
   projectId,
   onSubmit,
-  currentPageNumber,
-  setCurrentPageNumber,
+  currentPageIndex,
+  setCurrentPageIndex,
   phase,
   defaultValues,
 }: SurveyPage) => {
@@ -97,7 +97,7 @@ const SurveyPage = ({
     useEsriMapPage({
       project,
       pages,
-      currentPageNumber,
+      currentPageIndex,
       localize,
     });
 
@@ -115,7 +115,7 @@ const SurveyPage = ({
 
   const onFormSubmit = async (formValues: FormValues) => {
     // Go to the project page if this is the last page
-    if (currentPageNumber === lastPageNumber) {
+    if (currentPageIndex === lastPageIndex) {
       clHistory.push({
         pathname: `/projects/${project?.data.attributes.slug}`,
       });
@@ -126,11 +126,11 @@ const SurveyPage = ({
       setShowFormFeedback(false);
       await onSubmit({
         formValues,
-        isSubmitPage: nextPageNumber === lastPageNumber,
+        isSubmitPage: nextPageNumber === lastPageIndex,
       });
       // Go to the next page
-      if (currentPageNumber < lastPageNumber) {
-        setCurrentPageNumber(nextPageNumber);
+      if (currentPageIndex < lastPageIndex) {
+        setCurrentPageIndex(nextPageNumber);
       }
     } catch (error) {
       // Only show feedback if the form submission failed
@@ -148,8 +148,8 @@ const SurveyPage = ({
 
   const formCompletionPercentage = getFormCompletionPercentage({
     pageQuestions,
-    currentPageNumber,
-    lastPageNumber,
+    currentPageIndex,
+    lastPageIndex,
     formValues: methods.getValues(),
     userIsEditing: false,
   });
@@ -161,7 +161,7 @@ const SurveyPage = ({
 
   const handlePrevious = () => {
     pageRef.current?.scrollTo(0, 0);
-    setCurrentPageNumber(previousPageNumber);
+    setCurrentPageIndex(previousPageNumber);
   };
 
   return (
@@ -173,11 +173,11 @@ const SurveyPage = ({
           flexDirection={isMobileOrSmaller ? 'column' : 'row'}
           height="100%"
           w="100%"
-          data-cy={`e2e-page-number-${currentPageNumber + 1}`}
+          data-cy={`e2e-page-number-${currentPageIndex + 1}`}
         >
           {shouldShowMap && (
             <PageEsriMap
-              currentPageNumber={currentPageNumber}
+              currentPageIndex={currentPageIndex}
               mapConfig={mapConfig}
               mapLayers={mapLayers}
               draggableDivRef={draggableDivRef}
@@ -224,7 +224,7 @@ const SurveyPage = ({
                         phase={phase}
                         participationMethod={participationMethod}
                       />
-                      {currentPageNumber === lastPageNumber &&
+                      {currentPageIndex === lastPageIndex &&
                         idea &&
                         showIdeaId && (
                           <SubmissionReference
@@ -240,13 +240,13 @@ const SurveyPage = ({
           </Box>
           <PageFooter
             variant={
-              currentPageNumber === lastPageNumber
+              currentPageIndex === lastPageIndex
                 ? 'after-submission'
-                : nextPageNumber === lastPageNumber
+                : nextPageNumber === lastPageIndex
                 ? 'submission'
                 : 'other'
             }
-            hasPreviousPage={currentPageNumber > 0}
+            hasPreviousPage={currentPageIndex > 0}
             handleNextAndSubmit={handleNextAndSubmit}
             handlePrevious={handlePrevious}
             formCompletionPercentage={formCompletionPercentage}
@@ -259,7 +259,7 @@ const SurveyPage = ({
             isAdminPage={isAdminPage}
             isMapPage={isMapPage}
             pageQuestions={pageQuestions}
-            currentPageNumber={currentPageNumber}
+            currentPageIndex={currentPageIndex}
           />
         </Box>
       </StyledForm>
