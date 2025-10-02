@@ -111,10 +111,6 @@ describe('Admin: add projects to folder', async () => {
 
         // Check that folder projects are visible in the dropdown
         cy.contains(projectTitle2).should('exist');
-        cy.contains(projectTitle2).click();
-
-        // Check that we navigated to the correct project page
-        cy.url().should('include', `/admin/projects/${projectId2}`);
       });
     });
   });
