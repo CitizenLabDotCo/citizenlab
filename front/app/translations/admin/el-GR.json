@@ -755,6 +755,7 @@
   "app.containers.Admin.Users.options": "Options",
   "app.containers.Admin.Users.permissionToBuy": "Για να δώσετε στο {name} δικαιώματα διαχειριστή, πρέπει να αγοράσετε 1 επιπλέον θέση.",
   "app.containers.Admin.Users.platformAdmin": "Διαχειριστής πλατφόρμας",
+  "app.containers.Admin.Users.projectFilterPlaceholder": "Filter by project",
   "app.containers.Admin.Users.projectManager": "Διαχειριστής έργου",
   "app.containers.Admin.Users.reachedLimitMessage": "Έχετε φτάσει στο όριο των θέσεων στο πρόγραμμά σας, θα προστεθεί 1 επιπλέον θέση για το {name} .",
   "app.containers.Admin.Users.registeredUser": "Εγγεγραμμένος χρήστης",
