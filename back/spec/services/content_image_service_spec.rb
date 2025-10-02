@@ -41,7 +41,7 @@ describe ContentImageService do
         :text_reference
       end
 
-      def precompute_for_rendering(_multiloc, _imageable, _field)
+      def precompute_for_rendering(_imageable)
         @precomputed_content_images = content_image_class.all.index_by do |ti|
           ti[code_attribute_for_model]
         end

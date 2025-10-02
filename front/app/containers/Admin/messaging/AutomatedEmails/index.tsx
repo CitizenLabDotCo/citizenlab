@@ -29,7 +29,6 @@ const AutomatedEmails = () => {
   const { data: campaigns } = useCampaigns({
     withoutCampaignNames: [
       'manual',
-      'invite_received',
       ...(isInternalCommentingEnabled ? [] : internalCommentNotificationTypes),
     ],
     pageSize: 250,

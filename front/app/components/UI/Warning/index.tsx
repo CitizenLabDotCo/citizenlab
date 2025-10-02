@@ -1,6 +1,8 @@
 import React from 'react';
 
 import {
+  Box,
+  BoxProps,
   Icon,
   IconNames,
   colors,
@@ -10,7 +12,7 @@ import {
 import { darken } from 'polished';
 import styled from 'styled-components';
 
-const Container = styled.div`
+const Container = styled(Box)`
   display: flex;
   align-items: center;
   padding: 14px;
@@ -69,16 +71,22 @@ const Text = styled.div`
   }
 `;
 
-export interface Props {
+export type Props = {
   children: string | JSX.Element;
   icon?: IconNames;
   className?: string;
   hideIcon?: boolean;
-}
+} & BoxProps;
 
-const Warning = ({ children, icon, className, hideIcon }: Props) => {
+const Warning = ({
+  children,
+  icon,
+  className,
+  hideIcon,
+  ...boxProps
+}: Props) => {
   return (
-    <Container className={`${className || ''}`}>
+    <Container className={`${className || ''}`} {...boxProps}>
       {!hideIcon && <StyledIcon name={icon || 'info-outline'} />}
       <Text>{children}</Text>
     </Container>

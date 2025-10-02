@@ -2,8 +2,6 @@ import React from 'react';
 
 import { SupportedLocale } from 'typings';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import messages from 'containers/ProjectDescriptionBuilder/messages';
 
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
@@ -33,10 +31,6 @@ const ProjectDescriptionBuilderToolbox = ({
   selectedLocale,
 }: ProjectDescriptionBuilderToolboxProps) => {
   const { formatMessage } = useIntl();
-
-  const isDataRepositoryEnabled = useFeatureFlag({
-    name: 'data_repository',
-  });
 
   return (
     <Container
@@ -98,14 +92,12 @@ const ProjectDescriptionBuilderToolbox = ({
           icon="button"
           label={formatMessage(ButtonMultiloc.craft.custom.title)}
         />
-        {isDataRepositoryEnabled && (
-          <DraggableElement
-            id="e2e-draggable-file-attachment"
-            component={<FileAttachment />}
-            icon="file"
-            label={formatMessage(FileAttachment.craft.custom.title)}
-          />
-        )}
+        <DraggableElement
+          id="e2e-draggable-file-attachment"
+          component={<FileAttachment />}
+          icon="file"
+          label={formatMessage(FileAttachment.craft.custom.title)}
+        />
         <DraggableElement
           id="e2e-draggable-image"
           component={<ImageMultiloc />}
@@ -133,7 +125,7 @@ const ProjectDescriptionBuilderToolbox = ({
         />
         <DraggableElement
           id="e2e-draggable-accordion"
-          component={<AccordionMultiloc title={{}} text={{}} />}
+          component={<AccordionMultiloc title={{}} />}
           icon="accordion"
           label={formatMessage(AccordionMultiloc.craft.custom.title)}
         />

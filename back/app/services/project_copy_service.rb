@@ -21,6 +21,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       import_log = ["Copied project: #{project.title_multiloc.values.first}"]
       import_log << "Translated strings: #{translate_logs[:strings]}"
       import_log << "Translated chars: #{translate_logs[:chars]}"
+      import_log << "Models translated - #{translate_logs[:models].map { |k, v| "#{k}: #{v}" }.join(', ')}"
       BulkImportIdeas::ProjectImport.create!(project: project, log: import_log, import_type: 'project_copy')
     end
 
@@ -79,7 +80,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       limit_num_ideas = max_ideas && @project.ideas.published.count > max_ideas
       exported_ideas = limit_num_ideas ? @project.ideas.published.sample(max_ideas) : @project.ideas.published
 
-      @template['models']['user']                   = yml_users anonymize_users, exported_ideas, shift_timestamps: shift_timestamps
+      @template['models']['user']                   = yml_users anonymize_users, exported_ideas, limit_num_ideas, shift_timestamps: shift_timestamps
       @template['models']['idea']                   = yml_ideas exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['basket']                 = yml_baskets shift_timestamps: shift_timestamps
       @template['models']['baskets_idea']           = yml_baskets_ideas exported_ideas
@@ -368,7 +369,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       if phase.pmethod.supports_survey_form?
         yml_phase['native_survey_title_multiloc'] = phase.native_survey_title_multiloc
         yml_phase['native_survey_button_multiloc'] = phase.native_survey_button_multiloc
-        yml_phase['user_fields_in_form'] = phase.user_fields_in_form
       end
 
       store_ref yml_phase, phase.id, :phase
@@ -472,7 +472,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     end
   end
 
-  def yml_users(anonymize_users, exported_ideas, shift_timestamps: 0)
+  def yml_users(anonymize_users, exported_ideas, limit_num_ideas, shift_timestamps: 0)
     service = AnonymizeUserService.new
     user_ids = []
     idea_ids = exported_ideas.pluck(:id)
@@ -481,13 +481,14 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     user_ids += Comment.where(id: comment_ids).pluck(:author_id)
     reaction_ids = Reaction.where(reactable_id: [idea_ids + comment_ids]).ids
     user_ids += Reaction.where(id: reaction_ids).pluck(:user_id)
-    user_ids += Basket.where(phase: Phase.where(project: @project)).pluck(:user_id)
+    user_ids += Basket.joins(:baskets_ideas).where(baskets_ideas: { idea_id: idea_ids }).pluck(:user_id)
     user_ids += OfficialFeedback.where(idea_id: idea_ids).pluck(:user_id)
-    user_ids += Follower.where(followable_id: ([@project.id] + idea_ids)).pluck(:user_id)
+    user_ids += Follower.where(followable_id: ([@project.id] + idea_ids)).pluck(:user_id) unless limit_num_ideas
     user_ids += Volunteering::Volunteer.where(cause: Volunteering::Cause.where(phase: Phase.where(project: @project))).pluck :user_id
     user_ids += Events::Attendance.where(event: @project.events).pluck :attendee_id
 
-    User.where(id: user_ids.uniq).map do |user|
+    @user_ids = user_ids.uniq # set globally so we can restrict follower export later
+    User.where(id: @user_ids).map do |user|
       yml_user = if anonymize_users
         service.anonymized_attributes AppConfiguration.instance.settings('core', 'locales'), user: user
       else
@@ -604,7 +605,9 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'permission_scope_ref' => lookup_ref(p.permission_scope_id, :phase),
         'global_custom_fields' => p.global_custom_fields,
         'created_at' => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
-        'updated_at' => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601
+        'updated_at' => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601,
+        'user_fields_in_form' => p.user_fields_in_form,
+        'user_data_collection' => p.user_data_collection
       }
       store_ref yml_permission, p.id, :permission
       yml_permission
@@ -752,8 +755,8 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   end
 
   def yml_followers(exported_ideas, shift_timestamps: 0)
-    followers = Follower.where(followable: @project)
-      .or(Follower.where(followable: exported_ideas))
+    followers = Follower.where(followable: @project, user_id: @user_ids)
+      .or(Follower.where(followable: exported_ideas, user_id: @user_ids))
 
     followers.map do |follower|
       {

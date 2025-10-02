@@ -127,9 +127,26 @@ module ParticipationMethod
       false
     end
 
+    # Attribute used interally by backend to determine if user fields should be shown in the form
     def user_fields_in_form?
-      phase.user_fields_in_form
+      return false if posting_permission.nil?
+      return false if posting_permission.user_data_collection == 'anonymous'
+
+      case posting_permission.permitted_by
+      when 'everyone'
+        !posting_permission.permissions_custom_fields.empty?
+      when 'everyone_confirmed_email'
+        posting_permission.user_fields_in_form && !posting_permission.permissions_custom_fields.empty?
+      else
+        if posting_permission.global_custom_fields == true
+          posting_permission.user_fields_in_form
+        else
+          posting_permission.user_fields_in_form && !posting_permission.permissions_custom_fields.empty?
+        end
+      end
     end
+
+    delegate :user_data_collection, to: :posting_permission
 
     private
 
@@ -153,6 +170,13 @@ module ParticipationMethod
         title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.title_text_3'),
         description_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.description_text_3'),
         include_in_printed_form: false
+      )
+    end
+
+    def posting_permission
+      @posting_permission ||= Permission.find_by(
+        permission_scope_id: phase.id,
+        action: 'posting_idea'
       )
     end
   end

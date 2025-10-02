@@ -644,6 +644,7 @@ ca:
         user_is_given_admin_rights: 'L''usuari té drets d''administrador'
         user_is_given_folder_moderator_rights: 'L''usuari té drets de moderador de carpetes'
         user_is_given_project_moderator_rights: 'L''usuari té drets de moderador del projecte'
+        user_is_invited_to_platform: 'L''usuari està convidat a la plataforma'
         user_is_invited_to_cosponsor_a_proposal: 'Es convida l''usuari a copatrocinar una proposta'
         user_is_mentioned: 'S''esmenta l''usuari'
         user_is_mentioned_in_internal_comment: 'L''usuari s''esmenta al comentari intern'

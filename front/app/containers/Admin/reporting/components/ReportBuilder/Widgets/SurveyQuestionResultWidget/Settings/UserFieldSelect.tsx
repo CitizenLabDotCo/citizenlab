@@ -25,7 +25,7 @@ const UserFieldSelect = ({ userFieldId, onChange }: Props) => {
     <BaseUserFieldSelect
       userFieldId={userFieldId}
       userFields={userFields?.data}
-      label={formatMessage(messages.groupByRegistrationField)}
+      label={formatMessage(messages.groupByDemographicQuestion)}
       onChange={onChange}
     />
   );

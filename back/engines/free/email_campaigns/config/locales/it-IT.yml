@@ -644,6 +644,7 @@ it:
         user_is_given_admin_rights: 'All''utente vengono concessi i diritti di amministratore'
         user_is_given_folder_moderator_rights: 'All''utente vengono concessi i diritti di moderatore della cartella'
         user_is_given_project_moderator_rights: 'All''utente vengono concessi i diritti di moderatore del progetto'
+        user_is_invited_to_platform: 'L''utente è invitato alla piattaforma'
         user_is_invited_to_cosponsor_a_proposal: 'L''utente è invitato a co-sponsorizzare una proposta'
         user_is_mentioned: 'L''utente è menzionato'
         user_is_mentioned_in_internal_comment: 'L''utente è menzionato in un commento interno'
