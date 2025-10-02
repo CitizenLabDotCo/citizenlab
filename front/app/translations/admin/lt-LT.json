@@ -2419,6 +2419,7 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet1": "Kai kurių metodų rezultatų dalijimasis (pvz., balsavimo rezultatų) nebus aktyvuotas, kol nebus pasirinkta pabaigos data.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "Kai tik po šio etapo pridėsite kitą etapą, prie šio etapo bus pridėta pabaigos data.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "Tai reiškia, kad nepasirinkus galutinės datos:",
+  "app.containers.AdminPage.ProjectTimeline.phaseTitlePlaceholder": "Naujas etapas",
   "app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel": "Peržiūra",
   "app.containers.AdminPage.ProjectTimeline.saveChangesLabel": "Išsaugoti pakeitimus",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "Įvyko klaida pateikiant formą, pabandykite dar kartą.",
