@@ -2149,6 +2149,7 @@
   "app.errors.password_too_short": "Het wachtwoord moet minstens 8 tekens lang zijn",
   "app.errors.resending_code_failed": "Er is iets misgegaan bij het verzenden van de bevestigingscode.",
   "app.errors.slug_taken": "Deze project-URL bestaat al. Verander de slug in iets anders.",
+  "app.errors.something_went_wrong": "Er is iets misgegaan. Neem contact met ons op als het probleem zich blijft voordoen.",
   "app.errors.tag_name_taken": "Er bestaat al een tag met deze naam",
   "app.errors.title_multiloc_blank": "De titel kan niet leeg zijn.",
   "app.errors.title_multiloc_includes_banned_words": "De titel bevat woorden die als ongepast worden beschouwd.",
