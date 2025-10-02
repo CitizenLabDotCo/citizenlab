@@ -2155,6 +2155,7 @@
   "app.errors.password_too_short": "Lozinka mora sadržati najmanje 8 znakova",
   "app.errors.resending_code_failed": "Nešto nije u redu prilikom slanja potvrdnog koda.",
   "app.errors.slug_taken": "Ovaj URL projekta već postoji. Molimo vas izmijenite „puž“ projekta.",
+  "app.errors.something_went_wrong": "Nešto je pošlo po zlu. Kontaktirajte nas ako se problem nastavi.",
   "app.errors.tag_name_taken": "Oznaka s ovim nazivom već postoji",
   "app.errors.title_multiloc_blank": "Naziv ne može biti prazan.",
   "app.errors.title_multiloc_includes_banned_words": "Naslov sadrži riječi koje se smatraju neprikladnima.",
