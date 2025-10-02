@@ -755,6 +755,7 @@
   "app.containers.Admin.Users.options": "Optionen",
   "app.containers.Admin.Users.permissionToBuy": "Um {name} Admin-Zugang zu gewähren, müssen Sie einen zusätzlichen Zugang kaufen.",
   "app.containers.Admin.Users.platformAdmin": "Plattform-Admin",
+  "app.containers.Admin.Users.projectFilterPlaceholder": "Nach Projekt filtern",
   "app.containers.Admin.Users.projectManager": "Projektmanager*in",
   "app.containers.Admin.Users.reachedLimitMessage": "Sie haben die Höchstzahl an Zugängen in Ihrer Lizenz erreicht. Ein zusätzlicher Zugang für {name} wird hinzugefügt.",
   "app.containers.Admin.Users.registeredUser": "Registrierte*r Nutzer*in",
