@@ -13,10 +13,6 @@ module Analysis
           raise NotImplementedError
         end
 
-        def headroom_ratio
-          0.85
-        end
-
         # On Azure, each model needs to be deployed separately and given its own
         # name. To avoid having to introduce an extra deployment_name parameter
         # per model in our configuration, we derive the deployment name from the
@@ -24,6 +20,10 @@ module Analysis
         # deployment names.
         def azure_deployment_name
           gpt_model.gsub(/[^\w.-]/, '')
+        end
+
+        def headroom_ratio
+          0.85
         end
       end
 
