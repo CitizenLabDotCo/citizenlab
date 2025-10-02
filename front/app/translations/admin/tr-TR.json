@@ -755,6 +755,7 @@
   "app.containers.Admin.Users.options": "Seçenekler",
   "app.containers.Admin.Users.permissionToBuy": "{name} yönetici haklarını vermek için 1 ek koltuk satın almanız gerekir.",
   "app.containers.Admin.Users.platformAdmin": "Platform yöneticisi",
+  "app.containers.Admin.Users.projectFilterPlaceholder": "Projeye göre filtrele",
   "app.containers.Admin.Users.projectManager": "Proje Yöneticisi",
   "app.containers.Admin.Users.reachedLimitMessage": "Planınızdaki koltuk sınırına ulaştınız, {name} için 1 ek koltuk eklenecektir.",
   "app.containers.Admin.Users.registeredUser": "Kayıtlı kullanıcı",
