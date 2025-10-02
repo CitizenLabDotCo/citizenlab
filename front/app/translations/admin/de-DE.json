@@ -1015,7 +1015,7 @@
   "app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.thisWidgetShows": "Dieses Widget zeigt <b>Projekte</b> an <b>, die abgeschlossen und/oder archiviert sind.</b>\"Abgeschlossen\" umfasst auch Projekte, die sich in der letzten Phase befinden und bei denen die letzte Phase ein Bericht ist.",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.title": "Abgeschlossene Projekte",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.youSaidWeDid": "Abgeschlossene Projekte",
-  "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.accessWarning": "In der Navigationsleiste werden nur Projekte oder Ordner angezeigt, auf die der Benutzer Zugriff hat.",
+  "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.accessWarning": "In der Navigationsleiste werden nur Projekte oder Ordner angezeigt, auf die die Person Zugriff hat.",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.accessWarningProjectOnly": "In der Navigationsleiste werden nur Projekte angezeigt, auf die Nutzer*innen Zugriff haben.",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.emptyNameErrorText": "Geben Sie einen Namen für alle Sprachen an",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.emptyProjectError": "Das Projekt kann nicht leer sein",
