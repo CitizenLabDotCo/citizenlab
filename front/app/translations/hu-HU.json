@@ -2149,6 +2149,7 @@
   "app.errors.password_too_short": "A jelszónak legalább 8 karakter hosszúnak kell lennie",
   "app.errors.resending_code_failed": "Hiba történt a megerősítő kód elküldése közben.",
   "app.errors.slug_taken": "Ez a projekt URL már létezik. Kérjük, módosítsa a projekt slug-ját valami másra.",
+  "app.errors.something_went_wrong": "Valami hiba történt. Kérjük, vegye fel velünk a kapcsolatot, ha a probléma továbbra is fennáll.",
   "app.errors.tag_name_taken": "Már létezik ilyen nevű címke",
   "app.errors.title_multiloc_blank": "A cím nem lehet üres.",
   "app.errors.title_multiloc_includes_banned_words": "A cím nem megfelelőnek tartott szavakat tartalmaz.",
