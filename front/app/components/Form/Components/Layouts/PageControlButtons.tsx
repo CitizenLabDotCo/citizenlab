@@ -72,7 +72,7 @@ interface Props {
   pageButtonLink?: string;
   project: IProject | undefined;
   pageQuestions?: IFlatCustomField[];
-  currentPageNumber?: number;
+  currentPageIndex?: number;
 }
 
 const PageControlButtons = ({
@@ -87,7 +87,7 @@ const PageControlButtons = ({
   currentPhase,
   project,
   pageQuestions = [],
-  currentPageNumber,
+  currentPageIndex,
 }: Props) => {
   const theme = useTheme();
   const localize = useLocalize();
@@ -103,7 +103,7 @@ const PageControlButtons = ({
 
   useEffect(() => {
     setHasReachedBottom(false);
-  }, [currentPageNumber]);
+  }, [currentPageIndex]);
 
   useEffect(() => {
     const enabledQuestions = pageQuestions.filter((q) => q.id && q.key);
@@ -147,7 +147,7 @@ const PageControlButtons = ({
         observerRef.current.disconnect();
       }
     };
-  }, [pageQuestions, currentPageNumber]);
+  }, [pageQuestions, currentPageIndex]);
 
   const getButtonMessage = () => {
     if (pageVariant !== 'after-submission') {

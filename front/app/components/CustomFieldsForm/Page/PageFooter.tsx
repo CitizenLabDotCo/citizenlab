@@ -26,7 +26,7 @@ const PageFooter = ({
   isAdminPage,
   isMapPage,
   pageQuestions,
-  currentPageNumber,
+  currentPageIndex,
 }: {
   variant: 'other' | 'after-submission' | 'submission';
   hasPreviousPage: boolean;
@@ -42,7 +42,7 @@ const PageFooter = ({
   isAdminPage?: boolean;
   isMapPage?: boolean;
   pageQuestions?: IFlatCustomField[];
-  currentPageNumber?: number;
+  currentPageIndex?: number;
 }) => {
   const isMobileOrSmaller = useBreakpoint('phone');
   return (
@@ -70,7 +70,7 @@ const PageFooter = ({
           pageButtonLink={pageButtonLink}
           project={project}
           pageQuestions={pageQuestions}
-          currentPageNumber={currentPageNumber}
+          currentPageIndex={currentPageIndex}
         />
       </Box>
     </Box>

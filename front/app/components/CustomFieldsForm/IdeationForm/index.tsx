@@ -35,7 +35,7 @@ const IdeationForm = ({
   // For the admin idea edit page only
   goBack?: () => void;
 }) => {
-  const [currentPageNumber, setCurrentPageNumber] = useState(0);
+  const [currentPageIndex, setCurrentPageIndex] = useState(0);
 
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
@@ -55,10 +55,10 @@ const IdeationForm = ({
     phase?.data.attributes.allow_anonymous_participation &&
     participationMethod !== 'native_survey';
 
-  const lastPageNumber = nestedPagesData.length - 1;
+  const lastPageIndex = nestedPagesData.length - 1;
 
   const onSubmit = async (formValues: FormValues) => {
-    if (currentPageNumber === nestedPagesData.length - 2) {
+    if (currentPageIndex === nestedPagesData.length - 2) {
       if (!idea) {
         // If the user is an admin or project moderator, we allow them to post to a specific phase
         const phase_ids =
@@ -92,8 +92,8 @@ const IdeationForm = ({
       goBack?.();
     }
     // Go to the next page
-    if (currentPageNumber < lastPageNumber) {
-      setCurrentPageNumber((pageNumber: number) => pageNumber + 1);
+    if (currentPageIndex < lastPageIndex) {
+      setCurrentPageIndex((pageNumber: number) => pageNumber + 1);
     }
   };
   const initialFormData = idea
@@ -109,13 +109,13 @@ const IdeationForm = ({
 
   return (
     <Box w="100%">
-      {nestedPagesData[currentPageNumber] && (
+      {nestedPagesData[currentPageIndex] && (
         <IdeationPage
-          page={nestedPagesData[currentPageNumber].page}
-          pageQuestions={nestedPagesData[currentPageNumber].pageQuestions}
-          currentPageNumber={currentPageNumber}
-          lastPageNumber={lastPageNumber}
-          setCurrentPageNumber={setCurrentPageNumber}
+          page={nestedPagesData[currentPageIndex].page}
+          pageQuestions={nestedPagesData[currentPageIndex].pageQuestions}
+          currentPageIndex={currentPageIndex}
+          lastPageIndex={lastPageIndex}
+          setCurrentPageIndex={setCurrentPageIndex}
           showTogglePostAnonymously={showTogglePostAnonymously}
           participationMethod={participationMethod}
           ideaId={idea?.id}
@@ -123,7 +123,6 @@ const IdeationForm = ({
           onSubmit={onSubmit}
           phase={phase?.data}
           defaultValues={initialFormData}
-          customFields={customFields ?? []}
           pages={nestedPagesData}
         />
       )}
