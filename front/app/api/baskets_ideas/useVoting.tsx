@@ -148,14 +148,8 @@ const useVotingInterface = ({
       ...(remoteVotesPerIdea ? Object.keys(remoteVotesPerIdea) : []),
     ]);
 
-    let count = 0;
-    ideaIdsSet.forEach((ideaId) => {
-      if ((getVotes(ideaId) ?? 0) > 0) {
-        count += 1;
-      }
-    });
-
-    return count;
+    return Array.from(ideaIdsSet).filter((id) => (getVotes(id) ?? 0) > 0)
+      .length;
   }, [getVotes, remoteVotesPerIdea, votesPerIdea]);
 
   const userHasVotesLeft = useMemo(() => {
