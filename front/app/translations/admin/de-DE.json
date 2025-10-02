@@ -2099,6 +2099,8 @@
   "app.containers.AdminPage.ProjectEdit.headerImageAltText": "Alt-Text für Kopfzeilenbild",
   "app.containers.AdminPage.ProjectEdit.headerImageInputLabel": "Bild in der Kopfzeile",
   "app.containers.AdminPage.ProjectEdit.imageSupportPageURL": "https://support.govocal.com/de/articles/1346397-welche-dimensionen-und-grossen-sind-fur-bilder-auf-der-plattform-empfohlen",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarning1": "Wenn Sie Nutzer*innen erlauben, Ideen über die Karte einzureichen, stellen Sie sicher, dass das Feld Standort in der {inputFormLink} enthalten ist.",
+  "app.containers.AdminPage.ProjectEdit.information.locationFieldWarningLink1": "Eingabeformular",
   "app.containers.AdminPage.ProjectEdit.information.new1": "NEU",
   "app.containers.AdminPage.ProjectEdit.information.provideInformation": "Stellen Sie den Nutzer*innen Informationen zur Verfügung oder erstellen Sie einen Bericht, um die Ergebnisse vergangener Phasen zu teilen.",
   "app.containers.AdminPage.ProjectEdit.information.shareInformationOrResults": "Informationen oder Ergebnisse teilen",
