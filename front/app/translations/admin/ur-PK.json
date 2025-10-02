@@ -2419,6 +2419,7 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet1": "کچھ طریقوں کے نتائج کا اشتراک (جیسے ووٹنگ کے نتائج) کو اس وقت تک متحرک نہیں کیا جائے گا جب تک کہ ایک اختتامی تاریخ منتخب نہ ہو جائے۔",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "جیسے ہی آپ اس کے بعد ایک مرحلہ شامل کریں گے، یہ اس مرحلے میں ایک اختتامی تاریخ کا اضافہ کر دے گا۔",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "اس کے لیے آخری تاریخ کا انتخاب نہ کرنے کا مطلب یہ ہے کہ:",
+  "app.containers.AdminPage.ProjectTimeline.phaseTitlePlaceholder": "نیا مرحلہ",
   "app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel": "پیش نظارہ",
   "app.containers.AdminPage.ProjectTimeline.saveChangesLabel": "تبدیلیاں محفوظ کریں۔",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "فارم جمع کرانے میں ایک خامی تھی، براہ کرم دوبارہ کوشش کریں۔",
