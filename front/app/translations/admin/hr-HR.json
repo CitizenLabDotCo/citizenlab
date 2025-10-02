@@ -755,6 +755,7 @@
   "app.containers.Admin.Users.options": "Opcije",
   "app.containers.Admin.Users.permissionToBuy": "Da biste korisniku {name} dali administratorska prava, morate kupiti 1 dodatno mjesto.",
   "app.containers.Admin.Users.platformAdmin": "Administrator platforme",
+  "app.containers.Admin.Users.projectFilterPlaceholder": "Filtriraj po projektu",
   "app.containers.Admin.Users.projectManager": "Upravitelj projekta",
   "app.containers.Admin.Users.reachedLimitMessage": "Dosegli ste ograničenje broja mjesta u svom planu, bit će dodano 1 dodatno mjesto za korisnika {name}.",
   "app.containers.Admin.Users.registeredUser": "Registrirani korisnik",
