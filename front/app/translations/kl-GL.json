@@ -2155,6 +2155,7 @@
   "app.errors.password_too_short": "Kode isissutissaq minnerpaamik 8-nik naqinneqassaaq.",
   "app.errors.resending_code_failed": "Something went wrong while sending out the confirmation code.",
   "app.errors.slug_taken": "URL taanna atorneqareerpoq. Inussiarnersumik suliniutip slugia allanngortiguk.",
+  "app.errors.something_went_wrong": "Something went wrong. Please contact us if the problem persists.",
   "app.errors.tag_name_taken": "A tag with this name already exists",
   "app.errors.title_multiloc_blank": "Atorfiup taaguutaa allanneqassaaq",
   "app.errors.title_multiloc_includes_banned_words": "The title contains words that are considered inappropriate.",
