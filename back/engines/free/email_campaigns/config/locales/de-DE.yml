@@ -514,7 +514,7 @@ de:
       title: 'Letzte Chance, für %{phaseTitle} abzustimmen'
       body_1: 'Die Abstimmungsphase für das Projekt %{projectTitle} geht morgen um Mitternacht zu Ende.'
       body_2: 'Die Zeit läuft ab und wir haben festgestellt, dass Sie Ihre Stimme noch nicht abgegeben haben! Klicken Sie auf den Button unten und machen Sie mit.'
-      body_3: 'Auf diese Weise erhalten Sie Zugang zu einer Reihe von Optionen und haben die Möglichkeit, Ihre Stimme abzugeben, die für die Entscheidung über die Zukunft dieses Projekts entscheidend ist.'
+      body_3: 'Auf diese Weise erhält man Zugang zu einer Reihe von Optionen und hat die Möglichkeit, seine Stimme abzugeben, die für die Entscheidung über die Zukunft dieses Projekts entscheidend ist.'
       cta_button: 'Auswählen'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} Abstimmungsergebnisse veröffentlicht!'
