@@ -73,15 +73,18 @@ const multipleVotingConfig: VotingMethodConfig = {
             {...cumulativeVotingInstructionsTotalVotesMessage}
           />
           {minimumSelectedOptions && minimumSelectedOptions > 1 && (
-            <FormattedMessage
-              values={{
-                b: (chunks) => (
-                  <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-                ),
-                minSelectedOptions: minimumSelectedOptions,
-              }}
-              {...messages.minSelectedOptionsMessage}
-            />
+            <>
+              {' '}
+              <FormattedMessage
+                values={{
+                  b: (chunks) => (
+                    <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+                  ),
+                  minSelectedOptions: minimumSelectedOptions,
+                }}
+                {...messages.minSelectedOptionsMessage}
+              />
+            </>
           )}
           <ul>
             <li>
