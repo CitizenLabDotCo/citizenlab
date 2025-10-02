@@ -755,6 +755,7 @@
   "app.containers.Admin.Users.options": "Options",
   "app.containers.Admin.Users.permissionToBuy": "Pour donner à {name} des droits d'administration, vous devez acheter 1 siège supplémentaire.",
   "app.containers.Admin.Users.platformAdmin": "Administrateur de la plate-forme",
+  "app.containers.Admin.Users.projectFilterPlaceholder": "Filtrer par projet",
   "app.containers.Admin.Users.projectManager": "Chef de projet",
   "app.containers.Admin.Users.reachedLimitMessage": "Vous avez atteint la limite de places dans votre plan, 1 place supplémentaire pour {name} sera ajoutée.",
   "app.containers.Admin.Users.registeredUser": "Utilisateur enregistré",
