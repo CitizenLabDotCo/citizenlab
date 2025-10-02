@@ -2155,6 +2155,7 @@
   "app.errors.password_too_short": "Salasanan tulee olla vähintään 8 merkkiä pitkä",
   "app.errors.resending_code_failed": "Jotain meni pieleen lähetettäessä vahvistuskoodia.",
   "app.errors.slug_taken": "Tämä projektin URL-osoite on jo olemassa. Vaihda projektin slug johonkin muuhun.",
+  "app.errors.something_went_wrong": "Jotain meni pieleen. Ota meihin yhteyttä, jos ongelma jatkuu.",
   "app.errors.tag_name_taken": "Tämän niminen tunniste on jo olemassa",
   "app.errors.title_multiloc_blank": "Otsikko ei voi olla tyhjä.",
   "app.errors.title_multiloc_includes_banned_words": "Otsikko sisältää sanoja, joita pidetään sopimattomina.",
