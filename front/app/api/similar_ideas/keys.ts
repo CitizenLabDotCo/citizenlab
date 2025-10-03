@@ -17,7 +17,7 @@ const similarIdeasKeys = {
         projectId: payload.idea.project_id,
         title: payload.idea.title_multiloc ?? '',
         body: payload.idea.body_multiloc ?? '',
-        phaseIds: payload.idea.phase_ids ?? [],
+        phaseId: payload.phase_id,
       },
     },
   ],
