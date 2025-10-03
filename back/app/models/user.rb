@@ -219,7 +219,6 @@ class User < ApplicationRecord
     {
       sub: id,
       highest_role: highest_role,
-      roles: compress_roles,
       exp: token_lifetime.from_now.to_i,
       cluster: CL2_CLUSTER,
       tenant: Tenant.current.id
