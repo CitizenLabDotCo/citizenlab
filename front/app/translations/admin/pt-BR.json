@@ -143,7 +143,7 @@
   "app.components.admin.ActionForm.Fields.user_fields_in_survey_not_supported_for_participation_method": "Fazer perguntas demográficas na última página do questionário não é compatível com o método de participação selecionado.",
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow": "Com a combinação atual das configurações de \"Autenticação\" e \"Coleta de dados do usuário\", as perguntas demográficas só podem ser feitas no fluxo de registro.",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "A escolha de como as perguntas demográficas são feitas aos participantes não é aplicável, pois você desativou a autenticação e selecionou o anonimato total",
-  "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions2": "To add content inside the accordion, click the accordion in the preview on the left to open it and then drag any widgets inside.",
+  "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions2": "Para adicionar conteúdo dentro do acordeão, clique no acordeão na visualização à esquerda para abri-lo e arraste os widgets para dentro dele.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Nenhuma pergunta foi selecionada. Selecione uma pergunta primeiro.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Sem resposta",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.numberOfResponses": "{count} respostas",
