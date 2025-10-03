@@ -90,6 +90,8 @@ describe('Proposal edit page', () => {
       .find('[data-cy="e2e-more-field-actions"]')
       .click();
     cy.get('.e2e-more-actions-list button').contains('Delete').click();
+    cy.dataCy('e2e-confirm-delete-location-field').should('be.visible').click();
+
     // Add an extra field
     cy.addItemToFormBuilder('#toolbox_text');
     cy.get('#e2e-title-multiloc').type(extraFieldTitle, {

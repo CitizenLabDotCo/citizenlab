@@ -49,6 +49,7 @@ const LocationDeletionModal = ({
             {formatMessage(messages.cancel)}
           </Button>
           <Button
+            data-cy="e2e-confirm-delete-location-field"
             onClick={() => {
               onDelete(index);
               setModalOpen(false);
