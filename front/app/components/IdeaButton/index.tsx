@@ -128,6 +128,7 @@ const IdeaButton = memo<Props>(
           params: {
             projectSlug: project.data.attributes.slug,
             phaseId: phase.id,
+            latLng,
           },
         };
 
