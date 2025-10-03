@@ -143,6 +143,7 @@
   "app.components.admin.ActionForm.Fields.user_fields_in_survey_not_supported_for_participation_method": "Pasirinktam dalyvavimo metodui nepalaikomas demografinių klausimų pateikimas paskutiniame apklausos puslapyje.",
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow": "Naudojant dabartinį \"Autentifikavimo\" ir \"Naudotojo duomenų rinkimo\" nustatymų derinį, demografinius klausimus galima užduoti tik registracijos sraute.",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "Pasirinkti, kaip dalyviams bus užduodami demografiniai klausimai, negalima, nes išjungėte autentifikavimą ir pasirinkote visišką anonimiškumą.",
+  "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions2": "To add content inside the accordion, click the accordion in the preview on the left to open it and then drag any widgets inside.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Nepasirinktas nė vienas klausimas. Pirmiausia pasirinkite klausimą.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Nėra atsakymo",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.numberOfResponses": "{count} atsakymai",
