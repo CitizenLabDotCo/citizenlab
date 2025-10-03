@@ -1,8 +1,17 @@
 import React, { useState } from 'react';
 
-import { Text, Box, Button, Dropdown } from '@citizenlab/cl2-component-library';
+import {
+  Text,
+  Box,
+  Button,
+  Dropdown,
+  Icon,
+  truncate,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -10,9 +19,12 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 type Props = {
   folderId: string;
+  projectId: string;
 };
 
-const LinkToFolderProjectsDropdown = ({ folderId }: Props) => {
+const LinkToFolderProjectsDropdown = ({ folderId, projectId }: Props) => {
+  const { data: projectFolder } = useProjectFolderById(folderId);
+
   const localize = useLocalize();
   const [isProjectListOpen, setIsProjectListOpen] = useState(false);
 
@@ -29,10 +41,20 @@ const LinkToFolderProjectsDropdown = ({ folderId }: Props) => {
         buttonStyle="text"
         iconSize="20px"
         p="0px"
-        ml="4px"
         icon={isProjectListOpen ? 'chevron-up' : 'chevron-down'}
+        iconPos="right"
         data-cy="e2e-folder-preview-open-projects-dropdown"
-      />
+      >
+        <Box display="flex" alignItems="center" gap="4px">
+          <Icon name="folder-solid" fill={colors.coolGrey600} width="14px" />
+          <Text color="coolGrey600" m="0px" fontSize="s" p="0">
+            {truncate(
+              localize(projectFolder?.data.attributes.title_multiloc),
+              40
+            )}
+          </Text>
+        </Box>
+      </Button>
       <Dropdown
         opened={isProjectListOpen}
         content={
