@@ -143,7 +143,7 @@
   "app.components.admin.ActionForm.Fields.user_fields_in_survey_not_supported_for_participation_method": "Demogrāfisko jautājumu uzdošana aptaujas pēdējā lappusē izvēlētajā dalības metodē nav atbalstīta.",
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow": "Izmantojot pašreizējo iestatījumu \"Autentifikācija\" un \"Lietotāja datu vākšana\" kombināciju, demogrāfiskos jautājumus var uzdot tikai reģistrācijas plūsmā.",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "Demogrāfisko jautājumu uzdošana dalībniekiem nav piemērojama, jo esat atspējojis autentifikāciju un izvēlējies pilnīgu anonimitāti.",
-  "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions2": "To add content inside the accordion, click the accordion in the preview on the left to open it and then drag any widgets inside.",
+  "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions2": "Lai pievienotu saturu akordeona iekšpusē, noklikšķiniet uz akordeona priekšskatījumā kreisajā pusē, lai to atvērtu, un pēc tam velciet iekšā visus logrīkus.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Nav izvēlēts neviens jautājums. Lūdzu, vispirms izvēlieties jautājumu.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Nav atbildes",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.numberOfResponses": "{count} atbildes",
