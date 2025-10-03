@@ -70,7 +70,7 @@ const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
         adminPublication.relationships.publication.data.type
       );
     });
-  }, [flattenedAdminPublications]);
+  }, [flattenedAdminPublications, localize]);
 
   const { data: projects } = useProjects({
     publicationStatuses: ['published', 'draft', 'archived'],

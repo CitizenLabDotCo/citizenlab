@@ -17,6 +17,14 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     admin_publications = policy_scope(AdminPublication.includes(:parent))
     admin_publications = admin_publication_filterer.filter(admin_publications, params.merge(current_user: current_user))
 
+    multiloc_service = MultilocService.new app_configuration: AppConfiguration.instance
+    admin_publications.each do |ap|
+      title_with_fallback = I18n.with_locale(current_user&.locale || I18n.default_locale) do
+        multiloc_service.t(ap.publication.title_multiloc)
+      end
+      puts "title with fallback v3: #{title_with_fallback}"
+    end
+
     # A flattened ordering, such that project publications with a parent (projects in folders) are ordered
     # first by their parent's :ordering, and then by their own :ordering (their ordering within the folder).
     admin_publications = admin_publications.select(
