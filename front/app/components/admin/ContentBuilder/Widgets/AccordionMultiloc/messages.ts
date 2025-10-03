@@ -26,4 +26,9 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel',
     defaultMessage: 'Open by default',
   },
+  accordionInstructions: {
+    id: 'app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions',
+    defaultMessage:
+      'To add content inside the accordion, click the accordion in the preview on the left to open it, and then drag any other widgets inside.',
+  },
 });
