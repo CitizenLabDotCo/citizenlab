@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -10,6 +10,8 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddNavbarItem from 'api/navbar/useAddNavbarItem';
 import useProjects from 'api/projects/useProjects';
 import useProjectFolders from 'api/project_folders/useProjectFolders';
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import { IAdminPublicationData } from 'api/admin_publications/types';
 
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
@@ -39,6 +41,37 @@ type Props = {
 
 const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
   const { mutateAsync: addNavbarItem } = useAddNavbarItem();
+
+  const [flattenedAdminPublications, setFlattenedAdminPublications] = useState<
+    IAdminPublicationData[]
+  >([]);
+  const { data: adminPublications } = useAdminPublications({
+    removeNotAllowedParents: true,
+  });
+
+  const localize = useLocalize();
+  const locale = useLocale();
+
+  // Flatten and store publications when adminPublications changes
+  useEffect(() => {
+    if (adminPublications?.pages) {
+      const allAdminPublications = adminPublications.pages.flatMap(
+        (page) => page.data
+      );
+      setFlattenedAdminPublications(allAdminPublications);
+    }
+  }, [adminPublications]);
+
+  // DEBUG: Log publication localized titles & types when flattenedAdminPublications changes
+  useEffect(() => {
+    flattenedAdminPublications.forEach((adminPublication) => {
+      console.log(
+        localize(adminPublication.attributes.publication_title_multiloc),
+        adminPublication.relationships.publication.data.type
+      );
+    });
+  }, [flattenedAdminPublications]);
+
   const { data: projects } = useProjects({
     publicationStatuses: ['published', 'draft', 'archived'],
   });
@@ -51,8 +84,6 @@ const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
   const { data: appConfig } = useAppConfiguration();
 
   const { formatMessage } = useIntl();
-  const localize = useLocalize();
-  const locale = useLocale();
 
   const schema = object({
     itemId: string().required(
