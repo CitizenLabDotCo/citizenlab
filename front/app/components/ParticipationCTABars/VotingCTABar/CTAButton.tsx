@@ -69,7 +69,11 @@ const CTAButton = ({ phase, project }: Props) => {
   const basketId = phase.relationships.user_basket?.data?.id;
   const { data: basket } = useBasket(basketId);
   const { mutate: updateBasket } = useUpdateBasket();
-  const { numberOfVotesCast, processing: votingProcessing } = useVoting();
+  const {
+    numberOfVotesCast,
+    numberOfOptionsSelected,
+    processing: votingProcessing,
+  } = useVoting();
   const { data: appConfig } = useAppConfiguration();
   const formatCurrency = useFormatCurrency();
   const theme = useTheme();
@@ -138,7 +142,8 @@ const CTAButton = ({ phase, project }: Props) => {
     phase,
     permissionsDisabledReason,
     numberOfVotesCast,
-    formatCurrency
+    formatCurrency,
+    numberOfOptionsSelected
   );
 
   return (

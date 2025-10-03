@@ -22,6 +22,7 @@ const validate = (
     voting_min_total,
     voting_max_total,
     voting_max_votes_per_idea,
+    voting_min_selected_options,
     reacting_threshold,
     expire_days_limit,
   } = state;
@@ -35,6 +36,7 @@ const validate = (
   let maxVotesPerOptionError: string | undefined;
   let expireDateLimitError: string | undefined;
   let reactingThresholdError: string | undefined;
+  let minSelectedOptionsError: string | undefined;
 
   if (!phases || phases.data.length === 0) {
     if (!start_at) {
@@ -66,6 +68,16 @@ const validate = (
     voting_max_votes_per_idea > voting_max_total
   ) {
     maxVotesPerOptionError = formatMessage(messages.maxVotesPerOptionError);
+    isValidated = false;
+  }
+
+  if (
+    participation_method === 'voting' &&
+    voting_min_selected_options &&
+    voting_max_total &&
+    voting_min_selected_options > voting_max_total
+  ) {
+    minSelectedOptionsError = formatMessage(messages.minSelectedOptionsError);
     isValidated = false;
   }
 
@@ -168,6 +180,7 @@ const validate = (
       maxVotesPerOptionError,
       expireDateLimitError,
       reactingThresholdError,
+      minSelectedOptionsError,
     },
   };
 };

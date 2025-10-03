@@ -16,7 +16,7 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
 
   %i[
     voting_method voting_max_total voting_min_total
-    voting_max_votes_per_idea baskets_count
+    voting_max_votes_per_idea baskets_count voting_min_selected_options
     native_survey_title_multiloc native_survey_button_multiloc
     expire_days_limit reacting_threshold autoshare_results_enabled
   ].each do |attribute_name|

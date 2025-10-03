@@ -42,6 +42,8 @@ const multipleVotingConfig: VotingMethodConfig = {
   }: GetStatusDescriptionProps) => {
     if (!phase) return null;
 
+    const minimumSelectedOptions = phase.attributes.voting_min_selected_options;
+
     const cumulativeVotingInstructionsTotalVotesMessage =
       getPhaseVoteTermMessage(phase, {
         vote: messages.cumulativeVotingInstructionsTotalVotes,
@@ -70,6 +72,20 @@ const multipleVotingConfig: VotingMethodConfig = {
             }}
             {...cumulativeVotingInstructionsTotalVotesMessage}
           />
+          {minimumSelectedOptions && minimumSelectedOptions > 1 && (
+            <>
+              {' '}
+              <FormattedMessage
+                values={{
+                  b: (chunks) => (
+                    <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+                  ),
+                  minSelectedOptions: minimumSelectedOptions,
+                }}
+                {...messages.minSelectedOptionsMessage}
+              />
+            </>
+          )}
           <ul>
             <li>
               <FormattedMessage
