@@ -143,6 +143,7 @@
   "app.components.admin.ActionForm.Fields.user_fields_in_survey_not_supported_for_participation_method": "Att ställa demografiska frågor på sista sidan i enkäten stöds inte för den valda deltagandemetoden.",
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow": "Med den nuvarande kombinationen av inställningarna \"Authentication\" och \"User data collection\" kan demografiska frågor endast ställas i registreringsflödet.",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "Att välja hur demografiska frågor ska ställas till deltagarna är inte tillämpligt eftersom du har inaktiverat autentisering och valt fullständig anonymitet",
+  "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions2": "To add content inside the accordion, click the accordion in the preview on the left to open it and then drag any widgets inside.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Ingen fråga vald. Vänligen välj en fråga först.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Inget svar",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.numberOfResponses": "{count} svar",
