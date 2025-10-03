@@ -25,7 +25,7 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { getFullName } from 'utils/textUtils';
 
-import LinkToFolderSettings from './LinkToFolderSettings';
+import LinkToFolderSettings from './FolderProjectDropdown';
 import messages from './messages';
 import ProjectDescriptionPreview from './ProjectDescriptionPreview';
 import PublicationButtons from './PublicationButtons';
