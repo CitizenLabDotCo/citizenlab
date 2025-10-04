@@ -362,9 +362,13 @@ class User < ApplicationRecord
     domain = email_field.split('@')&.last
     return unless domain
 
-    # Mild obfuscation of error message to make a spammers life a little more difficult,
-    # especially avoiding leaking info about which domains are blacklisted
-    errors.add(:email, :something_went_wrong, code: 'zrb-42') if EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
+    if EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
+      # Mild obfuscation of error message to make a spammers life a little more difficult,
+      # especially avoiding leaking info about which domains are blacklisted.
+      # Error is a string, not a symbol, as it is translated on FE, not BE.
+      errors.add(:email, 'something_went_wrong', code: 'zrb-42')
+      Rails.logger.info "Validation error! Email domain blacklisted: #{domain}" # Clearer message in the logs
+    end
   end
 
   def remove_initiated_notifications
