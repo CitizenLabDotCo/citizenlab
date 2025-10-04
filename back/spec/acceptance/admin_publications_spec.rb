@@ -143,16 +143,16 @@ resource 'AdminPublication' do
 
         let(:expected_ascending_order) do
           [
-            { :en => 'Alpha' },
-            { :en => 'Beta' },
-            { :en => 'Delta' },
-            { :en => 'Eta' },
-            { :en => '', :"fr-FR" => 'Omega' }, # comes after Eta because en title is blank
-            { :en => 'Phi' },
-            { :"fr-FR" => 'Sigma' }, # comes after Phi because en title is nil
-            { :en => 'Tau' },
-            { :en => 'Theta' },
-            { :"fr-FR" => 'Zeta', :"nl-NL" => 'Gamma' } # comes last because en title is nil, and fr-FR is before nl-NL in tenant locales.
+            { en: 'Alpha' },
+            { en: 'Beta' },
+            { en: 'Delta' },
+            { en: 'Eta' },
+            { en: '', 'fr-FR': 'Omega' }, # comes after Eta because en title is blank
+            { en: 'Phi' },
+            { 'fr-FR': 'Sigma' }, # comes after Phi because en title is nil
+            { en: 'Tau' },
+            { en: 'Theta' },
+            { 'fr-FR': 'Zeta', 'nl-NL': 'Gamma' } # comes last because en title is nil, and fr-FR is before nl-NL in tenant locales.
           ]
         end
 
