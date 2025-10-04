@@ -156,26 +156,37 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     ]
   end
 
+  # Sorts admin publications by the title_multiloc of their associated
+  # publication (Project or ProjectFolder::Folder),
+  # in the specified direction ('ASC' or 'DESC').
+  # The sorting respects the user's locale and falls back to another locale
+  # if the title is nil or blank in the user's locale.
+  #
+  # @param admin_publications [ActiveRecord::Relation] The admin publications to sort.
+  # @param direction [String] The direction to sort ('ASC' or 'DESC').
+  # @return [ActiveRecord::Relation] The sorted admin publications.
   def sort_by_title_multiloc(admin_publications, direction)
     prioritized_locales = [current_user.locale, *AppConfiguration.instance.settings('core', 'locales')].uniq
-      coalesce_sql = prioritized_locales.map do |locale|
-        "NULLIF(projects.title_multiloc->>'#{locale}', '')"
-      end.join(', ')
-      coalesce_sql_folders = prioritized_locales.map do |locale|
-        "NULLIF(project_folders_folders.title_multiloc->>'#{locale}', '')"
-      end.join(', ')
 
-      admin_publications
-        .joins("LEFT JOIN projects ON admin_publications.publication_id = projects.id AND admin_publications.publication_type = 'Project'")
-        .joins("LEFT JOIN project_folders_folders ON admin_publications.publication_id = project_folders_folders.id AND admin_publications.publication_type = 'ProjectFolders::Folder'")
-        .select(
-          'admin_publications.*',
-          "COALESCE(
-            #{coalesce_sql},
-            #{coalesce_sql_folders}
-          ) AS title_for_sorting"
-        )
-        .order("title_for_sorting #{direction}")
+    coalesce_sql_projects = prioritized_locales.map do |locale|
+      "NULLIF(projects.title_multiloc->>'#{locale}', '')"
+    end.join(', ')
+
+    coalesce_sql_folders = prioritized_locales.map do |locale|
+      "NULLIF(project_folders_folders.title_multiloc->>'#{locale}', '')"
+    end.join(', ')
+
+    admin_publications
+      .joins("LEFT JOIN projects ON admin_publications.publication_id = projects.id AND admin_publications.publication_type = 'Project'")
+      .joins("LEFT JOIN project_folders_folders ON admin_publications.publication_id = project_folders_folders.id AND admin_publications.publication_type = 'ProjectFolders::Folder'")
+      .select(
+        'admin_publications.*',
+        "COALESCE(
+          #{coalesce_sql_projects},
+          #{coalesce_sql_folders}
+        ) AS title_for_sorting"
+      )
+      .order("title_for_sorting #{direction}")
   end
 end
 
