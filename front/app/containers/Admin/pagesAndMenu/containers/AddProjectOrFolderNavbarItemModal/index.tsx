@@ -52,7 +52,7 @@ const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
   const localize = useLocalize();
   const locale = useLocale();
 
-  // Flatten and store publications when adminPublications changes
+  // Flatten and store adminPublications when they change
   useEffect(() => {
     if (adminPublications?.pages) {
       const allAdminPublications = adminPublications.pages.flatMap(

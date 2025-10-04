@@ -47,6 +47,7 @@ resource 'AdminPublication' do
       parameter :filter_user_is_moderator_of, 'Filter out the publications the given user is moderator of (user id)', required: false
       parameter :exclude_projects_in_included_folders, 'Exclude projects in included folders (boolean)', required: false
       parameter :review_state, 'Filter by project review status (pending, approved)', required: false
+      parameter :sort, 'Either title_multiloc or -title_multiloc to sort by title ascending or descending respectively. Defaults to ordering by order attribute if not specified.', required: false
 
       example_request 'List all admin publications' do
         hidden_project = create(:community_monitor_project)
@@ -124,6 +125,53 @@ resource 'AdminPublication' do
         assert_status 200
         expect(response_data.size).to eq 10
         expect(response_data.pluck(:id)).not_to include unlisted_project.admin_publication.id
+      end
+
+      context 'when sorted by title' do
+        before do
+          projects[0].update!(title_multiloc: { en: 'Delta' })
+          projects[1].update!(title_multiloc: { en: 'Beta' })
+          projects[2].update!(title_multiloc: { en: 'Alpha' })
+          projects[3].update!(title_multiloc: { en: '', 'fr-FR': 'Omega' })
+          projects[4].update!(title_multiloc: { 'fr-FR': 'Sigma' })
+          projects[5].update!(title_multiloc: { 'nl-NL': 'Gamma', 'fr-FR': 'Zeta' })
+          projects[6].update!(title_multiloc: { en: 'Theta' })
+          projects[7].update!(title_multiloc: { en: 'Eta' })
+          empty_draft_folder.update!(title_multiloc: { en: 'Phi' })
+          custom_folder.update!(title_multiloc: { en: 'Tau' })
+        end
+
+        let (:expected_ascending_order) do
+          [
+            {:en=>"Alpha"},
+            {:en=>"Beta"},
+            {:en=>"Delta"},
+            {:en=>"Eta"},
+            {:en=>"", :"fr-FR"=>"Omega"}, # comes after Eta because en title is blank
+            {:en=>"Phi"},
+            {:"fr-FR"=>"Sigma"}, # comes after Phi because en title is nil
+            {:en=>"Tau"},
+            {:en=>"Theta"},
+            {:"fr-FR"=>"Zeta", :"nl-NL"=>"Gamma"} # comes last because en title is nil, and fr-FR is before nl-NL in tenant locales.
+          ]
+        end
+
+        example 'List all admin publications sorted by title ascending' do
+          expect(@admin.locale).to eq 'en'
+          expect(AppConfiguration.instance.settings('core', 'locales')).to eq %w[en fr-FR nl-NL]
+
+          do_request(sort: 'title_multiloc')
+          assert_status 200
+          expect(response_data.map { |d| d.dig(:attributes, :publication_title_multiloc) })
+            .to eq expected_ascending_order
+        end
+
+        example 'List all admin publications sorted by title descending' do
+          do_request(sort: '-title_multiloc')
+          assert_status 200
+          expect(response_data.map { |d| d.dig(:attributes, :publication_title_multiloc) })
+            .to eq expected_ascending_order.reverse
+        end
       end
 
       context 'when admin is moderator of publications' do
