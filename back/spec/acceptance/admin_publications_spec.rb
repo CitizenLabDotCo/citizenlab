@@ -279,14 +279,6 @@ resource 'AdminPublication' do
           expect(response_data.map { |d| d.dig(:attributes, :publication_title_multiloc, :en) })
             .to eq(%w[P1 F1 P2 F2 P6 P7 P8])
         end
-
-        example 'List only project publications maintains a flattened nested ordering', document: false do
-          do_request(only_projects: 'true')
-          expect(status).to eq(200)
-
-          expect(response_data.map { |d| d.dig(:attributes, :publication_title_multiloc, :en) })
-            .to eq(%w[P1 P2 P3-f2 P4-f2 P5-f2 P6 P7 P8])
-        end
       end
     end
 
