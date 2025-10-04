@@ -46,7 +46,7 @@ const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
     IAdminPublicationData[]
   >([]);
   const { data: adminPublications } = useAdminPublications({
-    removeNotAllowedParents: true,
+    sort: 'title_multiloc',
   });
 
   const localize = useLocalize();
