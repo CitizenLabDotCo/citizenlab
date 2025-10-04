@@ -19,32 +19,14 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
 
     admin_publications = case params[:sort]
     when 'title_multiloc'
-      prioritized_locales = [current_user.locale, *AppConfiguration.instance.settings('core', 'locales')].uniq
-      coalesce_sql = prioritized_locales.map { |locale|
-        "NULLIF(projects.title_multiloc->>'#{locale}', '')"
-      }.join(', ')
-      coalesce_sql_folders = prioritized_locales.map { |locale|
-        "NULLIF(project_folders_folders.title_multiloc->>'#{locale}', '')"
-      }.join(', ')
-      
-      admin_publications
-        .joins("LEFT JOIN projects ON admin_publications.publication_id = projects.id AND admin_publications.publication_type = 'Project'")
-        .joins("LEFT JOIN project_folders_folders ON admin_publications.publication_id = project_folders_folders.id AND admin_publications.publication_type = 'ProjectFolders::Folder'")
-        .select(
-          'admin_publications.*',
-          "COALESCE(
-            #{coalesce_sql},
-            #{coalesce_sql_folders}
-          ) AS title_for_sorting"
-        )
-        .order('title_for_sorting DESC')
+      sort_by_title_multiloc(admin_publications, 'ASC')
+    when '-title_multiloc'
+      sort_by_title_multiloc(admin_publications, 'DESC')
     when nil
       admin_publications.order('admin_publications.ordering ASC')
     else
       raise 'Unsupported sort method'
     end
-
-    admin_publications = admin_publications.order('admin_publications.ordering ASC')
 
     @admin_publications = paginate admin_publications
 
@@ -172,6 +154,28 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
       publication.current_phase
       publication.phases
     ]
+  end
+
+  def sort_by_title_multiloc(admin_publications, direction)
+    prioritized_locales = [current_user.locale, *AppConfiguration.instance.settings('core', 'locales')].uniq
+      coalesce_sql = prioritized_locales.map do |locale|
+        "NULLIF(projects.title_multiloc->>'#{locale}', '')"
+      end.join(', ')
+      coalesce_sql_folders = prioritized_locales.map do |locale|
+        "NULLIF(project_folders_folders.title_multiloc->>'#{locale}', '')"
+      end.join(', ')
+
+      admin_publications
+        .joins("LEFT JOIN projects ON admin_publications.publication_id = projects.id AND admin_publications.publication_type = 'Project'")
+        .joins("LEFT JOIN project_folders_folders ON admin_publications.publication_id = project_folders_folders.id AND admin_publications.publication_type = 'ProjectFolders::Folder'")
+        .select(
+          'admin_publications.*',
+          "COALESCE(
+            #{coalesce_sql},
+            #{coalesce_sql_folders}
+          ) AS title_for_sorting"
+        )
+        .order("title_for_sorting #{direction}")
   end
 end
 
