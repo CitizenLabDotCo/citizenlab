@@ -1,9 +1,10 @@
 class ScriptReporter
-  attr_reader :creates, :changes, :errors, :tenants
+  attr_reader :creates, :changes, :deletes, :errors, :tenants
 
   def initialize
     @creates = []
     @changes = []
+    @deletes = []
     @errors = []
     @tenants = []
   end
@@ -14,6 +15,10 @@ class ScriptReporter
 
   def add_change(old_value, new_value, context: {})
     @changes << { old_value: old_value, new_value: new_value, context: context }
+  end
+
+  def add_delete(model_name, id, context: {})
+    @deletes << { model_name: model_name, id: id, context: context }
   end
 
   def add_error(error, context: {})
@@ -35,6 +40,10 @@ class ScriptReporter
       changes.each do |change|
         Rails.logger.info "  #{change[:old_value]} => #{change[:new_value]} (#{change[:context].map { |k, v| "#{k}: #{v}" }.join(', ')})"
       end
+      Rails.logger.info 'Deletes:'
+      deletes.each do |delete|
+        Rails.logger.info "  #{delete[:model_name]}: #{delete[:id]} (#{delete[:context].map { |k, v| "#{k}: #{v}" }.join(', ')})"
+      end
       if errors.present?
         Rails.logger.error 'Errors:'
         errors.each do |error|
@@ -45,6 +54,6 @@ class ScriptReporter
       end
     end
 
-    File.write(filestr, JSON.pretty_generate(processed_tenants: tenants, creates: creates, changes: changes, errors: errors))
+    File.write(filestr, JSON.pretty_generate(processed_tenants: tenants, creates: creates, changes: changes, deletes: deletes, errors: errors))
   end
 end
