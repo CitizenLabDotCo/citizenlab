@@ -4,24 +4,27 @@
 #
 # Table name: nav_bar_items
 #
-#  id             :uuid             not null, primary key
-#  code           :string           not null
-#  ordering       :integer
-#  title_multiloc :jsonb
-#  static_page_id :uuid
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  project_id     :uuid
+#  id                :uuid             not null, primary key
+#  code              :string           not null
+#  ordering          :integer
+#  title_multiloc    :jsonb
+#  static_page_id    :uuid
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  project_id        :uuid
+#  project_folder_id :uuid
 #
 # Indexes
 #
-#  index_nav_bar_items_on_code            (code)
-#  index_nav_bar_items_on_ordering        (ordering)
-#  index_nav_bar_items_on_project_id      (project_id)
-#  index_nav_bar_items_on_static_page_id  (static_page_id)
+#  index_nav_bar_items_on_code               (code)
+#  index_nav_bar_items_on_ordering           (ordering)
+#  index_nav_bar_items_on_project_folder_id  (project_folder_id)
+#  index_nav_bar_items_on_project_id         (project_id)
+#  index_nav_bar_items_on_static_page_id     (static_page_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (project_folder_id => project_folders_folders.id)
 #  fk_rails_...  (project_id => projects.id)
 #  fk_rails_...  (static_page_id => static_pages.id)
 #
@@ -33,12 +36,14 @@ class NavBarItem < ApplicationRecord
 
   belongs_to :static_page, optional: true
   belongs_to :project, optional: true
+  belongs_to :project_folder, class_name: 'ProjectFolders::Folder', optional: true
 
   validates :title_multiloc, multiloc: { presence: false }
   validates :code, inclusion: { in: CODES }
   validates :code, uniqueness: true, if: ->(item) { !item.custom? }
   validates :static_page, presence: true, if: :page?
   validates :project, presence: true, if: :project?
+  validates :project_folder, presence: true, if: :project_folder?
 
   before_validation :set_code, on: :create
 
@@ -65,12 +70,17 @@ class NavBarItem < ApplicationRecord
     code == 'custom' && project_id.present?
   end
 
+  def project_folder?
+    code == 'custom' && project_folder_id.present?
+  end
+
   def title_multiloc_with_fallback
     fallback_title_multiloc.merge(title_multiloc || {})
   end
 
   def item_slug
     return project.slug if project?
+    return project_folder.slug if project_folder?
 
     static_page.slug if page?
   end
@@ -83,6 +93,7 @@ class NavBarItem < ApplicationRecord
 
   def fallback_title_multiloc
     return project.title_multiloc if project?
+    return project_folder.title_multiloc if project_folder?
 
     key_code = page? ? static_page.code : code
     key = "nav_bar_items.#{key_code}.title"

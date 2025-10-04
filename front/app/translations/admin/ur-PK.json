@@ -1021,8 +1021,6 @@
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.project": "پروجیکٹ",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.resultingUrl": "نتیجہ خیز URL",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.savePage": "محفوظ کریں۔",
-  "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.title": "پروجیکٹ شامل کریں۔",
-  "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.warning": "نیویگیشن بار صرف وہ پروجیکٹ دکھائے گا جن تک صارفین کو رسائی حاصل ہے۔",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTADescription": "یہ ویجیٹ ہوم پیج پر تب ہی نظر آئے گا جب کمیونٹی مانیٹر جوابات قبول کر رہا ہو۔",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTATitle2": "کمیونٹی مانیٹر",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorDescription": "تفصیل",

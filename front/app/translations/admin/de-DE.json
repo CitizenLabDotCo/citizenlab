@@ -1021,8 +1021,6 @@
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.project": "Projekt",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.resultingUrl": "Resultierende URL",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.savePage": "Speichern",
-  "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.title": "Projekt hinzufügen",
-  "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.warning": "In der Navigationsleiste werden nur Projekte angezeigt, auf die Nutzer*innen Zugriff haben.",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTADescription": "Dieses Widget ist nur auf der Startseite sichtbar, wenn der Gemeinschaftspuls Antworten annimmt.",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTATitle2": "Gemeinschaftspuls",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorDescription": "Beschreibung",

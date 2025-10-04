@@ -1021,8 +1021,6 @@
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.project": "Proje",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.resultingUrl": "Sonuçlanan URL",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.savePage": "Kaydet",
-  "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.title": "Proje ekle",
-  "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.warning": "Gezinti çubuğu yalnızca kullanıcıların erişebildiği projeleri gösterecektir.",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTADescription": "Bu widget yalnızca Topluluk Gözlemcisi yanıtları kabul ederken Ana Sayfada görünür olacaktır.",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTATitle2": "Topluluk Gözlemcisi",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorDescription": "Açıklama",

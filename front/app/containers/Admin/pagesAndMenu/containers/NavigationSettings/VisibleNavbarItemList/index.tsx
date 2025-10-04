@@ -71,8 +71,11 @@ const VisibleNavbarItemList = ({
       deleteCustomPage(pageId);
     }
   };
-  const isProjectItem = (navbarItem: Item) => {
-    return navbarItem.relationships.project.data !== null;
+  const isProjectOrFolderItem = (navbarItem: Item) => {
+    return (
+      navbarItem.relationships.project.data !== null ||
+      navbarItem.relationships.project_folder?.data !== null
+    );
   };
   return (
     <Box className="intercom-admin-pages-menu-navigation-items">
@@ -122,7 +125,7 @@ const VisibleNavbarItemList = ({
                   onClickRemoveButton={handleClickRemove(navbarItem.id)}
                   onClickDeleteButton={
                     // Only show delete button for custom pages
-                    !isProjectItem(navbarItem)
+                    !isProjectOrFolderItem(navbarItem)
                       ? handleClickDelete(
                           navbarItem.relationships.static_page.data?.id
                         )

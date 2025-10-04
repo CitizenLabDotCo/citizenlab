@@ -17,15 +17,16 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     admin_publications = policy_scope(AdminPublication.includes(:parent))
     admin_publications = admin_publication_filterer.filter(admin_publications, params.merge(current_user: current_user))
 
-    # A flattened ordering, such that project publications with a parent (projects in folders) are ordered
-    # first by their parent's :ordering, and then by their own :ordering (their ordering within the folder).
-    admin_publications = admin_publications.select(
-      'admin_publications.*',
-      'CASE WHEN admin_publications.parent_id IS NULL THEN admin_publications.ordering ELSE parents.ordering END
-      AS root_ordering'
-    )
-      .joins('LEFT OUTER JOIN admin_publications AS parents ON parents.id = admin_publications.parent_id')
-      .order('root_ordering, admin_publications.ordering')
+    admin_publications = case params[:sort]
+    when 'title_multiloc'
+      sort_by_title_multiloc(admin_publications, 'ASC')
+    when '-title_multiloc'
+      sort_by_title_multiloc(admin_publications, 'DESC')
+    when nil
+      admin_publications.order('admin_publications.ordering ASC')
+    else
+      raise 'Unsupported sort method'
+    end
 
     @admin_publications = paginate admin_publications
 
@@ -153,6 +154,39 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
       publication.current_phase
       publication.phases
     ]
+  end
+
+  # Sorts admin publications by the title_multiloc of their associated
+  # publication (Project or ProjectFolder::Folder),
+  # in the specified direction ('ASC' or 'DESC').
+  # The sorting respects the user's locale and falls back to another locale
+  # if the title is nil or blank in the user's locale.
+  #
+  # @param admin_publications [ActiveRecord::Relation] The admin publications to sort.
+  # @param direction [String] The direction to sort ('ASC' or 'DESC').
+  # @return [ActiveRecord::Relation] The sorted admin publications.
+  def sort_by_title_multiloc(admin_publications, direction)
+    prioritized_locales = [current_user.locale, *AppConfiguration.instance.settings('core', 'locales')].uniq
+
+    coalesce_sql_projects = prioritized_locales.map do |locale|
+      "NULLIF(projects.title_multiloc->>'#{locale}', '')"
+    end.join(', ')
+
+    coalesce_sql_folders = prioritized_locales.map do |locale|
+      "NULLIF(project_folders_folders.title_multiloc->>'#{locale}', '')"
+    end.join(', ')
+
+    admin_publications
+      .joins("LEFT JOIN projects ON admin_publications.publication_id = projects.id AND admin_publications.publication_type = 'Project'")
+      .joins("LEFT JOIN project_folders_folders ON admin_publications.publication_id = project_folders_folders.id AND admin_publications.publication_type = 'ProjectFolders::Folder'")
+      .select(
+        'admin_publications.*',
+        "COALESCE(
+          #{coalesce_sql_projects},
+          #{coalesce_sql_folders}
+        ) AS title_for_sorting"
+      )
+      .order("title_for_sorting #{direction}")
   end
 end
 

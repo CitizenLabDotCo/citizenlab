@@ -5,6 +5,7 @@ import { Outlet as RouterOutlet } from 'react-router-dom';
 
 import useNavbarItems from 'api/navbar/useNavbarItems';
 import { MAX_NAVBAR_ITEMS } from 'api/navbar/util';
+import useProjectFolders from 'api/project_folders/useProjectFolders';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -15,14 +16,20 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 
-import AddProjectNavbarItemModal from '../AddProjectNavbarItemModal';
+import AddProjectOrFolderNavbarItemModal from '../AddProjectOrFolderNavbarItemModal';
 
 import messages from './messages';
 
 const PagesMenu = () => {
   const { data: navbarItems } = useNavbarItems();
   const { formatMessage } = useIntl();
-  const [addProjectModalIsOpen, setAddProjectModalIsOpen] = useState(false);
+
+  const { data: projectFolders } = useProjectFolders({});
+  const anyFolderExists = !!(
+    projectFolders?.data && projectFolders.data.length > 0
+  );
+
+  const [addModalIsOpen, setAddModalIsOpen] = useState(false);
   const canCreateCustomPages = useFeatureFlag({
     name: 'pages',
     onlyCheckAllowed: true,
@@ -32,7 +39,7 @@ const PagesMenu = () => {
     return null;
   }
 
-  const disabledAddProjectToNavbarButton =
+  const disabledAddProjectOrFolderToNavbarButton =
     navbarItems.data.length >= MAX_NAVBAR_ITEMS;
 
   return (
@@ -43,16 +50,18 @@ const PagesMenu = () => {
         <Box display="flex" gap="16px">
           <Tooltip
             content={formatMessage(messages.navBarMaxItems)}
-            disabled={!disabledAddProjectToNavbarButton}
+            disabled={!disabledAddProjectOrFolderToNavbarButton}
           >
             <Box>
               <ButtonWithLink
                 icon="link"
                 buttonStyle="text"
-                onClick={() => setAddProjectModalIsOpen(true)}
-                disabled={disabledAddProjectToNavbarButton}
+                onClick={() => setAddModalIsOpen(true)}
+                disabled={disabledAddProjectOrFolderToNavbarButton}
               >
-                {formatMessage(messages.addProject)}
+                {anyFolderExists
+                  ? formatMessage(messages.addProjectOrFolder)
+                  : formatMessage(messages.addProject)}
               </ButtonWithLink>
             </Box>
           </Tooltip>
@@ -79,9 +88,9 @@ const PagesMenu = () => {
       }
     >
       <RouterOutlet />
-      <AddProjectNavbarItemModal
-        opened={addProjectModalIsOpen}
-        onClose={() => setAddProjectModalIsOpen(false)}
+      <AddProjectOrFolderNavbarItemModal
+        opened={addModalIsOpen}
+        onClose={() => setAddModalIsOpen(false)}
       />
     </SectionFormWrapper>
   );

@@ -1021,8 +1021,6 @@
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.project": "مشروع",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.resultingUrl": "عنوان URL الناتج",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.savePage": "يحفظ",
-  "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.title": "إضافة مشروع",
-  "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.warning": "سيعرض شريط التنقل فقط المشاريع التي يمكن للمستخدمين الوصول إليها.",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTADescription": "ستكون هذه الأداة مرئية فقط على الصفحة الرئيسية عندما يقبل مراقب المجتمع الردود.",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTATitle2": "مراقب المجتمع",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorDescription": "وصف",
