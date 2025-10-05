@@ -84,7 +84,6 @@ const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
     resolver: yupResolver(schema),
   });
 
-  // Reset form fields when modal is opened
   useEffect(() => {
     if (opened) {
       methods.reset({
@@ -145,7 +144,6 @@ const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
 
   const selectedItem = getSelectedItem();
 
-  // Automatically fill out the title multiloc field when a project is selected
   useEffect(() => {
     const titleMultiloc =
       selectedItem?.attributes.publication_title_multiloc || {};
