@@ -84,6 +84,16 @@ const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
     resolver: yupResolver(schema),
   });
 
+  // Reset form fields when modal is opened
+  useEffect(() => {
+    if (opened) {
+      methods.reset({
+        itemId: '',
+        titleMultiloc: {},
+      });
+    }
+  }, [opened, methods]);
+
   const onFormSubmit = async (formValues: FormValues) => {
     try {
       const selectedAdminPublication = flattenedAdminPublications.find(
