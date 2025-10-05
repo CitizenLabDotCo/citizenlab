@@ -8,8 +8,6 @@ import { object, string } from 'yup';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddNavbarItem from 'api/navbar/useAddNavbarItem';
-import useProjects from 'api/projects/useProjects';
-import useProjectFolders from 'api/project_folders/useProjectFolders';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import { IAdminPublicationData } from 'api/admin_publications/types';
 
@@ -49,9 +47,6 @@ const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
     sort: 'title_multiloc',
   });
 
-  const localize = useLocalize();
-  const locale = useLocale();
-
   // Flatten and store adminPublications when they change
   useEffect(() => {
     if (adminPublications?.pages) {
@@ -62,28 +57,16 @@ const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
     }
   }, [adminPublications]);
 
-  // DEBUG: Log publication localized titles & types when flattenedAdminPublications changes
-  useEffect(() => {
-    flattenedAdminPublications.forEach((adminPublication) => {
-      console.log(
-        localize(adminPublication.attributes.publication_title_multiloc),
-        adminPublication.relationships.publication.data.type
-      );
-    });
-  }, [flattenedAdminPublications, localize]);
-
-  const { data: projects } = useProjects({
-    publicationStatuses: ['published', 'draft', 'archived'],
-  });
-  const { data: projectFolders } = useProjectFolders({});
-
-  const anyFolderExists = !!(
-    projectFolders?.data && projectFolders.data.length > 0
+  const anyFolderExists = flattenedAdminPublications.some(
+    (adminPublication) =>
+      adminPublication.relationships.publication.data.type === 'folder'
   );
 
   const { data: appConfig } = useAppConfiguration();
 
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
+  const locale = useLocale();
 
   const schema = object({
     itemId: string().required(
@@ -103,50 +86,32 @@ const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
-      const selectedProject = projects?.data.find(
-        (project) => project.id === formValues.itemId
-      );
-      const selectedFolder = projectFolders?.data.find(
-        (folder) => folder.id === formValues.itemId
+      const selectedAdminPublication = flattenedAdminPublications.find(
+        (adminPublication) => adminPublication.id === formValues.itemId
       );
 
-      let payload: IItemNotInNavbar;
+      const type =
+        selectedAdminPublication?.relationships.publication.data.type;
+      const id = selectedAdminPublication?.relationships.publication.data.id;
+      const titleMultiloc = formValues.titleMultiloc;
 
-      if (selectedProject) {
-        payload = {
-          ...formValues,
-          type: 'project',
-          itemId: selectedProject.id,
-          slug: selectedProject.attributes.slug,
-        };
-      } else if (selectedFolder) {
-        payload = {
-          ...formValues,
-          type: 'folder',
-          itemId: selectedFolder.id,
-          slug: selectedFolder.attributes.slug,
-        };
-      } else {
-        throw new Error('Selected item is not a valid project or folder');
-      }
+      await addNavbarItem({
+        itemId: id,
+        type,
+        titleMultiloc,
+      } as IItemNotInNavbar);
 
-      await addNavbarItem(payload);
       handleOnClose();
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
   };
 
-  const projectAndFolderOptions = [
-    ...(projects?.data.map((project) => ({
-      value: project.id,
-      label: localize(project.attributes.title_multiloc),
-    })) || []),
-    ...(projectFolders?.data.map((folder) => ({
-      value: folder.id,
-      label: localize(folder.attributes.title_multiloc),
-    })) || []),
-  ].sort((a, b) => a.label.localeCompare(b.label));
+  const projectAndFolderOptions =
+    flattenedAdminPublications.map((item) => ({
+      value: item.id,
+      label: localize(item.attributes.publication_title_multiloc),
+    })) || [];
 
   const handleOnClose = () => {
     methods.reset();
@@ -156,26 +121,31 @@ const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
   const itemId = methods.watch('itemId');
 
   const getSelectedItem = () => {
-    const project = projects?.data.find((project) => project.id === itemId);
-    if (project) return { ...project, type: 'project' };
+    const selectedAdminPublication = flattenedAdminPublications.find(
+      (adminPublication) => adminPublication.id === itemId
+    );
+    if (!selectedAdminPublication) return null;
 
-    const folder = projectFolders?.data.find((folder) => folder.id === itemId);
-    if (folder) return { ...folder, type: 'folder' };
+    const type = selectedAdminPublication.relationships.publication.data.type;
 
-    return null;
+    return {
+      ...selectedAdminPublication,
+      type,
+    };
   };
 
   const selectedItem = getSelectedItem();
 
   // Automatically fill out the title multiloc field when a project is selected
   useEffect(() => {
-    const titleMultiloc = selectedItem?.attributes.title_multiloc || {};
+    const titleMultiloc =
+      selectedItem?.attributes.publication_title_multiloc || {};
     methods.setValue('titleMultiloc', titleMultiloc);
-  }, [selectedItem?.attributes.title_multiloc, methods]);
+  }, [selectedItem?.attributes.publication_title_multiloc, methods]);
 
   const hostName = appConfig?.data.attributes.host;
 
-  const slug = selectedItem?.attributes.slug;
+  const slug = selectedItem?.attributes.publication_slug;
   const previewUrl = selectedItem
     ? selectedItem.type === 'project'
       ? `${hostName}/${locale}/projects/${slug}`
