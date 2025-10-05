@@ -107,11 +107,10 @@ const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
     }
   };
 
-  const projectAndFolderOptions =
-    flattenedAdminPublications.map((item) => ({
-      value: item.id,
-      label: localize(item.attributes.publication_title_multiloc),
-    })) || [];
+  const projectAndFolderOptions = flattenedAdminPublications.map((item) => ({
+    value: item.id,
+    label: localize(item.attributes.publication_title_multiloc),
+  }));
 
   const handleOnClose = () => {
     methods.reset();
