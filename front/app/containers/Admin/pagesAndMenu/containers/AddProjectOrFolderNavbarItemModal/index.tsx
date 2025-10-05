@@ -44,6 +44,7 @@ const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
     IAdminPublicationData[]
   >([]);
   const { data: adminPublications } = useAdminPublications({
+    remove_all_unlisted: true,
     sort: 'title_multiloc',
   });
 
