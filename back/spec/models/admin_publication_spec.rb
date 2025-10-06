@@ -54,30 +54,30 @@ RSpec.describe AdminPublication do
     let(:user) { create(:user, locale: 'en') }
     let!(:project1) { create(:project, title_multiloc: { en: 'Bravo' }) }
     let!(:project2) { create(:project, title_multiloc: { en: 'Alpha' }) }
-    let!(:folder1)  { create(:project_folder, title_multiloc: { en: 'Charlie', 'fr-FR': 'CharlieFR' }) }
-    let!(:project3) { create(:project, title_multiloc: { en: '', 'fr-FR': 'EchoFR' }) }
-    let!(:folder2)  { create(:project_folder, title_multiloc: { 'nl-NL': 'Gamma', 'fr-FR': 'DeltaFR' }) }
+    let!(:folder1)  { create(:project_folder, title_multiloc: { en: 'Charlie', 'fr-FR': 'Gamma' }) }
+    let!(:project3) { create(:project, title_multiloc: { en: '', 'fr-FR': 'Echo' }) }
+    let!(:folder2)  { create(:project_folder, title_multiloc: { 'nl-NL': 'Omega', 'fr-FR': 'Delta' }) }
 
     let(:expected_ascending_order) do
       [
         project2.title_multiloc,   # Alpha
         project1.title_multiloc,   # Bravo
         folder1.title_multiloc,    # Charlie
-        folder2.title_multiloc,    # DeltaFR (no en, falls back to fr)
-        project3.title_multiloc    # EchoFR (en is blank, falls back to fr because fr-FR is before nl-NL in tenant locales)
+        folder2.title_multiloc,    # Delta (no en, falls back to fr)
+        project3.title_multiloc    # Echo (en is blank, falls back to fr because fr-FR is before nl-NL in tenant locales)
       ]
     end
 
     it 'sorts admin publications by multiloc title ascending (with locale fallback)' do
       expect(AppConfiguration.instance.settings('core', 'locales')).to eq %w[en fr-FR nl-NL]
 
-      sorted = AdminPublication.sorted_by_title_multiloc(user, 'ASC')
+      sorted = described_class.sorted_by_title_multiloc(user, 'ASC')
       expect(sorted.map { |ap| ap.publication.title_multiloc })
         .to eq expected_ascending_order
     end
 
     it 'sorts admin publications by multiloc title descending (with locale fallback)' do
-      sorted = AdminPublication.sorted_by_title_multiloc(user, 'DESC')
+      sorted = described_class.sorted_by_title_multiloc(user, 'DESC')
       expect(sorted.map { |ap| ap.publication.title_multiloc })
         .to eq expected_ascending_order.reverse
     end
