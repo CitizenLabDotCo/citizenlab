@@ -214,8 +214,8 @@ const generateYupValidationSchema = ({
         schema[key] = required ? string().required(fieldRequired) : string();
 
         // Other option
-        const fieldSchemaOther = string().when(key, (value, schema) => {
-          return (value as unknown as string) === 'other'
+        const fieldSchemaOther = string().when(key, ([value], schema) => {
+          return value === 'other'
             ? schema.required(formatMessage(messages.typeYourAnswerRequired))
             : schema.notRequired();
         });
