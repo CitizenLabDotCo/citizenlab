@@ -44,6 +44,7 @@ const Table = () => {
     fetchNextPage,
     hasNextPage,
     status,
+    ...rest
   } = useInfiniteProjectsMiniAdmin(
     {
       ...params,
@@ -52,6 +53,15 @@ const Table = () => {
     },
     PAGE_SIZE
   );
+
+  // eslint-disable-next-line no-console
+  console.log({
+    isLoading,
+    isFetching,
+    isFetchingNextPage,
+    status,
+    ...rest,
+  });
 
   const projects = useMemo(
     () => data?.pages.flatMap((page) => page.data) ?? [],
