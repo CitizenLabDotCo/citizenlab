@@ -143,7 +143,7 @@
   "app.components.admin.ActionForm.Fields.user_fields_in_survey_not_supported_for_participation_method": "Zadawanie pytań demograficznych na ostatniej stronie ankiety nie jest obsługiwane w przypadku wybranej metody uczestnictwa.",
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow": "Przy obecnej kombinacji ustawień \"Uwierzytelnianie\" i \"Gromadzenie danych użytkownika\" pytania demograficzne mogą być zadawane tylko w procesie rejestracji.",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "Wybór sposobu zadawania pytań demograficznych uczestnikom nie ma zastosowania, ponieważ wyłączyłeś uwierzytelnianie i wybrałeś pełną anonimowość.",
-  "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions2": "Aby dodać zawartość wewnątrz akordeonu, kliknij akordeon w podglądzie po lewej stronie, aby go otworzyć, a następnie przeciągnij dowolne widżety do środka.",
+  "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "Aby dodać zawartość wewnątrz akordeonu, otwórz akordeon, naciskając symbol \">\", a następnie przeciągnij dowolne widżety do środka.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Nie wybrano żadnego pytania. Wybierz pytanie jako pierwsze.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Brak odpowiedzi",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.numberOfResponses": "{count} odpowiedzi",
