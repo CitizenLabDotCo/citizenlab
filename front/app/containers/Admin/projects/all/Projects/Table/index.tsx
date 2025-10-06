@@ -112,7 +112,13 @@ const Table = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {projects.length === 0 && <EmptyRow />}
+          {projects.length === 0 && (
+            <>
+              <EmptyRow />
+              <EmptyRow />
+              <EmptyRow />
+            </>
+          )}
           {projects.map((project, i) => (
             <Row
               key={project.id}
@@ -146,24 +152,22 @@ const Table = () => {
         </Box>
       )}
 
-      {isLoading ||
-        (isFetching && !isFetchingNextPage && (
-          <Box
-            position="absolute"
-            left="0"
-            top="0"
-            minHeight="300px"
-            w="100%"
-            h="100%"
-            display="flex"
-            justifyContent="center"
-            pt="200px"
-            bgColor={colors.white}
-            opacity={0.5}
-          >
-            <Spinner />
-          </Box>
-        ))}
+      {(isLoading || (isFetching && !isFetchingNextPage)) && (
+        <Box
+          position="absolute"
+          left="0"
+          top="0"
+          w="100%"
+          h="100%"
+          display="flex"
+          justifyContent="center"
+          pt="80px"
+          bgColor={colors.white}
+          opacity={0.5}
+        >
+          <Spinner />
+        </Box>
+      )}
     </Box>
   );
 };

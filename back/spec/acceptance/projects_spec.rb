@@ -1881,5 +1881,32 @@ resource 'Projects' do
         ].sort
       end
     end
+
+    context 'when admin' do
+      before do
+        @admin = create(:admin)
+        header_token_for(@admin)
+
+        @project = create(:project)
+        @moderator = create(:project_moderator, projects: [@project])
+        @moderator.add_role 'project_moderator', project_id: @project.id
+        @moderator.save!
+      end
+
+      example 'includes project moderator' do
+        do_request
+        assert_status 200
+        expect(response_data.size).to eq 1
+        expect(response_data.first[:id]).to eq @project.id
+        expect(response_data.first.dig(:relationships, :moderators, :data).size).to eq 1
+        expect(response_data.first.dig(:relationships, :moderators, :data).first[:id]).to eq @moderator.id
+        expect(json_response[:included]).to include(
+          a_hash_including(
+            id: @moderator.id,
+            type: 'user'
+          )
+        )
+      end
+    end
   end
 end

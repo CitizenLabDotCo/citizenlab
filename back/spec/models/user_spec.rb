@@ -209,7 +209,7 @@ RSpec.describe User do
 
       # We mildly obfuscate the error message to make a spammers life a little more difficult,
       # especially avoiding leaking info about which domains are blacklisted.
-      expect(u1.errors.details[:email]).to eq [{ error: :something_went_wrong, code: 'zrb-42' }]
+      expect(u1.errors.details[:email]).to eq [{ error: 'something_went_wrong', code: 'zrb-42' }]
     end
 
     it 'is required when a unique code is not present' do
@@ -231,7 +231,7 @@ RSpec.describe User do
 
       # We mildly obfuscate the error message to make a spammers life a little more difficult,
       # especially avoiding leaking info about which domains are blacklisted.
-      expect(user.errors.details[:email]).to eq [{ error: :something_went_wrong, code: 'zrb-42' }]
+      expect(user.errors.details[:email]).to eq [{ error: 'something_went_wrong', code: 'zrb-42' }]
     end
 
     it 'is invalid email if the new email is not a valid email' do
