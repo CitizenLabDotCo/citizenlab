@@ -363,10 +363,12 @@ class User < ApplicationRecord
     return unless domain
 
     if EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
+      field = (email_field == new_email ? :new_email : :email)
+
       # Mild obfuscation of error message to make a spammers life a little more difficult,
       # especially avoiding leaking info about which domains are blacklisted.
       # Error is a string, not a symbol, as it is translated on FE, not BE.
-      errors.add(:email, 'something_went_wrong', code: 'zrb-42')
+      errors.add(field, 'something_went_wrong', code: 'zrb-42')
       Rails.logger.info "Validation error! Email domain blacklisted: #{domain}" # Clearer message in the logs
     end
   end
