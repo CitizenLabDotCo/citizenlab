@@ -102,6 +102,7 @@ describe('Input form builder', () => {
       .find('[data-cy="e2e-more-field-actions"]')
       .click();
     cy.get('.e2e-more-actions-list button').contains('Delete').click();
+    cy.dataCy('e2e-confirm-delete-location-field').should('be.visible').click();
 
     // The location tool box item should be enabled as it has been removed from the canvas
     cy.get('@locationToolboxItem').should('not.have.attr', 'disabled');

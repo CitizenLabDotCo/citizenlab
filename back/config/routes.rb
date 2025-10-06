@@ -285,6 +285,7 @@ Rails.application.routes.draw do
         post 'by_token/:token/accept', on: :collection, to: 'invites#accept'
         get :example_xlsx, on: :collection
         get :as_xlsx, on: :collection, action: 'index_xlsx'
+        post 'resend', on: :collection, to: 'invites#resend'
       end
 
       resources :invites_imports, controller: 'invites/invites_imports', only: %i[show count_new_seats count_new_seats_xlsx] do
