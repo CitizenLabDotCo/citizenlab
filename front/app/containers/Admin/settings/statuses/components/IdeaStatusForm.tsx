@@ -12,10 +12,7 @@ import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import { string, object } from 'yup';
 
-import {
-  IdeaStatusParticipationMethod,
-  InputStatusCode,
-} from 'api/idea_statuses/types';
+import { IdeaStatusParticipationMethod } from 'api/idea_statuses/types';
 
 import { Section, SectionField } from 'components/admin/Section';
 import ColorPicker from 'components/HookForm/ColorPicker';
@@ -33,7 +30,7 @@ import ProposalStatusCategories from './ProposalStatusCategories';
 
 export interface FormValues {
   color: string;
-  code: InputStatusCode;
+  code: string;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
 }
@@ -61,17 +58,17 @@ const IdeaStatusForm = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const schema = object({
-    color: string(),
+    color: string().required(),
+    code: string().required(),
     title_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.fieldTitleError)
     ),
     description_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.fieldDescriptionError)
     ),
-    code: string().required(),
   });
 
-  const methods = useForm({
+  const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues,
     resolver: yupResolver(schema),

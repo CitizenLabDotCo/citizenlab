@@ -2,7 +2,10 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { IdeaStatusParticipationMethod } from 'api/idea_statuses/types';
+import {
+  IdeaStatusParticipationMethod,
+  InputStatusCode,
+} from 'api/idea_statuses/types';
 import useAddIdeaStatus from 'api/idea_statuses/useAddIdeaStatus';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 
@@ -33,7 +36,11 @@ const NewIdeaStatus = ({
   const { mutateAsync: addIdeaStatus } = useAddIdeaStatus();
   const tenantLocales = useAppConfigurationLocales();
   const handleSubmit = async (values: FormValues) => {
-    await addIdeaStatus({ ...values, participation_method: variant });
+    await addIdeaStatus({
+      ...values,
+      code: values.code as InputStatusCode,
+      participation_method: variant,
+    });
     goBack();
   };
 
