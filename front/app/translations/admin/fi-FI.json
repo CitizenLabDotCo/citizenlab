@@ -143,7 +143,7 @@
   "app.components.admin.ActionForm.Fields.user_fields_in_survey_not_supported_for_participation_method": "Demografisten kysymysten esittämistä kyselyn viimeisellä sivulla ei tueta valitussa osallistumistavassa.",
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow": "Nykyisellä \"Todennus\"- ja \"Käyttäjätietojen keruu\" -asetusten yhdistelmällä demografisia kysymyksiä voi esittää vain rekisteröintiprosessissa.",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "Demografisten kysymysten esittämistavan valinta ei ole sovellettavissa, koska olet poistanut todennuksen käytöstä ja valinnut täyden anonymiteetin.",
-  "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions2": "Lisää sisältöä haitariin napsauttamalla sitä vasemmalla olevassa esikatselussa ja vetämällä sitten widgetit sisään.",
+  "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "Lisätäksesi sisältöä haitariin, avaa haitari painamalla symbolia \">\" ja vedä sitten widgetit sisään.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Yhtään kysymystä ei valittu. Valitse ensin kysymys.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Ei vastausta",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.numberOfResponses": "{count} vastauksia",
