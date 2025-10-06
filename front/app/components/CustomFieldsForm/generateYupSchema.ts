@@ -214,13 +214,12 @@ const generateYupValidationSchema = ({
         schema[key] = required ? string().required(fieldRequired) : string();
 
         // Other option
-        const fieldSchemaOther = string().when(key, {
-          is: (value?: string) => value === 'other',
-          then: string().required(
-            formatMessage(messages.typeYourAnswerRequired)
-          ),
-          otherwise: string().notRequired(),
+        const fieldSchemaOther = string().when(key, (value, schema) => {
+          return (value as unknown as string) === 'other'
+            ? schema.required(formatMessage(messages.typeYourAnswerRequired))
+            : schema.notRequired();
         });
+
         schema[`${key}_other`] = fieldSchemaOther;
 
         break;
@@ -258,12 +257,10 @@ const generateYupValidationSchema = ({
         }
 
         // Other option
-        const fieldSchemaOther = string().when(key, {
-          is: (value?: string[]) => value?.includes('other'),
-          then: string().required(
-            formatMessage(messages.typeYourAnswerRequired)
-          ),
-          otherwise: string().notRequired(),
+        const fieldSchemaOther = string().when(key, (value, schema) => {
+          return value.includes('other')
+            ? schema.required(formatMessage(messages.typeYourAnswerRequired))
+            : schema.notRequired();
         });
 
         schema[key] = fieldSchema;
