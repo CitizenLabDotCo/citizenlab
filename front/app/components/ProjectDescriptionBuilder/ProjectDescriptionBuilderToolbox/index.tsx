@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { SupportedLocale } from 'typings';
-
 import messages from 'containers/ProjectDescriptionBuilder/messages';
 
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
@@ -23,13 +21,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 
-type ProjectDescriptionBuilderToolboxProps = {
-  selectedLocale: SupportedLocale;
-};
-
-const ProjectDescriptionBuilderToolbox = ({
-  selectedLocale,
-}: ProjectDescriptionBuilderToolboxProps) => {
+const ProjectDescriptionBuilderToolbox = () => {
   const { formatMessage } = useIntl();
 
   return (
@@ -110,8 +102,9 @@ const ProjectDescriptionBuilderToolbox = ({
             <IframeMultiloc
               url=""
               height={500}
+              tabletHeight={500}
+              mobileHeight={500}
               hasError={false}
-              selectedLocale={selectedLocale}
             />
           }
           icon="code"

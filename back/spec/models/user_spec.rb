@@ -206,7 +206,10 @@ RSpec.describe User do
     it 'is invalid if the domain is on our blacklist' do
       u1 = build(:user, email: 'xwrknecgyq_1542135485@039b1ee.netsolhost.com')
       expect(u1).to be_invalid
-      expect(u1.errors.details[:email]).to eq [{ error: :domain_blacklisted, value: '039b1ee.netsolhost.com' }]
+
+      # We mildly obfuscate the error message to make a spammers life a little more difficult,
+      # especially avoiding leaking info about which domains are blacklisted.
+      expect(u1.errors.details[:email]).to eq [{ error: 'something_went_wrong', code: 'zrb-42' }]
     end
 
     it 'is required when a unique code is not present' do
@@ -225,7 +228,10 @@ RSpec.describe User do
       user = build(:user, new_email: 'xwrknecgyq_1542135485@039b1ee.netsolhost.com')
       expect(user).to be_invalid
       expect(user.errors.details[:new_email]).not_to be_present
-      expect(user.errors.details[:email]).to eq [{ error: :domain_blacklisted, value: '039b1ee.netsolhost.com' }]
+
+      # We mildly obfuscate the error message to make a spammers life a little more difficult,
+      # especially avoiding leaking info about which domains are blacklisted.
+      expect(user.errors.details[:email]).to eq [{ error: 'something_went_wrong', code: 'zrb-42' }]
     end
 
     it 'is invalid email if the new email is not a valid email' do

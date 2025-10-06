@@ -36,6 +36,7 @@ const StartIdeaButton = ({
       projectId={projectId}
       phase={phase}
       participationMethod={'ideation'}
+      inMap={true}
     />,
     modalPortalElement
   );

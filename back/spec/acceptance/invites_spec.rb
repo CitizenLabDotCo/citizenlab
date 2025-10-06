@@ -180,6 +180,50 @@ resource 'Invites' do
         do_request
         expect(response_status).to eq 401 # unauthorized
       end
+
+      example 'Accept an expired invitation', document: false do
+        invite.update!(created_at: 2.months.ago)
+        do_request
+        # You would expect this to be a 401 (unauthorized),
+        # but the way this works is that there is a job that cleans up
+        # expired invites. So the idea is that this invite
+        # would already have been deleted by that job.
+        # So the situation in this test should not really occur.
+        # Still, wanted to add this just as documentation of some
+        # potentially confusing behavior.
+        # Would be more robust if we would block acceptance of expired
+        # invites in the controller as well.
+        expect(response_status).to eq 200
+      end
+    end
+
+    post 'web_api/v1/invites/resend' do
+      with_options scope: :invite do
+        parameter :email, 'The email of the user to resend the invite to', required: true
+      end
+
+      let(:user) { create(:invited_user) }
+      let(:invite) { user.invitee_invite }
+      let(:email) { user.email }
+
+      example_request 'Resend an invite' do
+        assert_status 200
+        expect(LogActivityJob).to have_been_enqueued.with(
+          invite, 'resent', anything, nil
+        ).exactly(1).times
+      end
+
+      example '[error] Resend an invite to a user without a pending invite', document: false do
+        user.update!(invite_status: 'accepted')
+        do_request
+        assert_status 422
+      end
+
+      example '[error] Resend an invite to a non-existing user', document: false do
+        user.destroy!
+        do_request
+        assert_status 422
+      end
     end
   end
 end

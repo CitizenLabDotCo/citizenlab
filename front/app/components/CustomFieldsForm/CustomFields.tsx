@@ -85,6 +85,7 @@ const renderField = ({
           name={question.key}
           maxCharCount={question.max_characters}
           scrollErrorIntoView={true}
+          minRows={2}
         />
       );
     case 'select':

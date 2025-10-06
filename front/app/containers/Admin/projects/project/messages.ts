@@ -22,6 +22,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.inputFormTab',
     defaultMessage: 'Input form',
   },
+  locationFieldWarning: {
+    id: 'app.containers.AdminPage.ProjectEdit.information.locationFieldWarning1',
+    defaultMessage:
+      'If you allow users to submit ideas through the map, make sure that the Location field is included in the {inputFormLink}.',
+  },
+  locationFieldWarningLink: {
+    id: 'app.containers.AdminPage.ProjectEdit.information.locationFieldWarningLink1',
+    defaultMessage: 'Input Form',
+  },
   mapTab: {
     id: 'app.containers.AdminPage.ProjectEdit.mapTab',
     defaultMessage: 'Map',
