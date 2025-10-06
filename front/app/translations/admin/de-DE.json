@@ -2124,7 +2124,7 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Wählen Sie, wie Nutzer*innen teilnehmen können.",
   "app.containers.AdminPage.ProjectEdit.participationRequirementsSubtitle": "Sie können festlegen, wer jede Aktion durchführen darf, und den Teilnehmenden zusätzliche Fragen stellen, um weitere Informationen zu sammeln.",
   "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Teilnahmebedingungen & Fragen",
-  "app.containers.AdminPage.ProjectEdit.phaseAccessRights2": "Zugriffs- und Nutzungsdaten",
+  "app.containers.AdminPage.ProjectEdit.phaseAccessRights2": "Phasenzugang und Nutzungsdaten",
   "app.containers.AdminPage.ProjectEdit.phaseEmails": "Benachrichtigungen",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Blitz-Umfrage",
   "app.containers.AdminPage.ProjectEdit.popularSortingMethod2": "Meiste Reaktionen",
