@@ -238,7 +238,7 @@ const CustomFields = ({
               )}
               {renderField({ question, projectId, ideaId })}
               {question?.code && inputIqFields.includes(question.code) && (
-                <InputIQ phase={phase} field={question} />
+                <InputIQ phase={phase} />
               )}
             </Box>
           );
