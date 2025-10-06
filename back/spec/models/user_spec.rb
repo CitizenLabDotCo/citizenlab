@@ -203,13 +203,30 @@ RSpec.describe User do
       expect(user).to be_invalid
     end
 
-    it 'is invalid if the domain is on our blacklist' do
+    it 'is invalid when new record and the domain is on our blacklist' do
       u1 = build(:user, email: 'xwrknecgyq_1542135485@039b1ee.netsolhost.com')
       expect(u1).to be_invalid
 
       # We mildly obfuscate the error message to make a spammers life a little more difficult,
       # especially avoiding leaking info about which domains are blacklisted.
       expect(u1.errors.details[:email]).to eq [{ error: 'something_went_wrong', code: 'zrb-42' }]
+    end
+
+    it 'is invalid when existing record and the domain is updated to a domain on our blacklist' do
+      user = create(:user, email: 'allowed@domain.com')
+      user.email = 'blocked@039b1ee.netsolhost.com'
+
+      expect(user).to be_invalid
+      expect(user.errors.details[:email]).to eq [{ error: 'something_went_wrong', code: 'zrb-42' }]
+    end
+
+    # We avoid invalidating users who had a now-blocked email domain before it was blocked
+    it 'is valid if domain is on our blacklist but are updating other user attributes' do
+      user = create(:user)
+      user.update_column(:email, 'blocked@039b1ee.netsolhost.com') # bypasses validations
+
+      user.first_name = 'UpdatedName'
+      expect(user).to be_valid
     end
 
     it 'is required when a unique code is not present' do
@@ -224,13 +241,30 @@ RSpec.describe User do
   end
 
   describe 'new_email' do
-    it 'is invalid if the domain is on our blacklist' do
+    it 'is invalid when new record and the domain is on our blacklist' do
       user = build(:user, new_email: 'xwrknecgyq_1542135485@039b1ee.netsolhost.com')
       expect(user).to be_invalid
 
       # We mildly obfuscate the error message to make a spammers life a little more difficult,
       # especially avoiding leaking info about which domains are blacklisted.
       expect(user.errors.details[:new_email]).to eq [{ error: 'something_went_wrong', code: 'zrb-42' }]
+    end
+
+    it 'is invalid when existing record and the domain is updated to a domain on our blacklist' do
+      user = create(:user, new_email: 'allowed@domain.com')
+      user.new_email = 'blocked@039b1ee.netsolhost.com'
+
+      expect(user).to be_invalid
+      expect(user.errors.details[:new_email]).to eq [{ error: 'something_went_wrong', code: 'zrb-42' }]
+    end
+
+    # We avoid invalidating users who had a now-blocked email domain before it was blocked
+    it 'is valid if domain is on our blacklist but are updating other user attributes' do
+      user = create(:user)
+      user.update_column(:new_email, 'blocked@039b1ee.netsolhost.com') # bypasses validations
+
+      user.first_name = 'UpdatedName'
+      expect(user).to be_valid
     end
 
     it 'is invalid email if the new email is not a valid email' do
