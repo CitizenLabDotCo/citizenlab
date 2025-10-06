@@ -164,7 +164,6 @@ const Table = () => {
           pt="80px"
           bgColor={colors.white}
           opacity={0.5}
-          id="fjaopiwjgrpag"
         >
           <Spinner />
         </Box>
