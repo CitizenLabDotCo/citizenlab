@@ -39,8 +39,14 @@ module Analysis
         ).responses
       end
 
+      # @param message [String, Analysis::LLM::Message, Array<String, Analysis::LLM::Message>]
+      #   The message(s) to send to the model.
       def response(message, **params)
-        parameters = default_params.merge(input: message).deep_merge(params)
+        inputs = Array.wrap(message)
+          .map { |m| Message.wrap(m) }
+          .map { |m| format_message(m) }
+
+        parameters = default_params.merge(input: inputs).deep_merge(params)
 
         if block_given?
           parameters[:stream] = proc do |chunk, _event|
@@ -71,6 +77,39 @@ module Analysis
           top_p: 0.5,
           store: false # prevent OpenAI from storing the prompts and responses
         }
+      end
+
+      def format_message(msg)
+        {
+          role: msg.role,
+          content: msg.inputs.map { |input| format_input(input) }
+        }
+      end
+
+      def format_input(input)
+        case input
+        when String then format_text(input)
+        when Files::File then format_file(input)
+        else raise ArgumentError, <<~MSG.squish
+          Unsupported content type: #{input.class}.
+          Must be String or Files::File."
+        MSG
+        end
+      end
+
+      # @param file [Files::File]
+      def format_file(file)
+        encoded = Base64.strict_encode64(file.content.read)
+
+        {
+          type: 'input_file',
+          filename: file.name,
+          file_data: "data:#{file.mime_type};base64,#{encoded}"
+        }
+      end
+
+      def format_text(text)
+        { type: 'input_text', text: text }
       end
     end
   end
