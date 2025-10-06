@@ -56,6 +56,7 @@ module Analysis
     protected
 
     # Use `execute` on the parent class to actually use the method
+    # @param plan [Analysis::QAndAPlan]
     def run(plan)
       inputs_text = input_to_text.format_all(
         filtered_inputs,
