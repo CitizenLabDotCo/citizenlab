@@ -209,6 +209,7 @@ const CustomFields = ({
           const answerNotPublic =
             !question.visible_to_public &&
             participationMethod !== 'native_survey';
+          const inputIqFields = ['title_multiloc', 'body_multiloc'];
 
           return (
             <Box
@@ -235,10 +236,9 @@ const CustomFields = ({
                 </Text>
               )}
               {renderField({ question, projectId, ideaId })}
-              {question?.code &&
-                ['title_multiloc', 'body_multiloc'].includes(question.code) && (
-                  <InputIQ phase={phase} field={question} />
-                )}
+              {question?.code && inputIqFields.includes(question.code) && (
+                <InputIQ phase={phase} field={question} />
+              )}
             </Box>
           );
         })}

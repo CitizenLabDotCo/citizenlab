@@ -24,13 +24,8 @@ const InputIQ = ({
     phase?.attributes.similarity_enabled && isInputIQEnabled
   );
 
-  let titleMultiloc, bodyMultiloc;
-  if (field.code === 'title_multiloc') {
-    titleMultiloc = watch('title_multiloc');
-  }
-  if (field.code === 'body_multiloc') {
-    bodyMultiloc = watch('body_multiloc');
-  }
+  const titleMultiloc = watch('title_multiloc');
+  const bodyMultiloc = watch('body_multiloc');
 
   // Debounced values for similar ideas lookup
   const [debouncedTitleMultiloc, setDebouncedTitleMultiloc] =
