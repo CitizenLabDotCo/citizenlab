@@ -2384,7 +2384,7 @@
   "app.utils.votingMethodUtils.voteSubmittedWithIcon": "Stimme eingereicht 🎉",
   "app.utils.votingMethodUtils.votesCast": "Abgegebene Stimmen",
   "app.utils.votingMethodUtils.votingClosed": "Abstimmung geschlossen",
-  "app.utils.votingMethodUtils.votingPreSubmissionWarning1": "<b>Ihre Stimmen werden erst gezählt</b>, wenn Sie auf \"Senden\" klicken",
+  "app.utils.votingMethodUtils.votingPreSubmissionWarning1": "<b>Stimmen werden erst gezählt</b>, wenn auf \"Senden\" geklickt wurde",
   "app.utils.votingMethodUtils.votingSubmittedInstructions1": "<b>Herzlichen Glückwunsch, Ihre Stimme wurde abgegeben!</b> Sie können Ihren Beitrag überprüfen oder ändern, bevor <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.votingSubmittedInstructionsNoEndDate1": "<b>Herzlichen Glückwunsch, Ihre Stimme wurde abgegeben!</b> Sie können Ihre Stimmabgabe unten jederzeit überprüfen oder ändern.",
   "components.UI.IdeaSelect.noIdeaAvailable": "Es sind keine Beiträge vorhanden.",
