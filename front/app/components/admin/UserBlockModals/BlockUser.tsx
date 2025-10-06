@@ -41,6 +41,7 @@ type Props = {
 
 type FormValues = {
   reason: string;
+  current_password: string;
 };
 
 const BlockUserModal = ({ open, setClose, user, returnFocusRef }: Props) => {
@@ -51,14 +52,13 @@ const BlockUserModal = ({ open, setClose, user, returnFocusRef }: Props) => {
   const { mutate: blockUser } = useBlockUser();
 
   const schema = object({
-    current_password: string(),
+    reason: string().required(),
+    current_password: string().required(),
   });
 
   const methods = useForm<FormValues>({
     mode: 'onBlur',
-    defaultValues: {
-      reason: '',
-    },
+    defaultValues: {},
     resolver: yupResolver(schema),
   });
 
