@@ -40,10 +40,10 @@ type AddFieldScreenProps = {
 };
 
 export interface FormValues {
-  input_type?: FieldType;
+  options: IOptionsType[];
+  input_type: string;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
-  options: IOptionsType[];
 }
 
 export const AddFieldScreen = ({
@@ -60,14 +60,17 @@ export const AddFieldScreen = ({
     options: validateOneOptionForMultiSelect(
       formatMessage(messages.atLeastOneOptionError),
       formatMessage(messages.emptyTitleErrorMessage)
-    ),
+    ).required(),
     input_type: string().required(formatMessage(messages.selectValueError)),
     title_multiloc: validateMultiloc(
       formatMessage(messages.missingTitleLocaleError)
     ),
+    description_multiloc: validateMultiloc(
+      formatMessage(messages.missingDescriptionLocaleError)
+    ),
   });
 
-  const methods = useForm({
+  const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues,
     resolver: yupResolver(schema),
@@ -88,6 +91,7 @@ export const AddFieldScreen = ({
         try {
           const newField = await addCustomFieldForUsers({
             ...formValues,
+            input_type: formValues.input_type as FieldType,
             enabled: false,
           });
 
