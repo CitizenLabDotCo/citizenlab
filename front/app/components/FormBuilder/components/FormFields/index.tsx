@@ -43,7 +43,7 @@ const FormFields = ({
   const formCustomFields: IFlatCustomField[] = watch('customFields');
 
   const shouldShowField = (field: IFlatCustomField) => {
-    if (!!field.code) {
+    if (field.code) {
       return field.enabled;
     }
     return true;

@@ -188,7 +188,7 @@ export const FormField = ({
   };
 
   const onDelete = (fieldIndex: number) => {
-    if (!!field.code && field.input_type !== 'page') {
+    if (field.code && field.input_type !== 'page') {
       const newField = { ...field, enabled: false };
       setValue(`customFields.${index}`, newField);
     } else {
