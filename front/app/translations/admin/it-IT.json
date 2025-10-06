@@ -143,7 +143,7 @@
   "app.components.admin.ActionForm.Fields.user_fields_in_survey_not_supported_for_participation_method": "Asking demographic questions as the last page of the survey is not supported for the selected participation method.",
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow": "With the current combination of \"Authentication\" and \"User data collection\" settings, demographic questions can only be asked in the registration flow.",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "Choosing how demographic questions are asked to participants is not applicable as you have disabled authentication and selected full anonymity",
-  "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions2": "Per aggiungere contenuti all'interno della fisarmonica, clicca sulla fisarmonica nell'anteprima a sinistra per aprirla e poi trascina i widget all'interno.",
+  "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "Per aggiungere contenuti all'interno della fisarmonica, apri la fisarmonica premendo sul simbolo \">\", quindi trascina i widget all'interno.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Non è stata selezionata alcuna domanda. Seleziona prima una domanda.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "No answer",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.numberOfResponses": "{count} risposte",
