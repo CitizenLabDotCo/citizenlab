@@ -2806,7 +2806,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteSummary": "Supprimer le résumé",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteSummaryConfirmation": "Êtes-vous sûr de vouloir supprimer ces résumés ?",
   "app.containers.AdminPage.projects.project.analysis.Insights.emptyList": "Vos résumés s'afficheront ici, mais pour l'instant, vous n'en avez encore généré aucun.",
-  "app.containers.AdminPage.projects.project.analysis.Insights.emptyListDescription": "Cliquez sur le bouton « Résumé automatique » ci-dessus pour commencer.",
+  "app.containers.AdminPage.projects.project.analysis.Insights.emptyListDescription": "Cliquez sur le bouton « Résumer » ci-dessus pour commencer.",
   "app.containers.AdminPage.projects.project.analysis.Insights.inputsSelected": "contributions sélectionnées",
   "app.containers.AdminPage.projects.project.analysis.Insights.percentage": "%",
   "app.containers.AdminPage.projects.project.analysis.Insights.questionAccuracyTooltip": "Poser des questions sur un nombre restreint de contributions permet généralement d'obtenir une plus grande précision. N'hésitez pas à essayer les différents filtres disponibles pour affiner votre sélection.",
