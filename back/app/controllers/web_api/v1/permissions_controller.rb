@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::PermissionsController < ApplicationController
-  before_action :set_permission, only: %i[show update reset requirements schema access_denied_explanation]
+  before_action :set_permission, only: %i[show update reset requirements schema custom_fields access_denied_explanation]
   skip_before_action :authenticate_user
 
   def index
@@ -59,6 +59,12 @@ class WebApi::V1::PermissionsController < ApplicationController
     authorize @permission
     fields = user_requirements_service.requirements_custom_fields @permission
     render json: raw_json(user_ui_and_json_multiloc_schemas(fields))
+  end
+
+  def custom_fields
+    authorize @permission
+    fields = user_requirements_service.requirements_custom_fields @permission
+    render json: WebApi::V1::CustomFieldSerializer.new(fields, params: jsonapi_serializer_params_with_locked_fields).serializable_hash.to_json
   end
 
   def access_denied_explanation
@@ -143,7 +149,27 @@ class WebApi::V1::PermissionsController < ApplicationController
   def verification_service
     @verification_service ||= Verification::VerificationService.new
   end
+
+  def jsonapi_serializer_params_with_locked_fields
+    constraints = build_locked_custom_fields_constraints
+    jsonapi_serializer_params({ constraints: constraints })
+  end
+
+  def build_locked_custom_fields_constraints
+    return {} unless current_user
+
+    locked_custom_field_keys = verification_service.locked_custom_fields(current_user).map(&:to_s)
+    constraints = {}
+    
+    # Find the corresponding codes for the locked custom field keys
+    # The serializer expects constraints keyed by 'code', not 'key'
+    CustomField.where(key: locked_custom_field_keys).each do |field|
+      code_key = field.code&.to_sym || field.key&.to_sym
+      constraints[code_key] = { locked: true } if code_key
+    end
+    
+    constraints
+  end
 end
 
 # WebApi::V1::PermissionsController.prepend(Verification::Patches::WebApi::V1::PermissionsController)
-# frozen_string_literal: true
