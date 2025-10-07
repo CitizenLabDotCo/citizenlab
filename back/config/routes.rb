@@ -27,7 +27,6 @@ Rails.application.routes.draw do
         # We named the param :permission_action, bc :action is already taken (controller action).
         resources :permissions, param: :permission_action do
           get 'requirements', on: :member
-          get 'schema', on: :member
           get 'access_denied_explanation', on: :member
           patch 'reset', on: :member
           resources :permissions_custom_fields, shallow: true do

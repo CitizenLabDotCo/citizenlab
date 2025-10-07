@@ -7,10 +7,6 @@ class FormLogicService
     @option_index = fields.flat_map(&:options).index_by(&:id)
   end
 
-  def ui_schema_rules_for(target_field)
-    target_field_rules[target_field.id]
-  end
-
   def replace_temp_ids!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping)
     fields.each do |field|
       next if field.logic.blank?
