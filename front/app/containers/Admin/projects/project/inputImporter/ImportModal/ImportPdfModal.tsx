@@ -10,7 +10,7 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { UploadFile } from 'typings';
+import { SupportedLocale, UploadFile } from 'typings';
 import { object, string, mixed, boolean } from 'yup';
 
 import { IBackgroundJobData } from 'api/background_jobs/types';
@@ -97,9 +97,10 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
   const submitFile = async ({
     file,
     google_consent: _,
-    ...rest
+    locale,
+    personal_data,
   }: FormValues) => {
-    if (!file || !phaseId) return;
+    if (!phaseId) return;
 
     try {
       const response = await addOfflineIdeas({
@@ -107,7 +108,8 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
         file: file.base64,
         format: 'pdf',
         legacy_pdf: legacyPdfImport,
-        ...rest,
+        locale: locale as SupportedLocale,
+        personal_data,
       });
 
       onImport(response.data);
