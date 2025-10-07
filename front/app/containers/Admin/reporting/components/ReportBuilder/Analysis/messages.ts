@@ -39,13 +39,4 @@ export default defineMessages({
     id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.dragAiContentInfo',
     defaultMessage: 'Use the ☰ icon below to drag AI content into your report.',
   },
-  openSensemaking: {
-    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.openSensemaking',
-    defaultMessage: 'Open Sensemaking',
-  },
-  dragAndDrop: {
-    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.dragAndDrop',
-    defaultMessage:
-      'Use the ☰ icon to drag and drop AI content into your report.',
-  },
 });

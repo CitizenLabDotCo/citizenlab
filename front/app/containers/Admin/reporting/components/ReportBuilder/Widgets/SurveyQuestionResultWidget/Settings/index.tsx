@@ -12,7 +12,9 @@ import { GroupMode } from 'api/graph_data_units/requestTypes';
 import useLocale from 'hooks/useLocale';
 
 import HeatmapTooltipContent from 'components/admin/FormResults/FormResultsQuestion/MappingQuestions/PointLocationQuestion/HeatmapTooltipContent';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import PhaseFilter from 'components/UI/PhaseFilter';
+import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -138,6 +140,7 @@ const Settings = () => {
       analysis.relationships.main_custom_field?.data?.id === questionId
   );
 
+  const showInsights = projectId && phaseId && questionId;
   return (
     <Box>
       <ProjectFilter
@@ -195,15 +198,29 @@ const Settings = () => {
         </>
       )}
 
-      {projectId &&
+      {showInsights &&
         relevantAnalyses?.map((analysis) => (
-          <Insights
-            analysisId={analysis.id}
+          <Box
             key={analysis.id}
-            projectId={projectId}
-            selectedLocale={locale}
-            phaseId={phaseId}
-          />
+            display="flex"
+            flexDirection="column"
+            gap="8px"
+            mb="16px"
+          >
+            <ButtonWithLink
+              linkTo={`/admin/projects/${projectId}/analysis/${analysis.id}?phase_id=${phaseId}`}
+            >
+              {formatMessage(messages.openSensemaking)}
+            </ButtonWithLink>
+            <Warning>{formatMessage(messages.dragAndDrop)}</Warning>
+            <Insights
+              analysisId={analysis.id}
+              key={analysis.id}
+              projectId={projectId}
+              selectedLocale={locale}
+              phaseId={phaseId}
+            />
+          </Box>
         ))}
 
       {showHeatmapSettings && (

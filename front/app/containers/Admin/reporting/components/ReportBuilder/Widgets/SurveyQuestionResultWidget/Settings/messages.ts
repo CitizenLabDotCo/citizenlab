@@ -43,4 +43,13 @@ export default defineMessages({
     id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupBySurveyQuestion',
     defaultMessage: 'Group by survey question',
   },
+  openSensemaking: {
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.openSensemaking',
+    defaultMessage: 'Open Sensemaking',
+  },
+  dragAndDrop: {
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.dragAndDrop',
+    defaultMessage:
+      'Use the ☰ icon to drag and drop AI content into your report.',
+  },
 });
