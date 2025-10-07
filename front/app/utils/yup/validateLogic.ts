@@ -1,10 +1,6 @@
 import { object } from 'yup';
 
-import {
-  IFlatCustomField,
-  LogicType,
-  QuestionRuleType,
-} from 'api/custom_fields/types';
+import { IFlatCustomField, QuestionRuleType } from 'api/custom_fields/types';
 
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -53,7 +49,7 @@ const validateLogic = (message: string) => {
     .shape({
       logic: object(),
     })
-    .when('input_type', (input_type: string, schema) => {
+    .when('input_type', ([input_type], schema) => {
       if (
         [
           'multiselect',
@@ -66,16 +62,16 @@ const validateLogic = (message: string) => {
         return schema.test(
           'rules reference prior pages',
           message,
-          (value: { rules: QuestionRuleType[] }, obj) => {
+          (value, obj) => {
             // Extract current state of customFields
-            const fields = obj.from[2].value.customFields;
+            const fields = obj.from?.[2].value.customFields;
 
             // TODO: Fix this the next time the file is edited.
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (!isNilOrError(obj) && value && fields) {
               // TODO: Fix this the next time the file is edited.
               // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              return (value.rules || []).every((rule) =>
+              return ((value as any).rules || []).every((rule) =>
                 isRuleValid(rule, obj.parent.id, fields)
               );
             }
@@ -86,13 +82,17 @@ const validateLogic = (message: string) => {
         return schema.test(
           'rules reference prior pages',
           message,
-          (value: LogicType, obj) => {
-            const fields = obj.from[2].value.customFields;
+          (value, obj) => {
+            const fields = obj.from?.[2].value.customFields;
 
             // TODO: Fix this the next time the file is edited.
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            if (!isNilOrError(obj) && value?.next_page_id && fields) {
-              return isPageRuleValid(fields, obj.parent.id, value.next_page_id);
+            if (!isNilOrError(obj) && (value as any)?.next_page_id && fields) {
+              return isPageRuleValid(
+                fields,
+                obj.parent.id,
+                (value as any).next_page_id
+              );
             }
             return true;
           }
