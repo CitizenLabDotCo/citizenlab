@@ -195,9 +195,6 @@ Rails.application.routes.draw do
         end
 
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
-        resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
-          get 'json_forms_schema', on: :collection
-        end
         get 'custom_form', on: :member, controller: 'custom_forms', action: 'show', defaults: { container_type: 'Phase' }
         patch 'custom_form', on: :member, controller: 'custom_forms', action: 'update', defaults: { container_type: 'Phase' }
       end
@@ -211,9 +208,6 @@ Rails.application.routes.draw do
         resources :images, defaults: { container_type: 'Project' }
         resources :files, defaults: { container_type: 'Project' }
         resources :groups_projects, shallow: true, except: [:update]
-        resources :custom_fields, controller: 'project_custom_fields', only: %i[] do
-          get 'json_forms_schema', on: :collection
-        end
         resources :moderators, controller: 'project_moderators', except: [:update] do
           get :users_search, on: :collection
         end
