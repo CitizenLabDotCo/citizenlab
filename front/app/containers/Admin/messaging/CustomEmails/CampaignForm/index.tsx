@@ -56,7 +56,7 @@ export interface FormValues {
   reply_to: string;
   subject_multiloc: Multiloc;
   body_multiloc: Multiloc;
-  group_ids?: string[];
+  group_ids: string[];
 }
 
 type CampaignFormProps = {
@@ -91,10 +91,10 @@ const CampaignForm = ({
     body_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.fieldBodyError)
     ),
-    group_ids: array(),
+    group_ids: array().required(),
   });
 
-  const methods = useForm({
+  const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues,
     resolver: yupResolver(schema),
