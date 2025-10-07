@@ -2434,7 +2434,7 @@
   "app.containers.AdminPage.ProjectTimeline.surveyTitleLabel": "Titre de l'enquête",
   "app.containers.AdminPage.ProjectTimeline.titleLabel": "Nom de la phase",
   "app.containers.AdminPage.ProjectTimeline.uploadAttachments": "Télécharger des pièces jointes",
-  "app.containers.AdminPage.ReportsTab.customFieldTitleExport": "{fieldName}_repartition",
+  "app.containers.AdminPage.ReportsTab.customFieldTitleExport": "{fieldName}_répartition",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.subtitleTerminology": "Terminologie (filtre de la page d'accueil)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.terminologyTooltip": "Comment appeler les balises dans le filtre de la page d'accueil ? Par exemple, balises, catégories, départements, ...",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipExtraCopy": "Les étiquettes peuvent être configurées {topicManagerLink}.",
