@@ -73,10 +73,15 @@ describe('InviteUsersWithSeatsModal', () => {
         closeModal={closeModal}
         newSeatsResponse={{
           data: {
-            type: 'invite_new_seats',
+            id: '1',
+            type: 'invites_import',
             attributes: {
-              newly_added_admins_number: 1,
-              newly_added_moderators_number: 0,
+              job_type: 'count_new_seats',
+              completed_at: null,
+              result: {
+                newly_added_admins_number: 1,
+                newly_added_moderators_number: 0,
+              },
             },
           },
         }}
@@ -107,10 +112,15 @@ describe('InviteUsersWithSeatsModal', () => {
         closeModal={closeModal}
         newSeatsResponse={{
           data: {
-            type: 'invite_new_seats',
+            id: '1',
+            type: 'invites_import',
             attributes: {
-              newly_added_admins_number: 0,
-              newly_added_moderators_number: 2,
+              job_type: 'count_new_seats',
+              completed_at: null,
+              result: {
+                newly_added_admins_number: 0,
+                newly_added_moderators_number: 2,
+              },
             },
           },
         }}

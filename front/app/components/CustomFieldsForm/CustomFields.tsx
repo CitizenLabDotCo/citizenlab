@@ -85,6 +85,7 @@ const renderField = ({
           name={question.key}
           maxCharCount={question.max_characters}
           scrollErrorIntoView={true}
+          minRows={2}
         />
       );
     case 'select':
@@ -211,7 +212,12 @@ const CustomFields = ({
             participationMethod !== 'native_survey';
 
           return (
-            <Box key={question.id} mb="24px" position="relative">
+            <Box
+              key={question.id}
+              mb="24px"
+              position="relative"
+              data-question-id={question.id}
+            >
               <FormLabel {...labelProps} />
               <Text mt="4px" mb={answerNotPublic ? '4px' : '8px'} fontSize="s">
                 {getInstructionMessage({

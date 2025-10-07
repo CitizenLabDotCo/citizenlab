@@ -137,4 +137,6 @@ export interface IQueryParameters {
   is_not_folder_moderator?: string;
   // Admin users that can approve project review requests
   project_reviewer?: boolean;
+  // Pass project id to filter users who participated in the project
+  project?: string;
 }

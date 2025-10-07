@@ -119,6 +119,8 @@ da:
       "unfollow_here": "Du har modtaget denne meddelelse på grund af et emne, du følger. <a href=\"%{unfollow_url}\">Du kan fjerne den her.</a>"
     manual:
       preheader: 'Du har fået en mail fra %{organizationName}'
+    manual_project_participants:
+      preheader: 'Du har fået en mail fra %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Din kommentar er blevet slettet på %{organizationName}s platform'
       preheader: 'Din kommentar er blevet slettet'
@@ -642,6 +644,7 @@ da:
         user_is_given_admin_rights: 'Brugeren får administratorrettigheder'
         user_is_given_folder_moderator_rights: 'Brugeren får rettigheder som mappemoderator'
         user_is_given_project_moderator_rights: 'Brugeren har fået rettigheder som projektmoderator'
+        user_is_invited_to_platform: 'Brugeren er inviteret til platformen'
         user_is_invited_to_cosponsor_a_proposal: 'Brugeren inviteres til at være medstiller på et forslag'
         user_is_mentioned: 'Brugeren er nævnt'
         user_is_mentioned_in_internal_comment: 'Brugeren er nævnt i en intern kommentar'

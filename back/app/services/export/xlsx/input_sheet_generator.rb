@@ -15,7 +15,6 @@ module Export
       end
 
       def generate_sheet(workbook, sheetname)
-        utils = Utils.new
         sheetname = utils.sanitize_sheetname sheetname
         workbook.styles do |styles|
           column_header = styles.add_style(
@@ -47,6 +46,18 @@ module Export
 
       def input_id_report_field
         ComputedFieldForReport.new(column_header_for('input_id'), ->(input) { input.id })
+      end
+
+      def title_multiloc_report_field
+        input_multiloc_report_field('title_multiloc', column_header_for('title'))
+      end
+
+      def body_multiloc_report_field
+        input_multiloc_report_field('body_multiloc', column_header_for('description'))
+      end
+
+      def input_multiloc_report_field(attribute_name, column_header)
+        ComputedFieldForReport.new(column_header, ->(input) { utils.multiloc_with_fallback_locale(input, attribute_name) })
       end
 
       def author_name_report_field
@@ -151,21 +162,54 @@ module Export
           fields_in_form.each do |field|
             next if field.code == 'author_id' # Never included, because the user fields include it
 
-            if field.code == 'location_description'
-              input_fields << latitude_report_field
-              input_fields << longitude_report_field
-            end
-            if field.input_type == 'matrix_linear_scale'
-              field.matrix_statements.each do |statement|
-                input_fields << matrix_statement_report_field(statement)
-              end
-              next
-            end
-            input_fields << Export::CustomFieldForExport.new(field, @value_visitor)
-            input_fields << Export::CustomFieldForExport.new(field.other_option_text_field, @value_visitor) if field.other_option_text_field
-            input_fields << Export::CustomFieldForExport.new(field.follow_up_text_field, @value_visitor) if field.follow_up_text_field
+            process_input_report_field(field, input_fields)
           end
         end
+      end
+
+      def process_input_report_field(field, input_fields)
+        case field.code
+        when 'title_multiloc'
+          input_fields << title_multiloc_report_field
+        when 'body_multiloc'
+          input_fields << body_multiloc_report_field
+        when 'location_description'
+          add_location_fields(input_fields)
+          add_standard_field(field, input_fields)
+        else
+          if field.input_type == 'matrix_linear_scale'
+            add_matrix_fields(field, input_fields)
+          else
+            add_standard_field(field, input_fields)
+          end
+        end
+
+        add_supplementary_fields(field, input_fields)
+      end
+
+      def add_location_fields(input_fields)
+        input_fields << latitude_report_field
+        input_fields << longitude_report_field
+      end
+
+      def add_matrix_fields(field, input_fields)
+        field.matrix_statements.each do |statement|
+          input_fields << matrix_statement_report_field(statement)
+        end
+      end
+
+      def add_standard_field(field, input_fields)
+        return if %w[title_multiloc body_multiloc].include?(field.code)
+
+        input_fields << Export::CustomFieldForExport.new(field, @value_visitor)
+      end
+
+      def add_supplementary_fields(field, input_fields)
+        # Skip for matrix fields which are handled differently
+        return if field.input_type == 'matrix_linear_scale'
+
+        input_fields << Export::CustomFieldForExport.new(field.other_option_text_field, @value_visitor) if field.other_option_text_field
+        input_fields << Export::CustomFieldForExport.new(field.follow_up_text_field, @value_visitor) if field.follow_up_text_field
       end
 
       def author_report_fields
@@ -222,7 +266,6 @@ module Export
       end
 
       def all_report_field_values_for(input)
-        utils = Utils.new
         all_report_fields.map do |field|
           utils.escape_formula field.value_from(input)
         end
@@ -244,6 +287,10 @@ module Export
         return input.author_name unless input.anonymous?
 
         I18n.t 'xlsx_export.anonymous'
+      end
+
+      def utils
+        @utils ||= Utils.new
       end
     end
   end

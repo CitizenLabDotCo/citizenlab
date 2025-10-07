@@ -77,13 +77,23 @@ describe('Proposal edit page', () => {
     // Edit input form
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form/edit`);
     // Delete the Details page
-    cy.dataCy('e2e-more-field-actions').eq(2).click({ force: true });
+    cy.dataCy('e2e-form-fields')
+      .contains('Details')
+      .parents('[data-cy="e2e-field-row"]')
+      .find('[data-cy="e2e-more-field-actions"]')
+      .click();
     cy.get('.e2e-more-actions-list button').contains('Delete').click();
     // Delete the Location field
-    cy.dataCy('e2e-more-field-actions').eq(3).click({ force: true });
+    cy.dataCy('e2e-form-fields')
+      .contains('Location')
+      .parents('[data-cy="e2e-field-row"]')
+      .find('[data-cy="e2e-more-field-actions"]')
+      .click();
     cy.get('.e2e-more-actions-list button').contains('Delete').click();
+    cy.dataCy('e2e-confirm-delete-location-field').should('be.visible').click();
+
     // Add an extra field
-    cy.dataCy('e2e-short-answer').click();
+    cy.addItemToFormBuilder('#toolbox_text');
     cy.get('#e2e-title-multiloc').type(extraFieldTitle, {
       force: true,
       delay: 0,
@@ -118,6 +128,9 @@ describe('Proposal edit page', () => {
     // Go to uploads page and add an image
     cy.dataCy('e2e-next-page').should('be.visible').click();
     cy.get('#e2e-idea-image-upload input').attachFile('icon.png');
+    cy.wait(1000);
+    // check that the base64 image was added to the dropzone component
+    cy.get('#e2e-idea-image-upload input').should('have.length', 0);
     // Check that the tags field was not removed
     cy.get('.e2e-topics-picker').should('exist');
     // Answer the extra field

@@ -40,7 +40,7 @@ module Files
     # @param locales [Array<String>] Array of locale codes
     # @return [Hash] Hash with locale keys and description values
     def generate_descriptions(file, locales)
-      chat = RubyLLM.chat(model: infer_best_model)
+      chat = RubyLLM.chat(model: infer_best_model, provider: :bedrock, assume_model_exists: true)
       prompt = build_prompt(file.name, locales)
       prefill_msg = '{' # Prefill the response to encourage the LLM to respond with a JSON object
 
@@ -64,6 +64,16 @@ module Files
     #
     # @return [String] The model ID to use
     def infer_best_model
+      # RubyLLM does not yet support all Bedrock regions due to differences in available
+      # models and inference profiles. In the following regions, it returns non-existent
+      # inference profiles. For now, we hardcode the id of the inference profile and set
+      # +assume_model_exists+ to +true+ when initializing the RubyLLM client.
+      # (We are considering moving away from RubyLLM, so we don't want to spend too much
+      # time on a full fix.)
+      if RubyLLM.config.bedrock_region.in? %w[ca-central-1 sa-east-1]
+        return 'global.anthropic.claude-sonnet-4-5-20250929-v1:0'
+      end
+
       available_models = RubyLLM.models
         .select { |model| model.provider == 'bedrock' }
         .map(&:id)

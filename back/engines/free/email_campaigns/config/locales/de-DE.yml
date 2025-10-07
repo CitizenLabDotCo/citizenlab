@@ -119,6 +119,8 @@ de:
       "unfollow_here": "Sie haben diese Benachrichtigung wegen eines Elementes erhalten, dem Sie folgen. <a href=\"%{unfollow_url}\">Sie können hier aufhören diesem zu folgen.</a>"
     manual:
       preheader: 'Sie haben Post von %{organizationName}'
+    manual_project_participants:
+      preheader: 'Sie haben Post von %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Ihr Kommentar wurde von der Plattform von %{organizationName} gelöscht'
       preheader: 'Ihr Kommentar wurde gelöscht'
@@ -222,7 +224,7 @@ de:
       invitation_expiry_message: 'Diese Einladung läuft in etwa %{expiryDaysRemaining} Tagen ab.'
     invite_received:
       preheader: '%{organizationName} hat Ihnen eine Einladung zur Teilnahme an ihrer Beteiligungsplattform geschickt.'
-      subject: 'Sie sind eingeladen worden um an der Plattform von %{organizationName} teilzunehmen'
+      subject: 'Sie sind eingeladen worden um an der Plattform von %{organizationName} mitzuwirken'
       title: 'Sie sind eingeladen!'
       event_description: '%{organizationName} hat Sie auf ihre Beteiligungsplattform eingeladen.'
       cta_button: 'Einladung annehmen'
@@ -505,14 +507,14 @@ de:
       title: 'Sie haben Ihre Stimme nicht abgegeben'
       event_description: 'Sie haben ein paar Optionen für %{contextTitle} ausgewählt, aber Sie haben Ihre Auswahl nicht abgeschickt.'
       cta_button: 'Optionen ansehen und abstimmen'
-      cta_message: 'Klicken Sie auf den Button unten, um Ihre ausgewählten Optionen abzuschicken'
+      cta_message: 'Auf den Button unten klicken, um die ausgewählten Optionen abzuschicken'
     voting_last_chance:
       subject: '%{organizationName}: Letzte Chance, für %{phaseTitle} abzustimmen'
       preheader: 'Letzte Chance, für %{phaseTitle} auf der Beteiligungsplattform von %{organizationName} abzustimmen'
       title: 'Letzte Chance, für %{phaseTitle} abzustimmen'
       body_1: 'Die Abstimmungsphase für das Projekt %{projectTitle} geht morgen um Mitternacht zu Ende.'
       body_2: 'Die Zeit läuft ab und wir haben festgestellt, dass Sie Ihre Stimme noch nicht abgegeben haben! Klicken Sie auf den Button unten und machen Sie mit.'
-      body_3: 'Auf diese Weise erhalten Sie Zugang zu einer Reihe von Optionen und haben die Möglichkeit, Ihre Stimme abzugeben, die für die Entscheidung über die Zukunft dieses Projekts entscheidend ist.'
+      body_3: 'Auf diese Weise erhält man Zugang zu einer Reihe von Optionen und hat die Möglichkeit, seine Stimme abzugeben, die für die Entscheidung über die Zukunft dieses Projekts entscheidend ist.'
       cta_button: 'Auswählen'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} Abstimmungsergebnisse veröffentlicht!'
@@ -642,6 +644,7 @@ de:
         user_is_given_admin_rights: 'Nutzer*in erhält Admin-Rechte'
         user_is_given_folder_moderator_rights: 'Nutzer*in erhält Ordner-Moderationsrechte'
         user_is_given_project_moderator_rights: 'Nutzer*in erhält Projektmanagementrechte'
+        user_is_invited_to_platform: 'Benutzer ist zu Plattform eingeladen'
         user_is_invited_to_cosponsor_a_proposal: 'Nutzer*in ist eingeladen, einen Vorschlag zu unterstützen'
         user_is_mentioned: 'Nutzer*in wird erwähnt'
         user_is_mentioned_in_internal_comment: 'Nutzer*in wird in internem Kommentar erwähnt'

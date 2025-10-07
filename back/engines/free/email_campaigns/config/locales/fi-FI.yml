@@ -119,6 +119,8 @@ fi:
       "unfollow_here": "Sait tämän ilmoituksen seuraamasi kohteen takia. <a href=\"%{unfollow_url}\">Voit lopettaa sen seuraamisen täällä.</a>"
     manual:
       preheader: 'Sinulla on postia osoitteesta %{organizationName}'
+    manual_project_participants:
+      preheader: 'Sinulla on postia lähettäjältä %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Kommenttisi on poistettu alustalta %{organizationName}'
       preheader: 'Kommenttisi on poistettu'
@@ -642,6 +644,7 @@ fi:
         user_is_given_admin_rights: 'Käyttäjälle annetaan järjestelmänvalvojan oikeudet'
         user_is_given_folder_moderator_rights: 'Käyttäjälle annetaan kansion valvojan oikeudet'
         user_is_given_project_moderator_rights: 'Käyttäjä saa projektin moderaattorin oikeudet'
+        user_is_invited_to_platform: 'Käyttäjä on kutsuttu alustalle'
         user_is_invited_to_cosponsor_a_proposal: 'Käyttäjää pyydetään tukemaan ehdotusta'
         user_is_mentioned: 'Käyttäjä mainitaan'
         user_is_mentioned_in_internal_comment: 'Käyttäjä mainitaan sisäisessä kommentissa'

@@ -69,4 +69,34 @@ describe Export::Xlsx::Utils do
       end
     end
   end
+
+  describe '#multiloc_with_fallback_locale' do
+    it "returns the value in the user's current locale if present" do
+      idea = create(
+        :idea,
+        title_multiloc: { 'fr-FR' => 'Titre en français', 'en' => 'English title' },
+        body_multiloc: { 'fr-FR' => '<p>Corps en français</p>', 'en' => '<p>English body</p>' }
+      )
+
+      result = service.multiloc_with_fallback_locale(idea, :title_multiloc)
+      expect(result).to eq('English title')
+
+      result = service.multiloc_with_fallback_locale(idea, :body_multiloc)
+      expect(result).to eq('English body')
+    end
+
+    it "falls back to another locale if the value in the user's current locale is blank" do
+      idea = create(
+        :idea,
+        title_multiloc: { 'en' => '', 'fr-FR' => 'Titre en français' },
+        body_multiloc: { 'en' => '', 'fr-FR' => '<p>Corps en français</p>' }
+      )
+
+      result = service.multiloc_with_fallback_locale(idea, :title_multiloc)
+      expect(result).to eq('Titre en français')
+
+      result = service.multiloc_with_fallback_locale(idea, :body_multiloc)
+      expect(result).to eq('Corps en français')
+    end
+  end
 end

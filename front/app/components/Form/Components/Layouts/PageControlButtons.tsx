@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import {
   Box,
@@ -11,6 +11,7 @@ import {
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
+import { IFlatCustomField } from 'api/custom_fields/types';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
 import { getInputTerm } from 'api/phases/utils';
@@ -70,6 +71,8 @@ interface Props {
   pageButtonLabelMultiloc?: Multiloc;
   pageButtonLink?: string;
   project: IProject | undefined;
+  pageQuestions?: IFlatCustomField[];
+  currentPageNumber?: number;
 }
 
 const PageControlButtons = ({
@@ -83,6 +86,8 @@ const PageControlButtons = ({
   pageButtonLink,
   currentPhase,
   project,
+  pageQuestions = [],
+  currentPageNumber,
 }: Props) => {
   const theme = useTheme();
   const localize = useLocalize();
@@ -92,6 +97,57 @@ const PageControlButtons = ({
   const userCanModerate = project
     ? canModerateProject(project.data, authUser)
     : false;
+
+  const [hasReachedBottom, setHasReachedBottom] = useState(false);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+
+  useEffect(() => {
+    setHasReachedBottom(false);
+  }, [currentPageNumber]);
+
+  useEffect(() => {
+    const enabledQuestions = pageQuestions.filter((q) => q.id && q.key);
+    const lastQuestion =
+      enabledQuestions.length > 0
+        ? enabledQuestions[enabledQuestions.length - 1]
+        : undefined;
+
+    if (!lastQuestion) {
+      setHasReachedBottom(true);
+      return;
+    }
+
+    const lastQuestionElement = document.querySelector(
+      `[data-question-id="${lastQuestion.id}"]`
+    );
+
+    if (!lastQuestionElement) {
+      setHasReachedBottom(true);
+      return;
+    }
+
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setHasReachedBottom(true);
+          }
+        });
+      },
+      {
+        threshold: 0,
+        rootMargin: '0px 0px 0px 0px',
+      }
+    );
+
+    observerRef.current.observe(lastQuestionElement);
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [pageQuestions, currentPageNumber]);
 
   const getButtonMessage = () => {
     if (pageVariant !== 'after-submission') {
@@ -121,6 +177,9 @@ const PageControlButtons = ({
     const inputTerm = getInputTerm(phases, currentPhase);
     return formatMessage(inputTermMessages[inputTerm]);
   };
+
+  const isButtonDisabled =
+    !hasReachedBottom && pageVariant !== 'after-submission';
 
   return (
     <Box
@@ -166,6 +225,7 @@ const PageControlButtons = ({
             boxShadow={defaultStyles.boxShadow}
             processing={isLoading}
             linkTo={pageButtonLink}
+            disabled={isButtonDisabled}
           >
             {getButtonMessage()}
           </ButtonWithLink>
@@ -178,6 +238,7 @@ const PageControlButtons = ({
             bgColor={theme.colors.tenantPrimary}
             boxShadow={defaultStyles.boxShadow}
             processing={isLoading}
+            disabled={isButtonDisabled}
           >
             {getButtonMessage()}
           </Button>

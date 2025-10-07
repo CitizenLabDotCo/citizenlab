@@ -14,7 +14,7 @@ module EmailCampaigns
       }
     end
 
-    def preview_command(recipient)
+    def preview_command(recipient, _context)
       { recipient: recipient }
     end
   end

@@ -83,7 +83,7 @@ describe('Input form builder', () => {
     cy.dataCy('e2e-edit-input-form').click();
 
     // The location tool box item should be disabled as it is already on the canvas
-    cy.dataCy('e2e-location-item').as('locationToolboxItem');
+    cy.dataCy('e2e-location_description-item').as('locationToolboxItem');
     cy.get('@locationToolboxItem').should('exist');
     cy.get('@locationToolboxItem').should('have.attr', 'disabled');
 
@@ -95,8 +95,14 @@ describe('Input form builder', () => {
     // Title should not be present or editable
     cy.get('#e2e-title-multiloc').should('not.exist');
 
-    cy.dataCy('e2e-more-field-actions').eq(4).click({ force: true });
+    // Find the row containing "Location" and click its "more actions" button
+    cy.dataCy('e2e-form-fields')
+      .contains('Location')
+      .parents('[data-cy="e2e-field-row"]')
+      .find('[data-cy="e2e-more-field-actions"]')
+      .click();
     cy.get('.e2e-more-actions-list button').contains('Delete').click();
+    cy.dataCy('e2e-confirm-delete-location-field').should('be.visible').click();
 
     // The location tool box item should be enabled as it has been removed from the canvas
     cy.get('@locationToolboxItem').should('not.have.attr', 'disabled');

@@ -33,7 +33,6 @@ resource 'User Token' do
 
         expect(jwt['sub']).to eq(user.id)
         expect(jwt['highest_role']).to eq('user')
-        expect(jwt['roles']).to eq([])
         expect(jwt['cluster']).to eq('local')
         expect(jwt['tenant']).to eq(Tenant.current.id)
         expect(jwt['exp']).to eq((Time.now + 1.day).to_i)

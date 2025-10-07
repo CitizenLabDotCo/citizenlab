@@ -5,6 +5,10 @@ require 'rails_helper'
 RSpec.describe Files::DescriptionGenerator do
   subject(:service) { described_class.new }
 
+  before do
+    stub_const('ENV', ENV.to_h.merge('AWS_TOXICITY_DETECTION_REGION' => 'eu-central-1'))
+  end
+
   # Helper method to create a file with AI processing allowed, but without queuing a
   # description generation job.
   def create_ai_file(...)

@@ -2,10 +2,11 @@
 
 class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   def import(template, folder: nil, local_copy: false)
-    same_template = MultiTenancy::Templates::Utils.translate_and_fix_locales(template)
+    # No translation required if it's a local copy
+    template, translate_logs = MultiTenancy::Templates::Utils.translate_and_fix_locales(template) unless local_copy
 
     created_objects_ids = ActiveRecord::Base.transaction do
-      tenant_deserializer.deserialize(same_template, validate: false, local_copy: local_copy)
+      tenant_deserializer.deserialize(template, validate: false, local_copy: local_copy)
     end
 
     project = Project.find(created_objects_ids['Project'].first)
@@ -15,6 +16,15 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     end
     project.update! folder: folder if folder
 
+    # Log to a project import if this is a copy from another platform
+    unless local_copy
+      import_log = ["Copied project: #{project.title_multiloc.values.first}"]
+      import_log << "Translated strings: #{translate_logs[:strings]}"
+      import_log << "Translated chars: #{translate_logs[:chars]}"
+      import_log << "Models translated - #{translate_logs[:models].map { |k, v| "#{k}: #{v}" }.join(', ')}"
+      BulkImportIdeas::ProjectImport.create!(project: project, log: import_log, import_type: 'project_copy')
+    end
+
     project
   end
 
@@ -22,6 +32,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     project,
     local_copy: false,
     include_ideas: false,
+    max_ideas: nil,
     anonymize_users: true,
     shift_timestamps: 0,
     new_slug: nil,
@@ -30,6 +41,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     new_publication_status: nil
   )
     include_ideas = false if local_copy
+    max_ideas = max_ideas&.to_i
     @include_ideas = include_ideas
     @local_copy = local_copy
     @project = project
@@ -65,9 +77,10 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     end
 
     if include_ideas
-      exported_ideas = @project.ideas.published
+      limit_num_ideas = max_ideas && @project.ideas.published.count > max_ideas
+      exported_ideas = limit_num_ideas ? @project.ideas.published.sample(max_ideas) : @project.ideas.published
 
-      @template['models']['user']                   = yml_users anonymize_users, exported_ideas, shift_timestamps: shift_timestamps
+      @template['models']['user']                   = yml_users anonymize_users, exported_ideas, limit_num_ideas, shift_timestamps: shift_timestamps
       @template['models']['idea']                   = yml_ideas exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['basket']                 = yml_baskets shift_timestamps: shift_timestamps
       @template['models']['baskets_idea']           = yml_baskets_ideas exported_ideas
@@ -81,7 +94,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       @template['models']['volunteering/volunteer'] = yml_volunteers shift_timestamps: shift_timestamps
       @template['models']['events/attendance']      = yml_attendances shift_timestamps: shift_timestamps
     end
-
     @template
   end
 
@@ -357,7 +369,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       if phase.pmethod.supports_survey_form?
         yml_phase['native_survey_title_multiloc'] = phase.native_survey_title_multiloc
         yml_phase['native_survey_button_multiloc'] = phase.native_survey_button_multiloc
-        yml_phase['user_fields_in_form'] = phase.user_fields_in_form
       end
 
       store_ref yml_phase, phase.id, :phase
@@ -461,22 +472,23 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     end
   end
 
-  def yml_users(anonymize_users, exported_ideas, shift_timestamps: 0)
+  def yml_users(anonymize_users, exported_ideas, limit_num_ideas, shift_timestamps: 0)
     service = AnonymizeUserService.new
     user_ids = []
-    idea_ids = exported_ideas.ids
+    idea_ids = exported_ideas.pluck(:id)
     user_ids += Idea.where(id: idea_ids).pluck(:author_id)
     comment_ids = Comment.where(idea_id: idea_ids).ids
     user_ids += Comment.where(id: comment_ids).pluck(:author_id)
     reaction_ids = Reaction.where(reactable_id: [idea_ids + comment_ids]).ids
     user_ids += Reaction.where(id: reaction_ids).pluck(:user_id)
-    user_ids += Basket.where(phase: Phase.where(project: @project)).pluck(:user_id)
+    user_ids += Basket.joins(:baskets_ideas).where(baskets_ideas: { idea_id: idea_ids }).pluck(:user_id)
     user_ids += OfficialFeedback.where(idea_id: idea_ids).pluck(:user_id)
-    user_ids += Follower.where(followable_id: ([@project.id] + idea_ids)).pluck(:user_id)
+    user_ids += Follower.where(followable_id: ([@project.id] + idea_ids)).pluck(:user_id) unless limit_num_ideas
     user_ids += Volunteering::Volunteer.where(cause: Volunteering::Cause.where(phase: Phase.where(project: @project))).pluck :user_id
     user_ids += Events::Attendance.where(event: @project.events).pluck :attendee_id
 
-    User.where(id: user_ids.uniq).map do |user|
+    @user_ids = user_ids.uniq # set globally so we can restrict follower export later
+    User.where(id: @user_ids).map do |user|
       yml_user = if anonymize_users
         service.anonymized_attributes AppConfiguration.instance.settings('core', 'locales'), user: user
       else
@@ -593,7 +605,9 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'permission_scope_ref' => lookup_ref(p.permission_scope_id, :phase),
         'global_custom_fields' => p.global_custom_fields,
         'created_at' => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
-        'updated_at' => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601
+        'updated_at' => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601,
+        'user_fields_in_form' => p.user_fields_in_form,
+        'user_data_collection' => p.user_data_collection
       }
       store_ref yml_permission, p.id, :permission
       yml_permission
@@ -725,7 +739,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   end
 
   def yml_reactions(exported_ideas, shift_timestamps: 0)
-    idea_ids = exported_ideas.ids
+    idea_ids = exported_ideas.pluck(:id)
     comment_ids = Comment.where(idea_id: idea_ids)
     Reaction.where.not(user_id: nil).where(reactable_id: idea_ids + comment_ids).map do |v|
       yml_reaction = {
@@ -741,8 +755,8 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   end
 
   def yml_followers(exported_ideas, shift_timestamps: 0)
-    followers = Follower.where(followable: @project)
-      .or(Follower.where(followable: exported_ideas))
+    followers = Follower.where(followable: @project, user_id: @user_ids)
+      .or(Follower.where(followable: exported_ideas, user_id: @user_ids))
 
     followers.map do |follower|
       {

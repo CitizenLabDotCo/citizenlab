@@ -119,6 +119,8 @@ nb:
       "unfollow_here": "Du har mottatt dette varselet på grunn av et element du følger. <a href=\"%{unfollow_url}\">Du kan slutte å følge det her.</a>"
     manual:
       preheader: 'Du har e-post fra %{organizationName}'
+    manual_project_participants:
+      preheader: 'Du har e-post fra %{organizationName}'
     comment_deleted_by_admin:
       subject: 'Kommentaren din er slettet fra plattformen til %{organizationName}'
       preheader: 'Kommentaren din har blitt slettet'
@@ -642,6 +644,7 @@ nb:
         user_is_given_admin_rights: 'Brukeren får administratorrettigheter'
         user_is_given_folder_moderator_rights: 'Brukeren får rettigheter som mappemoderator'
         user_is_given_project_moderator_rights: 'Brukeren får rettigheter som prosjektmoderator'
+        user_is_invited_to_platform: 'Brukeren inviteres til plattformen'
         user_is_invited_to_cosponsor_a_proposal: 'Brukeren inviteres til å være medsponsor for et forslag'
         user_is_mentioned: 'Bruker er nevnt'
         user_is_mentioned_in_internal_comment: 'Bruker er nevnt i intern kommentar'

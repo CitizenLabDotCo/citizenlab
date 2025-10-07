@@ -75,7 +75,7 @@ describe('Input form builder', () => {
     cy.dataCy('e2e-edit-input-form').click();
 
     // The tags tool box item should be disabled as it is already on the canvas
-    cy.dataCy('e2e-tags-item').as('tagsToolboxItem');
+    cy.dataCy('e2e-topic_ids-item').as('tagsToolboxItem');
     cy.get('@tagsToolboxItem').should('exist');
     cy.get('@tagsToolboxItem').should('have.attr', 'disabled');
 
@@ -87,7 +87,12 @@ describe('Input form builder', () => {
     // Title should not be present or editable
     cy.get('#e2e-title-multiloc').should('not.exist');
 
-    cy.dataCy('e2e-more-field-actions').eq(3).click({ force: true });
+    // Find the row containing "Tags" and click its "more actions" button
+    cy.dataCy('e2e-form-fields')
+      .contains('Tags')
+      .parents('[data-cy="e2e-field-row"]')
+      .find('[data-cy="e2e-more-field-actions"]')
+      .click();
     cy.get('.e2e-more-actions-list button').contains('Delete').click();
 
     // The tags tool box item should be enabled as it has been removed from the canvas

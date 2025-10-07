@@ -13,14 +13,86 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabelTooltip',
     defaultMessage: 'Full URL of the website you want to embed.',
   },
-  embedIframeHeightLabel: {
-    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabel',
-    defaultMessage: 'Embed height (pixels)',
+  embedModeLabel: {
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedModeLabel',
+    defaultMessage: 'Embed mode',
   },
-  embedIframeHeightLabelTooltip: {
-    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabelTooltip',
+  embedModeFixedHeight: {
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedModeFixedHeight',
+    defaultMessage: 'Fixed Height',
+  },
+  embedModeAspectRatio: {
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedModeAspectRatio',
+    defaultMessage: 'Aspect Ratio',
+  },
+  embedModeTooltip: {
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedModeTooltip',
     defaultMessage:
-      'Height you want your embedded content to appear on the page (in pixels).',
+      'Choose between fixed heights for different devices or responsive aspect ratios.',
+  },
+  embedDesktopIframeHeightLabel: {
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabel',
+    defaultMessage: 'Desktop height (pixels)',
+  },
+  embedDesktopIframeHeightLabelTooltip: {
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedDesktopIframeHeightLabelTooltip',
+    defaultMessage: 'Height for desktop view (in pixels).',
+  },
+  embedTabletHeightLabel: {
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedTabletHeightLabel',
+    defaultMessage: 'Tablet height (pixels)',
+  },
+  embedTabletHeightTooltip: {
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedTabletHeightTooltip1',
+    defaultMessage:
+      'Height for tablet view (in pixels). Will fall back to desktop height if not set.',
+  },
+  embedMobileHeightLabel: {
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedMobileHeightLabel',
+    defaultMessage: 'Mobile height (pixels)',
+  },
+  embedMobileHeightTooltip: {
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedMobileHeightTooltip1',
+    defaultMessage:
+      'Height for mobile view (in pixels). Will fall back to desktop height if not set.',
+  },
+  embedAspectRatioLabel: {
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedAspectRatioLabel',
+    defaultMessage: 'Aspect ratio',
+  },
+  embedAspectRatioTooltip: {
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedAspectRatioTooltip',
+    defaultMessage:
+      'Choose an aspect ratio that scales responsively across all devices.',
+  },
+  embedAspectRatio169: {
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedAspectRatio169',
+    defaultMessage: '16:9',
+  },
+  embedAspectRatio43: {
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedAspectRatio43',
+    defaultMessage: '4:3',
+  },
+  embedAspectRatio34: {
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedAspectRatio34',
+    defaultMessage: '3:4',
+  },
+  embedAspectRatio11: {
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedAspectRatio11',
+    defaultMessage: '1:1',
+  },
+  embedAspectRatioCustom: {
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedAspectRatioCustom',
+    defaultMessage: 'Custom',
+  },
+  embedCustomAspectRatioLabel: {
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioLabel',
+    defaultMessage: 'Custom aspect ratio',
+  },
+  embedCustomAspectRatioTooltip: {
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.embedCustomAspectRatioTooltip',
+    defaultMessage:
+      'Enter width:height ratio (e.g., 5:3, 16:10, 21:9). Common ratios: 5:3 (1.67:1), 16:10 (1.6:1), 21:9 (2.33:1).',
   },
   iframeHeightPlaceholder: {
     id: 'app.containers.admin.ContentBuilder.IframeMultiloc.iframeHeightPlaceholder',
@@ -58,5 +130,9 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink',
     defaultMessage:
       'https://support.govocal.com/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions',
+  },
+  invalidAspectRatio: {
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio',
+    defaultMessage: 'Enter a valid aspect ratio, for example 16:10 or 5:3.',
   },
 });

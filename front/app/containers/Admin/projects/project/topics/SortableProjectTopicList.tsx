@@ -12,7 +12,6 @@ import useTopics from 'api/topics/useTopics';
 
 import SortableList from 'components/admin/ResourceList/SortableList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
-import { StyledLink } from 'components/admin/Section';
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal, {
@@ -124,16 +123,7 @@ const SortableProjectTopicList = memo(
         <>
           {isLastSelectedTopic && (
             <StyledWarning>
-              <FormattedMessage
-                {...messages.lastTopicWarning}
-                values={{
-                  ideaFormLink: (
-                    <StyledLink to={`/admin/projects/${projectId}/form`}>
-                      <FormattedMessage {...messages.inputForm} />
-                    </StyledLink>
-                  ),
-                }}
-              />
+              <FormattedMessage {...messages.lastTopicWarning} />
             </StyledWarning>
           )}
           <SortableList

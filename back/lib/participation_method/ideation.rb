@@ -59,7 +59,7 @@ module ParticipationMethod
         title_page: { locks: { enabled: true, title_multiloc: true } },
         title_multiloc: { locks: { enabled: true, required: true, title_multiloc: true } },
         body_multiloc: { locks: { enabled: true, required: true, title_multiloc: true } },
-        idea_images_attributes: { locks: { enabled: true, title_multiloc: true } },
+        idea_images_attributes: { locks: { title_multiloc: true } },
         idea_files_attributes: { locks: { title_multiloc: true } },
         topic_ids: { locks: { title_multiloc: true } },
         location_description: { locks: { title_multiloc: true } }
@@ -376,6 +376,12 @@ module ParticipationMethod
     def generate_slug(input)
       title = MultilocService.new.t(input.title_multiloc, input.author&.locale).presence
       SlugService.new.generate_slug input, title
+    end
+
+    def validate_phase
+      if phase.id && Idea.exists?(creation_phase_id: phase.id)
+        phase.errors.add(:participation_method, :non_complying_inputs, message: 'some inputs do not comply with the participation method')
+      end
     end
 
     def supported_email_campaigns

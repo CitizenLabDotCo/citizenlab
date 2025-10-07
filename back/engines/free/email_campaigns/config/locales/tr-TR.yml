@@ -119,6 +119,8 @@ tr:
       "unfollow_here": "Takip ettiğiniz bir öğe nedeniyle bu bildirimi aldınız. <a href=\"%{unfollow_url}\">Buradan takibi bırakabilirsiniz.</a>"
     manual:
       preheader: '%{organizationName}adresinden postanız var.'
+    manual_project_participants:
+      preheader: '%{organizationName}adresinden postanız var.'
     comment_deleted_by_admin:
       subject: 'Yorumunuz %{organizationName} platformundan silindi'
       preheader: 'Yorumunuz silindi'
@@ -642,6 +644,7 @@ tr:
         user_is_given_admin_rights: 'Kullanıcıya yönetici hakları verilir'
         user_is_given_folder_moderator_rights: 'Kullanıcıya klasör moderatörü hakları verilir'
         user_is_given_project_moderator_rights: 'Kullanıcıya proje moderatörü hakları verilir'
+        user_is_invited_to_platform: 'Kullanıcı platforma davet edilir'
         user_is_invited_to_cosponsor_a_proposal: 'Kullanıcı bir teklife eş sponsorluk yapmaya davet edilir'
         user_is_mentioned: 'Kullanıcıdan bahsedilir'
         user_is_mentioned_in_internal_comment: 'Dahili yorumda kullanıcıdan bahsediliyor'

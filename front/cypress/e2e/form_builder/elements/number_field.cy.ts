@@ -53,7 +53,11 @@ describe('Form builder number field', () => {
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.dataCy('e2e-number-field');
     cy.wait(2000);
-    cy.dataCy('e2e-number-field').click();
+
+    // Add number field using the custom command
+    cy.addItemToFormBuilder('#toolbox_number');
+
+    cy.wait(1000);
 
     // Save the survey
     cy.get('form').submit();

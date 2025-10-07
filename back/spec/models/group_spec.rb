@@ -88,4 +88,87 @@ RSpec.describe Group do
       expect(group.slug).to eq 'titel'
     end
   end
+
+  describe 'search_by_title' do
+    let!(:engineering_group) { create(:group, title_multiloc: { 'en' => 'Engineering Team', 'fr-BE' => 'Équipe d\'ingénierie' }) }
+    let!(:marketing_group) { create(:group, title_multiloc: { 'en' => 'Marketing Team', 'fr-BE' => 'Équipe marketing' }) }
+    let!(:design_group) { create(:group, title_multiloc: { 'en' => 'Design Committee', 'fr-BE' => 'Comité de design' }) }
+
+    it 'returns groups matching the search term in English' do
+      results = described_class.search_by_title('Team')
+      expect(results).to contain_exactly(engineering_group, marketing_group)
+    end
+
+    it 'returns groups matching the search term in French' do
+      results = described_class.search_by_title('Équipe')
+      expect(results).to contain_exactly(engineering_group, marketing_group)
+    end
+
+    it 'returns groups matching partial search terms' do
+      results = described_class.search_by_title('Engin')
+      expect(results).to contain_exactly(engineering_group)
+    end
+
+    it 'returns empty result when no groups match' do
+      results = described_class.search_by_title('NonExistentTerm')
+      expect(results).to be_empty
+    end
+  end
+
+  describe 'by_project_id' do
+    let!(:project1) { create(:project) }
+    let!(:project2) { create(:project) }
+
+    let!(:smart_group_with_project1) do
+      create(:group,
+        title_multiloc: { 'en' => 'Project1 Participants' },
+        membership_type: 'rules',
+        rules: [{ ruleType: 'participated_in_project', predicate: 'in', value: [project1.id] }])
+    end
+
+    let!(:smart_group_with_project2) do
+      create(:group,
+        title_multiloc: { 'en' => 'Project2 Participants' },
+        membership_type: 'rules',
+        rules: [{ ruleType: 'participated_in_project', predicate: 'posted_in', value: [project2.id] }])
+    end
+
+    let!(:smart_group_with_both_projects) do
+      create(:group,
+        title_multiloc: { 'en' => 'Both Projects Participants' },
+        membership_type: 'rules',
+        rules: [{ ruleType: 'participated_in_project', predicate: 'commented_in', value: [project1.id, project2.id] }])
+    end
+
+    let!(:manual_group) { create(:group, membership_type: 'manual') }
+
+    let!(:other_rule_smart_group) do
+      create(:group,
+        title_multiloc: { 'en' => 'Role Based Group' },
+        membership_type: 'rules',
+        rules: [{ ruleType: 'role', predicate: 'is_admin' }])
+    end
+
+    it 'returns groups with the specified project_id in their rules' do
+      results = described_class.by_project_id(project1.id)
+      expect(results).to contain_exactly(smart_group_with_project1, smart_group_with_both_projects)
+    end
+
+    it 'returns groups with the specified project_id in array values' do
+      results = described_class.by_project_id(project2.id)
+      expect(results).to contain_exactly(smart_group_with_project2, smart_group_with_both_projects)
+    end
+
+    it 'returns empty result when no groups have the project_id in their rules' do
+      non_existent_project = create(:project)
+      results = described_class.by_project_id(non_existent_project.id)
+      expect(results).to be_empty
+    end
+
+    it 'does not return manual groups or groups with other rule types' do
+      results = described_class.by_project_id(project1.id)
+      expect(results).not_to include(manual_group)
+      expect(results).not_to include(other_rule_smart_group)
+    end
+  end
 end

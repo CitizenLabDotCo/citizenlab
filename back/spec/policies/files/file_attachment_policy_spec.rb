@@ -61,6 +61,52 @@ RSpec.describe Files::FileAttachmentPolicy do
         end
       end
 
+      context 'when project moderator' do
+        let_it_be(:project) { create(:project) }
+        let_it_be(:user) do
+          create(
+            :user,
+            roles: [{ 'type' => 'project_moderator', 'project_id' => project.id }]
+          )
+        end
+
+        context 'when the attachable is a project the user moderates' do
+          let_it_be(:file_attachment) { build(:file_attachment, attachable: project, file: build(:file)) }
+
+          it { is_expected.to permit(:create) }
+        end
+
+        context 'when the attachable is a phase for project the user moderates' do
+          let_it_be(:file_attachment) { build(:file_attachment, attachable: create(:phase, project: project), file: build(:file)) }
+
+          it { is_expected.to permit(:create) }
+        end
+
+        context 'when the attachable is an event for project the user moderates' do
+          let_it_be(:file_attachment) { build(:file_attachment, attachable: create(:event, project: project), file: build(:file)) }
+
+          it { is_expected.to permit(:create) }
+        end
+
+        context 'when the attachable is a project the user does not moderate' do
+          let_it_be(:file_attachment) { build(:file_attachment, attachable: create(:project), file: build(:file)) }
+
+          it { is_expected.not_to permit(:create) }
+        end
+
+        context 'when the attachable is a phase for project the user does not moderate' do
+          let_it_be(:file_attachment) { build(:file_attachment, attachable: create(:phase), file: build(:file)) }
+
+          it { is_expected.not_to permit(:create) }
+        end
+
+        context 'when the attachable is an event for project the user does not moderate' do
+          let_it_be(:file_attachment) { build(:file_attachment, attachable: create(:event), file: build(:file)) }
+
+          it { is_expected.not_to permit(:create) }
+        end
+      end
+
       context 'when normal user' do
         let_it_be(:user) { create(:user) }
 

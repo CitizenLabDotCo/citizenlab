@@ -104,6 +104,7 @@ const UserTableRow = ({
   const userInRowHasRegistered =
     userInRow.attributes.invite_status !== 'pending';
   const userInRowIsCurrentUser = userInRow.id === authUser.id;
+  const authUserIsAdmin = isAdmin({ data: authUser });
 
   const [showBlockUserModal, setShowBlockUserModal] = useState(false);
   const [showUnblockUserModal, setShowUnblockUserModal] = useState(false);
@@ -251,6 +252,21 @@ const UserTableRow = ({
     icon: 'delete' as const,
   };
 
+  const getActions = () => {
+    if (userInRowHasRegistered) {
+      return authUserIsAdmin
+        ? [
+            showProfileAction,
+            ...getSeatChangeActions(),
+            deleteUserAction,
+            ...userBlockingRelatedActions,
+          ]
+        : [showProfileAction]; // Project/folder managers can only see profile
+    }
+
+    return authUserIsAdmin ? [deleteUserAction] : []; // Project/folder managers cannot delete anyone
+  };
+
   /*
   ===========
   Actions end
@@ -291,7 +307,10 @@ const UserTableRow = ({
                 fontSize={`${fontSizes.s}px`}
                 p="0px"
                 iconSize="18px"
-                onClick={() => setIsAssignedItemsOpened(true)}
+                disabled={!authUserIsAdmin}
+                onClick={() => {
+                  setIsAssignedItemsOpened(true);
+                }}
               >
                 <FormattedMessage {...messages.seeAssignedItems} />
               </Button>
@@ -325,16 +344,7 @@ const UserTableRow = ({
           <MoreActionsMenu
             showLabel={false}
             ref={moreActionsButtonRef}
-            actions={
-              userInRowHasRegistered
-                ? [
-                    showProfileAction,
-                    ...getSeatChangeActions(),
-                    deleteUserAction,
-                    ...userBlockingRelatedActions,
-                  ]
-                : [deleteUserAction]
-            }
+            actions={getActions()}
           />
         </Td>
         <BlockUser

@@ -722,7 +722,8 @@ resource 'Projects' do
           project: project,
           title_multiloc: { 'en' => 'Phase 2: Native survey' },
           start_at: (Time.zone.today - 30.days),
-          end_at: (Time.zone.today - 21.days)
+          end_at: (Time.zone.today - 21.days),
+          with_permissions: true
         )
       end
       let(:survey_form) { create(:custom_form, participation_context: native_survey_phase) }
@@ -1878,6 +1879,33 @@ resource 'Projects' do
           *@listed_projects_user_moderates.pluck(:id),
           *@unlisted_projects_user_moderates.pluck(:id)
         ].sort
+      end
+    end
+
+    context 'when admin' do
+      before do
+        @admin = create(:admin)
+        header_token_for(@admin)
+
+        @project = create(:project)
+        @moderator = create(:project_moderator, projects: [@project])
+        @moderator.add_role 'project_moderator', project_id: @project.id
+        @moderator.save!
+      end
+
+      example 'includes project moderator' do
+        do_request
+        assert_status 200
+        expect(response_data.size).to eq 1
+        expect(response_data.first[:id]).to eq @project.id
+        expect(response_data.first.dig(:relationships, :moderators, :data).size).to eq 1
+        expect(response_data.first.dig(:relationships, :moderators, :data).first[:id]).to eq @moderator.id
+        expect(json_response[:included]).to include(
+          a_hash_including(
+            id: @moderator.id,
+            type: 'user'
+          )
+        )
       end
     end
   end

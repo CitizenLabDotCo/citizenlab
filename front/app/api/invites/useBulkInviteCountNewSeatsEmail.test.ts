@@ -6,7 +6,7 @@ import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import useBulkInviteCountNewSeatsEmail from './useBulkInviteCountNewSeatsEmails';
 
-const apiPath = '*/invites/count_new_seats';
+const apiPath = '*/invites_imports/count_new_seats';
 
 const server = setupServer(
   http.post(apiPath, () => {

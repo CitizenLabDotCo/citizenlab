@@ -194,48 +194,66 @@ module MultiTenancy
           serialized_models
         end
 
+        # rubocop:disable Metrics/CyclomaticComplexity
         def translate_and_fix_locales(serialized_models)
           translator = MachineTranslations::MachineTranslationService.new
           locales_to = AppConfiguration.instance.settings('core', 'locales')
-          return serialized_models if Set.new(template_locales(serialized_models)).subset? Set.new(locales_to)
 
-          locales_from = user_locales(serialized_models)
+          # Log number of translations to help monitor costs.
+          translate_logs = { models: {}, strings: 0, chars: 0 }
+
+          # Do the locales in the template already match the target locales?
+          return [serialized_models, translate_logs] if Set.new(locales_to) == Set.new(template_locales(serialized_models))
+
           # Change unsupported user locales to first target tenant locale.
-          unless Set.new(locales_from).subset? Set.new(locales_to)
+          # Only keep the bio if the locale is supported by the target - to reduce translation costs.
+          unless Set.new(locales_to) == Set.new(user_locales(serialized_models))
             serialized_models['models']['user']&.each do |attributes|
               unless locales_to.include? attributes['locale']
                 attributes['locale'] = locales_to.first
+                attributes['bio_multiloc'].select! { |key, _| locales_to.include?(key) }
               end
             end
           end
-          # Determine if translation needs to happen.
-          translate_from = locales_from.first
-          translate_to = locales_to.include?(translate_from) ? nil : locales_to.first
-          # Change multiloc fields, applying translation and removing
-          # unsupported locales.
-          serialized_models['models'].each_value do |fields|
-            fields.each do |attributes|
+
+          # Translate any missing locales from the first locale found.
+          serialized_models['models'].each do |model_name, model|
+            next if model_name == 'user' # Users have been handled above and do not have translations
+
+            model.each do |attributes|
+              model_has_been_logged = false
               attributes.each do |field_name, field_value|
                 if multiloc?(field_name) && field_value.is_a?(Hash)
-                  if (field_value.keys & locales_to).blank? && !field_value.key?(translate_from) && field_value.present?
-                    other_translate_from = field_value.keys.first
-                    other_translate_to = translate_to || locales_to.first
-                    translation = translator.translate field_value[other_translate_from], other_translate_from,
-                      other_translate_to, retries: 10
-                    attributes[field_name] = { translate_to => translation }
-                  else
-                    field_value.each_key do |locale|
-                      if locale == translate_from && translate_to
-                        field_value[locale] = translator.translate field_value[locale], locale, translate_to, retries: 10
-                      elsif locales_to.exclude?(locale)
-                        field_value.delete locale
-                      end
+                  source_locale = field_value.keys.first
+                  next unless source_locale
+
+                  # log the model being translated
+                  translate_logs[:models][model_name] ||= 0
+                  translate_logs[:models][model_name] += 1 unless model_has_been_logged
+                  model_has_been_logged = true
+
+                  source_text = field_value[source_locale]
+                  locales_to.each do |locale|
+                    next if field_value.key?(locale) && field_value[locale].present?
+
+                    field_value[locale] = if source_text.blank?
+                      source_text
+                    else
+                      translate_logs[:strings] += 1
+                      translate_logs[:chars] += source_text.length
+                      translator.translate source_text, source_locale, locale, retries: 10
                     end
                   end
+
+                  # Only keep the target locales
+                  field_value.select! { |key, _| locales_to.include?(key) }
+
+                  attributes[field_name] = field_value
                 end
               end
             end
           end
+
           # Cut off translations that are too long.
           {
             'project' => { 'description_preview_multiloc' => 280 },
@@ -250,8 +268,9 @@ module MultiTenancy
               end
             end
           end
-          serialized_models
+          [serialized_models, translate_logs]
         end
+        # rubocop:enable Metrics/CyclomaticComplexity
 
         def user_locales(serialized_models)
           serialized_models = serialized_models.with_indifferent_access

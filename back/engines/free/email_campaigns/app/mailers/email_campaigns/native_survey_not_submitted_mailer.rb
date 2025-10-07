@@ -15,14 +15,16 @@ module EmailCampaigns
       }
     end
 
-    def preview_command(recipient)
+    # NOTE: This preview uses the phase context when available to render a more realistic preview.
+    def preview_command(recipient, context)
       data = preview_service.preview_data(recipient)
+      context_project_url = context && Frontend::UrlService.new.model_to_url(context.project, locale: Locale.new(recipient.locale))
       {
         recipient: recipient,
         event_payload: {
-          survey_url: data.phase.url,
-          phase_title_multiloc: data.phase.title_multiloc,
-          phase_end_at: Time.now + 10.days
+          survey_url: context ? "#{context_project_url}/ideas/new?phase_id=#{context.id}" : data.phase.url,
+          phase_title_multiloc: context&.title_multiloc || data.phase.title_multiloc,
+          phase_end_at: context ? context.end_at : Time.now + 10.days
         }
       }
     end

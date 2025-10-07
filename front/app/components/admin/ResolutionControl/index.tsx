@@ -1,6 +1,6 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 
-import styled from 'styled-components';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import Tabs from 'components/UI/Tabs';
 
@@ -10,46 +10,44 @@ import messages from './messages';
 
 export type IResolution = 'day' | 'week' | 'month';
 
-const Container = styled.div``;
-
 interface Props {
   value: IResolution;
   onChange: (arg: IResolution) => void;
   className?: string;
 }
 
-export default class ResolutionControl extends PureComponent<Props> {
-  handleOnResolutionChange = (resolution: IResolution) => {
-    this.props.onChange(resolution);
-  };
+const ResolutionControl = ({ value, onChange, className }: Props) => {
+  const resOptions = [
+    {
+      name: 'day',
+      label: <FormattedMessage {...messages.resolutionday} />,
+    },
+    {
+      name: 'week',
+      label: <FormattedMessage {...messages.resolutionweek} />,
+    },
+    {
+      name: 'month',
+      label: <FormattedMessage {...messages.resolutionmonth} />,
+    },
+  ];
 
-  render() {
-    const { value, className } = this.props;
-    const resOptions = [
-      {
-        name: 'day',
-        label: <FormattedMessage {...messages.resolutionday} />,
-      },
-      {
-        name: 'week',
-        label: <FormattedMessage {...messages.resolutionweek} />,
-      },
-      {
-        name: 'month',
-        label: <FormattedMessage {...messages.resolutionmonth} />,
-      },
-    ];
+  return (
+    <Box
+      className={className}
+      pl="1px" // Compensates for Tabs component's margin-left: -1px on first tab to prevent left border cutoff.
+      // We can't remove the -1px margin from Tabs component as it creates seamless borders between tabs
+      // and removing it would cause double borders (2px thick) in all other Tabs usages across the app.
+    >
+      <Tabs
+        items={resOptions}
+        selectedValue={
+          resOptions.find((item) => item.name === value)?.name as string
+        }
+        onClick={onChange}
+      />
+    </Box>
+  );
+};
 
-    return (
-      <Container className={className}>
-        <Tabs
-          items={resOptions}
-          selectedValue={
-            resOptions.find((item) => item.name === value)?.name as string
-          }
-          onClick={this.handleOnResolutionChange}
-        />
-      </Container>
-    );
-  }
-}
+export default ResolutionControl;

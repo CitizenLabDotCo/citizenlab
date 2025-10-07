@@ -10,6 +10,7 @@ module Analysis
       # changed between enqueueing and executing this job
       plan = QAndAMethod::Base.plan(question)
 
+      # @type [Analysis::QAndAMethod::Base]
       q_and_a_method = plan.q_and_a_method_class.new(question)
       q_and_a_method.execute(plan)
     end
