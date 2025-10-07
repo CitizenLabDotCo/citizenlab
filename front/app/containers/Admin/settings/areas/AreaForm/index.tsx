@@ -23,7 +23,7 @@ export interface FormValues {
 
 type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
-  defaultValues?: FormValues;
+  defaultValues?: Partial<FormValues>;
 };
 
 const AreaForm = ({ defaultValues, onSubmit }: Props) => {
@@ -35,7 +35,7 @@ const AreaForm = ({ defaultValues, onSubmit }: Props) => {
     description_multiloc: object(),
   });
 
-  const methods = useForm({
+  const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues,
     resolver: yupResolver(schema),
