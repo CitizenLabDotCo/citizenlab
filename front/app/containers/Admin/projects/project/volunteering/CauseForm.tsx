@@ -26,7 +26,7 @@ import messages from './messages';
 export interface FormValues {
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
-  image?: UploadFile[] | null;
+  image: UploadFile[] | null | undefined;
 }
 
 export interface SubmitValues {
@@ -54,10 +54,10 @@ const CauseForm = ({ onSubmit, defaultValues, imageUrl }: PageFormProps) => {
     image: mixed().nullable(),
   });
 
-  const methods = useForm({
+  const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues,
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as any,
   });
 
   // Load the API cause object as a local image

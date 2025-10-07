@@ -18,6 +18,7 @@ import messages from '../messages';
 
 export interface FormValues {
   title_multiloc: Multiloc;
+  description_multiloc: Multiloc;
 }
 
 type Props = {
