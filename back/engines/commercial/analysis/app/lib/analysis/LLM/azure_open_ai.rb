@@ -6,6 +6,8 @@ require 'tiktoken_ruby'
 module Analysis
   module LLM
     class AzureOpenAI < Base
+      MAX_RETRIES = 20
+
       class << self
         def gpt_model
           raise NotImplementedError
@@ -41,7 +43,7 @@ module Analysis
 
       # @param message [String, Analysis::LLM::Message, Array<String, Analysis::LLM::Message>]
       #   The message(s) to send to the model.
-      def response(message, **params)
+      def response(message, retries: MAX_RETRIES, **params)
         inputs = Array.wrap(message)
           .map { |m| Message.wrap(m) }
           .map { |m| format_message(m) }
@@ -54,7 +56,21 @@ module Analysis
           end
         end
 
-        response_client.create(parameters:)
+        begin
+          response_client.create(parameters:)
+        rescue Faraday::TooManyRequestsError => e
+          if retries.positive?
+            sleep(rand(20..40))
+            retries -= 1
+            retry
+          else
+            ErrorReporter.report_msg(
+              'API request to Azure OpenAI failed',
+              extra: { response: e.response }
+            )
+            raise
+          end
+        end
       end
 
       def chat(...)
