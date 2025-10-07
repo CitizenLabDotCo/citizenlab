@@ -69,7 +69,8 @@ module Analysis
 
       question.update!(prompt:)
 
-      plan.llm.chat_async(prompt) do |new_text|
+      message = LLM::Message.new(prompt.to_s, *analysis.attached_files)
+      plan.llm.chat_async(message) do |new_text|
         update_answer([question.answer || '', new_text].join)
       end
     rescue StandardError => e
