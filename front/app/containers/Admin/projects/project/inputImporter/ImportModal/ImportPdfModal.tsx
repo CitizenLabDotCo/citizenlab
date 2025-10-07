@@ -10,7 +10,7 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { UploadFile, SupportedLocale } from 'typings';
+import { UploadFile } from 'typings';
 import { object, string, mixed, boolean } from 'yup';
 
 import { IBackgroundJobData } from 'api/background_jobs/types';
@@ -32,10 +32,10 @@ import LocalePicker from './LocalePicker';
 import messages from './messages';
 
 interface FormValues {
-  locale: SupportedLocale;
-  file?: UploadFile;
+  locale: string;
+  file: UploadFile;
   personal_data: boolean;
-  google_consent: false;
+  google_consent: boolean;
 }
 
 interface Props {
@@ -63,7 +63,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
       ? `/admin/projects/${projectId}/phases/${phaseId}/survey-form`
       : `/admin/projects/${projectId}/phases/${phaseId}/form`;
 
-  const defaultValues: FormValues = {
+  const defaultValues = {
     locale,
     file: undefined,
     personal_data: false,
@@ -88,10 +88,10 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
     ),
   });
 
-  const methods = useForm({
+  const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues,
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as any,
   });
 
   const submitFile = async ({
