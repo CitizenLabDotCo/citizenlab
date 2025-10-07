@@ -46,7 +46,6 @@ class FormLogicService
 
   attr_reader :fields, :field_index, :option_index
 
-  # NEED
   def valid_field_logic_structure?(field)
     logic = field.logic
     if logic.keys == ['rules']
@@ -59,7 +58,6 @@ class FormLogicService
     false
   end
 
-  # NEED
   def valid_page_logic_structure?(field)
     return true if field.logic.keys == ['next_page_id']
 
@@ -67,7 +65,6 @@ class FormLogicService
     false
   end
 
-  # NEED
   def valid_next_page?(field)
     target_id = field.logic['next_page_id'] # Present because we passed the `valid_page_logic_structure?` check.
 
@@ -77,7 +74,6 @@ class FormLogicService
     valid_next_page_id?(target_id, field) && target_after_source?(target_id, field) && target_is_page?(target_id, field)
   end
 
-  # NEED
   def valid_rules?(field)
     field.logic['rules'].all? do |rule|
       target_id = rule['goto_page_id'] # Present because we passed the `valid_field_logic_structure?` check.
@@ -89,7 +85,6 @@ class FormLogicService
     end
   end
 
-  # NEED
   def valid_next_page_id?(next_page_id, field)
     return true if field_index.key? next_page_id
 
@@ -97,7 +92,6 @@ class FormLogicService
     false
   end
 
-  # NEED
   def valid_goto_page_id?(target_id, field)
     return true if field_index.key? target_id
 
@@ -105,7 +99,6 @@ class FormLogicService
     false
   end
 
-  # NEED
   def target_after_source?(target_id, source_field)
     target_field = field_index[target_id]
     return true if target_field.ordering > source_field.ordering
@@ -114,7 +107,6 @@ class FormLogicService
     false
   end
 
-  # NEED
   def target_is_page?(target_id, field)
     target_field = field_index[target_id]
     return true if target_field.page?
@@ -123,12 +115,10 @@ class FormLogicService
     false
   end
 
-  # NEED
   def add_invalid_structure_error(field)
     field.errors.add(:logic, :invalid_structure, message: 'has invalid structure')
   end
 
-  # NEED
   def add_invalid_goto_page_id_error(field, target_id)
     field.errors.add(
       :logic,
@@ -138,7 +128,6 @@ class FormLogicService
     )
   end
 
-  # NEED
   def add_invalid_next_page_id_error(field, target_id)
     field.errors.add(
       :logic,
@@ -148,7 +137,6 @@ class FormLogicService
     )
   end
 
-  # NEED
   def add_target_before_source_not_allowed_error(field, target_id)
     field.errors.add(
       :logic,
@@ -158,7 +146,6 @@ class FormLogicService
     )
   end
 
-  # NEED
   def add_only_page_allowed_as_target_error(field, target_id)
     field.errors.add(
       :logic,
@@ -168,7 +155,6 @@ class FormLogicService
     )
   end
 
-  # NEED
   def replace_temp_ids_in_page_logic!(field, page_temp_ids_to_ids_mapping)
     logic = field.logic
     target_id = logic['next_page_id']
@@ -178,7 +164,6 @@ class FormLogicService
     field.update! logic: logic
   end
 
-  # NEED
   def replace_temp_ids_in_field_logic!(field, page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping)
     logic = field.logic
     rules = logic.fetch('rules', [])
