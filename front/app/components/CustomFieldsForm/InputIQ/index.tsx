@@ -44,6 +44,7 @@ const InputIQ = ({ phase }: { phase: IPhaseData | undefined }) => {
       <SimilarIdeasList
         titleMultiloc={debouncedTitleMultiloc}
         bodyMultiloc={debouncedBodyMultiloc}
+        phase={phase}
       />
     </div>
   );

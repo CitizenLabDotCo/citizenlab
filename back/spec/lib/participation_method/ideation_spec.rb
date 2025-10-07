@@ -162,6 +162,21 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
+  describe 'constraints' do
+    it 'has constraints on built in fields to lock certain values from being changed' do
+      expect(participation_method.constraints).to eq({
+        title_page: { locks: { attributes: %i[title_multiloc] } },
+        title_multiloc: { locks: { attributes: %i[title_multiloc required], deletion: true } },
+        body_multiloc: { locks: { attributes: %i[title_multiloc] } },
+        idea_images_attributes: { locks: { attributes: %i[title_multiloc] } },
+        idea_files_attributes: { locks: { attributes: %i[title_multiloc] } },
+        topic_ids: { locks: { attributes: %i[title_multiloc] } },
+        location_description: { locks: { attributes: %i[title_multiloc] } },
+        proposed_budget: { locks: { attributes: %i[title_multiloc] } }
+      })
+    end
+  end
+
   describe '#custom_form' do
     let(:project) { create(:project_with_active_ideation_phase) }
     let(:project_form) { create(:custom_form, participation_context: project) }
@@ -189,30 +204,6 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
-  describe 'constraints' do
-    it 'has constraints on built in fields to lock certain values from being changed' do
-      expect(participation_method.constraints.size).to be 8
-      expect(participation_method.constraints.keys).to match_array %i[
-        title_page
-        title_multiloc
-        body_multiloc
-        idea_images_attributes
-        idea_files_attributes
-        topic_ids
-        location_description
-        proposed_budget
-      ]
-    end
-
-    it 'each constraint has locks only on enabled, required & title_multiloc' do
-      participation_method.constraints.each_value do |value|
-        expect(value.key?(:locks)).to be true
-        valid_locks = %i[enabled required title_multiloc]
-        expect(valid_locks).to include(*value[:locks].keys)
-      end
-    end
-  end
-
   describe '#validate_phase' do
     it 'does not add an error with transitive inputs' do
       create(:idea, phases: [phase], project: phase.project)
@@ -233,7 +224,6 @@ RSpec.describe ParticipationMethod::Ideation do
   its(:return_disabled_actions?) { is_expected.to be false }
   its(:supports_assignment?) { is_expected.to be true }
   its(:built_in_title_required?) { is_expected.to be(true) }
-  its(:built_in_body_required?) { is_expected.to be(true) }
   its(:supports_commenting?) { is_expected.to be true }
   its(:supports_edits_after_publication?) { is_expected.to be true }
   its(:supports_exports?) { is_expected.to be true }

@@ -124,6 +124,21 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
+  describe 'constraints' do
+    it 'has constraints on built in fields to lock certain values from being changed' do
+      expect(participation_method.constraints).to eq({
+        title_page: { locks: { attributes: %i[title_multiloc] } },
+        title_multiloc: { locks: { attributes: %i[title_multiloc required], deletion: true } },
+        body_multiloc: { locks: { attributes: %i[title_multiloc] } },
+        idea_images_attributes: { locks: { attributes: %i[title_multiloc] } },
+        idea_files_attributes: { locks: { attributes: %i[title_multiloc] } },
+        topic_ids: { locks: { attributes: %i[title_multiloc] } },
+        location_description: { locks: { attributes: %i[title_multiloc] } },
+        proposed_budget: { locks: { attributes: %i[title_multiloc] } }
+      })
+    end
+  end
+
   describe '#custom_form' do
     let(:project) { phase.project }
     let(:project_form) { create(:custom_form, participation_context: project) }
@@ -191,7 +206,6 @@ RSpec.describe ParticipationMethod::Voting do
   its(:return_disabled_actions?) { is_expected.to be false }
   its(:supports_assignment?) { is_expected.to be true }
   its(:built_in_title_required?) { is_expected.to be(true) }
-  its(:built_in_body_required?) { is_expected.to be(true) }
   its(:supports_commenting?) { is_expected.to be true }
   its(:supports_edits_after_publication?) { is_expected.to be true }
   its(:supports_exports?) { is_expected.to be true }
