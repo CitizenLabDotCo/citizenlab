@@ -259,7 +259,7 @@ resource 'Users' do
               'blacklisted_email_domain_used',
               nil,
               anything,
-              payload: { email: email }
+              payload: { email: email, remote_ip: anything }
             )
           end
         end
