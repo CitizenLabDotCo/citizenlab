@@ -59,7 +59,7 @@ const validateHTMLWithCharacterLimits = (
 // NOTE: When the question is a built-in field, it is necessary to
 // check the `enabled` property before adding it to the schema.
 
-const generateYupValidationSchema = ({
+const generateYupSchema = ({
   pageQuestions,
   formatMessage,
   localize,
@@ -458,4 +458,4 @@ const generateYupValidationSchema = ({
   return object(schema);
 };
 
-export default generateYupValidationSchema;
+export default generateYupSchema;
