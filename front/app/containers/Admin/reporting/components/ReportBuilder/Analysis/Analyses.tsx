@@ -30,8 +30,6 @@ const Analyses = ({
     phaseId: participationMethod === 'native_survey' ? phaseId : undefined,
   });
 
-  console.log({ analyses, isLoading });
-
   const projectLink: RouteType =
     participationMethod === 'ideation'
       ? `/admin/projects/${projectId}/phases/${phaseId}/ideas`

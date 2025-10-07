@@ -4,6 +4,9 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
 
+import ButtonWithLink from 'components/UI/ButtonWithLink';
+import Warning from 'components/UI/Warning';
+
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
@@ -26,7 +29,7 @@ const Insights = ({
     analysisId,
   });
 
-  if (!projectId || !phaseId) {
+  if (!projectId) {
     return null;
   }
 
@@ -36,6 +39,13 @@ const Insights = ({
 
   return (
     <Box display="flex" flexDirection="column" gap="8px" mb="8px">
+      <ButtonWithLink
+        linkTo={`/admin/projects/${projectId}/analysis/${analysisId}?phase_id=${phaseId}`}
+      >
+        {formatMessage(messages.openSensemaking)}
+      </ButtonWithLink>
+      <Warning>{formatMessage(messages.dragAndDrop)}</Warning>
+
       {insights?.data.map((insight) => (
         <Box key={insight.id}>
           {insight.relationships.insightable.data.type ===
