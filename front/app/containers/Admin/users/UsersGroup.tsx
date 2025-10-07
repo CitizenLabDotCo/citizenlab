@@ -58,8 +58,13 @@ const UsersGroup = () => {
   };
 
   const handleSubmitForm =
-    (groupId: string) => async (values: NormalFormValues) => {
-      await updateGroup({ id: groupId, ...values });
+    (groupId: string) =>
+    async ({ title_multiloc, membership_type }: NormalFormValues) => {
+      await updateGroup({
+        id: groupId,
+        title_multiloc,
+        membership_type: membership_type as MembershipType,
+      });
       closeGroupEditionModal();
     };
 

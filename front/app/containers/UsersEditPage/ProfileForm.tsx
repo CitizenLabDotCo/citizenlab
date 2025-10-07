@@ -76,7 +76,7 @@ const ProfileForm = () => {
   const [profanityApiError, setProfanityApiError] = useState(false);
 
   const schema = object({
-    first_name: string().when('last_name', (last_name, schema) => {
+    first_name: string().when('last_name', ([last_name], schema) => {
       return last_name
         ? schema.required(formatMessage(messages.provideFirstNameIfLastName))
         : schema;
@@ -101,7 +101,7 @@ const ProfileForm = () => {
       bio_multiloc: authUser?.data.attributes.bio_multiloc,
       locale: authUser?.data.attributes.locale,
     },
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as any,
   });
 
   useEffect(() => {
