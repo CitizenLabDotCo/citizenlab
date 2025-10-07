@@ -69,7 +69,9 @@ module Analysis
 
       question.update!(prompt:)
 
-      message = LLM::Message.new(prompt.to_s, *analysis.attached_files)
+      files = file_ai_analysis_enabled? ? analysis.attached_files : []
+      message = LLM::Message.new(prompt.to_s, *files)
+
       plan.llm.chat_async(message) do |new_text|
         update_answer([question.answer || '', new_text].join)
       end
@@ -89,6 +91,12 @@ module Analysis
                I18n.default_locale
 
       Locale.new(locale).language_copy
+    end
+
+    private
+
+    def file_ai_analysis_enabled?
+      @file_ai_analysis_enabled ||= AppConfiguration.instance.feature_activated?('data_repository_ai_analysis')
     end
   end
 end
