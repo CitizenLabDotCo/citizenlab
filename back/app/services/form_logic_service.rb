@@ -46,6 +46,7 @@ class FormLogicService
 
   attr_reader :fields, :field_index, :option_index
 
+  # NEED
   def valid_field_logic_structure?(field)
     logic = field.logic
     if logic.keys == ['rules']
@@ -58,6 +59,7 @@ class FormLogicService
     false
   end
 
+  # NEED
   def valid_page_logic_structure?(field)
     return true if field.logic.keys == ['next_page_id']
 
@@ -65,6 +67,7 @@ class FormLogicService
     false
   end
 
+  # NEED
   def valid_next_page?(field)
     target_id = field.logic['next_page_id'] # Present because we passed the `valid_page_logic_structure?` check.
 
@@ -74,6 +77,7 @@ class FormLogicService
     valid_next_page_id?(target_id, field) && target_after_source?(target_id, field) && target_is_page?(target_id, field)
   end
 
+  # NEED
   def valid_rules?(field)
     field.logic['rules'].all? do |rule|
       target_id = rule['goto_page_id'] # Present because we passed the `valid_field_logic_structure?` check.
@@ -85,6 +89,7 @@ class FormLogicService
     end
   end
 
+  # NEED
   def valid_next_page_id?(next_page_id, field)
     return true if field_index.key? next_page_id
 
@@ -92,6 +97,7 @@ class FormLogicService
     false
   end
 
+  # NEED
   def valid_goto_page_id?(target_id, field)
     return true if field_index.key? target_id
 
@@ -99,6 +105,7 @@ class FormLogicService
     false
   end
 
+  # NEED
   def target_after_source?(target_id, source_field)
     target_field = field_index[target_id]
     return true if target_field.ordering > source_field.ordering
@@ -107,6 +114,7 @@ class FormLogicService
     false
   end
 
+  # NEED
   def target_is_page?(target_id, field)
     target_field = field_index[target_id]
     return true if target_field.page?
@@ -115,10 +123,12 @@ class FormLogicService
     false
   end
 
+  # NEED
   def add_invalid_structure_error(field)
     field.errors.add(:logic, :invalid_structure, message: 'has invalid structure')
   end
 
+  # NEED
   def add_invalid_goto_page_id_error(field, target_id)
     field.errors.add(
       :logic,
@@ -128,6 +138,7 @@ class FormLogicService
     )
   end
 
+  # NEED
   def add_invalid_next_page_id_error(field, target_id)
     field.errors.add(
       :logic,
@@ -137,6 +148,7 @@ class FormLogicService
     )
   end
 
+  # NEED
   def add_target_before_source_not_allowed_error(field, target_id)
     field.errors.add(
       :logic,
@@ -146,6 +158,7 @@ class FormLogicService
     )
   end
 
+  # NEED
   def add_only_page_allowed_as_target_error(field, target_id)
     field.errors.add(
       :logic,
@@ -155,145 +168,7 @@ class FormLogicService
     )
   end
 
-  def ui_schema_hide_rule_for(field, value)
-    if field.support_options? && value != 'no_answer'
-      value = option_index[value].key
-    end
-    {
-      effect: 'HIDE',
-      condition: {
-        scope: "#/properties/#{field.key}",
-        schema: {
-          enum: [value]
-        }
-      }
-    }
-  end
-
-  def ui_schema_next_page_rule_for(field)
-    {
-      effect: 'HIDE',
-      condition: {
-        type: 'HIDEPAGE',
-        pageId: field.id
-      }
-    }
-  end
-
-  def target_field_rules
-    @target_field_rules ||= {}.tap do |accu|
-      current_page = nil
-      fields.each_with_index do |field, index|
-        if field.page?
-          current_page = field
-          add_rules_for_page(field, index, accu)
-        else
-          # current_page is nil when the form starts with a question
-          next_page_id = current_page ? current_page.logic['next_page_id'] : nil
-          add_rules_for_field(field, index, next_page_id, accu)
-        end
-      end
-    end
-  end
-
-  def add_rules_for_page(field, index, rules_accu)
-    target_id = field.logic['next_page_id']
-    return if target_id.blank?
-
-    pages_to_hide = pages_in_between(index, target_id)
-    pages_to_hide.each do |page|
-      rules_accu[page.id] ||= []
-      rules_accu[page.id] << ui_schema_next_page_rule_for(field)
-    end
-  end
-
-  def add_rules_for_field(field, index, next_page_id, rules_accu)
-    rules = field.logic['rules']
-    return if rules.blank?
-
-    # Question-level logic trumps page-level logic.
-    # So start collecting question-level logic.
-    logic = question_level_logic_for_field(field, rules, next_page_id)
-
-    # Then apply page-level logic if no question-level logic is present.
-    logic = page_level_logic_for_field(logic, field, next_page_id) if next_page_id
-
-    # Finally add the rules for the collected logic.
-    logic.each do |value, target_page_id|
-      pages_to_hide = pages_in_between(index, target_page_id)
-      pages_to_hide.each do |page|
-        rules_accu[page.id] ||= []
-        rules_accu[page.id] << ui_schema_hide_rule_for(field, value)
-      end
-    end
-  end
-
-  def question_level_logic_for_field(field, rules, next_page_id)
-    logic = rules.each_with_object({}) do |rule, accu|
-      value = rule['if']
-      target_id = rule['goto_page_id']
-      accu[value] = target_id unless value == 'any_other_answer'
-    end
-
-    # Fill in option IDs for 'any_other_answer' rule
-    any_other_answer_rule = rules.find { |rule| rule['if'] == 'any_other_answer' }
-    if any_other_answer_rule
-      target_id = any_other_answer_rule['goto_page_id']
-      if field.support_options?
-        field.options.each do |option|
-          logic[option.id] = target_id unless logic.key?(option.id)
-        end
-      elsif field.linear_scale?
-        (1..field.maximum).each do |scale_value|
-          logic[scale_value] = target_id unless logic.key?(scale_value)
-        end
-      end
-    end
-
-    # If there is page logic and question logic on a non-required field, but with no 'no_answer' then we need to explicitly create it
-    if !field.required && next_page_id && logic && !logic.key?('no_answer')
-      logic['no_answer'] = next_page_id
-    end
-    logic
-  end
-
-  def page_level_logic_for_field(logic, field, next_page_id)
-    if field.support_options?
-      field.options.each do |option|
-        value = option.id
-        next if logic.key?(value)
-
-        logic[value] = next_page_id
-      end
-    elsif field.linear_scale?
-      (1..field.maximum).each do |value|
-        next if logic.key?(value)
-
-        logic[value] = next_page_id
-      end
-    end
-    logic
-  end
-
-  def pages_after(index)
-    fields.drop(index + 1).select(&:page?)
-  end
-
-  def pages_in_between(index, page_id)
-    pages = []
-    index += 1
-    last_page_id = fields.last.id
-
-    while index < fields.size
-      return pages if fields[index].id == page_id
-      return pages if fields[index].id == last_page_id
-
-      pages << fields[index] if fields[index].page?
-      index += 1
-    end
-    pages
-  end
-
+  # NEED
   def replace_temp_ids_in_page_logic!(field, page_temp_ids_to_ids_mapping)
     logic = field.logic
     target_id = logic['next_page_id']
@@ -303,6 +178,7 @@ class FormLogicService
     field.update! logic: logic
   end
 
+  # NEED
   def replace_temp_ids_in_field_logic!(field, page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping)
     logic = field.logic
     rules = logic.fetch('rules', [])
