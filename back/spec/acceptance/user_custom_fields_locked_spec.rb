@@ -14,7 +14,7 @@ resource 'User Custom Fields - Locked Fields' do
   end
 
   let(:user) { create(:user) }
-  let(:gender_field) { create(:custom_field_gender, required: false) }
+  let!(:gender_field) { create(:custom_field_gender, required: false) }
 
   context 'when user has locked custom fields from verification' do
     before do
@@ -28,6 +28,7 @@ resource 'User Custom Fields - Locked Fields' do
         json_response = json_parse response_body
         
         gender_custom_field = json_response[:data].find { |field| field[:attributes][:code] == 'gender' }
+        expect(gender_custom_field).not_to be_nil, "Gender custom field not found in response. Available fields: #{json_response[:data].map { |f| f[:attributes][:code] }}"
         expect(gender_custom_field[:attributes][:constraints]).to eq({ locked: true })
       end
     end
@@ -44,6 +45,7 @@ resource 'User Custom Fields - Locked Fields' do
         json_response = json_parse response_body
         
         gender_custom_field = json_response[:data].find { |field| field[:attributes][:code] == 'gender' }
+        expect(gender_custom_field).not_to be_nil, "Gender custom field not found in response. Available fields: #{json_response[:data].map { |f| f[:attributes][:code] }}"
         expect(gender_custom_field[:attributes][:constraints]).to eq({})
       end
     end
