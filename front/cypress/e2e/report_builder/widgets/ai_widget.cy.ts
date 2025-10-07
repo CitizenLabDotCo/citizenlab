@@ -113,7 +113,7 @@ describe('Report builder: AI widget', () => {
     });
   });
 
-  it.only('should make AI analysis insights in a survey possible to include in a report', () => {
+  it('should make AI analysis insights in a survey possible to include in a report', () => {
     cy.intercept('POST', '**/analyses').as('createAnalysis');
     cy.intercept('GET', '**/insights', {
       fixture: 'analysis_insights_survey.json',
