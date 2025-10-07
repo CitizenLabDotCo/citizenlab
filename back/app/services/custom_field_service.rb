@@ -16,6 +16,28 @@ class CustomFieldService
     fields_to_json_schema(optional_fields)
   end
 
+  def fields_to_json_schema(fields, locale = 'en')
+    {
+      type: 'object',
+      additionalProperties: false,
+      properties: fields.each_with_object({}) do |field, memo|
+        override_method_code = "#{field.resource_type.underscore}_#{field.code}_to_json_schema_field"
+        override_method_type = "#{field.resource_type.underscore}_#{field.input_type}_to_json_schema_field"
+        memo[field.key] =
+          if field.code && respond_to?(override_method_code, true)
+            send(override_method_code, field, locale)
+          elsif field.input_type && respond_to?(override_method_type, true)
+            send(override_method_type, field, locale)
+          else
+            send(:"#{field.input_type}_to_json_schema_field", field, locale)
+          end
+      end
+    }.tap do |output|
+      required = fields.select(&:enabled?).select(&:required?).map(&:key)
+      output[:required] = required unless required.empty?
+    end
+  end
+
   def generate_key(title, other_option: false)
     return 'other' if other_option == true
 
