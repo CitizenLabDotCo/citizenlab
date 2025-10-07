@@ -37,7 +37,7 @@ export interface SubmitValues {
 
 type PageFormProps = {
   onSubmit: (formValues: SubmitValues) => void | Promise<void>;
-  defaultValues?: FormValues;
+  defaultValues?: Partial<FormValues>;
   imageUrl?: string | null;
 };
 
