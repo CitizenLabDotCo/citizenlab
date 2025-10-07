@@ -7,6 +7,7 @@ import useAnalyses from 'api/analyses/useAnalyses';
 import { ParticipationMethod } from 'api/phases/types';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -60,6 +61,17 @@ const Analyses = ({
 
   return (
     <div>
+      {projectId &&
+        analysesWithoutMainCustomField &&
+        analysesWithoutMainCustomField.length > 0 && (
+          <Box mb="16px">
+            <Warning>
+              <Text p="0px" m="0px" fontSize="s" color="teal700">
+                {formatMessage(messages.dragAiContentInfo)}
+              </Text>
+            </Warning>
+          </Box>
+        )}
       {projectId &&
         analysesWithoutMainCustomField?.map((analysis) => (
           <Insights

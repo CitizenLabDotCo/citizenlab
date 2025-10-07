@@ -210,7 +210,7 @@ const Settings = () => {
             <ButtonWithLink
               linkTo={`/admin/projects/${projectId}/analysis/${analysis.id}?phase_id=${phaseId}`}
             >
-              {formatMessage(messages.openSensemaking)}
+              {formatMessage(messages.openAIAnalysis)}
             </ButtonWithLink>
             <Warning>{formatMessage(messages.dragAndDrop)}</Warning>
             <Insights

@@ -43,9 +43,9 @@ export default defineMessages({
     id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupBySurveyQuestion',
     defaultMessage: 'Group by survey question',
   },
-  openSensemaking: {
-    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.openSensemaking',
-    defaultMessage: 'Open Sensemaking',
+  openAIAnalysis: {
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.openAIAnalysis',
+    defaultMessage: 'Open AI Analysis',
   },
   dragAndDrop: {
     id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.dragAndDrop',
