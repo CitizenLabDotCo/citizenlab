@@ -55,12 +55,6 @@ class WebApi::V1::PermissionsController < ApplicationController
     render json: raw_json(json_requirements), status: :ok
   end
 
-  def schema
-    authorize @permission
-    fields = user_requirements_service.requirements_custom_fields @permission
-    render json: raw_json(user_ui_and_json_multiloc_schemas(fields))
-  end
-
   def access_denied_explanation
     authorize @permission
     attributes = {
@@ -77,12 +71,6 @@ class WebApi::V1::PermissionsController < ApplicationController
       params: jsonapi_serializer_params,
       include: %i[permissions_custom_fields custom_fields]
     ).serializable_hash
-  end
-
-  def user_ui_and_json_multiloc_schemas(fields)
-    json_schemas = JsonFormsService.new.user_ui_and_json_multiloc_schemas(fields)
-    mark_locked_json_forms_fields(json_schemas) if current_user
-    json_schemas
   end
 
   def permissions_update_service
