@@ -116,10 +116,6 @@ module ParticipationMethod
       false
     end
 
-    def built_in_body_required?
-      false
-    end
-
     def supports_commenting?
       false
     end
