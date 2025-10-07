@@ -11,11 +11,11 @@ module UserCustomFields
         .registration.order(:ordering)
       @custom_fields = @custom_fields.where(input_type: params[:input_types]) if params[:input_types]
 
-      render json: serialize_custom_fields(@custom_fields, params: jsonapi_serializer_params, include: %i[projects])
+      render json: serialize_custom_fields(@custom_fields, params: jsonapi_serializer_params_with_locked_fields, include: %i[projects])
     end
 
     def show
-      render json: serialize_custom_fields(@custom_field, params: jsonapi_serializer_params, include: %i[projects])
+      render json: serialize_custom_fields(@custom_field, params: jsonapi_serializer_params_with_locked_fields, include: %i[projects])
     end
 
     def create
@@ -27,7 +27,7 @@ module UserCustomFields
 
       if @custom_field.save
         SideFxCustomFieldService.new.after_create(@custom_field, current_user)
-        render json: serialize_custom_fields(@custom_field, params: jsonapi_serializer_params), status: :created
+        render json: serialize_custom_fields(@custom_field, params: jsonapi_serializer_params_with_locked_fields), status: :created
       else
         render json: { errors: @custom_field.errors.details }, status: :unprocessable_entity
       end
@@ -39,7 +39,7 @@ module UserCustomFields
       SideFxCustomFieldService.new.before_update @custom_field, current_user
       if @custom_field.save
         SideFxCustomFieldService.new.after_update(@custom_field, current_user)
-        render json: serialize_custom_fields(@custom_field.reload, params: jsonapi_serializer_params), status: :ok
+        render json: serialize_custom_fields(@custom_field.reload, params: jsonapi_serializer_params_with_locked_fields), status: :ok
       else
         render json: { errors: @custom_field.errors.details }, status: :unprocessable_entity
       end
@@ -49,7 +49,7 @@ module UserCustomFields
       fix_reordering
       if @custom_field.insert_at(custom_field_params(@custom_field)[:ordering])
         SideFxCustomFieldService.new.after_update(@custom_field, current_user)
-        render json: serialize_custom_fields(@custom_field.reload, params: jsonapi_serializer_params), status: :ok
+        render json: serialize_custom_fields(@custom_field.reload, params: jsonapi_serializer_params_with_locked_fields), status: :ok
       else
         render json: { errors: @custom_field.errors.details }, status: :unprocessable_entity
       end
@@ -95,6 +95,31 @@ module UserCustomFields
           field.set_list_position(index)
         end
       end
+    end
+
+    def jsonapi_serializer_params_with_locked_fields
+      constraints = build_locked_custom_fields_constraints
+      jsonapi_serializer_params({ constraints: constraints })
+    end
+
+    def build_locked_custom_fields_constraints
+      return {} unless current_user
+
+      locked_custom_field_keys = verification_service.locked_custom_fields(current_user).map(&:to_s)
+      constraints = {}
+      
+      # Find the corresponding codes for the locked custom field keys
+      # The serializer expects constraints keyed by 'code', not 'key'
+      CustomField.where(key: locked_custom_field_keys).each do |field|
+        code_key = field.code&.to_sym || field.key&.to_sym
+        constraints[code_key] = { locked: true } if code_key
+      end
+      
+      constraints
+    end
+
+    def verification_service
+      @verification_service ||= Verification::VerificationService.new
     end
   end
 end
