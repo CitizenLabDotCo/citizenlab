@@ -53,6 +53,54 @@ RSpec.describe Analysis::LLM::AzureOpenAI do
       expect(service.chat('fake prompt')).to eq 'fake response'
       expect(ErrorReporter).not_to have_received :report_msg
     end
+
+    it 'supports multiple messages' do
+      expect(service.response_client).to receive(:create).with(parameters: hash_including(
+        input: [
+          { role: 'system', content: [{ type: 'input_text', text: 'Hello, how are you?' }] },
+          { role: 'user', content: [{ type: 'input_text', text: "What's the weather like today?" }] }
+        ]
+      )).and_return(nil)
+
+      messages = [
+        Analysis::LLM::Message.new('Hello, how are you?', role: 'system'),
+        "What's the weather like today?"
+      ]
+
+      service.chat(messages)
+    end
+
+    it 'supports single message with multiple inputs' do
+      expect(service.response_client)
+        .to receive(:create).with(parameters: hash_including(
+          input: [{ role: 'user', content: [
+            { type: 'input_text', text: 'Hello, how are you?' },
+            { type: 'input_text', text: "What's the weather like today?" }
+          ] }]
+        )).and_return(nil)
+
+      messages = Analysis::LLM::Message.new(
+        'Hello, how are you?',
+        "What's the weather like today?"
+      )
+
+      service.chat(messages)
+    end
+
+    it 'supports file inputs' do
+      file = create(:global_file)
+      message = Analysis::LLM::Message.new('Describe the content of this file?', file)
+
+      expect(service.response_client)
+        .to receive(:create).with(parameters: hash_including(input: [{
+          role: 'user', content: [
+            { type: 'input_text', text: 'Describe the content of this file?' },
+            { type: 'input_file', filename: file.name, file_data: start_with('data:application/pdf;base64,') }
+          ]
+        }])).and_return(nil)
+
+      service.chat(message)
+    end
   end
 
   describe 'usable_context_window' do
