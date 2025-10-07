@@ -9,9 +9,13 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
+import usePhase from 'api/phases/usePhase';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
+
+import PhaseFilter from 'components/UI/PhaseFilter';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -26,7 +30,10 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
     name: 'analysis',
     onlyCheckAllowed: true,
   });
-  const { projectId: contextProjectId } = useReportContext();
+  const { projectId: contextProjectId, phaseId: contextPhaseId } =
+    useReportContext();
+  const [phaseId, setPhaseId] = useState<string | undefined>(contextPhaseId);
+  const { data: phase } = usePhase(phaseId);
 
   const [projectId, setProjectId] = useState<string | undefined>(
     contextProjectId
@@ -36,7 +43,14 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
 
   const handleProjectFilter = useCallback(({ value }: IOption) => {
     setProjectId(value);
+    setPhaseId(undefined);
   }, []);
+
+  const handlePhaseFilter = useCallback(({ value }: IOption) => {
+    setPhaseId(value);
+  }, []);
+
+  const showAnalyses = projectId && phaseId;
 
   return (
     <>
@@ -62,7 +76,29 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
             onProjectFilter={handleProjectFilter}
           />
 
-          <Analyses projectId={projectId} selectedLocale={selectedLocale} />
+          {projectId !== undefined && (
+            <PhaseFilter
+              id="e2e-report-builder-analysis-phase-filter-box"
+              label={formatMessage(messages.selectPhase)}
+              projectId={projectId}
+              phaseId={phaseId}
+              participationMethods={[
+                'native_survey',
+                'ideation',
+                'community_monitor_survey',
+              ]}
+              onPhaseFilter={handlePhaseFilter}
+            />
+          )}
+
+          {showAnalyses && (
+            <Analyses
+              projectId={projectId}
+              phaseId={phaseId}
+              participationMethod={phase?.data.attributes.participation_method}
+              selectedLocale={selectedLocale}
+            />
+          )}
         </Box>
       )}
     </>

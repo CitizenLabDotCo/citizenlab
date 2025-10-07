@@ -13,10 +13,12 @@ import Summary from './Summary';
 const Insights = ({
   analysisId,
   projectId,
+  phaseId,
   selectedLocale,
 }: {
   analysisId: string;
   projectId: string;
+  phaseId?: string;
   selectedLocale: string;
 }) => {
   const { formatMessage } = useIntl();
@@ -24,7 +26,7 @@ const Insights = ({
     analysisId,
   });
 
-  if (!projectId) {
+  if (!projectId || !phaseId) {
     return null;
   }
 
@@ -43,6 +45,7 @@ const Insights = ({
               questionId={insight.relationships.insightable.data.id}
               analysisId={analysisId}
               projectId={projectId}
+              phaseId={phaseId}
               selectedLocale={selectedLocale}
             />
           ) : (
@@ -51,6 +54,7 @@ const Insights = ({
               summaryId={insight.relationships.insightable.data.id}
               analysisId={analysisId}
               projectId={projectId}
+              phaseId={phaseId}
               selectedLocale={selectedLocale}
             />
           )}

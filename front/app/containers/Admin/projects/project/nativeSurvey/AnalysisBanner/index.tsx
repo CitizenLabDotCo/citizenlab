@@ -145,6 +145,7 @@ const AnalysisBanner = () => {
           onClick={goToAnalysis}
           processing={isAddLoading || isUpdateLoading}
           disabled={!customFieldArePersisted}
+          id="e2e-analysis-banner-button"
         >
           {formatMessage(messages.aiAnalysis)}
         </ButtonWithLink>

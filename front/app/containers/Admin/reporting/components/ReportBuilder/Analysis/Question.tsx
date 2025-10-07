@@ -22,11 +22,13 @@ const Question = ({
   questionId,
   analysisId,
   projectId,
+  phaseId,
   selectedLocale,
 }: {
   questionId: string;
   analysisId: string;
   projectId: string;
+  phaseId?: string;
   selectedLocale: string;
 }) => {
   const { data } = useAnalysisQuestion({ analysisId, id: questionId });
@@ -89,6 +91,7 @@ const Question = ({
           fileIds={fileIds}
           analysisId={analysisId}
           projectId={projectId}
+          phaseId={phaseId}
           generatedAt={generatedAt}
           // TODO: Fix this the next time the file is edited.
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -99,6 +102,7 @@ const Question = ({
           generatedAt={generatedAt}
           analysisId={analysisId}
           projectId={projectId}
+          phaseId={phaseId}
           // TODO: Fix this the next time the file is edited.
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           customFieldIds={data?.data.attributes.custom_field_ids}

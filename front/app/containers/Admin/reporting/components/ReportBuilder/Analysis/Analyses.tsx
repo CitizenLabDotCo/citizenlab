@@ -4,6 +4,7 @@ import { Box, Divider, Text } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 
 import useAnalyses from 'api/analyses/useAnalyses';
+import { ParticipationMethod } from 'api/phases/types';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -15,18 +16,33 @@ import messages from './messages';
 const Analyses = ({
   projectId,
   selectedLocale,
+  phaseId,
+  participationMethod,
 }: {
   projectId?: string;
   selectedLocale: string;
+  phaseId?: string;
+  participationMethod?: ParticipationMethod;
 }) => {
   const { formatMessage } = useIntl();
   const { data: analyses, isLoading } = useAnalyses({
-    projectId,
+    projectId: participationMethod === 'ideation' ? projectId : undefined,
+    phaseId: participationMethod === 'native_survey' ? phaseId : undefined,
   });
 
-  const projectLink: RouteType = `/admin/projects/${projectId}`;
+  console.log({ analyses, isLoading });
 
-  if (analyses?.data.length === 0 && !isLoading) {
+  const projectLink: RouteType =
+    participationMethod === 'ideation'
+      ? `/admin/projects/${projectId}/phases/${phaseId}/ideas`
+      : `/admin/projects/${projectId}/phases/${phaseId}/results`;
+
+  // Analyses related to specific survey questions are now handled in the Survey Question Widget
+  const analysesWithoutMainCustomField = analyses?.data.filter(
+    (analysis) => analysis.relationships.main_custom_field?.data === null
+  );
+
+  if (analysesWithoutMainCustomField?.length === 0 && !isLoading) {
     return (
       <Box id="e2e-report-buider-ai-no-analyses">
         <Divider />
@@ -47,11 +63,12 @@ const Analyses = ({
   return (
     <div>
       {projectId &&
-        analyses?.data.map((analysis) => (
+        analysesWithoutMainCustomField?.map((analysis) => (
           <Insights
             analysisId={analysis.id}
             key={analysis.id}
             projectId={projectId}
+            phaseId={phaseId}
             selectedLocale={selectedLocale}
           />
         ))}
