@@ -17,41 +17,128 @@ RSpec.describe Analysis::LLM::AzureOpenAI do
   describe 'chat' do
     before { allow(service).to receive(:sleep) } # Don't sleep while testing
 
-    it 'reports error when response is 429 and retries is 0' do
-      allow(service.instance_variable_get(:@client)).to(
-        receive(:chat).and_raise(Faraday::TooManyRequestsError.new(status: 429))
-      )
-      expect { service.chat('fake prompt', retries: 0) }.to raise_error(Faraday::TooManyRequestsError)
-      expect(ErrorReporter).to have_received :report_msg
+    # A simplified version of a successful response from Azure OpenAI Responses API.
+    # A better approach would be to use VCR to record and replay actual API responses.
+    let(:simplified_response) do
+      {
+        'id' => 'resp_0f89cbd1c06a0ef90168e3eccd09988197929b3f176d8fd7a6',
+        'status' => 'completed',
+        'output' => [{
+          'id' => 'msg_0f89cbd1c06a0ef90168e3eccd72f8819796810f939adc81ef',
+          'type' => 'message',
+          'status' => 'completed',
+          'content' => [{ 'type' => 'output_text', 'text' => 'The weather today is...' }],
+          'role' => 'assistant'
+        }]
+      }
     end
 
-    it 'retries when response is 429 and retries > 0' do
-      allow(service).to receive(:chat_with_retry).with(retries: 3, parameters: anything).and_call_original
-      allow(service.instance_variable_get(:@client)).to(
-        receive(:chat).and_raise(Faraday::TooManyRequestsError.new(status: 429))
-      )
-      fake_response = { 'choices' => [{ 'message' => { 'content' => 'fake response' } }] }
-      allow(service).to receive(:chat_with_retry).with(retries: 2, parameters: anything).and_return(fake_response)
-      expect(service.chat('fake prompt', retries: 3)).to eq 'fake response'
-      expect(service).to have_received(:chat_with_retry).twice
+    context 'when the OpenAI API returns "Too Many Requests" errors' do
+      let(:too_many_requests_error) { Faraday::TooManyRequestsError.new(status: 429) }
+
+      it "doesn't retry when retries is set to 0" do
+        expect(service.response_client)
+          .to receive(:create).once.and_raise(too_many_requests_error)
+
+        expect(ErrorReporter).to receive(:report_msg).once
+
+        expect { service.chat('Hello, how are you?', retries: 0) }
+          .to raise_error(Faraday::TooManyRequestsError)
+      end
+
+      it 'retries the specified number of times before raising the error' do
+        max_retries = 2
+
+        expect(service.response_client)
+          .to receive(:create).exactly(max_retries + 1).times
+          .and_raise(too_many_requests_error)
+
+        expect(ErrorReporter).to receive(:report_msg).once
+
+        expect { service.chat('Hello, how are you?', retries: max_retries) }
+          .to raise_error(Faraday::TooManyRequestsError)
+      end
+
+      it 'retries MAX_RETRIES times by default' do
+        expect(service.response_client)
+          .to receive(:create).exactly(described_class::MAX_RETRIES + 1).times
+          .and_raise(too_many_requests_error)
+
+        expect(ErrorReporter).to receive(:report_msg).once
+
+        expect { service.chat('Hello, how are you?') }
+          .to raise_error(Faraday::TooManyRequestsError)
+      end
+
+      it 'succeeds if a retry succeeds within the allowed attempts' do
+        call_count = 0
+        success_on_attempt = 3
+
+        allow(service.response_client).to receive(:create) do
+          call_count += 1
+          call_count < success_on_attempt ? (raise too_many_requests_error) : simplified_response
+        end
+
+        expect(service.chat('Hello?', retries: 5)).to eq('The weather today is...')
+        expect(service.response_client).to have_received(:create).exactly(success_on_attempt).times
+        expect(ErrorReporter).not_to have_received :report_msg
+      end
+    end
+
+    it 'returns the response text when the API call is successful' do
+      allow(service.response_client)
+        .to receive(:create).once.and_return(simplified_response)
+
+      expect(service.chat('Hello?')).to eq('The weather today is...')
       expect(ErrorReporter).not_to have_received :report_msg
     end
 
-    it 'reports error when response is not 429 and retries > 0' do
-      allow(service.instance_variable_get(:@client)).to(
-        receive(:chat).and_raise(Faraday::TooManyRequestsError.new(status: 400))
-      )
-      expect { service.chat('fake prompt', retries: 3) }.to raise_error(Faraday::TooManyRequestsError)
-      expect(ErrorReporter).to have_received :report_msg
+    it 'supports multiple messages' do
+      expect(service.response_client).to receive(:create).with(parameters: hash_including(
+        input: [
+          { role: 'system', content: [{ type: 'input_text', text: 'Hello, how are you?' }] },
+          { role: 'user', content: [{ type: 'input_text', text: "What's the weather like today?" }] }
+        ]
+      )).and_return(nil)
+
+      messages = [
+        Analysis::LLM::Message.new('Hello, how are you?', role: 'system'),
+        "What's the weather like today?"
+      ]
+
+      service.chat(messages)
     end
 
-    it 'returns when response is ok' do
-      fake_response = { 'choices' => [{ 'message' => { 'content' => 'fake response' } }] }
-      allow(service.instance_variable_get(:@client)).to(
-        receive(:chat).and_return(fake_response)
+    it 'supports single message with multiple inputs' do
+      expect(service.response_client)
+        .to receive(:create).with(parameters: hash_including(
+          input: [{ role: 'user', content: [
+            { type: 'input_text', text: 'Hello, how are you?' },
+            { type: 'input_text', text: "What's the weather like today?" }
+          ] }]
+        )).and_return(nil)
+
+      messages = Analysis::LLM::Message.new(
+        'Hello, how are you?',
+        "What's the weather like today?"
       )
-      expect(service.chat('fake prompt')).to eq 'fake response'
-      expect(ErrorReporter).not_to have_received :report_msg
+
+      service.chat(messages)
+    end
+
+    it 'supports file inputs' do
+      file = create(:global_file)
+      message = Analysis::LLM::Message.new('Describe the content of this file?', file)
+
+      expect(service.response_client)
+        .to receive(:create).with(parameters: hash_including(input: [{
+          role: 'user', content: [
+            { type: 'input_text', text: 'Describe the content of this file?' },
+            { type: 'input_file', filename: file.name, file_data: start_with('data:application/pdf;base64,') }
+          ]
+        }])).and_return(nil)
+
+      service.chat(message)
     end
   end
 

@@ -196,6 +196,13 @@ RSpec.describe ParticipationMethod::Proposals do
     end
   end
 
+  describe '#validate_phase' do
+    it 'does not add an error with non-transitive inputs' do
+      create(:proposal, creation_phase: phase, project: phase.project)
+      expect(phase).to be_valid
+    end
+  end
+
   describe '#supported_email_campaigns' do
     it 'returns campaigns supported for proposals' do
       expect(participation_method.supported_email_campaigns).to match_array %w[comment_deleted_by_admin comment_on_idea_you_follow comment_on_your_comment cosponsor_of_your_idea idea_published invitation_to_cosponsor_idea mention_in_official_feedback official_feedback_on_idea_you_follow project_phase_started status_change_on_idea_you_follow your_input_in_screening]
@@ -234,7 +241,6 @@ RSpec.describe ParticipationMethod::Proposals do
   its(:supports_private_attributes_in_export?) { is_expected.to be true }
   its(:form_logic_enabled?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be true }
-  its(:validate_phase) { is_expected.to be_nil }
   its(:supports_custom_field_categories?) { is_expected.to be false }
   its(:user_fields_in_form?) { is_expected.to be false }
   its(:supports_multiple_phase_reports?) { is_expected.to be false }

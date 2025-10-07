@@ -204,6 +204,21 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
+  describe '#validate_phase' do
+    it 'does not add an error with transitive inputs' do
+      create(:idea, phases: [phase], project: phase.project)
+      expect(phase).to be_valid
+    end
+
+    it 'adds an error with non-transitive inputs' do
+      phase.update!(participation_method: 'proposals', reacting_threshold: 50, expire_days_limit: 10)
+      create(:proposal, creation_phase: phase, project: phase.project)
+      phase.participation_method = 'ideation'
+      expect(phase).not_to be_valid
+      expect(phase.errors.details).to eq({ participation_method: [{ error: :non_complying_inputs }] })
+    end
+  end
+
   its(:additional_export_columns) { is_expected.to eq %w[manual_votes] }
   its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new comments_count] }
   its(:return_disabled_actions?) { is_expected.to be false }
@@ -225,7 +240,6 @@ RSpec.describe ParticipationMethod::Ideation do
   its(:supports_private_attributes_in_export?) { is_expected.to be true }
   its(:form_logic_enabled?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be true }
-  its(:validate_phase) { is_expected.to be_nil }
   its(:supports_custom_field_categories?) { is_expected.to be false }
   its(:user_fields_in_form?) { is_expected.to be false }
   its(:supports_multiple_phase_reports?) { is_expected.to be false }
