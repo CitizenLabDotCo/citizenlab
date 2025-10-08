@@ -39,5 +39,7 @@ export function removeJwt() {
 }
 
 export function decode(jwt) {
+  console.log('decode called with:', jwt);
+  console.trace('decode call stack');
   return jwtDecode<IDecodedJwt>(jwt);
 }

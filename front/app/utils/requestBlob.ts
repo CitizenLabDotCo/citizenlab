@@ -1,6 +1,6 @@
 import { stringify } from 'qs';
 
-import { getJwt } from 'utils/auth/jwt';
+// import { getJwt } from 'utils/auth/jwt';
 
 // we use xhr rather than fetch API, to enforce response type
 export function requestBlob(
@@ -23,7 +23,7 @@ export function requestBlob(
     xhr.open('GET', urlWithParams, true);
     xhr.responseType = 'blob';
     xhr.setRequestHeader('Content-Type', type);
-    xhr.setRequestHeader('Authorization', `Bearer ${getJwt()}`);
+    // xhr.setRequestHeader('Authorization', `Bearer ${getJwt()}`);
     xhr.onload = () => {
       if (xhr.status >= 200 && xhr.status < 300) {
         const blob = new Blob([xhr.response], { type });
