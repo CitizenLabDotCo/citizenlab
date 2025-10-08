@@ -4,10 +4,6 @@ module Analysis
   class QAndAMethod::Base
     attr_reader :analysis, :task, :question, :input_to_text
 
-    Q_AND_A_METHOD_CLASSES = [
-      QAndAMethod::OnePassLLM
-    ]
-
     LLMS = [
       LLM::GPT41.new,
       LLM::GPT4oMini.new
@@ -16,10 +12,16 @@ module Analysis
     class QAndAFailedError < StandardError; end
     class TooManyInputs < QAndAFailedError; end
 
-    def self.plan(question)
-      QAndAMethod::OnePassLLM.new(question).generate_plan || QAndAPlan.new(
-        impossible_reason: :too_many_inputs
-      )
+    class << self
+      def method_classes
+        @method_classes ||= [QAndAMethod::OnePassLLM]
+      end
+
+      def plan(question)
+        QAndAMethod::OnePassLLM.new(question).generate_plan || QAndAPlan.new(
+          impossible_reason: :too_many_inputs
+        )
+      end
     end
 
     def initialize(question, *_args, **_kwargs)
