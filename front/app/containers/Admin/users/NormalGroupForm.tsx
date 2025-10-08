@@ -6,7 +6,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
-import { object, string } from 'yup';
+import { object } from 'yup';
 
 import { SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
@@ -25,7 +25,6 @@ type Props = {
 
 export interface NormalFormValues {
   title_multiloc: Multiloc;
-  membership_type: string;
 }
 
 export const Fill = styled.div`
@@ -54,7 +53,6 @@ const NormalGroupForm = ({
     title_multiloc: validateAtLeastOneLocale(
       formatMessage(messages.fieldGroupNameEmptyError)
     ),
-    membership_type: string().required(),
   });
 
   const methods = useForm<NormalFormValues>({
