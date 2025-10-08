@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
 module UserCustomFields
-  class WebApi::V1::UserCustomFieldsController < ApplicationController
-    before_action :set_custom_field, only: %i[show update reorder destroy]
-    skip_before_action :authenticate_user
+  module WebApi
+    module V1
+      class UserCustomFieldsController < ::ApplicationController
+        include LockedUserCustomFieldsConcern
+        
+        before_action :set_custom_field, only: %i[show update reorder destroy]
+        skip_before_action :authenticate_user, only: [:index]
     skip_after_action :verify_policy_scoped
 
     def index
@@ -96,30 +100,7 @@ module UserCustomFields
         end
       end
     end
-
-    def jsonapi_serializer_params_with_locked_fields
-      constraints = build_locked_custom_fields_constraints
-      jsonapi_serializer_params({ constraints: constraints })
-    end
-
-    def build_locked_custom_fields_constraints
-      return {} unless current_user
-
-      locked_custom_field_keys = verification_service.locked_custom_fields(current_user).map(&:to_s)
-      constraints = {}
-      
-      # Find the corresponding codes for the locked custom field keys
-      # The serializer expects constraints keyed by 'code', not 'key'
-      CustomField.where(key: locked_custom_field_keys).each do |field|
-        code_key = field.code&.to_sym || field.key&.to_sym
-        constraints[code_key] = { locked: true } if code_key
       end
-      
-      constraints
-    end
-
-    def verification_service
-      @verification_service ||= Verification::VerificationService.new
     end
   end
 end
