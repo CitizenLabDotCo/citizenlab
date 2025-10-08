@@ -768,6 +768,7 @@
   "app.components.formBuilder.aiUpsellText1": "Jos sinulla on pääsy tekoälypakettimme, voit tehdä yhteenvedon ja luokitella tekstivastaukset tekoälyllä",
   "app.components.formBuilder.askFollowUpToggleLabel": "Pyydä seurantaa",
   "app.components.formBuilder.bad": "Huono",
+  "app.components.formBuilder.bodyMultiloc": "Kuvaus",
   "app.components.formBuilder.buttonLabel": "Painikkeen etiketti",
   "app.components.formBuilder.buttonLink": "Painikkeen linkki",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Peruuta",

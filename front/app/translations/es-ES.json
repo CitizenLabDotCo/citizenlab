@@ -768,6 +768,7 @@
   "app.components.formBuilder.aiUpsellText1": "Si tienes acceso a nuestro paquete de IA, podrás resumir y categorizar respuestas de texto con IA",
   "app.components.formBuilder.askFollowUpToggleLabel": "Pregunta tras respuesta inicial",
   "app.components.formBuilder.bad": "Mal",
+  "app.components.formBuilder.bodyMultiloc": "Descripción",
   "app.components.formBuilder.buttonLabel": "Etiqueta del botón",
   "app.components.formBuilder.buttonLink": "Enlace al botón",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Cancelar",

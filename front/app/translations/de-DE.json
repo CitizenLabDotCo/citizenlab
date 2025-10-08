@@ -768,6 +768,7 @@
   "app.components.formBuilder.aiUpsellText1": "Wenn Sie Zugang zu unserem KI-Paket haben, können Sie Textantworten mit KI zusammenfassen und kategorisieren",
   "app.components.formBuilder.askFollowUpToggleLabel": "Nachfragen",
   "app.components.formBuilder.bad": "Schlecht",
+  "app.components.formBuilder.bodyMultiloc": "Beschreibung",
   "app.components.formBuilder.buttonLabel": "Button-Label",
   "app.components.formBuilder.buttonLink": "Button-Link",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Abbrechen",

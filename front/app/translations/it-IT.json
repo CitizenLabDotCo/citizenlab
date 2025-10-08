@@ -768,6 +768,7 @@
   "app.components.formBuilder.aiUpsellText1": "Se hai accesso al nostro pacchetto AI, sarai in grado di riassumere e categorizzare le risposte al testo con l'AI.",
   "app.components.formBuilder.askFollowUpToggleLabel": "Chiedi un follow-up",
   "app.components.formBuilder.bad": "Male",
+  "app.components.formBuilder.bodyMultiloc": "Descrizione",
   "app.components.formBuilder.buttonLabel": "Etichetta del pulsante",
   "app.components.formBuilder.buttonLink": "Link al pulsante",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Annullamento",

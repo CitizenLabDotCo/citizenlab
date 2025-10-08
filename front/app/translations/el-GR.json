@@ -768,6 +768,7 @@
   "app.components.formBuilder.aiUpsellText1": "Εάν έχετε πρόσβαση στο πακέτο τεχνητής νοημοσύνης, θα μπορείτε να συνοψίζετε και να κατηγοριοποιείτε απαντήσεις κειμένου με τεχνητή νοημοσύνη.",
   "app.components.formBuilder.askFollowUpToggleLabel": "Ζητήστε συνέχεια",
   "app.components.formBuilder.bad": "Κακό",
+  "app.components.formBuilder.bodyMultiloc": "Περιγραφή",
   "app.components.formBuilder.buttonLabel": "Ετικέτα κουμπιού",
   "app.components.formBuilder.buttonLink": "Σύνδεσμος κουμπιών",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Ακύρωση",
