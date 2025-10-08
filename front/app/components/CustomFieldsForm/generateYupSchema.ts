@@ -257,7 +257,7 @@ const generateYupSchema = ({
         }
 
         // Other option
-        const fieldSchemaOther = string().when(key, (value, schema) => {
+        const fieldSchemaOther = string().when(key, ([value], schema) => {
           return value.includes('other')
             ? schema.required(formatMessage(messages.typeYourAnswerRequired))
             : schema.notRequired();

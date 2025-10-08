@@ -29,4 +29,33 @@ describe('generateYupSchema', () => {
       ).toBe(true);
     });
   });
+
+  describe('multiselect field', () => {
+    const pageQuestions = [
+      {
+        input_type: 'multiselect',
+        required: true,
+        key: 'select_q',
+      },
+    ] as any;
+
+    const schema = generateYupSchema({
+      pageQuestions,
+      formatMessage,
+      localize,
+    });
+    it('does not make other field required if values do not contain other', () => {
+      expect(schema.isValidSync({ select_q: ['Value'] })).toBe(true);
+    });
+
+    it('makes other field required if values contain other', () => {
+      expect(schema.isValidSync({ select_q: ['Value', 'other'] })).toBe(false);
+      expect(
+        schema.isValidSync({
+          select_q: ['Value', 'other'],
+          select_q_other: 'Bla',
+        })
+      ).toBe(true);
+    });
+  });
 });
