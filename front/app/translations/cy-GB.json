@@ -768,6 +768,7 @@
   "app.components.formBuilder.aiUpsellText1": "Os oes gennych chi fynediad i'n pecyn AI, byddwch chi'n gallu crynhoi a chategoreiddio ymatebion testun gydag AI",
   "app.components.formBuilder.askFollowUpToggleLabel": "Gofynnwch am ddilyniant",
   "app.components.formBuilder.bad": "Drwg",
+  "app.components.formBuilder.bodyMultiloc": "Disgrifiad",
   "app.components.formBuilder.buttonLabel": "Label botwm",
   "app.components.formBuilder.buttonLink": "Cyswllt botwm",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Canslo",

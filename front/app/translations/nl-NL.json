@@ -768,6 +768,7 @@
   "app.components.formBuilder.aiUpsellText1": "Als je toegang hebt tot ons AI-pakket, kun je tekstreacties samenvatten en categoriseren met AI.",
   "app.components.formBuilder.askFollowUpToggleLabel": "Vraag follow-up",
   "app.components.formBuilder.bad": "Slecht",
+  "app.components.formBuilder.bodyMultiloc": "Beschrijving",
   "app.components.formBuilder.buttonLabel": "Label voor de knop",
   "app.components.formBuilder.buttonLink": "Link voor de knop",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Annuleer",

@@ -768,6 +768,7 @@
   "app.components.formBuilder.aiUpsellText1": "Jei turite prieigą prie mūsų dirbtinio intelekto paketo, galėsite apibendrinti ir kategorizuoti teksto atsakymus naudodami dirbtinį intelektą.",
   "app.components.formBuilder.askFollowUpToggleLabel": "Paklauskite tolesnių veiksmų",
   "app.components.formBuilder.bad": "Blogas",
+  "app.components.formBuilder.bodyMultiloc": "Aprašymas",
   "app.components.formBuilder.buttonLabel": "Mygtuko etiketė",
   "app.components.formBuilder.buttonLink": "Mygtuko nuoroda",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Atšaukti",

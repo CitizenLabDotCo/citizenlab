@@ -768,6 +768,7 @@
   "app.components.formBuilder.aiUpsellText1": "Si teniu accés al nostre paquet d'IA, podreu resumir i categoritzar les respostes de text amb AI",
   "app.components.formBuilder.askFollowUpToggleLabel": "Demana seguiment",
   "app.components.formBuilder.bad": "Dolent",
+  "app.components.formBuilder.bodyMultiloc": "Descripció",
   "app.components.formBuilder.buttonLabel": "Etiqueta del botó",
   "app.components.formBuilder.buttonLink": "Enllaç del botó",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Cancel · lar",

@@ -768,6 +768,7 @@
   "app.components.formBuilder.aiUpsellText1": "Wann Dir Zougang zu eisem AI Package hutt, kënnt Dir Textreaktiounen mat AI zesummefaassen an kategoriséieren",
   "app.components.formBuilder.askFollowUpToggleLabel": "Frot de Suivi",
   "app.components.formBuilder.bad": "Schlecht",
+  "app.components.formBuilder.bodyMultiloc": "Beschreiwung",
   "app.components.formBuilder.buttonLabel": "Knäppchen Label",
   "app.components.formBuilder.buttonLink": "Knäppchen Link",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Ofbriechen",

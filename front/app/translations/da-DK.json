@@ -768,6 +768,7 @@
   "app.components.formBuilder.aiUpsellText1": "Hvis du har adgang til vores AI-pakke, vil du kunne opsummere og kategorisere tekstsvar med AI.",
   "app.components.formBuilder.askFollowUpToggleLabel": "Spørg om opfølgning",
   "app.components.formBuilder.bad": "Dårlig",
+  "app.components.formBuilder.bodyMultiloc": "Beskrivelse",
   "app.components.formBuilder.buttonLabel": "Etiket til knap",
   "app.components.formBuilder.buttonLink": "Link til knap",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Afbryd",
