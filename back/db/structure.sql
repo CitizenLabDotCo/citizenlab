@@ -1725,7 +1725,8 @@ CREATE TABLE public.phases (
     similarity_threshold_title double precision DEFAULT 0.3,
     similarity_threshold_body double precision DEFAULT 0.4,
     similarity_enabled boolean DEFAULT true NOT NULL,
-    vote_term character varying DEFAULT 'vote'::character varying
+    vote_term character varying DEFAULT 'vote'::character varying,
+    voting_min_selected_options integer DEFAULT 1 NOT NULL
 );
 
 
@@ -7854,6 +7855,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250930942638'),
 ('20250922131002'),
 ('20250915151900'),
 ('20250910093500'),

@@ -10,10 +10,15 @@ import { CLErrors, IOption } from 'typings';
 
 import { VoteTerm } from 'api/phases/types';
 
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import {
+  SectionField,
+  SubSectionTitle,
+  SubSectionTitleWithDescription,
+} from 'components/admin/Section';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
+import { StyledSectionDescription } from '..';
 import { VotingAmountInputError } from '../../../shared/styling';
 import messages from '../messages';
 
@@ -23,6 +28,9 @@ interface Props {
   apiErrors: CLErrors | null | undefined;
   maxTotalVotesError?: string;
   maxVotesPerOptionError?: string;
+  voting_min_selected_options?: number | null;
+  minSelectedOptionsError?: string;
+  handleMinVotingOptionsChange: (newMinVotingOptions: string | null) => void;
   handleMaxVotingAmountChange: (newMaxTotalVote: string | null) => void;
   handleMaxVotesPerOptionAmountChange: (newMaxVotesPerOption: string) => void;
   handleVoteTermChange: (option: IOption) => void;
@@ -36,7 +44,10 @@ const MultipleVotingInputs = ({
   handleMaxVotesPerOptionAmountChange,
   apiErrors,
   maxTotalVotesError,
+  minSelectedOptionsError,
   maxVotesPerOptionError,
+  voting_min_selected_options,
+  handleMinVotingOptionsChange,
   handleVoteTermChange,
   voteTerm,
 }: Props) => {
@@ -108,6 +119,28 @@ const MultipleVotingInputs = ({
         <VotingAmountInputError
           apiErrors={apiErrors && apiErrors.voting_max_votes_per_idea}
         />
+      </SectionField>
+      <SectionField>
+        <SubSectionTitleWithDescription>
+          <FormattedMessage {...messages.minimumOptions} />
+        </SubSectionTitleWithDescription>
+        <StyledSectionDescription>
+          <FormattedMessage {...messages.minimumOptionsDescription} />
+        </StyledSectionDescription>
+        <Box maxWidth="200px">
+          <Box maxWidth="100px">
+            <Input
+              value={voting_min_selected_options?.toString()}
+              onChange={handleMinVotingOptionsChange}
+              type="number"
+              min="0"
+            />
+          </Box>
+          <VotingAmountInputError text={minSelectedOptionsError} />
+          <VotingAmountInputError
+            apiErrors={apiErrors && apiErrors.voting_min_selected_options}
+          />
+        </Box>
       </SectionField>
     </>
   );
