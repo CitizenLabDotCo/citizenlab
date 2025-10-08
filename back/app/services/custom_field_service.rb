@@ -124,4 +124,10 @@ class CustomFieldService
       @multiloc_service.t(field.description_multiloc)
     end
   end
+
+  # Making pages a different data model would avoid
+  # having to do this.
+  def pages(fields)
+    fields.chunk_while { |_, field| !field.page? }
+  end
 end
