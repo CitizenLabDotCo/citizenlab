@@ -24,7 +24,7 @@ const fetchUserCustomFieldsSchema = (
 
   if (type === 'global' || type === 'follow') {
     return fetcher<SchemaResponse>({
-      path: `/permissions/${action}/custom_fields`,
+      path: `/permissions/${action}/schema`,
       action: 'get',
     });
   }
@@ -33,13 +33,13 @@ const fetchUserCustomFieldsSchema = (
 
   if (type === 'idea') {
     return fetcher<SchemaResponse>({
-      path: `/ideas/${id}/permissions/${action}/custom_fields`,
+      path: `/ideas/${id}/permissions/${action}/schema`,
       action: 'get',
     });
   }
 
   return fetcher<SchemaResponse>({
-    path: `/${type}s/${id}/permissions/${action}/custom_fields`,
+    path: `/${type}s/${id}/permissions/${action}/schema`,
     action: 'get',
   });
 };

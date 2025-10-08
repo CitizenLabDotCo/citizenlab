@@ -104,8 +104,6 @@ const UserCustomFieldsFormWrapper = ({
   const { data: userCustomFieldsSchema } = useCustomFieldsSchema(
     authenticationContext
   );
-  console.log('authenticationContext', authenticationContext);
-  console.log('userCustomFieldsSchema', userCustomFieldsSchema);
   const locale = useLocale();
 
   if (!authUser || !userCustomFieldsSchema) return null;
