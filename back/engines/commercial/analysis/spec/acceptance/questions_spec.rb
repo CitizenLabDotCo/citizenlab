@@ -37,12 +37,8 @@ resource 'Questions' do
           missing_inputs_count: 0
         },
         relationships: {
-          background_task: {
-            data: {
-              type: 'background_task',
-              id: kind_of(String)
-            }
-          }
+          files: { data: [] },
+          background_task: { data: { type: 'background_task', id: kind_of(String) } }
         }
       })
     end
@@ -95,12 +91,8 @@ resource 'Questions' do
           generated_at: nil
         },
         relationships: {
-          background_task: {
-            data: {
-              type: 'background_task',
-              id: kind_of(String)
-            }
-          }
+          files: { data: [] },
+          background_task: { data: { type: 'background_task', id: kind_of(String) } }
         }
       })
       background_task = Analysis::BackgroundTask.first
@@ -148,12 +140,8 @@ resource 'Questions' do
           generated_at: nil
         },
         relationships: {
-          background_task: {
-            data: {
-              type: 'background_task',
-              id: new_background_task.id
-            }
-          }
+          files: { data: [] },
+          background_task: { data: { type: 'background_task', id: new_background_task.id } }
         }
       })
       expect(json_response_body[:included].pluck(:id)).to include(new_background_task.id)
