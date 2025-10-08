@@ -24,9 +24,8 @@ const InputIQ = ({
     phase?.attributes.similarity_enabled && isInputIQEnabled
   );
 
-  const titleMultiloc =
-    field.code === 'title_multiloc' && watch('title_multiloc');
-  const bodyMultiloc = field.code === 'body_multiloc' && watch('body_multiloc');
+  const titleMultiloc = watch('title_multiloc');
+  const bodyMultiloc = watch('body_multiloc');
 
   // Debounced values for similar ideas lookup
   const [debouncedTitleMultiloc, setDebouncedTitleMultiloc] =
@@ -50,8 +49,12 @@ const InputIQ = ({
   return (
     <div>
       <SimilarIdeasList
-        titleMultiloc={debouncedTitleMultiloc}
-        bodyMultiloc={debouncedBodyMultiloc}
+        titleMultiloc={
+          field.code === 'title_multiloc' ? debouncedTitleMultiloc : undefined
+        }
+        bodyMultiloc={
+          field.code === 'body_multiloc' ? debouncedBodyMultiloc : undefined
+        }
         phase={phase}
       />
     </div>
