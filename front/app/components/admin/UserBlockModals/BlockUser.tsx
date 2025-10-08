@@ -41,7 +41,6 @@ type Props = {
 
 type FormValues = {
   reason: string;
-  current_password: string;
 };
 
 const BlockUserModal = ({ open, setClose, user, returnFocusRef }: Props) => {
@@ -53,7 +52,6 @@ const BlockUserModal = ({ open, setClose, user, returnFocusRef }: Props) => {
 
   const schema = object({
     reason: string().required(),
-    current_password: string().required(),
   });
 
   const methods = useForm<FormValues>({
