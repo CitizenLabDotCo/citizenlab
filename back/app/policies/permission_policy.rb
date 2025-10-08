@@ -30,10 +30,6 @@ class PermissionPolicy < ApplicationPolicy
     true
   end
 
-  def schema?
-    true
-  end
-
   def access_denied_explanation?
     true
   end
