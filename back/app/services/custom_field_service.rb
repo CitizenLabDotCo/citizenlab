@@ -128,4 +128,267 @@ class CustomFieldService
   def pages(fields)
     fields.chunk_while { |_, field| !field.page? }
   end
+
+  private
+
+  # *** text ***
+
+  def text_to_ui_schema_field(field, locale)
+    base_ui_schema_field(field, locale)
+  end
+
+  def text_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
+
+  # *** number ***
+
+  def number_to_ui_schema_field(field, locale)
+    base_ui_schema_field(field, locale)
+  end
+
+  def number_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'number'
+    }
+  end
+
+  # *** multiline_text ***
+
+  def multiline_text_to_ui_schema_field(field, locale)
+    base = base_ui_schema_field(field, locale)
+    if base[:'ui:widget']
+      base
+    else
+      { 'ui:widget': 'textarea' }
+    end
+  end
+
+  def multiline_text_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
+
+  # *** select ***
+
+  def select_to_ui_schema_field(field, locale)
+    base_ui_schema_field(field, locale)
+  end
+
+  def select_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }.tap do |items|
+      options = field.ordered_transformed_options
+
+      unless options.empty?
+        items[:enum] = options.map(&:key)
+        items[:enumNames] = options.map { |o| handle_title(o, locale) }
+      end
+    end
+  end
+
+  # *** multiselect ***
+
+  def multiselect_to_ui_schema_field(field, locale)
+    base_ui_schema_field(field, locale)
+  end
+
+  def multiselect_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'array',
+      uniqueItems: true,
+      minItems: field.enabled? && field.required? ? 1 : 0,
+      items: {
+        type: 'string'
+      }.tap do |items|
+        options = field.ordered_options
+
+        unless options.empty?
+          items[:enum] = options.map(&:key)
+          items[:enumNames] = options.map { |o| handle_title(o, locale) }
+        end
+      end
+    }
+  end
+
+  # *** checkbox ***
+
+  def checkbox_to_ui_schema_field(field, locale)
+    base_ui_schema_field(field, locale)
+  end
+
+  def checkbox_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'boolean'
+    }
+  end
+
+  # *** date ***
+
+  def date_to_ui_schema_field(field, locale)
+    base_ui_schema_field(field, locale)
+  end
+
+  def date_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string',
+      format: 'date'
+    }
+  end
+
+  # Methods here are not really used to render the fields on the front-end, only description hidden and required are used
+
+  # *** html ***
+
+  def html_to_ui_schema_field(field, locale)
+    base_ui_schema_field(field, locale)
+  end
+
+  def html_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
+
+  # *** text_multiloc ***
+
+  def text_multiloc_to_ui_schema_field(field, locale)
+    base_ui_schema_field(field, locale)
+  end
+
+  def text_multiloc_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
+
+  # *** multiline_text_multiloc ***
+
+  def multiline_text_multiloc_to_ui_schema_field(field, locale)
+    base_ui_schema_field(field, locale)
+  end
+
+  def multiline_text_multiloc_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
+
+  # *** html_multiloc ***
+
+  def html_multiloc_to_ui_schema_field(field, locale)
+    base_ui_schema_field(field, locale)
+  end
+
+  def html_multiloc_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
+
+  # *** point ***
+
+  def point_to_ui_schema_field(_field, _locale)
+    {}.tap do |ui_schema|
+      ui_schema[:'ui:widget'] = 'hidden'
+    end
+  end
+
+  def point_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
+
+  # *** line ***
+
+  def line_to_ui_schema_field(_field, _locale)
+    {}.tap do |ui_schema|
+      ui_schema[:'ui:widget'] = 'hidden'
+    end
+  end
+
+  def line_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
+
+  # *** polygon ***
+
+  def polygon_to_ui_schema_field(_field, _locale)
+    {}.tap do |ui_schema|
+      ui_schema[:'ui:widget'] = 'hidden'
+    end
+  end
+
+  def polygon_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
+
+  # *** files ***
+
+  def files_to_ui_schema_field(field, locale)
+    base_ui_schema_field(field, locale)
+  end
+
+  def files_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'array',
+      items: {
+        type: 'string',
+        format: 'data-url'
+      }
+    }
+  end
+
+  # *** image files ***
+
+  def image_files_to_ui_schema_field(field, locale)
+    base_ui_schema_field(field, locale)
+  end
+
+  def image_files_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
 end
