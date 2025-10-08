@@ -8,8 +8,8 @@ resource 'User Custom Fields - Locked Fields' do
 
   before do
     header 'Content-Type', 'application/json'
-    SettingsService.new.activate_feature! 'verification', settings: { 
-      verification_methods: [{ name: 'bogus', enabled_for_verified_actions: true }] 
+    SettingsService.new.activate_feature! 'verification', settings: {
+      verification_methods: [{ name: 'bogus', enabled_for_verified_actions: true }]
     }
   end
 
@@ -26,7 +26,7 @@ resource 'User Custom Fields - Locked Fields' do
       example_request 'List user custom fields with locked constraints' do
         assert_status 200
         json_response = json_parse response_body
-        
+
         gender_custom_field = json_response[:data].find { |field| field[:attributes][:code] == 'gender' }
         expect(gender_custom_field).not_to be_nil, "Gender custom field not found in response. Available fields: #{json_response[:data].map { |f| f[:attributes][:code] }}"
         expect(gender_custom_field[:attributes][:constraints]).to eq({ locked: true })
@@ -43,7 +43,7 @@ resource 'User Custom Fields - Locked Fields' do
       example_request 'List user custom fields without locked constraints' do
         assert_status 200
         json_response = json_parse response_body
-        
+
         gender_custom_field = json_response[:data].find { |field| field[:attributes][:code] == 'gender' }
         expect(gender_custom_field).not_to be_nil, "Gender custom field not found in response. Available fields: #{json_response[:data].map { |f| f[:attributes][:code] }}"
         expect(gender_custom_field[:attributes][:constraints]).to eq({})

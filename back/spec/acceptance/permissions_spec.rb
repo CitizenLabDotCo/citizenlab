@@ -521,10 +521,10 @@ resource 'Permissions' do
           json_response = json_parse response_body
           expect(json_response[:data]).to be_an(Array)
           expect(json_response[:data].size).to eq 2
-          
+
           field_codes = json_response[:data].map { |field| field.dig(:attributes, :code) }
           expect(field_codes).to include(@field1.code, @field2.code)
-          
+
           # Check that custom fields have the expected attributes
           field1_data = json_response[:data].find { |field| field.dig(:attributes, :code) == @field1.code }
           expect(field1_data[:type]).to eq 'custom_field'
@@ -552,7 +552,7 @@ resource 'Permissions' do
         example_request 'Locked fields have constraints in custom fields response' do
           assert_status 200
           json_response = json_parse response_body
-          
+
           gender_field = json_response[:data].find { |field| field.dig(:attributes, :code) == 'gender' }
           expect(gender_field).to be_present
           expect(gender_field[:attributes][:constraints]).to eq({ locked: true })
@@ -579,10 +579,10 @@ resource 'Permissions' do
         json_response = json_parse response_body
         expect(json_response[:data]).to be_an(Array)
         expect(json_response[:data].size).to eq 2
-        
+
         field_codes = json_response[:data].map { |field| field.dig(:attributes, :code) }
         expect(field_codes).to include(@field1.code, @field2.code)
-        
+
         # Check that custom fields are returned with basic attributes
         field1_data = json_response[:data].find { |field| field.dig(:attributes, :code) == @field1.code }
         field2_data = json_response[:data].find { |field| field.dig(:attributes, :code) == @field2.code }
@@ -609,10 +609,10 @@ resource 'Permissions' do
         json_response = json_parse response_body
         expect(json_response[:data]).to be_an(Array)
         expect(json_response[:data].size).to eq 2
-        
+
         field_codes = json_response[:data].map { |field| field.dig(:attributes, :code) }
         expect(field_codes).to include(@field1.code, @field2.code)
-        
+
         # Check that custom fields are returned with basic attributes
         field1_data = json_response[:data].find { |field| field.dig(:attributes, :code) == @field1.code }
         field2_data = json_response[:data].find { |field| field.dig(:attributes, :code) == @field2.code }

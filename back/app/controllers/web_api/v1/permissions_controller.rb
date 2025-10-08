@@ -2,7 +2,7 @@
 
 class WebApi::V1::PermissionsController < ApplicationController
   include LockedUserCustomFieldsConcern
-  
+
   before_action :set_permission, only: %i[show update reset requirements schema custom_fields access_denied_explanation]
   skip_before_action :authenticate_user
 
@@ -147,8 +147,6 @@ class WebApi::V1::PermissionsController < ApplicationController
       end
     end
   end
-
-
 end
 
 # WebApi::V1::PermissionsController.prepend(Verification::Patches::WebApi::V1::PermissionsController)

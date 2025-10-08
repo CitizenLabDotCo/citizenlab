@@ -15,14 +15,14 @@ module LockedUserCustomFieldsConcern
 
     locked_custom_field_keys = verification_service.locked_custom_fields(current_user).map(&:to_s)
     constraints = {}
-    
+
     # Find the corresponding codes for the locked custom field keys
     # The serializer expects constraints keyed by 'code', not 'key'
     CustomField.where(key: locked_custom_field_keys).each do |field|
       code_key = field.code&.to_sym || field.key&.to_sym
       constraints[code_key] = { locked: true } if code_key
     end
-    
+
     constraints
   end
 
