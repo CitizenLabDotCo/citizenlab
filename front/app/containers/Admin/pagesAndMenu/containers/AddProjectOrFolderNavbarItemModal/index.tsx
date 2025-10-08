@@ -40,23 +40,13 @@ type Props = {
 const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
   const { mutateAsync: addNavbarItem } = useAddNavbarItem();
 
-  const [flattenedAdminPublications, setFlattenedAdminPublications] = useState<
-    IAdminPublicationData[]
-  >([]);
   const { data: adminPublications } = useAdminPublications({
     remove_all_unlisted: true,
     sort: 'title_multiloc',
   });
 
-  // Flatten and store adminPublications when they change
-  useEffect(() => {
-    if (adminPublications?.pages) {
-      const allAdminPublications = adminPublications.pages.flatMap(
-        (page) => page.data
-      );
-      setFlattenedAdminPublications(allAdminPublications);
-    }
-  }, [adminPublications]);
+  const flattenedAdminPublications: IAdminPublicationData[] =
+    adminPublications?.pages?.flatMap((page) => page.data) ?? [];
 
   const anyFolderExists = flattenedAdminPublications.some(
     (adminPublication) =>
