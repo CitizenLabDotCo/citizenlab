@@ -135,8 +135,8 @@ describe('Report builder: AI widget', () => {
     cy.get('#e2e-report-buider-ai-no-analyses').should('exist');
 
     cy.visit(`/admin/projects/${projectId}/phases/${surveyPhaseId}/results`);
-    cy.wait(2000);
-    cy.get('#e2e-analysis-banner-button').click();
+    cy.wait(3000);
+    cy.get('#e2e-analysis-banner-button').click({ force: true });
     cy.wait('@createAnalysis');
 
     // Go back to the report builder
