@@ -1,4 +1,4 @@
-import { object } from 'yup';
+import { object, array } from 'yup';
 
 import { IFlatCustomField, QuestionRuleType } from 'api/custom_fields/types';
 
@@ -45,61 +45,59 @@ export const isPageRuleValid = (
 };
 
 const validateLogic = (message: string) => {
-  return object()
-    .shape({
-      logic: object(),
-    })
-    .when('input_type', ([input_type], schema) => {
-      if (
-        [
-          'multiselect',
-          'multiselect_image',
-          'select',
-          'linear_scale',
-          'rating',
-        ].includes(input_type)
-      ) {
-        return schema.test(
-          'rules reference prior pages',
-          message,
-          (value, obj) => {
-            // Extract current state of customFields
-            const fields = obj.from?.[2].value.customFields;
+  return object({
+    rules: array(object()),
+  }).when('input_type', ([input_type], schema) => {
+    if (
+      [
+        'multiselect',
+        'multiselect_image',
+        'select',
+        'linear_scale',
+        'rating',
+      ].includes(input_type)
+    ) {
+      return schema.test(
+        'rules reference prior pages',
+        message,
+        (value, obj) => {
+          // Extract current state of customFields
+          const fields = obj.from?.[2].value.customFields;
 
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          if (!isNilOrError(obj) && value && fields) {
             // TODO: Fix this the next time the file is edited.
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            if (!isNilOrError(obj) && value && fields) {
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              return ((value as any).rules || []).every((rule) =>
-                isRuleValid(rule, obj.parent.id, fields)
-              );
-            }
-            return true;
+            return (value.rules || []).every((rule) =>
+              isRuleValid(rule as any, obj.parent.id, fields)
+            );
           }
-        );
-      } else if (input_type === 'page') {
-        return schema.test(
-          'rules reference prior pages',
-          message,
-          (value, obj) => {
-            const fields = obj.from?.[2].value.customFields;
+          return true;
+        }
+      );
+    } else if (input_type === 'page') {
+      return schema.test(
+        'rules reference prior pages',
+        message,
+        (value, obj) => {
+          const fields = obj.from?.[2].value.customFields;
 
-            // TODO: Fix this the next time the file is edited.
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            if (!isNilOrError(obj) && (value as any)?.next_page_id && fields) {
-              return isPageRuleValid(
-                fields,
-                obj.parent.id,
-                (value as any).next_page_id
-              );
-            }
-            return true;
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          if (!isNilOrError(obj) && (value as any)?.next_page_id && fields) {
+            return isPageRuleValid(
+              fields,
+              obj.parent.id,
+              (value as any).next_page_id
+            );
           }
-        );
-      }
-      return schema;
-    });
+          return true;
+        }
+      );
+    }
+    return schema;
+  });
 };
 
 export default validateLogic;
