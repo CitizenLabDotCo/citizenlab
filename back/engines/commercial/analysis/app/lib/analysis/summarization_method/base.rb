@@ -4,10 +4,6 @@ module Analysis
   class SummarizationMethod::Base
     attr_reader :analysis, :task, :summary, :input_to_text
 
-    SUMMARIZATION_METHOD_CLASSES = [
-      SummarizationMethod::OnePassLLM
-    ]
-
     LLMS = [
       LLM::GPT41.new,
       LLM::GPT4oMini.new
@@ -16,10 +12,16 @@ module Analysis
     class SummarizationFailedError < StandardError; end
     class TooManyInputs < SummarizationFailedError; end
 
-    def self.plan(summary)
-      SummarizationMethod::OnePassLLM.new(summary).generate_plan || SummarizationPlan.new(
-        impossible_reason: :too_many_inputs
-      )
+    class << self
+      def method_classes
+        @method_classes ||= [SummarizationMethod::OnePassLLM]
+      end
+
+      def plan(summary)
+        SummarizationMethod::OnePassLLM.new(summary).generate_plan || SummarizationPlan.new(
+          impossible_reason: :too_many_inputs
+        )
+      end
     end
 
     def initialize(summary, *_args, **_kwargs)
