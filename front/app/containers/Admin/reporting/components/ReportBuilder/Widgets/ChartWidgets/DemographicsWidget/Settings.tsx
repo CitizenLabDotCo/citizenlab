@@ -34,14 +34,18 @@ import {
 import messages from './messages';
 import { Props } from './typings';
 
+export const INPUT_TYPES: IUserCustomFieldInputType[] = [
+  'select',
+  'multiselect',
+  'checkbox',
+  'number',
+];
+
 export const isSupportedField = (userField: IUserCustomFieldData) => {
-  const { input_type, code } = userField.attributes;
+  const { input_type } = userField.attributes;
 
-  if (input_type === 'number' && code === 'birthyear') return true;
-  return input_type === 'select';
+  return INPUT_TYPES.includes(input_type);
 };
-
-export const INPUT_TYPES: IUserCustomFieldInputType[] = ['select', 'number'];
 
 const Settings = () => {
   const { formatMessage } = useIntl();

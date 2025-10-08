@@ -1,6 +1,7 @@
 import { Multiloc } from 'typings';
 
 import { DemographicsResponse } from 'api/graph_data_units/responseTypes/DemographicsWidget';
+import { IUserCustomField } from 'api/user_custom_fields/types';
 
 import { Localize } from 'hooks/useLocalize';
 
@@ -13,16 +14,35 @@ import { truncate } from 'utils/textUtils';
 export const parseResponse = (
   response: DemographicsResponse,
   localize: Localize,
-  blankLabel: string
+  blankLabel: string,
+  customField?: IUserCustomField
 ) => {
   const { options } = response.data.attributes;
 
-  // Birthyear is the only custom field we support here
-  // that does not have options
-  const isBirthyearData = options === undefined;
+  // Check if this is birthyear data (has no options and is specifically birthyear)
+  // vs other number fields (like household_size) which also have no options
+  const customFieldCode = customField?.data.attributes.code;
+  const isBirthyearData =
+    options === undefined && customFieldCode === 'birthyear';
 
   if (isBirthyearData) {
     return parseBirthyearResponse(response.data.attributes.series, blankLabel);
+  }
+
+  // For other number fields without options, create a simple number distribution
+  if (
+    options === undefined &&
+    customField?.data.attributes.input_type === 'number'
+  ) {
+    return parseNumberFieldResponse(
+      response.data.attributes.series,
+      blankLabel
+    );
+  }
+
+  // If no options are available and it's not a number field, return null
+  if (!options) {
+    return null;
   }
 
   return parseOtherResponse(
@@ -64,6 +84,126 @@ const parseBirthyearResponse = (
       color: statusColorById[column],
       label: column,
       value: data[0][column],
+    };
+  });
+
+  return {
+    data,
+    percentages,
+    columns,
+    statusColorById,
+    labels: columns,
+    legendItems,
+  };
+};
+
+export const parseNumberFieldResponse = (
+  series: DemographicsResponse['data']['attributes']['series'],
+  blankLabel: string
+) => {
+  // For number fields, create bins based on the actual values
+  const values = Object.keys(series).filter((key) => key !== '_blank');
+  const numericValues = values.map(Number).filter((val) => !isNaN(val));
+
+  if (numericValues.length === 0) {
+    // No numeric values, just show unknown
+    const data: [Record<string, number>] = [
+      { [blankLabel]: series._blank || 0 },
+    ];
+    return {
+      data,
+      percentages: [100],
+      columns: [blankLabel],
+      statusColorById: { [blankLabel]: DEFAULT_CATEGORICAL_COLORS[0] },
+      labels: [blankLabel],
+      legendItems: [
+        {
+          icon: 'circle' as const,
+          color: DEFAULT_CATEGORICAL_COLORS[0],
+          label: blankLabel,
+          value: series._blank || 0,
+        },
+      ],
+    };
+  }
+
+  // Create bins for the numeric values
+  const min = Math.min(...numericValues);
+  const max = Math.max(...numericValues);
+  const range = max - min;
+
+  // Create bins based on the range
+  const bins: Record<string, number> = {};
+
+  // Determine binning strategy based on data characteristics
+  if (range <= 10 && numericValues.length <= 20) {
+    // Small range with few unique values: create individual bins
+    for (let i = min; i <= max; i++) {
+      const key = i.toString();
+      bins[key] = series[key] || 0;
+    }
+  } else if (range <= 50) {
+    // Medium range: create bins of size 5
+    const binSize = 5;
+    for (let i = min; i <= max; i += binSize) {
+      const binEnd = Math.min(i + binSize - 1, max);
+      const binKey = `${i}-${binEnd}`;
+      bins[binKey] = 0;
+
+      // Sum values in this range
+      for (let j = i; j <= binEnd; j++) {
+        bins[binKey] += series[j.toString()] || 0;
+      }
+    }
+  } else {
+    // Large range: create ~5-7 bins
+    const numBins = Math.min(
+      7,
+      Math.max(5, Math.ceil(numericValues.length / 10))
+    );
+    const binSize = Math.ceil(range / numBins);
+
+    for (let i = min; i <= max; i += binSize) {
+      const binEnd = Math.min(i + binSize - 1, max);
+      const binKey = binSize === 1 ? i.toString() : `${i}-${binEnd}`;
+      bins[binKey] = 0;
+
+      // Sum values in this range
+      for (let j = i; j <= binEnd; j++) {
+        bins[binKey] += series[j.toString()] || 0;
+      }
+    }
+  }
+
+  // Add unknown/blank values
+  if (series._blank) {
+    bins[blankLabel] = series._blank;
+  }
+
+  const data: [Record<string, number>] = [bins];
+  const columns = Object.keys(bins).sort((a, b) => {
+    // Sort numeric values properly
+    const aNum = parseInt(a, 10);
+    const bNum = parseInt(b, 10);
+    if (!isNaN(aNum) && !isNaN(bNum)) {
+      return aNum - bNum;
+    }
+    // Put blank/unknown at the end
+    if (a === blankLabel) return 1;
+    if (b === blankLabel) return -1;
+    return a.localeCompare(b);
+  });
+
+  const percentages = roundPercentages(columns.map((column) => bins[column]));
+
+  const statusColorById = createColorMap(columns);
+
+  const legendItems = columns.map((column) => {
+    return {
+      icon: 'circle' as const,
+      color: statusColorById[column],
+      label: column,
+      value: bins[column],
     };
   });
 
