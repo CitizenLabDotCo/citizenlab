@@ -1,13 +1,32 @@
 import generateYupSchema from './generateYupSchema';
 
 describe('generateYupSchema', () => {
+  const formatMessage = () => 'formatMessage';
+  const localize = () => 'localize';
+
   describe('select field', () => {
+    const pageQuestions = [
+      {
+        input_type: 'select',
+        required: true,
+        key: 'select_q',
+      },
+    ] as any;
+
+    const schema = generateYupSchema({
+      pageQuestions,
+      formatMessage,
+      localize,
+    });
     it('does not make other field required is not other', () => {
-      generateYupSchema;
+      expect(schema.isValidSync({ select_q: 'Value' })).toBe(true);
     });
 
     it('makes other field required if value is other', () => {
-      // TODO
+      expect(schema.isValidSync({ select_q: 'other' })).toBe(false);
+      expect(
+        schema.isValidSync({ select_q: 'other', select_q_other: 'Bla' })
+      ).toBe(true);
     });
   });
 });
