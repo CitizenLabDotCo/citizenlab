@@ -75,15 +75,6 @@ const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
     resolver: yupResolver(schema),
   });
 
-  useEffect(() => {
-    if (opened) {
-      methods.reset({
-        itemId: '',
-        titleMultiloc: {},
-      });
-    }
-  }, [opened, methods]);
-
   const onFormSubmit = async (formValues: FormValues) => {
     try {
       const selectedAdminPublication = flattenedAdminPublications.find(
@@ -113,7 +104,10 @@ const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
   }));
 
   const handleOnClose = () => {
-    methods.reset();
+    methods.reset({
+      itemId: '',
+      titleMultiloc: {},
+    });
     onClose();
   };
 
