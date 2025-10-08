@@ -3,9 +3,9 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import { Action } from 'api/permissions/types';
-import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
-import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
-import useReorderPermissionsCustomField from 'api/permissions_custom_fields/useReorderPermissionsCustomField';
+import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
+import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
+import useReorderPermissionsPhaseCustomField from 'api/permissions_phase_custom_fields/useReorderPermissionsPhaseCustomField';
 import { PermittedBy } from 'api/phase_permissions/types';
 
 import SortableList from 'components/admin/ResourceList/SortableList';
@@ -26,13 +26,13 @@ interface Props {
 }
 
 const FieldsList = ({ phaseId, action }: Props) => {
-  const { data: permissionFields } = usePermissionsCustomFields({
+  const { data: permissionFields } = usePermissionsPhaseCustomFields({
     phaseId,
     action,
   });
 
   const { mutate: reorderPermissionsCustomField } =
-    useReorderPermissionsCustomField({ phaseId, action });
+    useReorderPermissionsPhaseCustomField({ phaseId, action });
 
   if (!permissionFields) {
     return null;
@@ -106,7 +106,7 @@ const FieldsList = ({ phaseId, action }: Props) => {
           {({ itemsList, handleDragRow, handleDropRow }) => (
             <>
               {itemsList.map(
-                (field: IPermissionsCustomFieldData, index: number) => {
+                (field: IPermissionsPhaseCustomFieldData, index: number) => {
                   return (
                     <SortableRow
                       key={field.id}

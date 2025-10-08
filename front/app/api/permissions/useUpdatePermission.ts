@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import permissionsCustomFieldsKeys from 'api/permissions_custom_fields/keys';
+import permissionsPhaseCustomFieldsKeys from 'api/permissions_phase_custom_fields/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -33,7 +33,7 @@ const useUpdatePermission = () => {
 
       if (action) {
         queryClient.invalidateQueries({
-          queryKey: permissionsCustomFieldsKeys.list({
+          queryKey: permissionsPhaseCustomFieldsKeys.list({
             action,
           }),
         });

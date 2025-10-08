@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
-import useCustomFieldsSchema from 'api/custom_fields_json_form_schema/useCustomFieldsSchema';
-import { hasRequiredNonLockedFields } from 'api/custom_fields_json_form_schema/utils';
 import useAuthUser from 'api/me/useAuthUser';
+import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
 
 import useLocale from 'hooks/useLocale';
 
@@ -13,8 +12,6 @@ import {
   SetError,
 } from 'containers/Authentication/typings';
 
-import FormWrapper from 'components/Form/Components/FormWrapper';
-import customAjv from 'components/Form/utils/customAjv';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import UserCustomFieldsForm from 'components/UserCustomFields';
 
@@ -42,7 +39,7 @@ const CustomFields = ({
 }: Props) => {
   const { data: authUser } = useAuthUser();
   const locale = useLocale();
-  const { data: userCustomFieldsSchema } = useCustomFieldsSchema(
+  const { data: customFields } = usePermissionsCustomFields(
     authenticationData.context
   );
   const smallerThanPhone = useBreakpoint('phone');
@@ -54,32 +51,24 @@ const CustomFields = ({
     trackEventByName(tracks.signUpCustomFieldsStepEntered);
   }, []);
 
-  const schema =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    userCustomFieldsSchema?.data.attributes?.json_schema_multiloc[locale];
-  const uiSchema =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    userCustomFieldsSchema?.data.attributes?.ui_schema_multiloc[locale];
-
-  if (!authUser || !userCustomFieldsSchema || !schema || !uiSchema) {
+  if (!authUser || !customFields) {
     return null;
   }
 
   const handleSubmit = async () => {
-    if (!customAjv.validate(schema, formData)) {
-      setShowAllErrors(true);
-    } else {
-      try {
-        await onSubmit(authUser.data.id, formData);
-      } catch (e) {
-        setError('unknown');
-      }
-    }
+    // if (!customAjv.validate(schema, formData)) {
+    //   setShowAllErrors(true);
+    // } else {
+    //   try {
+    //     await onSubmit(authUser.data.id, formData);
+    //   } catch (e) {
+    //     setError('unknown');
+    //   }
+    // }
   };
-
-  const allowSkip = !hasRequiredNonLockedFields(userCustomFieldsSchema, locale);
+  const allowSkip =
+    !customFields.some((field) => field.required) &&
+    !customFields.some((field) => field.constraints?.locked === true);
 
   return (
     <Box
@@ -89,45 +78,45 @@ const CustomFields = ({
     >
       {/* TODO: Fix this the next time the file is edited. */}
       {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-      <FormWrapper formId={uiSchema?.options?.formId}>
-        <UserCustomFieldsForm
-          authenticationContext={authenticationData.context}
-          showAllErrors={showAllErrors}
-          setShowAllErrors={setShowAllErrors}
-          onChange={setFormData}
+      {/* <FormWrapper formId={uiSchema?.options?.formId}> */}
+      <UserCustomFieldsForm
+        authenticationContext={authenticationData.context}
+        showAllErrors={showAllErrors}
+        setShowAllErrors={setShowAllErrors}
+        onChange={setFormData}
+      />
+
+      <Box
+        display="flex"
+        flexDirection={smallerThanPhone ? 'column' : undefined}
+        alignItems={smallerThanPhone ? 'stretch' : 'center'}
+        justifyContent={smallerThanPhone ? 'center' : 'space-between'}
+      >
+        <ButtonWithLink
+          id="e2e-signup-custom-fields-submit-btn"
+          processing={loading}
+          disabled={loading}
+          text={formatMessage(messages.continue)}
+          onClick={handleSubmit}
         />
 
-        <Box
-          display="flex"
-          flexDirection={smallerThanPhone ? 'column' : undefined}
-          alignItems={smallerThanPhone ? 'stretch' : 'center'}
-          justifyContent={smallerThanPhone ? 'center' : 'space-between'}
-        >
+        {allowSkip && (
           <ButtonWithLink
-            id="e2e-signup-custom-fields-submit-btn"
+            id="e2e-signup-custom-fields-skip-btn"
+            buttonStyle="text"
+            padding="0"
+            textDecoration="underline"
+            textDecorationHover="underline"
             processing={loading}
-            disabled={loading}
-            text={formatMessage(messages.continue)}
-            onClick={handleSubmit}
-          />
-
-          {allowSkip && (
-            <ButtonWithLink
-              id="e2e-signup-custom-fields-skip-btn"
-              buttonStyle="text"
-              padding="0"
-              textDecoration="underline"
-              textDecorationHover="underline"
-              processing={loading}
-              onClick={onSkip}
-              mt={smallerThanPhone ? '20px' : undefined}
-              mb={smallerThanPhone ? '16px' : undefined}
-            >
-              {formatMessage(messages.skip)}
-            </ButtonWithLink>
-          )}
-        </Box>
-      </FormWrapper>
+            onClick={onSkip}
+            mt={smallerThanPhone ? '20px' : undefined}
+            mb={smallerThanPhone ? '16px' : undefined}
+          >
+            {formatMessage(messages.skip)}
+          </ButtonWithLink>
+        )}
+      </Box>
+      {/* </FormWrapper> */}
     </Box>
   );
 };

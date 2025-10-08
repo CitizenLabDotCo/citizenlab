@@ -1,29 +1,10 @@
-import React, { Suspense, useState, useEffect } from 'react';
-
-import { Box } from '@citizenlab/cl2-component-library';
-import { JsonSchema7, Layout, isCategorization } from '@jsonforms/core';
-import { ErrorObject } from 'ajv';
+import React from 'react';
 
 import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
-import useCustomFieldsSchema from 'api/custom_fields_json_form_schema/useCustomFieldsSchema';
 import useAuthUser from 'api/me/useAuthUser';
-import { IUser } from 'api/users/types';
+import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
 
-import useLocale from 'hooks/useLocale';
-
-import { parseRequiredMultilocsData } from 'components/Form/parseRequiredMultilocs';
-
-import messages from './messages';
-
-const Fields = React.lazy(() => import('components/Form/Components/Fields'));
-
-// Todo :
-/*
-- InputControl : implement long input, implement numeric
-- Rework, test and document labels (show optional, make variants clear)
-- Single select enum : move options to uischema
-- Multi select enum : move options to uischema
-*/
+import CustomFields from 'components/CustomFieldsForm/CustomFields';
 
 interface Props {
   showAllErrors: boolean;
@@ -35,98 +16,15 @@ interface OuterProps extends Props {
   authenticationContext: AuthenticationContext;
 }
 
-interface InnerProps extends Props {
-  authUser: IUser;
-  schema: JsonSchema7;
-  uiSchema: Layout;
-}
-
-const UserCustomFieldsForm = ({
-  authUser,
-  schema,
-  uiSchema,
-  showAllErrors,
-  setShowAllErrors,
-  onChange,
-}: InnerProps) => {
-  const locale = useLocale();
-
-  const initialFormData = authUser.data.attributes.custom_field_values;
-
-  const [data, setData] = useState(() => {
-    return parseRequiredMultilocsData(schema, locale, initialFormData ?? {});
-  });
-
-  useEffect(() => {
-    setData(parseRequiredMultilocsData(schema, locale, initialFormData ?? {}));
-  }, [schema, locale, initialFormData]);
-
-  const getAjvErrorMessage = (error: ErrorObject) => {
-    switch (error.keyword) {
-      case 'required':
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        return messages[`ajv_error_${error?.params?.missingProperty}_required`];
-      default:
-        return undefined;
-    }
-  };
-
-  const layout = isCategorization(uiSchema) ? 'fullpage' : 'inline';
-
-  return (
-    <Box overflow={layout === 'inline' ? 'visible' : 'auto'} flex="1">
-      <Suspense>
-        <Fields
-          data={data}
-          schema={schema}
-          uiSchema={uiSchema}
-          getAjvErrorMessage={getAjvErrorMessage}
-          locale={locale}
-          showAllErrors={showAllErrors}
-          setShowAllErrors={setShowAllErrors}
-          onChange={(data) => {
-            // TODO: Fix this the next time the file is edited.
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            data && onChange?.(data);
-          }}
-        />
-      </Suspense>
-    </Box>
-  );
-};
-
-const UserCustomFieldsFormWrapper = ({
-  authenticationContext,
-  ...props
-}: OuterProps) => {
+const UserCustomFieldsForm = ({ authenticationContext }: OuterProps) => {
   const { data: authUser } = useAuthUser();
-  const { data: userCustomFieldsSchema } = useCustomFieldsSchema(
+  const { data: customFields } = usePermissionsCustomFields(
     authenticationContext
   );
-  const locale = useLocale();
 
-  if (!authUser || !userCustomFieldsSchema) return null;
+  if (!authUser || !customFields) return null;
 
-  const schema =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    userCustomFieldsSchema.data.attributes?.json_schema_multiloc[locale];
-  const uiSchema =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    userCustomFieldsSchema.data.attributes?.ui_schema_multiloc[locale];
-
-  if (!schema || !uiSchema) return null;
-
-  return (
-    <UserCustomFieldsForm
-      authUser={authUser}
-      schema={schema}
-      uiSchema={uiSchema}
-      {...props}
-    />
-  );
+  return <CustomFields questions={customFields as any} />;
 };
 
-export default UserCustomFieldsFormWrapper;
+export default UserCustomFieldsForm;
