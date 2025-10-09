@@ -10,7 +10,7 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { SupportedLocale, UploadFile } from 'typings';
+import { SupportedLocale } from 'typings';
 import { object, mixed, boolean } from 'yup';
 
 import { IBackgroundJobData } from 'api/background_jobs/types';
@@ -34,7 +34,7 @@ import messages from './messages';
 
 interface FormValues {
   locale: SupportedLocale;
-  file: UploadFile;
+  file: Record<string, any>;
   personal_data: boolean;
   google_consent: boolean;
 }
@@ -75,24 +75,22 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
     locale: validateLocale().required(),
     file: mixed().required(formatMessage(messages.pleaseUploadFile)),
 
-    personal_data: boolean(),
-    google_consent: boolean().test(
-      '',
-      formatMessage(messages.consentNeeded),
-      (v, context) => {
+    personal_data: boolean().required(),
+    google_consent: boolean()
+      .required()
+      .test('', formatMessage(messages.consentNeeded), (v, context) => {
         if (context.parent.file?.extension === 'application/pdf') {
           return !!v;
         }
 
         return true;
-      }
-    ),
+      }),
   });
 
   const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues,
-    resolver: yupResolver(schema) as any,
+    resolver: yupResolver(schema),
   });
 
   const submitFile = async ({
