@@ -191,7 +191,6 @@ const CustomFields = ({
 }) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  console.log('questions', questions);
   return (
     <>
       {questions
@@ -238,7 +237,7 @@ const CustomFields = ({
               )}
               {renderField({ question, projectId, ideaId })}
               {question.code && inputIqFields.includes(question.code) && (
-                <InputIQ phase={phase} />
+                <InputIQ phase={phase} field={question} />
               )}
             </Box>
           );
