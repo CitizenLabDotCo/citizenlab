@@ -1,6 +1,35 @@
 import { useQuery } from '@tanstack/react-query';
+import { Multiloc } from 'typings';
 
 import { graphqlFetcher } from '../../utils/graphqlFetcher';
+
+import { MultilocWithId } from './types';
+
+interface DescriptionMultiloc {
+  content: string;
+  locale: string;
+}
+
+interface SuccessCase {
+  id: string;
+  href: string;
+  image: string;
+}
+
+interface ProjectTemplatePreviewResponse {
+  projectTemplate: {
+    id: string;
+    headerImage: string;
+    departments: MultilocWithId[];
+    participationLevels: MultilocWithId[];
+    phases: Multiloc;
+    purposes: MultilocWithId[];
+    titleMultiloc: Multiloc;
+    subtitleMultiloc: Multiloc;
+    descriptionMultilocs: DescriptionMultiloc[];
+    successCases: SuccessCase[];
+  };
+}
 
 type ProjectTemplatePreviewArgs = {
   projectTemplateId: string | null | undefined;
@@ -59,10 +88,11 @@ const useProjectTemplatePreview = ({
   return useQuery({
     queryKey: ['projectTemplate', projectTemplateId],
     queryFn: () =>
-      graphqlFetcher({
+      graphqlFetcher<ProjectTemplatePreviewResponse>({
         query: PROJECT_TEMPLATE_QUERY,
         variables: { id: projectTemplateId },
       }),
+    enabled: !!projectTemplateId,
   });
 };
 

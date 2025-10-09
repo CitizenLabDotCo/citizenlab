@@ -1,10 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
+import { Multiloc } from 'component-library/utils/typings';
 
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 
 import { graphqlFetcher } from '../../utils/graphqlFetcher';
 
-const useTemplateTitle = (projectTemplateId?: string) => {
+interface ProjectTemplateTitle {
+  projectTemplate: {
+    titleMultiloc: Multiloc;
+  };
+}
+
+const useTemplateTitle = (projectTemplateId?: string | null) => {
   const graphqlTenantLocales = useGraphqlTenantLocales();
 
   const TEMPLATE_TITLE_QUERY = `
@@ -20,7 +27,7 @@ const useTemplateTitle = (projectTemplateId?: string) => {
   return useQuery({
     queryKey: ['projectTemplateTitle', projectTemplateId],
     queryFn: () =>
-      graphqlFetcher({
+      graphqlFetcher<ProjectTemplateTitle>({
         query: TEMPLATE_TITLE_QUERY,
         variables: { id: projectTemplateId },
       }),

@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+import { Multiloc } from 'typings';
 
 import adminPublicationsKeys from 'api/admin_publications/keys';
 import meKeys from 'api/me/keys';
@@ -8,11 +9,17 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import { graphqlFetcher } from '../../utils/graphqlFetcher';
 
-interface IVariables {
+interface ApplyProjectTemplateVariables {
   projectTemplateId: string;
-  titleMultiloc: Record<string, string>;
+  titleMultiloc: Multiloc;
   timelineStartAt?: string;
   folderId?: string | null;
+}
+
+interface ApplyProjectTemplateResponse {
+  applyProjectTemplate: {
+    errors: string[] | null;
+  };
 }
 
 const useApplyProjectTemplate = () => {
@@ -35,8 +42,8 @@ const useApplyProjectTemplate = () => {
   `;
 
   return useMutation({
-    mutationFn: (variables: IVariables) =>
-      graphqlFetcher({
+    mutationFn: (variables: ApplyProjectTemplateVariables) =>
+      graphqlFetcher<ApplyProjectTemplateResponse>({
         query: APPLY_PROJECT_TEMPLATE_MUTATION,
         variables,
       }),
