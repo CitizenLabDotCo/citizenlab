@@ -34,7 +34,6 @@ services:
       - USER_GID=${USER_GID:-1000}
     # Keep the container running for VS Code
     command: sleep infinity
-    network_mode: service:web
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "pgrep", "sleep"]

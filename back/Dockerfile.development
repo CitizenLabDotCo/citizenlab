@@ -43,6 +43,7 @@ RUN groupadd --gid $USER_GID $USERNAME \
 
 ENV INSTALL_PATH /citizenlab
 RUN mkdir -p $INSTALL_PATH && chown -R $USERNAME:$USERNAME $INSTALL_PATH
+RUN mkdir -p /bundle && chown -R $USERNAME:$USERNAME /bundle
 
 WORKDIR ${INSTALL_PATH}/back
 
