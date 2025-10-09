@@ -3,9 +3,11 @@ import { useLocation, useSearchParams } from 'react-router-dom';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
 
 export default function useAuthConfig() {
   const { data: appConfiguration } = useAppConfiguration();
+  const { data: verificationMethods } = useVerificationMethods();
   const appConfigurationSettings = appConfiguration?.data.attributes.settings;
 
   // Allows testing of specific SSO providers without showing to all users
@@ -22,7 +24,6 @@ export default function useAuthConfig() {
   const showAdminOnlyMethods = pathname.endsWith('/sign-in/admin');
 
   // Standard auth methods
-
   const passwordLoginEnabled =
     useFeatureFlag({ name: 'password_login' }) || superAdminParam;
 
@@ -40,12 +41,11 @@ export default function useAuthConfig() {
     name: 'azure_ad_b2c_login',
   });
 
-  // Custom SSO methods - found in the custom auth & verification config
-
+  // Custom SSO methods - found in the verification config
   const isCustomSsoEnabled = (methodName) => {
     return (
-      appConfigurationSettings?.verification?.verification_methods?.some(
-        methodName
+      verificationMethods?.data?.some(
+        (method) => method.attributes?.name === methodName
       ) || providerForTest === methodName
     );
   };
