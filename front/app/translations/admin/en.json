@@ -2736,6 +2736,7 @@
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "Are you sure you want to remove this group from the project?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "Select one or more groups",
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {No members} one {1 member} other {{count} members}}",
+  "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "Please fill in the description in all languages",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "Please fill in the title in all languages",
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Are you sure?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Project managers not found",

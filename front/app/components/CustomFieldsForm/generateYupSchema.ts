@@ -59,7 +59,7 @@ const validateHTMLWithCharacterLimits = (
 // NOTE: When the question is a built-in field, it is necessary to
 // check the `enabled` property before adding it to the schema.
 
-const generateYupValidationSchema = ({
+const generateYupSchema = ({
   pageQuestions,
   formatMessage,
   localize,
@@ -215,13 +215,12 @@ const generateYupValidationSchema = ({
         schema[key] = required ? string().required(fieldRequired) : string();
 
         // Other option
-        const fieldSchemaOther = string().when(key, {
-          is: (value?: string) => value === 'other',
-          then: string().required(
-            formatMessage(messages.typeYourAnswerRequired)
-          ),
-          otherwise: string().notRequired(),
+        const fieldSchemaOther = string().when(key, ([value], schema) => {
+          return value === 'other'
+            ? schema.required(formatMessage(messages.typeYourAnswerRequired))
+            : schema.notRequired();
         });
+
         schema[`${key}_other`] = fieldSchemaOther;
 
         break;
@@ -259,12 +258,12 @@ const generateYupValidationSchema = ({
         }
 
         // Other option
-        const fieldSchemaOther = string().when(key, {
-          is: (value?: string[]) => value?.includes('other'),
-          then: string().required(
-            formatMessage(messages.typeYourAnswerRequired)
-          ),
-          otherwise: string().notRequired(),
+        const fieldSchemaOther = string().when(key, ([value], schema) => {
+          if (!Array.isArray(value)) return schema.notRequired();
+
+          return value.includes('other')
+            ? schema.required(formatMessage(messages.typeYourAnswerRequired))
+            : schema.notRequired();
         });
 
         schema[key] = fieldSchema;
@@ -462,4 +461,4 @@ const generateYupValidationSchema = ({
   return object(schema);
 };
 
-export default generateYupValidationSchema;
+export default generateYupSchema;

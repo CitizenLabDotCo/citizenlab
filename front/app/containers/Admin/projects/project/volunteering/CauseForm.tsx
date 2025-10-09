@@ -3,8 +3,8 @@ import React, { useEffect } from 'react';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
-import { Multiloc, UploadFile } from 'typings';
-import { mixed, object } from 'yup';
+import { Multiloc } from 'typings';
+import { mixed, object, array } from 'yup';
 
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
@@ -26,7 +26,7 @@ import messages from './messages';
 export interface FormValues {
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
-  image?: UploadFile[] | null;
+  image?: Record<string, any>[];
 }
 
 export interface SubmitValues {
@@ -37,7 +37,7 @@ export interface SubmitValues {
 
 type PageFormProps = {
   onSubmit: (formValues: SubmitValues) => void | Promise<void>;
-  defaultValues?: FormValues;
+  defaultValues?: Partial<FormValues>;
   imageUrl?: string | null;
 };
 
@@ -51,13 +51,16 @@ const CauseForm = ({ onSubmit, defaultValues, imageUrl }: PageFormProps) => {
     description_multiloc: validateAtLeastOneLocale(
       formatMessage(messages.emptyDescriptionErrorMessage)
     ),
-    image: mixed().nullable(),
+    image: array(mixed().required()),
   });
 
-  const methods = useForm({
+  const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues,
-    resolver: yupResolver(schema),
+    // This type cast should not be necessary,
+    // but there is a bug in yup that messes up
+    // the image array typing
+    resolver: yupResolver(schema) as any,
   });
 
   // Load the API cause object as a local image

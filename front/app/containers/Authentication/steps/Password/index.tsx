@@ -57,12 +57,12 @@ const Password = ({ state, loading, setError, onSubmit }: Props) => {
         password: string().required(
           formatMessage(sharedMessages.noPasswordError)
         ),
-        rememberMe: boolean(),
+        rememberMe: boolean().required(),
       }),
     [formatMessage]
   );
 
-  const methods = useForm({
+  const methods = useForm<FormValues>({
     mode: 'onSubmit',
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),
