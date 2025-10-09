@@ -901,6 +901,7 @@
   "app.components.formBuilder.printSupportTooltip.topics2": "As tags são mostradas como não suportadas no PDF baixado e não são suportadas para importação via FormSync.",
   "app.components.formBuilder.proposedBudget": "Orçamento proposto",
   "app.components.formBuilder.question": "Pergunta",
+  "app.components.formBuilder.questionCannotBeDeleted": "Esta questão não pode ser eliminada.",
   "app.components.formBuilder.questionDescriptionOptional": "Descrição da pergunta (opcional)",
   "app.components.formBuilder.questionTitle": "Título da pergunta",
   "app.components.formBuilder.randomize": "Aleatorizar",
