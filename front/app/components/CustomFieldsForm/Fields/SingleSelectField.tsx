@@ -31,9 +31,11 @@ const StyledBox = styled(Box)`
 const SingleSelectField = ({
   question,
   scrollErrorIntoView,
+  disabled,
 }: {
   question: IFlatCustomField;
   scrollErrorIntoView?: boolean;
+  disabled?: boolean;
 }) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
@@ -63,6 +65,7 @@ const SingleSelectField = ({
           name={question.key}
           options={options}
           scrollErrorIntoView={scrollErrorIntoView}
+          disabled={disabled}
         />
       ) : (
         <RadioGroup name={question.key} padding="0px">
@@ -90,6 +93,7 @@ const SingleSelectField = ({
                 value={option.value}
                 label={option.label}
                 canDeselect
+                disabled={disabled}
               />
             </StyledBox>
           ))}

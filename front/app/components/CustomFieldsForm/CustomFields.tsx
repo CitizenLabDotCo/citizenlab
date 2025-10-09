@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, IconTooltip, Text } from '@citizenlab/cl2-component-library';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
@@ -46,6 +46,10 @@ const renderField = ({
   projectId?: string;
   ideaId?: string;
 }) => {
+  // Only user fields can be locked (disabled) for now due to a verification method!
+  // Possible user fields are: text, number, multiline_text, select, multiselect, checkbox, date
+  const disabled = question.constraints?.locked;
+
   switch (question.input_type) {
     case 'text_multiloc':
       return (
@@ -54,6 +58,7 @@ const renderField = ({
           hideLocaleSwitcher
           maxCharCount={question.max_characters}
           scrollErrorIntoView={true}
+          disabled={disabled}
         />
       );
     case 'html_multiloc':
@@ -70,13 +75,18 @@ const renderField = ({
     case 'text':
     case 'number':
       return question.key === 'location_description' ? (
-        <LocationInput name={question.key} scrollErrorIntoView={true} />
+        <LocationInput
+          name={question.key}
+          scrollErrorIntoView={true}
+          isDisabled={disabled}
+        />
       ) : (
         <Input
           type={question.input_type === 'number' ? 'number' : 'text'}
           name={question.key}
           maxCharCount={question.max_characters}
           scrollErrorIntoView={true}
+          disabled={disabled}
         />
       );
     case 'multiline_text':
@@ -86,15 +96,24 @@ const renderField = ({
           maxCharCount={question.max_characters}
           scrollErrorIntoView={true}
           minRows={2}
+          disabled={disabled}
         />
       );
     case 'select':
       return (
-        <SingleSelectField question={question} scrollErrorIntoView={true} />
+        <SingleSelectField
+          question={question}
+          scrollErrorIntoView={true}
+          disabled={disabled}
+        />
       );
     case 'multiselect':
       return (
-        <MultiSelectField question={question} scrollErrorIntoView={true} />
+        <MultiSelectField
+          question={question}
+          scrollErrorIntoView={true}
+          disabled={disabled}
+        />
       );
     case 'image_files':
       return (
@@ -168,9 +187,21 @@ const renderField = ({
         />
       );
     case 'checkbox':
-      return <CheckboxField name={question.key} scrollErrorIntoView={true} />;
+      return (
+        <CheckboxField
+          name={question.key}
+          scrollErrorIntoView={true}
+          disabled={disabled}
+        />
+      );
     case 'date':
-      return <DateField name={question.key} scrollErrorIntoView={true} />;
+      return (
+        <DateField
+          name={question.key}
+          scrollErrorIntoView={true}
+          disabled={disabled}
+        />
+      );
     default:
       return null;
   }
@@ -208,6 +239,7 @@ const CustomFields = ({
 
           const answerNotPublic =
             !question.visible_to_public &&
+            participationMethod &&
             participationMethod !== 'native_survey';
           const inputIqFields = ['title_multiloc', 'body_multiloc'];
 
@@ -235,7 +267,17 @@ const CustomFields = ({
                   <FormattedMessage {...messages.notPublic} />
                 </Text>
               )}
-              {renderField({ question, projectId, ideaId })}
+              <Box display="flex" alignItems="center" gap="8px">
+                <Box w="100%">
+                  {renderField({ question, projectId, ideaId })}
+                </Box>
+                {question.constraints?.locked && (
+                  <IconTooltip
+                    content={<FormattedMessage {...messages.blockedVerified} />}
+                    icon="lock"
+                  />
+                )}
+              </Box>
               {question.code && inputIqFields.includes(question.code) && (
                 <InputIQ phase={phase} field={question} />
               )}
