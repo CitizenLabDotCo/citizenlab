@@ -768,6 +768,7 @@
   "app.components.formBuilder.aiUpsellText1": "اگر آپ کو ہمارے AI پیکیج تک رسائی حاصل ہے، تو آپ AI کے ساتھ متنی جوابات کا خلاصہ اور درجہ بندی کر سکیں گے۔",
   "app.components.formBuilder.askFollowUpToggleLabel": "فالو اپ پوچھیں۔",
   "app.components.formBuilder.bad": "برا",
+  "app.components.formBuilder.bodyMultiloc": "تفصیل",
   "app.components.formBuilder.buttonLabel": "بٹن کا لیبل",
   "app.components.formBuilder.buttonLink": "بٹن لنک",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "منسوخ کریں۔",

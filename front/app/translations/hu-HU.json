@@ -768,6 +768,7 @@
   "app.components.formBuilder.aiUpsellText1": "Ha hozzáfér a mesterséges intelligencia csomagunkhoz, akkor összefoglalhatja és kategorizálhatja a szöveges válaszokat az AI segítségével",
   "app.components.formBuilder.askFollowUpToggleLabel": "Kérjen nyomon követést",
   "app.components.formBuilder.bad": "Rossz",
+  "app.components.formBuilder.bodyMultiloc": "Leírás",
   "app.components.formBuilder.buttonLabel": "Gomb címke",
   "app.components.formBuilder.buttonLink": "Gomb link",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Mégsem",

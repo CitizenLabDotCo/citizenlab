@@ -768,6 +768,7 @@
   "app.components.formBuilder.aiUpsellText1": "ਜੇਕਰ ਤੁਹਾਡੇ ਕੋਲ ਸਾਡੇ AI ਪੈਕੇਜ ਤੱਕ ਪਹੁੰਚ ਹੈ, ਤਾਂ ਤੁਸੀਂ AI ਨਾਲ ਟੈਕਸਟ ਜਵਾਬਾਂ ਨੂੰ ਸੰਖੇਪ ਅਤੇ ਸ਼੍ਰੇਣੀਬੱਧ ਕਰਨ ਦੇ ਯੋਗ ਹੋਵੋਗੇ।",
   "app.components.formBuilder.askFollowUpToggleLabel": "ਫਾਲੋ-ਅੱਪ ਲਈ ਪੁੱਛੋ",
   "app.components.formBuilder.bad": "ਮਾੜਾ",
+  "app.components.formBuilder.bodyMultiloc": "ਵੇਰਵਾ",
   "app.components.formBuilder.buttonLabel": "ਬਟਨ ਲੇਬਲ",
   "app.components.formBuilder.buttonLink": "ਬਟਨ ਲਿੰਕ",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "ਰੱਦ ਕਰੋ",
