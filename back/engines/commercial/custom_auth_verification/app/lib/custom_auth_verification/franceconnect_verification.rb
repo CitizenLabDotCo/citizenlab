@@ -25,12 +25,12 @@ module CustomAuthVerification
         client_id: {
           private: true,
           type: 'string',
-          description: 'Client ID.'
+          title: 'Client ID.'
         },
         client_secret: {
           private: true,
           type: 'string',
-          description: 'Client secret.'
+          title: 'Client secret.'
         },
         environment: {
           type: 'string',

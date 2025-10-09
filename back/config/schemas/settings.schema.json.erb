@@ -1397,15 +1397,15 @@
 
       "verification": {
         "type": "object",
-        "title": "Verification",
-        "description": "Use a pre-defined list to verify user identities during registration.",
+        "title": "Custom SSO and Verification",
+        "description": "Custom single sign-on and user verification methods developed for customers.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false },
           "verification_methods": {
-            "title": "Verification Methods",
+            "title": "Enabled Methods",
             "private": true,
             "type": "array",
             "default": [],
