@@ -16,12 +16,6 @@ interface ApplyProjectTemplateVariables {
   folderId?: string | null;
 }
 
-interface ApplyProjectTemplateResponse {
-  applyProjectTemplate: {
-    errors: string[] | null;
-  };
-}
-
 const useApplyProjectTemplate = () => {
   const APPLY_PROJECT_TEMPLATE_MUTATION = `
     mutation ApplyProjectTemplate(
@@ -43,7 +37,7 @@ const useApplyProjectTemplate = () => {
 
   return useMutation({
     mutationFn: (variables: ApplyProjectTemplateVariables) =>
-      graphqlFetcher<ApplyProjectTemplateResponse>({
+      graphqlFetcher({
         query: APPLY_PROJECT_TEMPLATE_MUTATION,
         variables,
       }),

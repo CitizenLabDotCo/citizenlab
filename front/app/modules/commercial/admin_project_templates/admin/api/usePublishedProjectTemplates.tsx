@@ -1,29 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { Multiloc } from 'typings';
 
 import { graphqlFetcher } from '../../utils/graphqlFetcher';
-
-import { MultilocWithId } from './types';
-
-interface ProjectTemplate {
-  id: string;
-  cardImage: string;
-  titleMultiloc: Multiloc;
-  subtitleMultiloc: Multiloc;
-  departments: MultilocWithId[];
-  purposes: MultilocWithId[];
-  participationLevels: MultilocWithId[];
-}
-
-interface PublishedProjectTemplatesResponse {
-  publishedProjectTemplates: {
-    nodes: ProjectTemplate[];
-    pageInfo: {
-      hasNextPage: boolean;
-      endCursor: string;
-    };
-  };
-}
 
 interface PublishedProjectTemplatesArgs {
   departments?: string[] | null;
@@ -118,7 +95,7 @@ const usePublishedProjectTemplates = ({
       },
     ],
     queryFn: ({ pageParam = null }) =>
-      graphqlFetcher<PublishedProjectTemplatesResponse>({
+      graphqlFetcher({
         query: PUBLISHED_PROJECT_TEMPLATES_QUERY,
         variables: {
           departments,
