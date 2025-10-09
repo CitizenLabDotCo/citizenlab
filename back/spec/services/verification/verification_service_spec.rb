@@ -27,7 +27,7 @@ describe Verification::VerificationService do
         verification_parameters: { desired_error: nil }
       }
 
-      allow_any_instance_of(IdBogus::BogusVerification)
+      allow_any_instance_of(CustomAuthVerification::BogusVerification)
         .to receive(:verify_sync)
         .and_return({ uid: 'fakeuuid' })
 
@@ -52,7 +52,7 @@ describe Verification::VerificationService do
         verification_parameters: {}
       }
 
-      allow_any_instance_of(IdBogus::BogusVerification)
+      allow_any_instance_of(CustomAuthVerification::BogusVerification)
         .to receive(:verify_sync)
         .and_return({
           uid: '123',
@@ -80,7 +80,7 @@ describe Verification::VerificationService do
         verification_parameters: {}
       }
 
-      allow_any_instance_of(IdBogus::BogusVerification)
+      allow_any_instance_of(CustomAuthVerification::BogusVerification)
         .to receive(:verify_sync)
         .and_return({
           uid: '123',

@@ -8,6 +8,7 @@ import useVerificationMethods from 'api/verification_methods/useVerificationMeth
 export default function useAuthConfig() {
   const { data: appConfiguration } = useAppConfiguration();
   const { data: verificationMethods } = useVerificationMethods();
+  // TODO: JS - Only enable use verification methods if verification enabled in settings
   const appConfigurationSettings = appConfiguration?.data.attributes.settings;
 
   // Allows testing of specific SSO providers without showing to all users
