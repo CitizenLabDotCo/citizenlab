@@ -58,6 +58,7 @@ PATH
   remote: engines/commercial/custom_auth_verification
   specs:
     custom_auth_verification (1.0.0)
+      httparty
       id_id_card_lookup
       omniauth-auth0 (~> 2.0)
       omniauth_openid_connect

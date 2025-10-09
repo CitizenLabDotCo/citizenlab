@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module IdOostendeRrn
-  class OostendeRrnVerification
+module CustomAuthVerification
+  class GentRrnVerification
     include Verification::VerificationMethod
 
     def verification_method_type
@@ -9,15 +9,15 @@ module IdOostendeRrn
     end
 
     def id
-      '00c4faa6-4b0f-11ed-b878-0242ac120002'
+      '8a6d6f7e-a451-41ea-8e0a-0021439923a0'
     end
 
     def name
-      'oostende_rrn'
+      'gent_rrn'
     end
 
     def config_parameters
-      %i[api_key environment]
+      %i[api_key environment custom_field_key wijk_mapping]
     end
 
     def config_parameters_schema
@@ -26,12 +26,26 @@ module IdOostendeRrn
           type: 'string',
           enum: %w[dv qa production],
           private: true
+        },
+        custom_field_key: {
+          type: 'string',
+          description: 'The key of the custom field that stores the "wijk"',
+          private: true
+        },
+        wijk_mapping: {
+          type: 'object',
+          description: 'Maps wijknummers (see https://data.stad.gent/explore/dataset/stadswijken-gent/table/) to custom_field_value keys',
+          properties: (1..25).to_h do |i|
+            [i.to_s, { type: 'string' }]
+          end,
+          additionalProperties: false,
+          private: true
         }
       }
     end
 
     def locked_custom_fields
-      []
+      [config[:custom_field_key]]
     end
 
     def verification_parameters
@@ -62,7 +76,16 @@ module IdOostendeRrn
 
       raise Verification::VerificationService::NoMatchError unless body.dig('verificatieResultaat', 'geldig')
 
-      { uid: rrn }
+      {
+        uid: rrn,
+        custom_field_values: {
+          config[:custom_field_key] => map_wijk(body.dig('verificatieResultaat', 'wijkNr'))
+        }.compact
+      }.compact
+    end
+
+    def map_wijk(wijk_nr)
+      wijk_nr && config[:wijk_mapping] && config[:wijk_mapping][wijk_nr]
     end
 
     # Validates the format of the Belgian rijksregisternummer, including a check on the last 2 check digits

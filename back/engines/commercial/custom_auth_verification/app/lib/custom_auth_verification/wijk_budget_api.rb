@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module IdGentRrn
+module CustomAuthVerification
   class WijkBudgetApi
     include HTTParty
     debug_output $stdout if Rails.env.local?
@@ -15,7 +15,7 @@ module IdGentRrn
       when 'production'
         'apidg.gent.be'
       else
-        raise "Unsupported environment #{environment} for IdGentRrn::WijkBudgetApi.new"
+        raise "Unsupported environment #{environment} for CustomAuthVerification::WijkBudgetApi.new"
       end
     end
 

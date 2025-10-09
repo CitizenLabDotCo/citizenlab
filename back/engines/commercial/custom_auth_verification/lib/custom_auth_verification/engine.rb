@@ -45,6 +45,12 @@ module CustomAuthVerification
       franceconnect = FranceconnectOmniauth.new
       AuthenticationService.add_method('franceconnect', franceconnect)
       Verification.add_method(franceconnect)
+
+      # Gent RRN verification method
+      Verification.add_method(GentRrnVerification.new)
+
+      # Verification by RRN (BE social security number) using an API from the city of Oostende
+      Verification.add_method(OostendeRrnVerification.new)
     end
   end
 end

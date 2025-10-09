@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'omniauth-auth0', '~> 2.0' # auth0
   s.add_dependency 'id_id_card_lookup' # claveunica
   s.add_dependency 'savon', '>= 2.12', '< 2.15' # cow
+  s.add_dependency 'httparty' # gent rrn
 
   s.add_development_dependency 'rspec_api_documentation'
   s.add_development_dependency 'rspec-rails'

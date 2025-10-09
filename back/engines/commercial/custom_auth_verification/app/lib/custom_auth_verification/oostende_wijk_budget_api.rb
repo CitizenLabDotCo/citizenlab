@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module IdOostendeRrn
-  class WijkBudgetApi
+module CustomAuthVerification
+  class OostendeWijkBudgetApi
     include HTTParty
     debug_output $stdout if Rails.env.local?
 
@@ -17,7 +17,7 @@ module IdOostendeRrn
       when 'production'
         'wapazp-wijkprikkelsapi-01.azurewebsites.net'
       else
-        raise "Unsupported environment #{environment} for IdOostendeRrn::WijkBudgetApi.new"
+        raise "Unsupported environment #{environment} for CustomAuthVerification::OostendeWijkBudgetApi.new"
       end
       # rubocop:enable Lint/DuplicateBranch
     end
