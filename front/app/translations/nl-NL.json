@@ -901,6 +901,7 @@
   "app.components.formBuilder.printSupportTooltip.topics2": "Tags worden als niet-ondersteund weergegeven op de gedownloade PDF en worden niet ondersteund voor import via FormSync.",
   "app.components.formBuilder.proposedBudget": "Voorgesteld budget",
   "app.components.formBuilder.question": "Vraag",
+  "app.components.formBuilder.questionCannotBeDeleted": "Deze vraag kan niet worden verwijderd.",
   "app.components.formBuilder.questionDescriptionOptional": "Vraagbeschrijving (optioneel)",
   "app.components.formBuilder.questionTitle": "Vraagtitel",
   "app.components.formBuilder.randomize": "Maak willekeurig",

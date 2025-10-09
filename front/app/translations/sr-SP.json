@@ -901,6 +901,7 @@
   "app.components.formBuilder.printSupportTooltip.topics2": "Tags are shown as unsupported on the downloaded PDF and are not supported for import via FormSync.",
   "app.components.formBuilder.proposedBudget": "Предложени буџет",
   "app.components.formBuilder.question": "Питање",
+  "app.components.formBuilder.questionCannotBeDeleted": "Ово питање се не може избрисати.",
   "app.components.formBuilder.questionDescriptionOptional": "Опис питања (опционо)",
   "app.components.formBuilder.questionTitle": "Наслов питања",
   "app.components.formBuilder.randomize": "Randomize",

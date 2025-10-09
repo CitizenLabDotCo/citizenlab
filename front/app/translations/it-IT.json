@@ -901,6 +901,7 @@
   "app.components.formBuilder.printSupportTooltip.topics2": "I tag sono indicati come non supportati nel PDF scaricato e non sono supportati per l'importazione tramite FormSync.",
   "app.components.formBuilder.proposedBudget": "Bilancio proposto",
   "app.components.formBuilder.question": "Domanda",
+  "app.components.formBuilder.questionCannotBeDeleted": "Questa domanda non può essere cancellata.",
   "app.components.formBuilder.questionDescriptionOptional": "Descrizione della domanda (facoltativa)",
   "app.components.formBuilder.questionTitle": "Titolo della domanda",
   "app.components.formBuilder.randomize": "Randomizzare",

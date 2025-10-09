@@ -901,6 +901,7 @@
   "app.components.formBuilder.printSupportTooltip.topics2": "Tags vises som ikke-understøttede i den downloadede PDF og understøttes ikke til import via FormSync.",
   "app.components.formBuilder.proposedBudget": "Foreslået budget",
   "app.components.formBuilder.question": "Spørgsmål",
+  "app.components.formBuilder.questionCannotBeDeleted": "Dette spørgsmål kan ikke slettes.",
   "app.components.formBuilder.questionDescriptionOptional": "Beskrivelse af spørgsmålet (valgfrit)",
   "app.components.formBuilder.questionTitle": "Spørgsmålets titel",
   "app.components.formBuilder.randomize": "Randomiser",
