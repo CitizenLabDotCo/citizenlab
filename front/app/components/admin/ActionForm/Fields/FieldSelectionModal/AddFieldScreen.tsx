@@ -4,7 +4,7 @@ import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Multiloc } from 'typings';
-import { object, string } from 'yup';
+import { object } from 'yup';
 
 import useAddCustomFieldOption from 'api/custom_field_options/useAddCustomFieldOption';
 import { IOptionsType } from 'api/custom_fields/types';
@@ -17,6 +17,7 @@ import { getLabelForInputType } from 'containers/Admin/projects/project/permissi
 import {
   FieldType,
   fieldTypes,
+  fieldTypeValidator,
 } from 'containers/Admin/settings/registration/CustomFieldRoutes/RegistrationCustomFieldForm';
 
 import { SectionField } from 'components/admin/Section';
@@ -41,7 +42,7 @@ type AddFieldScreenProps = {
 
 export interface FormValues {
   options: IOptionsType[];
-  input_type: string;
+  input_type: FieldType;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
 }
@@ -61,7 +62,9 @@ export const AddFieldScreen = ({
       formatMessage(messages.atLeastOneOptionError),
       formatMessage(messages.emptyTitleErrorMessage)
     ).required(),
-    input_type: string().required(formatMessage(messages.selectValueError)),
+    input_type: fieldTypeValidator.required(
+      formatMessage(messages.selectValueError)
+    ),
     title_multiloc: validateMultiloc(
       formatMessage(messages.missingTitleLocaleError)
     ),
@@ -91,7 +94,6 @@ export const AddFieldScreen = ({
         try {
           const newField = await addCustomFieldForUsers({
             ...formValues,
-            input_type: formValues.input_type as FieldType,
             enabled: false,
           });
 
