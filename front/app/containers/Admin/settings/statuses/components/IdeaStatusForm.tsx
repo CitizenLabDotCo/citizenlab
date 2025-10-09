@@ -12,7 +12,10 @@ import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import { string, object } from 'yup';
 
-import { IdeaStatusParticipationMethod } from 'api/idea_statuses/types';
+import {
+  IdeaStatusParticipationMethod,
+  InputStatusCode,
+} from 'api/idea_statuses/types';
 
 import { Section, SectionField } from 'components/admin/Section';
 import ColorPicker from 'components/HookForm/ColorPicker';
@@ -22,6 +25,7 @@ import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMult
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateInputStatusCode from 'utils/yup/validateInputStatusCode';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
 import IdeationStatusCategories from './IdeationStatusCategories';
@@ -30,7 +34,7 @@ import ProposalStatusCategories from './ProposalStatusCategories';
 
 export interface FormValues {
   color: string;
-  code: string;
+  code: InputStatusCode;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
 }
@@ -59,7 +63,7 @@ const IdeaStatusForm = ({
   const { formatMessage } = useIntl();
   const schema = object({
     color: string().required(),
-    code: string().required(),
+    code: validateInputStatusCode().required(),
     title_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.fieldTitleError)
     ),

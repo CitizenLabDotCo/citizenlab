@@ -3,10 +3,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import {
-  IdeaStatusParticipationMethod,
-  InputStatusCode,
-} from 'api/idea_statuses/types';
+import { IdeaStatusParticipationMethod } from 'api/idea_statuses/types';
 import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import useUpdateIdeaStatus from 'api/idea_statuses/useUpdateIdeaStatus';
@@ -41,13 +38,10 @@ const Edit = ({ variant }: { variant: IdeaStatusParticipationMethod }) => {
   const tenantLocales = useAppConfigurationLocales();
 
   const handleSubmit = async (values: FormValues) => {
-    const { code, ...params } = values;
-
     await updateIdeaStatus({
       id: statusId,
       requestBody: {
-        ...params,
-        code: code as InputStatusCode,
+        ...values,
         participation_method: variant,
       },
     });
