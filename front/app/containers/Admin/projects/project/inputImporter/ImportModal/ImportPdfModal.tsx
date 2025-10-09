@@ -11,7 +11,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { SupportedLocale, UploadFile } from 'typings';
-import { object, string, mixed, boolean } from 'yup';
+import { object, mixed, boolean } from 'yup';
 
 import { IBackgroundJobData } from 'api/background_jobs/types';
 import useAddOfflineIdeasAsync from 'api/import_ideas/useAddOfflineIdeasAsync';
@@ -27,12 +27,13 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateLocale from 'utils/yup/validateLocale';
 
 import LocalePicker from './LocalePicker';
 import messages from './messages';
 
 interface FormValues {
-  locale: string;
+  locale: SupportedLocale;
   file: UploadFile;
   personal_data: boolean;
   google_consent: boolean;
@@ -71,7 +72,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
   };
 
   const schema = object({
-    locale: string().required(),
+    locale: validateLocale().required(),
     file: mixed().required(formatMessage(messages.pleaseUploadFile)),
 
     personal_data: boolean(),
@@ -108,7 +109,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
         file: file.base64,
         format: 'pdf',
         legacy_pdf: legacyPdfImport,
-        locale: locale as SupportedLocale,
+        locale,
         personal_data,
       });
 
