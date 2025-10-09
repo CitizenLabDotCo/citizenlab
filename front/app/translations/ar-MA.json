@@ -901,6 +901,7 @@
   "app.components.formBuilder.printSupportTooltip.topics2": "تظهر العلامات على أنها غير مدعومة في ملف PDF الذي تم تنزيله ولا يتم دعمها للاستيراد عبر FormSync.",
   "app.components.formBuilder.proposedBudget": "ميزانية مقترحة",
   "app.components.formBuilder.question": "سؤال",
+  "app.components.formBuilder.questionCannotBeDeleted": "لا يمكن حذف هذا السؤال.",
   "app.components.formBuilder.questionDescriptionOptional": "وصف السؤال (اختياري)",
   "app.components.formBuilder.questionTitle": "عنوان السؤال",
   "app.components.formBuilder.randomize": "عشوائية",

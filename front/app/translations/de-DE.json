@@ -901,6 +901,7 @@
   "app.components.formBuilder.printSupportTooltip.topics2": "Tags werden in der heruntergeladenen PDF-Datei als nicht unterstützt angezeigt und werden für den Import über Papier-Scans nicht unterstützt.",
   "app.components.formBuilder.proposedBudget": "Vorgeschlagenes Budget",
   "app.components.formBuilder.question": "Frage",
+  "app.components.formBuilder.questionCannotBeDeleted": "Diese Frage kann nicht gelöscht werden.",
   "app.components.formBuilder.questionDescriptionOptional": "Beschreibung der Frage (optional)",
   "app.components.formBuilder.questionTitle": "Titel der Frage",
   "app.components.formBuilder.randomize": "Randomisieren",

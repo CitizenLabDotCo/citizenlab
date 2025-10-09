@@ -901,6 +901,7 @@
   "app.components.formBuilder.printSupportTooltip.topics2": "Taggar visas som ej stödda i den nedladdade PDF-filen och stöds inte för import via FormSync.",
   "app.components.formBuilder.proposedBudget": "Budgetförslag",
   "app.components.formBuilder.question": "Fråga",
+  "app.components.formBuilder.questionCannotBeDeleted": "Den här frågan kan inte tas bort.",
   "app.components.formBuilder.questionDescriptionOptional": "Frågebeskrivning (valfri)",
   "app.components.formBuilder.questionTitle": "Frågetitel",
   "app.components.formBuilder.randomize": "Slumpmässigt",

@@ -901,6 +901,7 @@
   "app.components.formBuilder.printSupportTooltip.topics2": "Tags ginn am erofgeluedene PDF als net ënnerstëtzt ugewisen an den Import iwwer FormSync gëtt net ënnerstëtzt.",
   "app.components.formBuilder.proposedBudget": "Proposéierte Budget",
   "app.components.formBuilder.question": "Fro",
+  "app.components.formBuilder.questionCannotBeDeleted": "Dës Fro kann net geläscht ginn.",
   "app.components.formBuilder.questionDescriptionOptional": "Froebeschreiwung (optionell)",
   "app.components.formBuilder.questionTitle": "Froen-Titel",
   "app.components.formBuilder.randomize": "Randomiséieren",
