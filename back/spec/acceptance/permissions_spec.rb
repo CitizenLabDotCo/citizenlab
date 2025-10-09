@@ -505,7 +505,6 @@ resource 'Permissions' do
       end
     end
 
-    # Tests for custom_fields endpoints that mirror schema endpoints
     get 'web_api/v1/permissions/:action/custom_fields' do
       let(:action) { 'visiting' }
 
