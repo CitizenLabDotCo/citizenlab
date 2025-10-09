@@ -901,6 +901,7 @@
   "app.components.formBuilder.printSupportTooltip.topics2": "A címkék nem támogatottként jelennek meg a letöltött PDF-ben, és a FormSync-en keresztüli importálásuk nem támogatott.",
   "app.components.formBuilder.proposedBudget": "Javasolt költségvetés",
   "app.components.formBuilder.question": "Kérdés",
+  "app.components.formBuilder.questionCannotBeDeleted": "Ezt a kérdést nem lehet törölni.",
   "app.components.formBuilder.questionDescriptionOptional": "Kérdés leírása (nem kötelező)",
   "app.components.formBuilder.questionTitle": "Kérdés címe",
   "app.components.formBuilder.randomize": "Véletlenszerűvé",
