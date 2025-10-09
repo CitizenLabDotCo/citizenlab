@@ -901,6 +901,7 @@
   "app.components.formBuilder.printSupportTooltip.topics2": "Etiketler indirilen PDF'de desteklenmiyor olarak gösterilir ve FormSync aracılığıyla içe aktarma için desteklenmez.",
   "app.components.formBuilder.proposedBudget": "Önerilen bütçe",
   "app.components.formBuilder.question": "Soru",
+  "app.components.formBuilder.questionCannotBeDeleted": "Bu soru silinemez.",
   "app.components.formBuilder.questionDescriptionOptional": "Soru açıklaması (isteğe bağlı)",
   "app.components.formBuilder.questionTitle": "Soru başlığı",
   "app.components.formBuilder.randomize": "Rastgele",
