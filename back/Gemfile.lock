@@ -55,6 +55,13 @@ PATH
       ros-apartment (>= 2.9.0)
 
 PATH
+  remote: engines/commercial/custom_auth_verification
+  specs:
+    custom_auth_verification (1.0.0)
+      omniauth_openid_connect
+      rails (~> 7.0)
+
+PATH
   remote: engines/commercial/custom_maps
   specs:
     custom_maps (0.1.0)
@@ -121,13 +128,6 @@ PATH
       rails (~> 7.0)
 
 PATH
-  remote: engines/commercial/id_fake_sso
-  specs:
-    id_fake_sso (0.1.0)
-      omniauth_openid_connect
-      rails (~> 7.0)
-
-PATH
   remote: engines/commercial/id_franceconnect
   specs:
     id_franceconnect (0.1.0)
@@ -161,13 +161,6 @@ PATH
       admin_api
       rails (~> 7.0)
       savon (>= 2.12, < 2.15)
-
-PATH
-  remote: engines/commercial/id_keycloak
-  specs:
-    id_keycloak (0.1.0)
-      omniauth_openid_connect (~> 0.7.1)
-      rails (~> 7.0)
 
 PATH
   remote: engines/commercial/id_nemlog_in
@@ -1373,6 +1366,7 @@ DEPENDENCIES
   content_builder!
   counter_culture (~> 3.5)
   csv (~> 3.3.0)
+  custom_auth_verification!
   custom_maps!
   dalli (~> 3.2.8)
   database_cleaner (~> 2.1.0)
@@ -1399,13 +1393,11 @@ DEPENDENCIES
   id_clave_unica!
   id_cow!
   id_criipto!
-  id_fake_sso!
   id_franceconnect!
   id_gent_rrn!
   id_hoplr!
   id_id_austria!
   id_id_card_lookup!
-  id_keycloak!
   id_nemlog_in!
   id_oostende_rrn!
   id_twoday!

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module IdKeycloak
+module CustomAuthVerification
   class KeycloakOmniauth < OmniauthMethods::Base
     include KeycloakVerification
 

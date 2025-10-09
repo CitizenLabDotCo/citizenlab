@@ -243,17 +243,16 @@ commercial_engines = [
   'id_clave_unica',
   'id_cow',
   'id_criipto',
-  'id_fake_sso',
   'id_franceconnect',
   'id_gent_rrn',
   'id_id_card_lookup',
-  'id_keycloak',
   'id_id_austria',
   'id_nemlog_in',
   'id_oostende_rrn',
   'id_hoplr',
   'id_vienna_saml',
-  'id_twoday'
+  'id_twoday',
+  'custom_auth_verification',
 ]
 
 commercial_engines.each do |engine_name|

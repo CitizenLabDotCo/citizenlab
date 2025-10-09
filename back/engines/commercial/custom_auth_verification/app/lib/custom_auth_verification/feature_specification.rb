@@ -2,7 +2,7 @@
 
 require 'citizen_lab/mixins/feature_specification'
 
-module IdFakeSso
+module CustomAuthVerification
   module FeatureSpecification
     extend CitizenLab::Mixins::FeatureSpecification
 

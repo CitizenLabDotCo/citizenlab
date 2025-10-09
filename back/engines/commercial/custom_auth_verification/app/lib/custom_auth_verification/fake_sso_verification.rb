@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module IdFakeSso
+module CustomAuthVerification
   module FakeSsoVerification
     include Verification::VerificationMethod
 

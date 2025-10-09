@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module IdFakeSso
+module CustomAuthVerification
   class FakeSsoOmniauth < OmniauthMethods::Base
     include FakeSsoVerification
 
