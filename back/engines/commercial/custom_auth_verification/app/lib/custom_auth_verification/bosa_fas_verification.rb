@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module IdBosaFas
+module CustomAuthVerification
   module BosaFasVerification
     include Verification::VerificationMethod
 

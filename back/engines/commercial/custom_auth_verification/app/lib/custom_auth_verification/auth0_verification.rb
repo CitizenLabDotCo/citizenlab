@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module IdAuth0
+module CustomAuthVerification
   module Auth0Verification
     include Verification::VerificationMethod
 

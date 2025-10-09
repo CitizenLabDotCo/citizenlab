@@ -58,6 +58,7 @@ PATH
   remote: engines/commercial/custom_auth_verification
   specs:
     custom_auth_verification (1.0.0)
+      omniauth-auth0 (~> 2.0)
       omniauth_openid_connect
       rails (~> 7.0)
 
@@ -84,25 +85,6 @@ PATH
   remote: engines/commercial/google_tag_manager
   specs:
     google_tag_manager (0.1.0)
-      rails (~> 7.0)
-
-PATH
-  remote: engines/commercial/id_auth0
-  specs:
-    id_auth0 (0.1.0)
-      omniauth-auth0 (~> 2.0)
-      rails (~> 7.0)
-
-PATH
-  remote: engines/commercial/id_bogus
-  specs:
-    id_bogus (0.1.0)
-      rails (~> 7.0)
-
-PATH
-  remote: engines/commercial/id_bosa_fas
-  specs:
-    id_bosa_fas (0.1.0)
       rails (~> 7.0)
 
 PATH
@@ -1387,9 +1369,6 @@ DEPENDENCIES
   groupdate (~> 6.5)
   icalendar (~> 2.10)
   ice_cube (~> 0.17)
-  id_auth0!
-  id_bogus!
-  id_bosa_fas!
   id_clave_unica!
   id_cow!
   id_criipto!

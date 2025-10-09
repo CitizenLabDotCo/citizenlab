@@ -15,3 +15,20 @@ end
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :openid_connect, setup: KEYCLOAK_SETUP_PROC, name: 'keycloak', issuer: CustomAuthVerification::KeycloakOmniauth.new.method(:issuer)
 end
+
+# TODO: JS - auth0 does not work
+# AUTH0_SETUP_PROC = lambda do |env|
+#   CustomAuthVerification::Auth0Omniauth.new.omniauth_setup(AppConfiguration.instance, env)
+# end
+#
+# Rails.application.config.middleware.use OmniAuth::Builder do
+#   provider :auth0, setup: AUTH0_SETUP_PROC, name: 'auth0'
+# end
+
+BOSA_FAS_SETUP_PROC = lambda do |env|
+  CustomAuthVerification::BosaFasOmniauth.new.omniauth_setup(AppConfiguration.instance, env)
+end
+
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider :openid_connect, setup: BOSA_FAS_SETUP_PROC, name: 'bosa_fas'
+end

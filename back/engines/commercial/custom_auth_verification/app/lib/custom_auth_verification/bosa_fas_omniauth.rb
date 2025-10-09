@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module IdBosaFas
+module CustomAuthVerification
   class BosaFasOmniauth < OmniauthMethods::Base
     include BosaFasVerification
 

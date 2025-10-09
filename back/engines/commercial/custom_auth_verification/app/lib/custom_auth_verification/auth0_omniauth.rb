@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module IdAuth0
+module CustomAuthVerification
   class Auth0Omniauth < OmniauthMethods::Base
     include Auth0Verification
 

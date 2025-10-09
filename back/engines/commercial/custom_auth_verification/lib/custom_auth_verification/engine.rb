@@ -16,6 +16,17 @@ module CustomAuthVerification
       keycloak = KeycloakOmniauth.new
       Verification.add_method(keycloak)
       AuthenticationService.add_method('keycloak', keycloak)
+
+      # Auth0 integration
+      # auth0 = Auth0Omniauth.new
+      # Verification.add_method(auth0)
+      # AuthenticationService.add_method('auth0', auth0)
+
+      # Bogus verification method for testing purposes
+      Verification.add_method(BogusVerification.new)
+
+      # BOSA FAS integration - Authentication and verification using the Belgian eID and itsme system
+      Verification.add_method(BosaFasOmniauth.new)
     end
   end
 end

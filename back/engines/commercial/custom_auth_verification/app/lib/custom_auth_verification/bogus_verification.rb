@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module IdBogus
+module CustomAuthVerification
   # Fake method for testing purposes only
   class BogusVerification
     include Verification::VerificationMethod
