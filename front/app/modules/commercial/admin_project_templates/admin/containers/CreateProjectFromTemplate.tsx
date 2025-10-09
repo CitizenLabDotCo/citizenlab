@@ -59,7 +59,7 @@ const CreateProjectFromTemplate = memo(
               node,
               cursor: node.id, // Use node id as cursor fallback
             }))
-          ) as [], // Type assertion to match expected empty array type
+          ),
           pageInfo: {
             hasNextPage: Boolean(
               data.pages[data.pages.length - 1]?.publishedProjectTemplates

@@ -96,7 +96,7 @@ interface Props {
   onDepartmentFilterChange: (departments: string[]) => void;
   onParticipationLevelFilterChange: (participationLevels: string[]) => void;
   templates: {
-    edges: [];
+    edges: any[];
     pageInfo: {
       hasNextPage: boolean;
     };
