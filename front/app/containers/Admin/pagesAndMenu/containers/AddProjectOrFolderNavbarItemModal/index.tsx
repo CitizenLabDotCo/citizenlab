@@ -129,6 +129,8 @@ const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
 
   const selectedItem = getSelectedItem();
 
+  // When the selected item changes, update the titleMultiloc fields
+  // to the item's current titleMultiloc values.
   useEffect(() => {
     const titleMultiloc =
       selectedItem?.attributes.publication_title_multiloc || {};
