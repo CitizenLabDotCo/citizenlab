@@ -70,7 +70,6 @@ const ImportZipModal = ({ open, onClose, onImport }: Props) => {
       const response = await addProjectImport({
         file: file.base64,
         ...rest,
-        locale: file.locale as SupportedLocale,
       });
 
       onImport(response.data);
