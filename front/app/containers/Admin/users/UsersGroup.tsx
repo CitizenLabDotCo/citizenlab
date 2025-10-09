@@ -148,7 +148,12 @@ const UsersGroup = () => {
             {groupEditionModal === 'manual' && (
               <NormalGroupForm
                 defaultValues={group.data.attributes}
-                onSubmit={handleSubmitForm(group.data.id)}
+                onSubmit={(values) =>
+                  handleSubmitForm(group.data.id)({
+                    ...values,
+                    membership_type: 'manual',
+                  })
+                }
               />
             )}
 
