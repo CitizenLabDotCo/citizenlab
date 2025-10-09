@@ -2363,7 +2363,7 @@
   "app.utils.votingMethodUtils.finalTally": "Eindtotaal",
   "app.utils.votingMethodUtils.howToParticipate": "Hoe deel te nemen",
   "app.utils.votingMethodUtils.howToVote": "Hoe te stemmen",
-  "app.utils.votingMethodUtils.minSelectedOptionsMessage": "You must select a minimum of at least <b>{minSelectedOptions, plural, one {# option} other {# options}}</b>.",
+  "app.utils.votingMethodUtils.minSelectedOptionsMessage": "Je moet ten minste <b>{minSelectedOptions, plural, one {# optie} other {# opties}}</b>selecteren.",
   "app.utils.votingMethodUtils.multipleVotingEnded1": "De stemming is gesloten op <b>{endDate}.</b>",
   "app.utils.votingMethodUtils.numberOfCredits": "{numberOfVotes, plural, =0 {0 credits} one {1 credit} other {# credits}}",
   "app.utils.votingMethodUtils.numberOfPoints": "{numberOfVotes, plural, =0 {0 punten} one {1 punt} other {# punten}}",
