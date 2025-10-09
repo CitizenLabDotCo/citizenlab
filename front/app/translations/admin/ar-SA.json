@@ -2732,6 +2732,7 @@
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "هل تريد حذف هذه المجموعة من المشروع بالتأكيد؟",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "تحديد مجموعة واحدة أو أكثر",
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {لا يوجد أعضاء} one {عضو واحد} other {{count} من الأعضاء}}",
+  "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "يرجى ملء الوصف بجميع اللغات",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "يرجى ملء العنوان بجميع اللغات",
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "هل أنت متأكد؟",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "لم يتم العثور على مديري المشاريع",
