@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module IdClaveUnica
+module CustomAuthVerification
   module ClaveUnicaVerification
     include Verification::VerificationMethod
 

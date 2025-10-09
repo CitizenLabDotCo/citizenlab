@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'rails', '~> 7.0'
   s.add_dependency 'omniauth_openid_connect'
   s.add_dependency 'omniauth-auth0', '~> 2.0'
+  s.add_dependency 'id_id_card_lookup'
 
   s.add_development_dependency 'rspec_api_documentation'
   s.add_development_dependency 'rspec-rails'

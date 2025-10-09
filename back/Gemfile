@@ -237,7 +237,6 @@ commercial_engines = [
   'user_custom_fields',
 
   # ID verification & SSO engines.
-  'id_clave_unica',
   'id_cow',
   'id_criipto',
   'id_franceconnect',

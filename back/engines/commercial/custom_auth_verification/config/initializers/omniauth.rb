@@ -32,3 +32,11 @@ end
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :openid_connect, setup: BOSA_FAS_SETUP_PROC, name: 'bosa_fas'
 end
+
+CLAVE_UNICA_SETUP_PROC = lambda do |env|
+  CustomAuthVerification::ClaveUnicaOmniauth.new.omniauth_setup(AppConfiguration.instance, env)
+end
+
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider :openid_connect, setup: CLAVE_UNICA_SETUP_PROC, name: 'clave_unica', issuer: CustomAuthVerification::ClaveUnicaOmniauth.new.method(:issuer)
+end
