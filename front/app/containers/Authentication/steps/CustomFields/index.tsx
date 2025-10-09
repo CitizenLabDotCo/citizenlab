@@ -5,8 +5,6 @@ import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import useAuthUser from 'api/me/useAuthUser';
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
 
-import useLocale from 'hooks/useLocale';
-
 import {
   AuthenticationData,
   SetError,
@@ -33,18 +31,18 @@ interface Props {
 const CustomFields = ({
   authenticationData,
   loading,
-  setError,
-  onSubmit,
+  // setError,
+  // onSubmit,
   onSkip,
 }: Props) => {
   const { data: authUser } = useAuthUser();
-  const locale = useLocale();
+  // const locale = useLocale();
   const { data: customFields } = usePermissionsCustomFields(
     authenticationData.context
   );
   const smallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
-  const [formData, setFormData] = useState<Record<string, any>>({});
+  const [_formData, setFormData] = useState<Record<string, any>>({});
   const [showAllErrors, setShowAllErrors] = useState(false);
 
   useEffect(() => {

@@ -28,7 +28,9 @@ const useReorderUserCustomField = () => {
       queryClient.invalidateQueries({
         queryKey: userCustomFieldsKeys.lists(),
       });
-      queryClient.invalidateQueries({ queryKey: schemaKeys.all() });
+      queryClient.invalidateQueries({
+        queryKey: permissionsCustomFieldsKeys.all(),
+      });
     },
   });
 };
