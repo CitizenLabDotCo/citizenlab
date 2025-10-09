@@ -11,7 +11,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { SupportedLocale, UploadFile } from 'typings';
-import { object, string, mixed } from 'yup';
+import { object, mixed } from 'yup';
 
 import { IBackgroundJobData } from 'api/background_jobs/types';
 import useAddOfflineIdeasAsync from 'api/import_ideas/useAddOfflineIdeasAsync';
@@ -26,12 +26,13 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateLocale from 'utils/yup/validateLocale';
 
 import LocalePicker from './LocalePicker';
 import messages from './messages';
 
 interface FormValues {
-  locale: string;
+  locale: SupportedLocale;
   file: UploadFile;
 }
 
@@ -62,7 +63,7 @@ const ImportExcelModal = ({ open, onClose, onImport }: Props) => {
   };
 
   const schema = object({
-    locale: string().required(),
+    locale: validateLocale().required(),
     file: mixed().required(formatMessage(messages.pleaseUploadFile)),
   });
 
@@ -81,7 +82,7 @@ const ImportExcelModal = ({ open, onClose, onImport }: Props) => {
         file: file.base64,
         format: 'xlsx',
         personal_data: false,
-        locale: locale as SupportedLocale,
+        locale,
       });
 
       onImport(response.data);
