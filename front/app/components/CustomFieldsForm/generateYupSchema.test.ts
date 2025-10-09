@@ -44,6 +44,11 @@ describe('generateYupSchema', () => {
       formatMessage,
       localize,
     });
+
+    it('does not crash if no values are provided', () => {
+      expect(schema.isValidSync({})).toBe(false);
+    });
+
     it('does not make other field required if values do not contain other', () => {
       expect(schema.isValidSync({ multiselect_q: ['Value'] })).toBe(true);
     });
