@@ -30,7 +30,7 @@ const ContentSettings = ({ field }: ContentSettingsProps) => {
 
   const locales = useAppConfigurationLocales();
   const { watch } = useFormContext();
-  const lockedAttributes = field.constraints?.locks;
+  const lockedAttributes = field.constraints?.locks?.attributes || [];
   const platformLocale = useLocale();
   const isFieldGrouping = field.input_type === 'page';
 
@@ -40,9 +40,6 @@ const ContentSettings = ({ field }: ContentSettingsProps) => {
       event.preventDefault();
     }
   };
-  const disableTogglingRequired = ['body_multiloc', 'title_multiloc'].includes(
-    field.code || ''
-  );
 
   if (!locales) {
     return null;
@@ -53,7 +50,7 @@ const ContentSettings = ({ field }: ContentSettingsProps) => {
       {!isFieldGrouping && (
         <>
           <FieldTypeSwitcher field={field} />
-          {!lockedAttributes?.title_multiloc && (
+          {!lockedAttributes.includes('title_multiloc') && (
             <SectionField>
               <InputMultilocWithLocaleSwitcher
                 initiallySelectedLocale={platformLocale}
@@ -103,7 +100,7 @@ const ContentSettings = ({ field }: ContentSettingsProps) => {
         <SectionField id="e2e-required-toggle">
           <Toggle
             name={`customFields.${field.index}.required`}
-            disabled={disableTogglingRequired}
+            disabled={lockedAttributes.includes('required')}
             label={
               <Text as="span" variant="bodyM" my="0px">
                 <FormattedMessage {...messages.requiredToggleLabel} />

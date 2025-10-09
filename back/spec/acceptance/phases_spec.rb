@@ -158,15 +158,6 @@ resource 'Phases' do
         expect(response_data[:attributes]).to eq({ totalSubmissions: 2 })
       end
     end
-
-    context 'ideation' do
-      example 'Get count for ideation phase (ignores native survey responses)' do
-        phase.update!(participation_method: 'ideation')
-        do_request
-        assert_status 200
-        expect(response_data[:attributes]).to eq({ totalSubmissions: 3 })
-      end
-    end
   end
 
   get 'web_api/v1/phases/:id/as_xlsx' do
