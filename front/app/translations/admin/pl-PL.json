@@ -2736,6 +2736,7 @@
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "Czy na pewno chcesz usunąć tę grupę z projektu?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "Wybierz jedną lub więcej grup",
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {Brak członków} one {1 członek} few {{count} członków} many {{count} członków} other {{count} członków}}",
+  "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "Wypełnij opis we wszystkich językach",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "Proszę wypełnić tytuł we wszystkich językach",
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Czy na pewno?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Nie znaleziono menadżerów projektu",
