@@ -10,7 +10,7 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { SupportedLocale } from 'typings';
-import { object, string, mixed, boolean } from 'yup';
+import { object, mixed, boolean } from 'yup';
 
 import { IBackgroundJobData } from 'api/background_jobs/types';
 import useAddProjectImportAsync from 'api/project_imports/useAddProjectImportAsync';
@@ -27,9 +27,10 @@ import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateLocale from 'utils/yup/validateLocale';
 
 interface FormValues {
-  locale: string;
+  locale: SupportedLocale;
   file: Record<string, any>;
   preview: boolean;
 }
@@ -53,7 +54,7 @@ const ImportZipModal = ({ open, onClose, onImport }: Props) => {
   };
 
   const schema = object({
-    locale: string().required(),
+    locale: validateLocale().required(),
     file: mixed().required(formatMessage(messages.pleaseUploadFile)),
     preview: boolean().required(),
   });
