@@ -51,6 +51,16 @@ module CustomAuthVerification
 
       # Verification by RRN (BE social security number) using an API from the city of Oostende
       Verification.add_method(OostendeRrnVerification.new)
+
+      # ID Austria integration
+      id_austria = IdAustriaOmniauth.new
+      Verification.add_method(id_austria)
+      AuthenticationService.add_method('id_austria', id_austria)
+
+      # twoday integration
+      twoday = TwodayOmniauth.new
+      Verification.add_method(twoday)
+      AuthenticationService.add_method('twoday', twoday)
     end
   end
 end

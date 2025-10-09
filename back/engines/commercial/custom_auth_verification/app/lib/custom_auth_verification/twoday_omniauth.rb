@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module IdTwoday
+module CustomAuthVerification
   class TwodayOmniauth < OmniauthMethods::Base
     include TwodayVerification
 

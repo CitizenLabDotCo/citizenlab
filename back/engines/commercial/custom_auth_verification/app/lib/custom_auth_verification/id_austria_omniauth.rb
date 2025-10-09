@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module IdIdAustria
+module CustomAuthVerification
   class IdAustriaOmniauth < OmniauthMethods::Base
     include IdAustriaVerification
 

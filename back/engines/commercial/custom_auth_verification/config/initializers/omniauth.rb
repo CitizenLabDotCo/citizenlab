@@ -56,3 +56,19 @@ end
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :openid_connect, setup: FRANCECONNECT_SETUP_PROC, name: 'franceconnect', issuer: CustomAuthVerification::FranceconnectOmniauth.new.method(:issuer)
 end
+
+ID_AUSTRIA_SETUP_PROC = lambda do |env|
+  CustomAuthVerification::IdAustriaOmniauth.new.omniauth_setup(AppConfiguration.instance, env)
+end
+
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider :openid_connect, setup: ID_AUSTRIA_SETUP_PROC, name: 'id_austria', issuer: CustomAuthVerification::IdAustriaOmniauth.new.method(:issuer)
+end
+
+TWODAY_SETUP_PROC = lambda do |env|
+  CustomAuthVerification::TwodayOmniauth.new.omniauth_setup(AppConfiguration.instance, env)
+end
+
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider :openid_connect, setup: TWODAY_SETUP_PROC, name: 'twoday', issuer: CustomAuthVerification::TwodayOmniauth.new.method(:issuer)
+end
