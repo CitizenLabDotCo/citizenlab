@@ -40,3 +40,11 @@ end
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :openid_connect, setup: CLAVE_UNICA_SETUP_PROC, name: 'clave_unica', issuer: CustomAuthVerification::ClaveUnicaOmniauth.new.method(:issuer)
 end
+
+CRIIPTO_SETUP_PROC = lambda do |env|
+  CustomAuthVerification::CriiptoOmniauth.new.omniauth_setup(AppConfiguration.instance, env)
+end
+
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider :openid_connect, setup: CRIIPTO_SETUP_PROC, name: 'criipto', issuer: CustomAuthVerification::CriiptoOmniauth.new.method(:issuer)
+end

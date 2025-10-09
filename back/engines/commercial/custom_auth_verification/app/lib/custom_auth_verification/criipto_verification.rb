@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module IdCriipto
+module CustomAuthVerification
   module CriiptoVerification # rubocop:disable Metrics/ModuleLength
     include Verification::VerificationMethod
 

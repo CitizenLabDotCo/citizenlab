@@ -35,6 +35,11 @@ module CustomAuthVerification
 
       # Cow
       Verification.add_method(CowVerification.new)
+
+      # Criipto integration - Danish MitID
+      criipto = CriiptoOmniauth.new
+      Verification.add_method(criipto)
+      AuthenticationService.add_method('criipto', criipto)
     end
   end
 end

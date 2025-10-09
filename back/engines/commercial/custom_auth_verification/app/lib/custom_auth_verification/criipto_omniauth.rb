@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module IdCriipto
+module CustomAuthVerification
   class CriiptoOmniauth < OmniauthMethods::Base
     include CriiptoVerification
 
