@@ -2159,7 +2159,6 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "Ne yapmak istiyorsunuz?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Kullanıcıların katılma biçimini seçin.",
   "app.containers.AdminPage.ProjectEdit.participationRequirementsSubtitle": "Her bir eylemi kimin gerçekleştirebileceğini belirleyebilir ve daha fazla bilgi toplamak için katılımcılara ek sorular sorabilirsiniz.",
-  "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Katılımcı gereksinimleri & sorular",
   "app.containers.AdminPage.ProjectEdit.phaseAccessRights2": "Faz erişimi ve kullanıcı verileri",
   "app.containers.AdminPage.ProjectEdit.phaseEmails": "Bildirimler",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Oylama",

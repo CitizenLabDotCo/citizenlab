@@ -2159,7 +2159,6 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "ਤੁਸੀਂ ਕੀ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "ਚੁਣੋ ਕਿ ਉਪਭੋਗਤਾ ਕਿਵੇਂ ਭਾਗ ਲੈ ਸਕਦੇ ਹਨ।",
   "app.containers.AdminPage.ProjectEdit.participationRequirementsSubtitle": "ਤੁਸੀਂ ਨਿਸ਼ਚਿਤ ਕਰ ਸਕਦੇ ਹੋ ਕਿ ਹਰੇਕ ਕਾਰਵਾਈ ਕੌਣ ਕਰ ਸਕਦਾ ਹੈ, ਅਤੇ ਹੋਰ ਜਾਣਕਾਰੀ ਇਕੱਠੀ ਕਰਨ ਲਈ ਭਾਗੀਦਾਰਾਂ ਨੂੰ ਵਾਧੂ ਸਵਾਲ ਪੁੱਛ ਸਕਦੇ ਹੋ।",
-  "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "ਭਾਗੀਦਾਰ ਦੀਆਂ ਲੋੜਾਂ ਅਤੇ ਸਵਾਲ",
   "app.containers.AdminPage.ProjectEdit.phaseAccessRights2": "ਪੜਾਅ ਪਹੁੰਚ ਅਤੇ ਉਪਭੋਗਤਾ ਡੇਟਾ",
   "app.containers.AdminPage.ProjectEdit.phaseEmails": "ਸੂਚਨਾਵਾਂ",
   "app.containers.AdminPage.ProjectEdit.pollTab": "ਪੋਲ",
