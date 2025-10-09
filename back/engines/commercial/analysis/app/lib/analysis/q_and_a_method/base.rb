@@ -60,6 +60,10 @@ module Analysis
 
     protected
 
+    def run(plan)
+      raise NotImplementedError
+    end
+
     def filtered_inputs
       @filtered_inputs ||= InputsFinder.new(analysis, question.filters.symbolize_keys).execute
     end

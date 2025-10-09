@@ -18,11 +18,12 @@ import messages from '../messages';
 
 export interface FormValues {
   title_multiloc: Multiloc;
+  description_multiloc: Multiloc;
 }
 
 type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
-  defaultValues?: FormValues;
+  defaultValues?: Partial<FormValues>;
 };
 
 const AreaForm = ({ defaultValues, onSubmit }: Props) => {
@@ -34,7 +35,7 @@ const AreaForm = ({ defaultValues, onSubmit }: Props) => {
     description_multiloc: object(),
   });
 
-  const methods = useForm({
+  const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues,
     resolver: yupResolver(schema),

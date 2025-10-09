@@ -131,34 +131,6 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
     roles.any? { |r| r['type'] == 'admin' }
   end
 
-  # Reduce the roles to add to the JWT cookie to stop it getting too large
-  # Roles from cookie are ONLY used by workshops and cl2-admin-templates
-  # - workshops only cares if it finds type: admin or type: project_moderator.
-  #   It does not use project_id or use type: project_moderator
-  # - cl2-admin-templates only cares if it finds type: admin or type: project_folder_moderator.
-  #   It needs the project_folder_id but does not use type: project_moderator
-  def compress_roles
-    admin = false
-    project_moderator = false
-    compressed_roles = []
-
-    roles.each do |role|
-      case role['type']
-      when 'admin'
-        admin = true
-      when 'project_moderator'
-        project_moderator = true
-      when 'project_folder_moderator'
-        compressed_roles << role
-      end
-    end
-
-    compressed_roles << { 'type' => 'admin' } if admin
-    compressed_roles << { 'type' => 'project_moderator' } if project_moderator
-
-    compressed_roles
-  end
-
   def project_folder_moderator?(project_folder_id = nil)
     project_folder_id ? moderated_project_folder_ids.include?(project_folder_id) : moderated_project_folder_ids.present?
   end

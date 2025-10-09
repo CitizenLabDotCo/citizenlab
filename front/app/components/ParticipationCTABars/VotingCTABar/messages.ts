@@ -31,6 +31,17 @@ export default defineMessages({
       'You need to spend a minimum of {votesMinimum} before you can submit your basket.',
   },
 
+  // Minimum selected options
+  selectMinXOptions: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.selectMinXOptions',
+    defaultMessage: 'Select at least {minSelectedOptions} options',
+  },
+  selectMinXOptionsToVote: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.selectMinXOptionsToVote',
+    defaultMessage:
+      'You need to select at least {minSelectedOptions} options before you can submit.',
+  },
+
   // votes count
   currencyLeft1: {
     id: 'app.components.ParticipationCTABars.VotingCTABar.currencyLeft1',

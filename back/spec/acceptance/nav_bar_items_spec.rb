@@ -12,9 +12,11 @@ resource 'NavBarItems' do
     before do
       @static_page = create(:static_page, slug: 'static-page')
       @project = create(:project, slug: 'project')
+      @project_folder = create(:project_folder, slug: 'project-folder')
       @items = [
         create(:nav_bar_item, code: 'custom', project: nil, static_page: @static_page),
         create(:nav_bar_item, code: 'custom', project: @project, static_page: nil),
+        create(:nav_bar_item, code: 'custom', project_folder: @project_folder, static_page: nil),
         create(:nav_bar_item, code: 'events'),
         create(:nav_bar_item, code: 'all_input'),
         create(:nav_bar_item, code: 'home')
@@ -24,13 +26,13 @@ resource 'NavBarItems' do
 
     example_request 'List all NavBarItems' do
       assert_status 200
-      expect(json_response_body[:data].size).to eq 5
-      expect(json_response_body[:data].map { |d| d.dig(:attributes, :ordering) }).to eq [0, 1, 2, 3, 4]
+      expect(json_response_body[:data].size).to eq 6
+      expect(json_response_body[:data].map { |d| d.dig(:attributes, :ordering) }).to eq [0, 1, 2, 3, 4, 5]
       expect(json_response_body[:data].map { |d| d.dig(:attributes, :slug) })
-        .to eq [nil, @static_page.slug, @project.slug, nil, nil]
+        .to eq [nil, @static_page.slug, @project.slug, @project_folder.slug, nil, nil]
 
       expect(json_response_body[:data].map { |d| d.dig(:attributes, :code) })
-        .to eq %w[home custom custom events all_input]
+        .to eq %w[home custom custom custom events all_input]
     end
   end
 
@@ -68,6 +70,7 @@ resource 'NavBarItems' do
         parameter :title_multiloc, title_desc, required: false
         parameter :static_page_id, 'The ID of the static page for custom NavBarItems.', required: false
         parameter :project_id, 'The ID of the project for custom NavBarItems.', required: false
+        parameter :project_folder_id, 'The ID of the folder for custom NavBarItems.', required: false
       end
 
       ValidationErrorHelper.new.error_fields self, NavBarItem
@@ -133,6 +136,20 @@ resource 'NavBarItems' do
           expect(json_response.dig(:data, :attributes, :code)).to eq code
           expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match project_title_multiloc
           expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
+        end
+      end
+
+      describe do
+        let(:code) { 'custom' }
+        let(:project_folder_title_multiloc) { { 'en' => 'Referenda' } }
+        let(:project_folder_id) { create(:project_folder, title_multiloc: project_folder_title_multiloc).id }
+
+        example_request 'Adding a custom project_folder NavBarItem without title, will use the project_folder title instead' do
+          expect(response_status).to eq 201
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :attributes, :code)).to eq code
+          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match project_folder_title_multiloc
+          expect(json_response.dig(:data, :relationships, :project_folder, :data, :id)).to eq project_folder_id
         end
       end
     end

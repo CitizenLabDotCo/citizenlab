@@ -25,6 +25,7 @@ import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMult
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateInputStatusCode from 'utils/yup/validateInputStatusCode';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
 import IdeationStatusCategories from './IdeationStatusCategories';
@@ -61,17 +62,17 @@ const IdeaStatusForm = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const schema = object({
-    color: string(),
+    color: string().required(),
+    code: validateInputStatusCode().required(),
     title_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.fieldTitleError)
     ),
     description_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.fieldDescriptionError)
     ),
-    code: string().required(),
   });
 
-  const methods = useForm({
+  const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues,
     resolver: yupResolver(schema),
