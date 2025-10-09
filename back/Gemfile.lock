@@ -91,12 +91,33 @@ PATH
       rails (~> 7.0)
 
 PATH
+  remote: engines/commercial/id_hoplr
+  specs:
+    id_hoplr (0.1.0)
+      omniauth_openid_connect
+      rails (~> 7.0)
+
+PATH
   remote: engines/commercial/id_id_card_lookup
   specs:
     id_id_card_lookup (0.1.0)
       admin_api
       rails (~> 7.0)
       savon (>= 2.12, < 2.15)
+
+PATH
+  remote: engines/commercial/id_nemlog_in
+  specs:
+    id_nemlog_in (1.0.0)
+      omniauth-saml (~> 2.2.0)
+      rails (~> 7.0)
+
+PATH
+  remote: engines/commercial/id_vienna_saml
+  specs:
+    id_vienna_saml (1.0.0)
+      omniauth-saml (~> 2.2.0)
+      rails (~> 7.0)
 
 PATH
   remote: engines/commercial/idea_assignment
@@ -1295,7 +1316,10 @@ DEPENDENCIES
   groupdate (~> 6.5)
   icalendar (~> 2.10)
   ice_cube (~> 0.17)
+  id_hoplr!
   id_id_card_lookup!
+  id_nemlog_in!
+  id_vienna_saml!
   idea_assignment!
   idea_custom_fields!
   impact_tracking!

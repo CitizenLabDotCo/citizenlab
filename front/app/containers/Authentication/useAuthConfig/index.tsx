@@ -21,6 +21,8 @@ export default function useAuthConfig() {
   const { pathname } = useLocation();
   const showAdminOnlyMethods = pathname.endsWith('/sign-in/admin');
 
+  // Standard auth methods
+
   const passwordLoginEnabled =
     useFeatureFlag({ name: 'password_login' }) || superAdminParam;
 
@@ -38,45 +40,36 @@ export default function useAuthConfig() {
     name: 'azure_ad_b2c_login',
   });
 
-  const franceconnect = useFeatureFlag({
-    name: 'franceconnect_login',
-  });
+  // Custom SSO methods - found in the custom auth & verification config
 
+  const isCustomSsoEnabled = (methodName) => {
+    return (
+      appConfigurationSettings?.verification?.verification_methods?.some(
+        methodName
+      ) || providerForTest === methodName
+    );
+  };
+
+  const fakeSso = isCustomSsoEnabled('fake_sso');
+  const keycloak = isCustomSsoEnabled('keycloak');
+  const twoday = isCustomSsoEnabled('twoday');
+  const idAustria = isCustomSsoEnabled('id_austria');
+  const criipto = isCustomSsoEnabled('criipto');
+  const claveUnica = isCustomSsoEnabled('clave_unica');
+  const franceconnect = isCustomSsoEnabled('franceconnect');
+
+  // TODO: JS - these need converting
   const viennaCitizen = useFeatureFlag({
     name: 'vienna_citizen_login',
-  });
-
-  const claveUnica = useFeatureFlag({
-    name: 'clave_unica_login',
   });
 
   const hoplr = useFeatureFlag({
     name: 'hoplr_login',
   });
 
-  const idAustria = useFeatureFlag({
-    name: 'id_austria_login',
-  });
-
-  const criipto = useFeatureFlag({
-    name: 'criipto_login',
-  });
-
   const nemlogIn = useFeatureFlag({
     name: 'nemlog_in_login',
   });
-
-  const keycloak =
-    useFeatureFlag({
-      name: 'keycloak_login',
-    }) || providerForTest === 'keycloak';
-
-  const twoday =
-    useFeatureFlag({
-      name: 'twoday_login',
-    }) || providerForTest === 'twoday';
-
-  const fakeSso = useFeatureFlag({ name: 'fake_sso' });
 
   const ssoProviders = {
     google,

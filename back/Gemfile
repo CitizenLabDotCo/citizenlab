@@ -239,6 +239,9 @@ commercial_engines = [
   # Custom ID verification & SSO engines.
   'id_id_card_lookup',
   'custom_auth_verification',
+  'id_hoplr',
+  'id_nemlog_in',
+  'id_vienna_saml'
 ]
 
 commercial_engines.each do |engine_name|
