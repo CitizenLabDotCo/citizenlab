@@ -128,7 +128,7 @@ class WebApi::V1::PermissionsController < ApplicationController
 
   # lock any fields locked by verification method(s)
   def mark_locked_json_forms_fields(schemas)
-    locked_custom_fields = verification_service.locked_custom_fields(current_user).map(&:to_s)
+    locked_custom_fields = Verification::VerificationService.new.locked_custom_fields(current_user).map(&:to_s)
 
     # Mark fields as locked & read only
     schemas[:ui_schema_multiloc].each_value do |ui_schema|
