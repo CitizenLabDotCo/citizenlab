@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import schemaKeys from 'api/custom_fields_json_form_schema/keys';
+import permissionsCustomFieldsKeys from 'api/permissions_custom_fields/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
