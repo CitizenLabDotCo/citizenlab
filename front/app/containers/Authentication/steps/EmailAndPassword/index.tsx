@@ -11,6 +11,8 @@ import TextButton from '../_components/TextButton';
 
 import Form from './Form';
 import messages from './messages';
+import authMessages from '../messages';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 interface Props {
   loading: boolean;
@@ -36,6 +38,12 @@ const EmailAndPassword = ({
 }: Props) => {
   const { anySSOProviderEnabled } = useAuthConfig();
   const { formatMessage } = useIntl();
+  const { data: tenant } = useAppConfiguration();
+  const tenantSettings = tenant?.data.attributes.settings;
+
+  // Show link to the Azure AD button?
+  const showAdminLoginLink =
+    tenantSettings?.azure_ad_login?.visibility === 'link';
 
   return (
     <Box id="e2e-sign-in-email-password-container">
@@ -71,6 +79,13 @@ const EmailAndPassword = ({
           />
         )}
       </Text>
+      {showAdminLoginLink && (
+        <a href="/sign-in/admin">
+          <Text fontSize="xs" textDecoration="underline" color="textSecondary">
+            <FormattedMessage {...authMessages.adminOptions} />
+          </Text>
+        </a>
+      )}
     </Box>
   );
 };

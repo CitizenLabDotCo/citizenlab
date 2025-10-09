@@ -24,6 +24,7 @@ import SSOButtonsExceptFCAndCU from '../_components/SSOButtonsExceptFCAndCU';
 import TextButton from '../_components/TextButton';
 
 import messages from './messages';
+import authMessages from '../messages';
 
 const Container = styled.div`
   display: flex;
@@ -58,7 +59,7 @@ const AuthProviders = memo<Props>(
 
     // Show link to the above hidden path
     const showAdminLoginLink =
-      flow === 'signin' &&
+      (flow === 'signin' || flow === 'signup') &&
       tenantSettings?.azure_ad_login?.visibility === 'link';
 
     const handleOnFranceConnectSelected = useCallback(
@@ -162,7 +163,7 @@ const AuthProviders = memo<Props>(
               textDecoration="underline"
               color="textSecondary"
             >
-              <FormattedMessage {...messages.adminOptions} />
+              <FormattedMessage {...authMessages.adminOptions} />
             </Text>
           </Link>
         )}
