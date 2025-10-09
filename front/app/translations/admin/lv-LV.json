@@ -2732,6 +2732,7 @@
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "Vai esat pārliecināts, ka vēlaties šo grupu izņemt no projekta?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "Izvēlēties vienu vai vairākas grupas",
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, zero {}=0 {Nav dalībnieku} one {1 dalībnieks} other {{count} biedri}}",
+  "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "Lūdzu, aizpildiet aprakstu visās valodās",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "Lūdzu, aizpildiet nosaukumu visās valodās",
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Vai esat pārliecināts?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Projektu vadītāji nav atrasti",
