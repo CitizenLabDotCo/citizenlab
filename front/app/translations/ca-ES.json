@@ -901,6 +901,7 @@
   "app.components.formBuilder.printSupportTooltip.topics2": "Les etiquetes es mostren com a no compatibles al PDF descarregat i no són compatibles per a la importació mitjançant FormSync.",
   "app.components.formBuilder.proposedBudget": "Proposta de pressupost",
   "app.components.formBuilder.question": "Pregunta",
+  "app.components.formBuilder.questionCannotBeDeleted": "Aquesta pregunta no es pot suprimir.",
   "app.components.formBuilder.questionDescriptionOptional": "Descripció de la pregunta (opcional)",
   "app.components.formBuilder.questionTitle": "Títol de la pregunta",
   "app.components.formBuilder.randomize": "Aleatoritzar",
