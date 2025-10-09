@@ -40,6 +40,11 @@ module CustomAuthVerification
       criipto = CriiptoOmniauth.new
       Verification.add_method(criipto)
       AuthenticationService.add_method('criipto', criipto)
+
+      # FranceConnect integration
+      franceconnect = FranceconnectOmniauth.new
+      AuthenticationService.add_method('franceconnect', franceconnect)
+      Verification.add_method(franceconnect)
     end
   end
 end

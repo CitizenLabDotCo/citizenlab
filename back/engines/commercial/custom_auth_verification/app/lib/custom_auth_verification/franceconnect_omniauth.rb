@@ -2,7 +2,7 @@
 
 # FranceConnect works locally with any of these identifiers
 # https://github.com/france-connect/identity-provider-example/blob/master/database.csv
-module IdFranceconnect
+module CustomAuthVerification
   class FranceconnectOmniauth < OmniauthMethods::Base
     include FranceconnectVerification
 
@@ -40,26 +40,26 @@ module IdFranceconnect
 
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      return unless configuration.feature_activated?('franceconnect_login')
+      return unless config[:client_id].present? && config[:client_secret].present?
 
       if version == 'v2'
         env['omniauth.strategy'].options.merge!(
           discovery: true, # https://fcp-low.sbx.dev-franceconnect.fr/api/v2/.well-known/openid-configuration
-          scope: %w[openid] + configuration.settings('franceconnect_login', 'scope'),
+          scope: %w[openid] + config[:scope],
           issuer: issuer, # the integration env is now using 'https'
           client_auth_method: 'jwks', # France connect does not use BASIC authentication
           acr_values: 'eidas1',
           client_signing_alg: :ES256, # hashing function of France Connect
           client_options: {
-            identifier: configuration.settings('franceconnect_login', 'identifier'),
-            secret: configuration.settings('franceconnect_login', 'secret'),
+            identifier: config[:client_id],
+            secret: config[:client_secret],
             redirect_uri: redirect_uri(configuration)
           }
         )
       else
         # Version 1 - Will not work after Sept 2025
         env['omniauth.strategy'].options.merge!(
-          scope: %w[openid] + configuration.settings('franceconnect_login', 'scope'),
+          scope: %w[openid] + config[:scope],
           response_type: :code,
           state: true, # required by France connect
           nonce: true, # required by France connect
@@ -68,8 +68,8 @@ module IdFranceconnect
           acr_values: 'eidas1',
           client_signing_alg: :HS256, # hashing function of France Connect
           client_options: {
-            identifier: configuration.settings('franceconnect_login', 'identifier'),
-            secret: configuration.settings('franceconnect_login', 'secret'),
+            identifier: config[:client_id],
+            secret: config[:client_secret],
             scheme: 'https',
             host: host,
             port: 443,
@@ -118,7 +118,7 @@ module IdFranceconnect
       # We always merge during verification (not authentication) regardless of other attributes.
       return true if sso_verification_param_value == SSO_VERIFICATION_PARAM_VALUE
 
-      matcher = IdFranceconnect::AttributesMatcher
+      matcher = CustomAuthVerification::AttributesMatcher
 
       matcher.match?(user.first_name, user_attrs[:first_name]) ||
         matcher.match?(user.last_name, user_attrs[:last_name])
@@ -135,11 +135,11 @@ module IdFranceconnect
     private
 
     def version
-      @version ||= auth_config['version'] == 'v2' ? 'v2' : 'v1'
+      @version ||= config[:version] == 'v2' ? 'v2' : 'v1'
     end
 
     def host
-      env = auth_config['environment'] || 'integration'
+      env = config[:environment] || 'integration'
       urls = {
         production: {
           v1: 'app.franceconnect.gouv.fr',
@@ -164,10 +164,6 @@ module IdFranceconnect
     # @param [AppConfiguration] configuration
     def redirect_uri(configuration)
       "#{configuration.base_backend_uri}/auth/franceconnect/callback"
-    end
-
-    def auth_config
-      @auth_config ||= AppConfiguration.instance.settings('franceconnect_login')
     end
   end
 end

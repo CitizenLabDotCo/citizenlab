@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-class IdFranceconnect::AttributesMatcher
+# Used with FranceConnect to compare user attributes
+class CustomAuthVerification::AttributesMatcher
   extend Gem::Text
 
   MAXIMUM_NUMBER_OF_LETTERS_FOR_EXACT_MATCH = 3

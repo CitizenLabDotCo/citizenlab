@@ -48,3 +48,11 @@ end
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :openid_connect, setup: CRIIPTO_SETUP_PROC, name: 'criipto', issuer: CustomAuthVerification::CriiptoOmniauth.new.method(:issuer)
 end
+
+FRANCECONNECT_SETUP_PROC = lambda do |env|
+  CustomAuthVerification::FranceconnectOmniauth.new.omniauth_setup(AppConfiguration.instance, env)
+end
+
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider :openid_connect, setup: FRANCECONNECT_SETUP_PROC, name: 'franceconnect', issuer: CustomAuthVerification::FranceconnectOmniauth.new.method(:issuer)
+end

@@ -4,7 +4,7 @@
 
 require 'rails_helper'
 
-describe IdFranceconnect::FranceconnectOmniauth do
+describe CustomAuthVerification::FranceconnectOmniauth do
   describe '#can_merge?' do
     using RSpec::Parameterized::TableSyntax
 
