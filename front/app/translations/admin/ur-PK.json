@@ -2732,6 +2732,7 @@
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "کیا آپ واقعی اس گروپ کو پروجیکٹ سے ہٹانا چاہتے ہیں؟",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "ایک یا زیادہ گروپ منتخب کریں۔",
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {کوئی ممبر نہیں} one {1 ممبر} other {{count} ممبران}}",
+  "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "براہ کرم تمام زبانوں میں تفصیل پُر کریں۔",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "براہ کرم تمام زبانوں میں عنوان بھریں۔",
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "کیا آپ کو یقین ہے؟",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "پروجیکٹ مینیجر نہیں ملے",

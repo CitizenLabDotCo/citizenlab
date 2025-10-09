@@ -2732,6 +2732,7 @@
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "ਕੀ ਤੁਸੀਂ ਯਕੀਨੀ ਤੌਰ 'ਤੇ ਇਸ ਸਮੂਹ ਨੂੰ ਪ੍ਰੋਜੈਕਟ ਤੋਂ ਹਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "ਇੱਕ ਜਾਂ ਇੱਕ ਤੋਂ ਵੱਧ ਸਮੂਹ ਚੁਣੋ",
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {ਕੋਈ ਮੈਂਬਰ ਨਹੀਂ} one {1 ਮੈਂਬਰ} other {{count} ਮੈਂਬਰ}}",
+  "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "ਕਿਰਪਾ ਕਰਕੇ ਸਾਰੀਆਂ ਭਾਸ਼ਾਵਾਂ ਵਿੱਚ ਵੇਰਵਾ ਭਰੋ।",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "ਕਿਰਪਾ ਕਰਕੇ ਸਾਰੀਆਂ ਭਾਸ਼ਾਵਾਂ ਵਿੱਚ ਸਿਰਲੇਖ ਭਰੋ",
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "ਤੁਹਾਨੂੰ ਪੂਰਾ ਵਿਸ਼ਵਾਸ ਹੈ?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਨਹੀਂ ਮਿਲੇ",

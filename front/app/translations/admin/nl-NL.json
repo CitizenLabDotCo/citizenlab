@@ -2732,6 +2732,7 @@
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "Weet je zeker dat je deze groep uit dit project wilt verwijderen?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "Selecteer één of meer groepen",
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {Geen leden} one {één lid} other {{count} leden}}",
+  "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "Vul de beschrijving in alle talen in",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "Vul de titel alsjeblieft in alle talen in",
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Zeker weten?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Geen projectbeheerders gevonden",
