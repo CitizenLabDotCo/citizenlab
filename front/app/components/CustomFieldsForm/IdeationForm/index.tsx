@@ -45,7 +45,10 @@ const IdeationForm = ({
   const { mutateAsync: updateIdea } = useUpdateIdea();
   const { data: customFields } = useCustomFields({
     projectId,
-    phaseId: participationMethod !== 'ideation' ? phaseId : undefined,
+    phaseId:
+      participationMethod !== 'ideation' && participationMethod !== 'voting'
+        ? phaseId
+        : undefined,
     publicFields: true,
   });
 
