@@ -66,11 +66,11 @@ const FileEditForm = ({ file, setEditingMetadata }: Props) => {
           // Join the file name back with the extension before persisting.
           name: `${methods.getValues('name')}.${fileExtensionString}`,
           category: methods.getValues('category'),
-          // eslint-disable-next-line
           description_multiloc:
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             methods.getValues('description_multiloc') ?? undefined,
-          // eslint-disable-next-line
           ai_processing_allowed:
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             methods.getValues('ai_processing_allowed') ?? undefined,
         },
       });
