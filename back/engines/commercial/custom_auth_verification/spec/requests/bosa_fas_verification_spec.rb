@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-describe 'bosa_fas verification' do
+context 'bosa_fas verification' do
   before do
     allow_any_instance_of(CustomAuthVerification::BosaFasOmniauth).to receive(:jwks).and_return({}) # to skip fetching keys from external service
     @user = create(:user, first_name: 'Rudolphi', last_name: 'Raindeari')

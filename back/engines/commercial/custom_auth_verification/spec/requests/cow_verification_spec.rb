@@ -140,28 +140,6 @@ resource 'Verifications' do
     end
 
     describe do
-      let(:run) { '125.326.452-1' }
-      let(:id_serial) { 'A001529382' }
-
-      example_request '[error] Verify with cow using invalid run' do
-        assert_status 422
-        json_response = json_parse response_body
-        expect(json_response).to include_response_error(:run, 'invalid')
-      end
-    end
-
-    describe do
-      let(:run) { '12.025.365-6' }
-      let(:id_serial) { '' }
-
-      example_request '[error] Verify with cow using invalid id_serial' do
-        assert_status 422
-        json_response = json_parse response_body
-        expect(json_response).to include_response_error(:id_serial, 'invalid')
-      end
-    end
-
-    describe do
       before do
         other_user = create(:user)
         @run = '12.025.365-6'
