@@ -10,7 +10,7 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
-import { SupportedLocale, UploadFile } from 'typings';
+import { SupportedLocale } from 'typings';
 import { object, mixed } from 'yup';
 
 import { IBackgroundJobData } from 'api/background_jobs/types';
@@ -33,7 +33,7 @@ import messages from './messages';
 
 interface FormValues {
   locale: SupportedLocale;
-  file: UploadFile;
+  file: Record<string, any>;
 }
 
 interface Props {
@@ -70,7 +70,7 @@ const ImportExcelModal = ({ open, onClose, onImport }: Props) => {
   const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues,
-    resolver: yupResolver(schema) as any,
+    resolver: yupResolver(schema),
   });
 
   const submitFile = async ({ file, locale }: FormValues) => {
