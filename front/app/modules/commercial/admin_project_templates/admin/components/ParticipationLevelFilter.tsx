@@ -1,9 +1,7 @@
 import React, { memo, useCallback, useState } from 'react';
 
-import { gql, useQuery } from '@apollo/client';
 import { WrappedComponentProps } from 'react-intl';
 
-import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import useLocalize from 'hooks/useLocalize';
 
 import FilterSelector, {
@@ -12,7 +10,7 @@ import FilterSelector, {
 
 import { injectIntl } from 'utils/cl-intl';
 
-import { client } from '../../utils/apolloUtils';
+import useParticipationLevels from '../api/useParticipationLevels';
 
 import messages from './messages';
 
@@ -23,31 +21,16 @@ interface Props {
 const ParticipationlevelFilter = memo<Props & WrappedComponentProps>(
   ({ intl: { formatMessage }, onChange }) => {
     const localize = useLocalize();
-    const graphqlTenantLocales = useGraphqlTenantLocales();
-
-    const PARTICIPATIONLEVELS_QUERY = gql`
-    {
-      participationLevels {
-        nodes {
-          id
-          titleMultiloc {
-            ${graphqlTenantLocales}
-          }
-        }
-      }
-    }
-  `;
-
     const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
-    const { data } = useQuery(PARTICIPATIONLEVELS_QUERY, { client });
+    const { data: participationLevels } = useParticipationLevels();
 
     let options: IFilterSelectorValue[] = [];
 
-    if (data) {
-      options = data.participationLevels.nodes.map((node) => ({
-        value: node.id,
-        text: localize(node.titleMultiloc),
+    if (participationLevels) {
+      options = participationLevels.map((participationLevel) => ({
+        value: participationLevel.id,
+        text: localize(participationLevel.titleMultiloc),
       }));
     }
 
