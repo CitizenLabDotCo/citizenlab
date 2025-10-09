@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module IdCow
+module CustomAuthVerification
   class CowVerification
     include Verification::VerificationMethod
 

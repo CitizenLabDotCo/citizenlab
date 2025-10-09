@@ -109,7 +109,7 @@ describe Verification::VerificationService do
 
       expect(Verification::Verification.count).to eq 0
 
-      expect_any_instance_of(IdCow::CowVerification)
+      expect_any_instance_of(CustomAuthVerification::CowVerification)
         .to receive(:verify_sync)
         .with(params[:verification_parameters])
         .and_return({ uid: '001529382' })
@@ -135,7 +135,7 @@ describe Verification::VerificationService do
         verification_parameters: { run: '12.025.365-6', id_serial: 'A001529382' }
       }
 
-      expect_any_instance_of(IdCow::CowVerification)
+      expect_any_instance_of(CustomAuthVerification::CowVerification)
         .to receive(:verify_sync)
         .with(params1[:verification_parameters])
         .and_return({ uid: '001529382' })
@@ -148,7 +148,7 @@ describe Verification::VerificationService do
         verification_parameters: { run: '12.025.365-6', id_serial: 'A001529382' }
       }
 
-      expect_any_instance_of(IdCow::CowVerification)
+      expect_any_instance_of(CustomAuthVerification::CowVerification)
         .to receive(:verify_sync)
         .with(params2[:verification_parameters])
         .and_return({ uid: '001529382' })

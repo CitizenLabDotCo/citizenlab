@@ -28,9 +28,13 @@ module CustomAuthVerification
       # BOSA FAS integration - Authentication and verification using the Belgian eID and itsme system
       Verification.add_method(BosaFasOmniauth.new)
 
+      # Clave Unica integration - Authentication and verification using the Chilean Clave Unica system
       clave_unica = ClaveUnicaOmniauth.new
       AuthenticationService.add_method('clave_unica', clave_unica)
       Verification.add_method(clave_unica)
+
+      # Cow
+      Verification.add_method(CowVerification.new)
     end
   end
 end

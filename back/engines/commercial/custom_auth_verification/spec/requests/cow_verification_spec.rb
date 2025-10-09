@@ -30,7 +30,7 @@ resource 'Verifications' do
 
     before do
       stub_request(:get, 'https://terceros.sidiv.registrocivil.cl:8443/InteroperabilityPlateform/TercerosCOWProxyService?wsdl')
-        .to_return(status: 200, body: File.read('engines/commercial/id_cow/spec/fixtures/cow_wsdl.xml'), headers: {})
+        .to_return(status: 200, body: File.read('engines/commercial/custom_auth_verification/spec/fixtures/cow/cow_wsdl.xml'), headers: {})
       savon.mock!
     end
 
@@ -84,7 +84,7 @@ resource 'Verifications' do
             'typens:NumRUN' => '12025365',
             'typens:NumSerie' => 'A001529382'
           })
-          .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_match.xml'))
+          .returns(File.read('engines/commercial/custom_auth_verification/spec/fixtures/cow/get_data_document_match.xml'))
         do_request
         assert_status 201
         expect(@user.reload.verified).to be true
@@ -110,7 +110,7 @@ resource 'Verifications' do
             'typens:NumRUN' => '11111111',
             'typens:NumSerie' => 'A001529382'
           })
-          .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_no_match.xml'))
+          .returns(File.read('engines/commercial/custom_auth_verification/spec/fixtures/cow/get_data_document_no_match.xml'))
         do_request
         assert_status 422
         json_response = json_parse response_body
@@ -131,7 +131,7 @@ resource 'Verifications' do
             'typens:NumRUN' => '11111111',
             'typens:NumSerie' => 'A001529382'
           })
-          .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_match_no_citizen.xml'))
+          .returns(File.read('engines/commercial/custom_auth_verification/spec/fixtures/cow/get_data_document_match_no_citizen.xml'))
         do_request
         assert_status 422
         json_response = json_parse response_body
@@ -168,7 +168,7 @@ resource 'Verifications' do
         @id_serial = 'A001529382'
         savon.expects(:get_data_document)
           .with(message: :any)
-          .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_match.xml'))
+          .returns(File.read('engines/commercial/custom_auth_verification/spec/fixtures/cow/get_data_document_match.xml'))
 
         Verification::VerificationService.new.verify_sync(
           user: other_user,
@@ -183,7 +183,7 @@ resource 'Verifications' do
       example '[error] Verify with cow using credentials that are already taken' do
         savon.expects(:get_data_document)
           .with(message: :any)
-          .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_match.xml'))
+          .returns(File.read('engines/commercial/custom_auth_verification/spec/fixtures/cow/get_data_document_match.xml'))
         do_request
         assert_status 422
         json_response = json_parse response_body
