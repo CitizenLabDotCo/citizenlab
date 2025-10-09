@@ -901,6 +901,7 @@
   "app.components.formBuilder.printSupportTooltip.topics2": "Οι ετικέτες εμφανίζονται ως μη υποστηριζόμενες στο κατεβασμένο PDF και δεν υποστηρίζονται για εισαγωγή μέσω του FormSync.",
   "app.components.formBuilder.proposedBudget": "Προτεινόμενος προϋπολογισμός",
   "app.components.formBuilder.question": "Ερώτηση",
+  "app.components.formBuilder.questionCannotBeDeleted": "Αυτή η ερώτηση δεν μπορεί να διαγραφεί.",
   "app.components.formBuilder.questionDescriptionOptional": "Περιγραφή της ερώτησης (προαιρετική)",
   "app.components.formBuilder.questionTitle": "Τίτλος ερώτησης",
   "app.components.formBuilder.randomize": "Τυχαία επιλογή",

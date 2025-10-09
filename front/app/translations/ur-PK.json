@@ -901,6 +901,7 @@
   "app.components.formBuilder.printSupportTooltip.topics2": "ٹیگز کو ڈاؤن لوڈ کردہ پی ڈی ایف پر غیر تعاون یافتہ کے طور پر دکھایا گیا ہے اور FormSync کے ذریعے درآمد کے لیے تعاون یافتہ نہیں ہیں۔",
   "app.components.formBuilder.proposedBudget": "مجوزہ بجٹ",
   "app.components.formBuilder.question": "سوال",
+  "app.components.formBuilder.questionCannotBeDeleted": "اس سوال کو حذف نہیں کیا جا سکتا۔",
   "app.components.formBuilder.questionDescriptionOptional": "سوال کی تفصیل (اختیاری)",
   "app.components.formBuilder.questionTitle": "سوال کا عنوان",
   "app.components.formBuilder.randomize": "بے ترتیب کرنا",

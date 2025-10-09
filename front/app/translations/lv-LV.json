@@ -901,6 +901,7 @@
   "app.components.formBuilder.printSupportTooltip.topics2": "Lejuplādētajā PDF failā ir norādītas kā neatbalstītas, un tās nav atbalstītas importēšanai, izmantojot FormSync.",
   "app.components.formBuilder.proposedBudget": "Ierosinātais budžets",
   "app.components.formBuilder.question": "Jautājums",
+  "app.components.formBuilder.questionCannotBeDeleted": "Šo jautājumu nevar dzēst.",
   "app.components.formBuilder.questionDescriptionOptional": "Jautājuma apraksts (pēc izvēles)",
   "app.components.formBuilder.questionTitle": "Jautājuma nosaukums",
   "app.components.formBuilder.randomize": "Randomizēt",

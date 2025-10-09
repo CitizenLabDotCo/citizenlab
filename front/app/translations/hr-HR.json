@@ -901,6 +901,7 @@
   "app.components.formBuilder.printSupportTooltip.topics2": "Oznake su prikazane kao nepodržane u preuzetom PDF-u i nisu podržane za uvoz putem FormSynca.",
   "app.components.formBuilder.proposedBudget": "Predloženi proračun",
   "app.components.formBuilder.question": "Pitanje",
+  "app.components.formBuilder.questionCannotBeDeleted": "Ovo se pitanje ne može izbrisati.",
   "app.components.formBuilder.questionDescriptionOptional": "Opis pitanja (nije obavezno)",
   "app.components.formBuilder.questionTitle": "Naslov pitanja",
   "app.components.formBuilder.randomize": "Nasumično odredi",

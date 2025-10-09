@@ -901,6 +901,7 @@
   "app.components.formBuilder.printSupportTooltip.topics2": "Dangosir tagiau fel rhai nad ydynt yn cael eu cefnogi ar y PDF sydd wedi'i lawrlwytho ac nid ydynt yn cael eu cefnogi ar gyfer mewnforio trwy FormSync.",
   "app.components.formBuilder.proposedBudget": "Cyllideb arfaethedig",
   "app.components.formBuilder.question": "Cwestiwn",
+  "app.components.formBuilder.questionCannotBeDeleted": "Nid oes modd dileu'r cwestiwn hwn.",
   "app.components.formBuilder.questionDescriptionOptional": "Disgrifiad o'r cwestiwn (dewisol)",
   "app.components.formBuilder.questionTitle": "Teitl y cwestiwn",
   "app.components.formBuilder.randomize": "Ar hap",
