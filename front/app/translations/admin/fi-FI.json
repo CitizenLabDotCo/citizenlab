@@ -1021,8 +1021,6 @@
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.project": "Projekti",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.resultingUrl": "Tuloksena oleva URL-osoite",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.savePage": "Tallenna",
-  "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.title": "Lisää projekti",
-  "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.warning": "Navigointipalkki näyttää vain projektit, joihin käyttäjillä on pääsy.",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTADescription": "Tämä widget näkyy vain kotisivulla, kun Community Monitor hyväksyy vastauksia.",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTATitle2": "Yhteisön valvonta",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorDescription": "Kuvaus",

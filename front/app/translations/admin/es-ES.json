@@ -1021,8 +1021,6 @@
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.project": "proyectos",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.resultingUrl": "URL resultante",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.savePage": "Guarda",
-  "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.title": "Añadir proyecto",
-  "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.warning": "La barra de navegación sólo mostrará los proyectos a los que tengan acceso los usuarios.",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTADescription": "Este widget sólo estará visible en la página de inicio cuando el Barómetro de satisfacción esté aceptando respuestas.",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTATitle2": "Barómetro de satisfacción",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorDescription": "Descripción",

@@ -1021,8 +1021,6 @@
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.project": "Projekt",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.resultingUrl": "Resulterende URL",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.savePage": "Gem",
-  "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.title": "Tilføj projekt",
-  "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.warning": "Navigationslinjen viser kun projekter, som brugerne har adgang til.",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTADescription": "Denne widget vil kun være synlig på hjemmesiden, når Community Monitor accepterer svar.",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTATitle2": "Borgerbarometer",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorDescription": "Beskrivelse",

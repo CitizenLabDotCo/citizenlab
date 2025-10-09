@@ -1021,8 +1021,6 @@
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.project": "Projekt",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.resultingUrl": "Resulterande URL",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.savePage": "Spara",
-  "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.title": "Lägg till projekt",
-  "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.warning": "I navigeringsfältet visas endast projekt som användare har tillgång till.",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTADescription": "Den här widgeten visas bara på startsidan när Community Monitor tar emot svar.",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTATitle2": "Gemenskapens övervakare",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorDescription": "Beskrivning",
