@@ -2163,7 +2163,6 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "Hvad ønsker du at gøre?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Udvalgt, hvordan brugerne kan deltage.",
   "app.containers.AdminPage.ProjectEdit.participationRequirementsSubtitle": "Du kan angive, hvem der kan udføre hver enkelt handling, og du kan stille yderligere spørgsmål til deltagerne for at indsamle flere oplysninger.",
-  "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Krav til deltagere og spørgsmål",
   "app.containers.AdminPage.ProjectEdit.phaseAccessRights2": "Faseadgang og brugerdata",
   "app.containers.AdminPage.ProjectEdit.phaseEmails": "Notifikationer",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Afstemning",

@@ -2163,7 +2163,6 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "Ko jūs vēlaties darīt?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Izvēlieties, kā lietotāji var piedalīties.",
   "app.containers.AdminPage.ProjectEdit.participationRequirementsSubtitle": "Varat norādīt, kas var veikt katru darbību, un uzdot papildu jautājumus dalībniekiem, lai iegūtu vairāk informācijas.",
-  "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Prasības dalībniekiem un jautājumi",
   "app.containers.AdminPage.ProjectEdit.phaseAccessRights2": "Fāzes piekļuve un lietotāja dati",
   "app.containers.AdminPage.ProjectEdit.phaseEmails": "Paziņojumi",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Aptauja",

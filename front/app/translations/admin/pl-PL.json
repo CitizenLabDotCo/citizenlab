@@ -2163,7 +2163,6 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "Co chcesz zrobić?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Wybierz sposób udziału użytkowników.",
   "app.containers.AdminPage.ProjectEdit.participationRequirementsSubtitle": "Możesz określić, kto może podjąć poszczególne działania, a także zadawać uczestnikom dodatkowe pytania, aby zebrać więcej informacji.",
-  "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Wymagania i pytania dotyczące uczestników",
   "app.containers.AdminPage.ProjectEdit.phaseAccessRights2": "Dostęp do fazy i dane użytkownika",
   "app.containers.AdminPage.ProjectEdit.phaseEmails": "Powiadomienia",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Badanie",
