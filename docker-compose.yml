@@ -25,17 +25,23 @@ services:
     build:
       context: .
       dockerfile: back/Dockerfile.development
+      args:
+        USER_UID: ${USER_UID:-1000}
+        USER_GID: ${USER_GID:-1000}
+    user: "${USER_UID:-1000}:${USER_GID:-1000}"
     ports:
       - "4000:4000"
     volumes:
-      - "./back:/cl2_back"
-      - bundle_path:/bundle
+      - "./back:/citizenlab/back"
+      - bundle:/bundle
     env_file:
       - "env_files/back-safe.env"
       - "env_files/back-secret.env"
     environment:
       - BUNDLE_PATH=/bundle
       - BASE_DEV_URI
+      - USER_UID=${USER_UID:-1000}
+      - USER_GID=${USER_GID:-1000}
       - ASSET_HOST_URI
     tty: true
     stdin_open: true
@@ -49,15 +55,21 @@ services:
     build:
       context: .
       dockerfile: back/Dockerfile.development
+      args:
+        USER_UID: ${USER_UID:-1000}
+        USER_GID: ${USER_GID:-1000}
+    user: "${USER_UID:-1000}:${USER_GID:-1000}"
     command: bundle exec que
     volumes:
-      - "./back:/cl2_back"
-      - bundle_path:/bundle
+      - "./back:/citizenlab/back"
+      - bundle:/bundle
     env_file:
       - "env_files/back-safe.env"
       - "env_files/back-secret.env"
     environment:
-      BUNDLE_PATH: /bundle
+      - BUNDLE_PATH=/bundle
+      - USER_UID=${USER_UID:-1000}
+      - USER_GID=${USER_GID:-1000}
     tty: true
     stdin_open: true
 
@@ -102,7 +114,7 @@ services:
 
 volumes:
   postgres:
-  bundle_path:
+  bundle:
 
 networks:
   default:

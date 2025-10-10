@@ -19,7 +19,7 @@ services:
       dockerfile: back/Dockerfile
     # To easily test locally. Volumes are not supported on CircleCI
     # volumes:
-    #   - "../back:/cl2_back"
+    #   - "../back:/citizenlab/back"
     env_file:
       - "../env_files/back-safe.env"
       - "../env_files/back-secret.env"

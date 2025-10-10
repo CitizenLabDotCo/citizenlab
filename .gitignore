@@ -17,5 +17,5 @@ node_modules
 
 # VSCode settings files
 .vscode/
-.devcontainer/
+.devcontainer/.env
 
