@@ -141,6 +141,14 @@ RSpec.describe Analysis::LLM::AzureOpenAI do
       service.chat(message)
     end
 
+    it 'raises an error for unsupported image types' do
+      file = build(:global_file, name: 'image.heic', mime_type: 'image/heic')
+      message = Analysis::LLM::Message.new('Describe the content of this image?', file)
+
+      expect { service.chat(message) }
+        .to raise_error(Analysis::LLM::UnsupportedAttachmentError, 'image/heic')
+    end
+
     it 'supports file inputs' do
       file = create(:global_file)
       message = Analysis::LLM::Message.new('Describe the content of this file?', file)

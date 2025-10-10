@@ -9,3 +9,9 @@ class File
     alias exists? exist?
   end
 end
+
+class Object
+  def not_in?(collection)
+    !in?(collection)
+  end
+end

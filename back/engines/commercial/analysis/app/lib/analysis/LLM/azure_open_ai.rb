@@ -8,6 +8,14 @@ module Analysis
     class AzureOpenAI < Base
       MAX_RETRIES = 20
 
+      SUPPORTED_IMAGE_TYPES = %w[
+        image/gif
+        image/jpeg
+        image/jpg
+        image/png
+        image/webp
+      ].freeze
+
       class << self
         def gpt_model
           raise NotImplementedError
@@ -139,6 +147,10 @@ module Analysis
       end
 
       def format_image(file)
+        if file.mime_type.not_in?(SUPPORTED_IMAGE_TYPES)
+          raise UnsupportedAttachmentError, file.mime_type
+        end
+
         encoded = Base64.strict_encode64(file.content.read)
 
         {
