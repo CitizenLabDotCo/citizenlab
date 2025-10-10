@@ -13,7 +13,6 @@ const fetchVerificationMethods = () =>
   });
 
 const useVerificationMethods = (enabled: boolean = true) => {
-  console.log('enabled', enabled);
   return useQuery<
     IVerificationMethods,
     CLErrors,

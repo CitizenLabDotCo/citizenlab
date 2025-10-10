@@ -114,7 +114,7 @@ RSpec.describe AppConfiguration do
         enabled: true,
         tenant: 'tenant',
         client_id: 'id',
-        logo_url: 'url',
+        logo_url: 'https://url.com/logo.png',
         login_mechanism_name: 'Azure Active Directory',
         visibility: 'show'
       }
@@ -125,7 +125,13 @@ RSpec.describe AppConfiguration do
       }
       app_config.save!
 
-      expect(app_config.public_settings['azure_ad_login']).to eq({ 'allowed' => true, 'enabled' => true })
+      expect(app_config.public_settings['azure_ad_login']).to eq({
+        'allowed' => true,
+        'enabled' => true,
+        'login_mechanism_name' => 'Azure Active Directory',
+        'logo_url' => 'https://url.com/logo.png',
+        'visibility' => 'show'
+      })
       expect(app_config.public_settings['verification']).to eq({ 'allowed' => true, 'enabled' => true })
     end
   end

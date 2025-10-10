@@ -1,13 +1,10 @@
 import { useLocation, useSearchParams } from 'react-router-dom';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { TVerificationMethodName } from 'api/verification_methods/types';
+import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
-import {
-  IVerificationMethod,
-  TVerificationMethodName,
-} from 'api/verification_methods/types';
 
 export default function useAuthConfig() {
   const { data: appConfiguration } = useAppConfiguration();
@@ -51,8 +48,8 @@ export default function useAuthConfig() {
   // Custom SSO methods - found in the verification config
   const isCustomSsoEnabled = (methodName: TVerificationMethodName) => {
     return (
-      verificationMethods?.data?.some(
-        (method) => method.attributes?.name === methodName
+      verificationMethods?.data.some(
+        (method) => method.attributes.name === methodName
       ) || providerForTest === methodName
     );
   };
