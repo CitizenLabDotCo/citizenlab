@@ -126,6 +126,21 @@ RSpec.describe Analysis::LLM::AzureOpenAI do
       service.chat(messages)
     end
 
+    it 'supports image inputs' do
+      file = create(:global_file, name: 'header.jpg')
+      message = Analysis::LLM::Message.new('Describe the content of this image?', file)
+
+      expect(service.response_client)
+        .to receive(:create).with(parameters: hash_including(input: [{
+          role: 'user', content: [
+            { type: 'input_text', text: 'Describe the content of this image?' },
+            { type: 'input_image', image_url: start_with('data:image/jpeg;base64,') }
+          ]
+        }])).and_return(nil)
+
+      service.chat(message)
+    end
+
     it 'supports file inputs' do
       file = create(:global_file)
       message = Analysis::LLM::Message.new('Describe the content of this file?', file)

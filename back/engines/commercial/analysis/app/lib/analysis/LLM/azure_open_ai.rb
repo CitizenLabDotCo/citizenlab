@@ -104,8 +104,9 @@ module Analysis
 
       def format_input(input)
         case input
-        when String then format_text(input)
-        when Files::File then format_file(input)
+        in String then format_text(input)
+        in Files::File if input.image? then format_image(input)
+        in Files::File then format_file(input)
         else raise ArgumentError, <<~MSG.squish
           Unsupported content type: #{input.class}.
           Must be String or Files::File."
@@ -121,6 +122,15 @@ module Analysis
           type: 'input_file',
           filename: file.name,
           file_data: "data:#{file.mime_type};base64,#{encoded}"
+        }
+      end
+
+      def format_image(file)
+        encoded = Base64.strict_encode64(file.content.read)
+
+        {
+          type: 'input_image',
+          image_url: "data:#{file.mime_type};base64,#{encoded}"
         }
       end
 
