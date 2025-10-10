@@ -17,7 +17,7 @@ module CustomAuthVerification
     end
 
     def config_parameters
-      %i[enabled_for_verified_actions]
+      %i[issue enabled_for_verified_actions]
     end
 
     def config_parameters_schema
@@ -26,6 +26,11 @@ module CustomAuthVerification
           private: true,
           type: 'boolean',
           description: 'Whether this verification method should be enabled for verified actions.'
+        },
+        issuer: {
+          private: true,
+          title: 'Issuer',
+          type: 'string'
         }
       }
     end

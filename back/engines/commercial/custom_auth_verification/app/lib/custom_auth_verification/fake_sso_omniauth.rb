@@ -77,7 +77,7 @@ module CustomAuthVerification
     end
 
     def issuer_in_settings
-      @issuer_in_settings ||= AppConfiguration.instance.settings('fake_sso', 'issuer')
+      @issuer_in_settings ||= config[:issuer]
     end
   end
 end

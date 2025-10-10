@@ -24,9 +24,6 @@ module CustomAuthVerification
     ]
 
     config.to_prepare do
-      # TODO: Move feature from JSON.erb?
-      # AppConfiguration::Settings.add_feature(CustomAuthVerification::FeatureSpecification)
-
       AUTH_AND_VERIFICATION_METHODS.each do |method|
         instance = "CustomAuthVerification::#{method}".constantize.new
         AuthenticationService.add_method(instance.name, instance)

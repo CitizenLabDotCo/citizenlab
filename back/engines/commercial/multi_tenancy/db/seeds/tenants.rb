@@ -264,7 +264,8 @@ module MultiTenancy
                 # more than one verification method enabled at a time.
                 # The below list is for testing purposes only.
                 {
-                  name: 'fake_sso'
+                  name: 'fake_sso',
+                  issuer: '' # Change this value to 'https://fake-sso.onrender.com' to test with the deployed version of the Fake SSO
                 },
                 {
                   name: 'cow',
@@ -484,11 +485,6 @@ module MultiTenancy
             remove_vendor_branding: {
               enabled: false,
               allowed: true
-            },
-            fake_sso: {
-              enabled: true,
-              allowed: true,
-              issuer: '' # Change this value to 'https://fake-sso.onrender.com' to test with the deployed version of the Fake SSO
             },
             project_review: {
               enabled: true,
