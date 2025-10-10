@@ -143,6 +143,7 @@
   "app.components.admin.ActionForm.Fields.user_fields_in_survey_not_supported_for_participation_method": "Postavljanje demografskih pitanja na posljednjoj stranici ankete nije podržano za odabranu metodu sudjelovanja.",
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow": "S trenutnom kombinacijom postavki \"Autentifikacija\" i \"Prikupljanje korisničkih podataka\", demografska pitanja mogu se postavljati samo tijekom registracije.",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "Odabir načina postavljanja demografskih pitanja sudionicima nije primjenjiv jer ste onemogućili autentifikaciju i odabrali potpunu anonimnost",
+  "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "Za dodavanje sadržaja unutar harmonike, otvorite harmoniku pritiskom na simbol \">\", a zatim povucite sve widgete unutra.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Nije odabrano nijedno pitanje. Prvo odaberite pitanje.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Nema odgovora",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.numberOfResponses": "{count} odgovora",
