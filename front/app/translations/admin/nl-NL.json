@@ -2163,7 +2163,7 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "Wat wil je doen?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Bepaal hoe gebruikers kunnen deelnemen.",
   "app.containers.AdminPage.ProjectEdit.participationRequirementsSubtitle": "Je kunt aangeven wie elke actie mag uitvoeren, en deelnemers aanvullende vragen stellen om meer informatie te verzamelen.",
-  "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Vereisten & vragen voor deelname",
+  "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle1": "Fasetoegang en gebruikersgegevens",
   "app.containers.AdminPage.ProjectEdit.phaseAccessRights2": "Fasetoegang en gebruikersgegevens",
   "app.containers.AdminPage.ProjectEdit.phaseEmails": "Meldingen",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Peiling",
