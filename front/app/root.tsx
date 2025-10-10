@@ -19,7 +19,6 @@ import modules from 'modules';
 import { createRoot } from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 
-import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
 import OutletsProvider from 'containers/OutletsProvider';
 
@@ -51,7 +50,9 @@ const legacyRoutes = createRoutes();
 type LegacyRoutes = typeof legacyRoutes;
 
 const setupRouter = (legacyRoutes: LegacyRoutes) => {
-  const rootRoute = createRootRoute();
+  const rootRoute = createRootRoute({
+    component: () => <div id="fajwipejf">Test</div>,
+  });
 
   const children: Route[] = [];
 
@@ -98,9 +99,7 @@ const Root = () => {
       <OutletsProvider>
         <HelmetProvider>
           <LanguageProvider>
-            <App>
-              <RouterProvider router={router} />
-            </App>
+            <RouterProvider router={router} />
           </LanguageProvider>
         </HelmetProvider>
       </OutletsProvider>
