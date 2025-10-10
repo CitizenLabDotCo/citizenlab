@@ -2163,7 +2163,7 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "Hva har du lyst til å gjøre?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Velg hvordan brukerne kan delta.",
   "app.containers.AdminPage.ProjectEdit.participationRequirementsSubtitle": "Du kan spesifisere hvem som kan utføre de ulike handlingene, og du kan stille tilleggsspørsmål til deltakerne for å innhente mer informasjon.",
-  "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Deltakerkrav og spørsmål",
+  "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle1": "Fasetilgang og brukerdata",
   "app.containers.AdminPage.ProjectEdit.phaseAccessRights2": "Fasetilgang og brukerdata",
   "app.containers.AdminPage.ProjectEdit.phaseEmails": "Varsler",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Meningsmåling",
