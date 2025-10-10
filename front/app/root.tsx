@@ -19,14 +19,14 @@ import {
   useNavigationType,
   useRoutes,
   unstable_HistoryRouter as HistoryRouter,
-} from 'react-router-dom';
+} from 'react-router';
 
 import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
 import OutletsProvider from 'containers/OutletsProvider';
 
-import history from 'utils/browserHistory';
 import { queryClient } from 'utils/cl-react-query/queryClient';
+import createBrowserHistory from 'utils/cl-router/history';
 
 import prefetchData from './prefetchData';
 import createRoutes from './routes';
@@ -69,7 +69,7 @@ const Root = () => {
       <OutletsProvider>
         <HelmetProvider>
           <LanguageProvider>
-            <HistoryRouter history={history}>
+            <HistoryRouter history={createBrowserHistory}>
               <App>
                 <Routes />
               </App>

@@ -1,7 +1,7 @@
 import React, { lazy } from 'react';
 
 import moduleConfiguration from 'modules';
-import { Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router';
 import { RouteType } from 'routes';
 
 import PageLoading from 'components/UI/PageLoading';

@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';

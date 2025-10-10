@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useState } from 'react';
 
 import { Button, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import styled from 'styled-components';
 
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';

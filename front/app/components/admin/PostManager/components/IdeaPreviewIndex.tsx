@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { RouteType } from 'routes';
 
 import GoBackButton from 'components/UI/GoBackButton';

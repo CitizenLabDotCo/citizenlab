@@ -9,7 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { UploadFile, SupportedLocale } from 'typings';
 import { object, string, mixed } from 'yup';
 

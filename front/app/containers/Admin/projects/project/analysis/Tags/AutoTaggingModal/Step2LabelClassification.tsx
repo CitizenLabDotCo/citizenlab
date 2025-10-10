@@ -9,7 +9,7 @@ import {
   Title,
 } from '@citizenlab/cl2-component-library';
 import { xor } from 'lodash-es';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 

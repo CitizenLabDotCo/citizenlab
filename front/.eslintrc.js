@@ -145,7 +145,7 @@ module.exports = {
             name: 'react-router-dom',
             importNames: ['Link', 'useNavigate', 'NavLink'],
             message:
-              "Import the Link or useNavigate from utils/cl-router instead of directly from 'react-router-dom'",
+              "Import the Link or useNavigate from utils/cl-router instead of directly from 'react-router'",
           },
           {
             name: 'react-intl',

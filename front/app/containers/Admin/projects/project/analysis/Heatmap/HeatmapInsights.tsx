@@ -7,7 +7,7 @@ import {
   Button,
   IconButton,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 import { Unit } from 'api/analysis_heat_map_cells/types';
 import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHeatmapCells';

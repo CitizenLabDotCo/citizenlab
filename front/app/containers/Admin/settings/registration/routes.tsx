@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 
 import { AdminRoute } from 'containers/Admin/routes';
 

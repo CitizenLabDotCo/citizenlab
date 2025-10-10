@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Box, Title, Text, Button } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';

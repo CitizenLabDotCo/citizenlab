@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { Multiloc, SupportedLocale } from 'typings';
 
 import { Country } from 'api/project_library_countries/types';

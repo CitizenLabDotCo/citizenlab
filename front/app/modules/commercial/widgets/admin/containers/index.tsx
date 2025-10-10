@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import GoBackButton from 'components/UI/GoBackButton';

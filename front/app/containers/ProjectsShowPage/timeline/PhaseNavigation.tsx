@@ -7,7 +7,7 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { findIndex } from 'lodash-es';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import styled from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';

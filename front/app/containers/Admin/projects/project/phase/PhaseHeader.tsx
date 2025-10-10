@@ -13,7 +13,7 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router';
 import styled from 'styled-components';
 
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';

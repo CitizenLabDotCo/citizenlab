@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router';
 import { SupportedLocale } from 'typings';
 
 import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';

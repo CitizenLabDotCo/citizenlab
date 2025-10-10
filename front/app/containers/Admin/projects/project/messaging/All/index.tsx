@@ -7,7 +7,7 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 import useCampaigns from 'api/campaigns/useCampaigns';
 import { isDraft } from 'api/campaigns/util';

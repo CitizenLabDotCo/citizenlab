@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 import { ITopicUpdate } from 'api/topics/types';
 import useTopic from 'api/topics/useTopic';

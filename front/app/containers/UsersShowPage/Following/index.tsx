@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 import { FollowableObject } from 'api/follow_unfollow/types';
 import useAuthUser from 'api/me/useAuthUser';

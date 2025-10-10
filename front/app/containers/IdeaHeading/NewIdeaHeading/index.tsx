@@ -9,7 +9,7 @@ import {
   stylingConsts,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 

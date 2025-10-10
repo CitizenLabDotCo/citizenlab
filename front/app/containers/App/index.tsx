@@ -15,7 +15,7 @@ import 'intersection-observer';
 // moment-timezone extends the regular moment library,
 // so there's no need to import both moment and moment-timezone
 import moment from 'moment-timezone';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import styled, { ThemeProvider } from 'styled-components';
 
 import { IAppConfigurationStyle } from 'api/app_configuration/types';

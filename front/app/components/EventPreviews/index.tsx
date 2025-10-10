@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 import useEvents from 'api/events/useEvents';
 import usePhases from 'api/phases/usePhases';

@@ -37,4 +37,14 @@ export default {
   replace: (location: Partial<Location> | RouteType, options?: Options): void =>
     historyMethod('replace', location, { scrollToTop: options?.scrollToTop }),
   goBack: () => history.back(),
+  // Add missing methods for React Router v6/v7 compatibility
+  createURL: (location: any) =>
+    new URL(history.createHref(location), window.location.origin),
+  encodeLocation: (location: any) => location,
+  // Wrap listen to add missing delta property
+  listen: (listener: any) => {
+    return history.listen((update: any) => {
+      listener({ ...update, delta: update.action === 'POP' ? -1 : 1 });
+    });
+  },
 };

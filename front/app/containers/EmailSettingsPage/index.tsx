@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Title, colors } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 

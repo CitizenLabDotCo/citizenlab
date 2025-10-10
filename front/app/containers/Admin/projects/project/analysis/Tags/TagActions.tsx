@@ -10,7 +10,7 @@ import {
   Box,
   IconButton,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import styled from 'styled-components';
 
 import useAddAnalysisBulkTagging from 'api/analysis_taggings/useAnalysisBulkTaggings';

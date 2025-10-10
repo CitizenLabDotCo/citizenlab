@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 import { SectionDescription, SectionTitle } from 'components/admin/Section';
 import Outlet from 'components/Outlet';

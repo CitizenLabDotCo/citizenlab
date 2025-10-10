@@ -8,7 +8,7 @@ import {
   stylingConsts,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 import { IBackgroundJobData } from 'api/background_jobs/types';
 import useTrackBackgroundJobs from 'api/background_jobs/useTrackBackgroundJobs';

@@ -9,7 +9,7 @@ import GlobalStyle from 'global-styles';
 import messages from 'i18n/en';
 import { HelmetProvider } from 'react-helmet-async';
 import { IntlProvider } from 'react-intl';
-import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
+import { unstable_HistoryRouter as HistoryRouter } from 'react-router';
 import { ThemeProvider } from 'styled-components';
 
 import { ModalQueueProvider } from 'containers/App/ModalQueue';

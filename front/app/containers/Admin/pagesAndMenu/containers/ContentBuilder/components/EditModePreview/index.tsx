@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { SupportedLocale } from 'typings';
 
 import useLocale from 'hooks/useLocale';

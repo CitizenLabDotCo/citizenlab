@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { WrappedComponentProps } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { CLErrors } from 'typings';
 
 import { ICustomPageAttributes } from 'api/custom_pages/types';

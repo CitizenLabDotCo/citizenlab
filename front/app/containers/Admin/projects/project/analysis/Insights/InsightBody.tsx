@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import styled from 'styled-components';
 
 import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';

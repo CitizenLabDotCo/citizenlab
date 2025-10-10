@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 import { ICustomPageAttributes } from 'api/custom_pages/types';
 import useCustomPageById from 'api/custom_pages/useCustomPageById';

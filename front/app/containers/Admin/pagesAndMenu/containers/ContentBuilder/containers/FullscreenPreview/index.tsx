@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { SupportedLocale } from 'typings';
 
 import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import useFiles from 'api/files/useFiles';

@@ -8,7 +8,7 @@ import {
   useBreakpoint,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { useTheme } from 'styled-components';
 
 import useBasket from 'api/baskets/useBasket';

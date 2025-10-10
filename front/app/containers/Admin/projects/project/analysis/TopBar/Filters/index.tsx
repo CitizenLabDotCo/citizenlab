@@ -7,7 +7,7 @@ import {
   Text,
   defaultStyles,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 import useAnalysis from 'api/analyses/useAnalysis';
 

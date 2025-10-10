@@ -10,7 +10,7 @@ import {
   Success,
 } from '@citizenlab/cl2-component-library';
 import { request, ErrorTypes, ApiKeyManager } from '@esri/arcgis-rest-request';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddMapLayer from 'api/map_layers/useAddMapLayer';

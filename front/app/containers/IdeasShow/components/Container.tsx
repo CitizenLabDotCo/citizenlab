@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 

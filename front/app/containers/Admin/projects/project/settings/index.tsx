@@ -1,11 +1,7 @@
 import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import {
-  Outlet as RouterOutlet,
-  useLocation,
-  useParams,
-} from 'react-router-dom';
+import { Outlet as RouterOutlet, useLocation, useParams } from 'react-router';
 import { ITab } from 'typings';
 
 import NavigationTabs, { Tab } from 'components/admin/NavigationTabs';

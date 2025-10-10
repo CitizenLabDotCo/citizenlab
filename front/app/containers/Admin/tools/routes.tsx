@@ -1,7 +1,7 @@
 import React, { lazy } from 'react';
 
 import moduleConfiguration from 'modules';
-import { Outlet as RouterOutlet } from 'react-router-dom';
+import { Outlet as RouterOutlet } from 'react-router';
 
 import HelmetIntl from 'components/HelmetIntl';
 import PageLoading from 'components/UI/PageLoading';

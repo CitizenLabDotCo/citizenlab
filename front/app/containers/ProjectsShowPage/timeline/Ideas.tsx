@@ -1,7 +1,7 @@
 import React, { lazy, Suspense, useMemo } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 
 import { IdeaSortMethod, IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';

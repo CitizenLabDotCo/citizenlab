@@ -10,7 +10,7 @@ import {
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 
 import useCommunityMonitorSentimentScores from 'api/community_monitor_scores/useCommunityMonitorSentimentScores';
 

@@ -1,5 +1,5 @@
 import { useNode } from '@craftjs/core';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router';
 
 import useGraphDataUnitsPublished from 'api/graph_data_units/useGraphDataUnitsPublished';
 

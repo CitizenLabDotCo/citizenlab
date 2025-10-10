@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';

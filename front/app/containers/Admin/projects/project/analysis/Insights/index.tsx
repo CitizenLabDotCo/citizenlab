@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';

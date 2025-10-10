@@ -8,7 +8,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { SupportedLocale } from 'typings';
 
 import useAddProjectDescriptionBuilderLayout from 'api/project_description_builder/useAddProjectDescriptionBuilderLayout';

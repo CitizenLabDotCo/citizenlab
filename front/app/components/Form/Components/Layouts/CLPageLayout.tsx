@@ -20,7 +20,7 @@ import {
   useJsonForms,
   JsonFormsDispatch,
 } from '@jsonforms/react';
-import { useLocation, useParams, useSearchParams } from 'react-router-dom';
+import { useLocation, useParams, useSearchParams } from 'react-router';
 import { useTheme } from 'styled-components';
 
 import { IIdea } from 'api/ideas/types';

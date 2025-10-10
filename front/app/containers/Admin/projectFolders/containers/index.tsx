@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
+import { Outlet as RouterOutlet, useParams } from 'react-router';
 import styled from 'styled-components';
 import { ITab } from 'typings';
 
