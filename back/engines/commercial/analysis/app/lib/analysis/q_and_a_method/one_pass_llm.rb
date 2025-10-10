@@ -65,11 +65,20 @@ module Analysis
         shorten_labels: plan.shorten_labels,
         include_comments: plan.include_comments
       )
-      prompt = prompt(analysis.source_project, inputs_text, plan.include_comments)
 
+      prompt = prompt(analysis.source_project, inputs_text, plan.include_comments)
       question.update!(prompt:)
 
-      plan.llm.chat_async(prompt) do |new_text|
+      messages = if file_ai_analysis_enabled?
+        [
+          LLM::Message.new(prompt.to_s, role: 'system'),
+          LLM::Message.new(question.question, *analysis.attached_files)
+        ]
+      else
+        LLM::Message.new(prompt.to_s)
+      end
+
+      plan.llm.chat_async(messages) do |new_text|
         update_answer([question.answer || '', new_text].join)
       end
     rescue StandardError => e
@@ -78,7 +87,12 @@ module Analysis
 
     def prompt(project, inputs_text, include_comments)
       project_title = MultilocService.new.t(project.title_multiloc)
-      LLM::Prompt.new.fetch('q_and_a', project_title:, question: question.question, inputs_text:, language: response_language, include_comments:)
+      filename = file_ai_analysis_enabled? ? 'q_and_a.v2' : 'q_and_a'
+
+      LLM::Prompt.new.fetch(
+        filename,
+        project_title:, question: question.question, inputs_text:, language: response_language, include_comments:
+      )
     end
 
     def response_language
@@ -88,6 +102,12 @@ module Analysis
                I18n.default_locale
 
       Locale.new(locale).language_copy
+    end
+
+    private
+
+    def file_ai_analysis_enabled?
+      @file_ai_analysis_enabled ||= AppConfiguration.instance.feature_activated?('data_repository_ai_analysis')
     end
   end
 end

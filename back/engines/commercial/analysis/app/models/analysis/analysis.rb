@@ -26,6 +26,8 @@
 #
 module Analysis
   class Analysis < ApplicationRecord
+    include Files::FileAttachable
+
     belongs_to :project, optional: true
     belongs_to :phase, optional: true
 

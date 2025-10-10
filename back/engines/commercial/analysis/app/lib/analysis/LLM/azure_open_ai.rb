@@ -8,6 +8,14 @@ module Analysis
     class AzureOpenAI < Base
       MAX_RETRIES = 20
 
+      SUPPORTED_IMAGE_TYPES = %w[
+        image/gif
+        image/jpeg
+        image/jpg
+        image/png
+        image/webp
+      ].freeze
+
       class << self
         def gpt_model
           raise NotImplementedError
@@ -104,8 +112,9 @@ module Analysis
 
       def format_input(input)
         case input
-        when String then format_text(input)
-        when Files::File then format_file(input)
+        in String then format_text(input)
+        in Files::File if input.image? then format_image(input)
+        in Files::File then format_file(input)
         else raise ArgumentError, <<~MSG.squish
           Unsupported content type: #{input.class}.
           Must be String or Files::File."
@@ -115,12 +124,38 @@ module Analysis
 
       # @param file [Files::File]
       def format_file(file)
-        encoded = Base64.strict_encode64(file.content.read)
+        # We use the PDF preview for non-PDF files because Azure OpenAI currently only
+        # supports PDFs as file inputs.
+        file_content = if file.mime_type == 'application/pdf'
+          file.content.read
+        elsif file.preview.nil? || file.preview.status == 'failed'
+          raise UnsupportedAttachmentError, file.mime_type
+        elsif file.preview.status == 'pending'
+          raise PreviewPendingError
+        else
+          file.preview.content.read
+        end
+
+        encoded = Base64.strict_encode64(file_content)
+        mime_type = 'application/pdf'
 
         {
           type: 'input_file',
           filename: file.name,
-          file_data: "data:#{file.mime_type};base64,#{encoded}"
+          file_data: "data:#{mime_type};base64,#{encoded}"
+        }
+      end
+
+      def format_image(file)
+        if file.mime_type.not_in?(SUPPORTED_IMAGE_TYPES)
+          raise UnsupportedAttachmentError, file.mime_type
+        end
+
+        encoded = Base64.strict_encode64(file.content.read)
+
+        {
+          type: 'input_image',
+          image_url: "data:#{file.mime_type};base64,#{encoded}"
         }
       end
 

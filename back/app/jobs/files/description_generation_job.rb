@@ -20,12 +20,12 @@ module Files
     UNRECOVERABLE_ERRORS = [
       RubyLLM::UnsupportedAttachmentError,
       RubyLLM::BadRequestError,
-      DescriptionGenerator::ImageSizeLimitExceededError
+      LLMFilePreprocessor::ImageSizeLimitExceededError
     ].freeze
 
     def handle_error(error)
       case error
-      when DescriptionGenerator::PreviewPendingError then retry_in(30.seconds)
+      when LLMFilePreprocessor::PreviewPendingError then retry_in(30.seconds)
       when *UNRECOVERABLE_ERRORS then expire
       else super
       end
