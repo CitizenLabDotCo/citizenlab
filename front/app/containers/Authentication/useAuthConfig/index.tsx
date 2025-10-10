@@ -4,14 +4,20 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
+import {
+  IVerificationMethod,
+  TVerificationMethodName,
+} from 'api/verification_methods/types';
 
 export default function useAuthConfig() {
   const { data: appConfiguration } = useAppConfiguration();
-  const { data: verificationMethods } = useVerificationMethods();
-  // TODO: JS - Only enable use verification methods if verification enabled in settings
   const appConfigurationSettings = appConfiguration?.data.attributes.settings;
 
-  // Allows testing of specific SSO providers without showing to all users
+  const { data: verificationMethods } = useVerificationMethods(
+    appConfigurationSettings?.verification?.enabled || false
+  );
+
+  // Allows testing of custom SSO providers without showing to all users
   // e.g. ?provider=keycloak
   const [searchParams] = useSearchParams();
   const providerForTest = searchParams.get('provider');
@@ -43,7 +49,7 @@ export default function useAuthConfig() {
   });
 
   // Custom SSO methods - found in the verification config
-  const isCustomSsoEnabled = (methodName) => {
+  const isCustomSsoEnabled = (methodName: TVerificationMethodName) => {
     return (
       verificationMethods?.data?.some(
         (method) => method.attributes?.name === methodName
