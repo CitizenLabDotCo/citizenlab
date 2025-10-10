@@ -2163,7 +2163,7 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "Beth ydych chi eisiau ei wneud?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Dewiswch sut y gall defnyddwyr gymryd rhan.",
   "app.containers.AdminPage.ProjectEdit.participationRequirementsSubtitle": "Gallwch nodi pwy all gymryd pob cam, a gofyn cwestiynau ychwanegol i gyfranogwyr er mwyn casglu rhagor o wybodaeth.",
-  "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Gofynion a chwestiynau cyfranogwyr",
+  "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle1": "Mynediad cyfnod a data defnyddwyr",
   "app.containers.AdminPage.ProjectEdit.phaseAccessRights2": "Mynediad cyfnod a data defnyddwyr",
   "app.containers.AdminPage.ProjectEdit.phaseEmails": "Hysbysiadau",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Pleidlais",
