@@ -77,10 +77,6 @@ export default defineConfig(({ mode }) => {
       },
     },
     plugins: [
-      tanstackRouter({
-        target: 'react',
-        autoCodeSplitting: true,
-      }),
       react(),
       commonjs(),
       tsconfigPaths(), // Support for TS path aliases
