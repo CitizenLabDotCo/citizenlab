@@ -46,7 +46,7 @@ const MapControl = ({ ...props }: ControlProps) => {
   const [mapView, setMapView] = useState<MapView | null>(null);
 
   // Get Project
-  const { slug } = useParams() as {
+  const { slug } = useParams({ strict: false }) as {
     slug: string;
   };
   const { data: project } = useProjectBySlug(slug);

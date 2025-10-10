@@ -31,7 +31,7 @@ interface Props {
 
 const TopBar = ({ onClickPDFImport, onClickExcelImport }: Props) => {
   const localize = useLocalize();
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };

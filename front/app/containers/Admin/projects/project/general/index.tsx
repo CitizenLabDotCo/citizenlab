@@ -85,7 +85,7 @@ export type TOnProjectAttributesDiffChangeFunction = (
 
 const AdminProjectsProjectGeneral = () => {
   const { formatMessage } = useIntl();
-  const { projectId } = useParams();
+  const { projectId } = useParams({ strict: false });
   const { data: project } = useProjectById(projectId);
 
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });

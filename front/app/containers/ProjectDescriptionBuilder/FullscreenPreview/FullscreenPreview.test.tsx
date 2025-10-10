@@ -46,7 +46,7 @@ jest.mock('@tanstack/react-router', () => {
     useParams: () => ({
       projectId: 'id',
     }),
-    useSearchParams: () => [
+    useSearch: () => [
       {
         get: () => mockLocale,
       },

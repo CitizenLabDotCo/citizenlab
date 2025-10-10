@@ -27,7 +27,7 @@ const ImportInputsModal = ({
   setShowPastInputsModal,
   currentPhaseid,
 }: Props) => {
-  const { projectId: currentProjectId } = useParams();
+  const { projectId: currentProjectId } = useParams({ strict: false });
   const { formatMessage } = useIntl();
   const [selectedProjectId, setSelectedProjectId] = useState<
     string | undefined

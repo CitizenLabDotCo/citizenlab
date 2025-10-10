@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Spinner } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from '@tanstack/react-router';
+import { useParams, useSearch } from '@tanstack/react-router';
 
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
@@ -24,7 +24,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import IdeasNewIdeationForm from './IdeasNewIdeationForm';
 
 const IdeasNewPage = () => {
-  const { slug } = useParams();
+  const { slug } = useParams({ strict: false });
   const {
     data: project,
     status: projectStatus,
@@ -32,7 +32,7 @@ const IdeasNewPage = () => {
   } = useProjectBySlug(slug);
   const { data: authUser } = useAuthUser();
   const { data: phases, status: phasesStatus } = usePhases(project?.data.id);
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const phaseIdFromSearchParams = searchParams.get('phase_id');
   // If we reach this component by hitting ideas/new directly, without a phase_id,
   // we'll still get to this component, so we try to get the phase id from getCurrentPhase.

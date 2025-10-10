@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useSearchParams } from '@tanstack/react-router';
+import { useSearch } from '@tanstack/react-router';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
@@ -19,7 +19,7 @@ const ConsentManager = () => {
   const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
 
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const from = searchParams.get('from');
 
   const isConsentRequired = useConsentRequired();

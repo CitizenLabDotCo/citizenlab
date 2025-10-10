@@ -24,7 +24,7 @@ type Props = {
 
 const Step2LabelClassification = ({ onLaunch }: Props) => {
   const { formatMessage } = useIntl();
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
   const { data: tags } = useAnalysisTags({ analysisId });
 
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);

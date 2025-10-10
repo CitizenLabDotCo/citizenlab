@@ -57,7 +57,7 @@ const TabPanel = ({
 };
 
 export default () => {
-  const { projectId, phaseId } = useParams();
+  const { projectId, phaseId } = useParams({ strict: false });
 
   if (!projectId || !phaseId) {
     return null;

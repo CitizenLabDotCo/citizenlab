@@ -1,4 +1,4 @@
-import { useLocation, useSearchParams } from '@tanstack/react-router';
+import { useLocation, useSearch } from '@tanstack/react-router';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
@@ -10,7 +10,7 @@ export default function useAuthConfig() {
 
   // Allows testing of specific SSO providers without showing to all users
   // e.g. ?provider=keycloak
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const providerForTest = searchParams.get('provider');
 
   // Allows super admins to sign in with password when password login is disabled

@@ -28,7 +28,7 @@ interface FilterProps {
 }
 
 const Filters = ({ onClose }: FilterProps) => {
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
   const { data: analysis } = useAnalysis(analysisId);
   const { formatMessage } = useIntl();
 

@@ -25,7 +25,7 @@ const AdminIdeaEdit = ({
   ideaId: string;
   goBack: () => void;
 }) => {
-  const { phaseId } = useParams() as { phaseId: string };
+  const { phaseId } = useParams({ strict: false }) as { phaseId: string };
   const theme = useTheme();
   const { data: idea } = useIdeaById(ideaId);
   const { data: phase } = usePhase(phaseId);

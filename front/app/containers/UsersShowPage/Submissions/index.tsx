@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from '@tanstack/react-router';
+import { useParams, useSearch } from '@tanstack/react-router';
 
 import { IdeaSortMethod } from 'api/phases/types';
 import { IdeaSortMethodFallback } from 'api/phases/utils';
@@ -26,9 +26,9 @@ interface QueryParameters {
 }
 
 const Submissions = () => {
-  const { userSlug } = useParams() as { userSlug: string };
+  const { userSlug } = useParams({ strict: false }) as { userSlug: string };
   const { data: user } = useUserBySlug(userSlug);
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const sortParam = searchParams.get('sort') as IdeaSortMethod | null;
   const { data: ideasCount } = useUserIdeasCount({ userId: user?.data.id });
   const isSmallerThanPhone = useBreakpoint('phone');

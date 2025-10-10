@@ -9,7 +9,7 @@ import { START_DATE_PAGEVIEW_AND_EXPANDED_SESSION_DATA_COLLECTION as LOWER_BOUND
 import TrafficDatesRange from './TrafficDatesRange';
 
 const ProjectTraffic = () => {
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { data: phases } = usePhases(projectId);
   if (!phases) return null;
 

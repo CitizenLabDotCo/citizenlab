@@ -19,7 +19,7 @@ const UserFieldsInFormNotice = ({
   communityMonitor = false,
 }: UserFieldsInFormNoticeProps) => {
   const { formatMessage } = useIntl();
-  const { phaseId, projectId } = useParams() as {
+  const { phaseId, projectId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };

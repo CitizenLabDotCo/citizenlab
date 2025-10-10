@@ -9,7 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import JSConfetti from 'js-confetti';
 import { isError } from 'lodash-es';
-import { useParams, useSearchParams } from '@tanstack/react-router';
+import { useParams, useSearch } from '@tanstack/react-router';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -79,7 +79,7 @@ const ProjectsShowPage = ({ project }: Props) => {
   const { data: appConfig } = useAppConfiguration();
   const { data: phases } = usePhases(projectId);
 
-  const [search] = useSearchParams();
+  const [search] = useSearch({ strict: false });
   const scrollToStatusModule = search.get('scrollToStatusModule');
   const scrollToIdeas = search.get('scrollToIdeas');
 
@@ -179,7 +179,7 @@ const ProjectsShowPage = ({ project }: Props) => {
 };
 
 const ProjectsShowPageWrapper = () => {
-  const { slug, phaseNumber } = useParams();
+  const { slug, phaseNumber } = useParams({ strict: false });
   const {
     data: project,
     status: statusProject,

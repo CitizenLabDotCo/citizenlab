@@ -66,7 +66,7 @@ interface Props {
 const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
   const { formatMessage } = useIntl();
   const { data: phases } = usePhases(projectId);
-  const { phaseNumber } = useParams();
+  const { phaseNumber } = useParams({ strict: false });
   const { data: project } = useProjectById(projectId);
 
   const selectedPhase = useMemo(() => {

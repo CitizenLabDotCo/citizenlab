@@ -67,7 +67,7 @@ const FilterSidebar = ({
   visibleFilterMenus,
   type,
 }: Props) => {
-  const { projectId } = useParams();
+  const { projectId } = useParams({ strict: false });
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
   const handleItemClick = (id: string) => {

@@ -22,7 +22,7 @@ import messages from './messages';
 import { isPDFUploadSupported, supportsNativeSurvey } from './utils';
 
 const EmptyState = () => {
-  const { phaseId } = useParams() as {
+  const { phaseId } = useParams({ strict: false }) as {
     phaseId: string;
   };
   const { data: phase } = usePhase(phaseId);

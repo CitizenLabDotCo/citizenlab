@@ -7,7 +7,7 @@ import {
   Icon,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from '@tanstack/react-router';
+import { useParams, useSearch } from '@tanstack/react-router';
 import { Multiloc } from 'typings';
 
 import { IIdeaData } from 'api/ideas/types';
@@ -37,11 +37,13 @@ const SimilarIdeasList = ({
 }) => {
   const { formatMessage } = useIntl();
   const currentLocale = useLocale();
-  const { slug: projectSlug, projectId: urlProjectId } = useParams() as {
+  const { slug: projectSlug, projectId: urlProjectId } = useParams({
+    strict: false,
+  }) as {
     slug?: string;
     projectId?: string;
   };
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const { ideaId: idea_id } = useParams<{
     ideaId?: string;
   }>();

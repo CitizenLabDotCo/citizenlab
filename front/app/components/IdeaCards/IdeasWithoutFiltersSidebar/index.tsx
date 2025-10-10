@@ -7,7 +7,7 @@ import {
   isRtl,
   Box,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from '@tanstack/react-router';
+import { useSearch } from '@tanstack/react-router';
 import styled from 'styled-components';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
@@ -105,7 +105,7 @@ const IdeasWithoutFiltersSidebar = ({
   showDropdownFilters,
   showSearchbar,
 }: Props) => {
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const selectedIdeaMarkerId = searchParams.get('idea_map_id');
   const smallerThanTablet = useBreakpoint('tablet');
   const smallerThanPhone = useBreakpoint('phone');

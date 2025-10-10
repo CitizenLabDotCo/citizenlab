@@ -67,7 +67,7 @@ import { initializeEventTimes } from './utils';
 const EventMap = lazy(() => import('./components/EventMap'));
 
 const AdminProjectEventEdit = () => {
-  const { id: eventId, projectId } = useParams();
+  const { id: eventId, projectId } = useParams({ strict: false });
 
   const isCreatingNewEvent = !eventId;
 

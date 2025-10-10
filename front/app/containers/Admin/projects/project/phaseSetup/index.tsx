@@ -494,7 +494,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
 };
 
 const AdminPhaseEditWrapper = () => {
-  const { projectId, phaseId } = useParams();
+  const { projectId, phaseId } = useParams({ strict: false });
   const { data: phase } = usePhase(phaseId);
 
   if (!projectId) return null;

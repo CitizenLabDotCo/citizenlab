@@ -29,7 +29,7 @@ const PAGE_SIZE = 10;
 
 const Table = () => {
   const { formatMessage } = useIntl();
-  const params = useParams();
+  const params = useParams({ strict: false });
 
   const {
     data,

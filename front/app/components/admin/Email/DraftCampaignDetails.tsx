@@ -25,7 +25,7 @@ interface Props {
 }
 
 const DraftCampaignDetails = ({ campaign }: Props) => {
-  const { projectId } = useParams();
+  const { projectId } = useParams({ strict: false });
   const { formatMessage } = useIntl();
   const { mutate: deleteCampaign, isLoading } = useDeleteCampaign();
 

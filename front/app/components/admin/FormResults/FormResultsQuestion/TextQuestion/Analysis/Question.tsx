@@ -37,7 +37,7 @@ const Question = ({
   });
 
   const { data } = useAnalysisQuestion({ analysisId, id: questionId });
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };

@@ -34,7 +34,9 @@ const PAGE_SIZE = 10;
 
 const Table = () => {
   const { formatMessage } = useIntl();
-  const { sort, participation_methods, ...params } = useParams();
+  const { sort, participation_methods, ...params } = useParams({
+    strict: false,
+  });
 
   const {
     data,

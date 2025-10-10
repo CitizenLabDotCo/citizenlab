@@ -23,7 +23,7 @@ const QuestionButton = ({ onClick }: { onClick: () => void }) => {
   const { formatMessage } = useIntl();
   const { mutate: addQuestionPreCheck, isLoading: isLoadingPreCheck } =
     useAddAnalysisQuestionPreCheck();
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
   const filters = useAnalysisFilterParams();
 
   const [preCheck, setPreCheck] = useState<IQuestionPreCheck | null>(null);

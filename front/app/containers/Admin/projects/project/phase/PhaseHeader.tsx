@@ -68,7 +68,7 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
   const [isDropdownOpened, setDropdownOpened] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { mutate: deletePhase } = useDeletePhase();
-  const { projectId } = useParams() as {
+  const { projectId } = useParams({ strict: false }) as {
     projectId: string;
   };
   const { data: permissions } = usePhasePermissions({ phaseId: phase.id });

@@ -47,7 +47,7 @@ const Tasks = () => {
   const { formatMessage } = useIntl();
   const [isDropdownOpened, setIsDropdownOpened] = useState(false);
 
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
   const { data: tasks } = useAnalysisBackgroundTasks(analysisId);
 
   const locale = useLocale();

@@ -61,14 +61,14 @@ export enum pagesAndMenuRoutes {
   homepageBuilderPreview = 'homepage-builder/preview',
   pages = 'pages',
   pagesNew = 'new',
-  customPageId = ':customPageId',
+  customPageId = '$customPageId',
   pageSettings = 'settings',
   pageContent = 'content',
-  customPageIdBanner = ':customPageId/banner',
-  customPageIdTopInfoSection = ':customPageId/top-info-section',
-  customPageIdBottomInfoSection = ':customPageId/bottom-info-section',
-  customPageIdAttachments = ':customPageId/attachments',
-  customPageIdProjects = ':customPageId/projects',
+  customPageIdBanner = '$customPageId/banner',
+  customPageIdTopInfoSection = '$customPageId/top-info-section',
+  customPageIdBottomInfoSection = '$customPageId/bottom-info-section',
+  customPageIdAttachments = '$customPageId/attachments',
+  customPageIdProjects = '$customPageId/projects',
 }
 
 export type pagesAndMenuRouteTypes =
@@ -196,7 +196,7 @@ export default () => ({
       ],
     },
     {
-      path: 'navbar-items/edit/:navbarItemId',
+      path: 'navbar-items/edit/$navbarItemId',
       element: <EditNavbarItemForm />,
     },
   ],

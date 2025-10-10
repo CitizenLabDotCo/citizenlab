@@ -40,7 +40,9 @@ const UserSelectSection = styled.section`
 `;
 
 const FolderPermissions = () => {
-  const { projectFolderId } = useParams() as { projectFolderId: string };
+  const { projectFolderId } = useParams({ strict: false }) as {
+    projectFolderId: string;
+  };
   const { mutate: deleteFolderModerator, isLoading: deleteIsLoading } =
     useDeleteProjectFolderModerator();
   const { mutate: addFolderModerator, isLoading: addIsLoading } =

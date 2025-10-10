@@ -9,7 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
-import { useParams, useSearchParams } from '@tanstack/react-router';
+import { useParams, useSearch } from '@tanstack/react-router';
 import { SupportedLocale } from 'typings';
 import { object, mixed, boolean } from 'yup';
 
@@ -49,14 +49,14 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
   const { formatMessage } = useIntl();
   const { mutateAsync: addOfflineIdeas, isLoading } = useAddOfflineIdeasAsync();
   const locale = useLocale();
-  const { phaseId } = useParams();
+  const { phaseId } = useParams({ strict: false });
   const { data: phase } = usePhase(phaseId);
-  const { projectId } = useParams() as {
+  const { projectId } = useParams({ strict: false }) as {
     projectId: string;
   };
 
   // TEMP: Remove this when the legacy PDF format is no longer required
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const legacyPdfImport = searchParams.get('legacy_pdf') !== null;
 
   const downloadFormPath =

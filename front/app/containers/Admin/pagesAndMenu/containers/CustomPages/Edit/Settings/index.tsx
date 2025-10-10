@@ -29,7 +29,9 @@ const customPageSlugAllowedToEdit: { [key in TCustomPageCode]: boolean } = {
 
 const EditCustomPageSettings = () => {
   const { mutateAsync: updateCustomPage } = useUpdateCustomPage();
-  const { customPageId } = useParams() as { customPageId: string };
+  const { customPageId } = useParams({ strict: false }) as {
+    customPageId: string;
+  };
   const { data: customPage } = useCustomPageById(customPageId);
 
   if (!isNilOrError(customPage)) {

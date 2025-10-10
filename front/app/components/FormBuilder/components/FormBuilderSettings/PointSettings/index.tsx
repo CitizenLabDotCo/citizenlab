@@ -44,7 +44,7 @@ type Props = {
 };
 
 const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId?: string;
   };

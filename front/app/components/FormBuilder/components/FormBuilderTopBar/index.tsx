@@ -63,7 +63,7 @@ const FormBuilderTopBar = ({
 }: FormBuilderTopBarProps) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const { projectId } = useParams() as {
+  const { projectId } = useParams({ strict: false }) as {
     projectId: string;
   };
   const { data: project } = useProjectById(projectId);

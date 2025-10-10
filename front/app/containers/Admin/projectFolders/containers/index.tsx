@@ -37,7 +37,9 @@ type TabbedPropsType = {
 };
 
 const AdminProjectFolderEdition = () => {
-  const { projectFolderId } = useParams() as { projectFolderId: string };
+  const { projectFolderId } = useParams({ strict: false }) as {
+    projectFolderId: string;
+  };
   const { data: projectFolder } = useProjectFolderById(projectFolderId);
   const { data: authUser } = useAuthUser();
   const localize = useLocalize();

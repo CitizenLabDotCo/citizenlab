@@ -39,7 +39,7 @@ const submitBarHeight = '62px';
 
 const ProjectDescription = () => {
   const { formatMessage } = useIntl();
-  const { projectId } = useParams();
+  const { projectId } = useParams({ strict: false });
   const { data: project } = useProjectById(projectId);
   const { mutate: updateProject, isLoading, error } = useUpdateProject();
   const showProjectDescriptionBuilder = useFeatureFlag({

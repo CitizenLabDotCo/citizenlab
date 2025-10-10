@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { Box, Text, Button, colors } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from '@tanstack/react-router';
+import { useSearch } from '@tanstack/react-router';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -9,7 +9,7 @@ import messages from '../messages';
 
 const QuarterlyDatePicker = () => {
   const { formatMessage } = useIntl();
-  const [search, setSearchParams] = useSearchParams();
+  const [search, setSearchParams] = useSearch({ strict: false });
 
   // Check if initial year and quarter set in URL
   const initialYear = search.get('year');

@@ -43,7 +43,7 @@ interface Props {
 }
 
 const CustomMapConfigPage = memo<Props>(({ className, passedMapConfig }) => {
-  const { projectId } = useParams() as {
+  const { projectId } = useParams({ strict: false }) as {
     projectId: string;
   };
   const { data: appConfig } = useAppConfiguration();

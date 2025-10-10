@@ -35,7 +35,7 @@ const StyledContentContainer = styled(ContentContainer)`
 `;
 
 const UsersShowPage = () => {
-  const { userSlug } = useParams() as { userSlug: string };
+  const { userSlug } = useParams({ strict: false }) as { userSlug: string };
   const { data: user } = useUserBySlug(userSlug);
 
   if (!user) return null;

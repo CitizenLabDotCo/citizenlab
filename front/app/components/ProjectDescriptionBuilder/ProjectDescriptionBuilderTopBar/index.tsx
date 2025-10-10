@@ -48,7 +48,7 @@ const ProjectDescriptionBuilderTopBar = ({
   hasError,
   hasPendingState,
 }: ProjectDescriptionBuilderTopBarProps) => {
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
 
   const { query } = useEditor();
   const localize = useLocalize();

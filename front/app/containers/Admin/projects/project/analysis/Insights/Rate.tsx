@@ -17,7 +17,7 @@ import messages from './messages';
 
 const Rate = ({ insightId }: { insightId: string }) => {
   const { formatMessage } = useIntl();
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
   const { mutate: rateAnalysisInsight } = useRateAnalysisInsight();
   const [rated, setRated] = useState(false);
 

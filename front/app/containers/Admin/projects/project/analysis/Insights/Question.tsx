@@ -7,7 +7,7 @@ import {
   IconTooltip,
   Divider,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from '@tanstack/react-router';
+import { useParams, useSearch } from '@tanstack/react-router';
 
 import { IInsightData } from 'api/analysis_insights/types';
 import useDeleteAnalysisInsight from 'api/analysis_insights/useDeleteAnalysisInsight';
@@ -32,9 +32,9 @@ type Props = {
 
 const Question = ({ insight }: Props) => {
   const [isCopied, setIsCopied] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearch({ strict: false });
   const { formatMessage } = useIntl();
-  const { analysisId, projectId } = useParams() as {
+  const { analysisId, projectId } = useParams({ strict: false }) as {
     analysisId: string;
     projectId: string;
   };

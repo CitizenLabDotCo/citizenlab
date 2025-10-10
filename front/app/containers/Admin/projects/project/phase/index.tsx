@@ -85,7 +85,7 @@ const AdminProjectPhaseIndex = ({
 };
 
 export default () => {
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId?: string;
   };

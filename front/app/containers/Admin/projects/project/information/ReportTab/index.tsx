@@ -21,7 +21,7 @@ import messages from './messages';
 import ReportPreview from './ReportPreview';
 
 const ReportTab = () => {
-  const { phaseId } = useParams();
+  const { phaseId } = useParams({ strict: false });
   const { data: phase } = usePhase(phaseId);
   const { data: report } = useReport(
     phase?.data.relationships.report?.data?.id

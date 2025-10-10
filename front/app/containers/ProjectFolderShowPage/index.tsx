@@ -167,7 +167,7 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
 };
 
 const ProjectFolderShowPageWrapper = () => {
-  const { slug } = useParams();
+  const { slug } = useParams({ strict: false });
   const { data: projectFolder, status, error } = useProjectFolderBySlug(slug);
 
   if (status === 'loading') {

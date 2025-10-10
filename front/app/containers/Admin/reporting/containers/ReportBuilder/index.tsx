@@ -2,11 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import {
-  useLocation,
-  useParams,
-  useSearchParams,
-} from '@tanstack/react-router';
+import { useLocation, useParams, useSearch } from '@tanstack/react-router';
 import { SupportedLocale } from 'typings';
 
 import { ReportLayout } from 'api/report_layout/types';
@@ -175,11 +171,11 @@ const ReportBuilder = ({ report, reportLayout, templateConfig }: Props) => {
 const ReportBuilderWrapper = () => {
   const reportBuilderEnabled = useReportBuilderEnabled();
   const { pathname } = useLocation();
-  const { reportId } = useParams();
+  const { reportId } = useParams({ strict: false });
   const { data: report } = useReport(reportId);
   const { data: reportLayout } = useReportLayout(reportId);
 
-  const [search] = useSearchParams();
+  const [search] = useSearch({ strict: false });
   const [templateProjectId] = useState(search.get('templateProjectId'));
   const [templatePhaseId] = useState(search.get('templatePhaseId'));
   const [startDatePlatformReport] = useState(

@@ -33,7 +33,7 @@ const ProjectDescriptionBuilderPage = () => {
   const [selectedLocale, setSelectedLocale] = useState(locale);
   const [draftData, setDraftData] = useState<Record<string, SerializedNodes>>();
   const { pathname } = useLocation();
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
 
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 

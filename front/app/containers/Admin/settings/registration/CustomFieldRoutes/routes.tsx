@@ -27,11 +27,11 @@ const AdminCustomFieldRegistrationOptionsEditComponent = React.lazy(
 export enum customFieldRouteEnum {
   customFields = 'custom-fields',
   new = 'new',
-  customFieldsId = ':userCustomFieldId',
+  customFieldsId = '$userCustomFieldId',
   fieldSettings = 'field-settings',
   options = 'options',
   optionsNew = 'options/new',
-  userCustomFieldOptionId = 'options/:userCustomFieldOptionId',
+  userCustomFieldOptionId = 'options/$userCustomFieldOptionId',
 }
 
 export type customFieldRouteTypes =

@@ -6,7 +6,7 @@ import {
   colors,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from '@tanstack/react-router';
+import { useSearch } from '@tanstack/react-router';
 import styled from 'styled-components';
 
 import { IdeaQueryParameters } from 'api/ideas/types';
@@ -77,7 +77,7 @@ const PageTitle = styled.h1`
 `;
 
 export default () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const sortParam = searchParams.get('sort') as IdeaSortMethod | null;
   const searchParam = searchParams.get('search');
   const ideaStatusParam = searchParams.get('idea_status');

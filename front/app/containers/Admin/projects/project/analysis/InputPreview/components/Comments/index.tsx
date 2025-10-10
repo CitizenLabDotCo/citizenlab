@@ -41,7 +41,7 @@ const Comments = () => {
     pageSize: 5,
   });
 
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
   const { data: input } = useAnalysisInput(
     analysisId,
     selectedInputId ?? undefined

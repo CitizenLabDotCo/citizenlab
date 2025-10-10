@@ -28,7 +28,9 @@ const Comments = ({
   const isTabletOrSmaller = useBreakpoint('tablet');
 
   // Get the relevant project and phase id from the URL
-  const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams() as {
+  const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams({
+    strict: false,
+  }) as {
     projectId: string;
     phaseId: string;
   };

@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { FormProvider } from 'react-hook-form';
-import { useLocation, useSearchParams } from '@tanstack/react-router';
+import { useLocation, useSearch } from '@tanstack/react-router';
 import styled from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
@@ -82,7 +82,7 @@ const SurveyPage = ({
   const isMapPage = page.page_layout === 'map';
   const isMobileOrSmaller = useBreakpoint('phone');
 
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const ideaId = (initialIdeaId || searchParams.get('idea_id')) ?? undefined;
   const { data: idea } = useIdeaById(ideaId);
 

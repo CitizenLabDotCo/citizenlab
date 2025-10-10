@@ -27,7 +27,9 @@ const ProjectList = () => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  const { customPageId } = useParams() as { customPageId: string };
+  const { customPageId } = useParams({ strict: false }) as {
+    customPageId: string;
+  };
   const { data: customPage } = useCustomPageById(customPageId);
 
   if (isNilOrError(customPage)) {

@@ -13,7 +13,7 @@ import messages from './messages';
 
 const ResetParticipationData = () => {
   const [modalOpened, setModalOpened] = useState(false);
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { mutate: resetProject, isLoading: isProjectResetLoading } =
     useResetProject();
 

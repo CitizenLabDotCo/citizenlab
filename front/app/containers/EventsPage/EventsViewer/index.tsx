@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import { MessageDescriptor } from 'react-intl';
-import { useSearchParams } from '@tanstack/react-router';
+import { useSearch } from '@tanstack/react-router';
 import styled from 'styled-components';
 
 import useEvents from 'api/events/useEvents';
@@ -81,7 +81,7 @@ const EventsViewer = ({
   attendeeId,
   showDateFilter = true,
 }: Props) => {
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const { formatMessage } = useIntl();
 
   // Get any URL params

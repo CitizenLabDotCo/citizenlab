@@ -30,7 +30,7 @@ const AnalysisBanner = () => {
   const { mutate: updateAnalysis, isLoading: isUpdateLoading } =
     useUpdateAnalysis();
 
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };

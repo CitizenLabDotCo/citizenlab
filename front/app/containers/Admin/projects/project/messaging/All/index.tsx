@@ -26,7 +26,7 @@ import messages from '../messages';
 import NewCampaignButton from './NewCampaignButton';
 
 const CustomEmails = () => {
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
   const [currentPage, setCurrentPage] = useState(1);
   const { data: campaigns, fetchNextPage } = useCampaigns({
     context: { projectId },

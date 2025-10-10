@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { useBreakpoint, Box, Title } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from '@tanstack/react-router';
+import { useSearch } from '@tanstack/react-router';
 import { RouteType } from 'routes';
 
 import useIdeaImage from 'api/idea_images/useIdeaImage';
@@ -69,7 +69,7 @@ const IdeaCard = ({
   const ideaTitle = localize(idea.data.attributes.title_multiloc, {
     maxChar: 50,
   });
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const scrollToCardParam = searchParams.get('scroll_to_card');
 
   useEffect(() => {

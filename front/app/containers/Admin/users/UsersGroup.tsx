@@ -33,7 +33,7 @@ const UsersGroup = () => {
   const queryClient = useQueryClient();
   const isVerificationEnabled = useFeatureFlag({ name: 'verification' });
   const { formatMessage } = useIntl();
-  const { groupId } = useParams() as { groupId: string };
+  const { groupId } = useParams({ strict: false }) as { groupId: string };
   const { data: group } = useGroup(groupId);
   const { mutateAsync: deleteMembershipByUserId } = useDeleteMembership();
   const { mutateAsync: updateGroup } = useUpdateGroup();

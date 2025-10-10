@@ -34,7 +34,7 @@ const CommunityMonitor = lazy(() => import('./index'));
 
 export enum communityMonitorRoutes {
   communityMonitor = 'community-monitor',
-  communityMonitorSurveyEdit = 'projects/:projectId/phases/:phaseId/survey/edit',
+  communityMonitorSurveyEdit = 'projects/$projectId/phases/$phaseId/survey/edit',
   communityMonitorDefault = '',
   liveMonitor = 'live-monitor',
   participants = 'participants',

@@ -42,7 +42,7 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
     useDeleteAnalysisTag();
   const { mutate: bulkAddTaggings, isLoading: bulkTaggingIsLoading } =
     useAddAnalysisBulkTagging();
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
   const filters = useAnalysisFilterParams();
 
   const { formatMessage } = useIntl();

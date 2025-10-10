@@ -12,6 +12,7 @@ import {
   createRootRoute,
   createRoute,
   createRouter,
+  Route,
   RouterProvider,
 } from '@tanstack/react-router';
 import modules from 'modules';
@@ -52,7 +53,7 @@ type LegacyRoutes = typeof legacyRoutes;
 const setupRouter = (legacyRoutes: LegacyRoutes) => {
   const rootRoute = createRootRoute();
 
-  const children: any[] = [];
+  const children: Route[] = [];
 
   legacyRoutes.forEach((legacyRoute) => {
     const route = createRoute({
@@ -61,7 +62,7 @@ const setupRouter = (legacyRoutes: LegacyRoutes) => {
       component: findComponent(legacyRoute),
     });
 
-    children.push(route);
+    children.push(route as any);
   });
 
   const routeTree = rootRoute.addChildren(children);

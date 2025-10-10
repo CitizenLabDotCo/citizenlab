@@ -20,7 +20,7 @@ import messages from './messages';
 const Settings = () => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
   const tabs: ITab[] = [
     {
       label: formatMessage(messages.general),

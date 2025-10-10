@@ -19,7 +19,7 @@ import messages from './messages';
 import Users from './Users';
 
 const ProjectParticipation = () => {
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { pathname } = useLocation();
   const { formatMessage } = useIntl();
   const { data: phases } = usePhases(projectId);

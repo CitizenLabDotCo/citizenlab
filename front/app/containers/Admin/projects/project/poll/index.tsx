@@ -28,7 +28,7 @@ const PhaseContainer = styled.div`
 `;
 
 const AdminProjectPoll = () => {
-  const { phaseId } = useParams() as {
+  const { phaseId } = useParams({ strict: false }) as {
     phaseId?: string;
   };
   const { data: phase } = usePhase(phaseId);

@@ -26,7 +26,7 @@ type ContentSettingsProps = {
 };
 
 const ContentSettings = ({ field }: ContentSettingsProps) => {
-  const { projectId } = useParams();
+  const { projectId } = useParams({ strict: false });
 
   const locales = useAppConfigurationLocales();
   const { watch } = useFormContext();

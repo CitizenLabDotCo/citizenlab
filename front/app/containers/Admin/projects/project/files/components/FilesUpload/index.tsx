@@ -31,7 +31,7 @@ const MAX_FILES = 35;
 
 const FilesUpload = ({ setModalOpen, setShowFirstUploadView }: Props) => {
   const { formatMessage } = useIntl();
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
 
   const [fileList, setFileList] = useState<FileWithMeta[]>([]);
   const [hasStartedUploading, setHasStartedUploading] = useState(false);

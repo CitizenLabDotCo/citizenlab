@@ -84,46 +84,46 @@ export function adminProjectsProjectPath(projectId: string): RouteType {
 export enum projectsRoutes {
   projects = 'projects',
   new = 'new',
-  projectIdeaId = ':projectId/ideas/:ideaId',
-  projectSettings = ':projectId/settings',
+  projectIdeaId = '$projectId/ideas/$ideaId',
+  projectSettings = '$projectId/settings',
   projectTraffic = 'traffic',
   projectParticipation = 'participation',
   projectParticipationDemographics = 'participation/demographics',
   projectSettingsDescription = 'description',
   projectMessaging = 'messaging',
   projectMessagingNew = 'messaging/new',
-  projectMessagingEdit = 'messaging/:campaignId/edit',
-  projectMessagingShow = 'messaging/:campaignId',
+  projectMessagingEdit = 'messaging/$campaignId/edit',
+  projectMessagingShow = 'messaging/$campaignId',
   projectFiles = 'files',
   projectEvents = 'events',
   projectEventsNew = 'events/new',
-  projectEventsId = 'events/:id',
+  projectEventsId = 'events/$id',
   projectSettingsTags = 'tags',
   projectSettingsAccessRights = 'access-rights',
   projectSettingsData = 'data',
-  projectId = ':projectId',
+  projectId = '$projectId',
   projectIdPhases = 'phases',
   projectPhasesSetup = 'setup',
-  projectPhaseSetup = ':phaseId/setup',
-  projectPhase = ':phaseId',
-  projectPhaseExternalSurveyResults = ':phaseId/survey-results',
-  projectPhasePolls = ':phaseId/polls',
-  projectPhaseAccessRights = ':phaseId/access-rights',
-  projectPhaseEmails = ':phaseId/emails',
-  projectPhaseIdeas = ':phaseId/ideas',
-  projectPhaseProposals = ':phaseId/proposals',
-  projectPhaseIdeaForm = ':phaseId/form',
-  projectPhaseVolunteering = ':phaseId/volunteering',
-  projectPhaseMap = ':phaseId/map',
-  projectPhaseNativeSurveyResults = ':phaseId/results',
-  projectPhaseSurveyForm = ':phaseId/survey-form',
-  projectPhaseNativeSurveyFormEdit = ':phaseId/survey-form/edit',
-  projectPhaseVolunteeringNewCause = ':phaseId/volunteering/causes/new',
-  projectPhaseIdeaFormEdit = ':phaseId/form/edit',
-  projectPhaseVolunteeringCause = ':phaseId/volunteering/causes/:causeId',
-  projectPhaseInputImporter = ':phaseId/input-importer',
-  projectPhaseReport = ':phaseId/report',
-  projectAnalysis = 'analysis/:analysisId',
+  projectPhaseSetup = '$phaseId/setup',
+  projectPhase = '$phaseId',
+  projectPhaseExternalSurveyResults = '$phaseId/survey-results',
+  projectPhasePolls = '$phaseId/polls',
+  projectPhaseAccessRights = '$phaseId/access-rights',
+  projectPhaseEmails = '$phaseId/emails',
+  projectPhaseIdeas = '$phaseId/ideas',
+  projectPhaseProposals = '$phaseId/proposals',
+  projectPhaseIdeaForm = '$phaseId/form',
+  projectPhaseVolunteering = '$phaseId/volunteering',
+  projectPhaseMap = '$phaseId/map',
+  projectPhaseNativeSurveyResults = '$phaseId/results',
+  projectPhaseSurveyForm = '$phaseId/survey-form',
+  projectPhaseNativeSurveyFormEdit = '$phaseId/survey-form/edit',
+  projectPhaseVolunteeringNewCause = '$phaseId/volunteering/causes/new',
+  projectPhaseIdeaFormEdit = '$phaseId/form/edit',
+  projectPhaseVolunteeringCause = '$phaseId/volunteering/causes/$causeId',
+  projectPhaseInputImporter = '$phaseId/input-importer',
+  projectPhaseReport = '$phaseId/report',
+  projectAnalysis = 'analysis/$analysisId',
 }
 
 export type projectsRouteTypes =
@@ -256,7 +256,7 @@ const createAdminProjectsRoutes = () => {
             <AdminProjectsProjectIndex />
           </PageLoading>
         ),
-        // all routes under /admin/projects/:projectId
+        // all routes under /admin/projects/$projectId
         children: [
           {
             path: '',
@@ -373,7 +373,7 @@ const createAdminProjectsRoutes = () => {
                 <AdminProjectPhaseIndex />
               </PageLoading>
             ),
-            // all routes under /admin/projects/:projectId/phases
+            // all routes under /admin/projects/$projectId/phases
             children: [
               {
                 path: projectsRoutes.projectPhasesSetup,
@@ -450,7 +450,7 @@ const createAdminProjectsRoutes = () => {
                 ),
               },
               {
-                path: ':phaseId/emails/:campaignId/edit',
+                path: '$phaseId/emails/$campaignId/edit',
                 element: <EmailsEdit campaignType="automated" />,
               },
               {

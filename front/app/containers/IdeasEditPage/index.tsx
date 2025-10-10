@@ -15,7 +15,7 @@ import { usePermission } from 'utils/permissions';
 import IdeasEditForm from './IdeasEditForm';
 
 const IdeasEditPage = () => {
-  const { ideaId } = useParams() as { ideaId: string };
+  const { ideaId } = useParams({ strict: false }) as { ideaId: string };
   const { status, error, data: idea } = useIdeaById(ideaId);
   const ideaEditPermission = usePermission({
     item: idea?.data || null,

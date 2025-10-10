@@ -19,7 +19,7 @@ type AboutBoxProps = {
 };
 
 const AboutBox = ({ hideParticipationAvatars }: AboutBoxProps) => {
-  const { projectId, slug } = useParams() as {
+  const { projectId, slug } = useParams({ strict: false }) as {
     projectId: string;
     slug: string;
   };

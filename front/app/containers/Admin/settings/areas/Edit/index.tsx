@@ -17,7 +17,7 @@ import messages from '../messages';
 
 const Edit = () => {
   const { mutate: updateArea } = useUpdateArea();
-  const { areaId } = useParams() as { areaId: string };
+  const { areaId } = useParams({ strict: false }) as { areaId: string };
   const { data: area } = useArea(areaId);
   const handleSubmit = async (values: FormValues) => {
     if (!area) return;

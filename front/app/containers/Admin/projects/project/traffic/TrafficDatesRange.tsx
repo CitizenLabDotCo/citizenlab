@@ -22,7 +22,7 @@ const TrafficDatesRange = ({
   defaultStartDate: string | undefined;
   defaultEndDate: string | undefined;
 }) => {
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
 
   const { formatMessage } = useIntl();
 

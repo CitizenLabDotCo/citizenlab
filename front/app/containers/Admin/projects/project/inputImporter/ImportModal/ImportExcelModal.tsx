@@ -46,9 +46,9 @@ const ImportExcelModal = ({ open, onClose, onImport }: Props) => {
   const { formatMessage } = useIntl();
   const { mutateAsync: addOfflineIdeas, isLoading } = useAddOfflineIdeasAsync();
   const locale = useLocale();
-  const { phaseId } = useParams();
+  const { phaseId } = useParams({ strict: false });
   const { data: phase } = usePhase(phaseId);
-  const { projectId } = useParams() as {
+  const { projectId } = useParams({ strict: false }) as {
     projectId: string;
   };
 

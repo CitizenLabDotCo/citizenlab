@@ -15,7 +15,7 @@ import tracks from '../tracks';
 import messages from './messages';
 
 const AddTag = ({ onCreateTag }: { onCreateTag?: (tagId: string) => void }) => {
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
 
   const [name, setName] = useState('');
   const { mutate: addTag, isLoading, error } = useAddAnalysisTag();

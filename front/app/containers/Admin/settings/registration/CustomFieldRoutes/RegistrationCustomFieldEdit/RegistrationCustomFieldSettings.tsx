@@ -11,7 +11,9 @@ import RegistrationCustomFieldForm, {
 } from '../RegistrationCustomFieldForm';
 
 const RegistrationCustomFieldSettings = () => {
-  const { userCustomFieldId } = useParams() as { userCustomFieldId: string };
+  const { userCustomFieldId } = useParams({ strict: false }) as {
+    userCustomFieldId: string;
+  };
   const { data: customField } = useUserCustomField(userCustomFieldId);
   const { mutate: updateCustomFieldForUsers } = useUpdateUserCustomField();
 

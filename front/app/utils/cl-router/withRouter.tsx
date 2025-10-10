@@ -5,7 +5,7 @@ import {
   // eslint-disable-next-line no-restricted-imports
   useNavigate,
   useParams,
-  useSearchParams,
+  useSearch,
 } from '@tanstack/react-router';
 
 /** @deprecated Use `React Router hooks` instead */
@@ -21,9 +21,9 @@ export const withRouter = <T extends WithRouterProps = WithRouterProps>(
 ) => {
   return (props: Omit<T, keyof WithRouterProps>) => {
     const location = useLocation();
-    const params = useParams();
+    const params = useParams({ strict: false });
     const navigate = useNavigate();
-    const [searchParams] = useSearchParams();
+    const [searchParams] = useSearch({ strict: false });
 
     // normally you have to do searchParams.get('key'),
     // we create a normal key/value object here and pass it down

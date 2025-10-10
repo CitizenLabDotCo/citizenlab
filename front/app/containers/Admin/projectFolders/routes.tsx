@@ -14,7 +14,7 @@ const FolderPermissions = lazy(() => import('./containers/permissions'));
 export enum projectFolderRoutes {
   projectFolders = 'projects/folders',
   new = 'new',
-  projectFolderId = `:projectFolderId`,
+  projectFolderId = `$projectFolderId`,
   projectFolderIdDefault = '',
   settings = `settings`,
   projects = `projects`,

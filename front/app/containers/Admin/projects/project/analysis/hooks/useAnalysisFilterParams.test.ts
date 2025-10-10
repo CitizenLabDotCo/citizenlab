@@ -17,7 +17,7 @@ const mockSearchParams = new URLSearchParams({
 });
 
 jest.mock('@tanstack/react-router', () => ({
-  useSearchParams: jest.fn(() => [mockSearchParams]),
+  useSearch: jest.fn(() => [mockSearchParams]),
 }));
 
 describe('useAnalysisFilterParams', () => {

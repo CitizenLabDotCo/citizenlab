@@ -31,7 +31,9 @@ export interface ICustomPageSectionToggleData extends ISectionToggleData {
 const CustomPagesEditContent = () => {
   const { mutate: updateCustomPage } = useUpdateCustomPage();
   const { formatMessage } = useIntl();
-  const { customPageId } = useParams() as { customPageId: string };
+  const { customPageId } = useParams({ strict: false }) as {
+    customPageId: string;
+  };
   const { data: customPage } = useCustomPageById(customPageId);
   const advancedCustomPagesEnabled = useFeatureFlag({
     name: 'advanced_custom_pages',

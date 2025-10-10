@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from '@tanstack/react-router';
+import { useSearch } from '@tanstack/react-router';
 
 import useCommonGroundProgress from 'api/common_ground/useCommonGroundProgress';
 import { IProjectData } from 'api/projects/types';
@@ -25,7 +25,7 @@ interface Props {
 }
 
 const CommonGroundTabs = ({ phaseId, project }: Props) => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearch({ strict: false });
   const currentTabParam = searchParams.get('tab') as TabKey;
   const currentTab = tabs.includes(currentTabParam)
     ? currentTabParam

@@ -99,7 +99,7 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
     setView,
     localize,
   }) => {
-    const { projectId } = useParams() as {
+    const { projectId } = useParams({ strict: false }) as {
       projectId: string;
     };
 

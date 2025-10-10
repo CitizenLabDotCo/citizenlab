@@ -40,7 +40,7 @@ const DateSetup = ({
   setSubmitState,
   setValidationErrors,
 }: Props) => {
-  const { projectId, phaseId } = useParams();
+  const { projectId, phaseId } = useParams({ strict: false });
   const { data: phases } = usePhases(projectId);
 
   const { start_at, end_at } = formData;

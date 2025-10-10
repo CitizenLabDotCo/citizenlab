@@ -33,8 +33,8 @@ const Heatmap = () => {
 
   const { formatMessage } = useIntl();
 
-  const { projectId } = useParams() as { projectId: string };
-  const { analysisId } = useParams() as { analysisId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
 
   const { data: analysis } = useAnalysis(analysisId);
 

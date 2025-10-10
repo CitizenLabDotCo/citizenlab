@@ -17,7 +17,9 @@ import RegistrationCustomFieldOptionsForm, {
 } from './RegistrationCustomFieldOptionsForm';
 
 const RegistrationCustomFieldOptionsEdit = () => {
-  const { userCustomFieldId, userCustomFieldOptionId } = useParams() as {
+  const { userCustomFieldId, userCustomFieldOptionId } = useParams({
+    strict: false,
+  }) as {
     userCustomFieldId: string;
     userCustomFieldOptionId: string;
   };

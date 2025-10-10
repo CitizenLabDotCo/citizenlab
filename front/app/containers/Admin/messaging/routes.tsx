@@ -17,10 +17,10 @@ export enum messagingRoutes {
   messaging = 'messaging',
   emailsCustom = `emails/custom`,
   emailsCustomNew = `emails/custom/new`,
-  emailsCustomCampaignId = 'emails/custom/:campaignId',
-  emailsCustomCampaignIdEdit = 'emails/custom/:campaignId/edit',
+  emailsCustomCampaignId = 'emails/custom/$campaignId',
+  emailsCustomCampaignIdEdit = 'emails/custom/$campaignId/edit',
   emailsAutomated = 'emails/automated',
-  emailsAutomatedCampaignIdEdit = 'emails/automated/:campaignId/edit',
+  emailsAutomatedCampaignIdEdit = 'emails/automated/$campaignId/edit',
 }
 
 export type messagingRouteTypes =

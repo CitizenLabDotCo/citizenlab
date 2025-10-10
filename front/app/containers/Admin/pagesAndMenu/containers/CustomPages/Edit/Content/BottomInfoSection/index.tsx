@@ -15,7 +15,9 @@ import { isNilOrError } from 'utils/helperUtils';
 const BottomInfoSection = () => {
   const localize = useLocalize();
   const { mutateAsync: updateCustomPage } = useUpdateCustomPage();
-  const { customPageId } = useParams() as { customPageId: string };
+  const { customPageId } = useParams({ strict: false }) as {
+    customPageId: string;
+  };
   const { data: customPage } = useCustomPageById(customPageId);
 
   if (isNilOrError(customPage)) {

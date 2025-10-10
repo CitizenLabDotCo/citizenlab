@@ -65,7 +65,7 @@ interface Props {
 const GeoJsonImportButton = memo<Props>(({ mapConfig, className }) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const { projectId } = useParams() as {
+  const { projectId } = useParams({ strict: false }) as {
     projectId: string;
   };
   const { mutate: createProjectMapLayer } = useAddMapLayer(projectId);

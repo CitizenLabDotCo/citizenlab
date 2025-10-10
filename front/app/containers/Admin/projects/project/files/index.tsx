@@ -35,7 +35,7 @@ const ProjectFilesTab = ({ projectHasFiles }: Props) => {
 };
 
 const ProjectFilesTabWrapper = () => {
-  const { projectId } = useParams() as {
+  const { projectId } = useParams({ strict: false }) as {
     projectId: string;
   };
 

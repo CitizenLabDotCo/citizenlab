@@ -19,7 +19,7 @@ import ProjectHeader from './projectHeader';
 const AdminProjectsProjectIndex = () => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
 
   return (
     <div data-cy="e2e-admin-projects-project-index">

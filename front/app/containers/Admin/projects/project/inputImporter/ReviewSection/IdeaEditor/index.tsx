@@ -51,7 +51,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   const [ideaFormDataValid, setIdeaFormDataValid] = useState(false);
   const setError = useRef<UseFormSetError<FormValues>>();
 
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };

@@ -53,7 +53,9 @@ const AttachmentsForm = ({
 }: WrappedComponentProps) => {
   const { mutateAsync: updateCustomPage } = useUpdateCustomPage();
   const localize = useLocalize();
-  const { customPageId } = useParams() as { customPageId: string };
+  const { customPageId } = useParams({ strict: false }) as {
+    customPageId: string;
+  };
 
   const { data: customPage } = useCustomPageById(customPageId);
   const { data: remoteFiles } = usePageFiles(customPageId);

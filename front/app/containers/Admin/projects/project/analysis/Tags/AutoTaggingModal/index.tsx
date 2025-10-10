@@ -25,7 +25,7 @@ const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
     'all'
   );
 
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
   const {
     mutate: launchTagging,
     isLoading,

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useParams, useSearchParams } from '@tanstack/react-router';
+import { useParams, useSearch } from '@tanstack/react-router';
 
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';
@@ -17,7 +17,7 @@ const SurveyFormBuilder = ({
   projectId: string;
   phaseId: string;
 }) => {
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const copyFrom = searchParams.get('copy_from');
   const { data: phase } = usePhase(phaseId);
   const { data: project } = useProjectById(projectId);
@@ -51,7 +51,7 @@ const SurveyFormBuilder = ({
 };
 
 export default () => {
-  const { projectId, phaseId } = useParams();
+  const { projectId, phaseId } = useParams({ strict: false });
 
   if (typeof projectId !== 'string' || typeof phaseId !== 'string') {
     return null;

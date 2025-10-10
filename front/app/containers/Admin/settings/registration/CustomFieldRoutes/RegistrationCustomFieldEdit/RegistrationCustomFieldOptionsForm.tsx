@@ -33,7 +33,9 @@ const RegistrationCustomFieldOptionsForm = ({
   onSubmit,
   defaultValues,
 }: Props) => {
-  const { userCustomFieldId } = useParams() as { userCustomFieldId: string };
+  const { userCustomFieldId } = useParams({ strict: false }) as {
+    userCustomFieldId: string;
+  };
   const schema = object({
     title_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.answerOptionError)

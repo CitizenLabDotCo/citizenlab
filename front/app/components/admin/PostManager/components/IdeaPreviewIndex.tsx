@@ -19,7 +19,7 @@ interface Props {
 
 const IdeaPreviewIndex = ({ goBackUrl }: Props) => {
   const [previewMode, setPreviewMode] = useState<PreviewMode>('view');
-  const { ideaId } = useParams() as {
+  const { ideaId } = useParams({ strict: false }) as {
     ideaId: string;
   };
 

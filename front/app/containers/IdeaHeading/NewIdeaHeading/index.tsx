@@ -9,7 +9,7 @@ import {
   stylingConsts,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from '@tanstack/react-router';
+import { useParams, useSearch } from '@tanstack/react-router';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 
@@ -40,7 +40,7 @@ type Props = {
 };
 
 const NewIdeaHeading = ({ phase, titleText }: Props) => {
-  const { slug: projectSlug } = useParams();
+  const { slug: projectSlug } = useParams({ strict: false });
   const { data: project } = useProjectBySlug(projectSlug);
   const { data: authUser } = useAuthUser();
   const phaseId = phase.id;
@@ -48,7 +48,7 @@ const NewIdeaHeading = ({ phase, titleText }: Props) => {
   const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
   const [showLeaveModal, setShowLeaveModal] = useState(false);
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const ideaSubmitted = searchParams.get('idea_id') !== null;
 
   const openModal = () => {

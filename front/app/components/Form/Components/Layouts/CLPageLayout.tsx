@@ -20,11 +20,7 @@ import {
   useJsonForms,
   JsonFormsDispatch,
 } from '@jsonforms/react';
-import {
-  useLocation,
-  useParams,
-  useSearchParams,
-} from '@tanstack/react-router';
+import { useLocation, useParams, useSearch } from '@tanstack/react-router';
 import { useTheme } from 'styled-components';
 
 import { IIdea } from 'api/ideas/types';
@@ -91,7 +87,7 @@ const CLPageLayout = memo(
     const { onSubmit, setShowAllErrors, setFormData } = useContext(FormContext);
     const [isLoading, setIsLoading] = useState(false);
     const isMobileOrSmaller = useBreakpoint('phone');
-    const [searchParams] = useSearchParams();
+    const [searchParams] = useSearch({ strict: false });
     const { formatMessage } = useIntl();
     const formState = useJsonForms();
     const localize = useLocalize();

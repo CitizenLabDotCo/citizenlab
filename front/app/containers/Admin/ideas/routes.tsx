@@ -11,7 +11,7 @@ const AdminIdeasAll = lazy(() => import('./all'));
 
 export enum ideaRoutes {
   ideas = 'ideas',
-  ideaId = `:ideaId`,
+  ideaId = `$ideaId`,
 }
 
 export type ideaRouteTypes =

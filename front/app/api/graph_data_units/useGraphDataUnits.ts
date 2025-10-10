@@ -1,5 +1,5 @@
 import { useNode } from '@craftjs/core';
-import { useLocation, useSearchParams } from '@tanstack/react-router';
+import { useLocation, useSearch } from '@tanstack/react-router';
 
 import useGraphDataUnitsPublished from 'api/graph_data_units/useGraphDataUnitsPublished';
 
@@ -62,7 +62,7 @@ const useGraphDataUnits = <Response extends BaseResponseData>(
   { enabled = true, onSuccess }: Options = { enabled: true }
 ) => {
   const { pathname } = useLocation();
-  const [search] = useSearchParams();
+  const [search] = useSearch({ strict: false });
 
   const { id: graphId } = useNode();
   const { reportId, phaseId } = useReportContext();

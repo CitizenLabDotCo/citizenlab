@@ -43,7 +43,7 @@ const StyledList = styled(List)`
 `;
 
 const AdminProjectEventsIndex = () => {
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { data: events } = useEvents({

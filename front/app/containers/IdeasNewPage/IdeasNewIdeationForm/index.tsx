@@ -1,7 +1,7 @@
 import React, { Suspense, useEffect, useState } from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from '@tanstack/react-router';
+import { useSearch } from '@tanstack/react-router';
 
 import { IPhases, IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
@@ -52,7 +52,7 @@ const IdeasNewIdeationForm = ({
   const { data: phase } = usePhase(phaseId);
   const isSmallerThanPhone = useBreakpoint('phone');
   const [usingMapView, setUsingMapView] = useState(false);
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const selectedIdeaId = searchParams.get('selected_idea_id');
   const participationMethodConfig = getConfig(phase?.data, phases);
 

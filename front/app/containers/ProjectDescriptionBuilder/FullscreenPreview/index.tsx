@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
-import { useParams, useSearchParams } from '@tanstack/react-router';
+import { useParams, useSearch } from '@tanstack/react-router';
 import { SupportedLocale } from 'typings';
 
 import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
@@ -19,7 +19,7 @@ import Editor from 'components/ProjectDescriptionBuilder/Editor';
 import { isNilOrError } from 'utils/helperUtils';
 
 export const FullScreenPreview = () => {
-  const [search] = useSearchParams();
+  const [search] = useSearch({ strict: false });
   const selectedLocale =
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -27,7 +27,7 @@ export const FullScreenPreview = () => {
   const localize = useLocalize();
 
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
   const platformLocale = useLocale();
 
   const { data: project } = useProjectById(projectId);

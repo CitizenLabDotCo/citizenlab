@@ -36,7 +36,7 @@ const FileSelectOrUploadModal = ({
   const { formatMessage } = useIntl();
   const [modalOpen, setModalOpen] = React.useState(false);
 
-  const { projectId } = useParams();
+  const { projectId } = useParams({ strict: false });
 
   const { data: files } = useFiles({
     project: projectId ? [projectId] : [],

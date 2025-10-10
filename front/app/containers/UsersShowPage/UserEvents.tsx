@@ -23,7 +23,7 @@ const Container = styled.div`
 `;
 
 export const UserEvents = () => {
-  const { userSlug } = useParams() as { userSlug: string };
+  const { userSlug } = useParams({ strict: false }) as { userSlug: string };
   const { data: user } = useUserBySlug(userSlug);
   const { data: events } = useEventsByUserId(user?.data.id);
   const isPhoneOrSmaller = useBreakpoint('phone');

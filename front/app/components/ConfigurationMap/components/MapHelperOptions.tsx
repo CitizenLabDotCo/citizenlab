@@ -25,7 +25,7 @@ type Props = {
 };
 
 const MapHelperOptions = ({ mapConfig, mapView }: Props) => {
-  const { projectId } = useParams() as {
+  const { projectId } = useParams({ strict: false }) as {
     projectId: string;
   };
 

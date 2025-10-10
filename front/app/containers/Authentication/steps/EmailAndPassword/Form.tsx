@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
-import { useSearchParams } from '@tanstack/react-router';
+import { useSearch } from '@tanstack/react-router';
 import { string, object, boolean } from 'yup';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -58,7 +58,7 @@ const Form = ({ loading, setError, onSubmit, closeModal }: Props) => {
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
 
   // To allow super admins to sign in with password when password login is disabled
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const superAdmin = searchParams.get('super_admin') !== null;
 
   const { data: appConfiguration } = useAppConfiguration();

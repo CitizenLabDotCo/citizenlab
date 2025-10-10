@@ -64,7 +64,7 @@ const Buttons = styled.div`
 `;
 
 const Show = () => {
-  const { projectId, campaignId } = useParams() as {
+  const { projectId, campaignId } = useParams({ strict: false }) as {
     projectId: string;
     campaignId: string;
   };

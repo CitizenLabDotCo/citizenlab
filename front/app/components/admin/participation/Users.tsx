@@ -9,7 +9,7 @@ import UsersHeader from 'containers/Admin/users/UsersHeader';
 import messages from './messages';
 
 const Users = () => {
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
 
   return (
     <Box className="intercom-project-participants-users">

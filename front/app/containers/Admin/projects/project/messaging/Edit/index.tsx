@@ -15,7 +15,7 @@ import CampaignForm, { FormValues, PageTitle } from '../CampaignForm';
 import messages from '../messages';
 
 const Edit = () => {
-  const { projectId, campaignId } = useParams() as {
+  const { projectId, campaignId } = useParams({ strict: false }) as {
     projectId: string;
     campaignId: string;
   };

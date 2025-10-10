@@ -40,7 +40,7 @@ interface Props {
 }
 
 const FeedbackSettings = ({ projectId, ideaId, className }: Props) => {
-  const { phaseId } = useParams() as { phaseId: string };
+  const { phaseId } = useParams({ strict: false }) as { phaseId: string };
   const { data: phase } = usePhase(phaseId);
   const { formatMessage } = useIntl();
   const localize = useLocalize();

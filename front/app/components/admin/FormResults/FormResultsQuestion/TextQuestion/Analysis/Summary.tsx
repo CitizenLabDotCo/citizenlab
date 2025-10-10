@@ -40,7 +40,7 @@ const Summary = ({
     onlyCheckAllowed: true,
   });
 
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };

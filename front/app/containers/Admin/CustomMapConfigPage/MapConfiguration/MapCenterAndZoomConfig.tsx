@@ -84,7 +84,7 @@ interface IFormValues {
 
 const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
   ({ className, mapConfig, mapView, intl: { formatMessage } }) => {
-    const { projectId } = useParams() as {
+    const { projectId } = useParams({ strict: false }) as {
       projectId: string;
     };
 

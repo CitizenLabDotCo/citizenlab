@@ -73,7 +73,7 @@ const Step1 = ({
     name: 'advanced_autotagging',
     onlyCheckAllowed: true,
   });
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
   const { data: analysis } = useAnalysis(analysisId);
   const { data: allInputs } = useInfiniteAnalysisInputs({
     analysisId,

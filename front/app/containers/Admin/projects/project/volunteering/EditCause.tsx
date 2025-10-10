@@ -15,7 +15,7 @@ import messages from './messages';
 
 const EditCause = () => {
   const { mutateAsync: updateCause } = useUpdateCause();
-  const { projectId, causeId, phaseId } = useParams() as {
+  const { projectId, causeId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     causeId: string;
     phaseId: string;

@@ -7,7 +7,10 @@ import { useParams } from '@tanstack/react-router';
 import clHistory from 'utils/cl-router/history';
 
 const ProjectPreviewToken = () => {
-  const { slug, token } = useParams() as { slug: string; token: string };
+  const { slug, token } = useParams({ strict: false }) as {
+    slug: string;
+    token: string;
+  };
   useEffect(() => {
     set('preview_token', token);
     clHistory.push(`/projects/${slug}`);

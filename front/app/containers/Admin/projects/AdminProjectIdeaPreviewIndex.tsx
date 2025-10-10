@@ -5,7 +5,7 @@ import { useParams } from '@tanstack/react-router';
 import IdeaPreviewIndex from 'components/admin/PostManager/components/IdeaPreviewIndex';
 
 const AdminProjectIdeaPreviewIndex = () => {
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };

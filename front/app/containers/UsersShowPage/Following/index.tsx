@@ -24,7 +24,7 @@ import UserFollowingList from './UserFollowingList';
 type FollowableValue = FollowableObject | 'Topics' | 'Areas';
 
 const Following = () => {
-  const { userSlug } = useParams() as { userSlug: string };
+  const { userSlug } = useParams({ strict: false }) as { userSlug: string };
   const { data: user } = useUserBySlug(userSlug);
   const [currentTab, setSelectedTab] = useState<FollowableValue>('Project');
   const handleOnChangeTab = (selectedTab: FollowableValue) => {

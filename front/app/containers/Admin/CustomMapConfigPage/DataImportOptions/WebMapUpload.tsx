@@ -29,7 +29,7 @@ type Props = {
 };
 
 const WebMapUpload = ({ mapConfigId, setView }: Props) => {
-  const { projectId } = useParams() as {
+  const { projectId } = useParams({ strict: false }) as {
     projectId: string;
   };
 

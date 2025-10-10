@@ -98,7 +98,7 @@ const HeatmapDetails = ({
   );
   const isSelectedRowTypeTags = selectedRowType === 'tags';
 
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
   const { data: analysis } = useAnalysis(analysisId);
 
   const { data: analysisHeatmapCells } = useAnalysisHeatmapCells({

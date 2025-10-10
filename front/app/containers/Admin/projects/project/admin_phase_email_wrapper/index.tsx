@@ -17,7 +17,7 @@ import messages from './messages';
 
 const AdminPhaseEmailWrapper = () => {
   const localize = useLocalize();
-  const { phaseId } = useParams();
+  const { phaseId } = useParams({ strict: false });
   const { data: supportedCampaigns } = useSupportedCampaignNames({ phaseId });
   const supportedCampaignNames = supportedCampaigns?.data.attributes || [];
   const contextCampaigns = useCampaigns({

@@ -20,7 +20,7 @@ const ParticipationDatesRange = ({
   defaultEndDate?: string;
   projectId?: string;
 }) => {
-  const { projectId: projectIdFromParams } = useParams() as {
+  const { projectId: projectIdFromParams } = useParams({ strict: false }) as {
     projectId: string;
   };
   const projectId = props.projectId || projectIdFromParams;

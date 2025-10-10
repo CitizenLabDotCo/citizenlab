@@ -110,7 +110,7 @@ const getEditableTitleMultiloc = (
 
 const MapLayerConfig = memo<Props & WrappedComponentProps>(
   ({ mapConfig, mapLayerId, className, onClose, intl: { formatMessage } }) => {
-    const { projectId } = useParams() as { projectId: string };
+    const { projectId } = useParams({ strict: false }) as { projectId: string };
     const { mutateAsync: updateProjectMapLayer } = useUpdateMapLayer(projectId);
     const tenantLocales = useAppConfigurationLocales();
 

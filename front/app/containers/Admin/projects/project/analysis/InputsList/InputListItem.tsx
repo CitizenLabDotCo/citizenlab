@@ -34,7 +34,7 @@ interface Props {
 }
 
 const InputListItem = memo(({ input, onSelect, selected }: Props) => {
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
   const { data: analysis } = useAnalysis(analysisId);
   const { data: author } = useAnalysisUserById({
     id: input.relationships.author.data?.id ?? null,

@@ -35,7 +35,7 @@ const ReviewSection = ({
 }: {
   importJobs: IBackgroundJobData[];
 }) => {
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };

@@ -14,7 +14,7 @@ type Props = {
   fileAttachments?: IFileAttachmentData[];
 };
 const ScreenReaderFilesList = ({ fileAttachments }: Props) => {
-  const { projectId } = useParams();
+  const { projectId } = useParams({ strict: false });
   const { data: files } = useFiles({
     project: projectId ? [projectId] : [],
   });

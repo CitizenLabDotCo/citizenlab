@@ -68,7 +68,7 @@ type Props = {
 const AuthorsByDomicile = ({ customFieldId }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
   const filters = useAnalysisFilterParams();
   const { data: totalAuthorsByDomicile } = useAuthorsByDomicile({
     analysisId,

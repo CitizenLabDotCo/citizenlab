@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { useSearchParams } from '@tanstack/react-router';
+import { useSearch } from '@tanstack/react-router';
 import { SupportedLocale } from 'typings';
 
 import useLocale from 'hooks/useLocale';
@@ -13,7 +13,7 @@ const HomapageBuilderEditModePreview = React.forwardRef<
     selectedLocale?: SupportedLocale | null;
   }
 >(({ selectedLocale }, ref) => {
-  const [search] = useSearchParams();
+  const [search] = useSearch({ strict: false });
   const platformLocale = useLocale();
   const locale = selectedLocale || platformLocale;
 

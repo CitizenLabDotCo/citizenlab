@@ -21,7 +21,9 @@ import NavbarItemForm, { FormValues } from '../../components/NavbarItemForm';
 import { getInitialFormValues, createNavbarItemUpdateData } from './utils';
 
 const EditNavbarItemForm = () => {
-  const { navbarItemId } = useParams() as { navbarItemId: string };
+  const { navbarItemId } = useParams({ strict: false }) as {
+    navbarItemId: string;
+  };
   const { formatMessage } = useIntl();
   const { data: navbarItems } = useNavbarItems();
   const { mutateAsync: updateNavbarItem } = useUpdateNavbarItem();

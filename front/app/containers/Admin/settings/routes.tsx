@@ -50,14 +50,14 @@ export enum settingsRoutes {
   policies = 'policies',
   areas = 'areas',
   new = 'new',
-  areaId = ':areaId',
+  areaId = '$areaId',
   topics = 'topics',
   edit = 'edit',
-  topicEdit = ':topicId/edit',
+  topicEdit = '$topicId/edit',
   ideation = 'ideation',
   proposals = 'proposals',
   statuses = 'statuses',
-  statusId = ':statusId',
+  statusId = '$statusId',
 }
 
 export type settingRouteTypes =

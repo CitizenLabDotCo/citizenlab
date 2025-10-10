@@ -10,7 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
-import { useParams, useSearchParams } from '@tanstack/react-router';
+import { useParams, useSearch } from '@tanstack/react-router';
 import { RouteType } from 'routes';
 
 import {
@@ -166,7 +166,7 @@ const FormEdit = ({
   };
 
   // Remove copy_from param on save to avoid overwriting a saved survey when reloading
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearch({ strict: false });
 
   const resetCopyFrom = () => {
     if (searchParams.has('copy_from')) {
@@ -388,7 +388,7 @@ const FormBuilderPage = ({
   viewFormLink,
 }: FormBuilderPageProps) => {
   const modalPortalElement = document.getElementById('modal-portal');
-  const { phaseId } = useParams();
+  const { phaseId } = useParams({ strict: false });
   const { data: submissionCount } = useSubmissionsCount({
     phaseId,
   });

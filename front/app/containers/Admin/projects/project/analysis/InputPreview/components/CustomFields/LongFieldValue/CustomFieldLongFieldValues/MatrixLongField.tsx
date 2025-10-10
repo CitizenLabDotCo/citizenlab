@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from '@tanstack/react-router';
+import { useParams, useSearch } from '@tanstack/react-router';
 import { useTheme } from 'styled-components';
 
 import useCustomFieldStatements from 'api/custom_field_statements/useCustomFieldStatements';
@@ -24,7 +24,7 @@ const MatrixLongField = ({ customField, rawValue }: Props) => {
   const theme = useTheme();
   const locale = useLocale();
   const { formatMessage } = useIntl();
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
 
   // Get phase and project from URL
   const phaseId = searchParams.get('phase_id') || '';

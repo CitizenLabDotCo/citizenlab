@@ -55,7 +55,7 @@ const IdeaFormBuilder = ({
 };
 
 export default () => {
-  const { projectId, phaseId } = useParams();
+  const { projectId, phaseId } = useParams({ strict: false });
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
 

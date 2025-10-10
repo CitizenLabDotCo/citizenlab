@@ -15,7 +15,7 @@ import ProjectManagement from './ProjectManagement';
 import ProjectVisibility from './ProjectVisibility';
 
 const ProjectPermissions = () => {
-  const { projectId } = useParams();
+  const { projectId } = useParams({ strict: false });
   if (!projectId) return null;
 
   return (

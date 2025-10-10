@@ -10,7 +10,7 @@ import {
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from '@tanstack/react-router';
+import { useSearch } from '@tanstack/react-router';
 
 import useCommunityMonitorSentimentScores from 'api/community_monitor_scores/useCommunityMonitorSentimentScores';
 
@@ -38,7 +38,7 @@ type Props = {
 };
 const HealthScoreWidget = ({ phaseId, ...props }: Props) => {
   const locale = useLocale();
-  const [search] = useSearchParams();
+  const [search] = useSearch({ strict: false });
   const { formatMessage } = useIntl();
   const isMobileOrSmaller = useBreakpoint('phone');
 

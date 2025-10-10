@@ -17,7 +17,7 @@ import messages from '../messages';
 import TopicForm from '../TopicForm';
 
 const Edit = () => {
-  const { topicId } = useParams() as { topicId: string };
+  const { topicId } = useParams({ strict: false }) as { topicId: string };
   const { data: topic } = useTopic(topicId);
   const { mutate: updateTopic } = useUpdateTopic();
 

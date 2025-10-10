@@ -7,7 +7,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { lighten } from 'polished';
-import { useSearchParams } from '@tanstack/react-router';
+import { useSearch } from '@tanstack/react-router';
 import styled from 'styled-components';
 
 import { IIdeaData } from 'api/ideas/types';
@@ -81,7 +81,7 @@ const IdeaShowPageTopBar = ({
   const { data: project } = useProjectById(projectId);
   const isSmallerThanTablet = useBreakpoint('tablet');
 
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const [goBack] = useState(searchParams.get('go_back'));
 
   useEffect(() => {

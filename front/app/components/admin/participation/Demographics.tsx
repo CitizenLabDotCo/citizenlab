@@ -22,7 +22,7 @@ const Demographics = ({
   defaultEndDate,
   ...props
 }: Props) => {
-  const { projectId: projectIdFromParams } = useParams() as {
+  const { projectId: projectIdFromParams } = useParams({ strict: false }) as {
     projectId: string;
   };
   const projectId = props.projectId || projectIdFromParams;

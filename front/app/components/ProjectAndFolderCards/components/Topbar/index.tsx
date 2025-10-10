@@ -8,7 +8,7 @@ import {
   colors,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from '@tanstack/react-router';
+import { useSearch } from '@tanstack/react-router';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
@@ -132,7 +132,7 @@ const Header = ({
   const localize = useLocalize();
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const [searchInputRef, setSearchInputRef] = useState<HTMLInputElement | null>(
     null
   );

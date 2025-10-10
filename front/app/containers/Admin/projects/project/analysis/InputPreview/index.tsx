@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Box, Divider, Text } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from '@tanstack/react-router';
+import { useParams, useSearch } from '@tanstack/react-router';
 
 import useAnalysis from 'api/analyses/useAnalysis';
 import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
@@ -22,15 +22,15 @@ import CustomFields from './components/CustomFields';
 import messages from './messages';
 
 const InputListItem = () => {
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
   const [showAllQuestions, setShowAllQuestions] = useState(false);
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
 
   const phaseId = searchParams.get('phase_id');
 
   const { formatMessage } = useIntl();
   const { selectedInputId } = useSelectedInputContext();
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
   const { data: input } = useAnalysisInput(
     analysisId,
     selectedInputId ?? undefined

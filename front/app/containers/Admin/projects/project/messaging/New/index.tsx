@@ -16,7 +16,7 @@ import CampaignForm, { FormValues, PageTitle } from '../CampaignForm';
 import messages from '../messages';
 
 const New = () => {
-  const { projectId } = useParams();
+  const { projectId } = useParams({ strict: false });
   const { data: authUser } = useAuthUser();
   const { isLoading, mutateAsync: createCampaign } = useAddCampaign();
   const handleSubmit = async (values: FormValues) => {

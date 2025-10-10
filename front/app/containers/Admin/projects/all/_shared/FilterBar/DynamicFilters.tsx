@@ -19,7 +19,7 @@ interface Props {
 }
 
 const DynamicFilters = ({ isUserAdmin }: Props) => {
-  const params = useParams();
+  const params = useParams({ strict: false });
   const { formatMessage } = useIntl();
 
   const [activeFilters, setActiveFilters] = useState(() => {

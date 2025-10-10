@@ -18,7 +18,7 @@ type Props = {
 };
 
 const FieldTypeSwitcher = ({ field }: Props) => {
-  const { phaseId } = useParams();
+  const { phaseId } = useParams({ strict: false });
 
   const { data: submissionCount } = useFormSubmissionsCount({
     phaseId,

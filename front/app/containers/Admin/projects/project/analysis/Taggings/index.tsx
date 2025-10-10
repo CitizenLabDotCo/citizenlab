@@ -17,7 +17,7 @@ const Taggings = ({
   inputId: string;
   onlyShowTagged?: boolean;
 }) => {
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
 
   const { data: tags } = useAnalysisTags({
     analysisId,

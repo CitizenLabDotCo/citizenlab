@@ -10,7 +10,7 @@ import messages from '../messages';
 import ActionForms from './ActionForms';
 
 const Phase = () => {
-  const { phaseId } = useParams();
+  const { phaseId } = useParams({ strict: false });
   if (!phaseId) return null;
 
   return (

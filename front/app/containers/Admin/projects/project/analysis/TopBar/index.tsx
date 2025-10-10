@@ -8,7 +8,7 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 import { get, set } from 'js-cookie';
-import { useParams, useSearchParams } from '@tanstack/react-router';
+import { useParams, useSearch } from '@tanstack/react-router';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 
@@ -47,9 +47,9 @@ const TruncatedTitle = styled(Title)`
 const TopBar = () => {
   const [showLaunchModal, setShowLaunchModal] = useState(false);
   const { data: authUser } = useAuthUser();
-  const [urlParams] = useSearchParams();
+  const [urlParams] = useSearch({ strict: false });
   const phaseId = urlParams.get('phase_id') || undefined;
-  const { projectId, analysisId } = useParams() as {
+  const { projectId, analysisId } = useParams({ strict: false }) as {
     projectId: string;
     analysisId: string;
   };

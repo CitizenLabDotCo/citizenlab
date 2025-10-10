@@ -23,7 +23,7 @@ type Props = {
 };
 
 const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
-  const { projectId } = useParams();
+  const { projectId } = useParams({ strict: false });
   const { mutate: updateAnalysis } = useUpdateAnalysis();
 
   const { data: files } = useFiles({

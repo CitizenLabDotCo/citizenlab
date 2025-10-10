@@ -24,7 +24,7 @@ const FilesList = () => {
   const [sideViewOpened, setSideViewOpened] = useState(false);
   const [selectedFileId, setSelectedFileId] = useState<string | null>(null);
 
-  const { projectId } = useParams() as {
+  const { projectId } = useParams({ strict: false }) as {
     projectId: string;
   };
 

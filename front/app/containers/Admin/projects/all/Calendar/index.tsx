@@ -28,7 +28,9 @@ const PAGE_SIZE = 10;
 const Calendar = () => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const { sort, participation_methods, ...params } = useParams();
+  const { sort, participation_methods, ...params } = useParams({
+    strict: false,
+  });
 
   const { data, isLoading, isFetching, isError, fetchNextPage, hasNextPage } =
     useInfiniteProjectsMiniAdmin(

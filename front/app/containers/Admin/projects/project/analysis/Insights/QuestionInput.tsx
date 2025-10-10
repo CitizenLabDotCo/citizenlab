@@ -24,7 +24,7 @@ const QuestionInput = ({ onClose }: { onClose: () => void }) => {
   const [question, setQuestion] = useState('');
   const { formatMessage } = useIntl();
   const { mutate: askQuestion, isLoading } = useAddAnalysisQuestion();
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
   const filters = useAnalysisFilterParams();
 
   const handleAskQuestion = () => {

@@ -73,7 +73,7 @@ const NoBannerContainer = styled(ContentContainer)`
 `;
 
 const CustomPageShow = () => {
-  const { slug } = useParams() as {
+  const { slug } = useParams({ strict: false }) as {
     slug: string;
   };
   const { data: appConfiguration } = useAppConfiguration();

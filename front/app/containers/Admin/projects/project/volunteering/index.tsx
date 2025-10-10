@@ -22,7 +22,7 @@ const PhaseContainer = styled.div`
 `;
 
 const AdminProjectVolunteering = () => {
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };

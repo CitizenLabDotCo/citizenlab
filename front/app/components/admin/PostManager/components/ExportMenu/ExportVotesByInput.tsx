@@ -16,7 +16,7 @@ import messages from '../../messages';
 const ExportVotesByInput = () => {
   const [exporting, setExporting] = useState(false);
   const { formatMessage, formatDate } = useIntl();
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { data: phases } = usePhases(projectId);
 
   const hasVotingPhase = phases?.data.some(

@@ -12,7 +12,7 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
-import { useLocation, useSearchParams } from '@tanstack/react-router';
+import { useLocation, useSearch } from '@tanstack/react-router';
 import { RouteType } from 'routes';
 import { ImageSizes, Multiloc, UploadFile } from 'typings';
 
@@ -122,7 +122,7 @@ type Props = {
 const HomepageBanner = ({ homepageSettings, image }: Props) => {
   const { pathname } = useLocation();
   const { data: authUser } = useAuthUser();
-  const [search] = useSearchParams();
+  const [search] = useSearch({ strict: false });
   const locale = useLocale();
   const isSmallerThanPhone = useBreakpoint('phone');
 
@@ -210,7 +210,7 @@ const HomepageBannerSettings = () => {
 
   const [errors, setErrors] = useState<ErrorType[]>([]);
   const [hasError, setHasError] = useState(false);
-  const [search, setSearchParams] = useSearchParams();
+  const [search, setSearchParams] = useSearch({ strict: false });
   const { formatMessage } = useIntl();
 
   const [imageFiles, setImageFiles] = useState<UploadFile[]>([]);

@@ -9,7 +9,7 @@ import {
   StatusLabel,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from '@tanstack/react-router';
+import { useParams, useSearch } from '@tanstack/react-router';
 
 import { CampaignFormValues } from 'api/campaigns/types';
 import useCampaign from 'api/campaigns/useCampaign';
@@ -42,13 +42,13 @@ const feedbackMessages = {
 };
 
 const Edit = ({ campaignType }: EditProps) => {
-  const { campaignId } = useParams() as {
+  const { campaignId } = useParams({ strict: false }) as {
     campaignId: string;
   };
   const { data: campaign } = useCampaign(campaignId);
   const { mutateAsync: updateCampaign, isLoading } = useUpdateCampaign();
 
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const created = searchParams.get('created');
   const [feedbackType, setFeedbackType] = useState<FeedbackType>(
     created ? 'created' : null

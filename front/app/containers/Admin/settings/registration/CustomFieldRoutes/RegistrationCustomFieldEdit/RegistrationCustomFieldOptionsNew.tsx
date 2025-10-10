@@ -17,7 +17,9 @@ import RegistrationCustomFieldOptionsForm, {
 
 const RegistrationCustomFieldOptionsNew = () => {
   const { mutate: addCustomFieldOption } = useAddCustomFieldOption();
-  const { userCustomFieldId } = useParams() as { userCustomFieldId: string };
+  const { userCustomFieldId } = useParams({ strict: false }) as {
+    userCustomFieldId: string;
+  };
 
   const handleSubmit = (values: FormValues) => {
     addCustomFieldOption(

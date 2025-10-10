@@ -41,7 +41,7 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
 
   const { formatMessage } = useIntl();
 
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
 
   const { data: analysisHeatmapCells } = useAnalysisHeatmapCells({
     analysisId,

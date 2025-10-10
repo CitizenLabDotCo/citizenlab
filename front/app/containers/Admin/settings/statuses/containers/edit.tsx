@@ -32,7 +32,7 @@ const Edit = ({ variant }: { variant: IdeaStatusParticipationMethod }) => {
   const { data: ideaStatuses } = useIdeaStatuses({
     queryParams: { participation_method: variant },
   });
-  const { statusId } = useParams() as { statusId: string };
+  const { statusId } = useParams({ strict: false }) as { statusId: string };
   const { data: ideaStatus } = useIdeaStatus(statusId);
   const { mutateAsync: updateIdeaStatus } = useUpdateIdeaStatus();
   const tenantLocales = useAppConfigurationLocales();

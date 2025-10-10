@@ -9,11 +9,7 @@ import {
   stylingConsts,
   Title,
 } from '@citizenlab/cl2-component-library';
-import {
-  useLocation,
-  useParams,
-  useSearchParams,
-} from '@tanstack/react-router';
+import { useLocation, useParams, useSearch } from '@tanstack/react-router';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 
@@ -50,7 +46,7 @@ type Props = {
 const SurveyHeading = ({ titleText, phaseId }: Props) => {
   const location = useLocation();
 
-  const { slug: projectSlug } = useParams();
+  const { slug: projectSlug } = useParams({ strict: false });
   const { data: project } = useProjectBySlug(projectSlug);
   const { data: phase } = usePhase(phaseId);
   const { data: authUser } = useAuthUser();
@@ -66,7 +62,7 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
   const closeModal = () => {
     setShowLeaveModal(false);
   };
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
 
   const hasBeenSubmitted = !!searchParams.get('idea_id');
 

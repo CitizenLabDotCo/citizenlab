@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useSearchParams } from '@tanstack/react-router';
+import { useSearch } from '@tanstack/react-router';
 
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import { IIdeaQueryParameters, Sort } from 'api/ideas/types';
@@ -99,7 +99,7 @@ const InputManager = ({
   };
 
   const topicsData = getTopicsData();
-  const [search] = useSearchParams();
+  const [search] = useSearch({ strict: false });
   const [selection, setSelection] = useState<Set<string>>(new Set());
 
   const [activeFilterMenu, setActiveFilterMenu] =

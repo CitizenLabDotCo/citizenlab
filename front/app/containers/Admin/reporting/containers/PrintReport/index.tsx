@@ -94,7 +94,7 @@ export const PrintReport = ({ reportId, _print = true }: Props) => {
 
 const PrintReportWrapper = () => {
   const reportBuilderEnabled = useReportBuilderEnabled();
-  const { reportId } = useParams();
+  const { reportId } = useParams({ strict: false });
 
   if (!reportBuilderEnabled || reportId === undefined) {
     return null;

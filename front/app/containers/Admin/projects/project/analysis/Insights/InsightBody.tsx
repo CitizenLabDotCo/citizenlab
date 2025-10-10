@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { useSearchParams } from '@tanstack/react-router';
+import { useSearch } from '@tanstack/react-router';
 import styled from 'styled-components';
 
 import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';
@@ -39,7 +39,7 @@ const InsightBody = ({
   generatedAt?: string;
   backgroundTaskId?: string;
 }) => {
-  const [search] = useSearchParams();
+  const [search] = useSearch({ strict: false });
   const { data: task } = useAnalysisBackgroundTask(
     analysisId,
     backgroundTaskId,

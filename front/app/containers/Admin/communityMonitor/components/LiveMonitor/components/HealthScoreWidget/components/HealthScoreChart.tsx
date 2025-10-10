@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from '@tanstack/react-router';
+import { useSearch } from '@tanstack/react-router';
 
 import LineChart from 'components/admin/Graphs/LineChart';
 
@@ -16,7 +16,7 @@ type Props = {
 };
 
 const HealthScoreChart = ({ sentimentScores }: Props) => {
-  const [search] = useSearchParams();
+  const [search] = useSearch({ strict: false });
   const { formatMessage } = useIntl();
   const isMobileOrSmaller = useBreakpoint('phone');
 

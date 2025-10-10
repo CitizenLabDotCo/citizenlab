@@ -74,7 +74,7 @@ const FileAttachmentSettings = () => {
   const { mutate: addFileAttachment } = useAddFileAttachment({});
   const { mutate: deleteFileAttachment } = useDeleteFileAttachment({});
 
-  const { projectId } = useParams();
+  const { projectId } = useParams({ strict: false });
 
   const { data: projectDescriptionLayout } = useProjectDescriptionBuilderLayout(
     projectId || ''
