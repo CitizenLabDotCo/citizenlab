@@ -8,23 +8,28 @@ import 'tippy.js/themes/light.css';
 import * as Sentry from '@sentry/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import {
+  createRootRoute,
+  createRoute,
+  createRouter,
+  RouterProvider,
+} from '@tanstack/react-router';
 import modules from 'modules';
 import { createRoot } from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
-import {
-  createRoutesFromChildren,
-  matchRoutes,
-  useLocation,
-  useNavigationType,
-  useRoutes,
-  unstable_HistoryRouter as HistoryRouter,
-} from 'react-router-dom';
+// import {
+//   createRoutesFromChildren,
+//   matchRoutes,
+//   useLocation,
+//   useNavigationType,
+//   useRoutes,
+//   unstable_HistoryRouter as HistoryRouter,
+// } from 'react-router-dom';
 
 import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
 import OutletsProvider from 'containers/OutletsProvider';
 
-import history from 'utils/browserHistory';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import prefetchData from './prefetchData';
@@ -35,28 +40,60 @@ Sentry.init({
   environment: process.env.SENTRY_ENV,
   integrations: [
     Sentry.browserTracingIntegration(),
-    Sentry.reactRouterV6BrowserTracingIntegration({
-      useEffect: React.useEffect,
-      useLocation,
-      useNavigationType,
-      createRoutesFromChildren,
-      matchRoutes,
-    }),
+    // Sentry.reactRouterV6BrowserTracingIntegration({
+    //   useEffect: React.useEffect,
+    //   useLocation,
+    //   useNavigationType,
+    //   createRoutesFromChildren,
+    //   matchRoutes,
+    // }),
   ],
   tracesSampleRate: 0.05,
   sendClientReports: false,
 });
 
 // const useSentryRoutes = wrapUseRoutesV6(useRoutes);
-const routes = createRoutes();
+const legacyRoutes = createRoutes();
 
-function Routes() {
-  useEffect(() => {
-    modules.afterMountApplication();
-  }, []);
+type LegacyRoutes = typeof legacyRoutes;
 
-  return useRoutes(routes);
-}
+const setupRouter = (legacyRoutes: LegacyRoutes) => {
+  const rootRoute = createRootRoute();
+
+  const children: any[] = [];
+
+  legacyRoutes.forEach((legacyRoute) => {
+    const route = createRoute({
+      getParentRoute: () => rootRoute,
+      path: legacyRoute.path,
+      component: findComponent(legacyRoute),
+    });
+
+    children.push(route);
+  });
+
+  const routeTree = rootRoute.addChildren(children);
+
+  return createRouter({ routeTree });
+};
+
+const findComponent = (legacyRoute) => {
+  if (legacyRoute.element) {
+    return () => legacyRoute.element;
+  }
+
+  if (legacyRoute.children) {
+    const indexElement = legacyRoute.children.find((child) => {
+      return child.index;
+    });
+
+    return () => indexElement;
+  }
+
+  return () => null;
+};
+
+const router = setupRouter(legacyRoutes);
 
 const Root = () => {
   useEffect(() => {
@@ -68,11 +105,9 @@ const Root = () => {
       <OutletsProvider>
         <HelmetProvider>
           <LanguageProvider>
-            <HistoryRouter history={history}>
-              <App>
-                <Routes />
-              </App>
-            </HistoryRouter>
+            <App>
+              <RouterProvider router={router} />
+            </App>
           </LanguageProvider>
         </HelmetProvider>
       </OutletsProvider>
