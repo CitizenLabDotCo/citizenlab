@@ -7,7 +7,7 @@ import {
   Text,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import useSearch from 'utils/useSearch';
+import { useSearch } from 'utils/router';
 
 import { IAnalysisData } from 'api/analyses/types';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';

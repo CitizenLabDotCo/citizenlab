@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 import { IOption, isIOption } from 'typings';
 

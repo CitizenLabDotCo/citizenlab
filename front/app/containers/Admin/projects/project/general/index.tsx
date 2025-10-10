@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { useParams, useLocation } from '@tanstack/react-router';
 import { Multiloc, UploadFile, CLErrors } from 'typings';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
@@ -56,6 +55,7 @@ import {
 } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { usePermission } from 'utils/permissions';
+import { useParams, useLocation } from 'utils/router';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
 
@@ -85,7 +85,7 @@ export type TOnProjectAttributesDiffChangeFunction = (
 
 const AdminProjectsProjectGeneral = () => {
   const { formatMessage } = useIntl();
-  const { projectId } = useParams({ strict: false });
+  const { projectId } = useParams({ strict: false }) as any;
   const { data: project } = useProjectById(projectId);
 
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });

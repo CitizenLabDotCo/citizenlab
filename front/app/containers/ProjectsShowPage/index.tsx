@@ -9,7 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import JSConfetti from 'js-confetti';
 import { isError } from 'lodash-es';
-import { useParams, useSearch } from '@tanstack/react-router';
+import { useParams, useSearch } from 'utils/router';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';

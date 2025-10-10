@@ -9,7 +9,7 @@ import {
   Title,
 } from '@citizenlab/cl2-component-library';
 import { useInView } from 'react-intersection-observer';
-import { useLocation } from '@tanstack/react-router';
+import { useLocation } from 'utils/router';
 import styled from 'styled-components';
 
 import { CommentsSort } from 'api/comments/types';

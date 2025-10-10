@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Box, Button, Tooltip } from '@citizenlab/cl2-component-library';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 
 import { IQuestionPreCheck } from 'api/analysis_question_pre_check/types';
 import useAddAnalysisQuestionPreCheck from 'api/analysis_question_pre_check/useAddAnalysisQuestionPreCheck';

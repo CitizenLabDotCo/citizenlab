@@ -6,7 +6,7 @@ import React, {
   useEffect,
 } from 'react';
 
-import useSearch from 'utils/useSearch';
+import { useSearch } from 'utils/router';
 
 const Context = createContext<{
   selectedInputId: string | null;

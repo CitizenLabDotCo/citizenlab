@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { Outlet as RouterOutlet } from '@tanstack/react-router';
+import { Outlet as RouterOutlet } from 'utils/router';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 

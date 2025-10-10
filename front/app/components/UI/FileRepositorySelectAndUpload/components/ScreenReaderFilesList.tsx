@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import useFiles from 'api/files/useFiles';

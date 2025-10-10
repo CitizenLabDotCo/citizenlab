@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Outlet as RouterOutlet } from '@tanstack/react-router';
+import { Outlet as RouterOutlet } from 'utils/router';
 
 const CustomPages = () => {
   return <RouterOutlet />;

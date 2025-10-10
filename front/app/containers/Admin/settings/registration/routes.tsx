@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 
-import { Outlet } from '@tanstack/react-router';
+import { Outlet } from 'utils/router';
 
 import { AdminRoute } from 'containers/Admin/routes';
 

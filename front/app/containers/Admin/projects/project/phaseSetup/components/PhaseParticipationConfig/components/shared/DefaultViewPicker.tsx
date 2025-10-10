@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Radio, IconTooltip } from '@citizenlab/cl2-component-library';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 import { CLErrors } from 'typings';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';

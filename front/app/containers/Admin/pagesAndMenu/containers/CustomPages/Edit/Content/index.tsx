@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 
 import { TCustomPageEnabledSetting } from 'api/custom_pages/types';
 import useCustomPageById from 'api/custom_pages/useCustomPageById';

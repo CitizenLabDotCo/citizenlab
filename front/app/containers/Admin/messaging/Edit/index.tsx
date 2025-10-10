@@ -9,7 +9,7 @@ import {
   StatusLabel,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearch } from '@tanstack/react-router';
+import { useParams, useSearch } from 'utils/router';
 
 import { CampaignFormValues } from 'api/campaigns/types';
 import useCampaign from 'api/campaigns/useCampaign';

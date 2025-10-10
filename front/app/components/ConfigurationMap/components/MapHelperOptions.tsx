@@ -7,7 +7,7 @@ import {
   colors,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 
 import { IMapConfig } from 'api/map_config/types';
 import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';

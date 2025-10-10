@@ -10,7 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
-import { useParams, useSearch } from '@tanstack/react-router';
+import { useParams, useSearch } from 'utils/router';
 import { RouteType } from 'routes';
 
 import {

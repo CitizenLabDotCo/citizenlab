@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 
 import { WrappedComponentProps } from 'react-intl';
-import { Outlet as RouterOutlet } from '@tanstack/react-router';
+import { Outlet as RouterOutlet } from 'utils/router';
 import styled from 'styled-components';
 import { ITab } from 'typings';
 

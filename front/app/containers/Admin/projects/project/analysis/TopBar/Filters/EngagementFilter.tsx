@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, Select, Input, Label } from '@citizenlab/cl2-component-library';
-import useSearch from 'utils/useSearch';
+import { useSearch } from 'utils/router';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';

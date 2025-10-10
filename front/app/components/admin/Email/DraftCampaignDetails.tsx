@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import { ICampaignData } from 'api/campaigns/types';

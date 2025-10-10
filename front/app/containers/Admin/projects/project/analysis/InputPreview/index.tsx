@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Box, Divider, Text } from '@citizenlab/cl2-component-library';
-import { useParams, useSearch } from '@tanstack/react-router';
+import { useParams, useSearch } from 'utils/router';
 
 import useAnalysis from 'api/analyses/useAnalysis';
 import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';

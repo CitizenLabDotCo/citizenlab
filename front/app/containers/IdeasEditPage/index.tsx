@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Spinner } from '@citizenlab/cl2-component-library';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 

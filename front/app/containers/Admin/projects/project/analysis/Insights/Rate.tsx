@@ -7,7 +7,7 @@ import {
   Box,
   Icon,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 
 import useRateAnalysisInsight from 'api/analysis_insights/useRateAnalysisInsight';
 

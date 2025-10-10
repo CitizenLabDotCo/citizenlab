@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Box, Button, Input } from '@citizenlab/cl2-component-library';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 
 import useAddAnalysisTag from 'api/analysis_tags/useAddAnalysisTag';
 

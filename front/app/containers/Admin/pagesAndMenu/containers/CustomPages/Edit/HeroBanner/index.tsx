@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { WrappedComponentProps } from 'react-intl';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 import { CLErrors } from 'typings';
 
 import { ICustomPageAttributes } from 'api/custom_pages/types';

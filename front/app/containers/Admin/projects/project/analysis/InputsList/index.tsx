@@ -8,7 +8,7 @@ import {
   Spinner,
 } from '@citizenlab/cl2-component-library';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';

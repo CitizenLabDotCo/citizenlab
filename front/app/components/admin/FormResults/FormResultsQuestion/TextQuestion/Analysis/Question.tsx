@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';

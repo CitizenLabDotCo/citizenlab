@@ -1,7 +1,7 @@
 import React, { Suspense, useEffect, useState } from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
-import useSearch from 'utils/useSearch';
+import { useSearch } from 'utils/router';
 
 import { IPhases, IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';

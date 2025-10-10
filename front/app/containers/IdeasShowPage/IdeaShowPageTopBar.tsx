@@ -7,7 +7,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { lighten } from 'polished';
-import useSearch from 'utils/useSearch';
+import { useSearch } from 'utils/router';
 import styled from 'styled-components';
 
 import { IIdeaData } from 'api/ideas/types';

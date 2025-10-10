@@ -2,7 +2,7 @@ import React, { memo, useState } from 'react';
 
 import { Tooltip } from '@citizenlab/cl2-component-library';
 import flatten from 'geojson-flatten';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import { IMapConfig } from 'api/map_config/types';

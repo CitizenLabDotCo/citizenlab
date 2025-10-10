@@ -8,13 +8,6 @@ import 'tippy.js/themes/light.css';
 import * as Sentry from '@sentry/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import {
-  createRootRoute,
-  createRoute,
-  createRouter,
-  Route,
-  RouterProvider,
-} from '@tanstack/react-router';
 import modules from 'modules';
 import { createRoot } from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
@@ -23,6 +16,13 @@ import LanguageProvider from 'containers/LanguageProvider';
 import OutletsProvider from 'containers/OutletsProvider';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
+import {
+  createRootRoute,
+  createRoute,
+  createRouter,
+  Route,
+  RouterProvider,
+} from 'utils/router';
 
 import prefetchData from './prefetchData';
 import createRoutes from './routes';

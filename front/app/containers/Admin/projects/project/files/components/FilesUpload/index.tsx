@@ -7,7 +7,7 @@ import {
   Title,
 } from '@citizenlab/cl2-component-library';
 import { useDropzone } from 'react-dropzone';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 
 import { useIntl } from 'utils/cl-intl';
 

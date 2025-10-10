@@ -4,7 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 import { Multiloc } from 'typings';
 import { object } from 'yup';
 

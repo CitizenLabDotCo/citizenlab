@@ -20,7 +20,7 @@ import {
   useJsonForms,
   JsonFormsDispatch,
 } from '@jsonforms/react';
-import { useLocation, useParams, useSearch } from '@tanstack/react-router';
+import { useLocation, useParams, useSearch } from 'utils/router';
 import { useTheme } from 'styled-components';
 
 import { IIdea } from 'api/ideas/types';

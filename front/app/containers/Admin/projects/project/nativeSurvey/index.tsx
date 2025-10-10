@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Box, Spinner, Title, Toggle } from '@citizenlab/cl2-component-library';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 
 import usePhase from 'api/phases/usePhase';
 import useUpdatePhase from 'api/phases/useUpdatePhase';

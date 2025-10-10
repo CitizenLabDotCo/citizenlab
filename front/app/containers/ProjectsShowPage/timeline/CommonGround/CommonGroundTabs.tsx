@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import useSearch from 'utils/useSearch';
+import { useSearch } from 'utils/router';
 
 import useCommonGroundProgress from 'api/common_ground/useCommonGroundProgress';
 import { IProjectData } from 'api/projects/types';

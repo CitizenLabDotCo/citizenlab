@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import useSearch from 'utils/useSearch';
+import { useSearch } from 'utils/router';
 
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import { IIdeaQueryParameters, Sort } from 'api/ideas/types';

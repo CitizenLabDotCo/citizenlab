@@ -1,4 +1,4 @@
-import { useLocation, useSearch } from '@tanstack/react-router';
+import { useLocation, useSearch } from 'utils/router';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 

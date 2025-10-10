@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 
 import { ITopicUpdate } from 'api/topics/types';
 import useTopic from 'api/topics/useTopic';

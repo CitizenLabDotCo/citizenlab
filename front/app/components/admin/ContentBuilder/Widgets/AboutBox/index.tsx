@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, colors, Toggle } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 
 import useCampaign from 'api/campaigns/useCampaign';
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';

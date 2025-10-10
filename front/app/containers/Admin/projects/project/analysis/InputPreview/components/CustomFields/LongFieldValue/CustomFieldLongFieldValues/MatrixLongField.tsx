@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
-import { useParams, useSearch } from '@tanstack/react-router';
 import { useTheme } from 'styled-components';
 
 import useCustomFieldStatements from 'api/custom_field_statements/useCustomFieldStatements';
@@ -12,6 +11,7 @@ import useLocale from 'hooks/useLocale';
 import T from 'components/T';
 
 import { useIntl } from 'utils/cl-intl';
+import { useParams, useSearch } from 'utils/router';
 
 import messages from '../../../../../messages';
 
@@ -28,7 +28,7 @@ const MatrixLongField = ({ customField, rawValue }: Props) => {
 
   // Get phase and project from URL
   const phaseId = searchParams.get('phase_id') || '';
-  const projectId = useParams({ strict: false }).projectId || '';
+  const projectId = (useParams({ strict: false }) as any).projectId || '';
 
   // Get the statements data for the custom field
   const statements = useCustomFieldStatements({

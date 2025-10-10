@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 
 import useDeleteMembership from 'api/group_memberships/useDeleteMembership';
 import { MembershipType } from 'api/groups/types';

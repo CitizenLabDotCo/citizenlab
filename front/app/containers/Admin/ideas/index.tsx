@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 // module
 
-import { Outlet as RouterOutlet, useLocation } from '@tanstack/react-router';
+import { Outlet as RouterOutlet, useLocation } from 'utils/router';
 import { InsertConfigurationOptions, ITab } from 'typings';
 
 import NavigationTabs, {

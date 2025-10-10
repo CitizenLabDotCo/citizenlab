@@ -9,7 +9,7 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { xor } from 'lodash-es';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 import {
   BarChart,
   Bar,

@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import useSearch from 'utils/useSearch';
+import { useSearch } from 'utils/router';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 

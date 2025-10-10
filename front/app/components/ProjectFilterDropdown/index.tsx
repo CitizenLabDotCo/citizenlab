@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import useSearch from 'utils/useSearch';
+import { useSearch } from 'utils/router';
 
 import useProjects from 'api/projects/useProjects';
 

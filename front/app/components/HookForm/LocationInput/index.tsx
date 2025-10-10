@@ -3,7 +3,7 @@ import React, { useCallback, useEffect } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
-import useSearch from 'utils/useSearch';
+import { useSearch } from 'utils/router';
 import { CLError, RHFErrors } from 'typings';
 
 import useLocale from 'hooks/useLocale';

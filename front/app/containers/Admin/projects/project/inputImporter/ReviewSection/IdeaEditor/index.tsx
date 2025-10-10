@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { UseFormSetError } from 'react-hook-form';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';

@@ -7,7 +7,7 @@ import {
   Icon,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearch } from '@tanstack/react-router';
+import { useParams, useSearch } from 'utils/router';
 import { Multiloc } from 'typings';
 
 import { IIdeaData } from 'api/ideas/types';

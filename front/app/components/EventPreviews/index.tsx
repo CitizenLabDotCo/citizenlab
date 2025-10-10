@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useParams } from '@tanstack/react-router';
 import moment from 'moment';
 
 import useEvents from 'api/events/useEvents';
@@ -13,6 +12,7 @@ import HorizontalScroll from 'components/HorizontalScroll';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { useParams } from 'utils/router';
 
 import EventPreviewCard from './EventPreviewCard';
 import messages from './messages';
@@ -26,7 +26,7 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
   const isTablet = useBreakpoint('tablet');
 
   // project related
-  const params = useParams({ strict: false });
+  const params = useParams({ strict: false }) as any;
   const { data: project } = useProjectBySlug(params.slug);
   const projectIdToUse = projectId || project?.data.id;
   const { data: phases } = usePhases(projectIdToUse);

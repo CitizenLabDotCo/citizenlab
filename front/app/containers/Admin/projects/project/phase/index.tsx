@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { Box, colors, Spinner } from '@citizenlab/cl2-component-library';
-import {
-  Outlet as RouterOutlet,
-  useParams,
-  useLocation,
-} from '@tanstack/react-router';
+import { Outlet as RouterOutlet, useParams, useLocation } from 'utils/router';
 
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';

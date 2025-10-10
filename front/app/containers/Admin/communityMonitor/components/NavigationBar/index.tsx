@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useLocation } from '@tanstack/react-router';
+import { useLocation } from 'utils/router';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 

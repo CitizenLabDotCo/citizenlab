@@ -9,7 +9,7 @@ import {
   Box,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 import GetGroup from 'resources/GetGroup';
 import styled from 'styled-components';
 

@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 import { array, object, string } from 'yup';
 
 import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';

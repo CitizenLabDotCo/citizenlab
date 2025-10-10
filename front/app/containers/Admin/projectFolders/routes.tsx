@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 
-import { Navigate, Outlet as RouterOutlet } from '@tanstack/react-router';
+import { Navigate, Outlet as RouterOutlet } from 'utils/router';
 
 import PageLoading from 'components/UI/PageLoading';
 

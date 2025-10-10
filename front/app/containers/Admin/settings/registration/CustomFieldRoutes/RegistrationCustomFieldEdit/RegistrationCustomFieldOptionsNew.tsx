@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 
 import useAddCustomFieldOption from 'api/custom_field_options/useAddCustomFieldOption';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Outlet as RouterOutlet, useParams } from '@tanstack/react-router';
+import { Outlet as RouterOutlet, useParams } from 'utils/router';
 import styled from 'styled-components';
 import { ITab } from 'typings';
 

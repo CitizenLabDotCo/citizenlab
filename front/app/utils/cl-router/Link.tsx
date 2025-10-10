@@ -1,14 +1,8 @@
 import React from 'react';
 
-import {
-  // eslint-disable-next-line no-restricted-imports
-  Link as RouterLink,
-  LinkProps as NavLinkProps,
-} from '@tanstack/react-router';
-// eslint-disable-next-line no-restricted-imports
-
 import useLocale from 'hooks/useLocale';
 
+import { Link as RouterLink, LinkProps as NavLinkProps } from 'utils/router';
 import { scrollToTop as scrollTop } from 'utils/scroll';
 
 import updateLocationDescriptor from './updateLocationDescriptor';
@@ -39,7 +33,7 @@ const Link = ({
   return (
     <RouterLink
       // end={onlyActiveOnIndex}
-      to={updateLocationDescriptor(to, locale).pathname ?? '#'}
+      to={(updateLocationDescriptor(to, locale).pathname ?? '#') as any}
       onClick={(event) => {
         onClick && onClick(event);
         if (scrollToTop) {

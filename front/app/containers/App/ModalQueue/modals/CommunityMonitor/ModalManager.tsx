@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 
 import { get } from 'js-cookie';
-import { useLocation } from '@tanstack/react-router';
+import { useLocation } from 'utils/router';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 import useAuthUser from 'api/me/useAuthUser';

@@ -10,7 +10,7 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import * as Sentry from '@sentry/react';
-import { useLocation } from '@tanstack/react-router';
+import { useLocation } from 'utils/router';
 import GlobalStyle from 'global-styles';
 import 'intersection-observer';
 // moment-timezone extends the regular moment library,

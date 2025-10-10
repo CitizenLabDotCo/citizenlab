@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 
 import { Box, Button } from '@citizenlab/cl2-component-library';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 import { useTheme } from 'styled-components';
 
 import useIdeaById from 'api/ideas/useIdeaById';

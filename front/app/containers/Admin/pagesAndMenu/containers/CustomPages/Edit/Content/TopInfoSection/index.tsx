@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 
 import { ICustomPageAttributes } from 'api/custom_pages/types';
 import useCustomPageById from 'api/custom_pages/useCustomPageById';

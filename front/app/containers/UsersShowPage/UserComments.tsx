@@ -9,7 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { groupBy } from 'lodash-es';
 import { darken, rgba } from 'polished';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 import styled, { useTheme } from 'styled-components';
 
 import useComments from 'api/comments/useComments';

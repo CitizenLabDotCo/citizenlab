@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
-import useSearch from 'utils/useSearch';
+import { useSearch } from 'utils/router';
 import { string, object, boolean } from 'yup';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';

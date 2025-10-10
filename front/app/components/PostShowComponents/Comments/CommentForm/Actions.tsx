@@ -7,7 +7,7 @@ import {
   Box,
   CheckboxWithLabel,
 } from '@citizenlab/cl2-component-library';
-import { useLocation } from '@tanstack/react-router';
+import { useLocation } from 'utils/router';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 

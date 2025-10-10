@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useLocation } from '@tanstack/react-router';
+import { useLocation } from 'utils/router';
 import { RouteType } from 'routes';
 
 import { InputTerm, ParticipationMethod } from 'api/phases/types';

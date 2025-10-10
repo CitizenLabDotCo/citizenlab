@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { format, parseISO, startOfDay } from 'date-fns';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 import { CLErrors } from 'typings';
 
 import { IUpdatedPhaseProperties } from 'api/phases/types';

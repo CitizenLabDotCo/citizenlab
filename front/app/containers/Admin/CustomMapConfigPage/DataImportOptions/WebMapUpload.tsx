@@ -10,7 +10,7 @@ import {
   Success,
 } from '@citizenlab/cl2-component-library';
 import { request, ErrorTypes, ApiKeyManager } from '@esri/arcgis-rest-request';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';

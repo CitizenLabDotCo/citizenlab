@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { omit } from 'lodash-es';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 
 import { TCustomPageCode } from 'api/custom_pages/types';
 import useCustomPageById from 'api/custom_pages/useCustomPageById';

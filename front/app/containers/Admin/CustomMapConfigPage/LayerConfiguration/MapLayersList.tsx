@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import { IMapConfig } from 'api/map_config/types';

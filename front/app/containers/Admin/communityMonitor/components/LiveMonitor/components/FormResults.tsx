@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
-import { useParams, useSearch } from '@tanstack/react-router';
+import { useParams, useSearch } from 'utils/router';
 
 import useProjectById from 'api/projects/useProjectById';
 import useSurveyResults from 'api/survey_results/useSurveyResults';

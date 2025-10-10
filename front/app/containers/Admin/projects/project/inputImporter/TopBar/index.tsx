@@ -7,7 +7,7 @@ import {
   stylingConsts,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 import { RouteType } from 'routes';
 
 import usePhase from 'api/phases/usePhase';

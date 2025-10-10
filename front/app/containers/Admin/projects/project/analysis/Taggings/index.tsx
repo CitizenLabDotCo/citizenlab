@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 
 import useAddAnalysisTagging from 'api/analysis_taggings/useAddAnalysisTagging';
 import useAnalysisTaggings from 'api/analysis_taggings/useAnalysisTaggings';

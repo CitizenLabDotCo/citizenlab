@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 

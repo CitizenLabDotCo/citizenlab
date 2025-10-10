@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import usePhases from 'api/phases/usePhases';

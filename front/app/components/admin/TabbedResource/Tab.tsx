@@ -6,7 +6,7 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import { useLocation } from '@tanstack/react-router';
+import { useLocation } from 'utils/router';
 import styled from 'styled-components';
 import { ITab } from 'typings';
 

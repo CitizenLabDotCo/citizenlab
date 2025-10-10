@@ -9,7 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import saveAs from 'file-saver';
 import moment from 'moment';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import { IEventData } from 'api/events/types';

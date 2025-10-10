@@ -12,7 +12,7 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
-import { useLocation, useSearch } from '@tanstack/react-router';
+import { useLocation, useSearch } from 'utils/router';
 import { RouteType } from 'routes';
 import { ImageSizes, Multiloc, UploadFile } from 'typings';
 

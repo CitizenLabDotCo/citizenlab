@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import useSearch from 'utils/useSearch';
+import { useSearch } from 'utils/router';
 
 import { Parameters } from 'api/projects_mini_admin/types';
 

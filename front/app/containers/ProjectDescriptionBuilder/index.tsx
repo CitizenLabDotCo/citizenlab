@@ -3,7 +3,7 @@ import React, { useState, useRef, useCallback } from 'react';
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 import { isEmpty } from 'lodash-es';
-import { useParams, useLocation } from '@tanstack/react-router';
+import { useParams, useLocation } from 'utils/router';
 import { SupportedLocale } from 'typings';
 
 import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';

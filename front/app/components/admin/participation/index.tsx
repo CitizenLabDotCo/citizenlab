@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { useLocation, useParams } from '@tanstack/react-router';
+import { useLocation, useParams } from 'utils/router';
 
 import usePhases from 'api/phases/usePhases';
 

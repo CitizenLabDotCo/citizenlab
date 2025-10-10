@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { useBreakpoint, Box, Title } from '@citizenlab/cl2-component-library';
-import useSearch from 'utils/useSearch';
+import { useSearch } from 'utils/router';
 import { RouteType } from 'routes';
 
 import useIdeaImage from 'api/idea_images/useIdeaImage';

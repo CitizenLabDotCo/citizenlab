@@ -7,7 +7,7 @@ import {
   Box,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 import { CLErrors, IOption } from 'typings';
 

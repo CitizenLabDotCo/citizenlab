@@ -1,7 +1,7 @@
 import React from 'react';
 
 import moment from 'moment';
-import useSearch from 'utils/useSearch';
+import { useSearch } from 'utils/router';
 
 import TimeControl from 'containers/Admin/dashboard/components/TimeControl';
 

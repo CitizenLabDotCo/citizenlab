@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 
-import { Navigate } from '@tanstack/react-router';
+import { Navigate } from 'utils/router';
 import moduleConfiguration from 'modules';
 
 import PageLoading from 'components/UI/PageLoading';

@@ -9,7 +9,7 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 import { UploadFile } from 'typings';
 import { mixed, object } from 'yup';
 

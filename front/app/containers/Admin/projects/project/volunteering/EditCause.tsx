@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 
 import useCause from 'api/causes/useCause';
 import useUpdateCause from 'api/causes/useUpdateCause';

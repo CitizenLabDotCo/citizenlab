@@ -1,6 +1,6 @@
 import React from 'react';
 
-import useSearch from 'utils/useSearch';
+import { useSearch } from 'utils/router';
 
 import { getPercentageDifference } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
 import TrendIndicator from 'components/TrendIndicator';

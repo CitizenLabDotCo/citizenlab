@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { FormProvider } from 'react-hook-form';
-import { useLocation, useSearch } from '@tanstack/react-router';
+import { useLocation, useSearch } from 'utils/router';
 import styled from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';

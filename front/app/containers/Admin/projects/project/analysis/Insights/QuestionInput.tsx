@@ -7,7 +7,7 @@ import {
   stylingConsts,
   Button,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from '@tanstack/react-router';
+import { useParams } from 'utils/router';
 
 import useAddAnalysisQuestion from 'api/analysis_questions/useAddAnalysisQuestion';
 
