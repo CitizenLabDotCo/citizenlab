@@ -12,6 +12,7 @@ import { Multiloc } from 'typings';
 
 import { IIdeaData } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
+import { IPhaseData } from 'api/phases/types';
 import useProjectById from 'api/projects/useProjectById';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 import useSimilarIdeas from 'api/similar_ideas/useSimilarIdeas';
@@ -24,7 +25,6 @@ import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import messages from './messages';
-import { IPhaseData } from 'api/phases/types';
 
 const SimilarIdeasList = ({
   titleMultiloc,
@@ -44,9 +44,7 @@ const SimilarIdeasList = ({
     projectId?: string;
   };
   const [searchParams] = useSearch({ strict: false });
-  const { ideaId: idea_id } = useParams<{
-    ideaId?: string;
-  }>();
+  const { ideaId: idea_id } = useParams({ strict: false });
   const ideaId = searchParams.get('idea_id') || idea_id;
   const selectedIdeaId = searchParams.get('selected_idea_id');
   const { data: idea } = useIdeaById(ideaId ?? undefined);
