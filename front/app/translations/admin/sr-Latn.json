@@ -2736,6 +2736,7 @@
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "Da li ste sigurni da želite da uklonite ovu grupu iz projekta?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "Odaberite jednu ili više grupa",
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {Nema članova} one {1 član} other {{count} članova}}",
+  "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "Please fill in the description in all languages",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "Молимо попуните наслов на свим језицима",
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Da li ste sigurni",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Nisu pronađeni projektni menadžeri",

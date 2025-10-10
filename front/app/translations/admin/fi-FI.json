@@ -2736,6 +2736,7 @@
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "Haluatko varmasti poistaa tämän ryhmän projektista?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "Valitse yksi tai useampi ryhmä",
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {Ei jäseniä} one {1 jäsen} other {{count} jäsentä}}",
+  "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "Täytä kuvaus kaikilla kielillä",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "Täytä otsikko kaikilla kielillä",
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Oletko varma?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Projektipäälliköitä ei löydy",
