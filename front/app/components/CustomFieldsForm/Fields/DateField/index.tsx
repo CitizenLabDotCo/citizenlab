@@ -9,7 +9,15 @@ import { CLError, RHFErrors } from 'typings';
 import DateSinglePicker from 'components/admin/DatePickers/DateSinglePicker';
 import Error, { TFieldName } from 'components/UI/Error';
 
-const DateField = ({ name, scrollErrorIntoView }) => {
+const DateField = ({
+  name,
+  scrollErrorIntoView,
+  disabled,
+}: {
+  name: string;
+  scrollErrorIntoView?: boolean;
+  disabled?: boolean;
+}) => {
   const {
     formState: { errors: formContextErrors },
     control,
@@ -39,6 +47,7 @@ const DateField = ({ name, scrollErrorIntoView }) => {
               setValue(name, format(startOfDay(value), 'yyyy-MM-dd'));
               trigger(name);
             }}
+            disabled={disabled}
           />
         )}
       />

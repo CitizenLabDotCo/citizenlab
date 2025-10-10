@@ -9,7 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import permissionsCustomFieldsKeys from 'api/permissions_custom_fields/keys';
+import permissionsPhaseCustomFieldsKeys from 'api/permissions_phase_custom_fields/keys';
 import userCustomFieldsKeys from 'api/user_custom_fields/keys';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import useDeleteUserCustomField from 'api/user_custom_fields/useDeleteUserCustomField';
@@ -88,7 +88,7 @@ const CustomFieldSettings = () => {
                 queryKey: userCustomFieldsKeys.lists(),
               });
               queryClient.invalidateQueries({
-                queryKey: permissionsCustomFieldsKeys.all(),
+                queryKey: permissionsPhaseCustomFieldsKeys.all(),
               });
             },
           });

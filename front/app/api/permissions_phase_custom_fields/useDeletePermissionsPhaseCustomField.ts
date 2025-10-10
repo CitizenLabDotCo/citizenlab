@@ -2,10 +2,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import permissionsCustomFieldsKeys from './keys';
+import permissionsPhaseCustomFieldsKeys from './keys';
 import { IListParameters } from './types';
 
-type DeletePermissionsCustomField = {
+type DeletePermissionsPhaseCustomField = {
   id: string;
 
   // These two should be defined if the
@@ -14,10 +14,10 @@ type DeletePermissionsCustomField = {
   custom_field_id?: string;
 };
 
-const deletePermissionsCustomField = ({
+const deletePermissionsPhaseCustomField = ({
   id,
   ...body
-}: DeletePermissionsCustomField) => {
+}: DeletePermissionsPhaseCustomField) => {
   return fetcher({
     path: `/permissions_custom_fields/${id}`,
     action: 'delete',
@@ -25,17 +25,17 @@ const deletePermissionsCustomField = ({
   });
 };
 
-const useDeletePermissionsCustomField = ({
+const useDeletePermissionsPhaseCustomField = ({
   phaseId,
   action,
 }: IListParameters) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deletePermissionsCustomField,
+    mutationFn: deletePermissionsPhaseCustomField,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: permissionsCustomFieldsKeys.list({
+        queryKey: permissionsPhaseCustomFieldsKeys.list({
           phaseId,
           action,
         }),
@@ -44,4 +44,4 @@ const useDeletePermissionsCustomField = ({
   });
 };
 
-export default useDeletePermissionsCustomField;
+export default useDeletePermissionsPhaseCustomField;

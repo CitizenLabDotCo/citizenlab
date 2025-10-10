@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
-import useUpdatePermissionsCustomField from 'api/permissions_custom_fields/useUpdatePermissionsCustomField';
+import useUpdatePermissionsPhaseCustomField from 'api/permissions_phase_custom_fields/useUpdatePermissionsPhaseCustomField';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
@@ -37,14 +37,14 @@ const server = setupServer(
   })
 );
 
-describe('useUpdatePermissionsCustomField', () => {
+describe('useUpdatePermissionsPhaseCustomField', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
     const { result } = renderHook(
       () =>
-        useUpdatePermissionsCustomField({
+        useUpdatePermissionsPhaseCustomField({
           action: 'taking_poll',
           phaseId: '1',
         }),
@@ -70,7 +70,7 @@ describe('useUpdatePermissionsCustomField', () => {
 
     const { result } = renderHook(
       () =>
-        useUpdatePermissionsCustomField({
+        useUpdatePermissionsPhaseCustomField({
           action: 'taking_poll',
           phaseId: '1',
         }),

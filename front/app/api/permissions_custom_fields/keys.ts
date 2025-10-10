@@ -1,19 +1,13 @@
+import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
+
 import { QueryKeys } from 'utils/cl-react-query/types';
 
-import { IItemParameters, IListParameters } from './types';
-
-const baseKey = { type: 'permissions_custom_field' };
-
-const permissionsCustomFieldsKeys = {
-  all: () => [baseKey],
-  lists: () => [{ ...baseKey, operation: 'list' }],
-  list: (parameters: IListParameters) => [
-    { ...baseKey, operation: 'list', parameters },
-  ],
-  items: () => [{ ...baseKey, operation: 'item' }],
-  item: (parameters: IItemParameters) => [
-    { ...baseKey, operation: 'item', parameters },
+const baseType = { type: 'custom_field' };
+const permissionCustomFieldsKeys = {
+  all: () => [baseType],
+  item: (authenticationContext: AuthenticationContext) => [
+    { ...baseType, operation: 'item', parameters: { authenticationContext } },
   ],
 } satisfies QueryKeys;
 
-export default permissionsCustomFieldsKeys;
+export default permissionCustomFieldsKeys;

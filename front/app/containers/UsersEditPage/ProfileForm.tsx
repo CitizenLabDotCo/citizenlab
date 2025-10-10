@@ -53,6 +53,7 @@ const StyledIconTooltip = styled(IconTooltip)`
 const InputContainer = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
 `;
 
 type FormValues = {

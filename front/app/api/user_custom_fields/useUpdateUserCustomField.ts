@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors, Multiloc } from 'typings';
 
-import schemaKeys from 'api/custom_fields_json_form_schema/keys';
+import permissionsCustomFieldsKeys from 'api/permissions_custom_fields/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -31,7 +31,9 @@ const useUpdateUserCustomField = () => {
   return useMutation<IUserCustomField, { errors: CLErrors }, UpdateField>({
     mutationFn: updateField,
     onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({ queryKey: schemaKeys.all() });
+      queryClient.invalidateQueries({
+        queryKey: permissionsCustomFieldsKeys.all(),
+      });
       queryClient.invalidateQueries({
         queryKey: userCustomFieldsKeys.lists(),
       });

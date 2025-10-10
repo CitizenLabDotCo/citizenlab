@@ -3,16 +3,18 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import permissionsCustomFieldsKeys from './keys';
+import permissionsPhaseCustomFieldsKeys from './keys';
 import {
   IListParameters,
-  IPermissionsCustomField,
-  IPermissionsCustomFieldAdd,
+  IPermissionsPhaseCustomField,
+  IPermissionsPhaseCustomFieldAdd,
 } from './types';
 import { getPath } from './utils';
 
-const addPermissionsCustomField = async (params: IPermissionsCustomFieldAdd) =>
-  fetcher<IPermissionsCustomField>({
+const addPermissionsPhaseCustomField = async (
+  params: IPermissionsPhaseCustomFieldAdd
+) =>
+  fetcher<IPermissionsPhaseCustomField>({
     path: getPath(params),
     action: 'post',
     body: {
@@ -21,17 +23,20 @@ const addPermissionsCustomField = async (params: IPermissionsCustomFieldAdd) =>
     },
   });
 
-const useAddPermissionsCustomField = ({ phaseId, action }: IListParameters) => {
+const useAddPermissionsPhaseCustomField = ({
+  phaseId,
+  action,
+}: IListParameters) => {
   const queryClient = useQueryClient();
   return useMutation<
-    IPermissionsCustomField,
+    IPermissionsPhaseCustomField,
     CLErrors,
-    IPermissionsCustomFieldAdd
+    IPermissionsPhaseCustomFieldAdd
   >({
-    mutationFn: addPermissionsCustomField,
+    mutationFn: addPermissionsPhaseCustomField,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: permissionsCustomFieldsKeys.list({
+        queryKey: permissionsPhaseCustomFieldsKeys.list({
           phaseId,
           action,
         }),
@@ -40,4 +45,4 @@ const useAddPermissionsCustomField = ({ phaseId, action }: IListParameters) => {
   });
 };
 
-export default useAddPermissionsCustomField;
+export default useAddPermissionsPhaseCustomField;

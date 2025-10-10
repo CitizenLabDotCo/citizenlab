@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 
-import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
+import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
 import { PermittedBy } from 'api/phase_permissions/types';
 
 import Blocks from './Blocks';
@@ -12,7 +12,7 @@ interface Props {
   permittedBy: PermittedBy;
   verificationEnabled: boolean;
   verificationExpiry: number | null;
-  permissionsCustomFields: IPermissionsCustomFieldData[];
+  permissionsCustomFields: IPermissionsPhaseCustomFieldData[];
   onChangeVerificationExpiry: (value: number | null) => void;
   userFieldsInForm: boolean | null;
 }

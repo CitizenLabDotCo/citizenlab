@@ -200,4 +200,9 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.otherArea',
     defaultMessage: 'Somewhere else',
   },
+  blockedVerified: {
+    id: 'app.components.CustomFieldsForm.blockedVerified',
+    defaultMessage:
+      "You can't edit this field because it contains verified information",
+  },
 });

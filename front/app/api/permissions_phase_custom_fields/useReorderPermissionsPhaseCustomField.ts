@@ -3,10 +3,10 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import permissionsCustomFieldsKeys from './keys';
-import { IListParameters, IPermissionsCustomField } from './types';
+import permissionsPhaseCustomFieldsKeys from './keys';
+import { IListParameters, IPermissionsPhaseCustomField } from './types';
 
-type ReorderPermissionsCustomField = {
+type ReorderPermissionsPhaseCustomField = {
   id: string;
 
   // These two should be defined if the
@@ -18,31 +18,31 @@ type ReorderPermissionsCustomField = {
   ordering: number;
 };
 
-const reorderPermissionsCustomField = ({
+const reorderPermissionsPhaseCustomField = ({
   id,
   ...body
-}: ReorderPermissionsCustomField) =>
-  fetcher<IPermissionsCustomField>({
+}: ReorderPermissionsPhaseCustomField) =>
+  fetcher<IPermissionsPhaseCustomField>({
     path: `/permissions_custom_fields/${id}/reorder`,
     action: 'patch',
     body,
   });
 
-const useReorderPermissionsCustomField = ({
+const useReorderPermissionsPhaseCustomField = ({
   phaseId,
   action,
 }: IListParameters) => {
   const queryClient = useQueryClient();
 
   return useMutation<
-    IPermissionsCustomField,
+    IPermissionsPhaseCustomField,
     CLErrors,
-    ReorderPermissionsCustomField
+    ReorderPermissionsPhaseCustomField
   >({
-    mutationFn: reorderPermissionsCustomField,
+    mutationFn: reorderPermissionsPhaseCustomField,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: permissionsCustomFieldsKeys.list({
+        queryKey: permissionsPhaseCustomFieldsKeys.list({
           phaseId,
           action,
         }),
@@ -51,4 +51,4 @@ const useReorderPermissionsCustomField = ({
   });
 };
 
-export default useReorderPermissionsCustomField;
+export default useReorderPermissionsPhaseCustomField;

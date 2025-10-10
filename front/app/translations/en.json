@@ -151,6 +151,7 @@
   "app.components.CustomFieldsForm.authorFieldLabel": "Author",
   "app.components.CustomFieldsForm.authorFieldPlaceholder": "Start typing to search by user email or name...",
   "app.components.CustomFieldsForm.back": "Back",
+  "app.components.CustomFieldsForm.blockedVerified": "You can't edit this field because it contains verified information",
   "app.components.CustomFieldsForm.budgetFieldLabel": "Budget",
   "app.components.CustomFieldsForm.clickOnMapMultipleToAdd3": "Click on the map to draw. Then, drag on points to move them.",
   "app.components.CustomFieldsForm.clickOnMapToAddOrType": "Click on the map or type an address below to add your answer.",

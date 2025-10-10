@@ -1,11 +1,11 @@
-import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
+import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
 import {
   PermittedBy,
   UserFieldsInFormFrontendDescriptor,
 } from 'api/phase_permissions/types';
 
 export const getNumberOfVerificationLockedItems = (
-  fields: IPermissionsCustomFieldData[]
+  fields: IPermissionsPhaseCustomFieldData[]
 ) => {
   return fields.filter(({ attributes }) => attributes.lock === 'verification')
     .length;
@@ -13,7 +13,7 @@ export const getNumberOfVerificationLockedItems = (
 
 export const showResetButton = (
   permittedBy: PermittedBy,
-  fields: IPermissionsCustomFieldData[],
+  fields: IPermissionsPhaseCustomFieldData[],
   groupIds?: string[]
 ) => {
   if (groupIds && groupIds.length > 0) return true;
