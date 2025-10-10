@@ -2736,6 +2736,7 @@
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "Bu grubu projeden kaldırmak istediğinizden emin misiniz?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "Bir veya daha fazla grup seçin",
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {Üye yok} one {1 üye} other {{count} üye}}",
+  "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "Lütfen açıklamayı tüm dillerde doldurun",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "Lütfen başlığı tüm dillerde doldurun",
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Emin misiniz?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Proje yöneticileri bulunamadı",

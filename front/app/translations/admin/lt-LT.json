@@ -2736,6 +2736,7 @@
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "Ar tikrai norite pašalinti šią grupę iš projekto?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "Pasirinkite vieną ar daugiau grupių",
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {narių nėra} one {1 narys} other {{count} nariai}}",
+  "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "Užpildykite aprašymą visomis kalbomis",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "Užpildykite pavadinimą visomis kalbomis",
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Ar tikrai?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Projektų vadovai nerasti",

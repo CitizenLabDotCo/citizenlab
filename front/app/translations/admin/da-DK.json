@@ -2736,6 +2736,7 @@
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "Er du sikker på, at du ønsker at fjerne denne gruppe fra projektet?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "Udvalgt en eller flere grupper",
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {Ingen medlemmer} one {1 medlem} other {{count} medlemmer}}",
+  "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "Udfyld venligst beskrivelsen på alle sprog",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "Udfyld venligst titlen på alle sprog",
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Er du sikker?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Projektledere ikke fundet",

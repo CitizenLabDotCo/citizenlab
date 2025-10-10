@@ -2736,6 +2736,7 @@
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "crwdns212152:0crwdne212152:0",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "crwdns212154:0crwdne212154:0",
   "app.containers.AdminPage.groups.permissions.members": "crwdns212156:0count={count}crwdnd212156:0count={count}crwdne212156:0",
+  "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "crwdns5574615:0crwdne5574615:0",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "crwdns523161:0crwdne523161:0",
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "crwdns212158:0crwdne212158:0",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "crwdns212160:0crwdne212160:0",

@@ -2736,6 +2736,7 @@
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "Ydych chi'n siŵr eich bod am ddileu'r grŵp hwn o'r prosiect?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "Dewiswch un neu fwy o grwpiau",
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {Dim aelodau} one {1 aelod} other {{count} aelodau}}",
+  "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "Llenwch y disgrifiad ym mhob iaith os gwelwch yn dda",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "Cwblhewch y teitl ym mhob iaith",
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Wyt ti'n siwr?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Rheolwyr prosiect heb eu canfod",
