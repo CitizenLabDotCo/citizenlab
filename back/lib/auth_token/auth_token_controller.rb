@@ -3,11 +3,23 @@
 # After https://github.com/nsarno/knock/blob/master/app/controllers/knock/auth_token_controller.rb.
 module AuthToken
   class AuthTokenController < ActionController::API
+    include ActionController::Cookies
+
     before_action :authenticate
 
     rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
     def create
+      token = auth_token.token
+
+      cookies[:cl2_jwt] = {
+        value: token,
+        httponly: true,
+        secure: Rails.env.production?,
+        same_site: :lax,
+        expires: 1.day.from_now
+      }
+
       render json: auth_token, status: :created
     end
 

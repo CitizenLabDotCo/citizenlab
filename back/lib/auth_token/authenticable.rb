@@ -19,7 +19,8 @@ module AuthToken
     private
 
     def token
-      params[:token] || token_from_request_headers
+      # params[:token] || token_from_request_headers
+      params[:token] || cookies[:cl2_jwt]
     end
 
     def method_missing(method, *args)
