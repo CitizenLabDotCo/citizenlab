@@ -2163,7 +2163,6 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "Šta želite da radite?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Odaberite kako korisnici učestvuju.",
   "app.containers.AdminPage.ProjectEdit.participationRequirementsSubtitle": "Можете да одредите ко може да предузме сваку радњу и да поставите додатна питања учесницима како бисте прикупили више информација.",
-  "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Захтеви и питања за учеснике",
   "app.containers.AdminPage.ProjectEdit.phaseAccessRights2": "Phase access and user data",
   "app.containers.AdminPage.ProjectEdit.phaseEmails": "Notifications",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Anketa",
