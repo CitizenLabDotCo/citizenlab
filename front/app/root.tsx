@@ -6,7 +6,6 @@ import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light.css';
 
 import * as Sentry from '@sentry/react';
-import { wrapUseRoutesV6 } from '@sentry/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import modules from 'modules';
@@ -48,7 +47,7 @@ Sentry.init({
   sendClientReports: false,
 });
 
-const useSentryRoutes = wrapUseRoutesV6(useRoutes);
+// const useSentryRoutes = wrapUseRoutesV6(useRoutes);
 const routes = createRoutes();
 
 function Routes() {
@@ -56,7 +55,7 @@ function Routes() {
     modules.afterMountApplication();
   }, []);
 
-  return useSentryRoutes(routes);
+  return useRoutes(routes);
 }
 
 const Root = () => {
