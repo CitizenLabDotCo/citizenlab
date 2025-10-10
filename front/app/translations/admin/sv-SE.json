@@ -2163,7 +2163,7 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "Vad vill du göra?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Välj hur användare kan delta.",
   "app.containers.AdminPage.ProjectEdit.participationRequirementsSubtitle": "Du kan ange vem som kan utföra varje åtgärd och ställa ytterligare frågor till deltagarna för att samla in mer information.",
-  "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Deltagarnas krav och frågor",
+  "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle1": "Fasåtkomst och användardata",
   "app.containers.AdminPage.ProjectEdit.phaseAccessRights2": "Fasåtkomst och användardata",
   "app.containers.AdminPage.ProjectEdit.phaseEmails": "Meddelanden",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Omröstning",
