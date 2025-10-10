@@ -82,6 +82,33 @@ const usePublishedProjectTemplates = ({
     }
   `;
 
+  type PublishedProjectTemplatesResponse = {
+    publishedProjectTemplates: {
+      nodes: {
+        id: string;
+        cardImage: string | null;
+        titleMultiloc: { [key: string]: string };
+        subtitleMultiloc: { [key: string]: string };
+        departments: {
+          id: string;
+          titleMultiloc: { [key: string]: string };
+        }[];
+        purposes: {
+          id: string;
+          titleMultiloc: { [key: string]: string };
+        }[];
+        participationLevels: {
+          id: string;
+          titleMultiloc: { [key: string]: string };
+        }[];
+      }[];
+      pageInfo: {
+        hasNextPage: boolean;
+        endCursor: string | null;
+      };
+    };
+  };
+
   return useInfiniteQuery({
     queryKey: [
       'publishedProjectTemplates',
@@ -95,7 +122,7 @@ const usePublishedProjectTemplates = ({
       },
     ],
     queryFn: ({ pageParam = null }) =>
-      graphqlFetcher({
+      graphqlFetcher<PublishedProjectTemplatesResponse>({
         query: PUBLISHED_PROJECT_TEMPLATES_QUERY,
         variables: {
           departments,

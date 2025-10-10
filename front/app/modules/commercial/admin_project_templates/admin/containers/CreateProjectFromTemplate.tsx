@@ -11,9 +11,9 @@ import { trackEventByName } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
 
 import tracks from '../../tracks';
+import { Templates } from '../../types';
 import usePublishedProjectTemplates from '../api/usePublishedProjectTemplates';
 import ProjectTemplateCards from '../components/ProjectTemplateCards';
-
 interface Props {
   className?: string;
   graphqlTenantLocales: string[];
@@ -52,7 +52,7 @@ const CreateProjectFromTemplate = memo(
     });
 
     // Transform the infinite query data to match the expected structure
-    const templates = data
+    const templates: Templates = data
       ? {
           edges: data.pages.flatMap((page) =>
             page.publishedProjectTemplates.nodes.map((node) => ({
