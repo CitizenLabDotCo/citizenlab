@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from '@tanstack/react-router';
 
 import UserManager from 'containers/Admin/users/UserManager';
 import UsersHeader from 'containers/Admin/users/UsersHeader';

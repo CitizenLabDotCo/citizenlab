@@ -5,7 +5,7 @@ import {
   Outlet as RouterOutlet,
   useLocation,
   useParams,
-} from 'react-router-dom';
+} from '@tanstack/react-router';
 
 import NavigationTabs from 'components/admin/NavigationTabs';
 import Tab from 'components/admin/NavigationTabs/Tab';

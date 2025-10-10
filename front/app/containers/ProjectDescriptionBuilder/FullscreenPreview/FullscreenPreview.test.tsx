@@ -39,8 +39,8 @@ jest.mock(
   }
 );
 
-jest.mock('react-router-dom', () => {
-  const originalModule = jest.requireActual('react-router-dom');
+jest.mock('@tanstack/react-router', () => {
+  const originalModule = jest.requireActual('@tanstack/react-router');
   return {
     ...originalModule,
     useParams: () => ({

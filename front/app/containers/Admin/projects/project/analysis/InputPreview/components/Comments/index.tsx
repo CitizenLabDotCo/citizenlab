@@ -2,7 +2,7 @@ import React, { useMemo, useEffect } from 'react';
 
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import { useInView } from 'react-intersection-observer';
-import { useParams } from 'react-router-dom';
+import { useParams } from '@tanstack/react-router';
 
 import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
 import useComments from 'api/comments/useComments';

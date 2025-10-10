@@ -6,7 +6,7 @@ import {
   colors,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from '@tanstack/react-router';
 import styled from 'styled-components';
 
 import { IdeaQueryParameters } from 'api/ideas/types';

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import moment from 'moment';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from '@tanstack/react-router';
 
 import TimeControl from 'containers/Admin/dashboard/components/TimeControl';
 

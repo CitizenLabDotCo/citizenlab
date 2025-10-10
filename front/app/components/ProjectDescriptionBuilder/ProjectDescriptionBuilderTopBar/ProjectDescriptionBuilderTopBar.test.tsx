@@ -63,8 +63,8 @@ jest.mock('utils/cl-router/withRouter', () => {
   };
 });
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+jest.mock('@tanstack/react-router', () => ({
+  ...jest.requireActual('@tanstack/react-router'),
   useParams: () => mockParams,
 }));
 

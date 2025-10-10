@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from '@tanstack/react-router';
 
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 

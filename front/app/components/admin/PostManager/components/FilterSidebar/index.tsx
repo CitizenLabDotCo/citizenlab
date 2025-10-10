@@ -7,7 +7,7 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { useParams } from 'react-router-dom';
+import { useParams } from '@tanstack/react-router';
 import { RouteType } from 'routes';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';

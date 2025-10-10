@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { media, colors } from '@citizenlab/cl2-component-library';
-import { useParams, Outlet as RouterOutlet } from 'react-router-dom';
+import { useParams, Outlet as RouterOutlet } from '@tanstack/react-router';
 import styled from 'styled-components';
 
 import useUserBySlug from 'api/users/useUserBySlug';

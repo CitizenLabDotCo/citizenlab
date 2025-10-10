@@ -7,7 +7,7 @@ import {
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from '@tanstack/react-router';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';

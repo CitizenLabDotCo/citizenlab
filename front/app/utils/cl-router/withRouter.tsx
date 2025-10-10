@@ -6,7 +6,7 @@ import {
   useNavigate,
   useParams,
   useSearchParams,
-} from 'react-router-dom';
+} from '@tanstack/react-router';
 
 /** @deprecated Use `React Router hooks` instead */
 export interface WithRouterProps {

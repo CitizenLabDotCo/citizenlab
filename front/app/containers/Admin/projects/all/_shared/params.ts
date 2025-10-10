@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from '@tanstack/react-router';
 
 import { Parameters } from 'api/projects_mini_admin/types';
 

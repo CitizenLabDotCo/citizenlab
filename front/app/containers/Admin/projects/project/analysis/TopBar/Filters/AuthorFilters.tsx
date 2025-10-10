@@ -7,7 +7,7 @@ import {
   Button,
   Text,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from '@tanstack/react-router';
 
 import useUserCustomFieldsOptions from 'api/custom_field_options/useCustomFieldOptions';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';

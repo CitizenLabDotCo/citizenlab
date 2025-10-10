@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { useLocation, useParams, useSearchParams } from 'react-router-dom';
+import {
+  useLocation,
+  useParams,
+  useSearchParams,
+} from '@tanstack/react-router';
 import { SupportedLocale } from 'typings';
 
 import { ReportLayout } from 'api/report_layout/types';

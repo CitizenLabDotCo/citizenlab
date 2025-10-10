@@ -8,7 +8,7 @@ import {
   IconNames,
 } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from '@tanstack/react-router';
 import styled from 'styled-components';
 import { ITab } from 'typings';
 

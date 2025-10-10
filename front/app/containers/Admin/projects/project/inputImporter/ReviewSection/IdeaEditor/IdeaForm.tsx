@@ -2,7 +2,7 @@ import React, { Suspense, useEffect } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { FormProvider, UseFormSetError } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useParams } from '@tanstack/react-router';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';

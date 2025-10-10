@@ -7,7 +7,7 @@ import {
   media,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from '@tanstack/react-router';
 import styled, { useTheme } from 'styled-components';
 
 import { VotingContext } from 'api/baskets_ideas/useVoting';

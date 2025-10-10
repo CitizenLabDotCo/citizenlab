@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, Title, Toggle } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from '@tanstack/react-router';
 
 import usePhase from 'api/phases/usePhase';
 import useReport from 'api/reports/useReport';

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation } from '@tanstack/react-router';
 import { Multiloc, UploadFile, CLErrors } from 'typings';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';

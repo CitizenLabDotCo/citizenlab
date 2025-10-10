@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 
 import { parse } from 'qs';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from '@tanstack/react-router';
 import { RouteType } from 'routes';
 
 import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Select, Tooltip } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useParams } from '@tanstack/react-router';
 
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 import useFormSubmissionsCount from 'api/submission_count/useSubmissionCount';

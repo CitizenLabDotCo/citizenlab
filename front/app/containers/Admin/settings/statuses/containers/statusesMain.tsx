@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useLocation, Outlet } from 'react-router-dom';
+import { useLocation, Outlet } from '@tanstack/react-router';
 
 import { Tab } from 'components/admin/NavigationTabs';
 

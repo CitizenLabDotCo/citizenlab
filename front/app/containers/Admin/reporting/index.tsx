@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Outlet as RouterOutlet } from 'react-router-dom';
+import { Outlet as RouterOutlet } from '@tanstack/react-router';
 
 import HelmetIntl from 'components/HelmetIntl';
 

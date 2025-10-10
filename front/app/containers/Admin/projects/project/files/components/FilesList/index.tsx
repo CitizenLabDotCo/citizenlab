@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Box, Spinner, Text } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from '@tanstack/react-router';
 
 import { GetFilesParameters } from 'api/files/types';
 import useFiles from 'api/files/useFiles';

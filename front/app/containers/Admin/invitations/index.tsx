@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useLocation, Outlet as RouterOutlet } from 'react-router-dom';
+import { useLocation, Outlet as RouterOutlet } from '@tanstack/react-router';
 import { ITab } from 'typings';
 
 import TabbedResource from 'components/admin/TabbedResource';

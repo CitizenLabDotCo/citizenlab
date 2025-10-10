@@ -5,7 +5,7 @@ import {
   Outlet as RouterOutlet,
   useParams,
   useLocation,
-} from 'react-router-dom';
+} from '@tanstack/react-router';
 
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';

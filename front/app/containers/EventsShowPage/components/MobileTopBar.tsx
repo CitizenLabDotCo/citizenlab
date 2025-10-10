@@ -6,7 +6,7 @@ import {
   media,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from '@tanstack/react-router';
 import styled from 'styled-components';
 
 import useProjectById from 'api/projects/useProjectById';

@@ -10,7 +10,7 @@ import {
   Radio,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { useParams } from 'react-router-dom';
+import { useParams } from '@tanstack/react-router';
 import styled from 'styled-components';
 
 import useAnalysis from 'api/analyses/useAnalysis';

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from '@tanstack/react-router';
 
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';

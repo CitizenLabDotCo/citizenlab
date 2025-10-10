@@ -13,7 +13,7 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty, get, isError } from 'lodash-es';
-import { useParams } from 'react-router-dom';
+import { useParams } from '@tanstack/react-router';
 import { RouteType } from 'routes';
 import { useTheme } from 'styled-components';
 import { Multiloc, UploadFile } from 'typings';

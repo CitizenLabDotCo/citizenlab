@@ -7,7 +7,7 @@ import {
   IconTooltip,
   Divider,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from '@tanstack/react-router';
 
 import { IInsightData } from 'api/analysis_insights/types';
 import useDeleteAnalysisInsight from 'api/analysis_insights/useDeleteAnalysisInsight';

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from '@tanstack/react-router';
 
 import ContentContainer from 'components/ContentContainer';
 import { Title } from 'components/smallForm';

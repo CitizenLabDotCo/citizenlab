@@ -8,7 +8,7 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
-import { useParams } from 'react-router-dom';
+import { useParams } from '@tanstack/react-router';
 
 import useAddFileAttachment from 'api/file_attachments/useAddFileAttachment';
 import useDeleteFileAttachment from 'api/file_attachments/useDeleteFileAttachment';

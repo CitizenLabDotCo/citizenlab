@@ -4,7 +4,7 @@ import MapView from '@arcgis/core/views/MapView';
 import { Input, IconTooltip, Icon } from '@citizenlab/cl2-component-library';
 import { isEmpty, inRange } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { useParams } from '@tanstack/react-router';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';

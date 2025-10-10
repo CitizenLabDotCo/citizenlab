@@ -6,7 +6,7 @@ import {
   // eslint-disable-next-line no-restricted-imports
   NavLink as RouterLink,
   NavLinkProps,
-} from 'react-router-dom';
+} from '@tanstack/react-router';
 import { RouteType } from 'routes';
 
 import useLocale from 'hooks/useLocale';

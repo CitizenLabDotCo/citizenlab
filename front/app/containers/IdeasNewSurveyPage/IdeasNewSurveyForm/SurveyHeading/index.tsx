@@ -9,7 +9,11 @@ import {
   stylingConsts,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useLocation, useParams, useSearchParams } from 'react-router-dom';
+import {
+  useLocation,
+  useParams,
+  useSearchParams,
+} from '@tanstack/react-router';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 

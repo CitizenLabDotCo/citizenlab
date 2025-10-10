@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, Button, Select, Text } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from '@tanstack/react-router';
 import { UploadFile } from 'typings';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';

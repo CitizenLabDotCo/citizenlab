@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 
 import { Box, colors, isRtl, Title } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from '@tanstack/react-router';
 import styled from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';

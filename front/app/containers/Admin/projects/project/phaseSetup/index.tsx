@@ -6,7 +6,7 @@ import {
   IconTooltip,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from '@tanstack/react-router';
 import { CLErrors, Multiloc, UploadFile } from 'typings';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';

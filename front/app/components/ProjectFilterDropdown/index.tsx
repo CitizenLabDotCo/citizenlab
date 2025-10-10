@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from '@tanstack/react-router';
 
 import useProjects from 'api/projects/useProjects';
 

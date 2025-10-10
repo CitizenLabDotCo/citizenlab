@@ -7,7 +7,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { isEmpty, cloneDeep, forOwn } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { useParams } from '@tanstack/react-router';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 

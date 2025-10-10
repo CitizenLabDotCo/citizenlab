@@ -6,7 +6,7 @@ import {
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from '@tanstack/react-router';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 

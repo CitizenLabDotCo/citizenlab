@@ -1,7 +1,8 @@
 import React, { lazy } from 'react';
 
+import { Navigate, useLocation } from '@tanstack/react-router';
 import moduleConfiguration from 'modules';
-import { Navigate, useLocation } from 'react-router-dom';
+// import { Navigate, useLocation } from '@tanstack/react-router';
 
 import { IAppConfigurationData } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';

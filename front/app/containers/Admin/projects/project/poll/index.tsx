@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import { isError } from 'lodash-es';
-import { useParams } from 'react-router-dom';
+import { useParams } from '@tanstack/react-router';
 import GetPollQuestions, {
   GetPollQuestionsChildProps,
 } from 'resources/GetPollQuestions';
