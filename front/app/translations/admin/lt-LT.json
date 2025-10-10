@@ -2163,7 +2163,7 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "Ką norite daryti?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Pasirinkite, kaip naudotojai gali dalyvauti.",
   "app.containers.AdminPage.ProjectEdit.participationRequirementsSubtitle": "Galite nurodyti, kas gali atlikti kiekvieną veiksmą, ir užduoti papildomų klausimų dalyviams, kad surinktumėte daugiau informacijos.",
-  "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Dalyvių reikalavimai ir klausimai",
+  "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle1": "Fazės prieiga ir naudotojo duomenys",
   "app.containers.AdminPage.ProjectEdit.phaseAccessRights2": "Fazės prieiga ir naudotojo duomenys",
   "app.containers.AdminPage.ProjectEdit.phaseEmails": "Pranešimai",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Apklausa",
