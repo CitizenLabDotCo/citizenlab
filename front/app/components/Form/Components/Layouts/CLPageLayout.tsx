@@ -114,12 +114,7 @@ const CLPageLayout = memo(
       ideaId: idea_id,
       phaseId: phaseFromAdminUrl,
       projectId: projectIdFromAdminUrl,
-    } = useParams<{
-      slug?: string;
-      ideaId?: string;
-      phaseId?: string;
-      projectId?: string;
-    }>();
+    } = useParams({ strict: false });
     const ideaId = searchParams.get('idea_id') || idea_id;
     const { data: idea } = useIdeaById(ideaId ?? undefined);
     const projectId =

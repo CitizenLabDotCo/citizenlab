@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
-import moment from 'moment';
 import { useParams } from '@tanstack/react-router';
+import moment from 'moment';
 
 import useEvents from 'api/events/useEvents';
 import usePhases from 'api/phases/usePhases';
@@ -26,7 +26,7 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
   const isTablet = useBreakpoint('tablet');
 
   // project related
-  const params = useParams<{ slug: string }>();
+  const params = useParams({ strict: false });
   const { data: project } = useProjectBySlug(params.slug);
   const projectIdToUse = projectId || project?.data.id;
   const { data: phases } = usePhases(projectIdToUse);

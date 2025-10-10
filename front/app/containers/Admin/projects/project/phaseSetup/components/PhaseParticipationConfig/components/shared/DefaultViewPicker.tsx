@@ -25,10 +25,7 @@ export default ({
   handleIdeasDisplayChange,
   title,
 }: Props) => {
-  const { projectId, phaseId } = useParams<{
-    projectId: string;
-    phaseId: string;
-  }>();
+  const { projectId, phaseId } = useParams({ strict: false });
 
   const inputFormUrl = `/admin/projects/${projectId}/phases/${phaseId}/form/edit`;
 
