@@ -69,10 +69,9 @@ const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
 
   // Generate options for the file select dropdown
   const fileOptions =
-    files?.data.map((file) => ({
-      value: file.id,
-      label: file.attributes.name,
-    })) || [];
+    files?.data
+      .map((file) => ({ value: file.id, label: file.attributes?.name }))
+      .sort((a, b) => a.label.localeCompare(b.label)) || [];
 
   return (
     <FormProvider {...methods}>
