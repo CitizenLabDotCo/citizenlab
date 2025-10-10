@@ -12,8 +12,9 @@ import { Multiloc } from 'typings';
 import useLocalize from 'hooks/useLocalize';
 
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import Warning from 'components/UI/Warning';
 
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 import Container from '../Container';
@@ -86,6 +87,11 @@ const AccordionSettings = () => {
           }}
           label={formatMessage(messages.accordionMultilocDefaultOpenLabel)}
         />
+      </Box>
+      <Box mb="24px">
+        <Warning>
+          <FormattedMessage {...messages.accordionInstructions} />
+        </Warning>
       </Box>
     </Box>
   );
