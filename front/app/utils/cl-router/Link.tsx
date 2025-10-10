@@ -1,27 +1,27 @@
 import React from 'react';
 
-// eslint-disable-next-line no-restricted-imports
-import { Path } from 'history';
 import {
   // eslint-disable-next-line no-restricted-imports
-  NavLink as RouterLink,
-  NavLinkProps,
+  Link as RouterLink,
+  LinkProps as NavLinkProps,
 } from '@tanstack/react-router';
-import { RouteType } from 'routes';
+// eslint-disable-next-line no-restricted-imports
 
 import useLocale from 'hooks/useLocale';
 
-import { isNilOrError } from 'utils/helperUtils';
 import { scrollToTop as scrollTop } from 'utils/scroll';
 
 import updateLocationDescriptor from './updateLocationDescriptor';
 
 export type Props = {
-  to: Path | RouteType | { pathname: string };
+  to: any;
   onlyActiveOnIndex?: boolean;
   scrollToTop?: boolean;
   active?: boolean;
   onClick?: (event: React.MouseEvent) => void;
+  className?: string;
+  id?: string;
+  rel?: string;
 } & Omit<NavLinkProps, 'onClick'>;
 
 /*
@@ -29,7 +29,7 @@ export type Props = {
  */
 const Link = ({
   to,
-  onlyActiveOnIndex,
+  // onlyActiveOnIndex,
   scrollToTop,
   onClick,
   active: _active,
@@ -38,8 +38,8 @@ const Link = ({
   const locale = useLocale();
   return (
     <RouterLink
-      end={onlyActiveOnIndex}
-      to={!isNilOrError(locale) ? updateLocationDescriptor(to, locale) : '#'}
+      // end={onlyActiveOnIndex}
+      to={updateLocationDescriptor(to, locale).pathname ?? '#'}
       onClick={(event) => {
         onClick && onClick(event);
         if (scrollToTop) {

@@ -9,7 +9,7 @@ import {
   stylingConsts,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useLocation, useParams, useSearch } from '@tanstack/react-router';
+import { useParams, useSearch } from '@tanstack/react-router';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 
@@ -44,7 +44,7 @@ type Props = {
 };
 
 const SurveyHeading = ({ titleText, phaseId }: Props) => {
-  const location = useLocation();
+  // const location = useLocation();
 
   const { slug: projectSlug } = useParams({ strict: false });
   const { data: project } = useProjectBySlug(projectSlug);
@@ -83,7 +83,7 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
     switch (leaveFormDestination) {
       case 'go-back':
         // If there is a back history, go back, otherwise go to the homepage
-        location.key !== 'default' ? clHistory.goBack() : clHistory.push('/');
+        // location.key !== 'default' ? clHistory.goBack() : clHistory.push('/');
         break;
       case 'project-page':
         clHistory.push(`/projects/${projectSlug}`);
