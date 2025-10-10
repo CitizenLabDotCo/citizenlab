@@ -47,6 +47,12 @@ Sentry.init({
 // const useSentryRoutes = wrapUseRoutesV6(useRoutes);
 const legacyRoutes = createRoutes();
 
+declare module '@tanstack/react-router' {
+  interface Register {
+    router: typeof router;
+  }
+}
+
 type LegacyRoutes = typeof legacyRoutes;
 
 const setupRouter = (legacyRoutes: LegacyRoutes) => {

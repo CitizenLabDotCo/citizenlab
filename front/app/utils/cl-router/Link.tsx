@@ -22,7 +22,7 @@ export type Props = {
   className?: string;
   id?: string;
   rel?: string;
-} & Omit<NavLinkProps, 'onClick'>;
+} & Omit<NavLinkProps, 'onClick' | 'to'>;
 
 /*
  * This link override doesn't support url parameters, because updateLocationDescriptor doesn't parse them
