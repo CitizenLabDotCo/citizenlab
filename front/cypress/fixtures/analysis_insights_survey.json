@@ -49,7 +49,7 @@
           "input_custom_field_no_empty_values": true
         },
         "custom_field_ids": {
-          "main_custom_field_id": "dbad67c0-e812-41a1-99f2-17d3b6a2bdde",
+          "main_custom_field_id": null,
           "additional_custom_field_ids": []
         },
         "accuracy": 0.8,
@@ -90,7 +90,7 @@
           "input_custom_field_no_empty_values": true
         },
         "custom_field_ids": {
-          "main_custom_field_id": "dbad67c0-e812-41a1-99f2-17d3b6a2bdde",
+          "main_custom_field_id": null,
           "additional_custom_field_ids": []
         },
         "question": "Tell me more about the answers?",

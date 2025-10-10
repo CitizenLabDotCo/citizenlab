@@ -7,6 +7,7 @@ import Container from 'components/admin/ContentBuilder/Widgets/Container';
 
 import CommunityMonitorTemplate from '../Templates/CommunityMonitorTemplate';
 import PhaseTemplate from '../Templates/PhaseTemplate';
+import Insights from '../Templates/PhaseTemplate/Insights';
 import PlatformTemplate from '../Templates/PlatformTemplate';
 import ProjectTemplate from '../Templates/ProjectTemplate';
 import { WIDGETS } from '../Widgets';
@@ -26,6 +27,7 @@ const resolver = {
   ProjectTemplate,
   CommunityMonitorTemplate,
   PhaseTemplate,
+  Insights,
   PlatformTemplate,
 };
 

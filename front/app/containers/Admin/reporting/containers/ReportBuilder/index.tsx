@@ -142,7 +142,10 @@ const ReportBuilder = ({ report, reportLayout, templateConfig }: Props) => {
                       />
                     ) : emptyReportOnInit &&
                       templateConfig?.template === 'phase' ? (
-                      <PhaseTemplate phaseId={templateConfig.phaseId} />
+                      <PhaseTemplate
+                        phaseId={templateConfig.phaseId}
+                        selectedLocale={selectedLocale}
+                      />
                     ) : emptyReportOnInit &&
                       templateConfig?.template === 'platform' ? (
                       <PlatformTemplate
