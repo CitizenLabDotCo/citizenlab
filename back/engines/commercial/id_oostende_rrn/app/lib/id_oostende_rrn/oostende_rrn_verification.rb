@@ -17,7 +17,7 @@ module IdOostendeRrn
     end
 
     def config_parameters
-      %i[api_key environment]
+      %i[api_key environment enabled_for_verified_actions]
     end
 
     def config_parameters_schema
@@ -26,6 +26,11 @@ module IdOostendeRrn
           type: 'string',
           enum: %w[dv qa production],
           private: true
+        },
+        enabled_for_verified_actions: {
+          private: true,
+          type: 'boolean',
+          description: 'Whether this verification method should be enabled for verified actions.'
         }
       }
     end
