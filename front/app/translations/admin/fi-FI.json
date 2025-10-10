@@ -2163,7 +2163,7 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "Mitä haluat tehdä?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Valitse, miten käyttäjät voivat osallistua.",
   "app.containers.AdminPage.ProjectEdit.participationRequirementsSubtitle": "Voit määrittää, kuka voi suorittaa kunkin toiminnon, ja kysyä osallistujille lisäkysymyksiä saadaksesi lisätietoja.",
-  "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Osallistujavaatimukset ja kysymykset",
+  "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle1": "Vaiheiden käyttöoikeus ja käyttäjätiedot",
   "app.containers.AdminPage.ProjectEdit.phaseAccessRights2": "Vaiheiden käyttöoikeus ja käyttäjätiedot",
   "app.containers.AdminPage.ProjectEdit.phaseEmails": "Ilmoitukset",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Poll",
