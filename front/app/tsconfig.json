@@ -6,7 +6,7 @@
     "target": "esnext",
     "module": "esnext",
     "jsx": "react",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,

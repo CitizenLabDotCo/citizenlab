@@ -1,13 +1,14 @@
 import path from 'path';
 
 import { sentryVitePlugin } from '@sentry/vite-plugin';
+import { tanstackRouter } from '@tanstack/router-plugin/vite';
 import react from '@vitejs/plugin-react';
 import dotenv from 'dotenv';
 import { defineConfig } from 'vite';
 import checker from 'vite-plugin-checker';
 import commonjs from 'vite-plugin-commonjs';
-import tsconfigPaths from 'vite-plugin-tsconfig-paths';
 import mkcert from 'vite-plugin-mkcert';
+import tsconfigPaths from 'vite-plugin-tsconfig-paths';
 
 // Load environment variables using dotenv
 dotenv.config({
@@ -36,7 +37,7 @@ export default defineConfig(({ mode }) => {
   // Determine if HTTPS should be used based on the presence of a HTTPS_HOST
   const HTTPS_HOST = process.env.HTTPS_HOST;
   const USE_HTTPS = HTTPS_HOST !== undefined;
-  if (USE_HTTPS) console.log('\nSecure local dev URL: https://' + HTTPS_HOST);
+  if (USE_HTTPS) console.log(`\nSecure local dev URL: https://${HTTPS_HOST}`);
 
   return {
     root: path.resolve(__dirname, 'app'), // Root directory
@@ -77,6 +78,10 @@ export default defineConfig(({ mode }) => {
       },
     },
     plugins: [
+      tanstackRouter({
+        target: 'react',
+        autoCodeSplitting: true,
+      }),
       react(),
       commonjs(),
       tsconfigPaths(), // Support for TS path aliases
