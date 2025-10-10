@@ -9,7 +9,6 @@ import {
   Badge,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { get } from 'lodash-es';
 import { rgba } from 'polished';
 import { useFormContext, useFieldArray } from 'react-hook-form';
 import styled from 'styled-components';
@@ -24,10 +23,7 @@ import {
 import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
 
 import { Conflict } from 'components/FormBuilder/edit/utils';
-import {
-  FormBuilderConfig,
-  builtInFieldKeys,
-} from 'components/FormBuilder/utils';
+import { FormBuilderConfig } from 'components/FormBuilder/utils';
 import Modal from 'components/UI/Modal';
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 
@@ -59,7 +55,6 @@ type Props = {
   fieldNumbers: Record<string, number>;
   closeSettings: (triggerAutosave?: boolean) => void;
   conflicts?: Conflict[];
-  hasFullPageRestriction: boolean;
 };
 
 export const FormField = ({
@@ -70,7 +65,6 @@ export const FormField = ({
   fieldNumbers,
   closeSettings,
   conflicts,
-  hasFullPageRestriction,
 }: Props) => {
   const {
     watch,
@@ -80,9 +74,6 @@ export const FormField = ({
   } = useFormContext();
   const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
   const { formatMessage } = useIntl();
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const lockedAttributes = field?.constraints?.locks;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showLocationDeleteModal, setShowLocationDeleteModal] = useState(false);
   const formCustomFields: IFlatCustomField[] = watch('customFields');
@@ -100,23 +91,17 @@ export const FormField = ({
   const showLogicOnRow = field.input_type !== 'page' ? field.logic.rules : true;
   const isFieldGrouping = field.input_type === 'page';
 
-  // Group is only deletable when we have more than one group
-  const getGroupDeletable = () => {
-    const groupFields = formCustomFields.filter(
+  // A page cannot be deleted if it's the last one
+  const isLastPage = () => {
+    if (field.input_type !== 'page') return false;
+
+    const pages = formCustomFields.filter(
       (field) => field.input_type === 'page'
-    );
-
-    return builderConfig.type === 'survey'
-      ? groupFields.length > 2
-      : groupFields.length > 1;
+    ).length;
+    return pages < 3;
   };
-
-  const isGroupDeletable = getGroupDeletable();
-  const shouldShowDelete = !(
-    (field.input_type === 'page' && !isGroupDeletable) ||
-    get(lockedAttributes, 'enabled', false) ||
-    hasFullPageRestriction
-  );
+  const shouldShowDelete =
+    !isLastPage() && !field?.constraints?.locks?.deletion;
 
   const editFieldAndValidate = (defaultTab: ICustomFieldSettingsTab) => {
     onEditField({ ...field, index, defaultTab });
@@ -205,7 +190,7 @@ export const FormField = ({
   };
 
   const onDelete = (fieldIndex: number) => {
-    if (builtInFieldKeys.includes(field.key)) {
+    if (field.code && field.input_type !== 'page') {
       const newField = { ...field, enabled: false };
       setValue(`customFields.${index}`, newField);
     } else {
@@ -355,7 +340,6 @@ export const FormField = ({
                   hasErrors={hasErrors}
                   field={field}
                   fieldNumber={fieldNumbers[field.id]}
-                  hasFullPageRestriction={hasFullPageRestriction}
                 />
               </Box>
             </Box>

@@ -33,7 +33,7 @@ const StyledTextArea = styled(TextArea)`
 `;
 
 const schema = object({
-  comment_body: string(),
+  comment_body: string().required(),
 });
 
 type FormValues = {

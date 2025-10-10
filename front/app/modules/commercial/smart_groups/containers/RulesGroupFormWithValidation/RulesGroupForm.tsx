@@ -66,12 +66,13 @@ const RulesGroupForm = ({
           } else return true;
         }
       )
-      .min(1, formatMessage(messages.atLeastOneRuleError)),
+      .min(1, formatMessage(messages.atLeastOneRuleError))
+      .required(),
     membership_type: string().oneOf(['rules']).required(),
-    memberships_count: number(),
+    memberships_count: number().required(),
   });
 
-  const methods = useForm({
+  const methods = useForm<RulesFormValues>({
     mode: 'onBlur',
     defaultValues,
     resolver: yupResolver(schema),

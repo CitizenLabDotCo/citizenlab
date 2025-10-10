@@ -116,28 +116,6 @@ RSpec.describe ParticipationMethod::Proposals do
     end
   end
 
-  describe 'constraints' do
-    it 'has constraints on built in fields to lock certain values from being changed' do
-      expect(participation_method.constraints.keys).to match_array %i[
-        title_page
-        title_multiloc
-        body_multiloc
-        idea_images_attributes
-        idea_files_attributes
-        topic_ids
-        location_description
-      ]
-    end
-
-    it 'each constraint has locks only on enabled, required & title_multiloc' do
-      participation_method.constraints.each_value do |value|
-        expect(value.key?(:locks)).to be true
-        valid_locks = %i[enabled required title_multiloc]
-        expect(valid_locks).to include(*value[:locks].keys)
-      end
-    end
-  end
-
   describe '#create_default_form!' do
     it 'creates a default form on the phase level' do
       form = nil
@@ -198,9 +176,30 @@ RSpec.describe ParticipationMethod::Proposals do
     end
   end
 
+  describe 'constraints' do
+    it 'has constraints on built in fields to lock certain values from being changed' do
+      expect(participation_method.constraints).to eq({
+        title_page: { locks: { attributes: %i[title_multiloc] } },
+        title_multiloc: { locks: { attributes: %i[title_multiloc required], deletion: true } },
+        body_multiloc: { locks: { attributes: %i[title_multiloc] } },
+        idea_images_attributes: { locks: { attributes: %i[title_multiloc] } },
+        idea_files_attributes: { locks: { attributes: %i[title_multiloc] } },
+        topic_ids: { locks: { attributes: %i[title_multiloc] } },
+        location_description: { locks: { attributes: %i[title_multiloc] } }
+      })
+    end
+  end
+
   describe '#custom_form' do
     it 'returns the custom form of the phase' do
       expect(participation_method.custom_form.participation_context_id).to eq phase.id
+    end
+  end
+
+  describe '#validate_phase' do
+    it 'does not add an error with non-transitive inputs' do
+      create(:proposal, creation_phase: phase, project: phase.project)
+      expect(phase).to be_valid
     end
   end
 
@@ -226,7 +225,6 @@ RSpec.describe ParticipationMethod::Proposals do
   its(:return_disabled_actions?) { is_expected.to be false }
   its(:supports_assignment?) { is_expected.to be true }
   its(:built_in_title_required?) { is_expected.to be(true) }
-  its(:built_in_body_required?) { is_expected.to be(true) }
   its(:supports_commenting?) { is_expected.to be true }
   its(:supports_edits_after_publication?) { is_expected.to be true }
   its(:supports_exports?) { is_expected.to be true }
@@ -243,7 +241,6 @@ RSpec.describe ParticipationMethod::Proposals do
   its(:supports_private_attributes_in_export?) { is_expected.to be true }
   its(:form_logic_enabled?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be true }
-  its(:validate_phase) { is_expected.to be_nil }
   its(:supports_custom_field_categories?) { is_expected.to be false }
   its(:user_fields_in_form?) { is_expected.to be false }
   its(:supports_multiple_phase_reports?) { is_expected.to be false }

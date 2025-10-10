@@ -66,7 +66,7 @@ class SideFxUserService
     LogActivityJob.perform_later(user, 'unblocked', current_user, user.updated_at.to_i)
   end
 
-  def after_error(user)
+  def after_error(user, remote_ip)
     return unless user.errors.details[:email].any? { |e| e[:code] == 'zrb-42' }
 
     # We pass AppConfiguration.instance as item (required)
@@ -76,7 +76,7 @@ class SideFxUserService
       'blacklisted_email_domain_used',
       nil,
       Time.current,
-      payload: { email: user.email }
+      payload: { email: user.email, remote_ip: remote_ip }
     )
   end
 

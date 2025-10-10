@@ -7,8 +7,15 @@ import { IPhaseData } from 'api/phases/types';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import SimilarIdeasList from 'containers/IdeasNewPage/SimilarInputs/SimilarInputsList';
+import { IFlatCustomField } from 'api/custom_fields/types';
 
-const InputIQ = ({ phase }: { phase: IPhaseData | undefined }) => {
+const InputIQ = ({
+  phase,
+  field,
+}: {
+  phase: IPhaseData | undefined;
+  field: IFlatCustomField;
+}) => {
   const { watch } = useFormContext();
   const isInputIQEnabled = useFeatureFlag({
     name: 'input_iq',
@@ -42,8 +49,13 @@ const InputIQ = ({ phase }: { phase: IPhaseData | undefined }) => {
   return (
     <div>
       <SimilarIdeasList
-        titleMultiloc={debouncedTitleMultiloc}
-        bodyMultiloc={debouncedBodyMultiloc}
+        titleMultiloc={
+          field.code === 'title_multiloc' ? debouncedTitleMultiloc : undefined
+        }
+        bodyMultiloc={
+          field.code === 'body_multiloc' ? debouncedBodyMultiloc : undefined
+        }
+        phase={phase}
       />
     </div>
   );
