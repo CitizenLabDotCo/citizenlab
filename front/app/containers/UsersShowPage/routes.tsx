@@ -41,7 +41,7 @@ export default () => ({
   children: [
     {
       path: userShowPageRoutes.default,
-      element: <Navigate to="submissions" replace />,
+      element: <Navigate to="/submissions" replace />,
     },
     {
       path: userShowPageRoutes.submissions,

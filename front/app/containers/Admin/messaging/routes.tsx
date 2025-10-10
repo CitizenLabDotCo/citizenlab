@@ -42,7 +42,7 @@ const createAdminMessagingRoutes = () => ({
   children: [
     {
       path: '',
-      element: <Navigate to={messagingRoutes.emailsCustom} />,
+      element: <Navigate to={`/${messagingRoutes.emailsCustom}`} />,
     },
     {
       path: messagingRoutes.emailsCustom,

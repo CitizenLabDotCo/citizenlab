@@ -69,7 +69,7 @@ const communityMonitorsRoutes = () => {
     children: [
       {
         path: '',
-        element: <Navigate to="live-monitor" replace />,
+        element: <Navigate to="/live-monitor" replace />,
       },
       {
         path: communityMonitorRoutes.liveMonitor,
@@ -97,7 +97,7 @@ const communityMonitorsRoutes = () => {
         children: [
           {
             path: '',
-            element: <Navigate to="survey" replace />,
+            element: <Navigate to="/survey" replace />,
           },
           {
             path: communityMonitorRoutes.settingsSurvey,

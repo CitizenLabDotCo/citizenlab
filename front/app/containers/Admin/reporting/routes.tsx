@@ -53,7 +53,7 @@ const reportingRoutes = () => {
     },
     {
       path: reportingEnumRoutes.reporting,
-      element: <Navigate to={reportingEnumRoutes.reportBuilder} />,
+      element: <Navigate to={`/${reportingEnumRoutes.reportBuilder}`} />,
     },
   ];
 };

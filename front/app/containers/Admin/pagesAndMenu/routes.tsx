@@ -134,7 +134,7 @@ export default () => ({
           path: pagesAndMenuRoutes.customPageId,
           element: <EditCustomPageIndex />,
           children: [
-            { path: '', element: <Navigate to="settings" /> }, // to handle manually changing URL
+            { path: '', element: <Navigate to="/settings" /> }, // to handle manually changing URL
             {
               path: pagesAndMenuRoutes.pageSettings,
               element: (

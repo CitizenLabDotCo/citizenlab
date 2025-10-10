@@ -1,7 +1,7 @@
 import React, { lazy } from 'react';
 
-import moduleConfiguration from 'modules';
 import { Navigate } from '@tanstack/react-router';
+import moduleConfiguration from 'modules';
 
 import PageLoading from 'components/UI/PageLoading';
 
@@ -90,7 +90,7 @@ export default () => ({
   children: [
     {
       path: settingsRoutes.settingsDefault,
-      element: <Navigate to="general" replace />,
+      element: <Navigate to="/general" replace />,
     },
     {
       path: settingsRoutes.general,

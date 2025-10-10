@@ -47,7 +47,7 @@ export default () => ({
       children: [
         {
           path: projectFolderRoutes.projectFolderIdDefault,
-          element: <Navigate to="projects" />,
+          element: <Navigate to="/projects" />,
         },
         {
           path: projectFolderRoutes.projects,
