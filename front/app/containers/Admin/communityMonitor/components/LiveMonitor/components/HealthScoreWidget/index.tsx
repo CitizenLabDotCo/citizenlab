@@ -10,7 +10,7 @@ import {
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from '@tanstack/react-router';
+import useSearch from 'utils/useSearch';
 
 import useCommunityMonitorSentimentScores from 'api/community_monitor_scores/useCommunityMonitorSentimentScores';
 

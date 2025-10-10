@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { useSearch } from '@tanstack/react-router';
+import useSearch from 'utils/useSearch';
 import { SupportedLocale } from 'typings';
 
 import useLocale from 'hooks/useLocale';

@@ -9,7 +9,7 @@ import {
   Text,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from '@tanstack/react-router';
+import useSearch from 'utils/useSearch';
 import styled from 'styled-components';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';

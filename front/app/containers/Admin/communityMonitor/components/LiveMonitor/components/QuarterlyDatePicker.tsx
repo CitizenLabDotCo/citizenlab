@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { Box, Text, Button, colors } from '@citizenlab/cl2-component-library';
-import { useSearch } from '@tanstack/react-router';
+import useSearch from 'utils/useSearch';
 
 import { useIntl } from 'utils/cl-intl';
 

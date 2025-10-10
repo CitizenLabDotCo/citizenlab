@@ -69,7 +69,7 @@ const setupRouter = (legacyRoutes: LegacyRoutes) => {
           background: 'green',
         }}
       >
-        Test
+        Loading...
       </div>
     ),
   });
@@ -86,7 +86,8 @@ const setupRouter = (legacyRoutes: LegacyRoutes) => {
     children.push(route as any);
   });
 
-  const routeTree = rootRoute.addChildren(children);
+  // const routeTree = rootRoute.addChildren(children);
+  const routeTree = rootRoute.addChildren([]);
 
   return createRouter({ routeTree });
 };

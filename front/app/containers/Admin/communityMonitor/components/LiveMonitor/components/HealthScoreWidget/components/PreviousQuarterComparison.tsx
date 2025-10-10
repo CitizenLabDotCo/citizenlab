@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useSearch } from '@tanstack/react-router';
+import useSearch from 'utils/useSearch';
 
 import { getPercentageDifference } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
 import TrendIndicator from 'components/TrendIndicator';

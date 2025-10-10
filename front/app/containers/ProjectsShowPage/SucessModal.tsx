@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { Box, Image } from '@citizenlab/cl2-component-library';
 import rocket from 'assets/img/rocket.png';
-import { useSearch } from '@tanstack/react-router';
+import useSearch from 'utils/useSearch';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import usePhases from 'api/phases/usePhases';

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useSearch } from '@tanstack/react-router';
+import useSearch from 'utils/useSearch';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';

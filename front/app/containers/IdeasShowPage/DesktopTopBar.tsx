@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useSearch } from '@tanstack/react-router';
+import useSearch from 'utils/useSearch';
 
 import { IProjectData } from 'api/projects/types';
 

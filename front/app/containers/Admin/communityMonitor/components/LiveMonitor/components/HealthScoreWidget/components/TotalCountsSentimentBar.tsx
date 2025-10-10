@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Tooltip } from '@citizenlab/cl2-component-library';
-import { useSearch } from '@tanstack/react-router';
+import useSearch from 'utils/useSearch';
 
 import SentimentBar from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/components/SentimentScore/SentimentBar';
 import SentimentTooltip from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/components/SentimentScore/SentimentTooltip';

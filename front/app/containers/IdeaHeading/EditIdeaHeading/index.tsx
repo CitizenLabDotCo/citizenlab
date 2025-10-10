@@ -9,7 +9,7 @@ import {
   stylingConsts,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from '@tanstack/react-router';
+import useSearch from 'utils/useSearch';
 import styled from 'styled-components';
 
 import { IIdeaData } from 'api/ideas/types';

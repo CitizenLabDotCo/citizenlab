@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 
-import { useSearch } from '@tanstack/react-router';
+import useSearch from 'utils/useSearch';
 import { Multiloc, SupportedLocale } from 'typings';
 
 import { Country } from 'api/project_library_countries/types';

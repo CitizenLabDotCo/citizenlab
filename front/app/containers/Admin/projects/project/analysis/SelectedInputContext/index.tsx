@@ -6,7 +6,7 @@ import React, {
   useEffect,
 } from 'react';
 
-import { useSearch } from '@tanstack/react-router';
+import useSearch from 'utils/useSearch';
 
 const Context = createContext<{
   selectedInputId: string | null;

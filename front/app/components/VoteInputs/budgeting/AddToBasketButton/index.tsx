@@ -7,7 +7,7 @@ import {
   Tooltip,
   Box,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from '@tanstack/react-router';
+import useSearch from 'utils/useSearch';
 
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';

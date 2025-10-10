@@ -7,7 +7,7 @@ import {
   Title,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from '@tanstack/react-router';
+import useSearch from 'utils/useSearch';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
