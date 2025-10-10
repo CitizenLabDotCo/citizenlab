@@ -57,7 +57,21 @@ type LegacyRoutes = typeof legacyRoutes;
 
 const setupRouter = (legacyRoutes: LegacyRoutes) => {
   const rootRoute = createRootRoute({
-    component: () => <div id="fajwipejf">Test</div>,
+    component: () => (
+      <div
+        id="fajwipejf"
+        style={{
+          width: '100%',
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          background: 'green',
+        }}
+      >
+        Test
+      </div>
+    ),
   });
 
   const children: Route[] = [];
