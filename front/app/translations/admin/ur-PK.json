@@ -2163,7 +2163,7 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "آپ کیا کرنا چاہتے ہیں؟",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "منتخب کریں کہ صارفین کس طرح حصہ لے سکتے ہیں۔",
   "app.containers.AdminPage.ProjectEdit.participationRequirementsSubtitle": "آپ وضاحت کر سکتے ہیں کہ ہر ایکشن کون لے سکتا ہے، اور مزید معلومات اکٹھا کرنے کے لیے شرکاء سے اضافی سوالات پوچھ سکتے ہیں۔",
-  "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "شرکاء کی ضروریات اور سوالات",
+  "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle1": "فیز رسائی اور صارف کا ڈیٹا",
   "app.containers.AdminPage.ProjectEdit.phaseAccessRights2": "فیز رسائی اور صارف کا ڈیٹا",
   "app.containers.AdminPage.ProjectEdit.phaseEmails": "اطلاعات",
   "app.containers.AdminPage.ProjectEdit.pollTab": "رائے شماری",
