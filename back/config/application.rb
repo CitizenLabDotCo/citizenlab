@@ -69,8 +69,8 @@ module Cl2Back
       same_site: :lax
 
     # TODO: This is for testing if we can get things working on epic - may well need adjusting.
-    config.force_ssl = true if Rails.env.production? || Rails.env.staging?
     if Rails.env.production? || Rails.env.staging?
+      config.force_ssl = true
       config.ssl_options = {
         secure_cookies: true,
         httponly: true
