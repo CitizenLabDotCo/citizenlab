@@ -68,14 +68,6 @@ module Cl2Back
       secure: Rails.env.production? || Rails.env.staging?,
       same_site: :lax
 
-    # TODO: This is for testing if we can get things working on epic - may well need adjusting.
-    if Rails.env.production? || Rails.env.staging?
-      config.force_ssl = true
-      config.ssl_options = {
-        secure_cookies: true
-      }
-    end
-
     # https://github.com/AzureAD/omniauth-azure-activedirectory/issues/22#issuecomment-1259340380
     # It's weird that returning nil in `cookies_same_site_protection` works because `lax` is default
     # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#lax
