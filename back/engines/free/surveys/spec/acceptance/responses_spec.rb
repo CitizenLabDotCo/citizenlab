@@ -6,8 +6,7 @@ require 'rspec_api_documentation/dsl'
 resource 'Survey Responses' do
   explanation 'One survey response contains all the answers of a single user on a survey'
 
-  def set_jwt_cookie(user)
-    payload = user.to_token_payload
+  def jwt_cookie(user)
     token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
     header 'Cookie', "cl2_jwt=#{token}"
   end
@@ -131,7 +130,7 @@ resource 'Survey Responses' do
     header 'Content-Type', 'application/json'
 
     admin_user = create(:admin)
-    set_jwt_cookie(admin_user)
+    jwt_cookie(admin_user)
 
     stub_request(:get, 'https://api.typeform.com/forms/HKGaPV')
       .with(headers: { 'Authorization' => 'Bearer' })
