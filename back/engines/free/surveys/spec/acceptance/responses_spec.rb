@@ -6,6 +6,12 @@ require 'rspec_api_documentation/dsl'
 resource 'Survey Responses' do
   explanation 'One survey response contains all the answers of a single user on a survey'
 
+  def set_jwt_cookie(user)
+    payload = user.to_token_payload
+    token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
+    header 'Cookie', "cl2_jwt=#{token}"
+  end
+
   let(:form_body) do
     {
       'id' => 'USLYB6',
@@ -121,8 +127,11 @@ resource 'Survey Responses' do
   end
 
   before do
-    admin_header_token
+    # admin_header_token
     header 'Content-Type', 'application/json'
+
+    admin_user = create(:admin)
+    set_jwt_cookie(admin_user)
 
     stub_request(:get, 'https://api.typeform.com/forms/HKGaPV')
       .with(headers: { 'Authorization' => 'Bearer' })
@@ -144,7 +153,10 @@ resource 'Survey Responses' do
     end
 
     describe 'when resident' do
-      before { resident_header_token }
+      before do
+        user = create(:user)
+        set_jwt_cookie(user)
+      end
 
       example '[error] XLSX export', document: false do
         do_request
