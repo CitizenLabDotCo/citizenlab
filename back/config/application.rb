@@ -72,8 +72,7 @@ module Cl2Back
     if Rails.env.production? || Rails.env.staging?
       config.force_ssl = true
       config.ssl_options = {
-        secure_cookies: true,
-        httponly: true
+        secure_cookies: true
       }
     end
 
