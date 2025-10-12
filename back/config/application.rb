@@ -60,7 +60,20 @@ module Cl2Back
     config.eager_load_paths << Rails.root.join('lib')
 
     config.action_dispatch.perform_deep_munge = false
-    config.session_store :cookie_store, key: '_interslice_session'
+
+    # TODO: This is for testing if we can get things working on epic - may well need adjusting.
+    config.session_store :cookie_store, 
+      key: '_interslice_session',
+      httponly: true,
+      secure: Rails.env.production? || Rails.env.staging?,
+      same_site: :lax
+
+    # TODO: This is for testing if we can get things working on epic - may well need adjusting.
+    config.force_ssl = true if Rails.env.production? || Rails.env.staging?
+    config.ssl_options = {
+      secure_cookies: true,
+      httponly: true
+    } if Rails.env.production? || Rails.env.staging?
 
     # https://github.com/AzureAD/omniauth-azure-activedirectory/issues/22#issuecomment-1259340380
     # It's weird that returning nil in `cookies_same_site_protection` works because `lax` is default
