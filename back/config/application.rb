@@ -45,6 +45,9 @@ module Cl2Back
 
     config.api_only = true
 
+    config.middleware.use ActionDispatch::Cookies # Required for all session management
+    config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
+
     config.generators do |g|
       g.orm :active_record, primary_key_type: :uuid
     end
@@ -89,9 +92,6 @@ module Cl2Back
 
       :lax
     }
-
-    config.middleware.use ActionDispatch::Cookies # Required for all session management
-    config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
 
     # Dump the database schema as SQL (`structure.sql`) instead of Ruby (`schema.rb`).
     config.active_record.schema_format = :sql
