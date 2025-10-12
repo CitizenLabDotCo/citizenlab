@@ -20,6 +20,13 @@ module AuthToken
         expires: 1.day.from_now
       }
 
+      # Log what Rails is sending vs what the browser receives
+      Rails.logger.info "=== STAGING COOKIE DEBUG ==="
+      Rails.logger.info "Rails env: #{Rails.env}"
+      Rails.logger.info "Rails Set-Cookie header: #{response.headers['Set-Cookie']}"
+      Rails.logger.info "Full response headers: #{response.headers.to_h}"
+      Rails.logger.info "=========================="
+
       render json: auth_token, status: :created
     end
 
