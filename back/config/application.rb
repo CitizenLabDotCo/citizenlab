@@ -45,9 +45,6 @@ module Cl2Back
 
     config.api_only = true
 
-    config.middleware.use ActionDispatch::Cookies # Required for all session management
-    config.middleware.use ActionDispatch::Session::CookieStore
-
     config.generators do |g|
       g.orm :active_record, primary_key_type: :uuid
     end
@@ -63,13 +60,7 @@ module Cl2Back
     config.eager_load_paths << Rails.root.join('lib')
 
     config.action_dispatch.perform_deep_munge = false
-
-    # TODO: This is for testing if we can get things working on epic - may well need adjusting.
-    config.session_store :cookie_store,
-      key: '_interslice_session',
-      httponly: true,
-      secure: Rails.env.production? || Rails.env.staging?,
-      same_site: :lax
+    config.session_store :cookie_store, key: '_interslice_session'
 
     # https://github.com/AzureAD/omniauth-azure-activedirectory/issues/22#issuecomment-1259340380
     # It's weird that returning nil in `cookies_same_site_protection` works because `lax` is default
@@ -92,6 +83,9 @@ module Cl2Back
 
       :lax
     }
+
+    config.middleware.use ActionDispatch::Cookies # Required for all session management
+    config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
 
     # Dump the database schema as SQL (`structure.sql`) instead of Ruby (`schema.rb`).
     config.active_record.schema_format = :sql

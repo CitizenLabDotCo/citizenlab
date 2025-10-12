@@ -12,6 +12,8 @@ module AuthToken
     def create
       token = auth_token.token
 
+      # Use response.set_cookie instead of cookies[:cl2_jwt] = to bypass middleware dependency
+      # and ensure reliable HttpOnly flag setting in API-only Rails apps
       response.set_cookie(:cl2_jwt, {
         value: token,
         httponly: true,
@@ -20,13 +22,6 @@ module AuthToken
         expires: 1.day.from_now,
         path: '/'
       })
-
-      # Log what Rails is sending vs what the browser receives
-      Rails.logger.info "=== STAGING COOKIE DEBUG ==="
-      Rails.logger.info "Rails env: #{Rails.env}"
-      Rails.logger.info "Rails Set-Cookie header: #{response.headers['Set-Cookie']}"
-      Rails.logger.info "Full response headers: #{response.headers.to_h}"
-      Rails.logger.info "=========================="
 
       render json: auth_token, status: :created
     end
