@@ -15,7 +15,7 @@ module AuthToken
       cookies[:cl2_jwt] = {
         value: token,
         httponly: true,
-        secure: Rails.env.production?,
+        secure: true, # Might need to make this false for test env, but maybe not.
         same_site: :lax,
         expires: 1.day.from_now
       }
