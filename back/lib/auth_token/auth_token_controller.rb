@@ -12,13 +12,14 @@ module AuthToken
     def create
       token = auth_token.token
 
-      cookies[:cl2_jwt] = {
+      response.set_cookie(:cl2_jwt, {
         value: token,
         httponly: true,
-        secure: true, # Might need to make this false for test env, but maybe not.
+        secure: true,
         same_site: :lax,
-        expires: 1.day.from_now
-      }
+        expires: 1.day.from_now,
+        path: '/'
+      })
 
       # Log what Rails is sending vs what the browser receives
       Rails.logger.info "=== STAGING COOKIE DEBUG ==="
