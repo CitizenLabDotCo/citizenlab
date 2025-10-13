@@ -56,7 +56,7 @@ describe('Survey template', () => {
       })
       .then((response) => {
         surveyFields = response.body.data;
-        return cy.apiGetSurveySchema(phaseId);
+        return cy.apiGetSurveyFields(phaseId);
       })
       .then((response) => {
         surveySchema = response.body;

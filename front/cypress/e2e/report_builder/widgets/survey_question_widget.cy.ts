@@ -80,7 +80,7 @@ describe('Survey question widget', () => {
       })
       .then((response) => {
         surveyFields = response.body.data;
-        return cy.apiGetSurveySchema(surveyPhaseId);
+        return cy.apiGetSurveyFields(surveyPhaseId);
       })
       .then((response) => {
         surveySchema = response.body;
