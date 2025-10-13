@@ -143,6 +143,7 @@
   "app.components.admin.ActionForm.Fields.user_fields_in_survey_not_supported_for_participation_method": "Die Beantwortung demografischer Fragen auf der letzten Seite der Umfrage ist bei der gewählten Beteiligungsmethode nicht möglich.",
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow": "Mit der aktuellen Kombination aus den Einstellungen \"Authentifizierung\" und \"Benutzerdatenerfassung\" können demografische Fragen nur im Registrierungsablauf gestellt werden.",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "Die Auswahl, wie demografische Fragen an die Teilnehmenden gestellt werden, ist nicht anwendbar, da Sie die Authentifizierung deaktiviert und vollständige Anonymität gewählt haben",
+  "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "Um Inhalte in das Akkordeon einzufügen, öffnen Sie das Akkordeon, indem Sie auf das Symbol \">\" drücken, und ziehen Sie dann beliebige Widgets hinein.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Keine Frage ausgewählt. Bitte wählen Sie zuerst eine Frage aus.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Keine Antwort",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.numberOfResponses": "{count} Antworten",
