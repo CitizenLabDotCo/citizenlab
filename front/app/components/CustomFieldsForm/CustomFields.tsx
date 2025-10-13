@@ -7,7 +7,6 @@ import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { getSubtextElement } from 'components/Form/Components/Controls/controlUtils';
 import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import LocationInput from 'components/HookForm/LocationInput';
@@ -15,6 +14,7 @@ import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWi
 import TextArea from 'components/HookForm/TextArea';
 import Topics from 'components/HookForm/Topics';
 import { FormLabel } from 'components/UI/FormComponents';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -36,6 +36,18 @@ import SingleSelectField from './Fields/SingleSelectField';
 import InputIQ from './InputIQ';
 import messages from './messages';
 import { getInstructionMessage } from './util';
+
+export const getSubtextElement = (description: string) => {
+  return (
+    <QuillEditedContent fontWeight={400}>
+      <div
+        dangerouslySetInnerHTML={{
+          __html: description,
+        }}
+      />
+    </QuillEditedContent>
+  );
+};
 
 const renderField = ({
   question,
