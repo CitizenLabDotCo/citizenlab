@@ -7,19 +7,19 @@ import { ICustomFields, IFlatCustomField } from 'api/custom_fields/types';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import permissionCustomFieldsKeys from './keys';
-import { PermissionsCustomFields } from './types';
+import customFieldsWithPermissionsKeys from './keys';
+import { CustomFieldsWithPermissions } from './types';
 
-const usePermissionsCustomFields = (
+const useCustomFieldsWithPermissions = (
   authenticationContext: AuthenticationContext
 ) => {
   const result = useQuery<
     ICustomFields,
     CLErrors,
     ICustomFields,
-    PermissionsCustomFields
+    CustomFieldsWithPermissions
   >({
-    queryKey: permissionCustomFieldsKeys.item(authenticationContext),
+    queryKey: customFieldsWithPermissionsKeys.item(authenticationContext),
     queryFn: () => fetchUserPermissionsCustomFields(authenticationContext),
   });
 
@@ -87,4 +87,4 @@ const fetchUserPermissionsCustomFields = (
   });
 };
 
-export default usePermissionsCustomFields;
+export default useCustomFieldsWithPermissions;

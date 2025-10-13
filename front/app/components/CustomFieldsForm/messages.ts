@@ -303,4 +303,44 @@ export default defineMessages({
     id: 'app.utils.IdeasNewPage.viewYourIssue',
     defaultMessage: 'View your issue',
   },
+  valueOutOfTotalWithLabel: {
+    id: 'app.components.form.controls.valueOutOfTotalWithLabel',
+    defaultMessage: '{value} out of {total}, {label}',
+  },
+  valueOutOfTotalWithMaxExplanation: {
+    id: 'app.components.form.controls.valueOutOfTotalWithMaxExplanation',
+    defaultMessage: '{value} out of {total}, where {maxValue} is {maxLabel}',
+  },
+  valueOutOfTotal: {
+    id: 'app.components.form.controls.valueOutOfTotal',
+    defaultMessage: '{value} out of {total}',
+  },
+  cosponsorsPlaceholder: {
+    id: 'app.components.form.controls.cosponsorsPlaceholder',
+    defaultMessage: 'Start typing a name to search',
+  },
+  clearAll: {
+    id: 'app.components.form.controls.clearAll',
+    defaultMessage: 'Clear all',
+  },
+  clearAllScreenreader: {
+    id: 'app.components.form.controls.clearAllScreenreader',
+    defaultMessage: 'Clear all answers from above matrix question',
+  },
+  noRankSelected: {
+    id: 'app.components.form.controls.noRankSelected',
+    defaultMessage: 'No rank selected',
+  },
+  currentRank: {
+    id: 'app.components.form.controls.currentRank',
+    defaultMessage: 'Current rank: ',
+  },
+  rankingInstructions: {
+    id: 'app.components.form.controls.rankingInstructions',
+    defaultMessage: 'Drag and drop to rank options.',
+  },
+  optionalParentheses: {
+    id: 'app.components.form.controls.optionalParentheses',
+    defaultMessage: '(optional)',
+  },
 });

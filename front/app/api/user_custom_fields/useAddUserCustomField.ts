@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors, Multiloc } from 'typings';
 
-import permissionsCustomFieldsKeys from 'api/permissions_custom_fields/keys';
+import customFieldsWithPermissionsKeys from 'api/custom_fields_with_permissions/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -32,7 +32,7 @@ const useAddUserCustomField = () => {
         queryKey: userCustomFieldsKeys.lists(),
       });
       queryClient.invalidateQueries({
-        queryKey: permissionsCustomFieldsKeys.all(),
+        queryKey: customFieldsWithPermissionsKeys.all(),
       });
     },
   });

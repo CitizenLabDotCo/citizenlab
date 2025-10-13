@@ -3,11 +3,11 @@ import { AuthenticationContext } from 'api/authentication/authentication_require
 import { QueryKeys } from 'utils/cl-react-query/types';
 
 const baseType = { type: 'custom_field' };
-const permissionCustomFieldsKeys = {
+const customFieldsWithPermissionsKeys = {
   all: () => [baseType],
   item: (authenticationContext: AuthenticationContext) => [
     { ...baseType, operation: 'item', parameters: { authenticationContext } },
   ],
 } satisfies QueryKeys;
 
-export default permissionCustomFieldsKeys;
+export default customFieldsWithPermissionsKeys;

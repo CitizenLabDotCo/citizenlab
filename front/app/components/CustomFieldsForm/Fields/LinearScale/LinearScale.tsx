@@ -6,10 +6,10 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import messages from 'components/Form/Components/Controls/messages';
-
 import { useIntl } from 'utils/cl-intl';
 import { sanitizeForClassname } from 'utils/JSONFormUtils';
+
+import messages from '../../messages';
 
 import Labels from './Labels';
 import LinearScaleButton from './LinearScaleButton';
