@@ -382,3 +382,6 @@ ca:
     default_voting_term_plural: "vots"
   ics_calendar_event:
     event_details: "Detalls de l'esdeveniment"
+  errors:
+    messages:
+      max_must_be_greater_than_min_characters: "El màxim ha de ser més gran que el mínim."

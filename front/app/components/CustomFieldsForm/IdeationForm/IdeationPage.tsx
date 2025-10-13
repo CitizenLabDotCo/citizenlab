@@ -46,9 +46,9 @@ const StyledForm = styled.form`
 type CustomFieldsPage = {
   page: IFlatCustomField;
   pageQuestions: IFlatCustomField[];
-  currentPageNumber: number;
-  setCurrentPageNumber: React.Dispatch<React.SetStateAction<number>>;
-  lastPageNumber: number;
+  currentPageIndex: number;
+  setCurrentPageIndex: React.Dispatch<React.SetStateAction<number>>;
+  lastPageIndex: number;
   showTogglePostAnonymously?: boolean;
   participationMethod?: ParticipationMethod;
   ideaId?: string;
@@ -56,7 +56,6 @@ type CustomFieldsPage = {
   onSubmit: (formValues: FormValues) => Promise<void>;
   phase?: IPhaseData;
   defaultValues?: FormValues;
-  customFields: IFlatCustomField[];
   pages: {
     page: IFlatCustomField;
     pageQuestions: IFlatCustomField[];
@@ -66,17 +65,16 @@ type CustomFieldsPage = {
 const IdeationPage = ({
   page,
   pageQuestions,
-  lastPageNumber,
+  lastPageIndex,
   showTogglePostAnonymously,
   participationMethod,
   ideaId: initialIdeaId,
   projectId,
   onSubmit,
-  currentPageNumber,
-  setCurrentPageNumber,
+  currentPageIndex,
+  setCurrentPageIndex,
   phase,
   defaultValues,
-  customFields,
   pages,
 }: CustomFieldsPage) => {
   const pageRef = useRef<HTMLDivElement>(null);
@@ -105,7 +103,7 @@ const IdeationPage = ({
 
   const handleNextAndsubmit = () => {
     pageRef.current?.scrollTo(0, 0);
-    if (currentPageNumber === lastPageNumber) {
+    if (currentPageIndex === lastPageIndex) {
       const userCanModerate = project
         ? canModerateProject(project.data, authUser)
         : false;
@@ -129,7 +127,7 @@ const IdeationPage = ({
     useEsriMapPage({
       project,
       pages,
-      currentPageNumber,
+      currentPageIndex,
       localize,
     });
 
@@ -147,7 +145,7 @@ const IdeationPage = ({
         ))
     );
 
-    if (currentPageNumber === lastPageNumber - 1) {
+    if (currentPageIndex === lastPageIndex - 1) {
       if (disclaimerNeeded && !isDisclaimerAccepted) {
         setIsDisclaimerOpened(true);
         return;
@@ -181,10 +179,11 @@ const IdeationPage = ({
   const showIdeaId = idea ? !idea.data.relationships.author?.data : false;
 
   const formCompletionPercentage = getFormCompletionPercentage({
-    customFields,
+    pageQuestions,
+    currentPageIndex,
+    lastPageIndex,
     formValues: methods.getValues(),
     userIsEditing: isIdeaEditPage,
-    userIsOnLastPage: currentPageNumber === lastPageNumber,
   });
 
   const onAcceptDisclaimer = async () => {
@@ -205,11 +204,11 @@ const IdeationPage = ({
           flexDirection={isMobileOrSmaller ? 'column' : 'row'}
           height="100%"
           w="100%"
-          data-cy={`e2e-page-number-${currentPageNumber + 1}`}
+          data-cy={`e2e-page-number-${currentPageIndex + 1}`}
         >
           {shouldShowMap && (
             <PageEsriMap
-              currentPageNumber={currentPageNumber}
+              currentPageIndex={currentPageIndex}
               mapConfig={mapConfig}
               mapLayers={mapLayers}
               draggableDivRef={draggableDivRef}
@@ -249,12 +248,12 @@ const IdeationPage = ({
                   <Box display="flex" flexDirection="column">
                     <PageTitle page={page} />
 
-                    {currentPageNumber === 0 && isAdmin(authUser) && (
+                    {currentPageIndex === 0 && isAdmin(authUser) && (
                       <Box mb="24px">
                         <AuthorField name="author_id" />
                       </Box>
                     )}
-                    {currentPageNumber === lastPageNumber - 1 &&
+                    {currentPageIndex === lastPageIndex - 1 &&
                       isAdmin(authUser) &&
                       phase?.attributes.voting_method === 'budgeting' && (
                         <Box mb="24px">
@@ -269,7 +268,7 @@ const IdeationPage = ({
                       participationMethod={participationMethod}
                     />
 
-                    {currentPageNumber === lastPageNumber - 1 &&
+                    {currentPageIndex === lastPageIndex - 1 &&
                       showTogglePostAnonymously &&
                       !isIdeaEditPage && (
                         <ProfileVisiblity
@@ -277,7 +276,7 @@ const IdeationPage = ({
                           onChange={handleOnChangeAnonymousPosting}
                         />
                       )}
-                    {currentPageNumber === lastPageNumber &&
+                    {currentPageIndex === lastPageIndex &&
                       idea &&
                       showIdeaId && (
                         <SubmissionReference
@@ -299,17 +298,17 @@ const IdeationPage = ({
           )}
           <PageFooter
             variant={
-              currentPageNumber === lastPageNumber
+              currentPageIndex === lastPageIndex
                 ? 'after-submission'
-                : currentPageNumber === lastPageNumber - 1
+                : currentPageIndex === lastPageIndex - 1
                 ? 'submission'
                 : 'other'
             }
-            hasPreviousPage={currentPageNumber > 0}
+            hasPreviousPage={currentPageIndex > 0}
             handleNextAndSubmit={handleNextAndsubmit}
             handlePrevious={() => {
               pageRef.current?.scrollTo(0, 0);
-              setCurrentPageNumber(currentPageNumber - 1);
+              setCurrentPageIndex(currentPageIndex - 1);
             }}
             formCompletionPercentage={formCompletionPercentage}
             pageButtonLabelMultiloc={page.page_button_label_multiloc}
@@ -320,6 +319,8 @@ const IdeationPage = ({
             isLoading={methods.formState.isSubmitting}
             isAdminPage={isAdminPage}
             isMapPage={isMapPage}
+            pageQuestions={pageQuestions}
+            currentPageIndex={currentPageIndex}
           />
         </Box>
         <ContentUploadDisclaimer

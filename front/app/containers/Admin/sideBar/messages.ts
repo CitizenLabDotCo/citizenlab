@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.groups',
     defaultMessage: 'Groups',
   },
+  productChangelog: {
+    id: 'app.containers.AdminPage.SideBar.productChangelog',
+    defaultMessage: 'Product changelog',
+  },
   community_monitor: {
     id: 'app.containers.AdminPage.SideBar.community_monitor',
     defaultMessage: 'Community monitor',
@@ -68,6 +72,11 @@ export default defineMessages({
   linkToSupport: {
     id: 'app.containers.AdminPage.SideBar.linkToSupport2',
     defaultMessage: 'https://support.govocal.com',
+  },
+  linkToChangelog: {
+    id: 'app.containers.AdminPage.SideBar.linkToChangelog',
+    defaultMessage:
+      'https://support.govocal.com/en/articles/12082845-changelog',
   },
   toPlatform: {
     id: 'app.containers.AdminPage.SideBar.toPlatform',

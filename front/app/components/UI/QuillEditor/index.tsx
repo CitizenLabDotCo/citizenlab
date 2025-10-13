@@ -6,7 +6,7 @@ import React, {
   useLayoutEffect,
 } from 'react';
 
-import { Label, IconTooltip } from '@citizenlab/cl2-component-library';
+import { Label, IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import Quill, { RangeStatic } from 'quill';
 
@@ -19,7 +19,12 @@ import { createQuill } from './createQuill';
 import messages from './messages';
 import StyleContainer from './StyleContainer';
 import Toolbar from './Toolbar';
-import { getHTML, setHTML, syncPlaceHolder } from './utils';
+import {
+  getHTML,
+  setHTML,
+  syncPlaceHolder,
+  getQuillPlainTextLength,
+} from './utils';
 
 export interface Props {
   id: string;
@@ -37,6 +42,8 @@ export interface Props {
   onChange?: (html: string) => void;
   onFocus?: () => void;
   onBlur?: () => void;
+  maxCharCount?: number;
+  minCharCount?: number;
 }
 
 configureQuill();
@@ -57,6 +64,8 @@ const QuillEditor = ({
   onChange,
   onBlur,
   onFocus,
+  maxCharCount,
+  minCharCount,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [editor, setEditor] = useState<Quill | null>(null);
@@ -213,6 +222,23 @@ const QuillEditor = ({
       <div>
         <div ref={containerRef} />
       </div>
+      {(maxCharCount || minCharCount) && editor && (
+        <Box
+          display="flex"
+          justifyContent="flex-end"
+          mt="8px"
+          color={
+            (maxCharCount && getQuillPlainTextLength(editor) > maxCharCount) ||
+            (minCharCount && getQuillPlainTextLength(editor) < minCharCount)
+              ? 'red600'
+              : 'textSecondary'
+          }
+        >
+          {getQuillPlainTextLength(editor)}
+          {maxCharCount && ` / ${maxCharCount}`}
+          {minCharCount && ` (≥ ${minCharCount})`}
+        </Box>
+      )}
     </StyleContainer>
   );
 };

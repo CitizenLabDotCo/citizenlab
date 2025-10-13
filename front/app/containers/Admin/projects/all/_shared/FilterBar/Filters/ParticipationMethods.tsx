@@ -68,14 +68,9 @@ const ParticipationMethods = ({ onClear }: Props) => {
   }));
 
   const handleOnChange = (selected: string[]) => {
-    // if the value is survey, we send both native and external surveys
-    const updatedMethods = selected.includes('survey')
-      ? [...selected, 'native_survey', 'survey']
-      : selected;
-
-    setParam('participation_methods', updatedMethods as ParticipationMethod[]);
+    setParam('participation_methods', selected as ParticipationMethod[]);
     trackEventByName(tracks.setParticipationMethod, {
-      participation_methods: JSON.stringify(updatedMethods),
+      participation_methods: JSON.stringify(selected),
     });
   };
 

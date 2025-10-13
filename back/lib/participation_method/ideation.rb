@@ -56,15 +56,15 @@ module ParticipationMethod
     # Locks mirror the name of the fields whose default values cannot be changed (ie are locked)
     def constraints
       result = {
-        title_page: { locks: { enabled: true, title_multiloc: true } },
-        title_multiloc: { locks: { enabled: true, required: true, title_multiloc: true } },
-        body_multiloc: { locks: { enabled: true, required: true, title_multiloc: true } },
-        idea_images_attributes: { locks: { enabled: true, title_multiloc: true } },
-        idea_files_attributes: { locks: { title_multiloc: true } },
-        topic_ids: { locks: { title_multiloc: true } },
-        location_description: { locks: { title_multiloc: true } }
+        title_page: { locks: { attributes: %i[title_multiloc] } },
+        title_multiloc: { locks: { attributes: %i[title_multiloc required], deletion: true } },
+        body_multiloc: { locks: { attributes: %i[title_multiloc] } },
+        idea_images_attributes: { locks: { attributes: %i[title_multiloc] } },
+        idea_files_attributes: { locks: { attributes: %i[title_multiloc] } },
+        topic_ids: { locks: { attributes: %i[title_multiloc] } },
+        location_description: { locks: { attributes: %i[title_multiloc] } }
       }
-      result[:proposed_budget] = { locks: { title_multiloc: true } } if proposed_budget_in_form?
+      result[:proposed_budget] = { locks: { attributes: %i[title_multiloc] } } if proposed_budget_in_form?
       result
     end
 
@@ -124,7 +124,9 @@ module ParticipationMethod
           end,
           required: true,
           enabled: true,
-          ordering: 1
+          ordering: 1,
+          min_characters: 3,
+          max_characters: 120
         ),
         CustomField.new(
           id: SecureRandom.uuid,
@@ -376,6 +378,12 @@ module ParticipationMethod
       SlugService.new.generate_slug input, title
     end
 
+    def validate_phase
+      if phase.id && Idea.exists?(creation_phase_id: phase.id)
+        phase.errors.add(:participation_method, :non_complying_inputs, message: 'some inputs do not comply with the participation method')
+      end
+    end
+
     def supported_email_campaigns
       super + %w[your_input_in_screening]
     end
@@ -389,10 +397,6 @@ module ParticipationMethod
     end
 
     def built_in_title_required?
-      true
-    end
-
-    def built_in_body_required?
       true
     end
 

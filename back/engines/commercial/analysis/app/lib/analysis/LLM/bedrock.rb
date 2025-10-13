@@ -13,7 +13,7 @@ module Analysis
         @client = Aws::BedrockRuntime::Client.new(params)
       end
 
-      def self.token_count(str)
+      def token_count(str)
         # From https://docs.aws.amazon.com/bedrock/latest/userguide/model-customization-prepare.html:
         # "Use 6 characters per token as an approximation for the number of tokens."
         (str.size / 6.0).ceil

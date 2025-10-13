@@ -31,11 +31,7 @@ const PendingApproval = () => {
   const { formatMessage } = useIntl();
 
   const pendingReviewParams = {
-    publicationStatusFilter: [
-      'draft' as const,
-      'published' as const,
-      'archived' as const,
-    ],
+    publicationStatusFilter: ['draft' as const],
     review_state: 'pending' as const,
     onlyProjects: true,
     rootLevelOnly: false,
@@ -45,9 +41,7 @@ const PendingApproval = () => {
     useAdminPublicationsStatusCounts(pendingReviewParams);
 
   const totalPendingCount =
-    (pendingReviewStatusCounts?.data.attributes.status_counts.draft ?? 0) +
-    (pendingReviewStatusCounts?.data.attributes.status_counts.published ?? 0) +
-    (pendingReviewStatusCounts?.data.attributes.status_counts.archived ?? 0);
+    pendingReviewStatusCounts?.data.attributes.status_counts.draft ?? 0;
 
   return (
     <StyledInputContainer

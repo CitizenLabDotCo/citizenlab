@@ -335,10 +335,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        data_repository: {
-          enabled: true,
-          allowed: true
-        },
         data_repository_transcription: {
           enabled: true,
           allowed: true

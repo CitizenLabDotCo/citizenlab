@@ -37,13 +37,13 @@ module MultiTenancy
         attribute(:voting_max_total, if: :voting?)
         attribute(:voting_min_total, if: :voting?)
         attribute(:voting_max_votes_per_idea, if: :voting?)
+        attribute(:voting_min_selected_options, if: :voting?)
         attribute(:autoshare_results_enabled, if: :voting?)
         attribute(:survey_embed_url, if: :survey?)
         attribute(:survey_service, if: :survey?)
         attribute(:document_annotation_embed_url, if: :document_annotation?)
         attribute(:native_survey_title_multiloc, if: proc { |phase| phase.pmethod.supports_survey_form? })
         attribute(:native_survey_button_multiloc, if: proc { |phase| phase.pmethod.supports_survey_form? })
-        attribute(:user_fields_in_form, if: proc { |phase| phase.pmethod.supports_survey_form? })
       end
     end
   end

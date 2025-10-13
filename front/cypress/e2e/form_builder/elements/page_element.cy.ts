@@ -47,7 +47,10 @@ describe('Form builder page element', () => {
 
     cy.dataCy('e2e-page');
     cy.wait(2000);
-    cy.dataCy('e2e-page').click();
+
+    // Add page element using the custom command
+    cy.addItemToFormBuilder('#toolbox_page');
+
     cy.get('#e2e-field-group-title-multiloc').type('Page title', {
       force: true,
     });
@@ -56,7 +59,7 @@ describe('Form builder page element', () => {
       .type('Page description');
 
     // Add number field to the next page
-    cy.dataCy('e2e-number-field').click();
+    cy.addItemToFormBuilder('#toolbox_number');
     cy.get('#e2e-title-multiloc').type('Number', { force: true });
 
     // Should show success message on saving
@@ -93,10 +96,11 @@ describe('Form builder page element', () => {
   it('does not let the user delete the page if there is only one page', () => {
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
 
-    // Add a second page
+    // Add a second page using the custom command
     cy.dataCy('e2e-page');
     cy.wait(2000);
-    cy.dataCy('e2e-page').click();
+    cy.addItemToFormBuilder('#toolbox_page');
+
     cy.get('#e2e-field-group-title-multiloc').type('Page title', {
       force: true,
     });
@@ -113,10 +117,6 @@ describe('Form builder page element', () => {
       .find('[data-cy="e2e-more-field-actions"]')
       .should('exist');
     cy.dataCy('e2e-more-field-actions').eq(0).click({ force: true });
-    cy.get('.e2e-more-actions-list button').contains('Delete');
-
-    // Delete the second page
-    cy.dataCy('e2e-more-field-actions').eq(2).click({ force: true });
     cy.get('.e2e-more-actions-list button').contains('Delete').click();
 
     // Check that we don't have options to delete the first page since we only have one page

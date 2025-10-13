@@ -93,6 +93,7 @@ const DateSetup = ({
         selectedRange={selectedRange}
         disabledRanges={disabledRanges}
         defaultMonth={defaultMonth ?? undefined}
+        startMonth={new Date(1900, 1, 1)}
         onUpdateRange={({ from, to }) => {
           setSubmitState('enabled');
           setValidationErrors((prevState) => ({

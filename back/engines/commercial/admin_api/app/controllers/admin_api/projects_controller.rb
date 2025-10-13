@@ -36,6 +36,7 @@ module AdminApi
     def template_export_params
       params.require(:project).permit(
         :include_ideas,
+        :max_ideas,
         :anonymize_users,
         :translate_content,
         :shift_timestamps,

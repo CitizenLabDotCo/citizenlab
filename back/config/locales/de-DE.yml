@@ -45,9 +45,9 @@ de:
     under_consideration: unter Berücksichtigung
     under_consideration_description: Diese Idee wird von der Stadtverwaltung berücksichtigt
     accepted: akzeptiert
-    accepted_description: Diese Idee wurde angenommen und wird von der Stadt umgesetzt.
+    accepted_description: Dieser Beitrag wurde angenommen und wird umgesetzt.
     implemented: umgesetzt
-    implemented_description: Diese Idee wurde von der Stadtverwaltung umgesetzt
+    implemented_description: Dieser Beitrag wurde umgesetzt.
     rejected: abgelehnt
     rejected_description: Diese Idee wurde abgelehnt
     expired: abgelaufen
@@ -230,7 +230,7 @@ de:
         idea:
           title: Was ist deine Idee?
         question:
-          title: Was ist deine Frage?
+          title: Was ist Ihre Frage?
         contribution:
           title: Was ist dein Beitrag?
         project:
@@ -255,9 +255,9 @@ de:
   reset_password_mailer:
     send_reset_password:
       preheader: 'Passwort für %{organizationName} zurücksetzen'
-      cta_reset_password: 'Ihr Passwort zurücksetzen'
+      cta_reset_password: 'Passwort zurücksetzen'
       message_you_reset_your_password: 'Sie haben ein neues Passwort für die Beteiligungsplattform %{organizationName} beantragt. Klicken Sie auf den Button unten, um ein neues, sicheres Passwort zu wählen. Der Link läuft in einer Stunde ab.'
-      subject: '%{organizationName}: Ihr Passwort zurücksetzen'
+      subject: '%{organizationName}: Passwort zurücksetzen'
       title_reset_your_password: 'Wählen Sie ein neues Passwort'
   xlsx_export:
     anonymous: 'Anonym'
@@ -382,3 +382,6 @@ de:
     default_voting_term_plural: "Stimmen"
   ics_calendar_event:
     event_details: "Veranstaltungsdetails"
+  errors:
+    messages:
+      max_must_be_greater_than_min_characters: "Das Maximum muss größer sein als das Minimum."

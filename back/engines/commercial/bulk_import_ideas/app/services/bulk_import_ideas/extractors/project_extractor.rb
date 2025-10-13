@@ -111,7 +111,6 @@ module BulkImportIdeas::Extractors
         start_at: phase_attributes[:start_at],
         end_at: phase_attributes[:end_at],
         participation_method: 'information',
-        campaigns_settings: { project_phase_started: true },
         idea_custom_fields: [],
         user_custom_fields: [],
         idea_rows: []

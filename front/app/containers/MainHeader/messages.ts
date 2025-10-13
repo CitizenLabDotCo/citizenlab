@@ -38,4 +38,8 @@ export default defineMessages({
     id: 'app.containers.app.navbar.showFullMenu',
     defaultMessage: 'Show full menu',
   },
+  more: {
+    id: 'app.containers.app.navbar.more',
+    defaultMessage: 'More',
+  },
 });

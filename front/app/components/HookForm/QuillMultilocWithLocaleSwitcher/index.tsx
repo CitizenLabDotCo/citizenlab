@@ -21,6 +21,7 @@ type Props = {
   withCTAButton?: boolean;
   hideLocaleSwitcher?: boolean;
   scrollErrorIntoView?: boolean;
+  maxCharCount?: number;
 } & Omit<
   QuillMultilocWithLocaleSwitcherComponentProps,
   'onChange' | 'valueMultiloc' | 'id'
@@ -30,6 +31,7 @@ const QuillMultilocWithLocaleSwitcher = ({
   id,
   name,
   scrollErrorIntoView,
+  maxCharCount,
   ...rest
 }: Props) => {
   const {
@@ -67,6 +69,7 @@ const QuillMultilocWithLocaleSwitcher = ({
             {...rest}
             id={id || name.replace(/\./g, '_')}
             valueMultiloc={{ ...defaultValue, ...field.value }}
+            maxCharCount={maxCharCount}
           />
         )}
       />

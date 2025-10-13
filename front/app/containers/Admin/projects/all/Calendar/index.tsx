@@ -17,7 +17,7 @@ import { useIntl } from 'utils/cl-intl';
 import FilterBar from '../_shared/FilterBar';
 import sharedMessages from '../_shared/messages';
 import { useParams } from '../_shared/params';
-import { getStatusColor } from '../_shared/utils';
+import { getStatusColor, getParticipationMethods } from '../_shared/utils';
 
 import messages from './messages';
 import ProjectGanttChart from './ProjectGanttChart';
@@ -28,13 +28,14 @@ const PAGE_SIZE = 10;
 const Calendar = () => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const params = useParams();
+  const { sort, participation_methods, ...params } = useParams();
 
   const { data, isLoading, isFetching, isError, fetchNextPage, hasNextPage } =
     useInfiniteProjectsMiniAdmin(
       {
         ...params,
-        sort: params.sort ?? 'recently_viewed',
+        participation_methods: getParticipationMethods(participation_methods),
+        sort: sort ?? 'recently_viewed',
       },
       PAGE_SIZE
     );

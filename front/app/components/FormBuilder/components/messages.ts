@@ -111,6 +111,14 @@ export default defineMessages({
     id: 'app.components.formBuilder.drawArea',
     defaultMessage: 'Draw area',
   },
+  bodyMultiloc: {
+    id: 'app.components.formBuilder.bodyMultiloc',
+    defaultMessage: 'Description',
+  },
+  inputImages: {
+    id: 'app.components.formBuilder.inputImages',
+    defaultMessage: 'Images',
+  },
   proposedBudget: {
     id: 'app.components.formBuilder.proposedBudget',
     defaultMessage: 'Proposed budget',
@@ -272,15 +280,6 @@ export default defineMessages({
     defaultMessage:
       'Adding custom content is not part of your current license. Reach out to your GovSuccess Manager to learn more about it.',
   },
-  pageCannotBeDeletedNorNewFieldsAdded: {
-    id: 'app.components.formBuilder.pageCannotBeDeletedNorNewFieldsAdded',
-    defaultMessage:
-      'This page cannot be deleted and does not allow any additional fields to be added.',
-  },
-  pageCannotBeDeleted: {
-    id: 'app.components.formBuilder.pageCannotBeDeleted',
-    defaultMessage: "This page can't be deleted.",
-  },
   questionCannotBeDeleted: {
     id: 'app.components.formBuilder.questionCannotBeDeleted',
     defaultMessage: "This question can't be deleted.",
@@ -366,5 +365,14 @@ export default defineMessages({
   veryGood: {
     id: 'app.components.formBuilder.veryGood',
     defaultMessage: 'Very good',
+  },
+  manageTagsExplanation: {
+    id: 'app.components.formBuilder.manageTagsExplanation',
+    defaultMessage:
+      'You can manage the tags shown in this question on the {inputTagsLink} of the project.',
+  },
+  inputTagsPage: {
+    id: 'app.components.formBuilder.inputTagManager',
+    defaultMessage: 'Input tags page',
   },
 });

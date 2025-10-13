@@ -108,7 +108,7 @@ const HomepageBuilderPage = () => {
           mt={`${stylingConsts.menuHeight}px`}
           display={previewEnabled ? 'none' : 'flex'}
         >
-          <Toolbox selectedLocale={selectedLocale} />
+          <Toolbox />
           <StyledRightColumn>
             <LanguageProvider
               contentBuilderLocale={selectedLocale}

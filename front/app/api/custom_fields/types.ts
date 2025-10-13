@@ -86,9 +86,8 @@ export interface IAttributes {
   ask_follow_up?: boolean;
   constraints?: {
     locks: {
-      title_multiloc?: boolean;
-      enabled?: boolean;
-      required?: boolean;
+      attributes?: ('title_multiloc' | 'required')[];
+      deletion?: boolean;
     };
   };
   enabled: boolean;
@@ -115,6 +114,8 @@ export interface IAttributes {
   dropdown_layout?: boolean;
   question_category?: string;
   include_in_printed_form?: boolean;
+  min_characters?: number;
+  max_characters?: number;
 }
 
 export interface ICustomFieldResponse {

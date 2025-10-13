@@ -43,6 +43,7 @@ module MachineTranslations
       translation = nil
       exception = nil
       (retries + 1).times do |i|
+        Rails.logger.info "GOOGLE TRANSLATE (attempt #{i + 1}/#{retries + 1})"
         translation = EasyTranslate.translate text_or_html, from: from, to: to
         break
       rescue EasyTranslate::EasyTranslateException => e

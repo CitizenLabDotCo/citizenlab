@@ -32,7 +32,7 @@ const SurveyForm = ({
   phaseId?: string;
   participationMethod?: ParticipationMethod;
 }) => {
-  const [currentPageNumber, setCurrentPageNumber] = useState(0);
+  const [currentPageIndex, setCurrentPageIndex] = useState(0);
 
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
@@ -49,7 +49,10 @@ const SurveyForm = ({
 
   const nestedPagesData = convertCustomFieldsToNestedPages(customFields || []);
 
-  const lastPageNumber = nestedPagesData.length - 1;
+  const lastPageIndex = nestedPagesData.length - 1;
+
+  if (!phase) return null;
+
   const onSubmit = async ({
     formValues,
     isSubmitPage,
@@ -57,11 +60,14 @@ const SurveyForm = ({
     formValues: FormValues;
     isSubmitPage: boolean;
   }) => {
-    const anonymousUser =
-      !authUser || phase?.data.attributes.allow_anonymous_participation;
+    const userWillNotBeLinkedToSurvey =
+      !authUser || phase.data.attributes.user_data_collection !== 'all_data';
 
-    // If the user is anonymous and is not on the submit page, do not save the draft idea
-    if (anonymousUser && !isSubmitPage) {
+    // The draft idea endpoint relies on the idea having a user id / being linked to a user
+    // If the user is not linked to the survey, we cannot use draft ideas
+    // So instead, we just keep all the data on the client until the final page
+    // (the submit page) where everything gets submitted in a single POST request.
+    if (userWillNotBeLinkedToSurvey && !isSubmitPage) {
       return;
     }
 
@@ -108,20 +114,19 @@ const SurveyForm = ({
 
   return (
     <Box w="100%">
-      {nestedPagesData[currentPageNumber] && (
+      {nestedPagesData[currentPageIndex] && (
         <SurveyPage
-          page={nestedPagesData[currentPageNumber].page}
+          page={nestedPagesData[currentPageIndex].page}
           pages={nestedPagesData}
-          pageQuestions={nestedPagesData[currentPageNumber].pageQuestions}
-          currentPageNumber={currentPageNumber}
-          lastPageNumber={lastPageNumber}
-          setCurrentPageNumber={setCurrentPageNumber}
+          pageQuestions={nestedPagesData[currentPageIndex].pageQuestions}
+          currentPageIndex={currentPageIndex}
+          lastPageIndex={lastPageIndex}
+          setCurrentPageIndex={setCurrentPageIndex}
           participationMethod={participationMethod}
           projectId={projectId}
           onSubmit={onSubmit}
-          phase={phase?.data}
+          phase={phase.data}
           defaultValues={initialFormData}
-          customFields={customFields ?? []}
         />
       )}
     </Box>

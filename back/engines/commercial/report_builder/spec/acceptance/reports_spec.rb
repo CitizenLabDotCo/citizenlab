@@ -95,7 +95,7 @@ resource 'Reports' do
         settings['community_monitor'] = { 'enabled' => true, 'allowed' => true, 'project_id' => community_monitor_phase.project.id }
         AppConfiguration.instance.update!(settings:)
 
-        report = create(:report, phase: community_monitor_phase)
+        report = create(:report, community_monitor: true)
 
         do_request(community_monitor: 'true')
         assert_status 200

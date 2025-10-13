@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe ParticipationMethod::NativeSurvey do
   subject(:participation_method) { described_class.new phase }
 
-  let(:phase) { create(:native_survey_phase) }
+  let(:phase) { create(:native_survey_phase, with_permissions: true) }
 
   describe '#method_str' do
     it 'returns native_survey' do
@@ -41,6 +41,20 @@ RSpec.describe ParticipationMethod::NativeSurvey do
       expect do
         participation_method.assign_defaults_for_phase
       end.not_to change(phase, :ideas_order)
+    end
+  end
+
+  describe '#generate_slug' do
+    let(:input) { create(:input, slug: nil, project: phase.project, creation_phase: phase) }
+
+    before { create(:idea_status_proposed) }
+
+    it 'sets and persists the id as the slug of the input' do
+      expect(input.slug).to eq input.id
+
+      input.update_column :slug, nil
+      input.reload
+      expect(participation_method.generate_slug(input)).to eq input.id
     end
   end
 
@@ -95,20 +109,6 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
-  describe '#generate_slug' do
-    let(:input) { create(:input, slug: nil, project: phase.project, creation_phase: phase) }
-
-    before { create(:idea_status_proposed) }
-
-    it 'sets and persists the id as the slug of the input' do
-      expect(input.slug).to eq input.id
-
-      input.update_column :slug, nil
-      input.reload
-      expect(participation_method.generate_slug(input)).to eq input.id
-    end
-  end
-
   describe '#author_in_form?' do
     it 'returns false for a moderator when idea_author_change is activated' do
       SettingsService.new.activate_feature! 'idea_author_change'
@@ -119,6 +119,12 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   describe '#budget_in_form?' do
     it 'returns false for a moderator' do
       expect(participation_method.budget_in_form?(create(:admin))).to be false
+    end
+  end
+
+  describe 'constraints' do
+    it 'has no constraints' do
+      expect(participation_method.constraints).to eq({})
     end
   end
 
@@ -175,13 +181,87 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   end
 
   describe '#user_fields_in_form?' do
-    it 'returns false when not enabled' do
+    let(:permission) { phase.permissions.find_by(action: 'posting_idea') }
+
+    it 'returns false if user_data_collection == \'anonymous\'' do
+      permission.update!(user_data_collection: 'anonymous')
       expect(participation_method.user_fields_in_form?).to be false
     end
 
-    it 'returns true when enabled' do
-      phase.user_fields_in_form = true
-      expect(participation_method.user_fields_in_form?).to be true
+    context 'when permission permitted_by is \'everyone\'' do
+      before do
+        permission.update!(permitted_by: 'everyone')
+      end
+
+      it 'returns false if no permissions_custom_fields' do
+        permission.permissions_custom_fields = []
+        permission.save!
+
+        expect(participation_method.user_fields_in_form?).to be false
+      end
+
+      it 'returns true if any permissions_custom_fields' do
+        permission.permissions_custom_fields = [create(:permissions_custom_field)]
+        permission.save!
+
+        expect(participation_method.user_fields_in_form?).to be true
+      end
+    end
+
+    context 'when permission permitted_by is \'everyone_confirmed_email\'' do
+      before do
+        permission.permitted_by = 'everyone_confirmed_email'
+        permission.save!
+      end
+
+      it 'returns true if any permissions_custom_fields and user_fields_in_form selected' do
+        permission.permissions_custom_fields = [create(:permissions_custom_field)]
+        permission.user_fields_in_form = true
+        permission.save!
+
+        expect(participation_method.user_fields_in_form?).to be true
+      end
+
+      it 'returns false if no permissions_custom_fields' do
+        permission.permissions_custom_fields = []
+        permission.user_fields_in_form = true
+        permission.save!
+
+        expect(participation_method.user_fields_in_form?).to be false
+      end
+
+      it 'returns false if no user_fields_in_form' do
+        permission.permissions_custom_fields = [create(:permissions_custom_field)]
+        permission.user_fields_in_form = false
+        permission.save!
+
+        expect(participation_method.user_fields_in_form?).to be false
+      end
+    end
+
+    context 'when permission permitted_by is \'users\'' do
+      before do
+        permission.permitted_by = 'users'
+        permission.save!
+      end
+
+      it 'returns true if global_custom_fields and user_fields_in_form' do
+        permission.permissions_custom_fields = []
+        permission.global_custom_fields = true
+        permission.user_fields_in_form = true
+        permission.save!
+
+        expect(participation_method.user_fields_in_form?).to be true
+      end
+
+      it 'returns true if global_custom_fields = false but there are permissions_custom_fields and user_fields_in_form' do
+        permission.permissions_custom_fields = [create(:permissions_custom_field)]
+        permission.global_custom_fields = false
+        permission.user_fields_in_form = true
+        permission.save!
+
+        expect(participation_method.user_fields_in_form?).to be true
+      end
     end
   end
 
@@ -190,7 +270,6 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   its(:return_disabled_actions?) { is_expected.to be true }
   its(:supports_assignment?) { is_expected.to be false }
   its(:built_in_title_required?) { is_expected.to be(false) }
-  its(:built_in_body_required?) { is_expected.to be(false) }
   its(:supports_commenting?) { is_expected.to be false }
   its(:supports_edits_after_publication?) { is_expected.to be false }
   its(:supports_exports?) { is_expected.to be true }
@@ -207,7 +286,6 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   its(:transitive?) { is_expected.to be false }
   its(:form_logic_enabled?) { is_expected.to be true }
   its(:follow_idea_on_idea_submission?) { is_expected.to be false }
-  its(:validate_phase) { is_expected.to be_nil }
   its(:supports_custom_field_categories?) { is_expected.to be false }
   its(:supports_multiple_phase_reports?) { is_expected.to be false }
   its(:add_autoreaction_to_inputs?) { is_expected.to be(false) }

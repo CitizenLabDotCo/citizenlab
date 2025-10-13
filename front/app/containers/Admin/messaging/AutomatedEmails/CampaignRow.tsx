@@ -16,6 +16,7 @@ import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -56,12 +57,19 @@ const CampaignRow = ({ campaign, context, onClickViewExample }: Props) => {
     }
   };
 
-  const isEditingEnabled =
-    useFeatureFlag({
-      name: 'customised_automated_emails',
-    }) &&
-    (!context || campaign.attributes.enabled);
-  const isEditable = (campaign.attributes.editable_regions || []).length > 0;
+  const globalFeatureActivated = useFeatureFlag({
+    name: 'customised_automated_emails',
+  });
+  const contextFeatureActivated = useFeatureFlag({
+    name: 'customised_automated_context_emails',
+  });
+  const isComingSoon =
+    (campaign.attributes.editable_regions || []).length === 0;
+  const isContextDisabled = context && !campaign.attributes.enabled;
+  const isOutsidePlan =
+    !globalFeatureActivated || (context && !contextFeatureActivated);
+  const isEditable = !isComingSoon && !isContextDisabled && !isOutsidePlan;
+  const canBeDisabled = campaign.attributes.can_be_disabled;
   const handleEditClick = () => {
     if (unpersistedContextCampaign) {
       addCampaign(
@@ -82,6 +90,19 @@ const CampaignRow = ({ campaign, context, onClickViewExample }: Props) => {
       clHistory.push(`${pathname}/${campaign.id}/edit` as RouteType);
     }
   };
+  const renderTooltip = (children) => {
+    if (isOutsidePlan) {
+      return <UpsellTooltip disabled={false}>{children}</UpsellTooltip>;
+    }
+    return (
+      <Tooltip
+        disabled={!isComingSoon}
+        content={formatMessage(messages.editDisabledTooltip)}
+      >
+        {children}
+      </Tooltip>
+    );
+  };
 
   return (
     <ListItem p="8px 0">
@@ -89,6 +110,7 @@ const CampaignRow = ({ campaign, context, onClickViewExample }: Props) => {
         <Toggle
           checked={!!campaign.attributes.enabled}
           onChange={toggleEnabled}
+          disabled={!canBeDisabled}
         />
         <CampaignDescription campaign={campaign} />
         <Box display="flex" justifyContent="flex-end" flexGrow={1}>
@@ -103,23 +125,18 @@ const CampaignRow = ({ campaign, context, onClickViewExample }: Props) => {
               </ButtonWithLink>
             </Box>
           )}
-          {isEditingEnabled && (
-            <Box ml="12px">
-              <Tooltip
-                disabled={isEditable}
-                content={formatMessage(messages.editDisabledTooltip)}
+          <Box ml="12px">
+            {renderTooltip(
+              <ButtonWithLink
+                icon="edit"
+                onClick={handleEditClick}
+                disabled={!isEditable}
+                buttonStyle="secondary-outlined"
               >
-                <ButtonWithLink
-                  icon="edit"
-                  onClick={handleEditClick}
-                  disabled={!isEditable}
-                  buttonStyle="secondary-outlined"
-                >
-                  <FormattedMessage {...messages.editButtonLabel} />
-                </ButtonWithLink>
-              </Tooltip>
-            </Box>
-          )}
+                <FormattedMessage {...messages.editButtonLabel} />
+              </ButtonWithLink>
+            )}
+          </Box>
         </Box>
       </Box>
     </ListItem>

@@ -47,6 +47,14 @@ module IdFranceconnect
       private: true
     }
 
+    add_setting 'version', required: true, schema: {
+      title: 'Version of FranceConnect API',
+      type: 'string',
+      enum: %w[v1 v2],
+      default: 'v1',
+      private: true
+    }
+
     add_setting 'scope', required: true, schema: {
       title: 'Scope',
       description: 'The data that will be requested from FranceConnect. See https://partenaires.franceconnect.gouv.fr/fcp/fournisseur-service#identite-pivot. Fields that can be saved: email, given_name, family_name, birthdate, gender.',

@@ -319,11 +319,25 @@ resource 'Ideas' do
           describe 'when anonymous posting is not allowed' do
             let(:allow_anonymous_participation) { false }
 
-            example 'Rejects the anonymous parameter' do
+            example 'Does not reject the anonymous parameter' do
               do_request idea: { anonymous: true }
-              assert_status 422
-              json_response = json_parse response_body
-              expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
+
+              assert_status 200
+              expect(response_data.dig(:relationships, :author, :data, :id)).to be_nil
+              expect(response_data.dig(:attributes, :anonymous)).to be true
+            end
+          end
+
+          describe 'when anonymous posting is allowed and phase is not current' do
+            let(:allow_anonymous_participation) { true }
+
+            example 'updates without error' do
+              project.phases.first.update! start_at: 2.weeks.ago, end_at: 1.week.ago
+
+              do_request idea: { body_multiloc: { 'en' => 'Updated body' } }
+
+              assert_status 200
+              expect(response_data.dig(:attributes, :body_multiloc)).to eq({ en: 'Updated body' })
             end
           end
 
@@ -563,8 +577,23 @@ resource 'Ideas' do
     context 'in a native survey phase' do
       before_all { create(:idea_status_proposed) }
 
-      let(:project) { create(:single_phase_native_survey_project) }
-      let(:author) { create(:user) }
+      let(:project) do
+        project = create(:single_phase_native_survey_project, phase_attrs: {
+          with_permissions: true
+        })
+
+        phase = project.phases.first
+
+        permission = phase.permissions.find_by(action: 'posting_idea')
+        permission.update!(global_custom_fields: false)
+        permission.permissions_custom_fields = [
+          create(:permissions_custom_field, custom_field: create(:custom_field, key: 'age'))
+        ]
+
+        project
+      end
+
+      let(:author) { create(:user, custom_field_values: { age: 30 }) }
       let(:input) { create(:native_survey_response, project: project, author: author) }
 
       context 'when author' do
@@ -578,6 +607,10 @@ resource 'Ideas' do
           example_request 'Can change a survey response from draft to published' do
             assert_status 200
             expect(response_data[:attributes][:publication_status]).to eq 'published'
+
+            # It also saves the custom field values into the idea
+            idea = Idea.find(response_data[:id])
+            expect(idea.custom_field_values['u_age']).to eq 30
           end
         end
       end

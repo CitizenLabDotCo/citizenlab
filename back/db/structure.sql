@@ -51,6 +51,7 @@ ALTER TABLE IF EXISTS ONLY public.reactions DROP CONSTRAINT IF EXISTS fk_rails_c
 ALTER TABLE IF EXISTS ONLY public.idea_import_files DROP CONSTRAINT IF EXISTS fk_rails_c93392afae;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_deliveries DROP CONSTRAINT IF EXISTS fk_rails_c87ec11171;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_c76d81b062;
+ALTER TABLE IF EXISTS ONLY public.invites_imports DROP CONSTRAINT IF EXISTS fk_rails_c5f42488d1;
 ALTER TABLE IF EXISTS ONLY public.custom_field_matrix_statements DROP CONSTRAINT IF EXISTS fk_rails_c379cdcd80;
 ALTER TABLE IF EXISTS ONLY public.idea_images DROP CONSTRAINT IF EXISTS fk_rails_c349bb4ac3;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_c32c787647;
@@ -106,6 +107,7 @@ ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS fk_rails_7f
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaign_email_commands DROP CONSTRAINT IF EXISTS fk_rails_7f284a4f09;
 ALTER TABLE IF EXISTS ONLY public.activities DROP CONSTRAINT IF EXISTS fk_rails_7e11bb717f;
 ALTER TABLE IF EXISTS ONLY public.analysis_heatmap_cells DROP CONSTRAINT IF EXISTS fk_rails_7a39fbbdee;
+ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rails_7832d74868;
 ALTER TABLE IF EXISTS ONLY public.idea_files DROP CONSTRAINT IF EXISTS fk_rails_7768309984;
 ALTER TABLE IF EXISTS ONLY public.analysis_questions DROP CONSTRAINT IF EXISTS fk_rails_74e779db86;
 ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_74744744a6;
@@ -254,6 +256,7 @@ DROP INDEX IF EXISTS public.index_notifications_on_cosponsorship_id;
 DROP INDEX IF EXISTS public.index_notifications_on_basket_id;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_static_page_id;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_project_id;
+DROP INDEX IF EXISTS public.index_nav_bar_items_on_project_folder_id;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_ordering;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_code;
 DROP INDEX IF EXISTS public.index_memberships_on_user_id;
@@ -271,6 +274,7 @@ DROP INDEX IF EXISTS public.index_jobs_trackers_on_completed_at;
 DROP INDEX IF EXISTS public.index_invites_on_token;
 DROP INDEX IF EXISTS public.index_invites_on_inviter_id;
 DROP INDEX IF EXISTS public.index_invites_on_invitee_id;
+DROP INDEX IF EXISTS public.index_invites_imports_on_importer_id;
 DROP INDEX IF EXISTS public.index_internal_comments_on_rgt;
 DROP INDEX IF EXISTS public.index_internal_comments_on_parent_id;
 DROP INDEX IF EXISTS public.index_internal_comments_on_lft;
@@ -501,6 +505,7 @@ ALTER TABLE IF EXISTS ONLY public.maps_layers DROP CONSTRAINT IF EXISTS maps_lay
 ALTER TABLE IF EXISTS ONLY public.machine_translations_machine_translations DROP CONSTRAINT IF EXISTS machine_translations_machine_translations_pkey;
 ALTER TABLE IF EXISTS ONLY public.jobs_trackers DROP CONSTRAINT IF EXISTS jobs_trackers_pkey;
 ALTER TABLE IF EXISTS ONLY public.invites DROP CONSTRAINT IF EXISTS invites_pkey;
+ALTER TABLE IF EXISTS ONLY public.invites_imports DROP CONSTRAINT IF EXISTS invites_imports_pkey;
 ALTER TABLE IF EXISTS ONLY public.internal_comments DROP CONSTRAINT IF EXISTS internal_comments_pkey;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_sessions DROP CONSTRAINT IF EXISTS impact_tracking_sessions_pkey;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_salts DROP CONSTRAINT IF EXISTS impact_tracking_salts_pkey;
@@ -619,6 +624,7 @@ DROP TABLE IF EXISTS public.maps_map_configs;
 DROP TABLE IF EXISTS public.maps_layers;
 DROP TABLE IF EXISTS public.machine_translations_machine_translations;
 DROP TABLE IF EXISTS public.jobs_trackers;
+DROP TABLE IF EXISTS public.invites_imports;
 DROP TABLE IF EXISTS public.internal_comments;
 DROP TABLE IF EXISTS public.impact_tracking_salts;
 DROP TABLE IF EXISTS public.impact_tracking_pageviews;
@@ -1712,7 +1718,6 @@ CREATE TABLE public.phases (
     voting_term_plural_multiloc jsonb DEFAULT '{}'::jsonb,
     baskets_count integer DEFAULT 0 NOT NULL,
     votes_count integer DEFAULT 0 NOT NULL,
-    campaigns_settings jsonb DEFAULT '{}'::jsonb,
     native_survey_title_multiloc jsonb DEFAULT '{}'::jsonb,
     native_survey_button_multiloc jsonb DEFAULT '{}'::jsonb,
     expire_days_limit integer,
@@ -1727,8 +1732,8 @@ CREATE TABLE public.phases (
     similarity_threshold_title double precision DEFAULT 0.3,
     similarity_threshold_body double precision DEFAULT 0.4,
     similarity_enabled boolean DEFAULT true NOT NULL,
-    user_fields_in_form boolean DEFAULT false NOT NULL,
-    vote_term character varying DEFAULT 'vote'::character varying
+    vote_term character varying DEFAULT 'vote'::character varying,
+    voting_min_selected_options integer DEFAULT 1 NOT NULL
 );
 
 
@@ -2295,7 +2300,9 @@ CREATE TABLE public.custom_fields (
     page_button_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     page_button_link character varying,
     question_category character varying,
-    include_in_printed_form boolean DEFAULT true NOT NULL
+    include_in_printed_form boolean DEFAULT true NOT NULL,
+    min_characters integer,
+    max_characters integer
 );
 
 
@@ -2851,6 +2858,21 @@ CREATE TABLE public.internal_comments (
 
 
 --
+-- Name: invites_imports; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.invites_imports (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    job_type character varying,
+    result jsonb DEFAULT '{}'::jsonb,
+    completed_at timestamp(6) without time zone,
+    importer_id uuid,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: jobs_trackers; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3006,7 +3028,8 @@ CREATE TABLE public.nav_bar_items (
     static_page_id uuid,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    project_id uuid
+    project_id uuid,
+    project_folder_id uuid
 );
 
 
@@ -3069,7 +3092,9 @@ CREATE TABLE public.permissions (
     global_custom_fields boolean DEFAULT false NOT NULL,
     verification_expiry integer,
     access_denied_explanation_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    everyone_tracking_enabled boolean DEFAULT false NOT NULL
+    everyone_tracking_enabled boolean DEFAULT false NOT NULL,
+    user_fields_in_form boolean DEFAULT false NOT NULL,
+    user_data_collection character varying DEFAULT 'all_data'::character varying NOT NULL
 );
 
 
@@ -3262,7 +3287,6 @@ CREATE TABLE public.project_imports (
     import_id uuid,
     log character varying[] DEFAULT '{}'::character varying[],
     locale character varying,
-    string character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     import_type character varying
@@ -3403,7 +3427,8 @@ CREATE TABLE public.report_builder_reports (
     visible boolean DEFAULT false NOT NULL,
     name_tsvector tsvector GENERATED ALWAYS AS (to_tsvector('simple'::regconfig, (name)::text)) STORED,
     year integer,
-    quarter integer
+    quarter integer,
+    community_monitor boolean DEFAULT false NOT NULL
 );
 
 
@@ -4207,6 +4232,14 @@ ALTER TABLE ONLY public.impact_tracking_sessions
 
 ALTER TABLE ONLY public.internal_comments
     ADD CONSTRAINT internal_comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: invites_imports invites_imports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invites_imports
+    ADD CONSTRAINT invites_imports_pkey PRIMARY KEY (id);
 
 
 --
@@ -5518,7 +5551,7 @@ CREATE INDEX index_files_previews_on_file_id ON public.files_previews USING btre
 -- Name: index_files_projects_on_file_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_files_projects_on_file_id ON public.files_projects USING btree (file_id);
+CREATE UNIQUE INDEX index_files_projects_on_file_id ON public.files_projects USING btree (file_id);
 
 
 --
@@ -5872,6 +5905,13 @@ CREATE INDEX index_internal_comments_on_rgt ON public.internal_comments USING bt
 
 
 --
+-- Name: index_invites_imports_on_importer_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_invites_imports_on_importer_id ON public.invites_imports USING btree (importer_id);
+
+
+--
 -- Name: index_invites_on_invitee_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5988,6 +6028,13 @@ CREATE INDEX index_nav_bar_items_on_code ON public.nav_bar_items USING btree (co
 --
 
 CREATE INDEX index_nav_bar_items_on_ordering ON public.nav_bar_items USING btree (ordering);
+
+
+--
+-- Name: index_nav_bar_items_on_project_folder_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_nav_bar_items_on_project_folder_id ON public.nav_bar_items USING btree (project_folder_id);
 
 
 --
@@ -7079,6 +7126,14 @@ ALTER TABLE ONLY public.idea_files
 
 
 --
+-- Name: nav_bar_items fk_rails_7832d74868; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.nav_bar_items
+    ADD CONSTRAINT fk_rails_7832d74868 FOREIGN KEY (project_folder_id) REFERENCES public.project_folders_folders(id);
+
+
+--
 -- Name: analysis_heatmap_cells fk_rails_7a39fbbdee; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7519,6 +7574,14 @@ ALTER TABLE ONLY public.custom_field_matrix_statements
 
 
 --
+-- Name: invites_imports fk_rails_c5f42488d1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invites_imports
+    ADD CONSTRAINT fk_rails_c5f42488d1 FOREIGN KEY (importer_id) REFERENCES public.users(id);
+
+
+--
 -- Name: notifications fk_rails_c76d81b062; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7861,11 +7924,20 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250930942638'),
+('20251001090229'),
+('20251001090208'),
+('20251001083036'),
+('20250922131002'),
+('20250915151900'),
+('20250910093500'),
+('20250829154300'),
 ('20250808071349'),
 ('20250807120354'),
 ('20250807000000'),
 ('20250730150828'),
 ('20250730103628'),
+('20250729181738'),
 ('20250725204303'),
 ('20250724190507'),
 ('20250724074646'),
@@ -7922,6 +7994,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250204143605'),
 ('20250120125531'),
 ('20250117121004'),
+('20250101000000'),
 ('20241230172612'),
 ('20241230165518'),
 ('20241230165323'),

@@ -52,7 +52,7 @@ const renderField = ({
         <InputMultilocWithLocaleSwitcher
           name={question.key}
           hideLocaleSwitcher
-          maxCharCount={question.key === 'title_multiloc' ? 120 : undefined}
+          maxCharCount={question.max_characters}
           scrollErrorIntoView={true}
         />
       );
@@ -63,6 +63,8 @@ const renderField = ({
           hideLocaleSwitcher
           scrollErrorIntoView={true}
           id={question.key}
+          maxCharCount={question.max_characters}
+          minCharCount={question.min_characters}
         />
       );
     case 'text':
@@ -73,11 +75,19 @@ const renderField = ({
         <Input
           type={question.input_type === 'number' ? 'number' : 'text'}
           name={question.key}
+          maxCharCount={question.max_characters}
           scrollErrorIntoView={true}
         />
       );
     case 'multiline_text':
-      return <TextArea name={question.key} scrollErrorIntoView={true} />;
+      return (
+        <TextArea
+          name={question.key}
+          maxCharCount={question.max_characters}
+          scrollErrorIntoView={true}
+          minRows={2}
+        />
+      );
     case 'select':
       return (
         <SingleSelectField question={question} scrollErrorIntoView={true} />
@@ -200,9 +210,15 @@ const CustomFields = ({
           const answerNotPublic =
             !question.visible_to_public &&
             participationMethod !== 'native_survey';
+          const inputIqFields = ['title_multiloc', 'body_multiloc'];
 
           return (
-            <Box key={question.id} mb="24px" position="relative">
+            <Box
+              key={question.id}
+              mb="24px"
+              position="relative"
+              data-question-id={question.id}
+            >
               <FormLabel {...labelProps} />
               <Text mt="4px" mb={answerNotPublic ? '4px' : '8px'} fontSize="s">
                 {getInstructionMessage({
@@ -221,8 +237,9 @@ const CustomFields = ({
                 </Text>
               )}
               {renderField({ question, projectId, ideaId })}
-              {(question.key === 'title_multiloc' ||
-                question.key === 'body_multiloc') && <InputIQ phase={phase} />}
+              {question?.code && inputIqFields.includes(question.code) && (
+                <InputIQ phase={phase} field={question} />
+              )}
             </Box>
           );
         })}

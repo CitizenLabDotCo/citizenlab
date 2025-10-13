@@ -15,7 +15,7 @@ module EmailCampaigns
 
       # Automated campaigns only.
       with_options unless: :manual? do
-        validates :title_multiloc, multiloc: { presence: true }
+        validates :title_multiloc, multiloc: { presence: false }
         validates :intro_multiloc, multiloc: { presence: false, html: true }
         validates :button_text_multiloc, multiloc: { presence: true }, if: :editable_button_text?
         before_validation :sanitize_intro_multiloc
@@ -50,8 +50,8 @@ module EmailCampaigns
       @editable_regions ||= empty_mailer.editable_regions
     end
 
-    def preview_command(recipient)
-      @preview_command ||= empty_mailer.preview_command(recipient)
+    def preview_command(recipient, context)
+      @preview_command ||= empty_mailer.preview_command(recipient, context)
     end
 
     def substitution_variables

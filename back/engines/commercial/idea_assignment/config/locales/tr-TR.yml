@@ -6,8 +6,8 @@ tr:
       "idea_assigned_to_you": Fikir atanması - yöneticiler ve proje yöneticileri
     idea_assigned_to_you:
       by_author: '%{authorName} tarafından'
-      cta_reply_to: '%{authorName} için geri bildirim sağlayın'
-      event_description_idea: 'Size bir fikir atandı. Resmi bilgilendirme yazarak veya fikrin durumunu değiştirerek geri bildirim sağlayın.'
-      main_header: '%{firstName}, yeni bir atamanız var'
+      cta_button: '%{authorName}adresine geri bildirimde bulunun'
+      event_description: 'Size bir girdi atandı. Resmi bir güncelleme yazarak veya durumunu değiştirerek geri bildirimde bulunun.'
+      title: '%{firstName}, size bir girdi atandı'
       subject: '%{organizationName} platformunda bir atamanız var'
       preheader_idea: '%{authorName} adlı kişinin fikri size atandı'

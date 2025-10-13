@@ -13,6 +13,7 @@ import { IPhaseData } from 'api/phases/types';
 
 import { isNilOrError } from 'utils/helperUtils';
 
+import CharacterLimitSettings from './components/FormBuilderSettings/CharacterLimitSettings';
 import ConfigOptionsWithLocaleSwitcher from './components/FormBuilderSettings/ConfigOptionsWithLocaleSwitcher';
 import FieldGroupSettings from './components/FormBuilderSettings/FieldGroupSettings';
 import LinearAndRatingSettings from './components/FormBuilderSettings/LinearAndRatingSettings';
@@ -71,7 +72,7 @@ export type FormBuilderConfig = {
     phaseId: string | undefined,
     handleClose: () => void
   ) => React.JSX.Element | null;
-  getUserFieldsNotice?: () => void;
+  getUserFieldsNotice?: () => React.ReactNode;
 };
 
 export const getIsPostingEnabled = (
@@ -92,10 +93,6 @@ export function getAdditionalSettings(
   locales: SupportedLocale[],
   platformLocale: SupportedLocale
 ) {
-  if (builtInFieldKeys.includes(field.key)) {
-    return null;
-  }
-
   switch (inputType) {
     case 'sentiment_linear_scale':
       return (
@@ -209,6 +206,16 @@ export function getAdditionalSettings(
         <PointSettings
           mapConfigIdName={`customFields.${field.index}.map_config_id`}
           field={field}
+        />
+      );
+    case 'text':
+    case 'multiline_text':
+    case 'text_multiloc':
+    case 'html_multiloc':
+      return (
+        <CharacterLimitSettings
+          minCharactersName={`customFields.${field.index}.min_characters`}
+          maxCharactersName={`customFields.${field.index}.max_characters`}
         />
       );
     default:

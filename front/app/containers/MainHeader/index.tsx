@@ -54,13 +54,16 @@ const Left = styled.div`
   display: flex;
   align-items: center;
   height: ${({ theme }) => theme.menuHeight}px;
+  flex: 1;
+  min-width: 0;
   ${isRtl`
     flex-direction: row-reverse;
     `}
 `;
 
 const RightContainer = styled.div`
-  max-width: 200px;
+  flex-shrink: 0;
+  min-width: 200px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -77,6 +80,7 @@ const MainHeader = () => {
   const [showMobileStickyNav, setShowMobileStickyNav] =
     useState<boolean>(false);
 
+  // Show desktop navbar down to phone breakpoint so the "More" menu can handle overflow
   const isSmallerThanTablet = useBreakpoint('tablet');
   const isDesktopUser = !isSmallerThanTablet;
 

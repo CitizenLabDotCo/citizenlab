@@ -52,7 +52,7 @@ module BulkImportIdeas
       personal_data_enabled = params[:personal_data] == 'true'
 
       service = form_exporter_service.new(@phase, locale, personal_data_enabled)
-      file = service.export
+      file = service.export # This service is failing
 
       send_not_found and return unless file
 

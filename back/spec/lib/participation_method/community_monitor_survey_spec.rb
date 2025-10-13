@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
   subject(:participation_method) { described_class.new phase }
 
-  let(:phase) { create(:community_monitor_survey_phase) }
+  let(:phase) { create(:community_monitor_survey_phase, with_permissions: true) }
 
   describe '#method_str' do
     it 'returns community_monitor_survey' do
@@ -41,6 +41,20 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
       expect do
         participation_method.assign_defaults_for_phase
       end.not_to change(phase, :ideas_order)
+    end
+  end
+
+  describe '#generate_slug' do
+    let(:input) { create(:input, slug: nil, project: phase.project, creation_phase: phase) }
+
+    before { create(:idea_status_proposed) }
+
+    it 'sets and persists the id as the slug of the input' do
+      expect(input.slug).to eq input.id
+
+      input.update_column :slug, nil
+      input.reload
+      expect(participation_method.generate_slug(input)).to eq input.id
     end
   end
 
@@ -84,39 +98,6 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
     end
   end
 
-  describe 'constraints' do
-    it 'has constraints on built in fields to lock certain values from being changed' do
-      expect(participation_method.constraints.size).to be 3
-      expect(participation_method.constraints.keys).to match_array %i[
-        page_quality_of_life
-        page_service_delivery
-        page_governance_and_trust
-      ]
-    end
-
-    it 'each constraint has locks only title_multiloc' do
-      participation_method.constraints.each_value do |value|
-        expect(value.key?(:locks)).to be true
-        valid_locks = %i[title_multiloc]
-        expect(valid_locks).to include(*value[:locks].keys)
-      end
-    end
-  end
-
-  describe '#generate_slug' do
-    let(:input) { create(:input, slug: nil, project: phase.project, creation_phase: phase) }
-
-    before { create(:idea_status_proposed) }
-
-    it 'sets and persists the id as the slug of the input' do
-      expect(input.slug).to eq input.id
-
-      input.update_column :slug, nil
-      input.reload
-      expect(participation_method.generate_slug(input)).to eq input.id
-    end
-  end
-
   describe '#author_in_form?' do
     it 'returns false for a moderator when idea_author_change is activated' do
       SettingsService.new.activate_feature! 'idea_author_change'
@@ -127,6 +108,16 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
   describe '#budget_in_form?' do
     it 'returns false for a moderator' do
       expect(participation_method.budget_in_form?(create(:admin))).to be false
+    end
+  end
+
+  describe 'constraints' do
+    it 'has constraints on built in fields to lock certain values from being changed' do
+      expect(participation_method.constraints).to eq({
+        page_governance_and_trust: { locks: { attributes: %i[title_multiloc] } },
+        page_quality_of_life: { locks: { attributes: %i[title_multiloc] } },
+        page_service_delivery: { locks: { attributes: %i[title_multiloc] } }
+      })
     end
   end
 
@@ -184,12 +175,36 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
 
   describe '#user_fields_in_form?' do
     it 'returns false when not enabled' do
+      phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: false)
       expect(participation_method.user_fields_in_form?).to be false
     end
 
     it 'returns true when enabled' do
-      phase.user_fields_in_form = true
+      phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
       expect(participation_method.user_fields_in_form?).to be true
+    end
+
+    context 'when permission permitted_by is \'everyone\' and there is at least one demographic field' do
+      before do
+        permission = Permission.find_by(
+          permission_scope_id: phase.id,
+          action: 'posting_idea'
+        )
+
+        permission.permitted_by = 'everyone'
+        permission.permissions_custom_fields = [create(:permissions_custom_field)]
+        permission.save!
+      end
+
+      it 'returns true even when not enabled' do
+        phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: false)
+        expect(participation_method.user_fields_in_form?).to be true
+      end
+
+      it 'returns true when enabled' do
+        phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
+        expect(participation_method.user_fields_in_form?).to be true
+      end
     end
   end
 
@@ -217,7 +232,6 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
   its(:return_disabled_actions?) { is_expected.to be true }
   its(:supports_assignment?) { is_expected.to be false }
   its(:built_in_title_required?) { is_expected.to be(false) }
-  its(:built_in_body_required?) { is_expected.to be(false) }
   its(:supports_commenting?) { is_expected.to be false }
   its(:supports_edits_after_publication?) { is_expected.to be false }
   its(:supports_exports?) { is_expected.to be true }

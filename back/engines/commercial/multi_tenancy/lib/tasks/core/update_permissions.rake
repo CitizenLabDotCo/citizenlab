@@ -5,6 +5,7 @@ namespace :fix_existing_tenants do
   task update_permissions: [:environment] do |_t, _args|
     Rails.logger.info 'fix_existing_tenants:update_permissions started'
     Tenant.creation_finalized.each do |tenant|
+      Rails.logger.info "Updating permissions for tenant #{tenant.name}"
       Apartment::Tenant.switch(tenant.schema_name) do
         Permissions::PermissionsUpdateService.new.update_all_permissions
       end

@@ -90,8 +90,17 @@ export const signUpFlow = (
 
           setCurrentStep('success');
         } catch (e) {
-          trackEventByName(tracks.signInEmailPasswordFailed);
-          throw e;
+          if (e.errors?.email?.[0]?.error === 'taken_by_invite') {
+            // If the invitation is already taken:
+            // Store email in state to use in taken-by-invite step
+            updateState({ email: params.email });
+
+            // Go to step where user can enter invitation token again
+            setCurrentStep('taken-by-invite');
+          } else {
+            trackEventByName(tracks.signInEmailPasswordFailed);
+            throw e;
+          }
         }
       },
     },

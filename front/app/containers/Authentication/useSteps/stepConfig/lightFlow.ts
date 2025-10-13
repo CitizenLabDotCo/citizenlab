@@ -37,25 +37,40 @@ export const lightFlow = (
       SUBMIT_EMAIL: async (email: string, locale: SupportedLocale) => {
         updateState({ email });
 
-        const response = await checkUser(email);
-        const { action } = response.data.attributes;
+        try {
+          const response = await checkUser(email);
+          const { action } = response.data.attributes;
 
-        if (action === 'terms') {
-          setCurrentStep('light-flow:email-policies');
-        }
+          if (action === 'terms') {
+            setCurrentStep('light-flow:email-policies');
+          }
 
-        if (action === 'password') {
-          setCurrentStep('light-flow:password');
-        }
+          if (action === 'password') {
+            setCurrentStep('light-flow:password');
+          }
 
-        if (action === 'confirm') {
-          await createEmailOnlyAccount({ email, locale });
-          setCurrentStep('light-flow:email-confirmation');
+          if (action === 'confirm') {
+            await createEmailOnlyAccount({ email, locale });
+            setCurrentStep('light-flow:email-confirmation');
+          }
+        } catch (e) {
+          if (e.errors?.email?.[0]?.error === 'taken_by_invite') {
+            setCurrentStep('taken-by-invite');
+          } else {
+            throw e;
+          }
         }
       },
       CONTINUE_WITH_SSO: (ssoProvider: SSOProviderWithoutVienna) => {
         if (ssoProvider === 'franceconnect') {
           setCurrentStep('light-flow:france-connect-login');
+        } else if (ssoProvider === 'clave_unica') {
+          handleOnSSOClick(
+            ssoProvider,
+            getAuthenticationData(),
+            true,
+            state.flow
+          );
         } else {
           updateState({ ssoProvider });
           setCurrentStep('light-flow:sso-policies');

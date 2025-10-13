@@ -40,6 +40,7 @@ const PageButtonSettings = ({
   return (
     <Box mb="16px" id="e2e-custom-button-toggle">
       <Toggle
+        data-cy="e2e-use-custom-button"
         checked={useCustomButton}
         label={formatMessage(messages.useCustomButton)}
         onChange={() => {

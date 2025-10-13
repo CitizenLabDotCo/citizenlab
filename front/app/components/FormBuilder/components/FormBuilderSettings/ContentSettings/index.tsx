@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 
@@ -15,6 +16,7 @@ import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWi
 import Toggle from 'components/HookForm/Toggle';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 
 import messages from '../../messages';
 import FieldTypeSwitcher from '../FieldTypeSwitcher';
@@ -24,9 +26,11 @@ type ContentSettingsProps = {
 };
 
 const ContentSettings = ({ field }: ContentSettingsProps) => {
+  const { projectId } = useParams();
+
   const locales = useAppConfigurationLocales();
   const { watch } = useFormContext();
-  const lockedAttributes = field.constraints?.locks;
+  const lockedAttributes = field.constraints?.locks?.attributes || [];
   const platformLocale = useLocale();
   const isFieldGrouping = field.input_type === 'page';
 
@@ -36,9 +40,6 @@ const ContentSettings = ({ field }: ContentSettingsProps) => {
       event.preventDefault();
     }
   };
-  const disableTogglingRequired = ['body_multiloc', 'title_multiloc'].includes(
-    field.code || ''
-  );
 
   if (!locales) {
     return null;
@@ -49,7 +50,7 @@ const ContentSettings = ({ field }: ContentSettingsProps) => {
       {!isFieldGrouping && (
         <>
           <FieldTypeSwitcher field={field} />
-          {!lockedAttributes?.title_multiloc && (
+          {!lockedAttributes.includes('title_multiloc') && (
             <SectionField>
               <InputMultilocWithLocaleSwitcher
                 initiallySelectedLocale={platformLocale}
@@ -59,6 +60,23 @@ const ContentSettings = ({ field }: ContentSettingsProps) => {
                 onKeyDown={handleKeyDown}
               />
             </SectionField>
+          )}
+          {field.input_type === 'topic_ids' && (
+            <Text>
+              <FormattedMessage
+                {...messages.manageTagsExplanation}
+                values={{
+                  inputTagsLink: (
+                    <Link
+                      to={`/admin/projects/${projectId ?? ''}/settings/tags`}
+                      target="_blank"
+                    >
+                      <FormattedMessage {...messages.inputTagsPage} />
+                    </Link>
+                  ),
+                }}
+              />
+            </Text>
           )}
           <SectionField>
             <QuillMultilocWithLocaleSwitcher
@@ -82,7 +100,7 @@ const ContentSettings = ({ field }: ContentSettingsProps) => {
         <SectionField id="e2e-required-toggle">
           <Toggle
             name={`customFields.${field.index}.required`}
-            disabled={disableTogglingRequired}
+            disabled={lockedAttributes.includes('required')}
             label={
               <Text as="span" variant="bodyM" my="0px">
                 <FormattedMessage {...messages.requiredToggleLabel} />

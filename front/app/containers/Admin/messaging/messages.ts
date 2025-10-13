@@ -132,6 +132,10 @@ export default defineMessages({
     defaultMessage:
       'When you click this link, a test email will be sent to your email address only. This allows you to check what the email looks like in ‘real life’.',
   },
+  preview: {
+    id: 'app.containers.Admin.emails.preview',
+    defaultMessage: 'Preview',
+  },
   previewSentConfirmation: {
     id: 'app.containers.Admin.emails.previewSentConfirmation',
     defaultMessage: 'A preview email has been sent to your email address',

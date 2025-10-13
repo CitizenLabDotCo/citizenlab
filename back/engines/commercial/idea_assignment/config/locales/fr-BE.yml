@@ -6,8 +6,8 @@ fr-BE:
       "idea_assigned_to_you": Attribution d'une idée - administrateurs et administrateurs projet
     idea_assigned_to_you:
       by_author: 'par %{authorName}'
-      cta_reply_to: 'Faites vos retours à %{authorName}'
-      event_description_idea: 'Une idée vous a été attribuée. Envoyer une mise à jour en écrivant un commentaire officiel ou en changeant son statut.'
-      main_header: '%{firstName}, vous avez une nouvelle attribution'
+      cta_button: 'Faites votre retour à %{authorName}'
+      event_description: 'Une idée vous a été attribuée. Envoyer une mise à jour en écrivant un commentaire officiel ou en changeant son statut.'
+      title: '%{firstName}, une contribution vous a été assignée.'
       subject: 'Vous avez une attribution sur la plate-forme de %{organizationName}'
       preheader_idea: 'L’idée de %{authorName} vous a été attribuée'

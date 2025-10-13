@@ -6,8 +6,8 @@ lt:
       "idea_assigned_to_you": Įvesties priskyrimas - administratoriams ir projektų vadovams
     idea_assigned_to_you:
       by_author: 'pagal %{authorName}'
-      cta_reply_to: 'Pateikite atsiliepimus adresu %{authorName}'
-      event_description_idea: 'Jums buvo priskirtas įvesties kodas. Pateikite atsiliepimus rašydami oficialų atnaujinimą arba keisdami jo būseną.'
-      main_header: '%{firstName}, jums buvo priskirtas įvesties elementas'
+      cta_button: 'Pateikite atsiliepimus adresu %{authorName}'
+      event_description: 'Jums buvo priskirtas įvesties kodas. Pateikite atsiliepimus rašydami oficialų atnaujinimą arba keisdami jo būseną.'
+      title: '%{firstName}, jums buvo priskirtas įvesties elementas'
       subject: 'Įvestis jums buvo priskirta %{organizationName}platformoje.'
       preheader_idea: 'Jums priskirta %{authorName} įvestis'

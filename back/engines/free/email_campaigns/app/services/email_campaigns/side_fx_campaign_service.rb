@@ -6,9 +6,21 @@ module EmailCampaigns
 
     def before_create(campaign, user); end
 
-    def before_update(campaign, user); end
+    def after_update(campaign, user)
+      super
 
-    def after_update(campaign, _user); end
+      %i[enabled reply_to body_multiloc subject_multiloc title_multiloc intro_multiloc button_text_multiloc].each do |attr|
+        next if !campaign.public_send(:"saved_change_to_#{attr}?")
+
+        LogActivityJob.perform_later(
+          campaign,
+          "changed_#{attr}",
+          user,
+          campaign.updated_at.to_i,
+          payload: { change: campaign.saved_changes[attr] }
+        )
+      end
+    end
 
     def before_send(campaign, user); end
 

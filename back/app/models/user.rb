@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require Rails.root.join('lib/email_domain_blacklist')
+
 # == Schema Information
 #
 # Table name: users
@@ -60,7 +62,7 @@ class User < ApplicationRecord
   GENDERS = %w[male female unspecified].freeze
   INVITE_STATUSES = %w[pending accepted].freeze
   EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
-  EMAIL_DOMAIN_BLACKLIST = Rails.root.join('config/domain_blacklist.txt').readlines.map(&:strip).freeze
+  EMAIL_DOMAIN_BLACKLIST = EmailDomainBlacklist.load
 
   slug from: proc { |user| UserSlugService.new.generate_slug(user, user.full_name) }, if: proc { |user| !user.invite_pending? }
 
@@ -191,7 +193,7 @@ class User < ApplicationRecord
   validate :validate_not_duplicate_email
   validate :validate_not_duplicate_new_email
   validate :validate_can_update_email, on: :form_submission # only called if `save` is called w/ `context: :form_submission`
-  validate :validate_email_domains_blacklist
+  validate :validate_email_domains_blacklist, if: :email_or_new_email_changed?
 
   before_destroy :remove_initiated_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
@@ -216,7 +218,7 @@ class User < ApplicationRecord
     token_lifetime = AppConfiguration.instance.settings('core', 'authentication_token_lifetime_in_days').days
     {
       sub: id,
-      roles: compress_roles,
+      highest_role: highest_role,
       exp: token_lifetime.from_now.to_i,
       cluster: CL2_CLUSTER,
       tenant: Tenant.current.id
@@ -348,6 +350,10 @@ class User < ApplicationRecord
     self.bio_multiloc = service.linkify_multiloc(bio_multiloc)
   end
 
+  def email_or_new_email_changed?
+    new_record? || email_changed? || new_email_changed?
+  end
+
   def validate_email_domains_blacklist
     validate_email_domain_blacklist email
     validate_email_domain_blacklist new_email
@@ -359,7 +365,15 @@ class User < ApplicationRecord
     domain = email_field.split('@')&.last
     return unless domain
 
-    errors.add(:email, :domain_blacklisted, value: domain) if EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
+    if EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
+      field = (email_field == new_email ? :new_email : :email)
+
+      # Mild obfuscation of error message to make a spammers life a little more difficult,
+      # especially avoiding leaking info about which domains are blacklisted.
+      # Error is a string, not a symbol, as it is translated on FE, not BE.
+      errors.add(field, 'something_went_wrong', code: 'zrb-42')
+      Rails.logger.info "Validation error! Email domain blacklisted: #{domain}" # Clearer message in the logs
+    end
   end
 
   def remove_initiated_notifications

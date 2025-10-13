@@ -33,6 +33,10 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
     create(:custom_field_option, custom_field: image_multiselect_field, key: 'image1', title_multiloc: { 'en' => 'Image 1' })
     create(:custom_field_option, custom_field: image_multiselect_field, key: 'image2', title_multiloc: { 'en' => 'Image 2' })
 
+    ranking_field = create(:custom_field_ranking, resource: custom_form, key: 'ranking_field', title_multiloc: { 'en' => 'Ranking field' })
+    create(:custom_field_option, custom_field: ranking_field, key: 'one', title_multiloc: { 'en' => 'One' })
+    create(:custom_field_option, custom_field: ranking_field, key: 'two', title_multiloc: { 'en' => 'Two' })
+
     create(
       :custom_field_matrix_linear_scale,
       resource: custom_form,
@@ -87,6 +91,7 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
             'Select field' => 'Yes',
             'Multi select field' => 'This; That',
             'Image select field' => 'Image 1; Image 2',
+            'Ranking field' => 'Two; One',
             'Image URL' => 'https://images.com/image.png',
             'Latitude' => 50.5035,
             'Longitude' => 6.0944
@@ -139,6 +144,7 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
       expect(rows[0][:custom_field_values][:rating_field]).to eq 2
       expect(rows[0][:custom_field_values][:select_field]).to eq 'yes'
       expect(rows[0][:custom_field_values][:multiselect_field]).to match_array %w[this that]
+      expect(rows[0][:custom_field_values][:ranking_field]).to eq %w[two one]
       expect(rows[0][:custom_field_values][:image_select_field]).to match_array %w[image1 image2]
     end
 
@@ -253,7 +259,8 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
 
     it 'parses user fields in surveys correctly' do
       # Basic survey
-      phase = create(:native_survey_phase, user_fields_in_form: true, with_permissions: true)
+      phase = create(:native_survey_phase, with_permissions: true)
+      phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
       custom_form = create(:custom_form, participation_context: phase)
       create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'First page' })
       create(:custom_field_text, resource: custom_form, key: 'text_field', title_multiloc: { 'en' => 'Text field' })

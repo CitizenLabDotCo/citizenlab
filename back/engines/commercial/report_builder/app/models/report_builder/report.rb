@@ -4,16 +4,17 @@
 #
 # Table name: report_builder_reports
 #
-#  id            :uuid             not null, primary key
-#  name          :string
-#  owner_id      :uuid
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  phase_id      :uuid
-#  visible       :boolean          default(FALSE), not null
-#  name_tsvector :tsvector
-#  year          :integer
-#  quarter       :integer
+#  id                :uuid             not null, primary key
+#  name              :string
+#  owner_id          :uuid
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  phase_id          :uuid
+#  visible           :boolean          default(FALSE), not null
+#  name_tsvector     :tsvector
+#  year              :integer
+#  quarter           :integer
+#  community_monitor :boolean          default(FALSE), not null
 #
 # Indexes
 #

@@ -51,6 +51,7 @@ module IdeaAssignment
       include ::EmailCampaigns::ActivityTriggerable
       include ::EmailCampaigns::Disableable
       include ::EmailCampaigns::Trackable
+      include ::EmailCampaigns::ContentConfigurable
       include ::EmailCampaigns::LifecycleStageRestrictable
 
       allow_lifecycle_stages only: %w[trial active]
@@ -97,9 +98,7 @@ module IdeaAssignment
             post_title_multiloc: notification.idea.title_multiloc,
             post_body_multiloc: notification.idea.body_multiloc,
             post_author_name: name_service.display_name!(notification.idea.author),
-            post_published_at: notification.idea.published_at&.iso8601,
-            post_url: Frontend::UrlService.new.model_to_url(notification.idea, locale: Locale.new(recipient.locale)),
-            post_assigned_at: notification.idea.assigned_at&.iso8601
+            post_url: Frontend::UrlService.new.model_to_url(notification.idea, locale: Locale.new(recipient.locale))
           }
         }]
       end

@@ -340,7 +340,7 @@ nl-BE:
       point_print_description: 'Teken een X op de kaart hieronder om de locatie aan te geven of schrijf het adres op.'
       line_print_description: 'Teken een route op de kaart hieronder.'
       polygon_print_description: 'Teken een gebied op de kaart hieronder.'
-      select_print_description: 'Kies slechts één optie.'
+      select_print_description: 'Kies één optie.'
       date_print_description: 'Schrijf een datum in het formaat JJJJ-MM-DD.'
   project_copy:
     title_suffix: 'Kopie'
@@ -382,3 +382,6 @@ nl-BE:
     default_voting_term_plural: "stemmen"
   ics_calendar_event:
     event_details: "Details evenement"
+  errors:
+    messages:
+      max_must_be_greater_than_min_characters: "Het maximum moet groter zijn dan het minimum."

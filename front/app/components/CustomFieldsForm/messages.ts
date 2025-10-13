@@ -21,6 +21,20 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.descriptionMinLength',
     defaultMessage: 'The description must be at least {min} characters long',
   },
+  descriptionMaxLength: {
+    id: 'app.components.CustomFieldsForm.descriptionMaxLength',
+    defaultMessage: 'The description must be at most {max} characters long',
+  },
+  fieldMinLength: {
+    id: 'app.components.CustomFieldsForm.fieldMinLength',
+    defaultMessage:
+      'The field "{fieldName}" must be at least {min} characters long',
+  },
+  fieldMaxLength: {
+    id: 'app.components.CustomFieldsForm.fieldMaxLength',
+    defaultMessage:
+      'The field "{fieldName}" must be at most {max} characters long',
+  },
   imageRequired: {
     id: 'app.components.CustomFieldsForm.imageRequired',
     defaultMessage: 'The image is required',
@@ -177,10 +191,6 @@ export default defineMessages({
   atLeastThreePointsRequired: {
     id: 'app.components.CustomFieldsForm.atLeastThreePointsRequired',
     defaultMessage: 'At least three points are required for a polygon.',
-  },
-  anonymousSurveyMessage: {
-    id: 'app.components.CustomFieldsForm.anonymousSurveyMessage2',
-    defaultMessage: 'All responses to this survey are anonymized.',
   },
   fileSizeLimit: {
     id: 'app.components.CustomFieldsForm.fileSizeLimit',

@@ -6,8 +6,8 @@ sr-Cyrl:
       "idea_assigned_to_you": Задатак идеје - администратори и пројект менаџери
     idea_assigned_to_you:
       by_author: 'од %{authorName}'
-      cta_reply_to: 'Дајте повратну информацију %{authorName}'
-      event_description_idea: 'Идеја вам је додељена. Дајте повратне информације писањем званичног ажурирања или променом његовог статуса.'
-      main_header: '%{firstName}, имате нови задатак'
+      cta_button: 'Give feedback to %{authorName}'
+      event_description: 'An input has been assigned to you. Give feedback by writing an official update or by changing its status.'
+      title: '%{firstName}, an input was assigned to you'
       subject: 'Имате задатак на платформи од %{organizationName}'
       preheader_idea: 'Идеја %{authorName} је додељена вама'

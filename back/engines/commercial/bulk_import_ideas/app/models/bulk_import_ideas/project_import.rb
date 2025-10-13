@@ -10,7 +10,6 @@
 #  import_id      :uuid
 #  log            :string           default([]), is an Array
 #  locale         :string
-#  string         :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  import_type    :string
@@ -29,7 +28,7 @@ module BulkImportIdeas
   class ProjectImport < ApplicationRecord
     self.table_name = 'project_imports'
 
-    IMPORT_TYPES = %w[project user preview].freeze
+    IMPORT_TYPES = %w[project user preview project_copy].freeze
 
     belongs_to :project, optional: true
     belongs_to :import_user, class_name: 'User', optional: true

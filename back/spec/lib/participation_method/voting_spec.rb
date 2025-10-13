@@ -124,6 +124,21 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
+  describe 'constraints' do
+    it 'has constraints on built in fields to lock certain values from being changed' do
+      expect(participation_method.constraints).to eq({
+        title_page: { locks: { attributes: %i[title_multiloc] } },
+        title_multiloc: { locks: { attributes: %i[title_multiloc required], deletion: true } },
+        body_multiloc: { locks: { attributes: %i[title_multiloc] } },
+        idea_images_attributes: { locks: { attributes: %i[title_multiloc] } },
+        idea_files_attributes: { locks: { attributes: %i[title_multiloc] } },
+        topic_ids: { locks: { attributes: %i[title_multiloc] } },
+        location_description: { locks: { attributes: %i[title_multiloc] } },
+        proposed_budget: { locks: { attributes: %i[title_multiloc] } }
+      })
+    end
+  end
+
   describe '#custom_form' do
     let(:project) { phase.project }
     let(:project_form) { create(:custom_form, participation_context: project) }
@@ -159,7 +174,7 @@ RSpec.describe ParticipationMethod::Voting do
 
   describe '#supported_email_campaigns' do
     it 'returns campaigns supported for voting' do
-      expect(participation_method.supported_email_campaigns).to match_array %w[comment_deleted_by_admin comment_on_idea_you_follow comment_on_your_comment idea_published mention_in_official_feedback official_feedback_on_idea_you_follow project_phase_started status_change_on_idea_you_follow voting_basket_not_submitted voting_last_chance voting_phase_started voting_results your_input_in_screening]
+      expect(participation_method.supported_email_campaigns).to match_array %w[comment_deleted_by_admin comment_on_idea_you_follow comment_on_your_comment idea_published mention_in_official_feedback official_feedback_on_idea_you_follow project_phase_started status_change_on_idea_you_follow voting_basket_not_submitted voting_basket_submitted voting_last_chance voting_phase_started voting_results your_input_in_screening]
     end
   end
 
@@ -172,11 +187,25 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
+  describe '#validate_phase' do
+    it 'does not add an error with transitive inputs' do
+      create(:idea, phases: [phase], project: phase.project)
+      expect(phase).to be_valid
+    end
+
+    it 'adds an error with non-transitive inputs' do
+      phase.update!(participation_method: 'proposals', reacting_threshold: 50, expire_days_limit: 10)
+      create(:proposal, creation_phase: phase, project: phase.project)
+      phase.participation_method = 'voting'
+      expect(phase).not_to be_valid
+      expect(phase.errors.details).to eq({ participation_method: [{ error: :non_complying_inputs }] })
+    end
+  end
+
   its(:allowed_ideas_orders) { is_expected.to eq ['random'] }
   its(:return_disabled_actions?) { is_expected.to be false }
   its(:supports_assignment?) { is_expected.to be true }
   its(:built_in_title_required?) { is_expected.to be(true) }
-  its(:built_in_body_required?) { is_expected.to be(true) }
   its(:supports_commenting?) { is_expected.to be true }
   its(:supports_edits_after_publication?) { is_expected.to be true }
   its(:supports_exports?) { is_expected.to be true }

@@ -1,11 +1,7 @@
 import React, { ReactNode } from 'react';
 
-import {
-  colors,
-  Icon,
-  Title,
-  useBreakpoint,
-} from '@citizenlab/cl2-component-library';
+import { Icon, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -18,11 +14,12 @@ interface Props {
 }
 
 const BaseMainContent = ({ id, children }: Props) => {
+  const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
 
   return (
     <CookieModalContentContainer id={id}>
-      <Icon name="cookie" fill={colors.primary} />
+      <Icon name="cookie" fill={theme.colors.tenantPrimary} />
       <Title as="h1" variant={isSmallerThanPhone ? 'h4' : 'h3'}>
         <FormattedMessage {...messages.cookieModalTitle} />
       </Title>

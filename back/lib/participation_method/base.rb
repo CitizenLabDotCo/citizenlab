@@ -116,10 +116,6 @@ module ParticipationMethod
       false
     end
 
-    def built_in_body_required?
-      false
-    end
-
     def supports_commenting?
       false
     end
@@ -226,8 +222,14 @@ module ParticipationMethod
       false
     end
 
+    # Attribute used interally by backend to determine if user fields should be shown in the form
     def user_fields_in_form?
       false
+    end
+
+    # Only implemented in native_survey and community monitor
+    def user_data_collection
+      'all_data'
     end
 
     def supports_multiple_phase_reports?

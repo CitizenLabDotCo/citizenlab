@@ -167,6 +167,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :voting_max_total,
       :voting_min_total,
       :voting_max_votes_per_idea,
+      :voting_min_selected_options,
       :poll_anonymous,
       :document_annotation_embed_url,
       :ideas_order,
@@ -180,7 +181,6 @@ class WebApi::V1::PhasesController < ApplicationController
       :survey_popup_frequency,
       :similarity_threshold_title,
       :similarity_threshold_body,
-      :user_fields_in_form,
       {
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,
