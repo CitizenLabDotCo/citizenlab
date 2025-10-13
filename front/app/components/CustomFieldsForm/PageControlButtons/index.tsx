@@ -26,7 +26,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
-import messages from '../../messages';
+import messages from '../messages';
 
 type PageVariant = 'other' | 'submission' | 'after-submission';
 

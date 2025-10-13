@@ -13,7 +13,7 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
-import SubmissionReference from 'components/Form/Components/Layouts/SubmissionReference';
+import SubmissionReference from 'components/CustomFieldsForm/PageControlButtons/SubmissionReference';
 import Feedback from 'components/HookForm/Feedback';
 
 import clHistory from 'utils/cl-router/history';
