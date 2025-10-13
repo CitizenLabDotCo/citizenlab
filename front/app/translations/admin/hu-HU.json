@@ -2159,7 +2159,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Go back",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "Importálás",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs2": "Import",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText4": "AI summaries for short answer, long answer, and sentiment scale follow up questions can be accessed from the AI tab in the left sidebar.",
+  "app.containers.AdminPage.ProjectEdit.survey.informationText4": "A rövid válaszokhoz, a hosszú válaszokhoz és a hangulatskálához tartozó további kérdésekhez tartozó mesterséges intelligencia által készített összefoglalók a bal oldalsávon található MI fülön érhetők el.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Linear scale",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "Mátrix",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Long answer",
