@@ -18,6 +18,7 @@
 #  index_groups_on_slug  (slug)
 #
 class Group < ApplicationRecord
+  include PgSearch::Model
   include EmailCampaigns::GroupDecorator
 
   slug from: proc { |group| group.title_multiloc&.values&.find(&:present?) }
@@ -37,9 +38,16 @@ class Group < ApplicationRecord
   before_validation :set_membership_type, on: :create
   before_validation :strip_title
 
+  pg_search_scope :search_by_title,
+    against: :title_multiloc,
+    using: { tsearch: { prefix: true } }
+
   scope :order_new, ->(direction = :desc) { order(created_at: direction) }
   scope :with_user, ->(user) { Group._with_user(self, user) } # Delegating to class method makes it easier to patch.
   scope :by_custom_field, ->(custom_field_id) { where('rules::text ~ ?', custom_field_id) }
+  scope :by_project_id, lambda { |project_id|
+    where('rules::text ~ ? AND rules::text ~ ?', 'participated_in_project', project_id)
+  }
 
   def self._with_user(groups, user)
     groups.left_outer_joins(:users).where(users: { id: user.id })

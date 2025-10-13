@@ -149,6 +149,8 @@ class WebApi::V1::UsersController < ApplicationController
         params: jsonapi_serializer_params
       ).serializable_hash, status: :ok
     else
+      SideFxUserService.new.after_error(@user, request&.remote_ip)
+
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
   end

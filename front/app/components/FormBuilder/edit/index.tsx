@@ -113,7 +113,7 @@ const FormEdit = ({
 
   const methods = useForm({
     mode: 'onBlur',
-    defaultValues,
+    defaultValues: defaultValues as any,
     resolver: yupResolver(schema),
   });
 
@@ -313,7 +313,7 @@ const FormEdit = ({
       <HelmetIntl title={messages.helmetTitle} />
       <FocusOn>
         <FormProvider {...methods}>
-          <form onSubmit={handleSubmit(onFormSubmit)}>
+          <form onSubmit={handleSubmit(onFormSubmit as any)}>
             <FormBuilderTopBar
               isSubmitting={isSubmitting}
               builderConfig={builderConfig}

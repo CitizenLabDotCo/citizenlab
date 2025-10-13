@@ -3,8 +3,8 @@ import React from 'react';
 import {
   Box,
   Icon,
-  Text,
   IconTooltip,
+  Text,
   colors,
 } from '@citizenlab/cl2-component-library';
 
@@ -20,15 +20,9 @@ interface Props {
   hasErrors: boolean;
   field: IFlatCustomField;
   fieldNumber?: number;
-  hasFullPageRestriction: boolean;
 }
 
-const FieldTitle = ({
-  hasErrors,
-  field,
-  fieldNumber,
-  hasFullPageRestriction,
-}: Props) => {
+const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
   const { formatMessage } = useIntl();
 
   let rowTitle = messages.question;
@@ -41,26 +35,10 @@ const FieldTitle = ({
     }
   }
 
-  const lockedAttributes = field.constraints?.locks;
   const titleColor = field.input_type === 'page' ? 'blue500' : 'teal400';
-  const getLockMessage = () => {
-    if (field.input_type === 'page') {
-      if (hasFullPageRestriction) {
-        return formatMessage(messages.pageCannotBeDeletedNorNewFieldsAdded);
-      }
-      if (lockedAttributes?.enabled) {
-        return formatMessage(messages.pageCannotBeDeleted);
-      }
-    }
-
-    if (lockedAttributes?.enabled) {
-      return formatMessage(messages.questionCannotBeDeleted);
-    }
-
-    return undefined;
-  };
-
-  const lockMessage = getLockMessage();
+  const lockMessage =
+    field.constraints?.locks?.deletion &&
+    formatMessage(messages.questionCannotBeDeleted);
 
   return (
     <Box

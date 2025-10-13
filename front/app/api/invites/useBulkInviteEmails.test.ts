@@ -7,7 +7,7 @@ import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 import { invitesData } from './__mocks__/useInvites';
 import useBulkInviteEmails from './useBulkInviteEmails';
 
-const apiPath = '*/invites/bulk_create';
+const apiPath = '*/invites_imports/bulk_create';
 
 const server = setupServer(
   http.post(apiPath, () => {

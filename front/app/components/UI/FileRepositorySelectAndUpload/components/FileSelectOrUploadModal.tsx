@@ -8,8 +8,6 @@ import { IFileAttachmentData } from 'api/file_attachments/types';
 import { IFileData } from 'api/files/types';
 import useFiles from 'api/files/useFiles';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
@@ -37,9 +35,6 @@ const FileSelectOrUploadModal = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const [modalOpen, setModalOpen] = React.useState(false);
-  const isDataRepositoryEnabled = useFeatureFlag({
-    name: 'data_repository',
-  });
 
   const { projectId } = useParams();
 
@@ -89,7 +84,7 @@ const FileSelectOrUploadModal = ({
         header={formatMessage(messages.selectFile)}
       >
         <Box mt="0px" p="24px">
-          {isDataRepositoryEnabled && filteredFileOptions.length > 0 && (
+          {filteredFileOptions.length > 0 && (
             <Box>
               <Select
                 value={''} // Since onChange we close the modal, we don't need to worry about setting this value.

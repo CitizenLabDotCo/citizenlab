@@ -158,15 +158,6 @@ resource 'Phases' do
         expect(response_data[:attributes]).to eq({ totalSubmissions: 2 })
       end
     end
-
-    context 'ideation' do
-      example 'Get count for ideation phase (ignores native survey responses)' do
-        phase.update!(participation_method: 'ideation')
-        do_request
-        assert_status 200
-        expect(response_data[:attributes]).to eq({ totalSubmissions: 3 })
-      end
-    end
   end
 
   get 'web_api/v1/phases/:id/as_xlsx' do
@@ -558,7 +549,7 @@ resource 'Phases' do
         parameter :project_id, 'The id of the project this phase belongs to'
         parameter :title_multiloc, 'The title of the phase in multiple locales'
         parameter :description_multiloc, 'The description of the phase in multiple languages. Supports basic HTML.'
-        parameter :participation_method, "The participation method of the project, either #{Phase::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
+        parameter :participation_method, "The participation method of the project, either #{Phase::PARTICIPATION_METHODS.join(',')}. Some changes are not allowed when there are inputs.", required: false
         parameter :submission_enabled, 'Can citizens post ideas in this phase?', required: false
         parameter :commenting_enabled, 'Can citizens post comment in this phase?', required: false
         parameter :reacting_enabled, 'Can citizens react in this phase?', required: false
@@ -717,6 +708,22 @@ resource 'Phases' do
           ideas_phase.reload
           expect(response_status).to eq 200
           expect(ideas_phase.valid?).to be true
+        end
+      end
+
+      describe do
+        let(:project) { create(:project) }
+        let(:id) { create(:proposals_phase, project: project).id }
+        let(:participation_method) { 'ideation' }
+
+        example '[error] Cannot be changed to ideation when there are non-transitive inputs' do
+          proposal = create(:proposal, project: project, creation_phase_id: id)
+          do_request
+          assert_status 422
+          expect(json_response).to eq(
+            { errors: { participation_method: [{ error: 'non_complying_inputs' }] } }
+          )
+          expect(proposal.reload).to be_valid
         end
       end
     end

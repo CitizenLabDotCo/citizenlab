@@ -11,6 +11,7 @@ RSpec.describe ScriptReporter do
       reporter.add_change('old-title', 'new-title', context: { page: 'my-page', attribute: 'title' })
       reporter.add_change('old-body', 'new-body', context: { page: 'my-page', attribute: 'body' })
       reporter.add_change('old-title', 'new-title', context: { page: 'your-page', attribute: 'title' })
+      reporter.add_delete('Post', '123', context: { tenant: 'my-tenant' })
       reporter.add_error('not my page error', context: { page: 'your-page', attribute: 'title' })
       reporter.add_processed_tenant(create(:tenant, host: 'my.tenant.com'))
 
@@ -24,12 +25,21 @@ RSpec.describe ScriptReporter do
         { old_value: 'old-body', new_value: 'new-body', context: { page: 'my-page', attribute: 'body' } },
         { old_value: 'old-title', new_value: 'new-title', context: { page: 'your-page', attribute: 'title' } }
       ]
+      expected_deletes = [
+        { model_name: 'Post', id: '123', context: { tenant: 'my-tenant' } }
+      ]
       expected_errors = [
         { error: 'not my page error', context: { page: 'your-page', attribute: 'title' } }
       ]
       expect(File).to have_received(:write).with(
         'test_report.json',
-        JSON.pretty_generate({ processed_tenants: ['my.tenant.com'], creates: expected_creates, changes: expected_changes, errors: expected_errors })
+        JSON.pretty_generate({
+          processed_tenants: ['my.tenant.com'],
+          creates: expected_creates,
+          changes: expected_changes,
+          deletes: expected_deletes,
+          errors: expected_errors
+        })
       )
     end
   end

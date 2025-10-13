@@ -23,6 +23,9 @@ export const navbarItemsData: INavbarItem[] = [
       project: {
         data: null,
       },
+      project_folder: {
+        data: null,
+      },
     },
   },
   {
@@ -45,6 +48,9 @@ export const navbarItemsData: INavbarItem[] = [
         data: null,
       },
       project: {
+        data: null,
+      },
+      project_folder: {
         data: null,
       },
     },
@@ -71,6 +77,9 @@ export const navbarItemsData: INavbarItem[] = [
       project: {
         data: null,
       },
+      project_folder: {
+        data: null,
+      },
     },
   },
   {
@@ -93,6 +102,9 @@ export const navbarItemsData: INavbarItem[] = [
         data: null,
       },
       project: {
+        data: null,
+      },
+      project_folder: {
         data: null,
       },
     },
@@ -122,6 +134,9 @@ export const navbarItemsData: INavbarItem[] = [
       project: {
         data: null,
       },
+      project_folder: {
+        data: null,
+      },
     },
   },
   {
@@ -149,6 +164,9 @@ export const navbarItemsData: INavbarItem[] = [
       project: {
         data: null,
       },
+      project_folder: {
+        data: null,
+      },
     },
   },
   {
@@ -171,6 +189,9 @@ export const navbarItemsData: INavbarItem[] = [
         data: null,
       },
       project: {
+        data: null,
+      },
+      project_folder: {
         data: null,
       },
     },

@@ -63,7 +63,7 @@ import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
 
 import { fragmentId } from '../../projectHeader';
-import { fragmentId as folderFragmentId } from '../../projectHeader/LinkToFolderSettings';
+import { fragmentId as folderFragmentId } from '../../projectHeader/FolderProjectDropdown';
 import GeographicAreaInputs from '../components/GeographicAreaInputs';
 import ProjectCardImageDropzone from '../components/ProjectCardImageDropzone';
 import ProjectCardImageTooltip from '../components/ProjectCardImageTooltip';
