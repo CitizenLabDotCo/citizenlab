@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { FormProvider } from 'react-hook-form';
 
 import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
-import useCustomFieldsWithPermissions from 'api/custom_fields_with_permissions/useCustomFieldsWithPermissions';
+import useUserCustomFieldsForPermission from 'api/user_custom_fields_for_permission/useUserCustomFieldsForPermission';
 
 import CustomFields from 'components/CustomFieldsForm/CustomFields';
 import usePageForm from 'components/CustomFieldsForm/Page/usePageForm';
@@ -23,7 +23,7 @@ const UserCustomFieldsForm = ({
   triggerValidation,
   onValidationResult,
 }: Props) => {
-  const { data: customFields } = useCustomFieldsWithPermissions(
+  const { data: customFields } = useUserCustomFieldsForPermission(
     authenticationContext
   );
   const { methods } = usePageForm({

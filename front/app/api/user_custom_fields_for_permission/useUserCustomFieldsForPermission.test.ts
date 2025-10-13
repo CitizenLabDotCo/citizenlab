@@ -7,8 +7,8 @@ import { renderHook, waitFor } from 'utils/testUtils/rtl';
 import {
   phaseResponse,
   ideaResponse,
-} from './__mocks__/useCustomFieldsWithPermissions';
-import useCustomFieldsWithPermissions from './useCustomFieldsWithPermissions';
+} from './__mocks__/useUserCustomFieldsForPermission';
+import useUserCustomFieldsForPermission from './useUserCustomFieldsForPermission';
 
 // Mock the useCustomFieldOptionsBulk hook
 jest.mock('api/custom_field_options/useCustomFieldOptionsBulk', () => {
@@ -27,7 +27,7 @@ const server = setupServer(
   })
 );
 
-describe('useCustomFieldsWithPermissions', () => {
+describe('useUserCustomFieldsForPermission', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
@@ -39,7 +39,7 @@ describe('useCustomFieldsWithPermissions', () => {
     } as const;
 
     const { result } = renderHook(
-      () => useCustomFieldsWithPermissions(context),
+      () => useUserCustomFieldsForPermission(context),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -78,7 +78,7 @@ describe('useCustomFieldsWithPermissions', () => {
     } as const;
 
     const { result } = renderHook(
-      () => useCustomFieldsWithPermissions(context),
+      () => useUserCustomFieldsForPermission(context),
       {
         wrapper: createQueryClientWrapper(),
       }

@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import customFieldsWithPermissionsKeys from 'api/custom_fields_with_permissions/keys';
+import userCustomFieldsForPermissionKeys from 'api/user_custom_fields_for_permission/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -29,7 +29,7 @@ const useReorderUserCustomField = () => {
         queryKey: userCustomFieldsKeys.lists(),
       });
       queryClient.invalidateQueries({
-        queryKey: customFieldsWithPermissionsKeys.all(),
+        queryKey: userCustomFieldsForPermissionKeys.all(),
       });
     },
   });

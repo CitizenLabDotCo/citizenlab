@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
-import useCustomFieldsWithPermissions from 'api/custom_fields_with_permissions/useCustomFieldsWithPermissions';
 import useAuthUser from 'api/me/useAuthUser';
+import useUserCustomFieldsForPermission from 'api/user_custom_fields_for_permission/useUserCustomFieldsForPermission';
 
 import {
   AuthenticationData,
@@ -36,7 +36,7 @@ const CustomFields = ({
   onSkip,
 }: Props) => {
   const { data: authUser } = useAuthUser();
-  const { data: customFields } = useCustomFieldsWithPermissions(
+  const { data: customFields } = useUserCustomFieldsForPermission(
     authenticationData.context
   );
   const smallerThanPhone = useBreakpoint('phone');

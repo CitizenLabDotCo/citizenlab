@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import customFieldsWithPermissionsKeys from 'api/custom_fields_with_permissions/keys';
+import userCustomFieldsForPermissionKeys from 'api/user_custom_fields_for_permission/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -21,7 +21,7 @@ const useDeleteUserCustomField = () => {
         queryKey: optionKeys.lists(),
       });
       queryClient.invalidateQueries({
-        queryKey: customFieldsWithPermissionsKeys.all(),
+        queryKey: userCustomFieldsForPermissionKeys.all(),
       });
     },
   });
