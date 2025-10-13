@@ -21,7 +21,6 @@ import {
   createRootRoute,
   createRoute,
   createRouter,
-  Outlet,
   Route,
   RouterProvider,
 } from 'utils/router';
@@ -52,16 +51,7 @@ const legacyRoutes = createRoutes();
 type LegacyRoutes = typeof legacyRoutes;
 
 const setupRouter = (legacyRoutes: LegacyRoutes) => {
-  const rootRoute = createRootRoute({
-    component: () => {
-      console.log('root route rendering');
-      return (
-        <div>
-          <Outlet />
-        </div>
-      );
-    },
-  });
+  const rootRoute = createRootRoute({});
 
   const children: Route[] = [];
 
@@ -75,19 +65,7 @@ const setupRouter = (legacyRoutes: LegacyRoutes) => {
     children.push(route as any);
   });
 
-  // const routeTree = rootRoute.addChildren(children);
-  const routeTree = rootRoute.addChildren([
-    createRoute({
-      getParentRoute: () => rootRoute,
-      path: '/', // Root path
-      component: () => <div>Root Home</div>,
-    }),
-    createRoute({
-      getParentRoute: () => rootRoute,
-      path: '/en', // English path (note the leading slash)
-      component: () => <div>English Home</div>,
-    }),
-  ]);
+  const routeTree = rootRoute.addChildren(children);
 
   return createRouter({ routeTree });
 };
@@ -102,7 +80,7 @@ const findComponent = (legacyRoute) => {
       return child.index;
     });
 
-    return () => indexElement;
+    return () => <>Test</>;
   }
 
   return () => null;
