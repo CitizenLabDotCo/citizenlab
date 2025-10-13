@@ -8,8 +8,6 @@ import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import { object } from 'yup';
 
-import { MembershipType } from 'api/groups/types';
-
 import { SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
@@ -27,7 +25,6 @@ type Props = {
 
 export interface NormalFormValues {
   title_multiloc: Multiloc;
-  membership_type: MembershipType;
 }
 
 export const Fill = styled.div`
@@ -58,7 +55,7 @@ const NormalGroupForm = ({
     ),
   });
 
-  const methods = useForm({
+  const methods = useForm<NormalFormValues>({
     mode: 'onBlur',
     defaultValues,
     resolver: yupResolver(schema),

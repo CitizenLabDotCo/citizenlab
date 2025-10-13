@@ -9,8 +9,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
-import { UploadFile, SupportedLocale } from 'typings';
-import { object, string, mixed } from 'yup';
+import { SupportedLocale } from 'typings';
+import { object, mixed, boolean } from 'yup';
 
 import { IBackgroundJobData } from 'api/background_jobs/types';
 import useAddProjectImportAsync from 'api/project_imports/useAddProjectImportAsync';
@@ -27,10 +27,11 @@ import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateLocale from 'utils/yup/validateLocale';
 
 interface FormValues {
   locale: SupportedLocale;
-  file?: UploadFile;
+  file: Record<string, any>;
   preview: boolean;
 }
 
@@ -46,26 +47,25 @@ const ImportZipModal = ({ open, onClose, onImport }: Props) => {
     useAddProjectImportAsync();
   const locale = useLocale();
 
-  const defaultValues: FormValues = {
+  const defaultValues: Partial<FormValues> = {
     locale,
     file: undefined,
     preview: false,
   };
 
   const schema = object({
-    locale: string().required(),
+    locale: validateLocale().required(),
     file: mixed().required(formatMessage(messages.pleaseUploadFile)),
+    preview: boolean().required(),
   });
 
-  const methods = useForm({
+  const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues,
     resolver: yupResolver(schema),
   });
 
   const submitFile = async ({ file, ...rest }: FormValues) => {
-    if (!file) return;
-
     try {
       const response = await addProjectImport({
         file: file.base64,
