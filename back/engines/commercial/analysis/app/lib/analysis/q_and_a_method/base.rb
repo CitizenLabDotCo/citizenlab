@@ -55,7 +55,8 @@ module Analysis
       end
     end
 
-    # Should be implemente by subclasses and return a QAndAPlan or nil
+    # Should be implemented by subclasses.
+    # @return [Analysis::QAndAPlan, nil]
     def generate_plan
       raise NotImplementedError
     end
