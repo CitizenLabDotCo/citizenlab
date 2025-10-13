@@ -49,7 +49,7 @@ module Verification
       methods = all_methods.select do |method|
         active_method_names.include?(method.name) if method.respond_to?(:name)
       end
-      methods.sort_by { |method| method.name }
+      methods.sort_by(&:name)
     end
 
     # @param [AppConfiguration] configuration
