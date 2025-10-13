@@ -12,12 +12,16 @@ interface Props {
   onChange: (formData: Record<string, any>) => void;
   authenticationContext: AuthenticationContext;
   formData?: Record<string, any>;
+  triggerValidation?: boolean;
+  onValidationResult?: (isValid: boolean) => void;
 }
 
 const UserCustomFieldsForm = ({
   authenticationContext,
   formData,
   onChange,
+  triggerValidation,
+  onValidationResult,
 }: Props) => {
   const { data: customFields } = usePermissionsCustomFields(
     authenticationContext
@@ -26,6 +30,17 @@ const UserCustomFieldsForm = ({
     pageQuestions: customFields || [],
     defaultValues: formData,
   });
+
+  // Effect to handle validation trigger from parent
+  useEffect(() => {
+    if (triggerValidation && onValidationResult) {
+      const validateForm = async () => {
+        const isValid = await methods.trigger();
+        onValidationResult(isValid);
+      };
+      validateForm();
+    }
+  }, [triggerValidation, onValidationResult, methods]);
 
   useEffect(() => {
     const subscription = methods.watch((value) => {

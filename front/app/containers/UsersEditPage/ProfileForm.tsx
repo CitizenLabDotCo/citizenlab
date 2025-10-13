@@ -74,8 +74,10 @@ const ProfileForm = () => {
   const { formatMessage } = useIntl();
   const [extraFormData, setExtraFormData] = useState<Record<string, any>>({});
   const [profanityApiError, setProfanityApiError] = useState(false);
+  const [triggerCustomFieldsValidation, setTriggerCustomFieldsValidation] =
+    useState(false);
+  const [validationInProgress, setValidationInProgress] = useState(false);
 
-  console.log(authUser);
   const schema = object({
     first_name: string().when('last_name', (last_name, schema) => {
       return last_name
@@ -128,10 +130,31 @@ const ProfileForm = () => {
     label: appLocalePairs[locale],
   }));
 
-  const handleDisclaimer = (event: FormEvent) => {
+  const handleDisclaimer = async (event: FormEvent) => {
     // Prevent page from reloading
     event.preventDefault();
 
+    // First validate the main form
+    const isMainFormValid = await methods.trigger();
+    if (!isMainFormValid) {
+      return;
+    }
+
+    // Trigger custom fields validation and wait for result
+    setValidationInProgress(true);
+    setTriggerCustomFieldsValidation(true);
+  };
+
+  // Handle custom fields validation result
+  const handleCustomFieldsValidation = (isValid: boolean) => {
+    setTriggerCustomFieldsValidation(false);
+    setValidationInProgress(false);
+
+    if (!isValid) {
+      return; // Stop submission if custom fields are invalid
+    }
+
+    // Proceed with submission logic if both forms are valid
     if (
       methods.formState.dirtyFields.avatar &&
       methods.getValues('avatar') &&
@@ -300,9 +323,15 @@ const ProfileForm = () => {
             authenticationContext={GLOBAL_CONTEXT}
             onChange={setExtraFormData}
             formData={authUser.data.attributes.custom_field_values}
+            triggerValidation={triggerCustomFieldsValidation}
+            onValidationResult={handleCustomFieldsValidation}
           />
           <Box display="flex">
-            <Button processing={methods.formState.isSubmitting}>
+            <Button
+              processing={
+                methods.formState.isSubmitting || validationInProgress
+              }
+            >
               {formatMessage(messages.submit)}
             </Button>
           </Box>

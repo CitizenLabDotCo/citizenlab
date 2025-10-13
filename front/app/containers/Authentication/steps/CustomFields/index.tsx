@@ -31,18 +31,20 @@ interface Props {
 const CustomFields = ({
   authenticationData,
   loading,
-  // setError,
-  // onSubmit,
+  setError,
+  onSubmit,
   onSkip,
 }: Props) => {
   const { data: authUser } = useAuthUser();
-  // const locale = useLocale();
   const { data: customFields } = usePermissionsCustomFields(
     authenticationData.context
   );
   const smallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
   const [_formData, setFormData] = useState<Record<string, any>>({});
+  const [triggerCustomFieldsValidation, setTriggerCustomFieldsValidation] =
+    useState(false);
+  const [validationInProgress, setValidationInProgress] = useState(false);
 
   useEffect(() => {
     trackEventByName(tracks.signUpCustomFieldsStepEntered);
@@ -53,15 +55,23 @@ const CustomFields = ({
   }
 
   const handleSubmit = async () => {
-    // if (!customAjv.validate(schema, formData)) {
-    //   setShowAllErrors(true);
-    // } else {
-    //   try {
-    //     await onSubmit(authUser.data.id, formData);
-    //   } catch (e) {
-    //     setError('unknown');
-    //   }
-    // }
+    setValidationInProgress(true);
+    setTriggerCustomFieldsValidation(true);
+  };
+
+  const handleCustomFieldsValidation = async (isValid: boolean) => {
+    setTriggerCustomFieldsValidation(false);
+    setValidationInProgress(false);
+
+    if (!isValid) {
+      return;
+    }
+
+    try {
+      await onSubmit(authUser.data.id, _formData);
+    } catch (e) {
+      setError('unknown');
+    }
   };
   const allowSkip =
     !customFields.some((field) => field.required) &&
@@ -76,6 +86,8 @@ const CustomFields = ({
       <UserCustomFieldsForm
         authenticationContext={authenticationData.context}
         onChange={setFormData}
+        triggerValidation={triggerCustomFieldsValidation}
+        onValidationResult={handleCustomFieldsValidation}
       />
 
       <Box
@@ -86,8 +98,8 @@ const CustomFields = ({
       >
         <ButtonWithLink
           id="e2e-signup-custom-fields-submit-btn"
-          processing={loading}
-          disabled={loading}
+          processing={loading || validationInProgress}
+          disabled={loading || validationInProgress}
           text={formatMessage(messages.continue)}
           onClick={handleSubmit}
         />
@@ -108,7 +120,6 @@ const CustomFields = ({
           </ButtonWithLink>
         )}
       </Box>
-      {/* </FormWrapper> */}
     </Box>
   );
 };
