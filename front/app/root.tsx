@@ -12,6 +12,7 @@ import modules from 'modules';
 import { createRoot } from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 
+import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
 import OutletsProvider from 'containers/OutletsProvider';
 import 'utils/locale';
@@ -28,8 +29,6 @@ import {
 
 import prefetchData from './prefetchData';
 import createRoutes from './routes2';
-
-import App from 'containers/App';
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,

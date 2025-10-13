@@ -10,7 +10,6 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import * as Sentry from '@sentry/react';
-import { useLocation } from 'utils/router';
 import GlobalStyle from 'global-styles';
 import 'intersection-observer';
 // moment-timezone extends the regular moment library,
@@ -50,6 +49,7 @@ import {
 } from 'utils/helperUtils';
 import { usePermission } from 'utils/permissions';
 import { isAdmin, isModerator } from 'utils/permissions/roles';
+import { useLocation } from 'utils/router';
 
 import messages from './messages';
 import Meta from './Meta';
