@@ -2159,7 +2159,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Torna indietro",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "Importazione",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs2": "Import",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText4": "AI summaries for short answer, long answer, and sentiment scale follow up questions can be accessed from the AI tab in the left sidebar.",
+  "app.containers.AdminPage.ProjectEdit.survey.informationText4": "I riepiloghi dell'intelligenza artificiale per le domande a risposta breve, a risposta lunga e per le domande di verifica della scala di sentimento sono accessibili dalla scheda AI nella barra laterale di sinistra.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Linear scale",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "Matrice",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Long answer",
