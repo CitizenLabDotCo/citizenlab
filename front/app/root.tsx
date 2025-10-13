@@ -26,7 +26,7 @@ import {
 } from 'utils/router';
 
 import prefetchData from './prefetchData';
-import createRoutes from './routes';
+import createRoutes from './routes2';
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
@@ -50,12 +50,29 @@ const legacyRoutes = createRoutes();
 
 type LegacyRoutes = typeof legacyRoutes;
 
+const findComponent = (legacyRoute: any) => {
+  if (legacyRoute.component) {
+    return legacyRoute.component;
+  }
+
+  if (legacyRoute.children) {
+    const indexComponent = legacyRoute.children.find(
+      (child: any) => child.index
+    );
+    if (indexComponent) {
+      return indexComponent.component;
+    }
+  }
+
+  return undefined;
+};
+
 const setupRouter = (legacyRoutes: LegacyRoutes) => {
   const rootRoute = createRootRoute({});
 
   const children: Route[] = [];
 
-  legacyRoutes.forEach((legacyRoute) => {
+  legacyRoutes.forEach((legacyRoute: any) => {
     const route = createRoute({
       getParentRoute: () => rootRoute,
       path: legacyRoute.path,
@@ -68,22 +85,6 @@ const setupRouter = (legacyRoutes: LegacyRoutes) => {
   const routeTree = rootRoute.addChildren(children);
 
   return createRouter({ routeTree });
-};
-
-const findComponent = (legacyRoute) => {
-  if (legacyRoute.element) {
-    return () => legacyRoute.element;
-  }
-
-  if (legacyRoute.children) {
-    const indexElement = legacyRoute.children.find((child) => {
-      return child.index;
-    });
-
-    return () => <>Test</>;
-  }
-
-  return () => null;
 };
 
 const router = setupRouter(legacyRoutes);

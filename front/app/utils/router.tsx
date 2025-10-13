@@ -1,9 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
-import {
-  useSearch as useSearchTanstack,
-  Navigate as NavigateTanstack,
-} from 'utils/router';
+import { Navigate as NavigateTanstack } from 'utils/router';
 
 import { updateSearchParams } from './cl-router/updateSearchParams';
 
@@ -11,17 +8,28 @@ import { updateSearchParams } from './cl-router/updateSearchParams';
 export * from '@tanstack/react-router';
 
 export const useSearch = (_options: any) => {
-  const params = useSearchTanstack({ strict: false });
+  const searchParams = new URLSearchParams(window.location.search);
+  const params = {};
 
-  return [
-    {
-      get: (key: string) => {
-        return params[key];
+  searchParams.forEach((value, key) => {
+    params[key] = value;
+  });
+
+  const stringified = JSON.stringify(params);
+
+  return useMemo(() => {
+    const params = JSON.parse(stringified);
+
+    return [
+      {
+        get: (key: string) => {
+          return params[key];
+        },
+        entries: () => Object.entries(params),
       },
-      entries: () => Object.entries(params),
-    },
-    updateSearchParams,
-  ] as any;
+      updateSearchParams,
+    ] as any;
+  }, [stringified]);
 };
 
 export const Navigate = (props: any) => {
