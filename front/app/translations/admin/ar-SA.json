@@ -143,6 +143,7 @@
   "app.components.admin.ActionForm.Fields.user_fields_in_survey_not_supported_for_participation_method": "لا يتم دعم طرح الأسئلة الديموغرافية في الصفحة الأخيرة من الاستبيان لطريقة المشاركة المحددة.",
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow": "مع المجموعة الحالية من إعدادات \"المصادقة\" و\"جمع بيانات المستخدم\"، لا يمكن طرح الأسئلة الديموغرافية إلا في تدفق التسجيل.",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "لا ينطبق اختيار كيفية طرح الأسئلة الديموغرافية على المشاركين لأنك قمت بتعطيل المصادقة واخترت عدم الكشف عن هويتك بالكامل",
+  "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "لإضافة محتوى داخل الأكورديون، افتح الأكورديون بالضغط على الرمز \">\"، ثم اسحب أي عناصر واجهة مستخدم إلى الداخل.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "لم يتم تحديد أي سؤال. الرجاء تحديد سؤال أولاً.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "لا اجابة",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.numberOfResponses": "{count} الردود",
