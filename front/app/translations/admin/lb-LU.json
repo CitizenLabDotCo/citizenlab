@@ -2208,7 +2208,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Géi zréck",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "Import",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs2": "Import",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText4": "AI summaries for short answer, long answer, and sentiment scale follow up questions can be accessed from the AI tab in the left sidebar.",
+  "app.containers.AdminPage.ProjectEdit.survey.informationText4": "KI-Resuméen fir Kuerz-Äntwert-, Lang-Äntwert- a Sentiment-Skala-Nofroen kënnen iwwer den KI-Tab an der lénkser Sidebar zougegraff ginn.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Linearmossstaf",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "Matrix",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Long answer",
