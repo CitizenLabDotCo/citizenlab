@@ -2212,7 +2212,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Grįžti atgal",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "Importas",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs2": "Importas",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText4": "AI santraukas, skirtas trumpo atsakymo, ilgo atsakymo ir sentimentų skalės kontroliniams klausimams, galite rasti kairėje šoninėje juostoje esančiame skirtuke AI.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Linijinė skalė",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "Matrica",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Ilgas atsakymas",

@@ -2212,7 +2212,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Zurück",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "Importieren",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs2": "Importieren",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText4": "KI-Zusammenfassungen für kurze und lange Antworten sowie für Fragen zur Stimmungsskala können Sie über die Registerkarte KI in der linken Seitenleiste aufrufen.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Lineare Skala",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "Matrix",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Lange Antwort",

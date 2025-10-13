@@ -2212,7 +2212,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Wróć",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "Import",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs2": "Import",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText4": "Podsumowania AI dla krótkich odpowiedzi, długich odpowiedzi i pytań uzupełniających ze skalą sentymentu są dostępne w zakładce AI na lewym pasku bocznym.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Skala liniowa",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "Matryca",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Długa odpowiedź",

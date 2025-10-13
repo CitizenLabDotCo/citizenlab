@@ -2212,7 +2212,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Ga terug",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "Importeren",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs2": "Importeren",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText4": "AI samenvattingen voor korte antwoord, lange antwoord en sentiment schaal vervolgvragen zijn toegankelijk via de AI tab in de linker zijbalk.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Lineaire schaal",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "Matrix",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Lang antwoord",

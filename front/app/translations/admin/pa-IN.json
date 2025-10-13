@@ -2212,7 +2212,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "ਵਾਪਸ ਜਾਓ",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "ਆਯਾਤ ਕਰੋ",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs2": "ਆਯਾਤ ਕਰੋ",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText4": "ਛੋਟੇ ਜਵਾਬ, ਲੰਬੇ ਜਵਾਬ, ਅਤੇ ਭਾਵਨਾ ਸਕੇਲ ਫਾਲੋ-ਅੱਪ ਪ੍ਰਸ਼ਨਾਂ ਲਈ AI ਸਾਰਾਂਸ਼ਾਂ ਨੂੰ ਖੱਬੇ ਸਾਈਡਬਾਰ ਵਿੱਚ AI ਟੈਬ ਤੋਂ ਐਕਸੈਸ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ।",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "ਰੇਖਿਕ ਪੈਮਾਨਾ",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "ਮੈਟ੍ਰਿਕਸ",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "ਲੰਮਾ ਜਵਾਬ",

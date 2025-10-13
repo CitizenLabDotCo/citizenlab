@@ -2212,7 +2212,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Gå tillbaka",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "Import",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs2": "Import",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText4": "AI-sammanfattningar för uppföljningsfrågor med korta svar, långa svar och sentimentskala kan nås från AI-fliken i vänster sidofält.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Linjär skala",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "Matris",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Långt svar",

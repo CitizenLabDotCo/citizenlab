@@ -2212,7 +2212,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Mynd yn ôl",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "Mewnforio",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs2": "Mewnforio",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText4": "Gellir cyrchu crynodebau AI ar gyfer ateb byr, ateb hir, a chwestiynau dilynol ar raddfa sentiment o'r tab AI yn y bar ochr chwith.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Graddfa linol",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "Matrics",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Ateb hir",
