@@ -5,7 +5,7 @@ module AuthToken
   class AuthTokenController < ActionController::API
     include ActionController::Cookies
 
-    before_action :authenticate
+    before_action :authenticate, except: [:destroy]
 
     rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
@@ -24,6 +24,21 @@ module AuthToken
       })
 
       render json: auth_token, status: :created
+    end
+
+    def destroy
+      puts 'Destroy action in AuthTokenController called'
+      # Clear the JWT cookie by setting it to expire immediately
+      response.set_cookie(:cl2_jwt, {
+        value: '',
+        expires: 1.second.ago,
+        path: '/',
+        httponly: true,
+        secure: true,
+        same_site: :lax
+      })
+
+      head :no_content
     end
 
     private

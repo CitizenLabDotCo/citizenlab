@@ -1,6 +1,6 @@
 import { RouteType } from 'routes';
+import { API_PATH } from 'containers/App/constants';
 
-import { getJwt, removeJwt, decode } from 'utils/auth/jwt';
 import {
   invalidateQueryCache,
   resetMeQuery,
@@ -9,38 +9,34 @@ import clHistory from 'utils/cl-router/history';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import { endsWith } from 'utils/helperUtils';
 
-import logoutUrl from './logoutUrl';
-
 export default async function signOut() {
-  const jwt = getJwt();
+  try {
+    // Call backend to clear the HttpOnly cookie
+    await fetch(`${API_PATH}/user_token`, {
+      method: 'DELETE',
+      credentials: 'include',
+    });
+  } catch (error) {
+    console.error('Sign out failed:', error);
+  }
 
-  if (jwt) {
-    const decodedJwt = decode(jwt);
+  // Always do client-side cleanup
+  await resetMeQuery();
+  invalidateQueryCache();
+  const { pathname } = removeLocale(location.pathname);
 
-    removeJwt();
+  if (
+    pathname &&
+    (endsWith(pathname, '/sign-up') || pathname.startsWith('/admin'))
+  ) {
+    clHistory.push('/');
+  }
 
-    if (decodedJwt.logout_supported) {
-      const url = await logoutUrl(decodedJwt);
-      window.location.href = url;
-    } else {
-      await resetMeQuery();
-      invalidateQueryCache();
-      const { pathname } = removeLocale(location.pathname);
-
-      if (
-        pathname &&
-        (endsWith(pathname, '/sign-up') || pathname.startsWith('/admin'))
-      ) {
-        clHistory.push('/');
-      }
-
-      /*
-        TODO: Could probably be removed now that we have the Unauthorized component
-        that renders if the user is not authenticated
-      */
-      if (pathname && endsWith(pathname, '/ideas/new')) {
-        clHistory.push(pathname.split('/ideas/new')[0] as RouteType);
-      }
-    }
+  /*
+    TODO: Could probably be removed now that we have the Unauthorized component
+    that renders if the user is not authenticated
+  */
+  if (pathname && endsWith(pathname, '/ideas/new')) {
+    clHistory.push(pathname.split('/ideas/new')[0] as RouteType);
   }
 }

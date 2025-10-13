@@ -105,6 +105,7 @@ Rails.application.routes.draw do
 
       # auth
       post 'user_token' => 'user_token#create'
+      delete 'user_token' => 'user_token#destroy'
 
       resources :users, only: %i[index create update destroy] do
         get :me, on: :collection
