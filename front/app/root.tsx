@@ -14,6 +14,7 @@ import { HelmetProvider } from 'react-helmet-async';
 
 import LanguageProvider from 'containers/LanguageProvider';
 import OutletsProvider from 'containers/OutletsProvider';
+import 'utils/locale';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import {
@@ -119,23 +120,6 @@ const Root = () => {
   useEffect(() => {
     prefetchData();
   }, []);
-
-  if (Math.random() > 0) {
-    return (
-      <QueryClientProvider client={queryClient}>
-        <OutletsProvider>
-          <HelmetProvider>
-            {/* <LanguageProvider> */}
-            <div>
-              <RouterProvider router={router} />
-            </div>
-            {/* </LanguageProvider> */}
-          </HelmetProvider>
-        </OutletsProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    );
-  }
 
   return (
     <QueryClientProvider client={queryClient}>
