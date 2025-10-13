@@ -369,8 +369,6 @@
   "app.components.form.ErrorDisplay.next": "Următorul",
   "app.components.form.ErrorDisplay.previous": "Anterior",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Începeți să tastați pentru a căuta după adresa de e-mail sau numele utilizatorului...",
-  "app.components.form.controls.adminFieldTooltip": "Câmp vizibil doar pentru administratori",
-  "app.components.form.controls.selectMany": "*Alegeți câte doriți",
   "app.components.form.error": "Eroare",
   "app.components.form.locationGoogleUnavailable": "Nu s-a putut încărca câmpul de locație furnizat de Google Maps.",
   "app.components.form.submit": "Trimite",
