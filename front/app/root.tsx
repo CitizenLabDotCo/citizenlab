@@ -20,6 +20,7 @@ import {
   createRootRoute,
   createRoute,
   createRouter,
+  Outlet,
   Route,
   RouterProvider,
 } from 'utils/router';
@@ -47,31 +48,18 @@ Sentry.init({
 // const useSentryRoutes = wrapUseRoutesV6(useRoutes);
 const legacyRoutes = createRoutes();
 
-declare module '@tanstack/react-router' {
-  interface Register {
-    router: typeof router;
-  }
-}
-
 type LegacyRoutes = typeof legacyRoutes;
 
 const setupRouter = (legacyRoutes: LegacyRoutes) => {
   const rootRoute = createRootRoute({
-    component: () => (
-      <div
-        id="fajwipejf"
-        style={{
-          width: '100%',
-          height: '100vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          background: 'green',
-        }}
-      >
-        Loading...
-      </div>
-    ),
+    component: () => {
+      console.log('root route rendering');
+      return (
+        <div>
+          <Outlet />
+        </div>
+      );
+    },
   });
 
   const children: Route[] = [];
@@ -87,7 +75,18 @@ const setupRouter = (legacyRoutes: LegacyRoutes) => {
   });
 
   // const routeTree = rootRoute.addChildren(children);
-  const routeTree = rootRoute.addChildren([]);
+  const routeTree = rootRoute.addChildren([
+    createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/', // Root path
+      component: () => <div>Root Home</div>,
+    }),
+    createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/en', // English path (note the leading slash)
+      component: () => <div>English Home</div>,
+    }),
+  ]);
 
   return createRouter({ routeTree });
 };
@@ -110,17 +109,42 @@ const findComponent = (legacyRoute) => {
 
 const router = setupRouter(legacyRoutes);
 
+declare module '@tanstack/react-router' {
+  interface Register {
+    router: typeof router;
+  }
+}
+
 const Root = () => {
   useEffect(() => {
     prefetchData();
   }, []);
+
+  if (Math.random() > 0) {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <OutletsProvider>
+          <HelmetProvider>
+            {/* <LanguageProvider> */}
+            <div>
+              <RouterProvider router={router} />
+            </div>
+            {/* </LanguageProvider> */}
+          </HelmetProvider>
+        </OutletsProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    );
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
       <OutletsProvider>
         <HelmetProvider>
           <LanguageProvider>
-            <RouterProvider router={router} />
+            <div>
+              <RouterProvider router={router} />
+            </div>
           </LanguageProvider>
         </HelmetProvider>
       </OutletsProvider>
