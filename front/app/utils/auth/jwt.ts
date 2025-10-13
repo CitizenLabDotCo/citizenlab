@@ -4,12 +4,6 @@ import { SECURE_COOKIE } from '../cookie';
 
 const COOKIE_NAME = 'cl2_jwt';
 
-export interface IDecodedJwt {
-  sub: string;
-  provider?: string;
-  logout_supported?: boolean;
-}
-
 export function getJwt() {
   try {
     return get(COOKIE_NAME);
