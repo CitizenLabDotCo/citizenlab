@@ -16,7 +16,7 @@ const defaultProps = {
     title_multiloc: { en: '', 'nl-NL': '' },
     description_multiloc: { en: descriptionEN, 'nl-NL': descriptionNL },
   },
-};
+} as any;
 
 jest.mock('hooks/useAppConfigurationLocales', () =>
   jest.fn(() => ['en', 'nl-NL'])

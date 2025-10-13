@@ -6,6 +6,6 @@ export interface ISimilarityRequestPayload {
     title_multiloc?: Multiloc;
     body_multiloc?: Multiloc;
     project_id?: string;
-    phase_ids?: string[];
   };
+  phase_id?: string;
 }

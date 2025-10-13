@@ -16,6 +16,7 @@ export function getNavbarItemSlug({
 }: INavbarItem): RouteType | null {
   const hasCorrespondingPage = !!relationships.static_page.data?.id;
   const hasCorrespondingProject = !!relationships.project.data?.id;
+  const hasCorrespondingFolder = !!relationships.project_folder?.data?.id;
 
   // Default navbar item
   if (code !== 'custom' && !hasCorrespondingPage) {
@@ -30,6 +31,11 @@ export function getNavbarItemSlug({
   // Project navbar item
   if (code === 'custom' && hasCorrespondingProject && slug) {
     return `/projects/${slug}`;
+  }
+
+  // Folder navbar item
+  if (code === 'custom' && hasCorrespondingFolder && slug) {
+    return `/folders/${slug}`;
   }
 
   // This is impossible, but I can't seem to make typescript understand
