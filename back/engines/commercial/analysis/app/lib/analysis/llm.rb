@@ -3,5 +3,6 @@ module Analysis
     class Error < StandardError; end
     class UnsupportedAttachmentError < Error; end
     class PreviewPendingError < Error; end
+    class TooManyRequestsError < Error; end
   end
 end

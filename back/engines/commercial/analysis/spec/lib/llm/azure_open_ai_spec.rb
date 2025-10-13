@@ -43,7 +43,7 @@ RSpec.describe Analysis::LLM::AzureOpenAI do
         expect(ErrorReporter).to receive(:report_msg).once
 
         expect { service.chat('Hello, how are you?', retries: 0) }
-          .to raise_error(Faraday::TooManyRequestsError)
+          .to raise_error(Analysis::LLM::TooManyRequestsError)
       end
 
       it 'retries the specified number of times before raising the error' do
@@ -56,7 +56,7 @@ RSpec.describe Analysis::LLM::AzureOpenAI do
         expect(ErrorReporter).to receive(:report_msg).once
 
         expect { service.chat('Hello, how are you?', retries: max_retries) }
-          .to raise_error(Faraday::TooManyRequestsError)
+          .to raise_error(Analysis::LLM::TooManyRequestsError)
       end
 
       it 'retries MAX_RETRIES times by default' do
@@ -67,7 +67,7 @@ RSpec.describe Analysis::LLM::AzureOpenAI do
         expect(ErrorReporter).to receive(:report_msg).once
 
         expect { service.chat('Hello, how are you?') }
-          .to raise_error(Faraday::TooManyRequestsError)
+          .to raise_error(Analysis::LLM::TooManyRequestsError)
       end
 
       it 'succeeds if a retry succeeds within the allowed attempts' do

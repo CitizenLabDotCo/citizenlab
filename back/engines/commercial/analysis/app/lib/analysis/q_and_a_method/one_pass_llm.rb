@@ -78,11 +78,9 @@ module Analysis
         LLM::Message.new(prompt.to_s)
       end
 
-      plan.llm.chat_async(messages) do |new_text|
+      plan.llm.chat_async(messages, retries: 0) do |new_text|
         update_answer([question.answer || '', new_text].join)
       end
-    rescue StandardError => e
-      raise QAndAFailedError, e
     end
 
     def prompt(project, inputs_text, include_comments)

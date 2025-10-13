@@ -76,7 +76,8 @@ module Analysis
               'API request to Azure OpenAI failed',
               extra: { response: e.response }
             )
-            raise
+
+            raise TooManyRequestsError
           end
         end
       end
