@@ -11,6 +11,7 @@ import useFiles from 'api/files/useFiles';
 
 import MultipleSelect from 'components/HookForm/MultipleSelect';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+import NewLabel from 'components/UI/NewLabel';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { useIntl } from 'utils/cl-intl';
@@ -98,7 +99,9 @@ const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
                 numberAttachedFiles: watchedFileIds.length || 0,
               })}
             </Title>
+            <NewLabel ml="4px" mt="4px" expiryDate={new Date('2026-01-15')} />
           </Box>
+
           <Text>{formatMessage(messages.attachFilesDescription)}</Text>
 
           <MultipleSelect
