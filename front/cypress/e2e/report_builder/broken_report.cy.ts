@@ -57,9 +57,7 @@ describe('Broken report', () => {
           .included as ICustomFieldOptionData[];
 
         const selectField = fields[1];
-        const selectKey = selectField.attributes.key;
         const multiSelectField = fields[2];
-        const multiSelectKey = multiSelectField.attributes.key;
 
         const getAnswerKeys = (field: ICustomFieldResponse) => {
           return field.relationships.options.data.map((option) => {
@@ -89,8 +87,8 @@ describe('Broken report', () => {
               password,
               project_id: projectId,
               fields: {
-                [selectKey]: selectAnswerKeys[0],
-                [multiSelectKey]: [
+                [selectField.attributes.key]: selectAnswerKeys[0],
+                [multiSelectField.attributes.key]: [
                   multiSelectAnswerKeys[0],
                   multiSelectAnswerKeys[1],
                 ],
