@@ -44,9 +44,8 @@ const SingleSelectField = ({
   const { data: areas } = useAreas({});
 
   const value = watch(question.key);
-
   const options = useMemo(() => {
-    if (question.key === 'u_domicile') {
+    if (question.key === 'u_domicile' || question.key === 'domicile') {
       return [
         ...(areas?.data || []).map((area) => ({
           value: area.id,

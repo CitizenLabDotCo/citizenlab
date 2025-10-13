@@ -73,9 +73,9 @@ const ProfileForm = () => {
   const { data: lockedAttributes } = useUserLockedAttributes();
   const { formatMessage } = useIntl();
   const [extraFormData, setExtraFormData] = useState<Record<string, any>>({});
-  const [showAllErrors, setShowAllErrors] = useState(false);
   const [profanityApiError, setProfanityApiError] = useState(false);
 
+  console.log(authUser);
   const schema = object({
     first_name: string().when('last_name', (last_name, schema) => {
       return last_name
@@ -298,9 +298,8 @@ const ProfileForm = () => {
           </SectionField>
           <UserCustomFieldsForm
             authenticationContext={GLOBAL_CONTEXT}
-            showAllErrors={showAllErrors}
-            setShowAllErrors={setShowAllErrors}
             onChange={setExtraFormData}
+            formData={authUser.data.attributes.custom_field_values}
           />
           <Box display="flex">
             <Button processing={methods.formState.isSubmitting}>

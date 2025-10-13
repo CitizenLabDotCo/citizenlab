@@ -1,30 +1,46 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+
+import { FormProvider } from 'react-hook-form';
 
 import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
-import useAuthUser from 'api/me/useAuthUser';
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
 
 import CustomFields from 'components/CustomFieldsForm/CustomFields';
+import usePageForm from 'components/CustomFieldsForm/Page/usePageForm';
 
 interface Props {
-  showAllErrors: boolean;
-  setShowAllErrors: (showAllErrors: boolean) => void;
   onChange: (formData: Record<string, any>) => void;
-}
-
-interface OuterProps extends Props {
   authenticationContext: AuthenticationContext;
+  formData?: Record<string, any>;
 }
 
-const UserCustomFieldsForm = ({ authenticationContext }: OuterProps) => {
-  const { data: authUser } = useAuthUser();
+const UserCustomFieldsForm = ({
+  authenticationContext,
+  formData,
+  onChange,
+}: Props) => {
   const { data: customFields } = usePermissionsCustomFields(
     authenticationContext
   );
+  const { methods } = usePageForm({
+    pageQuestions: customFields || [],
+    defaultValues: formData,
+  });
 
-  if (!authUser || !customFields) return null;
+  useEffect(() => {
+    const subscription = methods.watch((value) => {
+      onChange(value);
+    });
+    return () => subscription.unsubscribe();
+  }, [methods, onChange]);
 
-  return <CustomFields questions={customFields as any} />;
+  if (!customFields) return null;
+
+  return (
+    <FormProvider {...methods}>
+      <CustomFields questions={customFields} />
+    </FormProvider>
+  );
 };
 
 export default UserCustomFieldsForm;

@@ -43,7 +43,6 @@ const CustomFields = ({
   const smallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
   const [_formData, setFormData] = useState<Record<string, any>>({});
-  const [showAllErrors, setShowAllErrors] = useState(false);
 
   useEffect(() => {
     trackEventByName(tracks.signUpCustomFieldsStepEntered);
@@ -74,13 +73,8 @@ const CustomFields = ({
       pb={smallerThanPhone ? '14px' : '28px'}
       id="e2e-signup-custom-fields-container"
     >
-      {/* TODO: Fix this the next time the file is edited. */}
-      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-      {/* <FormWrapper formId={uiSchema?.options?.formId}> */}
       <UserCustomFieldsForm
         authenticationContext={authenticationData.context}
-        showAllErrors={showAllErrors}
-        setShowAllErrors={setShowAllErrors}
         onChange={setFormData}
       />
 
