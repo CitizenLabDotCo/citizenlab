@@ -12,7 +12,11 @@ resource 'File Transcripts' do
     context 'for an audio file with completed transcript' do
       before do
         admin_header_token
-        @file = create(:file, ai_processing_allowed: true)
+        @file = create(:file)
+        # If we'd set ai_processing_allowed to true in the factory, the uploader
+        # runs the description job which fails. Be updating it here instead, we
+        # avoid the execution of the uploader callbacks in tests.
+        @file.update(ai_processing_allowed: true)
         @transcript = create(:file_transcript, :completed, file: @file)
       end
 
@@ -33,7 +37,8 @@ resource 'File Transcripts' do
     context 'for an audio file with processing transcript' do
       before do
         admin_header_token
-        @file = create(:file, ai_processing_allowed: true)
+        @file = create(:file)
+        @file.update(ai_processing_allowed: true)
         @transcript = create(:file_transcript, :processing, file: @file)
       end
 
@@ -51,7 +56,8 @@ resource 'File Transcripts' do
     context 'for an audio file with failed transcript' do
       before do
         admin_header_token
-        @file = create(:file, ai_processing_allowed: true)
+        @file = create(:file)
+        @file.update(ai_processing_allowed: true)
         @transcript = create(:file_transcript, :failed, file: @file)
       end
 
@@ -85,7 +91,8 @@ resource 'File Transcripts' do
       before do
         header_token_for create(:user)
         @other_user = create(:user)
-        @file = create(:file, uploader: @other_user, ai_processing_allowed: true)
+        @file = create(:file, uploader: @other_user)
+        @file.update(ai_processing_allowed: true)
         @transcript = create(:file_transcript, :completed, file: @file)
       end
 
