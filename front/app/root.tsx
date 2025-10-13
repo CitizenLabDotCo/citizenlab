@@ -23,10 +23,13 @@ import {
   createRouter,
   Route,
   RouterProvider,
+  Outlet,
 } from 'utils/router';
 
 import prefetchData from './prefetchData';
 import createRoutes from './routes2';
+
+import App from 'containers/App';
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
@@ -68,7 +71,13 @@ const findComponent = (legacyRoute: any) => {
 };
 
 const setupRouter = (legacyRoutes: LegacyRoutes) => {
-  const rootRoute = createRootRoute({});
+  const rootRoute = createRootRoute({
+    component: () => (
+      <App>
+        <Outlet />
+      </App>
+    ), // Use Outlet to render child routes
+  });
 
   const children: Route[] = [];
 
