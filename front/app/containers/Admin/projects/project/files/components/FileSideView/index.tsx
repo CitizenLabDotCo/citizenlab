@@ -94,7 +94,7 @@ const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
                 </Box>
 
                 {isTranscriptionEnabled &&
-                  file.data.relationships.transcript.data && (
+                  file.data.relationships.transcript?.data && (
                     <Box mt="32px">
                       <FileTranscription file={file.data} />
                     </Box>

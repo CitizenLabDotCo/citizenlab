@@ -4,11 +4,15 @@ require 'rails_helper'
 
 RSpec.describe Files::TranscriptService, type: :service do
   let(:service) { described_class.new(file) }
-  let(:file) { create(:file, ai_processing_allowed: true, name: 'david.mp3') }
+  let(:file) { create(:file, name: 'david.mp3') }
   let(:mock_client) { instance_double(AssemblyAIClient) }
 
   before do
     allow(AssemblyAIClient).to receive(:new).and_return(mock_client)
+    # If we'd set ai_processing_allowed to true in the factory, the uploader
+    # runs the description job which fails. Be updating it here instead, we
+    # avoid the execution of the uploader callbacks in tests.
+    file.update(ai_processing_allowed: true)
   end
 
   describe '#should_generate_transcript?' do
@@ -35,7 +39,7 @@ RSpec.describe Files::TranscriptService, type: :service do
     end
 
     context 'when format is not supported' do
-      let(:file) { create(:file, ai_processing_allowed: true, mime_type: 'text/plain') }
+      let(:file) { create(:file, mime_type: 'text/plain') }
 
       it 'returns false' do
         expect(service.should_generate_transcript?).to be false
@@ -85,7 +89,7 @@ RSpec.describe Files::TranscriptService, type: :service do
         expect(transcript.assemblyai_id).to eq 'abc123'
 
         expect(mock_client).to have_received(:submit_transcript_from_file).with(
-          kind_of(String),
+          kind_of(StringIO),
           hash_including(
             punctuate: true,
             format_text: true,
