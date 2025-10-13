@@ -192,7 +192,7 @@ gem 'drb'
 gem 'nkf'
 gem 'mutex_m'
 
-# Explicitly adding timezone data to make sure all timezones (e.g. Asia/Choibalsan are supported).
+# Explicitly adding timezone data to make sure all timezones listed in the timezone service (e.g. Asia/Choibalsan) are supported.
 gem 'tzinfo', '~> 2.0'
 gem 'tzinfo-data', '~> 1.2024'
 
