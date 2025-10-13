@@ -11,7 +11,7 @@ class WebApi::V1::InvitesController < ApplicationController
     already_accepted: 'already_accepted'
   }
 
-  skip_after_action :verify_authorized, only: :accept
+  skip_after_action :verify_authorized, only: %i[accept resend]
 
   def index
     @invites = policy_scope(Invite)
@@ -122,6 +122,21 @@ class WebApi::V1::InvitesController < ApplicationController
     else
       head :internal_server_error
     end
+  end
+
+  def resend
+    user = User.find_by(email: accept_params[:email])
+
+    unless user&.invite_status == 'pending'
+      render json: { errors: { base: [{ error: 'no_pending_invite' }] } }, status: :unprocessable_entity
+      return
+    end
+
+    invite = user&.invitee_invite
+
+    LogActivityJob.perform_later(invite, 'resent', current_user, nil)
+
+    head :ok
   end
 
   private

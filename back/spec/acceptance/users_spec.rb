@@ -259,7 +259,7 @@ resource 'Users' do
               'blacklisted_email_domain_used',
               nil,
               anything,
-              payload: { email: email }
+              payload: { email: email, remote_ip: anything }
             )
           end
         end
@@ -1426,6 +1426,14 @@ resource 'Users' do
               example_request 'is allowed' do
                 expect(@user.reload.email).to eq(email)
                 assert_status 200
+              end
+
+              example 'is not allowed when there is already an invite associated with email' do
+                create(:invited_user, email: email)
+                do_request
+
+                expect(@user.reload.email).to be_nil
+                assert_status 422
               end
             end
 

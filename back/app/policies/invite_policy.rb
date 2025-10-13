@@ -46,4 +46,8 @@ class InvitePolicy < ApplicationPolicy
   def accept?
     true
   end
+
+  def resend?
+    true
+  end
 end

@@ -69,9 +69,12 @@ const EmailAndPasswordSignUp = ({
 
   const schema = getSchema(minimumPasswordLength, formatMessage);
 
-  const methods = useForm({
+  const methods = useForm<FormValues>({
     mode: 'onSubmit',
-    defaultValues: { ...DEFAULT_VALUES, ...state.prefilledBuiltInFields },
+    defaultValues: {
+      ...DEFAULT_VALUES,
+      ...state.prefilledBuiltInFields,
+    },
     resolver: yupResolver(schema),
   });
 

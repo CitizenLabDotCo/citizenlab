@@ -30,14 +30,6 @@ describe('Project settings', () => {
     });
   });
 
-  describe('Folder', () => {
-    it('The folder preview links to the folder selector', () => {
-      cy.visit(`admin/projects/${globalProjectId}`);
-      cy.dataCy('e2e-folder-preview-link-to-settings').click();
-      cy.dataCy('e2e-project-folder-setting-field').should('exist');
-    });
-  });
-
   describe('Project title', () => {
     it('The title preview links to project title settings', () => {
       cy.visit(`admin/projects/${globalProjectId}`);

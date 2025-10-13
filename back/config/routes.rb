@@ -28,6 +28,7 @@ Rails.application.routes.draw do
         resources :permissions, param: :permission_action do
           get 'requirements', on: :member
           get 'schema', on: :member
+          get 'custom_fields', on: :member
           get 'access_denied_explanation', on: :member
           patch 'reset', on: :member
           resources :permissions_custom_fields, shallow: true do
@@ -285,6 +286,7 @@ Rails.application.routes.draw do
         post 'by_token/:token/accept', on: :collection, to: 'invites#accept'
         get :example_xlsx, on: :collection
         get :as_xlsx, on: :collection, action: 'index_xlsx'
+        post 'resend', on: :collection, to: 'invites#resend'
       end
 
       resources :invites_imports, controller: 'invites/invites_imports', only: %i[show count_new_seats count_new_seats_xlsx] do
