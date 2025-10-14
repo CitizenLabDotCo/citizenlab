@@ -240,13 +240,13 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
       if input.save(**save_options)
         update_file_upload_fields input, form, params_for_create
 
-        input.update!(
-          body_multiloc: TextImageService.new.swap_data_images_multiloc(
+        if body_multiloc.present?
+          input.update!(body_multiloc: TextImageService.new.swap_data_images_multiloc(
             body_multiloc,
             field: :body_multiloc,
             imageable: input
-          )
-        )
+          ))
+        end
 
         sidefx.after_create(input, current_user)
         write_everyone_tracking_cookie input
