@@ -219,6 +219,7 @@ const TimeControl = ({
             endDate: to ? moment(to) : null,
           });
         }}
+        height="48px"
       />
       {tooltip && <IconTooltip ml="12px" content={tooltip} />}
     </Container>
