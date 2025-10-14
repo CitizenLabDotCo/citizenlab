@@ -14,4 +14,9 @@ describe('isAllowedOnUrl', () => {
     expect(isAllowedOnUrl('/en/pages/custom-page')).toBeTruthy();
     expect(isAllowedOnUrl('/nl-NL/pages/custom-page')).toBeTruthy();
   });
+
+  it('returns false for project page', () => {
+    expect(isAllowedOnUrl('/en/projects/project-name')).toBeFalsy();
+    expect(isAllowedOnUrl('/nl-NL/projects/project-name')).toBeFalsy();
+  });
 });
