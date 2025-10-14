@@ -44,4 +44,23 @@ RSpec.describe EmailCampaigns::Campaigns::YourInputInScreening do
       expect(campaign.run_filter_hooks(activity: activity)).to be_falsy
     end
   end
+
+  describe 'send_on_activity' do
+    it 'delivers context campaigns' do
+      phase = create(:proposals_phase)
+      campaign = create(:your_input_in_screening_campaign, context: phase)
+      proposal = create(:proposal, idea_status: create(:proposal_status_prescreening), publication_status: 'submitted', project: phase.project, creation_phase: phase, phases: [phase])
+      activity = create(:activity, item: proposal, action: 'submitted')
+
+      expect do
+        EmailCampaigns::DeliveryService.new.send_on_activity(activity)
+      end.to have_enqueued_job(ActionMailer::MailDeliveryJob)
+        .with(
+          campaign.mailer_class.to_s,
+          'campaign_mail',
+          'deliver_now',
+          anything
+        )
+    end
+  end
 end
