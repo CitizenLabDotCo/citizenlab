@@ -5,6 +5,7 @@ import {
   Label,
   Spinner,
   BoxProps,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import ReactSelect from 'react-select';
 import { useTheme } from 'styled-components';
@@ -177,9 +178,32 @@ const ProjectFilter = ({
             ...base,
             zIndex: 1001,
           }),
-          control: (base) => ({
+          control: (base, { isFocused }) => ({
             ...base,
-            minWidth: '300px',
+            minWidth: '310px',
+            minHeight: '48px',
+            height: '48px',
+            borderWidth: isFocused ? '2px' : '1px',
+            borderColor: isFocused
+              ? theme.colors.tenantPrimary
+              : colors.borderDark,
+            boxShadow: 'none',
+            '&:hover': {
+              borderColor: isFocused
+                ? theme.colors.tenantPrimary
+                : colors.black,
+            },
+          }),
+          placeholder: (base) => ({
+            ...base,
+            color: colors.placeholder,
+          }),
+          dropdownIndicator: (base, { isFocused }) => ({
+            ...base,
+            color: isFocused ? theme.colors.tenantPrimary : colors.borderDark,
+            '&:hover': {
+              color: theme.colors.tenantPrimary,
+            },
           }),
         }}
         menuPosition="fixed"
