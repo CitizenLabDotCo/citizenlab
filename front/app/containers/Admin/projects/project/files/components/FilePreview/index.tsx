@@ -15,6 +15,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import DownloadFileButton from '../DownloadFileButton';
 
+import AudioFilePreview, { AudioRef } from './AudioFilePreview';
 import CsvFilePreview from './CsvFilePreview';
 import IframePreview from './IframeFilePreview';
 import MarkdownFilePreview from './MarkdownFilePreview';
@@ -29,11 +30,21 @@ import {
 } from './utils';
 import VideoFilePreview from './VideoFilePreview';
 
+export type { AudioRef };
+
 type Props = {
   file: IFile;
+  audioRef?: React.Ref<AudioRef>;
+  onCurrentTimeJump?: (time: number) => void;
+  onCurrentTimeUpdate?: (time: number) => void;
 };
 
-const FilePreview = ({ file }: Props) => {
+const FilePreview = ({
+  file,
+  audioRef,
+  onCurrentTimeJump,
+  onCurrentTimeUpdate,
+}: Props) => {
   const { formatMessage } = useIntl();
 
   const { data: filePreview, isLoading: isLoadingPreview } = useFilePreview(
@@ -83,16 +94,14 @@ const FilePreview = ({ file }: Props) => {
 
       if (AUDIO_MIMETYPES.has(mimeType)) {
         return (
-          <Box mt="24px">
-            <audio
-              title={file.data.attributes.name}
-              controls
-              style={{ width: '100%' }}
-            >
-              <source src={fileUrl} type={mimeType} />
-              {formatMessage(messages.previewNotSupported)}
-            </audio>
-          </Box>
+          <AudioFilePreview
+            ref={audioRef}
+            url={fileUrl}
+            title={file.data.attributes.name}
+            mimeType={mimeType}
+            onCurrentTimeJump={onCurrentTimeJump}
+            onCurrentTimeUpdate={onCurrentTimeUpdate}
+          />
         );
       }
 
