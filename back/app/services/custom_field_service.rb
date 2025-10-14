@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class CustomFieldService
+  include CustomFieldUserOverrides
+
   def initialize
     @multiloc_service = MultilocService.new app_configuration: AppConfiguration.instance
   end
