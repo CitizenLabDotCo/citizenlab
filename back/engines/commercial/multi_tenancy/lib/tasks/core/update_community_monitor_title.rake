@@ -17,7 +17,7 @@ namespace :fix_existing_tenants do
           title_multiloc: new_title_multiloc,
           native_survey_title_multiloc: new_title_multiloc
         )
-        Rails.logger.info "UPDATED community monitor title"
+        Rails.logger.info 'UPDATED community monitor title'
       end
     end
   end
