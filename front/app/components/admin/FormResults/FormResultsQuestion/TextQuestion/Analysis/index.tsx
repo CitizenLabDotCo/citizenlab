@@ -9,7 +9,7 @@ import {
   Spinner,
 } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearch } from 'utils/router';
 import styled from 'styled-components';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
@@ -47,7 +47,7 @@ const Analysis = ({
   hasOtherResponses,
   ...props
 }: Props) => {
-  const [search] = useSearchParams();
+  const [search] = useSearch({ strict: false });
   const { data: appConfig } = useAppConfiguration();
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const { formatMessage } = useIntl();
@@ -55,7 +55,9 @@ const Analysis = ({
     useAddAnalysis();
   const { mutate: updateAnalysis, isLoading } = useUpdateAnalysis();
 
-  const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams() as {
+  const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams({
+    strict: false,
+  }) as {
     projectId: string;
     phaseId: string;
   };

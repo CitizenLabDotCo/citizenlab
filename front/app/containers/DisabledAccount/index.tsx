@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 
 import ContentContainer from 'components/ContentContainer';
 import { Title } from 'components/smallForm';
@@ -13,7 +13,7 @@ import Link from 'utils/cl-router/Link';
 import messages from './messages';
 
 const DisabledAccount = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const parsedDate = moment(searchParams.get('date')).format('LL');
 
   return (

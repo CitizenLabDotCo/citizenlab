@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
@@ -25,7 +25,7 @@ const Insights = () => {
   const { formatMessage } = useIntl();
   const [isQuestionInputOpen, setIsQuestionInputOpen] = useState(false);
   const [isFileSelectionOpen, setIsFileSelectionOpen] = useState(false);
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
   const { data: insights, isLoading } = useAnalysisInsights({
     analysisId,
   });

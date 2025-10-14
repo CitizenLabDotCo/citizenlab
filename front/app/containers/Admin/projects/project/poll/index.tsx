@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import { isError } from 'lodash-es';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import GetPollQuestions, {
   GetPollQuestionsChildProps,
 } from 'resources/GetPollQuestions';
@@ -28,7 +28,7 @@ const PhaseContainer = styled.div`
 `;
 
 const AdminProjectPoll = () => {
-  const { phaseId } = useParams() as {
+  const { phaseId } = useParams({ strict: false }) as {
     phaseId?: string;
   };
   const { data: phase } = usePhase(phaseId);

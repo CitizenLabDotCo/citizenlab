@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useCause from 'api/causes/useCause';
 import useUpdateCause from 'api/causes/useUpdateCause';
@@ -15,7 +15,7 @@ import messages from './messages';
 
 const EditCause = () => {
   const { mutateAsync: updateCause } = useUpdateCause();
-  const { projectId, causeId, phaseId } = useParams() as {
+  const { projectId, causeId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     causeId: string;
     phaseId: string;

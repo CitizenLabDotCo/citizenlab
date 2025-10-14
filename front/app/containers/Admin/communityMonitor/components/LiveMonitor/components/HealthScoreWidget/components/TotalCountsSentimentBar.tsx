@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Tooltip } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 
 import SentimentBar from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/components/SentimentScore/SentimentBar';
 import SentimentTooltip from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/components/SentimentScore/SentimentTooltip';
@@ -19,7 +19,7 @@ type Props = {
   quarter?: string;
 };
 const TotalCountsSentimentBar = ({ sentimentScores, ...props }: Props) => {
-  const [search] = useSearchParams();
+  const [search] = useSearch({ strict: false });
 
   // Get the current year/quarter filter
   const year = props.year || getYearFilter(search);

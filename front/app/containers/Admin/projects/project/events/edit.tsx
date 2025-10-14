@@ -13,7 +13,7 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty, get, isError } from 'lodash-es';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import { RouteType } from 'routes';
 import { useTheme } from 'styled-components';
 import { Multiloc, UploadFile } from 'typings';
@@ -67,7 +67,7 @@ import { initializeEventTimes } from './utils';
 const EventMap = lazy(() => import('./components/EventMap'));
 
 const AdminProjectEventEdit = () => {
-  const { id: eventId, projectId } = useParams();
+  const { id: eventId, projectId } = useParams({ strict: false });
 
   const isCreatingNewEvent = !eventId;
 

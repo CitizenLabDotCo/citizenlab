@@ -1,5 +1,4 @@
 import { useNode } from '@craftjs/core';
-import { useLocation, useSearchParams } from 'react-router-dom';
 
 import useGraphDataUnitsPublished from 'api/graph_data_units/useGraphDataUnitsPublished';
 
@@ -8,6 +7,7 @@ import { reportingEnumRoutes } from 'containers/Admin/reporting/routes';
 
 import { BaseResponseData } from 'utils/cl-react-query/fetcher';
 import { isPage } from 'utils/helperUtils';
+import { useLocation, useSearch } from 'utils/router';
 
 import { ParametersLive, Options } from './requestTypes';
 import useGraphDataUnitsLive from './useGraphDataUnitsLive';
@@ -62,7 +62,7 @@ const useGraphDataUnits = <Response extends BaseResponseData>(
   { enabled = true, onSuccess }: Options = { enabled: true }
 ) => {
   const { pathname } = useLocation();
-  const [search] = useSearchParams();
+  const [search] = useSearch({ strict: false });
 
   const { id: graphId } = useNode();
   const { reportId, phaseId } = useReportContext();

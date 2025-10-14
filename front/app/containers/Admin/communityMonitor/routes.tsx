@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 
-import { Navigate } from 'react-router-dom';
+import { Navigate } from 'utils/router';
 
 import PageLoading from 'components/UI/PageLoading';
 
@@ -34,7 +34,7 @@ const CommunityMonitor = lazy(() => import('./index'));
 
 export enum communityMonitorRoutes {
   communityMonitor = 'community-monitor',
-  communityMonitorSurveyEdit = 'projects/:projectId/phases/:phaseId/survey/edit',
+  communityMonitorSurveyEdit = 'projects/$projectId/phases/$phaseId/survey/edit',
   communityMonitorDefault = '',
   liveMonitor = 'live-monitor',
   participants = 'participants',
@@ -69,7 +69,7 @@ const communityMonitorsRoutes = () => {
     children: [
       {
         path: '',
-        element: <Navigate to="live-monitor" replace />,
+        element: <Navigate to="/live-monitor" replace />,
       },
       {
         path: communityMonitorRoutes.liveMonitor,
@@ -97,7 +97,7 @@ const communityMonitorsRoutes = () => {
         children: [
           {
             path: '',
-            element: <Navigate to="survey" replace />,
+            element: <Navigate to="/survey" replace />,
           },
           {
             path: communityMonitorRoutes.settingsSurvey,

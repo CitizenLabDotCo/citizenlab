@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearch } from 'utils/router';
 
 import useProjectById from 'api/projects/useProjectById';
 import useSurveyResults from 'api/survey_results/useSurveyResults';
@@ -25,7 +25,9 @@ const FormResults = (props: Props) => {
   const localize = useLocalize();
 
   // Get the projectId and phaseId from the URL
-  const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams() as {
+  const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams({
+    strict: false,
+  }) as {
     projectId: string;
     phaseId: string;
   };
@@ -35,7 +37,7 @@ const FormResults = (props: Props) => {
   const { data: project } = useProjectById(projectId);
 
   // Get the current year and quarter for the results
-  const [search] = useSearchParams();
+  const [search] = useSearch({ strict: false });
 
   // Get the year and quarter
   const year = getYearFilter(search);

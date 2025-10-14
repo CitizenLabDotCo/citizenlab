@@ -2,7 +2,7 @@ import React, { useEffect, useCallback, useState } from 'react';
 
 import { Success, Box, colors } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import { Multiloc, SupportedLocale } from 'typings';
 
 import useProjectById from 'api/projects/useProjectById';
@@ -39,7 +39,7 @@ const submitBarHeight = '62px';
 
 const ProjectDescription = () => {
   const { formatMessage } = useIntl();
-  const { projectId } = useParams();
+  const { projectId } = useParams({ strict: false });
   const { data: project } = useProjectById(projectId);
   const { mutate: updateProject, isLoading, error } = useUpdateProject();
   const showProjectDescriptionBuilder = useFeatureFlag({

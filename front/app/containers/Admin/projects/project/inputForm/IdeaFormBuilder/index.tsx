@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import { RouteType } from 'routes';
 
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
@@ -55,7 +55,7 @@ const IdeaFormBuilder = ({
 };
 
 export default () => {
-  const { projectId, phaseId } = useParams();
+  const { projectId, phaseId } = useParams({ strict: false });
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
 

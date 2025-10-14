@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, Select, Input, Label } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -26,7 +26,7 @@ const EngagementFilter = ({
   id,
 }: EngagementFilterProps) => {
   const { formatMessage } = useIntl();
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
 
   const selectValue = searchParams.get(to) ? to : from;
 

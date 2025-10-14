@@ -10,7 +10,7 @@ import {
   Select,
   Text,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useAnalysis from 'api/analyses/useAnalysis';
 import { Unit } from 'api/analysis_heat_map_cells/types';
@@ -98,7 +98,7 @@ const HeatmapDetails = ({
   );
   const isSelectedRowTypeTags = selectedRowType === 'tags';
 
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
   const { data: analysis } = useAnalysis(analysisId);
 
   const { data: analysisHeatmapCells } = useAnalysisHeatmapCells({

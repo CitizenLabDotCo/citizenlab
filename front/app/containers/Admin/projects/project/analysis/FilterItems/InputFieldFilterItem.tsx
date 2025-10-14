@@ -6,7 +6,7 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useAnalysis from 'api/analyses/useAnalysis';
 import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
@@ -35,7 +35,7 @@ const InputFieldFilterItem = ({
   predicate,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
   const { data: analysis } = useAnalysis(analysisId);
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

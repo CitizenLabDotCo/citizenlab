@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 
-import { Navigate } from 'react-router-dom';
+import { Navigate } from 'utils/router';
 import { RouteType } from 'routes';
 
 import PageLoading from 'components/UI/PageLoading';
@@ -61,14 +61,14 @@ export enum pagesAndMenuRoutes {
   homepageBuilderPreview = 'homepage-builder/preview',
   pages = 'pages',
   pagesNew = 'new',
-  customPageId = ':customPageId',
+  customPageId = '$customPageId',
   pageSettings = 'settings',
   pageContent = 'content',
-  customPageIdBanner = ':customPageId/banner',
-  customPageIdTopInfoSection = ':customPageId/top-info-section',
-  customPageIdBottomInfoSection = ':customPageId/bottom-info-section',
-  customPageIdAttachments = ':customPageId/attachments',
-  customPageIdProjects = ':customPageId/projects',
+  customPageIdBanner = '$customPageId/banner',
+  customPageIdTopInfoSection = '$customPageId/top-info-section',
+  customPageIdBottomInfoSection = '$customPageId/bottom-info-section',
+  customPageIdAttachments = '$customPageId/attachments',
+  customPageIdProjects = '$customPageId/projects',
 }
 
 export type pagesAndMenuRouteTypes =
@@ -134,7 +134,7 @@ export default () => ({
           path: pagesAndMenuRoutes.customPageId,
           element: <EditCustomPageIndex />,
           children: [
-            { path: '', element: <Navigate to="settings" /> }, // to handle manually changing URL
+            { path: '', element: <Navigate to="/settings" /> }, // to handle manually changing URL
             {
               path: pagesAndMenuRoutes.pageSettings,
               element: (
@@ -196,7 +196,7 @@ export default () => ({
       ],
     },
     {
-      path: 'navbar-items/edit/:navbarItemId',
+      path: 'navbar-items/edit/$navbarItemId',
       element: <EditNavbarItemForm />,
     },
   ],

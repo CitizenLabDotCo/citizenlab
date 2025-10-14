@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
 import { Box, Spinner, Toggle } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useMapConfigById from 'api/map_config/useMapConfigById';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
@@ -32,7 +32,7 @@ const PointLocationQuestion = ({
   const resetButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
 
   // Get project from URL
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };

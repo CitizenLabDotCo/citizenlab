@@ -4,7 +4,7 @@ import contexts from '../.storybook/contexts';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 import mockServer from '../.storybook/mockServer';
 import { reactIntl } from '../.storybook/reactIntl';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'utils/router';
 import { allModes } from '../.storybook/modes';
 import { MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
 

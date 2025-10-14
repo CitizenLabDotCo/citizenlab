@@ -3,7 +3,7 @@ import React, { useCallback, useEffect } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 import { CLError, RHFErrors } from 'typings';
 
 import useLocale from 'hooks/useLocale';
@@ -37,7 +37,7 @@ const LocationInput = ({
     watch,
   } = useFormContext();
   const locale = useLocale();
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const latitude = searchParams.get('lat');
   const longitude = searchParams.get('lng');
 

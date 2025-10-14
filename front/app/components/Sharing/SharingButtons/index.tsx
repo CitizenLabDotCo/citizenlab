@@ -6,7 +6,7 @@ import {
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
@@ -46,7 +46,7 @@ const SharingButtons = ({
   hideTitle,
   justifyContent,
 }: Props) => {
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const phaseContext = searchParams.get('phase_context');
   const { data: appConfiguration } = useAppConfiguration();
   const isSharingEnabled =

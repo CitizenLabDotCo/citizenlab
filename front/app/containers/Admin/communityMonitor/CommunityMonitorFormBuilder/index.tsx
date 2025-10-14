@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';
@@ -11,7 +11,7 @@ import FormBuilder from 'components/FormBuilder/edit';
 import { communityMonitorConfig } from './utils';
 
 const CommunityMonitorSurveyFormBuilder = () => {
-  const { phaseId, projectId } = useParams() as {
+  const { phaseId, projectId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };

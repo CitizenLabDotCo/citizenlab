@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 
 import { IProjectData } from 'api/projects/types';
 
@@ -18,7 +18,7 @@ interface Props {
 }
 
 const TopBar = ({ project }: Props) => {
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const goBackParameter = searchParams.get('go_back');
   const [goBack] = useState(goBackParameter === 'true');
   const { formatMessage } = useIntl();

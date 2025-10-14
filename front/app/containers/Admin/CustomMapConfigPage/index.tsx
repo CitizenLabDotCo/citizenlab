@@ -2,7 +2,7 @@ import React, { memo, useEffect, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -43,7 +43,7 @@ interface Props {
 }
 
 const CustomMapConfigPage = memo<Props>(({ className, passedMapConfig }) => {
-  const { projectId } = useParams() as {
+  const { projectId } = useParams({ strict: false }) as {
     projectId: string;
   };
   const { data: appConfig } = useAppConfiguration();

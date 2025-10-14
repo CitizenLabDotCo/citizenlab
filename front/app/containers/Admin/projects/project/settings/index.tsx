@@ -1,11 +1,7 @@
 import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import {
-  Outlet as RouterOutlet,
-  useLocation,
-  useParams,
-} from 'react-router-dom';
+import { Outlet as RouterOutlet, useLocation, useParams } from 'utils/router';
 import { ITab } from 'typings';
 
 import NavigationTabs, { Tab } from 'components/admin/NavigationTabs';
@@ -20,7 +16,7 @@ import messages from './messages';
 const Settings = () => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
   const tabs: ITab[] = [
     {
       label: formatMessage(messages.general),

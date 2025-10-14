@@ -8,7 +8,7 @@ import {
   stylingConsts,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import { IBackgroundJobData } from 'api/background_jobs/types';
 import useTrackBackgroundJobs from 'api/background_jobs/useTrackBackgroundJobs';
@@ -35,7 +35,7 @@ const ReviewSection = ({
 }: {
   importJobs: IBackgroundJobData[];
 }) => {
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };

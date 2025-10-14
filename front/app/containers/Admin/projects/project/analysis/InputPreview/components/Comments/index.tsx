@@ -2,7 +2,7 @@ import React, { useMemo, useEffect } from 'react';
 
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import { useInView } from 'react-intersection-observer';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
 import useComments from 'api/comments/useComments';
@@ -41,7 +41,7 @@ const Comments = () => {
     pageSize: 5,
   });
 
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
   const { data: input } = useAnalysisInput(
     analysisId,
     selectedInputId ?? undefined

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
+import { Outlet as RouterOutlet, useParams } from 'utils/router';
 import styled from 'styled-components';
 import { ITab } from 'typings';
 
@@ -37,7 +37,9 @@ type TabbedPropsType = {
 };
 
 const AdminProjectFolderEdition = () => {
-  const { projectFolderId } = useParams() as { projectFolderId: string };
+  const { projectFolderId } = useParams({ strict: false }) as {
+    projectFolderId: string;
+  };
   const { data: projectFolder } = useProjectFolderById(projectFolderId);
   const { data: authUser } = useAuthUser();
   const localize = useLocalize();

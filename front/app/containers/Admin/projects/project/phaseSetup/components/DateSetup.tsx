@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { format, parseISO, startOfDay } from 'date-fns';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import { CLErrors } from 'typings';
 
 import { IUpdatedPhaseProperties } from 'api/phases/types';
@@ -40,7 +40,7 @@ const DateSetup = ({
   setSubmitState,
   setValidationErrors,
 }: Props) => {
-  const { projectId, phaseId } = useParams();
+  const { projectId, phaseId } = useParams({ strict: false });
   const { data: phases } = usePhases(projectId);
 
   const { start_at, end_at } = formData;

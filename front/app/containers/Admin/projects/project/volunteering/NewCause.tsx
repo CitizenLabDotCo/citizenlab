@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useAddCause from 'api/causes/useAddCause';
 
@@ -13,7 +13,7 @@ import CauseForm, { SubmitValues } from './CauseForm';
 import messages from './messages';
 
 const NewCause = () => {
-  const { projectId, phaseId } = useParams();
+  const { projectId, phaseId } = useParams({ strict: false });
   const { mutateAsync: addCause } = useAddCause();
 
   const handleOnSubmit = async (formValues: SubmitValues) => {

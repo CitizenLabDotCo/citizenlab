@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -9,7 +9,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 const NewCampaignButton = () => {
-  const { projectId } = useParams();
+  const { projectId } = useParams({ strict: false });
   return (
     <ButtonWithLink
       buttonStyle="admin-dark"

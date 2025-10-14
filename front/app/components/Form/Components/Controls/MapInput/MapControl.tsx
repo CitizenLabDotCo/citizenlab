@@ -11,7 +11,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { ControlProps } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useMapConfigById from 'api/map_config/useMapConfigById';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
@@ -46,7 +46,7 @@ const MapControl = ({ ...props }: ControlProps) => {
   const [mapView, setMapView] = useState<MapView | null>(null);
 
   // Get Project
-  const { slug } = useParams() as {
+  const { slug } = useParams({ strict: false }) as {
     slug: string;
   };
   const { data: project } = useProjectBySlug(slug);

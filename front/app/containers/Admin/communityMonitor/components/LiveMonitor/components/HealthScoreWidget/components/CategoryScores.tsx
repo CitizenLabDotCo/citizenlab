@@ -6,7 +6,7 @@ import {
   Text,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 
 import { getPercentageDifference } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
 import TrendIndicator from 'components/TrendIndicator';
@@ -21,7 +21,7 @@ type Props = {
 };
 
 const CategoryScores = ({ sentimentScores, ...props }: Props) => {
-  const [search] = useSearchParams();
+  const [search] = useSearch({ strict: false });
   const isMobileOrSmaller = useBreakpoint('phone');
 
   // Extract year and quarter from search params or defaults

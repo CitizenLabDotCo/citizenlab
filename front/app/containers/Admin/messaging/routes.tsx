@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 
-import { Navigate } from 'react-router-dom';
+import { Navigate } from 'utils/router';
 
 import PageLoading from 'components/UI/PageLoading';
 
@@ -17,10 +17,10 @@ export enum messagingRoutes {
   messaging = 'messaging',
   emailsCustom = `emails/custom`,
   emailsCustomNew = `emails/custom/new`,
-  emailsCustomCampaignId = 'emails/custom/:campaignId',
-  emailsCustomCampaignIdEdit = 'emails/custom/:campaignId/edit',
+  emailsCustomCampaignId = 'emails/custom/$campaignId',
+  emailsCustomCampaignIdEdit = 'emails/custom/$campaignId/edit',
   emailsAutomated = 'emails/automated',
-  emailsAutomatedCampaignIdEdit = 'emails/automated/:campaignId/edit',
+  emailsAutomatedCampaignIdEdit = 'emails/automated/$campaignId/edit',
 }
 
 export type messagingRouteTypes =
@@ -42,7 +42,7 @@ const createAdminMessagingRoutes = () => ({
   children: [
     {
       path: '',
-      element: <Navigate to={messagingRoutes.emailsCustom} />,
+      element: <Navigate to={`/${messagingRoutes.emailsCustom}`} />,
     },
     {
       path: messagingRoutes.emailsCustom,

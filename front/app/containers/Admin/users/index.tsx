@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { media } from '@citizenlab/cl2-component-library';
-import { Outlet as RouterOutlet } from 'react-router-dom';
+import { Outlet as RouterOutlet } from 'utils/router';
 import styled from 'styled-components';
 
 import { IGroupData, MembershipType } from 'api/groups/types';

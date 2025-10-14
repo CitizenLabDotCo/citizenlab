@@ -9,7 +9,7 @@ import {
   Text,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 import styled from 'styled-components';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
@@ -94,7 +94,7 @@ const IdeasWithFiltersSidebar = ({
   inputTerm,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const smallerThanPhone = useBreakpoint('phone');
   const biggerThanLargeTablet = !useBreakpoint('tablet');
 

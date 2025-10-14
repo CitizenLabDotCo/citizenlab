@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { media, colors } from '@citizenlab/cl2-component-library';
-import { useParams, Outlet as RouterOutlet } from 'react-router-dom';
+import { useParams, Outlet as RouterOutlet } from 'utils/router';
 import styled from 'styled-components';
 
 import useUserBySlug from 'api/users/useUserBySlug';
@@ -35,7 +35,7 @@ const StyledContentContainer = styled(ContentContainer)`
 `;
 
 const UsersShowPage = () => {
-  const { userSlug } = useParams() as { userSlug: string };
+  const { userSlug } = useParams({ strict: false }) as { userSlug: string };
   const { data: user } = useUserBySlug(userSlug);
 
   if (!user) return null;

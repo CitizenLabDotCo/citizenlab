@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { UseFormSetError } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
@@ -51,7 +51,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   const [ideaFormDataValid, setIdeaFormDataValid] = useState(false);
   const setError = useRef<UseFormSetError<FormValues>>();
 
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };

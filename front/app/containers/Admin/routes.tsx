@@ -1,7 +1,8 @@
 import React, { lazy } from 'react';
 
+import { Navigate, useLocation } from 'utils/router';
 import moduleConfiguration from 'modules';
-import { Navigate, useLocation } from 'react-router-dom';
+// import { Navigate, useLocation } from 'utils/router';
 
 import { IAppConfigurationData } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -136,8 +137,8 @@ const IndexElement = () => {
 
 export enum descriptionBuilderRoutes {
   projectdescriptionBuilder = 'project-description-builder',
-  description = `project-description-builder/projects/:projectId/description`,
-  preview = `project-description-builder/projects/:projectId/preview`,
+  description = `project-description-builder/projects/$projectId/description`,
+  preview = `project-description-builder/projects/$projectId/preview`,
 }
 
 const createAdminRoutes = () => {
@@ -149,7 +150,7 @@ const createAdminRoutes = () => {
         // Careful: moderators currently have access to the admin index route
         // Adjust isModerator in routePermissions.ts if needed.
         path: '',
-        element: <Navigate to="dashboard/overview" />,
+        element: <Navigate to="/dashboard/overview" />,
       },
       createDashboardRoutes(),
       createAdminUsersRoutes(),

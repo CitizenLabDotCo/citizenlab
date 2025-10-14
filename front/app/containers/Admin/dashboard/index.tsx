@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { Outlet as RouterOutlet } from 'react-router-dom';
+import { Outlet as RouterOutlet } from 'utils/router';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
+import { Outlet as RouterOutlet, useParams } from 'utils/router';
 
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 
@@ -28,7 +28,9 @@ import ViewCustomPageButton from './ViewCustomPageButton';
 const CustomPagesEditSettings = () => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const { customPageId } = useParams() as { customPageId: string };
+  const { customPageId } = useParams({ strict: false }) as {
+    customPageId: string;
+  };
   const { data: customPage } = useCustomPageById(customPageId);
   const canCreateCustomPages = useFeatureFlag({
     name: 'pages',

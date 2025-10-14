@@ -1,7 +1,7 @@
 import React, { lazy } from 'react';
 
+import { Navigate } from 'utils/router';
 import moduleConfiguration from 'modules';
-import { Navigate } from 'react-router-dom';
 
 import PageLoading from 'components/UI/PageLoading';
 
@@ -50,14 +50,14 @@ export enum settingsRoutes {
   policies = 'policies',
   areas = 'areas',
   new = 'new',
-  areaId = ':areaId',
+  areaId = '$areaId',
   topics = 'topics',
   edit = 'edit',
-  topicEdit = ':topicId/edit',
+  topicEdit = '$topicId/edit',
   ideation = 'ideation',
   proposals = 'proposals',
   statuses = 'statuses',
-  statusId = ':statusId',
+  statusId = '$statusId',
 }
 
 export type settingRouteTypes =
@@ -90,7 +90,7 @@ export default () => ({
   children: [
     {
       path: settingsRoutes.settingsDefault,
-      element: <Navigate to="general" replace />,
+      element: <Navigate to="/general" replace />,
     },
     {
       path: settingsRoutes.general,

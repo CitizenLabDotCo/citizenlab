@@ -7,7 +7,7 @@ import {
   Button,
   IconButton,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import { Unit } from 'api/analysis_heat_map_cells/types';
 import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHeatmapCells';
@@ -41,7 +41,7 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
 
   const { formatMessage } = useIntl();
 
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
 
   const { data: analysisHeatmapCells } = useAnalysisHeatmapCells({
     analysisId,

@@ -1,7 +1,7 @@
 import React, { Suspense, useEffect, useState } from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -32,7 +32,7 @@ interface Props {
 const IdeasEditForm = ({ ideaId }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
   const isSmallerThanPhone = useBreakpoint('phone');
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const selectedIdeaId = searchParams.get('selected_idea_id');
 
   const projectId = idea?.data.relationships.project.data.id;

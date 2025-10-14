@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Button } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useAnalysis from 'api/analyses/useAnalysis';
 import { Unit } from 'api/analysis_heat_map_cells/types';
@@ -33,8 +33,8 @@ const Heatmap = () => {
 
   const { formatMessage } = useIntl();
 
-  const { projectId } = useParams() as { projectId: string };
-  const { analysisId } = useParams() as { analysisId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
 
   const { data: analysis } = useAnalysis(analysisId);
 

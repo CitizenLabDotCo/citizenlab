@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import { IOption } from 'typings';
 
 import { IJob } from 'api/copy_inputs/types';
@@ -27,7 +27,7 @@ const ImportInputsModal = ({
   setShowPastInputsModal,
   currentPhaseid,
 }: Props) => {
-  const { projectId: currentProjectId } = useParams();
+  const { projectId: currentProjectId } = useParams({ strict: false });
   const { formatMessage } = useIntl();
   const [selectedProjectId, setSelectedProjectId] = useState<
     string | undefined

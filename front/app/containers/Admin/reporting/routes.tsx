@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 
-import { Navigate } from 'react-router-dom';
+import { Navigate } from 'utils/router';
 
 import PageLoading from 'components/UI/PageLoading';
 
@@ -42,7 +42,7 @@ const reportingRoutes = () => {
           ),
         },
         {
-          path: `:reportId/${reportingEnumRoutes.editor}`,
+          path: `$reportId/${reportingEnumRoutes.editor}`,
           element: (
             <PageLoading>
               <ReportBuilder />
@@ -53,7 +53,7 @@ const reportingRoutes = () => {
     },
     {
       path: reportingEnumRoutes.reporting,
-      element: <Navigate to={reportingEnumRoutes.reportBuilder} />,
+      element: <Navigate to={`/${reportingEnumRoutes.reportBuilder}`} />,
     },
   ];
 };

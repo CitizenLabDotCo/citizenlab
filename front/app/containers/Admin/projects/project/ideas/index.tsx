@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Box, Title, Text, Button } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
@@ -31,7 +31,7 @@ const timelineProjectVisibleFilterMenus: TFilterMenu[] = [
 ];
 
 const AdminProjectIdeas = () => {
-  const { projectId, phaseId } = useParams();
+  const { projectId, phaseId } = useParams({ strict: false });
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const { data: phase } = usePhase(phaseId);

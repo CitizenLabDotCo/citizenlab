@@ -1,8 +1,7 @@
 import React, { Suspense } from 'react';
 
-import { useLocation } from 'react-router-dom';
-
 import { isAdminRoute } from 'utils/permissions/rules/routePermissions';
+import { useLocation } from 'utils/router';
 
 import FullPageSpinner from '../FullPageSpinner';
 

@@ -10,7 +10,7 @@ import {
   Radio,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import useAnalysis from 'api/analyses/useAnalysis';
@@ -73,7 +73,7 @@ const Step1 = ({
     name: 'advanced_autotagging',
     onlyCheckAllowed: true,
   });
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
   const { data: analysis } = useAnalysis(analysisId);
   const { data: allInputs } = useInfiniteAnalysisInputs({
     analysisId,

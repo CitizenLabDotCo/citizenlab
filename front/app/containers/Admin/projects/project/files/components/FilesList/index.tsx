@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Box, Spinner, Text } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import { GetFilesParameters } from 'api/files/types';
 import useFiles from 'api/files/useFiles';
@@ -24,7 +24,7 @@ const FilesList = () => {
   const [sideViewOpened, setSideViewOpened] = useState(false);
   const [selectedFileId, setSelectedFileId] = useState<string | null>(null);
 
-  const { projectId } = useParams() as {
+  const { projectId } = useParams({ strict: false }) as {
     projectId: string;
   };
 

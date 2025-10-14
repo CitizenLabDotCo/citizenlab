@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import { RouteType } from 'routes';
 
 import DownloadPDFButtonWithModal from 'components/admin/FormSync/DownloadPDFButtonWithModal';
@@ -57,7 +57,7 @@ const TabPanel = ({
 };
 
 export default () => {
-  const { projectId, phaseId } = useParams();
+  const { projectId, phaseId } = useParams({ strict: false });
 
   if (!projectId || !phaseId) {
     return null;

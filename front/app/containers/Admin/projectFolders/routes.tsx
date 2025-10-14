@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 
-import { Navigate, Outlet as RouterOutlet } from 'react-router-dom';
+import { Navigate, Outlet as RouterOutlet } from 'utils/router';
 
 import PageLoading from 'components/UI/PageLoading';
 
@@ -14,7 +14,7 @@ const FolderPermissions = lazy(() => import('./containers/permissions'));
 export enum projectFolderRoutes {
   projectFolders = 'projects/folders',
   new = 'new',
-  projectFolderId = `:projectFolderId`,
+  projectFolderId = `$projectFolderId`,
   projectFolderIdDefault = '',
   settings = `settings`,
   projects = `projects`,
@@ -47,7 +47,7 @@ export default () => ({
       children: [
         {
           path: projectFolderRoutes.projectFolderIdDefault,
-          element: <Navigate to="projects" />,
+          element: <Navigate to="/projects" />,
         },
         {
           path: projectFolderRoutes.projects,

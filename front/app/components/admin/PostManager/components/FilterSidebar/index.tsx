@@ -7,7 +7,7 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import { RouteType } from 'routes';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
@@ -67,7 +67,7 @@ const FilterSidebar = ({
   visibleFilterMenus,
   type,
 }: Props) => {
-  const { projectId } = useParams();
+  const { projectId } = useParams({ strict: false });
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
   const handleItemClick = (id: string) => {

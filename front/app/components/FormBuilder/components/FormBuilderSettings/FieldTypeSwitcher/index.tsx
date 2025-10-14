@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Select, Tooltip } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 import useFormSubmissionsCount from 'api/submission_count/useSubmissionCount';
@@ -18,7 +18,7 @@ type Props = {
 };
 
 const FieldTypeSwitcher = ({ field }: Props) => {
-  const { phaseId } = useParams();
+  const { phaseId } = useParams({ strict: false });
 
   const { data: submissionCount } = useFormSubmissionsCount({
     phaseId,

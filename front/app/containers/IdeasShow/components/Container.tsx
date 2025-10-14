@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 
@@ -75,7 +75,7 @@ const Container2 = ({
   handleContainerRef,
 }: Props) => {
   const { data: project } = useProjectById(projectId);
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const ideaIdParameter = searchParams.get('new_idea_id');
   const [newIdeaId, setNewIdeaId] = useState<string | null>(null);
   const timeout = useRef<NodeJS.Timeout>();

@@ -13,7 +13,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useQueryClient } from '@tanstack/react-query';
 import { isEqual, omit, uniq } from 'lodash-es';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import inputsKeys from 'api/analysis_inputs/keys';
@@ -89,7 +89,7 @@ const Tags = () => {
 
   const filters = useAnalysisFilterParams();
 
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
 
   const queryClient = useQueryClient();
   const { data: tags, isLoading: isLoadingTags } = useAnalysisTags({

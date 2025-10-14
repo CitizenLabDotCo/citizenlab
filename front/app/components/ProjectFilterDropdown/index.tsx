@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 
 import useProjects from 'api/projects/useProjects';
 
@@ -36,7 +36,7 @@ const ProjectFilterDropdown = ({
     sort: 'new',
     removeAllUnlisted: true,
   });
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const projectIdsParam =
     eventsTime === 'past'
       ? searchParams.get('past_events_project_ids')

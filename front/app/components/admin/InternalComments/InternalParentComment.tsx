@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Spinner } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'utils/router';
 import styled, { useTheme } from 'styled-components';
 
 import useIdeaById from 'api/ideas/useIdeaById';

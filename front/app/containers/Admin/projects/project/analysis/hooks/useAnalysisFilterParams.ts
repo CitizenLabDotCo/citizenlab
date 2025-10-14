@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 
@@ -30,7 +30,7 @@ const STATIC_ARRAY_FILTERS = ['tag_ids'];
 /** Hook that extracts and returns all filter params used in the analysis,
  * extracted from the url */
 const useAnalysisFilterParams = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
 
   const allParams = Object.fromEntries(searchParams.entries());
 

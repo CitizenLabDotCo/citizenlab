@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Box, Spinner, Title, Toggle } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import usePhase from 'api/phases/usePhase';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
@@ -26,7 +26,7 @@ import messages from './messages';
 const Forms = () => {
   const locale = useLocale();
   const { formatMessage } = useIntl();
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };

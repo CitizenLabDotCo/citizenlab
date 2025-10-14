@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import { ICampaignData } from 'api/campaigns/types';
@@ -25,7 +25,7 @@ interface Props {
 }
 
 const DraftCampaignDetails = ({ campaign }: Props) => {
-  const { projectId } = useParams();
+  const { projectId } = useParams({ strict: false });
   const { formatMessage } = useIntl();
   const { mutate: deleteCampaign, isLoading } = useDeleteCampaign();
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { WrappedComponentProps } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import { CLErrors } from 'typings';
 
 import { ICustomPageAttributes } from 'api/custom_pages/types';
@@ -49,7 +49,9 @@ const EditCustomPageHeroBannerForm = ({
   const [localSettings, setLocalSettings] =
     useState<ICustomPageAttributes | null>(null);
 
-  const { customPageId } = useParams() as { customPageId: string };
+  const { customPageId } = useParams({ strict: false }) as {
+    customPageId: string;
+  };
   const { data: customPage } = useCustomPageById(customPageId);
 
   useEffect(() => {

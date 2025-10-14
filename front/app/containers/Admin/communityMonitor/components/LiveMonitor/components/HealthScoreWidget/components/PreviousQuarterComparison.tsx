@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 
 import { getPercentageDifference } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
 import TrendIndicator from 'components/TrendIndicator';
@@ -15,7 +15,7 @@ type Props = {
 };
 
 const PreviousQuarterComparison = ({ sentimentScores, ...props }: Props) => {
-  const [search] = useSearchParams();
+  const [search] = useSearch({ strict: false });
 
   const year = props.year || getYearFilter(search);
   const quarter = props.quarter || getQuarterFilter(search);

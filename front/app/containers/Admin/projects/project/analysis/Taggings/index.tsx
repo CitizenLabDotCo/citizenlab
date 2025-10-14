@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useAddAnalysisTagging from 'api/analysis_taggings/useAddAnalysisTagging';
 import useAnalysisTaggings from 'api/analysis_taggings/useAnalysisTaggings';
@@ -17,7 +17,7 @@ const Taggings = ({
   inputId: string;
   onlyShowTagged?: boolean;
 }) => {
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
 
   const { data: tags } = useAnalysisTags({
     analysisId,

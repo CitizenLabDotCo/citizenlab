@@ -8,7 +8,7 @@ import {
   Divider,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useAnalysis from 'api/analyses/useAnalysis';
 import { IInputsData } from 'api/analysis_inputs/types';
@@ -34,7 +34,7 @@ interface Props {
 }
 
 const InputListItem = memo(({ input, onSelect, selected }: Props) => {
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
   const { data: analysis } = useAnalysis(analysisId);
   const { data: author } = useAnalysisUserById({
     id: input.relationships.author.data?.id ?? null,

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Button, Box, Title, Text } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useResetProject from 'api/projects/useResetProject';
 
@@ -13,7 +13,7 @@ import messages from './messages';
 
 const ResetParticipationData = () => {
   const [modalOpened, setModalOpened] = useState(false);
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { mutate: resetProject, isLoading: isProjectResetLoading } =
     useResetProject();
 

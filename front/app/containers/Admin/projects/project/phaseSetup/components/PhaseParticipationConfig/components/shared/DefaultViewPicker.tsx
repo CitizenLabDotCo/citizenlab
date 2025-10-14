@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Radio, IconTooltip } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import { CLErrors } from 'typings';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
@@ -25,10 +25,7 @@ export default ({
   handleIdeasDisplayChange,
   title,
 }: Props) => {
-  const { projectId, phaseId } = useParams<{
-    projectId: string;
-    phaseId: string;
-  }>();
+  const { projectId, phaseId } = useParams({ strict: false });
 
   const inputFormUrl = `/admin/projects/${projectId}/phases/${phaseId}/form/edit`;
 

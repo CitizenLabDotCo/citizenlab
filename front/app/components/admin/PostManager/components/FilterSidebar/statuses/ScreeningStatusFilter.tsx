@@ -2,7 +2,7 @@ import React from 'react';
 
 import { IconTooltip, Box, Tooltip } from '@citizenlab/cl2-component-library';
 import ColorIndicator from 'component-library/components/ColorIndicator';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
@@ -33,7 +33,7 @@ interface Props {
 }
 
 const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
-  const { phaseId } = useParams();
+  const { phaseId } = useParams({ strict: false });
   const { data: phase } = usePhase(phaseId);
   const prescreeningIdeationAllowed = useFeatureFlag({
     name: 'prescreening_ideation',

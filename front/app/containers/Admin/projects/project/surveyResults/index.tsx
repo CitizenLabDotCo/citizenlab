@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import usePhases from 'api/phases/usePhases';
@@ -24,7 +24,7 @@ const Container = styled.div`
 `;
 
 const SurveyResults = () => {
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
   const surveys_enabled = useFeatureFlag({ name: 'surveys' });
   const typeform_enabled = useFeatureFlag({ name: 'typeform_surveys' });
   const { data: phases } = usePhases(projectId);

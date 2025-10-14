@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useAddCustomFieldOption from 'api/custom_field_options/useAddCustomFieldOption';
 
@@ -17,7 +17,9 @@ import RegistrationCustomFieldOptionsForm, {
 
 const RegistrationCustomFieldOptionsNew = () => {
   const { mutate: addCustomFieldOption } = useAddCustomFieldOption();
-  const { userCustomFieldId } = useParams() as { userCustomFieldId: string };
+  const { userCustomFieldId } = useParams({ strict: false }) as {
+    userCustomFieldId: string;
+  };
 
   const handleSubmit = (values: FormValues) => {
     addCustomFieldOption(

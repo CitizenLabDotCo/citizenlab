@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Text, Spinner, Box } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
@@ -94,7 +94,7 @@ export const PrintReport = ({ reportId, _print = true }: Props) => {
 
 const PrintReportWrapper = () => {
   const reportBuilderEnabled = useReportBuilderEnabled();
-  const { reportId } = useParams();
+  const { reportId } = useParams({ strict: false });
 
   if (!reportBuilderEnabled || reportId === undefined) {
     return null;

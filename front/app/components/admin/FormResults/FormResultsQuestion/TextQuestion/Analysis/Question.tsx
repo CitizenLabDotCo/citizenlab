@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
@@ -37,7 +37,7 @@ const Question = ({
   });
 
   const { data } = useAnalysisQuestion({ analysisId, id: questionId });
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import { AutoTaggingMethod } from 'api/analysis_background_tasks/types';
 import useLaunchAnalysisAutotagging from 'api/analysis_background_tasks/useLaunchAnalysisAutotagging';
@@ -25,7 +25,7 @@ const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
     'all'
   );
 
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
   const {
     mutate: launchTagging,
     isLoading,

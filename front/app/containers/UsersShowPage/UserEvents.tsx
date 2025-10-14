@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import useEventsByUserId from 'api/events/useEventsByUserId';
@@ -23,7 +23,7 @@ const Container = styled.div`
 `;
 
 export const UserEvents = () => {
-  const { userSlug } = useParams() as { userSlug: string };
+  const { userSlug } = useParams({ strict: false }) as { userSlug: string };
   const { data: user } = useUserBySlug(userSlug);
   const { data: events } = useEventsByUserId(user?.data.id);
   const isPhoneOrSmaller = useBreakpoint('phone');

@@ -8,7 +8,7 @@ import {
   Text,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import {
   BarChart as RechartsBarChart,
   Bar,
@@ -68,7 +68,7 @@ const ageToBirthyear = (age: number): number => {
 
 const AuthorsByAge = ({ customFieldId }: Props) => {
   const { formatMessage } = useIntl();
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
   const filters = useAnalysisFilterParams();
   const { data: totalAuthorsByAge, isLoading: isLoadingTotal } =
     useAuthorsByAge({

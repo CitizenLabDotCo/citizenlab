@@ -7,7 +7,7 @@ import {
   Title,
 } from '@citizenlab/cl2-component-library';
 import { useDropzone } from 'react-dropzone';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -31,7 +31,7 @@ const MAX_FILES = 35;
 
 const FilesUpload = ({ setModalOpen, setShowFirstUploadView }: Props) => {
   const { formatMessage } = useIntl();
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
 
   const [fileList, setFileList] = useState<FileWithMeta[]>([]);
   const [hasStartedUploading, setHasStartedUploading] = useState(false);

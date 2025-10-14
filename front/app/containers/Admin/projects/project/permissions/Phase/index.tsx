@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Title, Text, Box, colors } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -10,7 +10,7 @@ import messages from '../messages';
 import ActionForms from './ActionForms';
 
 const Phase = () => {
-  const { phaseId } = useParams();
+  const { phaseId } = useParams({ strict: false });
   if (!phaseId) return null;
 
   return (

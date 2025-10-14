@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useArea from 'api/areas/useArea';
 import useUpdateArea from 'api/areas/useUpdateArea';
@@ -17,7 +17,7 @@ import messages from '../messages';
 
 const Edit = () => {
   const { mutate: updateArea } = useUpdateArea();
-  const { areaId } = useParams() as { areaId: string };
+  const { areaId } = useParams({ strict: false }) as { areaId: string };
   const { data: area } = useArea(areaId);
   const handleSubmit = async (values: FormValues) => {
     if (!area) return;

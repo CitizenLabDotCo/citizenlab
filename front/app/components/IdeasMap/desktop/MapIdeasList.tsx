@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useState } from 'react';
 
 import { Button, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 import styled from 'styled-components';
 
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
@@ -47,7 +47,7 @@ interface Props {
 
 const MapIdeasList = memo<Props>(
   ({ projectId, phaseId, className, onSelectIdea, inputFiltersProps }) => {
-    const [searchParams] = useSearchParams();
+    const [searchParams] = useSearch({ strict: false });
     const isTabletOrSmaller = useBreakpoint('tablet');
     const { formatMessage } = useIntl();
     const [showFilters, setShowFilters] = useState(false);

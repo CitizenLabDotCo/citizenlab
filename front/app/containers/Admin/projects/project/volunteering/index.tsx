@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, Title } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
@@ -22,7 +22,7 @@ const PhaseContainer = styled.div`
 `;
 
 const AdminProjectVolunteering = () => {
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };

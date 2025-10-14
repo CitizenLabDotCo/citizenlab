@@ -14,7 +14,7 @@ export enum usersRoutes {
   users = 'users',
   admins = 'admins',
   moderators = 'moderators',
-  groupId = `:groupId`,
+  groupId = `$groupId`,
   blocked = 'blocked',
 }
 

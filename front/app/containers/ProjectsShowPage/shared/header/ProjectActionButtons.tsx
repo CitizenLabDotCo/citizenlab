@@ -2,7 +2,7 @@ import React, { memo, useEffect, useState } from 'react';
 
 import { useBreakpoint, Box } from '@citizenlab/cl2-component-library';
 import { isNumber } from 'lodash-es';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'utils/router';
 
 import useEvents from 'api/events/useEvents';
 import { IPhaseData } from 'api/phases/types';

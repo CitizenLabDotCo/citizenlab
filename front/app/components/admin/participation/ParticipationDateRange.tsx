@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
 
@@ -20,7 +20,7 @@ const ParticipationDatesRange = ({
   defaultEndDate?: string;
   projectId?: string;
 }) => {
-  const { projectId: projectIdFromParams } = useParams() as {
+  const { projectId: projectIdFromParams } = useParams({ strict: false }) as {
     projectId: string;
   };
   const projectId = props.projectId || projectIdFromParams;

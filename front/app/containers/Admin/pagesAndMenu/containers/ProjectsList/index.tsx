@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 
@@ -27,7 +27,9 @@ const ProjectList = () => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  const { customPageId } = useParams() as { customPageId: string };
+  const { customPageId } = useParams({ strict: false }) as {
+    customPageId: string;
+  };
   const { data: customPage } = useCustomPageById(customPageId);
 
   if (isNilOrError(customPage)) {

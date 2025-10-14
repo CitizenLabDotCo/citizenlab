@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 
-import { Navigate } from 'react-router-dom';
+import { Navigate } from 'utils/router';
 
 import PageLoading from 'components/UI/PageLoading';
 
@@ -14,7 +14,7 @@ const UserEvents = lazy(() => import('./UserEvents'));
 enum userShowPageRoutes {
   profile = 'profile',
   default = '',
-  profileUserSlug = `profile/:userSlug`,
+  profileUserSlug = `profile/$userSlug`,
   submissions = 'submissions',
   comments = 'comments',
   following = 'following',
@@ -41,7 +41,7 @@ export default () => ({
   children: [
     {
       path: userShowPageRoutes.default,
-      element: <Navigate to="submissions" replace />,
+      element: <Navigate to="/submissions" replace />,
     },
     {
       path: userShowPageRoutes.submissions,

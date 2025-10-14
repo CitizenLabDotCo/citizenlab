@@ -7,7 +7,7 @@ import {
   stylingConsts,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import { RouteType } from 'routes';
 
 import usePhase from 'api/phases/usePhase';
@@ -31,7 +31,7 @@ interface Props {
 
 const TopBar = ({ onClickPDFImport, onClickExcelImport }: Props) => {
   const localize = useLocalize();
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };

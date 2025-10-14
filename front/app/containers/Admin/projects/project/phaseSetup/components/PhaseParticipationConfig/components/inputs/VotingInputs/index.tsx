@@ -7,7 +7,7 @@ import {
   Box,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 import { CLErrors, IOption } from 'typings';
 
@@ -100,7 +100,7 @@ const VotingInputs = ({
   voteTerm,
 }: VotingInputsProps) => {
   const { formatMessage } = useIntl();
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };

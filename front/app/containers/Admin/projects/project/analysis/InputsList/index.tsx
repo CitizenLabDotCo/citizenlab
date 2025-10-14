@@ -8,7 +8,7 @@ import {
   Spinner,
 } from '@citizenlab/cl2-component-library';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
@@ -36,7 +36,7 @@ const Item = styled.div<{ start: number }>`
 const InputsList = () => {
   const { formatMessage } = useIntl();
   const { selectedInputId, setSelectedInputId } = useSelectedInputContext();
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
   const filters = useAnalysisFilterParams();
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isSuccess } =

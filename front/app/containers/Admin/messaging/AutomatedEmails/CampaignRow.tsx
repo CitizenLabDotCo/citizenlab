@@ -6,7 +6,7 @@ import {
   ListItem,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'utils/router';
 import { RouteType } from 'routes';
 
 import { CampaignContext } from 'api/campaigns/types';

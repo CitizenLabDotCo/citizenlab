@@ -20,7 +20,7 @@ import {
   useJsonForms,
   JsonFormsDispatch,
 } from '@jsonforms/react';
-import { useLocation, useParams, useSearchParams } from 'react-router-dom';
+import { useLocation, useParams, useSearch } from 'utils/router';
 import { useTheme } from 'styled-components';
 
 import { IIdea } from 'api/ideas/types';
@@ -87,7 +87,7 @@ const CLPageLayout = memo(
     const { onSubmit, setShowAllErrors, setFormData } = useContext(FormContext);
     const [isLoading, setIsLoading] = useState(false);
     const isMobileOrSmaller = useBreakpoint('phone');
-    const [searchParams] = useSearchParams();
+    const [searchParams] = useSearch({ strict: false });
     const { formatMessage } = useIntl();
     const formState = useJsonForms();
     const localize = useLocalize();
@@ -114,12 +114,7 @@ const CLPageLayout = memo(
       ideaId: idea_id,
       phaseId: phaseFromAdminUrl,
       projectId: projectIdFromAdminUrl,
-    } = useParams<{
-      slug?: string;
-      ideaId?: string;
-      phaseId?: string;
-      projectId?: string;
-    }>();
+    } = useParams({ strict: false });
     const ideaId = searchParams.get('idea_id') || idea_id;
     const { data: idea } = useIdeaById(ideaId ?? undefined);
     const projectId =

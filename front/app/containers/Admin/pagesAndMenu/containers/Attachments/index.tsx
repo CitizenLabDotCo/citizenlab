@@ -9,7 +9,7 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import { UploadFile } from 'typings';
 import { mixed, object } from 'yup';
 
@@ -53,7 +53,9 @@ const AttachmentsForm = ({
 }: WrappedComponentProps) => {
   const { mutateAsync: updateCustomPage } = useUpdateCustomPage();
   const localize = useLocalize();
-  const { customPageId } = useParams() as { customPageId: string };
+  const { customPageId } = useParams({ strict: false }) as {
+    customPageId: string;
+  };
 
   const { data: customPage } = useCustomPageById(customPageId);
   const { data: remoteFiles } = usePageFiles(customPageId);

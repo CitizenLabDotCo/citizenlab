@@ -7,7 +7,7 @@ import {
   Text,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 
 import { IAnalysisData } from 'api/analyses/types';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
@@ -34,7 +34,7 @@ const AnalysisInsights = ({
   hasOtherResponses?: boolean;
   insights?: IInsights;
 }) => {
-  const [search] = useSearchParams();
+  const [search] = useSearch({ strict: false });
   const [automaticSummaryCreated, setAutomaticSummaryCreated] = useState(false);
   const [selectedInsightIndex, setSelectedInsightIndex] = useState(0);
 

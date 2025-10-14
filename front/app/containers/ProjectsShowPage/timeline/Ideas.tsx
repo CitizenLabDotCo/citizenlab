@@ -1,7 +1,7 @@
 import React, { lazy, Suspense, useMemo } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 
 import { IdeaSortMethod, IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
@@ -39,7 +39,7 @@ interface QueryParameters {
 }
 
 const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const sortParam = searchParams.get('sort') as IdeaSortMethod | null;
   const searchParam = searchParams.get('search');
   const topicsParam = searchParams.get('topics');
