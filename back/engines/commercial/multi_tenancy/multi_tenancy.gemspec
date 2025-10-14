@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
 
   spec.files = Dir['{app,config,db,lib}/**/*', 'README.md']
 
-  spec.add_dependency 'rails', '~> 7.0'
+  spec.add_dependency 'rails', '~> 7.2'
   spec.add_dependency 'ros-apartment', '>=2.9.0'
 
   spec.add_development_dependency 'rubocop', '1.65.1'

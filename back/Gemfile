@@ -8,7 +8,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 7.1.5.2'
+gem 'rails', '~> 7.2.2.2'
 gem 'pg', '~> 1.5.6'
 gem 'puma', '~> 6.4.3'
 gem 'bcrypt', '~> 3.1.20' # Use ActiveModel has_secure_password
@@ -84,7 +84,7 @@ gem 'que', '~> 2.3.0'
 
 gem 'activerecord-import', '~> 1.7'
 gem 'json-schema', '~> 4.3'
-gem 'activerecord-postgis-adapter', '~> 9.0.2'
+gem 'activerecord-postgis-adapter', '~> 10.0.1'
 
 gem 'carrierwave', '~> 3.0.7'
 gem 'carrierwave-base64', '~> 2.11'
@@ -94,7 +94,7 @@ gem 'api-pagination', '~> 6.0.0'
 gem 'kaminari', '~> 1.2'
 gem 'rails-i18n', '~> 7.0.9'
 
-gem 'awesome_nested_set', '~> 3.6.0'
+gem 'awesome_nested_set', '~> 3.8.0'
 gem 'axlsx', '3.0.0.pre' # write xlsx files
 gem 'rubyXL', '~> 3.4.27' # read xlsx files. Has issues with writing files https://github.com/CitizenLabDotCo/citizenlab/pull/7834
 gem 'docx', '~> 0.3.0'
