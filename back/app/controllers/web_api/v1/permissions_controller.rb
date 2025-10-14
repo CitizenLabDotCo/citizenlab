@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class WebApi::V1::PermissionsController < ApplicationController
-  before_action :set_permission, only: %i[show update reset requirements access_denied_explanation]
+  include LockedUserCustomFieldsConcern
+
+  before_action :set_permission, only: %i[show update reset requirements custom_fields access_denied_explanation]
   skip_before_action :authenticate_user
 
   def index
@@ -55,6 +57,12 @@ class WebApi::V1::PermissionsController < ApplicationController
     render json: raw_json(json_requirements), status: :ok
   end
 
+  def custom_fields
+    authorize @permission
+    fields = user_requirements_service.requirements_custom_fields @permission
+    render json: WebApi::V1::CustomFieldSerializer.new(fields, params: jsonapi_serializer_params_with_locked_fields).serializable_hash.to_json
+  end
+
   def access_denied_explanation
     authorize @permission
     attributes = {
@@ -105,11 +113,6 @@ class WebApi::V1::PermissionsController < ApplicationController
       access_denied_explanation_multiloc: CL2_SUPPORTED_LOCALES
     )
   end
-
-  def verification_service
-    @verification_service ||= Verification::VerificationService.new
-  end
 end
 
 # WebApi::V1::PermissionsController.prepend(Verification::Patches::WebApi::V1::PermissionsController)
-# frozen_string_literal: true

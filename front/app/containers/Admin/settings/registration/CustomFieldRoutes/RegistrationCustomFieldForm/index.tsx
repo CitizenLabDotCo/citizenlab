@@ -38,16 +38,7 @@ type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
 } & WrappedComponentProps;
 
-export type FieldType =
-  | 'select'
-  | 'multiselect'
-  | 'checkbox'
-  | 'text'
-  | 'multiline_text'
-  | 'number'
-  | 'date';
-
-export const fieldTypes: FieldType[] = [
+export const fieldTypes = [
   'select',
   'multiselect',
   'checkbox',
@@ -55,7 +46,11 @@ export const fieldTypes: FieldType[] = [
   'multiline_text',
   'number',
   'date',
-];
+] as const;
+
+export const fieldTypeValidator = string().oneOf(fieldTypes);
+
+export type FieldType = (typeof fieldTypes)[number];
 
 const RegistrationCustomFieldForm = ({
   intl: { formatMessage },

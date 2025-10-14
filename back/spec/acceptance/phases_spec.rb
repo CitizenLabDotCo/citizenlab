@@ -264,6 +264,7 @@ resource 'Phases' do
         parameter :voting_min_total, 'The minimum value a basket can have.', required: false
         parameter :voting_max_total, 'The maximal value a basket can have during voting. Required when the voting method is budgeting.', required: false
         parameter :voting_max_votes_per_idea, 'The maximum amount of votes that can be assigned on the same idea.', required: false
+        parameter :voting_min_selected_options, 'The minimum number of different ideas that must be voted for.', required: false
         parameter :start_at, 'The start date of the phase', required: true
         parameter :end_at, 'The end date of the phase', required: true
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
@@ -392,6 +393,7 @@ resource 'Phases' do
             expect(response_data.dig(:attributes, :voting_method)).to eq 'multiple_voting'
             expect(response_data.dig(:attributes, :voting_max_total)).to eq 10
             expect(response_data.dig(:attributes, :voting_min_total)).to eq 0
+            expect(response_data.dig(:attributes, :voting_min_selected_options)).to eq 1
             expect(response_data.dig(:attributes, :voting_max_votes_per_idea)).to eq 5
             expect(response_data.dig(:attributes, :vote_term)).to eq 'point'
             expect(response_data.dig(:attributes, :ideas_order)).to eq 'random'
@@ -406,6 +408,7 @@ resource 'Phases' do
             expect(response_data.dig(:attributes, :participation_method)).to eq 'voting'
             expect(response_data.dig(:attributes, :voting_method)).to eq 'single_voting'
             expect(response_data.dig(:attributes, :voting_max_total)).to be_nil
+            expect(response_data.dig(:attributes, :voting_min_selected_options)).to eq 1
             expect(response_data.dig(:attributes, :voting_min_total)).to eq 0
             expect(response_data.dig(:attributes, :voting_max_votes_per_idea)).to eq 1
             expect(response_data.dig(:attributes, :ideas_order)).to eq 'random'
@@ -644,6 +647,7 @@ resource 'Phases' do
 
           expect(json_response.dig(:data, :attributes, :voting_min_total)).to eq 3
           expect(json_response.dig(:data, :attributes, :voting_max_total)).to eq 15
+          expect(json_response.dig(:data, :attributes, :voting_min_selected_options)).to eq 1
           expect(json_response.dig(:data, :attributes, :voting_max_votes_per_idea)).to be_nil
           expect(json_response.dig(:data, :attributes, :vote_term)).to eq 'token'
         end
