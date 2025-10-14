@@ -644,6 +644,7 @@ da:
         user_is_given_admin_rights: 'Brugeren får administratorrettigheder'
         user_is_given_folder_moderator_rights: 'Brugeren får rettigheder som mappemoderator'
         user_is_given_project_moderator_rights: 'Brugeren har fået rettigheder som projektmoderator'
+        user_is_invited_to_platform: 'Brugeren er inviteret til platformen'
         user_is_invited_to_cosponsor_a_proposal: 'Brugeren inviteres til at være medstiller på et forslag'
         user_is_mentioned: 'Brugeren er nævnt'
         user_is_mentioned_in_internal_comment: 'Brugeren er nævnt i en intern kommentar'

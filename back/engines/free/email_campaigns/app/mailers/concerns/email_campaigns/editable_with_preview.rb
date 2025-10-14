@@ -75,6 +75,9 @@ module EmailCampaigns
         region_text = I18n.t("#{message_group}.#{override_default_key}", locale: locale.to_s).gsub(/%\{(.*?)}/, '{{\1}}')
       end
 
+      # Render any images that are stored as data in the text.
+      region_text = TextImageService.new.render_data_images(region_text, field: region_key, imageable: campaign) if region[:type] == 'html'
+
       render_liquid_template(
         text: region_text,
         values: values.transform_keys(&:to_s),

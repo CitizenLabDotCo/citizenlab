@@ -215,13 +215,6 @@ const PhaseParticipationConfig = ({
     }));
   };
 
-  const handleUserFieldsInFormOnChange = (user_fields_in_form: boolean) => {
-    updateFormData((state) => ({
-      ...state,
-      user_fields_in_form,
-    }));
-  };
-
   const handleVotingMethodOnChange = (voting_method: VotingMethod) => {
     const maxVotes = MAX_VOTES_PER_VOTING_METHOD[voting_method];
 
@@ -307,6 +300,20 @@ const PhaseParticipationConfig = ({
     setValidationErrors((errors) => ({
       ...errors,
       maxVotesPerOptionError: undefined,
+    }));
+  };
+
+  const handleMinVotingOptionsChange = (newMinVotingOptions: string | null) => {
+    const voting_min_selected_options = newMinVotingOptions
+      ? parseInt(newMinVotingOptions, 10)
+      : null;
+    updateFormData((state) => ({
+      ...state,
+      voting_min_selected_options,
+    }));
+    setValidationErrors((errors) => ({
+      ...errors,
+      minSelectedOptionsError: undefined,
     }));
   };
 
@@ -414,6 +421,7 @@ const PhaseParticipationConfig = ({
     voting_method,
     voting_min_total,
     voting_max_total,
+    voting_min_selected_options,
     voting_max_votes_per_idea,
     survey_service,
     survey_embed_url,
@@ -428,7 +436,6 @@ const PhaseParticipationConfig = ({
     similarity_enabled,
     similarity_threshold_title,
     similarity_threshold_body,
-    user_fields_in_form,
     vote_term: voteTerm,
   } = formData;
 
@@ -490,8 +497,10 @@ const PhaseParticipationConfig = ({
             voting_method={voting_method}
             voting_min_total={voting_min_total}
             voting_max_total={voting_max_total}
+            voting_min_selected_options={voting_min_selected_options}
             commenting_enabled={commenting_enabled}
             autoshare_results_enabled={autoshare_results_enabled}
+            handleMinVotingOptionsChange={handleMinVotingOptionsChange}
             handleVotingMinTotalChange={handleVotingMinTotalChange}
             handleVotingMaxTotalChange={handleVotingMaxTotalChange}
             toggleCommentingEnabled={toggleCommentingEnabled}
@@ -650,15 +659,9 @@ const PhaseParticipationConfig = ({
 
         {participation_method === 'native_survey' && (
           <NativeSurveyInputs
-            allow_anonymous_participation={allow_anonymous_participation}
-            user_fields_in_form={user_fields_in_form}
             apiErrors={apiErrors}
             phase={phase}
             formData={formData}
-            handleAllowAnonymousParticipationOnChange={
-              handleAllowAnonymousParticipationOnChange
-            }
-            handleUserFieldsInFormOnChange={handleUserFieldsInFormOnChange}
             handleSurveyTitleChange={handleSurveyTitleChange}
             handleSurveyCTAChange={handleSurveyCTAChange}
           />

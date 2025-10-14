@@ -1,14 +1,17 @@
-import { ICustomFieldResponse } from '../../../../app/api/custom_fields/types';
-import { IIdeaJsonFormSchemas } from '../../../../app/api/idea_json_form_schema/types';
+import {
+  ICustomFields,
+  ICustomFieldResponse,
+} from '../../../../app/api/custom_fields/types';
+import { ICustomFieldOptionData } from '../../../../app/api/custom_field_options/types';
 import { randomString, randomEmail } from '../../../support/commands';
 import moment = require('moment');
 import { base64 } from '../../../fixtures/base64img';
 
 let projectId: string;
+const projectTitle = randomString();
 let projectSlug: string;
 let surveyPhaseId: string;
-let surveyFields: ICustomFieldResponse[];
-let surveySchema: IIdeaJsonFormSchemas;
+let surveyCustomFields: ICustomFields;
 
 let informationPhaseId: string;
 
@@ -37,7 +40,7 @@ const userIds: string[] = [];
 describe('Survey question widget', () => {
   before(() => {
     cy.apiCreateProject({
-      title: randomString(),
+      title: projectTitle,
       descriptionPreview: randomString(),
       description: randomString(),
       publicationStatus: 'published',
@@ -78,40 +81,33 @@ describe('Survey question widget', () => {
         );
       })
       .then((response) => {
-        surveyFields = response.body.data;
-        return cy.apiGetSurveySchema(surveyPhaseId);
+        return cy.apiGetSurveyFields(surveyPhaseId);
       })
       .then((response) => {
-        surveySchema = response.body;
+        surveyCustomFields = response.body;
 
-        const selectKey = surveyFields[1].attributes.key;
-        const multiSelectKey = surveyFields[2].attributes.key;
-        const linearScaleKey = surveyFields[3].attributes.key;
-        const multiselectImageKey = surveyFields[4].attributes.key;
-        const pointKey = surveyFields[5].attributes.key;
-        const select2Key = surveyFields[6].attributes.key;
+        const fields = surveyCustomFields.data;
+        const included = (surveyCustomFields as any)
+          .included as ICustomFieldOptionData[];
 
-        const fieldConfigs: any =
-          surveySchema.data.attributes.json_schema_multiloc.en?.properties;
+        const selectField = fields[1];
+        const multiSelectField = fields[2];
+        const linearScaleField = fields[3];
+        const multiselectImageField = fields[4];
+        const pointField = fields[5];
+        const select2Field = fields[6];
 
-        const getAnswerKeys = (fieldKey: string) => {
-          const fieldConfig = fieldConfigs[fieldKey];
-
-          if (fieldConfig.items) {
-            return fieldConfig.items.oneOf.map((x: any) => x.const);
-          }
-
-          if (fieldConfig.enum) {
-            return fieldConfig.enum;
-          }
-
-          return undefined;
+        const getAnswerKeys = (field: ICustomFieldResponse) => {
+          return field.relationships.options.data.map((option) => {
+            const optionData = included.find((i) => i.id === option.id);
+            return optionData?.attributes.key;
+          });
         };
 
-        const selectAnswerKeys = getAnswerKeys(selectKey);
-        const multiSelectAnswerKeys = getAnswerKeys(multiSelectKey);
-        const multiselectImageAnswerKeys = getAnswerKeys(multiselectImageKey);
-        const select2AnswerKeys = getAnswerKeys(select2Key);
+        const selectAnswerKeys = getAnswerKeys(selectField);
+        const multiSelectAnswerKeys = getAnswerKeys(multiSelectField);
+        const multiselectImageAnswerKeys = getAnswerKeys(multiselectImageField);
+        const select2AnswerKeys = getAnswerKeys(select2Field);
 
         users.forEach(
           ({ firstName, lastName, email, password, gender, location }, i) => {
@@ -138,18 +134,21 @@ describe('Survey question widget', () => {
                     password,
                     project_id: projectId,
                     fields: {
-                      [selectKey]: selectAnswerKeys[0],
-                      [multiSelectKey]: [
+                      [selectField.attributes.key]: selectAnswerKeys[0],
+                      [multiSelectField.attributes.key]: [
                         multiSelectAnswerKeys[0],
                         multiSelectAnswerKeys[1],
                       ],
-                      [linearScaleKey]: i > 1 ? 3 : 2,
-                      [multiselectImageKey]: [multiselectImageAnswerKeys[0]],
-                      [pointKey]: {
+                      [linearScaleField.attributes.key]: i > 1 ? 3 : 2,
+                      [multiselectImageField.attributes.key]: [
+                        multiselectImageAnswerKeys[0],
+                      ],
+                      [pointField.attributes.key]: {
                         type: 'Point',
                         coordinates: location,
                       },
-                      [select2Key]: select2AnswerKeys[i % 2 ? 0 : 1],
+                      [select2Field.attributes.key]:
+                        select2AnswerKeys[i % 2 ? 0 : 1],
                     },
                   },
                   jwt
@@ -203,13 +202,14 @@ describe('Survey question widget', () => {
         cy.wait(1000);
 
         // Select project, phase and question
-        cy.get('#e2e-report-builder-project-filter-box select').select(
-          projectId
+        cy.selectReactSelectOption(
+          '#e2e-report-builder-project-filter-box',
+          projectTitle
         );
         cy.get('#e2e-phase-filter').select(surveyPhaseId);
         cy.get('.e2e-question-select select')
           .first()
-          .select(surveyFields[2].id);
+          .select(surveyCustomFields.data[2].id);
 
         // Check if values are correct
         cy.get('.e2e-survey-question-ungrouped-bars')
@@ -294,13 +294,14 @@ describe('Survey question widget', () => {
         cy.wait(1000);
 
         // Select project, phase and question
-        cy.get('#e2e-report-builder-project-filter-box select').select(
-          projectId
+        cy.selectReactSelectOption(
+          '#e2e-report-builder-project-filter-box',
+          projectTitle
         );
         cy.get('#e2e-phase-filter').select(surveyPhaseId);
         cy.get('.e2e-question-select select')
           .first()
-          .select(surveyFields[3].id);
+          .select(surveyCustomFields.data[3].id);
 
         // Check if values are correct
         cy.get('.e2e-survey-question-ungrouped-bars').first().contains('50%');
@@ -377,13 +378,14 @@ describe('Survey question widget', () => {
         cy.wait(1000);
 
         // Select project, phase and question
-        cy.get('#e2e-report-builder-project-filter-box select').select(
-          projectId
+        cy.selectReactSelectOption(
+          '#e2e-report-builder-project-filter-box',
+          projectTitle
         );
         cy.get('#e2e-phase-filter').select(surveyPhaseId);
         cy.get('.e2e-question-select select')
           .first()
-          .select(surveyFields[4].id);
+          .select(surveyCustomFields.data[4].id);
 
         // Check if values are correct
         cy.get('.e2e-survey-question-ungrouped-bars')
@@ -450,13 +452,14 @@ describe('Survey question widget', () => {
         cy.wait(1000);
 
         // Select project, phase and question
-        cy.get('#e2e-report-builder-project-filter-box select').select(
-          projectId
+        cy.selectReactSelectOption(
+          '#e2e-report-builder-project-filter-box',
+          projectTitle
         );
         cy.get('#e2e-phase-filter').select(surveyPhaseId);
         cy.get('.e2e-question-select select')
           .first()
-          .select(surveyFields[5].id);
+          .select(surveyCustomFields.data[5].id);
 
         // Expect map to render
         cy.get('div.esri-view-root').contains('Responses');
@@ -497,13 +500,14 @@ describe('Survey question widget', () => {
         cy.wait(1000);
 
         // Select project, phase and question
-        cy.get('#e2e-report-builder-project-filter-box select').select(
-          projectId
+        cy.selectReactSelectOption(
+          '#e2e-report-builder-project-filter-box',
+          projectTitle
         );
         cy.get('#e2e-phase-filter').select(surveyPhaseId);
         cy.get('.e2e-question-select select')
           .first()
-          .select(surveyFields[2].id);
+          .select(surveyCustomFields.data[2].id);
 
         // Group by linear scale
         cy.get('#e2e-group-mode-select').select('survey_question');
@@ -570,13 +574,14 @@ describe('Survey question widget', () => {
         cy.wait(1000);
 
         // Select project, phase and question
-        cy.get('#e2e-report-builder-project-filter-box select').select(
-          projectId
+        cy.selectReactSelectOption(
+          '#e2e-report-builder-project-filter-box',
+          projectTitle
         );
         cy.get('#e2e-phase-filter').select(surveyPhaseId);
         cy.get('.e2e-question-select select')
           .first()
-          .select(surveyFields[6].id);
+          .select(surveyCustomFields.data[6].id);
 
         cy.get('#e2e-group-mode-select').select('user_field');
         cy.get('#e2e-user-field-select').select('Gender');

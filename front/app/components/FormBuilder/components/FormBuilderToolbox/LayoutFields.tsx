@@ -2,8 +2,6 @@ import React from 'react';
 
 import { Box, Title } from '@citizenlab/cl2-component-library';
 
-import { ICustomFieldInputType } from 'api/custom_fields/types';
-
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -11,14 +9,12 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 import ToolboxItem from './ToolboxItem';
-import { DraggableElement } from './utils';
 
 interface BuiltInFieldsProps {
-  addField: (inputType: ICustomFieldInputType) => void;
   builderConfig: FormBuilderConfig;
 }
 
-const LayoutFields = ({ addField, builderConfig }: BuiltInFieldsProps) => {
+const LayoutFields = ({ builderConfig }: BuiltInFieldsProps) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -33,16 +29,15 @@ const LayoutFields = ({ addField, builderConfig }: BuiltInFieldsProps) => {
       >
         <FormattedMessage {...messages.layout} />
       </Title>
-      <DraggableElement>
-        <ToolboxItem
-          icon="page"
-          label={formatMessage(messages.page)}
-          onClick={() => addField('page')}
-          data-cy="e2e-page"
-          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
-          inputType="page"
-        />
-      </DraggableElement>
+      <ToolboxItem
+        icon="page"
+        label={formatMessage(messages.page)}
+        data-cy="e2e-page"
+        fieldsToInclude={builderConfig.toolboxFieldsToInclude}
+        inputType="page"
+        dragId="toolbox_page"
+        dragIndex={-1}
+      />
     </Box>
   );
 };

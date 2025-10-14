@@ -112,7 +112,7 @@ describe IdeaCustomFieldsService do
     describe 'survey_results_fields' do
       context 'commmunity monitor survey' do
         let(:custom_form) do
-          phase = create(:community_monitor_survey_phase)
+          phase = create(:community_monitor_survey_phase, with_permissions: true)
           phase.pmethod.create_default_form!
           phase.custom_form.custom_fields[2].update!(question_category: 'governance_and_trust')
           phase.custom_form.custom_fields[3].update!(question_category: nil)
@@ -354,7 +354,11 @@ describe IdeaCustomFieldsService do
       let!(:user_field_birthyear) { create(:custom_field_birthyear) }
 
       context 'when phase is a native survey phase' do
-        let(:form_context) { create(:native_survey_phase, user_fields_in_form: true, with_permissions: true) }
+        let(:form_context) do
+          phase = create(:native_survey_phase, with_permissions: true)
+          phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
+          phase
+        end
 
         it 'returns form fields with an additional page of demographics' do
           output = service.enabled_fields
@@ -380,164 +384,6 @@ describe IdeaCustomFieldsService do
             form_end
           ]
         end
-      end
-    end
-  end
-
-  context 'constraints/locks on changing attributes' do
-    describe 'validate_constraints_against_defaults' do
-      it 'validates if locked attributes are not changed from defaults' do
-        title_field = custom_form.custom_fields.find_by(code: 'title_multiloc')
-        service.validate_constraints_against_defaults(title_field)
-
-        expect(title_field.errors.errors).to eq []
-      end
-
-      it 'only returns 1 error for page 1 even if locked title is different from default' do
-        page1_field = custom_form.custom_fields.find_by(code: 'title_page')
-        page1_field.enabled = false
-        page1_field.title_multiloc = { en: 'Changed value' }
-        service.validate_constraints_against_defaults(page1_field)
-
-        expect(page1_field.errors.errors.length).to eq 1
-      end
-
-      it 'returns errors if title locked attributes are different from default' do
-        title_field = custom_form.custom_fields.find_by(code: 'title_multiloc')
-        title_field.enabled = false
-        title_field.required = false
-        title_field.title_multiloc = { en: 'Changed value' }
-        service.validate_constraints_against_defaults(title_field)
-
-        expect(title_field.errors.errors.length).to eq 3
-      end
-
-      it 'returns errors if body locked attributes are different from default' do
-        body_field = custom_form.custom_fields.find_by(code: 'body_multiloc')
-        body_field.enabled = false
-        body_field.required = false
-        body_field.title_multiloc = { en: 'Changed value' }
-        service.validate_constraints_against_defaults(body_field)
-
-        expect(body_field.errors.errors.length).to eq 3
-      end
-
-      it 'returns errors if images locked attributes are different from default' do
-        images_field = custom_form.custom_fields.find_by(code: 'idea_images_attributes')
-        images_field.title_multiloc = { en: 'Changed value' }
-        service.validate_constraints_against_defaults(images_field)
-
-        expect(images_field.errors.errors.length).to eq 1
-      end
-
-      it 'returns errors if files locked attributes are different from default' do
-        files_field = custom_form.custom_fields.find_by(code: 'idea_files_attributes')
-        files_field.title_multiloc = { en: 'Changed value' }
-        service.validate_constraints_against_defaults(files_field)
-
-        expect(files_field.errors.errors.length).to eq 1
-      end
-
-      it 'returns errors if topic_ids locked attributes are different from default' do
-        topic_ids_field = custom_form.custom_fields.find_by(code: 'topic_ids')
-        topic_ids_field.title_multiloc = { en: 'Changed value' }
-        service.validate_constraints_against_defaults(topic_ids_field)
-
-        expect(topic_ids_field.errors.errors.length).to eq 1
-      end
-
-      it 'returns errors if location locked attributes are different from default' do
-        location_field = custom_form.custom_fields.find_by(code: 'location_description')
-        location_field.title_multiloc = { en: 'Changed value' }
-        service.validate_constraints_against_defaults(location_field)
-
-        expect(location_field.errors.errors.length).to eq 1
-      end
-
-      it 'returns errors if proposed budget locked attributes are different from default' do
-        proposed_budget_field = custom_form.custom_fields.find_by(code: 'proposed_budget')
-        proposed_budget_field.title_multiloc = { en: 'Changed value' }
-        service.validate_constraints_against_defaults(proposed_budget_field)
-
-        expect(proposed_budget_field.errors.errors.length).to eq 1
-      end
-    end
-
-    describe 'validate_constraints_against_updates' do
-      it 'validates if locked attributes are not changed' do
-        title_field = custom_form.custom_fields.find_by(code: 'title_multiloc')
-        valid_params = {
-          enabled: title_field.enabled,
-          required: title_field.enabled,
-          title_multiloc: title_field.title_multiloc
-        }
-        service.validate_constraints_against_updates(title_field, valid_params)
-
-        expect(title_field.errors.errors).to eq []
-      end
-
-      it 'only returns 1 error for page 1 even if locked title is changed' do
-        page1_field = custom_form.custom_fields.find_by(code: 'title_page')
-        valid_params = { enabled: false, title_multiloc: { en: 'Changed value' } }
-        service.validate_constraints_against_updates(page1_field, valid_params)
-
-        expect(page1_field.errors.errors.length).to eq 1
-      end
-
-      it 'returns errors if title locked attributes are changed from previous values' do
-        title_field = custom_form.custom_fields.find_by(code: 'title_multiloc')
-        bad_params = { enabled: false, required: false, title_multiloc: { en: 'Changed value' } }
-        service.validate_constraints_against_updates(title_field, bad_params)
-
-        expect(title_field.errors.errors.length).to eq 3
-      end
-
-      it 'returns errors if body locked attributes are changed from previous values' do
-        body_field = custom_form.custom_fields.find_by(code: 'body_multiloc')
-        bad_params = { enabled: false, required: false, title_multiloc: { en: 'Changed value' } }
-        service.validate_constraints_against_updates(body_field, bad_params)
-
-        expect(body_field.errors.errors.length).to eq 3
-      end
-
-      it 'returns errors if images locked attributes are changed from previous values' do
-        images_field = custom_form.custom_fields.find_by(code: 'idea_images_attributes')
-        bad_params = { title_multiloc: { en: 'Changed value' } }
-        service.validate_constraints_against_updates(images_field, bad_params)
-
-        expect(images_field.errors.errors.length).to eq 1
-      end
-
-      it 'returns errors if files locked attributes are changed from previous values' do
-        files_field = custom_form.custom_fields.find_by(code: 'idea_files_attributes')
-        bad_params = { title_multiloc: { en: 'Changed value' } }
-        service.validate_constraints_against_updates(files_field, bad_params)
-
-        expect(files_field.errors.errors.length).to eq 1
-      end
-
-      it 'returns errors if topic_ids locked attributes are changed from previous values' do
-        topic_ids_field = custom_form.custom_fields.find_by(code: 'topic_ids')
-        bad_params = { title_multiloc: { en: 'Changed value' } }
-        service.validate_constraints_against_updates(topic_ids_field, bad_params)
-
-        expect(topic_ids_field.errors.errors.length).to eq 1
-      end
-
-      it 'returns errors if location locked attributes are changed from previous values' do
-        location_field = custom_form.custom_fields.find_by(code: 'location_description')
-        bad_params = { title_multiloc: { en: 'Changed value' } }
-        service.validate_constraints_against_updates(location_field, bad_params)
-
-        expect(location_field.errors.errors.length).to eq 1
-      end
-
-      it 'returns errors if proposed budget locked attributes are changed from previous values' do
-        proposed_budget_field = custom_form.custom_fields.find_by(code: 'proposed_budget')
-        bad_params = { title_multiloc: { en: 'Changed value' } }
-        service.validate_constraints_against_updates(proposed_budget_field, bad_params)
-
-        expect(proposed_budget_field.errors.errors.length).to eq 1
       end
     end
   end

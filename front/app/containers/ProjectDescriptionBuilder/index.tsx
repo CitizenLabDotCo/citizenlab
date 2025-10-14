@@ -141,7 +141,7 @@ const ProjectDescriptionBuilderPage = () => {
           display={previewEnabled ? 'none' : 'flex'}
           id="e2e-project-description-content-builder-page"
         >
-          <ProjectDescriptionBuilderToolbox selectedLocale={selectedLocale} />
+          <ProjectDescriptionBuilderToolbox />
           <LanguageProvider
             contentBuilderLocale={selectedLocale}
             platformLocale={locale}

@@ -644,6 +644,7 @@ ar:
         user_is_given_admin_rights: 'يتم منح المستخدم حقوق المسؤول'
         user_is_given_folder_moderator_rights: 'يتم منح المستخدم حقوق وسيط المجلد'
         user_is_given_project_moderator_rights: 'يتم منح المستخدم حقوق مشرف المشروع'
+        user_is_invited_to_platform: 'تمت دعوة المستخدم إلى المنصة'
         user_is_invited_to_cosponsor_a_proposal: 'المستخدم مدعو للمشاركة في رعاية اقتراح'
         user_is_mentioned: 'المستخدم مذكور'
         user_is_mentioned_in_internal_comment: 'تم ذكر المستخدم في التعليق الداخلي'

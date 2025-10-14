@@ -59,7 +59,7 @@ const validateHTMLWithCharacterLimits = (
 // NOTE: When the question is a built-in field, it is necessary to
 // check the `enabled` property before adding it to the schema.
 
-const generateYupValidationSchema = ({
+const generateYupSchema = ({
   pageQuestions,
   formatMessage,
   localize,
@@ -96,47 +96,48 @@ const generateYupValidationSchema = ({
             ? formatMessage(messages.titleRequired)
             : formatMessage(messages.descriptionRequired);
 
-        schema[key] = enabled
-          ? validateAtLeastOneLocale(requiredMessage, {
-              validateEachNonEmptyLocale: (schema) => {
-                let fieldSchema = schema;
+        schema[key] =
+          enabled && required
+            ? validateAtLeastOneLocale(requiredMessage, {
+                validateEachNonEmptyLocale: (schema) => {
+                  let fieldSchema = schema;
 
-                if (input_type === 'text_multiloc') {
-                  // Apply standard character limits to text_multiloc
-                  if (min_characters) {
-                    fieldSchema = fieldSchema.min(
+                  if (input_type === 'text_multiloc') {
+                    // Apply standard character limits to text_multiloc
+                    if (min_characters) {
+                      fieldSchema = fieldSchema.min(
+                        min_characters,
+                        formatMessage(messages.fieldMinLength, {
+                          min: min_characters,
+                          fieldName: title,
+                        })
+                      );
+                    }
+
+                    if (max_characters) {
+                      fieldSchema = fieldSchema.max(
+                        max_characters,
+                        formatMessage(messages.fieldMaxLength, {
+                          max: max_characters,
+                          fieldName: title,
+                        })
+                      );
+                    }
+                  } else {
+                    // Apply HTML-aware character limits to html_multiloc
+                    fieldSchema = validateHTMLWithCharacterLimits(
+                      fieldSchema,
+                      formatMessage,
+                      title,
                       min_characters,
-                      formatMessage(messages.fieldMinLength, {
-                        min: min_characters,
-                        fieldName: title,
-                      })
+                      max_characters
                     );
                   }
 
-                  if (max_characters) {
-                    fieldSchema = fieldSchema.max(
-                      max_characters,
-                      formatMessage(messages.fieldMaxLength, {
-                        max: max_characters,
-                        fieldName: title,
-                      })
-                    );
-                  }
-                } else {
-                  // Apply HTML-aware character limits to html_multiloc
-                  fieldSchema = validateHTMLWithCharacterLimits(
-                    fieldSchema,
-                    formatMessage,
-                    title,
-                    min_characters,
-                    max_characters
-                  );
-                }
-
-                return fieldSchema;
-              },
-            })
-          : {};
+                  return fieldSchema;
+                },
+              })
+            : object();
         break;
       }
 
@@ -214,13 +215,12 @@ const generateYupValidationSchema = ({
         schema[key] = required ? string().required(fieldRequired) : string();
 
         // Other option
-        const fieldSchemaOther = string().when(key, {
-          is: (value?: string) => value === 'other',
-          then: string().required(
-            formatMessage(messages.typeYourAnswerRequired)
-          ),
-          otherwise: string().notRequired(),
+        const fieldSchemaOther = string().when(key, ([value], schema) => {
+          return value === 'other'
+            ? schema.required(formatMessage(messages.typeYourAnswerRequired))
+            : schema.notRequired();
         });
+
         schema[`${key}_other`] = fieldSchemaOther;
 
         break;
@@ -258,12 +258,12 @@ const generateYupValidationSchema = ({
         }
 
         // Other option
-        const fieldSchemaOther = string().when(key, {
-          is: (value?: string[]) => value?.includes('other'),
-          then: string().required(
-            formatMessage(messages.typeYourAnswerRequired)
-          ),
-          otherwise: string().notRequired(),
+        const fieldSchemaOther = string().when(key, ([value], schema) => {
+          if (!Array.isArray(value)) return schema.notRequired();
+
+          return value.includes('other')
+            ? schema.required(formatMessage(messages.typeYourAnswerRequired))
+            : schema.notRequired();
         });
 
         schema[key] = fieldSchema;
@@ -461,4 +461,4 @@ const generateYupValidationSchema = ({
   return object(schema);
 };
 
-export default generateYupValidationSchema;
+export default generateYupSchema;

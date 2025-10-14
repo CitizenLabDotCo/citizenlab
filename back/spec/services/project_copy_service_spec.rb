@@ -379,7 +379,7 @@ describe ProjectCopyService do
         configure_platform_locales ['en']
 
         project = create(:project_with_active_ideation_phase, title_multiloc: { en: 'ENGLISH PROJECT' }, description_multiloc: { en: '' })
-        create(:idea, project: project, phases: project.phases, author: create(:user, locale: 'en'))
+        create(:idea, project: project, phases: project.phases, author: create(:user, locale: 'en', bio_multiloc: { en: 'ENGLISH BIO' }))
         template = service.export project, anonymize_users: false, include_ideas: true
 
         # Switch to a platform with a different locale
@@ -394,8 +394,9 @@ describe ProjectCopyService do
           # Does nothing with empty multiloc values
           expect(copied_project.description_multiloc).to eq({ 'fr-FR' => '' })
 
-          # Changes the locale of users too
+          # Changes the locale of users, but removes their bios
           expect(copied_project.ideas.first.author.locale).to eq 'fr-FR'
+          expect(copied_project.ideas.first.author.bio_multiloc).to eq({})
 
           # Adds a project import record
           project_import = BulkImportIdeas::ProjectImport.last
@@ -403,7 +404,8 @@ describe ProjectCopyService do
           expect(project_import.log).to eq [
             'Copied project: TRANSLATED: ENGLISH PROJECT',
             'Translated strings: 6',
-            'Translated chars: 248'
+            'Translated chars: 248',
+            'Models translated - project: 1, phase: 1, idea: 1'
           ]
         end
       end
@@ -413,7 +415,7 @@ describe ProjectCopyService do
         configure_platform_locales ['en']
 
         project = create(:project_with_active_ideation_phase, title_multiloc: { en: 'ENGLISH PROJECT' }, description_multiloc: {})
-        create(:idea, project: project, phases: project.phases, author: create(:user, locale: 'en'))
+        create(:idea, project: project, phases: project.phases, author: create(:user, locale: 'en', bio_multiloc: { en: 'ENGLISH BIO' }))
         template = service.export project, anonymize_users: false, include_ideas: true
 
         # Switch to a platform with multiple locales
@@ -425,8 +427,9 @@ describe ProjectCopyService do
           copied_project = service.import template
           expect(copied_project.title_multiloc).to eq({ 'en' => 'ENGLISH PROJECT', 'fr-FR' => 'TRANSLATED: ENGLISH PROJECT' })
 
-          # Does not change the locale of users
+          # Does not change the locale of users or their bios
           expect(copied_project.ideas.first.author.locale).to eq 'en'
+          expect(copied_project.ideas.first.author.bio_multiloc).to eq({ 'en' => 'ENGLISH BIO' })
         end
       end
 

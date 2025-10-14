@@ -9,6 +9,7 @@ module AdminApi
       :map_config_id,
       :image_path, # Used by project library
       :visible_to,
+      :ideas_count,
       :created_at,
       :updated_at
 

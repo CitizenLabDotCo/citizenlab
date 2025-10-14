@@ -1,5 +1,7 @@
 import { IRelationship, Multiloc } from 'typings';
 
+import { UserDataCollection } from 'api/phase_permissions/types';
+
 import { Keys } from 'utils/cl-react-query/types';
 
 import phasesKeys from './keys';
@@ -62,6 +64,7 @@ export interface IPhaseAttributes {
   vote_term: VoteTerm;
   voting_min_total?: number | null;
   voting_max_total?: number | null;
+  voting_min_selected_options?: number | null;
   voting_max_votes_per_idea?: number | null;
   ideas_count: number;
   baskets_count: number;
@@ -77,7 +80,7 @@ export interface IPhaseAttributes {
   similarity_enabled?: boolean;
   similarity_threshold_title?: number | null;
   similarity_threshold_body?: number | null;
-  user_fields_in_form?: boolean;
+  user_data_collection: UserDataCollection;
 }
 
 export interface IPhases {
@@ -97,6 +100,7 @@ export interface IUpdatedPhaseProperties {
   end_at?: string | null;
   participation_method?: ParticipationMethod;
   voting_method?: VotingMethod | null;
+  voting_min_selected_options?: number | null;
   submission_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
   autoshare_results_enabled?: boolean | null;
@@ -127,7 +131,6 @@ export interface IUpdatedPhaseProperties {
   similarity_enabled?: boolean | null;
   similarity_threshold_title?: number | null;
   similarity_threshold_body?: number | null;
-  user_fields_in_form?: boolean;
 }
 
 export interface AddPhaseObject extends IUpdatedPhaseProperties {

@@ -538,10 +538,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            data_repository: {
-              enabled: true,
-              allowed: true
-            },
             data_repository_ai_analysis: {
               enabled: true,
               allowed: true

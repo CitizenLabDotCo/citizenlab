@@ -77,10 +77,10 @@ const Form = ({ loading, setError, onSubmit, closeModal }: Props) => {
   const schema = object({
     email: emailSchema,
     password: string().required(formatMessage(sharedMessages.noPasswordError)),
-    rememberMe: boolean(),
+    rememberMe: boolean().required(),
   });
 
-  const methods = useForm({
+  const methods = useForm<FormValues>({
     mode: 'onSubmit',
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),

@@ -17,9 +17,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.select',
     defaultMessage: 'Select',
   },
-  defaultField: {
-    id: 'app.containers.AdminPage.groups.permissions.defaultField',
-    defaultMessage: 'Default field',
+  defaultQuestion: {
+    id: 'app.containers.AdminPage.groups.permissions.defaultQuestion',
+    defaultMessage: 'Default question',
   },
   createANewQuestion: {
     id: 'app.containers.AdminPage.groups.permissions.createANewQuestion',
@@ -46,6 +46,10 @@ export default defineMessages({
   missingTitleLocaleError: {
     id: 'app.containers.AdminPage.groups.permissions.missingTitleLocaleError',
     defaultMessage: 'Please fill in the title in all languages',
+  },
+  missingDescriptionLocaleError: {
+    id: 'app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError',
+    defaultMessage: 'Please fill in the description in all languages',
   },
   answerFormat: {
     id: 'app.containers.AdminPage.groups.permissions.answerFormat',

@@ -10,8 +10,11 @@ import {
 import { useNode } from '@craftjs/core';
 import { useParams } from 'react-router-dom';
 
-import useFileById from 'api/files/useFileById';
+import useAddFileAttachment from 'api/file_attachments/useAddFileAttachment';
+import useDeleteFileAttachment from 'api/file_attachments/useDeleteFileAttachment';
+import useFileAttachmentById from 'api/file_attachments/useFileAttachmentById';
 import useFiles from 'api/files/useFiles';
+import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import FileDisplay from 'components/UI/FileAttachments/FileDisplay';
@@ -22,12 +25,13 @@ import messages from './messages';
 
 type FileAttachmentProps = {
   fileId?: string;
+  fileAttachmentId?: string;
 };
 
-const FileAttachment = ({ fileId }: FileAttachmentProps) => {
-  const { data: file } = useFileById(fileId);
+const FileAttachment = ({ fileAttachmentId }: FileAttachmentProps) => {
+  const { data: fileAttachment } = useFileAttachmentById(fileAttachmentId);
 
-  if (!file) {
+  if (!fileAttachment) {
     return null;
   }
 
@@ -37,13 +41,16 @@ const FileAttachment = ({ fileId }: FileAttachmentProps) => {
         file={{
           // Transform the file data to match the current expected type structure.
           // TODO: In the future, once we remove the old files structure/api, we can simplify this.
-          ...file.data,
+          ...fileAttachment.data,
           attributes: {
-            ...file.data.attributes,
+            ordering: fileAttachment.data.attributes.position,
+            name: fileAttachment.data.attributes.file_name,
+            size: fileAttachment.data.attributes.file_size,
+            created_at: fileAttachment.data.attributes.created_at,
+            updated_at: fileAttachment.data.attributes.updated_at,
             file: {
-              url: file.data.attributes.content.url,
+              url: fileAttachment.data.attributes.file_url,
             },
-            ordering: null,
           },
         }}
       />
@@ -55,14 +62,23 @@ const FileAttachmentSettings = () => {
   const {
     actions: { setProp },
     fileId,
+    fileAttachmentId,
   } = useNode((node) => ({
     fileId: node.data.props.fileId,
+    fileAttachmentId: node.data.props.fileAttachmentId,
     id: node.id,
   }));
 
   const { formatMessage } = useIntl();
+  // File attachment API hooks
+  const { mutate: addFileAttachment } = useAddFileAttachment({});
+  const { mutate: deleteFileAttachment } = useDeleteFileAttachment({});
 
   const { projectId } = useParams();
+
+  const { data: projectDescriptionLayout } = useProjectDescriptionBuilderLayout(
+    projectId || ''
+  );
 
   // Get files for project
   const { data: files, isFetching: isFetchingFiles } = useFiles({
@@ -87,7 +103,7 @@ const FileAttachmentSettings = () => {
       my="32px"
       display="flex"
       flexDirection="column"
-      gap="24px"
+      gap="12px"
     >
       {fileOptions.length === 0 ? (
         <Text m="0px">{formatMessage(messages.noFilesAvailable)}</Text>
@@ -96,7 +112,30 @@ const FileAttachmentSettings = () => {
           value={fileId}
           onChange={(option) => {
             setProp((props: FileAttachmentProps) => {
+              // Remove any current file attachment.
+              if (fileAttachmentId) {
+                deleteFileAttachment(fileAttachmentId);
+              }
+              // Set the new selected file ID.
               props.fileId = option.value;
+
+              // Create a new file attachment to the project description layout.
+              projectDescriptionLayout?.data.id &&
+                addFileAttachment(
+                  {
+                    file_id: option.value,
+                    attachable_type: 'ContentBuilder::Layout',
+                    attachable_id: projectDescriptionLayout.data.id,
+                  },
+                  {
+                    onSuccess: (data) => {
+                      // Update the node's fileId prop with the newly created attachment.
+                      setProp((props: FileAttachmentProps) => {
+                        props.fileAttachmentId = data.data.id;
+                      });
+                    },
+                  }
+                );
             });
           }}
           placeholder={formatMessage(messages.selectFile)}
@@ -107,7 +146,8 @@ const FileAttachmentSettings = () => {
 
       <ButtonWithLink
         linkTo={`/admin/projects/${projectId}/files`}
-        buttonStyle="secondary-outlined"
+        buttonStyle="text"
+        icon="upload-file"
         openLinkInNewTab={true}
       >
         {formatMessage(messages.uploadFiles)}

@@ -97,7 +97,6 @@ class Phase < ApplicationRecord
   before_validation :strip_title
   before_validation :set_participation_method_defaults, on: :create
   before_validation :set_presentation_mode, on: :create
-  before_save :reload_participation_method, if: :will_save_change_to_participation_method?
 
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
@@ -164,6 +163,8 @@ class Phase < ApplicationRecord
   end
 
   validates :ideas_order, inclusion: { in: ->(phase) { phase.pmethod.allowed_ideas_orders } }, allow_nil: true
+
+  # ONLY USED FOR IDEATION
   validates :allow_anonymous_participation, inclusion: { in: [true, false] }
 
   # voting?
@@ -179,6 +180,10 @@ class Phase < ApplicationRecord
     numericality: { greater_than_or_equal_to: :voting_min_total,
                     if: %i[voting? voting_min_total],
                     allow_nil: true }
+  validates :voting_min_selected_options,
+    numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: :voting_max_total,
+                    if: %i[voting? voting_max_total],
+                    allow_nil: false }
   validates :voting_max_votes_per_idea,
     numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: :voting_max_total,
                     if: %i[voting? voting_max_total],
@@ -252,10 +257,33 @@ class Phase < ApplicationRecord
     participation_method == 'voting'
   end
 
-  # @return [ParticipationMethod::Base]
   def pmethod
-    reload_participation_method if !@pmethod
-    @pmethod
+    @pmethod = case participation_method
+    when 'information'
+      ParticipationMethod::Information.new(self)
+    when 'ideation'
+      ParticipationMethod::Ideation.new(self)
+    when 'proposals'
+      ParticipationMethod::Proposals.new(self)
+    when 'native_survey'
+      ParticipationMethod::NativeSurvey.new(self)
+    when 'community_monitor_survey'
+      ParticipationMethod::CommunityMonitorSurvey.new(self)
+    when 'document_annotation'
+      ParticipationMethod::DocumentAnnotation.new(self)
+    when 'survey'
+      ParticipationMethod::Survey.new(self)
+    when 'voting'
+      ParticipationMethod::Voting.new(self)
+    when 'poll'
+      ParticipationMethod::Poll.new(self)
+    when 'volunteering'
+      ParticipationMethod::Volunteering.new(self)
+    when 'common_ground'
+      ParticipationMethod::CommonGround.new(self)
+    else
+      ParticipationMethod::None.new
+    end
   end
 
   def set_manual_voters(amount, user)
@@ -342,35 +370,6 @@ class Phase < ApplicationRecord
 
   def set_participation_method_defaults
     pmethod.assign_defaults_for_phase
-  end
-
-  def reload_participation_method
-    @pmethod = case participation_method
-    when 'information'
-      ParticipationMethod::Information.new(self)
-    when 'ideation'
-      ParticipationMethod::Ideation.new(self)
-    when 'proposals'
-      ParticipationMethod::Proposals.new(self)
-    when 'native_survey'
-      ParticipationMethod::NativeSurvey.new(self)
-    when 'community_monitor_survey'
-      ParticipationMethod::CommunityMonitorSurvey.new(self)
-    when 'document_annotation'
-      ParticipationMethod::DocumentAnnotation.new(self)
-    when 'survey'
-      ParticipationMethod::Survey.new(self)
-    when 'voting'
-      ParticipationMethod::Voting.new(self)
-    when 'poll'
-      ParticipationMethod::Poll.new(self)
-    when 'volunteering'
-      ParticipationMethod::Volunteering.new(self)
-    when 'common_ground'
-      ParticipationMethod::CommonGround.new(self)
-    else
-      ParticipationMethod::None.new
-    end
   end
 
   def set_presentation_mode

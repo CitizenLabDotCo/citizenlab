@@ -23,8 +23,8 @@ export default defineMessages({
       'Users in specific user group(s) can participate. You can manage user groups in “Users” tab.',
   },
   participationRequirementsTitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.participationRequirementsTitle',
-    defaultMessage: 'Participant requirements & questions',
+    id: 'app.containers.AdminPage.ProjectEdit.participationRequirementsTitle1',
+    defaultMessage: 'Phase access and user data',
   },
   participationRequirementsSubtitle: {
     id: 'app.containers.AdminPage.ProjectEdit.participationRequirementsSubtitle',

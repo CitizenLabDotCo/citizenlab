@@ -644,6 +644,7 @@ hr:
         user_is_given_admin_rights: 'Korisnik dobiva administratorska prava'
         user_is_given_folder_moderator_rights: 'Korisniku su dana prava moderatora mape'
         user_is_given_project_moderator_rights: 'Korisnik dobiva prava moderatora projekta'
+        user_is_invited_to_platform: 'Korisnik je pozvan na platformu'
         user_is_invited_to_cosponsor_a_proposal: 'Korisnik je pozvan da susponzorira prijedlog'
         user_is_mentioned: 'Spominje se korisnik'
         user_is_mentioned_in_internal_comment: 'Korisnik je spomenut u internom komentaru'

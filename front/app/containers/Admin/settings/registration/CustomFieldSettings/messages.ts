@@ -1,18 +1,33 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  registrationFields: {
-    id: 'app.containers.AdminPage.SettingsPage.registrationFields',
-    defaultMessage: 'Registration fields',
+  demographicQuestion: {
+    id: 'app.containers.AdminPage.SettingsPage.demographicQuestions',
+    defaultMessage: 'Demographic questions',
   },
-  subtitleRegistration: {
-    id: 'app.containers.AdminPage.SettingsPage.subtitleRegistration',
+  subtitleRegistration1: {
+    id: 'app.containers.AdminPage.SettingsPage.subtitleRegistration1',
     defaultMessage:
-      'Specify what information people are asked to provide when signing up.',
+      'Manage the demographic questions used on this platform. Enabling a question here will do two things:',
   },
-  addAFieldButton: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.addAFieldButton',
-    defaultMessage: 'Add field',
+  subtitleBullet1: {
+    id: 'app.containers.AdminPage.SettingsPage.subtitleBullet1',
+    defaultMessage:
+      'The question will be asked in the global sign-up process (e.g. when people click "Sign up" on the homepage).',
+  },
+  subtitleBullet2: {
+    id: 'app.containers.AdminPage.SettingsPage.subtitleBullet2',
+    defaultMessage:
+      'The question will be asked <b>by default</b> when people sign up for a specific phase or event. However: <b>admins and project moderators can override this per phase</b>- see the "Phase access and user data" tab on each phase.',
+  },
+  subtitleRegistration2: {
+    id: 'app.containers.AdminPage.SettingsPage.subtitleRegistration2',
+    defaultMessage:
+      'The same applies to the "required" setting that you see when you click "Edit" on a question.',
+  },
+  addAQuestionButton: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.addAQuestionButton',
+    defaultMessage: 'Add question',
   },
   domicileManagementInfo: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.domicileManagementInfo',
@@ -23,18 +38,18 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.geographicAreasTabLinkText',
     defaultMessage: 'Geographic areas tab',
   },
-  registrationQuestionDeletionConfirmation: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.registrationQuestionDeletionConfirmation3',
+  demographicQuestionDeletionConfirmation: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionDeletionConfirmation3',
     defaultMessage:
-      'Are you sure you want to delete this registration question? All answers that users have given to this question will be permanently deleted, and it will no longer be asked in projects or proposals. This action cannot be undone.',
+      'Are you sure you want to delete this demographic question? All answers that users have given to this question will be permanently deleted, and it will no longer be asked in projects or proposals. This action cannot be undone.',
   },
-  customFieldsTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsTooltip',
+  demographicQuestionsTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsTooltip',
     defaultMessage:
-      'Drag and drop the fields to determine the order in which they appear in the sign-up form.',
+      'Drag and drop the questions to determine the order in which they appear in the global sign-up process.',
   },
-  customFieldsSubSectionTitle: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsSubSectionTitle',
-    defaultMessage: 'Fields',
+  demographicQuestionsSubSectionTitle: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.demographicQuestionsSubSectionTitle',
+    defaultMessage: 'Questions',
   },
 });

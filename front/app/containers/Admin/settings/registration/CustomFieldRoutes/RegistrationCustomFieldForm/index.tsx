@@ -38,16 +38,7 @@ type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
 } & WrappedComponentProps;
 
-export type FieldType =
-  | 'select'
-  | 'multiselect'
-  | 'checkbox'
-  | 'text'
-  | 'multiline_text'
-  | 'number'
-  | 'date';
-
-export const fieldTypes: FieldType[] = [
+export const fieldTypes = [
   'select',
   'multiselect',
   'checkbox',
@@ -55,7 +46,11 @@ export const fieldTypes: FieldType[] = [
   'multiline_text',
   'number',
   'date',
-];
+] as const;
+
+export const fieldTypeValidator = string().oneOf(fieldTypes);
+
+export type FieldType = (typeof fieldTypes)[number];
 
 const RegistrationCustomFieldForm = ({
   intl: { formatMessage },
@@ -69,7 +64,7 @@ const RegistrationCustomFieldForm = ({
       .oneOf(fieldTypes, formatMessage(messages.answerFormatError))
       .required(formatMessage(messages.answerFormatError)),
     title_multiloc: validateMultilocForEveryLocale(
-      formatMessage(messages.fieldNameError)
+      formatMessage(messages.questionNameError)
     ),
     description_multiloc: object(),
     required: boolean().required(),
@@ -101,7 +96,7 @@ const RegistrationCustomFieldForm = ({
         <Section>
           <SectionField>
             <Feedback
-              successMessage={formatMessage(messages.saveFieldSuccess)}
+              successMessage={formatMessage(messages.saveQuestionSuccess)}
             />
             <Select
               name="input_type"
@@ -112,7 +107,7 @@ const RegistrationCustomFieldForm = ({
           </SectionField>
           <SectionField>
             <InputMultilocWithLocaleSwitcher
-              label={formatMessage(messages.fieldName)}
+              label={formatMessage(messages.questionName)}
               name="title_multiloc"
               disabled={builtInField}
             />
@@ -127,13 +122,13 @@ const RegistrationCustomFieldForm = ({
           <SectionField>
             <Toggle
               name="required"
-              label={formatMessage(messages.isFieldRequired)}
+              label={formatMessage(messages.isQuestionRequired)}
             />
           </SectionField>
         </Section>
         <Box display="flex">
           <Button type="submit" processing={methods.formState.isSubmitting}>
-            {formatMessage(messages.saveField)}
+            {formatMessage(messages.saveQuestion)}
           </Button>
         </Box>
       </form>

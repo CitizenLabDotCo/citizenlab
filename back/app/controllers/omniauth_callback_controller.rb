@@ -58,6 +58,7 @@ class OmniauthCallbackController < ApplicationController
     user_attrs = authver_method.profile_to_user_attrs(auth)
 
     @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
+
     @user = @identity.user || find_existing_user(authver_method, auth, user_attrs, verify: verify)
     @user = authentication_service.prevent_user_account_hijacking @user
 
@@ -69,6 +70,12 @@ class OmniauthCallbackController < ApplicationController
     end
 
     if @user
+      if @user.invite_pending? && auth.dig('info', 'email_verified') == false
+        # If the user is invited but the SSO email is not verified, we cannot proceed
+        signin_failure_redirect
+        return
+      end
+
       @identity.update(user: @user) unless @identity.user
 
       if @user.invite_pending?
@@ -78,6 +85,7 @@ class OmniauthCallbackController < ApplicationController
           return
         end
         UserService.assign_params_in_accept_invite(@user, user_attrs)
+
         ActiveRecord::Base.transaction do
           SideFxInviteService.new.before_accept @invite
           @user.save!
@@ -93,6 +101,7 @@ class OmniauthCallbackController < ApplicationController
       else # !@user.invite_pending?
         begin
           update_user!(auth, @user, authver_method)
+          update_identity!(auth, @identity, authver_method)
           SideFxUserService.new.after_update(@user, nil)
         rescue ActiveRecord::RecordInvalid => e
           ErrorReporter.report(e)
@@ -221,6 +230,11 @@ class OmniauthCallbackController < ApplicationController
     confirm_user = authver_method.email_confirmed?(auth) && sso_email_is_used
 
     UserService.update_in_sso!(user, user_params, confirm_user)
+  end
+
+  # Updates the auth_hash in a users identity to ensure tokens are up to date for logout (mainly for FranceConnect)
+  def update_identity!(auth, identity, authver_method)
+    identity.update_auth_hash!(auth, authver_method)
   end
 
   # Return locale if a locale can be parsed from pathname which matches an app locale

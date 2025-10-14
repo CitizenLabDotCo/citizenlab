@@ -7,8 +7,6 @@ import {
   useParams,
 } from 'react-router-dom';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import NavigationTabs from 'components/admin/NavigationTabs';
 import Tab from 'components/admin/NavigationTabs/Tab';
 import NewLabel from 'components/UI/NewLabel';
@@ -23,15 +21,18 @@ const AdminProjectsProjectIndex = () => {
   const { pathname } = useLocation();
   const { projectId } = useParams() as { projectId: string };
 
-  const isDataRepositoryEnabled = useFeatureFlag({
-    name: 'data_repository',
-  });
-
   return (
     <div data-cy="e2e-admin-projects-project-index">
       <ProjectHeader projectId={projectId} />
       <NavigationTabs position="relative">
         <Tab
+          className="intercom-admin-project-general-tab"
+          label={formatMessage(messages.generalTab)}
+          url={`/admin/projects/${projectId}/general`}
+          active={pathname.includes(`/admin/projects/${projectId}/general`)}
+        />
+        <Tab
+          data-cy="e2e-admin-project-timeline-tab"
           className="intercom-admin-project-timeline-tab"
           label={formatMessage(messages.timelineTab)}
           url={`/admin/projects/${projectId}/phases/setup`}
@@ -39,17 +40,9 @@ const AdminProjectsProjectIndex = () => {
         />
         <Tab
           className="intercom-admin-project-participants-tab"
-          label={formatMessage(messages.participationTab)}
-          url={`/admin/projects/${projectId}/participation`}
-          active={pathname.includes(
-            `/admin/projects/${projectId}/participation`
-          )}
-        />
-        <Tab
-          className="intercom-admin-project-traffic-tab"
-          label={formatMessage(messages.trafficTab)}
-          url={`/admin/projects/${projectId}/traffic`}
-          active={pathname.includes(`/admin/projects/${projectId}/traffic`)}
+          label={formatMessage(messages.audienceTab)}
+          url={`/admin/projects/${projectId}/audience`}
+          active={pathname.includes(`/admin/projects/${projectId}/audience`)}
         />
         <Tab
           className="intercom-admin-project-messaging-tab"
@@ -63,19 +56,17 @@ const AdminProjectsProjectIndex = () => {
           url={`/admin/projects/${projectId}/events`}
           active={pathname.includes(`/admin/projects/${projectId}/events`)}
         />
-        {isDataRepositoryEnabled && (
-          <Tab
-            className="intercom-admin-project-files-tab"
-            label={
-              <Box display="flex" alignItems="center" gap="8px">
-                {formatMessage(messages.filesTab)}
-                <NewLabel />
-              </Box>
-            }
-            url={`/admin/projects/${projectId}/files`}
-            active={pathname.includes(`/admin/projects/${projectId}/files`)}
-          />
-        )}
+        <Tab
+          className="intercom-admin-project-files-tab"
+          label={
+            <Box display="flex" alignItems="center" gap="8px">
+              {formatMessage(messages.filesTab)}
+              <NewLabel />
+            </Box>
+          }
+          url={`/admin/projects/${projectId}/files`}
+          active={pathname.includes(`/admin/projects/${projectId}/files`)}
+        />
       </NavigationTabs>
       <RouterOutlet />
     </div>

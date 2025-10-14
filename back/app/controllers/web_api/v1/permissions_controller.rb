@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class WebApi::V1::PermissionsController < ApplicationController
-  before_action :set_permission, only: %i[show update reset requirements schema access_denied_explanation]
+  include LockedUserCustomFieldsConcern
+
+  before_action :set_permission, only: %i[show update reset requirements schema custom_fields access_denied_explanation]
   skip_before_action :authenticate_user
 
   def index
@@ -61,6 +63,12 @@ class WebApi::V1::PermissionsController < ApplicationController
     render json: raw_json(user_ui_and_json_multiloc_schemas(fields))
   end
 
+  def custom_fields
+    authorize @permission
+    fields = user_requirements_service.requirements_custom_fields @permission
+    render json: WebApi::V1::CustomFieldSerializer.new(fields, params: jsonapi_serializer_params_with_locked_fields).serializable_hash.to_json
+  end
+
   def access_denied_explanation
     authorize @permission
     attributes = {
@@ -111,6 +119,8 @@ class WebApi::V1::PermissionsController < ApplicationController
       :global_custom_fields,
       :verification_expiry,
       :everyone_tracking_enabled,
+      :user_fields_in_form,
+      :user_data_collection,
       group_ids: [],
       access_denied_explanation_multiloc: CL2_SUPPORTED_LOCALES
     )
@@ -118,7 +128,7 @@ class WebApi::V1::PermissionsController < ApplicationController
 
   # lock any fields locked by verification method(s)
   def mark_locked_json_forms_fields(schemas)
-    locked_custom_fields = verification_service.locked_custom_fields(current_user).map(&:to_s)
+    locked_custom_fields = Verification::VerificationService.new.locked_custom_fields(current_user).map(&:to_s)
 
     # Mark fields as locked & read only
     schemas[:ui_schema_multiloc].each_value do |ui_schema|
@@ -137,11 +147,6 @@ class WebApi::V1::PermissionsController < ApplicationController
       end
     end
   end
-
-  def verification_service
-    @verification_service ||= Verification::VerificationService.new
-  end
 end
 
 # WebApi::V1::PermissionsController.prepend(Verification::Patches::WebApi::V1::PermissionsController)
-# frozen_string_literal: true

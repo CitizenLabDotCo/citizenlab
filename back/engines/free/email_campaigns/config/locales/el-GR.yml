@@ -644,6 +644,7 @@ el:
         user_is_given_admin_rights: 'Ο χρήστης αποκτά δικαιώματα διαχειριστή'
         user_is_given_folder_moderator_rights: 'Ο χρήστης αποκτά δικαιώματα συντονιστή φακέλου'
         user_is_given_project_moderator_rights: 'Ο χρήστης αποκτά δικαιώματα συντονιστή έργου'
+        user_is_invited_to_platform: 'Ο χρήστης καλείται στην πλατφόρμα'
         user_is_invited_to_cosponsor_a_proposal: 'Ο χρήστης καλείται να συν-χορηγήσει μια πρόταση'
         user_is_mentioned: 'Αναφέρεται ο χρήστης'
         user_is_mentioned_in_internal_comment: 'Ο χρήστης αναφέρεται σε εσωτερικό σχόλιο'

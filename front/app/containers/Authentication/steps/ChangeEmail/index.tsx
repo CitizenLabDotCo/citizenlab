@@ -51,7 +51,7 @@ const ChangeEmail = ({ loading, setError, onGoBack, onChangeEmail }: Props) => {
     [formatMessage]
   );
 
-  const methods = useForm({
+  const methods = useForm<FormValues>({
     mode: 'onSubmit',
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),

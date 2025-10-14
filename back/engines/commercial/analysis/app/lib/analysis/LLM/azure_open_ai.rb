@@ -8,77 +8,124 @@ module Analysis
     class AzureOpenAI < Base
       MAX_RETRIES = 20
 
-      def initialize(**params)
+      class << self
+        def gpt_model
+          raise NotImplementedError
+        end
+
+        # On Azure, each model needs to be deployed separately and given its own
+        # name. To avoid having to introduce an extra deployment_name parameter
+        # per model in our configuration, we derive the deployment name from the
+        # model name, stripping out any characters that are not allowed in Azure
+        # deployment names.
+        def azure_deployment_name
+          gpt_model.gsub(/[^\w.-]/, '')
+        end
+
+        def headroom_ratio
+          0.85
+        end
+      end
+
+      attr_reader :response_client
+
+      def initialize(**client_config)
         super
 
-        @client = OpenAI::Client.new(
+        @response_client = OpenAI::Client.new(
           access_token: ENV.fetch('AZURE_OPENAI_API_KEY'),
-          uri_base: [ENV.fetch('AZURE_OPENAI_URI'), '/openai/deployments/', azure_deployment_name].join,
+          uri_base: "#{ENV.fetch('AZURE_OPENAI_URI')}/openai/v1/",
           api_type: :azure,
-          api_version: '2025-01-01-preview',
           request_timeout: 900,
-          **params
-        )
+          **client_config
+        ).responses
       end
 
-      def chat(prompt, **params)
-        response = chat_with_retry(**default_prompt_params(prompt).deep_merge(params))
-        response.dig('choices', 0, 'message', 'content')
-      end
+      # @param message [String, Analysis::LLM::Message, Array<String, Analysis::LLM::Message>]
+      #   The message(s) to send to the model.
+      def response(message, retries: MAX_RETRIES, **params)
+        inputs = Array.wrap(message)
+          .map { |m| Message.wrap(m) }
+          .map { |m| format_message(m) }
 
-      def chat_async(prompt, **params)
-        params_with_stream = default_prompt_params(prompt)
-        params_with_stream[:parameters][:stream] = proc do |chunk, _bytesize|
-          new_text = chunk.dig('choices', 0, 'delta', 'content')
-          yield new_text
+        parameters = default_params.merge(input: inputs).deep_merge(params)
+
+        if block_given?
+          parameters[:stream] = proc do |chunk, _event|
+            yield chunk['delta'] if chunk['type'] == 'response.output_text.delta'
+          end
         end
-        chat_with_retry(**params_with_stream.deep_merge(params))
+
+        begin
+          response_client.create(parameters:)
+        rescue Faraday::TooManyRequestsError => e
+          if retries.positive?
+            sleep(rand(20..40))
+            retries -= 1
+            retry
+          else
+            ErrorReporter.report_msg(
+              'API request to Azure OpenAI failed',
+              extra: { response: e.response }
+            )
+            raise
+          end
+        end
       end
 
-      def gpt_model
-        raise NotImplementedError
+      def chat(...)
+        # response returns "" if streaming is used
+        response(...).presence&.dig('output', 0, 'content', 0, 'text')
       end
+      alias chat_async chat
 
-      # On Azure, each model needs to be deployed separately and given its own
-      # name. To avoid having to introduce an extra deployment_name parameter
-      # per model in our configuration, we derive the deployment name from the
-      # model name, stripping out any characters that are not allowed in Azure
-      # deployment names.
-      def azure_deployment_name
-        gpt_model.gsub(/[^a-zA-Z0-9-]\./, '')
-      end
-
-      def self.token_count(str)
-        enc = Tiktoken.encoding_for_model('gpt-4') # same as gpt-3
+      def token_count(str)
+        enc = Tiktoken.encoding_for_model(self.class.gpt_model)
         enc.encode(str).size
-      end
-
-      def default_prompt_params(prompt)
-        {
-          parameters: {
-            model: gpt_model,
-            messages: [{ role: 'user', content: prompt }],
-            temperature: 0.2,
-            top_p: 0.5,
-            frequency_penalty: 0.1
-          }
-        }
       end
 
       private
 
-      def chat_with_retry(retries: MAX_RETRIES, **params)
-        @client.chat(**params)
-      rescue Faraday::TooManyRequestsError => e
-        if retries <= 1
-          ErrorReporter.report_msg('API request to Azure OpenAI failed', extra: { response: e.response })
-          raise
-        end
+      def default_params
+        {
+          model: self.class.azure_deployment_name,
+          temperature: 0.2,
+          top_p: 0.5,
+          store: false # prevent OpenAI from storing the prompts and responses
+        }
+      end
 
-        # Retry after waiting between 20 and 60 seconds
-        sleep_time = rand(20..60)
-        sleep(sleep_time)
-        chat_with_retry(retries: retries - 1, **params)
+      def format_message(msg)
+        {
+          role: msg.role,
+          content: msg.inputs.map { |input| format_input(input) }
+        }
+      end
+
+      def format_input(input)
+        case input
+        when String then format_text(input)
+        when Files::File then format_file(input)
+        else raise ArgumentError, <<~MSG.squish
+          Unsupported content type: #{input.class}.
+          Must be String or Files::File."
+        MSG
+        end
+      end
+
+      # @param file [Files::File]
+      def format_file(file)
+        encoded = Base64.strict_encode64(file.content.read)
+
+        {
+          type: 'input_file',
+          filename: file.name,
+          file_data: "data:#{file.mime_type};base64,#{encoded}"
+        }
+      end
+
+      def format_text(text)
+        { type: 'input_text', text: text }
       end
     end
   end

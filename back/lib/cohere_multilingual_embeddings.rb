@@ -7,7 +7,7 @@ class CohereMultilingualEmbeddings
     @client = Aws::BedrockRuntime::Client.new(params)
   end
 
-  def self.token_count(str)
+  def token_count(str)
     # From https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-embed.html:
     # "For optimal performance, we recommend reducing the length of each text to less than 512 tokens. 1 token is about 4 characters."
     (str.size / 4.0).ceil

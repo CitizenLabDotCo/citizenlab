@@ -16,7 +16,7 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
 
   %i[
     voting_method voting_max_total voting_min_total
-    voting_max_votes_per_idea baskets_count
+    voting_max_votes_per_idea baskets_count voting_min_selected_options
     native_survey_title_multiloc native_survey_button_multiloc
     expire_days_limit reacting_threshold autoshare_results_enabled
   ].each do |attribute_name|
@@ -24,10 +24,6 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
       phase.pmethod.supports_serializing?(attribute_name)
     }
   end
-
-  attribute :user_fields_in_form, if: proc { |phase|
-    phase.pmethod.user_fields_in_form?
-  }
 
   attribute :votes_count, if: proc { |phase, params|
     phase.pmethod.supports_serializing?(:votes_count) && view_votes?(phase, current_user(params))
@@ -65,6 +61,10 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
 
   attribute :supports_survey_form do |phase|
     phase.pmethod.supports_survey_form?
+  end
+
+  attribute :user_data_collection do |phase|
+    phase.pmethod.user_data_collection
   end
 
   belongs_to :project

@@ -73,7 +73,7 @@ export const SelectionScreen = ({
               <Box display="flex">
                 {isBuiltInField(field) && (
                   <Text color="primary" fontSize="s" mr="20px" my="auto">
-                    <FormattedMessage {...messages.defaultField} />
+                    <FormattedMessage {...messages.defaultQuestion} />
                   </Text>
                 )}
                 <Button
@@ -93,6 +93,7 @@ export const SelectionScreen = ({
       <Tooltip
         zIndex={9999999}
         disabled={userIsAdmin}
+        theme="dark"
         content={
           <Text my="8px" color="white" fontSize="s">
             {formatMessage(messages.onlyAdminsCreateQuestion)}

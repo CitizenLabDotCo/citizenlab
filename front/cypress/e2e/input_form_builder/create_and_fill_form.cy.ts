@@ -145,7 +145,7 @@ describe('Input form builder', () => {
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form`);
     cy.dataCy('e2e-edit-input-form').click();
     cy.dataCy('e2e-short-answer').should('exist');
-    cy.dataCy('e2e-short-answer').click();
+    cy.addItemToFormBuilder('#toolbox_text');
 
     // Save the form
     cy.get('form').submit();
