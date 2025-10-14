@@ -173,6 +173,11 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
     form = phase_for_input.pmethod.custom_form
     extract_custom_field_values_from_params!(form)
     params_for_create = idea_params form
+
+    # if params_for_create[:body_multiloc].present?
+
+    # end
+
     files_params = extract_file_params(params_for_create)
 
     input = Idea.new params_for_create
