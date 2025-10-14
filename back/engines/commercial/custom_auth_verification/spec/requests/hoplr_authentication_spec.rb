@@ -60,14 +60,18 @@ context 'hoplr authentication' do
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['hoplr_login'] = {
+    settings['verification'] = {
       allowed: true,
       enabled: true,
-      environment: 'test',
-      client_id: 'fakeid',
-      client_secret: 'fakesecret',
-      neighbourhood_custom_field_key: 'neighbourhood'
+      verification_methods: [{
+                               name: 'hoplr',
+                               environment: 'test',
+                               client_id: 'fakeid',
+                               client_secret: 'fakesecret',
+                               neighbourhood_custom_field_key: 'neighbourhood'
+                             }]
     }
+
     configuration.save!
     host! 'example.org'
     SettingsService.new.activate_feature!('user_confirmation')
@@ -94,6 +98,8 @@ context 'hoplr authentication' do
   it 'successfully authenticates new user' do
     get '/auth/hoplr?random-passthrough-param=somevalue'
     follow_redirect!
+
+    binding.pry
 
     expect(response).to redirect_to('/en/?random-passthrough-param=somevalue&sso_flow=signup&sso_success=true')
 

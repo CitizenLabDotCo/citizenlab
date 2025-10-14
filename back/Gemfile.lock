@@ -91,13 +91,6 @@ PATH
       rails (~> 7.0)
 
 PATH
-  remote: engines/commercial/id_hoplr
-  specs:
-    id_hoplr (0.1.0)
-      omniauth_openid_connect
-      rails (~> 7.0)
-
-PATH
   remote: engines/commercial/id_id_card_lookup
   specs:
     id_id_card_lookup (0.1.0)
@@ -1316,7 +1309,6 @@ DEPENDENCIES
   groupdate (~> 6.5)
   icalendar (~> 2.10)
   ice_cube (~> 0.17)
-  id_hoplr!
   id_id_card_lookup!
   id_nemlog_in!
   id_vienna_saml!

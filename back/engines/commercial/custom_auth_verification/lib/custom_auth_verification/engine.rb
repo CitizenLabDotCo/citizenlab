@@ -23,7 +23,14 @@ module CustomAuthVerification
       OostendeRrnVerification
     ]
 
+    AUTH_ONLY_METHODS = %w[
+      HoplrOmniauth
+    ]
+
     config.to_prepare do
+
+      AppConfiguration::Settings.add_feature(CustomAuthVerification::FeatureSpecification)
+
       AUTH_AND_VERIFICATION_METHODS.each do |method|
         instance = "CustomAuthVerification::#{method}".constantize.new
         AuthenticationService.add_method(instance.name, instance)

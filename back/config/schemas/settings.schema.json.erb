@@ -1395,27 +1395,6 @@
         }
       },
 
-      "verification": {
-        "type": "object",
-        "title": "Custom SSO and Verification",
-        "description": "Custom single sign-on and user verification methods developed for customers.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false },
-          "verification_methods": {
-            "title": "Enabled Methods",
-            "private": true,
-            "type": "array",
-            "default": [],
-            "items": {
-              "anyOf": <%= ::Verification::VerificationService.new.all_methods_json_schema %>
-            }
-          }
-        }
-      },
-
       "community_monitor": {
         "type": "object",
         "title": "Community Monitor",
