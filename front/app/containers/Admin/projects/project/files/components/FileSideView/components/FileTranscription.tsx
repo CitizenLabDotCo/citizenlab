@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import {
   Box,
@@ -6,6 +6,7 @@ import {
   Spinner,
   Accordion,
   Title,
+  colors,
 } from '@citizenlab/cl2-component-library';
 
 import useFileTranscript from 'api/file_transcript/useFileTranscript';
@@ -13,6 +14,7 @@ import { IFileData } from 'api/files/types';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { AudioRef } from '../../FilePreview';
 import messages from '../../messages';
 
 const timecodeFormat = (ms: number) => {
@@ -21,9 +23,17 @@ const timecodeFormat = (ms: number) => {
   return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 };
 
-const Timecode = ({ timecode }) => {
+const Timecode = ({ timecode, onClick }) => {
   return (
-    <Text color="textSecondary" fontSize="s">
+    <Text
+      color="textSecondary"
+      fontSize="s"
+      style={{
+        cursor: onClick ? 'pointer' : 'default',
+        textDecoration: onClick ? 'underline' : 'none',
+      }}
+      onClick={onClick}
+    >
       {timecodeFormat(timecode)}
     </Text>
   );
@@ -31,12 +41,60 @@ const Timecode = ({ timecode }) => {
 
 type Props = {
   file: IFileData;
+  audioRef?: React.RefObject<AudioRef>;
+  currentAudioTime?: number;
 };
-const FileTranscription = ({ file }: Props) => {
+const FileTranscription = ({ file, audioRef, currentAudioTime }: Props) => {
   const { formatMessage } = useIntl();
   const { data: fileTranscript, isError } = useFileTranscript(file.id);
 
   const transcriptionStatus = fileTranscript?.data.attributes.status;
+
+  const handleTimecodeClick = (milliseconds: number) => {
+    if (audioRef?.current) {
+      const seconds = milliseconds / 1000;
+      audioRef.current.setCurrentTime(seconds);
+      // Play the audio if it's paused
+      if (audioRef.current.paused) {
+        audioRef.current.play();
+      }
+    }
+  };
+
+  // Calculate which utterance is currently active based on audio time
+  const activeUtteranceIndex = useMemo(() => {
+    if (currentAudioTime === undefined) return null;
+
+    const utterances =
+      fileTranscript?.data.attributes.assemblyai_transcript?.utterances;
+
+    if (!utterances) return null;
+
+    const currentTimeMs = currentAudioTime * 1000;
+    const index = utterances.findIndex(
+      (utterance) =>
+        currentTimeMs >= utterance.start && currentTimeMs < utterance.end
+    );
+
+    return index !== -1 ? index : null;
+  }, [currentAudioTime, fileTranscript]);
+
+  // Calculate which chapter is currently active based on audio time
+  const activeChapterIndex = useMemo(() => {
+    if (currentAudioTime === undefined) return null;
+
+    const chapters =
+      fileTranscript?.data.attributes.assemblyai_transcript?.chapters;
+
+    if (!chapters) return null;
+
+    const currentTimeMs = currentAudioTime * 1000;
+    const index = chapters.findIndex(
+      (chapter) => currentTimeMs >= chapter.start && currentTimeMs < chapter.end
+    );
+
+    return index !== -1 ? index : null;
+  }, [currentAudioTime, fileTranscript]);
 
   return (
     <>
@@ -59,12 +117,30 @@ const FileTranscription = ({ file }: Props) => {
                 {formatMessage(messages.transcriptionChapters)}
               </Title>
               {fileTranscript.data.attributes.assemblyai_transcript.chapters.map(
-                (chapter) => (
+                (chapter, index) => (
                   <Accordion
                     key={chapter.start}
+                    bgColor={
+                      activeChapterIndex === index
+                        ? colors.green100
+                        : 'transparent'
+                    }
                     title={
-                      <Box display="flex" alignItems="center" gap="8px">
-                        <Timecode timecode={chapter.start} />
+                      <Box
+                        display="flex"
+                        alignItems="center"
+                        gap="8px"
+                        p="4px"
+                        borderRadius="4px"
+                      >
+                        <Timecode
+                          timecode={chapter.start}
+                          onClick={
+                            audioRef
+                              ? () => handleTimecodeClick(chapter.start)
+                              : undefined
+                          }
+                        />
                         <Title variant="h5" p="0" m="0">
                           {chapter.gist}
                         </Title>
@@ -83,9 +159,26 @@ const FileTranscription = ({ file }: Props) => {
             <Box mt="8px">
               {fileTranscript.data.attributes.assemblyai_transcript.utterances.map(
                 (utterance, index) => (
-                  <Box key={utterance.start}>
+                  <Box
+                    key={utterance.start}
+                    bgColor={
+                      activeUtteranceIndex === index
+                        ? colors.green100
+                        : 'transparent'
+                    }
+                    p="8px"
+                    borderRadius="4px"
+                    mb="4px"
+                  >
                     <Box display="flex" alignItems="center" gap="8px">
-                      <Timecode timecode={utterance.start} />
+                      <Timecode
+                        timecode={utterance.start}
+                        onClick={
+                          audioRef
+                            ? () => handleTimecodeClick(utterance.start)
+                            : undefined
+                        }
+                      />
                       <Title variant="h6" p="0" m="0">
                         {formatMessage(messages.speakerA, {
                           speaker: utterance.speaker,

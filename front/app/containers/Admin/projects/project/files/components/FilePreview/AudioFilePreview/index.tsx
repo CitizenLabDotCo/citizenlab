@@ -21,12 +21,11 @@ type Props = {
   url: string;
   title?: string;
   mimeType: string;
-  onCurrentTimeJump?: (time: number) => void;
   onCurrentTimeUpdate?: (time: number) => void;
 };
 
 const AudioFilePreview = forwardRef<AudioRef, Props>(
-  ({ url, title, mimeType, onCurrentTimeJump, onCurrentTimeUpdate }, ref) => {
+  ({ url, title, mimeType, onCurrentTimeUpdate }, ref) => {
     const audioElementRef = useRef<HTMLAudioElement>(null);
     const isProgrammaticSeekRef = useRef(false);
 
@@ -71,15 +70,6 @@ const AudioFilePreview = forwardRef<AudioRef, Props>(
       }
     }, [onCurrentTimeUpdate]);
 
-    // Handle user-initiated seeks and programmatic time changes
-    const handleSeeked = useCallback(() => {
-      if (audioElementRef.current && onCurrentTimeJump) {
-        onCurrentTimeJump(audioElementRef.current.currentTime);
-      }
-      // Reset the flag after handling the seek
-      isProgrammaticSeekRef.current = false;
-    }, [onCurrentTimeJump]);
-
     return (
       <Box mt="24px">
         <audio
@@ -88,7 +78,6 @@ const AudioFilePreview = forwardRef<AudioRef, Props>(
           controls
           style={{ width: '100%' }}
           onTimeUpdate={handleTimeUpdate}
-          onSeeked={handleSeeked}
         >
           <source src={url} type={mimeType} />
         </audio>

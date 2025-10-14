@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 
 import {
   Box,
@@ -16,7 +16,7 @@ import SideModal from 'components/UI/SideModal';
 
 import { useIntl } from 'utils/cl-intl';
 
-import FilePreview from '../FilePreview';
+import FilePreview, { AudioRef } from '../FilePreview';
 import messages from '../messages';
 
 import FileDescription from './components/FileDescription';
@@ -34,10 +34,16 @@ const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
   const { formatMessage } = useIntl();
   const { data: file } = useFileById(selectedFileId);
   const [editingMetadata, setEditingMetadata] = useState(false);
+  const [currentAudioTime, setCurrentAudioTime] = useState<number>(0);
+  const audioRef = useRef<AudioRef>(null);
 
   const isTranscriptionEnabled = useFeatureFlag({
     name: 'data_repository_transcription',
   });
+
+  const handleCurrentTimeUpdate = useCallback((time: number) => {
+    setCurrentAudioTime(time);
+  }, []);
 
   return (
     <SideModal
@@ -90,13 +96,21 @@ const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
                   )}
                 </Box>
                 <Box mt="32px">
-                  <FilePreview file={file} />
+                  <FilePreview
+                    file={file}
+                    audioRef={audioRef}
+                    onCurrentTimeUpdate={handleCurrentTimeUpdate}
+                  />
                 </Box>
 
                 {isTranscriptionEnabled &&
                   file.data.relationships.transcript?.data && (
                     <Box mt="32px">
-                      <FileTranscription file={file.data} />
+                      <FileTranscription
+                        file={file.data}
+                        audioRef={audioRef}
+                        currentAudioTime={currentAudioTime}
+                      />
                     </Box>
                   )}
               </Box>

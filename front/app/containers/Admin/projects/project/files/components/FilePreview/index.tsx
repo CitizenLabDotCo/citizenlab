@@ -35,16 +35,10 @@ export type { AudioRef };
 type Props = {
   file: IFile;
   audioRef?: React.Ref<AudioRef>;
-  onCurrentTimeJump?: (time: number) => void;
   onCurrentTimeUpdate?: (time: number) => void;
 };
 
-const FilePreview = ({
-  file,
-  audioRef,
-  onCurrentTimeJump,
-  onCurrentTimeUpdate,
-}: Props) => {
+const FilePreview = ({ file, audioRef, onCurrentTimeUpdate }: Props) => {
   const { formatMessage } = useIntl();
 
   const { data: filePreview, isLoading: isLoadingPreview } = useFilePreview(
@@ -99,7 +93,6 @@ const FilePreview = ({
             url={fileUrl}
             title={file.data.attributes.name}
             mimeType={mimeType}
-            onCurrentTimeJump={onCurrentTimeJump}
             onCurrentTimeUpdate={onCurrentTimeUpdate}
           />
         );
