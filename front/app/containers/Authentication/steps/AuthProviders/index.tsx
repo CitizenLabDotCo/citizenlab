@@ -22,9 +22,9 @@ import AuthProviderButton, {
 import ClaveUnicaExpandedAuthProviderButton from '../_components/ClaveUnicaExpandedAuthProviderButton';
 import SSOButtonsExceptFCAndCU from '../_components/SSOButtonsExceptFCAndCU';
 import TextButton from '../_components/TextButton';
+import authMessages from '../messages';
 
 import messages from './messages';
-import authMessages from '../messages';
 
 const Container = styled.div`
   display: flex;
@@ -59,7 +59,6 @@ const AuthProviders = memo<Props>(
 
     // Show link to the above hidden path
     const showAdminLoginLink =
-      (flow === 'signin' || flow === 'signup') &&
       tenantSettings?.azure_ad_login?.visibility === 'link';
 
     const handleOnFranceConnectSelected = useCallback(

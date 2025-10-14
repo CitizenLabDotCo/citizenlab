@@ -2,17 +2,18 @@ import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import { SetError } from 'containers/Authentication/typings';
 import useAuthConfig from 'containers/Authentication/useAuthConfig';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
 import TextButton from '../_components/TextButton';
+import authMessages from '../messages';
 
 import Form from './Form';
 import messages from './messages';
-import authMessages from '../messages';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 interface Props {
   loading: boolean;
