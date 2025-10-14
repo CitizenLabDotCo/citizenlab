@@ -9,6 +9,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import PageLoading from 'components/UI/PageLoading';
 import Unauthorized from 'components/Unauthorized';
 
+import RelativeNavigate from 'utils/cl-router/RelativeNavigate';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import { isUUID } from 'utils/helperUtils';
 import { usePermission } from 'utils/permissions';
@@ -149,7 +150,7 @@ const createAdminRoutes = () => {
         // Careful: moderators currently have access to the admin index route
         // Adjust isModerator in routePermissions.ts if needed.
         path: '',
-        element: <Navigate to="dashboard/overview" />,
+        element: <RelativeNavigate to="dashboard/overview" />,
       },
       createDashboardRoutes(),
       createAdminUsersRoutes(),

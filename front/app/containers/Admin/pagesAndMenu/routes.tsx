@@ -1,9 +1,10 @@
 import React, { lazy } from 'react';
 
-import { Navigate } from 'react-router';
 import { RouteType } from 'routes';
 
 import PageLoading from 'components/UI/PageLoading';
+
+import RelativeNavigate from 'utils/cl-router/RelativeNavigate';
 
 import { AdminRoute } from '../routes';
 
@@ -134,7 +135,7 @@ export default () => ({
           path: pagesAndMenuRoutes.customPageId,
           element: <EditCustomPageIndex />,
           children: [
-            { path: '', element: <Navigate to="settings" /> }, // to handle manually changing URL
+            { path: '', element: <RelativeNavigate to="settings" /> }, // to handle manually changing URL
             {
               path: pagesAndMenuRoutes.pageSettings,
               element: (

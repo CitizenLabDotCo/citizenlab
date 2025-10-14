@@ -1,8 +1,8 @@
 import React, { lazy } from 'react';
 
-import { Navigate } from 'react-router';
-
 import PageLoading from 'components/UI/PageLoading';
+
+import RelativeNavigate from 'utils/cl-router/RelativeNavigate';
 
 import { AdminRoute } from '../routes';
 
@@ -53,7 +53,7 @@ const reportingRoutes = () => {
     },
     {
       path: reportingEnumRoutes.reporting,
-      element: <Navigate to={reportingEnumRoutes.reportBuilder} />,
+      element: <RelativeNavigate to={reportingEnumRoutes.reportBuilder} />,
     },
   ];
 };

@@ -1,10 +1,11 @@
 import React, { lazy } from 'react';
 
 import moduleConfiguration from 'modules';
-import { Navigate } from 'react-router';
 import { RouteType } from 'routes';
 
 import PageLoading from 'components/UI/PageLoading';
+
+import RelativeNavigate from 'utils/cl-router/RelativeNavigate';
 
 import { AdminRoute } from '../routes';
 
@@ -260,7 +261,7 @@ const createAdminProjectsRoutes = () => {
         children: [
           {
             path: '',
-            element: <Navigate to="phases/setup" replace />,
+            element: <RelativeNavigate to="phases/setup" replace />,
           },
           {
             path: projectsRoutes.projectTraffic,

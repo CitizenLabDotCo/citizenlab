@@ -1,8 +1,8 @@
 import React, { lazy } from 'react';
 
-import { Navigate } from 'react-router';
-
 import PageLoading from 'components/UI/PageLoading';
+
+import RelativeNavigate from 'utils/cl-router/RelativeNavigate';
 
 import { AdminRoute } from '../routes';
 
@@ -42,7 +42,7 @@ const createAdminMessagingRoutes = () => ({
   children: [
     {
       path: '',
-      element: <Navigate to={messagingRoutes.emailsCustom} />,
+      element: <RelativeNavigate to={messagingRoutes.emailsCustom} />,
     },
     {
       path: messagingRoutes.emailsCustom,

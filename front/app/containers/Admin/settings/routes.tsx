@@ -1,9 +1,10 @@
 import React, { lazy } from 'react';
 
 import moduleConfiguration from 'modules';
-import { Navigate } from 'react-router';
 
 import PageLoading from 'components/UI/PageLoading';
+
+import RelativeNavigate from 'utils/cl-router/RelativeNavigate';
 
 import { AdminRoute } from '../routes';
 
@@ -90,7 +91,7 @@ export default () => ({
   children: [
     {
       path: settingsRoutes.settingsDefault,
-      element: <Navigate to="general" replace />,
+      element: <RelativeNavigate to="general" replace />,
     },
     {
       path: settingsRoutes.general,

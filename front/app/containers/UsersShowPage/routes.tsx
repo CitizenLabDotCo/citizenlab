@@ -1,8 +1,8 @@
 import React, { lazy } from 'react';
 
-import { Navigate } from 'react-router';
-
 import PageLoading from 'components/UI/PageLoading';
+
+import RelativeNavigate from 'utils/cl-router/RelativeNavigate';
 
 const UsersShowPage = lazy(() => import('./'));
 const Following = lazy(() => import('./Following'));
@@ -41,7 +41,7 @@ export default () => ({
   children: [
     {
       path: userShowPageRoutes.default,
-      element: <Navigate to="submissions" replace />,
+      element: <RelativeNavigate to="submissions" replace />,
     },
     {
       path: userShowPageRoutes.submissions,

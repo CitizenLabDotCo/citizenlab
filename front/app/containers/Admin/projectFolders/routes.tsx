@@ -1,8 +1,10 @@
 import React, { lazy } from 'react';
 
-import { Navigate, Outlet as RouterOutlet } from 'react-router';
+import { Outlet as RouterOutlet } from 'react-router';
 
 import PageLoading from 'components/UI/PageLoading';
+
+import RelativeNavigate from 'utils/cl-router/RelativeNavigate';
 
 import { AdminRoute } from '../routes';
 
@@ -47,7 +49,7 @@ export default () => ({
       children: [
         {
           path: projectFolderRoutes.projectFolderIdDefault,
-          element: <Navigate to="projects" />,
+          element: <RelativeNavigate to="projects" />,
         },
         {
           path: projectFolderRoutes.projects,

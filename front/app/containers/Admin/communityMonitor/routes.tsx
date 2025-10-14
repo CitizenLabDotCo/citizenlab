@@ -1,13 +1,13 @@
 import React, { lazy } from 'react';
 
-import { Navigate } from 'react-router';
-
 import PageLoading from 'components/UI/PageLoading';
 
 const LiveMonitor = lazy(() => import('./components/LiveMonitor'));
 const Reports = lazy(() => import('./components/Reports'));
 const Settings = lazy(() => import('./components/Settings/index'));
 const Participants = lazy(() => import('./components/Participants'));
+
+import RelativeNavigate from 'utils/cl-router/RelativeNavigate';
 
 import { AdminRoute } from '../routes';
 
@@ -69,7 +69,7 @@ const communityMonitorsRoutes = () => {
     children: [
       {
         path: '',
-        element: <Navigate to="live-monitor" replace />,
+        element: <RelativeNavigate to="live-monitor" replace />,
       },
       {
         path: communityMonitorRoutes.liveMonitor,
@@ -97,7 +97,7 @@ const communityMonitorsRoutes = () => {
         children: [
           {
             path: '',
-            element: <Navigate to="survey" replace />,
+            element: <RelativeNavigate to="survey" replace />,
           },
           {
             path: communityMonitorRoutes.settingsSurvey,
