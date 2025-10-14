@@ -1,0 +1,46 @@
+# frozen_string_literal: true
+
+module CustomIdMethods
+  class Engine < ::Rails::Engine
+    isolate_namespace CustomIdMethods
+
+    AUTH_AND_VERIFICATION_METHODS = %w[
+      FakeSsoOmniauth
+      KeycloakOmniauth
+      Auth0Omniauth
+      ClaveUnicaOmniauth
+      CriiptoOmniauth
+      FranceconnectOmniauth
+      IdAustriaOmniauth
+      TwodayOmniauth
+    ]
+
+    VERIFICATION_ONLY_METHODS = %w[
+      BogusVerification
+      BosaFasOmniauth
+      CowVerification
+      GentRrnVerification
+      OostendeRrnVerification
+    ]
+
+    AUTH_ONLY_METHODS = %w[
+      HoplrOmniauth
+    ]
+
+    config.to_prepare do
+
+      AppConfiguration::Settings.add_feature(CustomIdMethods::FeatureSpecification)
+
+      AUTH_AND_VERIFICATION_METHODS.each do |method|
+        instance = "CustomIdMethods::#{method}".constantize.new
+        AuthenticationService.add_method(instance.name, instance)
+        Verification.add_method(instance)
+      end
+
+      VERIFICATION_ONLY_METHODS.each do |method|
+        instance = "CustomIdMethods::#{method}".constantize.new
+        Verification.add_method(instance)
+      end
+    end
+  end
+end
