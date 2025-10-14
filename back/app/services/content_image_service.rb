@@ -57,13 +57,13 @@ class ContentImageService
     encode_content content
   end
 
-  def remove_data_images_multiloc(multiloc, imageable: nil, field: nil)
+  def remove_data_images_multiloc(multiloc)
     multiloc.transform_values do |encoded_content|
       remove_data_images(encoded_content)
     end
   end
 
-  def remove_data_images
+  def remove_data_images(encoded_content)
     content = begin
       decode_content encoded_content
     rescue DecodingError => e
