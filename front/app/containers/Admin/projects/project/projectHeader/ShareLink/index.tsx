@@ -69,7 +69,7 @@ const ShareLink = ({ projectId, projectSlug, token, className }: Props) => {
     <Box position="relative" className={className}>
       <Button
         id="e2e-share-link"
-        buttonStyle="secondary-outlined"
+        buttonStyle="admin-dark"
         size="s"
         padding="4px 8px"
         onClick={() => {
