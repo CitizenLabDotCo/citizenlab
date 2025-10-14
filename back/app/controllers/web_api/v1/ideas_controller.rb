@@ -174,6 +174,11 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
     extract_custom_field_values_from_params!(form)
     params_for_create = idea_params form
 
+    # We take out the body_multiloc and add it later,
+    # after we process the images in it (see transaction below).
+    body_multiloc = params_for_create[:body_multiloc]
+    params_for_create[:body_multiloc] = nil
+
     files_params = extract_file_params(params_for_create)
 
     input = Idea.new params_for_create
@@ -234,6 +239,15 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
     ActiveRecord::Base.transaction do
       if input.save(**save_options)
         update_file_upload_fields input, form, params_for_create
+        
+        input.update!(
+          body_multiloc: TextImageService.new.swap_data_images_multiloc(
+            body_multiloc, 
+            field: :body_multiloc, 
+            imageable: input
+          )
+        )
+
         sidefx.after_create(input, current_user)
         write_everyone_tracking_cookie input
         render json: WebApi::V1::IdeaSerializer.new(
