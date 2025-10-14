@@ -16,6 +16,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import { AudioRef } from '../../FilePreview';
 import messages from '../../messages';
+import Centerer from 'components/UI/Centerer';
 
 const timecodeFormat = (ms: number) => {
   const minutes = Math.floor(ms / 60000);
@@ -102,8 +103,10 @@ const FileTranscription = ({ file, audioRef, currentAudioTime }: Props) => {
       <Box pt="12px" display="flex">
         {(transcriptionStatus === 'pending' ||
           transcriptionStatus === 'processing') && (
-          <Box ml="4px">
-            <Spinner size="12px" />
+          <Box ml="4px" display="flex">
+            <Centerer width="32px">
+              <Spinner size="16px" />
+            </Centerer>
             {formatMessage(messages.transcriptionPending)}
           </Box>
         )}
