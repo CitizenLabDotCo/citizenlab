@@ -37,18 +37,6 @@ import InputIQ from './InputIQ';
 import messages from './messages';
 import { getInstructionMessage } from './util';
 
-export const getSubtextElement = (description: string) => {
-  return (
-    <QuillEditedContent fontWeight={400}>
-      <div
-        dangerouslySetInnerHTML={{
-          __html: description,
-        }}
-      />
-    </QuillEditedContent>
-  );
-};
-
 const renderField = ({
   question,
   projectId,
@@ -243,8 +231,14 @@ const CustomFields = ({
             htmlFor: question.key,
             labelValue: localize(question.title_multiloc),
             optional: !question.required,
-            subtextValue: getSubtextElement(
-              localize(question.description_multiloc)
+            subtextValue: (
+              <QuillEditedContent fontWeight={400}>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: localize(question.description_multiloc),
+                  }}
+                />
+              </QuillEditedContent>
             ),
             subtextSupportsHtml: true,
           };
