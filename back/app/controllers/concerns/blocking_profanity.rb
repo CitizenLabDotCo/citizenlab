@@ -32,7 +32,7 @@ module BlockingProfanity
 
     all_blocked_words = []
     violating_attributes = []
-    service = ProfanityService.new
+    ProfanityService.new
     attrs = DEFAULT_CLASS_ATTRS[object.class.name] || []
     attrs += EXTENDED_CLASS_ATTRS[object.class.name] || [] if AppConfiguration.instance.settings.dig('blocking_profanity', 'extended_blocking')
     attrs&.each do |atr|
@@ -56,9 +56,9 @@ module BlockingProfanity
 
     all_blocked_words = []
     violating_attributes = []
-    service = ProfanityService.new
+    ProfanityService.new
 
-    { title_multiloc: title_multiloc, description_multiloc: description_multiloc }.each do |atr, multiloc|
+    [title_multiloc, description_multiloc].each do |multiloc|
       next if multiloc.blank?
 
       result = verify_profanity_multiloc(multiloc)
@@ -89,8 +89,8 @@ module BlockingProfanity
       end
     end
 
-    return { 
-      blocked_words: blocked_words, 
+    {
+      blocked_words: blocked_words,
       violating_attributes: violating_attributes
     }
   end
