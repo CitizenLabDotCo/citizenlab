@@ -229,7 +229,7 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
       render json: { errors: { idea_status_id: [{ error: 'Cannot manually assign inputs to an automatic status', value: input.idea_status_id }] } }, status: :unprocessable_entity
       return
     end
-    verify_profanity input
+    verify_profanity_title_description(input.title_multiloc, body_multiloc)
 
     save_options = {}
     publication_status = params.dig(:idea, :publication_status)

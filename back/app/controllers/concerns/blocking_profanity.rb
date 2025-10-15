@@ -51,6 +51,25 @@ module BlockingProfanity
     raise ProfanityBlockedError.new(violating_attributes, all_blocked_words) if violating_attributes.present?
   end
 
+  def verify_profanity_title_description(title_multiloc, description_multiloc)
+    return unless AppConfiguration.instance.feature_activated? 'blocking_profanity'
+
+    all_blocked_words = []
+    violating_attributes = []
+    service = ProfanityService.new
+
+    { title_multiloc: title_multiloc, description_multiloc: description_multiloc }.each do |atr, multiloc|
+      next if multiloc.blank?
+
+      result = verify_profanity_multiloc(multiloc)
+      all_blocked_words += result[:blocked_words]
+      violating_attributes += result[:violating_attributes]
+    end
+    raise ProfanityBlockedError.new(violating_attributes, all_blocked_words) if violating_attributes.present?
+  end
+
+  private
+
   def verify_profanity_multiloc(multiloc)
     blocked_words = []
     violating_attributes = []
@@ -75,8 +94,6 @@ module BlockingProfanity
       violating_attributes: violating_attributes
     }
   end
-
-  private
 
   # renders errors in a custom format (opposed to the new HookForm format overridden in InitiativesController)
   def render_profanity_blocked(exception)
