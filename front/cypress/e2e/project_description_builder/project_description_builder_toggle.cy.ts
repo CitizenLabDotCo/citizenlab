@@ -60,7 +60,7 @@ describe('Project description builder toggle', () => {
     cy.intercept(`**/files`).as('saveProjectFiles');
 
     // Attach a project file
-    cy.visit(`admin/projects/${projectId}/settings`);
+    cy.visit(`admin/projects/${projectId}/general`);
     cy.wait(2000);
     cy.scrollTo('bottom');
 
@@ -88,7 +88,7 @@ describe('Project description builder toggle', () => {
   });
 
   it('shows original description when project description builder is enabled but there is no content yet', () => {
-    cy.visit(`/admin/projects/${projectId}/settings/description`);
+    cy.visit(`/admin/projects/${projectId}/general`);
     cy.get('#e2e-toggle-enable-project-description-builder').click({
       force: true,
     });
@@ -104,7 +104,7 @@ describe('Project description builder toggle', () => {
     );
 
     // Attach a project file
-    cy.visit(`admin/projects/${projectId}/settings`);
+    cy.visit(`admin/projects/${projectId}/general`);
     cy.wait(2000);
     cy.scrollTo('bottom');
 
@@ -123,7 +123,7 @@ describe('Project description builder toggle', () => {
     cy.wait('@saveProjectFiles');
     cy.contains('Your form has been saved!').should('be.visible');
 
-    cy.visit(`/admin/projects/${projectId}/settings/description`);
+    cy.visit(`/admin/projects/${projectId}/general`);
     cy.apiToggleProjectDescriptionBuilder({ projectId, enabled: true });
     cy.visit(
       `/admin/project-description-builder/projects/${projectId}/description`

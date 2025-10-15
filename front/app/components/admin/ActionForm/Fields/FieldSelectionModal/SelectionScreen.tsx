@@ -93,6 +93,7 @@ export const SelectionScreen = ({
       <Tooltip
         zIndex={9999999}
         disabled={userIsAdmin}
+        theme="dark"
         content={
           <Text my="8px" color="white" fontSize="s">
             {formatMessage(messages.onlyAdminsCreateQuestion)}
