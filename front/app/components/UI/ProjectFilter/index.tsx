@@ -6,6 +6,7 @@ import {
   Spinner,
   BoxProps,
   colors,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import ReactSelect from 'react-select';
 import { useTheme } from 'styled-components';
@@ -181,8 +182,8 @@ const ProjectFilter = ({
           control: (base, { isFocused }) => ({
             ...base,
             minWidth: '310px',
-            minHeight: '48px',
-            height: '48px',
+            minHeight: `${stylingConsts.inputHeight}px`,
+            height: `${stylingConsts.inputHeight}px`,
             borderWidth: isFocused ? '2px' : '1px',
             borderColor: isFocused
               ? theme.colors.tenantPrimary
