@@ -38,27 +38,42 @@ module BlockingProfanity
     attrs&.each do |atr|
       next if object[atr].blank?
 
-      values = if atr.to_s.ends_with? '_multiloc'
+      multiloc = if atr.to_s.ends_with? '_multiloc'
         object[atr]
       else
-        { nil => object[atr] }
+        { nil => object[atr] } # Create a fake multiloc-like hash
       end
-      values.each do |locale, text|
-        next if text.blank?
 
-        value_blocked_words = service.search_blocked_words(text)
-        if value_blocked_words.present?
-          violating_attributes << atr
+      result = verify_profanity_multiloc(multiloc)
+      all_blocked_words += result[:blocked_words]
+      violating_attributes += result[:violating_attributes]
+    end
+    raise ProfanityBlockedError.new(violating_attributes, all_blocked_words) if violating_attributes.present?
+  end
 
-          value_blocked_words.each do |result|
-            result[:locale] = locale if locale
-            result[:attribute] = atr
-            all_blocked_words.push result
-          end
+  def verify_profanity_multiloc(multiloc)
+    blocked_words = []
+    violating_attributes = []
+
+    multiloc.each do |locale, text|
+      next if text.blank?
+
+      value_blocked_words = service.search_blocked_words(text)
+      if value_blocked_words.present?
+        violating_attributes << atr
+
+        value_blocked_words.each do |result|
+          result[:locale] = locale if locale
+          result[:attribute] = atr
+          blocked_words.push result
         end
       end
     end
-    raise ProfanityBlockedError.new(violating_attributes, all_blocked_words) if violating_attributes.present?
+
+    return { 
+      blocked_words: blocked_words, 
+      violating_attributes: violating_attributes
+    }
   end
 
   private
