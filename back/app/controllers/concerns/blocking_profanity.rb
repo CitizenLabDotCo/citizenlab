@@ -43,9 +43,11 @@ module BlockingProfanity
         { nil => object[atr] } # Create a fake multiloc-like hash
       end
 
-      result = verify_profanity_multiloc(multiloc)
-      all_blocked_words += result[:blocked_words]
-      violating_attributes += result[:violating_attributes]
+      blocked_words = verify_profanity_multiloc(multiloc)
+      if blocked_words.present?
+        all_blocked_words += blocked_words
+        violating_attributes << atr
+      end
     end
     raise ProfanityBlockedError.new(violating_attributes, all_blocked_words) if violating_attributes.present?
   end
@@ -59,9 +61,11 @@ module BlockingProfanity
     {title_multiloc: title_multiloc, body_multiloc: body_multiloc}.each do |atr, multiloc|
       next if multiloc.blank?
 
-      result = verify_profanity_multiloc(multiloc, atr)
-      all_blocked_words += result[:blocked_words]
-      violating_attributes += result[:violating_attributes]
+      blocked_words = verify_profanity_multiloc(multiloc, atr)
+      if blocked_words.present?
+        all_blocked_words += blocked_words
+        violating_attributes << atr
+      end
     end
     raise ProfanityBlockedError.new(violating_attributes, all_blocked_words) if violating_attributes.present?
   end
@@ -70,7 +74,6 @@ module BlockingProfanity
 
   def verify_profanity_multiloc(multiloc, atr)
     blocked_words = []
-    violating_attributes = []
     service = ProfanityService.new
 
     multiloc.each do |locale, text|
@@ -78,8 +81,6 @@ module BlockingProfanity
 
       value_blocked_words = service.search_blocked_words(text)
       if value_blocked_words.present?
-        violating_attributes << atr
-
         value_blocked_words.each do |result|
           result[:locale] = locale if locale
           result[:attribute] = atr
@@ -88,10 +89,7 @@ module BlockingProfanity
       end
     end
 
-    {
-      blocked_words: blocked_words,
-      violating_attributes: violating_attributes
-    }
+    blocked_words
   end
 
   # renders errors in a custom format (opposed to the new HookForm format overridden in InitiativesController)
