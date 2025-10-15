@@ -61,7 +61,8 @@ RSpec.describe EmailCampaigns::Campaigns::YourInputInScreening do
       it 'delivers global campaigns' do
         expect do
           EmailCampaigns::DeliveryService.new.send_on_activity(activity)
-        end.to have_enqueued_job(ActionMailer::MailDeliveryJob)
+        end.to have_enqueued_job(ActionMailer::MailDeliveryJob).exactly(:once)
+          .and have_enqueued_job(ActionMailer::MailDeliveryJob)
           .with(
             global_campaign.mailer_class.to_s,
             'campaign_mail',
@@ -74,7 +75,8 @@ RSpec.describe EmailCampaigns::Campaigns::YourInputInScreening do
     it 'delivers context campaigns' do
       expect do
         EmailCampaigns::DeliveryService.new.send_on_activity(activity)
-      end.to have_enqueued_job(ActionMailer::MailDeliveryJob)
+      end.to have_enqueued_job(ActionMailer::MailDeliveryJob).exactly(:once)
+        .and have_enqueued_job(ActionMailer::MailDeliveryJob)
         .with(
           context_campaign.mailer_class.to_s,
           'campaign_mail',
