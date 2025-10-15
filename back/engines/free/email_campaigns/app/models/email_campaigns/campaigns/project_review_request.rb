@@ -50,8 +50,8 @@ module EmailCampaigns
       { 'Notifications::ProjectReviewRequest' => { 'created' => true } }
     end
 
-    def filter_request_approved(activity:, time: nil)
-      activity && activity.item.project_review.approved?
+    def filter_pending_request(activity:, time: nil)
+      activity && !activity.item.project_review.approved?
     end
 
     def notification_recipient(users_scope, activity:, time: nil)
