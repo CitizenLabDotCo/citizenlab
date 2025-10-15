@@ -175,23 +175,16 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
     params_for_create = idea_params form
 
     # We put the body_multiloc in a variable, and then
-    # remove the data images for the body_multiloc that we pass to the input creation.
-    # This way, the input has a body_multiloc that can be used for profanity detection,
-    # without needing to store the data images in the database, which was creating issues
-    # when the data images were too large.
-    # Later, we handle the swapping of the data images by references in the transation (see below).
-    #
-    # It would be nicer if we could replace the images by references here already,
-    # but currently we need to have an input id to do that, which we don't have yet,
-    # because we haven't created the input yet.
-    # We could refactor the whole content_image_service to not need an imageable id,
-    # but that would be too much work for now.
-    # It would also be nice if we could do the profanity detection on the body_multiloc
-    # with the data images, but then we have to refactor that whole thing (see profanity code).
+    # remove it from params_for_create.
+    # This way, the input gets created without a body.
+    # We add the body later, after the input has an ID,
+    # and we have taken the base64 images out of the body (see transaction below).
+    # It would be cleaner if we could already take out the base64 images
+    # here, but unfortunately the TextImageService needs the input id,
+    # which we don't have yet at this point.
+    # Refactoring it is too much work right now so we do it like this.
     body_multiloc = params_for_create[:body_multiloc]
-    if body_multiloc.present?
-      params_for_create[:body_multiloc] = TextImageService.new.remove_data_images_multiloc(body_multiloc)
-    end
+    params_for_create[:body_multiloc] = nil
 
     files_params = extract_file_params(params_for_create)
 
@@ -229,6 +222,8 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
       render json: { errors: { idea_status_id: [{ error: 'Cannot manually assign inputs to an automatic status', value: input.idea_status_id }] } }, status: :unprocessable_entity
       return
     end
+
+    # Different implementation of profanity check because input.body_multiloc is still nil here
     verify_profanity_title_description(input.title_multiloc, body_multiloc)
 
     save_options = {}

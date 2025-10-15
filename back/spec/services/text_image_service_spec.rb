@@ -36,30 +36,6 @@ describe TextImageService do
     end
   end
 
-  describe 'remove_data_images_multiloc' do
-    it 'processes both base64 and URL as src' do
-      input = <<~HTML
-        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
-        <img src="data:image/jpeg;base64,/9j/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/yQALCAABAAEBAREA/8wABgAQEAX/2gAIAQEAAD8A0s8g/9k=" />
-        <img src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg" />
-      HTML
-      imageable = build(:project, description_multiloc: { 'fr-BE' => input })
-      output = service.remove_data_images_multiloc(imageable.description_multiloc)
-      expected_html = <<~HTML
-        <img>
-        <img>
-        <img>
-      HTML
-      expect(output).to eq({ 'fr-BE' => expected_html })
-    end
-
-    it 'does not modify the empty string' do
-      input = ''
-      imageable = build(:project, description_multiloc: { 'en' => input })
-      expect(service.remove_data_images_multiloc(imageable.description_multiloc)).to eq({ 'en' => input })
-    end
-  end
-
   describe 'render_data_images_multiloc' do
     it 'adds src attributes to the img tags' do
       text_image1, text_image2 = create_list(:text_image, 2)
