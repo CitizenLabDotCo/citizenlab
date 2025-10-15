@@ -58,7 +58,7 @@ module BlockingProfanity
     all_blocked_words = []
     violating_attributes = []
 
-    {title_multiloc: title_multiloc, body_multiloc: body_multiloc}.each do |atr, multiloc|
+    { title_multiloc: title_multiloc, body_multiloc: body_multiloc }.each do |atr, multiloc|
       next if multiloc.blank?
 
       blocked_words = verify_profanity_multiloc(multiloc, atr)
