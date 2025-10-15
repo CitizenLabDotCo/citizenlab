@@ -16,7 +16,6 @@ const DateRangePicker = ({
   disabled,
   numberOfMonths,
   onUpdateRange,
-  height,
 }: Props) => {
   const [selectionMode, setSelectionMode] = useState<SelectionMode>();
 
@@ -62,7 +61,6 @@ const DateRangePicker = ({
               ? setSelectionMode(undefined)
               : setSelectionMode('to');
           }}
-          height={height}
         />
       </Tooltip>
     </ClickOutsideContainer>

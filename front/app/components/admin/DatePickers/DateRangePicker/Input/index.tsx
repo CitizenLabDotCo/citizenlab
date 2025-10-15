@@ -16,7 +16,6 @@ interface Props {
   selectionMode?: SelectionMode;
   onClickFrom: () => void;
   onClickTo: () => void;
-  height?: string;
 }
 
 const Input = ({
@@ -24,13 +23,12 @@ const Input = ({
   selectionMode,
   onClickFrom,
   onClickTo,
-  height,
 }: Props) => {
   const { formatMessage } = useIntl();
   const selectDate = formatMessage(sharedMessages.selectDate);
 
   return (
-    <InputContainer height={height}>
+    <InputContainer>
       <DateButton
         className="date-range-picker-from"
         isSelected={selectionMode === 'from'}
