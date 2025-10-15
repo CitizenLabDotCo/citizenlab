@@ -32,7 +32,6 @@ module BlockingProfanity
 
     all_blocked_words = []
     violating_attributes = []
-    ProfanityService.new
     attrs = DEFAULT_CLASS_ATTRS[object.class.name] || []
     attrs += EXTENDED_CLASS_ATTRS[object.class.name] || [] if AppConfiguration.instance.settings.dig('blocking_profanity', 'extended_blocking')
     attrs&.each do |atr|
@@ -51,17 +50,16 @@ module BlockingProfanity
     raise ProfanityBlockedError.new(violating_attributes, all_blocked_words) if violating_attributes.present?
   end
 
-  def verify_profanity_title_description(title_multiloc, description_multiloc)
+  def verify_profanity_title_and_body(title_multiloc, body_multiloc)
     return unless AppConfiguration.instance.feature_activated? 'blocking_profanity'
 
     all_blocked_words = []
     violating_attributes = []
-    ProfanityService.new
 
-    [title_multiloc, description_multiloc].each do |multiloc|
+    {title_multiloc: title_multiloc, body_multiloc: body_multiloc}.each do |atr, multiloc|
       next if multiloc.blank?
 
-      result = verify_profanity_multiloc(multiloc)
+      result = verify_profanity_multiloc(multiloc, atr)
       all_blocked_words += result[:blocked_words]
       violating_attributes += result[:violating_attributes]
     end
@@ -70,9 +68,10 @@ module BlockingProfanity
 
   private
 
-  def verify_profanity_multiloc(multiloc)
+  def verify_profanity_multiloc(multiloc, atr)
     blocked_words = []
     violating_attributes = []
+    service = ProfanityService.new
 
     multiloc.each do |locale, text|
       next if text.blank?
