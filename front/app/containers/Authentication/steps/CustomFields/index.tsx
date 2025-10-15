@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useUserCustomFieldsForPermission from 'api/user_custom_fields_for_permission/useUserCustomFieldsForPermission';
@@ -51,7 +51,7 @@ const CustomFields = ({
   }, []);
 
   if (!authUser || !customFields) {
-    return null;
+    return <Spinner />;
   }
 
   const handleSubmit = async () => {
