@@ -55,9 +55,9 @@ PATH
       ros-apartment (>= 2.9.0)
 
 PATH
-  remote: engines/commercial/custom_auth_verification
+  remote: engines/commercial/custom_id_methods
   specs:
-    custom_auth_verification (1.0.0)
+    custom_id_methods (1.0.0)
       httparty
       id_id_card_lookup
       omniauth-auth0 (~> 2.0)
@@ -1288,7 +1288,7 @@ DEPENDENCIES
   content_builder!
   counter_culture (~> 3.5)
   csv (~> 3.3.0)
-  custom_auth_verification!
+  custom_id_methods!
   custom_maps!
   dalli (~> 3.2.8)
   database_cleaner (~> 2.1.0)

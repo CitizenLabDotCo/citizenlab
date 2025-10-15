@@ -64,12 +64,12 @@ context 'hoplr authentication' do
       allowed: true,
       enabled: true,
       verification_methods: [{
-                               name: 'hoplr',
-                               environment: 'test',
-                               client_id: 'fakeid',
-                               client_secret: 'fakesecret',
-                               neighbourhood_custom_field_key: 'neighbourhood'
-                             }]
+        name: 'hoplr',
+        environment: 'test',
+        client_id: 'fakeid',
+        client_secret: 'fakesecret',
+        neighbourhood_custom_field_key: 'neighbourhood'
+      }]
     }
 
     configuration.save!
@@ -98,8 +98,6 @@ context 'hoplr authentication' do
   it 'successfully authenticates new user' do
     get '/auth/hoplr?random-passthrough-param=somevalue'
     follow_redirect!
-
-    binding.pry
 
     expect(response).to redirect_to('/en/?random-passthrough-param=somevalue&sso_flow=signup&sso_success=true')
 

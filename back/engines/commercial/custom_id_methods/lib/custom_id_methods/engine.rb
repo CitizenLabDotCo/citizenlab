@@ -28,9 +28,6 @@ module CustomIdMethods
     ]
 
     config.to_prepare do
-
-      AppConfiguration::Settings.add_feature(CustomIdMethods::FeatureSpecification)
-
       AUTH_AND_VERIFICATION_METHODS.each do |method|
         instance = "CustomIdMethods::#{method}".constantize.new
         AuthenticationService.add_method(instance.name, instance)
@@ -41,6 +38,13 @@ module CustomIdMethods
         instance = "CustomIdMethods::#{method}".constantize.new
         Verification.add_method(instance)
       end
+
+      AUTH_ONLY_METHODS.each do |method|
+        instance = "CustomIdMethods::#{method}".constantize.new
+        AuthenticationService.add_method(instance.name, instance)
+      end
+
+      AppConfiguration::Settings.add_feature(CustomIdMethods::FeatureSpecification)
     end
   end
 end

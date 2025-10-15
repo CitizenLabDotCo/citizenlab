@@ -28,8 +28,9 @@ module CustomIdMethods
 
     # To list all the methods in admin HQ settings
     def self.all_methods_json_schema
+      # TODO: JS - Better way to get all methods
       all_methods = ::Verification.all_methods + [CustomIdMethods::HoplrOmniauth.new]
-      schema = all_methods.map do |method|
+      all_methods.map do |method|
         {
           type: 'object',
           title: method.name,
@@ -42,19 +43,17 @@ module CustomIdMethods
             end
           }
         }
-      end.to_json
-      # binding.pry
-      schema.to_json
+      end
     end
 
-    add_setting "verification_methods", schema: {
-          "title": "Enabled Methods",
-          "private": true,
-          "type": "array",
-          "default": [],
-          "items": {
-            "anyOf": all_methods_json_schema
-            }
-          }
+    add_setting 'verification_methods', schema: {
+      title: 'Enabled Methods',
+      private: true,
+      type: 'array',
+      default: [],
+      items: {
+        anyOf: all_methods_json_schema
+      }
+    }
   end
 end
