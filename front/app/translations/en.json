@@ -2031,6 +2031,7 @@
   "app.containers.VoteControl.voteErrorTitle": "Something went wrong",
   "app.containers.admin.ContentBuilder.default": "default",
   "app.containers.admin.ContentBuilder.folderFiles": "Folder files",
+  "app.containers.admin.ContentBuilder.folderTimeline": "Folder Timeline",
   "app.containers.admin.ContentBuilder.imageTextCards": "Image & text cards",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Info & accordions",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 column",
