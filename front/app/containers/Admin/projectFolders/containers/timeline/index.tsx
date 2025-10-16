@@ -19,12 +19,13 @@ import { getStatusColor } from 'containers/Admin/projects/all/_shared/utils';
 import messages from 'containers/Admin/projects/all/Calendar/messages';
 import ProjectGanttChart from 'containers/Admin/projects/all/Calendar/ProjectGanttChart';
 import UpsellNudge from 'containers/Admin/projects/all/Calendar/UpsellNudge';
-import { AdminProjectPhaseIndex } from 'containers/Admin/projects/project/phase';
 
 import Centerer from 'components/UI/Centerer';
 import { GanttItem } from 'components/UI/GanttChart/types';
 
 import { useIntl } from 'utils/cl-intl';
+
+import { StandaloneAdminProjectPhaseIndex } from './StandaloneAdminProjectPhaseIndex';
 
 const PAGE_SIZE = 50;
 
@@ -156,7 +157,7 @@ const FolderTimeline = () => {
 
       {selectedProjectId && projectData && selectedPhase && (
         <Box mt="32px">
-          <AdminProjectPhaseIndex
+          <StandaloneAdminProjectPhaseIndex
             project={projectData.data}
             selectedPhase={selectedPhase}
             setSelectedPhase={setSelectedPhase}
