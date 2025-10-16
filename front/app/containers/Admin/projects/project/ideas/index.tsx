@@ -30,8 +30,15 @@ const timelineProjectVisibleFilterMenus: TFilterMenu[] = [
   'topics',
 ];
 
-const AdminProjectIdeas = () => {
-  const { projectId, phaseId } = useParams();
+interface AdminProjectIdeasContentProps {
+  projectId: string;
+  phaseId: string;
+}
+
+export const AdminProjectIdeasContent = ({
+  projectId,
+  phaseId,
+}: AdminProjectIdeasContentProps) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const { data: phase } = usePhase(phaseId);
@@ -39,11 +46,7 @@ const AdminProjectIdeas = () => {
   const isCommonGround =
     phase?.data.attributes.participation_method === 'common_ground';
 
-  if (
-    project === undefined ||
-    projectId === undefined ||
-    phaseId === undefined
-  ) {
+  if (project === undefined) {
     return null;
   }
 
@@ -146,6 +149,16 @@ const AdminProjectIdeas = () => {
       )}
     </>
   );
+};
+
+const AdminProjectIdeas = () => {
+  const { projectId, phaseId } = useParams();
+
+  if (projectId === undefined || phaseId === undefined) {
+    return null;
+  }
+
+  return <AdminProjectIdeasContent projectId={projectId} phaseId={phaseId} />;
 };
 
 export default AdminProjectIdeas;

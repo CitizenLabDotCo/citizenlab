@@ -13,6 +13,7 @@ import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
 import { useIntl } from 'utils/cl-intl';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
+import { AdminProjectIdeasContent } from '../../../projects/project/ideas';
 import { AdminPhaseEdit } from '../../../projects/project/phaseSetup';
 import { getTimelineTab } from '../../../projects/project/phaseSetup/utils';
 import {
@@ -123,12 +124,10 @@ const StandaloneAdminProjectPhaseIndex = ({
         );
       case 'ideas':
         return (
-          <PlaceholderBox>
-            <Text color="textSecondary">Ideas Tab Content</Text>
-            <Text mt="8px" color="textSecondary">
-              Ideas management would go here
-            </Text>
-          </PlaceholderBox>
+          <AdminProjectIdeasContent
+            projectId={project.id}
+            phaseId={selectedPhase.id}
+          />
         );
       case 'form':
         return (
