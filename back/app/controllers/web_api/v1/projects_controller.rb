@@ -235,6 +235,39 @@ class WebApi::V1::ProjectsController < ApplicationController
     end
   end
 
+  def ai_create
+    authorize Project, :create?
+    
+    description = params[:description]
+    return render json: { errors: { description: [{ error: 'Description is required' }] } }, status: :unprocessable_entity if description.blank?
+
+    begin
+      ai_service = ProjectAiGeneratorService.new(description, current_user)
+      project_attributes = ai_service.generate_project_attributes
+      
+      project = Project.new(project_attributes)
+      sidefx.before_create(project, current_user)
+
+      created = Project.transaction do
+        save_project(project).tap do |saved|
+          sidefx.after_create(project, current_user) if saved
+        end
+      end
+
+      if created
+        render json: WebApi::V1::ProjectSerializer.new(
+          project,
+          params: jsonapi_serializer_params,
+          include: [:admin_publication]
+        ).serializable_hash, status: :created
+      else
+        render json: { errors: project.errors.details }, status: :unprocessable_entity
+      end
+    rescue ProjectAiGeneratorService::AiGenerationError => e
+      render json: { errors: { ai_generation: [{ error: e.message }] } }, status: :unprocessable_entity
+    end
+  end
+
   def copy
     source_project = Project.find(params[:id])
     dest_folder = source_project.folder if UserRoleService.new.can_moderate?(source_project.folder, current_user)
