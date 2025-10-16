@@ -7,7 +7,7 @@ Object.assign(global, { TextDecoder, TextEncoder });
 global.ResizeObserver = require('resize-observer-polyfill');
 
 jest.mock('polished');
-jest.mock('quill-blot-formatter');
+jest.mock('@enzedonline/quill-blot-formatter2');
 jest.mock('history', () => ({
   createBrowserHistory: () => ({
     replace: jest.fn(),
