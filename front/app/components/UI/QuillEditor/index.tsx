@@ -8,7 +8,7 @@ import React, {
 
 import { Label, IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
-import Quill, { RangeStatic } from 'quill';
+import Quill, { Range } from 'quill';
 
 import 'quill/dist/quill.snow.css';
 
@@ -135,7 +135,7 @@ const QuillEditor = ({
     const debouncedTextChangeHandler = debounce(textChangeHandler, 100);
 
     // Not sure why we handle focus like this, but seems to work
-    const focusHandler = (range: RangeStatic, oldRange: RangeStatic) => {
+    const focusHandler = (range: Range, oldRange: Range) => {
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (range === null && oldRange !== null) {
