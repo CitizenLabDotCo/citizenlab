@@ -14,7 +14,7 @@ const Users = () => {
   return (
     <Box className="intercom-project-participants-users">
       <UsersHeader
-        title={messages.usersTab}
+        title={messages.participantsTab}
         subtitle={messages.usersSubtitle}
       />
       <UserManager projectId={projectId} />

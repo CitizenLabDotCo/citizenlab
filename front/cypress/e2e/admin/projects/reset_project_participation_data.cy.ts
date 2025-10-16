@@ -72,7 +72,7 @@ describe('Admin reset project participation data', () => {
     cy.get('.e2e-single-vote-button').should('contain', 'Selected');
 
     // Reset project participation data
-    cy.visit(`/admin/projects/${projectId}/settings/data`);
+    cy.visit(`/admin/projects/${projectId}/general/data`);
     cy.get('#e2e-reset-participation-data').click();
     cy.get('#e2e-reset-participation-data-yes').click();
 

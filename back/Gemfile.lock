@@ -1,3 +1,13 @@
+GIT
+  remote: https://github.com/CitizenLabDotCo/action-caching.git
+  revision: 142df0442e5adae26a50bfc06e779d013fdfaf4b
+  branch: main
+  specs:
+    action-caching (0.1.0)
+      actionpack (>= 7.0)
+      activesupport (>= 7.0)
+      railties (>= 7.0)
+
 PATH
   remote: engines/commercial/admin_api
   specs:
@@ -13,7 +23,7 @@ PATH
   remote: engines/commercial/aggressive_caching
   specs:
     aggressive_caching (0.1.0)
-      actionpack-action_caching (~> 1.2)
+      action-caching (~> 0.1)
       rails (~> 7.0)
 
 PATH
@@ -410,8 +420,6 @@ GEM
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.2)
       rails-html-sanitizer (~> 1.6)
-    actionpack-action_caching (1.2.2)
-      actionpack (>= 4.0.0)
     actiontext (7.1.5.2)
       actionpack (= 7.1.5.2)
       activerecord (= 7.1.5.2)
@@ -1011,7 +1019,7 @@ GEM
       base64 (>= 0.2)
     que (2.3.0)
     racc (1.8.1)
-    rack (2.2.19)
+    rack (2.2.20)
     rack-attack (6.7.0)
       rack (>= 1.0, < 4)
     rack-cors (2.0.0)
@@ -1342,6 +1350,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  action-caching!
   active_model_serializers (~> 0.10.15)
   activerecord-import (~> 1.7)
   activerecord-postgis-adapter (~> 9.0.2)
