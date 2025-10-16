@@ -19,6 +19,7 @@ interface GanttItemProps {
   getDuration: (start: Date, end: Date) => number;
   unitWidth: number;
   renderItemTooltip?: (item: GanttItem) => React.ReactNode;
+  onHighlightClick?: (item: GanttItem) => void;
 }
 
 const GanttItem = ({
@@ -29,6 +30,7 @@ const GanttItem = ({
   getDuration,
   unitWidth,
   renderItemTooltip,
+  onHighlightClick,
 }: GanttItemProps) => {
   const start = item.start ? parseBackendDateString(item.start) : undefined;
   if (!start) return null;
@@ -120,6 +122,13 @@ const GanttItem = ({
               display="flex"
               overflow="hidden"
               alignItems="center"
+              cursor={onHighlightClick ? 'pointer' : 'default'}
+              onClick={(e) => {
+                if (onHighlightClick) {
+                  e.stopPropagation();
+                  onHighlightClick(item);
+                }
+              }}
             >
               {textInHighlight && (
                 <GanttItemTextLabel

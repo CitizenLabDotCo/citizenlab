@@ -35,4 +35,5 @@ export type GanttChartProps = {
   renderItemTooltip?: (item: GanttItem) => ReactNode;
   showTodayLine?: boolean;
   onItemLabelClick?: (item: GanttItem) => void;
+  onHighlightClick?: (item: GanttItem) => void;
 };

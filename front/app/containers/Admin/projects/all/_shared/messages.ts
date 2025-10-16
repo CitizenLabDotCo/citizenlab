@@ -33,4 +33,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Table.allProjectsHaveLoaded',
     defaultMessage: 'All projects have been loaded',
   },
+  noProjects: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.noProjects',
+    defaultMessage: 'No projects found',
+  },
 });

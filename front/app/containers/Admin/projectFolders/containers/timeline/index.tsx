@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { Box, Spinner, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
@@ -10,16 +10,17 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInfiniteScroll from 'hooks/useInfiniteScroll';
 import useLocalize from 'hooks/useLocalize';
 
+import sharedMessages from 'containers/Admin/projects/all/_shared/messages';
+import { getStatusColor } from 'containers/Admin/projects/all/_shared/utils';
+import messages from 'containers/Admin/projects/all/Calendar/messages';
+import ProjectGanttChart from 'containers/Admin/projects/all/Calendar/ProjectGanttChart';
+import UpsellNudge from 'containers/Admin/projects/all/Calendar/UpsellNudge';
+import PhaseSetup from 'containers/Admin/projects/project/phaseSetup';
+
 import Centerer from 'components/UI/Centerer';
 import { GanttItem } from 'components/UI/GanttChart/types';
 
 import { useIntl } from 'utils/cl-intl';
-
-import ProjectGanttChart from 'containers/Admin/projects/all/Calendar/ProjectGanttChart';
-import UpsellNudge from 'containers/Admin/projects/all/Calendar/UpsellNudge';
-import messages from 'containers/Admin/projects/all/Calendar/messages';
-import sharedMessages from 'containers/Admin/projects/all/_shared/messages';
-import { getStatusColor } from 'containers/Admin/projects/all/_shared/utils';
 
 const PAGE_SIZE = 50;
 
@@ -27,6 +28,9 @@ const FolderTimeline = () => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { projectFolderId } = useParams() as { projectFolderId: string };
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
+    null
+  );
 
   const { data, isLoading, isFetching, isError, fetchNextPage, hasNextPage } =
     useInfiniteProjectsMiniAdmin(
@@ -103,12 +107,17 @@ const FolderTimeline = () => {
   };
   const sentinelMessage = getSentinelMessage();
 
+  const handlePhaseClick = (ganttItem: GanttItem) => {
+    setSelectedProjectId(ganttItem.id);
+  };
+
   return (
     <Box>
       <Box position="relative" mt="16px">
         <ProjectGanttChart
           ganttItems={projectsGanttData}
           projectsById={projectsById}
+          onPhaseClick={handlePhaseClick}
         />
 
         {isFetching && (
@@ -123,6 +132,12 @@ const FolderTimeline = () => {
           </Box>
         )}
       </Box>
+
+      {selectedProjectId && (
+        <Box mt="32px">
+          <PhaseSetup />
+        </Box>
+      )}
 
       <Box ref={loadMoreRef} mt="12px" display="flex" justifyContent="center">
         {formatMessage(sentinelMessage)}

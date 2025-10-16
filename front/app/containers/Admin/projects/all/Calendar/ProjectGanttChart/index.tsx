@@ -14,9 +14,14 @@ import ProjectTooltip from './ProjectTooltip';
 interface Props {
   ganttItems: GanttItem[];
   projectsById: Record<string, ProjectMiniAdminData>;
+  onPhaseClick?: (ganttItem: GanttItem) => void;
 }
 
-const ProjectGanttChart = ({ ganttItems, projectsById }: Props) => {
+const ProjectGanttChart = ({
+  ganttItems,
+  projectsById,
+  onPhaseClick,
+}: Props) => {
   const { formatMessage } = useIntl();
 
   const onItemLabelClick = (ganttItem: GanttItem) => {
@@ -31,6 +36,7 @@ const ProjectGanttChart = ({ ganttItems, projectsById }: Props) => {
       )}
       chartTitle={formatMessage(messages.project)}
       onItemLabelClick={onItemLabelClick}
+      onHighlightClick={onPhaseClick}
     />
   );
 };

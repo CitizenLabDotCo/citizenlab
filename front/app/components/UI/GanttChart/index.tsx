@@ -30,6 +30,7 @@ const GanttChart = ({
   renderItemTooltip,
   showTodayLine = true,
   onItemLabelClick,
+  onHighlightClick,
 }: GanttChartProps) => {
   const today = useMemo(() => new Date(), []);
   const [selectedRange, setSelectedRange] = useState<TimeRangeOption>('year');
@@ -269,6 +270,7 @@ const GanttChart = ({
               getDuration={getDurationForView}
               unitWidth={unitWidth}
               renderItemTooltip={renderItemTooltip}
+              onHighlightClick={onHighlightClick}
             />
           </Box>
         </Box>

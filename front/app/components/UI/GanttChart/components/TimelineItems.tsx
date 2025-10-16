@@ -15,6 +15,7 @@ interface TimelineItemsProps {
   getDuration: (start: Date, end: Date) => number;
   unitWidth: number;
   renderItemTooltip?: (item: GanttItem) => ReactNode;
+  onHighlightClick?: (item: GanttItem) => void;
 }
 
 const TimelineItems = ({
@@ -24,6 +25,7 @@ const TimelineItems = ({
   getDuration,
   unitWidth,
   renderItemTooltip,
+  onHighlightClick,
 }: TimelineItemsProps) => (
   <Box
     position="absolute"
@@ -43,6 +45,7 @@ const TimelineItems = ({
         getDuration={getDuration}
         unitWidth={unitWidth}
         renderItemTooltip={renderItemTooltip}
+        onHighlightClick={onHighlightClick}
       />
     ))}
   </Box>
