@@ -60,6 +60,11 @@ const AdminProjectFolderEdition = () => {
         name: 'projects',
       },
       {
+        label: formatMessage(messages.projectFolderTimelineTab),
+        url: `/admin/projects/folders/${projectFolderId}/timeline`,
+        name: 'timeline',
+      },
+      {
         label: formatMessage(messages.projectFolderSettingsTab),
         url: `/admin/projects/folders/${projectFolderId}/settings`,
         name: 'settings',

@@ -27,6 +27,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.projectFolderProjectsTab',
     defaultMessage: 'Projects',
   },
+  projectFolderTimelineTab: {
+    id: 'app.containers.AdminPage.FoldersEdit.projectFolderTimelineTab',
+    defaultMessage: 'Timeline',
+  },
   titleInputLabel: {
     id: 'app.containers.AdminPage.FoldersEdit.titleInputLabel',
     defaultMessage: 'Title',

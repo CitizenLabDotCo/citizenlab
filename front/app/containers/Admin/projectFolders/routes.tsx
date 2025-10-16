@@ -10,6 +10,7 @@ const FolderSettings = lazy(() => import('./containers/settings'));
 const FolderContainer = lazy(() => import('./containers'));
 const FolderProjects = lazy(() => import('./containers/projects'));
 const FolderPermissions = lazy(() => import('./containers/permissions'));
+const FolderTimeline = lazy(() => import('./containers/timeline'));
 
 export enum projectFolderRoutes {
   projectFolders = 'projects/folders',
@@ -19,6 +20,7 @@ export enum projectFolderRoutes {
   settings = `settings`,
   projects = `projects`,
   permissions = `permissions`,
+  timeline = `timeline`,
 }
 
 export type projectFolderRouteTypes =
@@ -27,7 +29,8 @@ export type projectFolderRouteTypes =
   | AdminRoute<`${projectFolderRoutes.projectFolders}/${string}`>
   | AdminRoute<`${projectFolderRoutes.projectFolders}/${string}/${projectFolderRoutes.projects}`>
   | AdminRoute<`${projectFolderRoutes.projectFolders}/${string}/${projectFolderRoutes.settings}`>
-  | AdminRoute<`${projectFolderRoutes.projectFolders}/${string}/${projectFolderRoutes.permissions}`>;
+  | AdminRoute<`${projectFolderRoutes.projectFolders}/${string}/${projectFolderRoutes.permissions}`>
+  | AdminRoute<`${projectFolderRoutes.projectFolders}/${string}/${projectFolderRoutes.timeline}`>;
 
 export default () => ({
   path: projectFolderRoutes.projectFolders,
@@ -60,6 +63,10 @@ export default () => ({
         {
           path: projectFolderRoutes.permissions,
           element: <FolderPermissions />,
+        },
+        {
+          path: projectFolderRoutes.timeline,
+          element: <FolderTimeline />,
         },
       ],
     },
