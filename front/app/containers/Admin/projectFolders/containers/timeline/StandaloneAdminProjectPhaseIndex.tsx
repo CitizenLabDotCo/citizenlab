@@ -13,6 +13,7 @@ import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
 import { useIntl } from 'utils/cl-intl';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
+import { AdminPhaseEdit } from '../../../projects/project/phaseSetup';
 import { getTimelineTab } from '../../../projects/project/phaseSetup/utils';
 import {
   FeatureFlags,
@@ -75,25 +76,19 @@ const StandaloneAdminProjectPhaseIndex = ({
   const renderTabContent = () => {
     if (!selectedPhase) return null;
 
-    // Render placeholder components for each tab type
+    // Render components for each tab type
     switch (activeTab) {
       case 'setup':
         return (
-          <PlaceholderBox>
-            <Text variant="h4" color="textSecondary">
-              Setup Tab Content
-            </Text>
-            <Text mt="8px" color="textSecondary">
-              Phase setup configuration would go here
-            </Text>
-          </PlaceholderBox>
+          <AdminPhaseEdit
+            projectId={project.id}
+            phase={{ data: selectedPhase }}
+          />
         );
       case 'access-rights':
         return (
           <PlaceholderBox>
-            <Text variant="h4" color="textSecondary">
-              Access Rights Tab Content
-            </Text>
+            <Text color="textSecondary">Access Rights Tab Content</Text>
             <Text mt="8px" color="textSecondary">
               Phase permissions configuration would go here
             </Text>
@@ -102,9 +97,7 @@ const StandaloneAdminProjectPhaseIndex = ({
       case 'emails':
         return (
           <PlaceholderBox>
-            <Text variant="h4" color="textSecondary">
-              Emails Tab Content
-            </Text>
+            <Text color="textSecondary">Emails Tab Content</Text>
             <Text mt="8px" color="textSecondary">
               Phase email configuration would go here
             </Text>
@@ -113,9 +106,7 @@ const StandaloneAdminProjectPhaseIndex = ({
       case 'survey-results':
         return (
           <PlaceholderBox>
-            <Text variant="h4" color="textSecondary">
-              Survey Results Tab Content
-            </Text>
+            <Text color="textSecondary">Survey Results Tab Content</Text>
             <Text mt="8px" color="textSecondary">
               Survey results would go here
             </Text>
@@ -124,9 +115,7 @@ const StandaloneAdminProjectPhaseIndex = ({
       case 'polls':
         return (
           <PlaceholderBox>
-            <Text variant="h4" color="textSecondary">
-              Polls Tab Content
-            </Text>
+            <Text color="textSecondary">Polls Tab Content</Text>
             <Text mt="8px" color="textSecondary">
               Poll configuration would go here
             </Text>
@@ -135,9 +124,7 @@ const StandaloneAdminProjectPhaseIndex = ({
       case 'ideas':
         return (
           <PlaceholderBox>
-            <Text variant="h4" color="textSecondary">
-              Ideas Tab Content
-            </Text>
+            <Text color="textSecondary">Ideas Tab Content</Text>
             <Text mt="8px" color="textSecondary">
               Ideas management would go here
             </Text>
@@ -146,9 +133,7 @@ const StandaloneAdminProjectPhaseIndex = ({
       case 'form':
         return (
           <PlaceholderBox>
-            <Text variant="h4" color="textSecondary">
-              Input Form Tab Content
-            </Text>
+            <Text color="textSecondary">Input Form Tab Content</Text>
             <Text mt="8px" color="textSecondary">
               Input form configuration would go here
             </Text>
@@ -157,9 +142,7 @@ const StandaloneAdminProjectPhaseIndex = ({
       case 'proposals':
         return (
           <PlaceholderBox>
-            <Text variant="h4" color="textSecondary">
-              Proposals Tab Content
-            </Text>
+            <Text color="textSecondary">Proposals Tab Content</Text>
             <Text mt="8px" color="textSecondary">
               Proposals management would go here
             </Text>
@@ -168,9 +151,7 @@ const StandaloneAdminProjectPhaseIndex = ({
       case 'volunteering':
         return (
           <PlaceholderBox>
-            <Text variant="h4" color="textSecondary">
-              Volunteering Tab Content
-            </Text>
+            <Text color="textSecondary">Volunteering Tab Content</Text>
             <Text mt="8px" color="textSecondary">
               Volunteering configuration would go here
             </Text>
@@ -179,9 +160,7 @@ const StandaloneAdminProjectPhaseIndex = ({
       case 'map':
         return (
           <PlaceholderBox>
-            <Text variant="h4" color="textSecondary">
-              Map Tab Content
-            </Text>
+            <Text color="textSecondary">Map Tab Content</Text>
             <Text mt="8px" color="textSecondary">
               Map configuration would go here
             </Text>
@@ -190,9 +169,7 @@ const StandaloneAdminProjectPhaseIndex = ({
       case 'results':
         return (
           <PlaceholderBox>
-            <Text variant="h4" color="textSecondary">
-              Survey Results Tab Content
-            </Text>
+            <Text color="textSecondary">Survey Results Tab Content</Text>
             <Text mt="8px" color="textSecondary">
               Native survey results would go here
             </Text>
@@ -201,9 +178,7 @@ const StandaloneAdminProjectPhaseIndex = ({
       case 'survey-form':
         return (
           <PlaceholderBox>
-            <Text variant="h4" color="textSecondary">
-              Survey Form Tab Content
-            </Text>
+            <Text color="textSecondary">Survey Form Tab Content</Text>
             <Text mt="8px" color="textSecondary">
               Survey form editor would go here
             </Text>
@@ -212,9 +187,7 @@ const StandaloneAdminProjectPhaseIndex = ({
       case 'report':
         return (
           <PlaceholderBox>
-            <Text variant="h4" color="textSecondary">
-              Report Tab Content
-            </Text>
+            <Text color="textSecondary">Report Tab Content</Text>
             <Text mt="8px" color="textSecondary">
               Report builder would go here
             </Text>
@@ -223,9 +196,7 @@ const StandaloneAdminProjectPhaseIndex = ({
       default:
         return (
           <PlaceholderBox>
-            <Text variant="h4" color="textSecondary">
-              Tab Content
-            </Text>
+            <Text color="textSecondary">Tab Content</Text>
             <Text mt="8px" color="textSecondary">
               Content for &ldquo;{activeTab}&rdquo; would go here
             </Text>
