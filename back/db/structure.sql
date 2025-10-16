@@ -1475,7 +1475,6 @@ CREATE TABLE public.users (
     unique_code character varying,
     last_active_at timestamp(6) without time zone,
     imported boolean DEFAULT false NOT NULL,
-    died_at timestamp(6) without time zone
 );
 
 

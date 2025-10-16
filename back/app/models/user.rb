@@ -38,7 +38,6 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  unique_code                         :string
 #  last_active_at                      :datetime
 #  imported                            :boolean          default(FALSE), not null
-#  died_at                             :datetime
 #
 # Indexes
 #
