@@ -12,6 +12,7 @@ import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/Accordion
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import FileAttachment from 'components/admin/ContentBuilder/Widgets/FileAttachment';
+import FolderTimeline from 'components/admin/ContentBuilder/Widgets/FolderTimeline';
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
@@ -57,6 +58,7 @@ const Editor: React.FC<EditorProps> = ({
         Spotlight,
         Selection,
         FolderFiles,
+        FolderTimeline,
       }}
       isPreview={isPreview}
       onNodesChange={onNodesChange}

@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.folderFiles',
     defaultMessage: 'Folder files',
   },
+  folderTimeline: {
+    id: 'app.containers.admin.ContentBuilder.folderTimeline',
+    defaultMessage: 'Folder Timeline',
+  },
   infoWithAccordions: {
     id: 'app.containers.admin.ContentBuilder.infoWithAccordions',
     defaultMessage: 'Info & accordions',

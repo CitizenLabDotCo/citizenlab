@@ -19,6 +19,7 @@ import Section from 'components/admin/ContentBuilder/Toolbox/Section';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import FileAttachment from 'components/admin/ContentBuilder/Widgets/FileAttachment';
+import FolderTimeline from 'components/admin/ContentBuilder/Widgets/FolderTimeline';
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
@@ -96,6 +97,17 @@ const FolderDescriptionBuilderToolbox = ({
           }
           icon="flash"
           label={formatMessage(spotlightTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-folder-timeline"
+          component={
+            <FolderTimeline
+              titleMultiloc={toMultiloc(messages.folderTimeline)}
+              folderId={folderId}
+            />
+          }
+          icon="timeline"
+          label={formatMessage(messages.folderTimeline)}
         />
         <DraggableElement
           id="e2e-draggable-folder-files"
