@@ -76,11 +76,6 @@ Gemspec/RequiredRubyVersion:
   Enabled: false
 
 # Offense count: 1
-Lint/DuplicateHashKey:
-  Exclude:
-    - 'spec/support/validation_error_helper.rb'
-
-# Offense count: 1
 # Configuration parameters: AllowComments, AllowEmptyLambdas.
 Lint/EmptyBlock:
   Exclude:
