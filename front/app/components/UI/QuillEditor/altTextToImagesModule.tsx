@@ -2,78 +2,79 @@
 // https://quilljs.com/guides/cloning-medium-with-parchment/
 // https://gist.github.com/tranduongms1/584d43ec7d8ddeab458f087adbeef950
 
-import Quill, { QuillOptionsStatic } from 'quill';
+import Quill, { QuillOptions } from 'quill';
 
 import { getPlaceHolder } from './utils';
 
-const Module = Quill.import('core/module');
-const BaseImageFormat = Quill.import('formats/image');
-const BlockEmbed = Quill.import('blots/block/embed');
+const Module = Quill.import('core/module') as any;
+const BaseImageFormat = Quill.import('formats/image') as any;
 
 export const attributes = ['alt', 'width', 'height', 'style'];
 
 // Create a custom ImageBlot that allows us to add alt text to the image
 export class ImageBlot extends BaseImageFormat {
   static blotName = 'image';
-  // Instead of using the default img tag, we are using a div where we can add an input field for the alt text
-  static tagName = ['span'];
-  // We are setting a custom class on the div so that we can reference it later on
-  static className = 'ql-alt-text-input-container';
+  // Keep the default img tag
+  static tagName = 'img';
+  // No custom className to avoid conflicts
 
   static create(value: string) {
-    // The node with tag div is created
-    const node: HTMLSpanElement = super.create();
-    // Next, need to create and add an img tag to it with the src attribute
-    const img: HTMLImageElement = window.document.createElement('img');
-    if (typeof value === 'string') {
-      img.setAttribute('src', value);
-      img.setAttribute('class', `${node.getAttribute('class')} ` + `keepHTML`);
-      img.setAttribute('alt', '');
-    }
-    if (value) {
-      node.appendChild(img);
-    }
-
-    return node;
+    // Use the default image creation
+    const img = super.create(value) as HTMLImageElement;
+    return img;
   }
 
-  constructor(
-    domNode: HTMLSpanElement & { onSelect: () => void; onDeselect: () => void }
-  ) {
-    super(domNode);
-    const img = domNode.querySelector('img');
-    // We are creating an input field for the alt text and setting the necessary attributes
-    const altInput = window.document.createElement('input');
-    altInput.setAttribute('type', 'text');
-    altInput.setAttribute('class', 'ql-alt-text-input');
-    altInput.setAttribute(
-      'style',
-      'display: block; width:100%; border: 1px solid #ccc; border-radius: 3px; padding: 5px; margin-bottom:4px;'
-    );
-    altInput.setAttribute('value', img?.getAttribute('alt') || '');
+  attach() {
+    super.attach();
+    const img = this.domNode as HTMLImageElement;
 
-    // Set placeholder
-    altInput.setAttribute('placeholder', getPlaceHolder());
+    // Create a wrapper span for the alt text input
+    const wrapper = document.createElement('span');
+    wrapper.setAttribute('class', 'ql-alt-text-input-container');
 
-    // Handle change of input field value
-    const handleChange = (e: Event) => {
-      const target = e.target as HTMLTextAreaElement;
-      img?.setAttribute('alt', target.value);
-    };
+    // Move the img into the wrapper
+    img.parentNode?.insertBefore(wrapper, img);
+    wrapper.appendChild(img);
 
-    // We are adding the input field to the blot
-    domNode.prepend(altInput);
-    // When the blot is selected, we are adding the event listener to the input field
-    domNode.onSelect = () => {
-      altInput.addEventListener('input', handleChange);
-    };
-    // When the blot is deselected, we are removing the event listener from the input field
-    domNode.onDeselect = () => {
-      altInput.removeEventListener('input', handleChange);
-    };
+    // Only add alt input if it doesn't already exist
+    if (!wrapper.querySelector('.ql-alt-text-input')) {
+      // We are creating an input field for the alt text and setting the necessary attributes
+      const altInput = window.document.createElement('input');
+      altInput.setAttribute('type', 'text');
+      altInput.setAttribute('class', 'ql-alt-text-input');
+      altInput.setAttribute(
+        'style',
+        'display: block; width:100%; border: 1px solid #ccc; border-radius: 3px; padding: 5px; margin-bottom:4px;'
+      );
+      altInput.setAttribute('value', img.getAttribute('alt') || '');
+
+      // Set placeholder
+      altInput.setAttribute('placeholder', getPlaceHolder());
+
+      // Handle change of input field value
+      const handleChange = (e: Event) => {
+        const target = e.target as HTMLTextAreaElement;
+        img.setAttribute('alt', target.value);
+      };
+
+      // We are adding the input field to the wrapper
+      wrapper.prepend(altInput);
+      // When the blot is selected, we are adding the event listener to the input field
+      (wrapper as any).onSelect = () => {
+        altInput.addEventListener('input', handleChange);
+      };
+      // When the blot is deselected, we are removing the event listener from the input field
+      (wrapper as any).onDeselect = () => {
+        altInput.removeEventListener('input', handleChange);
+      };
+    }
   }
 
-  static formats(domNode: HTMLSpanElement) {
+  static value(domNode: HTMLImageElement) {
+    return domNode.getAttribute('src') || '';
+  }
+
+  static formats(domNode: HTMLImageElement) {
     // Registering unregistered embed formats (see the attributes constant for the full list) so that Quill can handle them
     return attributes.reduce((formats, attribute) => {
       if (domNode.hasAttribute(attribute)) {
@@ -83,10 +84,17 @@ export class ImageBlot extends BaseImageFormat {
     }, {});
   }
 
+  value() {
+    return (this.constructor as typeof ImageBlot).value(
+      this.domNode as HTMLImageElement
+    );
+  }
+
   format(name: string, value: string) {
     // Handle embed formats (see the attributes constant for the full list)
-    const img = this.domNode.querySelector('img');
-    const altInput = this.domNode.querySelector('input');
+    const img = this.domNode as HTMLImageElement;
+    const wrapper = img.parentElement;
+    const altInput = wrapper?.querySelector('.ql-alt-text-input');
 
     if (attributes.indexOf(name) > -1) {
       if (value) {
@@ -100,7 +108,7 @@ export class ImageBlot extends BaseImageFormat {
 
     // Ensure that there is always an alt attribute
     if (name === 'alt') {
-      altInput.setAttribute('value', value);
+      altInput?.setAttribute('value', value);
       img.setAttribute(name, value || '');
     }
   }
@@ -108,7 +116,11 @@ export class ImageBlot extends BaseImageFormat {
 
 // Define custom KeepHTML module that allows us to keep the HTML of the image
 // including inline styles that otherwise get stripped out by Quill
-export class KeepHTML extends BlockEmbed {
+export class KeepHTML extends BaseImageFormat {
+  static blotName = 'KeepHTML';
+  static className = 'keepHTML';
+  static tagName = 'img';
+
   static create(node: HTMLImageElement) {
     return node;
   }
@@ -117,13 +129,9 @@ export class KeepHTML extends BlockEmbed {
   }
 }
 
-KeepHTML.blotName = 'KeepHTML';
-KeepHTML.className = 'keepHTML';
-KeepHTML.tagName = 'img';
-
 // Define custom AltTextToImages module
 export class AltTextToImagesModule extends Module {
-  constructor(quill, options: QuillOptionsStatic) {
+  constructor(quill: Quill, options: QuillOptions) {
     super(quill, options);
 
     const listener = (e) => {
