@@ -1,7 +1,5 @@
 import React from 'react';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import messages from 'containers/DescriptionBuilder/messages';
 
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
@@ -21,9 +19,6 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import InfoWithAccordions from 'components/DescriptionBuilder/CraftSections/InfoWithAccordions';
 
 import { useIntl } from 'utils/cl-intl';
-
-import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
-
 const ProjectDescriptionBuilderToolbox = () => {
   const { formatMessage } = useIntl();
 

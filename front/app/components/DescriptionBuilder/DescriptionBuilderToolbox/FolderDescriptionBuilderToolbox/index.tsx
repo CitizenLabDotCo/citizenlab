@@ -5,7 +5,6 @@ import { SupportedLocale } from 'typings';
 import useAppConfigurationLocales, {
   createMultiloc,
 } from 'hooks/useAppConfigurationLocales';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Published from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Published';
 import Selection from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Selection';
@@ -42,15 +41,11 @@ type FolderDescriptionBuilderToolboxProps = {
 };
 
 const FolderDescriptionBuilderToolbox = ({
-  selectedLocale,
   folderId,
 }: FolderDescriptionBuilderToolboxProps) => {
   const { formatMessage } = useIntl();
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
-  const isDataRepositoryEnabled = useFeatureFlag({
-    name: 'data_repository',
-  });
 
   if (!appConfigurationLocales || !formatMessageWithLocale) {
     return null;
@@ -163,14 +158,12 @@ const FolderDescriptionBuilderToolbox = ({
           icon="button"
           label={formatMessage(ButtonMultiloc.craft.custom.title)}
         />
-        {isDataRepositoryEnabled && (
-          <DraggableElement
-            id="e2e-draggable-file-attachment"
-            component={<FileAttachment />}
-            icon="file"
-            label={formatMessage(FileAttachment.craft.custom.title)}
-          />
-        )}
+        <DraggableElement
+          id="e2e-draggable-file-attachment"
+          component={<FileAttachment />}
+          icon="file"
+          label={formatMessage(FileAttachment.craft.custom.title)}
+        />
         <DraggableElement
           id="e2e-draggable-image"
           component={<ImageMultiloc />}
@@ -179,14 +172,7 @@ const FolderDescriptionBuilderToolbox = ({
         />
         <DraggableElement
           id="e2e-draggable-iframe"
-          component={
-            <IframeMultiloc
-              url=""
-              height={500}
-              hasError={false}
-              selectedLocale={selectedLocale}
-            />
-          }
+          component={<IframeMultiloc url="" height={500} hasError={false} />}
           icon="code"
           label={formatMessage(IframeMultiloc.craft.custom.title)}
         />

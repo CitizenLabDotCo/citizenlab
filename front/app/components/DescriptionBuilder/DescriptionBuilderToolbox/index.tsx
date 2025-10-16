@@ -29,7 +29,7 @@ const DescriptionBuilderToolbox = ({
   }
 
   // Project
-  return <ProjectDescriptionBuilderToolbox selectedLocale={selectedLocale} />;
+  return <ProjectDescriptionBuilderToolbox />;
 };
 
 export default DescriptionBuilderToolbox;
