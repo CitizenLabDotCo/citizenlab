@@ -208,14 +208,14 @@ RSpec.configure do |config|
     self.use_transactional_tests = initial_use_transactional_tests
   end
 
-  config.around(:each, active_job_inline_adapter: true) do |example|
+  config.around(:each, :active_job_inline_adapter) do |example|
     initial_queue_adapter = ActiveJob::Base.queue_adapter
     ActiveJob::Base.queue_adapter = :inline
     example.run
     ActiveJob::Base.queue_adapter = initial_queue_adapter
   end
 
-  config.around(:each, active_job_que_adapter: true) do |example|
+  config.around(:each, :active_job_que_adapter) do |example|
     initial_queue_adapter = ActiveJob::Base.queue_adapter
     ActiveJob::Base.queue_adapter = :que
     example.run
@@ -225,11 +225,11 @@ RSpec.configure do |config|
   # By default, skip the slow tests and template tests. Can be overriden on the command line.
   config.filter_run_excluding template_test: true
 
-  config.before(:example, clear_cache: true) do
+  config.before(:example, :clear_cache) do
     Rails.cache.clear
   end
 
-  config.after(:example, clear_cache: true) do
+  config.after(:example, :clear_cache) do
     Rails.cache.clear
   end
 end

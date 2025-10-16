@@ -265,20 +265,6 @@ RSpec/MatchArray:
 RSpec/MessageSpies:
   Enabled: false
 
-# Offense count: 12
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: hash, symbol
-RSpec/MetadataStyle:
-  Exclude:
-    - 'engines/commercial/idea_assignment/spec/acceptance/ideas_spec.rb'
-    - 'engines/commercial/multi_tenancy/spec/services/multi_tenancy/templates/apply_service_spec.rb'
-    - 'spec/acceptance/project_folders_spec.rb'
-    - 'spec/lib/carrierwave_temp_remote_spec.rb'
-    - 'spec/services/additional_seats_incrementer_spec.rb'
-    - 'spec/services/side_fx_reaction_service_spec.rb'
-    - 'spec/spec_helper.rb'
-
 # Offense count: 247
 RSpec/MissingExampleGroupArgument:
   Enabled: false

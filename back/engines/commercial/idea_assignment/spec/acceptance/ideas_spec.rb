@@ -80,7 +80,7 @@ resource 'Ideas' do
         expect(worksheet.count).to eq(ideas.size + 1)
       end
 
-      example 'XLSX export includes assignee', pending: true do
+      example 'XLSX export includes assignee', :pending do
         raise 'TODO'
       end
     end
@@ -88,7 +88,7 @@ resource 'Ideas' do
     get 'web_api/v1/ideas/filter_counts' do
       parameter :assignee, 'Filter by assignee (user id)', required: false
 
-      example 'List idea counts per filter option by assignee', pending: true do
+      example 'List idea counts per filter option by assignee', :pending do
         raise 'TODO'
       end
     end
