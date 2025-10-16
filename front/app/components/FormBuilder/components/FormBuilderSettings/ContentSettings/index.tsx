@@ -30,7 +30,7 @@ const ContentSettings = ({ field }: ContentSettingsProps) => {
 
   const locales = useAppConfigurationLocales();
   const { watch } = useFormContext();
-  const lockedAttributes = field.constraints?.locks?.attributes || [];
+  const lockedAttributes = field.constraints?.locks.attributes || [];
   const platformLocale = useLocale();
   const isFieldGrouping = field.input_type === 'page';
 

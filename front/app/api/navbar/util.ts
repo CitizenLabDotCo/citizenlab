@@ -16,7 +16,7 @@ export function getNavbarItemSlug({
 }: INavbarItem): RouteType | null {
   const hasCorrespondingPage = !!relationships.static_page.data?.id;
   const hasCorrespondingProject = !!relationships.project.data?.id;
-  const hasCorrespondingFolder = !!relationships.project_folder?.data?.id;
+  const hasCorrespondingFolder = !!relationships.project_folder.data?.id;
 
   // Default navbar item
   if (code !== 'custom' && !hasCorrespondingPage) {

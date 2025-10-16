@@ -6,9 +6,9 @@ import { useParams } from 'react-router-dom';
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import { getLatestRelevantPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 import useInfiniteProjectsMiniAdmin from 'api/projects_mini_admin/useInfiniteProjectsMiniAdmin';
-import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInfiniteScroll from 'hooks/useInfiniteScroll';
@@ -160,6 +160,7 @@ const FolderTimeline = () => {
             project={projectData.data}
             selectedPhase={selectedPhase}
             setSelectedPhase={setSelectedPhase}
+            hideTimeline={true}
           />
         </Box>
       )}

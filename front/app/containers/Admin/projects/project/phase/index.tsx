@@ -30,12 +30,14 @@ interface DataProps {
   project: IProjectData;
   selectedPhase?: IPhaseData;
   setSelectedPhase: (phase: IPhaseData) => void;
+  hideTimeline?: boolean;
 }
 
 const AdminProjectPhaseIndex = ({
   project,
   selectedPhase,
   setSelectedPhase,
+  hideTimeline = false,
 }: DataProps) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
@@ -63,14 +65,16 @@ const AdminProjectPhaseIndex = ({
 
   return (
     <>
-      <Box mt="16px" px="24px">
-        <Timeline
-          projectId={project.id}
-          selectedPhase={selectedPhase}
-          setSelectedPhase={setSelectedPhase}
-          isBackoffice
-        />
-      </Box>
+      {!hideTimeline && (
+        <Box mt="16px" px="24px">
+          <Timeline
+            projectId={project.id}
+            selectedPhase={selectedPhase}
+            setSelectedPhase={setSelectedPhase}
+            isBackoffice
+          />
+        </Box>
+      )}
       <Box p="8px 24px 24px 24px">
         {!isNewPhaseLink && selectedPhase && (
           <PhaseHeader phase={selectedPhase} tabs={tabs} />

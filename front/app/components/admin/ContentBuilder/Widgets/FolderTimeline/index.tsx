@@ -3,7 +3,6 @@ import React from 'react';
 import { Box, colors, Title } from '@citizenlab/cl2-component-library';
 import { UserComponent } from '@craftjs/core';
 import styled from 'styled-components';
-
 import { Multiloc } from 'typings';
 
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
