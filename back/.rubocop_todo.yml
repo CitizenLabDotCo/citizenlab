@@ -630,18 +630,6 @@ Rails/WhereRange:
 Security/Open:
   Enabled: false
 
-# Offense count: 8
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowOnlyRestArgument, UseAnonymousForwarding, RedundantRestArgumentNames, RedundantKeywordRestArgumentNames, RedundantBlockArgumentNames.
-# RedundantRestArgumentNames: args, arguments
-# RedundantKeywordRestArgumentNames: kwargs, options, opts
-# RedundantBlockArgumentNames: blk, block, proc
-Style/ArgumentsForwarding:
-  Exclude:
-    - 'engines/commercial/multi_tenancy/app/models/tenant.rb'
-    - 'engines/free/surveys/app/jobs/surveys/webhook_manager_job.rb'
-    - 'lib/finder/helpers.rb'
-
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Style/ArrayIntersect:
