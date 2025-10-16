@@ -68,6 +68,11 @@ describe 'franceconnect verification' do
     }
     configuration.save!
     host! 'example.org'
+
+    # The FranceConnect test users almost all use the yopmail.com domain,
+    # which is in our spam domain blacklist. So we stub out the email domain
+    # blacklist validation in these tests.
+    allow_any_instance_of(User).to receive(:validate_email_domain_blacklist)
   end
 
   it 'successfully authenticates and verifies a new user' do

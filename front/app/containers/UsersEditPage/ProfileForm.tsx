@@ -10,7 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { isEmpty } from 'lodash-es';
 import { useForm, FormProvider } from 'react-hook-form';
 import styled from 'styled-components';
-import { IOption, UploadFile, Multiloc } from 'typings';
+import { IOption, UploadFile, Multiloc, SupportedLocale } from 'typings';
 import { string, object, mixed } from 'yup';
 
 import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
@@ -41,6 +41,7 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 import Link from 'utils/cl-router/Link';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
+import validateLocale from 'utils/yup/validateLocale';
 
 import messages from './messages';
 
@@ -58,7 +59,7 @@ type FormValues = {
   first_name?: string;
   last_name?: string;
   bio_multiloc?: Multiloc;
-  locale?: string;
+  locale: SupportedLocale;
   avatar?: UploadFile[] | null;
 };
 
@@ -76,7 +77,7 @@ const ProfileForm = () => {
   const [profanityApiError, setProfanityApiError] = useState(false);
 
   const schema = object({
-    first_name: string().when('last_name', (last_name, schema) => {
+    first_name: string().when('last_name', ([last_name], schema) => {
       return last_name
         ? schema.required(formatMessage(messages.provideFirstNameIfLastName))
         : schema;
@@ -85,7 +86,7 @@ const ProfileForm = () => {
     ...(!disableBio && {
       bio_multiloc: object(),
     }),
-    locale: string(),
+    locale: validateLocale(),
     ...(userAvatarsEnabled ? { avatar: mixed().nullable() } : {}),
   });
 
@@ -101,7 +102,7 @@ const ProfileForm = () => {
       bio_multiloc: authUser?.data.attributes.bio_multiloc,
       locale: authUser?.data.attributes.locale,
     },
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as any,
   });
 
   useEffect(() => {

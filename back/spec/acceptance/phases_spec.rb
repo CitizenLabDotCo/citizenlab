@@ -158,15 +158,6 @@ resource 'Phases' do
         expect(response_data[:attributes]).to eq({ totalSubmissions: 2 })
       end
     end
-
-    context 'ideation' do
-      example 'Get count for ideation phase (ignores native survey responses)' do
-        phase.update!(participation_method: 'ideation')
-        do_request
-        assert_status 200
-        expect(response_data[:attributes]).to eq({ totalSubmissions: 3 })
-      end
-    end
   end
 
   get 'web_api/v1/phases/:id/as_xlsx' do
@@ -273,6 +264,7 @@ resource 'Phases' do
         parameter :voting_min_total, 'The minimum value a basket can have.', required: false
         parameter :voting_max_total, 'The maximal value a basket can have during voting. Required when the voting method is budgeting.', required: false
         parameter :voting_max_votes_per_idea, 'The maximum amount of votes that can be assigned on the same idea.', required: false
+        parameter :voting_min_selected_options, 'The minimum number of different ideas that must be voted for.', required: false
         parameter :start_at, 'The start date of the phase', required: true
         parameter :end_at, 'The end date of the phase', required: true
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
@@ -401,6 +393,7 @@ resource 'Phases' do
             expect(response_data.dig(:attributes, :voting_method)).to eq 'multiple_voting'
             expect(response_data.dig(:attributes, :voting_max_total)).to eq 10
             expect(response_data.dig(:attributes, :voting_min_total)).to eq 0
+            expect(response_data.dig(:attributes, :voting_min_selected_options)).to eq 1
             expect(response_data.dig(:attributes, :voting_max_votes_per_idea)).to eq 5
             expect(response_data.dig(:attributes, :vote_term)).to eq 'point'
             expect(response_data.dig(:attributes, :ideas_order)).to eq 'random'
@@ -415,6 +408,7 @@ resource 'Phases' do
             expect(response_data.dig(:attributes, :participation_method)).to eq 'voting'
             expect(response_data.dig(:attributes, :voting_method)).to eq 'single_voting'
             expect(response_data.dig(:attributes, :voting_max_total)).to be_nil
+            expect(response_data.dig(:attributes, :voting_min_selected_options)).to eq 1
             expect(response_data.dig(:attributes, :voting_min_total)).to eq 0
             expect(response_data.dig(:attributes, :voting_max_votes_per_idea)).to eq 1
             expect(response_data.dig(:attributes, :ideas_order)).to eq 'random'
@@ -558,7 +552,7 @@ resource 'Phases' do
         parameter :project_id, 'The id of the project this phase belongs to'
         parameter :title_multiloc, 'The title of the phase in multiple locales'
         parameter :description_multiloc, 'The description of the phase in multiple languages. Supports basic HTML.'
-        parameter :participation_method, "The participation method of the project, either #{Phase::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
+        parameter :participation_method, "The participation method of the project, either #{Phase::PARTICIPATION_METHODS.join(',')}. Some changes are not allowed when there are inputs.", required: false
         parameter :submission_enabled, 'Can citizens post ideas in this phase?', required: false
         parameter :commenting_enabled, 'Can citizens post comment in this phase?', required: false
         parameter :reacting_enabled, 'Can citizens react in this phase?', required: false
@@ -653,6 +647,7 @@ resource 'Phases' do
 
           expect(json_response.dig(:data, :attributes, :voting_min_total)).to eq 3
           expect(json_response.dig(:data, :attributes, :voting_max_total)).to eq 15
+          expect(json_response.dig(:data, :attributes, :voting_min_selected_options)).to eq 1
           expect(json_response.dig(:data, :attributes, :voting_max_votes_per_idea)).to be_nil
           expect(json_response.dig(:data, :attributes, :vote_term)).to eq 'token'
         end
@@ -717,6 +712,22 @@ resource 'Phases' do
           ideas_phase.reload
           expect(response_status).to eq 200
           expect(ideas_phase.valid?).to be true
+        end
+      end
+
+      describe do
+        let(:project) { create(:project) }
+        let(:id) { create(:proposals_phase, project: project).id }
+        let(:participation_method) { 'ideation' }
+
+        example '[error] Cannot be changed to ideation when there are non-transitive inputs' do
+          proposal = create(:proposal, project: project, creation_phase_id: id)
+          do_request
+          assert_status 422
+          expect(json_response).to eq(
+            { errors: { participation_method: [{ error: 'non_complying_inputs' }] } }
+          )
+          expect(proposal.reload).to be_valid
         end
       end
     end

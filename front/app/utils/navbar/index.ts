@@ -20,8 +20,8 @@ interface ICustomPageNotInNavbar {
 }
 
 interface IProjectNotInNavbar {
-  type: 'project';
-  projectId: string;
+  type: 'project' | 'folder';
+  itemId: string;
   titleMultiloc: Multiloc;
   slug: string | null;
 }

@@ -88,7 +88,7 @@ declare global {
       apiUpdateUserCustomFields: typeof apiUpdateUserCustomFields;
       apiCreateSurveyResponse: typeof apiCreateSurveyResponse;
       uploadSurveyImageQuestionImage: typeof uploadSurveyImageQuestionImage;
-      apiGetSurveySchema: typeof apiGetSurveySchema;
+      apiGetSurveyFields: typeof apiGetSurveyFields;
       uploadProjectFolderImage: typeof uploadProjectFolderImage;
       uploadProjectImage: typeof uploadProjectImage;
       apiCreateModeratorForProject: typeof apiCreateModeratorForProject;
@@ -96,10 +96,10 @@ declare global {
       apiCreateNativeSurveyPhase: typeof apiCreateNativeSurveyPhase;
       createProjectWithNativeSurveyPhase: typeof createProjectWithNativeSurveyPhase;
       createProjectWithIdeationPhase: typeof createProjectWithIdeationPhase;
-      selectReactSelectOption: typeof selectReactSelectOption;
       addItemToFormBuilder(
         toolboxSelector: string
       ): Chainable<JQuery<HTMLElement>>;
+      selectReactSelectOption: typeof selectReactSelectOption;
     }
   }
 }
@@ -1846,7 +1846,7 @@ function uploadSurveyImageQuestionImage(base64: string) {
   });
 }
 
-function apiGetSurveySchema(phaseId: string) {
+function apiGetSurveyFields(phaseId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -1856,7 +1856,7 @@ function apiGetSurveySchema(phaseId: string) {
         Authorization: `Bearer ${adminJwt}`,
       },
       method: 'GET',
-      url: `web_api/v1/phases/${phaseId}/custom_fields/json_forms_schema`,
+      url: `web_api/v1/phases/${phaseId}/custom_fields`,
     });
   });
 }
@@ -2234,7 +2234,7 @@ Cypress.Commands.add(
   'uploadSurveyImageQuestionImage',
   uploadSurveyImageQuestionImage
 );
-Cypress.Commands.add('apiGetSurveySchema', apiGetSurveySchema);
+Cypress.Commands.add('apiGetSurveyFields', apiGetSurveyFields);
 Cypress.Commands.add('uploadProjectFolderImage', uploadProjectFolderImage);
 Cypress.Commands.add('uploadProjectImage', uploadProjectImage);
 Cypress.Commands.add(

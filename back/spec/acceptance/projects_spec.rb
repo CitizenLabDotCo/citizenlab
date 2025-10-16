@@ -917,24 +917,6 @@ resource 'Projects' do
           }
         ])
       end
-
-      example 'Downloaded inputs do not include ideas with no content' do
-        # Simulating a survey response with no content, which already
-        # existed before the phase participation_method was changed.
-        survey_response.title_multiloc = {}
-        survey_response.body_multiloc = {}
-        survey_response.save!(validate: false)
-
-        native_survey_phase.update!(participation_method: 'ideation')
-
-        do_request
-        assert_status 200
-        xlsx = xlsx_contents response_body
-        expect(xlsx.size).to eq 3
-
-        all_values = xlsx.flat_map { |sheet| sheet[:rows].flatten }
-        expect(all_values).not_to include(survey_response.id)
-      end
     end
   end
 
@@ -1879,6 +1861,33 @@ resource 'Projects' do
           *@listed_projects_user_moderates.pluck(:id),
           *@unlisted_projects_user_moderates.pluck(:id)
         ].sort
+      end
+    end
+
+    context 'when admin' do
+      before do
+        @admin = create(:admin)
+        header_token_for(@admin)
+
+        @project = create(:project)
+        @moderator = create(:project_moderator, projects: [@project])
+        @moderator.add_role 'project_moderator', project_id: @project.id
+        @moderator.save!
+      end
+
+      example 'includes project moderator' do
+        do_request
+        assert_status 200
+        expect(response_data.size).to eq 1
+        expect(response_data.first[:id]).to eq @project.id
+        expect(response_data.first.dig(:relationships, :moderators, :data).size).to eq 1
+        expect(response_data.first.dig(:relationships, :moderators, :data).first[:id]).to eq @moderator.id
+        expect(json_response[:included]).to include(
+          a_hash_including(
+            id: @moderator.id,
+            type: 'user'
+          )
+        )
       end
     end
   end

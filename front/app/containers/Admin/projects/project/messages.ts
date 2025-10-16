@@ -22,6 +22,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.inputFormTab',
     defaultMessage: 'Input form',
   },
+  locationFieldWarning: {
+    id: 'app.containers.AdminPage.ProjectEdit.information.locationFieldWarning1',
+    defaultMessage:
+      'If you allow users to submit ideas through the map, make sure that the Location field is included in the {inputFormLink}.',
+  },
+  locationFieldWarningLink: {
+    id: 'app.containers.AdminPage.ProjectEdit.information.locationFieldWarningLink1',
+    defaultMessage: 'Input Form',
+  },
   mapTab: {
     id: 'app.containers.AdminPage.ProjectEdit.mapTab',
     defaultMessage: 'Map',
@@ -88,6 +97,11 @@ export default defineMessages({
   voteTermError: {
     id: 'app.containers.AdminPage.ProjectEdit.voteTermError',
     defaultMessage: 'Vote terms must be specified for all locales',
+  },
+  minSelectedOptionsError: {
+    id: 'app.containers.AdminPage.ProjectEdit.minSelectedOptionsError',
+    defaultMessage:
+      'Minimum number of selected options must be less than total number of votes',
   },
   noReactingLimitErrorMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage',

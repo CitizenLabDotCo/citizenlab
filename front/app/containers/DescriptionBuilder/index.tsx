@@ -152,11 +152,7 @@ const DescriptionBuilderPage = ({
           display={previewEnabled ? 'none' : 'flex'}
           id="e2e-project-description-content-builder-page"
         >
-          <DescriptionBuilderToolbox
-            modelType={modelType}
-            modelId={modelId}
-            selectedLocale={selectedLocale}
-          />
+          <DescriptionBuilderToolbox modelType={modelType} modelId={modelId} />
           <LanguageProvider
             contentBuilderLocale={selectedLocale}
             platformLocale={locale}

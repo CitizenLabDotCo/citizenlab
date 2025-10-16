@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { SupportedLocale } from 'typings';
-
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from 'containers/DescriptionBuilder/messages';
@@ -24,18 +22,10 @@ import InfoWithAccordions from 'components/DescriptionBuilder/CraftSections/Info
 
 import { useIntl } from 'utils/cl-intl';
 
-type ProjectDescriptionBuilderToolboxProps = {
-  selectedLocale: SupportedLocale;
-};
+import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 
-const ProjectDescriptionBuilderToolbox = ({
-  selectedLocale,
-}: ProjectDescriptionBuilderToolboxProps) => {
+const ProjectDescriptionBuilderToolbox = () => {
   const { formatMessage } = useIntl();
-
-  const isDataRepositoryEnabled = useFeatureFlag({
-    name: 'data_repository',
-  });
 
   return (
     <Container
@@ -97,14 +87,12 @@ const ProjectDescriptionBuilderToolbox = ({
           icon="button"
           label={formatMessage(ButtonMultiloc.craft.custom.title)}
         />
-        {isDataRepositoryEnabled && (
-          <DraggableElement
-            id="e2e-draggable-file-attachment"
-            component={<FileAttachment />}
-            icon="file"
-            label={formatMessage(FileAttachment.craft.custom.title)}
-          />
-        )}
+        <DraggableElement
+          id="e2e-draggable-file-attachment"
+          component={<FileAttachment />}
+          icon="file"
+          label={formatMessage(FileAttachment.craft.custom.title)}
+        />
         <DraggableElement
           id="e2e-draggable-image"
           component={<ImageMultiloc />}
@@ -117,8 +105,9 @@ const ProjectDescriptionBuilderToolbox = ({
             <IframeMultiloc
               url=""
               height={500}
+              tabletHeight={500}
+              mobileHeight={500}
               hasError={false}
-              selectedLocale={selectedLocale}
             />
           }
           icon="code"
