@@ -76,15 +76,6 @@ Gemspec/RequiredRubyVersion:
   Enabled: false
 
 # Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowForAlignment, EnforcedStyleForExponentOperator, EnforcedStyleForRationalLiterals.
-# SupportedStylesForExponentOperator: space, no_space
-# SupportedStylesForRationalLiterals: space, no_space
-Layout/SpaceAroundOperators:
-  Exclude:
-    - 'spec/services/trending_idea_service_spec.rb'
-
-# Offense count: 1
 Lint/DuplicateHashKey:
   Exclude:
     - 'spec/support/validation_error_helper.rb'
@@ -172,17 +163,6 @@ Metrics/PerceivedComplexity:
 Naming/AccessorMethodName:
   Exclude:
     - 'engines/free/email_campaigns/app/models/email_campaigns/delivery.rb'
-
-# Offense count: 6
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, BlockForwardingName.
-# SupportedStyles: anonymous, explicit
-Naming/BlockForwarding:
-  Exclude:
-    - 'app/services/invites/seats_counter.rb'
-    - 'engines/commercial/multi_tenancy/app/models/tenant.rb'
-    - 'engines/commercial/public_api/app/controllers/public_api/public_api_controller.rb'
-    - 'spec/support/general_helper.rb'
 
 # Offense count: 39
 # Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
