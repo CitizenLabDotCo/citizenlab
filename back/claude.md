@@ -64,6 +64,7 @@ back/
 
 **Build and initialize database**:
 Run in the root repository folder (parent of back/)
+
 ```bash
 make reset-dev-env
 ```
@@ -82,57 +83,19 @@ docker compose up
 
 API available at: http://localhost:4000
 
-**Run in background**:
-```bash
-docker compose up -d
-```
-
 ### Executing Commands
 
-**Linux** (requires user mapping):
-```bash
-docker compose run --user "$(id -u):$(id -g)" --rm web <command>
-```
+All commands MUST be run through docker compose. The docker compose configuration lives at the root of the repository (parent of `back` folder), so any docker compose commands must be launched from there.
 
-**Mac/Windows**:
 ```bash
 docker compose run --rm web <command>
 ```
 
-**Interactive shell**:
-```bash
-# Linux
-docker compose run --user "$(id -u):$(id -g)" --rm web /bin/bash
-
-# Mac/Windows
-docker compose run --rm web /bin/bash
-```
-
 ## Development
 
-### Common Commands
+### Commands
 
 The development environment is always run through docker compose. Never run the tests locally, but always run all commands through `docker compose run`.
-
-```bash
-# Rails console
-docker compose run --rm web rails console
-
-# Database migrations
-docker compose run --rm web rails db:migrate
-
-# Reset database
-docker compose run --rm web rails db:reset
-
-# Install gems
-docker compose run --rm web bundle install
-
-# Generate migration
-docker compose run --rm web rails generate migration <name>
-
-# Generate model
-docker compose run --rm web rails generate model <name>
-```
 
 ### Handling Updates
 
@@ -199,10 +162,6 @@ There is no difference anymore between free and commercial engines, historically
 
 **All tests**:
 ```bash
-# Linux
-docker compose run --rm --user "$(id -u):$(id -g)" web rspec
-
-# Mac/Windows
 docker compose run --rm web bin/rspec
 ```
 
@@ -213,16 +172,6 @@ docker compose run --rm web bin/rspec spec/models/user_spec.rb
 For engines, the specs also need to be executed from the root of the rails projects, and not from the engine folder e.g.
 ```bash
 docker compose run --rm web bin/rspec engines/commercial/multi_tenancy
-```
-
-**With focus**:
-```bash
-docker compose run --rm web bin/rspec spec/models/user_spec.rb:42
-```
-
-**Repeat until failure** (debugging flaky tests):
-```bash
-for i in `seq 50`; do docker compose run --rm web bin/rspec ./spec/acceptance/pages_spec.rb; [[ ! $? = 0 ]] && break ; done
 ```
 
 ### Test Structure
@@ -243,39 +192,23 @@ for i in `seq 50`; do docker compose run --rm web bin/rspec ./spec/acceptance/pa
 - **DatabaseCleaner**: Clean test database
 - **SimpleCov**: Code coverage
 
-### E2E Test Setup
-
-E2E tests are in frontend (`../front/cypress`).
-
-**Setup backend for E2E**:
-```bash
-make e2e-setup
-```
-
-This loads `config/tenant_templates/e2etests_template.yml`.
-
 ## Code Quality
 
 ### Rubocop
 
 **Run linter**:
 ```bash
-docker compose run --rm web rubocop
+docker compose run --rm web bundle exec rubocop
 ```
 
 **Auto-fix**:
 ```bash
-docker compose run --rm web rubocop -a
+docker compose run --rm web bundle exec rubocop -a
 ```
 
 **Check modified files only**:
 ```bash
-git diff --name-only --diff-filter=MA | xargs rubocop
-```
-
-**Auto-fix modified files**:
-```bash
-git diff --name-only --diff-filter=MA | xargs rubocop -a
+docker compose run --rm web "git diff --name-only --diff-filter=MA | xargs bundle exec rubocop"
 ```
 
 Configuration:
@@ -312,27 +245,6 @@ docker compose run --rm web rails generate migration <name>
 ```bash
 docker compose run --rm web rails db:migrate
 ```
-
-**Rollback**:
-```bash
-docker compose run --rm web rails db:rollback
-```
-
-### Strong Migrations
-
-Uses `strong_migrations` gem to catch dangerous operations.
-
-If blocked, review the error and use suggested safe alternatives.
-
-### Seeds
-
-**Load seeds**:
-```bash
-docker compose run --rm web rails db:seed
-```
-
-**Customize seed size**:
-Set `SEED_SIZE=large` in env file, then `rails db:reset`.
 
 ### Schema
 
@@ -379,7 +291,7 @@ Generated with `rspec_api_documentation`:
 
 **Generate docs**:
 ```bash
-docker compose run --rm web rake docs:generate
+docker compose run --rm web bin/rake docs:generate
 ```
 
 Output in `doc/api/`.
@@ -439,26 +351,16 @@ docker compose run --rm web bin/rails c
 
 Add `byebug` in code to set breakpoint.
 
-### Pry
-
-Available via `pry`, `pry-byebug`, `pry-rails`.
-
-Add `binding.pry` in code for interactive debugging.
-
 ## Monitoring & Logging
 
 ### Logs
 
 **View logs**:
 ```bash
-docker-compose logs -f web
+docker compose logs -f web
 ```
 
 **Rails logs**: `log/development.log`
-
-### Sentry
-
-Error tracking configured with `sentry-ruby` and `sentry-rails`.
 
 
 ## Common Tasks

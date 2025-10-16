@@ -80,20 +80,15 @@ The back-end is purely an API layer, and in general not rendering HTML.
 
 ### Backend Development
 
-- **Run commands in Docker**:
+**Run all rails commands in docker compose, no local execution**:
 
-  ```bash
-  # Linux
-  docker compose run --user "$(id -u):$(id -g)" --rm web <command>
+```bash
+docker compose run --rm web <command>
+```
 
-  # Mac/Windows
-  docker compose run --rm web <command>
-  ```
+## Make commands
 
-- **Interactive shell**:
-  ```bash
-  docker compose run --rm web /bin/bash
-  ```
+The root of the repository defines a Makefile with a bunch of useful make commands. Most apply to the back-end, so despite the code of the back-end living in `back/`, executing any make commands should be done through the root folder.
 
 ### Frontend Development
 
