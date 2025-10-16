@@ -1474,7 +1474,7 @@ CREATE TABLE public.users (
     onboarding jsonb DEFAULT '{}'::jsonb NOT NULL,
     unique_code character varying,
     last_active_at timestamp(6) without time zone,
-    imported boolean DEFAULT false NOT NULL,
+    imported boolean DEFAULT false NOT NULL
 );
 
 
