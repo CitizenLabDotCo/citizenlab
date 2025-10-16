@@ -34,13 +34,10 @@ const Header = () => {
     clHistory.push('/admin/projects/new');
   };
 
-  const handleAiMode = (description: string) => {
+  const handleAiProjectCreated = (projectId: string) => {
     setIsModalOpen(false);
-    // For now, we'll just navigate to the regular flow
-    // Later this will be replaced with AI processing
-    // We can store the description in sessionStorage temporarily
-    sessionStorage.setItem('ai_project_description', description);
-    clHistory.push('/admin/projects/new');
+    // Navigate to the created project's general settings page
+    clHistory.push(`/admin/projects/${projectId}/general`);
   };
 
   return (
@@ -97,7 +94,7 @@ const Header = () => {
         open={isModalOpen}
         onClose={handleModalClose}
         onManualMode={handleManualMode}
-        onAiMode={handleAiMode}
+        onAiProjectCreated={handleAiProjectCreated}
       />
     </>
   );

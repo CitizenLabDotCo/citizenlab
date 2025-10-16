@@ -242,7 +242,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     return render json: { errors: { description: [{ error: 'Description is required' }] } }, status: :unprocessable_entity if description.blank?
 
     begin
-      ai_service = ProjectAiGeneratorService.new(description, current_user)
+      ai_service = ProjectAIGeneratorService.new(description, current_user)
       project_attributes = ai_service.generate_project_attributes
       
       project = Project.new(project_attributes)
@@ -263,7 +263,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       else
         render json: { errors: project.errors.details }, status: :unprocessable_entity
       end
-    rescue ProjectAiGeneratorService::AiGenerationError => e
+    rescue ProjectAIGeneratorService::AiGenerationError => e
       render json: { errors: { ai_generation: [{ error: e.message }] } }, status: :unprocessable_entity
     end
   end

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 import {
   Title,
-  Text,
   stylingConsts,
   colors,
   Box,
@@ -46,17 +45,8 @@ const CreateProject = () => {
   ]);
 
   const [selectedTabValue, setSelectedTabValue] = useState<TTabName>('scratch');
-  const [aiDescription, setAiDescription] = useState<string | null>(null);
 
   useEffect(() => {
-    // Check for AI project description from the modal
-    const storedDescription = sessionStorage.getItem('ai_project_description');
-    if (storedDescription) {
-      setAiDescription(storedDescription);
-      // Clear it after reading to avoid persisting it
-      sessionStorage.removeItem('ai_project_description');
-    }
-
     const subscription = eventEmitter
       .observeEvent<INewProjectCreatedEvent>('NewProjectCreated')
       .subscribe(({ eventValue }) => {
@@ -115,31 +105,6 @@ const CreateProject = () => {
             />
           )}
         </Box>
-
-        {aiDescription && (
-          <Box
-            bg={colors.successLight}
-            p="16px"
-            mb="24px"
-            borderRadius={stylingConsts.borderRadius}
-            border={`1px solid ${colors.success}`}
-          >
-            <Title variant="h4" color="success" mb="8px">
-              AI Project Description
-            </Title>
-            <Text color="textSecondary" mb="8px">
-              Your AI-assisted project idea:
-            </Text>
-            <Box p="12px" bg={colors.white} borderRadius="4px">
-              <Text fontStyle="italic">"{aiDescription}"</Text>
-            </Box>
-            <Text mt="8px" fontSize="s" color="textSecondary">
-              Note: AI processing is not yet implemented. For now, you can use
-              this description as a reference while filling out the form
-              manually.
-            </Text>
-          </Box>
-        )}
 
         <Outlet
           id="app.containers.Admin.projects.all.createProject"

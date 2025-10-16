@@ -230,6 +230,7 @@ Rails.application.routes.draw do
           get 'community_monitor', action: 'community_monitor'
           get 'for_admin', action: 'index_for_admin'
           get 'participant_counts', action: 'participant_counts'
+          post 'ai_create', action: 'ai_create'
         end
 
         resource :review, controller: 'project_reviews'

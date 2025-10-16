@@ -8,6 +8,8 @@ import {
   Radio,
 } from '@citizenlab/cl2-component-library';
 
+import useAiCreateProject from 'api/projects/useAiCreateProject';
+
 import Modal from 'components/UI/Modal';
 import TextArea from 'components/UI/TextArea';
 
@@ -21,25 +23,35 @@ interface Props {
   open: boolean;
   onClose: () => void;
   onManualMode: () => void;
-  onAiMode: (description: string) => void;
+  onAiProjectCreated: (projectId: string) => void;
 }
 
 const ProjectCreationModeModal = ({
   open,
   onClose,
   onManualMode,
-  onAiMode,
+  onAiProjectCreated,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [selectedMode, setSelectedMode] =
     useState<ProjectCreationMode>('manual');
   const [aiDescription, setAiDescription] = useState('');
 
-  const handleContinue = () => {
+  const { mutateAsync: createAiProject, isLoading: isCreatingAiProject } =
+    useAiCreateProject();
+
+  const handleContinue = async () => {
     if (selectedMode === 'manual') {
       onManualMode();
     } else {
-      onAiMode(aiDescription);
+      try {
+        const result = await createAiProject({ description: aiDescription });
+        const projectId = result.data.id;
+        onAiProjectCreated(projectId);
+      } catch (error) {
+        // Error handling will be done by react-query
+        console.error('Failed to create AI project:', error);
+      }
     }
   };
 
@@ -51,7 +63,8 @@ const ProjectCreationModeModal = ({
   };
 
   const isContinueDisabled =
-    selectedMode === 'ai' && aiDescription.trim().length === 0;
+    (selectedMode === 'ai' && aiDescription.trim().length === 0) ||
+    isCreatingAiProject;
 
   return (
     <Modal width="600px" opened={open} close={onClose}>
@@ -139,6 +152,7 @@ const ProjectCreationModeModal = ({
             buttonStyle="admin-dark"
             onClick={handleContinue}
             disabled={isContinueDisabled}
+            processing={isCreatingAiProject}
           >
             <FormattedMessage {...messages.continue} />
           </Button>
