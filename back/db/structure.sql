@@ -1,3 +1,8 @@
+\restrict ELjqqopCF2nhUQnkzQUYjbkBwvH2XlvL6qNXujco7WsKu1102idJDCNGNsKzydo
+
+-- Dumped from database version 16.6 (Debian 16.6-1.pgdg110+1)
+-- Dumped by pg_dump version 16.10 (Debian 16.10-1.pgdg13+1)
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -1469,7 +1474,8 @@ CREATE TABLE public.users (
     onboarding jsonb DEFAULT '{}'::jsonb NOT NULL,
     unique_code character varying,
     last_active_at timestamp(6) without time zone,
-    imported boolean DEFAULT false NOT NULL
+    imported boolean DEFAULT false NOT NULL,
+    died_at timestamp(6) without time zone
 );
 
 
@@ -7870,13 +7876,16 @@ ALTER TABLE ONLY public.ideas_topics
 -- PostgreSQL database dump complete
 --
 
+\unrestrict ELjqqopCF2nhUQnkzQUYjbkBwvH2XlvL6qNXujco7WsKu1102idJDCNGNsKzydo
+
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20250930942638'),
+('20251016090226'),
 ('20251001090229'),
 ('20251001090208'),
 ('20251001083036'),
+('20250930942638'),
 ('20250922131002'),
 ('20250915151900'),
 ('20250910093500'),

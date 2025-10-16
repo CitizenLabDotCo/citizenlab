@@ -196,6 +196,9 @@ gem 'mutex_m'
 gem 'tzinfo', '~> 2.0'
 gem 'tzinfo-data', '~> 1.2024'
 
+# Internal gems
+gem 'action-caching', path: 'gems/action-caching'
+
 free_engines = %w[
   document_annotation
   email_campaigns
