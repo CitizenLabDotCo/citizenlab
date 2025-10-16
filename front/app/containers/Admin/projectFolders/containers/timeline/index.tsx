@@ -3,6 +3,8 @@ import React, { useMemo, useState } from 'react';
 import { Box, Spinner, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
+import usePhases from 'api/phases/usePhases';
+import { getLatestRelevantPhase } from 'api/phases/utils';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 import useInfiniteProjectsMiniAdmin from 'api/projects_mini_admin/useInfiniteProjectsMiniAdmin';
 
@@ -15,7 +17,7 @@ import { getStatusColor } from 'containers/Admin/projects/all/_shared/utils';
 import messages from 'containers/Admin/projects/all/Calendar/messages';
 import ProjectGanttChart from 'containers/Admin/projects/all/Calendar/ProjectGanttChart';
 import UpsellNudge from 'containers/Admin/projects/all/Calendar/UpsellNudge';
-import PhaseSetup from 'containers/Admin/projects/project/phaseSetup';
+import { AdminPhaseEdit } from 'containers/Admin/projects/project/phaseSetup';
 
 import Centerer from 'components/UI/Centerer';
 import { GanttItem } from 'components/UI/GanttChart/types';
@@ -40,6 +42,9 @@ const FolderTimeline = () => {
       },
       PAGE_SIZE
     );
+
+  // Fetch phases for the selected project
+  const { data: phasesData } = usePhases(selectedProjectId || undefined);
 
   const allProjects = useMemo(
     () => data?.pages.flatMap((page) => page.data) ?? [],
@@ -111,6 +116,12 @@ const FolderTimeline = () => {
     setSelectedProjectId(ganttItem.id);
   };
 
+  // Get the current phase for the selected project
+  const currentPhase =
+    phasesData && selectedProjectId
+      ? getLatestRelevantPhase(phasesData.data)
+      : undefined;
+
   return (
     <Box>
       <Box position="relative" mt="16px">
@@ -133,9 +144,12 @@ const FolderTimeline = () => {
         )}
       </Box>
 
-      {selectedProjectId && (
+      {selectedProjectId && currentPhase && (
         <Box mt="32px">
-          <PhaseSetup />
+          <AdminPhaseEdit
+            projectId={selectedProjectId}
+            phase={{ data: currentPhase }}
+          />
         </Box>
       )}
 

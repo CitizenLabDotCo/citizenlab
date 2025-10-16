@@ -507,4 +507,5 @@ const AdminPhaseEditWrapper = () => {
   );
 };
 
+export { AdminPhaseEdit };
 export default AdminPhaseEditWrapper;
