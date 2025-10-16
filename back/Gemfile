@@ -197,7 +197,7 @@ gem 'tzinfo', '~> 2.0'
 gem 'tzinfo-data', '~> 1.2024'
 
 # Internal gems
-gem 'action-caching', path: 'gems/action-caching'
+gem 'action-caching', git: 'https://github.com/CitizenLabDotCo/action-caching.git', branch: 'main'
 
 free_engines = %w[
   document_annotation

@@ -1,3 +1,13 @@
+GIT
+  remote: https://github.com/CitizenLabDotCo/action-caching.git
+  revision: 142df0442e5adae26a50bfc06e779d013fdfaf4b
+  branch: main
+  specs:
+    action-caching (0.1.0)
+      actionpack (>= 7.0)
+      activesupport (>= 7.0)
+      railties (>= 7.0)
+
 PATH
   remote: engines/commercial/admin_api
   specs:
@@ -369,14 +379,6 @@ PATH
       kaminari (~> 1.2)
       pundit (~> 2.0)
       rails (~> 7.0)
-
-PATH
-  remote: gems/action-caching
-  specs:
-    action-caching (0.1.0)
-      actionpack (>= 7.0)
-      activesupport (>= 7.0)
-      railties (>= 7.0)
 
 GEM
   remote: https://rubygems.org/
