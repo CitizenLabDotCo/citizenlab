@@ -87,14 +87,6 @@ Lint/OrAssignmentToConstant:
   Exclude:
     - 'config/initializers/bunny.rb'
 
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: AllowedMethods.
-# AllowedMethods: instance_of?, kind_of?, is_a?, eql?, respond_to?, equal?, presence, present?
-Lint/RedundantSafeNavigation:
-  Exclude:
-    - 'app/jobs/publish_raw_event_to_segment_job.rb'
-
 # Offense count: 5
 Lint/RescueException:
   Exclude:
