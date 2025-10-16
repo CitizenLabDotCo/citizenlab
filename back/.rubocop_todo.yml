@@ -87,13 +87,6 @@ Lint/OrAssignmentToConstant:
   Exclude:
     - 'config/initializers/bunny.rb'
 
-# Offense count: 5
-Lint/RescueException:
-  Exclude:
-    - 'engines/commercial/multi_tenancy/app/services/multi_tenancy/side_fx_tenant_service.rb'
-    - 'engines/commercial/multi_tenancy/lib/tasks/core/complex_migrations.rake'
-    - 'engines/commercial/multi_tenancy/lib/tasks/core/fix_html_multiloc.rake'
-
 # Offense count: 659
 # Configuration parameters: AllowedMethods, AllowedPatterns, CountRepeatedAttributes.
 Metrics/AbcSize:
