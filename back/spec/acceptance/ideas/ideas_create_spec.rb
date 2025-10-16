@@ -676,7 +676,7 @@ resource 'Ideas' do
               expect(Idea.all.pluck(:author_hash)).to match_array %w[LOGGED_OUT_HASH LOGGED_OUT_HASH]
 
               # Check that the cookie is written in the response
-              expect(response_headers['Set-Cookie']).to include("#{phase.id}=%7B%22lo%22%3D%3E%22LOGGED_OUT_HASH%22%7D")
+              expect(CGI.unescape(response_headers['Set-Cookie'])).to include("#{phase.id}={\"lo\" => \"LOGGED_OUT_HASH\"}")
             end
 
             example 'Uses the logged in author hash over the logged out hash to create the new idea' do
