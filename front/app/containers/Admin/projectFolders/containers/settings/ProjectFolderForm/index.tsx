@@ -53,6 +53,7 @@ import messages from '../../messages';
 import FolderCardImageTooltip from './FolderCardImageTooltip';
 import FolderHeaderImageTooltip from './FolderHeaderImageTooltip';
 import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
+import NewLabel from 'components/UI/NewLabel';
 
 type IProjectFolderSubmitState =
   | 'disabled'
@@ -575,7 +576,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         </SectionField>
         <SectionField data-cy="e2e-project-folder-short-description">
           <SubSectionTitle>
-            <FormattedMessage {...messages.folderDescriptions} />
+            <FormattedMessage {...messages.folderDescription} />
           </SubSectionTitle>
           {!showDescriptionBuilder && (
             <Box data-cy="e2e-project-folder-description">

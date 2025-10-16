@@ -1,6 +1,6 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
-const baseKey = { type: 'content_builder' };
+const baseKey = { type: 'content_builder_layout' };
 
 const contentBuilderKeys = {
   all: () => [baseKey],

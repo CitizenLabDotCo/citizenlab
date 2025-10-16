@@ -149,7 +149,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.folderName',
     defaultMessage: 'Folder name',
   },
-  folderDescriptions: {
+  folderDescription: {
     id: 'app.containers.AdminPage.FoldersEdit.folderDescriptions2',
     defaultMessage: 'Folder Description',
   },
