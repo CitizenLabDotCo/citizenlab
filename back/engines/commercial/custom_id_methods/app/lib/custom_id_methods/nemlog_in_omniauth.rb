@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module IdNemlogIn
+module CustomIdMethods
   class NemlogInOmniauth < OmniauthMethods::Base
     include NemlogInVerification
 
@@ -8,15 +8,15 @@ module IdNemlogIn
       pre_production_integration: {
         # https://www.nemlog-in.dk/vejledningertiltestmiljo/forside/test-som-tjenesteudbyder-eller-broker/
         # But the certificates from `production_integration` are used, because the ones from `pre_production_integration` give "Invalid Signature on SAML Response"
-        metadata_xml_file: File.join(IdNemlogIn::Engine.root, 'config', 'saml', 'idp_metadata', 'pre_production_integration.xml')
+        metadata_xml_file: File.join(CustomIdMethods::Engine.root, 'config', 'saml', 'nemlog_in', 'idp_metadata', 'pre_production_integration.xml')
       },
       production_integration: {
         # https://tu.nemlog-in.dk/oprettelse-og-administration-af-tjenester/log-in/dokumentation.og.guides/integrationstestmiljo/
-        metadata_xml_file: File.join(IdNemlogIn::Engine.root, 'config', 'saml', 'idp_metadata', 'production_integration.xml')
+        metadata_xml_file: File.join(CustomIdMethods::Engine.root, 'config', 'saml', 'nemlog_in', 'idp_metadata', 'production_integration.xml')
       },
       production: {
         # https://tu.nemlog-in.dk/oprettelse-og-administration-af-tjenester/log-in/dokumentation.og.guides/produktionsmiljo/
-        metadata_xml_file: File.join(IdNemlogIn::Engine.root, 'config', 'saml', 'idp_metadata', 'production.xml')
+        metadata_xml_file: File.join(CustomIdMethods::Engine.root, 'config', 'saml', 'idp_metadata', 'production.xml')
       }
     }.freeze
 
@@ -129,7 +129,7 @@ module IdNemlogIn
     private
 
     def fetch_municipality_code(cpr_number)
-      IdNemlogIn::KkiLocationApi.new.municipality_code(cpr_number)
+      CustomIdMethods::KkiLocationApi.new.municipality_code(cpr_number)
     end
 
     def redirect_uri(configuration)

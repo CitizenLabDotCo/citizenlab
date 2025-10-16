@@ -74,13 +74,6 @@ module MultiTenancy
               logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
               login_mechanism_name: 'Azure AD B2C'
             },
-            hoplr_login: {
-              allowed: true,
-              enabled: true,
-              environment: 'test',
-              client_id: ENV.fetch('DEFAULT_HOPLR_CLIENT_ID', 'fake id'),
-              client_secret: ENV.fetch('DEFAULT_HOPLR_CLIENT_SECRET', 'fake secret')
-            },
             nemlog_in_login: {
               allowed: true,
               enabled: true
@@ -349,6 +342,12 @@ module MultiTenancy
                   domain: ENV.fetch('DEFAULT_ID_TWODAY_DOMAIN', 'fake domain'),
                   ui_method_name: 'Bank ID',
                   enabled_for_verified_actions: true
+                },
+                {
+                  name: 'hoplr',
+                  environment: 'test',
+                  client_id: ENV.fetch('DEFAULT_HOPLR_CLIENT_ID', 'fake id'),
+                  client_secret: ENV.fetch('DEFAULT_HOPLR_CLIENT_SECRET', 'fake secret')
                 }
               ]
             },

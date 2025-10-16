@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class IdNemlogIn::KkiLocationApi
+class CustomIdMethods::KkiLocationApi
   FEATURE_NAME = 'kki_location_api'
 
   def municipality_code(cpr_number)

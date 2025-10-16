@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module IdNemlogIn
+module CustomIdMethods
   module NemlogInVerification
     include Verification::VerificationMethod
 
@@ -34,7 +34,7 @@ module IdNemlogIn
           private: true,
           type: 'string',
           description: 'What Nemlog-in environment to use.',
-          enum: IdNemlogIn::NemlogInOmniauth::ENVIRONMENTS.keys
+          enum: CustomIdMethods::NemlogInOmniauth::ENVIRONMENTS.keys
         },
         issuer: {
           private: true,

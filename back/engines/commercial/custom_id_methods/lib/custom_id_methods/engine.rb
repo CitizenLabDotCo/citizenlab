@@ -13,6 +13,7 @@ module CustomIdMethods
       FranceconnectOmniauth
       IdAustriaOmniauth
       TwodayOmniauth
+      NemlogInOmniauth
     ]
 
     VERIFICATION_ONLY_METHODS = %w[
@@ -45,6 +46,9 @@ module CustomIdMethods
       end
 
       AppConfiguration::Settings.add_feature(CustomIdMethods::FeatureSpecification)
+
+      # TODO: Change this to be in the verification settings for NemlogIn
+      AppConfiguration::Settings.add_feature(CustomIdMethods::KkiLocationApiFeatureSpecification)
     end
   end
 end

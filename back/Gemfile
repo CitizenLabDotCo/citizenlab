@@ -239,7 +239,6 @@ commercial_engines = [
   # Custom ID verification & SSO engines.
   'id_id_card_lookup',
   'custom_id_methods',
-  'id_nemlog_in',
   'id_vienna_saml'
 ]
 

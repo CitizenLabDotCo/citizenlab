@@ -2,7 +2,7 @@
 
 require 'citizen_lab/mixins/feature_specification'
 
-module IdNemlogIn
+module CustomIdMethods
   module KkiLocationApiFeatureSpecification
     extend CitizenLab::Mixins::FeatureSpecification
 
