@@ -17,7 +17,7 @@ const createEditor = (htmlContent: string): Quill => {
   const quill = new Quill(editorElement);
 
   if (htmlContent) {
-    const delta = quill.clipboard.convert(htmlContent as any);
+    const delta = quill.clipboard.convert({ html: htmlContent });
     quill.setContents(delta, 'silent');
   }
 
