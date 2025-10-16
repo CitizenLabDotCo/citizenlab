@@ -317,11 +317,6 @@ RSpec/RepeatedDescription:
     - 'engines/commercial/smart_groups/spec/rules/custom_field_select_spec.rb'
     - 'spec/services/sanitization_service_spec.rb'
 
-# Offense count: 2
-RSpec/RepeatedExample:
-  Exclude:
-    - 'engines/commercial/idea_assignment/spec/acceptance/ideas_spec.rb'
-
 # Offense count: 37
 # This cop supports safe autocorrection (--autocorrect).
 RSpec/ScatteredSetup:
