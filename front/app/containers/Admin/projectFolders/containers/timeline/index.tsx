@@ -1,12 +1,14 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { Box, Spinner, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
+import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import { getLatestRelevantPhase } from 'api/phases/utils';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 import useInfiniteProjectsMiniAdmin from 'api/projects_mini_admin/useInfiniteProjectsMiniAdmin';
+import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInfiniteScroll from 'hooks/useInfiniteScroll';
@@ -17,7 +19,7 @@ import { getStatusColor } from 'containers/Admin/projects/all/_shared/utils';
 import messages from 'containers/Admin/projects/all/Calendar/messages';
 import ProjectGanttChart from 'containers/Admin/projects/all/Calendar/ProjectGanttChart';
 import UpsellNudge from 'containers/Admin/projects/all/Calendar/UpsellNudge';
-import { AdminPhaseEdit } from 'containers/Admin/projects/project/phaseSetup';
+import { AdminProjectPhaseIndex } from 'containers/Admin/projects/project/phase';
 
 import Centerer from 'components/UI/Centerer';
 import { GanttItem } from 'components/UI/GanttChart/types';
@@ -33,6 +35,9 @@ const FolderTimeline = () => {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
     null
   );
+  const [selectedPhase, setSelectedPhase] = useState<IPhaseData | undefined>(
+    undefined
+  );
 
   const { data, isLoading, isFetching, isError, fetchNextPage, hasNextPage } =
     useInfiniteProjectsMiniAdmin(
@@ -42,6 +47,9 @@ const FolderTimeline = () => {
       },
       PAGE_SIZE
     );
+
+  // Fetch full project data for the selected project
+  const { data: projectData } = useProjectById(selectedProjectId || undefined);
 
   // Fetch phases for the selected project
   const { data: phasesData } = usePhases(selectedProjectId || undefined);
@@ -65,6 +73,14 @@ const FolderTimeline = () => {
     }),
     {} as Record<string, ProjectMiniAdminData>
   );
+
+  // Update selected phase when phases data changes
+  useEffect(() => {
+    if (phasesData && selectedProjectId) {
+      const phase = getLatestRelevantPhase(phasesData.data);
+      setSelectedPhase(phase);
+    }
+  }, [phasesData, selectedProjectId]);
 
   if (isLoading) {
     return (
@@ -116,12 +132,6 @@ const FolderTimeline = () => {
     setSelectedProjectId(ganttItem.id);
   };
 
-  // Get the current phase for the selected project
-  const currentPhase =
-    phasesData && selectedProjectId
-      ? getLatestRelevantPhase(phasesData.data)
-      : undefined;
-
   return (
     <Box>
       <Box position="relative" mt="16px">
@@ -144,11 +154,12 @@ const FolderTimeline = () => {
         )}
       </Box>
 
-      {selectedProjectId && currentPhase && (
+      {selectedProjectId && projectData && selectedPhase && (
         <Box mt="32px">
-          <AdminPhaseEdit
-            projectId={selectedProjectId}
-            phase={{ data: currentPhase }}
+          <AdminProjectPhaseIndex
+            project={projectData.data}
+            selectedPhase={selectedPhase}
+            setSelectedPhase={setSelectedPhase}
           />
         </Box>
       )}

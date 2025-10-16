@@ -84,6 +84,8 @@ const AdminProjectPhaseIndex = ({
   );
 };
 
+export { AdminProjectPhaseIndex };
+
 export default () => {
   const { projectId, phaseId } = useParams() as {
     projectId: string;
