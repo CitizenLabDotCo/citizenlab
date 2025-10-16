@@ -53,8 +53,6 @@ import messages from '../../messages';
 import FolderCardImageTooltip from './FolderCardImageTooltip';
 import FolderHeaderImageTooltip from './FolderHeaderImageTooltip';
 import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
-// import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-// import Error from 'components/UI/Error';
 
 type IProjectFolderSubmitState =
   | 'disabled'
@@ -575,48 +573,10 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             label={<FormattedMessage {...messages.titleInputLabel} />}
           />
         </SectionField>
-
-        {/* Only show this field when slug is already saved to folder (i.e. not when creating a new folder, which uses this form as well) */}
-        {!isNilOrError(projectFolder) && slug && (
-          <SectionField>
-            <>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.url} />
-              </SubSectionTitle>
-              <SlugInput
-                slug={slug}
-                pathnameWithoutSlug={'folders'}
-                apiErrors={errors}
-                showSlugErrorMessage={showSlugErrorMessage}
-                onSlugChange={handleSlugOnChange}
-                showSlugChangedWarning={
-                  slug !== projectFolder.data.attributes.slug
-                }
-              />
-            </>
-          </SectionField>
-        )}
         <SectionField data-cy="e2e-project-folder-short-description">
-          {/* SHOULD probably change this to homepage desciption like on projects */}
           <SubSectionTitle>
             <FormattedMessage {...messages.folderDescriptions} />
           </SubSectionTitle>
-          <Box mb="35px">
-            <TextAreaMultilocWithLocaleSwitcher
-              data-cy="e2e-project-folder-short-description"
-              valueMultiloc={shortDescriptionMultiloc}
-              name="textAreaMultiloc"
-              onChange={getHandler(setShortDescriptionMultiloc)}
-              label={
-                <FormattedMessage {...messages.shortDescriptionInputLabel} />
-              }
-              labelTooltipText={
-                <FormattedMessage
-                  {...messages.shortDescriptionInputLabelTooltip}
-                />
-              }
-            />
-          </Box>
           {!showDescriptionBuilder && (
             <Box data-cy="e2e-project-folder-description">
               <QuillMutilocWithLocaleSwitcher
@@ -640,8 +600,43 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             fieldName="description_multiloc"
             apiErrors={errors.description_multiloc}
           />
+          <Box mt="35px">
+            <TextAreaMultilocWithLocaleSwitcher
+              data-cy="e2e-project-folder-short-description"
+              valueMultiloc={shortDescriptionMultiloc}
+              name="textAreaMultiloc"
+              onChange={getHandler(setShortDescriptionMultiloc)}
+              label={
+                <FormattedMessage {...messages.shortDescriptionInputLabel} />
+              }
+              labelTooltipText={
+                <FormattedMessage
+                  {...messages.shortDescriptionInputLabelTooltip}
+                />
+              }
+            />
+          </Box>
         </SectionField>
-
+        {/* Only show URL field when slug is already saved to folder (i.e. not when creating a new folder, which uses this form as well) */}
+        {!isNilOrError(projectFolder) && slug && (
+          <SectionField>
+            <>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.url} />
+              </SubSectionTitle>
+              <SlugInput
+                slug={slug}
+                pathnameWithoutSlug={'folders'}
+                apiErrors={errors}
+                showSlugErrorMessage={showSlugErrorMessage}
+                onSlugChange={handleSlugOnChange}
+                showSlugChangedWarning={
+                  slug !== projectFolder.data.attributes.slug
+                }
+              />
+            </>
+          </SectionField>
+        )}
         <SectionField>
           <SubSectionTitle>
             <FormattedMessage {...messages.headerImageInputLabel} />

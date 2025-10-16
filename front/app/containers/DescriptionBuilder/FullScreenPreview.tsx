@@ -39,7 +39,7 @@ export const FullScreenPreview = ({
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
   const platformLocale = useLocale();
 
-  const { data: projectDescriptionBuilderLayout } = useContentBuilderLayout(
+  const { data: descriptionBuilderLayout } = useContentBuilderLayout(
     modelId,
     modelType
   );
@@ -49,13 +49,12 @@ export const FullScreenPreview = ({
   }
 
   const isLoadingProjectDescriptionBuilderLayout =
-    projectDescriptionBuilderLayout === undefined;
+    descriptionBuilderLayout === undefined;
 
-  const savedEditorData = projectDescriptionBuilderLayout?.data.attributes
-    .craftjs_json
+  const savedEditorData = descriptionBuilderLayout?.data.attributes.craftjs_json
     ? // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      projectDescriptionBuilderLayout?.data.attributes.craftjs_json
+      descriptionBuilderLayout?.data.attributes.craftjs_json
     : undefined;
 
   const editorData = draftData || savedEditorData;

@@ -32,12 +32,13 @@ export default defineMessages({
     defaultMessage: 'Title',
   },
   shortDescriptionInputLabel: {
-    id: 'app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabel',
-    defaultMessage: 'Short description',
+    id: 'app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabel2',
+    defaultMessage: 'Homepage description',
   },
   shortDescriptionInputLabelTooltip: {
-    id: 'app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip',
-    defaultMessage: 'shown in the landing page',
+    id: 'app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip2',
+    defaultMessage:
+      'This short description will be shown on the card for the folder on the homepage. Keep it concise and engaging.',
   },
   descriptionInputLabel: {
     id: 'app.containers.AdminPage.FoldersEdit.descriptionInputLabel',
@@ -149,8 +150,8 @@ export default defineMessages({
     defaultMessage: 'Folder name',
   },
   folderDescriptions: {
-    id: 'app.containers.AdminPage.FoldersEdit.folderDescriptions',
-    defaultMessage: 'Descriptions',
+    id: 'app.containers.AdminPage.FoldersEdit.folderDescriptions2',
+    defaultMessage: 'Folder Description',
   },
   url: {
     id: 'app.containers.AdminPage.FoldersEdit.url',

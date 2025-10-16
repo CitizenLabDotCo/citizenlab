@@ -31,14 +31,14 @@ const DEFAULT_FOLDER_DESCRIPTION_BUILDER_LAYOUT_DATA = {
   },
 };
 
-const mockProjectDescriptionBuilderLayoutData:
+const mockFolderDescriptionBuilderLayoutData:
   | typeof DEFAULT_FOLDER_DESCRIPTION_BUILDER_LAYOUT_DATA
   | undefined
   | Error = DEFAULT_FOLDER_DESCRIPTION_BUILDER_LAYOUT_DATA;
 
 jest.mock('api/content_builder/useContentBuilderLayout', () => () => {
   return {
-    data: mockProjectDescriptionBuilderLayoutData,
+    data: mockFolderDescriptionBuilderLayoutData,
   };
 });
 

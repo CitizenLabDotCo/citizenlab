@@ -84,9 +84,12 @@ const DescriptionBuilderPage = ({
     });
   }, []);
 
-  if (isNilOrError(locales)) return null;
-  if (!descriptionBuilderVisible) return null;
-  if (!descriptionBuilderLayout) return null;
+  if (
+    isNilOrError(locales) ||
+    !descriptionBuilderVisible ||
+    !descriptionBuilderLayout
+  )
+    return null;
 
   const hasError =
     Object.values(contentBuilderErrors).filter((node) => node.hasError).length >

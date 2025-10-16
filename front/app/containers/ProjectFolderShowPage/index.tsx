@@ -104,7 +104,7 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
   const isSmallerThanSmallDesktop = useBreakpoint('smallDesktop');
 
   const userCanEditFolder = userModeratesFolder(authUser, projectFolder.id);
-  const projectDescriptionBuilderEnabled =
+  const descriptionBuilderEnabled =
     useFeatureFlag({
       name: 'project_description_builder',
     }) && projectFolder.attributes.uses_content_builder;
@@ -148,7 +148,7 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
         </Box>
       </StyledContentContainer>
       <main id="e2e-folder-page">
-        {projectDescriptionBuilderEnabled ? (
+        {descriptionBuilderEnabled ? (
           <StyledContentContainer maxWidth={maxPageWidth}>
             <ProjectFolderHeader projectFolder={projectFolder} />
             <FolderContentViewer
