@@ -21,6 +21,7 @@ import {
   getTabs,
   IPhaseTab,
 } from '../../../projects/project/tabs';
+import { AdminProjectVolunteeringContent } from '../../../projects/project/volunteering';
 
 import { StandalonePhaseHeader } from './StandalonePhaseHeader';
 
@@ -149,12 +150,10 @@ const StandaloneAdminProjectPhaseIndex = ({
         );
       case 'volunteering':
         return (
-          <PlaceholderBox>
-            <Text color="textSecondary">Volunteering Tab Content</Text>
-            <Text mt="8px" color="textSecondary">
-              Volunteering configuration would go here
-            </Text>
-          </PlaceholderBox>
+          <AdminProjectVolunteeringContent
+            projectId={project.id}
+            phaseId={selectedPhase.id}
+          />
         );
       case 'map':
         return (

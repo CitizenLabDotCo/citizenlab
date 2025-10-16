@@ -21,11 +21,15 @@ const PhaseContainer = styled.div`
   }
 `;
 
-const AdminProjectVolunteering = () => {
-  const { projectId, phaseId } = useParams() as {
-    projectId: string;
-    phaseId: string;
-  };
+interface AdminProjectVolunteeringContentProps {
+  projectId: string;
+  phaseId: string;
+}
+
+export const AdminProjectVolunteeringContent = ({
+  projectId,
+  phaseId,
+}: AdminProjectVolunteeringContentProps) => {
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
 
@@ -51,6 +55,21 @@ const AdminProjectVolunteering = () => {
         <AllCauses projectId={project.data.id} phaseId={phaseId} />
       </PhaseContainer>
     </Box>
+  );
+};
+
+const AdminProjectVolunteering = () => {
+  const { projectId, phaseId } = useParams() as {
+    projectId: string;
+    phaseId: string;
+  };
+
+  if (!projectId || !phaseId) {
+    return null;
+  }
+
+  return (
+    <AdminProjectVolunteeringContent projectId={projectId} phaseId={phaseId} />
   );
 };
 
