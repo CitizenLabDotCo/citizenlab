@@ -388,13 +388,6 @@ Rails/AddColumnIndex:
 Rails/BulkChangeTable:
   Enabled: false
 
-# Offense count: 2
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Rails/CompactBlank:
-  Exclude:
-    - 'engines/commercial/bulk_import_ideas/app/services/bulk_import_ideas/importers/idea_importer.rb'
-    - 'engines/commercial/bulk_import_ideas/app/services/bulk_import_ideas/parsers/idea_base_file_parser.rb'
-
 # Offense count: 5
 # Configuration parameters: Severity, Include.
 # Include: db/**/*.rb
