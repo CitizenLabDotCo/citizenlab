@@ -376,6 +376,7 @@ PATH
     action-caching (0.1.0)
       actionpack (>= 7.0)
       activesupport (>= 7.0)
+      railties (>= 7.0)
 
 GEM
   remote: https://rubygems.org/

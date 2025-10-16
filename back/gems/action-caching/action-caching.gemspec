@@ -19,7 +19,8 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'actionpack', '>= 7.0'
   spec.add_dependency 'activesupport', '>= 7.0'
+  spec.add_dependency 'railties', '>= 7.0'
 
   spec.add_development_dependency 'rspec', '~> 3.0'
-  spec.add_development_dependency 'rspec-rails'
+  spec.add_development_dependency 'rake', '~> 13.0'
 end
