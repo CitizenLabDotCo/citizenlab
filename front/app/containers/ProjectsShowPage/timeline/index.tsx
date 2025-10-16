@@ -36,11 +36,16 @@ import VotingResults from './VotingResults';
 
 const PhaseReport = React.lazy(() => import('./PhaseReport'));
 
-const StyledSectionContainer = styled(SectionContainer)`
+const StyledSectionContainer = styled(SectionContainer)<{
+  $removeBackground?: boolean;
+  $removePadding?: boolean;
+}>`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  background: ${colors.background};
+  background: ${({ $removeBackground }) =>
+    $removeBackground ? 'transparent' : colors.background};
+  ${({ $removePadding }) => $removePadding && 'padding: 0;'}
 `;
 
 const Header = styled.div`
@@ -57,9 +62,18 @@ const Header = styled.div`
 interface Props {
   projectId: string;
   className?: string;
+  removeBackground?: boolean;
+  removePadding?: boolean;
+  hideWrapper?: boolean;
 }
 
-const ProjectTimelineContainer = ({ projectId, className }: Props) => {
+const ProjectTimelineContainer = ({
+  projectId,
+  className,
+  removeBackground = false,
+  removePadding = false,
+  hideWrapper = false,
+}: Props) => {
   const { phaseNumber } = useParams();
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
@@ -110,11 +124,9 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
       !!reportId &&
       selectedPhase.attributes.report_public;
 
-    return (
-      <StyledSectionContainer
-        className={`${className || ''} e2e-project-process-page`}
-      >
-        <ContentContainer maxWidth={maxPageWidth}>
+    const content = (
+      <>
+        <ContentContainer maxWidth={removePadding ? undefined : maxPageWidth}>
           {!hideTimelineUI(phases?.data, currentLocale) && (
             <>
               <Header>
@@ -167,6 +179,20 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
         {showReport && (
           <PhaseReport reportId={reportId} phaseId={selectedPhaseId} />
         )}
+      </>
+    );
+
+    if (hideWrapper) {
+      return <div className={className}>{content}</div>;
+    }
+
+    return (
+      <StyledSectionContainer
+        className={`${className || ''} e2e-project-process-page`}
+        $removeBackground={removeBackground}
+        $removePadding={removePadding}
+      >
+        {content}
       </StyledSectionContainer>
     );
   }

@@ -7,12 +7,12 @@ import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import useProjectById from 'api/projects/useProjectById';
 
-import { useLocalize } from 'hooks/useLocalize';
+import useLocalize from 'hooks/useLocalize';
 
 import ProjectTimelineContainer from 'containers/ProjectsShowPage/timeline';
 
-import ContentContainer from 'components/ContentContainer';
 import SectionContainer from 'components/SectionContainer';
 
 import { useIntl } from 'utils/cl-intl';
@@ -24,7 +24,8 @@ const StyledSectionContainer = styled(SectionContainer)`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  background: ${colors.background};
+  background: transparent;
+  padding: 0;
 `;
 
 const TimelineWrapper = styled.div`
@@ -33,6 +34,45 @@ const TimelineWrapper = styled.div`
   gap: 40px;
   margin-top: 20px;
 `;
+
+const ProjectSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 40px;
+  border-bottom: 2px solid ${colors.grey300};
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+`;
+
+const ProjectTitleHeader = styled(Title)`
+  margin-bottom: 8px;
+`;
+
+interface ProjectTimelineItemProps {
+  projectId: string;
+}
+
+const ProjectTimelineItem = ({ projectId }: ProjectTimelineItemProps) => {
+  const { data: project } = useProjectById(projectId);
+  const localize = useLocalize();
+
+  if (!project) return null;
+
+  const projectTitle = localize(project.data.attributes.title_multiloc);
+
+  return (
+    <ProjectSection>
+      <ProjectTitleHeader variant="h3" color="tenantText" mb="0">
+        {projectTitle}
+      </ProjectTitleHeader>
+      <ProjectTimelineContainer projectId={projectId} hideWrapper={true} />
+    </ProjectSection>
+  );
+};
 
 interface Props {
   titleMultiloc?: Multiloc;
@@ -68,12 +108,10 @@ const FolderTimeline: UserComponent<Props> = ({ titleMultiloc, folderId }) => {
   if (isLoading) {
     return (
       <StyledSectionContainer>
-        <ContentContainer>
-          <Title variant="h2" color="tenantText">
-            {getTitle()}
-          </Title>
-          <Box mt="20px">Loading...</Box>
-        </ContentContainer>
+        <Title variant="h2" color="tenantText">
+          {getTitle()}
+        </Title>
+        <Box mt="20px">Loading...</Box>
       </StyledSectionContainer>
     );
   }
@@ -84,19 +122,17 @@ const FolderTimeline: UserComponent<Props> = ({ titleMultiloc, folderId }) => {
 
   return (
     <StyledSectionContainer className="e2e-folder-timeline">
-      <ContentContainer>
-        <Title variant="h2" color="tenantText" mb="20px">
-          {getTitle()}
-        </Title>
-        <TimelineWrapper>
-          {projects.map((publication) => (
-            <ProjectTimelineContainer
-              key={publication.id}
-              projectId={publication.relationships.publication.data.id}
-            />
-          ))}
-        </TimelineWrapper>
-      </ContentContainer>
+      <Title variant="h2" color="tenantText" mb="20px">
+        {getTitle()}
+      </Title>
+      <TimelineWrapper>
+        {projects.map((publication) => (
+          <ProjectTimelineItem
+            key={publication.id}
+            projectId={publication.relationships.publication.data.id}
+          />
+        ))}
+      </TimelineWrapper>
     </StyledSectionContainer>
   );
 };
