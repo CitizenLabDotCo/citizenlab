@@ -104,7 +104,9 @@ resource 'Ideas' do
           example 'Removes images from body_multiloc and creates idea_images', document: false do
             do_request
             assert_status 201
-            expect(response_data.dig(:attributes, :body_multiloc, :en)).to include('<p>Some text</p><img alt="Red dot" data-cl2-text-image-text-reference')
+            expect(response_data.dig(:attributes, :body_multiloc, :en)).to include('<p>Some text</p><img alt="Red dot"')
+            text_image = TextImage.find_by(imageable_id: response_data[:id], imageable_type: 'Idea', imageable_field: 'body_multiloc')
+            expect(response_data.dig(:attributes, :body_multiloc, :en)).to include("data-cl2-text-image-text-reference=\"#{text_image.text_reference}\"")
             expect(TextImage.count).to eq 1
             image = TextImage.last
             expect(image.imageable_id).to eq response_data[:id]
