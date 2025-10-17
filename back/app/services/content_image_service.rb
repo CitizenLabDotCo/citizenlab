@@ -57,6 +57,44 @@ class ContentImageService
     encode_content content
   end
 
+  # Applies {#extract_data_images} to each multiloc value in the given multiloc.
+  def extract_data_images_multiloc(multiloc)
+    multiloc.transform_values do |encoded_content|
+      extract_data_images encoded_content
+    end
+  end
+
+  def extract_data_images(encoded_content)
+    content = begin
+      decode_content encoded_content
+    rescue DecodingError => e
+      log_decoding_error e
+    end
+
+    extracted_images = []
+
+    if !content
+      return { content: encoded_content, extracted_images: extracted_images }
+    end
+
+    image_elements(content).each do |img_elt|
+      next if image_attributes_for_element.none? { |elt_atr| attribute? img_elt, elt_atr }
+
+      if !attribute?(img_elt, code_attribute_for_element) && image_attributes(img_elt, imageable, field).present?
+        content_image = content_image_class.create! image_attributes(img_elt, imageable, field)
+        set_attribute! img_elt, code_attribute_for_element, content_image[code_attribute_for_model]
+      end
+      image_attributes_for_element.each do |elt_atr|
+        remove_attribute! img_elt, elt_atr
+      end
+    end
+
+    return { 
+      content: encode_content content, 
+      extracted_images: extracted_images 
+    }
+  end
+
   # Applies {#render_data_images} to each multiloc value in the given multiloc.
   def render_data_images_multiloc(multiloc, imageable: nil, field: nil)
     return multiloc if multiloc.blank?
