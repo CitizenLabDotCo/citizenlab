@@ -27,13 +27,16 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def create
+    description_multiloc = phase_params[:description_multiloc]
+    phase_params[:description_multiloc] = {}
+
     @phase = Phase.new(phase_params)
     @phase.project_id = params[:project_id]
     sidefx.before_create(@phase, current_user)
     authorize @phase
 
     if @phase.save
-      sidefx.after_create(@phase, current_user)
+      sidefx.after_create(@phase, current_user, description_multiloc)
       render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash, status: :created
     else
       render json: { errors: @phase.errors.details }, status: :unprocessable_entity
