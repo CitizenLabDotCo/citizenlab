@@ -68,11 +68,21 @@ module Analysis
       insightable&.update!(generated_at: Time.now)
     end
 
-    def set_failed!
-      self.state = 'failed'
-      self.progress = nil
-      self.ended_at = Time.now
-      save!
+    def set_failed!(error = nil)
+      attrs = {
+        state: 'failed',
+        progress: nil,
+        ended_at: Time.now
+      }
+      attrs[:last_error_class] = error.class.name if error
+      update!(attrs)
+    end
+
+    def failure_reason
+      case last_error_class
+      when 'Analysis::LLM::UnsupportedAttachmentError' then 'unsupported_file_type'
+      else 'unknown'
+      end
     end
 
     def task_type
