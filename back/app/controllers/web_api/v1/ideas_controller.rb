@@ -248,7 +248,7 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
     ActiveRecord::Base.transaction do
       if input.save(**save_options)
         update_file_upload_fields input, form, params_for_create
-        sidefx.after_create(input, current_user)
+        sidefx.after_create(input, current_user, body_multiloc)
         write_everyone_tracking_cookie input
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
