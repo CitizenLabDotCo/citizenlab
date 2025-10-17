@@ -43,7 +43,7 @@ module BlockingProfanity
         { nil => object[atr] } # Create a fake multiloc-like hash
       end
 
-      blocked_words = verify_profanity_multiloc(multiloc)
+      blocked_words = verify_profanity_multiloc(multiloc, atr)
       if blocked_words.present?
         all_blocked_words += blocked_words
         violating_attributes << atr
