@@ -518,7 +518,7 @@ GEM
     base64 (0.3.0)
     bcrypt (3.1.20)
     benchmark (0.4.1)
-    bigdecimal (3.2.3)
+    bigdecimal (3.3.1)
     bindata (2.5.0)
     binding_of_caller (1.0.0)
       debug_inspector (>= 0.0.1)
@@ -739,7 +739,7 @@ GEM
     gyoku (1.4.0)
       builder (>= 2.1.2)
       rexml (~> 3.0)
-    hashdiff (1.1.0)
+    hashdiff (1.2.1)
     hashery (2.1.2)
     hashie (5.0.0)
     htmlentities (4.3.4)
@@ -1097,7 +1097,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (3.1.2)
-    rexml (3.4.2)
+    rexml (3.4.4)
     rgeo (3.0.1)
     rgeo-activerecord (7.0.1)
       activerecord (>= 5.0)
@@ -1317,7 +1317,7 @@ GEM
       activesupport
       faraday (~> 2.0)
       faraday-follow_redirects
-    webmock (3.23.1)
+    webmock (3.25.1)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
@@ -1511,7 +1511,7 @@ DEPENDENCIES
   user_custom_fields!
   vcr (~> 6.2)
   volunteering!
-  webmock (~> 3.23)
+  webmock (~> 3.25)
 
 RUBY VERSION
    ruby 3.3.4p94
