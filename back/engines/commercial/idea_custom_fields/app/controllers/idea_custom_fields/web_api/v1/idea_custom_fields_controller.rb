@@ -181,12 +181,16 @@ module IdeaCustomFields
         end
         create_params['key'] = default_field.key
       end
+
+      description_multiloc = create_params['description_multiloc']
+      create_params['description_multiloc'] = {}
+
       field = CustomField.new create_params.merge(resource: @custom_form)
 
       SideFxCustomFieldService.new.before_create field, current_user
       if field.save
         page_temp_ids_to_ids_mapping[field_params[:temp_id]] = field.id if field_params[:temp_id]
-        SideFxCustomFieldService.new.after_create field, current_user
+        SideFxCustomFieldService.new.after_create(field, current_user, description_multiloc)
         field
       else
         errors[index.to_s] = field.errors.details
