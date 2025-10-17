@@ -23,6 +23,10 @@ module UserCustomFields
         end
 
         def create
+          params = custom_field_params(CustomField)
+          description_multiloc = params[:description_multiloc]
+          params[:description_multiloc] = {}
+
           @custom_field = CustomField.new custom_field_params(CustomField)
           @custom_field.resource_type = 'User'
           authorize @custom_field, policy_class: UserCustomFieldPolicy
@@ -30,7 +34,7 @@ module UserCustomFields
           SideFxCustomFieldService.new.before_create(@custom_field, current_user)
 
           if @custom_field.save
-            SideFxCustomFieldService.new.after_create(@custom_field, current_user)
+            SideFxCustomFieldService.new.after_create(@custom_field, current_user, description_multiloc)
             render json: serialize_custom_fields(@custom_field, params: jsonapi_serializer_params_with_locked_fields), status: :created
           else
             render json: { errors: @custom_field.errors.details }, status: :unprocessable_entity
