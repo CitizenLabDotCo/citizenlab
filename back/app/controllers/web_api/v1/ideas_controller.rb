@@ -217,7 +217,7 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
       return
     end
 
-    # Different implementation of profanity check because input.body_multiloc is still nil here
+    # Different implementation of profanity check because input.body_multiloc is still empty here
     verify_profanity_title_and_body(input.title_multiloc, body_multiloc)
 
     save_options = {}
