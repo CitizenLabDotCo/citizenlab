@@ -3,6 +3,53 @@
 class TextImageService < ContentImageService
   BASE64_REGEX = %r{^data:image/([a-zA-Z]*);base64,.*$}
 
+  # Applies {#extract_data_images} to each multiloc value in the given multiloc.
+  def extract_data_images_multiloc(multiloc)
+    multiloc.transform_values do |encoded_content|
+      extract_data_images encoded_content
+    end
+  end
+
+  def extract_data_images(encoded_content)
+    content = begin
+      decode_content encoded_content
+    rescue DecodingError => e
+      log_decoding_error e
+    end
+
+    extracted_images = []
+
+    if !content
+      return { content: encoded_content, extracted_images: extracted_images }
+    end
+
+    image_elements(content).each do |img_elt|
+      next if image_attributes_for_element.none? { |elt_atr| attribute? img_elt, elt_atr }
+
+      if !attribute?(img_elt, code_attribute_for_element) && image_attributes(img_elt, imageable, field).present?
+        text_reference = SecureRandom.uuid
+        set_attribute! img_elt, code_attribute_for_element, text_reference
+
+        img_src = get_attribute html_doc, image_attribute_for_element
+        img_key = img_src.match?(BASE64_REGEX) ? :image : :remote_image_url
+        
+        extracted_images << { 
+          text_reference: text_reference, 
+          img_key: img_key,
+          img_src: img_src
+        }
+      end
+      image_attributes_for_element.each do |elt_atr|
+        remove_attribute! img_elt, elt_atr
+      end
+    end
+
+    return { 
+      content: encode_content(content),
+      extracted_images: extracted_images 
+    }
+  end
+
   protected
 
   # Decodes the given HTML string into a Nokogiri document.
