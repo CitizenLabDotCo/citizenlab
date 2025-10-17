@@ -5,10 +5,18 @@ class SideFxProjectService
 
   def before_create(project, user); end
 
-  def after_create(project, user)
+  def after_create(project, user, original_description_multiloc)
     ensure_user_can_moderate_project!(project, user)
     project.set_default_topics!
-    project.update!(description_multiloc: TextImageService.new.swap_data_images_multiloc(project.description_multiloc, field: :description_multiloc, imageable: project))
+
+    if original_description_multiloc.present?
+      project.update!(description_multiloc: TextImageService.new.swap_data_images_multiloc(
+        original_description_multiloc, 
+        field: :description_multiloc, 
+        imageable: project
+      ))
+    end
+
     serialized_project = clean_time_attributes(project.attributes)
 
     LogActivityJob.perform_later(

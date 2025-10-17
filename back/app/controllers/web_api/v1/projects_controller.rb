@@ -215,12 +215,16 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def create
+    attributes = permitted_attributes(Project)
+    description_multiloc = attributes[:description_multiloc]
+    attributes[:description_multiloc] = {}
+
     project = Project.new(permitted_attributes(Project))
     sidefx.before_create(project, current_user)
 
     created = Project.transaction do
       save_project(project).tap do |saved|
-        sidefx.after_create(project, current_user) if saved
+        sidefx.after_create(project, current_user, description_multiloc) if saved
       end
     end
 
