@@ -8,18 +8,43 @@ import styled from 'styled-components';
 import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 
+import Error from 'components/UI/Error';
+
 import FilterItems from 'containers/Admin/projects/project/analysis/FilterItems';
 import {
   deleteTrailingIncompleteIDs,
   replaceIdRefsWithLinks,
 } from 'containers/Admin/projects/project/analysis/Insights/util';
 
+import { useIntl } from 'utils/cl-intl';
+
 import FileItem from '../FileItem';
+import messages from './messages';
 
 const StyledInsightsText = styled(Text)`
   white-space: pre-wrap;
   word-break: break-word;
 `;
+
+const getErrorMessage = (
+  failureReason?: string | null,
+  formatMessage?: any
+) => {
+  if (!formatMessage) return null;
+
+  switch (failureReason) {
+    case 'unsupported_file_type':
+      return formatMessage(messages.taskFailedUnsupportedFileType);
+    case 'input_too_large':
+      return formatMessage(messages.taskFailedInputTooLarge);
+    case 'rate_limit_exceeded':
+      return formatMessage(messages.taskFailedRateLimit);
+    case 'file_preview_failed':
+    case 'unknown':
+    default:
+      return formatMessage(messages.taskFailedGeneric);
+  }
+};
 
 const InsightBody = ({
   text,
@@ -40,6 +65,7 @@ const InsightBody = ({
   backgroundTaskId?: string;
 }) => {
   const [search] = useSearchParams();
+  const { formatMessage } = useIntl();
   const { data: task } = useAnalysisBackgroundTask(
     analysisId,
     backgroundTaskId,
@@ -49,6 +75,8 @@ const InsightBody = ({
   const isLoading =
     task?.data.attributes.state === 'queued' ||
     task?.data.attributes.state === 'in_progress';
+
+  const isFailed = task?.data.attributes.state === 'failed';
 
   const selectedInputId = search.get('selected_input_id') || undefined;
 
@@ -73,16 +101,29 @@ const InsightBody = ({
           </Box>
         )}
 
-        <StyledInsightsText mt="0px">
-          {replaceIdRefsWithLinks({
-            insight: isLoading ? deleteTrailingIncompleteIDs(text) : text,
-            analysisId,
-            projectId,
-            phaseId,
-            selectedInputId,
-          })}
-        </StyledInsightsText>
-        {isLoading && <Spinner />}
+        {isFailed ? (
+          <Error
+            text={getErrorMessage(
+              task?.data.attributes.failure_reason,
+              formatMessage
+            )}
+            showIcon={true}
+            showBackground={true}
+          />
+        ) : (
+          <>
+            <StyledInsightsText mt="0px">
+              {replaceIdRefsWithLinks({
+                insight: isLoading ? deleteTrailingIncompleteIDs(text) : text,
+                analysisId,
+                projectId,
+                phaseId,
+                selectedInputId,
+              })}
+            </StyledInsightsText>
+            {isLoading && <Spinner />}
+          </>
+        )}
       </>
     </div>
   );

@@ -16,6 +16,7 @@
 #  updated_at          :datetime         not null
 #  tags_ids            :jsonb
 #  filters             :jsonb            not null
+#  last_error_class    :string
 #
 # Indexes
 #
@@ -67,10 +68,11 @@ module Analysis
       insightable&.update!(generated_at: Time.now)
     end
 
-    def set_failed!
+    def set_failed!(error: nil)
       self.state = 'failed'
       self.progress = nil
       self.ended_at = Time.now
+      self.last_error_class = error&.class&.name
       save!
     end
 

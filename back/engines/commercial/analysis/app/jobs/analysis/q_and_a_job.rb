@@ -22,14 +22,16 @@ module Analysis
       case error
       when LLM::PreviewPendingError then retry_in(15.seconds)
       when LLM::TooManyRequestsError then retry_in(1.minute)
-      when LLM::UnsupportedAttachmentError then expire
-      else super
+      when LLM::UnsupportedAttachmentError then expire(error)
+      else
+        @question.background_task.set_failed!(error: error)
+        super
       end
     end
 
-    def expire
-      @question.task.set_failed!
-      expire
+    def expire(error = nil)
+      @question.background_task.set_failed!(error: error)
+      super()
     end
   end
 end

@@ -111,4 +111,24 @@ export default defineMessages({
     defaultMessage:
       'This is AI-generated content. It may not be 100% accurate. Please review and cross-reference with the actual inputs for accuracy. Be aware that the accuracy is likely to improve if the number of selected inputs is reduced.',
   },
+  taskFailedUnsupportedFileType: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.taskFailedUnsupportedFileType',
+    defaultMessage:
+      'This file type is not supported for AI analysis. Please use a different file format.',
+  },
+  taskFailedInputTooLarge: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.taskFailedInputTooLarge',
+    defaultMessage:
+      'The input is too large to process. Please try with fewer or smaller inputs.',
+  },
+  taskFailedRateLimit: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.taskFailedRateLimit',
+    defaultMessage:
+      'Too many requests were made. Please wait a few minutes and try again.',
+  },
+  taskFailedGeneric: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.taskFailedGeneric',
+    defaultMessage:
+      'An error occurred while generating this insight. Please try again.',
+  },
 });

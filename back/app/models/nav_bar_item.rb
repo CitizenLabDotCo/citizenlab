@@ -4,24 +4,27 @@
 #
 # Table name: nav_bar_items
 #
-#  id             :uuid             not null, primary key
-#  code           :string           not null
-#  ordering       :integer
-#  title_multiloc :jsonb
-#  static_page_id :uuid
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  project_id     :uuid
+#  id                :uuid             not null, primary key
+#  code              :string           not null
+#  ordering          :integer
+#  title_multiloc    :jsonb
+#  static_page_id    :uuid
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  project_id        :uuid
+#  project_folder_id :uuid
 #
 # Indexes
 #
-#  index_nav_bar_items_on_code            (code)
-#  index_nav_bar_items_on_ordering        (ordering)
-#  index_nav_bar_items_on_project_id      (project_id)
-#  index_nav_bar_items_on_static_page_id  (static_page_id)
+#  index_nav_bar_items_on_code               (code)
+#  index_nav_bar_items_on_ordering           (ordering)
+#  index_nav_bar_items_on_project_folder_id  (project_folder_id)
+#  index_nav_bar_items_on_project_id         (project_id)
+#  index_nav_bar_items_on_static_page_id     (static_page_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (project_folder_id => project_folders_folders.id)
 #  fk_rails_...  (project_id => projects.id)
 #  fk_rails_...  (static_page_id => static_pages.id)
 #
