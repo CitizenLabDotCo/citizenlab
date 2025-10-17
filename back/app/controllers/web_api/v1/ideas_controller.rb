@@ -184,7 +184,7 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
     # which we don't have yet at this point.
     # Refactoring it is too much work right now so we do it like this.
     body_multiloc = params_for_create[:body_multiloc]
-    params_for_create[:body_multiloc] = nil
+    params_for_create[:body_multiloc] = {}
 
     files_params = extract_file_params(params_for_create)
 
