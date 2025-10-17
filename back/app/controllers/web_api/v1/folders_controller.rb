@@ -76,12 +76,19 @@ class WebApi::V1::FoldersController < ApplicationController
   end
 
   def create
+    description_multiloc = project_folder_params[:description_multiloc]
+    project_folder_params[:description_multiloc] = {}
+
     @project_folder = ProjectFolders::Folder.new(project_folder_params)
 
     authorize @project_folder
 
     if @project_folder.save
-      ProjectFolders::SideFxProjectFolderService.new.after_create(@project_folder, current_user)
+      ProjectFolders::SideFxProjectFolderService.new.after_create(
+        @project_folder, 
+        current_user,
+        description_multiloc
+      )
 
       render json: WebApi::V1::FolderSerializer.new(
         @project_folder,
