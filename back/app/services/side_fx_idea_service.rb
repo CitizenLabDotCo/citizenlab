@@ -13,7 +13,15 @@ class SideFxIdeaService
     before_publish_or_submit idea, user if idea.submitted_or_published?
   end
 
-  def after_create(idea, user)
+  def after_create(idea, user, original_body_multiloc)
+    if original_body_multiloc.present?
+      idea.update!(body_multiloc: TextImageService.new.swap_data_images_multiloc(
+        original_body_multiloc,
+        field: :body_multiloc,
+        imageable: idea
+      ))
+    end
+
     idea.phases.each(&:update_manual_votes_count!) if idea.manual_votes_amount.present?
 
     LogActivityJob.perform_later(
