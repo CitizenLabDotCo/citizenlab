@@ -174,15 +174,9 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
     extract_custom_field_values_from_params!(form)
     params_for_create = idea_params form
 
-    # We put the body_multiloc in a variable, and then
-    # remove it from params_for_create.
-    # This way, the input gets created without a body.
-    # We add the body later, after the input has an ID,
-    # and we have taken the base64 images out of the body (see transaction below).
-    # It would be cleaner if we could already take out the base64 images
-    # here, but unfortunately the TextImageService needs the input id,
-    # which we don't have yet at this point.
-    # Refactoring it is too much work right now so we do it like this.
+    # At this point, the body_multiloc still contains the
+    # data images. We can only remove those after creating the input.
+    # So we store it in this variable and process them in after_create.
     body_multiloc = params_for_create[:body_multiloc]
     params_for_create[:body_multiloc] = {}
 

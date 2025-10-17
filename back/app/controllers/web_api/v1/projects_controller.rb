@@ -216,6 +216,10 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def create
     attributes = permitted_attributes(Project)
+
+    # At this point, the description_multiloc still contains the
+    # data images. We can only remove those after creating the project.
+    # So we store it in this variable and process them in after_create.
     description_multiloc = attributes[:description_multiloc]
     attributes[:description_multiloc] = {}
 

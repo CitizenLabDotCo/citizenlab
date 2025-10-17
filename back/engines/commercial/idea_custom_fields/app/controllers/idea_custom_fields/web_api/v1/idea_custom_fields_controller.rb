@@ -182,6 +182,9 @@ module IdeaCustomFields
         create_params['key'] = default_field.key
       end
 
+      # At this point, the description_multiloc still contains the
+      # data images. We can only remove those after creating the field.
+      # So we store it in this variable and process them in after_create.
       description_multiloc = create_params['description_multiloc']
       create_params['description_multiloc'] = {}
 

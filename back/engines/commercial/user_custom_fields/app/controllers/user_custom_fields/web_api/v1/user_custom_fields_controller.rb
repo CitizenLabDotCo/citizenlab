@@ -24,6 +24,10 @@ module UserCustomFields
 
         def create
           params = custom_field_params(CustomField)
+
+           # At this point, the description_multiloc still contains the
+          # data images. We can only remove those after creating the field.
+          # So we store it in this variable and process them in after_create.
           description_multiloc = params[:description_multiloc]
           params[:description_multiloc] = {}
 

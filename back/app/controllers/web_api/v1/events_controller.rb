@@ -68,6 +68,9 @@ class WebApi::V1::EventsController < ApplicationController
   end
 
   def create
+     # At this point, the description_multiloc still contains the
+      # data images. We can only remove those after creating the event.
+      # So we store it in this variable and process them in after_create.
     description_multiloc = event_params[:description_multiloc]
     event_params[:description_multiloc] = {}
 
