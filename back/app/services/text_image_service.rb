@@ -10,6 +10,9 @@ class TextImageService < ContentImageService
     end
   end
 
+  # Extracts and remove image data from the content, and stores it in an array
+  # to be processed later.
+  # Already updates the original content to reference the future image model instead.
   def extract_data_images(encoded_content)
     content = begin
       decode_content encoded_content
