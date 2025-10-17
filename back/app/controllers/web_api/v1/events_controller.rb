@@ -68,6 +68,9 @@ class WebApi::V1::EventsController < ApplicationController
   end
 
   def create
+    description_multiloc = event_params[:description_multiloc]
+    event_params[:description_multiloc] = {}
+
     event = Event.new(event_params)
     event.project_id = params[:project_id]
 
@@ -76,7 +79,7 @@ class WebApi::V1::EventsController < ApplicationController
     authorize(event)
 
     if event.save
-      sidefx.after_create(event, current_user)
+      sidefx.after_create(event, current_user, description_multiloc)
       render json: WebApi::V1::EventSerializer.new(event, params: jsonapi_serializer_params, include: %i[event_images]).serializable_hash, status: :created
     else
       render json: { errors: event.errors.details }, status: :unprocessable_entity

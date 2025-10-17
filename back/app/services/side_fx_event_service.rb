@@ -5,8 +5,14 @@ class SideFxEventService
 
   def before_create(event, current_user); end
 
-  def after_create(event, current_user)
-    event.update!(description_multiloc: TextImageService.new.swap_data_images_multiloc(event.description_multiloc, field: :description_multiloc, imageable: event))
+  def after_create(event, current_user, original_description_multiloc)
+    if original_description_multiloc.present?
+      event.update!(description_multiloc: TextImageService.new.swap_data_images_multiloc(
+        original_description_multiloc, 
+        field: :description_multiloc, 
+        imageable: event
+      ))
+    end
     LogActivityJob.perform_later(event, 'created', current_user, event.created_at.to_i)
   end
 
