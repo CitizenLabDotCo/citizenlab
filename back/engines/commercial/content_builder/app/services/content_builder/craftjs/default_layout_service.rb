@@ -51,7 +51,7 @@ module ContentBuilder
           TEXT: {
             type: { resolvedName: 'TextMultiloc' },
             nodes: [],
-            props: { text: { en: '<p>yeah this is a project folder</p>' } },
+            props: { text: folder.description_multiloc || {} },
             custom: {
               title: {
                 id: 'app.containers.admin.ContentBuilder.textMultiloc',

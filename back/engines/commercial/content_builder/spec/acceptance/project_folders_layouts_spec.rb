@@ -13,6 +13,8 @@ resource 'ContentBuilderLayouts' do
   let(:folder_id) { folder.id }
   let(:code) { 'project_folder_description' }
 
+  # TODO: JS - This works but the tests are giving 404s
+
   context 'when not authorized' do
     get 'web_api/v1/project_folders/:folder_id/content_builder_layouts/:code' do
       example_request 'Get one layout by folder_id and code' do
