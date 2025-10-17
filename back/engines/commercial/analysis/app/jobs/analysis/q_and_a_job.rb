@@ -19,6 +19,8 @@ module Analysis
     end
 
     def handle_error(error)
+      @error = error # make the error accessible in the `expire` method
+
       case error
       when LLM::PreviewPendingError then retry_in(15.seconds)
       when LLM::TooManyRequestsError then retry_in(1.minute)
@@ -28,8 +30,13 @@ module Analysis
     end
 
     def expire
-      @question.background_task.set_failed!
+      mark_as_failed!(@error)
       super
+    end
+
+    # @param [StandardError,nil] error
+    def mark_as_failed!(error)
+      @question.background_task.set_failed!(error)
     end
   end
 end

@@ -49,7 +49,7 @@ module Analysis
         task.set_succeeded!
       rescue SummarizationFailedError => e
         ErrorReporter.report(e)
-        task.set_failed!
+        task.set_failed!(e)
         summary.update!(accuracy: old_accuracy, summary: old_summary)
         summary.insight.update!(inputs_ids: old_input_ids, custom_field_ids: old_custom_field_ids)
       end
