@@ -154,7 +154,7 @@ resource 'Survey Responses' do
     describe 'when resident' do
       before do
         user = create(:user)
-        set_jwt_cookie(user)
+        jwt_cookie(user)
       end
 
       example '[error] XLSX export', document: false do
