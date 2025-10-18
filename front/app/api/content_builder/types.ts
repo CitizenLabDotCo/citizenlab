@@ -22,9 +22,9 @@ export interface IContentBuilderLayout {
 
 export interface IAddContentBuilderLayout {
   modelId: string;
-  modelType?: DescriptionModelType;
+  modelType?: ContentBuilderModelType;
   craftjs_json?: CraftJson;
   enabled?: boolean;
 }
 
-export type DescriptionModelType = 'project' | 'folder';
+export type ContentBuilderModelType = 'project' | 'folder' | 'homepage';

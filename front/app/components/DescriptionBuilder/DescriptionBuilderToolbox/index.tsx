@@ -2,7 +2,7 @@ import React from 'react';
 
 import { SupportedLocale } from 'typings';
 
-import { DescriptionModelType } from 'api/content_builder/types';
+import { ContentBuilderModelType } from 'api/content_builder/types';
 
 import FolderDescriptionBuilderToolbox from 'components/DescriptionBuilder/DescriptionBuilderToolbox/FolderDescriptionBuilderToolbox';
 import ProjectDescriptionBuilderToolbox from 'components/DescriptionBuilder/DescriptionBuilderToolbox/ProjectDescriptionBuilderToolbox';
@@ -10,7 +10,7 @@ import ProjectDescriptionBuilderToolbox from 'components/DescriptionBuilder/Desc
 type DescriptionBuilderToolboxProps = {
   selectedLocale: SupportedLocale;
   modelId: string;
-  modelType: DescriptionModelType;
+  modelType: ContentBuilderModelType;
 };
 
 const DescriptionBuilderToolbox = ({

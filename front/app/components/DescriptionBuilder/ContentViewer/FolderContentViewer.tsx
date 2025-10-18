@@ -30,7 +30,7 @@ const FolderContentViewer = ({
 }: FolderContentViewerProps) => {
   const localize = useLocalize();
   const { data: descriptionBuilderLayout, isInitialLoading } =
-    useContentBuilderLayout(folderId, 'folder');
+    useContentBuilderLayout('folder', folderId);
 
   const descriptionBuilderContent =
     descriptionBuilderLayout &&

@@ -8,18 +8,19 @@ import fetcher from 'utils/cl-react-query/fetcher';
 
 import contentBuilderKeys from './keys';
 import { IContentBuilderLayout, IAddContentBuilderLayout } from './types';
+import contentBuilderlayoutPath from './useContentBuilderLayout';
 
 const addContentBuilderLayout = async ({
   modelId,
   modelType,
   craftjs_json,
-  enabled,
+  enabled = true,
 }: IAddContentBuilderLayout) =>
   fetcher<IContentBuilderLayout>({
-    path:
-      modelType === 'folder'
-        ? `/project_folders/${modelId}/content_builder_layouts/project_folder_description/upsert`
-        : `/projects/${modelId}/content_builder_layouts/project_description/upsert`,
+    path: `${contentBuilderlayoutPath(
+      modelType,
+      modelId
+    )}/upsert` as `/${string}`,
     action: 'post',
     body: { content_builder_layout: { craftjs_json, enabled } },
   });

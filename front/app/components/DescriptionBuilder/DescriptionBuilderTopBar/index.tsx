@@ -5,7 +5,7 @@ import { useEditor, SerializedNodes } from '@craftjs/core';
 import { RouteType } from 'routes';
 import { Multiloc, SupportedLocale } from 'typings';
 
-import { DescriptionModelType } from 'api/content_builder/types';
+import { ContentBuilderModelType } from 'api/content_builder/types';
 import useAddContentBuilderLayout from 'api/content_builder/useAddContentBuilderLayout';
 
 import useLocalize from 'hooks/useLocalize';
@@ -33,7 +33,7 @@ type DescriptionBuilderTopBarProps = {
     editorData: SerializedNodes;
   }) => void;
   modelId: string;
-  modelType: DescriptionModelType;
+  modelType: ContentBuilderModelType;
   backPath: RouteType;
   previewPath: RouteType;
   titleMultiloc: Multiloc;

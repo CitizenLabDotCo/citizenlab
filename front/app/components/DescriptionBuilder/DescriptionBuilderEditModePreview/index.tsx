@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 import { SupportedLocale } from 'typings';
 
-import { DescriptionModelType } from 'api/content_builder/types';
+import { ContentBuilderModelType } from 'api/content_builder/types';
 
 import useLocale from 'hooks/useLocale';
 
@@ -10,7 +10,7 @@ import EditModePreview from 'components/admin/ContentBuilder/EditModePreview';
 
 type DescriptionBuilderPreviewProps = {
   modelId: string;
-  modelType?: DescriptionModelType;
+  modelType?: ContentBuilderModelType;
   selectedLocale?: SupportedLocale | null;
 };
 

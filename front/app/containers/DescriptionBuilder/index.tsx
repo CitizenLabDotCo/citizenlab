@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 import { RouteType } from 'routes';
 import { Multiloc, SupportedLocale } from 'typings';
 
-import { DescriptionModelType } from 'api/content_builder/types';
+import { ContentBuilderModelType } from 'api/content_builder/types';
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -29,7 +29,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 type Props = {
   modelId: string;
-  modelType: DescriptionModelType;
+  modelType: ContentBuilderModelType;
   backPath: RouteType;
   previewPath: RouteType;
   titleMultiloc: Multiloc;
@@ -56,8 +56,8 @@ const DescriptionBuilderPage = ({
   const locales = useAppConfigurationLocales();
 
   const { data: descriptionBuilderLayout } = useContentBuilderLayout(
-    modelId,
-    modelType
+    modelType,
+    modelId
   );
 
   const [contentBuilderErrors, setContentBuilderErrors] =

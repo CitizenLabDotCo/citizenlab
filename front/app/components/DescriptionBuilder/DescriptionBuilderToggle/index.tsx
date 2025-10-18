@@ -64,8 +64,8 @@ const DescriptionBuilderToggle = ({
   const modelId =
     modelType === 'folder' ? params.projectFolderId : params.projectId;
   const { data: DescriptionBuilderLayout } = useContentBuilderLayout(
-    modelId,
     modelType,
+    modelId,
     featureEnabled
   );
 

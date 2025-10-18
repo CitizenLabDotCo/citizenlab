@@ -5,7 +5,7 @@ import { SerializedNodes } from '@craftjs/core';
 import { useSearchParams } from 'react-router-dom';
 import { Multiloc, SupportedLocale } from 'typings';
 
-import { DescriptionModelType } from 'api/content_builder/types';
+import { ContentBuilderModelType } from 'api/content_builder/types';
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 
 import useLocale from 'hooks/useLocale';
@@ -20,7 +20,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 type Props = {
   modelId: string;
-  modelType: DescriptionModelType;
+  modelType: ContentBuilderModelType;
   titleMultiloc: Multiloc;
 };
 
@@ -40,8 +40,8 @@ export const FullScreenPreview = ({
   const platformLocale = useLocale();
 
   const { data: descriptionBuilderLayout } = useContentBuilderLayout(
-    modelId,
-    modelType
+    modelType,
+    modelId
   );
 
   if (isNilOrError(platformLocale)) {
