@@ -100,8 +100,7 @@ export const FormField = ({
     ).length;
     return pages < 3;
   };
-  const shouldShowDelete =
-    !isLastPage() && !field?.constraints?.locks?.deletion;
+  const shouldShowDelete = !isLastPage() && !field.constraints?.locks.deletion;
 
   const editFieldAndValidate = (defaultTab: ICustomFieldSettingsTab) => {
     onEditField({ ...field, index, defaultTab });

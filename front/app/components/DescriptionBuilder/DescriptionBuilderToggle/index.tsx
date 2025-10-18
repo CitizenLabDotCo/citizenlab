@@ -18,13 +18,13 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from 'containers/DescriptionBuilder/messages';
 
+import NewLabel from 'components/UI/NewLabel';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import Warning from 'components/UI/Warning';
 
 import { injectIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import NewLabel from 'components/UI/NewLabel';
 
 // Messages
 

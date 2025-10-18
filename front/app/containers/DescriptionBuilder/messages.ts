@@ -21,10 +21,6 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.selectedProjects',
     defaultMessage: 'Selected projects',
   },
-  folderFiles: {
-    id: 'app.containers.admin.ContentBuilder.folderFiles',
-    defaultMessage: 'Folder files',
-  },
   infoWithAccordions: {
     id: 'app.containers.admin.ContentBuilder.infoWithAccordions',
     defaultMessage: 'Info & accordions',

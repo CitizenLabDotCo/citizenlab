@@ -19,9 +19,9 @@ import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
-import FolderFiles from 'components/DescriptionBuilder/CraftSections/FolderFiles';
+import FolderFiles from 'components/DescriptionBuilder/Widgets/FolderFiles';
 
-import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
+import InfoWithAccordions from '.././Widgets/InfoWithAccordions';
 
 import BaseEditor from './Editor';
 

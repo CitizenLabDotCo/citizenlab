@@ -7,6 +7,8 @@ import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFile
 
 import FileAttachments from 'components/UI/FileAttachments';
 
+import messages from './messages';
+
 interface Props {
   folderId: string;
 }
@@ -25,5 +27,13 @@ const FolderFiles: UserComponent = ({ folderId }: Props) => {
     </Box>
   );
 };
+
+FolderFiles.craft = {
+  custom: {
+    title: messages.folderFiles,
+  },
+};
+
+export const folderFilesTitle = messages.folderFiles;
 
 export default FolderFiles;

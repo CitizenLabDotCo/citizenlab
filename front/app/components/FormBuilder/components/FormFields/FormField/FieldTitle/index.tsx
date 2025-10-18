@@ -37,7 +37,7 @@ const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
 
   const titleColor = field.input_type === 'page' ? 'blue500' : 'teal400';
   const lockMessage =
-    field.constraints?.locks?.deletion &&
+    field.constraints?.locks.deletion &&
     formatMessage(messages.questionCannotBeDeleted);
 
   return (

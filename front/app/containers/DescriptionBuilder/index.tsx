@@ -88,8 +88,9 @@ const DescriptionBuilderPage = ({
     isNilOrError(locales) ||
     !descriptionBuilderVisible ||
     !descriptionBuilderLayout
-  )
+  ) {
     return null;
+  }
 
   const hasError =
     Object.values(contentBuilderErrors).filter((node) => node.hasError).length >

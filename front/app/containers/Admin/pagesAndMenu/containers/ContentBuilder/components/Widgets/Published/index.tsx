@@ -61,6 +61,9 @@ Published.craft = {
   related: {
     settings: Settings,
   },
+  custom: {
+    title: messages.publishedTitle,
+  },
 };
 
 export const publishedTitle = messages.publishedTitle;
