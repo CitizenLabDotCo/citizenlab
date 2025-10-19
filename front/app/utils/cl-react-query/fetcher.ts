@@ -4,7 +4,6 @@ import { CLErrors } from 'typings';
 
 import { API_PATH } from 'containers/App/constants';
 
-// import { getJwt } from 'utils/auth/jwt';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { handleBlockedUserError } from 'utils/errorUtils';
 import { reportError } from 'utils/loggingUtils';
@@ -92,7 +91,6 @@ async function fetcher({
     delete: 'DELETE',
     put: 'PUT',
   };
-  // const jwt = getJwt();
   // Remove query parameters that have an empty value from query object in order to keep
   // sanitization behaviour consistent current and previous data-fetchign setup
   const relevantQueryParams = omitBy(
@@ -112,9 +110,9 @@ async function fetcher({
   const response = await fetch(`${apiPath}${path}${requestQueryParams}`, {
     method: methodMap[action],
     body: body ? JSON.stringify(body) : undefined,
+    credentials: 'include', // Include cookies (session, auth tokens) with all requests
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'invalid (in fetcher.ts)',
     },
   });
 
