@@ -20,6 +20,7 @@ const trackSessionStarted = async (path: string) => {
 
   const response = await fetch(`${API_PATH}/sessions`, {
     method: 'POST',
+    credentials: 'include', // Include cookies (session, auth tokens)
     body: JSON.stringify({
       session: {
         referrer,

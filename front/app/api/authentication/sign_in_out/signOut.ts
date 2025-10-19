@@ -14,7 +14,7 @@ export default async function signOut() {
     // Call backend to clear the HttpOnly cookie
     await fetch(`${API_PATH}/user_token`, {
       method: 'DELETE',
-      credentials: 'include',
+      credentials: 'include', // Include cookies (session, auth tokens)
     });
   } catch (error) {
     console.error('Sign out failed:', error);
