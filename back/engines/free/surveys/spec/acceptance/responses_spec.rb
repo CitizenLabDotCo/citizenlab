@@ -6,11 +6,6 @@ require 'rspec_api_documentation/dsl'
 resource 'Survey Responses' do
   explanation 'One survey response contains all the answers of a single user on a survey'
 
-  def jwt_cookie(user)
-    token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
-    header 'Cookie', "cl2_jwt=#{token}"
-  end
-
   let(:form_body) do
     {
       'id' => 'USLYB6',

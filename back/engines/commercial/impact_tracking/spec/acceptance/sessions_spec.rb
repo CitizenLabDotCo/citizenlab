@@ -6,11 +6,6 @@ require 'rspec_api_documentation/dsl'
 resource 'Impact tracking session' do
   explanation 'Signals the start of a browsing session, corresponds with the loading of the platform'
 
-  def jwt_cookie(user)
-    token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
-    header 'Cookie', "cl2_jwt=#{token}"
-  end
-
   before do
     header 'Content-Type', 'application/json'
   end
