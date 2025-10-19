@@ -208,12 +208,14 @@ class OmniauthCallbackController < ApplicationController
   end
 
   def set_auth_cookie(provider: nil)
-    cookies[:cl2_jwt] = {
+    response.set_cookie(:cl2_jwt, {
       value: auth_token(@user, provider).token,
+      httponly: true,
+      secure: true,
+      same_site: :lax,
       expires: 1.month.from_now,
-      secure: false, # Unfortunately, we can't use secure cookies in production yet (probably some HTTP steps somewhere)
-      same_site: 'Lax' # Strict won't work due to SSO redirect, so we explicitly document use of Lax
-    }
+      path: '/'
+    })
   end
 
   # Updates the user with attributes from the auth response if `updateable_user_attrs` is set
