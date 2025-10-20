@@ -60,12 +60,20 @@ module Analysis
 
         if block_given?
           parameters[:stream] = proc do |chunk, _event|
+            raise StreamError, chunk if chunk['type'] == 'error'
+
             yield chunk['delta'] if chunk['type'] == 'response.output_text.delta'
           end
         end
 
         begin
           response_client.create(parameters:)
+        rescue StreamError, Faraday::BadRequestError => e
+          message = e.is_a?(StreamError) ? e.message : e.response_body.dig('error', 'message')
+
+          raise TooManyImagesError if message.include?('Too many images')
+
+          raise
         rescue Faraday::TooManyRequestsError => e
           if retries.positive?
             sleep(rand(20..40))
@@ -162,6 +170,27 @@ module Analysis
 
       def format_text(text)
         { type: 'input_text', text: text }
+      end
+
+      class StreamError < StandardError
+        attr_reader :chunk
+
+        # Example of an error chunk:
+        # {
+        #   "type" => "error",
+        #   "sequence_number" => 2,
+        #   "error" => {
+        #     "type" => nil,
+        #     "code" => "BadRequest",
+        #     "message" => "Too many images in the request. The maximum is 50.",
+        #     "param" => nil
+        #   }
+        # }
+        def initialize(chunk)
+          @chunk = chunk
+          message = chunk.dig('error', 'message')
+          super(message || chunk.to_s)
+        end
       end
     end
   end

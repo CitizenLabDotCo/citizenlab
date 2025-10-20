@@ -116,6 +116,11 @@ export default defineMessages({
     defaultMessage:
       'This file type is not supported for AI analysis. Please use a different file format.',
   },
+  taskFailureTooManyImages: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.taskFailureTooManyImages',
+    defaultMessage:
+      'The request includes too many images. Try attaching fewer files or reducing the number of images per file.',
+  },
   taskFailureGenericError: {
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.taskFailureGenericError',
     defaultMessage:

@@ -81,6 +81,7 @@ module Analysis
     def failure_reason
       case last_error_class
       when 'Analysis::LLM::UnsupportedAttachmentError' then 'unsupported_file_type'
+      when 'Analysis::LLM::TooManyImagesError' then 'too_many_images'
       else 'unknown'
       end
     end

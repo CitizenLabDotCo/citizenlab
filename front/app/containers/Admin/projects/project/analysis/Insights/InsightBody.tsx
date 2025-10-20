@@ -39,6 +39,7 @@ const getErrorMessage = (
 
 const failureMessages = {
   unsupported_file_type: messages.taskFailureUnsupportedFileType,
+  too_many_images: messages.taskFailureTooManyImages,
 };
 
 const InsightBody = ({
