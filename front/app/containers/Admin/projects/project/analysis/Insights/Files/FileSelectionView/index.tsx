@@ -114,10 +114,11 @@ const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
             <ButtonWithLink
               linkTo={`/admin/projects/${projectId}/files`}
               buttonStyle="text"
-              icon="upload-file"
+              icon="open-in-new"
+              iconPos="right"
               openLinkInNewTab={true}
             >
-              {formatMessage(messages.uploadFiles)}
+              {formatMessage(messages.manageFiles)}
             </ButtonWithLink>
           </Box>
         </Box>
