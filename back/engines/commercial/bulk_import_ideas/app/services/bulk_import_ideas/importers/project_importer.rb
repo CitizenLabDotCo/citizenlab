@@ -246,10 +246,23 @@ module BulkImportIdeas::Importers
 
         # Create a new project only visible to admins
         project_attributes = project_data.except(:phases, :thumbnail_url)
-        project = Project.create!(project_attributes)
 
         # Any images in the description need to be uploaded to our system and refs replaced
-        update_description_images(project)
+        text_image_service = TextImageService.new
+        extract_output = text_image_service.extract_data_images_multiloc(
+          project_attributes[:description_multiloc]
+        )
+        project_attributes[:description_multiloc] = extract_output[:content_multiloc]
+
+        # Create project
+        project = Project.create!(project_attributes)
+
+        # Generate description TextImages
+        text_image_service.bulk_create_images!(
+          extract_output[:extracted_images],
+          project,
+          :description_multiloc
+        )
 
         # Create the project thumbnail image if it exists
         create_project_thumbnail_image(project, project_data)
@@ -292,8 +305,25 @@ module BulkImportIdeas::Importers
       else
         log "Importing phase: '#{phase_attributes[:title_multiloc][@locale]}'"
         begin
-          phase = Phase.create!(phase_attributes.merge(project: project))
-          update_description_images(phase)
+          phase_attributes = phase_attributes.merge(project: project)
+
+          # Any images in the description need to be uploaded to our system and refs replaced
+          text_image_service = TextImageService.new
+          extract_output = text_image_service.extract_data_images_multiloc(
+            phase_attributes[:description_multiloc]
+          )
+          phase_attributes[:description_multiloc] = phase_attributes[:content_multiloc]
+
+          # Create project
+          phase = Phase.create!(phase_attributes)
+
+          # Generate description TextImages
+          text_image_service.bulk_create_images!(
+            extract_output[:extracted_images],
+            phase,
+            :description_multiloc
+          )
+
           Permissions::PermissionsUpdateService.new.update_permissions_for_scope(phase)
           log "Created '#{phase.participation_method}' phase"
           phase
@@ -402,16 +432,6 @@ module BulkImportIdeas::Importers
     def remove_idea_import_records(ideas)
       # Remove the idea import records for this project - not needed via this import
       BulkImportIdeas::IdeaImport.where(idea: ideas).delete_all
-    end
-
-    def update_description_images(record)
-      record.update!(
-        description_multiloc: TextImageService.new.swap_data_images_multiloc(
-          record.description_multiloc,
-          field: :description_multiloc,
-          imageable: record
-        )
-      )
     end
 
     # Phases will have some user data in the idea rows, so we need to extract that so that we can import the users first
