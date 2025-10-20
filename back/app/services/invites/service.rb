@@ -31,10 +31,13 @@ class Invites::Service
   end
 
   def bulk_create(hash_array, default_params = {})
-    invitees = build_invitees(hash_array, default_params)
+    build_invitees_output = build_invitees(hash_array, default_params)
+    invitees = build_invitees_output[:invitees]
+    extracted_images = build_invitees_output[:extracted_images]
+
     check_invitees(invitees)
     if @error_storage.no_critical_errors?
-      save_invitees(invitees - ignored_invitees(invitees))
+      save_invitees(invitees - ignored_invitees(invitees), extracted_images)
     else
       fail_now
     end
@@ -72,23 +75,31 @@ class Invites::Service
       add_error(:no_invites_specified)
       fail_now
     else
+      extract_output = text_image_service.extract_data_images(
+        params['invite_text'] || default_params['invite_text']
+      )
+
       invitees = hash_array.map do |invite_params|
-        build_invitee(invite_params, default_params)
+        build_invitee(invite_params, extract_output[:content], default_params)
       end
 
       UserSlugService.new.generate_slugs(invitees)
-      invitees
+      
+      {
+        invitees: invitees,
+        extracted_images: extract_output[:extracted_images]
+      }
     end
   end
 
-  def build_invitee(params, default_params = {})
+  def build_invitee(params, invite_text, default_params = {})
     invitee = prepare_invitee(params, default_params)
 
     if invitee.new_record?
       invitee.invitee_invite = Invite.new(
         invitee: invitee,
         inviter: @inviter,
-        invite_text: params['invite_text'] || default_params['invite_text'],
+        invite_text: invite_text,
         send_invite_email: params['send_invite_email'].nil? ? true : params['send_invite_email']
       )
     end
@@ -161,10 +172,16 @@ class Invites::Service
     end
   end
 
-  def save_invitees(invitees)
+  def save_invitees(invitees, extracted_images)
     ActiveRecord::Base.transaction do
       invitees.each(&:save!)
     end
+
+    text_image_service.bulk_create_images!(
+      extracted_images,
+      invitees[0].invitee_invite,
+      :invite_text
+    )
 
     invitees.each do |invitee|
       if @run_side_fx
@@ -182,5 +199,9 @@ class Invites::Service
 
   def ignored_invitees(invitees)
     @error_storage.ignored_errors.map { |e| invitees[e.row] }
+  end
+
+  def text_image_service
+    @text_image_service ||= TextImageService.new
   end
 end

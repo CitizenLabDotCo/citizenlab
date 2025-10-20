@@ -52,7 +52,6 @@ class Invite < ApplicationRecord
   validates :send_invite_email, inclusion: [true, false]
 
   after_destroy :destroy_invitee, if: :pending?
-  after_save :process_invite_text_images, if: :invite_text
 
   private
 
@@ -76,11 +75,6 @@ class Invite < ApplicationRecord
     )
     self.invite_text = service.remove_empty_trailing_tags(invite_text)
     self.invite_text = service.linkify(invite_text)
-  end
-
-  def process_invite_text_images
-    processed_invite_text = TextImageService.new.swap_data_images invite_text, field: :invite_text, imageable: self
-    update_column :invite_text, processed_invite_text
   end
 
   def remove_notifications

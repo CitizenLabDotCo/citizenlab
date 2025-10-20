@@ -21,25 +21,6 @@ class TextImageService < ContentImageService
     }
   end
 
-  def bulk_create_images!(
-    extracted_images,
-    imageable,
-    field
-  )
-    extracted_images.map do |extracted_image|
-      img_attrs = {
-        imageable: imageable,
-        imageable_field: field,
-        text_reference: extracted_image[:text_reference]
-      }
-      img_attrs[extracted_image[:img_key]] = extracted_image[:img_src]
-
-      TextImage.create!(img_attrs)
-    end
-  end
-
-  private
-
   # Extracts and remove image data from the content, and stores it in an array
   # to be processed later.
   # Already updates the original content to reference the future image model instead.
@@ -81,6 +62,23 @@ class TextImageService < ContentImageService
       content: encode_content(content),
       extracted_images: extracted_images
     }
+  end
+
+  def bulk_create_images!(
+    extracted_images,
+    imageable,
+    field
+  )
+    extracted_images.map do |extracted_image|
+      img_attrs = {
+        imageable: imageable,
+        imageable_field: field,
+        text_reference: extracted_image[:text_reference]
+      }
+      img_attrs[extracted_image[:img_key]] = extracted_image[:img_src]
+
+      TextImage.create!(img_attrs)
+    end
   end
 
   protected
