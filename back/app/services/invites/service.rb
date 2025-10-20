@@ -99,6 +99,9 @@ class Invites::Service
       invitee.invitee_invite = Invite.new(
         invitee: invitee,
         inviter: @inviter,
+        # If the invite text is the same for all invitees,
+        # why do we store it in each invite individually?
+        # Seems unnecessary
         invite_text: invite_text,
         send_invite_email: params['send_invite_email'].nil? ? true : params['send_invite_email']
       )
@@ -186,6 +189,8 @@ class Invites::Service
       # But because of how this was implemented before,
       # we still need to link the image to one of the invites.
       # So we just link it to the first invite in the list.
+      # Still, not sure why we store the invite text in each invite individually
+      # (see comment above).
       invitees[0].invitee_invite,
       :invite_text
     )
