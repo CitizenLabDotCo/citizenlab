@@ -29,11 +29,11 @@ class TextImageService < ContentImageService
     image_elements(content).each do |img_elt|
       next if image_attributes_for_element.none? { |elt_atr| attribute? img_elt, elt_atr }
 
-      if !attribute?(img_elt, code_attribute_for_element) && image_attributes(img_elt, imageable, field).present?
+      if !attribute?(img_elt, code_attribute_for_element)
         text_reference = SecureRandom.uuid
         set_attribute! img_elt, code_attribute_for_element, text_reference
 
-        img_src = get_attribute html_doc, image_attribute_for_element
+        img_src = get_attribute img_elt, image_attribute_for_element
         img_key = img_src.match?(BASE64_REGEX) ? :image : :remote_image_url
         
         extracted_images << { 
