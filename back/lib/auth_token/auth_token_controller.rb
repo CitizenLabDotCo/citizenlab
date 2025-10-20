@@ -21,7 +21,7 @@ module AuthToken
         value: token,
         httponly: true,
         secure: true,
-        same_site: :lax,
+        same_site: :strict,
         expires: @token_lifetime.from_now,
         path: '/'
       })
@@ -37,7 +37,7 @@ module AuthToken
         path: '/',
         httponly: true,
         secure: true,
-        same_site: :lax
+        same_site: :strict
       })
 
       head :no_content
