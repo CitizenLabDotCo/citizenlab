@@ -13,7 +13,6 @@ PATH
   remote: engines/commercial/aggressive_caching
   specs:
     aggressive_caching (0.1.0)
-      actionpack-action_caching (~> 1.2)
       rails (~> 7.0)
 
 PATH
@@ -410,8 +409,6 @@ GEM
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.2)
       rails-html-sanitizer (~> 1.6)
-    actionpack-action_caching (1.2.2)
-      actionpack (>= 4.0.0)
     actiontext (7.1.5.2)
       actionpack (= 7.1.5.2)
       activerecord (= 7.1.5.2)
