@@ -72,7 +72,33 @@ describe TextImageService do
   end
 
   describe 'bulk_create_images_multiloc!' do
-    # TODO
+    before do
+      stub_request(:any, 'res.cloudinary.com').to_return(
+        body: png_image_as_base64('image10.jpg')
+      )
+    end
+
+    it 'processes both base64 and URL as src' do
+      input = <<~HTML
+        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+        <img src="data:image/jpeg;base64,/9j/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/yQALCAABAAEBAREA/8wABgAQEAX/2gAIAQEAAD8A0s8g/9k=" />
+        <img src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg" />
+      HTML
+      imageable = build(:idea, body_multiloc: { 'fr-BE' => input })
+      extract_data_images_multiloc_output = service.extract_data_images_multiloc(imageable.body_multiloc)
+
+      images = service.bulk_create_images_multiloc!(
+        extract_data_images_multiloc_output,
+        imageable,
+        :body_multiloc
+      )
+
+      expect(TextImage.count).to eq(3)
+      expect(images['fr-BE'].count).to eq(3)
+      expect(TextImage.all.map(&:text_reference).sort).to eq(
+        extract_data_images_multiloc_output['fr-BE'][:extracted_images].map { |img| img[:text_reference] }.sort
+      )
+    end
   end
 
   describe 'render_data_images_multiloc' do
