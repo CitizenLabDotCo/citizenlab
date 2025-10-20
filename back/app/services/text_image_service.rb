@@ -53,13 +53,13 @@ class TextImageService < ContentImageService
     }
   end
 
-  def bulk_create_images_multiloc(
+  def bulk_create_images_multiloc!(
     extract_data_images_multiloc_output,
     imageable,
     field
   )
     extract_data_images_multiloc_output.transform_values do |extract_data_images_output|
-      bulk_create_images(
+      bulk_create_images!(
         extract_data_images_output,
         imageable,
         field
@@ -67,7 +67,7 @@ class TextImageService < ContentImageService
     end 
   end
 
-  def bulk_create_images(
+  def bulk_create_images!(
     extract_data_images_output,
     imageable,
     field
