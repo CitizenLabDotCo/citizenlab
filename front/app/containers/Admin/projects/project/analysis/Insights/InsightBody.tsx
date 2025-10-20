@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { FormatMessage } from 'typings';
+
 import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { useSearchParams } from 'react-router-dom';
@@ -8,18 +10,36 @@ import styled from 'styled-components';
 import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 
+import Error from 'components/UI/Error';
+
 import FilterItems from 'containers/Admin/projects/project/analysis/FilterItems';
 import {
   deleteTrailingIncompleteIDs,
   replaceIdRefsWithLinks,
 } from 'containers/Admin/projects/project/analysis/Insights/util';
 
+import { useIntl } from 'utils/cl-intl';
+
 import FileItem from '../FileItem';
+import messages from './messages';
 
 const StyledInsightsText = styled(Text)`
   white-space: pre-wrap;
   word-break: break-word;
+  margin: 0;
 `;
+
+const getErrorMessage = (
+  failureReason: string | null,
+  formatMessage: FormatMessage
+) => {
+  const message = failureReason ? failureMessages[failureReason] : null;
+  return formatMessage(message || messages.taskFailureGenericError);
+};
+
+const failureMessages = {
+  unsupported_file_type: messages.taskFailureUnsupportedFileType,
+};
 
 const InsightBody = ({
   text,
@@ -40,6 +60,7 @@ const InsightBody = ({
   backgroundTaskId?: string;
 }) => {
   const [search] = useSearchParams();
+  const { formatMessage } = useIntl();
   const { data: task } = useAnalysisBackgroundTask(
     analysisId,
     backgroundTaskId,
@@ -49,42 +70,49 @@ const InsightBody = ({
   const isLoading =
     task?.data.attributes.state === 'queued' ||
     task?.data.attributes.state === 'in_progress';
+  const isFailed = task?.data.attributes.state === 'failed';
+
+  const errorMessage = isFailed
+    ? getErrorMessage(task.data.attributes.failure_reason, formatMessage)
+    : null;
 
   const selectedInputId = search.get('selected_input_id') || undefined;
 
   return (
-    <div>
-      <>
-        {filters && !isEmpty(filters) && (
-          <Box mb="16px">
-            <FilterItems
-              filters={filters}
-              isEditable={false}
-              analysisId={analysisId}
-            />
-          </Box>
-        )}
+    <>
+      {filters && !isEmpty(filters) && (
+        <FilterItems
+          filters={filters}
+          isEditable={false}
+          analysisId={analysisId}
+        />
+      )}
 
-        {fileIds && fileIds.length > 0 && (
-          <Box mb="16px" display="flex" gap="4px">
-            {fileIds.map((fileId) => (
-              <FileItem key={fileId} fileId={fileId} />
-            ))}
-          </Box>
-        )}
+      {fileIds && fileIds.length > 0 && (
+        <Box display="flex" gap="4px">
+          {fileIds.map((fileId) => (
+            <FileItem key={fileId} fileId={fileId} />
+          ))}
+        </Box>
+      )}
 
-        <StyledInsightsText mt="0px">
-          {replaceIdRefsWithLinks({
-            insight: isLoading ? deleteTrailingIncompleteIDs(text) : text,
-            analysisId,
-            projectId,
-            phaseId,
-            selectedInputId,
-          })}
-        </StyledInsightsText>
-        {isLoading && <Spinner />}
-      </>
-    </div>
+      {errorMessage ? (
+        <Error text={errorMessage} showIcon={true} showBackground={true} />
+      ) : (
+        <>
+          <StyledInsightsText>
+            {replaceIdRefsWithLinks({
+              insight: isLoading ? deleteTrailingIncompleteIDs(text) : text,
+              analysisId,
+              projectId,
+              phaseId,
+              selectedInputId,
+            })}
+          </StyledInsightsText>
+          {isLoading && <Spinner />}
+        </>
+      )}
+    </>
   );
 };
 
