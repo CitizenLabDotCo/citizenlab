@@ -253,6 +253,24 @@ resource 'StaticPages' do
           expect(json_response).to include_response_error(:slug, 'blank')
         end
       end
+
+      describe 'when bottom section contains images', document: false do
+        let(:bottom_info_section_multiloc) do
+          {
+            # rubocop:disable Layout/LineLength
+            'en' => '<p>Some text</p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUgAAACRCAYAAAChUiFgAAABQmlDQ1BJQ0MgUHJvZmlsZQAAKJFjYGASSCwoyGFhYGDIzSspCnJ3UoiIjFJgf8LAw8DOIMjAySCXmFxc4BgQ4ANUwgCjUcG3awyMIPqyLsgsbcHrjJlvIy94HY3bt6yRLQpTPQrgSkktTgbSf4A4JbmgqISBgTEByFYuLykAsVuAbJEioKOA7BkgdjqEvQbEToKwD4DVhAQ5A9lXgGyB5IzEFCD7CZCtk4Qkno7EhtoLdkOAh4+CkYlxmDkBx5IKSlIrSkC0c35BZVFmekaJgiMwhFIVPPOS9XQUjAyMDBgYQOENUf35BjgcGcU4EGIpTxkYjHOBghoIsSwBBobd3xgYBLcixNQfAr00l4HhQEBBYlEi3AGM31iK04yNIGzu7QwMrNP+//8czsDArsnA8Pf6//+/t////3cZAwPzLaDebwCKpl7ZLwfKCwAAAFZlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA5KGAAcAAAASAAAARKACAAQAAAABAAABSKADAAQAAAABAAAAkQAAAABBU0NJSQAAAFNjcmVlbnNob3RTua7jAAAB1mlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS40LjAiPgogICA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogICAgICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgICAgICAgICB4bWxuczpleGlmPSJodHRwOi8vbnMuYWRvYmUuY29tL2V4aWYvMS4wLyI+CiAgICAgICAgIDxleGlmOlBpeGVsWERpbWVuc2lvbj4zMjg8L2V4aWY6UGl4ZWxYRGltZW5zaW9uPgogICAgICAgICA8ZXhpZjpVc2VyQ29tbWVudD5TY3JlZW5zaG90PC9leGlmOlVzZXJDb21tZW50PgogICAgICAgICA8ZXhpZjpQaXhlbFlEaW1lbnNpb24+MTQ1PC9leGlmOlBpeGVsWURpbWVuc2lvbj4KICAgICAgPC9yZGY6RGVzY3JpcHRpb24+CiAgIDwvcmRmOlJERj4KPC94OnhtcG1ldGE+Cgbzcd8AAAR2SURBVHgB7dSxDcAwDAQxx7so+2+YAG6N24AqvySEe96ZbzkCBAgQuAT2tRgIECBA4AgIpEcgQIBACAhkwJgJECAgkH6AAAECISCQAWMmQICAQPoBAgQIhIBABoyZAAECAukHCBAgEAICGTBmAgQICKQfIECAQAgIZMCYCRAgIJB+gAABAiEgkAFjJkCAgED6AQIECISAQAaMmQABAgLpBwgQIBACAhkwZgIECAikHyBAgEAICGTAmAkQICCQfoAAAQIhIJABYyZAgIBA+gECBAiEgEAGjJkAAQIC6QcIECAQAgIZMGYCBAgIpB8gQIBACAhkwJgJECAgkH6AAAECISCQAWMmQICAQPoBAgQIhIBABoyZAAECAukHCBAgEAICGTBmAgQICKQfIECAQAgIZMCYCRAgIJB+gAABAiEgkAFjJkCAgED6AQIECISAQAaMmQABAgLpBwgQIBACAhkwZgIECAikHyBAgEAICGTAmAkQICCQfoAAAQIhIJABYyZAgIBA+gECBAiEgEAGjJkAAQIC6QcIECAQAgIZMGYCBAgIpB8gQIBACAhkwJgJECAgkH6AAAECISCQAWMmQICAQPoBAgQIhIBABoyZAAECAukHCBAgEAICGTBmAgQICKQfIECAQAgIZMCYCRAgIJB+gAABAiEgkAFjJkCAgED6AQIECISAQAaMmQABAgLpBwgQIBACAhkwZgIECAikHyBAgEAICGTAmAkQICCQfoAAAQIhIJABYyZAgIBA+gECBAiEgEAGjJkAAQIC6QcIECAQAgIZMGYCBAgIpB8gQIBACAhkwJgJECAgkH6AAAECISCQAWMmQICAQPoBAgQIhIBABoyZAAECAukHCBAgEAICGTBmAgQICKQfIECAQAgIZMCYCRAgIJB+gAABAiEgkAFjJkCAgED6AQIECISAQAaMmQABAgLpBwgQIBACAhkwZgIECAikHyBAgEAICGTAmAkQICCQfoAAAQIhIJABYyZAgIBA+gECBAiEgEAGjJkAAQIC6QcIECAQAgIZMGYCBAgIpB8gQIBACAhkwJgJECAgkH6AAAECISCQAWMmQICAQPoBAgQIhIBABoyZAAECAukHCBAgEAICGTBmAgQICKQfIECAQAgIZMCYCRAgIJB+gAABAiEgkAFjJkCAgED6AQIECISAQAaMmQABAgLpBwgQIBACAhkwZgIECAikHyBAgEAICGTAmAkQICCQfoAAAQIhIJABYyZAgIBA+gECBAiEgEAGjJkAAQIC6QcIECAQAgIZMGYCBAgIpB8gQIBACAhkwJgJECAgkH6AAAECISCQAWMmQICAQPoBAgQIhIBABoyZAAECAukHCBAgEAICGTBmAgQICKQfIECAQAgIZMCYCRAgIJB+gAABAiEgkAFjJkCAgED6AQIECISAQAaMmQABAgLpBwgQIBACAhkwZgIECAikHyBAgEAICGTAmAkQICCQfoAAAQIhIJABYyZAgIBA+gECBAiEgEAGjJkAAQIC6QcIECAQAj+cJAKROCvwtAAAAABJRU5ErkJggg==" alt="Red dot" />'
+            # rubocop:enable Layout/LineLength
+          }
+        end
+
+        example_request 'Create a static page with bottom section containing images', document: false do
+          assert_status 201
+          json_response = json_parse(response_body)
+          expect(response_data.dig(:attributes, :bottom_info_section_multiloc, :en)).to include('<p>Some text</p><img alt="Red dot"')
+          text_image = TextImage.find_by(imageable_id: response_data[:id], imageable_type: 'StaticPage', imageable_field: 'bottom_info_section_multiloc')
+          expect(response_data.dig(:attributes, :bottom_info_section_multiloc, :en)).to include("data-cl2-text-image-text-reference=\"#{text_image.text_reference}\"")
+        end
+      end
     end
 
     patch 'web_api/v1/static_pages/:id' do
