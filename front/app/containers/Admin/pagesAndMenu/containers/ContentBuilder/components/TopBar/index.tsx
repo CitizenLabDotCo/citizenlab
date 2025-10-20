@@ -53,8 +53,8 @@ const BuilderTopBar = ({
 
   const handleSave = () => {
     updateHomepage({
-      modelId: 'homepage',
-      modelType: 'homepage',
+      contentBuildableId: 'homepage',
+      contentBuildableType: 'homepage',
       craftjs_json: query.getSerializedNodes(),
     });
   };

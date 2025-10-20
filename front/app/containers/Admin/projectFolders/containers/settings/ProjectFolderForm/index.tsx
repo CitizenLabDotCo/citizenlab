@@ -593,7 +593,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               valueMultiloc={descriptionMultiloc}
               onChange={getHandler(setDescriptionMultiloc)}
               label={formatMessage(messages.descriptionInputLabel)}
-              modelType="folder"
+              contentBuildableType="folder"
             />
           </Highlighter>
           <Error

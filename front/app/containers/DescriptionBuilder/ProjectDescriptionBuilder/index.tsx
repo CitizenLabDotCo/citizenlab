@@ -15,8 +15,8 @@ const ProjectDescriptionBuilderPage = () => {
 
   return (
     <DescriptionBuilderPage
-      modelId={projectId}
-      modelType="project"
+      contentBuildableId={projectId}
+      contentBuildableType="project"
       backPath={`/admin/projects/${projectId}/general`}
       previewPath={`/projects/${project.data.attributes.slug}`}
       titleMultiloc={project.data.attributes.title_multiloc}

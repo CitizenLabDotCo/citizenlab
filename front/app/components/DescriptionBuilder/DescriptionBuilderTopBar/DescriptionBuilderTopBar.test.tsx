@@ -103,8 +103,8 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
-          modelId="2"
-          modelType="project"
+          contentBuildableId="2"
+          contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
           previewPath="/projects/preview"
@@ -122,8 +122,8 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
-          modelId="2"
-          modelType="project"
+          contentBuildableId="2"
+          contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
           previewPath="/projects/preview"
@@ -142,8 +142,8 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
-          modelId="2"
-          modelType="project"
+          contentBuildableId="2"
+          contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
           previewPath="/projects/preview"
@@ -156,8 +156,8 @@ describe('ProjectDescriptionBuilderTopBar', () => {
     });
 
     expect(mockAddProjectDescriptionBuilderLayout).toHaveBeenCalledWith({
-      modelId: '2',
-      modelType: 'project',
+      contentBuildableId: '2',
+      contentBuildableType: 'project',
       craftjs_json: {},
     });
   });
@@ -170,8 +170,8 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
-          modelId="2"
-          modelType="project"
+          contentBuildableId="2"
+          contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
           previewPath="/projects/preview"
@@ -192,8 +192,8 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
-          modelId="2"
-          modelType="project"
+          contentBuildableId="2"
+          contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
           previewPath="/projects/preview"
@@ -214,8 +214,8 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={setPreviewEnabled}
-          modelId="2"
-          modelType="project"
+          contentBuildableId="2"
+          contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
           previewPath="/projects/preview"
@@ -239,8 +239,8 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           onSelectLocale={() => {}}
           previewEnabled={true}
           setPreviewEnabled={setPreviewEnabled}
-          modelId="2"
-          modelType="project"
+          contentBuildableId="2"
+          contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
           previewPath="/projects/preview"
@@ -263,8 +263,8 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
-          modelId="2"
-          modelType="project"
+          contentBuildableId="2"
+          contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
           previewPath="/projects/preview"
@@ -284,8 +284,8 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
-          modelId="2"
-          modelType="project"
+          contentBuildableId="2"
+          contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
           previewPath="/projects/preview"
@@ -306,8 +306,8 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           onSelectLocale={onSelectLocale}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
-          modelId="2"
-          modelType="project"
+          contentBuildableId="2"
+          contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
           previewPath="/projects/preview"
@@ -337,8 +337,8 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           onSelectLocale={onSelectLocale}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
-          modelId="2"
-          modelType="project"
+          contentBuildableId="2"
+          contentBuildableType="project"
           backPath="/projects"
           titleMultiloc={{ en: 'Test Project' }}
           previewPath="/projects/preview"

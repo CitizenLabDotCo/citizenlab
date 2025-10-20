@@ -15,8 +15,8 @@ export const ProjectFullScreenPreview = () => {
 
   return (
     <FullScreenPreview
-      modelId={projectId}
-      modelType="project"
+      contentBuildableId={projectId}
+      contentBuildableType="project"
       titleMultiloc={project.data.attributes.title_multiloc}
     />
   );

@@ -11,15 +11,15 @@ import { IContentBuilderLayout, IAddContentBuilderLayout } from './types';
 import contentBuilderlayoutPath from './useContentBuilderLayout';
 
 const addContentBuilderLayout = async ({
-  modelId,
-  modelType,
+  contentBuildableId,
+  contentBuildableType,
   craftjs_json,
   enabled = true,
 }: IAddContentBuilderLayout) =>
   fetcher<IContentBuilderLayout>({
     path: `${contentBuilderlayoutPath(
-      modelType,
-      modelId
+      contentBuildableType,
+      contentBuildableId
     )}/upsert` as `/${string}`,
     action: 'post',
     body: { content_builder_layout: { craftjs_json, enabled } },
@@ -33,7 +33,7 @@ const useAddContentBuilderLayout = () => {
       onSuccess: (_data, variables) => {
         queryClient.invalidateQueries({
           queryKey: contentBuilderKeys.item({
-            modelId: variables.modelId,
+            contentBuildableId: variables.contentBuildableId,
           }),
         });
 
@@ -42,9 +42,9 @@ const useAddContentBuilderLayout = () => {
         if (Object.prototype.hasOwnProperty.call(variables, 'enabled')) {
           queryClient.invalidateQueries({
             queryKey:
-              variables.modelType === 'folder'
-                ? foldersKeys.item({ id: variables.modelId })
-                : projectsKeys.item({ id: variables.modelId }),
+              variables.contentBuildableType === 'folder'
+                ? foldersKeys.item({ id: variables.contentBuildableId })
+                : projectsKeys.item({ id: variables.contentBuildableId }),
           });
         }
       },

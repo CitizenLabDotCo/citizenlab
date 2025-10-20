@@ -24,7 +24,7 @@ const prefetchData = () => {
 
   if (isHomepage(pathname)) {
     queryClient.prefetchQuery({
-      queryKey: contentBuilderKeys.item({ modelId: 'homepage' }),
+      queryKey: contentBuilderKeys.item({ contentBuildableId: 'homepage' }),
       queryFn: () => fetchContentBuilderLayout('homepage'),
     });
   }

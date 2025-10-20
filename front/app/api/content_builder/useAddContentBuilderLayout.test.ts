@@ -31,7 +31,7 @@ describe('useAddContentBuilderLayout', () => {
 
     act(() => {
       result.current.mutate({
-        modelId: 'projectId',
+        contentBuildableId: 'projectId',
         enabled: true,
       });
     });
@@ -53,7 +53,7 @@ describe('useAddContentBuilderLayout', () => {
 
     act(() => {
       result.current.mutate({
-        modelId: 'projectId',
+        contentBuildableId: 'projectId',
         enabled: true,
       });
     });

@@ -5,11 +5,11 @@ const baseKey = { type: 'content_builder_layout' };
 const contentBuilderKeys = {
   all: () => [baseKey],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ modelId }: { modelId: string }) => [
+  item: ({ contentBuildableId }: { contentBuildableId: string }) => [
     {
       ...baseKey,
       operation: 'item',
-      parameters: { modelId },
+      parameters: { contentBuildableId },
     },
   ],
 } satisfies QueryKeys;

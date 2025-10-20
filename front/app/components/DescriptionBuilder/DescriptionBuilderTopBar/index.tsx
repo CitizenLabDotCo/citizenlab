@@ -5,7 +5,7 @@ import { useEditor, SerializedNodes } from '@craftjs/core';
 import { RouteType } from 'routes';
 import { Multiloc, SupportedLocale } from 'typings';
 
-import { ContentBuilderModelType } from 'api/content_builder/types';
+import { ContentBuildableType } from 'api/content_builder/types';
 import useAddContentBuilderLayout from 'api/content_builder/useAddContentBuilderLayout';
 
 import useLocalize from 'hooks/useLocalize';
@@ -32,8 +32,8 @@ type DescriptionBuilderTopBarProps = {
     locale: SupportedLocale;
     editorData: SerializedNodes;
   }) => void;
-  modelId: string;
-  modelType: ContentBuilderModelType;
+  contentBuildableId: string;
+  contentBuildableType: ContentBuildableType;
   backPath: RouteType;
   previewPath: RouteType;
   titleMultiloc: Multiloc;
@@ -46,8 +46,8 @@ const DescriptionBuilderTopBar = ({
   onSelectLocale,
   hasError,
   hasPendingState,
-  modelId,
-  modelType,
+  contentBuildableId,
+  contentBuildableType,
   backPath,
   previewPath,
   titleMultiloc,
@@ -68,8 +68,8 @@ const DescriptionBuilderTopBar = ({
 
   const handleSave = async () => {
     addContentBuilderLayout({
-      modelId,
-      modelType,
+      contentBuildableId,
+      contentBuildableType,
       craftjs_json: query.getSerializedNodes(),
     });
   };
@@ -90,7 +90,7 @@ const DescriptionBuilderTopBar = ({
         <Box flexGrow={2}>
           <Title variant="h3" as="h1" mb="0px" mt="0px">
             <FormattedMessage
-              {...(modelType === 'project'
+              {...(contentBuildableType === 'project'
                 ? messages.descriptionProjectHeading
                 : messages.descriptionFolderHeading)}
             />
