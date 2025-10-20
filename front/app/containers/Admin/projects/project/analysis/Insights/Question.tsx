@@ -124,7 +124,6 @@ const Question = ({ insight }: Props) => {
           gap="16px"
           alignItems="center"
           justifyContent="flex-end"
-          pt="8px"
         >
           <IconButton
             iconName="filter-2"
