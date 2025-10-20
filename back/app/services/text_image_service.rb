@@ -8,7 +8,7 @@ class TextImageService < ContentImageService
     content_multiloc = {}
     extracted_images = []
 
-    multiloc.each do |language_key, encoded_content|
+    (multiloc || {}).each do |language_key, encoded_content|
       output = extract_data_images(encoded_content)
 
       content_multiloc[language_key] = output[:content]
