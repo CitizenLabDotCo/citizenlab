@@ -111,6 +111,11 @@ export default defineMessages({
     defaultMessage:
       'AI can make mistakes. Please verify important information.',
   },
+  aiDisclaimerDetails: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.aiDisclaimerDetails',
+    defaultMessage:
+      'The content in this section is AI-generated and may not be completely accurate. Please review and verify it against your inputs. Selecting fewer inputs can help improve accuracy.',
+  },
   aiSummaryTooltip: {
     id: 'app.containers.Admin.projects.project.analysis.aiSummaryTooltipText',
     defaultMessage:

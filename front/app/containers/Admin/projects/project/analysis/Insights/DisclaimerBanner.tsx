@@ -1,14 +1,26 @@
 import React, { useState } from 'react';
 
 import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
+const ClickableBox = styled(Box)`
+  cursor: pointer;
+`;
+
+const HiddenIcon = styled(Icon).attrs({
+  'aria-hidden': 'true',
+})`
+  visibility: hidden;
+`;
+
 const DisclaimerBanner = () => {
   const { formatMessage } = useIntl();
   const [isExpanded, setIsExpanded] = useState(false);
+  const shared_gap = '8px';
 
   return (
     <Box
@@ -19,39 +31,33 @@ const DisclaimerBanner = () => {
       background={colors.orange100}
       borderRadius="3px"
     >
-      <Box
+      <ClickableBox
         display="flex"
-        gap="8px"
+        gap={shared_gap}
         alignItems="center"
         onClick={() => setIsExpanded(!isExpanded)}
-        style={{ cursor: 'pointer' }}
       >
         <Icon name="alert-circle" fill={colors.orange500} />
-        <Text fontSize="s" m="0px" color="textSecondary" style={{ flex: 1 }}>
-          {formatMessage(messages.aiDisclaimerBanner)}
-        </Text>
+        <Box flex="1">
+          <Text fontSize="s" m="0px" color="textSecondary">
+            {formatMessage(messages.aiDisclaimerBanner)}
+          </Text>
+        </Box>
         <Icon
           name={isExpanded ? 'chevron-up' : 'chevron-down'}
           fill={colors.textSecondary}
         />
-      </Box>
+      </ClickableBox>
+
       {isExpanded && (
-        <Box display="flex" gap="8px" alignItems="flex-start">
-          <Icon
-            name="alert-circle"
-            fill={colors.orange500}
-            style={{ visibility: 'hidden' }}
-            aria-hidden="true"
-          />
-          <Text fontSize="s" m="0px" color="textSecondary" style={{ flex: 1 }}>
-            {formatMessage(messages.aiSummaryTooltip)}
-          </Text>
-          <Icon
-            name="chevron-up"
-            fill={colors.textSecondary}
-            style={{ visibility: 'hidden' }}
-            aria-hidden="true"
-          />
+        <Box display="flex" gap={shared_gap}>
+          <HiddenIcon name="alert-circle" fill={colors.orange500} />
+          <Box flex="1">
+            <Text fontSize="s" m="0px" color="textSecondary">
+              {formatMessage(messages.aiDisclaimerDetails)}
+            </Text>
+          </Box>
+          <HiddenIcon name="chevron-up" fill={colors.textSecondary} />
         </Box>
       )}
     </Box>
