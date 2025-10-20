@@ -5,7 +5,6 @@ import {
   IconButton,
   colors,
   IconTooltip,
-  Divider,
 } from '@citizenlab/cl2-component-library';
 import { useParams, useSearchParams } from 'react-router-dom';
 
@@ -98,8 +97,6 @@ const Summary = ({ insight }: Props) => {
       position="relative"
       data-cy="e2e-analysis-summary"
     >
-      <Divider />
-
       <Box display="flex" flexDirection="column" gap="8px">
         <SummaryHeader showAiWarning={false} />
         <InsightBody
