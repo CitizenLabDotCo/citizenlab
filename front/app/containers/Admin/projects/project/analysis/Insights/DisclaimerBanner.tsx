@@ -57,7 +57,6 @@ const DisclaimerBanner = () => {
               {formatMessage(messages.aiDisclaimerDetails)}
             </Text>
           </Box>
-          <HiddenIcon name="chevron-up" fill={colors.textSecondary} />
         </Box>
       )}
     </Box>
