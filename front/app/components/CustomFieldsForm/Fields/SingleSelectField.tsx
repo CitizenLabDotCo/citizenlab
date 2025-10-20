@@ -57,12 +57,20 @@ const SingleSelectField = ({
     return extractOptions(question, localize, question.random_option_ordering);
   }, [question, localize, areas, formatMessage]);
 
+  const selectOptions = useMemo(() => {
+    // Add empty option at the beginning if field is not required (only for dropdown)
+    if (!question.required) {
+      return [{ value: '', label: '' }, ...options];
+    }
+    return options;
+  }, [question.required, options]);
+
   return (
     <>
       {question.dropdown_layout ? (
         <Select
           name={question.key}
-          options={options}
+          options={selectOptions}
           scrollErrorIntoView={scrollErrorIntoView}
           disabled={disabled}
         />
