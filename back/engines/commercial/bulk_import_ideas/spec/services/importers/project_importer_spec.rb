@@ -54,7 +54,7 @@ describe BulkImportIdeas::Importers::ProjectImporter do
         project = service.send(:find_or_create_project, project_data)
         expect(project.title_multiloc['en']).to eq('Test Project')
         expect(project.description_multiloc['en']).to include('<p>Some text</p><img alt="Red dot"')
-        
+
         text_image = TextImage.find_by(imageable_id: project.id, imageable_type: 'Project', imageable_field: 'description_multiloc')
         expect(text_image).to be_present
         expect(project.description_multiloc['en']).to include("data-cl2-text-image-text-reference=\"#{text_image.text_reference}\"")

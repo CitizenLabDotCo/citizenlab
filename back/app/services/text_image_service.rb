@@ -15,7 +15,7 @@ class TextImageService < ContentImageService
       extracted_images += output[:extracted_images]
     end
 
-    return {
+    {
       content_multiloc: content_multiloc,
       extracted_images: extracted_images
     }
@@ -65,9 +65,9 @@ class TextImageService < ContentImageService
 
         img_src = get_attribute img_elt, image_attribute_for_element
         img_key = img_src.match?(BASE64_REGEX) ? :image : :remote_image_url
-        
-        extracted_images << { 
-          text_reference: text_reference, 
+
+        extracted_images << {
+          text_reference: text_reference,
           img_key: img_key,
           img_src: img_src
         }
@@ -77,9 +77,9 @@ class TextImageService < ContentImageService
       end
     end
 
-    return { 
+    {
       content: encode_content(content),
-      extracted_images: extracted_images 
+      extracted_images: extracted_images
     }
   end
 

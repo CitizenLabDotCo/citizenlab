@@ -356,7 +356,7 @@ resource 'Events' do
 
         example_request 'Create an event with description containing images', document: false do
           assert_status 201
-          json_response = json_parse(response_body)
+          json_parse(response_body)
           expect(response_data.dig(:attributes, :description_multiloc, :en)).to include('<p>Some text</p><img alt="Red dot"')
           text_image = TextImage.find_by(imageable_id: response_data[:id], imageable_type: 'Event', imageable_field: 'description_multiloc')
           expect(response_data.dig(:attributes, :description_multiloc, :en)).to include("data-cl2-text-image-text-reference=\"#{text_image.text_reference}\"")

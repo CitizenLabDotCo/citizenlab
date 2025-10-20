@@ -39,7 +39,7 @@ module UserCustomFields
           if @custom_field.save
             text_image_service.bulk_create_images!(
               extract_output[:extracted_images],
-              @custom_field, 
+              @custom_field,
               :description_multiloc
             )
             SideFxCustomFieldService.new.after_create(@custom_field, current_user)

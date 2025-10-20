@@ -196,7 +196,7 @@ module IdeaCustomFields
 
         text_image_service.bulk_create_images!(
           extract_output[:extracted_images],
-          field, 
+          field,
           :description_multiloc
         )
 

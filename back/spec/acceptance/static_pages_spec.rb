@@ -265,7 +265,7 @@ resource 'StaticPages' do
 
         example_request 'Create a static page with bottom section containing images', document: false do
           assert_status 201
-          json_response = json_parse(response_body)
+          json_parse(response_body)
           expect(response_data.dig(:attributes, :bottom_info_section_multiloc, :en)).to include('<p>Some text</p><img alt="Red dot"')
           text_image = TextImage.find_by(imageable_id: response_data[:id], imageable_type: 'StaticPage', imageable_field: 'bottom_info_section_multiloc')
           expect(response_data.dig(:attributes, :bottom_info_section_multiloc, :en)).to include("data-cl2-text-image-text-reference=\"#{text_image.text_reference}\"")
