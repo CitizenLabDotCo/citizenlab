@@ -312,7 +312,7 @@ module BulkImportIdeas::Importers
           extract_output = text_image_service.extract_data_images_multiloc(
             phase_attributes[:description_multiloc]
           )
-          phase_attributes[:description_multiloc] = phase_attributes[:content_multiloc]
+          phase_attributes[:description_multiloc] = extract_output[:content_multiloc]
 
           # Create project
           phase = Phase.create!(phase_attributes)
