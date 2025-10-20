@@ -33,10 +33,13 @@ const SummaryHeader = ({
         </Tooltip>
       )}
 
+      {!showAiWarning && <Icon name="stars" />}
+
       <Text m="0px" fontWeight="bold">
         {formatMessage(messages.aiSummary)}
       </Text>
-      <Icon name="stars" />
+
+      {showAiWarning && <Icon name="stars" />}
     </Box>
   );
 };

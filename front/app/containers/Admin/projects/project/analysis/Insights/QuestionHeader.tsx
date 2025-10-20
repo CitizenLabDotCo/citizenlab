@@ -36,12 +36,22 @@ const QuestionHeader = ({
           </Tooltip>
         </Box>
       )}
+
+      {!showAiWarning && (
+        <Box>
+          <Icon name="question-bubble" width="18px" height="18px" />
+        </Box>
+      )}
+
       <Text fontWeight="bold" m="0px">
         {question}
       </Text>
-      <Box>
-        <Icon name="question-bubble" width="18px" height="18px" />
-      </Box>
+
+      {showAiWarning && (
+        <Box>
+          <Icon name="question-bubble" width="18px" height="18px" />
+        </Box>
+      )}
     </Box>
   );
 };
