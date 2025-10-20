@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -6,6 +6,7 @@ import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { array, object, string } from 'yup';
 
+import useAnalysis from 'api/analyses/useAnalysis';
 import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
 import useFiles from 'api/files/useFiles';
 
@@ -23,9 +24,24 @@ type Props = {
   analysisId: string;
 };
 
+const areSetsEqual = <T,>(a: T[], b: T[]): boolean => {
+  if (a.length !== b.length) return false;
+
+  const sortedA = [...a].sort();
+  const sortedB = [...b].sort();
+  return sortedA.every((val, index) => val === sortedB[index]);
+};
+
 const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
+  // Track previous file IDs to prevent unnecessary auto-submits
+  // (on initial load or reset)
+  const previousFileIdsRef = useRef<string[]>([]);
+
   const { projectId } = useParams();
   const { mutate: updateAnalysis } = useUpdateAnalysis();
+
+  const { data: analysis, isLoading: isLoadingAnalysis } =
+    useAnalysis(analysisId);
 
   const { data: files } = useFiles({
     project: projectId ? [projectId] : [],
@@ -54,15 +70,31 @@ const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
     name: 'file_ids',
   });
 
+  // Populate form with existing file IDs when analysis data loads
+  useEffect(() => {
+    if (!isLoadingAnalysis && analysis) {
+      const existingFileIds =
+        analysis.data.relationships?.files?.data.map((file) => file.id) || [];
+
+      methods.reset({ file_ids: existingFileIds });
+      previousFileIdsRef.current = existingFileIds;
+    }
+  }, [isLoadingAnalysis, analysisId]);
+
   // Auto-submit when file_ids changes (debounced by 500ms)
   useEffect(() => {
+    // Skip if the values haven't changed from the previous state
+    if (areSetsEqual(watchedFileIds, previousFileIdsRef.current)) return;
+
     const timeoutId = setTimeout(() => {
-      methods.handleSubmit(() =>
+      methods.handleSubmit(() => {
         updateAnalysis({
           id: analysisId,
           files: watchedFileIds,
-        })
-      )();
+        });
+
+        previousFileIdsRef.current = watchedFileIds;
+      })();
     }, 500);
 
     return () => clearTimeout(timeoutId);
@@ -107,6 +139,7 @@ const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
           <MultipleSelect
             name="file_ids"
             options={fileOptions}
+            disabled={isLoadingAnalysis}
             placeholder={formatMessage(messages.attachFilesFromProject)}
           />
 
