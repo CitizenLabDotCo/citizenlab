@@ -179,6 +179,13 @@ class Invites::Service
 
     text_image_service.bulk_create_images!(
       extracted_images,
+      # Before, we were creating images for each invite.
+      # This made no sense whatsoever as every invite has the same text,
+      # so if the invite text has any images, they will be duplicated in our DB for each invite.
+      # Now, we just create all images in the invite once. 
+      # But because of how this was implemented before,
+      # we still need to link the image to one of the invites.
+      # So we just link it to the first invite in the list.
       invitees[0].invitee_invite,
       :invite_text
     )
