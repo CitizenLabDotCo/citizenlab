@@ -51,8 +51,8 @@ describe TextImageService do
       HTML
       output = service.extract_data_images_multiloc({ 'fr-BE' => input })
 
-      content = output['fr-BE'][:content]
-      extracted_images = output['fr-BE'][:extracted_images]
+      content = output[:content]['fr-BE']
+      extracted_images = output[:extracted_images]
 
       codes = extracted_images.pluck(:text_reference)
       expected_html = <<~HTML
@@ -67,11 +67,16 @@ describe TextImageService do
     it 'does not modify the empty string' do
       input = ''
       output = service.extract_data_images_multiloc({ 'en' => input })
-      expect(output).to eq({ 'en' => { content: input, extracted_images: [] } })
+      expect(output).to eq({
+        content: {
+          'en' => input
+        },
+        extracted_images: []
+      })
     end
   end
 
-  describe 'bulk_create_images_multiloc!' do
+  describe 'bulk_create_images!' do
     before do
       stub_request(:any, 'res.cloudinary.com').to_return(
         body: png_image_as_base64('image10.jpg')
@@ -85,10 +90,10 @@ describe TextImageService do
         <img src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg" />
       HTML
       imageable = build(:idea, body_multiloc: { 'fr-BE' => input })
-      extract_data_images_multiloc_output = service.extract_data_images_multiloc(imageable.body_multiloc)
+      extracted_images = service.extract_data_images_multiloc(imageable.body_multiloc)[:extracted_images]
 
-      images = service.bulk_create_images_multiloc!(
-        extract_data_images_multiloc_output,
+      images = service.bulk_create_images!(
+        extracted_images,
         imageable,
         :body_multiloc
       )

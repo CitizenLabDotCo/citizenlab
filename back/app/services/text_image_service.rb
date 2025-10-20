@@ -5,23 +5,37 @@ class TextImageService < ContentImageService
 
   # Applies {#extract_data_images} to each multiloc value in the given multiloc.
   def extract_data_images_multiloc(multiloc)
-    multiloc.transform_values do |encoded_content|
-      extract_data_images encoded_content
+    content_multiloc = {}
+    extracted_images = []
+
+    multiloc.each do |language_key, encoded_content|
+      output = extract_data_images(encoded_content)
+
+      content_multiloc[language_key] = output[:content]
+      extracted_images += output[:extracted_images]
     end
+
+    return {
+      content_multiloc: content_multiloc,
+      extracted_images: extracted_images
+    }
   end
 
-  def bulk_create_images_multiloc!(
-    extract_data_images_multiloc_output,
+  def bulk_create_images!(
+    extracted_images,
     imageable,
     field
   )
-    extract_data_images_multiloc_output.transform_values do |extract_data_images_output|
-      bulk_create_images!(
-        extract_data_images_output,
-        imageable,
-        field
-      )
-    end 
+    extracted_images.map do |extracted_image|
+      img_attrs = {
+        imageable: imageable,
+        imageable_field: field,
+        text_reference: extracted_image[:text_reference]
+      }
+      img_attrs[extracted_image[:img_key]] = extracted_image[:img_src]
+
+      TextImage.create!(img_attrs)
+    end
   end
 
   private
@@ -67,23 +81,6 @@ class TextImageService < ContentImageService
       content: encode_content(content),
       extracted_images: extracted_images 
     }
-  end
-
-  def bulk_create_images!(
-    extract_data_images_output,
-    imageable,
-    field
-  )
-    extract_data_images_output[:extracted_images].map do |img_data|
-      img_attrs = {
-        imageable: imageable,
-        imageable_field: field,
-        text_reference: img_data[:text_reference]
-      }
-      img_attrs[img_data[:img_key]] = img_data[:img_src]
-
-      TextImage.create!(img_attrs)
-    end
   end
 
   protected
