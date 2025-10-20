@@ -53,6 +53,37 @@ class TextImageService < ContentImageService
     }
   end
 
+  def bulk_create_images_multiloc(
+    extract_data_images_multiloc_output,
+    imageable,
+    field
+  )
+    extract_data_images_multiloc_output.transform_values do |extract_data_images_output|
+      bulk_create_images(
+        extract_data_images_output,
+        imageable,
+        field
+      )
+    end 
+  end
+
+  def bulk_create_images(
+    extract_data_images_output,
+    imageable,
+    field
+  )
+    extract_data_images_output[:extracted_images].map do |img_data|
+      img_attrs = {
+        imageable: imageable,
+        imageable_field: field,
+        text_reference: img_data[:text_reference]
+      }
+      img_attrs[img_data[:img_key]] = img_data[:img_src]
+
+      TextImage.create!(img_attrs)
+    end
+  end
+
   protected
 
   # Decodes the given HTML string into a Nokogiri document.
