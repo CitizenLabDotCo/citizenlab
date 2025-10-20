@@ -9,11 +9,11 @@ resource 'ContentBuilderLayouts' do
   before { header 'Content-Type', 'application/json' }
 
   let(:folder) { create(:project_folder) }
-  let!(:layout) { create(:layout, content_buildable: folder) }
+  let!(:layout) { create(:layout, content_buildable: folder, code: 'project_folder_description') }
+
+  # URL parameters
   let(:folder_id) { folder.id }
   let(:code) { 'project_folder_description' }
-
-  # TODO: JS - This works but the tests are giving 404s
 
   context 'when not authorized' do
     get 'web_api/v1/project_folders/:folder_id/content_builder_layouts/:code' do
@@ -79,7 +79,7 @@ resource 'ContentBuilderLayouts' do
           end
         end
 
-        context 'when no layout with the given code exists for the given project' do
+        context 'when no layout with the given code exists for the given folder' do
           let(:code) { 'unknown' }
 
           example_request '[error] Try to get a layout of a folder when the code is unknown' do
@@ -95,7 +95,9 @@ resource 'ContentBuilderLayouts' do
         parameter :craftjs_json, 'The craftjs layout configuration'
       end
 
-      post 'web_api/v1/project_folders/:project_id/content_builder_layouts/:code/upsert' do
+      let(:enabled) { true }
+
+      post 'web_api/v1/project_folders/:folder_id/content_builder_layouts/:code/upsert' do
         context 'when the folder does not exist' do
           let(:folder_id) { 'unknown' }
 
@@ -161,9 +163,6 @@ resource 'ContentBuilderLayouts' do
 
         context 'when the layout exists' do
           describe 'updating one locale' do
-            let! :layout do
-              create(:layout, craftjs_json: { ROOT: {} })
-            end
             let :craftjs_json do
               {
                 ROOT: {
@@ -204,12 +203,6 @@ resource 'ContentBuilderLayouts' do
           end
 
           describe 'disabling a layout' do
-            let! :layout do
-              create(
-                :layout,
-                craftjs_json: { ROOT: {} }
-              )
-            end
             let(:enabled) { false }
 
             example_request 'Disable a layout of a folder' do
@@ -220,7 +213,7 @@ resource 'ContentBuilderLayouts' do
                     id: layout.id,
                     type: 'content_builder_layout',
                     attributes: {
-                      craftjs_json: { ROOT: {} },
+                      craftjs_json: {},
                       enabled: false,
                       code: code,
                       created_at: match(time_regex),
@@ -236,13 +229,8 @@ resource 'ContentBuilderLayouts' do
           end
 
           describe 'enabling a layout' do
-            let! :layout do
-              create(
-                :layout,
-                enabled: false,
-                craftjs_json: { ROOT: {} }
-              )
-            end
+            before { layout.update!(enabled: false) }
+
             let(:enabled) { true }
 
             example_request 'Enable a layout of a folder' do
@@ -253,7 +241,7 @@ resource 'ContentBuilderLayouts' do
                     id: layout.id,
                     type: 'content_builder_layout',
                     attributes: {
-                      craftjs_json: { ROOT: {} },
+                      craftjs_json: {},
                       enabled: true,
                       code: code,
                       created_at: match(time_regex),

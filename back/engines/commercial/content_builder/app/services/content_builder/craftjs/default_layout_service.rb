@@ -7,8 +7,6 @@ module ContentBuilder
     class DefaultLayoutService
       def default_layout(content_buildable)
         case content_buildable.class.name
-        when 'Project'
-          project_layout(content_buildable)
         when 'ProjectFolders::Folder'
           folder_layout(content_buildable)
         else
@@ -35,11 +33,7 @@ module ContentBuilder
             nodes: [],
             props: {
               folderId: folder.id,
-              titleMultiloc: {
-                en: 'Published projects',
-                'fr-BE': 'Published projects',
-                'nl-BE': 'Published projects'
-              }
+              titleMultiloc: MultilocService.new.i18n_to_multiloc('projects.published_projects')
             },
             custom: {},
             hidden: false,
@@ -65,10 +59,6 @@ module ContentBuilder
             linkedNodes: {}
           }
         }
-      end
-
-      def project_layout(_project)
-        {}
       end
     end
   end
