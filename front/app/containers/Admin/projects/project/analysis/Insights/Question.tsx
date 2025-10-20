@@ -103,7 +103,7 @@ const Question = ({ insight }: Props) => {
       <Box display="flex" flexDirection="column" gap="8px">
         <QuestionHeader
           question={question.data.attributes.question}
-          showTooltip={false}
+          showAiWarning={false}
         />
         <InsightBody
           text={answer}

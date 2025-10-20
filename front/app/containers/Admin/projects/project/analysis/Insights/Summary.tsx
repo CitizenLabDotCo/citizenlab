@@ -101,7 +101,7 @@ const Summary = ({ insight }: Props) => {
       <Divider />
 
       <Box display="flex" flexDirection="column" gap="8px">
-        <SummaryHeader showTooltip={false} />
+        <SummaryHeader showAiWarning={false} />
         <InsightBody
           text={summaryText}
           filters={summary.data.attributes.filters}

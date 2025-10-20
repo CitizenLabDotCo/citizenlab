@@ -14,16 +14,16 @@ import messages from './messages';
 
 const QuestionHeader = ({
   question,
-  showTooltip = true,
+  showAiWarning = true,
 }: {
   question: string;
-  showTooltip?: boolean;
+  showAiWarning?: boolean;
 }) => {
   const { formatMessage } = useIntl();
 
   return (
     <Box display="flex" gap="4px" alignItems="center" w="fit-content">
-      {showTooltip && (
+      {showAiWarning && (
         <Box>
           <Tooltip
             content={

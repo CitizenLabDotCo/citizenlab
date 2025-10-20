@@ -12,12 +12,16 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-const SummaryHeader = ({ showTooltip = true }: { showTooltip?: boolean }) => {
+const SummaryHeader = ({
+  showAiWarning = true,
+}: {
+  showAiWarning?: boolean;
+}) => {
   const { formatMessage } = useIntl();
 
   return (
     <Box display="flex" gap="4px" alignItems="center" w="fit-content">
-      {showTooltip && (
+      {showAiWarning && (
         <Tooltip
           content={
             <Box p="4px">{formatMessage(messages.aiSummaryTooltip)}</Box>
