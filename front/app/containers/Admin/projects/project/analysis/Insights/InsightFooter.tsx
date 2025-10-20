@@ -85,7 +85,6 @@ const InsightFooter = ({
       alignItems="center"
       w="100%"
       pr="16px"
-      mb="20px"
     >
       <Tooltip
         content={formatMessage(messages.tooltipTextLimit)}

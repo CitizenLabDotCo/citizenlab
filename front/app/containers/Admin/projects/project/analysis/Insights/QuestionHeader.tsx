@@ -16,14 +16,7 @@ const QuestionHeader = ({ question }: { question: string }) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box
-      display="flex"
-      gap="4px"
-      alignItems="center"
-      p="8px"
-      mb="12px"
-      w="fit-content"
-    >
+    <Box display="flex" gap="4px" alignItems="center" w="fit-content">
       <Box>
         <Tooltip
           content={
