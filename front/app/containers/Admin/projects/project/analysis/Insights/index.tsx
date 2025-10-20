@@ -97,6 +97,8 @@ const Insights = () => {
           display="flex"
           justifyContent="space-between"
           alignItems="center"
+          height="40px"
+          pb="8px"
           gap="4px"
         >
           <Box>
@@ -127,7 +129,7 @@ const Insights = () => {
       <Box flex="1" overflow="auto">
         {insights?.data.map((insight, index) => (
           <div key={insight.id}>
-            {index > 0 && <Divider />}
+            {index > 0 && <Divider m="0px" />}
             {insight.relationships.insightable.data.type === 'summary' ? (
               <Summary insight={insight} />
             ) : (

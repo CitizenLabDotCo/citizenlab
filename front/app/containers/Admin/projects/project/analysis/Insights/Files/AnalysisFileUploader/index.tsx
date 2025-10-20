@@ -33,11 +33,11 @@ const AnalysisFileUploader = ({
         })}
         buttonStyle="text"
         iconSize="20px"
-        p="4px"
+        pr="0px"
         fontSize="s"
         onClick={() => setIsFileSelectionOpen(true)}
       />
-      <NewLabel ml="2px" expiryDate={new Date('2026-01-15')} />
+      <NewLabel ml="4px" expiryDate={new Date('2026-01-15')} />
     </Box>
   );
 };

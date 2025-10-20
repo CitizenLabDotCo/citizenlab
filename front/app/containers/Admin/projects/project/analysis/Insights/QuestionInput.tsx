@@ -55,7 +55,6 @@ const QuestionInput = ({ onClose }: { onClose: () => void }) => {
     <Box
       bgColor={colors.successLight}
       p="16px"
-      mb="8px"
       borderRadius={stylingConsts.borderRadius}
       display="flex"
       gap="8px"

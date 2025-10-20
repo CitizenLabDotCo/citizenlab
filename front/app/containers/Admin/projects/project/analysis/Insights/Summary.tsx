@@ -93,7 +93,7 @@ const Summary = ({ insight }: Props) => {
   return (
     <Box
       key={summary.data.id}
-      mb="24px"
+      my="14px"
       position="relative"
       data-cy="e2e-analysis-summary"
     >
@@ -116,18 +116,28 @@ const Summary = ({ insight }: Props) => {
           phaseId={phaseId}
           customFieldIds={summary.data.attributes.custom_field_ids}
         />
-        <Box display="flex" gap="16px" alignItems="center">
+        <Box
+          display="flex"
+          gap="16px"
+          alignItems="center"
+          justifyContent="flex-end"
+          pt="8px"
+        >
           <IconButton
             iconName="filter-2"
             onClick={handleRestoreFilters}
             iconColor={colors.textPrimary}
             iconColorOnHover={colors.textSecondary}
+            iconWidth="20px"
+            iconHeight="20px"
             a11y_buttonActionMessage={formatMessage(messages.restoreFilters)}
           />
           <IconButton
             iconName={isCopied ? 'check' : 'copy'}
             iconColor={colors.textPrimary}
             iconColorOnHover={colors.textSecondary}
+            iconWidth="20px"
+            iconHeight="20px"
             a11y_buttonActionMessage={'Copy summary to clipboard'}
             onClick={() => {
               summaryText &&
@@ -139,7 +149,7 @@ const Summary = ({ insight }: Props) => {
             icon="flag"
             content={<Rate insightId={insight.id} />}
             theme="light"
-            iconSize="24px"
+            iconSize="20px"
             iconColor={colors.textPrimary}
             placement="top"
           />
@@ -148,6 +158,8 @@ const Summary = ({ insight }: Props) => {
             onClick={() => handleSummaryDelete(insight.id)}
             iconColor={colors.textPrimary}
             iconColorOnHover={colors.textSecondary}
+            iconWidth="20px"
+            iconHeight="20px"
             a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
           />
         </Box>
