@@ -23,13 +23,25 @@ module UserCustomFields
         end
 
         def create
-          @custom_field = CustomField.new custom_field_params(CustomField)
+          params = custom_field_params(CustomField)
+          text_image_service = TextImageService.new
+          extract_output = text_image_service.extract_data_images_multiloc(
+            params[:description_multiloc]
+          )
+          params['description_multiloc'] = extract_output[:content_multiloc]
+
+          @custom_field = CustomField.new params
           @custom_field.resource_type = 'User'
           authorize @custom_field, policy_class: UserCustomFieldPolicy
 
           SideFxCustomFieldService.new.before_create(@custom_field, current_user)
 
           if @custom_field.save
+            text_image_service.bulk_create_images!(
+              extract_output[:extracted_images],
+              @custom_field, 
+              :description_multiloc
+            )
             SideFxCustomFieldService.new.after_create(@custom_field, current_user)
             render json: serialize_custom_fields(@custom_field, params: jsonapi_serializer_params_with_locked_fields), status: :created
           else
