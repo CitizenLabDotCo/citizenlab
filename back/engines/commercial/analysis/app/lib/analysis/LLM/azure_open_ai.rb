@@ -69,9 +69,11 @@ module Analysis
         begin
           response_client.create(parameters:)
         rescue StreamError, Faraday::BadRequestError => e
-          message = e.is_a?(StreamError) ? e.message : e.response_body.dig('error', 'message')
+          error = e.is_a?(StreamError) ? e.chunk['error'] : e.response_body['error']
+          message = error['message']
 
           raise TooManyImagesError if message.include?('Too many images')
+          raise UnsupportedAttachmentError if error['code'] == 'unsupported_file'
 
           raise
         rescue Faraday::TooManyRequestsError => e
