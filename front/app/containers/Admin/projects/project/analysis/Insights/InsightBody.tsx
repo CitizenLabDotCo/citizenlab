@@ -98,7 +98,12 @@ const InsightBody = ({
       )}
 
       {errorMessage ? (
-        <Error text={errorMessage} showIcon={true} showBackground={true} />
+        <Error
+          text={errorMessage}
+          showIcon={true}
+          showBackground={true}
+          scrollIntoView={false}
+        />
       ) : (
         <>
           <StyledInsightsText>
