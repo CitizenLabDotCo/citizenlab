@@ -51,7 +51,7 @@ describe TextImageService do
       HTML
       output = service.extract_data_images_multiloc({ 'fr-BE' => input })
 
-      content = output[:content]['fr-BE']
+      content = output[:content_multiloc]['fr-BE']
       extracted_images = output[:extracted_images]
 
       codes = extracted_images.pluck(:text_reference)
@@ -68,7 +68,7 @@ describe TextImageService do
       input = ''
       output = service.extract_data_images_multiloc({ 'en' => input })
       expect(output).to eq({
-        content: {
+        content_multiloc: {
           'en' => input
         },
         extracted_images: []
@@ -99,9 +99,9 @@ describe TextImageService do
       )
 
       expect(TextImage.count).to eq(3)
-      expect(images['fr-BE'].count).to eq(3)
+      expect(images.count).to eq(3)
       expect(TextImage.all.map(&:text_reference).sort).to eq(
-        extract_data_images_multiloc_output['fr-BE'][:extracted_images].map { |img| img[:text_reference] }.sort
+        images.map { |img| img[:text_reference] }.sort
       )
     end
   end
