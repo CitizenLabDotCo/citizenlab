@@ -1884,7 +1884,6 @@
   "app.containers.SearchInput.searchTerm": "Pojam za pretraživanje: {searchTerm}",
   "app.containers.SignIn.franceConnectIsTheSolutionProposedByTheGovernment": "FranceConnect je rešenje koje je francuska država predložila za osiguranje i pojednostavljivanje registracije za više od 700 mrežnih usluga.",
   "app.containers.SignIn.or": "Ili",
-  "app.containers.SignIn.signInError": "Unesene informacije nisu točne. Kliknite „Zaboravi lozinku“ kako biste je ponovno postavili.",
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Koristite FranceConnect kako biste se prijavili, prijavili ili potvrdili svoj račun.",
   "app.containers.SignIn.whatIsFranceConnect": "Što je FranceConnect?",
   "app.containers.SignUp.adminOptions2": "Za administratore i voditelje projekata",

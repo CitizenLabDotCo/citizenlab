@@ -1884,7 +1884,6 @@
   "app.containers.SearchInput.searchTerm": "تلاش کی اصطلاح: {searchTerm}",
   "app.containers.SignIn.franceConnectIsTheSolutionProposedByTheGovernment": "FranceConnect 700 سے زیادہ آن لائن خدمات کے لیے سائن اپ کو محفوظ اور آسان بنانے کے لیے فرانسیسی ریاست کا تجویز کردہ حل ہے۔",
   "app.containers.SignIn.or": "یا",
-  "app.containers.SignIn.signInError": "فراہم کردہ معلومات درست نہیں ہیں۔ 'پاس ورڈ بھول گئے؟' اپنا پاس ورڈ دوبارہ ترتیب دینے کے لیے۔",
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "لاگ ان، سائن اپ یا اپنے اکاؤنٹ کی تصدیق کے لیے FranceConnect کا استعمال کریں۔",
   "app.containers.SignIn.whatIsFranceConnect": "فرانس کنیکٹ کیا ہے؟",
   "app.containers.SignUp.adminOptions2": "منتظمین اور پروجیکٹ مینیجرز کے لیے",
