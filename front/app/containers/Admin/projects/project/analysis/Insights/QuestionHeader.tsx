@@ -12,22 +12,30 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-const QuestionHeader = ({ question }: { question: string }) => {
+const QuestionHeader = ({
+  question,
+  showTooltip = true,
+}: {
+  question: string;
+  showTooltip?: boolean;
+}) => {
   const { formatMessage } = useIntl();
 
   return (
     <Box display="flex" gap="4px" alignItems="center" w="fit-content">
-      <Box>
-        <Tooltip
-          content={
-            <Box p="4px">{formatMessage(messages.aiSummaryTooltip)}</Box>
-          }
-          placement="bottom"
-          zIndex={99999}
-        >
-          <Icon name="alert-circle" fill={colors.orange500} />
-        </Tooltip>
-      </Box>
+      {showTooltip && (
+        <Box>
+          <Tooltip
+            content={
+              <Box p="4px">{formatMessage(messages.aiSummaryTooltip)}</Box>
+            }
+            placement="bottom"
+            zIndex={99999}
+          >
+            <Icon name="alert-circle" fill={colors.orange500} />
+          </Tooltip>
+        </Box>
+      )}
       <Text fontWeight="bold" m="0px">
         {question}
       </Text>

@@ -14,6 +14,7 @@ import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 
 import AnalysisFileUploader from './Files/AnalysisFileUploader';
 import FileSelectionView from './Files/FileSelectionView';
+import DisclaimerBanner from './DisclaimerBanner';
 import messages from './messages';
 import Question from './Question';
 import QuestionButton from './QuestionButton';
@@ -64,78 +65,80 @@ const Insights = () => {
   }
   return (
     <Box display="flex" flexDirection="column" height="100%">
-      <Box display="flex" gap="4px">
-        <Box flex="1">
-          <SummarizeButton
-            applyInputsLimit={applyInputsLimit}
-            inputsCount={filteredInputsCount}
-            analysisId={analysisId}
-          />
-        </Box>
-        <Box flex="1">
-          <QuestionButton
-            onClick={() => setIsQuestionInputOpen(!isQuestionInputOpen)}
-          />
-        </Box>
-      </Box>
-      <Box
-        m="0"
-        my="8px"
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        gap="4px"
-      >
-        <Box>
-          {applyInputsLimit && (
-            <Icon name="alert-circle" fill={colors.orange500} />
-          )}
-
-          <Text
-            fontSize="s"
-            m="0"
-            variant="bodyXs"
-            color={applyInputsLimit ? 'orange500' : 'textSecondary'}
-          >
-            {`${filteredInputsCount} / ${inputsCount}`}{' '}
-            {formatMessage(messages.inputsSelected)}
-          </Text>
+      <Box display="flex" flexDirection="column" gap="8px" height="100%">
+        <Box display="flex" gap="4px">
+          <Box flex="1">
+            <SummarizeButton
+              applyInputsLimit={applyInputsLimit}
+              inputsCount={filteredInputsCount}
+              analysisId={analysisId}
+            />
+          </Box>
+          <Box flex="1">
+            <QuestionButton
+              onClick={() => setIsQuestionInputOpen(!isQuestionInputOpen)}
+            />
+          </Box>
         </Box>
 
-        {isDataRepositoryAnalysisEnabled && (
-          <AnalysisFileUploader
-            setIsFileSelectionOpen={setIsFileSelectionOpen}
-            analysisId={analysisId}
-          />
+        <DisclaimerBanner />
+
+        {isQuestionInputOpen && (
+          <QuestionInput onClose={() => setIsQuestionInputOpen(false)} />
         )}
-      </Box>
 
-      {isQuestionInputOpen && (
-        <QuestionInput onClose={() => setIsQuestionInputOpen(false)} />
-      )}
-
-      <Box flex="1" overflow="auto">
-        {insights?.data.map((insight) => (
-          <div key={insight.id}>
-            {insight.relationships.insightable.data.type === 'summary' ? (
-              <Summary insight={insight} />
-            ) : (
-              <Question insight={insight} />
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          gap="4px"
+        >
+          <Box>
+            {applyInputsLimit && (
+              <Icon name="alert-circle" fill={colors.orange500} />
             )}
-          </div>
-        ))}
-        {/* TODO: Fix this the next time the file is edited. */}
-        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-        {!isLoading && insights?.data?.length === 0 && (
-          <>
-            <Text px="24px" color="grey600">
-              {formatMessage(messages.emptyList)}
+
+            <Text
+              fontSize="s"
+              m="0"
+              variant="bodyXs"
+              color={applyInputsLimit ? 'orange500' : 'textSecondary'}
+            >
+              {`${filteredInputsCount} / ${inputsCount}`}{' '}
+              {formatMessage(messages.inputsSelected)}
             </Text>
-            <Text px="24px" color="grey600">
-              {formatMessage(messages.emptyListDescription)}
-            </Text>
-          </>
-        )}
+          </Box>
+
+          {isDataRepositoryAnalysisEnabled && (
+            <AnalysisFileUploader
+              setIsFileSelectionOpen={setIsFileSelectionOpen}
+              analysisId={analysisId}
+            />
+          )}
+        </Box>
+        <Box flex="1" overflow="auto">
+          {insights?.data.map((insight) => (
+            <div key={insight.id}>
+              {insight.relationships.insightable.data.type === 'summary' ? (
+                <Summary insight={insight} />
+              ) : (
+                <Question insight={insight} />
+              )}
+            </div>
+          ))}
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
+          {!isLoading && insights?.data?.length === 0 && (
+            <>
+              <Text px="24px" color="grey600">
+                {formatMessage(messages.emptyList)}
+              </Text>
+              <Text px="24px" color="grey600">
+                {formatMessage(messages.emptyListDescription)}
+              </Text>
+            </>
+          )}
+        </Box>
       </Box>
     </Box>
   );

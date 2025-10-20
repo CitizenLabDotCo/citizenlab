@@ -101,7 +101,10 @@ const Question = ({ insight }: Props) => {
       <Divider />
 
       <Box display="flex" flexDirection="column" gap="8px">
-        <QuestionHeader question={question.data.attributes.question} />
+        <QuestionHeader
+          question={question.data.attributes.question}
+          showTooltip={false}
+        />
         <InsightBody
           text={answer}
           filters={question.data.attributes.filters}

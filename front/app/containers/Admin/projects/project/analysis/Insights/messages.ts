@@ -106,6 +106,11 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.analysis.aiSummary',
     defaultMessage: 'AI summary',
   },
+  aiDisclaimerBanner: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.aiDisclaimerBanner',
+    defaultMessage:
+      'AI can make mistakes. Please verify important information.',
+  },
   aiSummaryTooltip: {
     id: 'app.containers.Admin.projects.project.analysis.aiSummaryTooltipText',
     defaultMessage:

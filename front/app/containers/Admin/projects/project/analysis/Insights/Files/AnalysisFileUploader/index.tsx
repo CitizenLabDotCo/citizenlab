@@ -33,7 +33,7 @@ const AnalysisFileUploader = ({
         })}
         buttonStyle="text"
         iconSize="20px"
-        pr="4px"
+        p="4px"
         fontSize="s"
         onClick={() => setIsFileSelectionOpen(true)}
       />

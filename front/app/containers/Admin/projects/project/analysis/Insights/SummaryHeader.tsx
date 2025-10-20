@@ -12,25 +12,23 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-const SummaryHeader = () => {
+const SummaryHeader = ({ showTooltip = true }: { showTooltip?: boolean }) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box
-      display="flex"
-      gap="4px"
-      alignItems="center"
-      p="8px"
-      mb="12px"
-      w="fit-content"
-    >
-      <Tooltip
-        content={<Box p="4px">{formatMessage(messages.aiSummaryTooltip)}</Box>}
-        placement="bottom"
-        zIndex={99999}
-      >
-        <Icon name="alert-circle" fill={colors.orange500} mr="4px" />
-      </Tooltip>
+    <Box display="flex" gap="4px" alignItems="center" mb="12px" w="fit-content">
+      {showTooltip && (
+        <Tooltip
+          content={
+            <Box p="4px">{formatMessage(messages.aiSummaryTooltip)}</Box>
+          }
+          placement="bottom"
+          zIndex={99999}
+        >
+          <Icon name="alert-circle" fill={colors.orange500} mr="4px" />
+        </Tooltip>
+      )}
+
       <Text m="0px" fontWeight="bold">
         {formatMessage(messages.aiSummary)}
       </Text>
