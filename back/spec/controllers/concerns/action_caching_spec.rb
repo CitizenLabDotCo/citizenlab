@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-# require_relative '../../app/controllers/concerns/action_caching'
 
 RSpec.describe ActionCaching do
   let(:cache_store) { ActiveSupport::Cache::MemoryStore.new }
@@ -25,11 +24,10 @@ RSpec.describe ActionCaching do
   end
 
   let(:controller) do
-    controller_instance = controller_class.new
-    # Set up the doubles AFTER creating the instance
-    controller_instance.request = double('request')
-    controller_instance.response = double('response', body: '{"data":"test"}', status: 200)
-    controller_instance
+    controller_class.new.tap do |controller_instance|
+      controller_instance.request = double('request')
+      controller_instance.response = double('response', body: '{"data":"test"}', status: 200)
+    end
   end
 
   before do
@@ -37,10 +35,6 @@ RSpec.describe ActionCaching do
   end
 
   describe '.caches_action' do
-    it 'defines caches_action class method' do
-      expect(controller_class).to respond_to(:caches_action)
-    end
-
     it 'stores cache options for the action' do
       controller_class.caches_action :index, expires_in: 1.minute
 
@@ -117,7 +111,7 @@ RSpec.describe ActionCaching do
       end
 
       it 'handles cache_path as symbol method name' do
-        allow(controller).to receive(:custom_cache_params).and_return({ sort: 'name' })
+        controller.define_singleton_method(:custom_cache_params) { { sort: 'name' } }
 
         key = controller.send(:compute_cache_key, :custom_cache_params)
         expect(key).to eq('views/example.org/web_api/v1/ideas?sort=name.json')

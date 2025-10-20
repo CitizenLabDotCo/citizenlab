@@ -36,7 +36,6 @@ module ActionCaching
     # @option options [Symbol, Proc] :unless Inverse condition for caching
     def caches_action(*actions)
       options = actions.extract_options!
-      around_filter = options.delete(:around_filter) || :around_action
 
       cache_options = options.extract!(:expires_in, :cache_path)
       filter_options = options
@@ -45,7 +44,7 @@ module ActionCaching
         _action_cache_options[action.to_sym] = cache_options
       end
 
-      public_send(around_filter, filter_options.merge(only: actions)) do |controller, block|
+      around_action(filter_options.merge(only: actions)) do |controller, block|
         controller.send(:cache_action, &block)
       end
     end
