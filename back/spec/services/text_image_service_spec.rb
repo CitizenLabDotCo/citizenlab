@@ -71,6 +71,10 @@ describe TextImageService do
     end
   end
 
+  describe 'bulk_create_images_multiloc!' do
+    # TODO
+  end
+
   describe 'render_data_images_multiloc' do
     it 'adds src attributes to the img tags' do
       text_image1, text_image2 = create_list(:text_image, 2)

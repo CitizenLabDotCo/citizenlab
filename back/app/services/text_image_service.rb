@@ -10,6 +10,22 @@ class TextImageService < ContentImageService
     end
   end
 
+  def bulk_create_images_multiloc!(
+    extract_data_images_multiloc_output,
+    imageable,
+    field
+  )
+    extract_data_images_multiloc_output.transform_values do |extract_data_images_output|
+      bulk_create_images!(
+        extract_data_images_output,
+        imageable,
+        field
+      )
+    end 
+  end
+
+  private
+
   # Extracts and remove image data from the content, and stores it in an array
   # to be processed later.
   # Already updates the original content to reference the future image model instead.
@@ -51,20 +67,6 @@ class TextImageService < ContentImageService
       content: encode_content(content),
       extracted_images: extracted_images 
     }
-  end
-
-  def bulk_create_images_multiloc!(
-    extract_data_images_multiloc_output,
-    imageable,
-    field
-  )
-    extract_data_images_multiloc_output.transform_values do |extract_data_images_output|
-      bulk_create_images!(
-        extract_data_images_output,
-        imageable,
-        field
-      )
-    end 
   end
 
   def bulk_create_images!(
