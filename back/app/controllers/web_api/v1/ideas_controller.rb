@@ -175,6 +175,12 @@ class WebApi::V1::IdeasController < ApplicationController
     params_for_create = idea_params form
     files_params = extract_file_params(params_for_create)
 
+    text_image_service = TextImageService.new
+    extract_output = text_image_service.extract_data_images_multiloc(
+      params_for_create[:body_multiloc]
+    )
+    params_for_create[:body_multiloc] = extract_output[:content_multiloc]
+
     input = Idea.new params_for_create
 
     files_params.each do |file_params|
@@ -233,6 +239,11 @@ class WebApi::V1::IdeasController < ApplicationController
     ActiveRecord::Base.transaction do
       if input.save(**save_options)
         update_file_upload_fields input, form, params_for_create
+        text_image_service.bulk_create_images!(
+          extract_output[:extracted_images],
+          input, 
+          :body_multiloc
+        )
         sidefx.after_create(input, current_user)
         write_everyone_tracking_cookie input
         render json: WebApi::V1::IdeaSerializer.new(
