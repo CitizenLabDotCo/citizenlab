@@ -16,7 +16,7 @@ const SummaryHeader = ({ showTooltip = true }: { showTooltip?: boolean }) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box display="flex" gap="4px" alignItems="center" mb="12px" w="fit-content">
+    <Box display="flex" gap="4px" alignItems="center" w="fit-content">
       {showTooltip && (
         <Tooltip
           content={

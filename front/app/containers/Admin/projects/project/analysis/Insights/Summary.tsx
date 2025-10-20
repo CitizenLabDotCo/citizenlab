@@ -100,7 +100,7 @@ const Summary = ({ insight }: Props) => {
     >
       <Divider />
 
-      <Box>
+      <Box display="flex" flexDirection="column" gap="8px">
         <SummaryHeader showTooltip={false} />
         <InsightBody
           text={summaryText}
@@ -119,42 +119,41 @@ const Summary = ({ insight }: Props) => {
           phaseId={phaseId}
           customFieldIds={summary.data.attributes.custom_field_ids}
         />
-      </Box>
-
-      <Box display="flex" gap="16px" alignItems="center" mt="16px">
-        <IconButton
-          iconName="filter-2"
-          onClick={handleRestoreFilters}
-          iconColor={colors.textPrimary}
-          iconColorOnHover={colors.textSecondary}
-          a11y_buttonActionMessage={formatMessage(messages.restoreFilters)}
-        />
-        <IconButton
-          iconName={isCopied ? 'check' : 'copy'}
-          iconColor={colors.textPrimary}
-          iconColorOnHover={colors.textSecondary}
-          a11y_buttonActionMessage={'Copy summary to clipboard'}
-          onClick={() => {
-            summaryText &&
-              navigator.clipboard.writeText(removeRefs(summaryText));
-            setIsCopied(true);
-          }}
-        />
-        <IconTooltip
-          icon="flag"
-          content={<Rate insightId={insight.id} />}
-          theme="light"
-          iconSize="24px"
-          iconColor={colors.textPrimary}
-          placement="top"
-        />
-        <IconButton
-          iconName="delete"
-          onClick={() => handleSummaryDelete(insight.id)}
-          iconColor={colors.textPrimary}
-          iconColorOnHover={colors.textSecondary}
-          a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
-        />
+        <Box display="flex" gap="16px" alignItems="center">
+          <IconButton
+            iconName="filter-2"
+            onClick={handleRestoreFilters}
+            iconColor={colors.textPrimary}
+            iconColorOnHover={colors.textSecondary}
+            a11y_buttonActionMessage={formatMessage(messages.restoreFilters)}
+          />
+          <IconButton
+            iconName={isCopied ? 'check' : 'copy'}
+            iconColor={colors.textPrimary}
+            iconColorOnHover={colors.textSecondary}
+            a11y_buttonActionMessage={'Copy summary to clipboard'}
+            onClick={() => {
+              summaryText &&
+                navigator.clipboard.writeText(removeRefs(summaryText));
+              setIsCopied(true);
+            }}
+          />
+          <IconTooltip
+            icon="flag"
+            content={<Rate insightId={insight.id} />}
+            theme="light"
+            iconSize="24px"
+            iconColor={colors.textPrimary}
+            placement="top"
+          />
+          <IconButton
+            iconName="delete"
+            onClick={() => handleSummaryDelete(insight.id)}
+            iconColor={colors.textPrimary}
+            iconColorOnHover={colors.textSecondary}
+            a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
+          />
+        </Box>
       </Box>
     </Box>
   );
