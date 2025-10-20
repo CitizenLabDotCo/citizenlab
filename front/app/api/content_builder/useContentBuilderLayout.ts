@@ -22,20 +22,20 @@ export const fetchContentBuilderLayout = (
 
 export const contentBuilderlayoutPath = (
   modelType: ContentBuilderModelType,
-  modelId: string = 'homepage'
+  modelId: string
 ) => {
-  if (modelType === 'homepage') {
-    return `/home_pages/content_builder_layouts/homepage`;
+  if (modelType === 'project') {
+    return `/projects/${modelId}/content_builder_layouts/project_description`;
   } else if (modelType === 'folder') {
     return `/project_folders/${modelId}/content_builder_layouts/project_folder_description`;
   } else {
-    // Return project layout by default
-    return `/projects/${modelId}/content_builder_layouts/project_description`;
+    // Return homepage layout by default
+    return `/home_pages/content_builder_layouts/homepage`;
   }
 };
 
 const useContentBuilderLayout = (
-  modelType: ContentBuilderModelType = 'project',
+  modelType: ContentBuilderModelType = 'homepage',
   modelId: string = 'homepage',
   enabled: boolean = true
 ) => {
