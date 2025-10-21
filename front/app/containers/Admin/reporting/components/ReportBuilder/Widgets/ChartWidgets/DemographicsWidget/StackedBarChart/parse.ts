@@ -97,19 +97,38 @@ const parseBirthyearResponse = (
   };
 };
 
+/**
+ * Processes raw number field data by grouping numeric values into bins.
+ * This is crucial for creating readable distributions for bar/column charts.
+ * The function dynamically selects one of three binning strategies based on the data's range:
+ *
+ * 1. Individual Bins: If the data range is small (<= 10) AND the number of unique
+ * values is low (<= 20). Creates a bin for every single unique number (e.g., "1", "2").
+ *
+ * 2. Fixed Bin Size: If the data range is medium (<= 50, but > 10). Uses a
+ * standardized, fixed bin size of 5 (e.g., "1-5", "6-10").
+ *
+ * 3. Dynamic/Calculated Bins: If the data range is large (> 50). Calculates a
+ * dynamic bin size to target between 5 and 7 total bins, ensuring the chart
+ * is legible and trends are clear, even with extreme data spread.
+ *
+ * All strategies include a separate category for blank responses.
+ */
 export const parseNumberFieldResponse = (
   series: DemographicsResponse['data']['attributes']['series'],
   blankLabel: string
 ) => {
   // For number fields, create bins based on the actual values
-  const values = Object.keys(series).filter((key) => key !== '_blank');
-  const numericValues = values.map(Number).filter((val) => !isNaN(val));
+  const numericKeys = Object.keys(series).filter((key) => key !== '_blank');
+  const numericValues = numericKeys
+    .map(Number)
+    .filter((numericKey) => !isNaN(numericKey));
 
   if (numericValues.length === 0) {
-    // No numeric values, just show unknown
     const data: [Record<string, number>] = [
       { [blankLabel]: series._blank || 0 },
     ];
+
     return {
       data,
       percentages: [100],
@@ -128,65 +147,89 @@ export const parseNumberFieldResponse = (
   }
 
   // Create bins for the numeric values
-  const min = Math.min(...numericValues);
-  const max = Math.max(...numericValues);
-  const range = max - min;
-
-  // Create bins based on the range
-  const bins: Record<string, number> = {};
+  const minimumValue = Math.min(...numericValues);
+  const maximumValue = Math.max(...numericValues);
+  const dataRange = maximumValue - minimumValue;
+  const dataBins: Record<string, number> = {};
 
   // Determine binning strategy based on data characteristics
-  if (range <= 10 && numericValues.length <= 20) {
+  if (dataRange <= 10 && numericValues.length <= 20) {
     // Small range with few unique values: create individual bins
-    for (let i = min; i <= max; i++) {
-      const key = i.toString();
-      bins[key] = series[key] || 0;
+    for (
+      let currentValue = minimumValue;
+      currentValue <= maximumValue;
+      currentValue++
+    ) {
+      const key = currentValue.toString();
+      dataBins[key] = series[key] || 0;
     }
-  } else if (range <= 50) {
+  } else if (dataRange <= 50) {
     // Medium range: create bins of size 5
     const binSize = 5;
-    for (let i = min; i <= max; i += binSize) {
-      const binEnd = Math.min(i + binSize - 1, max);
-      const binKey = `${i}-${binEnd}`;
-      bins[binKey] = 0;
+    for (
+      let binStartValue = minimumValue;
+      binStartValue <= maximumValue;
+      binStartValue += binSize
+    ) {
+      const binEndValue = Math.min(binStartValue + binSize - 1, maximumValue);
+      const binKey = `${binStartValue}-${binEndValue}`;
+      dataBins[binKey] = 0;
 
       // Sum values in this range
-      for (let j = i; j <= binEnd; j++) {
-        bins[binKey] += series[j.toString()] || 0;
+      for (
+        let valueToSum = binStartValue;
+        valueToSum <= binEndValue;
+        valueToSum++
+      ) {
+        dataBins[binKey] += series[valueToSum.toString()] || 0;
       }
     }
   } else {
     // Large range: create ~5-7 bins
-    const numBins = Math.min(
+    const recommendedNumBins = Math.min(
       7,
       Math.max(5, Math.ceil(numericValues.length / 10))
     );
-    const binSize = Math.ceil(range / numBins);
+    const calculatedBinSize = Math.ceil(dataRange / recommendedNumBins);
 
-    for (let i = min; i <= max; i += binSize) {
-      const binEnd = Math.min(i + binSize - 1, max);
-      const binKey = binSize === 1 ? i.toString() : `${i}-${binEnd}`;
-      bins[binKey] = 0;
+    for (
+      let binStartValue = minimumValue;
+      binStartValue <= maximumValue;
+      binStartValue += calculatedBinSize
+    ) {
+      const binEndValue = Math.min(
+        binStartValue + calculatedBinSize - 1,
+        maximumValue
+      );
+      const binKey =
+        calculatedBinSize === 1
+          ? binStartValue.toString()
+          : `${binStartValue}-${binEndValue}`;
+      dataBins[binKey] = 0;
 
       // Sum values in this range
-      for (let j = i; j <= binEnd; j++) {
-        bins[binKey] += series[j.toString()] || 0;
+      for (
+        let valueToSum = binStartValue;
+        valueToSum <= binEndValue;
+        valueToSum++
+      ) {
+        dataBins[binKey] += series[valueToSum.toString()] || 0;
       }
     }
   }
 
   // Add unknown/blank values
   if (series._blank) {
-    bins[blankLabel] = series._blank;
+    dataBins[blankLabel] = series._blank;
   }
 
-  const data: [Record<string, number>] = [bins];
-  const columns = Object.keys(bins).sort((a, b) => {
+  const data: [Record<string, number>] = [dataBins];
+  const columns = Object.keys(dataBins).sort((a, b) => {
     // Sort numeric values properly
-    const aNum = parseInt(a, 10);
-    const bNum = parseInt(b, 10);
-    if (!isNaN(aNum) && !isNaN(bNum)) {
-      return aNum - bNum;
+    const aNumericValue = parseInt(a, 10);
+    const bNumericValue = parseInt(b, 10);
+    if (!isNaN(aNumericValue) && !isNaN(bNumericValue)) {
+      return aNumericValue - bNumericValue;
     }
     // Put blank/unknown at the end
     if (a === blankLabel) return 1;
@@ -194,7 +237,9 @@ export const parseNumberFieldResponse = (
     return a.localeCompare(b);
   });
 
-  const percentages = roundPercentages(columns.map((column) => bins[column]));
+  const percentages = roundPercentages(
+    columns.map((column) => dataBins[column])
+  );
 
   const statusColorById = createColorMap(columns);
 
@@ -203,7 +248,7 @@ export const parseNumberFieldResponse = (
       icon: 'circle' as const,
       color: statusColorById[column],
       label: column,
-      value: bins[column],
+      value: dataBins[column],
     };
   });
 
