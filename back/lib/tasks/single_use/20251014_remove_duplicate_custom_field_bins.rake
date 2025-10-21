@@ -15,7 +15,7 @@ namespace :single_use do
         .having('COUNT(*) > 1')
         .count
 
-      option_bin_duplicates.each do |(custom_field_id, custom_field_option_id), count|
+      option_bin_duplicates.each_key do |(custom_field_id, custom_field_option_id)|
         bins = CustomFieldBin
           .where(
             type: 'CustomFieldBins::OptionBin',
@@ -47,7 +47,7 @@ namespace :single_use do
         .having('COUNT(*) > 1')
         .count
 
-      value_bin_duplicates.each do |(custom_field_id, values), count|
+      value_bin_duplicates.each_key do |(custom_field_id, values)|
         bins = CustomFieldBin
           .where(
             type: 'CustomFieldBins::ValueBin',
@@ -78,7 +78,7 @@ namespace :single_use do
         .having('COUNT(*) > 1')
         .count
 
-      range_bin_duplicates.each do |(custom_field_id, range), count|
+      range_bin_duplicates.each_key do |(custom_field_id, range)|
         bins = CustomFieldBin
           .where(
             type: 'CustomFieldBins::RangeBin',
@@ -109,7 +109,7 @@ namespace :single_use do
         .having('COUNT(*) > 1')
         .count
 
-      age_bin_duplicates.each do |(custom_field_id, range), count|
+      age_bin_duplicates.each_key do |(custom_field_id, range)|
         bins = CustomFieldBin
           .where(
             type: 'CustomFieldBins::AgeBin',
