@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { FormatMessage } from 'typings';
+
 import { DemographicsResponse } from 'api/graph_data_units/responseTypes/DemographicsWidget';
 
 import dashboardMessages from 'containers/Admin/dashboard/messages';
@@ -16,6 +18,50 @@ import {
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { roundPercentages } from 'utils/math';
 
+interface IntermediateSerie {
+  value: number;
+  name: string;
+  code: string;
+}
+
+// Convert demographics response to checkbox format
+const convertToCheckboxFormat = (
+  data: DemographicsResponse,
+  formatMessage: FormatMessage
+): IntermediateSerie[] | null => {
+  const { series } = data.data.attributes;
+
+  // Get all keys from the series data (universal approach)
+  const allKeys = Object.keys(series);
+  if (allKeys.length === 0) {
+    return null;
+  }
+
+  // Map each key to a display format
+  return allKeys.map((key) => {
+    let displayName: string;
+
+    // Handle special cases with proper internationalization
+    if (key === '_blank') {
+      displayName = formatMessage(dashboardMessages._blank);
+    } else if (key === 'true') {
+      displayName = formatMessage(dashboardMessages.true);
+    } else if (key === 'false') {
+      displayName = formatMessage(dashboardMessages.false);
+    } else {
+      // For any other keys, use the key as display name
+      // This handles custom checkbox values or other boolean representations
+      displayName = key;
+    }
+
+    return {
+      value: series[key] || 0,
+      name: displayName,
+      code: key,
+    };
+  });
+};
+
 interface Props {
   response: DemographicsResponse;
 }
@@ -29,42 +75,7 @@ interface Serie {
 
 const CheckboxChart = ({ response }: Props) => {
   const { formatMessage } = useIntl();
-
-  // Convert demographics response to checkbox format
-  const convertToCheckboxFormat = (data: DemographicsResponse) => {
-    const { series } = data.data.attributes;
-
-    // Get all keys from the series data (universal approach)
-    const allKeys = Object.keys(series);
-
-    // Map each key to a display format
-    const res = allKeys.map((key) => {
-      let displayName: string;
-
-      // Handle special cases with proper internationalization
-      if (key === '_blank') {
-        displayName = formatMessage(dashboardMessages._blank);
-      } else if (key === 'true') {
-        displayName = formatMessage(dashboardMessages.true);
-      } else if (key === 'false') {
-        displayName = formatMessage(dashboardMessages.false);
-      } else {
-        // For any other keys, use the key as display name
-        // This handles custom checkbox values or other boolean representations
-        displayName = key;
-      }
-
-      return {
-        value: series[key] || 0,
-        name: displayName,
-        code: key,
-      };
-    });
-
-    return res.length > 0 ? res : null;
-  };
-
-  const serie = convertToCheckboxFormat(response);
+  const serie = convertToCheckboxFormat(response, formatMessage);
 
   if (!serie) {
     return (
@@ -80,11 +91,11 @@ const CheckboxChart = ({ response }: Props) => {
     percentage: percentages[i],
   }));
 
-  const makeLegends = (row: Serie, i: number) => ({
+  const legendItems = percentagesSerie.map((row, i) => ({
     icon: 'circle' as const,
     color: categoricalColorScheme({ rowIndex: i }),
     label: `${row.name} (${row.percentage}%)`,
-  });
+  }));
 
   return (
     <GraphCard>
@@ -103,7 +114,7 @@ const CheckboxChart = ({ response }: Props) => {
               outerRadius: 60,
             }}
             legend={{
-              items: percentagesSerie.map(makeLegends),
+              items: legendItems,
               maintainGraphSize: true,
               marginLeft: 50,
               position: 'right-center',
