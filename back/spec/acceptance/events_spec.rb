@@ -340,6 +340,8 @@ resource 'Events' do
         end
       end
 
+      invalid syntax!!!!
+
       describe 'when event description contains images' do
         let(:project_id) { @project.id }
         let(:title_multiloc) { event.title_multiloc }
