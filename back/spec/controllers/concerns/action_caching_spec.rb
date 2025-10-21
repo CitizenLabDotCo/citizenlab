@@ -6,6 +6,9 @@ RSpec.describe ActionCaching do
   include ActiveSupport::Testing::TimeHelpers
 
   let(:cache_key) { 'api_response/example.org/web_api/v1/test.json' }
+  # Alias for backward compatibility with existing simple tests
+  let(:controller_class) { test_controller_class }
+  let(:controller) { new_test_controller }
 
   # Shared test controller class with all needed functionality
   let(:test_controller_class) do
@@ -42,10 +45,10 @@ RSpec.describe ActionCaching do
   # Helper to create a controller instance with proper request/response setup
   def new_test_controller(klass = test_controller_class, request_path: '/web_api/v1/test', query_params: {})
     klass.new.tap do |ctrl|
-      ctrl.request = double('request',
+      ctrl.request = instance_double(ActionDispatch::Request,
         path: request_path,
         host: 'example.org',
-        format: double(symbol: :json),
+        format: instance_double(Mime::Type, symbol: :json),
         query_parameters: query_params)
       ctrl.response = ActionDispatch::Response.new
     end
@@ -61,10 +64,6 @@ RSpec.describe ActionCaching do
       controller.index
     end
   end
-
-  # Alias for backward compatibility with existing simple tests
-  let(:controller_class) { test_controller_class }
-  let(:controller) { new_test_controller }
 
   before do
     test_controller_class.cache_store.clear
@@ -194,8 +193,8 @@ RSpec.describe ActionCaching do
         execute_cached_action(test_controller1)
 
         expect(test_controller1.execution_count).to eq(1)
-        cache_key_1 = 'api_response/example.org/web_api/v1/test?page=1.json'
-        expect(test_controller_class.cache_store.read(cache_key_1)).to be_present
+        cache_key1 = 'api_response/example.org/web_api/v1/test?page=1.json'
+        expect(test_controller_class.cache_store.read(cache_key1)).to be_present
 
         # Second request with page=2
         test_controller2 = new_test_controller(query_params: { page: 2 })
@@ -203,15 +202,15 @@ RSpec.describe ActionCaching do
         execute_cached_action(test_controller2)
 
         expect(test_controller2.execution_count).to eq(1)
-        cache_key_2 = 'api_response/example.org/web_api/v1/test?page=2.json'
-        expect(test_controller_class.cache_store.read(cache_key_2)).to be_present
+        cache_key2 = 'api_response/example.org/web_api/v1/test?page=2.json'
+        expect(test_controller_class.cache_store.read(cache_key2)).to be_present
       end
     end
   end
 
   describe '#compute_cache_key' do
     before do
-      allow(controller.request).to receive_messages(path: '/web_api/v1/ideas', host: 'example.org', format: double(symbol: :json))
+      allow(controller.request).to receive_messages(path: '/web_api/v1/ideas', host: 'example.org', format: instance_double(Mime::Type, symbol: :json))
     end
 
     it 'removes existing extension from path' do
@@ -222,7 +221,7 @@ RSpec.describe ActionCaching do
     end
 
     it 'uses json format by default when format is nil' do
-      allow(controller.request).to receive(:format).and_return(double(symbol: nil))
+      allow(controller.request).to receive(:format).and_return(instance_double(Mime::Type, symbol: nil))
 
       key = controller.send(:compute_cache_key, nil)
       expect(key).to eq('api_response/example.org/web_api/v1/ideas.json')

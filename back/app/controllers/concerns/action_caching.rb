@@ -56,7 +56,7 @@ module ActionCaching
 
       # Convert to query string if it's a hash
       query_string = custom_params.is_a?(Hash) ? custom_params.to_query : custom_params.to_s
-      cache_key = "#{cache_key}?#{query_string}"  if query_string.present?
+      cache_key = "#{cache_key}?#{query_string}" if query_string.present?
     end
     "#{cache_key}.#{format}"
   end
