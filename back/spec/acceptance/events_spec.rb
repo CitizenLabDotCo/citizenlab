@@ -339,6 +339,8 @@ resource 'Events' do
           expect(json_response).to include_response_error(:online_link, 'url')
         end
       end
+      
+      describe do end
 
       describe 'when event description contains images' do
         let(:project_id) { @project.id }
