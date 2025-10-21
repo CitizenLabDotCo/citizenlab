@@ -86,12 +86,7 @@ const SSOButtonsExceptFCAndCU = ({
           authProvider="id_austria"
           onContinue={onSelectAuthProvider}
         >
-          <FormattedMessage
-            {...parentMessages.continueWithLoginMechanism}
-            values={{
-              loginMechanismName: 'ID Austria',
-            }}
-          />
+          <FormattedMessage {...messages.continueWithIdAustria} />
         </WrappedAuthProviderButton>
       )}
       {ssoProviders.criipto && (
