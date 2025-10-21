@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 import { RouteType } from 'routes';
 import { Multiloc, SupportedLocale } from 'typings';
 
-import { DescriptionModelType } from 'api/content_builder/types';
+import { ContentBuildableType } from 'api/content_builder/types';
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -28,16 +28,16 @@ import ContentBuilderSettings from 'components/DescriptionBuilder/Settings';
 import { isNilOrError } from 'utils/helperUtils';
 
 type Props = {
-  modelId: string;
-  modelType: DescriptionModelType;
+  contentBuildableId: string;
+  contentBuildableType: ContentBuildableType;
   backPath: RouteType;
   previewPath: RouteType;
   titleMultiloc: Multiloc;
 };
 
 const DescriptionBuilderPage = ({
-  modelId,
-  modelType,
+  contentBuildableId,
+  contentBuildableType,
   backPath,
   previewPath,
   titleMultiloc,
@@ -56,8 +56,8 @@ const DescriptionBuilderPage = ({
   const locales = useAppConfigurationLocales();
 
   const { data: descriptionBuilderLayout } = useContentBuilderLayout(
-    modelId,
-    modelType
+    contentBuildableType,
+    contentBuildableId
   );
 
   const [contentBuilderErrors, setContentBuilderErrors] =
@@ -88,8 +88,9 @@ const DescriptionBuilderPage = ({
     isNilOrError(locales) ||
     !descriptionBuilderVisible ||
     !descriptionBuilderLayout
-  )
+  ) {
     return null;
+  }
 
   const hasError =
     Object.values(contentBuilderErrors).filter((node) => node.hasError).length >
@@ -144,8 +145,8 @@ const DescriptionBuilderPage = ({
           setPreviewEnabled={setPreviewEnabled}
           selectedLocale={selectedLocale}
           onSelectLocale={handleSelectedLocaleChange}
-          modelId={modelId}
-          modelType={modelType}
+          contentBuildableId={contentBuildableId}
+          contentBuildableType={contentBuildableType}
           backPath={backPath}
           previewPath={previewPath}
           titleMultiloc={titleMultiloc}
@@ -156,8 +157,8 @@ const DescriptionBuilderPage = ({
           id="e2e-project-description-content-builder-page"
         >
           <DescriptionBuilderToolbox
-            modelType={modelType}
-            modelId={modelId}
+            contentBuildableType={contentBuildableType}
+            contentBuildableId={contentBuildableId}
             selectedLocale={selectedLocale}
           />
           <LanguageProvider
@@ -175,8 +176,8 @@ const DescriptionBuilderPage = ({
       </Editor>
       <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>
         <DescriptionBuilderEditModePreview
-          modelId={modelId}
-          modelType={modelType}
+          contentBuildableId={contentBuildableId}
+          contentBuildableType={contentBuildableType}
           ref={iframeRef}
           selectedLocale={selectedLocale}
         />

@@ -11,6 +11,7 @@ import { RouteType } from 'routes';
 import styled from 'styled-components';
 import { SupportedLocale, Multiloc } from 'typings';
 
+import { ContentBuildableType } from 'api/content_builder/types';
 import useAddContentBuilderLayout from 'api/content_builder/useAddContentBuilderLayout';
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 
@@ -18,20 +19,20 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from 'containers/DescriptionBuilder/messages';
 
+import NewLabel from 'components/UI/NewLabel';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import Warning from 'components/UI/Warning';
 
 import { injectIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import NewLabel from 'components/UI/NewLabel';
 
 // Messages
 
 type DescriptionBuilderToggleProps = {
   valueMultiloc: Multiloc | undefined | null;
   onChange: (description_multiloc: Multiloc, _locale: SupportedLocale) => void;
-  modelType?: 'project' | 'folder';
+  contentBuildableType: ContentBuildableType;
   label: string;
 } & WithRouterProps &
   WrappedComponentProps;
@@ -54,18 +55,20 @@ const DescriptionBuilderToggle = ({
   intl: { formatMessage },
   valueMultiloc,
   onChange,
-  modelType,
+  contentBuildableType,
   label,
 }: DescriptionBuilderToggleProps) => {
   const featureEnabled = useFeatureFlag({
     name: 'project_description_builder',
   });
 
-  const modelId =
-    modelType === 'folder' ? params.projectFolderId : params.projectId;
+  const contentBuildableId =
+    contentBuildableType === 'folder'
+      ? params.projectFolderId
+      : params.projectId;
   const { data: DescriptionBuilderLayout } = useContentBuilderLayout(
-    modelId,
-    modelType,
+    contentBuildableType,
+    contentBuildableId,
     featureEnabled
   );
 
@@ -93,14 +96,14 @@ const DescriptionBuilderToggle = ({
 
   const toggleLayoutEnabledStatus = async (enabled: boolean) => {
     await addDescriptionBuilderLayout({
-      modelId,
-      modelType,
+      contentBuildableId,
+      contentBuildableType,
       enabled,
     });
   };
 
   const route =
-    `/admin/description-builder/${modelType}s/${modelId}/description` as RouteType;
+    `/admin/description-builder/${contentBuildableType}s/${contentBuildableId}/description` as RouteType;
 
   return (
     <Box data-testid="descriptionBuilderToggle">
@@ -127,7 +130,7 @@ const DescriptionBuilderToggle = ({
           <Box mt="10px">
             <Warning>
               {formatMessage(
-                modelType === 'folder'
+                contentBuildableType === 'folder'
                   ? messages.folderLayoutBuilderWarning
                   : messages.projectLayoutBuilderWarning
               )}

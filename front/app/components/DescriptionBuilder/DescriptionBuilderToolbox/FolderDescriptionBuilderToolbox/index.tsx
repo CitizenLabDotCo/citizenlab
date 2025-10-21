@@ -25,8 +25,10 @@ import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
-import FolderFiles from 'components/DescriptionBuilder/CraftSections/FolderFiles';
-import InfoWithAccordions from 'components/DescriptionBuilder/CraftSections/InfoWithAccordions';
+import FolderFiles, {
+  folderFilesTitle,
+} from 'components/DescriptionBuilder/Widgets/FolderFiles';
+import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
 
 import {
   MessageDescriptor,
@@ -56,6 +58,7 @@ const FolderDescriptionBuilderToolbox = ({
     });
   };
 
+  // Note: Some widgets here have folder specific labels
   return (
     <Container
       className="
@@ -100,7 +103,7 @@ const FolderDescriptionBuilderToolbox = ({
           id="e2e-draggable-folder-files"
           component={<FolderFiles folderId={folderId} />}
           icon="paperclip"
-          label={formatMessage(messages.folderFiles)}
+          label={formatMessage(folderFilesTitle)}
         />
       </Section>
       <Section>

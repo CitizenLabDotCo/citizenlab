@@ -2,28 +2,28 @@ import React from 'react';
 
 import { SupportedLocale } from 'typings';
 
-import { DescriptionModelType } from 'api/content_builder/types';
+import { ContentBuildableType } from 'api/content_builder/types';
 
 import FolderDescriptionBuilderToolbox from 'components/DescriptionBuilder/DescriptionBuilderToolbox/FolderDescriptionBuilderToolbox';
 import ProjectDescriptionBuilderToolbox from 'components/DescriptionBuilder/DescriptionBuilderToolbox/ProjectDescriptionBuilderToolbox';
 
 type DescriptionBuilderToolboxProps = {
   selectedLocale: SupportedLocale;
-  modelId: string;
-  modelType: DescriptionModelType;
+  contentBuildableId: string;
+  contentBuildableType: ContentBuildableType;
 };
 
 const DescriptionBuilderToolbox = ({
   selectedLocale,
-  modelId,
-  modelType,
+  contentBuildableId,
+  contentBuildableType,
 }: DescriptionBuilderToolboxProps) => {
   // Folder
-  if (modelType === 'folder') {
+  if (contentBuildableType === 'folder') {
     return (
       <FolderDescriptionBuilderToolbox
         selectedLocale={selectedLocale}
-        folderId={modelId}
+        folderId={contentBuildableId}
       />
     );
   }

@@ -16,7 +16,7 @@ import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
-import InfoWithAccordions from 'components/DescriptionBuilder/CraftSections/InfoWithAccordions';
+import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
 
 import { useIntl } from 'utils/cl-intl';
 const ProjectDescriptionBuilderToolbox = () => {

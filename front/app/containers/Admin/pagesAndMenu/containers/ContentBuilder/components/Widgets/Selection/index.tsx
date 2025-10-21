@@ -65,6 +65,9 @@ Selection.craft = {
   related: {
     settings: Settings,
   },
+  custom: {
+    title: messages.selectionTitle,
+  },
 };
 
 export const selectionTitle = messages.selectionTitle;

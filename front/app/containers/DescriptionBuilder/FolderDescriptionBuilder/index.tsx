@@ -15,8 +15,8 @@ const FolderDescriptionBuilderPage = () => {
 
   return (
     <DescriptionBuilderPage
-      modelId={folderId}
-      modelType="folder"
+      contentBuildableId={folderId}
+      contentBuildableType="folder"
       backPath={`/admin/projects/folders/${folderId}/settings`}
       previewPath={`/folders/${folder.data.attributes.slug}`}
       titleMultiloc={folder.data.attributes.title_multiloc}
