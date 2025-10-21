@@ -1,6 +1,6 @@
 import { Pages } from '../util';
 
-import { determineNextPageNumber, determinePreviousPage } from './logic';
+import { determineNextPageNumber, determinePreviousPageNumber } from './logic';
 
 const pages: Pages = [
   {
@@ -441,7 +441,7 @@ describe('Survey form logic', () => {
       const userNavigationHistory = [0, 2, 1];
       const currentPageIndex = 1; // Currently on page 1
 
-      const previousPageIndex = determinePreviousPage({
+      const previousPageIndex = determinePreviousPageNumber({
         userNavigationHistory,
         currentPageIndex,
       });
@@ -454,7 +454,7 @@ describe('Survey form logic', () => {
       const userNavigationHistory = [0, 2]; // History doesn't include current page
       const currentPageIndex = 1;
 
-      const previousPageIndex = determinePreviousPage({
+      const previousPageIndex = determinePreviousPageNumber({
         userNavigationHistory,
         currentPageIndex,
       });
@@ -467,7 +467,7 @@ describe('Survey form logic', () => {
       const userNavigationHistory = [1]; // Only current page in history
       const currentPageIndex = 1;
 
-      const previousPageIndex = determinePreviousPage({
+      const previousPageIndex = determinePreviousPageNumber({
         userNavigationHistory,
         currentPageIndex,
       });
@@ -481,7 +481,7 @@ describe('Survey form logic', () => {
       const userNavigationHistory = [0, 3, 1, 2, 4];
       const currentPageIndex = 4;
 
-      const previousPageIndex = determinePreviousPage({
+      const previousPageIndex = determinePreviousPageNumber({
         userNavigationHistory,
         currentPageIndex,
       });
@@ -495,7 +495,7 @@ describe('Survey form logic', () => {
       const userNavigationHistory = [0, 1, 2, 1];
       const currentPageIndex = 1;
 
-      const previousPageIndex = determinePreviousPage({
+      const previousPageIndex = determinePreviousPageNumber({
         userNavigationHistory,
         currentPageIndex,
       });

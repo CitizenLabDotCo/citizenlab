@@ -30,7 +30,7 @@ import { FormValues } from '../Page/types';
 import usePageForm from '../Page/usePageForm';
 import { getFormCompletionPercentage, Pages } from '../util';
 
-import { determineNextPageNumber, determinePreviousPage } from './logic';
+import { determineNextPageNumber, determinePreviousPageNumber } from './logic';
 
 const StyledForm = styled.form`
   height: 100%;
@@ -105,7 +105,7 @@ const SurveyPage = ({
       localize,
     });
 
-  const previousPageNumber = determinePreviousPage({
+  const previousPageNumber = determinePreviousPageNumber({
     userNavigationHistory,
     currentPageIndex,
   });

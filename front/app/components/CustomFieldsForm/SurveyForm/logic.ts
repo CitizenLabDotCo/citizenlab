@@ -146,7 +146,7 @@ export const determineNextPageNumber = ({
   return nextPageIndex;
 };
 
-export const determinePreviousPage = ({
+export const determinePreviousPageNumber = ({
   userNavigationHistory,
   currentPageIndex,
 }: {
