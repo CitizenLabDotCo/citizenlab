@@ -10,7 +10,7 @@ resource 'ProjectFolder' do
     header 'Content-Type', 'application/json'
 
     @projects = %w[published published draft published archived archived published]
-      .map { |ps|  create(:project, admin_publication_attributes: { publication_status: ps }) }
+      .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
     @folders = [
       create(:project_folder, projects: @projects.take(3)),
       create(:project_folder, projects: [@projects.last])
@@ -30,7 +30,7 @@ resource 'ProjectFolder' do
       expect(json_response[:data].size).to eq 2
     end
 
-    example 'List only folders with specified IDs', document: true do
+    example 'List only folders with specified IDs' do
       filter_ids = [@folders.first.id]
 
       do_request(filter_ids: filter_ids)

@@ -601,9 +601,9 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.timelineTab',
     defaultMessage: 'Timeline',
   },
-  participationTab: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.participationTab',
-    defaultMessage: 'Participants',
+  audienceTab: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.audienceTab',
+    defaultMessage: 'Audience',
   },
   messagingTab: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.messagingTab',

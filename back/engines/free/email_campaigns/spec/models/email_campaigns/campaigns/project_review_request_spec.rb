@@ -30,4 +30,19 @@ RSpec.describe EmailCampaigns::Campaigns::ProjectReviewRequest do
       )
     end
   end
+
+  describe 'filters' do
+    let(:campaign) { create(:project_review_request_campaign) }
+    let(:notification) { create(:project_review_request) }
+    let(:activity) { create(:activity, item: notification, action: 'created') }
+
+    it 'is sent if the review is still pending' do
+      expect(campaign.filter_pending_request(activity: activity)).to be true
+    end
+
+    it 'is not sent if the review has been approved' do
+      notification.project_review.approve!(create(:admin))
+      expect(campaign.filter_pending_request(activity: activity)).to be false
+    end
+  end
 end

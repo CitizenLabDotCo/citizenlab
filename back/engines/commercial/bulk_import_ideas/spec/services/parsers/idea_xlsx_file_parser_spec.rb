@@ -198,16 +198,16 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
       parsed_rows = service.parse_rows(file)
       expect(parsed_rows.count).to eq 2
       expect(parsed_rows[0]).to include(
-        :title_multiloc => { :en => 'Another idea from xlsx' },
-        :body_multiloc => { :en => 'And some bigger description here' },
-        :location_description => 'Oxford',
-        :custom_field_values => { :text_field => 'Some custom text here' }
+        title_multiloc: { en: 'Another idea from xlsx' },
+        body_multiloc: { en: 'And some bigger description here' },
+        location_description: 'Oxford',
+        custom_field_values: { text_field: 'Some custom text here' }
       )
       expect(parsed_rows[1]).to include(
-        :title_multiloc => { :en => 'One more idea from xlsx' },
-        :body_multiloc => { :en => 'And another description here' },
-        :location_description => 'Cambridge',
-        :custom_field_values => {}
+        title_multiloc: { en: 'One more idea from xlsx' },
+        body_multiloc: { en: 'And another description here' },
+        location_description: 'Cambridge',
+        custom_field_values: {}
       )
     end
 
