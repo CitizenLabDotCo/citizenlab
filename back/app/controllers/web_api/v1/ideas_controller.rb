@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metrics/ClassLength
+class WebApi::V1::IdeasController < ApplicationController
   include BlockingProfanity
 
   SIMILARITIES_LIMIT = 5

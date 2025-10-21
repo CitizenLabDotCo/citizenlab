@@ -4,7 +4,7 @@ require 'timeout'
 
 module GeneralHelper
   # https://gist.github.com/jnicklas/d8da686061f0a59ffdf7#gistcomment-2900179
-  def wait_until(time, &_block)
+  def wait_until(time, &)
     Timeout.timeout(time) do
       sleep(0.01) until (value = yield)
       value
