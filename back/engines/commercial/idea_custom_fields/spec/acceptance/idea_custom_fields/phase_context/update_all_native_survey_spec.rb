@@ -636,7 +636,7 @@ resource 'Idea Custom Fields' do
 
         assert_status 422
         json_response = json_parse response_body
-        expect(json_response).to eq({ :errors => { :form => [{ :error => 'stale_data' }] } })
+        expect(json_response).to eq({ errors: { form: [{ error: 'stale_data' }] } })
       end
 
       example '[error] last custom field is not the end page' do
@@ -653,7 +653,7 @@ resource 'Idea Custom Fields' do
 
         assert_status 422
         json_response = json_parse response_body
-        expect(json_response).to eq({ :errors => { :form => [{ :error => 'no_end_page' }] } })
+        expect(json_response).to eq({ errors: { form: [{ error: 'no_end_page' }] } })
       end
 
       example 'Update linear_scale field' do

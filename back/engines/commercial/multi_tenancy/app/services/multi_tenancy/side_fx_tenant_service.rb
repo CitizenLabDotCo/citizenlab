@@ -16,7 +16,7 @@ module MultiTenancy
 
     def around_apply_template(tenant, _template, current_user = nil)
       yield
-    rescue Exception => e
+    rescue StandardError => e
       LogActivityJob.perform_later(tenant, 'creation_failed', current_user, Time.now.to_i, payload: {
         error_message: "Loading of the template failed.\n#{e}"
       })
@@ -31,7 +31,7 @@ module MultiTenancy
       tenant.switch do
         TenantService.new.finalize_creation tenant
         LogActivityJob.perform_later tenant, 'creation_finalized', current_user, tenant.creation_finalized_at.to_i
-      rescue Exception => e
+      rescue StandardError => e
         LogActivityJob.perform_later(tenant, 'creation_failed', current_user, Time.now.to_i, payload: {
           error_message: 'Finalization of tenant (default campaigns, permissions, tracking) failed'
         })

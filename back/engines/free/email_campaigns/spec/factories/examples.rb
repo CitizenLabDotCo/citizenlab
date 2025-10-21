@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :campaign_example, class: EmailCampaigns::Example do
+  factory :campaign_example, class: 'EmailCampaigns::Example' do
     association :campaign, factory: :admin_rights_received_campaign
     association :recipient, factory: :user
     locale { 'en' }

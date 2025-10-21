@@ -2,12 +2,15 @@ import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import { SetError } from 'containers/Authentication/typings';
 import useAuthConfig from 'containers/Authentication/useAuthConfig';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
 import TextButton from '../_components/TextButton';
+import authMessages from '../messages';
 
 import Form from './Form';
 import messages from './messages';
@@ -36,6 +39,12 @@ const EmailAndPassword = ({
 }: Props) => {
   const { anySSOProviderEnabled } = useAuthConfig();
   const { formatMessage } = useIntl();
+  const { data: tenant } = useAppConfiguration();
+  const tenantSettings = tenant?.data.attributes.settings;
+
+  // Show link to the Azure AD button?
+  const showAdminLoginLink =
+    tenantSettings?.azure_ad_login?.visibility === 'link';
 
   return (
     <Box id="e2e-sign-in-email-password-container">
@@ -71,6 +80,13 @@ const EmailAndPassword = ({
           />
         )}
       </Text>
+      {showAdminLoginLink && (
+        <a href="/sign-in/admin">
+          <Text fontSize="xs" textDecoration="underline" color="textSecondary">
+            <FormattedMessage {...authMessages.adminOptions} />
+          </Text>
+        </a>
+      )}
     </Box>
   );
 };
