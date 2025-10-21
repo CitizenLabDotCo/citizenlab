@@ -53,7 +53,6 @@ import messages from '../../messages';
 import FolderCardImageTooltip from './FolderCardImageTooltip';
 import FolderHeaderImageTooltip from './FolderHeaderImageTooltip';
 import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
-import NewLabel from 'components/UI/NewLabel';
 
 type IProjectFolderSubmitState =
   | 'disabled'
