@@ -16,38 +16,25 @@ module ActionCaching
     #   caches_action :index, :show, expires_in: 1.minute, cache_path: -> { request.query_parameters }
     def caches_action(*actions)
       options = actions.extract_options!
-
       cache_options = options.extract!(:expires_in, :cache_path)
       filter_options = options
 
-      actions.each do |action|
-        _action_cache_options[action.to_sym] = cache_options
-      end
-
       around_action(filter_options.merge(only: actions)) do |controller, block|
-        controller.send(:cache_action, &block)
+        controller.send(:cache_action, **cache_options, &block)
       end
     end
   end
 
   private
 
-  def cache_action
-    action_name_sym = action_name.to_sym
-    cache_options = self.class._action_cache_options[action_name_sym] || {}
-
-    cache_key = compute_cache_key(cache_options[:cache_path])
-    expires_in = cache_options[:expires_in]
-
+  def cache_action(expires_in: nil, cache_path: nil)
+    cache_key = compute_cache_key(cache_path)
     cached_response = read_cache(cache_key)
 
     if cached_response
       render_cached_response(cached_response)
     else
-      # Execute the action and capture the response
-      yield
-
-      # Store the response in cache after rendering
+      yield # Execute the action
       write_cache(cache_key, response, expires_in)
     end
   end

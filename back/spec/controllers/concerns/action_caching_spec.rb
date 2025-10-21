@@ -71,19 +71,6 @@ RSpec.describe ActionCaching do
   end
 
   describe '.caches_action' do
-    it 'stores cache options for one action' do
-      controller_class.caches_action :index, expires_in: 1.minute
-
-      expect(controller_class._action_cache_options[:index]).to eq(expires_in: 1.minute)
-    end
-
-    it 'stores cache options for multiple actions' do
-      controller_class.caches_action :index, :show, expires_in: 5.minutes
-
-      expect(controller_class._action_cache_options[:index]).to eq(expires_in: 5.minutes)
-      expect(controller_class._action_cache_options[:show]).to eq(expires_in: 5.minutes)
-    end
-
     describe 'cache miss then cache hit' do
       it 'returns cached response without executing action body on cache hit' do
         test_controller_class.caches_action :index, expires_in: 1.minute
