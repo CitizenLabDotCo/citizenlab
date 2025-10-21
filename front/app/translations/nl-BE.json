@@ -1882,7 +1882,7 @@
   "app.containers.SearchInput.searchLabel": "Zoeken",
   "app.containers.SearchInput.searchPlaceholder": "Zoeken",
   "app.containers.SearchInput.searchTerm": "Zoekterm: {searchTerm}",
-  "app.containers.SignIn.createAnAccountLink": "registreren",
+  "app.containers.SignIn.createAnAccountLink": "registreer je",
   "app.containers.SignIn.franceConnectIsTheSolutionProposedByTheGovernment": "FranceConnect is de door de Franse staat voorgestelde oplossing om de toegang tot meer dan 700 onlinediensten te beveiligen en te vereenvoudigen.",
   "app.containers.SignIn.or": "Of",
   "app.containers.SignIn.signInError2": "De verstrekte informatie is niet correct. Klik op 'Wachtwoord vergeten?' om je wachtwoord opnieuw in te stellen, of {createAnAccountLink}.",
