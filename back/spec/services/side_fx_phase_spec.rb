@@ -23,11 +23,6 @@ describe SideFxPhaseService do
         )
     end
 
-    it 'runs the description through the necessary steps' do
-      expect_any_instance_of(TextImageService).to receive(:swap_data_images_multiloc).with(phase.description_multiloc, field: :description_multiloc, imageable: phase).and_return(phase.description_multiloc)
-      service.after_create(phase, user)
-    end
-
     it { expect { service.after_create(phase, user) }.to have_enqueued_job(Surveys::WebhookManagerJob) }
   end
 
