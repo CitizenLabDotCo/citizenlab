@@ -1,6 +1,10 @@
 import { Pages } from '../util';
 
-import { determineNextPageNumber, determinePreviousPageNumber } from './logic';
+import {
+  determineNextPageNumber,
+  determinePreviousPageNumber,
+  determinePreviousPageNumberWithHistory,
+} from './logic';
 
 const pages: Pages = [
   {
@@ -514,5 +518,85 @@ describe('Survey form logic', () => {
       currentPage: pages[4].page,
     });
     expect(previousPageIndex4).toBe(0);
+  });
+
+  describe('Navigation history-based previous page determination', () => {
+    it('should use navigation history when available', () => {
+      // Simulate a path where user went from page 0 -> page 2 -> page 1 (through conditional logic)
+      const userNavigationHistory = [0, 2, 1];
+      const currentPageIndex = 1; // Currently on page 1
+
+      const previousPageIndex = determinePreviousPageNumberWithHistory({
+        userNavigationHistory,
+        currentPageIndex,
+        pages,
+        currentPage: pages[1].page,
+      });
+
+      // Should return page 2 (the previous page in history), not page 0 (sequential previous)
+      expect(previousPageIndex).toBe(2);
+    });
+
+    it('should fallback to logic-based approach when current page not in history', () => {
+      const userNavigationHistory = [0, 2]; // History doesn't include current page
+      const currentPageIndex = 1;
+
+      const previousPageIndex = determinePreviousPageNumberWithHistory({
+        userNavigationHistory,
+        currentPageIndex,
+        pages,
+        currentPage: pages[1].page,
+      });
+
+      // Should fallback to original logic
+      expect(previousPageIndex).toBe(0);
+    });
+
+    it('should fallback to logic-based approach when history has only one page', () => {
+      const userNavigationHistory = [1]; // Only current page in history
+      const currentPageIndex = 1;
+
+      const previousPageIndex = determinePreviousPageNumberWithHistory({
+        userNavigationHistory,
+        currentPageIndex,
+        pages,
+        currentPage: pages[1].page,
+      });
+
+      // Should fallback to original logic
+      expect(previousPageIndex).toBe(0);
+    });
+
+    it('should handle complex navigation paths correctly', () => {
+      // Simulate: page 0 -> page 3 -> page 1 -> page 2 -> page 4
+      const userNavigationHistory = [0, 3, 1, 2, 4];
+      const currentPageIndex = 4;
+
+      const previousPageIndex = determinePreviousPageNumberWithHistory({
+        userNavigationHistory,
+        currentPageIndex,
+        pages,
+        currentPage: pages[4].page,
+      });
+
+      // Should return page 2 (the actual previous page in user's path)
+      expect(previousPageIndex).toBe(2);
+    });
+
+    it('should handle multiple visits to the same page', () => {
+      // Simulate: page 0 -> page 1 -> page 2 -> page 1 (user went back and forth)
+      const userNavigationHistory = [0, 1, 2, 1];
+      const currentPageIndex = 1;
+
+      const previousPageIndex = determinePreviousPageNumberWithHistory({
+        userNavigationHistory,
+        currentPageIndex,
+        pages,
+        currentPage: pages[1].page,
+      });
+
+      // Should return page 2 (the most recent previous page in history)
+      expect(previousPageIndex).toBe(2);
+    });
   });
 });

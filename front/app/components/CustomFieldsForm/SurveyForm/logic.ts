@@ -200,3 +200,36 @@ export const determinePreviousPageNumber = ({
 
   return previousPageIndex;
 };
+
+export const determinePreviousPageNumberWithHistory = ({
+  userNavigationHistory,
+  currentPageIndex,
+  pages,
+  currentPage,
+  formData,
+}: {
+  userNavigationHistory: number[];
+  currentPageIndex: number;
+  pages: Pages;
+  currentPage: IFlatCustomField;
+  formData?: Record<string, any>;
+}) => {
+  // If we have navigation history and can go back in history, use that
+  if (userNavigationHistory.length > 1) {
+    // Find the current page in the history
+    const currentHistoryIndex =
+      userNavigationHistory.lastIndexOf(currentPageIndex);
+
+    // If we found the current page and there's a previous page in history
+    if (currentHistoryIndex > 0) {
+      return userNavigationHistory[currentHistoryIndex - 1];
+    }
+  }
+
+  // Fallback to the existing logic-based approach
+  return determinePreviousPageNumber({
+    pages,
+    currentPage,
+    formData,
+  });
+};

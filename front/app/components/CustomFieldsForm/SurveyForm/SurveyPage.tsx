@@ -30,7 +30,10 @@ import { FormValues } from '../Page/types';
 import usePageForm from '../Page/usePageForm';
 import { getFormCompletionPercentage, Pages } from '../util';
 
-import { determineNextPageNumber, determinePreviousPageNumber } from './logic';
+import {
+  determineNextPageNumber,
+  determinePreviousPageNumberWithHistory,
+} from './logic';
 
 const StyledForm = styled.form`
   height: 100%;
@@ -42,6 +45,8 @@ type SurveyPage = {
   pageQuestions: IFlatCustomField[];
   currentPageIndex: number;
   setCurrentPageIndex: React.Dispatch<React.SetStateAction<number>>;
+  userNavigationHistory: number[];
+  setUserNavigationHistory: React.Dispatch<React.SetStateAction<number[]>>;
   lastPageIndex: number;
   participationMethod?: ParticipationMethod;
   ideaId?: string;
@@ -68,6 +73,8 @@ const SurveyPage = ({
   onSubmit,
   currentPageIndex,
   setCurrentPageIndex,
+  userNavigationHistory,
+  setUserNavigationHistory,
   phase,
   defaultValues,
 }: SurveyPage) => {
@@ -101,7 +108,9 @@ const SurveyPage = ({
       localize,
     });
 
-  const previousPageNumber = determinePreviousPageNumber({
+  const previousPageNumber = determinePreviousPageNumberWithHistory({
+    userNavigationHistory,
+    currentPageIndex,
     pages,
     currentPage: page,
     formData: methods.watch(),
@@ -130,6 +139,8 @@ const SurveyPage = ({
       });
       // Go to the next page
       if (currentPageIndex < lastPageIndex) {
+        // Add the next page to navigation history
+        setUserNavigationHistory((history) => [...history, nextPageNumber]);
         setCurrentPageIndex(nextPageNumber);
       }
     } catch (error) {
@@ -161,6 +172,8 @@ const SurveyPage = ({
 
   const handlePrevious = () => {
     pageRef.current?.scrollTo(0, 0);
+    // Remove the current page from navigation history when going back
+    setUserNavigationHistory((history) => history.slice(0, -1));
     setCurrentPageIndex(previousPageNumber);
   };
 
