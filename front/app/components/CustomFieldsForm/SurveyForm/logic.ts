@@ -146,75 +146,14 @@ export const determineNextPageNumber = ({
   return nextPageIndex;
 };
 
-export const determinePreviousPageNumber = ({
-  pages,
-  currentPage,
-  formData,
-}: {
-  pages: Pages;
-  currentPage: IFlatCustomField;
-  formData?: Record<string, any>;
-}) => {
-  const currentPageIndex = findPageIndex(pages, currentPage.id);
-  let previousPageIndex = currentPageIndex - 1;
-
-  const questionsWithLogic = pages.map((page) =>
-    page.pageQuestions.filter((question) => question.logic.rules?.length)
-  );
-
-  const questionsWithLogicReferringToCurrentPage = questionsWithLogic
-    .flat()
-    .filter((question) =>
-      question.logic.rules?.some((rule) => rule.goto_page_id === currentPage.id)
-    );
-
-  if (questionsWithLogicReferringToCurrentPage.length > 0) {
-    questionsWithLogicReferringToCurrentPage.forEach((question) => {
-      const rules = question.logic.rules;
-      if (rules && rules.length > 0) {
-        const rule = rules.find((rule) =>
-          isRuleConditionMet(question, rule, formData)
-        );
-
-        if (rule) {
-          const previousPage = pages.find((page) =>
-            page.pageQuestions.some(
-              (pageQuestion) => pageQuestion.id === question.id
-            )
-          );
-
-          if (previousPage) {
-            previousPageIndex = findPageIndex(pages, previousPage.page.id);
-          }
-        }
-      }
-    });
-  } else {
-    const previousPage = pages.find(
-      (page) => currentPage.id === page.page.logic.next_page_id
-    );
-    if (previousPage) {
-      previousPageIndex = findPageIndex(pages, previousPage.page.id);
-    }
-  }
-
-  return previousPageIndex;
-};
-
-export const determinePreviousPageNumberWithHistory = ({
+export const determinePreviousPage = ({
   userNavigationHistory,
   currentPageIndex,
-  pages,
-  currentPage,
-  formData,
 }: {
   userNavigationHistory: number[];
   currentPageIndex: number;
-  pages: Pages;
-  currentPage: IFlatCustomField;
-  formData?: Record<string, any>;
 }) => {
-  // If we have navigation history and can go back in history, use that
+  // Rely solely on navigation history
   if (userNavigationHistory.length > 1) {
     // Find the current page in the history
     const currentHistoryIndex =
@@ -226,10 +165,6 @@ export const determinePreviousPageNumberWithHistory = ({
     }
   }
 
-  // Fallback to the existing logic-based approach
-  return determinePreviousPageNumber({
-    pages,
-    currentPage,
-    formData,
-  });
+  // If no history is available, return the sequential previous page
+  return Math.max(0, currentPageIndex - 1);
 };
