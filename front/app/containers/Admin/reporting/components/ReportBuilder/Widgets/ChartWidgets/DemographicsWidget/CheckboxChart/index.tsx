@@ -66,7 +66,7 @@ interface Props {
   response: DemographicsResponse;
 }
 
-interface Serie {
+interface SerieWithPercentage {
   value: number;
   name: string;
   code: string;
@@ -75,9 +75,9 @@ interface Serie {
 
 const CheckboxChart = ({ response }: Props) => {
   const { formatMessage } = useIntl();
-  const serie = convertToCheckboxFormat(response, formatMessage);
+  const chartData = convertToCheckboxFormat(response, formatMessage);
 
-  if (!serie) {
+  if (!chartData) {
     return (
       <NoDataContainer>
         <FormattedMessage {...dashboardMessages.noData} />
@@ -85,16 +85,21 @@ const CheckboxChart = ({ response }: Props) => {
     );
   }
 
-  const percentages = roundPercentages(serie.map((row) => row.value));
-  const percentagesSerie: Serie[] = serie.map((row, i) => ({
-    ...row,
-    percentage: percentages[i],
-  }));
+  const percentages = roundPercentages(
+    chartData.map((dataItem) => dataItem.value)
+  );
 
-  const legendItems = percentagesSerie.map((row, i) => ({
+  const finalChartSeries: SerieWithPercentage[] = chartData.map(
+    (dataItem, index) => ({
+      ...dataItem,
+      percentage: percentages[index],
+    })
+  );
+
+  const legendItems = finalChartSeries.map((seriesItem, index) => ({
     icon: 'circle' as const,
-    color: categoricalColorScheme({ rowIndex: i }),
-    label: `${row.name} (${row.percentage}%)`,
+    color: categoricalColorScheme({ rowIndex: index }),
+    label: `${seriesItem.name} (${seriesItem.percentage}%)`,
   }));
 
   return (
@@ -102,7 +107,7 @@ const CheckboxChart = ({ response }: Props) => {
       <GraphCardInner>
         <PieChartStyleFixesDiv>
           <PieChart
-            data={percentagesSerie}
+            data={finalChartSeries}
             width={164}
             mapping={{
               angle: 'value',
