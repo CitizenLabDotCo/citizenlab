@@ -137,9 +137,7 @@ const Insights = () => {
             )}
           </div>
         ))}
-        {/* TODO: Fix this the next time the file is edited. */}
-        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-        {!isLoading && insights?.data?.length === 0 && (
+        {!isLoading && insights?.data.length === 0 && (
           <>
             <Text px="24px" color="grey600">
               {formatMessage(messages.emptyList)}

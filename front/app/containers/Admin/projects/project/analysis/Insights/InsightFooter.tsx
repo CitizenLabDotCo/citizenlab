@@ -113,9 +113,7 @@ const InsightFooter = ({
         </Box>
       </Tooltip>
 
-      {/* TODO: Fix this the next time the file is edited. */}
-      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-      {mainCustomFieldId && additionalCustomFieldIds?.length > 0 && (
+      {mainCustomFieldId && additionalCustomFieldIds.length > 0 && (
         <Tooltip
           zIndex={99999}
           content={
@@ -129,9 +127,7 @@ const InsightFooter = ({
                     phaseId={phaseId}
                   />
                 </li>
-                {/* TODO: Fix this the next time the file is edited. */}
-                {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-                {additionalCustomFieldIds?.map((customFieldId) => (
+                {additionalCustomFieldIds.map((customFieldId) => (
                   <li key={customFieldId}>
                     <CustomFieldTitle
                       customFieldId={customFieldId}
