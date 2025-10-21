@@ -74,10 +74,6 @@ module MultiTenancy
               logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
               login_mechanism_name: 'Azure AD B2C'
             },
-            nemlog_in_login: {
-              allowed: true,
-              enabled: true
-            },
             vienna_citizen_login: {
               allowed: true,
               enabled: true,
