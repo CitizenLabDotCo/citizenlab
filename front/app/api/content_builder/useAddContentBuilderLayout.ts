@@ -8,11 +8,11 @@ import fetcher from 'utils/cl-react-query/fetcher';
 
 import contentBuilderKeys from './keys';
 import { IContentBuilderLayout, IAddContentBuilderLayout } from './types';
-import contentBuilderlayoutPath from './useContentBuilderLayout';
+import { contentBuilderlayoutPath } from './useContentBuilderLayout';
 
 const addContentBuilderLayout = async ({
-  contentBuildableId,
   contentBuildableType,
+  contentBuildableId,
   craftjs_json,
   enabled = true,
 }: IAddContentBuilderLayout) =>
@@ -40,12 +40,15 @@ const useAddContentBuilderLayout = () => {
         // We invalidate the project or folder if `enabled` changes
         // because the `uses_content_builder` attribute will also change on the model
         if (Object.prototype.hasOwnProperty.call(variables, 'enabled')) {
-          queryClient.invalidateQueries({
-            queryKey:
-              variables.contentBuildableType === 'folder'
-                ? foldersKeys.item({ id: variables.contentBuildableId })
-                : projectsKeys.item({ id: variables.contentBuildableId }),
-          });
+          const type = variables.contentBuildableType;
+          if (type !== 'homepage') {
+            queryClient.invalidateQueries({
+              queryKey:
+                type === 'folder'
+                  ? foldersKeys.item({ id: variables.contentBuildableId })
+                  : projectsKeys.item({ id: variables.contentBuildableId }),
+            });
+          }
         }
       },
     }

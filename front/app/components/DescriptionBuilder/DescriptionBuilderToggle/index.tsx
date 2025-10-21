@@ -32,7 +32,7 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 type DescriptionBuilderToggleProps = {
   valueMultiloc: Multiloc | undefined | null;
   onChange: (description_multiloc: Multiloc, _locale: SupportedLocale) => void;
-  contentBuildableType?: ContentBuildableType;
+  contentBuildableType: ContentBuildableType;
   label: string;
 } & WithRouterProps &
   WrappedComponentProps;

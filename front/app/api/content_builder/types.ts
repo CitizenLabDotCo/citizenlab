@@ -21,8 +21,8 @@ export interface IContentBuilderLayout {
 }
 
 export interface IAddContentBuilderLayout {
+  contentBuildableType: ContentBuildableType;
   contentBuildableId: string;
-  contentBuildableType?: ContentBuildableType;
   craftjs_json?: CraftJson;
   enabled?: boolean;
 }
