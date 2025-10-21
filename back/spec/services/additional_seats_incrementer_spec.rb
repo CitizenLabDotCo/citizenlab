@@ -18,7 +18,7 @@ describe AdditionalSeatsIncrementer do
   let(:updated_user) { create(:user) }
 
   describe '.increment_if_necessary' do
-    it 'logs activity for admin', active_job_inline_adapter: true do
+    it 'logs activity for admin', :active_job_inline_adapter do
       expect(PublishActivityToRabbitJob).to receive(:perform_later)
 
       create(:admin) # to reach limit
@@ -33,7 +33,7 @@ describe AdditionalSeatsIncrementer do
       expect(activity.user).to eq(current_user)
     end
 
-    it 'logs activity for moderator', active_job_inline_adapter: true do
+    it 'logs activity for moderator', :active_job_inline_adapter do
       expect(PublishActivityToRabbitJob).to receive(:perform_later)
 
       create(:project_moderator) # to reach limit

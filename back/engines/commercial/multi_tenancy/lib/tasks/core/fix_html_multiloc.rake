@@ -68,7 +68,7 @@ namespace :fix_existing_tenants do
                 multiloc = TextImageService.new.swap_data_images_multiloc instance[attribute], field: attribute, imageable: instance
                 instance.send :"#{attribute}=", multiloc
                 instance.save!
-              rescue Exception => e
+              rescue StandardError => e
                 errors += [e.message]
               end
             end
@@ -207,7 +207,7 @@ namespace :fix_existing_tenants do
                 multiloc = TextImageService.new.swap_data_images_multiloc instance[attribute], field: attribute, imageable: instance
                 instance.send :"#{attribute}=", multiloc
                 instance.save!
-              rescue Exception => e
+              rescue StandardError => e
                 errors += [e.message]
               end
             end

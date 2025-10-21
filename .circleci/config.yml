@@ -174,7 +174,7 @@ jobs:
     executor:
       name: cl2-back
       image-tag: amd64-$CIRCLE_SHA1
-    working_directory: /cl2_back
+    working_directory: /citizenlab/back
     environment:
       RAILS_ENV: development
     steps:
@@ -185,7 +185,7 @@ jobs:
     executor:
       name: cl2-back
       image-tag: amd64-$CIRCLE_SHA1
-    working_directory: /cl2_back
+    working_directory: /citizenlab/back
     steps:
       - run: bundle exec license_finder
 
@@ -226,7 +226,7 @@ jobs:
     executor:
       name: cl2-back
       image-tag: amd64-$CIRCLE_SHA1
-    working_directory: /cl2_back
+    working_directory: /citizenlab/back
     environment:
       RAILS_ENV: development
     steps:
@@ -237,7 +237,7 @@ jobs:
     executor:
       name: cl2-back
       image-tag: amd64-$CIRCLE_SHA1
-    working_directory: /cl2_back
+    working_directory: /citizenlab/back
     parallelism: 8
     environment:
       RAILS_ENV: test
@@ -256,7 +256,7 @@ jobs:
     executor:
       name: cl2-back
       image-tag: amd64-$CIRCLE_SHA1
-    working_directory: /cl2_back
+    working_directory: /citizenlab/back
     environment:
       RAILS_ENV: test
     steps:
@@ -278,7 +278,7 @@ jobs:
     executor:
       name: cl2-back
       image-tag: amd64-$CIRCLE_SHA1
-    working_directory: /cl2_back
+    working_directory: /citizenlab/back
     steps:
       - attach_workspace:
           at: /tmp/workspace
@@ -289,7 +289,7 @@ jobs:
     executor:
       name: cl2-back
       image-tag: amd64-$CIRCLE_SHA1
-    working_directory: /cl2_back
+    working_directory: /citizenlab/back
     environment:
       RAILS_ENV: test
     steps:
@@ -735,7 +735,7 @@ jobs:
           cd e2e
           docker compose run web bin/rails db:drop db:create db:schema:load
           docker compose run web bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
-      - run: docker cp $(docker ps -lq):/cl2_back/public/uploads .
+      - run: docker cp $(docker ps -lq):/citizenlab/back/public/uploads .
       - run: |
           cd e2e
           docker cp -a $(docker compose ps -q postgres):/var/lib/postgresql/data ../postgresql-data
@@ -809,7 +809,7 @@ jobs:
             WEB_CONTAINER_ID=$(docker compose ps -a -q web)
             FRONT_CONTAINER_ID=$(docker compose ps -a -q front)
             POSTGRES_CONTAINER_ID=$(docker compose ps -a -q postgres)
-            docker cp ../uploads/. $WEB_CONTAINER_ID:/cl2_back/public/uploads
+            docker cp ../uploads/. $WEB_CONTAINER_ID:/citizenlab/back/public/uploads
             docker cp ../build $FRONT_CONTAINER_ID:/front/build
             docker cp ../postgresql-data/. $POSTGRES_CONTAINER_ID:/var/lib/postgresql/data
       - run:
