@@ -22,7 +22,7 @@ const QuestionHeader = ({
   const { formatMessage } = useIntl();
 
   return (
-    <Box display="flex" gap="4px" alignItems="center" w="fit-content">
+    <Box display="flex" gap="8px" alignItems="center" w="fit-content">
       {showAiWarning && (
         <Box>
           <Tooltip
