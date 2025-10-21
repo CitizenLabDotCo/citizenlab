@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe ActionCaching do
+  include ActiveSupport::Testing::TimeHelpers
+
   # Shared test controller class with all needed functionality
   let(:test_controller_class) do
     Class.new(ActionController::API) do
@@ -19,7 +21,7 @@ RSpec.describe ActionCaching do
       end
 
       def action_name
-        @_action_name || 'index'
+        'index'
       end
 
       def controller_path
@@ -49,11 +51,12 @@ RSpec.describe ActionCaching do
 
   # Helper to execute the caching around_action callbacks
   def execute_cached_action(controller)
-    controller.class._process_action_callbacks.each do |callback|
-      if callback.kind == :around && callback.filter.is_a?(Proc)
-        callback.filter.call(controller, proc { controller.index })
-        return
-      end
+    # Set up the action name so Rails knows which callbacks to run
+    controller.action_name = 'index'
+    
+    # Use Rails' callback runner which respects :if and :unless
+    controller.run_callbacks :process_action do
+      controller.index
     end
   end
 
@@ -66,7 +69,7 @@ RSpec.describe ActionCaching do
   end
 
   describe '.caches_action' do
-    it 'stores cache options for the action' do
+    it 'stores cache options for one action' do
       controller_class.caches_action :index, expires_in: 1.minute
 
       expect(controller_class._action_cache_options[:index]).to eq(expires_in: 1.minute)
@@ -79,182 +82,162 @@ RSpec.describe ActionCaching do
       expect(controller_class._action_cache_options[:show]).to eq(expires_in: 5.minutes)
     end
 
-    it 'supports cache_path option' do
-      controller_class.caches_action :index, cache_path: -> { 'custom' }
+    describe 'cache miss then cache hit' do
+      it 'returns cached response without executing action body on cache hit' do
+        test_controller_class.caches_action :index, expires_in: 1.minute
 
-      expect(controller_class._action_cache_options[:index][:cache_path]).to be_a(Proc)
+        # First request - cache miss
+        test_controller1 = new_test_controller
+        execute_cached_action(test_controller1)
+
+        expect(test_controller1.execution_count).to eq(1)
+        first_response = test_controller1.response.body
+        expect(first_response).to include('fresh')
+
+        cache_key = 'api_response/example.org/web_api/v1/test.json'
+        cached_data = test_controller_class.cache_store.read(cache_key)
+        expect(cached_data).to be_present
+        expect(cached_data[:body]).to include('fresh')
+        expect(cached_data[:status]).to eq(200)
+
+        # Second request - cache hit
+        test_controller2 = new_test_controller
+        execute_cached_action(test_controller2)
+
+        expect(test_controller2.execution_count).to eq(0) # Action body NOT executed
+        expect(test_controller2.response.body).to eq(first_response)
+        expect(test_controller2.response.status).to eq(200)
+      end
     end
 
-    context 'integration with around_action pipeline' do
-      describe 'cache miss then cache hit' do
-        it 'executes action body on cache miss and writes to cache' do
-          test_controller_class.caches_action :index, expires_in: 1.minute
-          test_controller = new_test_controller
+    describe 'cache expiration' do
+      it 'expires cache and re-executes action after expiration time' do
+        test_controller_class.caches_action :index, expires_in: 1.minute
 
-          execute_cached_action(test_controller)
+        # First request - cache miss
+        test_controller1 = new_test_controller
+        execute_cached_action(test_controller1)
 
-          expect(test_controller.execution_count).to eq(1)
-          expect(test_controller.response.body).to include('fresh')
+        expect(test_controller1.execution_count).to eq(1)
+        cache_key = 'api_response/example.org/web_api/v1/test.json'
+        expect(test_controller_class.cache_store.read(cache_key)).to be_present
 
-          cache_key = 'api_response/example.org/web_api/v1/test.json'
-          cached_data = test_controller_class.cache_store.read(cache_key)
-          expect(cached_data).to be_present
-          expect(cached_data[:body]).to include('fresh')
-          expect(cached_data[:status]).to eq(200)
-        end
+        # Second request within 1 minute - cache hit
+        travel 50.seconds
+        test_controller2 = new_test_controller
+        execute_cached_action(test_controller2)
 
-        it 'returns cached response without executing action body on cache hit' do
-          test_controller_class.caches_action :index, expires_in: 1.minute
+        expect(test_controller2.execution_count).to eq(0) # Still cached
 
-          # First request - cache miss
-          test_controller1 = new_test_controller
-          execute_cached_action(test_controller1)
+        # Travel forward past expiration time
+        travel 11.seconds
 
-          expect(test_controller1.execution_count).to eq(1)
-          first_response = test_controller1.response.body
+        # Third request after expiration - cache miss again
+        test_controller3 = new_test_controller
+        execute_cached_action(test_controller3)
 
-          # Second request - cache hit
-          test_controller2 = new_test_controller
-          execute_cached_action(test_controller2)
+        expect(test_controller3.execution_count).to eq(1) # Action executed again
+        expect(test_controller3.response.body).to include('"count":1')
 
-          expect(test_controller2.execution_count).to eq(0) # Action body NOT executed
-          expect(test_controller2.response.body).to eq(first_response)
-          expect(test_controller2.response.status).to eq(200)
-        end
+        travel_back
+      end
+    end
+
+    describe 'conditional caching with :if option' do
+      it 'does not cache when :if condition returns false' do
+        test_controller = new_test_controller
+        test_controller.define_singleton_method(:cacheable?) { false }
+        test_controller_class.caches_action :index, expires_in: 1.minute, if: :cacheable?
+
+        execute_cached_action(test_controller)
+
+        expect(test_controller.execution_count).to eq(1)
+
+        cache_key = 'api_response/example.org/web_api/v1/test.json'
+        expect(test_controller_class.cache_store.read(cache_key)).to be_nil
       end
 
-      describe 'conditional caching with :if option' do
-        it 'does not cache when :if condition returns false' do
-          test_controller = new_test_controller
-          test_controller.define_singleton_method(:cacheable?) { false }
-          test_controller_class.caches_action :index, expires_in: 1.minute, if: :cacheable?
+      it 'caches when :if condition returns true' do
+        test_controller = new_test_controller
+        test_controller.define_singleton_method(:cacheable?) { true }
+        test_controller_class.caches_action :index, expires_in: 1.minute, if: :cacheable?
 
-          # With :if => false, the around_action callback should not run, so we directly call the action
-          test_controller.index
+        execute_cached_action(test_controller)
 
-          expect(test_controller.execution_count).to eq(1)
+        expect(test_controller.execution_count).to eq(1)
 
-          cache_key = 'api_response/example.org/web_api/v1/test.json'
-          expect(test_controller_class.cache_store.read(cache_key)).to be_nil
-        end
-
-        it 'caches when :if condition returns true' do
-          test_controller = new_test_controller
-          test_controller.define_singleton_method(:cacheable?) { true }
-          test_controller_class.caches_action :index, expires_in: 1.minute, if: :cacheable?
-
-          execute_cached_action(test_controller)
-
-          expect(test_controller.execution_count).to eq(1)
-
-          cache_key = 'api_response/example.org/web_api/v1/test.json'
-          expect(test_controller_class.cache_store.read(cache_key)).to be_present
-        end
-
-        it 'supports :if with proc' do
-          test_controller = new_test_controller
-          test_controller_class.caches_action :index, expires_in: 1.minute, if: -> { false }
-
-          # Proc returns false, so don't run caching
-          test_controller.index
-
-          cache_key = 'api_response/example.org/web_api/v1/test.json'
-          expect(test_controller_class.cache_store.read(cache_key)).to be_nil
-        end
+        cache_key = 'api_response/example.org/web_api/v1/test.json'
+        expect(test_controller_class.cache_store.read(cache_key)).to be_present
       end
 
-      describe 'conditional caching with :unless option' do
-        it 'does not cache when :unless condition returns true' do
-          test_controller = new_test_controller
-          test_controller.define_singleton_method(:skip_cache?) { true }
-          test_controller_class.caches_action :index, expires_in: 1.minute, unless: :skip_cache?
+      it 'supports :if with proc' do
+        test_controller = new_test_controller
+        test_controller_class.caches_action :index, expires_in: 1.minute, if: -> { false }
 
-          # With :unless => true, don't run caching
-          test_controller.index
+        execute_cached_action
 
-          expect(test_controller.execution_count).to eq(1)
+        cache_key = 'api_response/example.org/web_api/v1/test.json'
+        expect(test_controller_class.cache_store.read(cache_key)).to be_nil
+      end
+    end
 
-          cache_key = 'api_response/example.org/web_api/v1/test.json'
-          expect(test_controller_class.cache_store.read(cache_key)).to be_nil
-        end
+    describe 'conditional caching with :unless option' do
+      it 'does not cache when :unless condition returns true' do
+        test_controller = new_test_controller
+        test_controller.define_singleton_method(:skip_cache?) { true }
+        test_controller_class.caches_action :index, expires_in: 1.minute, unless: :skip_cache?
 
-        it 'caches when :unless condition returns false' do
-          test_controller = new_test_controller
-          test_controller.define_singleton_method(:skip_cache?) { false }
-          test_controller_class.caches_action :index, expires_in: 1.minute, unless: :skip_cache?
+        # With :unless => true, don't run caching
+        test_controller.index
 
-          execute_cached_action(test_controller)
+        expect(test_controller.execution_count).to eq(1)
 
-          expect(test_controller.execution_count).to eq(1)
-
-          cache_key = 'api_response/example.org/web_api/v1/test.json'
-          expect(test_controller_class.cache_store.read(cache_key)).to be_present
-        end
+        cache_key = 'api_response/example.org/web_api/v1/test.json'
+        expect(test_controller_class.cache_store.read(cache_key)).to be_nil
       end
 
-      describe 'cache_path option' do
-        it 'creates separate cache entries for different cache_path values' do
-          test_controller_class.caches_action :index, expires_in: 1.minute, cache_path: -> { { page: params[:page] } }
+      it 'caches when :unless condition returns false' do
+        test_controller = new_test_controller
+        test_controller.define_singleton_method(:skip_cache?) { false }
+        test_controller_class.caches_action :index, expires_in: 1.minute, unless: :skip_cache?
 
-          # First request with page=1
-          test_controller1 = new_test_controller(query_params: { page: 1 })
-          test_controller1.params = { page: 1 }
-          execute_cached_action(test_controller1)
+        execute_cached_action(test_controller)
 
-          expect(test_controller1.execution_count).to eq(1)
-          cache_key_1 = 'api_response/example.org/web_api/v1/test?page=1.json'
-          expect(test_controller_class.cache_store.read(cache_key_1)).to be_present
+        expect(test_controller.execution_count).to eq(1)
 
-          # Second request with page=2
-          test_controller2 = new_test_controller(query_params: { page: 2 })
-          test_controller2.params = { page: 2 }
-          execute_cached_action(test_controller2)
-
-          expect(test_controller2.execution_count).to eq(1)
-          cache_key_2 = 'api_response/example.org/web_api/v1/test?page=2.json'
-          expect(test_controller_class.cache_store.read(cache_key_2)).to be_present
-
-          # Both cache entries should exist and be different
-          expect(cache_key_1).not_to eq(cache_key_2)
-          cached_1 = test_controller_class.cache_store.read(cache_key_1)
-          cached_2 = test_controller_class.cache_store.read(cache_key_2)
-          expect(cached_1[:body]).to include('"count":1')
-          expect(cached_2[:body]).to include('"count":1')
-        end
+        cache_key = 'api_response/example.org/web_api/v1/test.json'
+        expect(test_controller_class.cache_store.read(cache_key)).to be_present
       end
+    end
 
-      describe 'cache expiration' do
-        include ActiveSupport::Testing::TimeHelpers
+    describe 'cache_path option' do
+      it 'creates separate cache entries for different cache_path values' do
+        test_controller_class.caches_action :index, expires_in: 1.minute, cache_path: -> { { page: params[:page] } }
 
-        it 'expires cache and re-executes action after expiration time' do
-          test_controller_class.caches_action :index, expires_in: 1.minute
+        # First request with page=1
+        test_controller1 = new_test_controller(query_params: { page: 1 })
+        test_controller1.params = { page: 1 }
+        execute_cached_action(test_controller1)
 
-          # First request - cache miss
-          test_controller1 = new_test_controller
-          execute_cached_action(test_controller1)
+        expect(test_controller1.execution_count).to eq(1)
+        cache_key_1 = 'api_response/example.org/web_api/v1/test?page=1.json'
+        expect(test_controller_class.cache_store.read(cache_key_1)).to be_present
 
-          expect(test_controller1.execution_count).to eq(1)
-          cache_key = 'api_response/example.org/web_api/v1/test.json'
-          expect(test_controller_class.cache_store.read(cache_key)).to be_present
+        # Second request with page=2
+        test_controller2 = new_test_controller(query_params: { page: 2 })
+        test_controller2.params = { page: 2 }
+        execute_cached_action(test_controller2)
 
-          # Second request immediately - cache hit
-          test_controller2 = new_test_controller
-          execute_cached_action(test_controller2)
+        expect(test_controller2.execution_count).to eq(1)
+        cache_key_2 = 'api_response/example.org/web_api/v1/test?page=2.json'
+        expect(test_controller_class.cache_store.read(cache_key_2)).to be_present
 
-          expect(test_controller2.execution_count).to eq(0) # Still cached
-
-          # Travel forward past expiration time
-          travel 61.seconds
-
-          # Third request after expiration - cache miss again
-          test_controller3 = new_test_controller
-          execute_cached_action(test_controller3)
-
-          expect(test_controller3.execution_count).to eq(1) # Action executed again
-          expect(test_controller3.response.body).to include('"count":1')
-
-          travel_back
-        end
+        # Both cache entries should exist and be different
+        expect(cache_key_1).not_to eq(cache_key_2)
+        cached_1 = test_controller_class.cache_store.read(cache_key_1)
+        cached_2 = test_controller_class.cache_store.read(cache_key_2)
+        expect(cached_1[:body]).to include('"count":1')
+        expect(cached_2[:body]).to include('"count":1')
       end
     end
   end
