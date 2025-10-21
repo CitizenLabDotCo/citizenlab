@@ -33,7 +33,7 @@ RSpec.describe ActionCaching do
       def index
         @execution_count += 1
         self.response_body = { data: 'fresh', count: @execution_count }.to_json
-        self.status = 200
+        self.status = 422
         self.content_type = 'application/json'
       end
     end
@@ -94,13 +94,13 @@ RSpec.describe ActionCaching do
 
         expect(test_controller1.execution_count).to eq(1)
         first_response = test_controller1.response.body
-        expect(first_response).to include('fresh')
+        expect(first_response).to eq('{"data":"fresh","count":1}')
         expect(test_controller1.content_type).to eq('application/json; charset=utf-8')
 
         cached_data = test_controller_class.cache_store.read(cache_key)
         expect(cached_data).to be_present
-        expect(cached_data[:body]).to include('fresh')
-        expect(cached_data[:status]).to eq(200)
+        expect(cached_data[:body]).to eq('{"data":"fresh","count":1}')
+        expect(cached_data[:status]).to eq(422)
 
         # Second request - cache hit
         test_controller2 = new_test_controller
@@ -108,7 +108,7 @@ RSpec.describe ActionCaching do
 
         expect(test_controller2.execution_count).to eq(0) # Action body NOT executed
         expect(test_controller2.response.body).to eq(first_response)
-        expect(test_controller2.response.status).to eq(200)
+        expect(test_controller2.response.status).to eq(422)
         expect(test_controller2.content_type).to eq('application/json; charset=utf-8')
       end
     end
@@ -139,7 +139,7 @@ RSpec.describe ActionCaching do
         execute_cached_action(test_controller3)
 
         expect(test_controller3.execution_count).to eq(1) # Action executed again
-        expect(test_controller3.response.body).to include('"count":1')
+        expect(test_controller3.response.body).to eq('{"data":"fresh","count":1}')
 
         travel_back
       end
