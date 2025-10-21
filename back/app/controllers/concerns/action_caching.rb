@@ -73,12 +73,11 @@ module ActionCaching
   end
 
   def compute_cache_key(cache_path_option)
-    # Format: views/{host}{path}.{format}
-    # Example: views/example.org/web_api/v1/ideas.json
-    # With query params: views/example.org/web_api/v1/ideas?page=1&filter=active.json
+    # Example: views/example.org/web_api/v1/ideas?page=1&filter=active.json
 
     path = request.path.sub(/\.\w+$/, '') # Remove extension if present
     format = request.format.symbol || :json
+    cache_key = "api_response/#{request.host}#{path}"
 
     if cache_path_option
       # Custom cache path (lambda or symbol)
@@ -90,15 +89,9 @@ module ActionCaching
 
       # Convert to query string if it's a hash
       query_string = custom_params.is_a?(Hash) ? custom_params.to_query : custom_params.to_s
-
-      if query_string.present?
-        "views/#{request.host}#{path}?#{query_string}.#{format}"
-      else
-        "views/#{request.host}#{path}.#{format}"
-      end
-    else
-      "views/#{request.host}#{path}.#{format}"
+      cache_key = "#{cache_key}?#{query_string}"  if query_string.present?
     end
+    "#{cache_key}.#{format}"
   end
 
   def read_cache(key)

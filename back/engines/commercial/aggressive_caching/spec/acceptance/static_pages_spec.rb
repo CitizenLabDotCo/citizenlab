@@ -11,7 +11,7 @@ resource 'StaticPages', :clear_cache, document: false do
 
   get 'web_api/v1/static_pages' do
     example 'Caches for a visitor' do
-      cache_key = 'views/example.org/web_api/v1/static_pages.json'
+      cache_key = 'api_response/example.org/web_api/v1/static_pages.json'
 
       expect(Rails.cache.read(cache_key)).to be_nil
       do_request

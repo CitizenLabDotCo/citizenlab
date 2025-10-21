@@ -10,7 +10,7 @@ resource 'Ideas', :clear_cache, document: false do
   end
 
   get 'web_api/v1/ideas' do
-    let(:cache_key) { 'views/example.org/web_api/v1/ideas.json' }
+    let(:cache_key) { 'api_response/example.org/web_api/v1/ideas.json' }
 
     example 'caches for a visitor' do
       expect(Rails.cache.read(cache_key)).to be_nil
@@ -49,7 +49,7 @@ resource 'Ideas', :clear_cache, document: false do
   get 'web_api/v1/ideas/:id' do
     let(:idea) { create(:idea) }
     let(:id) { idea.id }
-    let(:cache_key) { "views/example.org/web_api/v1/ideas/#{id}.json" }
+    let(:cache_key) { "api_response/example.org/web_api/v1/ideas/#{id}.json" }
 
     example 'caches for a visitor' do
       expect(Rails.cache.read(cache_key)).to be_nil

@@ -96,7 +96,7 @@ RSpec.describe ActionCaching do
           expect(test_controller.execution_count).to eq(1)
           expect(test_controller.response.body).to include('fresh')
 
-          cache_key = 'views/example.org/web_api/v1/test.json'
+          cache_key = 'api_response/example.org/web_api/v1/test.json'
           cached_data = test_controller_class.cache_store.read(cache_key)
           expect(cached_data).to be_present
           expect(cached_data[:body]).to include('fresh')
@@ -134,7 +134,7 @@ RSpec.describe ActionCaching do
 
           expect(test_controller.execution_count).to eq(1)
 
-          cache_key = 'views/example.org/web_api/v1/test.json'
+          cache_key = 'api_response/example.org/web_api/v1/test.json'
           expect(test_controller_class.cache_store.read(cache_key)).to be_nil
         end
 
@@ -147,7 +147,7 @@ RSpec.describe ActionCaching do
 
           expect(test_controller.execution_count).to eq(1)
 
-          cache_key = 'views/example.org/web_api/v1/test.json'
+          cache_key = 'api_response/example.org/web_api/v1/test.json'
           expect(test_controller_class.cache_store.read(cache_key)).to be_present
         end
 
@@ -158,7 +158,7 @@ RSpec.describe ActionCaching do
           # Proc returns false, so don't run caching
           test_controller.index
 
-          cache_key = 'views/example.org/web_api/v1/test.json'
+          cache_key = 'api_response/example.org/web_api/v1/test.json'
           expect(test_controller_class.cache_store.read(cache_key)).to be_nil
         end
       end
@@ -174,7 +174,7 @@ RSpec.describe ActionCaching do
 
           expect(test_controller.execution_count).to eq(1)
 
-          cache_key = 'views/example.org/web_api/v1/test.json'
+          cache_key = 'api_response/example.org/web_api/v1/test.json'
           expect(test_controller_class.cache_store.read(cache_key)).to be_nil
         end
 
@@ -187,7 +187,7 @@ RSpec.describe ActionCaching do
 
           expect(test_controller.execution_count).to eq(1)
 
-          cache_key = 'views/example.org/web_api/v1/test.json'
+          cache_key = 'api_response/example.org/web_api/v1/test.json'
           expect(test_controller_class.cache_store.read(cache_key)).to be_present
         end
       end
@@ -202,7 +202,7 @@ RSpec.describe ActionCaching do
           execute_cached_action(test_controller1)
 
           expect(test_controller1.execution_count).to eq(1)
-          cache_key_1 = 'views/example.org/web_api/v1/test?page=1.json'
+          cache_key_1 = 'api_response/example.org/web_api/v1/test?page=1.json'
           expect(test_controller_class.cache_store.read(cache_key_1)).to be_present
 
           # Second request with page=2
@@ -211,7 +211,7 @@ RSpec.describe ActionCaching do
           execute_cached_action(test_controller2)
 
           expect(test_controller2.execution_count).to eq(1)
-          cache_key_2 = 'views/example.org/web_api/v1/test?page=2.json'
+          cache_key_2 = 'api_response/example.org/web_api/v1/test?page=2.json'
           expect(test_controller_class.cache_store.read(cache_key_2)).to be_present
 
           # Both cache entries should exist and be different
@@ -234,7 +234,7 @@ RSpec.describe ActionCaching do
           execute_cached_action(test_controller1)
 
           expect(test_controller1.execution_count).to eq(1)
-          cache_key = 'views/example.org/web_api/v1/test.json'
+          cache_key = 'api_response/example.org/web_api/v1/test.json'
           expect(test_controller_class.cache_store.read(cache_key)).to be_present
 
           # Second request immediately - cache hit
@@ -264,30 +264,25 @@ RSpec.describe ActionCaching do
       allow(controller.request).to receive_messages(path: '/web_api/v1/ideas', host: 'example.org', format: double(symbol: :json))
     end
 
-    it 'generates cache key with views prefix' do
-      key = controller.send(:compute_cache_key, nil)
-      expect(key).to eq('views/example.org/web_api/v1/ideas.json')
-    end
-
     it 'removes existing extension from path' do
       allow(controller.request).to receive(:path).and_return('/web_api/v1/ideas.json')
 
       key = controller.send(:compute_cache_key, nil)
-      expect(key).to eq('views/example.org/web_api/v1/ideas.json')
+      expect(key).to eq('api_response/example.org/web_api/v1/ideas.json')
     end
 
     it 'uses json format by default when format is nil' do
       allow(controller.request).to receive(:format).and_return(double(symbol: nil))
 
       key = controller.send(:compute_cache_key, nil)
-      expect(key).to eq('views/example.org/web_api/v1/ideas.json')
+      expect(key).to eq('api_response/example.org/web_api/v1/ideas.json')
     end
 
     it 'includes the host in the cache key' do
       allow(controller.request).to receive(:host).and_return('different-host.com')
 
       key = controller.send(:compute_cache_key, nil)
-      expect(key).to eq('views/different-host.com/web_api/v1/ideas.json')
+      expect(key).to eq('api_response/different-host.com/web_api/v1/ideas.json')
     end
 
     context 'with cache_path option' do
@@ -295,7 +290,7 @@ RSpec.describe ActionCaching do
         cache_path_proc = -> { { page: 1, filter: 'active' } }
 
         key = controller.send(:compute_cache_key, cache_path_proc)
-        expect(key).to match(%r{views/example\.org/web_api/v1/ideas\?.*\.json})
+        expect(key).to match(%r{api_response/example\.org/web_api/v1/ideas\?.*\.json})
         expect(key).to include('page=1')
         expect(key).to include('filter=active')
       end
@@ -304,28 +299,28 @@ RSpec.describe ActionCaching do
         cache_path_proc = -> { {} }
 
         key = controller.send(:compute_cache_key, cache_path_proc)
-        expect(key).to eq('views/example.org/web_api/v1/ideas.json')
+        expect(key).to eq('api_response/example.org/web_api/v1/ideas.json')
       end
 
       it 'handles cache_path proc returning string' do
         cache_path_proc = -> { 'custom_param=value' }
 
         key = controller.send(:compute_cache_key, cache_path_proc)
-        expect(key).to eq('views/example.org/web_api/v1/ideas?custom_param=value.json')
+        expect(key).to eq('api_response/example.org/web_api/v1/ideas?custom_param=value.json')
       end
 
       it 'handles cache_path as symbol method name' do
         controller.define_singleton_method(:custom_cache_params) { { sort: 'name' } }
 
         key = controller.send(:compute_cache_key, :custom_cache_params)
-        expect(key).to eq('views/example.org/web_api/v1/ideas?sort=name.json')
+        expect(key).to eq('api_response/example.org/web_api/v1/ideas?sort=name.json')
       end
 
       it 'handles nil value from cache_path proc' do
         cache_path_proc = -> {}
 
         key = controller.send(:compute_cache_key, cache_path_proc)
-        expect(key).to eq('views/example.org/web_api/v1/ideas.json')
+        expect(key).to eq('api_response/example.org/web_api/v1/ideas.json')
       end
     end
   end
@@ -334,7 +329,7 @@ RSpec.describe ActionCaching do
     include ActiveSupport::Testing::TimeHelpers
 
     let(:response) { double('response', body: '{"result":"success"}', status: 200) }
-    let(:cache_key) { 'views/example.org/web_api/v1/test.json' }
+    let(:cache_key) { 'api_response/example.org/web_api/v1/test.json' }
 
     it 'writes response to cache with body and status' do
       controller.send(:write_cache, cache_key, response, 1.minute)
@@ -375,7 +370,7 @@ RSpec.describe ActionCaching do
   end
 
   describe '#read_cache' do
-    let(:cache_key) { 'views/example.org/web_api/v1/test.json' }
+    let(:cache_key) { 'api_response/example.org/web_api/v1/test.json' }
     let(:cached_data) { { body: '{"data":"cached"}', status: 200 } }
 
     before do
