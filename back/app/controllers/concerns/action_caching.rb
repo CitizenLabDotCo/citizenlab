@@ -4,36 +4,16 @@ module ActionCaching
   extend ActiveSupport::Concern
 
   included do
-    # Make ActionController::Caching available (needed for ActionController::API)
     include ActionController::Caching unless include?(ActionController::Caching)
 
     class_attribute :_action_cache_options, instance_accessor: false, default: {}
   end
 
-  # Compatibility shim for actionpack-action_caching
-  # Needed to work with ActionController::API (normally only in ActionController::Base)
-  def action_has_layout=(value)
-    value
-  end
-
   module ClassMethods
-    # Main DSL method for caching actions
+    # Supported options: :expires_in, :cache_path, :if, :unless
     #
-    # @example Basic usage
-    #   caches_action :index, :show, expires_in: 1.minute
-    #
-    # @example With custom cache path
-    #   caches_action :index, expires_in: 1.minute, cache_path: -> { request.query_parameters }
-    #
-    # @example With conditions
-    #   caches_action :show, expires_in: 1.minute, if: :caching_active?
-    #
-    # @param actions [Array<Symbol>] List of action names to cache
-    # @param options [Hash] Caching options
-    # @option options [ActiveSupport::Duration] :expires_in Cache expiration time
-    # @option options [Proc, Symbol] :cache_path Custom cache key generation
-    # @option options [Symbol, Proc] :if Condition for caching
-    # @option options [Symbol, Proc] :unless Inverse condition for caching
+    # Example usage:
+    #   caches_action :index, :show, expires_in: 1.minute, cache_path: -> { request.query_parameters }
     def caches_action(*actions)
       options = actions.extract_options!
 

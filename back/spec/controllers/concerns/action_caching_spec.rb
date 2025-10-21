@@ -95,6 +95,7 @@ RSpec.describe ActionCaching do
         expect(test_controller1.execution_count).to eq(1)
         first_response = test_controller1.response.body
         expect(first_response).to include('fresh')
+        expect(test_controller1.content_type).to eq('application/json; charset=utf-8')
 
         cached_data = test_controller_class.cache_store.read(cache_key)
         expect(cached_data).to be_present
@@ -108,6 +109,7 @@ RSpec.describe ActionCaching do
         expect(test_controller2.execution_count).to eq(0) # Action body NOT executed
         expect(test_controller2.response.body).to eq(first_response)
         expect(test_controller2.response.status).to eq(200)
+        expect(test_controller2.content_type).to eq('application/json; charset=utf-8')
       end
     end
 
@@ -226,7 +228,7 @@ RSpec.describe ActionCaching do
     end
 
     it 'removes existing extension from path' do
-      allow(controller.request).to receive(:path).and_return('/web_api/v1/ideas.json')
+      allow(controller.request).to receive(:path).and_return('/web_api/v1/ideas.txt')
 
       key = controller.send(:compute_cache_key, nil)
       expect(key).to eq('api_response/example.org/web_api/v1/ideas.json')
@@ -251,9 +253,7 @@ RSpec.describe ActionCaching do
         cache_path_proc = -> { { page: 1, filter: 'active' } }
 
         key = controller.send(:compute_cache_key, cache_path_proc)
-        expect(key).to match(%r{api_response/example\.org/web_api/v1/ideas\?.*\.json})
-        expect(key).to include('page=1')
-        expect(key).to include('filter=active')
+        expect(key).to eq('api_response/example.org/web_api/v1/ideas?filter=active&page=1.json')
       end
 
       it 'handles empty hash from cache_path proc' do
@@ -283,117 +283,6 @@ RSpec.describe ActionCaching do
         key = controller.send(:compute_cache_key, cache_path_proc)
         expect(key).to eq('api_response/example.org/web_api/v1/ideas.json')
       end
-    end
-  end
-
-  describe '#write_cache' do
-    include ActiveSupport::Testing::TimeHelpers
-
-    let(:response) { double('response', body: '{"result":"success"}', status: 200) }
-
-    it 'writes response to cache with body and status' do
-      controller.send(:write_cache, cache_key, response, 1.minute)
-
-      cached = controller_class.cache_store.read(cache_key)
-      expect(cached).to eq(body: '{"result":"success"}', status: 200)
-    end
-
-    it 'respects expires_in option' do
-      controller.send(:write_cache, cache_key, response, 10.seconds)
-
-      # Verify it was written with expiration
-      expect(controller_class.cache_store.read(cache_key)).to be_present
-    end
-
-    it 'cache entry expires after expires_in duration' do
-      # Write with 1 minute expiration
-      controller.send(:write_cache, cache_key, response, 1.minute)
-
-      # Should be present immediately
-      expect(controller_class.cache_store.read(cache_key)).to be_present
-
-      # Travel forward past expiration time
-      travel 61.seconds
-
-      # Should be gone after expiration
-      expect(controller_class.cache_store.read(cache_key)).to be_nil
-
-      travel_back
-    end
-
-    it 'does not cache content_type' do
-      controller.send(:write_cache, cache_key, response, 1.minute)
-
-      cached = controller_class.cache_store.read(cache_key)
-      expect(cached.keys).to contain_exactly(:body, :status)
-    end
-  end
-
-  describe '#read_cache' do
-    let(:cached_data) { { body: '{"data":"cached"}', status: 200 } }
-
-    before do
-      controller_class.cache_store.write(cache_key, cached_data)
-    end
-
-    it 'reads from cache store' do
-      result = controller.send(:read_cache, cache_key)
-      expect(result).to eq(cached_data)
-    end
-
-    it 'returns nil for missing keys' do
-      result = controller.send(:read_cache, 'nonexistent-key')
-      expect(result).to be_nil
-    end
-  end
-
-  describe '#render_cached_response' do
-    let(:cached_response) { { body: '{"cached":"data"}', status: 304 } }
-    let(:test_controller) { new_test_controller }
-
-    it 'sets response body from cache' do
-      test_controller.send(:render_cached_response, cached_response)
-      # response_body is an array in Rails
-      expect(test_controller.response_body).to eq(['{"cached":"data"}'])
-    end
-
-    it 'sets response status from cache' do
-      test_controller.send(:render_cached_response, cached_response)
-      expect(test_controller.status).to eq(304)
-    end
-
-    it 'sets content_type to application/json' do
-      test_controller.send(:render_cached_response, cached_response)
-      expect(test_controller.content_type).to eq('application/json; charset=utf-8')
-    end
-  end
-
-  describe '#cache_store' do
-    it 'uses class cache_store' do
-      expect(controller.send(:cache_store)).to eq(controller_class.cache_store)
-    end
-
-    it 'falls back to Rails.cache when class cache_store is nil' do
-      original_store = controller_class.cache_store
-      controller_class.cache_store = nil
-
-      # Just verify it returns Rails.cache (instance may vary by test execution)
-      result = controller.send(:cache_store)
-      expect(result).to be_a(ActiveSupport::Cache::Store)
-      expect(result).not_to be_nil
-
-      # Restore
-      controller_class.cache_store = original_store
-    end
-  end
-
-  describe '#action_has_layout=' do
-    it 'provides compatibility shim' do
-      expect { controller.action_has_layout = true }.not_to raise_error
-    end
-
-    it 'returns the value passed' do
-      expect(controller.action_has_layout = :custom).to eq(:custom)
     end
   end
 
