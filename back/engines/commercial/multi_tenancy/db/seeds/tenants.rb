@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
+
 require_relative 'base'
 
 module MultiTenancy
@@ -586,3 +588,4 @@ module MultiTenancy
     end
   end
 end
+# rubocop:enable Metrics/ClassLength
