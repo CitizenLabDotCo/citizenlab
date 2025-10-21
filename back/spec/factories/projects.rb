@@ -21,7 +21,7 @@ FactoryBot.define do
         'nl-BE' => 'Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.'
       }
     end
-    sequence(:slug) { |n| "renew-west-parc-#{n}" }
+    sequence(:slug) { |n| "renew-west-parc-#{n}-#{SecureRandom.hex(4)}" }
 
     transient do
       with_permissions { false }

@@ -1454,6 +1454,18 @@
         }
       },
 
+      "data_repository_transcription": {
+        "type": "object",
+        "title": "Data repository transcription",
+        "description": "Experimental. Automatically transcribe audio and video files uploaded to the data repository. Uses AssemblyAI behind the scenes.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "data_repository_ai_analysis": {
         "type": "object",
         "title": "Data repository: AI analysis",

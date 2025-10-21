@@ -194,13 +194,13 @@ USE eager loading detected
   Project => [:admin_publication]
   Add to your query: .includes([:admin_publication])
 Call stack
-  /cl2_back/app/services/participation_context_service.rb:67:in `get_participation_context'
-  /cl2_back/app/services/participation_context_service.rb:120:in `commenting_disabled_reason_for_idea'
-  /cl2_back/app/serializers/web_api/v1/idea_serializer.rb:11:in `block in <class:IdeaSerializer>'
-  /cl2_back/app/controllers/application_controller.rb:82:in `linked_json'
-  /cl2_back/app/controllers/web_api/v1/ideas_controller.rb:78:in `index'
-  /cl2_back/config/initializers/apartment.rb:91:in `block in call'
-  /cl2_back/config/initializers/apartment.rb:91:in `call'
+  /citizenlab/back/app/services/participation_context_service.rb:67:in `get_participation_context'
+  /citizenlab/back/app/services/participation_context_service.rb:120:in `commenting_disabled_reason_for_idea'
+  /citizenlab/back/app/serializers/web_api/v1/idea_serializer.rb:11:in `block in <class:IdeaSerializer>'
+  /citizenlab/back/app/controllers/application_controller.rb:82:in `linked_json'
+  /citizenlab/back/app/controllers/web_api/v1/ideas_controller.rb:78:in `index'
+  /citizenlab/back/config/initializers/apartment.rb:91:in `block in call'
+  /citizenlab/back/config/initializers/apartment.rb:91:in `call'
 ```
 
 Following the callstack, you will be able to understand that extra queries are being performed to retrieve the `admin_publication` in the `participation_context_service.rb` of each idea of the` Ideas#index` action. (adding `:admin_publication` to the includes args would fix it)

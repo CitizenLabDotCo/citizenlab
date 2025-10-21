@@ -76,9 +76,9 @@ module PublicApi
 
     private
 
-    def switch_locale(&action)
+    def switch_locale(&)
       locale = AppConfiguration.instance.closest_locale_to(requested_locale)
-      I18n.with_locale(locale, &action)
+      I18n.with_locale(locale, &)
     end
 
     def requested_locale
