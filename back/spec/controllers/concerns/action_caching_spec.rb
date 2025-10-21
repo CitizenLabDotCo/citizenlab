@@ -3,35 +3,66 @@
 require 'rails_helper'
 
 RSpec.describe ActionCaching do
-  let(:cache_store) { ActiveSupport::Cache::MemoryStore.new }
-
-  let(:controller_class) do
+  # Shared test controller class with all needed functionality
+  let(:test_controller_class) do
     Class.new(ActionController::API) do
       include ActionCaching
 
       self.cache_store = ActiveSupport::Cache::MemoryStore.new
 
-      attr_accessor :request, :response
+      attr_accessor :execution_count, :params
+
+      def initialize
+        super
+        @execution_count = 0
+        @params = {}
+      end
 
       def action_name
-        'index'
+        @_action_name || 'index'
       end
 
       def controller_path
         'web_api/v1/test'
       end
+
+      def index
+        @execution_count += 1
+        self.response_body = { data: 'fresh', count: @execution_count }.to_json
+        self.status = 200
+        self.content_type = 'application/json'
+      end
     end
   end
 
-  let(:controller) do
-    controller_class.new.tap do |controller_instance|
-      controller_instance.request = double('request')
-      controller_instance.response = double('response', body: '{"data":"test"}', status: 200)
+  # Helper to create a controller instance with proper request/response setup
+  def new_test_controller(klass = test_controller_class, request_path: '/web_api/v1/test', query_params: {})
+    klass.new.tap do |ctrl|
+      ctrl.request = double('request',
+        path: request_path,
+        host: 'example.org',
+        format: double(symbol: :json),
+        query_parameters: query_params)
+      ctrl.response = ActionDispatch::Response.new
     end
   end
+
+  # Helper to execute the caching around_action callbacks
+  def execute_cached_action(controller)
+    controller.class._process_action_callbacks.each do |callback|
+      if callback.kind == :around && callback.filter.is_a?(Proc)
+        callback.filter.call(controller, proc { controller.index })
+        return
+      end
+    end
+  end
+
+  # Alias for backward compatibility with existing simple tests
+  let(:controller_class) { test_controller_class }
+  let(:controller) { new_test_controller }
 
   before do
-    controller_class.cache_store.clear
+    test_controller_class.cache_store.clear
   end
 
   describe '.caches_action' do
@@ -55,62 +86,12 @@ RSpec.describe ActionCaching do
     end
 
     context 'integration with around_action pipeline' do
-      let(:test_controller_class) do
-        Class.new(ActionController::API) do
-          include ActionCaching
-
-          self.cache_store = ActiveSupport::Cache::MemoryStore.new
-
-          attr_accessor :execution_count, :params
-
-          def initialize
-            super
-            @execution_count = 0
-            @params = {}
-          end
-
-          def action_name
-            @_action_name || 'index'
-          end
-
-          def controller_path
-            'web_api/v1/test'
-          end
-
-          def index
-            @execution_count += 1
-            self.response_body = { data: 'fresh', count: @execution_count }.to_json
-            self.status = 200
-            self.content_type = 'application/json'
-          end
-        end
-      end
-
-      let(:test_controller) do
-        test_controller_class.new.tap do |ctrl|
-          ctrl.request = double('request',
-            path: '/web_api/v1/test',
-            host: 'example.org',
-            format: double(symbol: :json),
-            query_parameters: {})
-          ctrl.response = ActionDispatch::Response.new
-        end
-      end
-
-      before do
-        test_controller_class.cache_store.clear
-      end
-
       describe 'cache miss then cache hit' do
         it 'executes action body on cache miss and writes to cache' do
           test_controller_class.caches_action :index, expires_in: 1.minute
+          test_controller = new_test_controller
 
-          # Simulate action execution
-          test_controller_class._process_action_callbacks.each do |callback|
-            if callback.kind == :around && callback.filter.is_a?(Proc)
-              callback.filter.call(test_controller, proc { test_controller.index })
-            end
-          end
+          execute_cached_action(test_controller)
 
           expect(test_controller.execution_count).to eq(1)
           expect(test_controller.response.body).to include('fresh')
@@ -126,25 +107,15 @@ RSpec.describe ActionCaching do
           test_controller_class.caches_action :index, expires_in: 1.minute
 
           # First request - cache miss
-          test_controller_class._process_action_callbacks.each do |callback|
-            if callback.kind == :around && callback.filter.is_a?(Proc)
-              callback.filter.call(test_controller, proc { test_controller.index })
-            end
-          end
+          test_controller1 = new_test_controller
+          execute_cached_action(test_controller1)
 
-          expect(test_controller.execution_count).to eq(1)
-          first_response = test_controller.response.body
+          expect(test_controller1.execution_count).to eq(1)
+          first_response = test_controller1.response.body
 
-          # Second request with new controller instance - cache hit
-          test_controller2 = test_controller_class.new
-          test_controller2.request = test_controller.request
-          test_controller2.response = ActionDispatch::Response.new
-
-          test_controller_class._process_action_callbacks.each do |callback|
-            if callback.kind == :around && callback.filter.is_a?(Proc)
-              callback.filter.call(test_controller2, proc { test_controller2.index })
-            end
-          end
+          # Second request - cache hit
+          test_controller2 = new_test_controller
+          execute_cached_action(test_controller2)
 
           expect(test_controller2.execution_count).to eq(0) # Action body NOT executed
           expect(test_controller2.response.body).to eq(first_response)
@@ -154,6 +125,7 @@ RSpec.describe ActionCaching do
 
       describe 'conditional caching with :if option' do
         it 'does not cache when :if condition returns false' do
+          test_controller = new_test_controller
           test_controller.define_singleton_method(:cacheable?) { false }
           test_controller_class.caches_action :index, expires_in: 1.minute, if: :cacheable?
 
@@ -167,15 +139,11 @@ RSpec.describe ActionCaching do
         end
 
         it 'caches when :if condition returns true' do
+          test_controller = new_test_controller
           test_controller.define_singleton_method(:cacheable?) { true }
           test_controller_class.caches_action :index, expires_in: 1.minute, if: :cacheable?
 
-          # With :if => true, the callback runs - find and execute the caching callback
-          test_controller_class._process_action_callbacks.each do |callback|
-            if callback.kind == :around && callback.filter.is_a?(Proc)
-              callback.filter.call(test_controller, proc { test_controller.index })
-            end
-          end
+          execute_cached_action(test_controller)
 
           expect(test_controller.execution_count).to eq(1)
 
@@ -184,6 +152,7 @@ RSpec.describe ActionCaching do
         end
 
         it 'supports :if with proc' do
+          test_controller = new_test_controller
           test_controller_class.caches_action :index, expires_in: 1.minute, if: -> { false }
 
           # Proc returns false, so don't run caching
@@ -196,6 +165,7 @@ RSpec.describe ActionCaching do
 
       describe 'conditional caching with :unless option' do
         it 'does not cache when :unless condition returns true' do
+          test_controller = new_test_controller
           test_controller.define_singleton_method(:skip_cache?) { true }
           test_controller_class.caches_action :index, expires_in: 1.minute, unless: :skip_cache?
 
@@ -209,15 +179,11 @@ RSpec.describe ActionCaching do
         end
 
         it 'caches when :unless condition returns false' do
+          test_controller = new_test_controller
           test_controller.define_singleton_method(:skip_cache?) { false }
           test_controller_class.caches_action :index, expires_in: 1.minute, unless: :skip_cache?
 
-          # With :unless => false, run caching
-          test_controller_class._process_action_callbacks.each do |callback|
-            if callback.kind == :around && callback.filter.is_a?(Proc)
-              callback.filter.call(test_controller, proc { test_controller.index })
-            end
-          end
+          execute_cached_action(test_controller)
 
           expect(test_controller.execution_count).to eq(1)
 
@@ -231,34 +197,18 @@ RSpec.describe ActionCaching do
           test_controller_class.caches_action :index, expires_in: 1.minute, cache_path: -> { { page: params[:page] } }
 
           # First request with page=1
-          test_controller.params = { page: 1 }
-          allow(test_controller.request).to receive(:query_parameters).and_return(page: 1)
+          test_controller1 = new_test_controller(query_params: { page: 1 })
+          test_controller1.params = { page: 1 }
+          execute_cached_action(test_controller1)
 
-          test_controller_class._process_action_callbacks.each do |callback|
-            if callback.kind == :around && callback.filter.is_a?(Proc)
-              callback.filter.call(test_controller, proc { test_controller.index })
-            end
-          end
-
-          expect(test_controller.execution_count).to eq(1)
+          expect(test_controller1.execution_count).to eq(1)
           cache_key_1 = 'views/example.org/web_api/v1/test?page=1.json'
           expect(test_controller_class.cache_store.read(cache_key_1)).to be_present
 
           # Second request with page=2
-          test_controller2 = test_controller_class.new
+          test_controller2 = new_test_controller(query_params: { page: 2 })
           test_controller2.params = { page: 2 }
-          test_controller2.request = double('request',
-            path: '/web_api/v1/test',
-            host: 'example.org',
-            format: double(symbol: :json),
-            query_parameters: { page: 2 })
-          test_controller2.response = ActionDispatch::Response.new
-
-          test_controller_class._process_action_callbacks.each do |callback|
-            if callback.kind == :around && callback.filter.is_a?(Proc)
-              callback.filter.call(test_controller2, proc { test_controller2.index })
-            end
-          end
+          execute_cached_action(test_controller2)
 
           expect(test_controller2.execution_count).to eq(1)
           cache_key_2 = 'views/example.org/web_api/v1/test?page=2.json'
@@ -280,26 +230,16 @@ RSpec.describe ActionCaching do
           test_controller_class.caches_action :index, expires_in: 1.minute
 
           # First request - cache miss
-          test_controller_class._process_action_callbacks.each do |callback|
-            if callback.kind == :around && callback.filter.is_a?(Proc)
-              callback.filter.call(test_controller, proc { test_controller.index })
-            end
-          end
+          test_controller1 = new_test_controller
+          execute_cached_action(test_controller1)
 
-          expect(test_controller.execution_count).to eq(1)
+          expect(test_controller1.execution_count).to eq(1)
           cache_key = 'views/example.org/web_api/v1/test.json'
           expect(test_controller_class.cache_store.read(cache_key)).to be_present
 
           # Second request immediately - cache hit
-          test_controller2 = test_controller_class.new
-          test_controller2.request = test_controller.request
-          test_controller2.response = ActionDispatch::Response.new
-
-          test_controller_class._process_action_callbacks.each do |callback|
-            if callback.kind == :around && callback.filter.is_a?(Proc)
-              callback.filter.call(test_controller2, proc { test_controller2.index })
-            end
-          end
+          test_controller2 = new_test_controller
+          execute_cached_action(test_controller2)
 
           expect(test_controller2.execution_count).to eq(0) # Still cached
 
@@ -307,15 +247,8 @@ RSpec.describe ActionCaching do
           travel 61.seconds
 
           # Third request after expiration - cache miss again
-          test_controller3 = test_controller_class.new
-          test_controller3.request = test_controller.request
-          test_controller3.response = ActionDispatch::Response.new
-
-          test_controller_class._process_action_callbacks.each do |callback|
-            if callback.kind == :around && callback.filter.is_a?(Proc)
-              callback.filter.call(test_controller3, proc { test_controller3.index })
-            end
-          end
+          test_controller3 = new_test_controller
+          execute_cached_action(test_controller3)
 
           expect(test_controller3.execution_count).to eq(1) # Action executed again
           expect(test_controller3.response.body).to include('"count":1')
@@ -462,47 +395,20 @@ RSpec.describe ActionCaching do
 
   describe '#render_cached_response' do
     let(:cached_response) { { body: '{"cached":"data"}', status: 304 } }
+    let(:test_controller) { new_test_controller }
 
     it 'sets response body from cache' do
-      # Use the integration test controller that has proper setup
-      test_controller_class = Class.new(ActionController::API) do
-        include ActionCaching
-        self.cache_store = ActiveSupport::Cache::MemoryStore.new
-      end
-
-      test_controller = test_controller_class.new
-      test_controller.request = double('request', path: '/test', host: 'example.org', format: double(symbol: :json))
-      test_controller.response = ActionDispatch::Response.new
-
       test_controller.send(:render_cached_response, cached_response)
       # response_body is an array in Rails
       expect(test_controller.response_body).to eq(['{"cached":"data"}'])
     end
 
     it 'sets response status from cache' do
-      test_controller_class = Class.new(ActionController::API) do
-        include ActionCaching
-        self.cache_store = ActiveSupport::Cache::MemoryStore.new
-      end
-
-      test_controller = test_controller_class.new
-      test_controller.request = double('request', path: '/test', host: 'example.org', format: double(symbol: :json))
-      test_controller.response = ActionDispatch::Response.new
-
       test_controller.send(:render_cached_response, cached_response)
       expect(test_controller.status).to eq(304)
     end
 
     it 'sets content_type to application/json' do
-      test_controller_class = Class.new(ActionController::API) do
-        include ActionCaching
-        self.cache_store = ActiveSupport::Cache::MemoryStore.new
-      end
-
-      test_controller = test_controller_class.new
-      test_controller.request = double('request', path: '/test', host: 'example.org', format: double(symbol: :json))
-      test_controller.response = ActionDispatch::Response.new
-
       test_controller.send(:render_cached_response, cached_response)
       expect(test_controller.content_type).to eq('application/json; charset=utf-8')
     end
