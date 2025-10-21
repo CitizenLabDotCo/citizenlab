@@ -81,6 +81,7 @@ const FilesUpload = ({ setModalOpen, setShowFirstUploadView }: Props) => {
         projectId,
         userId: user?.data.id,
         userRole: user?.data.attributes.highest_role,
+        fileName: file.file.name,
         fileType: file.file.name.split('.').pop(),
         fileSize: file.file.size,
         aiProcessingAllowed: allowAiProcessing,
