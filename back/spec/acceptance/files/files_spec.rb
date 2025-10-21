@@ -164,7 +164,8 @@ resource 'Files' do
             attachments: { data: [] },
             uploader: { data: { id: file.uploader_id, type: 'user' } },
             projects: { data: [{ id: project.id, type: 'project' }] },
-            preview: { data: nil }
+            preview: { data: nil },
+            transcript: { data: nil }
           }
         )
       end
@@ -242,7 +243,8 @@ resource 'Files' do
             attachments: { data: [] },
             uploader: { data: { id: admin.id, type: 'user' } },
             projects: { data: [{ id: project, type: 'project' }] },
-            preview: { data: nil } # pdf file doesn't generate a preview
+            preview: { data: nil }, # pdf file doesn't generate a preview
+            transcript: { data: nil }
           }
         )
       end

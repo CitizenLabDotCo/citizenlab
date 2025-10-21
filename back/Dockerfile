@@ -58,7 +58,7 @@ RUN curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --yes --
     # `postgres` service in `docker-compose.yml`.
     && apt-get update && apt-get install -y postgresql-client-16
 
-WORKDIR /cl2_back
+WORKDIR /citizenlab/back
 
 COPY --from=dependency_files /app .
 
