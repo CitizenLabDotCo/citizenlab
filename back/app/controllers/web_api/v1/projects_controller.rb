@@ -440,7 +440,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
       # Skip a known case where we expect project to be invalid at this point
       moved_folder = project.admin_publication&.parent_id_was == project.folder_id
-      assignee_error_only = errors == { :default_assignee_id => [{ :error => :assignee_can_not_moderate_project }] }
+      assignee_error_only = errors == { default_assignee_id: [{ error: :assignee_can_not_moderate_project }] }
       next if assignee_error_only && moved_folder
 
       # Validation errors will appear in the Sentry error 'Additional Data'

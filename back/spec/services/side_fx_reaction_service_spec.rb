@@ -33,7 +33,7 @@ describe SideFxReactionService do
 
     # Test for regression of bugfix to prevent case where an exception occurs due to resource being
     # deleted before the job to log an Activity recording its creation is run. See CL-1962.
-    it "logs a 'liked' action when a like on an idea is created and then immediately removed", active_job_inline_adapter: true do
+    it "logs a 'liked' action when a like on an idea is created and then immediately removed", :active_job_inline_adapter do
       reaction = create(:reaction, mode: 'up', reactable: create(:idea))
       reaction.destroy!
       allow(PublishActivityToRabbitJob).to receive(:perform_later)
