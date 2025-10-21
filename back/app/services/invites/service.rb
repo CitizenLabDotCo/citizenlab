@@ -31,13 +31,10 @@ class Invites::Service
   end
 
   def bulk_create(hash_array, default_params = {})
-    build_invitees_output = build_invitees(hash_array, default_params)
-    invitees = build_invitees_output[:invitees]
-    extracted_images = build_invitees_output[:extracted_images]
-
+    invitees = build_invitees(hash_array, default_params)
     check_invitees(invitees)
     if @error_storage.no_critical_errors?
-      save_invitees(invitees - ignored_invitees(invitees), extracted_images)
+      save_invitees(invitees - ignored_invitees(invitees))
     else
       fail_now
     end
@@ -75,34 +72,23 @@ class Invites::Service
       add_error(:no_invites_specified)
       fail_now
     else
-      extract_output = text_image_service.extract_data_images(
-        params['invite_text'] || default_params['invite_text']
-      )
-
       invitees = hash_array.map do |invite_params|
-        build_invitee(invite_params, extract_output[:content], default_params)
+        build_invitee(invite_params, default_params)
       end
 
       UserSlugService.new.generate_slugs(invitees)
-
-      {
-        invitees: invitees,
-        extracted_images: extract_output[:extracted_images]
-      }
+      invitees
     end
   end
 
-  def build_invitee(params, invite_text, default_params = {})
+  def build_invitee(params, default_params = {})
     invitee = prepare_invitee(params, default_params)
 
     if invitee.new_record?
       invitee.invitee_invite = Invite.new(
         invitee: invitee,
         inviter: @inviter,
-        # If the invite text is the same for all invitees,
-        # why do we store it in each invite individually?
-        # Seems unnecessary
-        invite_text: invite_text,
+        invite_text: params['invite_text'] || default_params['invite_text'],
         send_invite_email: params['send_invite_email'].nil? ? true : params['send_invite_email']
       )
     end
@@ -175,25 +161,10 @@ class Invites::Service
     end
   end
 
-  def save_invitees(invitees, extracted_images)
+  def save_invitees(invitees)
     ActiveRecord::Base.transaction do
       invitees.each(&:save!)
     end
-
-    text_image_service.bulk_create_images!(
-      extracted_images,
-      # Before, we were creating images for each invite.
-      # This made no sense whatsoever as every invite has the same text,
-      # so if the invite text has any images, they will be duplicated in our DB for each invite.
-      # Now, we just create all images in the invite once.
-      # But because of how this was implemented before,
-      # we still need to link the image to one of the invites.
-      # So we just link it to the first invite in the list.
-      # Still, not sure why we store the invite text in each invite individually
-      # (see comment above).
-      invitees[0].invitee_invite,
-      :invite_text
-    )
 
     invitees.each do |invitee|
       if @run_side_fx
@@ -211,9 +182,5 @@ class Invites::Service
 
   def ignored_invitees(invitees)
     @error_storage.ignored_errors.map { |e| invitees[e.row] }
-  end
-
-  def text_image_service
-    @text_image_service ||= TextImageService.new
   end
 end
