@@ -1,11 +1,12 @@
-import React, {
-  useRef,
-  useImperativeHandle,
-  useCallback,
-  forwardRef,
-} from 'react';
+import React, { useRef, useCallback, useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+
+import { IFileData } from 'api/files/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import FileTranscription from './FileTranscription';
 
 export interface AudioRef {
   readonly currentTime: number;
@@ -21,56 +22,55 @@ type Props = {
   url: string;
   title?: string;
   mimeType: string;
-  onCurrentTimeUpdate?: (time: number) => void;
+  file: IFileData;
 };
 
-const AudioFilePreview = forwardRef<AudioRef, Props>(
-  ({ url, title, mimeType, onCurrentTimeUpdate }, ref) => {
-    const audioElementRef = useRef<HTMLAudioElement>(null);
-    const isProgrammaticSeekRef = useRef(false);
+const AudioFilePreview = ({ url, title, mimeType, file }: Props) => {
+  const audioElementRef = useRef<HTMLAudioElement>(null);
+  const [currentAudioTime, setCurrentAudioTime] = useState<number>(0);
 
-    // Expose audio controls to parent component via ref
-    useImperativeHandle(
-      ref,
-      () => ({
-        get currentTime() {
-          return audioElementRef.current?.currentTime ?? 0;
-        },
-        get duration() {
-          return audioElementRef.current?.duration ?? 0;
-        },
-        get paused() {
-          return audioElementRef.current?.paused ?? true;
-        },
-        setCurrentTime: (time: number) => {
-          if (audioElementRef.current) {
-            isProgrammaticSeekRef.current = true;
-            audioElementRef.current.currentTime = time;
-          }
-        },
-        play: async () => {
-          if (audioElementRef.current) {
-            await audioElementRef.current.play();
-          }
-        },
-        pause: () => {
-          if (audioElementRef.current) {
-            audioElementRef.current.pause();
-          }
-        },
-        getAudioElement: () => audioElementRef.current,
-      }),
-      []
-    );
+  const isTranscriptionActive = useFeatureFlag({
+    name: 'data_repository_transcription',
+  });
 
-    // Handle continuous time updates during playback
-    const handleTimeUpdate = useCallback(() => {
-      if (audioElementRef.current && onCurrentTimeUpdate) {
-        onCurrentTimeUpdate(audioElementRef.current.currentTime);
+  // Create internal audioRef object for FileTranscription
+  const audioRef = useRef<AudioRef>({
+    get currentTime() {
+      return audioElementRef.current?.currentTime ?? 0;
+    },
+    get duration() {
+      return audioElementRef.current?.duration ?? 0;
+    },
+    get paused() {
+      return audioElementRef.current?.paused ?? true;
+    },
+    setCurrentTime: (time: number) => {
+      if (audioElementRef.current) {
+        audioElementRef.current.currentTime = time;
       }
-    }, [onCurrentTimeUpdate]);
+    },
+    play: async () => {
+      if (audioElementRef.current) {
+        await audioElementRef.current.play();
+      }
+    },
+    pause: () => {
+      if (audioElementRef.current) {
+        audioElementRef.current.pause();
+      }
+    },
+    getAudioElement: () => audioElementRef.current,
+  });
 
-    return (
+  // Handle continuous time updates during playback
+  const handleTimeUpdate = useCallback(() => {
+    if (audioElementRef.current) {
+      setCurrentAudioTime(audioElementRef.current.currentTime);
+    }
+  }, []);
+
+  return (
+    <>
       <Box mt="24px">
         <audio
           ref={audioElementRef}
@@ -82,9 +82,19 @@ const AudioFilePreview = forwardRef<AudioRef, Props>(
           <source src={url} type={mimeType} />
         </audio>
       </Box>
-    );
-  }
-);
+
+      {isTranscriptionActive && file.relationships.transcript?.data && (
+        <Box mt="32px">
+          <FileTranscription
+            file={file}
+            audioRef={audioRef}
+            currentAudioTime={currentAudioTime}
+          />
+        </Box>
+      )}
+    </>
+  );
+};
 
 AudioFilePreview.displayName = 'AudioFilePreview';
 

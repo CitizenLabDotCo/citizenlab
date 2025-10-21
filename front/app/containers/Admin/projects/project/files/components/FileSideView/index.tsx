@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
@@ -10,19 +10,16 @@ import {
 
 import useFileById from 'api/files/useFileById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import SideModal from 'components/UI/SideModal';
 
 import { useIntl } from 'utils/cl-intl';
 
-import FilePreview, { AudioRef } from '../FilePreview';
+import FilePreview from '../FilePreview';
 import messages from '../messages';
 
 import FileDescription from './components/FileDescription';
 import FileEditForm from './components/FileEditForm';
 import FileMetadata from './components/FileMetadata';
-import FileTranscription from './components/FileTranscription';
 
 type Props = {
   opened: boolean;
@@ -34,16 +31,6 @@ const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
   const { formatMessage } = useIntl();
   const { data: file } = useFileById(selectedFileId);
   const [editingMetadata, setEditingMetadata] = useState(false);
-  const [currentAudioTime, setCurrentAudioTime] = useState<number>(0);
-  const audioRef = useRef<AudioRef>(null);
-
-  const isTranscriptionEnabled = useFeatureFlag({
-    name: 'data_repository_transcription',
-  });
-
-  const handleCurrentTimeUpdate = useCallback((time: number) => {
-    setCurrentAudioTime(time);
-  }, []);
 
   return (
     <SideModal
@@ -96,23 +83,8 @@ const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
                   )}
                 </Box>
                 <Box mt="32px">
-                  <FilePreview
-                    file={file}
-                    audioRef={audioRef}
-                    onCurrentTimeUpdate={handleCurrentTimeUpdate}
-                  />
+                  <FilePreview file={file} />
                 </Box>
-
-                {isTranscriptionEnabled &&
-                  file.data.relationships.transcript?.data && (
-                    <Box mt="32px">
-                      <FileTranscription
-                        file={file.data}
-                        audioRef={audioRef}
-                        currentAudioTime={currentAudioTime}
-                      />
-                    </Box>
-                  )}
               </Box>
             </Box>
           </>

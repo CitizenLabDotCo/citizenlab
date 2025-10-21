@@ -55,10 +55,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully',
     defaultMessage: 'All files uploaded successfully',
   },
-  transcription: {
-    id: 'app.containers.AdminPage.ProjectFiles.transcription',
-    defaultMessage: 'Transcription',
-  },
   transcriptionPending: {
     id: 'app.containers.AdminPage.ProjectFiles.transcriptionPending',
     defaultMessage:

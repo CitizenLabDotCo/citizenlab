@@ -15,7 +15,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import DownloadFileButton from '../DownloadFileButton';
 
-import AudioFilePreview, { AudioRef } from './AudioFilePreview';
+import AudioFilePreview from './AudioFilePreview';
 import CsvFilePreview from './CsvFilePreview';
 import IframePreview from './IframeFilePreview';
 import MarkdownFilePreview from './MarkdownFilePreview';
@@ -30,15 +30,11 @@ import {
 } from './utils';
 import VideoFilePreview from './VideoFilePreview';
 
-export type { AudioRef };
-
 type Props = {
   file: IFile;
-  audioRef?: React.Ref<AudioRef>;
-  onCurrentTimeUpdate?: (time: number) => void;
 };
 
-const FilePreview = ({ file, audioRef, onCurrentTimeUpdate }: Props) => {
+const FilePreview = ({ file }: Props) => {
   const { formatMessage } = useIntl();
 
   const { data: filePreview, isLoading: isLoadingPreview } = useFilePreview(
@@ -89,11 +85,10 @@ const FilePreview = ({ file, audioRef, onCurrentTimeUpdate }: Props) => {
       if (AUDIO_MIMETYPES.has(mimeType)) {
         return (
           <AudioFilePreview
-            ref={audioRef}
             url={fileUrl}
             title={file.data.attributes.name}
             mimeType={mimeType}
-            onCurrentTimeUpdate={onCurrentTimeUpdate}
+            file={file.data}
           />
         );
       }

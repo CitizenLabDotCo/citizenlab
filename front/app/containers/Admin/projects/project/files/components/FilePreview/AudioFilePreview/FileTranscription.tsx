@@ -14,7 +14,7 @@ import { IFileData } from 'api/files/types';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { AudioRef } from '../../FilePreview';
+import { AudioRef } from './index';
 import messages from '../../messages';
 import Centerer from 'components/UI/Centerer';
 
@@ -99,7 +99,6 @@ const FileTranscription = ({ file, audioRef, currentAudioTime }: Props) => {
 
   return (
     <>
-      <Title variant="h3">{formatMessage(messages.transcription)}</Title>
       <Box pt="12px" display="flex">
         {(transcriptionStatus === 'pending' ||
           transcriptionStatus === 'processing') && (
