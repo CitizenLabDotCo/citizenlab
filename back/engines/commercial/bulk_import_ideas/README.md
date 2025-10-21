@@ -3,7 +3,7 @@
 ## Importing from handwritten ideas / surveys using google
 To use the Google document AI importer you need to add the following to your back-secret.env file:
 ```
-GOOGLE_APPLICATION_CREDENTIALS=/cl2_back/config/google_cloud.json
+GOOGLE_APPLICATION_CREDENTIALS=/citizenlab/back/config/google_cloud.json
 GOOGLE_DOCUMENT_AI_PROJECT=xxxxxxxxxxxx
 GOOGLE_DOCUMENT_AI_LOCATION=us
 GOOGLE_DOCUMENT_AI_PROCESSOR=xxxxxxxxxxxxx
