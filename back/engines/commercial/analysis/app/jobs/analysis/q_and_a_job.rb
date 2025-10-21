@@ -4,6 +4,11 @@ module Analysis
   class QAndAJob < ApplicationJob
     self.priority = 45 # Slighltly more important than emails (50)
 
+    UNRECOVERABLE_ERRORS = [
+      LLM::UnsupportedAttachmentError,
+      LLM::TooManyImagesError
+    ].freeze
+
     def run(question)
       # Make the question available to other methods
       @question = question
@@ -24,7 +29,7 @@ module Analysis
       case error
       when LLM::PreviewPendingError then retry_in(15.seconds)
       when LLM::TooManyRequestsError then retry_in(1.minute)
-      when LLM::UnsupportedAttachmentError then expire
+      when *UNRECOVERABLE_ERRORS then expire
       else super
       end
     end
