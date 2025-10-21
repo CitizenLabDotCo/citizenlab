@@ -41,7 +41,7 @@ const ProjectContentViewer = ({
   });
   const { data: projectFiles } = useProjectFiles(projectId);
   const { data: descriptionBuilderLayout, isInitialLoading } =
-    useContentBuilderLayout(projectId, 'project', featureEnabled && enabled);
+    useContentBuilderLayout('project', projectId, featureEnabled && enabled);
 
   if (!featureEnabled) return null;
 

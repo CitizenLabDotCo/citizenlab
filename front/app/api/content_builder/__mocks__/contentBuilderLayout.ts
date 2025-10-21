@@ -4,6 +4,6 @@ export const contentBuilderLayoutData = {
   attributes: {
     enabled: true,
     craftjs_json: {},
-    code: 'test',
+    code: 'project_description',
   },
 };

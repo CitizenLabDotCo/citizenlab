@@ -599,7 +599,7 @@ const AdminProjectsProjectGeneral = () => {
                     valueMultiloc={descriptionMultiloc}
                     onChange={handleDescriptionChange}
                     label={formatMessage(messages.descriptionLabel)}
-                    modelType="project"
+                    contentBuildableType="project"
                   />
                 </Highlighter>
                 <Error

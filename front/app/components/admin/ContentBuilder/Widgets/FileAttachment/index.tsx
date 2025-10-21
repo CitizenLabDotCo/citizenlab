@@ -77,6 +77,7 @@ const FileAttachmentSettings = () => {
   const { projectId } = useParams();
 
   const { data: projectDescriptionLayout } = useContentBuilderLayout(
+    'project',
     projectId || ''
   );
 

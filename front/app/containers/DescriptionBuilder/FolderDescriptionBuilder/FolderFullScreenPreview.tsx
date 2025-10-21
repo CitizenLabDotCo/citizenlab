@@ -15,8 +15,8 @@ export const FolderFullScreenPreview = () => {
 
   return (
     <FullScreenPreview
-      modelId={folderId}
-      modelType="folder"
+      contentBuildableId={folderId}
+      contentBuildableType="folder"
       titleMultiloc={folder.data.attributes.title_multiloc}
     />
   );

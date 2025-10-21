@@ -21,10 +21,10 @@ export interface IContentBuilderLayout {
 }
 
 export interface IAddContentBuilderLayout {
-  modelId: string;
-  modelType?: DescriptionModelType;
+  contentBuildableType: ContentBuildableType;
+  contentBuildableId: string;
   craftjs_json?: CraftJson;
   enabled?: boolean;
 }
 
-export type DescriptionModelType = 'project' | 'folder';
+export type ContentBuildableType = 'project' | 'folder' | 'homepage';

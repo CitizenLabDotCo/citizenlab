@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
+import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 import useAuthUser from 'api/me/useAuthUser';
 
 import useLocale from 'hooks/useLocale';
@@ -22,7 +22,7 @@ import messages from './messages';
 const Meta = () => {
   const locale = useLocale();
   const { data: tenant } = useAppConfiguration();
-  const { data: homepageLayout } = useHomepageLayout();
+  const { data: homepageLayout } = useContentBuilderLayout('homepage');
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
   const localize = useLocalize();

@@ -102,9 +102,10 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     useAddProjectFolder();
   const { mutate: updateProjectFolder } = useUpdateProjectFolder();
 
-  const showDescriptionBuilder = useFeatureFlag({
-    name: 'project_description_builder',
-  });
+  const showDescriptionBuilder =
+    useFeatureFlag({
+      name: 'project_description_builder',
+    }) && projectFolder; // description builder cannot be used when creating a folder
 
   /*
     ==============
@@ -577,7 +578,16 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           <SubSectionTitle>
             <FormattedMessage {...messages.folderDescription} />
           </SubSectionTitle>
-          {!showDescriptionBuilder && (
+          {showDescriptionBuilder ? (
+            <Highlighter fragmentId="description-multiloc">
+              <DescriptionBuilderToggle
+                valueMultiloc={descriptionMultiloc}
+                onChange={getHandler(setDescriptionMultiloc)}
+                label={formatMessage(messages.descriptionInputLabel)}
+                contentBuildableType="folder"
+              />
+            </Highlighter>
+          ) : (
             <Box data-cy="e2e-project-folder-description">
               <QuillMutilocWithLocaleSwitcher
                 id="description"
@@ -588,14 +598,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               />
             </Box>
           )}
-          <Highlighter fragmentId="description-multiloc">
-            <DescriptionBuilderToggle
-              valueMultiloc={descriptionMultiloc}
-              onChange={getHandler(setDescriptionMultiloc)}
-              label={formatMessage(messages.descriptionInputLabel)}
-              modelType="folder"
-            />
-          </Highlighter>
           <Error
             fieldName="description_multiloc"
             apiErrors={errors.description_multiloc}

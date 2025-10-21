@@ -60,7 +60,7 @@ describe('DescriptionBuilderToggle', () => {
         valueMultiloc={multiloc}
         onChange={dummyFunction}
         label={'QuillLabel'}
-        modelType="project"
+        contentBuildableType="project"
         {...routerProps}
       />
     );
@@ -74,8 +74,8 @@ describe('DescriptionBuilderToggle', () => {
     ).toBeInTheDocument();
 
     expect(mockAddDescriptionBuilderLayout).toHaveBeenCalledWith({
-      modelId: 'projectId',
-      modelType: 'project',
+      contentBuildableId: 'projectId',
+      contentBuildableType: 'project',
       enabled: true,
     });
   });
@@ -86,7 +86,7 @@ describe('DescriptionBuilderToggle', () => {
         valueMultiloc={multiloc}
         onChange={dummyFunction}
         label={'QuillLabel'}
-        modelType="project"
+        contentBuildableType="project"
         {...routerProps}
       />
     );
@@ -95,8 +95,8 @@ describe('DescriptionBuilderToggle', () => {
     toggle.click();
     expect(screen.queryByText('QuillLabel')).not.toBeInTheDocument();
     expect(mockAddDescriptionBuilderLayout).toHaveBeenCalledWith({
-      modelId: 'projectId',
-      modelType: 'project',
+      contentBuildableId: 'projectId',
+      contentBuildableType: 'project',
       enabled: true,
     });
   });
@@ -108,7 +108,7 @@ describe('DescriptionBuilderToggle', () => {
         valueMultiloc={multiloc}
         onChange={dummyFunction}
         label={'QuillLabel'}
-        modelType="project"
+        contentBuildableType="project"
         {...routerProps}
       />
     );
