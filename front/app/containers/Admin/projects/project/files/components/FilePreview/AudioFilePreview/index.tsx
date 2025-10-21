@@ -71,7 +71,14 @@ const AudioFilePreview = ({ url, title, mimeType, file }: Props) => {
 
   return (
     <>
-      <Box mt="24px">
+      <Box
+        position="sticky"
+        top="0"
+        zIndex="1"
+        background="white"
+        pt="24px"
+        pb="16px"
+      >
         <audio
           ref={audioElementRef}
           title={title}
@@ -84,7 +91,7 @@ const AudioFilePreview = ({ url, title, mimeType, file }: Props) => {
       </Box>
 
       {isTranscriptionActive && file.relationships.transcript?.data && (
-        <Box mt="32px">
+        <Box mt="16px">
           <FileTranscription
             file={file}
             audioRef={audioRef}
