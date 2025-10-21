@@ -274,8 +274,10 @@ RSpec.describe ActionCaching do
       end
 
       describe 'cache expiration' do
+        include ActiveSupport::Testing::TimeHelpers
+
         it 'expires cache and re-executes action after expiration time' do
-          test_controller_class.caches_action :index, expires_in: 1.second
+          test_controller_class.caches_action :index, expires_in: 1.minute
 
           # First request - cache miss
           test_controller_class._process_action_callbacks.each do |callback|
@@ -301,8 +303,8 @@ RSpec.describe ActionCaching do
 
           expect(test_controller2.execution_count).to eq(0) # Still cached
 
-          # Wait for cache to expire
-          sleep(1.1)
+          # Travel forward past expiration time
+          travel 61.seconds
 
           # Third request after expiration - cache miss again
           test_controller3 = test_controller_class.new
@@ -317,6 +319,8 @@ RSpec.describe ActionCaching do
 
           expect(test_controller3.execution_count).to eq(1) # Action executed again
           expect(test_controller3.response.body).to include('"count":1')
+
+          travel_back
         end
       end
     end
@@ -394,6 +398,8 @@ RSpec.describe ActionCaching do
   end
 
   describe '#write_cache' do
+    include ActiveSupport::Testing::TimeHelpers
+
     let(:response) { double('response', body: '{"result":"success"}', status: 200) }
     let(:cache_key) { 'views/example.org/web_api/v1/test.json' }
 
@@ -412,17 +418,19 @@ RSpec.describe ActionCaching do
     end
 
     it 'cache entry expires after expires_in duration' do
-      # Write with 1 second expiration
-      controller.send(:write_cache, cache_key, response, 1.second)
+      # Write with 1 minute expiration
+      controller.send(:write_cache, cache_key, response, 1.minute)
 
       # Should be present immediately
       expect(controller_class.cache_store.read(cache_key)).to be_present
 
-      # Wait for expiration
-      sleep(1.1)
+      # Travel forward past expiration time
+      travel 61.seconds
 
       # Should be gone after expiration
       expect(controller_class.cache_store.read(cache_key)).to be_nil
+
+      travel_back
     end
 
     it 'does not cache content_type' do
