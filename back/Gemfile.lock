@@ -1005,7 +1005,7 @@ GEM
       base64 (>= 0.2)
     que (2.3.0)
     racc (1.8.1)
-    rack (2.2.19)
+    rack (2.2.20)
     rack-attack (6.7.0)
       rack (>= 1.0, < 4)
     rack-cors (2.0.0)
@@ -1514,4 +1514,4 @@ RUBY VERSION
    ruby 3.4.7p58
 
 BUNDLED WITH
-   2.5.11
+   2.6.9

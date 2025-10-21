@@ -318,7 +318,7 @@ describe('Seat based billing', () => {
     });
 
     it('allows user to add a moderator and shows a confirmation when needed', () => {
-      cy.visit(`admin/projects/${projectId}/settings/access-rights`);
+      cy.visit(`admin/projects/${projectId}/general/access-rights`);
 
       cy.intercept(`**/projects/${projectId}/moderators`).as(
         'moderatorsRequest'
@@ -372,7 +372,7 @@ describe('Seat based billing', () => {
         cy.dataCy('e2e-moderator-count').contains(moderatorsCount);
 
         // Navigate to the project permissions page
-        cy.visit(`admin/projects/${projectId}/settings/access-rights`);
+        cy.visit(`admin/projects/${projectId}/general/access-rights`);
         cy.intercept(`**/projects/${projectId}/moderators`).as(
           'moderatorsRequest'
         );
@@ -415,7 +415,7 @@ describe('Seat based billing', () => {
           cy.dataCy('e2e-moderator-total-seats').contains(totalSeats);
 
           // Navigate to the project permissions page
-          cy.visit(`admin/projects/${projectId}/settings/access-rights`);
+          cy.visit(`admin/projects/${projectId}/general/access-rights`);
 
           // Add moderator and check that they are shown in the list
           cy.get('#projectModeratorUserSearch').should('exist');
