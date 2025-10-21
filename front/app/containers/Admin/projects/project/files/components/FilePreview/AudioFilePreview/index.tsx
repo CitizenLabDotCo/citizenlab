@@ -28,6 +28,7 @@ type Props = {
 const AudioFilePreview = ({ url, title, mimeType, file }: Props) => {
   const audioElementRef = useRef<HTMLAudioElement>(null);
   const [currentAudioTime, setCurrentAudioTime] = useState<number>(0);
+  const [shouldScrollToActive, setShouldScrollToActive] = useState(false);
 
   const isTranscriptionActive = useFeatureFlag({
     name: 'data_repository_transcription',
@@ -69,6 +70,11 @@ const AudioFilePreview = ({ url, title, mimeType, file }: Props) => {
     }
   }, []);
 
+  // Handle user seeking in the audio timeline
+  const handleSeeked = useCallback(() => {
+    setShouldScrollToActive(true);
+  }, []);
+
   return (
     <>
       <Box
@@ -85,6 +91,7 @@ const AudioFilePreview = ({ url, title, mimeType, file }: Props) => {
           controls
           style={{ width: '100%' }}
           onTimeUpdate={handleTimeUpdate}
+          onSeeked={handleSeeked}
         >
           <source src={url} type={mimeType} />
         </audio>
@@ -96,6 +103,8 @@ const AudioFilePreview = ({ url, title, mimeType, file }: Props) => {
             file={file}
             audioRef={audioRef}
             currentAudioTime={currentAudioTime}
+            shouldScrollToActive={shouldScrollToActive}
+            onScrollComplete={() => setShouldScrollToActive(false)}
           />
         </Box>
       )}

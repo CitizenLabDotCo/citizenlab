@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef, useEffect } from 'react';
 
 import {
   Box,
@@ -44,10 +44,19 @@ type Props = {
   file: IFileData;
   audioRef?: React.RefObject<AudioRef>;
   currentAudioTime?: number;
+  shouldScrollToActive?: boolean;
+  onScrollComplete?: () => void;
 };
-const FileTranscription = ({ file, audioRef, currentAudioTime }: Props) => {
+const FileTranscription = ({
+  file,
+  audioRef,
+  currentAudioTime,
+  shouldScrollToActive,
+  onScrollComplete,
+}: Props) => {
   const { formatMessage } = useIntl();
   const { data: fileTranscript, isError } = useFileTranscript(file.id);
+  const utteranceRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const transcriptionStatus = fileTranscript?.data.attributes.status;
 
@@ -96,6 +105,21 @@ const FileTranscription = ({ file, audioRef, currentAudioTime }: Props) => {
 
     return index !== -1 ? index : null;
   }, [currentAudioTime, fileTranscript]);
+
+  // Scroll to active utterance when user seeks in the audio timeline
+  useEffect(() => {
+    if (
+      shouldScrollToActive &&
+      activeUtteranceIndex !== null &&
+      utteranceRefs.current[activeUtteranceIndex]
+    ) {
+      utteranceRefs.current[activeUtteranceIndex]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+      onScrollComplete?.();
+    }
+  }, [shouldScrollToActive, activeUtteranceIndex, onScrollComplete]);
 
   return (
     <>
@@ -163,6 +187,7 @@ const FileTranscription = ({ file, audioRef, currentAudioTime }: Props) => {
                 (utterance, index) => (
                   <Box
                     key={utterance.start}
+                    ref={(el) => (utteranceRefs.current[index] = el)}
                     bgColor={
                       activeUtteranceIndex === index
                         ? colors.green100
