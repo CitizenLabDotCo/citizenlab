@@ -3,7 +3,6 @@ import React from 'react';
 import { Button, Label } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
-import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import { string, object, array, number } from 'yup';
@@ -15,7 +14,7 @@ import { SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
@@ -39,14 +38,15 @@ type Props = {
   onSubmit: (formValues: RulesFormValues) => void | Promise<void>;
   defaultValues?: Partial<RulesFormValues>;
   isVerificationEnabled: boolean;
-} & WrappedComponentProps;
+};
 
 const RulesGroupForm = ({
-  intl: { formatMessage },
   onSubmit,
   defaultValues,
   isVerificationEnabled,
 }: Props) => {
+  const { formatMessage } = useIntl();
+
   const schema = object({
     // Ensure a value is entered for at least one language
     title_multiloc: validateAtLeastOneLocale(
@@ -126,4 +126,4 @@ const RulesGroupForm = ({
   );
 };
 
-export default injectIntl(RulesGroupForm);
+export default RulesGroupForm;

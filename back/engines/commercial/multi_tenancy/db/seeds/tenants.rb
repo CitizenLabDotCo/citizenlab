@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
+
 require_relative 'base'
 
 module MultiTenancy
@@ -506,6 +508,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            data_repository_transcription: {
+              enabled: true,
+              allowed: true
+            },
             data_repository_ai_analysis: {
               enabled: true,
               allowed: true
@@ -550,3 +556,4 @@ module MultiTenancy
     end
   end
 end
+# rubocop:enable Metrics/ClassLength

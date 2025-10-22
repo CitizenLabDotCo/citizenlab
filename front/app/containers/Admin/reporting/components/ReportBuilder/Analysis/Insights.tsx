@@ -35,7 +35,7 @@ const Insights = ({
   }
 
   return (
-    <Box display="flex" flexDirection="column" gap="8px">
+    <Box display="flex" flexDirection="column" gap="8px" mb="8px">
       {insights?.data.map((insight) => (
         <Box key={insight.id}>
           {insight.relationships.insightable.data.type ===
