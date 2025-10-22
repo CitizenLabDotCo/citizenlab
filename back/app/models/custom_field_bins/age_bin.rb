@@ -13,8 +13,12 @@
 #
 # Indexes
 #
+#  index_age_bins_on_cf_and_range                     (custom_field_id,range) UNIQUE WHERE ((type)::text = 'CustomFieldBins::AgeBin'::text)
 #  index_custom_field_bins_on_custom_field_id         (custom_field_id)
 #  index_custom_field_bins_on_custom_field_option_id  (custom_field_option_id)
+#  index_option_bins_on_cf_and_option                 (custom_field_id,custom_field_option_id) UNIQUE WHERE ((type)::text = 'CustomFieldBins::OptionBin'::text)
+#  index_range_bins_on_cf_and_range                   (custom_field_id,range) UNIQUE WHERE ((type)::text = 'CustomFieldBins::RangeBin'::text)
+#  index_value_bins_on_cf_and_values                  (custom_field_id,values) UNIQUE WHERE ((type)::text = 'CustomFieldBins::ValueBin'::text)
 #
 # Foreign Keys
 #
@@ -48,7 +52,7 @@ module CustomFieldBins
       # achieving statistically significant auto-insights at the expense of
       # detail
       [0, 20, 40, 60, 80, nil].each_cons(2) do |low, high|
-        create!(custom_field:, range: low...high)
+        find_or_create_by!(custom_field:, range: low...high)
       end
     end
 

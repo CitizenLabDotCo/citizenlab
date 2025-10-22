@@ -13,8 +13,12 @@
 #
 # Indexes
 #
+#  index_age_bins_on_cf_and_range                     (custom_field_id,range) UNIQUE WHERE ((type)::text = 'CustomFieldBins::AgeBin'::text)
 #  index_custom_field_bins_on_custom_field_id         (custom_field_id)
 #  index_custom_field_bins_on_custom_field_option_id  (custom_field_option_id)
+#  index_option_bins_on_cf_and_option                 (custom_field_id,custom_field_option_id) UNIQUE WHERE ((type)::text = 'CustomFieldBins::OptionBin'::text)
+#  index_range_bins_on_cf_and_range                   (custom_field_id,range) UNIQUE WHERE ((type)::text = 'CustomFieldBins::RangeBin'::text)
+#  index_value_bins_on_cf_and_values                  (custom_field_id,values) UNIQUE WHERE ((type)::text = 'CustomFieldBins::ValueBin'::text)
 #
 # Foreign Keys
 #
@@ -46,7 +50,7 @@ module CustomFieldBins
       return if custom_field.custom_field_bins.any?
 
       custom_field.options.order(:ordering).each do |option|
-        create!(custom_field:, custom_field_option: option)
+        find_or_create_by!(custom_field:, custom_field_option: option)
       end
     end
 

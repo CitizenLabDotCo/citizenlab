@@ -1,3 +1,8 @@
+\restrict WcLbQY3lS1BDU1HpJrnxkWgSlauzoeIK8bPxnkPTHz9F2hgUkNuomccNtcVseE1
+
+-- Dumped from database version 16.6 (Debian 16.6-1.pgdg110+1)
+-- Dumped by pg_dump version 16.10 (Debian 16.10-1.pgdg12+1)
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -178,6 +183,7 @@ DROP INDEX IF EXISTS public.index_volunteering_causes_on_phase_id;
 DROP INDEX IF EXISTS public.index_volunteering_causes_on_ordering;
 DROP INDEX IF EXISTS public.index_verification_verifications_on_user_id;
 DROP INDEX IF EXISTS public.index_verification_verifications_on_hashed_uid;
+DROP INDEX IF EXISTS public.index_value_bins_on_cf_and_values;
 DROP INDEX IF EXISTS public.index_users_on_unique_code;
 DROP INDEX IF EXISTS public.index_users_on_slug;
 DROP INDEX IF EXISTS public.index_users_on_registration_completed_at;
@@ -204,6 +210,7 @@ DROP INDEX IF EXISTS public.index_report_builder_reports_on_name;
 DROP INDEX IF EXISTS public.index_reactions_on_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id_and_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id;
+DROP INDEX IF EXISTS public.index_range_bins_on_cf_and_range;
 DROP INDEX IF EXISTS public.index_projects_topics_on_topic_id;
 DROP INDEX IF EXISTS public.index_projects_topics_on_project_id;
 DROP INDEX IF EXISTS public.index_projects_on_slug;
@@ -237,6 +244,7 @@ DROP INDEX IF EXISTS public.index_permissions_on_action;
 DROP INDEX IF EXISTS public.index_permissions_custom_fields_on_permission_id;
 DROP INDEX IF EXISTS public.index_permissions_custom_fields_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_permission_field;
+DROP INDEX IF EXISTS public.index_option_bins_on_cf_and_option;
 DROP INDEX IF EXISTS public.index_onboarding_campaign_dismissals_on_user_id;
 DROP INDEX IF EXISTS public.index_official_feedbacks_on_user_id;
 DROP INDEX IF EXISTS public.index_official_feedbacks_on_idea_id;
@@ -426,6 +434,7 @@ DROP INDEX IF EXISTS public.index_analysis_analyses_on_main_custom_field_id;
 DROP INDEX IF EXISTS public.index_analysis_analyses_custom_fields;
 DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_analysis_id;
+DROP INDEX IF EXISTS public.index_age_bins_on_cf_and_range;
 DROP INDEX IF EXISTS public.index_admin_publications_on_rgt;
 DROP INDEX IF EXISTS public.index_admin_publications_on_publication_type_and_publication_id;
 DROP INDEX IF EXISTS public.index_admin_publications_on_publication_status;
@@ -4848,6 +4857,13 @@ CREATE INDEX index_admin_publications_on_rgt ON public.admin_publications USING 
 
 
 --
+-- Name: index_age_bins_on_cf_and_range; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_age_bins_on_cf_and_range ON public.custom_field_bins USING btree (custom_field_id, range) WHERE ((type)::text = 'CustomFieldBins::AgeBin'::text);
+
+
+--
 -- Name: index_analysis_additional_custom_fields_on_analysis_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6171,6 +6187,13 @@ CREATE INDEX index_onboarding_campaign_dismissals_on_user_id ON public.onboardin
 
 
 --
+-- Name: index_option_bins_on_cf_and_option; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_option_bins_on_cf_and_option ON public.custom_field_bins USING btree (custom_field_id, custom_field_option_id) WHERE ((type)::text = 'CustomFieldBins::OptionBin'::text);
+
+
+--
 -- Name: index_permission_field; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6402,6 +6425,13 @@ CREATE INDEX index_projects_topics_on_topic_id ON public.projects_topics USING b
 
 
 --
+-- Name: index_range_bins_on_cf_and_range; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_range_bins_on_cf_and_range ON public.custom_field_bins USING btree (custom_field_id, range) WHERE ((type)::text = 'CustomFieldBins::RangeBin'::text);
+
+
+--
 -- Name: index_reactions_on_reactable_type_and_reactable_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6581,6 +6611,13 @@ CREATE UNIQUE INDEX index_users_on_slug ON public.users USING btree (slug);
 --
 
 CREATE UNIQUE INDEX index_users_on_unique_code ON public.users USING btree (unique_code);
+
+
+--
+-- Name: index_value_bins_on_cf_and_values; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_value_bins_on_cf_and_values ON public.custom_field_bins USING btree (custom_field_id, "values") WHERE ((type)::text = 'CustomFieldBins::ValueBin'::text);
 
 
 --
@@ -7921,13 +7958,16 @@ ALTER TABLE ONLY public.ideas_topics
 -- PostgreSQL database dump complete
 --
 
+\unrestrict WcLbQY3lS1BDU1HpJrnxkWgSlauzoeIK8bPxnkPTHz9F2hgUkNuomccNtcVseE1
+
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20250930942638'),
+('20251014142253'),
 ('20251001090229'),
 ('20251001090208'),
 ('20251001083036'),
+('20250930942638'),
 ('20250922131002'),
 ('20250915151900'),
 ('20250910093500'),
