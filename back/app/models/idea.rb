@@ -250,6 +250,25 @@ class Idea < ApplicationRecord
   # Equivalent to pmethod.supports_survey_form?
   scope :supports_survey, -> { where(creation_phase: Phase.where(participation_method: %w[native_survey community_monitor_survey])) }
 
+  def body_multiloc=(value)
+    output = TextImageService.new.extract_data_images_multiloc(value)
+    multiloc = output[:content_multiloc]
+    extracted_images = output[:extracted_images]
+
+    text_images.each(&:mark_for_destruction)
+
+    extracted_images.each do |extracted_image|
+      img_attrs = {
+        imageable_field: 'body_multiloc',
+        text_reference: extracted_image[:text_reference]
+      }
+      img_attrs[extracted_image[:img_key]] = extracted_image[:img_src]
+      text_images.build(img_attrs)
+    end
+
+    super(multiloc)
+  end
+
   # Filters out all the ideas for which the ParticipationMethod responds truety
   # to the given block. The block receives the ParticipationMethod object as an
   # argument

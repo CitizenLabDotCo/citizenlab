@@ -103,6 +103,7 @@ resource 'Ideas' do
             do_request
             assert_status 201
             expect(response_data.dig(:attributes, :body_multiloc, :en)).to include('<p>Some text</p><img alt="Red dot"')
+            binding.pry
             text_image = TextImage.find_by(imageable_id: response_data[:id], imageable_type: 'Idea', imageable_field: 'body_multiloc')
             expect(response_data.dig(:attributes, :body_multiloc, :en)).to include("data-cl2-text-image-text-reference=\"#{text_image.text_reference}\"")
             expect(TextImage.count).to eq 1
