@@ -1,14 +1,14 @@
-# iPaaS Integration via Webhooks - Architectural Analysis
+# iPaaS Integration via Webhooks - Implementation Plan
 
 **Date:** 2025-10-17
-**Status:** Analysis & Recommendation
-**Author:** Architecture Review
+**Status:** Implementation Plan
+**Jira:** TAN-5687
 
 ## Executive Summary
 
-This document analyzes architectural options for integrating Go Vocal with iPaaS platforms (primarily n8n) to enable customers to build custom workflows triggered by platform events.
+This document outlines the implementation plan for integrating Go Vocal with iPaaS platforms (primarily n8n) through a Rails-native webhook subscription and delivery system.
 
-**Recommendation:** Implement a Rails-native webhook subscription and delivery system that leverages the existing Activity-driven event architecture.
+**Approach:** Leverage the existing Activity-driven event architecture to deliver webhooks for selected event types (ideas and users initially) with optional project-based filtering.
 
 ---
 
@@ -16,11 +16,9 @@ This document analyzes architectural options for integrating Go Vocal with iPaaS
 
 1. [Current Architecture](#current-architecture)
 2. [Requirements](#requirements)
-3. [Architectural Options](#architectural-options)
-4. [Comparative Analysis](#comparative-analysis)
-5. [Recommendation](#recommendation)
-6. [Implementation Plan](#implementation-plan)
-7. [Appendix](#appendix)
+3. [Solution Architecture](#solution-architecture)
+4. [Implementation Plan](#implementation-plan)
+5. [Appendix](#appendix)
 
 ---
 
@@ -207,11 +205,15 @@ end
 ### Functional Requirements
 
 1. **Event Triggers:** Enable external systems (n8n, Zapier, Make.com) to receive real-time notifications when events occur in Go Vocal
-2. **Event Types:** Support all existing event types (ideas, comments, projects, phases, users, etc.)
-3. **Filtering:** Allow subscriptions to specific event types
-4. **Multi-tenancy:** Tenant-scoped subscriptions and delivery
+2. **Event Types:** Support selected event types:
+   - **Phase 1:** Idea events (`idea.created`, `idea.published`, `idea.changed`) and User events (`user.created`)
+   - **Future:** Additional event types can be added incrementally
+3. **Event Filtering:**
+   - Filter by event type (required)
+   - Filter by project (optional) - only deliver events for specific projects
+4. **Multi-tenancy:** Tenant-scoped subscriptions (using Apartment)
 5. **Reliability:** At-least-once delivery with retry logic
-6. **Security:** Signature verification, HTTPS, tenant isolation
+6. **Security:** Signature verification, HTTPS enforcement, tenant isolation
 
 ### Non-Functional Requirements
 
@@ -235,9 +237,9 @@ Based on n8n documentation research:
 
 ---
 
-## Architectural Options
+## Solution Architecture
 
-### Option 1: Rails-Native Webhook Delivery System ⭐ RECOMMENDED
+### Rails-Native Webhook Delivery System
 
 Build webhook subscriptions in Rails, leveraging existing Activity infrastructure.
 
@@ -268,17 +270,18 @@ HTTP POST to subscriber URL
 ```ruby
 # Migration: create_webhook_subscriptions
 create_table :webhook_subscriptions, id: :uuid do |t|
-  t.uuid :tenant_id, null: false, index: true
   t.string :name, null: false
   t.string :url, null: false
   t.string :secret_token, null: false
-  t.jsonb :events, default: [], null: false  # ['idea.created', 'comment.*']
+  t.jsonb :events, default: [], null: false  # ['idea.created', 'idea.published', 'user.created']
+  t.uuid :project_id  # Optional: filter to specific project
   t.boolean :enabled, default: true
   t.integer :max_retries, default: 3
   t.integer :timeout_seconds, default: 10
   t.timestamps
 
-  t.index [:tenant_id, :enabled]
+  t.index :enabled
+  t.index :project_id
 end
 
 # Migration: create_webhook_deliveries
@@ -307,8 +310,17 @@ end
 ```ruby
 # app/models/webhook_subscription.rb
 class WebhookSubscription < ApplicationRecord
-  belongs_to :tenant, class_name: 'Tenant', foreign_key: :tenant_id
+  # Tenant-scoped via Apartment
+  belongs_to :project, optional: true
   has_many :webhook_deliveries, dependent: :destroy
+
+  # Supported event types (Phase 1)
+  SUPPORTED_EVENTS = [
+    'idea.created',
+    'idea.published',
+    'idea.changed',
+    'user.created'
+  ].freeze
 
   validates :url, presence: true, url: true
   validates :name, presence: true
@@ -316,26 +328,44 @@ class WebhookSubscription < ApplicationRecord
   validates :secret_token, presence: true
   validates :max_retries, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10 }
   validates :timeout_seconds, numericality: { greater_than: 0, less_than_or_equal_to: 30 }
+  validate :validate_supported_events
 
   before_validation :generate_secret_token, on: :create
 
   scope :enabled, -> { where(enabled: true) }
   scope :for_event, ->(event_type) do
     where("events @> ?", [event_type].to_json)
-      .or(where("events @> ?", ["#{event_type.split('.').first}.*"].to_json))
-      .or(where("events @> ?", ["*"].to_json))
+  end
+  scope :for_project, ->(project_id) do
+    where(project_id: [nil, project_id])
   end
 
   def matches_event?(event_type)
-    events.include?('*') ||
-    events.include?(event_type) ||
-    events.any? { |pattern| pattern.ends_with?('.*') && event_type.starts_with?(pattern[0..-3]) }
+    events.include?(event_type)
+  end
+
+  def matches_project?(activity_project_id)
+    # If subscription has no project filter, match all
+    return true if project_id.nil?
+
+    # If activity has no project, always send (e.g., user.created)
+    return true if activity_project_id.nil?
+
+    # Otherwise, must match the subscription's project
+    project_id == activity_project_id
   end
 
   private
 
   def generate_secret_token
     self.secret_token ||= SecureRandom.base64(32)
+  end
+
+  def validate_supported_events
+    unsupported = events - SUPPORTED_EVENTS
+    if unsupported.any?
+      errors.add(:events, "contains unsupported event types: #{unsupported.join(', ')}")
+    end
   end
 end
 ```
@@ -489,14 +519,19 @@ class SideFxWebhookService
   def after_activity_created(activity)
     event_type = routing_key(activity)
 
-    # Find matching subscriptions
+    # Only process supported event types
+    return unless WebhookSubscription::SUPPORTED_EVENTS.include?(event_type)
+
+    # Find matching subscriptions (event type + optional project filter)
     subscriptions = WebhookSubscription
       .enabled
       .for_event(event_type)
+      .for_project(activity.project_id)
 
     # Create delivery records and enqueue jobs
     subscriptions.find_each do |subscription|
       next unless subscription.matches_event?(event_type)
+      next unless subscription.matches_project?(activity.project_id)
 
       delivery = WebhookDelivery.create!(
         webhook_subscription: subscription,
@@ -580,8 +615,6 @@ class WebApi::V1::WebhookSubscriptionsController < ApplicationController
 
   def create
     @subscription = WebhookSubscription.new(subscription_params)
-    @subscription.tenant = Tenant.current
-
     authorize @subscription
 
     if @subscription.save
@@ -645,442 +678,6 @@ end
 | **Testing**       | Unit tests, integration tests, E2E                   | 1.5 days     |
 | **Documentation** | API docs, n8n integration guide                      | 0.5 days     |
 | **Total**         |                                                      | **7-8 days** |
-
----
-
-### Option 2: RabbitMQ Webhook Plugin
-
-Install `rabbitmq-webhooks` plugin to forward RabbitMQ messages to HTTP endpoints.
-
-#### Architecture Diagram
-
-```
-User Action
-    ↓
-SideFxService
-    ↓
-LogActivityJob
-    ↓
-Activity.create!
-    ↓
-PublishActivityToRabbitJob (existing)
-    ↓
-RabbitMQ Exchange: cl2back
-    ↓
-Queue: webhooks.{tenant_id}.{event_pattern}
-    ↓
-RabbitMQ Webhooks Plugin
-    ↓
-HTTP POST to configured URL
-```
-
-#### Implementation
-
-1. **Customize RabbitMQ Docker Image:**
-
-   ```dockerfile
-   FROM rabbitmq:3.8-management
-
-   # Install plugin
-   RUN apt-get update && apt-get install -y git make erlang-dev
-   RUN git clone https://github.com/jbrisbin/rabbitmq-webhooks.git /tmp/webhooks
-   RUN cd /tmp/webhooks && make && make install
-   RUN rabbitmq-plugins enable rabbitmq_webhooks
-   ```
-
-2. **Configure Webhook Bindings:**
-
-   ```bash
-   # Create queue for tenant's webhooks
-   rabbitmqadmin declare queue name=webhooks.{tenant_id}.idea.created durable=true
-
-   # Bind to exchange
-   rabbitmqadmin declare binding source=cl2back destination=webhooks.{tenant_id}.idea.created routing_key=idea.created
-
-   # Configure webhook
-   rabbitmqadmin declare webhook queue=webhooks.{tenant_id}.idea.created \
-     url=https://n8n.customer.com/webhook/abc123 \
-     method=POST
-   ```
-
-3. **Multi-Tenant Setup:**
-   - Create separate queue per tenant per event pattern
-   - Bind queues to `cl2back` exchange with routing keys
-   - Configure webhooks on each queue
-
-#### Pros
-
-- ✅ **Low Code Changes:** Reuses existing RabbitMQ infrastructure
-- ✅ **Separation of Concerns:** Webhook delivery outside application
-- ✅ **Leverage RabbitMQ:** Already publishing events
-
-#### Cons
-
-- ❌ **Plugin Unmaintained:** Last update 10+ years ago (2012)
-- ❌ **Security Concerns:**
-  - Limited authentication options
-  - RabbitMQ must be exposed to plugin
-  - Unclear signature support
-- ❌ **Multi-Tenancy Complexity:**
-  - Need queue per tenant per event type
-  - Hundreds of queues = management nightmare
-- ❌ **Debugging Difficulty:** No delivery logs in application
-- ❌ **Observability Gap:** Can't track delivery success/failures easily
-- ❌ **Unknown Reliability:** Retry behavior unclear
-- ❌ **Docker Complexity:** Custom RabbitMQ image, deployment changes
-- ❌ **Configuration Management:** Webhooks configured via RabbitMQ, not application
-
-#### Effort Estimate
-
-| Phase                | Tasks                                  | Effort       |
-| -------------------- | -------------------------------------- | ------------ |
-| **Docker Image**     | Build custom RabbitMQ with plugin      | 1 day        |
-| **Plugin Testing**   | Verify functionality, limits           | 1 day        |
-| **Queue Management** | Auto-create queues per tenant          | 1 day        |
-| **Webhook Config**   | API to configure webhooks via RabbitMQ | 1.5 days     |
-| **Multi-Tenant**     | Queue/exchange per tenant setup        | 1.5 days     |
-| **Testing**          | Integration tests                      | 1 day        |
-| **Documentation**    | Setup, configuration                   | 0.5 days     |
-| **Total**            |                                        | **7.5 days** |
-
-**Risk Level:** 🔴 **HIGH** (unmaintained dependency, unclear reliability)
-
----
-
-### Option 3: External Webhook Service Consuming RabbitMQ
-
-Build a dedicated microservice that consumes RabbitMQ messages and delivers webhooks.
-
-#### Architecture Diagram
-
-```
-User Action
-    ↓
-SideFxService
-    ↓
-LogActivityJob
-    ↓
-Activity.create!
-    ↓
-PublishActivityToRabbitJob (existing)
-    ↓
-RabbitMQ Exchange: cl2back
-    ↓
-Webhook Service (Node.js/Go)
-    ├→ PostgreSQL: Subscription DB
-    ├→ PostgreSQL: Delivery logs
-    └→ HTTP POST to subscriber URLs
-```
-
-#### Implementation
-
-**Service Technology:** Node.js or Go (good async I/O performance)
-
-**Components:**
-
-1. **RabbitMQ Consumer:** Subscribe to all events from `cl2back` exchange
-2. **Subscription Database:** Store webhook subscriptions (separate from main DB)
-3. **Delivery Engine:** HTTP client with retry logic
-4. **Admin API:** Manage subscriptions (separate from Rails API)
-
-**Example (Node.js with TypeScript):**
-
-```typescript
-// webhook-service/src/consumer.ts
-import amqp from "amqplib";
-import { WebhookDeliveryEngine } from "./delivery";
-
-class RabbitMQConsumer {
-  async start() {
-    const connection = await amqp.connect(process.env.RABBITMQ_URI);
-    const channel = await connection.createChannel();
-
-    await channel.assertExchange("cl2back", "topic", { durable: true });
-    const queue = await channel.assertQueue("", { exclusive: true });
-
-    // Subscribe to all events
-    await channel.bindQueue(queue.queue, "cl2back", "#");
-
-    channel.consume(queue.queue, async (msg) => {
-      if (msg) {
-        const event = JSON.parse(msg.content.toString());
-        await this.processEvent(event, msg.fields.routingKey);
-        channel.ack(msg);
-      }
-    });
-  }
-
-  async processEvent(event: any, routingKey: string) {
-    const tenantId = event.tenantId;
-    const subscriptions = await this.getSubscriptions(tenantId, routingKey);
-
-    for (const sub of subscriptions) {
-      await WebhookDeliveryEngine.deliver(sub, event);
-    }
-  }
-}
-```
-
-#### Pros
-
-- ✅ **Specialized:** Optimized for webhook delivery
-- ✅ **Scalable:** Independent scaling from main app
-- ✅ **Technology Choice:** Use best language for async I/O
-- ✅ **Isolation:** Failures don't impact main application
-
-#### Cons
-
-- ❌ **Operational Overhead:** New service to deploy, monitor, maintain
-- ❌ **Infrastructure:** Separate database, networking, CI/CD
-- ❌ **Team Complexity:** Different language/framework
-- ❌ **Distributed Debugging:** Need distributed tracing
-- ❌ **Admin UI Integration:** Rails admin needs to talk to external service
-- ❌ **Data Duplication:** Tenant info duplicated in service
-
-#### Effort Estimate
-
-| Phase                   | Tasks                              | Effort      |
-| ----------------------- | ---------------------------------- | ----------- |
-| **Service Development** | Consumer, delivery engine, retries | 4 days      |
-| **Database**            | Migrations, schema, ORM            | 1 day       |
-| **Admin API**           | Subscription CRUD endpoints        | 2 days      |
-| **Rails Integration**   | Admin UI calling external API      | 2 days      |
-| **Deployment**          | Docker, CI/CD, infrastructure      | 2 days      |
-| **Monitoring**          | Metrics, logs, alerts              | 1 day       |
-| **Testing**             | Unit, integration, E2E             | 2 days      |
-| **Documentation**       | Architecture, runbooks             | 1 day       |
-| **Total**               |                                    | **15 days** |
-
-**Risk Level:** 🟡 **MEDIUM** (operational complexity)
-
----
-
-### Option 4: n8n Consumes RabbitMQ Directly
-
-Document how users can connect n8n directly to your RabbitMQ using the **RabbitMQ Trigger** node.
-
-#### Architecture Diagram
-
-```
-User Action
-    ↓
-SideFxService
-    ↓
-LogActivityJob
-    ↓
-Activity.create!
-    ↓
-PublishActivityToRabbitJob (existing)
-    ↓
-RabbitMQ Exchange: cl2back
-    ↑
-    └─ n8n RabbitMQ Trigger Node
-         ↓
-       n8n Workflow
-```
-
-#### Implementation
-
-**Zero Code Changes** - Already publishing events to RabbitMQ
-
-**Documentation:**
-
-1. Provide RabbitMQ connection details
-2. Show how to configure RabbitMQ Trigger node
-3. Document routing key patterns
-4. Provide example workflows
-
-**n8n Configuration:**
-
-```yaml
-# n8n RabbitMQ Trigger Node
-Host: rabbitmq.govocal.com
-Port: 5672
-Username: tenant_readonly_user
-Password: <generated_password>
-Exchange: cl2back
-Exchange Type: topic
-Routing Key: idea.* # Or specific: idea.created
-Queue: n8n_queue_<unique_id>
-```
-
-#### Pros
-
-- ✅ **Zero Effort:** Works today, just document
-- ✅ **No Maintenance:** No code to maintain
-- ✅ **Real-Time:** Direct message consumption
-- ✅ **Full Power:** Users get all events, filter in n8n
-- ✅ **Advanced:** Power users can do complex routing
-
-#### Cons
-
-- ❌ **Security Risk:** RabbitMQ credentials shared with users
-- ❌ **Network Exposure:** RabbitMQ must be internet-accessible
-- ❌ **Multi-Tenancy:** Complex isolation (need per-tenant queues or message filtering)
-- ❌ **Not User-Friendly:** Requires RabbitMQ knowledge
-- ❌ **Non-Standard:** Most SaaS uses webhooks, not message queues
-- ❌ **Credential Management:** Rotating credentials impacts all users
-- ❌ **Attack Surface:** Direct access to message broker
-
-#### Security Mitigation
-
-1. **Read-Only User:** Create RabbitMQ user with read-only permissions
-2. **Tenant Isolation:** Create exchange/queue per tenant
-3. **Network:** Use VPN or IP whitelisting
-4. **Credentials:** Rotate regularly, per tenant
-
-#### Effort Estimate
-
-| Phase               | Tasks                          | Effort       |
-| ------------------- | ------------------------------ | ------------ |
-| **Security Review** | Assess risks, design isolation | 1 day        |
-| **RabbitMQ Config** | Per-tenant users, exchanges    | 1 day        |
-| **Documentation**   | Setup guide, examples          | 1 day        |
-| **Testing**         | Verify isolation, security     | 0.5 days     |
-| **Total**           |                                | **3.5 days** |
-
-**Risk Level:** 🔴 **HIGH** (security concerns for multi-tenant SaaS)
-
----
-
-### Option 5: Hybrid Approach
-
-Implement **Option 1 (Rails Webhooks)** for standard users + **Option 4 (RabbitMQ Direct)** for advanced users.
-
-#### Architecture
-
-```
-Activity Created
-    ↓
-    ├→ trigger_webhooks() → WebhookDeliveryJob → HTTP POST
-    └→ publish_to_rabbit() → RabbitMQ → (Optional) n8n RabbitMQ Trigger
-```
-
-#### Pros
-
-- ✅ **Flexibility:** Webhooks for 90% of users, RabbitMQ for power users
-- ✅ **Migration Path:** Start with webhooks, graduate to RabbitMQ if needed
-
-#### Cons
-
-- ❌ **Complexity:** Two systems to document/maintain
-- ❌ **Confusion:** Users may not know which to use
-- ❌ **Security:** RabbitMQ exposure still a concern
-
-#### Effort Estimate
-
-**Total:** Option 1 (7-8 days) + Option 4 documentation (1 day) = **8-9 days**
-
----
-
-## Comparative Analysis
-
-### Security Comparison
-
-| Option                 | Tenant Isolation            | Credential Security      | Attack Surface      | Auth Method   | Score            |
-| ---------------------- | --------------------------- | ------------------------ | ------------------- | ------------- | ---------------- |
-| **Option 1 (Rails)**   | ✅ Database-scoped          | ✅ Per-webhook secret    | ✅ Minimal (HTTPS)  | HMAC-SHA256   | 🟢 **Excellent** |
-| **Option 2 (Plugin)**  | ⚠️ Complex (queue-based)    | ⚠️ Plugin-dependent      | ⚠️ RabbitMQ exposed | Unknown       | 🟡 **Fair**      |
-| **Option 3 (Service)** | ✅ Database-scoped          | ✅ Per-webhook secret    | ⚠️ New service      | HMAC-SHA256   | 🟢 **Good**      |
-| **Option 4 (Direct)**  | ❌ Complex (queue/exchange) | ❌ Shared RabbitMQ creds | ❌ Message broker   | RabbitMQ auth | 🔴 **Poor**      |
-| **Option 5 (Hybrid)**  | Mixed                       | Mixed                    | ⚠️ Both surfaces    | Both          | 🟡 **Fair**      |
-
-**Winner:** Option 1 (Rails-native)
-
----
-
-### Performance Comparison
-
-| Option                 | Throughput | Latency | Scalability          | Resource Usage | Score            |
-| ---------------------- | ---------- | ------- | -------------------- | -------------- | ---------------- |
-| **Option 1 (Rails)**   | Good       | Medium  | ✅ Que workers scale | PostgreSQL     | 🟢 **Good**      |
-| **Option 2 (Plugin)**  | Unknown    | Low     | ❓ Unknown           | RabbitMQ       | 🟡 **Unknown**   |
-| **Option 3 (Service)** | Excellent  | Low     | ✅ Independent       | Separate infra | 🟢 **Excellent** |
-| **Option 4 (Direct)**  | Excellent  | Lowest  | ✅ Client-side       | Minimal        | 🟢 **Excellent** |
-| **Option 5 (Hybrid)**  | Mixed      | Mixed   | Mixed                | Both           | 🟢 **Good**      |
-
-**Winner:** Options 3/4 for raw performance, Option 1 acceptable for expected load
-
----
-
-### Maintainability Comparison
-
-| Option                 | Code Familiarity  | Testing           | Debugging           | Operational Overhead | Dependencies    | Score            |
-| ---------------------- | ----------------- | ----------------- | ------------------- | -------------------- | --------------- | ---------------- |
-| **Option 1 (Rails)**   | ✅ Team expertise | ✅ Existing infra | ✅ Rails logs       | ✅ None              | ✅ Zero new     | 🟢 **Excellent** |
-| **Option 2 (Plugin)**  | ❌ Plugin code    | ⚠️ Limited        | ❌ Plugin internals | ⚠️ Custom image      | ❌ Unmaintained | 🔴 **Poor**      |
-| **Option 3 (Service)** | ⚠️ New codebase   | ⚠️ New infra      | ⚠️ Distributed      | ❌ High              | ⚠️ New stack    | 🟡 **Fair**      |
-| **Option 4 (Direct)**  | ✅ Just docs      | ✅ None needed    | ⚠️ User-side        | ✅ None              | ✅ None         | 🟢 **Good**      |
-| **Option 5 (Hybrid)**  | Mixed             | Mixed             | Mixed               | ⚠️ Both              | Mixed           | 🟡 **Fair**      |
-
-**Winner:** Option 1 (Rails-native)
-
----
-
-### Developer Experience (n8n Users)
-
-| Option                 | Setup Ease         | Standard Pattern     | Documentation | Debugging        | Score            |
-| ---------------------- | ------------------ | -------------------- | ------------- | ---------------- | ---------------- |
-| **Option 1 (Rails)**   | ✅ Webhook URL     | ✅ Industry standard | ✅ Simple     | ✅ Delivery logs | 🟢 **Excellent** |
-| **Option 2 (Plugin)**  | ✅ Webhook URL     | ✅ Industry standard | ⚠️ Complex    | ❌ No logs       | 🟡 **Good**      |
-| **Option 3 (Service)** | ✅ Webhook URL     | ✅ Industry standard | ✅ Simple     | ✅ Delivery logs | 🟢 **Excellent** |
-| **Option 4 (Direct)**  | ❌ RabbitMQ config | ❌ Non-standard      | ❌ Complex    | ⚠️ n8n logs      | 🟡 **Fair**      |
-| **Option 5 (Hybrid)**  | Mixed              | ✅ Webhook primary   | ⚠️ Two paths  | Mixed            | 🟡 **Good**      |
-
-**Winner:** Options 1/3 (webhook-based)
-
----
-
-### Overall Scoring
-
-| Option                 | Security | Performance | Maintainability | DX     | Effort     | Total Score  |
-| ---------------------- | -------- | ----------- | --------------- | ------ | ---------- | ------------ |
-| **Option 1 (Rails)**   | 🟢 5/5   | 🟢 4/5      | 🟢 5/5          | 🟢 5/5 | 🟢 8 days  | ⭐ **19/20** |
-| **Option 2 (Plugin)**  | 🟡 2/5   | 🟡 3/5      | 🔴 1/5          | 🟡 3/5 | 🟢 7 days  | 🔴 **9/20**  |
-| **Option 3 (Service)** | 🟢 4/5   | 🟢 5/5      | 🟡 3/5          | 🟢 5/5 | 🟡 15 days | 🟡 **17/20** |
-| **Option 4 (Direct)**  | 🔴 1/5   | 🟢 5/5      | 🟢 4/5          | 🟡 2/5 | 🟢 3 days  | 🟡 **12/20** |
-| **Option 5 (Hybrid)**  | 🟡 3/5   | 🟢 4/5      | 🟡 3/5          | 🟡 3/5 | 🟡 9 days  | 🟡 **13/20** |
-
----
-
-## Recommendation
-
-### 🥇 Primary: Option 1 - Rails-Native Webhook System
-
-**Rationale:**
-
-1. **Architectural Elegance:** Perfectly leverages existing Activity-driven event system
-2. **Security:** Proven patterns (tenant isolation, HMAC verification) already in codebase
-3. **Maintainability:** Follows SideFx, Que jobs, existing patterns
-4. **Industry Standard:** Webhooks are how every major SaaS platform works (GitHub, Stripe, Twilio, Mailgun)
-5. **Developer Experience:** n8n users expect webhooks, not RabbitMQ
-6. **Low Risk:** No new infrastructure, no unmaintained dependencies
-7. **Reasonable Effort:** 7-8 days vs 15 days for external service
-
-**Why Not Others:**
-
-- **Option 2:** Unmaintained plugin (last update 2012), security/reliability concerns
-- **Option 3:** Solid option but 2x effort for marginal benefit (only needed at massive scale)
-- **Option 4:** Security risk in multi-tenant SaaS, non-standard UX
-- **Option 5:** Unnecessary complexity
-
----
-
-### 🥈 Secondary: Optional RabbitMQ Documentation (Advanced Users)
-
-For **power users** who want real-time access to all events:
-
-- Document how to consume RabbitMQ directly using n8n RabbitMQ Trigger
-- Provide as "Advanced Integration" option
-- Requires almost zero effort (documentation only)
-- Include security warnings
-
-**Security Requirements:**
-
-- Read-only RabbitMQ user per tenant
-- Dedicated exchange/queue per tenant
-- VPN or IP whitelist
-- Clear documentation of security implications
 
 ---
 
@@ -1209,62 +806,22 @@ For **power users** who want real-time access to all events:
 
 ### A. Event Types Reference
 
-All events published via Activity system:
+Phase 1 supported event types:
 
 #### Ideas
 
 - `idea.created` - New idea submitted
-- `idea.changed` - Idea updated
-- `idea.deleted` - Idea removed
 - `idea.published` - Idea published (from draft)
-- `idea.changed_status` - Status changed
-- `idea.changed_title` - Title changed
-- `idea.changed_body` - Body changed
-
-#### Comments
-
-- `comment.created` - New comment posted
-- `comment.changed` - Comment edited
-- `comment.deleted` - Comment removed
-- `comment.marked_as_spam` - Marked as spam
-
-#### Projects
-
-- `project.created` - New project created
-- `project.changed` - Project updated
-- `project.deleted` - Project removed
-- `project.published` - Project published
-
-#### Phases
-
-- `phase.created` - Phase created
-- `phase.changed` - Phase updated
-- `phase.deleted` - Phase removed
-- `phase.started` - Phase became active
-- `phase.upcoming` - Phase starting soon
-- `phase.ended` - Phase completed
+- `idea.changed` - Idea updated (title, body, or other attributes)
+- `idea.deleted` - Idea removed
 
 #### Users
 
 - `user.created` - New user registered
-- `user.changed` - User profile updated
-- `user.deleted` - User account deleted
+- `user.deleted` - User removed their profile
+- `user.changed` - User updated
 
-#### Votes
-
-- `vote.created` - New vote cast
-- `vote.deleted` - Vote removed
-
-#### Baskets (Participatory Budgeting)
-
-- `basket.created` - Basket created
-- `basket.submitted` - Basket submitted
-
-#### Notifications
-
-- `notification.created` - Notification sent to user
-
-_And many more... (30+ total event types)_
+**Note:** Additional event types (comments, projects, votes, etc.) can be added in future phases as needed.
 
 ---
 
