@@ -5,7 +5,7 @@ require 'rspec_api_documentation/dsl'
 
 context 'bosa_fas verification' do
   before do
-    allow_any_instance_of(CustomIdMethods::BosaFasOmniauth).to receive(:jwks).and_return({}) # to skip fetching keys from external service
+    allow_any_instance_of(CustomIdMethods::BosaFas::BosaFasOmniauth).to receive(:jwks).and_return({}) # to skip fetching keys from external service
     @user = create(:user, first_name: 'Rudolphi', last_name: 'Raindeari')
     @token = AuthToken::AuthToken.new(payload: @user.to_token_payload).token
     OmniAuth.config.test_mode = true
