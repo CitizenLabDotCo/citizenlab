@@ -1616,7 +1616,7 @@
   "app.containers.NewAuthModal.logIn": "Anmelden",
   "app.containers.NewAuthModal.steps.AcceptPolicies.reviewTheTerms": "Um fortzufahren, lesen Sie bitte die nachstehenden Bedingungen.",
   "app.containers.NewAuthModal.steps.BuiltInFields.pleaseCompleteYourProfile": "Bitte vervollständigen Sie Ihr Profil.",
-  "app.containers.NewAuthModal.steps.EmailAndPassword.goBackToLoginOptions": "Zurück zu den Anmeldeoptionen",
+  "app.containers.NewAuthModal.steps.EmailAndPassword.goBackToLoginOptions": "Zurück zur Anmeldung oder Registrierung",
   "app.containers.NewAuthModal.steps.EmailAndPassword.goToSignUp": "Noch kein Konto? {goToOtherFlowLink}",
   "app.containers.NewAuthModal.steps.EmailAndPassword.signUp": "Registrierung",
   "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveFourDigits": "Der Code muss 4-stellig sein.",
