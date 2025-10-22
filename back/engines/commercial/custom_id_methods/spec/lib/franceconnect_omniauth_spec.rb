@@ -4,7 +4,7 @@
 
 require 'rails_helper'
 
-describe CustomIdMethods::FranceconnectOmniauth do
+describe CustomIdMethods::Franceconnect::FranceconnectOmniauth do
   describe '#can_merge?' do
     using RSpec::Parameterized::TableSyntax
 
