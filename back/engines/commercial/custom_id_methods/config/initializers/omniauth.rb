@@ -10,7 +10,7 @@ ID_AUSTRIA_SETUP_PROC = ->(env) { CustomIdMethods::IdAustriaOmniauth.new.omniaut
 TWODAY_SETUP_PROC = ->(env) { CustomIdMethods::TwodayOmniauth.new.omniauth_setup(AppConfiguration.instance, env) }
 AUTH0_SETUP_PROC = ->(env) { CustomIdMethods::Auth0Omniauth.new.omniauth_setup(AppConfiguration.instance, env) }
 HOPLR_SETUP_PROC = ->(env) { CustomIdMethods::HoplrOmniauth.new.omniauth_setup(AppConfiguration.instance, env) }
-NEMLOG_IN_SAML_SETUP_PROC = lambda { |env| IdNemlogIn::NemlogInOmniauth.new.omniauth_setup(AppConfiguration.instance, env) }
+NEMLOG_IN_SAML_SETUP_PROC = ->(env) { CustomIdMethods::NemlogInOmniauth.new.omniauth_setup(AppConfiguration.instance, env) }
 
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :openid_connect, setup: FAKE_SSO_SETUP_PROC, name: 'fake_sso', issuer: CustomIdMethods::FakeSsoOmniauth.new.method(:issuer)
