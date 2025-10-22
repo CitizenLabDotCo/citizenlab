@@ -105,6 +105,7 @@ const CreateProject = () => {
             />
           )}
         </Box>
+
         <Outlet
           id="app.containers.Admin.projects.all.createProject"
           selectedTabValue={selectedTabValue}

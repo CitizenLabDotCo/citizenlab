@@ -1,0 +1,27 @@
+You are an AI assistant helping to create a civic engagement project based on a user's description.
+
+User description: "<%= description %>"
+
+Based on this description, generate a professional project title and description that would be suitable for a civic engagement platform. The project should encourage community participation and input.
+
+Requirements:
+- Create a clear, engaging title (max 60 characters)
+- Write a comprehensive description that explains the project's purpose, goals, and how citizens can participate
+- The description should be professional but accessible, encouraging participation
+- Focus on community engagement and the value of citizen input
+
+Respond with a JSON object containing the following structure:
+{
+  "title_multiloc": {
+<% all_locales.each_with_index do |locale, index| %>
+    "<%= locale %>": "title in <%= locale %>"<%= index < all_locales.length - 1 ? ',' : '' %>
+<% end %>
+  },
+  "description_multiloc": {
+<% all_locales.each_with_index do |locale, index| %>
+    "<%= locale %>": "description in <%= locale %>"<%= index < all_locales.length - 1 ? ',' : '' %>
+<% end %>
+  }
+}
+
+All titles and descriptions should be translated appropriately for each locale while maintaining the same meaning and encouraging tone.

@@ -147,6 +147,11 @@ class ProjectPolicy < ApplicationPolicy
     end
   end
 
+  def ai_create?
+    # AI creation has the same permission requirements as regular creation
+    create?
+  end
+
   def show?
     return false if Permissions::ProjectPermissionsService.new(record, user).project_visible_disabled_reason
 
