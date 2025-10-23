@@ -53,15 +53,12 @@ module PublicApi
 
     def permitted_idea_params
       params.require(:idea).permit(
-        :location_description,
         :assignee_id,
         :idea_status_id,
         title_multiloc: {},
         body_multiloc: {},
-        location_point_geojson: [:type, { coordinates: [] }],
         topic_ids: [],
         phase_ids: [],
-        custom_field_values: {}
       )
     end
   end
