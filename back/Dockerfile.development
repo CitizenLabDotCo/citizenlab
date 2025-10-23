@@ -21,7 +21,8 @@ RUN apt-get update && apt-get install -qq -y --no-install-recommends \
       less                 \
       clang                \
       gnupg                \
-      # libyaml-dev          \
+      # Needed by Psych (Ruby's default YAML parser)
+      libyaml-dev          \
       sudo
 
 # Install Postgres client:
