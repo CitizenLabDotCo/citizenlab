@@ -373,7 +373,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "Idee",
   "app.components.app.containers.AdminPage.ProjectEdit.initiativeTerm": "Initiative",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Wie soll ein Beitrag genannt werden?",
-  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Vorhaben",
+  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Kommentar",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupport": "Geben Sie hier den Link zu Ihrem Konveio-Dokument an. Weitere Informationen zum Einrichten von Konveio finden Sie in unserem {supportArticleLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle": "Support-Artikel",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL": "https://support.govocal.com/en/articles/7946532-embedding-konveio-pdf-documents-for-collecting-feedback",
