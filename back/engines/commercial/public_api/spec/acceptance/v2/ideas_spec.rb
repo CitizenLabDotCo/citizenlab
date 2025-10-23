@@ -233,7 +233,6 @@ resource 'Posts' do
         publication_status: 'published'
       })
     end
-
   end
 
   put '/api/v2/ideas/:idea_id' do
