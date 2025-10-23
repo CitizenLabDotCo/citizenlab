@@ -23,10 +23,16 @@ class EventPolicy < ApplicationPolicy
       project_scope = scope_for(Project)
 
       if @hide_events_unlisted_projects
+        remove_unlisted_type = if @show_unlisted_events_user_can_moderate
+          'remove_unlisted_that_user_cannot_moderate'
+        else
+          'remove_all_unlisted'
+        end
+
         project_scope = ProjectPolicy.apply_listed_scope(
           project_scope,
           user,
-          'remove_all_unlisted'
+          remove_unlisted_type
         )
       end
 
