@@ -17,6 +17,31 @@ module PublicApi
       show_item Idea.find(params[:id]), V2::IdeaSerializer
     end
 
+    def create
+      project = Project.find(params[:project_id])
+            
+      idea_params = permitted_idea_params   
+      idea = Idea.new(idea_params)
+      idea.project = project      
+
+      if idea.save
+        show_item idea, V2::IdeaSerializer, status: :created
+      else
+        render json: { errors: idea.errors.details }, status: :unprocessable_entity
+      end
+    end
+
+    def update
+      idea = Idea.find(params[:id])
+      update_params = permitted_idea_params
+      
+      if idea.update(update_params)
+        show_item idea, V2::IdeaSerializer
+      else
+        render json: { errors: idea.errors.details }, status: :unprocessable_entity
+      end
+    end
+
     private
 
     def finder_params
@@ -24,6 +49,20 @@ module PublicApi
         .permit(:author_id, :project_id, :type, topic_ids: [])
         .to_h
         .symbolize_keys
+    end
+
+    def permitted_idea_params
+      params.require(:idea).permit(
+        :location_description,
+        :assignee_id,
+        :idea_status_id,
+        title_multiloc: {},
+        body_multiloc: {},
+        location_point_geojson: [:type, { coordinates: [] }],
+        topic_ids: [],
+        phase_ids: [],
+        custom_field_values: {}
+      )
     end
   end
 end

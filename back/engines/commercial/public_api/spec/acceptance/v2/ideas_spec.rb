@@ -194,5 +194,135 @@ resource 'Posts' do
     end
   end
 
+  post '/api/v2/ideas' do
+    route_summary 'Create an idea'
+    route_description <<~DESC.squish
+      Create a new idea in an active project phase. The project must have an active ideation 
+      or native survey phase to accept new ideas.
+    DESC
+
+    parameter :project_id, 'The unique ID of the project where the idea will be created', type: 'string', required: true
+    parameter 'idea[title_multiloc]', 'The idea title in multiple languages (object with language codes as keys)', type: 'object', required: true
+    parameter 'idea[body_multiloc]', 'The idea description in multiple languages (object with language codes as keys)', type: 'object', required: true
+    parameter 'idea[location_description]', 'A textual description of the location', type: 'string', required: false
+    parameter 'idea[proposed_budget]', 'The proposed budget for the idea', type: 'integer', required: false
+    parameter 'idea[topic_ids]', 'Array of topic IDs to associate with the idea', type: 'array', required: false
+
+    before do
+      @project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'ideation' })
+      create(:idea_status_proposed) # Ensure default status exists
+    end
+
+    let(:project_id) { @project.id }
+    let(:idea) do
+      {
+        title_multiloc: { 'en' => 'My great idea', 'nl' => 'Mijn geweldige idee' },
+        body_multiloc: { 'en' => 'This is a detailed description of my idea', 'nl' => 'Dit is een gedetailleerde beschrijving van mijn idee' },
+        location_description: 'City center',
+        proposed_budget: 50000
+      }
+    end
+
+    example_request 'Create a new idea successfully' do
+      explanation 'Create a new idea in an active ideation phase. The idea will be published automatically.'
+      
+      assert_status 201
+      expect(json_response_body[:idea]).to include({
+        title: 'My great idea',
+        project_id: project_id
+      })
+    end
+
+    example 'Create idea without active phase fails' do
+      inactive_project = create(:project)
+      
+      do_request(project_id: inactive_project.id)
+      
+      assert_status 422
+      expect(json_response_body[:error]).to include('No active phase found')
+    end
+
+    example 'Create idea with invalid project fails' do
+      do_request(project_id: 'invalid-id')
+      
+      assert_status 404
+      expect(json_response_body[:error]).to include('Project not found')
+    end
+
+    example 'Create idea without required parameters fails' do
+      do_request(project_id: project_id, idea: { title_multiloc: { 'en' => 'Title only' } })
+      
+      assert_status 422
+      expect(json_response_body[:errors]).to be_present
+    end
+  end
+
+  put '/api/v2/ideas/:idea_id' do
+    route_summary 'Update an idea'
+    route_description <<~DESC.squish
+      Update an existing published idea. Only certain fields can be updated and the idea 
+      must be in a state that allows modifications.
+    DESC
+
+    parameter :idea_id, 'The unique ID of the idea to update', type: 'string', required: true
+    parameter 'idea[title_multiloc]', 'Updated idea title in multiple languages', type: 'object', required: false
+    parameter 'idea[body_multiloc]', 'Updated idea description in multiple languages', type: 'object', required: false
+    parameter 'idea[location_description]', 'Updated textual description of the location', type: 'string', required: false
+    parameter 'idea[proposed_budget]', 'Updated proposed budget for the idea', type: 'integer', required: false
+    parameter 'idea[custom_field_values]', 'Updated custom field values', type: 'object', required: false
+
+    before do
+      @project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'ideation' })
+      @existing_idea = create(:idea, 
+        project: @project, 
+        title_multiloc: { 'en' => 'Original Title', 'nl' => 'Oorspronkelijke Titel' },
+        body_multiloc: { 'en' => 'Original description', 'nl' => 'Oorspronkelijke beschrijving' },
+        publication_status: 'published'
+      )
+    end
+
+    let(:idea_id) { @existing_idea.id }
+    let(:idea) do
+      {
+        title_multiloc: { 'en' => 'Updated Amazing Idea', 'nl' => 'Bijgewerkt Geweldig Idee' },
+        body_multiloc: { 'en' => 'This is an updated detailed description', 'nl' => 'Dit is een bijgewerkte gedetailleerde beschrijving' },
+        location_description: 'Updated city center',
+        proposed_budget: 85000,
+        custom_field_values: { 'priority' => 'updated_high', 'category' => 'updated_infrastructure' }
+      }
+    end
+
+    example_request 'Update an idea successfully' do
+      explanation 'Update an existing published idea with new content and custom field values.'
+      
+      assert_status 200
+      expect(json_response_body[:idea]).to include({
+        title: 'Updated Amazing Idea',
+        id: idea_id,
+        proposed_budget: 85000
+      })
+      expect(json_response_body[:idea][:custom_field_values]).to include({
+        'priority' => 'updated_high',
+        'category' => 'updated_infrastructure'
+      })
+    end
+
+    example 'Update non-existent idea fails' do
+      do_request(idea_id: 'non-existent-id')
+      
+      assert_status 404
+      expect(json_response_body[:error]).to include('Idea not found')
+    end
+
+    example 'Update with partial data succeeds' do
+      partial_idea = { title_multiloc: { 'en' => 'Partially Updated Title' } }
+      
+      do_request(idea_id: idea_id, idea: partial_idea)
+      
+      assert_status 200
+      expect(json_response_body[:idea][:title]).to eq 'Partially Updated Title'
+    end
+  end
+
   include_examples '/api/v2/.../deleted', :ideas
 end
