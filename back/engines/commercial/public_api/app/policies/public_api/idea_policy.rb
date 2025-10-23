@@ -23,30 +23,11 @@ module PublicApi
     end
 
     def create?
-      # Allow idea creation through public API if the project allows it
-      return false unless record.project
-
-      phases_to_check = []
-      if record.phase_ids.present?
-        phases_to_check = record.project.phases.where(id: record.phase_ids)
-      end
-
-      return false if phases_to_check.empty?
-
-      # For Public API, we allow creation if the project is visible and phases support inputs
-      # This is simpler than the standard IdeaPolicy which has complex user permission checks
-      true
+      ::IdeaPolicy.new(user, record).create?
     end
 
     def update?
-      # Allow idea updates through public API 
-      return false unless record.project
-
-      # Check if the idea is published (can't edit drafts through public API)
-      return false unless record.published?
-
-      # For Public API, allow updates to published ideas
-      true
+      ::IdeaPolicy.new(user, record).update?
     end
   end
 end
