@@ -18,6 +18,7 @@ const fetchEvents = (filters: InputParameters) => {
     staticPageId: static_page_id,
     attendeeId: attendee_id,
     ongoing_during,
+    remove_events_unlisted_projects,
   } = filters;
   return fetcher<IEvents>({
     path: '/events',
@@ -34,6 +35,7 @@ const fetchEvents = (filters: InputParameters) => {
       attendee_id,
       ongoing_during:
         ongoing_during && `[${ongoing_during[0]}, ${ongoing_during[1]}]`,
+      remove_events_unlisted_projects,
     },
   });
 };
