@@ -2160,7 +2160,7 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Choisissez comment les citoyens peuvent participer .",
   "app.containers.AdminPage.ProjectEdit.participationRequirementsSubtitle": "Vous pouvez définir qui est autorisé à effectuer chaque action et poser des questions supplémentaires aux participants pour recueillir plus d'informations.",
   "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle1": "Droits d'accès et données utilisateur",
-  "app.containers.AdminPage.ProjectEdit.phaseAccessRights2": "Accès à la phase et données utilisateur",
+  "app.containers.AdminPage.ProjectEdit.phaseAccessRights2": "Droits d'accès et données utilisateur",
   "app.containers.AdminPage.ProjectEdit.phaseEmails": "Notifications",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Sondage",
   "app.containers.AdminPage.ProjectEdit.popularSortingMethod2": "Plus de réactions",
