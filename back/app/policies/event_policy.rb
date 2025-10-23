@@ -4,17 +4,17 @@ class EventPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     attr_reader :attendee_id
 
-    def initialize(user_context, scope, params)
+    def initialize(user_context, scope, params = {})
       super(user_context, scope)
       @attendee_id = params[:attendee_id]
 
       # If we do not filter by project_ids, we hide events from unlisted projects
       # This way, when people list all events, they don't see events from unlisted projects
       # But if someone filters by an unlisted project we do want to show those events
-      @hide_events_unlisted_projects = !params[:project_ids].present?
+      @hide_events_unlisted_projects = params[:project_ids].blank?
 
       # This flag is needed in the case of smart groups,
-      # where a moderator should be able to see unlisted events of projects that they 
+      # where a moderator should be able to see unlisted events of projects that they
       # can moderate, but not other unlisted events.
       @show_unlisted_events_user_can_moderate = !!params[:show_unlisted_events_user_can_moderate]
     end
