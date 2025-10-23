@@ -1535,7 +1535,7 @@ DEPENDENCIES
   rspec-sqlimit
   rspec_api_documentation
   rspec_junit_formatter
-  rubocop
+  rubocop (~> 1.69)
   rubocop-ast
   rubocop-performance
   rubocop-rails
