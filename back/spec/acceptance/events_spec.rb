@@ -147,6 +147,41 @@ resource 'Events' do
         expected_ids = @events.pluck(:id) + @unlisted_events.pluck(:id)
         expect(response_ids.sort).to match_array(expected_ids.sort)
       end
+
+      context 'when moderator' do
+        before do
+          @unlisted_project2 = create(:project, listed: false)
+          @unlisted_events2 = create_list(:event, 2, project: @unlisted_project2)
+
+          @user = create(:user, roles: [{ type: 'project_moderator', project_id: @unlisted_project2.id }])
+          header_token_for @user
+        end
+
+        example_request 'Does not list unlisted projects if not filtering by project ID' do
+          assert_status 200
+          expect(response_data.size).to eq 4
+          expected_ids = @events.pluck(:id) + @other_events.pluck(:id)
+          expect(response_ids.sort).to match_array(expected_ids.sort)
+        end
+
+        example 'Does list unlisted project the user can moderate if show_unlisted_events_user_can_moderate' do
+          do_request(
+            show_unlisted_events_user_can_moderate: true
+          )
+          assert_status 200
+          expect(response_data.size).to eq 6
+          expected_ids = @events.pluck(:id) + @other_events.pluck(:id) + @unlisted_events2.pluck(:id)
+          expect(response_ids.sort).to match_array(expected_ids.sort)
+        end
+
+        example_request 'Does list unlisted project if included in project IDs' do
+          do_request(project_ids: [@project.id, @unlisted_project.id])
+          assert_status 200
+          expect(response_data.size).to eq 4
+          expected_ids = @events.pluck(:id) + @unlisted_events.pluck(:id)
+          expect(response_ids.sort).to match_array(expected_ids.sort)
+        end
+      end
     end
 
     context 'when admin' do
