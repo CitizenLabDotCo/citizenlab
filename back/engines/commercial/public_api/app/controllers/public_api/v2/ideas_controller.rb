@@ -18,11 +18,8 @@ module PublicApi
     end
 
     def create
-      project = Project.find(params[:project_id])
-            
-      idea_params = permitted_idea_params   
+      idea_params = permitted_idea_params
       idea = Idea.new(idea_params)
-      idea.project = project      
 
       if idea.save
         show_item idea, V2::IdeaSerializer, status: :created
@@ -34,7 +31,7 @@ module PublicApi
     def update
       idea = Idea.find(params[:id])
       update_params = permitted_idea_params
-      
+
       if idea.update(update_params)
         show_item idea, V2::IdeaSerializer
       else
@@ -53,12 +50,13 @@ module PublicApi
 
     def permitted_idea_params
       params.require(:idea).permit(
+        :project_id,
         :assignee_id,
         :idea_status_id,
         title_multiloc: {},
         body_multiloc: {},
         topic_ids: [],
-        phase_ids: [],
+        phase_ids: []
       )
     end
   end
