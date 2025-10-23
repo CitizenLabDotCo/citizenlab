@@ -46,7 +46,7 @@ RUN apt-get update                                        \
    # tiktoken_ruby
    clang                                                  \
    gnupg                                                  \
-   libyaml-dev                                            \
+   # libyaml-dev                                            \
    && apt-get clean                                       \
    && rm -rf /var/lib/apt/lists/*
 
