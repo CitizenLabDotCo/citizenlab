@@ -7,7 +7,10 @@ class EventPolicy < ApplicationPolicy
     def initialize(user_context, scope, params)
       super(user_context, scope)
       @attendee_id = params[:attendee_id]
+
       # If we do not filter by project_ids, we hide events from unlisted projects
+      # This way, when people list all events, they don't see events from unlisted projects
+      # But if someone filters by an unlisted project we do want to show those events
       @hide_events_unlisted_projects = !params[:project_ids].present?
     end
 
