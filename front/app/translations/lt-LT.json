@@ -1884,7 +1884,6 @@
   "app.containers.SearchInput.searchTerm": "Paieškos terminas: {searchTerm}",
   "app.containers.SignIn.franceConnectIsTheSolutionProposedByTheGovernment": "\"FranceConnect\" - tai Prancūzijos valstybės pasiūlytas sprendimas, kuriuo siekiama užtikrinti ir supaprastinti prisijungimą prie daugiau kaip 700 internetinių paslaugų.",
   "app.containers.SignIn.or": "Arba",
-  "app.containers.SignIn.signInError": "Pateikta informacija nėra teisinga. Spustelėkite \"Pamiršote slaptažodį?\", kad iš naujo nustatytumėte slaptažodį.",
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Prisijunkite, užsiregistruokite arba patikrinkite savo paskyrą naudodamiesi FranceConnect.",
   "app.containers.SignIn.whatIsFranceConnect": "Kas yra \"France Connect\"?",
   "app.containers.SignUp.adminOptions2": "Administratoriams ir projektų vadovams",
