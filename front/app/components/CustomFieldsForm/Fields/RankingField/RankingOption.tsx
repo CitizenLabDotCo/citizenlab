@@ -24,19 +24,19 @@ const StyledSelect = styled(Select)`
 
   select {
     padding: 4px;
-    border: solid 1px ${(props) => props.theme.colors.textPrimary};
+    border: solid 1px ${(props) => props.theme.colors.borderDark};
     color: ${(props) => props.theme.colors.textPrimary};
   }
 
   svg {
-    fill: ${(props) => props.theme.colors.textPrimary} !important;
+    fill: ${(props) => props.theme.colors.borderDark} !important;
     width: 16px;
   }
 `;
 
 const StyledBox = styled(Box)`
   :hover {
-    box-shadow: 0 0 0 1px ${(props) => props.theme.colors.textPrimary};
+    box-shadow: 0 0 0 1px ${(props) => props.theme.colors.borderDark};
   }
 `;
 
