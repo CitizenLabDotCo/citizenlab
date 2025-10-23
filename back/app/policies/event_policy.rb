@@ -12,6 +12,11 @@ class EventPolicy < ApplicationPolicy
       # This way, when people list all events, they don't see events from unlisted projects
       # But if someone filters by an unlisted project we do want to show those events
       @hide_events_unlisted_projects = !params[:project_ids].present?
+
+      # This flag is needed in the case of smart groups,
+      # where a moderator should be able to see unlisted events of projects that they 
+      # can moderate, but not other unlisted events.
+      @show_unlisted_events_user_can_moderate = !!params[:show_unlisted_events_user_can_moderate]
     end
 
     def resolve
