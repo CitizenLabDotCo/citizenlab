@@ -127,6 +127,28 @@ resource 'Events' do
       end
     end
 
+    context 'when there are unlisted projects' do
+      before do
+        @unlisted_project = create(:project, listed: false)
+        @unlisted_events = create_list(:event, 2, project: @unlisted_project)
+      end
+
+      example_request 'Does not list unlisted projects if not filtering by project ID' do
+        assert_status 200
+        expect(response_data.size).to eq 4
+        expected_ids = @events.pluck(:id) + @other_events.pluck(:id)
+        expect(response_ids.sort).to match_array(expected_ids.sort)
+      end
+
+      example_request 'Does list unlisted project if included in project IDs' do
+        do_request(project_ids: [@project.id, @unlisted_project.id])
+        assert_status 200
+        expect(response_data.size).to eq 4
+        expected_ids = @events.pluck(:id) + @unlisted_events.pluck(:id)
+        expect(response_ids.sort).to match_array(expected_ids.sort)
+      end
+    end
+
     context 'when admin' do
       before do
         admin_header_token
