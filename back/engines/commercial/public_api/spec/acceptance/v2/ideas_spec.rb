@@ -203,13 +203,13 @@ resource 'Posts' do
     header 'Content-Type', 'application/json'
 
     with_options scope: :idea do
-      parameter :project_id, 'The unique ID of the project where the idea will be created', type: 'string', required: true
-      parameter :title_multiloc, 'The idea title in multiple languages', type: 'object', required: true
-      parameter :body_multiloc, 'The idea description in multiple languages', type: 'object', required: true
-      parameter :assignee_id, 'The ID of the user to assign this idea to', type: 'string', required: false
-      parameter :idea_status_id, 'The ID of the status to assign to this idea', type: 'string', required: false
-      parameter :topic_ids, 'Array of topic IDs to associate with the idea', type: 'array', required: false
-      parameter :phase_ids, 'Array of phase IDs to associate with the idea', type: 'array', required: false
+      parameter :project_id, 'The unique ID of the project where the post will be created', type: 'string', required: true
+      parameter :title_multiloc, 'The post title in multiple languages', type: 'object', required: true
+      parameter :body_multiloc, 'The post description in multiple languages', type: 'object', required: true
+      parameter :assignee_id, 'The ID of the user to assign this post to', type: 'string', required: false
+      parameter :idea_status_id, 'The ID of the status to assign to this post', type: 'string', required: false
+      parameter :topic_ids, 'Array of topic IDs to associate with the post', type: 'array', required: false
+      parameter :phase_ids, 'Array of phase IDs to associate with the post', type: 'array', required: false
     end
 
     before do
@@ -247,14 +247,14 @@ resource 'Posts' do
     parameter :idea_id, 'The unique ID of the idea to update', type: 'string', required: true
 
     with_options scope: :idea do
-      parameter :project_id, 'The unique ID of the project to move the idea to', type: 'string', required: false
-      parameter :title_multiloc, 'Updated idea title in multiple languages', type: 'object', required: false
-      parameter :body_multiloc, 'Updated idea description in multiple languages', type: 'object', required: false
-      parameter :publication_status, 'The publication status of the idea (draft, submitted, published)', type: 'string', required: false
-      parameter :assignee_id, 'The ID of the user to assign this idea to', type: 'string', required: false
-      parameter :idea_status_id, 'The ID of the status to assign to this idea', type: 'string', required: false
-      parameter :topic_ids, 'Array of topic IDs to associate with the idea', type: 'array', required: false
-      parameter :phase_ids, 'Array of phase IDs to associate with the idea', type: 'array', required: false
+      parameter :project_id, 'The unique ID of the project to move the post to', type: 'string', required: false
+      parameter :title_multiloc, 'Updated post title in multiple languages', type: 'object', required: false
+      parameter :body_multiloc, 'Updated post description in multiple languages', type: 'object', required: false
+      parameter :publication_status, 'The publication status of the post (draft, submitted, published)', type: 'string', required: false
+      parameter :assignee_id, 'The ID of the user to assign this post to', type: 'string', required: false
+      parameter :idea_status_id, 'The ID of the status to assign to this post', type: 'string', required: false
+      parameter :topic_ids, 'Array of topic IDs to associate with the post', type: 'array', required: false
+      parameter :phase_ids, 'Array of phase IDs to associate with the post', type: 'array', required: false
     end
 
     before do
