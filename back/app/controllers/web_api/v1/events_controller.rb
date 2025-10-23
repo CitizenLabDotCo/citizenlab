@@ -7,7 +7,7 @@ class WebApi::V1::EventsController < ApplicationController
   skip_before_action :authenticate_user
 
   def index
-    scope = EventPolicy::Scope.new(pundit_user, Event, params[:attendee_id]).resolve
+    scope = EventPolicy::Scope.new(pundit_user, Event, params).resolve
     # Necessary because we instantiate the scope directly instead of using Pundit's
     # `policy_scope` method.
     skip_policy_scope
