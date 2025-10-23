@@ -1882,7 +1882,7 @@
   "app.containers.SearchInput.searchLabel": "Søg",
   "app.containers.SearchInput.searchPlaceholder": "Søg",
   "app.containers.SearchInput.searchTerm": "Søgeudtryk: {searchTerm}",
-  "app.containers.SignIn.createAnAccountLink": "registrer dig",
+  "app.containers.SignIn.createAnAccountLink": "opret en konto",
   "app.containers.SignIn.franceConnectIsTheSolutionProposedByTheGovernment": "FranceConnect er den løsning, som den franske stat har foreslået for at sikre og forenkle tilmeldingen til mere end 700 onlinetjenester.",
   "app.containers.SignIn.or": "Eller",
   "app.containers.SignIn.signInError2": "De angivne oplysninger er ikke korrekte. Klik på 'Glemt adgangskode?' for at nulstille din adgangskode, eller {createAnAccountLink}.",
