@@ -6,27 +6,27 @@ require 'rspec_api_documentation/dsl'
 resource 'Topics', :clear_cache, document: false do
   before do
     header 'Content-Type', 'application/json'
-    settings = AppConfiguration.instance.settings
-    settings['aggressive_caching'] = { 'enabled' => true, 'allowed' => true }
-    AppConfiguration.instance.update!(settings:)
+    SettingsService.new.activate_feature! 'aggressive_caching'
   end
 
   get 'web_api/v1/topics' do
+    let(:cache_key) { 'api_response/example.org/web_api/v1/topics.json' }
+
     example 'caches for a visitor' do
-      expect(Rails.cache.read('views/example.org/web_api/v1/topics.json')).to be_nil
+      expect(Rails.cache.read(cache_key)).to be_nil
       do_request
       expect(status).to eq 200
-      expect(Rails.cache.read('views/example.org/web_api/v1/topics.json')).to be_present
+      expect(Rails.cache.read(cache_key)).to be_present
     end
 
     context 'when logged in and following something' do
       before { header_token_for create(:follower).user }
 
       example 'it does not cache' do
-        expect(Rails.cache.read('views/example.org/web_api/v1/topics.json')).to be_nil
+        expect(Rails.cache.read(cache_key)).to be_nil
         do_request
         expect(status).to eq 200
-        expect(Rails.cache.read('views/example.org/web_api/v1/topics.json')).to be_nil
+        expect(Rails.cache.read(cache_key)).to be_nil
       end
     end
 
@@ -34,10 +34,10 @@ resource 'Topics', :clear_cache, document: false do
       before { header_token_for create(:user) }
 
       example 'it caches' do
-        expect(Rails.cache.read('views/example.org/web_api/v1/topics.json')).to be_nil
+        expect(Rails.cache.read(cache_key)).to be_nil
         do_request
         expect(status).to eq 200
-        expect(Rails.cache.read('views/example.org/web_api/v1/topics.json')).to be_present
+        expect(Rails.cache.read(cache_key)).to be_present
       end
     end
 
@@ -49,10 +49,10 @@ resource 'Topics', :clear_cache, document: false do
       end
 
       example 'does not cache' do
-        expect(Rails.cache.read('views/example.org/web_api/v1/topics.json')).to be_nil
+        expect(Rails.cache.read(cache_key)).to be_nil
         do_request
         expect(status).to eq 200
-        expect(Rails.cache.read('views/example.org/web_api/v1/topics.json')).to be_nil
+        expect(Rails.cache.read(cache_key)).to be_nil
       end
     end
   end
@@ -60,22 +60,23 @@ resource 'Topics', :clear_cache, document: false do
   get 'web_api/v1/topics/:id' do
     let(:topic) { create(:topic) }
     let(:id) { topic.id }
+    let(:cache_key) { "api_response/example.org/web_api/v1/topics/#{id}.json" }
 
     example 'caches for a visitor' do
-      expect(Rails.cache.read("views/example.org/web_api/v1/topics/#{id}.json")).to be_nil
+      expect(Rails.cache.read(cache_key)).to be_nil
       do_request
       expect(status).to eq 200
-      expect(Rails.cache.read("views/example.org/web_api/v1/topics/#{id}.json")).to be_present
+      expect(Rails.cache.read(cache_key)).to be_present
     end
 
     context 'when logged in and not following' do
       before { header_token_for create(:user) }
 
       example 'it caches' do
-        expect(Rails.cache.read("views/example.org/web_api/v1/topics/#{id}.json")).to be_nil
+        expect(Rails.cache.read(cache_key)).to be_nil
         do_request
         expect(status).to eq 200
-        expect(Rails.cache.read("views/example.org/web_api/v1/topics/#{id}.json")).to be_present
+        expect(Rails.cache.read(cache_key)).to be_present
       end
     end
 
@@ -87,10 +88,10 @@ resource 'Topics', :clear_cache, document: false do
       end
 
       example 'does not cache' do
-        expect(Rails.cache.read("views/example.org/web_api/v1/topics/#{id}.json")).to be_nil
+        expect(Rails.cache.read(cache_key)).to be_nil
         do_request
         expect(status).to eq 200
-        expect(Rails.cache.read("views/example.org/web_api/v1/topics/#{id}.json")).to be_nil
+        expect(Rails.cache.read(cache_key)).to be_nil
       end
     end
   end
