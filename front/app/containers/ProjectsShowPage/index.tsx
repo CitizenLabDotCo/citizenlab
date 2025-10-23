@@ -86,6 +86,7 @@ const ProjectsShowPage = ({ project }: Props) => {
   const { data: events } = useEvents({
     projectIds: [projectId],
     sort: '-start_at',
+    include: ['event_images'],
   });
 
   const loading = useMemo(() => {
