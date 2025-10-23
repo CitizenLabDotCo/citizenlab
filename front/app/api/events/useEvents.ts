@@ -19,6 +19,7 @@ const fetchEvents = (filters: InputParameters) => {
     attendeeId: attendee_id,
     ongoing_during,
     show_unlisted_events_user_can_moderate,
+    include,
   } = filters;
   return fetcher<IEvents>({
     path: '/events',
@@ -36,6 +37,7 @@ const fetchEvents = (filters: InputParameters) => {
       ongoing_during:
         ongoing_during && `[${ongoing_during[0]}, ${ongoing_during[1]}]`,
       show_unlisted_events_user_can_moderate,
+      include,
     },
   });
 };
@@ -54,6 +56,7 @@ const useEvents = ({
   attendeeId,
   ongoing_during,
   show_unlisted_events_user_can_moderate,
+  include,
 }: InputParameters) => {
   const queryParams: InputParameters = {
     projectPublicationStatuses,
@@ -67,6 +70,7 @@ const useEvents = ({
     attendeeId,
     ongoing_during,
     show_unlisted_events_user_can_moderate,
+    include,
   };
 
   return useQuery<IEvents, CLErrors, IEvents, EventsKeys>({

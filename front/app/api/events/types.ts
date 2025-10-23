@@ -63,6 +63,7 @@ export interface InputParameters {
   attendeeId?: string;
   ongoing_during?: (string | null)[]; // [startDate, endDate], use null for open ended
   show_unlisted_events_user_can_moderate?: boolean;
+  include?: 'event_images'[];
 }
 export interface IEvent {
   data: IEventData;
