@@ -184,6 +184,35 @@ resource 'Events' do
       end
     end
 
+    context 'when the event has an image' do
+      before do
+        @event_with_image = create(:event, project: @project)
+        @event_image = create(:event_image, event: @event_with_image)
+      end
+
+      example_request 'Does not include event images if included param not provided' do
+        assert_status 200
+        event_data = response_data.find { |e| e[:id] == @event_with_image.id }
+        expect(event_data.dig(:relationships, :event_images, :data)).to eq([
+          { type: 'image', id: @event_image.id }
+        ])
+        expect(json_response_body[:included]).to be_nil
+      end
+
+      example 'Includes event images if included param provided' do
+        do_request(include: ['event_images'])
+        assert_status 200
+        event_data = response_data.find { |e| e[:id] == @event_with_image.id }
+        relationships = event_data.dig(:relationships, :event_images, :data)
+        expect(relationships).to eq([
+          { type: 'image', id: @event_image.id }
+        ])
+
+        image = json_response_body[:included].find { |inc| inc[:id] == relationships.first[:id] }
+        expect(image[:type]).to eq 'image'
+      end
+    end
+
     context 'when admin' do
       before do
         admin_header_token

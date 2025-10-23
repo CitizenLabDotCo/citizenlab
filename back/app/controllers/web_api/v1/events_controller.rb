@@ -30,7 +30,8 @@ class WebApi::V1::EventsController < ApplicationController
     render json: linked_json(
       events,
       WebApi::V1::EventSerializer,
-      params: serializer_params
+      params: serializer_params,
+      include: (params[:include] || []).map(&:to_sym)
     )
   end
 
