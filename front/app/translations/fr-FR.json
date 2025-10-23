@@ -1882,7 +1882,7 @@
   "app.containers.SearchInput.searchLabel": "Chercher",
   "app.containers.SearchInput.searchPlaceholder": "Chercher",
   "app.containers.SearchInput.searchTerm": "Terme de recherche : {searchTerm}",
-  "app.containers.SignIn.createAnAccountLink": "s'inscrire",
+  "app.containers.SignIn.createAnAccountLink": "créer un compte",
   "app.containers.SignIn.franceConnectIsTheSolutionProposedByTheGovernment": "FranceConnect est la solution proposée par l'État pour sécuriser et simplifier la connexion à vos services en ligne.",
   "app.containers.SignIn.or": "Ou",
   "app.containers.SignIn.signInError2": "Les informations fournies ne sont pas correctes. Cliquez sur \"Mot de passe oublié\" pour réinitialiser votre mot de passe, ou {createAnAccountLink}.",
