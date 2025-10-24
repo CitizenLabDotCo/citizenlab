@@ -203,8 +203,8 @@ class WebApi::V1::EventsController < ApplicationController
     # This way, when people list all events, they don't see events from unlisted projects
     # But if someone filters by an unlisted project we do want to show those events
     if params[:project_ids].blank?
-      # This 'show_unlisted_events_user_can_moderate' flag is needed in e.g. 
-      # the case of smart groups, where a moderator should be able to see unlisted 
+      # This 'show_unlisted_events_user_can_moderate' flag is needed in e.g.
+      # the case of smart groups, where a moderator should be able to see unlisted
       # events of projects that they can moderate, but not other unlisted events.
       remove_unlisted_type = if params[:show_unlisted_events_user_can_moderate]
         'remove_unlisted_that_user_cannot_moderate'
