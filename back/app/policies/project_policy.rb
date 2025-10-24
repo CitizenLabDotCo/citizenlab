@@ -11,19 +11,9 @@ class ProjectPolicy < ApplicationPolicy
       # of the user gives access).
       moderator_scope = user&.active? ? UserRoleService.new.moderatable_projects(user, scope) : scope.none
 
-      moderator_scope = moderator_scope
+      moderator_scope
         .or(resolve_for_visitor)
         .or(resolve_for_normal_user)
-
-      if context[:remove_unlisted]
-        moderator_scope = ProjectsListedScopeService.call(
-          moderator_scope,
-          user,
-          context[:remove_unlisted]
-        )
-      end
-
-      moderator_scope
     end
 
     private
