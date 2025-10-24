@@ -5,7 +5,7 @@ require 'rails_helper'
 describe EventPolicy do
   subject { described_class.new(user, event) }
 
-  let(:scope) { EventPolicy::Scope.new(user, project.events, { attendee_id: attendee_id }) }
+  let(:scope) { EventPolicy::Scope.new(user, project.events, attendee_id) }
   let(:attendee_id) { nil }
 
   context 'on event in a public project' do

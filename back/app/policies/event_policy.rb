@@ -4,29 +4,13 @@ class EventPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     attr_reader :attendee_id
 
-    def initialize(user_context, scope, params = {})
+    def initialize(user_context, scope, attendee_id = nil)
       super(user_context, scope)
-      @attendee_id = params[:attendee_id]
+      @attendee_id = attendee_id
     end
 
     def resolve
-      project_scope = scope_for(Project)
-
-      if @hide_events_unlisted_projects
-        remove_unlisted_type = if @show_unlisted_events_user_can_moderate
-          'remove_unlisted_that_user_cannot_moderate'
-        else
-          'remove_all_unlisted'
-        end
-
-        project_scope = ProjectPolicy.apply_listed_scope(
-          project_scope,
-          user,
-          remove_unlisted_type
-        )
-      end
-
-      result = scope.where(project: project_scope)
+      result = scope.where(project: scope_for(Project))
 
       # If the +attendee_id+ query parameter has been used to access the list of events
       # to which a user is registered, an additional set of permission rules is applied.
