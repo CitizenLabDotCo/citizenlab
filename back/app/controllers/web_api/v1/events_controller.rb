@@ -218,7 +218,7 @@ class WebApi::V1::EventsController < ApplicationController
         remove_unlisted_type
       )
 
-      return events.where(id: projects.select(:id))
+      return events.where(project_id: projects.select(:id))
     end
 
     events
