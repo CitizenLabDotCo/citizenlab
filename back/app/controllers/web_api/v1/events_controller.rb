@@ -213,7 +213,7 @@ class WebApi::V1::EventsController < ApplicationController
       end
 
       projects = ProjectsListedScopeService.call(
-        events,
+        Project.all,
         current_user,
         remove_unlisted_type
       )
