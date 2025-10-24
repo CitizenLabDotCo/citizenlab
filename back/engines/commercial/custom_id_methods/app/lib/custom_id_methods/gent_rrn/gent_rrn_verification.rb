@@ -16,12 +16,12 @@ module CustomIdMethods
       'gent_rrn'
     end
 
-    def config_parameters
-      %i[api_key environment custom_field_key wijk_mapping]
-    end
-
     def config_parameters_schema
       {
+        api_key: {
+          type: 'string',
+          private: true
+        },
         environment: {
           type: 'string',
           enum: %w[dv qa production],

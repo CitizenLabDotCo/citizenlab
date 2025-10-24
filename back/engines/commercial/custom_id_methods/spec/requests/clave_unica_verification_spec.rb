@@ -313,7 +313,7 @@ context 'clave_unica verification' do
 
   context 'when checking against list of verified RUTs registered in municipality' do
     context 'when RUT is added to list' do
-      before { IdIdCardLookup::IdCard.create!(card_id: '44.444.444-4') }
+      before { CustomIdMethods::IdCardLookup::IdCard.create!(card_id: '44.444.444-4') }
 
       it 'sets rut_verified custom field' do
         get "/auth/clave_unica?token=#{@token}"
@@ -324,7 +324,7 @@ context 'clave_unica verification' do
     end
 
     context 'when RUT is not added to list' do
-      before { IdIdCardLookup::IdCard.create!(card_id: '55.555.555-5') }
+      before { CustomIdMethods::IdCardLookup::IdCard.create!(card_id: '55.555.555-5') }
 
       it 'does not set rut_verified custom field' do
         get "/auth/clave_unica?token=#{@token}"

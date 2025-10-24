@@ -18,7 +18,7 @@ module CustomIdMethods
 
       # We save formatted RUT in IdCard to be able to use this table for IdCard verification
       # (so, that users enter their RUT in its usual format)
-      if IdIdCardLookup::IdCard.find_by_card_id(formatted_rut(auth))
+      if IdCardLookup::IdCard.find_by_card_id(formatted_rut(auth))
         info[:custom_field_values] = { rut_verified: true }
       end
 

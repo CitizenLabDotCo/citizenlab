@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module CustomIdMethods
-  module Criipto::CriiptoVerification # rubocop:disable Metrics/ModuleLength
+  module Criipto::CriiptoVerification
     include Verification::VerificationMethod
 
     DK_MIT_ID = 'DK MitID'
@@ -27,31 +27,8 @@ module CustomIdMethods
       config[:method_name_for_hashing].presence || config[:identity_source].presence || super
     end
 
-    def config_parameters
-      %i[
-        identity_source
-        birthday_custom_field_key
-        birthyear_custom_field_key
-        municipality_code_custom_field_key
-        postal_code_custom_field_key
-        domain
-        client_id
-        client_secret
-        ui_method_name
-        uid_field_pattern
-        method_name_for_hashing
-        minimum_age
-        enabled_for_verified_actions
-      ]
-    end
-
     def config_parameters_schema
-      {
-        ui_method_name: {
-          type: 'string',
-          description: 'The name this verification method will have in the UI',
-          default: 'MitID'
-        },
+      default_config_schema('MitID').merge!({
         identity_source: {
           private: true,
           type: 'string',
@@ -93,13 +70,8 @@ module CustomIdMethods
           private: true,
           type: 'integer',
           description: 'Minimum age required to verify (in years). No value means no age minimum.'
-        },
-        enabled_for_verified_actions: {
-          private: true,
-          type: 'boolean',
-          description: 'Whether this verification method should be enabled for verified actions.'
         }
-      }
+      })
     end
 
     # copied from back/engines/commercial/id_nemlog_in/app/lib/id_nemlog_in/nemlog_in_verification.rb

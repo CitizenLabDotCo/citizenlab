@@ -17,37 +17,24 @@ module CustomIdMethods
     end
 
     def config_parameters_schema
-      {
-        client_id: {
-          private: true,
-          type: 'string',
-          description: 'Client ID.'
-        },
-        client_secret: {
-          private: true,
-          type: 'string',
-          description: 'Client secret.'
-        },
-        environment: {
-          type: 'string',
-          title: 'Environment',
-          description: 'Live on the production environment or still testing on their test environment?',
-          enum: %w[test production],
-          default: 'production',
-          private: true
-        },
-        neighbourhood_custom_field_key: {
-          private: true,
-          type: 'string',
-          title: 'Neighbourhood custom field key',
-          description: 'The `key` attribute of the custom field where the neighbourhood should be stored. Leave empty to not store the neighbourhood.'
-        },
-        enabled_for_verified_actions: {
-          private: true,
-          type: 'boolean',
-          description: 'Whether this verification method should be enabled for verified actions.'
-        }
+      schema = {}
+      schema.merge! SCHEMA_CLIENT_ID
+      schema.merge! SCHEMA_CLIENT_SECRET
+      schema[:environment] = {
+        type: 'string',
+        title: 'Environment',
+        description: 'Live on the production environment or still testing on their test environment?',
+        enum: %w[test production],
+        default: 'production',
+        private: true
       }
+      schema[:neighbourhood_custom_field_key] = {
+        private: true,
+        type: 'string',
+        title: 'Neighbourhood custom field key',
+        description: 'The `key` attribute of the custom field where the neighbourhood should be stored. Leave empty to not store the neighbourhood.'
+      }
+      schema
     end
 
     def profile_to_user_attrs(auth)

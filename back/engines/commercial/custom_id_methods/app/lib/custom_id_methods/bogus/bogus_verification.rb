@@ -17,8 +17,8 @@ module CustomIdMethods
       'bogus'
     end
 
-    def config_parameters
-      []
+    def config_parameters_schema
+      {}
     end
 
     def verification_parameters

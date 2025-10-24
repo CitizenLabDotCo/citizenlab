@@ -16,35 +16,8 @@ module CustomIdMethods
       'twoday'
     end
 
-    def config_parameters
-      %i[
-        ui_method_name
-        domain
-        client_id
-        client_secret
-        enabled_for_verified_actions
-        hide_from_profile
-      ]
-    end
-
     def config_parameters_schema
-      {
-        ui_method_name: {
-          type: 'string',
-          description: 'The name this verification method will have in the UI',
-          default: 'BankID eller Freja eID+'
-        },
-        enabled_for_verified_actions: {
-          private: true,
-          type: 'boolean',
-          description: 'Whether this verification method should be enabled for verified actions.'
-        },
-        hide_from_profile: {
-          private: true,
-          type: 'boolean',
-          description: 'Should verification be hidden in the user profile and under the username?'
-        }
-      }
+      default_config_schema('BankID eller Freja eID+').merge!(SCHEMA_DOMAIN)
     end
 
     def exposed_config_parameters

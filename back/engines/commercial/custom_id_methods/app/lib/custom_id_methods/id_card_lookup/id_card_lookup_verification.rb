@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-module IdIdCardLookup
+module CustomIdMethods
   # Verifies a user by matching their entered ID card id against an uploaded list
-  class IdCardLookupVerification
+  class IdCardLookup::IdCardLookupVerification
     include Verification::VerificationMethod
 
     def verification_method_type
@@ -60,10 +60,10 @@ module IdIdCardLookup
 
     def verify_sync(card_id: nil)
       raise Verification::VerificationService::ParameterInvalidError, 'card_id' if card_id.blank?
-      raise Verification::VerificationService::NoMatchError unless IdCard.find_by_card_id(card_id)
+      raise Verification::VerificationService::NoMatchError unless IdCardLookup::IdCard.find_by_card_id(card_id)
 
       {
-        uid: IdCardService.new.normalize(card_id)
+        uid: IdCardLookup::IdCardService.new.normalize(card_id)
       }
     end
   end

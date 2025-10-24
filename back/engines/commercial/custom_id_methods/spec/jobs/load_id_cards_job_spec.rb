@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe IdIdCardLookup::LoadIdCardsJob do
+RSpec.describe CustomIdMethods::IdCardLookup::LoadIdCardsJob do
   subject(:job) { described_class.new }
 
   describe '#perform' do
@@ -22,7 +22,7 @@ RSpec.describe IdIdCardLookup::LoadIdCardsJob do
 
     it 'loads all given card_ids' do
       job.perform(card_ids)
-      expect(IdIdCardLookup::IdCard.count).to eq 9
+      expect(CustomIdMethods::IdCardLookup::IdCard.count).to eq 9
     end
   end
 end

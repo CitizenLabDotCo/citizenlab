@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-IdIdCardLookup::Engine.routes.draw do
+CustomIdMethods::Engine.routes.draw do
   namespace :admin_api, defaults: { format: :json } do
     scope 'verification_id_cards' do
       post :bulk_replace, controller: 'id_cards'
@@ -10,5 +10,5 @@ IdIdCardLookup::Engine.routes.draw do
 end
 
 Rails.application.routes.draw do
-  mount IdIdCardLookup::Engine => ''
+  mount CustomIdMethods::Engine => ''
 end

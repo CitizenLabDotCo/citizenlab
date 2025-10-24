@@ -53,7 +53,7 @@ resource 'Verification Id Cards', admin_api: true do
 
     example 'Replaces all id cards with the CSV file contents' do
       expect { do_request }
-        .to have_enqueued_job(IdIdCardLookup::LoadIdCardsJob)
+        .to have_enqueued_job(CustomIdMethods::IdCardLookup::LoadIdCardsJob)
         .with(card_ids)
       expect(status).to eq(201)
       expect { @idea_card.reload }.to raise_error(ActiveRecord::RecordNotFound)

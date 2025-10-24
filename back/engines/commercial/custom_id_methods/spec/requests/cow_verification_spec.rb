@@ -2,11 +2,9 @@
 
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
-require 'savon/mock/spec_helper'
 
 resource 'Verifications' do
   explanation 'A Verifications is an attempt from a user to get verified'
-  include Savon::SpecHelper
 
   before do
     @user = create(:user)
@@ -31,11 +29,6 @@ resource 'Verifications' do
     before do
       stub_request(:get, 'https://terceros.sidiv.registrocivil.cl:8443/InteroperabilityPlateform/TercerosCOWProxyService?wsdl')
         .to_return(status: 200, body: File.read('engines/commercial/custom_id_methods/spec/fixtures/cow/cow_wsdl.xml'), headers: {})
-      savon.mock!
-    end
-
-    after do
-      savon.unmock!
     end
 
     # Uncomment this and fill out the credentials to do a real, non-mocked test
@@ -55,7 +48,6 @@ resource 'Verifications' do
     #       }],
     #     }
     #     configuration.save!
-    #     savon.unmock!
     #   end
     #   let(:run) { "14.533.402-0" }
     #   let(:id_serial) { "518.137.850" }
@@ -76,15 +68,8 @@ resource 'Verifications' do
       let(:id_serial) { 'A001529382' }
 
       example 'Verify with cow' do
-        savon.expects(:get_data_document)
-          .with(message: {
-            'typens:RUTEmpresa' => 'fake_rut_empresa',
-            'typens:DVEmpresa' => 'k',
-            'typens:CodTipoDocumento' => 'C',
-            'typens:NumRUN' => '12025365',
-            'typens:NumSerie' => 'A001529382'
-          })
-          .returns(File.read('engines/commercial/custom_id_methods/spec/fixtures/cow/get_data_document_match.xml'))
+        stub_request(:post, 'https://terceros.sidiv.registrocivil.cl:8443/InteroperabilityPlateform/TercerosCOWProxyService')
+          .to_return(status: 200, body: File.read('engines/commercial/custom_id_methods/spec/fixtures/cow/get_data_document_match.xml'), headers: {})
         do_request
         assert_status 201
         expect(@user.reload.verified).to be true
@@ -102,15 +87,8 @@ resource 'Verifications' do
       let(:id_serial) { 'A001529382' }
 
       example '[error] Verify with cow without a match' do
-        savon.expects(:get_data_document)
-          .with(message: {
-            'typens:RUTEmpresa' => 'fake_rut_empresa',
-            'typens:DVEmpresa' => 'k',
-            'typens:CodTipoDocumento' => 'C',
-            'typens:NumRUN' => '11111111',
-            'typens:NumSerie' => 'A001529382'
-          })
-          .returns(File.read('engines/commercial/custom_id_methods/spec/fixtures/cow/get_data_document_no_match.xml'))
+        stub_request(:post, 'https://terceros.sidiv.registrocivil.cl:8443/InteroperabilityPlateform/TercerosCOWProxyService')
+          .to_return(status: 200, body: File.read('engines/commercial/custom_id_methods/spec/fixtures/cow/get_data_document_no_match.xml'), headers: {})
         do_request
         assert_status 422
         json_response = json_parse response_body
@@ -123,15 +101,8 @@ resource 'Verifications' do
       let(:id_serial) { 'A.001.529.382' }
 
       example "[error] Verify with cow with a match that's not entitled to verification" do
-        savon.expects(:get_data_document)
-          .with(message: {
-            'typens:RUTEmpresa' => 'fake_rut_empresa',
-            'typens:DVEmpresa' => 'k',
-            'typens:CodTipoDocumento' => 'C',
-            'typens:NumRUN' => '11111111',
-            'typens:NumSerie' => 'A001529382'
-          })
-          .returns(File.read('engines/commercial/custom_id_methods/spec/fixtures/cow/get_data_document_match_no_citizen.xml'))
+        stub_request(:post, 'https://terceros.sidiv.registrocivil.cl:8443/InteroperabilityPlateform/TercerosCOWProxyService')
+          .to_return(status: 200, body: File.read('engines/commercial/custom_id_methods/spec/fixtures/cow/get_data_document_match_no_citizen.xml'), headers: {})
         do_request
         assert_status 422
         json_response = json_parse response_body
@@ -144,9 +115,8 @@ resource 'Verifications' do
         other_user = create(:user)
         @run = '12.025.365-6'
         @id_serial = 'A001529382'
-        savon.expects(:get_data_document)
-          .with(message: :any)
-          .returns(File.read('engines/commercial/custom_id_methods/spec/fixtures/cow/get_data_document_match.xml'))
+        stub_request(:post, 'https://terceros.sidiv.registrocivil.cl:8443/InteroperabilityPlateform/TercerosCOWProxyService')
+          .to_return(status: 200, body: File.read('engines/commercial/custom_id_methods/spec/fixtures/cow/get_data_document_match.xml'), headers: {})
 
         Verification::VerificationService.new.verify_sync(
           user: other_user,
@@ -159,9 +129,8 @@ resource 'Verifications' do
       let(:id_serial) { @id_serial }
 
       example '[error] Verify with cow using credentials that are already taken' do
-        savon.expects(:get_data_document)
-          .with(message: :any)
-          .returns(File.read('engines/commercial/custom_id_methods/spec/fixtures/cow/get_data_document_match.xml'))
+        stub_request(:post, 'https://terceros.sidiv.registrocivil.cl:8443/InteroperabilityPlateform/TercerosCOWProxyService')
+          .to_return(status: 200, body: File.read('engines/commercial/custom_id_methods/spec/fixtures/cow/get_data_document_match.xml'), headers: {})
         do_request
         assert_status 422
         json_response = json_parse response_body

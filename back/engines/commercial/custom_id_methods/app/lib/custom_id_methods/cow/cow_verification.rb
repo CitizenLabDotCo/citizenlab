@@ -1,3 +1,5 @@
+require 'savon'
+
 # frozen_string_literal: true
 
 module CustomIdMethods
@@ -31,6 +33,10 @@ module CustomIdMethods
 
     def config_parameters
       %i[api_username api_password rut_empresa]
+    end
+
+    def config_parameters_schema
+      {}
     end
 
     def verification_parameters

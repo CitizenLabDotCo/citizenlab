@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'savon/mock/spec_helper'
 
-describe IdNemlogIn::KkiLocationApi do
+describe CustomIdMethods::NemlogIn::KkiLocationApi do
   let(:cpr_number) { '1234567890' }
   let(:base_uri) { 'http://api.example.com/' }
   let(:full_uri) { base_uri + cpr_number }

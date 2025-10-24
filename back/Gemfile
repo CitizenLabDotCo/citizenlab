@@ -237,7 +237,6 @@ commercial_engines = [
   'user_custom_fields',
 
   # Custom ID verification & SSO engines.
-  'id_id_card_lookup',
   'custom_id_methods',
   'id_vienna_saml'
 ]

@@ -16,22 +16,19 @@ module CustomIdMethods
       'auth0'
     end
 
-    def config_parameters
-      %i[client_id client_secret domain method_name_multiloc enabled_for_verified_actions]
-    end
-
     def config_parameters_schema
-      {
+      schema = {
         method_name_multiloc: {
           '$ref': '#/definitions/multiloc_string',
           private: true
-        },
-        enabled_for_verified_actions: {
-          private: true,
-          type: 'boolean',
-          description: 'Whether this verification method should be enabled for verified actions.'
         }
       }
+      schema.merge!(SCHEMA_CLIENT_SECRET)
+      schema.merge!(SCHEMA_CLIENT_ID)
+      schema.merge!(SCHEMA_DOMAIN)
+      schema.merge!(SCHEMA_ENABLED_FOR_VERIFIED_ACTIONS)
+      schema.merge!(SCHEMA_HIDE_FROM_PROFILE)
+      schema
     end
 
     def exposed_config_parameters

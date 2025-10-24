@@ -20,27 +20,8 @@ module CustomIdMethods
       config[:ui_method_name].presence || name
     end
 
-    def config_parameters
-      %i[
-        client_id
-        client_secret
-        ui_method_name
-        enabled_for_verified_actions
-      ]
-    end
-
     def config_parameters_schema
-      {
-        ui_method_name: {
-          type: 'string',
-          description: 'The name this verification method will have in the UI'
-        },
-        enabled_for_verified_actions: {
-          private: true,
-          type: 'boolean',
-          description: 'Whether this verification method should be enabled for verified actions.'
-        }
-      }
+      default_config_schema('ID Austria')
     end
 
     def entitled?(_auth)

@@ -16,18 +16,8 @@ module CustomIdMethods
       'bosa_fas'
     end
 
-    def config_parameters
-      %i[environment identifier secret enabled_for_verified_actions]
-    end
-
     def config_parameters_schema
-      {
-        enabled_for_verified_actions: {
-          private: true,
-          type: 'boolean',
-          description: 'Whether this verification method should be enabled for verified actions.'
-        }
-      }
+      default_config_schema.merge!(SCHEMA_ENVIRONMENT)
     end
 
     def entitled?(_auth)

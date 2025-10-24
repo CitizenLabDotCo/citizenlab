@@ -265,8 +265,8 @@ module MultiTenancy
                 {
                   name: 'bosa_fas',
                   environment: 'integration',
-                  identifier: 'fake_identifier',
-                  secret: 'fake_secret'
+                  client_id: 'fake_identifier',
+                  client_secret: 'fake_secret'
                 },
                 {
                   name: 'clave_unica',

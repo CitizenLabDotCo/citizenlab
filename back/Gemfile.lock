@@ -58,8 +58,8 @@ PATH
   remote: engines/commercial/custom_id_methods
   specs:
     custom_id_methods (1.0.0)
+      admin_api
       httparty
-      id_id_card_lookup
       omniauth-auth0 (~> 2.0)
       omniauth-saml (~> 2.2.0)
       omniauth_openid_connect
@@ -90,14 +90,6 @@ PATH
   specs:
     google_tag_manager (0.1.0)
       rails (~> 7.0)
-
-PATH
-  remote: engines/commercial/id_id_card_lookup
-  specs:
-    id_id_card_lookup (0.1.0)
-      admin_api
-      rails (~> 7.0)
-      savon (>= 2.12, < 2.15)
 
 PATH
   remote: engines/commercial/id_vienna_saml
@@ -1303,7 +1295,6 @@ DEPENDENCIES
   groupdate (~> 6.5)
   icalendar (~> 2.10)
   ice_cube (~> 0.17)
-  id_id_card_lookup!
   id_vienna_saml!
   idea_assignment!
   idea_custom_fields!

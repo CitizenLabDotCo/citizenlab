@@ -29,7 +29,7 @@ module CustomIdMethods
     end
 
     def config_parameters_schema
-      {
+      schema = {
         environment: {
           private: true,
           type: 'string',
@@ -60,13 +60,10 @@ module CustomIdMethods
           private: true,
           type: 'string',
           description: 'The `key` attribute of the custom field where the birthyear should be stored (`birthyear` by default). Leave empty to not store the birthyear. If it\'s set, the field will be locked for verified users.'
-        },
-        enabled_for_verified_actions: {
-          private: true,
-          type: 'boolean',
-          description: 'Whether this verification method should be enabled for verified actions.'
         }
       }
+      schema.merge! SCHEMA_ENABLED_FOR_VERIFIED_ACTIONS
+      schema
     end
 
     def entitled?(auth)

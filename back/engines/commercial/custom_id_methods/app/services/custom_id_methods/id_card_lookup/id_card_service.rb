@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module IdIdCardLookup
-  class IdCardService
+module CustomIdMethods
+  class IdCardLookup::IdCardService
     def encode(card_id)
       hash(normalize(card_id))
     end

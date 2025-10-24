@@ -37,8 +37,8 @@ module CustomIdMethods
       options[:client_signing_alg] = :RS256
       options[:client_jwk_signing_key] = jwks
       options[:client_options] = {
-        identifier: config[:identifier],
-        secret: config[:secret],
+        identifier: config[:client_id],
+        secret: config[:client_secret],
         port: 443,
         scheme: 'https',
         host: host,

@@ -16,23 +16,16 @@ module CustomIdMethods
       'fake_sso'
     end
 
-    def config_parameters
-      %i[issue enabled_for_verified_actions]
-    end
-
     def config_parameters_schema
-      {
-        enabled_for_verified_actions: {
-          private: true,
-          type: 'boolean',
-          description: 'Whether this verification method should be enabled for verified actions.'
-        },
-        issuer: {
-          private: true,
-          title: 'Issuer',
-          type: 'string'
-        }
+      schema = {}
+      schema.merge! SCHEMA_ENABLED_FOR_VERIFIED_ACTIONS
+      schema.merge! SCHEMA_HIDE_FROM_PROFILE
+      schema[:issuer] = {
+        private: true,
+        title: 'Issuer',
+        type: 'string'
       }
+      schema
     end
 
     def locked_attributes
