@@ -1,40 +1,6 @@
 # frozen_string_literal: true
 
 class ProjectPolicy < ApplicationPolicy
-  def self.apply_listed_scope(scope, user, remove_unlisted_type)
-    # remove_unlisted_type can be:
-    # - 'remove_all_unlisted': only return listed projects
-    # - 'remove_unlisted_that_user_cannot_moderate': return listed projects
-    # AND unlisted projects that the user can moderate.
-
-    if remove_unlisted_type == 'remove_all_unlisted'
-      return scope.where(listed: true)
-    end
-
-    # Admins: return all projects,
-    # since they can moderate all projects.
-    if user&.admin?
-      return scope
-    end
-
-    # Moderators: return all projects that
-    # they can moderate.
-    if user&.project_or_folder_moderator?
-      scope = scope.joins(:admin_publication)
-
-      return scope.where(
-        '(projects.listed = TRUE) OR ' \
-        '(projects.listed = FALSE AND projects.id IN (?)) OR ' \
-        '(projects.listed = FALSE AND admin_publications.parent_id IN (?))',
-        user.moderatable_project_ids,
-        AdminPublication.where(publication_id: user.moderated_project_folder_ids).select(:id)
-      )
-    end
-
-    # Other users: return only listed projects.
-    scope.where(listed: true)
-  end
-
   class Scope < ApplicationPolicy::Scope
     def resolve
       @scope = scope.includes(:admin_publication)
@@ -50,7 +16,7 @@ class ProjectPolicy < ApplicationPolicy
         .or(resolve_for_normal_user)
 
       if context[:remove_unlisted]
-        moderator_scope = ProjectPolicy.apply_listed_scope(
+        moderator_scope = ProjectsListedScopeService.call(
           moderator_scope,
           user,
           context[:remove_unlisted]

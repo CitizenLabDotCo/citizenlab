@@ -21,7 +21,7 @@ class AdminPublicationPolicy < ApplicationPolicy
         end
 
         if context[:remove_unlisted]
-          scope = ProjectPolicy.apply_listed_scope(
+          scope = ProjectsListedScopeService.call(
             scope,
             user,
             context[:remove_unlisted]
