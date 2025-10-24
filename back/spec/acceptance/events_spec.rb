@@ -190,17 +190,7 @@ resource 'Events' do
         @event_image = create(:event_image, event: @event_with_image)
       end
 
-      example_request 'Does not include event images if included param not provided' do
-        assert_status 200
-        event_data = response_data.find { |e| e[:id] == @event_with_image.id }
-        expect(event_data.dig(:relationships, :event_images, :data)).to eq([
-          { type: 'image', id: @event_image.id }
-        ])
-        expect(json_response_body[:included]).to be_nil
-      end
-
-      example 'Includes event images if included param provided' do
-        do_request(include: ['event_images'])
+      example_request 'Includes event images' do
         assert_status 200
         event_data = response_data.find { |e| e[:id] == @event_with_image.id }
         relationships = event_data.dig(:relationships, :event_images, :data)
