@@ -22,6 +22,8 @@ class WebApi::V1::EventsController < ApplicationController
         ]
       ).find_records
 
+    events = apply_projects_listed_scope(events, params)
+
     events = paginate SortByParamsService.new.sort_events(events, params)
 
     serializer_params = jsonapi_serializer_params
@@ -163,20 +165,6 @@ class WebApi::V1::EventsController < ApplicationController
       if p.key?(:ongoing_during)
         p[:ongoing_during] = parse_date_range(p[:ongoing_during])
       end
-
-      # If we do not filter by project_ids, we hide events from unlisted projects
-      # This way, when people list all events, they don't see events from unlisted projects
-      # But if someone filters by an unlisted project we do want to show those events
-      if p[:project_ids].blank?
-        # This 'show_unlisted_events_user_can_moderate' flag is needed in e.g. 
-        # the case of smart groups, where a moderator should be able to see unlisted 
-        # events of projects that they can moderate, but not other unlisted events.
-        p[:remove_unlisted_type] = if p[:show_unlisted_events_user_can_moderate]
-          'remove_unlisted_that_user_cannot_moderate'
-        else
-          'remove_all_unlisted'
-        end
-      end
     end
   end
 
@@ -208,6 +196,30 @@ class WebApi::V1::EventsController < ApplicationController
 
   def sidefx
     @sidefx ||= SideFxEventService.new
+  end
+
+  def apply_projects_listed_scope(events, params)
+    # If we do not filter by project_ids, we hide events from unlisted projects
+    # This way, when people list all events, they don't see events from unlisted projects
+    # But if someone filters by an unlisted project we do want to show those events
+    if params[:project_ids].blank?
+      # This 'show_unlisted_events_user_can_moderate' flag is needed in e.g. 
+      # the case of smart groups, where a moderator should be able to see unlisted 
+      # events of projects that they can moderate, but not other unlisted events.
+      remove_unlisted_type = if params[:show_unlisted_events_user_can_moderate]
+        'remove_unlisted_that_user_cannot_moderate'
+      else
+        'remove_all_unlisted'
+      end
+
+      return ProjectsListedScopeService.call(
+        events,
+        current_user,
+        remove_unlisted_type
+      )
+    end
+
+    events
   end
 end
 
