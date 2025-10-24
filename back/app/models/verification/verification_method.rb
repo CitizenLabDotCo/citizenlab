@@ -2,7 +2,6 @@
 
 module Verification
   module VerificationMethod
-
     # Schema definitions for common parameters
     SCHEMA_CLIENT_ID = {
       client_id: {
@@ -89,13 +88,18 @@ module Verification
     private
 
     def default_config_schema(default_name_in_ui = nil)
-      schema = default_name_in_ui ? {
-        ui_method_name: {
-          type: 'string',
-          title: 'Method name in UI',
-          description: 'The name this verification method will have in the UI',
-          default: default_name_in_ui
-        }} : {}
+      schema = if default_name_in_ui
+        {
+          ui_method_name: {
+            type: 'string',
+            title: 'Method name in UI',
+            description: 'The name this verification method will have in the UI',
+            default: default_name_in_ui
+          }
+        }
+      else
+        {}
+      end
       schema.merge!(SCHEMA_CLIENT_SECRET)
       schema.merge!(SCHEMA_CLIENT_ID)
       schema.merge!(SCHEMA_ENABLED_FOR_VERIFIED_ACTIONS)
