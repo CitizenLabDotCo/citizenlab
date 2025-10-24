@@ -35,11 +35,7 @@ class ContentImageService
   # Extracts and remove image data from the content, stores it in a separate image model,
   # and updates the original content to reference the image model instead.
   def swap_data_images(encoded_content, imageable: nil, field: nil)
-    content = begin
-      decode_content encoded_content
-    rescue DecodingError => e
-      log_decoding_error e
-    end
+    content = decode_content(encoded_content)
     return encoded_content if !content
 
     image_elements(content).each do |img_elt|
@@ -71,7 +67,7 @@ class ContentImageService
 
   # Replaces references to image models in the content by actual image data.
   def render_data_images(encoded_content, imageable: nil, field: nil)
-    content = decode_content encoded_content
+    content = decode_content! encoded_content
     precompute_for_rendering imageable
 
     image_elements(content).each do |img_elt|
@@ -91,9 +87,18 @@ class ContentImageService
 
   protected
 
-  def decode_content(encoded_content)
+  # @param encoded_content [String]
+  # @raise [DecodingError] if the content could not be decoded.
+  def decode_content!(encoded_content)
     # No encoding by default.
     encoded_content
+  end
+
+  def decode_content(encoded_content)
+    decode_content!(encoded_content)
+  rescue DecodingError => e
+    log_decoding_error(e)
+    nil
   end
 
   def encode_content(decoded_content)

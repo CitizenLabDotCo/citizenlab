@@ -9,7 +9,7 @@ class TextImageService < ContentImageService
   # @raise [DecodingError] if the HTML string is not valid.
   # @param html_string [String] the HTML string to decode.
   # @return [Nokogiri::HTML::DocumentFragment] the decoded HTML document.
-  def decode_content(html_string)
+  def decode_content!(html_string)
     html_doc = Nokogiri::HTML.fragment html_string
     raise ContentImageService::DecodingError.new parse_errors: html_doc.errors if html_doc.errors.any?
 
