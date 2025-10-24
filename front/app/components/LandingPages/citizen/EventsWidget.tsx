@@ -70,7 +70,6 @@ const EventsWidget = ({ staticPageId }: Props) => {
     currentAndFutureOnly: true,
     pageSize: 3,
     sort: '-start_at',
-    include: ['event_images'],
     ...(staticPageId && { staticPageId }),
   });
   const isSmallerThanPhone = useBreakpoint('phone');

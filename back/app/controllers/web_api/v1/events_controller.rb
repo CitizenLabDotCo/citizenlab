@@ -33,7 +33,7 @@ class WebApi::V1::EventsController < ApplicationController
       events,
       WebApi::V1::EventSerializer,
       params: serializer_params,
-      include: (params[:include] || []).map(&:to_sym)
+      include: [:event_images]
     )
   end
 

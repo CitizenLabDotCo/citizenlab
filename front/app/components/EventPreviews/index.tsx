@@ -41,7 +41,6 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
         .add(1, 'day')
         .toString() || null,
     ],
-    include: ['event_images'],
   });
 
   // TODO: Fix this the next time the file is edited.

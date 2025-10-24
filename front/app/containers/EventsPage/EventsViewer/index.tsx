@@ -134,7 +134,6 @@ const EventsViewer = ({
     pageSize: 15,
     attendeeId,
     ongoing_during: ongoingDuringDates,
-    include: ['event_images'],
   });
 
   useEffect(() => {
