@@ -25,11 +25,7 @@ class TextImageService < ContentImageService
   # to be processed later.
   # Already updates the original content to reference the future image model instead.
   def extract_data_images(encoded_content)
-    content = begin
-      decode_content encoded_content
-    rescue DecodingError => e
-      log_decoding_error e
-    end
+    content = decode_content(encoded_content)
 
     extracted_images = []
 
@@ -87,7 +83,7 @@ class TextImageService < ContentImageService
   # @raise [DecodingError] if the HTML string is not valid.
   # @param html_string [String] the HTML string to decode.
   # @return [Nokogiri::HTML::DocumentFragment] the decoded HTML document.
-  def decode_content(html_string)
+  def decode_content!(html_string)
     html_doc = Nokogiri::HTML.fragment html_string
     raise ContentImageService::DecodingError.new parse_errors: html_doc.errors if html_doc.errors.any?
 
