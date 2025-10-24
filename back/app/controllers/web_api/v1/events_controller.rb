@@ -212,11 +212,13 @@ class WebApi::V1::EventsController < ApplicationController
         'remove_all_unlisted'
       end
 
-      return ProjectsListedScopeService.call(
+      projects = ProjectsListedScopeService.call(
         events,
         current_user,
         remove_unlisted_type
       )
+
+      return events.where(id: projects.select(:id))
     end
 
     events

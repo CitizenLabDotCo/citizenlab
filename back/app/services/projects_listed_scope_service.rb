@@ -1,5 +1,5 @@
 class ProjectsListedScopeService
-  def self.call(user, projects_scope, remove_unlisted_type)
+  def self.call(projects_scope, user, remove_unlisted_type)
     # remove_unlisted_type can be:
     # - 'remove_all_unlisted': only return listed projects
     # - 'remove_unlisted_that_user_cannot_moderate': return listed projects
