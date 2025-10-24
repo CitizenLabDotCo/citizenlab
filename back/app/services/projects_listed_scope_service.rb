@@ -1,14 +1,12 @@
 class ProjectsListedScopeService
-  def self.call(projects_scope, user, remove_unlisted_type)
-    # remove_unlisted_type can be:
-    # - 'remove_all_unlisted': only return listed projects
-    # - 'remove_unlisted_that_user_cannot_moderate': return listed projects
-    # AND unlisted projects that the user can moderate.
+  def self.remove_unlisted_projects(projects_scope)
+    projects_scope.where(listed: true)
+  end
 
-    if remove_unlisted_type == 'remove_all_unlisted'
-      return projects_scope.where(listed: true)
-    end
-
+  def self.remove_unlisted_that_user_cannot_moderate(
+    projects_scope,
+    user
+  )
     # Admins: return all projects,
     # since they can moderate all projects.
     if user&.admin?

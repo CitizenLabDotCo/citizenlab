@@ -21,11 +21,14 @@ class AdminPublicationPolicy < ApplicationPolicy
         end
 
         if context[:remove_unlisted]
-          scope = ProjectsListedScopeService.call(
-            scope,
-            user,
-            context[:remove_unlisted]
-          )
+          scope = if context[:remove_unlisted] == 'remove_all_unlisted'
+            ProjectsListedScopeService.remove_unlisted_projects(scope)
+          else
+            ProjectsListedScopeService.remove_unlisted_that_user_cannot_moderate(
+              scope,
+              user
+            )
+          end
         end
 
         scope

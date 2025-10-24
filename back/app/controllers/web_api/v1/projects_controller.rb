@@ -27,12 +27,14 @@ class WebApi::V1::ProjectsController < ApplicationController
     # By default, this endpoint will remove unlisted projects that the user cannot moderate.
     # But if the `remove_all_unlisted` parameter is set to 'true', it will
     # even remove all unlisted projects.
-    remove_unlisted_type = if params[:remove_all_unlisted] == 'true'
-      'remove_all_unlisted'
+    @projects = if params[:remove_all_unlisted] == 'true'
+      ProjectsListedScopeService.remove_unlisted_projects(@projects)
     else
-      'remove_unlisted_that_user_cannot_moderate'
+      ProjectsListedScopeService.remove_unlisted_that_user_cannot_moderate(
+        @projects,
+        current_user
+      )
     end
-    @projects = remove_unlisted(@projects, remove_unlisted_type)
 
     @projects = paginate @projects
     @projects = @projects.preload(
@@ -72,7 +74,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   # => [Project]
   def index_finished_or_archived
     projects = policy_scope(Project)
-    projects = remove_unlisted(projects, 'remove_all_unlisted')
+    projects = ProjectsListedScopeService.remove_unlisted_projects(projects)
     projects = ProjectsFinderService.new(projects, current_user, params).finished_or_archived
 
     @projects = paginate projects
@@ -89,7 +91,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   # ordered by the follow created_at (most recent first).
   def index_for_followed_item
     projects = policy_scope(Project)
-    projects = remove_unlisted(projects, 'remove_all_unlisted')
+    projects = ProjectsListedScopeService.remove_unlisted_projects(projects)
     projects = projects.not_draft
     projects = ProjectsFinderService.new(projects, current_user).followed_by_user
 
@@ -107,7 +109,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   # Ordered by the end date of the current phase, soonest first (nulls last).
   def index_with_active_participatory_phase
     projects = policy_scope(Project)
-    projects = remove_unlisted(projects, 'remove_all_unlisted')
+    projects = ProjectsListedScopeService.remove_unlisted_projects(projects)
     projects_and_descriptors = ProjectsFinderService.new(projects, current_user, params).participation_possible
     projects = projects_and_descriptors[:projects]
 
@@ -130,7 +132,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   # Ordered by created_at, newest first.
   def index_for_areas
     projects = policy_scope(Project)
-    projects = remove_unlisted(projects, 'remove_all_unlisted')
+    projects = ProjectsListedScopeService.remove_unlisted_projects(projects)
     projects = ProjectsFinderService.new(projects, current_user, params).projects_for_areas
 
     @projects = paginate projects
@@ -146,7 +148,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   # Ordered by created_at, newest first.
   def index_for_topics
     projects = policy_scope(Project)
-    projects = remove_unlisted(projects, 'remove_all_unlisted')
+    projects = ProjectsListedScopeService.remove_unlisted_projects(projects)
     projects = projects
       .not_draft
       .with_some_topics(params[:topics])
@@ -162,7 +164,10 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def index_for_admin
     projects = policy_scope(Project).not_hidden
-    projects = remove_unlisted(projects, 'remove_unlisted_that_user_cannot_moderate')
+    projects = ProjectsListedScopeService.remove_unlisted_that_user_cannot_moderate(
+      projects,
+      current_user
+    )
     projects = ProjectsFinderAdminService.execute(projects, params, current_user: current_user)
 
     projects = paginate projects
@@ -440,14 +445,6 @@ class WebApi::V1::ProjectsController < ApplicationController
         user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
       }),
       include: %i[project_images current_phase]
-    )
-  end
-
-  def remove_unlisted(projects_scope, remove_unlisted_type)
-    ProjectsListedScopeService.call(
-      projects_scope,
-      current_user,
-      remove_unlisted_type
     )
   end
 end
