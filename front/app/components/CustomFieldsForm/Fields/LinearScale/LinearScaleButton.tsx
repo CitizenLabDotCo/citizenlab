@@ -81,13 +81,7 @@ const LinearScaleButton = ({
           data === visualIndex ? colors.white : theme.colors.textPrimary
         }
         width="100%"
-        onClick={() => {
-          if (data === visualIndex) {
-            onSelect(undefined); // Deselect if the same button is clicked
-          } else {
-            onSelect(visualIndex);
-          }
-        }}
+        onClick={() => onSelect(data === visualIndex ? undefined : visualIndex)}
       >
         {visualIndex}
       </StyledButton>
