@@ -18,13 +18,11 @@ class ProjectsListedScopeService
     if user&.project_or_folder_moderator?
       projects_scope = projects_scope.joins(:admin_publication)
 
-      return projects_scope.where(
-        '(projects.listed = TRUE) OR ' \
-        '(projects.listed = FALSE AND projects.id IN (?)) OR ' \
-        '(projects.listed = FALSE AND admin_publications.parent_id IN (?))',
-        user.moderatable_project_ids,
-        AdminPublication.where(publication_id: user.moderated_project_folder_ids).select(:id)
-      )
+      return projects_scope
+        .where(listed: true)
+        .or(UserRoleService.new
+          .moderatable_projects(user, projects_scope.where(listed: false))
+        )
     end
 
     # Other users: return only listed projects.
