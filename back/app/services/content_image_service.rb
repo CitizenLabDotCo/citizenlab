@@ -25,6 +25,71 @@ class ContentImageService
     attr_reader :parse_errors
   end
 
+  ExtractResult = Data.define(:content, :images)
+  private_constant :ExtractResult
+
+  # @param [ActiveRecord] imageable
+  # @param [Symbol] field the field of +imageable+ that (potentially) contains the embedded images.
+  # @param [Symbol, ActiveRecord::Relation, ActiveRecord::Associations::CollectionProxy] image_association
+  # @return [ActiveRecord] the imageable
+  def swap_data_images!(imageable, field, image_association)
+    encoded_content = imageable.read_attribute(field)
+    extract_result = extract_images(encoded_content, imageable, field)
+    imageable.write_attribute(field, extract_result.content)
+
+    image_association = imageable.public_send(image_association) if image_association.is_a?(Symbol)
+    # CAUTION: We append images directly to the association's target instead of using `<<`
+    # to avoid saving them immediately (which `<<` would do if imageable is already
+    # persisted). This lets ActiveRecord's autosave handle everything transactionally when
+    # the imageable is saved. It effectively works like `image_association.build(...)` but
+    # requires setting the foreign key manually on the images.
+    image_association.target.concat(extract_result.images)
+    imageable
+  end
+
+  # @param [ActiveRecord] imageable
+  # @param [Symbol] field the multiloc field of +imageable+ that (potentially) contains the embedded images.
+  # @param [Symbol, ActiveRecord::Relation, ActiveRecord::Associations::CollectionProxy] image_association
+  # @return [ActiveRecord] the imageable
+  def swap_data_images_multiloc!(imageable, field, image_association)
+    multiloc = imageable.read_attribute(field)
+
+    image_association = imageable.public_send(image_association) if image_association.is_a?(Symbol)
+    # CAUTION: We append images directly to the association's target instead of using `<<`
+    # to avoid saving them immediately (which `<<` would do if imageable is already
+    # persisted). This lets ActiveRecord's autosave handle everything transactionally when
+    # the imageable is saved. It effectively works like `image_association.build(...)` but
+    # requires setting the foreign key manually on the images.
+    assoc_target = image_association.target
+
+    multiloc.transform_values! do |encoded_content|
+      extract_result = extract_images(encoded_content, imageable, field)
+      assoc_target.concat(extract_result.images)
+      extract_result.content
+    end
+
+    imageable
+  end
+
+  def extract_images(encoded_content, imageable, field)
+    content = decode_content(encoded_content)
+    return ExtractResult.new(encoded_content, []) unless content
+
+    images = image_elements(content).filter_map do |img_elt|
+      next if get_attribute(img_elt, code_attribute_for_element)
+      next if image_attributes_for_element.none? { |elt_atr| attribute? img_elt, elt_atr }
+      next if (image_attrs = image_attributes(img_elt, imageable, field)).blank?
+
+      image = content_image_class.new(image_attrs)
+      set_attribute!(img_elt, code_attribute_for_element, image[code_attribute_for_model])
+      image_attributes_for_element.each { |elt_atr| remove_attribute!(img_elt, elt_atr) }
+
+      image
+    end
+
+    ExtractResult.new(encode_content(content), images)
+  end
+
   # Applies {#swap_data_images} to each multiloc value in the given multiloc.
   def swap_data_images_multiloc(multiloc, imageable: nil, field: nil)
     multiloc.transform_values do |encoded_content|
