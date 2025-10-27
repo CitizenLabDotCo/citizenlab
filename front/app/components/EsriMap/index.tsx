@@ -276,31 +276,48 @@ const EsriMap = ({
     if (!showUserLocation || !mapView) return;
 
     let currentLocationGraphic: Graphic | null = null;
+    let watchId: number | null = null;
 
-    const getCurrentLocation = () => {
-      if ('geolocation' in navigator) {
-        navigator.geolocation.getCurrentPosition((position) => {
-          const { longitude, latitude } = position.coords;
+    const updateUserLocation = (position: GeolocationPosition) => {
+      const { longitude, latitude } = position.coords;
 
-          // Create new user location graphic
-          const locationGraphic = createUserLocationGraphic(
-            longitude,
-            latitude
-          );
-          mapView.graphics.add(locationGraphic);
-          currentLocationGraphic = locationGraphic;
-        });
-      } else {
-        console.warn('Geolocation is not supported by this browser.');
+      // Remove existing location graphic if it exists
+      if (currentLocationGraphic) {
+        mapView.graphics.remove(currentLocationGraphic);
       }
+
+      // Create new user location graphic
+      const locationGraphic = createUserLocationGraphic(longitude, latitude);
+      mapView.graphics.add(locationGraphic);
+      currentLocationGraphic = locationGraphic;
     };
 
-    getCurrentLocation();
+    const handleLocationError = (error: GeolocationPositionError) => {
+      console.warn('Error getting user location:', error);
+    };
 
-    // Cleanup function to remove user location graphic
+    if ('geolocation' in navigator) {
+      // Use watchPosition for continuous location updates
+      watchId = navigator.geolocation.watchPosition(
+        updateUserLocation,
+        handleLocationError,
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 30000, // Cache location for 30 seconds
+        }
+      );
+    } else {
+      console.warn('Geolocation is not supported by this browser.');
+    }
+
+    // Cleanup function to remove user location graphic and stop watching
     return () => {
       if (currentLocationGraphic) {
         mapView.graphics.remove(currentLocationGraphic);
+      }
+      if (watchId !== null) {
+        navigator.geolocation.clearWatch(watchId);
       }
     };
   }, [showUserLocation, mapView]);
