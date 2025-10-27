@@ -86,7 +86,7 @@ const EsriMap = ({
   webMapId,
   initialData,
   globalMapSettings,
-  showUserLocation = true,
+  showUserLocation = false,
 }: EsriMapProps) => {
   const locale = useLocale();
   const isMobileOrSmaller = useBreakpoint('phone');
