@@ -25,6 +25,7 @@ import {
   getDefaultBasemapType,
   getDefaultBasemap,
   handleWebMapReferenceLayers,
+  createUserLocationGraphic,
 } from './utils';
 
 // Custom Esri styles
@@ -71,6 +72,7 @@ export type EsriMapProps = {
   onClick?: (event: any, mapView: MapView) => void;
   onHover?: (event: any, mapView: MapView) => void;
   globalMapSettings: AppConfigurationMapSettings;
+  showUserLocation?: boolean;
 };
 
 const EsriMap = ({
@@ -84,6 +86,7 @@ const EsriMap = ({
   webMapId,
   initialData,
   globalMapSettings,
+  showUserLocation = true,
 }: EsriMapProps) => {
   const locale = useLocale();
   const isMobileOrSmaller = useBreakpoint('phone');
@@ -267,6 +270,40 @@ const EsriMap = ({
       esriConfig.apiKey = apiKey;
     }
   }, [appConfig?.data.attributes.settings.esri_integration?.api_key]);
+
+  // Handle user location
+  useEffect(() => {
+    if (!showUserLocation || !mapView) return;
+
+    let currentLocationGraphic: Graphic | null = null;
+
+    const getCurrentLocation = () => {
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          const { longitude, latitude } = position.coords;
+
+          // Create new user location graphic
+          const locationGraphic = createUserLocationGraphic(
+            longitude,
+            latitude
+          );
+          mapView.graphics.add(locationGraphic);
+          currentLocationGraphic = locationGraphic;
+        });
+      } else {
+        console.warn('Geolocation is not supported by this browser.');
+      }
+    };
+
+    getCurrentLocation();
+
+    // Cleanup function to remove user location graphic
+    return () => {
+      if (currentLocationGraphic) {
+        mapView.graphics.remove(currentLocationGraphic);
+      }
+    };
+  }, [showUserLocation, mapView]);
 
   return (
     <>
