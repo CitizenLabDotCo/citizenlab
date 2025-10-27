@@ -178,6 +178,22 @@ resource 'ProjectFolder' do
         # New folders are added to the top
         expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
       end
+
+      describe 'when the folder description contains images' do
+        let(:description_multiloc) do
+          {
+            'en' => html_with_base64_image
+          }
+        end
+
+        example_request 'Create a folder with images in the description', document: false do
+          assert_status 201
+          json_parse(response_body)
+          expect(response_data.dig(:attributes, :description_multiloc, :en)).to include('<p>Some text</p><img alt="Red dot"')
+          text_image = TextImage.find_by(imageable_id: response_data[:id], imageable_type: 'ProjectFolders::Folder', imageable_field: 'description_multiloc')
+          expect(response_data.dig(:attributes, :description_multiloc, :en)).to include("data-cl2-text-image-text-reference=\"#{text_image.text_reference}\"")
+        end
+      end
     end
 
     patch 'web_api/v1/project_folders/:id' do
