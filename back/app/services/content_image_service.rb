@@ -71,25 +71,6 @@ class ContentImageService
     imageable
   end
 
-  def extract_images(encoded_content, imageable, field)
-    content = decode_content(encoded_content)
-    return ExtractResult.new(encoded_content, []) unless content
-
-    images = image_elements(content).filter_map do |img_elt|
-      next if get_attribute(img_elt, code_attribute_for_element)
-      next if image_attributes_for_element.none? { |elt_atr| attribute? img_elt, elt_atr }
-      next if (image_attrs = image_attributes(img_elt, imageable, field)).blank?
-
-      image = content_image_class.new(image_attrs)
-      set_attribute!(img_elt, code_attribute_for_element, image[code_attribute_for_model])
-      image_attributes_for_element.each { |elt_atr| remove_attribute!(img_elt, elt_atr) }
-
-      image
-    end
-
-    ExtractResult.new(encode_content(content), images)
-  end
-
   # Applies {#swap_data_images} to each multiloc value in the given multiloc.
   def swap_data_images_multiloc(multiloc, imageable: nil, field: nil)
     multiloc.transform_values do |encoded_content|
@@ -242,6 +223,25 @@ class ContentImageService
   end
 
   private
+
+  def extract_images(encoded_content, imageable, field)
+    content = decode_content(encoded_content)
+    return ExtractResult.new(encoded_content, []) unless content
+
+    images = image_elements(content).filter_map do |img_elt|
+      next if get_attribute(img_elt, code_attribute_for_element)
+      next if image_attributes_for_element.none? { |elt_atr| attribute? img_elt, elt_atr }
+      next if (image_attrs = image_attributes(img_elt, imageable, field)).blank?
+
+      image = content_image_class.new(image_attrs)
+      set_attribute!(img_elt, code_attribute_for_element, image[code_attribute_for_model])
+      image_attributes_for_element.each { |elt_atr| remove_attribute!(img_elt, elt_atr) }
+
+      image
+    end
+
+    ExtractResult.new(encode_content(content), images)
+  end
 
   def log_decoding_error(error)
     Sentry.capture_exception(error, extra: { parse_errors: error.parse_errors })
