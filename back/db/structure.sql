@@ -1,3 +1,8 @@
+\restrict xUlSfhwHgA9Ktu9jcvzyanAcHX8Oh51d6wjYDKXhantrNfw65o321CZyeDzeami
+
+-- Dumped from database version 16.6 (Debian 16.6-1.pgdg110+1)
+-- Dumped by pg_dump version 16.10 (Debian 16.10-1.pgdg13+1)
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -7921,13 +7926,15 @@ ALTER TABLE ONLY public.ideas_topics
 -- PostgreSQL database dump complete
 --
 
+\unrestrict xUlSfhwHgA9Ktu9jcvzyanAcHX8Oh51d6wjYDKXhantrNfw65o321CZyeDzeami
+
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20250930942638'),
 ('20251001090229'),
 ('20251001090208'),
 ('20251001083036'),
+('20250930942638'),
 ('20250922131002'),
 ('20250915151900'),
 ('20250910093500'),
