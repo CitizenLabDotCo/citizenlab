@@ -150,7 +150,8 @@ end
 #   request.host.split('.').first
 # }
 
-Rails.application.config.middleware.insert_after ActionDispatch::Session::CookieStore, RescuedApartmentMiddleware
+# Results in No such middleware to insert after: ActionDispatch::Session::CookieStore
+# Rails.application.config.middleware.insert_after ActionDispatch::Session::CookieStore, RescuedApartmentMiddleware
 
 # Rails.application.config.middleware.use RescuedApartmentElevator, Proc.new { |request| puts request.path; request.host.gsub(/\./, "_") }
 # Rails.application.config.middleware.use Apartment::Elevators::Domain
