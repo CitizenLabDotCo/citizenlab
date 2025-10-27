@@ -66,7 +66,7 @@ module Export
 
       def generate_phase_sheet(workbook, phase)
         inputs = eager_load_inputs(phase.ideas.submitted_or_published)
-        inputs = inputs.with_content unless phase.participation_method == 'native_survey'
+        inputs = inputs.with_content unless phase.participation_method == 'native_survey' or phase.participation_method == 'community_monitor_survey'
 
         generate_sheet(workbook, inputs, phase)
       end
