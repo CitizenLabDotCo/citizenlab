@@ -307,8 +307,6 @@ const EsriMap = ({
           maximumAge: 30000, // Cache location for 30 seconds
         }
       );
-    } else {
-      console.warn('Geolocation is not supported by this browser.');
     }
 
     // Cleanup function to remove user location graphic and stop watching
