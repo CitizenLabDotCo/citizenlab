@@ -82,6 +82,9 @@ module Cl2Back
       :lax
     }
 
+    config.middleware.use ActionDispatch::Cookies # Required for all session management
+    config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
+
     # Dump the database schema as SQL (`structure.sql`) instead of Ruby (`schema.rb`).
     config.active_record.schema_format = :sql
     # Extra flags to pass to `pg_dump` when dumping the database schema. With these
