@@ -1,9 +1,9 @@
 class ProjectsListedScopeService
-  def self.remove_unlisted_projects(projects_scope)
+  def remove_unlisted_projects(projects_scope)
     projects_scope.where(listed: true)
   end
 
-  def self.remove_unlisted_that_user_cannot_moderate(
+  def remove_unlisted_that_user_cannot_moderate(
     projects_scope,
     user
   )

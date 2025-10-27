@@ -153,9 +153,9 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     # But if the `remove_all_unlisted` parameter is set to 'true', it will
     # even remove all unlisted projects.
     listed_projects = if params[:remove_all_unlisted] == 'true'
-      ProjectsListedScopeService.remove_unlisted_projects(Project.all)
+      ProjectsListedScopeService.new.remove_unlisted_projects(Project.all)
     else
-      ProjectsListedScopeService.remove_unlisted_that_user_cannot_moderate(
+      ProjectsListedScopeService.new.remove_unlisted_that_user_cannot_moderate(
         Project.all,
         current_user
       )

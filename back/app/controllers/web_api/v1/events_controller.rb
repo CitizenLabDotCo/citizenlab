@@ -207,12 +207,12 @@ class WebApi::V1::EventsController < ApplicationController
       # the case of smart groups, where a moderator should be able to see unlisted
       # events of projects that they can moderate, but not other unlisted events.
       projects = if params[:show_unlisted_events_user_can_moderate]
-        ProjectsListedScopeService.remove_unlisted_that_user_cannot_moderate(
+        ProjectsListedScopeService.new.remove_unlisted_that_user_cannot_moderate(
           Project.all,
           current_user
         )
       else
-        ProjectsListedScopeService.remove_unlisted_projects(Project.all)
+        ProjectsListedScopeService.new.remove_unlisted_projects(Project.all)
       end
 
       return events.where(project_id: projects.select(:id))
