@@ -19,10 +19,9 @@ class ProjectsListedScopeService
       projects_scope = projects_scope.joins(:admin_publication)
 
       return projects_scope
-        .where(listed: true)
-        .or(UserRoleService.new
-          .moderatable_projects(user, projects_scope.where(listed: false))
-        )
+          .where(listed: true)
+          .or(UserRoleService.new
+          .moderatable_projects(user, projects_scope.where(listed: false)))
     end
 
     # Other users: return only listed projects.
