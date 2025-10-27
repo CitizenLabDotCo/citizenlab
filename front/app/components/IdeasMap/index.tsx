@@ -127,6 +127,7 @@ const IdeasMap = memo<Props>(
     const { data: authUser } = useAuthUser();
     const [searchParams] = useSearchParams();
     const isMobileOrSmaller = useBreakpoint('phone');
+    const isTabletOrSmaller = useBreakpoint('tablet');
 
     // Create div elements to use for inserting React components into Esri map popup
     // Docs: https://developers.arcgis.com/javascript/latest/custom-ui/#introduction
@@ -164,7 +165,7 @@ const IdeasMap = memo<Props>(
     // Map icon for ideas
     const ideaIcon = useMemo(() => {
       return getShapeSymbol({
-        shape: 'circle',
+        shape: 'triangle',
         color: theme.colors.tenantPrimary,
         outlineColor: colors.white,
         outlineWidth: 2,
@@ -174,7 +175,7 @@ const IdeasMap = memo<Props>(
 
     const ideaIconSecondary = useMemo(() => {
       return getShapeSymbol({
-        shape: 'circle',
+        shape: 'triangle',
         color: theme.colors.tenantSecondary,
         outlineColor: colors.white,
         outlineWidth: 2,
@@ -537,7 +538,8 @@ const IdeasMap = memo<Props>(
               onHover={onMapHover}
               onClick={onMapClick}
               id="e2e-ideas-map"
-              showUserLocation={true}
+              // Only show user location on mobile screens
+              showUserLocation={isTabletOrSmaller}
             />
             <LayerHoverLabel
               layer={mapConfig?.data.attributes.layers.find(
