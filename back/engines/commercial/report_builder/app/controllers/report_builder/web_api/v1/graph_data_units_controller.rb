@@ -5,6 +5,8 @@ module ReportBuilder
     module V1
       class GraphDataUnitsController < ApplicationController
         skip_before_action :authenticate_user, only: :published
+        after_action :verify_authorized
+        skip_after_action :verify_policy_scoped
 
         def live
           props = params[:props]&.permit! || {}

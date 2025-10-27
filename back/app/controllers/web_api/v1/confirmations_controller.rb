@@ -2,6 +2,7 @@
 
 class WebApi::V1::ConfirmationsController < ApplicationController
   skip_after_action :verify_authorized
+  skip_after_action :verify_policy_scoped
 
   def create
     result = ConfirmUser.call(user: current_user, code: confirmation_params[:code])

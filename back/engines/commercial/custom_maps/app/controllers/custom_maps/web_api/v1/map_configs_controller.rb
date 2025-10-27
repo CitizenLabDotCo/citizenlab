@@ -5,6 +5,8 @@ module CustomMaps
     module V1
       class MapConfigsController < ApplicationController
         before_action :set_map_config, only: %i[show update destroy]
+        after_action :verify_authorized
+        skip_after_action :verify_policy_scoped
 
         def create
           authorize @map_config, :create?, policy_class: MapConfigPolicy
