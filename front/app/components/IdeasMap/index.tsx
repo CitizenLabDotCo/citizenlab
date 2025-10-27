@@ -165,23 +165,23 @@ const IdeasMap = memo<Props>(
     // Map icon for ideas
     const ideaIcon = useMemo(() => {
       return getShapeSymbol({
-        shape: 'triangle',
+        shape: isTabletOrSmaller ? 'triangle' : 'circle',
         color: theme.colors.tenantPrimary,
         outlineColor: colors.white,
         outlineWidth: 2,
         sizeInPx: 18,
       });
-    }, [theme.colors.tenantPrimary]);
+    }, [theme.colors.tenantPrimary, isTabletOrSmaller]);
 
     const ideaIconSecondary = useMemo(() => {
       return getShapeSymbol({
-        shape: 'triangle',
+        shape: isTabletOrSmaller ? 'triangle' : 'circle',
         color: theme.colors.tenantSecondary,
         outlineColor: colors.white,
         outlineWidth: 2,
         sizeInPx: 18,
       });
-    }, [theme.colors.tenantSecondary]);
+    }, [theme.colors.tenantSecondary, isTabletOrSmaller]);
 
     // Existing handling for dynamic container width
     const { windowWidth } = useWindowSize();
