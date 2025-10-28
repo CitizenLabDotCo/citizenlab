@@ -9,6 +9,8 @@ module Webhooks
     perform_retries false
     self.priority = 60
 
+    class UnsuccessfulResponse < StandardError; end
+
     # Hardcoded constants
     MAX_RETRIES = 3
     CONNECT_TIMEOUT = 5  # seconds
@@ -68,23 +70,28 @@ module Webhooks
         )
         .post(subscription.url, body: payload_json)
 
-      if response.status.client_error? || response.status.server_error?
-        raise HTTP::Error, "HTTP Error: #{response.status.code}"
-      end
-
       if response.status.redirect?
         raise SecurityError, 'Redirects are not allowed'
+      elsif response.status.success?
+        delivery.update!(
+          status: 'success',
+          attempts: delivery.attempts + 1,
+          response_code: response.code,
+          response_body: response.body.to_s.truncate(10_000),
+          last_attempt_at: Time.current,
+          succeeded_at: Time.current
+        )
+      else
+        delivery.update!(
+          attempts: delivery.attempts + 1,
+          error_message: "HTTP Error: #{response.code}",
+          response_code: response.code,
+          response_body: response.body.to_s.truncate(10_000),
+          last_attempt_at: Time.current
+        )
+        # Raise so we can retry
+        raise UnsuccessfulResponse, "HTTP Error: #{response.code}"
       end
-
-      # Record success
-      delivery.update!(
-        status: 'success',
-        attempts: delivery.attempts + 1,
-        response_code: response.code,
-        response_body: response.body.to_s.truncate(10_000),
-        last_attempt_at: Time.current,
-        succeeded_at: Time.current
-      )
     rescue HTTP::Error => e
       # Record attempt, will retry via ActiveJob
       delivery.update!(
@@ -161,7 +168,7 @@ module Webhooks
       # Check if last N deliveries all failed
       recent_failures = subscription.deliveries
         .recent
-        .limit(10)
+        .limit(DISABLE_AFTER_FAILURES)
         .count { |d| d.status == 'failed' }
 
       if recent_failures >= DISABLE_AFTER_FAILURES

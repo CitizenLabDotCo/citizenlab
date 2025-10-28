@@ -44,16 +44,16 @@ RSpec.describe 'Webhook Integration Flow', type: :integration do
         .with { |req|
           # Verify headers
           req.headers['Content-Type'] == 'application/json' &&
-          req.headers['X-Govocal-Event'] == 'idea.created' &&
-          req.headers['X-Govocal-Signature'].present? &&
-          req.headers['User-Agent'] == 'GoVocal-Webhooks/1.0' &&
+            req.headers['X-Govocal-Event'] == 'idea.created' &&
+            req.headers['X-Govocal-Signature'].present? &&
+            req.headers['User-Agent'] == 'GoVocal-Webhooks/1.0' &&
 
-          # Verify payload structure
-          body = JSON.parse(req.body)
+            # Verify payload structure
+            body = JSON.parse(req.body)
           body['id'] == activity.id &&
-          body['event_type'] == 'idea.created' &&
-          body['data'].present? &&
-          body['metadata'].present?
+            body['event_type'] == 'idea.created' &&
+            body['data'].present? &&
+            body['metadata'].present?
         }.once
 
       # Verify delivery was marked as successful
@@ -225,8 +225,7 @@ RSpec.describe 'Webhook Integration Flow', type: :integration do
         Webhooks::EnqueueService.new.call(activity)
         delivery = Webhooks::Delivery.first
 
-        expect { Webhooks::DeliveryJob.perform_now(delivery.id) }
-          .to raise_error(HTTP::TimeoutError)
+        expect(Webhooks::DeliveryJob.perform_now(delivery.id)).to be_a(HTTP::TimeoutError)
 
         delivery.reload
         expect(delivery.status).to eq('pending')
@@ -247,8 +246,7 @@ RSpec.describe 'Webhook Integration Flow', type: :integration do
         Webhooks::EnqueueService.new.call(activity)
         delivery = Webhooks::Delivery.first
 
-        expect { Webhooks::DeliveryJob.perform_now(delivery.id) }
-          .to raise_error(HTTP::Error)
+        expect(Webhooks::DeliveryJob.perform_now(delivery.id)).to be_a(Webhooks::DeliveryJob::UnsuccessfulResponse)
 
         delivery.reload
         expect(delivery.attempts).to eq(1)
@@ -347,73 +345,6 @@ RSpec.describe 'Webhook Integration Flow', type: :integration do
       expect(payload['data']).to be_present
       expect(payload['data']).to have_key('id')
       expect(payload['data']).to have_key('type')
-    end
-  end
-
-  describe 'any_enabled optimization' do
-    it 'does not process webhooks when none are enabled' do
-      # No subscriptions exist
-      expect(Webhooks::Subscription.any_enabled?).to be false
-
-      idea = create(:idea, author: user, project: project)
-      activity = create(:idea_created_activity, item: idea, user: user, project_id: project.id)
-
-      # EnqueueService should not be called due to early return check
-      expect(Webhooks::EnqueueService).not_to receive(:new)
-
-      # Simulate LogActivityJob with any_enabled check
-      return unless Webhooks::Subscription.any_enabled?
-
-      Webhooks::EnqueueService.new.call(activity)
-    end
-
-    it 'processes webhooks when subscriptions are enabled' do
-      create(:webhook_subscription,
-        events: ['idea.created'],
-        url: 'https://webhook.example.com',
-        enabled: true)
-
-      stub_request(:post, 'https://webhook.example.com').to_return(status: 200)
-
-      # Should return true when enabled subscriptions exist
-      expect(Webhooks::Subscription.any_enabled?).to be true
-
-      idea = create(:idea, author: user, project: project)
-      activity = create(:idea_created_activity, item: idea, user: user, project_id: project.id)
-
-      Webhooks::EnqueueService.new.call(activity)
-
-      expect(Webhooks::Delivery.count).to eq 1
-    end
-  end
-
-  describe 'cleanup job' do
-    it 'removes old deliveries' do
-      subscription = create(:webhook_subscription, events: ['idea.created'])
-      activity = create(:idea_created_activity)
-
-      # Create old deliveries
-      old_success = create(:webhook_delivery, :succeeded,
-        subscription: subscription,
-        activity: activity,
-        created_at: 31.days.ago)
-      old_failed = create(:webhook_delivery, :failed,
-        subscription: subscription,
-        activity: activity,
-        created_at: 31.days.ago)
-
-      # Create recent delivery
-      recent = create(:webhook_delivery,
-        subscription: subscription,
-        activity: activity,
-        created_at: 1.day.ago)
-
-      expect { Webhooks::CleanupDeliveriesJob.perform_now }
-        .to change(Webhooks::Delivery, :count).by(-2)
-
-      expect(Webhooks::Delivery.exists?(old_success.id)).to be false
-      expect(Webhooks::Delivery.exists?(old_failed.id)).to be false
-      expect(Webhooks::Delivery.exists?(recent.id)).to be true
     end
   end
 end

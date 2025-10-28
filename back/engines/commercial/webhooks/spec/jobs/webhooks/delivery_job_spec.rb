@@ -162,7 +162,7 @@ RSpec.describe Webhooks::DeliveryJob do
       stub_request(:post, 'https://webhook.example.com/receive')
         .to_return(status: 500, body: 'Internal Server Error')
 
-      expect(described_class.perform_now(delivery.id)).to be_a(HTTP::Error)
+      expect(described_class.perform_now(delivery.id)).to be_a(Webhooks::DeliveryJob::UnsuccessfulResponse)
 
       expect(delivery.reload.attempts).to eq(1)
     end
@@ -240,7 +240,7 @@ RSpec.describe Webhooks::DeliveryJob do
 
         delivery = create(:webhook_delivery, subscription: subscription, activity: activity)
 
-        expect(described_class.perform_now(delivery.id)).to be_a(HTTP::Error)
+        expect(described_class.perform_now(delivery.id)).to be_a(Webhooks::DeliveryJob::UnsuccessfulResponse)
       end
     end
 
@@ -251,7 +251,7 @@ RSpec.describe Webhooks::DeliveryJob do
 
         delivery = create(:webhook_delivery, subscription: subscription, activity: activity)
 
-        expect(described_class.perform_now(delivery.id)).to be_a(HTTP::Error)
+        expect(described_class.perform_now(delivery.id)).to be_a(Webhooks::DeliveryJob::UnsuccessfulResponse)
       end
     end
   end
