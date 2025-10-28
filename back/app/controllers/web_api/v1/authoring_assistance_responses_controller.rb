@@ -1,4 +1,7 @@
 class WebApi::V1::AuthoringAssistanceResponsesController < ApplicationController
+  after_action :verify_authorized
+  skip_after_action :verify_policy_scoped
+
   def create
     if AuthoringAssistanceResponse.exists?(idea_id: params[:idea_id]) && !parse_bool(params[:regenerate])
       render_last_authoring_assistance_response

@@ -2,6 +2,8 @@
 
 class WebApi::V1::AppConfigurationsController < ApplicationController
   skip_before_action :authenticate_user
+  after_action :verify_authorized
+  skip_after_action :verify_policy_scoped
 
   def show
     render json: WebApi::V1::AppConfigurationSerializer.new(app_configuration).serializable_hash

@@ -5,6 +5,8 @@ module Onboarding
     module V1
       class WebApi::V1::CampaignDismissalsController < OnboardingController
         skip_before_action :authenticate_user
+        after_action :verify_authorized
+        skip_after_action :verify_policy_scoped
 
         def create
           authorize current_user, :update?

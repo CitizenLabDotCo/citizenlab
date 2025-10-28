@@ -5,6 +5,7 @@ module Analysis
     module V1
       class CommentsSummariesController < ApplicationController
         skip_after_action :verify_policy_scoped # The analysis is authorized instead.
+        after_action :verify_authorized
         before_action :set_analysis
         before_action :set_input
         before_action :set_comments_summary, only: %i[show]

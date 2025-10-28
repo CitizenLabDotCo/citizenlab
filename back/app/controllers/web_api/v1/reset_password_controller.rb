@@ -2,6 +2,7 @@
 
 class WebApi::V1::ResetPasswordController < ApplicationController
   skip_after_action :verify_authorized
+  skip_after_action :verify_policy_scoped
   skip_before_action :authenticate_user
 
   # Creates a password reset token and sends an email to the user with instructions.

@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectReviewsController < ApplicationController
+  after_action :verify_authorized
+  skip_after_action :verify_policy_scoped
+
   def show
     if review
       authorize(review)

@@ -4,7 +4,8 @@ module ImpactTracking
   module WebApi::V1
     class SessionsController < ::ApplicationController
       skip_before_action :authenticate_user, only: %i[create]
-      skip_after_action :verify_authorized, only: %i[create upgrade]
+      skip_after_action :verify_policy_scoped
+      skip_after_action :verify_authorized
 
       before_action :ignore_crawlers
       before_action :set_current_session, only: %i[upgrade]
