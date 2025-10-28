@@ -263,8 +263,13 @@ RSpec.describe 'Webhook Integration Flow', type: :integration do
         secret_token: 'test_secret_token')
     end
 
+    let(:captured_request) { [] }
+
     before do
-      stub_request(:post, 'https://webhook.example.com').to_return(status: 200)
+      stub_request(:post, 'https://webhook.example.com').to_return do |request|
+        captured_request << request
+        { status: 200 }
+      end
     end
 
     it 'generates valid HMAC signature that can be verified by receiver', :aggregate_failures do
@@ -277,7 +282,7 @@ RSpec.describe 'Webhook Integration Flow', type: :integration do
       Webhooks::DeliveryJob.perform_now(delivery.id)
 
       # Extract request details
-      request = WebMock.requests.first
+      request = captured_request.first
       signature = request.headers['X-Govocal-Signature']
       body = request.body
 
@@ -303,8 +308,13 @@ RSpec.describe 'Webhook Integration Flow', type: :integration do
         url: 'https://webhook.example.com')
     end
 
+    let(:captured_request) { [] }
+
     before do
-      stub_request(:post, 'https://webhook.example.com').to_return(status: 200)
+      stub_request(:post, 'https://webhook.example.com').to_return do |request|
+        captured_request << request
+        { status: 200 }
+      end
     end
 
     it 'sends complete and correctly structured payload', :aggregate_failures do
@@ -320,7 +330,7 @@ RSpec.describe 'Webhook Integration Flow', type: :integration do
 
       Webhooks::DeliveryJob.perform_now(delivery.id)
 
-      request = WebMock.requests.first
+      request = captured_request.first
       payload = JSON.parse(request.body)
 
       # Verify top-level structure
@@ -343,8 +353,9 @@ RSpec.describe 'Webhook Integration Flow', type: :integration do
 
       # Verify data is present and serialized
       expect(payload['data']).to be_present
-      expect(payload['data']).to have_key('id')
-      expect(payload['data']).to have_key('type')
+      expect(payload['data']).to have_key('idea')
+      expect(payload['data']['idea']).to have_key('id')
+      expect(payload['data']['idea']['id']).to eq(idea.id)
     end
   end
 end
