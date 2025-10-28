@@ -30,7 +30,9 @@ class PublicApi::V2::IdeaSerializer < PublicApi::V2::BaseSerializer
     :href, # Not in spec
     :status, # idea_status in spec
     :custom_field_values, # Not nested in spec
-    :type
+    :type,
+    :survey_title,
+    :file_attachments
 
   def title
     multiloc_service.t(object.title_multiloc)
@@ -60,6 +62,21 @@ class PublicApi::V2::IdeaSerializer < PublicApi::V2::BaseSerializer
 
   def href
     Frontend::UrlService.new.model_to_url object
+  end
+
+  def survey_title
+    return nil unless object.creation_phase_id.present?
+    
+    multiloc_service.t(object.creation_phase&.native_survey_title_multiloc)
+  end
+
+  def file_attachments
+    object.idea_files.map do |idea_file|
+      {
+        name: idea_file.name,
+        url: idea_file.file.url
+      }
+    end
   end
 
   private

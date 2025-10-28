@@ -194,5 +194,76 @@ resource 'Posts' do
     end
   end
 
+  context 'survey-specific fields' do
+    context 'for survey responses' do
+      let!(:survey_project) { create(:project_with_active_native_survey_phase) }
+      let!(:survey_phase) { survey_project.phases.first }
+      let!(:survey_response) do
+        create(
+          :native_survey_response,
+          project: survey_project,
+          creation_phase: survey_phase
+        )
+      end
+      let!(:survey_file) { create(:idea_file, idea: survey_response) }
+
+      get '/api/v2/ideas/:id' do
+        let(:id) { survey_response.id }
+
+        example_request 'Returns survey_title for survey responses' do
+          assert_status 200
+          expect(json_response_body.dig(:idea, :survey_title)).to be_present
+          expect(json_response_body.dig(:idea, :survey_title)).to eq(
+            survey_phase.native_survey_title_multiloc['en']
+          )
+        end
+
+        example_request 'Returns file_attachments for survey responses with files' do
+          assert_status 200
+          file_attachments = json_response_body.dig(:idea, :file_attachments)
+          expect(file_attachments).to be_an(Array)
+          expect(file_attachments.size).to eq(1)
+          expect(file_attachments.first).to include(
+            'name' => survey_file.name,
+            'url' => be_present
+          )
+        end
+      end
+
+      get '/api/v2/ideas/' do
+        let(:type) { 'survey' }
+
+        example_request 'List surveys includes survey_title and file_attachments' do
+          assert_status 200
+          survey_items = json_response_body[:ideas].select { |item| item[:id] == survey_response.id }
+          expect(survey_items.size).to eq(1)
+          
+          survey_item = survey_items.first
+          expect(survey_item[:survey_title]).to be_present
+          expect(survey_item[:file_attachments]).to be_an(Array)
+          expect(survey_item[:file_attachments].size).to eq(1)
+        end
+      end
+    end
+
+    context 'for regular ideas' do
+      let(:regular_idea) { ideas.first }
+
+      get '/api/v2/ideas/:id' do
+        let(:id) { regular_idea.id }
+
+        example_request 'Returns null survey_title for regular ideas' do
+          assert_status 200
+          expect(json_response_body.dig(:idea, :survey_title)).to be_nil
+        end
+
+        example_request 'Returns empty file_attachments for ideas without files' do
+          assert_status 200
+          expect(json_response_body.dig(:idea, :file_attachments)).to eq([])
+        end
+      end
+    end
+  end
+
   include_examples '/api/v2/.../deleted', :ideas
 end

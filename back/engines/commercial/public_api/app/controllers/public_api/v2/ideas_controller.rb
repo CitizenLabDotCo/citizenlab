@@ -10,11 +10,12 @@ module PublicApi
         **finder_params
       ).execute
 
-      list_items(ideas, V2::IdeaSerializer, includes: %i[idea_images project idea_status])
+      list_items(ideas, V2::IdeaSerializer, includes: %i[idea_images project idea_status creation_phase idea_files])
     end
 
     def show
-      show_item Idea.find(params[:id]), V2::IdeaSerializer
+      idea = Idea.includes(:idea_images, :project, :idea_status, :creation_phase, :idea_files).find(params[:id])
+      show_item idea, V2::IdeaSerializer
     end
 
     private
