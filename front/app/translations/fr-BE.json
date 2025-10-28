@@ -2030,7 +2030,7 @@
   "app.containers.VoteControl.close": "Fermer",
   "app.containers.VoteControl.voteErrorTitle": "Oups... Une erreur est survenue",
   "app.containers.admin.ContentBuilder.default": "par défaut",
-  "app.containers.admin.ContentBuilder.folderFiles": "Dossiers",
+  "app.containers.admin.ContentBuilder.folderFiles": "Fichiers d'un dossier",
   "app.containers.admin.ContentBuilder.imageTextCards": "Cartes image et texte",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Infos et sections accordéons",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 colonne",
