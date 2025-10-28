@@ -22,7 +22,6 @@
 # Foreign Keys
 #
 #  fk_rails_...  (migrated_file_id => files.id)
-#  fk_rails_...  (phase_id => phases.id)
 #
 class PhaseFile < ApplicationRecord
   include FileMigratable
