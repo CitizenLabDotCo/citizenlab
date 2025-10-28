@@ -5,6 +5,9 @@ require 'http'
 module Webhooks
   class DeliveryJob < ApplicationJob
     queue_as :default
+    # Disable Que retries, we handle webhook retries through ActiveJob
+    perform_retries false
+    self.priority = 60
 
     # Hardcoded constants
     MAX_RETRIES = 3
@@ -56,7 +59,6 @@ module Webhooks
           read: READ_TIMEOUT,
           write: WRITE_TIMEOUT
         )
-        .follow(max_hops: 1) # Disable redirects (SSRF protection)
         .headers(
           'Content-Type' => 'application/json',
           'X-GoVocal-Event' => delivery.event_type,
@@ -65,6 +67,14 @@ module Webhooks
           'User-Agent' => 'GoVocal-Webhooks/1.0'
         )
         .post(subscription.url, body: payload_json)
+
+      if response.status.client_error? || response.status.server_error?
+        raise HTTP::Error, "HTTP Error: #{response.status.code}"
+      end
+
+      if response.status.redirect?
+        raise SecurityError, 'Redirects are not allowed'
+      end
 
       # Record success
       delivery.update!(
@@ -75,7 +85,7 @@ module Webhooks
         last_attempt_at: Time.current,
         succeeded_at: Time.current
       )
-    rescue HTTP::Error, HTTP::TimeoutError => e
+    rescue HTTP::Error => e
       # Record attempt, will retry via ActiveJob
       delivery.update!(
         attempts: delivery.attempts + 1,

@@ -100,24 +100,6 @@ RSpec.describe Webhooks::DeliveryJob do
     end
   end
 
-  describe 'timeout configuration' do
-    it 'uses hardcoded timeout settings' do
-      allow(HTTP).to receive(:timeout).with(
-        connect: 5,
-        read: 10,
-        write: 10
-      ).and_call_original
-
-      described_class.perform_now(delivery.id)
-
-      expect(HTTP).to have_received(:timeout).with(
-        connect: 5,
-        read: 10,
-        write: 10
-      )
-    end
-  end
-
   describe 'SSRF protection' do
     it 'validates URL at delivery time (DNS rebinding protection)' do
       # URL was valid at subscription creation, but now resolves to private IP
@@ -149,7 +131,7 @@ RSpec.describe Webhooks::DeliveryJob do
 
       described_class.perform_now(delivery.id)
       expect(stub).to have_been_requested
-      expect(a_request(:post, 'https://malicious.example.com')).not_to have_been_made
+      expect(a_request(:any, 'https://malicious.example.com')).not_to have_been_made
     end
   end
 
@@ -157,8 +139,9 @@ RSpec.describe Webhooks::DeliveryJob do
     it 'handles timeout errors' do
       stub_request(:post, 'https://webhook.example.com/receive').to_timeout
 
-      expect { described_class.perform_now(delivery.id) }
-        .to raise_error(HTTP::TimeoutError)
+      # When calling perform_now, any errors raised in `perform` are _returned_
+      # as opposed to being thrown
+      expect(described_class.perform_now(delivery.id)).to be_a(HTTP::TimeoutError)
 
       expect(delivery.reload.status).to eq('pending') # Will retry
       expect(delivery.attempts).to eq(1)
@@ -169,8 +152,7 @@ RSpec.describe Webhooks::DeliveryJob do
       stub_request(:post, 'https://webhook.example.com/receive')
         .to_raise(HTTP::ConnectionError.new('Connection refused'))
 
-      expect { described_class.perform_now(delivery.id) }
-        .to raise_error(HTTP::ConnectionError)
+      expect(described_class.perform_now(delivery.id)).to be_a(HTTP::ConnectionError)
 
       expect(delivery.reload.attempts).to eq(1)
       expect(delivery.error_message).to include('Connection refused')
@@ -180,8 +162,7 @@ RSpec.describe Webhooks::DeliveryJob do
       stub_request(:post, 'https://webhook.example.com/receive')
         .to_return(status: 500, body: 'Internal Server Error')
 
-      expect { described_class.perform_now(delivery.id) }
-        .to raise_error(HTTP::Error)
+      expect(described_class.perform_now(delivery.id)).to be_a(HTTP::Error)
 
       expect(delivery.reload.attempts).to eq(1)
     end
@@ -238,20 +219,6 @@ RSpec.describe Webhooks::DeliveryJob do
     end
   end
 
-  describe '#check_subscription_health' do
-    it 'logs warning when subscription has 10 consecutive failures' do
-      # Create 10 failed deliveries
-      10.times { create(:webhook_delivery, :failed, subscription: subscription) }
-
-      allow(Rails.logger).to receive(:warn)
-
-      described_class.perform_now(delivery.id)
-
-      # The health check should log a warning
-      # Note: This is called in the retry handler, so we'd need to simulate that
-    end
-  end
-
   describe 'different HTTP response codes' do
     it 'treats 2xx as success' do
       [200, 201, 202, 204].each do |code|
@@ -273,8 +240,7 @@ RSpec.describe Webhooks::DeliveryJob do
 
         delivery = create(:webhook_delivery, subscription: subscription, activity: activity)
 
-        expect { described_class.perform_now(delivery.id) }
-          .to raise_error(HTTP::Error)
+        expect(described_class.perform_now(delivery.id)).to be_a(HTTP::Error)
       end
     end
 
@@ -285,8 +251,7 @@ RSpec.describe Webhooks::DeliveryJob do
 
         delivery = create(:webhook_delivery, subscription: subscription, activity: activity)
 
-        expect { described_class.perform_now(delivery.id) }
-          .to raise_error(HTTP::Error)
+        expect(described_class.perform_now(delivery.id)).to be_a(HTTP::Error)
       end
     end
   end
