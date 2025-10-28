@@ -1884,7 +1884,6 @@
   "app.containers.SearchInput.searchTerm": "Arama terimi: {searchTerm}",
   "app.containers.SignIn.franceConnectIsTheSolutionProposedByTheGovernment": "FranceConnect, 700'den fazla çevrimiçi hizmete güvenli ve basit bir şekilde kaydolmak için Fransız devleti tarafından önerilen bir çözümdür.",
   "app.containers.SignIn.or": "Ya da",
-  "app.containers.SignIn.signInError": "Girilen bilgiler doğru değil. Parolanızı sıfırlamak için \"Parolanızı mı unuttunuz?\" seçeneğine tıklayın.",
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Oturum açmak, kaydolmak veya hesabınızı doğrulamak için FranceConnect'i kullanın.",
   "app.containers.SignIn.whatIsFranceConnect": "FranceConnect nedir?",
   "app.containers.SignUp.adminOptions2": "Yöneticiler ve proje yöneticileri için",

@@ -1884,7 +1884,6 @@
   "app.containers.SearchInput.searchTerm": "Keresett kifejezés: {searchTerm}",
   "app.containers.SignIn.franceConnectIsTheSolutionProposedByTheGovernment": "A FranceConnect a francia állam által javasolt megoldás a több mint 700 online szolgáltatásra történő regisztráció biztosítására és egyszerűsítésére.",
   "app.containers.SignIn.or": "Vagy",
-  "app.containers.SignIn.signInError": "A megadott információ nem helytálló. Kattintson az \"Elfelejtette a jelszavát?\" jelszó visszaállításához.",
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "A FranceConnect segítségével bejelentkezhet, regisztrálhat vagy igazolhatja fiókját.",
   "app.containers.SignIn.whatIsFranceConnect": "Mi az a France Connect?",
   "app.containers.SignUp.adminOptions2": "Adminoknak és projektmenedzsereknek",

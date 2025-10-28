@@ -43,8 +43,13 @@ export default defineMessages({
     defaultMessage: 'Something went wrong. Please try again later.',
   },
   signInError: {
-    id: 'app.containers.SignIn.signInError',
-    defaultMessage: 'No account was found for the provided credentials',
+    id: 'app.containers.SignIn.signInError2',
+    defaultMessage:
+      "The provided information is not correct. Click 'Forgot Password?' to reset your password, or {createAnAccountLink}.",
+  },
+  createAnAccountLink: {
+    id: 'app.containers.SignIn.createAnAccountLink',
+    defaultMessage: 'create an account',
   },
   emailTakenAndUserCanBeVerified: {
     id: 'app.containers.AuthProviders.emailTakenAndUserCanBeVerified',

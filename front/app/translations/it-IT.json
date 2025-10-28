@@ -1884,7 +1884,6 @@
   "app.containers.SearchInput.searchTerm": "Termine di ricerca: {searchTerm}",
   "app.containers.SignIn.franceConnectIsTheSolutionProposedByTheGovernment": "FranceConnect è la soluzione proposta dallo Stato francese per assicurare e semplificare l'iscrizione a più di 700 servizi online.",
   "app.containers.SignIn.or": "Oppure",
-  "app.containers.SignIn.signInError": "Le informazioni fornite non sono corrette. Clicca su \"Hai dimenticato la password?\" per reimpostare la tua password.",
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Usa FranceConnect per accedere, iscriverti o verificare il tuo account.",
   "app.containers.SignIn.whatIsFranceConnect": "Cos'è France Connect?",
   "app.containers.SignUp.adminOptions2": "Per amministratori e project manager",
