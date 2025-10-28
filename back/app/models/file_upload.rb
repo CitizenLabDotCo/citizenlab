@@ -21,7 +21,6 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (idea_id => ideas.id)
 #  fk_rails_...  (migrated_file_id => files.id)
 #
 class FileUpload < IdeaFile
