@@ -21,6 +21,12 @@ export type Step =
   | 'light-flow:email-confirmation'
   | 'light-flow:password'
 
+  // email flow
+  | 'email-flow:start'
+  | 'email-flow:policies'
+  | 'email-flow:email-confirmation'
+  | 'email-flow:password'
+
   // missing data (if signed in already)
   | 'missing-data:built-in'
   | 'missing-data:email-confirmation'
