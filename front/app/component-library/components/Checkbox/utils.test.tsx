@@ -30,7 +30,7 @@ describe('getColor', () => {
       checkedOrIndeterminate: false,
       element: 'hoverBackground',
     });
-    expect(borderColor).toEqual('#999999');
+    expect(borderColor).toEqual('#767676');
     expect(hoverBorderColor).toEqual('#000000');
     expect(backgroundColor).toEqual('#ffffff');
     expect(hoverBackgroundColor).toEqual('#ffffff');

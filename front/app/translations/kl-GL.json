@@ -1884,7 +1884,6 @@
   "app.containers.SearchInput.searchTerm": "Misissuinermut taaguut: {searchTerm}",
   "app.containers.SignIn.franceConnectIsTheSolutionProposedByTheGovernment": "Franskit naalagaaffiata internettikkut kiffartuussissutinut 700-nit amerlanerusunut ilannguttarneq qulakkeerniarlugu ajornaallisarniarlugulu FranceConnect aaqqiissutissatut siunnersuutigaa.",
   "app.containers.SignIn.or": "Imaluunniit",
-  "app.containers.SignIn.signInError": "Paasissutissat allanneqartut eqqortuunngillat. Qulaani \"password\" puigorpara tooruk nutaamik taarserniarukku.",
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Iserniaruit, atuisumik pilersitsiniaruit imaluunniit atuisuuffiit uppernarsarniarukku FranceConnect atoruk.",
   "app.containers.SignIn.whatIsFranceConnect": "France Connect sunaana?",
   "app.containers.SignUp.adminOptions2": "For admins and project managers",

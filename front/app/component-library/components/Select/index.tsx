@@ -4,7 +4,12 @@ import { isString, get, isNumber } from 'lodash-es';
 import styled from 'styled-components';
 import { Placement } from 'tippy.js';
 
-import { defaultInputStyle, colors, isRtl } from '../../utils/styleUtils';
+import {
+  defaultInputStyle,
+  colors,
+  isRtl,
+  stylingConsts,
+} from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 import { IOption, InputSize } from '../../utils/typings';
 import Icon from '../Icon';
@@ -79,6 +84,7 @@ export const SelectWrapper = styled.div<{ mr?: string; size?: InputSize }>`
       display: none;
     }
     ${defaultInputStyle};
+    height: ${stylingConsts.inputHeight}px;
   }
 `;
 

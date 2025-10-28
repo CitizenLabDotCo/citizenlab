@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -qq -y --no-install-recommends \
       less                 \
       clang                \
       gnupg                \
+      # Needed by Psych (Ruby's default YAML parser)
       libyaml-dev          \
       sudo
 

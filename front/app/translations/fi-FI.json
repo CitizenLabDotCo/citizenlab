@@ -1884,7 +1884,6 @@
   "app.containers.SearchInput.searchTerm": "Hakutermi: {searchTerm}",
   "app.containers.SignIn.franceConnectIsTheSolutionProposedByTheGovernment": "FranceConnect on Ranskan valtion ehdottama ratkaisu yli 700 verkkopalveluun liittymisen turvaamiseksi ja yksinkertaistamiseksi.",
   "app.containers.SignIn.or": "Tai",
-  "app.containers.SignIn.signInError": "Annetut tiedot eivät pidä paikkaansa. Napsauta Unohditko salasanan? nollataksesi salasanasi.",
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Käytä FranceConnectia kirjautuaksesi sisään, rekisteröityäksesi tai vahvistaaksesi tilisi.",
   "app.containers.SignIn.whatIsFranceConnect": "Mikä on France Connect?",
   "app.containers.SignUp.adminOptions2": "Järjestelmänvalvojille ja projektipäälliköille",

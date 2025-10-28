@@ -3,6 +3,84 @@
 class TextImageService < ContentImageService
   BASE64_REGEX = %r{^data:image/([a-zA-Z]*);base64,.*$}
 
+  # Applies {#extract_data_images} to each multiloc value in the given multiloc.
+  def extract_data_images_multiloc(multiloc)
+    content_multiloc = {}
+    extracted_images = []
+
+    (multiloc || {}).each do |language_key, encoded_content|
+      output = extract_data_images(encoded_content)
+
+      content_multiloc[language_key] = output[:content]
+      extracted_images += output[:extracted_images]
+    end
+
+    {
+      content_multiloc: content_multiloc,
+      extracted_images: extracted_images
+    }
+  end
+
+  # Extracts and remove image data from the content, and stores it in an array
+  # to be processed later.
+  # Already updates the original content to reference the future image model instead.
+  def extract_data_images(encoded_content)
+    content = begin
+      decode_content encoded_content
+    rescue DecodingError => e
+      log_decoding_error e
+    end
+
+    extracted_images = []
+
+    if !content
+      return { content: encoded_content, extracted_images: extracted_images }
+    end
+
+    image_elements(content).each do |img_elt|
+      next if image_attributes_for_element.none? { |elt_atr| attribute? img_elt, elt_atr }
+
+      if !attribute?(img_elt, code_attribute_for_element)
+        text_reference = SecureRandom.uuid
+        set_attribute! img_elt, code_attribute_for_element, text_reference
+
+        img_src = get_attribute img_elt, image_attribute_for_element
+        img_key = img_src.match?(BASE64_REGEX) ? :image : :remote_image_url
+
+        extracted_images << {
+          text_reference: text_reference,
+          img_key: img_key,
+          img_src: img_src
+        }
+      end
+      image_attributes_for_element.each do |elt_atr|
+        remove_attribute! img_elt, elt_atr
+      end
+    end
+
+    {
+      content: encode_content(content),
+      extracted_images: extracted_images
+    }
+  end
+
+  def bulk_create_images!(
+    extracted_images,
+    imageable,
+    field
+  )
+    extracted_images.map do |extracted_image|
+      img_attrs = {
+        imageable: imageable,
+        imageable_field: field,
+        text_reference: extracted_image[:text_reference]
+      }
+      img_attrs[extracted_image[:img_key]] = extracted_image[:img_src]
+
+      TextImage.create!(img_attrs)
+    end
+  end
+
   protected
 
   # Decodes the given HTML string into a Nokogiri document.

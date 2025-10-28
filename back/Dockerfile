@@ -46,6 +46,7 @@ RUN apt-get update                                        \
    # tiktoken_ruby
    clang                                                  \
    gnupg                                                  \
+   # Needed by Psych (Ruby's default YAML parser)
    libyaml-dev                                            \
    && apt-get clean                                       \
    && rm -rf /var/lib/apt/lists/*

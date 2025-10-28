@@ -36,6 +36,76 @@ describe TextImageService do
     end
   end
 
+  describe 'extract_data_images_multiloc' do
+    before do
+      stub_request(:any, 'res.cloudinary.com').to_return(
+        body: png_image_as_base64('image10.jpg')
+      )
+    end
+
+    it 'processes both base64 and URL as src' do
+      input = <<~HTML
+        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+        <img src="data:image/jpeg;base64,/9j/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/yQALCAABAAEBAREA/8wABgAQEAX/2gAIAQEAAD8A0s8g/9k=" />
+        <img src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg" />
+      HTML
+      output = service.extract_data_images_multiloc({ 'fr-BE' => input })
+
+      content = output[:content_multiloc]['fr-BE']
+      extracted_images = output[:extracted_images]
+
+      codes = extracted_images.pluck(:text_reference)
+      expected_html = <<~HTML
+        <img data-cl2-text-image-text-reference="#{codes[0]}">
+        <img data-cl2-text-image-text-reference="#{codes[1]}">
+        <img data-cl2-text-image-text-reference="#{codes[2]}">
+      HTML
+
+      expect(content).to eq(expected_html)
+    end
+
+    it 'does not modify the empty string' do
+      input = ''
+      output = service.extract_data_images_multiloc({ 'en' => input })
+      expect(output).to eq({
+        content_multiloc: {
+          'en' => input
+        },
+        extracted_images: []
+      })
+    end
+  end
+
+  describe 'bulk_create_images!' do
+    before do
+      stub_request(:any, 'res.cloudinary.com').to_return(
+        body: png_image_as_base64('image10.jpg')
+      )
+    end
+
+    it 'processes both base64 and URL as src' do
+      input = <<~HTML
+        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+        <img src="data:image/jpeg;base64,/9j/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/yQALCAABAAEBAREA/8wABgAQEAX/2gAIAQEAAD8A0s8g/9k=" />
+        <img src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg" />
+      HTML
+      imageable = build(:idea, body_multiloc: { 'fr-BE' => input })
+      extracted_images = service.extract_data_images_multiloc(imageable.body_multiloc)[:extracted_images]
+
+      images = service.bulk_create_images!(
+        extracted_images,
+        imageable,
+        :body_multiloc
+      )
+
+      expect(TextImage.count).to eq(3)
+      expect(images.count).to eq(3)
+      expect(TextImage.all.map(&:text_reference).sort).to eq(
+        images.map { |img| img[:text_reference] }.sort
+      )
+    end
+  end
+
   describe 'render_data_images_multiloc' do
     it 'adds src attributes to the img tags' do
       text_image1, text_image2 = create_list(:text_image, 2)

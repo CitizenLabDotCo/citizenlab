@@ -1884,7 +1884,6 @@
   "app.containers.SearchInput.searchTerm": "Søgeudtryk: {searchTerm}",
   "app.containers.SignIn.franceConnectIsTheSolutionProposedByTheGovernment": "FranceConnect er den løsning, som den franske stat har foreslået for at sikre og forenkle tilmeldingen til mere end 700 onlinetjenester.",
   "app.containers.SignIn.or": "Eller",
-  "app.containers.SignIn.signInError": "De angivne oplysninger er ikke korrekte. Klik \"Glemt dit password\" for at nulstille dit password.",
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Brug FranceConnect til at logge ind, tilmelde dig eller verificere din konto.",
   "app.containers.SignIn.whatIsFranceConnect": "Hvad er France Connect?",
   "app.containers.SignUp.adminOptions2": "Til administratorer og projektledere",

@@ -79,6 +79,17 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       expect(current_phase_ids).to match included_phase_ids
     end
 
+    example 'Does not include unlisted projects' do
+      unlisted_project = create(:project, listed: false)
+      create(:follower, followable: unlisted_project, user: @user)
+
+      do_request
+      expect(status).to eq(200)
+
+      project_ids = json_response[:data].pluck(:id)
+      expect(project_ids).not_to include(unlisted_project.id)
+    end
+
     context 'when admin' do
       before do
         @user = create(:admin)
@@ -253,6 +264,14 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
 
         project_ids = json_response[:data].pluck(:id)
 
+        expect(project_ids).to match_array [finished_project1.id, unfinished_project2.id]
+      end
+
+      example 'Does not include unlisted projects' do
+        create(:project_with_two_past_ideation_phases, listed: false)
+        do_request filter_by: 'finished'
+        expect(status).to eq 200
+        project_ids = json_response[:data].pluck(:id)
         expect(project_ids).to match_array [finished_project1.id, unfinished_project2.id]
       end
     end
