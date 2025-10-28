@@ -20,11 +20,11 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { extractOptions } from '../util';
 
-const StyledBox = styled(Box)`
+const StyledBox = styled(Box)<{ selected: boolean }>`
   cursor: pointer;
-  background-color: ${colors.grey100};
   &:hover {
-    background-color: ${colors.grey200};
+    box-shadow: 0 0 0 1px
+      ${({ selected }) => (selected ? 'undefined' : colors.borderDark)};
   }
 `;
 
@@ -75,13 +75,13 @@ const SingleSelectField = ({
               mb="12px"
               padding="20px 20px 8px 20px"
               border={
-                options.includes(option.value)
+                option.value === value
                   ? `2px solid ${theme.colors.tenantPrimary}`
-                  : `1px solid ${theme.colors.tenantPrimary}`
+                  : `1px solid ${theme.colors.borderDark}`
               }
-              background={theme.colors.tenantPrimaryLighten95}
               key={option.value}
               borderRadius="3px"
+              selected={option.value === value}
             >
               <Radio
                 name={question.key}
@@ -89,6 +89,7 @@ const SingleSelectField = ({
                 key={option.value}
                 value={option.value}
                 label={option.label}
+                buttonColor={theme.colors.tenantPrimary}
                 canDeselect
               />
             </StyledBox>

@@ -18,7 +18,7 @@ import { getLinearScaleLabel } from './utils';
 interface Props {
   value?: number;
   question: IFlatCustomField;
-  onChange: (value: number) => void;
+  onChange: (value: number | undefined) => void;
 }
 
 const LinearScale = ({ value: data, question, onChange }: Props) => {
