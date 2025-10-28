@@ -116,7 +116,7 @@ const Matrix = ({ value: data, question, onChange }: Props) => {
     tableDivRef.current?.addEventListener('scroll', () => {
       checkApplyBorder();
     });
-  }, [theme.colors.tenantPrimaryLighten75]);
+  }, [theme.colors.borderLight]);
 
   const getAriaValueText = useCallback(
     (value: number, total: number) => {
