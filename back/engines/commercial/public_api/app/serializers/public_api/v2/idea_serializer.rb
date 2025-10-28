@@ -73,8 +73,8 @@ class PublicApi::V2::IdeaSerializer < PublicApi::V2::BaseSerializer
   def file_attachments
     object.idea_files.map do |idea_file|
       {
-        name: idea_file.name,
-        url: idea_file.file.url
+        'name' => idea_file.name,
+        'url' => idea_file.file.url
       }
     end
   end
