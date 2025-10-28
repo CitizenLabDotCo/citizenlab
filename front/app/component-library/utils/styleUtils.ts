@@ -193,6 +193,20 @@ export const defaultOutline = css`
   border: 2px solid ${(props) => props.theme.colors.tenantPrimary};
 `;
 
+export const stylingConsts = {
+  menuHeight: 78,
+  mobileMenuHeight: 72,
+  mobileTopBarHeight: 66,
+  footerHeight: 60,
+  maxPageWidth: 952,
+  inputHeight: 48,
+  bannerWidth: 1340,
+  pageWidth: 1150,
+  textWidth: 720,
+  borderRadius: '3px',
+  border: `1px solid ${colors.divider}`,
+};
+
 export const defaultInputStyle = css`
   color: ${colors.textPrimary};
   font-size: ${fontSizes.base}px;
@@ -208,6 +222,7 @@ export const defaultInputStyle = css`
   -moz-appearance: none;
   -webkit-appearance: none;
   transition: box-shadow 100ms ease-out;
+  height: ${stylingConsts.inputHeight}px;
 
   &:not(:disabled):not(.disabled) {
     &:not(.error):hover,
@@ -246,19 +261,6 @@ export const defaultInputStyle = css`
     `}
   }
 `;
-
-export const stylingConsts = {
-  menuHeight: 78,
-  mobileMenuHeight: 72,
-  mobileTopBarHeight: 66,
-  footerHeight: 60,
-  maxPageWidth: 952,
-  bannerWidth: 1340,
-  pageWidth: 1150,
-  textWidth: 720,
-  borderRadius: '3px',
-  border: `1px solid ${colors.divider}`,
-};
 
 export const getFontWeightCSS = (fontWeight: FontWeight) => {
   switch (fontWeight) {

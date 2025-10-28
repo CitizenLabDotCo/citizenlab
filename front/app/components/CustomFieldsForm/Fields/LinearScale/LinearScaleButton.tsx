@@ -6,7 +6,7 @@ import {
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 
@@ -15,8 +15,15 @@ interface Props {
   visualIndex: number;
   data?: number;
   maximum: number;
-  onSelect: (value: number) => void;
+  onSelect: (value: number | undefined) => void;
 }
+
+const StyledButton = styled(Button)<{ selected: boolean }>`
+  &:hover {
+    box-shadow: 0 0 0 1px
+      ${({ selected }) => (selected ? 'undefined' : colors.borderDark)};
+  }
+`;
 
 const LinearScaleButton = ({
   question,
@@ -44,34 +51,40 @@ const LinearScaleButton = ({
       minWidth={getButtonWidth()}
       padding="16px, 20px, 16px, 20px"
     >
-      <Button
+      <StyledButton
         py="12px"
         id={`linear-scale-option-${visualIndex}`}
+        selected={data === visualIndex}
         tabIndex={-1}
         aria-pressed={data === visualIndex}
-        borderColor={theme.colors.tenantPrimary}
-        borderHoverColor={theme.colors.tenantPrimary}
-        bgColor={
+        borderRadius="3px"
+        borderColor={
           data === visualIndex
             ? theme.colors.tenantPrimary
-            : theme.colors.tenantPrimaryLighten95
+            : theme.colors.borderDark
+        }
+        borderHoverColor={
+          data === visualIndex
+            ? theme.colors.tenantPrimary
+            : theme.colors.borderDark
+        }
+        bgColor={
+          data === visualIndex ? theme.colors.tenantPrimary : theme.colors.white
         }
         bgHoverColor={
-          data === visualIndex
-            ? theme.colors.tenantPrimary
-            : theme.colors.tenantPrimaryLighten75
+          data === visualIndex ? theme.colors.tenantPrimary : theme.colors.white
         }
         textHoverColor={
-          data === visualIndex ? colors.white : theme.colors.tenantPrimary
+          data === visualIndex ? colors.white : theme.colors.textPrimary
         }
         textColor={
-          data === visualIndex ? colors.white : theme.colors.tenantPrimary
+          data === visualIndex ? colors.white : theme.colors.textPrimary
         }
         width="100%"
-        onClick={() => onSelect(visualIndex)}
+        onClick={() => onSelect(data === visualIndex ? undefined : visualIndex)}
       >
         {visualIndex}
-      </Button>
+      </StyledButton>
     </Box>
   );
 };

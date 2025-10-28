@@ -3,6 +3,7 @@ import {
   Radio,
   fontSizes,
   colors,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -39,7 +40,7 @@ export const ToggleRow = styled(Row)`
 
 export const ReactingLimitInput = styled(Input)`
   width: 100px;
-  height: 46px !important;
+  height: ${stylingConsts.inputHeight}px !important;
 `;
 
 export const BudgetingAmountInput = styled(Input)`
