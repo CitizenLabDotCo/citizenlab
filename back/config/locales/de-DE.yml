@@ -289,7 +289,7 @@ de:
       participants: 'Teilnehmende'
       picks: 'Auswahl'
       project: '{orgName, select, München {Bezirke} other {Projekte}}'
-      published_at: 'Veröffentlicht am'
+      published_at: 'Veröffentlicht'
       registration_completed_at: 'Registrierung abgeschlossen am'
       status: 'Status'
       submitted_at: 'Eingereicht am'
