@@ -24,13 +24,19 @@ const StyledSelect = styled(Select)`
 
   select {
     padding: 4px;
-    border: solid 1px ${(props) => props.theme.colors.tenantPrimary};
-    color: ${(props) => props.theme.colors.tenantPrimary};
+    border: solid 1px ${(props) => props.theme.colors.borderDark};
+    color: ${(props) => props.theme.colors.textPrimary};
   }
 
   svg {
-    fill: ${(props) => props.theme.colors.tenantPrimary} !important;
+    fill: ${(props) => props.theme.colors.borderDark} !important;
     width: 16px;
+  }
+`;
+
+const StyledBox = styled(Box)`
+  :hover {
+    box-shadow: 0 0 0 1px ${(props) => props.theme.colors.borderDark};
   }
 `;
 
@@ -72,14 +78,13 @@ const RankingOption = ({
   return (
     <li aria-roledescription="sortable">
       <Drag index={index} useBorder={false} id={`ranking-item-${option.value}`}>
-        <Box
+        <StyledBox
           style={{ cursor: 'grab' }}
           mb="12px"
-          background={theme.colors.tenantPrimaryLighten95}
           borderRadius={theme.borderRadius}
-          border={`1px solid ${theme.colors.tenantPrimary}`}
+          border={`1px solid ${theme.colors.borderDark}`}
         >
-          <Box
+          <StyledBox
             padding="18px 20px 18px 20px"
             display="flex"
             justifyContent="space-between"
@@ -112,7 +117,7 @@ const RankingOption = ({
               <Text
                 maxWidth="80%"
                 my="auto"
-                color="tenantPrimary"
+                color="textPrimary"
                 p="0px"
                 m="0px"
                 aria-hidden
@@ -125,11 +130,11 @@ const RankingOption = ({
               <Icon
                 height="18px"
                 name="drag-handle"
-                fill={theme.colors.tenantPrimary}
+                fill={theme.colors.textPrimary}
               />
             </Box>
-          </Box>
-        </Box>
+          </StyledBox>
+        </StyledBox>
       </Drag>
     </li>
   );

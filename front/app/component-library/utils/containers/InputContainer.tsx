@@ -2,7 +2,12 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { defaultInputStyle, colors, fontSizes } from '../styleUtils';
+import {
+  defaultInputStyle,
+  colors,
+  fontSizes,
+  stylingConsts,
+} from '../styleUtils';
 
 const Container = styled.button<{ disabled: boolean }>`
   ${defaultInputStyle};
@@ -11,6 +16,7 @@ const Container = styled.button<{ disabled: boolean }>`
   flex-direction: row;
   align-items: center;
   font-size: ${fontSizes.base}px;
+  height: ${stylingConsts.inputHeight}px;
 
   color: ${colors.grey800};
 
