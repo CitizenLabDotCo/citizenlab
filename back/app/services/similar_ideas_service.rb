@@ -59,15 +59,15 @@ class SimilarIdeasService
       .where.not(embedding: nil)
       .order(
         ActiveRecord::Base.sanitize_sql_for_order([
-          Arel.sql('embedding <=> ?::vector'), 
+          Arel.sql('embedding <=> ?::vector'),
           sql_embedding
         ])
       )
-      
+
     if distance_threshold
       embsims = embsims.where(
-        Arel.sql('embedding <=> ?::vector < ?'), 
-        sql_embedding, 
+        Arel.sql('embedding <=> ?::vector < ?'),
+        sql_embedding,
         distance_threshold
       )
     end
