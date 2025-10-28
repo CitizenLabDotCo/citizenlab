@@ -1,3 +1,8 @@
+\restrict mjMRKngDQvQtFQrR5DbwIen4RzDoPxJJohpJqGrCdkX7ctgMONF45kQlC3UiT6M
+
+-- Dumped from database version 16.6 (Debian 16.6-1.pgdg110+1)
+-- Dumped by pg_dump version 16.10 (Debian 16.10-1.pgdg12+1)
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -41,6 +46,7 @@ ALTER TABLE IF EXISTS ONLY public.projects_topics DROP CONSTRAINT IF EXISTS fk_r
 ALTER TABLE IF EXISTS ONLY public.projects_allowed_input_topics DROP CONSTRAINT IF EXISTS fk_rails_db7813bfef;
 ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS fk_rails_d6353758d5;
 ALTER TABLE IF EXISTS ONLY public.projects DROP CONSTRAINT IF EXISTS fk_rails_d1892257e3;
+ALTER TABLE IF EXISTS ONLY public.webhooks_subscriptions DROP CONSTRAINT IF EXISTS fk_rails_d182afe5ca;
 ALTER TABLE IF EXISTS ONLY public.static_page_files DROP CONSTRAINT IF EXISTS fk_rails_d0209b82ff;
 ALTER TABLE IF EXISTS ONLY public.jobs_trackers DROP CONSTRAINT IF EXISTS fk_rails_cfd1ddfa6b;
 ALTER TABLE IF EXISTS ONLY public.analytics_dimension_locales_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_cd2a592e7b;
@@ -76,6 +82,7 @@ ALTER TABLE IF EXISTS ONLY public.analytics_fact_visits DROP CONSTRAINT IF EXIST
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_a7a91f1df3;
 ALTER TABLE IF EXISTS ONLY public.groups_permissions DROP CONSTRAINT IF EXISTS fk_rails_a5c3527604;
 ALTER TABLE IF EXISTS ONLY public.event_files DROP CONSTRAINT IF EXISTS fk_rails_a590d6ddde;
+ALTER TABLE IF EXISTS ONLY public.webhooks_deliveries DROP CONSTRAINT IF EXISTS fk_rails_a3793c8571;
 ALTER TABLE IF EXISTS ONLY public.analytics_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_a34b51c948;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_a2cfad997d;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_a2016447bc;
@@ -143,6 +150,7 @@ ALTER TABLE IF EXISTS ONLY public.files DROP CONSTRAINT IF EXISTS fk_rails_34e9f
 ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rails_34143a680f;
 ALTER TABLE IF EXISTS ONLY public.volunteering_volunteers DROP CONSTRAINT IF EXISTS fk_rails_33a154a9ba;
 ALTER TABLE IF EXISTS ONLY public.phase_files DROP CONSTRAINT IF EXISTS fk_rails_33852a9a71;
+ALTER TABLE IF EXISTS ONLY public.webhooks_deliveries DROP CONSTRAINT IF EXISTS fk_rails_333f76f79b;
 ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS fk_rails_2d026b99a2;
 ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS fk_rails_2c74f68dd3;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk_rails_2a92a64a56;
@@ -172,12 +180,20 @@ DROP INDEX IF EXISTS public.que_jobs_args_gin_idx;
 DROP INDEX IF EXISTS public.moderation_statuses_moderatable;
 DROP INDEX IF EXISTS public.machine_translations_translatable;
 DROP INDEX IF EXISTS public.machine_translations_lookup;
+DROP INDEX IF EXISTS public.index_webhooks_subscriptions_on_project_id;
+DROP INDEX IF EXISTS public.index_webhooks_subscriptions_on_events;
+DROP INDEX IF EXISTS public.index_webhooks_subscriptions_on_enabled;
+DROP INDEX IF EXISTS public.index_webhooks_deliveries_on_webhooks_subscription_id;
+DROP INDEX IF EXISTS public.index_webhooks_deliveries_on_status_and_created_at;
+DROP INDEX IF EXISTS public.index_webhooks_deliveries_on_created_at;
+DROP INDEX IF EXISTS public.index_webhooks_deliveries_on_activity_id;
 DROP INDEX IF EXISTS public.index_volunteering_volunteers_on_user_id;
 DROP INDEX IF EXISTS public.index_volunteering_volunteers_on_cause_id_and_user_id;
 DROP INDEX IF EXISTS public.index_volunteering_causes_on_phase_id;
 DROP INDEX IF EXISTS public.index_volunteering_causes_on_ordering;
 DROP INDEX IF EXISTS public.index_verification_verifications_on_user_id;
 DROP INDEX IF EXISTS public.index_verification_verifications_on_hashed_uid;
+DROP INDEX IF EXISTS public.index_value_bins_on_cf_and_values;
 DROP INDEX IF EXISTS public.index_users_on_unique_code;
 DROP INDEX IF EXISTS public.index_users_on_slug;
 DROP INDEX IF EXISTS public.index_users_on_registration_completed_at;
@@ -204,6 +220,7 @@ DROP INDEX IF EXISTS public.index_report_builder_reports_on_name;
 DROP INDEX IF EXISTS public.index_reactions_on_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id_and_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id;
+DROP INDEX IF EXISTS public.index_range_bins_on_cf_and_range;
 DROP INDEX IF EXISTS public.index_projects_topics_on_topic_id;
 DROP INDEX IF EXISTS public.index_projects_topics_on_project_id;
 DROP INDEX IF EXISTS public.index_projects_on_slug;
@@ -237,6 +254,7 @@ DROP INDEX IF EXISTS public.index_permissions_on_action;
 DROP INDEX IF EXISTS public.index_permissions_custom_fields_on_permission_id;
 DROP INDEX IF EXISTS public.index_permissions_custom_fields_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_permission_field;
+DROP INDEX IF EXISTS public.index_option_bins_on_cf_and_option;
 DROP INDEX IF EXISTS public.index_onboarding_campaign_dismissals_on_user_id;
 DROP INDEX IF EXISTS public.index_official_feedbacks_on_user_id;
 DROP INDEX IF EXISTS public.index_official_feedbacks_on_idea_id;
@@ -426,6 +444,7 @@ DROP INDEX IF EXISTS public.index_analysis_analyses_on_main_custom_field_id;
 DROP INDEX IF EXISTS public.index_analysis_analyses_custom_fields;
 DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_analysis_id;
+DROP INDEX IF EXISTS public.index_age_bins_on_cf_and_range;
 DROP INDEX IF EXISTS public.index_admin_publications_on_rgt;
 DROP INDEX IF EXISTS public.index_admin_publications_on_publication_type_and_publication_id;
 DROP INDEX IF EXISTS public.index_admin_publications_on_publication_status;
@@ -439,6 +458,7 @@ DROP INDEX IF EXISTS public.index_activities_on_item_type_and_item_id;
 DROP INDEX IF EXISTS public.index_activities_on_action;
 DROP INDEX IF EXISTS public.index_activities_on_acted_at;
 DROP INDEX IF EXISTS public.inappropriate_content_flags_flaggable;
+DROP INDEX IF EXISTS public.idx_on_webhooks_subscription_id_status_c35145e2df;
 DROP INDEX IF EXISTS public.idx_on_context_type_context_id_root_job_type_d5d424e7c3;
 DROP INDEX IF EXISTS public.i_v_user;
 DROP INDEX IF EXISTS public.i_v_timestamp;
@@ -453,6 +473,8 @@ DROP INDEX IF EXISTS public.i_l_v_locale;
 DROP INDEX IF EXISTS public.i_d_referrer_key;
 DROP INDEX IF EXISTS public.i_analytics_dim_projects_fact_visits_on_project_and_visit_ids;
 DROP INDEX IF EXISTS public.i_analytics_dim_locales_fact_visits_on_locale_and_visit_ids;
+ALTER TABLE IF EXISTS ONLY public.webhooks_subscriptions DROP CONSTRAINT IF EXISTS webhooks_subscriptions_pkey;
+ALTER TABLE IF EXISTS ONLY public.webhooks_deliveries DROP CONSTRAINT IF EXISTS webhooks_deliveries_pkey;
 ALTER TABLE IF EXISTS ONLY public.reactions DROP CONSTRAINT IF EXISTS votes_pkey;
 ALTER TABLE IF EXISTS ONLY public.volunteering_volunteers DROP CONSTRAINT IF EXISTS volunteering_volunteers_pkey;
 ALTER TABLE IF EXISTS ONLY public.volunteering_causes DROP CONSTRAINT IF EXISTS volunteering_causes_pkey;
@@ -582,6 +604,8 @@ ALTER TABLE IF EXISTS ONLY public.admin_publications DROP CONSTRAINT IF EXISTS a
 ALTER TABLE IF EXISTS ONLY public.activities DROP CONSTRAINT IF EXISTS activities_pkey;
 ALTER TABLE IF EXISTS public.que_jobs ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS public.areas_static_pages ALTER COLUMN id DROP DEFAULT;
+DROP TABLE IF EXISTS public.webhooks_subscriptions;
+DROP TABLE IF EXISTS public.webhooks_deliveries;
 DROP TABLE IF EXISTS public.verification_verifications;
 DROP TABLE IF EXISTS public.user_custom_fields_representativeness_ref_distributions;
 DROP TABLE IF EXISTS public.topics;
@@ -3629,6 +3653,44 @@ CREATE TABLE public.verification_verifications (
 
 
 --
+-- Name: webhooks_deliveries; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.webhooks_deliveries (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    webhooks_subscription_id uuid NOT NULL,
+    activity_id uuid NOT NULL,
+    event_type character varying NOT NULL,
+    status character varying DEFAULT 'pending'::character varying NOT NULL,
+    attempts integer DEFAULT 0 NOT NULL,
+    response_code integer,
+    response_body text,
+    error_message text,
+    last_attempt_at timestamp(6) without time zone,
+    succeeded_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: webhooks_subscriptions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.webhooks_subscriptions (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    name character varying NOT NULL,
+    url character varying NOT NULL,
+    secret_token character varying NOT NULL,
+    events jsonb DEFAULT '[]'::jsonb NOT NULL,
+    project_id uuid,
+    enabled boolean DEFAULT true NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: areas_static_pages id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -4659,6 +4721,22 @@ ALTER TABLE ONLY public.reactions
 
 
 --
+-- Name: webhooks_deliveries webhooks_deliveries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.webhooks_deliveries
+    ADD CONSTRAINT webhooks_deliveries_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: webhooks_subscriptions webhooks_subscriptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.webhooks_subscriptions
+    ADD CONSTRAINT webhooks_subscriptions_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: i_analytics_dim_locales_fact_visits_on_locale_and_visit_ids; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4757,6 +4835,13 @@ CREATE UNIQUE INDEX idx_on_context_type_context_id_root_job_type_d5d424e7c3 ON p
 
 
 --
+-- Name: idx_on_webhooks_subscription_id_status_c35145e2df; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_webhooks_subscription_id_status_c35145e2df ON public.webhooks_deliveries USING btree (webhooks_subscription_id, status);
+
+
+--
 -- Name: inappropriate_content_flags_flaggable; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4845,6 +4930,13 @@ CREATE INDEX index_admin_publications_on_publication_type_and_publication_id ON 
 --
 
 CREATE INDEX index_admin_publications_on_rgt ON public.admin_publications USING btree (rgt);
+
+
+--
+-- Name: index_age_bins_on_cf_and_range; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_age_bins_on_cf_and_range ON public.custom_field_bins USING btree (custom_field_id, range) WHERE ((type)::text = 'CustomFieldBins::AgeBin'::text);
 
 
 --
@@ -6171,6 +6263,13 @@ CREATE INDEX index_onboarding_campaign_dismissals_on_user_id ON public.onboardin
 
 
 --
+-- Name: index_option_bins_on_cf_and_option; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_option_bins_on_cf_and_option ON public.custom_field_bins USING btree (custom_field_id, custom_field_option_id) WHERE ((type)::text = 'CustomFieldBins::OptionBin'::text);
+
+
+--
 -- Name: index_permission_field; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6402,6 +6501,13 @@ CREATE INDEX index_projects_topics_on_topic_id ON public.projects_topics USING b
 
 
 --
+-- Name: index_range_bins_on_cf_and_range; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_range_bins_on_cf_and_range ON public.custom_field_bins USING btree (custom_field_id, range) WHERE ((type)::text = 'CustomFieldBins::RangeBin'::text);
+
+
+--
 -- Name: index_reactions_on_reactable_type_and_reactable_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6584,6 +6690,13 @@ CREATE UNIQUE INDEX index_users_on_unique_code ON public.users USING btree (uniq
 
 
 --
+-- Name: index_value_bins_on_cf_and_values; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_value_bins_on_cf_and_values ON public.custom_field_bins USING btree (custom_field_id, "values") WHERE ((type)::text = 'CustomFieldBins::ValueBin'::text);
+
+
+--
 -- Name: index_verification_verifications_on_hashed_uid; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6623,6 +6736,55 @@ CREATE UNIQUE INDEX index_volunteering_volunteers_on_cause_id_and_user_id ON pub
 --
 
 CREATE INDEX index_volunteering_volunteers_on_user_id ON public.volunteering_volunteers USING btree (user_id);
+
+
+--
+-- Name: index_webhooks_deliveries_on_activity_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_webhooks_deliveries_on_activity_id ON public.webhooks_deliveries USING btree (activity_id);
+
+
+--
+-- Name: index_webhooks_deliveries_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_webhooks_deliveries_on_created_at ON public.webhooks_deliveries USING btree (created_at);
+
+
+--
+-- Name: index_webhooks_deliveries_on_status_and_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_webhooks_deliveries_on_status_and_created_at ON public.webhooks_deliveries USING btree (status, created_at);
+
+
+--
+-- Name: index_webhooks_deliveries_on_webhooks_subscription_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_webhooks_deliveries_on_webhooks_subscription_id ON public.webhooks_deliveries USING btree (webhooks_subscription_id);
+
+
+--
+-- Name: index_webhooks_subscriptions_on_enabled; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_webhooks_subscriptions_on_enabled ON public.webhooks_subscriptions USING btree (enabled);
+
+
+--
+-- Name: index_webhooks_subscriptions_on_events; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_webhooks_subscriptions_on_events ON public.webhooks_subscriptions USING gin (events);
+
+
+--
+-- Name: index_webhooks_subscriptions_on_project_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_webhooks_subscriptions_on_project_id ON public.webhooks_subscriptions USING btree (project_id);
 
 
 --
@@ -6843,6 +7005,14 @@ ALTER TABLE ONLY public.phases
 
 ALTER TABLE ONLY public.cosponsorships
     ADD CONSTRAINT fk_rails_2d026b99a2 FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
+
+
+--
+-- Name: webhooks_deliveries fk_rails_333f76f79b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.webhooks_deliveries
+    ADD CONSTRAINT fk_rails_333f76f79b FOREIGN KEY (activity_id) REFERENCES public.activities(id) ON DELETE CASCADE;
 
 
 --
@@ -7382,6 +7552,14 @@ ALTER TABLE ONLY public.analytics_fact_visits
 
 
 --
+-- Name: webhooks_deliveries fk_rails_a3793c8571; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.webhooks_deliveries
+    ADD CONSTRAINT fk_rails_a3793c8571 FOREIGN KEY (webhooks_subscription_id) REFERENCES public.webhooks_subscriptions(id) ON DELETE CASCADE;
+
+
+--
 -- Name: event_files fk_rails_a590d6ddde; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7662,6 +7840,14 @@ ALTER TABLE ONLY public.static_page_files
 
 
 --
+-- Name: webhooks_subscriptions fk_rails_d182afe5ca; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.webhooks_subscriptions
+    ADD CONSTRAINT fk_rails_d182afe5ca FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
+
+
+--
 -- Name: projects fk_rails_d1892257e3; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7921,13 +8107,19 @@ ALTER TABLE ONLY public.ideas_topics
 -- PostgreSQL database dump complete
 --
 
+\unrestrict mjMRKngDQvQtFQrR5DbwIen4RzDoPxJJohpJqGrCdkX7ctgMONF45kQlC3UiT6M
+
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20250930942638'),
+('20251022100725'),
+('20251022100724'),
+('20251022100723'),
+('20251014142253'),
 ('20251001090229'),
 ('20251001090208'),
 ('20251001083036'),
+('20250930942638'),
 ('20250922131002'),
 ('20250915151900'),
 ('20250910093500'),

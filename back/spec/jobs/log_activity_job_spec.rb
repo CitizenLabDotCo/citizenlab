@@ -72,6 +72,23 @@ RSpec.describe LogActivityJob do
       user = create(:user)
       expect { job.perform(item, 'created', user, Time.now) }.not_to have_enqueued_job(TrackEventJob)
     end
+
+    it 'calls Webhooks::EnqueueService when there are enabled webhooks' do
+      create(:webhook_subscription)
+      idea = create(:idea)
+
+      expect_any_instance_of(Webhooks::EnqueueService).to receive(:call).with(instance_of(Activity))
+
+      job.perform(idea, 'created', idea.author, Time.now)
+    end
+
+    it 'does not call Webhooks::EnqueueService when there are no enabled webhooks' do
+      idea = create(:idea)
+
+      expect_any_instance_of(Webhooks::EnqueueService).not_to receive(:call)
+
+      job.perform(idea, 'created', idea.author, Time.now)
+    end
   end
 
   describe '.perform_later' do

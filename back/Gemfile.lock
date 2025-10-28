@@ -296,6 +296,13 @@ PATH
       ros-apartment (>= 2.9.0)
 
 PATH
+  remote: engines/commercial/webhooks
+  specs:
+    webhooks (1.0.0)
+      http
+      rails (~> 7.0)
+
+PATH
   remote: engines/free/document_annotation
   specs:
     document_annotation (0.1.0)
@@ -1511,6 +1518,7 @@ DEPENDENCIES
   user_custom_fields!
   vcr (~> 6.2)
   volunteering!
+  webhooks!
   webmock (~> 3.23)
 
 RUBY VERSION

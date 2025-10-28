@@ -235,6 +235,7 @@ commercial_engines = [
   'report_builder',
   'smart_groups',
   'user_custom_fields',
+  'webhooks',
 
   # ID verification & SSO engines.
   'id_auth0',
