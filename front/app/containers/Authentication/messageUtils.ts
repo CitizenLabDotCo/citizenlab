@@ -34,6 +34,11 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'light-flow:email-confirmation': messages.confirmYourEmail,
   'light-flow:password': messages.logIn,
 
+  // email flow
+  'email-flow:start': messages.beforeYouParticipate,
+  'email-flow:policies': messages.beforeYouParticipate,
+  'email-flow:password': messages.logIn,
+
   // missing data flow
   'missing-data:built-in': messages.completeYourProfile,
   'missing-data:email-confirmation': messages.confirmYourEmail,
