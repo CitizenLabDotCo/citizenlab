@@ -29,6 +29,7 @@ import { getLinearScaleLabel } from '../LinearScale/utils';
 const StickyTh = styled(Th)<{ hasLongContent: boolean }>`
   position: sticky;
   inset-inline-start: 0px;
+  background: white;
   z-index: 1;
 
   overflow-wrap: break-word;
