@@ -37,7 +37,7 @@ RSpec.describe 'Webhook Integration Flow', type: :integration do
       expect(delivery.status).to eq 'pending'
 
       # Process the delivery job
-      Webhooks::DeliveryJob.perform_now(delivery.id)
+      Webhooks::DeliveryJob.perform_now(delivery)
 
       # Verify webhook was sent
       expect(WebMock).to have_requested(:post, 'https://webhook.example.com/receive')
@@ -94,7 +94,7 @@ RSpec.describe 'Webhook Integration Flow', type: :integration do
 
       # Process both deliveries
       Webhooks::Delivery.find_each do |delivery|
-        Webhooks::DeliveryJob.perform_now(delivery.id)
+        Webhooks::DeliveryJob.perform_now(delivery)
       end
 
       expect(WebMock).to have_requested(:post, 'https://webhook1.example.com').once
@@ -171,7 +171,7 @@ RSpec.describe 'Webhook Integration Flow', type: :integration do
       expect(Webhooks::Delivery.count).to eq 1
       expect(Webhooks::Delivery.first.subscription).to eq enabled_sub
 
-      Webhooks::DeliveryJob.perform_now(Webhooks::Delivery.first.id)
+      Webhooks::DeliveryJob.perform_now(Webhooks::Delivery.first)
 
       expect(WebMock).to have_requested(:post, 'https://enabled.example.com').once
       expect(WebMock).not_to have_requested(:post, 'https://disabled.example.com')
@@ -225,7 +225,7 @@ RSpec.describe 'Webhook Integration Flow', type: :integration do
         Webhooks::EnqueueService.new.call(activity)
         delivery = Webhooks::Delivery.first
 
-        expect(Webhooks::DeliveryJob.perform_now(delivery.id)).to be_a(HTTP::TimeoutError)
+        expect(Webhooks::DeliveryJob.perform_now(delivery)).to be_a(HTTP::TimeoutError)
 
         delivery.reload
         expect(delivery.status).to eq('pending')
@@ -246,7 +246,7 @@ RSpec.describe 'Webhook Integration Flow', type: :integration do
         Webhooks::EnqueueService.new.call(activity)
         delivery = Webhooks::Delivery.first
 
-        expect(Webhooks::DeliveryJob.perform_now(delivery.id)).to be_a(Webhooks::DeliveryJob::UnsuccessfulResponse)
+        expect(Webhooks::DeliveryJob.perform_now(delivery)).to be_a(Webhooks::DeliveryJob::UnsuccessfulResponse)
 
         delivery.reload
         expect(delivery.attempts).to eq(1)
@@ -279,7 +279,7 @@ RSpec.describe 'Webhook Integration Flow', type: :integration do
       Webhooks::EnqueueService.new.call(activity)
       delivery = Webhooks::Delivery.first
 
-      Webhooks::DeliveryJob.perform_now(delivery.id)
+      Webhooks::DeliveryJob.perform_now(delivery)
 
       # Extract request details
       request = captured_request.first
@@ -328,7 +328,7 @@ RSpec.describe 'Webhook Integration Flow', type: :integration do
       Webhooks::EnqueueService.new.call(activity)
       delivery = Webhooks::Delivery.first
 
-      Webhooks::DeliveryJob.perform_now(delivery.id)
+      Webhooks::DeliveryJob.perform_now(delivery)
 
       request = captured_request.first
       payload = JSON.parse(request.body)

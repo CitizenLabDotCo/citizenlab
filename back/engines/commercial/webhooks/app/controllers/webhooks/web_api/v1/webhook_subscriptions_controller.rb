@@ -79,7 +79,7 @@ module Webhooks
 
           # Deliver synchronously
           begin
-            Webhooks::DeliveryJob.perform_now(delivery.id)
+            Webhooks::DeliveryJob.perform_now(delivery)
             render json: {
               success: true,
               delivery: WebApi::V1::WebhookDeliverySerializer.new(

@@ -13,7 +13,7 @@ RSpec.describe Webhooks::DeliveryJob do
 
   describe '#perform' do
     it 'delivers webhook successfully' do
-      described_class.perform_now(delivery.id)
+      described_class.perform_now(delivery)
 
       expect(delivery.reload.status).to eq('success')
       expect(delivery.response_code).to eq(200)
@@ -22,13 +22,13 @@ RSpec.describe Webhooks::DeliveryJob do
     end
 
     it 'makes HTTP POST request to subscription URL' do
-      described_class.perform_now(delivery.id)
+      described_class.perform_now(delivery)
 
       expect(WebMock).to have_requested(:post, 'https://webhook.example.com/receive').once
     end
 
     it 'includes correct HTTP headers' do
-      described_class.perform_now(delivery.id)
+      described_class.perform_now(delivery)
 
       expect(WebMock).to have_requested(:post, 'https://webhook.example.com/receive')
         .with(headers: {
@@ -41,7 +41,7 @@ RSpec.describe Webhooks::DeliveryJob do
     end
 
     it 'sends correct JSON payload' do
-      described_class.perform_now(delivery.id)
+      described_class.perform_now(delivery)
 
       expect(WebMock).to(have_requested(:post, 'https://webhook.example.com/receive')
         .with do |req|
@@ -54,7 +54,7 @@ RSpec.describe Webhooks::DeliveryJob do
     end
 
     it 'generates valid HMAC signature' do
-      described_class.perform_now(delivery.id)
+      described_class.perform_now(delivery)
       expect(a_request(:post, 'https://webhook.example.com/receive')
         .with do |request|
         signature = request.headers['X-Govocal-Signature']
@@ -75,7 +75,7 @@ RSpec.describe Webhooks::DeliveryJob do
       stub_request(:post, 'https://webhook.example.com/receive')
         .to_return(status: 200, body: 'Success response')
 
-      described_class.perform_now(delivery.id)
+      described_class.perform_now(delivery)
 
       expect(delivery.reload.response_body).to eq('Success response')
     end
@@ -86,7 +86,7 @@ RSpec.describe Webhooks::DeliveryJob do
       stub_request(:post, 'https://webhook.example.com/receive')
         .to_return(status: 200, body: large_body)
 
-      described_class.perform_now(delivery.id)
+      described_class.perform_now(delivery)
 
       expect(delivery.reload.response_body.length).to eq(10_000)
     end
@@ -94,7 +94,7 @@ RSpec.describe Webhooks::DeliveryJob do
     it 'skips delivery if subscription is disabled' do
       subscription.update!(enabled: false)
 
-      described_class.perform_now(delivery.id)
+      described_class.perform_now(delivery)
 
       expect(WebMock).not_to have_requested(:post, 'https://webhook.example.com/receive')
     end
@@ -107,7 +107,7 @@ RSpec.describe Webhooks::DeliveryJob do
         .to receive(:validate_url_safe)
         .and_return(false)
 
-      described_class.perform_now(delivery.id)
+      described_class.perform_now(delivery)
 
       expect(delivery.reload.status).to eq('failed')
       expect(delivery.error_message).to include('Security error')
@@ -119,7 +119,7 @@ RSpec.describe Webhooks::DeliveryJob do
         .and_return(false)
 
       # Should not raise error (which would trigger retry)
-      expect { described_class.perform_now(delivery.id) }
+      expect { described_class.perform_now(delivery) }
         .not_to raise_error
 
       expect(delivery.reload.status).to eq('failed')
@@ -129,7 +129,7 @@ RSpec.describe Webhooks::DeliveryJob do
       stub = stub_request(:post, 'https://webhook.example.com/receive')
         .to_return(status: 302, headers: { 'Location' => 'https://malicious.example.com' })
 
-      described_class.perform_now(delivery.id)
+      described_class.perform_now(delivery)
       expect(stub).to have_been_requested
       expect(a_request(:any, 'https://malicious.example.com')).not_to have_been_made
     end
@@ -141,7 +141,7 @@ RSpec.describe Webhooks::DeliveryJob do
 
       # When calling perform_now, any errors raised in `perform` are _returned_
       # as opposed to being thrown
-      expect(described_class.perform_now(delivery.id)).to be_a(HTTP::TimeoutError)
+      expect(described_class.perform_now(delivery)).to be_a(HTTP::TimeoutError)
 
       expect(delivery.reload.status).to eq('pending') # Will retry
       expect(delivery.attempts).to eq(1)
@@ -152,7 +152,7 @@ RSpec.describe Webhooks::DeliveryJob do
       stub_request(:post, 'https://webhook.example.com/receive')
         .to_raise(HTTP::ConnectionError.new('Connection refused'))
 
-      expect(described_class.perform_now(delivery.id)).to be_a(HTTP::ConnectionError)
+      expect(described_class.perform_now(delivery)).to be_a(HTTP::ConnectionError)
 
       expect(delivery.reload.attempts).to eq(1)
       expect(delivery.error_message).to include('Connection refused')
@@ -162,7 +162,7 @@ RSpec.describe Webhooks::DeliveryJob do
       stub_request(:post, 'https://webhook.example.com/receive')
         .to_return(status: 500, body: 'Internal Server Error')
 
-      expect(described_class.perform_now(delivery.id)).to be_a(Webhooks::DeliveryJob::UnsuccessfulResponse)
+      expect(described_class.perform_now(delivery)).to be_a(Webhooks::DeliveryJob::UnsuccessfulResponse)
 
       expect(delivery.reload.attempts).to eq(1)
     end
@@ -172,7 +172,7 @@ RSpec.describe Webhooks::DeliveryJob do
         stub_request(:post, 'https://webhook.example.com/receive').to_timeout
 
         begin
-          described_class.perform_now(delivery.id)
+          described_class.perform_now(delivery)
         rescue HTTP::TimeoutError
           # Expected
         end
@@ -190,7 +190,7 @@ RSpec.describe Webhooks::DeliveryJob do
       # Simulate retry exhaustion
       3.times do |i|
         delivery.update!(attempts: i)
-        described_class.perform_now(delivery.id)
+        described_class.perform_now(delivery)
       rescue StandardError
         # Expected to fail
       end
@@ -227,7 +227,7 @@ RSpec.describe Webhooks::DeliveryJob do
 
         delivery = create(:webhook_delivery, subscription: subscription, activity: activity)
 
-        described_class.perform_now(delivery.id)
+        described_class.perform_now(delivery)
 
         expect(delivery.reload.status).to eq('success')
       end
@@ -240,7 +240,7 @@ RSpec.describe Webhooks::DeliveryJob do
 
         delivery = create(:webhook_delivery, subscription: subscription, activity: activity)
 
-        expect(described_class.perform_now(delivery.id)).to be_a(Webhooks::DeliveryJob::UnsuccessfulResponse)
+        expect(described_class.perform_now(delivery)).to be_a(Webhooks::DeliveryJob::UnsuccessfulResponse)
       end
     end
 
@@ -251,7 +251,7 @@ RSpec.describe Webhooks::DeliveryJob do
 
         delivery = create(:webhook_delivery, subscription: subscription, activity: activity)
 
-        expect(described_class.perform_now(delivery.id)).to be_a(Webhooks::DeliveryJob::UnsuccessfulResponse)
+        expect(described_class.perform_now(delivery)).to be_a(Webhooks::DeliveryJob::UnsuccessfulResponse)
       end
     end
   end

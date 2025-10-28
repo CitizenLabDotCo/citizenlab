@@ -22,8 +22,7 @@ module Webhooks
     retry_on StandardError,
       wait: :polynomially_longer,
       attempts: MAX_RETRIES do |job, exception|
-      delivery_id = job.arguments.first
-      delivery = Webhooks::Delivery.find(delivery_id)
+      delivery = job.arguments.first
 
       delivery.update!(
         status: 'failed',
@@ -35,8 +34,7 @@ module Webhooks
       check_subscription_health(delivery.subscription)
     end
 
-    def perform(delivery_id)
-      delivery = Webhooks::Delivery.find(delivery_id)
+    def perform(delivery)
       subscription = delivery.subscription
 
       return unless subscription.enabled?
