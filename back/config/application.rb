@@ -82,6 +82,9 @@ module Cl2Back
       :lax
     }
 
+    # Prevents filtering out nil values from arrays in params (future Rails versions might stop supporting this).
+    config.action_dispatch.perform_deep_munge = false
+
     config.middleware.use ActionDispatch::Cookies # Required for all session management
     config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
 
