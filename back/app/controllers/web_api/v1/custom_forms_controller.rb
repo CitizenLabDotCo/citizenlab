@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class WebApi::V1::CustomFormsController < ApplicationController
+  after_action :verify_authorized
+  skip_after_action :verify_policy_scoped
   before_action :set_custom_form, only: %i[show update]
 
   def show

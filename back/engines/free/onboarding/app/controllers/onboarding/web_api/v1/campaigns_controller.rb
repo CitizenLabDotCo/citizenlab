@@ -6,6 +6,7 @@ module Onboarding
       class CampaignsController < OnboardingController
         class Campaign < OpenStruct
           include ActiveModel::Serialization
+
           def id
             SecureRandom.uuid
           end
@@ -14,6 +15,9 @@ module Onboarding
             Campaign
           end
         end
+
+        after_action :verify_authorized
+        skip_after_action :verify_policy_scoped
 
         def current
           authorize current_user, :update?

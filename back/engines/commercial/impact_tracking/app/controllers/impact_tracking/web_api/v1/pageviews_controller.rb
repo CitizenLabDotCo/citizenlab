@@ -3,8 +3,8 @@
 module ImpactTracking
   module WebApi::V1
     class PageviewsController < ::ApplicationController
-      skip_before_action :authenticate_user, only: :create
-      after_action :verify_authorized
+      skip_before_action :authenticate_user
+      skip_after_action :verify_authorized
       skip_after_action :verify_policy_scoped
 
       # POST /sessions/:id/track_pageview

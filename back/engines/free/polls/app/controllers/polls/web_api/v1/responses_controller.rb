@@ -6,6 +6,8 @@ module Polls
       class ResponsesController < PollsController
         before_action :set_phase
         skip_before_action :authenticate_user
+        after_action :verify_authorized
+        skip_after_action :verify_policy_scoped
 
         def index_xlsx
           authorize Project.find(@phase.project.id), :index_xlsx?
