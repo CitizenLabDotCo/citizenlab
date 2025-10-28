@@ -22,8 +22,8 @@ class BulkImportIdeas::Parsers::Pdf::GPTTextCorrector
 
   def correctable_idea_fields
     text_fields = @form_fields.select { |f| f.input_type.in?(JUMBLING_FIELD_TYPES) }
-    core_fields = text_fields.filter_map { _1.code&.to_sym }
-    custom_fields = text_fields.reject(&:code?).map { _1.key&.to_sym }
+    core_fields = text_fields.filter_map { it.code&.to_sym }
+    custom_fields = text_fields.reject(&:code?).map { it.key&.to_sym }
 
     return [] if core_fields.blank? && custom_fields.blank?
 

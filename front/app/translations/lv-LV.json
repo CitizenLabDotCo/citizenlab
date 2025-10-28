@@ -1884,7 +1884,6 @@
   "app.containers.SearchInput.searchTerm": "Meklēšanas termins: {searchTerm}",
   "app.containers.SignIn.franceConnectIsTheSolutionProposedByTheGovernment": "FranceConnect ir Francijas valsts piedāvātais risinājums, lai nodrošinātu un vienkāršotu reģistrēšanos vairāk nekā 700 tiešsaistes pakalpojumiem.",
   "app.containers.SignIn.or": "Vai",
-  "app.containers.SignIn.signInError": "Sniegtā informācija nav pareiza. Lai atiestatītu paroli, nospiediet uz “Aizmirsāt paroli?”.",
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Izmantot FranceConnect, lai pierakstītos, reģistrētos vai pārbaudītu savu kontu.",
   "app.containers.SignIn.whatIsFranceConnect": "Kas ir France Connect?",
   "app.containers.SignUp.adminOptions2": "Administratoriem un projektu vadītājiem",

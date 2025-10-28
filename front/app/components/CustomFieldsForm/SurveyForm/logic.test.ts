@@ -131,12 +131,6 @@ describe('Survey form logic', () => {
       currentPage: pages[0].page,
     });
     expect(nextPageIndex).toBe(2);
-
-    const previousPageIndex = determinePreviousPageNumber({
-      pages,
-      currentPage: pages[2].page,
-    });
-    expect(previousPageIndex).toBe(0);
   });
 
   it('should determine previous and next page number based on select question logic', () => {
@@ -196,13 +190,6 @@ describe('Survey form logic', () => {
     });
     expect(nextPageIndex).toBe(1);
 
-    const previousPageIndex = determinePreviousPageNumber({
-      pages,
-      currentPage: pages[1].page,
-    });
-
-    expect(previousPageIndex).toBe(0);
-
     const nextPageIndex2 = determineNextPageNumber({
       pages,
       currentPage: pages[0].page,
@@ -211,12 +198,6 @@ describe('Survey form logic', () => {
       },
     });
     expect(nextPageIndex2).toBe(2);
-
-    const previousPageIndex2 = determinePreviousPageNumber({
-      pages,
-      currentPage: pages[2].page,
-    });
-    expect(previousPageIndex2).toBe(0);
 
     const nextPageIndex3 = determineNextPageNumber({
       pages,
@@ -227,23 +208,12 @@ describe('Survey form logic', () => {
     });
     expect(nextPageIndex3).toBe(3);
 
-    const previousPageIndex3 = determinePreviousPageNumber({
-      pages,
-      currentPage: pages[3].page,
-    });
-    expect(previousPageIndex3).toBe(0);
     const nextPageIndex4 = determineNextPageNumber({
       pages,
       currentPage: pages[0].page,
       formData: {},
     });
     expect(nextPageIndex4).toBe(4);
-
-    const previousPageIndex4 = determinePreviousPageNumber({
-      pages,
-      currentPage: pages[4].page,
-    });
-    expect(previousPageIndex4).toBe(0);
   });
 
   it('should determine previous and next page number based on multiselect question logic', () => {
@@ -302,11 +272,7 @@ describe('Survey form logic', () => {
       },
     });
     expect(nextPageIndex).toBe(1);
-    const previousPageIndex = determinePreviousPageNumber({
-      pages,
-      currentPage: pages[1].page,
-    });
-    expect(previousPageIndex).toBe(0);
+
     const nextPageIndex2 = determineNextPageNumber({
       pages,
       currentPage: pages[0].page,
@@ -315,11 +281,7 @@ describe('Survey form logic', () => {
       },
     });
     expect(nextPageIndex2).toBe(2);
-    const previousPageIndex2 = determinePreviousPageNumber({
-      pages,
-      currentPage: pages[2].page,
-    });
-    expect(previousPageIndex2).toBe(0);
+
     const nextPageIndex3 = determineNextPageNumber({
       pages,
       currentPage: pages[0].page,
@@ -328,22 +290,13 @@ describe('Survey form logic', () => {
       },
     });
     expect(nextPageIndex3).toBe(3);
-    const previousPageIndex3 = determinePreviousPageNumber({
-      pages,
-      currentPage: pages[3].page,
-    });
-    expect(previousPageIndex3).toBe(0);
+
     const nextPageIndex4 = determineNextPageNumber({
       pages,
       currentPage: pages[0].page,
       formData: {},
     });
     expect(nextPageIndex4).toBe(4);
-    const previousPageIndex4 = determinePreviousPageNumber({
-      pages,
-      currentPage: pages[4].page,
-    });
-    expect(previousPageIndex4).toBe(0);
   });
 
   it('determies previous and next page number based on linear scale question logic', () => {
@@ -386,11 +339,7 @@ describe('Survey form logic', () => {
       },
     });
     expect(nextPageIndex).toBe(1);
-    const previousPageIndex = determinePreviousPageNumber({
-      pages,
-      currentPage: pages[1].page,
-    });
-    expect(previousPageIndex).toBe(0);
+
     const nextPageIndex2 = determineNextPageNumber({
       pages,
       currentPage: pages[0].page,
@@ -399,11 +348,7 @@ describe('Survey form logic', () => {
       },
     });
     expect(nextPageIndex2).toBe(2);
-    const previousPageIndex2 = determinePreviousPageNumber({
-      pages,
-      currentPage: pages[2].page,
-    });
-    expect(previousPageIndex2).toBe(0);
+
     const nextPageIndex3 = determineNextPageNumber({
       pages,
       currentPage: pages[0].page,
@@ -413,22 +358,13 @@ describe('Survey form logic', () => {
     });
 
     expect(nextPageIndex3).toBe(3);
-    const previousPageIndex3 = determinePreviousPageNumber({
-      pages,
-      currentPage: pages[3].page,
-    });
-    expect(previousPageIndex3).toBe(0);
+
     const nextPageIndex4 = determineNextPageNumber({
       pages,
       currentPage: pages[0].page,
       formData: {},
     });
     expect(nextPageIndex4).toBe(4);
-    const previousPageIndex4 = determinePreviousPageNumber({
-      pages,
-      currentPage: pages[4].page,
-    });
-    expect(previousPageIndex4).toBe(0);
   });
 
   it('determies previous and next page number based on rating question logic', () => {
@@ -471,11 +407,7 @@ describe('Survey form logic', () => {
       },
     });
     expect(nextPageIndex).toBe(1);
-    const previousPageIndex = determinePreviousPageNumber({
-      pages,
-      currentPage: pages[1].page,
-    });
-    expect(previousPageIndex).toBe(0);
+
     const nextPageIndex2 = determineNextPageNumber({
       pages,
       currentPage: pages[0].page,
@@ -484,11 +416,7 @@ describe('Survey form logic', () => {
       },
     });
     expect(nextPageIndex2).toBe(2);
-    const previousPageIndex2 = determinePreviousPageNumber({
-      pages,
-      currentPage: pages[2].page,
-    });
-    expect(previousPageIndex2).toBe(0);
+
     const nextPageIndex3 = determineNextPageNumber({
       pages,
       currentPage: pages[0].page,
@@ -498,21 +426,82 @@ describe('Survey form logic', () => {
     });
 
     expect(nextPageIndex3).toBe(3);
-    const previousPageIndex3 = determinePreviousPageNumber({
-      pages,
-      currentPage: pages[3].page,
-    });
-    expect(previousPageIndex3).toBe(0);
+
     const nextPageIndex4 = determineNextPageNumber({
       pages,
       currentPage: pages[0].page,
       formData: {},
     });
     expect(nextPageIndex4).toBe(4);
-    const previousPageIndex4 = determinePreviousPageNumber({
-      pages,
-      currentPage: pages[4].page,
+  });
+
+  describe('Navigation history-based previous page determination', () => {
+    it('should use navigation history when available', () => {
+      // Simulate a path where user went from page 0 -> page 2 -> page 1 (through conditional logic)
+      const userNavigationHistory = [0, 2, 1];
+      const currentPageIndex = 1; // Currently on page 1
+
+      const previousPageIndex = determinePreviousPageNumber({
+        userNavigationHistory,
+        currentPageIndex,
+      });
+
+      // Should return page 2 (the previous page in history), not page 0 (sequential previous)
+      expect(previousPageIndex).toBe(2);
     });
-    expect(previousPageIndex4).toBe(0);
+
+    it('should fallback to logic-based approach when current page not in history', () => {
+      const userNavigationHistory = [0, 2]; // History doesn't include current page
+      const currentPageIndex = 1;
+
+      const previousPageIndex = determinePreviousPageNumber({
+        userNavigationHistory,
+        currentPageIndex,
+      });
+
+      // Should fallback to original logic
+      expect(previousPageIndex).toBe(0);
+    });
+
+    it('should fallback to logic-based approach when history has only one page', () => {
+      const userNavigationHistory = [1]; // Only current page in history
+      const currentPageIndex = 1;
+
+      const previousPageIndex = determinePreviousPageNumber({
+        userNavigationHistory,
+        currentPageIndex,
+      });
+
+      // Should fallback to original logic
+      expect(previousPageIndex).toBe(0);
+    });
+
+    it('should handle complex navigation paths correctly', () => {
+      // Simulate: page 0 -> page 3 -> page 1 -> page 2 -> page 4
+      const userNavigationHistory = [0, 3, 1, 2, 4];
+      const currentPageIndex = 4;
+
+      const previousPageIndex = determinePreviousPageNumber({
+        userNavigationHistory,
+        currentPageIndex,
+      });
+
+      // Should return page 2 (the actual previous page in user's path)
+      expect(previousPageIndex).toBe(2);
+    });
+
+    it('should handle multiple visits to the same page', () => {
+      // Simulate: page 0 -> page 1 -> page 2 -> page 1 (user went back and forth)
+      const userNavigationHistory = [0, 1, 2, 1];
+      const currentPageIndex = 1;
+
+      const previousPageIndex = determinePreviousPageNumber({
+        userNavigationHistory,
+        currentPageIndex,
+      });
+
+      // Should return page 2 (the most recent previous page in history)
+      expect(previousPageIndex).toBe(2);
+    });
   });
 });
