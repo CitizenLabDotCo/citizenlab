@@ -106,7 +106,7 @@ const Matrix = ({ value: data, question, onChange }: Props) => {
         ) {
           tableElement.style.borderRight = 'none';
         } else {
-          tableElement.style.borderRight = `1px dashed ${theme.colors.tenantPrimaryLighten75}`;
+          tableElement.style.borderRight = `1px dashed ${theme.colors.borderLight}`;
         }
       }
     };
