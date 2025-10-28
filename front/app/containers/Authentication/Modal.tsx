@@ -228,6 +228,32 @@ const AuthModal = () => {
           />
         )}
 
+        {/* email flow */}
+        {currentStep === 'email-flow:start' && (
+          <LightFlowStart
+            loading={loading}
+            setError={setError}
+            onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
+            onSwitchToSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
+          />
+        )}
+        {currentStep === 'email-flow:policies' && (
+          <EmailPolicies
+            state={state}
+            loading={loading}
+            setError={setError}
+            onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
+          />
+        )}
+        {currentStep === 'email-flow:password' && (
+          <Password
+            state={state}
+            loading={loading}
+            setError={setError}
+            onSubmit={transition(currentStep, 'SUBMIT_PASSWORD')}
+          />
+        )}
+
         {/* missing data flow / shared */}
         {currentStep === 'missing-data:built-in' && (
           <BuiltInFields
