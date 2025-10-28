@@ -80,6 +80,13 @@ RSpec.describe Webhooks::Subscription do
 
       expect { subscription.destroy! }.to change(Webhooks::Delivery, :count).by(-1)
     end
+
+    it 'gets destroyed when project is destroyed' do
+      project = create(:project)
+      create(:webhook_subscription, project: project)
+
+      expect { project.destroy! }.to change(described_class, :count).by(-1)
+    end
   end
 
   describe 'scopes' do
@@ -120,7 +127,7 @@ RSpec.describe Webhooks::Subscription do
         sub3 = create(:webhook_subscription, project: create(:project))
 
         results = described_class.for_project(project.id)
-        expect(results).to include(sub1, sub2)  # nil project_id matches all
+        expect(results).to include(sub1, sub2) # nil project_id matches all
         expect(results).not_to include(sub3)
       end
     end

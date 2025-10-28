@@ -4,7 +4,7 @@ module Webhooks
   module WebApi
     module V1
       class WebhookSubscriptionsController < ::ApplicationController
-        before_action :set_subscription, only: [:show, :update, :destroy, :test, :regenerate_secret]
+        before_action :set_subscription, only: %i[show update destroy test regenerate_secret]
 
         def index
           authorize Webhooks::Subscription
@@ -87,7 +87,7 @@ module Webhooks
                 params: jsonapi_serializer_params
               ).serializable_hash
             }
-          rescue => e
+          rescue StandardError => e
             render json: {
               success: false,
               error: e.message,
