@@ -4,6 +4,8 @@ module BulkImportIdeas
   class WebApi::V1::BulkImportController < ApplicationController
     skip_before_action :authenticate_user, only: %i[export_form]
     before_action :authorize_bulk_import_ideas, only: %i[bulk_create_async export_form draft_records approve_all]
+    after_action :verify_authorized
+    skip_after_action :verify_policy_scoped
 
     CONSTANTIZER = {
       'idea' => {

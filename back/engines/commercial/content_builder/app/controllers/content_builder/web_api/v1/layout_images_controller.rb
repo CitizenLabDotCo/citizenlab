@@ -4,6 +4,9 @@ module ContentBuilder
   class WebApi::V1::LayoutImagesController < ApplicationController
     include CarrierwaveErrorDetailsTransformation
 
+    after_action :verify_authorized
+    skip_after_action :verify_policy_scoped
+
     def create
       @image = LayoutImage.new image_params
       authorize @image

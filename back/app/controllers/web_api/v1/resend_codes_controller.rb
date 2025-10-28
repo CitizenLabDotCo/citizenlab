@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ResendCodesController < ApplicationController
+  skip_after_action :verify_policy_scoped
   skip_after_action :verify_authorized
 
   def create

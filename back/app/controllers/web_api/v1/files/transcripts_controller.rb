@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class WebApi::V1::Files::TranscriptsController < ApplicationController
+  after_action :verify_authorized
+  skip_after_action :verify_policy_scoped
   before_action :set_file
   before_action :set_transcript, only: [:show]
 

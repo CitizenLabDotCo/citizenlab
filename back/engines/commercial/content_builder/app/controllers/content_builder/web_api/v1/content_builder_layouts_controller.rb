@@ -5,6 +5,8 @@ module ContentBuilder
     module V1
       class ContentBuilderLayoutsController < ApplicationController
         skip_before_action :authenticate_user, only: %i[show]
+        after_action :verify_authorized
+        skip_after_action :verify_policy_scoped
 
         def show
           render json: WebApi::V1::LayoutSerializer.new(layout, params: jsonapi_serializer_params).serializable_hash

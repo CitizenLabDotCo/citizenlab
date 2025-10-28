@@ -4,6 +4,8 @@ module Analysis
   module WebApi
     module V1
       class UsersController < ApplicationController
+        skip_after_action :verify_policy_scoped
+        after_action :verify_authorized
         before_action :set_analysis
         before_action :set_user
 

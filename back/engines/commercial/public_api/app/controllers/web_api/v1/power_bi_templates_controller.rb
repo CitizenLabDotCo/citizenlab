@@ -2,6 +2,9 @@
 
 module PublicApi
   class WebApi::V1::PowerBiTemplatesController < ApplicationController
+    skip_after_action :verify_policy_scoped
+    after_action :verify_authorized
+
     # Download a template - files behind a controller to give permission only to admins
     def show
       authorize :'public_api/power_bi_template'

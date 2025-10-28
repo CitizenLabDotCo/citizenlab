@@ -5,6 +5,8 @@ module Analysis
     module V1
       class QuestionsController < ApplicationController
         include FilterParamsExtraction
+        
+        after_action :verify_authorized
         skip_after_action :verify_policy_scoped # The analysis is authorized instead.
         before_action :set_analysis
         before_action :set_question, only: %i[show regenerate]

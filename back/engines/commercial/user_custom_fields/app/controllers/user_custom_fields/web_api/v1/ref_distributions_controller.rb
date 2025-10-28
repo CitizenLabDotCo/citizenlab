@@ -3,6 +3,9 @@
 module UserCustomFields
   module WebApi::V1
     class RefDistributionsController < ::ApplicationController
+      after_action :verify_authorized
+      skip_after_action :verify_policy_scoped
+
       # Shortcuts for long namespace
       RefDistribution = Representativeness::RefDistribution
       CategoricalDistribution = Representativeness::CategoricalDistribution

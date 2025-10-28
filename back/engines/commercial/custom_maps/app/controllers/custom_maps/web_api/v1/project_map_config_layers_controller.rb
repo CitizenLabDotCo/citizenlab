@@ -4,6 +4,8 @@ module CustomMaps
   module WebApi
     module V1
       class ProjectMapConfigLayersController < ApplicationController
+        after_action :verify_authorized
+        skip_after_action :verify_policy_scoped
         before_action :set_layer, except: %i[create]
         before_action :set_project
 

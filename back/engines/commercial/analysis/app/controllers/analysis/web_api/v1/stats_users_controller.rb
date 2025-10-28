@@ -5,6 +5,8 @@ module Analysis
     module V1
       class StatsUsersController < ApplicationController
         include FilterParamsExtraction
+        
+        after_action :verify_authorized
         skip_after_action :verify_policy_scoped # The analysis is authorized instead.
         before_action :set_analysis
 

@@ -6,6 +6,7 @@ module Analysis
       class SummariesController < ApplicationController
         include FilterParamsExtraction
         skip_after_action :verify_policy_scoped # The analysis is authorized instead.
+        after_action :verify_authorized
         before_action :set_analysis
         before_action :set_summary, only: %i[show regenerate]
 

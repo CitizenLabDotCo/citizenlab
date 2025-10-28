@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class WebApi::V1::Files::PreviewsController < ApplicationController
+  skip_after_action :verify_policy_scoped
+  after_action :verify_authorized
   before_action :set_file
 
   def show

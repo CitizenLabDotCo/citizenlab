@@ -4,6 +4,9 @@ module UserCustomFields
   module WebApi
     module V1
       class RScoresController < ::ApplicationController
+        skip_after_action :verify_policy_scoped
+        after_action :verify_authorized
+
         def show
           authorize %i[user_custom_fields representativeness r_score]
           ref_distribution = user_custom_field.current_ref_distribution
