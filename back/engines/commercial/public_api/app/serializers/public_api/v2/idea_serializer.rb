@@ -68,12 +68,11 @@ class PublicApi::V2::IdeaSerializer < PublicApi::V2::BaseSerializer
     multiloc_service.t(object.creation_phase&.title_multiloc)
   end
 
- def survey_title
-    return nil unless object.creation_phase_id.present?
-
+  def survey_title
+    return nil unless object.creation_phase_id.blank? == false
     multiloc_service.t(object.creation_phase&.native_survey_title_multiloc)
   end
-
+  
   private
 
   def multiloc_service
