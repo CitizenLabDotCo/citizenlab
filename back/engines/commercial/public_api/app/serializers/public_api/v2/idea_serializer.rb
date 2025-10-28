@@ -27,6 +27,7 @@ class PublicApi::V2::IdeaSerializer < PublicApi::V2::BaseSerializer
     :proposed_budget,
     :creation_phase_id,
     :creation_phase_title,
+    :survey_title,
     :images, # Not in spec
     :href, # Not in spec
     :status, # idea_status in spec
@@ -65,6 +66,12 @@ class PublicApi::V2::IdeaSerializer < PublicApi::V2::BaseSerializer
 
   def creation_phase_title
     multiloc_service.t(object.creation_phase&.title_multiloc)
+  end
+
+ def survey_title
+    return nil unless object.creation_phase_id.present?
+
+    multiloc_service.t(object.creation_phase&.native_survey_title_multiloc)
   end
 
   private
