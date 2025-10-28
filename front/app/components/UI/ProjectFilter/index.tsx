@@ -181,7 +181,7 @@ const ProjectFilter = ({
           }),
           control: (base, { isFocused }) => ({
             ...base,
-            minWidth: '310px',
+            width: '100%',
             minHeight: `${stylingConsts.inputHeight}px`,
             height: `${stylingConsts.inputHeight}px`,
             borderWidth: isFocused ? '2px' : '1px',
