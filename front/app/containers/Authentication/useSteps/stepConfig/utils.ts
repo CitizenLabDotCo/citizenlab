@@ -7,12 +7,12 @@ export const checkMissingData = (
   { context }: AuthenticationData,
   flow: 'signup' | 'signin'
 ) => {
-  if (requiredBuiltInFields(requirements)) {
-    return 'missing-data:built-in';
-  }
-
   if (confirmationRequired(requirements)) {
     return 'missing-data:email-confirmation';
+  }
+
+  if (requiredBuiltInFields(requirements)) {
+    return 'missing-data:built-in';
   }
 
   if (requirements.verification) {

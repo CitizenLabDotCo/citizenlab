@@ -42,7 +42,7 @@ export const lightFlow = (
 
           if (action === 'confirm') {
             await createEmailOnlyAccount({ email, locale });
-            setCurrentStep('email-flow:email-confirmation');
+            setCurrentStep('missing-data:email-confirmation');
           }
         } catch (e) {
           if (e.errors?.email?.[0]?.error === 'taken_by_invite') {
@@ -66,6 +66,24 @@ export const lightFlow = (
         } else {
           updateState({ ssoProvider });
           setCurrentStep('light-flow:sso-policies');
+        }
+      },
+    },
+
+    'email-flow:policies': {
+      CLOSE: () => setCurrentStep('closed'),
+
+      ACCEPT_POLICIES: async (email: string, locale: SupportedLocale) => {
+        updateState({ email });
+
+        const result = await createEmailOnlyAccount({ email, locale });
+
+        if (result === 'account_created_successfully') {
+          setCurrentStep('missing-data:email-confirmation');
+        }
+
+        if (result === 'email_taken') {
+          setCurrentStep('email-flow:password');
         }
       },
     },

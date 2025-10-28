@@ -24,7 +24,6 @@ export type Step =
   // email flow
   | 'email-flow:start'
   | 'email-flow:policies'
-  | 'email-flow:email-confirmation'
   | 'email-flow:password'
 
   // missing data (if signed in already)
