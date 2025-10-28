@@ -1,8 +1,13 @@
 import { SupportedLocale } from 'typings';
 
+import signIn from 'api/authentication/sign_in_out/signIn';
 import createEmailOnlyAccount from 'api/authentication/sign_up/createEmailOnlyAccount';
 import { handleOnSSOClick } from 'api/authentication/singleSignOn';
 import checkUser from 'api/users/checkUser';
+
+import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
+
+import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
 import {
   GetRequirements,
@@ -13,6 +18,7 @@ import {
 } from '../../typings';
 
 import { Step } from './typings';
+import { doesNotMeetGroupCriteria, checkMissingData } from './utils';
 
 export const lightFlow = (
   getAuthenticationData: () => AuthenticationData,
@@ -72,7 +78,6 @@ export const lightFlow = (
 
     'email-flow:policies': {
       CLOSE: () => setCurrentStep('closed'),
-
       ACCEPT_POLICIES: async (email: string, locale: SupportedLocale) => {
         updateState({ email });
 
@@ -84,6 +89,48 @@ export const lightFlow = (
 
         if (result === 'email_taken') {
           setCurrentStep('email-flow:password');
+        }
+      },
+    },
+
+    'email-flow:password': {
+      CLOSE: () => setCurrentStep('closed'),
+      SUBMIT_PASSWORD: async (
+        email: string,
+        password: string,
+        rememberMe: boolean,
+        tokenLifetime: number
+      ) => {
+        await signIn({ email, password, rememberMe, tokenLifetime });
+
+        const { requirements } = await getRequirements();
+        const authenticationData = getAuthenticationData();
+
+        const missingDataStep = checkMissingData(
+          requirements,
+          authenticationData,
+          state.flow
+        );
+
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
+          return;
+        }
+
+        invalidateQueryCache();
+
+        // trackEventByName(tracks.signUpFlowCompleted);
+
+        if (doesNotMeetGroupCriteria(requirements)) {
+          setCurrentStep('access-denied');
+          return;
+        }
+
+        setCurrentStep('closed');
+
+        const { successAction } = getAuthenticationData();
+        if (successAction) {
+          triggerSuccessAction(successAction);
         }
       },
     },
