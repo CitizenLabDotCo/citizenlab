@@ -10,7 +10,6 @@ import { emailFlow } from './emailFlow';
 import { lightFlow } from './lightFlow';
 import { missingDataFlow } from './missingDataFlow';
 import { sharedSteps } from './sharedSteps';
-import { signInFlow } from './signInFlow';
 import { signUpFlow } from './signUpFlow';
 import { ssoVerificationFlow } from './ssoVerificationFlow';
 import { Step } from './typings';
@@ -54,14 +53,6 @@ export const getStepConfig = (
       getRequirements,
       setCurrentStep,
       setError,
-      updateState,
-      anySSOEnabled
-    ),
-
-    ...signInFlow(
-      getAuthenticationData,
-      getRequirements,
-      setCurrentStep,
       updateState,
       anySSOEnabled
     ),

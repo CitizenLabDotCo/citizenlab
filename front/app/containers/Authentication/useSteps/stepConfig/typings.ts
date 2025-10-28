@@ -4,10 +4,6 @@ export type Step =
   | 'success'
   | 'access-denied'
 
-  // old sign in flow
-  | 'sign-in:auth-providers'
-  | 'sign-in:email-password'
-
   // old sign up flow
   | 'sign-up:auth-providers'
   | 'sign-up:email-password'

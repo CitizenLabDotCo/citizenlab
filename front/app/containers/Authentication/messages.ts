@@ -42,11 +42,6 @@ export default defineMessages({
     id: 'app.containers.SignUp.unknownError',
     defaultMessage: 'Something went wrong. Please try again later.',
   },
-  signInError: {
-    id: 'app.containers.SignIn.signInError2',
-    defaultMessage:
-      "The provided information is not correct. Click 'Forgot Password?' to reset your password, or {createAnAccountLink}.",
-  },
   createAnAccountLink: {
     id: 'app.containers.SignIn.createAnAccountLink',
     defaultMessage: 'create an account',

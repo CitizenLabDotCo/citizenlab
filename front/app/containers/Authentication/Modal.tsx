@@ -12,18 +12,15 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
-import messages from './messages';
 import {
   getHeaderMessage,
   HELPER_TEXT_KEYS,
   ERROR_CODE_MESSAGES,
 } from './messageUtils';
-import TextButton from './steps/_components/TextButton';
 import AccessDenied from './steps/AccessDenied';
 import AuthProviders from './steps/AuthProviders';
 import BuiltInFields from './steps/BuiltInFields';
 import ChangeEmail from './steps/ChangeEmail';
-import EmailAndPassword from './steps/EmailAndPassword';
 import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
 import EmailAndPasswordVerifiedActions from './steps/EmailAndPasswordVerifiedActions';
 import EmailConfirmation from './steps/EmailConfirmation';
@@ -107,17 +104,6 @@ const AuthModal = () => {
                   {...ERROR_CODE_MESSAGES[error]}
                   values={{
                     br: <br />,
-                    createAnAccountLink: (
-                      <TextButton
-                        onClick={
-                          currentStep === 'sign-in:email-password'
-                            ? transition(currentStep, 'SWITCH_FLOW')
-                            : undefined
-                        }
-                      >
-                        {formatMessage(messages.createAnAccountLink)}
-                      </TextButton>
-                    ),
                   }}
                 />
               }
@@ -139,28 +125,6 @@ const AuthModal = () => {
           <Success
             loading={loading}
             onContinue={transition(currentStep, 'CONTINUE')}
-          />
-        )}
-        {/* old sign in flow */}
-        {currentStep === 'sign-in:auth-providers' && (
-          <AuthProviders
-            flow="signin"
-            error={error}
-            onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
-            onSelectAuthProvider={transition(
-              currentStep,
-              'SELECT_AUTH_PROVIDER'
-            )}
-          />
-        )}
-        {currentStep === 'sign-in:email-password' && (
-          <EmailAndPassword
-            loading={loading}
-            setError={setError}
-            onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
-            onGoBack={transition(currentStep, 'GO_BACK')}
-            onSubmit={transition(currentStep, 'SIGN_IN')}
-            closeModal={transition(currentStep, 'CLOSE')}
           />
         )}
         {/* old sign up flow */}

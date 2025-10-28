@@ -10,7 +10,6 @@ import { getStepConfig } from './useSteps/stepConfig';
 export type ErrorCode =
   | 'account_creation_failed'
   | 'wrong_confirmation_code'
-  | 'sign_in_failed'
   | 'requirements_fetching_failed'
   | 'invitation_error'
   | 'unknown'

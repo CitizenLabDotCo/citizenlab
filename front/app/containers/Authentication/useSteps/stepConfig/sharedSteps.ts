@@ -145,9 +145,7 @@ export const sharedSteps = (
         }
 
         if (flow === 'signin') {
-          anySSOEnabled
-            ? setCurrentStep('sign-in:auth-providers')
-            : setCurrentStep('sign-in:email-password');
+          setCurrentStep('email-flow:start');
           return;
         }
 
