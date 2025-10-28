@@ -6,6 +6,7 @@ import {
   State,
 } from '../../typings';
 
+import { emailFlow } from './emailFlow';
 import { lightFlow } from './lightFlow';
 import { missingDataFlow } from './missingDataFlow';
 import { sharedSteps } from './sharedSteps';
@@ -24,6 +25,14 @@ export const getStepConfig = (
   state: State
 ) => {
   return {
+    ...emailFlow(
+      getAuthenticationData,
+      getRequirements,
+      setCurrentStep,
+      updateState,
+      state
+    ),
+
     ...lightFlow(
       getAuthenticationData,
       getRequirements,

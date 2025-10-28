@@ -20,7 +20,7 @@ import {
 import { Step } from './typings';
 import { doesNotMeetGroupCriteria, checkMissingData } from './utils';
 
-export const lightFlow = (
+export const emailFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
