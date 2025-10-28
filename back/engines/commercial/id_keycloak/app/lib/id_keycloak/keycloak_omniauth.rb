@@ -23,8 +23,11 @@ module IdKeycloak
       options[:response_type] = :code
       options[:issuer] = issuer
       options[:client_options] = {
-        identifier: config[:client_id],
-        secret: config[:client_secret],
+        # identifier: config[:client_id],
+        # secret: config[:client_secret],
+        identifier: 'Beteiligungsplattform',
+        secret: 'UhlGUnpscUxUz7hf66ljLIizvskPESM7',
+
         redirect_uri: "#{configuration.base_backend_uri}/auth/keycloak/callback",
 
         # NOTE: Cannot use auto discovery as .well-known/openid-configuration is not on the root of the domain
@@ -56,7 +59,8 @@ module IdKeycloak
     end
 
     def issuer
-      "https://#{config[:domain]}/auth/realms/idporten"
+      "https://idp-test.rheinbahn.de/auth/realms/Rheinbahn-Test"
+      # "https://#{config[:domain]}/auth/realms/idporten"
     end
 
     def updateable_user_attrs

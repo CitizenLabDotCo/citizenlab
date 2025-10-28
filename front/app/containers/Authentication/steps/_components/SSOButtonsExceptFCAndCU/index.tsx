@@ -122,6 +122,21 @@ const SSOButtonsExceptFCAndCU = ({
           />
         </WrappedAuthProviderButton>
       )}
+      {ssoProviders.keycloak && (
+        <WrappedAuthProviderButton
+          icon="rheinbahn"
+          showConsent={showConsent}
+          authProvider="keycloak"
+          onContinue={onSelectAuthProvider}
+        >
+          <FormattedMessage
+            {...parentMessages.continueWithLoginMechanism}
+            values={{
+              loginMechanismName: 'Rheinbahn login',
+            }}
+          />
+        </WrappedAuthProviderButton>
+      )}
       {ssoProviders.twoday && (
         <WrappedAuthProviderButton
           icon="bankId"

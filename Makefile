@@ -46,8 +46,15 @@ be-up-sso:
 	docker compose down
 	BASE_DEV_URI=https://sso.dev.govocal.com ASSET_HOST_URI=https://sso.dev.govocal.com docker compose up
 
+be-up-demo-stg:
+	docker compose down
+	BASE_DEV_URI=https://demo.stg.govocal.com ASSET_HOST_URI=https://demo.stg.govocal.com docker compose up
+
 fe-up-sso:
 	cd front && npm run start:sso
+
+fe-up-demo-stg:
+	cd front && npm run start:sso:demo-stg
 
 # Clave Unica
 be-up-claveunica:
