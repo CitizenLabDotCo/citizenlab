@@ -17,11 +17,6 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   success: null,
   'access-denied': messages.youCantParticipate,
 
-  // full account creation sign up flow
-  'sign-up:auth-providers': messages.signUp,
-  'sign-up:email-password': messages.signUp,
-  'sign-up:invite': messages.signUp,
-
   // light flow
   'light-flow:email': messages.beforeYouParticipate,
   'light-flow:email-policies': messages.beforeYouParticipate,
@@ -34,6 +29,11 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'email-flow:start': messages.beforeYouParticipate,
   'email-flow:policies': messages.beforeYouParticipate,
   'email-flow:password': messages.logIn,
+
+  // invite flow
+  'invite:email-password': messages.signUp,
+  'invite:code': messages.signUp,
+  'invite:taken': messages.signUp,
 
   // missing data flow
   'missing-data:built-in': messages.completeYourProfile,
@@ -51,9 +51,6 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'sso-verification:sso-providers': messages.verificationRequired,
   'sso-verification:sso-providers-policies': messages.verificationRequired,
   'sso-verification:email-password': messages.logIn,
-
-  // invite taken flow
-  'invite:taken': messages.signUp,
 };
 
 export const getHeaderMessage = (
@@ -77,6 +74,7 @@ export const getHeaderMessage = (
 export const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
   account_creation_failed: messages.unknownError,
   wrong_confirmation_code: errorMessages.confirmation_code_invalid,
+  sign_in_failed: messages.signInError,
   requirements_fetching_failed: messages.unknownError,
   unknown: messages.unknownError,
   invitation_error: messages.invitationErrorText,
@@ -94,7 +92,7 @@ type HelperTextKey =
   | 'login_helper_text';
 
 export const HELPER_TEXT_KEYS: Partial<Record<Step, HelperTextKey>> = {
-  'sign-up:auth-providers': 'signup_helper_text',
-  'sign-up:email-password': 'signup_helper_text',
+  'email-flow:start': 'signup_helper_text',
+  'invite:email-password': 'signup_helper_text',
   'missing-data:custom-fields': 'custom_fields_signup_helper_text',
 };
