@@ -5,7 +5,6 @@ export type Step =
   | 'access-denied'
 
   // old sign up flow
-  | 'sign-up:auth-providers'
   | 'sign-up:email-password'
   | 'sign-up:invite'
 

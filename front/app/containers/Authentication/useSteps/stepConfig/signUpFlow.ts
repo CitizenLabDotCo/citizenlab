@@ -2,14 +2,12 @@ import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
 import createAccountWithPassword, {
   Parameters as CreateAccountParameters,
 } from 'api/authentication/sign_up/createAccountWithPassword';
-import { handleOnSSOClick } from 'api/authentication/singleSignOn';
 
 import { trackEventByName } from 'utils/analytics';
 
 import tracks from '../../tracks';
 import {
   AuthenticationData,
-  AuthProvider,
   GetRequirements,
   UpdateState,
 } from '../../typings';
@@ -25,30 +23,6 @@ export const signUpFlow = (
   anySSOProviderEnabled: boolean
 ) => {
   return {
-    // old sign up flow
-    'sign-up:auth-providers': {
-      CLOSE: () => setCurrentStep('closed'),
-      SWITCH_FLOW: () => {
-        updateState({ flow: 'signin' });
-        setCurrentStep('sign-in:auth-providers');
-      },
-      SELECT_AUTH_PROVIDER: async (authProvider: AuthProvider) => {
-        if (authProvider === 'email') {
-          setCurrentStep('sign-up:email-password');
-          return;
-        }
-
-        const { requirements } = await getRequirements();
-
-        handleOnSSOClick(
-          authProvider,
-          getAuthenticationData(),
-          requirements.verification,
-          'signup'
-        );
-      },
-    },
-
     'sign-up:email-password': {
       CLOSE: () => {
         setCurrentStep('closed');

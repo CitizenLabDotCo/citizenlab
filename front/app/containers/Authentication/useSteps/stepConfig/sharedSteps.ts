@@ -25,8 +25,7 @@ export const sharedSteps = (
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   setError: SetError,
-  updateState: UpdateState,
-  anySSOEnabled: boolean
+  updateState: UpdateState
 ) => {
   return {
     closed: {
@@ -144,19 +143,7 @@ export const sharedSteps = (
           }
         }
 
-        if (flow === 'signin') {
-          setCurrentStep('email-flow:start');
-          return;
-        }
-
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        if (flow === 'signup') {
-          anySSOEnabled
-            ? setCurrentStep('sign-up:auth-providers')
-            : setCurrentStep('sign-up:email-password');
-          return;
-        }
+        setCurrentStep('email-flow:start');
       },
 
       TRIGGER_VERIFICATION_ONLY: () => {
@@ -173,19 +160,19 @@ export const sharedSteps = (
           setCurrentStep('missing-data:verification');
           setError('verification_taken');
         } else {
-          setCurrentStep('sign-up:auth-providers');
+          setCurrentStep('email-flow:start');
           setError('unknown');
         }
       },
 
       TRIGGER_AUTH_ERROR: (error_code?: SignUpInError) => {
         if (error_code === 'franceconnect_merging_failed') {
-          setCurrentStep('sign-up:auth-providers');
+          setCurrentStep('email-flow:start');
           setError('franceconnect_merging_failed');
         } else if (error_code === 'not_entitled_under_minimum_age') {
           setCurrentStep('access-denied');
         } else {
-          setCurrentStep('sign-up:auth-providers');
+          setCurrentStep('email-flow:start');
           setError('unknown');
         }
       },

@@ -53,8 +53,7 @@ export const getStepConfig = (
       getRequirements,
       setCurrentStep,
       setError,
-      updateState,
-      anySSOEnabled
+      updateState
     ),
 
     ...signUpFlow(
