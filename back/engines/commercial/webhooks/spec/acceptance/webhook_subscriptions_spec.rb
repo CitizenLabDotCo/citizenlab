@@ -24,8 +24,7 @@ resource 'Webhook Subscriptions' do
 
       example_request 'List all webhook subscriptions' do
         expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data).size).to eq 3
+        expect(response_data.size).to eq 3
       end
 
       example 'List includes project relationship' do
@@ -67,7 +66,6 @@ resource 'Webhook Subscriptions' do
     example 'Secret token is masked' do
       do_request
 
-      json_response = json_parse(response_body)
       secret = response_data[:attributes][:secret_token]
       expect(secret).to include '...'
       expect(secret).not_to eq subscription.secret_token
@@ -204,56 +202,6 @@ resource 'Webhook Subscriptions' do
     end
   end
 
-  post 'web_api/v1/webhook_subscriptions/:id/test' do
-    let(:subscription) { create(:webhook_subscription, url: 'https://webhook.example.com/test') }
-    let(:id) { subscription.id }
-
-    context 'with successful delivery' do
-      before do
-        stub_request(:post, 'https://webhook.example.com/test')
-          .to_return(status: 200, body: 'OK')
-      end
-
-      example_request 'Test webhook delivery' do
-        expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:success]).to be true
-        expect(json_response.dig(:delivery, :data, :attributes, :status)).to eq 'success'
-      end
-    end
-
-    context 'with failed delivery' do
-      before do
-        stub_request(:post, 'https://webhook.example.com/test')
-          .to_return(status: 500)
-      end
-
-      example 'Returns failure information' do
-        do_request
-
-        expect(status).to eq 422
-        json_response = json_parse(response_body)
-        expect(json_response[:success]).to be false
-        expect(json_response[:error]).to be_present
-      end
-    end
-
-    context 'with timeout' do
-      before do
-        stub_request(:post, 'https://webhook.example.com/test').to_timeout
-      end
-
-      example 'Returns timeout error' do
-        do_request
-
-        expect(status).to eq 422
-        json_response = json_parse(response_body)
-        expect(json_response[:success]).to be false
-        expect(json_response[:error]).to include('TimeoutError')
-      end
-    end
-  end
-
   post 'web_api/v1/webhook_subscriptions/:id/regenerate_secret' do
     let(:subscription) { create(:webhook_subscription) }
     let(:id) { subscription.id }
@@ -261,7 +209,6 @@ resource 'Webhook Subscriptions' do
 
     example_request 'Regenerate secret token' do
       expect(status).to eq 200
-      json_response = json_parse(response_body)
 
       # Verify secret was changed
       subscription.reload

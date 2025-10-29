@@ -74,7 +74,7 @@ resource 'Webhook Deliveries' do
     end
   end
 
-  get 'web_api/v1/webhook_subscriptions/:webhook_subscription_id/webhook_deliveries/:id' do
+  get 'web_api/v1/webhook_deliveries/:id' do
     let(:activity) { create(:idea_created_activity) }
     let(:delivery) do
       create(:webhook_delivery, :succeeded,
@@ -122,23 +122,6 @@ resource 'Webhook Deliveries' do
 
         expect(attributes[:status]).to eq 'failed'
         expect(attributes[:error_message]).to eq 'Connection timeout'
-      end
-    end
-
-    context 'accessing delivery from different subscription' do
-      let(:other_subscription) { create(:webhook_subscription) }
-      let(:other_delivery) do
-        create(:webhook_delivery,
-          subscription: other_subscription,
-          activity: activity)
-      end
-      let(:webhook_subscription_id) { subscription.id }
-      let(:id) { other_delivery.id }
-
-      example 'Returns 404 not found' do
-        do_request
-
-        expect(status).to eq 404
       end
     end
   end

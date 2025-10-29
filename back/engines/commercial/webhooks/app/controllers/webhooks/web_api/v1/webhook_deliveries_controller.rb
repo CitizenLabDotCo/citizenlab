@@ -4,8 +4,8 @@ module Webhooks
   module WebApi
     module V1
       class WebhookDeliveriesController < ::ApplicationController
-        before_action :set_subscription
-        before_action :set_delivery, only: [:show]
+        before_action :set_delivery, only: %i[show replay]
+        before_action :set_subscription, only: [:index]
         skip_after_action :verify_policy_scoped, only: [:index]
 
         def index
@@ -28,6 +28,20 @@ module Webhooks
           ).serializable_hash
         end
 
+        def replay
+          new_delivery = Delivery.create!(
+            subscriptin: @delivery.subscription,
+            activity: @delivery.activity,
+            event_type: @delivery.event_type,
+            status: 'pending'
+          )
+          Webhooks::DeliveryJob.perform_later(new_delivery)
+          render json: WebApi::V1::WebhookDeliverySerializer.new(
+            new_delivery,
+            params: jsonapi_serializer_params
+          ).serializable_hash, status: :created
+        end
+
         private
 
         def set_subscription
@@ -36,7 +50,8 @@ module Webhooks
         end
 
         def set_delivery
-          @delivery = @subscription.deliveries.find(params[:id])
+          @delivery = Delivery.find(params[:id])
+          authorize @delivery
         end
       end
     end

@@ -36,11 +36,11 @@ RSpec.describe Webhooks::EnqueueService do
         expect(delivery.status).to eq('pending')
       end
 
-      it 'enqueues job with delivery ID' do
+      it 'enqueues job with the delivery' do
         described_class.new.call(activity)
 
         delivery = Webhooks::Delivery.last
-        expect(Webhooks::DeliveryJob).to have_been_enqueued.with(delivery.id)
+        expect(Webhooks::DeliveryJob).to have_been_enqueued.with(delivery)
       end
     end
 

@@ -64,41 +64,6 @@ module Webhooks
           head :no_content
         end
 
-        def test
-          authorize @subscription
-
-          # Create test delivery
-          test_activity = create_test_activity
-
-          delivery = Webhooks::Delivery.create!(
-            subscription: @subscription,
-            event_type: 'test.webhook',
-            status: 'pending',
-            activity: test_activity
-          )
-
-          # Deliver synchronously
-          begin
-            Webhooks::DeliveryJob.perform_now(delivery)
-            render json: {
-              success: true,
-              delivery: WebApi::V1::WebhookDeliverySerializer.new(
-                delivery.reload,
-                params: jsonapi_serializer_params
-              ).serializable_hash
-            }
-          rescue StandardError => e
-            render json: {
-              success: false,
-              error: e.message,
-              delivery: WebApi::V1::WebhookDeliverySerializer.new(
-                delivery.reload,
-                params: jsonapi_serializer_params
-              ).serializable_hash
-            }, status: :unprocessable_entity
-          end
-        end
-
         def regenerate_secret
           authorize @subscription
 

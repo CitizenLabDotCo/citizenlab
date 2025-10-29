@@ -25,7 +25,7 @@ module Webhooks
           event_type: event_type,
           status: 'pending'
         )
-        Webhooks::DeliveryJob.perform_later(delivery.id)
+        Webhooks::DeliveryJob.perform_later(delivery)
       end
     end
 
