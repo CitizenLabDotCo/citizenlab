@@ -3,7 +3,7 @@ class AddUniquenessConstraintToCustomFieldsOrdering < ActiveRecord::Migration[7.
 
   def change
     # Input forms
-    add_index :custom_fields, [:resource_id, :ordering],
+    add_index :custom_fields, %i[resource_id ordering],
       unique: true,
       name: 'index_custom_fields_on_resource_id_and_ordering_unique',
       algorithm: :concurrently
