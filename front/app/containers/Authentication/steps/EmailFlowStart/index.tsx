@@ -17,6 +17,7 @@ import useAuthConfig from 'containers/Authentication/useAuthConfig';
 import Input from 'components/HookForm/Input';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
+import Or from 'components/UI/Or';
 
 import { useIntl } from 'utils/cl-intl';
 import {
@@ -96,12 +97,19 @@ const EmailFlowStart = ({
   return (
     <>
       {ssoProviders.franceconnect && (
-        <FranceConnectButton
-          logoAlt={formatMessage(oldMessages.signUpButtonAltText, {
-            loginMechanismName: 'FranceConnect',
-          })}
-          onClick={onEnterFranceConnect}
-        />
+        <>
+          <FranceConnectButton
+            logoAlt={formatMessage(oldMessages.signUpButtonAltText, {
+              loginMechanismName: 'FranceConnect',
+            })}
+            onClick={onEnterFranceConnect}
+          />
+          {passwordLoginEnabled && (
+            <Box mt="32px" mb="20px">
+              <Or />
+            </Box>
+          )}
+        </>
       )}
       {passwordLoginEnabled && (
         <FormProvider {...methods}>
