@@ -21,7 +21,6 @@ import {
   isCLErrorsWrapper,
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
-import { isNilOrError } from 'utils/helperUtils';
 import { isValidEmail } from 'utils/validate';
 
 import sharedMessages from '../messages';
@@ -45,7 +44,7 @@ const DEFAULT_VALUES: Partial<FormValues> = {
   email: undefined,
 };
 
-const LightFlowStart = ({
+const EmailFlowStart = ({
   loading,
   setError,
   onSubmit,
@@ -76,8 +75,6 @@ const LightFlowStart = ({
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),
   });
-
-  if (isNilOrError(locale)) return null;
 
   const handleSubmit = async ({ email }: FormValues) => {
     try {
@@ -126,4 +123,4 @@ const LightFlowStart = ({
   );
 };
 
-export default LightFlowStart;
+export default EmailFlowStart;
