@@ -98,6 +98,7 @@ export const emailFlow = (
 
     'email-flow:password': {
       CLOSE: () => setCurrentStep('closed'),
+      GO_BACK: () => setCurrentStep('email-flow:start'),
       SUBMIT_PASSWORD: async (
         email: string,
         password: string,

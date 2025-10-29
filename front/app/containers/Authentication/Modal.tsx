@@ -17,11 +17,13 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
+import messages from './messages';
 import {
   getHeaderMessage,
   HELPER_TEXT_KEYS,
   ERROR_CODE_MESSAGES,
 } from './messageUtils';
+import TextButton from './steps/_components/TextButton';
 import AccessDenied from './steps/AccessDenied';
 import BuiltInFields from './steps/BuiltInFields';
 import ChangeEmail from './steps/ChangeEmail';
@@ -107,6 +109,17 @@ const AuthModal = () => {
                   {...ERROR_CODE_MESSAGES[error]}
                   values={{
                     br: <br />,
+                    createAnAccountLink: (
+                      <TextButton
+                        onClick={
+                          currentStep === 'email-flow:password'
+                            ? transition(currentStep, 'GO_BACK')
+                            : undefined
+                        }
+                      >
+                        {formatMessage(messages.createAnAccountLink)}
+                      </TextButton>
+                    ),
                   }}
                 />
               }
