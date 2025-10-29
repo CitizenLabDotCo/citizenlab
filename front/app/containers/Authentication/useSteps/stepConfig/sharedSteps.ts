@@ -45,13 +45,13 @@ export const sharedSteps = (
             };
 
             updateState({ token, prefilledBuiltInFields });
-            setCurrentStep('sign-up:email-password');
+            setCurrentStep('invite:email-password');
           } catch {
-            setCurrentStep('sign-up:email-password');
+            setCurrentStep('invite:email-password');
             setError('invitation_error');
           }
         } else {
-          setCurrentStep('sign-up:invite');
+          setCurrentStep('invite:code');
         }
       },
 

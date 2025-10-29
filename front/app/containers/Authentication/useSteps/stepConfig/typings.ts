@@ -4,10 +4,6 @@ export type Step =
   | 'success'
   | 'access-denied'
 
-  // old sign up flow
-  | 'sign-up:email-password'
-  | 'sign-up:invite'
-
   // light flow
   | 'light-flow:email'
   | 'light-flow:email-policies'
@@ -20,6 +16,10 @@ export type Step =
   | 'email-flow:start'
   | 'email-flow:policies'
   | 'email-flow:password'
+
+  // invite flow
+  | 'invite:email-password'
+  | 'invite:code'
 
   // missing data (if signed in already)
   | 'missing-data:built-in'

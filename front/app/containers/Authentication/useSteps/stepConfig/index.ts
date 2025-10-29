@@ -7,10 +7,10 @@ import {
 } from '../../typings';
 
 import { emailFlow } from './emailFlow';
+import { inviteFlow } from './inviteFlow';
 import { lightFlow } from './lightFlow';
 import { missingDataFlow } from './missingDataFlow';
 import { sharedSteps } from './sharedSteps';
-import { signUpFlow } from './signUpFlow';
 import { ssoVerificationFlow } from './ssoVerificationFlow';
 import { Step } from './typings';
 
@@ -20,7 +20,6 @@ export const getStepConfig = (
   setCurrentStep: (step: Step) => void,
   setError: SetError,
   updateState: UpdateState,
-  anySSOEnabled: boolean,
   state: State
 ) => {
   return {
@@ -30,6 +29,13 @@ export const getStepConfig = (
       setCurrentStep,
       updateState,
       state
+    ),
+
+    ...inviteFlow(
+      getAuthenticationData,
+      getRequirements,
+      setCurrentStep,
+      updateState
     ),
 
     ...lightFlow(
@@ -54,14 +60,6 @@ export const getStepConfig = (
       setCurrentStep,
       setError,
       updateState
-    ),
-
-    ...signUpFlow(
-      getAuthenticationData,
-      getRequirements,
-      setCurrentStep,
-      updateState,
-      anySSOEnabled
     ),
 
     ...ssoVerificationFlow(

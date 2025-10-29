@@ -15,29 +15,16 @@ import {
 import { Step } from './typings';
 import { doesNotMeetGroupCriteria, checkMissingData } from './utils';
 
-export const signUpFlow = (
+export const inviteFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
-  updateState: UpdateState,
-  anySSOProviderEnabled: boolean
+  updateState: UpdateState
 ) => {
   return {
-    'sign-up:email-password': {
+    'invite:email-password': {
       CLOSE: () => {
         setCurrentStep('closed');
-        trackEventByName(tracks.signUpEmailPasswordStepExited);
-      },
-      SWITCH_FLOW: () => {
-        updateState({ flow: 'signup' });
-        setCurrentStep('sign-in:email-password');
-        trackEventByName(tracks.signUpEmailPasswordStepExited);
-      },
-      GO_BACK: () => {
-        if (anySSOProviderEnabled) {
-          setCurrentStep('sign-up:auth-providers');
-          trackEventByName(tracks.signUpEmailPasswordStepExited);
-        }
       },
       SUBMIT: async (params: CreateAccountParameters) => {
         try {
@@ -79,7 +66,7 @@ export const signUpFlow = (
       },
     },
 
-    'sign-up:invite': {
+    'invite:code': {
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT: async (token: string) => {
         const response = await getUserDataFromToken(token);
@@ -92,7 +79,7 @@ export const signUpFlow = (
 
         updateState({ token, prefilledBuiltInFields });
 
-        setCurrentStep('sign-up:email-password');
+        setCurrentStep('invite:email-password');
       },
     },
   };
