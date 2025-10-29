@@ -64,7 +64,11 @@ const Container = styled.div`
   }
 `;
 
-export const SelectWrapper = styled.div<{ mr?: string; size?: InputSize }>`
+export const SelectWrapper = styled.div<{
+  mr?: string;
+  size?: InputSize;
+  height?: string;
+}>`
   width: 100%;
   position: relative;
   select {
@@ -84,7 +88,8 @@ export const SelectWrapper = styled.div<{ mr?: string; size?: InputSize }>`
       display: none;
     }
     ${defaultInputStyle};
-    height: ${stylingConsts.inputHeight}px;
+    height: ${({ height }) =>
+      height ? height : `${stylingConsts.inputHeight}px`} !important;
   }
 `;
 
@@ -104,6 +109,7 @@ export interface Props extends DefaultProps {
   labelTooltipPlacement?: Placement;
   className?: string;
   size?: InputSize;
+  height?: string;
   placeholder?: string;
   mr?: string;
   dataCy?: string;
@@ -160,6 +166,7 @@ class Select extends PureComponent<Props> {
       label,
       labelTooltipText,
       labelTooltipPlacement,
+      height,
       size,
       value,
       placeholder,
@@ -189,7 +196,7 @@ class Select extends PureComponent<Props> {
             )}
           </Label>
         )}
-        <SelectWrapper size={size} mr={mr}>
+        <SelectWrapper mr={mr} size={size} height={height}>
           <select
             id={id}
             disabled={disabled}
