@@ -58,6 +58,7 @@ module Cl2Back
     # that need to be loaded.
     config.eager_load_paths << Rails.root.join('lib')
 
+    config.action_dispatch.perform_deep_munge = false
     config.session_store :cookie_store, key: '_interslice_session'
 
     # https://github.com/AzureAD/omniauth-azure-activedirectory/issues/22#issuecomment-1259340380
@@ -81,9 +82,6 @@ module Cl2Back
 
       :lax
     }
-
-    # Prevents filtering out nil values from arrays in params (future Rails versions might stop supporting this).
-    config.action_dispatch.perform_deep_munge = false
 
     config.middleware.use ActionDispatch::Cookies # Required for all session management
     config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
