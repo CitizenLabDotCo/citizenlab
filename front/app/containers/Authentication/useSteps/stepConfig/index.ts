@@ -77,9 +77,5 @@ export const getStepConfig = (
     'verification-success': {
       CLOSE: () => setCurrentStep('closed'),
     },
-
-    'taken-by-invite': {
-      CLOSE: () => setCurrentStep('closed'),
-    },
   };
 };

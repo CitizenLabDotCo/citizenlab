@@ -23,7 +23,6 @@ import {
   ERROR_CODE_MESSAGES,
 } from './messageUtils';
 import AccessDenied from './steps/AccessDenied';
-import AuthProviders from './steps/AuthProviders';
 import BuiltInFields from './steps/BuiltInFields';
 import ChangeEmail from './steps/ChangeEmail';
 import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
@@ -132,35 +131,7 @@ const AuthModal = () => {
             onContinue={transition(currentStep, 'CONTINUE')}
           />
         )}
-        {/* old sign up flow */}
-        {currentStep === 'sign-up:auth-providers' && (
-          <AuthProviders
-            flow="signup"
-            error={error}
-            onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
-            onSelectAuthProvider={transition(
-              currentStep,
-              'SELECT_AUTH_PROVIDER'
-            )}
-          />
-        )}
-        {currentStep === 'sign-up:email-password' && (
-          <EmailAndPasswordSignUp
-            state={state}
-            loading={loading}
-            setError={setError}
-            onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
-            onGoBack={transition(currentStep, 'GO_BACK')}
-            onSubmit={transition(currentStep, 'SUBMIT')}
-          />
-        )}
-        {currentStep === 'sign-up:invite' && (
-          <Invitation
-            loading={loading}
-            setError={setError}
-            onSubmit={transition(currentStep, 'SUBMIT')}
-          />
-        )}
+
         {/* light flow */}
         {currentStep === 'light-flow:email' && (
           <LightFlowStart
@@ -222,6 +193,26 @@ const AuthModal = () => {
             onSubmit={transition(currentStep, 'SUBMIT_PASSWORD')}
           />
         )}
+
+        {/* invite flow */}
+        {currentStep === 'invite:email-password' && (
+          <EmailAndPasswordSignUp
+            state={state}
+            loading={loading}
+            setError={setError}
+            onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
+            onGoBack={transition(currentStep, 'GO_BACK')}
+            onSubmit={transition(currentStep, 'SUBMIT')}
+          />
+        )}
+        {currentStep === 'invite:code' && (
+          <Invitation
+            loading={loading}
+            setError={setError}
+            onSubmit={transition(currentStep, 'SUBMIT')}
+          />
+        )}
+        {currentStep === 'invite:taken' && <InvitationResent state={state} />}
 
         {/* missing data flow / shared */}
         {currentStep === 'missing-data:built-in' && (
@@ -315,10 +306,6 @@ const AuthModal = () => {
             authenticationData={authenticationData}
             onClose={transition(currentStep, 'CLOSE')}
           />
-        )}
-
-        {currentStep === 'taken-by-invite' && (
-          <InvitationResent state={state} />
         )}
       </Box>
     </Modal>

@@ -55,7 +55,7 @@ export const lightFlow = (
           }
         } catch (e) {
           if (e.errors?.email?.[0]?.error === 'taken_by_invite') {
-            setCurrentStep('taken-by-invite');
+            setCurrentStep('invite:taken');
           } else {
             throw e;
           }
