@@ -39,14 +39,17 @@ export const emailFlow = (
           const { action } = response.data.attributes;
 
           if (action === 'terms') {
+            updateState({ flow: 'signup' });
             setCurrentStep('email-flow:policies');
           }
 
           if (action === 'password') {
+            updateState({ flow: 'signin' });
             setCurrentStep('email-flow:password');
           }
 
           if (action === 'confirm') {
+            updateState({ flow: 'signin' });
             await createEmailOnlyAccount({ email, locale });
             setCurrentStep('missing-data:email-confirmation');
           }
