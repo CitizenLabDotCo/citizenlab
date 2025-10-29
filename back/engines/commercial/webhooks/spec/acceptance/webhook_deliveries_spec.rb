@@ -184,4 +184,26 @@ resource 'Webhook Deliveries' do
       end
     end
   end
+
+  post 'web_api/v1/webhook_deliveries/:id/replay' do
+    let(:activity) { create(:idea_created_activity) }
+    let(:delivery) do
+      create(:webhook_delivery, :succeeded,
+        subscription: subscription,
+        activity: activity)
+    end
+    let(:id) { delivery.id }
+
+    example_request 'Replay a webhook delivery' do
+      expect(status).to eq 201
+      json_response = json_parse(response_body)
+      expect(json_response.dig(:data, :attributes, :status)).to eq 'pending'
+
+      new_delivery = Webhooks::Delivery.find(json_response.dig(:data, :id))
+      expect(new_delivery.subscription).to eq delivery.subscription
+      expect(new_delivery.activity).to eq delivery.activity
+      expect(new_delivery.event_type).to eq delivery.event_type
+      expect(new_delivery.status).to eq 'pending'
+    end
+  end
 end

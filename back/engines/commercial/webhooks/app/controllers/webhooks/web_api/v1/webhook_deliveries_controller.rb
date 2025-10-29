@@ -30,7 +30,7 @@ module Webhooks
 
         def replay
           new_delivery = Delivery.create!(
-            subscriptin: @delivery.subscription,
+            subscription: @delivery.subscription,
             activity: @delivery.activity,
             event_type: @delivery.event_type,
             status: 'pending'
