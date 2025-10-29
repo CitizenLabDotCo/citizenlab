@@ -17,7 +17,7 @@ import {
   Footer,
   SubmitButton,
   CancelButton,
-} from 'containers/Authentication/steps/AuthProviders/styles';
+} from 'components/AuthProviderStyles/styles';
 
 import Error from 'components/UI/Error';
 
