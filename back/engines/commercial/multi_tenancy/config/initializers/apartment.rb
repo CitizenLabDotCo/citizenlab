@@ -109,6 +109,7 @@ Apartment.configure do |config|
   # config.prepend_environment = !Rails.env.production?
 end
 
+# Custom Tenant switching middleware
 class RescuedApartmentMiddleware < Apartment::Elevators::Generic
   def call(env)
     request = Rack::Request.new(env)
@@ -144,19 +145,7 @@ class RescuedApartmentMiddleware < Apartment::Elevators::Generic
   end
 end
 
-# Setup a custom Tenant switching middleware. The Proc should return the name of the Tenant that
-# you want to switch to.
-# Rails.application.config.middleware.use 'Apartment::Elevators::Generic', lambda { |request|
-#   request.host.split('.').first
-# }
-
-# Results in No such middleware to insert after: ActionDispatch::Session::CookieStore
-# Rails.application.config.middleware.insert_after ActionDispatch::Session::CookieStore, RescuedApartmentMiddleware
-
-# Rails.application.config.middleware.use RescuedApartmentElevator, Proc.new { |request| puts request.path; request.host.gsub(/\./, "_") }
-# Rails.application.config.middleware.use Apartment::Elevators::Domain
-# Rails.application.config.middleware.use 'Apartment::Elevators::Subdomain'
-# Rails.application.config.middleware.use 'Apartment::Elevators::FirstSubdomain'
+Rails.application.config.middleware.insert_after ActionDispatch::Session::CookieStore, RescuedApartmentMiddleware
 
 # https://github.com/rails-on-services/apartment/tree/2.11.0#callbacks
 require 'apartment/adapters/abstract_adapter'
