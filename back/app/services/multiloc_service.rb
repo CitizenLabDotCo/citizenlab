@@ -6,7 +6,7 @@ class MultilocService
   end
 
   # @param ignore_blank [Boolean] If true, blank translations (empty or only whitespace)
-  #   considered missing, and the next best translation is returned.
+  #   are considered missing, and the next best translation is returned.
   def t(translations, preferred_locale = nil, ignore_blank: false)
     return nil unless translations
 
