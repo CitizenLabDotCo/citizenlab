@@ -108,6 +108,8 @@ export const missingDataFlow = (
           setCurrentStep('access-denied');
           return;
         }
+
+        setCurrentStep('success');
       },
     },
 
