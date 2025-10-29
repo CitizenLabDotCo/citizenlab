@@ -160,7 +160,7 @@ module IdeaCustomFields
           end
           update_statements! field, statements_params, errors, index if statements_params
           relate_map_config_to_field(field, field_params, errors, index)
-          field.set_list_position(index)
+          field.move_to_bottom
           count_fields(field)
         end
         raise UpdateAllFailedError, errors if errors.present?

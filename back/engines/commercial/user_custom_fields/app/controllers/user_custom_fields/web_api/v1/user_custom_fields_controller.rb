@@ -62,7 +62,6 @@ module UserCustomFields
         end
 
         def reorder
-          fix_reordering
           if @custom_field.insert_at(custom_field_params(@custom_field)[:ordering])
             SideFxCustomFieldService.new.after_update(@custom_field, current_user)
             render json: serialize_custom_fields(@custom_field.reload, params: jsonapi_serializer_params_with_locked_fields), status: :ok
@@ -101,16 +100,6 @@ module UserCustomFields
 
         def serialize_custom_fields(...)
           UserCustomFields::WebApi::V1::UserCustomFieldSerializer.new(...).serializable_hash.to_json
-        end
-
-        # Fix the ordering so it is sequential - sometimes some fields can get set to the same order position
-        def fix_reordering
-          fields = CustomField.registration.order(:ordering)
-          if fields.pluck(:ordering) != (0..fields.size - 1).to_a
-            fields.each_with_index do |field, index|
-              field.set_list_position(index)
-            end
-          end
         end
       end
     end
