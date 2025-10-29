@@ -1610,7 +1610,6 @@
   "app.containers.NewAuthModal.steps.AcceptPolicies.reviewTheTerms": "Norėdami tęsti, peržiūrėkite toliau nurodytas sąlygas.",
   "app.containers.NewAuthModal.steps.BuiltInFields.pleaseCompleteYourProfile": "Užpildykite savo profilį.",
   "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveFourDigits": "Kodą turi sudaryti 4 skaitmenys.",
-  "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.continueWithFranceConnect": "Tęsti su FranceConnect",
   "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.noAuthenticationMethodsEnabled": "Šioje platformoje neįjungti jokie autentifikavimo metodai.",
   "app.containers.NewAuthModal.steps.EmailSignUp.byContinuing": "Tęsdami sutinkate gauti el. laiškus iš šios platformos. Puslapyje \"Mano nustatymai\" galite pasirinkti, kokius el. laiškus norite gauti.",
   "app.containers.NewAuthModal.steps.EmailSignUp.email": "El. paštas",

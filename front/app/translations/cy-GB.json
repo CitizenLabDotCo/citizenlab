@@ -1610,7 +1610,6 @@
   "app.containers.NewAuthModal.steps.AcceptPolicies.reviewTheTerms": "Adolygwch y telerau isod i barhau.",
   "app.containers.NewAuthModal.steps.BuiltInFields.pleaseCompleteYourProfile": "Cwblhewch eich proffil.",
   "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveFourDigits": "Rhaid i'r cod fod â 4 digid.",
-  "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.continueWithFranceConnect": "Parhewch gyda FranceConnect",
   "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.noAuthenticationMethodsEnabled": "Nid oes unrhyw ddulliau dilysu wedi'u galluogi ar y platfform hwn.",
   "app.containers.NewAuthModal.steps.EmailSignUp.byContinuing": "Trwy barhau, rydych chi'n cytuno i dderbyn e-byst o'r platfform hwn. Gallwch ddewis pa e-byst yr hoffech eu derbyn ar y dudalen 'Fy Ngosodiadau'.",
   "app.containers.NewAuthModal.steps.EmailSignUp.email": "Ebost",

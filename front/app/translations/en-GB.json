@@ -1610,7 +1610,6 @@
   "app.containers.NewAuthModal.steps.AcceptPolicies.reviewTheTerms": "Review the terms below to continue.",
   "app.containers.NewAuthModal.steps.BuiltInFields.pleaseCompleteYourProfile": "Please complete your profile.",
   "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveFourDigits": "Code must have 4 digits.",
-  "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.continueWithFranceConnect": "Continue with FranceConnect",
   "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.noAuthenticationMethodsEnabled": "No authentication methods are enabled on this platform.",
   "app.containers.NewAuthModal.steps.EmailSignUp.byContinuing": "By continuing, you agree to receive emails from this platform. You can select which emails you wish to receive in the 'My Settings' page.",
   "app.containers.NewAuthModal.steps.EmailSignUp.email": "Email",

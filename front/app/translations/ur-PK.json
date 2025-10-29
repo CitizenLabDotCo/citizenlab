@@ -1610,7 +1610,6 @@
   "app.containers.NewAuthModal.steps.AcceptPolicies.reviewTheTerms": "جاری رکھنے کے لیے نیچے دی گئی شرائط کا جائزہ لیں۔",
   "app.containers.NewAuthModal.steps.BuiltInFields.pleaseCompleteYourProfile": "براہ کرم اپنا پروفائل مکمل کریں۔",
   "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveFourDigits": "کوڈ میں 4 ہندسوں کا ہونا ضروری ہے۔",
-  "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.continueWithFranceConnect": "FranceConnect کے ساتھ جاری رکھیں",
   "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.noAuthenticationMethodsEnabled": "اس پلیٹ فارم پر تصدیق کا کوئی طریقہ فعال نہیں ہے۔",
   "app.containers.NewAuthModal.steps.EmailSignUp.byContinuing": "جاری رکھ کر، آپ اس پلیٹ فارم سے ای میلز وصول کرنے سے اتفاق کرتے ہیں۔ آپ 'میری ترتیبات' صفحہ میں منتخب کر سکتے ہیں کہ آپ کون سی ای میلز وصول کرنا چاہتے ہیں۔",
   "app.containers.NewAuthModal.steps.EmailSignUp.email": "ای میل",

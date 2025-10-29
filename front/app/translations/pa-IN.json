@@ -1610,7 +1610,6 @@
   "app.containers.NewAuthModal.steps.AcceptPolicies.reviewTheTerms": "ਜਾਰੀ ਰੱਖਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੀਆਂ ਸ਼ਰਤਾਂ ਦੀ ਸਮੀਖਿਆ ਕਰੋ।",
   "app.containers.NewAuthModal.steps.BuiltInFields.pleaseCompleteYourProfile": "ਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ ਪ੍ਰੋਫਾਈਲ ਪੂਰਾ ਕਰੋ।",
   "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveFourDigits": "ਕੋਡ ਵਿੱਚ 4 ਅੰਕ ਹੋਣੇ ਚਾਹੀਦੇ ਹਨ।",
-  "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.continueWithFranceConnect": "FranceConnect ਨਾਲ ਜਾਰੀ ਰੱਖੋ",
   "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.noAuthenticationMethodsEnabled": "ਇਸ ਪਲੇਟਫਾਰਮ 'ਤੇ ਕੋਈ ਪ੍ਰਮਾਣੀਕਰਨ ਵਿਧੀਆਂ ਯੋਗ ਨਹੀਂ ਹਨ।",
   "app.containers.NewAuthModal.steps.EmailSignUp.byContinuing": "ਜਾਰੀ ਰੱਖ ਕੇ, ਤੁਸੀਂ ਇਸ ਪਲੇਟਫਾਰਮ ਤੋਂ ਈਮੇਲਾਂ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ ਸਹਿਮਤ ਹੁੰਦੇ ਹੋ। ਤੁਸੀਂ 'ਮੇਰੀ ਸੈਟਿੰਗ' ਪੰਨੇ ਵਿੱਚ ਚੁਣ ਸਕਦੇ ਹੋ ਕਿ ਤੁਸੀਂ ਕਿਹੜੀਆਂ ਈਮੇਲਾਂ ਪ੍ਰਾਪਤ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ।",
   "app.containers.NewAuthModal.steps.EmailSignUp.email": "ਈਮੇਲ",

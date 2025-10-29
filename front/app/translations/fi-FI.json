@@ -1610,7 +1610,6 @@
   "app.containers.NewAuthModal.steps.AcceptPolicies.reviewTheTerms": "Lue alla olevat ehdot jatkaaksesi.",
   "app.containers.NewAuthModal.steps.BuiltInFields.pleaseCompleteYourProfile": "Täytä profiilisi.",
   "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveFourDigits": "Koodissa on oltava 4 numeroa.",
-  "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.continueWithFranceConnect": "Jatka FranceConnectilla",
   "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.noAuthenticationMethodsEnabled": "Tällä alustalla ei ole käytössä todennusmenetelmiä.",
   "app.containers.NewAuthModal.steps.EmailSignUp.byContinuing": "Jatkamalla hyväksyt sähköpostien vastaanottamisen tältä alustalta. Voit valita, mitkä sähköpostit haluat vastaanottaa \"Omat asetukset\" -sivulla.",
   "app.containers.NewAuthModal.steps.EmailSignUp.email": "Sähköposti",
