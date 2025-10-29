@@ -79,7 +79,8 @@ context 'keycloak verification (ID-Porten - Oslo)' do
       enabled: true,
       verification_methods: [{
         name: 'keycloak',
-        domain: 'some.test.domain.com',
+        provider: 'id-porten',
+        issuer: 'https://some.test.domain.com/auth/realms/example-realm',
         client_id: '12345',
         client_secret: '78910'
       }]

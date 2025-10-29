@@ -25,5 +25,9 @@ module Verification
     def enabled_for_verified_actions?
       config[:enabled_for_verified_actions] || false
     end
+
+    def enabled?
+      true
+    end
   end
 end

@@ -360,10 +360,10 @@ module MultiTenancy
                 },
                 {
                   name: 'keycloak',
+                  provider: ENV.fetch('DEFAULT_ID_KEYCLOAK_PROVIDER', 'id-porten'),
                   client_id: ENV.fetch('DEFAULT_ID_KEYCLOAK_CLIENT_ID', 'fake id'),
                   client_secret: ENV.fetch('DEFAULT_ID_KEYCLOAK_CLIENT_SECRET', 'fake secret'),
-                  domain: ENV.fetch('DEFAULT_ID_KEYCLOAK_DOMAIN', 'fake domain'),
-                  ui_method_name: 'Bank ID',
+                  issuer: ENV.fetch('DEFAULT_ID_KEYCLOAK_ISSUER', 'fake issuer'),
                   enabled_for_verified_actions: true
                 },
                 {
