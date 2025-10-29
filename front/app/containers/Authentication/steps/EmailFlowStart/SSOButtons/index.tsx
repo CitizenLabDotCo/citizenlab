@@ -38,7 +38,7 @@ const SSOButtons = ({ onClickSSO }: Props) => {
   return (
     <>
       {passwordLoginEnabled && (
-        <Box mt="32px" mb="20px">
+        <Box mt="20px">
           <Or />
         </Box>
       )}

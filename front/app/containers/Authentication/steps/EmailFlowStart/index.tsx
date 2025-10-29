@@ -105,7 +105,7 @@ const EmailFlowStart = ({
             onClick={onEnterFranceConnect}
           />
           {passwordLoginEnabled && (
-            <Box mt="32px" mb="20px">
+            <Box mt="24px">
               <Or />
             </Box>
           )}
