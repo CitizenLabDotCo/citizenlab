@@ -77,6 +77,17 @@ export const emailFlow = (
           setCurrentStep('email-flow:sso-policies');
         }
       },
+
+      ENTER_FRANCE_CONNECT: async () => {
+        const { requirements } = await getRequirements();
+
+        handleOnSSOClick(
+          'franceconnect',
+          getAuthenticationData(),
+          requirements.verification,
+          'signin'
+        );
+      },
     },
 
     'email-flow:policies': {

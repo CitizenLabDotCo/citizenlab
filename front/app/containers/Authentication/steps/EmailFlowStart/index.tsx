@@ -8,13 +8,15 @@ import { string, object } from 'yup';
 
 import { SSOProvider } from 'api/authentication/singleSignOn';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
+import oldMessages from 'containers/Authentication/steps/_components/AuthProviderButton/messages';
 import { SetError } from 'containers/Authentication/typings';
+import useAuthConfig from 'containers/Authentication/useAuthConfig';
 
 import Input from 'components/HookForm/Input';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+import FranceConnectButton from 'components/UI/FranceConnectButton';
 
 import { useIntl } from 'utils/cl-intl';
 import {
@@ -34,6 +36,7 @@ interface Props {
   setError: SetError;
   onSubmit: (email: string, locale: SupportedLocale) => void;
   onSwitchToSSO: (ssoProvider: SSOProvider) => void;
+  onEnterFranceConnect: () => void;
 }
 
 interface FormValues {
@@ -49,8 +52,9 @@ const EmailFlowStart = ({
   setError,
   onSubmit,
   onSwitchToSSO,
+  onEnterFranceConnect,
 }: Props) => {
-  const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
+  const { passwordLoginEnabled, ssoProviders } = useAuthConfig();
   const locale = useLocale();
 
   const { formatMessage } = useIntl();
@@ -91,6 +95,14 @@ const EmailFlowStart = ({
 
   return (
     <>
+      {ssoProviders.franceconnect && (
+        <FranceConnectButton
+          logoAlt={formatMessage(oldMessages.signUpButtonAltText, {
+            loginMechanismName: 'FranceConnect',
+          })}
+          onClick={onEnterFranceConnect}
+        />
+      )}
       {passwordLoginEnabled && (
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(handleSubmit)}>
