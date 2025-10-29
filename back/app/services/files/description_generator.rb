@@ -209,19 +209,19 @@ module Files
 
       missing_locales = expected_locales - parsed_response.keys
       if missing_locales.any?
-        ErrorReporter.report_msg("LLM response is missing locales: #{missing_locales.join(', ')}", extra: {
-          response_content: json_content,
-          file_id: file.id
-        })
+        ErrorReporter.report_msg(
+          "LLM response is missing locales: #{missing_locales.join(', ')}",
+          extra: { response_content:, file_id: file.id }
+        )
       end
 
       supported_locales = CL2_SUPPORTED_LOCALES.map(&:to_s)
       invalid_locales = parsed_response.keys - supported_locales
       if invalid_locales.any?
-        ErrorReporter.report_msg("LLM response contains invalid locales: #{invalid_locales.join(', ')}", extra: {
-          response_content: json_content,
-          file_id: file.id
-        })
+        ErrorReporter.report_msg(
+          "LLM response contains invalid locales: #{invalid_locales.join(', ')}",
+          extra: { response_content:, file_id: file.id }
+        )
       end
 
       # We are lenient and accept any additional *valid* locales in the response.
