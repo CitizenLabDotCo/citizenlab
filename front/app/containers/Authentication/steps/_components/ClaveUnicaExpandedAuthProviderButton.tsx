@@ -3,9 +3,10 @@ import React, { memo, useCallback, useState } from 'react';
 import { fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { AuthProvider } from 'api/authentication/singleSignOn';
 import { TVerificationMethodName } from 'api/verification_methods/types';
 import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
+
+import { AuthProvider } from 'containers/Authentication/typings';
 
 import ClaveUnicaButton from 'components/UI/ClaveUnicaButton';
 

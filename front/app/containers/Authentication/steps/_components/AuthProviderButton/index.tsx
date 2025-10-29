@@ -5,7 +5,7 @@ import { darken } from 'polished';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled, { useTheme } from 'styled-components';
 
-import { AuthProvider } from 'api/authentication/singleSignOn';
+import { AuthProvider } from 'containers/Authentication/typings';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 

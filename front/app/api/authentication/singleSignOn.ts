@@ -27,7 +27,6 @@ export interface SSOProviderMap {
 }
 
 export type SSOProvider = SSOProviderMap[keyof SSOProviderMap];
-export type AuthProvider = 'email' | SSOProvider;
 
 // Note: these are url parameters so therefore all typed as strings
 // All are optional as there may be cases the backend does not always return these
