@@ -64,7 +64,7 @@ export const emailFlow = (
 
       CONTINUE_WITH_SSO: (ssoProvider: SSOProviderWithoutVienna) => {
         if (ssoProvider === 'franceconnect') {
-          setCurrentStep('light-flow:france-connect-login');
+          setCurrentStep('email-flow:france-connect-login');
         } else if (ssoProvider === 'clave_unica') {
           handleOnSSOClick(
             ssoProvider,
@@ -74,7 +74,7 @@ export const emailFlow = (
           );
         } else {
           updateState({ ssoProvider });
-          setCurrentStep('light-flow:sso-policies');
+          setCurrentStep('email-flow:sso-policies');
         }
       },
     },
@@ -135,6 +135,32 @@ export const emailFlow = (
         if (successAction) {
           triggerSuccessAction(successAction);
         }
+      },
+    },
+
+    'email-flow:sso-policies': {
+      CLOSE: () => setCurrentStep('closed'),
+      ACCEPT_POLICIES: (ssoProvider: SSOProviderWithoutVienna) => {
+        handleOnSSOClick(
+          ssoProvider,
+          getAuthenticationData(),
+          true,
+          state.flow
+        );
+      },
+    },
+
+    'email-flow:france-connect-login': {
+      CLOSE: () => setCurrentStep('closed'),
+      LOGIN: async () => {
+        const { requirements } = await getRequirements();
+
+        handleOnSSOClick(
+          'franceconnect',
+          getAuthenticationData(),
+          requirements.verification,
+          'signin'
+        );
       },
     },
   };

@@ -148,14 +148,14 @@ const AuthModal = () => {
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
-        {currentStep === 'light-flow:sso-policies' && (
+        {currentStep === 'email-flow:sso-policies' && (
           <SSOPolicies
             state={state}
             loading={loading}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
-        {currentStep === 'light-flow:france-connect-login' && (
+        {currentStep === 'email-flow:france-connect-login' && (
           <FranceConnectLogin onLogin={transition(currentStep, 'LOGIN')} />
         )}
         {currentStep === 'light-flow:password' && (

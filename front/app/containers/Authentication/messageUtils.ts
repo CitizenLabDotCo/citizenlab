@@ -20,8 +20,8 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   // light flow
   'light-flow:email': messages.beforeYouParticipate,
   'light-flow:email-policies': messages.beforeYouParticipate,
-  'light-flow:sso-policies': messages.beforeYouParticipate,
-  'light-flow:france-connect-login': messages.beforeYouParticipate,
+  'email-flow:sso-policies': messages.beforeYouParticipate,
+  'email-flow:france-connect-login': messages.beforeYouParticipate,
   'light-flow:email-confirmation': messages.confirmYourEmail,
   'light-flow:password': messages.logIn,
 
@@ -61,8 +61,8 @@ export const getHeaderMessage = (
     [
       'light-flow:email',
       'light-flow:email-policies',
-      'light-flow:sso-policies',
-      'light-flow:france-connect-login',
+      'email-flow:sso-policies',
+      'email-flow:france-connect-login',
     ].includes(step)
   ) {
     return messages.beforeYouFollow;

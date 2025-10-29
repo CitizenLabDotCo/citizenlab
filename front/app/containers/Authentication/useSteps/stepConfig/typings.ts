@@ -7,8 +7,8 @@ export type Step =
   // light flow
   | 'light-flow:email'
   | 'light-flow:email-policies'
-  | 'light-flow:sso-policies'
-  | 'light-flow:france-connect-login'
+  | 'email-flow:sso-policies'
+  | 'email-flow:france-connect-login'
   | 'light-flow:email-confirmation'
   | 'light-flow:password'
 
