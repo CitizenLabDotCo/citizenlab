@@ -54,10 +54,13 @@ module Verification
     # @param [AppConfiguration] configuration
     # @return [Boolean]
     def active?(configuration, method_name)
-      method = method_by_name(method_name)
-      return false unless active_methods(configuration).include? method
+      return false unless method_configured?(configuration, method_name)
 
-      method.enabled?
+      method_by_name(method_name).enabled?
+    end
+
+    def method_configured?(configuration, method_name)
+      active_methods(configuration).include? method_by_name(method_name)
     end
 
     # Not all verification methods are allowed at a permission/action level

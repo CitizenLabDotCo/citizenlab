@@ -15,7 +15,7 @@ module IdKeycloak
 
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      return unless Verification::VerificationService.new.active?(configuration, name)
+      return unless Verification::VerificationService.new.method_configured?(configuration, name)
 
       options = env['omniauth.strategy'].options
 
@@ -25,7 +25,6 @@ module IdKeycloak
       options[:client_options] = {
         identifier: config[:client_id],
         secret: config[:client_secret],
-
         redirect_uri: "#{configuration.base_backend_uri}/auth/keycloak/callback",
 
         # NOTE: Cannot use auto discovery as .well-known/openid-configuration is not on the root of the domain
@@ -71,6 +70,17 @@ module IdKeycloak
       return unless name
 
       name.downcase.split(/[\s-]/).map(&:capitalize).join(name.include?('-') ? '-' : ' ')
+    end
+
+    def user_locale
+      case config[:provider]
+      when 'idporten'
+        'nb-NO'
+      when 'rheinbahn'
+        'de-DE'
+      else
+        'en'
+      end
     end
   end
 end

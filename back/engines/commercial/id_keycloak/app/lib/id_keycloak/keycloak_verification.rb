@@ -75,15 +75,19 @@ module IdKeycloak
     end
 
     def ui_method_name
-      return 'ID-Porten' if config[:provider] == 'idporten'
-      return 'Rheinbahn' if config[:provider] == 'rheinbahn'
-
-      name
+      case config[:provider]
+      when 'idporten'
+        'ID-Porten'
+      when 'rheinbahn'
+        'Rheinbahn'
+      else
+        name
+      end
     end
 
     # Verification is only enabled for ID-Porten not Rheinbahn
     def enabled?
-      config[:provider] == 'id-porten'
+      config[:provider] == 'idporten'
     end
   end
 end

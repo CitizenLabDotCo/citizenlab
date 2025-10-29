@@ -360,7 +360,7 @@ module MultiTenancy
                 },
                 {
                   name: 'keycloak',
-                  provider: ENV.fetch('DEFAULT_ID_KEYCLOAK_PROVIDER', 'id-porten'),
+                  provider: ENV.fetch('DEFAULT_ID_KEYCLOAK_PROVIDER', 'idporten'),
                   client_id: ENV.fetch('DEFAULT_ID_KEYCLOAK_CLIENT_ID', 'fake id'),
                   client_secret: ENV.fetch('DEFAULT_ID_KEYCLOAK_CLIENT_SECRET', 'fake secret'),
                   issuer: ENV.fetch('DEFAULT_ID_KEYCLOAK_ISSUER', 'fake issuer'),
