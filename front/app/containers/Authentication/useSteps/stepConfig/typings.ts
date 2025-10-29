@@ -4,22 +4,17 @@ export type Step =
   | 'success'
   | 'access-denied'
 
-  // light flow
-  | 'light-flow:email'
-  | 'light-flow:email-policies'
-  | 'email-flow:sso-policies'
-  | 'email-flow:france-connect-login'
-  | 'light-flow:email-confirmation'
-  | 'light-flow:password'
-
   // email flow
   | 'email-flow:start'
   | 'email-flow:policies'
   | 'email-flow:password'
+  | 'email-flow:sso-policies'
+  | 'email-flow:france-connect-login'
 
   // invite flow
   | 'invite:email-password'
   | 'invite:code'
+  | 'invite:taken'
 
   // missing data (if signed in already)
   | 'missing-data:built-in'
@@ -37,10 +32,7 @@ export type Step =
 
   // sso verification flow
   | 'sso-verification:sso-providers'
-  | 'sso-verification:sso-providers-policies'
-
-  // invite taken flow
-  | 'invite:taken';
+  | 'sso-verification:sso-providers-policies';
 
 export interface BuiltInFieldsUpdate {
   first_name?: string;

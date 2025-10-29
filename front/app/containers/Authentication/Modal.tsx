@@ -144,42 +144,6 @@ const AuthModal = () => {
           />
         )}
 
-        {/* light flow */}
-        {currentStep === 'light-flow:email' && (
-          <LightFlowStart
-            loading={loading}
-            setError={setError}
-            onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
-            onSwitchToSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
-          />
-        )}
-        {currentStep === 'light-flow:email-policies' && (
-          <EmailPolicies
-            state={state}
-            loading={loading}
-            setError={setError}
-            onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
-          />
-        )}
-        {currentStep === 'email-flow:sso-policies' && (
-          <SSOPolicies
-            state={state}
-            loading={loading}
-            onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
-          />
-        )}
-        {currentStep === 'email-flow:france-connect-login' && (
-          <FranceConnectLogin onLogin={transition(currentStep, 'LOGIN')} />
-        )}
-        {currentStep === 'light-flow:password' && (
-          <Password
-            state={state}
-            loading={loading}
-            setError={setError}
-            onSubmit={transition(currentStep, 'SUBMIT_PASSWORD')}
-          />
-        )}
-
         {/* email flow */}
         {currentStep === 'email-flow:start' && (
           <LightFlowStart
@@ -204,6 +168,16 @@ const AuthModal = () => {
             setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT_PASSWORD')}
           />
+        )}
+        {currentStep === 'email-flow:sso-policies' && (
+          <SSOPolicies
+            state={state}
+            loading={loading}
+            onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
+          />
+        )}
+        {currentStep === 'email-flow:france-connect-login' && (
+          <FranceConnectLogin onLogin={transition(currentStep, 'LOGIN')} />
         )}
 
         {/* invite flow */}
@@ -233,8 +207,7 @@ const AuthModal = () => {
             onSubmit={transition(currentStep, 'SUBMIT')}
           />
         )}
-        {(currentStep === 'light-flow:email-confirmation' ||
-          currentStep === 'missing-data:email-confirmation') && (
+        {currentStep === 'missing-data:email-confirmation' && (
           <EmailConfirmation
             state={state}
             loading={loading}

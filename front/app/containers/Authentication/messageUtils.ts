@@ -17,18 +17,12 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   success: null,
   'access-denied': messages.youCantParticipate,
 
-  // light flow
-  'light-flow:email': messages.beforeYouParticipate,
-  'light-flow:email-policies': messages.beforeYouParticipate,
-  'email-flow:sso-policies': messages.beforeYouParticipate,
-  'email-flow:france-connect-login': messages.beforeYouParticipate,
-  'light-flow:email-confirmation': messages.confirmYourEmail,
-  'light-flow:password': messages.logIn,
-
   // email flow
   'email-flow:start': messages.beforeYouParticipate,
   'email-flow:policies': messages.beforeYouParticipate,
   'email-flow:password': messages.logIn,
+  'email-flow:sso-policies': messages.beforeYouParticipate,
+  'email-flow:france-connect-login': messages.beforeYouParticipate,
 
   // invite flow
   'invite:email-password': messages.signUp,
@@ -59,8 +53,8 @@ export const getHeaderMessage = (
   if (
     action === 'following' &&
     [
-      'light-flow:email',
-      'light-flow:email-policies',
+      'email-flow:start',
+      'email-flow:email-policies',
       'email-flow:sso-policies',
       'email-flow:france-connect-login',
     ].includes(step)

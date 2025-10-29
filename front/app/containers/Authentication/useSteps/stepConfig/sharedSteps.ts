@@ -18,7 +18,7 @@ import {
 } from '../../typings';
 
 import { Step } from './typings';
-import { confirmationRequired, checkMissingData } from './utils';
+import { checkMissingData } from './utils';
 
 export const sharedSteps = (
   getAuthenticationData: () => AuthenticationData,
@@ -95,7 +95,6 @@ export const sharedSteps = (
         const authenticationData = getAuthenticationData();
 
         const { permitted_by } = requirements.authentication;
-        const isLightFlow = permitted_by === 'everyone_confirmed_email';
 
         // This `disabled_reason === null` is a bit of a weird check,
         // because most of the times if there is no disabled reason,
@@ -105,27 +104,10 @@ export const sharedSteps = (
         const signedIn =
           disabled_reason === null || disabled_reason !== 'user_not_signed_in';
 
-        if (isLightFlow) {
-          if (!signedIn) {
-            setCurrentStep('light-flow:email');
-            return;
-          }
-
-          if (confirmationRequired(requirements)) {
-            setCurrentStep('light-flow:email-confirmation');
-            return;
-          }
-        }
-
         const isVerifiedActionFlow = permitted_by === 'verified';
-
-        const userNotSignedIn = !signedIn;
         const userRequiresVerification = requirements.verification;
 
-        if (
-          isVerifiedActionFlow &&
-          (userNotSignedIn || userRequiresVerification)
-        ) {
+        if (isVerifiedActionFlow && (!signedIn || userRequiresVerification)) {
           setCurrentStep('sso-verification:sso-providers');
           return;
         }

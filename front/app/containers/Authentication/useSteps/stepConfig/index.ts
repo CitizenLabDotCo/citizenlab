@@ -8,7 +8,6 @@ import {
 
 import { emailFlow } from './emailFlow';
 import { inviteFlow } from './inviteFlow';
-import { lightFlow } from './lightFlow';
 import { missingDataFlow } from './missingDataFlow';
 import { sharedSteps } from './sharedSteps';
 import { ssoVerificationFlow } from './ssoVerificationFlow';
@@ -36,14 +35,6 @@ export const getStepConfig = (
       getRequirements,
       setCurrentStep,
       updateState
-    ),
-
-    ...lightFlow(
-      getAuthenticationData,
-      getRequirements,
-      setCurrentStep,
-      updateState,
-      state
     ),
 
     ...missingDataFlow(
