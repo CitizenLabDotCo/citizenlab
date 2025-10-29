@@ -22,7 +22,6 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'email-flow:policies': messages.beforeYouParticipate,
   'email-flow:password': messages.logIn,
   'email-flow:sso-policies': messages.beforeYouParticipate,
-  'email-flow:france-connect-login': messages.beforeYouParticipate,
 
   // invite flow
   'invite:email-password': messages.signUp,
@@ -56,7 +55,6 @@ export const getHeaderMessage = (
       'email-flow:start',
       'email-flow:email-policies',
       'email-flow:sso-policies',
-      'email-flow:france-connect-login',
     ].includes(step)
   ) {
     return messages.beforeYouFollow;

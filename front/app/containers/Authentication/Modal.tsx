@@ -35,7 +35,6 @@ import InviteTaken from './steps/InviteTaken';
 import Onboarding from './steps/Onboarding';
 import Password from './steps/Password';
 import EmailPolicies from './steps/Policies/EmailPolicies';
-import FranceConnectLogin from './steps/Policies/FranceConnectLogin';
 import SSOPolicies from './steps/Policies/SSOPolicies';
 import SSOVerification from './steps/SSOVerification';
 import SSOVerificationPolicies from './steps/SSOVerificationPolicies';
@@ -179,9 +178,6 @@ const AuthModal = () => {
             loading={loading}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
-        )}
-        {currentStep === 'email-flow:france-connect-login' && (
-          <FranceConnectLogin onLogin={transition(currentStep, 'LOGIN')} />
         )}
 
         {/* invite flow */}

@@ -9,7 +9,6 @@ export type Step =
   | 'email-flow:policies'
   | 'email-flow:password'
   | 'email-flow:sso-policies'
-  | 'email-flow:france-connect-login'
 
   // invite flow
   | 'invite:email-password'
