@@ -1,6 +1,11 @@
 import React, { lazy, Suspense } from 'react';
 
-import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Spinner,
+  Title,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -256,7 +261,7 @@ const AuthModal = () => {
           />
         )}
         {currentStep === 'missing-data:custom-fields' && (
-          <Suspense fallback={null}>
+          <Suspense fallback={<Spinner />}>
             <CustomFields
               authenticationData={authenticationData}
               loading={loading}
