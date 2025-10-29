@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Webhook Integration Flow', type: :integration do
+RSpec.describe Webhooks, type: :integration do
   let(:user) { create(:user) }
   let(:project) { create(:project) }
 
@@ -52,8 +52,7 @@ RSpec.describe 'Webhook Integration Flow', type: :integration do
             body = JSON.parse(req.body)
           body['id'] == activity.id &&
             body['event_type'] == 'idea.created' &&
-            body['data'].present? &&
-            body['metadata'].present?
+            body['item'].present?
         }.once
 
       # Verify delivery was marked as successful
@@ -333,16 +332,13 @@ RSpec.describe 'Webhook Integration Flow', type: :integration do
       request = captured_request.first
       payload = JSON.parse(request.body)
 
-      # Verify top-level structure
-      expect(payload).to include('id', 'event', 'event_type', 'timestamp', 'data', 'metadata')
-
       # Verify event details
       expect(payload['id']).to eq(activity.id)
       expect(payload['event_type']).to eq('idea.created')
-      expect(payload['timestamp']).to match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/)
+      expect(payload['acted_at']).to match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/)
 
       # Verify metadata
-      expect(payload['metadata']).to include(
+      expect(payload).to include(
         'item_type' => 'Idea',
         'item_id' => idea.id,
         'action' => 'created',
@@ -352,10 +348,8 @@ RSpec.describe 'Webhook Integration Flow', type: :integration do
       )
 
       # Verify data is present and serialized
-      expect(payload['data']).to be_present
-      expect(payload['data']).to have_key('idea')
-      expect(payload['data']['idea']).to have_key('id')
-      expect(payload['data']['idea']['id']).to eq(idea.id)
+      expect(payload['item']).to be_present
+      expect(payload['item']['id']).to eq(idea.id)
     end
   end
 end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Webhooks
   module WebApi
     module V1
@@ -8,7 +9,7 @@ module Webhooks
         attribute :secret_token do |object|
           # Only show first/last 4 characters for security
           token = object.secret_token
-          "#{token[0...4]}...#{token[-4..-1]}"
+          "#{token[0...4]}...#{token[-4..]}"
         end
 
         attribute :deliveries_count do |object|

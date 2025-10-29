@@ -31,11 +31,11 @@ resource 'Webhook Deliveries' do
       example_request 'List all deliveries for a subscription' do
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data).size).to eq 5
+        expect(json_response[:data].size).to eq 5
       end
 
       example 'List is ordered by most recent first' do
-        old_delivery = create(:webhook_delivery,
+        create(:webhook_delivery,
           subscription: subscription,
           activity: @activity,
           created_at: 2.days.ago)

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Webhooks::CleanupDeliveriesJob, type: :job do
+RSpec.describe Webhooks::CleanupDeliveriesJob do
   describe '#perform' do
     let(:subscription) { create(:webhook_subscription) }
     let(:activity) { create(:idea_created_activity) }
@@ -82,6 +82,5 @@ RSpec.describe Webhooks::CleanupDeliveriesJob, type: :job do
         expect { described_class.perform_now }.not_to raise_error
       end
     end
-
   end
 end

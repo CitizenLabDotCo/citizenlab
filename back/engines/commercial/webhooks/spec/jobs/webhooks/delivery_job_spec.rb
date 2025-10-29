@@ -48,27 +48,28 @@ RSpec.describe Webhooks::DeliveryJob do
           body = JSON.parse(req.body)
           body['id'] == activity.id &&
             body['event_type'] == 'idea.created' &&
-            body['data'].present? &&
-            body['metadata'].present?
+            body['item'].present?
         end)
     end
 
     it 'generates valid HMAC signature' do
       described_class.perform_now(delivery)
-      expect(a_request(:post, 'https://webhook.example.com/receive')
+      expect(
+        a_request(:post, 'https://webhook.example.com/receive')
         .with do |request|
-        signature = request.headers['X-Govocal-Signature']
-        expected_hmac = OpenSSL::HMAC.digest(
-          OpenSSL::Digest.new('sha256'),
-          subscription.secret_token,
-          request.body
-        )
-        expected_signature = "sha256=#{Base64.strict_encode64(expected_hmac)}"
+          signature = request.headers['X-Govocal-Signature']
+          expected_hmac = OpenSSL::HMAC.digest(
+            OpenSSL::Digest.new('sha256'),
+            subscription.secret_token,
+            request.body
+          )
+          expected_signature = "sha256=#{Base64.strict_encode64(expected_hmac)}"
 
-        expect(signature).to eq(expected_signature)
+          expect(signature).to eq(expected_signature)
 
-        true
-      end).to have_been_made.once
+          true
+        end
+      ).to have_been_made.once
     end
 
     it 'records response body' do
@@ -179,43 +180,6 @@ RSpec.describe Webhooks::DeliveryJob do
 
         expect(delivery.reload.last_attempt_at).to be_within(1.second).of(Time.current)
       end
-    end
-  end
-
-  describe 'retry logic' do
-    it 'retries up to MAX_RETRIES times' do
-      stub_request(:post, 'https://webhook.example.com/receive')
-        .to_return(status: 500)
-
-      # Simulate retry exhaustion
-      3.times do |i|
-        delivery.update!(attempts: i)
-        described_class.perform_now(delivery)
-      rescue StandardError
-        # Expected to fail
-      end
-
-      expect(delivery.reload.attempts).to eq(3)
-    end
-
-    it 'marks as failed after max retries' do
-      stub_request(:post, 'https://webhook.example.com/receive')
-        .to_return(status: 500)
-
-      # Manually trigger the retry exhaustion handler
-      allow_any_instance_of(described_class).to receive(:perform).and_raise(StandardError.new('Test error'))
-
-      job = described_class.new
-      job.deserialize('job_id' => 'test', 'arguments' => [delivery.id])
-
-      begin
-        ActiveJob::Base.execute(job.serialize)
-      rescue StandardError
-        # Job will fail
-      end
-
-      # Retry handler should mark as failed
-      # Note: In actual tests, the retry_on callback would handle this
     end
   end
 

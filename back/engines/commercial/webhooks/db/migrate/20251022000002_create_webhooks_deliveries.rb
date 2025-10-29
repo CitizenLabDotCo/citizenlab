@@ -17,9 +17,9 @@ class CreateWebhooksDeliveries < ActiveRecord::Migration[7.1]
 
       t.index :webhooks_subscription_id
       t.index :activity_id
-      t.index [:webhooks_subscription_id, :status]
+      t.index %i[webhooks_subscription_id status]
       t.index :created_at
-      t.index [:status, :created_at]
+      t.index %i[status created_at]
     end
 
     add_foreign_key :webhooks_deliveries, :webhooks_subscriptions, on_delete: :cascade, validate: false

@@ -76,7 +76,7 @@ RSpec.describe Webhooks::Subscription do
 
     it 'destroys deliveries when destroyed' do
       subscription = create(:webhook_subscription)
-      delivery = create(:webhook_delivery, subscription: subscription)
+      create(:webhook_delivery, subscription: subscription)
 
       expect { subscription.destroy! }.to change(Webhooks::Delivery, :count).by(-1)
     end
