@@ -1,6 +1,6 @@
 import React from 'react';
 
-import oldMessages from 'containers/Authentication/steps/AuthProviders/messages';
+import oldMessages from 'containers/Authentication/steps/_components/AuthProviderButton/messages';
 
 import FranceConnectButton from 'components/UI/FranceConnectButton';
 

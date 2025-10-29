@@ -3,6 +3,7 @@ import React, { memo, useCallback, useState } from 'react';
 import { fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { AuthProvider } from 'api/authentication/singleSignOn';
 import { TVerificationMethodName } from 'api/verification_methods/types';
 import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
 
@@ -10,8 +11,6 @@ import ClaveUnicaButton from 'components/UI/ClaveUnicaButton';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { AuthProvider } from '../AuthProviders';
 
 import Consent from './AuthProviderButton/Consent';
 import messages from './messages';
