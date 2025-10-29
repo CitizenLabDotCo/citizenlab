@@ -26,7 +26,6 @@ import AccessDenied from './steps/AccessDenied';
 import BuiltInFields from './steps/BuiltInFields';
 import ChangeEmail from './steps/ChangeEmail';
 import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
-import EmailAndPasswordVerifiedActions from './steps/EmailAndPasswordVerifiedActions';
 import EmailConfirmation from './steps/EmailConfirmation';
 import Invitation from './steps/Invitation';
 import InviteTaken from './steps/InviteTaken';
@@ -286,16 +285,6 @@ const AuthModal = () => {
             state={state}
             loading={loading}
             onAccept={transition(currentStep, 'ACCEPT')}
-          />
-        )}
-
-        {currentStep === 'sso-verification:email-password' && (
-          <EmailAndPasswordVerifiedActions
-            loading={loading}
-            setError={setError}
-            onSubmit={transition(currentStep, 'SIGN_IN')}
-            onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
-            closeModal={transition(currentStep, 'CLOSE')}
           />
         )}
 

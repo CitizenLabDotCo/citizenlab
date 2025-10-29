@@ -50,7 +50,6 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   // sso verification flow
   'sso-verification:sso-providers': messages.verificationRequired,
   'sso-verification:sso-providers-policies': messages.verificationRequired,
-  'sso-verification:email-password': messages.logIn,
 };
 
 export const getHeaderMessage = (
