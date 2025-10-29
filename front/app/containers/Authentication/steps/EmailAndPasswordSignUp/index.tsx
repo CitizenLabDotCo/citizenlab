@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Box, Text, Label } from '@citizenlab/cl2-component-library';
+import { Box, Label } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 
@@ -10,7 +10,6 @@ import { Parameters as CreateAccountParameters } from 'api/authentication/sign_u
 import useLocale from 'hooks/useLocale';
 
 import { SetError, State } from 'containers/Authentication/typings';
-import useAuthConfig from 'containers/Authentication/useAuthConfig';
 
 import { SectionField } from 'components/admin/Section';
 import Input from 'components/HookForm/Input';
@@ -28,23 +27,17 @@ import {
   isCLErrorsWrapper,
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
-import { isNilOrError } from 'utils/helperUtils';
 
-import containerMessages from '../../messages';
 import tracks from '../../tracks';
-import TextButton from '../_components/TextButton';
 import sharedMessages from '../messages';
 import PoliciesMarkup from '../Policies/PoliciesMarkup';
 
 import { DEFAULT_VALUES, getSchema, FormValues } from './form';
-import messages from './messages';
 
 interface Props {
   state: State;
   loading: boolean;
   setError: SetError;
-  onSwitchFlow: () => void;
-  onGoBack: () => void;
   onSubmit: (parameters: CreateAccountParameters) => void;
 }
 
@@ -52,11 +45,8 @@ const EmailAndPasswordSignUp = ({
   state,
   loading,
   setError,
-  onSwitchFlow,
-  onGoBack,
   onSubmit,
 }: Props) => {
-  const { anySSOProviderEnabled } = useAuthConfig();
   const { data: appConfiguration } = useAppConfiguration();
   const locale = useLocale();
   const { formatMessage } = useIntl();
@@ -81,8 +71,6 @@ const EmailAndPasswordSignUp = ({
   useEffect(() => {
     trackEventByName(tracks.signUpEmailPasswordStepEntered);
   }, []);
-
-  if (isNilOrError(locale)) return null;
 
   const handleSubmit = async ({
     first_name,
@@ -201,28 +189,6 @@ const EmailAndPasswordSignUp = ({
             </ButtonWithLink>
           </Box>
         </form>
-        <Text mt="24px">
-          {anySSOProviderEnabled ? (
-            <TextButton onClick={onGoBack} className="link">
-              {formatMessage(messages.backToSignUpOptions)}
-            </TextButton>
-          ) : (
-            <FormattedMessage
-              {...messages.goToLogIn}
-              values={{
-                goToOtherFlowLink: (
-                  <TextButton
-                    id="e2e-goto-signup"
-                    onClick={onSwitchFlow}
-                    className="link"
-                  >
-                    {formatMessage(containerMessages.logIn)}
-                  </TextButton>
-                ),
-              }}
-            />
-          )}
-        </Text>
       </FormProvider>
     </Box>
   );

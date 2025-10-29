@@ -200,8 +200,6 @@ const AuthModal = () => {
             state={state}
             loading={loading}
             setError={setError}
-            onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
-            onGoBack={transition(currentStep, 'GO_BACK')}
             onSubmit={transition(currentStep, 'SUBMIT')}
           />
         )}
