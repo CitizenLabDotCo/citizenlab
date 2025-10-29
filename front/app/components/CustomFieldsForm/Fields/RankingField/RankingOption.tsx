@@ -103,6 +103,7 @@ const RankingOption = ({
               <StyledSelect
                 options={rankDropdownOptions}
                 value={getRankOfOption(option)}
+                height="auto"
                 onChange={(selectedOption) => {
                   moveOptionInArray(index, selectedOption.value - 1);
 

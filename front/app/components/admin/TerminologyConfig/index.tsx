@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import { mapValues, lowerCase } from 'lodash-es';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
@@ -69,11 +68,11 @@ const TerminologyConfig = ({
   const toggleOpened = () => setOpened((opened) => !opened);
 
   const handleSingularChange = (changedTerm: Multiloc) => {
-    setSingular(mapValues(changedTerm, lowerCase));
+    setSingular(changedTerm);
   };
 
   const handlePluralChange = (changedTerm: Multiloc) => {
-    setPlural(mapValues(changedTerm, lowerCase));
+    setPlural(changedTerm);
   };
 
   const save = async () => {
