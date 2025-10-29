@@ -29,7 +29,7 @@ import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
 import EmailAndPasswordVerifiedActions from './steps/EmailAndPasswordVerifiedActions';
 import EmailConfirmation from './steps/EmailConfirmation';
 import Invitation from './steps/Invitation';
-import InvitationResent from './steps/InvitationResent';
+import InviteTaken from './steps/InviteTaken';
 import LightFlowStart from './steps/LightFlowStart';
 import Onboarding from './steps/Onboarding';
 import Password from './steps/Password';
@@ -212,7 +212,7 @@ const AuthModal = () => {
             onSubmit={transition(currentStep, 'SUBMIT')}
           />
         )}
-        {currentStep === 'invite:taken' && <InvitationResent state={state} />}
+        {currentStep === 'invite:taken' && <InviteTaken state={state} />}
 
         {/* missing data flow / shared */}
         {currentStep === 'missing-data:built-in' && (
