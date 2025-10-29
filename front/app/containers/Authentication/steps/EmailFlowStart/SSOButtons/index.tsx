@@ -13,7 +13,6 @@ import { useIntl } from 'utils/cl-intl';
 import ClaveUnicaExpandedAuthProviderButton from '../../_components/ClaveUnicaExpandedAuthProviderButton';
 import SSOButtonsExceptFCAndCU from '../../_components/SSOButtonsExceptFCAndCU';
 
-import FranceConnectButton from './FranceConnectButton';
 import messages from './messages';
 
 interface Props {
@@ -44,9 +43,6 @@ const SSOButtons = ({ onClickSSO }: Props) => {
         </Box>
       )}
       <Box>
-        {ssoProviders.franceconnect && (
-          <FranceConnectButton onClick={() => onClickSSO('franceconnect')} />
-        )}
         {ssoProviders.claveUnica && (
           <Box mb="18px">
             <ClaveUnicaExpandedAuthProviderButton
