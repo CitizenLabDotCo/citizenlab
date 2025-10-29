@@ -69,11 +69,11 @@ const TerminologyConfig = ({
   const toggleOpened = () => setOpened((opened) => !opened);
 
   const handleSingularChange = (changedTerm: Multiloc) => {
-    setSingular(mapValues(changedTerm, lowerCase));
+    setSingular(mapValues(changedTerm));
   };
 
   const handlePluralChange = (changedTerm: Multiloc) => {
-    setPlural(mapValues(changedTerm, lowerCase));
+    setPlural(mapValues(changedTerm));
   };
 
   const save = async () => {
