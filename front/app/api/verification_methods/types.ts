@@ -144,5 +144,3 @@ export type TVerificationMethod =
   | IDTwodayMethod
   | IDAuth0Method
   | IDIdAustriaMethod;
-// TODO: JS - No Fake SSO?
-// TODO: JS - Can we add the icon name into the method type?

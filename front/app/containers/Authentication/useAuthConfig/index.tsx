@@ -1,6 +1,8 @@
 import { useLocation, useSearchParams } from 'react-router-dom';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { TVerificationMethodName } from 'api/verification_methods/types';
+import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -8,7 +10,11 @@ export default function useAuthConfig() {
   const { data: appConfiguration } = useAppConfiguration();
   const appConfigurationSettings = appConfiguration?.data.attributes.settings;
 
-  // Allows testing of specific SSO providers without showing to all users
+  const { data: verificationMethods } = useVerificationMethods(
+    appConfigurationSettings?.verification?.enabled || false
+  );
+
+  // Allows testing of custom SSO providers without showing to all users
   // e.g. ?provider=keycloak
   const [searchParams] = useSearchParams();
   const providerForTest = searchParams.get('provider');
@@ -21,6 +27,7 @@ export default function useAuthConfig() {
   const { pathname } = useLocation();
   const showAdminOnlyMethods = pathname.endsWith('/sign-in/admin');
 
+  // Standard auth methods
   const passwordLoginEnabled =
     useFeatureFlag({ name: 'password_login' }) || superAdminParam;
 
@@ -38,45 +45,35 @@ export default function useAuthConfig() {
     name: 'azure_ad_b2c_login',
   });
 
-  const franceconnect = useFeatureFlag({
-    name: 'franceconnect_login',
-  });
+  // Custom SSO methods - found in the verification config
+  const isCustomSsoEnabled = (methodName: TVerificationMethodName) => {
+    return (
+      verificationMethods?.data.some(
+        (method) => method.attributes.name === methodName
+      ) || providerForTest === methodName
+    );
+  };
 
+  const fakeSso = isCustomSsoEnabled('fake_sso');
+  const keycloak = isCustomSsoEnabled('keycloak');
+  const twoday = isCustomSsoEnabled('twoday');
+  const idAustria = isCustomSsoEnabled('id_austria');
+  const criipto = isCustomSsoEnabled('criipto');
+  const claveUnica = isCustomSsoEnabled('clave_unica');
+  const franceconnect = isCustomSsoEnabled('franceconnect');
+
+  // TODO: JS - these need converting
   const viennaCitizen = useFeatureFlag({
     name: 'vienna_citizen_login',
-  });
-
-  const claveUnica = useFeatureFlag({
-    name: 'clave_unica_login',
   });
 
   const hoplr = useFeatureFlag({
     name: 'hoplr_login',
   });
 
-  const idAustria = useFeatureFlag({
-    name: 'id_austria_login',
-  });
-
-  const criipto = useFeatureFlag({
-    name: 'criipto_login',
-  });
-
   const nemlogIn = useFeatureFlag({
     name: 'nemlog_in_login',
   });
-
-  const keycloak =
-    useFeatureFlag({
-      name: 'keycloak_login',
-    }) || providerForTest === 'keycloak';
-
-  const twoday =
-    useFeatureFlag({
-      name: 'twoday_login',
-    }) || providerForTest === 'twoday';
-
-  const fakeSso = useFeatureFlag({ name: 'fake_sso' });
 
   const ssoProviders = {
     google,

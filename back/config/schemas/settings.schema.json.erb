@@ -1395,27 +1395,6 @@
         }
       },
 
-      "verification": {
-        "type": "object",
-        "title": "Verification",
-        "description": "Use a pre-defined list to verify user identities during registration.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false },
-          "verification_methods": {
-            "title": "Verification Methods",
-            "private": true,
-            "type": "array",
-            "default": [],
-            "items": {
-              "anyOf": <%= ::Verification::VerificationService.new.all_methods_json_schema %>
-            }
-          }
-        }
-      },
-
       "community_monitor": {
         "type": "object",
         "title": "Community Monitor",
@@ -1524,6 +1503,105 @@
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "fake_sso": {
+        "type": "object",
+        "title": "Fake SSO",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false },
+          "issuer": {
+            "title": "Issuer",
+            "type": "string",
+            "private": true
+          }
+        }
+      },
+      "france_connect": {
+        "type": "object",
+        "title": "FranceConnect",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false },
+          "environment": {
+            "title": "Environment",
+            "type": "string",
+            "enum": ["production", "integration"],
+            "default": "production",
+            "private": true
+          },
+          "identifier": {
+            "title": "Identifier",
+            "type": "string",
+            "private": true
+          },
+          "secret": {
+            "title": "Secret Key",
+            "type": "string",
+            "private": true
+          },
+          "version": {
+            "title": "Version of FranceConnect API",
+            "type": "string",
+            "enum": ["v1", "v2"],
+            "default": "v1",
+            "private": true
+          },
+          "scope": {
+            "title": "Scope",
+            "type": "array",
+            "enum": ["email", "given_name", "family_name", "birthdate", "gender", "idp_birthdate", "birthplace", "birthcountry", "preferred_username", "profile birth", "identite_pivot"],
+            "default": ["email", "given_name", "family_name"],
+            "uniqueItems": true,
+            "private": true
+          }
+        }
+      },
+      "hoplr": {
+        "type": "object",
+        "title": "Hoplr",
+        "additionalProperties": false,
+        "required": [
+          "allowed",
+          "enabled"
+        ],
+        "properties": {
+          "allowed": {
+            "type": "boolean",
+            "default": false
+          },
+          "enabled": {
+            "type": "boolean",
+            "default": false
+          },
+          "environment": {
+            "title": "Environment",
+            "type": "string",
+            "enum": ["test", "production"],
+            "default": "production",
+            "private": true
+          },
+          "client_id": {
+            "title": "Client ID",
+            "type": "string",
+            "private": true
+          },
+          "client_secret": {
+            "title": "Client Secret",
+            "type": "string",
+            "private": true
+          },
+          "neighbourhood_custom_field_key": {
+            "title": "Neighbourhood custom field key",
+            "type": "string",
+            "private": true
+          }
+        }
       }
     },
   "dependencies": {
@@ -1538,17 +1616,6 @@
     "snap_survey_surveys": ["surveys"],
     "microsoft_forms_surveys": ["surveys"],
     "smart_survey_surveys": ["surveys"],
-
-    "id_auth0": ["verification"],
-    "id_bogus": ["verification"],
-    "id_bosa_fas": ["verification"],
-    "id_clave_unica": ["verification"],
-    "id_cow": ["verification"],
-    "id_franceconnect": ["verification"],
-    "id_gent_rrn": ["verification"],
-    "id_oostende_rrn": ["verification"],
-    "id_id_card_lookup": ["verification"],
-    "id_keycloak": ["verification"],
 
     "power_bi": ["public_api_tokens"],
     "large_summaries": ["analysis"],

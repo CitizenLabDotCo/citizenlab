@@ -46,7 +46,7 @@ resource 'Verification methods' do
     example_request 'Lists all active verification methods' do
       expect(status).to eq(200)
       expect(response_data.length).to eq 3
-      expect(response_data[0]).to eq(
+      expect(response_data).to include(
         {
           id: '7ccd453d-0eaf-412a-94a2-ae703b1b3e3f',
           type: 'verification_method',
@@ -63,7 +63,7 @@ resource 'Verification methods' do
           }
         }
       )
-      expect(response_data[1]).to eq(
+      expect(response_data).to include(
         {
           id: '8bb00a8d-26a5-4e00-866d-36e23986d441',
           type: 'verification_method',
@@ -87,7 +87,7 @@ resource 'Verification methods' do
           }
         }
       )
-      expect(response_data[2]).to eq(
+      expect(response_data).to include(
         {
           id: '516e134d-e22b-4386-a783-0db4c2708256',
           type: 'verification_method',

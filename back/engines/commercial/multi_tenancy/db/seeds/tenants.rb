@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/ClassLength
-
 require_relative 'base'
 
 module MultiTenancy
@@ -75,45 +73,6 @@ module MultiTenancy
               client_id: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_CLIENT_ID'),
               logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
               login_mechanism_name: 'Azure AD B2C'
-            },
-            id_austria_login: {
-              allowed: true,
-              enabled: true
-            },
-            criipto_login: {
-              allowed: true,
-              enabled: true
-            },
-            clave_unica_login: {
-              allowed: true,
-              enabled: true
-            },
-            nemlog_in_login: {
-              allowed: true,
-              enabled: true
-            },
-            keycloak_login: {
-              allowed: true,
-              enabled: true
-            },
-            twoday_login: {
-              allowed: true,
-              enabled: true
-            },
-            franceconnect_login: {
-              allowed: true,
-              enabled: true,
-              environment: 'integration',
-              version: 'v2',
-              identifier: ENV.fetch('DEFAULT_FRANCECONNECT_LOGIN_IDENTIFIER', 'fake id'),
-              secret: ENV.fetch('DEFAULT_FRANCECONNECT_LOGIN_SECRET', 'fake secret')
-            },
-            hoplr_login: {
-              allowed: true,
-              enabled: true,
-              environment: 'test',
-              client_id: ENV.fetch('DEFAULT_HOPLR_CLIENT_ID', 'fake id'),
-              client_secret: ENV.fetch('DEFAULT_HOPLR_CLIENT_SECRET', 'fake secret')
             },
             vienna_citizen_login: {
               allowed: true,
@@ -294,7 +253,8 @@ module MultiTenancy
                 # more than one verification method enabled at a time.
                 # The below list is for testing purposes only.
                 {
-                  name: 'fake_sso'
+                  name: 'fake_sso',
+                  issuer: '' # Change this value to 'https://fake-sso.onrender.com' to test with the deployed version of the Fake SSO
                 },
                 {
                   name: 'cow',
@@ -305,8 +265,8 @@ module MultiTenancy
                 {
                   name: 'bosa_fas',
                   environment: 'integration',
-                  identifier: 'fake_identifier',
-                  secret: 'fake_secret'
+                  client_id: 'fake_identifier',
+                  client_secret: 'fake_secret'
                 },
                 {
                   name: 'clave_unica',
@@ -326,7 +286,12 @@ module MultiTenancy
                   explainer_image_url: 'http://localhost:4000/id_card_explainer.jpg'
                 },
                 {
-                  name: 'franceconnect'
+                  name: 'franceconnect',
+                  environment: 'integration',
+                  version: 'v2',
+                  client_id: ENV.fetch('DEFAULT_FRANCECONNECT_LOGIN_IDENTIFIER', 'fake id'),
+                  client_secret: ENV.fetch('DEFAULT_FRANCECONNECT_LOGIN_SECRET', 'fake secret'),
+                  enabled_for_verified_actions: true
                 },
                 {
                   name: 'auth0',
@@ -373,6 +338,12 @@ module MultiTenancy
                   domain: ENV.fetch('DEFAULT_ID_TWODAY_DOMAIN', 'fake domain'),
                   ui_method_name: 'Bank ID',
                   enabled_for_verified_actions: true
+                },
+                {
+                  name: 'hoplr',
+                  environment: 'test',
+                  client_id: ENV.fetch('DEFAULT_HOPLR_CLIENT_ID', 'fake id'),
+                  client_secret: ENV.fetch('DEFAULT_HOPLR_CLIENT_SECRET', 'fake secret')
                 }
               ]
             },
@@ -510,11 +481,6 @@ module MultiTenancy
               enabled: false,
               allowed: true
             },
-            fake_sso: {
-              enabled: true,
-              allowed: true,
-              issuer: '' # Change this value to 'https://fake-sso.onrender.com' to test with the deployed version of the Fake SSO
-            },
             project_review: {
               enabled: true,
               allowed: true
@@ -588,4 +554,3 @@ module MultiTenancy
     end
   end
 end
-# rubocop:enable Metrics/ClassLength

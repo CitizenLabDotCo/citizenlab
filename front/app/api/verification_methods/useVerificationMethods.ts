@@ -12,7 +12,7 @@ const fetchVerificationMethods = () =>
     action: 'get',
   });
 
-const useVerificationMethods = () => {
+const useVerificationMethods = (enabled: boolean = true) => {
   return useQuery<
     IVerificationMethods,
     CLErrors,
@@ -21,6 +21,7 @@ const useVerificationMethods = () => {
   >({
     queryKey: verificationMethodsKeys.list(),
     queryFn: () => fetchVerificationMethods(),
+    enabled,
   });
 };
 

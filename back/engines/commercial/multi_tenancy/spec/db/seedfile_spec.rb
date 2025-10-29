@@ -41,7 +41,6 @@ describe 'db/seeds.rb' do
       expect(CustomField.registration.count).to be > 0
       expect(CustomFieldOption.count).to be > 0
       expect(Invite.count).to be > 0
-      # expect(IdIdCardLookup::IdCard.count).to be 10
       expect(EmailCampaigns::UnsubscriptionToken.count).to be > 0
       expect(CustomMaps::MapConfig.count).to be 2
       expect(CustomMaps::Layer.count).to be 2
