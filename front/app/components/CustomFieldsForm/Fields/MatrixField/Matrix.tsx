@@ -29,6 +29,7 @@ import { getLinearScaleLabel } from '../LinearScale/utils';
 const StickyTh = styled(Th)<{ hasLongContent: boolean }>`
   position: sticky;
   inset-inline-start: 0px;
+  background: white;
   z-index: 1;
 
   overflow-wrap: break-word;
@@ -105,7 +106,7 @@ const Matrix = ({ value: data, question, onChange }: Props) => {
         ) {
           tableElement.style.borderRight = 'none';
         } else {
-          tableElement.style.borderRight = `1px dashed ${theme.colors.tenantPrimaryLighten75}`;
+          tableElement.style.borderRight = `1px dashed ${theme.colors.borderLight}`;
         }
       }
     };
@@ -115,7 +116,7 @@ const Matrix = ({ value: data, question, onChange }: Props) => {
     tableDivRef.current?.addEventListener('scroll', () => {
       checkApplyBorder();
     });
-  }, [theme.colors.tenantPrimaryLighten75]);
+  }, [theme.colors.borderLight]);
 
   const getAriaValueText = useCallback(
     (value: number, total: number) => {

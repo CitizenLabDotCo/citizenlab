@@ -21,7 +21,6 @@ ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rai
 ALTER TABLE IF EXISTS ONLY public.custom_field_bins DROP CONSTRAINT IF EXISTS fk_rails_f09b1bc4cd;
 ALTER TABLE IF EXISTS ONLY public.file_attachments DROP CONSTRAINT IF EXISTS fk_rails_f06e641e03;
 ALTER TABLE IF EXISTS ONLY public.project_imports DROP CONSTRAINT IF EXISTS fk_rails_efff220342;
-ALTER TABLE IF EXISTS ONLY public.idea_files DROP CONSTRAINT IF EXISTS fk_rails_efb12f53ad;
 ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS fk_rails_edc8786515;
 ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXISTS fk_rails_e871bf6e26;
 ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rails_e8076fb9f6;
@@ -35,13 +34,11 @@ ALTER TABLE IF EXISTS ONLY public.project_reviews DROP CONSTRAINT IF EXISTS fk_r
 ALTER TABLE IF EXISTS ONLY public.official_feedbacks DROP CONSTRAINT IF EXISTS fk_rails_ddd7e21dfa;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF EXISTS fk_rails_dd3b2cc184;
 ALTER TABLE IF EXISTS ONLY public.project_folders_images DROP CONSTRAINT IF EXISTS fk_rails_dcbc962cfe;
-ALTER TABLE IF EXISTS ONLY public.project_folders_files DROP CONSTRAINT IF EXISTS fk_rails_dc7aeb6534;
 ALTER TABLE IF EXISTS ONLY public.analysis_summaries DROP CONSTRAINT IF EXISTS fk_rails_dbd13460f0;
 ALTER TABLE IF EXISTS ONLY public.projects_topics DROP CONSTRAINT IF EXISTS fk_rails_db7813bfef;
 ALTER TABLE IF EXISTS ONLY public.projects_allowed_input_topics DROP CONSTRAINT IF EXISTS fk_rails_db7813bfef;
 ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS fk_rails_d6353758d5;
 ALTER TABLE IF EXISTS ONLY public.projects DROP CONSTRAINT IF EXISTS fk_rails_d1892257e3;
-ALTER TABLE IF EXISTS ONLY public.static_page_files DROP CONSTRAINT IF EXISTS fk_rails_d0209b82ff;
 ALTER TABLE IF EXISTS ONLY public.jobs_trackers DROP CONSTRAINT IF EXISTS fk_rails_cfd1ddfa6b;
 ALTER TABLE IF EXISTS ONLY public.analytics_dimension_locales_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_cd2a592e7b;
 ALTER TABLE IF EXISTS ONLY public.analysis_taggings DROP CONSTRAINT IF EXISTS fk_rails_cc8b68bfb4;
@@ -55,7 +52,6 @@ ALTER TABLE IF EXISTS ONLY public.invites_imports DROP CONSTRAINT IF EXISTS fk_r
 ALTER TABLE IF EXISTS ONLY public.custom_field_matrix_statements DROP CONSTRAINT IF EXISTS fk_rails_c379cdcd80;
 ALTER TABLE IF EXISTS ONLY public.idea_images DROP CONSTRAINT IF EXISTS fk_rails_c349bb4ac3;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_c32c787647;
-ALTER TABLE IF EXISTS ONLY public.project_files DROP CONSTRAINT IF EXISTS fk_rails_c26fbba4b3;
 ALTER TABLE IF EXISTS ONLY public.jobs_trackers DROP CONSTRAINT IF EXISTS fk_rails_bede8fb214;
 ALTER TABLE IF EXISTS ONLY public.analysis_background_tasks DROP CONSTRAINT IF EXISTS fk_rails_bde9116e72;
 ALTER TABLE IF EXISTS ONLY public.ideas_phases DROP CONSTRAINT IF EXISTS fk_rails_bd36415a82;
@@ -75,7 +71,6 @@ ALTER TABLE IF EXISTS ONLY public.memberships DROP CONSTRAINT IF EXISTS fk_rails
 ALTER TABLE IF EXISTS ONLY public.analytics_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_a9aa810ecf;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_a7a91f1df3;
 ALTER TABLE IF EXISTS ONLY public.groups_permissions DROP CONSTRAINT IF EXISTS fk_rails_a5c3527604;
-ALTER TABLE IF EXISTS ONLY public.event_files DROP CONSTRAINT IF EXISTS fk_rails_a590d6ddde;
 ALTER TABLE IF EXISTS ONLY public.analytics_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_a34b51c948;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_a2cfad997d;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_a2016447bc;
@@ -142,7 +137,6 @@ ALTER TABLE IF EXISTS ONLY public.analysis_comments_summaries DROP CONSTRAINT IF
 ALTER TABLE IF EXISTS ONLY public.files DROP CONSTRAINT IF EXISTS fk_rails_34e9f7c7ef;
 ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rails_34143a680f;
 ALTER TABLE IF EXISTS ONLY public.volunteering_volunteers DROP CONSTRAINT IF EXISTS fk_rails_33a154a9ba;
-ALTER TABLE IF EXISTS ONLY public.phase_files DROP CONSTRAINT IF EXISTS fk_rails_33852a9a71;
 ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS fk_rails_2d026b99a2;
 ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS fk_rails_2c74f68dd3;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk_rails_2a92a64a56;
@@ -6846,14 +6840,6 @@ ALTER TABLE ONLY public.cosponsorships
 
 
 --
--- Name: phase_files fk_rails_33852a9a71; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.phase_files
-    ADD CONSTRAINT fk_rails_33852a9a71 FOREIGN KEY (phase_id) REFERENCES public.phases(id);
-
-
---
 -- Name: volunteering_volunteers fk_rails_33a154a9ba; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7382,14 +7368,6 @@ ALTER TABLE ONLY public.analytics_fact_visits
 
 
 --
--- Name: event_files fk_rails_a590d6ddde; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.event_files
-    ADD CONSTRAINT fk_rails_a590d6ddde FOREIGN KEY (event_id) REFERENCES public.events(id);
-
-
---
 -- Name: groups_permissions fk_rails_a5c3527604; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7542,14 +7520,6 @@ ALTER TABLE ONLY public.jobs_trackers
 
 
 --
--- Name: project_files fk_rails_c26fbba4b3; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.project_files
-    ADD CONSTRAINT fk_rails_c26fbba4b3 FOREIGN KEY (project_id) REFERENCES public.projects(id);
-
-
---
 -- Name: ideas fk_rails_c32c787647; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7654,14 +7624,6 @@ ALTER TABLE ONLY public.jobs_trackers
 
 
 --
--- Name: static_page_files fk_rails_d0209b82ff; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.static_page_files
-    ADD CONSTRAINT fk_rails_d0209b82ff FOREIGN KEY (static_page_id) REFERENCES public.static_pages(id);
-
-
---
 -- Name: projects fk_rails_d1892257e3; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7699,14 +7661,6 @@ ALTER TABLE ONLY public.projects_topics
 
 ALTER TABLE ONLY public.analysis_summaries
     ADD CONSTRAINT fk_rails_dbd13460f0 FOREIGN KEY (background_task_id) REFERENCES public.analysis_background_tasks(id);
-
-
---
--- Name: project_folders_files fk_rails_dc7aeb6534; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.project_folders_files
-    ADD CONSTRAINT fk_rails_dc7aeb6534 FOREIGN KEY (project_folder_id) REFERENCES public.project_folders_folders(id);
 
 
 --
@@ -7814,14 +7768,6 @@ ALTER TABLE ONLY public.static_pages_topics
 
 
 --
--- Name: idea_files fk_rails_efb12f53ad; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.idea_files
-    ADD CONSTRAINT fk_rails_efb12f53ad FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
-
-
---
 -- Name: project_imports fk_rails_efff220342; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7924,10 +7870,11 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20250930942638'),
+('20251021150138'),
 ('20251001090229'),
 ('20251001090208'),
 ('20251001083036'),
+('20250930942638'),
 ('20250922131002'),
 ('20250915151900'),
 ('20250910093500'),
