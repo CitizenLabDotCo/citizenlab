@@ -70,6 +70,10 @@ const AdminCustomMapConfigComponent = lazy(
 
 const AdminProjectAnalysis = lazy(() => import('./project/analysis'));
 const ReportTab = lazy(() => import('./project/information/ReportTab'));
+const AdminPhaseInsights = lazy(() => import('./project/insights'));
+const AdminPhaseInsightsOverview = lazy(
+  () => import('./project/insights/Overview')
+);
 
 const AdminProjectProposals = lazy(() => import('./project/proposals'));
 
@@ -123,6 +127,7 @@ export enum projectsRoutes {
   projectPhaseVolunteeringCause = ':phaseId/volunteering/causes/:causeId',
   projectPhaseInputImporter = ':phaseId/input-importer',
   projectPhaseReport = ':phaseId/report',
+  projectPhaseInsights = ':phaseId/insights',
   projectAnalysis = 'analysis/:analysisId',
 }
 
@@ -169,6 +174,7 @@ export type projectsRouteTypes =
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-form/edit?${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/emails`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/insights`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/analysis/${string}`>;
 
 const createAdminProjectsRoutes = () => {
@@ -554,6 +560,32 @@ const createAdminProjectsRoutes = () => {
                     <ReportTab />
                   </PageLoading>
                 ),
+              },
+              {
+                path: projectsRoutes.projectPhaseInsights,
+                element: (
+                  <PageLoading>
+                    <AdminPhaseInsights />
+                  </PageLoading>
+                ),
+                children: [
+                  {
+                    index: true,
+                    element: (
+                      <PageLoading>
+                        <AdminPhaseInsightsOverview />
+                      </PageLoading>
+                    ),
+                  },
+                  {
+                    path: 'report',
+                    element: (
+                      <PageLoading>
+                        <ReportTab />
+                      </PageLoading>
+                    ),
+                  },
+                ],
               },
             ],
           },
