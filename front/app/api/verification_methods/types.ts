@@ -1,3 +1,4 @@
+import { IconNames } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
@@ -102,7 +103,7 @@ export type IDKeycloakMethod = {
     name: 'keycloak';
     method_metadata?: MethodMetadata;
     ui_method_name: string;
-    provider: string;
+    provider: IconNames;
   };
 };
 

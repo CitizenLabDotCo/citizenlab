@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, IconNames } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IDKeycloakMethod } from 'api/verification_methods/types';
@@ -52,9 +52,9 @@ const SSOButtonsExceptFCAndCU = ({
 
   const keycloakMethod = verificationMethods?.data.find(
     (item) => item.attributes.name === 'keycloak'
-  ) as IDKeycloakMethod;
-  const keycloakIcon = keycloakMethod.attributes.provider as IconNames;
-  const keycloakName = keycloakMethod.attributes.method_metadata?.name;
+  ) as IDKeycloakMethod | undefined;
+  const keycloakIcon = keycloakMethod?.attributes.provider;
+  const keycloakName = keycloakMethod?.attributes.method_metadata?.name;
 
   return (
     <>
