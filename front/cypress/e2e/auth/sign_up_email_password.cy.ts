@@ -20,7 +20,7 @@ describe('Sign up - email and password flow', () => {
     cy.get('.e2e-error-message');
   });
 
-  it('has working fields', () => {
+  it('has working built in fields', () => {
     signUpEmailConformation(cy);
 
     // first name field
