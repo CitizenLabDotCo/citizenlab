@@ -8,21 +8,8 @@ class PublicApi::V2::FileAttachmentSerializer < PublicApi::V2::BaseSerializer
     :attachable_id,
     :attachable_type,
     :project_id,
-    :custom_field_key,
     :created_at,
     :updated_at
-
-  def filename
-    object.file&.name
-  end
-
-  def file_url
-    object.file&.content&.url
-  end
-
-  def file_size
-    object.file&.size
-  end
 
   def project_id
     case object.attachable_type
@@ -31,16 +18,5 @@ class PublicApi::V2::FileAttachmentSerializer < PublicApi::V2::BaseSerializer
     when 'Project'
       object.attachable_id
     end
-  end
-
-  def custom_field_key
-    # Logic to find which custom field this attachment belongs to
-    # by checking the attachable's custom_field_values
-    return nil unless object.attachable.respond_to?(:custom_field_values)
-
-    object.attachable.custom_field_values&.find do |_key, value|
-      attachment_ids = Array(value).map(&:to_s)
-      attachment_ids.include?(object.id.to_s)
-    end&.first
   end
 end
