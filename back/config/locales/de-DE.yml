@@ -236,7 +236,7 @@ de:
         project:
           title: Was ist dein Projekt?
         issue:
-          title: Was ist dein Vorhaben?
+          title: Was ist Ihr Kommentar?
         option:
           title: Was ist deine Option?
         proposal:
@@ -289,7 +289,7 @@ de:
       participants: 'Teilnehmende'
       picks: 'Auswahl'
       project: '{orgName, select, München {Bezirke} other {Projekte}}'
-      published_at: 'Veröffentlicht am'
+      published_at: 'Veröffentlicht'
       registration_completed_at: 'Registrierung abgeschlossen am'
       status: 'Status'
       submitted_at: 'Eingereicht am'
