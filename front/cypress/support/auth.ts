@@ -6,7 +6,6 @@ export const signUpEmailConformation = (
 ) => {
   // Enter email
   cy.dataCy('email-flow-start').get('input[type="email"]').type(email);
-
   cy.dataCy('email-flow-start-continue-button').click();
 
   // Accept terms and privacy policy
@@ -37,4 +36,18 @@ export const enterUserInfo = (
   cy.get('#password').type(password);
 
   cy.get('#e2e-built-in-fields-submit-button > button').click({ force: true });
+};
+
+export const logIn = (
+  cy: Cypress.Chainable,
+  email: string,
+  password: string
+) => {
+  // Enter email
+  cy.dataCy('email-flow-start').get('input[type="email"]').type(email);
+  cy.dataCy('email-flow-start-continue-button').click();
+
+  // Enter password
+  cy.get('#e2e-password-input').type(password);
+  cy.get('#e2e-password-submit');
 };

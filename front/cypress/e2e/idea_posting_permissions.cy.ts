@@ -1,3 +1,4 @@
+import { logIn } from '../support/auth';
 import { randomString, randomEmail } from '../support/commands';
 
 describe('Idea posting permissions', () => {
@@ -134,9 +135,7 @@ describe('idea posting restricted to a group', () => {
   it("doesn't redirect users after authentication to form page if they are not permitted", () => {
     cy.visit(`projects/${projectSlug}`);
     cy.dataCy('e2e-ideation-start-idea-button').should('be.visible').click();
-    cy.get('#email').type(nonPermittedUserEmail);
-    cy.get('#password').type(nonPermittedUserPassword);
-    cy.get('#e2e-signin-password-submit-button').click();
+    logIn(cy, nonPermittedUserEmail, nonPermittedUserPassword);
     cy.url().should('not.include', `/ideas/new`);
   });
 

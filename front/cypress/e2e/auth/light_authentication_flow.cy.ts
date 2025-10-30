@@ -77,7 +77,7 @@ describe('Light authentication flow', () => {
     cy.get('#e2e-light-flow-email-submit').click();
 
     cy.get('input#password').type('democracy2.0');
-    cy.get('#e2e-light-flow-password-submit').click();
+    cy.get('#e2e-password-submit').click();
 
     cy.location('pathname').should(
       'eq',

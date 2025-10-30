@@ -111,6 +111,7 @@ const Password = ({ state, loading, setError, onSubmit }: Props) => {
         </Text>
         <Box>
           <PasswordInput
+            id="e2e-password-input"
             name="password"
             isLoginPasswordInput
             label={formatMessage(sharedMessages.password)}
@@ -129,7 +130,7 @@ const Password = ({ state, loading, setError, onSubmit }: Props) => {
         </Box>
         <Box w="100%" display="flex" mt="32px">
           <ButtonWithLink
-            id="e2e-light-flow-password-submit"
+            id="e2e-password-submit"
             type="submit"
             width="auto"
             disabled={loading}
