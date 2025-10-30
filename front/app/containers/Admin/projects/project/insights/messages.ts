@@ -59,4 +59,36 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.noDataAvailable',
     defaultMessage: 'No data available yet',
   },
+  uniqueParticipants: {
+    id: 'app.containers.Admin.projects.project.insights.uniqueParticipants',
+    defaultMessage: 'Unique Participants',
+  },
+  uniqueParticipantsSubtext: {
+    id: 'app.containers.Admin.projects.project.insights.uniqueParticipantsSubtext',
+    defaultMessage: 'Total number of unique participants in this phase',
+  },
+  totalContributions: {
+    id: 'app.containers.Admin.projects.project.insights.totalContributions',
+    defaultMessage: 'Total Contributions',
+  },
+  totalContributionsSubtext: {
+    id: 'app.containers.Admin.projects.project.insights.totalContributionsSubtext',
+    defaultMessage: 'All contributions made in this phase',
+  },
+  engagementRate: {
+    id: 'app.containers.Admin.projects.project.insights.engagementRate',
+    defaultMessage: 'Engagement Rate',
+  },
+  engagementRateSubtext: {
+    id: 'app.containers.Admin.projects.project.insights.engagementRateSubtext',
+    defaultMessage: '{visitors} total visitors',
+  },
+  contributionBreakdown: {
+    id: 'app.containers.Admin.projects.project.insights.contributionBreakdown',
+    defaultMessage: 'Contribution Breakdown',
+  },
+  participationMetricsDescription: {
+    id: 'app.containers.Admin.projects.project.insights.participationMetricsDescription',
+    defaultMessage: 'Key participation metrics for this phase',
+  },
 });
