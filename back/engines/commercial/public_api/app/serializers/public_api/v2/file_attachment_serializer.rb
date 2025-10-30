@@ -11,6 +11,18 @@ class PublicApi::V2::FileAttachmentSerializer < PublicApi::V2::BaseSerializer
     :created_at,
     :updated_at
 
+  def filename
+    object.file&.name
+  end
+
+  def file_url
+    object.file&.content&.url
+  end
+
+  def file_size
+    object.file&.size
+  end
+
   def project_id
     case object.attachable_type
     when 'Idea', 'Phase', 'Event'
