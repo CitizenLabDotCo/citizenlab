@@ -17,7 +17,7 @@ class PublicApi::V2::FileAttachmentSerializer < PublicApi::V2::BaseSerializer
   end
 
   def file_url  
-    object.file&.file&.url
+    object.file&.content&.url
   end
 
   def file_size
