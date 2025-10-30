@@ -17,7 +17,7 @@ describe('Sign in page', () => {
   it('has a working password field', () => {
     cy.dataCy('email-flow-start').get('input[type="email"]').type(adminEmail);
     cy.dataCy('email-flow-start-continue-button').click();
-    cy.get('#password').type('test').should('have.value', 'test');
+    cy.get('#e2e-password-input').type('test').should('have.value', 'test');
   });
 
   it('shows an error when no email is provided', () => {
@@ -30,7 +30,7 @@ describe('Sign in page', () => {
   });
 
   it('shows an error when no valid email is provided', () => {
-    cy.dataCy('email-flow-start').get('input[type="email"]').type('test@');
+    cy.dataCy('email-flow-start').get('input[type="email"]').type('test@x');
     cy.dataCy('email-flow-start-continue-button').click();
 
     cy.dataCy('email-flow-start-email-input').should('exist');

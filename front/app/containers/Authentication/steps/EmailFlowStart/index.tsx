@@ -121,6 +121,7 @@ const EmailFlowStart = ({
               <Input
                 name="email"
                 type="email"
+                autocomplete="email"
                 label={formatMessage(sharedMessages.email)}
               />
             </Box>
