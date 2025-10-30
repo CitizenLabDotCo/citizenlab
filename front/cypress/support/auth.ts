@@ -49,5 +49,5 @@ export const logIn = (
 
   // Enter password
   cy.get('#e2e-password-input').type(password);
-  cy.get('#e2e-password-submit');
+  cy.get('#e2e-password-submit > button').click({ force: true });
 };

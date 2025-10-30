@@ -142,9 +142,7 @@ describe('idea posting restricted to a group', () => {
   it('redirects users after authentication to form page if they are permitted', () => {
     cy.visit(`projects/${projectSlug}`);
     cy.dataCy('e2e-ideation-start-idea-button').should('be.visible').click();
-    cy.get('#email').type(permittedUserEmail);
-    cy.get('#password').type(permittedUserPassword);
-    cy.get('#e2e-signin-password-submit-button').click();
+    logIn(cy, nonPermittedUserEmail, nonPermittedUserPassword);
     cy.url().should('include', `/ideas/new`);
   });
 
@@ -153,9 +151,7 @@ describe('idea posting restricted to a group', () => {
     cy.get('#e2e-not-authorized').should('be.visible');
     cy.dataCy('e2e-unauthorized-must-sign-in').should('be.visible');
     cy.dataCy('e2e-trigger-authentication').click();
-    cy.get('#email').type(permittedUserEmail);
-    cy.get('#password').type(permittedUserPassword);
-    cy.get('#e2e-signin-password-submit-button').click();
+    logIn(cy, nonPermittedUserEmail, nonPermittedUserPassword);
     cy.get('#idea-form').should('be.visible');
   });
 
@@ -164,9 +160,7 @@ describe('idea posting restricted to a group', () => {
     cy.get('#e2e-not-authorized').should('be.visible');
     cy.dataCy('e2e-unauthorized-must-sign-in').should('be.visible');
     cy.dataCy('e2e-trigger-authentication').click();
-    cy.get('#email').type(nonPermittedUserEmail);
-    cy.get('#password').type(nonPermittedUserPassword);
-    cy.get('#e2e-signin-password-submit-button').click();
+    logIn(cy, nonPermittedUserEmail, nonPermittedUserPassword);
     cy.get('#idea-form').should('not.exist');
   });
 
