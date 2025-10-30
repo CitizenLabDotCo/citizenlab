@@ -6,7 +6,7 @@ require './engines/commercial/public_api/spec/acceptance/v2/support/shared'
 
 resource 'File Attachments' do
   explanation <<~DESC.squish
-    File attachments represent files that are linked to specific resources (like ideas, projects, phases, etc.) 
+    File attachments represent files that are linked to specific resources (like ideas, initiatives, etc.) 
     within the platform.
   DESC
 
@@ -15,12 +15,15 @@ resource 'File Attachments' do
   let!(:user) { create(:user) }
   let!(:project) { create(:project) }
   let!(:idea) { create(:idea, project: project) }
+  
+  # Create files that belong to the project
   let!(:files) do
     [
-      create(:file, uploader: user),
-      create(:file, uploader: user)
+      create(:file, uploader: user, project: project),
+      create(:file, uploader: user, project: project)
     ]
   end
+  
   let!(:file_attachments) do
     [
       create(:file_attachment, file: files[0], attachable: idea),
