@@ -39,24 +39,21 @@ describe('Sign in page', () => {
     });
   });
 
-  // // TODO
-  // it('shows an error when no password is provided', () => {
-  //   cy.dataCy('email-flow-start').get('input[type="email"]').type(adminEmail);
-  //   cy.dataCy('email-flow-start-continue-button').click();
+  it('shows an error when no password is provided', () => {
+    cy.dataCy('email-flow-start').get('input[type="email"]').type(adminEmail);
+    cy.dataCy('email-flow-start-continue-button').click();
 
-  //   cy.get('#e2e-password-submit > button').click({ force: true });
+    cy.get('#e2e-password-submit > button').click({ force: true });
 
-  //   cy.get('#e2e-password-container').should('exist');
-  //   cy.get('#e2e-password-container').within(() => {
-  //     cy.get('[data-testid="error-message-text"]').should('exist');
-  //   });
-  // });
+    cy.get('.e2e-error-message').should('exist');
+  });
 
-  // // TODO
-  // it('has a working link to the password recovery page', () => {
-  //   cy.get('.e2e-password-recovery-link').click();
-  //   cy.location('pathname').should('eq', '/en/password-recovery');
-  // });
+  it('has a working link to the password recovery page', () => {
+    cy.dataCy('email-flow-start').get('input[type="email"]').type(adminEmail);
+    cy.dataCy('email-flow-start-continue-button').click();
+    cy.get('a[href="/en/password-recovery"]').click();
+    cy.location('pathname').should('eq', '/en/password-recovery');
+  });
 
   it('logs in with valid credentials', () => {
     const password = 'democracy2.0';
