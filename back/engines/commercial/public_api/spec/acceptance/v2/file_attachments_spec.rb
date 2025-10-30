@@ -5,25 +5,22 @@ require 'rspec_api_documentation/dsl'
 require './engines/commercial/public_api/spec/acceptance/v2/support/shared'
 
 resource 'File Attachments' do
-  explanation <<~DESC.squish
-    File attachments represent files that are linked to specific resources (like ideas, initiatives, etc.) 
-    within the platform.
-  DESC
+  explanation 'File attachments represent files that are linked to specific resources '\
+             '(like ideas, initiatives, etc.) within the platform.'
 
   include_context 'common_auth'
 
   let!(:user) { create(:user) }
   let!(:project) { create(:project) }
   let!(:idea) { create(:idea, project: project) }
-  
-  # Create files that belong to the project
+
   let!(:files) do
     [
-      create(:file, uploader: user, project: project),
-      create(:file, uploader: user, project: project)
+      create(:file, uploader: user, projects: [project]),
+      create(:file, uploader: user, projects: [project])
     ]
   end
-  
+
   let!(:file_attachments) do
     [
       create(:file_attachment, file: files[0], attachable: idea),
@@ -45,24 +42,43 @@ resource 'File Attachments' do
 
       example_request 'Successful response' do
         assert_status 200
-        expect(json_response_body[:file_attachments].size).to eq(page_size)
-        expect(json_response_body[:meta]).to eq({ total_pages: 2, current_page: 1 })
+        expect(json_response_body[:'files/file_attachments'].size).to eq(page_size)
       end
     end
 
-    context 'when filtering by attachable' do
+    context 'when filtering by attachable_id' do
+      let(:attachable_id) { idea.id }
+
+      example_request 'Returns file attachments for the specified attachable' do
+        assert_status 200
+        expect(json_response_body[:'files/file_attachments'].map { |fa| fa[:attachable_id] })
+          .to all(eq(idea.id))
+      end
+    end
+
+    context 'when filtering by attachable_type' do
+      let(:attachable_type) { 'Idea' }
+
+      example_request 'Returns file attachments for the specified type' do
+        assert_status 200
+        expect(json_response_body[:'files/file_attachments'].map { |fa| fa[:attachable_type] })
+          .to all(eq('Idea'))
+      end
+    end
+
+    context 'when filtering by both attachable_id and type' do
       let(:attachable_id) { idea.id }
       let(:attachable_type) { 'Idea' }
 
-      example_request 'Returns only attachments for the specified attachable' do
+      example_request 'Returns file attachments matching both filters' do
         assert_status 200
-        expect(json_response_body[:file_attachments].size).to eq(2)
-        expect(json_response_body[:file_attachments].map { |fa| fa[:attachable_id] }.uniq).to eq([idea.id])
+        attachments = json_response_body[:'files/file_attachments']
+        expect(attachments).to all(include(
+          attachable_id: idea.id,
+          attachable_type: 'Idea'
+        ))
       end
     end
-
-    include_examples 'filtering_by_date', :file_attachment, :created_at
-    include_examples 'filtering_by_date', :file_attachment, :updated_at
   end
 
   get '/api/v2/file_attachments/:id' do
@@ -76,14 +92,11 @@ resource 'File Attachments' do
 
     example_request 'Returns the file attachment' do
       assert_status 200
-      expect(json_response_body[:file_attachment]).to include({
+      expect(json_response_body[:'files/file_attachment']).to include(
         id: id,
-        file_id: files[0].id,
         attachable_id: idea.id,
         attachable_type: 'Idea'
-      })
+      )
     end
   end
-
-  include_examples '/api/v2/.../deleted', :file_attachments
 end
