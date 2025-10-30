@@ -15,7 +15,7 @@ module IdKeycloak
 
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      return unless Verification::VerificationService.new.method_configured?(configuration, name)
+      return unless Verification::VerificationService.new.active?(configuration, name)
 
       options = env['omniauth.strategy'].options
 

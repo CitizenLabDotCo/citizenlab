@@ -54,9 +54,11 @@ module Verification
     # @param [AppConfiguration] configuration
     # @return [Boolean]
     def active?(configuration, method_name)
-      return false unless method_configured?(configuration, method_name)
+      active_methods(configuration).include? method_by_name(method_name)
+    end
 
-      method_by_name(method_name).enabled?
+    def enabled?(method_name)
+      method_by_name(method_name)&.enabled?
     end
 
     def method_configured?(configuration, method_name)
