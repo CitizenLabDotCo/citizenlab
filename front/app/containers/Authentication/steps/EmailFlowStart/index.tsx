@@ -117,7 +117,7 @@ const EmailFlowStart = ({
             <Text mt="0px" mb="32px" color="tenantText">
               {formatMessage(sharedMessages.enterYourEmailAddress)}
             </Text>
-            <Box>
+            <Box data-cy="email-flow-start-email-input">
               <Input
                 name="email"
                 type="email"
