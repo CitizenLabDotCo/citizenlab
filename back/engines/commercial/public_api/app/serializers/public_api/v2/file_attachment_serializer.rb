@@ -30,6 +30,7 @@ class PublicApi::V2::FileAttachmentSerializer < PublicApi::V2::BaseSerializer
       object.attachable&.project_id
     when 'Project'
       object.attachable_id
+    end
   end
 
   def custom_field_key
