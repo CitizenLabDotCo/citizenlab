@@ -304,7 +304,6 @@ const PlatformFooter = ({ className }: Props) => {
         <PagesNav aria-label={formatMessage(messages.ariaLabel)}>
           <PagesNavList>
             {FOOTER_PAGES.map((slug: TFooterPage, index) => {
-              console.log(slug);
               return (
                 <React.Fragment key={slug}>
                   <PagesNavListItem>
