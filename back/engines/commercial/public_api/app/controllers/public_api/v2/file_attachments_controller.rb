@@ -21,7 +21,7 @@ module PublicApi
 
     def finder_params
       params
-        .permit(:attachable_id, :attachable_type, :project_id, :phase_id, :idea_id)
+        .permit(:attachable_id, :attachable_type)
         .to_h
         .symbolize_keys
     end
