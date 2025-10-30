@@ -1,27 +1,11 @@
 # frozen_string_literal: true
 
 class PublicApi::V2::FileAttachmentSerializer < PublicApi::V2::BaseSerializer
-  attributes :id,
-    :filename,
-    :file_url,
-    :file_size,
-    :attachable_id,
-    :attachable_type,
-    :project_id,
-    :created_at,
-    :updated_at
+  attributes :id, :project_id, :created_at, :updated_at, :attachable_type, :attachable_id
 
-  def filename
-    object.file&.name
-  end
-
-  def file_url
-    object.file&.content&.url
-  end
-
-  def file_size
-    object.file&.size
-  end
+  attribute(:file_url) { |attachment| object.file.content.url }
+  attribute(:file_name) { |attachment| object.file.name }
+  attribute(:file_size) { |attachment| object.file.size }
 
   def project_id
     case object.attachable_type
