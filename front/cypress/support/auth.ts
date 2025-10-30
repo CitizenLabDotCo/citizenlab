@@ -1,6 +1,6 @@
 import { randomEmail, randomString } from './commands';
 
-export const signUpEmailConformation = (
+export const signUp = (
   cy: Cypress.Chainable,
   email: string = randomEmail()
 ) => {
@@ -16,6 +16,13 @@ export const signUpEmailConformation = (
     .click()
     .should('have.class', 'checked');
   cy.get('#e2e-policies-continue').click();
+};
+
+export const signUpEmailConformation = (
+  cy: Cypress.Chainable,
+  email: string = randomEmail()
+) => {
+  signUp(cy, email);
 
   // Confirm email
   cy.get('#code').should('exist');
