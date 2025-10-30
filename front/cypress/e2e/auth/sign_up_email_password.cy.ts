@@ -15,35 +15,32 @@ describe('Sign up - built in fields step', () => {
     cy.get('#firstName').type('test').should('have.value', 'test');
     cy.get('#firstName').clear().should('have.value', '');
 
-    // show san error when no first name is provided
-    cy.get('#e2e-built-in-fields-submit-button > button').click();
-    cy.scrollTo('top');
-    cy.wait(500);
-    cy.get('#e2e-firstName-container .e2e-error-message').should('exist');
-    cy.get('#e2e-firstName-container .e2e-error-message').should(
-      'contain',
-      'Enter your first name'
-    );
-
     // last name field
     cy.get('#lastName').type('test').should('have.value', 'test');
     cy.get('#lastName').clear().should('have.value', '');
 
-    // show an error when no last name is provided
-    cy.get('#e2e-built-in-fields-submit-button > button')
-      .wait(500)
-      .click()
-      .wait(500);
-    cy.get('#e2e-lastName-container .e2e-error-message').should(
-      'contain',
-      'Enter your last name'
-    );
-
-    // has a working password field
+    // password field
     cy.get('#password')
       .type('democracy2.0')
       .should('have.value', 'democracy2.0');
     cy.get('#password').clear().should('have.value', '');
+
+    // shows errors when the fields are empty
+    cy.get('#e2e-built-in-fields-submit-button > button')
+      .wait(500)
+      .click()
+      .wait(500);
+    cy.get('#e2e-firstName-container .e2e-error-message').should('exist');
+    cy.get('#e2e-lastName-container .e2e-error-message').should('exist');
+    cy.get('#e2e-password-container .e2e-error-message').should('exist');
+    cy.get('#e2e-firstName-container .e2e-error-message').should(
+      'contain',
+      'Enter your first name'
+    );
+    cy.get('#e2e-lastName-container .e2e-error-message').should(
+      'contain',
+      'Enter your last name'
+    );
 
     // shows an error when no valid password is provided
     cy.get('#password').type('test').should('have.value', 'test');
