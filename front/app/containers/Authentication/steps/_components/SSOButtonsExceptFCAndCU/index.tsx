@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, IconNames } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
@@ -17,6 +17,8 @@ import parentMessages from '../messages';
 import ViennaSamlButton from '../ViennaSamlButton';
 
 import messages from './messages';
+import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
+import { IDKeycloakMethod } from 'api/verification_methods/types';
 
 const WrappedAuthProviderButton = (props: AuthProviderButtonProps) => (
   <Box mb="18px">
@@ -39,12 +41,20 @@ const SSOButtonsExceptFCAndCU = ({
 }: Props) => {
   const { ssoProviders } = useAuthConfig();
   const { data: tenant } = useAppConfiguration();
+  const { data: verificationMethods } = useVerificationMethods();
+
   const tenantSettings = tenant?.data.attributes.settings;
 
   const azureProviderName =
     tenantSettings?.azure_ad_login?.login_mechanism_name;
   const azureB2cProviderName =
     tenantSettings?.azure_ad_b2c_login?.login_mechanism_name;
+
+  const keycloakMethod = verificationMethods?.data.find(
+    (item) => item.attributes?.name === 'keycloak'
+  ) as IDKeycloakMethod;
+  const keycloakIcon = keycloakMethod?.attributes?.provider as IconNames;
+  const keycloakName = keycloakMethod?.attributes?.method_metadata?.name;
 
   return (
     <>
@@ -107,9 +117,9 @@ const SSOButtonsExceptFCAndCU = ({
           />
         </WrappedAuthProviderButton>
       )}
-      {ssoProviders.keycloak && (
+      {ssoProviders.keycloak && keycloakIcon && keycloakName && (
         <WrappedAuthProviderButton
-          icon="idporten"
+          icon={keycloakIcon}
           showConsent={showConsent}
           authProvider="keycloak"
           onContinue={onSelectAuthProvider}
@@ -117,22 +127,7 @@ const SSOButtonsExceptFCAndCU = ({
           <FormattedMessage
             {...parentMessages.continueWithLoginMechanism}
             values={{
-              loginMechanismName: 'ID-Porten',
-            }}
-          />
-        </WrappedAuthProviderButton>
-      )}
-      {ssoProviders.keycloak && (
-        <WrappedAuthProviderButton
-          icon="rheinbahn"
-          showConsent={showConsent}
-          authProvider="keycloak"
-          onContinue={onSelectAuthProvider}
-        >
-          <FormattedMessage
-            {...parentMessages.continueWithLoginMechanism}
-            values={{
-              loginMechanismName: 'Rheinbahn login',
+              loginMechanismName: keycloakName,
             }}
           />
         </WrappedAuthProviderButton>

@@ -102,6 +102,7 @@ export type IDKeycloakMethod = {
     name: 'keycloak';
     method_metadata?: MethodMetadata;
     ui_method_name: string;
+    provider: string;
   };
 };
 
@@ -144,5 +145,3 @@ export type TVerificationMethod =
   | IDTwodayMethod
   | IDAuth0Method
   | IDIdAustriaMethod;
-// TODO: JS - No Fake SSO?
-// TODO: JS - Can we add the icon name into the method type?

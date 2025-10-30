@@ -445,7 +445,7 @@ export const icons = {
   ),
   rheinbahn: (props: IconPropsWithoutName) => (
     <Svg
-      viewBox="0 0 25 40"
+      viewBox="10 0 20 34"
       width="24px"
       height="24px"
       fill="none"
