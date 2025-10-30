@@ -95,7 +95,7 @@ const EmailFlowStart = ({
   };
 
   return (
-    <>
+    <Box data-cy="email-flow-start">
       {ssoProviders.franceconnect && (
         <>
           <FranceConnectButton
@@ -126,7 +126,7 @@ const EmailFlowStart = ({
             </Box>
             <Box w="100%" display="flex" mt="32px">
               <ButtonWithLink
-                id="e2e-light-flow-email-submit"
+                dataCy="email-flow-start-continue-button"
                 type="submit"
                 width="100%"
                 disabled={loading}
@@ -139,7 +139,7 @@ const EmailFlowStart = ({
         </FormProvider>
       )}
       <SSOButtons onClickSSO={onSwitchToSSO} />
-    </>
+    </Box>
   );
 };
 
