@@ -5,8 +5,8 @@ require 'rspec_api_documentation/dsl'
 require './engines/commercial/public_api/spec/acceptance/v2/support/shared'
 
 resource 'File Attachments' do
-  explanation 'File attachments represent files that are linked to specific resources '\
-             '(like ideas, initiatives, etc.) within the platform.'
+  explanation 'File attachments represent files that are linked to specific resources ' \
+    '(like ideas, initiatives, etc.) within the platform.'
 
   include_context 'common_auth'
 
@@ -15,17 +15,13 @@ resource 'File Attachments' do
   let!(:idea) { create(:idea, project: project) }
 
   let!(:files) do
-    [
-      create(:file, uploader: user, projects: [project]),
-      create(:file, uploader: user, projects: [project])
-    ]
+    create_list(:file, 2, uploader: user, projects: [project])
   end
 
   let!(:file_attachments) do
-    [
-      create(:file_attachment, file: files[0], attachable: idea),
-      create(:file_attachment, file: files[1], attachable: idea)
-    ]
+    files.map do |file|
+      create(:file_attachment, file: file, attachable: idea)
+    end
   end
 
   get '/api/v2/file_attachments/' do
