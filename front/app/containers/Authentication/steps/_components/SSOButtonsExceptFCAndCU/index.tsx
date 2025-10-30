@@ -3,6 +3,8 @@ import React from 'react';
 import { Box, IconNames } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { IDKeycloakMethod } from 'api/verification_methods/types';
+import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
 
 import { SignUpInFlow } from 'containers/Authentication/typings';
 import useAuthConfig from 'containers/Authentication/useAuthConfig';
@@ -17,8 +19,6 @@ import parentMessages from '../messages';
 import ViennaSamlButton from '../ViennaSamlButton';
 
 import messages from './messages';
-import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
-import { IDKeycloakMethod } from 'api/verification_methods/types';
 
 const WrappedAuthProviderButton = (props: AuthProviderButtonProps) => (
   <Box mb="18px">
@@ -51,10 +51,10 @@ const SSOButtonsExceptFCAndCU = ({
     tenantSettings?.azure_ad_b2c_login?.login_mechanism_name;
 
   const keycloakMethod = verificationMethods?.data.find(
-    (item) => item.attributes?.name === 'keycloak'
+    (item) => item.attributes.name === 'keycloak'
   ) as IDKeycloakMethod;
-  const keycloakIcon = keycloakMethod?.attributes?.provider as IconNames;
-  const keycloakName = keycloakMethod?.attributes?.method_metadata?.name;
+  const keycloakIcon = keycloakMethod.attributes.provider as IconNames;
+  const keycloakName = keycloakMethod.attributes.method_metadata?.name;
 
   return (
     <>

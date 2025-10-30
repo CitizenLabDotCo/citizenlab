@@ -61,10 +61,6 @@ module Verification
       method_by_name(method_name)&.enabled?
     end
 
-    def method_configured?(configuration, method_name)
-      active_methods(configuration).include? method_by_name(method_name)
-    end
-
     # Not all verification methods are allowed at a permission/action level
     # NOTE: for real platforms, you should never have
     # more than one verification method enabled at a time.
