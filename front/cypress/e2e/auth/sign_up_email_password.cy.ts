@@ -1,11 +1,23 @@
-import { randomEmail } from '../../support/commands';
 import { signUp, signUpEmailConformation } from '../../support/auth';
 
-describe('Sign up - built in fields step', () => {
+describe('Sign up - email and password flow', () => {
   beforeEach(() => {
     cy.goToLandingPage();
     cy.get('#e2e-navbar-login-menu-item').click();
     cy.get('#e2e-authentication-modal').should('exist');
+  });
+
+  it('signs up and confirms code successfully', () => {
+    signUpEmailConformation(cy);
+    cy.get('.e2e-modal-close-button').first().click();
+    cy.clearCookies();
+  });
+
+  it('fails to confirm account with an invalid code', () => {
+    signUp(cy);
+    cy.get('#code').click().type('0000');
+    cy.get('#e2e-verify-email-button > button').click({ force: true });
+    cy.get('.e2e-error-message');
   });
 
   it('has working fields', () => {
@@ -52,18 +64,5 @@ describe('Sign up - built in fields step', () => {
       'contain',
       'Provide a password that is at least 8 characters long'
     );
-  });
-
-  it('signs up and confirms code successfully', () => {
-    signUpEmailConformation(cy);
-    cy.get('.e2e-modal-close-button').first().click();
-    cy.clearCookies();
-  });
-
-  it('fails to confirm account with an invalid code', () => {
-    signUp(cy);
-    cy.get('#code').click().type('0000');
-    cy.get('#e2e-verify-email-button > button').click({ force: true });
-    cy.get('.e2e-error-message');
   });
 });
