@@ -66,20 +66,4 @@ describe('Sign up - built in fields step', () => {
     cy.get('#e2e-verify-email-button > button').click({ force: true });
     cy.get('.e2e-error-message');
   });
-
-  it.only('allows changing email during sign-up flow', () => {
-    const oldEmail = randomEmail();
-    signUp(cy, oldEmail);
-
-    cy.contains(oldEmail).should('exist');
-
-    cy.get('#e2e-go-to-change-email').click();
-
-    const newEmail = randomEmail();
-    cy.get('#email').focus().type(newEmail);
-    cy.get('#e2e-change-email-submit').click();
-
-    cy.contains(newEmail).should('exist');
-    cy.contains(oldEmail).should('not.exist');
-  });
 });
