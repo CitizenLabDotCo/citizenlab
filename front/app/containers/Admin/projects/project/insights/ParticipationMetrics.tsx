@@ -5,61 +5,83 @@ import styled from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
+import { useParticipationMetrics } from './hooks/useParticipationMetrics';
 import messages from './messages';
+import MetricCard from './widgets/MetricCard';
 
-const MetricCard = styled(Box)`
-  background: ${({ theme }) => theme.colors.background};
-  border: 1px solid ${({ theme }) => theme.colors.divider};
-  border-radius: 4px;
-  padding: 24px;
+const GridContainer = styled(Box)`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
 `;
 
-const MetricValue = styled.div`
-  font-size: 36px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.primary};
-  margin-top: 8px;
-`;
-
-const MetricLabel = styled(Text)`
-  font-size: 14px;
-  color: ${({ theme }) => theme.colors.textSecondary};
+const BreakdownGrid = styled(Box)`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
 `;
 
 interface Props {
-  phase?: IPhaseData;
+  phase: IPhaseData;
 }
 
-const ParticipationMetrics = ({ phase: _phase }: Props) => {
-  const dummyParticipants = Math.floor(Math.random() * 500) + 50;
-  const dummyInputs = Math.floor(Math.random() * 300) + 20;
+const ParticipationMetrics = ({ phase }: Props) => {
+  const { formatMessage } = useIntl();
+  const metrics = useParticipationMetrics(phase);
 
   return (
     <Box>
-      <Title variant="h3" mb="16px">
+      <Title variant="h3" mb="8px">
         <FormattedMessage {...messages.participationMetricsTitle} />
       </Title>
+      <Text color="textSecondary" mb="24px">
+        <FormattedMessage {...messages.participationMetricsDescription} />
+      </Text>
 
-      <Box display="flex" gap="16px" flexWrap="wrap">
-        <MetricCard flex="1" minWidth="200px">
-          <MetricLabel>
-            <FormattedMessage {...messages.totalParticipants} />
-          </MetricLabel>
-          <MetricValue>{dummyParticipants}</MetricValue>
-        </MetricCard>
+      <GridContainer>
+        <MetricCard
+          value={metrics.uniqueParticipants}
+          label={formatMessage(messages.uniqueParticipants)}
+          subtext={formatMessage(messages.uniqueParticipantsSubtext)}
+        />
 
-        <MetricCard flex="1" minWidth="200px">
-          <MetricLabel>Total Inputs</MetricLabel>
-          <MetricValue>{dummyInputs}</MetricValue>
-        </MetricCard>
+        {metrics.totalContributions > 0 && (
+          <MetricCard
+            value={metrics.totalContributions}
+            label={formatMessage(messages.totalContributions)}
+            subtext={formatMessage(messages.totalContributionsSubtext)}
+          />
+        )}
 
-        <MetricCard flex="1" minWidth="200px">
-          <MetricLabel>Completion Rate</MetricLabel>
-          <MetricValue>{Math.floor(Math.random() * 30) + 60}%</MetricValue>
-        </MetricCard>
-      </Box>
+        <MetricCard
+          value={`${metrics.engagementRate.toFixed(1)}%`}
+          label={formatMessage(messages.engagementRate)}
+          subtext={formatMessage(messages.engagementRateSubtext, {
+            visitors: metrics.totalVisitors,
+          })}
+        />
+      </GridContainer>
+
+      {metrics.contributionsByType && (
+        <Box mt="24px">
+          <Title variant="h4" mb="16px">
+            <FormattedMessage {...messages.contributionBreakdown} />
+          </Title>
+          <BreakdownGrid>
+            {Object.entries(metrics.contributionsByType).map(
+              ([type, count]) => (
+                <MetricCard
+                  key={type}
+                  value={count}
+                  label={type.charAt(0).toUpperCase() + type.slice(1)}
+                />
+              )
+            )}
+          </BreakdownGrid>
+        </Box>
+      )}
     </Box>
   );
 };
