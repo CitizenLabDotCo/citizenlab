@@ -323,6 +323,7 @@ const PlatformFooter = ({ className }: Props) => {
                       <StyledLink
                         to={`/pages/${slug}`}
                         className={index === 0 ? 'first' : ''}
+                        scrollToTop={true}
                       >
                         <FormattedMessage {...MESSAGES_MAP[slug]} />
                       </StyledLink>
