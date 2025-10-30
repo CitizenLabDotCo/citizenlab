@@ -10,7 +10,7 @@ module PublicApi
         **finder_params
       ).execute
 
-      list_items(file_attachments, V2::FileAttachmentSerializer, includes: %i[file attachable])
+      list_items(file_attachments, V2::FileAttachmentSerializer, includes: %i[file])
     end
 
     def show
