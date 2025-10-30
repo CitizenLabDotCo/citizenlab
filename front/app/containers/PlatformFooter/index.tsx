@@ -304,6 +304,7 @@ const PlatformFooter = ({ className }: Props) => {
         <PagesNav aria-label={formatMessage(messages.ariaLabel)}>
           <PagesNavList>
             {FOOTER_PAGES.map((slug: TFooterPage, index) => {
+              console.log(slug);
               return (
                 <React.Fragment key={slug}>
                   <PagesNavListItem>
@@ -323,6 +324,7 @@ const PlatformFooter = ({ className }: Props) => {
                       <StyledLink
                         to={`/pages/${slug}`}
                         className={index === 0 ? 'first' : ''}
+                        scrollToTop={true}
                       >
                         <FormattedMessage {...MESSAGES_MAP[slug]} />
                       </StyledLink>
