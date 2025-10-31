@@ -3,6 +3,8 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { IDKeycloakMethod } from 'api/verification_methods/types';
+import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
 
 import { SignUpInFlow } from 'containers/Authentication/typings';
 import useAuthConfig from 'containers/Authentication/useAuthConfig';
@@ -39,12 +41,20 @@ const SSOButtonsExceptFCAndCU = ({
 }: Props) => {
   const { ssoProviders } = useAuthConfig();
   const { data: tenant } = useAppConfiguration();
+  const { data: verificationMethods } = useVerificationMethods();
+
   const tenantSettings = tenant?.data.attributes.settings;
 
   const azureProviderName =
     tenantSettings?.azure_ad_login?.login_mechanism_name;
   const azureB2cProviderName =
     tenantSettings?.azure_ad_b2c_login?.login_mechanism_name;
+
+  const keycloakMethod = verificationMethods?.data.find(
+    (item) => item.attributes.name === 'keycloak'
+  ) as IDKeycloakMethod | undefined;
+  const keycloakIcon = keycloakMethod?.attributes.provider;
+  const keycloakName = keycloakMethod?.attributes.method_metadata?.name;
 
   return (
     <>
@@ -107,9 +117,9 @@ const SSOButtonsExceptFCAndCU = ({
           />
         </WrappedAuthProviderButton>
       )}
-      {ssoProviders.keycloak && (
+      {ssoProviders.keycloak && keycloakIcon && keycloakName && (
         <WrappedAuthProviderButton
-          icon="idporten"
+          icon={keycloakIcon}
           showConsent={showConsent}
           authProvider="keycloak"
           onContinue={onSelectAuthProvider}
@@ -117,7 +127,7 @@ const SSOButtonsExceptFCAndCU = ({
           <FormattedMessage
             {...parentMessages.continueWithLoginMechanism}
             values={{
-              loginMechanismName: 'ID-Porten',
+              loginMechanismName: keycloakName,
             }}
           />
         </WrappedAuthProviderButton>
