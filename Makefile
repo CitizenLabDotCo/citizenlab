@@ -79,7 +79,7 @@ be-up-idporten:
 	BASE_DEV_URI=https://keycloak-r3tyu.loca.lt ASSET_HOST_URI=https://keycloak-r3tyu.loca.lt docker compose up
 
 fe-up-idporten:
-	cd front && npm run start:sso:keycloak
+	cd front && npm run start:sso:idporten
 
 # Note: Rheinbahn uses the same Keycloak setup as ID-Porten so verification config will need changing
 be-up-rheinbahn:
