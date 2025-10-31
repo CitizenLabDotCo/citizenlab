@@ -44,8 +44,8 @@ export const missingDataFlow = (
           setCurrentStep('missing-data:change-email');
         }
       },
-      SUBMIT_CODE: async (code: string) => {
-        await confirmEmail({ code });
+      SUBMIT_CODE: async (email: string, code: string) => {
+        await confirmEmail({ email, code });
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
 

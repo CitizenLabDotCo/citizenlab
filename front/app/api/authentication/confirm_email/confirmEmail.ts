@@ -7,13 +7,12 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 
 const confirmationApiEndpoint = `user/confirm`;
 
-export type IConfirmation = {
-  code?: string | null;
+type IConfirmation = {
+  email: string;
+  code: string;
 };
 
-export default async function confirmEmail(
-  confirmation: Partial<IConfirmation>
-) {
+export default async function confirmEmail(confirmation: IConfirmation) {
   const bodyData = {
     confirmation,
   };

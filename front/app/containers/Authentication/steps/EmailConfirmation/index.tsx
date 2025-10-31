@@ -26,7 +26,7 @@ interface Props {
   state: State;
   loading: boolean;
   setError: SetError;
-  onConfirm: (code: string) => void;
+  onConfirm: (email: string, code: string) => void;
   onChangeEmail?: () => void;
 }
 
@@ -71,12 +71,15 @@ const EmailConfirmation = ({
     resolver: yupResolver(schema),
   });
 
+  const email = state.email;
+  if (!email) return null;
+
   const handleConfirm = async ({ code }: FormValues) => {
     setResendingCode(false);
     setCodeResent(false);
 
     try {
-      await onConfirm(code);
+      await onConfirm(email, code);
     } catch (e) {
       if (isCLErrorsWrapper(e)) {
         handleHookFormSubmissionError(e, methods.setError);
@@ -116,10 +119,7 @@ const EmailConfirmation = ({
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(handleConfirm)}>
         <Box mt="-8px">
-          <CodeSentMessage
-            email={state.email ?? undefined}
-            codeResent={codeResent}
-          />
+          <CodeSentMessage email={email} codeResent={codeResent} />
         </Box>
         <Box>
           <Input

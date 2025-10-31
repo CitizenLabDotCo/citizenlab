@@ -55,20 +55,23 @@ const EmailChange = () => {
     resolver: yupResolver(schema),
   });
 
+  const emailValue = methods.watch('email');
+
   // Once auth user is fetched, set the email field to the user's email
   useEffect(() => {
     if (!isNilOrError(authUser) && authUser.data.attributes.email) {
-      if (!methods.watch('email')) {
+      if (!emailValue) {
         methods.setValue('email', authUser.data.attributes.email);
       }
     }
-  }, [authUser, methods]);
+  }, [authUser, methods, emailValue]);
 
   const onEmailConfirmation = async (code: string) => {
     setLoading(true);
 
     try {
-      await confirmEmail({ code });
+      if (!emailValue) return;
+      await confirmEmail({ email: emailValue, code });
       setConfirmationError(null);
       setOpenConfirmationModal(false);
       setUpdateSuccessful(true);

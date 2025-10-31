@@ -114,6 +114,7 @@ export const emailFlow = (
         rememberMe: boolean,
         tokenLifetime: number
       ) => {
+        updateState({ email });
         await signIn({ email, password, rememberMe, tokenLifetime });
 
         const { requirements } = await getRequirements();
