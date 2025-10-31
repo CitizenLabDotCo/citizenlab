@@ -13,7 +13,7 @@ resource 'Confirmations' do
 
   post 'web_api/v1/user/confirm' do
     with_options scope: :confirmation do
-      parameter :code, 'The 6-digit confirmation code received by SMS or email.'
+      parameter :code, 'The 4-digit confirmation code received by SMS or email.'
     end
 
     context 'when not logged in' do
