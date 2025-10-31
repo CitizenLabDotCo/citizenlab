@@ -24,7 +24,7 @@ class ConfirmUser < ApplicationInteractor
   end
 
   def validate_retry_count
-    return if user.email_confirmation_code == code # don't increment unless code is valid
+    return if user.email_confirmation_code == code # don't increment if code is valid
 
     return if user.increment_confirmation_retry_count!
 
