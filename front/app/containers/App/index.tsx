@@ -186,7 +186,12 @@ const App = ({ children }: Props) => {
           if (fontName !== undefined && fontURL !== undefined) {
             WebfontLoader.load({
               custom: {
-                families: [fontName],
+                families: [
+                  fontName,
+                  // Support additional font variations, if specified
+                  // in the css file (E.g. n4=normal 400, i4=italic 400, n7=normal 700, i7=italic 700, n8=normal 800, i8=italic 800)
+                  `${fontName}:n4,i4,n7,i7,n8,i8`,
+                ],
                 urls: [fontURL],
               },
             });
