@@ -3,8 +3,9 @@ import React from 'react';
 import { Box, useBreakpoint, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { DEFAULT_Y_PADDING } from '../../constants';
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
+
+import { DEFAULT_Y_PADDING } from '../../constants';
 
 const StyledBox = styled(Box)`
   .scroll-button {
