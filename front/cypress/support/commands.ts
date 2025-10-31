@@ -232,16 +232,15 @@ function emailSignup(
   });
 }
 
-function emailConfirmation(jwt: any) {
+function emailConfirmation(email: string) {
   return cy.request({
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${jwt}`,
     },
     method: 'POST',
     url: 'web_api/v1/user/confirm',
     body: {
-      confirmation: { code: '1234' },
+      confirmation: { email, code: '1234' },
     },
   });
 }
@@ -257,25 +256,16 @@ function apiSignup(
   return emailSignup(firstName, lastName, email, password).then((response) => {
     originalResponse = response;
 
-    return cy.apiLogin(email, password).then((response) => {
-      const jwt = response.body.jwt;
-
-      return emailConfirmation(jwt).then(() => {
-        return {
-          ...originalResponse,
-          _jwt: jwt,
-        };
-      });
+    return emailConfirmation(email).then(() => {
+      return {
+        ...originalResponse,
+      };
     });
   });
 }
 
-function apiConfirmUser(email: string, password: string) {
-  return cy.apiLogin(email, password).then((response) => {
-    const jwt = response.body.jwt;
-
-    return emailConfirmation(jwt);
-  });
+function apiConfirmUser(email: string) {
+  return emailConfirmation(email);
 }
 
 function apiCreateAdmin(
