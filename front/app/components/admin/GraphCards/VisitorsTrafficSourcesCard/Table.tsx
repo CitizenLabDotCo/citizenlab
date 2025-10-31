@@ -61,7 +61,7 @@ const TableComponent = ({ tableData, onOpenModal }: Props) => {
         <Tbody>
           {paginatedData.map((row, i) => (
             <Tr key={i}>
-              <Td background={colors.grey50} display="flex">
+              <Td background={colors.grey50}>
                 <Text color="primary" fontSize="s" wordBreak="break-word">
                   ({row.referrer_type}) {row.referrer}
                 </Text>

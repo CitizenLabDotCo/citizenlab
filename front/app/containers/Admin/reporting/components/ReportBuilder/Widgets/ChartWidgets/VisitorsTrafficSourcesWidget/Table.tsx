@@ -48,7 +48,7 @@ const TableView = ({ tableData }: Props) => {
         <Tbody>
           {tableData.slice(0, 5).map((row, i) => (
             <Tr key={i}>
-              <Td background={colors.grey50} display="flex">
+              <Td background={colors.grey50}>
                 <Text color="primary" fontSize="s" wordBreak="break-word">
                   ({row.referrer_type}) {row.referrer}
                 </Text>
