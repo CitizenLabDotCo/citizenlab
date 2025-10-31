@@ -22,8 +22,7 @@ resource 'File attachment as legacy EventFile' do
 
     example_request 'List all file attachments of an event' do
       assert_status 200
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 2
+      expect(response_data.size).to eq 2
     end
   end
 
@@ -34,16 +33,17 @@ resource 'File attachment as legacy EventFile' do
     example_request 'Get one file of an event' do
       assert_status 200
 
-      expect(response_data).to include(type: 'file', id: file_id)
-
-      attributes = response_data[:attributes]
-      expect(attributes).to include(
-        file: include(url: end_with('.pdf')),
-        ordering: nil,
-        name: be_a(String),
-        size: be_an(Integer),
-        created_at: be_a(String),
-        updated_at: be_a(String)
+      expect(response_data).to include(
+        type: 'file',
+        id: file_id,
+        attributes: hash_including(
+          file: hash_including(url: end_with('.pdf')),
+          ordering: nil,
+          name: be_a(String),
+          size: be_an(Integer),
+          created_at: be_a(String),
+          updated_at: be_a(String)
+        )
       )
     end
   end
@@ -59,8 +59,7 @@ resource 'File attachment as legacy EventFile' do
 
     example_request 'Update the ordering of a file attachment' do
       assert_status 200
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :attributes, :ordering)).to eq(3)
+      expect(response_data.dig(:attributes, :ordering)).to eq(3)
     end
   end
 
@@ -100,8 +99,7 @@ resource 'File attachment as legacy EventFile' do
 
       example_request '[error]' do
         assert_status 422
-        json_response = json_parse response_body
-        expect(json_response).to include_response_error(:file, 'extension_whitelist_error')
+        expect(json_response_body).to include_response_error(:file, 'extension_whitelist_error')
       end
     end
 
@@ -120,8 +118,7 @@ resource 'File attachment as legacy EventFile' do
 
         do_request
         assert_status 422
-        json_response = json_parse response_body
-        expect(json_response).to include_response_error(:file, 'max_size_error')
+        expect(json_response_body).to include_response_error(:file, 'max_size_error')
       end
     end
   end

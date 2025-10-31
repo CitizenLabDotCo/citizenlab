@@ -22,9 +22,8 @@ resource 'File attachment as legacy IdeaFile' do
     let(:idea_id) { @idea.id }
 
     example_request 'List all file attachments of an idea' do
-      expect(status).to eq(200)
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 2
+      assert_status 200
+      expect(response_data.size).to eq 2
     end
   end
 
@@ -35,15 +34,17 @@ resource 'File attachment as legacy IdeaFile' do
     example_request 'Get one file attachment of an idea by id' do
       expect(status).to eq(200)
 
-      expect(response_data).to include(type: 'file', id: file_id)
-
-      expect(response_data[:attributes]).to include(
-        file: include(url: end_with('.pdf')),
-        ordering: nil,
-        name: be_a(String),
-        size: be_an(Integer),
-        created_at: be_a(String),
-        updated_at: be_a(String)
+      expect(response_data).to include(
+        type: 'file',
+        id: file_id,
+        attributes: hash_including(
+          file: hash_including(url: end_with('.pdf')),
+          ordering: nil,
+          name: be_a(String),
+          size: be_an(Integer),
+          created_at: be_a(String),
+          updated_at: be_a(String)
+        )
       )
     end
   end
@@ -59,8 +60,7 @@ resource 'File attachment as legacy IdeaFile' do
 
     example_request 'Update the ordering of a file attachment' do
       assert_status 200
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :attributes, :ordering)).to eq(3)
+      expect(response_data.dig(:attributes, :ordering)).to eq(3)
     end
   end
 
@@ -82,11 +82,13 @@ resource 'File attachment as legacy IdeaFile' do
         .and(change(Files::FileAttachment, :count).by(1))
         .and not_change(IdeaFile, :count)
 
-      expect(response_status).to eq 201
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :attributes, :file)).to be_present
-      expect(json_response.dig(:data, :attributes, :ordering)).to eq(1)
-      expect(json_response.dig(:data, :attributes, :name)).to eq(name)
+      assert_status 201
+
+      expect(response_data[:attributes]).to include(
+        file: be_present,
+        ordering: 1,
+        name: name
+      )
     end
   end
 
@@ -99,7 +101,7 @@ resource 'File attachment as legacy IdeaFile' do
         .to change(Files::FileAttachment, :count).by(-1)
         .and not_change(IdeaFile, :count)
 
-      expect(response_status).to eq 200
+      assert_status 200
 
       expect { Files::FileAttachment.find(file_id) }
         .to raise_error(ActiveRecord::RecordNotFound)
