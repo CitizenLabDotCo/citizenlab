@@ -138,6 +138,16 @@ const { formatMessage } = useIntl();
 const text = formatMessage(messages.title);
 ```
 
+The data often contains multiloc attributes, which we transform to a string with the `localize` method.
+
+```typesript
+import useLocalize from 'hooks/useLocalize';
+
+// Component usage
+const localize = useLocalize();
+const title = localize(title_multiloc);
+```
+
 ### Component Library
 
 Reusable components are in `app/component-library/`:

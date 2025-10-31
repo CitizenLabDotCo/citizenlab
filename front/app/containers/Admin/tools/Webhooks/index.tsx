@@ -9,11 +9,10 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
+import apiImage from '../PublicAPI/api.png';
 
-import apiImage from './api.png';
-
-export const PublicAPI = () => {
-  const isPublicAPIEnabled = useFeatureFlag({ name: 'public_api_tokens' });
+export const Webhooks = () => {
+  const isWebhooksEnabled = useFeatureFlag({ name: 'public_api_tokens' });
   const { formatMessage } = useIntl();
 
   return (
@@ -22,36 +21,36 @@ export const PublicAPI = () => {
         width="320px"
         height="240px"
         src={apiImage}
-        alt={formatMessage(messages.publicAPIImage)}
+        alt={formatMessage(messages.webhooksImage)}
         style={{ borderRadius: '3px' }}
       />
 
       <Box ml="32px" display="flex" flexDirection="column">
         <Text variant="bodyL" color="primary" my="0px">
-          {formatMessage(messages.publicAPITitle)}
+          {formatMessage(messages.webhooksTitle)}
         </Text>
         <Text color="coolGrey700">
-          {formatMessage(messages.publicAPIDescription)}
+          {formatMessage(messages.webhooksDescription)}
         </Text>
         <Tooltip
-          content={<FormattedMessage {...messages.publicAPIDisabled} />}
-          disabled={isPublicAPIEnabled}
+          content={<FormattedMessage {...messages.webhooksDisabled} />}
+          disabled={isWebhooksEnabled}
           placement="top"
           theme="dark"
         >
           <Box>
             <ButtonWithLink
-              disabled={!isPublicAPIEnabled}
+              disabled={!isWebhooksEnabled}
               height="45px"
-              icon={isPublicAPIEnabled ? 'arrow-right' : 'lock'}
+              icon={isWebhooksEnabled ? 'arrow-right' : 'lock'}
               iconColor={colors.white}
               iconPos="right"
               width="fit-content"
-              linkTo="/admin/tools/public-api-tokens"
+              linkTo="/admin/tools/webhooks"
               textColor="white"
               bgColor={colors.primary}
             >
-              {formatMessage(messages.managePublicAPIKeys)}
+              {formatMessage(messages.manageWebhooks)}
             </ButtonWithLink>
           </Box>
         </Tooltip>
@@ -60,4 +59,5 @@ export const PublicAPI = () => {
   );
 };
 
-export default PublicAPI;
+export default Webhooks;
+
