@@ -18,7 +18,6 @@ declare global {
       dataCy: typeof dataCy;
       unregisterServiceWorkers: typeof unregisterServiceWorkers;
       goToLandingPage: typeof goToLandingPage;
-      login: typeof login;
       signUp: typeof signUp;
       apiLogin: typeof apiLogin;
       apiCreateManualGroup: typeof apiCreateManualGroup;
@@ -138,20 +137,6 @@ function unregisterServiceWorkers() {
 
 function goToLandingPage() {
   cy.visit('/');
-}
-
-function login(email: string, password: string) {
-  cy.wait(500);
-  cy.visit('/');
-  cy.get('#e2e-landing-page');
-  cy.get('#e2e-navbar');
-  cy.get('#e2e-navbar-login-menu-item').click();
-  cy.get('#e2e-authentication-modal');
-  cy.get('#email').type(email);
-  cy.get('#password').type(password);
-  cy.get('#e2e-signin-password-submit-button').click();
-  cy.get('#e2e-user-menu-container');
-  cy.wait(500);
 }
 
 function signUp() {
@@ -2137,7 +2122,6 @@ function dataCy(dataCyValue: string): Cypress.Chainable<JQuery<HTMLElement>> {
 Cypress.Commands.add('dataCy', dataCy);
 Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
 Cypress.Commands.add('goToLandingPage', goToLandingPage);
-Cypress.Commands.add('login', login);
 Cypress.Commands.add('signUp', signUp);
 Cypress.Commands.add('apiLogin', apiLogin);
 Cypress.Commands.add('apiSignup', apiSignup);
