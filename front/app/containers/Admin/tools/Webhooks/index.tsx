@@ -9,10 +9,10 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
-import apiImage from '../PublicAPI/api.png';
+import apiImage from './webhooks.png';
 
 export const Webhooks = () => {
-  const isWebhooksEnabled = useFeatureFlag({ name: 'public_api_tokens' });
+  const isWebhooksActive = useFeatureFlag({ name: 'public_api_tokens' });
   const { formatMessage } = useIntl();
 
   return (
@@ -34,15 +34,15 @@ export const Webhooks = () => {
         </Text>
         <Tooltip
           content={<FormattedMessage {...messages.webhooksDisabled} />}
-          disabled={isWebhooksEnabled}
+          disabled={isWebhooksActive}
           placement="top"
           theme="dark"
         >
           <Box>
             <ButtonWithLink
-              disabled={!isWebhooksEnabled}
+              disabled={!isWebhooksActive}
               height="45px"
-              icon={isWebhooksEnabled ? 'arrow-right' : 'lock'}
+              icon={isWebhooksActive ? 'arrow-right' : 'lock'}
               iconColor={colors.white}
               iconPos="right"
               width="fit-content"
@@ -60,4 +60,3 @@ export const Webhooks = () => {
 };
 
 export default Webhooks;
-

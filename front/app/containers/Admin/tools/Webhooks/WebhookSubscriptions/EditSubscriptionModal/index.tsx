@@ -49,7 +49,10 @@ const EditSubscriptionModal = ({
     useUpdateWebhookSubscription();
   const { data: subscription, isLoading: isLoadingSubscription } =
     useWebhookSubscription(subscriptionId);
-  const { data: projects } = useProjects({ pageSize: 1000, publicationStatuses: ['published', 'draft','archived']  });
+  const { data: projects } = useProjects({
+    pageSize: 1000,
+    publicationStatuses: ['published', 'draft', 'archived'],
+  });
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
@@ -81,7 +84,7 @@ const EditSubscriptionModal = ({
     }
 
     return options;
-  }, [projects, formatMessage]);
+  }, [projects, formatMessage, localize]);
 
   const schema = object({
     name: string().required(formatMessage(messages.nameRequired)),
@@ -139,7 +142,13 @@ const EditSubscriptionModal = ({
 
   if (isLoadingSubscription) {
     return (
-      <Box w="100%" m="24px auto" pr="24px" display="flex" justifyContent="center">
+      <Box
+        w="100%"
+        m="24px auto"
+        pr="24px"
+        display="flex"
+        justifyContent="center"
+      >
         <Spinner />
       </Box>
     );

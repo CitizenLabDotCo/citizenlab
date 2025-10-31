@@ -75,5 +75,3 @@ export const WEBHOOK_EVENTS = [
   'idea.changed',
   'user.created',
 ] as const;
-
-export type WebhookEvent = typeof WEBHOOK_EVENTS[number];

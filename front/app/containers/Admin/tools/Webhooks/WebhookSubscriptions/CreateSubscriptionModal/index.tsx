@@ -1,11 +1,6 @@
 import React, { useState, useMemo } from 'react';
 
-import {
-  Box,
-  Button,
-  Text,
-  Title,
-} from '@citizenlab/cl2-component-library';
+import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { object, string, array, boolean } from 'yup';
@@ -42,16 +37,21 @@ type CreateSubscriptionModalProps = {
 const CreateSubscriptionModal = ({ onClose }: CreateSubscriptionModalProps) => {
   const [success, setSuccess] = useState(false);
   const [secret, setSecret] = useState<string>('');
-  const { mutateAsync: addSubscription, isLoading } = useAddWebhookSubscription();
-  const { data: projects } = useProjects({ pageSize: 1000, publicationStatuses: ['published', 'draft','archived'] });
+  const { mutateAsync: addSubscription, isLoading } =
+    useAddWebhookSubscription();
+  const { data: projects } = useProjects({
+    pageSize: 1000,
+    publicationStatuses: ['published', 'draft', 'archived'],
+  });
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
-  const eventOptions = useMemo(() =>
-    WEBHOOK_EVENTS.map((event) => ({
-      value: event,
-      label: event,
-    })),
+  const eventOptions = useMemo(
+    () =>
+      WEBHOOK_EVENTS.map((event) => ({
+        value: event,
+        label: event,
+      })),
     []
   );
 
@@ -74,7 +74,7 @@ const CreateSubscriptionModal = ({ onClose }: CreateSubscriptionModalProps) => {
     }
 
     return options;
-  }, [projects, formatMessage]);
+  }, [projects, formatMessage, localize]);
 
   const schema = object({
     name: string().required(formatMessage(messages.nameRequired)),
@@ -120,18 +120,20 @@ const CreateSubscriptionModal = ({ onClose }: CreateSubscriptionModalProps) => {
     <Box w="100%" m="24px auto" pr="24px">
       {!success ? (
         <>
-          <Title variant="h2">{formatMessage(messages.createWebhookTitle)}</Title>
+          <Title variant="h2">
+            {formatMessage(messages.createWebhookTitle)}
+          </Title>
           <Text>{formatMessage(messages.createWebhookDescription)}</Text>
           <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onFormSubmit)}>
               <Feedback />
               <Box mb="16px">
                 <Input
-                name="name"
-                label={formatMessage(messages.webhookName)}
-                type="text"
-                placeholder={formatMessage(messages.webhookNamePlaceholder)}
-              />
+                  name="name"
+                  label={formatMessage(messages.webhookName)}
+                  type="text"
+                  placeholder={formatMessage(messages.webhookNamePlaceholder)}
+                />
               </Box>
               <Box mb="16px">
                 <Input
@@ -150,10 +152,10 @@ const CreateSubscriptionModal = ({ onClose }: CreateSubscriptionModalProps) => {
               </Box>
               <Box mb="16px">
                 <Select
-                name="project_id"
-                label={formatMessage(messages.webhookProject)}
-                options={projectOptions}
-              />
+                  name="project_id"
+                  label={formatMessage(messages.webhookProject)}
+                  options={projectOptions}
+                />
               </Box>
               <Box mb="16px">
                 <Toggle
@@ -185,9 +187,7 @@ const CreateSubscriptionModal = ({ onClose }: CreateSubscriptionModalProps) => {
         </>
       ) : (
         <Box data-testid="webhookCreateSuccess">
-          <Title variant="h2">
-            {formatMessage(messages.createSuccess)}
-          </Title>
+          <Title variant="h2">{formatMessage(messages.createSuccess)}</Title>
           <SecretTokenDisplay secret={secret} onClose={onClose} />
         </Box>
       )}

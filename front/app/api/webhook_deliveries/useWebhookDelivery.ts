@@ -24,5 +24,5 @@ const useWebhookDelivery = (id: string) => {
     enabled: !!id,
   });
 };
-
+// ts-prune-ignore-next
 export default useWebhookDelivery;
