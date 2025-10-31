@@ -38,7 +38,7 @@ module Webhooks
           if @subscription.save
             render json: WebApi::V1::WebhookSubscriptionSerializer.new(
               @subscription,
-              params: jsonapi_serializer_params
+              params: jsonapi_serializer_params(include_secret_token: true)
             ).serializable_hash, status: :created
           else
             render json: { errors: @subscription.errors.details }, status: :unprocessable_entity
@@ -70,7 +70,7 @@ module Webhooks
           @subscription.update!(secret_token: SecureRandom.base64(32))
           render json: WebApi::V1::WebhookSubscriptionSerializer.new(
             @subscription,
-            params: jsonapi_serializer_params
+            params: jsonapi_serializer_params(include_secret_token: true)
           ).serializable_hash
         end
 

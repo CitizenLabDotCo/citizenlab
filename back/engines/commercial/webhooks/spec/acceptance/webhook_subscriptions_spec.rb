@@ -65,10 +65,10 @@ resource 'Webhook Subscriptions' do
 
     example 'Secret token is masked' do
       do_request
-
-      secret = response_data[:attributes][:secret_token]
-      expect(secret).to include '...'
-      expect(secret).not_to eq subscription.secret_token
+      expect(response_data[:attributes]).not_to have_key(:secret_token)
+      masked_secret = response_data[:attributes][:masked_secret_token]
+      expect(masked_secret).to include '...'
+      expect(masked_secret).not_to eq subscription.secret_token
     end
   end
 
@@ -96,6 +96,8 @@ resource 'Webhook Subscriptions' do
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :attributes, :name)).to eq 'My Webhook'
       expect(json_response.dig(:data, :attributes, :url)).to eq url
+      expect(json_response.dig(:data, :attributes, :secret_token)).to be_present
+      expect(json_response.dig(:data, :attributes, :masked_secret_token)).to be_present
       expect(json_response.dig(:data, :attributes, :events)).to match_array events
     end
 

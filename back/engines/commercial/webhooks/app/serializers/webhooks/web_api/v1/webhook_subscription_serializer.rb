@@ -6,11 +6,15 @@ module Webhooks
       class WebhookSubscriptionSerializer < ::WebApi::V1::BaseSerializer
         attributes :name, :url, :events, :enabled, :created_at, :updated_at
 
-        attribute :secret_token do |object|
+        attribute :masked_secret_token do |object|
           # Only show first/last 4 characters for security
           token = object.secret_token
           "#{token[0...4]}...#{token[-4..]}"
         end
+
+        attribute :secret_token, if: proc { |_, params|
+          params && params[:include_secret_token]
+        }
 
         attribute :deliveries_count do |object|
           object.deliveries.count
