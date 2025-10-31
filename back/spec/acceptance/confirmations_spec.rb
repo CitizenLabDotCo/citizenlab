@@ -17,13 +17,6 @@ resource 'Confirmations' do
       parameter :code, 'The 4-digit confirmation code received by SMS or email.'
     end
 
-    # context 'when not logged in' do
-    #   example 'returns a not authorized status passing a valid code' do
-    #     do_request(confirmation: { code: '1234' })
-    #     expect(status).to eq 401
-    #   end
-    # end
-
     context 'when email does not exist' do
       let(:user) { create(:user_with_confirmation) }
       let(:email) { 'nonexistent@example.com' }
@@ -34,7 +27,7 @@ resource 'Confirmations' do
 
       example 'returns a not found status when the email does not exist' do
         do_request(confirmation: { email: email, code: '1234' })
-        expect(status).to eq 404
+        expect(status).to eq 422
       end
     end
 

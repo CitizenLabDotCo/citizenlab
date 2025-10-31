@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ConfirmationsController < ApplicationController
+  skip_before_action :authenticate_user
   skip_after_action :verify_authorized
 
   def create
-    result = ConfirmUser.call(user: current_user, code: confirmation_params[:code])
+    user = User.find_by(email: confirmation_params[:email])
+    result = ConfirmUser.call(user:, code: confirmation_params[:code])
 
     if result.success?
-      SideFxUserService.new.after_update(current_user, current_user)
+      SideFxUserService.new.after_update(user, user)
 
       head :ok
     else
@@ -18,6 +20,6 @@ class WebApi::V1::ConfirmationsController < ApplicationController
   private
 
   def confirmation_params
-    params.require(:confirmation).permit(:code)
+    params.require(:confirmation).permit(:email, :code)
   end
 end
