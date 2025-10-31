@@ -281,6 +281,17 @@ resource 'Users' do
         end
 
         describe 'case insensitive email handling' do
+          before do
+            create(:user, email: 'JeZuS@citizenlab.co')
+          end
+
+          let(:email) { 'jEzUs@citizenlab.co' }
+
+          example '[error] Registering a user with case insensitive email duplicate', document: false do
+            do_request
+            assert_status 422
+          end
+
           example 'Accepts registration with different case and converts to lowercase' do
             user_params = {
               first_name: Faker::Name.first_name,
