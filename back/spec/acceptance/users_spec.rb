@@ -280,16 +280,29 @@ resource 'Users' do
           end
         end
 
-        describe 'case insensitive email error' do
-          before do
-            create(:user, email: 'JeZuS@citizenlab.co')
+        describe 'case insensitive email handling' do
+          example 'Accepts registration with different case and converts to lowercase' do
+            user_params = {
+              first_name: Faker::Name.first_name,
+              last_name: Faker::Name.last_name,
+              email: 'TeStUsEr@ExAmPlE.com',
+              password: 'password8',
+              locale: 'en'
+            }
+
+            do_request(user: user_params)
+            assert_status 201
+            expect(User.last.email).to eq 'testuser@example.com'
           end
 
-          let(:email) { 'jEzUs@citizenlab.co' }
-
-          example '[error] Registering a user with case insensitive email duplicate', document: false do
-            do_request
-            assert_status 422
+          example 'Different cases of same email are treated as same user' do
+            original_email = 'TeStUsEr@ExAmPlE.com'
+            lowercased_email = 'testuser@example.com'
+            
+            create(:user, email: original_email)
+            expect(User.find_by_cimail(lowercased_email)).to be_present
+            expect(User.find_by_cimail(original_email)).to be_present
+            expect(User.last.email).to eq lowercased_email
           end
         end
 
