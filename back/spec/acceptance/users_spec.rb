@@ -294,7 +294,7 @@ resource 'Users' do
 
           example 'Accepts registration with different case and converts to lowercase' do
             User.delete_all # Clean state
-            
+
             user_params = {
               first_name: Faker::Name.first_name,
               last_name: Faker::Name.last_name,
@@ -310,7 +310,7 @@ resource 'Users' do
 
           example 'Different cases of same email are treated as same user' do
             User.delete_all # Clean state
-            
+
             original_email = 'TeStUsEr@ExAmPlE.com'
             lowercased_email = 'testuser@example.com'
 
