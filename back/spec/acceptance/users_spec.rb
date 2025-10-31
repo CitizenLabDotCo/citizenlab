@@ -309,7 +309,7 @@ resource 'Users' do
           example 'Different cases of same email are treated as same user' do
             original_email = 'TeStUsEr@ExAmPlE.com'
             lowercased_email = 'testuser@example.com'
-            
+
             create(:user, email: original_email)
             expect(User.find_by_cimail(lowercased_email)).to be_present
             expect(User.find_by_cimail(original_email)).to be_present
