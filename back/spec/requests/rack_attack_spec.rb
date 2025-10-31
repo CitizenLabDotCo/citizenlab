@@ -334,15 +334,15 @@ describe 'Rack::Attack' do
       5.times do
         post(
           '/web_api/v1/user/confirm',
-          params: '{ "confirmation": { "code": "1234" } }',
+          params: "{ \"confirmation\": { \"email\": \"#{user.email}\", \"code\": \"1234\" } }",
           headers: headers
         )
       end
-      expect(status).to eq(401) # Unauthorized
+      expect(status).to eq(422)
 
       post(
         '/web_api/v1/user/confirm',
-        params: '{ "confirmation": { "code": "1234" } }',
+        params: "{ \"confirmation\": { \"email\": \"#{user.email}\", \"code\": \"1234\" } }",
         headers: headers
       )
       expect(status).to eq(429) # Too many requests
@@ -351,10 +351,10 @@ describe 'Rack::Attack' do
     travel_to(20.seconds.from_now) do
       post(
         '/web_api/v1/user/confirm',
-        params: '{ "confirmation": { "code": "1234" } }',
+        params: "{ \"confirmation\": { \"email\": \"#{user.email}\", \"code\": \"1234\" } }",
         headers: headers
       )
-      expect(status).to eq(401) # Unauthorized
+      expect(status).to eq(422)
     end
   end
 
