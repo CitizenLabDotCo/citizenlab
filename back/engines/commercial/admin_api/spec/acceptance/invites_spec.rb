@@ -48,7 +48,7 @@ resource 'Invite', admin_api: true do
         expect(json_response[:send_invite_email]).to eq send_invite_email
         expect(invite.invitee.first_name).to eq first_name
         expect(invite.invitee.last_name).to eq last_name
-        expect(invite.invitee.email).to eq email
+        expect(invite.invitee.email).to eq email.downcase
         expect(invite.invitee.locale).to eq locale
       end
     end
