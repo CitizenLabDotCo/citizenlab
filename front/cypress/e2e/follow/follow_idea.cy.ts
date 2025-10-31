@@ -1,3 +1,4 @@
+import { signUpEmailConformation } from '../../support/auth';
 import { randomString, randomEmail } from '../../support/commands';
 import moment = require('moment');
 
@@ -128,15 +129,7 @@ describe('Follow idea', () => {
     cy.dataCy('e2e-follow-button').should('exist');
     cy.dataCy('e2e-follow-button').click();
 
-    cy.get('input#email').focus().type(randomEmail());
-    cy.get('#e2e-light-flow-email-submit').click();
-
-    cy.get('#e2e-terms-conditions-container .e2e-checkbox').click();
-    cy.get('#e2e-privacy-policy-container .e2e-checkbox').click();
-    cy.get('#e2e-policies-continue').click();
-
-    cy.get('input#code').focus().type('1234');
-    cy.get('#e2e-verify-email-button').click();
+    signUpEmailConformation(cy);
 
     cy.get('#e2e-success-continue-button').click();
 
