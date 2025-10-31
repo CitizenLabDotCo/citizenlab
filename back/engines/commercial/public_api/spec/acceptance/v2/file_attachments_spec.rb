@@ -5,8 +5,9 @@ require 'rspec_api_documentation/dsl'
 require './engines/commercial/public_api/spec/acceptance/v2/support/shared'
 
 resource 'File Attachments' do
-  explanation 'File attachments represent files that are linked to specific resources ' \
-    '(like ideas, initiatives, etc.) within the platform.'
+  explanation <<~DESC.squish
+    File attachments represent files that are linked to specific resources (like ideas, initiatives, etc.) within the platform.
+  DESC
 
   include_context 'common_auth'
 
