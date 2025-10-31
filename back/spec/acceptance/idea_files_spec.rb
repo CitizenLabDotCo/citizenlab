@@ -58,7 +58,6 @@ resource 'File attachment as legacy IdeaFile' do
     let(:ordering) { 3 }
 
     example_request 'Update the ordering of a file attachment' do
-      do_request(ordering: ordering)
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :attributes, :ordering)).to eq(3)
