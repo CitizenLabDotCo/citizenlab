@@ -3397,7 +3397,7 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectProjectsOrFolders": "Selecteer projecten of mappen",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "Geselecteerde projecten en mappen",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidget": "Met deze widget kun je de volgorde selecteren en bepalen waarin je projecten of mappen aan gebruikers wilt laten zien.",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidgetFolder": "Met deze widget kun je de volgorde selecteren en bepalen waarin je wilt dat projecten uit deze map verschijnen voor gebruikers.",
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidgetFolder": "Met deze widget kun je projecten selecteren en de volgorde bepalen waarin je wilt dat projecten uit deze map verschijnen voor gebruikers.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} projecten",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "bekijk onze supportpagina",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
