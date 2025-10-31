@@ -207,6 +207,22 @@ export const stylingConsts = {
   border: `1px solid ${colors.divider}`,
 };
 
+type DefaultInputStyleProps = {
+  theme: MainThemeProps;
+  height?: string | number;
+  size?: InputSize;
+};
+
+const getHeight = (props: DefaultInputStyleProps) => {
+  if (typeof props.height === 'string') {
+    return props.height;
+  }
+  if (typeof props.height === 'number') {
+    return `${props.height}px`;
+  }
+  return `${stylingConsts.inputHeight}px`;
+};
+
 export const defaultInputStyle = css`
   color: ${colors.textPrimary};
   font-size: ${fontSizes.base}px;
@@ -222,7 +238,7 @@ export const defaultInputStyle = css`
   -moz-appearance: none;
   -webkit-appearance: none;
   transition: box-shadow 100ms ease-out;
-  height: ${stylingConsts.inputHeight}px;
+  height: ${getHeight};
 
   &:not(:disabled):not(.disabled) {
     &:not(.error):hover,
