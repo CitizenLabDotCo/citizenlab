@@ -297,7 +297,7 @@ RSpec.describe User do
       user = build(:user, new_email: 'kOeN@citizenlab.co')
       expect(user).to be_invalid
       expect(user.errors.details[:new_email]).not_to be_present
-      expect(user.errors.details[:email]).to eq [{ error: :taken, value: 'kOeN@citizenlab.co' }]
+      expect(user.errors.details[:email]).to eq [{ error: :taken, value: 'koen@citizenlab.co' }]
     end
   end
 
