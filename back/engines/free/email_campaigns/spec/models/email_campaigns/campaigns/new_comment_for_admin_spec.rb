@@ -25,7 +25,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentForAdmin do
           initiating_user_last_name: 'Xion',
           comment_author_name: 'Rea Xion',
           comment_body_multiloc: { 'en' => 'Example comment.' },
-          comment_url: 'http://example.org/en/ideas/plant-more-trees-1',
+          comment_url: "http://example.org/en/ideas/#{comment.idea.slug}",
           idea_published_at: comment.idea.published_at.iso8601,
           idea_title_multiloc: comment.idea.title_multiloc,
           idea_author_name: comment.idea.author_name
