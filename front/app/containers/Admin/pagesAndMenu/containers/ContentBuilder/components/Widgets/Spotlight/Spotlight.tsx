@@ -13,13 +13,13 @@ import {
 
 import { CARD_IMAGE_ASPECT_RATIO_STR } from 'api/project_images/useProjectImages';
 
-import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 import AvatarBubbles from 'components/AvatarBubbles';
 import Skeleton from 'components/AvatarBubbles/Skeleton';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { DEFAULT_Y_PADDING } from '../constants';
+import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 
 interface Props {
   title: string;
@@ -45,10 +45,11 @@ const Spotlight = ({
   userCount,
 }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
+  const craftComponentDefaultPadding = useCraftComponentDefaultPadding();
 
   return (
     <Box
-      px={DEFAULT_PADDING}
+      px={craftComponentDefaultPadding}
       pt={isSmallerThanPhone ? DEFAULT_Y_PADDING : '56px'}
       pb="56px"
       w="100%"
