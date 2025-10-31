@@ -94,17 +94,22 @@ resource 'File attachment as legacy IdeaFile' do
 
   delete 'web_api/v1/ideas/:idea_id/files/:file_id' do
     let(:idea_id) { @idea.id }
-    let(:file_id) { @idea.file_attachments.first.id }
+    let(:file_attachment) { @idea.file_attachments.first }
+    let(:file_id) { file_attachment.id }
 
-    example 'Delete file attachment from an idea' do
+    example 'Delete the file attachment by id and its underlying file' do
+      file_id = file_attachment.file_id
+
       expect { do_request }
         .to change(Files::FileAttachment, :count).by(-1)
+        # Special case: idea files are automatically deleted when detached from their idea
+        .and change(Files::File, :count).by(-1)
         .and not_change(IdeaFile, :count)
 
       assert_status 200
 
-      expect { Files::FileAttachment.find(file_id) }
-        .to raise_error(ActiveRecord::RecordNotFound)
+      expect { Files::File.find(file_id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { file_attachment.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

@@ -9,66 +9,72 @@ resource 'File attachment as legacy ProjectFile' do
     model behind the scenes, instead of the legacy +ProjectFile+ model.
   EXPLANATION
 
-  before do
-    header 'Content-Type', 'application/json'
-    admin_header_token
-    @project = create(:project)
-    create_list(:file_attachment, 2, attachable: @project)
-  end
+  header 'Content-Type', 'application/json'
+
+  before { admin_header_token }
+
+  let_it_be(:project) { create(:project) }
+  let(:project_id) { project.id }
 
   get 'web_api/v1/projects/:project_id/files' do
-    let(:project_id) { @project.id }
-
-    example_request 'List all file attachments of a project' do
+    example 'List the file attachments' do
+      create_list(:file_attachment, 2, attachable: project)
+      do_request
       assert_status 200
       expect(response_data.size).to eq 2
     end
 
     context 'when there are no file attachments' do
-      let(:project) { create(:project) }
-      let(:project_id) { project.id }
-
-      example_request 'Returns empty results' do
+      example_request 'Returns an empty list' do
         assert_status 200
         expect(json_response_body[:data]).to be_empty
       end
     end
   end
 
-  get 'web_api/v1/projects/:project_id/files/:file_id' do
-    let(:project_id) { @project.id }
-    let(:file_id) { @project.file_attachments.first.id }
+  get 'web_api/v1/projects/:project_id/files/:id' do
+    let!(:file_attachment) { create(:file_attachment, attachable: project) }
+    let(:id) { file_attachment.id }
 
-    example_request 'Get one file of a project' do
+    example_request 'Get a file attachment by id' do
       assert_status 200
 
-      expect(response_data).to include(
+      expect(response_data).to match hash_including(
+        id: id,
         type: 'file',
-        id: file_id,
         attributes: hash_including(
-          file: hash_including(url: end_with('.pdf')),
-          ordering: nil,
-          name: be_a(String),
-          size: be_an(Integer),
-          created_at: be_a(String),
-          updated_at: be_a(String)
+          ordering: file_attachment.position,
+          file: { url: file_attachment.file.content.url },
+          name: file_attachment.file.name,
+          size: file_attachment.file.size,
+          created_at: file_attachment.file.created_at.iso8601(3),
+          updated_at: file_attachment.file.updated_at.iso8601(3)
         )
       )
     end
   end
 
-  patch 'web_api/v1/projects/:project_id/files/:file_id' do
+  patch 'web_api/v1/projects/:project_id/files/:id' do
     with_options scope: :file do
       parameter :ordering, 'An integer to update the order of the file attachments', required: false
     end
 
-    let(:project_id) { @project.id }
-    let(:file_id) { @project.file_attachments.first.id }
-    let(:ordering) { 3 }
+    example 'Update the ordering of a file attachment by id' do
+      attachment1 = create(:file_attachment, attachable: project, position: 1)
+      attachment2 = create(:file_attachment, attachable: project, position: 2)
 
-    example_request 'Update the ordering of a file attachment' do
+      expect(attachment1.position).to eq(1)
+      expect(attachment2.position).to eq(2)
+
+      do_request(id: attachment2.id, ordering: 1)
       assert_status 200
-      expect(response_data.dig(:attributes, :ordering)).to eq(3)
+      expect(response_data.dig(:attributes, :ordering)).to eq(1)
+
+      # The front-end has full control over the ordering of file attachments which can
+      # lead to inconsistencies. This will be reworked in the future.
+      # See ticket TAN-5126.
+      expect(attachment1.reload.position).to eq(1)
+      expect(attachment2.reload.position).to eq(1)
     end
   end
 
@@ -78,26 +84,40 @@ resource 'File attachment as legacy ProjectFile' do
       parameter :name, 'The name of the file, including the file extension', required: true
       parameter :ordering, 'An integer that is used to order the file attachments within a project', required: false
     end
+
     ValidationErrorHelper.new.error_fields(self, Files::File)
-    let(:project_id) { @project.id }
+
     let(:ordering) { 1 }
-    let(:name) { 'afvalkalender.pdf' }
+    let(:name) { 'minimal_pdf.pdf' }
     let(:file) { file_as_base64 name, 'application/pdf' }
+
+    let!(:file_attachment) { create(:file_attachment, attachable: project, position: 1) }
 
     example 'Add a file to the project' do
       expect { do_request }
         .to change(Files::File, :count).by(1)
         .and(change(Files::FileAttachment, :count).by(1))
+        .and(change(Files::FilesProject, :count).by(1))
         .and not_change(ProjectFile, :count)
+        .and not_change(file_attachment.reload, :position)
 
       assert_status 201
 
-      expect(response_data[:attributes]).to include(
-        file: be_present,
-        ordering: 1,
-        name: name,
-        size: be_present
+      expect(response_data).to match hash_including(
+        id: be_present,
+        type: 'file',
+        attributes: {
+          ordering: ordering,
+          file: { url: be_present },
+          name: name,
+          size: 130,
+          created_at: be_present,
+          updated_at: be_present
+        }
       )
+
+      attachment = Files::FileAttachment.find(response_data[:id])
+      expect(attachment.file.projects).to contain_exactly(project)
     end
 
     # [TODO] Currently, the +Files::FileUploader+ allows all file extensions.
@@ -125,19 +145,16 @@ resource 'File attachment as legacy ProjectFile' do
     end
   end
 
-  delete 'web_api/v1/projects/:project_id/files/:file_id' do
-    let(:project_id) { @project.id }
-    let(:file_id) { @project.file_attachments.first.id }
+  delete 'web_api/v1/projects/:project_id/files/:id' do
+    let!(:file_attachment) { create(:file_attachment, attachable: project) }
+    let(:id) { file_attachment.id }
 
-    example 'Delete project file by id' do
-      expect { do_request }
-        .to change(Files::FileAttachment, :count).by(-1)
-        .and not_change(ProjectFile, :count)
+    example 'Delete a file attachment by id' do
+      do_request(id: file_attachment.id)
 
-      expect(response_status).to eq 200
-
-      expect { Files::FileAttachment.find(file_id) }
-        .to raise_error(ActiveRecord::RecordNotFound)
+      assert_status 200
+      expect { file_attachment.file.reload }.not_to raise_error
+      expect { file_attachment.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end
