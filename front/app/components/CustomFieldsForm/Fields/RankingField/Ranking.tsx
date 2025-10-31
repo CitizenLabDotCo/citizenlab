@@ -96,7 +96,7 @@ const Ranking = ({ value: data, question, onChange }: Props) => {
           }}
         >
           <Drop id="droppable" type="rankOptions">
-            <Text m="0px" aria-hidden color="tenantPrimary">
+            <Text m="0px" aria-hidden color="textPrimary">
               {formatMessage(messages.rankingInstructions)}
             </Text>
             <Ul aria-labelledby={`ranking-question-label-${question.key}`}>
@@ -118,7 +118,7 @@ const Ranking = ({ value: data, question, onChange }: Props) => {
             <Button
               p="0px"
               buttonStyle="text"
-              textColor={theme.colors.tenantPrimary}
+              textColor={theme.colors.textPrimary}
               textDecoration="underline"
               text={formatMessage(messages.clearAll)}
               onClick={() => {

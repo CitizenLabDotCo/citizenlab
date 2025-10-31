@@ -1,0 +1,258 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "AssemblyAI Transcript Response",
+  "description": "High-level schema for AssemblyAI Get Transcript API response",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the transcript"
+    },
+    "audio_url": {
+      "type": "string",
+      "description": "URL of the audio file"
+    },
+    "status": {
+      "type": "string",
+      "description": "Processing status of the transcript"
+    },
+    "language_confidence_threshold": {
+      "type": ["number", "null"],
+      "description": "Threshold for language detection confidence"
+    },
+    "language_confidence": {
+      "type": ["number", "null"],
+      "description": "Confidence score for detected language"
+    },
+    "speech_model": {
+      "type": ["string", "null"],
+      "description": "Speech model used for transcription"
+    },
+    "webhook_auth": {
+      "type": ["boolean", "null"],
+      "description": "Whether webhook authentication is enabled"
+    },
+    "auto_highlights": {
+      "type": ["boolean", "null"],
+      "description": "Whether automatic highlights are enabled"
+    },
+    "redact_pii": {
+      "type": ["boolean", "null"],
+      "description": "Whether PII redaction is enabled"
+    },
+    "summarization": {
+      "type": ["boolean", "null"],
+      "description": "Whether summarization is enabled"
+    },
+    "language_model": {
+      "type": ["string", "null"],
+      "description": "Language model used"
+    },
+    "acoustic_model": {
+      "type": ["string", "null"],
+      "description": "Acoustic model used"
+    },
+    "language_code": {
+      "type": ["string", "null"],
+      "description": "Language code of the transcript"
+    },
+    "language_detection": {
+      "type": ["boolean", "null"],
+      "description": "Whether language detection is enabled"
+    },
+    "text": {
+      "type": ["string", "null"],
+      "description": "Full transcript text"
+    },
+    "words": {
+      "type": ["array", "null"],
+      "description": "Array of word objects with timing information",
+      "items": {
+        "type": ["object", "null"]
+      }
+    },
+    "utterances": {
+      "type": ["array", "null"],
+      "description": "Array of utterance objects grouped by speaker",
+      "items": {
+        "type": ["object", "null"]
+      }
+    },
+    "confidence": {
+      "type": ["number", "null"],
+      "description": "Overall confidence score for the transcript"
+    },
+    "audio_duration": {
+      "type": ["number", "null"],
+      "description": "Duration of the audio in seconds"
+    },
+    "punctuate": {
+      "type": ["boolean", "null"],
+      "description": "Whether punctuation is added"
+    },
+    "format_text": {
+      "type": ["boolean", "null"],
+      "description": "Whether text formatting is applied"
+    },
+    "disfluencies": {
+      "type": ["boolean", "null"],
+      "description": "Whether disfluencies are included"
+    },
+    "multichannel": {
+      "type": ["boolean", "null"],
+      "description": "Whether multichannel processing is enabled"
+    },
+    "webhook_url": {
+      "type": ["string", "null"],
+      "description": "URL for webhook notifications"
+    },
+    "webhook_status_code": {
+      "type": ["number", "null"],
+      "description": "HTTP status code from webhook"
+    },
+    "webhook_auth_header_name": {
+      "type": ["string", "null"],
+      "description": "Header name for webhook authentication"
+    },
+    "auto_highlights_result": {
+      "type": ["object", "null"],
+      "description": "Results from automatic highlighting",
+      "properties": {
+        "status": {
+          "type": ["string", "null"]
+        },
+        "results": {
+          "type": ["array", "null"],
+          "items": {
+            "type": ["object", "null"]
+          }
+        }
+      }
+    },
+    "audio_start_from": {
+      "type": ["number", "null"],
+      "description": "Start time offset in seconds"
+    },
+    "audio_end_at": {
+      "type": ["number", "null"],
+      "description": "End time in seconds"
+    },
+    "boost_param": {
+      "type": ["string", "null"],
+      "description": "Boost parameter setting"
+    },
+    "filter_profanity": {
+      "type": ["boolean", "null"],
+      "description": "Whether profanity filtering is enabled"
+    },
+    "redact_pii_audio": {
+      "type": ["boolean", "null"],
+      "description": "Whether PII is redacted from audio"
+    },
+    "redact_pii_audio_quality": {
+      "type": ["string", "null"],
+      "description": "Quality setting for PII-redacted audio"
+    },
+    "redact_pii_policies": {
+      "type": ["array", "null"],
+      "description": "List of PII policies to apply",
+      "items": {
+        "type": ["string", "null"]
+      }
+    },
+    "redact_pii_sub": {
+      "type": ["string", "null"],
+      "description": "Substitution method for redacted PII"
+    },
+    "speaker_labels": {
+      "type": ["boolean", "null"],
+      "description": "Whether speaker labeling is enabled"
+    },
+    "speakers_expected": {
+      "type": ["number", "null"],
+      "description": "Expected number of speakers"
+    },
+    "content_safety": {
+      "type": ["boolean", "null"],
+      "description": "Whether content safety analysis is enabled"
+    },
+    "content_safety_labels": {
+      "type": ["object", "null"],
+      "description": "Results from content safety analysis"
+    },
+    "iab_categories": {
+      "type": ["boolean", "null"],
+      "description": "Whether IAB categorization is enabled"
+    },
+    "iab_categories_result": {
+      "type": ["object", "null"],
+      "description": "Results from IAB categorization"
+    },
+    "auto_chapters": {
+      "type": ["boolean", "null"],
+      "description": "Whether automatic chapter generation is enabled"
+    },
+    "chapters": {
+      "type": ["array", "null"],
+      "description": "Array of chapter objects",
+      "items": {
+        "type": ["object", "null"]
+      }
+    },
+    "summary_type": {
+      "type": ["string", "null"],
+      "description": "Type of summary requested"
+    },
+    "summary_model": {
+      "type": ["string", "null"],
+      "description": "Model used for summarization"
+    },
+    "summary": {
+      "type": ["string", "null"],
+      "description": "Generated summary of the transcript"
+    },
+    "topics": {
+      "type": ["array", "null"],
+      "description": "Array of detected topics",
+      "items": {
+        "type": ["object", "null"]
+      }
+    },
+    "sentiment_analysis": {
+      "type": ["boolean", "null"],
+      "description": "Whether sentiment analysis is enabled"
+    },
+    "entity_detection": {
+      "type": ["boolean", "null"],
+      "description": "Whether entity detection is enabled"
+    },
+    "entities": {
+      "type": ["array", "null"],
+      "description": "Array of detected entities",
+      "items": {
+        "type": ["object", "null"]
+      }
+    },
+    "speech_threshold": {
+      "type": ["number", "null"],
+      "description": "Threshold for speech detection"
+    },
+    "dual_channel": {
+      "type": ["boolean", "null"],
+      "description": "Whether dual channel processing is enabled"
+    },
+    "word_boost": {
+      "type": ["array", "null"],
+      "description": "List of words to boost in recognition",
+      "items": {
+        "type": ["string", "null"]
+      }
+    },
+    "custom_topics": {
+      "type": ["boolean", "null"],
+      "description": "Whether custom topics detection is enabled"
+    }
+  },
+  "required": ["id", "status"],
+  "additionalProperties": true
+}

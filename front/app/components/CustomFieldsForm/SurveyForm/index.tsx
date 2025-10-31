@@ -33,6 +33,11 @@ const SurveyForm = ({
   participationMethod?: ParticipationMethod;
 }) => {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
+  // Track the actual path the user has taken through the survey
+  // This helps with proper go-back navigation when users can reach the same page through multiple paths
+  const [userNavigationHistory, setUserNavigationHistory] = useState<number[]>([
+    0,
+  ]);
 
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
@@ -122,6 +127,8 @@ const SurveyForm = ({
           currentPageIndex={currentPageIndex}
           lastPageIndex={lastPageIndex}
           setCurrentPageIndex={setCurrentPageIndex}
+          userNavigationHistory={userNavigationHistory}
+          setUserNavigationHistory={setUserNavigationHistory}
           participationMethod={participationMethod}
           projectId={projectId}
           onSubmit={onSubmit}

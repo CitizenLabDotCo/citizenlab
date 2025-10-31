@@ -78,7 +78,7 @@ module BulkImportIdeas::Parsers
       idea_row[:image_url]    = fields[locale_image_url_label]
       idea_row[:latitude]     = fields[locale_latitude_label]
       idea_row[:longitude]    = fields[locale_longitude_label]
-      idea_row[:topic_titles] = (fields[locale_tags_label] || '').split(';').map(&:strip).select(&:present?)
+      idea_row[:topic_titles] = fields[locale_tags_label].to_s.split(';').map(&:strip).compact_blank
 
       fields = structure_raw_fields(fields)
       idea_row = process_user_details(fields, idea_row)

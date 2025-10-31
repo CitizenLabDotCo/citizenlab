@@ -1,3 +1,4 @@
+import { IconNames } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
@@ -102,6 +103,7 @@ export type IDKeycloakMethod = {
     name: 'keycloak';
     method_metadata?: MethodMetadata;
     ui_method_name: string;
+    provider: IconNames;
   };
 };
 
@@ -144,5 +146,3 @@ export type TVerificationMethod =
   | IDTwodayMethod
   | IDAuth0Method
   | IDIdAustriaMethod;
-// TODO: JS - No Fake SSO?
-// TODO: JS - Can we add the icon name into the method type?

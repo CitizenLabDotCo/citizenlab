@@ -42,6 +42,8 @@ type SurveyPage = {
   pageQuestions: IFlatCustomField[];
   currentPageIndex: number;
   setCurrentPageIndex: React.Dispatch<React.SetStateAction<number>>;
+  userNavigationHistory: number[];
+  setUserNavigationHistory: React.Dispatch<React.SetStateAction<number[]>>;
   lastPageIndex: number;
   participationMethod?: ParticipationMethod;
   ideaId?: string;
@@ -68,6 +70,8 @@ const SurveyPage = ({
   onSubmit,
   currentPageIndex,
   setCurrentPageIndex,
+  userNavigationHistory,
+  setUserNavigationHistory,
   phase,
   defaultValues,
 }: SurveyPage) => {
@@ -102,9 +106,8 @@ const SurveyPage = ({
     });
 
   const previousPageNumber = determinePreviousPageNumber({
-    pages,
-    currentPage: page,
-    formData: methods.watch(),
+    userNavigationHistory,
+    currentPageIndex,
   });
 
   const nextPageNumber = determineNextPageNumber({
@@ -130,6 +133,8 @@ const SurveyPage = ({
       });
       // Go to the next page
       if (currentPageIndex < lastPageIndex) {
+        // Add the next page to navigation history
+        setUserNavigationHistory((history) => [...history, nextPageNumber]);
         setCurrentPageIndex(nextPageNumber);
       }
     } catch (error) {
@@ -161,6 +166,8 @@ const SurveyPage = ({
 
   const handlePrevious = () => {
     pageRef.current?.scrollTo(0, 0);
+    // Remove the current page from navigation history when going back
+    setUserNavigationHistory((history) => history.slice(0, -1));
     setCurrentPageIndex(previousPageNumber);
   };
 

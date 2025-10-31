@@ -171,7 +171,7 @@ module BulkImportIdeas::Importers
             .map(&:downcase)
             .include? topic_title
         end
-      end.select(&:present?).map(&:id).uniq
+      end.compact_blank.map(&:id).uniq
 
       idea_attributes[:topic_ids] = topics_ids
     end

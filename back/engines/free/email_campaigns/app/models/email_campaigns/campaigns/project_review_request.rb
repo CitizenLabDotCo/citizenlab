@@ -39,7 +39,7 @@ module EmailCampaigns
     include ContentConfigurable
     include Disableable
 
-    filter :filter_request_approved
+    filter :filter_pending_request
     recipient_filter :notification_recipient
 
     def mailer_class

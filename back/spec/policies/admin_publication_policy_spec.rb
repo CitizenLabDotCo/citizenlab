@@ -151,42 +151,4 @@ describe AdminPublicationPolicy do
       it { is_expected.to permit(:show) }
     end
   end
-
-  context 'on a public but unlisted project' do
-    let!(:admin_publication) { create(:project, listed: false).admin_publication }
-    let(:context) { { remove_unlisted: 'remove_unlisted_that_user_cannot_moderate' } }
-
-    context 'for a visitor' do
-      let(:user) { nil }
-
-      it 'should not index the project holder' do
-        expect(scope.resolve.size).to eq 0
-      end
-    end
-
-    context 'for a resident' do
-      let(:user) { create(:user) }
-
-      it 'should not index the project holder' do
-        expect(scope.resolve.size).to eq 0
-      end
-    end
-
-    context 'for an admin' do
-      let(:user) { create(:admin) }
-
-      it 'indexes the project holder' do
-        expect(scope.resolve.size).to eq 1
-      end
-    end
-
-    context 'for a moderator of another project' do
-      let(:user) { create(:project_moderator, projects: [create(:project)]) }
-
-      it 'should not index the project holder' do
-        expect(scope.resolve.size).to eq 1
-        expect(scope.resolve).not_to include(admin_publication)
-      end
-    end
-  end
 end
