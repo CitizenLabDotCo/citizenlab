@@ -154,6 +154,7 @@ class User < ApplicationRecord
 
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :complete_registration
+  before_validation :downcase_email, if: :email_or_new_email_changed?
 
   has_many :identities, dependent: :destroy
   has_many :spam_reports, dependent: :nullify
@@ -348,6 +349,11 @@ class User < ApplicationRecord
     )
     self.bio_multiloc = service.remove_multiloc_empty_trailing_tags(bio_multiloc)
     self.bio_multiloc = service.linkify_multiloc(bio_multiloc)
+  end
+
+  def downcase_email
+    self.email = email.downcase if email_changed? && email.present?
+    self.new_email = new_email.downcase if new_email_changed? && new_email.present?
   end
 
   def email_or_new_email_changed?
