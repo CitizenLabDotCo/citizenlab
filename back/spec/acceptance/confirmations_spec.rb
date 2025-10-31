@@ -13,31 +13,46 @@ resource 'Confirmations' do
 
   post 'web_api/v1/user/confirm' do
     with_options scope: :confirmation do
+      parameter :email, 'The email address of the user to confirm.'
       parameter :code, 'The 4-digit confirmation code received by SMS or email.'
     end
 
-    context 'when not logged in' do
-      example 'returns a not authorized status passing a valid code' do
-        do_request(confirmation: { code: '1234' })
-        expect(status).to eq 401
+    # context 'when not logged in' do
+    #   example 'returns a not authorized status passing a valid code' do
+    #     do_request(confirmation: { code: '1234' })
+    #     expect(status).to eq 401
+    #   end
+    # end
+
+    context 'when email does not exist' do
+      let(:user) { create(:user_with_confirmation) }
+      let(:email) { 'nonexistent@example.com' }
+
+      before do
+        RequestConfirmationCodeJob.perform_now user
+      end
+
+      example 'returns a not found status when the email does not exist' do
+        do_request(confirmation: { email: email, code: '1234' })
+        expect(status).to eq 404
       end
     end
 
-    context 'when logged in' do
+    context 'when email exists' do
       let(:user) { create(:user_with_confirmation) }
+      let(:email) { user.email }
 
       before do
-        header_token_for user
         RequestConfirmationCodeJob.perform_now user
       end
 
       example 'returns an ok status passing the right code' do
-        do_request(confirmation: { code: user.email_confirmation_code })
+        do_request(confirmation: { email:, code: user.email_confirmation_code })
         assert_status 200
       end
 
       example "logs 'completed_registration' activity job when passed the right code" do
-        do_request(confirmation: { code: user.email_confirmation_code })
+        do_request(confirmation: { email:, code: user.email_confirmation_code })
         expect(LogActivityJob).to have_been_enqueued.with(
           user,
           'completed_registration',
@@ -47,25 +62,20 @@ resource 'Confirmations' do
       end
 
       example 'returns an unprocessable entity status passing no code' do
-        do_request(confirmation: { code: nil })
+        do_request(confirmation: { email:, code: nil })
         assert_status 422
       end
 
       example 'returns an code.blank error code when no code is passed' do
-        do_request(confirmation: { code: nil })
+        do_request(confirmation: { email:, code: nil })
 
         assert_status 422
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:code, 'blank')
       end
 
-      example 'returns an unprocessable entity status when the code is invalid' do
-        do_request(confirmation: { code: 'badcode' })
-        assert_status 422
-      end
-
       example 'returns an code.invalid error code when the code is invalid' do
-        do_request(confirmation: { code: 'badcode' })
+        do_request(confirmation: { email:, code: 'badcode' })
 
         assert_status 422
         json_response = json_parse response_body
@@ -76,7 +86,7 @@ resource 'Confirmations' do
         # Clear any previously enqueued jobs
         ActiveJob::Base.queue_adapter.enqueued_jobs.clear
 
-        do_request(confirmation: { code: 'badcode' })
+        do_request(confirmation: { email:, code: 'badcode' })
 
         expect(LogActivityJob).not_to have_been_enqueued.with(
           anything,
