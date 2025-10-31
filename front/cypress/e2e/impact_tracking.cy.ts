@@ -1,3 +1,5 @@
+import { logIn } from '../support/auth';
+
 describe('Impact tracking: Session tracking', () => {
   it('Does a POST request to /sessions as a normal user', () => {
     cy.intercept('POST', '**/web_api/v1/sessions').as('createSession');
@@ -20,7 +22,10 @@ describe('Impact tracking: Session tracking', () => {
     cy.intercept('PATCH', '**/web_api/v1/sessions/current/upgrade').as(
       'upgradeSession'
     );
-    cy.login('mortal@govocal.com', 'democracy2.0');
+    cy.goToLandingPage();
+    cy.get('#e2e-navbar');
+    cy.get('#e2e-navbar-login-menu-item').click();
+    logIn(cy, 'mortal@govocal.com', 'democracy2.0');
     cy.wait('@upgradeSession').then((interception) => {
       expect(interception.response?.statusCode).to.eq(202);
     });
