@@ -53,23 +53,24 @@ const ProjectName = ({ projectId }: { projectId: string | null }) => {
   const localize = useLocalize();
 
   if (!projectId) {
-    return <Text fontSize='s'>{formatMessage(messages.allProjects)}</Text>;
+    return <Text fontSize="s">{formatMessage(messages.allProjects)}</Text>;
   }
 
   if (!project) {
     return <Spinner size="20px" />;
   }
 
-  return <Text fontSize='s'>{localize(project.data.attributes.title_multiloc)}</Text>;
+  return (
+    <Text fontSize="s">{localize(project.data.attributes.title_multiloc)}</Text>
+  );
 };
 
-type ModalState = 
-{ view: 'create'; } |
-{ view: 'edit'; subscriptionId: string; } |
-{ view: 'deliveries'; subscriptionId: string; } |
-{ view: 'new_secret'; new_secret_token: string; } |
-{ view: 'closed'; };
-
+type ModalState =
+  | { view: 'create' }
+  | { view: 'edit'; subscriptionId: string }
+  | { view: 'deliveries'; subscriptionId: string }
+  | { view: 'new_secret'; new_secret_token: string }
+  | { view: 'closed' };
 
 const WebhookSubscriptions = () => {
   const [modal, setModal] = useState<ModalState>({ view: 'closed' });
@@ -92,7 +93,10 @@ const WebhookSubscriptions = () => {
   const handleRegenerateSecret = async (id: string) => {
     if (window.confirm(formatMessage(messages.regenerateSecretConfirmation))) {
       const response = await regenerateSecret(id);
-      setModal({ view: 'new_secret', new_secret_token: response.data.attributes.secret_token });
+      setModal({
+        view: 'new_secret',
+        new_secret_token: response.data.attributes.secret_token,
+      });
     }
   };
 
@@ -145,11 +149,11 @@ const WebhookSubscriptions = () => {
         <Table bgColor="white" data-testid="webhookSubscriptionsTable">
           <Thead>
             <Tr>
+              <Th>{formatMessage(messages.enabled)}</Th>
               <Th>{formatMessage(messages.name)}</Th>
               <Th>{formatMessage(messages.url)}</Th>
               <Th>{formatMessage(messages.events)}</Th>
               <Th>{formatMessage(messages.project)}</Th>
-              <Th>{formatMessage(messages.enabled)}</Th>
               <Th>{formatMessage(messages.deliveryStats)}</Th>
               <Th>{formatMessage(messages.actions)}</Th>
             </Tr>
@@ -157,28 +161,11 @@ const WebhookSubscriptions = () => {
           <Tbody>
             {subscriptions.data.map((subscription) => {
               const stats = subscription.attributes.recent_delivery_stats;
-              const projectId = subscription.relationships?.project?.data?.id || null;
+              const projectId =
+                subscription.relationships?.project?.data?.id || null;
 
               return (
                 <Tr key={subscription.id}>
-                  <Td>
-                    <Text fontSize="s">{subscription.attributes.name}</Text>
-                  </Td>
-                  <Td>
-                    <Tooltip content={subscription.attributes.url}>
-                      <Text fontSize="s">
-                        <EllipsisText>{subscription.attributes.url}</EllipsisText>
-                      </Text>
-                    </Tooltip>
-                  </Td>
-                  <Td>
-                    <Text fontSize="s">
-                      {subscription.attributes.events.join(', ')}
-                    </Text>
-                  </Td>
-                  <Td>
-                    <ProjectName projectId={projectId} />
-                  </Td>
                   <Td>
                     <Toggle
                       checked={subscription.attributes.enabled}
@@ -189,6 +176,26 @@ const WebhookSubscriptions = () => {
                         )
                       }
                     />
+                  </Td>
+                  <Td>
+                    <Text fontSize="s">{subscription.attributes.name}</Text>
+                  </Td>
+                  <Td>
+                    <Tooltip content={subscription.attributes.url}>
+                      <Text fontSize="s">
+                        <EllipsisText>
+                          {subscription.attributes.url}
+                        </EllipsisText>
+                      </Text>
+                    </Tooltip>
+                  </Td>
+                  <Td>
+                    <Text fontSize="s">
+                      {subscription.attributes.events.join(', ')}
+                    </Text>
+                  </Td>
+                  <Td>
+                    <ProjectName projectId={projectId} />
                   </Td>
                   <Td>
                     <Box display="flex" gap="4px" flexWrap="wrap">
@@ -241,8 +248,12 @@ const WebhookSubscriptions = () => {
                         iconName="delete"
                         iconColor={colors.red500}
                         iconColorOnHover={colors.red500}
-                        onClick={() => handleDeleteSubscription(subscription.id)}
-                        a11y_buttonActionMessage={formatMessage(messages.delete)}
+                        onClick={() =>
+                          handleDeleteSubscription(subscription.id)
+                        }
+                        a11y_buttonActionMessage={formatMessage(
+                          messages.delete
+                        )}
                       />
                     </Box>
                   </Td>
@@ -261,22 +272,33 @@ const WebhookSubscriptions = () => {
         <CreateSubscriptionModal onClose={closeModal} />
       </Modal>
       {modal.view === 'edit' && (
-        <Modal opened={!!modal.subscriptionId} close={closeModal}>
-          <EditSubscriptionModal subscriptionId={modal.subscriptionId} onClose={closeModal} />
+        <Modal opened={modal.view === 'edit'} close={closeModal}>
+          <EditSubscriptionModal
+            subscriptionId={modal.subscriptionId}
+            onClose={closeModal}
+          />
         </Modal>
       )}
       {modal.view === 'deliveries' && (
-        <Modal opened={!!modal.subscriptionId} close={closeModal} width="800px">
-          <DeliveriesModal subscriptionId={modal.subscriptionId} onClose={closeModal} />
+        <Modal
+          opened={modal.view === 'deliveries'}
+          close={closeModal}
+          width="800px"
+        >
+          <DeliveriesModal
+            subscriptionId={modal.subscriptionId}
+            onClose={closeModal}
+          />
         </Modal>
       )}
       {modal.view === 'new_secret' && (
-        <Modal opened={!!modal.new_secret_token} close={closeModal}>
+        <Modal opened={modal.view === 'new_secret'} close={closeModal}>
           <Box data-testid="webhookNewSecret">
-            <Title variant="h2">
-              {formatMessage(messages.newSecretTitle)}
-            </Title>
-            <SecretTokenDisplay secret={modal.new_secret_token} onClose={closeModal} />
+            <Title variant="h2">{formatMessage(messages.newSecretTitle)}</Title>
+            <SecretTokenDisplay
+              secret={modal.new_secret_token}
+              onClose={closeModal}
+            />
           </Box>
         </Modal>
       )}
