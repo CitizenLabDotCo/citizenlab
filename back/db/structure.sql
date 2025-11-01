@@ -1,4 +1,4 @@
-\restrict mjMRKngDQvQtFQrR5DbwIen4RzDoPxJJohpJqGrCdkX7ctgMONF45kQlC3UiT6M
+\restrict fssM7Yh2okr5ItfhMVNXpPxPFVDm9k2k5HlXsg0n0GVip7EzbcnHkRjVhLAMhfp
 
 -- Dumped from database version 16.6 (Debian 16.6-1.pgdg110+1)
 -- Dumped by pg_dump version 16.10 (Debian 16.10-1.pgdg12+1)
@@ -26,7 +26,6 @@ ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rai
 ALTER TABLE IF EXISTS ONLY public.custom_field_bins DROP CONSTRAINT IF EXISTS fk_rails_f09b1bc4cd;
 ALTER TABLE IF EXISTS ONLY public.file_attachments DROP CONSTRAINT IF EXISTS fk_rails_f06e641e03;
 ALTER TABLE IF EXISTS ONLY public.project_imports DROP CONSTRAINT IF EXISTS fk_rails_efff220342;
-ALTER TABLE IF EXISTS ONLY public.idea_files DROP CONSTRAINT IF EXISTS fk_rails_efb12f53ad;
 ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS fk_rails_edc8786515;
 ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXISTS fk_rails_e871bf6e26;
 ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rails_e8076fb9f6;
@@ -40,14 +39,12 @@ ALTER TABLE IF EXISTS ONLY public.project_reviews DROP CONSTRAINT IF EXISTS fk_r
 ALTER TABLE IF EXISTS ONLY public.official_feedbacks DROP CONSTRAINT IF EXISTS fk_rails_ddd7e21dfa;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF EXISTS fk_rails_dd3b2cc184;
 ALTER TABLE IF EXISTS ONLY public.project_folders_images DROP CONSTRAINT IF EXISTS fk_rails_dcbc962cfe;
-ALTER TABLE IF EXISTS ONLY public.project_folders_files DROP CONSTRAINT IF EXISTS fk_rails_dc7aeb6534;
 ALTER TABLE IF EXISTS ONLY public.analysis_summaries DROP CONSTRAINT IF EXISTS fk_rails_dbd13460f0;
 ALTER TABLE IF EXISTS ONLY public.projects_topics DROP CONSTRAINT IF EXISTS fk_rails_db7813bfef;
 ALTER TABLE IF EXISTS ONLY public.projects_allowed_input_topics DROP CONSTRAINT IF EXISTS fk_rails_db7813bfef;
 ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS fk_rails_d6353758d5;
 ALTER TABLE IF EXISTS ONLY public.projects DROP CONSTRAINT IF EXISTS fk_rails_d1892257e3;
 ALTER TABLE IF EXISTS ONLY public.webhooks_subscriptions DROP CONSTRAINT IF EXISTS fk_rails_d182afe5ca;
-ALTER TABLE IF EXISTS ONLY public.static_page_files DROP CONSTRAINT IF EXISTS fk_rails_d0209b82ff;
 ALTER TABLE IF EXISTS ONLY public.jobs_trackers DROP CONSTRAINT IF EXISTS fk_rails_cfd1ddfa6b;
 ALTER TABLE IF EXISTS ONLY public.analytics_dimension_locales_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_cd2a592e7b;
 ALTER TABLE IF EXISTS ONLY public.analysis_taggings DROP CONSTRAINT IF EXISTS fk_rails_cc8b68bfb4;
@@ -61,7 +58,6 @@ ALTER TABLE IF EXISTS ONLY public.invites_imports DROP CONSTRAINT IF EXISTS fk_r
 ALTER TABLE IF EXISTS ONLY public.custom_field_matrix_statements DROP CONSTRAINT IF EXISTS fk_rails_c379cdcd80;
 ALTER TABLE IF EXISTS ONLY public.idea_images DROP CONSTRAINT IF EXISTS fk_rails_c349bb4ac3;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_c32c787647;
-ALTER TABLE IF EXISTS ONLY public.project_files DROP CONSTRAINT IF EXISTS fk_rails_c26fbba4b3;
 ALTER TABLE IF EXISTS ONLY public.jobs_trackers DROP CONSTRAINT IF EXISTS fk_rails_bede8fb214;
 ALTER TABLE IF EXISTS ONLY public.analysis_background_tasks DROP CONSTRAINT IF EXISTS fk_rails_bde9116e72;
 ALTER TABLE IF EXISTS ONLY public.ideas_phases DROP CONSTRAINT IF EXISTS fk_rails_bd36415a82;
@@ -81,7 +77,6 @@ ALTER TABLE IF EXISTS ONLY public.memberships DROP CONSTRAINT IF EXISTS fk_rails
 ALTER TABLE IF EXISTS ONLY public.analytics_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_a9aa810ecf;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_a7a91f1df3;
 ALTER TABLE IF EXISTS ONLY public.groups_permissions DROP CONSTRAINT IF EXISTS fk_rails_a5c3527604;
-ALTER TABLE IF EXISTS ONLY public.event_files DROP CONSTRAINT IF EXISTS fk_rails_a590d6ddde;
 ALTER TABLE IF EXISTS ONLY public.webhooks_deliveries DROP CONSTRAINT IF EXISTS fk_rails_a3793c8571;
 ALTER TABLE IF EXISTS ONLY public.analytics_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_a34b51c948;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_a2cfad997d;
@@ -149,7 +144,6 @@ ALTER TABLE IF EXISTS ONLY public.analysis_comments_summaries DROP CONSTRAINT IF
 ALTER TABLE IF EXISTS ONLY public.files DROP CONSTRAINT IF EXISTS fk_rails_34e9f7c7ef;
 ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rails_34143a680f;
 ALTER TABLE IF EXISTS ONLY public.volunteering_volunteers DROP CONSTRAINT IF EXISTS fk_rails_33a154a9ba;
-ALTER TABLE IF EXISTS ONLY public.phase_files DROP CONSTRAINT IF EXISTS fk_rails_33852a9a71;
 ALTER TABLE IF EXISTS ONLY public.webhooks_deliveries DROP CONSTRAINT IF EXISTS fk_rails_333f76f79b;
 ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS fk_rails_2d026b99a2;
 ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS fk_rails_2c74f68dd3;
@@ -193,7 +187,6 @@ DROP INDEX IF EXISTS public.index_volunteering_causes_on_phase_id;
 DROP INDEX IF EXISTS public.index_volunteering_causes_on_ordering;
 DROP INDEX IF EXISTS public.index_verification_verifications_on_user_id;
 DROP INDEX IF EXISTS public.index_verification_verifications_on_hashed_uid;
-DROP INDEX IF EXISTS public.index_value_bins_on_cf_and_values;
 DROP INDEX IF EXISTS public.index_users_on_unique_code;
 DROP INDEX IF EXISTS public.index_users_on_slug;
 DROP INDEX IF EXISTS public.index_users_on_registration_completed_at;
@@ -220,7 +213,6 @@ DROP INDEX IF EXISTS public.index_report_builder_reports_on_name;
 DROP INDEX IF EXISTS public.index_reactions_on_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id_and_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id;
-DROP INDEX IF EXISTS public.index_range_bins_on_cf_and_range;
 DROP INDEX IF EXISTS public.index_projects_topics_on_topic_id;
 DROP INDEX IF EXISTS public.index_projects_topics_on_project_id;
 DROP INDEX IF EXISTS public.index_projects_on_slug;
@@ -254,7 +246,6 @@ DROP INDEX IF EXISTS public.index_permissions_on_action;
 DROP INDEX IF EXISTS public.index_permissions_custom_fields_on_permission_id;
 DROP INDEX IF EXISTS public.index_permissions_custom_fields_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_permission_field;
-DROP INDEX IF EXISTS public.index_option_bins_on_cf_and_option;
 DROP INDEX IF EXISTS public.index_onboarding_campaign_dismissals_on_user_id;
 DROP INDEX IF EXISTS public.index_official_feedbacks_on_user_id;
 DROP INDEX IF EXISTS public.index_official_feedbacks_on_idea_id;
@@ -444,7 +435,6 @@ DROP INDEX IF EXISTS public.index_analysis_analyses_on_main_custom_field_id;
 DROP INDEX IF EXISTS public.index_analysis_analyses_custom_fields;
 DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_analysis_id;
-DROP INDEX IF EXISTS public.index_age_bins_on_cf_and_range;
 DROP INDEX IF EXISTS public.index_admin_publications_on_rgt;
 DROP INDEX IF EXISTS public.index_admin_publications_on_publication_type_and_publication_id;
 DROP INDEX IF EXISTS public.index_admin_publications_on_publication_status;
@@ -4933,13 +4923,6 @@ CREATE INDEX index_admin_publications_on_rgt ON public.admin_publications USING 
 
 
 --
--- Name: index_age_bins_on_cf_and_range; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_age_bins_on_cf_and_range ON public.custom_field_bins USING btree (custom_field_id, range) WHERE ((type)::text = 'CustomFieldBins::AgeBin'::text);
-
-
---
 -- Name: index_analysis_additional_custom_fields_on_analysis_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6263,13 +6246,6 @@ CREATE INDEX index_onboarding_campaign_dismissals_on_user_id ON public.onboardin
 
 
 --
--- Name: index_option_bins_on_cf_and_option; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_option_bins_on_cf_and_option ON public.custom_field_bins USING btree (custom_field_id, custom_field_option_id) WHERE ((type)::text = 'CustomFieldBins::OptionBin'::text);
-
-
---
 -- Name: index_permission_field; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6501,13 +6477,6 @@ CREATE INDEX index_projects_topics_on_topic_id ON public.projects_topics USING b
 
 
 --
--- Name: index_range_bins_on_cf_and_range; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_range_bins_on_cf_and_range ON public.custom_field_bins USING btree (custom_field_id, range) WHERE ((type)::text = 'CustomFieldBins::RangeBin'::text);
-
-
---
 -- Name: index_reactions_on_reactable_type_and_reactable_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6687,13 +6656,6 @@ CREATE UNIQUE INDEX index_users_on_slug ON public.users USING btree (slug);
 --
 
 CREATE UNIQUE INDEX index_users_on_unique_code ON public.users USING btree (unique_code);
-
-
---
--- Name: index_value_bins_on_cf_and_values; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_value_bins_on_cf_and_values ON public.custom_field_bins USING btree (custom_field_id, "values") WHERE ((type)::text = 'CustomFieldBins::ValueBin'::text);
 
 
 --
@@ -7013,14 +6975,6 @@ ALTER TABLE ONLY public.cosponsorships
 
 ALTER TABLE ONLY public.webhooks_deliveries
     ADD CONSTRAINT fk_rails_333f76f79b FOREIGN KEY (activity_id) REFERENCES public.activities(id) ON DELETE CASCADE;
-
-
---
--- Name: phase_files fk_rails_33852a9a71; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.phase_files
-    ADD CONSTRAINT fk_rails_33852a9a71 FOREIGN KEY (phase_id) REFERENCES public.phases(id);
 
 
 --
@@ -7560,14 +7514,6 @@ ALTER TABLE ONLY public.webhooks_deliveries
 
 
 --
--- Name: event_files fk_rails_a590d6ddde; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.event_files
-    ADD CONSTRAINT fk_rails_a590d6ddde FOREIGN KEY (event_id) REFERENCES public.events(id);
-
-
---
 -- Name: groups_permissions fk_rails_a5c3527604; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7720,14 +7666,6 @@ ALTER TABLE ONLY public.jobs_trackers
 
 
 --
--- Name: project_files fk_rails_c26fbba4b3; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.project_files
-    ADD CONSTRAINT fk_rails_c26fbba4b3 FOREIGN KEY (project_id) REFERENCES public.projects(id);
-
-
---
 -- Name: ideas fk_rails_c32c787647; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7832,14 +7770,6 @@ ALTER TABLE ONLY public.jobs_trackers
 
 
 --
--- Name: static_page_files fk_rails_d0209b82ff; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.static_page_files
-    ADD CONSTRAINT fk_rails_d0209b82ff FOREIGN KEY (static_page_id) REFERENCES public.static_pages(id);
-
-
---
 -- Name: webhooks_subscriptions fk_rails_d182afe5ca; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7885,14 +7815,6 @@ ALTER TABLE ONLY public.projects_topics
 
 ALTER TABLE ONLY public.analysis_summaries
     ADD CONSTRAINT fk_rails_dbd13460f0 FOREIGN KEY (background_task_id) REFERENCES public.analysis_background_tasks(id);
-
-
---
--- Name: project_folders_files fk_rails_dc7aeb6534; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.project_folders_files
-    ADD CONSTRAINT fk_rails_dc7aeb6534 FOREIGN KEY (project_folder_id) REFERENCES public.project_folders_folders(id);
 
 
 --
@@ -8000,14 +7922,6 @@ ALTER TABLE ONLY public.static_pages_topics
 
 
 --
--- Name: idea_files fk_rails_efb12f53ad; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.idea_files
-    ADD CONSTRAINT fk_rails_efb12f53ad FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
-
-
---
 -- Name: project_imports fk_rails_efff220342; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8107,7 +8021,7 @@ ALTER TABLE ONLY public.ideas_topics
 -- PostgreSQL database dump complete
 --
 
-\unrestrict mjMRKngDQvQtFQrR5DbwIen4RzDoPxJJohpJqGrCdkX7ctgMONF45kQlC3UiT6M
+\unrestrict fssM7Yh2okr5ItfhMVNXpPxPFVDm9k2k5HlXsg0n0GVip7EzbcnHkRjVhLAMhfp
 
 SET search_path TO public,shared_extensions;
 
@@ -8115,7 +8029,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20251022100725'),
 ('20251022100724'),
 ('20251022100723'),
-('20251014142253'),
+('20251021150138'),
 ('20251001090229'),
 ('20251001090208'),
 ('20251001083036'),
