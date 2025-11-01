@@ -5,7 +5,6 @@ module ProjectFolders
     include SideFxHelper
 
     def after_create(folder, user)
-      folder.update!(description_multiloc: TextImageService.new.swap_data_images_multiloc(folder.description_multiloc, field: :description_multiloc, imageable: folder))
       LogActivityJob.perform_later(
         folder,
         'created',

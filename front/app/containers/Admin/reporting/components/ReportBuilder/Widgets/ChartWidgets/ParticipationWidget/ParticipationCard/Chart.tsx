@@ -34,7 +34,7 @@ const LEGEND_ITEMS = {
     message: messages.inputs,
   },
   comments: {
-    color: colors.categorical02,
+    color: colors.categorical05,
     message: messages.comments,
   },
   votes: {

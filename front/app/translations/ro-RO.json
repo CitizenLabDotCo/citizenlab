@@ -832,7 +832,6 @@
   "app.containers.SearchInput.searchTerm": "Termen de căutare: {searchTerm}",
   "app.containers.SignIn.franceConnectIsTheSolutionProposedByTheGovernment": "FranceConnect este soluția propusă de statul francez pentru a securiza și simplifica înscrierea la peste 700 de servicii online.",
   "app.containers.SignIn.or": "Sau",
-  "app.containers.SignIn.signInError": "Informațiile furnizate nu sunt corecte. Faceți clic pe „Parolă uitată“ pentru a vă reseta parola.",
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Folosiți FranceConnect pentru a vă conecta, a vă înscrie sau a vă verifica contul.",
   "app.containers.SignIn.whatIsFranceConnect": "Ce este France Connect?",
   "app.containers.SignUp.backToSignUpOptions": "Reveniți la opțiunile de conectare",

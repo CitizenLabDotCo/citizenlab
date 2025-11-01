@@ -6,7 +6,6 @@ class SideFxCustomFieldService
   def before_create(custom_field, current_user); end
 
   def after_create(custom_field, current_user)
-    custom_field.update! description_multiloc: TextImageService.new.swap_data_images_multiloc(custom_field.description_multiloc, field: :description_multiloc, imageable: custom_field)
     LogActivityJob.perform_later(custom_field, 'created', current_user, custom_field.created_at.to_i)
   end
 

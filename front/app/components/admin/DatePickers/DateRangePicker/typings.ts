@@ -10,6 +10,7 @@ export interface Props {
   disabled?: PropsBase['disabled'];
   numberOfMonths?: 1 | 2;
   onUpdateRange: (range: Partial<DateRange>) => void;
+  height?: string;
 }
 
 export interface CalendarProps extends Props {

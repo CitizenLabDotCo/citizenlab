@@ -273,6 +273,7 @@ class OmniauthCallbackController < ApplicationController
     configuration = AppConfiguration.instance
     return unless configuration.feature_activated?('verification')
     return unless verification_service.active?(configuration, auth.provider)
+    return unless verification_service.enabled?(auth.provider)
 
     verification_service.verify_omniauth(auth: auth, user: user)
   end
