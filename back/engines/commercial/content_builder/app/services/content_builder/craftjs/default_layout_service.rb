@@ -73,7 +73,7 @@ module ContentBuilder
             isCanvas: false,
             displayName: 'Published',
             linkedNodes: {}
-          },
+          }
         }
       end
     end
