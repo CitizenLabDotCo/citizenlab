@@ -1,12 +1,10 @@
 import React from 'react';
 
-import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { Multiloc } from 'typings';
 
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
-
-import useLocalize from 'hooks/useLocalize';
 
 import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
@@ -24,11 +22,7 @@ const handleLoadImages = () => {
   eventEmitter.emit(IMAGES_LOADED_EVENT);
 };
 
-const FolderContentViewer = ({
-  folderId,
-  folderTitle,
-}: FolderContentViewerProps) => {
-  const localize = useLocalize();
+const FolderContentViewer = ({ folderId }: FolderContentViewerProps) => {
   const { data: descriptionBuilderLayout, isInitialLoading } =
     useContentBuilderLayout('folder', folderId);
 
@@ -49,9 +43,6 @@ const FolderContentViewer = ({
         <Spinner />
       ) : (
         <Box data-testid="descriptionBuilderFolderPreviewContent">
-          <Title color="tenantText" variant="h1">
-            {localize(folderTitle)}
-          </Title>
           <Box id={`project-folder-description-${folderId}`} mb="24px">
             <Editor isPreview={true}>
               <ContentBuilderFrame

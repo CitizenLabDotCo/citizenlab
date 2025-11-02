@@ -20,7 +20,7 @@ module ContentBuilder
         {
           ROOT: {
             type: 'div',
-            nodes: %w[TEXT PUBLISHED_PROJECTS],
+            nodes: %w[TITLE TEXT PUBLISHED_PROJECTS],
             props: { id: 'e2e-content-builder-frame' },
             custom: {},
             hidden: false,
@@ -28,18 +28,20 @@ module ContentBuilder
             displayName: 'div',
             linkedNodes: {}
           },
-          PUBLISHED_PROJECTS: {
-            type: { resolvedName: 'Published' },
+          TITLE: {
+            type: { resolvedName: 'FolderTitle' },
             nodes: [],
-            props: {
-              folderId: folder.id,
-              titleMultiloc: MultilocService.new.i18n_to_multiloc('projects.published_projects')
+            props: { folderId: folder.id },
+            custom: {
+              title: {
+                id: 'app.containers.admin.ContentBuilder.folderTitle',
+                defaultMessage: 'Folder title'
+              }
             },
-            custom: {},
             hidden: false,
             parent: 'ROOT',
             isCanvas: false,
-            displayName: 'Published',
+            displayName: 'TextMultiloc',
             linkedNodes: {}
           },
           TEXT: {
@@ -57,7 +59,21 @@ module ContentBuilder
             isCanvas: false,
             displayName: 'TextMultiloc',
             linkedNodes: {}
-          }
+          },
+          PUBLISHED_PROJECTS: {
+            type: { resolvedName: 'Published' },
+            nodes: [],
+            props: {
+              folderId: folder.id,
+              titleMultiloc: MultilocService.new.i18n_to_multiloc('projects.published_projects')
+            },
+            custom: {},
+            hidden: false,
+            parent: 'ROOT',
+            isCanvas: false,
+            displayName: 'Published',
+            linkedNodes: {}
+          },
         }
       end
     end
