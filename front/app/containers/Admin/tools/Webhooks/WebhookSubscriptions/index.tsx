@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 
 import {
   Title,
@@ -19,6 +18,7 @@ import {
   Badge,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import useProjectById from 'api/projects/useProjectById';
 import useDeleteWebhookSubscription from 'api/webhook_subscriptions/useDeleteWebhookSubscription';
@@ -26,18 +26,19 @@ import useRegenerateSecret from 'api/webhook_subscriptions/useRegenerateSecret';
 import useUpdateWebhookSubscription from 'api/webhook_subscriptions/useUpdateWebhookSubscription';
 import useWebhookSubscriptions from 'api/webhook_subscriptions/useWebhookSubscriptions';
 
+import useLocalize from 'hooks/useLocalize';
+
 import GoBackButton from 'components/UI/GoBackButton';
 import Modal from 'components/UI/Modal';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
+import SecretTokenDisplay from './components/SecretTokenDisplay';
 import CreateSubscriptionModal from './CreateSubscriptionModal';
 import DeliveriesModal from './DeliveriesModal';
 import EditSubscriptionModal from './EditSubscriptionModal';
 import messages from './messages';
-import useLocalize from 'hooks/useLocalize';
-import SecretTokenDisplay from './components/SecretTokenDisplay';
 
 const EllipsisText = styled.span`
   display: block;
@@ -272,7 +273,7 @@ const WebhookSubscriptions = () => {
         <CreateSubscriptionModal onClose={closeModal} />
       </Modal>
       {modal.view === 'edit' && (
-        <Modal opened={modal.view === 'edit'} close={closeModal}>
+        <Modal opened={true} close={closeModal}>
           <EditSubscriptionModal
             subscriptionId={modal.subscriptionId}
             onClose={closeModal}
@@ -280,11 +281,7 @@ const WebhookSubscriptions = () => {
         </Modal>
       )}
       {modal.view === 'deliveries' && (
-        <Modal
-          opened={modal.view === 'deliveries'}
-          close={closeModal}
-          width="800px"
-        >
+        <Modal opened={true} close={closeModal} width="800px">
           <DeliveriesModal
             subscriptionId={modal.subscriptionId}
             onClose={closeModal}
@@ -292,7 +289,7 @@ const WebhookSubscriptions = () => {
         </Modal>
       )}
       {modal.view === 'new_secret' && (
-        <Modal opened={modal.view === 'new_secret'} close={closeModal}>
+        <Modal opened={true} close={closeModal}>
           <Box data-testid="webhookNewSecret">
             <Title variant="h2">{formatMessage(messages.newSecretTitle)}</Title>
             <SecretTokenDisplay
