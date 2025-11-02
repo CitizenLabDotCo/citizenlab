@@ -68,19 +68,19 @@ RSpec.describe Webhooks, type: :integration do
     let!(:sub1) do
       create(:webhook_subscription,
         events: ['idea.created'],
-        url: 'https://webhook1.example.com',
+        url: 'https://webhook.example.com/1',
         enabled: true)
     end
     let!(:sub2) do
       create(:webhook_subscription,
         events: ['idea.created', 'idea.published'],
-        url: 'https://webhook2.example.com',
+        url: 'https://webhook.example.com/2',
         enabled: true)
     end
 
     before do
-      stub_request(:post, 'https://webhook1.example.com').to_return(status: 200)
-      stub_request(:post, 'https://webhook2.example.com').to_return(status: 200)
+      stub_request(:post, 'https://webhook.example.com/1').to_return(status: 200)
+      stub_request(:post, 'https://webhook.example.com/2').to_return(status: 200)
     end
 
     it 'delivers to all matching subscriptions' do
@@ -96,8 +96,8 @@ RSpec.describe Webhooks, type: :integration do
         Webhooks::DeliveryJob.perform_now(delivery)
       end
 
-      expect(WebMock).to have_requested(:post, 'https://webhook1.example.com').once
-      expect(WebMock).to have_requested(:post, 'https://webhook2.example.com').once
+      expect(WebMock).to have_requested(:post, 'https://webhook.example.com/1').once
+      expect(WebMock).to have_requested(:post, 'https://webhook.example.com/2').once
     end
   end
 
@@ -108,19 +108,19 @@ RSpec.describe Webhooks, type: :integration do
     let!(:global_sub) do
       create(:webhook_subscription,
         events: ['idea.created'],
-        url: 'https://global.example.com',
+        url: 'https://global.webhook.example.com',
         project: nil)
     end
     let!(:project1_sub) do
       create(:webhook_subscription,
         events: ['idea.created'],
-        url: 'https://project1.example.com',
+        url: 'https://project1.webhook.example.com',
         project: project1)
     end
     let!(:project2_sub) do
       create(:webhook_subscription,
         events: ['idea.created'],
-        url: 'https://project2.example.com',
+        url: 'https://project2.webhook.example.com',
         project: project2)
     end
 
@@ -146,19 +146,19 @@ RSpec.describe Webhooks, type: :integration do
     let!(:enabled_sub) do
       create(:webhook_subscription,
         events: ['idea.created'],
-        url: 'https://enabled.example.com',
+        url: 'https://enabled.webhook.example.com',
         enabled: true)
     end
     let!(:disabled_sub) do
       create(:webhook_subscription,
         events: ['idea.created'],
-        url: 'https://disabled.example.com',
+        url: 'https://disabled.webhook.example.com',
         enabled: false)
     end
 
     before do
-      stub_request(:post, 'https://enabled.example.com').to_return(status: 200)
-      stub_request(:post, 'https://disabled.example.com').to_return(status: 200)
+      stub_request(:post, 'https://enabled.webhook.example.com').to_return(status: 200)
+      stub_request(:post, 'https://disabled.webhook.example.com').to_return(status: 200)
     end
 
     it 'only delivers to enabled subscriptions' do
@@ -172,8 +172,8 @@ RSpec.describe Webhooks, type: :integration do
 
       Webhooks::DeliveryJob.perform_now(Webhooks::Delivery.first)
 
-      expect(WebMock).to have_requested(:post, 'https://enabled.example.com').once
-      expect(WebMock).not_to have_requested(:post, 'https://disabled.example.com')
+      expect(WebMock).to have_requested(:post, 'https://enabled.webhook.example.com').once
+      expect(WebMock).not_to have_requested(:post, 'https://disabled.webhook.example.com')
     end
   end
 
@@ -181,12 +181,12 @@ RSpec.describe Webhooks, type: :integration do
     let!(:idea_sub) do
       create(:webhook_subscription,
         events: ['idea.created'],
-        url: 'https://ideas.example.com')
+        url: 'https://ideas.webhook.example.com')
     end
     let!(:user_sub) do
       create(:webhook_subscription,
         events: ['user.created'],
-        url: 'https://users.example.com')
+        url: 'https://users.webhook.example.com')
     end
 
     before do

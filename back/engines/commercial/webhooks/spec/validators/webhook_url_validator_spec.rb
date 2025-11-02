@@ -210,7 +210,7 @@ RSpec.describe WebhookUrlValidator do
 
     it 'allows IPv6 ::1' do
       subscription.url = 'http://[::1]:3000'
-      allow(Resolv).to receive(:getaddresses).with('::1').and_return(['::1'])
+      allow(Resolv).to receive(:getaddresses).with('[::1]').and_return(['::1'])
 
       expect(subscription).to be_valid
     end
