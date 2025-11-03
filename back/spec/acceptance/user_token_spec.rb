@@ -138,6 +138,11 @@ resource 'User Token' do
           end
         end
       end
+
+      example 'Does not create JWT token with invalid password' do
+        do_request(auth: { email: email, password: 'wrongpassword' })
+        expect(status).to eq(404)
+      end
     end
 
     context 'when the user is unconfirmed' do
