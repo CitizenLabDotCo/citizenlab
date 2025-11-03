@@ -54,7 +54,7 @@ resource 'Confirmations' do
         ).exactly(1).times
       end
 
-      example "returns an auth token when passing the right code" do
+      example 'returns an auth token when passing the right code' do
         do_request(confirmation: { email:, code: user.email_confirmation_code })
         assert_status 200
         json_response = json_parse response_body
