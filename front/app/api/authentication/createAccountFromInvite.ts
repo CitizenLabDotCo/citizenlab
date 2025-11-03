@@ -34,7 +34,7 @@ export default async function createAccountFromInvite({
   token,
 }: Parameters) {
   const bodyData = {
-    [token ? 'invite' : 'user']: {
+    invite: {
       email,
       password,
       locale,
