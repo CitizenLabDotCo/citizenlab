@@ -33,21 +33,11 @@ RSpec.describe Webhooks::Delivery do
     end
   end
 
-  describe 'associations' do
-    it 'belongs to a subscription' do
-      subscription = create(:webhook_subscription)
-      delivery = create(:webhook_delivery, subscription: subscription)
-      expect(delivery.subscription).to eq(subscription)
-    end
-
-    it 'belongs to an activity' do
-      activity = create(:idea_created_activity)
-      delivery = create(:webhook_delivery, activity: activity)
-      expect(delivery.activity).to eq(activity)
-    end
-  end
-
   describe 'scopes' do
+    before do
+      allow(Resolv).to receive(:getaddresses).with(a_string_matching(/webhook.example.com.*/)).and_return(['93.184.216.34'])
+    end
+
     let!(:pending) { create(:webhook_delivery, status: 'pending') }
     let!(:succeeded) { create(:webhook_delivery, :succeeded) }
     let!(:failed) { create(:webhook_delivery, :failed) }

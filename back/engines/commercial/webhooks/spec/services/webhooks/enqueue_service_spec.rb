@@ -7,7 +7,10 @@ RSpec.describe Webhooks::EnqueueService do
   let(:project) { create(:project) }
   let(:idea) { create(:idea, author: user, project: project) }
 
-  before { ActiveJob::Base.queue_adapter.enqueued_jobs.clear }
+  before do
+    allow(Resolv).to receive(:getaddresses).with(a_string_matching(/webhook.example.com.*/)).and_return(['93.184.216.34'])
+    ActiveJob::Base.queue_adapter.enqueued_jobs.clear
+  end
 
   describe '#call' do
     context 'with matching subscriptions' do

@@ -7,6 +7,8 @@ resource 'Webhook Deliveries' do
   explanation 'Webhook deliveries represent individual attempts to send webhook notifications.'
 
   before do
+    allow(Resolv).to receive(:getaddresses).with(a_string_matching(/webhook.example.com.*/)).and_return(['93.184.216.34'])
+
     header 'Content-Type', 'application/json'
     admin_header_token
   end

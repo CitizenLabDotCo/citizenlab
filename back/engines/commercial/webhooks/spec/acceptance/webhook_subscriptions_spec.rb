@@ -7,6 +7,8 @@ resource 'Webhook Subscriptions' do
   explanation 'Webhooks allow external systems to receive real-time notifications about events in the platform.'
 
   before do
+    allow(Resolv).to receive(:getaddresses).with(a_string_matching(/webhook.example.com.*/)).and_return(['93.184.216.34'])
+
     header 'Content-Type', 'application/json'
     admin_header_token
   end

@@ -6,6 +6,10 @@ RSpec.describe Webhooks, type: :integration do
   let(:user) { create(:user) }
   let(:project) { create(:project) }
 
+  before do
+    allow(Resolv).to receive(:getaddresses).with(a_string_matching(/webhook.example.com.*/)).and_return(['93.184.216.34'])
+  end
+
   describe 'end-to-end webhook delivery' do
     let!(:subscription) do
       create(:webhook_subscription,

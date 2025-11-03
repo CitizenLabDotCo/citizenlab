@@ -74,6 +74,8 @@ RSpec.describe LogActivityJob do
     end
 
     it 'calls Webhooks::EnqueueService when there are enabled webhooks' do
+      allow(Resolv).to receive(:getaddresses).with(a_string_matching(/webhook.example.com.*/)).and_return(['93.184.216.34'])
+
       create(:webhook_subscription)
       idea = create(:idea)
 

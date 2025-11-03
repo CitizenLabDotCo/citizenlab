@@ -8,6 +8,8 @@ RSpec.describe Webhooks::DeliveryJob do
   let(:delivery) { create(:webhook_delivery, subscription: subscription, activity: activity) }
 
   before do
+    allow(Resolv).to receive(:getaddresses).with(a_string_matching(/webhook.example.com.*/)).and_return(['93.184.216.34'])
+
     stub_request(:post, 'https://webhook.example.com/receive').to_return(status: 200, body: 'OK')
   end
 

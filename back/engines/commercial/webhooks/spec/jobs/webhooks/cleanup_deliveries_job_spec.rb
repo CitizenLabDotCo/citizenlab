@@ -4,6 +4,10 @@ require 'rails_helper'
 
 RSpec.describe Webhooks::CleanupDeliveriesJob do
   describe '#perform' do
+    before do
+      allow(Resolv).to receive(:getaddresses).with(a_string_matching(/webhook.example.com.*/)).and_return(['93.184.216.34'])
+    end
+
     let(:subscription) { create(:webhook_subscription) }
     let(:activity) { create(:idea_created_activity) }
 

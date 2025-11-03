@@ -3,6 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe Webhooks::Subscription do
+  before do
+    allow(Resolv).to receive(:getaddresses).with(a_string_matching(/webhook.example.com.*/)).and_return(['93.184.216.34'])
+  end
+
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:webhook_subscription)).to be_valid
