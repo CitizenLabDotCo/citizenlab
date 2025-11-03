@@ -41,32 +41,17 @@ const QuillEditedContent = ({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const theme = useTheme();
 
+  const tabbableElements = containerRef.current?.querySelectorAll(
+    'a, iframe, button, input, select, textarea'
+  );
+
   useEffect(() => {
-    if (!containerRef.current) return;
-
-    const tabbableElements = containerRef.current.querySelectorAll(
-      'a, iframe, button, input, select, textarea'
-    );
-
-    for (const item of tabbableElements) {
-      item.setAttribute('tabindex', disableTabbing ? '-1' : '0');
-    }
-
-    // Fix YouTube iframes - add referrerpolicy
-    const iframes = containerRef.current.querySelectorAll('iframe');
-
-    for (const iframe of iframes) {
-      const src = iframe.getAttribute('src');
-
-      if (
-        src &&
-        (src.includes('youtube.com/embed') ||
-          src.includes('youtube-nocookie.com/embed'))
-      ) {
-        iframe.setAttribute('referrerpolicy', 'origin');
+    if (tabbableElements) {
+      for (const item of tabbableElements) {
+        item.setAttribute('tabindex', disableTabbing ? '-1' : '0');
       }
     }
-  }, [disableTabbing, children]);
+  }, [disableTabbing, tabbableElements]);
 
   return (
     <Container
