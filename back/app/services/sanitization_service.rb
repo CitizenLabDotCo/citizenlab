@@ -160,12 +160,12 @@ class SanitizationService
     def allowed_node?(node)
       if node.name == 'iframe'
         return false unless iframe_allowed? && UrlValidationService.new.video_whitelisted?(node['src'])
-        
+
         # Add referrerpolicy for YouTube embeds if missing
         if youtube_embed?(node['src']) && !node['referrerpolicy']
           node['referrerpolicy'] = 'strict-origin-when-cross-origin'
         end
-        
+
         return true
       end
 
