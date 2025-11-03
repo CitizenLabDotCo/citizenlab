@@ -184,7 +184,7 @@ resource 'User Token' do
       end
 
       context 'when user has password' do
-        let!(:user) { create(:user, email: email, password: password) }
+        let!(:user) { create(:user, email: email, password: 'other_password') }
 
         example_request '[error] no JWT token is returned' do
           assert_status 404
