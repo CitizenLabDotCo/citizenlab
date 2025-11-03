@@ -2374,7 +2374,7 @@
   "app.containers.AdminPage.ProjectFiles.saveFileMetadataSuccessMessage": "Archivo actualizado correctamente.",
   "app.containers.AdminPage.ProjectFiles.searchFiles": "Buscar archivos",
   "app.containers.AdminPage.ProjectFiles.selectFileType2": "Categoría",
-  "app.containers.AdminPage.ProjectFiles.speakerA": "Altavoz {speaker}",
+  "app.containers.AdminPage.ProjectFiles.speakerA": "Orador {speaker}",
   "app.containers.AdminPage.ProjectFiles.strategic_plan": "Plan estratégico",
   "app.containers.AdminPage.ProjectFiles.tooManyFiles": "Sólo puedes subir un máximo de {maxFiles} archivos a la vez.",
   "app.containers.AdminPage.ProjectFiles.transcriptionChapters": "Capítulos",
