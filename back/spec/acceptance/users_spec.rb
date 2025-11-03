@@ -125,6 +125,28 @@ resource 'Users' do
           expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken_by_invite')
         end
       end
+
+      context 'when a user exists with different email casing' do
+        before { create(:user, email: 'TeSt@EmAiL.com') }
+
+        let(:email) { 'test@email.com' }
+
+        example_request 'Returns "password" for case-insensitive match' do
+          assert_status 200
+          expect(json_response_body[:data][:attributes][:action]).to eq('password')
+        end
+      end
+
+      context 'when a user exists without password and different email casing', document: false do
+        before { create(:user_no_password, email: 'TeSt@EmAiL.com', registration_completed_at: Time.now) }
+
+        let(:email) { 'test@email.com' }
+
+        example_request 'Returns "confirm" for case-insensitive match' do
+          assert_status 200
+          expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+        end
+      end
     end
 
     post 'web_api/v1/users' do
