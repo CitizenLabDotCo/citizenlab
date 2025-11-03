@@ -5,8 +5,6 @@ import { IUser } from 'api/users/types';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
-import { getAndSetToken } from '../sign_in_out/signIn';
-
 import { CreateEmailOnlyAccountProperties } from './types';
 
 const triggerCreateEmailOnlyAccount = (
@@ -42,7 +40,6 @@ export default async function createEmailOnlyAccount({
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (response.data) {
-    await getAndSetToken({ email });
     invalidateQueryCache();
     return 'account_created_successfully';
   }
