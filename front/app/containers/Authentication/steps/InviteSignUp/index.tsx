@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { Parameters as CreateAccountParameters } from 'api/authentication/createAccountFromInvite';
+import { Parameters as CreateAccountFromInviteParameters } from 'api/authentication/createAccountFromInvite';
 
 import useLocale from 'hooks/useLocale';
 
@@ -38,7 +38,7 @@ interface Props {
   state: State;
   loading: boolean;
   setError: SetError;
-  onSubmit: (parameters: CreateAccountParameters) => void;
+  onSubmit: (parameters: CreateAccountFromInviteParameters) => void;
 }
 
 const InviteSignUp = ({ state, loading, setError, onSubmit }: Props) => {
