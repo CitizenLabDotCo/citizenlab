@@ -58,10 +58,18 @@ const IframeMultiloc = ({
             aspectRatio={aspectRatio}
             customAspectRatio={customAspectRatio}
           >
-            <iframe {...iframeProps} height="100%" />
+            <iframe
+              referrerPolicy="strict-origin-when-cross-origin"
+              {...iframeProps}
+              height="100%"
+            />
           </AspectRatioContainer>
         ) : (
-          <iframe {...iframeProps} height={responsiveHeight} />
+          <iframe
+            referrerPolicy="strict-origin-when-cross-origin"
+            {...iframeProps}
+            height={responsiveHeight}
+          />
         ))}
     </Box>
   );
