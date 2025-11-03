@@ -241,6 +241,7 @@ function updateProfile(
   firstName: string,
   lastName: string,
   password: string,
+  id: string,
   jwt: string
 ) {
   return cy.request({
@@ -249,7 +250,7 @@ function updateProfile(
       Authorization: `Bearer ${jwt}`,
     },
     method: 'PATCH',
-    url: 'web_api/v1/users',
+    url: `web_api/v1/users/${id}`,
     body: {
       user: {
         first_name: firstName,
@@ -266,12 +267,13 @@ function apiSignup(
   email: string,
   password: string
 ) {
-  return emailSignup(email).then(() => {
+  return emailSignup(email).then((response) => {
+    const id = response.body.data.id;
     return emailConfirmation(email).then((emailConfirmationResponse) => {
       const jwt =
         emailConfirmationResponse.body.data.attributes.auth_token.token;
 
-      return updateProfile(firstName, lastName, password, jwt);
+      return updateProfile(firstName, lastName, password, id, jwt);
     });
   });
 }
