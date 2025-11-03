@@ -138,7 +138,7 @@ resource 'Users' do
         }
         AppConfiguration.instance.update!(settings: settings)
         allow(RequestConfirmationCodeJob).to receive(:perform_now)
-          SettingsService.new.activate_feature! 'user_confirmation'
+        SettingsService.new.activate_feature! 'user_confirmation'
       end
 
       with_options scope: 'user' do
@@ -190,9 +190,9 @@ resource 'Users' do
               existing_user.confirm!
 
               do_request
-            assert_status 422
-            expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken')
-            expect(existing_user.confirmation_required?).to be(false)
+              assert_status 422
+              expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken')
+              expect(existing_user.confirmation_required?).to be(false)
             end
           end
         end

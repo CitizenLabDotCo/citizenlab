@@ -93,7 +93,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def permitted_attributes_for_create
-    [:email, :locale]
+    %i[email locale]
   end
 
   def permitted_attributes_for_update
