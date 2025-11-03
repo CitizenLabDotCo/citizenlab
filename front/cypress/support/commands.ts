@@ -238,11 +238,9 @@ function emailConfirmation(email: string) {
 }
 
 function updateProfile(
-  firstName: string,
-  lastName: string,
-  password: string,
   id: string,
-  jwt: string
+  jwt: string,
+  attributes: Record<string, any>
 ) {
   return cy.request({
     headers: {
@@ -252,18 +250,14 @@ function updateProfile(
     method: 'PATCH',
     url: `web_api/v1/users/${id}`,
     body: {
-      user: {
-        first_name: firstName,
-        last_name: lastName,
-        password: password,
-      },
+      user: attributes,
     },
   });
 }
 
 function apiSignup(
-  firstName: string,
-  lastName: string,
+  first_name: string,
+  last_name: string,
   email: string,
   password: string
 ) {
@@ -273,7 +267,11 @@ function apiSignup(
       const jwt =
         emailConfirmationResponse.body.data.attributes.auth_token.token;
 
-      return updateProfile(firstName, lastName, password, id, jwt);
+      return updateProfile(id, jwt, {
+        first_name,
+        last_name,
+        password,
+      });
     });
   });
 }
@@ -292,26 +290,12 @@ function apiCreateAdmin(
   IMPORTANT: at the time of writing, this does not increase additional_admins_number in appConfig correctly,
   so it's important to remove admins after creating them in order to not influence other tests.
   */
-  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
-    const adminJwt = response.body.jwt;
-
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
-      },
-      method: 'POST',
-      url: 'web_api/v1/users',
-      body: {
-        user: {
-          email,
-          password,
-          locale: 'en',
-          first_name: firstName,
-          last_name: lastName,
-          roles: [{ type: 'admin' }],
-        },
-      },
+  return cy.apiSignup(firstName, lastName, email, password).then((response) => {
+    return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+      const adminJwt = response.body.jwt;
+      return updateProfile(response.body.data.id, adminJwt, {
+        roles: [{ type: 'admin' }],
+      });
     });
   });
 }
