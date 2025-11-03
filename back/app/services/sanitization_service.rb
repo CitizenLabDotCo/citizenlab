@@ -135,7 +135,7 @@ class SanitizationService
       },
       video: {
         tags: %w[iframe],
-        attributes: %w[class frameborder allowfullscreen src data-blot-formatter-unclickable-bound width referrerpolicy height data-align style]
+        attributes: %w[class frameborder allowfullscreen src data-blot-formatter-unclickable-bound width height data-align style]
       },
       mention: {
         tags: %w[span],
@@ -158,16 +158,7 @@ class SanitizationService
     end
 
     def allowed_node?(node)
-      if node.name == 'iframe'
-        return false unless iframe_allowed? && UrlValidationService.new.video_whitelisted?(node['src'])
-
-        # Add referrerpolicy for YouTube embeds if missing
-        if youtube_embed?(node['src']) && !node['referrerpolicy']
-          node['referrerpolicy'] = 'strict-origin-when-cross-origin'
-        end
-
-        return true
-      end
+      return iframe_allowed? && UrlValidationService.new.video_whitelisted?(node['src']) if node.name == 'iframe'
 
       ensure_nofollow(node) if node.name == 'a'
       tags.include? node.name
@@ -177,10 +168,6 @@ class SanitizationService
 
     def iframe_allowed?
       tags.include? 'iframe'
-    end
-
-    def youtube_embed?(src)
-      src && (src.include?('youtube.com'))
     end
 
     def ensure_nofollow(node)
