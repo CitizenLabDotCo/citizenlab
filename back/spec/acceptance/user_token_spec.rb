@@ -15,7 +15,7 @@ resource 'User Token' do
       parameter :remember_me, required: false
     end
 
-    context 'when a password is used' do
+    context 'when user is confirmed' do
       let(:email) { 'test@email.com' }
       let(:password) { '12345678' }
       let(:remember_me) { false }
@@ -24,6 +24,7 @@ resource 'User Token' do
 
       before do
         allow(Time).to receive(:now).and_return(Time.now)
+        SettingsService.new.activate_feature! 'user_confirmation'
       end
 
       example_request 'Create JWT token creates expected payload' do
@@ -139,6 +140,23 @@ resource 'User Token' do
       end
     end
 
+    context 'when the user is unconfirmed' do
+      let(:email) { 'test@email.com' }
+      let(:password) { '12345678' }
+      let(:remember_me) { false }
+
+      let!(:user_with_confirmation) { create(:user, email: email, password: password) }
+
+      before do
+        allow(Time).to receive(:now).and_return(Time.now)
+        SettingsService.new.activate_feature! 'user_confirmation'
+      end
+
+      example_request '[error] no JWT token is returned' do
+        assert_status 404
+      end
+    end
+
     context 'when the user is an invited user' do
       let(:email) { 'test@email.com' }
       let(:password) { '12345678' }
@@ -160,41 +178,8 @@ resource 'User Token' do
         SettingsService.new.activate_feature! 'user_confirmation'
       end
 
-      context 'when the user has no password set' do
-        context 'when confirmation is still required' do
-          before do
-            create(:user_no_password, email: email)
-            allow(Time).to receive(:now).and_return(Time.now)
-          end
-
-          example_request 'create a JWT token with 1 day expiration' do
-            assert_status 201
-
-            jwt = JWT.decode(json_response_body[:jwt], nil, false).first
-            expect(jwt['exp']).to eq((Time.now + 1.day).to_i)
-          end
-        end
-
-        context 'when email has already been confirmed' do
-          before do
-            user = create(:user_no_password, email: email)
-            user.confirm!
-          end
-
-          example_request 'no JWT token is returned' do
-            assert_status 404
-          end
-        end
-      end
-
-      context 'when the user has a password set and confirmation is required' do
-        before do
-          create(:user_with_confirmation, email: email, password: 'monkeynuts123')
-        end
-
-        example_request 'no JWT token is returned' do
-          expect(status).to eq(404)
-        end
+      example_request '[error] no JWT token is returned' do
+        assert_status 404
       end
     end
   end
