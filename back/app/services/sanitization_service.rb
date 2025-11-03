@@ -180,7 +180,7 @@ class SanitizationService
     end
 
     def youtube_embed?(src)
-      src && (src.include?('youtube.com/embed') || src.include?('youtube-nocookie.com/embed'))
+      src && (src.include?('youtube.com'))
     end
 
     def ensure_nofollow(node)
