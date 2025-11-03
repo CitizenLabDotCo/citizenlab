@@ -4,7 +4,7 @@ PublicApi::Engine.routes.draw do
   # Legacy API endpoints
   namespace :v1 do
     post 'authenticate' => 'api_token#create'
-    resources :ideas, only: %i[index show create update]
+    resources :ideas, only: %i[index show]
     resources :projects, only: %i[index show] do
       resources :phases, only: %i[index show], shallow: true
     end
@@ -18,6 +18,7 @@ PublicApi::Engine.routes.draw do
     end
 
     resources :files, concerns: :deleted_items
+    resources :ideas, only: %i[index show create update], concerns: :deleted_items
 
     with_options only: %i[index show], concerns: :deleted_items do |route_mapper|
       route_mapper.resources :comments
@@ -40,9 +41,6 @@ PublicApi::Engine.routes.draw do
         resources :phases, only: %i[index]
       end
     end
-
-    # Ideas with create and update actions (separate from the with_options block)
-    resources :ideas, only: %i[index show create update], concerns: :deleted_items
 
     # Association endpoints
     resources :idea_phases, only: %i[index]

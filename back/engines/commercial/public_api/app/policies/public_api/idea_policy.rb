@@ -21,13 +21,5 @@ module PublicApi
       # We base this on the same rules a non-authenticated user
       ::IdeaPolicy.new(nil, record).show? && record.published?
     end
-
-    def create?
-      ::IdeaPolicy.new(user, record).create?
-    end
-
-    def update?
-      ::IdeaPolicy.new(user, record).update?
-    end
   end
 end

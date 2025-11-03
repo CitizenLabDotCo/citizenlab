@@ -236,9 +236,9 @@ resource 'Posts' do
   end
 
   put '/api/v2/ideas/:idea_id' do
-    route_summary 'Update an idea'
+    route_summary 'Update a post'
     route_description <<~DESC.squish
-      Update an existing published idea. Only certain fields can be updated and the idea 
+      Update an existing post. Only certain fields can be updated and the post
       must be in a state that allows modifications.
     DESC
     include_context 'common_auth'
@@ -247,7 +247,6 @@ resource 'Posts' do
     parameter :idea_id, 'The unique ID of the idea to update', type: 'string', required: true
 
     with_options scope: :idea do
-      parameter :project_id, 'The unique ID of the project to move the post to', type: 'string', required: false
       parameter :title_multiloc, 'Updated post title in multiple languages', type: 'object', required: false
       parameter :body_multiloc, 'Updated post description in multiple languages', type: 'object', required: false
       parameter :publication_status, 'The publication status of the post (draft, submitted, published)', type: 'string', required: false
@@ -307,6 +306,18 @@ resource 'Posts' do
 
         assert_status 200
         expect(json_response_body[:idea][:title]).to eq 'Partially Updated Title'
+      end
+    end
+
+    context 'when updating the project_id' do
+      let(:other_project) { create(:project) }
+
+      example 'Update idea with project_id has no effect' do
+        original_project_id = @existing_idea.project_id
+        do_request(idea: { project_id: other_project.id })
+
+        assert_status 200
+        expect(json_response_body[:idea][:project_id]).to eq(original_project_id)
       end
     end
 
