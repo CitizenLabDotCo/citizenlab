@@ -183,8 +183,20 @@ resource 'User Token' do
         SettingsService.new.activate_feature! 'user_confirmation'
       end
 
-      example_request '[error] no JWT token is returned' do
-        assert_status 404
+      context 'when user has password' do
+        let!(:user) { create(:user, email: email, password: password) }
+
+        example_request '[error] no JWT token is returned' do
+          assert_status 404
+        end
+      end
+
+      context 'when user has no password' do
+        let!(:user) { create(:user_no_password, email: email) }
+
+        example_request '[error] no JWT token is returned' do
+          assert_status 404
+        end
       end
     end
   end
