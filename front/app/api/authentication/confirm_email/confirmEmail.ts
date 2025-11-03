@@ -3,6 +3,7 @@ import meKeys from 'api/me/keys';
 import onboardingCampaignsKeys from 'api/onboarding_campaigns/keys';
 import { HighestRole } from 'api/users/types';
 
+import { setJwt } from 'utils/auth/jwt';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
@@ -43,7 +44,7 @@ export default async function confirmEmail(confirmation: IConfirmation) {
       body: bodyData,
     });
 
-    // TODO set token
+    setJwt(res.data.attributes.auth_token.token, false);
 
     queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
     queryClient.invalidateQueries({ queryKey: meKeys.all() });
