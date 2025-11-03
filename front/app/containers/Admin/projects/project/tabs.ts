@@ -18,7 +18,7 @@ export type FeatureFlags = {
 
 export const getTabs = (
   phase: IPhaseData,
-  { surveys_enabled, typeform_enabled }: FeatureFlags,
+  { surveys_enabled, typeform_enabled, report_builder_enabled }: FeatureFlags,
   formatMessage: FormatMessage
 ): IPhaseTab[] => {
   return [
@@ -83,15 +83,14 @@ export const getTabs = (
       url: 'volunteering',
       name: 'volunteering',
     },
-    // Report tab moved to Insights sub-tab
-    // phase.attributes.participation_method === 'information' && {
-    //   label: formatMessage(messages.reportTab),
-    //   url: 'report',
-    //   name: 'report',
-    //   disabledTooltipText: report_builder_enabled
-    //     ? undefined
-    //     : formatMessage(messages.lockedTooltip),
-    // },
+    phase.attributes.participation_method === 'information' && {
+      label: formatMessage(messages.reportTab),
+      url: 'report',
+      name: 'report',
+      disabledTooltipText: report_builder_enabled
+        ? undefined
+        : formatMessage(messages.lockedTooltip),
+    },
     {
       label: formatMessage(messages.insightsTab),
       url: 'insights',

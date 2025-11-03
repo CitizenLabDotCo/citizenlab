@@ -71,9 +71,6 @@ const AdminCustomMapConfigComponent = lazy(
 const AdminProjectAnalysis = lazy(() => import('./project/analysis'));
 const ReportTab = lazy(() => import('./project/information/ReportTab'));
 const AdminPhaseInsights = lazy(() => import('./project/insights'));
-const AdminPhaseInsightsOverview = lazy(
-  () => import('./project/insights/Overview')
-);
 
 const AdminProjectProposals = lazy(() => import('./project/proposals'));
 
@@ -568,24 +565,6 @@ const createAdminProjectsRoutes = () => {
                     <AdminPhaseInsights />
                   </PageLoading>
                 ),
-                children: [
-                  {
-                    index: true,
-                    element: (
-                      <PageLoading>
-                        <AdminPhaseInsightsOverview />
-                      </PageLoading>
-                    ),
-                  },
-                  {
-                    path: 'report',
-                    element: (
-                      <PageLoading>
-                        <ReportTab />
-                      </PageLoading>
-                    ),
-                  },
-                ],
               },
             ],
           },
