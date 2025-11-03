@@ -1,6 +1,7 @@
 import requirementsKeys from 'api/authentication/authentication_requirements/keys';
 import meKeys from 'api/me/keys';
 import onboardingCampaignsKeys from 'api/onboarding_campaigns/keys';
+import { HighestRole } from 'api/users/types';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 import { queryClient } from 'utils/cl-react-query/queryClient';
@@ -12,17 +13,38 @@ type IConfirmation = {
   code: string;
 };
 
+type Response = {
+  data: {
+    type: 'create';
+    attributes: {
+      auth_token: {
+        payload: {
+          exp: number;
+          cluster: string;
+          highest_role: HighestRole;
+          sub: string;
+          tenant: string;
+        };
+        token: string;
+      };
+    };
+  };
+};
+
 export default async function confirmEmail(confirmation: IConfirmation) {
   const bodyData = {
     confirmation,
   };
 
   try {
-    await fetcher({
+    const res = await fetcher<Response>({
       path: `/${confirmationApiEndpoint}`,
       action: 'post',
       body: bodyData,
     });
+
+    // TODO set token
+
     queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
     queryClient.invalidateQueries({ queryKey: meKeys.all() });
     queryClient.invalidateQueries({

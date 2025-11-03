@@ -24,17 +24,19 @@ export type OnboardingType = {
   topics_and_areas?: RequirementStatus;
 };
 
+export type HighestRole =
+  | 'super_admin'
+  | 'admin'
+  | 'project_folder_moderator'
+  | 'project_moderator'
+  | 'user';
+
 export interface IUserAttributes {
   first_name?: string | null;
   last_name?: string | null;
   slug: string;
   locale: SupportedLocale;
-  highest_role:
-    | 'super_admin'
-    | 'admin'
-    | 'project_folder_moderator'
-    | 'project_moderator'
-    | 'user';
+  highest_role: HighestRole;
   bio_multiloc: Multiloc;
   block_end_at?: string;
   block_reason?: string;
