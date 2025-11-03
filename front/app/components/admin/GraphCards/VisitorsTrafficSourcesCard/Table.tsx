@@ -29,6 +29,7 @@ type Props = {
 };
 
 const PAGE_SIZE = 10;
+const MAX_REFERRER_LENGTH = 70;
 
 const TableComponent = ({ tableData, onOpenModal }: Props) => {
   const [pageNumber, setPageNumber] = useState<number>(1);
@@ -75,9 +76,10 @@ const TableComponent = ({ tableData, onOpenModal }: Props) => {
                   fontSize="s"
                   wordBreak="break-word"
                 >
-                  ({row.referrer_type}) {truncate(row.referrer, 70)}
+                  ({row.referrer_type}){' '}
+                  {truncate(row.referrer, MAX_REFERRER_LENGTH)}
                 </Text>
-                {row.referrer.length > 70 && (
+                {row.referrer.length > MAX_REFERRER_LENGTH && (
                   <IconTooltip
                     content={
                       <Text wordBreak="break-word" color="white" fontSize="s">
