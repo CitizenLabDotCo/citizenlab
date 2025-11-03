@@ -93,9 +93,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def permitted_attributes_for_create
-    permitted_attributes_for_update.tap do |attributes|
-      attributes.delete(:avatar) unless AppConfiguration.instance.feature_activated?('user_avatars')
-    end
+    [:email, :locale]
   end
 
   def permitted_attributes_for_update

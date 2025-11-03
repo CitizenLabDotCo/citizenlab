@@ -131,10 +131,8 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def create
-    binding.pry
-
     @user = User.new
-    saved = UserService.upsert_in_web_api(@user, email: permitted_attributes(@user)[:email]) do
+    saved = UserService.upsert_in_web_api(@user, permitted_attributes(@user)) do
       authorize @user
     end
     if saved
