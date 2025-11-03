@@ -12,6 +12,8 @@ import {
   getResponsiveHeight,
 } from 'components/admin/ContentBuilder/Widgets/IframeMultiloc/utils';
 
+import { isYouTubeEmbedLink } from 'utils/urlUtils';
+
 type IframeMultilocProps = Pick<
   IframeProps,
   | 'url'
@@ -68,14 +70,22 @@ const IframeMultiloc = ({
             customAspectRatio={customAspectRatio}
           >
             <iframe
-              referrerPolicy="strict-origin-when-cross-origin"
+              referrerPolicy={
+                isYouTubeEmbedLink(iframeProps.src)
+                  ? 'strict-origin-when-cross-origin'
+                  : undefined
+              }
               {...iframeProps}
               height="100%"
             />
           </AspectRatioContainer>
         ) : (
           <iframe
-            referrerPolicy="strict-origin-when-cross-origin"
+            referrerPolicy={
+              isYouTubeEmbedLink(iframeProps.src)
+                ? 'strict-origin-when-cross-origin'
+                : undefined
+            }
             {...iframeProps}
             height={responsiveHeight}
           />
