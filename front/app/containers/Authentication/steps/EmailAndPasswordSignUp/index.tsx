@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { Parameters as CreateAccountParameters } from 'api/authentication/sign_up/createAccountWithPassword';
+import { Parameters as CreateAccountParameters } from 'api/authentication/createAccountFromInvite';
 
 import useLocale from 'hooks/useLocale';
 
@@ -72,6 +72,10 @@ const EmailAndPasswordSignUp = ({
     trackEventByName(tracks.signUpEmailPasswordStepEntered);
   }, []);
 
+  const token = state.token;
+
+  if (!token) return null;
+
   const handleSubmit = async ({
     first_name,
     last_name,
@@ -85,8 +89,7 @@ const EmailAndPasswordSignUp = ({
         email,
         password,
         locale,
-        isInvitation: !!state.token,
-        token: state.token,
+        token,
       });
       setProfanityApiError(false);
     } catch (e) {

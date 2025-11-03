@@ -1,7 +1,7 @@
+import createAccountFromInvite, {
+  Parameters as CreateAccountFromInviteParameters,
+} from 'api/authentication/createAccountFromInvite';
 import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
-import createAccountWithPassword, {
-  Parameters as CreateAccountParameters,
-} from 'api/authentication/sign_up/createAccountWithPassword';
 
 import { trackEventByName } from 'utils/analytics';
 
@@ -26,9 +26,9 @@ export const inviteFlow = (
       CLOSE: () => {
         setCurrentStep('closed');
       },
-      SUBMIT: async (params: CreateAccountParameters) => {
+      SUBMIT: async (params: CreateAccountFromInviteParameters) => {
         try {
-          await createAccountWithPassword(params);
+          await createAccountFromInvite(params);
 
           const { requirements } = await getRequirements();
           const authenticationData = getAuthenticationData();
