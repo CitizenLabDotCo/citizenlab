@@ -137,6 +137,8 @@ resource 'Users' do
           'minimum_length' => 6
         }
         AppConfiguration.instance.update!(settings: settings)
+        allow(RequestConfirmationCodeJob).to receive(:perform_now)
+          SettingsService.new.activate_feature! 'user_confirmation'
       end
 
       with_options scope: 'user' do
@@ -151,65 +153,58 @@ resource 'Users' do
       end
       ValidationErrorHelper.new.error_fields(self, User)
 
-      context 'light registration without a password' do
-        let(:email) { Faker::Internet.email }
-        let(:locale) { 'en' }
+      let(:email) { Faker::Internet.email }
+      let(:locale) { 'en' }
 
-        before do
-          allow(RequestConfirmationCodeJob).to receive(:perform_now)
-          SettingsService.new.activate_feature! 'user_confirmation'
+      describe 'create a user with no password' do
+        example_request 'User successfully created and requires confirmation' do
+          assert_status 201
+          user = User.order(:created_at).last
+          expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
+          expect(response_data.dig(:attributes, :confirmation_required)).to be(true)
         end
 
-        describe 'create a user with no password' do
-          example_request 'User successfully created and requires confirmation' do
-            assert_status 201
-            user = User.order(:created_at).last
-            expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
-            expect(response_data.dig(:attributes, :confirmation_required)).to be(true)
-          end
-
-          example_request 'Registration is not completed by default' do
-            assert_status 201
-            expect(response_data.dig(:attributes, :registration_completed_at)).to be_nil
-          end
+        example_request 'Registration is not completed by default' do
+          assert_status 201
+          expect(response_data.dig(:attributes, :registration_completed_at)).to be_nil
         end
+      end
 
-        describe 'Reusing an existing user with no password' do
-          context 'when there is an existing user that has no password' do
+      describe 'When there is an existing user' do
+        context 'when there is an existing user that has no password' do
+          example 'email taken error is returned and confirmation requirement is not reset' do
+            existing_user = create(:user_no_password, email: email)
+            existing_user.confirm!
+
+            do_request
+            assert_status 422
+            expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken')
+            expect(existing_user.confirmation_required?).to be(false)
+          end
+
+          context 'when the request tries to pass additional changed attributes', document: false do
+            let(:first_name) { Faker::Name.first_name }
+
             example 'email taken error is returned and confirmation requirement is not reset' do
               existing_user = create(:user_no_password, email: email)
               existing_user.confirm!
 
               do_request
-              assert_status 422
-              expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken')
-              expect(existing_user.confirmation_required?).to be(false)
-            end
-
-            context 'when the request tries to pass additional changed attributes', document: false do
-              let(:first_name) { Faker::Name.first_name }
-
-              example 'email taken error is returned and confirmation requirement is not reset' do
-                existing_user = create(:user_no_password, email: email)
-                existing_user.confirm!
-
-                do_request
-              assert_status 422
-              expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken')
-              expect(existing_user.confirmation_required?).to be(false)
-              end
+            assert_status 422
+            expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken')
+            expect(existing_user.confirmation_required?).to be(false)
             end
           end
+        end
 
-          context 'when there is an existing user WITH a password' do
-            example 'email taken error is returned and confirmation requirement is not reset' do
-              existing_user = create(:user, email: email, password: 'gravy123')
+        context 'when there is an existing user WITH a password' do
+          example 'email taken error is returned and confirmation requirement is not reset' do
+            existing_user = create(:user, email: email, password: 'gravy123')
 
-              do_request
-              assert_status 422
-              expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken')
-              expect(existing_user.confirmation_required?).to be(false)
-            end
+            do_request
+            assert_status 422
+            expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken')
+            expect(existing_user.confirmation_required?).to be(false)
           end
         end
       end
