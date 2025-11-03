@@ -27,10 +27,10 @@ import TextButton from './steps/_components/TextButton';
 import AccessDenied from './steps/AccessDenied';
 import BuiltInFields from './steps/BuiltInFields';
 import ChangeEmail from './steps/ChangeEmail';
-import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
 import EmailConfirmation from './steps/EmailConfirmation';
 import LightFlowStart from './steps/EmailFlowStart';
 import Invitation from './steps/Invitation';
+import InviteSignUp from './steps/InviteSignUp';
 import InviteTaken from './steps/InviteTaken';
 import Onboarding from './steps/Onboarding';
 import Password from './steps/Password';
@@ -182,7 +182,7 @@ const AuthModal = () => {
 
         {/* invite flow */}
         {currentStep === 'invite:email-password' && (
-          <EmailAndPasswordSignUp
+          <InviteSignUp
             state={state}
             loading={loading}
             setError={setError}

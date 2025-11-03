@@ -41,12 +41,7 @@ interface Props {
   onSubmit: (parameters: CreateAccountParameters) => void;
 }
 
-const EmailAndPasswordSignUp = ({
-  state,
-  loading,
-  setError,
-  onSubmit,
-}: Props) => {
+const InviteSignUp = ({ state, loading, setError, onSubmit }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const locale = useLocale();
   const { formatMessage } = useIntl();
@@ -197,4 +192,4 @@ const EmailAndPasswordSignUp = ({
   );
 };
 
-export default EmailAndPasswordSignUp;
+export default InviteSignUp;
