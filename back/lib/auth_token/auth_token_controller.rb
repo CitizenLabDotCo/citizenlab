@@ -14,10 +14,8 @@ module AuthToken
     private
 
     def authenticate
-      return if
-        entity.present? &&
-        entity.authenticate(auth_params[secret_param]) &&
-        !entity.confirmation_required?
+      return if entity.present? && entity.authenticate(auth_params[secret_param])
+      return if entity_class.respond_to?(:confirmation_required?) && !entity.confirmation_required?
 
       raise ActiveRecord::RecordNotFound
     end
