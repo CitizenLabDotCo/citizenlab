@@ -179,6 +179,10 @@ class SanitizationService
       tags.include? 'iframe'
     end
 
+    def youtube_embed?(src)
+      src && (src.include?('youtube.com/embed') || src.include?('youtube-nocookie.com/embed'))
+    end
+
     def ensure_nofollow(node)
       node.scrub!(:nofollow)
     end
