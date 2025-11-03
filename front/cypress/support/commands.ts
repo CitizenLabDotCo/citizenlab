@@ -208,12 +208,7 @@ function setConsentAndAdminLoginCookies() {
   cy.setAdminLoginCookie();
 }
 
-function emailSignup(
-  firstName: string,
-  lastName: string,
-  email: string,
-  password: string
-) {
+function emailSignup(email: string) {
   return cy.request({
     headers: {
       'Content-Type': 'application/json',
@@ -223,10 +218,7 @@ function emailSignup(
     body: {
       user: {
         email,
-        password,
         locale: 'en',
-        first_name: firstName,
-        last_name: lastName,
       },
     },
   });
@@ -245,21 +237,41 @@ function emailConfirmation(email: string) {
   });
 }
 
+function updateProfile(
+  firstName: string,
+  lastName: string,
+  password: string,
+  jwt: string
+) {
+  return cy.request({
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwt}`,
+    },
+    method: 'PATCH',
+    url: 'web_api/v1/users',
+    body: {
+      user: {
+        first_name: firstName,
+        last_name: lastName,
+        password: password,
+      },
+    },
+  });
+}
+
 function apiSignup(
   firstName: string,
   lastName: string,
   email: string,
   password: string
 ) {
-  let originalResponse: Cypress.Response<any>;
+  return emailSignup(email).then(() => {
+    return emailConfirmation(email).then((emailConfirmationResponse) => {
+      const jwt =
+        emailConfirmationResponse.body.data.attributes.auth_token.token;
 
-  return emailSignup(firstName, lastName, email, password).then((response) => {
-    originalResponse = response;
-
-    return emailConfirmation(email).then(() => {
-      return {
-        ...originalResponse,
-      };
+      return updateProfile(firstName, lastName, password, jwt);
     });
   });
 }
