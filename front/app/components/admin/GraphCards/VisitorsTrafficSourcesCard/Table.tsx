@@ -63,36 +63,30 @@ const TableComponent = ({ tableData, onOpenModal }: Props) => {
         <Tbody>
           {paginatedData.map((row, i) => (
             <Tr key={i}>
-              <Td background={colors.grey50}>
-                {row.referrer.length <= 70 ? (
-                  <Text
-                    m="0px"
-                    color="primary"
-                    fontSize="s"
-                    wordBreak="break-word"
-                  >
-                    ({row.referrer_type}) {row.referrer}
-                  </Text>
-                ) : (
-                  <>
-                    <Text
-                      m="0px"
-                      color="primary"
-                      fontSize="s"
-                      wordBreak="break-word"
-                    >
-                      ({row.referrer_type}) {truncate(row.referrer, 70)}
-                    </Text>{' '}
-                    <IconTooltip
-                      content={
-                        <Text wordBreak="break-word" color="white" fontSize="s">
-                          {row.referrer}
-                        </Text>
-                      }
-                      icon="info-outline"
-                      placement="bottom"
-                    />
-                  </>
+              <Td
+                background={colors.grey50}
+                display="flex"
+                gap="4px"
+                alignItems="center"
+              >
+                <Text
+                  m="0px"
+                  color="primary"
+                  fontSize="s"
+                  wordBreak="break-word"
+                >
+                  ({row.referrer_type}) {truncate(row.referrer, 70)}
+                </Text>
+                {row.referrer.length > 70 && (
+                  <IconTooltip
+                    content={
+                      <Text wordBreak="break-word" color="white" fontSize="s">
+                        {row.referrer}
+                      </Text>
+                    }
+                    icon="info-outline"
+                    placement="top"
+                  />
                 )}
               </Td>
               <Td>{row.visits}</Td>
