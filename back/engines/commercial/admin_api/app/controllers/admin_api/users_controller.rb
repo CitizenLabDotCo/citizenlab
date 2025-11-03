@@ -29,6 +29,12 @@ module AdminApi
       render json: @user
     end
 
+    def jwt_token
+      user = User.find(params[:id])
+      json = { jwt_token: UserService.jwt_token(user) }
+      render json: json
+    end
+
     def create
       user = UserService.create_in_admin_api(user_params, confirm_user?)
 
