@@ -150,7 +150,7 @@ resource 'User Token' do
       let(:password) { '12345678' }
       let(:remember_me) { false }
 
-      let!(:user_with_confirmation) { create(:user, email: email, password: password) }
+      let!(:user) { create(:user_with_confirmation, email: email, password: password) }
 
       before do
         allow(Time).to receive(:now).and_return(Time.now)
