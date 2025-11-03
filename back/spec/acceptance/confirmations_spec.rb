@@ -54,6 +54,15 @@ resource 'Confirmations' do
         ).exactly(1).times
       end
 
+      example "returns an auth token when passing the right code" do
+        do_request(confirmation: { email:, code: user.email_confirmation_code })
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response[:data][:attributes]).to have_key(:auth_token)
+        token = json_response[:data][:attributes][:auth_token][:token]
+        expect(token[0..2]).to eq 'eyJ' # JWTs start with 'eyJ'
+      end
+
       example 'returns an unprocessable entity status passing no code' do
         do_request(confirmation: { email:, code: nil })
         assert_status 422

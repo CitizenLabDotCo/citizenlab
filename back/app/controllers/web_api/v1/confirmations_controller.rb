@@ -11,7 +11,10 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     if result.success?
       SideFxUserService.new.after_update(user, user)
 
-      head :ok
+      payload = user.to_token_payload
+      auth_token = AuthToken::AuthToken.new payload: payload
+
+      render json: raw_json({ auth_token: })
     else
       render json: { errors: result.errors.details }, status: :unprocessable_entity
     end
