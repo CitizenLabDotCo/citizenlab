@@ -68,7 +68,7 @@ resource 'User', admin_api: true do
       expect(header['alg']).to be_present
       expect(payload).to include(
         'sub' => id,
-        'exp' => (freeze_time + 10.minutes).to_i
+        'exp' => (freeze_time + 30.minutes).to_i
       )
     end
   end

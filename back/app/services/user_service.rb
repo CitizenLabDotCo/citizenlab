@@ -66,7 +66,7 @@ class UserService
 
     def jwt_token(user)
       payload = user.to_token_payload
-      payload[:exp] = 10.minutes.from_now.to_i
+      payload[:exp] = 30.minutes.from_now.to_i
       AuthToken::AuthToken.new(payload:).token
     end
   end
