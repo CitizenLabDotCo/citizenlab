@@ -29,7 +29,6 @@ declare global {
       setLoginCookie: typeof setLoginCookie;
       apiSignup: typeof apiSignup;
       apiCreateAdmin: typeof apiCreateAdmin;
-      apiConfirmUser: typeof apiConfirmUser;
       apiUpdateCurrentUser: typeof apiUpdateCurrentUser;
       apiRemoveUser: typeof apiRemoveUser;
       apiGetUsersCount: typeof apiGetUsersCount;
@@ -276,10 +275,6 @@ function apiSignup(
   });
 }
 
-function apiConfirmUser(email: string) {
-  return emailConfirmation(email);
-}
-
 function apiCreateAdmin(
   firstName: string,
   lastName: string,
@@ -290,14 +285,18 @@ function apiCreateAdmin(
   IMPORTANT: at the time of writing, this does not increase additional_admins_number in appConfig correctly,
   so it's important to remove admins after creating them in order to not influence other tests.
   */
-  return cy.apiSignup(firstName, lastName, email, password).then((response) => {
-    return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
-      const adminJwt = response.body.jwt;
-      return updateProfile(response.body.data.id, adminJwt, {
-        roles: [{ type: 'admin' }],
-      });
+  return cy
+    .apiSignup(firstName, lastName, email, password)
+    .then((outerResponse) => {
+      return cy
+        .apiLogin('admin@govocal.com', 'democracy2.0')
+        .then((response) => {
+          const adminJwt = response.body.jwt;
+          return updateProfile(outerResponse.body.data.id, adminJwt, {
+            roles: [{ type: 'admin' }],
+          });
+        });
     });
-  });
 }
 
 function apiUpdateCurrentUser(attrs: IUserUpdate) {
@@ -2114,7 +2113,6 @@ Cypress.Commands.add('signUp', signUp);
 Cypress.Commands.add('apiLogin', apiLogin);
 Cypress.Commands.add('apiSignup', apiSignup);
 Cypress.Commands.add('apiCreateAdmin', apiCreateAdmin);
-Cypress.Commands.add('apiConfirmUser', apiConfirmUser);
 Cypress.Commands.add('apiUpdateCurrentUser', apiUpdateCurrentUser);
 Cypress.Commands.add('apiRemoveUser', apiRemoveUser);
 Cypress.Commands.add('apiGetUsersCount', apiGetUsersCount);
