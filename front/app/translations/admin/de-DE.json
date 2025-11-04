@@ -3293,7 +3293,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "Letzte 30 Tage:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "Letzte 7 Tage:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "Seitenaufrufe pro Besuch",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.visitDuration": "Dauer des Besuchs",
+  "app.modules.commercial.analytics.admin.components.VisitorsCard.visitDuration": "Besuchsdauer",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitors": "Besucher*innen",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitorsStatTooltipMessage": "\"Besucher*innen\" ist die Anzahl der einzelnen Besucher*innen. Wenn dieselbe Person die Plattform mehrmals besucht, wird sie einmal gezählt.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visits": "Besuche",
