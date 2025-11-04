@@ -2032,6 +2032,7 @@
   "app.containers.VoteControl.voteErrorTitle": "Coś poszło nie tak",
   "app.containers.admin.ContentBuilder.default": "domyślny",
   "app.containers.admin.ContentBuilder.folderFiles": "Pliki folderów",
+  "app.containers.admin.ContentBuilder.folderTitle": "Tytuł folderu",
   "app.containers.admin.ContentBuilder.imageTextCards": "Karty graficzne i tekstowe",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Informacje i akordeony",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolumna",
