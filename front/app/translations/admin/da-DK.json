@@ -1808,7 +1808,7 @@
   "app.containers.AdminPage.FoldersEdit.draftStatus": "Udkast",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabel": "Tilføj filer til denne mappe",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabelTooltip": "Filerne bør ikke være større end 50 Mb. Tilføjede filer vil blive vist på mappesiden.",
-  "app.containers.AdminPage.FoldersEdit.folderDescriptions2": "Mappe Beskrivelse",
+  "app.containers.AdminPage.FoldersEdit.folderDescriptions2": "Mappebeskrivelse",
   "app.containers.AdminPage.FoldersEdit.folderEmptyGoBackToAdd": "Der er ingen projekter i denne mappe. Gå tilbage til hovedfanen Projekter for at oprette og tilføje projekter.",
   "app.containers.AdminPage.FoldersEdit.folderName": "Mappenavn",
   "app.containers.AdminPage.FoldersEdit.headerImageInputLabel": "Overskriftsbillede",
