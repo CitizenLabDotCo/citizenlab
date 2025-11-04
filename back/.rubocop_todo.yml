@@ -201,6 +201,7 @@ RSpec/DescribeClass:
     - 'spec/tasks/single_use/migrate_homepage_craftjson_task_spec.ignore.rb'
     - 'spec/tasks/single_use/rename_gv_profile_spec.ignore.rb'
     - 'spec/tasks/single_use/substitute_cl_gv_task_spec.ignore.rb'
+    - 'spec/tasks/single_use/custom_field_orderings_spec.ignore.rb'
 
 # Offense count: 149
 # This cop supports safe autocorrection (--autocorrect).
@@ -337,6 +338,7 @@ RSpec/SpecFilePathSuffix:
     - 'spec/tasks/single_use/move_ideation_custom_forms_to_project_spec.ignore.rb'
     - 'spec/tasks/single_use/rename_gv_profile_spec.ignore.rb'
     - 'spec/tasks/single_use/substitute_cl_gv_task_spec.ignore.rb'
+    - 'spec/tasks/single_use/custom_field_orderings_spec.ignore.rb'
 
 # Offense count: 77
 RSpec/StubbedMock:
