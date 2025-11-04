@@ -114,5 +114,11 @@ resource 'Code Resends' do
       do_request(email: 'wrong@email.com')
       expect(status).to eq 404
     end
+
+    example 'increments the email_confirmation_code_reset_count on the user' do
+      expect {
+        do_request(email: @user.email)
+      }.to change { @user.reload.email_confirmation_code_reset_count }.by(1)
+    end
   end
 end
