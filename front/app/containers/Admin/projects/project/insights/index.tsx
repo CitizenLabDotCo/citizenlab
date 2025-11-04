@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Title, Text } from 'component-library';
+import { Box, Title, Button } from 'component-library';
 import { useParams } from 'react-router-dom';
 
 import usePhase from 'api/phases/usePhase';
@@ -20,18 +20,60 @@ const AdminPhaseInsights = () => {
   }
 
   return (
-    <Box>
-      <Title variant="h3" mb="8px">
-        <FormattedMessage {...messages.overviewTitle} />
-      </Title>
-      <Text color="textSecondary" mb="32px">
-        <FormattedMessage {...messages.overviewDescription} />
-      </Text>
-
-      <Box display="flex" flexDirection="column" gap="32px">
-        <ParticipationMetrics phase={phase.data} />
-        <DemographicsWidget phase={phase.data} />
+    <Box
+      background="white"
+      borderBottom="none"
+      display="flex"
+      flexDirection="column"
+      alignItems="flex-start"
+    >
+      <Box
+        display="flex"
+        w="100%"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <Title variant="h2" as="h1" color="textPrimary" m="0px">
+          <FormattedMessage {...messages.insights} />
+        </Title>
+        <Box display="flex" gap="8px">
+          <Button
+            buttonStyle="secondary"
+            icon="edit"
+            onClick={() => {
+              // TODO: Implement generate report
+            }}
+          >
+            <FormattedMessage {...messages.generateReport} />
+          </Button>
+          <Button
+            buttonStyle="primary"
+            icon="download"
+            onClick={() => {
+              // TODO: Implement download
+            }}
+          >
+            <FormattedMessage {...messages.download} />
+          </Button>
+        </Box>
       </Box>
+
+      <Box display="flex" flexDirection="column" gap="16px" pt="16px">
+        <Box display="flex" justifyContent="space-between">
+          <ParticipationMetrics phase={phase.data} />
+          <DemographicsWidget phase={phase.data} />
+        </Box>
+      </Box>
+      <Button
+        buttonStyle="text"
+        icon="arrow-right"
+        iconPos="right"
+        onClick={() => {
+          // TODO: Navigate to full report
+        }}
+      >
+        <FormattedMessage {...messages.viewFullReport} />
+      </Button>
     </Box>
   );
 };
