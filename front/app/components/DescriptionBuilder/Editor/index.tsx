@@ -20,6 +20,7 @@ import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import FolderFiles from 'components/DescriptionBuilder/Widgets/FolderFiles';
+import FolderTitle from 'components/DescriptionBuilder/Widgets/FolderTitle';
 
 import InfoWithAccordions from '.././Widgets/InfoWithAccordions';
 
@@ -57,6 +58,7 @@ const Editor: React.FC<EditorProps> = ({
         Spotlight,
         Selection,
         FolderFiles,
+        FolderTitle,
       }}
       isPreview={isPreview}
       onNodesChange={onNodesChange}

@@ -28,6 +28,9 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import FolderFiles, {
   folderFilesTitle,
 } from 'components/DescriptionBuilder/Widgets/FolderFiles';
+import FolderTitle, {
+  folderTitleTitle,
+} from 'components/DescriptionBuilder/Widgets/FolderTitle';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
 
 import {
@@ -66,6 +69,12 @@ const FolderDescriptionBuilderToolbox = ({
     "
     >
       <Section>
+        <DraggableElement
+          id="e2e-draggable-folder-title"
+          component={<FolderTitle folderId={folderId} />}
+          icon="text"
+          label={formatMessage(folderTitleTitle)}
+        />
         <DraggableElement
           id="e2e-draggable-published"
           component={
