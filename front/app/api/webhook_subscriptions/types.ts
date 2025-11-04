@@ -73,5 +73,7 @@ export const WEBHOOK_EVENTS = [
   'idea.created',
   'idea.published',
   'idea.changed',
+  'idea.deleted',
   'user.created',
+  'user.deleted',
 ] as const;

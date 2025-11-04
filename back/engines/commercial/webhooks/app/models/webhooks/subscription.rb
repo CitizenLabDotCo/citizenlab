@@ -39,7 +39,9 @@ module Webhooks
       'idea.created',
       'idea.published',
       'idea.changed',
-      'user.created'
+      'idea.deleted',
+      'user.created',
+      'user.deleted'
     ].freeze
 
     validates :name, presence: true
