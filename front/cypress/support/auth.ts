@@ -1,14 +1,11 @@
 import { randomEmail, randomString } from './commands';
 
-export const signUp = (
-  cy: Cypress.Chainable,
-  email: string = randomEmail()
-) => {
-  // Enter email
+const enterEmail = (cy: Cypress.Chainable, email: string = randomEmail()) => {
   cy.dataCy('email-flow-start').get('input[type="email"]').type(email);
   cy.dataCy('email-flow-start-continue-button').click();
+};
 
-  // Accept terms and privacy policy
+const acceptPolicies = (cy: Cypress.Chainable) => {
   cy.get('[data-testid="termsAndConditionsAccepted"] .e2e-checkbox')
     .click()
     .should('have.class', 'checked');
@@ -18,16 +15,26 @@ export const signUp = (
   cy.get('#e2e-policies-continue').click();
 };
 
+export const confirmEmail = (cy: Cypress.Chainable, email: string) => {
+  cy.get('#code').should('exist');
+  cy.get('#code').click().type('1234');
+  cy.get('#e2e-verify-email-button > button').click({ force: true });
+};
+
+export const signUp = (
+  cy: Cypress.Chainable,
+  email: string = randomEmail()
+) => {
+  enterEmail(cy, email);
+  acceptPolicies(cy);
+};
+
 export const signUpEmailConformation = (
   cy: Cypress.Chainable,
   email: string = randomEmail()
 ) => {
   signUp(cy, email);
-
-  // Confirm email
-  cy.get('#code').should('exist');
-  cy.get('#code').click().type('1234');
-  cy.get('#e2e-verify-email-button > button').click({ force: true });
+  confirmEmail(cy, email);
 };
 
 export const enterUserInfo = (

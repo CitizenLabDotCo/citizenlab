@@ -27,7 +27,7 @@ interface Props {
   loading: boolean;
   setError: SetError;
   onConfirm: (email: string, code: string) => void;
-  onChangeEmail?: () => void;
+  onChangeEmail: () => void;
 }
 
 interface FormValues {
@@ -112,7 +112,7 @@ const EmailConfirmation = ({
 
   const handleChangeEmail = (e: FormEvent) => {
     e.preventDefault();
-    onChangeEmail && onChangeEmail();
+    onChangeEmail();
   };
 
   return (
@@ -144,7 +144,7 @@ const EmailConfirmation = ({
           <FooterNotes
             codeResent={codeResent}
             onResendCode={handleResendCode}
-            onChangeEmail={onChangeEmail ? handleChangeEmail : undefined}
+            onChangeEmail={handleChangeEmail}
           />
         </Box>
       </form>

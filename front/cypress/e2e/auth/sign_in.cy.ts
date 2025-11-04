@@ -1,5 +1,5 @@
 import { logIn } from '../../support/auth';
-import { randomString, randomEmail } from '../../support/commands';
+import { randomString } from '../../support/commands';
 
 const adminEmail = 'admin@govocal.com';
 

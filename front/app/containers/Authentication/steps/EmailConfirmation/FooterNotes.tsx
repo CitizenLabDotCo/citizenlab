@@ -44,7 +44,7 @@ const FooterNoteSuccessMessageIcon = styled(Icon)`
 interface Props {
   codeResent: boolean;
   onResendCode: (e: FormEvent) => void;
-  onChangeEmail?: (e: FormEvent) => void;
+  onChangeEmail: (e: FormEvent) => void;
 }
 
 const FooterNotes = ({ codeResent, onResendCode, onChangeEmail }: Props) => (
@@ -63,14 +63,12 @@ const FooterNotes = ({ codeResent, onResendCode, onChangeEmail }: Props) => (
         </FooterNoteLink>
       )}
     </FooterNote>
-    {onChangeEmail && (
-      <FooterNote>
-        <FormattedMessage {...messages.wrongEmail} />
-        <FooterNoteLink onClick={onChangeEmail} id="e2e-go-to-change-email">
-          <FormattedMessage {...messages.changeYourEmail} />
-        </FooterNoteLink>
-      </FooterNote>
-    )}
+    <FooterNote>
+      <FormattedMessage {...messages.wrongEmail} />
+      <FooterNoteLink onClick={onChangeEmail} id="e2e-go-to-change-email">
+        <FormattedMessage {...messages.changeYourEmail} />
+      </FooterNoteLink>
+    </FooterNote>
   </>
 );
 
