@@ -2032,6 +2032,7 @@
   "app.containers.VoteControl.voteErrorTitle": "Något gick fel",
   "app.containers.admin.ContentBuilder.default": "standard",
   "app.containers.admin.ContentBuilder.folderFiles": "Filer i mapp",
+  "app.containers.admin.ContentBuilder.folderTitle": "Mapptitel",
   "app.containers.admin.ContentBuilder.imageTextCards": "Bild- och textkort",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Info & dragspel",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolumn",
