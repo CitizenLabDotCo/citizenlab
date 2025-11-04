@@ -2032,6 +2032,7 @@
   "app.containers.VoteControl.voteErrorTitle": "Etwas ging schief",
   "app.containers.admin.ContentBuilder.default": "Standard",
   "app.containers.admin.ContentBuilder.folderFiles": "Ordnerdateien",
+  "app.containers.admin.ContentBuilder.folderTitle": "Ordnertitel",
   "app.containers.admin.ContentBuilder.imageTextCards": "Bild & Textkarten",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Info & Akkordeons",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 Spalte",
