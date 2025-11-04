@@ -2032,6 +2032,7 @@
   "app.containers.VoteControl.voteErrorTitle": "Et ass e Feeler opgetrueden",
   "app.containers.admin.ContentBuilder.default": "Default",
   "app.containers.admin.ContentBuilder.folderFiles": "Dossier Dateien",
+  "app.containers.admin.ContentBuilder.folderTitle": "Dossiertitel",
   "app.containers.admin.ContentBuilder.imageTextCards": "Bild & Text Kaarten",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Info & Akkordeonen",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolonne",
