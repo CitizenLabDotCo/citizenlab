@@ -2032,6 +2032,7 @@
   "app.containers.VoteControl.voteErrorTitle": "Kažkas nutiko ne taip",
   "app.containers.admin.ContentBuilder.default": "numatytasis",
   "app.containers.admin.ContentBuilder.folderFiles": "Aplankų failai",
+  "app.containers.admin.ContentBuilder.folderTitle": "Aplankų pavadinimas",
   "app.containers.admin.ContentBuilder.imageTextCards": "Paveikslėlių ir teksto kortelės",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Informacija ir akordeonai",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 stulpelis",
