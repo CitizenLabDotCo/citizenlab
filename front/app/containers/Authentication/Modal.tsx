@@ -26,7 +26,6 @@ import {
 import TextButton from './steps/_components/TextButton';
 import AccessDenied from './steps/AccessDenied';
 import BuiltInFields from './steps/BuiltInFields';
-import ChangeEmail from './steps/ChangeEmail';
 import EmailConfirmation from './steps/EmailConfirmation';
 import LightFlowStart from './steps/EmailFlowStart';
 import Invitation from './steps/Invitation';
@@ -214,15 +213,6 @@ const AuthModal = () => {
             setError={setError}
             onConfirm={transition(currentStep, 'SUBMIT_CODE')}
             onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
-          />
-        )}
-
-        {currentStep === 'missing-data:change-email' && (
-          <ChangeEmail
-            loading={loading}
-            setError={setError}
-            onGoBack={transition(currentStep, 'GO_BACK')}
-            onChangeEmail={transition(currentStep, 'RESEND_CODE')}
           />
         )}
 

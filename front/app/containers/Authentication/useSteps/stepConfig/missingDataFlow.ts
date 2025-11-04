@@ -1,7 +1,4 @@
-import getAuthUser from 'api/authentication/auth_user/getAuthUser';
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
-import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
-import signOut from 'api/authentication/sign_in_out/signOut';
 import { OnboardingType } from 'api/users/types';
 import {
   updateUser,
@@ -12,7 +9,6 @@ import {
   AuthenticationData,
   GetRequirements,
   State,
-  UpdateState,
 } from 'containers/Authentication/typings';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
@@ -28,21 +24,13 @@ export const missingDataFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
-  updateState: UpdateState,
   state: State
 ) => {
   return {
     'missing-data:email-confirmation': {
       CLOSE: () => setCurrentStep('closed'),
       CHANGE_EMAIL: async () => {
-        const authUser = await getAuthUser();
-
-        if (authUser.data.attributes.no_password) {
-          await signOut();
-          setCurrentStep('closed');
-        } else {
-          setCurrentStep('missing-data:change-email');
-        }
+        setCurrentStep('email-flow:start');
       },
       SUBMIT_CODE: async (email: string, code: string) => {
         await confirmEmail({ email, code });
@@ -66,18 +54,6 @@ export const missingDataFlow = (
         }
 
         setCurrentStep('success');
-      },
-    },
-
-    'missing-data:change-email': {
-      CLOSE: () => setCurrentStep('closed'),
-      GO_BACK: () => {
-        setCurrentStep('missing-data:email-confirmation');
-      },
-      RESEND_CODE: async (newEmail: string) => {
-        updateState({ email: newEmail });
-        await resendEmailConfirmationCode(newEmail);
-        setCurrentStep('missing-data:email-confirmation');
       },
     },
 

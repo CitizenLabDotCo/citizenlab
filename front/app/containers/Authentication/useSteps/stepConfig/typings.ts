@@ -18,7 +18,6 @@ export type Step =
   // missing data (if signed in already)
   | 'missing-data:built-in'
   | 'missing-data:email-confirmation'
-  | 'missing-data:change-email'
   | 'missing-data:verification'
   | 'missing-data:custom-fields'
 
