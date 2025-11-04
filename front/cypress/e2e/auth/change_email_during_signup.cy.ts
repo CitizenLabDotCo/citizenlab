@@ -1,4 +1,8 @@
-import { signUp, confirmEmail } from '../../support/auth';
+import {
+  signUp,
+  confirmEmail,
+  signUpEmailConformation,
+} from '../../support/auth';
 import { randomEmail } from '../../support/commands';
 
 describe('Change email during sign-up', () => {
@@ -17,10 +21,9 @@ describe('Change email during sign-up', () => {
     cy.get('#e2e-go-to-change-email').click();
 
     // Enter the new email
-    signUp(cy, newEmail);
-    confirmEmail(cy, newEmail);
+    signUpEmailConformation(cy, newEmail);
 
     // Verify that we are logged in
-    cy.get('#e2e-navbar-user-menu').should('exist');
+    cy.get('#e2e-user-menu-container');
   });
 });
