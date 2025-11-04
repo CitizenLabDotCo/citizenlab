@@ -5,7 +5,6 @@ import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 
 import { trackEventByName } from 'utils/analytics';
-import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
 import tracks from '../../tracks';
 import {
@@ -162,7 +161,6 @@ export const sharedSteps = (
 
     success: {
       CONTINUE: async () => {
-        invalidateQueryCache();
         setCurrentStep('closed');
 
         trackEventByName(tracks.signUpFlowCompleted);

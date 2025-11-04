@@ -8,8 +8,6 @@ import checkUser from 'api/users/checkUser';
 
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 
-import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
-
 import {
   GetRequirements,
   UpdateState,
@@ -131,8 +129,6 @@ export const emailFlow = (
           setCurrentStep(missingDataStep);
           return;
         }
-
-        invalidateQueryCache();
 
         // trackEventByName(tracks.signUpFlowCompleted);
 
