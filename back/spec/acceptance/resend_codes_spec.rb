@@ -66,26 +66,32 @@ resource 'Code Resends' do
         end
       end
 
-      context 'requesting a code more than 5 times' do
-        before do
-          user.update(email_confirmation_code_reset_count: 5)
-          do_request
-        end
-
-        example 'returns unprocessable entity status' do
-          assert_status 422
-        end
+      example 'requesting a code more than 5 times' do
+        user.update(email_confirmation_code_reset_count: 5)
+        do_request
+        assert_status 422
       end
 
-      context 'requesting a code more than 5 times but always providing new email' do
-        before do
-          user.update(email_confirmation_code_reset_count: 5)
-          do_request(new_email: 'some@email.com')
-        end
+      example 'requesting a code more than 5 times but always providing new email' do
+        user.update(email_confirmation_code_reset_count: 5)
+        do_request(new_email: 'some@email.com')
+        assert_status 200
+        # A bit weird, but if provide a `new_email`, the limit is not applied.
+        # But at least this does not allow people to brute force the code,
+        # since the email_confirmation_retry_count is not reset in this case.
+        # (see test below)
+      end
 
-        example 'returns unprocessable entity status' do
-          assert_status 422
-        end
+      example 'request a code with a new email does NOT reset the email_confirmation_retry_count' do
+        user.update(email_confirmation_retry_count: 3)
+        user.update(email_confirmation_code_reset_count: 3)
+
+        do_request(new_email: 'test@email.com')
+        assert_status 200
+
+        user.reload
+        expect(user.email_confirmation_retry_count).to eq 3
+        expect(user.email_confirmation_code_reset_count).to eq 1
       end
     end
   end
