@@ -95,4 +95,24 @@ resource 'Code Resends' do
       end
     end
   end
+
+  post 'web_api/v1/user/resend_code_unauthenticated' do
+    parameter :email, 'The email address of the user requesting a new confirmation code.'
+
+    before do
+      @user = create(:user_with_confirmation, email: 'test@test.com')
+    end
+
+    example 'resending a confirmation code to an existing user email' do
+      allow(RequestConfirmationCodeJob).to receive(:perform_now)
+      do_request(email: @user.email)
+      expect(status).to eq 200
+      expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(@user, new_email: nil).once
+    end
+
+    example 'resending a confirmation code to a non-existing user email' do
+      do_request(email: 'wrong@email.com')
+      expect(status).to eq 404
+    end
+  end
 end

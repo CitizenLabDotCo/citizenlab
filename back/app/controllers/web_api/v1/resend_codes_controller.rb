@@ -2,6 +2,7 @@
 
 class WebApi::V1::ResendCodesController < ApplicationController
   skip_after_action :verify_authorized
+  before_action :authenticate_user, except: [:resend_code_unauthenticated]
 
   def create
     RequestConfirmationCodeJob.perform_now current_user, new_email: resend_code_params[:new_email]
@@ -13,14 +14,14 @@ class WebApi::V1::ResendCodesController < ApplicationController
   end
 
   def resend_code_unauthenticated
-    email = resend_code_unauthenticated_params[:email]
+    email = resend_code_unauthenticated_params
     user = User.find_by(email: email)
 
     if user
       RequestConfirmationCodeJob.perform_now user, new_email: nil
       head :ok
     else
-      render json: { errors: { email: ['not found'] } }, status: :not_found
+      render json: { errors: { email: [{ error: 'not_found' }] } }, status: :not_found
     end
   end
 
