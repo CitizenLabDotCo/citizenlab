@@ -2032,6 +2032,7 @@
   "app.containers.VoteControl.voteErrorTitle": "حدث خطأ ما",
   "app.containers.admin.ContentBuilder.default": "تقصير",
   "app.containers.admin.ContentBuilder.folderFiles": "ملفات المجلد",
+  "app.containers.admin.ContentBuilder.folderTitle": "عنوان المجلد",
   "app.containers.admin.ContentBuilder.imageTextCards": "بطاقات الصور والنصوص",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "معلومات و أكورديون",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "عمود واحد",
