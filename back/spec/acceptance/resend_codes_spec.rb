@@ -116,9 +116,9 @@ resource 'Code Resends' do
     end
 
     example 'increments the email_confirmation_code_reset_count on the user' do
-      expect {
+      expect do
         do_request(email: @user.email)
-      }.to change { @user.reload.email_confirmation_code_reset_count }.by(1)
+      end.to change { @user.reload.email_confirmation_code_reset_count }.by(1)
     end
   end
 end

@@ -282,7 +282,7 @@ class WebApi::V1::UsersController < ApplicationController
       first_name = attrs[:first_name]
       last_name = attrs[:last_name]
 
-      if (@user.first_name.blank? && @user.last_name.blank? && first_name.present? && last_name.present?)
+      if @user.first_name.blank? && @user.last_name.blank? && first_name.present? && last_name.present?
         attrs[:slug] = UserSlugService.new.generate_slug(@user, [first_name, last_name].compact.join(' '))
       end
 
