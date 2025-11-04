@@ -2032,6 +2032,7 @@
   "app.containers.VoteControl.voteErrorTitle": "Κάτι πήγε στραβά",
   "app.containers.admin.ContentBuilder.default": "προεπιλογή",
   "app.containers.admin.ContentBuilder.folderFiles": "Αρχεία φακέλου",
+  "app.containers.admin.ContentBuilder.folderTitle": "Τίτλος φακέλου",
   "app.containers.admin.ContentBuilder.imageTextCards": "Κάρτες εικόνας & κειμένου",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Πληροφορίες & ακορντεόν",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 στήλη",
