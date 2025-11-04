@@ -10,7 +10,7 @@ describe 'fix_existing_tenants:custom_fields_orderings rake task' do
     create(:custom_field, resource: form1, input_type: 'number', key: 'field3').update_column(:ordering, 3)
     create(:custom_field, resource: form1, input_type: 'text', key: 'field4').update_column(:ordering, 3)
     create(:custom_field_page, resource: form1, key: 'field5').update_column(:ordering, 4)
-    
+
     form2 = create(:custom_form)
     create(:custom_field_page, resource: form2, key: 'field1')
     create(:custom_field, resource: form2, input_type: 'number', key: 'field2')

@@ -4,6 +4,7 @@ namespace :fix_existing_tenants do
     reporter = ScriptReporter.new
     Tenant.all.each do |tenant|
       tenant.switch do
+        # rubocop:disable Performance/CollectionLiteralInLoop
         ([nil] + CustomForm.all).each do |form|
           fields = CustomField.where(resource_id: form&.id).order(:ordering)
 
