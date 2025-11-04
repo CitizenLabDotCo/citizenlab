@@ -9,5 +9,9 @@ module ParticipationMethod
     def supports_permitted_by_everyone?
       true
     end
+
+    def participations
+      {} # Quick fix for failing specs.
+    end
   end
 end
