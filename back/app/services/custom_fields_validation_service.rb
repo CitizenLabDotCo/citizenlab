@@ -29,12 +29,12 @@ class CustomFieldsValidationService
   def validate_lock_constraints(fields, participation_method)
     default_fields = participation_method.default_fields(participation_method.custom_form)
 
-    validate_deletions(fields, participation_method.constraints) ||
+    validate_deletions(fields, participation_method) ||
       validate_attributes(fields, default_fields, participation_method)
   end
 
-  def validate_deletions(fields, constraints)
-    constraints.each do |code, constraint|
+  def validate_deletions(fields, participation_method)
+    participation_method.constraints.each do |code, constraint|
       next if !constraint.dig(:locks, :deletion)
 
       if !fields.find { |f| f.code == code.to_s && f.enabled? }
