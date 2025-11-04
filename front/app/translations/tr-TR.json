@@ -2032,6 +2032,7 @@
   "app.containers.VoteControl.voteErrorTitle": "Bir sorun oluştu",
   "app.containers.admin.ContentBuilder.default": "varsayılan",
   "app.containers.admin.ContentBuilder.folderFiles": "Klasör dosyaları",
+  "app.containers.admin.ContentBuilder.folderTitle": "Klasör başlığı",
   "app.containers.admin.ContentBuilder.imageTextCards": "Resim ve metin kartları",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Bilgi ve akordeonlar",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 sütun",
