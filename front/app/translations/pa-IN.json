@@ -2032,6 +2032,7 @@
   "app.containers.VoteControl.voteErrorTitle": "ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ",
   "app.containers.admin.ContentBuilder.default": "ਡਿਫਾਲਟ",
   "app.containers.admin.ContentBuilder.folderFiles": "ਫੋਲਡਰ ਫਾਈਲਾਂ",
+  "app.containers.admin.ContentBuilder.folderTitle": "ਫੋਲਡਰ ਦਾ ਸਿਰਲੇਖ",
   "app.containers.admin.ContentBuilder.imageTextCards": "ਚਿੱਤਰ ਅਤੇ ਟੈਕਸਟ ਕਾਰਡ",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "ਜਾਣਕਾਰੀ ਅਤੇ ਅਨੁਕੂਲਤਾ",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 ਕਾਲਮ",
