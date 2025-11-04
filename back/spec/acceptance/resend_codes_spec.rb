@@ -65,6 +65,28 @@ resource 'Code Resends' do
           expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user, new_email: nil).once
         end
       end
+
+      context 'requesting a code more than 5 times' do
+        before do
+          user.update(email_confirmation_code_reset_count: 5)
+          do_request
+        end
+
+        example 'returns unprocessable entity status' do
+          assert_status 422
+        end
+      end
+
+      context 'requesting a code more than 5 times but always providing new email' do
+        before do
+          user.update(email_confirmation_code_reset_count: 5)
+          do_request(new_email: 'some@email.com')
+        end
+
+        example 'returns unprocessable entity status' do
+          assert_status 422
+        end
+      end
     end
   end
 end
