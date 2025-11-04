@@ -2032,6 +2032,7 @@
   "app.containers.VoteControl.voteErrorTitle": "Ups, algo salió mal",
   "app.containers.admin.ContentBuilder.default": "por defecto",
   "app.containers.admin.ContentBuilder.folderFiles": "Archivos de carpetas",
+  "app.containers.admin.ContentBuilder.folderTitle": "Título de la carpeta",
   "app.containers.admin.ContentBuilder.imageTextCards": "Imagen y tarjetas de texto",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Información y acordeones",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 columna",
