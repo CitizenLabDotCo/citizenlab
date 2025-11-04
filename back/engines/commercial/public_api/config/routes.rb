@@ -19,6 +19,7 @@ PublicApi::Engine.routes.draw do
 
     resources :files, concerns: :deleted_items
     resources :file_attachments, only: %i[index show]
+    resources :ideas, only: %i[index show create update], concerns: :deleted_items
 
     with_options only: %i[index show], concerns: :deleted_items do |route_mapper|
       route_mapper.resources :comments
@@ -28,7 +29,6 @@ PublicApi::Engine.routes.draw do
       route_mapper.resources :email_campaign_deliveries
       route_mapper.resources :events
       route_mapper.resources :event_attendances
-      route_mapper.resources :ideas
       route_mapper.resources :phases
       route_mapper.resources :project_folders
       route_mapper.resources :reactions, only: %i[index]
