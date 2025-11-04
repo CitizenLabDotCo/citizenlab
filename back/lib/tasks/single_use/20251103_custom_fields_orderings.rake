@@ -43,6 +43,7 @@ namespace :fix_existing_tenants do
             context: { tenant: tenant.host, form: form.id, page: first_page.id }
           )
         end
+        # rubocop:enable Performance/CollectionLiteralInLoop
       end
     end
     reporter.report!('fix_custom_fields_orderings_report.json', verbose: true)
