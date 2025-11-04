@@ -1,94 +1,90 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  insightsTitle: {
-    id: 'app.containers.Admin.projects.project.insights.title',
-    defaultMessage: 'Phase Insights',
+  insights: {
+    id: 'app.containers.Admin.projects.project.insights',
+    defaultMessage: 'Insights',
   },
-  insightsDescription: {
-    id: 'app.containers.Admin.projects.project.insights.description',
-    defaultMessage:
-      'View participation metrics, demographics, and insights for this phase.',
+  generateReport: {
+    id: 'app.containers.Admin.projects.project.insights.generateReport',
+    defaultMessage: 'Generate report',
   },
-  overviewTab: {
-    id: 'app.containers.Admin.projects.project.insights.overviewTab',
-    defaultMessage: 'Overview',
+  download: {
+    id: 'app.containers.Admin.projects.project.insights.download',
+    defaultMessage: 'Download',
   },
-  overviewTitle: {
-    id: 'app.containers.Admin.projects.project.insights.overviewTitle',
-    defaultMessage: 'Participation Overview',
+  viewFullReport: {
+    id: 'app.containers.Admin.projects.project.insights.viewFullReport',
+    defaultMessage: 'View full report',
   },
-  overviewDescription: {
-    id: 'app.containers.Admin.projects.project.insights.overviewDescription',
-    defaultMessage: 'Key metrics and demographic insights for this phase.',
+  // Participation metrics
+  visitors: {
+    id: 'app.containers.Admin.projects.project.insights.visitors',
+    defaultMessage: 'Visitors',
   },
-  reportTab: {
-    id: 'app.containers.Admin.projects.project.insights.reportTab',
-    defaultMessage: 'Report',
+  participants: {
+    id: 'app.containers.Admin.projects.project.insights.participants',
+    defaultMessage: 'Participants',
   },
-  participationMetricsTitle: {
-    id: 'app.containers.Admin.projects.project.insights.participationMetricsTitle',
-    defaultMessage: 'Participation Metrics',
+  inputs: {
+    id: 'app.containers.Admin.projects.project.insights.inputs',
+    defaultMessage: 'Inputs',
   },
-  totalParticipants: {
-    id: 'app.containers.Admin.projects.project.insights.totalParticipants',
-    defaultMessage: 'Total Participants',
+  comments: {
+    id: 'app.containers.Admin.projects.project.insights.comments',
+    defaultMessage: 'Comments',
   },
-  participationOverTime: {
-    id: 'app.containers.Admin.projects.project.insights.participationOverTime',
-    defaultMessage: 'Participation Over Time',
+  reactions: {
+    id: 'app.containers.Admin.projects.project.insights.reactions',
+    defaultMessage: 'Reactions',
   },
-  demographicsTitle: {
-    id: 'app.containers.Admin.projects.project.insights.demographicsTitle',
-    defaultMessage: 'Participant Demographics',
+  votes: {
+    id: 'app.containers.Admin.projects.project.insights.votes',
+    defaultMessage: 'Votes',
   },
-  demographicsDescription: {
-    id: 'app.containers.Admin.projects.project.insights.demographicsDescription',
-    defaultMessage:
-      'Demographic breakdown of participants who engaged in this phase.',
+  submissions: {
+    id: 'app.containers.Admin.projects.project.insights.submissions',
+    defaultMessage: 'Submissions',
   },
-  ageDistribution: {
-    id: 'app.containers.Admin.projects.project.insights.ageDistribution',
-    defaultMessage: 'Age Distribution',
+  completionRate: {
+    id: 'app.containers.Admin.projects.project.insights.completionRate',
+    defaultMessage: 'Completion rate',
   },
-  genderDistribution: {
-    id: 'app.containers.Admin.projects.project.insights.genderDistribution',
-    defaultMessage: 'Gender Distribution',
-  },
-  noDataAvailable: {
-    id: 'app.containers.Admin.projects.project.insights.noDataAvailable',
-    defaultMessage: 'No data available yet',
-  },
-  uniqueParticipants: {
-    id: 'app.containers.Admin.projects.project.insights.uniqueParticipants',
-    defaultMessage: 'Unique Participants',
-  },
-  uniqueParticipantsSubtext: {
-    id: 'app.containers.Admin.projects.project.insights.uniqueParticipantsSubtext',
-    defaultMessage: 'Total number of unique participants in this phase',
-  },
-  totalContributions: {
-    id: 'app.containers.Admin.projects.project.insights.totalContributions',
-    defaultMessage: 'Total Contributions',
-  },
-  totalContributionsSubtext: {
-    id: 'app.containers.Admin.projects.project.insights.totalContributionsSubtext',
-    defaultMessage: 'All contributions made in this phase',
+  votesPerPerson: {
+    id: 'app.containers.Admin.projects.project.insights.votesPerPerson',
+    defaultMessage: 'Votes per person',
   },
   engagementRate: {
     id: 'app.containers.Admin.projects.project.insights.engagementRate',
-    defaultMessage: 'Engagement Rate',
+    defaultMessage: 'Engagement rate',
   },
-  engagementRateSubtext: {
-    id: 'app.containers.Admin.projects.project.insights.engagementRateSubtext',
-    defaultMessage: '{visitors} total visitors',
+  // Demographics
+  gender: {
+    id: 'app.containers.Admin.projects.project.insights.gender',
+    defaultMessage: 'Gender',
   },
-  contributionBreakdown: {
-    id: 'app.containers.Admin.projects.project.insights.contributionBreakdown',
-    defaultMessage: 'Contribution Breakdown',
+  age: {
+    id: 'app.containers.Admin.projects.project.insights.age',
+    defaultMessage: 'Age',
   },
-  participationMetricsDescription: {
-    id: 'app.containers.Admin.projects.project.insights.participationMetricsDescription',
-    defaultMessage: 'Key participation metrics for this phase',
+  areas: {
+    id: 'app.containers.Admin.projects.project.insights.areas',
+    defaultMessage: 'Areas',
+  },
+  men: {
+    id: 'app.containers.Admin.projects.project.insights.men',
+    defaultMessage: 'Men',
+  },
+  women: {
+    id: 'app.containers.Admin.projects.project.insights.women',
+    defaultMessage: 'Women',
+  },
+  nonBinary: {
+    id: 'app.containers.Admin.projects.project.insights.nonBinary',
+    defaultMessage: 'Non binary',
+  },
+  unspecified: {
+    id: 'app.containers.Admin.projects.project.insights.unspecified',
+    defaultMessage: 'Unspecified',
   },
 });
