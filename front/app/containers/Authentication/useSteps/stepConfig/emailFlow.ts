@@ -1,5 +1,6 @@
 import { SupportedLocale } from 'typings';
 
+import resendEmailConfirmationCodeUnauthenticated from 'api/authentication/confirm_email/resendEmailConfirmationCodeUnauthenticated';
 import signIn from 'api/authentication/sign_in_out/signIn';
 import createEmailOnlyAccount from 'api/authentication/sign_up/createEmailOnlyAccount';
 import { handleOnSSOClick } from 'api/authentication/singleSignOn';
@@ -31,7 +32,7 @@ export const emailFlow = (
     'email-flow:start': {
       CLOSE: () => setCurrentStep('closed'),
 
-      SUBMIT_EMAIL: async (email: string, locale: SupportedLocale) => {
+      SUBMIT_EMAIL: async (email: string) => {
         updateState({ email });
 
         try {
@@ -50,7 +51,7 @@ export const emailFlow = (
 
           if (action === 'confirm') {
             updateState({ flow: 'signin' });
-            await createEmailOnlyAccount({ email, locale });
+            await resendEmailConfirmationCodeUnauthenticated(email);
             setCurrentStep('missing-data:email-confirmation');
           }
         } catch (e) {

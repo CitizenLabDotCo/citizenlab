@@ -27,7 +27,7 @@ import TextButton from './steps/_components/TextButton';
 import AccessDenied from './steps/AccessDenied';
 import BuiltInFields from './steps/BuiltInFields';
 import EmailConfirmation from './steps/EmailConfirmation';
-import LightFlowStart from './steps/EmailFlowStart';
+import EmailFlowStart from './steps/EmailFlowStart';
 import Invitation from './steps/Invitation';
 import InviteSignUp from './steps/InviteSignUp';
 import InviteTaken from './steps/InviteTaken';
@@ -144,7 +144,7 @@ const AuthModal = () => {
 
         {/* email flow */}
         {currentStep === 'email-flow:start' && (
-          <LightFlowStart
+          <EmailFlowStart
             loading={loading}
             setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}

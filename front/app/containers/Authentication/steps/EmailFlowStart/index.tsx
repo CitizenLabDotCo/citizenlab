@@ -3,12 +3,9 @@ import React, { useMemo } from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
-import { SupportedLocale } from 'typings';
 import { string, object } from 'yup';
 
 import { SSOProvider } from 'api/authentication/singleSignOn';
-
-import useLocale from 'hooks/useLocale';
 
 import oldMessages from 'containers/Authentication/steps/_components/AuthProviderButton/messages';
 import { SetError } from 'containers/Authentication/typings';
@@ -35,7 +32,7 @@ import SSOButtons from './SSOButtons';
 interface Props {
   loading: boolean;
   setError: SetError;
-  onSubmit: (email: string, locale: SupportedLocale) => void;
+  onSubmit: (email: string) => void;
   onSwitchToSSO: (ssoProvider: SSOProvider) => void;
   onEnterFranceConnect: () => void;
 }
@@ -56,7 +53,6 @@ const EmailFlowStart = ({
   onEnterFranceConnect,
 }: Props) => {
   const { passwordLoginEnabled, ssoProviders } = useAuthConfig();
-  const locale = useLocale();
 
   const { formatMessage } = useIntl();
 
@@ -83,7 +79,7 @@ const EmailFlowStart = ({
 
   const handleSubmit = async ({ email }: FormValues) => {
     try {
-      await onSubmit(email, locale);
+      await onSubmit(email);
     } catch (e) {
       if (isCLErrorsWrapper(e)) {
         handleHookFormSubmissionError(e, methods.setError);
