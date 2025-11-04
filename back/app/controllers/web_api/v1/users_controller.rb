@@ -279,6 +279,13 @@ class WebApi::V1::UsersController < ApplicationController
       attrs[:custom_field_values] = params_service.updated_custom_field_values(@user.custom_field_values, attrs[:custom_field_values].to_h)
       CustomFieldService.new.compact_custom_field_values!(attrs[:custom_field_values])
 
+      first_name = attrs[:first_name]
+      last_name = attrs[:last_name]
+
+      if (@user.first_name.blank? && @user.last_name.blank? && first_name.present? && last_name.present?)
+        attrs[:slug] = UserSlugService.new.generate_slug(@user, [first_name, last_name].compact.join(' '))
+      end
+
       # Even if the feature is not activated, we still want to allow the user to remove
       # their avatar.
       if !app_configuration.feature_activated?('user_avatars') && !attrs[:avatar].nil?

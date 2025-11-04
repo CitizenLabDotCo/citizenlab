@@ -1467,6 +1467,24 @@ resource 'Users' do
             expect(@user.custom_field_values[gender_cf.key]).to eq 'male'
           end
         end
+
+        describe 'updating the user name when user has no first or last name yet' do
+          let(:user) { create(:user, first_name: nil, last_name: nil) }
+          let(:id) { user.id }
+          let(:first_name) { 'NewFirstName' }
+          let(:last_name) { 'NewLastName' }
+
+          before do
+            header_token_for user
+          end
+
+          example_request 'Updates user name and slug' do
+            assert_status 200
+            expect(user.reload.first_name).to eq 'NewFirstName'
+            expect(user.reload.last_name).to eq 'NewLastName'
+            expect(user.reload.slug).to eq 'newfirstname-newlastname'
+          end
+        end
       end
 
       post 'web_api/v1/users/update_password' do
