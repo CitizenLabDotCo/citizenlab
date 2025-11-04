@@ -27,7 +27,7 @@ interface Props {
   loading: boolean;
   setError: SetError;
   onConfirm: (email: string, code: string) => void;
-  onChangeEmail: () => void;
+  onChangeEmail?: () => void;
 }
 
 interface FormValues {
@@ -110,10 +110,12 @@ const EmailConfirmation = ({
       });
   };
 
-  const handleChangeEmail = (e: FormEvent) => {
-    e.preventDefault();
-    onChangeEmail();
-  };
+  const handleChangeEmail = onChangeEmail
+    ? (e: FormEvent) => {
+        e.preventDefault();
+        onChangeEmail();
+      }
+    : undefined;
 
   return (
     <FormProvider {...methods}>
