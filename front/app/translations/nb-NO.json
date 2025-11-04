@@ -2032,6 +2032,7 @@
   "app.containers.VoteControl.voteErrorTitle": "Noe gikk galt",
   "app.containers.admin.ContentBuilder.default": "standard",
   "app.containers.admin.ContentBuilder.folderFiles": "Mappefiler",
+  "app.containers.admin.ContentBuilder.folderTitle": "Mappetittel",
   "app.containers.admin.ContentBuilder.imageTextCards": "Bilde- og tekstkort",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Info & trekkspill",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolonne",
