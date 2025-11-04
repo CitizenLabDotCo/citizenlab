@@ -8,7 +8,7 @@ class ParticipationsService
     # eg for permissions:
     # participations = phase_participations(permission.phase)
     # participations = participations.filter_by_action(participations, permission.action))
-    format_participation_data(participations)
+    phase_participation_data(participations)
   end
 
   private
@@ -22,15 +22,22 @@ class ParticipationsService
     @phase_participations[phase.id] ||= phase.pmethod.participations
   end
 
-  def format_participation_data(participations)
-    all_participations = participations.values.flatten
+  def phase_participation_data(participations)
+    phase_level = format_participation_data(participations.values.flatten)
+    pmethods_level = participations.each_with_object({}) do |(action, records), hash|
+      hash[action] = format_participation_data(records)
+    end
 
+    phase_level.merge(pmethods_level)
+  end
+
+  def format_participation_data(participations)
     {
       participations: {
-        count: all_participations.count
+        count: participations.count
       },
       participants: {
-        count: all_participations.pluck(:user_id).uniq.count,
+        count: participations.pluck(:user_id).uniq.count,
         demographics: [
           { tbc: 'tbc' } # Placeholder for demographics data
         ]

@@ -448,7 +448,7 @@ module ParticipationMethod
       # phase.ideas will return all ideas associated with the phase,
       # but ideas can be associated with multiple phases, through ideas_phases.
       # We only want ideas where this phase is the earliest associated phase.
-      phase.ideas.where(<<~SQL, phase.id)
+      phase.ideas.where(<<~SQL.squish, phase.id)
         ideas_phases.created_at = (
           SELECT MIN(ip.created_at) 
           FROM ideas_phases ip 
@@ -459,7 +459,17 @@ module ParticipationMethod
     end
 
     def participation_comments
-      Comment.joins(:idea).merge(participation_ideas)
+      comments = Comment.joins(:idea).merge(participation_ideas)
+
+      comments.map do |comment|
+        {
+          id: comment.id,
+          action: 'voting',
+          classname: 'Comment',
+          user_id: comment.author_id,
+          user_custom_field_values: comment.author.custom_field_values
+        }
+      end
     end
 
     def follow_idea_on_idea_submission?
