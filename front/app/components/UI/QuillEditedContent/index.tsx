@@ -43,6 +43,10 @@ const QuillEditedContent = ({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const theme = useTheme();
 
+  const tabbableElements = containerRef.current?.querySelectorAll(
+    'a, iframe, button, input, select, textarea'
+  );
+
   useEffect(() => {
     const setSecureReferrerPolicy = (iframe: HTMLIFrameElement) => {
       if (!isYouTubeEmbedLink(iframe.src)) return;
@@ -62,16 +66,12 @@ const QuillEditedContent = ({
   }, []);
 
   useEffect(() => {
-    const tabbableElements = containerRef.current?.querySelectorAll(
-      'a, iframe, button, input, select, textarea'
-    );
-
     if (tabbableElements) {
       for (const item of tabbableElements) {
         item.setAttribute('tabindex', disableTabbing ? '-1' : '0');
       }
     }
-  }, [disableTabbing]);
+  }, [disableTabbing, tabbableElements]);
 
   return (
     <Container
