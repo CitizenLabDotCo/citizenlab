@@ -48,20 +48,27 @@ const QuillEditedContent = ({
   );
 
   useEffect(() => {
+    const setSecureReferrerPolicy = (iframe: HTMLIFrameElement) => {
+      if (!isYouTubeEmbedLink(iframe.src)) return;
+
+      // Set both referrer policy attribute and property
+      iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+    };
+
+    // Process all iframes in container
+    containerRef.current?.querySelectorAll('iframe').forEach((iframe) => {
+      const src = iframe.src;
+      setSecureReferrerPolicy(iframe);
+      // Re-assign src to force reload with new referrer policy
+      iframe.src = src;
+    });
+  }, []);
+
+  useEffect(() => {
     if (tabbableElements) {
       for (const item of tabbableElements) {
         item.setAttribute('tabindex', disableTabbing ? '-1' : '0');
-
-        // Add referrerpolicy to YouTube iframes for proper embedding
-        if (item.tagName === 'IFRAME') {
-          const iframe = item as HTMLIFrameElement;
-          if (isYouTubeEmbedLink(iframe.src)) {
-            iframe.setAttribute(
-              'referrerpolicy',
-              'strict-origin-when-cross-origin'
-            );
-          }
-        }
       }
     }
   }, [disableTabbing, tabbableElements]);
