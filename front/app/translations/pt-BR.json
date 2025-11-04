@@ -2032,6 +2032,7 @@
   "app.containers.VoteControl.voteErrorTitle": "Ocorreu um erro",
   "app.containers.admin.ContentBuilder.default": "padrão",
   "app.containers.admin.ContentBuilder.folderFiles": "Arquivos de pastas",
+  "app.containers.admin.ContentBuilder.folderTitle": "Título da pasta",
   "app.containers.admin.ContentBuilder.imageTextCards": "Cartões de imagem e texto",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Informações e acordeões",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 coluna",
