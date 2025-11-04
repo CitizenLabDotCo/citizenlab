@@ -53,6 +53,13 @@ module ParticipationMethod
     def participations
       # comments? can be permitted... so we only count if commented idea does NOT have association with other phase, created before associated with the voting phase?
       # events? Not associated with phase, so cannot really be seen as participation in voting phase.
+      {
+        'voting': participation_baskets,
+        'commenting_idea': participation_comments
+      }
+    end
+
+    def participation_baskets
       phase.baskets.map do |basket|
         {
           id: basket.id,

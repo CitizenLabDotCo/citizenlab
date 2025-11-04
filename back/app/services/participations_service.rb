@@ -23,12 +23,14 @@ class ParticipationsService
   end
 
   def format_participation_data(participations)
+    all_participations = participations.values.flatten
+
     {
       participations: {
-        count: participations.count
+        count: all_participations.count
       },
       participants: {
-        count: participations.pluck(:user_id).uniq.count,
+        count: all_participations.pluck(:user_id).uniq.count,
         demographics: [
           { tbc: 'tbc' } # Placeholder for demographics data
         ]
