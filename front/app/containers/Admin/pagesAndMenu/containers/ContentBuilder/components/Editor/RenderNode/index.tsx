@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
+import { MessageDescriptor } from 'react-intl';
 import styled from 'styled-components';
 
 import messages from 'components/admin/ContentBuilder/messages';
@@ -9,7 +10,6 @@ import messages from 'components/admin/ContentBuilder/messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import { WIDGET_TITLES, hasChildren, hasNoPointerEvents } from '../../Widgets';
-import { MessageDescriptor } from 'react-intl';
 
 const StyledBox = styled(Box)`
   ${({ isRoot }: { isRoot: boolean }) =>

@@ -1,4 +1,7 @@
 // Shared widgets
+import AboutBox, {
+  aboutBoxTitle,
+} from 'components/admin/ContentBuilder/Widgets/AboutBox';
 import AccordionMultiloc, {
   accordionMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
@@ -90,6 +93,9 @@ export const WIDGETS = {
   // Folder description builder widgets
   FolderTitle,
   FolderFiles,
+
+  // Project description builder widgets
+  AboutBox,
 };
 
 type WidgetName = keyof typeof WIDGETS;
@@ -130,6 +136,9 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   // Folder description builder widgets
   FolderTitle: folderTitleTitle,
   FolderFiles: folderFilesTitle,
+
+  // Project description builder widgets
+  AboutBox: aboutBoxTitle,
 };
 
 const WIDGETS_WITH_CHILDREN = new Set<string>([
@@ -169,6 +178,9 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   // Folder description builder widgets
   'FolderTitle',
   'FolderFiles',
+
+  // Project description builder widgets
+  'AboutBox',
 ] satisfies WidgetName[]);
 
 export const hasNoPointerEvents = (nodeName: string) => {
