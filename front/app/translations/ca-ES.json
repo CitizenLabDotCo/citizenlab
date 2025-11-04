@@ -2032,6 +2032,7 @@
   "app.containers.VoteControl.voteErrorTitle": "Alguna cosa ha anat malament",
   "app.containers.admin.ContentBuilder.default": "per defecte",
   "app.containers.admin.ContentBuilder.folderFiles": "Fitxers de carpeta",
+  "app.containers.admin.ContentBuilder.folderTitle": "Títol de la carpeta",
   "app.containers.admin.ContentBuilder.imageTextCards": "Targetes d'imatge i text",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Informació i acordions",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 columna",
