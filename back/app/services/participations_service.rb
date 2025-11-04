@@ -5,21 +5,13 @@ class ParticipationsService
     participations = phase_participations(phase)
 
     # For other requests, some kind of filtering might be applied here
-    format_participation_data(participations)
-  end
-
-  def permission_participation(permission)
-    participations = phase_participations(permission.phase)
-
-    particiption.filter(by(permission.action))
-
-    # For other requests, some kind of filtering might be applied here
+    # eg for permissions:
+    # participations = phase_participations(permission.phase)
+    # participations = participations.filter_by_action(participations, permission.action))
     format_participation_data(participations)
   end
 
   private
-
-  def filter_by_permission(participations, action); end
 
   def initialize
     @phase_participations = {}
