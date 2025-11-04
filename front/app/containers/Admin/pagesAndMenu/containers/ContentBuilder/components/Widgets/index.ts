@@ -29,6 +29,9 @@ import FolderFiles, {
 import FolderTitle, {
   folderTitleTitle,
 } from 'components/DescriptionBuilder/Widgets/FolderTitle';
+import InfoWithAccordions, {
+  infoWithAccordionsTitle,
+} from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
@@ -66,6 +69,9 @@ export const WIDGETS = {
   ThreeColumn,
   TwoColumn,
   WhiteSpace,
+  Published,
+  Selection,
+  Spotlight,
 
   // Homepage builder widgets
   Areas,
@@ -77,9 +83,6 @@ export const WIDGETS = {
   HomepageBanner,
   OpenToParticipation,
   ProjectsAndFoldersLegacy,
-  Published,
-  Selection,
-  Spotlight,
   TextMultiloc,
   VideoEmbed,
 
@@ -95,6 +98,7 @@ export const WIDGETS = {
   FolderFiles,
 
   // Project description builder widgets
+  InfoWithAccordions,
   AboutBox,
 };
 
@@ -109,6 +113,9 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   ThreeColumn: threeColumnTitle,
   TwoColumn: twoColumnTitle,
   WhiteSpace: whiteSpaceTitle,
+  Published: publishedTitle,
+  Selection: selectionTitle,
+  Spotlight: spotlightTitle,
 
   // Homepage builder widgets
   Areas: areasTitle,
@@ -120,9 +127,6 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   HomepageBanner: homepageBannerTitle,
   OpenToParticipation: openToParticipationTitle,
   ProjectsAndFoldersLegacy: projectsAndFoldersLegacyTitle,
-  Published: publishedTitle,
-  Selection: selectionTitle,
-  Spotlight: spotlightTitle,
   TextMultiloc: textMultilocTitle,
   VideoEmbed: videoEmbedTitle,
 
@@ -138,6 +142,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   FolderFiles: folderFilesTitle,
 
   // Project description builder widgets
+  InfoWithAccordions: infoWithAccordionsTitle,
   AboutBox: aboutBoxTitle,
 };
 
@@ -145,6 +150,7 @@ const WIDGETS_WITH_CHILDREN = new Set<string>([
   'TwoColumn',
   'ThreeColumn',
   'AccordionMultiloc',
+  'InfoWithAccordions',
 ] satisfies WidgetName[]);
 
 export const hasChildren = (nodeName: string) => {
@@ -155,6 +161,9 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   // Shared widgets
   'ButtonMultiloc',
   'IframeMultiloc',
+  'Published',
+  'Selection',
+  'Spotlight',
 
   // Homepage builder widgets
   'Areas',
@@ -166,9 +175,6 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'HomepageBanner',
   'OpenToParticipation',
   'ProjectsAndFoldersLegacy',
-  'Published',
-  'Selection',
-  'Spotlight',
   'VideoEmbed',
 
   // RENAMED
@@ -180,6 +186,7 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'FolderFiles',
 
   // Project description builder widgets
+  'InfoWithAccordions',
   'AboutBox',
 ] satisfies WidgetName[]);
 
