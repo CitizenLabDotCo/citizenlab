@@ -20,6 +20,12 @@ import TwoColumn, {
 import WhiteSpace, {
   whiteSpaceTitle,
 } from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import FolderFiles, {
+  folderFilesTitle,
+} from 'components/DescriptionBuilder/Widgets/FolderFiles';
+import FolderTitle, {
+  folderTitleTitle,
+} from 'components/DescriptionBuilder/Widgets/FolderTitle';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
@@ -47,12 +53,6 @@ import Selection, { selectionTitle } from './Selection';
 import Spotlight, { spotlightTitle } from './Spotlight';
 import TextMultiloc, { textMultilocTitle } from './TextMultiloc';
 import VideoEmbed, { videoEmbedTitle } from './VideoEmbed';
-import FolderTitle, {
-  folderTitleTitle,
-} from 'components/DescriptionBuilder/Widgets/FolderTitle';
-import FolderFiles, {
-  folderFilesTitle,
-} from 'components/DescriptionBuilder/Widgets/FolderFiles';
 
 export const WIDGETS = {
   // Shared widgets
