@@ -1,4 +1,4 @@
-import { logIn } from '../support/auth';
+import { logIn, signUpEmailConformation } from '../support/auth';
 
 describe('Impact tracking: Session tracking', () => {
   it('Does a POST request to /sessions as a normal user', () => {
@@ -25,7 +25,7 @@ describe('Impact tracking: Session tracking', () => {
     cy.goToLandingPage();
     cy.get('#e2e-navbar');
     cy.get('#e2e-navbar-login-menu-item').click();
-    logIn(cy, 'mortal@govocal.com', 'democracy2.0');
+    signUpEmailConformation(cy);
     cy.wait('@upgradeSession').then((interception) => {
       expect(interception.response?.statusCode).to.eq(202);
     });
