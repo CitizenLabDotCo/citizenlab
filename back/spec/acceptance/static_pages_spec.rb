@@ -253,6 +253,22 @@ resource 'StaticPages' do
           expect(json_response).to include_response_error(:slug, 'blank')
         end
       end
+
+      describe 'when bottom section contains images', document: false do
+        let(:bottom_info_section_multiloc) do
+          {
+            'en' => html_with_base64_image
+          }
+        end
+
+        example_request 'Create a static page with bottom section containing images', document: false do
+          assert_status 201
+          json_parse(response_body)
+          expect(response_data.dig(:attributes, :bottom_info_section_multiloc, :en)).to include('<p>Some text</p><img alt="Red dot"')
+          text_image = TextImage.find_by(imageable_id: response_data[:id], imageable_type: 'StaticPage', imageable_field: 'bottom_info_section_multiloc')
+          expect(response_data.dig(:attributes, :bottom_info_section_multiloc, :en)).to include("data-cl2-text-image-text-reference=\"#{text_image.text_reference}\"")
+        end
+      end
     end
 
     patch 'web_api/v1/static_pages/:id' do

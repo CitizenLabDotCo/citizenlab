@@ -185,6 +185,7 @@ const RankingControl = ({
                             <StyledSelect
                               options={rankDropdownOptions}
                               value={getRankOfOption(option)}
+                              height="auto"
                               onChange={(selectedOption) => {
                                 moveOptionInArray(
                                   index,
