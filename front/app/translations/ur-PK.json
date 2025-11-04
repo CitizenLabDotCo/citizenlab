@@ -2032,6 +2032,7 @@
   "app.containers.VoteControl.voteErrorTitle": "کچھ غلط ہو گیا۔",
   "app.containers.admin.ContentBuilder.default": "پہلے سے طے شدہ",
   "app.containers.admin.ContentBuilder.folderFiles": "فولڈر فائلیں۔",
+  "app.containers.admin.ContentBuilder.folderTitle": "فولڈر کا عنوان",
   "app.containers.admin.ContentBuilder.imageTextCards": "تصویر اور ٹیکسٹ کارڈز",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "معلومات اور موافقت",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 کالم",
