@@ -2032,6 +2032,7 @@
   "app.containers.VoteControl.voteErrorTitle": "Valami elromlott",
   "app.containers.admin.ContentBuilder.default": "alapértelmezett",
   "app.containers.admin.ContentBuilder.folderFiles": "Mappafájlok",
+  "app.containers.admin.ContentBuilder.folderTitle": "Mappa címe",
   "app.containers.admin.ContentBuilder.imageTextCards": "Képes és szöveges kártyák",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Info és harmonika",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 oszlop",
