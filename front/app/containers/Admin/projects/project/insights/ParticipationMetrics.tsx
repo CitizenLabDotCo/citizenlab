@@ -1,87 +1,179 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
-import { Box, Title, Text } from 'component-library';
-import styled from 'styled-components';
+import { Box, Text } from 'component-library';
 
+import useParticipationMetrics from 'api/phase_insights/useParticipationMetrics';
 import { IPhaseData } from 'api/phases/types';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 
-import { useParticipationMetrics } from './hooks/useParticipationMetrics';
 import messages from './messages';
-import MetricCard from './widgets/MetricCard';
-
-const GridContainer = styled(Box)`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-`;
-
-const BreakdownGrid = styled(Box)`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 12px;
-`;
 
 interface Props {
   phase: IPhaseData;
 }
 
+interface MetricDisplay {
+  key: string;
+  label: string;
+  value: string;
+  subtext?: string;
+}
+
 const ParticipationMetrics = ({ phase }: Props) => {
   const { formatMessage } = useIntl();
-  const metrics = useParticipationMetrics(phase);
+  const { data: metricsData } = useParticipationMetrics({
+    phaseId: phase.id,
+    participationMethod: phase.attributes.participation_method,
+  });
+
+  // Transform API data into display format
+  const metrics: MetricDisplay[] = useMemo(() => {
+    if (!metricsData) return [];
+    const result: MetricDisplay[] = [];
+
+    // Always show visitors and participants
+    result.push({
+      key: 'visitors',
+      label: formatMessage(messages.visitors),
+      value: metricsData.visitors.toLocaleString(),
+      subtext: metricsData.visitors_change
+        ? `Last week: +${metricsData.visitors_change.toLocaleString()}`
+        : undefined,
+    });
+
+    result.push({
+      key: 'participants',
+      label: formatMessage(messages.participants),
+      value: metricsData.participants.toLocaleString(),
+      subtext: metricsData.participants_change
+        ? `Last week: +${metricsData.participants_change.toLocaleString()}`
+        : undefined,
+    });
+
+    // Method-specific metrics
+    if (metricsData.ideas !== undefined) {
+      result.push({
+        key: 'ideas',
+        label: formatMessage(messages.inputs),
+        value: metricsData.ideas.toLocaleString(),
+        subtext: metricsData.ideas_change
+          ? `Last week: +${metricsData.ideas_change.toLocaleString()}`
+          : undefined,
+      });
+    }
+
+    if (metricsData.comments !== undefined) {
+      result.push({
+        key: 'comments',
+        label: formatMessage(messages.comments),
+        value: metricsData.comments.toLocaleString(),
+        subtext: metricsData.comments_change
+          ? `Last week: +${metricsData.comments_change.toLocaleString()}`
+          : undefined,
+      });
+    }
+
+    if (metricsData.reactions !== undefined) {
+      result.push({
+        key: 'reactions',
+        label: formatMessage(messages.reactions),
+        value: metricsData.reactions.toLocaleString(),
+        subtext: metricsData.reactions_change
+          ? `Last week: +${metricsData.reactions_change.toLocaleString()}`
+          : undefined,
+      });
+    }
+
+    if (metricsData.votes !== undefined && !metricsData.votes_per_person) {
+      result.push({
+        key: 'votes',
+        label: formatMessage(messages.votes),
+        value: metricsData.votes.toLocaleString(),
+        subtext: metricsData.votes_change
+          ? `Last week: +${metricsData.votes_change.toLocaleString()}`
+          : undefined,
+      });
+    }
+
+    if (metricsData.votes_per_person !== undefined) {
+      result.push({
+        key: 'votes',
+        label: formatMessage(messages.votes),
+        value: metricsData.votes!.toLocaleString(),
+        subtext: metricsData.votes_change
+          ? `Last week: +${metricsData.votes_change.toLocaleString()}`
+          : undefined,
+      });
+
+      result.push({
+        key: 'votesPerPerson',
+        label: formatMessage(messages.votesPerPerson),
+        value: metricsData.votes_per_person.toFixed(1),
+        subtext: `Total: ${metricsData.votes!.toLocaleString()}`,
+      });
+    }
+
+    if (metricsData.submissions !== undefined) {
+      result.push({
+        key: 'submissions',
+        label: formatMessage(messages.submissions),
+        value: metricsData.submissions.toLocaleString(),
+        subtext: metricsData.submissions_change
+          ? `Last week: +${metricsData.submissions_change.toLocaleString()}`
+          : undefined,
+      });
+    }
+
+    if (metricsData.completion_rate !== undefined) {
+      result.push({
+        key: 'completionRate',
+        label: formatMessage(messages.completionRate),
+        value: `${metricsData.completion_rate.toFixed(1)}%`,
+        subtext: undefined,
+      });
+    }
+
+    // Always show engagement rate last
+    result.push({
+      key: 'engagementRate',
+      label: formatMessage(messages.engagementRate),
+      value: `${metricsData.engagement_rate.toFixed(1)}%`,
+      subtext: undefined,
+    });
+
+    return result;
+  }, [metricsData, formatMessage]);
 
   return (
-    <Box>
-      <Title variant="h3" mb="8px">
-        <FormattedMessage {...messages.participationMetricsTitle} />
-      </Title>
-      <Text color="textSecondary" mb="24px">
-        <FormattedMessage {...messages.participationMetricsDescription} />
-      </Text>
-
-      <GridContainer>
-        <MetricCard
-          value={metrics.uniqueParticipants}
-          label={formatMessage(messages.uniqueParticipants)}
-          subtext={formatMessage(messages.uniqueParticipantsSubtext)}
-        />
-
-        {metrics.totalContributions > 0 && (
-          <MetricCard
-            value={metrics.totalContributions}
-            label={formatMessage(messages.totalContributions)}
-            subtext={formatMessage(messages.totalContributionsSubtext)}
-          />
-        )}
-
-        <MetricCard
-          value={`${metrics.engagementRate.toFixed(1)}%`}
-          label={formatMessage(messages.engagementRate)}
-          subtext={formatMessage(messages.engagementRateSubtext, {
-            visitors: metrics.totalVisitors,
-          })}
-        />
-      </GridContainer>
-
-      {metrics.contributionsByType && (
-        <Box mt="24px">
-          <Title variant="h4" mb="16px">
-            <FormattedMessage {...messages.contributionBreakdown} />
-          </Title>
-          <BreakdownGrid>
-            {Object.entries(metrics.contributionsByType).map(
-              ([type, count]) => (
-                <MetricCard
-                  key={type}
-                  value={count}
-                  label={type.charAt(0).toUpperCase() + type.slice(1)}
-                />
-              )
-            )}
-          </BreakdownGrid>
+    <Box
+      display="flex"
+      flexWrap="wrap"
+      alignContent="center"
+      gap="24px"
+      flexGrow={1}
+    >
+      {metrics.map((metric) => (
+        <Box
+          key={metric.key}
+          display="flex"
+          flexDirection="column"
+          gap="4px"
+          w="130px"
+        >
+          <Text fontSize="s" color="primary">
+            {metric.label}
+          </Text>
+          <Text fontSize="l" color="textPrimary">
+            {metric.value}
+          </Text>
+          {metric.subtext && (
+            <Text fontSize="s" color="textSecondary">
+              {metric.subtext}
+            </Text>
+          )}
         </Box>
-      )}
+      ))}
     </Box>
   );
 };
