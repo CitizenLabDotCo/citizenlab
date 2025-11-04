@@ -49,5 +49,19 @@ module ParticipationMethod
     def voting_method
       Factory.instance.voting_method_for(phase)
     end
+
+    def participations
+      # comments? can be permitted... so we only count if commented idea does NOT have association with other phase, created before associated with the voting phase?
+      # events? Not associated with phase, so cannot really be seen as participation in voting phase.
+      phase.baskets.map do |basket|
+        {
+          id: basket.id,
+          action: 'voting',
+          classname: 'Basket',
+          user_id: basket.user_id,
+          user_custom_field_values: basket.user.custom_field_values
+        }
+      end
+    end
   end
 end
