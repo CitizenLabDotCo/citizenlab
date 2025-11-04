@@ -440,6 +440,18 @@ module ParticipationMethod
       true
     end
 
+    def participations
+      # TODO: Add in comment reactions etc
+      phase.ideas.map do |idea|
+        {
+          id: idea.id,
+          action: 'posting_idea',
+          user_id: idea.author_id,
+          user_custom_field_values: idea.author.custom_field_values
+        }
+      end
+    end
+
     def follow_idea_on_idea_submission?
       true
     end

@@ -7,10 +7,8 @@ module Participation
     participation_service = ParticipationsService.instance
 
     # Check which type of model is including this concern
-    if self.is_a?(Phase)
+    if is_a?(Phase)
       participation_service.phase_participation(self)
-    else
-      nil
     end
   end
 end

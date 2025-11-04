@@ -14,8 +14,9 @@ resource 'Phase participation' do
 
     example_request 'Get a phase with participation data' do
       assert_status 200
-      expect(json_response_body.dig(:data, :attributes, :participation)).to be_present
+      participations = json_response_body.dig(:data, :attributes, :participation)
+      expect(participations.dig(:participations, :count)).to eq 3
+      expect(participations.dig(:participants, :count)).to eq 3
     end
   end
 end
-

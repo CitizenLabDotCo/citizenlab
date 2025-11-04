@@ -8,7 +8,18 @@ class ParticipationsService
     format_participation_data(participations)
   end
 
+  def permission_participation(permission)
+    participations = phase_participations(permission.phase)
+
+    particiption.filter(by(permission.action))
+
+    # For other requests, some kind of filtering might be applied here
+    format_participation_data(participations)
+  end
+
   private
+
+  def filter_by_permission(participations, action); end
 
   def initialize
     @phase_participations = {}
@@ -16,15 +27,7 @@ class ParticipationsService
 
   # Fetch and cache participations in singleton for a phase
   def phase_participations(phase)
-    @phase_participations[phase.id] ||= begin
-      phase.ideas.map do |idea|
-        {
-          id: idea.id,
-          user_id: idea.author_id,
-          user_custom_field_values: idea.author.custom_field_values
-        }
-      end
-                                     end
+    @phase_participations[phase.id] ||= phase.pmethod.participations
   end
 
   def format_participation_data(participations)
@@ -33,7 +36,7 @@ class ParticipationsService
         count: participations.count
       },
       participants: {
-        count: participations.map { |p| p[:user_id] }.uniq.count,
+        count: participations.pluck(:user_id).uniq.count,
         demographics: [
           { tbc: 'tbc' } # Placeholder for demographics data
         ]
