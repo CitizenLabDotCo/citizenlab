@@ -51,7 +51,7 @@ const QuillEditedContent = ({
     const setSecureReferrerPolicy = (iframe: HTMLIFrameElement) => {
       if (!isYouTubeEmbedLink(iframe.src)) return;
 
-      // Set both attribute and property
+      // Set both referrer policy attribute and property
       iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
       iframe.referrerPolicy = 'strict-origin-when-cross-origin';
     };
