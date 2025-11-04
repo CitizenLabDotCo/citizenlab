@@ -21,21 +21,27 @@ const ProgressBarRow = styled(Box)`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding: 0;
+  padding: 4px;
   position: relative;
   width: 100%;
   height: 26px;
-  overflow: hidden;
+  overflow: visible;
 `;
 
 const ProgressBarFill = styled(Box)<{ percentage: number }>`
   background: rgba(4, 77, 108, 0.2);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 4px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
   width: ${({ percentage }) => percentage}%;
-  height: 100%;
+  z-index: 0;
+`;
+
+const BarLabel = styled(Text)`
+  position: relative;
+  z-index: 1;
+  white-space: nowrap;
 `;
 
 interface Props {
@@ -71,22 +77,18 @@ const DemographicsWidget = ({ phase }: Props) => {
         >
           {data.map((item, index) => (
             <ProgressBarRow key={`${item.key}-${index}`}>
-              <ProgressBarFill percentage={item.percentage}>
-                <Text
-                  fontSize="s"
-                  fontWeight="semi-bold"
-                  color="tenantText"
-                  m="0px"
-                  whiteSpace="nowrap"
-                  overflow="hidden"
-                  textOverflow="ellipsis"
-                  title={`${item.label}: ${
-                    item.count
-                  } (${item.percentage.toFixed(1)}%)`}
-                >
-                  {item.label}
-                </Text>
-              </ProgressBarFill>
+              <ProgressBarFill percentage={item.percentage} />
+              <BarLabel
+                fontSize="s"
+                fontWeight="semi-bold"
+                color="tenantText"
+                m="0px"
+                title={`${item.label}: ${item.count} (${item.percentage.toFixed(
+                  1
+                )}%)`}
+              >
+                {item.label}
+              </BarLabel>
             </ProgressBarRow>
           ))}
         </Box>
