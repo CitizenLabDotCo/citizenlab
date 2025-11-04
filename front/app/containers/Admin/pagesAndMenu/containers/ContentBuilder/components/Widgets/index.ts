@@ -23,7 +23,7 @@ import WhiteSpace, {
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
-// Homepage builder widggets
+// Homepage builder widgets
 import Proposals from './_deprecated/Proposals';
 import Areas, { areasTitle } from './Areas';
 import CallToAction, { callToActionTitle } from './CallToAction';
@@ -47,6 +47,12 @@ import Selection, { selectionTitle } from './Selection';
 import Spotlight, { spotlightTitle } from './Spotlight';
 import TextMultiloc, { textMultilocTitle } from './TextMultiloc';
 import VideoEmbed, { videoEmbedTitle } from './VideoEmbed';
+import FolderTitle, {
+  folderTitleTitle,
+} from 'components/DescriptionBuilder/Widgets/FolderTitle';
+import FolderFiles, {
+  folderFilesTitle,
+} from 'components/DescriptionBuilder/Widgets/FolderFiles';
 
 export const WIDGETS = {
   // Shared widgets
@@ -80,6 +86,10 @@ export const WIDGETS = {
 
   // DEPRECATED (TODO remove in migration)
   Proposals,
+
+  // Folder description builder widgets
+  FolderTitle,
+  FolderFiles,
 };
 
 type WidgetName = keyof typeof WIDGETS;
@@ -116,6 +126,10 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
 
   // DEPRECATED
   Proposals: callToActionTitle,
+
+  // Folder description builder widgets
+  FolderTitle: folderTitleTitle,
+  FolderFiles: folderFilesTitle,
 };
 
 const WIDGETS_WITH_CHILDREN = new Set<string>([
@@ -151,6 +165,10 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   // RENAMED
   'Projects',
   'Highlight',
+
+  // Folder description builder widgets
+  'FolderTitle',
+  'FolderFiles',
 ] satisfies WidgetName[]);
 
 export const hasNoPointerEvents = (nodeName: string) => {
