@@ -32,12 +32,7 @@ module ContentBuilder
             type: { resolvedName: 'FolderTitle' },
             nodes: [],
             props: { folderId: folder.id },
-            custom: {
-              title: {
-                id: 'app.containers.admin.ContentBuilder.folderTitle',
-                defaultMessage: 'Folder title'
-              }
-            },
+            custom: {},
             hidden: false,
             parent: 'ROOT',
             isCanvas: false,
@@ -48,12 +43,7 @@ module ContentBuilder
             type: { resolvedName: 'TextMultiloc' },
             nodes: [],
             props: { text: folder.description_multiloc || {} },
-            custom: {
-              title: {
-                id: 'app.containers.admin.ContentBuilder.textMultiloc',
-                defaultMessage: 'Text'
-              }
-            },
+            custom: {},
             hidden: false,
             parent: 'ROOT',
             isCanvas: false,
