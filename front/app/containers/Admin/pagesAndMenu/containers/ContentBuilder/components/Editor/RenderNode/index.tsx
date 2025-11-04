@@ -9,6 +9,7 @@ import messages from 'components/admin/ContentBuilder/messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import { WIDGET_TITLES, hasChildren, hasNoPointerEvents } from '../../Widgets';
+import { MessageDescriptor } from 'react-intl';
 
 const StyledBox = styled(Box)`
   ${({ isRoot }: { isRoot: boolean }) =>
@@ -50,7 +51,9 @@ const RenderNode = ({ render }) => {
       isHover: node.events.hovered,
       name,
       hasError: node.data.props.hasError,
-      title: WIDGET_TITLES[name],
+      title:
+        WIDGET_TITLES[name] ||
+        (node.data.custom?.title as MessageDescriptor | undefined),
       noPointerEvents: hasNoPointerEvents(name),
     };
   });
