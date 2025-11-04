@@ -2032,6 +2032,7 @@
   "app.containers.VoteControl.voteErrorTitle": "Nešto je pošlo po krivu",
   "app.containers.admin.ContentBuilder.default": "zadana vrijednost",
   "app.containers.admin.ContentBuilder.folderFiles": "Datoteke mapa",
+  "app.containers.admin.ContentBuilder.folderTitle": "Naslov mape",
   "app.containers.admin.ContentBuilder.imageTextCards": "Slike i tekstualne kartice",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Info & harmonike",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 stupac",
