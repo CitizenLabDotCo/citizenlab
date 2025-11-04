@@ -2032,6 +2032,7 @@
   "app.containers.VoteControl.voteErrorTitle": "Jotain meni pieleen",
   "app.containers.admin.ContentBuilder.default": "oletuksena",
   "app.containers.admin.ContentBuilder.folderFiles": "Kansiotiedostot",
+  "app.containers.admin.ContentBuilder.folderTitle": "Kansion otsikko",
   "app.containers.admin.ContentBuilder.imageTextCards": "Kuva- ja tekstikortit",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Info & harmonikka",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 sarake",
