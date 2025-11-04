@@ -2032,6 +2032,7 @@
   "app.containers.VoteControl.voteErrorTitle": "Radās kļūda",
   "app.containers.admin.ContentBuilder.default": "noklusējuma",
   "app.containers.admin.ContentBuilder.folderFiles": "Mapes faili",
+  "app.containers.admin.ContentBuilder.folderTitle": "Mapes nosaukums",
   "app.containers.admin.ContentBuilder.imageTextCards": "Attēlu un teksta kartes",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Informācija un akordeoni",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 sleja",
