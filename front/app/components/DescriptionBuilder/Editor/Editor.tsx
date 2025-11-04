@@ -7,7 +7,6 @@ import {
   Resolver,
 } from '@craftjs/core';
 
-// import RenderNode from './RenderNode';
 import RenderNode from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Editor/RenderNode';
 
 type EditorProps = {
