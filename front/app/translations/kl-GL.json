@@ -2032,6 +2032,7 @@
   "app.containers.VoteControl.voteErrorTitle": "Arlaanik ajortoqarpoq.",
   "app.containers.admin.ContentBuilder.default": "default",
   "app.containers.admin.ContentBuilder.folderFiles": "Folder files",
+  "app.containers.admin.ContentBuilder.folderTitle": "Folder title",
   "app.containers.admin.ContentBuilder.imageTextCards": "Image & text cards",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Info & accordions",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 column",
