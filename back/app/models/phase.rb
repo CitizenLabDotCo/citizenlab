@@ -67,6 +67,7 @@ class Phase < ApplicationRecord
   include Volunteering::VolunteeringPhase
   include DocumentAnnotation::DocumentAnnotationPhase
   include Files::FileAttachable
+  include Participation
 
   PARTICIPATION_METHODS = ParticipationMethod::Base.all_methods.map(&:method_str).freeze
   VOTING_METHODS        = %w[budgeting multiple_voting single_voting].freeze
