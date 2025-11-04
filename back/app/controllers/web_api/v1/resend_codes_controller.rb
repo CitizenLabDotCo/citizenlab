@@ -12,9 +12,25 @@ class WebApi::V1::ResendCodesController < ApplicationController
     end
   end
 
+  def resend_code_unauthenticated
+    email = resend_code_unauthenticated_params[:email]
+    user = User.find_by(email: email)
+
+    if user
+      RequestConfirmationCodeJob.perform_now user, new_email: nil
+      head :ok
+    else
+      render json: { errors: { email: ['not found'] } }, status: :not_found
+    end
+  end
+
   private
 
   def resend_code_params
     params.permit(:new_email)
+  end
+
+  def resend_code_unauthenticated_params
+    params.require(:email)
   end
 end
