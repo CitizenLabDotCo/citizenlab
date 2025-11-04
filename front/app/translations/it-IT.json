@@ -2032,6 +2032,7 @@
   "app.containers.VoteControl.voteErrorTitle": "Qualcosa è andato storto",
   "app.containers.admin.ContentBuilder.default": "predefinito",
   "app.containers.admin.ContentBuilder.folderFiles": "Cartelle",
+  "app.containers.admin.ContentBuilder.folderTitle": "Titolo della cartella",
   "app.containers.admin.ContentBuilder.imageTextCards": "Schede immagine e testo",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Info e fisarmoniche",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 colonna",
