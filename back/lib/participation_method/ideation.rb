@@ -446,6 +446,7 @@ module ParticipationMethod
         {
           id: idea.id,
           action: 'posting_idea',
+          classname: 'Idea',
           user_id: idea.author_id,
           user_custom_field_values: idea.author.custom_field_values
         }
