@@ -24,11 +24,11 @@ class ParticipationsService
 
   def phase_participation_data(participations)
     phase_level = format_participation_data(participations.values.flatten)
-    pmethods_level = participations.each_with_object({}) do |(action, records), hash|
-      hash[action] = format_participation_data(records)
+    actions_level = participations.transform_values do |records|
+      format_participation_data(records)
     end
 
-    phase_level.merge(pmethods_level)
+    { **phase_level, actions: [actions_level] }
   end
 
   def format_participation_data(participations)
