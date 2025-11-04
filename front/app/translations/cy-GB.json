@@ -2032,6 +2032,7 @@
   "app.containers.VoteControl.voteErrorTitle": "Aeth rhywbeth o'i le",
   "app.containers.admin.ContentBuilder.default": "rhagosodedig",
   "app.containers.admin.ContentBuilder.folderFiles": "Ffeiliau ffolder",
+  "app.containers.admin.ContentBuilder.folderTitle": "Teitl y ffolder",
   "app.containers.admin.ContentBuilder.imageTextCards": "Cardiau delwedd a thestun",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Gwybodaeth ac acordion",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 golofn",
