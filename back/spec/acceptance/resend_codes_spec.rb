@@ -76,7 +76,7 @@ resource 'Code Resends' do
         user.update(email_confirmation_code_reset_count: 5)
         do_request(new_email: 'some@email.com')
         assert_status 200
-        # A bit weird, but if provide a `new_email`, the limit is not applied.
+        # A bit weird, but if a `new_email` is provided, the limit is not applied.
         # But at least this does not allow people to brute force the code,
         # since the email_confirmation_retry_count is not reset in this case.
         # (see test below)
