@@ -115,7 +115,7 @@ class WebApi::V1::UsersController < ApplicationController
   def check
     skip_authorization
     if User::EMAIL_REGEX.match?(params[:email])
-      @user = User.find_by email: params[:email]
+      @user = User.find_by_cimail(params[:email])
       if @user&.invite_pending?
         render json: { errors: { email: [{ error: 'taken_by_invite', value: params[:email], inviter_email: @user.invitee_invite&.inviter&.email }] } }, status: :unprocessable_entity
       elsif @user && !@user&.no_password?
