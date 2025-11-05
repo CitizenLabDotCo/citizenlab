@@ -407,11 +407,13 @@ pa:
       title: '%{requesterName} ਨੇ ਤੁਹਾਨੂੰ "%{projectTitle}" ਪ੍ਰੋਜੈਕਟ ਦੀ ਸਮੀਖਿਆ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਹੈ।'
       event_description: "ਵਰਤਮਾਨ ਵਿੱਚ, ਪ੍ਰੋਜੈਕਟ ਡਰਾਫਟ ਮੋਡ ਵਿੱਚ ਹੈ ਅਤੇ ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਦਿਖਾਈ ਨਹੀਂ ਦੇ ਰਿਹਾ ਹੈ। ਇੱਕ ਵਾਰ ਜਦੋਂ ਤੁਸੀਂ ਇਸਦੀ ਸਮੀਖਿਆ ਅਤੇ ਪ੍ਰਵਾਨਗੀ ਦੇ ਦਿੰਦੇ ਹੋ, ਤਾਂ ਸੰਚਾਲਕ ਇਸਨੂੰ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰਨ ਦੇ ਯੋਗ ਹੋਵੇਗਾ।"
       cta_button: "ਪ੍ਰੋਜੈਕਟ ਦੀ ਸਮੀਖਿਆ ਕਰੋ"
+      preheader: '%{requesterName} ਨੇ ਤੁਹਾਨੂੰ "%{projectTitle}" ਪ੍ਰੋਜੈਕਟ ਦੀ ਸਮੀਖਿਆ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਹੈ।'
     project_review_state_change:
       subject: '"%{projectTitle}" ਨੂੰ ਮਨਜ਼ੂਰੀ ਦਿੱਤੀ ਗਈ ਹੈ'
       title: '%{reviewerName} ਨੇ "%{projectTitle}" ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਪ੍ਰਵਾਨਗੀ ਦਿੱਤੀ'
       event_description: "ਇਹ ਪ੍ਰੋਜੈਕਟ ਹੁਣ ਲਾਈਵ ਹੋਣ ਲਈ ਤਿਆਰ ਹੈ। ਤੁਸੀਂ ਜਦੋਂ ਵੀ ਤਿਆਰ ਹੋਵੋ ਇਸਨੂੰ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰ ਸਕਦੇ ਹੋ!"
       cta_button: "ਪ੍ਰੋਜੈਕਟ ਸੈਟਿੰਗਾਂ 'ਤੇ ਜਾਓ"
+      preheader: '%{reviewerName} ਨੇ ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਪ੍ਰਵਾਨਗੀ ਦਿੱਤੀ "%{projectTitle}"'
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
       event_description: '%{organizationName} ਨੇ ਆਪਣੇ ਡਿਜੀਟਲ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ''%{input_title}'' ਇਨਪੁਟ ਦੀ ਸਥਿਤੀ ਨੂੰ ਅਪਡੇਟ ਕੀਤਾ।'
