@@ -264,4 +264,22 @@ resource 'User Token' do
       end
     end
   end
+
+  post 'web_api/v1/user_token/unconfirmed' do
+    context 'when user_confirmation is enabled' do
+      # TODO: always block
+    end
+
+    context 'when user_confirmation is disabled' do
+      context 'when user has no password' do
+        # TODO: allow
+      end
+
+      context 'when user has password' do
+        # TODO: not allow
+      end
+
+      # anything else?
+    end
+  end
 end
