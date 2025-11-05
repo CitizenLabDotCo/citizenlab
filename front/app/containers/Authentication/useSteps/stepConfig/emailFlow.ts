@@ -1,6 +1,7 @@
 import { SupportedLocale } from 'typings';
 
 import resendEmailConfirmationCodeUnauthenticated from 'api/authentication/confirm_email/resendEmailConfirmationCodeUnauthenticated';
+import getUserTokenUnconfirmed from 'api/authentication/sign_in_out/getUserTokenUnconfirmed';
 import signIn from 'api/authentication/sign_in_out/signIn';
 import createEmailOnlyAccount from 'api/authentication/sign_up/createEmailOnlyAccount';
 import { handleOnSSOClick } from 'api/authentication/singleSignOn';
@@ -111,8 +112,8 @@ export const emailFlow = (
             setCurrentStep('missing-data:email-confirmation');
           } else {
             // If user confirmation is not enabled, we can
-            // log in and see where to go next
-            // TODO
+            // request a JWT for the unconfirmed user and proceed
+            await getUserTokenUnconfirmed(email);
 
             const { requirements } = await getRequirements();
             const authenticationData = getAuthenticationData();
