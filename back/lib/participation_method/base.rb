@@ -253,7 +253,7 @@ module ParticipationMethod
     end
 
     def participations
-      {} # Quick fix for failing specs.
+      {} # No-op default.
     end
 
     private

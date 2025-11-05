@@ -42,6 +42,8 @@ resource 'Phase participation' do
         )
       end
 
+      let(:id) { voting_phase.id }
+
       (1..3).each do |i|
         let!(:"idea#{i}") { create(:idea, phases: [ideation_phase, voting_phase], project: ideation_phase.project, submitted_at: 20.days.ago) }
       end
@@ -54,8 +56,6 @@ resource 'Phase participation' do
       let!(:comment2) { create(:comment, idea: idea2, author: user2, created_at: 13.days.ago) } # in voting phase
       let!(:comment3) { create(:comment, idea: idea3, author: user2, created_at: 5.days.ago) } # in voting phase & last 7 days
       let!(:comment4) { create(:comment, idea: idea3, author: user3, created_at: 5.days.ago) } # in voting phase & last 7 days
-
-      let(:id) { voting_phase.id }
 
       example_request 'Get a phase with participation data' do
         assert_status 200
@@ -81,7 +81,7 @@ resource 'Phase participation' do
               participants: {
                 count: 0,
                 change_last_7_days: 0,
-                demographics: [{tbc: "tbc"}]
+                demographics: [{ tbc: 'tbc' }]
               }
             },
             {
@@ -93,7 +93,7 @@ resource 'Phase participation' do
               participants: {
                 count: 2,
                 change_last_7_days: 1,
-                demographics: [{tbc: "tbc"}]
+                demographics: [{ tbc: 'tbc' }]
               }
             }
           ]
@@ -102,30 +102,3 @@ resource 'Phase participation' do
     end
   end
 end
-
-# actions: [
-#   {
-#     action_type: 'voting',
-#     participations: {
-#       count: 0,
-#       change_last_7_days: 0
-#     },
-#     participants: {
-#       count: 0,
-#       change_last_7_days: 0,
-#       demographics: [{tbc: "tbc"}]
-#     }
-#   },
-#   {
-#     action_type: 'commenting_idea',
-#     participations: {
-#       count: 3,
-#       change_last_7_days: 2
-#     },
-#     participants: {
-#       count: 2,
-#       change_last_7_days: 1,
-#       demographics: [{tbc: "tbc"}]
-#     }
-#   }
-# ]
