@@ -720,6 +720,8 @@
   "app.components.form.backToInputManager": "Tilbage til input manager",
   "app.components.form.backToProject": "Tilbage til projektet",
   "app.components.form.controls.allStatementsError": "Der skal vælges et svar for alle udsagn.",
+  "app.components.form.controls.birthyearTooHigh": "Fødselsåret må ikke ligge i fremtiden",
+  "app.components.form.controls.birthyearTooLow": "Fødselsåret skal være mindst 1900",
   "app.components.form.controls.clearAll": "Ryd alt",
   "app.components.form.controls.clearAllScreenreader": "Ryd alle svar fra ovenstående matrixspørgsmål",
   "app.components.form.controls.cosponsorsPlaceholder": "Begynd at skrive et navn for at søge",
