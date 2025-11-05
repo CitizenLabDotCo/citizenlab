@@ -46,6 +46,39 @@ class ContentImageService
     encode_content content
   end
 
+  # Extracts image data from the content field of the given record, stores them in a
+  # separate model and updates the content field to reference the stored image instead.
+  #
+  # This method doesn't directly save the image models. Instead, it returns the record
+  # with the updated content field and the new image models added to the association.
+  # The actual saving relies on the association's auto-save behavior.
+  #
+  # @param imageable [Imageable] The record that contains the content field.
+  # @param field [String, Symbol] The name of the field in `imageable` containing the
+  #   content to be processed.
+  # @param association [Symbol, ActiveRecord::Associations::CollectionProxy] The
+  #   association to/through which the new image models will be added.
+  # @return [Imageable] The updated `imageable` object.
+  def swap_data_images!(imageable, field, association)
+    encoded_content = imageable.read_attribute(field)
+    content = decode_content(encoded_content)
+    association = imageable.public_send(association) if association.is_a?(Symbol)
+
+    image_elements(content).each do |img_elt|
+      next if get_attribute(img_elt, code_attribute_for_element) # Image already stored.
+      next if image_attributes_for_element.none? { |elt_atr| attribute? img_elt, elt_atr }
+      next if (image_attrs = image_attributes(img_elt, imageable, field)).blank?
+
+      image = association.build(image_attrs)
+
+      set_attribute!(img_elt, code_attribute_for_element, image[code_attribute_for_model])
+      image_attributes_for_element.each { |elt_atr| remove_attribute!(img_elt, elt_atr) }
+    end
+
+    imageable.write_attribute(field, encode_content(content))
+    imageable
+  end
+
   # Applies {#render_data_images} to each multiloc value in the given multiloc.
   def render_data_images_multiloc(multiloc, imageable: nil, field: nil)
     return multiloc if multiloc.blank?
