@@ -34,7 +34,7 @@ namespace :single_use do
             tenant_error_count = 0
 
             legacy_classes.each do |klass|
-              klass.find_each do |file|
+              klass.migrated.find_each do |file|
                 file.destroy!
                 # region stats_and_logging
                 tenant_file_counts[klass.name] += 1
