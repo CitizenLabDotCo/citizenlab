@@ -46,7 +46,9 @@ const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
   });
 
   const flattenedAdminPublications: IAdminPublicationData[] =
-    adminPublications?.pages.flatMap((page) => page.data) ?? [];
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    adminPublications?.pages?.flatMap((page) => page.data) ?? [];
 
   const anyFolderExists = flattenedAdminPublications.some(
     (adminPublication) =>

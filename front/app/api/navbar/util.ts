@@ -16,7 +16,9 @@ export function getNavbarItemSlug({
 }: INavbarItem): RouteType | null {
   const hasCorrespondingPage = !!relationships.static_page.data?.id;
   const hasCorrespondingProject = !!relationships.project.data?.id;
-  const hasCorrespondingFolder = !!relationships.project_folder.data?.id;
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  const hasCorrespondingFolder = !!relationships.project_folder?.data?.id;
 
   // Default navbar item
   if (code !== 'custom' && !hasCorrespondingPage) {
