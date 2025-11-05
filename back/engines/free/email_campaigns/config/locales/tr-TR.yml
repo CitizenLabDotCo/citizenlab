@@ -407,11 +407,13 @@ tr:
       title: '%{requesterName} sizi "%{projectTitle}" projesini incelemeye davet etti.'
       event_description: "Şu anda proje taslak modundadır ve kullanıcılar tarafından görülemez. Siz inceleyip onayladıktan sonra moderatör projeyi yayınlayabilecektir."
       cta_button: "Projeyi gözden geçirin"
+      preheader: '%{requesterName} sizi "%{projectTitle}" projesini incelemeye davet etti.'
     project_review_state_change:
       subject: '"%{projectTitle}" onaylanmıştır'
       title: '%{reviewerName} "%{projectTitle}" projesini onayladı.'
       event_description: "Proje artık yayına girmeye hazır. Hazır olduğunuzda yayınlayabilirsiniz!"
       cta_button: "Proje ayarlarına gidin"
+      preheader: '%{reviewerName} "%{projectTitle}" projesini onayladı.'
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
       event_description: '%{organizationName} dijital katılım platformlarında ''%{input_title}'' girdisinin durumunu güncelledi.'
