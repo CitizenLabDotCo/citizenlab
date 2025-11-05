@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { Box, Text } from 'component-library';
 import styled from 'styled-components';
@@ -57,7 +57,29 @@ const DemographicsWidget = ({ phase }: Props) => {
     userDataCollection: phase?.attributes.user_data_collection || 'anonymous',
   });
 
-  const { gender, age, areas } = demographicsData || {};
+  // Extract the first 3 built-in fields for overview display
+  // Order: gender, birthyear, domicile
+  const { gender, age, areas } = useMemo(() => {
+    if (!demographicsData?.fields) {
+      return { gender: undefined, age: undefined, areas: undefined };
+    }
+
+    const genderField = demographicsData.fields.find(
+      (f) => f.field_code === 'gender'
+    );
+    const birthyearField = demographicsData.fields.find(
+      (f) => f.field_code === 'birthyear'
+    );
+    const domicileField = demographicsData.fields.find(
+      (f) => f.field_code === 'domicile'
+    );
+
+    return {
+      gender: genderField?.data_points,
+      age: birthyearField?.data_points,
+      areas: domicileField?.data_points,
+    };
+  }, [demographicsData]);
 
   // Helper to render a demographic section
   const renderSection = (title: string, data?: DemographicDataPoint[]) => {
