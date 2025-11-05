@@ -10,7 +10,7 @@ class SideFxEventService
   end
 
   def before_update(event, _current_user)
-    event.description_multiloc = TextImageService.new.swap_data_images_multiloc(event.description_multiloc, field: :description_multiloc, imageable: event)
+    event.description_multiloc = TextImageService.new.swap_data_images(event.description_multiloc, field: :description_multiloc, imageable: event)
   end
 
   def after_update(event, current_user)

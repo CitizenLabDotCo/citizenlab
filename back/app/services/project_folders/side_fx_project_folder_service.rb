@@ -15,7 +15,7 @@ module ProjectFolders
     end
 
     def before_update(folder, _user)
-      folder.description_multiloc = TextImageService.new.swap_data_images_multiloc(folder.description_multiloc, field: :description_multiloc, imageable: folder)
+      folder.description_multiloc = TextImageService.new.swap_data_images(folder.description_multiloc, field: :description_multiloc, imageable: folder)
     end
 
     def after_update(folder, user)

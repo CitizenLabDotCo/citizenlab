@@ -5,7 +5,7 @@ require 'rails_helper'
 describe TextImageService do
   let(:service) { described_class.new }
 
-  describe 'swap_data_images_multiloc' do
+  describe 'swap_data_images' do
     before do
       stub_request(:any, 'res.cloudinary.com').to_return(
         body: png_image_as_base64('image10.jpg')
@@ -19,7 +19,7 @@ describe TextImageService do
         <img src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg" />
       HTML
       imageable = build(:project, description_multiloc: { 'fr-BE' => input })
-      output = service.swap_data_images_multiloc imageable.description_multiloc, field: :description_multiloc, imageable: imageable
+      output = service.swap_data_images imageable.description_multiloc, field: :description_multiloc, imageable: imageable
       codes = imageable.reload.text_images.order(:created_at).pluck :text_reference
       expected_html = <<~HTML
         <img data-cl2-text-image-text-reference="#{codes[0]}">
@@ -32,7 +32,7 @@ describe TextImageService do
     it 'does not modify the empty string' do
       input = ''
       imageable = build(:project, description_multiloc: { 'en' => input })
-      expect(service.swap_data_images_multiloc(imageable.description_multiloc, field: :description_multiloc, imageable: imageable)).to eq({ 'en' => input })
+      expect(service.swap_data_images(imageable.description_multiloc, field: :description_multiloc, imageable: imageable)).to eq({ 'en' => input })
     end
 
     # It's more of a side effect; what really matters is that it doesn't fail when some

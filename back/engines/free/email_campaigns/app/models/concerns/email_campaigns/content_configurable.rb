@@ -73,7 +73,7 @@ module EmailCampaigns
     end
 
     def process_images(multiloc)
-      processed_multiloc = TextImageService.new.swap_data_images_multiloc self[multiloc], field: multiloc, imageable: self
+      processed_multiloc = TextImageService.new.swap_data_images self[multiloc], field: multiloc, imageable: self
       update_column multiloc, processed_multiloc
     end
 

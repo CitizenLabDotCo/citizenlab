@@ -26,7 +26,7 @@ describe ProjectFolders::SideFxProjectFolderService do
   describe 'before_update' do
     it 'runs the description through the text image service' do
       expect_any_instance_of(TextImageService)
-        .to receive(:swap_data_images_multiloc)
+        .to receive(:swap_data_images)
         .with(project_folder.description_multiloc, field: :description_multiloc, imageable: project_folder)
         .and_return(project_folder.description_multiloc)
       service.before_update(project_folder, user)

@@ -25,13 +25,6 @@ class ContentImageService
     attr_reader :parse_errors
   end
 
-  # Applies {#swap_data_images} to each multiloc value in the given multiloc.
-  def swap_data_images_multiloc(multiloc, imageable: nil, field: nil)
-    multiloc.transform_values do |encoded_content|
-      swap_data_images encoded_content, imageable: imageable, field: field
-    end
-  end
-
   # Extracts and remove image data from the content, stores it in a separate image model,
   # and updates the original content to reference the image model instead.
   def swap_data_images(encoded_content, imageable: nil, field: nil)

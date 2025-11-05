@@ -11,12 +11,12 @@ class SideFxStaticPageService
 
   def before_update(page, _)
     if page.top_info_section_multiloc.present?
-      page.top_info_section_multiloc = TextImageService.new.swap_data_images_multiloc page.top_info_section_multiloc, field: :top_info_section_multiloc, imageable: page
+      page.top_info_section_multiloc = TextImageService.new.swap_data_images page.top_info_section_multiloc, field: :top_info_section_multiloc, imageable: page
     end
 
     return if page.bottom_info_section_multiloc.blank?
 
-    page.bottom_info_section_multiloc = TextImageService.new.swap_data_images_multiloc page.bottom_info_section_multiloc, field: :bottom_info_section_multiloc, imageable: page
+    page.bottom_info_section_multiloc = TextImageService.new.swap_data_images page.bottom_info_section_multiloc, field: :bottom_info_section_multiloc, imageable: page
   end
 
   def after_update(page, user)

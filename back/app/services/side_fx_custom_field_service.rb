@@ -10,7 +10,7 @@ class SideFxCustomFieldService
   end
 
   def before_update(custom_field, _current_user)
-    custom_field.description_multiloc = TextImageService.new.swap_data_images_multiloc(custom_field.description_multiloc, field: :description_multiloc, imageable: custom_field)
+    custom_field.description_multiloc = TextImageService.new.swap_data_images(custom_field.description_multiloc, field: :description_multiloc, imageable: custom_field)
   end
 
   def after_update(custom_field, current_user)
