@@ -720,6 +720,8 @@
   "app.components.form.backToInputManager": "Tillbaka till input manager",
   "app.components.form.backToProject": "Tillbaka till projektet",
   "app.components.form.controls.allStatementsError": "Ett svar måste väljas för alla påståenden.",
+  "app.components.form.controls.birthyearTooHigh": "Födelseåret kan inte ligga i framtiden",
+  "app.components.form.controls.birthyearTooLow": "Födelseåret måste vara minst 1900",
   "app.components.form.controls.clearAll": "Rensa alla",
   "app.components.form.controls.clearAllScreenreader": "Rensa alla svar från ovanstående matrisfråga",
   "app.components.form.controls.cosponsorsPlaceholder": "Börja skriva in ett namn för att söka",
