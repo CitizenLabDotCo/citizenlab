@@ -4,8 +4,6 @@ module FlagInappropriateContent
   module WebApi
     module V1
       class InappropriateContentFlagsController < ApplicationController
-        after_action :verify_authorized
-        skip_after_action :verify_policy_scoped
         before_action :set_flag
 
         def show
