@@ -78,6 +78,9 @@ class Phase < ApplicationRecord
 
   attribute :reacting_dislike_enabled, :boolean, default: -> { disliking_enabled_default }
 
+  has_many_text_images_from :description_multiloc
+  accepts_nested_attributes_for :text_images
+
   belongs_to :project
 
   has_one :custom_form, as: :participation_context, dependent: :destroy # native_survey only
@@ -87,8 +90,6 @@ class Phase < ApplicationRecord
   has_many :ideas_phases, dependent: :destroy
   has_many :ideas, through: :ideas_phases
   has_many :reactions, through: :ideas
-  has_many :text_images, as: :imageable, dependent: :destroy
-  accepts_nested_attributes_for :text_images
   has_many :phase_files, -> { order(:ordering) }, dependent: :destroy
   has_many :jobs_trackers, -> { where(context_type: 'Phase') }, class_name: 'Jobs::Tracker', as: :context, dependent: :destroy
   belongs_to :manual_voters_last_updated_by, class_name: 'User', optional: true
