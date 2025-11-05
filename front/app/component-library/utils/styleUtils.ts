@@ -559,20 +559,3 @@ export function hexToRgb(hex: any) {
       }
     : null;
 }
-
-// RGBAtoRGB
-// Description: Function to convert RGBA color to RGB representation by blending it with a white background.
-// https://stackoverflow.com/a/71532946
-export function RGBAtoRGB(rgba: string, alpha: number) {
-  const rgbaValues: RegExpMatchArray | null = rgba.match(/\d+/g);
-
-  if (rgbaValues) {
-    const r = Math.round((1 - alpha) * 255 + alpha * parseFloat(rgbaValues[0]));
-    const g = Math.round((1 - alpha) * 255 + alpha * parseFloat(rgbaValues[1]));
-    const b = Math.round((1 - alpha) * 255 + alpha * parseFloat(rgbaValues[2]));
-
-    return `rgba(${r},${g},${b}, 1.0)`;
-  }
-
-  return '';
-}
