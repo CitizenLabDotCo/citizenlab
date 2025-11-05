@@ -171,4 +171,18 @@ class TextImageService < ContentImageService
   def fetch_content_image(code)
     @precomputed_text_images[code] || content_image_class.find_by(code_attribute_for_model => code)
   end
+
+  class << self
+    private
+
+    def define_association(imageable_class, association_name, field)
+      imageable_class.has_many(
+        association_name,
+        -> { where(imageable_field: field) },
+        as: :imageable,
+        dependent: :destroy,
+        class_name: 'TextImage'
+      )
+    end
+  end
 end
