@@ -22,6 +22,7 @@ resource 'Phase participation' do
     end
 
     context 'voting phase 2' do
+      # rubocop:disable RSpec/ScatteredLet
       let(:ideation_phase) do
         create(
           :phase,
@@ -52,10 +53,11 @@ resource 'Phase participation' do
         let!(:"user#{i}") { create(:user) }
       end
 
-      let!(:comment1) { create(:comment, idea: idea1, author: user1, created_at: 25.days.ago, ) } # before voting phase
+      let!(:comment1) { create(:comment, idea: idea1, author: user1, created_at: 25.days.ago) } # before voting phase
       let!(:comment2) { create(:comment, idea: idea2, author: user2, created_at: 13.days.ago) } # in voting phase
       let!(:comment3) { create(:comment, idea: idea3, author: user2, created_at: 5.days.ago) } # in voting phase & last 7 days
       let!(:comment4) { create(:comment, idea: idea3, author: user3, created_at: 5.days.ago) } # in voting phase & last 7 days
+      # rubocop:enable RSpec/ScatteredLet
 
       example_request 'Get a phase with participation data' do
         assert_status 200
@@ -69,7 +71,7 @@ resource 'Phase participation' do
           participants: {
             count: 2,
             change_last_7_days: 1,
-            demographics: [{ tbc: "tbc" }]
+            demographics: [{ tbc: 'tbc' }]
           },
           actions: [
             {
