@@ -192,15 +192,45 @@ const generateYupSchema = ({
         if (key === 'proposed_budget') {
           schema[key] =
             required && enabled
-              ? number().required(fieldRequired)
+              ? number()
+                  .transform((value, originalValue) =>
+                    originalValue === '' ? null : value
+                  )
+                  .required(fieldRequired)
               : number()
                   .transform((value, originalValue) =>
                     originalValue === '' ? null : value
                   )
                   .nullable();
+        } else if (key === 'birthyear') {
+          schema[key] = required
+            ? number()
+                .transform((value, originalValue) =>
+                  originalValue === '' ? null : value
+                )
+                .min(1900, formatMessage(messages.birthyearTooLow))
+                .max(
+                  new Date().getFullYear(),
+                  formatMessage(messages.birthyearTooHigh)
+                )
+                .required(fieldRequired)
+            : number()
+                .transform((value, originalValue) =>
+                  originalValue === '' ? null : value
+                )
+                .min(1900, formatMessage(messages.birthyearTooLow))
+                .max(
+                  new Date().getFullYear(),
+                  formatMessage(messages.birthyearTooHigh)
+                )
+                .nullable();
         } else {
           schema[key] = required
-            ? number().required(fieldRequired)
+            ? number()
+                .transform((value, originalValue) =>
+                  originalValue === '' ? null : value
+                )
+                .required(fieldRequired)
             : number()
                 .transform((value, originalValue) =>
                   originalValue === '' ? null : value

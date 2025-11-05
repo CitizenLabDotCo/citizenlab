@@ -343,4 +343,12 @@ export default defineMessages({
     id: 'app.components.form.controls.optionalParentheses',
     defaultMessage: '(optional)',
   },
+  birthyearTooHigh: {
+    id: 'app.components.form.controls.birthyearTooHigh',
+    defaultMessage: 'Birth year cannot be in the future',
+  },
+  birthyearTooLow: {
+    id: 'app.components.form.controls.birthyearTooLow',
+    defaultMessage: 'Birth year must be at least 1900',
+  },
 });
