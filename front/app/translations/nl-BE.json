@@ -720,6 +720,8 @@
   "app.components.form.backToInputManager": "Terug naar Beheer Bijdragen",
   "app.components.form.backToProject": "Terug naar project",
   "app.components.form.controls.allStatementsError": "Voor alle stellingen moet een antwoord worden gekozen.",
+  "app.components.form.controls.birthyearTooHigh": "Geboortejaar kan niet in de toekomst liggen",
+  "app.components.form.controls.birthyearTooLow": "Geboortejaar moet minstens 1900 zijn",
   "app.components.form.controls.clearAll": "Alles wissen",
   "app.components.form.controls.clearAllScreenreader": "Wis alle antwoorden uit bovenstaande matrixvraag",
   "app.components.form.controls.cosponsorsPlaceholder": "Begin met het typen van een naam om te zoeken",
