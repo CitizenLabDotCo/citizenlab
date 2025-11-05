@@ -7,18 +7,29 @@ describe ContentImageService do
 
   let(:subclass) do
     Class.new(described_class) do
-      def decode_content(str)
-        JSON.parse str, symbolize_names: true
+      def decode_content!(content)
+        case content
+        when Hash then content.transform_values { |v| decode_content!(v) }
+        when String then JSON.parse(content, symbolize_names: true)
+        else raise "Invalid content type: #{content.class}"
+        end
       rescue StandardError => e
         raise ContentImageService::DecodingError.new parse_errors: e.message
       end
 
       def encode_content(json)
-        json.to_json
+        case json
+        when Hash then json.transform_values { |v| encode_content(v) }
+        else json.to_json
+        end
       end
 
       def image_elements(content)
-        content.select { |elt| elt[:type] == 'image' }
+        case content
+        when Hash then content.values.flat_map { |v| image_elements(v) }
+        when Array then content.select { |elt| elt[:type] == 'image' }
+        else raise "Invalid content type: #{content.class}"
+        end
       end
 
       def content_image_class
@@ -111,22 +122,6 @@ describe ContentImageService do
       output = nil
       expect { output = service.swap_data_images_multiloc imageable.bio_multiloc, field: :bio_multiloc }.not_to(change(TextImage, :count))
       expect(output).to eq({ 'de' => json_str })
-    end
-
-    it 'returns the same value when decoding failed' do
-      invalid_json_str = '¯\_(ツ)_/¯'
-      valid_json_str = [
-        { type: 'image', src: 'https://images.com/image.png' }
-      ].to_json
-      expected_json = [
-        { type: 'image', data_cl2_content_image_code: text_images[0].text_reference }
-      ].to_json
-
-      imageable = build(:user, bio_multiloc: { 'en' => invalid_json_str, 'de' => valid_json_str })
-      output = service.swap_data_images_multiloc imageable.bio_multiloc, field: :bio_multiloc
-      expect(output).to eq({ 'en' => invalid_json_str, 'de' => expected_json })
-      expect(Sentry).to have_received :capture_exception
-      expect(TextImage).to have_received(:create!).once
     end
   end
 

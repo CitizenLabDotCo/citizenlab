@@ -34,6 +34,23 @@ describe TextImageService do
       imageable = build(:project, description_multiloc: { 'en' => input })
       expect(service.swap_data_images_multiloc(imageable.description_multiloc, field: :description_multiloc, imageable: imageable)).to eq({ 'en' => input })
     end
+
+    # It's more of a side effect; what really matters is that it doesn't fail when some
+    # values are nil.
+    it 'converts nil values in multiloc to empty strings' do
+      imageable = build(:project, description_multiloc: {
+        'nl-BE' => nil,
+        'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">'
+      })
+
+      output = service.swap_data_images imageable.description_multiloc, field: :description_multiloc, imageable: imageable
+      text_image = imageable.text_images.order(:created_at).first
+
+      expect(output).to match(
+        'en' => %(<img data-cl2-text-image-text-reference="#{text_image.text_reference}">),
+        'nl-BE' => ''
+      )
+    end
   end
 
   describe 'extract_data_images_multiloc' do
