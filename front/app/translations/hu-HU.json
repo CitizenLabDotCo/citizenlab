@@ -720,6 +720,8 @@
   "app.components.form.backToInputManager": "Vissza a beviteli kezelőhöz",
   "app.components.form.backToProject": "Vissza a projekthez",
   "app.components.form.controls.allStatementsError": "Minden állításhoz választ kell választani.",
+  "app.components.form.controls.birthyearTooHigh": "A születési év nem lehet a jövőben",
+  "app.components.form.controls.birthyearTooLow": "A születési évnek legalább 1900-nak kell lennie",
   "app.components.form.controls.clearAll": "Minden törlése",
   "app.components.form.controls.clearAllScreenreader": "Törölje az összes választ a fenti mátrixkérdésből",
   "app.components.form.controls.cosponsorsPlaceholder": "Kezdjen el beírni egy nevet a kereséshez",
