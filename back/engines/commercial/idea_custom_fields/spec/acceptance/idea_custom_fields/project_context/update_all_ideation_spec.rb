@@ -306,6 +306,17 @@ resource 'Idea Custom Fields' do
           assert_status 200
           expect(context.reload.custom_form.custom_fields[1].description_multiloc).to eq custom_description
         end
+
+        example 'Updating custom fields after when default multilocs have fewer persisted locales', document: false do
+          title_page = custom_form.custom_fields.find_by(code: 'title_multiloc')
+          title_page.update!(title_multiloc: { 'en' => 'Title' })
+
+          do_request(
+            custom_fields: (default_fields_param + [final_page])
+          )
+
+          assert_status 200
+        end
       end
     end
 
