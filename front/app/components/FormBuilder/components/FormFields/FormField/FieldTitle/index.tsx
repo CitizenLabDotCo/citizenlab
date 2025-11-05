@@ -37,6 +37,8 @@ const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
 
   const titleColor = field.input_type === 'page' ? 'blue500' : 'teal400';
   const lockMessage =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     field.constraints?.locks?.deletion &&
     formatMessage(messages.questionCannotBeDeleted);
 
