@@ -105,6 +105,7 @@ Rails.application.routes.draw do
 
       # auth
       post 'user_token' => 'user_token#create'
+      post 'user_token/unconfirmed' => 'user_token#user_token_unconfirmed'
 
       resources :users, only: %i[index create update destroy] do
         get :me, on: :collection

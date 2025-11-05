@@ -3,6 +3,11 @@
 class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
   TOKEN_LIFETIME = 1.day
 
+  # This endpoint is only used when user_confirmation is disabled.
+  def user_token_unconfirmed
+    # TODO
+  end
+
   private
 
   def auth_token
