@@ -18,7 +18,7 @@ describe TextImageService do
         <img src="data:image/jpeg;base64,/9j/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/yQALCAABAAEBAREA/8wABgAQEAX/2gAIAQEAAD8A0s8g/9k=" />
         <img src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg" />
       HTML
-      imageable = build(:project, description_multiloc: { 'fr-BE' => input })
+      imageable = create(:project, description_multiloc: { 'fr-BE' => input })
       output = service.swap_data_images imageable.description_multiloc, field: :description_multiloc, imageable: imageable
       codes = imageable.reload.text_images.order(:created_at).pluck :text_reference
       expected_html = <<~HTML
@@ -31,20 +31,20 @@ describe TextImageService do
 
     it 'does not modify the empty string' do
       input = ''
-      imageable = build(:project, description_multiloc: { 'en' => input })
+      imageable = create(:project, description_multiloc: { 'en' => input })
       expect(service.swap_data_images(imageable.description_multiloc, field: :description_multiloc, imageable: imageable)).to eq({ 'en' => input })
     end
 
     # It's more of a side effect; what really matters is that it doesn't fail when some
     # values are nil.
     it 'converts nil values in multiloc to empty strings' do
-      imageable = build(:project, description_multiloc: {
+      imageable = create(:project, description_multiloc: {
         'nl-BE' => nil,
         'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">'
       })
 
       output = service.swap_data_images imageable.description_multiloc, field: :description_multiloc, imageable: imageable
-      text_image = imageable.text_images.order(:created_at).first
+      text_image = imageable.text_images.reload.order(:created_at).first
 
       expect(output).to match(
         'en' => %(<img data-cl2-text-image-text-reference="#{text_image.text_reference}">),
