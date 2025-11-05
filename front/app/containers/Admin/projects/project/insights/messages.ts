@@ -17,10 +17,17 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.viewFullReport',
     defaultMessage: 'View full report',
   },
-  // Participation metrics
   visitors: {
     id: 'app.containers.Admin.projects.project.insights.visitors',
     defaultMessage: 'Visitors',
+  },
+  lastWeek: {
+    id: 'app.containers.Admin.projects.project.insights.lastWeek',
+    defaultMessage: 'Last week',
+  },
+  total: {
+    id: 'app.containers.Admin.projects.project.insights.total',
+    defaultMessage: 'Total',
   },
   participants: {
     id: 'app.containers.Admin.projects.project.insights.participants',
@@ -86,5 +93,13 @@ export default defineMessages({
   unspecified: {
     id: 'app.containers.Admin.projects.project.insights.unspecified',
     defaultMessage: 'Unspecified',
+  },
+  audienceTitle: {
+    id: 'app.containers.Admin.projects.project.insights.audienceTitle',
+    defaultMessage: 'Audience',
+  },
+  communityRepresentativeness: {
+    id: 'app.containers.Admin.projects.project.insights.communityRepresentativeness',
+    defaultMessage: 'Community representativeness',
   },
 });
