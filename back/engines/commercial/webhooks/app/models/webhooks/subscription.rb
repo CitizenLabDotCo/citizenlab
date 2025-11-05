@@ -41,6 +41,7 @@ module Webhooks
       'idea.changed',
       'idea.deleted',
       'user.created',
+      'user.changed',
       'user.deleted'
     ].freeze
 
