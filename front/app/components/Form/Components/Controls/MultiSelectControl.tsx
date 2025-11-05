@@ -50,6 +50,13 @@ const MultiSelectControl = ({
   const maxItems = schema.maxItems;
   const minItems = schema.minItems;
 
+  // to prevent jumping to another component when pressing Enter key
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  };
   return (
     <>
       <FormLabel
@@ -63,7 +70,7 @@ const MultiSelectControl = ({
         {getInstructionMessage({ minItems, maxItems, formatMessage, options })}
       </Text>
       <Box display="flex" flexDirection="row" overflow="visible">
-        <Box flexGrow={1}>
+        <Box flexGrow={1} onKeyDown={handleKeyDown}>
           <StyledMultipleSelect
             value={data}
             options={options}

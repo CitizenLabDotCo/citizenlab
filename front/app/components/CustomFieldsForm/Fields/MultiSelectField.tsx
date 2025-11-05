@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 
+import Box from 'component-library/components/Box';
 import { useFormContext } from 'react-hook-form';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
@@ -32,14 +33,23 @@ const MultiSelectField = ({
     return extractOptions(question, localize, question.random_option_ordering);
   }, [question, localize]);
 
+  // to prevent jumping to another component when pressing Enter key
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  };
   return (
     <>
       {question.dropdown_layout ? (
-        <MultipleSelect
-          name={question.key}
-          options={options}
-          scrollErrorIntoView={scrollErrorIntoView}
-        />
+        <Box onKeyDown={handleKeyDown}>
+          <MultipleSelect
+            name={question.key}
+            options={options}
+            scrollErrorIntoView={scrollErrorIntoView}
+          />
+        </Box>
       ) : (
         <CheckboxMultiSelect
           name={question.key}

@@ -72,7 +72,7 @@ const MultipleSelect = ({
         isMulti
         isSearchable={isSearchable}
         blurInputOnSelect={typeof autoBlur === 'boolean' ? autoBlur : false}
-        backspaceRemovesValue={false}
+        backspaceRemovesValue={true}
         menuShouldScrollIntoView={false}
         isClearable={false}
         value={findFullOptionValues()}
