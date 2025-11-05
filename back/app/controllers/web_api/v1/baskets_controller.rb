@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 class WebApi::V1::BasketsController < ApplicationController
-  after_action :verify_authorized
-  skip_after_action :verify_policy_scoped
-
   def show
     render json: WebApi::V1::BasketSerializer.new(
       basket,

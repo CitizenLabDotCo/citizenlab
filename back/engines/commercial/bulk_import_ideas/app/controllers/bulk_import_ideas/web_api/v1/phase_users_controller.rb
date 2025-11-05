@@ -6,8 +6,6 @@
 module BulkImportIdeas
   class WebApi::V1::PhaseUsersController < ApplicationController
     before_action :authorize_project, only: %i[create_user]
-    after_action :verify_authorized
-    skip_after_action :verify_policy_scoped
 
     # called when approving individual inputs
     def create_user

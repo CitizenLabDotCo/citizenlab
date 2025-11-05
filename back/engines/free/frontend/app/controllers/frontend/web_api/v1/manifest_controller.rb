@@ -5,7 +5,6 @@ module Frontend
     module V1
       class ManifestController < FrontendController
         skip_before_action :authenticate_user
-        skip_after_action :verify_policy_scoped
         skip_after_action :verify_authorized
 
         def show

@@ -5,10 +5,9 @@ module WebApi
     module Verification
       class VerificationsController < ApplicationController
         skip_before_action :authenticate_user
-        skip_after_action :verify_policy_scoped
         # Not all code paths (exceptions) perform an `authorize` call, so we're
         # forced to skip this
-        skip_after_action :verify_authorized
+        skip_after_action :verify_authorized, only: :create
 
         before_action :set_verification_method
 

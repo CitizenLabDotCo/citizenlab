@@ -4,8 +4,7 @@ module Surveys
   module WebApi
     module V1
       class ResponsesController < SurveysController
-        after_action :verify_authorized
-        skip_after_action :verify_policy_scoped
+        after_action :verify_authorized, only: [:index_xlsx]
         before_action :set_phase
         rescue_from TypeformApiParser::AuthorizationError, with: :typeform_authorization_error
 

@@ -2,8 +2,7 @@
 
 class WebApi::V1::MentionsController < ApplicationController
   skip_before_action :authenticate_user
-  skip_after_action :verify_authorized
-  skip_after_action :verify_policy_scoped
+  skip_after_action :verify_authorized, only: :users
   before_action :validate_roles_param
 
   VALID_ROLES = %w[admin moderator].freeze
