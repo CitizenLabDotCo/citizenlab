@@ -720,6 +720,8 @@
   "app.components.form.backToInputManager": "Zum Beitragsmanager",
   "app.components.form.backToProject": "Zurück zum Projekt",
   "app.components.form.controls.allStatementsError": "Für alle Aussagen muss eine Antwort ausgewählt werden.",
+  "app.components.form.controls.birthyearTooHigh": "Das Geburtsjahr kann nicht in der Zukunft liegen",
+  "app.components.form.controls.birthyearTooLow": "Das Geburtsjahr muss mindestens 1900 sein",
   "app.components.form.controls.clearAll": "Alle löschen",
   "app.components.form.controls.clearAllScreenreader": "Löschen Sie alle Antworten aus der obigen Matrixfrage",
   "app.components.form.controls.cosponsorsPlaceholder": "Einen Namen eingeben, um die Suche zu starten",
