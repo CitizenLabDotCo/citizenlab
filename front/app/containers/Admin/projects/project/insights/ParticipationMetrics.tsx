@@ -38,7 +38,9 @@ const ParticipationMetrics = ({ phase }: Props) => {
       label: formatMessage(messages.visitors),
       value: metricsData.visitors.toLocaleString(),
       subtext: metricsData.visitors_change
-        ? `Last week: +${metricsData.visitors_change.toLocaleString()}`
+        ? `${formatMessage(
+            messages.lastWeek
+          )}: +${metricsData.visitors_change.toLocaleString()}`
         : undefined,
     });
 
@@ -47,7 +49,9 @@ const ParticipationMetrics = ({ phase }: Props) => {
       label: formatMessage(messages.participants),
       value: metricsData.participants.toLocaleString(),
       subtext: metricsData.participants_change
-        ? `Last week: +${metricsData.participants_change.toLocaleString()}`
+        ? `${formatMessage(
+            messages.lastWeek
+          )}: ${metricsData.participants_change.toLocaleString()}`
         : undefined,
     });
 
@@ -58,7 +62,9 @@ const ParticipationMetrics = ({ phase }: Props) => {
         label: formatMessage(messages.inputs),
         value: metricsData.ideas.toLocaleString(),
         subtext: metricsData.ideas_change
-          ? `Last week: +${metricsData.ideas_change.toLocaleString()}`
+          ? `${formatMessage(
+              messages.lastWeek
+            )}: +${metricsData.ideas_change.toLocaleString()}`
           : undefined,
       });
     }
@@ -69,7 +75,9 @@ const ParticipationMetrics = ({ phase }: Props) => {
         label: formatMessage(messages.comments),
         value: metricsData.comments.toLocaleString(),
         subtext: metricsData.comments_change
-          ? `Last week: +${metricsData.comments_change.toLocaleString()}`
+          ? `${formatMessage(
+              messages.lastWeek
+            )}: +${metricsData.comments_change.toLocaleString()}`
           : undefined,
       });
     }
@@ -80,7 +88,9 @@ const ParticipationMetrics = ({ phase }: Props) => {
         label: formatMessage(messages.reactions),
         value: metricsData.reactions.toLocaleString(),
         subtext: metricsData.reactions_change
-          ? `Last week: +${metricsData.reactions_change.toLocaleString()}`
+          ? `${formatMessage(
+              messages.lastWeek
+            )}: +${metricsData.reactions_change.toLocaleString()}`
           : undefined,
       });
     }
@@ -91,7 +101,9 @@ const ParticipationMetrics = ({ phase }: Props) => {
         label: formatMessage(messages.votes),
         value: metricsData.votes.toLocaleString(),
         subtext: metricsData.votes_change
-          ? `Last week: +${metricsData.votes_change.toLocaleString()}`
+          ? `${formatMessage(
+              messages.lastWeek
+            )}: +${metricsData.votes_change.toLocaleString()}`
           : undefined,
       });
     }
@@ -102,7 +114,9 @@ const ParticipationMetrics = ({ phase }: Props) => {
         label: formatMessage(messages.votes),
         value: metricsData.votes!.toLocaleString(),
         subtext: metricsData.votes_change
-          ? `Last week: +${metricsData.votes_change.toLocaleString()}`
+          ? `${formatMessage(
+              messages.lastWeek
+            )}: +${metricsData.votes_change.toLocaleString()}`
           : undefined,
       });
 
@@ -110,7 +124,9 @@ const ParticipationMetrics = ({ phase }: Props) => {
         key: 'votesPerPerson',
         label: formatMessage(messages.votesPerPerson),
         value: metricsData.votes_per_person.toFixed(1),
-        subtext: `Total: ${metricsData.votes!.toLocaleString()}`,
+        subtext: `${formatMessage(
+          messages.total
+        )}: ${metricsData.votes!.toLocaleString()}`,
       });
     }
 
@@ -120,7 +136,9 @@ const ParticipationMetrics = ({ phase }: Props) => {
         label: formatMessage(messages.submissions),
         value: metricsData.submissions.toLocaleString(),
         subtext: metricsData.submissions_change
-          ? `Last week: +${metricsData.submissions_change.toLocaleString()}`
+          ? `${formatMessage(
+              messages.lastWeek
+            )}: +${metricsData.submissions_change.toLocaleString()}`
           : undefined,
       });
     }
@@ -134,7 +152,6 @@ const ParticipationMetrics = ({ phase }: Props) => {
       });
     }
 
-    // Always show engagement rate last
     result.push({
       key: 'engagementRate',
       label: formatMessage(messages.engagementRate),
