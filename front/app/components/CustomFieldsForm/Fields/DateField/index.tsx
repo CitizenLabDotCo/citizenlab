@@ -35,7 +35,7 @@ const DateField = ({
   const value = watch(name);
 
   return (
-    <Box display="flex">
+    <Box>
       <Controller
         name={name}
         control={control}

@@ -46,13 +46,14 @@ const UserCustomFieldsForm = ({
     const subscription = methods.watch((values) => {
       const valueKeys = Object.keys(values);
 
-      const transformedValues = valueKeys.reduce((acc, key) => {
+      const transformedValues = {};
+      valueKeys.forEach((key) => {
         const question = customFields?.find((q) => q.key === key);
-        if (question?.input_type === 'number' && values[key] !== undefined) {
-          return { ...acc, [key]: Number(values[key]) };
-        }
-        return { ...acc, [key]: values[key] };
-      }, {});
+        transformedValues[key] =
+          question?.input_type === 'number' && values[key] !== undefined
+            ? Number(values[key])
+            : values[key];
+      });
       onChange(transformedValues);
     });
     return () => subscription.unsubscribe();
