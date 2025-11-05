@@ -270,6 +270,9 @@ function apiSignup(
         first_name,
         last_name,
         password,
+      }).then((res: any) => {
+        res._jwt = jwt;
+        return res;
       });
     });
   });
