@@ -46,6 +46,7 @@ resource 'Phase participation' do
       let!(:basket2) { create(:basket, phase: voting_phase, user: user5, submitted_at: 10.days.ago) } # in voting phase
       let!(:basket3) { create(:basket, phase: voting_phase, user: user5, submitted_at: 5.days.ago) } # in voting phase & last 7 days
       let!(:basket4) { create(:basket, phase: voting_phase, user: user6, submitted_at: 5.days.ago) } # in voting phase & last 7 days
+      let!(:basket5) { create(:basket, phase: voting_phase, user: user3, submitted_at: 5.days.ago) } # in voting phase & last 7 days
       # rubocop:enable RSpec/ScatteredLet
 
       example_request 'Get a phase with participation data' do
@@ -54,8 +55,8 @@ resource 'Phase participation' do
         participations = json_response_body.dig(:data, :attributes, :participation)
         expect(participations).to eq({
           participations: {
-            count: 7,
-            change_last_7_days: 4
+            count: 8,
+            change_last_7_days: 5
           },
           participants: {
             count: 5, # unique users: user2, user3, user4, user5, user6
@@ -66,12 +67,12 @@ resource 'Phase participation' do
             {
               action_type: 'voting',
               participations: {
-                count: 4,
-                change_last_7_days: 2
+                count: 5,
+                change_last_7_days: 3
               },
               participants: {
-                count: 3, # unique users: user4, user5, user6
-                change_last_7_days: 1, # NEW unique user in last 7 days: user6
+                count: 4, # unique users: user3, user4, user5, user6
+                change_last_7_days: 2, # NEW unique users in last 7 days: user3, user6
                 demographics: [{ tbc: 'tbc' }]
               }
             },
