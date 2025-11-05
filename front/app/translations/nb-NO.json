@@ -720,6 +720,8 @@
   "app.components.form.backToInputManager": "Tilbake til input manager",
   "app.components.form.backToProject": "Tilbake til prosjektet",
   "app.components.form.controls.allStatementsError": "Du må velge et svar for alle påstander.",
+  "app.components.form.controls.birthyearTooHigh": "Fødselsåret kan ikke ligge i fremtiden",
+  "app.components.form.controls.birthyearTooLow": "Fødselsåret må være minst 1900",
   "app.components.form.controls.clearAll": "Tøm alle",
   "app.components.form.controls.clearAllScreenreader": "Fjern alle svarene fra matrisespørsmålet ovenfor",
   "app.components.form.controls.cosponsorsPlaceholder": "Begynn å skrive inn et navn for å søke",
