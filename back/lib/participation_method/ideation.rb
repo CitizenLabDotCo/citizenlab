@@ -462,11 +462,11 @@ module ParticipationMethod
       # Note: If phase dates are changed such that an comment's created_at
       # falls outside the phase dates, it will not be counted.
       comments = Comment.joins(:idea)
-               .merge(phase.ideas)
-               .where(<<~SQL.squish, phase.start_at.beginning_of_day, phase.end_at.end_of_day)
-                 comments.created_at >= ? AND comments.created_at <= ?
-                 AND comments.publication_status = 'published'
-               SQL
+                   .merge(phase.ideas)
+                   .where(<<~SQL.squish, phase.start_at.beginning_of_day, phase.end_at.end_of_day)
+                     comments.created_at >= ? AND comments.created_at <= ?
+                     AND comments.publication_status = 'published'
+                   SQL
 
       comments.map do |comment|
         {
