@@ -3,7 +3,7 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import permissionsCustomFieldsKeys from '../permissions_custom_fields/keys';
+import permissionsPhaseCustomFieldsKeys from '../permissions_phase_custom_fields/keys';
 
 import phasePermissionKeys from './keys';
 import { IPhasePermission, ResetPermissionParams } from './types';
@@ -34,7 +34,7 @@ const useResetPhasePermission = () => {
       }
 
       queryClient.invalidateQueries({
-        queryKey: permissionsCustomFieldsKeys.list({
+        queryKey: permissionsPhaseCustomFieldsKeys.list({
           phaseId,
           action,
         }),
