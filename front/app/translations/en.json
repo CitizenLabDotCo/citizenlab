@@ -1594,6 +1594,8 @@
   "app.containers.NewAuthModal.steps.Password.password": "Password",
   "app.containers.NewAuthModal.steps.Password.rememberMe": "Remember me",
   "app.containers.NewAuthModal.steps.Password.rememberMeTooltip": "Do not select if using a public computer",
+  "app.containers.NewAuthModal.steps.Policies.change1": "change",
+  "app.containers.NewAuthModal.steps.Policies.createANewAccountWith": "Create a new account with: {email} {changeLink}",
   "app.containers.NewAuthModal.steps.Success.allDone": "All done",
   "app.containers.NewAuthModal.steps.Success.nowContinueYourParticipation": "Now continue your participation.",
   "app.containers.NewAuthModal.steps.VerificationSuccess.userVerifiedSubtitle": "Your identity has been verified. You're now a full member of the community on this platform.",
