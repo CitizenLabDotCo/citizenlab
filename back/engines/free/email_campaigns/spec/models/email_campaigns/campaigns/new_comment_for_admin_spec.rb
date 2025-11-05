@@ -44,14 +44,14 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentForAdmin do
     let!(:admin) { create(:admin) }
     let!(:moderator) { create(:project_moderator, projects: [idea.project]) }
 
-    it 'filters out moderators' do
+    it 'returns moderators only' do
       expect(campaign.filter_recipient(User.all, activity:).ids).to match_array([admin.id, moderator.id])
     end
 
     context 'when the author is a moderator' do
       let(:author) { create(:project_moderator, projects: [idea.project]) }
 
-      it 'filters out no one if the author is a moderator' do
+      it 'returns no one (empty array)' do
         expect(campaign.filter_recipient(User.all, activity:).ids).to eq []
       end
     end
@@ -59,7 +59,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentForAdmin do
     context 'when there is no author' do
       let(:author) { nil }
 
-      it 'filters out moderators' do
+      it 'returns moderators only' do
         expect(campaign.filter_recipient(User.all, activity:).ids).to match_array([admin.id, moderator.id])
       end
     end
