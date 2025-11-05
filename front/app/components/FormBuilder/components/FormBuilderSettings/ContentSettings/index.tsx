@@ -30,6 +30,8 @@ const ContentSettings = ({ field }: ContentSettingsProps) => {
 
   const locales = useAppConfigurationLocales();
   const { watch } = useFormContext();
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const lockedAttributes = field.constraints?.locks?.attributes || [];
   const platformLocale = useLocale();
   const isFieldGrouping = field.input_type === 'page';
