@@ -71,6 +71,7 @@ const AdminCustomMapConfigComponent = lazy(
 const AdminProjectAnalysis = lazy(() => import('./project/analysis'));
 const ReportTab = lazy(() => import('./project/information/ReportTab'));
 const AdminPhaseInsights = lazy(() => import('./project/insights'));
+const AdminPhaseAudience = lazy(() => import('./project/insights/audience'));
 
 const AdminProjectProposals = lazy(() => import('./project/proposals'));
 
@@ -125,6 +126,7 @@ export enum projectsRoutes {
   projectPhaseInputImporter = ':phaseId/input-importer',
   projectPhaseReport = ':phaseId/report',
   projectPhaseInsights = ':phaseId/insights',
+  projectPhaseInsightsDetails = ':phaseId/insights/details',
   projectAnalysis = 'analysis/:analysisId',
 }
 
@@ -172,6 +174,7 @@ export type projectsRouteTypes =
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/emails`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/insights`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/insights/details`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/analysis/${string}`>;
 
 const createAdminProjectsRoutes = () => {
@@ -563,6 +566,14 @@ const createAdminProjectsRoutes = () => {
                 element: (
                   <PageLoading>
                     <AdminPhaseInsights />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: projectsRoutes.projectPhaseInsightsDetails,
+                element: (
+                  <PageLoading>
+                    <AdminPhaseAudience />
                   </PageLoading>
                 ),
               },
