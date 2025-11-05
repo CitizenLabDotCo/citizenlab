@@ -43,11 +43,20 @@ const UserCustomFieldsForm = ({
   }, [triggerValidation, onValidationResult, methods]);
 
   useEffect(() => {
-    const subscription = methods.watch((value) => {
-      onChange(value);
+    const subscription = methods.watch((values) => {
+      const valueKeys = Object.keys(values);
+
+      const transformedValues = valueKeys.reduce((acc, key) => {
+        const question = customFields?.find((q) => q.key === key);
+        if (question?.input_type === 'number' && values[key] !== undefined) {
+          return { ...acc, [key]: Number(values[key]) };
+        }
+        return { ...acc, [key]: values[key] };
+      }, {});
+      onChange(transformedValues);
     });
     return () => subscription.unsubscribe();
-  }, [methods, onChange]);
+  }, [methods, onChange, customFields]);
 
   if (!customFields) return null;
 
