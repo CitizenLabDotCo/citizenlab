@@ -720,6 +720,8 @@
   "app.components.form.backToInputManager": "Voltar ao gerenciador de entradas",
   "app.components.form.backToProject": "Voltar ao projeto",
   "app.components.form.controls.allStatementsError": "Você deve selecionar uma resposta para todas as afirmações.",
+  "app.components.form.controls.birthyearTooHigh": "O ano de nascimento não pode ser no futuro",
+  "app.components.form.controls.birthyearTooLow": "O ano de nascimento deve ser, no mínimo, 1900",
   "app.components.form.controls.clearAll": "Limpar tudo",
   "app.components.form.controls.clearAllScreenreader": "Limpe todas as respostas da pergunta da matriz acima",
   "app.components.form.controls.cosponsorsPlaceholder": "Comece a digitar um nome para pesquisar",
