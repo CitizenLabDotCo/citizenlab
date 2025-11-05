@@ -2,11 +2,10 @@
 
 FactoryBot.define do
   factory :idea_import, class: 'BulkImportIdeas::IdeaImport' do
-    association :idea, factory: :idea
+    association :idea
     page_range { [1, 2] }
     user_created { false }
     user_consent { false }
     locale { 'en' }
-    file { nil }
   end
 end

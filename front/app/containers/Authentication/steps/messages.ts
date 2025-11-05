@@ -58,4 +58,8 @@ export default defineMessages({
     id: 'app.containers.SignUp.emptyLastNameError',
     defaultMessage: 'Enter your last name',
   },
+  adminOptions: {
+    id: 'app.containers.SignUp.adminOptions2',
+    defaultMessage: 'For admins and project managers',
+  },
 });

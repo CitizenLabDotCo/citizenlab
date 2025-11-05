@@ -114,10 +114,10 @@ describe Permissions::PermissionsCustomFieldsService do
               ])
             ]
             expect(service.send(:extract_custom_field_ids_from_rules, groups)).to match_array([
-              { :id => '19b2088c-bb8c-4f3c-812d-4a2faf594497', :required => false },
-              { :id => '9b43081c-2ba1-432a-89fb-81cfa243cee7', :required => true },
-              { :id => '8240f6b0-aca3-4151-a8ca-f68a028d0e83', :required => true },
-              { :id => '2a982fca-e026-4173-9ddd-03a8082160dc', :required => false }
+              { id: '19b2088c-bb8c-4f3c-812d-4a2faf594497', required: false },
+              { id: '9b43081c-2ba1-432a-89fb-81cfa243cee7', required: true },
+              { id: '8240f6b0-aca3-4151-a8ca-f68a028d0e83', required: true },
+              { id: '2a982fca-e026-4173-9ddd-03a8082160dc', required: false }
             ])
           end
         end

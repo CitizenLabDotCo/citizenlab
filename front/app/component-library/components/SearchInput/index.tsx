@@ -58,10 +58,11 @@ const StyledInput = styled(Input)`
   `}
 `;
 
-const IconContainer = styled.div<{ inputSize?: InputSize }>`
+const IconContainer = styled(Box)`
   position: absolute;
   right: 10px;
-  top: ${({ inputSize }) => (inputSize === 'small' ? '7px' : '10px')};
+  top: 50%;
+  transform: translateY(-50%);
   ${isRtl`
     left: 10px;
     right: auto;
@@ -169,7 +170,7 @@ const SearchInput = ({
           onFocus={handleFocus}
           onBlur={handleBlur}
         />
-        <IconContainer inputSize={size}>
+        <IconContainer>
           {internalSearchTerm ? (
             <IconButton
               iconName="close"

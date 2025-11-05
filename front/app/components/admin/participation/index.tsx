@@ -5,8 +5,6 @@ import { useLocation, useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 import { ITab } from 'typings';
 
-import usePhases from 'api/phases/usePhases';
-
 import ProjectTraffic from 'containers/Admin/projects/project/traffic';
 
 import NavigationTabs, { Tab } from 'components/admin/NavigationTabs';
@@ -23,13 +21,6 @@ const ProjectParticipation = () => {
   const { projectId } = useParams() as { projectId: string };
   const { pathname } = useLocation();
   const { formatMessage } = useIntl();
-  const { data: phases } = usePhases(projectId);
-
-  const startOfFirstPhase = phases?.data[0]?.attributes.start_at;
-  const endOfLastPhase =
-    phases?.data[phases.data.length - 1]?.attributes.end_at;
-
-  if (!phases) return null;
 
   const basePath = `/admin/projects/${projectId}/audience`;
 
@@ -50,23 +41,6 @@ const ProjectParticipation = () => {
       url: `/admin/projects/${projectId}/audience/traffic` as RouteType,
     },
   ];
-
-  // Content components mapping
-  const contentComponents = {
-    participants: Users,
-    demographics: Demographics,
-    traffic: ProjectTraffic,
-  };
-
-  // Content props mapping
-  const contentProps = {
-    participants: {},
-    demographics: {
-      defaultStartDate: startOfFirstPhase,
-      defaultEndDate: endOfLastPhase ?? undefined,
-    },
-    traffic: {},
-  };
 
   // Find the active tab based on current pathname
   const activeTab =
@@ -89,10 +63,9 @@ const ProjectParticipation = () => {
           </NavigationTabs>
         </Box>
         <Box p={`${defaultAdminCardPadding}px`}>
-          {React.createElement(
-            contentComponents[activeTab.name as keyof typeof contentComponents],
-            contentProps[activeTab.name as keyof typeof contentProps]
-          )}
+          {activeTab.name === 'participants' && <Users />}
+          {activeTab.name === 'demographics' && <Demographics />}
+          {activeTab.name === 'traffic' && <ProjectTraffic />}
         </Box>
       </Box>
     </Box>

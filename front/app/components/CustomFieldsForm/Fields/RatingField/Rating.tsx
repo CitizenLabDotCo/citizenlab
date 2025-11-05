@@ -6,7 +6,7 @@ import {
   Button,
   Icon,
 } from '@citizenlab/cl2-component-library';
-import { useTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 
@@ -17,6 +17,12 @@ interface Props {
   question: IFlatCustomField;
   onChange: (value: number) => void;
 }
+
+const StyledIcon = styled(Icon)`
+  :hover {
+    fill: ${(props) => props.theme.colors.grey800};
+  }
+`;
 
 const Rating = ({ value: data, question, onChange }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
@@ -115,14 +121,14 @@ const Rating = ({ value: data, question, onChange }: Props) => {
                     alignItems="center"
                     gap="4px"
                   >
-                    <Icon
+                    <StyledIcon
                       name={selectedIndex ? 'ratingFilled' : 'rating'}
                       height="40px"
                       width="40px"
                       fill={
                         selectedIndex
                           ? theme.colors.tenantPrimary
-                          : theme.colors.tenantPrimaryLighten75
+                          : theme.colors.borderDark
                       }
                     />
                     {visualIndex}

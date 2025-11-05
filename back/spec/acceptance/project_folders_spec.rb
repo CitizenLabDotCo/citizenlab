@@ -10,7 +10,7 @@ resource 'ProjectFolder' do
     header 'Content-Type', 'application/json'
 
     @projects = %w[published published draft published archived archived published]
-      .map { |ps|  create(:project, admin_publication_attributes: { publication_status: ps }) }
+      .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
     @folders = [
       create(:project_folder, projects: @projects.take(3)),
       create(:project_folder, projects: [@projects.last])
@@ -30,7 +30,7 @@ resource 'ProjectFolder' do
       expect(json_response[:data].size).to eq 2
     end
 
-    example 'List only folders with specified IDs', document: true do
+    example 'List only folders with specified IDs' do
       filter_ids = [@folders.first.id]
 
       do_request(filter_ids: filter_ids)
@@ -177,6 +177,22 @@ resource 'ProjectFolder' do
         expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'draft'
         # New folders are added to the top
         expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
+      end
+
+      describe 'when the folder description contains images' do
+        let(:description_multiloc) do
+          {
+            'en' => html_with_base64_image
+          }
+        end
+
+        example_request 'Create a folder with images in the description', document: false do
+          assert_status 201
+          json_parse(response_body)
+          expect(response_data.dig(:attributes, :description_multiloc, :en)).to include('<p>Some text</p><img alt="Red dot"')
+          text_image = TextImage.find_by(imageable_id: response_data[:id], imageable_type: 'ProjectFolders::Folder', imageable_field: 'description_multiloc')
+          expect(response_data.dig(:attributes, :description_multiloc, :en)).to include("data-cl2-text-image-text-reference=\"#{text_image.text_reference}\"")
+        end
       end
     end
 

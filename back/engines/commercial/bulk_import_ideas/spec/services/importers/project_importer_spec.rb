@@ -35,6 +35,29 @@ describe BulkImportIdeas::Importers::ProjectImporter do
       project = service.send(:find_or_create_project, project_data)
       expect(project).to be_nil
     end
+
+    describe 'when project description contains images' do
+      let(:project_data) do
+        {
+          title_multiloc: { 'en' => 'Test Project' },
+          slug: 'test-project',
+          description_multiloc: {
+            'en' => html_with_base64_image
+          },
+          admin_publication_attributes: { publication_status: 'published' }
+        }
+      end
+
+      it 'creates a project with description containing images and processes text images' do
+        project = service.send(:find_or_create_project, project_data)
+        expect(project.title_multiloc['en']).to eq('Test Project')
+        expect(project.description_multiloc['en']).to include('<p>Some text</p><img alt="Red dot"')
+
+        text_image = TextImage.find_by(imageable_id: project.id, imageable_type: 'Project', imageable_field: 'description_multiloc')
+        expect(text_image).to be_present
+        expect(project.description_multiloc['en']).to include("data-cl2-text-image-text-reference=\"#{text_image.text_reference}\"")
+      end
+    end
   end
 
   describe '#find_or_create_phase' do

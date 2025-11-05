@@ -172,6 +172,10 @@ const ReportExportMenu = ({
         // Create canvas
         const canvas = document.createElement('canvas');
 
+        // Set canvas dimensions
+        canvas.width = newWidth;
+        canvas.height = newHeight;
+
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 

@@ -15,6 +15,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import DownloadFileButton from '../DownloadFileButton';
 
+import AudioFilePreview from './AudioFilePreview';
 import CsvFilePreview from './CsvFilePreview';
 import IframePreview from './IframeFilePreview';
 import MarkdownFilePreview from './MarkdownFilePreview';
@@ -83,16 +84,12 @@ const FilePreview = ({ file }: Props) => {
 
       if (AUDIO_MIMETYPES.has(mimeType)) {
         return (
-          <Box mt="24px">
-            <audio
-              title={file.data.attributes.name}
-              controls
-              style={{ width: '100%' }}
-            >
-              <source src={fileUrl} type={mimeType} />
-              {formatMessage(messages.previewNotSupported)}
-            </audio>
-          </Box>
+          <AudioFilePreview
+            url={fileUrl}
+            title={file.data.attributes.name}
+            mimeType={mimeType}
+            file={file.data}
+          />
         );
       }
 
