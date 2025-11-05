@@ -5,7 +5,6 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 
 import { Localize } from 'hooks/useLocalize';
 
-import legacyMessages from 'components/Form/Components/Controls/messages';
 import { getPlainTextLengthFromHTML } from 'components/UI/QuillEditor/utils';
 
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
@@ -346,7 +345,7 @@ const generateYupSchema = ({
 
         schema[key] = required
           ? object().test({
-              message: formatMessage(legacyMessages.allStatementsError),
+              message: formatMessage(messages.allStatementsError),
               test: (object) => {
                 if (typeof object !== 'object') {
                   return false;
