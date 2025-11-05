@@ -720,6 +720,8 @@
   "app.components.form.backToInputManager": "العودة إلى مدير الإدخال",
   "app.components.form.backToProject": "العودة إلى المشروع",
   "app.components.form.controls.allStatementsError": "يجب تحديد إجابة لجميع العبارات.",
+  "app.components.form.controls.birthyearTooHigh": "لا يمكن أن تكون سنة الميلاد في المستقبل",
+  "app.components.form.controls.birthyearTooLow": "يجب أن تكون سنة الميلاد 1900 على الأقل",
   "app.components.form.controls.clearAll": "مسح الكل",
   "app.components.form.controls.clearAllScreenreader": "مسح جميع الإجابات من سؤال المصفوفة أعلاه",
   "app.components.form.controls.cosponsorsPlaceholder": "ابدأ بكتابة اسم للبحث",
