@@ -720,6 +720,8 @@
   "app.components.form.backToInputManager": "ਇਨਪੁੱਟ ਮੈਨੇਜਰ ਤੇ ਵਾਪਸ ਜਾਓ",
   "app.components.form.backToProject": "ਪ੍ਰੋਜੈਕਟ 'ਤੇ ਵਾਪਸ ਜਾਓ",
   "app.components.form.controls.allStatementsError": "ਸਾਰੇ ਬਿਆਨਾਂ ਲਈ ਇੱਕ ਜਵਾਬ ਚੁਣਿਆ ਜਾਣਾ ਚਾਹੀਦਾ ਹੈ।",
+  "app.components.form.controls.birthyearTooHigh": "ਜਨਮ ਸਾਲ ਭਵਿੱਖ ਦਾ ਨਹੀਂ ਹੋ ਸਕਦਾ।",
+  "app.components.form.controls.birthyearTooLow": "ਜਨਮ ਸਾਲ ਘੱਟੋ-ਘੱਟ 1900 ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।",
   "app.components.form.controls.clearAll": "ਸਭ ਸਾਫ਼ ਕਰੋ",
   "app.components.form.controls.clearAllScreenreader": "ਉਪਰੋਕਤ ਮੈਟਰਿਕਸ ਪ੍ਰਸ਼ਨ ਵਿੱਚੋਂ ਸਾਰੇ ਜਵਾਬਾਂ ਨੂੰ ਸਾਫ਼ ਕਰੋ",
   "app.components.form.controls.cosponsorsPlaceholder": "ਖੋਜ ਕਰਨ ਲਈ ਇੱਕ ਨਾਮ ਟਾਈਪ ਕਰਨਾ ਸ਼ੁਰੂ ਕਰੋ",
