@@ -25,16 +25,27 @@ export interface DemographicDataPoint {
   label: string;
   count: number;
   percentage: number;
+  // For representativeness comparison
+  population_percentage?: number;
+}
+
+export interface DemographicField {
+  field_id: string;
+  field_key: string;
+  field_name: string;
+  field_code?: string | null;
+  data_points: DemographicDataPoint[];
+  r_score?: number; // Representativeness score (0-100)
 }
 
 export interface PhaseInsightsDemographics {
+  fields: DemographicField[];
+}
+
+export interface PhaseInsightsDemographicsLegacy {
   gender?: DemographicDataPoint[];
   age?: DemographicDataPoint[];
   areas?: DemographicDataPoint[];
-  // Additional custom fields can be added dynamically
-  custom_fields?: {
-    [field_id: string]: DemographicDataPoint[];
-  };
 }
 
 export interface TopicDistribution {
