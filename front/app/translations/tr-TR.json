@@ -720,6 +720,8 @@
   "app.components.form.backToInputManager": "Giriş yöneticisine geri dön",
   "app.components.form.backToProject": "Projeye geri dön",
   "app.components.form.controls.allStatementsError": "Tüm ifadeler için bir cevap seçilmelidir.",
+  "app.components.form.controls.birthyearTooHigh": "Doğum yılı gelecekte olamaz",
+  "app.components.form.controls.birthyearTooLow": "Doğum yılı en az 1900 olmalıdır",
   "app.components.form.controls.clearAll": "Tümünü temizle",
   "app.components.form.controls.clearAllScreenreader": "Yukarıdaki matris sorusundaki tüm cevapları temizleyin",
   "app.components.form.controls.cosponsorsPlaceholder": "Aramak için bir isim yazmaya başlayın",
