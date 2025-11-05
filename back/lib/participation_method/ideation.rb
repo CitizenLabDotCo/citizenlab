@@ -469,7 +469,7 @@ module ParticipationMethod
       comments.map do |comment|
         {
           id: comment.id,
-          action: 'voting',
+          action: 'commenting_idea',
           acted_at: comment.created_at,
           classname: 'Comment',
           user_id: comment.author_id,
