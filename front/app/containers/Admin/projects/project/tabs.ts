@@ -91,7 +91,7 @@ export const getTabs = (
         ? undefined
         : formatMessage(messages.lockedTooltip),
     },
-    {
+    phase.attributes.participation_method !== 'information' && {
       label: formatMessage(messages.insightsTab),
       url: 'insights',
       name: 'insights',
