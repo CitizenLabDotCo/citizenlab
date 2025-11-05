@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 
-import Box from 'component-library/components/Box';
 import { useFormContext } from 'react-hook-form';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
