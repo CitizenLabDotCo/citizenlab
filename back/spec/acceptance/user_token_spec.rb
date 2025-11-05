@@ -266,20 +266,51 @@ resource 'User Token' do
   end
 
   post 'web_api/v1/user_token/unconfirmed' do
+    with_options scope: :auth do
+      parameter :email, required: true
+    end
+
     context 'when user_confirmation is enabled' do
-      # TODO: always block
+      before do
+        SettingsService.new.activate_feature! 'user_confirmation'
+      end
+
+      example 'user has no password' do
+        user = create(:user_no_password)
+        do_request(auth: { email: user.email })
+        expect(status).to eq(404)
+      end
     end
 
     context 'when user_confirmation is disabled' do
-      context 'when user has no password' do
-        # TODO: allow
+      before do
+        SettingsService.new.deactivate_feature! 'user_confirmation'
       end
 
-      context 'when user has password' do
-        # TODO: not allow
+      example 'user has no password' do
+        user = create(:user_no_password)
+        do_request(auth: { email: user.email })
+        expect(status).to eq(201)
+
+        jwt = JWT.decode(json_response_body[:jwt], nil, false).first
+
+        expect(jwt['sub']).to eq(user.id)
+        expect(jwt['highest_role']).to eq('user')
+        expect(jwt['cluster']).to eq('local')
+        expect(jwt['tenant']).to eq(Tenant.current.id)
+        expect(jwt['exp']).to eq((Time.now + 1.day).to_i)
       end
 
-      # anything else?
+      example 'when user has password' do
+        user = create(:user)
+        do_request(auth: { email: user.email })
+        expect(status).to eq(422)
+      end
+
+      example 'when user does not exist' do
+        do_request(auth: { email: 'random@email.com' })
+        expect(status).to eq(404)
+      end
     end
   end
 end
