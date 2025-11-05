@@ -720,6 +720,8 @@
   "app.components.form.backToInputManager": "Επιστροφή στον διαχειριστή εισόδου",
   "app.components.form.backToProject": "Πίσω στο έργο",
   "app.components.form.controls.allStatementsError": "Πρέπει να επιλεγεί μια απάντηση για όλες τις δηλώσεις.",
+  "app.components.form.controls.birthyearTooHigh": "Το έτος γέννησης δεν μπορεί να είναι στο μέλλον",
+  "app.components.form.controls.birthyearTooLow": "Το έτος γέννησης πρέπει να είναι τουλάχιστον το 1900",
   "app.components.form.controls.clearAll": "Εκκαθάριση όλων",
   "app.components.form.controls.clearAllScreenreader": "Καθαρίστε όλες τις απαντήσεις από την παραπάνω ερώτηση μήτρας",
   "app.components.form.controls.cosponsorsPlaceholder": "Αρχίστε να πληκτρολογείτε ένα όνομα για αναζήτηση",
