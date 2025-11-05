@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 
 interface UseSeeMoreReturn<T> {
   visibleItems: T[];
@@ -14,10 +14,7 @@ export function useSeeMore<T>(
 ): UseSeeMoreReturn<T> {
   const [seeMore, setSeeMore] = useState(false);
 
-  const visibleItems = useMemo(
-    () => (seeMore ? items : items.slice(0, itemLimit)),
-    [items, seeMore, itemLimit]
-  );
+  const visibleItems = seeMore ? items : items.slice(0, itemLimit);
 
   const showSeeMore = items.length > itemLimit;
   const hiddenCount = items.length - itemLimit;
