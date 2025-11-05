@@ -63,6 +63,7 @@ export const emailFlow = (
 
       CONTINUE_WITH_SSO: (ssoProvider: SSOProviderWithoutVienna) => {
         if (ssoProvider === 'clave_unica') {
+          // If clave unica, we always go straight to SSO login
           handleOnSSOClick(
             ssoProvider,
             getAuthenticationData(),
@@ -70,8 +71,18 @@ export const emailFlow = (
             state.flow
           );
         } else {
-          updateState({ ssoProvider });
-          setCurrentStep('email-flow:sso-policies');
+          // If other SSO provider, it depends on the flow
+          if (state.flow === 'signin') {
+            handleOnSSOClick(
+              ssoProvider,
+              getAuthenticationData(),
+              true,
+              state.flow
+            );
+          } else {
+            updateState({ ssoProvider });
+            setCurrentStep('email-flow:sso-policies');
+          }
         }
       },
 
