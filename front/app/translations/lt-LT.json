@@ -720,6 +720,8 @@
   "app.components.form.backToInputManager": "Grįžti į įvesties tvarkyklę",
   "app.components.form.backToProject": "Atgal į projektą",
   "app.components.form.controls.allStatementsError": "Turi būti pasirinktas atsakymas į visus teiginius.",
+  "app.components.form.controls.birthyearTooHigh": "Gimimo metai negali būti ateityje",
+  "app.components.form.controls.birthyearTooLow": "Gimimo metai turi būti bent 1900 m.",
   "app.components.form.controls.clearAll": "Išvalyti viską",
   "app.components.form.controls.clearAllScreenreader": "Išvalykite visus atsakymus iš pirmiau pateikto matricos klausimo",
   "app.components.form.controls.cosponsorsPlaceholder": "Pradėkite rinkti vardą, kurio norite ieškoti",
