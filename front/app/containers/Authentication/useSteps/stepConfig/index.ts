@@ -19,7 +19,8 @@ export const getStepConfig = (
   setCurrentStep: (step: Step) => void,
   setError: SetError,
   updateState: UpdateState,
-  state: State
+  state: State,
+  userConfirmationEnabled: boolean
 ) => {
   return {
     ...emailFlow(
@@ -27,7 +28,8 @@ export const getStepConfig = (
       getRequirements,
       setCurrentStep,
       updateState,
-      state
+      state,
+      userConfirmationEnabled
     ),
 
     ...inviteFlow(

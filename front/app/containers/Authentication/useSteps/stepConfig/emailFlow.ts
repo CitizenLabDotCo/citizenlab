@@ -24,7 +24,8 @@ export const emailFlow = (
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   updateState: UpdateState,
-  state: State
+  state: State,
+  userConfirmationEnabled: boolean
 ) => {
   return {
     'email-flow:start': {
@@ -106,7 +107,29 @@ export const emailFlow = (
         const result = await createEmailOnlyAccount({ email, locale });
 
         if (result === 'account_created_successfully') {
-          setCurrentStep('missing-data:email-confirmation');
+          if (userConfirmationEnabled) {
+            setCurrentStep('missing-data:email-confirmation');
+          } else {
+            // If user confirmation is not enabled, we can
+            // log in and see where to go next
+            // TODO
+
+            const { requirements } = await getRequirements();
+            const authenticationData = getAuthenticationData();
+
+            const missingDataStep = checkMissingData(
+              requirements,
+              authenticationData,
+              state.flow
+            );
+
+            if (missingDataStep) {
+              setCurrentStep(missingDataStep);
+              return;
+            }
+
+            setCurrentStep('success');
+          }
         }
 
         if (result === 'email_taken') {
