@@ -7,7 +7,7 @@ import {
   Resolver,
 } from '@craftjs/core';
 
-import RenderNode from './RenderNode';
+import RenderNode from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Editor/RenderNode';
 
 type EditorProps = {
   isPreview: boolean;
@@ -36,7 +36,7 @@ const Editor: React.FC<EditorProps> = ({
         transition: 'none',
       }}
       onRender={isPreview ? PlainDiv : RenderNode}
-      enabled={isPreview ? false : true}
+      enabled={!isPreview}
       onNodesChange={(data) => {
         onNodesChange && onNodesChange(data.getSerializedNodes());
       }}

@@ -43,4 +43,6 @@ InfoWithAccordions.craft = {
   },
 };
 
+export const infoWithAccordionsTitle = messages.infoWithAccordions;
+
 export default InfoWithAccordions;
