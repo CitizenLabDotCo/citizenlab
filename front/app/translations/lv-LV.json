@@ -720,6 +720,8 @@
   "app.components.form.backToInputManager": "Atgriezties pie ievades pārvaldnieka",
   "app.components.form.backToProject": "Atgriezties pie projekta",
   "app.components.form.controls.allStatementsError": "Jāizvēlas atbilde uz visiem apgalvojumiem.",
+  "app.components.form.controls.birthyearTooHigh": "Dzimšanas gads nevar būt nākotnē",
+  "app.components.form.controls.birthyearTooLow": "Dzimšanas gadam jābūt vismaz 1900.",
   "app.components.form.controls.clearAll": "Notīrīt visus",
   "app.components.form.controls.clearAllScreenreader": "Notīriet visas atbildes no iepriekš minētā matricas jautājuma",
   "app.components.form.controls.cosponsorsPlaceholder": "Sāciet ierakstīt nosaukumu, lai veiktu meklēšanu",
