@@ -147,56 +147,24 @@ export const determineNextPageNumber = ({
 };
 
 export const determinePreviousPageNumber = ({
-  pages,
-  currentPage,
-  formData,
+  userNavigationHistory,
+  currentPageIndex,
 }: {
-  pages: Pages;
-  currentPage: IFlatCustomField;
-  formData?: Record<string, any>;
+  userNavigationHistory: number[];
+  currentPageIndex: number;
 }) => {
-  const currentPageIndex = findPageIndex(pages, currentPage.id);
-  let previousPageIndex = currentPageIndex - 1;
+  // Rely solely on navigation history
+  if (userNavigationHistory.length > 1) {
+    // Find the current page in the history
+    const currentHistoryIndex =
+      userNavigationHistory.lastIndexOf(currentPageIndex);
 
-  const questionsWithLogic = pages.map((page) =>
-    page.pageQuestions.filter((question) => question.logic.rules?.length)
-  );
-
-  const questionsWithLogicReferringToCurrentPage = questionsWithLogic
-    .flat()
-    .filter((question) =>
-      question.logic.rules?.some((rule) => rule.goto_page_id === currentPage.id)
-    );
-
-  if (questionsWithLogicReferringToCurrentPage.length > 0) {
-    questionsWithLogicReferringToCurrentPage.forEach((question) => {
-      const rules = question.logic.rules;
-      if (rules && rules.length > 0) {
-        const rule = rules.find((rule) =>
-          isRuleConditionMet(question, rule, formData)
-        );
-
-        if (rule) {
-          const previousPage = pages.find((page) =>
-            page.pageQuestions.some(
-              (pageQuestion) => pageQuestion.id === question.id
-            )
-          );
-
-          if (previousPage) {
-            previousPageIndex = findPageIndex(pages, previousPage.page.id);
-          }
-        }
-      }
-    });
-  } else {
-    const previousPage = pages.find(
-      (page) => currentPage.id === page.page.logic.next_page_id
-    );
-    if (previousPage) {
-      previousPageIndex = findPageIndex(pages, previousPage.page.id);
+    // If we found the current page and there's a previous page in history
+    if (currentHistoryIndex > 0) {
+      return userNavigationHistory[currentHistoryIndex - 1];
     }
   }
 
-  return previousPageIndex;
+  // If no history is available, return the sequential previous page
+  return Math.max(0, currentPageIndex - 1);
 };

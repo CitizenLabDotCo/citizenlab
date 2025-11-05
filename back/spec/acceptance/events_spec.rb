@@ -127,6 +127,82 @@ resource 'Events' do
       end
     end
 
+    context 'when there are unlisted projects' do
+      before do
+        @unlisted_project = create(:project, listed: false)
+        @unlisted_events = create_list(:event, 2, project: @unlisted_project)
+      end
+
+      example_request 'Does not list unlisted projects if not filtering by project ID' do
+        assert_status 200
+        expect(response_data.size).to eq 4
+        expected_ids = @events.pluck(:id) + @other_events.pluck(:id)
+        expect(response_ids.sort).to match_array(expected_ids.sort)
+      end
+
+      example_request 'Does list unlisted project if included in project IDs' do
+        do_request(project_ids: [@project.id, @unlisted_project.id])
+        assert_status 200
+        expect(response_data.size).to eq 4
+        expected_ids = @events.pluck(:id) + @unlisted_events.pluck(:id)
+        expect(response_ids.sort).to match_array(expected_ids.sort)
+      end
+
+      context 'when moderator' do
+        before do
+          @unlisted_project2 = create(:project, listed: false)
+          @unlisted_events2 = create_list(:event, 2, project: @unlisted_project2)
+
+          @user = create(:user, roles: [{ type: 'project_moderator', project_id: @unlisted_project2.id }])
+          header_token_for @user
+        end
+
+        example_request 'Does not list unlisted projects if not filtering by project ID' do
+          assert_status 200
+          expect(response_data.size).to eq 4
+          expected_ids = @events.pluck(:id) + @other_events.pluck(:id)
+          expect(response_ids.sort).to match_array(expected_ids.sort)
+        end
+
+        example 'Does list unlisted project the user can moderate if show_unlisted_events_user_can_moderate' do
+          do_request(
+            show_unlisted_events_user_can_moderate: true
+          )
+          assert_status 200
+          expect(response_data.size).to eq 6
+          expected_ids = @events.pluck(:id) + @other_events.pluck(:id) + @unlisted_events2.pluck(:id)
+          expect(response_ids.sort).to match_array(expected_ids.sort)
+        end
+
+        example_request 'Does list unlisted project if included in project IDs' do
+          do_request(project_ids: [@project.id, @unlisted_project.id])
+          assert_status 200
+          expect(response_data.size).to eq 4
+          expected_ids = @events.pluck(:id) + @unlisted_events.pluck(:id)
+          expect(response_ids.sort).to match_array(expected_ids.sort)
+        end
+      end
+    end
+
+    context 'when the event has an image' do
+      before do
+        @event_with_image = create(:event, project: @project)
+        @event_image = create(:event_image, event: @event_with_image)
+      end
+
+      example_request 'Includes event images' do
+        assert_status 200
+        event_data = response_data.find { |e| e[:id] == @event_with_image.id }
+        relationships = event_data.dig(:relationships, :event_images, :data)
+        expect(relationships).to eq([
+          { type: 'image', id: @event_image.id }
+        ])
+
+        image = json_response_body[:included].find { |inc| inc[:id] == relationships.first[:id] }
+        expect(image[:type]).to eq 'image'
+      end
+    end
+
     context 'when admin' do
       before do
         admin_header_token
@@ -337,6 +413,27 @@ resource 'Events' do
           expect(json_response).to include_response_error(:title_multiloc, 'blank')
           expect(json_response).to include_response_error(:start_at, 'after_end_at')
           expect(json_response).to include_response_error(:online_link, 'url')
+        end
+      end
+
+      describe 'when event description contains images' do
+        let(:project_id) { @project.id }
+        let(:title_multiloc) { event.title_multiloc }
+        let(:description_multiloc) do
+          {
+            'en' => html_with_base64_image
+          }
+        end
+        let(:start_at) { event.start_at }
+        let(:end_at) { event.end_at }
+        let(:online_link) { event.online_link }
+
+        example_request 'Create an event with description containing images', document: false do
+          assert_status 201
+          json_parse(response_body)
+          expect(response_data.dig(:attributes, :description_multiloc, :en)).to include('<p>Some text</p><img alt="Red dot"')
+          text_image = TextImage.find_by(imageable_id: response_data[:id], imageable_type: 'Event', imageable_field: 'description_multiloc')
+          expect(response_data.dig(:attributes, :description_multiloc, :en)).to include("data-cl2-text-image-text-reference=\"#{text_image.text_reference}\"")
         end
       end
 

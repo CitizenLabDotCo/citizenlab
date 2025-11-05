@@ -374,6 +374,7 @@ Rails.application.routes.draw do
       resources :files, controller: 'files/files' do
         get 'preview', on: :member, to: 'files/previews#show'
         resources :attachments, controller: 'files/file_attachments', only: %i[index]
+        get 'transcript', on: :member, to: 'files/transcripts#show'
       end
 
       resources :file_attachments, controller: 'files/file_attachments'

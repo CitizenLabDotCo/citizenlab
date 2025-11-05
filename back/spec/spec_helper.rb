@@ -245,7 +245,8 @@ VCR.configure do |config|
 
   # Filter out sensitive data from cassettes
   sensitive_data = {
-    '<OPENAI_API_KEY>' => ENV.fetch('OPENAI_API_KEY', nil)
+    '<OPENAI_API_KEY>' => ENV.fetch('OPENAI_API_KEY', nil),
+    '<ASSEMBLYAI_API_KEY>' => ENV.fetch('ASSEMBLYAI_API_KEY', nil)
   }
 
   sensitive_data.each do |placeholder, secret|
