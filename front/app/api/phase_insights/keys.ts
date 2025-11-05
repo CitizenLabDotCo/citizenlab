@@ -15,5 +15,3 @@ export const participationMetricsKey = (phaseId: string) =>
 
 export const demographicsKey = (phaseId: string) =>
   phaseInsightsKeys.item({ phaseId, type: 'demographics' });
-
-export default phaseInsightsKeys;
