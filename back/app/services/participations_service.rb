@@ -32,12 +32,19 @@ class ParticipationsService
   end
 
   def format_participation_data(participations)
+    all_participant_ids = participations.pluck(:user_id).uniq
+    participants_before_7_days_ids = participations.select { |p| p[:acted_at] < 7.days.ago }.pluck(:user_id).uniq
+    participants_after_7_days_ids = participations.select { |p| p[:acted_at] >= 7.days.ago }.pluck(:user_id).uniq
+    participants_change_last_7_days = (participants_after_7_days_ids - participants_before_7_days_ids).count
+
     {
       participations: {
-        count: participations.count
+        count: participations.count,
+        change_last_7_days: participations.count { |p| p[:acted_at] >= 7.days.ago }
       },
       participants: {
-        count: participations.pluck(:user_id).uniq.count,
+        count: all_participant_ids.count,
+        change_last_7_days: participants_change_last_7_days,
         demographics: [
           { tbc: 'tbc' } # Placeholder for demographics data
         ]

@@ -144,7 +144,7 @@ module ParticipationMethod
           posting_permission.user_fields_in_form && !posting_permission.permissions_custom_fields.empty?
         end
       end
-    end   
+    end
 
     delegate :user_data_collection, to: :posting_permission
 

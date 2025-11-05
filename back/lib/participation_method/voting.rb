@@ -63,6 +63,7 @@ module ParticipationMethod
         {
           id: basket.id,
           action: 'voting',
+          acted_at: basket.submitted_at,
           classname: 'Basket',
           user_id: basket.user_id,
           user_custom_field_values: basket.user.custom_field_values

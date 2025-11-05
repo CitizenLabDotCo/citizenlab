@@ -440,34 +440,37 @@ module ParticipationMethod
       true
     end
 
-    def participation_ideas_submitted(from_date: phase.start_at.beginning_of_day)
+    def participation_ideas_submitted
       # phase.ideas will return all ideas associated with the phase,
       # but ideas can be associated with multiple phases, through ideas_phases.
-      # We only want ideas submitted during this phase and after the from_date.
+      # We only want ideas submitted during this phase.
       # Note: If phase dates are changed such that an idea's submitted_at
       # falls outside the phase dates, it will not be counted.
-      phase.ideas.where(<<~SQL.squish, from_date, phase.end_at.end_of_day)
+      phase.ideas.where(<<~SQL.squish, phase.start_at.beginning_of_day, phase.end_at.end_of_day)
         ideas.submitted_at >= ? AND ideas.submitted_at <= ?
       SQL
+
+      # TODO: Map to participation format
     end
 
-    def participation_idea_comments(from_date: phase.start_at.beginning_of_day)
+    def participation_idea_comments
       # phase.ideas will return all ideas associated with the phase,
       # but ideas can be associated with multiple phases, through ideas_phases.
-      # We only want comments posted during this phase and after the from_date.
+      # We only want comments posted during this phase.
       # Note: If phase dates are changed such that an comment's created_at
       # falls outside the phase dates, it will not be counted.
       comments = Comment.joins(:idea)
-                   .merge(phase.ideas)
-                   .where(<<~SQL.squish, from_date, phase.end_at.end_of_day)
-                     comments.created_at >= ? AND comments.created_at <= ?
-                     AND comments.publication_status = 'published'
-                   SQL
+        .merge(phase.ideas)
+        .where(<<~SQL.squish, phase.start_at.beginning_of_day, phase.end_at.end_of_day)
+          comments.created_at >= ? AND comments.created_at <= ?
+          AND comments.publication_status = 'published'
+        SQL
 
       comments.map do |comment|
         {
           id: comment.id,
           action: 'voting',
+          acted_at: comment.created_at,
           classname: 'Comment',
           user_id: comment.author_id,
           user_custom_field_values: comment.author.custom_field_values
