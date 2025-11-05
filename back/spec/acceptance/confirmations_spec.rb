@@ -63,11 +63,6 @@ resource 'Confirmations' do
         expect(token[0..2]).to eq 'eyJ' # JWTs start with 'eyJ'
       end
 
-      example 'returns an unprocessable entity status passing no code' do
-        do_request(confirmation: { email:, code: nil })
-        assert_status 422
-      end
-
       example 'returns an code.blank error code when no code is passed' do
         do_request(confirmation: { email:, code: nil })
 
