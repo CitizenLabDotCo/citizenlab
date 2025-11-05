@@ -720,6 +720,8 @@
   "app.components.form.backToInputManager": "Takaisin syötehallintaan",
   "app.components.form.backToProject": "Takaisin projektiin",
   "app.components.form.controls.allStatementsError": "Kaikkiin väitteisiin on valittava vastaus.",
+  "app.components.form.controls.birthyearTooHigh": "Syntymävuosi ei voi olla tulevaisuudessa",
+  "app.components.form.controls.birthyearTooLow": "Syntymävuoden on oltava vähintään 1900",
   "app.components.form.controls.clearAll": "Tyhjennä kaikki",
   "app.components.form.controls.clearAllScreenreader": "Poista kaikki vastaukset yllä olevasta matriisikysymyksestä",
   "app.components.form.controls.cosponsorsPlaceholder": "Aloita etsittävän nimen kirjoittaminen",
