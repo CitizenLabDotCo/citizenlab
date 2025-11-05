@@ -110,7 +110,7 @@ const AuthModal = () => {
                     createAnAccountLink: (
                       <TextButton
                         onClick={
-                          currentStep === 'emailpassword'
+                          currentStep === 'email:password'
                             ? transition(currentStep, 'GO_BACK')
                             : undefined
                         }
@@ -143,7 +143,7 @@ const AuthModal = () => {
         )}
 
         {/* email flow */}
-        {currentStep === 'emailstart' && (
+        {currentStep === 'email:start' && (
           <EmailFlowStart
             loading={loading}
             setError={setError}
@@ -155,7 +155,7 @@ const AuthModal = () => {
             )}
           />
         )}
-        {currentStep === 'emailpolicies' && (
+        {currentStep === 'email:policies' && (
           <EmailPolicies
             state={state}
             loading={loading}
@@ -164,7 +164,7 @@ const AuthModal = () => {
             goBack={transition(currentStep, 'GO_BACK')}
           />
         )}
-        {currentStep === 'emailpassword' && (
+        {currentStep === 'email:password' && (
           <Password
             state={state}
             loading={loading}
@@ -172,7 +172,7 @@ const AuthModal = () => {
             onSubmit={transition(currentStep, 'SUBMIT_PASSWORD')}
           />
         )}
-        {currentStep === 'emailsso-policies' && (
+        {currentStep === 'email:sso-policies' && (
           <SSOPolicies
             state={state}
             loading={loading}

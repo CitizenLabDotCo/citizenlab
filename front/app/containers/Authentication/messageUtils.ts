@@ -18,10 +18,10 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'access-denied': messages.youCantParticipate,
 
   // email flow
-  emailstart: messages.beforeYouParticipate,
-  emailpolicies: messages.beforeYouParticipate,
-  emailpassword: messages.logIn,
-  'emailsso-policies': messages.beforeYouParticipate,
+  'email:start': messages.beforeYouParticipate,
+  'email:policies': messages.beforeYouParticipate,
+  'email:password': messages.logIn,
+  'email:sso-policies': messages.beforeYouParticipate,
 
   // invite flow
   'invite:email-password': messages.signUp,
@@ -50,7 +50,7 @@ export const getHeaderMessage = (
 ) => {
   if (
     action === 'following' &&
-    ['emailstart', 'emailemail-policies', 'emailsso-policies'].includes(step)
+    ['email:start', 'emailemail-policies', 'email:sso-policies'].includes(step)
   ) {
     return messages.beforeYouFollow;
   }
@@ -78,7 +78,7 @@ type HelperTextKey =
   | 'login_helper_text';
 
 export const HELPER_TEXT_KEYS: Partial<Record<Step, HelperTextKey>> = {
-  emailstart: 'signup_helper_text',
+  'email:start': 'signup_helper_text',
   'invite:email-password': 'signup_helper_text',
   'missing-data:custom-fields': 'custom_fields_signup_helper_text',
 };

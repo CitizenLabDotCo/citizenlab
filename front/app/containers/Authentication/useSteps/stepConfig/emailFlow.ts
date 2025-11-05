@@ -29,7 +29,7 @@ export const emailFlow = (
   userConfirmationEnabled: boolean
 ) => {
   return {
-    emailstart: {
+    'email:start': {
       CLOSE: () => setCurrentStep('closed'),
 
       SUBMIT_EMAIL: async (email: string) => {
@@ -41,12 +41,12 @@ export const emailFlow = (
 
           if (action === 'terms') {
             updateState({ flow: 'signup' });
-            setCurrentStep('emailpolicies');
+            setCurrentStep('email:policies');
           }
 
           if (action === 'password') {
             updateState({ flow: 'signin' });
-            setCurrentStep('emailpassword');
+            setCurrentStep('email:password');
           }
 
           if (action === 'confirm') {
@@ -83,7 +83,7 @@ export const emailFlow = (
             );
           } else {
             updateState({ ssoProvider });
-            setCurrentStep('emailsso-policies');
+            setCurrentStep('email:sso-policies');
           }
         }
       },
@@ -100,7 +100,7 @@ export const emailFlow = (
       },
     },
 
-    emailpolicies: {
+    'email:policies': {
       CLOSE: () => setCurrentStep('closed'),
       ACCEPT_POLICIES: async (email: string, locale: SupportedLocale) => {
         updateState({ email });
@@ -134,15 +134,15 @@ export const emailFlow = (
         }
 
         if (result === 'email_taken') {
-          setCurrentStep('emailpassword');
+          setCurrentStep('email:password');
         }
       },
-      GO_BACK: () => setCurrentStep('emailstart'),
+      GO_BACK: () => setCurrentStep('email:start'),
     },
 
-    emailpassword: {
+    'email:password': {
       CLOSE: () => setCurrentStep('closed'),
-      GO_BACK: () => setCurrentStep('emailstart'),
+      GO_BACK: () => setCurrentStep('email:start'),
       SUBMIT_PASSWORD: async (
         email: string,
         password: string,
@@ -182,7 +182,7 @@ export const emailFlow = (
       },
     },
 
-    'emailsso-policies': {
+    'email:sso-policies': {
       CLOSE: () => setCurrentStep('closed'),
       ACCEPT_POLICIES: (ssoProvider: SSOProviderWithoutVienna) => {
         handleOnSSOClick(
