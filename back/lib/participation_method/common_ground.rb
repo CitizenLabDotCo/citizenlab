@@ -121,10 +121,6 @@ module ParticipationMethod
       ]
     end
 
-    def participations
-      {} # Quick fix for failing specs.
-    end
-
     private
 
     delegate :i18n_to_multiloc, to: :multiloc_service

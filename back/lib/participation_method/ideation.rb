@@ -440,30 +440,26 @@ module ParticipationMethod
       true
     end
 
-    def participations
-      {} # Quick fix for failing specs.
-    end
-
-    def participation_ideas_submitted
+    def participation_ideas_submitted(from_date: phase.start_at.beginning_of_day)
       # phase.ideas will return all ideas associated with the phase,
       # but ideas can be associated with multiple phases, through ideas_phases.
-      # We only want ideas submitted during this phase.
+      # We only want ideas submitted during this phase and after the from_date.
       # Note: If phase dates are changed such that an idea's submitted_at
       # falls outside the phase dates, it will not be counted.
-      phase.ideas.where(<<~SQL.squish, phase.start_at.beginning_of_day, phase.end_at.end_of_day)
+      phase.ideas.where(<<~SQL.squish, from_date, phase.end_at.end_of_day)
         ideas.submitted_at >= ? AND ideas.submitted_at <= ?
       SQL
     end
 
-    def participation_idea_comments
+    def participation_idea_comments(from_date: phase.start_at.beginning_of_day)
       # phase.ideas will return all ideas associated with the phase,
       # but ideas can be associated with multiple phases, through ideas_phases.
-      # We only want comments posted during this phase.
+      # We only want comments posted during this phase and after the from_date.
       # Note: If phase dates are changed such that an comment's created_at
       # falls outside the phase dates, it will not be counted.
       comments = Comment.joins(:idea)
                    .merge(phase.ideas)
-                   .where(<<~SQL.squish, phase.start_at.beginning_of_day, phase.end_at.end_of_day)
+                   .where(<<~SQL.squish, from_date, phase.end_at.end_of_day)
                      comments.created_at >= ? AND comments.created_at <= ?
                      AND comments.publication_status = 'published'
                    SQL

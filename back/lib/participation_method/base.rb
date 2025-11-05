@@ -252,6 +252,10 @@ module ParticipationMethod
       false
     end
 
+    def participations
+      {} # Quick fix for failing specs.
+    end
+
     private
 
     attr_reader :phase

@@ -5,9 +5,5 @@ module ParticipationMethod
     def self.method_str
       'information'
     end
-
-    def participations
-      {} # Quick fix for failing specs.
-    end
   end
 end
