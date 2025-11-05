@@ -6,13 +6,17 @@ import { useParams } from 'react-router-dom';
 import usePhase from 'api/phases/usePhase';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 
 import DemographicsWidget from './DemographicsWidget';
 import messages from './messages';
 import ParticipationMetrics from './ParticipationMetrics';
 
 const AdminPhaseInsights = () => {
-  const { phaseId } = useParams() as { phaseId: string };
+  const { projectId, phaseId } = useParams() as {
+    projectId: string;
+    phaseId: string;
+  };
   const { data: phase } = usePhase(phaseId);
 
   if (!phase) {
@@ -25,7 +29,6 @@ const AdminPhaseInsights = () => {
       borderBottom="none"
       display="flex"
       flexDirection="column"
-      alignItems="flex-start"
     >
       <Box
         display="flex"
@@ -63,17 +66,20 @@ const AdminPhaseInsights = () => {
           <ParticipationMetrics phase={phase.data} />
           <DemographicsWidget phase={phase.data} />
         </Box>
+
+        <Button
+          buttonStyle="text"
+          icon="arrow-right"
+          iconPos="right"
+          onClick={() =>
+            clHistory.push(
+              `/admin/projects/${projectId}/phases/${phase.data.id}/insights/details`
+            )
+          }
+        >
+          <FormattedMessage {...messages.viewFullReport} />
+        </Button>
       </Box>
-      <Button
-        buttonStyle="text"
-        icon="arrow-right"
-        iconPos="right"
-        onClick={() => {
-          // TODO: Navigate to full report
-        }}
-      >
-        <FormattedMessage {...messages.viewFullReport} />
-      </Button>
     </Box>
   );
 };
