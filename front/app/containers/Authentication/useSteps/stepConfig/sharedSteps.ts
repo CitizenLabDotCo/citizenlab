@@ -125,7 +125,7 @@ export const sharedSteps = (
           }
         }
 
-        setCurrentStep('email-flow:start');
+        setCurrentStep('emailstart');
       },
 
       TRIGGER_VERIFICATION_ONLY: () => {
@@ -142,19 +142,19 @@ export const sharedSteps = (
           setCurrentStep('missing-data:verification');
           setError('verification_taken');
         } else {
-          setCurrentStep('email-flow:start');
+          setCurrentStep('emailstart');
           setError('unknown');
         }
       },
 
       TRIGGER_AUTH_ERROR: (error_code?: SignUpInError) => {
         if (error_code === 'franceconnect_merging_failed') {
-          setCurrentStep('email-flow:start');
+          setCurrentStep('emailstart');
           setError('franceconnect_merging_failed');
         } else if (error_code === 'not_entitled_under_minimum_age') {
           setCurrentStep('access-denied');
         } else {
-          setCurrentStep('email-flow:start');
+          setCurrentStep('emailstart');
           setError('unknown');
         }
       },

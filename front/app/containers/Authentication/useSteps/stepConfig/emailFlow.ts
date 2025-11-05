@@ -29,7 +29,7 @@ export const emailFlow = (
   userConfirmationEnabled: boolean
 ) => {
   return {
-    'email-flow:start': {
+    emailstart: {
       CLOSE: () => setCurrentStep('closed'),
 
       SUBMIT_EMAIL: async (email: string) => {
@@ -41,12 +41,12 @@ export const emailFlow = (
 
           if (action === 'terms') {
             updateState({ flow: 'signup' });
-            setCurrentStep('email-flow:policies');
+            setCurrentStep('emailpolicies');
           }
 
           if (action === 'password') {
             updateState({ flow: 'signin' });
-            setCurrentStep('email-flow:password');
+            setCurrentStep('emailpassword');
           }
 
           if (action === 'confirm') {
@@ -83,7 +83,7 @@ export const emailFlow = (
             );
           } else {
             updateState({ ssoProvider });
-            setCurrentStep('email-flow:sso-policies');
+            setCurrentStep('emailsso-policies');
           }
         }
       },
@@ -100,7 +100,7 @@ export const emailFlow = (
       },
     },
 
-    'email-flow:policies': {
+    emailpolicies: {
       CLOSE: () => setCurrentStep('closed'),
       ACCEPT_POLICIES: async (email: string, locale: SupportedLocale) => {
         updateState({ email });
@@ -134,15 +134,15 @@ export const emailFlow = (
         }
 
         if (result === 'email_taken') {
-          setCurrentStep('email-flow:password');
+          setCurrentStep('emailpassword');
         }
       },
-      GO_BACK: () => setCurrentStep('email-flow:start'),
+      GO_BACK: () => setCurrentStep('emailstart'),
     },
 
-    'email-flow:password': {
+    emailpassword: {
       CLOSE: () => setCurrentStep('closed'),
-      GO_BACK: () => setCurrentStep('email-flow:start'),
+      GO_BACK: () => setCurrentStep('emailstart'),
       SUBMIT_PASSWORD: async (
         email: string,
         password: string,
@@ -182,7 +182,7 @@ export const emailFlow = (
       },
     },
 
-    'email-flow:sso-policies': {
+    'emailsso-policies': {
       CLOSE: () => setCurrentStep('closed'),
       ACCEPT_POLICIES: (ssoProvider: SSOProviderWithoutVienna) => {
         handleOnSSOClick(

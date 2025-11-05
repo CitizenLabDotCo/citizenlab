@@ -44,7 +44,7 @@ export const ssoVerificationFlow = (
         }
       },
       GO_TO_LOGIN: () => {
-        setCurrentStep('email-flow:start');
+        setCurrentStep('emailstart');
       },
     },
 

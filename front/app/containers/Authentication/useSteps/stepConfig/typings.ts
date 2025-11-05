@@ -5,10 +5,10 @@ export type Step =
   | 'access-denied'
 
   // email flow
-  | 'email-flow:start'
-  | 'email-flow:policies'
-  | 'email-flow:password'
-  | 'email-flow:sso-policies'
+  | 'email:start'
+  | 'email:policies'
+  | 'email:password'
+  | 'email:sso-policies'
 
   // invite flow
   | 'invite:email-password'
