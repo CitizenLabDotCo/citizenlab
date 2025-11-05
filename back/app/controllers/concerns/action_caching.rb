@@ -40,7 +40,7 @@ module ActionCaching
   end
 
   def compute_cache_key(cache_path_option)
-    # Example: views/example.org/web_api/v1/ideas?page=1&filter=active.json
+    # Example: api_response/example.org/web_api/v1/ideas?page=1&filter=active.json
 
     path = request.path.sub(/\.\w+$/, '') # Remove extension if present
     format = request.format.symbol || :json
