@@ -24,11 +24,14 @@ class ParticipationsService
 
   def phase_participation_data(participations)
     phase_level = format_participation_data(participations.values.flatten)
-    actions_level = participations.transform_values do |records|
-      format_participation_data(records)
+    actions_level = participations.map do |action_type, records|
+      {
+        action_type: action_type.to_s,
+        **format_participation_data(records)
+      }
     end
 
-    { **phase_level, actions: [actions_level] }
+    { **phase_level, actions: actions_level }
   end
 
   def format_participation_data(participations)
