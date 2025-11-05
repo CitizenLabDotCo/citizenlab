@@ -444,22 +444,29 @@ module ParticipationMethod
       {} # Quick fix for failing specs.
     end
 
-    def participation_ideas
+    def participation_ideas_submitted
       # phase.ideas will return all ideas associated with the phase,
       # but ideas can be associated with multiple phases, through ideas_phases.
-      # We only want ideas where this phase is the earliest associated phase.
-      phase.ideas.where(<<~SQL.squish, phase.id)
-        ideas_phases.created_at = (
-          SELECT MIN(ip.created_at) 
-          FROM ideas_phases ip 
-          WHERE ip.idea_id = ideas.id
-        )
-        AND ideas_phases.phase_id = ?
+      # We only want ideas submitted during this phase.
+      # Note: If phase dates are changed such that an idea's submitted_at
+      # falls outside the phase dates, it will not be counted.
+      phase.ideas.where(<<~SQL.squish, phase.start_at.beginning_of_day, phase.end_at.end_of_day)
+        ideas.submitted_at >= ? AND ideas.submitted_at <= ?
       SQL
     end
 
-    def participation_comments
-      comments = Comment.joins(:idea).merge(participation_ideas)
+    def participation_idea_comments
+      # phase.ideas will return all ideas associated with the phase,
+      # but ideas can be associated with multiple phases, through ideas_phases.
+      # We only want comments posted during this phase.
+      # Note: If phase dates are changed such that an comment's created_at
+      # falls outside the phase dates, it will not be counted.
+      comments = Comment.joins(:idea)
+               .merge(phase.ideas)
+               .where(<<~SQL.squish, phase.start_at.beginning_of_day, phase.end_at.end_of_day)
+                 comments.created_at >= ? AND comments.created_at <= ?
+                 AND comments.publication_status = 'published'
+               SQL
 
       comments.map do |comment|
         {
