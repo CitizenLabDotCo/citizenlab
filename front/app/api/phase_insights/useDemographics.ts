@@ -8,6 +8,9 @@ import { PhaseInsightsDemographics } from './types';
 const fetchDemographics = async (
   phaseId: string
 ): Promise<PhaseInsightsDemographics> => {
+  // TODO: This will call the backend endpoint when ready
+  // Backend should aggregate all enabled user custom fields (select + birthyear)
+  // and return demographic data for each field
   const response = await fetch(
     `/api/v1/phases/${phaseId}/insights/demographics`
   );
@@ -33,19 +36,19 @@ const useDemographics = ({
   >({
     queryKey: demographicsKey(phaseId),
     queryFn: async () => {
-      // Don't fetch demographics for anonymous phases
-      if (userDataCollection === 'anonymous') {
-        return {};
-      }
-
       if (USE_DUMMY_DATA) {
-        // Return dummy data for development
         return getDummyDemographics();
       }
+
+      // Don't fetch demographics for anonymous phases in production
+      if (userDataCollection === 'anonymous') {
+        return { fields: [] };
+      }
+
       // Fetch real data from backend
       return fetchDemographics(phaseId);
     },
-    enabled: !!phaseId && userDataCollection !== 'anonymous',
+    enabled: userDataCollection !== 'anonymous',
   });
 };
 
