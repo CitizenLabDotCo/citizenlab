@@ -720,6 +720,8 @@
   "app.components.form.backToInputManager": "Torna al gestor d'entrades",
   "app.components.form.backToProject": "Tornar al projecte",
   "app.components.form.controls.allStatementsError": "S'ha de seleccionar una resposta per a totes les afirmacions.",
+  "app.components.form.controls.birthyearTooHigh": "L'any de naixement no pot ser en el futur",
+  "app.components.form.controls.birthyearTooLow": "L'any de naixement ha de ser com a mínim el 1900",
   "app.components.form.controls.clearAll": "Esborra-ho tot",
   "app.components.form.controls.clearAllScreenreader": "Esborreu totes les respostes de la pregunta de la matriu anterior",
   "app.components.form.controls.cosponsorsPlaceholder": "Comenceu a escriure un nom per cercar",
