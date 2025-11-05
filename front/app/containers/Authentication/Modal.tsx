@@ -161,6 +161,7 @@ const AuthModal = () => {
             loading={loading}
             setError={setError}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
+            goBack={transition(currentStep, 'GO_BACK')}
           />
         )}
         {currentStep === 'email-flow:password' && (

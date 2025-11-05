@@ -4,10 +4,10 @@ import { Text, Icon, colors } from '@citizenlab/cl2-component-library';
 
 import useLocale from 'hooks/useLocale';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import { SetError, State } from '../../typings';
+import TextButton from '../_components/TextButton';
 
 import messages from './messages';
 import PoliciesForm from './PoliciesForm';
@@ -17,13 +17,21 @@ interface Props {
   loading: boolean;
   setError: SetError;
   onAccept: (email: string, locale: string) => void;
+  goBack: () => void;
 }
 
-const EmailPolicies = ({ state, loading, setError, onAccept }: Props) => {
+const EmailPolicies = ({
+  state,
+  loading,
+  setError,
+  onAccept,
+  goBack,
+}: Props) => {
   const locale = useLocale();
+  const { formatMessage } = useIntl();
   const { email } = state;
 
-  if (isNilOrError(locale) || email === null) return null;
+  if (email === null) return null;
 
   const handleSubmit = async () => {
     try {
@@ -48,7 +56,15 @@ const EmailPolicies = ({ state, loading, setError, onAccept }: Props) => {
           {...messages.createANewAccountWith}
           values={{
             email: <strong>{state.email}</strong>,
-            changeLink: 'TODO',
+            changeLink: (
+              <>
+                {'('}
+                <TextButton onClick={goBack}>
+                  {formatMessage(messages.change)}
+                </TextButton>
+                {')'}
+              </>
+            ),
           }}
         />
       </Text>

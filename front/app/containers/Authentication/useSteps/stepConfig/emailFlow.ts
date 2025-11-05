@@ -113,6 +113,7 @@ export const emailFlow = (
           setCurrentStep('email-flow:password');
         }
       },
+      GO_BACK: () => setCurrentStep('email-flow:start'),
     },
 
     'email-flow:password': {

@@ -14,4 +14,8 @@ export default defineMessages({
     id: 'app.containers.NewAuthModal.steps.Policies.createANewAccountWith',
     defaultMessage: 'Create a new account with: {email} {changeLink}',
   },
+  change: {
+    id: 'app.containers.NewAuthModal.steps.Policies.change1',
+    defaultMessage: 'change',
+  },
 });
