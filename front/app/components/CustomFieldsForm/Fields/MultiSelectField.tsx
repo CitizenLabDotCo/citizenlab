@@ -35,24 +35,15 @@ const MultiSelectField = ({
     return extractOptions(question, localize, question.random_option_ordering);
   }, [question, localize]);
 
-  // to prevent jumping to another component when pressing Enter key
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-  };
   return (
     <>
       {question.dropdown_layout ? (
-        <Box onKeyDown={handleKeyDown}>
-          <MultipleSelect
-            name={question.key}
-            options={options}
-            scrollErrorIntoView={scrollErrorIntoView}
-            disabled={disabled}
-          />
-        </Box>
+        <MultipleSelect
+          name={question.key}
+          options={options}
+          scrollErrorIntoView={scrollErrorIntoView}
+          disabled={disabled}
+        />
       ) : (
         <CheckboxMultiSelect
           name={question.key}
