@@ -192,7 +192,11 @@ const generateYupSchema = ({
         if (key === 'proposed_budget') {
           schema[key] =
             required && enabled
-              ? number().required(fieldRequired)
+              ? number()
+                  .transform((value, originalValue) =>
+                    originalValue === '' ? null : value
+                  )
+                  .required(fieldRequired)
               : number()
                   .transform((value, originalValue) =>
                     originalValue === '' ? null : value
@@ -200,7 +204,11 @@ const generateYupSchema = ({
                   .nullable();
         } else {
           schema[key] = required
-            ? number().required(fieldRequired)
+            ? number()
+                .transform((value, originalValue) =>
+                  originalValue === '' ? null : value
+                )
+                .required(fieldRequired)
             : number()
                 .transform((value, originalValue) =>
                   originalValue === '' ? null : value
