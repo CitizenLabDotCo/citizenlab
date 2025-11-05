@@ -720,6 +720,8 @@
   "app.components.form.backToInputManager": "Powrót do menedżera wprowadzania danych",
   "app.components.form.backToProject": "Powrót do projektu",
   "app.components.form.controls.allStatementsError": "Odpowiedź musi zostać wybrana dla wszystkich stwierdzeń.",
+  "app.components.form.controls.birthyearTooHigh": "Rok urodzenia nie może być w przyszłości",
+  "app.components.form.controls.birthyearTooLow": "Rok urodzenia musi wynosić co najmniej 1900",
   "app.components.form.controls.clearAll": "Wyczyść wszystko",
   "app.components.form.controls.clearAllScreenreader": "Usuń wszystkie odpowiedzi z powyższego pytania macierzy",
   "app.components.form.controls.cosponsorsPlaceholder": "Zacznij wpisywać nazwę do wyszukania",
