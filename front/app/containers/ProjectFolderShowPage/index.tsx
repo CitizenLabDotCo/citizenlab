@@ -65,6 +65,7 @@ const StyledProjectFolderDescription = styled(ProjectFolderDescription)`
 
 const StyledProjectFolderProjectCards = styled(ProjectFolderProjectCards)`
   flex: 0 1 800px;
+  flex-shrink: 0;
   width: 800px;
   padding: 20px;
   padding-bottom: 0px;
@@ -162,15 +163,13 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
               <ProjectFolderHeader projectFolder={projectFolder} />
               {!isSmallerThanSmallDesktop ? (
                 <Content>
-                  <Box maxWidth="400px">
-                    <StyledProjectFolderDescription
-                      folderId={projectFolder.id}
-                      folderTitle={projectFolder.attributes.title_multiloc}
-                      folderDescription={
-                        projectFolder.attributes.description_multiloc
-                      }
-                    />
-                  </Box>
+                  <StyledProjectFolderDescription
+                    folderId={projectFolder.id}
+                    folderTitle={projectFolder.attributes.title_multiloc}
+                    folderDescription={
+                      projectFolder.attributes.description_multiloc
+                    }
+                  />
                   <StyledProjectFolderProjectCards
                     folderId={projectFolder.id}
                   />
