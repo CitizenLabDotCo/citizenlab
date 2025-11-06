@@ -162,7 +162,7 @@ module Webhooks
       Rails.env.development? && ['localhost', '127.0.0.1', '::1'].include?(host)
     end
 
-    def check_subscription_health(subscription)
+    def self.check_subscription_health(subscription)
       # Check if last N deliveries all failed
       recent_failures = subscription.deliveries
         .recent
@@ -175,5 +175,6 @@ module Webhooks
         subscription.update!(enabled: false)
       end
     end
+    private_class_method :check_subscription_health
   end
 end
