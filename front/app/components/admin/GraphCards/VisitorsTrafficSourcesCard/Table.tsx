@@ -77,9 +77,9 @@ const TableComponent = ({ tableData, onOpenModal }: Props) => {
                   wordBreak="break-word"
                 >
                   ({row.referrer_type}){' '}
-                  {truncate(row.referrer, MAX_REFERRER_LENGTH)}
+                  {row.referrer && truncate(row.referrer, MAX_REFERRER_LENGTH)}
                 </Text>
-                {row.referrer.length > MAX_REFERRER_LENGTH && (
+                {row.referrer && row.referrer.length > MAX_REFERRER_LENGTH && (
                   <IconTooltip
                     content={
                       <Text wordBreak="break-word" color="white" fontSize="s">
