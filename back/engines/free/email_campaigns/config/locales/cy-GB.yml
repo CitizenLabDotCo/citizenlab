@@ -407,11 +407,13 @@ cy:
       title: 'Mae %{requesterName} wedi eich gwahodd i adolygu''r prosiect "%{projectTitle}"'
       event_description: "Ar hyn o bryd, mae'r prosiect mewn modd drafft ac nid yw'n weladwy i ddefnyddwyr. Unwaith y byddwch wedi'i adolygu a'i gymeradwyo, bydd y cymedrolwr yn gallu ei gyhoeddi."
       cta_button: "Adolygu'r prosiect"
+      preheader: 'Mae %{requesterName} wedi eich gwahodd i adolygu''r prosiect "%{projectTitle}"'
     project_review_state_change:
       subject: '"%{projectTitle}" wedi ei gymeradwyo'
       title: '%{reviewerName} cymeradwyodd y prosiect "%{projectTitle}"'
       event_description: "Mae'r prosiect bellach yn barod i fynd yn fyw. Gallwch ei gyhoeddi pryd bynnag y byddwch yn barod!"
       cta_button: "Ewch i osodiadau'r prosiect"
+      preheader: '%{reviewerName} wedi cymeradwyo''r prosiect "%{projectTitle}"'
     status_change_on_idea_you_follow:
       status_change: 'Statws newydd y mewnbwn hwn yw ''%{status}'''
       event_description: 'Diweddarodd %{organizationName} statws y mewnbwn ''%{input_title}'' ar eu platfform cyfranogiad digidol.'
