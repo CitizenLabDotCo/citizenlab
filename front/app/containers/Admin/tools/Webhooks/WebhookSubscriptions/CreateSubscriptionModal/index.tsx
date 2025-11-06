@@ -16,10 +16,9 @@ import Select from 'components/HookForm/Select';
 import Toggle from 'components/HookForm/Toggle';
 
 import useLocalize from 'hooks/useLocalize';
-import { useIntl } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import SecretTokenDisplay from '../components/SecretTokenDisplay';
 
