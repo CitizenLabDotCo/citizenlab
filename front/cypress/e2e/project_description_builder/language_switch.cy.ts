@@ -29,7 +29,7 @@ describe('Project description builder language switch', () => {
         projectId = project.body.data.id;
         cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
           cy.visit(
-            `/admin/project-description-builder/projects/${projectId}/description`
+            `/admin/description-builder/projects/${projectId}/description`
           );
         });
       });
@@ -80,9 +80,7 @@ describe('Project description builder language switch', () => {
       'saveProjectDescriptionBuilder'
     );
 
-    cy.visit(
-      `/admin/project-description-builder/projects/${projectId}/description`
-    );
+    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
 
     // Delete content
     cy.get('.e2e-text-box').wait(1000).click({ force: true });
