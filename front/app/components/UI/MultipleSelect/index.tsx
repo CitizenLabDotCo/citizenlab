@@ -1,6 +1,6 @@
 import React, { KeyboardEvent } from 'react';
 
-import { Label } from '@citizenlab/cl2-component-library';
+import { Box, Label } from '@citizenlab/cl2-component-library';
 import ReactSelect from 'react-select';
 import { useTheme } from 'styled-components';
 import { IOption } from 'typings';
@@ -62,8 +62,15 @@ const MultipleSelect = ({
     if (event.code === 'Escape') event.stopPropagation();
   };
 
+  // to prevent jumping to another component when pressing Enter key
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  };
   return (
-    <div>
+    <Box onKeyDown={handleKeyDown}>
       {label && <Label htmlFor={inputId}>{label}</Label>}
       <ReactSelect
         id={id}
@@ -72,7 +79,7 @@ const MultipleSelect = ({
         isMulti
         isSearchable={isSearchable}
         blurInputOnSelect={typeof autoBlur === 'boolean' ? autoBlur : false}
-        backspaceRemovesValue={false}
+        backspaceRemovesValue={true}
         menuShouldScrollIntoView={false}
         isClearable={false}
         value={findFullOptionValues()}
@@ -94,7 +101,7 @@ const MultipleSelect = ({
         hideSelectedOptions
         onKeyDown={preventModalCloseOnEscape}
       />
-    </div>
+    </Box>
   );
 };
 

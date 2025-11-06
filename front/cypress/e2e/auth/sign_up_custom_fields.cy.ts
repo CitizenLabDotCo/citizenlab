@@ -55,10 +55,12 @@ describe('Sign up - custom fields step', () => {
     const email = randomEmail();
     const password = randomString();
     let customFieldId: string;
+    let customFieldName: string;
 
     before(() => {
       cy.apiCreateCustomField(randomFieldName, true, true).then((response) => {
         customFieldId = response.body.data.id;
+        customFieldName = response.body.data.attributes.title_multiloc.en;
         cy.apiSignup(firstName, lastName, email, password);
         cy.setLoginCookie(email, password);
         cy.goToLandingPage();
@@ -73,7 +75,7 @@ describe('Sign up - custom fields step', () => {
       cy.get('#e2e-signup-custom-fields-submit-btn').click();
       cy.get('#e2e-signup-custom-fields-container .e2e-error-message').should(
         'contain',
-        'Field is required'
+        `The field "${customFieldName}" is required`
       );
     });
 

@@ -407,11 +407,13 @@ ar:
       title: 'لقد دعاك %{requesterName} لمراجعة المشروع "%{projectTitle}"'
       event_description: "المشروع حاليًا في وضع المسودة، وهو غير مرئي للمستخدمين. بعد مراجعته والموافقة عليه، سيتمكن المشرف من نشره."
       cta_button: "مراجعة المشروع"
+      preheader: 'لقد دعاك %{requesterName} لمراجعة المشروع "%{projectTitle}"'
     project_review_state_change:
       subject: 'تمت الموافقة على "%{projectTitle}"'
       title: '%{reviewerName} وافق على المشروع "%{projectTitle}"'
       event_description: "المشروع جاهز الآن للانطلاق. يمكنك نشره في أي وقت!"
       cta_button: "انتقل إلى إعدادات المشروع"
+      preheader: '%{reviewerName} وافق على المشروع "%{projectTitle}"'
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
       event_description: 'قام %{organizationName} بتحديث حالة الإدخال ''%{input_title}'' على منصة المشاركة الرقمية الخاصة بهم.'
