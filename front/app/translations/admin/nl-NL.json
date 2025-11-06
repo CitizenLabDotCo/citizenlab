@@ -2425,7 +2425,7 @@
   "app.containers.AdminPage.ProjectTimeline.startDatePlaceholder": "Begint op",
   "app.containers.AdminPage.ProjectTimeline.surveyCTALabel": "Knop",
   "app.containers.AdminPage.ProjectTimeline.surveyTitleLabel": "Titel van de vragenlijst",
-  "app.containers.AdminPage.ProjectTimeline.titleLabel": "Fasenaam",
+  "app.containers.AdminPage.ProjectTimeline.titleLabel": "Fasetitel",
   "app.containers.AdminPage.ProjectTimeline.uploadAttachments": "Bijlagen uploaden",
   "app.containers.AdminPage.ReportsTab.customFieldTitleExport": "{fieldName}_opdeling",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.subtitleTerminology": "Terminologie (voorpaginafilter)",
