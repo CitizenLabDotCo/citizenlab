@@ -114,6 +114,7 @@ class CustomField < ApplicationRecord
 
   before_validation :set_default_enabled
   before_validation :generate_key, on: :create
+  before_validation :sanitize_description_multiloc
   after_create(if: :domicile?) { Area.recreate_custom_field_options }
 
   scope :registration, -> { where(resource_type: 'User') }
@@ -132,18 +133,6 @@ class CustomField < ApplicationRecord
     else
       raise "Polcy not implemented for resource type: #{resource_type}"
     end
-  end
-
-  def description_multiloc=(value)
-    if value.present?
-      service = SanitizationService.new
-      features = %i[title alignment list decoration link image video]
-      value = service.sanitize_multiloc(value, features)
-      value = service.remove_multiloc_empty_trailing_tags(value)
-      value = service.linkify_multiloc(value)
-    end
-
-    super(value)
   end
 
   def logic?
@@ -544,6 +533,16 @@ class CustomField < ApplicationRecord
     self.key = CustomFieldService.new.generate_key(title) do |key_proposal|
       self.class.find_by(key: key_proposal, resource_type: resource_type)
     end
+  end
+
+  def sanitize_description_multiloc
+    service = SanitizationService.new
+    self.description_multiloc = service.sanitize_multiloc(
+      description_multiloc,
+      %i[title alignment list decoration link image video]
+    )
+    self.description_multiloc = service.remove_multiloc_empty_trailing_tags description_multiloc
+    self.description_multiloc = service.linkify_multiloc description_multiloc
   end
 
   # Return domicile options with IDs and descriptions taken from areas

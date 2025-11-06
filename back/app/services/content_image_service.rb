@@ -222,18 +222,15 @@ class ContentImageService
   end
 
   class << self
-    def configure_image_extraction(imageable_class, field, association_name = :text_images)
+    def setup_image_extraction(imageable_class, field, association_name = :text_images)
       define_association(imageable_class, association_name, field)
       image_service_class = self
 
-      imageable_class.prepend(
-        Module.new do
-          define_method(:"#{field}=") do |value|
-            super(value)
-            image_service_class.new.swap_data_images!(self, field, association_name) if value.present?
-          end
-        end
-      )
+      imageable_class.before_validation do
+        next unless will_save_change_to_attribute?(field)
+
+        image_service_class.new.swap_data_images!(self, field, association_name)
+      end
     end
 
     private

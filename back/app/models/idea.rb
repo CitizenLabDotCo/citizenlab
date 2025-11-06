@@ -164,6 +164,7 @@ class Idea < ApplicationRecord
     validates :idea_status, presence: true
     validates :project, presence: true
     before_validation :assign_defaults
+    before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
 
   pg_search_scope :search_by_all,
@@ -383,16 +384,14 @@ class Idea < ApplicationRecord
     !draft? && participation_method_on_creation.built_in_title_required?
   end
 
-  def body_multiloc=(value)
-    if value.present?
-      service = SanitizationService.new
-      features = %i[title alignment list decoration link image video]
-      value = service.sanitize_multiloc(value, features)
-      value = service.remove_multiloc_empty_trailing_tags(value)
-      value = service.linkify_multiloc(value)
-    end
-
-    super
+  def sanitize_body_multiloc
+    service = SanitizationService.new
+    self.body_multiloc = service.sanitize_multiloc(
+      body_multiloc,
+      %i[title alignment list decoration link image video]
+    )
+    self.body_multiloc = service.remove_multiloc_empty_trailing_tags(body_multiloc)
+    self.body_multiloc = service.linkify_multiloc(body_multiloc)
   end
 
   def fix_comments_count_on_projects
