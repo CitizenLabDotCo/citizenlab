@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, MouseEvent } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
+
 type Props = {
   children?: any;
   onClick?: (event: MouseEvent) => void;
@@ -95,8 +97,7 @@ const ClickOutside = ({
   };
 
   return (
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-    <div
+    <Box
       id={id}
       ref={containerRef}
       className={className}
@@ -109,7 +110,7 @@ const ClickOutside = ({
       aria-labelledby={ariaLabelledBy}
     >
       {children}
-    </div>
+    </Box>
   );
 };
 
