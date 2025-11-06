@@ -46,7 +46,7 @@ class Project < ApplicationRecord
 
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
-  has_many_text_images_from :description_multiloc
+  has_many_text_images from: :description_multiloc
   accepts_nested_attributes_for :text_images
 
   has_one :custom_form, as: :participation_context, dependent: :destroy # ideation & voting phases only

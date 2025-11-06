@@ -2,10 +2,8 @@ module Imageable
   extend ActiveSupport::Concern
 
   class_methods do
-    # rubocop:disable Naming/PredicateName
-    def has_many_text_images_from(attribute, association_name = :text_images)
-      TextImageService.setup_image_extraction(self, attribute, association_name)
+    def has_many_text_images(from:, as: :text_images)
+      TextImageService.setup_image_extraction(self, from, as)
     end
-    # rubocop:enable Naming/PredicateName
   end
 end

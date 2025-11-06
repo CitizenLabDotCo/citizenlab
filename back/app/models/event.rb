@@ -36,7 +36,7 @@ class Event < ApplicationRecord
   include Files::FileAttachable
   include GeoJsonHelpers
 
-  has_many_text_images_from :description_multiloc
+  has_many_text_images from: :description_multiloc
 
   belongs_to :project
   has_many :attendances, class_name: 'Events::Attendance', dependent: :destroy

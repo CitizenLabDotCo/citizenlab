@@ -27,7 +27,7 @@ module ProjectFolders
 
     slug from: proc { |folder| folder.title_multiloc&.values&.find(&:present?) }
 
-    has_many_text_images_from :description_multiloc
+    has_many_text_images from: :description_multiloc
 
     has_one :admin_publication, as: :publication, dependent: :destroy
     has_one :nav_bar_item, dependent: :destroy, inverse_of: 'project_folder', foreign_key: 'project_folder_id'

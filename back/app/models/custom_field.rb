@@ -57,7 +57,7 @@
 class CustomField < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_id]
 
-  has_many_text_images_from :description_multiloc
+  has_many_text_images from: :description_multiloc
   accepts_nested_attributes_for :text_images
 
   has_many :options, -> { order(:ordering) }, dependent: :destroy, class_name: 'CustomFieldOption', inverse_of: :custom_field

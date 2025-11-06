@@ -44,8 +44,8 @@ class StaticPage < ApplicationRecord
 
   enum :projects_filter_type, { no_filter: 'no_filter', areas: 'areas', topics: 'topics' }
 
-  has_many_text_images_from :top_info_section_multiloc, :top_info_section_text_images
-  has_many_text_images_from :bottom_info_section_multiloc, :bottom_info_section_text_images
+  has_many_text_images from: :top_info_section_multiloc, as: :top_info_section_text_images
+  has_many_text_images from: :bottom_info_section_multiloc, as: :bottom_info_section_text_images
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
 

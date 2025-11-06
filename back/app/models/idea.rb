@@ -96,7 +96,7 @@ class Idea < ApplicationRecord
     delta_magnitude: proc { |idea| idea.comments_count }
   )
 
-  has_many_text_images_from :body_multiloc
+  has_many_text_images from: :body_multiloc
 
   # Must appear before before_destroy
   before_save :convert_wkt_geo_custom_field_values_to_geojson

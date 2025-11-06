@@ -222,7 +222,7 @@ class ContentImageService
   end
 
   class << self
-    def setup_image_extraction(imageable_class, field, association_name = :text_images)
+    def setup_image_extraction(imageable_class, field, association_name)
       define_association(imageable_class, association_name, field)
       image_service_class = self
 
