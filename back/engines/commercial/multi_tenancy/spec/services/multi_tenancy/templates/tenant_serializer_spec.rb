@@ -171,11 +171,8 @@ describe MultiTenancy::Templates::TenantSerializer do
     end
 
     it 'successfully exports custom field' do
-      description_multiloc = {
-        'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
-      }
+      description_multiloc = { 'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />' }
       field = create(:custom_field_page, :for_custom_form, description_multiloc: description_multiloc)
-      field.update! description_multiloc: TextImageService.new.swap_data_images(field.description_multiloc, field: :description_multiloc, imageable: field)
 
       template = tenant_serializer.run(deserializer_format: true)
 
