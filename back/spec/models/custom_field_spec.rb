@@ -496,8 +496,8 @@ RSpec.describe CustomField do
   end
 
   describe 'topic_ids field with select counts' do
-    let(:project) { create(:continuous_native_survey_project) }
-    let(:custom_form) { create(:custom_form, participation_context: project) }
+    let(:project) { create(:single_phase_native_survey_project) }
+    let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
     let(:field) { create(:custom_field, resource: custom_form, input_type: 'topic_ids') }
 
     it 'accepts valid minimum_select_count' do
