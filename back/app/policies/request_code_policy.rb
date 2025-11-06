@@ -2,7 +2,8 @@
 
 class RequestCodePolicy < ApplicationPolicy
   def request_code_unauthenticated?
-    # true
+    binding.pry
+    true
   end
 
   def request_code_authenticated?

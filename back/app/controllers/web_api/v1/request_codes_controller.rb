@@ -1,16 +1,26 @@
 # frozen_string_literal: true
 
 class WebApi::V1::RequestCodesController < ApplicationController
+  skip_before_action :authenticate_user
+  skip_after_action :verify_authorized
+
   def request_code_unauthenticated
-    # TODO
+    email = request_code_unauthenticated_params[:email]
+    user = User.find_by(email: email)
+    binding.pry
+    
+    if user
+      authorize user, :request_code_unauthenticated?
+      head :ok
+    else
+      head :ok
+    end
   end
 
-  def request_code_authenticated
-    # TODO
-  end
+  private
 
-  def request_code_email_change
-    # TODO
+  def request_code_unauthenticated_params
+    params.require(:request_code).permit(:email, :code)
   end
 
   # skip_after_action :verify_authorized

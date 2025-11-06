@@ -3,6 +3,29 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+resource 'Request codes' do
+  before do
+    set_api_content_type
+    SettingsService.new.activate_feature! 'user_confirmation'
+  end
+
+  post 'web_api/v1/user/request_code_unauthenticated' do
+    with_options scope: :request_code do
+      parameter :email, 'The email of the user requesting a confirmation code.', required: true
+    end
+    
+    context 'WTFFF???' do
+      let(:user) { create(:user_with_confirmation) }
+      let(:email) { user.email }
+
+      example 'It works' do
+        do_request(request_code: { email: email, code: '1234' })
+        expect(status).to eq 200
+      end
+    end
+  end
+end
+
 # resource 'Code Resends' do
 #   explanation 'A user can ask for a new code and update an email in case a mistake was made before.'
 
