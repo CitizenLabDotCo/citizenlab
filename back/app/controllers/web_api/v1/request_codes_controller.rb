@@ -7,7 +7,6 @@ class WebApi::V1::RequestCodesController < ApplicationController
   def request_code_unauthenticated
     email = request_code_unauthenticated_params[:email]
     user = User.find_by(email: email)
-    binding.pry
     
     if user
       authorize user, :request_code_unauthenticated?
