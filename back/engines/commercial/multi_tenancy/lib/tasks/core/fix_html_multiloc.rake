@@ -63,14 +63,12 @@ namespace :fix_existing_tenants do
         imageable_html_multilocs.map do |claz, attributes|
           claz.all.map do |instance|
             attributes.each do |attribute|
-              instance.send attribute
-              begin
-                multiloc = TextImageService.new.swap_data_images instance[attribute], field: attribute, imageable: instance
-                instance.send :"#{attribute}=", multiloc
-                instance.save!
-              rescue StandardError => e
-                errors += [e.message]
-              end
+              # Mark attribute as changed to trigger image extraction
+              # via before_validation callback
+              instance.attribute_will_change!(attribute)
+              instance.save!
+            rescue StandardError => e
+              errors += [e.message]
             end
           end
         end
@@ -107,9 +105,7 @@ namespace :fix_existing_tenants do
                 end
                 multiloc[k] = doc.to_s
               end
-              multiloc = TextImageService.new.swap_data_images object[attribute], field: attribute, imageable: object
-              object.send :"#{attribute}=", multiloc
-              object.save!
+              object.update(attribute => multiloc)
             end
           end
         end
@@ -202,11 +198,8 @@ namespace :fix_existing_tenants do
               end
               next unless changed
 
-              instance.update_column(attribute, multiloc)
               begin
-                multiloc = TextImageService.new.swap_data_images instance[attribute], field: attribute, imageable: instance
-                instance.send :"#{attribute}=", multiloc
-                instance.save!
+                instance.update!(attribute => multiloc)
               rescue StandardError => e
                 errors += [e.message]
               end
