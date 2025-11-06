@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::ResendCodesController < ApplicationController
+class WebApi::V1::RequestCodesController < ApplicationController
   def request_code_unauthenticated
     # TODO
   end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ResendCodePolicy < ApplicationPolicy
+class RequestCodePolicy < ApplicationPolicy
   def request_code_unauthenticated?
     # true
   end
