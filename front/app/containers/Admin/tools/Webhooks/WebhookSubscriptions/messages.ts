@@ -111,7 +111,7 @@ export default defineMessages({
   createWebhookDescription: {
     id: 'app.containers.Admin.tools.webhooks.createWebhookDescription',
     defaultMessage:
-      'Create a webhook to receive real-time notifications when events occur on your platform.',
+      'Create a webhook to receive real-time notifications when events occur on your platform. For more information, see our {webhookDocumentationLink}.',
   },
   webhookName: {
     id: 'app.containers.Admin.tools.webhooks.webhookName',

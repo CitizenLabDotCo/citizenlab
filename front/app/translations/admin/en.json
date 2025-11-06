@@ -1654,7 +1654,7 @@
   "app.containers.Admin.tools.webhooks.createSuccessDescription": "You can use the secret token below to verify whether requests to your webhook URL are coming from us. For more information, see our {webhookDocumentationLink}.",
   "app.containers.Admin.tools.webhooks.createSuccessImportant": "<b>Important!</b> You can only copy this secret token once. If you close this window you will not be able to see it again.",
   "app.containers.Admin.tools.webhooks.createWebhookButton": "Create webhook",
-  "app.containers.Admin.tools.webhooks.createWebhookDescription": "Create a webhook to receive real-time notifications when events occur on your platform.",
+  "app.containers.Admin.tools.webhooks.createWebhookDescription": "Create a webhook to receive real-time notifications when events occur on your platform. For more information, see our {webhookDocumentationLink}.",
   "app.containers.Admin.tools.webhooks.createWebhookTitle": "Create a new webhook",
   "app.containers.Admin.tools.webhooks.createdAt": "Created",
   "app.containers.Admin.tools.webhooks.delete": "Delete webhook",

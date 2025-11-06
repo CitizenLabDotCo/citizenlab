@@ -124,7 +124,7 @@ const WebhookSubscriptions = () => {
       </Box>
 
       <Title variant="h1">{formatMessage(messages.title)}</Title>
-      <Box display="flex" justifyContent={'space-between'} mb="12px">
+      <Box display="flex" justifyContent={'space-between'} mb="12px" gap="10px">
         <Text>
           <FormattedMessage
             {...messages.description}

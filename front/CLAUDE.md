@@ -119,8 +119,13 @@ const schema = yup.object({
 
 const { register, handleSubmit } = useForm({
   resolver: yupResolver(schema),
+  defaultValues: {
+    'fieldName'
+  }
 });
 ```
+
+When defining `defaultValues` to `useForm`, it's not needed to add empty defaultValues, just omit them.
 
 #### Internationalization
 

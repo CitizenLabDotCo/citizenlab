@@ -104,10 +104,6 @@ const EditSubscriptionModal = ({
     mode: 'onBlur',
     resolver: yupResolver(schema),
     defaultValues: {
-      name: '',
-      url: '',
-      events: [],
-      project_id: '',
       enabled: true,
     },
   });
@@ -190,6 +186,7 @@ const EditSubscriptionModal = ({
               name="project_id"
               label={formatMessage(messages.webhookProject)}
               options={projectOptions}
+              placeholder={formatMessage(messages.allProjects)}
             />
           </Box>
           <Box mb="16px">

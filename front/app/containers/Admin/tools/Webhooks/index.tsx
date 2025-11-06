@@ -9,7 +9,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
-import apiImage from './webhooks.png';
+import webhooksImage from './webhooks.png';
 
 export const Webhooks = () => {
   const isWebhooksActive = useFeatureFlag({ name: 'public_api_tokens' });
@@ -20,7 +20,7 @@ export const Webhooks = () => {
       <img
         width="320px"
         height="240px"
-        src={apiImage}
+        src={webhooksImage}
         alt={formatMessage(messages.webhooksImage)}
         style={{ borderRadius: '3px' }}
       />

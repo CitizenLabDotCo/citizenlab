@@ -38,6 +38,13 @@ const useWebhookDeliveries = (params: {
     queryKey: webhookDeliveryKeys.list(params),
     queryFn: () => fetchWebhookDeliveries(params),
     enabled: !!params.subscriptionId,
+    refetchInterval(data) {
+      return data?.data.some(
+        (delivery) => delivery.attributes.status === 'pending'
+      )
+        ? 5000
+        : false;
+    },
   });
 };
 

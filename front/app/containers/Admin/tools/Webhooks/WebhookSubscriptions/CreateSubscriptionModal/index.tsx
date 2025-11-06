@@ -19,6 +19,7 @@ import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import SecretTokenDisplay from '../components/SecretTokenDisplay';
 
@@ -35,7 +36,6 @@ type CreateSubscriptionModalProps = {
 };
 
 const CreateSubscriptionModal = ({ onClose }: CreateSubscriptionModalProps) => {
-  const [success, setSuccess] = useState(false);
   const [secret, setSecret] = useState<string>('');
   const { mutateAsync: addSubscription, isLoading } =
     useAddWebhookSubscription();
@@ -94,10 +94,6 @@ const CreateSubscriptionModal = ({ onClose }: CreateSubscriptionModalProps) => {
     mode: 'onBlur',
     resolver: yupResolver(schema),
     defaultValues: {
-      name: '',
-      url: '',
-      events: [],
-      project_id: '',
       enabled: true,
     },
   });
@@ -110,7 +106,6 @@ const CreateSubscriptionModal = ({ onClose }: CreateSubscriptionModalProps) => {
       };
       const result = await addSubscription(requestData);
       setSecret(result.data.attributes.secret_token);
-      setSuccess(true);
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
@@ -118,12 +113,27 @@ const CreateSubscriptionModal = ({ onClose }: CreateSubscriptionModalProps) => {
 
   return (
     <Box w="100%" m="24px auto" pr="24px">
-      {!success ? (
+      {!methods.formState.isSubmitSuccessful ? (
         <>
           <Title variant="h2">
             {formatMessage(messages.createWebhookTitle)}
           </Title>
-          <Text>{formatMessage(messages.createWebhookDescription)}</Text>
+          <Text>
+            <FormattedMessage
+              {...messages.createWebhookDescription}
+              values={{
+                webhookDocumentationLink: (
+                  <a
+                    href={formatMessage(messages.documentationUrl)}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {formatMessage(messages.webhookDocumentationLink)}
+                  </a>
+                ),
+              }}
+            />
+          </Text>
           <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onFormSubmit)}>
               <Feedback />
@@ -155,6 +165,7 @@ const CreateSubscriptionModal = ({ onClose }: CreateSubscriptionModalProps) => {
                   name="project_id"
                   label={formatMessage(messages.webhookProject)}
                   options={projectOptions}
+                  placeholder={formatMessage(messages.allProjects)}
                 />
               </Box>
               <Box mb="16px">
