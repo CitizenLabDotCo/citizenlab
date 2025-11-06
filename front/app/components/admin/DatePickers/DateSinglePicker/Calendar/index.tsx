@@ -17,6 +17,11 @@ const DayPickerStyles = styled.div`
   .rdp-root {
     --rdp-accent-color: ${colors.teal700};
     --rdp-accent-background-color: ${colors.teal100};
+
+    .rdp-dropdown_root:has(> select:focus-visible) {
+      border: 2px solid ${colors.black};
+      border-radius: 4px;
+    }
   }
 
   .rdp-selected > button.rdp-day_button {
