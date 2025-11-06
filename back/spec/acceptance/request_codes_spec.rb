@@ -13,15 +13,12 @@ resource 'Request codes' do
     with_options scope: :request_code do
       parameter :email, 'The email of the user requesting a confirmation code.', required: true
     end
-    
-    context 'WTFFF???' do
-      let(:user) { create(:user_with_confirmation) }
-      let(:email) { user.email }
 
-      example 'It works' do
-        do_request(request_code: { email: email })
-        expect(status).to eq 200
-      end
+    example 'It works' do
+      user = create(:user_with_confirmation)
+      email = user.email
+      do_request(request_code: { email: email })
+      expect(status).to eq 200
     end
   end
 end
