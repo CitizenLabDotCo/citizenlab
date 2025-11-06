@@ -70,11 +70,18 @@ class ParticipationsService
       custom_field = field.custom_field
       counts = UserCustomFields::FieldValueCounter.counts_by_field_option(participants, custom_field)
       reference_population = calculate_reference_population(custom_field) || {}
-      
+
       demographics_hash[custom_field.key] = {
         counts: counts,
-        reference_population: reference_population
+        reference_population: reference_population,
+        title_multiloc: custom_field.title_multiloc
       }
+
+      if custom_field.options.present?
+        demographics_hash[custom_field.key][:options] = custom_field.options.to_h do |o|
+          [o.key, o.attributes.slice('title_multiloc', 'ordering')]
+        end
+      end
     end
   end
 
