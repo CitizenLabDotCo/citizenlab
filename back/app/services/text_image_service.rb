@@ -60,23 +60,6 @@ class TextImageService < ContentImageService
     }
   end
 
-  def bulk_create_images!(
-    extracted_images,
-    imageable,
-    field
-  )
-    extracted_images.map do |extracted_image|
-      img_attrs = {
-        imageable: imageable,
-        imageable_field: field,
-        text_reference: extracted_image[:text_reference]
-      }
-      img_attrs[extracted_image[:img_key]] = extracted_image[:img_src]
-
-      TextImage.create!(img_attrs)
-    end
-  end
-
   protected
 
   def decode_content!(content)
