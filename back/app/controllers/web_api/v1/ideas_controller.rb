@@ -10,7 +10,6 @@ class WebApi::V1::IdeasController < ApplicationController
   skip_after_action :verify_authorized, only: %i[index_xlsx index_mini index_idea_markers filter_counts]
   skip_after_action :verify_authorized, only: %i[create], unless: -> { response.status == 400 }
   after_action :verify_policy_scoped, only: %i[index index_mini]
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
     ideas = IdeasFinder.new(
