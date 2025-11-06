@@ -10,4 +10,4 @@ da:
       event_description: 'Du har fået tildelt et input. Giv feedback ved at skrive en officiel opdatering eller ved at ændre dets status.'
       title: '%{firstName}, der er blevet tildelt et input til dig'
       subject: 'Du har en tildeling på platformen for %{organizationName}'
-      preheader_idea: 'Du er blevet tildelt %{authorName}s idé'
+      preheader: 'Inputtet %{authorName} er blevet tildelt dig'

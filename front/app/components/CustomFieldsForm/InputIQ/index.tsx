@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 
+import { IFlatCustomField } from 'api/custom_fields/types';
 import { IPhaseData } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import SimilarIdeasList from 'containers/IdeasNewPage/SimilarInputs/SimilarInputsList';
-import { IFlatCustomField } from 'api/custom_fields/types';
 
 const InputIQ = ({
   phase,

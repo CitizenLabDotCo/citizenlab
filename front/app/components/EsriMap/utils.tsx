@@ -713,3 +713,33 @@ export const goToLayerExtent = (
     }
   });
 };
+
+// Helper function to create user location marker
+export const createUserLocationGraphic = (
+  longitude: number,
+  latitude: number
+) => {
+  const point = new Point({
+    longitude,
+    latitude,
+  });
+
+  const symbol = new SimpleMarkerSymbol({
+    color: [51, 119, 255], // Blue color
+    size: 12,
+    outline: {
+      color: [255, 255, 255], // White outline
+      width: 2,
+    },
+    style: 'circle',
+  });
+
+  return new Graphic({
+    geometry: point,
+    symbol,
+    attributes: {
+      id: 'user-location',
+      title: 'Your Location',
+    },
+  });
+};
