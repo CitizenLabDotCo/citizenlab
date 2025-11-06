@@ -96,6 +96,8 @@ class Idea < ApplicationRecord
     delta_magnitude: proc { |idea| idea.comments_count }
   )
 
+  has_many_text_images_from :body_multiloc
+
   # Must appear before before_destroy
   before_save :convert_wkt_geo_custom_field_values_to_geojson
   after_update :fix_comments_count_on_projects
@@ -124,7 +126,6 @@ class Idea < ApplicationRecord
   has_many :phases, through: :ideas_phases, after_add: :update_phase_counts, after_remove: :update_phase_counts
   has_many :baskets_ideas, dependent: :destroy
   has_many :baskets, through: :baskets_ideas
-  has_many :text_images, as: :imageable, dependent: :destroy
   has_many :followers, as: :followable, dependent: :destroy
   has_many :official_feedbacks, dependent: :destroy
 
@@ -163,7 +164,6 @@ class Idea < ApplicationRecord
     validates :idea_status, presence: true
     validates :project, presence: true
     before_validation :assign_defaults
-    before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
 
   pg_search_scope :search_by_all,
@@ -383,14 +383,16 @@ class Idea < ApplicationRecord
     !draft? && participation_method_on_creation.built_in_title_required?
   end
 
-  def sanitize_body_multiloc
-    service = SanitizationService.new
-    self.body_multiloc = service.sanitize_multiloc(
-      body_multiloc,
-      %i[title alignment list decoration link image video]
-    )
-    self.body_multiloc = service.remove_multiloc_empty_trailing_tags(body_multiloc)
-    self.body_multiloc = service.linkify_multiloc(body_multiloc)
+  def body_multiloc=(value)
+    if value.present?
+      service = SanitizationService.new
+      features = %i[title alignment list decoration link image video]
+      value = service.sanitize_multiloc(value, features)
+      value = service.remove_multiloc_empty_trailing_tags(value)
+      value = service.linkify_multiloc(value)
+    end
+
+    super
   end
 
   def fix_comments_count_on_projects

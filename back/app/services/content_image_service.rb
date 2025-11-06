@@ -230,7 +230,7 @@ class ContentImageService
         Module.new do
           define_method(:"#{field}=") do |value|
             super(value)
-            image_service_class.new.swap_data_images!(self, field, association_name)
+            image_service_class.new.swap_data_images!(self, field, association_name) if value.present?
           end
         end
       )
