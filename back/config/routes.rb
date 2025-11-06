@@ -133,8 +133,9 @@ Rails.application.routes.draw do
 
       scope path: 'user' do
         resource :confirmation, path: :confirm, only: %i[create]
-        resource :resend_code, only: %i[create]
         post 'resend_code_unauthenticated', to: 'resend_codes#resend_code_unauthenticated'
+        post 'resend_code_authenticated', to: 'resend_codes#resend_code_authenticated'
+        post 'request_code_email_change', to: 'resend_codes#request_code_email_change'
       end
 
       resources :topics do

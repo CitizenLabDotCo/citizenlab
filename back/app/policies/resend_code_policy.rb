@@ -1,0 +1,15 @@
+# frozen_string_literal: true
+
+class ResendCodePolicy < ApplicationPolicy
+  def request_code_unauthenticated?
+    # true
+  end
+
+  def request_code_authenticated?
+    # user&.active?
+  end
+
+  def request_code_email_change?
+    # user&.active? && (record.id == user.id)
+  end
+end
