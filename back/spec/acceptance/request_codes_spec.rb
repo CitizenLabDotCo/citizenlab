@@ -19,7 +19,7 @@ resource 'Request codes' do
       let(:email) { user.email }
 
       example 'It works' do
-        do_request(request_code: { email: email, code: '1234' })
+        do_request(request_code: { email: email })
         expect(status).to eq 200
       end
     end
