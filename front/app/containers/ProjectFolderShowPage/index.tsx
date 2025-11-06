@@ -162,13 +162,15 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
               <ProjectFolderHeader projectFolder={projectFolder} />
               {!isSmallerThanSmallDesktop ? (
                 <Content>
-                  <StyledProjectFolderDescription
-                    folderId={projectFolder.id}
-                    folderTitle={projectFolder.attributes.title_multiloc}
-                    folderDescription={
-                      projectFolder.attributes.description_multiloc
-                    }
-                  />
+                  <Box maxWidth="400px">
+                    <StyledProjectFolderDescription
+                      folderId={projectFolder.id}
+                      folderTitle={projectFolder.attributes.title_multiloc}
+                      folderDescription={
+                        projectFolder.attributes.description_multiloc
+                      }
+                    />
+                  </Box>
                   <StyledProjectFolderProjectCards
                     folderId={projectFolder.id}
                   />
