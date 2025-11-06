@@ -420,12 +420,11 @@ const IdeasMap = memo<Props>(
                           geometry,
                           symbol: ideaIconSecondary,
                         });
-                        mapView.graphics.removeAll();
 
                         // Add the graphic to the map for a few seconds to highlight the clicked point
                         mapView.graphics.add(graphic);
                         setTimeout(() => {
-                          mapView.graphics.removeAll();
+                          mapView.graphics.remove(graphic);
                         }, 2000);
                       }
                     });
