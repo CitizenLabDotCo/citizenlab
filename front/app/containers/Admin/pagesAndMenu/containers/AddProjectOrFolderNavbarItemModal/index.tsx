@@ -6,10 +6,10 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { Multiloc } from 'typings';
 import { object, string } from 'yup';
 
+import { IAdminPublicationData } from 'api/admin_publications/types';
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddNavbarItem from 'api/navbar/useAddNavbarItem';
-import useAdminPublications from 'api/admin_publications/useAdminPublications';
-import { IAdminPublicationData } from 'api/admin_publications/types';
 
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
@@ -46,6 +46,8 @@ const AddProjectOrFolderNavbarItemModal = ({ opened, onClose }: Props) => {
   });
 
   const flattenedAdminPublications: IAdminPublicationData[] =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     adminPublications?.pages?.flatMap((page) => page.data) ?? [];
 
   const anyFolderExists = flattenedAdminPublications.some(

@@ -8,6 +8,6 @@ if ENV['ENABLE_SPRING'] == 'true' || ENV['ENABLE_SPRING'] == '1'
   end
 end
 
-APP_PATH = File.expand_path('../config/application', __dir__)
-require_relative '../config/boot'
-require 'rails/commands'
+APP_PATH = File.expand_path("../config/application", __dir__)
+require_relative "../config/boot"
+require "rails/commands"
