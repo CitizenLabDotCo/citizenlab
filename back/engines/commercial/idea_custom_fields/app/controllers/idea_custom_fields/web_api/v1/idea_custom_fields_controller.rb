@@ -142,7 +142,10 @@ module IdeaCustomFields
       given_field_ids = given_fields.pluck(:id)
 
       ActiveRecord::Base.transaction do
-        delete_fields = fields.reject { |field| given_field_ids.include? field.id }
+        delete_fields = []
+        if @custom_form.persisted?
+          delete_fields = fields.reject { |field| given_field_ids.include? field.id }
+        end
         delete_fields.each { |field| delete_field! field }
         given_fields.each_with_index do |field_params, index|
           options_params = field_params.delete :options
