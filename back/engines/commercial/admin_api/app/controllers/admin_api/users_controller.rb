@@ -31,8 +31,8 @@ module AdminApi
 
     def jwt_token
       user = User.find(params[:id])
-      json = { jwt_token: UserService.jwt_token(user) }
-      render json: json
+      json = { jwt_token: JwtTokenService.new.request_token(user) }
+      render json:
     end
 
     def create
