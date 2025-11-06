@@ -243,7 +243,7 @@ class ContentImageService
         association_name,
         as: :imageable,
         dependent: :destroy,
-        class_name: 'TextImage'
+        class_name: content_image_class.name
       )
     end
   end
