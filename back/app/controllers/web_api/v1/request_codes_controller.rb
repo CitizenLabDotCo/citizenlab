@@ -7,9 +7,11 @@ class WebApi::V1::RequestCodesController < ApplicationController
   def request_code_unauthenticated
     email = request_code_unauthenticated_params[:email]
     user = User.find_by(email: email)
+
+    # TODO we need to determine if the thing is allowed
+    # Put that in a service
     
     if user
-      authorize user, :request_code_unauthenticated?
       head :ok
     else
       head :ok
