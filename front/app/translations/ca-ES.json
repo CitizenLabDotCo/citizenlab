@@ -185,7 +185,6 @@
   "app.components.CustomFieldsForm.titleMaxLength": "El títol ha de tenir un màxim de {max} caràcters",
   "app.components.CustomFieldsForm.titleMinLength": "El títol ha de tenir com a mínim {min} caràcters de llargada",
   "app.components.CustomFieldsForm.titleRequired": "El títol és obligatori",
-  "app.components.CustomFieldsForm.topicRequired": "Cal com a mínim una etiqueta",
   "app.components.CustomFieldsForm.typeYourAnswer": "Escriu la teva resposta",
   "app.components.CustomFieldsForm.typeYourAnswerRequired": "Cal que escriviu la vostra resposta",
   "app.components.CustomFieldsForm.uploadShapefileInstructions": "* Puja un fitxer zip que contingui un o més shapefiles.",

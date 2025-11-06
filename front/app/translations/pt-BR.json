@@ -185,7 +185,6 @@
   "app.components.CustomFieldsForm.titleMaxLength": "O título deve ter no máximo {max} caracteres",
   "app.components.CustomFieldsForm.titleMinLength": "O título deve ter no mínimo {min} caracteres",
   "app.components.CustomFieldsForm.titleRequired": "O título é obrigatório",
-  "app.components.CustomFieldsForm.topicRequired": "Pelo menos uma tag é necessária",
   "app.components.CustomFieldsForm.typeYourAnswer": "Digite sua resposta",
   "app.components.CustomFieldsForm.typeYourAnswerRequired": "É necessário que você digite sua resposta",
   "app.components.CustomFieldsForm.uploadShapefileInstructions": "* Carregue um arquivo zip contendo um ou mais shapefiles.",

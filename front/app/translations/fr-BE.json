@@ -185,7 +185,6 @@
   "app.components.CustomFieldsForm.titleMaxLength": "Le titre doit comporter au maximum {max} caractères",
   "app.components.CustomFieldsForm.titleMinLength": "Le titre doit comporter au minimum {min} caractères",
   "app.components.CustomFieldsForm.titleRequired": "Le titre est obligatoire",
-  "app.components.CustomFieldsForm.topicRequired": "Au moins une étiquette est nécessaire",
   "app.components.CustomFieldsForm.typeYourAnswer": "Saisissez votre réponse",
   "app.components.CustomFieldsForm.typeYourAnswerRequired": "Il est nécessaire de taper votre réponse",
   "app.components.CustomFieldsForm.uploadShapefileInstructions": "* Téléchargez un fichier zip contenant un ou plusieurs fichiers de formes.",

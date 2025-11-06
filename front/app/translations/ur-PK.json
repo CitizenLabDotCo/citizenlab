@@ -185,7 +185,6 @@
   "app.components.CustomFieldsForm.titleMaxLength": "عنوان زیادہ سے زیادہ {max} حروف کا ہونا چاہیے۔",
   "app.components.CustomFieldsForm.titleMinLength": "عنوان کم از کم {min} حروف کا ہونا چاہیے۔",
   "app.components.CustomFieldsForm.titleRequired": "عنوان درکار ہے۔",
-  "app.components.CustomFieldsForm.topicRequired": "کم از کم ایک ٹیگ درکار ہے۔",
   "app.components.CustomFieldsForm.typeYourAnswer": "اپنا جواب ٹائپ کریں۔",
   "app.components.CustomFieldsForm.typeYourAnswerRequired": "آپ کا جواب ٹائپ کرنا ضروری ہے۔",
   "app.components.CustomFieldsForm.uploadShapefileInstructions": "* ایک زپ فائل اپ لوڈ کریں جس میں ایک یا زیادہ شکل فائلیں ہوں۔",

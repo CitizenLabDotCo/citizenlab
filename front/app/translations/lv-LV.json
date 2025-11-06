@@ -185,7 +185,6 @@
   "app.components.CustomFieldsForm.titleMaxLength": "Virsrakstam jābūt ne garākam par {max} rakstzīmēm.",
   "app.components.CustomFieldsForm.titleMinLength": "Virsrakstam jābūt vismaz {min} rakstzīmju garam.",
   "app.components.CustomFieldsForm.titleRequired": "Nosaukums ir obligāts",
-  "app.components.CustomFieldsForm.topicRequired": "Nepieciešama vismaz viena birka",
   "app.components.CustomFieldsForm.typeYourAnswer": "Ierakstiet savu atbildi",
   "app.components.CustomFieldsForm.typeYourAnswerRequired": "Ir jāievada atbilde",
   "app.components.CustomFieldsForm.uploadShapefileInstructions": "* Augšupielādējiet zip failu, kas satur vienu vai vairākus shape failus.",
