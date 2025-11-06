@@ -1,4 +1,4 @@
-import React, { PureComponent, MouseEvent } from 'react';
+import React, { useEffect, useRef, MouseEvent } from 'react';
 
 type Props = {
   children?: any;
@@ -6,7 +6,7 @@ type Props = {
   onClickOutside: (event: MouseEvent) => void;
   onMouseEnter?: (event: MouseEvent) => void;
   onMouseLeave?: (event: MouseEvent) => void;
-  onMouseDown?: (even: MouseEvent) => void;
+  onMouseDown?: (event: MouseEvent) => void;
   className?: string;
   id?: string;
   setRef?: (arg: HTMLElement) => void;
@@ -16,115 +16,101 @@ type Props = {
   ariaLabelledBy?: string;
 };
 
-interface State {}
+const ClickOutside = ({
+  children,
+  onClick,
+  onClickOutside,
+  onMouseEnter,
+  onMouseLeave,
+  onMouseDown,
+  className,
+  id,
+  setRef,
+  role,
+  closeOnClickOutsideEnabled = true,
+  isModal,
+  ariaLabelledBy,
+}: Props) => {
+  const containerRef = useRef<HTMLDivElement>(null);
 
-export default class ClickOutside extends PureComponent<Props, State> {
-  container: HTMLDivElement | null = null;
+  useEffect(() => {
+    const handle = (event: PointerEvent | MouseEvent | KeyboardEvent) => {
+      // Press esc to close
+      if (event.type === 'keyup' && (event as KeyboardEvent).key === 'Escape') {
+        event.preventDefault();
+        onClickOutside(event as MouseEvent);
+      }
 
-  static defaultProps = {
-    closeOnClickOutsideEnabled: true,
-  };
+      if (
+        event.type === 'keyup' &&
+        (event as KeyboardEvent).key === 'Tab' &&
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        onClickOutside(event as MouseEvent);
+      }
 
-  componentDidMount() {
-    this.addEventListeners();
-  }
+      // Click outside to close
+      if (
+        event.type === 'click' &&
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        onClickOutside(event as MouseEvent);
+      }
+    };
 
-  componentDidUpdate(prevProps: Props) {
-    if (
-      !prevProps.closeOnClickOutsideEnabled &&
-      this.props.closeOnClickOutsideEnabled
-    ) {
-      this.addEventListeners();
+    const addEventListeners = () => {
+      if (closeOnClickOutsideEnabled) {
+        document.addEventListener('click', handle, true);
+        document.addEventListener('keyup', handle, true);
+      }
+    };
+
+    const removeEventListeners = () => {
+      document.removeEventListener('click', handle, true);
+      document.removeEventListener('keyup', handle, true);
+    };
+
+    addEventListeners();
+    return () => removeEventListeners();
+  }, [closeOnClickOutsideEnabled, onClickOutside]);
+
+  useEffect(() => {
+    if (setRef && containerRef.current) {
+      setRef(containerRef.current);
     }
+  }, [setRef]);
 
-    if (
-      prevProps.closeOnClickOutsideEnabled &&
-      !this.props.closeOnClickOutsideEnabled
-    ) {
-      this.removeEventListeners();
-    }
-  }
-
-  componentWillUnmount() {
-    this.container = null;
-    this.removeEventListeners();
-  }
-
-  addEventListeners = () => {
-    if (this.props.closeOnClickOutsideEnabled) {
-      document.addEventListener('click', this.handle, true);
-      document.addEventListener('keyup', this.handle, true);
-    }
+  const handleOnMouseEnter = (event: MouseEvent) => {
+    onMouseEnter?.(event);
   };
 
-  removeEventListeners = () => {
-    document.removeEventListener('click', this.handle, true);
-    document.removeEventListener('keyup', this.handle, true);
+  const handleOnMouseLeave = (event: MouseEvent) => {
+    onMouseLeave?.(event);
   };
 
-  handle = (event) => {
-    // Press esc to close
-    if (event.type === 'keyup' && event.key === 'Escape') {
-      event.preventDefault();
-      this.props.onClickOutside(event);
-    }
-
-    if (
-      event.type === 'keyup' &&
-      event.key === 'Tab' &&
-      this.container &&
-      !this.container.contains(event.target)
-    ) {
-      this.props.onClickOutside(event);
-    }
-
-    // Click outside to close
-    if (
-      event.type === 'click' &&
-      this.container &&
-      !this.container.contains(event.target)
-    ) {
-      this.props.onClickOutside(event);
-    }
+  const handleOnMouseDown = (event: MouseEvent) => {
+    onMouseDown?.(event);
   };
 
-  handleRef = (element: HTMLDivElement) => {
-    this.container = element;
-    this.props.setRef && this.props.setRef(element);
-  };
+  return (
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+    <div
+      id={id}
+      ref={containerRef}
+      className={className}
+      onClick={onClick}
+      onMouseEnter={handleOnMouseEnter}
+      onMouseLeave={handleOnMouseLeave}
+      onMouseDown={handleOnMouseDown}
+      role={role}
+      aria-modal={isModal}
+      aria-labelledby={ariaLabelledBy}
+    >
+      {children}
+    </div>
+  );
+};
 
-  handleOnMouseEnter = (event: MouseEvent) => {
-    this.props.onMouseEnter && this.props.onMouseEnter(event);
-  };
-
-  handleOnMouseLeave = (event: MouseEvent) => {
-    this.props.onMouseLeave && this.props.onMouseLeave(event);
-  };
-
-  handleOnMouseDown = (event: MouseEvent) => {
-    this.props.onMouseDown && this.props.onMouseDown(event);
-  };
-
-  render() {
-    const { id, role, children, className, onClick, isModal, ariaLabelledBy } =
-      this.props;
-
-    return (
-      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-      <div
-        id={id}
-        ref={this.handleRef}
-        className={className}
-        onClick={onClick}
-        onMouseEnter={this.handleOnMouseEnter}
-        onMouseLeave={this.handleOnMouseLeave}
-        onMouseDown={this.handleOnMouseDown}
-        role={role}
-        aria-modal={isModal}
-        aria-labelledby={ariaLabelledBy}
-      >
-        {children}
-      </div>
-    );
-  }
-}
+export default ClickOutside;
