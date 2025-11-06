@@ -100,8 +100,8 @@ class CustomField < ApplicationRecord
   validates :hidden, inclusion: { in: [true, false] }
   validates :select_count_enabled, inclusion: { in: [true, false] }
   validates :code, inclusion: { in: CODES }, uniqueness: { scope: %i[resource_type resource_id] }, allow_nil: true
-  validates :maximum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :multiselect?, allow_nil: true
-  validates :minimum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :multiselect?, allow_nil: true
+  validates :maximum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :supports_select_count?, allow_nil: true
+  validates :minimum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :supports_select_count?, allow_nil: true
   validates :page_layout, presence: true, inclusion: { in: PAGE_LAYOUTS }, if: :page?
   validates :page_layout, absence: true, unless: :page?
   validates :question_category, absence: true, unless: :supports_category?
@@ -321,6 +321,10 @@ class CustomField < ApplicationRecord
 
   def multiselect?
     %w[multiselect multiselect_image].include?(input_type)
+  end
+
+  def supports_select_count?
+    %w[multiselect multiselect_image topic_ids].include?(input_type)
   end
 
   def singleselect?
