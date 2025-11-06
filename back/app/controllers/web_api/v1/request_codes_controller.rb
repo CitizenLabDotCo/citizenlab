@@ -19,7 +19,7 @@ class WebApi::V1::RequestCodesController < ApplicationController
   private
 
   def request_code_unauthenticated_params
-    params.require(:request_code).permit(:email, :code)
+    params.require(:request_code).permit(:email)
   end
 
   # skip_after_action :verify_authorized
