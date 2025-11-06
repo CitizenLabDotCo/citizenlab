@@ -57,10 +57,11 @@
 class CustomField < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_id]
 
+  has_many_text_images_from :description_multiloc
+  accepts_nested_attributes_for :text_images
+
   has_many :options, -> { order(:ordering) }, dependent: :destroy, class_name: 'CustomFieldOption', inverse_of: :custom_field
   has_many :matrix_statements, -> { order(:ordering) }, dependent: :destroy, class_name: 'CustomFieldMatrixStatement', inverse_of: :custom_field
-  has_many :text_images, as: :imageable, dependent: :destroy
-  accepts_nested_attributes_for :text_images
 
   belongs_to :resource, polymorphic: true, optional: true
   belongs_to :custom_form, foreign_key: :resource_id, optional: true, inverse_of: :custom_fields
@@ -113,7 +114,6 @@ class CustomField < ApplicationRecord
 
   before_validation :set_default_enabled
   before_validation :generate_key, on: :create
-  before_validation :sanitize_description_multiloc
   after_create(if: :domicile?) { Area.recreate_custom_field_options }
 
   scope :registration, -> { where(resource_type: 'User') }
@@ -132,6 +132,18 @@ class CustomField < ApplicationRecord
     else
       raise "Polcy not implemented for resource type: #{resource_type}"
     end
+  end
+
+  def description_multiloc=(value)
+    if value.present?
+      service = SanitizationService.new
+      features = %i[title alignment list decoration link image video]
+      value = service.sanitize_multiloc(value, features)
+      value = service.remove_multiloc_empty_trailing_tags(value)
+      value = service.linkify_multiloc(value)
+    end
+
+    super(value)
   end
 
   def logic?
@@ -532,16 +544,6 @@ class CustomField < ApplicationRecord
     self.key = CustomFieldService.new.generate_key(title) do |key_proposal|
       self.class.find_by(key: key_proposal, resource_type: resource_type)
     end
-  end
-
-  def sanitize_description_multiloc
-    service = SanitizationService.new
-    self.description_multiloc = service.sanitize_multiloc(
-      description_multiloc,
-      %i[title alignment list decoration link image video]
-    )
-    self.description_multiloc = service.remove_multiloc_empty_trailing_tags description_multiloc
-    self.description_multiloc = service.linkify_multiloc description_multiloc
   end
 
   # Return domicile options with IDs and descriptions taken from areas
