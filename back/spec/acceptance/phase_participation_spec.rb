@@ -29,6 +29,10 @@ resource 'Phase participation' do
 
       let(:id) { voting_phase.id }
 
+      let!(:permission1) { create(:permission, action: 'voting', permission_scope: voting_phase) }
+      let!(:permission2) { create(:permission, action: 'commenting_idea', permission_scope: voting_phase) }
+      let!(:permission3) { create(:permission, action: 'attending_event', permission_scope: voting_phase) }
+
       (1..3).each do |i|
         let!(:"idea#{i}") { create(:idea, phases: [ideation_phase, voting_phase], project: ideation_phase.project, submitted_at: 20.days.ago) }
       end
@@ -53,7 +57,7 @@ resource 'Phase participation' do
         assert_status 200
 
         participations = json_response_body.dig(:data, :attributes, :participation)
-        expect(participations).to eq({
+        expect(participations).to match({
           participations: {
             count: 8,
             change_last_7_days: 5
@@ -61,7 +65,7 @@ resource 'Phase participation' do
           participants: {
             count: 5, # unique users: user2, user3, user4, user5, user6
             change_last_7_days: 2, # NEW unique users in last 7 days: user3, user6
-            demographics: [{ tbc: 'tbc' }]
+            demographics: be_a(Hash)
           },
           actions: [
             {
@@ -73,7 +77,7 @@ resource 'Phase participation' do
               participants: {
                 count: 4, # unique users: user3, user4, user5, user6
                 change_last_7_days: 2, # NEW unique users in last 7 days: user3, user6
-                demographics: [{ tbc: 'tbc' }]
+                demographics: be_a(Hash)
               }
             },
             {
@@ -85,7 +89,7 @@ resource 'Phase participation' do
               participants: {
                 count: 2, # unique users: user2, user3
                 change_last_7_days: 1, # NEW unique user in last 7 days: user3
-                demographics: [{ tbc: 'tbc' }]
+                demographics: be_a(Hash)
               }
             }
           ]
