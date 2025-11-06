@@ -8,7 +8,7 @@ class ParticipationsService
     # eg for permissions:
     # participations = phase_participations(permission.phase)
     # participations = participations.filter_by_action(participations, permission.action))
-    phase_participation_data(participations)
+    phase_participation_data(phase, participations)
   end
 
   private
@@ -19,12 +19,11 @@ class ParticipationsService
 
   # Fetch and cache participations in singleton for a phase
   def phase_participations(phase)
-    @phase = phase
     @phase_participations[phase.id] ||= phase.pmethod.participations
   end
 
-  def phase_participation_data(participations)
-    phase_participations_permissions = @phase.permissions.where.not(action: 'attending_event') # Needed for demographics
+  def phase_participation_data(phase, participations)
+    phase_participations_permissions = phase.permissions.where.not(action: 'attending_event') # Needed for demographics
 
     phase_level = format_participation_data(participations.values.flatten, phase_participations_permissions)
     actions_level = participations.map do |action_type, records|
