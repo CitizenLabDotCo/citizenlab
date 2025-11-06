@@ -19,6 +19,7 @@ class ParticipationsService
 
   # Fetch and cache participations in singleton for a phase
   def phase_participations(phase)
+    # demographics(phase)
     @phase_participations[phase.id] ||= phase.pmethod.participations
   end
 
@@ -52,5 +53,17 @@ class ParticipationsService
         ]
       }
     }
+  end
+
+  def demographics(phase)
+    # Just starting to play with this - for debugging purposes
+    # May well use permissions and participations as method params
+    phase_participations_permissions = phase.permissions.where.not(action: 'attending_event')
+
+    puts ' ---------------------- permissions ---------------------- '
+    phase_participations_permissions.each do |permission|
+      puts permission.inspect
+    end
+    puts ' --------------------------------------------------------- '
   end
 end

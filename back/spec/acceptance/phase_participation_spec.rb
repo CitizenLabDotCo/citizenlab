@@ -4,7 +4,7 @@ require 'rspec_api_documentation/dsl'
 resource 'Phase participation' do
   before { admin_header_token }
 
-  get 'web_api/v1/phases/:id' do
+  get 'web_api/v1/phases/:id/participation' do
     context 'voting phase' do
       # rubocop:disable RSpec/ScatteredLet
       let(:ideation_phase) do

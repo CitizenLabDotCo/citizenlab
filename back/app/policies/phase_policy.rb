@@ -47,6 +47,10 @@ class PhasePolicy < ApplicationPolicy
     show?
   end
 
+  def participation?
+    active_moderator?
+  end
+
   def delete_inputs?
     active_moderator?
   end
