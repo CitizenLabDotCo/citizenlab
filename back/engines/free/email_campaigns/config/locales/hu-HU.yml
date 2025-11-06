@@ -407,11 +407,13 @@ hu:
       title: '%{requesterName} meghívott téged a(z) "%{projectTitle}" projekt értékelésére'
       event_description: "Jelenleg a projekt vázlat módban van, és a felhasználók nem láthatják. Miután áttekintetted és jóváhagytad, a moderátor közzéteheti."
       cta_button: "Tekintse át a projektet"
+      preheader: '%{requesterName} meghívott téged a(z) "%{projectTitle}" projekt áttekintésére'
     project_review_state_change:
       subject: '"%{projectTitle}" jóváhagyva'
       title: '%{reviewerName} jóváhagyta a(z) "%{projectTitle}" projektet'
       event_description: "A projekt most már készen áll az élő közzétételre. Bármikor közzéteheted!"
       cta_button: "Ugrás a projektbeállításokhoz"
+      preheader: '%{reviewerName} jóváhagyta a(z) "%{projectTitle}" projektet'
     status_change_on_idea_you_follow:
       status_change: 'Ennek a bemenetnek az új állapota ''%{status}'''
       event_description: '%{organizationName} frissítette a(z) „%{input_title}” bemenet állapotát a digitális részvételi platformján.'
