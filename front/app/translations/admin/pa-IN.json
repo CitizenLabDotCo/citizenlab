@@ -1346,7 +1346,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.completeTheDemographicQuestionsAbove": "ਉੱਪਰ ਦਿੱਤੇ ਜਨਸੰਖਿਆ ਸੰਬੰਧੀ ਸਵਾਲ ਪੂਰੇ ਕਰੋ।",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.confirmYourEmail": "ਆਪਣੀ ਈਮੇਲ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.dataReturned": "ਪੁਸ਼ਟੀਕਰਨ ਵਿਧੀ ਤੋਂ ਡਾਟਾ ਵਾਪਸ ਕੀਤਾ ਗਿਆ:",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterNameLastNameEmailAndPassword1": "ਪਹਿਲਾ ਨਾਮ, ਆਖਰੀ ਨਾਮ, ਈਮੇਲ ਅਤੇ ਪਾਸਵਰਡ ਦਰਜ ਕਰੋ",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterYourEmail": "ਆਪਣੀ ਈਮੇਲ ਦਰਜ ਕਰੋ",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.howRecentlyShouldUsersBeVerified": "ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਹਾਲ ਹੀ ਵਿੱਚ ਕਿਵੇਂ ਤਸਦੀਕ ਕੀਤਾ ਜਾਣਾ ਚਾਹੀਦਾ ਹੈ?",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.identityVerificationWith": "{verificationMethod} ਨਾਲ ਪਛਾਣ ਦੀ ਪੁਸ਼ਟੀ (ਉਪਭੋਗਤਾ ਸਮੂਹ ਦੇ ਆਧਾਰ 'ਤੇ)",
