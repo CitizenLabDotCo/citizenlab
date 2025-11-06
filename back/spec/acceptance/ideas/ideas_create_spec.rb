@@ -91,6 +91,28 @@ resource 'Ideas' do
           expect(response_data[:attributes][:likes_count]).to eq 1
         end
 
+        describe 'when idea has images in body_multiloc', document: false do
+          let(:body_multiloc) do
+            {
+              'en' => html_with_base64_image
+            }
+          end
+          let(:idea) { build(:idea, body_multiloc: body_multiloc) }
+
+          example 'Removes images from body_multiloc and creates idea_images', document: false do
+            do_request
+            assert_status 201
+            expect(response_data.dig(:attributes, :body_multiloc, :en)).to include('<p>Some text</p><img alt="Red dot"')
+            text_image = TextImage.find_by(imageable_id: response_data[:id], imageable_type: 'Idea', imageable_field: 'body_multiloc')
+            expect(response_data.dig(:attributes, :body_multiloc, :en)).to include("data-cl2-text-image-text-reference=\"#{text_image.text_reference}\"")
+            expect(TextImage.count).to eq 1
+            image = TextImage.last
+            expect(image.imageable_id).to eq response_data[:id]
+            expect(image.imageable_type).to eq 'Idea'
+            expect(image.imageable_field).to eq 'body_multiloc'
+          end
+        end
+
         describe 'Values for disabled fields are ignored' do
           let(:proposed_budget) { 12_345 }
 
@@ -676,7 +698,7 @@ resource 'Ideas' do
               expect(Idea.all.pluck(:author_hash)).to match_array %w[LOGGED_OUT_HASH LOGGED_OUT_HASH]
 
               # Check that the cookie is written in the response
-              expect(response_headers['Set-Cookie']).to include("#{phase.id}=%7B%22lo%22%3D%3E%22LOGGED_OUT_HASH%22%7D")
+              expect(CGI.unescape(response_headers['Set-Cookie'])).to include("#{phase.id}={\"lo\" => \"LOGGED_OUT_HASH\"}")
             end
 
             example 'Uses the logged in author hash over the logged out hash to create the new idea' do

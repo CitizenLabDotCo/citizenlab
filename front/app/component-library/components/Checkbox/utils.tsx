@@ -24,7 +24,7 @@ export const getColor = ({
   if (!checkedOrIndeterminate && !usePrimaryBorder) {
     switch (element) {
       case 'border':
-        return colors.grey600;
+        return colors.borderDark;
       case 'background':
         return colors.white;
       case 'hoverBorder':

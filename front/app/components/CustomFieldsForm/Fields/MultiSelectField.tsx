@@ -18,9 +18,11 @@ import { extractOptions } from '../util';
 const MultiSelectField = ({
   question,
   scrollErrorIntoView,
+  disabled,
 }: {
   question: IFlatCustomField;
   scrollErrorIntoView?: boolean;
+  disabled?: boolean;
 }) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -39,6 +41,7 @@ const MultiSelectField = ({
           name={question.key}
           options={options}
           scrollErrorIntoView={scrollErrorIntoView}
+          disabled={disabled}
         />
       ) : (
         <CheckboxMultiSelect
@@ -46,6 +49,7 @@ const MultiSelectField = ({
           options={options}
           scrollErrorIntoView={scrollErrorIntoView}
           title={localize(question.title_multiloc)}
+          disabled={disabled}
         />
       )}
       {value?.includes('other') && (
@@ -53,6 +57,7 @@ const MultiSelectField = ({
           name={`${question.key}_other`}
           type="text"
           placeholder={formatMessage(messages.typeYourAnswer)}
+          disabled={disabled}
         />
       )}
     </>

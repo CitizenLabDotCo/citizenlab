@@ -6,6 +6,7 @@ import {
   useBreakpoint,
   Text,
   Image,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import { Controller, useFormContext } from 'react-hook-form';
 import styled, { useTheme } from 'styled-components';
@@ -27,10 +28,11 @@ import { extractOptions } from '../../util';
 
 import imageFile from './emptyImage.png';
 
-const HoverBox = styled(Box)<{ hoverColor: string }>`
+const HoverBox = styled(Box)<{ selected: boolean }>`
   cursor: pointer;
   &:hover {
-    background-color: ${({ hoverColor }) => hoverColor};
+    box-shadow: 0 0 0 1px
+      ${({ selected }) => (selected ? 'undefined' : colors.borderDark)};
   }
 `;
 
@@ -138,13 +140,12 @@ const ImageMultichoiceField = ({
                   <HoverBox
                     key={option.value}
                     borderRadius="3px"
-                    bgColor={theme.colors.tenantPrimaryLighten95}
                     border={
                       value?.includes(option.value)
                         ? `2px solid ${theme.colors.tenantPrimary}`
-                        : `1px solid ${theme.colors.tenantPrimary}`
+                        : `1px solid ${theme.colors.borderDark}`
                     }
-                    hoverColor={theme.colors.tenantPrimaryLighten75}
+                    selected={value?.includes(option.value)}
                   >
                     <Box
                       as="label"
@@ -171,14 +172,13 @@ const ImageMultichoiceField = ({
                       <Box display="flex" alignItems="flex-start" p="16px">
                         <Checkbox
                           checkedColor="tenantPrimary"
-                          usePrimaryBorder={true}
                           id={`${name}-checkbox-${index}`}
                           data-cy="e2e-image-multichoice-control-checkbox"
                           onChange={() => onChange(option)}
                           checked={value?.includes(option.value)}
                           mr="8px"
                         />
-                        <Text color="tenantPrimary" m="0">
+                        <Text color="textPrimary" m="0">
                           {option.label}
                         </Text>
                       </Box>
