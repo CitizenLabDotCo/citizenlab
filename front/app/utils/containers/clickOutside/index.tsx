@@ -5,7 +5,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 type Props = {
   children?: any;
   onClick?: (event: MouseEvent) => void;
-  onClickOutside: (event: MouseEvent) => void;
+  onClickOutside: (event: Event) => void;
   onMouseEnter?: (event: MouseEvent) => void;
   onMouseLeave?: (event: MouseEvent) => void;
   onMouseDown?: (event: MouseEvent) => void;
@@ -36,11 +36,11 @@ const ClickOutside = ({
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handle = (event: PointerEvent | MouseEvent | KeyboardEvent) => {
+    const handle = (event: Event) => {
       // Press esc to close
       if (event.type === 'keyup' && (event as KeyboardEvent).key === 'Escape') {
         event.preventDefault();
-        onClickOutside(event as MouseEvent);
+        onClickOutside(event);
       }
 
       if (
@@ -49,7 +49,7 @@ const ClickOutside = ({
         containerRef.current &&
         !containerRef.current.contains(event.target as Node)
       ) {
-        onClickOutside(event as MouseEvent);
+        onClickOutside(event);
       }
 
       // Click outside to close
@@ -58,7 +58,7 @@ const ClickOutside = ({
         containerRef.current &&
         !containerRef.current.contains(event.target as Node)
       ) {
-        onClickOutside(event as MouseEvent);
+        onClickOutside(event);
       }
     };
 
