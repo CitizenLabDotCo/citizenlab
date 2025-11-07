@@ -39,7 +39,7 @@ resource 'Request codes' do
 
   post 'web_api/v1/user/request_code_authenticated' do
     before do
-      allow(RequestConfirmationCodeJob).to receive(:perform_now))
+      allow(RequestConfirmationCodeJob).to receive(:perform_now)
     end
 
     example 'It works with authenticated user that requires confirmation' do
@@ -56,6 +56,13 @@ resource 'Request codes' do
       expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
     end
 
+    example 'It does not work if user has no password' do
+      user = create(:user_no_password)
+      header_token_for(user)
+      do_request
+      expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
+    end
+
     example 'It does not work if user reached email_confirmation_code_reset_count' do
       user = create(:user_with_confirmation, email_confirmation_code_reset_count: 5)
       header_token_for(user)
@@ -64,7 +71,8 @@ resource 'Request codes' do
     end
 
     example 'It does not work if user does not have email' do
-      user = create(:user_with_confirmation, email: nil)
+      user = create(:user_with_confirmation)
+      user.update_column(:email, nil)
       header_token_for(user)
       do_request
       expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
