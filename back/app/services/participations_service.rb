@@ -15,6 +15,7 @@ class ParticipationsService
 
   def initialize
     @phase_participations = {}
+    @permissions_custom_fields_service = Permissions::PermissionsCustomFieldsService.new
   end
 
   # Fetch and cache participations in singleton for a phase
@@ -37,9 +38,10 @@ class ParticipationsService
   end
 
   def format_participation_data(participations, permissions)
-    participants = User.where(id: participations.pluck(:user_id).uniq) # We probably don't want to do this (we already have the user custom_field_values)
+    participant_ids = participations.pluck(:user_id).uniq
+    total_participant_count = participant_ids.count
+    participant_custom_field_values = participants_custom_field_values(participations, participant_ids)
 
-    total_participant_count = participations.pluck(:user_id).uniq.count
     participants_before_7_days_count = participations.select { |p| p[:acted_at] < 7.days.ago }.pluck(:user_id).uniq.count
     participants_change_last_7_days = total_participant_count - participants_before_7_days_count
 
@@ -51,23 +53,30 @@ class ParticipationsService
       participants: {
         count: total_participant_count,
         change_last_7_days: participants_change_last_7_days,
-        demographics: demographics(permissions, participants)
+        demographics: demographics(permissions, participant_custom_field_values)
       }
     }
   end
 
-  # Just starting to play with this - by no means a final version!
-  def demographics(permissions, participants)
-    permissions_custom_fields_service = Permissions::PermissionsCustomFieldsService.new
+  def participants_custom_field_values(participations, participant_ids)
+    # Build lookup hash to avoid O(n × p) repeated searches. Reduces to O(n + p).
+    participation_by_user = participations.group_by { |p| p[:user_id] }
+    
+    # Get first participation's custom field values for each unique user
+    participant_ids.map do |user_id|
+      participation_by_user[user_id].first[:user_custom_field_values]
+    end
+  end
 
-    # Need to get the set of unique permissions custom fields across all permissions
+  def demographics(permissions, participant_custom_field_values)
+    # Get the set of unique permissions custom fields across all permissions
     unique_fields = permissions.flat_map do |permission|
-      permissions_custom_fields_service.fields_for_permission(permission)
+      @permissions_custom_fields_service.fields_for_permission(permission)
     end.uniq
 
     unique_fields.each_with_object({}) do |field, demographics_hash|
       custom_field = field.custom_field
-      counts = UserCustomFields::FieldValueCounter.counts_by_field_option(participants, custom_field)
+      counts = UserCustomFields::FieldValueCounter.counts_by_field_option(participant_custom_field_values, custom_field)
       reference_population = calculate_reference_population(custom_field) || {}
 
       demographics_hash[custom_field.key] = {
