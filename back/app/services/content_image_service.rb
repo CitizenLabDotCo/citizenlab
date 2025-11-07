@@ -47,11 +47,16 @@ class ContentImageService
   end
 
   # Extracts image data from the content field of the given record, stores it in a
-  # separate model and updates the content field to reference the stored image instead.
-  #
-  # This method doesn't directly save the image models. Instead, it returns the record
+  # separate model, and updates the content field to reference the image model instead.
+  # This method doesn't save the image models directly. Instead, it returns the record
   # with the updated content field and the new image models added to the association.
-  # The actual saving relies on the association's auto-save behavior.
+  #
+  # IMPORTANT: This method requires the imageable model to have a `has_many` association
+  # that lists all the image models it references. This is not currently the case for
+  # +ContentBuilder::Layout+ and +ContentBuilder::LayoutImage images+. It uses
+  # `association.build` to initialize image records and relies on the association's
+  # auto-save behavior to persist them. This ensures that foreign keys are set correctly
+  # when the records are saved.
   #
   # @param imageable [Imageable] The record that contains the content field.
   # @param field [String, Symbol] The name of the field in `imageable` containing the
@@ -222,6 +227,12 @@ class ContentImageService
   end
 
   class << self
+    # Convenience class method to set up automatic image extraction for a model.
+    #
+    # This method takes care of everything needed for automatic image extraction:
+    # 1. Defines a `has_many` association from the imageable model to the image model.
+    # 2. Registers a `before_validation` callback that automatically extracts images
+    #    from the specified field.
     def setup_image_extraction(imageable_class, field, association_name)
       define_association(imageable_class, association_name, field)
       image_service_class = self
