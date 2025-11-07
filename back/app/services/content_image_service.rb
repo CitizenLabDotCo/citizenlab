@@ -46,7 +46,7 @@ class ContentImageService
     encode_content content
   end
 
-  # Extracts image data from the content field of the given record, stores them in a
+  # Extracts image data from the content field of the given record, stores it in a
   # separate model and updates the content field to reference the stored image instead.
   #
   # This method doesn't directly save the image models. Instead, it returns the record

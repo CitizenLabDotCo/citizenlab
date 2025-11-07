@@ -77,7 +77,7 @@ namespace :fix_existing_tenants do
     if errors.blank?
       puts 'Success!'
     else
-      puts 'Some issues occured.'
+      puts 'Some issues occurred.'
       errors.each { |err| puts err }
     end
   end
@@ -218,7 +218,7 @@ namespace :fix_existing_tenants do
     if errors.blank?
       puts 'Success!'
     else
-      puts 'Some issues occured.'
+      puts 'Some issues occurred.'
       errors.each { |err| puts err }
     end
   end
