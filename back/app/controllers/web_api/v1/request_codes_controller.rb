@@ -32,7 +32,12 @@ class WebApi::V1::RequestCodesController < ApplicationController
   end
 
   def request_code_email_change
-    # TODO
+    if confirmation_codes_service.permit_request_code_email_change(current_user)
+      RequestEmailChangeConfirmationCodeJob.perform_now(
+        current_user, new_email: params[:new_email]
+      )
+    end
+
     head :ok
   end
 
@@ -40,6 +45,10 @@ class WebApi::V1::RequestCodesController < ApplicationController
 
   def request_code_unauthenticated_params
     params.require(:request_code).permit(:email)
+  end
+
+  def request_code_email_change_params
+    params.require(:request_code).permit(:new_email)
   end
 
   def confirmation_codes_service

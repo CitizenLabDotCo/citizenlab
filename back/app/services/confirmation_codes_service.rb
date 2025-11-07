@@ -24,6 +24,11 @@ class ConfirmationCodesService
     true
   end
 
+  def permit_request_code_email_change(user)
+    # TODO
+    true
+  end
+
   private
 
   def app_configuration

@@ -78,6 +78,18 @@ resource 'Request codes' do
       expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
     end
   end
+
+  post 'web_api/v1/user/request_code_email_change' do
+    with_options scope: :request_code do
+      parameter :email, 'The email of the user requesting a confirmation code.', required: true
+    end
+
+    before do
+      allow(RequestConfirmationCodeJob).to receive(:perform_now)
+    end
+
+    # TODO
+  end
 end
 
 # resource 'Code Resends' do
