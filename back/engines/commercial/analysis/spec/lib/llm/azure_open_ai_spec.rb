@@ -163,6 +163,41 @@ RSpec.describe Analysis::LLM::AzureOpenAI do
 
       service.chat(message)
     end
+
+    context 'file support' do
+      it 'uses PDF preview for non-PDF files' do
+        file = create(:global_file, name: 'david.docx')
+        create(:file_preview, file: file, status: 'completed')
+        message = Analysis::LLM::Message.new('Summarize this document', file)
+
+        expect(service.response_client)
+          .to receive(:create).with(parameters: hash_including(input: [{
+            role: 'user', content: [
+              { type: 'input_text', text: 'Summarize this document' },
+              { type: 'input_file', filename: 'david.docx', file_data: start_with('data:application/pdf;base64,') }
+            ]
+          }])).and_return(nil)
+
+        service.chat(message)
+      end
+
+      it 'raises PreviewPendingError when preview is pending' do
+        file = create(:global_file, name: 'david.docx')
+        message = Analysis::LLM::Message.new('Summarize', file)
+
+        expect { service.chat(message) }
+          .to raise_error(Analysis::LLM::PreviewPendingError)
+      end
+
+      it 'raises UnsupportedAttachmentError when preview generation failed' do
+        file = build(:global_file, name: 'data.xlsx', mime_type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        file.build_preview(status: 'failed', content: nil)
+        message = Analysis::LLM::Message.new('Summarize', file)
+
+        expect { service.chat(message) }
+          .to raise_error(Analysis::LLM::UnsupportedAttachmentError, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+      end
+    end
   end
 
   describe 'usable_context_window' do
