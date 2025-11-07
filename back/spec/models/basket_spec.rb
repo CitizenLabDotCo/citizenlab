@@ -50,14 +50,14 @@ RSpec.describe Basket do
       phase = create(:budgeting_phase)
 
       # Create first basket without user (simulating deleted user)
-      basket1 = Basket.new(user_id: nil, phase: phase)
+      basket1 = described_class.new(user_id: nil, phase: phase)
       expect(basket1.save).to be true
 
       # Create second basket without user (simulating another deleted user)
-      basket2 = Basket.new(user_id: nil, phase: phase)
+      basket2 = described_class.new(user_id: nil, phase: phase)
       expect(basket2.save).to be true
 
-      expect(Basket.where(user_id: nil, phase: phase).count).to eq 2
+      expect(described_class.where(user_id: nil, phase: phase).count).to eq 2
     end
   end
 
