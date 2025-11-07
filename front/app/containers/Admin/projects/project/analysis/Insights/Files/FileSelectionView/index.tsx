@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 
 import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { isEqual } from 'lodash-es';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { array, object, string } from 'yup';
@@ -12,8 +13,8 @@ import useFiles from 'api/files/useFiles';
 
 import MultipleSelect from 'components/HookForm/MultipleSelect';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
-import NewLabel from 'components/UI/NewLabel';
 import GoBackButton from 'components/UI/GoBackButton';
+import NewLabel from 'components/UI/NewLabel';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -24,24 +25,20 @@ type Props = {
   analysisId: string;
 };
 
-const areSetsEqual = <T,>(a: T[], b: T[]): boolean => {
-  if (a.length !== b.length) return false;
-
-  const sortedA = [...a].sort();
-  const sortedB = [...b].sort();
-  return sortedA.every((val, index) => val === sortedB[index]);
-};
-
 const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
-  // Track previous file IDs to prevent unnecessary auto-submits
-  // (on initial load or reset)
-  const previousFileIdsRef = useRef<string[]>([]);
-
   const { projectId } = useParams();
   const { mutate: updateAnalysis } = useUpdateAnalysis();
 
   const { data: analysis, isLoading: isLoadingAnalysis } =
     useAnalysis(analysisId);
+
+  const initialFileIds = analysis?.data.relationships.files?.data.map(
+    (file) => file.id
+  );
+
+  // Track previous file IDs to prevent unnecessary auto-submits
+  // (on initial load or reset)
+  const previousFileIdsRef = useRef<string[]>(initialFileIds || []);
 
   const { data: files } = useFiles({
     project: projectId ? [projectId] : [],
@@ -59,7 +56,7 @@ const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
   const methods = useForm<FormData>({
     mode: 'onBlur',
     defaultValues: {
-      file_ids: [],
+      file_ids: initialFileIds || [],
     },
     resolver: yupResolver(schema),
   });
@@ -70,21 +67,10 @@ const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
     name: 'file_ids',
   });
 
-  // Populate form with existing file IDs when analysis data loads
-  useEffect(() => {
-    if (!isLoadingAnalysis && analysis) {
-      const existingFileIds =
-        analysis.data.relationships?.files?.data.map((file) => file.id) || [];
-
-      methods.reset({ file_ids: existingFileIds });
-      previousFileIdsRef.current = existingFileIds;
-    }
-  }, [isLoadingAnalysis, analysisId]);
-
   // Auto-submit when file_ids changes (debounced by 500ms)
   useEffect(() => {
     // Skip if the values haven't changed from the previous state
-    if (areSetsEqual(watchedFileIds, previousFileIdsRef.current)) return;
+    if (isEqual(watchedFileIds, previousFileIdsRef.current)) return;
 
     const timeoutId = setTimeout(() => {
       methods.handleSubmit(() => {
@@ -103,7 +89,7 @@ const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
   // Generate options for the file select dropdown
   const fileOptions =
     files?.data
-      .map((file) => ({ value: file.id, label: file.attributes?.name }))
+      .map((file) => ({ value: file.id, label: file.attributes.name }))
       .sort((a, b) => a.label.localeCompare(b.label)) || [];
 
   return (
