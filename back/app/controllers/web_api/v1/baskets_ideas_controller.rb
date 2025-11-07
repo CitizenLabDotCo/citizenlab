@@ -63,11 +63,16 @@ class WebApi::V1::BasketsIdeasController < ApplicationController
     )
     if basket.new_record?
       authorize basket
-      if basket.save
-        SideFxBasketService.new.after_create basket, current_user
-      else
-        render json: { errors: basket.errors.details }, status: :unprocessable_entity
-        return
+      begin
+        if basket.save
+          SideFxBasketService.new.after_create basket, current_user
+        else
+          render json: { errors: basket.errors.details }, status: :unprocessable_entity
+          return
+        end
+      rescue ActiveRecord::RecordNotUnique
+        # Another request created the basket in the meantime - reload it
+        basket = Basket.find_by!(phase: phase, user: current_user)
       end
     end
 

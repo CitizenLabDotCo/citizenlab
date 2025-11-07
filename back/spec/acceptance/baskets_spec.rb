@@ -66,7 +66,11 @@ resource 'Baskets' do
       let(:submitted) { false }
       let(:phase_id) { @project.phases.first.id }
 
-      example_request 'Create a basket' do
+      example 'Create a basket' do
+        # Delete the existing basket to test creation of a new one
+        @basket.destroy
+
+        do_request
         assert_status 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :submitted_at)).to be_nil
