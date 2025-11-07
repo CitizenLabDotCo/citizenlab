@@ -59,7 +59,7 @@ module ParticipationMethod
     end
 
     def participation_baskets
-      phase.baskets.map do |basket|
+      phase.baskets.includes(:user).map do |basket|
         {
           id: basket.id,
           action: 'voting',
