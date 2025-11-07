@@ -1346,7 +1346,7 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.completeTheDemographicQuestionsAbove": "اوپر دیے گئے آبادیاتی سوالات کو مکمل کریں۔",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.confirmYourEmail": "اپنے ای میل کی تصدیق کریں۔",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.dataReturned": "توثیقی طریقہ سے ڈیٹا واپس کیا گیا:",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterNameLastNameEmailAndPassword1": "پہلا نام، آخری نام، ای میل اور پاس ورڈ درج کریں۔",
+  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterNameLastNameAndPassword": "نام، آخری نام، اور پاس ورڈ درج کریں۔",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterYourEmail": "اپنا ای میل درج کریں۔",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.howRecentlyShouldUsersBeVerified": "حال ہی میں صارفین کی تصدیق کتنی ہونی چاہیے؟",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.identityVerificationWith": "{verificationMethod} کے ساتھ شناخت کی تصدیق (صارف گروپ کی بنیاد پر)",
