@@ -252,28 +252,9 @@ resource 'Campaigns' do
         context 'when body contains images' do
           let(:body_multiloc) { { 'en' => html_with_base64_image } }
 
-          example 'Create a manual campaign with body containing images', document: false do
-            expect { do_request }.to change(TextImage, :count).by(1)
-
-            assert_status 201
-
-            campaign = EmailCampaigns::Campaign.find(json_response_body.dig(:data, :id))
-
-            text_image = TextImage.find_sole_by(
-              imageable: campaign,
-              imageable_type: 'EmailCampaigns::Campaign',
-              imageable_field: 'body_multiloc'
-            )
-
-            expect(campaign.body_multiloc['en']).not_to include('data:image/png;base64')
-            expect(campaign.body_multiloc['en']).to include(%(data-cl2-text-image-text-reference="#{text_image.text_reference}"))
-            expect(campaign.body_multiloc['en']).not_to include(' src="')
-
-            body = response_data.dig(:attributes, :body_multiloc, :en)
-            expect(body).not_to include('data:image/png;base64')
-            expect(body).to include(%(data-cl2-text-image-text-reference="#{text_image.text_reference}"))
-            expect(body).to include(' src="')
-          end
+          it_behaves_like 'creates record with text images',
+            model_class: EmailCampaigns::Campaign,
+            field: :body_multiloc
         end
       end
     end
@@ -390,6 +371,14 @@ resource 'Campaigns' do
           expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq campaign.author_id
           expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to eq group_ids
         end
+
+        context 'when body contains images' do
+          let(:body_multiloc) { { 'en' => html_with_base64_image } }
+
+          it_behaves_like 'updates record with text images',
+            model_class: EmailCampaigns::Campaign,
+            field: :body_multiloc
+        end
       end
 
       context 'global campaigns' do
@@ -440,28 +429,10 @@ resource 'Campaigns' do
           context 'when intro contains images' do
             let(:intro_multiloc) { { 'en' => html_with_base64_image } }
 
-            example 'Update automated campaign intro with images', document: false do
-              expect { do_request }.to change(TextImage, :count).by(1)
-
-              assert_status 200
-
-              campaign = EmailCampaigns::Campaign.find(json_response_body.dig(:data, :id))
-
-              text_image = TextImage.find_sole_by(
-                imageable: campaign,
-                imageable_type: 'EmailCampaigns::Campaign',
-                imageable_field: 'intro_multiloc'
-              )
-
-              expect(campaign.intro_multiloc['en']).not_to include('data:image/png;base64')
-              expect(campaign.intro_multiloc['en']).to include(%(data-cl2-text-image-text-reference="#{text_image.text_reference}"))
-              expect(campaign.intro_multiloc['en']).not_to include(' src="')
-
-              intro = response_data.dig(:attributes, :intro_multiloc, :en)
-              expect(intro).not_to include('data:image/png;base64')
-              expect(intro).to include(%(data-cl2-text-image-text-reference="#{text_image.text_reference}"))
-              expect(intro).to include(' src="')
-            end
+            it_behaves_like 'updates record with text images',
+              model_class: EmailCampaigns::Campaign,
+              field: :intro_multiloc,
+              locale: :en
           end
         end
       end
