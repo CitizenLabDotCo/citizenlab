@@ -1462,7 +1462,12 @@
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
+          "enabled": { "type": "boolean", "default": false },
+          "prompt_template": {
+            "title": "Custom AI analysis prompt",
+            "description": "Optional custom prompt template (ERB format) to override the default Q&A prompt. Available variables: project_title, question, inputs_text, language, include_comments.",
+            "type": "string"
+          }
         }
       },
 

@@ -85,12 +85,23 @@ module Analysis
 
     def prompt(project, inputs_text, include_comments)
       project_title = MultilocService.new.t(project.title_multiloc)
-      filename = file_ai_analysis_enabled? ? 'q_and_a.v2' : 'q_and_a'
 
-      LLM::Prompt.new.fetch(
-        filename,
-        project_title:, question: question.question, inputs_text:, language: response_language, include_comments:
-      )
+      custom_template = if file_ai_analysis_enabled?
+        AppConfiguration.instance.settings('data_repository_ai_analysis', 'prompt_template').presence
+      end
+
+      params = {
+        question: question.question,
+        language: response_language,
+        project_title:, inputs_text:, include_comments:
+      }
+
+      if custom_template
+        ERB.new(custom_template).result_with_hash(params)
+      else
+        filename = file_ai_analysis_enabled? ? 'q_and_a.v2' : 'q_and_a'
+        LLM::Prompt.new.fetch(filename, **params)
+      end
     end
 
     def response_language
