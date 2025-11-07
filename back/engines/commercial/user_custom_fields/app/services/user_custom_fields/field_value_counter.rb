@@ -91,24 +91,24 @@ module UserCustomFields
 
     # NEW PRIVATE METHOD:
     private_class_method def self.counts_from_custom_field_values_array(custom_field_values_array, custom_field, by)
-      field_key = custom_field.key  # For arrays, we don't need Ideas prefix logic
-      
+      field_key = custom_field.key # For arrays, we don't need Ideas prefix logic
+
       case custom_field.input_type
       when 'select', 'checkbox', 'number'
-        values = custom_field_values_array.map { |cfv| cfv[field_key] }
+        values = custom_field_values_array.pluck(field_key)
       when 'multiselect'
         values = custom_field_values_array.flat_map { |cfv| cfv[field_key] || [] }
       else
         raise NotSupportedFieldTypeError
       end
-      
+
       counts = values.group_by(&:itself).transform_values(&:count)
       counts[UNKNOWN_VALUE_LABEL] = counts.delete(nil) || 0
       counts = add_missing_options(counts, custom_field)
-      
+
       convert_area_ids_to_option_keys!(counts, custom_field) if by != :area_id && custom_field.domicile?
       convert_keys_to_option_ids!(counts, custom_field) if by == :option_id
-      
+
       counts.with_indifferent_access
     end
 
