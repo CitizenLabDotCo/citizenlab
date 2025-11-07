@@ -6,8 +6,8 @@ import {
   colors,
   Title,
   Text,
+  ClickOutside,
 } from '@citizenlab/cl2-component-library';
-import ClickOutside from 'component-library/utils/containers/clickOutside';
 import { get, set } from 'js-cookie';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { RouteType } from 'routes';

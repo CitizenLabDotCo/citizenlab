@@ -7,9 +7,9 @@ import {
   fontSizes,
   defaultOutline,
   viewportWidths,
+  ClickOutside,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import clickOutside from 'component-library/utils/containers/clickOutside';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -118,7 +118,7 @@ const StyledFocusOn = styled(FocusOn)<{
   justify-content: center;
 `;
 
-const ModalContainer = styled(clickOutside)<{
+const ModalContainer = styled(ClickOutside)<{
   windowHeight: number;
 }>`
   width: 100%;

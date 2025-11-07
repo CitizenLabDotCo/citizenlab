@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ClickOutside from 'component-library/utils/containers/clickOutside';
+import { ClickOutside } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 const StyledClickOutside = styled(ClickOutside)<{ width: string }>`

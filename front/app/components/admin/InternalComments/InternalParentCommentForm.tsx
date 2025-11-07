@@ -1,7 +1,10 @@
 import React, { useState, useRef } from 'react';
 
-import { useBreakpoint, colors } from '@citizenlab/cl2-component-library';
-import clickOutside from 'component-library/utils/containers/clickOutside';
+import {
+  ClickOutside,
+  useBreakpoint,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { isString, trim } from 'lodash-es';
 import { hideVisually } from 'polished';
 import styled from 'styled-components';
@@ -32,7 +35,7 @@ const StyledAvatar = styled(Avatar)`
   margin-top: 3px;
 `;
 
-const FormContainer = styled(clickOutside)`
+const FormContainer = styled(ClickOutside)`
   flex: 1;
   display: flex;
   flex-direction: column;

@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
-import clickOutside from 'component-library/utils/containers/clickOutside';
+import { Box, colors, ClickOutside } from '@citizenlab/cl2-component-library';
 import { isString, trim } from 'lodash-es';
 import { hideVisually } from 'polished';
 import { useLocation } from 'react-router-dom';
@@ -37,7 +36,7 @@ const StyledAvatar = styled(Avatar)`
   margin-top: 3px;
 `;
 
-const FormContainer = styled(clickOutside)`
+const FormContainer = styled(ClickOutside)`
   flex: 1;
   display: flex;
   flex-direction: column;
