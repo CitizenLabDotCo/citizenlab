@@ -14,11 +14,12 @@ resource 'Request codes' do
       parameter :email, 'The email of the user requesting a confirmation code.', required: true
     end
 
-    example 'It works' do
-      user = create(:user_with_confirmation)
+    example 'It works with a passwordless user' do
+      allow(RequestConfirmationCodeJob).to receive(:perform_now)
+      user = create(:user_no_password)
       email = user.email
       do_request(request_code: { email: email })
-      expect(status).to eq 200
+      expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
     end
   end
 end

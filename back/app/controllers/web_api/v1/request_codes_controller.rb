@@ -6,9 +6,10 @@ class WebApi::V1::RequestCodesController < ApplicationController
 
   def request_code_unauthenticated
     email = request_code_unauthenticated_params[:email]
+    user = User.find_by(email: email)
 
-    if confirmation_codes_service.permit_request_code_unauthenticated(email)
-      RequestConfirmationCodeJob.perform_now current_user, new_email: nil
+    if confirmation_codes_service.permit_request_code_unauthenticated(user)
+      RequestConfirmationCodeJob.perform_now user
     end
 
     head :ok

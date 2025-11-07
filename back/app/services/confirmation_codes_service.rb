@@ -3,12 +3,10 @@
 class ConfirmationCodesService
   MAX_RETRIES = ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5).to_i
 
-  def permit_request_code_unauthenticated(email)
+  def permit_request_code_unauthenticated(user)
     return false unless correct_feature_flags_enabled?
-    return false if email.blank?
-
-    user = User.find_by(email: email)
     return false if user.nil?
+    return false if user.email.blank?
     return false if user.password_digest?
     return false if user.email_confirmation_code_reset_count >= MAX_RETRIES
 
