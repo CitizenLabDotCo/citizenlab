@@ -1346,7 +1346,7 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.completeTheDemographicQuestionsAbove": "Yukarıdaki demografik soruları doldurun",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.confirmYourEmail": "E-postanızı onaylayın",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.dataReturned": "Doğrulama yönteminden döndürülen veriler:",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterNameLastNameEmailAndPassword1": "Adınızı, soyadınızı, e-posta adresinizi ve şifrenizi girin",
+  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterNameLastNameAndPassword": "Adınızı, soyadınızı ve şifrenizi girin",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterYourEmail": "E-posta adresinizi girin",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.howRecentlyShouldUsersBeVerified": "Kullanıcılar ne kadar süre sonra doğrulanmalıdır?",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.identityVerificationWith": "{verificationMethod} ile kimlik doğrulama (kullanıcı grubuna göre)",
