@@ -202,7 +202,6 @@ module IdeaCustomFields
       field.assign_attributes field_params
       return true unless field.changed?
 
-      SideFxCustomFieldService.new.before_update field, current_user
       if field.save
         SideFxCustomFieldService.new.after_update field, current_user
         field
