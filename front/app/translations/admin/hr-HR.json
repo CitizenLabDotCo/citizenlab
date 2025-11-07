@@ -1346,7 +1346,7 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.completeTheDemographicQuestionsAbove": "Odgovorite na gornja demografska pitanja",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.confirmYourEmail": "Potvrdite svoju e-poštu",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.dataReturned": "Podaci vraćeni od metode provjere:",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterNameLastNameEmailAndPassword1": "Unesite ime, prezime, email i lozinku",
+  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterNameLastNameAndPassword": "Unesite ime, prezime i lozinku",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterYourEmail": "Unesite svoju e-poštu",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.howRecentlyShouldUsersBeVerified": "Koliko bi se nedavno trebali verificirati korisnici?",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.identityVerificationWith": "Provjera identiteta s {verificationMethod} (na temelju korisničke grupe)",
