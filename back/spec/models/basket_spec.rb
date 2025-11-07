@@ -45,6 +45,20 @@ RSpec.describe Basket do
       expect(basket1).to be_valid
       expect(basket2).to be_valid
     end
+
+    it 'allows multiple baskets with NULL user_id for the same phase' do
+      phase = create(:budgeting_phase)
+
+      # Create first basket without user (simulating deleted user)
+      basket1 = Basket.new(user_id: nil, phase: phase)
+      expect(basket1.save).to be true
+
+      # Create second basket without user (simulating another deleted user)
+      basket2 = Basket.new(user_id: nil, phase: phase)
+      expect(basket2.save).to be true
+
+      expect(Basket.where(user_id: nil, phase: phase).count).to eq 2
+    end
   end
 
   context 'baskets_ideas' do
