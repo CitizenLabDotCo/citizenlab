@@ -53,6 +53,44 @@ describe TextImageService do
     end
   end
 
+  describe 'swap_data_images!' do
+    it 'extracts images and updates content field' do
+      project = create(:project, description_multiloc: {
+        'en' => html_with_base64_image,
+        'fr-FR' => html_with_base64_image(alt_text: 'Point rouge')
+      })
+
+      service.swap_data_images!(project, :description_multiloc, :text_images)
+
+      expect(project.text_images.size).to eq(2)
+      project.description_multiloc.values.each do |value|
+        expect(value).to include('data-cl2-text-image-text-reference')
+        expect(value).not_to include('data:image/png;base64')
+      end
+    end
+
+    it 'builds images through association with correct foreign keys' do
+      project = create(:project, description_multiloc: { 'en' => html_with_base64_image })
+
+      service.swap_data_images!(project, :description_multiloc, :text_images)
+
+      text_image = project.text_images.sole
+      expect(text_image.imageable_id).to eq(project.id)
+    end
+
+    it 'skips images that are already stored' do
+      project = create(:project)
+      text_image = create(:text_image, imageable: project)
+      project.description_multiloc = {
+        'en' => %(<img data-cl2-text-image-text-reference="#{text_image.text_reference}">)
+      }
+
+      expect do
+        service.swap_data_images!(project, :description_multiloc, :text_images)
+      end.not_to(change { TextImage.count })
+    end
+  end
+
   describe 'render_data_images_multiloc' do
     it 'adds src attributes to the img tags' do
       text_image1, text_image2 = create_list(:text_image, 2)
