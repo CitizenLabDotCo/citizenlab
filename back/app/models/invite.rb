@@ -39,7 +39,7 @@ class Invite < ApplicationRecord
   belongs_to :inviter, class_name: 'User', optional: true
   belongs_to :invitee, class_name: 'User'
 
-  has_many_text_images from: :invite_text
+  has_many_text_images from: :invite_text, as: :text_images
   accepts_nested_attributes_for :text_images
 
   before_validation :generate_token, on: :create
