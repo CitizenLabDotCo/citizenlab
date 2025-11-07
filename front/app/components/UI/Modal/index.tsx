@@ -9,6 +9,7 @@ import {
   viewportWidths,
   isRtl,
 } from '@citizenlab/cl2-component-library';
+import clickOutside from 'component-library/utils/containers/clickOutside';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -19,7 +20,6 @@ import styled from 'styled-components';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
 import { trackEventByName } from 'utils/analytics';
-import clickOutside from 'utils/containers/clickOutside';
 import eventEmitter from 'utils/eventEmitter';
 
 import messages from './messages';

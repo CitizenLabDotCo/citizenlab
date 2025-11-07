@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 
 import { useBreakpoint, colors } from '@citizenlab/cl2-component-library';
+import clickOutside from 'component-library/utils/containers/clickOutside';
 import { isString, trim } from 'lodash-es';
 import { hideVisually } from 'polished';
 import styled from 'styled-components';
@@ -16,7 +17,6 @@ import MentionsTextArea from 'components/UI/MentionsTextArea';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import clickOutside from 'utils/containers/clickOutside';
 
 import { commentAdded } from './events';
 import tracks from './tracks';

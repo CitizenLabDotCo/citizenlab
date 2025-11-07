@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
+import clickOutside from 'component-library/utils/containers/clickOutside';
 import { isString, trim } from 'lodash-es';
 import { hideVisually } from 'polished';
 import { useLocation } from 'react-router-dom';
@@ -22,7 +23,6 @@ import TextArea from 'components/PostShowComponents/Comments/CommentForm/TextAre
 import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
-import clickOutside from 'utils/containers/clickOutside';
 import { isNilOrError, isPage } from 'utils/helperUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 

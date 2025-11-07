@@ -1,8 +1,7 @@
 import React from 'react';
 
+import ClickOutside from 'component-library/utils/containers/clickOutside';
 import styled from 'styled-components';
-
-import ClickOutside from 'utils/containers/clickOutside';
 
 const StyledClickOutside = styled(ClickOutside)<{ width: string }>`
   div.tippy-box {

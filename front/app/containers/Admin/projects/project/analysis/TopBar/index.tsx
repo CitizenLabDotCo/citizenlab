@@ -7,6 +7,7 @@ import {
   Title,
   Text,
 } from '@citizenlab/cl2-component-library';
+import ClickOutside from 'component-library/utils/containers/clickOutside';
 import { get, set } from 'js-cookie';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { RouteType } from 'routes';
@@ -27,7 +28,6 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import ClickOutside from 'utils/containers/clickOutside';
 
 import FilterItems from '../FilterItems';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
