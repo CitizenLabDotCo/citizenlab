@@ -14,12 +14,26 @@ resource 'Request codes' do
       parameter :email, 'The email of the user requesting a confirmation code.', required: true
     end
 
-    example 'It works with a passwordless user' do
+    before do
       allow(RequestConfirmationCodeJob).to receive(:perform_now)
+    end
+
+    example 'It works with a passwordless user' do
       user = create(:user_no_password)
-      email = user.email
-      do_request(request_code: { email: email })
+      do_request(request_code: { email: user.email })
       expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
+    end
+
+    example 'It does not work with a user with password' do
+      user = create(:user)
+      do_request(request_code: { email: user.email })
+      expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
+    end
+
+    example 'It does not work if user reached email_confirmation_code_reset_count' do
+      user = create(:user_no_password, email_confirmation_code_reset_count: 5)
+      do_request(request_code: { email: user.email })
+      expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
     end
   end
 end
