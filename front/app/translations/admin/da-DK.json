@@ -1346,7 +1346,7 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.completeTheDemographicQuestionsAbove": "Udfyld de demografiske spørgsmål ovenfor",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.confirmYourEmail": "Bekræft din e-mail",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.dataReturned": "Data returneret fra verifikationsmetoden:",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterNameLastNameAndPassword": "Indtast navn, efternavn og adgangskode",
+  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterNameLastNameAndPassword": "Indtast fornavn, efternavn og adgangskode",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterYourEmail": "Indtast din e-mail",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.howRecentlyShouldUsersBeVerified": "Hvor ofte skal brugere verificeres?",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.identityVerificationWith": "Identitetsbekræftelse med {verificationMethod} (baseret på brugergruppe)",
