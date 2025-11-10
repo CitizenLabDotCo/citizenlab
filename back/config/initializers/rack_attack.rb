@@ -111,22 +111,22 @@ class Rack::Attack
   end
 
   # Resend code by IP.
-  throttle('resend_code/ip', limit: 10, period: 5.minutes) do |req|
-    if req.path == '/web_api/v1/user/resend_code' && req.post?
+  throttle('request_code_unauthenticated/ip', limit: 10, period: 5.minutes) do |req|
+    if req.path == '/web_api/v1/user/request_code_unauthenticated' && req.post?
       req.remote_ip
     end
   end
 
   # Confirm by IP.
-  throttle('confirm/ip', limit: 5, period: 20.seconds) do |req|
-    if req.path == '/web_api/v1/user/confirm' && req.post?
+  throttle('confirm_code_unauthenticated/ip', limit: 5, period: 20.seconds) do |req|
+    if req.path == '/web_api/v1/user/confirm_code_unauthenticated' && req.post?
       req.remote_ip
     end
   end
 
   # Confirm by user ID from JWT.
-  throttle('confirm/id', limit: 10, period: 24.hours) do |req|
-    if req.path == '/web_api/v1/user/confirm' && req.post?
+  throttle('confirm_code_authenticated/id', limit: 10, period: 24.hours) do |req|
+    if req.path == '/web_api/v1/user/confirm_code_authenticated' && req.post?
       begin
         jwt = req.env['HTTP_AUTHORIZATION']&.split&.last
         JWT.decode(jwt, nil, false, algorithm: 'RS256').first['sub'] # sub is the user ID

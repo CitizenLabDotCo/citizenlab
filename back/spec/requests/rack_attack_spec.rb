@@ -313,19 +313,19 @@ describe 'Rack::Attack' do
 
     freeze_time do
       10.times do
-        post('/web_api/v1/user/resend_code', headers: headers)
+        post('/web_api/v1/user/request_code_unauthenticated', params: '{ "request_code": { "email": "coolemail@example.org" } }', headers: headers)
       end
-      expect(status).to eq(401) # Unauthorized
+      expect(status).to eq(200) # ok
 
-      post('/web_api/v1/user/resend_code', headers: headers)
+      post('/web_api/v1/user/request_code_unauthenticated', params: '{ "request_code": { "email": "coolemail@example.org" } }', headers: headers)
       expect(status).to eq(429) # Too many requests
     end
 
     travel_to(5.minutes.from_now) do
-      post('/web_api/v1/user/resend_code', headers: headers)
-      expect(status).to eq(401) # Unauthorized
+      post('/web_api/v1/user/request_code_unauthenticated', params: '{ "request_code": { "email": "coolemail@example.org" } }', headers: headers)
+      expect(status).to eq(200) # ok
     end
-  end
+end
 
   it 'limits confirmation requests from same IP to 5 in 20 seconds' do
     headers = { 'CONTENT_TYPE' => 'application/json' }
@@ -333,7 +333,7 @@ describe 'Rack::Attack' do
     freeze_time do
       5.times do
         post(
-          '/web_api/v1/user/confirm',
+          '/web_api/v1/user/confirm_code_unauthenticated',
           params: "{ \"confirmation\": { \"email\": \"#{user.email}\", \"code\": \"1234\" } }",
           headers: headers
         )
@@ -341,7 +341,7 @@ describe 'Rack::Attack' do
       expect(status).to eq(422)
 
       post(
-        '/web_api/v1/user/confirm',
+        '/web_api/v1/user/confirm_code_unauthenticated',
         params: "{ \"confirmation\": { \"email\": \"#{user.email}\", \"code\": \"1234\" } }",
         headers: headers
       )
@@ -350,7 +350,7 @@ describe 'Rack::Attack' do
 
     travel_to(20.seconds.from_now) do
       post(
-        '/web_api/v1/user/confirm',
+        '/web_api/v1/user/confirm_code_unauthenticated',
         params: "{ \"confirmation\": { \"email\": \"#{user.email}\", \"code\": \"1234\" } }",
         headers: headers
       )
@@ -369,7 +369,7 @@ describe 'Rack::Attack' do
       10.times do |i|
         headers['REMOTE_ADDR'] = "1.2.3.#{i + 1}"
         post(
-          '/web_api/v1/user/confirm',
+          '/web_api/v1/user/confirm_code_authenticated',
           params: '{ "confirmation": { "code": "12345" } }',
           headers: headers
         )
@@ -378,7 +378,7 @@ describe 'Rack::Attack' do
 
       headers['REMOTE_ADDR'] = '1.2.3.11'
       post(
-        '/web_api/v1/user/confirm',
+        '/web_api/v1/user/confirm_code_authenticated',
         params: '{ "confirmation": { "code": "12345" } }',
         headers: headers
       )
@@ -388,7 +388,7 @@ describe 'Rack::Attack' do
       headers['Authorization'] = "Bearer #{token2}"
       headers['REMOTE_ADDR'] = '1.2.3.12'
       post(
-        '/web_api/v1/user/confirm',
+        '/web_api/v1/user/confirm_code_authenticated',
         params: '{ "confirmation": { "code": "12345" } }',
         headers: headers
       )
@@ -399,7 +399,7 @@ describe 'Rack::Attack' do
     travel_to(start_time + 23.hours) do
       headers['REMOTE_ADDR'] = '1.2.3.13'
       post(
-        '/web_api/v1/user/confirm',
+        '/web_api/v1/user/confirm_code_authenticated',
         params: '{ "confirmation": { "code": "12345" } }',
         headers: headers
       )
@@ -409,7 +409,7 @@ describe 'Rack::Attack' do
     travel_to(start_time + 25.hours) do
       headers['REMOTE_ADDR'] = '1.2.3.13'
       post(
-        '/web_api/v1/user/confirm',
+        '/web_api/v1/user/confirm_code_authenticated',
         params: '{ "confirmation": { "code": "12345" } }',
         headers: headers
       )
