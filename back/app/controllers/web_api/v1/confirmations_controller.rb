@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ConfirmationsController < ApplicationController
+  skip_before_action :authenticate_user, only: %i[confirm_code_unauthenticated]
   skip_after_action :verify_authorized
 
   # This endpoint allows unauthenticated users to confirm a code
