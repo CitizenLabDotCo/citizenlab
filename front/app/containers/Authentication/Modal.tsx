@@ -179,6 +179,16 @@ const AuthModal = () => {
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
+        {currentStep === 'email:confirmation' && (
+          <EmailConfirmation
+            state={state}
+            loading={loading}
+            setError={setError}
+            onConfirm={transition(currentStep, 'SUBMIT_CODE')}
+            onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
+            onResendCode={transition(currentStep, 'RESEND_CODE')}
+          />
+        )}
 
         {/* invite flow */}
         {currentStep === 'invite:email-password' && (
