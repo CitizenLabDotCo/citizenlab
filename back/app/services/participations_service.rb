@@ -119,7 +119,7 @@ class ParticipationsService
         demographics_hash[custom_field.key] = {
           series: {
             users: counts,
-            reference_population: calculate_reference_population(custom_field) || {},
+            reference_population: calculate_reference_population(custom_field) || {}
           },
           title_multiloc: custom_field.title_multiloc
         }
