@@ -65,6 +65,7 @@ const StyledProjectFolderDescription = styled(ProjectFolderDescription)`
 
 const StyledProjectFolderProjectCards = styled(ProjectFolderProjectCards)`
   flex: 0 1 800px;
+  flex-shrink: 0;
   width: 800px;
   padding: 20px;
   padding-bottom: 0px;
