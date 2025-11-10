@@ -5,8 +5,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
 
-import resendEmailConfirmationCode from 'api/authentication/confirm_email/requestEmailConfirmationCode';
-
 import Input from 'components/HookForm/Input';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -28,6 +26,7 @@ interface Props {
   setError: SetError;
   onConfirm: (email: string, code: string) => void;
   onChangeEmail?: () => void;
+  onResendCode: () => Promise<void>;
 }
 
 interface FormValues {
@@ -48,6 +47,7 @@ const EmailConfirmation = ({
   setError,
   onConfirm,
   onChangeEmail,
+  onResendCode,
 }: Props) => {
   const [codeResent, setCodeResent] = useState(false);
   const [resendingCode, setResendingCode] = useState(false);
@@ -99,7 +99,7 @@ const EmailConfirmation = ({
     e.preventDefault();
     setResendingCode(true);
 
-    resendEmailConfirmationCode()
+    onResendCode()
       .then(() => {
         setResendingCode(false);
         setCodeResent(true);

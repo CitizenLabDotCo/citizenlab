@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { object, string } from 'yup';
 
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
+import { requestEmailConfirmationCodeChangeEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
 import useAuthUser from 'api/me/useAuthUser';
 
 import { ERROR_CODE_MESSAGES } from 'containers/Authentication/messageUtils';
@@ -90,6 +91,8 @@ const EmailChange = () => {
     return null;
   }
 
+  const email = methods.watch('email');
+
   return (
     <>
       <Helmet
@@ -142,7 +145,7 @@ const EmailChange = () => {
             <EmailConfirmation
               state={{
                 flow: 'signup',
-                email: methods.watch('email'),
+                email,
                 token: null,
                 prefilledBuiltInFields: null,
                 ssoProvider: null,
@@ -150,6 +153,9 @@ const EmailChange = () => {
               loading={loading}
               setError={setConfirmationError}
               onConfirm={onEmailConfirmation}
+              onResendCode={async () => {
+                await requestEmailConfirmationCodeChangeEmail(email);
+              }}
             />
           </Box>
         </Modal>
