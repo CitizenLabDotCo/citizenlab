@@ -386,3 +386,4 @@ ach:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "crwdns5646853:0crwdne5646853:0"
+      max_must_be_greater_than_or_equal_to_min_select_count: "crwdns5648113:0crwdne5648113:0"
