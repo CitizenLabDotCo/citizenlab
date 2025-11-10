@@ -70,6 +70,7 @@ class ParticipationsService
 
   def demographics(permissions, participant_custom_field_values)
     # Get the set of unique permissions custom fields across all permissions
+    # TODO: Make a standalone method in PermissionsCustomFieldsService, to make testing easier
     unique_fields = permissions.flat_map do |permission|
       @permissions_custom_fields_service.fields_for_permission(permission)
     end.uniq
