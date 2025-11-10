@@ -14,6 +14,12 @@ class ParticipationsService
     phase_level_participation_data(participations) # Phase-level participations
   end
 
+  def phase_demographics(phase)
+    participations = phase_participations(phase)
+
+    phase_level_demographics(phase, participations)
+  end
+
   private
 
   def initialize
@@ -31,8 +37,15 @@ class ParticipationsService
     format_participation_data(participations.values.flatten)
   end
 
+  def phase_level_demographics(phase, participations)
+    phase_participations_permissions = phase.permissions.where.not(action: 'attending_event')
+    participant_ids = participations.values.flatten.pluck(:user_id).uniq
+    participant_custom_field_values = participants_custom_field_values(participations.values.flatten, participant_ids)
+    demographics(phase_participations_permissions, participant_custom_field_values)
+  end
+
   def phase_participation_data(phase, participations)
-    phase_participations_permissions = phase.permissions.where.not(action: 'attending_event') # Needed for demographics
+    # phase_participations_permissions = phase.permissions.where.not(action: 'attending_event') # Needed for demographics
 
     phase_level = format_participation_data(participations.values.flatten, phase_participations_permissions)
     actions_level = participations.map do |action_type, records|

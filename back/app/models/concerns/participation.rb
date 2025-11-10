@@ -2,11 +2,16 @@ module Participation
   extend ActiveSupport::Concern
 
   def participation
-    participation_service = ParticipationsService.instance
+    participation_service.phase_participation(self) if is_a?(Phase)
+  end
 
-    # Check which type of model is including this concern
-    if is_a?(Phase)
-      participation_service.phase_participation(self)
-    end
+  def demographics
+    participation_service.phase_demographics(self) if is_a?(Phase)
+  end
+
+  private
+
+  def participation_service
+    @participation_service ||= ParticipationsService.instance
   end
 end
