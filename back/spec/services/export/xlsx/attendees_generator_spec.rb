@@ -30,6 +30,17 @@ describe Export::Xlsx::AttendeesGenerator do
       expect([user_row[title_row.find_index 'domicile']]).to eq ['Center']
     end
 
+    it 'allows custom fields with the same name' do
+      create(:custom_field, title_multiloc: { 'en' => 'Last name' }, key: 'last_name', resource_type: 'User')
+      users.first.update!(custom_field_values: { 'last_name' => 'Doe' })
+
+      title_row = worksheet[0].cells.map(&:value)
+      user_rows = worksheet.map { |row| row.cells.map(&:value) }
+      user_row = user_rows.find { |values| values.include? users.first.email }
+      expect(title_row.count('Last name')).to eq 2
+      expect(user_row.count('Doe')).to eq 1
+    end
+
     it 'includes hidden custom fields' do
       create(:custom_field, hidden: true, title_multiloc: { 'en' => 'Hidden field' })
       headers = worksheet[0].cells.map(&:value)
