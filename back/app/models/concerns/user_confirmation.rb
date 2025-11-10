@@ -25,6 +25,7 @@ module UserConfirmation
   def confirm
     self.email_confirmed_at = Time.zone.now
     self.confirmation_required = false
+    self.email_confirmation_code = nil
   end
 
   def confirm!
