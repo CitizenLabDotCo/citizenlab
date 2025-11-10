@@ -1,4 +1,3 @@
-import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import { OnboardingType } from 'api/users/types';
 import {
   updateUser,
@@ -54,6 +53,9 @@ export const missingDataFlow = (
         }
 
         setCurrentStep('success');
+      },
+      RESEND_CODE: async (email: string) => {
+        await requestEmailConfirmationCode({ email });
       },
     },
 

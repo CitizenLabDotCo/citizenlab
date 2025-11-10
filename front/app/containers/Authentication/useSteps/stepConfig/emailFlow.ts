@@ -1,6 +1,7 @@
 import { SupportedLocale } from 'typings';
 
-import resendEmailConfirmationCodeUnauthenticated from 'api/authentication/confirm_email/resendEmailConfirmationCodeUnauthenticated';
+import { confirmEmailConfirmationCodeUnauthenticated } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
+import { requestEmailConfirmationCodeUnauthenticated } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
 import getUserTokenUnconfirmed from 'api/authentication/sign_in_out/getUserTokenUnconfirmed';
 import signIn from 'api/authentication/sign_in_out/signIn';
 import createEmailOnlyAccount from 'api/authentication/sign_up/createEmailOnlyAccount';
@@ -51,8 +52,8 @@ export const emailFlow = (
 
           if (action === 'confirm') {
             updateState({ flow: 'signin' });
-            await resendEmailConfirmationCodeUnauthenticated(email);
-            setCurrentStep('missing-data:email-confirmation');
+            await requestEmailConfirmationCodeUnauthenticated(email);
+            setCurrentStep('email:confirmation');
           }
         } catch (e) {
           if (e.errors?.email?.[0]?.error === 'taken_by_invite') {
@@ -179,6 +180,39 @@ export const emailFlow = (
         if (successAction) {
           triggerSuccessAction(successAction);
         }
+      },
+    },
+
+    'email:confirmation': {
+      CLOSE: () => setCurrentStep('closed'),
+      CHANGE_EMAIL: async () => {
+        setCurrentStep('email:start');
+      },
+      SUBMIT_CODE: async (email: string, code: string) => {
+        await confirmEmailConfirmationCodeUnauthenticated(email, code);
+        const { requirements } = await getRequirements();
+        const authenticationData = getAuthenticationData();
+
+        const missingDataStep = checkMissingData(
+          requirements,
+          authenticationData,
+          state.flow
+        );
+
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
+          return;
+        }
+
+        if (doesNotMeetGroupCriteria(requirements)) {
+          setCurrentStep('access-denied');
+          return;
+        }
+
+        setCurrentStep('success');
+      },
+      RESEND_CODE: async (email: string) => {
+        await requestEmailConfirmationCodeUnauthenticated(email);
       },
     },
 

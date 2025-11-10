@@ -26,7 +26,7 @@ interface Props {
   setError: SetError;
   onConfirm: (email: string, code: string) => void;
   onChangeEmail?: () => void;
-  onResendCode: () => Promise<void>;
+  onResendCode: (email: string) => Promise<void>;
 }
 
 interface FormValues {
@@ -99,7 +99,7 @@ const EmailConfirmation = ({
     e.preventDefault();
     setResendingCode(true);
 
-    onResendCode()
+    onResendCode(email)
       .then(() => {
         setResendingCode(false);
         setCodeResent(true);

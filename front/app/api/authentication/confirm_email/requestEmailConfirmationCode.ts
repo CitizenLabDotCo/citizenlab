@@ -44,8 +44,8 @@ export const requestEmailConfirmationCodeChangeEmail = async (
         request_code: { new_email },
       },
     });
+
     queryClient.invalidateQueries({ queryKey: meKeys.all() });
-    return true;
   } catch (errors) {
     throw errors.errors;
   }

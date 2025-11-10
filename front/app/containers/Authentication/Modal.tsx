@@ -214,6 +214,7 @@ const AuthModal = () => {
             setError={setError}
             onConfirm={transition(currentStep, 'SUBMIT_CODE')}
             onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
+            onResendCode={transition(currentStep, 'RESEND_CODE')}
           />
         )}
 
