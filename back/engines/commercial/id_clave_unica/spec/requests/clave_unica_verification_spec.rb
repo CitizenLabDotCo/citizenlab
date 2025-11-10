@@ -212,12 +212,7 @@ describe 'clave_unica verification' do
 
     context 'email confirmation enabled' do
       before do
-        configuration = AppConfiguration.instance
-        configuration.settings['user_confirmation'] = {
-          'enabled' => true,
-          'allowed' => true
-        }
-        configuration.save!
+        SettingsService.new.activate_feature! 'user_confirmation'
       end
 
       it 'creates user that can add & confirm her email' do
