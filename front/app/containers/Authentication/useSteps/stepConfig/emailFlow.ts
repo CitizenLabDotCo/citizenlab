@@ -110,7 +110,7 @@ export const emailFlow = (
 
         if (result === 'account_created_successfully') {
           if (userConfirmationEnabled) {
-            setCurrentStep('missing-data:email-confirmation');
+            setCurrentStep('email:confirmation');
           } else {
             // If user confirmation is not enabled, we can
             // request a JWT for the unconfirmed user and proceed
