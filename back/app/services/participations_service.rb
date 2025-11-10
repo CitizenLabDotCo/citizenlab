@@ -98,15 +98,33 @@ class ParticipationsService
 
     unique_fields.each_with_object({}) do |field, demographics_hash|
       custom_field = field.custom_field
-      counts = UserCustomFields::FieldValueCounter.counts_by_field_option(participant_custom_field_values, custom_field)
-      reference_population = calculate_reference_population(custom_field) || {}
+      reference_population = {}
 
-      # TODO: Copied from StatsUsersController#users_by_custom_field. Consider moving to a shared location (a service?).
-      demographics_hash[custom_field.key] = {
-        counts: counts,
-        reference_population: reference_population,
-        title_multiloc: custom_field.title_multiloc
-      }
+      if custom_field.key == 'birthyear'
+        age_stats = UserCustomFields::AgeStats.calculate(participant_custom_field_values)
+        reference_population = age_stats.population_counts
+
+        # TODO: Copied from StatsUsersController#users_by_age. Consider moving to a shared location (a service?).
+        demographics_hash['users_by_age'] = {
+          total_user_count: age_stats.user_count,
+          unknown_age_count: age_stats.unknown_age_count,
+          series: {
+            user_counts: age_stats.binned_counts,
+            reference_population: age_stats.population_counts,
+            bins: age_stats.bins
+          }
+        }
+      else
+        counts = UserCustomFields::FieldValueCounter.counts_by_field_option(participant_custom_field_values, custom_field)
+        reference_population = calculate_reference_population(custom_field) || {}
+
+        # TODO: Copied from StatsUsersController#users_by_custom_field. Consider moving to a shared location (a service?).
+        demographics_hash[custom_field.key] = {
+          counts: counts,
+          reference_population: reference_population,
+          title_multiloc: custom_field.title_multiloc
+        }
+      end
 
       if custom_field.options.present?
         demographics_hash[custom_field.key][:options] = custom_field.options.to_h do |o|

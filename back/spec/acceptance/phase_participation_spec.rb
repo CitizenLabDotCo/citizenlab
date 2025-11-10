@@ -43,6 +43,17 @@ resource 'Phase participation' do
       )
     end
 
+    let!(:custom_field_birthyear) { create(:custom_field, resource_type: 'User', key: 'birthyear', input_type: 'number', title_multiloc: {en: "Birthyear"}) }
+
+    let!(:binned_distribution) do
+      create(
+        :binned_distribution,
+        custom_field: custom_field_birthyear,
+        bins: [18, 25, 35, 45, 55, 65, nil],  # Age ranges: <18, 18-25, 25-35, 35-45, 45-65, >65
+        counts: [50, 200, 400, 300, 50, 700]       # Population in each bin
+      )
+    end
+
     let!(:permissions_custom_field) { create(:permissions_custom_field, permission: permission1, custom_field: custom_field_gender) }
 
     (1..3).each do |i|
@@ -93,7 +104,8 @@ resource 'Phase participation' do
         assert_status 200
 
         demographics = json_response_body.dig(:data, :attributes, :demographics)
-        expect(demographics).to eq({
+        pp demographics
+        expect(demographics).to match({
           gender: {
             counts: {
               male: 1, female: 1, unspecified: 0, _blank: 3
@@ -117,6 +129,15 @@ resource 'Phase participation' do
                 title_multiloc: { en: 'Unspecified' },
                 ordering: 2
               }
+            }
+          },
+          users_by_age: {
+            total_user_count: 5,
+            unknown_age_count: 3,
+            series: {
+              user_counts: [0, 0, 1, 1, 0, 0],
+              reference_population: [50, 200, 400, 300, 50, 700],
+              bins: [18, 25, 35, 45, 55, 65, nil]
             }
           }
         })
