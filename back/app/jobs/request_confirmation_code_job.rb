@@ -10,10 +10,11 @@ class RequestConfirmationCodeJob < ApplicationJob
     raise 'User confirmation is disabled.' if !AppConfiguration.instance.feature_activated?('user_confirmation')
 
     LogActivityJob.perform_later(user, 'requested_confirmation_code', user, Time.now.to_i, payload: { new_email: new_email })
+
     if new_email
       user.new_email = new_email
-      user.email_confirmation_code_reset_count = 0
     end
+
     reset_user_confirmation_code user
     return if !user.valid?
 

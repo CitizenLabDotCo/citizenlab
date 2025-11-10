@@ -77,6 +77,13 @@ RSpec.describe RequestConfirmationCodeJob do
             expect(user.errors.details).to eq({ email: [{ error: :taken, value: new_email }] })
             expect(user.reload.new_email).to be_nil
           end
+
+          it 'does not reset email_confirmation_code_reset_count' do
+            job.perform(user, new_email: new_email)
+            expect(user.email_confirmation_code_reset_count).to eq 1
+            job.perform(user, new_email: new_email)
+            expect(user.email_confirmation_code_reset_count).to eq 2
+          end
         end
       end
 
