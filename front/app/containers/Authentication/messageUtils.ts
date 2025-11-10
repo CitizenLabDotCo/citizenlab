@@ -22,6 +22,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'email:policies': messages.beforeYouParticipate,
   'email:password': messages.logIn,
   'email:sso-policies': messages.beforeYouParticipate,
+  'email:confirmation': messages.confirmYourEmail,
 
   // invite flow
   'invite:email-password': messages.signUp,
