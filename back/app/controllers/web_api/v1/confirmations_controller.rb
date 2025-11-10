@@ -57,7 +57,23 @@ class WebApi::V1::ConfirmationsController < ApplicationController
   # This endpoint is used when a logged in user wants to change their email
   # (or set their email for the first time if they came from SSO without email)
   def confirm_code_email_change
-    # TODO
+    unless confirmation_codes_service.permit_request_code_email_change(
+      current_user,
+      current_user.new_email
+    )
+      render json: { errors: { base: ['Confirmation not permitted'] } }, status: :unprocessable_entity
+      return
+    end
+
+    result = ConfirmUser.call(user: current_user, code: confirm_code_params[:code])
+
+    if result.success?
+      SideFxUserService.new.after_update(current_user, current_user)
+
+      head :ok
+    else
+      render json: { errors: result.errors.details }, status: :unprocessable_entity
+    end
   end
 
   private
