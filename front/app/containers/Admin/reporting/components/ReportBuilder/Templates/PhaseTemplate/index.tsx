@@ -1,11 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { Element } from '@craftjs/core';
 
-import useAnalyses from 'api/analyses/useAnalyses';
-import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
-import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
 import usePhase from 'api/phases/usePhase';
 
@@ -13,7 +10,6 @@ import useAppConfigurationLocales, {
   createMultiloc,
 } from 'hooks/useAppConfigurationLocales';
 
-import { removeRefs } from 'containers/Admin/projects/project/analysis/Insights/util';
 import { WIDGET_TITLES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
 
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
@@ -29,6 +25,7 @@ import TextMultiloc from '../../Widgets/TextMultiloc';
 import { TemplateContext } from '../context';
 
 import messages from './messages';
+import PrefetchSummaries from './PrefetchSummaries';
 interface Props {
   phaseId: string;
   selectedLocale: string;
@@ -40,7 +37,6 @@ const PhaseTemplateContent = ({
   selectedLocale,
   summaries,
 }: Props) => {
-  console.log({ summaries });
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
   const { data: phase } = usePhase(phaseId);
@@ -151,85 +147,3 @@ const PhaseTemplate = ({ phaseId, selectedLocale }: Props) => {
 };
 
 export default PhaseTemplate;
-
-const PrefetchSummaries = ({
-  phaseId,
-  setSummaries,
-  setSummariesLoaded,
-}: {
-  phaseId: string;
-  setSummaries: React.Dispatch<React.SetStateAction<any[]>>;
-  setSummariesLoaded: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
-  const { data: phase } = usePhase(phaseId);
-  const { data: surveyQuestions } = useRawCustomFields({
-    phaseId:
-      phase?.data.attributes.participation_method === 'native_survey'
-        ? phaseId
-        : undefined,
-  });
-
-  const questionIds =
-    surveyQuestions?.data
-      .filter((field) =>
-        SURVEY_QUESTION_INPUT_TYPES.has(field.attributes.input_type)
-      )
-      .map((field) => field.id) || [];
-
-  const { data: analyses } = useAnalyses({ phaseId });
-  const relevantAnalyses = analyses?.data.filter((analysis) =>
-    questionIds.includes(
-      analysis.relationships.main_custom_field?.data?.id || ''
-    )
-  );
-
-  useEffect(() => {
-    if (relevantAnalyses && relevantAnalyses.length === 0) {
-      setSummariesLoaded(true);
-    }
-  }, [relevantAnalyses, setSummariesLoaded]);
-
-  return (
-    <>
-      {relevantAnalyses?.map((analysis) => (
-        <InsightsNew
-          key={analysis.id}
-          analysisId={analysis.id}
-          questionId={analysis.relationships.main_custom_field?.data?.id}
-          setSummaries={setSummaries}
-          setSummariesLoaded={setSummariesLoaded}
-        />
-      ))}
-    </>
-  );
-};
-
-const InsightsNew = ({
-  analysisId,
-  questionId,
-  setSummaries,
-  setSummariesLoaded,
-}) => {
-  const { data: insights } = useAnalysisInsights({
-    analysisId,
-  });
-
-  const summaryId = insights?.data[0].relationships.insightable.data.id;
-  const { data: summary, isLoading } = useAnalysisSummary({
-    id: summaryId,
-    analysisId,
-  });
-
-  useEffect(() => {
-    if (summary) {
-      setSummaries((prev) => ({
-        ...prev,
-        [questionId]: `<p>${removeRefs(
-          summary.data.attributes.summary || ''
-        ).replace(/(\r\n|\n|\r)/gm, '</p><p>')}</p>`,
-      }));
-    }
-    setSummariesLoaded(!isLoading);
-  }, [summary, questionId, setSummaries, setSummariesLoaded, isLoading]);
-  return <></>;
-};
