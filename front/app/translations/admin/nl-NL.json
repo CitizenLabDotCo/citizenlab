@@ -2947,7 +2947,7 @@
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Dislikes",
   "app.containers.AdminPage.projects.project.analysis.heatmap.explore": "Verken",
   "app.containers.AdminPage.projects.project.analysis.heatmap.false": "Niet waar",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.inputs": "Invoeren",
+  "app.containers.AdminPage.projects.project.analysis.heatmap.inputs": "Bijdragen",
   "app.containers.AdminPage.projects.project.analysis.heatmap.likes": "Likes",
   "app.containers.AdminPage.projects.project.analysis.heatmap.nextHeatmap": "Volgende heatmap",
   "app.containers.AdminPage.projects.project.analysis.heatmap.nextInsight": "Volgend inzicht",
