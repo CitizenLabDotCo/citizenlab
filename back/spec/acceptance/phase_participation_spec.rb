@@ -4,52 +4,66 @@ require 'rspec_api_documentation/dsl'
 resource 'Phase participation' do
   before { admin_header_token }
 
-  get 'web_api/v1/phases/:id/participation' do
-    context 'voting phase' do
-      # rubocop:disable RSpec/ScatteredLet
-      let(:ideation_phase) do
-        create(
-          :phase,
-          participation_method: 'ideation',
-          start_at: 30.days.ago,
-          end_at: 15.days.ago
-        )
-      end
+  context 'voting phase' do
+    # rubocop:disable RSpec/ScatteredLet
+    let(:ideation_phase) do
+      create(
+        :phase,
+        participation_method: 'ideation',
+        start_at: 30.days.ago,
+        end_at: 15.days.ago
+      )
+    end
 
-      let(:voting_phase) do
-        create(
-          :phase,
-          participation_method: 'voting',
-          voting_method: 'single_voting',
-          start_at: 14.days.ago,
-          end_at: 1.day.ago,
-          project: ideation_phase.project
-        )
-      end
+    let(:voting_phase) do
+      create(
+        :phase,
+        participation_method: 'voting',
+        voting_method: 'single_voting',
+        start_at: 14.days.ago,
+        end_at: 1.day.ago,
+        project: ideation_phase.project
+      )
+    end
 
-      let(:id) { voting_phase.id }
+    let!(:permission1) { create(:permission, action: 'voting', permission_scope: voting_phase) }
+    let!(:permission2) { create(:permission, action: 'commenting_idea', permission_scope: voting_phase) }
+    let!(:permission3) { create(:permission, action: 'attending_event', permission_scope: voting_phase) }
 
-      (1..3).each do |i|
-        let!(:"idea#{i}") { create(:idea, phases: [ideation_phase, voting_phase], project: ideation_phase.project, submitted_at: 20.days.ago) }
-      end
+    let!(:custom_field) { create(:custom_field, resource_type: 'User', key: 'gender', input_type: 'select', title_multiloc: {en: "Gender"}) }
+    let!(:custom_field_option) { create(:custom_field_option, custom_field: custom_field, key: 'male', title_multiloc: {en: "Male"}) }
+    let!(:custom_field_option_female) { create(:custom_field_option, custom_field: custom_field, key: 'female', title_multiloc: {en: "Female"}) }
+    let!(:custom_field_option_other) { create(:custom_field_option, custom_field: custom_field, key: 'unspecified', title_multiloc: {en: "Unspecified"}) }
 
-      (1..6).each do |i|
-        let!(:"user#{i}") { create(:user) }
-      end
+    let!(:permissions_custom_field) { create(:permissions_custom_field, permission: permission1, custom_field: custom_field) }
 
-      let!(:comment1) { create(:comment, idea: idea1, author: user1, created_at: 25.days.ago) } # before voting phase (not counted)
-      let!(:comment2) { create(:comment, idea: idea2, author: user2, created_at: 13.days.ago) } # in voting phase
-      let!(:comment3) { create(:comment, idea: idea3, author: user2, created_at: 5.days.ago) } # in voting phase & last 7 days
-      let!(:comment4) { create(:comment, idea: idea3, author: user3, created_at: 5.days.ago) } # in voting phase & last 7 days
+    (1..3).each do |i|
+      let!(:"idea#{i}") { create(:idea, phases: [ideation_phase, voting_phase], project: ideation_phase.project, submitted_at: 20.days.ago) }
+    end
 
-      let!(:basket1) { create(:basket, phase: voting_phase, user: user4, submitted_at: 20.days.ago) } # before voting phase (still counts)
-      let!(:basket2) { create(:basket, phase: voting_phase, user: user5, submitted_at: 10.days.ago) } # in voting phase
-      let!(:basket3) { create(:basket, phase: voting_phase, user: user5, submitted_at: 5.days.ago) } # in voting phase & last 7 days
-      let!(:basket4) { create(:basket, phase: voting_phase, user: user6, submitted_at: 5.days.ago) } # in voting phase & last 7 days
-      let!(:basket5) { create(:basket, phase: voting_phase, user: user3, submitted_at: 5.days.ago) } # in voting phase & last 7 days
-      # rubocop:enable RSpec/ScatteredLet
+    (1..4).each do |i|
+      let!(:"user#{i}") { create(:user) }
+    end
 
-      example_request 'Get a phase with participation data' do
+    let!(:user5) { create(:user, custom_field_values: { gender: 'female', birthyear: 1980 }) }
+    let!(:user6) { create(:user, custom_field_values: { gender: 'male', birthyear: 1990 }) }
+
+    let!(:comment1) { create(:comment, idea: idea1, author: user1, created_at: 25.days.ago) } # before voting phase (not counted)
+    let!(:comment2) { create(:comment, idea: idea2, author: user2, created_at: 13.days.ago) } # in voting phase
+    let!(:comment3) { create(:comment, idea: idea3, author: user2, created_at: 5.days.ago) } # in voting phase & last 7 days
+    let!(:comment4) { create(:comment, idea: idea3, author: user3, created_at: 5.days.ago) } # in voting phase & last 7 days
+
+    let!(:basket1) { create(:basket, phase: voting_phase, user: user4, submitted_at: 20.days.ago) } # before voting phase (still counts)
+    let!(:basket2) { create(:basket, phase: voting_phase, user: user5, submitted_at: 10.days.ago) } # in voting phase
+    let!(:basket3) { create(:basket, phase: voting_phase, user: user5, submitted_at: 5.days.ago) } # in voting phase & last 7 days
+    let!(:basket4) { create(:basket, phase: voting_phase, user: user6, submitted_at: 5.days.ago) } # in voting phase & last 7 days
+    let!(:basket5) { create(:basket, phase: voting_phase, user: user3, submitted_at: 5.days.ago) } # in voting phase & last 7 days
+
+    let(:id) { voting_phase.id }
+    # rubocop:enable RSpec/ScatteredLet
+
+    get 'web_api/v1/phases/:id/participation' do
+      example_request 'Get participation data for a phase' do
         assert_status 200
 
         participations = json_response_body.dig(:data, :attributes, :participation)
@@ -61,6 +75,37 @@ resource 'Phase participation' do
           participants: {
             count: 5, # unique users: user2, user3, user4, user5, user6
             change_last_7_days: 2 # NEW unique users in last 7 days: user3, user6
+          }
+        })
+      end
+    end
+
+    get 'web_api/v1/phases/:id/demographics' do
+      example_request 'Get demographics data for a phase' do
+        assert_status 200
+
+        demographics = json_response_body.dig(:data, :attributes, :demographics)
+        expect(demographics).to eq({
+          gender: {
+            counts: {
+              male: 1, female: 1, unspecified: 0, _blank: 3
+            },
+            reference_population: {},
+            title_multiloc: {en: "Gender"},
+            options: {
+              male: {
+                title_multiloc: {en: "Male"},
+                ordering: 0
+              },
+              female: {
+                title_multiloc: {en: "Female"},
+                ordering: 1
+              },
+              unspecified: {
+                title_multiloc: {en: "Unspecified"},
+                ordering: 2
+              }
+            }
           }
         })
       end
