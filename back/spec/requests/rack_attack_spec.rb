@@ -115,12 +115,7 @@ describe 'Rack::Attack' do
       10.times do |i|
         post(
           '/web_api/v1/users',
-          params: '{ "user": { "email": "INSERT",
-                              "password": "test123456",
-                              "locale": "en",
-                              "first_name": "Jane",
-                              "last_name": "Doe" }
-                  }'.gsub('INSERT', "a#{i + 1}@b.com"),
+          params: '{ "user": { "email": "INSERT", "locale": "en" }}'.gsub('INSERT', "a#{i + 1}@b.com"),
           headers: headers
         )
       end
@@ -128,12 +123,7 @@ describe 'Rack::Attack' do
 
       post(
         '/web_api/v1/users',
-        params: '{ "user": { "email": "a11@b.com",
-                            "password": "test123456",
-                            "locale": "en",
-                            "first_name": "Jane",
-                            "last_name": "Doe" }
-                }',
+        params: '{ "user": { "email": "a11@b.com", "locale": "en" }}',
         headers: headers
       )
       expect(status).to eq(429) # Too many requests
@@ -141,12 +131,7 @@ describe 'Rack::Attack' do
 
     travel_to(20.seconds.from_now) do
       post '/web_api/v1/users',
-        params: '{ "user": { "email": "a12@b.com",
-                                "password": "test123456",
-                                "locale": "en",
-                                "first_name": "Jane",
-                                "last_name": "Doe" }
-                    }',
+        params: '{ "user": { "email": "a12@b.com", "locale": "en" }}',
         headers: headers
       expect(status).to eq(201) # Created
     end
