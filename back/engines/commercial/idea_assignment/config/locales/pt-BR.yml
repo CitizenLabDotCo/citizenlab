@@ -10,4 +10,4 @@ pt:
       event_description: 'Uma entrada foi atribuída a você. Dê seu feedback escrevendo uma atualização oficial ou alterando seu status.'
       title: '%{firstName}Se você não tiver uma entrada, uma entrada foi atribuída a você'
       subject: 'Você tem uma atribuição na plataforma de %{organizationName}'
-      preheader_idea: 'A ideia de %{authorName} foi atribuída a você'
+      preheader: 'A entrada de %{authorName} foi atribuída a você'
