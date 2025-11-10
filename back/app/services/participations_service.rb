@@ -8,7 +8,9 @@ class ParticipationsService
     # eg for permissions:
     # participations = phase_participations(permission.phase)
     # participations = participations.filter_by_action(participations, permission.action))
-    phase_participation_data(phase, participations)
+    # phase_participation_data(phase, participations) # All participations, including phase-level && action-levels
+
+    phase_level_participation_data(phase, participations) # Phase-level participations
   end
 
   private
@@ -21,6 +23,11 @@ class ParticipationsService
   # Fetch and cache participations in singleton for a phase
   def phase_participations(phase)
     @phase_participations[phase.id] ||= phase.pmethod.participations
+  end
+
+  # Just the phase-level participation data (not including action-level breakdowns, nor demographics)
+  def phase_level_participation_data(phase, participations)
+    format_participation_data(participations.values.flatten)
   end
 
   def phase_participation_data(phase, participations)
@@ -37,10 +44,11 @@ class ParticipationsService
     { **phase_level, actions: actions_level }
   end
 
-  def format_participation_data(participations, permissions)
+  # Participations at phase && action levels - Not used ATM
+  def format_participation_data(participations)
     participant_ids = participations.pluck(:user_id).uniq
     total_participant_count = participant_ids.count
-    participant_custom_field_values = participants_custom_field_values(participations, participant_ids)
+    # participant_custom_field_values = participants_custom_field_values(participations, participant_ids)
 
     participants_before_7_days_count = participations.select { |p| p[:acted_at] < 7.days.ago }.pluck(:user_id).uniq.count
     participants_change_last_7_days = total_participant_count - participants_before_7_days_count
@@ -53,7 +61,6 @@ class ParticipationsService
       participants: {
         count: total_participant_count,
         change_last_7_days: participants_change_last_7_days,
-        demographics: demographics(permissions, participant_custom_field_values)
       }
     }
   end
