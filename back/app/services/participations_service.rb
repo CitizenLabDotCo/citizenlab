@@ -26,7 +26,7 @@ class ParticipationsService
   end
 
   # Just the phase-level participation data (not including action-level breakdowns, nor demographics)
-  def phase_level_participation_data(phase, participations)
+  def phase_level_participation_data(participations)
     format_participation_data(participations.values.flatten)
   end
 
@@ -60,7 +60,7 @@ class ParticipationsService
       },
       participants: {
         count: total_participant_count,
-        change_last_7_days: participants_change_last_7_days,
+        change_last_7_days: participants_change_last_7_days
       }
     }
   end
