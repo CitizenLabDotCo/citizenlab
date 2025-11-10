@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Box, Success } from '@citizenlab/cl2-component-library';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 
-import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
+import resendEmailConfirmationCode from 'api/authentication/confirm_email/requestEmailConfirmationCode';
 import { IUserData } from 'api/users/types';
 import useUpdateUser from 'api/users/useUpdateUser';
 
