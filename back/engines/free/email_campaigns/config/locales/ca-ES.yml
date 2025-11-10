@@ -407,11 +407,13 @@ ca:
       title: '%{requesterName} t''ha convidat a revisar el projecte "%{projectTitle}"'
       event_description: "Actualment, el projecte està en mode esborrany i no és visible per als usuaris. Un cop l'hagis revisat i aprovat, el moderador podrà publicar-lo."
       cta_button: "Revisar el projecte"
+      preheader: '%{requesterName} t''ha convidat a revisar el projecte "%{projectTitle}"'
     project_review_state_change:
       subject: '"%{projectTitle}" s''ha aprovat'
       title: '%{reviewerName} va aprovar el projecte "%{projectTitle}"'
       event_description: "El projecte ja està llest per publicar-se. El podeu publicar quan vulgueu!"
       cta_button: "Anar a la configuració del projecte"
+      preheader: '%{reviewerName} ha aprovat el projecte "%{projectTitle}"'
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
       event_description: '%{organizationName} ha actualitzat l''estat de l''entrada ''%{input_title}'' a la seva plataforma de participació digital.'
