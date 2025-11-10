@@ -407,11 +407,13 @@ ach:
       title: 'crwdns5634095:0%{requesterName}crwdnd5634095:0%{projectTitle}crwdne5634095:0'
       event_description: "crwdns5634097:0crwdne5634097:0"
       cta_button: "crwdns5634099:0crwdne5634099:0"
+      preheader: 'crwdns5648115:0%{requesterName}crwdnd5648115:0%{projectTitle}crwdne5648115:0'
     project_review_state_change:
       subject: 'crwdns5634101:0%{projectTitle}crwdne5634101:0'
       title: 'crwdns5634103:0%{reviewerName}crwdnd5634103:0%{projectTitle}crwdne5634103:0'
       event_description: "crwdns5634105:0crwdne5634105:0"
       cta_button: "crwdns5634107:0crwdne5634107:0"
+      preheader: 'crwdns5648117:0%{reviewerName}crwdnd5648117:0%{projectTitle}crwdne5648117:0'
     status_change_on_idea_you_follow:
       status_change: 'crwdns5634109:0%{status}crwdne5634109:0'
       event_description: 'crwdns5634111:0%{organizationName}crwdnd5634111:0%{input_title}crwdne5634111:0'
