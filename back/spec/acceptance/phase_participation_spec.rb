@@ -30,27 +30,27 @@ resource 'Phase participation' do
     let!(:permission2) { create(:permission, action: 'commenting_idea', permission_scope: voting_phase) }
     let!(:permission3) { create(:permission, action: 'attending_event', permission_scope: voting_phase) }
 
-    let!(:custom_field_gender) { create(:custom_field, resource_type: 'User', key: 'gender', input_type: 'select', title_multiloc: {en: "Gender"}) }
-    let!(:custom_field_option_male) { create(:custom_field_option, custom_field: custom_field_gender, key: 'male', title_multiloc: {en: "Male"}) }
-    let!(:custom_field_option_female) { create(:custom_field_option, custom_field: custom_field_gender, key: 'female', title_multiloc: {en: "Female"}) }
-    let!(:custom_field_option_other) { create(:custom_field_option, custom_field: custom_field_gender, key: 'unspecified', title_multiloc: {en: "Unspecified"}) }
+    let!(:custom_field_gender) { create(:custom_field, resource_type: 'User', key: 'gender', input_type: 'select', title_multiloc: { en: 'Gender' }) }
+    let!(:custom_field_option_male) { create(:custom_field_option, custom_field: custom_field_gender, key: 'male', title_multiloc: { en: 'Male' }) }
+    let!(:custom_field_option_female) { create(:custom_field_option, custom_field: custom_field_gender, key: 'female', title_multiloc: { en: 'Female' }) }
+    let!(:custom_field_option_other) { create(:custom_field_option, custom_field: custom_field_gender, key: 'unspecified', title_multiloc: { en: 'Unspecified' }) }
 
     let!(:categorical_distribution) do
       create(
         :categorical_distribution,
         custom_field: custom_field_gender,
-        population_counts: [480, 510, 10]  # Male, Female, Unspecified counts
+        population_counts: [480, 510, 10] # Male, Female, Unspecified counts
       )
     end
 
-    let!(:custom_field_birthyear) { create(:custom_field, resource_type: 'User', key: 'birthyear', input_type: 'number', title_multiloc: {en: "Birthyear"}) }
+    let!(:custom_field_birthyear) { create(:custom_field, resource_type: 'User', key: 'birthyear', input_type: 'number', title_multiloc: { en: 'Birthyear' }) }
 
     let!(:binned_distribution) do
       create(
         :binned_distribution,
         custom_field: custom_field_birthyear,
-        bins: [18, 25, 35, 45, 55, 65, nil],  # Age ranges: <18, 18-25, 25-35, 35-45, 45-65, >65
-        counts: [50, 200, 400, 300, 50, 700]       # Population in each bin
+        bins: [18, 25, 35, 45, 55, 65, nil], # Age ranges: <18, 18-25, 25-35, 35-45, 45-65, >65
+        counts: [50, 200, 400, 300, 50, 700] # Population in each bin
       )
     end
 
