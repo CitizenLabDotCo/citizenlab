@@ -159,8 +159,43 @@ resource 'Confirmations' do
       end
     end
 
-    # context 'when user is authenticated' do
-      # TODO
-    # end
+    context 'when user is authenticated' do
+      let(:user) { create(:user, new_email: 'new_email@example.com') }
+
+      before do
+        header_token_for user
+        RequestConfirmationCodeJob.perform_now user, new_email: user.new_email
+      end
+
+      example 'updates the user email upon successful confirmation' do
+        do_request(confirmation: { code: user.email_confirmation_code })
+        assert_status 200
+        user.reload
+        expect(user.email).to eq 'new_email@example.com'
+        expect(user.new_email).to be_nil
+      end
+
+      example 'returns an code.blank error code when no code is passed' do
+        do_request(confirmation: { code: nil })
+
+        assert_status 422
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:code, 'blank')
+      end
+
+      example 'returns an code.invalid error code when the code is invalid' do
+        do_request(confirmation: { code: 'badcode' })
+
+        assert_status 422
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:code, 'invalid')
+      end
+
+      example 'does not work if user has no new_email set' do
+        user.update!(new_email: nil)
+        do_request(confirmation: { code: user.email_confirmation_code })
+        assert_status 422
+      end
+    end
   end
 end
