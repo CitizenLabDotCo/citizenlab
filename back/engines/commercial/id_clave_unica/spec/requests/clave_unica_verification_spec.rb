@@ -219,6 +219,8 @@ describe 'clave_unica verification' do
         get '/auth/clave_unica'
         follow_redirect!
 
+        binding.pry
+
         user = User.order(created_at: :asc).last
         expect_to_create_verified_and_identified_user(user)
         expect(user.email).to be_nil
