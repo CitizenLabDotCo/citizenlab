@@ -11,7 +11,6 @@ resource 'Confirmations' do
     SettingsService.new.activate_feature! 'user_confirmation'
   end
 
-  # Extract shared examples
   shared_examples 'confirmation code validation' do
     example 'returns an ok status passing the right code' do
       do_request(confirmation: { email: user.email, code: user.email_confirmation_code })
@@ -73,13 +72,6 @@ resource 'Confirmations' do
       do_request(confirmation: { email: user.email, code: code })
       assert_status 422
     end
-
-    example 'does not allow confirming a user with password' do
-      user_with_password = create(:user_with_confirmation, password: 'password123')
-      code = user_with_password.email_confirmation_code
-      do_request(confirmation: { email: user_with_password.email, code: code })
-      assert_status 422
-    end
   end
 
   post 'web_api/v1/user/confirm_code_unauthenticated' do
@@ -110,6 +102,13 @@ resource 'Confirmations' do
       end
 
       include_examples 'confirmation code validation'
+
+      example 'does not allow confirming a user with password' do
+        user_with_password = create(:user_with_confirmation, password: 'password123')
+        code = user_with_password.email_confirmation_code
+        do_request(confirmation: { email: user_with_password.email, code: code })
+        assert_status 422
+      end
     end
   end
 
@@ -136,6 +135,13 @@ resource 'Confirmations' do
       end
 
       include_examples 'confirmation code validation'
+
+      example 'does not allow confirming a user without password' do
+        user_without_password = create(:user_with_confirmation, password: nil)
+        code = user_without_password.email_confirmation_code
+        do_request(confirmation: { email: user_without_password.email, code: code })
+        assert_status 422
+      end
     end
   end
 end
