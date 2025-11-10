@@ -31,6 +31,8 @@ class WebApi::V1::RequestCodesController < ApplicationController
     head :ok
   end
 
+  # This endpoint is used when a logged in user wants to change their email
+  # (or set their email for the first time if they came from SSO without email)
   def request_code_email_change
     new_email = request_code_email_change_params[:new_email]
 
