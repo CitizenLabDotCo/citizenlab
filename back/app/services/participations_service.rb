@@ -44,7 +44,7 @@ class ParticipationsService
     demographics(phase_participations_permissions, participant_custom_field_values)
   end
 
-  def phase_participation_data(phase, participations)
+  def phase_participation_data(participations)
     # phase_participations_permissions = phase.permissions.where.not(action: 'attending_event') # Needed for demographics
 
     phase_level = format_participation_data(participations.values.flatten, phase_participations_permissions)
