@@ -32,7 +32,7 @@ resource 'Confirmations' do
     end
 
     context 'when email exists' do
-      let(:user) { create(:user_with_confirmation) }
+      let(:user) { create(:user_with_confirmation, password: nil) }
       let(:email) { user.email }
 
       before do
@@ -97,6 +97,13 @@ resource 'Confirmations' do
         code = user.email_confirmation_code
         do_request(confirmation: { email:, code: })
         assert_status 200
+        do_request(confirmation: { email:, code: })
+        assert_status 422
+      end
+
+      example 'does not allow confirming a user with password' do
+        user = create(:user_with_confirmation, password: 'password123')
+        code = user.email_confirmation_code
         do_request(confirmation: { email:, code: })
         assert_status 422
       end

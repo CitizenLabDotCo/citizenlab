@@ -9,6 +9,12 @@ class WebApi::V1::ConfirmationsController < ApplicationController
   # logging in passwordless users
   def confirm_code_unauthenticated
     user = User.find_by(email: confirm_code_unauthenticated_params[:email])
+
+    unless confirmation_codes_service.permit_request_code_unauthenticated(user)
+      render json: { errors: { base: ['Confirmation not permitted'] } }, status: :unprocessable_entity
+      return
+    end
+
     result = ConfirmUser.call(user:, code: confirm_code_unauthenticated_params[:code])
 
     if result.success?
@@ -29,7 +35,12 @@ class WebApi::V1::ConfirmationsController < ApplicationController
   # This should not be possible anymore, but there may still be some
   # legacy accounts like this. This way, they can confirm their email
   def confirm_code_authenticated
-    # TODO
+    unless confirmation_codes_service.permit_request_code_authenticated(current_user)
+      render json: { errors: { base: ['Confirmation not permitted'] } }, status: :unprocessable_entity
+      return
+    end
+
+    result = ConfirmUser.call(user: current_user, code: confirm_code_params[:code])
   end
 
   # This endpoint is used when a logged in user wants to change their email
@@ -46,6 +57,10 @@ class WebApi::V1::ConfirmationsController < ApplicationController
 
   def confirm_code_params
     params.require(:confirmation).permit(:code)
+  end
+
+  def confirmation_codes_service
+    @confirmation_codes_service ||= ConfirmationCodesService.new
   end
 
   # skip_before_action :authenticate_user
