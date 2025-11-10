@@ -32,9 +32,14 @@ class WebApi::V1::RequestCodesController < ApplicationController
   end
 
   def request_code_email_change
-    if confirmation_codes_service.permit_request_code_email_change(current_user)
-      RequestEmailChangeConfirmationCodeJob.perform_now(
-        current_user, new_email: params[:new_email]
+    new_email = request_code_email_change_params[:new_email]
+
+    if confirmation_codes_service.permit_request_code_email_change(
+      current_user,
+      new_email
+    )
+      RequestConfirmationCodeJob.perform_now(
+        current_user, new_email:
       )
     end
 
