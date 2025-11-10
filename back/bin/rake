@@ -8,8 +8,8 @@ if ENV['ENABLE_SPRING'] == 'true' || ENV['ENABLE_SPRING'] == '1'
   end
 end
 
-require_relative '../config/boot'
-require 'rake'
+require_relative "../config/boot"
+require "rake"
 
 if (profile_path = ENV['PROFILER_OUTPUT_PATH'])
   require 'json'

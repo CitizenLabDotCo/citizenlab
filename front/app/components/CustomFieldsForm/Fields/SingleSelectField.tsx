@@ -31,9 +31,11 @@ const StyledBox = styled(Box)<{ selected: boolean }>`
 const SingleSelectField = ({
   question,
   scrollErrorIntoView,
+  disabled,
 }: {
   question: IFlatCustomField;
   scrollErrorIntoView?: boolean;
+  disabled?: boolean;
 }) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
@@ -42,9 +44,8 @@ const SingleSelectField = ({
   const { data: areas } = useAreas({});
 
   const value = watch(question.key);
-
   const options = useMemo(() => {
-    if (question.key === 'u_domicile') {
+    if (question.key === 'u_domicile' || question.key === 'domicile') {
       return [
         ...(areas?.data || []).map((area) => ({
           value: area.id,
@@ -56,13 +57,22 @@ const SingleSelectField = ({
     return extractOptions(question, localize, question.random_option_ordering);
   }, [question, localize, areas, formatMessage]);
 
+  const selectOptions = useMemo(() => {
+    // Add empty option at the beginning if field is not required (only for dropdown)
+    if (!question.required) {
+      return [{ value: '', label: '' }, ...options];
+    }
+    return options;
+  }, [question.required, options]);
+
   return (
     <>
       {question.dropdown_layout ? (
         <Select
           name={question.key}
-          options={options}
+          options={selectOptions}
           scrollErrorIntoView={scrollErrorIntoView}
+          disabled={disabled}
         />
       ) : (
         <RadioGroup name={question.key} padding="0px">
@@ -91,6 +101,7 @@ const SingleSelectField = ({
                 label={option.label}
                 buttonColor={theme.colors.tenantPrimary}
                 canDeselect
+                disabled={disabled}
               />
             </StyledBox>
           ))}

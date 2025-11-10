@@ -16,16 +16,18 @@ import Settings from './Settings';
 
 interface Props {
   titleMultiloc: Multiloc;
+  folderId?: string;
 }
 
-const Published = ({ titleMultiloc }: Props) => {
+const Published = ({ titleMultiloc, folderId }: Props) => {
   const localizeWithFallback = useLocalizeWithFallback();
 
   const { data, hasNextPage, fetchNextPage, isInitialLoading } =
     useAdminPublications({
       pageSize: 6,
       publicationStatusFilter: ['published'],
-      rootLevelOnly: true,
+      childrenOfId: folderId,
+      rootLevelOnly: !folderId,
       removeNotAllowedParents: true,
       include_publications: true,
       remove_all_unlisted: true,
@@ -58,6 +60,9 @@ const Published = ({ titleMultiloc }: Props) => {
 Published.craft = {
   related: {
     settings: Settings,
+  },
+  custom: {
+    title: messages.publishedTitle,
   },
 };
 

@@ -4,7 +4,7 @@ namespace :db do
   desc 'Run db:migrate only if there are pending migrations.'
   task migrate_if_pending: :environment do
     Rails.logger.info 'db:migrate_if_pending started'
-    migration_versions = ActiveRecord::Base.connection.migration_context.migrations.to_set(&:version)
+    migration_versions = ActiveRecord::Base.connection_pool.migration_context.migrations.to_set(&:version)
 
     schemas = Tenant.all.map(&:schema_name) + ['public']
 

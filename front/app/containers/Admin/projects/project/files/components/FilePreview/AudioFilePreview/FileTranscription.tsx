@@ -12,11 +12,13 @@ import {
 import useFileTranscript from 'api/file_transcript/useFileTranscript';
 import { IFileData } from 'api/files/types';
 
+import Centerer from 'components/UI/Centerer';
+
 import { useIntl } from 'utils/cl-intl';
 
-import { AudioRef } from './index';
 import messages from '../../messages';
-import Centerer from 'components/UI/Centerer';
+
+import { AudioRef } from './index';
 
 const timecodeFormat = (ms: number) => {
   const minutes = Math.floor(ms / 60000);
