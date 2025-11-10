@@ -11,10 +11,10 @@ resource 'Confirmations' do
     SettingsService.new.activate_feature! 'user_confirmation'
   end
 
-  post 'web_api/v1/user/confirm' do
+  post 'web_api/v1/user/confirm_code_unauthenticated' do
     with_options scope: :confirmation do
       parameter :email, 'The email address of the user to confirm.'
-      parameter :code, 'The 4-digit confirmation code received by SMS or email.'
+      parameter :code, 'The 4-digit confirmation code received by email.'
     end
 
     context 'when email does not exist' do
@@ -93,12 +93,12 @@ resource 'Confirmations' do
         )
       end
 
-      example 'does not allow confirming a user already confirmed' do
+      example 'allows confirming a user already confirmed' do
         code = user.email_confirmation_code
         do_request(confirmation: { email:, code: })
         assert_status 200
         do_request(confirmation: { email:, code: })
-        assert_status 422
+        assert_status 200
       end
     end
   end

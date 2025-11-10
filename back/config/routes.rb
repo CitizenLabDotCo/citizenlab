@@ -132,10 +132,13 @@ Rails.application.routes.draw do
       get 'users/:id', to: 'users#show', constraints: { id: /\b(?!custom_fields|me)\b\S+/ }
 
       scope path: 'user' do
-        resource :confirmation, path: :confirm, only: %i[create]
         post 'request_code_unauthenticated', to: 'request_codes#request_code_unauthenticated'
         post 'request_code_authenticated', to: 'request_codes#request_code_authenticated'
         post 'request_code_email_change', to: 'request_codes#request_code_email_change'
+
+        post 'confirm_code_unauthenticated', to: 'confirmations#confirm_code_unauthenticated'
+        post 'confirm_code_authenticated', to: 'confirmations#confirm_code_authenticated'
+        post 'confirm_code_email_change', to: 'confirmations#confirm_code_email_change'
       end
 
       resources :topics do
