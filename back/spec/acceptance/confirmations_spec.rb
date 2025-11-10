@@ -144,4 +144,23 @@ resource 'Confirmations' do
       end
     end
   end
+
+  post 'web_api/v1/user/confirm_code_email_change' do
+    with_options scope: :confirmation do
+      parameter :code, 'The 4-digit confirmation code received by email.'
+    end
+
+    context 'when user is not authenticated' do
+      let(:user) { create(:user, new_email: 'new_email@example.com') }
+
+      example 'returns an unauthorized status when the user is not authenticated' do
+        do_request(confirmation: { code: '1234' })
+        expect(status).to eq 401
+      end
+    end
+
+    # context 'when user is authenticated' do
+      # TODO
+    # end
+  end
 end
