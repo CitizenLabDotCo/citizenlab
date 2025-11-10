@@ -227,8 +227,7 @@ describe 'clave_unica verification' do
 
         post "/web_api/v1/user/request_code_email_change", params: { request_code: { new_email: 'newcoolemail@example.org' } }, headers: headers
         expect(response).to have_http_status(:ok)
-        user.reload
-        expect(user).to have_attributes({ new_email: 'newcoolemail@example.org' })
+        expect(user.reload).to have_attributes({ new_email: 'newcoolemail@example.org' })
         expect(user.confirmation_required?).to be(true)
         expect(user.active?).to be(false)
         expect(ActionMailer::Base.deliveries.count).to eq(1)
