@@ -103,18 +103,18 @@ resource 'Phase participation' do
               male: 480,
               unspecified: 10
             },
-            title_multiloc: {en: "Gender"},
+            title_multiloc: { en: 'Gender' },
             options: {
               male: {
-                title_multiloc: {en: "Male"},
+                title_multiloc: { en: 'Male' },
                 ordering: 0
               },
               female: {
-                title_multiloc: {en: "Female"},
+                title_multiloc: { en: 'Female' },
                 ordering: 1
               },
               unspecified: {
-                title_multiloc: {en: "Unspecified"},
+                title_multiloc: { en: 'Unspecified' },
                 ordering: 2
               }
             }
