@@ -93,12 +93,12 @@ resource 'Confirmations' do
         )
       end
 
-      example 'allows confirming a user already confirmed' do
+      example 'does not allow confirming a user already confirmed' do
         code = user.email_confirmation_code
         do_request(confirmation: { email:, code: })
         assert_status 200
         do_request(confirmation: { email:, code: })
-        assert_status 200
+        assert_status 422
       end
     end
   end
