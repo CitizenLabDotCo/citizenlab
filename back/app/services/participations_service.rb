@@ -98,11 +98,9 @@ class ParticipationsService
 
     unique_fields.each_with_object({}) do |field, demographics_hash|
       custom_field = field.custom_field
-      reference_population = {}
 
       if custom_field.key == 'birthyear'
         age_stats = UserCustomFields::AgeStats.calculate(participant_custom_field_values)
-        reference_population = age_stats.population_counts
 
         # TODO: Copied from StatsUsersController#users_by_age. Consider moving to a shared location (a service?).
         demographics_hash['users_by_age'] = {
@@ -116,12 +114,11 @@ class ParticipationsService
         }
       else
         counts = UserCustomFields::FieldValueCounter.counts_by_field_option(participant_custom_field_values, custom_field)
-        reference_population = calculate_reference_population(custom_field) || {}
 
         # TODO: Copied from StatsUsersController#users_by_custom_field. Consider moving to a shared location (a service?).
         demographics_hash[custom_field.key] = {
           counts: counts,
-          reference_population: reference_population,
+          reference_population: calculate_reference_population(custom_field) || {},
           title_multiloc: custom_field.title_multiloc
         }
       end
