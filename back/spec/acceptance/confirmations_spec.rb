@@ -106,7 +106,7 @@ resource 'Confirmations' do
       example 'does not allow confirming a user with password' do
         user_with_password = create(:user_with_confirmation, password: 'password123')
         code = user_with_password.email_confirmation_code
-        do_request(confirmation: { email: user_with_password.email, code: code })
+        do_request(confirmation: { email: user_with_password.email, code: })
         assert_status 422
       end
     end

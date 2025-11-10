@@ -31,7 +31,7 @@ export const confirmEmailConfirmationCodeUnauthenticated = async (
       path: `/user/confirm_code_unauthenticated`,
       action: 'post',
       body: {
-        request_code: { email, code },
+        confirmation: { email, code },
       },
     });
 
@@ -52,7 +52,7 @@ export const confirmEmailConfirmationCodeAuthenticated = async (
       path: `/user/confirm_code_authenticated`,
       action: 'post',
       body: {
-        request_code: { code },
+        confirmation: { code },
       },
     });
 
@@ -71,7 +71,7 @@ export const confirmEmailConfirmationCodeChangeEmail = async (code: string) => {
       path: `/user/confirm_code_change_email`,
       action: 'post',
       body: {
-        request_code: { code },
+        confirmation: { code },
       },
     });
     return true;
