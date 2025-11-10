@@ -115,7 +115,7 @@ resource 'Phase participation' do
                 female: 510,
                 male: 480,
                 unspecified: 10
-              },
+              }
             },
             title_multiloc: { en: 'Gender' },
             options: {
