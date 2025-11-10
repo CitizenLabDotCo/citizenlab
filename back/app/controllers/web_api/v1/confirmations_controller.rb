@@ -5,7 +5,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
   skip_after_action :verify_authorized
 
   # This endpoint allows unauthenticated users to confirm a code
-  # This is used in the email account creation flow and when 
+  # This is used in the email account creation flow and when
   # logging in passwordless users
   def confirm_code_unauthenticated
     user = User.find_by(email: confirm_code_unauthenticated_params[:email])

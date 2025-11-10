@@ -128,7 +128,7 @@ resource 'Confirmations' do
 
     context 'when user is authenticated' do
       let(:user) { create(:user_with_confirmation, password: 'password123') }
-      
+
       before do
         header_token_for user
         RequestConfirmationCodeJob.perform_now user

@@ -4,28 +4,33 @@ class ConfirmationCodesService
   MAX_RETRIES = ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5).to_i
 
   def permit_request_code_unauthenticated(user)
-    puts "=" * 20
-    puts "fajewpiofjareg1"
-    puts "=" * 20
+    Rails.logger.debug '=' * 20
+    Rails.logger.debug 'fajewpiofjareg1'
+    Rails.logger.debug '=' * 20
     return false unless correct_feature_flags_enabled?
-    puts "=" * 20
-    puts "fajewpiofjareg2"
-    puts "=" * 20
+
+    Rails.logger.debug '=' * 20
+    Rails.logger.debug 'fajewpiofjareg2'
+    Rails.logger.debug '=' * 20
     return false if user.nil?
-    puts "=" * 20
-    puts "fajewpiofjareg3"
-    puts "=" * 20
+
+    Rails.logger.debug '=' * 20
+    Rails.logger.debug 'fajewpiofjareg3'
+    Rails.logger.debug '=' * 20
     return false if user.email.blank?
-    puts "=" * 20
-    puts "fajewpiofjareg4"
-    puts "=" * 20
+
+    Rails.logger.debug '=' * 20
+    Rails.logger.debug 'fajewpiofjareg4'
+    Rails.logger.debug '=' * 20
     return false if user.password_digest?
-    puts "=" * 20
-    puts "fajewpiofjareg5"
-    puts "=" * 20
+
+    Rails.logger.debug '=' * 20
+    Rails.logger.debug 'fajewpiofjareg5'
+    Rails.logger.debug '=' * 20
     return false if user.email_confirmation_code_reset_count >= MAX_RETRIES - 1
-    puts "=" * 20
-    puts "=" * 20
+
+    Rails.logger.debug '=' * 20
+    Rails.logger.debug '=' * 20
 
     true
   end
@@ -58,6 +63,6 @@ class ConfirmationCodesService
 
   def correct_feature_flags_enabled?
     app_configuration.feature_activated?('password_login') &&
-    app_configuration.feature_activated?('user_confirmation')
+      app_configuration.feature_activated?('user_confirmation')
   end
 end

@@ -8,11 +8,11 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
   def user_token_unconfirmed
     user = User.find_by(email: user_token_unconfirmed_params[:email])
 
-    raise ActiveRecord::RecordNotFound unless user.present?
+    raise ActiveRecord::RecordNotFound if user.blank?
 
     if user.password_digest.present?
       render(
-        json: { errors: { base: [{ error: 'cannot_have_password' }] } }, 
+        json: { errors: { base: [{ error: 'cannot_have_password' }] } },
         status: :unprocessable_entity
       )
     else

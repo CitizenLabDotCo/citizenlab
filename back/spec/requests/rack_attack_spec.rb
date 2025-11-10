@@ -310,7 +310,7 @@ describe 'Rack::Attack' do
       post('/web_api/v1/user/request_code_unauthenticated', params: '{ "request_code": { "email": "coolemail@example.org" } }', headers: headers)
       expect(status).to eq(200) # ok
     end
-end
+  end
 
   it 'limits confirmation requests from same IP to 5 in 20 seconds' do
     headers = { 'CONTENT_TYPE' => 'application/json' }

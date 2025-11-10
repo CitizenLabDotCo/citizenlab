@@ -5,7 +5,7 @@ class WebApi::V1::RequestCodesController < ApplicationController
   skip_after_action :verify_authorized
 
   # This endpoint allows unauthenticated users to request a confirmation code
-  # This is used in the email account creation flow and when 
+  # This is used in the email account creation flow and when
   # logging in passwordless users
   def request_code_unauthenticated
     email = request_code_unauthenticated_params[:email]
