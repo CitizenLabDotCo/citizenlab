@@ -12,6 +12,7 @@ class WebApi::V1::RequestCodesController < ApplicationController
     user = User.find_by(email: email)
 
     if confirmation_codes_service.permit_request_code_unauthenticated(user)
+      user.update!(new_email: nil) # Clear any pending email change to avoid confusion
       RequestConfirmationCodeJob.perform_now user
     end
 
@@ -25,6 +26,7 @@ class WebApi::V1::RequestCodesController < ApplicationController
   # legacy accounts like this. This way, they can still request a confirmation code.
   def request_code_authenticated
     if confirmation_codes_service.permit_request_code_authenticated(current_user)
+      current_user.update!(new_email: nil) # Clear any pending email change to avoid confusion
       RequestConfirmationCodeJob.perform_now current_user
     end
 

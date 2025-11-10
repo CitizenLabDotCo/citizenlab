@@ -35,6 +35,13 @@ resource 'Request codes' do
       do_request(request_code: { email: user.email })
       expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
     end
+
+    example 'Clears the new_email if present' do
+      user = create(:user_no_password, new_email: 'new@email.com')
+      expect(user.new_email).to eq 'new@email.com'
+      do_request(request_code: { email: user.email })
+      expect(user.reload.new_email).to be_nil
+    end
   end
 
   post 'web_api/v1/user/request_code_authenticated' do
