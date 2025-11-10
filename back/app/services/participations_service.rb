@@ -8,9 +8,10 @@ class ParticipationsService
     # eg for permissions:
     # participations = phase_participations(permission.phase)
     # participations = participations.filter_by_action(participations, permission.action))
+
     # phase_participation_data(phase, participations) # All participations, including phase-level && action-levels
 
-    phase_level_participation_data(phase, participations) # Phase-level participations
+    phase_level_participation_data(participations) # Phase-level participations
   end
 
   private
