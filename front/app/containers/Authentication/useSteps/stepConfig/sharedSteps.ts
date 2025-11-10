@@ -63,7 +63,8 @@ export const sharedSteps = (
         const missingDataStep = checkMissingData(
           requirements,
           authenticationData,
-          flow
+          flow,
+          true
         );
 
         if (missingDataStep) {
@@ -116,7 +117,8 @@ export const sharedSteps = (
           const missingDataStep = checkMissingData(
             requirements,
             authenticationData,
-            flow
+            flow,
+            true
           );
 
           if (missingDataStep) {

@@ -39,7 +39,8 @@ export const missingDataFlow = (
         const missingDataStep = checkMissingData(
           requirements,
           authenticationData,
-          state.flow
+          state.flow,
+          true
         );
 
         if (missingDataStep) {
@@ -74,7 +75,8 @@ export const missingDataFlow = (
         const missingDataStep = checkMissingData(
           requirements,
           authenticationData,
-          state.flow
+          state.flow,
+          true
         );
 
         if (missingDataStep) {
@@ -100,7 +102,8 @@ export const missingDataFlow = (
         const missingDataStep = checkMissingData(
           requirements,
           authenticationData,
-          state.flow
+          state.flow,
+          true
         );
 
         if (missingDataStep) {

@@ -122,7 +122,8 @@ export const emailFlow = (
             const missingDataStep = checkMissingData(
               requirements,
               authenticationData,
-              state.flow
+              state.flow,
+              false
             );
 
             if (missingDataStep) {
@@ -159,7 +160,8 @@ export const emailFlow = (
         const missingDataStep = checkMissingData(
           requirements,
           authenticationData,
-          state.flow
+          state.flow,
+          true
         );
 
         if (missingDataStep) {
@@ -196,7 +198,8 @@ export const emailFlow = (
         const missingDataStep = checkMissingData(
           requirements,
           authenticationData,
-          state.flow
+          state.flow,
+          true
         );
 
         if (missingDataStep) {
