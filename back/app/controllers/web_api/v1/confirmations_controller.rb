@@ -8,8 +8,8 @@ class WebApi::V1::ConfirmationsController < ApplicationController
   # This is used in the email account creation flow and when 
   # logging in passwordless users
   def confirm_code_unauthenticated
-    user = User.find_by(email: confirmation_params[:email])
-    result = ConfirmUser.call(user:, code: confirmation_params[:code])
+    user = User.find_by(email: confirm_code_unauthenticated_params[:email])
+    result = ConfirmUser.call(user:, code: confirm_code_unauthenticated_params[:code])
 
     if result.success?
       SideFxUserService.new.after_update(user, user)
