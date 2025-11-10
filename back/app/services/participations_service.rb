@@ -79,6 +79,7 @@ class ParticipationsService
       counts = UserCustomFields::FieldValueCounter.counts_by_field_option(participant_custom_field_values, custom_field)
       reference_population = calculate_reference_population(custom_field) || {}
 
+      # TODO: Copied from StatsUsersController#users_by_custom_field. Consider moving to a shared location (a service?).
       demographics_hash[custom_field.key] = {
         counts: counts,
         reference_population: reference_population,
@@ -93,6 +94,7 @@ class ParticipationsService
     end
   end
 
+  # TODO: Copied from StatsUsersController. Consider moving to a shared location (a service?).
   def calculate_reference_population(custom_field)
     return if custom_field.key == 'birthyear'
     return if (ref_distribution = custom_field.current_ref_distribution).blank?
