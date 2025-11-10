@@ -407,11 +407,13 @@ lv:
       title: '%{requesterName} ir aicinājusi jūs pārskatīt projektu "%{projectTitle}"'
       event_description: "Pašlaik projekts ir darba režīmā un nav redzams lietotājiem. Kad to būsiet pārskatījis un apstiprinājis, moderators varēs to publicēt."
       cta_button: "Projekta pārskatīšana"
+      preheader: '%{requesterName} ir aicinājusi jūs pārskatīt projektu "%{projectTitle}"'
     project_review_state_change:
       subject: '"%{projectTitle}" ir apstiprināts'
       title: '%{reviewerName} apstiprināja projektu "%{projectTitle}"'
       event_description: "Tagad projekts ir gatavs palaišanai. Jūs varat to publicēt, kad vien būsiet gatavs!"
       cta_button: "Dodieties uz projekta iestatījumiem"
+      preheader: '%{reviewerName} apstiprināja projektu "%{projectTitle}"'
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
       event_description: '%{organizationName} savā digitālās līdzdalības platformā atjaunināja ievades statusu "%{input_title}".'
