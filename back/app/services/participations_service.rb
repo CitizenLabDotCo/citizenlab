@@ -117,8 +117,10 @@ class ParticipationsService
 
         # TODO: Copied from StatsUsersController#users_by_custom_field. Consider moving to a shared location (a service?).
         demographics_hash[custom_field.key] = {
-          counts: counts,
-          reference_population: calculate_reference_population(custom_field) || {},
+          series: {
+              users: counts,
+              reference_population: calculate_reference_population(custom_field) || {},
+          },
           title_multiloc: custom_field.title_multiloc
         }
       end

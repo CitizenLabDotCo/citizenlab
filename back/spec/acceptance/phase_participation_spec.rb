@@ -107,13 +107,15 @@ resource 'Phase participation' do
         pp demographics
         expect(demographics).to match({
           gender: {
-            counts: {
-              male: 1, female: 1, unspecified: 0, _blank: 3
-            },
-            reference_population: {
-              female: 510,
-              male: 480,
-              unspecified: 10
+            series: {
+              users: {
+                male: 1, female: 1, unspecified: 0, _blank: 3
+              },
+              reference_population: {
+                female: 510,
+                male: 480,
+                unspecified: 10
+              },
             },
             title_multiloc: { en: 'Gender' },
             options: {
