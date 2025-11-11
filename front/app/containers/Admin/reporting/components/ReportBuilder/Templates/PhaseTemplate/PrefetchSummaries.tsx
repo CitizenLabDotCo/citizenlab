@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 
+import { useLocation } from 'react-router-dom';
+
 import useAnalyses from 'api/analyses/useAnalyses';
 import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
 import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
@@ -19,6 +21,7 @@ const PrefetchSummaries = ({
   setSummaries: React.Dispatch<React.SetStateAction<any[]>>;
   setSummariesLoaded: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const { pathname } = useLocation();
   const { data: phase } = usePhase(phaseId);
   const { data: surveyQuestions } = useRawCustomFields({
     phaseId:
@@ -26,6 +29,12 @@ const PrefetchSummaries = ({
         ? phaseId
         : undefined,
   });
+
+  useEffect(() => {
+    if (!pathname.includes('/report-builder/')) {
+      setSummariesLoaded(true);
+    }
+  }, [pathname, setSummariesLoaded]);
 
   const questionIds =
     surveyQuestions?.data
