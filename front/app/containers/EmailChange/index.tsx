@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -21,7 +21,6 @@ import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
 
 import CancelUpdate from './CancelUpdate';
 import messages from './messages';
@@ -58,16 +57,7 @@ const EmailChange = () => {
 
   const emailValue = methods.watch('email');
 
-  // Once auth user is fetched, set the email field to the user's email
-  useEffect(() => {
-    if (!isNilOrError(authUser) && authUser.data.attributes.email) {
-      if (!emailValue) {
-        methods.setValue('email', authUser.data.attributes.email);
-      }
-    }
-  }, [authUser, methods, emailValue]);
-
-  const onEmailConfirmation = async (code: string) => {
+  const onEmailConfirmation = async (_email: string, code: string) => {
     setLoading(true);
 
     try {
