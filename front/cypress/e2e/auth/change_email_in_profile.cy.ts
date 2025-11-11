@@ -24,5 +24,11 @@ describe('Change email in profile', () => {
     // Enter new email
     const newEmail = randomEmail();
     cy.get('input[name="email"]').clear().type(newEmail);
+    cy.dataCy('change-email-submit-button').click();
+
+    // Simulate email confirmation step
+    cy.get('.e2e-email-confirmation-modal').should('exist');
+    cy.get('input[name="confirmation_code"]').type('123456'); // Assuming '123456' is the code sent to the new email
+    cy.get('.e2e-confirmation-submit-button').click();
   });
 });
