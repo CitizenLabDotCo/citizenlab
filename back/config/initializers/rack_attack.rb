@@ -153,6 +153,24 @@ class Rack::Attack
     end
   end
 
+  # User check endpoint
+  throttle('user_check/ip', limit: 5, period: 2.minutes) do |req|
+    if req.path.start_with?('/web_api/v1/users/check') && req.get?
+      req.remote_ip
+    end
+  end
+
+  throttle('user_check/email', limit: 5, period: 5.minutes) do |req|
+    if req.path.start_with?('/web_api/v1/users/check') && req.get?
+      begin
+        # Extract email from the path: /web_api/v1/users/check/user@test.com
+        req.path.split('/').last&.to_s&.downcase&.gsub(/\s+/, '')&.presence
+      rescue
+        # do nothing
+      end
+    end
+  end
+
   # Machine translations by IP.
   throttle('translate/id', limit: 10, period: 20.seconds) do |req|
     if %r{/web_api/v1/.+/machine_translation}.match?(req.path)
