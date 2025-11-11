@@ -22,14 +22,15 @@ interface MetricDisplay {
 
 const ParticipationMetrics = ({ phase }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: metricsData } = useParticipationMetrics({
+  const { data: response } = useParticipationMetrics({
     phaseId: phase.id,
     participationMethod: phase.attributes.participation_method,
   });
 
   // Transform API data into display format
   const metrics: MetricDisplay[] = useMemo(() => {
-    if (!metricsData) return [];
+    if (!response?.data.attributes) return [];
+    const metricsData = response.data.attributes;
     const result: MetricDisplay[] = [];
 
     // Always show visitors and participants
@@ -160,7 +161,7 @@ const ParticipationMetrics = ({ phase }: Props) => {
     });
 
     return result;
-  }, [metricsData, formatMessage]);
+  }, [response, formatMessage]);
 
   return (
     <Box
