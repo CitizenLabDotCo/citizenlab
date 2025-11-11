@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { Element } from '@craftjs/core';
@@ -25,18 +25,24 @@ import TextMultiloc from '../../Widgets/TextMultiloc';
 import { TemplateContext } from '../context';
 
 import messages from './messages';
-import PrefetchSummaries from './PrefetchSummaries';
-interface Props {
+import usePrefetchSummaries from './usePrefetchSummaries';
+
+interface PhaseTemplateContentProps {
   phaseId: string;
   selectedLocale: string;
-  summaries: { [key: string]: any };
+  summaries: Record<string, string>;
+}
+
+interface PhaseTemplateProps {
+  phaseId: string;
+  selectedLocale: string;
 }
 
 const PhaseTemplateContent = ({
   phaseId,
   selectedLocale,
   summaries,
-}: Props) => {
+}: PhaseTemplateContentProps) => {
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
   const { data: phase } = usePhase(phaseId);
@@ -117,18 +123,12 @@ const PhaseTemplateContent = ({
   );
 };
 
-const PhaseTemplate = ({ phaseId, selectedLocale }: Props) => {
-  const [summaries, setSummaries] = useState<{ [key: string]: any }>({});
-  const [summariesReady, setSummariesReady] = useState(false);
+const PhaseTemplate = ({ phaseId, selectedLocale }: PhaseTemplateProps) => {
+  const { summaries, summariesReady } = usePrefetchSummaries({ phaseId });
   const enabled = useContext(TemplateContext);
+
   if (!summariesReady) {
-    return (
-      <PrefetchSummaries
-        phaseId={phaseId}
-        setSummaries={setSummaries}
-        setSummariesReady={setSummariesReady}
-      />
-    );
+    return null;
   }
 
   if (enabled) {
