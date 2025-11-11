@@ -38,7 +38,7 @@ export const requestEmailConfirmationCodeChangeEmail = async (
 ) => {
   try {
     await fetcher({
-      path: `/user/request_code_change_email`,
+      path: `/user/request_code_email_change`,
       action: 'post',
       body: {
         request_code: { new_email },
