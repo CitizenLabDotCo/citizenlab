@@ -125,11 +125,10 @@ const AuthModal = () => {
           </Box>
         )}
         {helperText && (
-          <Box mb="16px">
+          <Box mb="20px">
             <QuillEditedContent
               textColor={theme.colors.tenantText}
               fontSize="base"
-              fontWeight={300}
             >
               <T value={helperText} supportHtml />
             </QuillEditedContent>

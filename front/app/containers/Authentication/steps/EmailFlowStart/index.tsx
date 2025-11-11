@@ -27,8 +27,6 @@ import sharedMessages from '../messages';
 
 import SSOButtons from './SSOButtons';
 
-// errors
-
 interface Props {
   loading: boolean;
   setError: SetError;
