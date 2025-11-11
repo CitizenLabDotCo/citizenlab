@@ -7,7 +7,6 @@ import useAnalyses from 'api/analyses/useAnalyses';
 import useAnalysisSummaries from 'api/analysis_summaries/useAnalysisSummaries';
 import { IFlatCustomField } from 'api/custom_fields/types';
 import useCustomFields from 'api/custom_fields/useCustomFields';
-import usePhase from 'api/phases/usePhase';
 
 import { removeRefs } from 'containers/Admin/projects/project/analysis/Insights/util';
 
@@ -27,17 +26,15 @@ const usePrefetchSummaries = ({
   const { pathname } = useLocation();
   const isOnReportBuilderPage = pathname.includes('/report-builder/');
 
-  const { data: phase } = usePhase(phaseId);
-  const isNativeSurvey =
-    phase?.data.attributes.participation_method === 'native_survey';
-
   const { data: customFieldsData } = useCustomFields({
-    phaseId: isNativeSurvey ? phaseId : undefined,
+    phaseId,
   });
 
   const questionIds = filterSurveyQuestions(customFieldsData);
 
-  const { data: analyses } = useAnalyses({ phaseId });
+  const { data: analyses, isLoading: analysesLoading } = useAnalyses({
+    phaseId,
+  });
 
   const relevantAnalyses = filterRelevantAnalyses(analyses?.data, questionIds);
 
@@ -53,6 +50,7 @@ const usePrefetchSummaries = ({
   const allSummariesLoaded = summariesResults.every(
     (result) => !result.isLoading
   );
+
   const hasNoSummaries = relevantAnalyses.length === 0;
 
   const summaries = useMemo(
@@ -64,7 +62,8 @@ const usePrefetchSummaries = ({
     return { summaries: {}, summariesReady: true };
   }
 
-  const summariesReady = allSummariesLoaded || hasNoSummaries;
+  const summariesReady =
+    !analysesLoading && (allSummariesLoaded || hasNoSummaries);
 
   return { summaries, summariesReady };
 };
