@@ -30,13 +30,14 @@ const usePrefetchSummaries = ({
     phaseId,
   });
 
-  const questionIds = filterSurveyQuestions(customFieldsData);
-
   const { data: analyses, isLoading: analysesLoading } = useAnalyses({
     phaseId,
   });
 
-  const relevantAnalyses = filterRelevantAnalyses(analyses?.data, questionIds);
+  const relevantAnalyses = filterRelevantAnalyses(
+    analyses?.data,
+    filterSurveyQuestions(customFieldsData)
+  );
 
   const summaryIds = extractSummaryIds(relevantAnalyses);
 
@@ -70,6 +71,7 @@ const usePrefetchSummaries = ({
 
 export default usePrefetchSummaries;
 
+// Helper functions
 const formatSummaryText = (summaryText: string): string => {
   const textWithoutRefs = removeRefs(summaryText || '');
   const textWithParagraphs = textWithoutRefs.replace(
