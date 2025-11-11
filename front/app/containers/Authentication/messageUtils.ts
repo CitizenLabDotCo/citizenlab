@@ -79,7 +79,8 @@ type HelperTextKey =
   | 'login_helper_text';
 
 export const HELPER_TEXT_KEYS: Partial<Record<Step, HelperTextKey>> = {
-  'email:start': 'signup_helper_text',
+  'email:policies': 'signup_helper_text',
   'invite:email-password': 'signup_helper_text',
+  'email:password': 'login_helper_text',
   'missing-data:custom-fields': 'custom_fields_signup_helper_text',
 };
