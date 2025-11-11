@@ -229,7 +229,7 @@ function emailConfirmation(email: string) {
       'Content-Type': 'application/json',
     },
     method: 'POST',
-    url: 'web_api/v1/user/confirm',
+    url: 'web_api/v1/user/confirm_code_unauthenticated',
     body: {
       confirmation: { email, code: '1234' },
     },
