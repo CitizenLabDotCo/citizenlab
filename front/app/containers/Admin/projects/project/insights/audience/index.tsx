@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
 import { Box, Title, IconButton, Text, Toggle } from 'component-library';
 import { useParams } from 'react-router-dom';
 
+import { transformDemographicsResponse } from 'api/phase_insights/transformDemographics';
 import useDemographics from 'api/phase_insights/useDemographics';
 import usePhase from 'api/phases/usePhase';
+
+import useLocale from 'hooks/useLocale';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -19,13 +22,24 @@ const AdminPhaseAudience = () => {
     phaseId: string;
   };
   const { data: phase } = usePhase(phaseId);
+  const currentLocale = useLocale();
   const [showRepresentativeness, setShowRepresentativeness] = useState(true);
 
-  const { data: demographicsData } = useDemographics({
+  // Fetch demographics data in backend format (series/options)
+  const { data: response } = useDemographics({
     phaseId: phase?.data.id || '',
     userDataCollection:
       phase?.data.attributes.user_data_collection || 'anonymous',
   });
+
+  // Transform backend data to frontend format
+  const demographicsData = useMemo(() => {
+    if (!response?.data.attributes) return null;
+    return transformDemographicsResponse(
+      response.data.attributes,
+      currentLocale
+    );
+  }, [response, currentLocale]);
 
   const allFields = demographicsData?.fields || [];
 
