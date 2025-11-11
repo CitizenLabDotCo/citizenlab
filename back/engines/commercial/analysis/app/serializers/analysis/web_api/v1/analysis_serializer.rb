@@ -19,7 +19,6 @@ class Analysis::WebApi::V1::AnalysisSerializer < WebApi::V1::BaseSerializer
     IdeaCustomFieldsService.new(analysis.participation_context.custom_form).all_fields.filter(&:accepts_input?)
   end
 
-  # Returns the insightables (Summaries and Questions) directly, not wrapped in Insights
   has_many :insightables do |analysis|
     analysis.insights.map(&:insightable).compact
   end
