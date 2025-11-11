@@ -1,51 +1,61 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import fetcher from 'utils/cl-react-query/fetcher';
+
 import { getDummyDemographics, USE_DUMMY_DATA } from './dummyData';
 import { demographicsKey } from './keys';
-import { PhaseInsightsDemographics } from './types';
+import { IPhaseInsightsDemographics } from './types';
 
-const fetchDemographics = async (
-  phaseId: string
-): Promise<PhaseInsightsDemographics> => {
-  // TODO: This will call the backend endpoint when ready
-  // Backend should aggregate all enabled user custom fields (select + birthyear)
-  // and return demographic data for each field
-  const response = await fetch(
-    `/api/v1/phases/${phaseId}/insights/demographics`
-  );
-  if (!response.ok) {
-    throw new Error('Failed to fetch demographics');
-  }
-  return response.json();
-};
+/**
+ * Fetches raw demographics data from the backend
+ * Returns full JSONAPI response structure (data.attributes contains fields)
+ * Components handle transformation as needed
+ */
+const fetchDemographics = (phaseId: string) =>
+  fetcher<IPhaseInsightsDemographics>({
+    path: `/phases/${phaseId}/insights/demographics`,
+    action: 'get',
+  });
 
 interface UseDemographicsParams {
   phaseId: string;
   userDataCollection: string;
 }
 
+/**
+ * Hook to fetch demographics data in backend format (series/options)
+ * Returns standard React Query result with full JSONAPI structure
+ * Access fields via: data.data.attributes.fields
+ * Components should use transformDemographicsResponse() utility for transformation
+ */
 const useDemographics = ({
   phaseId,
   userDataCollection,
 }: UseDemographicsParams) => {
   return useQuery<
-    PhaseInsightsDemographics,
+    IPhaseInsightsDemographics,
     CLErrors,
-    PhaseInsightsDemographics
+    IPhaseInsightsDemographics
   >({
     queryKey: demographicsKey(phaseId),
-    queryFn: async () => {
+    queryFn: () => {
       if (USE_DUMMY_DATA) {
         return getDummyDemographics();
       }
 
-      // Don't fetch demographics for anonymous phases in production
+      // Don't fetch demographics for anonymous phases
       if (userDataCollection === 'anonymous') {
-        return { fields: [] };
+        return Promise.resolve({
+          data: {
+            id: phaseId,
+            type: 'phase_demographics',
+            attributes: { fields: [] },
+          },
+        });
       }
 
-      // Fetch real data from backend
+      // Fetch raw backend data
       return fetchDemographics(phaseId);
     },
     enabled: userDataCollection !== 'anonymous',
