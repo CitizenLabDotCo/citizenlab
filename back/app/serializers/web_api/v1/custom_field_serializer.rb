@@ -67,7 +67,9 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
     :linear_scale_label_11_multiloc,
     if: proc { |object, _params| object.supports_linear_scale_labels? }
 
-  attributes :select_count_enabled, :maximum_select_count, :minimum_select_count
+  attributes :select_count_enabled, :maximum_select_count, :minimum_select_count, if: proc { |object, _params|
+    object.multiselect?
+  }
 
   attributes :min_characters, :max_characters, if: proc { |object, _params|
     object.support_text?
