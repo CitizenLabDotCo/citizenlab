@@ -12,6 +12,36 @@ import { removeRefs } from 'containers/Admin/projects/project/analysis/Insights/
 
 import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
 
+const Insights = ({
+  analysisId,
+  questionId,
+  setSummaries,
+  setSummariesReady,
+}) => {
+  const { data: insights } = useAnalysisInsights({
+    analysisId,
+  });
+
+  const summaryId = insights?.data[0].relationships.insightable.data.id;
+  const { data: summary, isLoading } = useAnalysisSummary({
+    id: summaryId,
+    analysisId,
+  });
+
+  useEffect(() => {
+    if (summary) {
+      setSummaries((prev) => ({
+        ...prev,
+        [questionId]: `<p>${removeRefs(
+          summary.data.attributes.summary || ''
+        ).replace(/(\r\n|\n|\r)/gm, '</p><p>')}</p>`,
+      }));
+    }
+    setSummariesReady(!isLoading);
+  }, [summary, questionId, setSummaries, setSummariesReady, isLoading]);
+  return <></>;
+};
+
 const PrefetchSummaries = ({
   phaseId,
   setSummaries,
@@ -59,7 +89,7 @@ const PrefetchSummaries = ({
   return (
     <>
       {relevantAnalyses?.map((analysis) => (
-        <InsightsNew
+        <Insights
           key={analysis.id}
           analysisId={analysis.id}
           questionId={analysis.relationships.main_custom_field?.data?.id}
@@ -69,36 +99,6 @@ const PrefetchSummaries = ({
       ))}
     </>
   );
-};
-
-const InsightsNew = ({
-  analysisId,
-  questionId,
-  setSummaries,
-  setSummariesReady,
-}) => {
-  const { data: insights } = useAnalysisInsights({
-    analysisId,
-  });
-
-  const summaryId = insights?.data[0].relationships.insightable.data.id;
-  const { data: summary, isLoading } = useAnalysisSummary({
-    id: summaryId,
-    analysisId,
-  });
-
-  useEffect(() => {
-    if (summary) {
-      setSummaries((prev) => ({
-        ...prev,
-        [questionId]: `<p>${removeRefs(
-          summary.data.attributes.summary || ''
-        ).replace(/(\r\n|\n|\r)/gm, '</p><p>')}</p>`,
-      }));
-    }
-    setSummariesReady(!isLoading);
-  }, [summary, questionId, setSummaries, setSummariesReady, isLoading]);
-  return <></>;
 };
 
 export default PrefetchSummaries;
