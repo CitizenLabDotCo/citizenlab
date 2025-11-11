@@ -3,9 +3,12 @@ import React, { useMemo } from 'react';
 import { Box, Text } from 'component-library';
 import styled from 'styled-components';
 
+import { transformDemographicsResponse } from 'api/phase_insights/transformDemographics';
 import { DemographicDataPoint } from 'api/phase_insights/types';
 import useDemographics from 'api/phase_insights/useDemographics';
 import { IPhaseData } from 'api/phases/types';
+
+import useLocale from 'hooks/useLocale';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -50,12 +53,22 @@ interface Props {
 
 const DemographicsWidget = ({ phase }: Props) => {
   const { formatMessage } = useIntl();
+  const currentLocale = useLocale();
 
-  // Fetch demographics data using the API hook
-  const { data: demographicsData } = useDemographics({
+  // Fetch demographics data in backend format (series/options)
+  const { data: response } = useDemographics({
     phaseId: phase?.id || '',
     userDataCollection: phase?.attributes.user_data_collection || 'anonymous',
   });
+
+  // Transform backend data to frontend format
+  const demographicsData = useMemo(() => {
+    if (!response?.data.attributes) return null;
+    return transformDemographicsResponse(
+      response.data.attributes,
+      currentLocale
+    );
+  }, [response, currentLocale]);
 
   // Extract the first 3 built-in fields for overview display
   // Order: gender, birthyear, domicile
