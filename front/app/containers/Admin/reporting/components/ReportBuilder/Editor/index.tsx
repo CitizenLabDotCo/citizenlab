@@ -26,7 +26,7 @@ const resolver = {
   ProjectTemplate,
   CommunityMonitorTemplate,
   PhaseTemplate,
-  Insights: () => <div />,
+  Insights: () => <div />, // TODO: Remove after migrating report builder data
   PlatformTemplate,
 };
 
