@@ -63,6 +63,23 @@ class Rack::Attack
     end
   end
 
+  # Unconfirmed user token endpoint
+  throttle('user_token_unconfirmed/ip', limit: 5, period: 20.seconds) do |req|
+    if req.path == '/web_api/v1/user_token/unconfirmed' && req.post?
+      req.remote_ip
+    end
+  end
+
+  throttle('user_token_unconfirmed/email', limit: 5, period: 5.minutes) do |req|
+    if req.path == '/web_api/v1/user_token/unconfirmed' && req.post?
+      begin
+        JSON.parse(req.body.string).dig('auth', 'email')&.to_s&.downcase&.gsub(/\s+/, '')&.presence
+      rescue JSON::ParserError
+        # do nothing
+      end
+    end
+  end
+
   # Account creation by IP.
   throttle('signup/ip', limit: 10, period: 20.seconds) do |req|
     if req.path == '/web_api/v1/users' && req.post?

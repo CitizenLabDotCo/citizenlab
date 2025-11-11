@@ -507,6 +507,69 @@ describe 'Rack::Attack' do
     end
   end
 
+  it 'limits unconfirmed login requests from same IP to 5 in 20 seconds' do
+    headers = { 'CONTENT_TYPE' => 'application/json' }
+
+    freeze_time do
+      5.times do |i|
+        post(
+          '/web_api/v1/user_token/unconfirmed',
+          params: "{ \"auth\": { \"email\": \"user#{i}@test.com\" } }",
+          headers: headers
+        )
+      end
+      expect(status).to eq(404) # Not found
+
+      post(
+        '/web_api/v1/user_token/unconfirmed',
+        params: '{ "auth": { "email": "user6@test.com" } }',
+        headers: headers
+      )
+      expect(status).to eq(429) # Too many requests
+    end
+
+    travel_to(21.seconds.from_now) do
+      post(
+        '/web_api/v1/user_token/unconfirmed',
+        params: '{ "auth": { "email": "user7@test.com" } }',
+        headers: headers
+      )
+      expect(status).to eq(404) # Not found
+    end
+  end
+
+  it 'limits unconfirmed login requests to same email to 5 in 5 minutes' do
+    freeze_time do
+      5.times do |i|
+        headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => "1.2.3.#{i}" }
+        post(
+          '/web_api/v1/user_token/unconfirmed',
+          params: '{ "auth": { "email": "' + user.email + '" } }',
+          headers: headers
+        )
+      end
+      expect(status).to eq(422) # Unauthorized
+
+      headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => "1.2.3.7" }
+      post(
+        '/web_api/v1/user_token/unconfirmed',
+        params: '{ "auth": { "email": "' + user.email + '" } }',
+        headers: headers
+      )
+      expect(status).to eq(429) # Too many requests
+    end
+
+    travel_to(5.minutes.from_now) do
+      headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => "1.2.3.8" }
+      post(
+        '/web_api/v1/user_token/unconfirmed',
+        params: '{ "auth": { "email": "' + user.email + '", "password": "test123456" } }',
+        headers: headers
+      )
+      expect(status).to eq(422) # Unauthorized
+    end
+  end
+
   it 'limits authoring assistance response requests from same IP to 10 in 20 seconds' do
     token = AuthToken::AuthToken.new(payload: create(:user).to_token_payload).token
     headers = {
