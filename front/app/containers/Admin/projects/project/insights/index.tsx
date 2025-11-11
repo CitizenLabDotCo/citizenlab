@@ -10,6 +10,7 @@ import clHistory from 'utils/cl-router/history';
 
 import DemographicsWidget from './DemographicsWidget';
 import messages from './messages';
+import MethodSpecificInsights from './methodSpecific/MethodSpecificInsights';
 import ParticipationMetrics from './ParticipationMetrics';
 
 const AdminPhaseInsights = () => {
@@ -67,18 +68,25 @@ const AdminPhaseInsights = () => {
           <DemographicsWidget phase={phase.data} />
         </Box>
 
-        <Button
-          buttonStyle="text"
-          icon="arrow-right"
-          iconPos="right"
-          onClick={() =>
-            clHistory.push(
-              `/admin/projects/${projectId}/phases/${phase.data.id}/insights/details`
-            )
-          }
-        >
-          <FormattedMessage {...messages.viewFullReport} />
-        </Button>
+        <Box w="100%" display="flex" justifyContent="flex-start">
+          <Button
+            buttonStyle="text"
+            icon="arrow-right"
+            iconPos="right"
+            onClick={() =>
+              clHistory.push(
+                `/admin/projects/${projectId}/phases/${phase.data.id}/insights/details`
+              )
+            }
+          >
+            <FormattedMessage {...messages.viewFullReport} />
+          </Button>
+        </Box>
+
+        <MethodSpecificInsights
+          phaseId={phase.data.id}
+          participationMethod={phase.data.attributes.participation_method}
+        />
       </Box>
     </Box>
   );
