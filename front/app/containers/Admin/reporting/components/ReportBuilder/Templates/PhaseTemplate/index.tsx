@@ -119,14 +119,14 @@ const PhaseTemplateContent = ({
 
 const PhaseTemplate = ({ phaseId, selectedLocale }: Props) => {
   const [summaries, setSummaries] = useState<{ [key: string]: any }>({});
-  const [summariesLoaded, setSummariesLoaded] = useState(false);
+  const [summariesReady, setSummariesReady] = useState(false);
   const enabled = useContext(TemplateContext);
-  if (!summariesLoaded) {
+  if (!summariesReady) {
     return (
       <PrefetchSummaries
         phaseId={phaseId}
         setSummaries={setSummaries}
-        setSummariesLoaded={setSummariesLoaded}
+        setSummariesReady={setSummariesReady}
       />
     );
   }

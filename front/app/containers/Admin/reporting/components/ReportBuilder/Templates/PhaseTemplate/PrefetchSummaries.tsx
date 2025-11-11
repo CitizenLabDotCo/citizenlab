@@ -15,11 +15,11 @@ import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
 const PrefetchSummaries = ({
   phaseId,
   setSummaries,
-  setSummariesLoaded,
+  setSummariesReady,
 }: {
   phaseId: string;
   setSummaries: React.Dispatch<React.SetStateAction<any[]>>;
-  setSummariesLoaded: React.Dispatch<React.SetStateAction<boolean>>;
+  setSummariesReady: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { pathname } = useLocation();
   const { data: phase } = usePhase(phaseId);
@@ -32,9 +32,9 @@ const PrefetchSummaries = ({
 
   useEffect(() => {
     if (!pathname.includes('/report-builder/')) {
-      setSummariesLoaded(true);
+      setSummariesReady(true);
     }
-  }, [pathname, setSummariesLoaded]);
+  }, [pathname, setSummariesReady]);
 
   const questionIds =
     surveyQuestions?.data
@@ -52,9 +52,9 @@ const PrefetchSummaries = ({
 
   useEffect(() => {
     if (relevantAnalyses && relevantAnalyses.length === 0) {
-      setSummariesLoaded(true);
+      setSummariesReady(true);
     }
-  }, [relevantAnalyses, setSummariesLoaded]);
+  }, [relevantAnalyses, setSummariesReady]);
 
   return (
     <>
@@ -64,7 +64,7 @@ const PrefetchSummaries = ({
           analysisId={analysis.id}
           questionId={analysis.relationships.main_custom_field?.data?.id}
           setSummaries={setSummaries}
-          setSummariesLoaded={setSummariesLoaded}
+          setSummariesReady={setSummariesReady}
         />
       ))}
     </>
@@ -75,7 +75,7 @@ const InsightsNew = ({
   analysisId,
   questionId,
   setSummaries,
-  setSummariesLoaded,
+  setSummariesReady,
 }) => {
   const { data: insights } = useAnalysisInsights({
     analysisId,
@@ -96,8 +96,8 @@ const InsightsNew = ({
         ).replace(/(\r\n|\n|\r)/gm, '</p><p>')}</p>`,
       }));
     }
-    setSummariesLoaded(!isLoading);
-  }, [summary, questionId, setSummaries, setSummariesLoaded, isLoading]);
+    setSummariesReady(!isLoading);
+  }, [summary, questionId, setSummaries, setSummariesReady, isLoading]);
   return <></>;
 };
 
