@@ -20,6 +20,6 @@ class Analysis::WebApi::V1::AnalysisSerializer < WebApi::V1::BaseSerializer
   end
 
   has_many :insightables do |analysis|
-    analysis.insights.map(&:insightable).compact
+    analysis.insights.filter_map(&:insightable).compact
   end
 end
