@@ -1,4 +1,4 @@
-import { signUp, signUpEmailConformation } from '../../support/auth';
+import { signUpEmailConformation, confirmEmail } from '../../support/auth';
 import { randomEmail } from '../../support/commands';
 
 describe('Change email in profile', () => {
@@ -26,7 +26,9 @@ describe('Change email in profile', () => {
     cy.get('input[name="email"]').clear().type(newEmail);
     cy.dataCy('change-email-submit-button').click();
 
-    // Simulate email confirmation step
-    // TODO
+    // Confirm new email
+    confirmEmail(cy);
+
+    // TODO verify change was successful
   });
 });

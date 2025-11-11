@@ -68,7 +68,7 @@ export const confirmEmailConfirmationCodeAuthenticated = async (
 export const confirmEmailConfirmationCodeChangeEmail = async (code: string) => {
   try {
     await fetcher({
-      path: `/user/confirm_code_change_email`,
+      path: `/user/confirm_code_email_change`,
       action: 'post',
       body: {
         confirmation: { code },

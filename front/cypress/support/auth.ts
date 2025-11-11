@@ -15,7 +15,7 @@ const acceptPolicies = (cy: Cypress.Chainable) => {
   cy.get('#e2e-policies-continue').click();
 };
 
-export const confirmEmail = (cy: Cypress.Chainable, email: string) => {
+export const confirmEmail = (cy: Cypress.Chainable) => {
   cy.get('#code').should('exist');
   cy.get('#code').click().type('1234');
   cy.get('#e2e-verify-email-button > button').click({ force: true });
@@ -34,7 +34,7 @@ export const signUpEmailConformation = (
   email: string = randomEmail()
 ) => {
   signUp(cy, email);
-  confirmEmail(cy, email);
+  confirmEmail(cy);
 };
 
 export const enterUserInfo = (
