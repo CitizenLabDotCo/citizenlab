@@ -293,7 +293,7 @@ describe 'Rack::Attack' do
     end
   end
 
-  it 'limits resend code requests from same IP to 10 in 5 minutes' do
+  it 'limits unauthenticated code requests from same IP to 10 in 5 minutes' do
     headers = { 'CONTENT_TYPE' => 'application/json' }
 
     freeze_time do
@@ -312,7 +312,7 @@ describe 'Rack::Attack' do
     end
   end
 
-  it 'limits confirmation requests from same IP to 5 in 20 seconds' do
+  it 'limits unauthenticated confirmation requests from same IP to 5 in 20 seconds' do
     headers = { 'CONTENT_TYPE' => 'application/json' }
 
     freeze_time do
