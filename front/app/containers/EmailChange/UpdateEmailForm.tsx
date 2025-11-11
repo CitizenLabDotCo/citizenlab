@@ -101,6 +101,7 @@ const UpdateEmailForm = ({
             processing={methods.formState.isSubmitting}
             onClick={methods.handleSubmit(onFormSubmit)}
             text={formatMessage(messages.submitButton)}
+            dataCy="change-email-submit-button"
           />
         </Form>
         <Box display="flex" justifyContent="center">

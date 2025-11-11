@@ -1,7 +1,7 @@
 import { signUp, signUpEmailConformation } from '../../support/auth';
 import { randomEmail } from '../../support/commands';
 
-describe('Change email during sign-up', () => {
+describe('Change email in profile', () => {
   beforeEach(() => {
     cy.goToLandingPage();
     cy.get('#e2e-navbar-login-menu-item').click();
@@ -10,16 +10,19 @@ describe('Change email during sign-up', () => {
 
   it('allows changing the email during sign-up', () => {
     const email = randomEmail();
-    signUp(cy, email);
-
-    // On the email confirmation step, change the email
-    const newEmail = randomEmail();
-    cy.get('#e2e-go-to-change-email').click();
-
-    // Enter the new email
-    signUpEmailConformation(cy, newEmail);
+    signUpEmailConformation(cy, email);
 
     // Verify that we are logged in
     cy.get('#e2e-user-menu-container');
+
+    // Go to profile
+    cy.visit('/profile/edit');
+
+    // Click 'Change email' button
+    cy.get('a[href="/en/profile/change-email"]').click();
+
+    // Enter new email
+    const newEmail = randomEmail();
+    cy.get('input[name="email"]').clear().type(newEmail);
   });
 });
