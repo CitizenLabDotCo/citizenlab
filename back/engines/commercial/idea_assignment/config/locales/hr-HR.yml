@@ -10,4 +10,4 @@ hr:
       event_description: 'Dodijeljen vam je unos. Dajte povratne informacije pisanjem službenog ažuriranja ili promjenom njegovog statusa.'
       title: '%{firstName}, dodijeljen vam je ulaz'
       subject: 'Imate zadatak na %{organizationName} platformi '
-      preheader_idea: 'Dodijeljena vam je ideja od %{authorName}'
+      preheader: 'Ulaz od %{authorName} je dodijeljen vama'

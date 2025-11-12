@@ -138,6 +138,7 @@ const ProjectAndFolderCardsWrapper = (props: Props) => {
       publicationStatusFilter: PUBLICATION_STATUSES,
       rootLevelOnly: true,
       removeNotAllowedParents: true,
+      discoverability: ['listed'],
     }
   );
 

@@ -53,11 +53,25 @@ class SimilarIdeasService
     # embsim.nearest_neighbors(:embedding, distance: 'cosine') does not support
     # applying a threshold on the neighbor_distance.
 
-    embedding = embedding_for_text(text)
+    sql_embedding = "[#{embedding_for_text(text).join(',')}]"
+
     embsims = EmbeddingsSimilarity
       .where.not(embedding: nil)
-      .order(ActiveRecord::Base.sanitize_sql_for_order(Arel.sql("\"embedding\" <=> '#{embedding}'")))
-    embsims = embsims.where('"embedding" <=> \'[:embedding]\' < :distance_threshold', embedding:, distance_threshold:) if distance_threshold
+      .order(
+        ActiveRecord::Base.sanitize_sql_for_order([
+          Arel.sql('embedding <=> ?::vector'),
+          sql_embedding
+        ])
+      )
+
+    if distance_threshold
+      embsims = embsims.where(
+        Arel.sql('embedding <=> ?::vector < ?'),
+        sql_embedding,
+        distance_threshold
+      )
+    end
+
     embsims = embsims.where(embeddable: scope) if scope
 
     embsims

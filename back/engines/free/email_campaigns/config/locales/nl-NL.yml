@@ -407,11 +407,13 @@ nl:
       title: '%{requesterName} heeft je uitgenodigd om het project "%{projectTitle}" te beoordelen'
       event_description: "Momenteel staat het project in conceptmodus en is het niet zichtbaar voor gebruikers. Zodra je het hebt goedgekeurd, kan de moderator het publiceren."
       cta_button: "Het project beoordelen"
+      preheader: '%{requesterName} heeft je uitgenodigd om het project "%{projectTitle}" te beoordelen'
     project_review_state_change:
       subject: '"%{projectTitle}" is goedgekeurd'
       title: '%{reviewerName} heeft het project "%{projectTitle}" goedgekeurd'
       event_description: "Het project is nu klaar om live te gaan. Je kunt het publiceren wanneer je er klaar voor bent!"
       cta_button: "Ga naar projectinstellingen"
+      preheader: '%{reviewerName} heeft het project "%{projectTitle}" goedgekeurd'
     status_change_on_idea_you_follow:
       status_change: 'De nieuwe status van dit idee is ''%{status}'''
       event_description: '%{organizationName} heeft de status van de bijdrage ''%{input_title}'' op hun digitale participatieplatform bijgewerkt.'

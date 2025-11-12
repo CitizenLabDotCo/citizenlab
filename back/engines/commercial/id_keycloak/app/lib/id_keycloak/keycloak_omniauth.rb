@@ -38,7 +38,7 @@ module IdKeycloak
     end
 
     def email_always_present?
-      false
+      config[:provider] == 'rheinbahn'
     end
 
     def verification_prioritized?
@@ -56,7 +56,7 @@ module IdKeycloak
     end
 
     def issuer
-      "https://#{config[:domain]}/auth/realms/idporten"
+      config[:issuer]
     end
 
     def updateable_user_attrs
@@ -65,11 +65,22 @@ module IdKeycloak
 
     private
 
-    # Proper case the returned Captialised name - capitalize first letter of each part, lowercase the rest
+    # Proper case the returned capitalized name - capitalize first letter of each part, lowercase the rest
     def format_name(name)
       return unless name
 
       name.downcase.split(/[\s-]/).map(&:capitalize).join(name.include?('-') ? '-' : ' ')
+    end
+
+    def user_locale
+      case config[:provider]
+      when 'idporten'
+        'nb-NO'
+      when 'rheinbahn'
+        'de-DE'
+      else
+        'en'
+      end
     end
   end
 end

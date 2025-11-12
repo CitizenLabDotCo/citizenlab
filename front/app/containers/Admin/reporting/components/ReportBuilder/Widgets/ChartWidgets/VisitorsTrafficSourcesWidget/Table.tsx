@@ -10,6 +10,7 @@ import {
   Td,
   colors,
   stylingConsts,
+  Text,
 } from '@citizenlab/cl2-component-library';
 
 import messages from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/messages';
@@ -48,7 +49,9 @@ const TableView = ({ tableData }: Props) => {
           {tableData.slice(0, 5).map((row, i) => (
             <Tr key={i}>
               <Td background={colors.grey50}>
-                ({row.referrer_type}) {row.referrer}
+                <Text color="primary" fontSize="s" wordBreak="break-word">
+                  ({row.referrer_type}) {row.referrer}
+                </Text>
               </Td>
               <Td>{row.visits}</Td>
               <Td>{row.visitors}</Td>
