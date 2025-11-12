@@ -304,8 +304,6 @@
   "app.containers.AdminPage.FoldersEdit.titleSettingsTab": "Settings",
   "app.containers.AdminPage.FoldersEdit.viewPublicProjectFolder": "View Folder",
   "app.containers.AdminPage.PagesEdition.policiesTitle": "Platform policies",
-  "app.containers.AdminPage.PagesEdition.privacy-policy": "Privacy Policy",
-  "app.containers.AdminPage.PagesEdition.terms-and-conditions": "Terms and Conditions",
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "List of projects on the platform",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Projects dashboard",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Projects",

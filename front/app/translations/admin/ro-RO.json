@@ -525,8 +525,6 @@
   "app.containers.AdminPage.HeroBannerForm.heroBannerTitle": "Hero banner",
   "app.containers.AdminPage.PagesEdition.policiesSubtitle": "Editați termenii și condițiile și politica de confidențialitate ale platformei dvs. Alte pagini, inclusiv paginile Despre și Întrebări frecvente, pot fi editate în fila {navigationLink}.",
   "app.containers.AdminPage.PagesEdition.policiesTitle": "Platform policies",
-  "app.containers.AdminPage.PagesEdition.privacy-policy": "Politica de confidențialitate",
-  "app.containers.AdminPage.PagesEdition.terms-and-conditions": "Termeni și condiții",
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "List of projects on the platform",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Projects dashboard",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Proiecte",
