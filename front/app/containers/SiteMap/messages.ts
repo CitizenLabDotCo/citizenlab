@@ -50,54 +50,22 @@ export default defineMessages({
     id: 'containers.SiteMap.projectEvents',
     defaultMessage: 'Events',
   },
-  projectIdeas: {
-    id: 'containers.SiteMap.projectIdeas',
-    defaultMessage: 'Ideas',
-  },
-  contributions: {
-    id: 'app.containers.SiteMap.contributions',
-    defaultMessage: 'Contributions',
-  },
-  issues: {
-    id: 'app.containers.SiteMap.issues',
-    defaultMessage: 'Issues',
-  },
+
   options: {
     id: 'app.containers.SiteMap.options',
     defaultMessage: 'Options',
   },
-  questions: {
-    id: 'app.containers.SiteMap.questions',
-    defaultMessage: 'Questions',
-  },
+
   projects: {
     id: 'app.containers.SiteMap.projects',
     defaultMessage: 'Projects',
   },
-  projectPoll: {
-    id: 'containers.SiteMap.projectPoll',
-    defaultMessage: 'Poll',
-  },
-  projectSurvey: {
-    id: 'containers.SiteMap.projectSurvey',
-    defaultMessage: 'Survey',
-  },
+
   timeline: {
     id: 'containers.SiteMap.timeline',
     defaultMessage: 'Project phases',
   },
-  signInPage: {
-    id: 'containers.SiteMap.signInPage',
-    defaultMessage: 'Sign in',
-  },
-  signUpPage: {
-    id: 'containers.SiteMap.signUpPage',
-    defaultMessage: 'Sign up',
-  },
-  successStories: {
-    id: 'containers.SiteMap.successStories',
-    defaultMessage: 'Success Stories',
-  },
+
   userSpaceSection: {
     id: 'containers.SiteMap.userSpaceSection',
     defaultMessage: 'Your Account',

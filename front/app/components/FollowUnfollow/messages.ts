@@ -27,8 +27,4 @@ export default defineMessages({
     id: 'app.components.followUnfollow.unsubscribe',
     defaultMessage: 'unsubscribe',
   },
-  unsubscribeUrl: {
-    id: 'app.components.followUnfollow.unsubscribeUrl',
-    defaultMessage: '/profile/edit',
-  },
 });

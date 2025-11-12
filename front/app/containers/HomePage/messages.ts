@@ -13,10 +13,7 @@ export default defineMessages({
     id: 'app.containers.landing.createAccount',
     defaultMessage: 'Create an account',
   },
-  cityProjects: {
-    id: 'app.containers.landing.cityProjects',
-    defaultMessage: 'City projects',
-  },
+
   twitterMessage: {
     id: 'app.containers.landing.twitterMessage',
     defaultMessage: 'Vote for {ideaTitle} on',

@@ -107,10 +107,7 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.draft',
     defaultMessage: 'Draft',
   },
-  sending: {
-    id: 'app.containers.Admin.emails.sending',
-    defaultMessage: 'Sending',
-  },
+
   sent: {
     id: 'app.containers.Admin.emails.sent',
     defaultMessage: 'Sent',
@@ -180,11 +177,7 @@ export default defineMessages({
     id: 'app.containers.Admin.Campaigns.campaignTo',
     defaultMessage: 'To:',
   },
-  noAccess: {
-    id: 'app.containers.Admin.Campaigns.noAccess',
-    defaultMessage:
-      "We're sorry, but it seems like you don't have access to the emails section",
-  },
+
   noCampaignsHeader: {
     id: 'app.containers.Admin.emails.emptyCampaignsHeader',
     defaultMessage: 'Send your first email',
@@ -291,10 +284,7 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.allParticipantsInProject',
     defaultMessage: 'All participants in project',
   },
-  editModalTitle: {
-    id: 'app.containers.Admin.messaging.automated.editModalTitle',
-    defaultMessage: 'Edit campaign fields',
-  },
+
   variablesToolTip: {
     id: 'app.containers.Admin.messaging.automated.variablesToolTip',
     defaultMessage: 'You can use the following variables in your message:',
@@ -302,21 +292,5 @@ export default defineMessages({
   regionMultilocError: {
     id: 'app.containers.Admin.emails.regionMultilocError',
     defaultMessage: 'Please provide a value for all languages',
-  },
-  editRegion_subject_multiloc: {
-    id: 'app.containers.Admin.emails.editRegion_subject_multiloc',
-    defaultMessage: 'Subject',
-  },
-  editRegion_title_multiloc: {
-    id: 'app.containers.Admin.emails.editRegion_title_multiloc',
-    defaultMessage: 'Title',
-  },
-  editRegion_intro_multiloc: {
-    id: 'app.containers.Admin.emails.editRegion_intro_multiloc',
-    defaultMessage: 'Introduction',
-  },
-  editRegion_button_text_multiloc: {
-    id: 'app.containers.Admin.emails.editRegion_button_text_multiloc',
-    defaultMessage: 'Button text',
   },
 });

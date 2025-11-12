@@ -9,15 +9,7 @@ export default defineMessages({
     id: 'app.components.FileUploader.fileInputDescription',
     defaultMessage: 'Select a file',
   },
-  incorrect_extension: {
-    id: 'app.components.FileUploader.incorrect_extension',
-    defaultMessage:
-      '{fileName} is not supported by our system, it will not be uploaded.',
-  },
-  file_too_large: {
-    id: 'app.components.FileUploader.file_too_large2',
-    defaultMessage: 'Files larger than {maxSizeMb}MB are not permitted.',
-  },
+
   a11y_removeFile: {
     id: 'app.components.FileUploader.a11y_removeFile',
     defaultMessage: 'Remove this file',

@@ -9,10 +9,7 @@ export default defineMessages({
     id: 'app.components.IdeasMap.signInLinkText',
     defaultMessage: 'sign in',
   },
-  a11y_mapTitle: {
-    id: 'app.components.IdeasMap.a11y_mapTitle',
-    defaultMessage: 'Map overview',
-  },
+
   or: {
     id: 'app.components.IdeasMap.or',
     defaultMessage: 'or',
@@ -66,16 +63,16 @@ export default defineMessages({
   screenReaderLikesText: {
     id: 'app.components.IdeasMap.screenReaderLikesText',
     defaultMessage:
-      '{noOfLikes, plural, =0 {, no likes.} one {, 1 like.} other {, # likes.}}',
+      '{noOfLikes, plural, =0 { no likes.} one { 1 like.} other { # likes.}}',
   },
   screenReaderDislikesText: {
     id: 'app.components.IdeasMap.screenReaderDislikesText',
     defaultMessage:
-      '{noOfDislikes, plural, =0 {, no dislikes.} one {1 dislike.} other {, # dislikes.}}',
+      '{noOfDislikes, plural, =0 { no dislikes.} one {1 dislike.} other { # dislikes.}}',
   },
   screenReaderCommentsText: {
     id: 'app.components.IdeasMap.xComments',
     defaultMessage:
-      '{noOfComments, plural, =0 {, no comments.} one {, 1 comment.} other {, # comments.}}',
+      '{noOfComments, plural, =0 { no comments.} one { 1 comment.} other { # comments.}}',
   },
 });

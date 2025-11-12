@@ -14,11 +14,7 @@ export default defineMessages({
     id: 'app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton',
     defaultMessage: 'I withdraw my offer to volunteer',
   },
-  notLoggedIn: {
-    id: 'app.containers.ProjectsShowPage.VolunteeringSection.notLoggedIn',
-    defaultMessage:
-      'Please {signInLink} or {signUpLink} first in order to volunteer for this activity',
-  },
+
   signInLinkText: {
     id: 'app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText',
     defaultMessage: 'log in',

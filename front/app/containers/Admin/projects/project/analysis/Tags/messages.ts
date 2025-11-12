@@ -13,10 +13,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.deleteTag',
     defaultMessage: 'Delete tag',
   },
-  editTag: {
-    id: 'app.containers.AdminPage.projects.project.analysis.Tags.editTag',
-    defaultMessage: 'Edit tag',
-  },
+
   renameTagModalTitle: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.renameTagModalTitle',
     defaultMessage: 'Rename tag',
@@ -37,10 +34,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.emptyNameError',
     defaultMessage: 'Add name',
   },
-  allTags: {
-    id: 'app.containers.AdminPage.projects.project.analysis.Tags.allTags',
-    defaultMessage: 'All tags',
-  },
+
   renameTag: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.renameTag',
     defaultMessage: 'Rename tag',
@@ -95,10 +89,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.howToTag',
     defaultMessage: 'How do you want to tag?',
   },
-  tagDetection: {
-    id: 'app.containers.AdminPage.projects.project.analysis.Tags.tagDetection',
-    defaultMessage: 'Tag detection',
-  },
+
   fullyAutomatedTitle: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.fullyAutomatedTitle',
     defaultMessage: 'Tags: Fully automated',

@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  loading: {
-    id: 'app.containers.App.loading',
-    defaultMessage: 'Loading...',
-  },
   metaTitle1: {
     id: 'app.containers.App.metaTitle1',
     defaultMessage: 'Citizen engagement platform | {orgName}',

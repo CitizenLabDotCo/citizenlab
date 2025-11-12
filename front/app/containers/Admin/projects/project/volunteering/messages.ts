@@ -74,10 +74,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.saveCause',
     defaultMessage: 'Save',
   },
-  causeErrorMessage: {
-    id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.causeErrorMessage',
-    defaultMessage: "Couldn't save because the form contains errors.",
-  },
+
   emptyTitleErrorMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.emptyTitleErrorMessage',
     defaultMessage: 'Add a title',

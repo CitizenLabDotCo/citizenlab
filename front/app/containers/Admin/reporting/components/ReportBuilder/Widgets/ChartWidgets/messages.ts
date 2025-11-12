@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  analyticsChart: {
-    id: 'app.containers.admin.ReportBuilder.charts.analyticsChart',
-    defaultMessage: 'Chart',
-  },
   analyticsChartTitle: {
     id: 'app.containers.admin.ReportBuilder.charts.analyticsChartTitle',
     defaultMessage: 'Title',
@@ -34,14 +30,7 @@ export default defineMessages({
     id: 'app.containers.admin.ReportBuilder.charts.trafficSources',
     defaultMessage: 'Traffic sources',
   },
-  usersByGender: {
-    id: 'app.containers.admin.ReportBuilder.charts.usersByGender',
-    defaultMessage: 'Users by gender',
-  },
-  usersByAge: {
-    id: 'app.containers.admin.ReportBuilder.charts.usersByAge',
-    defaultMessage: 'Users by age',
-  },
+
   noData: {
     id: 'app.containers.admin.ReportBuilder.charts.noData',
     defaultMessage:

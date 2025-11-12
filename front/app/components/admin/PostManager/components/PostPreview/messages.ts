@@ -9,11 +9,7 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.PostPreview.delete',
     defaultMessage: 'Delete',
   },
-  deleteInputConfirmation: {
-    id: 'app.components.admin.PostManager.PostPreview.deleteInputConfirmation',
-    defaultMessage:
-      'Are you sure you want to delete this input? This action cannot be undone.',
-  },
+
   deleteInputInTimelineConfirmation: {
     id: 'app.components.admin.PostManager.PostPreview.deleteInputInTimelineConfirmation',
     defaultMessage:
@@ -52,19 +48,12 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.PostPreview.save',
     defaultMessage: 'Save',
   },
-  submitError: {
-    id: 'app.components.admin.PostManager.PostPreview.submitError',
-    defaultMessage: 'Error',
-  },
+
   postedIn: {
     id: 'app.components.admin.PostManager.postedIn',
     defaultMessage: 'Posted in {projectLink}',
   },
-  xDaysLeft: {
-    id: 'app.components.admin.PostManager.xDaysLeft',
-    defaultMessage:
-      '{x, plural, =0 {Less than a day} one {One day} other {# days}} left',
-  },
+
   proposedBudgetTitle: {
     id: 'app.components.admin.PostManager.proposedBudgetTitle',
     defaultMessage: 'Proposed budget',
@@ -110,20 +99,7 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.petitionFormTitle',
     defaultMessage: 'Edit petition',
   },
-  submitApiError: {
-    id: 'app.components.admin.PostManager.submitApiError',
-    defaultMessage:
-      'There was an issue submitting the form. Please check for any errors and try again.',
-  },
-  editedPostSave: {
-    id: 'app.components.admin.PostManager.editedPostSave',
-    defaultMessage: 'Save',
-  },
-  fileUploadError: {
-    id: 'app.components.admin.PostManager.fileUploadError',
-    defaultMessage:
-      'One or more files failed to upload. Please check the file size and format and try again.',
-  },
+
   view: {
     id: 'app.components.admin.PostManager.view',
     defaultMessage: 'View',

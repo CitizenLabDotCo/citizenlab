@@ -1,34 +1,11 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  deliveryStatus_sent: {
-    id: 'app.components.Admin.Campaigns.deliveryStatus_sent',
-    defaultMessage: 'Sent',
-  },
   deliveryStatus_failed: {
     id: 'app.components.Admin.Campaigns.deliveryStatus_failed',
     defaultMessage: 'Failed',
   },
-  deliveryStatus_accepted: {
-    id: 'app.components.Admin.Campaigns.deliveryStatus_accepted',
-    defaultMessage: 'Accepted',
-  },
-  deliveryStatus_delivered: {
-    id: 'app.components.Admin.Campaigns.deliveryStatus_delivered',
-    defaultMessage: 'Delivered',
-  },
-  deliveryStatus_opened: {
-    id: 'app.components.Admin.Campaigns.deliveryStatus_opened',
-    defaultMessage: 'Opened',
-  },
-  deliveryStatus_clicked: {
-    id: 'app.components.Admin.Campaigns.deliveryStatus_clicked',
-    defaultMessage: 'Clicked',
-  },
-  deliveryStatus_bounced: {
-    id: 'app.components.Admin.Campaigns.deliveryStatus_bounced',
-    defaultMessage: 'Bounced',
-  },
+
   deliveryStatus_openedTooltip: {
     id: 'app.components.Admin.Campaigns.deliveryStatus_openedTooltip',
     defaultMessage:

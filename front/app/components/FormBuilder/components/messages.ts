@@ -67,14 +67,7 @@ export default defineMessages({
     id: 'app.components.formBuilder.singleChoice',
     defaultMessage: 'Single choice',
   },
-  chooseOne: {
-    id: 'app.components.formBuilder.chooseOne',
-    defaultMessage: 'Choose one',
-  },
-  chooseMany: {
-    id: 'app.components.formBuilder.chooseMany',
-    defaultMessage: 'Choose many',
-  },
+
   number: {
     id: 'app.components.formBuilder.number',
     defaultMessage: 'Number',
@@ -147,10 +140,7 @@ export default defineMessages({
     id: 'app.components.formBuilder.default',
     defaultMessage: 'Default',
   },
-  newField: {
-    id: 'app.components.formBuilder.newField',
-    defaultMessage: 'New field',
-  },
+
   closed: {
     id: 'app.components.formBuilder.closed',
     defaultMessage: 'Closed',
@@ -179,10 +169,7 @@ export default defineMessages({
     id: 'app.components.formBuilder.done',
     defaultMessage: 'Done',
   },
-  enable: {
-    id: 'app.components.formBuilder.enable',
-    defaultMessage: 'Enable',
-  },
+
   questionTitle: {
     id: 'app.components.formBuilder.questionTitle',
     defaultMessage: 'Question title',
@@ -195,10 +182,7 @@ export default defineMessages({
     id: 'app.components.formBuilder.requiredToggleLabel',
     defaultMessage: 'Make answering this question required',
   },
-  showResponseToUsersToggleLabel: {
-    id: 'app.components.formBuilder.showResponseToUsersToggleLabel',
-    defaultMessage: 'Show response to users',
-  },
+
   deleteButtonLabel: {
     id: 'app.components.formBuilder.deleteButtonLabel',
     defaultMessage: 'Delete',
@@ -224,10 +208,7 @@ export default defineMessages({
     defaultMessage: 'Mapping',
   },
   // Logic Settings
-  formEnd: {
-    id: 'app.components.formBuilder.formEnd',
-    defaultMessage: 'Form end',
-  },
+
   multipleChoiceHelperText: {
     id: 'app.components.formBuilder.multipleChoiceHelperText',
     defaultMessage:

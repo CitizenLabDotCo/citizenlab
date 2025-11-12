@@ -61,18 +61,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.saveSuccessMessage',
     defaultMessage: 'Your changes have been saved successfully.',
   },
-  deletePhaseConfirmation: {
-    id: 'app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation',
-    defaultMessage: 'Are you sure you wannna delete this phase?',
-  },
-  startDatePlaceholder: {
-    id: 'app.containers.AdminPage.ProjectTimeline.startDatePlaceholder',
-    defaultMessage: 'Start Date',
-  },
-  endDatePlaceholder: {
-    id: 'app.containers.AdminPage.ProjectTimeline.endDatePlaceholder',
-    defaultMessage: 'End Date',
-  },
+
   fileUploadLabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.fileUploadLabel',
     defaultMessage: 'Attach files to this phase',
@@ -85,10 +74,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.automatedEmails',
     defaultMessage: 'Automated emails',
   },
-  noEndDateCheckbox: {
-    id: 'app.containers.AdminPage.ProjectTimeline.noEndDateDescription',
-    defaultMessage: "This phase doesn't have a predefined end date.",
-  },
+
   noEndDateWarningTitle: {
     id: 'app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle',
     defaultMessage: 'Not selecting an end date for this implies that:',
@@ -103,10 +89,7 @@ export default defineMessages({
     defaultMessage:
       'As soon as you add a phase after this one, it will add an end date to this phase.',
   },
-  endDate: {
-    id: 'app.containers.AdminPage.ProjectTimeline.endDate',
-    defaultMessage: 'End date',
-  },
+
   startDate: {
     id: 'app.containers.AdminPage.ProjectTimeline.startDate',
     defaultMessage: 'Start date',

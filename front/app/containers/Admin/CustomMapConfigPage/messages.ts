@@ -38,10 +38,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.remove',
     defaultMessage: 'Remove layer',
   },
-  layers: {
-    id: 'app.containers.AdminPage.ProjectEdit.MapTab.layers',
-    defaultMessage: 'Map layers',
-  },
+
   unnamedLayer: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.unnamedLayer',
     defaultMessage: 'Unnamed layer',
@@ -160,18 +157,7 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.setAsDefaultMapView',
     defaultMessage: `Save the current center point and zoom level as the map defaults`,
   },
-  currentLat: {
-    id: 'app.components.admin.PostManager.currentLat',
-    defaultMessage: `Center latitude`,
-  },
-  currentLng: {
-    id: 'app.components.admin.PostManager.currentLng',
-    defaultMessage: `Center longitude`,
-  },
-  currentZoomLevel: {
-    id: 'app.components.admin.PostManager.currentZoomLevel',
-    defaultMessage: `Zoom level`,
-  },
+
   saved: {
     id: 'app.components.admin.PostManager.saved',
     defaultMessage: `Saved`,
@@ -192,10 +178,7 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.addFeatureLayer',
     defaultMessage: 'Add feature layer',
   },
-  addFeatureLayerTooltip: {
-    id: 'app.components.admin.PostManager.addFeatureLayerTooltip',
-    defaultMessage: 'Add a new feature layer to the map',
-  },
+
   addFeatureLayerInstruction: {
     id: 'app.components.admin.PostManager.addFeatureLayerInstruction',
     defaultMessage:

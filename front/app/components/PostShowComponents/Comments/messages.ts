@@ -131,14 +131,7 @@ export default defineMessages({
     id: 'app.components.Comments.likeComment',
     defaultMessage: 'Like this comment',
   },
-  commentLike: {
-    id: 'app.containers.Comments.commentLike',
-    defaultMessage: 'Like',
-  },
-  commentCancelLike: {
-    id: 'app.containers.Comments.commentCancelUpvote',
-    defaultMessage: 'Cancel',
-  },
+
   commentReplyButton: {
     id: 'app.containers.Comments.commentReplyButton',
     defaultMessage: 'Reply',

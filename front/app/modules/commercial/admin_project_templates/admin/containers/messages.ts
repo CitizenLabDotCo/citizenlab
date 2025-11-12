@@ -5,10 +5,7 @@ export default defineMessages({
     id: 'app.components.ProjectTemplatePreview.goBack',
     defaultMessage: 'Go back',
   },
-  seeMoreTemplates: {
-    id: 'app.components.ProjectTemplatePreview.seeMoreTemplates',
-    defaultMessage: 'See more templates',
-  },
+
   infoboxLine1: {
     id: 'app.components.ProjectTemplatePreview.infoboxLine1',
     defaultMessage: 'Want to use this template for your participation project?',

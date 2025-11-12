@@ -35,11 +35,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldDescription',
     defaultMessage: 'Description',
   },
-  descriptionTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.descriptionTooltip1',
-    defaultMessage:
-      'Optional text shown under the question name on the signup form.',
-  },
+
   isQuestionRequired: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.isQuestionRequired',
     defaultMessage: 'Make answering this question required?',
@@ -84,10 +80,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.addANewDemographicQuestion',
     defaultMessage: 'Add a new demographic question',
   },
-  optionDeleteButton: {
-    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionDeleteButton',
-    defaultMessage: 'Delete',
-  },
+
   optionCancelButton: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionCancelButton',
     defaultMessage: 'Cancel',

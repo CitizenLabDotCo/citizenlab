@@ -9,10 +9,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.components.Field.comingSoon',
     defaultMessage: 'Coming soon',
   },
-  baseMonth: {
-    id: 'app.containers.AdminPage.DashboardPage.components.Field.baseMonth',
-    defaultMessage: 'Base month (optional)',
-  },
+
   options: {
     id: 'app.containers.AdminPage.DashboardPage.components.Field.options',
     defaultMessage: 'Options',

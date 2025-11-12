@@ -13,14 +13,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.heatmap.viewAllInsights',
     defaultMessage: 'View all insights',
   },
-  previousHeatmap: {
-    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.previousHeatmap',
-    defaultMessage: 'Previous heatmap',
-  },
-  nextHeatmap: {
-    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.nextHeatmap',
-    defaultMessage: 'Next heatmap',
-  },
+
   instances: {
     id: 'app.containers.AdminPage.projects.project.analysis.heatmap.count',
     defaultMessage: 'There are {count} instances of this combination.',

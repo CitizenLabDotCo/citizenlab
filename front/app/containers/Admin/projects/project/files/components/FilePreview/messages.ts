@@ -29,10 +29,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.csvPreviewLimit',
     defaultMessage: 'Maximum 50 rows are shown in CSV previews.',
   },
-  downloadFullFile: {
-    id: 'app.containers.AdminPage.ProjectFiles.downloadFullFile',
-    defaultMessage: 'Download full file',
-  },
+
   csvPreviewTooLarge: {
     id: 'app.containers.AdminPage.ProjectFiles.csvPreviewTooLarge',
     defaultMessage: 'CSV file is too large to preview.',

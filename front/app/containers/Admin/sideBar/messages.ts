@@ -5,10 +5,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.dashboard',
     defaultMessage: 'Dashboard',
   },
-  moderation: {
-    id: 'app.containers.AdminPage.SideBar.moderation',
-    defaultMessage: 'Moderation',
-  },
+
   users: {
     id: 'app.containers.AdminPage.SideBar.users',
     defaultMessage: 'Users',
@@ -65,10 +62,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.tools',
     defaultMessage: 'Tools',
   },
-  guide: {
-    id: 'app.containers.AdminPage.SideBar.guide',
-    defaultMessage: 'Guide',
-  },
+
   linkToSupport: {
     id: 'app.containers.AdminPage.SideBar.linkToSupport2',
     defaultMessage: 'https://support.govocal.com',

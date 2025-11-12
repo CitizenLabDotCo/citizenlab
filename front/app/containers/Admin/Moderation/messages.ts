@@ -37,10 +37,7 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.rowsPerPage',
     defaultMessage: 'Rows per page',
   },
-  show: {
-    id: 'app.containers.Admin.Moderation.show',
-    defaultMessage: 'Show',
-  },
+
   status: {
     id: 'app.containers.Admin.Moderation.status',
     defaultMessage: 'Status',
@@ -87,10 +84,7 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.goToPost',
     defaultMessage: 'Open this post in a new tab',
   },
-  goToProposal: {
-    id: 'app.containers.Admin.Moderation.goToProposal',
-    defaultMessage: 'Open this proposal in a new tab',
-  },
+
   goToComment: {
     id: 'app.containers.Admin.Moderation.goToComment',
     defaultMessage: 'Open this comment in a new tab',

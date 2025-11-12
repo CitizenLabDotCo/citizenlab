@@ -14,11 +14,7 @@ export default defineMessages({
     defaultMessage:
       'No results found. Please try a different filter or search term.',
   },
-  tryDifferentFilters: {
-    id: 'app.containers.IdeaCards.tryDifferentFilters',
-    defaultMessage:
-      'No results found. Please try a different filter or search term.',
-  },
+
   numberResults: {
     id: 'app.containers.IdeaCards.numberResults',
     defaultMessage: 'Results ({postCount})',
@@ -128,11 +124,7 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.list',
     defaultMessage: 'List',
   },
-  xResults: {
-    id: 'app.containers.IdeaCards.xResults',
-    defaultMessage:
-      '{ideasCount, plural, no {# results} one {# result} other {# results}}',
-  },
+
   all: {
     id: 'app.containers.IdeaCards.all',
     defaultMessage: 'All',
@@ -170,20 +162,9 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.issueTerm',
     defaultMessage: 'Issues',
   },
-  contributions: {
-    id: 'app.containers.IdeaCards.contributions',
-    defaultMessage: 'Contributions',
-  },
+
   proposals: {
     id: 'app.containers.IdeaCards.proposals',
     defaultMessage: 'Proposals',
-  },
-  initiatives: {
-    id: 'app.containers.IdeaCards.initiatives',
-    defaultMessage: 'Initiatives',
-  },
-  petitions: {
-    id: 'app.containers.IdeaCards.petitions',
-    defaultMessage: 'Petitions',
   },
 });

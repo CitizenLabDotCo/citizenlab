@@ -22,11 +22,7 @@ export default defineMessages({
     defaultMessage:
       '{ideasCount, plural, no {# projects} one {# project} other {# projects}}',
   },
-  xIssues: {
-    id: 'app.components.ProjectCard.xIssues',
-    defaultMessage:
-      '{ideasCount, plural, no {# issues} one {# issue} other {# issues}}',
-  },
+
   xQuestions: {
     id: 'app.components.ProjectCard.xQuestions',
     defaultMessage:

@@ -53,10 +53,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.ranking2',
     defaultMessage: 'Ranking',
   },
-  matrix_linear_scale: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2',
-    defaultMessage: 'Matrix',
-  },
+
   multiselect: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.multiselectText2',
     defaultMessage: 'Multiple choice - choose many',
@@ -65,14 +62,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.selectText2',
     defaultMessage: 'Multiple choice - choose one',
   },
-  linear_scale: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.linear_scale2',
-    defaultMessage: 'Linear scale',
-  },
-  sentiment_linear_scale: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.sentiment_linear_scale',
-    defaultMessage: 'Sentiment linear scale',
-  },
+
   rating: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.rating',
     defaultMessage: 'Rating',
@@ -85,22 +75,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.text2',
     defaultMessage: 'Short answer',
   },
-  multiselect_image: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.multiselect_image',
-    defaultMessage: 'Image choice - choose many',
-  },
-  point: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.point',
-    defaultMessage: 'Location',
-  },
-  file_upload: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.file_upload',
-    defaultMessage: 'File upload',
-  },
-  shapefile_upload: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.shapefile_upload',
-    defaultMessage: 'Esri shapefile upload',
-  },
+
   /* End input types */
   importInputs: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.importInputs',

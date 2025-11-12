@@ -6,10 +6,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  loading: {
-    id: 'app.containers.UsersEditPage.loading',
-    defaultMessage: 'Loading...',
-  },
   invisibleTitleUserSettings: {
     id: 'app.containers.UsersEditPage.invisibleTitleUserSettings',
     defaultMessage: 'All settings for your account',
@@ -18,10 +14,7 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.processing',
     defaultMessage: 'Sending...',
   },
-  buttonSuccessLabel: {
-    id: 'app.containers.UsersEditPage.buttonSuccessLabel',
-    defaultMessage: 'Success',
-  },
+
   messageError: {
     id: 'app.containers.UsersEditPage.messageError',
     defaultMessage: 'There was an error saving your profile.',
@@ -50,18 +43,12 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.firstNames',
     defaultMessage: 'First names',
   },
-  firstNamesEmptyError: {
-    id: 'app.containers.UsersEditPage.firstNamesEmptyError',
-    defaultMessage: 'Provide a first name',
-  },
+
   lastName: {
     id: 'app.containers.UsersEditPage.lastName',
     defaultMessage: 'Last name',
   },
-  lastNameEmptyError: {
-    id: 'app.containers.UsersEditPage.lastNameEmptyError',
-    defaultMessage: 'Provide a last name',
-  },
+
   email: {
     id: 'app.containers.UsersEditPage.email',
     defaultMessage: 'E-mail address',
@@ -172,10 +159,7 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.bio',
     defaultMessage: 'Bio',
   },
-  bio_placeholder: {
-    id: 'app.containers.UsersEditPage.bio_placeholder',
-    defaultMessage: 'Write a short description of yourself',
-  },
+
   imageDropzonePlaceholder: {
     id: 'app.containers.UsersEditPage.imageDropzonePlaceholder',
     defaultMessage: 'Add your profile picture here (max. 5 Mb)',
@@ -259,23 +243,7 @@ export default defineMessages({
   /*
    * Password change
    */
-  passwordChangeSection: {
-    id: 'app.containers.UsersEditPage.passwordChangeSection',
-    defaultMessage: 'Change your password',
-  },
-  passwordChangeSubtitle: {
-    id: 'app.containers.UsersEditPage.passwordChangeSubtitle',
-    defaultMessage: 'Confirm your current password and change to new password.',
-  },
-  passwordAddSection: {
-    id: 'app.containers.UsersEditPage.passwordAddSection',
-    defaultMessage: 'Add a password',
-  },
-  passwordAddSubtitle2: {
-    id: 'app.containers.UsersEditPage.passwordAddSubtitle2',
-    defaultMessage:
-      'Set a password and easily login to the platform, without having to confirm your email every time.',
-  },
+
   addPassword: {
     id: 'app.containers.UsersEditPage.addPassword',
     defaultMessage: 'Add password',

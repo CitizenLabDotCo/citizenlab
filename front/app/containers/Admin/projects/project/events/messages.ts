@@ -42,10 +42,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEvents.onlineEventLinkTooltip',
     defaultMessage: 'If your event is online, add a link to it here.',
   },
-  locationLabel: {
-    id: 'app.containers.AdminPage.ProjectEvents.locationLabel',
-    defaultMessage: 'Location',
-  },
+
   dateStartLabel: {
     id: 'app.containers.AdminPage.ProjectEvents.dateStartLabel',
     defaultMessage: 'Starting date & time',
@@ -155,10 +152,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEvents.searchForLocation',
     defaultMessage: 'Search for a location',
   },
-  refineLocationCoordinates: {
-    id: 'app.containers.AdminPage.ProjectEvents.refineLocationCoordinates',
-    defaultMessage: 'Refine map location',
-  },
+
   addressOneTooltip: {
     id: 'app.containers.AdminPage.ProjectEvents.addressOneTooltip',
     defaultMessage: 'Street address of the event location',

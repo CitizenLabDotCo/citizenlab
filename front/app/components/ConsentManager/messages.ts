@@ -30,10 +30,7 @@ export default defineMessages({
     id: 'app.components.ConsentManager.Banner.accept',
     defaultMessage: 'Accept',
   },
-  ariaButtonClose: {
-    id: 'app.components.ConsentManager.Banner.ariaButtonClose2',
-    defaultMessage: 'Reject policy and close banner',
-  },
+
   back: {
     id: 'app.components.ConsentManager.Modal.PreferencesDialog.back',
     defaultMessage: 'Go back',

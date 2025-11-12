@@ -29,10 +29,7 @@ export default defineMessages({
     id: 'app.containers.footer.siteMap',
     defaultMessage: 'Site Map',
   },
-  feedbackEmptyError: {
-    id: 'app.containers.footer.feedbackEmptyError',
-    defaultMessage: 'The feedback field cannot be empty.',
-  },
+
   ariaLabel: {
     id: 'app.containers.footer.ariaLabel',
     defaultMessage: 'Secondary',

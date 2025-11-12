@@ -51,14 +51,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.Voting.maxVotesPerOption',
     defaultMessage: 'Maximum votes per option',
   },
-  voteCalledPlaceholderSingular: {
-    id: 'app.containers.AdminPage.ProjectEdit.Voting.voteCalledPlaceholderSingular2',
-    defaultMessage: 'E.g. token, point, carbon credit...',
-  },
-  voteCalledPlaceholderPlural: {
-    id: 'app.containers.AdminPage.ProjectEdit.Voting.voteCalledPlaceholderPlural2',
-    defaultMessage: 'E.g. tokens, points, carbon credits...',
-  },
+
   minimumOptions: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.minimumOptions',
     defaultMessage: 'Minimum selected options',

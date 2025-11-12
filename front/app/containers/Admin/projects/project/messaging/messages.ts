@@ -115,10 +115,7 @@ export default defineMessages({
     id: 'app.containers.Admin.project.emails.draft',
     defaultMessage: 'Draft',
   },
-  sending: {
-    id: 'app.containers.Admin.project.emails.sending',
-    defaultMessage: 'Sending',
-  },
+
   sent: {
     id: 'app.containers.Admin.project.emails.sent',
     defaultMessage: 'Sent',
@@ -164,27 +161,12 @@ export default defineMessages({
     id: 'app.containers.Admin.project.Campaigns.campaignTo',
     defaultMessage: 'To:',
   },
-  noAccess: {
-    id: 'app.containers.Admin.project.Campaigns.noAccess',
-    defaultMessage:
-      "We're sorry, but it seems like you don't have access to the emails section",
-  },
+
   noCampaignsHeader: {
     id: 'app.containers.Admin.project.emails.emptyCampaignsHeader',
     defaultMessage: 'Send your first email',
   },
-  message: {
-    id: 'app.containers.Admin.project.emails.message',
-    defaultMessage: 'Message',
-  },
-  dateSent: {
-    id: 'app.containers.Admin.project.emails.dateSent',
-    defaultMessage: 'Date sent',
-  },
-  recipients: {
-    id: 'app.containers.Admin.project.emails.recipients',
-    defaultMessage: 'Recipients',
-  },
+
   status: {
     id: 'app.containers.Admin.project.emails.status',
     defaultMessage: 'Status',

@@ -51,10 +51,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.searchFiles',
     defaultMessage: 'Search files',
   },
-  filesUploadedSuccessfully: {
-    id: 'app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully',
-    defaultMessage: 'All files uploaded successfully',
-  },
+
   transcriptionPending: {
     id: 'app.containers.AdminPage.ProjectFiles.transcriptionPending',
     defaultMessage:
@@ -101,11 +98,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.confirmAndUploadFiles',
     defaultMessage: 'Confirm and upload',
   },
-  tooManyFiles: {
-    id: 'app.containers.AdminPage.ProjectFiles.tooManyFiles',
-    defaultMessage:
-      'You can only upload a maximum of {maxFiles} files at a time.',
-  },
+
   uploadSummary: {
     id: 'app.containers.AdminPage.ProjectFiles.uploadSummary',
     defaultMessage:
@@ -160,26 +153,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.retryUpload',
     defaultMessage: 'Retry upload',
   },
-  meeting: {
-    id: 'app.containers.AdminPage.ProjectFiles.meeting',
-    defaultMessage: 'Meeting',
-  },
-  interview: {
-    id: 'app.containers.AdminPage.ProjectFiles.interview',
-    defaultMessage: 'Interview',
-  },
-  strategic_plan: {
-    id: 'app.containers.AdminPage.ProjectFiles.strategic_plan',
-    defaultMessage: 'Strategic plan',
-  },
-  info_sheet: {
-    id: 'app.containers.AdminPage.ProjectFiles.info_sheet',
-    defaultMessage: 'Information',
-  },
-  policy: {
-    id: 'app.containers.AdminPage.ProjectFiles.policy',
-    defaultMessage: 'Policy',
-  },
+
   report: {
     id: 'app.containers.AdminPage.ProjectFiles.report',
     defaultMessage: 'Report',
@@ -196,10 +170,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.fileNameLabel',
     defaultMessage: 'File Name',
   },
-  saveFileMetadataSuccessMessage: {
-    id: 'app.containers.AdminPage.ProjectFiles.saveFileMetadataSuccessMessage',
-    defaultMessage: 'File updated successfully.',
-  },
+
   categoryLabel: {
     id: 'app.containers.AdminPage.ProjectFiles.categoryLabel',
     defaultMessage: 'Category',
@@ -215,9 +186,5 @@ export default defineMessages({
   fileDescriptionLabel: {
     id: 'app.containers.AdminPage.ProjectFiles.fileDescriptionLabel',
     defaultMessage: 'Description',
-  },
-  askButton: {
-    id: 'app.containers.AdminPage.ProjectFiles.askButton',
-    defaultMessage: 'Ask',
   },
 });
