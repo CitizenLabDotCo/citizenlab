@@ -258,9 +258,7 @@ function formatOutput(unusedKeys, mode = 'standard') {
   }
 
   output += '└─────────────────────────────────────────────────────────────────────────────────────────────────┘\n';
-  output += '\n💡 Tips:\n';
-  output += '   • Keys marked with 🔄 are likely dynamically generated\n';
-  output += '   • Some results may be false positives if keys are constructed at runtime\n';
+  output += '\n💡 Tip:\n';
   output += '   • Review each key before removing it from translations\n';
 
   return output;
