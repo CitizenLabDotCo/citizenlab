@@ -3,7 +3,7 @@
 class WebApi::V1::PermissionsController < ApplicationController
   include LockedUserCustomFieldsConcern
 
-  before_action :set_permission, only: %i[show update reset requirements schema custom_fields access_denied_explanation]
+  before_action :set_permission, only: %i[show update reset requirements schema custom_fields custom_field_options access_denied_explanation]
   skip_before_action :authenticate_user
 
   def index
@@ -66,7 +66,22 @@ class WebApi::V1::PermissionsController < ApplicationController
   def custom_fields
     authorize @permission
     fields = user_requirements_service.requirements_custom_fields @permission
-    render json: WebApi::V1::CustomFieldSerializer.new(fields, params: jsonapi_serializer_params_with_locked_fields).serializable_hash.to_json
+    render json: WebApi::V1::CustomFieldSerializer.new(
+      fields, params: 
+      jsonapi_serializer_params_with_locked_fields,
+      include: [:options]
+    ).serializable_hash.to_json
+  end
+
+  def custom_field_options
+    authorize @permission
+    fields = user_requirements_service.requirements_custom_fields @permission
+    options = CustomFieldOption.where(custom_field_id: fields.map(&:id))
+
+    render json: WebApi::V1::CustomFieldOptionSerializer.new(
+      options,
+      params: jsonapi_serializer_params
+    ).serializable_hash.to_json
   end
 
   def access_denied_explanation

@@ -29,6 +29,7 @@ Rails.application.routes.draw do
           get 'requirements', on: :member
           get 'schema', on: :member
           get 'custom_fields', on: :member
+          get 'custom_field_options', on: :member
           get 'access_denied_explanation', on: :member
           patch 'reset', on: :member
           resources :permissions_custom_fields, shallow: true do
