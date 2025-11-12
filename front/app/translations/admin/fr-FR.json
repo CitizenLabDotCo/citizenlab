@@ -1649,7 +1649,7 @@
   "app.containers.Admin.tools.webhooks.close": "Fermer",
   "app.containers.Admin.tools.webhooks.copiedSuccess": "Copié !",
   "app.containers.Admin.tools.webhooks.copySecret": "Copier le jeton secret",
-  "app.containers.Admin.tools.webhooks.createButton": "Créer un webhook",
+  "app.containers.Admin.tools.webhooks.createButton": "Créer le webhook",
   "app.containers.Admin.tools.webhooks.createSuccess": "Webhook créé avec succès",
   "app.containers.Admin.tools.webhooks.createSuccessDescription": "Vous pouvez utiliser le jeton secret ci-dessous pour vérifier si les demandes adressées à l'URL de votre webhook proviennent de nous. Pour plus d'informations, consultez notre site {webhookDocumentationLink}.",
   "app.containers.Admin.tools.webhooks.createSuccessImportant": "<b>Important : vous ne pouvez copier ce jeton secret qu'une seule fois.</b> Vous ne pouvez copier ce jeton secret qu'une seule fois. Si vous fermez cette fenêtre, vous ne pourrez plus la voir.",
