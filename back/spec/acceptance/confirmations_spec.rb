@@ -136,11 +136,11 @@ resource 'Confirmations' do
 
       include_examples 'confirmation code validation'
 
-      example 'does not allow confirming a user without password' do
+      example 'allows confirming a user without password' do
         user_without_password = create(:user_with_confirmation, password: nil)
         code = user_without_password.email_confirmation_code
         do_request(confirmation: { email: user_without_password.email, code: code })
-        assert_status 422
+        assert_status 200
       end
     end
   end

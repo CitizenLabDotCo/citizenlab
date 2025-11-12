@@ -63,11 +63,11 @@ resource 'Request codes' do
       expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
     end
 
-    example 'It does not work if user has no password' do
+    example 'It works if user has no password' do
       user = create(:user_no_password)
       header_token_for(user)
       do_request
-      expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
+      expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
     end
 
     example 'It does not work if user reached email_confirmation_code_reset_count' do
