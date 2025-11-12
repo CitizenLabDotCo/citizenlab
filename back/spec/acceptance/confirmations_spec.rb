@@ -138,8 +138,9 @@ resource 'Confirmations' do
 
       example 'allows confirming a user without password' do
         user_without_password = create(:user_with_confirmation, password: nil)
+        header_token_for user_without_password
         code = user_without_password.email_confirmation_code
-        do_request(confirmation: { email: user_without_password.email, code: code })
+        do_request(confirmation: { code: code })
         assert_status 200
       end
     end
