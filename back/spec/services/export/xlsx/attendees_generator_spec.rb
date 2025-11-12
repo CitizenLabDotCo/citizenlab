@@ -30,7 +30,7 @@ describe Export::Xlsx::AttendeesGenerator do
       expect([user_row[title_row.find_index 'domicile']]).to eq ['Center']
     end
 
-    it 'allows custom fields with the same name as user attributes' do
+    it 'allows duplicate column headers' do
       create(:custom_field, title_multiloc: { 'en' => 'Last name' }, key: 'last_name', resource_type: 'User')
       user_last_name = users.first.last_name
       users.first.update!(custom_field_values: { 'last_name' => 'Doe' })
