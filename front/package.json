@@ -273,6 +273,9 @@
   "optionalDependencies": {
     "fsevents": "2"
   },
+  "overrides": {
+    "cheerio": "1.0.0-rc.12"
+  },
   "msw": {
     "workerDirectory": ".storybook/public"
   }
