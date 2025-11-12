@@ -544,26 +544,26 @@ describe 'Rack::Attack' do
         headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => "1.2.3.#{i}" }
         post(
           '/web_api/v1/user_token/unconfirmed',
-          params: '{ "auth": { "email": "' + user.email + '" } }',
+          params: "{ \"auth\": { \"email\": \"#{user.email}\" } }",
           headers: headers
         )
       end
       expect(status).to eq(422) # Unauthorized
 
-      headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => "1.2.3.7" }
+      headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.7' }
       post(
         '/web_api/v1/user_token/unconfirmed',
-        params: '{ "auth": { "email": "' + user.email + '" } }',
+        params: "{ \"auth\": { \"email\": \"#{user.email}\" } }",
         headers: headers
       )
       expect(status).to eq(429) # Too many requests
     end
 
     travel_to(5.minutes.from_now) do
-      headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => "1.2.3.8" }
+      headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.8' }
       post(
         '/web_api/v1/user_token/unconfirmed',
-        params: '{ "auth": { "email": "' + user.email + '", "password": "test123456" } }',
+        params: "{ \"auth\": { \"email\": \"#{user.email}\", \"password\": \"test123456\" } }",
         headers: headers
       )
       expect(status).to eq(422) # Unauthorized
@@ -677,7 +677,7 @@ describe 'Rack::Attack' do
       end
       expect(status).to eq(200) # ok
 
-      headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => "1.2.3.7" }
+      headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.7' }
       get(
         '/web_api/v1/users/check/user@test.com',
         headers: headers
@@ -686,7 +686,7 @@ describe 'Rack::Attack' do
     end
 
     travel_to(5.minutes.from_now) do
-      headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => "1.2.3.8" }
+      headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.8' }
       get(
         '/web_api/v1/users/check/user@test.com',
         headers: headers
