@@ -494,7 +494,9 @@ jobs:
           paths:
             - /root/.npm
           key: v2-npm-cache-{{ checksum "package-lock.json" }}
-      - run: npm run i18n-check:unused
+      - run:
+          name: Check for unused translations
+          command: npm run find-unused-translations
 
   front-lint:
     docker:
