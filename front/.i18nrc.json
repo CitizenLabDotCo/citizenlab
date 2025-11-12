@@ -1,0 +1,20 @@
+{
+  "sourceDirectories": ["app"],
+  "translationFiles": {
+    "en": "app/translations/en.json"
+  },
+  "exclude": [
+    "**/node_modules/**",
+    "**/build/**",
+    "**/dist/**",
+    "**/*.test.{ts,tsx,js,jsx}",
+    "**/*.spec.{ts,tsx,js,jsx}",
+    "**/cypress/**",
+    "**/__tests__/**",
+    "**/__mocks__/**"
+  ],
+  "checks": {
+    "unusedTranslations": true,
+    "missingTranslations": true
+  }
+}
