@@ -2939,7 +2939,6 @@
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesTooltip": "Analizi desteklemek amacıyla YZ'ye ek bağlam sağlamak için dosyaları ekleyin.",
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesWithCurrentCount": "Dosya ekleme ({numberAttachedFiles})",
   "app.containers.AdminPage.projects.project.analysis.files.save": "Kaydet",
-  "app.containers.AdminPage.projects.project.analysis.files.uploadFiles": "Projeye dosya yükleme",
   "app.containers.AdminPage.projects.project.analysis.filter": "Yalnızca bu değere sahip girdileri göster",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Cevapsız yanıtları gizle",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Otomatik içgörüler",

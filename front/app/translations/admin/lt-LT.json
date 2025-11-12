@@ -2939,7 +2939,6 @@
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesTooltip": "Pridėkite rinkmenas, kad suteiktumėte papildomą AI kontekstą, padedantį atlikti analizę.",
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesWithCurrentCount": "Pridėti failus ({numberAttachedFiles})",
   "app.containers.AdminPage.projects.project.analysis.files.save": "Išsaugoti",
-  "app.containers.AdminPage.projects.project.analysis.files.uploadFiles": "Failų įkėlimas į projektą",
   "app.containers.AdminPage.projects.project.analysis.filter": "Rodyti tik įvestis su šia reikšme",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Paslėpti atsakymus be atsakymo",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Automatinės įžvalgos",

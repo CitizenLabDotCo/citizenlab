@@ -2939,7 +2939,6 @@
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesTooltip": "Atodwch ffeiliau i roi cyd-destun ychwanegol i'r AI i gefnogi dadansoddiad.",
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesWithCurrentCount": "Atodi ffeiliau ({numberAttachedFiles})",
   "app.containers.AdminPage.projects.project.analysis.files.save": "Cadw",
-  "app.containers.AdminPage.projects.project.analysis.files.uploadFiles": "Lanlwytho ffeiliau i'r prosiect",
   "app.containers.AdminPage.projects.project.analysis.filter": "Dangos mewnbynnau gyda'r gwerth hwn yn unig",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Cuddio ymatebion heb unrhyw ateb",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Auto-mewnwelediadau",

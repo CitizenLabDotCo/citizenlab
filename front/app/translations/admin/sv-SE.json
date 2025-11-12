@@ -2939,7 +2939,6 @@
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesTooltip": "Bifoga filer för att ge ytterligare sammanhang till AI för att stödja analysen.",
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesWithCurrentCount": "Bifoga filer ({numberAttachedFiles})",
   "app.containers.AdminPage.projects.project.analysis.files.save": "Spara",
-  "app.containers.AdminPage.projects.project.analysis.files.uploadFiles": "Ladda upp filer till projektet",
   "app.containers.AdminPage.projects.project.analysis.filter": "Visa endast inmatningar med detta värde",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Dölj svar utan svar",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Auto-insikter",

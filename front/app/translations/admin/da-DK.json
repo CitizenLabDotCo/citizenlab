@@ -2939,7 +2939,6 @@
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesTooltip": "Vedhæft filer for at give yderligere kontekst til AI for at understøtte analysen.",
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesWithCurrentCount": "Vedhæft filer ({numberAttachedFiles})",
   "app.containers.AdminPage.projects.project.analysis.files.save": "Gem",
-  "app.containers.AdminPage.projects.project.analysis.files.uploadFiles": "Upload filer til projektet",
   "app.containers.AdminPage.projects.project.analysis.filter": "Vis kun input med denne værdi",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Skjul besvarelser uden svar",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Automatisk indsigt",

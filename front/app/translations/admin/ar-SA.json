@@ -2939,7 +2939,6 @@
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesTooltip": "قم بإرفاق الملفات لتوفير سياق إضافي للذكاء الاصطناعي لدعم التحليل.",
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesWithCurrentCount": "إرفاق الملفات ({numberAttachedFiles})",
   "app.containers.AdminPage.projects.project.analysis.files.save": "يحفظ",
-  "app.containers.AdminPage.projects.project.analysis.files.uploadFiles": "تحميل الملفات إلى المشروع",
   "app.containers.AdminPage.projects.project.analysis.filter": "إظهار المدخلات بهذه القيمة فقط",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "إخفاء الردود بدون إجابة",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "الرؤى التلقائية",

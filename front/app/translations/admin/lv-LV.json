@@ -2939,7 +2939,6 @@
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesTooltip": "Pievienojiet failus, lai sniegtu papildu kontekstu AI analīzei.",
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesWithCurrentCount": "Pievienot failus ({numberAttachedFiles})",
   "app.containers.AdminPage.projects.project.analysis.files.save": "Saglabāt",
-  "app.containers.AdminPage.projects.project.analysis.files.uploadFiles": "Failu augšupielāde projektā",
   "app.containers.AdminPage.projects.project.analysis.filter": "Rādīt tikai ievades ar šo vērtību",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Paslēpt atbildes bez atbildes",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Automātiskās norādes",

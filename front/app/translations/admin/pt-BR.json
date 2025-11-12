@@ -2939,7 +2939,6 @@
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesTooltip": "Anexe arquivos para fornecer contexto adicional à IA para apoiar a análise.",
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesWithCurrentCount": "Anexar arquivos ({numberAttachedFiles})",
   "app.containers.AdminPage.projects.project.analysis.files.save": "Salvar",
-  "app.containers.AdminPage.projects.project.analysis.files.uploadFiles": "Fazer upload de arquivos para o projeto",
   "app.containers.AdminPage.projects.project.analysis.filter": "Mostrar apenas entradas com este valor",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Ocultar respostas sem resposta",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Insights automáticos",

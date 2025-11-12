@@ -2939,7 +2939,6 @@
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesTooltip": "Voeg bestanden bij om de AI van extra context te voorzien ter ondersteuning van de analyse.",
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesWithCurrentCount": "Bestanden bijvoegen ({numberAttachedFiles})",
   "app.containers.AdminPage.projects.project.analysis.files.save": "Bewaar",
-  "app.containers.AdminPage.projects.project.analysis.files.uploadFiles": "Bestanden uploaden naar project",
   "app.containers.AdminPage.projects.project.analysis.filter": "Toon alleen bijdragen met deze waarde",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Verberg reacties zonder antwoord",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Auto-inzichten",
