@@ -537,8 +537,6 @@
   "app.containers.AdminPage.HeroBannerForm.heroBannerTitle": "البانر الرئيسي",
   "app.containers.AdminPage.PagesEdition.policiesSubtitle": "عدِّل الشروط والأحكام وسياسة الخصوصية في منصتك. يمكن تعديل صفحات أخرى، بما فيها الصفحتان \"نبذة\" و\"أسئلة مكررة\"، في علامة التبويب {navigationLink}.",
   "app.containers.AdminPage.PagesEdition.policiesTitle": "سياسات المنصة",
-  "app.containers.AdminPage.PagesEdition.privacy-policy": "سياسة الخصوصية",
-  "app.containers.AdminPage.PagesEdition.terms-and-conditions": "الشروط والأحكام",
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "قائمة بالمشاريع على المنصة",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "اللوحة الرئيسية للمشاريع",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "المشاريع",

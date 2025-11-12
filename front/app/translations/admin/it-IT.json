@@ -690,8 +690,6 @@
   "app.containers.AdminPage.HeroBannerForm.heroBannerTitle": "Hero banner",
   "app.containers.AdminPage.PagesEdition.policiesSubtitle": "Modifica i termini e le condizioni della tua piattaforma e l'informativa sulla privacy. Altre pagine, comprese le pagine About e FAQ, possono essere modificate nella scheda {navigationLink}.",
   "app.containers.AdminPage.PagesEdition.policiesTitle": "Politiche della piattaforma",
-  "app.containers.AdminPage.PagesEdition.privacy-policy": "Privacy Policy",
-  "app.containers.AdminPage.PagesEdition.terms-and-conditions": "Terms and Conditions",
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "List of projects on the platform",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Projects dashboard",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Projects",
