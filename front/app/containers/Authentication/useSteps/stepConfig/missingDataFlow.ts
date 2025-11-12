@@ -10,6 +10,7 @@ import {
   AuthenticationData,
   GetRequirements,
   State,
+  UpdateState,
 } from 'containers/Authentication/typings';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
@@ -25,6 +26,7 @@ export const missingDataFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
+  updateState: UpdateState,
   state: State
 ) => {
   return {
@@ -82,13 +84,19 @@ export const missingDataFlow = (
         );
 
         if (missingDataStep) {
+          if (
+            missingDataStep === 'missing-data:email-confirmation' &&
+            builtInFieldUpdate.email
+          ) {
+            updateState({ email: builtInFieldUpdate.email });
+          }
+
           setCurrentStep(missingDataStep);
           return;
         }
 
         if (doesNotMeetGroupCriteria(requirements)) {
           setCurrentStep('access-denied');
-          return;
         }
 
         setCurrentStep('success');

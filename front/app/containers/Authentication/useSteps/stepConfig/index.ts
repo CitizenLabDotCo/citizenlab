@@ -43,6 +43,7 @@ export const getStepConfig = (
       getAuthenticationData,
       getRequirements,
       setCurrentStep,
+      updateState,
       state
     ),
 
