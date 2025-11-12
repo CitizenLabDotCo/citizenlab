@@ -10,7 +10,9 @@ end
 # between preventing the app from starting or starting without refreshing the models,
 # which could likely cause errors in the services using RubyLLM. We chose the latter.
 begin
-  RubyLLM.models.refresh!
+  unless Rails.env.test?
+    RubyLLM.models.refresh!
+  end
 rescue StandardError => e
   require 'error_reporter'
   ErrorReporter.report(e)
