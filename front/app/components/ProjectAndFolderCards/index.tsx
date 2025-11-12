@@ -68,6 +68,7 @@ const ProjectAndFolderCards = ({
         publicationStatusFilter: PUBLICATION_STATUSES,
         rootLevelOnly,
         removeNotAllowedParents: true,
+        remove_all_unlisted: true,
         topicIds,
         areaIds,
         search,
