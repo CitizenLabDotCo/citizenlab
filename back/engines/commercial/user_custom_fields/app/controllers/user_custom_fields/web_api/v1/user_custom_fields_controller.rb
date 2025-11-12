@@ -15,6 +15,10 @@ module UserCustomFields
             .registration.order(:ordering)
           @custom_fields = @custom_fields.where(input_type: params[:input_types]) if params[:input_types]
 
+          puts "=" * 20
+          puts "fjaweipgjberpiotbjgrtiopbjnrypoih"
+          puts "=" * 20
+
           render json: serialize_custom_fields(@custom_fields, params: jsonapi_serializer_params_with_locked_fields, include: %i[projects])
         end
 

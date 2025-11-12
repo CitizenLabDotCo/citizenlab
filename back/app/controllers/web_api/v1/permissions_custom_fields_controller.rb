@@ -7,6 +7,10 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
   def index
     authorize PermissionsCustomField.new(permission: permission)
 
+    puts "=" * 20
+    puts "grjeaibophnjtoypnjtproihj"
+    puts "=" * 20
+
     permissions_custom_fields_service = Permissions::PermissionsCustomFieldsService.new
     permissions_custom_fields = permissions_custom_fields_service.fields_for_permission(permission, return_hidden: true)
     render json: WebApi::V1::PermissionsCustomFieldSerializer.new(permissions_custom_fields, params: jsonapi_serializer_params).serializable_hash
