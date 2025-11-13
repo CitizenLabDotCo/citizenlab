@@ -5,18 +5,25 @@ class TextImageService < ContentImageService
 
   protected
 
-  def decode_content!(content)
+  def decode_content(content, raise_on_error: false)
     case content
-    when Hash then content.transform_values { |v| decode_content!(v) }
-    when String, nil then decode_string!(content)
+    when Hash then content.transform_values { |v| decode_content(v, raise_on_error:) }
+    when String then decode_string!(content)
+    when nil then nil
     else raise ArgumentError, "Invalid content type: #{content.class}"
     end
+  rescue DecodingError => e
+    raise if raise_on_error
+
+    log_decoding_error(e)
+    UndecodableContent.new(content, e)
   end
 
   def encode_content(content)
     case content
+    when UndecodableContent then content.original_content
     when Nokogiri::HTML::DocumentFragment then content.to_s
-    when Hash then content.transform_values(&:to_s)
+    when Hash then content.transform_values { |v| encode_content(v) }
     else raise ArgumentError, "Invalid content type: #{content.class}"
     end
   end
@@ -35,9 +42,10 @@ class TextImageService < ContentImageService
 
   # Returns the image elements in the given HTML document.
   # @param html_doc [Nokogiri::HTML::DocumentFragment] the HTML document to search.
-  # @return [Nokogiri::XML::NodeSet] the image elements.
+  # @return [Enumerable<Nokogiri::XML::Node>] the image elements.
   def image_elements(content)
     case content
+    when UndecodableContent then []
     when Nokogiri::HTML::DocumentFragment then content.css('img')
     when Hash then content.values.flat_map { |v| image_elements(v) }
     else raise ArgumentError, "Invalid content type: #{content.class}"

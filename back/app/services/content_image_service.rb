@@ -25,11 +25,31 @@ class ContentImageService
     attr_reader :parse_errors
   end
 
+  # Wrapper for content that could not be decoded.
+  # Preserves the original encoded content for round-trip safety and partial processing.
+  class UndecodableContent
+    attr_reader :original_content, :error
+
+    def initialize(original_content, error = nil)
+      @original_content = original_content
+      @error = error
+      freeze
+    end
+
+    def to_s
+      "[UndecodableContent: #{original_content.class}]"
+    end
+
+    def inspect
+      "#<UndecodableContent original_content=#{original_content.inspect[0..50]}... error=#{error&.class}>"
+    end
+  end
+
   # Extracts and remove image data from the content, stores it in a separate image model,
   # and updates the original content to reference the image model instead.
   def swap_data_images(encoded_content, imageable: nil, field: nil)
     content = decode_content(encoded_content)
-    return encoded_content if !content
+    return encoded_content if content.is_a?(UndecodableContent) || content.blank?
 
     image_elements(content).each do |img_elt|
       next if image_attributes_for_element.none? { |elt_atr| attribute? img_elt, elt_atr }
@@ -67,6 +87,8 @@ class ContentImageService
   def swap_data_images!(imageable, field, association)
     encoded_content = imageable.read_attribute(field)
     content = decode_content(encoded_content)
+    return if content.is_a?(UndecodableContent) || content.blank?
+
     association = imageable.public_send(association) if association.is_a?(Symbol)
 
     image_elements(content).each do |img_elt|
@@ -98,7 +120,7 @@ class ContentImageService
 
   # Replaces references to image models in the content by actual image data.
   def render_data_images(encoded_content, imageable: nil, field: nil)
-    content = decode_content! encoded_content
+    content = decode_content(encoded_content, raise_on_error: true)
     precompute_for_rendering imageable
 
     image_elements(content).each do |img_elt|
@@ -118,18 +140,19 @@ class ContentImageService
 
   protected
 
-  # @param encoded_content [String]
-  # @raise [DecodingError] if the content could not be decoded.
-  def decode_content!(encoded_content)
-    # No encoding by default.
-    encoded_content
-  end
-
-  def decode_content(encoded_content)
-    decode_content!(encoded_content)
+  # Decodes the given encoded content.
+  # @param encoded_content [String] The content to decode.
+  # @param raise_on_error [Boolean] Whether to raise DecodingError on failure.
+  #   When false, returns UndecodableContent wrapper instead.
+  # @return The decoded content, or UndecodableContent if decoding fails and raise_on_error is false.
+  # @raise [DecodingError] if the content could not be decoded and raise_on_error is true.
+  def decode_content(encoded_content, raise_on_error: false)
+    encoded_content # No encoding by default.
   rescue DecodingError => e
+    raise if raise_on_error
+
     log_decoding_error(e)
-    nil
+    UndecodableContent.new(encoded_content, e)
   end
 
   def encode_content(decoded_content)
