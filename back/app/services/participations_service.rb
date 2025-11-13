@@ -25,11 +25,24 @@ class ParticipationsService
   def initialize
     @phase_participations = {}
     @permissions_custom_fields_service = Permissions::PermissionsCustomFieldsService.new
+
+    @cache_timestamps = {}
+    @cache_ttl = 1.minute # Adjust TTL as needed
   end
 
   # Fetch and cache participations in singleton for a phase
   def phase_participations(phase)
-    @phase_participations[phase.id] ||= phase.pmethod.participations
+    cache_key = phase.id
+  
+    # Expire old cache
+    if @cache_timestamps[cache_key] && @cache_timestamps[cache_key] < @cache_ttl.ago
+      @phase_participations.delete(cache_key)
+    end
+    
+    @phase_participations[cache_key] ||= begin
+      @cache_timestamps[cache_key] = Time.current
+      phase.pmethod.participations
+    end
   end
 
   # Just the phase-level participation data (not including action-level breakdowns, nor demographics)
