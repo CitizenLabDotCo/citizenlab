@@ -35,21 +35,34 @@ describe TextImageService do
       expect(service.swap_data_images(imageable.description_multiloc, field: :description_multiloc, imageable: imageable)).to eq({ 'en' => input })
     end
 
-    # It's more of a side effect; what really matters is that it doesn't fail when some
-    # values are nil.
-    it 'converts nil values in multiloc to empty strings' do
-      imageable = create(:project, description_multiloc: {
+    # NOTE: We build the multiloc hash directly instead of passing it through the model
+    # because Project's sanitize_description_multiloc callback converts nil to ''.
+    # This test verifies that swap_data_images itself preserves nil values.
+    it 'preserves nil values in multiloc' do
+      imageable = create(:project)
+      multiloc = {
         'nl-BE' => nil,
         'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">'
-      })
+      }
 
-      output = service.swap_data_images imageable.description_multiloc, field: :description_multiloc, imageable: imageable
+      output = service.swap_data_images multiloc, field: :description_multiloc, imageable: imageable
       text_image = imageable.text_images.reload.order(:created_at).first
 
       expect(output).to match(
-        'en' => %(<img data-cl2-text-image-text-reference="#{text_image.text_reference}">),
-        'nl-BE' => ''
+        'nl-BE' => nil,
+        'en' => %(<img data-cl2-text-image-text-reference="#{text_image.text_reference}">)
       )
+    end
+
+    it 'processes valid locale and preserves malformed HTML' do
+      # Nokogiri auto-fixes most HTML issues, so we need truly broken HTML
+      malformed_html = '<<<<invalid>>>>'
+      valid_html = '<p>Valid content</p>'
+      multiloc = { 'en' => valid_html, 'fr' => malformed_html }
+
+      result = service.swap_data_images(multiloc)
+
+      expect(result).to match('en' => valid_html, 'fr' => malformed_html)
     end
   end
 
@@ -89,6 +102,19 @@ describe TextImageService do
         service.swap_data_images!(project, :description_multiloc, :text_images)
       end.not_to(change(TextImage, :count))
     end
+
+    it 'skips processing for malformed HTML' do
+      imageable = create(:project)
+      malformed_html = '<<<<invalid>>>>'
+      imageable.description_multiloc = { 'en' => malformed_html }
+
+      # swap_data_images! returns the imageable, but doesn't modify the content
+      original_content = imageable.description_multiloc['en']
+      result = service.swap_data_images!(imageable, :description_multiloc, :text_images)
+
+      expect(result).to eq(imageable) # Returns the imageable
+      expect(imageable.description_multiloc['en']).to eq(original_content) # Content unchanged
+    end
   end
 
   describe 'render_data_images_multiloc' do
@@ -121,6 +147,41 @@ describe TextImageService do
       expect do
         service.render_data_images_multiloc imageable.description_multiloc, field: :description_multiloc, imageable: imageable
       end.not_to exceed_query_limit(1).with(/SELECT.*text_images/)
+    end
+  end
+
+  describe 'render_data_images' do
+    it 'preserves nil in round-trip with swap_data_images' do
+      imageable = create(:project)
+      swapped = service.swap_data_images(nil, imageable: imageable, field: :description_multiloc)
+      rendered = service.render_data_images(swapped, imageable: imageable, field: :description_multiloc)
+
+      expect(rendered).to be_nil
+    end
+  end
+
+  describe 'encode/decode content round-trip' do
+    where(:description, :value) do
+      [
+        ['nil', nil],
+        ['empty string', ''],
+        ['simple HTML', '<p>Hello</p>'],
+        ['HTML with image', '<img src="test.png">'],
+        ['malformed HTML', '<<<<invalid>>>>'],
+        ['flat hash', { 'en' => '<p>English</p>', 'fr' => '<p>French</p>' }],
+        ['nested hash', { 'outer' => { 'inner' => '<p>Nested</p>' } }],
+        ['hash with nil value', { 'en' => '<p>Content</p>', 'fr' => nil }],
+        ['hash with empty string', { 'en' => '<p>Content</p>', 'fr' => '' }],
+        ['hash with malformed HTML', { 'en' => '<p>Valid</p>', 'fr' => '<<<<bad>>>>' }]
+      ]
+    end
+
+    with_them do
+      it "preserves #{params[:description]} unchanged" do
+        decoded = service.send(:decode_content, value)
+        encoded = service.send(:encode_content, decoded)
+        expect(encoded).to eq(value)
+      end
     end
   end
 end

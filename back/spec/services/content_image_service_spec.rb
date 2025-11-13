@@ -7,18 +7,23 @@ describe ContentImageService do
 
   let(:subclass) do
     Class.new(described_class) do
-      def decode_content!(content)
+      def decode_content(content, raise_on_error: false)
         case content
-        when Hash then content.transform_values { |v| decode_content!(v) }
+        when Hash then content.transform_values { |v| decode_content(v, raise_on_error:) }
         when String then JSON.parse(content, symbolize_names: true)
         else raise "Invalid content type: #{content.class}"
         end
       rescue StandardError => e
-        raise ContentImageService::DecodingError.new parse_errors: e.message
+        error = ContentImageService::DecodingError.new parse_errors: e.message
+        raise error if raise_on_error
+
+        log_decoding_error(error)
+        ContentImageService::UndecodableContent.new(content, error)
       end
 
       def encode_content(json)
         case json
+        when ContentImageService::UndecodableContent then json.original_content
         when Hash then json.transform_values { |v| encode_content(v) }
         else json.to_json
         end
@@ -26,6 +31,7 @@ describe ContentImageService do
 
       def image_elements(content)
         case content
+        when ContentImageService::UndecodableContent then []
         when Hash then content.values.flat_map { |v| image_elements(v) }
         when Array then content.select { |elt| elt[:type] == 'image' }
         else raise "Invalid content type: #{content.class}"
@@ -123,6 +129,18 @@ describe ContentImageService do
       expect { output = service.swap_data_images imageable.bio_multiloc, field: :bio_multiloc }.not_to(change(TextImage, :count))
       expect(output).to eq({ 'de' => json_str })
     end
+
+    it 'processes valid locale and preserves malformed one unchanged' do
+      valid_json = '[{"type":"text"}]'
+      malformed_json = '{invalid json'
+      multiloc = { 'en' => valid_json, 'fr' => malformed_json }
+
+      result = service.swap_data_images(multiloc)
+
+      expect(result).to be_a(Hash)
+      expect(result['en']).to eq('[{"type":"text"}]')
+      expect(result['fr']).to eq(malformed_json)
+    end
   end
 
   describe 'render_data_images_multiloc' do
@@ -208,6 +226,18 @@ describe ContentImageService do
       output = service.render_data_images_multiloc imageable.bio_multiloc, imageable: imageable, field: :bio_multiloc
       expect(output).to eq({ 'en' => json_str })
       expect(service).to have_received :could_include_images?
+    end
+  end
+
+  describe 'encode/decode round-trip' do
+    it 'preserves original content through encode/decode round-trip' do
+      malformed = '{bad json}'
+
+      decoded = service.send(:decode_content, malformed)
+      expect(decoded).to be_a(ContentImageService::UndecodableContent)
+
+      encoded = service.send(:encode_content, decoded)
+      expect(encoded).to eq(malformed)
     end
   end
 end
