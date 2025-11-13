@@ -1,5 +1,8 @@
 import { IRelationship, Multiloc } from 'typings';
 
+import { ICustomFieldOptionData } from 'api/custom_field_options/types';
+import { IFormCustomFieldStatementData } from 'api/custom_field_statements/types';
+import { ICustomForm } from 'api/custom_form/types';
 import { IMapConfig } from 'api/map_config/types';
 
 import { Keys } from 'utils/cl-react-query/types';
@@ -202,8 +205,14 @@ export type IFlatCreateCustomField = Omit<
   matrix_statements?: ICreateMatrixStatementsType[];
 };
 
+type IncludedResource =
+  | ICustomForm['data']
+  | ICustomFieldOptionData
+  | IFormCustomFieldStatementData;
+
 export interface ICustomFields {
   data: ICustomFieldResponse[];
+  included: IncludedResource[];
 }
 
 export interface ICustomField {
