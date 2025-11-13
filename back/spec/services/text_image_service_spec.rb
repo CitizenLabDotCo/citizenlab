@@ -63,7 +63,7 @@ describe TextImageService do
       service.swap_data_images!(project, :description_multiloc, :text_images)
 
       expect(project.text_images.size).to eq(2)
-      project.description_multiloc.values.each do |value|
+      project.description_multiloc.each_value do |value|
         expect(value).to include('data-cl2-text-image-text-reference')
         expect(value).not_to include('data:image/png;base64')
       end
@@ -87,7 +87,7 @@ describe TextImageService do
 
       expect do
         service.swap_data_images!(project, :description_multiloc, :text_images)
-      end.not_to(change { TextImage.count })
+      end.not_to(change(TextImage, :count))
     end
   end
 
