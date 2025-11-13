@@ -77,7 +77,7 @@ class ParticipationsService
     end
   end
 
-  def demographics(permissions, participant_custom_field_values)    
+  def demographics(permissions, participant_custom_field_values)
     custom_fields = permissions.flat_map do |permission|
       @permissions_custom_fields_service.fields_for_permission(permission)
     end.map(&:custom_field).uniq
@@ -92,7 +92,7 @@ class ParticipationsService
         r_score: 'not implemented',
         title_multiloc: custom_field.title_multiloc
       }
-      
+
       key_sensitive_fields = if custom_field.key == 'birthyear'
         age_stats = UserCustomFields::AgeStats.calculate(participant_custom_field_values)
 
@@ -106,20 +106,18 @@ class ParticipationsService
         # Process bins (ignoring the last null bin)
         bins[0...-1].each_with_index do |bin_value, index|
           next_bin = bins[index + 1]
-          
+
           range_label = if next_bin.nil?
             "#{bin_value}+"
           else
             "#{bin_value}-#{next_bin - 1}"
           end
-          
+
           series_data[range_label] = user_counts[index] || 0
           reference_distribution_data[range_label] = population_counts[index] || 0
         end
-        
-        # Add _blank for unknown ages
-        series_data["_blank"] = age_stats.unknown_age_count
-        reference_distribution_data["_blank"] = 0  # Or some default value
+
+        series_data['_blank'] = age_stats.unknown_age_count
 
         reference_distribution = reference_distribution_data
 
