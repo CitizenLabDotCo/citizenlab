@@ -1,6 +1,5 @@
 import useCustomFieldOptionsBulk from 'api/custom_field_options/useCustomFieldOptionsBulk';
 import { IFormCustomFieldStatementData } from 'api/custom_field_statements/types';
-import useCustomFieldStatements from 'api/custom_field_statements/useCustomFieldStatements';
 import { IMatrixStatementsType } from 'api/custom_fields/types';
 
 import { ICustomFieldsParameters, IFlatCustomField } from './types';
@@ -24,17 +23,15 @@ const useCustomFields = ({
   const options = useCustomFieldOptionsBulk({
     customFields: result.data,
   });
-  const statements = useCustomFieldStatements({
-    projectId,
-    phaseId,
-    customFields: result.data,
-  });
+
+  const statements =
+    result.data?.included.filter(
+      (included): included is IFormCustomFieldStatementData =>
+        included.type === 'custom_field_matrix_statements'
+    ) ?? [];
 
   const statementsById = statements.reduce((acc, statement) => {
-    if (!statement.data) return acc;
-
-    const id = statement.data.data.id;
-    acc[id] = statement.data.data;
+    acc[statement.id] = statement;
     return acc;
   }, {} as Record<string, IFormCustomFieldStatementData>);
 
