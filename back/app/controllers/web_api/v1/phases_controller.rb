@@ -27,12 +27,17 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def insights
-    render json: WebApi::V1::PhaseParticipationSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash
+    participation_data = ParticipationsService.instance.phase_participation(@phase)
+    
+    render json: WebApi::V1::PhaseParticipationSerializer.new(
+      @phase, 
+      params: jsonapi_serializer_params.merge(participation_data: participation_data)
+    ).serializable_hash
   end
 
-  def demographics
-    render json: WebApi::V1::PhaseDemographicsSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash
-  end
+  # def demographics
+  #   render json: WebApi::V1::PhaseDemographicsSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash
+  # end
 
   def create
     phase_attributes = phase_params

@@ -85,7 +85,10 @@ resource 'Phase participation' do
       example_request 'Get insights data for a phase' do
         assert_status 200
 
-      insights = json_response_body.dig(:data, :attributes, :participation)
+        expect(json_response_body[:data][:id]).to eq(voting_phase.id.to_s)
+        expect(json_response_body[:data][:type]).to eq('phase_participation')
+
+        insights = json_response_body.dig(:data, :attributes, :participation)
         expect(insights).to eq({
           participations: {
             count: 8,
@@ -99,7 +102,7 @@ resource 'Phase participation' do
       end
     end
 
-    get 'web_api/v1/phases/:id/demographics' do
+    get 'web_api/v1/phases/:id/demographics', skip: 'to be merged into insights' do
       example_request 'Get demographics data for a phase' do
         assert_status 200
 

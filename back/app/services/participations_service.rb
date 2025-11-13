@@ -27,18 +27,18 @@ class ParticipationsService
     @permissions_custom_fields_service = Permissions::PermissionsCustomFieldsService.new
 
     @cache_timestamps = {}
-    @cache_ttl = 1.minute # Adjust TTL as needed
+    @cache_ttl = 1.minute # Adjust 'Time To Live' as needed
   end
 
   # Fetch and cache participations in singleton for a phase
   def phase_participations(phase)
     cache_key = phase.id
-  
+
     # Expire old cache
     if @cache_timestamps[cache_key] && @cache_timestamps[cache_key] < @cache_ttl.ago
       @phase_participations.delete(cache_key)
     end
-    
+
     @phase_participations[cache_key] ||= begin
       @cache_timestamps[cache_key] = Time.current
       phase.pmethod.participations
