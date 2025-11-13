@@ -45,7 +45,7 @@ RSpec.describe Files::LLMFilePreprocessor do
       allow(file).to receive(:size).and_return(60.megabytes)
 
       expect do
-        service.with_preprocessed_file_content(file) {}
+        service.with_preprocessed_file_content(file) { nil }
       end.to raise_error(described_class::ImageSizeLimitExceededError)
     end
 
@@ -62,7 +62,7 @@ RSpec.describe Files::LLMFilePreprocessor do
       file = create(:file, name: 'david.docx')
 
       expect do
-        service.with_preprocessed_file_content(file) {}
+        service.with_preprocessed_file_content(file) { nil }
       end.to raise_error(described_class::PreviewPendingError)
     end
 

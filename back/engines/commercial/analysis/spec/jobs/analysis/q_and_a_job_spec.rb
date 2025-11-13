@@ -15,7 +15,7 @@ RSpec.describe Analysis::QAndAJob do
       let(:error) { Analysis::LLM::PreviewPendingError.new }
 
       it 'retries in 15 seconds' do
-        expect(job).to receive(:retry_in).with(15.seconds)
+        expect(job).to receive(:retry_in).with(15.seconds) # rubocop:disable RSpec/SubjectStub
         job.handle_error(error)
       end
     end
@@ -24,7 +24,7 @@ RSpec.describe Analysis::QAndAJob do
       let(:error) { Analysis::LLM::TooManyRequestsError.new }
 
       it 'retries in 1 minute' do
-        expect(job).to receive(:retry_in).with(1.minute)
+        expect(job).to receive(:retry_in).with(1.minute) # rubocop:disable RSpec/SubjectStub
         job.handle_error(error)
       end
     end
@@ -35,7 +35,7 @@ RSpec.describe Analysis::QAndAJob do
           job.instance_variable_set(:@question, question)
           error = error_class.new
 
-          expect(job).to receive(:expire).and_call_original
+          expect(job).to receive(:expire).and_call_original # rubocop:disable RSpec/SubjectStub
           job.handle_error(error)
 
           background_task.reload
