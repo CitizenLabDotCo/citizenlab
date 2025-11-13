@@ -114,7 +114,10 @@ module BulkImportIdeas::Importers
           option_keys = []
           split_values.each do |option_title|
             option = find_object_by_title(field.options, option_title)
-            option_keys << option[:key] if option
+            next unless option
+
+            # For domicile fields, we need to use the area ID as the option key, except for 'outside' option
+            option_keys << (field.domicile? && option.key != 'outside' ? option.area.id : option.key)
           end
 
           value = option_keys.compact.uniq
@@ -136,8 +139,9 @@ module BulkImportIdeas::Importers
 
     def find_object_by_title(custom_fields, title)
       title = title.downcase
-      custom_fields.find { |f| f[:title_multiloc][@locale.to_s].downcase == title } ||
-        custom_fields.find { |f| f[:key].downcase == title }
+      custom_fields.find { |f| f[:title_multiloc][@locale.to_s]&.downcase == title } ||
+        custom_fields.find { |f| f[:key].downcase == title } ||
+        custom_fields.find { |f| f[:title_multiloc]['en']&.downcase == title } # Try fallback to English title
     end
 
     # Import a single project
