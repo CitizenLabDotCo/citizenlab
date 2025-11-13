@@ -1755,6 +1755,7 @@
   "app.sessionRecording.modalDescriptionFaq": "FAQ here.",
   "app.sessionRecording.modalTitle": "Help us improve this website",
   "app.sessionRecording.reject": "No, I reject",
+  "app.unusedMessage": "This is an unused message",
   "app.utils.FormattedCurrency.credits": "credits",
   "app.utils.FormattedCurrency.tokens": "tokens",
   "app.utils.FormattedCurrency.xCredits": "{numberOfCredits, plural, =0 {# credits} one {# credit} other {# credits}}",
