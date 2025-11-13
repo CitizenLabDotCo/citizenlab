@@ -2938,7 +2938,6 @@
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesTooltip": "Legg ved filer for å gi AI-en ytterligere kontekst for å støtte analysen.",
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesWithCurrentCount": "Legg ved filer ({numberAttachedFiles})",
   "app.containers.AdminPage.projects.project.analysis.files.save": "Spar",
-  "app.containers.AdminPage.projects.project.analysis.files.uploadFiles": "Last opp filer til prosjektet",
   "app.containers.AdminPage.projects.project.analysis.filter": "Vis bare innganger med denne verdien",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Skjul svar uten svar",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Auto-innsikt",

@@ -2938,7 +2938,6 @@
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesTooltip": "تجزیہ کی حمایت کے لیے AI کو اضافی سیاق و سباق فراہم کرنے کے لیے فائلیں منسلک کریں۔",
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesWithCurrentCount": "فائلیں منسلک کریں ({numberAttachedFiles})",
   "app.containers.AdminPage.projects.project.analysis.files.save": "محفوظ کریں۔",
-  "app.containers.AdminPage.projects.project.analysis.files.uploadFiles": "پروجیکٹ میں فائلیں اپ لوڈ کریں۔",
   "app.containers.AdminPage.projects.project.analysis.filter": "صرف اس قدر کے ساتھ ان پٹ دکھائیں۔",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "بغیر کسی جواب کے جوابات چھپائیں۔",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "خودکار بصیرتیں۔",

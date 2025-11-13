@@ -2938,7 +2938,6 @@
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesTooltip": "Hängen Sie Dateien an, um der KI zusätzlichen Kontext zu liefern und die Analyse zu unterstützen.",
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesWithCurrentCount": "Dateien anhängen ({numberAttachedFiles})",
   "app.containers.AdminPage.projects.project.analysis.files.save": "Speichern",
-  "app.containers.AdminPage.projects.project.analysis.files.uploadFiles": "Dateien zum Projekt hochladen",
   "app.containers.AdminPage.projects.project.analysis.filter": "Nur Beiträge mit diesem Wert anzeigen",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Leere Antworten ausblenden",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Automatische Einblicke",

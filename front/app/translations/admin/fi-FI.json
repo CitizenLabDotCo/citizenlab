@@ -2938,7 +2938,6 @@
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesTooltip": "Liitä tiedostoja antaaksesi tekoälylle lisäkontekstia analyysin tueksi.",
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesWithCurrentCount": "Liitä tiedostoja ({numberAttachedFiles})",
   "app.containers.AdminPage.projects.project.analysis.files.save": "Tallentaa",
-  "app.containers.AdminPage.projects.project.analysis.files.uploadFiles": "Lataa tiedostoja projektiin",
   "app.containers.AdminPage.projects.project.analysis.filter": "Näytä vain syötteet tällä arvolla",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Piilota vastaukset ilman vastausta",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Automaattiset tilastot",

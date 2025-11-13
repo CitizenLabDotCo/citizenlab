@@ -2938,7 +2938,6 @@
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesTooltip": "ਵਿਸ਼ਲੇਸ਼ਣ ਦਾ ਸਮਰਥਨ ਕਰਨ ਲਈ AI ਨੂੰ ਵਾਧੂ ਸੰਦਰਭ ਪ੍ਰਦਾਨ ਕਰਨ ਲਈ ਫਾਈਲਾਂ ਨੱਥੀ ਕਰੋ।",
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesWithCurrentCount": "ਫਾਈਲਾਂ ਨੱਥੀ ਕਰੋ ({numberAttachedFiles})",
   "app.containers.AdminPage.projects.project.analysis.files.save": "ਸੇਵ ਕਰੋ",
-  "app.containers.AdminPage.projects.project.analysis.files.uploadFiles": "ਪ੍ਰੋਜੈਕਟ ਲਈ ਫਾਈਲਾਂ ਅਪਲੋਡ ਕਰੋ",
   "app.containers.AdminPage.projects.project.analysis.filter": "ਸਿਰਫ਼ ਇਸ ਮੁੱਲ ਦੇ ਨਾਲ ਇਨਪੁੱਟ ਦਿਖਾਓ",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "ਬਿਨਾਂ ਜਵਾਬ ਦੇ ਜਵਾਬਾਂ ਨੂੰ ਲੁਕਾਓ",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "ਸਵੈ-ਝਾਤਾਂ",
