@@ -10,4 +10,4 @@ ar:
       event_description: 'تم تكليفك بمدخل. شاركنا رأيك بكتابة تحديث رسمي أو بتغيير حالته.'
       title: '%{firstName}، تم تعيين إدخال لك'
       subject: 'لديك مهمة على المنصة الخاصة بـ %{organizationName}'
-      preheader_idea: 'تم تعيين فكرة %{authorName} إليك'
+      preheader: 'لقد تم تعيين مدخلات %{authorName} لك'
