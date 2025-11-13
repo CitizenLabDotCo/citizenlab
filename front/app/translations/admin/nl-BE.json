@@ -2798,7 +2798,7 @@
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "AI-analyse",
   "app.containers.AdminPage.projects.project.analysis.Insights.accuracy": "Nauwkeurigheid: {accuracy}{percentage}",
   "app.containers.AdminPage.projects.project.analysis.Insights.aiDisclaimerBanner": "AI kan fouten maken. Controleer belangrijke informatie.",
-  "app.containers.AdminPage.projects.project.analysis.Insights.aiDisclaimerDetails": "De inhoud in dit gedeelte is door AI gegenereerd en is mogelijk niet helemaal accuraat. Bekijk en controleer het aan de hand van je invoer. Door minder invoer te selecteren kun je de nauwkeurigheid verbeteren.",
+  "app.containers.AdminPage.projects.project.analysis.Insights.aiDisclaimerDetails": "De inhoud in dit gedeelte is door AI gegenereerd en is mogelijk niet helemaal accuraat. Bekijk en controleer het aan de hand van de bijdragen. Door minder bijdragen te selecteren kun je de nauwkeurigheid verbeteren.",
   "app.containers.AdminPage.projects.project.analysis.Insights.ask": "Vraag",
   "app.containers.AdminPage.projects.project.analysis.Insights.askAQuestionUpsellMessage": "In plaats van samenvatten kun je ook relevante vragen stellen aan je data. Deze functionaliteit is niet in je huidige abonnement inbegrepen. Neem contact op met je Government Success Manager of platformbeheerder om deze functionaliteit te ontgrendelen.",
   "app.containers.AdminPage.projects.project.analysis.Insights.askQuestion": "Stel een vraag",
