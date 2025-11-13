@@ -81,12 +81,12 @@ resource 'Phase participation' do
     let(:id) { voting_phase.id }
     # rubocop:enable RSpec/ScatteredLet
 
-    get 'web_api/v1/phases/:id/participation' do
-      example_request 'Get participation data for a phase' do
+    get 'web_api/v1/phases/:id/insights' do
+      example_request 'Get insights data for a phase' do
         assert_status 200
 
-        participations = json_response_body.dig(:data, :attributes, :participation)
-        expect(participations).to eq({
+      insights = json_response_body.dig(:data, :attributes, :participation)
+        expect(insights).to eq({
           participations: {
             count: 8,
             change_last_7_days: 5

@@ -47,7 +47,7 @@ class PhasePolicy < ApplicationPolicy
     show?
   end
 
-  def participation?
+  def insights?
     active_moderator?
   end
 
