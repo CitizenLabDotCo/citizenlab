@@ -1316,6 +1316,38 @@ RSpec.describe User do
     end
   end
 
+  describe '#first_name' do
+    it 'does not allow HTML in the name' do
+      user = described_class.new
+      user.first_name = '<script>alert("hacked")</script>Bob'
+      user.validate
+      expect(user.first_name).to eq 'alert("hacked")Bob'
+    end
+
+    it 'does not change valid names' do
+      user = described_class.new
+      user.first_name = 'Terry'
+      user.validate
+      expect(user.first_name).to eq 'Terry'
+    end
+  end
+
+  describe '#last_name' do
+    it 'does not allow HTML in the name' do
+      user = described_class.new
+      user.last_name = '<script>alert("hacked")</script><p>Bob</p>'
+      user.validate
+      expect(user.last_name).to eq 'alert("hacked")Bob'
+    end
+
+    it 'does not change valid names' do
+      user = described_class.new
+      user.first_name = 'Smith'
+      user.validate
+      expect(user.first_name).to eq 'Smith'
+    end
+  end
+
   context 'billed users' do
     def create_admin_moderator(factory)
       create(factory).tap do |user|
