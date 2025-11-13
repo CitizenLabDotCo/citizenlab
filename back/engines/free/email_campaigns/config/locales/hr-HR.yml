@@ -407,11 +407,13 @@ hr:
       title: '%{requesterName} vas je pozvao/la da recenzirate projekt "%{projectTitle}"'
       event_description: "Trenutno je projekt u nacrtu i nije vidljiv korisnicima. Nakon što ga pregledate i odobrite, moderator će ga moći objaviti."
       cta_button: "Pregledajte projekt"
+      preheader: '%{requesterName} vas je pozvao/la da recenzirate projekt "%{projectTitle}"'
     project_review_state_change:
       subject: '"%{projectTitle}" je odobren'
       title: '%{reviewerName} odobrio/la je projekt "%{projectTitle}"'
       event_description: "Projekt je sada spreman za objavu. Možete ga objaviti kad god budete spremni!"
       cta_button: "Idi na postavke projekta"
+      preheader: '%{reviewerName} je odobrio/la projekt "%{projectTitle}"'
     status_change_on_idea_you_follow:
       status_change: 'Novi status ovog unosa je ''%{status}'''
       event_description: '%{organizationName} ažurirao/la je status unosa ''%{input_title}'' na svojoj platformi za digitalno sudjelovanje.'
