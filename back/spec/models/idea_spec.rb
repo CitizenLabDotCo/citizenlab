@@ -632,11 +632,10 @@ RSpec.describe Idea do
     end
 
     it 'sanitizes img tags in the body' do
-      ti_service = instance_double(TextImageService).as_null_object
-      allow(TextImageService).to receive(:new).and_return(ti_service)
-
-      idea = create(:idea, body_multiloc: { 'en' => '... <img src=x onerror=alert(1)>' })
-      expect(idea.body_multiloc).to match('en' => '... <img src="x">')
+      idea = create(:idea, body_multiloc: {
+        'en' => 'Something <img src=x onerror=alert(1)>'
+      })
+      expect(idea.body_multiloc).to eq({ 'en' => 'Something <img src="x">' })
     end
 
     it "allows embedded youtube video's in the body" do

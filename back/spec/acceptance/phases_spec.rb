@@ -615,14 +615,6 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :similarity_threshold_body)).to eq similarity_threshold_body
       end
 
-      context 'when description_multiloc contains images' do
-        let(:description_multiloc) { { 'en' => html_with_base64_image } }
-
-        it_behaves_like 'updates record with text images',
-          model_class: Phase,
-          field: :description_multiloc
-      end
-
       describe do
         with_options scope: :phase do
           parameter :expire_days_limit, 'Default value for how many days a proposal has to meet the voting threshold and move to the next stage.'

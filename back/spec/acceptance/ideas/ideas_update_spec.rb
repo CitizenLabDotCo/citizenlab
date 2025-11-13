@@ -71,14 +71,6 @@ resource 'Ideas' do
           end
         end
 
-        context 'when body_multiloc contains images' do
-          let(:body_multiloc) { { 'en' => html_with_base64_image } }
-
-          it_behaves_like 'updates record with text images',
-            model_class: Idea,
-            field: :body_multiloc
-        end
-
         describe do
           let(:idea_status_id) { create(:idea_status).id }
 

@@ -6,6 +6,7 @@ export const invitesData: IInviteData[] = [
     type: 'invite',
     attributes: {
       token: '4nce3671h',
+      invite_text: null,
       accepted_at: null,
       updated_at: '2023-06-01T14:06:25.686Z',
       created_at: '2023-06-01T14:06:25.686Z',
@@ -25,6 +26,7 @@ export const invitesData: IInviteData[] = [
     type: 'invite',
     attributes: {
       token: '0q9h8po6v',
+      invite_text: null,
       accepted_at: null,
       updated_at: '2023-06-01T12:41:47.471Z',
       created_at: '2023-06-01T12:41:47.471Z',
@@ -42,6 +44,7 @@ export const invitesData: IInviteData[] = [
     type: 'invite',
     attributes: {
       token: '0qyim13pb',
+      invite_text: null,
       accepted_at: null,
       updated_at: '2023-06-01T12:41:47.425Z',
       created_at: '2023-06-01T12:41:47.425Z',
@@ -59,6 +62,7 @@ export const invitesData: IInviteData[] = [
     type: 'invite',
     attributes: {
       token: 'bmnugo2dy',
+      invite_text: null,
       accepted_at: null,
       updated_at: '2023-06-01T12:41:47.370Z',
       created_at: '2023-06-01T12:41:47.370Z',
@@ -76,6 +80,7 @@ export const invitesData: IInviteData[] = [
     type: 'invite',
     attributes: {
       token: 'yae6tfbrc',
+      invite_text: null,
       accepted_at: null,
       updated_at: '2023-06-01T12:41:47.325Z',
       created_at: '2023-06-01T12:41:47.325Z',
@@ -93,6 +98,7 @@ export const invitesData: IInviteData[] = [
     type: 'invite',
     attributes: {
       token: 'ze5gdqc9v',
+      invite_text: null,
       accepted_at: null,
       updated_at: '2023-06-01T12:41:47.278Z',
       created_at: '2023-06-01T12:41:47.278Z',

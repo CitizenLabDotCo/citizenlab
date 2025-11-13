@@ -63,12 +63,14 @@ namespace :fix_existing_tenants do
         imageable_html_multilocs.map do |claz, attributes|
           claz.all.map do |instance|
             attributes.each do |attribute|
-              # Mark attribute as changed to trigger image extraction
-              # via before_validation callback
-              instance.attribute_will_change!(attribute)
-              instance.save!
-            rescue StandardError => e
-              errors += [e.message]
+              instance.send attribute
+              begin
+                multiloc = TextImageService.new.swap_data_images_multiloc instance[attribute], field: attribute, imageable: instance
+                instance.send :"#{attribute}=", multiloc
+                instance.save!
+              rescue StandardError => e
+                errors += [e.message]
+              end
             end
           end
         end
@@ -77,40 +79,37 @@ namespace :fix_existing_tenants do
     if errors.blank?
       puts 'Success!'
     else
-      puts 'Some issues occurred.'
+      puts 'Some issues occured.'
       errors.each { |err| puts err }
     end
   end
 
   desc 'Substitutes HTML URLs by the S3 url, according to a list of requested sustitutions (tenants that changed host)'
   task :substitute_html_relative_paths, [:url] => [:environment] do |_t, args|
-    to_fix = JSON.parse open(args[:url]).read
-    to_fix.each do |host, klasses|
+    tofix = JSON.parse open(args[:url]).read
+    tofix.each do |host, clazzes|
       Apartment::Tenant.switch(host.tr('.', '_')) do
-        klasses.each do |klass, instances|
+        clazzes.each do |claz, instances|
           instances.each do |id, attributes|
-            instance = klass.constantize.find(id)
-
+            object = claz.constantize.find id
             attributes.each_key do |attribute|
-              multiloc = instance.public_send(attribute)
-
-              multiloc.transform_values! do |text|
+              multiloc = object.send attribute
+              multiloc.each_key do |k|
+                text = multiloc[k]
                 doc = Nokogiri::HTML.fragment(text)
-
                 allowed_images = doc.css('img').select do |img|
                   img.attr('src') =~ %r{^$|^((http://.+)|(https://.+))}
                 end
-
                 allowed_images.each do |img|
                   url = img.attr('src')
                   path = "#{Frontend::UrlService.new.home_url}/uploads/#{url.partition('/uploads/').last}"
                   img.set_attribute('src', path)
                 end
-
-                doc.to_s
+                multiloc[k] = doc.to_s
               end
-
-              instance.update(attribute => multiloc)
+              multiloc = TextImageService.new.swap_data_images_multiloc object[attribute], field: attribute, imageable: object
+              object.send :"#{attribute}=", multiloc
+              object.save!
             end
           end
         end
@@ -203,8 +202,11 @@ namespace :fix_existing_tenants do
               end
               next unless changed
 
+              instance.update_column(attribute, multiloc)
               begin
-                instance.update!(attribute => multiloc)
+                multiloc = TextImageService.new.swap_data_images_multiloc instance[attribute], field: attribute, imageable: instance
+                instance.send :"#{attribute}=", multiloc
+                instance.save!
               rescue StandardError => e
                 errors += [e.message]
               end
@@ -218,7 +220,7 @@ namespace :fix_existing_tenants do
     if errors.blank?
       puts 'Success!'
     else
-      puts 'Some issues occurred.'
+      puts 'Some issues occured.'
       errors.each { |err| puts err }
     end
   end

@@ -248,14 +248,6 @@ resource 'Campaigns' do
           expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq @user.id
           expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to eq group_ids
         end
-
-        context 'when body contains images' do
-          let(:body_multiloc) { { 'en' => html_with_base64_image } }
-
-          it_behaves_like 'creates record with text images',
-            model_class: EmailCampaigns::Campaign,
-            field: :body_multiloc
-        end
       end
     end
 
@@ -371,14 +363,6 @@ resource 'Campaigns' do
           expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq campaign.author_id
           expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to eq group_ids
         end
-
-        context 'when body contains images' do
-          let(:body_multiloc) { { 'en' => html_with_base64_image } }
-
-          it_behaves_like 'updates record with text images',
-            model_class: EmailCampaigns::Campaign,
-            field: :body_multiloc
-        end
       end
 
       context 'global campaigns' do
@@ -424,15 +408,6 @@ resource 'Campaigns' do
               assert_status 200
               expect(campaign.reload.enabled).to be false
             end
-          end
-
-          context 'when intro contains images' do
-            let(:intro_multiloc) { { 'en' => html_with_base64_image } }
-
-            it_behaves_like 'updates record with text images',
-              model_class: EmailCampaigns::Campaign,
-              field: :intro_multiloc,
-              locale: :en
           end
         end
       end
