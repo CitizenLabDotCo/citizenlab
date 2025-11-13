@@ -28,12 +28,23 @@ class WebApi::V1::PhasesController < ApplicationController
 
   def create
     phase_attributes = phase_params
+    text_image_service = TextImageService.new
+    extract_output = text_image_service.extract_data_images_multiloc(
+      phase_attributes[:description_multiloc]
+    )
+    phase_attributes[:description_multiloc] = extract_output[:content_multiloc]
+
     @phase = Phase.new(phase_attributes)
     @phase.project_id = params[:project_id]
     sidefx.before_create(@phase, current_user)
     authorize @phase
 
     if @phase.save
+      text_image_service.bulk_create_images!(
+        extract_output[:extracted_images],
+        @phase,
+        :description_multiloc
+      )
       sidefx.after_create(@phase, current_user)
       render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash, status: :created
     else

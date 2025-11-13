@@ -82,8 +82,11 @@ describe ProjectCopyService do
     end
 
     it 'successfully exports custom field text images' do
-      description_multiloc = { 'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />' }
+      description_multiloc = {
+        'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
+      }
       field = create(:custom_field, :for_custom_form, description_multiloc: description_multiloc)
+      field.update! description_multiloc: TextImageService.new.swap_data_images_multiloc(field.description_multiloc, field: :description_multiloc, imageable: field)
 
       template = service.export field.resource.participation_context
 

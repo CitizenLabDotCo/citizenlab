@@ -340,12 +340,20 @@ resource 'Projects' do
                  end.dig(:attributes, :ordering)).to eq 0
         end
 
-        context 'when project description contains text images' do
-          let(:description_multiloc) { { 'en' => html_with_base64_image } }
+        describe 'when project description contains text images' do
+          let(:description_multiloc) do
+            {
+              'en' => html_with_base64_image
+            }
+          end
 
-          it_behaves_like 'creates record with text images',
-            model_class: Project,
-            field: :description_multiloc
+          example_request 'Create a project with description containing images', document: false do
+            assert_status 201
+            json_parse(response_body)
+            expect(response_data.dig(:attributes, :description_multiloc, :en)).to include('<p>Some text</p><img alt="Red dot"')
+            text_image = TextImage.find_by(imageable_id: response_data[:id], imageable_type: 'Project', imageable_field: 'description_multiloc')
+            expect(response_data.dig(:attributes, :description_multiloc, :en)).to include("data-cl2-text-image-text-reference=\"#{text_image.text_reference}\"")
+          end
         end
       end
     end
@@ -448,14 +456,6 @@ resource 'Projects' do
         @project.update!(default_assignee: create(:admin))
         do_request(project: { default_assignee_id: nil })
         expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to be_nil
-      end
-
-      context 'when description_multiloc contains images' do
-        let(:description_multiloc) { { 'en' => html_with_base64_image } }
-
-        it_behaves_like 'updates record with text images',
-          model_class: Project,
-          field: :description_multiloc
       end
 
       describe do
