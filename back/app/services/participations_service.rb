@@ -81,13 +81,12 @@ class ParticipationsService
     participants_change_last_7_days = total_participant_count - participants_before_7_days_count
 
     {
-      participations: {
-        count: participations.count,
-        change_last_7_days: participations.count { |p| p[:acted_at] >= 7.days.ago }
-      },
-      participants: {
-        count: total_participant_count,
-        change_last_7_days: participants_change_last_7_days
+      metrics: {
+        visitors: 'not implemented',
+        participations: participations.count,
+        participations_last_7_days: participations.count { |p| p[:acted_at] >= 7.days.ago },
+        participants: total_participant_count,
+        participants_last_7_days: participants_change_last_7_days
       }
     }
   end
