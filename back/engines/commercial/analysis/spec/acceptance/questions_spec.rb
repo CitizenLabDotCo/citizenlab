@@ -37,19 +37,19 @@ resource 'Questions' do
           missing_inputs_count: 0
         },
         relationships: {
-          background_task: {
-            data: {
-              type: 'background_task',
-              id: kind_of(String)
-            }
-          }
+          files: { data: [] },
+          background_task: { data: { type: 'background_task', id: kind_of(String) } }
         }
       })
     end
   end
 
   post 'web_api/v1/analyses/:analysis_id/questions' do
-    parameter :question, 'The question posed by the user', required: true, scope: :question
+    with_options scope: :question do
+      parameter :question, 'The question posed by the user', required: true
+      parameter :file_ids, 'Array of File ids to attach to the question', type: :array
+    end
+
     with_options scope: %i[question filters] do
       parameter :search, 'Filter by searching in title and body'
       parameter :tag_ids, 'Filter inputs by analysis_tags (union)', type: :array
@@ -95,12 +95,8 @@ resource 'Questions' do
           generated_at: nil
         },
         relationships: {
-          background_task: {
-            data: {
-              type: 'background_task',
-              id: kind_of(String)
-            }
-          }
+          files: { data: [] },
+          background_task: { data: { type: 'background_task', id: kind_of(String) } }
         }
       })
       background_task = Analysis::BackgroundTask.first
@@ -114,6 +110,17 @@ resource 'Questions' do
         updated_at: be_present,
         ended_at: nil
       })
+    end
+
+    example 'Create question with attached files', document: false do
+      files = create_list(:file, 2, projects: [analysis.project])
+
+      # Attaching only the first file
+      attached_file = files.first
+      do_request(question: { file_ids: [attached_file.id], filters: {} })
+
+      question = Analysis::Question.find(response_data[:id])
+      expect(question.attached_files).to contain_exactly(attached_file)
     end
   end
 
@@ -148,12 +155,8 @@ resource 'Questions' do
           generated_at: nil
         },
         relationships: {
-          background_task: {
-            data: {
-              type: 'background_task',
-              id: new_background_task.id
-            }
-          }
+          files: { data: [] },
+          background_task: { data: { type: 'background_task', id: new_background_task.id } }
         }
       })
       expect(json_response_body[:included].pluck(:id)).to include(new_background_task.id)

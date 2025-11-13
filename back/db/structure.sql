@@ -1,3 +1,8 @@
+\restrict mgZkyDgtCjSLKfZxRhtiC7mYUyUSQRU7ovUCL1fQC2LD80zlZxvwlHvNXgkKxoK
+
+-- Dumped from database version 16.6 (Debian 16.6-1.pgdg110+1)
+-- Dumped by pg_dump version 16.10 (Debian 16.10-1.pgdg13+1)
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -1115,7 +1120,8 @@ CREATE TABLE public.analysis_background_tasks (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     tags_ids jsonb,
-    filters jsonb DEFAULT '{}'::jsonb NOT NULL
+    filters jsonb DEFAULT '{}'::jsonb NOT NULL,
+    last_error_class character varying
 );
 
 
@@ -7867,10 +7873,13 @@ ALTER TABLE ONLY public.ideas_topics
 -- PostgreSQL database dump complete
 --
 
+\unrestrict mgZkyDgtCjSLKfZxRhtiC7mYUyUSQRU7ovUCL1fQC2LD80zlZxvwlHvNXgkKxoK
+
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20251021150138'),
+('20251017141405'),
 ('20251001090229'),
 ('20251001090208'),
 ('20251001083036'),

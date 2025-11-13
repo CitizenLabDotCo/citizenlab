@@ -9,6 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
+import useAnalysis from 'api/analyses/useAnalysis';
 import useAddAnalysisQuestion from 'api/analysis_questions/useAddAnalysisQuestion';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
@@ -25,6 +26,10 @@ const QuestionInput = ({ onClose }: { onClose: () => void }) => {
   const { formatMessage } = useIntl();
   const { mutate: askQuestion, isLoading } = useAddAnalysisQuestion();
   const { analysisId } = useParams() as { analysisId: string };
+  const { data: analysis } = useAnalysis(analysisId);
+  const fileIds = analysis?.data.relationships.files?.data.map(
+    (file) => file.id
+  );
   const filters = useAnalysisFilterParams();
 
   const handleAskQuestion = () => {
@@ -33,6 +38,7 @@ const QuestionInput = ({ onClose }: { onClose: () => void }) => {
         analysisId,
         filters,
         question,
+        fileIds,
       },
       {
         onSuccess: () => {
@@ -49,7 +55,6 @@ const QuestionInput = ({ onClose }: { onClose: () => void }) => {
     <Box
       bgColor={colors.successLight}
       p="16px"
-      mb="8px"
       borderRadius={stylingConsts.borderRadius}
       display="flex"
       gap="8px"
