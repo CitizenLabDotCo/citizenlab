@@ -388,6 +388,7 @@ DROP INDEX IF EXISTS public.index_comments_on_idea_id;
 DROP INDEX IF EXISTS public.index_comments_on_created_at;
 DROP INDEX IF EXISTS public.index_comments_on_author_id;
 DROP INDEX IF EXISTS public.index_campaigns_groups;
+DROP INDEX IF EXISTS public.index_baskets_on_user_id_and_phase_id;
 DROP INDEX IF EXISTS public.index_baskets_on_user_id;
 DROP INDEX IF EXISTS public.index_baskets_on_submitted_at;
 DROP INDEX IF EXISTS public.index_baskets_on_phase_id;
@@ -5107,6 +5108,13 @@ CREATE INDEX index_baskets_on_user_id ON public.baskets USING btree (user_id);
 
 
 --
+-- Name: index_baskets_on_user_id_and_phase_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_baskets_on_user_id_and_phase_id ON public.baskets USING btree (user_id, phase_id);
+
+
+--
 -- Name: index_campaigns_groups; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7878,6 +7886,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251107143940'),
 ('20251021150138'),
 ('20251017141405'),
 ('20251001090229'),

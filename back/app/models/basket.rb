@@ -31,6 +31,7 @@ class Basket < ApplicationRecord
   has_many :notifications, dependent: :destroy
 
   validates :phase, presence: true
+  validates :user_id, uniqueness: { scope: :phase_id, allow_nil: true }
   validate :basket_submission, on: :basket_submission
 
   scope :submitted, -> { where.not(submitted_at: nil) }

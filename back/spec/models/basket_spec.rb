@@ -9,6 +9,58 @@ RSpec.describe Basket do
     end
   end
 
+  context 'uniqueness' do
+    it 'does not allow duplicate baskets for the same user and phase' do
+      user = create(:user)
+      phase = create(:budgeting_phase)
+
+      create(:basket, user: user, phase: phase)
+
+      # Attempting to create a second basket for the same user and phase should fail
+      duplicate_basket = build(:basket, user: user, phase: phase)
+      expect(duplicate_basket.save).to be false
+      expect(duplicate_basket.errors[:user_id]).to be_present
+    end
+
+    it 'allows multiple baskets for the same user in different phases' do
+      user = create(:user)
+      phase1 = create(:budgeting_phase)
+      phase2 = create(:budgeting_phase)
+
+      basket1 = create(:basket, user: user, phase: phase1)
+      basket2 = create(:basket, user: user, phase: phase2)
+
+      expect(basket1).to be_valid
+      expect(basket2).to be_valid
+    end
+
+    it 'allows multiple baskets for different users in the same phase' do
+      user1 = create(:user)
+      user2 = create(:user)
+      phase = create(:budgeting_phase)
+
+      basket1 = create(:basket, user: user1, phase: phase)
+      basket2 = create(:basket, user: user2, phase: phase)
+
+      expect(basket1).to be_valid
+      expect(basket2).to be_valid
+    end
+
+    it 'allows multiple baskets with NULL user_id for the same phase' do
+      phase = create(:budgeting_phase)
+
+      # Create first basket without user (simulating deleted user)
+      basket1 = described_class.new(user_id: nil, phase: phase)
+      expect(basket1.save).to be true
+
+      # Create second basket without user (simulating another deleted user)
+      basket2 = described_class.new(user_id: nil, phase: phase)
+      expect(basket2.save).to be true
+
+      expect(described_class.where(user_id: nil, phase: phase).count).to eq 2
+    end
+  end
+
   context 'baskets_ideas' do
     it 'preserve created_at upon update' do
       basket = create(:basket)
