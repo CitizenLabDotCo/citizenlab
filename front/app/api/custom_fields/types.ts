@@ -85,10 +85,10 @@ export interface IAttributes {
   isDeleteEnabled?: boolean;
   ask_follow_up?: boolean;
   constraints?: {
+    locked: boolean;
     locks: {
-      title_multiloc?: boolean;
-      enabled?: boolean;
-      required?: boolean;
+      attributes?: ('title_multiloc' | 'required')[];
+      deletion?: boolean;
     };
   };
   enabled: boolean;

@@ -102,7 +102,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
             formatMessage(config.getStatusTitle(basketStatus))}
         </Title>
         <>
-          <Box style={{ fontSize: fontSizes.m }}>
+          <Box style={{ fontSize: fontSizes.m }} key={`status-${basketStatus}`}>
             {config?.getStatusDescription &&
               config.getStatusDescription({
                 project,

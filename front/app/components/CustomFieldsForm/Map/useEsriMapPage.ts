@@ -3,18 +3,18 @@ import { useEffect, useMemo, useCallback, useRef } from 'react';
 import useMapConfigById from 'api/map_config/useMapConfigById';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 
+import { FORM_PAGE_CHANGE_EVENT } from 'components/CustomFieldsForm/PageControlButtons/events';
 import { parseLayers } from 'components/EsriMap/utils';
-import { FORM_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
 
 import eventEmitter from 'utils/eventEmitter';
 
-const useEsriMapPage = ({ project, pages, currentPageNumber, localize }) => {
+const useEsriMapPage = ({ project, pages, currentPageIndex, localize }) => {
   const draggableDivRef = useRef<HTMLDivElement>(null);
   const dragDividerRef = useRef<HTMLDivElement>(null);
   const { data: projectMapConfig, isFetching: isFetchingProjectConfig } =
     useProjectMapConfig(project?.data?.id);
   const mapConfigId =
-    pages[currentPageNumber]?.page?.map_config_id || projectMapConfig?.data.id;
+    pages[currentPageIndex]?.page?.map_config_id || projectMapConfig?.data.id;
   const { data: fetchedMapConfig, isFetching: isFetchingMapConfig } =
     useMapConfigById(mapConfigId);
 
@@ -27,7 +27,7 @@ const useEsriMapPage = ({ project, pages, currentPageNumber, localize }) => {
   // Emit event when page changes and map is fetched
   useEffect(() => {
     eventEmitter.emit(FORM_PAGE_CHANGE_EVENT);
-  }, [currentPageNumber, isFetchingMapConfig, isFetchingProjectConfig]);
+  }, [currentPageIndex, isFetchingMapConfig, isFetchingProjectConfig]);
 
   const onDragDivider = useCallback(
     (event) => {

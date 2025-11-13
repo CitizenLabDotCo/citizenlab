@@ -339,6 +339,22 @@ resource 'Projects' do
                    inc[:type] == 'admin_publication'
                  end.dig(:attributes, :ordering)).to eq 0
         end
+
+        describe 'when project description contains text images' do
+          let(:description_multiloc) do
+            {
+              'en' => html_with_base64_image
+            }
+          end
+
+          example_request 'Create a project with description containing images', document: false do
+            assert_status 201
+            json_parse(response_body)
+            expect(response_data.dig(:attributes, :description_multiloc, :en)).to include('<p>Some text</p><img alt="Red dot"')
+            text_image = TextImage.find_by(imageable_id: response_data[:id], imageable_type: 'Project', imageable_field: 'description_multiloc')
+            expect(response_data.dig(:attributes, :description_multiloc, :en)).to include("data-cl2-text-image-text-reference=\"#{text_image.text_reference}\"")
+          end
+        end
       end
     end
 
@@ -916,24 +932,6 @@ resource 'Projects' do
             ]
           }
         ])
-      end
-
-      example 'Downloaded inputs do not include ideas with no content' do
-        # Simulating a survey response with no content, which already
-        # existed before the phase participation_method was changed.
-        survey_response.title_multiloc = {}
-        survey_response.body_multiloc = {}
-        survey_response.save!(validate: false)
-
-        native_survey_phase.update!(participation_method: 'ideation')
-
-        do_request
-        assert_status 200
-        xlsx = xlsx_contents response_body
-        expect(xlsx.size).to eq 3
-
-        all_values = xlsx.flat_map { |sheet| sheet[:rows].flatten }
-        expect(all_values).not_to include(survey_response.id)
       end
     end
   end

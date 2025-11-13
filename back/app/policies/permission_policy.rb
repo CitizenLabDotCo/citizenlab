@@ -34,6 +34,14 @@ class PermissionPolicy < ApplicationPolicy
     true
   end
 
+  def custom_fields?
+    true
+  end
+
+  def custom_field_options?
+    true
+  end
+
   def access_denied_explanation?
     true
   end

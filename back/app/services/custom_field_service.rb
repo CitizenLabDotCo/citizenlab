@@ -76,9 +76,7 @@ class CustomFieldService
   end
 
   def generate_key(title, other_option: false)
-    return 'other' if other_option == true
-
-    keyify(title)
+    other_option ? 'other' : keyify(title)
   end
 
   def keyify(str)
@@ -169,6 +167,12 @@ class CustomFieldService
     I18n.with_locale(locale) do
       @multiloc_service.t(field.description_multiloc)
     end
+  end
+
+  # Making pages a different data model would avoid
+  # having to do this.
+  def pages(fields)
+    fields.chunk_while { |_, field| !field.page? }
   end
 
   private

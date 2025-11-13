@@ -177,6 +177,11 @@ export default defineMessages({
     id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsOnceYouAreDone',
     defaultMessage: 'Once you are done, click “Submit” to cast your vote.',
   },
+  minSelectedOptionsMessage: {
+    id: 'app.utils.votingMethodUtils.minSelectedOptionsMessage',
+    defaultMessage:
+      ' You must select a minimum of at least <b>{minSelectedOptions, plural, one {# option} other {# options}}</b>.',
+  },
   multipleVotingEnded: {
     id: 'app.utils.votingMethodUtils.multipleVotingEnded1',
     defaultMessage: 'Voting closed on <b>{endDate}.</b>',

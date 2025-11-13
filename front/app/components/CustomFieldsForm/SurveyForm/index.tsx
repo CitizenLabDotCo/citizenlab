@@ -32,7 +32,12 @@ const SurveyForm = ({
   phaseId?: string;
   participationMethod?: ParticipationMethod;
 }) => {
-  const [currentPageNumber, setCurrentPageNumber] = useState(0);
+  const [currentPageIndex, setCurrentPageIndex] = useState(0);
+  // Track the actual path the user has taken through the survey
+  // This helps with proper go-back navigation when users can reach the same page through multiple paths
+  const [userNavigationHistory, setUserNavigationHistory] = useState<number[]>([
+    0,
+  ]);
 
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
@@ -49,7 +54,7 @@ const SurveyForm = ({
 
   const nestedPagesData = convertCustomFieldsToNestedPages(customFields || []);
 
-  const lastPageNumber = nestedPagesData.length - 1;
+  const lastPageIndex = nestedPagesData.length - 1;
 
   if (!phase) return null;
 
@@ -114,20 +119,21 @@ const SurveyForm = ({
 
   return (
     <Box w="100%">
-      {nestedPagesData[currentPageNumber] && (
+      {nestedPagesData[currentPageIndex] && (
         <SurveyPage
-          page={nestedPagesData[currentPageNumber].page}
+          page={nestedPagesData[currentPageIndex].page}
           pages={nestedPagesData}
-          pageQuestions={nestedPagesData[currentPageNumber].pageQuestions}
-          currentPageNumber={currentPageNumber}
-          lastPageNumber={lastPageNumber}
-          setCurrentPageNumber={setCurrentPageNumber}
+          pageQuestions={nestedPagesData[currentPageIndex].pageQuestions}
+          currentPageIndex={currentPageIndex}
+          lastPageIndex={lastPageIndex}
+          setCurrentPageIndex={setCurrentPageIndex}
+          userNavigationHistory={userNavigationHistory}
+          setUserNavigationHistory={setUserNavigationHistory}
           participationMethod={participationMethod}
           projectId={projectId}
           onSubmit={onSubmit}
           phase={phase.data}
           defaultValues={initialFormData}
-          customFields={customFields ?? []}
         />
       )}
     </Box>

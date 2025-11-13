@@ -28,6 +28,8 @@ Rails.application.routes.draw do
         resources :permissions, param: :permission_action do
           get 'requirements', on: :member
           get 'schema', on: :member
+          get 'custom_fields', on: :member
+          get 'custom_field_options', on: :member
           get 'access_denied_explanation', on: :member
           patch 'reset', on: :member
           resources :permissions_custom_fields, shallow: true do
@@ -353,7 +355,7 @@ Rails.application.routes.draw do
           .all_methods
           .select { |vm| vm.verification_method_type == :manual_sync }
           .each do |vm|
-          post "#{vm.name}/verification", to: 'verifications#create', on: :collection, :defaults => { method_name: vm.name }
+          post "#{vm.name}/verification", to: 'verifications#create', on: :collection, defaults: { method_name: vm.name }
         end
       end
 
@@ -373,6 +375,7 @@ Rails.application.routes.draw do
       resources :files, controller: 'files/files' do
         get 'preview', on: :member, to: 'files/previews#show'
         resources :attachments, controller: 'files/file_attachments', only: %i[index]
+        get 'transcript', on: :member, to: 'files/transcripts#show'
       end
 
       resources :file_attachments, controller: 'files/file_attachments'

@@ -10,4 +10,4 @@ cy:
       event_description: 'Mae mewnbwn wedi''i aseinio i chi. Rhowch adborth drwy ysgrifennu diweddariad swyddogol neu drwy newid ei statws.'
       title: '%{firstName}, aseiniwyd mewnbwn i chi'
       subject: 'Mae gennych aseiniad ar y platfform o %{organizationName}'
-      preheader_idea: 'Mae''r syniad o %{authorName} wedi''i neilltuo i chi'
+      preheader: 'Mae mewnbwn %{authorName} wedi''i aseinio i chi'

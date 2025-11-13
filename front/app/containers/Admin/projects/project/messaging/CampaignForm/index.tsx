@@ -95,7 +95,7 @@ const CampaignForm = ({
     ),
   });
 
-  const methods = useForm({
+  const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues,
     resolver: yupResolver(schema),

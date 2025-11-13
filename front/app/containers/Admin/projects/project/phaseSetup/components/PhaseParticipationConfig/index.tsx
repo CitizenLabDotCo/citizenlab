@@ -303,6 +303,20 @@ const PhaseParticipationConfig = ({
     }));
   };
 
+  const handleMinVotingOptionsChange = (newMinVotingOptions: string | null) => {
+    const voting_min_selected_options = newMinVotingOptions
+      ? parseInt(newMinVotingOptions, 10)
+      : null;
+    updateFormData((state) => ({
+      ...state,
+      voting_min_selected_options,
+    }));
+    setValidationErrors((errors) => ({
+      ...errors,
+      minSelectedOptionsError: undefined,
+    }));
+  };
+
   const handleInputTermChange = (option: IOption) => {
     const input_term: InputTerm = option.value;
 
@@ -407,6 +421,7 @@ const PhaseParticipationConfig = ({
     voting_method,
     voting_min_total,
     voting_max_total,
+    voting_min_selected_options,
     voting_max_votes_per_idea,
     survey_service,
     survey_embed_url,
@@ -482,8 +497,10 @@ const PhaseParticipationConfig = ({
             voting_method={voting_method}
             voting_min_total={voting_min_total}
             voting_max_total={voting_max_total}
+            voting_min_selected_options={voting_min_selected_options}
             commenting_enabled={commenting_enabled}
             autoshare_results_enabled={autoshare_results_enabled}
+            handleMinVotingOptionsChange={handleMinVotingOptionsChange}
             handleVotingMinTotalChange={handleVotingMinTotalChange}
             handleVotingMaxTotalChange={handleVotingMaxTotalChange}
             toggleCommentingEnabled={toggleCommentingEnabled}

@@ -22,7 +22,7 @@ RSpec.describe QueJob, :active_job_que_adapter do
       jobs = Array.new(2) { TestJob.perform_later }
       que_jobs = described_class.all_by_job_ids(jobs.map(&:job_id) + ['non-existent-job-id'])
       job_ids_in_db = que_jobs.map { |qj| qj.args['job_id'] }
-      expect(job_ids_in_db).to eq(jobs.map(&:job_id))
+      expect(job_ids_in_db).to match_array(jobs.map(&:job_id))
     end
   end
 

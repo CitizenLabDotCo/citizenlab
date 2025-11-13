@@ -9,6 +9,33 @@ RSpec.describe FlagInappropriateContent::InappropriateContentFlag do
     end
   end
 
+  describe '#generate_commands' do
+    let(:author) { create(:user, first_name: 'Biggus', last_name: 'Dickus') }
+    let(:idea) { create(:idea, title_multiloc: { 'en' => 'Flagged idea' }, body_multiloc: { 'en' => 'This is a flagged idea.' }, author:, slug: 'flagged-idea') }
+    let(:flag) { create(:inappropriate_content_flag, flaggable: idea) }
+    let(:campaign) { create(:inappropriate_content_flagged_campaign) }
+    let(:notification) { create(:inappropriate_content_flagged, inappropriate_content_flag: flag) }
+    let(:notification_activity) { create(:activity, item: notification, action: 'created') }
+
+    it 'generates a command with the desired payload and tracked content' do
+      command = campaign.generate_commands(
+        recipient: notification_activity.item.recipient,
+        activity: notification_activity
+      ).first
+
+      expect(command).to match(
+        event_payload: a_hash_including(
+          flaggable_author_name: 'Biggus Dickus',
+          flaggable_type: 'Idea',
+          flag_automatically_detected: true,
+          flaggable_url: 'http://example.org/en/ideas/flagged-idea',
+          flaggable_title_multiloc: { 'en' => 'Flagged idea' },
+          flaggable_body_multiloc: { 'en' => 'This is a flagged idea.' }
+        )
+      )
+    end
+  end
+
   describe 'reason_code' do
     it 'is inappropriate when toxicity was detected' do
       flag = create(:inappropriate_content_flag, toxicity_label: 'insult')

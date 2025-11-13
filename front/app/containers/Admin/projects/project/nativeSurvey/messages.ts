@@ -9,11 +9,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.surveyResponses',
     defaultMessage: 'Survey responses',
   },
-  informationText: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.informationText4',
-    defaultMessage:
-      'AI summaries for short answer, long answer, and sentiment scale follow up questions can be accessed from the AI tab in the left sidebar.',
-  },
   openForResponses: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.openForResponses2',
     defaultMessage: 'Open for responses',

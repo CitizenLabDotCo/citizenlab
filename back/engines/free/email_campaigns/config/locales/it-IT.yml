@@ -407,11 +407,13 @@ it:
       title: '%{requesterName} ti ha invitato a visionare il progetto "%{projectTitle}".'
       event_description: "Attualmente il progetto è in modalità bozza e non è visibile agli utenti. Una volta che l'avrai rivisto e approvato, il moderatore potrà pubblicarlo."
       cta_button: "Rivedere il progetto"
+      preheader: '%{requesterName} ti ha invitato a visionare il progetto "%{projectTitle}".'
     project_review_state_change:
       subject: '"%{projectTitle}" è stato approvato'
       title: '%{reviewerName} ha approvato il progetto "%{projectTitle}".'
       event_description: "Il progetto è ora pronto per essere pubblicato. Puoi pubblicarlo quando sei pronto!"
       cta_button: "Vai alle impostazioni del progetto"
+      preheader: '%{reviewerName} ha approvato il progetto "%{projectTitle}".'
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
       event_description: '%{organizationName} ha aggiornato lo stato dell''input ''%{input_title}'' sulla sua piattaforma di partecipazione digitale.'

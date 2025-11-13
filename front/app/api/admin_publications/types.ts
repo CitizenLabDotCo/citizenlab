@@ -30,6 +30,7 @@ export interface IQueryParameters {
   remove_all_unlisted?: boolean;
   visibility?: Visibility[];
   discoverability?: ('listed' | 'unlisted')[];
+  sort?: 'title_multiloc' | '-title_multiloc';
 }
 
 export type AdminPublicationType = 'project' | 'folder';

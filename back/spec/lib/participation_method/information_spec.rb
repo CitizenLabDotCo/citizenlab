@@ -64,6 +64,12 @@ RSpec.describe ParticipationMethod::Information do
     end
   end
 
+  describe 'constraints' do
+    it 'has no constraints' do
+      expect(participation_method.constraints).to eq({})
+    end
+  end
+
   describe '#custom_form' do
     let(:project) { create(:project_with_past_ideation_and_current_information_phase) }
     let(:project_form) { create(:custom_form, participation_context: project) }
@@ -96,7 +102,6 @@ RSpec.describe ParticipationMethod::Information do
   its(:return_disabled_actions?) { is_expected.to be false }
   its(:supports_assignment?) { is_expected.to be false }
   its(:built_in_title_required?) { is_expected.to be(false) }
-  its(:built_in_body_required?) { is_expected.to be(false) }
   its(:supports_commenting?) { is_expected.to be false }
   its(:supports_edits_after_publication?) { is_expected.to be true }
   its(:supports_exports?) { is_expected.to be false }
@@ -114,7 +119,6 @@ RSpec.describe ParticipationMethod::Information do
   its(:supports_private_attributes_in_export?) { is_expected.to be false }
   its(:form_logic_enabled?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be false }
-  its(:validate_phase) { is_expected.to be_nil }
   its(:supports_custom_field_categories?) { is_expected.to be false }
   its(:user_fields_in_form?) { is_expected.to be false }
   its(:supports_multiple_phase_reports?) { is_expected.to be false }

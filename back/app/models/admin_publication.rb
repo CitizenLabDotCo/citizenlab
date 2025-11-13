@@ -79,6 +79,37 @@ class AdminPublication < ApplicationRecord
     where.not(publication_status: 'draft')
   }
 
+  # Sorts admin publications by the title_multiloc of their associated
+  # publication (Project or ProjectFolders::Folder), in the specified direction.
+  # The sorting uses the current user's locale as the primary key and falls back
+  # to another platform locale if the title is nil or blank in the user's locale.
+  #
+  # @param current_user [User, nil] The user whose locale is prioritized for sorting. If nil, the default locale is used.
+  # @param direction [String] The direction to sort ('ASC' or 'DESC'). Defaults to 'ASC'.
+  # @return [ActiveRecord::Relation] The sorted admin publications.
+  scope :sorted_by_title_multiloc, lambda { |current_user, direction = 'ASC'|
+    user_locale = current_user&.locale || I18n.default_locale.to_s
+    prioritized_locales = [user_locale, *AppConfiguration.instance.settings('core', 'locales')].uniq
+
+    joins_sql = []
+    coalesce_sql = []
+
+    publication_types.each do |type|
+      table_name = type.table_name
+      joins_sql << "LEFT JOIN #{table_name} ON admin_publications.publication_id = #{table_name}.id AND admin_publications.publication_type = '#{type.name}'"
+      coalesce_sql += prioritized_locales.map do |locale|
+        "NULLIF(#{table_name}.title_multiloc->>'#{locale}', '')"
+      end
+    end
+
+    joins(joins_sql.join(' '))
+      .select(
+        'admin_publications.*',
+        "COALESCE(#{coalesce_sql.join(', ')}) AS title_for_sorting"
+      )
+      .order("title_for_sorting #{direction}")
+  }
+
   def archived?
     publication_status == 'archived'
   end

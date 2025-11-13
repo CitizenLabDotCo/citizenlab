@@ -10,23 +10,34 @@ import navbarKeys from './keys';
 import { INavbarItemResponse, INavbarItemAdd } from './types';
 
 const addNavbarItem = (item: IItemNotInNavbar) => {
-  const navbarItem: INavbarItemAdd =
-    item.type === 'default_item'
-      ? {
-          code: item.navbarCode,
-          title_multiloc: item.titleMultiloc,
-        }
-      : 'pageId' in item
-      ? {
-          code: 'custom',
-          static_page_id: item.pageId, // static page
-          title_multiloc: item.titleMultiloc,
-        }
-      : {
-          code: 'custom',
-          project_id: item.projectId, // project
-          title_multiloc: item.titleMultiloc,
-        };
+  let navbarItem: INavbarItemAdd;
+
+  if (item.type === 'default_item') {
+    navbarItem = {
+      code: item.navbarCode,
+      title_multiloc: item.titleMultiloc,
+    };
+  } else if ('pageId' in item) {
+    navbarItem = {
+      code: 'custom',
+      static_page_id: item.pageId,
+      title_multiloc: item.titleMultiloc,
+    };
+  } else if (item.type === 'project') {
+    navbarItem = {
+      code: 'custom',
+      project_id: item.itemId,
+      title_multiloc: item.titleMultiloc,
+    };
+  } else {
+    // item.type === 'folder'
+    navbarItem = {
+      code: 'custom',
+      project_folder_id: item.itemId,
+      title_multiloc: item.titleMultiloc,
+    };
+  }
+
   return fetcher<INavbarItemResponse>({
     path: '/nav_bar_items',
     action: 'post',

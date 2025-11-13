@@ -131,24 +131,32 @@ const CustomPageSettingsForm = ({
         .required(formatMessage(messages.slugRequiredError)),
     }),
     projects_filter_type: string().oneOf(projectsFilterTypesArray).required(),
-    topic_ids: array().when('projects_filter_type', {
-      is: (value: ProjectsFilterTypes) => value === 'topics',
-      then: array().of(string()).min(1, formatMessage(messages.atLeastOneTag)),
-    }),
+    topic_ids: array()
+      .nullable()
+      .when('projects_filter_type', ([value]) => {
+        if (value === 'topics') {
+          return array()
+            .of(string())
+            .min(1, formatMessage(messages.atLeastOneTag));
+        }
+
+        return array();
+      }),
     area_id: string()
       .nullable()
-      .when('projects_filter_type', {
-        is: (value: ProjectsFilterTypes) => value === 'areas',
-        then: string()
-          .nullable()
-          .required(formatMessage(messages.selectAnArea)),
+      .when('projects_filter_type', ([value]) => {
+        if (value === 'areas') {
+          return string().required(formatMessage(messages.selectAnArea));
+        }
+
+        return string().nullable();
       }),
   });
 
-  const methods = useForm({
+  const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues,
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as any,
   });
 
   const slug = methods.watch('slug');

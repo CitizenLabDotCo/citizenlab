@@ -5,27 +5,20 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
   before_action :set_admin_publication, only: %i[reorder show]
 
   def index
-    # By default, this endpoint will remove unlisted projects that the user cannot moderate.
-    # But if the `remove_all_unlisted` parameter is set to 'true', it will
-    # even remove all unlisted projects.
-    policy_context[:remove_unlisted] = if params[:remove_all_unlisted] == 'true'
-      'remove_all_unlisted'
-    else
-      'remove_unlisted_that_user_cannot_moderate'
-    end
-
     admin_publications = policy_scope(AdminPublication.includes(:parent))
+    admin_publications = apply_projects_listed_scope(admin_publications)
     admin_publications = admin_publication_filterer.filter(admin_publications, params.merge(current_user: current_user))
 
-    # A flattened ordering, such that project publications with a parent (projects in folders) are ordered
-    # first by their parent's :ordering, and then by their own :ordering (their ordering within the folder).
-    admin_publications = admin_publications.select(
-      'admin_publications.*',
-      'CASE WHEN admin_publications.parent_id IS NULL THEN admin_publications.ordering ELSE parents.ordering END
-      AS root_ordering'
-    )
-      .joins('LEFT OUTER JOIN admin_publications AS parents ON parents.id = admin_publications.parent_id')
-      .order('root_ordering, admin_publications.ordering')
+    admin_publications = case params[:sort]
+    when 'title_multiloc'
+      admin_publications.sorted_by_title_multiloc(current_user, 'ASC')
+    when '-title_multiloc'
+      admin_publications.sorted_by_title_multiloc(current_user, 'DESC')
+    when nil
+      admin_publications.order('admin_publications.ordering ASC')
+    else
+      raise 'Unsupported sort method'
+    end
 
     @admin_publications = paginate admin_publications
 
@@ -104,6 +97,7 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
 
     admin_publication_filterer = AdminPublicationsFilteringService.new
     admin_publications = policy_scope(AdminPublication.includes(:parent))
+    admin_publications = apply_projects_listed_scope(admin_publications)
     admin_publications = admin_publication_filterer.filter(admin_publications, params)
 
     counts = admin_publications.group(:publication_status).count
@@ -153,6 +147,26 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
       publication.current_phase
       publication.phases
     ]
+  end
+
+  def apply_projects_listed_scope(admin_publications_scope)
+    # By default, this endpoint will remove unlisted projects that the user cannot moderate.
+    # But if the `remove_all_unlisted` parameter is set to 'true', it will
+    # even remove all unlisted projects.
+    listed_projects = if params[:remove_all_unlisted] == 'true'
+      ProjectsListedScopeService.new.remove_unlisted_projects(Project.all)
+    else
+      ProjectsListedScopeService.new.remove_unlisted_that_user_cannot_moderate(
+        Project.all,
+        current_user
+      )
+    end
+
+    admin_publications_scope.where(
+      "(admin_publications.publication_type != 'Project') OR " \
+      "(admin_publications.publication_type = 'Project' AND admin_publications.publication_id IN (?))",
+      listed_projects.select(:id)
+    )
   end
 end
 

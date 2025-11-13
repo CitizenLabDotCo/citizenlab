@@ -229,6 +229,15 @@ RSpec.describe User do
       expect(user).to be_valid
     end
 
+    it 'is valid if domain is on our blacklist but also on our whitelist' do
+      common_spam_domains = Rails.root.join('config/common_spam_domains.txt').readlines.map { |x| x.strip.downcase }
+      expect(common_spam_domains).to include('yopmail.com')
+      expect(EmailDomainBlacklist::WHITELISTED_DOMAINS).to include('yopmail.com')
+
+      user = build(:user, email: 'someone@yopmail.com')
+      expect(user).to be_valid
+    end
+
     it 'is required when a unique code is not present' do
       u1 = build(:user, email: nil)
       expect(u1).to be_invalid
@@ -264,6 +273,15 @@ RSpec.describe User do
       user.update_column(:new_email, 'blocked@039b1ee.netsolhost.com') # bypasses validations
 
       user.first_name = 'UpdatedName'
+      expect(user).to be_valid
+    end
+
+    it 'is valid if domain is on our blacklist but also on our whitelist' do
+      common_spam_domains = Rails.root.join('config/common_spam_domains.txt').readlines.map { |x| x.strip.downcase }
+      expect(common_spam_domains).to include('yopmail.com')
+      expect(EmailDomainBlacklist::WHITELISTED_DOMAINS).to include('yopmail.com')
+
+      user = build(:user, new_email: 'someone@yopmail.com')
       expect(user).to be_valid
     end
 

@@ -14,7 +14,7 @@ const validateMultilocForEveryLocale = (message: string) =>
         (acc, locale) => ((acc[locale] = string().required(message)), acc),
         {}
       )
-    );
+    ).required();
   });
 
 export default validateMultilocForEveryLocale;

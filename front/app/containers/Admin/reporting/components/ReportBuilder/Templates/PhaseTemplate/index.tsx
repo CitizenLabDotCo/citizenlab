@@ -24,13 +24,14 @@ import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget
 import TextMultiloc from '../../Widgets/TextMultiloc';
 import { TemplateContext } from '../context';
 
+import Insights from './Insights';
 import messages from './messages';
-
 interface Props {
   phaseId: string;
+  selectedLocale: string;
 }
 
-const PhaseTemplateContent = ({ phaseId }: Props) => {
+const PhaseTemplateContent = ({ phaseId, selectedLocale }: Props) => {
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
   const { data: phase } = usePhase(phaseId);
@@ -90,6 +91,11 @@ const PhaseTemplateContent = ({ phaseId }: Props) => {
             phaseId={phaseId}
             questionId={question.id}
           />
+          <Insights
+            phaseId={phaseId}
+            questionId={question.id}
+            selectedLocale={selectedLocale}
+          />
           <WhiteSpace />
         </Element>
       ))}
@@ -106,11 +112,13 @@ const PhaseTemplateContent = ({ phaseId }: Props) => {
   );
 };
 
-const PhaseTemplate = ({ phaseId }: Props) => {
+const PhaseTemplate = ({ phaseId, selectedLocale }: Props) => {
   const enabled = useContext(TemplateContext);
 
   if (enabled) {
-    return <PhaseTemplateContent phaseId={phaseId} />;
+    return (
+      <PhaseTemplateContent phaseId={phaseId} selectedLocale={selectedLocale} />
+    );
   } else {
     return <Element id="phase-report-template" is={Box} canvas />;
   }

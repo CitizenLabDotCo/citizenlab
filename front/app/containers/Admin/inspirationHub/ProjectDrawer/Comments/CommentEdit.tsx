@@ -16,7 +16,7 @@ import getAuthorNames from './getAuthorNames';
 import messages from './messages';
 
 const schema = object({
-  comment_body: string(),
+  comment_body: string().required(),
 });
 
 type FormValues = {

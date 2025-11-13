@@ -58,8 +58,16 @@ const UsersGroup = () => {
   };
 
   const handleSubmitForm =
-    (groupId: string) => async (values: NormalFormValues) => {
-      await updateGroup({ id: groupId, ...values });
+    (groupId: string) =>
+    async ({
+      membership_type,
+      ...otherFormValues
+    }: NormalFormValues & { membership_type: MembershipType }) => {
+      await updateGroup({
+        id: groupId,
+        membership_type: membership_type as MembershipType,
+        ...otherFormValues,
+      });
       closeGroupEditionModal();
     };
 
@@ -140,7 +148,12 @@ const UsersGroup = () => {
             {groupEditionModal === 'manual' && (
               <NormalGroupForm
                 defaultValues={group.data.attributes}
-                onSubmit={handleSubmitForm(group.data.id)}
+                onSubmit={(values) =>
+                  handleSubmitForm(group.data.id)({
+                    ...values,
+                    membership_type: 'manual',
+                  })
+                }
               />
             )}
 

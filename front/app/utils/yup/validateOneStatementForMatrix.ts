@@ -12,7 +12,7 @@ const validateOneStatementForMatrix = (
         title_multiloc: object(),
       })
     )
-    .when('input_type', (input_type: string, schema) => {
+    .when('input_type', ([input_type], schema) => {
       if (['matrix_linear_scale'].includes(input_type)) {
         return schema
           .test(

@@ -3,7 +3,7 @@ namespace :inconsistant_data do
   task :delete_proposals_in_ideation, [] => [:environment] do
     reporter = ScriptReporter.new
     Tenant.safe_switch_each do |tenant|
-      Idea.where(creation_phase: Phase.where(participation_method: 'ideation')).find_each do |input|
+      Idea.where(creation_phase: Phase.where(participation_method: %w[ideation voting])).find_each do |input|
         next if input.valid?
 
         if input.destroy

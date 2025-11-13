@@ -41,7 +41,7 @@ describe Permissions::PermissionsUpdateService do
       expect(phase.permissions.pluck(:action)).to match_array %w[posting_idea attending_event]
       expect(phase.permissions.pluck(:permitted_by)).to match_array %w[everyone users]
 
-      phase.update!(participation_method: 'ideation')
+      phase.update!(participation_method: 'ideation', input_term: 'idea')
       service.update_permissions_for_scope(phase)
       expect(phase.permissions.pluck(:action)).to match_array %w[posting_idea commenting_idea reacting_idea attending_event]
       expect(phase.permissions.pluck(:permitted_by)).to match_array %w[users users users users]
@@ -62,7 +62,7 @@ describe Permissions::PermissionsUpdateService do
       expect(phase.permissions.pluck(:action)).to match_array %w[posting_idea attending_event]
       expect(phase.permissions.pluck(:permitted_by)).to match_array %w[users users]
 
-      phase.update!(participation_method: 'ideation')
+      phase.update!(participation_method: 'ideation', input_term: 'idea')
       service.update_permissions_for_scope(phase)
       expect(phase.permissions.pluck(:action)).to match_array %w[posting_idea commenting_idea reacting_idea attending_event]
       expect(phase.permissions.pluck(:permitted_by)).to match_array %w[users users users users]

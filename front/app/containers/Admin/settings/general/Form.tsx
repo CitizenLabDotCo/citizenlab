@@ -68,7 +68,7 @@ const Form = ({ defaultValues, onSubmit }: Props) => {
     ),
     population: number()
       .integer()
-      .nullable(true)
+      .nullable()
       .min(0, formatMessage(messages.populationMinError))
       .transform((value, originalValue) => {
         // Population should be allowed to be empty (null), but the input field

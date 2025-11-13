@@ -54,7 +54,7 @@ describe('Project topics', () => {
       cy.get('.e2e-admin-list-row').contains(topicTitle);
 
       // Go to our project topic settings
-      cy.visit(`admin/projects/${projectId}/settings/tags`);
+      cy.visit(`admin/projects/${projectId}/general/input-tags`);
       cy.get('#e2e-project-topic-multiselect').click().contains(topicTitle);
     });
 
@@ -70,7 +70,7 @@ describe('Project topics', () => {
       cy.get('.e2e-admin-list-row').contains(topicTitle);
 
       // and check that our topic is there initially
-      cy.visit(`admin/projects/${projectId}/settings/tags`);
+      cy.visit(`admin/projects/${projectId}/general/input-tags`);
       cy.get('#e2e-project-topic-multiselect').click().contains(topicTitle);
 
       // go to topic manager
@@ -84,7 +84,7 @@ describe('Project topics', () => {
       cy.get('#e2e-custom-topic-delete-confirmation-button').click();
 
       // Go to our project topic settings and check that topic is not available
-      cy.visit(`admin/projects/${projectId}/settings/tags`);
+      cy.visit(`admin/projects/${projectId}/general/input-tags`);
       cy.get('#e2e-project-topic-multiselect')
         .click()
         .contains(topicTitle)
@@ -104,7 +104,7 @@ describe('Project topics', () => {
       cy.get('.e2e-admin-list-row').contains(topicTitle);
 
       // and check that our topic is there initially
-      cy.visit(`admin/projects/${projectId}/settings/tags`);
+      cy.visit(`admin/projects/${projectId}/general/input-tags`);
       cy.get('#e2e-project-topic-multiselect').click().contains(topicTitle);
 
       // go to topic manager
@@ -127,7 +127,7 @@ describe('Project topics', () => {
       cy.get('.e2e-admin-list-row').contains(editedTopicTitle);
 
       // Go to our project topic settings and check that name has chang
-      cy.visit(`admin/projects/${projectId}/settings/tags`);
+      cy.visit(`admin/projects/${projectId}/general/input-tags`);
       cy.get('#e2e-project-topic-multiselect')
         .click()
         .contains(editedTopicTitle);
@@ -150,7 +150,7 @@ describe('Project topics', () => {
       cy.get('.e2e-admin-list-row').contains(topicTitle);
 
       // Go to our project topic settings
-      cy.visit(`admin/projects/${projectId}/settings/tags`);
+      cy.visit(`admin/projects/${projectId}/general/input-tags`);
 
       // Add our new topic
       cy.get('#e2e-project-topic-multiselect').click();
@@ -197,7 +197,7 @@ describe('Project topics', () => {
       cy.get('.e2e-admin-list-row').contains(topicTitle);
 
       // Go to our project topic settings
-      cy.visit(`admin/projects/${projectId}/settings/tags`);
+      cy.visit(`admin/projects/${projectId}/general/input-tags`);
 
       // Add our new topic to the project
       cy.get('#e2e-project-topic-multiselect').click();
@@ -234,7 +234,7 @@ describe('Project topics', () => {
       cy.get('.e2e-topics-picker-item').contains(topicTitle);
 
       // Go to our project topic settings
-      cy.visit(`admin/projects/${projectId}/settings/tags`);
+      cy.visit(`admin/projects/${projectId}/general/input-tags`);
 
       // Remove our new topic from the project
       cy.get('.e2e-admin-list-row');
@@ -284,7 +284,7 @@ describe('Project topics', () => {
       cy.wait(1000);
 
       // Go to our project topic settings
-      cy.visit(`admin/projects/${projectId}/settings/tags`);
+      cy.visit(`admin/projects/${projectId}/general/input-tags`);
 
       // Add our new topic to the project
       cy.get('#e2e-project-topic-multiselect').click();
@@ -314,7 +314,7 @@ describe('Project topics', () => {
       cy.wait(1000);
 
       // Go to our project topic settings
-      cy.visit(`admin/projects/${projectId}/settings/tags`);
+      cy.visit(`admin/projects/${projectId}/general/input-tags`);
 
       // Add our new topic
       cy.get('#e2e-project-topic-multiselect').click();
@@ -333,7 +333,7 @@ describe('Project topics', () => {
       cy.get('#e2e-idea-manager-topic-filters').contains(topicTitle);
 
       // Go to our project topic settings
-      cy.visit(`admin/projects/${projectId}/settings/tags`);
+      cy.visit(`admin/projects/${projectId}/general/input-tags`);
 
       // Remove our new topic from the project
       cy.get('.e2e-admin-list-row')

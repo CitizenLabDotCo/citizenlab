@@ -1,0 +1,42 @@
+services:
+  # Keep the original web service running normally
+  web:
+    # This ensures the web service runs with its original command from the base docker-compose.yml
+    # No override needed - it will run the server as usual
+
+  # Create a dedicated development container for VS Code
+  devcontainer:
+    container_name: cl-devcontainer
+    depends_on:
+      - postgres
+      - mailcatcher
+      - rabbitmq
+    build:
+      context: .
+      dockerfile: back/Dockerfile.development
+      args:
+        USER_UID: ${USER_UID:-1000}
+        USER_GID: ${USER_GID:-1000}
+    user: ${USER_UID:-1000}:${USER_GID:-1000}
+    volumes:
+      - .:/citizenlab:z
+      - bundle:/bundle:z
+      - ~/.ssh:/home/dev/.ssh:ro,z
+      - ~/.gitconfig:/home/dev/.gitconfig:ro,z
+      - /var/run/docker.sock:/var/run/docker.sock:ro,z
+    env_file:
+      - "env_files/back-safe.env"
+      - "env_files/back-secret.env"
+    environment:
+      - BUNDLE_PATH=/bundle
+      - BASE_DEV_URI
+      - USER_UID=${USER_UID:-1000}
+      - USER_GID=${USER_GID:-1000}
+    # Keep the container running for VS Code
+    command: sleep infinity
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "pgrep", "sleep"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

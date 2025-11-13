@@ -7,8 +7,7 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 import { IPhaseData, IPhases } from 'api/phases/types';
 import { IProject } from 'api/projects/types';
 
-import PageControlButtons from 'components/Form/Components/Layouts/PageControlButtons';
-
+import PageControlButtons from '../PageControlButtons';
 import ProgressBar from '../ProgressBar';
 
 const PageFooter = ({
@@ -26,7 +25,7 @@ const PageFooter = ({
   isAdminPage,
   isMapPage,
   pageQuestions,
-  currentPageNumber,
+  currentPageIndex,
 }: {
   variant: 'other' | 'after-submission' | 'submission';
   hasPreviousPage: boolean;
@@ -42,7 +41,7 @@ const PageFooter = ({
   isAdminPage?: boolean;
   isMapPage?: boolean;
   pageQuestions?: IFlatCustomField[];
-  currentPageNumber?: number;
+  currentPageIndex?: number;
 }) => {
   const isMobileOrSmaller = useBreakpoint('phone');
   return (
@@ -70,7 +69,7 @@ const PageFooter = ({
           pageButtonLink={pageButtonLink}
           project={project}
           pageQuestions={pageQuestions}
-          currentPageNumber={currentPageNumber}
+          currentPageIndex={currentPageIndex}
         />
       </Box>
     </Box>

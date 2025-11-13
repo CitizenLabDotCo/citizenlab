@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metrics/ClassLength
+class WebApi::V1::IdeasController < ApplicationController
   include BlockingProfanity
 
   SIMILARITIES_LIMIT = 5
@@ -167,6 +167,7 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
   #   Normal users always post in an active phase. They should never provide a phase id.
   #   Users who can moderate projects post in an active phase if no phase id is given.
   #   Users who can moderate projects post in the given phase if a phase id is given.
+  # rubocop:disable Metrics/MethodLength
   def create
     send_error and return if !phase_for_input
 
@@ -174,6 +175,12 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
     extract_custom_field_values_from_params!(form)
     params_for_create = idea_params form
     files_params = extract_file_params(params_for_create)
+
+    text_image_service = TextImageService.new
+    extract_output = text_image_service.extract_data_images_multiloc(
+      params_for_create[:body_multiloc]
+    )
+    params_for_create[:body_multiloc] = extract_output[:content_multiloc]
 
     input = Idea.new params_for_create
 
@@ -233,6 +240,11 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
     ActiveRecord::Base.transaction do
       if input.save(**save_options)
         update_file_upload_fields input, form, params_for_create
+        text_image_service.bulk_create_images!(
+          extract_output[:extracted_images],
+          input,
+          :body_multiloc
+        )
         sidefx.after_create(input, current_user)
         write_everyone_tracking_cookie input
         render json: WebApi::V1::IdeaSerializer.new(
@@ -245,6 +257,7 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
       end
     end
   end
+  # rubocop:enable Metrics/MethodLength
 
   def update
     input = Idea.find params[:id]
@@ -346,8 +359,9 @@ class WebApi::V1::IdeasController < ApplicationController # rubocop:disable Metr
     idea = Idea.new idea_params_for_similarities
     service = SimilarIdeasService.new(idea)
 
-    title_threshold = phase_for_input.similarity_threshold_title
-    body_threshold = phase_for_input.similarity_threshold_body
+    phase_for_similarity = params[:phase_id] ? Phase.find(params[:phase_id]) : phase_for_input
+    title_threshold = phase_for_similarity.similarity_threshold_title
+    body_threshold = phase_for_similarity.similarity_threshold_body
     cache_key = "similar_ideas/#{{ id: idea.id, title_multiloc: idea.title_multiloc, body_multiloc: idea.body_multiloc, project_id: idea.project_id, title_threshold:, body_threshold: }}"
 
     json_result = Rails.cache.fetch(cache_key, expires_in: 10.minutes) do

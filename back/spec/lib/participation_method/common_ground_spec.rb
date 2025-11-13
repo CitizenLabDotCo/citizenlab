@@ -63,6 +63,12 @@ RSpec.describe ParticipationMethod::CommonGround do
     end
   end
 
+  describe 'constraints' do
+    it 'has no constraints' do
+      expect(participation_method.constraints).to eq({})
+    end
+  end
+
   describe '#supported_email_campaigns' do
     it 'returns campaigns supported for common ground' do
       expect(participation_method.supported_email_campaigns).to match_array %w[idea_published mention_in_official_feedback official_feedback_on_idea_you_follow project_phase_started]
@@ -90,7 +96,6 @@ RSpec.describe ParticipationMethod::CommonGround do
   its(:user_fields_in_form?) { is_expected.to be(false) }
   its(:supports_custom_field_categories?) { is_expected.to be(false) }
   its(:built_in_title_required?) { is_expected.to be(true) }
-  its(:built_in_body_required?) { is_expected.to be(false) }
 
   its(:supports_exports?) { is_expected.to be(true) }
   its(:supports_private_attributes_in_export?) { is_expected.to be(true) }

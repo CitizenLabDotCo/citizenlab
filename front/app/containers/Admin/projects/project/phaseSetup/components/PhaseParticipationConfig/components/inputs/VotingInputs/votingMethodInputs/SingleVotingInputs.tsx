@@ -16,14 +16,20 @@ import messages from '../messages';
 
 interface Props {
   voting_max_total?: number | null;
+  voting_min_selected_options?: number | null;
+  handleMinVotingOptionsChange: (newMinVotingOptions: string | null) => void;
   apiErrors: CLErrors | null | undefined;
   maxTotalVotesError?: string;
   handleMaxVotingAmountChange: (newMaxTotalVote: string | null) => void;
+  minSelectedOptionsError?: string;
 }
 
 const SingleVotingInputs = ({
   voting_max_total,
   handleMaxVotingAmountChange,
+  voting_min_selected_options,
+  handleMinVotingOptionsChange,
+  minSelectedOptionsError,
   apiErrors,
   maxTotalVotesError,
 }: Props) => {
@@ -34,6 +40,28 @@ const SingleVotingInputs = ({
 
   return (
     <>
+      <SectionField>
+        <SubSectionTitleWithDescription>
+          <FormattedMessage {...messages.minimumOptions} />
+        </SubSectionTitleWithDescription>
+        <StyledSectionDescription>
+          <FormattedMessage {...messages.minimumOptionsDescription} />
+        </StyledSectionDescription>
+        <Box maxWidth="200px">
+          <Box maxWidth="100px">
+            <Input
+              value={voting_min_selected_options?.toString()}
+              onChange={handleMinVotingOptionsChange}
+              type="number"
+              min="0"
+            />
+          </Box>
+          <VotingAmountInputError text={minSelectedOptionsError} />
+          <VotingAmountInputError
+            apiErrors={apiErrors && apiErrors.voting_min_selected_options}
+          />
+        </Box>
+      </SectionField>
       <SectionField>
         <SubSectionTitleWithDescription>
           <FormattedMessage {...messages.maximumVotes} />

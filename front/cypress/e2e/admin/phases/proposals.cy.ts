@@ -30,6 +30,8 @@ describe('Admin: proposal phase', () => {
     cy.wait('@createProject');
     cy.wait(2000);
 
+    cy.get('[data-cy=e2e-admin-project-timeline-tab]').click();
+
     // Create a proposals phase
     const phaseNameEN = randomString();
     cy.get('#title').type(phaseNameEN);

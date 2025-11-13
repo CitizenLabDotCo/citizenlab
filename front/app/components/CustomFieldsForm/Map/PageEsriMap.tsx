@@ -7,12 +7,12 @@ import { IMapConfig } from 'api/map_config/types';
 import EsriMap from 'components/EsriMap';
 
 const PageEsriMap = ({
-  currentPageNumber,
+  currentPageIndex,
   mapConfig,
   mapLayers,
   draggableDivRef,
 }: {
-  currentPageNumber: number;
+  currentPageIndex: number;
   mapConfig: IMapConfig | null | undefined;
   mapLayers: __esri.Layer[];
   draggableDivRef: React.RefObject<HTMLDivElement>;
@@ -25,7 +25,7 @@ const PageEsriMap = ({
       minWidth="60%"
       h="100%"
       ref={draggableDivRef}
-      key={`esri_map_${currentPageNumber}`}
+      key={`esri_map_${currentPageIndex}`}
     >
       <EsriMap
         layers={mapLayers}

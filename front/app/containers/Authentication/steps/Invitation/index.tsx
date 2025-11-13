@@ -43,7 +43,7 @@ const Invitation = ({ loading, setError, onSubmit }: Props) => {
     token: string().required(formatMessage(messages.pleaseEnterAToken)),
   });
 
-  const methods = useForm({
+  const methods = useForm<FormValues>({
     mode: 'onSubmit',
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),

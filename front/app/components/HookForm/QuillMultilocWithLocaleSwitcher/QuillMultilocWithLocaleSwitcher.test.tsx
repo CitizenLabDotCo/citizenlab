@@ -2,6 +2,7 @@ import React from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
+import { Multiloc } from 'typings';
 import { object } from 'yup';
 
 import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
@@ -19,7 +20,7 @@ jest.mock('hooks/useAppConfigurationLocales', () =>
 
 const onSubmit = jest.fn();
 
-const Form = ({ defaultValue }: { defaultValue?: Record<string, string> }) => {
+const Form = ({ defaultValue }: { defaultValue?: Multiloc }) => {
   const methods = useForm({
     resolver: yupResolver(schema),
     defaultValues: { description: defaultValue },

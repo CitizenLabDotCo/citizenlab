@@ -26,13 +26,13 @@ const BuiltInFields = ({ builderConfig }: BuiltInFieldsProps) => {
   const { watch } = useFormContext();
   const { formatMessage } = useIntl();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
-  const enabledBuiltInFieldKeys = formCustomFields
-    .filter((field) => {
-      return builderConfig.builtInFields.includes(field.key) && !field.enabled;
+  const enabledBuiltInFieldCodes = builderConfig.builtInFields
+    .filter((code) => {
+      return !formCustomFields.some(
+        (formField) => formField.code === code && formField.enabled
+      );
     })
-    .map((builtInField) => {
-      return builtInField.key;
-    });
+    .map((code) => code);
 
   return (
     <Box w="100%" display="inline">
@@ -47,28 +47,39 @@ const BuiltInFields = ({ builderConfig }: BuiltInFieldsProps) => {
         <FormattedMessage {...messages.defaultContent} />
       </Title>
       <Drop id="toolbox_builtin" type={fieldAreaDNDType} isDropDisabled={true}>
+        {builderConfig.builtInFields.includes('body_multiloc') && (
+          <ToolboxItem
+            icon="survey-long-answer-2"
+            label={formatMessage(messages.bodyMultiloc)}
+            disabled={!enabledBuiltInFieldCodes.includes('body_multiloc')}
+            disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
+            data-cy="e2e-body-multiloc-item"
+            dragId="toolbox_body_multiloc"
+            dragIndex={0}
+          />
+        )}
         {builderConfig.builtInFields.includes('idea_images_attributes') && (
           <ToolboxItem
             icon="image"
             label={formatMessage(messages.inputImages)}
             disabled={
-              !enabledBuiltInFieldKeys.includes('idea_images_attributes')
+              !enabledBuiltInFieldCodes.includes('idea_images_attributes')
             }
             disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
             data-cy="e2e-idea-images-attributes-item"
             dragId="toolbox_idea_images_attributes"
-            dragIndex={0}
+            dragIndex={1}
           />
         )}
         {builderConfig.builtInFields.includes('proposed_budget') && (
           <ToolboxItem
             icon="money-bag"
             label={formatMessage(messages.proposedBudget)}
-            disabled={!enabledBuiltInFieldKeys.includes('proposed_budget')}
+            disabled={!enabledBuiltInFieldCodes.includes('proposed_budget')}
             disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
             data-cy="e2e-proposed-budget-item"
             dragId="toolbox_proposed_budget"
-            dragIndex={1}
+            dragIndex={2}
           />
         )}
         {builderConfig.builtInFields.includes('idea_files_attributes') && (
@@ -76,34 +87,36 @@ const BuiltInFields = ({ builderConfig }: BuiltInFieldsProps) => {
             icon="upload-file"
             label={formatMessage(messages.fileUpload)}
             disabled={
-              !enabledBuiltInFieldKeys.includes('idea_files_attributes')
+              !enabledBuiltInFieldCodes.includes('idea_files_attributes')
             }
             disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
             data-cy="e2e-attachments-item"
             dragId="toolbox_idea_files_attributes"
-            dragIndex={2}
+            dragIndex={3}
           />
         )}
         {builderConfig.builtInFields.includes('location_description') && (
           <ToolboxItem
             icon="location-simple"
             label={formatMessage(messages.locationDescription)}
-            disabled={!enabledBuiltInFieldKeys.includes('location_description')}
+            disabled={
+              !enabledBuiltInFieldCodes.includes('location_description')
+            }
             data-cy="e2e-location_description-item"
             disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
             dragId="toolbox_location_description"
-            dragIndex={3}
+            dragIndex={4}
           />
         )}
         {builderConfig.builtInFields.includes('topic_ids') && (
           <ToolboxItem
             icon="label"
             label={formatMessage(messages.tags)}
-            disabled={!enabledBuiltInFieldKeys.includes('topic_ids')}
+            disabled={!enabledBuiltInFieldCodes.includes('topic_ids')}
             disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
             data-cy="e2e-topic_ids-item"
             dragId="toolbox_topic_ids"
-            dragIndex={4}
+            dragIndex={5}
           />
         )}
         {builderConfig.builtInFields.includes('cosponsor_ids') &&
@@ -114,10 +127,10 @@ const BuiltInFields = ({ builderConfig }: BuiltInFieldsProps) => {
               data-cy="e2e-cosponsors-field"
               fieldsToInclude={builderConfig.toolboxFieldsToInclude}
               inputType="cosponsor_ids"
-              disabled={!enabledBuiltInFieldKeys.includes('cosponsor_ids')}
+              disabled={!enabledBuiltInFieldCodes.includes('cosponsor_ids')}
               disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
               dragId="toolbox_cosponsor_ids"
-              dragIndex={5}
+              dragIndex={6}
             />
           )}
       </Drop>
