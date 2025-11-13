@@ -14,4 +14,8 @@ export default defineMessages({
     id: 'app.containers.App.skipLinkText',
     defaultMessage: 'Skip to main content',
   },
+  unusedMessage: {
+    id: 'app.unusedMessage',
+    defaultMessage: 'This is an unused message',
+  },
 });
