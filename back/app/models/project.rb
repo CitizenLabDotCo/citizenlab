@@ -46,6 +46,9 @@ class Project < ApplicationRecord
 
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
+  has_many_text_images from: :description_multiloc, as: :text_images
+  accepts_nested_attributes_for :text_images
+
   has_one :custom_form, as: :participation_context, dependent: :destroy # ideation & voting phases only
 
   has_many :ideas, dependent: :destroy
@@ -65,8 +68,6 @@ class Project < ApplicationRecord
   # project_images should always store one record, but in practice it's different (maybe because of a bug)
   # https://citizenlabco.slack.com/archives/C015M14HYSF/p1674228018666059
   has_many :project_images, -> { order(:ordering) }, dependent: :destroy
-  has_many :text_images, as: :imageable, dependent: :destroy
-  accepts_nested_attributes_for :text_images
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
   has_many :followers, as: :followable, dependent: :destroy
   has_many :impact_tracking_pageviews, class_name: 'ImpactTracking::Pageview', dependent: :nullify
