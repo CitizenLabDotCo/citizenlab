@@ -102,7 +102,7 @@ resource 'Phase participation' do
       end
     end
 
-    get 'web_api/v1/phases/:id/demographics', skip: 'to be merged into insights' do
+    get('web_api/v1/phases/:id/demographics', skip: 'to be merged into insights') do
       example_request 'Get demographics data for a phase' do
         assert_status 200
 

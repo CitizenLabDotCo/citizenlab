@@ -1,5 +1,5 @@
 class WebApi::V1::PhaseParticipationSerializer < WebApi::V1::BaseSerializer
-  attribute :participation do |phase, params|
+  attribute :participation do |_phase, params|
     params[:participation_data]
   end
 
