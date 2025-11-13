@@ -90,18 +90,19 @@ resource 'Phase participation' do
 
         metrics = json_response_body.dig(:data, :attributes, :metrics)
         expect(metrics).to eq({
-            visitors: 'not implemented',
-            participations: 8,
-            participations_last_7_days: 5,
-            participants: 5,
-            participants_last_7_days: 2
+          visitors: 'not implemented',
+          participants: 5,
+          participations: 8,
+          visitors_last_7_days: 'not implemented',
+          participants_last_7_days: 2,
+          participations_last_7_days: 5
         })
       end
     end
 
     # rubocop:disable Rails/HttpPositionalArguments
     get('web_api/v1/phases/:id/demographics', skip: 'to be merged into insights') do
-    # rubocop:enable Rails/HttpPositionalArguments
+      # rubocop:enable Rails/HttpPositionalArguments
       example_request 'Get demographics data for a phase' do
         assert_status 200
 

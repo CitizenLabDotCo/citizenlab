@@ -1,23 +1,10 @@
 class ParticipationsService
   include Singleton
 
-  def phase_participation(phase)
+  def phase_insights(phase)
     participations = phase_participations(phase)
 
-    # For other requests, some kind of filtering might be applied here
-    # eg for permissions:
-    # participations = phase_participations(permission.phase)
-    # participations = participations.filter_by_action(participations, permission.action))
-
-    # phase_participation_data(phase, participations) # All participations, including phase-level && action-levels
-
-    phase_level_participation_data(participations) # Phase-level participations
-  end
-
-  def phase_demographics(phase)
-    participations = phase_participations(phase)
-
-    phase_level_demographics(phase, participations)
+    insights_data(phase, participations)
   end
 
   private
@@ -45,11 +32,6 @@ class ParticipationsService
     end
   end
 
-  # Just the phase-level participation data (not including action-level breakdowns, nor demographics)
-  def phase_level_participation_data(participations)
-    format_participation_data(participations.values.flatten)
-  end
-
   def phase_level_demographics(phase, participations)
     phase_participations_permissions = phase.permissions.where.not(action: 'attending_event')
     participant_ids = participations.values.flatten.pluck(:user_id).uniq
@@ -57,22 +39,15 @@ class ParticipationsService
     demographics(phase_participations_permissions, participant_custom_field_values)
   end
 
-  def phase_participation_data(participations)
-    # phase_participations_permissions = phase.permissions.where.not(action: 'attending_event') # Needed for demographics
-
-    phase_level = format_participation_data(participations.values.flatten, phase_participations_permissions)
-    actions_level = participations.map do |action_type, records|
-      {
-        action_type: action_type.to_s,
-        **format_participation_data(records, [phase_participations_permissions.find { |p| p.action == action_type.to_s }])
-      }
-    end
-
-    { **phase_level, actions: actions_level }
+  def insights_data(phase, participations)
+    # puts "phase_level_demographics: #{phase_level_demographics(phase, participations).inspect}"
+    metrics_data(participations.values.flatten).merge(
+      demographics: { fields: phase_level_demographics(phase, participations) }
+    )
   end
 
   # Participations at phase && action levels - Not used ATM
-  def format_participation_data(participations)
+  def metrics_data(participations)
     participant_ids = participations.pluck(:user_id).uniq
     total_participant_count = participant_ids.count
     # participant_custom_field_values = participants_custom_field_values(participations, participant_ids)
@@ -83,10 +58,11 @@ class ParticipationsService
     {
       metrics: {
         visitors: 'not implemented',
-        participations: participations.count,
-        participations_last_7_days: participations.count { |p| p[:acted_at] >= 7.days.ago },
         participants: total_participant_count,
-        participants_last_7_days: participants_change_last_7_days
+        participations: participations.count,
+        visitors_last_7_days: 'not implemented',
+        participants_last_7_days: participants_change_last_7_days,
+        participations_last_7_days: participations.count { |p| p[:acted_at] >= 7.days.ago }
       }
     }
   end
@@ -101,52 +77,75 @@ class ParticipationsService
     end
   end
 
-  def demographics(permissions, participant_custom_field_values)
-    # Get the set of unique permissions custom fields across all permissions
-    # TODO: Make a standalone method in PermissionsCustomFieldsService, to make testing easier
-    unique_fields = permissions.flat_map do |permission|
+  def demographics(permissions, participant_custom_field_values)    
+    custom_fields = permissions.flat_map do |permission|
       @permissions_custom_fields_service.fields_for_permission(permission)
-    end.uniq
+    end.map(&:custom_field).uniq
 
-    unique_fields.each_with_object({}) do |field, demographics_hash|
-      custom_field = field.custom_field
+    custom_fields.map do |custom_field|
+      reference_distribution = nil
 
-      if custom_field.key == 'birthyear'
+      generic_fields = {
+        id: custom_field.id,
+        key: custom_field.key,
+        code: custom_field.code,
+        r_score: 'not implemented',
+        title_multiloc: custom_field.title_multiloc
+      }
+      
+      key_sensitive_fields = if custom_field.key == 'birthyear'
         age_stats = UserCustomFields::AgeStats.calculate(participant_custom_field_values)
 
-        # TODO: Copied from StatsUsersController#users_by_age. Consider moving to a shared location (a service?).
-        demographics_hash['users_by_age'] = {
-          total_user_count: age_stats.user_count,
-          unknown_age_count: age_stats.unknown_age_count,
-          series: {
-            user_counts: age_stats.binned_counts,
-            reference_population: age_stats.population_counts,
-            bins: age_stats.bins
-          }
-        }
+        # Transform binned data into labeled age ranges
+        series_data = {}
+        reference_distribution_data = {}
+        bins = age_stats.bins
+        user_counts = age_stats.binned_counts
+        population_counts = age_stats.population_counts
+
+        # Process bins (ignoring the last null bin)
+        bins[0...-1].each_with_index do |bin_value, index|
+          next_bin = bins[index + 1]
+          
+          range_label = if next_bin.nil?
+            "#{bin_value}+"
+          else
+            "#{bin_value}-#{next_bin - 1}"
+          end
+          
+          series_data[range_label] = user_counts[index] || 0
+          reference_distribution_data[range_label] = population_counts[index] || 0
+        end
+        
+        # Add _blank for unknown ages
+        series_data["_blank"] = age_stats.unknown_age_count
+        reference_distribution_data["_blank"] = 0  # Or some default value
+
+        reference_distribution = reference_distribution_data
+
+        { series: series_data }
       else
         counts = UserCustomFields::FieldValueCounter.counts_by_field_option(participant_custom_field_values, custom_field)
+        reference_distribution = calculate_reference_distribution(custom_field) || {}
 
-        # TODO: Copied from StatsUsersController#users_by_custom_field. Consider moving to a shared location (a service?).
-        demographics_hash[custom_field.key] = {
-          series: {
-            users: counts,
-            reference_population: calculate_reference_population(custom_field) || {}
-          },
-          title_multiloc: custom_field.title_multiloc
+        options = if custom_field.options.present?
+          custom_field.options.to_h do |o|
+            [o.key, o.attributes.slice('title_multiloc', 'ordering')]
+          end
+        end
+
+        {
+          series: counts,
+          options: options
         }
       end
 
-      if custom_field.options.present?
-        demographics_hash[custom_field.key][:options] = custom_field.options.to_h do |o|
-          [o.key, o.attributes.slice('title_multiloc', 'ordering')]
-        end
-      end
+      generic_fields.merge(key_sensitive_fields, population_distribution: reference_distribution)
     end
   end
 
   # TODO: Copied from StatsUsersController. Consider moving to a shared location (a service?).
-  def calculate_reference_population(custom_field)
+  def calculate_reference_distribution(custom_field)
     return if custom_field.key == 'birthyear'
     return if (ref_distribution = custom_field.current_ref_distribution).blank?
 
