@@ -723,7 +723,7 @@
   "app.components.form.backToProject": "Retour au projet",
   "app.components.form.controls.allStatementsError": "Une réponse doit être sélectionnée pour chacune des affirmations.",
   "app.components.form.controls.birthyearTooHigh": "L'année de naissance ne peut pas se situer dans le futur",
-  "app.components.form.controls.birthyearTooLow": "L'année de naissance doit être au moins 1900",
+  "app.components.form.controls.birthyearTooLow": "L’année de naissance doit être supérieure ou égale à 1900",
   "app.components.form.controls.clearAll": "Tout effacer",
   "app.components.form.controls.clearAllScreenreader": "Effacer toutes les réponses de la question matricielle ci-dessus",
   "app.components.form.controls.cosponsorsPlaceholder": "Commencez à taper un nom pour lancer une recherche",
