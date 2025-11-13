@@ -25,21 +25,10 @@ class ContentImageService
     attr_reader :parse_errors
   end
 
-  # Applies {#swap_data_images} to each multiloc value in the given multiloc.
-  def swap_data_images_multiloc(multiloc, imageable: nil, field: nil)
-    multiloc.transform_values do |encoded_content|
-      swap_data_images encoded_content, imageable: imageable, field: field
-    end
-  end
-
   # Extracts and remove image data from the content, stores it in a separate image model,
   # and updates the original content to reference the image model instead.
   def swap_data_images(encoded_content, imageable: nil, field: nil)
-    content = begin
-      decode_content encoded_content
-    rescue DecodingError => e
-      log_decoding_error e
-    end
+    content = decode_content(encoded_content)
     return encoded_content if !content
 
     image_elements(content).each do |img_elt|
@@ -57,6 +46,44 @@ class ContentImageService
     encode_content content
   end
 
+  # Extracts image data from the content field of the given record, stores it in a
+  # separate model, and updates the content field to reference the image model instead.
+  # This method doesn't save the image models directly. Instead, it returns the record
+  # with the updated content field and the new image models added to the association.
+  #
+  # IMPORTANT: This method requires the imageable model to have a `has_many` association
+  # that lists all the image models it references. This is not currently the case for
+  # +ContentBuilder::Layout+ and +ContentBuilder::LayoutImage images+. It uses
+  # `association.build` to initialize image records and relies on the association's
+  # auto-save behavior to persist them. This ensures that foreign keys are set correctly
+  # when the records are saved.
+  #
+  # @param imageable [Imageable] The record that contains the content field.
+  # @param field [String, Symbol] The name of the field in `imageable` containing the
+  #   content to be processed.
+  # @param association [Symbol, ActiveRecord::Associations::CollectionProxy] The
+  #   association to/through which the new image models will be added.
+  # @return [Imageable] The updated `imageable` object.
+  def swap_data_images!(imageable, field, association)
+    encoded_content = imageable.read_attribute(field)
+    content = decode_content(encoded_content)
+    association = imageable.public_send(association) if association.is_a?(Symbol)
+
+    image_elements(content).each do |img_elt|
+      next if get_attribute(img_elt, code_attribute_for_element) # Image already stored.
+      next if image_attributes_for_element.none? { |elt_atr| attribute? img_elt, elt_atr }
+      next if (image_attrs = image_attributes(img_elt, imageable, field)).blank?
+
+      image = association.build(image_attrs)
+
+      set_attribute!(img_elt, code_attribute_for_element, image[code_attribute_for_model])
+      image_attributes_for_element.each { |elt_atr| remove_attribute!(img_elt, elt_atr) }
+    end
+
+    imageable.write_attribute(field, encode_content(content))
+    imageable
+  end
+
   # Applies {#render_data_images} to each multiloc value in the given multiloc.
   def render_data_images_multiloc(multiloc, imageable: nil, field: nil)
     return multiloc if multiloc.blank?
@@ -71,7 +98,7 @@ class ContentImageService
 
   # Replaces references to image models in the content by actual image data.
   def render_data_images(encoded_content, imageable: nil, field: nil)
-    content = decode_content encoded_content
+    content = decode_content! encoded_content
     precompute_for_rendering imageable
 
     image_elements(content).each do |img_elt|
@@ -91,9 +118,18 @@ class ContentImageService
 
   protected
 
-  def decode_content(encoded_content)
+  # @param encoded_content [String]
+  # @raise [DecodingError] if the content could not be decoded.
+  def decode_content!(encoded_content)
     # No encoding by default.
     encoded_content
+  end
+
+  def decode_content(encoded_content)
+    decode_content!(encoded_content)
+  rescue DecodingError => e
+    log_decoding_error(e)
+    nil
   end
 
   def encode_content(decoded_content)
@@ -188,5 +224,35 @@ class ContentImageService
         imageable_field: field
       }
     )
+  end
+
+  class << self
+    # Convenience class method to set up automatic image extraction for a model.
+    #
+    # This method takes care of everything needed for automatic image extraction:
+    # 1. Defines a `has_many` association from the imageable model to the image model.
+    # 2. Registers a `before_validation` callback that automatically extracts images
+    #    from the specified field.
+    def setup_image_extraction(imageable_class, field, association_name)
+      define_association(imageable_class, association_name, field)
+      image_service_class = self
+
+      imageable_class.before_validation do
+        next unless will_save_change_to_attribute?(field)
+
+        image_service_class.new.swap_data_images!(self, field, association_name)
+      end
+    end
+
+    private
+
+    def define_association(imageable_class, association_name, _field)
+      imageable_class.has_many(
+        association_name,
+        as: :imageable,
+        dependent: :destroy,
+        class_name: content_image_class.name
+      )
+    end
   end
 end

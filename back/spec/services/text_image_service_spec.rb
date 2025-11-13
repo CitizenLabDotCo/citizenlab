@@ -5,7 +5,7 @@ require 'rails_helper'
 describe TextImageService do
   let(:service) { described_class.new }
 
-  describe 'swap_data_images_multiloc' do
+  describe 'swap_data_images' do
     before do
       stub_request(:any, 'res.cloudinary.com').to_return(
         body: png_image_as_base64('image10.jpg')
@@ -18,8 +18,8 @@ describe TextImageService do
         <img src="data:image/jpeg;base64,/9j/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/yQALCAABAAEBAREA/8wABgAQEAX/2gAIAQEAAD8A0s8g/9k=" />
         <img src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg" />
       HTML
-      imageable = build(:project, description_multiloc: { 'fr-BE' => input })
-      output = service.swap_data_images_multiloc imageable.description_multiloc, field: :description_multiloc, imageable: imageable
+      imageable = create(:project, description_multiloc: { 'fr-BE' => input })
+      output = service.swap_data_images imageable.description_multiloc, field: :description_multiloc, imageable: imageable
       codes = imageable.reload.text_images.order(:created_at).pluck :text_reference
       expected_html = <<~HTML
         <img data-cl2-text-image-text-reference="#{codes[0]}">
@@ -31,78 +31,63 @@ describe TextImageService do
 
     it 'does not modify the empty string' do
       input = ''
-      imageable = build(:project, description_multiloc: { 'en' => input })
-      expect(service.swap_data_images_multiloc(imageable.description_multiloc, field: :description_multiloc, imageable: imageable)).to eq({ 'en' => input })
-    end
-  end
-
-  describe 'extract_data_images_multiloc' do
-    before do
-      stub_request(:any, 'res.cloudinary.com').to_return(
-        body: png_image_as_base64('image10.jpg')
-      )
+      imageable = create(:project, description_multiloc: { 'en' => input })
+      expect(service.swap_data_images(imageable.description_multiloc, field: :description_multiloc, imageable: imageable)).to eq({ 'en' => input })
     end
 
-    it 'processes both base64 and URL as src' do
-      input = <<~HTML
-        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
-        <img src="data:image/jpeg;base64,/9j/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/yQALCAABAAEBAREA/8wABgAQEAX/2gAIAQEAAD8A0s8g/9k=" />
-        <img src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg" />
-      HTML
-      output = service.extract_data_images_multiloc({ 'fr-BE' => input })
-
-      content = output[:content_multiloc]['fr-BE']
-      extracted_images = output[:extracted_images]
-
-      codes = extracted_images.pluck(:text_reference)
-      expected_html = <<~HTML
-        <img data-cl2-text-image-text-reference="#{codes[0]}">
-        <img data-cl2-text-image-text-reference="#{codes[1]}">
-        <img data-cl2-text-image-text-reference="#{codes[2]}">
-      HTML
-
-      expect(content).to eq(expected_html)
-    end
-
-    it 'does not modify the empty string' do
-      input = ''
-      output = service.extract_data_images_multiloc({ 'en' => input })
-      expect(output).to eq({
-        content_multiloc: {
-          'en' => input
-        },
-        extracted_images: []
+    # It's more of a side effect; what really matters is that it doesn't fail when some
+    # values are nil.
+    it 'converts nil values in multiloc to empty strings' do
+      imageable = create(:project, description_multiloc: {
+        'nl-BE' => nil,
+        'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">'
       })
+
+      output = service.swap_data_images imageable.description_multiloc, field: :description_multiloc, imageable: imageable
+      text_image = imageable.text_images.reload.order(:created_at).first
+
+      expect(output).to match(
+        'en' => %(<img data-cl2-text-image-text-reference="#{text_image.text_reference}">),
+        'nl-BE' => ''
+      )
     end
   end
 
-  describe 'bulk_create_images!' do
-    before do
-      stub_request(:any, 'res.cloudinary.com').to_return(
-        body: png_image_as_base64('image10.jpg')
-      )
+  describe 'swap_data_images!' do
+    it 'extracts images and updates content field' do
+      project = create(:project, description_multiloc: {
+        'en' => html_with_base64_image,
+        'fr-FR' => html_with_base64_image(alt_text: 'Point rouge')
+      })
+
+      service.swap_data_images!(project, :description_multiloc, :text_images)
+
+      expect(project.text_images.size).to eq(2)
+      project.description_multiloc.values.each do |value|
+        expect(value).to include('data-cl2-text-image-text-reference')
+        expect(value).not_to include('data:image/png;base64')
+      end
     end
 
-    it 'processes both base64 and URL as src' do
-      input = <<~HTML
-        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
-        <img src="data:image/jpeg;base64,/9j/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/yQALCAABAAEBAREA/8wABgAQEAX/2gAIAQEAAD8A0s8g/9k=" />
-        <img src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg" />
-      HTML
-      imageable = build(:idea, body_multiloc: { 'fr-BE' => input })
-      extracted_images = service.extract_data_images_multiloc(imageable.body_multiloc)[:extracted_images]
+    it 'builds images through association with correct foreign keys' do
+      project = create(:project, description_multiloc: { 'en' => html_with_base64_image })
 
-      images = service.bulk_create_images!(
-        extracted_images,
-        imageable,
-        :body_multiloc
-      )
+      service.swap_data_images!(project, :description_multiloc, :text_images)
 
-      expect(TextImage.count).to eq(3)
-      expect(images.count).to eq(3)
-      expect(TextImage.all.map(&:text_reference).sort).to eq(
-        images.map { |img| img[:text_reference] }.sort
-      )
+      text_image = project.text_images.sole
+      expect(text_image.imageable_id).to eq(project.id)
+    end
+
+    it 'skips images that are already stored' do
+      project = create(:project)
+      text_image = create(:text_image, imageable: project)
+      project.description_multiloc = {
+        'en' => %(<img data-cl2-text-image-text-reference="#{text_image.text_reference}">)
+      }
+
+      expect do
+        service.swap_data_images!(project, :description_multiloc, :text_images)
+      end.not_to(change { TextImage.count })
     end
   end
 
