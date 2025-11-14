@@ -92,6 +92,7 @@ resource 'Phase participation' do
         expect(metrics).to eq({
           visitors: 'not implemented',
           participants: 5,
+          engagement_rate: 'not implemented',
           participations: 8,
           visitors_last_7_days: 'not implemented',
           participants_last_7_days: 2,

@@ -28,16 +28,19 @@ module UserCustomFields
     end
 
     # Formats both user counts and reference population into labeled age ranges
+    # Example usage:
+    #   age_stats = UserCustomFields::AgeStats.calculate(users)
+    #   age_stats.format_in_ranges
     # @return [Hash] :series and :reference_distribution with age ranges as keys
     # @example
     #   {
-    #     series: {
+    #     ranged_series: {
     #       "18-44" => 45,
     #       "45-64" => 123,
     #       "65+" => 23,
     #       "_blank" => 12
     #     },
-    #     reference_distribution: {
+    #     ranged_reference_distribution: {
     #       "18-44" => 150,
     #       "45-64" => 200,
     #       "65+" => 80
@@ -63,8 +66,8 @@ module UserCustomFields
       series_data['_blank'] = unknown_age_count
 
       {
-        series: series_data,
-        reference_distribution: reference_data
+        ranged_series: series_data,
+        ranged_reference_distribution: reference_data
       }
     end
 

@@ -90,20 +90,38 @@ class ParticipationsService
         id: custom_field.id,
         key: custom_field.key,
         code: custom_field.code,
-        r_score: 'not implemented',
         title_multiloc: custom_field.title_multiloc
       }
 
       key_sensitive_fields = if custom_field.key == 'birthyear'
         age_stats = UserCustomFields::AgeStats.calculate(participant_custom_field_values)
+        distribution_counts = age_stats.reference_distribution['distribution']['counts']
+        puts "distribution_counts_xx: #{distribution_counts.inspect}"
+
+        # Only compute R-Score if we have reference distribution data
+        r_score_value = if distribution_counts.present?
+          UserCustomFields::Representativeness::RScore.compute_scores(age_stats.binned_counts, distribution_counts)[:min_max_p_ratio]
+        else
+          nil  # Default to nil when no reference distribution exists
+        end
 
         formatted_data = age_stats.format_in_ranges
-        reference_distribution = formatted_data[:reference_distribution]
+        reference_distribution = formatted_data[:ranged_reference_distribution]
 
-        { series: formatted_data[:series] }
+        { 
+          r_score: r_score_value,
+          series: formatted_data[:ranged_series]
+        }
       else
         counts = UserCustomFields::FieldValueCounter.counts_by_field_option(participant_custom_field_values, custom_field)
         reference_distribution = calculate_reference_distribution(custom_field) || {}
+
+        # Only compute R-Score if we have reference distribution data
+        r_score_value = if reference_distribution.present?
+          UserCustomFields::Representativeness::RScore.compute_scores(counts, reference_distribution)[:min_max_p_ratio]
+        else
+          nil  # Default to nil when no reference distribution exists
+        end
 
         options = if custom_field.options.present?
           custom_field.options.to_h do |o|
@@ -112,6 +130,7 @@ class ParticipationsService
         end
 
         {
+          r_score: r_score_value,
           series: counts,
           options: options
         }
