@@ -33,13 +33,11 @@ class ParticipationsService
   end
 
   def phase_insights_data(phase, participations)
-    # puts "phase_level_demographics: #{phase_level_demographics(phase, participations).inspect}"
     phase_metrics_data(participations.values.flatten).merge(
       demographics: { fields: phase_demographics(phase, participations) }
     )
   end
 
-  # Participations at phase && action levels - Not used ATM
   def phase_metrics_data(participations)
     participant_ids = participations.pluck(:user_id).uniq
     total_participant_count = participant_ids.count

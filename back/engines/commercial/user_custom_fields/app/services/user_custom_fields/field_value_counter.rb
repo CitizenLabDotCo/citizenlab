@@ -89,7 +89,6 @@ module UserCustomFields
       end
     end
 
-    # NEW PRIVATE METHOD:
     private_class_method def self.counts_from_custom_field_values_array(custom_field_values_array, custom_field, by)
       field_key = custom_field.key # For arrays, we don't need Ideas prefix logic
 

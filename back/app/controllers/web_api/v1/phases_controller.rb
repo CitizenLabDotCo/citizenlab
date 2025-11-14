@@ -35,10 +35,6 @@ class WebApi::V1::PhasesController < ApplicationController
     ).serializable_hash
   end
 
-  # def demographics
-  #   render json: WebApi::V1::PhaseDemographicsSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash
-  # end
-
   def create
     phase_attributes = phase_params
     text_image_service = TextImageService.new

@@ -253,7 +253,7 @@ module ParticipationMethod
     end
 
     def participations
-      {} # No-op default.
+      {}
     end
 
     private
