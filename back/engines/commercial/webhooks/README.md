@@ -1,6 +1,6 @@
 # Webhooks Engine
 
-Webhook subscription and delivery system for Go Vocal, enabling integration with iPaaS platforms like n8n, Zapier, and Make.com.
+Webhook subscription and delivery system.
 
 ## Features
 
@@ -10,12 +10,9 @@ Webhook subscription and delivery system for Go Vocal, enabling integration with
 - **Reliability**: At-least-once delivery with exponential backoff retries
 - **Observability**: Comprehensive delivery tracking and logging
 
-## Supported Events (Phase 1)
+## Supported Events
 
-- `idea.created` - New idea submitted
-- `idea.published` - Idea published from draft
-- `idea.changed` - Idea updated
-- `user.created` - New user registered
+See the `Webhooks::Subscription` model
 
 ## Architecture
 
@@ -26,7 +23,7 @@ User Action → SideFxService → LogActivityJob → Activity
                                       ↓
                                Webhooks::EnqueueService
                                       ↓
-                               Webhooks::DeliveryJob
+                               Webhooks::DeliveryJob (perform later)
                                       ↓
                                HTTP POST to subscriber URL
 ```
@@ -40,27 +37,11 @@ User Action → SideFxService → LogActivityJob → Activity
 
 ## Database Tables
 
-- `webhooks_subscriptions`: Webhook subscription configuration
-- `webhooks_deliveries`: Delivery attempts and results
+The most important concepts are a webhook `Subscription` and a webhook `Delivery`.
 
-## API Endpoints
+A subscription is a rule the admin end-user defines in the back office, that specifies the URL to which a certain number of events need to be sent.
 
-```
-GET    /web_api/v1/webhook_subscriptions
-POST   /web_api/v1/webhook_subscriptions
-GET    /web_api/v1/webhook_subscriptions/:id
-PATCH  /web_api/v1/webhook_subscriptions/:id
-DELETE /web_api/v1/webhook_subscriptions/:id
-POST   /web_api/v1/webhook_subscriptions/:id/test
-POST   /web_api/v1/webhook_subscriptions/:id/regenerate_secret
-```
-
-## Configuration
-
-No additional configuration required. The engine uses:
-- Que for background job processing (`:default` queue)
-- HTTP gem for webhook delivery
-- Apartment for multi-tenancy
+A delivery is one such event, in the scope of a single subscription. It's used to track the delivery status.
 
 ## Development
 
@@ -68,7 +49,6 @@ Run tests:
 ```bash
 docker compose run --rm web bin/rspec engines/commercial/webhooks
 ```
-
 ## Documentation
 
-See `doc/TAN-5687-webhooks/implementation-plan.md` for full implementation details.
+The end user documentation is part of our developers platform at https://developers.govocal.com, defined [here](https://github.com/CitizenLabDotCo/documentation/blob/master/docs/guides/reference-webhooks.md).

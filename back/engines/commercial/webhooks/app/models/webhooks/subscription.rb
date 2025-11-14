@@ -34,7 +34,8 @@ module Webhooks
       foreign_key: :webhooks_subscription_id,
       dependent: :destroy
 
-    # Supported event types (Phase 1)
+    # Supported event types
+    # Keep the documentation at https://github.com/CitizenLabDotCo/documentation/blob/master/docs/guides/reference-webhooks.md#supported-events in sync
     SUPPORTED_EVENTS = [
       'idea.created',
       'idea.published',
