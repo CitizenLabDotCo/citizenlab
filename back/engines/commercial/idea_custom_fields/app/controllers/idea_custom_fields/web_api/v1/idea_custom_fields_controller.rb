@@ -182,24 +182,11 @@ module IdeaCustomFields
         create_params['key'] = default_field.key
       end
 
-      text_image_service = TextImageService.new
-      extract_output = text_image_service.extract_data_images_multiloc(
-        create_params['description_multiloc']
-      )
-      create_params['description_multiloc'] = extract_output[:content_multiloc]
-
       field = CustomField.new create_params.merge(resource: @custom_form)
 
       SideFxCustomFieldService.new.before_create field, current_user
       if field.save
         page_temp_ids_to_ids_mapping[field_params[:temp_id]] = field.id if field_params[:temp_id]
-
-        text_image_service.bulk_create_images!(
-          extract_output[:extracted_images],
-          field,
-          :description_multiloc
-        )
-
         SideFxCustomFieldService.new.after_create field, current_user
         field
       else
@@ -215,7 +202,6 @@ module IdeaCustomFields
       field.assign_attributes field_params
       return true unless field.changed?
 
-      SideFxCustomFieldService.new.before_update field, current_user
       if field.save
         SideFxCustomFieldService.new.after_update field, current_user
         field

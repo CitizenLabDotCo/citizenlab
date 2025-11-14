@@ -119,8 +119,13 @@ const schema = yup.object({
 
 const { register, handleSubmit } = useForm({
   resolver: yupResolver(schema),
+  defaultValues: {
+    'fieldName'
+  }
 });
 ```
+
+When defining `defaultValues` to `useForm`, it's not needed to add empty defaultValues, just omit them.
 
 #### Internationalization
 
@@ -136,6 +141,16 @@ import messages from './messages';
 // In code
 const { formatMessage } = useIntl();
 const text = formatMessage(messages.title);
+```
+
+The data often contains multiloc attributes, which we transform to a string with the `localize` method.
+
+```typesript
+import useLocalize from 'hooks/useLocalize';
+
+// Component usage
+const localize = useLocalize();
+const title = localize(title_multiloc);
 ```
 
 ### Component Library
