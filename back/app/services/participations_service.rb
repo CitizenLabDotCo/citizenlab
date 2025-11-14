@@ -127,9 +127,8 @@ class ParticipationsService
   end
 end
 
-# Returns nil if no reference distribution data is available.
 def calculate_r_score(counts, reference_distribution)
   return nil if reference_distribution.blank?
-  
+
   UserCustomFields::Representativeness::RScore.compute_scores(counts, reference_distribution)[:min_max_p_ratio]
 end
