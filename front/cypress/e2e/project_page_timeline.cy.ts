@@ -6,6 +6,8 @@ describe('Existing Timeline project', () => {
     cy.visit('/projects/test-project-1-timeline-with-file');
     cy.get('#e2e-project-page');
 
+    cy.setConsentCookie();
+
     cy.wait(1000);
   });
 
