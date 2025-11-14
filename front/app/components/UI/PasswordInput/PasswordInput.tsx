@@ -59,6 +59,8 @@ const PasswordInputComponent = ({
   setRef,
   errors = {},
   intl: { formatMessage },
+  'aria-invalid': ariaInvalidId,
+  'aria-describedby': ariaDescribedById,
 }: Props & WrappedComponentProps) => {
   const locale = useLocale();
   const { data: appConfig } = useAppConfiguration();
@@ -115,6 +117,8 @@ const PasswordInputComponent = ({
             autocomplete={autocomplete}
             placeholder={placeholder}
             setRef={setInputRef}
+            aria-invalid={ariaInvalidId}
+            aria-describedby={ariaDescribedById}
           />
           <ShowPasswordIconButton
             showPassword={showPassword}
@@ -174,9 +178,23 @@ const PasswordInputComponent = ({
             </ScreenReaderOnly>
           </>
         )}
-        {isLoginPasswordInput && <Error text={emptyPasswordErrorMessage} />}
+        {/* {isLoginPasswordInput && <Error id="password-error" text={emptyPasswordErrorMessage} />}
         {!isLoginPasswordInput && (
-          <Error text={minimumPasswordLengthErrorMessage} />
+          <Error id="password-error" text={minimumPasswordLengthErrorMessage} />
+        )} */}
+        {isLoginPasswordInput && emptyPasswordErrorMessage && (
+          <Error
+            id="password-error"
+            text={emptyPasswordErrorMessage}
+            scrollIntoView={false}
+          />
+        )}
+        {!isLoginPasswordInput && minimumPasswordLengthErrorMessage && (
+          <Error
+            id="password-error"
+            text={minimumPasswordLengthErrorMessage}
+            scrollIntoView={false}
+          />
         )}
       </>
     );

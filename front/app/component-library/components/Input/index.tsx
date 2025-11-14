@@ -105,6 +105,8 @@ export interface InputProps {
   className?: string;
   size?: InputSize;
   'data-testid'?: string;
+  'aria-invalid'?: boolean;
+  'aria-describedby'?: string;
 }
 
 class Input extends PureComponent<InputProps> {
@@ -142,6 +144,8 @@ class Input extends PureComponent<InputProps> {
       a11yCharactersLeftMessage,
       className,
       onKeyDown,
+      'aria-invalid': ariaInvalid,
+      'aria-describedby': ariaDescribedBy,
     } = this.props;
     const {
       id,
@@ -235,6 +239,8 @@ class Input extends PureComponent<InputProps> {
               : undefined
           }
           {...optionalProps}
+          aria-invalid={ariaInvalid}
+          aria-describedby={ariaDescribedBy}
         />
 
         {maxCharCount && (
