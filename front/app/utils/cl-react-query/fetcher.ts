@@ -55,7 +55,7 @@ interface Delete {
 
 type FetcherArgs = Get | Patch | Put | Post | Delete;
 
-type BaseData = { id?: string; type: string };
+export type BaseData = { id?: string; type: string };
 
 export type BaseResponseData =
   | { data: BaseData; included?: BaseData[] }

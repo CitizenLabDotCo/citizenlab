@@ -45,8 +45,6 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
     ...containerId,
   });
 
-  console.log({ customField });
-
   if (!customField) return null;
 
   const rawValue =
