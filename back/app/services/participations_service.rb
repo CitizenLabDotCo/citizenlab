@@ -96,7 +96,6 @@ class ParticipationsService
       key_sensitive_fields = if custom_field.key == 'birthyear'
         age_stats = UserCustomFields::AgeStats.calculate(participant_custom_field_values)
         distribution_counts = age_stats.reference_distribution['distribution']['counts']
-        puts "distribution_counts_xx: #{distribution_counts.inspect}"
 
         # Only compute R-Score if we have reference distribution data
         r_score_value = if distribution_counts.present?
