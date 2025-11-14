@@ -97,17 +97,15 @@ class ParticipationsService
         age_stats = UserCustomFields::AgeStats.calculate(participant_custom_field_values)
         distribution_counts = age_stats.reference_distribution['distribution']['counts']
 
-        # Only compute R-Score if we have reference distribution data
+        # Sets nil if no distribution_counts data is available.
         r_score_value = if distribution_counts.present?
           UserCustomFields::Representativeness::RScore.compute_scores(age_stats.binned_counts, distribution_counts)[:min_max_p_ratio]
-        else
-          nil  # Default to nil when no reference distribution exists
         end
 
         formatted_data = age_stats.format_in_ranges
         reference_distribution = formatted_data[:ranged_reference_distribution]
 
-        { 
+        {
           r_score: r_score_value,
           series: formatted_data[:ranged_series]
         }
@@ -115,11 +113,9 @@ class ParticipationsService
         counts = UserCustomFields::FieldValueCounter.counts_by_field_option(participant_custom_field_values, custom_field)
         reference_distribution = calculate_reference_distribution(custom_field) || {}
 
-        # Only compute R-Score if we have reference distribution data
+        # Sets nil if no reference distribution data is available.
         r_score_value = if reference_distribution.present?
           UserCustomFields::Representativeness::RScore.compute_scores(counts, reference_distribution)[:min_max_p_ratio]
-        else
-          nil  # Default to nil when no reference distribution exists
         end
 
         options = if custom_field.options.present?
