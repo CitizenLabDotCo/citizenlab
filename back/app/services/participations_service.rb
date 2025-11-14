@@ -56,28 +56,29 @@ class ParticipationsService
       sessions_data = ImpactTracking::Session
         .joins(:pageviews)
         .where(impact_tracking_pageviews: constraints)
-        .select('DISTINCT ON (impact_tracking_sessions.id) impact_tracking_sessions.id, 
-                impact_tracking_sessions.user_id, 
+        .select('DISTINCT ON (impact_tracking_sessions.id) impact_tracking_sessions.id,
+                impact_tracking_sessions.user_id,
                 impact_tracking_sessions.monthly_user_hash,
                 impact_tracking_pageviews.created_at as first_pageview_at')
         .order('impact_tracking_sessions.id, impact_tracking_pageviews.created_at')
 
-      # Calculate total and last 7 days visitors
+      # Calculate total and last 7 days visitors.
+      # Build lookup sets instead of arrays to avoid O(n^2) uniqueness checks.
       seven_days_ago = 7.days.ago
-      all_visitors = []
-      recent_visitors = []
+      all_visitors = Set.new
+      recent_visitors = Set.new
 
       sessions_data.each do |session|
         visitor_id = session.user_id.presence || session.monthly_user_hash.presence
         next unless visitor_id
 
-        all_visitors << visitor_id
-        recent_visitors << visitor_id if session.first_pageview_at >= seven_days_ago
+        all_visitors.add(visitor_id)
+        recent_visitors.add(visitor_id) if session.first_pageview_at >= seven_days_ago
       end
 
       {
-        total: all_visitors.uniq.count,
-        last_7_days: recent_visitors.uniq.count
+        total: all_visitors.size,
+        last_7_days: recent_visitors.size
       }
     end
   end
