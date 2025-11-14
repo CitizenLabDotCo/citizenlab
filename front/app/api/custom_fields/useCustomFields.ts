@@ -27,7 +27,7 @@ const useCustomFields = ({
   const statements =
     result.data?.included.filter(
       (included): included is IFormCustomFieldStatementData =>
-        included.type === 'custom_field_matrix_statements'
+        included.type === 'custom_field_matrix_statement'
     ) ?? [];
 
   const statementsById = statements.reduce((acc, statement) => {
