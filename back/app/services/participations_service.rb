@@ -11,6 +11,7 @@ class ParticipationsService
 
   def initialize
     @phase_participations = {}
+    @phase_visitors = {}
     @permissions_custom_fields_service = Permissions::PermissionsCustomFieldsService.new
 
     @cache_timestamps = {}
@@ -32,24 +33,58 @@ class ParticipationsService
     end
   end
 
+  def phase_visitors_data(phase)
+    cache_key = "visitors_#{phase.id}"
+
+    # Expire old cache
+    if @cache_timestamps[cache_key] && @cache_timestamps[cache_key] < @cache_ttl.ago
+      @phase_visitors.delete(cache_key)
+    end
+
+    @phase_visitors[cache_key] ||= begin
+      @cache_timestamps[cache_key] = Time.current
+
+      constraints = { project_id: phase.project.id }
+      
+      if phase.end_at.present?
+        constraints[:created_at] = phase.start_at..phase.end_at
+      else
+        constraints[:created_at] = phase.start_at..
+      end
+
+      visitor_identifiers = ImpactTracking::Session
+        .joins(:pageviews)
+        .where(impact_tracking_pageviews: constraints)
+        .distinct
+        .pluck(
+          Arel.sql("COALESCE(NULLIF(user_id::text, ''), monthly_user_hash)")
+        )
+        .compact
+        .uniq
+
+      visitor_identifiers.count
+    end
+  end
+
   def phase_insights_data(phase, participations)
     participant_ids = participations.pluck(:user_id).uniq
-  
-    phase_metrics_data(participations, participant_ids).merge(
+
+    phase_metrics_data(phase, participations, participant_ids).merge(
       demographics: { fields: phase_demographics_data(phase, participations, participant_ids) }
     )
   end
 
-  def phase_metrics_data(participations, participant_ids)
+  def phase_metrics_data(phase, participations, participant_ids)
+    visitors_count = phase_visitors_data(phase)
     total_participant_count = participant_ids.count
     participants_before_7_days_count = participations.select { |p| p[:acted_at] < 7.days.ago }.pluck(:user_id).uniq.count
     participants_change_last_7_days = total_participant_count - participants_before_7_days_count
 
     {
       metrics: {
-        visitors: 'not implemented',
+        visitors: visitors_count,
         participants: total_participant_count,
-        engagement_rate: 'not implemented',
+        engagement_rate: total_participant_count > 0 ? (total_participant_count.to_f / visitors_count).round(3) : 0,
         participations: participations.count,
         visitors_last_7_days: 'not implemented',
         new_participants_last_7_days: participants_change_last_7_days,
