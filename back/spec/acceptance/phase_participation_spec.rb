@@ -95,7 +95,7 @@ resource 'Phase participation' do
           engagement_rate: 'not implemented',
           participations: 8,
           visitors_last_7_days: 'not implemented',
-          participants_last_7_days: 2,
+          new_participants_last_7_days: 2,
           participations_last_7_days: 5
         })
       end

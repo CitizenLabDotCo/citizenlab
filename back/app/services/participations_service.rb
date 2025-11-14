@@ -2,7 +2,7 @@ class ParticipationsService
   include Singleton
 
   def phase_insights(phase)
-    participations = phase_participations(phase)
+    participations = phase_participations(phase).values.flatten
 
     phase_insights_data(phase, participations)
   end
@@ -33,13 +33,14 @@ class ParticipationsService
   end
 
   def phase_insights_data(phase, participations)
-    phase_metrics_data(participations.values.flatten).merge(
-      demographics: { fields: phase_demographics(phase, participations) }
+    participant_ids = participations.pluck(:user_id).uniq
+  
+    phase_metrics_data(participations, participant_ids).merge(
+      demographics: { fields: phase_demographics_data(phase, participations, participant_ids) }
     )
   end
 
-  def phase_metrics_data(participations)
-    participant_ids = participations.pluck(:user_id).uniq
+  def phase_metrics_data(participations, participant_ids)
     total_participant_count = participant_ids.count
     participants_before_7_days_count = participations.select { |p| p[:acted_at] < 7.days.ago }.pluck(:user_id).uniq.count
     participants_change_last_7_days = total_participant_count - participants_before_7_days_count
@@ -51,15 +52,14 @@ class ParticipationsService
         engagement_rate: 'not implemented',
         participations: participations.count,
         visitors_last_7_days: 'not implemented',
-        participants_last_7_days: participants_change_last_7_days,
+        new_participants_last_7_days: participants_change_last_7_days,
         participations_last_7_days: participations.count { |p| p[:acted_at] >= 7.days.ago }
       }
     }
   end
 
-  def phase_demographics(phase, participations)
-    participant_ids = participations.values.flatten.pluck(:user_id).uniq
-    participant_custom_field_values = participants_custom_field_values(participations.values.flatten, participant_ids)
+  def phase_demographics_data(phase, participations, participant_ids)
+    participant_custom_field_values = participants_custom_field_values(participations, participant_ids)
 
     custom_fields = phase.permissions.flat_map do |permission| # TODO: Maybe phase.permissions.where.not(action: 'attending_event')?
       @permissions_custom_fields_service.fields_for_permission(permission)
@@ -123,10 +123,10 @@ class ParticipationsService
 
     ref_distribution.distribution_by_option_key
   end
-end
 
-def calculate_r_score(counts, reference_distribution)
-  return nil if reference_distribution.blank?
+  def calculate_r_score(counts, reference_distribution)
+    return nil if reference_distribution.blank?
 
-  UserCustomFields::Representativeness::RScore.compute_scores(counts, reference_distribution)[:min_max_p_ratio]
+    UserCustomFields::Representativeness::RScore.compute_scores(counts, reference_distribution)[:min_max_p_ratio]
+  end
 end
