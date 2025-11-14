@@ -36,11 +36,12 @@ class Event < ApplicationRecord
   include Files::FileAttachable
   include GeoJsonHelpers
 
+  has_many_text_images from: :description_multiloc
+
   belongs_to :project
   has_many :attendances, class_name: 'Events::Attendance', dependent: :destroy
   has_many :attendees, through: :attendances
   has_many :event_files, -> { order(:ordering) }, dependent: :destroy
-  has_many :text_images, as: :imageable, dependent: :destroy
   has_many :event_images, -> { order(:ordering) }, dependent: :destroy, inverse_of: :event
   accepts_nested_attributes_for :text_images, :event_images
 
