@@ -7,6 +7,7 @@ describe('Existing Timeline project', () => {
 
     cy.visit('/projects/test-project-1-timeline-with-file');
     cy.get('#e2e-project-page');
+    cy.acceptCookies();
 
     cy.wait(1000);
   });
@@ -123,6 +124,7 @@ describe('New timeline project', () => {
     // navigate to project
     cy.setAdminLoginCookie();
     const path = `/projects/${projectSlug}`;
+    cy.acceptCookies();
     cy.visit(path);
     cy.wait(1000);
   });
