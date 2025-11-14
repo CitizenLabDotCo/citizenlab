@@ -14,7 +14,10 @@ import useAuthUser from 'api/me/useAuthUser';
 import { IProjectFolderData } from 'api/project_folders/types';
 import useProjectFolderBySlug from 'api/project_folders/useProjectFolderBySlug';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import ContentContainer from 'components/ContentContainer';
+import FolderContentViewer from 'components/DescriptionBuilder/ContentViewer/FolderContentViewer';
 import FollowUnfollow from 'components/FollowUnfollow';
 import PageNotFound from 'components/PageNotFound';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -30,13 +33,11 @@ import ProjectFolderDescription from './ProjectFolderDescription';
 import ProjectFolderHeader from './ProjectFolderHeader';
 import ProjectFolderProjectCards from './ProjectFolderProjectCards';
 import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
-import { maxPageWidth } from './styles';
 
 const StyledContentContainer = styled(ContentContainer)`
   padding-top: 30px;
   background: #fff;
-
-  @media (min-width: 1280px) {
+  @media (min-width: 1166px) {
     padding-left: 60px;
     padding-right: 60px;
   }
@@ -64,6 +65,7 @@ const StyledProjectFolderDescription = styled(ProjectFolderDescription)`
 
 const StyledProjectFolderProjectCards = styled(ProjectFolderProjectCards)`
   flex: 0 1 800px;
+  flex-shrink: 0;
   width: 800px;
   padding: 20px;
   padding-bottom: 0px;
@@ -101,6 +103,11 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
   const isSmallerThanSmallDesktop = useBreakpoint('smallDesktop');
 
   const userCanEditFolder = userModeratesFolder(authUser, projectFolder.id);
+  const descriptionBuilderEnabled =
+    useFeatureFlag({
+      name: 'project_description_builder',
+    }) && projectFolder.attributes.uses_content_builder;
+  const maxPageWidth = descriptionBuilderEnabled ? '1166px' : '1480px';
 
   return (
     <>
@@ -129,8 +136,6 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
                 followableType="project_folders"
                 followableId={projectFolder.id}
                 followersCount={projectFolder.attributes.followers_count}
-                // TODO: Fix this the next time the file is edited.
-                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 followerId={projectFolder.relationships.user_follower?.data?.id}
                 followableSlug={projectFolder.attributes.slug}
                 w="auto"
@@ -143,23 +148,51 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
         </Box>
       </StyledContentContainer>
       <main id="e2e-folder-page">
-        <StyledContentContainer maxWidth={maxPageWidth}>
-          <ProjectFolderHeader projectFolder={projectFolder} />
-          {!isSmallerThanSmallDesktop ? (
-            <Content>
-              <StyledProjectFolderDescription projectFolder={projectFolder} />
-              <StyledProjectFolderProjectCards folderId={projectFolder.id} />
-            </Content>
-          ) : (
-            <StyledProjectFolderDescription projectFolder={projectFolder} />
-          )}
-        </StyledContentContainer>
-        {isSmallerThanSmallDesktop && (
-          <CardsWrapper>
-            <ContentContainer maxWidth={maxPageWidth}>
-              <StyledProjectFolderProjectCards folderId={projectFolder.id} />
-            </ContentContainer>
-          </CardsWrapper>
+        {descriptionBuilderEnabled ? (
+          <StyledContentContainer maxWidth={maxPageWidth}>
+            <ProjectFolderHeader projectFolder={projectFolder} />
+            <FolderContentViewer
+              folderId={projectFolder.id}
+              folderTitle={projectFolder.attributes.title_multiloc}
+            />
+          </StyledContentContainer>
+        ) : (
+          <>
+            <StyledContentContainer maxWidth={maxPageWidth}>
+              <ProjectFolderHeader projectFolder={projectFolder} />
+              {!isSmallerThanSmallDesktop ? (
+                <Content>
+                  <StyledProjectFolderDescription
+                    folderId={projectFolder.id}
+                    folderTitle={projectFolder.attributes.title_multiloc}
+                    folderDescription={
+                      projectFolder.attributes.description_multiloc
+                    }
+                  />
+                  <StyledProjectFolderProjectCards
+                    folderId={projectFolder.id}
+                  />
+                </Content>
+              ) : (
+                <StyledProjectFolderDescription
+                  folderId={projectFolder.id}
+                  folderTitle={projectFolder.attributes.title_multiloc}
+                  folderDescription={
+                    projectFolder.attributes.description_multiloc
+                  }
+                />
+              )}
+            </StyledContentContainer>
+            {isSmallerThanSmallDesktop && (
+              <CardsWrapper>
+                <ContentContainer maxWidth={maxPageWidth}>
+                  <StyledProjectFolderProjectCards
+                    folderId={projectFolder.id}
+                  />
+                </ContentContainer>
+              </CardsWrapper>
+            )}
+          </>
         )}
       </main>
     </>

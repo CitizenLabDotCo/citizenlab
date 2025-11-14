@@ -52,10 +52,11 @@
 class CustomField < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_id]
 
+  has_many_text_images from: :description_multiloc, as: :text_images
+  accepts_nested_attributes_for :text_images
+
   has_many :options, -> { order(:ordering) }, dependent: :destroy, class_name: 'CustomFieldOption', inverse_of: :custom_field
   has_many :matrix_statements, -> { order(:ordering) }, dependent: :destroy, class_name: 'CustomFieldMatrixStatement', inverse_of: :custom_field
-  has_many :text_images, as: :imageable, dependent: :destroy
-  accepts_nested_attributes_for :text_images
 
   belongs_to :resource, polymorphic: true, optional: true
   belongs_to :custom_form, foreign_key: :resource_id, optional: true, inverse_of: :custom_fields

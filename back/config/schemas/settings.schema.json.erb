@@ -1121,8 +1121,8 @@
 
       "public_api_tokens": {
         "type": "object",
-        "title": "Public API tokens",
-        "description": "Enables the ability to create API tokens for the public API.",
+        "title": "Public API & Webhooks",
+        "description": "Enables the ability to create API tokens for the public API and webhooks. This allows external systems to interact with the platform programmatically.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1474,7 +1474,12 @@
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
+          "enabled": { "type": "boolean", "default": false },
+          "prompt_template": {
+            "title": "Custom AI analysis prompt",
+            "description": "Optional custom prompt template (ERB format) to override the default Q&A prompt. Available variables: project_title, question, inputs_text, language, include_comments.",
+            "type": "string"
+          }
         }
       },
 

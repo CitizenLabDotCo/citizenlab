@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   mount Seo::Engine => '', as: 'seo'
   mount Surveys::Engine => '', as: 'surveys'
   mount Volunteering::Engine => '', as: 'volunteering'
+  mount Webhooks::Engine => '', as: 'webhooks'
 
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
@@ -28,6 +29,7 @@ Rails.application.routes.draw do
         resources :permissions, param: :permission_action do
           get 'requirements', on: :member
           get 'custom_fields', on: :member
+          get 'custom_field_options', on: :member
           get 'access_denied_explanation', on: :member
           patch 'reset', on: :member
           resources :permissions_custom_fields, shallow: true do

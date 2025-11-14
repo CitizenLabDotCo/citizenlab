@@ -117,6 +117,9 @@ Spotlight.craft = {
   related: {
     settings: Settings,
   },
+  custom: {
+    title: messages.spotlightTitle,
+  },
 };
 
 export const spotlightTitle = messages.spotlightTitle;
