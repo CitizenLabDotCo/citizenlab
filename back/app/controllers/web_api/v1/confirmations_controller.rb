@@ -29,11 +29,9 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     end
   end
 
-  # This endpoint is used for an edge case:
-  # users that have a password and are logged in, but are not yet confirmed,
-  # while the user_confirmation feature is enabled.
-  # This should not be possible anymore, but there may still be some
-  # legacy accounts like this. This way, they can confirm their email
+  # This endpoint is for users who are logged in, but don't yet have a confirmed email
+  # this can happen if they signed up via SSO without an email, or if they signed up
+  # with an email but never confirmed it (now not possible anymore, but previously it was)
   def confirm_code_authenticated
     unless confirmation_codes_service.permit_request_code_authenticated(current_user)
       render json: { errors: { base: ['Confirmation not permitted'] } }, status: :unprocessable_entity
@@ -55,7 +53,6 @@ class WebApi::V1::ConfirmationsController < ApplicationController
   end
 
   # This endpoint is used when a logged in user wants to change their email
-  # (or set their email for the first time if they came from SSO without email)
   def confirm_code_email_change
     unless confirmation_codes_service.permit_request_code_email_change(
       current_user,
