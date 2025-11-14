@@ -4,7 +4,7 @@ class ParticipationsService
   def phase_insights(phase)
     participations = phase_participations(phase)
 
-    insights_data(phase, participations)
+    phase_insights_data(phase, participations)
   end
 
   private
@@ -32,26 +32,17 @@ class ParticipationsService
     end
   end
 
-  def phase_level_demographics(phase, participations)
-    phase_participations_permissions = phase.permissions.where.not(action: 'attending_event')
-    participant_ids = participations.values.flatten.pluck(:user_id).uniq
-    participant_custom_field_values = participants_custom_field_values(participations.values.flatten, participant_ids)
-    demographics(phase_participations_permissions, participant_custom_field_values)
-  end
-
-  def insights_data(phase, participations)
+  def phase_insights_data(phase, participations)
     # puts "phase_level_demographics: #{phase_level_demographics(phase, participations).inspect}"
-    metrics_data(participations.values.flatten).merge(
-      demographics: { fields: phase_level_demographics(phase, participations) }
+    phase_metrics_data(participations.values.flatten).merge(
+      demographics: { fields: phase_demographics(phase, participations) }
     )
   end
 
   # Participations at phase && action levels - Not used ATM
-  def metrics_data(participations)
+  def phase_metrics_data(participations)
     participant_ids = participations.pluck(:user_id).uniq
     total_participant_count = participant_ids.count
-    # participant_custom_field_values = participants_custom_field_values(participations, participant_ids)
-
     participants_before_7_days_count = participations.select { |p| p[:acted_at] < 7.days.ago }.pluck(:user_id).uniq.count
     participants_change_last_7_days = total_participant_count - participants_before_7_days_count
 
@@ -68,6 +59,55 @@ class ParticipationsService
     }
   end
 
+  def phase_demographics(phase, participations) # phase, participations
+    participant_ids = participations.values.flatten.pluck(:user_id).uniq
+    participant_custom_field_values = participants_custom_field_values(participations.values.flatten, participant_ids)
+
+    custom_fields = phase.permissions.flat_map do |permission| #TODO: Maybe phase.permissions.where.not(action: 'attending_event')?
+      @permissions_custom_fields_service.fields_for_permission(permission)
+    end.map(&:custom_field).uniq
+
+    custom_fields.map do |custom_field|
+      reference_distribution = nil
+
+      result = {
+        id: custom_field.id,
+        key: custom_field.key,
+        code: custom_field.code,
+        r_score: nil, # May be set below
+        title_multiloc: custom_field.title_multiloc,
+        series: nil # Will be set below
+      }
+
+      if custom_field.key == 'birthyear'
+        age_stats = UserCustomFields::AgeStats.calculate(participant_custom_field_values)
+        distribution_counts = age_stats.reference_distribution['distribution']['counts']
+
+        formatted_data = age_stats.format_in_ranges
+        reference_distribution = formatted_data[:ranged_reference_distribution]
+
+        result[:r_score] = calculate_r_score(age_stats.binned_counts, distribution_counts)
+        result[:series] = formatted_data[:ranged_series]
+      else
+        counts = UserCustomFields::FieldValueCounter.counts_by_field_option(participant_custom_field_values, custom_field)
+        reference_distribution = calculate_reference_distribution(custom_field) || {}
+
+        result[:r_score] = calculate_r_score(counts, reference_distribution)
+        result[:series] = counts
+
+        if custom_field.options.present?
+          result[:options] = custom_field.options.to_h do |o|
+            [o.key, o.attributes.slice('title_multiloc', 'ordering')]
+          end
+        end
+      end
+
+      result[:population_distribution] = reference_distribution
+    
+      result
+    end
+  end
+
   def participants_custom_field_values(participations, participant_ids)
     # Build lookup hash to avoid O(n × p) repeated searches. Reduces to O(n + p).
     participation_by_user = participations.group_by { |p| p[:user_id] }
@@ -78,68 +118,18 @@ class ParticipationsService
     end
   end
 
-  def demographics(permissions, participant_custom_field_values)
-    custom_fields = permissions.flat_map do |permission|
-      @permissions_custom_fields_service.fields_for_permission(permission)
-    end.map(&:custom_field).uniq
-
-    custom_fields.map do |custom_field|
-      reference_distribution = nil
-
-      generic_fields = {
-        id: custom_field.id,
-        key: custom_field.key,
-        code: custom_field.code,
-        title_multiloc: custom_field.title_multiloc
-      }
-
-      key_sensitive_fields = if custom_field.key == 'birthyear'
-        age_stats = UserCustomFields::AgeStats.calculate(participant_custom_field_values)
-        distribution_counts = age_stats.reference_distribution['distribution']['counts']
-
-        # Sets nil if no distribution_counts data is available.
-        r_score_value = if distribution_counts.present?
-          UserCustomFields::Representativeness::RScore.compute_scores(age_stats.binned_counts, distribution_counts)[:min_max_p_ratio]
-        end
-
-        formatted_data = age_stats.format_in_ranges
-        reference_distribution = formatted_data[:ranged_reference_distribution]
-
-        {
-          r_score: r_score_value,
-          series: formatted_data[:ranged_series]
-        }
-      else
-        counts = UserCustomFields::FieldValueCounter.counts_by_field_option(participant_custom_field_values, custom_field)
-        reference_distribution = calculate_reference_distribution(custom_field) || {}
-
-        # Sets nil if no reference distribution data is available.
-        r_score_value = if reference_distribution.present?
-          UserCustomFields::Representativeness::RScore.compute_scores(counts, reference_distribution)[:min_max_p_ratio]
-        end
-
-        options = if custom_field.options.present?
-          custom_field.options.to_h do |o|
-            [o.key, o.attributes.slice('title_multiloc', 'ordering')]
-          end
-        end
-
-        {
-          r_score: r_score_value,
-          series: counts,
-          options: options
-        }
-      end
-
-      generic_fields.merge(key_sensitive_fields, population_distribution: reference_distribution)
-    end
-  end
-
   # TODO: Copied from StatsUsersController. Consider moving to a shared location (a service?).
   def calculate_reference_distribution(custom_field)
     return if custom_field.key == 'birthyear'
     return if (ref_distribution = custom_field.current_ref_distribution).blank?
 
     ref_distribution.distribution_by_option_key
+  end
+end
+
+# Returns nil if no reference distribution data is available.
+def calculate_r_score(counts, reference_distribution)
+  r_score_value = if reference_distribution.present?
+    UserCustomFields::Representativeness::RScore.compute_scores(counts, reference_distribution)[:min_max_p_ratio]
   end
 end
