@@ -59,11 +59,11 @@ class ParticipationsService
     }
   end
 
-  def phase_demographics(phase, participations) # phase, participations
+  def phase_demographics(phase, participations)
     participant_ids = participations.values.flatten.pluck(:user_id).uniq
     participant_custom_field_values = participants_custom_field_values(participations.values.flatten, participant_ids)
 
-    custom_fields = phase.permissions.flat_map do |permission| #TODO: Maybe phase.permissions.where.not(action: 'attending_event')?
+    custom_fields = phase.permissions.flat_map do |permission| # TODO: Maybe phase.permissions.where.not(action: 'attending_event')?
       @permissions_custom_fields_service.fields_for_permission(permission)
     end.map(&:custom_field).uniq
 
@@ -103,7 +103,7 @@ class ParticipationsService
       end
 
       result[:population_distribution] = reference_distribution
-    
+
       result
     end
   end
@@ -129,7 +129,7 @@ end
 
 # Returns nil if no reference distribution data is available.
 def calculate_r_score(counts, reference_distribution)
-  r_score_value = if reference_distribution.present?
-    UserCustomFields::Representativeness::RScore.compute_scores(counts, reference_distribution)[:min_max_p_ratio]
-  end
+  return nil if reference_distribution.blank?
+  
+  UserCustomFields::Representativeness::RScore.compute_scores(counts, reference_distribution)[:min_max_p_ratio]
 end
