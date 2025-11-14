@@ -59,6 +59,7 @@ class ParticipationsService
       metrics: {
         visitors: 'not implemented',
         participants: total_participant_count,
+        engagement_rate: 'not implemented',
         participations: participations.count,
         visitors_last_7_days: 'not implemented',
         participants_last_7_days: participants_change_last_7_days,
@@ -96,32 +97,10 @@ class ParticipationsService
       key_sensitive_fields = if custom_field.key == 'birthyear'
         age_stats = UserCustomFields::AgeStats.calculate(participant_custom_field_values)
 
-        # Transform binned data into labeled age ranges
-        series_data = {}
-        reference_distribution_data = {}
-        bins = age_stats.bins
-        user_counts = age_stats.binned_counts
-        population_counts = age_stats.population_counts
+        formatted_data = age_stats.format_in_ranges
+        reference_distribution = formatted_data[:reference_distribution]
 
-        # Process bins (ignoring the last null bin)
-        bins[0...-1].each_with_index do |bin_value, index|
-          next_bin = bins[index + 1]
-
-          range_label = if next_bin.nil?
-            "#{bin_value}+"
-          else
-            "#{bin_value}-#{next_bin - 1}"
-          end
-
-          series_data[range_label] = user_counts[index] || 0
-          reference_distribution_data[range_label] = population_counts[index] || 0
-        end
-
-        series_data['_blank'] = age_stats.unknown_age_count
-
-        reference_distribution = reference_distribution_data
-
-        { series: series_data }
+        { series: formatted_data[:series] }
       else
         counts = UserCustomFields::FieldValueCounter.counts_by_field_option(participant_custom_field_values, custom_field)
         reference_distribution = calculate_reference_distribution(custom_field) || {}

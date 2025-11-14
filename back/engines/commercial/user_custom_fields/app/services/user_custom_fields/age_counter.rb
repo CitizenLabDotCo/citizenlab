@@ -6,10 +6,16 @@ module UserCustomFields
 
     DEFAULT_BINS = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, nil].freeze
 
-    def count(users, bins = nil)
+    # Counts users by age bins
+    # @param [ActiveRecord::Relation, Array<Hash>] records_or_values - Either:
+    #   - ActiveRecord relation of users
+    #   - Array of custom_field_values hashes (for in-memory processing)
+    # @param [Array<Numeric,nil>] bins - Age bin boundaries
+    # @return [Result] with binned_counts, unknown_age_count, and bins
+    def count(records_or_values, bins = nil)
       bins ||= DEFAULT_BINS
       birthyear_custom_field = CustomField.find_by(key: 'birthyear')
-      birthyear_counts = FieldValueCounter.counts_by_field_option(users, birthyear_custom_field)
+      birthyear_counts = FieldValueCounter.counts_by_field_option(records_or_values, birthyear_custom_field)
 
       unknown_age_count = birthyear_counts.delete(FieldValueCounter::UNKNOWN_VALUE_LABEL)
       age_counts = birthyear_counts.transform_keys { |birthyear| convert_to_age(birthyear) }
