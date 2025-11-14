@@ -178,23 +178,11 @@ const PasswordInputComponent = ({
             </ScreenReaderOnly>
           </>
         )}
-        {/* {isLoginPasswordInput && <Error id="password-error" text={emptyPasswordErrorMessage} />}
-        {!isLoginPasswordInput && (
-          <Error id="password-error" text={minimumPasswordLengthErrorMessage} />
-        )} */}
         {isLoginPasswordInput && emptyPasswordErrorMessage && (
-          <Error
-            id="password-error"
-            text={emptyPasswordErrorMessage}
-            scrollIntoView={false}
-          />
+          <Error id="password-error" text={emptyPasswordErrorMessage} />
         )}
         {!isLoginPasswordInput && minimumPasswordLengthErrorMessage && (
-          <Error
-            id="password-error"
-            text={minimumPasswordLengthErrorMessage}
-            scrollIntoView={false}
-          />
+          <Error id="password-error" text={minimumPasswordLengthErrorMessage} />
         )}
       </>
     );
