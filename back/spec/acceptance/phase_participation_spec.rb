@@ -90,11 +90,11 @@ resource 'Phase participation' do
 
         metrics = json_response_body.dig(:data, :attributes, :metrics)
         expect(metrics).to eq({
-          visitors: 'not implemented',
+          visitors: 0,
           participants: 5,
-          engagement_rate: 'not implemented',
+          engagement_rate: 0,
           participations: 8,
-          visitors_last_7_days: 'not implemented',
+          visitors_last_7_days: 0,
           new_participants_last_7_days: 2,
           participations_last_7_days: 5
         })

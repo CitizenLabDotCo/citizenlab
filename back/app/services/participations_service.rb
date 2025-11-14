@@ -45,24 +45,40 @@ class ParticipationsService
       @cache_timestamps[cache_key] = Time.current
 
       constraints = { project_id: phase.project.id }
-      
-      if phase.end_at.present?
-        constraints[:created_at] = phase.start_at..phase.end_at
+
+      constraints[:created_at] = if phase.end_at.present?
+        phase.start_at..phase.end_at
       else
-        constraints[:created_at] = phase.start_at..
+        phase.start_at..
       end
 
-      visitor_identifiers = ImpactTracking::Session
+      # Get sessions for project, within phase dates, with their pageview dates.
+      sessions_data = ImpactTracking::Session
         .joins(:pageviews)
         .where(impact_tracking_pageviews: constraints)
-        .distinct
-        .pluck(
-          Arel.sql("COALESCE(NULLIF(user_id::text, ''), monthly_user_hash)")
-        )
-        .compact
-        .uniq
+        .select('DISTINCT ON (impact_tracking_sessions.id) impact_tracking_sessions.id, 
+                impact_tracking_sessions.user_id, 
+                impact_tracking_sessions.monthly_user_hash,
+                impact_tracking_pageviews.created_at as first_pageview_at')
+        .order('impact_tracking_sessions.id, impact_tracking_pageviews.created_at')
 
-      visitor_identifiers.count
+      # Calculate total and last 7 days visitors
+      seven_days_ago = 7.days.ago
+      all_visitors = []
+      recent_visitors = []
+
+      sessions_data.each do |session|
+        visitor_id = session.user_id.presence || session.monthly_user_hash.presence
+        next unless visitor_id
+
+        all_visitors << visitor_id
+        recent_visitors << visitor_id if session.first_pageview_at >= seven_days_ago
+      end
+
+      {
+        total: all_visitors.uniq.count,
+        last_7_days: recent_visitors.uniq.count
+      }
     end
   end
 
@@ -75,18 +91,18 @@ class ParticipationsService
   end
 
   def phase_metrics_data(phase, participations, participant_ids)
-    visitors_count = phase_visitors_data(phase)
+    visitors_data = phase_visitors_data(phase)
     total_participant_count = participant_ids.count
     participants_before_7_days_count = participations.select { |p| p[:acted_at] < 7.days.ago }.pluck(:user_id).uniq.count
     participants_change_last_7_days = total_participant_count - participants_before_7_days_count
 
     {
       metrics: {
-        visitors: visitors_count,
+        visitors: visitors_data[:total],
         participants: total_participant_count,
-        engagement_rate: total_participant_count > 0 ? (total_participant_count.to_f / visitors_count).round(3) : 0,
+        engagement_rate: visitors_data[:total] > 0 ? (total_participant_count.to_f / visitors_data[:total]).round(3) : 0,
         participations: participations.count,
-        visitors_last_7_days: 'not implemented',
+        visitors_last_7_days: visitors_data[:last_7_days],
         new_participants_last_7_days: participants_change_last_7_days,
         participations_last_7_days: participations.count { |p| p[:acted_at] >= 7.days.ago }
       }
