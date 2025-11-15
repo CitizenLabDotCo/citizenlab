@@ -116,14 +116,14 @@ class WebApi::V1::UsersController < ApplicationController
     skip_authorization
     if User::EMAIL_REGEX.match?(params[:email])
       @user = User.find_by_cimail(params[:email])
-      if @user&.invite_pending?
-        render json: { errors: { email: [{ error: 'taken_by_invite', value: params[:email], inviter_email: @user.invitee_invite&.inviter&.email }] } }, status: :unprocessable_entity
-      elsif @user && !@user&.no_password?
-        render json: raw_json({ action: 'password' })
-      elsif @user&.registration_completed_at.present?
-        render json: raw_json({ action: 'confirm' })
-      else
+      if @user.nil?
         render json: raw_json({ action: 'terms' })
+      elsif @user.invite_pending?
+        render json: { errors: { email: [{ error: 'taken_by_invite', value: params[:email], inviter_email: @user.invitee_invite&.inviter&.email }] } }, status: :unprocessable_entity
+      elsif !@user.no_password?
+        render json: raw_json({ action: 'password' })
+      else
+        render json: raw_json({ action: 'confirm' })
       end
     else
       render json: { errors: { email: [{ error: 'invalid', value: params[:email] }] } }, status: :unprocessable_entity
