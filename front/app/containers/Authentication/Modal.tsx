@@ -169,6 +169,7 @@ const AuthModal = () => {
             loading={loading}
             setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT_PASSWORD')}
+            onClose={transition(currentStep, 'CLOSE')}
           />
         )}
         {currentStep === 'email:sso-policies' && (

@@ -35,6 +35,7 @@ interface Props {
     rememberMe: boolean,
     tokenLifetime: number
   ) => void;
+  onClose: () => void;
 }
 
 interface FormValues {
@@ -47,7 +48,7 @@ const DEFAULT_VALUES: Partial<FormValues> = {
   rememberMe: false,
 };
 
-const Password = ({ state, loading, setError, onSubmit }: Props) => {
+const Password = ({ state, loading, setError, onSubmit, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
 
@@ -141,7 +142,7 @@ const Password = ({ state, loading, setError, onSubmit }: Props) => {
         </Box>
       </form>
       <Box mt="32px">
-        <TextLink to="/password-recovery">
+        <TextLink to="/password-recovery" onClick={onClose}>
           {formatMessage(sharedMessages.forgotPassword)}
         </TextLink>
       </Box>
