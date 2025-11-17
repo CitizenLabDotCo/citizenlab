@@ -15,3 +15,21 @@ export const participationMetricsKey = (phaseId: string) =>
 
 export const demographicsKey = (phaseId: string) =>
   phaseInsightsKeys.item({ phaseId, type: 'demographics' });
+
+export const commonGroundResultsKey = ({
+  phaseId,
+  sort,
+  groupBy,
+}: {
+  phaseId: string;
+  sort?: string;
+  groupBy?: string;
+}) => {
+  const params: Record<string, string> = {
+    phaseId,
+    type: 'common_ground_results',
+  };
+  if (sort) params.sort = sort;
+  if (groupBy) params.groupBy = groupBy;
+  return phaseInsightsKeys.item(params);
+};
