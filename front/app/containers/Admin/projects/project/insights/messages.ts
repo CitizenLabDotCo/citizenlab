@@ -66,6 +66,18 @@ export default defineMessages({
     defaultMessage: 'Engagement rate',
   },
   // Demographics
+  demographicsAndAudience: {
+    id: 'app.containers.Admin.projects.project.insights.demographicsAndAudience',
+    defaultMessage: 'Demographics & Audience',
+  },
+  noDemographicData: {
+    id: 'app.containers.Admin.projects.project.insights.noDemographicData',
+    defaultMessage: 'No demographic data available for this phase.',
+  },
+  loadingDemographics: {
+    id: 'app.containers.Admin.projects.project.insights.loadingDemographics',
+    defaultMessage: 'Loading demographics...',
+  },
   gender: {
     id: 'app.containers.Admin.projects.project.insights.gender',
     defaultMessage: 'Gender',
