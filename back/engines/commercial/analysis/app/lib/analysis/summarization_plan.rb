@@ -15,7 +15,7 @@ module Analysis
     # understand the data attributes, potentially useful in the future when we
     # do decide to persist
     with_options unless: -> { impossible_reason } do
-      validates :summarization_method_class, inclusion: { in: SummarizationMethod::Base::SUMMARIZATION_METHOD_CLASSES }
+      validates :summarization_method_class, inclusion: { in: SummarizationMethod::Base.method_classes }
       validates :llm, inclusion: { in: SummarizationMethod::Base::LLMS }
       validates :truncate_values, numericality: { only_integer: true }, allow_blank: true
       validates :include_id, inclusion: { in: [true, false] }, allow_blank: true

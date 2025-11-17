@@ -147,8 +147,9 @@ resource 'Analyses' do
 
   patch 'web_api/v1/analyses/:id' do
     with_options scope: :analysis do
-      parameter :show_insights, 'Whether to show insights or not', required: false
-      parameter :additional_custom_field_ids, 'The additional custom fields that should be part of the analysis.', required: false
+      parameter :show_insights, 'Indicates whether to display insights', required: false
+      parameter :files, 'Array of file IDs to attach to the analysis', required: false
+      parameter :additional_custom_field_ids, 'Array of additional custom field IDs to include in the analysis', required: false
 
       ValidationErrorHelper.new.error_fields(self, Analysis::Analysis)
     end
@@ -173,6 +174,31 @@ resource 'Analyses' do
         expect(response_status).to eq 200
         expect(response_data.dig(:relationships, :additional_custom_fields, :data).pluck(:id)).to match_array additional_custom_field_ids
       end
+    end
+
+    example 'Update the attached files of an analysis', document: false do
+      files = create_list(:file, 3, projects: [analysis.project])
+      before_files = files.first(2)
+      after_files = files.last(2)
+
+      analysis.attached_files = before_files
+      expect(analysis.attached_files).to match_array(before_files)
+
+      do_request(analysis: { files: after_files.map(&:id) })
+
+      assert_status(200)
+      analysis.reload
+      expect(analysis.attached_files).to match_array(after_files)
+    end
+
+    example '[error] Attach a file from another project to an analysis', document: false do
+      file = create(:file)
+
+      do_request(analysis: { files: [file.id] })
+
+      assert_status(422)
+      expect(json_response_body.dig(:errors, :file).sole[:error])
+        .to eq 'does_not_belong_to_project'
     end
   end
 

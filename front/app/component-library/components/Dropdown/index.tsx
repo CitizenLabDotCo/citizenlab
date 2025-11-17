@@ -3,12 +3,12 @@ import React, { useEffect, useRef, FormEvent } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 
-import clickOutside from '../../utils/containers/clickOutside';
+import ClickOutside from '../../utils/containers/clickOutside';
 import { colors, fontSizes, media, isRtl } from '../../utils/styleUtils';
 
 const timeout = 200;
 
-const Container = styled(clickOutside)<ContainerProps>`
+const Container = styled(ClickOutside)<ContainerProps>`
   border-radius: ${(props) => props.theme.borderRadius};
   background-color: #fff;
   box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.18);

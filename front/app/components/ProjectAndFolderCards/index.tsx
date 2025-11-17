@@ -68,6 +68,7 @@ const ProjectAndFolderCards = ({
         publicationStatusFilter: PUBLICATION_STATUSES,
         rootLevelOnly,
         removeNotAllowedParents: true,
+        remove_all_unlisted: true,
         topicIds,
         areaIds,
         search,
@@ -138,6 +139,7 @@ const ProjectAndFolderCardsWrapper = (props: Props) => {
       publicationStatusFilter: PUBLICATION_STATUSES,
       rootLevelOnly: true,
       removeNotAllowedParents: true,
+      remove_all_unlisted: true,
     }
   );
 
