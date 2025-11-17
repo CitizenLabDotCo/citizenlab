@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-resource 'Phase participation' do
+resource 'Phase insights' do
   before { admin_header_token }
 
   context 'voting phase' do
@@ -124,7 +124,10 @@ resource 'Phase participation' do
           participations: 8,
           visitors_last_7_days: 5,
           participants_last_7_days: 4,
-          participations_last_7_days: 5
+          participations_last_7_days: 5,
+          inputs: 3,
+          comments: 4,
+          reactions: 0
         })
 
         demographics = json_response_body.dig(:data, :attributes, :demographics)
