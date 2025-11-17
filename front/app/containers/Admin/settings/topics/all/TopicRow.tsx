@@ -11,7 +11,7 @@ import useLocalize from 'hooks/useLocalize';
 import { Row } from 'components/admin/ResourceList';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -64,29 +64,24 @@ const DeleteButton = ({ topic, handleDeleteClick }: DeleteButtonProps) => {
     : 'e2e-default-topic-delete-button';
 
   // Determine tooltip configuration
-  let tooltipContent: React.ReactNode = null;
-  if (!isCustomTopic) {
-    tooltipContent = (
-      <FormattedMessage {...messages.defaultTagCannotBeDeleted} />
-    );
-  } else if (hasStaticPages) {
-    tooltipContent = (
-      <>
-        <FormattedMessage {...messages.tagIsLinkedToStaticPage} />
-        <ul>
-          {staticPages.map((staticPage) => (
-            <li key={staticPage.id}>
-              <StyledLink
-                to={`/admin/pages-menu/pages/${staticPage.id}/settings`}
-              >
-                {localize(staticPage.attributes.title_multiloc)}
-              </StyledLink>
-            </li>
-          ))}
-        </ul>
-      </>
-    );
-  }
+  const tooltipContent = !isCustomTopic ? (
+    <FormattedMessage {...messages.defaultTagCannotBeDeleted} />
+  ) : hasStaticPages ? (
+    <>
+      <FormattedMessage {...messages.tagIsLinkedToStaticPage} />
+      <ul>
+        {staticPages.map((staticPage) => (
+          <li key={staticPage.id}>
+            <StyledLink
+              to={`/admin/pages-menu/pages/${staticPage.id}/settings`}
+            >
+              {localize(staticPage.attributes.title_multiloc)}
+            </StyledLink>
+          </li>
+        ))}
+      </ul>
+    </>
+  ) : null;
 
   return (
     <Tooltip content={tooltipContent} disabled={!tooltipContent}>
@@ -105,7 +100,8 @@ const DeleteButton = ({ topic, handleDeleteClick }: DeleteButtonProps) => {
 
 const TopicRow = (props: Props) => {
   const { isLastItem, topic } = props;
-
+  const localize = useLocalize();
+  const { formatMessage } = useIntl();
   if (isNilOrError(topic)) {
     return null;
   }
@@ -133,10 +129,12 @@ const TopicRow = (props: Props) => {
           mr="20px"
           minHeight="40px"
         >
-          <RowTitle value={topic.attributes.title_multiloc}></RowTitle>
-          {topic.attributes.description_multiloc && (
-            <RowDescription value={topic.attributes.description_multiloc} />
-          )}
+          <RowTitle>{localize(topic.attributes.title_multiloc)}</RowTitle>
+          <RowDescription>
+            {localize(topic.attributes.description_multiloc, {
+              fallback: formatMessage({ ...messages.noDescriptionProvided }),
+            })}
+          </RowDescription>
         </Box>
       </Box>
       <Box display="flex" alignItems="center" gap="16px">

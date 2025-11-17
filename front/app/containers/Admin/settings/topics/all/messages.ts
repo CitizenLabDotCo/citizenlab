@@ -48,4 +48,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.defaultTagCannotBeDeleted',
     defaultMessage: 'Default tags cannot be deleted.',
   },
+  noDescriptionProvided: {
+    id: 'app.containers.AdminPage.SettingsPage.noDescriptionProvided',
+    defaultMessage: 'No description provided',
+  },
 });
