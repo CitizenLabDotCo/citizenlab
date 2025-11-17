@@ -29,6 +29,8 @@ class WebApi::V1::PhasesController < ApplicationController
   def insights
     participation_data = ParticipationsService.instance.phase_insights(@phase)
 
+    pp PhaseInsightsService.instance.insights_data(@phase)
+
     render json: WebApi::V1::PhaseInsightsSerializer.new(
       @phase,
       params: jsonapi_serializer_params.merge(**participation_data)
