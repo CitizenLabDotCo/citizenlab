@@ -185,7 +185,6 @@
   "app.components.CustomFieldsForm.titleMaxLength": "Titeln får vara högst {max} tecken lång",
   "app.components.CustomFieldsForm.titleMinLength": "Titeln måste vara minst {min} tecken lång",
   "app.components.CustomFieldsForm.titleRequired": "Titeln är obligatorisk",
-  "app.components.CustomFieldsForm.topicRequired": "Minst en tagg krävs",
   "app.components.CustomFieldsForm.typeYourAnswer": "Skriv in ditt svar",
   "app.components.CustomFieldsForm.typeYourAnswerRequired": "Det är nödvändigt att skriva in ditt svar",
   "app.components.CustomFieldsForm.uploadShapefileInstructions": "* Ladda upp en zip-fil som innehåller en eller flera shapefiler.",

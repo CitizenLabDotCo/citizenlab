@@ -185,7 +185,6 @@
   "app.components.CustomFieldsForm.titleMaxLength": "De titel mag maximaal {max} tekens lang zijn",
   "app.components.CustomFieldsForm.titleMinLength": "De titel moet minimaal {min} tekens lang zijn",
   "app.components.CustomFieldsForm.titleRequired": "De titel is vereist",
-  "app.components.CustomFieldsForm.topicRequired": "Minstens één tag is vereist",
   "app.components.CustomFieldsForm.typeYourAnswer": "Typ je antwoord",
   "app.components.CustomFieldsForm.typeYourAnswerRequired": "Het is vereist om je antwoord te typen",
   "app.components.CustomFieldsForm.uploadShapefileInstructions": "* Upload een zipbestand met een of meer shapefiles.",

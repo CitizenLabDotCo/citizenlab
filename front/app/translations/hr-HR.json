@@ -185,7 +185,6 @@
   "app.components.CustomFieldsForm.titleMaxLength": "Naslov mora imati najviše {max} znakova",
   "app.components.CustomFieldsForm.titleMinLength": "Naslov mora imati najmanje {min} znakova",
   "app.components.CustomFieldsForm.titleRequired": "Naslov je obavezan",
-  "app.components.CustomFieldsForm.topicRequired": "Potrebna je barem jedna oznaka",
   "app.components.CustomFieldsForm.typeYourAnswer": "Upišite svoj odgovor",
   "app.components.CustomFieldsForm.typeYourAnswerRequired": "Obavezno je upisati svoj odgovor",
   "app.components.CustomFieldsForm.uploadShapefileInstructions": "* Prenesite zip datoteku koja sadrži jednu ili više shapefileova.",

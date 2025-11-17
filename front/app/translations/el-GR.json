@@ -185,7 +185,6 @@
   "app.components.CustomFieldsForm.titleMaxLength": "Ο τίτλος πρέπει να είναι το πολύ {max} χαρακτήρες",
   "app.components.CustomFieldsForm.titleMinLength": "Ο τίτλος πρέπει να είναι τουλάχιστον {min} χαρακτήρες",
   "app.components.CustomFieldsForm.titleRequired": "Απαιτείται ο τίτλος",
-  "app.components.CustomFieldsForm.topicRequired": "Απαιτείται τουλάχιστον μία ετικέτα",
   "app.components.CustomFieldsForm.typeYourAnswer": "Πληκτρολογήστε την απάντησή σας",
   "app.components.CustomFieldsForm.typeYourAnswerRequired": "Απαιτείται να πληκτρολογήσετε την απάντησή σας",
   "app.components.CustomFieldsForm.uploadShapefileInstructions": "* Ανεβάστε ένα αρχείο zip που περιέχει ένα ή περισσότερα shapefiles.",

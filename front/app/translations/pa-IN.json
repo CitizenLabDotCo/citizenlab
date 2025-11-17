@@ -185,7 +185,6 @@
   "app.components.CustomFieldsForm.titleMaxLength": "ਸਿਰਲੇਖ ਵੱਧ ਤੋਂ ਵੱਧ {max} ਅੱਖਰ ਲੰਬਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।",
   "app.components.CustomFieldsForm.titleMinLength": "ਸਿਰਲੇਖ ਘੱਟੋ-ਘੱਟ {min} ਅੱਖਰ ਲੰਬਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।",
   "app.components.CustomFieldsForm.titleRequired": "ਸਿਰਲੇਖ ਲੋੜੀਂਦਾ ਹੈ",
-  "app.components.CustomFieldsForm.topicRequired": "ਘੱਟੋ-ਘੱਟ ਇੱਕ ਟੈਗ ਲੋੜੀਂਦਾ ਹੈ।",
   "app.components.CustomFieldsForm.typeYourAnswer": "ਆਪਣਾ ਜਵਾਬ ਟਾਈਪ ਕਰੋ",
   "app.components.CustomFieldsForm.typeYourAnswerRequired": "ਆਪਣਾ ਜਵਾਬ ਟਾਈਪ ਕਰਨਾ ਜ਼ਰੂਰੀ ਹੈ।",
   "app.components.CustomFieldsForm.uploadShapefileInstructions": "* ਇੱਕ ਜਾਂ ਵੱਧ ਸ਼ੇਪਫਾਈਲਾਂ ਵਾਲੀ ਜ਼ਿਪ ਫਾਈਲ ਅਪਲੋਡ ਕਰੋ।",

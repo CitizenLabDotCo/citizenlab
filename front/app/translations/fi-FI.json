@@ -185,7 +185,6 @@
   "app.components.CustomFieldsForm.titleMaxLength": "Otsikon on oltava enintään {max} merkkiä pitkä",
   "app.components.CustomFieldsForm.titleMinLength": "Otsikon on oltava vähintään {min} merkkiä pitkä",
   "app.components.CustomFieldsForm.titleRequired": "Otsikko on pakollinen",
-  "app.components.CustomFieldsForm.topicRequired": "Vähintään yksi tunniste vaaditaan",
   "app.components.CustomFieldsForm.typeYourAnswer": "Kirjoita vastauksesi",
   "app.components.CustomFieldsForm.typeYourAnswerRequired": "Vastauksen kirjoittaminen on pakollista",
   "app.components.CustomFieldsForm.uploadShapefileInstructions": "* Lähetä zip-tiedosto, joka sisältää yhden tai useamman shapefile-tiedoston.",

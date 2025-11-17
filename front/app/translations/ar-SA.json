@@ -185,7 +185,6 @@
   "app.components.CustomFieldsForm.titleMaxLength": "يجب أن يكون العنوان على الأكثر {max} حرفًا",
   "app.components.CustomFieldsForm.titleMinLength": "يجب أن يكون العنوان بطول {min} حرفًا على الأقل",
   "app.components.CustomFieldsForm.titleRequired": "العنوان مطلوب",
-  "app.components.CustomFieldsForm.topicRequired": "يجب أن يكون هناك علامة واحدة على الأقل",
   "app.components.CustomFieldsForm.typeYourAnswer": "اكتب إجابتك",
   "app.components.CustomFieldsForm.typeYourAnswerRequired": "يجب عليك كتابة إجابتك",
   "app.components.CustomFieldsForm.uploadShapefileInstructions": "* قم بتحميل ملف مضغوط يحتوي على ملف شكل واحد أو أكثر.",

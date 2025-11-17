@@ -185,7 +185,6 @@
   "app.components.CustomFieldsForm.titleMaxLength": "Tytuł musi mieć co najwyżej {max} znaków.",
   "app.components.CustomFieldsForm.titleMinLength": "Tytuł musi zawierać co najmniej {min} znaków.",
   "app.components.CustomFieldsForm.titleRequired": "Tytuł jest wymagany",
-  "app.components.CustomFieldsForm.topicRequired": "Wymagany jest co najmniej jeden znacznik",
   "app.components.CustomFieldsForm.typeYourAnswer": "Wpisz swoją odpowiedź",
   "app.components.CustomFieldsForm.typeYourAnswerRequired": "Musisz wpisać swoją odpowiedź",
   "app.components.CustomFieldsForm.uploadShapefileInstructions": "* Prześlij plik zip zawierający jeden lub więcej plików shapefiles.",
