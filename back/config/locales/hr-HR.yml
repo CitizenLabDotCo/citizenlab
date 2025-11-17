@@ -387,3 +387,4 @@ hr:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "Maksimalna vrijednost mora biti veća od minimalne."
+      max_must_be_greater_than_or_equal_to_min_select_count: "Maksimalna vrijednost mora biti veća ili jednaka minimalnoj vrijednosti."
