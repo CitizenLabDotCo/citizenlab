@@ -44,4 +44,8 @@ export default defineMessages({
     defaultMessage:
       'This tag cannot be deleted because it is being used to display projects on the following custom page(s). You will need to unlink the tag from the page, or delete the page before you can delete the tag.',
   },
+  defaultTagCannotBeDeleted: {
+    id: 'app.containers.AdminPage.SettingsPage.defaultTagCannotBeDeleted',
+    defaultMessage: 'Default tags cannot be deleted.',
+  },
 });

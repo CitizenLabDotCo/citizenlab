@@ -27,6 +27,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.fieldTopicTitleError',
     defaultMessage: 'Provide a tag name for all languages',
   },
+  fieldTopicDescription: {
+    id: 'app.containers.AdminPage.SettingsPage.fieldTopicDescription',
+    defaultMessage: 'Tag description',
+  },
+  fieldTopicDescriptionTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.fieldTopicDescriptionTooltip',
+    defaultMessage:
+      'Add an optional description to provide more context about this tag.',
+  },
   fieldTopicSave: {
     id: 'app.containers.AdminPage.SettingsPage.fieldTopicSave',
     defaultMessage: 'Save tag',

@@ -3,34 +3,33 @@ import React from 'react';
 import { Box, Button } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
-import { WrappedComponentProps } from 'react-intl';
 import { Multiloc } from 'typings';
 import { object } from 'yup';
 
 import { Section, SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
 
-import { injectIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
 import messages from '../messages';
+import { useIntl } from 'utils/cl-intl';
 
 export interface FormValues {
   title_multiloc: Multiloc;
+  description_multiloc?: Multiloc;
 }
 
 type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: FormValues;
-} & WrappedComponentProps;
+  isCustom?: boolean;
+};
 
-const TopicForm = ({
-  intl: { formatMessage },
-  onSubmit,
-  defaultValues,
-}: Props) => {
+const TopicForm = ({ onSubmit, defaultValues, isCustom = true }: Props) => {
+  const { formatMessage } = useIntl();
   const schema = object({
     title_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.fieldTopicTitleError)
@@ -64,6 +63,16 @@ const TopicForm = ({
               name="title_multiloc"
               label={formatMessage(messages.fieldTopicTitle)}
               labelTooltipText={formatMessage(messages.fieldTopicTitleTooltip)}
+              disabled={!isCustom}
+            />
+          </SectionField>
+          <SectionField>
+            <TextAreaMultilocWithLocaleSwitcher
+              name="description_multiloc"
+              label={formatMessage(messages.fieldTopicDescription)}
+              labelTooltipText={formatMessage(
+                messages.fieldTopicDescriptionTooltip
+              )}
             />
           </SectionField>
           <Box display="flex">
@@ -81,4 +90,4 @@ const TopicForm = ({
   );
 };
 
-export default injectIntl(TopicForm);
+export default TopicForm;
