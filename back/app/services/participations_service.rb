@@ -141,7 +141,7 @@ class ParticipationsService
         end
       end
 
-      result[:population_distribution] = reference_distribution
+      result[:reference_distribution] = reference_distribution
 
       result
     end

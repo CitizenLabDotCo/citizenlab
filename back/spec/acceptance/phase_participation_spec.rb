@@ -126,55 +126,35 @@ resource 'Phase participation' do
           participants_last_7_days: 4,
           participations_last_7_days: 5
         })
-      end
-    end
-
-    # rubocop:disable Rails/HttpPositionalArguments
-    get('web_api/v1/phases/:id/demographics', skip: 'to be merged into insights') do
-      # rubocop:enable Rails/HttpPositionalArguments
-      example_request 'Get demographics data for a phase' do
-        assert_status 200
 
         demographics = json_response_body.dig(:data, :attributes, :demographics)
-        pp demographics
-        expect(demographics).to match({
-          gender: {
-            series: {
-              users: {
-                male: 1, female: 1, unspecified: 0, _blank: 3
+        expect(demographics).to match(
+          fields: [
+            {
+              id: custom_field_gender.id,
+              key: 'gender',
+              code: nil,
+              r_score: 0.0,
+              title_multiloc: { en: 'Gender' },
+              series: { male: 1, female: 1, unspecified: 0, _blank: 3 },
+              options: {
+                male: { title_multiloc: { en: 'Male' }, ordering: 0 },
+                female: { title_multiloc: { en: 'Female' }, ordering: 1 },
+                unspecified: { title_multiloc: { en: 'Unspecified' }, ordering: 2 }
               },
-              reference_population: {
-                female: 510,
-                male: 480,
-                unspecified: 10
-              }
+              reference_distribution: { male: 480, unspecified: 10, female: 510 }
             },
-            title_multiloc: { en: 'Gender' },
-            options: {
-              male: {
-                title_multiloc: { en: 'Male' },
-                ordering: 0
-              },
-              female: {
-                title_multiloc: { en: 'Female' },
-                ordering: 1
-              },
-              unspecified: {
-                title_multiloc: { en: 'Unspecified' },
-                ordering: 2
-              }
+            {
+              id: custom_field_birthyear.id,
+              key: 'birthyear',
+              code: nil,
+              r_score: 0.0,
+              title_multiloc: { en: 'Birthyear' },
+              series: { '18-24': 0, '25-34': 0, '35-44': 1, '45-54': 1, '55-64': 0, '65+': 0, _blank: 3 },
+              reference_distribution: { '18-24': 50, '25-34': 200, '35-44': 400, '45-54': 300, '55-64': 50, '65+': 700 }
             }
-          },
-          users_by_age: {
-            total_user_count: 5,
-            unknown_age_count: 3,
-            series: {
-              user_counts: [0, 0, 1, 1, 0, 0],
-              reference_population: [50, 200, 400, 300, 50, 700],
-              bins: [18, 25, 35, 45, 55, 65, nil]
-            }
-          }
-        })
+          ]
+        )
       end
     end
   end
