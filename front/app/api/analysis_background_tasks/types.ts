@@ -22,6 +22,7 @@ type SharedAttributes = {
   started_at: string | null;
   ended_at: string | null;
   state: 'queued' | 'in_progress' | 'succeeded' | 'failed';
+  failure_reason: 'unsupported_file_type' | 'too_many_images' | null;
 };
 type AutoTaggingAttributes = SharedAttributes & {
   type: 'auto_tagging_task';

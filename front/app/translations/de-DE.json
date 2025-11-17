@@ -185,7 +185,6 @@
   "app.components.CustomFieldsForm.titleMaxLength": "Der Titel darf höchstens {max} Zeichen lang sein.",
   "app.components.CustomFieldsForm.titleMinLength": "Der Titel muss mindestens {min} Zeichen lang sein.",
   "app.components.CustomFieldsForm.titleRequired": "Der Titel ist erforderlich",
-  "app.components.CustomFieldsForm.topicRequired": "Mindestens ein Tag ist erforderlich",
   "app.components.CustomFieldsForm.typeYourAnswer": "Antwort eingeben",
   "app.components.CustomFieldsForm.typeYourAnswerRequired": "Die Eingabe Ihrer Antwort ist erforderlich",
   "app.components.CustomFieldsForm.uploadShapefileInstructions": "* Laden Sie eine Zip-Datei hoch, die eine oder mehrere Shapefiles enthält.",

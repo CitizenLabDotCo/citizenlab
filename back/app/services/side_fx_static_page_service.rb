@@ -9,16 +9,6 @@ class SideFxStaticPageService
     LogActivityJob.perform_later(page, 'created', user, page.created_at.to_i)
   end
 
-  def before_update(page, _)
-    if page.top_info_section_multiloc.present?
-      page.top_info_section_multiloc = TextImageService.new.swap_data_images_multiloc page.top_info_section_multiloc, field: :top_info_section_multiloc, imageable: page
-    end
-
-    return if page.bottom_info_section_multiloc.blank?
-
-    page.bottom_info_section_multiloc = TextImageService.new.swap_data_images_multiloc page.bottom_info_section_multiloc, field: :bottom_info_section_multiloc, imageable: page
-  end
-
   def after_update(page, user)
     LogActivityJob.perform_later(page, 'changed', user, page.updated_at.to_i)
   end

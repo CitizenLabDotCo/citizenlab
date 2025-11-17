@@ -65,6 +65,7 @@ const StyledProjectFolderDescription = styled(ProjectFolderDescription)`
 
 const StyledProjectFolderProjectCards = styled(ProjectFolderProjectCards)`
   flex: 0 1 800px;
+  flex-shrink: 0;
   width: 800px;
   padding: 20px;
   padding-bottom: 0px;
@@ -97,8 +98,6 @@ interface Props {
   projectFolder: IProjectFolderData;
 }
 
-const maxPageWidth = '1166px';
-
 const ProjectFolderShowPage = ({ projectFolder }: Props) => {
   const { data: authUser } = useAuthUser();
   const isSmallerThanSmallDesktop = useBreakpoint('smallDesktop');
@@ -108,6 +107,7 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
     useFeatureFlag({
       name: 'project_description_builder',
     }) && projectFolder.attributes.uses_content_builder;
+  const maxPageWidth = descriptionBuilderEnabled ? '1166px' : '1480px';
 
   return (
     <>

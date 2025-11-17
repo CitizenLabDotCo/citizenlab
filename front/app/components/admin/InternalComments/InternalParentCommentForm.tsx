@@ -1,6 +1,10 @@
 import React, { useState, useRef } from 'react';
 
-import { useBreakpoint, colors } from '@citizenlab/cl2-component-library';
+import {
+  ClickOutside,
+  useBreakpoint,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { isString, trim } from 'lodash-es';
 import { hideVisually } from 'polished';
 import styled from 'styled-components';
@@ -16,7 +20,6 @@ import MentionsTextArea from 'components/UI/MentionsTextArea';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import clickOutside from 'utils/containers/clickOutside';
 
 import { commentAdded } from './events';
 import tracks from './tracks';
@@ -32,7 +35,7 @@ const StyledAvatar = styled(Avatar)`
   margin-top: 3px;
 `;
 
-const FormContainer = styled(clickOutside)`
+const FormContainer = styled(ClickOutside)`
   flex: 1;
   display: flex;
   flex-direction: column;

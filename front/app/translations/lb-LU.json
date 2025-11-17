@@ -185,7 +185,6 @@
   "app.components.CustomFieldsForm.titleMaxLength": "Den Titel däerf maximal {max} Zeechen laang sinn",
   "app.components.CustomFieldsForm.titleMinLength": "Den Titel muss mindestens {min} Zeechen laang sinn",
   "app.components.CustomFieldsForm.titleRequired": "Den Titel ass obligatoresch",
-  "app.components.CustomFieldsForm.topicRequired": "Mindestens een Tag ass erfuerderlech",
   "app.components.CustomFieldsForm.typeYourAnswer": "Schreift Är Äntwert an",
   "app.components.CustomFieldsForm.typeYourAnswerRequired": "Et ass obligatoresch Är Äntwert ze tippen",
   "app.components.CustomFieldsForm.uploadShapefileInstructions": "* Luet eng Zip-Datei erop, déi eng oder méi Shapefiles enthält.",
