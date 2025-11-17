@@ -91,26 +91,12 @@ resource 'Ideas' do
           expect(response_data[:attributes][:likes_count]).to eq 1
         end
 
-        describe 'when idea has images in body_multiloc', document: false do
-          let(:body_multiloc) do
-            {
-              'en' => html_with_base64_image
-            }
-          end
-          let(:idea) { build(:idea, body_multiloc: body_multiloc) }
+        context 'when idea has images in body_multiloc' do
+          let(:body_multiloc) { { 'en' => html_with_base64_image } }
 
-          example 'Removes images from body_multiloc and creates idea_images', document: false do
-            do_request
-            assert_status 201
-            expect(response_data.dig(:attributes, :body_multiloc, :en)).to include('<p>Some text</p><img alt="Red dot"')
-            text_image = TextImage.find_by(imageable_id: response_data[:id], imageable_type: 'Idea', imageable_field: 'body_multiloc')
-            expect(response_data.dig(:attributes, :body_multiloc, :en)).to include("data-cl2-text-image-text-reference=\"#{text_image.text_reference}\"")
-            expect(TextImage.count).to eq 1
-            image = TextImage.last
-            expect(image.imageable_id).to eq response_data[:id]
-            expect(image.imageable_type).to eq 'Idea'
-            expect(image.imageable_field).to eq 'body_multiloc'
-          end
+          it_behaves_like 'creates record with text images',
+            model_class: Idea,
+            field: :body_multiloc
         end
 
         describe 'Values for disabled fields are ignored' do

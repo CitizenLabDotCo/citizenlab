@@ -204,26 +204,12 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def create
-    project_attributes = permitted_attributes(Project)
-    text_image_service = TextImageService.new
-    extract_output = text_image_service.extract_data_images_multiloc(
-      project_attributes[:description_multiloc]
-    )
-    project_attributes[:description_multiloc] = extract_output[:content_multiloc]
-
-    project = Project.new(project_attributes)
+    project = Project.new permitted_attributes(Project)
     sidefx.before_create(project, current_user)
 
     created = Project.transaction do
       save_project(project).tap do |saved|
-        if saved
-          text_image_service.bulk_create_images!(
-            extract_output[:extracted_images],
-            project,
-            :description_multiloc
-          )
-          sidefx.after_create(project, current_user)
-        end
+        sidefx.after_create(project, current_user) if saved
       end
     end
 

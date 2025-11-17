@@ -386,3 +386,4 @@ tr:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "Maksimum değer minimum değerden büyük olmalıdır."
+      max_must_be_greater_than_or_equal_to_min_select_count: "Maksimum değer minimum değerden büyük veya eşit olmalıdır."
