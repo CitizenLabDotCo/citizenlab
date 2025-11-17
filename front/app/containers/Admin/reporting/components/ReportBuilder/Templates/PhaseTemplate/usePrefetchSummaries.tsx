@@ -1,9 +1,11 @@
 import { useMemo } from 'react';
 
+import { UseQueryResult } from '@tanstack/react-query';
 import { useLocation } from 'react-router-dom';
 
 import { IAnalysisData } from 'api/analyses/types';
 import useAnalyses from 'api/analyses/useAnalyses';
+import { ISummary } from 'api/analysis_summaries/types';
 import useAnalysisSummaries from 'api/analysis_summaries/useAnalysisSummaries';
 import { IFlatCustomField } from 'api/custom_fields/types';
 import useCustomFields from 'api/custom_fields/useCustomFields';
@@ -117,7 +119,7 @@ const extractSummaryIds = (analyses: IAnalysisData[]): SummaryId[] => {
 };
 
 const buildSummariesMap = (
-  summariesResults: any[],
+  summariesResults: UseQueryResult<ISummary, unknown>[],
   summaryIds: SummaryId[]
 ): Record<string, string> => {
   const summariesMap: Record<string, string> = {};
