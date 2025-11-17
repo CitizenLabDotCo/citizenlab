@@ -8,7 +8,6 @@ import useCommonGroundInsights from 'api/phase_insights/useCommonGroundInsights'
 
 import useLocale from 'hooks/useLocale';
 
-import Statistics from 'containers/ProjectsShowPage/timeline/CommonGround/CommonGroundResults/Statistics';
 import OutcomeBreakdownBar from 'containers/ProjectsShowPage/timeline/CommonGround/OutcomeBreakdownBar';
 
 import T from 'components/T';
@@ -33,7 +32,7 @@ const CommonGroundInsights = ({ phaseId }: MethodSpecificInsightProps) => {
 
   if (isLoading) {
     return (
-      <Box mt="8px" bg="white" p="30px">
+      <Box mt="8px" bg="white">
         <Text>Loading...</Text>
       </Box>
     );
@@ -41,7 +40,7 @@ const CommonGroundInsights = ({ phaseId }: MethodSpecificInsightProps) => {
 
   if (error) {
     return (
-      <Box mt="8px" bg="white" p="30px">
+      <Box mt="8px" bg="white">
         <Text color="error">Error loading Common Ground results</Text>
       </Box>
     );
@@ -210,13 +209,7 @@ const CommonGroundInsights = ({ phaseId }: MethodSpecificInsightProps) => {
   const demographicKeys = getDemographicKeys();
 
   return (
-    <Box mt="8px" bg="white" p="30px 30px 48px 30px">
-      <Statistics
-        numOfParticipants={stats.num_participants}
-        numOfIdeas={stats.num_ideas}
-        totalVotes={totalVotes}
-      />
-
+    <Box mt="8px" bg="white">
       {/* Header with title and filters */}
       <Box mb="24px">
         <Title variant="h3" mb="16px">
