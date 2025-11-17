@@ -82,6 +82,30 @@ resource 'Phase participation' do
     let!(:basket4) { create(:basket, phase: voting_phase, user: user6, submitted_at: 5.days.ago) } # in voting phase & last 7 days
     let!(:basket5) { create(:basket, phase: voting_phase, user: user3, submitted_at: 5.days.ago) } # in voting phase & last 7 days
 
+    let!(:session1) { create(:session, user_id: user2.id) }
+    let!(:session2) { create(:session, user_id: user2.id) }
+    let!(:pageview1) { create(:pageview, session: session1, created_at: 20.days.ago, project_id: voting_phase.project.id) } # before voting phase
+    let!(:pageview2) { create(:pageview, session: session1, created_at: 13.days.ago, project_id: voting_phase.project.id) } # in voting phase
+    let!(:pageview3) { create(:pageview, session: session2, created_at: 5.days.ago, project_id: voting_phase.project.id) } # in voting phase & last 7 days
+    let!(:pageview4) { create(:pageview, session: session2, created_at: 4.days.ago, project_id: voting_phase.project.id) } # different session, but repeat visitor
+
+    let!(:session3) { create(:session, user_id: user3.id) }
+    let!(:pageview5) { create(:pageview, session: session3, created_at: 10.days.ago, project_id: voting_phase.project.id) } # in voting phase
+
+    let!(:session4) { create(:session, user_id: user4.id) }
+    let!(:pageview6) { create(:pageview, session: session4, created_at: 10.days.ago, project_id: voting_phase.project.id) } # in voting phase
+    let!(:pageview7) { create(:pageview, session: session4, created_at: 5.days.ago, project_id: voting_phase.project.id) } # in voting phase & last 7 days
+
+    let!(:session5) { create(:session, user_id: user5.id) }
+    let!(:pageview8) { create(:pageview, session: session5, created_at: 5.days.ago, project_id: voting_phase.project.id) } # in voting phase & last 7 days
+
+    let!(:session6) { create(:session, user_id: user6.id) }
+    let!(:pageview9) { create(:pageview, session: session6, created_at: 5.days.ago, project_id: voting_phase.project.id) } # in voting phase & last 7 days
+
+    let!(:session7) { create(:session, monthly_user_hash: 'fake_hash1') }
+    let!(:pageview10) { create(:pageview, session: session7, created_at: 10.days.ago, project_id: voting_phase.project.id) } # in voting phase (visitor did not participate)
+    let!(:pageview11) { create(:pageview, session: session7, created_at: 5.days.ago, project_id: voting_phase.project.id) } # in voting phase & last 7 days (visitor did not participate)
+
     let(:id) { voting_phase.id }
     # rubocop:enable RSpec/ScatteredLet
 
@@ -94,11 +118,11 @@ resource 'Phase participation' do
 
         metrics = json_response_body.dig(:data, :attributes, :metrics)
         expect(metrics).to eq({
-          visitors: 0,
+          visitors: 6,
           participants: 5,
-          engagement_rate: 0,
+          engagement_rate: 0.833,
           participations: 8,
-          visitors_last_7_days: 0,
+          visitors_last_7_days: 5,
           participants_last_7_days: 4,
           participations_last_7_days: 5
         })

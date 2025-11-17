@@ -52,33 +52,23 @@ class ParticipationsService
         phase.start_at..
       end
 
-      # Get sessions for project, within phase dates, with their pageview dates.
-      sessions_data = ImpactTracking::Session
+      seven_days_ago = 7.days.ago
+
+      total_visitors = ImpactTracking::Session
         .joins(:pageviews)
         .where(impact_tracking_pageviews: constraints)
-        .select('DISTINCT ON (impact_tracking_sessions.id) impact_tracking_sessions.id,
-                impact_tracking_sessions.user_id,
-                impact_tracking_sessions.monthly_user_hash,
-                impact_tracking_pageviews.created_at as first_pageview_at')
-        .order('impact_tracking_sessions.id, impact_tracking_pageviews.created_at')
+        .distinct
+        .count("COALESCE(NULLIF(impact_tracking_sessions.user_id::text, ''), impact_tracking_sessions.monthly_user_hash)")
 
-      # Calculate total and last 7 days visitors.
-      # Build lookup sets instead of arrays to avoid O(n^2) uniqueness checks.
-      seven_days_ago = 7.days.ago
-      all_visitors = Set.new
-      recent_visitors = Set.new
-
-      sessions_data.each do |session|
-        visitor_id = session.user_id.presence || session.monthly_user_hash.presence
-        next unless visitor_id
-
-        all_visitors.add(visitor_id)
-        recent_visitors.add(visitor_id) if session.first_pageview_at >= seven_days_ago
-      end
+      recent_visitors = ImpactTracking::Session
+        .joins(:pageviews)
+        .where(impact_tracking_pageviews: constraints.merge(created_at: seven_days_ago..))
+        .distinct
+        .count("COALESCE(NULLIF(impact_tracking_sessions.user_id::text, ''), impact_tracking_sessions.monthly_user_hash)")
 
       {
-        total: all_visitors.size,
-        last_7_days: recent_visitors.size
+        total: total_visitors,
+        last_7_days: recent_visitors
       }
     end
   end
