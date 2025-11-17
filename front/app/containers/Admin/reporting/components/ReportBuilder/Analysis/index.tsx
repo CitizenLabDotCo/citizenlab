@@ -50,7 +50,11 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
     setPhaseId(value);
   }, []);
 
-  const showAnalyses = projectId && phaseId;
+  const showAnalyses =
+    projectId &&
+    phaseId &&
+    // We only show analyses for non-information phases
+    phase?.data.attributes.participation_method !== 'information';
 
   return (
     <>
