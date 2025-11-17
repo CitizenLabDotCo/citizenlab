@@ -188,7 +188,7 @@ const baseStatements = [
 const generateDemographicBreakdown = (
   votes: { up: number; down: number; neutral: number },
   type: 'gender' | 'age' | 'location'
-) => {
+): Record<string, { up: number; down: number; neutral: number }> => {
   if (type === 'gender') {
     // Distribute votes across gender categories (roughly: 42% male, 45% female, 8% non-binary, 5% other)
     return {
