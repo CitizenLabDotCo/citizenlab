@@ -6,15 +6,14 @@ import { useParams } from 'react-router-dom';
 import usePhase from 'api/phases/usePhase';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
 
-import DemographicsWidget from './DemographicsWidget';
+import DemographicsSection from './DemographicsSection';
 import messages from './messages';
 import MethodSpecificInsights from './methodSpecific/MethodSpecificInsights';
 import ParticipationMetrics from './ParticipationMetrics';
 
 const AdminPhaseInsights = () => {
-  const { projectId, phaseId } = useParams() as {
+  const { phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
   };
@@ -63,25 +62,9 @@ const AdminPhaseInsights = () => {
       </Box>
 
       <Box display="flex" flexDirection="column" gap="16px" pt="16px">
-        <Box display="flex" justifyContent="space-between">
-          <ParticipationMetrics phase={phase.data} />
-          <DemographicsWidget phase={phase.data} />
-        </Box>
+        <ParticipationMetrics phase={phase.data} />
 
-        <Box w="100%" display="flex" justifyContent="flex-start">
-          <Button
-            buttonStyle="text"
-            icon="arrow-right"
-            iconPos="right"
-            onClick={() =>
-              clHistory.push(
-                `/admin/projects/${projectId}/phases/${phase.data.id}/insights/details`
-              )
-            }
-          >
-            <FormattedMessage {...messages.viewFullReport} />
-          </Button>
-        </Box>
+        <DemographicsSection phase={phase.data} />
 
         <MethodSpecificInsights
           phaseId={phase.data.id}
