@@ -60,17 +60,17 @@ class PhaseInsightsService
   def pmethod_specific_metrics(phase, participations)
     case phase.participation_method
     when 'voting'
-      voting_data(phase, participations).merge(ideas_data(phase))
+      voting_data(participations).merge(ideas_data(phase))
     else
       {}
     end
   end
 
-  def voting_data(phase, participations)
+  def voting_data(participations)
     voting_participations = participations[:voting]
 
     votes = voting_participations.sum { |p| p[:votes] }
-    voters = voting_participations.map { |p| p[:user_id] }.uniq.count
+    voters = voting_participations.pluck(:user_id).uniq.count
     votes_per_voter = voters > 0 ? (votes.to_f / voters).round(3) : 0
 
     {

@@ -29,8 +29,6 @@ module VotingMethod
     end
 
     def assign_baskets_idea(baskets_idea)
-      print 'budget value: #{baskets_idea.idea.budget}'
-
       baskets_idea.votes = baskets_idea.idea.budget
     end
 

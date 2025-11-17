@@ -16,7 +16,7 @@ RSpec.describe ParticipationMethod::Voting do
   describe '#participation_baskets' do
     it 'returns the participation baskets data associated with the phase' do
       phase.update!(voting_method: 'multiple_voting')
-      
+
       user = create(:user)
       idea1 = create(:idea, project: phase.project)
       idea2 = create(:idea, project: phase.project)
@@ -27,7 +27,9 @@ RSpec.describe ParticipationMethod::Voting do
       create(:baskets_idea, basket: basket, idea: idea1, votes: 2)
       create(:baskets_idea, basket: basket, idea: idea2, votes: 3)
 
-      expect(subject.participation_baskets).to eq([
+      participation_baskets = participation_method.participation_baskets
+
+      expect(participation_baskets).to eq([
         {
           id: basket.id,
           action: 'voting',

@@ -61,7 +61,7 @@ module ParticipationMethod
     def participation_baskets
       phase.baskets.includes(:user, :baskets_ideas).map do |basket|
         total_votes = basket.baskets_ideas.sum(:votes)
-        
+
         {
           id: basket.id,
           action: 'voting',
