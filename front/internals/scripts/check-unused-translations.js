@@ -50,10 +50,10 @@ function loadTranslationKeys(translationsDir, locale) {
   const translationFiles = glob.sync(`${translationsDir}/**/${locale}.json`);
   const allKeys = new Map(); // key -> translation file
 
-  translationFiles.forEach(file => {
+  translationFiles.forEach((file) => {
     try {
       const translations = JSON.parse(fs.readFileSync(file, 'utf8'));
-      Object.keys(translations).forEach(key => {
+      Object.keys(translations).forEach((key) => {
         allKeys.set(key, file);
       });
     } catch (error) {
@@ -66,7 +66,7 @@ function loadTranslationKeys(translationsDir, locale) {
 
 // Check if a key is likely dynamically generated
 function isDynamicKey(key) {
-  return CONFIG.knownDynamicPatterns.some(pattern => pattern.test(key));
+  return CONFIG.knownDynamicPatterns.some((pattern) => pattern.test(key));
 }
 
 // Extract all used message keys in a single pass
@@ -100,7 +100,7 @@ function extractAllUsedKeys(srcDir) {
     }
 
     const lines = output.trim().split('\n');
-    lines.forEach(line => {
+    lines.forEach((line) => {
       const match = line.match(/\w*[Mm]essages\d*\.(\w+)/);
       if (match && match[1]) {
         usedKeys.add(match[1]);
@@ -114,32 +114,44 @@ function extractAllUsedKeys(srcDir) {
   // Find files that use *Messages[...] pattern
   try {
     const dynamicFiles = USE_RIPGREP
-      ? execSync('rg -l "\\w*[Mm]essages\\d*\\[" app --type-not json --glob "!messages.*"', {
-          stdio: 'pipe',
-          encoding: 'utf8',
-          shell: '/bin/bash',
-        })
-      : execSync('grep -rl --exclude="messages.*" --exclude="*.json" "\\w*[Mm]essages[0-9]*\\[" app', {
-          stdio: 'pipe',
-          encoding: 'utf8',
-          shell: '/bin/bash',
-        });
+      ? execSync(
+          'rg -l "\\w*[Mm]essages\\d*\\[" app --type-not json --glob "!messages.*"',
+          {
+            stdio: 'pipe',
+            encoding: 'utf8',
+            shell: '/bin/bash',
+          }
+        )
+      : execSync(
+          'grep -rl --exclude="messages.*" --exclude="*.json" "\\w*[Mm]essages[0-9]*\\[" app',
+          {
+            stdio: 'pipe',
+            encoding: 'utf8',
+            shell: '/bin/bash',
+          }
+        );
 
     const files = dynamicFiles.trim().split('\n').filter(Boolean);
 
     // For each file with dynamic access, extract all message keys from nearby messages objects
-    files.forEach(file => {
+    files.forEach((file) => {
       try {
         const content = fs.readFileSync(file, 'utf8');
 
         // Look for messages imports or const declarations
-        const messageVarPattern = /\w*[Mm]essages\d*\s*=\s*\{([^}]+)\}|import.*[Mm]essages.*from/g;
+        const messageVarPattern =
+          /\w*[Mm]essages\d*\s*=\s*\{([^}]+)\}|import.*[Mm]essages.*from/g;
         if (messageVarPattern.test(content)) {
           // Find all potential keys in imported messages objects
           const keyPattern = /(\w+):/g;
           let match;
           while ((match = keyPattern.exec(content)) !== null) {
-            if (match[1] && match[1] !== 'id' && match[1] !== 'defaultMessage' && match[1] !== 'description') {
+            if (
+              match[1] &&
+              match[1] !== 'id' &&
+              match[1] !== 'defaultMessage' &&
+              match[1] !== 'description'
+            ) {
               usedKeys.add(match[1]);
             }
           }
@@ -156,24 +168,31 @@ function extractAllUsedKeys(srcDir) {
   // Find files with "keyof typeof *Messages" and extract string values
   try {
     const keyofFiles = USE_RIPGREP
-      ? execSync('rg -l "keyof typeof \\w*[Mm]essages\\d*" app --type-not json --glob "!messages.*"', {
-          stdio: 'pipe',
-          encoding: 'utf8',
-          shell: '/bin/bash',
-        })
-      : execSync('grep -rl --exclude="messages.*" --exclude="*.json" "keyof typeof \\w*[Mm]essages[0-9]*" app', {
-          stdio: 'pipe',
-          encoding: 'utf8',
-          shell: '/bin/bash',
-        });
+      ? execSync(
+          'rg -l "keyof typeof \\w*[Mm]essages\\d*" app --type-not json --glob "!messages.*"',
+          {
+            stdio: 'pipe',
+            encoding: 'utf8',
+            shell: '/bin/bash',
+          }
+        )
+      : execSync(
+          'grep -rl --exclude="messages.*" --exclude="*.json" "keyof typeof \\w*[Mm]essages[0-9]*" app',
+          {
+            stdio: 'pipe',
+            encoding: 'utf8',
+            shell: '/bin/bash',
+          }
+        );
 
     const files = keyofFiles.trim().split('\n').filter(Boolean);
 
-    files.forEach(file => {
+    files.forEach((file) => {
       try {
         const content = fs.readFileSync(file, 'utf8');
         // Look for patterns like: message: 'keyName', labelKey: 'keyName', etc.
-        const messagePattern = /(message|labelKey|messageKey):\s*['"](\w+)['"]/g;
+        const messagePattern =
+          /(message|labelKey|messageKey):\s*['"](\w+)['"]/g;
         let match;
         while ((match = messagePattern.exec(content)) !== null) {
           if (match[2]) {
@@ -214,7 +233,7 @@ function extractAllUsedKeys(srcDir) {
     }
 
     const idLines = idOutput.trim().split('\n');
-    idLines.forEach(line => {
+    idLines.forEach((line) => {
       const match = line.match(/id:\s*['"][\w.]*\.(\w+)['"]/);
       if (match && match[1]) {
         usedKeys.add(match[1]);
@@ -230,11 +249,15 @@ function extractAllUsedKeys(srcDir) {
 // Format output for different modes
 function formatOutput(unusedKeys, mode = 'standard') {
   if (mode === 'json') {
-    return JSON.stringify({
-      success: unusedKeys.length === 0,
-      count: unusedKeys.length,
-      unused: unusedKeys,
-    }, null, 2);
+    return JSON.stringify(
+      {
+        success: unusedKeys.length === 0,
+        count: unusedKeys.length,
+        unused: unusedKeys,
+      },
+      null,
+      2
+    );
   }
 
   // Standard format
@@ -243,22 +266,25 @@ function formatOutput(unusedKeys, mode = 'standard') {
   }
 
   let output = `❌ Found ${unusedKeys.length} potentially unused translations:\n\n`;
-  output += '┌─────────────────────────────────────────────────────────────────────────────────────────────────┐\n';
-  output += '│ Translation Key                                                    │ Defined in               │\n';
-  output += '├─────────────────────────────────────────────────────────────────────────────────────────────────┤\n';
+  output +=
+    '┌─────────────────────────────────────────────────────────────────────────────────────────────────┐\n';
+  output +=
+    '│ Translation Key                                                    │ Defined in               │\n';
+  output +=
+    '├─────────────────────────────────────────────────────────────────────────────────────────────────┤\n';
 
-  unusedKeys.slice(0, 100).forEach(({ key, definedIn, isDynamic }) => {
+  unusedKeys.slice(0, 100).forEach(({ key, definedIn }) => {
     const shortPath = definedIn.replace(/^app\//, '').substring(0, 22);
     const keyDisplay = key.length > 66 ? key.substring(0, 63) + '...' : key;
-    const flag = isDynamic ? ' 🔄' : '';
-    output += `│ ${keyDisplay.padEnd(66)} │ ${shortPath.padEnd(24)}${flag} │\n`;
+    output += `│ ${keyDisplay.padEnd(66)} │ ${shortPath.padEnd(24)} │\n`;
   });
 
   if (unusedKeys.length > 100) {
     output += `│ ... and ${unusedKeys.length - 100} more${' '.repeat(66)} │\n`;
   }
 
-  output += '└─────────────────────────────────────────────────────────────────────────────────────────────────┘\n';
+  output +=
+    '└─────────────────────────────────────────────────────────────────────────────────────────────────┘\n';
   output += '\n💡 Tip:\n';
   output += '   • Review each key before removing it from translations\n';
 
@@ -281,7 +307,7 @@ function findUnusedTranslations(options = {}) {
   const fullIdToShortKey = new Map();
   const messageFiles = glob.sync(`${CONFIG.srcDir}/**/messages.{ts,tsx,js}`);
 
-  messageFiles.forEach(file => {
+  messageFiles.forEach((file) => {
     try {
       const content = fs.readFileSync(file, 'utf8');
       // Match pattern: keyName: { id: 'full.id.path'
@@ -305,6 +331,9 @@ function findUnusedTranslations(options = {}) {
 
     if (!keyPart) continue;
 
+    // Skip keys that match known dynamic patterns
+    if (isDynamicKey(fullKey)) continue;
+
     // Get the short key name from messages.ts if available
     const shortKeyName = fullIdToShortKey.get(fullKey);
 
@@ -314,15 +343,17 @@ function findUnusedTranslations(options = {}) {
     // 3. Match with short key name from messages.ts
     const keyPartWithoutVersion = keyPart.replace(/\d+$/, '');
 
-    const isUsed = usedKeyParts.has(keyPart) ||
-                   (keyPartWithoutVersion !== keyPart && usedKeyParts.has(keyPartWithoutVersion)) ||
-                   (shortKeyName && usedKeyParts.has(shortKeyName));
+    const isUsed =
+      usedKeyParts.has(keyPart) ||
+      (keyPartWithoutVersion !== keyPart &&
+        usedKeyParts.has(keyPartWithoutVersion)) ||
+      (shortKeyName && usedKeyParts.has(shortKeyName));
 
     if (!isUsed) {
       unusedKeys.push({
         key: fullKey,
         definedIn: translationFile,
-        isDynamic: isDynamicKey(fullKey),
+        isDynamic: false, // Already filtered out dynamic keys above
       });
     }
   }
@@ -384,4 +415,8 @@ Options:
   }
 }
 
-module.exports = { findUnusedTranslations, loadTranslationKeys, extractAllUsedKeys };
+module.exports = {
+  findUnusedTranslations,
+  loadTranslationKeys,
+  extractAllUsedKeys,
+};
