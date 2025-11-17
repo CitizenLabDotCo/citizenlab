@@ -27,45 +27,57 @@ class PhaseInsightsService
       @cache_timestamps[cache_key] = Time.current
 
       visits_data = VisitsService.new.phase_visits_data(phase)
-      participations = phase.pmethod.participations.values.flatten
-      participant_ids = participations.pluck(:user_id).uniq
+      participations = phase.pmethod.participations
+      flattened_participations = participations.values.flatten
+      participant_ids = flattened_participations.pluck(:user_id).uniq
 
       metrics_data(phase, participations, participant_ids, visits_data).merge(
-        demographics: { fields: demographics_data(phase, participations, participant_ids) }
+        demographics: { fields: demographics_data(phase, flattened_participations, participant_ids) }
       )
     end
   end
 
   def metrics_data(phase, participations, participant_ids, visits_data)
     total_participant_count = participant_ids.count
-    participants_last_7_days_count = participations.select { |p| p[:acted_at] >= 7.days.ago }.pluck(:user_id).uniq.count
+    flattened_participations = participations.values.flatten
+    participants_last_7_days_count = flattened_participations.select { |p| p[:acted_at] >= 7.days.ago }.pluck(:user_id).uniq.count
 
     base_metrics = {
       visitors: visits_data[:total],
       participants: total_participant_count,
       engagement_rate: visits_data[:total] > 0 ? (total_participant_count.to_f / visits_data[:total]).round(3) : 0,
-      participations: participations.count,
+      participations: flattened_participations.count,
       visitors_last_7_days: visits_data[:last_7_days],
       participants_last_7_days: participants_last_7_days_count,
-      participations_last_7_days: participations.count { |p| p[:acted_at] >= 7.days.ago }
+      participations_last_7_days: flattened_participations.count { |p| p[:acted_at] >= 7.days.ago }
     }
 
     pmethod_specific_metrics = pmethod_specific_metrics(phase, participations)
 
-    # Build explicitly in desired order
-    all_metrics = base_metrics.dup
-    pmethod_specific_metrics.each { |k, v| all_metrics[k] = v }
-
-    { metrics: all_metrics }
+    { metrics: base_metrics.merge(pmethod_specific_metrics) }
   end
 
-  def pmethod_specific_metrics(phase, _participations)
+  def pmethod_specific_metrics(phase, participations)
     case phase.participation_method
     when 'voting'
-      ideas_data(phase)
+      voting_data(phase, participations).merge(ideas_data(phase))
     else
       {}
     end
+  end
+
+  def voting_data(phase, participations)
+    voting_participations = participations[:voting]
+
+    votes = voting_participations.sum { |p| p[:votes] }
+    voters = voting_participations.map { |p| p[:user_id] }.uniq.count
+    votes_per_voter = voters > 0 ? (votes.to_f / voters).round(3) : 0
+
+    {
+      votes: votes,
+      voters: voters,
+      votes_per_voter: votes_per_voter
+    }
   end
 
   def ideas_data(phase)

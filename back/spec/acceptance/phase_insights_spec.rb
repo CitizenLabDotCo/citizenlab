@@ -125,6 +125,9 @@ resource 'Phase insights' do
           visitors_last_7_days: 5,
           participants_last_7_days: 4,
           participations_last_7_days: 5,
+          votes: 0,
+          voters: 4,
+          votes_per_voter: 0.0,
           inputs: 3,
           comments: 4,
           reactions: 0
