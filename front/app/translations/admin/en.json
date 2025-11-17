@@ -2640,6 +2640,7 @@
   "app.containers.AdminPage.SettingsPage.loginHelper": "Login screen",
   "app.containers.AdminPage.SettingsPage.loginHelperTooltip": "This is shown on the top of the login form.",
   "app.containers.AdminPage.SettingsPage.logo": "Logo",
+  "app.containers.AdminPage.SettingsPage.noDescriptionProvided": "No description provided",
   "app.containers.AdminPage.SettingsPage.noHeader": "Please upload a header image",
   "app.containers.AdminPage.SettingsPage.no_button": "No button",
   "app.containers.AdminPage.SettingsPage.organizationName": "Name of city or organization",
