@@ -19,4 +19,8 @@ class Analysis::WebApi::V1::AnalysisSerializer < WebApi::V1::BaseSerializer
 
     IdeaCustomFieldsService.new(analysis.participation_context.custom_form).all_fields.filter(&:accepts_input?)
   end
+
+  has_many :insightables do |analysis|
+    analysis.insights.filter_map(&:insightable).compact
+  end
 end
