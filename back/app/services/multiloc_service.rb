@@ -5,7 +5,9 @@ class MultilocService
     @app_configuration = app_configuration
   end
 
-  def t(translations, preferred_locale = nil)
+  # @param ignore_blank [Boolean] If true, blank translations (empty or only whitespace)
+  #   are considered missing, and the next best translation is returned.
+  def t(translations, preferred_locale = nil, ignore_blank: false)
     return nil unless translations
 
     ErrorReporter.handle(ArgumentError) do
@@ -19,13 +21,17 @@ class MultilocService
       MSG
     end
 
+    # Determine if a translation is considered present based on the +ignore_blank+ flag.
+    is_present = ignore_blank ? ->(t) { t.present? } : ->(t) { !!t }
+
     # Optimization: return early if we can to avoid instantiating the AppConfiguration.
     preferred_locale ||= I18n.locale.to_s
-    return translations[preferred_locale] if translations[preferred_locale]
+    preferred_translation = translations[preferred_locale]
+    return preferred_translation if is_present.call(preferred_translation)
 
     platform_locales = app_configuration.settings('core', 'locales')
     locales_by_priority = platform_locales + translations.keys
-    result = locales_by_priority.lazy.filter_map { |locale| translations[locale] }.first
+    result = locales_by_priority.lazy.map { |locale| translations[locale] }.find(&is_present)
     result.is_a?(String) ? result : +'' # return a non-frozen empty string
   end
 

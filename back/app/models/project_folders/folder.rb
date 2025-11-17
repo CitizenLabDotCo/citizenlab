@@ -27,13 +27,13 @@ module ProjectFolders
 
     slug from: proc { |folder| folder.title_multiloc&.values&.find(&:present?) }
 
+    has_many_text_images from: :description_multiloc
+
     has_one :admin_publication, as: :publication, dependent: :destroy
     has_one :nav_bar_item, dependent: :destroy, inverse_of: 'project_folder', foreign_key: 'project_folder_id'
     accepts_nested_attributes_for :admin_publication, update_only: true
     has_many :images, -> { order(:ordering) }, dependent: :destroy, inverse_of: 'project_folder', foreign_key: 'project_folder_id' # TODO: remove after renaming project_folder association in Image model
     has_many :files, -> { order(:ordering) }, dependent: :destroy, inverse_of: 'project_folder', foreign_key: 'project_folder_id'  # TODO: remove after renaming project_folder association in File model
-    has_many :text_images, as: :imageable, dependent: :destroy
-    accepts_nested_attributes_for :text_images
     has_many :followers, as: :followable, dependent: :destroy
 
     mount_base64_uploader :header_bg, HeaderBgUploader

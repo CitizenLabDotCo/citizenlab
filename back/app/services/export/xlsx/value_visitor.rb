@@ -154,7 +154,7 @@ module Export
       end
 
       def value_for_multiloc(maybe_multiloc)
-        maybe_multiloc.is_a?(Hash) ? multiloc_service.t(maybe_multiloc) : ''
+        maybe_multiloc.is_a?(Hash) ? multiloc_service.t(maybe_multiloc, ignore_blank: true) : ''
       end
     end
   end

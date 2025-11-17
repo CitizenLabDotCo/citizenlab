@@ -49,7 +49,6 @@ class SideFxProjectService
   def before_update(project, _user)
     @publication_status_was = project.admin_publication.publication_status_was
     @folder_id_was = project.admin_publication.parent_id_was
-    project.description_multiloc = TextImageService.new.swap_data_images_multiloc(project.description_multiloc, field: :description_multiloc, imageable: project)
   end
 
   def after_update(project, user)
