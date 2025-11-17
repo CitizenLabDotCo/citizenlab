@@ -70,10 +70,9 @@ describe Export::Xlsx::InputSheetGenerator do
         it 'exports timestamps in the tenant timezone' do
           submitted_at_index = xlsx.first[:column_headers].index('Submitted at')
           exported_timestamp = xlsx.first[:rows].first[submitted_at_index].to_time.round
-          expected_timestamp = utc_time.in_time_zone(tenant_timezone)
 
           expect(exported_timestamp.strftime('%Y-%m-%d %H:%M:%S'))
-            .to eq(expected_timestamp.strftime('%Y-%m-%d %H:%M:%S'))
+            .to eq('2019-09-09 14:30:00')
         end
       end
 
