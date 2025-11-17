@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 import { Box, Text, Title, Select } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
+import { SortOption } from 'api/phase_insights/types';
+import useCommonGroundInsights from 'api/phase_insights/useCommonGroundInsights';
+
 import useLocale from 'hooks/useLocale';
 
 import Statistics from 'containers/ProjectsShowPage/timeline/CommonGround/CommonGroundResults/Statistics';
@@ -12,81 +15,44 @@ import T from 'components/T';
 
 import { useIntl } from 'utils/cl-intl';
 
-import {
-  dummyCommonGroundResults,
-  dummyCommonGroundResultsWithGender,
-  dummyCommonGroundResultsWithAge,
-  dummyCommonGroundResultsWithDomicile,
-} from './dummyData';
 import { MethodSpecificInsightProps } from './types';
 
-type SortOption =
-  | 'most_agreed'
-  | 'most_disagreed'
-  | 'most_controversial'
-  | 'newest';
 type ClusterByOption = '' | 'gender' | 'birthyear' | 'domicile';
 
-interface DemographicOption {
-  title_multiloc: Record<string, string>;
-  ordering: number;
-}
-
-interface DemographicField {
-  field_id: string;
-  field_key: string;
-  field_code: string;
-  options?: Record<string, DemographicOption>;
-}
-
-interface StatementItem {
-  id: string;
-  title_multiloc: Record<string, string>;
-  votes: {
-    up: number;
-    down: number;
-    neutral: number;
-  };
-  created_at: string;
-  demographic_breakdown?: Record<
-    string,
-    {
-      up: number;
-      down: number;
-      neutral: number;
-    }
-  >;
-}
-
-const CommonGroundInsights = ({
-  phaseId: _phaseId,
-}: MethodSpecificInsightProps) => {
+const CommonGroundInsights = ({ phaseId }: MethodSpecificInsightProps) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const [sortBy, setSortBy] = useState<SortOption>('most_agreed');
   const [clusterBy, setClusterBy] = useState<ClusterByOption>('');
 
-  // Get dummy data based on cluster selection
-  // TODO: Replace with real API call using _phaseId once backend is ready
-  const getDummyData = () => {
-    if (clusterBy === 'gender') return dummyCommonGroundResultsWithGender;
-    if (clusterBy === 'birthyear') return dummyCommonGroundResultsWithAge;
-    if (clusterBy === 'domicile') return dummyCommonGroundResultsWithDomicile;
-    return dummyCommonGroundResults;
-  };
+  // Fetch data using the hook
+  const { data, isLoading, error } = useCommonGroundInsights({
+    phaseId,
+    groupBy: clusterBy || undefined,
+  });
 
-  const results = getDummyData();
+  if (isLoading) {
+    return (
+      <Box mt="8px" bg="white" p="30px">
+        <Text>Loading...</Text>
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box mt="8px" bg="white" p="30px">
+        <Text color="error">Error loading Common Ground results</Text>
+      </Box>
+    );
+  }
+
   const {
     stats,
     total_count,
     items: unsortedItems,
     demographic_field,
-  } = results.data.attributes as {
-    stats: typeof results.data.attributes.stats;
-    total_count: number;
-    items: StatementItem[];
-    demographic_field?: DemographicField;
-  };
+  } = data!.data.attributes;
 
   // Sort items based on selected sort option
   const items = [...unsortedItems].sort((a, b) => {
@@ -195,13 +161,14 @@ const CommonGroundInsights = ({
     neutral: number;
   }) => {
     const total = votes.up + votes.down + votes.neutral;
-    if (total === 0)
+    if (total === 0) {
       return {
         agreedPercent: 0,
         disagreePercent: 0,
         unsurePercent: 0,
         total: 0,
       };
+    }
 
     return {
       agreedPercent: Math.round((votes.up / total) * 100),
