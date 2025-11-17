@@ -29,6 +29,7 @@ const CONFIG = {
     /^app\.containers\.Admin\.projects\.project\.error\./,
     /^app\.components\.Error\./,
     /^app\.api\.errors\./,
+    /^app\.errors\./, // Error messages from app/components/UI/Error/messages.ts
   ],
 };
 
