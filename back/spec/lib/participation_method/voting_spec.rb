@@ -13,6 +13,27 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
+  describe 'participation_baskets' do
+    it 'returns the participation baskets data associated with the phase' do
+      user = create(:user)
+      basket1 = create(:basket, phase: phase, user: user, submitted_at: phase.start_at + 1.day)
+      pp subject.participation_baskets
+
+      expect(subject.participation_baskets).to eq (
+        [
+          {
+            id: basket1.id,
+            action: 'voting',
+            acted_at: basket1.submitted_at,
+            classname: 'Basket',
+            user_id: user.id,
+            user_custom_field_values: {}
+          }
+        ]
+      )
+    end
+  end
+
   describe '#assign_defaults' do
     context 'when the proposed idea status is available' do
       let!(:proposed) { create(:idea_status_proposed) }
