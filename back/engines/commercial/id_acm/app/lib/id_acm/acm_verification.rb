@@ -24,6 +24,8 @@ module IdAcm
         client_secret
         enabled_for_verified_actions
         hide_from_profile
+        api_key
+        environment
       ]
     end
 
@@ -72,5 +74,34 @@ module IdAcm
     def ui_method_name
       config[:ui_method_name] || name
     end
+
+    def verify_sync(rrn:)
+      validate_citizen!(rrn)
+    end
+
+    def verification_parameters(auth)
+      { rrn: auth.info.rrn }
+    end
+
+    def validate_citizen!(rrn)
+      api = IdOostendeRrn::WijkBudgetApi.new(api_key: config[:api_key], environment: config[:environment])
+      response = api.verificatie(rrn)
+
+      raise RuntimeError(response) unless response.success?
+
+      body = response.parsed_response
+      reason = body.dig('verificatieResultaat', 'redenNietGeldig')
+
+      binding.pry
+
+      raise Verification::VerificationService::NoMatchError if reason&.include? 'ERR10'
+      raise Verification::VerificationService::NotEntitledError, 'lives_outside' if reason&.include? 'ERR11'
+      raise Verification::VerificationService::NotEntitledError, 'too_young' if reason&.include? 'ERR12'
+
+      raise Verification::VerificationService::NoMatchError unless body.dig('verificatieResultaat', 'geldig')
+
+      { uid: rrn }
+    end
+
   end
 end

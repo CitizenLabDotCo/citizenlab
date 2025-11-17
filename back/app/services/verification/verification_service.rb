@@ -106,6 +106,12 @@ module Verification
       method = method_by_name(auth.provider)
       raise NotEntitledError if method.respond_to?(:entitled?) && !method.entitled?(auth)
 
+      # Do additional verification steps if needed
+      if method.respond_to?(:verify_sync)
+        verification_parameters = method.verification_parameters(auth)
+        method.verify_sync(**verification_parameters)
+      end
+
       uid = method.profile_to_uid(auth)
       make_verification(user:, method:, uid:)
     end
