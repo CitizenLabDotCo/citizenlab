@@ -47,7 +47,9 @@
 #
 # Indexes
 #
-#  index_custom_fields_on_resource_type_and_resource_id  (resource_type,resource_id)
+#  index_custom_fields_on_ordering                         (ordering) UNIQUE WHERE (resource_id IS NULL)
+#  index_custom_fields_on_resource_id_and_ordering_unique  (resource_id,ordering) UNIQUE
+#  index_custom_fields_on_resource_type_and_resource_id    (resource_type,resource_id)
 #
 
 # support table :
