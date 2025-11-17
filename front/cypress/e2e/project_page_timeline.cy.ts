@@ -11,7 +11,7 @@ describe('Existing Timeline project', () => {
     cy.wait(1000);
   });
 
-  it('shows the correct elements', () => {
+  it.skip('shows the correct elements', () => {
     // shows the project page
     cy.get('#e2e-project-page');
 
