@@ -59,14 +59,17 @@ module ParticipationMethod
     end
 
     def participation_baskets
-      phase.baskets.includes(:user).map do |basket|
+      phase.baskets.includes(:user, :baskets_ideas).map do |basket|
+        total_votes = basket.baskets_ideas.sum(:votes)
+        
         {
           id: basket.id,
           action: 'voting',
           acted_at: basket.submitted_at,
           classname: 'Basket',
           user_id: basket.user_id,
-          user_custom_field_values: basket.user.custom_field_values
+          user_custom_field_values: basket.user.custom_field_values,
+          votes: total_votes
         }
       end
     end
