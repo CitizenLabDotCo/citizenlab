@@ -55,6 +55,28 @@ describe Export::Xlsx::InputSheetGenerator do
         end
       end
 
+      describe 'timezone handling' do
+        let(:tenant_timezone) { 'America/Toronto' }
+        let(:utc_time) { Time.utc(2019, 9, 9, 18, 30, 0) }
+        let(:idea) { create(:idea, project: phase.project, phases: [phase], created_at: utc_time) }
+        let(:inputs) { [idea] }
+
+        before do
+          settings = AppConfiguration.instance.settings
+          settings['core']['timezone'] = tenant_timezone
+          AppConfiguration.instance.update!(settings: settings)
+        end
+
+        it 'exports timestamps in the tenant timezone' do
+          submitted_at_index = xlsx.first[:column_headers].index('Submitted at')
+          exported_timestamp = xlsx.first[:rows].first[submitted_at_index].to_time.round
+          expected_timestamp = utc_time.in_time_zone(tenant_timezone).round
+
+          expect(exported_timestamp.strftime('%Y-%m-%d %H:%M:%S'))
+            .to eq(expected_timestamp.strftime('%Y-%m-%d %H:%M:%S'))
+        end
+      end
+
       context 'without persisted form' do
         let(:assignee) { create(:admin, first_name: 'John', last_name: 'Doe') }
         let(:ideation_response1) do
