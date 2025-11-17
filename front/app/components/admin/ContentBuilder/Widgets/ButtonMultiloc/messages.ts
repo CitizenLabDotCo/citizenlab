@@ -41,16 +41,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDescription.buttonMultilocText',
     defaultMessage: 'Button text',
   },
-  buttonMultilocTextErrorMessage: {
-    id: 'app.containers.AdminPage.ProjectDescription.buttonMultilocTextErrorMessage',
-    defaultMessage: 'Enter text for the button',
-  },
+
   buttonMultilocUrl: {
     id: 'app.containers.AdminPage.ProjectDescription.buttonMultilocUrl',
     defaultMessage: 'Button URL',
-  },
-  buttonMultilocUrlErrorMessage: {
-    id: 'app.containers.AdminPage.ProjectDescription.buttonMultilocUrlErrorMessage',
-    defaultMessage: 'Enter a URL for the button',
   },
 });

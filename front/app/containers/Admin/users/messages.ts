@@ -57,11 +57,7 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.role',
     defaultMessage: 'Role',
   },
-  permissionToBuy: {
-    id: 'app.containers.Admin.Users.permissionToBuy',
-    defaultMessage:
-      'To give {name} admin rights, you need to buy 1 additional seat.',
-  },
+
   options: {
     id: 'app.containers.Admin.Users.options',
     defaultMessage: 'Options',
@@ -78,11 +74,7 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.userDeletionConfirmation',
     defaultMessage: 'Permanently remove this user?',
   },
-  userDeletionProposalVotes: {
-    id: 'app.containers.Admin.Users.userDeletionProposalVotes',
-    defaultMessage:
-      'This will also delete any votes by this user on proposals which are still open for voting.',
-  },
+
   userDeletionFailed: {
     id: 'app.containers.Admin.Users.userDeletionFailed',
     defaultMessage:
@@ -238,18 +230,7 @@ export default defineMessages({
     defaultMessage:
       'An error occured while deleting users from the group, please try again.',
   },
-  exportAllUsers: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.exportAll',
-    defaultMessage: 'Export all',
-  },
-  exportGroup: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.exportGroupUsers',
-    defaultMessage: 'Export users in group',
-  },
-  exportSelectedUsers: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.exportSelected',
-    defaultMessage: 'Export selected',
-  },
+
   userInvitationPending: {
     id: 'app.containers.Admin.Users.UserTableRow.userInvitationPending',
     defaultMessage: 'Invitation pending',

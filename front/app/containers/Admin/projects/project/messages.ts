@@ -6,10 +6,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.generalTab',
     defaultMessage: 'General',
   },
-  descriptionTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.descriptionTab',
-    defaultMessage: 'Description',
-  },
+
   inputManagerTab: {
     id: 'app.containers.AdminPage.ProjectEdit.inputManagerTab',
     defaultMessage: 'Input manager',
@@ -51,10 +48,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.pollTab',
     defaultMessage: 'Poll',
   },
-  allowedInputTopicsTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab',
-    defaultMessage: 'Allowed input tags',
-  },
+
   eventsTab: {
     id: 'app.containers.AdminPage.ProjectEdit.eventsTab',
     defaultMessage: 'Events',
@@ -63,10 +57,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.filesTab2',
     defaultMessage: '360 Input',
   },
-  viewPublicProject: {
-    id: 'app.containers.AdminPage.ProjectEdit.viewPublicProject',
-    defaultMessage: 'View project',
-  },
+
   // edit - participationContext -----------------------------------------------
   optionAnalysisLinkText: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.optionAnalysisLinkText',
@@ -94,10 +85,7 @@ export default defineMessages({
     defaultMessage:
       'Maximum number of votes per option must be less than or equal to total number of votes',
   },
-  voteTermError: {
-    id: 'app.containers.AdminPage.ProjectEdit.voteTermError',
-    defaultMessage: 'Vote terms must be specified for all locales',
-  },
+
   minSelectedOptionsError: {
     id: 'app.containers.AdminPage.ProjectEdit.minSelectedOptionsError',
     defaultMessage:
@@ -107,10 +95,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage',
     defaultMessage: 'Not a valid number',
   },
-  noBudgetingAmountErrorMessage: {
-    id: 'app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage',
-    defaultMessage: 'Not a valid amount',
-  },
+
   participationMethodTitleText: {
     id: 'app.containers.AdminPage.ProjectEdit.participationMethodTitleText',
     defaultMessage: 'What do you want to do?',
@@ -119,61 +104,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.participationMethodTooltip',
     defaultMessage: 'Choose how users can participate.',
   },
-  shareInformation: {
-    id: 'app.containers.AdminPage.ProjectEdit.shareInformation',
-    defaultMessage: 'Share information',
-  },
-  inputAndFeedback: {
-    id: 'app.containers.AdminPage.ProjectEdit.inputAndFeedback',
-    defaultMessage: 'Collect input and feedback',
-  },
-  inputAndFeedbackDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.inputAndFeedbackDescription2',
-    defaultMessage:
-      'Create or collect inputs, reactions and/or comments. Pick between different types of inputs: idea collection, option analysis, question and answer, issue identification and more.',
-  },
-  createExternalSurveyText: {
-    id: 'app.containers.AdminPage.ProjectEdit.createExternalSurveyText',
-    defaultMessage: 'Create an external survey',
-  },
-  createSurveyDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.createSurveyDescription',
-    defaultMessage:
-      'Embed a Typeform, Google Form, Enalyzer, SurveyXact, Qualtrics, SmartSurvey, Snap Survey or Microsoft Forms survey.',
-  },
-  conductVotingOrPrioritizationText: {
-    id: 'app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationText',
-    defaultMessage: 'Conduct a voting or prioritization exercise',
-  },
-  conductVotingOrPrioritizationDescriptionText: {
-    id: 'app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText2',
-    defaultMessage:
-      'Select a voting method, and have users prioritize between a few different options.',
-  },
-  createNativeSurvey: {
-    id: 'app.containers.AdminPage.ProjectEdit.createNativeSurvey',
-    defaultMessage: 'Create an in-platform survey',
-  },
-  createNativeSurveyDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription',
-    defaultMessage: 'Set up a survey without leaving our platform.',
-  },
-  createPoll: {
-    id: 'app.containers.AdminPage.ProjectEdit.createPoll',
-    defaultMessage: 'Create a poll',
-  },
-  createPollDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.createPollDescription',
-    defaultMessage: 'Set up a multiple-choice questionnaire.',
-  },
-  findVolunteers: {
-    id: 'app.containers.AdminPage.ProjectEdit.findVolunteers',
-    defaultMessage: 'Find volunteers',
-  },
-  findVolunteersDescriptionText: {
-    id: 'app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText',
-    defaultMessage: 'Ask participants to volunteer for activities and causes.',
-  },
+
   totalBudget: {
     id: 'app.containers.AdminPage.ProjectEdit.totalBudget',
     defaultMessage: 'Total budget',
@@ -286,10 +217,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.enabled',
     defaultMessage: 'Enabled',
   },
-  disabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.disabled',
-    defaultMessage: 'Disabled',
-  },
+
   inputsDefaultView: {
     id: 'app.containers.AdminPage.ProjectEdit.inputsDefaultView',
     defaultMessage: 'Default view',
@@ -316,30 +244,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.mapDisplay',
     defaultMessage: 'Map',
   },
-  trendingSortingMethod: {
-    id: 'app.containers.AdminPage.ProjectEdit.trendingSortingMethod',
-    defaultMessage: 'Trending',
-  },
-  comments_countSortingMethod: {
-    id: 'app.containers.AdminPage.ProjectEdit.commens_countSortingMethod',
-    defaultMessage: 'Most discussed',
-  },
-  randomSortingMethod: {
-    id: 'app.containers.AdminPage.ProjectEdit.randomSortingMethod',
-    defaultMessage: 'Random',
-  },
-  popularSortingMethod: {
-    id: 'app.containers.AdminPage.ProjectEdit.popularSortingMethod2',
-    defaultMessage: 'Most reactions',
-  },
-  newestSortingMethod: {
-    id: 'app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod',
-    defaultMessage: 'Most recent',
-  },
-  oldestSortingMethod: {
-    id: 'app.containers.AdminPage.ProjectEdit.oldestFirstSortingMethod',
-    defaultMessage: 'Oldest',
-  },
+
   surveyService: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyService',
     defaultMessage: 'Survey Service',
@@ -394,15 +299,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.google_forms',
     defaultMessage: 'Google Forms',
   },
-  documentAnnotationMethod: {
-    id: 'app.containers.AdminPage.ProjectEdit.documentAnnotationMethod1',
-    defaultMessage: 'Collect feedback on a document',
-  },
-  documentAnnotationMethodDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.documentAnnotationMethodDescription1',
-    defaultMessage:
-      'Embed an interactive PDF and collect comments and feedback with Konveio.',
-  },
+
   surveyEmbedUrl: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyEmbedUrl',
     defaultMessage: 'Survey Embed URL',
@@ -424,10 +321,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.resultsTab',
     defaultMessage: 'Results',
   },
-  surveyTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.surveyTab',
-    defaultMessage: 'Survey',
-  },
+
   surveyFormTab: {
     id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.surveyFormTab',
     defaultMessage: 'Survey form',

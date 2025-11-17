@@ -7,10 +7,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  favicon: {
-    id: 'app.containers.AdminPage.FaviconPage.favicon',
-    defaultMessage: 'Favicon',
-  },
   save: {
     id: 'app.containers.AdminPage.FaviconPage.save',
     defaultMessage: 'Save',

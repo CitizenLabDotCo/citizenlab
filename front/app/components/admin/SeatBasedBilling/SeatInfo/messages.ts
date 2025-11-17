@@ -1,55 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  currentAdminSeatsTitle: {
-    id: 'app.components.SeatInfo.currentAdminSeatsTitle',
-    defaultMessage: 'Current admin seats',
-  },
-  currentManagerSeatsTitle: {
-    id: 'app.components.SeatInfo.currentManagerSeatsTitle',
-    defaultMessage: 'Current manager seats',
-  },
-  includedSeats: {
-    id: 'app.components.SeatInfo.includedSeats',
-    defaultMessage: 'Included seats',
-  },
-  additionalSeats: {
-    id: 'app.components.SeatInfo.additionalSeats',
-    defaultMessage: 'Additional seats',
-  },
-  adminInfoTextWithoutBilling: {
-    id: 'app.components.SeatTrackerInfo.adminInfoTextWithoutBilling',
-    defaultMessage:
-      "Your plan has {adminSeatsIncluded}. Once you've used all the seats, extra seats will be added under 'Additional seats'.",
-  },
-  adminSeatsIncludedText: {
-    id: 'app.components.SeatInfo.adminSeatsIncludedText',
-    defaultMessage: '{adminSeats} admin seats included',
-  },
-  managerInfoTextWithoutBilling: {
-    id: 'app.components.SeatTrackerInfo.managerInfoTextWithoutBilling',
-    defaultMessage:
-      "Your plan has {managerSeatsIncluded}, eligible for folder managers and project managers. Once you've used all the seats, extra seats will be added under 'Additional seats'.",
-  },
-  managersIncludedText: {
-    id: 'app.components.SeatInfo.managersIncludedText',
-    defaultMessage: '{managerSeats} manager seats included',
-  },
-  includedAdminToolTip: {
-    id: 'app.components.SeatInfo.includedAdminToolTip',
-    defaultMessage:
-      'This shows the number of available seats for admins included in the yearly contract.',
-  },
-  includedManagerToolTip: {
-    id: 'app.components.SeatInfo.includedManagerToolTip',
-    defaultMessage:
-      'This shows the number of available seats for managers included in the yearly contract.',
-  },
-  additionalSeatsToolTip: {
-    id: 'app.components.SeatInfo.additionalSeatsToolTip',
-    defaultMessage:
-      "This shows the number of additional seats you have purchased on top of 'Included seats'.",
-  },
   adminSeats: {
     id: 'app.components.SeatInfo.adminSeats',
     defaultMessage: 'Admin seats',

@@ -38,8 +38,4 @@ export default defineMessages({
     id: 'app.containers.PasswordRecovery.emailError',
     defaultMessage: 'Please enter a valid e-mail address',
   },
-  submitError: {
-    id: 'app.containers.PasswordRecovery.submitError',
-    defaultMessage: 'Something went wrong. Please try again later.',
-  },
 });

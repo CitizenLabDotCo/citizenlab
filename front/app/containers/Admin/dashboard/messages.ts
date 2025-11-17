@@ -15,10 +15,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.tabUsers',
     defaultMessage: 'Users',
   },
-  tabReports: {
-    id: 'app.containers.AdminPage.DashboardPage.tabReports',
-    defaultMessage: 'Reports',
-  },
+
   tabRepresentativeness: {
     id: 'app.containers.AdminPage.DashboardPage.tabRepresentativeness2',
     defaultMessage: 'Representation',
@@ -68,10 +65,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.reactions',
     defaultMessage: 'Reactions',
   },
-  fiveInputsWithMostReactions: {
-    id: 'app.containers.AdminPage.DashboardPage.fiveInputsWithMostReactions',
-    defaultMessage: 'Top 5 inputs by reactions',
-  },
+
   comments: {
     id: 'app.containers.AdminPage.DashboardPage.comments',
     defaultMessage: 'Comments',
@@ -106,27 +100,12 @@ export default defineMessages({
     defaultMessage: 'All Time',
   },
   // Summary Graphs
-  usersByTimeTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.usersByTimeTitle',
-    defaultMessage: 'Users',
-  },
+
   participants: {
     id: 'app.containers.AdminPage.DashboardPage.participants',
     defaultMessage: 'Participants',
   },
-  numberOfActiveParticipantsDescription: {
-    id: 'app.containers.AdminPage.DashboardPage.numberOfActiveParticipantsDescription2',
-    defaultMessage:
-      'The number of participants that posted inputs, reacted or commented.',
-  },
-  inputsByStatusTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.inputsByStatusTitle1',
-    defaultMessage: 'Inputs by status',
-  },
-  commentsByTimeTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.commentsByTimeTitle',
-    defaultMessage: 'Comments',
-  },
+
   numberOfLikes: {
     id: 'app.containers.AdminPage.DashboardPage.numberOfLikes',
     defaultMessage: 'Likes',
@@ -135,14 +114,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.numberOfDislikes',
     defaultMessage: 'Dislikes',
   },
-  numberOfReactionsTotal: {
-    id: 'app.containers.AdminPage.DashboardPage.numberOfReactionsTotal',
-    defaultMessage: 'Total reactions',
-  },
-  cumulatedTotal: {
-    id: 'app.containers.AdminPage.DashboardPage.cumulatedTotal',
-    defaultMessage: 'Cumulated Total',
-  },
+
   total: {
     id: 'app.containers.AdminPage.DashboardPage.total',
     defaultMessage: 'Total',
@@ -163,10 +135,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.hiddenLabelPickResourceByProject',
     defaultMessage: 'Pick resource to show by project',
   },
-  selectedProject: {
-    id: 'app.containers.AdminPage.DashboardPage.selectedProject',
-    defaultMessage: 'current project filter',
-  },
+
   participationPerTopic: {
     id: 'app.containers.AdminPage.DashboardPage.participationPerTopic',
     defaultMessage: 'Participation per topic',
@@ -175,10 +144,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.hiddenLabelPickResourceByTopic',
     defaultMessage: 'Pick resource to show by topic',
   },
-  selectedTopic: {
-    id: 'app.containers.AdminPage.DashboardPage.selectedTopic',
-    defaultMessage: 'current topic filter',
-  },
+
   // Users Charts
   usersByAgeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.usersByAgeTitle',
@@ -192,18 +158,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.usersByGenderTitle',
     defaultMessage: 'Users by gender',
   },
-  male: {
-    id: 'app.containers.AdminPage.DashboardPage.male',
-    defaultMessage: 'male',
-  },
-  female: {
-    id: 'app.containers.AdminPage.DashboardPage.female',
-    defaultMessage: 'female',
-  },
-  unspecified: {
-    id: 'app.containers.AdminPage.DashboardPage.unspecified',
-    defaultMessage: 'unspecified',
-  },
+
   _blank: {
     id: 'app.containers.AdminPage.DashboardPage._blank',
     defaultMessage: 'unknown',
@@ -216,43 +171,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.false',
     defaultMessage: 'false',
   },
-  subtitleDashboard: {
-    id: 'app.containers.AdminPage.DashboardPage.subtitleDashboard',
-    defaultMessage:
-      'Get immediate and easy-to-grasp analytics into what’s moving on the platform.',
-  },
-  titleDashboard: {
-    id: 'app.containers.AdminPage.DashboardPage.titleDashboard',
-    defaultMessage: 'Dashboard',
-  },
-  totalUsers: {
-    id: 'app.containers.AdminPage.DashboardPage.Report.totalUsers',
-    defaultMessage: 'total users on the platform',
-  },
-  timelineType: {
-    id: 'app.containers.AdminPage.DashboardPage.timelineType',
-    defaultMessage: 'Timeline',
-  },
-  continuousType: {
-    id: 'app.containers.AdminPage.DashboardPage.continuousType',
-    defaultMessage: 'Continuous',
-  },
-  projectType: {
-    id: 'app.containers.AdminPage.DashboardPage.projectType',
-    defaultMessage: 'Project type : {projectType}',
-  },
-  fromTo: {
-    id: 'app.containers.AdminPage.DashboardPage.fromTo',
-    defaultMessage: 'from {from} to {to}',
-  },
-  noPhase: {
-    id: 'app.containers.AdminPage.DashboardPage.noPhase',
-    defaultMessage: 'No phase created for this project',
-  },
-  customFieldTitleExport: {
-    id: 'app.containers.AdminPage.ReportsTab.customFieldTitleExport',
-    defaultMessage: '{fieldName}_repartition',
-  },
+
   showMore: {
     id: 'app.containers.AdminPage.DashboardPage.overview.showMore',
     defaultMessage: 'Show more',

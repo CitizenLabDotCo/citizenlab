@@ -117,20 +117,7 @@ export default defineMessages({
     defaultMessage:
       'Display content from an external website on your page in an HTML iFrame. Note that not every page can be embedded. If you are having trouble embedding a page, check with the owner of the page if it is configured to allow embedding.',
   },
-  iframeInvalidWhitelistUrlErrorMessage: {
-    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage',
-    defaultMessage:
-      'Sorry, this content could not be embedded. {visitLinkMessage} to learn more.',
-  },
-  iframeEmbedVisitLinkMessage: {
-    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.iframeEmbedVisitLinkMessage',
-    defaultMessage: 'Visit our support page',
-  },
-  iframeSupportLink: {
-    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink',
-    defaultMessage:
-      'https://support.govocal.com/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions',
-  },
+
   invalidAspectRatio: {
     id: 'app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio',
     defaultMessage: 'Enter a valid aspect ratio, for example 16:10 or 5:3.',

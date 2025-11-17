@@ -5,18 +5,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Topics.inputTags',
     defaultMessage: 'Input tags',
   },
-  browseTopics: {
-    id: 'app.containers.AdminPage.Topics.browseTopics',
-    defaultMessage: 'Browse topics',
-  },
+
   addTopics: {
     id: 'app.containers.AdminPage.Topics.addTopics',
     defaultMessage: 'Add',
   },
-  deleteTopicLabel: {
-    id: 'app.containers.AdminPage.Topics.deleteTopicLabel',
-    defaultMessage: 'Delete',
-  },
+
   remove: {
     id: 'app.containers.AdminPage.Topics.remove',
     defaultMessage: 'Remove',

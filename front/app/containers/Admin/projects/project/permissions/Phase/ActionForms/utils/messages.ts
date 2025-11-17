@@ -41,18 +41,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle',
     defaultMessage: 'Who can volunteer?',
   },
-  permissionAction_vote_proposals_subtitle: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle',
-    defaultMessage: 'Who can vote on proposals?',
-  },
-  permissionAction_comment_proposals_subtitle: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_comment_proposals_subtitle',
-    defaultMessage: 'Who can comment on proposals?',
-  },
-  permissionAction_post_proposal_subtitle: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_post_proposal_subtitle',
-    defaultMessage: 'Who can post a proposal?',
-  },
+
   fieldType_text: {
     id: 'app.containers.AdminPage.groups.permissions.fieldType_text',
     defaultMessage: 'Short answer',

@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  userAnonymityLabelMain: {
-    id: 'app.containers.AdminPage.ProjectEdit.NativeSurvey.userAnonymityLabelMain2',
-    defaultMessage: 'Anonymize all user data',
-  },
   userAnonymityLabelSubtext: {
     id: 'app.containers.AdminPage.ProjectEdit.NativeSurvey.userAnonymityLabelSubtext2',
     defaultMessage:
@@ -15,15 +11,7 @@ export default defineMessages({
     defaultMessage:
       "Users will still need to comply with participation requirements under the access 'Access Rights' tab. User profile data will not be available in the survey data export.",
   },
-  shareInformationOrResults: {
-    id: 'app.containers.AdminPage.ProjectEdit.information.shareInformationOrResults',
-    defaultMessage: 'Share information or results',
-  },
-  provideInformation: {
-    id: 'app.containers.AdminPage.ProjectEdit.information.provideInformation',
-    defaultMessage:
-      'Provide information to users, or use the report builder to share results on past phases.',
-  },
+
   new: {
     id: 'app.containers.AdminPage.ProjectEdit.information.new1',
     defaultMessage: 'NEW',
@@ -179,11 +167,7 @@ export default defineMessages({
     defaultMessage:
       'Show participants similar input while they type to help avoid duplicates.',
   },
-  warningSimilarInputDetectionTrial: {
-    id: 'app.containers.phaseConfig.warningSimilarInputDetectionTrial',
-    defaultMessage:
-      "This feature is available as part of an early access offering until June 30th, 2025. If you'd like to continue using it beyond that date, please reach out to your Government Success Manager or admin to discuss activation options.",
-  },
+
   enableSimilarInputDetection: {
     id: 'app.containers.phaseConfig.enableSimilarInputDetection',
     defaultMessage: 'Enable similar input detection',

@@ -31,11 +31,7 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.page',
     defaultMessage: 'Page',
   },
-  phaseNotAllowed: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2',
-    defaultMessage:
-      'The selected phase cannot contain inputs. Please select another one.',
-  },
+
   formDataNotValid: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid',
     defaultMessage: 'Invalid form data. Check the form above for errors.',
@@ -57,10 +53,7 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale',
     defaultMessage: 'Locale:',
   },
-  inputImportedAnonymously: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously',
-    defaultMessage: 'This input was imported anonymously.',
-  },
+
   inputsImported: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsImported',
     defaultMessage:

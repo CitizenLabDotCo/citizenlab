@@ -31,10 +31,7 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.createInputsDescription',
     defaultMessage: 'Create a new set of inputs from a past project',
   },
-  selectAProject: {
-    id: 'app.components.admin.PostManager.selectAProject',
-    defaultMessage: 'Select a project',
-  },
+
   selectAPhase: {
     id: 'app.components.admin.PostManager.selectAPhase',
     defaultMessage: 'Select a phase',

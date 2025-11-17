@@ -44,11 +44,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.descriptionInputLabel',
     defaultMessage: 'Description',
   },
-  descriptionTooltip: {
-    id: 'app.containers.AdminPage.FoldersEdit.descriptionTooltip',
-    defaultMessage:
-      'Shown on the project folder. Clearly describe what the folder contains, what you expect from your users and what they can expect from you.',
-  },
+
   projectFolderCardImageLabel: {
     id: 'app.containers.AdminPage.FoldersEdit.projectFolderCardImageLabel',
     defaultMessage: 'Folder card image',
@@ -107,10 +103,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.removeFromFolder',
     defaultMessage: 'Remove from folder',
   },
-  deleteFolderLabel: {
-    id: 'app.containers.AdminPage.FoldersEdit.deleteFolderLabel',
-    defaultMessage: 'Delete this folder',
-  },
+
   noProjectsToAdd: {
     id: 'app.containers.AdminPage.FoldersEdit.noProjectsToAdd',
     defaultMessage: 'There are no projects that you can add to this folder.',

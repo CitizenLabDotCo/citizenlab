@@ -21,16 +21,7 @@ export default defineMessages({
     defaultMessage:
       'Tags are shown as unsupported on the downloaded PDF and are not supported for import via FormSync.',
   },
-  cosponsor_ids: {
-    id: 'app.components.formBuilder.printSupportTooltip.cosponsor_ids2',
-    defaultMessage:
-      'Co-sponsors are not shown on the downloaded PDF and are not supported for import via FormSync.',
-  },
-  fileupload: {
-    id: 'app.components.formBuilder.printSupportTooltip.fileupload',
-    defaultMessage:
-      'File upload questions are shown as unsupported on the downloaded PDF and are not supported for import via FormSync.',
-  },
+
   mapping: {
     id: 'app.components.formBuilder.printSupportTooltip.mapping',
     defaultMessage:

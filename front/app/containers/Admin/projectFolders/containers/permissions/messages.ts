@@ -23,10 +23,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FolderPermissions.searchFolderManager',
     defaultMessage: 'Search users',
   },
-  noMatch: {
-    id: 'app.containers.AdminPage.FolderPermissions.noMatch',
-    defaultMessage: 'No match found',
-  },
+
   deleteFolderManagerLabel: {
     id: 'app.containers.AdminPage.FolderPermissions.deleteFolderManagerLabel',
     defaultMessage: 'Delete',

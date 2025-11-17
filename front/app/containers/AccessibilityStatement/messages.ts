@@ -18,14 +18,7 @@ export default defineMessages({
     defaultMessage:
       '{goVocalLink} is committed to providing a platform that is accessible to all users, regardless of technology or ability. Current relevant accessibility standards are adhered to in our on-going efforts to maximise the accessibility and usability of our platforms for all users.',
   },
-  changePreferencesText: {
-    id: 'app.containers.AccessibilityStatement.changePreferencesText',
-    defaultMessage: 'At any time, {changePreferencesButton}.',
-  },
-  changePreferencesButtonText: {
-    id: 'app.containers.AccessibilityStatement.changePreferencesButtonText',
-    defaultMessage: 'you can change your preferences',
-  },
+
   conformanceStatus: {
     id: 'app.containers.AccessibilityStatement.conformanceStatus',
     defaultMessage: 'Conformance status',
@@ -45,15 +38,7 @@ export default defineMessages({
     defaultMessage:
       'Our online workshops have a live video streaming component, which does not currently support subtitles.',
   },
-  technologiesTitle: {
-    id: 'app.containers.AccessibilityStatement.technologiesTitle',
-    defaultMessage: 'Technologies',
-  },
-  technologiesIntro: {
-    id: 'app.containers.AccessibilityStatement.technologiesIntro',
-    defaultMessage:
-      'The accessibility of this site relies on the following technologies to work:',
-  },
+
   assesmentMethodsTitle: {
     id: 'app.containers.AccessibilityStatement.assesmentMethodsTitle',
     defaultMessage: 'Assessment method',

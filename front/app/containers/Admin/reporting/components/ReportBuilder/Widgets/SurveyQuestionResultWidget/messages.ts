@@ -9,12 +9,4 @@ export default defineMessages({
     id: 'app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField',
     defaultMessage: 'No question selected. Please select a question first.',
   },
-  numberOfResponses: {
-    id: 'app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.numberOfResponses',
-    defaultMessage: '{count} responses',
-  },
-  untilNow: {
-    id: 'app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.untilNow',
-    defaultMessage: '{date} until now',
-  },
 });

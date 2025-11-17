@@ -13,14 +13,7 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.participation.reactions',
     defaultMessage: 'Reactions',
   },
-  usersByAge: {
-    id: 'app.containers.Admin.projects.project.participation.usersByAge',
-    defaultMessage: 'Users by age',
-  },
-  usersByGender: {
-    id: 'app.containers.Admin.projects.project.participation.usersByGender',
-    defaultMessage: 'Users by gender',
-  },
+
   comments: {
     id: 'app.containers.Admin.projects.project.participation.comments',
     defaultMessage: 'Comments',

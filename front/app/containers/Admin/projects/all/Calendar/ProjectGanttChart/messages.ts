@@ -37,8 +37,4 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.noPhases',
     defaultMessage: 'No phases',
   },
-  noCurrentPhase: {
-    id: 'app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.noCurrentPhase',
-    defaultMessage: 'No current phase',
-  },
 });

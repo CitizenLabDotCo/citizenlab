@@ -10,39 +10,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.emptyListDescription',
     defaultMessage: 'Click the Auto-summarize button above to get started.',
   },
-  questionFor: {
-    id: 'app.containers.AdminPage.projects.project.analysis.Insights.questionsFor',
-    defaultMessage: 'Questions for',
-  },
-  summaryFor: {
-    id: 'app.containers.AdminPage.projects.project.analysis.Insights.summaryFor',
-    defaultMessage: 'Summary for',
-  },
-  questionForAllInputs: {
-    id: 'app.containers.AdminPage.projects.project.analysis.Insights.questionsForAllInputs',
-    defaultMessage: 'Question for all inputs',
-  },
-  summaryForAllInputs: {
-    id: 'app.containers.AdminPage.projects.project.analysis.Insights.summaryForAllInputs',
-    defaultMessage: 'Summary for all inputs',
-  },
+
   restoreFilters: {
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.restoreFilters',
     defaultMessage: 'Restore filters',
   },
-  accuracy: {
-    id: 'app.containers.AdminPage.projects.project.analysis.Insights.accuracy',
-    defaultMessage: 'Accuracy: {accuracy}{percentage}',
-  },
+
   percentage: {
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.percentage',
     defaultMessage: '%',
   },
-  questionAccuracyTooltip: {
-    id: 'app.containers.AdminPage.projects.project.analysis.Insights.questionAccuracyTooltip',
-    defaultMessage:
-      'Asking questions about fewer inputs leads to a higher accuracy. Reduce the current input selection by using tags, search or demographic filters.',
-  },
+
   deleteSummary: {
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.deleteSummary',
     defaultMessage: 'Delete summary',

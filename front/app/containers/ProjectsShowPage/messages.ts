@@ -13,10 +13,7 @@ export default defineMessages({
     id: 'app.containers.Projects.project',
     defaultMessage: 'Project',
   },
-  a11y_titleInputs: {
-    id: 'app.containers.Projects.a11y_titleInputs',
-    defaultMessage: 'All inputs submitted to this project',
-  },
+
   a11y_titleInputsPhase: {
     id: 'app.containers.Projects.a11y_titleInputsPhase',
     defaultMessage: 'All inputs submitted to this phase',
@@ -25,22 +22,12 @@ export default defineMessages({
     id: 'app.containers.Projects.invisibleTitleSurvey',
     defaultMessage: 'Take the survey',
   },
-  invisbleTitleDocumentAnnotation: {
-    id: 'app.containers.Projects.invisbleTitleDocumentAnnotation1',
-    defaultMessage: 'Review the document',
-  },
-  invisibleTitlePoll: {
-    id: 'app.containers.Projects.invisibleTitlePoll',
-    defaultMessage: 'Take the poll',
-  },
+
   createANewPhase: {
     id: 'app.containers.Projects.createANewPhase',
     defaultMessage: 'Create a new phase',
   },
-  invisibleTitlePhaseAbout: {
-    id: 'app.containers.Projects.invisibleTitlePhaseAbout',
-    defaultMessage: 'About this phase',
-  },
+
   information: {
     id: 'app.containers.Projects.information',
     defaultMessage: 'Information',
@@ -53,10 +40,7 @@ export default defineMessages({
     id: 'app.containers.Projects.metaTitle1',
     defaultMessage: 'Project: {projectTitle} | {orgName}',
   },
-  upcomingEvents: {
-    id: 'app.containers.Projects.upcomingEvents',
-    defaultMessage: 'Upcoming events',
-  },
+
   seeUpcomingEvents: {
     id: 'app.containers.Projects.seeUpcomingEvents',
     defaultMessage: 'See upcoming events',
@@ -69,10 +53,7 @@ export default defineMessages({
     id: 'app.containers.Projects.noPhaseSelected',
     defaultMessage: 'No phase selected',
   },
-  endedOn: {
-    id: 'app.containers.Projects.endedOn',
-    defaultMessage: 'Ended on {date}',
-  },
+
   previousPhase: {
     id: 'app.containers.Projects.previousPhase',
     defaultMessage: 'Previous phase',
@@ -89,54 +70,17 @@ export default defineMessages({
     id: 'app.containers.Projects.navPoll',
     defaultMessage: 'Poll',
   },
-  navSurvey: {
-    id: 'app.containers.Projects.navSurvey',
-    defaultMessage: 'Survey',
-  },
+
   archived: {
     id: 'app.containers.Projects.archived',
     defaultMessage: 'Archived',
   },
-  myBasket: {
-    id: 'app.containers.Projects.myBasket',
-    defaultMessage: 'My basket',
-  },
-  basketSubmitted: {
-    id: 'app.containers.Projects.basketSubmitted',
-    defaultMessage: 'Your basket has been submitted!',
-  },
-  yourBudget: {
-    id: 'app.containers.Projects.yourBudget',
-    defaultMessage: 'Your budget',
-  },
-  requiredSelection: {
-    id: 'app.containers.Projects.requiredSelection',
-    defaultMessage: 'Required selection',
-  },
-  addedToBasket: {
-    id: 'app.containers.Projects.addedToBasket',
-    defaultMessage: 'Added to your basket',
-  },
+
   minBudgetRequired: {
     id: 'app.containers.Projects.minBudgetRequired',
     defaultMessage: 'Minimum budget required',
   },
-  manageBasket: {
-    id: 'app.containers.Projects.manageBasket',
-    defaultMessage: 'Manage basket',
-  },
-  submitMyBasket: {
-    id: 'app.containers.Projects.submitMyBasket',
-    defaultMessage: 'Submit my basket',
-  },
-  noItems: {
-    id: 'app.containers.Projects.noItems',
-    defaultMessage: "You haven't selected any items yet",
-  },
-  removeItem: {
-    id: 'app.containers.Projects.removeItem',
-    defaultMessage: 'Remove item',
-  },
+
   a11y_phasesOverview: {
     id: 'app.containers.Projects.a11y_phasesOverview',
     defaultMessage: 'Phases overview',
@@ -151,10 +95,7 @@ export default defineMessages({
     defaultMessage:
       '{projectName} | from the participation platform of {orgName}',
   },
-  allocateBudget: {
-    id: 'app.containers.Projects.allocateBudget',
-    defaultMessage: 'Allocate your budget',
-  },
+
   takeTheSurvey: {
     id: 'app.containers.Projects.takeTheSurvey',
     defaultMessage: 'Take the survey',
@@ -168,26 +109,12 @@ export default defineMessages({
     defaultMessage: 'Take the poll',
   },
   // #input_term_copy
-  ideas: {
-    id: 'app.containers.Projects.ideas',
-    defaultMessage: 'Ideas',
-  },
-  contributions: {
-    id: 'app.containers.Projects.contributions',
-    defaultMessage: 'Contributions',
-  },
-  issues: {
-    id: 'app.containers.Projects.issues',
-    defaultMessage: 'Issues',
-  },
+
   options: {
     id: 'app.containers.Projects.options',
     defaultMessage: 'Options',
   },
-  questions: {
-    id: 'app.containers.Projects.questions',
-    defaultMessage: 'Questions',
-  },
+
   projects: {
     id: 'app.containers.Projects.projects',
     defaultMessage: 'Projects',
@@ -196,14 +123,7 @@ export default defineMessages({
     id: 'app.containers.Projects.proposals',
     defaultMessage: 'Proposals',
   },
-  initiatives: {
-    id: 'app.containers.Projects.initiatives',
-    defaultMessage: 'Initiatives',
-  },
-  petitions: {
-    id: 'app.containers.Projects.petitions',
-    defaultMessage: 'Petitions',
-  },
+
   survey: {
     id: 'app.containers.Projects.survey',
     defaultMessage: 'Survey',
@@ -268,14 +188,7 @@ export default defineMessages({
     id: 'app.containers.Projects.seeThePetitions',
     defaultMessage: 'See the petitions',
   },
-  meetMinBudgetRequirement: {
-    id: 'app.containers.Projects.meetMinBudgetRequirement',
-    defaultMessage: 'Meet the minimum budget to submit your basket.',
-  },
-  meetMinSelectionRequirement: {
-    id: 'app.containers.Projects.meetMinSelectionRequirement',
-    defaultMessage: 'Meet the required selection to submit your basket.',
-  },
+
   a11y_phase: {
     id: 'app.containers.Projects.a11y_phase',
     defaultMessage: 'Phase {phaseNumber}: {phaseTitle}',

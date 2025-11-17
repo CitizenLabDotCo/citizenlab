@@ -13,10 +13,7 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.noOne',
     defaultMessage: 'Unassigned',
   },
-  inputManagerHeader: {
-    id: 'app.components.admin.PostManager.inputManagerHeader',
-    defaultMessage: 'Inputs',
-  },
+
   inputsNeedFeedbackToggle: {
     id: 'app.components.admin.PostManager.inputsNeedFeedbackToggle',
     defaultMessage: 'Only show inputs that need feedback',
@@ -70,10 +67,7 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.dislikes',
     defaultMessage: 'Dislikes',
   },
-  participatoryBudgettingPicks: {
-    id: 'app.components.admin.PostManager.participatoryBudgettingPicks',
-    defaultMessage: 'Picks',
-  },
+
   participatoryBudgettingPicksOnline: {
     id: 'app.components.admin.PostManager.participatoryBudgettingPicksOnline',
     defaultMessage: 'Online picks',
@@ -218,10 +212,7 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.multipleInputs',
     defaultMessage: '{ideaCount} inputs',
   },
-  feedbackBodyPlaceholder: {
-    id: 'app.components.admin.PostManager.feedbackBodyPlaceholder',
-    defaultMessage: 'Justify this status change',
-  },
+
   officialUpdateBody: {
     id: 'app.components.admin.PostManager.officialUpdateBody',
     defaultMessage: 'Justify this status change',
@@ -230,27 +221,7 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.officialUpdateAuthor',
     defaultMessage: 'Choose how people will see your name',
   },
-  feedbackAuthorPlaceholder: {
-    id: 'app.components.admin.PostManager.feedbackAuthorPlaceholder',
-    defaultMessage: 'Choose how people will see your name',
-  },
-  statusChangeSave: {
-    id: 'app.components.admin.PostManager.statusChangeSave',
-    defaultMessage: 'Change status',
-  },
-  statusChangeGenericError: {
-    id: 'app.components.admin.PostManager.statusChangeGenericError',
-    defaultMessage:
-      'There was an error, please try again later or contact support.',
-  },
-  newFeedbackMode: {
-    id: 'app.components.admin.PostManager.newFeedbackMode',
-    defaultMessage: 'Write a new official update to explain this change',
-  },
-  latestFeedbackMode: {
-    id: 'app.components.admin.PostManager.latestFeedbackMode',
-    defaultMessage: 'Use the latest existing official update as an explanation',
-  },
+
   automatedStatusTooltipText: {
     id: 'app.components.admin.PostManager.automatedStatusTooltipText',
     defaultMessage: 'This status updates automatically when conditions are met',

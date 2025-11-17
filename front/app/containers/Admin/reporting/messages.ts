@@ -13,10 +13,7 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.helmetDescription',
     defaultMessage: 'Admin reporting page',
   },
-  reportHeader: {
-    id: 'app.containers.Admin.reporting.reportHeader',
-    defaultMessage: 'Report header',
-  },
+
   printPrepare: {
     id: 'app.containers.Admin.reporting.printPrepare',
     defaultMessage: 'Preparing to print...',
@@ -26,14 +23,7 @@ export default defineMessages({
     defaultMessage:
       'Creating a custom report is not part of your current license. Reach out to your GovSuccess Manager to learn more about it.',
   },
-  tabReports: {
-    id: 'app.containers.Admin.Insights.tabReports',
-    defaultMessage: 'Reports',
-  },
-  deprecated: {
-    id: 'app.containers.Admin.reporting.deprecated',
-    defaultMessage: 'DEPRECATED',
-  },
+
   warningBanner: {
     id: 'app.containers.Admin.reporting.warningBanner3',
     defaultMessage:

@@ -40,10 +40,7 @@ export default defineMessages({
     id: 'app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip2',
     defaultMessage: 'Default statuses cannot be deleted.',
   },
-  lockedStatusTooltip: {
-    id: 'app.containers.admin.ideaStatuses.all.lockedStatusTooltip',
-    defaultMessage: 'This status cannot be deleted or moved.',
-  },
+
   pricingPlanUpgrade: {
     id: 'app.containers.admin.ideaStatuses.all.pricingPlanUpgrade',
     defaultMessage:

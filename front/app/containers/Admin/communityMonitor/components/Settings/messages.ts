@@ -5,10 +5,7 @@ export default defineMessages({
     id: 'app.containers.Admin.communityMonitor.settings.settings',
     defaultMessage: 'Settings',
   },
-  userAnonymityLabelMain: {
-    id: 'app.containers.Admin.communityMonitor.settings.userAnonymityLabelMain',
-    defaultMessage: 'Anonymize all user data',
-  },
+
   userAnonymityLabelTooltip: {
     id: 'app.containers.Admin.communityMonitor.settings.userAnonymityLabelTooltip',
     defaultMessage:
@@ -32,11 +29,7 @@ export default defineMessages({
     defaultMessage:
       'Managers can edit the Community Monitor survey & permissions, see response data and create reports.',
   },
-  communityMonitorManagerTooltip: {
-    id: 'app.containers.Admin.communityMonitor.settings.communityMonitorManagerTooltip',
-    defaultMessage:
-      'Community Monitor Managers can access and manage all Community Monitor settings and data.',
-  },
+
   surveySettings: {
     id: 'app.containers.Admin.communityMonitor.settings.surveySettings3',
     defaultMessage: 'General settings',

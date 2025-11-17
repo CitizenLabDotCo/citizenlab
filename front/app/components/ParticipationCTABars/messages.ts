@@ -29,10 +29,7 @@ export default defineMessages({
     id: 'app.components.ParticipationCTABars.addInput',
     defaultMessage: 'Add input',
   },
-  allocateBudget: {
-    id: 'app.components.ParticipationCTABars.allocateBudget',
-    defaultMessage: 'Allocate your budget',
-  },
+
   volunteer: {
     id: 'app.components.ParticipationCTABars.volunteer',
     defaultMessage: 'Volunteer',

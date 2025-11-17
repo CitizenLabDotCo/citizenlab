@@ -5,26 +5,12 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.titleRequired',
     defaultMessage: 'The title is required',
   },
-  titleMinLength: {
-    id: 'app.components.CustomFieldsForm.titleMinLength',
-    defaultMessage: 'The title must be at least {min} characters long',
-  },
-  titleMaxLength: {
-    id: 'app.components.CustomFieldsForm.titleMaxLength',
-    defaultMessage: 'The title must be at most {max} characters long',
-  },
+
   descriptionRequired: {
     id: 'app.components.CustomFieldsForm.descriptionRequired',
     defaultMessage: 'The description is required',
   },
-  descriptionMinLength: {
-    id: 'app.components.CustomFieldsForm.descriptionMinLength',
-    defaultMessage: 'The description must be at least {min} characters long',
-  },
-  descriptionMaxLength: {
-    id: 'app.components.CustomFieldsForm.descriptionMaxLength',
-    defaultMessage: 'The description must be at most {max} characters long',
-  },
+
   fieldMinLength: {
     id: 'app.components.CustomFieldsForm.fieldMinLength',
     defaultMessage:
@@ -65,10 +51,7 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.progressBarLabel',
     defaultMessage: 'Progress',
   },
-  selectMany: {
-    id: 'app.components.CustomFieldsForm.selectMany',
-    defaultMessage: '*Choose as many as you like',
-  },
+
   adminFieldTooltip: {
     id: 'app.components.CustomFieldsForm.adminFieldTooltip',
     defaultMessage: 'Field only visible to admins',
@@ -91,11 +74,7 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.selectAsManyAsYouLike',
     defaultMessage: '*Select as many as you like',
   },
-  validCordinatesTooltip: {
-    id: 'app.components.CustomFieldsForm.validCordinatesTooltip2',
-    defaultMessage:
-      "If the location is not displayed among the options as you type, you can add valid coordinates in the format 'latitude, longitude' to specify a precise location (eg: -33.019808, -71.495676).",
-  },
+
   typeYourAnswer: {
     id: 'app.components.CustomFieldsForm.typeYourAnswer',
     defaultMessage: 'Type your answer',
@@ -148,10 +127,7 @@ export default defineMessages({
     defaultMessage:
       'Click on the map to draw. Then, drag on points to move them.',
   },
-  minimumCoordinates: {
-    id: 'app.components.CustomFieldsForm.minimumCoordinates2',
-    defaultMessage: 'A minimum of {numPoints} map points is required.',
-  },
+
   addressInputAriaLabel: {
     id: 'app.components.CustomFieldsForm.addressInputAriaLabel',
     defaultMessage: 'Address input',
@@ -192,10 +168,7 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.atLeastThreePointsRequired',
     defaultMessage: 'At least three points are required for a polygon.',
   },
-  fileSizeLimit: {
-    id: 'app.components.CustomFieldsForm.fileSizeLimit',
-    defaultMessage: 'The file size limit is {maxFileSize} MB.',
-  },
+
   otherArea: {
     id: 'app.components.CustomFieldsForm.otherArea',
     defaultMessage: 'Somewhere else',
@@ -209,11 +182,7 @@ export default defineMessages({
     id: 'app.components.form.controls.allStatementsError',
     defaultMessage: 'An answer must be selected for all statements.',
   },
-  submitApiError: {
-    id: 'app.components.form.submitApiError',
-    defaultMessage:
-      'There was an issue submitting the form. Please check for any errors and try again.',
-  },
+
   submit: {
     id: 'app.components.form.submit',
     defaultMessage: 'Submit',
@@ -222,23 +191,12 @@ export default defineMessages({
     id: 'app.components.form.error',
     defaultMessage: 'Error',
   },
-  locationGoogleUnavailable: {
-    id: 'app.components.form.locationGoogleUnavailable',
-    defaultMessage: "Couldn't load location field provided by google maps.",
-  },
+
   guidelinesLinkText: {
     id: 'app.components.form.ErrorDisplay.guidelinesLinkText',
     defaultMessage: 'our guidelines',
   },
-  userPickerPlaceholder: {
-    id: 'app.components.form.ErrorDisplay.userPickerPlaceholder',
-    defaultMessage: 'Start typing to search by user email or name...',
-  },
-  verifiedBlocked: {
-    id: 'app.components.form.verifiedBlocked',
-    defaultMessage:
-      "You can't edit this field because it contains verified information",
-  },
+
   previous: {
     id: 'app.components.form.ErrorDisplay.previous',
     defaultMessage: 'Previous',
@@ -283,10 +241,7 @@ export default defineMessages({
     id: 'app.utils.IdeasNewPage.viewYourQuestion',
     defaultMessage: 'View your question',
   },
-  viewYourComment: {
-    id: 'app.utils.IdeasNewPage.viewYourComment',
-    defaultMessage: 'View your comment',
-  },
+
   viewYourProposal: {
     id: 'app.utils.IdeasNewPage.viewYourProposal',
     defaultMessage: 'View your proposal',
@@ -339,10 +294,7 @@ export default defineMessages({
     id: 'app.components.form.controls.rankingInstructions',
     defaultMessage: 'Drag and drop to rank options.',
   },
-  optionalParentheses: {
-    id: 'app.components.form.controls.optionalParentheses',
-    defaultMessage: '(optional)',
-  },
+
   birthyearTooHigh: {
     id: 'app.components.form.controls.birthyearTooHigh',
     defaultMessage: 'Birth year cannot be in the future',

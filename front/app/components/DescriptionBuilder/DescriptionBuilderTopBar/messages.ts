@@ -9,10 +9,7 @@ export default defineMessages({
     id: 'app.containers.ContentBuilder.PageTitleFolder',
     defaultMessage: 'Folder description',
   },
-  viewPublicProject: {
-    id: 'app.containers.AdminPage.ProjectDescription.viewPublicProject',
-    defaultMessage: 'View project',
-  },
+
   saveError: {
     id: 'app.containers.AdminPage.ProjectDescription.saveError',
     defaultMessage:

@@ -6,10 +6,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  loading: {
-    id: 'app.containers.NotificationMenu.loading',
-    defaultMessage: 'Loading notifications...',
-  },
   error: {
     id: 'app.containers.NotificationMenu.error',
     defaultMessage: "Couldn't load notifications",
@@ -147,10 +143,7 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.statusChangedOnIdeaYouFollow',
     defaultMessage: '{ideaTitle} status has changed to {status}',
   },
-  thresholdReachedForAdmin: {
-    id: 'app.containers.NotificationMenu.thresholdReachedForAdmin',
-    defaultMessage: '{post} reached the voting threshold',
-  },
+
   userAcceptedYourInvitation: {
     id: 'app.containers.NotificationMenu.userAcceptedYourInvitation',
     defaultMessage: '{name} accepted your invitation',
@@ -173,10 +166,7 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.adminRightsReceived',
     defaultMessage: "You're now an administrator of the platform",
   },
-  notificationsLabel: {
-    id: 'app.containers.NotificationMenu.notificationsLabel',
-    defaultMessage: 'Notifications',
-  },
+
   a11y_notificationsLabel: {
     id: 'app.containers.NotificationMenu.a11y_notificationsLabel',
     defaultMessage:

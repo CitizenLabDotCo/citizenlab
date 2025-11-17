@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  emailRequired: {
-    id: 'app.containers.ChangeEmail.emailRequired',
-    defaultMessage: 'Please enter an email address.',
-  },
   helmetTitle: {
     id: 'app.containers.ChangeEmail.helmetTitle',
     defaultMessage: 'Change your email',

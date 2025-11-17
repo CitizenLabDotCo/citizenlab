@@ -18,11 +18,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectIdeaForm.editInputForm',
     defaultMessage: 'Edit input form',
   },
-  postDescription: {
-    id: 'app.containers.AdminPage.ProjectIdeaForm.postDescription',
-    defaultMessage:
-      'Specify what information should be provided, add short descriptions or instructions to guide participant responses and specify whether each field is optional or required',
-  },
+
   save: {
     id: 'app.containers.AdminPage.ProjectIdeaForm.save',
     defaultMessage: 'Save',
@@ -43,14 +39,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectIdeaForm.descriptionLabel',
     defaultMessage: 'Field description',
   },
-  collapseAll: {
-    id: 'app.containers.AdminPage.ProjectIdeaForm.collapseAll',
-    defaultMessage: 'Collapse all fields',
-  },
-  expandAll: {
-    id: 'app.containers.AdminPage.ProjectIdeaForm.expandAll',
-    defaultMessage: 'Expand all fields',
-  },
+
   enabled: {
     id: 'app.containers.AdminPage.ProjectIdeaForm.enabled',
     defaultMessage: 'Enabled',
@@ -59,14 +48,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectIdeaForm.required',
     defaultMessage: 'Required',
   },
-  enabledTooltipContent: {
-    id: 'app.containers.AdminPage.ProjectIdeaForm.enabledTooltipContent',
-    defaultMessage: 'Include this field.',
-  },
-  requiredTooltipContent: {
-    id: 'app.containers.AdminPage.ProjectIdeaForm.requiredTooltipContent',
-    defaultMessage: 'Require this field to be filled in.',
-  },
+
   successMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.successMessage',
     defaultMessage: 'Form successfully saved',

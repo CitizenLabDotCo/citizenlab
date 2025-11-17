@@ -64,10 +64,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.optionsFormHeader1',
     defaultMessage: 'Manage answer options for: {questionTitle}',
   },
-  editOptionSave: {
-    id: 'app.containers.AdminPage.ProjectEdit.PollTab.editOptionSave1',
-    defaultMessage: 'Save answer options',
-  },
+
   cancelEditAnswerOptions: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.cancelEditAnswerOptions',
     defaultMessage: 'Cancel',

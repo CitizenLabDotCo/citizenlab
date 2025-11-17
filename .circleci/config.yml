@@ -479,6 +479,25 @@ jobs:
           key: v2-npm-cache-{{ checksum "package-lock.json" }}
       - run: npm run dependency-cruiser
 
+  front-i18n-check-unused:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    working_directory: ~/citizenlab/front
+    steps:
+      - shallow-clone
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v2-npm-cache-{{ checksum "package-lock.json" }}
+      - <<: *install-front-dependencies
+      - save_cache:
+          paths:
+            - /root/.npm
+          key: v2-npm-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: Check for unused translations
+          command: npm run find-unused-translations
+
   front-lint:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
@@ -1140,6 +1159,13 @@ workflows:
                 - crowdin_master
                 - /l10n_.*/
       - front-dependency-cruiser:
+          context: citizenlab-ee-environment
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+      - front-i18n-check-unused:
           context: citizenlab-ee-environment
           filters:
             branches:

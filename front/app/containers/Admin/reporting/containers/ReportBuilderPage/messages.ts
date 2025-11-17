@@ -5,11 +5,7 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.createAReport',
     defaultMessage: 'Create a report',
   },
-  createReportDescription: {
-    id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.createReportDescription',
-    defaultMessage:
-      'Customise your report and share it with internal stakeholders or community with a web link.',
-  },
+
   searchReports: {
     id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.searchReports',
     defaultMessage: 'Search reports',
