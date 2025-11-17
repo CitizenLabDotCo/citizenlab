@@ -55,10 +55,7 @@ const transformField = (
 
     // Calculate population percentage if available
     let population_percentage: number | undefined;
-    if (
-      field.population_distribution &&
-      field.population_distribution[key] !== undefined
-    ) {
+    if (field.population_distribution?.[key] !== undefined) {
       const popCount = field.population_distribution[key];
       population_percentage =
         populationTotal > 0 ? (popCount / populationTotal) * 100 : 0;
@@ -86,7 +83,7 @@ const transformField = (
 
   // Remove ordering from final output
   const data_points: DemographicDataPoint[] = sortedDataPoints.map(
-    ({ ordering, ...rest }) => rest
+    ({ ordering: _ordering, ...rest }) => rest
   );
 
   // Get localized field name

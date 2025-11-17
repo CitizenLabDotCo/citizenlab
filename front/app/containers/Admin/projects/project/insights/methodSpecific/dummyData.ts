@@ -251,28 +251,25 @@ const generateDemographicBreakdown = (
     };
   }
 
-  if (type === 'location') {
-    // Urban areas more progressive
-    return {
-      downtown: {
-        up: Math.round(votes.up * 0.52),
-        down: Math.round(votes.down * 0.38),
-        neutral: Math.round(votes.neutral * 0.45),
-      },
-      suburbs: {
-        up: Math.round(votes.up * 0.36),
-        down: Math.round(votes.down * 0.48),
-        neutral: Math.round(votes.neutral * 0.42),
-      },
-      rural: {
-        up: Math.round(votes.up * 0.12),
-        down: Math.round(votes.down * 0.14),
-        neutral: Math.round(votes.neutral * 0.13),
-      },
-    };
-  }
-
-  return {};
+  // type === 'location'
+  // Urban areas more progressive
+  return {
+    downtown: {
+      up: Math.round(votes.up * 0.52),
+      down: Math.round(votes.down * 0.38),
+      neutral: Math.round(votes.neutral * 0.45),
+    },
+    suburbs: {
+      up: Math.round(votes.up * 0.36),
+      down: Math.round(votes.down * 0.48),
+      neutral: Math.round(votes.neutral * 0.42),
+    },
+    rural: {
+      up: Math.round(votes.up * 0.12),
+      down: Math.round(votes.down * 0.14),
+      neutral: Math.round(votes.neutral * 0.13),
+    },
+  };
 };
 
 export const dummyCommonGroundResults = {
