@@ -827,7 +827,7 @@
   "app.components.formBuilder.limitAnswersTooltip": "Cuando está activado, los encuestados tienen que seleccionar el número especificado de respuestas para continuar.",
   "app.components.formBuilder.limitNumberAnswers": "Limitar el número de respuestas",
   "app.components.formBuilder.limitNumberTags": "Limitar el número de etiquetas",
-  "app.components.formBuilder.limitNumberTagsTooltip": "Cuando está activado, los encuestados tienen que seleccionar el número especificado de etiquetas para continuar.",
+  "app.components.formBuilder.limitNumberTagsTooltip": "Cuando está activado, los participantes tienen que seleccionar el número especificado de etiquetas para continuar.",
   "app.components.formBuilder.linePolygonMapWarning2": "El dibujo de líneas y polígonos puede no cumplir las normas de accesibilidad. Puedes encontrar más información en {accessibilityStatement}.",
   "app.components.formBuilder.linearScale": "Escala lineal",
   "app.components.formBuilder.locationDescription": "Ubicación",
