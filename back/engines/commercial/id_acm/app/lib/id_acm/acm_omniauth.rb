@@ -31,7 +31,7 @@ module IdAcm
     end
 
     def email_always_present?
-      false
+      true
     end
 
     def verification_prioritized?
@@ -39,7 +39,7 @@ module IdAcm
     end
 
     def email_confirmed?(_auth)
-      false
+      true
     end
 
     def filter_auth_to_persist(auth)

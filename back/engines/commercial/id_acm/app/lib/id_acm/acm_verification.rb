@@ -86,22 +86,16 @@ module IdAcm
     def validate_citizen!(rrn)
       api = IdOostendeRrn::WijkBudgetApi.new(api_key: config[:api_key], environment: config[:environment])
       response = api.verificatie(rrn)
-
       raise RuntimeError(response) unless response.success?
 
       body = response.parsed_response
       reason = body.dig('verificatieResultaat', 'redenNietGeldig')
-
-      binding.pry
-
       raise Verification::VerificationService::NoMatchError if reason&.include? 'ERR10'
       raise Verification::VerificationService::NotEntitledError, 'lives_outside' if reason&.include? 'ERR11'
       raise Verification::VerificationService::NotEntitledError, 'too_young' if reason&.include? 'ERR12'
-
       raise Verification::VerificationService::NoMatchError unless body.dig('verificatieResultaat', 'geldig')
 
-      { uid: rrn }
+      true
     end
-
   end
 end

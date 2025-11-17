@@ -20,7 +20,7 @@
 #  index_project_folders_folders_on_slug  (slug)
 #
 module ProjectFolders
-  class Folder < ::ApplicationRecord
+  class Folder < ::ApplicFolderationRecord
     self.table_name = 'project_folders_folders'
     include Files::FileAttachable
     include PgSearch::Model
