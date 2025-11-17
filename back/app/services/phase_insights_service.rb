@@ -70,7 +70,7 @@ class PhaseInsightsService
 
   def ideas_data(phase)
     # Use raw SQL to avoid ActiveRecord's implicit ordering issues
-    sql = <<~SQL
+    sql = <<~SQL.squish
       SELECT 
         COUNT(DISTINCT ideas.id) as ideas_count,
         COUNT(DISTINCT comments.id) as comments_count,
