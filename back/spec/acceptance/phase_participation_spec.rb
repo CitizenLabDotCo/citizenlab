@@ -67,6 +67,10 @@ resource 'Phase participation' do
     let!(:user5) { create(:user, custom_field_values: { gender: 'female', birthyear: 1980 }) }
     let!(:user6) { create(:user, custom_field_values: { gender: 'male', birthyear: 1990 }) }
 
+    # We respond with count of unique participants in last_7_days.
+    # We do not count the number of NEW participants in the last 7 days.
+    # Thus, user2 who participated before the last 7 days AND in last 7 days is also counted,
+    # and this is modelled in the test data to document this behavior.
     let!(:comment1) { create(:comment, idea: idea1, author: user1, created_at: 25.days.ago) } # before voting phase (not counted)
     let!(:comment2) { create(:comment, idea: idea2, author: user2, created_at: 13.days.ago) } # in voting phase
     let!(:comment3) { create(:comment, idea: idea3, author: user2, created_at: 5.days.ago) } # in voting phase & last 7 days
@@ -95,7 +99,7 @@ resource 'Phase participation' do
           engagement_rate: 0,
           participations: 8,
           visitors_last_7_days: 0,
-          new_participants_last_7_days: 2,
+          participants_last_7_days: 4,
           participations_last_7_days: 5
         })
       end

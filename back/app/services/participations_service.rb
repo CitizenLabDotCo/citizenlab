@@ -94,8 +94,7 @@ class ParticipationsService
   def phase_metrics_data(phase, participations, participant_ids)
     visitors_data = phase_visitors_data(phase)
     total_participant_count = participant_ids.count
-    participants_before_7_days_count = participations.select { |p| p[:acted_at] < 7.days.ago }.pluck(:user_id).uniq.count
-    participants_change_last_7_days = total_participant_count - participants_before_7_days_count
+    participants_last_7_days_count = participations.select { |p| p[:acted_at] >= 7.days.ago }.pluck(:user_id).uniq.count
 
     {
       metrics: {
@@ -104,7 +103,7 @@ class ParticipationsService
         engagement_rate: visitors_data[:total] > 0 ? (total_participant_count.to_f / visitors_data[:total]).round(3) : 0,
         participations: participations.count,
         visitors_last_7_days: visitors_data[:last_7_days],
-        new_participants_last_7_days: participants_change_last_7_days,
+        participants_last_7_days: participants_last_7_days_count,
         participations_last_7_days: participations.count { |p| p[:acted_at] >= 7.days.ago }
       }
     }
