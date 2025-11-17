@@ -185,7 +185,6 @@
   "app.components.CustomFieldsForm.titleMaxLength": "Pavadinimas turi būti ne ilgesnis kaip {max} simbolių.",
   "app.components.CustomFieldsForm.titleMinLength": "Pavadinimas turi būti ne trumpesnis nei {min} simbolių.",
   "app.components.CustomFieldsForm.titleRequired": "Reikia nurodyti pavadinimą",
-  "app.components.CustomFieldsForm.topicRequired": "Būtina bent viena žyma",
   "app.components.CustomFieldsForm.typeYourAnswer": "Įveskite atsakymą",
   "app.components.CustomFieldsForm.typeYourAnswerRequired": "Būtina įvesti atsakymą",
   "app.components.CustomFieldsForm.uploadShapefileInstructions": "* Įkelkite zip failą, kuriame yra vienas ar daugiau shape failų.",

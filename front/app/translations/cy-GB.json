@@ -185,7 +185,6 @@
   "app.components.CustomFieldsForm.titleMaxLength": "Rhaid i'r teitl fod ar y mwyaf {max} nod o hyd",
   "app.components.CustomFieldsForm.titleMinLength": "Rhaid i'r teitl fod o leiaf {min} nod o hyd",
   "app.components.CustomFieldsForm.titleRequired": "Mae'r teitl yn ofynnol",
-  "app.components.CustomFieldsForm.topicRequired": "Mae angen o leiaf un tag",
   "app.components.CustomFieldsForm.typeYourAnswer": "Teipiwch eich ateb",
   "app.components.CustomFieldsForm.typeYourAnswerRequired": "Mae'n ofynnol teipio'ch ateb",
   "app.components.CustomFieldsForm.uploadShapefileInstructions": "* Llwythwch ffeil zip i fyny sy'n cynnwys un neu fwy o ffeiliau siâp.",

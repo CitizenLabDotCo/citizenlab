@@ -44,8 +44,18 @@ export default defineMessages({
     defaultMessage: 'At least one attachment is required',
   },
   topicRequired: {
-    id: 'app.components.CustomFieldsForm.topicRequired',
-    defaultMessage: 'At least one tag is required',
+    id: 'app.components.CustomFieldsForm.tagsRequired',
+    defaultMessage: 'Selecting a tag is required',
+  },
+  topicMaximum: {
+    id: 'app.components.CustomFieldsForm.topicMaximumItems',
+    defaultMessage:
+      'At most {maxSelections, plural, one {# tag} other {# tags}} can be selected',
+  },
+  topicMinimum: {
+    id: 'app.components.CustomFieldsForm.topicMinimumItems',
+    defaultMessage:
+      'At least {minSelections, plural, one {# tag} other {# tags}} should be selected',
   },
   fieldRequired: {
     id: 'app.components.CustomFieldsForm.fieldRequired',

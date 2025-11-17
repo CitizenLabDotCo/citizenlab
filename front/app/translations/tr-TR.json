@@ -185,7 +185,6 @@
   "app.components.CustomFieldsForm.titleMaxLength": "Başlık en fazla {max} karakter uzunluğunda olmalıdır",
   "app.components.CustomFieldsForm.titleMinLength": "Başlık en az {min} karakter uzunluğunda olmalıdır",
   "app.components.CustomFieldsForm.titleRequired": "Başlık gereklidir",
-  "app.components.CustomFieldsForm.topicRequired": "En az bir etiket gereklidir",
   "app.components.CustomFieldsForm.typeYourAnswer": "Cevabınızı yazın",
   "app.components.CustomFieldsForm.typeYourAnswerRequired": "Cevabınızı yazmanız gerekmektedir",
   "app.components.CustomFieldsForm.uploadShapefileInstructions": "* Bir veya daha fazla shapefile içeren bir zip dosyası yükleyin.",

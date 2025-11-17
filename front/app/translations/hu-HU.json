@@ -185,7 +185,6 @@
   "app.components.CustomFieldsForm.titleMaxLength": "A cím legfeljebb {max} karakter hosszú lehet.",
   "app.components.CustomFieldsForm.titleMinLength": "A címnek legalább {min} karakter hosszúnak kell lennie",
   "app.components.CustomFieldsForm.titleRequired": "A cím megadása kötelező",
-  "app.components.CustomFieldsForm.topicRequired": "Legalább egy címke megadása kötelező",
   "app.components.CustomFieldsForm.typeYourAnswer": "Írd be a válaszod",
   "app.components.CustomFieldsForm.typeYourAnswerRequired": "Kötelező beírni a választ",
   "app.components.CustomFieldsForm.uploadShapefileInstructions": "* Töltsön fel egy zip fájlt, amely egy vagy több shapefájlt tartalmaz.",
