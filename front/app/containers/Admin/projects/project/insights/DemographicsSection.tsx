@@ -9,16 +9,19 @@ import { IPhaseData } from 'api/phases/types';
 
 import useLocale from 'hooks/useLocale';
 
+import ComparisonBarChart from 'components/admin/Graphs/ComparisonBarChart';
 import {
   tabLineHeight,
   tabPadding,
   tabBorderSize,
   activeBorderSize,
 } from 'components/admin/NavigationTabs/tabsStyleConstants';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 import { useIntl } from 'utils/cl-intl';
 
-import QuestionCard from './audience/QuestionCard';
+import RScore from './audience/RScore';
+import { toChartData, toExcelData } from './audience/utils';
 import messages from './messages';
 
 // Styled components reusing NavigationTabs constants and styles
@@ -171,7 +174,66 @@ const DemographicsSection = ({ phase }: Props) => {
       <Box display="flex" gap="40px">
         {/* Left side: Chart (60% width) */}
         <Box flexGrow={1} minWidth="0">
-          <QuestionCard field={selectedField} showRepresentativeness={true} />
+          {/* Field name and download button */}
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            mb="8px"
+          >
+            <Text fontSize="l" fontWeight="bold" m="0px">
+              {selectedField.field_name}
+            </Text>
+            <ReportExportMenu
+              name={selectedField.field_name}
+              xlsx={{ data: toExcelData(selectedField) }}
+            />
+          </Box>
+
+          {/* R.Score */}
+          {selectedField.r_score !== undefined && (
+            <Box mb="8px">
+              <RScore value={selectedField.r_score} />
+            </Box>
+          )}
+
+          {/* Legend */}
+          <Box display="flex" gap="24px" mb="12px">
+            <Box display="flex" gap="8px" alignItems="center">
+              <Box
+                width="8px"
+                height="8px"
+                borderRadius="50%"
+                background="#2f478a"
+              />
+              <Text fontSize="s" color="coolGrey700" m="0px">
+                {formatMessage(messages.participants)}
+              </Text>
+            </Box>
+            <Box display="flex" gap="8px" alignItems="center">
+              <Box
+                width="8px"
+                height="8px"
+                borderRadius="50%"
+                background="#40b8c5"
+              />
+              <Text fontSize="s" color="coolGrey700" m="0px">
+                {formatMessage(messages.totalPopulation)}
+              </Text>
+            </Box>
+          </Box>
+
+          {/* Chart */}
+          <ComparisonBarChart
+            data={toChartData(selectedField)}
+            mapping={{
+              category: 'category',
+              primaryValue: 'participants',
+              comparisonValue: 'population',
+            }}
+            primaryColor="#2f478a"
+            comparisonColor="#40b8c5"
+          />
         </Box>
 
         {/* Right side: Placeholder for Auto Insights (35% width) */}
