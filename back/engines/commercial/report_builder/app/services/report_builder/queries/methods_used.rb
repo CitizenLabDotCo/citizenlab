@@ -27,7 +27,7 @@ module ReportBuilder
       json_response
     end
 
-    def get_methods_used_in_overlapping_phases(start_date, end_date, publication_statuses = nil)
+    def get_methods_used_in_overlapping_phases(start_date, end_date, publication_statuses)
       non_overlapping_phase_ids = Phase.where('end_at <= ? OR start_at >= ?', start_date, end_date).select(:id)
 
       query = Phase
