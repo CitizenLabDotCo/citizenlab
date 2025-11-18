@@ -35,7 +35,7 @@ export const ProjectPublicationStatus = () => {
       <Select
         label={formatMessage(messages.projectPublicationStatusLabel)}
         onChange={handleProjectPublicationStatusFilter}
-        value={projectPublicationStatus ?? undefined}
+        value={projectPublicationStatus}
         options={options}
         canBeEmpty
       />
