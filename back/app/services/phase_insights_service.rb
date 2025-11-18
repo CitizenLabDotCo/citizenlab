@@ -50,7 +50,7 @@ class PhaseInsightsService
   def participation_method_metrics(phase, participations)
     case phase.participation_method
     when 'voting'
-      voting_data(phase, participations).merge(ideas_data(phase))
+      voting_data(phase, participations)
     else
       {}
     end
@@ -70,35 +70,45 @@ class PhaseInsightsService
       votes_last_7_days: online_votes_last_7_days,
       offline_votes: offline_votes,
       voters: voters,
-      voters_last_7_days: voters_last_7_days
+      voters_last_7_days: voters_last_7_days,
+      ideas: associated_ideas_count(phase),
+      comments: phase_comments(participations)
     }
+  end
+
+  def associated_ideas_count(phase)
+    phase.ideas.where(publication_status: 'published').count
+  end
+
+  def phase_comments(participations)
+    participations[:commenting_idea].count
   end
 
   # TODO: Add last_7_days variants
   # Needs rethinking. e.g. comments for voting phase should probably only count comments posted during that phase
-  def ideas_data(phase)
-    # Use raw SQL to avoid ActiveRecord's implicit ordering issues
-    sql = <<~SQL.squish
-      SELECT 
-        COUNT(DISTINCT ideas.id) as ideas_count,
-        COUNT(DISTINCT comments.id) as comments_count,
-        COUNT(DISTINCT reactions.id) as reactions_count
-      FROM ideas
-      INNER JOIN ideas_phases ON ideas_phases.idea_id = ideas.id
-      LEFT JOIN comments ON comments.idea_id = ideas.id
-      LEFT JOIN reactions ON reactions.reactable_id = ideas.id AND reactions.reactable_type = 'Idea'
-      WHERE ideas_phases.phase_id = $1 
-        AND ideas.publication_status = 'published'
-    SQL
+  # def ideas_data(phase)
+  #   # Use raw SQL to avoid ActiveRecord's implicit ordering issues
+  #   sql = <<~SQL.squish
+  #     SELECT 
+  #       COUNT(DISTINCT ideas.id) as ideas_count,
+  #       COUNT(DISTINCT comments.id) as comments_count,
+  #       COUNT(DISTINCT reactions.id) as reactions_count
+  #     FROM ideas
+  #     INNER JOIN ideas_phases ON ideas_phases.idea_id = ideas.id
+  #     LEFT JOIN comments ON comments.idea_id = ideas.id
+  #     LEFT JOIN reactions ON reactions.reactable_id = ideas.id AND reactions.reactable_type = 'Idea'
+  #     WHERE ideas_phases.phase_id = $1 
+  #       AND ideas.publication_status = 'published'
+  #   SQL
 
-    result = ActiveRecord::Base.connection.exec_query(sql, 'ideas_data', [phase.id]).first
+  #   result = ActiveRecord::Base.connection.exec_query(sql, 'ideas_data', [phase.id]).first
 
-    {
-      inputs: result['ideas_count'],
-      comments: result['comments_count'],
-      reactions: result['reactions_count']
-    }
-  end
+  #   {
+  #     inputs: result['ideas_count'],
+  #     comments: result['comments_count'],
+  #     reactions: result['reactions_count']
+  #   }
+  # end
 
   def demographics_data(phase, participations, participant_ids)
     participant_custom_field_values = participants_custom_field_values(participations, participant_ids)
