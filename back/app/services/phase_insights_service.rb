@@ -41,13 +41,15 @@ class PhaseInsightsService
       participations_last_7_days: flattened_participations.count { |p| p[:acted_at] >= 7.days.ago }
     }
 
-    participation_method_specific_metrics = participation_method_specific_metrics(phase, participations)
+    participation_method_metrics = {
+      phase.participation_method => participation_method_metrics(phase, participations)
+    }
 
-    { metrics: base_metrics.merge(participation_method_specific_metrics) }
+    { metrics: base_metrics.merge(participation_method_metrics) }
   end
 
   # TBD to cover the different needs for different participation methods
-  def participation_method_specific_metrics(phase, participations)
+  def participation_method_metrics(phase, participations)
     case phase.participation_method
     when 'voting'
       voting_data(participations).merge(ideas_data(phase))
