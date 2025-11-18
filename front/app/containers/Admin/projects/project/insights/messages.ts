@@ -114,4 +114,20 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.communityRepresentativeness',
     defaultMessage: 'Community representativeness',
   },
+  representativeScore: {
+    id: 'app.containers.Admin.projects.project.insights.representativeScore',
+    defaultMessage: 'Representative score',
+  },
+  totalPopulation: {
+    id: 'app.containers.Admin.projects.project.insights.totalPopulation',
+    defaultMessage: 'Total population',
+  },
+  loading: {
+    id: 'app.containers.Admin.projects.project.insights.loading',
+    defaultMessage: 'Loading...',
+  },
+  errorLoadingCommonGround: {
+    id: 'app.containers.Admin.projects.project.insights.errorLoadingCommonGround',
+    defaultMessage: 'Error loading Common Ground results',
+  },
 });
