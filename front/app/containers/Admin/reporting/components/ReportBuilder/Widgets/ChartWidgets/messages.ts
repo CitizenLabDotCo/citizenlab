@@ -67,4 +67,30 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.youNeedToSelectADateRange',
     defaultMessage: 'You need to select a date range first.',
   },
+  analyticsChartAriaLabel: {
+    id: 'app.containers.admin.ReportBuilder.charts.analyticsChartAriaLabel',
+    defaultMessage: 'Label',
+  },
+  analyticsChartDescription: {
+    id: 'app.containers.admin.ReportBuilder.charts.analyticsChartDescription',
+    defaultMessage: 'Description',
+  },
+  accessibility: {
+    id: 'app.containers.admin.ReportBuilder.charts.accessibility',
+    defaultMessage: 'Accessibility',
+  },
+  analyticsChartAriaLabelTooltip: {
+    id: 'app.containers.admin.ReportBuilder.charts.analyticsChartAriaLabelTooltip',
+    defaultMessage:
+      'Provide a label that describes the chart for screen reader users.',
+  },
+  analyticsChartDescriptionTooltip: {
+    id: 'app.containers.admin.ReportBuilder.charts.analyticsChartDescriptionTooltip',
+    defaultMessage:
+      'Provide a more detailed description of the chart for screen reader users.',
+  },
+  description: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.description',
+    defaultMessage: 'Description:',
+  },
 });

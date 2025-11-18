@@ -19,6 +19,8 @@ const VisitorsCard = ({
   compareEndAt,
   resolution,
   hideStatistics,
+  ariaLabel,
+  description,
 }: Props) => {
   const { currentResolution, stats, timeSeries } = useVisitors({
     startAt,
@@ -42,6 +44,8 @@ const VisitorsCard = ({
     stats,
     currentResolution,
     hideStatistics,
+    ariaLabel,
+    description,
   };
 
   return layout === 'wide' ? <Wide {...props} /> : <Narrow {...props} />;

@@ -5,6 +5,7 @@ import { useNode } from '@craftjs/core';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { AccessibilityInputs } from '../_shared/AccessibilityInputs';
 import {
   TitleInput,
   DateRangeInput,
@@ -21,6 +22,7 @@ const Settings = () => {
       <DateRangeInput />
       <ProjectInput />
       <ViewInput />
+      <AccessibilityInputs />
     </Box>
   );
 };

@@ -7,9 +7,19 @@ import messages from './messages';
 import RegistrationsCard from './RegistrationsCard';
 import { Props } from './typings';
 
-const RegistrationsWidget = ({ title, ...props }: Props) => {
+const RegistrationsWidget = ({
+  title,
+  description,
+  ariaLabel,
+  ...props
+}: Props) => {
   return (
-    <Card title={title} pagebreak>
+    <Card
+      title={title}
+      description={description}
+      pagebreak
+      ariaLabel={ariaLabel}
+    >
       <RegistrationsCard {...props} />
     </Card>
   );
@@ -18,6 +28,8 @@ const RegistrationsWidget = ({ title, ...props }: Props) => {
 RegistrationsWidget.craft = {
   props: {
     title: {},
+    description: undefined,
+    ariaLabel: undefined,
     startAt: undefined,
     endAt: null,
     resolution: undefined,

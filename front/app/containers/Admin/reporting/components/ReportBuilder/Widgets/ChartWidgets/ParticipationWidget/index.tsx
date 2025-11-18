@@ -18,6 +18,8 @@ const ParticipationWidget = ({ title, ...props }: Props) => {
 ParticipationWidget.craft = {
   props: {
     title: {},
+    ariaLabel: undefined,
+    description: undefined,
     projectId: undefined,
     startAt: undefined,
     endAt: null,

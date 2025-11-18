@@ -19,6 +19,8 @@ import { Props } from './typings';
 
 const DemographicsWidget = ({
   title,
+  ariaLabel,
+  description,
   projectId,
   startAt,
   endAt,
@@ -49,7 +51,12 @@ const DemographicsWidget = ({
 
   if (layout === 'narrow') {
     return (
-      <Card pagebreak className="e2e-demographics-widget">
+      <Card
+        pagebreak
+        className="e2e-demographics-widget"
+        ariaLabel={ariaLabel}
+        description={description}
+      >
         <Title variant="h4" mt="1px">
           {localize(title)}
         </Title>
@@ -59,7 +66,12 @@ const DemographicsWidget = ({
   }
 
   return (
-    <Card pagebreak className="e2e-demographics-widget">
+    <Card
+      pagebreak
+      className="e2e-demographics-widget"
+      ariaLabel={ariaLabel}
+      description={description}
+    >
       <Box width="100%" pb="0px" display="flex">
         <Box w="300px" display="flex" flexDirection="column">
           <Title variant="h4" mt="1px" pr="16px">

@@ -18,6 +18,8 @@ const VisitorsWidget = ({ title, ...props }: Props) => {
 VisitorsWidget.craft = {
   props: {
     title: {},
+    ariaLabel: undefined,
+    description: undefined,
     startAt: undefined,
     endAt: undefined,
     projectId: undefined,
