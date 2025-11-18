@@ -27,14 +27,17 @@ module ReportBuilder
       json_response
     end
 
-    def get_methods_used_in_overlapping_phases(start_date, end_date, publication_statuses = nil)
+    def get_methods_used_in_overlapping_phases(start_date, end_date, publication_statuses)
       non_overlapping_phase_ids = Phase.where('end_at <= ? OR start_at >= ?', start_date, end_date).select(:id)
 
       query = Phase
-        .joins(project: :admin_publication)
+        .joins(:project)
         .where.not(id: non_overlapping_phase_ids)
 
-      query = query.where(admin_publication: { publication_status: publication_statuses }) if publication_statuses.present?
+      if publication_statuses.present?
+        query = query.joins(project: :admin_publication)
+                     .where(admin_publication: { publication_status: publication_statuses })
+      end
 
       query.group(:participation_method).count
     end
