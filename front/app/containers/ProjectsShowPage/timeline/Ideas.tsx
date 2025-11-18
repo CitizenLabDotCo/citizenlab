@@ -19,6 +19,9 @@ import IdeaListScrollAnchor from 'components/IdeaListScrollAnchor';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+
+import StickyNotesPile from './StickyNotesPile';
+
 interface InnerProps {
   projectId: string;
   phase: IPhaseData;
@@ -87,6 +90,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
       id="project-ideas"
       className={`e2e-timeline-project-idea-cards ${className || ''}`}
     >
+      <StickyNotesPile queryParameters={ideaQueryParameters} maxNotes={20} />
       {isVotingContext ? (
         <IdeaCardsWithoutFiltersSidebar
           defaultSortingMethod={ideaQueryParameters.sort}
