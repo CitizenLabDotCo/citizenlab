@@ -27,19 +27,18 @@ module ReportBuilder
       json_response
     end
 
-    def get_methods_used_in_overlapping_phases(start_date, end_date, publication_statuses)
+    def get_methods_used_in_overlapping_phases(start_date, end_date, publication_statuses = nil)
       non_overlapping_phase_ids = Phase.where('end_at <= ? OR start_at >= ?', start_date, end_date).select(:id)
 
       query = Phase
-        .joins(:project)
+        .joins(project: :admin_publication)
         .where.not(id: non_overlapping_phase_ids)
 
-      if publication_statuses.present?
-        query = query.joins(project: :admin_publication)
-                     .where(admin_publication: { publication_status: publication_statuses })
-      end
-
-      query.group(:participation_method).count
+      # Filter by publication status: specific statuses if provided, otherwise exclude drafts
+      publication_filter = publication_statuses.present? ? publication_statuses : %w[published archived]
+      query.where(admin_publication: { publication_status: publication_filter })
+           .group(:participation_method)
+           .count
     end
   end
 end
