@@ -23,7 +23,7 @@ class PhaseInsightsService
   end
 
   def metrics_data(phase, participations, participant_ids, visits_data)
-    base_metrics = base_metrics(phase, participations, participant_ids, visits_data)
+    base_metrics = base_metrics(participations, participant_ids, visits_data)
 
     participation_method_metrics = {
       phase.participation_method => participation_method_metrics(phase, participations)
@@ -32,7 +32,7 @@ class PhaseInsightsService
     { metrics: base_metrics.merge(participation_method_metrics) }
   end
 
-  def base_metrics(phase, participations, participant_ids, visits_data)
+  def base_metrics(participations, participant_ids, visits_data)
     total_participant_count = participant_ids.count
     flattened_participations = participations.values.flatten
     participants_last_7_days_count = flattened_participations.select { |p| p[:acted_at] >= 7.days.ago }.pluck(:user_id).uniq.count
