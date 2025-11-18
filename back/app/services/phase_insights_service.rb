@@ -58,6 +58,7 @@ class PhaseInsightsService
     end
   end
 
+  # TODO: Add last_7_days variants
   def voting_data(participations)
     voting_participations = participations[:voting]
 
@@ -72,6 +73,8 @@ class PhaseInsightsService
     }
   end
 
+  # TODO: Add last_7_days variants
+  # Needs rethinking. e.g. comments for voting phase should probably only count comments posted during that phase
   def ideas_data(phase)
     # Use raw SQL to avoid ActiveRecord's implicit ordering issues
     sql = <<~SQL.squish
