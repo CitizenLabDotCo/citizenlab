@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 
 import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import Warning from 'components/UI/Warning';
 
