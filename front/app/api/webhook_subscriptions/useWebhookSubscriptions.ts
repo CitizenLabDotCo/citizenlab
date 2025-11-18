@@ -4,12 +4,15 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import webhookSubscriptionKeys from './keys';
-import {
-  IWebhookSubscriptions,
-  WebhookSubscriptionKeys,
-} from './types';
+import { IWebhookSubscriptions, WebhookSubscriptionKeys } from './types';
 
-const fetchWebhookSubscriptions = ({ pageNumber, pageSize }: { pageNumber?: number; pageSize?: number }) =>
+const fetchWebhookSubscriptions = ({
+  pageNumber,
+  pageSize,
+}: {
+  pageNumber?: number;
+  pageSize?: number;
+}) =>
   fetcher<IWebhookSubscriptions>({
     path: '/webhook_subscriptions',
     action: 'get',
@@ -19,7 +22,9 @@ const fetchWebhookSubscriptions = ({ pageNumber, pageSize }: { pageNumber?: numb
     },
   });
 
-const useWebhookSubscriptions = (params: { pageNumber?: number; pageSize?: number } = {}) => {
+const useWebhookSubscriptions = (
+  params: { pageNumber?: number; pageSize?: number } = {}
+) => {
   return useQuery<
     IWebhookSubscriptions,
     CLErrors,

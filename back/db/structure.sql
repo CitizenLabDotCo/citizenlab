@@ -380,6 +380,8 @@ DROP INDEX IF EXISTS public.index_email_campaigns_campaign_email_commands_on_rec
 DROP INDEX IF EXISTS public.index_dismissals_on_campaign_name_and_user_id;
 DROP INDEX IF EXISTS public.index_custom_forms_on_participation_context;
 DROP INDEX IF EXISTS public.index_custom_fields_on_resource_type_and_resource_id;
+DROP INDEX IF EXISTS public.index_custom_fields_on_resource_id_and_ordering_unique;
+DROP INDEX IF EXISTS public.index_custom_fields_on_ordering;
 DROP INDEX IF EXISTS public.index_custom_field_options_on_custom_field_id_and_key;
 DROP INDEX IF EXISTS public.index_custom_field_options_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_custom_field_option_images_on_custom_field_option_id;
@@ -5309,6 +5311,20 @@ CREATE UNIQUE INDEX index_custom_field_options_on_custom_field_id_and_key ON pub
 
 
 --
+-- Name: index_custom_fields_on_ordering; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_custom_fields_on_ordering ON public.custom_fields USING btree (ordering) WHERE (resource_id IS NULL);
+
+
+--
+-- Name: index_custom_fields_on_resource_id_and_ordering_unique; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_custom_fields_on_resource_id_and_ordering_unique ON public.custom_fields USING btree (resource_id, ordering);
+
+
+--
 -- Name: index_custom_fields_on_resource_type_and_resource_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8027,6 +8043,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251029135211'),
 ('20251022100725'),
 ('20251022100724'),
 ('20251022100723'),

@@ -96,10 +96,6 @@ export default defineMessages({
     id: 'app.containers.Admin.tools.webhooks.pending',
     defaultMessage: 'pending',
   },
-  toggleEnabled: {
-    id: 'app.containers.Admin.tools.webhooks.toggleEnabled',
-    defaultMessage: 'Toggle enabled status',
-  },
   createdAt: {
     id: 'app.containers.Admin.tools.webhooks.createdAt',
     defaultMessage: 'Created',
@@ -140,10 +136,6 @@ export default defineMessages({
   webhookProject: {
     id: 'app.containers.Admin.tools.webhooks.webhookProject',
     defaultMessage: 'Project',
-  },
-  webhookProjectPlaceholder: {
-    id: 'app.containers.Admin.tools.webhooks.webhookProjectPlaceholder',
-    defaultMessage: 'Select a project (optional)',
   },
   webhookEnabled: {
     id: 'app.containers.Admin.tools.webhooks.webhookEnabled',
@@ -215,10 +207,6 @@ export default defineMessages({
     id: 'app.containers.Admin.tools.webhooks.updateButton',
     defaultMessage: 'Update webhook',
   },
-  updateSuccess: {
-    id: 'app.containers.Admin.tools.webhooks.updateSuccess',
-    defaultMessage: 'Webhook updated successfully',
-  },
   deliveriesTitle: {
     id: 'app.containers.Admin.tools.webhooks.deliveriesTitle',
     defaultMessage: 'Deliveries for {name}',
@@ -251,10 +239,6 @@ export default defineMessages({
     id: 'app.containers.Admin.tools.webhooks.replay',
     defaultMessage: 'Replay delivery',
   },
-  replaySuccess: {
-    id: 'app.containers.Admin.tools.webhooks.replaySuccess',
-    defaultMessage: 'Delivery replayed successfully',
-  },
   viewDetails: {
     id: 'app.containers.Admin.tools.webhooks.viewDetails',
     defaultMessage: 'View details',
@@ -282,10 +266,5 @@ export default defineMessages({
   newSecretTitle: {
     id: 'app.containers.Admin.tools.webhooks.newSecretTitle',
     defaultMessage: 'New secret token',
-  },
-  newSecretDescription: {
-    id: 'app.containers.Admin.tools.webhooks.newSecretDescription',
-    defaultMessage:
-      'You can use the new secret token below to verify whether requests to your webhook URL are coming from us. For more information, see our {webhookDocumentationLink}.',
   },
 });
