@@ -12,7 +12,7 @@ module ReportBuilder
         .where(id: overlapping_project_ids)
         .where(admin_publication: { publication_status: publication_statuses })
         .not_hidden
-      
+
       overlapping_projects = apply_sorting(overlapping_projects, sort, locale)
 
       periods = Phase
