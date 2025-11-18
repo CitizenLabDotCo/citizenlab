@@ -22,7 +22,8 @@ resource 'Phase insights' do
         voting_method: 'single_voting',
         start_at: 14.days.ago,
         end_at: 1.day.ago,
-        project: ideation_phase.project
+        project: ideation_phase.project,
+        manual_votes_count: 3
       )
     end
 
@@ -126,8 +127,9 @@ resource 'Phase insights' do
           participants_last_7_days: 4,
           participations_last_7_days: 5,
           voting: {
-            votes: 0,
+            votes: 3,
             votes_last_7_days: 0,
+            offline_votes: 3,
             voters: 4,
             voters_last_7_days: 3,
             inputs: 3,

@@ -52,24 +52,25 @@ class PhaseInsightsService
   def participation_method_metrics(phase, participations)
     case phase.participation_method
     when 'voting'
-      voting_data(participations).merge(ideas_data(phase))
+      voting_data(phase, participations).merge(ideas_data(phase))
     else
       {}
     end
   end
 
-  # TODO: Add last_7_days variants
-  def voting_data(participations)
+  def voting_data(phase, participations)
     voting_participations = participations[:voting]
 
-    votes = voting_participations.sum { |p| p[:votes] }
-    votes_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.sum { |p| p[:votes] }
+    online_votes = voting_participations.sum { |p| p[:votes] }
+    online_votes_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.sum { |p| p[:votes] }
+    offline_votes = phase.manual_votes_count
     voters = voting_participations.pluck(:user_id).uniq.count
     voters_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.pluck(:user_id).uniq.count
 
     {
-      votes: votes,
-      votes_last_7_days: votes_last_7_days,
+      votes: online_votes + offline_votes,
+      votes_last_7_days: online_votes_last_7_days,
+      offline_votes: offline_votes,
       voters: voters,
       voters_last_7_days: voters_last_7_days
     }
