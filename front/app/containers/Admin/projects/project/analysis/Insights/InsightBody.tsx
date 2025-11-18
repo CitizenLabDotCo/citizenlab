@@ -1,16 +1,13 @@
 import React from 'react';
 
-import { FormatMessage } from 'typings';
-
 import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { FormatMessage } from 'typings';
 
 import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
-
-import Error from 'components/UI/Error';
 
 import FilterItems from 'containers/Admin/projects/project/analysis/FilterItems';
 import {
@@ -18,9 +15,12 @@ import {
   replaceIdRefsWithLinks,
 } from 'containers/Admin/projects/project/analysis/Insights/util';
 
+import Error from 'components/UI/Error';
+
 import { useIntl } from 'utils/cl-intl';
 
 import FileItem from '../FileItem';
+
 import messages from './messages';
 
 const StyledInsightsText = styled(Text)`
