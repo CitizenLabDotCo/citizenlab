@@ -66,8 +66,8 @@ class PhaseInsightsService
     voters_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.pluck(:user_id).uniq.count
 
     {
-      votes: online_votes + offline_votes,
-      votes_last_7_days: online_votes_last_7_days,
+      online_votes: online_votes,
+      online_votes_last_7_days: online_votes_last_7_days,
       offline_votes: offline_votes,
       voters: voters,
       voters_last_7_days: voters_last_7_days,

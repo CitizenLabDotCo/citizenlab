@@ -125,8 +125,8 @@ resource 'Phase insights' do
           participants_last_7_days: 4,
           engagement_rate: 0.833,
           voting: {
-            votes: 3,
-            votes_last_7_days: 0,
+            online_votes: 0,
+            online_votes_last_7_days: 0,
             offline_votes: 3,
             voters: 4,
             voters_last_7_days: 3,
