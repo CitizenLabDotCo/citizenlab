@@ -1,6 +1,4 @@
 class PhaseInsightsService
-  include Singleton
-
   def insights_data(phase)
     cached_insights_data(phase)
   end
@@ -15,26 +13,17 @@ class PhaseInsightsService
     @cache_ttl = 1.minute
   end
 
+  # TODO: Implement caching? (may not be needed if performance good enough)
+  # Removed funky caching used when originally used Singleton pattern.
   def cached_insights_data(phase)
-    cache_key = "phase_insights_#{phase.id}"
+    visits_data = VisitsService.new.phase_visits_data(phase)
+    participations = phase.pmethod.participations
+    flattened_participations = participations.values.flatten
+    participant_ids = flattened_participations.pluck(:user_id).uniq
 
-    # Expire old cache
-    if @cache_timestamps[cache_key] && @cache_timestamps[cache_key] < @cache_ttl.ago
-      @insights_data.delete(cache_key)
-    end
-
-    @insights_data[cache_key] ||= begin
-      @cache_timestamps[cache_key] = Time.current
-
-      visits_data = VisitsService.new.phase_visits_data(phase)
-      participations = phase.pmethod.participations
-      flattened_participations = participations.values.flatten
-      participant_ids = flattened_participations.pluck(:user_id).uniq
-
-      metrics_data(phase, participations, participant_ids, visits_data).merge(
-        demographics: { fields: demographics_data(phase, flattened_participations, participant_ids) }
-      )
-    end
+    metrics_data(phase, participations, participant_ids, visits_data).merge(
+      demographics: { fields: demographics_data(phase, flattened_participations, participant_ids) }
+    )
   end
 
   def metrics_data(phase, participations, participant_ids, visits_data)
@@ -119,7 +108,7 @@ class PhaseInsightsService
         id: custom_field.id,
         key: custom_field.key,
         code: custom_field.code,
-        r_score: nil, # May be set below
+        r_score: nil, # May be set below (or null if no ref distribution).
         title_multiloc: custom_field.title_multiloc,
         series: nil # Will be set below
       }

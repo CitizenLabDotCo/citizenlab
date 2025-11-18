@@ -27,7 +27,7 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def insights
-    insights_data = PhaseInsightsService.instance.insights_data(@phase)
+    insights_data = PhaseInsightsService.new.insights_data(@phase)
 
     render json: WebApi::V1::PhaseInsightsSerializer.new(
       @phase,
