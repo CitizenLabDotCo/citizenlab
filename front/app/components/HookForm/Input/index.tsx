@@ -48,8 +48,8 @@ const Input = ({
           <InputComponent
             id={name}
             type={type}
-            aria-invalid={ariaInvalid}
-            aria-describedby={ariaDescribedBy}
+            ariaInvalid={ariaInvalid}
+            ariaDescribedBy={ariaDescribedBy}
             {...field}
             {...rest}
           />

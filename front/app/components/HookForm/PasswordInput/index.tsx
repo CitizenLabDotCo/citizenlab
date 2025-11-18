@@ -21,8 +21,8 @@ interface Props
   name: string;
   id?: string;
   label?: string;
-  'aria-invalid'?: boolean;
-  'aria-describedby'?: string;
+  ariaInvalid?: boolean;
+  ariaDescribedBy?: string;
 }
 
 const PasswordInput = ({ name, label, ...rest }: Props) => {
@@ -62,8 +62,8 @@ const PasswordInput = ({ name, label, ...rest }: Props) => {
             id={name}
             aria-label={formatMessage(messages.passwordLabel)}
             password={getValues(name)}
-            aria-invalid={ariaInvalidId}
-            aria-describedby={ariaDescribedById}
+            ariaInvalid={ariaInvalidId}
+            ariaDescribedBy={ariaDescribedById}
           />
         )}
       />

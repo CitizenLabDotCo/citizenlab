@@ -68,6 +68,8 @@ const StyledInput = styled.input`
 
 export interface InputProps {
   ariaLabel?: string;
+  ariaInvalid?: boolean;
+  ariaDescribedBy?: string;
   id?: string;
   label?: string | JSX.Element | null;
   labelTooltipText?: string | JSX.Element | null;
@@ -105,8 +107,6 @@ export interface InputProps {
   className?: string;
   size?: InputSize;
   'data-testid'?: string;
-  'aria-invalid'?: boolean;
-  'aria-describedby'?: string;
 }
 
 class Input extends PureComponent<InputProps> {
@@ -144,8 +144,8 @@ class Input extends PureComponent<InputProps> {
       a11yCharactersLeftMessage,
       className,
       onKeyDown,
-      'aria-invalid': ariaInvalid,
-      'aria-describedby': ariaDescribedBy,
+      ariaInvalid,
+      ariaDescribedBy,
     } = this.props;
     const {
       id,
