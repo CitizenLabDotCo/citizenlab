@@ -6,11 +6,7 @@ class PhaseInsightsService
   private
 
   def initialize
-    @insights_data = {}
     @permissions_custom_fields_service = Permissions::PermissionsCustomFieldsService.new
-
-    @cache_timestamps = {}
-    @cache_ttl = 1.minute
   end
 
   # TODO: Implement caching? (may not be needed if performance good enough)
@@ -27,23 +23,27 @@ class PhaseInsightsService
   end
 
   def metrics_data(phase, participations, participant_ids, visits_data)
-    total_participant_count = participant_ids.count
-    flattened_participations = participations.values.flatten
-    participants_last_7_days_count = flattened_participations.select { |p| p[:acted_at] >= 7.days.ago }.pluck(:user_id).uniq.count
-
-    base_metrics = {
-      visitors: visits_data[:total],
-      visitors_last_7_days: visits_data[:last_7_days],
-      participants: total_participant_count,
-      participants_last_7_days: participants_last_7_days_count,
-      engagement_rate: visits_data[:total] > 0 ? (total_participant_count.to_f / visits_data[:total]).round(3) : 0
-    }
+    base_metrics = base_metrics(phase, participations, participant_ids, visits_data)
 
     participation_method_metrics = {
       phase.participation_method => participation_method_metrics(phase, participations)
     }
 
     { metrics: base_metrics.merge(participation_method_metrics) }
+  end
+
+  def base_metrics(phase, participations, participant_ids, visits_data)
+    total_participant_count = participant_ids.count
+    flattened_participations = participations.values.flatten
+    participants_last_7_days_count = flattened_participations.select { |p| p[:acted_at] >= 7.days.ago }.pluck(:user_id).uniq.count
+
+    {
+      visitors: visits_data[:total],
+      visitors_last_7_days: visits_data[:last_7_days],
+      participants: total_participant_count,
+      participants_last_7_days: participants_last_7_days_count,
+      engagement_rate: visits_data[:total] > 0 ? (total_participant_count.to_f / visits_data[:total]).round(3) : 0
+    }
   end
 
   # TBD to cover the different needs for different participation methods
