@@ -127,8 +127,9 @@ resource 'Phase insights' do
           participations_last_7_days: 5,
           voting: {
             votes: 0,
+            votes_last_7_days: 0,
             voters: 4,
-            votes_per_voter: 0.0,
+            voters_last_7_days: 3,
             inputs: 3,
             comments: 4,
             reactions: 0

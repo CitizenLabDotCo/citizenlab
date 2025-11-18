@@ -63,13 +63,15 @@ class PhaseInsightsService
     voting_participations = participations[:voting]
 
     votes = voting_participations.sum { |p| p[:votes] }
+    votes_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.sum { |p| p[:votes] }
     voters = voting_participations.pluck(:user_id).uniq.count
-    votes_per_voter = voters > 0 ? (votes.to_f / voters).round(3) : 0
+    voters_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.pluck(:user_id).uniq.count
 
     {
       votes: votes,
+      votes_last_7_days: votes_last_7_days,
       voters: voters,
-      votes_per_voter: votes_per_voter
+      voters_last_7_days: voters_last_7_days
     }
   end
 
