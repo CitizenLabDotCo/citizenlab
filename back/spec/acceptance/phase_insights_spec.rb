@@ -120,12 +120,10 @@ resource 'Phase insights' do
         metrics = json_response_body.dig(:data, :attributes, :metrics)
         expect(metrics).to eq({
           visitors: 6,
-          participants: 5,
-          engagement_rate: 0.833,
-          participations: 8,
           visitors_last_7_days: 5,
+          participants: 5,
           participants_last_7_days: 4,
-          participations_last_7_days: 5,
+          engagement_rate: 0.833,
           voting: {
             votes: 3,
             votes_last_7_days: 0,

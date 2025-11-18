@@ -33,12 +33,10 @@ class PhaseInsightsService
 
     base_metrics = {
       visitors: visits_data[:total],
-      participants: total_participant_count,
-      engagement_rate: visits_data[:total] > 0 ? (total_participant_count.to_f / visits_data[:total]).round(3) : 0,
-      participations: flattened_participations.count,
       visitors_last_7_days: visits_data[:last_7_days],
+      participants: total_participant_count,
       participants_last_7_days: participants_last_7_days_count,
-      participations_last_7_days: flattened_participations.count { |p| p[:acted_at] >= 7.days.ago }
+      engagement_rate: visits_data[:total] > 0 ? (total_participant_count.to_f / visits_data[:total]).round(3) : 0
     }
 
     participation_method_metrics = {
