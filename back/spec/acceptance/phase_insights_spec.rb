@@ -130,9 +130,8 @@ resource 'Phase insights' do
             offline_votes: 3,
             voters: 4,
             voters_last_7_days: 3,
-            inputs: 3,
-            comments: 4,
-            reactions: 0
+            ideas: 3,
+            comments: 3
           }
         })
 

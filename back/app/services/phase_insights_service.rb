@@ -80,12 +80,14 @@ class PhaseInsightsService
     phase.ideas.where(publication_status: 'published').count
   end
 
+  # idea comments posted during the phase
   def phase_comments(participations)
     participations[:commenting_idea].count
   end
 
   # TODO: Add last_7_days variants
   # Needs rethinking. e.g. comments for voting phase should probably only count comments posted during that phase
+  # rubocop:disable Layout/TrailingWhitespace
   # def ideas_data(phase)
   #   # Use raw SQL to avoid ActiveRecord's implicit ordering issues
   #   sql = <<~SQL.squish
@@ -109,6 +111,7 @@ class PhaseInsightsService
   #     reactions: result['reactions_count']
   #   }
   # end
+  # rubocop:enable Layout/TrailingWhitespace
 
   def demographics_data(phase, participations, participant_ids)
     participant_custom_field_values = participants_custom_field_values(participations, participant_ids)
