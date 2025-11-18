@@ -8,9 +8,9 @@ describe PhaseInsightsService do
   it 'does a thing' do
     expect(participation).to match({
       id: be_a(String),
-      action: "voting",
+      action: 'voting',
       acted_at: be_a(Time),
-      classname: "Basket",
+      classname: 'Basket',
       user_id: be_a(String),
       user_custom_field_values: {},
       votes: 15
