@@ -72,7 +72,7 @@ describe PhaseInsightsService do
 
       let(:participations) { { voting: [participation1, participation2, participation3, participation4] } }
       let(:participant_ids) { participations[:voting].pluck(:user_id).uniq }
-      
+
       it 'calculates demographics data correctly when no reference distribution' do
         participant_custom_field_values = service.send(:participants_custom_field_values, participations.values.flatten, participant_ids)
         result = service.send(:select_or_checkbox_field_demographics_data, participant_custom_field_values, custom_field_single_select)
