@@ -63,7 +63,7 @@ describe PhaseInsightsService do
     let(:participations) { { voting: [participation1, participation2, participation3, participation4] } }
     let(:participant_ids) { participations[:voting].pluck(:user_id).uniq }
 
-    context 'with single select field' do
+    context 'with single-select field' do
       let!(:custom_field_single_select) { create(:custom_field, resource_type: 'User', key: 'single_select', input_type: 'select', title_multiloc: { en: 'Select one' }) }
       let!(:option_a) { create(:custom_field_option, custom_field: custom_field_single_select, key: 'a', title_multiloc: { en: 'Option A' }) }
       let!(:option_b) { create(:custom_field_option, custom_field: custom_field_single_select, key: 'b', title_multiloc: { en: 'Option B' }) }
@@ -110,17 +110,18 @@ describe PhaseInsightsService do
       end
     end
 
-    context 'with single select field' do
+    context 'with multi-select field' do
       let!(:custom_field_multi_select) { create(:custom_field, resource_type: 'User', key: 'multi_select', input_type: 'multiselect', title_multiloc: { en: 'Select one' }) }
       let!(:option_a) { create(:custom_field_option, custom_field: custom_field_multi_select, key: 'a', title_multiloc: { en: 'Option A' }) }
       let!(:option_b) { create(:custom_field_option, custom_field: custom_field_multi_select, key: 'b', title_multiloc: { en: 'Option B' }) }
 
       let(:participation1) { create(:basket_participation, user_custom_field_values: { 'multi_select' => ['a'] }) }
-      let(:participation2) { create(:basket_participation, user_custom_field_values: { 'multi_select' => ['a', 'b'] }) }
+      let(:participation2) { create(:basket_participation, user_custom_field_values: { 'multi_select' => %w[a b] }) }
       let(:participation3) { create(:basket_participation, user_custom_field_values: { 'multi_select' => ['b'] }) }
       let(:participation4) { create(:basket_participation, user_custom_field_values: {}) }
 
-      # Note that we currently do not support the creation of reference distributions for multiselect fields in the front end.
+      # We currently do not support the creation of reference distributions for multiselect fields in the front end,
+      # nor would our existing back end implementation make sense for multiselect fields.
       it 'calculates demographics data correctly' do
         participant_custom_field_values = service.send(:participants_custom_field_values, participations.values.flatten, participant_ids)
         result = service.send(:select_or_checkbox_field_demographics_data, participant_custom_field_values, custom_field_multi_select)

@@ -3,6 +3,8 @@
 module UserCustomFields
   # This module can be used to count the number of times each custom field option
   # has been selected by a user (within a group of users).
+  #
+  # rubocop:disable Metrics/ModuleLength
   module FieldValueCounter
     UNKNOWN_VALUE_LABEL = '_blank'
 
@@ -188,4 +190,5 @@ module UserCustomFields
       counts
     end
   end
+  # rubocop:enable Metrics/ModuleLength
 end
