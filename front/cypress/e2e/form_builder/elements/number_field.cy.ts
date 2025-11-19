@@ -91,6 +91,7 @@ describe('Form builder number field', () => {
 
     // Try entering text that isn't a number
     cy.get(`*[id^="${questionTitle}"]`)
+      .first()
       .clear()
       .type('Test text', { force: true });
     cy.get('.e2e-error-message');
