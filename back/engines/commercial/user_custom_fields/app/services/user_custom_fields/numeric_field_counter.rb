@@ -5,6 +5,9 @@ module UserCustomFields
   # Does not handle open-ended bins (i.e., nil as last bin); all bins are closed.
   # Automatically ranges bins from min to max values if no bins are provided.
   # Handles negative and decimal values and bin limits.
+  #
+  # Note that this only makes sense for some numeric fields; e.g., income,
+  # but not for others, e.g. zip code, telephone number, etc.
   class NumericFieldCounter
     Result = Struct.new(:binned_counts, :unknown_count, :bins)
 

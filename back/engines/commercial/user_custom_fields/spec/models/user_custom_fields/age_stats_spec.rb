@@ -47,7 +47,8 @@ RSpec.describe UserCustomFields::AgeStats do
 
     context 'with reference distribution' do
       let!(:binned_distribution) do
-        create(:binned_distribution,
+        create(
+          :binned_distribution,
           custom_field: custom_field_birthyear,
           bins: [18, 30, 50, 65, nil],
           counts: [100, 200, 150, 50]

@@ -96,7 +96,7 @@ module UserCustomFields
         counts = add_missing_options(counts, custom_field)
         return counts.with_indifferent_access
       end
-    
+
       field_key = custom_field.key # For arrays, we don't need Ideas prefix logic
 
       case custom_field.input_type
