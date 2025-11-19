@@ -21,14 +21,12 @@ export const deriveProjectStatus = (period: Period, now: Moment) => {
   return now.isAfter(endAt) ? 'finished' : 'active';
 };
 
-export interface ISortOption<T> {
-  value: T;
+interface ISortOption {
+  value: ProjectSortableParam;
   label: string;
 }
 
-export const getSortOptions = (
-  formatMessage: FormatMessage
-): ISortOption<ProjectSortableParam>[] => [
+export const getSortOptions = (formatMessage: FormatMessage): ISortOption[] => [
   {
     value: 'alphabetically_asc',
     label: formatMessage(projectFilterMessages.alphabetically_asc),

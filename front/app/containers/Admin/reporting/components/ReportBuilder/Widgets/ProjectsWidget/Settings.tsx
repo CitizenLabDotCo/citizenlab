@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 
 import { Box, Select, Text } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
@@ -16,22 +16,6 @@ import {
 import messages from './messages';
 import { getSortOptions } from './ProjectsCard/utils';
 import { Props } from './typings';
-
-type SettingsFieldProps = {
-  label?: string;
-  children: ReactNode;
-};
-
-const SettingsField = ({ label, children }: SettingsFieldProps) => (
-  <Box mb="20px">
-    {label && (
-      <Text variant="bodyM" color="textSecondary" mb="5px">
-        {label}
-      </Text>
-    )}
-    {children}
-  </Box>
-);
 
 const Settings = () => {
   const { formatMessage } = useIntl();
@@ -76,13 +60,12 @@ const Settings = () => {
           onChange={handleStatusChange}
         />
       </Box>
-      <SettingsField label={formatMessage(messages.sort)}>
-        <Select
-          value={sort}
-          options={sortOptions}
-          onChange={handleSortChange}
-        />
-      </SettingsField>
+      <Select
+        label={formatMessage(messages.sort)}
+        value={sort}
+        options={sortOptions}
+        onChange={handleSortChange}
+      />
       <DateRangeInput />
     </Box>
   );
