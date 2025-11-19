@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IIdeaQueryParameters } from 'api/ideas/types';
 import useIdeas from 'api/ideas/useIdeas';
+import useTopics from 'api/topics/useTopics';
 
 import StickyNote from './StickyNote';
+import { createTopicColorMap } from './topicColors';
 
 const PileContainer = styled(Box)`
   position: relative;
@@ -70,12 +72,33 @@ const StickyNotesPile: React.FC<Props> = ({
   queryParameters,
   maxNotes = 10,
 }) => {
-  const { data: ideas, isLoading } = useIdeas({
+  const { data: ideas, isLoading: ideasLoading } = useIdeas({
     ...queryParameters,
     'page[size]': maxNotes,
   });
 
-  if (isLoading) {
+  const { data: topics, isLoading: topicsLoading } = useTopics();
+
+  // Create a color map for all topics
+  const topicColorMap = useMemo(() => {
+    if (!topics) return new Map();
+    const topicIds = topics.data.map((topic) => topic.id);
+    return createTopicColorMap(topicIds);
+  }, [topics]);
+
+  // Extract topic IDs for each idea
+  const ideaTopics = useMemo(() => {
+    if (!ideas) return new Map<string, string[]>();
+    const map = new Map<string, string[]>();
+    ideas.data.forEach((idea) => {
+      const topicIds =
+        idea.relationships.topics?.data.map((topic) => topic.id) || [];
+      map.set(idea.id, topicIds);
+    });
+    return map;
+  }, [ideas]);
+
+  if (ideasLoading || topicsLoading) {
     return (
       <Box display="flex" justifyContent="center" p="40px">
         <Spinner />
@@ -95,19 +118,26 @@ const StickyNotesPile: React.FC<Props> = ({
 
   return (
     <PileContainer>
-      {ideas.data.slice(0, maxNotes).map((idea, index) => (
-        <NoteWrapper
-          key={idea.id}
-          index={index}
-          totalNotes={totalNotes}
-          style={{ zIndex: index }}
-        >
-          <StickyNote
-            ideaId={idea.id}
-            rotation={rotations[index % rotations.length]}
-          />
-        </NoteWrapper>
-      ))}
+      {ideas.data.slice(0, maxNotes).map((idea, index) => {
+        const topicIds = ideaTopics.get(idea.id) || [];
+        const topicColors =
+          topicIds.length > 0 ? topicColorMap.get(topicIds[0]) : undefined;
+
+        return (
+          <NoteWrapper
+            key={idea.id}
+            index={index}
+            totalNotes={totalNotes}
+            style={{ zIndex: index }}
+          >
+            <StickyNote
+              ideaId={idea.id}
+              rotation={rotations[index % rotations.length]}
+              topicColors={topicColors}
+            />
+          </NoteWrapper>
+        );
+      })}
     </PileContainer>
   );
 };

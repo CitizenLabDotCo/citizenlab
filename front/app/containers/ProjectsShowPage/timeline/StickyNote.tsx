@@ -7,8 +7,8 @@ import useIdeaById from 'api/ideas/useIdeaById';
 
 import useLocalize from 'hooks/useLocalize';
 
-const StyledStickyNote = styled(Box)`
-  background: ${colors.teal200};
+const StyledStickyNote = styled(Box)<{ backgroundColor?: string }>`
+  background: ${({ backgroundColor }) => backgroundColor || colors.teal200};
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
   cursor: pointer;
   transition: all 0.3s ease;
@@ -20,15 +20,16 @@ const StyledStickyNote = styled(Box)`
   }
 `;
 
-const IdeaTitle = styled(Text)`
+const IdeaTitle = styled(Text)<{ textColor?: string }>`
   font-size: 20px;
   font-weight: 600;
   line-height: 1.3;
   margin-bottom: 8px;
   word-wrap: break-word;
+  color: ${({ textColor }) => textColor || 'inherit'};
 `;
 
-const IdeaBody = styled(Text)`
+const IdeaBody = styled(Text)<{ textColor?: string }>`
   font-size: 16px;
   line-height: 1.4;
   overflow: hidden;
@@ -36,20 +37,26 @@ const IdeaBody = styled(Text)`
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+  color: ${({ textColor }) => textColor || 'inherit'};
 `;
 
-const AuthorName = styled(Text)`
+const AuthorName = styled(Text)<{ textColor?: string }>`
   font-size: 14px;
   font-style: italic;
   margin-top: 8px;
+  color: ${({ textColor }) => textColor || 'inherit'};
 `;
 
 interface Props {
   ideaId: string;
   rotation?: number;
+  topicColors?: {
+    background: string;
+    text: string;
+  };
 }
 
-const StickyNote: React.FC<Props> = ({ ideaId, rotation = 0 }) => {
+const StickyNote: React.FC<Props> = ({ ideaId, rotation = 0, topicColors }) => {
   const { data: idea } = useIdeaById(ideaId);
   const localize = useLocalize();
 
@@ -68,10 +75,13 @@ const StickyNote: React.FC<Props> = ({ ideaId, rotation = 0 }) => {
       w="250px"
       minHeight="200px"
       transform={`rotate(${rotation}deg)`}
+      backgroundColor={topicColors?.background}
     >
-      {title && <IdeaTitle>{title}</IdeaTitle>}
-      {body && <IdeaBody>{body}</IdeaBody>}
-      {authorName && <AuthorName>— {authorName}</AuthorName>}
+      {title && <IdeaTitle textColor={topicColors?.text}>{title}</IdeaTitle>}
+      {body && <IdeaBody textColor={topicColors?.text}>{body}</IdeaBody>}
+      {authorName && (
+        <AuthorName textColor={topicColors?.text}>— {authorName}</AuthorName>
+      )}
     </StyledStickyNote>
   );
 };
