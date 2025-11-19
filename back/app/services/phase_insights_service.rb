@@ -66,6 +66,7 @@ class PhaseInsightsService
     offline_votes = phase.manual_votes_count
     voters = voting_participations.pluck(:user_id).uniq.count
     voters_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.pluck(:user_id).uniq.count
+    comments_counts = phase_comments_counts(participations)
 
     {
       online_votes: online_votes,
@@ -73,8 +74,9 @@ class PhaseInsightsService
       offline_votes: offline_votes,
       voters: voters,
       voters_last_7_days: voters_last_7_days,
-      ideas: associated_ideas_count(phase),
-      comments: phase_comments(participations)
+      associated_ideas: associated_ideas_count(phase),
+      comments_posted: comments_counts[:total],
+      comments_posted_last_7_days: comments_counts[:last_7_days]
     }
   end
 
@@ -83,8 +85,15 @@ class PhaseInsightsService
   end
 
   # idea comments posted during the phase
-  def phase_comments(participations)
-    participations[:commenting_idea].count
+  def phase_comments_counts(participations)
+    commenting_participations = participations[:commenting_idea]
+    total_comments = commenting_participations.count
+    comments_last_7_days = commenting_participations.select { |p| p[:acted_at] >= 7.days.ago }.count
+
+    {
+      total: total_comments,
+      last_7_days: comments_last_7_days
+    }
   end
 
   def demographics_data(phase, participations, participant_ids)
