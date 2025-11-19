@@ -4,6 +4,8 @@ import { Box, IconTooltip, Text } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { Multiloc } from 'typings';
 
+import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
+
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { useIntl } from 'utils/cl-intl';
@@ -13,6 +15,7 @@ import { ChartWidgetProps } from '../typings';
 
 export const AccessibilityInputs = () => {
   const { formatMessage } = useIntl();
+  const { phaseId } = useReportContext();
 
   const {
     actions: { setProp },
@@ -22,6 +25,11 @@ export const AccessibilityInputs = () => {
     ariaLabel: node.data.props.ariaLabel,
     description: node.data.props.description,
   }));
+
+  // Only show accessibility inputs for phase reports (not global reports)
+  if (!phaseId) {
+    return null;
+  }
 
   const setAriaLabel = (value: Multiloc) => {
     setProp((props: ChartWidgetProps) => {
