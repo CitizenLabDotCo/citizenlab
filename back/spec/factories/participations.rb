@@ -42,8 +42,8 @@ FactoryBot.define do
       end
 
       initialize_with do
-        participation_user = user || create(:user)  # ← Added this line
-        basket = create(:basket, user: participation_user)  # ← Use participation_user
+        participation_user = user || create(:user)
+        basket = create(:basket, user: participation_user)
         create(:baskets_idea, basket: basket, votes: vote_count)
         {
           id: basket.id,
@@ -61,8 +61,8 @@ FactoryBot.define do
   # Comment participation
   factory :comment_participation, parent: :participation do
     initialize_with do
-      participation_user = user || create(:user)  # ← Added this line
-      comment = create(:comment, author: participation_user)  # ← Use participation_user
+      participation_user = user || create(:user)
+      comment = create(:comment, author: participation_user)
       {
         id: comment.id,
         action: 'commenting_idea',

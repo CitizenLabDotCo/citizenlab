@@ -32,7 +32,7 @@ describe PhaseInsightsService do
 
     it 'calculates demographics data correctly' do
       result = service.send(:demographics_data, phase, participations.values.flatten, participant_ids)
-      
+
       expect(result).to eq([
         {
           id: custom_field_birthyear.id,
@@ -42,15 +42,15 @@ describe PhaseInsightsService do
           title_multiloc: { 'en' => 'Birthyear' },
           series: { 
             '0-9' => 0,
-            '10-19' => 0, 
-            '20-29' => 1, 
-            '30-39' => 0, 
-            '40-49' => 0, 
-            '50-59' => 0, 
-            '60-69' => 0, 
-            '70-79' => 0, 
-            '80-89' => 0, 
-            '90+' => 0, 
+            '10-19' => 0,
+            '20-29' => 1,
+            '30-39' => 0,
+            '40-49' => 0,
+            '50-59' => 0,
+            '60-69' => 0,
+            '70-79' => 0,
+            '80-89' => 0,
+            '90+' => 0,
             '_blank' => 0
           },
           reference_distribution: nil
