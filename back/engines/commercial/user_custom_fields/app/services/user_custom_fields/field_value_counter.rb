@@ -23,7 +23,7 @@ module UserCustomFields
     # @return [ActiveSupport::HashWithIndifferentAccess]
     def self.counts_by_field_option(records_or_values, custom_field, by: :option_key, record_type: 'users')
       # NEW: Handle array of custom_field_values hashes
-      if records_or_values.is_a?(Array) && records_or_values.first.is_a?(Hash)
+      if records_or_values.is_a?(Array)
         return counts_from_custom_field_values_array(records_or_values, custom_field, by)
       end
 
@@ -90,6 +90,13 @@ module UserCustomFields
     end
 
     private_class_method def self.counts_from_custom_field_values_array(custom_field_values_array, custom_field, by)
+      # Handle empty arrays gracefully
+      if custom_field_values_array.empty?
+        counts = { UNKNOWN_VALUE_LABEL => 0 }
+        counts = add_missing_options(counts, custom_field)
+        return counts.with_indifferent_access
+      end
+    
       field_key = custom_field.key # For arrays, we don't need Ideas prefix logic
 
       case custom_field.input_type
