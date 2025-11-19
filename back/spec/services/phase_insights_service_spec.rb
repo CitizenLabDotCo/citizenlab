@@ -40,7 +40,7 @@ describe PhaseInsightsService do
           code: nil,
           r_score: nil,
           title_multiloc: { 'en' => 'Birthyear' },
-          series: { 
+          series: {
             '0-9' => 0,
             '10-19' => 0,
             '20-29' => 1,

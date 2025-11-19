@@ -135,8 +135,8 @@ class PhaseInsightsService
       if custom_field.key == 'birthyear'
         age_stats = UserCustomFields::AgeStats.calculate(participant_custom_field_values)
 
-        if age_stats.reference_distribution&.dig('distribution', 'counts')
-          distribution_counts = age_stats.reference_distribution['distribution']['counts']
+        if age_stats.reference_distribution.present? && age_stats.reference_distribution.distribution&.dig('counts')
+          distribution_counts = age_stats.reference_distribution.distribution['counts']
           formatted_data = age_stats.format_in_ranges
           reference_distribution = formatted_data[:ranged_reference_distribution]
 
@@ -164,6 +164,9 @@ class PhaseInsightsService
       result
     end
   end
+
+  # def birthyear_demographics_data
+  # end
 
   def participants_custom_field_values(participations, participant_ids)
     # Build lookup hash to avoid O(n × p) repeated searches. Reduces to O(n + p).
