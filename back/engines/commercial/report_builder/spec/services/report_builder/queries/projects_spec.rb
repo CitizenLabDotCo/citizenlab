@@ -22,11 +22,11 @@ RSpec.describe ReportBuilder::Queries::Projects do
       )
 
       # 2021
-      @project1 = create(:project, title_multiloc: { 'en' => 'Alpha Project' })
+      @project1 = create(:project, title_multiloc: { 'en' => 'Alpha', 'fr-FR' => 'Zeta' })
       create(:phase, project: @project1, start_at: Date.new(2021, 2, 1), end_at: Date.new(2021, 3, 1))
       create_list(:idea, 5, project: @project1)
 
-      @project2 = create(:project, title_multiloc: { 'en' => 'Zeta Project' })
+      @project2 = create(:project, title_multiloc: { 'en' => 'Zeta', 'fr-FR' => 'Alpha' })
       create(:phase, project: @project2, start_at: Date.new(2021, 2, 1), end_at: Date.new(2021, 3, 1))
       create(:phase, project: @project2, start_at: Date.new(2021, 3, 2), end_at: nil)
       create_list(:idea, 10, project: @project2)
@@ -128,6 +128,25 @@ RSpec.describe ReportBuilder::Queries::Projects do
         result = query.run_query(start_at: start_at, end_at: end_at, sort: 'alphabetically_desc')
 
         expect(result[:projects].pluck(:id)).to eq([@project2.id, @project1.id])
+      end
+
+      it 'sorts projects alphabetically using the specified locale' do
+        result_en = query.run_query(
+          start_at: start_at,
+          end_at: end_at,
+          sort: 'alphabetically_asc',
+          locale: 'en'
+        )
+
+        result_fr = query.run_query(
+          start_at: start_at,
+          end_at: end_at,
+          sort: 'alphabetically_asc',
+          locale: 'fr-FR'
+        )
+
+        expect(result_en[:projects].pluck(:id)).to eq([@project1.id, @project2.id])
+        expect(result_fr[:projects].pluck(:id)).to eq([@project2.id, @project1.id])
       end
 
       it 'sorts projects by participation count in ascending order' do
