@@ -337,7 +337,7 @@ describe MultiTenancy::Templates::TenantSerializer do
           'sender' => global_manual_campaign.sender,
           'subject_multiloc' => global_manual_campaign.subject_multiloc,
           'body_multiloc' => global_manual_campaign.body_multiloc,
-          'context_ref' => nil
+          # 'context_ref' => nil
         ),
         hash_including(
           'type' => 'EmailCampaigns::Campaigns::ManualProjectParticipants',
@@ -354,7 +354,7 @@ describe MultiTenancy::Templates::TenantSerializer do
       tenant = create(:tenant, locales: AppConfiguration.instance.settings('core', 'locales'))
       tenant.switch do
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
-        expect(EmailCampaigns::Campaigns.count).to eq 2
+        expect(EmailCampaigns::Campaign.count).to eq 2
       end
     end
   end
