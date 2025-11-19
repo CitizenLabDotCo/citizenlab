@@ -120,8 +120,8 @@ describe PhaseInsightsService do
       let(:participation3) { create(:basket_participation, user_custom_field_values: { 'multi_select' => ['b'] }) }
       let(:participation4) { create(:basket_participation, user_custom_field_values: {}) }
 
-      # We currently do not support the creation of reference distributions for multiselect fields in the front end,
-      # nor would our existing back end implementation make sense for multiselect fields.
+      # We currently do not support the creation of reference distributions for multiselect fields in the front-end,
+      # nor would our existing back-end implementation make sense for multiselect fields.
       it 'calculates demographics data correctly' do
         participant_custom_field_values = service.send(:participants_custom_field_values, participations.values.flatten, participant_ids)
         result = service.send(:select_or_checkbox_field_demographics_data, participant_custom_field_values, custom_field_multi_select)
@@ -146,6 +146,8 @@ describe PhaseInsightsService do
       let(:participation3) { create(:basket_participation, user_custom_field_values: {}) }
       let(:participation4) { create(:basket_participation, user_custom_field_values: {}) }
 
+      # We currently do not support the creation of reference distributions for checkbox fields in the front-end,
+      # and the back-end currently only supports categorical distributions for select fields.
       it 'calculates demographics data correctly' do
         participant_custom_field_values = service.send(:participants_custom_field_values, participations.values.flatten, participant_ids)
         result = service.send(:select_or_checkbox_field_demographics_data, participant_custom_field_values, custom_field_checkbox)
