@@ -21,6 +21,8 @@ interface Props
   name: string;
   id?: string;
   label?: string;
+  ariaInvalid?: boolean;
+  ariaDescribedBy?: string;
 }
 
 const PasswordInput = ({ name, label, ...rest }: Props) => {
@@ -38,7 +40,9 @@ const PasswordInput = ({ name, label, ...rest }: Props) => {
 
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
   const apiError = errors?.error && ([errors] as CLError[]);
-
+  const ariaInvalidId = validationError || apiError ? true : undefined;
+  const ariaDescribedById =
+    validationError || apiError ? `${name}-error` : undefined;
   return (
     <>
       {label && (
@@ -58,11 +62,14 @@ const PasswordInput = ({ name, label, ...rest }: Props) => {
             id={name}
             aria-label={formatMessage(messages.passwordLabel)}
             password={getValues(name)}
+            ariaInvalid={ariaInvalidId}
+            ariaDescribedBy={ariaDescribedById}
           />
         )}
       />
       {validationError && (
         <Error
+          id={`${name}-error`}
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
@@ -71,6 +78,7 @@ const PasswordInput = ({ name, label, ...rest }: Props) => {
       )}
       {apiError && (
         <Error
+          id={`${name}-error`}
           fieldName={name as TFieldName}
           apiErrors={apiError}
           marginTop="8px"

@@ -16,13 +16,14 @@ import { WEBHOOK_EVENTS } from 'api/webhook_subscriptions/types';
 import useUpdateWebhookSubscription from 'api/webhook_subscriptions/useUpdateWebhookSubscription';
 import useWebhookSubscription from 'api/webhook_subscriptions/useWebhookSubscription';
 
+import useLocalize from 'hooks/useLocalize';
+
 import Feedback from 'components/HookForm/Feedback';
 import Input from 'components/HookForm/Input';
 import MultipleSelect from 'components/HookForm/MultipleSelect';
 import Select from 'components/HookForm/Select';
 import Toggle from 'components/HookForm/Toggle';
 
-import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 

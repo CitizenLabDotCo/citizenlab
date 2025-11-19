@@ -18,9 +18,9 @@ import { useIntl } from 'utils/cl-intl';
 
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 
+import DisclaimerBanner from './DisclaimerBanner';
 import AnalysisFileUploader from './Files/AnalysisFileUploader';
 import FileSelectionView from './Files/FileSelectionView';
-import DisclaimerBanner from './DisclaimerBanner';
 import messages from './messages';
 import Question from './Question';
 import QuestionButton from './QuestionButton';
