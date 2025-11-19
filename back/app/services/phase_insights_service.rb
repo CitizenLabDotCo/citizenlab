@@ -1,4 +1,6 @@
 class PhaseInsightsService
+  SUPPORTED_CATEGORICAL_FIELD_TYPES = %w[select checkbox multiselect].freeze
+
   def insights_data(phase)
     cached_insights_data(phase)
   end
@@ -109,7 +111,7 @@ class PhaseInsightsService
         result[:r_score] = birthyear_data[:r_score]
         result[:series] = birthyear_data[:series]
         reference_distribution = birthyear_data[:reference_distribution]
-      elsif %w[select checkbox multiselect].include?(custom_field.input_type)
+      elsif SUPPORTED_CATEGORICAL_FIELD_TYPES.include?(custom_field.input_type)
         select_or_checkbox_data = select_or_checkbox_field_demographics_data(participant_custom_field_values, custom_field)
         result[:r_score] = select_or_checkbox_data[:r_score]
         result[:series] = select_or_checkbox_data[:series]
