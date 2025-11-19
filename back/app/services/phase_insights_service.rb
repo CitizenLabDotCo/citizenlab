@@ -136,8 +136,8 @@ class PhaseInsightsService
 
     if age_stats.reference_distribution.present?
       distribution_data = age_stats.reference_distribution.distribution
-      
-      if distribution_data&.is_a?(Hash) && distribution_data['counts']
+
+      if distribution_data.is_a?(Hash) && distribution_data['counts']
         distribution_counts = distribution_data['counts']
         formatted_data = age_stats.format_in_ranges
         reference_distribution = formatted_data[:ranged_reference_distribution]
