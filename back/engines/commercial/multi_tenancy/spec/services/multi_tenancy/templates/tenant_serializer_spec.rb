@@ -336,8 +336,7 @@ describe MultiTenancy::Templates::TenantSerializer do
           'enabled' => global_manual_campaign.enabled,
           'sender' => global_manual_campaign.sender,
           'subject_multiloc' => global_manual_campaign.subject_multiloc,
-          'body_multiloc' => global_manual_campaign.body_multiloc,
-          # 'context_ref' => nil
+          'body_multiloc' => global_manual_campaign.body_multiloc
         ),
         hash_including(
           'type' => 'EmailCampaigns::Campaigns::ManualProjectParticipants',
