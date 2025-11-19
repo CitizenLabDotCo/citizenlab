@@ -98,18 +98,27 @@ module UserCustomFields
       end
 
       field_key = custom_field.key # For arrays, we don't need Ideas prefix logic
+      unknown_count = 0
 
       case custom_field.input_type
       when 'select', 'checkbox', 'number'
         values = custom_field_values_array.pluck(field_key)
       when 'multiselect'
-        values = custom_field_values_array.flat_map { |cfv| cfv[field_key] || [] }
+        values = []
+        custom_field_values_array.each do |cfv|
+          if cfv.key?(field_key) && cfv[field_key].present?
+            values.concat(cfv[field_key])
+          else
+            # Count missing or empty multiselect values as unknown
+            unknown_count += 1
+          end
+        end
       else
         raise NotSupportedFieldTypeError
       end
 
       counts = values.group_by(&:itself).transform_values(&:count)
-      counts[UNKNOWN_VALUE_LABEL] = counts.delete(nil) || 0
+      counts[UNKNOWN_VALUE_LABEL] = (counts.delete(nil) || 0) + unknown_count
       counts = add_missing_options(counts, custom_field)
 
       convert_area_ids_to_option_keys!(counts, custom_field) if by != :area_id && custom_field.domicile?
