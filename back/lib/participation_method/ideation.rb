@@ -426,7 +426,11 @@ module ParticipationMethod
     end
 
     def supports_inputs_without_author?
-      false
+      true
+    end
+
+    def supports_permitted_by_everyone?
+      true
     end
 
     def supports_public_visibility?
