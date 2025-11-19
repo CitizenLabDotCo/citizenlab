@@ -87,6 +87,8 @@ const DemographicsWidget = ({
 DemographicsWidget.craft = {
   props: {
     title: undefined,
+    ariaLabel: undefined,
+    description: undefined,
     projectId: undefined,
     startAt: undefined,
     endAt: null,

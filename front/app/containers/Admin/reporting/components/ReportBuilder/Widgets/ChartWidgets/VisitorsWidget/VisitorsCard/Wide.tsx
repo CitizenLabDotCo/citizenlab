@@ -1,19 +1,13 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
-import { Multiloc } from 'component-library/utils/typings';
+import { Box } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
-
-import useLocalize from 'hooks/useLocalize';
 
 import Chart from 'components/admin/GraphCards/VisitorsCard/Chart';
 import visitorsCardMessages from 'components/admin/GraphCards/VisitorsCard/messages';
 import { TimeSeries } from 'components/admin/GraphCards/VisitorsCard/useVisitors/typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 
-import { useIntl } from 'utils/cl-intl';
-
-import messages from '../../messages';
 import { formatLargeNumber, getDaysInRange } from '../../utils';
 import { Stats } from '../typings';
 
@@ -31,8 +25,6 @@ export interface Props {
   stats: Stats;
   timeSeries: TimeSeries | null;
   hideStatistics?: boolean;
-  ariaLabel?: Multiloc;
-  description?: Multiloc;
 }
 
 const Wide = ({
@@ -42,21 +34,8 @@ const Wide = ({
   stats,
   timeSeries,
   hideStatistics,
-  ariaLabel,
-  description,
 }: Props) => {
   const previousDays = getDaysInRange(startAt, endAt);
-  const localize = useLocalize();
-  const { formatMessage } = useIntl();
-
-  // Generate unique IDs for ARIA attributes
-  const chartId = React.useId();
-  const descriptionId = `${chartId}-description`;
-
-  // Get localized values
-  const localizedAriaLabel = ariaLabel ? localize(ariaLabel) : undefined;
-  const localizedDescription = description ? localize(description) : undefined;
-
   return (
     <Box
       width="100%"
@@ -101,12 +80,7 @@ const Wide = ({
           </Box>
         </Box>
       )}
-
-      {/* Chart container with ARIA attributes */}
       <Box
-        role="img"
-        aria-label={localizedAriaLabel || 'Visitors chart'}
-        aria-describedby={localizedDescription ? descriptionId : undefined}
         flexGrow={1}
         display="flex"
         justifyContent="flex-start"
@@ -126,13 +100,6 @@ const Wide = ({
           margin={{ top: 0, right: -16, bottom: 0, left: 0 }}
         />
       </Box>
-
-      {/* description for screen readers */}
-      {localizedDescription && (
-        <Text color="grey700" fontSize="s" id={descriptionId}>
-          {formatMessage(messages.description)} {localizedDescription}
-        </Text>
-      )}
     </Box>
   );
 };

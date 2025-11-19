@@ -49,7 +49,7 @@ export const AccessibilityInputs = () => {
                 {formatMessage(messages.analyticsChartAriaLabel)}
                 <IconTooltip
                   content={formatMessage(
-                    messages.analyticsChartAriaLabelTooltip
+                    messages.analyticsChartAriaLabelTooltip2
                   )}
                 />
               </Text>
@@ -67,7 +67,7 @@ export const AccessibilityInputs = () => {
                 {formatMessage(messages.analyticsChartDescription)}{' '}
                 <IconTooltip
                   content={formatMessage(
-                    messages.analyticsChartDescriptionTooltip
+                    messages.analyticsChartDescriptionTooltip2
                   )}
                 />
               </Text>

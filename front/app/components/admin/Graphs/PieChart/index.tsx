@@ -8,6 +8,7 @@ import {
   Label,
 } from 'recharts';
 
+import { useRechartsAccessibility } from '../../../../containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/_shared/useRechartsAccessibility';
 import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
@@ -45,6 +46,8 @@ const PieChart = <Row,>({
     LegendDimensions | undefined
   >();
 
+  const accessibilityProps = useRechartsAccessibility();
+
   if (hasNoData(data)) {
     return <EmptyState emptyContainerContent={emptyContainerContent} />;
   }
@@ -79,6 +82,7 @@ const PieChart = <Row,>({
           DEFAULT_LEGEND_OFFSET
         )}
         ref={innerRef}
+        {...accessibilityProps}
       >
         {legend && graphDimensions && legendDimensions && (
           <g className="graph-legend">

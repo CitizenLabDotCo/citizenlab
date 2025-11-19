@@ -14,6 +14,7 @@ import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { ChartAccessibilityProvider } from './../ChartWidgets/_shared/ChartAccessibilityContext';
 import messages from './messages';
 
 interface SharedProps {
@@ -53,13 +54,18 @@ const Card = ({
 }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  // Generate unique IDs for ARIA attributes
+
   const chartId = React.useId();
   const descriptionId = `${chartId}-description`;
-
-  // Get localized values
   const localizedAriaLabel = ariaLabel ? localize(ariaLabel) : undefined;
   const localizedDescription = description ? localize(description) : undefined;
+
+  // Create the ARIA label for charts - use ariaLabel if provided, otherwise use title
+  const chartAriaLabel =
+    localizedAriaLabel || (title ? localize(title) : undefined);
+
+  // Create the describedBy ID if there's a description
+  const chartAriaDescribedBy = localizedDescription ? descriptionId : undefined;
 
   return (
     <Container className="report-widget-card" {...rest}>
@@ -82,16 +88,18 @@ const Card = ({
           )}
         </Box>
       )}
-
-      {/* Chart container with ARIA attributes */}
-      <Box
-        role="img"
-        aria-label={localizedAriaLabel || localize(title)}
-        aria-describedby={localizedDescription ? descriptionId : undefined}
+      <ChartAccessibilityProvider
+        ariaLabel={chartAriaLabel}
+        ariaDescribedBy={chartAriaDescribedBy}
       >
-        {children}
-      </Box>
-      {/*  description for screen readers */}
+        <Box
+          role="img"
+          aria-label={chartAriaLabel}
+          aria-describedby={chartAriaDescribedBy}
+        >
+          {children}
+        </Box>
+      </ChartAccessibilityProvider>
       {localizedDescription && (
         <Text color="grey700" fontSize="s" id={descriptionId}>
           {formatMessage(messages.description)} {localizedDescription}

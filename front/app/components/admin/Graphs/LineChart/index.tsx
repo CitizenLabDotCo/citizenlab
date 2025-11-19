@@ -17,6 +17,7 @@ import {
 
 import { isNilOrError } from 'utils/helperUtils';
 
+import { useRechartsAccessibility } from '../../../../containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/_shared/useRechartsAccessibility';
 import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
@@ -56,6 +57,8 @@ const LineChart = <Row,>({
   const [legendDimensions, setLegendDimensions] = useState<
     LegendDimensions | undefined
   >();
+
+  const accessibilityProps = useRechartsAccessibility();
 
   if (hasNoData(data) && !showEmptyGraph) {
     return <EmptyState emptyContainerContent={emptyContainerContent} />;
@@ -97,7 +100,7 @@ const LineChart = <Row,>({
           DEFAULT_LEGEND_OFFSET
         )}
         ref={innerRef}
-        accessibilityLayer
+        {...accessibilityProps}
       >
         {legend && graphDimensions && legendDimensions && (
           <g className="graph-legend">

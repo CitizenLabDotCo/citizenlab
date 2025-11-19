@@ -7,9 +7,19 @@ import messages from './messages';
 import ParticipationCard from './ParticipationCard';
 import { Props } from './typings';
 
-const ParticipationWidget = ({ title, ...props }: Props) => {
+const ParticipationWidget = ({
+  title,
+  ariaLabel,
+  description,
+  ...props
+}: Props) => {
   return (
-    <Card title={title} pagebreak>
+    <Card
+      title={title}
+      ariaLabel={ariaLabel}
+      description={description}
+      pagebreak
+    >
       <ParticipationCard {...props} />
     </Card>
   );

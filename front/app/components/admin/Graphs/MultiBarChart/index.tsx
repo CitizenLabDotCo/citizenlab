@@ -18,6 +18,7 @@ import {
 
 import { truncate } from 'utils/textUtils';
 
+import { useRechartsAccessibility } from '../../../../containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/_shared/useRechartsAccessibility';
 import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
@@ -56,6 +57,8 @@ const MultiBarChart = <Row,>({
   const [legendDimensions, setLegendDimensions] = useState<
     LegendDimensions | undefined
   >();
+
+  const accessibilityProps = useRechartsAccessibility();
 
   if (hasNoData(data)) {
     return <EmptyState emptyContainerContent={emptyContainerContent} />;
@@ -124,7 +127,7 @@ const MultiBarChart = <Row,>({
         ref={innerRef}
         barGap={0}
         barCategoryGap={bars?.categoryGap}
-        accessibilityLayer
+        {...accessibilityProps}
       >
         {legend && graphDimensions && legendDimensions && (
           <g className="graph-legend">

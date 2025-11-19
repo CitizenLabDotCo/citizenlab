@@ -17,12 +17,22 @@ import ChartWidgetSettings from './ChartWidgetSettings';
 import ParticipantsCard from './ParticipantsCard';
 import { Props } from './typings';
 
-const ParticipantsWidget = ({ title, description, ...props }: Props) => {
+const ParticipantsWidget = ({
+  title,
+  ariaLabel,
+  description,
+  ...props
+}: Props) => {
   const { formatMessage } = useIntl();
   const { data: phases } = usePhases(props.projectId);
 
   return (
-    <Card title={title} description={description} pagebreak>
+    <Card
+      title={title}
+      ariaLabel={ariaLabel}
+      description={description}
+      pagebreak
+    >
       {hasEmbeddedSurvey(phases?.data) && (
         <Box mb="16px">
           <Warning>

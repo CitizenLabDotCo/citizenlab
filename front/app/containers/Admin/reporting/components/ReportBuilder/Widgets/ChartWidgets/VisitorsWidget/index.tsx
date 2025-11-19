@@ -7,9 +7,14 @@ import ChartWidgetSettings from './ChartWidgetSettings';
 import { Props } from './typings';
 import VisitorsCard from './VisitorsCard';
 
-const VisitorsWidget = ({ title, ...props }: Props) => {
+const VisitorsWidget = ({ title, ariaLabel, description, ...props }: Props) => {
   return (
-    <Card title={title} pagebreak>
+    <Card
+      title={title}
+      ariaLabel={ariaLabel}
+      description={description}
+      pagebreak
+    >
       <VisitorsCard {...props} />
     </Card>
   );

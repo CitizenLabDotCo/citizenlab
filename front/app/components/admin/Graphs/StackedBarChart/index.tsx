@@ -17,6 +17,7 @@ import {
   animation,
 } from 'components/admin/Graphs/styling';
 
+import { useRechartsAccessibility } from '../../../../containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/_shared/useRechartsAccessibility';
 import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
@@ -56,6 +57,8 @@ const StackedBarChart = <Row,>({
   const [legendDimensions, setLegendDimensions] = useState<
     LegendDimensions | undefined
   >();
+
+  const accessibilityProps = useRechartsAccessibility();
 
   if (hasNoData(data)) {
     return <EmptyState emptyContainerContent={emptyContainerContent} />;
@@ -120,7 +123,7 @@ const StackedBarChart = <Row,>({
         ref={innerRef}
         barGap={0}
         barCategoryGap={bars?.categoryGap}
-        accessibilityLayer
+        {...accessibilityProps}
       >
         {CustomLegend && legend && legendDimensions && (
           <RechartsLegend
