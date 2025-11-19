@@ -155,6 +155,16 @@ class PhaseInsightsService
 
   def select_or_checkbox_field_demographics_data(participant_custom_field_values, custom_field)
     counts = UserCustomFields::FieldValueCounter.counts_by_field_option(participant_custom_field_values, custom_field)
+
+    # Ensure checkbox fields always include both true and false options in consistent order
+    if custom_field.input_type == 'checkbox'
+      counts = {
+        true => counts[true] || 0,
+        false => counts[false] || 0,
+        '_blank' => counts['_blank']
+      }.compact
+    end
+
     reference_distribution = calculate_reference_distribution(custom_field)
 
     r_score = calculate_r_score(counts, reference_distribution)

@@ -137,5 +137,26 @@ describe PhaseInsightsService do
         })
       end
     end
+
+    context 'with checkbox field' do
+      let!(:custom_field_checkbox) { create(:custom_field, resource_type: 'User', key: 'checkbox', input_type: 'checkbox', title_multiloc: { en: 'Check if you agree' }) }
+
+      let(:participation1) { create(:basket_participation, user_custom_field_values: { 'checkbox' => false }) }
+      let(:participation2) { create(:basket_participation, user_custom_field_values: { 'checkbox' => false }) }
+      let(:participation3) { create(:basket_participation, user_custom_field_values: {}) }
+      let(:participation4) { create(:basket_participation, user_custom_field_values: {}) }
+
+      it 'calculates demographics data correctly' do
+        participant_custom_field_values = service.send(:participants_custom_field_values, participations.values.flatten, participant_ids)
+        result = service.send(:select_or_checkbox_field_demographics_data, participant_custom_field_values, custom_field_checkbox)
+
+        expect(result).to match({
+          r_score: nil,
+          series: { true => 0, false => 2, '_blank' => 2 },
+          reference_distribution: nil,
+          options: nil
+        })
+      end
+    end
   end
 end
