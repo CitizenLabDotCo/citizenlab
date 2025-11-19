@@ -21,13 +21,20 @@ export const AccessibilityInputs = () => {
     actions: { setProp },
     ariaLabel,
     description,
+    view,
   } = useNode((node) => ({
     ariaLabel: node.data.props.ariaLabel,
     description: node.data.props.description,
+    view: node.data.props.view, // Get the view prop if it exists
   }));
 
   // Only show accessibility inputs for phase reports (not global reports)
   if (!phaseId) {
+    return null;
+  }
+
+  // hide accessibility inputs when view is set to "table"
+  if (view === 'table') {
     return null;
   }
 
