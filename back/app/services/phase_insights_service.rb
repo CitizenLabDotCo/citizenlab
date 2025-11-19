@@ -109,18 +109,15 @@ class PhaseInsightsService
         result[:r_score] = birthyear_data[:r_score]
         result[:series] = birthyear_data[:series]
         reference_distribution = birthyear_data[:reference_distribution]
+      elsif %w[select checkbox multiselect].include?(custom_field.input_type)
+        select_or_checkbox_data = select_or_checkbox_field_demographics_data(participant_custom_field_values, custom_field)
+        result[:r_score] = select_or_checkbox_data[:r_score]
+        result[:series] = select_or_checkbox_data[:series]
+        result[:options] = select_or_checkbox_data[:options] if select_or_checkbox_data[:options]
+        reference_distribution = select_or_checkbox_data[:reference_distribution]
       else
-        counts = UserCustomFields::FieldValueCounter.counts_by_field_option(participant_custom_field_values, custom_field)
-        reference_distribution = calculate_reference_distribution(custom_field)
-
-        result[:r_score] = calculate_r_score(counts, reference_distribution)
-        result[:series] = counts
-
-        if custom_field.options.present?
-          result[:options] = custom_field.options.to_h do |o|
-            [o.key, o.attributes.slice('title_multiloc', 'ordering')]
-          end
-        end
+        # Skip unsupported field types (other number fields, text fields, etc.)
+        next
       end
 
       result[:reference_distribution] = reference_distribution
@@ -151,6 +148,27 @@ class PhaseInsightsService
       r_score: r_score,
       series: formatted_data[:ranged_series],
       reference_distribution: reference_distribution
+    }
+  end
+
+  def select_or_checkbox_field_demographics_data(participant_custom_field_values, custom_field)
+    counts = UserCustomFields::FieldValueCounter.counts_by_field_option(participant_custom_field_values, custom_field)
+    reference_distribution = calculate_reference_distribution(custom_field)
+
+    r_score = calculate_r_score(counts, reference_distribution)
+
+    options = nil
+    if custom_field.options.present?
+      options = custom_field.options.to_h do |o|
+        [o.key, o.attributes.slice('title_multiloc', 'ordering')]
+      end
+    end
+
+    {
+      r_score: r_score,
+      series: counts,
+      reference_distribution: reference_distribution,
+      options: options
     }
   end
 

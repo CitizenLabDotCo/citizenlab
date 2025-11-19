@@ -58,4 +58,56 @@ describe PhaseInsightsService do
       })
     end
   end
+
+  describe 'select_or_checkbox_field_demographics_data' do
+    context 'with single select field' do
+      let!(:custom_field_single_select) { create(:custom_field, resource_type: 'User', key: 'single_select', input_type: 'select', title_multiloc: { en: 'Select one' }) }
+      let!(:option_a) { create(:custom_field_option, custom_field: custom_field_single_select, key: 'a', title_multiloc: { en: 'Option A' }) }
+      let!(:option_b) { create(:custom_field_option, custom_field: custom_field_single_select, key: 'b', title_multiloc: { en: 'Option B' }) }
+
+      let(:participation1) { create(:basket_participation, user_custom_field_values: { 'single_select' => 'a' }) }
+      let(:participation2) { create(:basket_participation, user_custom_field_values: { 'single_select' => 'a' }) }
+      let(:participation3) { create(:basket_participation, user_custom_field_values: { 'single_select' => 'b' }) }
+      let(:participation4) { create(:basket_participation, user_custom_field_values: {}) }
+
+      let(:participations) { { voting: [participation1, participation2, participation3, participation4] } }
+      let(:participant_ids) { participations[:voting].pluck(:user_id).uniq }
+      
+      it 'calculates demographics data correctly when no reference distribution' do
+        participant_custom_field_values = service.send(:participants_custom_field_values, participations.values.flatten, participant_ids)
+        result = service.send(:select_or_checkbox_field_demographics_data, participant_custom_field_values, custom_field_single_select)
+
+        expect(result).to match({
+          r_score: nil,
+          series: { 'a' => 2, 'b' => 1, '_blank' => 1 },
+          reference_distribution: nil,
+          options: {
+            'a' => { 'title_multiloc' => { 'en' => 'Option A' }, 'ordering' => 0 },
+            'b' => { 'title_multiloc' => { 'en' => 'Option B' }, 'ordering' => 1 }
+          }
+        })
+      end
+
+      it 'calculates demographics data correctly when reference distribution is present' do
+        create(
+          :categorical_distribution,
+          custom_field: custom_field_single_select,
+          population_counts: [480, 510]
+        )
+
+        participant_custom_field_values = service.send(:participants_custom_field_values, participations.values.flatten, participant_ids)
+        result = service.send(:select_or_checkbox_field_demographics_data, participant_custom_field_values, custom_field_single_select)
+
+        expect(result).to match({
+          r_score: 0.47058823529411764,
+          series: { 'a' => 2, 'b' => 1, '_blank' => 1 },
+          reference_distribution: { 'a' => 480, 'b' => 510 },
+          options: {
+            'a' => { 'title_multiloc' => { 'en' => 'Option A' }, 'ordering' => 0 },
+            'b' => { 'title_multiloc' => { 'en' => 'Option B' }, 'ordering' => 1 }
+          }
+        })
+      end
+    end
+  end
 end
