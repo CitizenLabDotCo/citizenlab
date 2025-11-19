@@ -85,34 +85,6 @@ class PhaseInsightsService
     participations[:commenting_idea].count
   end
 
-  # TODO: Add last_7_days variants
-  # Needs rethinking. e.g. comments for voting phase should probably only count comments posted during that phase
-  # rubocop:disable Layout/TrailingWhitespace
-  # def ideas_data(phase)
-  #   # Use raw SQL to avoid ActiveRecord's implicit ordering issues
-  #   sql = <<~SQL.squish
-  #     SELECT 
-  #       COUNT(DISTINCT ideas.id) as ideas_count,
-  #       COUNT(DISTINCT comments.id) as comments_count,
-  #       COUNT(DISTINCT reactions.id) as reactions_count
-  #     FROM ideas
-  #     INNER JOIN ideas_phases ON ideas_phases.idea_id = ideas.id
-  #     LEFT JOIN comments ON comments.idea_id = ideas.id
-  #     LEFT JOIN reactions ON reactions.reactable_id = ideas.id AND reactions.reactable_type = 'Idea'
-  #     WHERE ideas_phases.phase_id = $1 
-  #       AND ideas.publication_status = 'published'
-  #   SQL
-
-  #   result = ActiveRecord::Base.connection.exec_query(sql, 'ideas_data', [phase.id]).first
-
-  #   {
-  #     inputs: result['ideas_count'],
-  #     comments: result['comments_count'],
-  #     reactions: result['reactions_count']
-  #   }
-  # end
-  # rubocop:enable Layout/TrailingWhitespace
-
   def demographics_data(phase, participations, participant_ids)
     participant_custom_field_values = participants_custom_field_values(participations, participant_ids)
 
@@ -133,18 +105,10 @@ class PhaseInsightsService
       }
 
       if custom_field.key == 'birthyear'
-        age_stats = UserCustomFields::AgeStats.calculate(participant_custom_field_values)
-
-        if age_stats.reference_distribution.present? && age_stats.reference_distribution.distribution&.dig('counts')
-          distribution_counts = age_stats.reference_distribution.distribution['counts']
-          formatted_data = age_stats.format_in_ranges
-          reference_distribution = formatted_data[:ranged_reference_distribution]
-
-          result[:r_score] = calculate_r_score(age_stats.binned_counts, distribution_counts)
-        end
-
-        formatted_data = age_stats.format_in_ranges
-        result[:series] = formatted_data[:ranged_series]
+        birthyear_data = birthyear_demographics_data(participant_custom_field_values)
+        result[:r_score] = birthyear_data[:r_score]
+        result[:series] = birthyear_data[:series]
+        reference_distribution = birthyear_data[:reference_distribution]
       else
         counts = UserCustomFields::FieldValueCounter.counts_by_field_option(participant_custom_field_values, custom_field)
         reference_distribution = calculate_reference_distribution(custom_field)
@@ -165,8 +129,30 @@ class PhaseInsightsService
     end
   end
 
-  # def birthyear_demographics_data
-  # end
+  def birthyear_demographics_data(participant_custom_field_values)
+    age_stats = UserCustomFields::AgeStats.calculate(participant_custom_field_values)
+    reference_distribution = nil
+    r_score = nil
+
+    if age_stats.reference_distribution.present?
+      distribution_data = age_stats.reference_distribution.distribution
+      
+      if distribution_data&.is_a?(Hash) && distribution_data['counts']
+        distribution_counts = distribution_data['counts']
+        formatted_data = age_stats.format_in_ranges
+        reference_distribution = formatted_data[:ranged_reference_distribution]
+        r_score = calculate_r_score(age_stats.binned_counts, distribution_counts)
+      end
+    end
+
+    formatted_data = age_stats.format_in_ranges
+
+    {
+      r_score: r_score,
+      series: formatted_data[:ranged_series],
+      reference_distribution: reference_distribution
+    }
+  end
 
   def participants_custom_field_values(participations, participant_ids)
     # Build lookup hash to avoid O(n × p) repeated searches. Reduces to O(n + p).
