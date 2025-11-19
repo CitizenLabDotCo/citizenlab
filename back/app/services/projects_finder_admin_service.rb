@@ -108,12 +108,15 @@ class ProjectsFinderAdminService
   def self.sort_by_participation(scope, params)
     direction = params[:sort] == 'participation_desc' ? 'DESC' : 'ASC'
 
+    filtered_projects_subquery = scope.select('projects.*')
+    filtered_projects = Project.from(filtered_projects_subquery, :projects)
+
     participants_subquery = Analytics::FactParticipation
-      .where(dimension_project_id: scope.select(:id))
+      .where(dimension_project_id: filtered_projects.select(:id))
       .group(:dimension_project_id)
       .select('COUNT(DISTINCT participant_id) as participants_count, dimension_project_id')
 
-    scope
+    filtered_projects
       .joins("LEFT JOIN (#{participants_subquery.to_sql}) AS project_participants ON project_participants.dimension_project_id = projects.id")
       .order(Arel.sql("COALESCE(project_participants.participants_count, 0) #{direction}, projects.id ASC"))
   end

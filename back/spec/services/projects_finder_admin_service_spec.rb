@@ -408,6 +408,22 @@ describe ProjectsFinderAdminService do
       # p2 has 10, p3 has 8, p1 has 5, p4 has 0
       expect(result.pluck(:id)).to eq([p2.id, p3.id, p1.id, p4.id])
     end
+
+    it 'works with pre-filtered scopes that have joins' do
+      pre_filtered_scope = Project
+        .joins(:admin_publication)
+        .where(admin_publication: { publication_status: 'published' })
+
+      result = described_class.execute(
+        pre_filtered_scope,
+        { sort: 'participation_desc' },
+        current_user: create(:admin)
+      )
+
+      # Force the query to actually run
+      expect { result.to_a }.not_to raise_error(ActiveRecord::StatementInvalid)
+      expect(result.to_a).to be_an(Array)
+    end
   end
 
   describe 'self.filter_visibility' do
