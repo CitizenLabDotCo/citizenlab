@@ -14,5 +14,3 @@ export const useRechartsAccessibility = () => {
     tabIndex: 0,
   };
 };
-
-export default useRechartsAccessibility;

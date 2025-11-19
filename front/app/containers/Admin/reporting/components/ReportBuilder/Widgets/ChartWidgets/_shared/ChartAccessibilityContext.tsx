@@ -39,5 +39,3 @@ export const useChartAccessibility = () => {
   }
   return context;
 };
-
-export default ChartAccessibilityContext;
