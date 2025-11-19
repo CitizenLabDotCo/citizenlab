@@ -3,8 +3,32 @@ require 'rails_helper'
 describe PhaseInsightsService do
   let(:service) { described_class.new }
 
-  # let(:phase) { create(:single_voting_phase) }
-  # let!(:permission1) { create(:permission, action: 'voting', permission_scope: phase) }
+  let(:phase) { create(:single_voting_phase) }
+  let!(:permission1) { create(:permission, action: 'voting', permission_scope: phase) }
+
+  describe 'demographics_data' do
+    it 'only includes data related to specific user custom fields' do
+      # Should be included
+      create(:custom_field, resource_type: 'User', key: 'birthyear', input_type: 'number')
+      create(:custom_field, resource_type: 'User', key: 'single_select', input_type: 'select')
+      create(:custom_field, resource_type: 'User', key: 'multi_select', input_type: 'multiselect')
+      create(:custom_field, resource_type: 'User', key: 'checkbox', input_type: 'checkbox')
+
+      # Should be excluded
+      create(:custom_field, resource_type: 'User', key: 'numeric_not_birthyear', input_type: 'number')
+      create(:custom_field, resource_type: 'User', key: 'date', input_type: 'date')
+      create(:custom_field, resource_type: 'User', key: 'text', input_type: 'text')
+      create(:custom_field, resource_type: 'User', key: 'multiline_text', input_type: 'multiline_text')
+
+      participation = create(:basket_participation)
+
+      flattened_participations = [participation]
+      participant_ids = flattened_participations.pluck(:user_id).uniq
+      result = service.send(:demographics_data, phase, flattened_participations, participant_ids)
+
+      expect(result.pluck(:key)).to match_array(%w[birthyear single_select multi_select checkbox])
+    end
+  end
 
   describe 'birthyear_demographics_data' do
     let!(:custom_field_birthyear) { create(:custom_field, resource_type: 'User', key: 'birthyear', input_type: 'number', title_multiloc: { en: 'Birthyear' }) }

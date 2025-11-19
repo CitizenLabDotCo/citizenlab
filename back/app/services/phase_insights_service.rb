@@ -88,7 +88,7 @@ class PhaseInsightsService
   def phase_comments_counts(participations)
     commenting_participations = participations[:commenting_idea]
     total_comments = commenting_participations.count
-    comments_last_7_days = commenting_participations.select { |p| p[:acted_at] >= 7.days.ago }.count
+    comments_last_7_days = commenting_participations.count { |p| p[:acted_at] >= 7.days.ago }
 
     {
       total: total_comments,
@@ -97,13 +97,15 @@ class PhaseInsightsService
   end
 
   def demographics_data(phase, participations, participant_ids)
+    return [] if participant_ids.empty?
+
     participant_custom_field_values = participants_custom_field_values(participations, participant_ids)
 
     custom_fields = phase.permissions.flat_map do |permission| # TODO: Maybe phase.permissions.where.not(action: 'attending_event')?
       @permissions_custom_fields_service.fields_for_permission(permission)
     end.map(&:custom_field).uniq
 
-    custom_fields.map do |custom_field|
+    custom_fields.filter_map do |custom_field|
       reference_distribution = nil
 
       result = {
