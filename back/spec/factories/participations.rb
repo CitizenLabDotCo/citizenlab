@@ -3,14 +3,19 @@ FactoryBot.define do
   factory :participation, class: Hash do
     skip_create
 
+    transient do
+      user { nil }
+    end
+
     initialize_with do
+      participation_user = user || create(:user)
       {
         id: SecureRandom.uuid,
         action: 'generic',
         acted_at: Time.current,
         classname: 'Generic',
-        user_id: create(:user).id,
-        user_custom_field_values: {}
+        user_id: participation_user.id,
+        user_custom_field_values: participation_user.custom_field_values
       }
     end
   end
@@ -18,7 +23,8 @@ FactoryBot.define do
   # Basket-specific participation
   factory :basket_participation, parent: :participation do
     initialize_with do
-      basket = create(:basket)
+      participation_user = user || create(:user)
+      basket = create(:basket, user: participation_user)
       {
         id: basket.id,
         action: 'voting',
@@ -36,7 +42,8 @@ FactoryBot.define do
       end
 
       initialize_with do
-        basket = create(:basket)
+        participation_user = user || create(:user)  # ← Added this line
+        basket = create(:basket, user: participation_user)  # ← Use participation_user
         create(:baskets_idea, basket: basket, votes: vote_count)
         {
           id: basket.id,
@@ -54,7 +61,8 @@ FactoryBot.define do
   # Comment participation
   factory :comment_participation, parent: :participation do
     initialize_with do
-      comment = create(:comment)
+      participation_user = user || create(:user)  # ← Added this line
+      comment = create(:comment, author: participation_user)  # ← Use participation_user
       {
         id: comment.id,
         action: 'commenting_idea',

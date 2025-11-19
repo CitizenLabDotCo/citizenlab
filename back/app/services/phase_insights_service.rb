@@ -134,16 +134,20 @@ class PhaseInsightsService
 
       if custom_field.key == 'birthyear'
         age_stats = UserCustomFields::AgeStats.calculate(participant_custom_field_values)
-        distribution_counts = age_stats.reference_distribution['distribution']['counts']
-
+        
+        if age_stats.reference_distribution&.dig('distribution', 'counts')
+          distribution_counts = age_stats.reference_distribution['distribution']['counts']
+          formatted_data = age_stats.format_in_ranges
+          reference_distribution = formatted_data[:ranged_reference_distribution]
+          
+          result[:r_score] = calculate_r_score(age_stats.binned_counts, distribution_counts)
+        end
+        
         formatted_data = age_stats.format_in_ranges
-        reference_distribution = formatted_data[:ranged_reference_distribution]
-
-        result[:r_score] = calculate_r_score(age_stats.binned_counts, distribution_counts)
         result[:series] = formatted_data[:ranged_series]
       else
         counts = UserCustomFields::FieldValueCounter.counts_by_field_option(participant_custom_field_values, custom_field)
-        reference_distribution = calculate_reference_distribution(custom_field) || {}
+        reference_distribution = calculate_reference_distribution(custom_field)
 
         result[:r_score] = calculate_r_score(counts, reference_distribution)
         result[:series] = counts
