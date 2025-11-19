@@ -318,5 +318,44 @@ describe MultiTenancy::Templates::TenantSerializer do
       expect(template['models']['permission'].first['permitted_by']).to eq 'admins_moderators' # Not changed
       expect(template['models']['permission'].last['permitted_by']).to eq 'users' # Changed
     end
+
+    it 'successfully exports only manual campaigns with the context relationship' do
+      _global_auto_campaign = create(:comment_on_your_comment_campaign)
+      global_manual_campaign = create(:manual_campaign)
+      phase = create(:ideation_phase)
+      _context_auto_campaign = create(:comment_on_your_comment_campaign, context: phase)
+      project = create(:project)
+      context_manual_campaign = create(:manual_project_participants_campaign, context: project)
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      expect(template['models']['email_campaigns/campaign'].size).to eq 2
+      expect(template['models']['email_campaigns/campaign']).to match array_including(
+        hash_including(
+          'type' => 'EmailCampaigns::Campaigns::Manual',
+          'enabled' => global_manual_campaign.enabled,
+          'sender' => global_manual_campaign.sender,
+          'subject_multiloc' => global_manual_campaign.subject_multiloc,
+          'body_multiloc' => global_manual_campaign.body_multiloc,
+          'context_ref' => nil
+        ),
+        hash_including(
+          'type' => 'EmailCampaigns::Campaigns::ManualProjectParticipants',
+          'enabled' => context_manual_campaign.enabled,
+          'sender' => context_manual_campaign.sender,
+          'subject_multiloc' => context_manual_campaign.subject_multiloc,
+          'body_multiloc' => context_manual_campaign.body_multiloc,
+          'context_ref' => hash_including(
+            'title_multiloc' => project.title_multiloc
+          )
+        )
+      )
+
+      tenant = create(:tenant, locales: AppConfiguration.instance.settings('core', 'locales'))
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+        expect(EmailCampaigns::Campaigns.count).to eq 2
+      end
+    end
   end
 end
