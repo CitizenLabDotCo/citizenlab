@@ -107,10 +107,9 @@ class ProjectsFinderAdminService
 
   def self.sort_by_participation(scope, params)
     direction = params[:sort] == 'participation_desc' ? 'DESC' : 'ASC'
-    project_ids = scope.pluck(:id)
 
     participants_subquery = Analytics::FactParticipation
-      .where(dimension_project_id: project_ids)
+      .where(dimension_project_id: scope.select(:id))
       .group(:dimension_project_id)
       .select('COUNT(DISTINCT participant_id) as participants_count, dimension_project_id')
 
