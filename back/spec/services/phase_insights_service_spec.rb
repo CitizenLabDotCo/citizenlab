@@ -40,7 +40,7 @@ describe PhaseInsightsService do
     end
 
     it 'calculates demographics data correctly when reference distribution is present' do
-      ref_distribution = create(
+      create(
         :binned_distribution,
         custom_field: custom_field_birthyear,
         bins: [18, 25, 35, 45, 55, 65, nil], # Age ranges: <18, 18-25, 25-35, 35-45, 45-65, >65
@@ -52,8 +52,8 @@ describe PhaseInsightsService do
 
       expect(result).to match({
         r_score: 0.0,
-        series: {'18-24' => 0, '25-34' => 1, '35-44' => 0, '45-54' => 0, '55-64' => 0, '65+' => 0, '_blank' => 0},
-        reference_distribution: {'18-24' => 50, '25-34' => 200, '35-44' => 400, '45-54' => 300, '55-64' => 50, '65+' => 700}
+        series: { '18-24' => 0, '25-34' => 1, '35-44' => 0, '45-54' => 0, '55-64' => 0, '65+' => 0, '_blank' => 0 },
+        reference_distribution: { '18-24' => 50, '25-34' => 200, '35-44' => 400, '45-54' => 300, '55-64' => 50, '65+' => 700 }
       })
     end
   end

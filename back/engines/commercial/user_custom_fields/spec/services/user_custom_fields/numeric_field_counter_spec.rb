@@ -36,7 +36,7 @@ RSpec.describe UserCustomFields::NumericFieldCounter do
         'negative_values' => {
           counts: { -10 => 2, -5 => 3, 0 => 1, 5 => 4 },
           bins: [-15, -7, 0, 10],
-          expected_result: [2, 3, 5] # Handles negative ranges properly  
+          expected_result: [2, 3, 5] # Handles negative ranges properly
         },
         'decimal_values' => {
           counts: { 1.5 => 2, 2.7 => 3, 4.1 => 1 },
@@ -54,8 +54,8 @@ RSpec.describe UserCustomFields::NumericFieldCounter do
           expected_result: [1, 5] # 10 and 15 both in second bin
         },
         'realistic_income_data' => {
-          counts: { 25000 => 5, 45000 => 8, 75000 => 12, 95000 => 3, 120000 => 2 },
-          bins: [0, 50000, 100000, 150000],
+          counts: { 25_000 => 5, 45_000 => 8, 75_000 => 12, 95_000 => 3, 120_000 => 2 },
+          bins: [0, 50_000, 100_000, 150_000],
           expected_result: [13, 15, 2] # Income distribution across salary ranges
         }
       }
@@ -73,7 +73,7 @@ RSpec.describe UserCustomFields::NumericFieldCounter do
     it 'creates 10 evenly spaced bins' do
       values = [10, 20, 30, 40, 50]
       bins = counter.send(:calculate_closed_bins, values, 5)
-      
+
       expect(bins.length).to eq(6) # 5 bins = 6 boundaries
       expect(bins.first).to eq(10) # Starts at min
       expect(bins.last).to be > 50 # Ends beyond max to include it
@@ -82,14 +82,14 @@ RSpec.describe UserCustomFields::NumericFieldCounter do
     it 'handles single value' do
       values = [42]
       bins = counter.send(:calculate_closed_bins, values, 10)
-      
+
       expect(bins).to eq([42, 43]) # Simple increment for single value
     end
 
     it 'handles negative values' do
       values = [-20, -10, 0, 10, 20]
       bins = counter.send(:calculate_closed_bins, values, 4)
-      
+
       expect(bins.first).to eq(-20) # Starts at min
       expect(bins.last).to be > 20 # Ends beyond max
       expect(bins.length).to eq(5) # 4 bins = 5 boundaries
@@ -98,7 +98,7 @@ RSpec.describe UserCustomFields::NumericFieldCounter do
     it 'handles empty values' do
       values = []
       bins = counter.send(:calculate_closed_bins, values, 10)
-      
+
       expect(bins).to eq([0, 10]) # Default fallback
     end
   end
@@ -117,17 +117,17 @@ RSpec.describe UserCustomFields::NumericFieldCounter do
 
     it 'counts values with dynamic binning' do
       result = counter.count(records_or_values, custom_field_income)
-      
+
       expect(result.binned_counts.sum).to eq(4) # 4 known values
       expect(result.unknown_count).to eq(1) # 1 blank value
-      expect(result.bins.first).to eq(25000.0) # Starts at min value
-      expect(result.bins.last).to be > 125000 # Ends beyond max value
+      expect(result.bins.first).to eq(25_000.0) # Starts at min value
+      expect(result.bins.last).to be > 125_000 # Ends beyond max value
     end
 
     it 'uses provided bins when given' do
-      custom_bins = [0, 50000, 100000, 150000]
+      custom_bins = [0, 50_000, 100_000, 150_000]
       result = counter.count(records_or_values, custom_field_income, custom_bins)
-      
+
       expect(result.bins).to eq(custom_bins)
       expect(result.binned_counts).to eq([1, 2, 1]) # Distributed across provided bins
     end
@@ -135,7 +135,7 @@ RSpec.describe UserCustomFields::NumericFieldCounter do
     it 'handles empty data' do
       empty_data = [{ 'income' => '' }, { 'income' => nil }]
       result = counter.count(empty_data, custom_field_income)
-      
+
       expect(result.binned_counts).to eq([0]) # Single empty bin
       expect(result.unknown_count).to eq(2) # All values unknown
     end
