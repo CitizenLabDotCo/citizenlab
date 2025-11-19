@@ -1,4 +1,10 @@
 module UserCustomFields
+  # Service for counting numeric custom field values and binning them
+  # Typically, the 'birthyear' user custom field counts are calculated by AgeCounter
+  #
+  # Does not handle open-ended bins (i.e., nil as last bin); all bins are closed.
+  # Automatically ranges bins from min to max values if no bins are provided.
+  # Handles negative and decimal values and bin limits.
   class NumericFieldCounter
     Result = Struct.new(:binned_counts, :unknown_count, :bins)
 

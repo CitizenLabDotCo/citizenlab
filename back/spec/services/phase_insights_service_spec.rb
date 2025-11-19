@@ -9,11 +9,12 @@ describe PhaseInsightsService do
   describe 'birthyear_demographics_data' do
     let!(:custom_field_birthyear) { create(:custom_field, resource_type: 'User', key: 'birthyear', input_type: 'number', title_multiloc: { en: 'Birthyear' }) }
 
-    let(:user1) { create(:user, custom_field_values: { birthyear: Date.current.year - 25 }) } # Age 25
+    let(:participation1) { create(:basket_participation, user_custom_field_values: { 'birthyear' => Date.current.year - 25 }) }
+    let(:participation2) { create(:basket_participation, user_custom_field_values: { 'birthyear' => Date.current.year - 25 }) }
+    let(:participation3) { create(:basket_participation, user_custom_field_values: { 'birthyear' => Date.current.year - 35 }) }
+    let(:participation4) { create(:basket_participation, user_custom_field_values: {}) }
 
-    let(:participation) { create(:basket_participation, user: user1) }
-
-    let(:participations) { { voting: [participation] } }
+    let(:participations) { { voting: [participation1, participation2, participation3, participation4] } }
     let(:participant_ids) { participations[:voting].pluck(:user_id).uniq }
 
     it 'calculates demographics data correctly when no reference distribution' do
@@ -25,15 +26,15 @@ describe PhaseInsightsService do
         series: {
           '0-9' => 0,
           '10-19' => 0,
-          '20-29' => 1,
-          '30-39' => 0,
+          '20-29' => 2,
+          '30-39' => 1,
           '40-49' => 0,
           '50-59' => 0,
           '60-69' => 0,
           '70-79' => 0,
           '80-89' => 0,
           '90+' => 0,
-          '_blank' => 0
+          '_blank' => 1
         },
         reference_distribution: nil
       })
@@ -52,7 +53,7 @@ describe PhaseInsightsService do
 
       expect(result).to match({
         r_score: 0.0,
-        series: { '18-24' => 0, '25-34' => 1, '35-44' => 0, '45-54' => 0, '55-64' => 0, '65+' => 0, '_blank' => 0 },
+        series: { '18-24' => 0, '25-34' => 2, '35-44' => 1, '45-54' => 0, '55-64' => 0, '65+' => 0, '_blank' => 1 },
         reference_distribution: { '18-24' => 50, '25-34' => 200, '35-44' => 400, '45-54' => 300, '55-64' => 50, '65+' => 700 }
       })
     end
