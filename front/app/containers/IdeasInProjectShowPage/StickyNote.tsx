@@ -8,6 +8,7 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useLocalize from 'hooks/useLocalize';
 
 import Avatar from 'components/Avatar';
+import T from 'components/T';
 
 // Only using styled-component for :hover pseudo-selector which isn't available as a Box prop
 const HoverableDiv = styled(Box)`
@@ -21,13 +22,14 @@ const HoverableDiv = styled(Box)`
 interface Props {
   ideaId: string;
   rotation?: number;
-  topicColors?: {
-    background: string;
-    text: string;
-  };
+  topicBackgroundColor: string;
 }
 
-const StickyNote: React.FC<Props> = ({ ideaId, rotation = 0, topicColors }) => {
+const StickyNote: React.FC<Props> = ({
+  ideaId,
+  rotation = 0,
+  topicBackgroundColor,
+}) => {
   const { data: idea } = useIdeaById(ideaId);
   const localize = useLocalize();
 
@@ -36,40 +38,32 @@ const StickyNote: React.FC<Props> = ({ ideaId, rotation = 0, topicColors }) => {
   }
 
   const title = localize(idea.data.attributes.title_multiloc);
-  const body = localize(idea.data.attributes.body_multiloc);
   const authorName = idea.data.attributes.author_name;
   const authorId = idea.data.relationships.author?.data?.id || null;
   const authorHash = idea.data.attributes.author_hash;
 
   return (
-    <Box
+    <HoverableDiv
       p="12px"
       borderRadius="2px"
       w="250px"
       minHeight="200px"
       transform={`rotate(${rotation}deg)`}
-      background={topicColors?.background || colors.teal200}
+      background={topicBackgroundColor || colors.teal200}
       boxShadow="0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08)"
       cursor="pointer"
       position="relative"
+      display="flex"
+      flexDirection="column"
+      gap="8px"
     >
-      <Text
-        fontSize="l"
-        fontWeight="bold"
-        m="0px"
-        lineHeight="1.3"
-        color={'textPrimary'}
-      >
+      <Text fontSize="l" fontWeight="bold" m="0px" color={'textPrimary'}>
         {title}
       </Text>
       {authorName && (
         <Box display="flex" alignItems="center">
           <Avatar userId={authorId} authorHash={authorHash} size={24} />
-          <Text
-            fontSize="s"
-            fontWeight="semi-bold"
-            style={{ color: topicColors?.text }}
-          >
+          <Text fontSize="s" fontWeight="semi-bold" color="textPrimary" m="0px">
             {authorName}
           </Text>
         </Box>
@@ -79,15 +73,16 @@ const StickyNote: React.FC<Props> = ({ ideaId, rotation = 0, topicColors }) => {
         color="textPrimary"
         textOverflow="ellipsis"
         overflow="hidden"
+        m="0px"
         style={{
           display: '-webkit-box',
           WebkitLineClamp: 4,
           WebkitBoxOrient: 'vertical',
         }}
       >
-        {body}
+        <T supportHtml={true} value={idea.data.attributes.body_multiloc} />
       </Text>
-    </Box>
+    </HoverableDiv>
   );
 };
 

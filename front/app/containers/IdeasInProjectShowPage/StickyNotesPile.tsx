@@ -120,8 +120,8 @@ const StickyNotesPile: React.FC<Props> = ({
     <PileContainer>
       {ideas.data.slice(0, maxNotes).map((idea, index) => {
         const topicIds = ideaTopics.get(idea.id) || [];
-        const topicColors =
-          topicIds.length > 0 ? topicColorMap.get(topicIds[0]) : undefined;
+        const topicBackgroundColor =
+          topicIds.length > 0 ? topicColorMap.get(topicIds[0]) : '';
 
         return (
           <NoteWrapper
@@ -133,7 +133,7 @@ const StickyNotesPile: React.FC<Props> = ({
             <StickyNote
               ideaId={idea.id}
               rotation={rotations[index % rotations.length]}
-              topicColors={topicColors}
+              topicBackgroundColor={topicBackgroundColor}
             />
           </NoteWrapper>
         );

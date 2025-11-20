@@ -39,15 +39,12 @@ export const getTopicColor = (topicId: string): string => {
 // All colors use grey800 for text
 export const createTopicColorMap = (
   topicIds: string[]
-): Map<string, { background: string; text: string }> => {
-  const colorMap = new Map<string, { background: string; text: string }>();
+): Map<string, string> => {
+  const colorMap = new Map<string, string>();
 
   topicIds.forEach((topicId) => {
     const backgroundColor = getTopicColor(topicId);
-    colorMap.set(topicId, {
-      background: backgroundColor,
-      text: colors.grey800,
-    });
+    colorMap.set(topicId, backgroundColor);
   });
 
   return colorMap;
