@@ -3,28 +3,85 @@
 // ============================================================================
 
 /**
+ * Method-specific metric types
+ */
+export interface IdeationMetrics {
+  ideas: number;
+  comments: number;
+  reactions: number;
+  ideas_last_7_days?: number;
+  comments_last_7_days?: number;
+  reactions_last_7_days?: number;
+}
+
+export interface ProposalsMetrics {
+  ideas: number;
+  comments: number;
+  reactions: number;
+  ideas_last_7_days?: number;
+  comments_last_7_days?: number;
+  reactions_last_7_days?: number;
+}
+
+export interface VotingMetrics {
+  votes: number;
+  voters: number;
+  comments: number;
+  offline_votes: number;
+  votes_last_7_days?: number;
+  comments_last_7_days?: number;
+  offline_votes_last_7_days?: number;
+}
+
+export interface BudgetingMetrics {
+  votes: number;
+  votes_per_person: number;
+  total_votes: number;
+  offline_votes: number;
+  comments: number;
+  votes_last_7_days?: number;
+  comments_last_7_days?: number;
+  offline_votes_last_7_days?: number;
+}
+
+export interface SurveyMetrics {
+  submissions: number;
+  completion_rate: number;
+  submissions_last_7_days?: number;
+}
+
+export interface PollMetrics {
+  respondents: number;
+}
+
+export interface CommonGroundMetrics {
+  statements: number;
+  respondents: number;
+  responses: number;
+  responses_per_respondent: number;
+  reactions: number;
+  reactions_last_7_days?: number;
+}
+
+/**
  * Participation metrics attributes (nested in JSONAPI response)
  */
 export interface PhaseInsightsParticipationMetrics {
   visitors: number;
   participants: number;
   engagement_rate: number;
-  // Method-specific metrics
-  ideas?: number;
-  comments?: number;
-  reactions?: number;
-  votes?: number;
-  submissions?: number;
-  votes_per_person?: number;
-  completion_rate?: number;
-  // Time comparison (for "Last week" deltas)
-  visitors_change?: number;
-  participants_change?: number;
-  ideas_change?: number;
-  comments_change?: number;
-  reactions_change?: number;
-  votes_change?: number;
-  submissions_change?: number;
+  // Time comparison (for "Last 7 days" deltas)
+  visitors_last_7_days?: number;
+  participants_last_7_days?: number;
+  // Method-specific metrics nested by participation method
+  ideation?: IdeationMetrics;
+  proposals?: ProposalsMetrics;
+  voting?: VotingMetrics;
+  budgeting?: BudgetingMetrics;
+  native_survey?: SurveyMetrics;
+  survey?: SurveyMetrics;
+  poll?: PollMetrics;
+  common_ground?: CommonGroundMetrics;
 }
 
 /**
