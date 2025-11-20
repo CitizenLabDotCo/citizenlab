@@ -450,7 +450,7 @@ module ParticipationMethod
     end
 
     def participation_ideas_submitted
-      end_time = phase.end_at ? phase.end_at.end_of_day : Time.current.end_of_day
+      end_time = phase.end_at ? phase.end_at.end_of_day : Time.current.end_of_day # TODO: Consider platform timezone
       ideas = phase.ideas.where(<<~SQL.squish, phase.start_at.beginning_of_day, end_time)
         ideas.submitted_at >= ? AND ideas.submitted_at <= ?
       SQL
@@ -468,7 +468,7 @@ module ParticipationMethod
     end
 
     def participation_idea_comments
-      end_time = phase.end_at ? phase.end_at.end_of_day : Time.current.end_of_day
+      end_time = phase.end_at ? phase.end_at.end_of_day : Time.current.end_of_day # TODO: Consider platform timezone
       comments = Comment.joins(:idea)
         .merge(phase.ideas)
         .where(<<~SQL.squish, phase.start_at.beginning_of_day, end_time)
@@ -490,7 +490,7 @@ module ParticipationMethod
     end
 
     def participation_idea_reactions
-      end_time = phase.end_at ? phase.end_at.end_of_day : Time.current.end_of_day
+      end_time = phase.end_at ? phase.end_at.end_of_day : Time.current.end_of_day # TODO: Consider platform timezone
       reactions = Reaction.where(
         reactable_type: 'Idea',
         reactable_id: phase.ideas.select(:id),

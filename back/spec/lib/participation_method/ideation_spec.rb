@@ -257,6 +257,56 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
+  describe '#participation_ideas_submitted' do
+    let(:user1) { create(:user) }
+    let!(:idea1) { create(:idea, phases: [phase], submitted_at: 20.days.ago, author: user1) } # before phase start
+    let!(:idea2) { create(:idea, phases: [phase], submitted_at: 10.days.ago, author: user1) } # during phase
+    let!(:idea3) { create(:idea, phases: [phase], submitted_at: 1.day.ago, author: user1) } # after phase end
+
+    let(:user2) { create(:user) }
+    let!(:idea4) { create(:idea, phases: [phase], submitted_at: 10.days.ago, author: user2) } # during phase
+
+    before { phase.update!(start_at: 15.days.ago, end_at: 2.days.ago) }
+
+    it 'returns the participation ideas submitted data for ideas created during phase' do
+      participation_ideas_submitted = participation_method.participation_ideas_submitted
+      expect(participation_ideas_submitted).to match_array([
+        {
+          id: idea2.id,
+          action: 'posting_idea',
+          acted_at: a_kind_of(Time),
+          classname: 'Idea',
+          user_id: user1.id,
+          user_custom_field_values: {}
+        },
+        {
+          id: idea4.id,
+          action: 'posting_idea',
+          acted_at: a_kind_of(Time),
+          classname: 'Idea',
+          user_id: user2.id,
+          user_custom_field_values: {}
+        }
+      ])
+
+      first_participation = participation_ideas_submitted.first
+      expect(first_participation[:acted_at])
+        .to be_within(1.second).of(Idea.find(first_participation[:id]).submitted_at)
+    end
+
+    it 'correctly handles phases with no end date' do
+      phase.update!(end_at: nil)
+      participation_ideas_submitted = participation_method.participation_ideas_submitted
+
+      expect(participation_ideas_submitted.pluck(:id)).to match_array([
+        idea2.id,
+        idea3.id,
+        idea4.id
+      ])
+    end
+  end
+
+
   describe '#participation_idea_comments' do
     let!(:idea) { create(:idea, phases: [phase]) }
 
@@ -295,6 +345,17 @@ RSpec.describe ParticipationMethod::Ideation do
       first_participation = participation_idea_comments.first
       expect(first_participation[:acted_at])
         .to be_within(1.second).of(Comment.find(first_participation[:id]).created_at)
+    end
+
+    it 'correctly handles phases with no end date' do
+      phase.update!(end_at: nil)
+      participation_idea_comments = participation_method.participation_idea_comments
+
+      expect(participation_idea_comments.pluck(:id)).to match_array([
+        comment2.id,
+        comment3.id,
+        comment4.id
+      ])
     end
   end
 
@@ -338,6 +399,17 @@ RSpec.describe ParticipationMethod::Ideation do
       first_participation = participation_idea_reactions.first
       expect(first_participation[:acted_at])
         .to be_within(1.second).of(Reaction.find(first_participation[:id]).created_at)
+    end
+
+    it 'correctly handles phases with no end date' do
+      phase.update!(end_at: nil)
+      participation_idea_reactions = participation_method.participation_idea_reactions
+
+      expect(participation_idea_reactions.pluck(:id)).to match_array([
+        reaction2.id,
+        reaction3.id,
+        reaction4.id
+      ])
     end
   end
 end
