@@ -8,6 +8,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import usePhases from 'api/phases/usePhases';
@@ -31,6 +32,12 @@ interface TopicItemProps {
   onTopicSelect: (topicId: string) => void;
 }
 
+const StyledButton = styled(Button)`
+  .buttonText {
+    width: 100%;
+  }
+`;
+
 const TopicItem: React.FC<TopicItemProps> = ({
   topicId,
   topicTitle,
@@ -47,7 +54,7 @@ const TopicItem: React.FC<TopicItemProps> = ({
   return (
     <>
       <Box
-        as={Button}
+        as={StyledButton}
         buttonStyle="secondary-outlined"
         background={isActive ? colors.teal100 : 'transparent'}
         onClick={() => onTopicSelect(topicId)}
@@ -76,22 +83,13 @@ const TopicItem: React.FC<TopicItemProps> = ({
               }}
             />
           </Box>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            mt="4px"
-            padding={'2px'}
-            w="100%"
-          >
-            <Text variant="bodyS" color="grey600">
-              {topicCount} {topicCount === 1 ? 'idea' : 'ideas'}
-            </Text>
-            <Text variant="bodyS" color="grey600">
-              {percentage.toFixed(1)}%
-            </Text>
-          </Box>
+
+          <Text variant="bodyS" color="grey600">
+            {topicCount} {topicCount === 1 ? 'idea' : 'ideas'}
+          </Text>
         </Box>
       </Box>
+
       <Divider m="0px" />
     </>
   );
@@ -121,16 +119,7 @@ const TopicsSidebar: React.FC<Props> = ({ selectedTopicId, onTopicSelect }) => {
   const totalIdeasCount = filterCounts?.data.attributes.total || 0;
   const topicCounts = filterCounts?.data.attributes.topic_id || {};
   if (topicsLoading || !projectId) {
-    return (
-      <Box
-        width="300px"
-        background={colors.white}
-        borderRight={`1px solid ${colors.grey300}`}
-        overflowY="auto"
-      >
-        <Text color="grey600">Loading topics...</Text>
-      </Box>
-    );
+    return null;
   }
 
   if (!topics || topics.data.length === 0) {
@@ -148,7 +137,7 @@ const TopicsSidebar: React.FC<Props> = ({ selectedTopicId, onTopicSelect }) => {
       <Box mb="24px">
         <GoBackButton linkTo={`/projects/${slug}`} />
       </Box>
-
+      <Divider m="0px" />
       <Box
         as={Button}
         justify="left"
