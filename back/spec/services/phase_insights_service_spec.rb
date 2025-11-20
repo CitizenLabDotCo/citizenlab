@@ -3,11 +3,43 @@ require 'rails_helper'
 describe PhaseInsightsService do
   let(:service) { described_class.new }
 
-  let(:phase) { create(:single_voting_phase) }
+  let(:phase) { create(:single_voting_phase, start_at: 15.days.ago, end_at: 2.days.ago) }
   let!(:permission1) { create(:permission, action: 'voting', permission_scope: phase) }
 
-  describe 'demographics_data' do
-    it 'only includes data related to specific user custom fields' do
+  describe '#base_metrics' do
+    let(:visitors_data) { { total: 100, last_7_days: 20 } }
+
+    let(:user1) { create(:user) }
+
+    let(:participation1) { create(:basket_participation, acted_at: 20.days.ago, user: user1) } # before phase start
+    let(:participation2) { create(:basket_participation, acted_at: 10.days.ago, user: user1) } # after phase start
+    let(:participation3) { create(:basket_participation, acted_at: 5.days.ago, user: user1) } # in last 7 days
+    let(:participation4) { create(:basket_participation, acted_at: 1.days.ago, user: user1) } # after phase end
+
+    let(:user2) { create(:user) }
+    let(:participation5) { create(:basket_participation, acted_at: 10.days.ago, user: user2) } # after phase start
+    let(:participation6) { create(:basket_participation, acted_at: 4.days.ago, user: user2) } # in last 7 days
+
+    let(:participations) { { voting: [participation1, participation2, participation3, participation4, participation5, participation6] } }
+    let(:participant_ids) { participations[:voting].pluck(:user_id).uniq }
+
+    it 'calculates base metrics correctly' do
+      result = service.send(:base_metrics, participations, participant_ids, visitors_data)
+
+      expect(result).to eq(
+        {
+          visitors: 100,
+          visitors_last_7_days: 20,
+          participants: 2,
+          participants_last_7_days: 2,
+          engagement_rate: 0.02
+        }
+      )
+    end
+  end
+
+  describe '#demographics_data' do
+    it 'only includes data related to specific types of user custom fields' do
       # Should be included
       create(:custom_field, resource_type: 'User', key: 'birthyear', input_type: 'number')
       create(:custom_field, resource_type: 'User', key: 'single_select', input_type: 'select')
@@ -158,7 +190,7 @@ describe PhaseInsightsService do
     end
   end
 
-  describe 'birthyear_demographics_data' do
+  describe '#birthyear_demographics_data' do
     let!(:custom_field_birthyear) { create(:custom_field, resource_type: 'User', key: 'birthyear', input_type: 'number', title_multiloc: { en: 'Birthyear' }) }
 
     let(:participation1) { create(:basket_participation, user_custom_field_values: { 'birthyear' => Date.current.year - 25 }) }
@@ -211,7 +243,7 @@ describe PhaseInsightsService do
     end
   end
 
-  describe 'select_or_checkbox_field_demographics_data' do
+  describe '#select_or_checkbox_field_demographics_data' do
     let(:participations) { { voting: [participation1, participation2, participation3, participation4] } }
     let(:participant_ids) { participations[:voting].pluck(:user_id).uniq }
 

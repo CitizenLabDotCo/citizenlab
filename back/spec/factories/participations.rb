@@ -4,18 +4,20 @@ FactoryBot.define do
     skip_create
 
     transient do
+      acted_at { Time.current }
       user { nil }
       user_custom_field_values { {} }
     end
 
     initialize_with do
+      acted_at_time = acted_at || Time.current
       participation_user = user || create(:user)
       custom_field_values = user_custom_field_values.presence || participation_user.custom_field_values
 
       {
         id: SecureRandom.uuid,
         action: 'generic',
-        acted_at: Time.current,
+        acted_at: acted_at_time,
         classname: 'Generic',
         user_id: participation_user.id,
         user_custom_field_values: custom_field_values
@@ -28,12 +30,13 @@ FactoryBot.define do
     initialize_with do
       participation_user = user || create(:user)
       basket = create(:basket, user: participation_user)
+      acted_at_time = acted_at || basket.created_at
       custom_field_values = user_custom_field_values.presence || basket.user.custom_field_values
 
       {
         id: basket.id,
         action: 'voting',
-        acted_at: basket.submitted_at,
+        acted_at: acted_at_time,
         classname: 'Basket',
         user_id: basket.user_id,
         user_custom_field_values: custom_field_values,
@@ -49,13 +52,14 @@ FactoryBot.define do
       initialize_with do
         participation_user = user || create(:user)
         basket = create(:basket, user: participation_user)
+        acted_at_time = acted_at || basket.created_at
         create(:baskets_idea, basket: basket, votes: vote_count)
         custom_field_values = user_custom_field_values.presence || basket.user.custom_field_values
 
         {
           id: basket.id,
           action: 'voting',
-          acted_at: basket.submitted_at,
+          acted_at: acted_at_time,
           classname: 'Basket',
           user_id: basket.user_id,
           user_custom_field_values: custom_field_values,
