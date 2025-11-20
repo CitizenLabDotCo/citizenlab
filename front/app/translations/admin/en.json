@@ -1299,6 +1299,7 @@
   "app.containers.Admin.projects.project.insights.offlineVotes": "Offline votes",
   "app.containers.Admin.projects.project.insights.participants": "Participants",
   "app.containers.Admin.projects.project.insights.participationOverTime": "Participation over time",
+  "app.containers.Admin.projects.project.insights.questions": "Questions",
   "app.containers.Admin.projects.project.insights.reactions": "Reactions",
   "app.containers.Admin.projects.project.insights.representativeScore": "Representative score",
   "app.containers.Admin.projects.project.insights.respondents": "Respondents",
