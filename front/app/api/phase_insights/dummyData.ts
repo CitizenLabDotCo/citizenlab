@@ -18,27 +18,42 @@ import {
 export const getDummyParticipationMetrics = (
   participationMethod: string
 ): IPhaseInsightsParticipationMetrics => {
-  const baseMetrics: PhaseInsightsParticipationMetrics = {
+  const baseMetrics = {
     visitors: 128442,
     participants: 2750,
     engagement_rate: 2.1,
-    visitors_change: 8394,
-    participants_change: 1283,
+    visitors_last_7_days: 8394,
+    participants_last_7_days: 1283,
   };
 
   let attributes: PhaseInsightsParticipationMetrics;
 
   switch (participationMethod) {
     case 'ideation':
+      attributes = {
+        ...baseMetrics,
+        ideation: {
+          ideas: 682,
+          comments: 2394,
+          reactions: 18293,
+          ideas_last_7_days: 12,
+          comments_last_7_days: 192,
+          reactions_last_7_days: 8384,
+        },
+      };
+      break;
+
     case 'proposals':
       attributes = {
         ...baseMetrics,
-        ideas: 682,
-        comments: 2394,
-        reactions: 18293,
-        ideas_change: 12,
-        comments_change: 192,
-        reactions_change: 8384,
+        proposals: {
+          ideas: 682,
+          comments: 2394,
+          reactions: 18293,
+          ideas_last_7_days: 12,
+          comments_last_7_days: 192,
+          reactions_last_7_days: 8384,
+        },
       };
       break;
 
@@ -46,27 +61,65 @@ export const getDummyParticipationMetrics = (
     case 'survey':
       attributes = {
         ...baseMetrics,
-        submissions: 682,
-        completion_rate: 78.5,
-        submissions_change: 12,
+        [participationMethod]: {
+          submissions: 682,
+          completion_rate: 78.5,
+          submissions_last_7_days: 12,
+        },
       };
       break;
 
     case 'voting':
+      attributes = {
+        ...baseMetrics,
+        voting: {
+          votes: 18293,
+          voters: 2394,
+          comments: 2394,
+          offline_votes: 1294,
+          votes_last_7_days: 3291,
+          comments_last_7_days: 192,
+          offline_votes_last_7_days: 150,
+        },
+      };
+      break;
+
     case 'budgeting':
       attributes = {
         ...baseMetrics,
-        votes: 10394,
-        votes_per_person: 3.8,
-        votes_change: 3291,
+        budgeting: {
+          votes: 2750,
+          votes_per_person: 3.8,
+          total_votes: 28419,
+          offline_votes: 1294,
+          comments: 2394,
+          votes_last_7_days: 3291,
+          comments_last_7_days: 192,
+          offline_votes_last_7_days: 150,
+        },
       };
       break;
 
     case 'poll':
       attributes = {
         ...baseMetrics,
-        votes: 5429,
-        votes_change: 834,
+        poll: {
+          respondents: 2750,
+        },
+      };
+      break;
+
+    case 'common_ground':
+      attributes = {
+        ...baseMetrics,
+        common_ground: {
+          statements: 682,
+          respondents: 2750,
+          responses: 18293,
+          responses_per_respondent: 6.7,
+          reactions: 18293,
+          reactions_last_7_days: 8384,
+        },
       };
       break;
 
