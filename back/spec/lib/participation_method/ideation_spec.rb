@@ -256,4 +256,45 @@ RSpec.describe ParticipationMethod::Ideation do
       expect(participation_method.send(:proposed_budget_in_form?)).to be true
     end
   end
+
+  describe '#participation_idea_comments' do
+    let!(:idea) { create(:idea, phases: [phase]) }
+
+    let(:user1) { create(:user) }
+    let!(:comment1) { create(:comment, idea: idea, created_at: 20.days.ago, author: user1) } # before phase start
+    let!(:comment2) { create(:comment, idea: idea, created_at: 10.days.ago, author: user1) } # during phase
+    let!(:comment3) { create(:comment, idea: idea, created_at: 1.day.ago, author: user1) }  # after phase end
+
+    let(:user2) { create(:user) }
+    let!(:comment4) { create(:comment, idea: idea, created_at: 10.days.ago, author: user2) } # during phase
+
+    before { phase.update!(start_at: 15.days.ago, end_at: 2.days.ago) }
+
+    it 'returns the participation idea comments data for comments posted during phase' do
+      participation_idea_comments = participation_method.participation_idea_comments
+
+      expect(participation_idea_comments).to match_array([
+        {
+          id: comment2.id,
+          action: 'commenting_idea',
+          acted_at: a_kind_of(Time),
+          classname: 'Comment',
+          user_id: user1.id,
+          user_custom_field_values: {}
+        },
+        {
+          id: comment4.id,
+          action: 'commenting_idea',
+          acted_at: a_kind_of(Time),
+          classname: 'Comment',
+          user_id: user2.id,
+          user_custom_field_values: {}
+        }
+      ])
+
+      first_participation = participation_idea_comments.first
+      expect(first_participation[:acted_at])
+        .to be_within(1.second).of(Comment.find(first_participation[:id]).created_at)
+    end
+  end
 end

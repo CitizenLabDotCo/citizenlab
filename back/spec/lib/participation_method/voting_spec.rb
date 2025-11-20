@@ -13,36 +13,6 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
-  describe '#participation_baskets' do
-    it 'returns the participation baskets data associated with the phase' do
-      phase.update!(voting_method: 'multiple_voting')
-
-      user = create(:user)
-      idea1 = create(:idea, project: phase.project)
-      idea2 = create(:idea, project: phase.project)
-      create(:ideas_phase, idea: idea1, phase: phase)
-      create(:ideas_phase, idea: idea2, phase: phase)
-
-      basket = create(:basket, phase: phase, user: user, submitted_at: phase.start_at + 1.day)
-      create(:baskets_idea, basket: basket, idea: idea1, votes: 2)
-      create(:baskets_idea, basket: basket, idea: idea2, votes: 3)
-
-      participation_baskets = participation_method.participation_baskets
-
-      expect(participation_baskets).to eq([
-        {
-          id: basket.id,
-          action: 'voting',
-          acted_at: basket.submitted_at,
-          classname: 'Basket',
-          user_id: user.id,
-          user_custom_field_values: {},
-          votes: 5
-        }
-      ])
-    end
-  end
-
   describe '#assign_defaults' do
     context 'when the proposed idea status is available' do
       let!(:proposed) { create(:idea_status_proposed) }
@@ -262,6 +232,33 @@ RSpec.describe ParticipationMethod::Voting do
   describe 'proposed_budget_in_form?' do # private method
     it 'is expected to be true' do
       expect(participation_method.send(:proposed_budget_in_form?)).to be true
+    end
+  end
+
+  describe '#participation_baskets' do
+  let!(:phase) { create(:multiple_voting_phase) }
+    let!(:idea1) { create(:idea, phases: [phase]) }
+    let!(:idea2) { create(:idea, phases: [phase]) }
+
+    let(:user) { create(:user) }
+    let!(:basket) { create(:basket, phase: phase, user: user, submitted_at: phase.start_at + 1.day) }
+    let!(:baskets_idea1) { create(:baskets_idea, basket: basket, idea: idea1, votes: 2) }
+    let!(:baskets_idea2) { create(:baskets_idea, basket: basket, idea: idea2, votes: 3) }
+
+    it 'returns the participation baskets data associated with the phase' do
+      participation_baskets = participation_method.participation_baskets
+
+      expect(participation_baskets).to eq([
+        {
+          id: basket.id,
+          action: 'voting',
+          acted_at: basket.submitted_at,
+          classname: 'Basket',
+          user_id: user.id,
+          user_custom_field_values: {},
+          votes: 5
+        }
+      ])
     end
   end
 end

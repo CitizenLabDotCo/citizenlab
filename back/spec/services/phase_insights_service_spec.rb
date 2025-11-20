@@ -39,10 +39,8 @@ describe PhaseInsightsService do
   end
 
   describe '#voting_data' do
-    let!(:idea1) { create(:idea, project: phase.project) }
-    let!(:ideas_phase) { create(:ideas_phase, phase: phase, idea: idea1) }
-    let!(:idea2) { create(:idea, project: phase.project) }
-    let!(:ideas_phase2) { create(:ideas_phase, phase: phase, idea: idea2) }
+    let!(:idea1) { create(:idea, phases: [phase]) }
+    let!(:idea2) { create(:idea, phases: [phase]) }
 
     let(:user1) { create(:user) }
     let(:participation1) { create(:basket_participation, :with_votes, acted_at: 10.days.ago, user: user1, vote_count: 3) }
