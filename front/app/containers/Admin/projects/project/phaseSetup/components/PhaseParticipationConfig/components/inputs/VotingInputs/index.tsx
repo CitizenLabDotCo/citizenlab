@@ -49,10 +49,12 @@ export interface VotingInputsProps {
   autoshare_results_enabled: boolean | null | undefined;
   voting_max_votes_per_idea?: number | null;
   voting_min_selected_options?: number | null;
+  voting_filtering_enabled?: boolean | null;
   handleMinVotingOptionsChange: (newMinVotingOptions: string | null) => void;
   handleVotingMinTotalChange: (newVotingMinTotal: string) => void;
   handleVotingMaxTotalChange: (newVotingMaxTotal: string | null) => void;
   handleMaxVotesPerOptionAmountChange: (newMaxVotesPerOption: string) => void;
+  toggleVotingFilteringEnabled: () => void;
   handleVoteTermChange: (option: IOption) => void;
   voteTerm?: VoteTerm;
   toggleCommentingEnabled: () => void;
@@ -77,6 +79,7 @@ const VotingInputs = ({
   voting_min_total,
   voting_max_total,
   voting_min_selected_options,
+  voting_filtering_enabled,
   commenting_enabled,
   autoshare_results_enabled,
   voting_max_votes_per_idea,
@@ -86,6 +89,7 @@ const VotingInputs = ({
   toggleAutoshareResultsEnabled,
   handleMaxVotesPerOptionAmountChange,
   handleMinVotingOptionsChange,
+  toggleVotingFilteringEnabled,
   apiErrors,
   validationErrors,
   presentation_mode,
@@ -219,7 +223,13 @@ const VotingInputs = ({
           <StyledSectionDescription>
             <FormattedMessage {...messages.enabledActionsForUsersDescription} />
           </StyledSectionDescription>
-
+          <ToggleRow>
+            <Toggle
+              checked={!!voting_filtering_enabled}
+              onChange={toggleVotingFilteringEnabled}
+              label={FormattedMessage(messages.votingFilteringEnabled)}
+            />
+          </ToggleRow>
           <ToggleRow>
             <Toggle
               checked={!!commenting_enabled}

@@ -200,6 +200,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.inputPostingEnabled',
     defaultMessage: 'Submitting inputs',
   },
+  votingFilteringEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.votingFilteringEnabled',
+    defaultMessage: 'Filtering ideas during voting',
+  },
   inputCommentingEnabled: {
     id: 'app.containers.AdminPage.ProjectEdit.inputCommentingEnabled',
     defaultMessage: 'Commenting on inputs',
