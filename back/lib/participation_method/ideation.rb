@@ -440,28 +440,38 @@ module ParticipationMethod
       true
     end
 
+    def participations
+      # events? Not associated with phase, so cannot really be seen as participation in voting phase.
+      {
+        posting_idea: participation_ideas_submitted,
+        commenting_idea: participation_idea_comments,
+        reacting_idea: participation_idea_reactions
+      }
+    end
+
     def participation_ideas_submitted
-      # phase.ideas will return all ideas associated with the phase,
-      # but ideas can be associated with multiple phases, through ideas_phases.
-      # We only want ideas submitted during this phase.
-      # Note: If phase dates are changed such that an idea's submitted_at
-      # falls outside the phase dates, it will not be counted.
-      phase.ideas.where(<<~SQL.squish, phase.start_at.beginning_of_day, phase.end_at.end_of_day)
+      end_time = phase.end_at ? phase.end_at.end_of_day : Time.current.end_of_day
+      ideas = phase.ideas.where(<<~SQL.squish, phase.start_at.beginning_of_day, end_time)
         ideas.submitted_at >= ? AND ideas.submitted_at <= ?
       SQL
 
-      # TODO: Map to participation format
+      ideas.map do |idea|
+        {
+          id: idea.id,
+          action: 'posting_idea',
+          acted_at: idea.submitted_at,
+          classname: 'Idea',
+          user_id: idea.author_id,
+          user_custom_field_values: idea.author.custom_field_values
+        }
+      end
     end
 
     def participation_idea_comments
-      # phase.ideas will return all ideas associated with the phase,
-      # but ideas can be associated with multiple phases, through ideas_phases.
-      # We only want comments posted during this phase.
-      # Note: If phase dates are changed such that a comment's created_at
-      # falls outside the phase dates, it will not be counted.
+      end_time = phase.end_at ? phase.end_at.end_of_day : Time.current.end_of_day
       comments = Comment.joins(:idea)
         .merge(phase.ideas)
-        .where(<<~SQL.squish, phase.start_at.beginning_of_day, phase.end_at.end_of_day)
+        .where(<<~SQL.squish, phase.start_at.beginning_of_day, end_time)
           comments.created_at >= ? AND comments.created_at <= ?
           AND comments.publication_status = 'published'
         SQL
@@ -480,16 +490,11 @@ module ParticipationMethod
     end
 
     def participation_idea_reactions
-      # phase.ideas will return all ideas associated with the phase,
-      # but ideas can be associated with multiple phases, through ideas_phases.
-      # We only want reactions created during this phase.
-      # Note: If phase dates are changed such that a reaction's created_at
-      # falls outside the phase dates, it will not be counted.
-
+      end_time = phase.end_at ? phase.end_at.end_of_day : Time.current.end_of_day
       reactions = Reaction.where(
         reactable_type: 'Idea',
         reactable_id: phase.ideas.select(:id),
-        created_at: phase.start_at.beginning_of_day..phase.end_at.end_of_day
+        created_at: phase.start_at.beginning_of_day..end_time
       ).includes(:user)
 
       reactions.map do |reaction|
