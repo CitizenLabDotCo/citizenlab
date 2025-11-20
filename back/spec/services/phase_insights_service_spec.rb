@@ -49,40 +49,90 @@ describe PhaseInsightsService do
       )
     end
 
-    it 'includes options and series for select and multiselect fields' do
-      single_select_field = create(:custom_field, resource_type: 'User', key: 'single_select', code: nil, input_type: 'select')
-      create(:custom_field_option, custom_field: single_select_field, key: 'a', title_multiloc: { en: 'Option A' })
-      create(:custom_field_option, custom_field: single_select_field, key: 'b', title_multiloc: { en: 'Option B' })
+    context 'single-select field' do
+      let!(:single_select_field) { create(:custom_field, resource_type: 'User', key: 'single_select', input_type: 'select', title_multiloc: { en: 'Select one' }) }
+      let!(:option_a) { create(:custom_field_option, custom_field: single_select_field, key: 'a', title_multiloc: { en: 'Option A' }) }
+      let!(:option_b) { create(:custom_field_option, custom_field: single_select_field, key: 'b', title_multiloc: { en: 'Option B' }) }
 
-      multi_select_field = create(:custom_field, resource_type: 'User', key: 'multi_select', code: nil, input_type: 'multiselect')
-      create(:custom_field_option, custom_field: multi_select_field, key: 'x', title_multiloc: { en: 'Option X' })
-      create(:custom_field_option, custom_field: multi_select_field, key: 'y', title_multiloc: { en: 'Option Y' })
+      let(:participation1) { create(:basket_participation, user_custom_field_values: { 'single_select' => 'a' }) }
+      let(:participation2) { create(:basket_participation, user_custom_field_values: { 'single_select' => 'b' }) }
 
-      participation1 = create(:basket_participation, user_custom_field_values: { 'single_select' => 'a', 'multi_select' => ['x'] })
-      participation2 = create(:basket_participation, user_custom_field_values: { 'single_select' => 'b', 'multi_select' => ['x', 'y'] })
+      let(:flattened_participations) { [participation1, participation2] }
+      let(:participant_ids) { flattened_participations.pluck(:user_id).uniq }
 
-      flattened_participations = [participation1, participation2]
-      participant_ids = flattened_participations.pluck(:user_id).uniq
-      result = service.send(:demographics_data, phase, flattened_participations, participant_ids)
+      context 'without reference distribution' do
+        it 'includes options and series' do
+          result = service.send(:demographics_data, phase, flattened_participations, participant_ids)
 
-      expect(result).to include(
-        hash_including(
-          key: 'single_select',
-          options: {
-            'a' => { 'title_multiloc' => { 'en' => 'Option A' }, 'ordering' => 0 },
-            'b' => { 'title_multiloc' => { 'en' => 'Option B' }, 'ordering' => 1 }
-          },
-          series: { 'a' => 1, 'b' => 1, '_blank' => 0 }
-        ),
-        hash_including(
-          key: 'multi_select',
-          options: {
-            'x' => { 'title_multiloc' => { 'en' => 'Option X' }, 'ordering' => 0 },
-            'y' => { 'title_multiloc' => { 'en' => 'Option Y' }, 'ordering' => 1 }
-          },
-          series: { 'x' => 2, 'y' => 1, '_blank' => 0 }
+          expect(result).to include(
+            hash_including(
+              key: 'single_select',
+              r_score: nil, # No reference distribution set
+              options: {
+                'a' => { 'title_multiloc' => { 'en' => 'Option A' }, 'ordering' => 0 },
+                'b' => { 'title_multiloc' => { 'en' => 'Option B' }, 'ordering' => 1 }
+              },
+              series: { 'a' => 1, 'b' => 1, '_blank' => 0 },
+              reference_distribution: nil # No reference distribution set
+            )
+          )
+        end
+      end
+
+      context 'with reference distribution' do
+        before do
+          create(
+            :categorical_distribution,
+            custom_field: single_select_field,
+            population_counts: [480, 510] # Option A, Option B counts
+          )
+        end
+
+        it 'includes options, series, reference distribution and r_score' do
+          result = service.send(:demographics_data, phase, flattened_participations, participant_ids)
+
+          expect(result).to include(
+            hash_including(
+              key: 'single_select',
+              r_score: 0.9411764705882353,
+              options: {
+                'a' => { 'title_multiloc' => { 'en' => 'Option A' }, 'ordering' => 0 },
+                'b' => { 'title_multiloc' => { 'en' => 'Option B' }, 'ordering' => 1 }
+              },
+              series: { 'a' => 1, 'b' => 1, '_blank' => 0 },
+              reference_distribution: { 'a' => 480, 'b' => 510 }
+            )
+          )
+        end
+      end
+    end
+
+    context 'multiselect field' do
+      it 'includes options and series for select and multiselect fields' do
+        multi_select_field = create(:custom_field, resource_type: 'User', key: 'multi_select', code: nil, input_type: 'multiselect')
+        create(:custom_field_option, custom_field: multi_select_field, key: 'x', title_multiloc: { en: 'Option X' })
+        create(:custom_field_option, custom_field: multi_select_field, key: 'y', title_multiloc: { en: 'Option Y' })
+
+        participation1 = create(:basket_participation, user_custom_field_values: { 'multi_select' => ['x'], 'checkbox' => true })
+        participation2 = create(:basket_participation, user_custom_field_values: { 'multi_select' => ['x', 'y'], 'checkbox' => false })
+
+        flattened_participations = [participation1, participation2]
+        participant_ids = flattened_participations.pluck(:user_id).uniq
+        result = service.send(:demographics_data, phase, flattened_participations, participant_ids)
+
+        expect(result).to include(
+          hash_including(
+            key: 'multi_select',
+            r_score: nil, # No reference distribution can be set for multiselect fields
+            options: {
+              'x' => { 'title_multiloc' => { 'en' => 'Option X' }, 'ordering' => 0 },
+              'y' => { 'title_multiloc' => { 'en' => 'Option Y' }, 'ordering' => 1 }
+            },
+            series: { 'x' => 2, 'y' => 1, '_blank' => 0 },
+            reference_distribution: nil # No reference distribution can be set for multiselect fields
+          )
         )
-      )
+      end
     end
 
     # it 'returns rscore value when reference_distribution is present' do
