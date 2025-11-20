@@ -20,11 +20,17 @@ type Props = Dates &
     innerRef?: React.RefObject<any>;
     margin?: Margin;
     yaxis?: YAxisProps;
+    showVisitors?: boolean;
   };
 
 const emptyLineConfig = { strokeWidths: [0] };
+const emptyLineConfigDual = { strokeWidths: [0, 0] };
 const lineConfig = {
   strokes: [colors.categorical01],
+  activeDot: { r: 4 },
+};
+const lineConfigDual = {
+  strokes: [colors.categorical01, colors.categorical03],
   activeDot: { r: 4 },
 };
 
@@ -36,6 +42,7 @@ const Chart = ({
   innerRef,
   margin,
   yaxis,
+  showVisitors = false,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -44,13 +51,26 @@ const Chart = ({
     [startAtMoment, endAtMoment, resolution]
   );
 
-  const legendItems: LegendItem[] = [
-    {
-      icon: 'circle',
-      color: colors.categorical01,
-      label: formatMessage(messages.participants),
-    },
-  ];
+  const legendItems: LegendItem[] = showVisitors
+    ? [
+        {
+          icon: 'circle',
+          color: colors.categorical01,
+          label: formatMessage(messages.participants),
+        },
+        {
+          icon: 'circle',
+          color: colors.categorical03,
+          label: formatMessage(messages.visitors),
+        },
+      ]
+    : [
+        {
+          icon: 'circle',
+          color: colors.categorical01,
+          label: formatMessage(messages.participants),
+        },
+      ];
 
   const formatTick = (date: string) => {
     return toThreeLetterMonth(date, resolution);
@@ -72,14 +92,22 @@ const Chart = ({
       data={noData ? emptyData : timeSeries}
       mapping={{
         x: 'date',
-        y: ['participants'],
+        y: showVisitors ? ['participants', 'visitors'] : ['participants'],
       }}
       margin={margin}
-      lines={noData ? emptyLineConfig : lineConfig}
+      lines={
+        noData
+          ? showVisitors
+            ? emptyLineConfigDual
+            : emptyLineConfig
+          : showVisitors
+          ? lineConfigDual
+          : lineConfig
+      }
       grid={{ vertical: true }}
       xaxis={{ tickFormatter: formatTick }}
       yaxis={yaxis}
-      tooltip={noData ? undefined : renderTooltip(resolution)}
+      tooltip={noData ? undefined : renderTooltip(resolution, showVisitors)}
       legend={{
         marginTop: 16,
         items: legendItems,
