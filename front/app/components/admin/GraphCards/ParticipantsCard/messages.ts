@@ -6,7 +6,7 @@ export default defineMessages({
     defaultMessage: 'Participants',
   },
   visitors: {
-    id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.visitors',
+    id: 'app.modules.commercial.analytics.admin.components.participants.visitors',
     defaultMessage: 'Visitors',
   },
   totalParticipants: {
