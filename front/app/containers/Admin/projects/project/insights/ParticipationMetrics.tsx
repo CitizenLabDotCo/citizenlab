@@ -44,7 +44,7 @@ const buildMetric = <T,>(
     if (change !== undefined) {
       subtext = `${formatMessage(
         messages.last7Days
-      )}: +${change.toLocaleString()}`;
+      )}: ${change.toLocaleString()}`;
     }
   }
 
