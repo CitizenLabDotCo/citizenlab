@@ -56,7 +56,7 @@ class PhaseInsightsService
     when 'voting'
       voting_data(phase, participations)
     when 'ideation'
-      ideation_data(phase, participations)
+      ideation_data(participations)
     else
       {}
     end
@@ -84,7 +84,7 @@ class PhaseInsightsService
     }
   end
 
-  def ideation_data(phase, participations)
+  def ideation_data(participations)
     ideas_counts = phase_ideas_counts(participations)
     comments_counts = phase_comments_counts(participations)
     reactions_counts = phase_reactions_counts(participations)
