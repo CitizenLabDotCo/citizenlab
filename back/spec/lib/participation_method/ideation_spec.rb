@@ -306,7 +306,6 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
-
   describe '#participation_idea_comments' do
     let!(:idea) { create(:idea, phases: [phase]) }
 

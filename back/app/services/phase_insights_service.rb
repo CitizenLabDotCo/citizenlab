@@ -55,13 +55,15 @@ class PhaseInsightsService
     case phase.participation_method
     when 'voting'
       voting_data(phase, participations)
+    when 'ideation'
+      ideation_data(phase, participations)
     else
       {}
     end
   end
 
   def voting_data(phase, participations)
-    voting_participations = participations[:voting]
+    voting_participations = participations[:voting] || []
 
     online_votes = voting_participations.sum { |p| p[:votes] }
     online_votes_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.sum { |p| p[:votes] }
@@ -82,8 +84,34 @@ class PhaseInsightsService
     }
   end
 
+  def ideation_data(phase, participations)
+    ideas_counts = phase_ideas_counts(participations)
+    comments_counts = phase_comments_counts(participations)
+    reactions_counts = phase_reactions_counts(participations)
+
+    {
+      ideas_submitted: ideas_counts[:total],
+      ideas_submitted_last_7_days: ideas_counts[:last_7_days],
+      comments_posted: comments_counts[:total],
+      comments_posted_last_7_days: comments_counts[:last_7_days],
+      reactions: reactions_counts[:total],
+      reactions_last_7_days: reactions_counts[:last_7_days]
+    }
+  end
+
   def associated_ideas_count(phase)
     phase.ideas.where(publication_status: 'published').count
+  end
+
+  def phase_ideas_counts(participations)
+    ideas_participations = participations[:submitting_idea] || []
+    total_ideas = ideas_participations.count
+    ideas_last_7_days = ideas_participations.count { |p| p[:acted_at] >= 7.days.ago }
+
+    {
+      total: total_ideas,
+      last_7_days: ideas_last_7_days
+    }
   end
 
   # idea comments posted during the phase
@@ -95,6 +123,17 @@ class PhaseInsightsService
     {
       total: total_comments,
       last_7_days: comments_last_7_days
+    }
+  end
+
+  def phase_reactions_counts(participations)
+    reacting_participations = participations[:reacting_idea] || []
+    total_reactions = reacting_participations.count
+    reactions_last_7_days = reacting_participations.count { |p| p[:acted_at] >= 7.days.ago }
+
+    {
+      total: total_reactions,
+      last_7_days: reactions_last_7_days
     }
   end
 
