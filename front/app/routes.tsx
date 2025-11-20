@@ -17,6 +17,9 @@ const EmailChange = lazy(() => import('containers/EmailChange'));
 const IdeasEditPage = lazy(() => import('containers/IdeasEditPage'));
 const IdeasIndexPage = lazy(() => import('containers/IdeasIndexPage'));
 const IdeasShowPage = lazy(() => import('containers/IdeasShowPage'));
+const IdeasInProjectShowPage = lazy(
+  () => import('containers/IdeasInProjectShowPage')
+);
 const IdeasNewPage = lazy(() => import('containers/IdeasNewPage'));
 const IdeasNewSurveyPage = lazy(() => import('containers/IdeasNewSurveyPage'));
 const ProjectsIndexPage = lazy(() => import('containers/ProjectsIndexPage'));
@@ -77,6 +80,7 @@ export enum citizenRoutes {
   ideasEditIdea = `ideas/edit/:ideaId`,
   ideasSlug = `ideas/:slug`,
   projects = 'projects',
+  projectIdeasIndex = `projects/:slug/ideas`,
   projectIdeaNew = `projects/:slug/ideas/new`,
   projectSurveyNew = `projects/:slug/surveys/new`,
   projectSlug = `projects/:slug`,
@@ -116,6 +120,7 @@ type citizenRouteTypes =
   | `/${citizenRoutes.ideas}/${string}`
   | `/${citizenRoutes.projects}`
   | `/${citizenRoutes.projects}?focusSearch=${string}`
+  | `/${citizenRoutes.projects}/${string}/ideas`
   | `/${citizenRoutes.projects}/${string}/${citizenRoutes.ideas}/new`
   | `/${citizenRoutes.projects}/${string}`
   | `/${citizenRoutes.projects}/${string}/preview/${string}`
@@ -237,6 +242,14 @@ export default function createRoutes() {
           ),
         },
 
+        {
+          path: citizenRoutes.projectIdeasIndex,
+          element: (
+            <PageLoading>
+              <IdeasInProjectShowPage />
+            </PageLoading>
+          ),
+        },
         {
           path: citizenRoutes.projectIdeaNew,
           element: (

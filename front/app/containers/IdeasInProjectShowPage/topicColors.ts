@@ -1,28 +1,27 @@
 import { colors } from '@citizenlab/cl2-component-library';
-import { readableColor } from 'polished';
 
 /**
  * Generate a consistent color for each topic
- * Uses a predefined palette of accessible colors that ensure
- * good contrast with both dark and light text (WCAG AA compliant)
+ * Uses a predefined palette of light pastel colors that work well with dark grey text
+ * Colors are chosen to be visually distinct from each other
  */
 const TOPIC_COLOR_PALETTE = [
-  colors.teal200, // Light teal - #80CFD8
-  colors.orange100, // Light orange - #FFECE6
-  colors.green100, // Light green - #e4f7ef
-  '#FFE6F0', // Light pink
-  '#E6E6FF', // Light lavender
-  '#FFF4E6', // Light peach
-  '#E6F9FF', // Light sky blue
-  '#F0E6FF', // Light purple
-  '#FFFFE6', // Light yellow
-  '#E6FFF0', // Light mint
-  '#FFE6E6', // Light coral
-  '#F5E6FF', // Light lilac
-  colors.teal100, // Lighter teal - #BEE7EB
-  colors.grey100, // Light grey - #F4F6F8
-  '#D4F1F4', // Pale cyan
-  '#FFE4D6', // Pale orange
+  '#FFB3BA', // Pastel red/pink
+  '#BAFFC9', // Pastel green
+  '#BAE1FF', // Pastel blue
+  '#FFFFBA', // Pastel yellow
+  '#FFD9BA', // Pastel orange
+  '#E0BBE4', // Pastel purple
+  '#FFDFD3', // Pastel peach
+  '#C7CEEA', // Pastel lavender
+  '#B5EAD7', // Pastel mint
+  '#FFE5B4', // Pastel gold
+  '#D4F4DD', // Pastel lime
+  '#FFB5E8', // Pastel magenta
+  colors.teal200, // Teal - #80CFD8
+  '#FFE4E1', // Misty rose
+  '#E6E6FA', // Lavender mist
+  '#F0E68C', // Khaki
 ];
 
 // Function to get a consistent color for a topic ID
@@ -36,12 +35,8 @@ export const getTopicColor = (topicId: string): string => {
   return TOPIC_COLOR_PALETTE[index];
 };
 
-// Get text color that contrasts well with the background
-export const getContrastingTextColor = (backgroundColor: string): string => {
-  return readableColor(backgroundColor, colors.grey800, colors.white);
-};
-
 // Create a map of topic IDs to colors for multiple topics
+// All colors use grey800 for text
 export const createTopicColorMap = (
   topicIds: string[]
 ): Map<string, { background: string; text: string }> => {
@@ -49,10 +44,9 @@ export const createTopicColorMap = (
 
   topicIds.forEach((topicId) => {
     const backgroundColor = getTopicColor(topicId);
-    const textColor = getContrastingTextColor(backgroundColor);
     colorMap.set(topicId, {
       background: backgroundColor,
-      text: textColor,
+      text: colors.grey800,
     });
   });
 
@@ -63,20 +57,19 @@ export const createTopicColorMap = (
 export const getPrimaryTopicColor = (
   topicIds: string[]
 ): { background: string; text: string } | null => {
-  if (!topicIds || topicIds.length === 0) {
+  if (topicIds.length === 0) {
     // Default to teal if no topics
     return {
       background: colors.teal200,
-      text: getContrastingTextColor(colors.teal200),
+      text: colors.grey800,
     };
   }
 
   const primaryTopicId = topicIds[0];
   const backgroundColor = getTopicColor(primaryTopicId);
-  const textColor = getContrastingTextColor(backgroundColor);
 
   return {
     background: backgroundColor,
-    text: textColor,
+    text: colors.grey800,
   };
 };

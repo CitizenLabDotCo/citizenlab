@@ -6,7 +6,9 @@ import { useSearchParams } from 'react-router-dom';
 import { IdeaSortMethod, IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import { IdeaSortMethodFallback } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
 
+import StickyNotesPile from 'containers/IdeasInProjectShowPage/StickyNotesPile';
 import messages from 'containers/ProjectsShowPage/messages';
 
 const IdeasWithFiltersSidebar = lazy(
@@ -16,11 +18,11 @@ const IdeasWithFiltersSidebar = lazy(
 import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 import { Props as WithFiltersProps } from 'components/IdeaCards/IdeasWithFiltersSidebar';
 import IdeaListScrollAnchor from 'components/IdeaListScrollAnchor';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
+import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-
-import StickyNotesPile from './StickyNotesPile';
 
 interface InnerProps {
   projectId: string;
@@ -48,6 +50,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
   const topicsParam = searchParams.get('topics');
   const ideaStatusParam = searchParams.get('idea_status');
   const config = getMethodConfig(phase.attributes.participation_method);
+  const { data: project } = useProjectById(projectId);
 
   const ideaQueryParameters = useMemo<QueryParameters>(
     () => ({
@@ -85,11 +88,20 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
     defaultView: phase.attributes.presentation_mode,
   };
 
+  const projectSlug = project?.data.attributes.slug;
+
   return (
     <Box
       id="project-ideas"
       className={`e2e-timeline-project-idea-cards ${className || ''}`}
     >
+      {projectSlug && (
+        <Box mb="16px">
+          <ButtonWithLink linkTo={`/projects/${projectSlug}/ideas`}>
+            <FormattedMessage {...messages.seeTheIdeas} />
+          </ButtonWithLink>
+        </Box>
+      )}
       <StickyNotesPile queryParameters={ideaQueryParameters} maxNotes={20} />
       {isVotingContext ? (
         <IdeaCardsWithoutFiltersSidebar
