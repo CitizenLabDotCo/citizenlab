@@ -263,7 +263,7 @@ RSpec.describe ParticipationMethod::Ideation do
     let(:user1) { create(:user) }
     let!(:comment1) { create(:comment, idea: idea, created_at: 20.days.ago, author: user1) } # before phase start
     let!(:comment2) { create(:comment, idea: idea, created_at: 10.days.ago, author: user1) } # during phase
-    let!(:comment3) { create(:comment, idea: idea, created_at: 1.day.ago, author: user1) }  # after phase end
+    let!(:comment3) { create(:comment, idea: idea, created_at: 1.day.ago, author: user1) } # after phase end
 
     let(:user2) { create(:user) }
     let!(:comment4) { create(:comment, idea: idea, created_at: 10.days.ago, author: user2) } # during phase

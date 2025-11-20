@@ -236,7 +236,7 @@ RSpec.describe ParticipationMethod::Voting do
   end
 
   describe '#participation_baskets' do
-  let!(:phase) { create(:multiple_voting_phase) }
+    let!(:phase) { create(:multiple_voting_phase) }
     let!(:idea1) { create(:idea, phases: [phase]) }
     let!(:idea2) { create(:idea, phases: [phase]) }
 
