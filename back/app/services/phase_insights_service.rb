@@ -104,7 +104,7 @@ class PhaseInsightsService
   end
 
   def phase_ideas_counts(participations)
-    ideas_participations = participations[:submitting_idea] || []
+    ideas_participations = participations[:posting_idea] || []
     total_ideas = ideas_participations.count
     ideas_last_7_days = ideas_participations.count { |p| p[:acted_at] >= 7.days.ago }
 
