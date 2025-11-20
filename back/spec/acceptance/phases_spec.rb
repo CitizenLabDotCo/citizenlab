@@ -366,6 +366,7 @@ resource 'Phases' do
 
       describe 'voting phases' do
         let(:participation_method) { 'voting' }
+        let(:voting_filtering_enabled) { true }
 
         context 'budgeting' do
           let(:voting_method) { 'budgeting' }
@@ -379,6 +380,7 @@ resource 'Phases' do
             expect(response_data.dig(:attributes, :voting_max_total)).to eq 100
             expect(response_data.dig(:attributes, :voting_min_total)).to eq 10
             expect(response_data.dig(:attributes, :ideas_order)).to eq 'random'
+            expect(response_data.dig(:attributes, :voting_filtering_enabled)).to be true
           end
         end
 
@@ -398,6 +400,7 @@ resource 'Phases' do
             expect(response_data.dig(:attributes, :voting_max_votes_per_idea)).to eq 5
             expect(response_data.dig(:attributes, :vote_term)).to eq 'point'
             expect(response_data.dig(:attributes, :ideas_order)).to eq 'random'
+            expect(response_data.dig(:attributes, :voting_filtering_enabled)).to be true
           end
         end
 
@@ -412,8 +415,8 @@ resource 'Phases' do
             expect(response_data.dig(:attributes, :voting_min_selected_options)).to eq 1
             expect(response_data.dig(:attributes, :voting_min_total)).to eq 0
             expect(response_data.dig(:attributes, :voting_max_votes_per_idea)).to eq 1
-            expect(response_data.dig(:attributes, :voting_filtering_enabled)).to be false
             expect(response_data.dig(:attributes, :ideas_order)).to eq 'random'
+            expect(response_data.dig(:attributes, :voting_filtering_enabled)).to be true
           end
         end
       end
