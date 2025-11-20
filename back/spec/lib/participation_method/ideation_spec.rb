@@ -297,4 +297,47 @@ RSpec.describe ParticipationMethod::Ideation do
         .to be_within(1.second).of(Comment.find(first_participation[:id]).created_at)
     end
   end
+
+  describe '#participation_idea_reactions' do
+    let!(:idea1) { create(:idea, phases: [phase]) }
+    let!(:idea2) { create(:idea, phases: [phase]) }
+    let!(:idea3) { create(:idea, phases: [phase]) }
+
+    let(:user1) { create(:user) }
+    let!(:reaction1) { create(:reaction, reactable: idea1, created_at: 20.days.ago, user: user1, mode: 'up') } # before phase start
+    let!(:reaction2) { create(:reaction, reactable: idea2, created_at: 10.days.ago, user: user1, mode: 'up') } # during phase
+    let!(:reaction3) { create(:reaction, reactable: idea3, created_at: 1.day.ago, user: user1, mode: 'up') } # after phase end
+
+    let(:user2) { create(:user) }
+    let!(:reaction4) { create(:reaction, reactable: idea2, created_at: 10.days.ago, user: user2, mode: 'down') } # during phase
+
+    before { phase.update!(start_at: 15.days.ago, end_at: 2.days.ago) }
+
+    it 'returns the participation idea reactions data for reactions made during phase' do
+      participation_idea_reactions = participation_method.participation_idea_reactions
+
+      expect(participation_idea_reactions).to match_array([
+        {
+          id: reaction2.id,
+          action: 'reacting_idea',
+          acted_at: a_kind_of(Time),
+          classname: 'Reaction',
+          user_id: user1.id,
+          user_custom_field_values: {}
+        },
+        {
+          id: reaction4.id,
+          action: 'reacting_idea',
+          acted_at: a_kind_of(Time),
+          classname: 'Reaction',
+          user_id: user2.id,
+          user_custom_field_values: {}
+        }
+      ])
+
+      first_participation = participation_idea_reactions.first
+      expect(first_participation[:acted_at])
+        .to be_within(1.second).of(Reaction.find(first_participation[:id]).created_at)
+    end
+  end
 end

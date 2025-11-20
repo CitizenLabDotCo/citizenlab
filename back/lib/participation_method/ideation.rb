@@ -457,7 +457,7 @@ module ParticipationMethod
       # phase.ideas will return all ideas associated with the phase,
       # but ideas can be associated with multiple phases, through ideas_phases.
       # We only want comments posted during this phase.
-      # Note: If phase dates are changed such that an comment's created_at
+      # Note: If phase dates are changed such that a comment's created_at
       # falls outside the phase dates, it will not be counted.
       comments = Comment.joins(:idea)
         .merge(phase.ideas)
@@ -475,6 +475,31 @@ module ParticipationMethod
           classname: 'Comment',
           user_id: comment.author_id,
           user_custom_field_values: comment.author.custom_field_values
+        }
+      end
+    end
+
+    def participation_idea_reactions
+      # phase.ideas will return all ideas associated with the phase,
+      # but ideas can be associated with multiple phases, through ideas_phases.
+      # We only want reactions created during this phase.
+      # Note: If phase dates are changed such that a reaction's created_at
+      # falls outside the phase dates, it will not be counted.
+
+      reactions = Reaction.where(
+        reactable_type: 'Idea',
+        reactable_id: phase.ideas.select(:id),
+        created_at: phase.start_at.beginning_of_day..phase.end_at.end_of_day
+      ).includes(:user)
+
+      reactions.map do |reaction|
+        {
+          id: reaction.id,
+          action: 'reacting_idea',
+          acted_at: reaction.created_at,
+          classname: 'Reaction',
+          user_id: reaction.user_id,
+          user_custom_field_values: reaction.user.custom_field_values
         }
       end
     end
