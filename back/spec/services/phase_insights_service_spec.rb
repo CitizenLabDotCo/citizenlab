@@ -114,7 +114,7 @@ describe PhaseInsightsService do
         create(:custom_field_option, custom_field: multi_select_field, key: 'y', title_multiloc: { en: 'Option Y' })
 
         participation1 = create(:basket_participation, user_custom_field_values: { 'multi_select' => ['x'], 'checkbox' => true })
-        participation2 = create(:basket_participation, user_custom_field_values: { 'multi_select' => ['x', 'y'], 'checkbox' => false })
+        participation2 = create(:basket_participation, user_custom_field_values: { 'multi_select' => %w[x y], 'checkbox' => false })
 
         flattened_participations = [participation1, participation2]
         participant_ids = flattened_participations.pluck(:user_id).uniq
@@ -134,19 +134,6 @@ describe PhaseInsightsService do
         )
       end
     end
-
-    # it 'returns rscore value when reference_distribution is present' do
-    #   create(:custom_field, resource_type: 'User', key: 'gender', input_type: 'select', title_multiloc: { en: 'Gender' })
-    #   create(:custom_field_option, custom_field: custom_field_gender, key: 'male', title_multiloc: { en: 'Male' })
-    #   create(:custom_field_option, custom_field: custom_field_gender, key: 'female', title_multiloc: { en: 'Female' })
-    #   create(:custom_field_option, custom_field: custom_field_gender, key: 'unspecified', title_multiloc: { en: 'Unspecified' })
-
-    #   create(
-    #     :categorical_distribution,
-    #     custom_field: custom_field_gender,
-    #     population_counts: [480, 510, 10] # Male, Female, Unspecified counts
-    #   )
-    # end
   end
 
   describe 'birthyear_demographics_data' do
