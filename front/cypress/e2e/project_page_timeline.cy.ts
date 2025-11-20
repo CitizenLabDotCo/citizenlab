@@ -4,6 +4,7 @@ import { randomString } from '../support/commands';
 describe('Existing Timeline project', () => {
   before(() => {
     cy.visit('/projects/test-project-1-timeline-with-file');
+    cy.acceptCookies();
     cy.get('#e2e-project-page');
 
     cy.wait(1000);

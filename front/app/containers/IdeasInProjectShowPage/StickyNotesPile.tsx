@@ -13,8 +13,10 @@ import { createTopicColorMap } from './topicColors';
 const PileContainer = styled(Box)`
   position: relative;
   width: 100%;
+  height: 100%;
   min-height: 800px;
   padding: 40px 20px;
+  overflow: hidden;
 `;
 
 const NoteWrapper = styled(Box)<{ index: number; totalNotes: number }>`
@@ -23,31 +25,31 @@ const NoteWrapper = styled(Box)<{ index: number; totalNotes: number }>`
 
   ${(props) => {
     const positions = [
-      { left: '1%', top: '20px' },
-      { left: '21%', top: '80px' },
-      { left: '42%', top: '40px' },
-      { left: '63%', top: '100px' },
-      { left: '83%', top: '60px' },
-      { left: '6%', top: '180px' },
-      { left: '27%', top: '220px' },
-      { left: '48%', top: '190px' },
-      { left: '69%', top: '240px' },
-      { left: '88%', top: '210px' },
-      { left: '3%', top: '340px' },
-      { left: '24%', top: '380px' },
-      { left: '45%', top: '350px' },
-      { left: '66%', top: '400px' },
-      { left: '85%', top: '370px' },
-      { left: '10%', top: '500px' },
-      { left: '31%', top: '540px' },
-      { left: '52%', top: '510px' },
-      { left: '73%', top: '560px' },
-      { left: '90%', top: '530px' },
-      { left: '15%', top: '660px' },
-      { left: '36%', top: '700px' },
-      { left: '57%', top: '670px' },
-      { left: '78%', top: '720px' },
-      { left: '8%', top: '460px' },
+      { left: '5%', top: '2%' },
+      { left: '20%', top: '10%' },
+      { left: '37%', top: '5%' },
+      { left: '53%', top: '12%' },
+      { left: '68%', top: '8%' },
+      { left: '10%', top: '20%' },
+      { left: '25%', top: '26%' },
+      { left: '43%', top: '23%' },
+      { left: '58%', top: '28%' },
+      { left: '73%', top: '25%' },
+      { left: '7%', top: '36%' },
+      { left: '22%', top: '41%' },
+      { left: '40%', top: '38%' },
+      { left: '55%', top: '43%' },
+      { left: '70%', top: '40%' },
+      { left: '13%', top: '50%' },
+      { left: '28%', top: '55%' },
+      { left: '45%', top: '52%' },
+      { left: '60%', top: '57%' },
+      { left: '75%', top: '54%' },
+      { left: '15%', top: '64%' },
+      { left: '33%', top: '68%' },
+      { left: '50%', top: '66%' },
+      { left: '65%', top: '70%' },
+      { left: '9%', top: '47%' },
     ];
 
     const position = positions[props.index % positions.length];
