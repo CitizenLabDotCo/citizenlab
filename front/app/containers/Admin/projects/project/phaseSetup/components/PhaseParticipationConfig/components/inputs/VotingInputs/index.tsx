@@ -225,13 +225,6 @@ const VotingInputs = ({
           </StyledSectionDescription>
           <ToggleRow>
             <Toggle
-              checked={!!voting_filtering_enabled}
-              onChange={toggleVotingFilteringEnabled}
-              label={FormattedMessage(messages.votingFilteringEnabled)}
-            />
-          </ToggleRow>
-          <ToggleRow>
-            <Toggle
               checked={!!commenting_enabled}
               onChange={toggleCommentingEnabled}
               label={FormattedMessage(messages.inputCommentingEnabled)}
@@ -241,6 +234,22 @@ const VotingInputs = ({
             {formatMessage(messages.commentingBias)}
           </Text>
           <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
+        </SectionField>
+        <SectionField>
+          <SubSectionTitleWithDescription>
+            <FormattedMessage {...messages.enabledVotingFiltering} />
+          </SubSectionTitleWithDescription>
+          <StyledSectionDescription>
+            <FormattedMessage {...messages.enabledVotingFilteringDescription} />
+          </StyledSectionDescription>
+          <ToggleRow>
+            <Toggle
+              checked={!!voting_filtering_enabled}
+              onChange={toggleVotingFilteringEnabled}
+              label={FormattedMessage(messages.votingFilteringEnabled)}
+            />
+          </ToggleRow>
+          <Error apiErrors={apiErrors && apiErrors.votingFilteringEnabled} />
         </SectionField>
 
         <ShareResultsToggle
