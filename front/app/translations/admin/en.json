@@ -2091,6 +2091,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.voteCalledPlaceholderPlural2": "E.g. tokens, points, carbon credits...",
   "app.containers.AdminPage.ProjectEdit.Voting.voteCalledPlaceholderSingular2": "E.g. token, point, carbon credit...",
   "app.containers.AdminPage.ProjectEdit.Voting.voteTerm": "Vote",
+  "app.containers.AdminPage.ProjectEdit.Voting.votingFilteringEnabled": "Filtering ideas during voting",
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorSubtitle": "Each voting method has different pre-configurations",
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTitle": "Voting method",
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTooltip2": "The voting method determines the rules of how users vote",
