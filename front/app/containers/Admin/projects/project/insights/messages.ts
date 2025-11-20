@@ -166,4 +166,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.participationOverTime',
     defaultMessage: 'Participation over time',
   },
+  questions: {
+    id: 'app.containers.Admin.projects.project.insights.questions',
+    defaultMessage: 'Questions',
+  },
 });
