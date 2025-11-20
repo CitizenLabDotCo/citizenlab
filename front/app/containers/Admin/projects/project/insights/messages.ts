@@ -130,4 +130,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.errorLoadingCommonGround',
     defaultMessage: 'Error loading Common Ground results',
   },
+  participationOverTime: {
+    id: 'app.containers.Admin.projects.project.insights.participationOverTime',
+    defaultMessage: 'Participation over time',
+  },
 });

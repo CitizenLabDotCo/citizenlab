@@ -10,6 +10,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import DemographicsSection from './DemographicsSection';
 import messages from './messages';
 import MethodSpecificInsights from './methodSpecific/MethodSpecificInsights';
+import ParticipantsTimeline from './ParticipantsTimeline';
 import ParticipationMetrics from './ParticipationMetrics';
 
 const AdminPhaseInsights = () => {
@@ -63,6 +64,8 @@ const AdminPhaseInsights = () => {
 
       <Box display="flex" flexDirection="column" gap="16px" pt="16px">
         <ParticipationMetrics phase={phase.data} />
+
+        <ParticipantsTimeline phaseId={phase.data.id} />
 
         <DemographicsSection phase={phase.data} />
 
