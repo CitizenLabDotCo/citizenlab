@@ -32,4 +32,9 @@ export default defineMessages({
     defaultMessage:
       'https://support.govocal.com/en/articles/7946486-enabling-anonymous-participation',
   },
+  anonymousParticipationAutoEnabled: {
+    id: 'app.components.AnonymousPostingToggle.anonymousParticipationAutoEnabled',
+    defaultMessage:
+      "Anonymous participation is automatically enabled when access is set to 'None (account-less participation)'.",
+  },
 });
