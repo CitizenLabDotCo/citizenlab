@@ -12,13 +12,13 @@ describe PhaseInsightsService do
     let(:user1) { create(:user) }
 
     let(:participation1) { create(:basket_participation, acted_at: 20.days.ago, user: user1) } # before phase start
-    let(:participation2) { create(:basket_participation, acted_at: 10.days.ago, user: user1) } # after phase start
-    let(:participation3) { create(:basket_participation, acted_at: 5.days.ago, user: user1) } # in last 7 days
-    let(:participation4) { create(:basket_participation, acted_at: 1.days.ago, user: user1) } # after phase end
+    let(:participation2) { create(:basket_participation, acted_at: 10.days.ago, user: user1) } # after phase start & before phase end
+    let(:participation3) { create(:basket_participation, acted_at: 5.days.ago, user: user1) } # in last 7 days & before phase end
+    let(:participation4) { create(:basket_participation, acted_at: 1.day.ago, user: user1) } # after phase end
 
     let(:user2) { create(:user) }
-    let(:participation5) { create(:basket_participation, acted_at: 10.days.ago, user: user2) } # after phase start
-    let(:participation6) { create(:basket_participation, acted_at: 4.days.ago, user: user2) } # in last 7 days
+    let(:participation5) { create(:basket_participation, acted_at: 10.days.ago, user: user2) } # after phase start & before phase end
+    let(:participation6) { create(:basket_participation, acted_at: 4.days.ago, user: user2) } # in last 7 days & before phase end
 
     let(:participations) { { voting: [participation1, participation2, participation3, participation4, participation5, participation6] } }
     let(:participant_ids) { participations[:voting].pluck(:user_id).uniq }
@@ -35,6 +35,41 @@ describe PhaseInsightsService do
           engagement_rate: 0.02
         }
       )
+    end
+  end
+
+  describe '#voting_data' do
+    let!(:idea1) { create(:idea, project: phase.project) }
+    let!(:ideas_phase) { create(:ideas_phase, phase: phase, idea: idea1) }
+    let!(:idea2) { create(:idea, project: phase.project) }
+    let!(:ideas_phase2) { create(:ideas_phase, phase: phase, idea: idea2) }
+
+    let(:user1) { create(:user) }
+    let(:participation1) { create(:basket_participation, :with_votes, acted_at: 10.days.ago, user: user1, vote_count: 3) }
+    let(:participation2) { create(:comment_participation, acted_at: 10.days.ago, user: user1) }
+    let(:participation3) { create(:comment_participation, acted_at: 5.days.ago, user: user1) } # in last 7 days
+
+    let(:user2) { create(:user) }
+    let(:participation4) { create(:basket_participation, :with_votes, acted_at: 10.days.ago, user: user2, vote_count: 4) }
+    let(:participation5) { create(:basket_participation, :with_votes, acted_at: 5.days.ago, user: user2, vote_count: 3) }
+
+    let(:participations) { { voting: [participation1, participation4, participation5], commenting_idea: [participation2, participation3] } }
+
+    it 'calculates voting data correctly' do
+      phase.update!(manual_votes_count: 5)
+
+      result = service.send(:voting_data, phase, participations)
+
+      expect(result).to eq({
+        online_votes: 10,
+        online_votes_last_7_days: 3,
+        offline_votes: 5,
+        voters: 2,
+        voters_last_7_days: 1,
+        associated_ideas: 2,
+        comments_posted: 2,
+        comments_posted_last_7_days: 1
+      })
     end
   end
 

@@ -86,7 +86,7 @@ class PhaseInsightsService
 
   # idea comments posted during the phase
   def phase_comments_counts(participations)
-    commenting_participations = participations[:commenting_idea]
+    commenting_participations = participations[:commenting_idea] || []
     total_comments = commenting_participations.count
     comments_last_7_days = commenting_participations.count { |p| p[:acted_at] >= 7.days.ago }
 
