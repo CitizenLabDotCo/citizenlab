@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.lastWeek',
     defaultMessage: 'Last week',
   },
+  last7Days: {
+    id: 'app.containers.Admin.projects.project.insights.last7Days',
+    defaultMessage: 'Last 7 days',
+  },
   total: {
     id: 'app.containers.Admin.projects.project.insights.total',
     defaultMessage: 'Total',
@@ -64,6 +68,34 @@ export default defineMessages({
   engagementRate: {
     id: 'app.containers.Admin.projects.project.insights.engagementRate',
     defaultMessage: 'Engagement rate',
+  },
+  offlineVotes: {
+    id: 'app.containers.Admin.projects.project.insights.offlineVotes',
+    defaultMessage: 'Offline votes',
+  },
+  totalVotes: {
+    id: 'app.containers.Admin.projects.project.insights.totalVotes',
+    defaultMessage: 'Total votes',
+  },
+  statements: {
+    id: 'app.containers.Admin.projects.project.insights.statements',
+    defaultMessage: 'Statements',
+  },
+  respondents: {
+    id: 'app.containers.Admin.projects.project.insights.respondents',
+    defaultMessage: 'Respondents',
+  },
+  responses: {
+    id: 'app.containers.Admin.projects.project.insights.responses',
+    defaultMessage: 'Responses',
+  },
+  responsesPerRespondent: {
+    id: 'app.containers.Admin.projects.project.insights.responsesPerRespondent',
+    defaultMessage: 'Responses per respondent',
+  },
+  voters: {
+    id: 'app.containers.Admin.projects.project.insights.voters',
+    defaultMessage: 'Voters',
   },
   // Demographics
   demographicsAndAudience: {
