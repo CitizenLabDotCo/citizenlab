@@ -30,10 +30,10 @@ describe PhaseInsightsService do
     end
 
     it 'includes base custom_field attributes' do
-      field1 = create(:custom_field, resource_type: 'User', key: 'birthyear', code: 'birthyear', input_type: 'number')
-      field2 = create(:custom_field, resource_type: 'User', key: 'single_select', code: nil, input_type: 'select')
-      field3 = create(:custom_field, resource_type: 'User', key: 'multi_select', code: nil, input_type: 'multiselect')
-      field4 = create(:custom_field, resource_type: 'User', key: 'checkbox', code: nil, input_type: 'checkbox')
+      create(:custom_field, resource_type: 'User', key: 'birthyear', code: 'birthyear', input_type: 'number')
+      create(:custom_field, resource_type: 'User', key: 'single_select', code: nil, input_type: 'select')
+      create(:custom_field, resource_type: 'User', key: 'multi_select', code: nil, input_type: 'multiselect')
+      create(:custom_field, resource_type: 'User', key: 'checkbox', code: nil, input_type: 'checkbox')
 
       participation = create(:basket_participation)
 
