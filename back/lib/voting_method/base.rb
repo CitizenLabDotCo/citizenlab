@@ -41,7 +41,7 @@ module VotingMethod
     def supports_serializing?(attribute)
       %i[
         voting_method voting_max_total voting_min_total voting_max_votes_per_idea baskets_count
-        votes_count total_votes_amount autoshare_results_enabled voting_min_selected_options
+        votes_count total_votes_amount autoshare_results_enabled voting_min_selected_options voting_filtering_enabled
       ].include?(attribute)
     end
 

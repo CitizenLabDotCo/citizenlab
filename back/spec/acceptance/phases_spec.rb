@@ -264,6 +264,7 @@ resource 'Phases' do
         parameter :voting_min_total, 'The minimum value a basket can have.', required: false
         parameter :voting_max_total, 'The maximal value a basket can have during voting. Required when the voting method is budgeting.', required: false
         parameter :voting_max_votes_per_idea, 'The maximum amount of votes that can be assigned on the same idea.', required: false
+        parameter :voting_filtering_enabled, 'Enable filtering of votes during voting. Defaults to false.', required: false
         parameter :voting_min_selected_options, 'The minimum number of different ideas that must be voted for.', required: false
         parameter :start_at, 'The start date of the phase', required: true
         parameter :end_at, 'The end date of the phase', required: true
@@ -411,6 +412,7 @@ resource 'Phases' do
             expect(response_data.dig(:attributes, :voting_min_selected_options)).to eq 1
             expect(response_data.dig(:attributes, :voting_min_total)).to eq 0
             expect(response_data.dig(:attributes, :voting_max_votes_per_idea)).to eq 1
+            expect(response_data.dig(:attributes, :voting_filtering_enabled)).to be false
             expect(response_data.dig(:attributes, :ideas_order)).to eq 'random'
           end
         end
@@ -569,6 +571,7 @@ resource 'Phases' do
         parameter :voting_min_total, 'The minimum value a basket can have.', required: false
         parameter :voting_max_total, 'The maximal value a basket can have during voting', required: false
         parameter :voting_max_votes_per_idea, 'The maximum amount of votes that can be assigned on the same idea.', required: false
+        parameter :voting_filtering_enabled, 'Enable filtering of votes during voting.', required: false
         parameter :manual_voters_amount, 'The number of voters from collected offline votes.', required: false
         parameter :vote_term, "The term used to describe the concept of a vote (noun). One of #{Phase::VOTE_TERMS.join(', ')}. Defaults to 'vote'.", required: false
         parameter :start_at, 'The start date of the phase'
@@ -648,6 +651,7 @@ resource 'Phases' do
         let(:voting_min_total) { 3 }
         let(:voting_max_total) { 15 }
         let(:voting_max_votes_per_idea) { 1 } # Should ignore this
+        let(:voting_filtering_enabled) { true }
         let(:vote_term) { 'token' }
 
         example_request 'Update a voting phase' do
@@ -657,6 +661,7 @@ resource 'Phases' do
           expect(json_response.dig(:data, :attributes, :voting_max_total)).to eq 15
           expect(json_response.dig(:data, :attributes, :voting_min_selected_options)).to eq 1
           expect(json_response.dig(:data, :attributes, :voting_max_votes_per_idea)).to be_nil
+          expect(json_response.dig(:data, :attributes, :voting_filtering_enabled)).to be true
           expect(json_response.dig(:data, :attributes, :vote_term)).to eq 'token'
         end
 
@@ -688,6 +693,7 @@ resource 'Phases' do
             participation_method: 'voting',
             voting_method: 'budgeting',
             voting_max_total: 30_000,
+            voting_filtering_enabled: false,
             ideas_order: 'random'
           )
         end
