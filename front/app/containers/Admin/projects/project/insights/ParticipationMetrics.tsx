@@ -5,12 +5,15 @@ import { Box, Text } from 'component-library';
 import useParticipationMetrics from 'api/phase_insights/useParticipationMetrics';
 import { IPhaseData } from 'api/phases/types';
 
-import { useIntl } from 'utils/cl-intl';
+import { useIntl, MessageDescriptor } from 'utils/cl-intl';
 
 import messages from './messages';
+import { METRIC_CONFIGS, MetricConfig } from './metricConfigs';
+
+type Phase = IPhaseData;
 
 interface Props {
-  phase: IPhaseData;
+  phase: Phase;
 }
 
 interface MetricDisplay {
@@ -20,148 +23,108 @@ interface MetricDisplay {
   subtext?: string;
 }
 
+interface FormatMessageFn {
+  (message: MessageDescriptor): string;
+}
+
+const buildMetric = <T,>(
+  config: MetricConfig<T>,
+  data: T,
+  formatMessage: FormatMessageFn
+): MetricDisplay => {
+  const value = config.getValue(data);
+  const formattedValue =
+    typeof value === 'number' ? value.toLocaleString() : String(value);
+
+  let subtext: string | undefined;
+  if (config.customSubtext) {
+    subtext = config.customSubtext(data, formatMessage);
+  } else if (config.getChange) {
+    const change = config.getChange(data);
+    if (change !== undefined) {
+      subtext = `${formatMessage(
+        messages.last7Days
+      )}: +${change.toLocaleString()}`;
+    }
+  }
+
+  return {
+    key: config.key,
+    label: formatMessage(config.message),
+    value: formattedValue,
+    subtext,
+  };
+};
+
 const ParticipationMetrics = ({ phase }: Props) => {
   const { formatMessage } = useIntl();
+  const { participation_method } = phase.attributes;
   const { data: response } = useParticipationMetrics({
     phaseId: phase.id,
-    participationMethod: phase.attributes.participation_method,
+    participationMethod: participation_method,
   });
 
   // Transform API data into display format
   const metrics: MetricDisplay[] = useMemo(() => {
     if (!response?.data.attributes) return [];
+
     const metricsData = response.data.attributes;
     const result: MetricDisplay[] = [];
 
-    // Always show visitors and participants
-    result.push({
-      key: 'visitors',
-      label: formatMessage(messages.visitors),
-      value: metricsData.visitors.toLocaleString(),
-      subtext: metricsData.visitors_change
-        ? `${formatMessage(
-            messages.lastWeek
-          )}: +${metricsData.visitors_change.toLocaleString()}`
-        : undefined,
-    });
+    // Always show visitors and participants first
+    result.push(
+      buildMetric(
+        {
+          key: 'visitors',
+          message: messages.visitors,
+          getValue: (d) => d.visitors,
+          getChange: (d) => d.visitors_last_7_days,
+        },
+        metricsData,
+        formatMessage
+      )
+    );
 
-    result.push({
-      key: 'participants',
-      label: formatMessage(messages.participants),
-      value: metricsData.participants.toLocaleString(),
-      subtext: metricsData.participants_change
-        ? `${formatMessage(
-            messages.lastWeek
-          )}: ${metricsData.participants_change.toLocaleString()}`
-        : undefined,
-    });
+    result.push(
+      buildMetric(
+        {
+          key: 'participants',
+          message: messages.participants,
+          getValue: (d) => d.participants,
+          getChange: (d) => d.participants_last_7_days,
+        },
+        metricsData,
+        formatMessage
+      )
+    );
 
-    // Method-specific metrics
-    if (metricsData.ideas !== undefined) {
-      result.push({
-        key: 'ideas',
-        label: formatMessage(messages.inputs),
-        value: metricsData.ideas.toLocaleString(),
-        subtext: metricsData.ideas_change
-          ? `${formatMessage(
-              messages.lastWeek
-            )}: +${metricsData.ideas_change.toLocaleString()}`
-          : undefined,
+    // Add method-specific metrics from config
+    const methodConfigs = METRIC_CONFIGS[participation_method];
+    const methodData = metricsData[
+      participation_method as keyof typeof metricsData
+    ] as Record<string, any> | undefined;
+
+    if (methodData) {
+      methodConfigs.forEach((config) => {
+        result.push(buildMetric(config, methodData, formatMessage));
       });
     }
 
-    if (metricsData.comments !== undefined) {
-      result.push({
-        key: 'comments',
-        label: formatMessage(messages.comments),
-        value: metricsData.comments.toLocaleString(),
-        subtext: metricsData.comments_change
-          ? `${formatMessage(
-              messages.lastWeek
-            )}: +${metricsData.comments_change.toLocaleString()}`
-          : undefined,
-      });
-    }
-
-    if (metricsData.reactions !== undefined) {
-      result.push({
-        key: 'reactions',
-        label: formatMessage(messages.reactions),
-        value: metricsData.reactions.toLocaleString(),
-        subtext: metricsData.reactions_change
-          ? `${formatMessage(
-              messages.lastWeek
-            )}: +${metricsData.reactions_change.toLocaleString()}`
-          : undefined,
-      });
-    }
-
-    if (metricsData.votes !== undefined && !metricsData.votes_per_person) {
-      result.push({
-        key: 'votes',
-        label: formatMessage(messages.votes),
-        value: metricsData.votes.toLocaleString(),
-        subtext: metricsData.votes_change
-          ? `${formatMessage(
-              messages.lastWeek
-            )}: +${metricsData.votes_change.toLocaleString()}`
-          : undefined,
-      });
-    }
-
-    if (metricsData.votes_per_person !== undefined) {
-      result.push({
-        key: 'votes',
-        label: formatMessage(messages.votes),
-        value: metricsData.votes!.toLocaleString(),
-        subtext: metricsData.votes_change
-          ? `${formatMessage(
-              messages.lastWeek
-            )}: +${metricsData.votes_change.toLocaleString()}`
-          : undefined,
-      });
-
-      result.push({
-        key: 'votesPerPerson',
-        label: formatMessage(messages.votesPerPerson),
-        value: metricsData.votes_per_person.toFixed(1),
-        subtext: `${formatMessage(
-          messages.total
-        )}: ${metricsData.votes!.toLocaleString()}`,
-      });
-    }
-
-    if (metricsData.submissions !== undefined) {
-      result.push({
-        key: 'submissions',
-        label: formatMessage(messages.submissions),
-        value: metricsData.submissions.toLocaleString(),
-        subtext: metricsData.submissions_change
-          ? `${formatMessage(
-              messages.lastWeek
-            )}: +${metricsData.submissions_change.toLocaleString()}`
-          : undefined,
-      });
-    }
-
-    if (metricsData.completion_rate !== undefined) {
-      result.push({
-        key: 'completionRate',
-        label: formatMessage(messages.completionRate),
-        value: `${metricsData.completion_rate.toFixed(1)}%`,
-        subtext: undefined,
-      });
-    }
-
-    result.push({
-      key: 'engagementRate',
-      label: formatMessage(messages.engagementRate),
-      value: `${metricsData.engagement_rate.toFixed(1)}%`,
-      subtext: undefined,
-    });
+    // Always show engagement rate last
+    result.push(
+      buildMetric(
+        {
+          key: 'engagementRate',
+          message: messages.engagementRate,
+          getValue: (d) => `${d.engagement_rate.toFixed(1)}%`,
+        },
+        metricsData,
+        formatMessage
+      )
+    );
 
     return result;
-  }, [response, formatMessage]);
+  }, [response, formatMessage, participation_method]);
 
   return (
     <Box
