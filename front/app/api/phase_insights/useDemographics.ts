@@ -3,7 +3,10 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import { getDummyDemographics, USE_DUMMY_DATA } from './dummyData';
+import {
+  getDummyDemographics,
+  USE_DUMMY_PHASE_INSIGHTS_DATA,
+} from './dummyData';
 import { demographicsKey } from './keys';
 import { IPhaseInsightsDemographics } from './types';
 
@@ -40,7 +43,7 @@ const useDemographics = ({
   >({
     queryKey: demographicsKey(phaseId),
     queryFn: () => {
-      if (USE_DUMMY_DATA) {
+      if (USE_DUMMY_PHASE_INSIGHTS_DATA) {
         return getDummyDemographics();
       }
 

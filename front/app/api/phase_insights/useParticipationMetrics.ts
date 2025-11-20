@@ -3,7 +3,10 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import { getDummyParticipationMetrics, USE_DUMMY_DATA } from './dummyData';
+import {
+  getDummyParticipationMetrics,
+  USE_DUMMY_PHASE_INSIGHTS_DATA,
+} from './dummyData';
 import { participationMetricsKey } from './keys';
 import { IPhaseInsightsParticipationMetrics } from './types';
 
@@ -38,7 +41,7 @@ const useParticipationMetrics = ({
   >({
     queryKey: participationMetricsKey(phaseId),
     queryFn: () =>
-      USE_DUMMY_DATA
+      USE_DUMMY_PHASE_INSIGHTS_DATA
         ? getDummyParticipationMetrics(participationMethod)
         : fetchParticipationMetrics(phaseId),
     enabled: !!phaseId,
