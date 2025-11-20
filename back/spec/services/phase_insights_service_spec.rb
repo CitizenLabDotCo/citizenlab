@@ -30,10 +30,10 @@ describe PhaseInsightsService do
     end
 
     it 'includes base custom_field attributes' do
-      create(:custom_field, resource_type: 'User', key: 'birthyear', code: 'birthyear', input_type: 'number')
-      create(:custom_field, resource_type: 'User', key: 'single_select', code: nil, input_type: 'select')
-      create(:custom_field, resource_type: 'User', key: 'multi_select', code: nil, input_type: 'multiselect')
-      create(:custom_field, resource_type: 'User', key: 'checkbox', code: nil, input_type: 'checkbox')
+      create(:custom_field, resource_type: 'User', key: 'birthyear', code: 'birthyear', input_type: 'number', title_multiloc: { en: 'Birthyear' })
+      create(:custom_field, resource_type: 'User', key: 'single_select', code: nil, input_type: 'select', title_multiloc: { en: 'Single Select' })
+      create(:custom_field, resource_type: 'User', key: 'multi_select', code: nil, input_type: 'multiselect', title_multiloc: { en: 'Multi Select' })
+      create(:custom_field, resource_type: 'User', key: 'checkbox', code: nil, input_type: 'checkbox', title_multiloc: { en: 'Checkbox' })
 
       participation = create(:basket_participation)
 
@@ -42,10 +42,10 @@ describe PhaseInsightsService do
       result = service.send(:demographics_data, phase, flattened_participations, participant_ids)
 
       expect(result).to contain_exactly(
-        hash_including(key: 'birthyear', code: 'birthyear', input_type: 'number'),
-        hash_including(key: 'single_select', code: nil, input_type: 'select'),
-        hash_including(key: 'multi_select', code: nil, input_type: 'multiselect'),
-        hash_including(key: 'checkbox', code: nil, input_type: 'checkbox')
+        hash_including(key: 'birthyear', code: 'birthyear', input_type: 'number', title_multiloc: { 'en' => 'Birthyear' }),
+        hash_including(key: 'single_select', code: nil, input_type: 'select', title_multiloc: { 'en' => 'Single Select' }),
+        hash_including(key: 'multi_select', code: nil, input_type: 'multiselect', title_multiloc: { 'en' => 'Multi Select' }),
+        hash_including(key: 'checkbox', code: nil, input_type: 'checkbox', title_multiloc: { 'en' => 'Checkbox' })
       )
     end
 
@@ -108,16 +108,16 @@ describe PhaseInsightsService do
     end
 
     context 'multiselect field' do
+      let!(:multi_select_field) { create(:custom_field, resource_type: 'User', key: 'multi_select', input_type: 'multiselect', title_multiloc: { en: 'Select one' }) }
+      let!(:option_x) { create(:custom_field_option, custom_field: multi_select_field, key: 'x', title_multiloc: { en: 'Option X' }) }
+      let!(:option_y) { create(:custom_field_option, custom_field: multi_select_field, key: 'y', title_multiloc: { en: 'Option Y' }) }
+
+      let(:participation1) { create(:basket_participation, user_custom_field_values: { 'multi_select' => ['x'] }) }
+      let(:participation2) { create(:basket_participation, user_custom_field_values: { 'multi_select' => %w[x y] }) }
+      let(:flattened_participations) { [participation1, participation2] }
+      let(:participant_ids) { flattened_participations.pluck(:user_id).uniq }
+
       it 'includes options and series for select and multiselect fields' do
-        multi_select_field = create(:custom_field, resource_type: 'User', key: 'multi_select', code: nil, input_type: 'multiselect')
-        create(:custom_field_option, custom_field: multi_select_field, key: 'x', title_multiloc: { en: 'Option X' })
-        create(:custom_field_option, custom_field: multi_select_field, key: 'y', title_multiloc: { en: 'Option Y' })
-
-        participation1 = create(:basket_participation, user_custom_field_values: { 'multi_select' => ['x'], 'checkbox' => true })
-        participation2 = create(:basket_participation, user_custom_field_values: { 'multi_select' => %w[x y], 'checkbox' => false })
-
-        flattened_participations = [participation1, participation2]
-        participant_ids = flattened_participations.pluck(:user_id).uniq
         result = service.send(:demographics_data, phase, flattened_participations, participant_ids)
 
         expect(result).to include(
@@ -130,6 +130,28 @@ describe PhaseInsightsService do
             },
             series: { 'x' => 2, 'y' => 1, '_blank' => 0 },
             reference_distribution: nil # No reference distribution can be set for multiselect fields
+          )
+        )
+      end
+    end
+
+    context 'checkbox field' do
+      let!(:checkbox_field) { create(:custom_field, resource_type: 'User', key: 'checkbox', input_type: 'checkbox', title_multiloc: { en: 'Check if you agree' }) }
+
+      let(:participation1) { create(:basket_participation, user_custom_field_values: { 'checkbox' => true }) }
+      let(:participation2) { create(:basket_participation, user_custom_field_values: { 'checkbox' => false }) }
+      let(:flattened_participations) { [participation1, participation2] }
+      let(:participant_ids) { flattened_participations.pluck(:user_id).uniq }
+
+      it 'includes series' do
+        result = service.send(:demographics_data, phase, flattened_participations, participant_ids)
+
+        expect(result).to include(
+          hash_including(
+            key: 'checkbox',
+            r_score: nil, # # No reference distribution can be set for checkbox fields
+            series: { true => 1, false => 1, '_blank' => 0 },
+            reference_distribution: nil # No reference distribution can be set for checkbox fields
           )
         )
       end
