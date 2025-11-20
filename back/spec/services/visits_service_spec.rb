@@ -10,7 +10,6 @@ describe VisitsService do
     (1..4).each do |i|
       let!(:"user#{i}") { create(:user) }
     end
-    # rubocop:enable RSpec/ScatteredLet
 
     let!(:session1) { create(:session, user_id: user1.id) }
     let!(:pageview1) { create(:pageview, session: session1, created_at: 22.days.ago, project_id: phase.project.id) } # before phase start
@@ -26,6 +25,7 @@ describe VisitsService do
 
     let!(:session4) { create(:session, user_id: user4.id) }
     let!(:pageview7) { create(:pageview, session: session4, created_at: 1.day.ago, project_id: phase.project.id) } # after phase end
+    # rubocop:enable RSpec/ScatteredLet
 
     it 'returns correct visits data for the phase' do
       visitors_data = service.phase_visitors_data(phase)

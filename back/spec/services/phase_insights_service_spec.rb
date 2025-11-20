@@ -28,6 +28,26 @@ describe PhaseInsightsService do
 
       expect(result.pluck(:key)).to match_array(%w[birthyear single_select multi_select checkbox])
     end
+
+    it 'includes base custom_field attributes' do
+      field1 = create(:custom_field, resource_type: 'User', key: 'birthyear', code: 'birthyear', input_type: 'number')
+      field2 = create(:custom_field, resource_type: 'User', key: 'single_select', code: nil, input_type: 'select')
+      field3 = create(:custom_field, resource_type: 'User', key: 'multi_select', code: nil, input_type: 'multiselect')
+      field4 = create(:custom_field, resource_type: 'User', key: 'checkbox', code: nil, input_type: 'checkbox')
+
+      participation = create(:basket_participation)
+
+      flattened_participations = [participation]
+      participant_ids = flattened_participations.pluck(:user_id).uniq
+      result = service.send(:demographics_data, phase, flattened_participations, participant_ids)
+
+      expect(result).to contain_exactly(
+        hash_including(key: 'birthyear', code: 'birthyear', input_type: 'number'),
+        hash_including(key: 'single_select', code: nil, input_type: 'select'),
+        hash_including(key: 'multi_select', code: nil, input_type: 'multiselect'),
+        hash_including(key: 'checkbox', code: nil, input_type: 'checkbox')
+      )
+    end
   end
 
   describe 'birthyear_demographics_data' do
