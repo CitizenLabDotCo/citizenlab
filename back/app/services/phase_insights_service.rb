@@ -14,18 +14,18 @@ class PhaseInsightsService
   # TODO: Implement caching? (may not be needed if performance good enough)
   # Removed funky caching used when originally used Singleton pattern.
   def cached_insights_data(phase)
-    visits_data = VisitsService.new.phase_visits_data(phase)
+    visitors_data = VisitsService.new.phase_visitors_data(phase)
     participations = phase.pmethod.participations
     flattened_participations = participations.values.flatten
     participant_ids = flattened_participations.pluck(:user_id).uniq
 
-    metrics_data(phase, participations, participant_ids, visits_data).merge(
+    metrics_data(phase, participations, participant_ids, visitors_data).merge(
       demographics: { fields: demographics_data(phase, flattened_participations, participant_ids) }
     )
   end
 
-  def metrics_data(phase, participations, participant_ids, visits_data)
-    base_metrics = base_metrics(participations, participant_ids, visits_data)
+  def metrics_data(phase, participations, participant_ids, visitors_data)
+    base_metrics = base_metrics(participations, participant_ids, visitors_data)
 
     participation_method_metrics = {
       phase.participation_method => participation_method_metrics(phase, participations)
@@ -34,17 +34,17 @@ class PhaseInsightsService
     { metrics: base_metrics.merge(participation_method_metrics) }
   end
 
-  def base_metrics(participations, participant_ids, visits_data)
+  def base_metrics(participations, participant_ids, visitors_data)
     total_participant_count = participant_ids.count
     flattened_participations = participations.values.flatten
     participants_last_7_days_count = flattened_participations.select { |p| p[:acted_at] >= 7.days.ago }.pluck(:user_id).uniq.count
 
     {
-      visitors: visits_data[:total],
-      visitors_last_7_days: visits_data[:last_7_days],
+      visitors: visitors_data[:total],
+      visitors_last_7_days: visitors_data[:last_7_days],
       participants: total_participant_count,
       participants_last_7_days: participants_last_7_days_count,
-      engagement_rate: visits_data[:total] > 0 ? (total_participant_count.to_f / visits_data[:total]).round(3) : 0
+      engagement_rate: visitors_data[:total] > 0 ? (total_participant_count.to_f / visitors_data[:total]).round(3) : 0
     }
   end
 
