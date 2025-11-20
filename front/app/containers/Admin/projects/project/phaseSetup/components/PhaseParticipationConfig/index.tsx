@@ -19,11 +19,13 @@ import {
   VoteTerm,
   VotingMethod,
 } from 'api/phases/types';
+import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import projectMessages from 'containers/Admin/projects/project/general/messages';
 
+import anonymousMessages from 'components/admin/AnonymousPostingToggle/messages';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
@@ -96,6 +98,17 @@ const PhaseParticipationConfig = ({
   const project_library_enabled = useFeatureFlag({ name: 'project_library' });
 
   const { formatMessage } = useIntl();
+
+  const { data: permissions } = usePhasePermissions({
+    phaseId: phase?.data.id,
+  });
+
+  // Check if anonymous posting toggle should be disabled
+  const anonymousPostingDisabledReason =
+    permissions?.data?.find((p) => p.attributes.action === 'posting_idea')
+      ?.attributes.permitted_by === 'everyone'
+      ? formatMessage(anonymousMessages.anonymousParticipationAutoEnabled)
+      : undefined;
 
   const updateFormData = (fn: SetFn) => {
     const updatedFormData = fn(formData);
@@ -558,6 +571,7 @@ const PhaseParticipationConfig = ({
             noLikingLimitError={validationErrors.noLikingLimitError}
             noDislikingLimitError={validationErrors.noDislikingLimitError}
             allow_anonymous_participation={allow_anonymous_participation}
+            anonymousPostingDisabledReason={anonymousPostingDisabledReason}
             apiErrors={apiErrors}
             togglePostingEnabled={togglePostingEnabled}
             toggleCommentingEnabled={toggleCommentingEnabled}
@@ -601,6 +615,7 @@ const PhaseParticipationConfig = ({
             reacting_like_limited_max={reacting_like_limited_max}
             noLikingLimitError={validationErrors.noLikingLimitError}
             allow_anonymous_participation={allow_anonymous_participation}
+            anonymousPostingDisabledReason={anonymousPostingDisabledReason}
             apiErrors={apiErrors}
             togglePostingEnabled={togglePostingEnabled}
             toggleCommentingEnabled={toggleCommentingEnabled}
