@@ -48,6 +48,55 @@ describe PhaseInsightsService do
         hash_including(key: 'checkbox', code: nil, input_type: 'checkbox')
       )
     end
+
+    it 'includes options and series for select and multiselect fields' do
+      single_select_field = create(:custom_field, resource_type: 'User', key: 'single_select', code: nil, input_type: 'select')
+      create(:custom_field_option, custom_field: single_select_field, key: 'a', title_multiloc: { en: 'Option A' })
+      create(:custom_field_option, custom_field: single_select_field, key: 'b', title_multiloc: { en: 'Option B' })
+
+      multi_select_field = create(:custom_field, resource_type: 'User', key: 'multi_select', code: nil, input_type: 'multiselect')
+      create(:custom_field_option, custom_field: multi_select_field, key: 'x', title_multiloc: { en: 'Option X' })
+      create(:custom_field_option, custom_field: multi_select_field, key: 'y', title_multiloc: { en: 'Option Y' })
+
+      participation1 = create(:basket_participation, user_custom_field_values: { 'single_select' => 'a', 'multi_select' => ['x'] })
+      participation2 = create(:basket_participation, user_custom_field_values: { 'single_select' => 'b', 'multi_select' => ['x', 'y'] })
+
+      flattened_participations = [participation1, participation2]
+      participant_ids = flattened_participations.pluck(:user_id).uniq
+      result = service.send(:demographics_data, phase, flattened_participations, participant_ids)
+
+      expect(result).to include(
+        hash_including(
+          key: 'single_select',
+          options: {
+            'a' => { 'title_multiloc' => { 'en' => 'Option A' }, 'ordering' => 0 },
+            'b' => { 'title_multiloc' => { 'en' => 'Option B' }, 'ordering' => 1 }
+          },
+          series: { 'a' => 1, 'b' => 1, '_blank' => 0 }
+        ),
+        hash_including(
+          key: 'multi_select',
+          options: {
+            'x' => { 'title_multiloc' => { 'en' => 'Option X' }, 'ordering' => 0 },
+            'y' => { 'title_multiloc' => { 'en' => 'Option Y' }, 'ordering' => 1 }
+          },
+          series: { 'x' => 2, 'y' => 1, '_blank' => 0 }
+        )
+      )
+    end
+
+    # it 'returns rscore value when reference_distribution is present' do
+    #   create(:custom_field, resource_type: 'User', key: 'gender', input_type: 'select', title_multiloc: { en: 'Gender' })
+    #   create(:custom_field_option, custom_field: custom_field_gender, key: 'male', title_multiloc: { en: 'Male' })
+    #   create(:custom_field_option, custom_field: custom_field_gender, key: 'female', title_multiloc: { en: 'Female' })
+    #   create(:custom_field_option, custom_field: custom_field_gender, key: 'unspecified', title_multiloc: { en: 'Unspecified' })
+
+    #   create(
+    #     :categorical_distribution,
+    #     custom_field: custom_field_gender,
+    #     population_counts: [480, 510, 10] # Male, Female, Unspecified counts
+    #   )
+    # end
   end
 
   describe 'birthyear_demographics_data' do
