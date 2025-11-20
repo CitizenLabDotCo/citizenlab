@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   mount Seo::Engine => '', as: 'seo'
   mount Surveys::Engine => '', as: 'surveys'
   mount Volunteering::Engine => '', as: 'volunteering'
+  mount Webhooks::Engine => '', as: 'webhooks'
 
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do

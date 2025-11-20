@@ -24,6 +24,7 @@ import PageButtonSettings from './components/FormBuilderSettings/PageButtonSetti
 import PageLayoutSettings from './components/FormBuilderSettings/PageLayoutSettings';
 import PointSettings from './components/FormBuilderSettings/PointSettings';
 import SentimentLinearScaleSettings from './components/FormBuilderSettings/SentimentLinearScaleSettings';
+import TopicsSettings from './components/FormBuilderSettings/TopicsSettings';
 import messages from './components/messages';
 
 export const builtInFieldKeys = [
@@ -216,6 +217,14 @@ export function getAdditionalSettings(
         <CharacterLimitSettings
           minCharactersName={`customFields.${field.index}.min_characters`}
           maxCharactersName={`customFields.${field.index}.max_characters`}
+        />
+      );
+    case 'topic_ids':
+      return (
+        <TopicsSettings
+          minimumSelectCountName={`customFields.${field.index}.minimum_select_count`}
+          maximumSelectCountName={`customFields.${field.index}.maximum_select_count`}
+          selectCountToggleName={`customFields.${field.index}.select_count_enabled`}
         />
       );
     default:
