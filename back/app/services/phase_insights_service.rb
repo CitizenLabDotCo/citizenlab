@@ -112,6 +112,7 @@ class PhaseInsightsService
         id: custom_field.id,
         key: custom_field.key,
         code: custom_field.code,
+        input_type: custom_field.input_type,
         r_score: nil, # May be set below (or null if no ref distribution).
         title_multiloc: custom_field.title_multiloc,
         series: nil # Will be set below
