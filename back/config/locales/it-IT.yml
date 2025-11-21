@@ -199,7 +199,7 @@ it:
         affordable_housing:
           title: Disponibilità di alloggi a prezzi accessibili
         employment_opportunities:
-          title: Opportunità di impiego e di avanzamento economico
+          title: Opportunità d'impiego e di avanzamento economico
         quality_of_services:
           title: Qualità complessiva dei servizi offerti dalla città
         overall_value:
@@ -214,17 +214,17 @@ it:
           title: Trasparenza su come vengono spesi i soldi delle tasse comunali
       question_categories:
         quality_of_life: Qualità della vita
-        service_delivery: Consegna del servizio
+        service_delivery: Servizi
         governance_and_trust: Governance e fiducia
         other: Altro
       labels:
-        label_1: Molto scarso
-        label_2: Povero
-        label_3: Fiera
-        label_4: Buono
-        label_5: Eccellente
+        label_1: Molto negativo
+        label_2: Negativo
+        label_3: Neutro
+        label_4: Positivo
+        label_5: Ottimo
       form_end:
-        button_text: Torna a casa
+        button_text: Torna alla home page
   custom_forms:
     categories:
       main_content:
@@ -248,7 +248,7 @@ it:
           title: Qual è la tua petizione?
   custom_field_options:
     gender:
-      male: Maschio
+      male: Uomo
       female: Femmina
       unspecified: Altro
     domicile:
