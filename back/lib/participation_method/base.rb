@@ -256,6 +256,9 @@ module ParticipationMethod
       {}
     end
 
+    # def participant_id(item)
+    # end
+
     private
 
     attr_reader :phase

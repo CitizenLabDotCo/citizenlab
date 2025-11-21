@@ -273,7 +273,7 @@ RSpec.describe ParticipationMethod::Ideation do
       participation_ideas_submitted = participation_method.participation_ideas_submitted
       expect(participation_ideas_submitted).to match_array([
         {
-          id: idea2.id,
+          item_id: idea2.id,
           action: 'posting_idea',
           acted_at: a_kind_of(Time),
           classname: 'Idea',
@@ -282,7 +282,7 @@ RSpec.describe ParticipationMethod::Ideation do
           user_custom_field_values: {}
         },
         {
-          id: idea4.id,
+          item_id: idea4.id,
           action: 'posting_idea',
           acted_at: a_kind_of(Time),
           classname: 'Idea',
@@ -294,14 +294,14 @@ RSpec.describe ParticipationMethod::Ideation do
 
       first_participation = participation_ideas_submitted.first
       expect(first_participation[:acted_at])
-        .to be_within(1.second).of(Idea.find(first_participation[:id]).submitted_at)
+        .to be_within(1.second).of(Idea.find(first_participation[:item_id]).submitted_at)
     end
 
     it 'correctly handles phases with no end date' do
       phase.update!(end_at: nil)
       participation_ideas_submitted = participation_method.participation_ideas_submitted
 
-      expect(participation_ideas_submitted.pluck(:id)).to match_array([
+      expect(participation_ideas_submitted.pluck(:item_id)).to match_array([
         idea2.id,
         idea3.id,
         idea4.id
@@ -327,7 +327,7 @@ RSpec.describe ParticipationMethod::Ideation do
 
       expect(participation_idea_comments).to match_array([
         {
-          id: comment2.id,
+          item_id: comment2.id,
           action: 'commenting_idea',
           acted_at: a_kind_of(Time),
           classname: 'Comment',
@@ -335,7 +335,7 @@ RSpec.describe ParticipationMethod::Ideation do
           user_custom_field_values: {}
         },
         {
-          id: comment4.id,
+          item_id: comment4.id,
           action: 'commenting_idea',
           acted_at: a_kind_of(Time),
           classname: 'Comment',
@@ -346,14 +346,14 @@ RSpec.describe ParticipationMethod::Ideation do
 
       first_participation = participation_idea_comments.first
       expect(first_participation[:acted_at])
-        .to be_within(1.second).of(Comment.find(first_participation[:id]).created_at)
+        .to be_within(1.second).of(Comment.find(first_participation[:item_id]).created_at)
     end
 
     it 'correctly handles phases with no end date' do
       phase.update!(end_at: nil)
       participation_idea_comments = participation_method.participation_idea_comments
 
-      expect(participation_idea_comments.pluck(:id)).to match_array([
+      expect(participation_idea_comments.pluck(:item_id)).to match_array([
         comment2.id,
         comment3.id,
         comment4.id
@@ -381,7 +381,7 @@ RSpec.describe ParticipationMethod::Ideation do
 
       expect(participation_idea_reactions).to match_array([
         {
-          id: reaction2.id,
+          item_id: reaction2.id,
           action: 'reacting_idea',
           acted_at: a_kind_of(Time),
           classname: 'Reaction',
@@ -389,7 +389,7 @@ RSpec.describe ParticipationMethod::Ideation do
           user_custom_field_values: {}
         },
         {
-          id: reaction4.id,
+          item_id: reaction4.id,
           action: 'reacting_idea',
           acted_at: a_kind_of(Time),
           classname: 'Reaction',
@@ -400,14 +400,14 @@ RSpec.describe ParticipationMethod::Ideation do
 
       first_participation = participation_idea_reactions.first
       expect(first_participation[:acted_at])
-        .to be_within(1.second).of(Reaction.find(first_participation[:id]).created_at)
+        .to be_within(1.second).of(Reaction.find(first_participation[:item_id]).created_at)
     end
 
     it 'correctly handles phases with no end date' do
       phase.update!(end_at: nil)
       participation_idea_reactions = participation_method.participation_idea_reactions
 
-      expect(participation_idea_reactions.pluck(:id)).to match_array([
+      expect(participation_idea_reactions.pluck(:item_id)).to match_array([
         reaction2.id,
         reaction3.id,
         reaction4.id

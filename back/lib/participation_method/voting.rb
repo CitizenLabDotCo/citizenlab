@@ -63,7 +63,7 @@ module ParticipationMethod
         total_votes = basket.baskets_ideas.sum(:votes)
 
         {
-          id: basket.id,
+          item_id: basket.id,
           action: 'voting',
           acted_at: basket.submitted_at,
           classname: 'Basket',

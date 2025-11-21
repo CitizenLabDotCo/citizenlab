@@ -15,7 +15,7 @@ FactoryBot.define do
       custom_field_values = user_custom_field_values.presence || participation_user.custom_field_values
 
       {
-        id: SecureRandom.uuid,
+        item_id: SecureRandom.uuid,
         action: 'generic',
         acted_at: acted_at_time,
         classname: 'Generic',
@@ -34,7 +34,7 @@ FactoryBot.define do
       custom_field_values = user_custom_field_values.presence || basket.user.custom_field_values
 
       {
-        id: basket.id,
+        item_id: basket.id,
         action: 'voting',
         acted_at: acted_at_time,
         classname: 'Basket',
@@ -57,7 +57,7 @@ FactoryBot.define do
         custom_field_values = user_custom_field_values.presence || basket.user.custom_field_values
 
         {
-          id: basket.id,
+          item_id: basket.id,
           action: 'voting',
           acted_at: acted_at_time,
           classname: 'Basket',
@@ -78,7 +78,7 @@ FactoryBot.define do
       custom_field_values = user_custom_field_values.presence || comment.author.custom_field_values
 
       {
-        id: comment.id,
+        item_id: comment.id,
         action: 'commenting_idea',
         acted_at: acted_at_time,
         classname: 'Comment',

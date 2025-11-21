@@ -458,7 +458,7 @@ module ParticipationMethod
 
       ideas.map do |idea|
         {
-          id: idea.id,
+          item_id: idea.id,
           action: 'posting_idea',
           acted_at: idea.submitted_at, # analytics_fact_participations uses created_at, so maybe we should use that here too?
           classname: 'Idea',
@@ -481,7 +481,7 @@ module ParticipationMethod
 
       comments.map do |comment|
         {
-          id: comment.id,
+          item_id: comment.id,
           action: 'commenting_idea',
           acted_at: comment.created_at,
           classname: 'Comment',
@@ -501,7 +501,7 @@ module ParticipationMethod
 
       reactions.map do |reaction|
         {
-          id: reaction.id,
+          item_id: reaction.id,
           action: 'reacting_idea',
           acted_at: reaction.created_at,
           classname: 'Reaction',

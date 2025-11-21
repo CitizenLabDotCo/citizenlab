@@ -34,8 +34,9 @@ class PhaseInsightsService
     { metrics: base_metrics.merge(participation_method_metrics) }
   end
 
-  # TODO: Add user_hash to all participations, and use in the various calculations of unique users,
-  # whenever user_id is nil (for non-logged in users, participating anonymously)
+  # TODO: Add user_hash to all participations where available (e.g. ideas, comments),
+  # and use in the various calculations of unique users,
+  # whenever user_id is nil (for non-logged in users, participating anonymously), etc.
   def base_metrics(participations, participant_ids, visitors_data)
     total_participant_count = participant_ids.count
     flattened_participations = participations.values.flatten

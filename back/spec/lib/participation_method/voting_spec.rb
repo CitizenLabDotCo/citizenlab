@@ -250,7 +250,7 @@ RSpec.describe ParticipationMethod::Voting do
 
       expect(participation_baskets).to eq([
         {
-          id: basket.id,
+          item_id: basket.id,
           action: 'voting',
           acted_at: basket.submitted_at,
           classname: 'Basket',
