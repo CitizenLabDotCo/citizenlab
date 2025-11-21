@@ -236,7 +236,7 @@ describe PhaseInsightsService do
     let(:participation4) { create(:basket_participation, user_custom_field_values: {}) }
 
     let(:participations) { { voting: [participation1, participation2, participation3, participation4] } }
-    let(:participant_ids) { participations[:voting].pluck(:user_id).uniq }
+    let(:participant_ids) { participations[:voting].pluck(:participant_id).uniq }
 
     it 'calculates demographics data correctly when no reference distribution' do
       participant_custom_field_values = service.send(:participants_custom_field_values, participations.values.flatten, participant_ids)
@@ -282,7 +282,7 @@ describe PhaseInsightsService do
 
   describe '#select_or_checkbox_field_demographics_data' do
     let(:participations) { { voting: [participation1, participation2, participation3, participation4] } }
-    let(:participant_ids) { participations[:voting].pluck(:user_id).uniq }
+    let(:participant_ids) { participations[:voting].pluck(:participant_id).uniq }
 
     context 'with single-select field' do
       let!(:custom_field_single_select) { create(:custom_field, resource_type: 'User', key: 'single_select', input_type: 'select', title_multiloc: { en: 'Select one' }) }
