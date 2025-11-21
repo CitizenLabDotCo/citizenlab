@@ -464,7 +464,6 @@ module ParticipationMethod
           acted_at: idea.submitted_at, # analytics_fact_participations uses created_at, so maybe we should use that here too?
           classname: 'Idea',
           participant_id: participant_id(idea.id, idea.author_id, idea.author_hash),
-          user_hash: idea.author_hash,
           user_custom_field_values: idea&.author&.custom_field_values || {}
         }
       end
@@ -487,7 +486,6 @@ module ParticipationMethod
           acted_at: comment.created_at,
           classname: 'Comment',
           participant_id: participant_id(comment.id, comment.author_id, comment.author_hash),
-          user_hash: comment.author_hash,
           user_custom_field_values: comment&.author&.custom_field_values || {}
         }
       end
