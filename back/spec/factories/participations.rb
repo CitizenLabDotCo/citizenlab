@@ -7,6 +7,7 @@ FactoryBot.define do
       acted_at { Time.current }
       user { nil }
       user_custom_field_values { {} }
+      participant_id { nil }
     end
 
     initialize_with do
@@ -31,6 +32,7 @@ FactoryBot.define do
       participation_user = user || create(:user)
       basket = create(:basket, user: participation_user)
       acted_at_time = acted_at || basket.created_at
+      participant_id = participant_id || basket.user_id
       custom_field_values = user_custom_field_values.presence || basket.user.custom_field_values
 
       {
@@ -38,6 +40,7 @@ FactoryBot.define do
         action: 'voting',
         acted_at: acted_at_time,
         classname: 'Basket',
+        participant_id: participant_id,
         user_id: basket.user_id,
         user_custom_field_values: custom_field_values,
         votes: basket.baskets_ideas.sum(:votes)
@@ -53,6 +56,7 @@ FactoryBot.define do
         participation_user = user || create(:user)
         basket = create(:basket, user: participation_user)
         acted_at_time = acted_at || basket.created_at
+        participant_id = participant_id || basket.user_id
         create(:baskets_idea, basket: basket, votes: vote_count)
         custom_field_values = user_custom_field_values.presence || basket.user.custom_field_values
 
@@ -61,6 +65,7 @@ FactoryBot.define do
           action: 'voting',
           acted_at: acted_at_time,
           classname: 'Basket',
+          participant_id: participant_id,
           user_id: basket.user_id,
           user_custom_field_values: custom_field_values,
           votes: vote_count
@@ -75,6 +80,7 @@ FactoryBot.define do
       participation_user = user || create(:user)
       comment = create(:comment, author: participation_user)
       acted_at_time = acted_at || comment.created_at
+      participant_id = participant_id || comment.author_id
       custom_field_values = user_custom_field_values.presence || comment.author.custom_field_values
 
       {
@@ -82,6 +88,7 @@ FactoryBot.define do
         action: 'commenting_idea',
         acted_at: acted_at_time,
         classname: 'Comment',
+        participant_id: participant_id,
         user_id: comment.author_id,
         user_custom_field_values: custom_field_values
       }

@@ -17,7 +17,7 @@ class PhaseInsightsService
     visitors_data = VisitsService.new.phase_visitors_data(phase)
     participations = phase.pmethod.participations
     flattened_participations = participations.values.flatten
-    participant_ids = flattened_participations.pluck(:user_id).uniq
+    participant_ids = flattened_participations.pluck(:participant_id).uniq
 
     metrics_data(phase, participations, participant_ids, visitors_data).merge(
       demographics: { fields: demographics_data(phase, flattened_participations, participant_ids) }
@@ -40,7 +40,7 @@ class PhaseInsightsService
   def base_metrics(participations, participant_ids, visitors_data)
     total_participant_count = participant_ids.count
     flattened_participations = participations.values.flatten
-    participants_last_7_days_count = flattened_participations.select { |p| p[:acted_at] >= 7.days.ago }.pluck(:user_id).uniq.count
+    participants_last_7_days_count = flattened_participations.select { |p| p[:acted_at] >= 7.days.ago }.pluck(:participant_id).uniq.count
 
     {
       visitors: visitors_data[:total],
@@ -65,12 +65,11 @@ class PhaseInsightsService
 
   def voting_data(phase, participations)
     voting_participations = participations[:voting] || []
-
     online_votes = voting_participations.sum { |p| p[:votes] }
     online_votes_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.sum { |p| p[:votes] }
     offline_votes = phase.manual_votes_count
-    voters = voting_participations.pluck(:user_id).uniq.count
-    voters_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.pluck(:user_id).uniq.count
+    voters = voting_participations.pluck(:participant_id).uniq.count
+    voters_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.pluck(:participant_id).uniq.count
     comments_counts = phase_comments_counts(participations)
 
     {

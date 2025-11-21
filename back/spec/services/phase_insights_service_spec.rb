@@ -20,8 +20,10 @@ describe PhaseInsightsService do
     let(:participation5) { create(:basket_participation, acted_at: 10.days.ago, user: user2) } # after phase start & before phase end
     let(:participation6) { create(:basket_participation, acted_at: 4.days.ago, user: user2) } # in last 7 days & before phase end
 
-    let(:participations) { { voting: [participation1, participation2, participation3, participation4, participation5, participation6] } }
-    let(:participant_ids) { participations[:voting].pluck(:user_id).uniq }
+    let(:participation7) { create(:basket_participation, acted_at: 4.days.ago, user: nil, participant_id: SecureRandom.uuid) } # Anonymous or no user, in last 7 days & before phase end
+
+    let(:participations) { { voting: [participation1, participation2, participation3, participation4, participation5, participation6, participation7] } }
+    let(:participant_ids) { participations[:voting].pluck(:participant_id).uniq }
 
     it 'calculates base metrics correctly' do
       result = service.send(:base_metrics, participations, participant_ids, visitors_data)
@@ -30,9 +32,9 @@ describe PhaseInsightsService do
         {
           visitors: 100,
           visitors_last_7_days: 20,
-          participants: 2,
-          participants_last_7_days: 2,
-          engagement_rate: 0.02
+          participants: 3,
+          participants_last_7_days: 3,
+          engagement_rate: 0.03
         }
       )
     end
@@ -51,7 +53,12 @@ describe PhaseInsightsService do
     let(:participation4) { create(:basket_participation, :with_votes, acted_at: 10.days.ago, user: user2, vote_count: 4) }
     let(:participation5) { create(:basket_participation, :with_votes, acted_at: 5.days.ago, user: user2, vote_count: 3) }
 
-    let(:participations) { { voting: [participation1, participation4, participation5], commenting_idea: [participation2, participation3] } }
+    let(:participation6) { create(:basket_participation, :with_votes, acted_at: 4.days.ago, user: nil, participant_id: SecureRandom.uuid, vote_count: 2) } # No user, in last 7 days & before phase end (e.g. imported basket)
+
+
+    let(:participations) { { voting: [participation1, participation4, participation5, participation6], commenting_idea: [participation2, participation3] } }
+
+    # let(:participations) { { voting: [participation6], commenting_idea: [participation2, participation3] } }
 
     it 'calculates voting data correctly' do
       phase.update!(manual_votes_count: 5)
@@ -59,11 +66,11 @@ describe PhaseInsightsService do
       result = service.send(:voting_data, phase, participations)
 
       expect(result).to eq({
-        online_votes: 10,
-        online_votes_last_7_days: 3,
+        online_votes: 12,
+        online_votes_last_7_days: 5,
         offline_votes: 5,
-        voters: 2,
-        voters_last_7_days: 1,
+        voters: 3,
+        voters_last_7_days: 2,
         associated_ideas: 2,
         comments_posted: 2,
         comments_posted_last_7_days: 1
@@ -88,7 +95,7 @@ describe PhaseInsightsService do
       participation = create(:basket_participation)
 
       flattened_participations = [participation]
-      participant_ids = flattened_participations.pluck(:user_id).uniq
+      participant_ids = flattened_participations.pluck(:participant_id).uniq
       result = service.send(:demographics_data, phase, flattened_participations, participant_ids)
 
       expect(result.pluck(:key)).to match_array(%w[birthyear single_select multi_select checkbox])
@@ -103,7 +110,7 @@ describe PhaseInsightsService do
       participation = create(:basket_participation)
 
       flattened_participations = [participation]
-      participant_ids = flattened_participations.pluck(:user_id).uniq
+      participant_ids = flattened_participations.pluck(:participant_id).uniq
       result = service.send(:demographics_data, phase, flattened_participations, participant_ids)
 
       expect(result).to contain_exactly(
@@ -123,7 +130,7 @@ describe PhaseInsightsService do
       let(:participation2) { create(:basket_participation, user_custom_field_values: { 'single_select' => 'b' }) }
 
       let(:flattened_participations) { [participation1, participation2] }
-      let(:participant_ids) { flattened_participations.pluck(:user_id).uniq }
+      let(:participant_ids) { flattened_participations.pluck(:participant_id).uniq }
 
       context 'without reference distribution' do
         it 'includes options and series' do
@@ -180,7 +187,7 @@ describe PhaseInsightsService do
       let(:participation1) { create(:basket_participation, user_custom_field_values: { 'multi_select' => ['x'] }) }
       let(:participation2) { create(:basket_participation, user_custom_field_values: { 'multi_select' => %w[x y] }) }
       let(:flattened_participations) { [participation1, participation2] }
-      let(:participant_ids) { flattened_participations.pluck(:user_id).uniq }
+      let(:participant_ids) { flattened_participations.pluck(:participant_id).uniq }
 
       it 'includes options and series for select and multiselect fields' do
         result = service.send(:demographics_data, phase, flattened_participations, participant_ids)
@@ -206,7 +213,7 @@ describe PhaseInsightsService do
       let(:participation1) { create(:basket_participation, user_custom_field_values: { 'checkbox' => true }) }
       let(:participation2) { create(:basket_participation, user_custom_field_values: { 'checkbox' => false }) }
       let(:flattened_participations) { [participation1, participation2] }
-      let(:participant_ids) { flattened_participations.pluck(:user_id).uniq }
+      let(:participant_ids) { flattened_participations.pluck(:participant_id).uniq }
 
       it 'includes series' do
         result = service.send(:demographics_data, phase, flattened_participations, participant_ids)

@@ -267,8 +267,8 @@ RSpec.describe ParticipationMethod::Ideation do
     let!(:idea4) { create(:idea, phases: [phase], submitted_at: 10.days.ago, author: user2) } # during phase
     let!(:idea5) { create(:idea, phases: [phase], submitted_at: 10.days.ago, author: user2, publication_status: 'draft') } # during phase, but not published
 
-    let!(:idea6) { create(:idea, phases: [phase], submitted_at: 10.days.ago, author: nil, author_hash: 'some_author_hash') } # during phase, no author
-    let!(:idea7) { create(:idea, phases: [phase], submitted_at: 10.days.ago, author: nil, author_hash: nil) } # during phase, no author nor author_hash
+    let!(:idea6) { create(:idea, phases: [phase], submitted_at: 10.days.ago, author: nil, author_hash: 'some_author_hash') } # during phase, no author (e.g. anonymous participation)
+    let!(:idea7) { create(:idea, phases: [phase], submitted_at: 10.days.ago, author: nil, author_hash: nil) } # during phase, no author nor author_hash (e.g. imported idea)
 
     before { phase.update!(start_at: 15.days.ago, end_at: 2.days.ago) }
 
