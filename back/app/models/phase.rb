@@ -190,7 +190,7 @@ class Phase < ApplicationRecord
     numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: :voting_max_total,
                     if: %i[voting? voting_max_total],
                     allow_nil: true }
-  validates :autoshare_results_enabled, inclusion: { in: [true, false] }
+  validates :voting_filtering_enabled, inclusion: { in: [true, false] }
 
   scope :starting_on, lambda { |date|
     where(start_at: date)
