@@ -265,10 +265,11 @@ RSpec.describe ParticipationMethod::Ideation do
 
     let(:user2) { create(:user) }
     let!(:idea4) { create(:idea, phases: [phase], submitted_at: 10.days.ago, author: user2) } # during phase
+    let!(:idea5) { create(:idea, phases: [phase], submitted_at: 10.days.ago, author: user2, publication_status: 'draft') } # during phase, but not published
 
     before { phase.update!(start_at: 15.days.ago, end_at: 2.days.ago) }
 
-    it 'returns the participation ideas submitted data for ideas created during phase' do
+    it 'returns the participation ideas submitted data for published ideas submitted during phase' do
       participation_ideas_submitted = participation_method.participation_ideas_submitted
       expect(participation_ideas_submitted).to match_array([
         {
@@ -277,6 +278,7 @@ RSpec.describe ParticipationMethod::Ideation do
           acted_at: a_kind_of(Time),
           classname: 'Idea',
           user_id: user1.id,
+          user_hash: idea2.author_hash,
           user_custom_field_values: {}
         },
         {
@@ -285,6 +287,7 @@ RSpec.describe ParticipationMethod::Ideation do
           acted_at: a_kind_of(Time),
           classname: 'Idea',
           user_id: user2.id,
+          user_hash: idea4.author_hash,
           user_custom_field_values: {}
         }
       ])

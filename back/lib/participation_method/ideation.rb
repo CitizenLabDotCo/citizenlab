@@ -453,15 +453,17 @@ module ParticipationMethod
       end_time = phase.end_at ? phase.end_at.end_of_day : Time.current.end_of_day # TODO: Consider platform timezone
       ideas = phase.ideas.where(<<~SQL.squish, phase.start_at.beginning_of_day, end_time)
         ideas.submitted_at >= ? AND ideas.submitted_at <= ?
+        AND ideas.publication_status = 'published'
       SQL
 
       ideas.map do |idea|
         {
           id: idea.id,
           action: 'posting_idea',
-          acted_at: idea.submitted_at,
+          acted_at: idea.submitted_at, # analytics_fact_participations uses created_at, so maybe we should use that here too?
           classname: 'Idea',
           user_id: idea.author_id,
+          user_hash: idea.author_hash,
           user_custom_field_values: idea.author.custom_field_values
         }
       end
