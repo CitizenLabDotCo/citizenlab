@@ -2867,7 +2867,7 @@
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "KI-Analyse",
   "app.containers.AdminPage.projects.project.analysis.Insights.accuracy": "Genauigkeit: {accuracy}{percentage}",
   "app.containers.AdminPage.projects.project.analysis.Insights.aiDisclaimerBanner": "AI kann Fehler machen. Bitte überprüfen Sie wichtige Informationen.",
-  "app.containers.AdminPage.projects.project.analysis.Insights.aiDisclaimerDetails": "Der Inhalt in diesem Abschnitt ist KI-generiert und möglicherweise nicht ganz korrekt. Bitte überprüfen Sie ihn anhand Ihrer Eingaben. Die Auswahl von weniger Eingaben kann die Genauigkeit verbessern.",
+  "app.containers.AdminPage.projects.project.analysis.Insights.aiDisclaimerDetails": "Der Inhalt in diesem Abschnitt ist KI-generiert und möglicherweise nicht ganz korrekt. Bitte überprüfen Sie ihn anhand Ihrer Beiträge. Die Auswahl von weniger Beiträgen kann die Genauigkeit verbessern.",
   "app.containers.AdminPage.projects.project.analysis.Insights.ask": "Fragen",
   "app.containers.AdminPage.projects.project.analysis.Insights.askAQuestionUpsellMessage": "Anstatt Zusammenfassungen zu erstellen, können Sie Ihren Daten relevante Fragen stellen. Diese Funktion ist in Ihrer aktuellen Lizenz nicht enthalten. Sprechen Sie mit Ihrer Kundenbetreuerin oder Ihrem Admin, um sie freizuschalten.",
   "app.containers.AdminPage.projects.project.analysis.Insights.askQuestion": "Frage stellen",
