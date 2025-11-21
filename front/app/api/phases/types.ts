@@ -34,6 +34,7 @@ export interface IPhaseData {
 }
 
 export interface IPhaseAttributes {
+  voting_filtering_enabled: boolean;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
   start_at: string;

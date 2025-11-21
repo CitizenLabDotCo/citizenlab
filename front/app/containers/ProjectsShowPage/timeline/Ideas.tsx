@@ -44,7 +44,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
   const searchParam = searchParams.get('search');
   const topicsParam = searchParams.get('topics');
   const ideaStatusParam = searchParams.get('idea_status');
-  const config = getMethodConfig(phase.attributes.participation_method);
+  const config = getMethodConfig(phase.attributes.participation_method, phase);
 
   const ideaQueryParameters = useMemo<QueryParameters>(
     () => ({
@@ -91,7 +91,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
         <IdeaCardsWithoutFiltersSidebar
           defaultSortingMethod={ideaQueryParameters.sort}
           invisibleTitleMessage={messages.a11y_titleInputsPhase}
-          showDropdownFilters={false}
+          showDropdownFilters={config.showIdeaFilters ?? false}
           showSearchbar={false}
           {...sharedProps}
         />
