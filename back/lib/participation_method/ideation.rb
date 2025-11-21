@@ -479,7 +479,7 @@ module ParticipationMethod
           comments.created_at >= ? AND comments.created_at <= ?
           AND comments.publication_status = 'published'
         SQL
-          .includes(:author)
+        .includes(:author)
 
       comments.map do |comment|
         {
