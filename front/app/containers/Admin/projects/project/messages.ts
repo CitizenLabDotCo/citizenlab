@@ -255,11 +255,11 @@ export default defineMessages({
   },
   enabledVotingFiltering: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.enabledVotingFiltering',
-    defaultMessage: 'Filtering ideas',
+    defaultMessage: 'Filtering input',
   },
   enabledVotingFilteringDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.enabledVotingFilteringDescription',
-    defaultMessage: 'Allow users to filter ideas during voting.',
+    defaultMessage: 'Allow users to filter input during voting.',
   },
   defaultViewOptions: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.defaultViewOptions',
