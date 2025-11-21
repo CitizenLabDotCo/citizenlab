@@ -256,8 +256,16 @@ module ParticipationMethod
       {}
     end
 
-    # def participant_id(item)
-    # end
+    def participant_id(item)
+      case item.class.name
+      when 'Idea', 'Comment'
+        item.author_id || item.author_hash || item.id
+      when 'Reaction', 'Basket'
+        item.user_id || item.id
+      else
+        nil
+      end
+    end
 
     private
 
