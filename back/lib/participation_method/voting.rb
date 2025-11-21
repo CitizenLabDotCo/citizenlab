@@ -67,8 +67,9 @@ module ParticipationMethod
           action: 'voting',
           acted_at: basket.submitted_at,
           classname: 'Basket',
+          participant_id: participant_id(basket.id, basket.user_id),
           user_id: basket.user_id,
-          user_custom_field_values: basket.user.custom_field_values,
+          user_custom_field_values: basket&.user&.custom_field_values || {},
           votes: total_votes
         }
       end

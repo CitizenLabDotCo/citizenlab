@@ -241,22 +241,36 @@ RSpec.describe ParticipationMethod::Voting do
     let!(:idea2) { create(:idea, phases: [phase]) }
 
     let(:user) { create(:user) }
-    let!(:basket) { create(:basket, phase: phase, user: user, submitted_at: phase.start_at + 1.day) }
-    let!(:baskets_idea1) { create(:baskets_idea, basket: basket, idea: idea1, votes: 2) }
-    let!(:baskets_idea2) { create(:baskets_idea, basket: basket, idea: idea2, votes: 3) }
+    let!(:basket1) { create(:basket, phase: phase, user: user, submitted_at: phase.start_at + 1.day) }
+    let!(:baskets_idea1) { create(:baskets_idea, basket: basket1, idea: idea1, votes: 2) }
+    let!(:baskets_idea2) { create(:baskets_idea, basket: basket1, idea: idea2, votes: 3) }
+
+    let!(:basket2) { create(:basket, phase: phase, user: nil, submitted_at: phase.start_at + 1.day) }
+    let!(:baskets_idea3) { create(:baskets_idea, basket: basket2, idea: idea2, votes: 42) }
 
     it 'returns the participation baskets data associated with the phase' do
       participation_baskets = participation_method.participation_baskets
 
       expect(participation_baskets).to eq([
         {
-          item_id: basket.id,
+          item_id: basket1.id,
           action: 'voting',
-          acted_at: basket.submitted_at,
+          acted_at: basket1.submitted_at,
           classname: 'Basket',
+          participant_id: user.id,
           user_id: user.id,
           user_custom_field_values: {},
           votes: 5
+        },
+        {
+          item_id: basket2.id,
+          action: 'voting',
+          acted_at: basket2.submitted_at,
+          classname: 'Basket',
+          participant_id: basket2.id,
+          user_id: nil,
+          user_custom_field_values: {},
+          votes: 42
         }
       ])
     end

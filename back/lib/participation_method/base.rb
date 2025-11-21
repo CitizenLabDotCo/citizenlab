@@ -256,6 +256,10 @@ module ParticipationMethod
       {}
     end
 
+    def participant_id(item_id, author_id, author_hash = nil)
+      author_id.presence || author_hash.presence || item_id
+    end
+
     private
 
     attr_reader :phase

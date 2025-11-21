@@ -267,16 +267,21 @@ RSpec.describe ParticipationMethod::Ideation do
     let!(:idea4) { create(:idea, phases: [phase], submitted_at: 10.days.ago, author: user2) } # during phase
     let!(:idea5) { create(:idea, phases: [phase], submitted_at: 10.days.ago, author: user2, publication_status: 'draft') } # during phase, but not published
 
+    let!(:idea6) { create(:idea, phases: [phase], submitted_at: 10.days.ago, author: nil, author_hash: 'some_author_hash') } # during phase, no author
+    let!(:idea7) { create(:idea, phases: [phase], submitted_at: 10.days.ago, author: nil, author_hash: nil) } # during phase, no author nor author_hash
+
     before { phase.update!(start_at: 15.days.ago, end_at: 2.days.ago) }
 
     it 'returns the participation ideas submitted data for published ideas submitted during phase' do
       participation_ideas_submitted = participation_method.participation_ideas_submitted
+
       expect(participation_ideas_submitted).to match_array([
         {
           item_id: idea2.id,
           action: 'posting_idea',
           acted_at: a_kind_of(Time),
           classname: 'Idea',
+          participant_id: user1.id,
           user_id: user1.id,
           user_hash: idea2.author_hash,
           user_custom_field_values: {}
@@ -286,8 +291,29 @@ RSpec.describe ParticipationMethod::Ideation do
           action: 'posting_idea',
           acted_at: a_kind_of(Time),
           classname: 'Idea',
+          participant_id: user2.id,
           user_id: user2.id,
           user_hash: idea4.author_hash,
+          user_custom_field_values: {}
+        },
+        {
+          item_id: idea6.id,
+          action: 'posting_idea',
+          acted_at: a_kind_of(Time),
+          classname: 'Idea',
+          participant_id: 'some_author_hash',
+          user_id: nil,
+          user_hash: 'some_author_hash',
+          user_custom_field_values: {}
+        },
+        { 
+          item_id: idea7.id,
+          action: 'posting_idea',
+          acted_at: a_kind_of(Time),
+          classname: 'Idea',
+          participant_id: idea7.id,
+          user_id: nil,
+          user_hash: nil,
           user_custom_field_values: {}
         }
       ])
@@ -304,7 +330,9 @@ RSpec.describe ParticipationMethod::Ideation do
       expect(participation_ideas_submitted.pluck(:item_id)).to match_array([
         idea2.id,
         idea3.id,
-        idea4.id
+        idea4.id,
+        idea6.id,
+        idea7.id
       ])
     end
   end
@@ -320,6 +348,9 @@ RSpec.describe ParticipationMethod::Ideation do
     let(:user2) { create(:user) }
     let!(:comment4) { create(:comment, idea: idea, created_at: 10.days.ago, author: user2) } # during phase
 
+    let!(:comment5) { create(:comment, idea: idea, created_at: 10.days.ago, author: nil, author_hash: 'some_author_hash') } # during phase, no author
+    let!(:comment6) { create(:comment, idea: idea, created_at: 10.days.ago, author: nil, author_hash: nil) } # during phase, no author nor author_hash
+
     before { phase.update!(start_at: 15.days.ago, end_at: 2.days.ago) }
 
     it 'returns the participation idea comments data for comments posted during phase' do
@@ -331,7 +362,9 @@ RSpec.describe ParticipationMethod::Ideation do
           action: 'commenting_idea',
           acted_at: a_kind_of(Time),
           classname: 'Comment',
+          participant_id: user1.id,
           user_id: user1.id,
+          user_hash: comment2.author_hash,
           user_custom_field_values: {}
         },
         {
@@ -339,7 +372,29 @@ RSpec.describe ParticipationMethod::Ideation do
           action: 'commenting_idea',
           acted_at: a_kind_of(Time),
           classname: 'Comment',
+          participant_id: user2.id,
           user_id: user2.id,
+          user_hash: comment4.author_hash,
+          user_custom_field_values: {}
+        },
+        {
+          item_id: comment5.id,
+          action: 'commenting_idea',
+          acted_at: a_kind_of(Time),
+          classname: 'Comment',
+          participant_id: 'some_author_hash',
+          user_id: nil,
+          user_hash: 'some_author_hash',
+          user_custom_field_values: {}
+        },
+        {
+          item_id: comment6.id,
+          action: 'commenting_idea',
+          acted_at: a_kind_of(Time),
+          classname: 'Comment',
+          participant_id: comment6.id,
+          user_id: nil,
+          user_hash: nil,
           user_custom_field_values: {}
         }
       ])
@@ -356,7 +411,9 @@ RSpec.describe ParticipationMethod::Ideation do
       expect(participation_idea_comments.pluck(:item_id)).to match_array([
         comment2.id,
         comment3.id,
-        comment4.id
+        comment4.id,
+        comment5.id,
+        comment6.id
       ])
     end
   end
@@ -374,6 +431,8 @@ RSpec.describe ParticipationMethod::Ideation do
     let(:user2) { create(:user) }
     let!(:reaction4) { create(:reaction, reactable: idea2, created_at: 10.days.ago, user: user2, mode: 'down') } # during phase
 
+    let!(:reaction5) { create(:reaction, reactable: idea1, created_at: 10.days.ago, user: nil, mode: 'up') } # during phase, no user
+
     before { phase.update!(start_at: 15.days.ago, end_at: 2.days.ago) }
 
     it 'returns the participation idea reactions data for reactions made during phase' do
@@ -385,6 +444,7 @@ RSpec.describe ParticipationMethod::Ideation do
           action: 'reacting_idea',
           acted_at: a_kind_of(Time),
           classname: 'Reaction',
+          participant_id: user1.id,
           user_id: user1.id,
           user_custom_field_values: {}
         },
@@ -393,7 +453,17 @@ RSpec.describe ParticipationMethod::Ideation do
           action: 'reacting_idea',
           acted_at: a_kind_of(Time),
           classname: 'Reaction',
+          participant_id: user2.id,
           user_id: user2.id,
+          user_custom_field_values: {}
+        },
+        {
+          item_id: reaction5.id,
+          action: 'reacting_idea',
+          acted_at: a_kind_of(Time),
+          classname: 'Reaction',
+          participant_id: reaction5.id,
+          user_id: nil,
           user_custom_field_values: {}
         }
       ])
@@ -410,7 +480,8 @@ RSpec.describe ParticipationMethod::Ideation do
       expect(participation_idea_reactions.pluck(:item_id)).to match_array([
         reaction2.id,
         reaction3.id,
-        reaction4.id
+        reaction4.id,
+        reaction5.id
       ])
     end
   end
