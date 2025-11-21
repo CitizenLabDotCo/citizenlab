@@ -32,7 +32,7 @@ FactoryBot.define do
       participation_user = user || create(:user)
       basket = create(:basket, user: participation_user)
       acted_at_time = acted_at || basket.created_at
-      participant_id = participant_id || basket.user_id
+      participant_id ||= basket.user_id
       custom_field_values = user_custom_field_values.presence || basket.user.custom_field_values
 
       {
@@ -56,7 +56,7 @@ FactoryBot.define do
         participation_user = user || create(:user)
         basket = create(:basket, user: participation_user)
         acted_at_time = acted_at || basket.created_at
-        participant_id = participant_id || basket.user_id
+        participant_id ||= basket.user_id
         create(:baskets_idea, basket: basket, votes: vote_count)
         custom_field_values = user_custom_field_values.presence || basket.user.custom_field_values
 
@@ -80,7 +80,7 @@ FactoryBot.define do
       participation_user = user || create(:user)
       comment = create(:comment, author: participation_user)
       acted_at_time = acted_at || comment.created_at
-      participant_id = participant_id || comment.author_id
+      participant_id ||= comment.author_id
       custom_field_values = user_custom_field_values.presence || comment.author.custom_field_values
 
       {

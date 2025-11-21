@@ -55,10 +55,7 @@ describe PhaseInsightsService do
 
     let(:participation6) { create(:basket_participation, :with_votes, acted_at: 4.days.ago, user: nil, participant_id: SecureRandom.uuid, vote_count: 2) } # No user, in last 7 days & before phase end (e.g. imported basket)
 
-
     let(:participations) { { voting: [participation1, participation4, participation5, participation6], commenting_idea: [participation2, participation3] } }
-
-    # let(:participations) { { voting: [participation6], commenting_idea: [participation2, participation3] } }
 
     it 'calculates voting data correctly' do
       phase.update!(manual_votes_count: 5)
