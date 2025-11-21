@@ -256,8 +256,8 @@ module ParticipationMethod
       {}
     end
 
-    def participant_id(item_id, author_id, author_hash = nil)
-      author_id.presence || author_hash.presence || item_id
+    def participant_id(item_id, user_id, user_hash = nil)
+      user_id.presence || user_hash.presence || item_id
     end
 
     private
