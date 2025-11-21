@@ -4,10 +4,8 @@ RSpec.describe ParticipationMethod::Base do
   subject(:participation_method) { described_class.new phase }
 
   let(:phase) { create(:phase) }
-  
-  describe '#participant_id' do
-    let(:idea) { create(:idea) }
 
+  describe '#participant_id' do
     it 'returns the user_id when present' do
       expect(participation_method.participant_id('item_id', 'user_id', 'user_hash')).to eq('user_id')
     end

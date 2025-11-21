@@ -306,7 +306,7 @@ RSpec.describe ParticipationMethod::Ideation do
           user_hash: 'some_author_hash',
           user_custom_field_values: {}
         },
-        { 
+        {
           item_id: idea7.id,
           action: 'posting_idea',
           acted_at: a_kind_of(Time),

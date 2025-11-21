@@ -455,7 +455,7 @@ module ParticipationMethod
         ideas.submitted_at >= ? AND ideas.submitted_at <= ?
         AND ideas.publication_status = 'published'
       SQL
-      .includes(:author)
+        .includes(:author)
 
       ideas.map do |idea|
         {
@@ -479,7 +479,7 @@ module ParticipationMethod
           comments.created_at >= ? AND comments.created_at <= ?
           AND comments.publication_status = 'published'
         SQL
-        .includes(:author)
+          .includes(:author)
 
       comments.map do |comment|
         {
