@@ -258,7 +258,6 @@ RSpec.describe ParticipationMethod::Voting do
           acted_at: basket1.submitted_at,
           classname: 'Basket',
           participant_id: user.id,
-          user_id: user.id,
           user_custom_field_values: {},
           votes: 5
         },
@@ -268,7 +267,6 @@ RSpec.describe ParticipationMethod::Voting do
           acted_at: basket2.submitted_at,
           classname: 'Basket',
           participant_id: basket2.id,
-          user_id: nil,
           user_custom_field_values: {},
           votes: 42
         }

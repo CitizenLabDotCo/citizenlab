@@ -239,11 +239,11 @@ class PhaseInsightsService
 
   def participants_custom_field_values(participations, participant_ids)
     # Build lookup hash to avoid O(n × p) repeated searches. Reduces to O(n + p).
-    participation_by_user = participations.group_by { |p| p[:user_id] }
+    participation_by_user = participations.group_by { |p| p[:participant_id] }
 
     # Get first participation's custom field values for each unique user
-    participant_ids.map do |user_id|
-      participation_by_user[user_id].first[:user_custom_field_values]
+    participant_ids.map do |participant_id|
+      participation_by_user[participant_id].first[:user_custom_field_values]
     end
   end
 

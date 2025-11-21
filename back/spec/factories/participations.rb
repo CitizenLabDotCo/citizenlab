@@ -13,14 +13,15 @@ FactoryBot.define do
     initialize_with do
       acted_at_time = acted_at || Time.current
       participation_user = user || create(:user)
-      custom_field_values = user_custom_field_values.presence || participation_user.custom_field_values
+      participant_id ||= participation_user.id
+      custom_field_values = user_custom_field_values.presence || participation_user.custom_field_values || {}
 
       {
         item_id: SecureRandom.uuid,
         action: 'generic',
         acted_at: acted_at_time,
         classname: 'Generic',
-        user_id: participation_user.id,
+        participant_id: participant_id,
         user_custom_field_values: custom_field_values
       }
     end
@@ -33,7 +34,7 @@ FactoryBot.define do
       basket = create(:basket, user: participation_user)
       acted_at_time = acted_at || basket.created_at
       participant_id ||= basket.user_id
-      custom_field_values = user_custom_field_values.presence || basket.user.custom_field_values
+      custom_field_values = user_custom_field_values.presence || basket.user.custom_field_values || {}
 
       {
         item_id: basket.id,
@@ -41,7 +42,6 @@ FactoryBot.define do
         acted_at: acted_at_time,
         classname: 'Basket',
         participant_id: participant_id,
-        user_id: basket.user_id,
         user_custom_field_values: custom_field_values,
         votes: basket.baskets_ideas.sum(:votes)
       }
@@ -58,7 +58,7 @@ FactoryBot.define do
         acted_at_time = acted_at || basket.created_at
         participant_id ||= basket.user_id
         create(:baskets_idea, basket: basket, votes: vote_count)
-        custom_field_values = user_custom_field_values.presence || basket.user.custom_field_values
+        custom_field_values = user_custom_field_values.presence || basket.user.custom_field_values || {}
 
         {
           item_id: basket.id,
@@ -66,7 +66,6 @@ FactoryBot.define do
           acted_at: acted_at_time,
           classname: 'Basket',
           participant_id: participant_id,
-          user_id: basket.user_id,
           user_custom_field_values: custom_field_values,
           votes: vote_count
         }
@@ -81,7 +80,7 @@ FactoryBot.define do
       comment = create(:comment, author: participation_user)
       acted_at_time = acted_at || comment.created_at
       participant_id ||= comment.author_id
-      custom_field_values = user_custom_field_values.presence || comment.author.custom_field_values
+      custom_field_values = user_custom_field_values.presence || comment.author.custom_field_values || {}
 
       {
         item_id: comment.id,
@@ -89,7 +88,6 @@ FactoryBot.define do
         acted_at: acted_at_time,
         classname: 'Comment',
         participant_id: participant_id,
-        user_id: comment.author_id,
         user_custom_field_values: custom_field_values
       }
     end

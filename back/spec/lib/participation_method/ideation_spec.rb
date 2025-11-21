@@ -282,7 +282,6 @@ RSpec.describe ParticipationMethod::Ideation do
           acted_at: a_kind_of(Time),
           classname: 'Idea',
           participant_id: user1.id,
-          user_id: user1.id,
           user_hash: idea2.author_hash,
           user_custom_field_values: {}
         },
@@ -292,7 +291,6 @@ RSpec.describe ParticipationMethod::Ideation do
           acted_at: a_kind_of(Time),
           classname: 'Idea',
           participant_id: user2.id,
-          user_id: user2.id,
           user_hash: idea4.author_hash,
           user_custom_field_values: {}
         },
@@ -302,7 +300,6 @@ RSpec.describe ParticipationMethod::Ideation do
           acted_at: a_kind_of(Time),
           classname: 'Idea',
           participant_id: 'some_author_hash',
-          user_id: nil,
           user_hash: 'some_author_hash',
           user_custom_field_values: {}
         },
@@ -312,7 +309,6 @@ RSpec.describe ParticipationMethod::Ideation do
           acted_at: a_kind_of(Time),
           classname: 'Idea',
           participant_id: idea7.id,
-          user_id: nil,
           user_hash: nil,
           user_custom_field_values: {}
         }
@@ -363,7 +359,6 @@ RSpec.describe ParticipationMethod::Ideation do
           acted_at: a_kind_of(Time),
           classname: 'Comment',
           participant_id: user1.id,
-          user_id: user1.id,
           user_hash: comment2.author_hash,
           user_custom_field_values: {}
         },
@@ -373,7 +368,6 @@ RSpec.describe ParticipationMethod::Ideation do
           acted_at: a_kind_of(Time),
           classname: 'Comment',
           participant_id: user2.id,
-          user_id: user2.id,
           user_hash: comment4.author_hash,
           user_custom_field_values: {}
         },
@@ -383,7 +377,6 @@ RSpec.describe ParticipationMethod::Ideation do
           acted_at: a_kind_of(Time),
           classname: 'Comment',
           participant_id: 'some_author_hash',
-          user_id: nil,
           user_hash: 'some_author_hash',
           user_custom_field_values: {}
         },
@@ -393,7 +386,6 @@ RSpec.describe ParticipationMethod::Ideation do
           acted_at: a_kind_of(Time),
           classname: 'Comment',
           participant_id: comment6.id,
-          user_id: nil,
           user_hash: nil,
           user_custom_field_values: {}
         }
@@ -445,7 +437,6 @@ RSpec.describe ParticipationMethod::Ideation do
           acted_at: a_kind_of(Time),
           classname: 'Reaction',
           participant_id: user1.id,
-          user_id: user1.id,
           user_custom_field_values: {}
         },
         {
@@ -454,7 +445,6 @@ RSpec.describe ParticipationMethod::Ideation do
           acted_at: a_kind_of(Time),
           classname: 'Reaction',
           participant_id: user2.id,
-          user_id: user2.id,
           user_custom_field_values: {}
         },
         {
@@ -463,7 +453,6 @@ RSpec.describe ParticipationMethod::Ideation do
           acted_at: a_kind_of(Time),
           classname: 'Reaction',
           participant_id: reaction5.id,
-          user_id: nil,
           user_custom_field_values: {}
         }
       ])
