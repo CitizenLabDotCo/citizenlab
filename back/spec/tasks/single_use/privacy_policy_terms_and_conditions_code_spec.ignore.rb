@@ -4,7 +4,7 @@ describe 'fix_existing_tenants:privacy_policy_terms_and_conditions_code rake tas
   before { load_rake_tasks_if_not_loaded }
 
   it 'replaces the code for privacy policy and terms and conditions pages' do
-    terms = build(:static_page, slug: 'terms-and-conditions', code: 'custom').tap{ it.save(validate: false) }
+    terms = build(:static_page, slug: 'terms-and-conditions', code: 'custom').tap { it.save(validate: false) }
     privc = create(:static_page, slug: 'privacy-policy', code: 'faq')
     other = create(:static_page, slug: 'other-page', code: 'custom')
 
