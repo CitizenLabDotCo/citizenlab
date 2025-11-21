@@ -1173,7 +1173,7 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "Alphabetisch (Z-A)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.manager": "Manager*in",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.participation_asc": "Beteiligung (niedrig-hoch)",
-  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.participation_desc": "Beteiligung (hoch-tief)",
+  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.participation_desc": "Beteiligung (hoch-niedrig)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.phase_starting_or_ending_soon": "Phase beginnt oder endet bald",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created_asc1": "Kürzlich erstellt (alt-neu)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created_desc1": "Kürzlich erstellt (neu-alt)",
