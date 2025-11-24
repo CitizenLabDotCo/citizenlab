@@ -29,14 +29,16 @@ class TopicPolicy < ApplicationPolicy
 
   def permitted_attributes_for_create
     [
-      title_multiloc: CL2_SUPPORTED_LOCALES,
-      description_multiloc: CL2_SUPPORTED_LOCALES
+      :default,
+      { title_multiloc: CL2_SUPPORTED_LOCALES },
+      { description_multiloc: CL2_SUPPORTED_LOCALES }
     ]
   end
 
   def permitted_attributes_for_update
     [
       :include_in_onboarding,
+      :default,
       { title_multiloc: CL2_SUPPORTED_LOCALES },
       { description_multiloc: CL2_SUPPORTED_LOCALES }
     ]

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Tooltip, colors, Box } from '@citizenlab/cl2-component-library';
+import { Tooltip, colors, Box, Badge } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useCustomPages from 'api/custom_pages/useCustomPages';
@@ -118,7 +118,9 @@ const TopicRow = (props: Props) => {
           mr="20px"
           minHeight="40px"
         >
-          <RowTitle>{localize(topic.attributes.title_multiloc)}</RowTitle>
+          <Box display="flex" alignItems="center" gap="8px">
+            <RowTitle>{localize(topic.attributes.title_multiloc)}</RowTitle>
+          </Box>
           <RowDescription>
             {localize(topic.attributes.description_multiloc, {
               fallback: formatMessage({ ...messages.noDescriptionProvided }),
@@ -127,6 +129,11 @@ const TopicRow = (props: Props) => {
         </Box>
       </Box>
       <Box display="flex" alignItems="center" gap="16px">
+        {topic.attributes.default && (
+          <Badge color={colors.teal400}>
+            <FormattedMessage {...messages.defaultBadge} />
+          </Badge>
+        )}
         <ButtonWithLink
           linkTo={`/admin/settings/topics/${topic.id}/edit`}
           buttonStyle="secondary-outlined"

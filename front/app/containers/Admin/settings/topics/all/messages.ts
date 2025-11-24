@@ -45,4 +45,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.noDescriptionProvided',
     defaultMessage: 'No description provided',
   },
+  defaultBadge: {
+    id: 'app.containers.AdminPage.SettingsPage.defaultBadge',
+    defaultMessage: 'Default',
+  },
 });

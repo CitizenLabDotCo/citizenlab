@@ -65,4 +65,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.projectsSettings',
     defaultMessage: 'project settings',
   },
+  fieldTopicDefault: {
+    id: 'app.containers.AdminPage.SettingsPage.fieldTopicDefault',
+    defaultMessage: 'Add to new projects by default',
+  },
+  fieldTopicDefaultTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.fieldTopicDefaultTooltip',
+    defaultMessage:
+      'When enabled, this topic will be automatically added to all newly created projects.',
+  },
 });

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Box, Button, IconTooltip } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Multiloc } from 'typings';
@@ -10,6 +10,7 @@ import { Section, SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
+import Toggle from 'components/HookForm/Toggle';
 
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
@@ -20,6 +21,7 @@ import messages from '../messages';
 export interface FormValues {
   title_multiloc: Multiloc;
   description_multiloc?: Multiloc;
+  default?: boolean;
 }
 
 type Props = {
@@ -72,6 +74,17 @@ const TopicForm = ({ onSubmit, defaultValues }: Props) => {
                 messages.fieldTopicDescriptionTooltip
               )}
             />
+          </SectionField>
+          <SectionField>
+            <Box display="flex" alignItems="center" gap="8px">
+              <Toggle
+                name="default"
+                label={formatMessage(messages.fieldTopicDefault)}
+              />
+              <IconTooltip
+                content={formatMessage(messages.fieldTopicDefaultTooltip)}
+              />
+            </Box>
           </SectionField>
           <Box display="flex">
             <Button
