@@ -2588,7 +2588,6 @@
   "app.containers.AdminPage.SettingsPage.customized_button": "Özel",
   "app.containers.AdminPage.SettingsPage.customized_button_text_label": "Düğme metni",
   "app.containers.AdminPage.SettingsPage.customized_button_url_label": "Düğme bağlantısı",
-  "app.containers.AdminPage.SettingsPage.defaultTopic": "Varsayılan etiket",
   "app.containers.AdminPage.SettingsPage.delete": "Sil",
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "Sil",
   "app.containers.AdminPage.SettingsPage.deleteTopicConfirmation": "Bu işlem, etiketi mevcut tüm yayınlardan siler. Bu değişiklik tüm projeler için geçerli olur.",

@@ -2588,7 +2588,6 @@
   "app.containers.AdminPage.SettingsPage.customized_button": "Brugerdefineret",
   "app.containers.AdminPage.SettingsPage.customized_button_text_label": "Knaptekst",
   "app.containers.AdminPage.SettingsPage.customized_button_url_label": "Link til knap",
-  "app.containers.AdminPage.SettingsPage.defaultTopic": "Standard-tag",
   "app.containers.AdminPage.SettingsPage.delete": "Slet",
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "Slet",
   "app.containers.AdminPage.SettingsPage.deleteTopicConfirmation": "Dette vil slette tagget fra alle eksisterende indlæg. Denne ændring gælder for alle projekter.",

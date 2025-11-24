@@ -2588,7 +2588,6 @@
   "app.containers.AdminPage.SettingsPage.customized_button": "Tilpasset",
   "app.containers.AdminPage.SettingsPage.customized_button_text_label": "Knappenes tekst",
   "app.containers.AdminPage.SettingsPage.customized_button_url_label": "Knappelink",
-  "app.containers.AdminPage.SettingsPage.defaultTopic": "Standard tag",
   "app.containers.AdminPage.SettingsPage.delete": "Slett",
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "Slett",
   "app.containers.AdminPage.SettingsPage.deleteTopicConfirmation": "Dette vil slette taggen fra alle eksisterende innlegg. Denne endringen vil gjelde for alle prosjekter.",

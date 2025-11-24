@@ -2588,7 +2588,6 @@
   "app.containers.AdminPage.SettingsPage.customized_button": "Personalizado",
   "app.containers.AdminPage.SettingsPage.customized_button_text_label": "Botão de texto",
   "app.containers.AdminPage.SettingsPage.customized_button_url_label": "Link para botão",
-  "app.containers.AdminPage.SettingsPage.defaultTopic": "Tópico padrão",
   "app.containers.AdminPage.SettingsPage.delete": "Deletar",
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "Deletar",
   "app.containers.AdminPage.SettingsPage.deleteTopicConfirmation": "Isso excluirá o tópico, incluindo todas as entradas existentes. Esta mudança será aplicada em todos os projetos.",
