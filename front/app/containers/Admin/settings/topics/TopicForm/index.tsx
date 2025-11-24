@@ -7,6 +7,7 @@ import { Multiloc } from 'typings';
 import { object } from 'yup';
 
 import { Section, SectionField } from 'components/admin/Section';
+import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
 
@@ -56,6 +57,7 @@ const TopicForm = ({ onSubmit, defaultValues }: Props) => {
           data-testid="topicForm"
         >
           <SectionField>
+            <Feedback />
             <InputMultilocWithLocaleSwitcher
               name="title_multiloc"
               label={formatMessage(messages.fieldTopicTitle)}

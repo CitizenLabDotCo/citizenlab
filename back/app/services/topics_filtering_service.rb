@@ -22,5 +22,4 @@ class TopicsFilteringService
       scope
     end
   end
-
 end

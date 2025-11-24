@@ -29,7 +29,10 @@ RSpec.describe Topic do
     it 'sorts from fewest ideas to most ideas when asking asc' do
       sorted_topics = described_class.order_ideas_count(Idea.where(id: [idea2.id, idea3.id, idea4.id, idea5.id, idea6.id]), direction: :asc)
       expect(sorted_topics.size).to eq 6
-      expect(sorted_topics).to eq [topics[1], topics[3], topics[0], topics[4], topics[2], topics[5]]
+      # topics[1]: 0 ideas, topics[3]: 1 idea, topics[0]: 2 ideas, topics[2] & topics[4]: 3 ideas each (tied), topics[5]: 4 ideas
+      expect(sorted_topics.map(&:id).take(3)).to eq [topics[1].id, topics[3].id, topics[0].id]
+      expect(sorted_topics.map(&:id)[3..4]).to match_array [topics[2].id, topics[4].id]
+      expect(sorted_topics.map(&:id).last).to eq topics[5].id
     end
 
     it 'sorts from most ideas to fewest ideas when asking desc' do
