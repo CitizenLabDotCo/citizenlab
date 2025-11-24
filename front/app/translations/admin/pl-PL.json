@@ -2397,6 +2397,7 @@
   "app.containers.AdminPage.ProjectFiles.allowAiProcessing": "Zezwalaj na zaawansowaną analizę tych plików przy użyciu przetwarzania AI.",
   "app.containers.AdminPage.ProjectFiles.allowAiProcessingSingleFile": "Zezwalaj na zaawansowaną analizę tego pliku przy użyciu przetwarzania AI.",
   "app.containers.AdminPage.ProjectFiles.askButton": "Zapytaj",
+  "app.containers.AdminPage.ProjectFiles.beta": "Beta",
   "app.containers.AdminPage.ProjectFiles.cancel": "Anuluj",
   "app.containers.AdminPage.ProjectFiles.categoryLabel": "Kategoria",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Wybierz pliki",
