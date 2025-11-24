@@ -2397,6 +2397,7 @@
   "app.containers.AdminPage.ProjectFiles.allowAiProcessing": "Caniatáu dadansoddeg uwch o'r ffeiliau hyn gan ddefnyddio prosesu AI.",
   "app.containers.AdminPage.ProjectFiles.allowAiProcessingSingleFile": "Caniatáu dadansoddeg uwch o'r ffeil hon gan ddefnyddio prosesu AI.",
   "app.containers.AdminPage.ProjectFiles.askButton": "Gofynnwch",
+  "app.containers.AdminPage.ProjectFiles.beta": "Beta",
   "app.containers.AdminPage.ProjectFiles.cancel": "Canslo",
   "app.containers.AdminPage.ProjectFiles.categoryLabel": "Categori",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Dewiswch ffeiliau",
