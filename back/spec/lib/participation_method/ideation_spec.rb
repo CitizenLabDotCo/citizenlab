@@ -269,6 +269,7 @@ RSpec.describe ParticipationMethod::Ideation do
 
     let!(:idea6) { create(:idea, phases: [phase], published_at: 10.days.ago, author: nil, author_hash: 'some_author_hash') } # during phase, no author (e.g. anonymous participation)
     let!(:idea7) { create(:idea, phases: [phase], published_at: 10.days.ago, author: nil, author_hash: nil) } # during phase, no author nor author_hash (e.g. imported idea)
+
     before { phase.update!(start_at: 15.days.ago, end_at: 2.days.ago) }
 
     it 'returns the participation ideas published data for published ideas published during phase' do
