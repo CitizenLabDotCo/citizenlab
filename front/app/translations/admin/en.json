@@ -2441,6 +2441,7 @@
   "app.containers.AdminPage.ProjectFiles.allowAiProcessing": "Allow advanced analytics of these files using AI processing.",
   "app.containers.AdminPage.ProjectFiles.allowAiProcessingSingleFile": "Allow advanced analytics of this file using AI processing.",
   "app.containers.AdminPage.ProjectFiles.askButton": "Ask",
+  "app.containers.AdminPage.ProjectFiles.beta": "Beta",
   "app.containers.AdminPage.ProjectFiles.cancel": "Cancel",
   "app.containers.AdminPage.ProjectFiles.categoryLabel": "Category",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Choose files",
