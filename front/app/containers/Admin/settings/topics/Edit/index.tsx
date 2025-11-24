@@ -54,7 +54,6 @@ const Edit = () => {
             description_multiloc: topic.data.attributes.description_multiloc,
           }}
           onSubmit={handleSubmit}
-          isCustom={topic.data.attributes.code === 'custom'}
         />
       )}
     </Section>

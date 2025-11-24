@@ -7,15 +7,14 @@ import { Multiloc } from 'typings';
 import { object } from 'yup';
 
 import { Section, SectionField } from 'components/admin/Section';
-import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
 
+import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
 import messages from '../messages';
-import { useIntl } from 'utils/cl-intl';
 
 export interface FormValues {
   title_multiloc: Multiloc;
@@ -25,10 +24,9 @@ export interface FormValues {
 type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: FormValues;
-  isCustom?: boolean;
 };
 
-const TopicForm = ({ onSubmit, defaultValues, isCustom = true }: Props) => {
+const TopicForm = ({ onSubmit, defaultValues }: Props) => {
   const { formatMessage } = useIntl();
   const schema = object({
     title_multiloc: validateMultilocForEveryLocale(
@@ -58,12 +56,10 @@ const TopicForm = ({ onSubmit, defaultValues, isCustom = true }: Props) => {
           data-testid="topicForm"
         >
           <SectionField>
-            <Feedback />
             <InputMultilocWithLocaleSwitcher
               name="title_multiloc"
               label={formatMessage(messages.fieldTopicTitle)}
               labelTooltipText={formatMessage(messages.fieldTopicTitleTooltip)}
-              disabled={!isCustom}
             />
           </SectionField>
           <SectionField>

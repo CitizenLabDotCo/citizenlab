@@ -8,26 +8,6 @@ import topicsKeys from './keys';
 
 export type TopicsKeys = Keys<typeof topicsKeys>;
 
-type DefaultTopicCodes =
-  | 'nature'
-  | 'waste'
-  | 'sustainability'
-  | 'mobility'
-  | 'technology'
-  | 'economy'
-  | 'housing'
-  | 'public_space'
-  | 'safety'
-  | 'education'
-  | 'culture'
-  | 'health'
-  | 'inclusion'
-  | 'community'
-  | 'services'
-  | 'other';
-
-export type Code = 'custom' | DefaultTopicCodes;
-
 export interface ITopicData {
   id: string;
   type: string;
@@ -36,7 +16,6 @@ export interface ITopicData {
     description_multiloc: Multiloc;
     icon: string;
     ordering: number;
-    code: Code;
     static_page_ids: string[];
     followers_count: number;
     include_in_onboarding: boolean;
@@ -60,8 +39,6 @@ export interface ITopics {
 }
 
 export interface ITopicsQueryParams {
-  code?: Code;
-  excludeCode?: Code;
   sort?:
     | 'new'
     | 'custom'

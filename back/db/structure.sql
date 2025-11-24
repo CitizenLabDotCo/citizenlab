@@ -1,8 +1,3 @@
-\restrict mgZkyDgtCjSLKfZxRhtiC7mYUyUSQRU7ovUCL1fQC2LD80zlZxvwlHvNXgkKxoK
-
--- Dumped from database version 16.6 (Debian 16.6-1.pgdg110+1)
--- Dumped by pg_dump version 16.10 (Debian 16.10-1.pgdg13+1)
-
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -3610,7 +3605,6 @@ CREATE TABLE public.topics (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     ordering integer,
-    code character varying DEFAULT 'custom'::character varying NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL,
     include_in_onboarding boolean DEFAULT false NOT NULL
 );
@@ -8038,11 +8032,10 @@ ALTER TABLE ONLY public.ideas_topics
 -- PostgreSQL database dump complete
 --
 
-\unrestrict mgZkyDgtCjSLKfZxRhtiC7mYUyUSQRU7ovUCL1fQC2LD80zlZxvwlHvNXgkKxoK
-
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251124000000'),
 ('20251029135211'),
 ('20251022100725'),
 ('20251022100724'),

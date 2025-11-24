@@ -177,7 +177,7 @@ class Project < ApplicationRecord
   end
 
   def set_default_topics!
-    self.allowed_input_topics = Topic.defaults.order(:ordering).reverse
+    self.allowed_input_topics = Topic.order(:ordering).reverse
     save!
   end
 

@@ -23,12 +23,4 @@ class TopicsFilteringService
     end
   end
 
-  add_filter('by_codes') do |scope, options|
-    params = options.fetch(:params)
-
-    result = scope
-    result = result.where(code: params[:code]) if params[:code].present?
-    result = result.where.not(code: params[:exclude_code]) if params[:exclude_code].present?
-    result
-  end
 end
