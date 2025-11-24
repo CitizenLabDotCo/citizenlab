@@ -114,7 +114,7 @@ const Tooltip = ({
         plugins={PLUGINS}
         interactive={true}
         role="tooltip"
-        visible={isFocused}
+        // visible={isFocused
         // Ensures tippy works with both keyboard and mouse
         onHidden={handleOnHidden}
         theme={theme}
@@ -134,7 +134,7 @@ const Tooltip = ({
           plugins={PLUGINS}
           interactive={true}
           role="tooltip"
-          visible={isFocused}
+          // visible={isFocused}
           // Ensures tippy works with both keyboard and mouse
           onHidden={handleOnHidden}
           theme={theme}
