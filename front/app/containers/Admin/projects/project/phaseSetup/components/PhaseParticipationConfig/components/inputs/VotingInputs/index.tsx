@@ -16,6 +16,7 @@ import { VoteTerm, VotingMethod } from 'api/phases/types';
 import {
   SectionDescription,
   SectionField,
+  SubSectionTitle,
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';
 import Error from 'components/UI/Error';
@@ -39,6 +40,10 @@ import VotingMethodSelector from './VotingMethodSelector';
 export const StyledSectionDescription = styled(SectionDescription)`
   margin-top: 0;
   margin-bottom: 20px;
+`;
+
+const WideToggleRow = styled(ToggleRow)`
+  max-width: 500px;
 `;
 
 export interface VotingInputsProps {
@@ -236,19 +241,16 @@ const VotingInputs = ({
           <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
         </SectionField>
         <SectionField>
-          <SubSectionTitleWithDescription>
+          <SubSectionTitle>
             <FormattedMessage {...messages.enabledVotingFiltering} />
-          </SubSectionTitleWithDescription>
-          <StyledSectionDescription>
-            <FormattedMessage {...messages.enabledVotingFilteringDescription} />
-          </StyledSectionDescription>
-          <ToggleRow>
+          </SubSectionTitle>
+          <WideToggleRow>
             <Toggle
               checked={!!voting_filtering_enabled}
               onChange={toggleVotingFilteringEnabled}
               label={FormattedMessage(messages.votingFilteringEnabled)}
             />
-          </ToggleRow>
+          </WideToggleRow>
           <Error apiErrors={apiErrors && apiErrors.votingFilteringEnabled} />
         </SectionField>
 
