@@ -2397,6 +2397,7 @@
   "app.containers.AdminPage.ProjectFiles.allowAiProcessing": "Salli näiden tiedostojen edistynyt analysointi tekoälyn avulla.",
   "app.containers.AdminPage.ProjectFiles.allowAiProcessingSingleFile": "Salli tämän tiedoston edistynyt analytiikka tekoälyn avulla.",
   "app.containers.AdminPage.ProjectFiles.askButton": "Kysyä",
+  "app.containers.AdminPage.ProjectFiles.beta": "Beeta",
   "app.containers.AdminPage.ProjectFiles.cancel": "Peruuttaa",
   "app.containers.AdminPage.ProjectFiles.categoryLabel": "Kategoria",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Valitse tiedostot",
