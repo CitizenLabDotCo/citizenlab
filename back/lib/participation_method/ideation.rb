@@ -451,10 +451,13 @@ module ParticipationMethod
 
     def participation_ideas_published
       end_time = phase.end_at ? phase.end_at.end_of_day : Time.current.end_of_day # TODO: Consider platform timezone
-      ideas = phase.ideas.transitive.where(<<~SQL.squish, phase.start_at.beginning_of_day, end_time)
-        ideas.published_at >= ? AND ideas.published_at <= ?
-        AND ideas.publication_status = 'published'
-      SQL
+      ideas = phase.ideas
+        .transitive
+        .where.not(published_at: nil)
+        .where(<<~SQL.squish, phase.start_at.beginning_of_day, end_time)
+          ideas.published_at >= ? AND ideas.published_at <= ?
+          AND ideas.publication_status = 'published'
+        SQL
         .includes(:author)
 
       ideas.map do |idea|

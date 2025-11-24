@@ -265,7 +265,7 @@ RSpec.describe ParticipationMethod::Ideation do
 
     let(:user2) { create(:user) }
     let!(:idea4) { create(:idea, phases: [phase], published_at: 10.days.ago, author: user2) } # during phase
-    let!(:idea5) { create(:idea, phases: [phase], published_at: 10.days.ago, author: user2, publication_status: 'draft') } # during phase, but not published
+    let!(:idea5) { create(:idea, phases: [phase], published_at: nil, author: user2, publication_status: 'draft') } # during phase, but not published
 
     let!(:idea6) { create(:idea, phases: [phase], published_at: 10.days.ago, author: nil, author_hash: 'some_author_hash') } # during phase, no author (e.g. anonymous participation)
     let!(:idea7) { create(:idea, phases: [phase], published_at: 10.days.ago, author: nil, author_hash: nil) } # during phase, no author nor author_hash (e.g. imported idea)
@@ -326,6 +326,22 @@ RSpec.describe ParticipationMethod::Ideation do
         idea6.id,
         idea7.id
       ])
+    end
+
+    it 'does not include ideas that are not published' do
+      participation_ideas_published = participation_method.participation_ideas_published
+
+      idea_ids = participation_ideas_published.map { |p| p[:item_id] }
+      expect(idea_ids).not_to include(idea5.id)
+    end
+
+    it 'does not include non-transitive ideas' do
+      idea2.creation_phase_id = phase.id
+      idea2.save!(validate: false) # skip validations to allow non-transitive idea
+      participation_ideas_published = participation_method.participation_ideas_published
+
+      idea_ids = participation_ideas_published.map { |p| p[:item_id] }
+      expect(idea_ids).not_to include(idea2.id)
     end
   end
 
