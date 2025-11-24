@@ -2588,7 +2588,6 @@
   "app.containers.AdminPage.SettingsPage.customized_button": "Benutzerdefiniert",
   "app.containers.AdminPage.SettingsPage.customized_button_text_label": "Text des Buttons",
   "app.containers.AdminPage.SettingsPage.customized_button_url_label": "Button-Link",
-  "app.containers.AdminPage.SettingsPage.defaultTopic": "Standardthema",
   "app.containers.AdminPage.SettingsPage.delete": "Löschen",
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "Löschen",
   "app.containers.AdminPage.SettingsPage.deleteTopicConfirmation": "Dadurch wird das Thema gelöscht, auch aus allen vorhandenen Beiträgen. Diese Änderung gilt für alle Projekte.",

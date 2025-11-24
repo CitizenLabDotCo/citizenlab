@@ -2588,7 +2588,6 @@
   "app.containers.AdminPage.SettingsPage.customized_button": "Обичај",
   "app.containers.AdminPage.SettingsPage.customized_button_text_label": "Текст дугмета",
   "app.containers.AdminPage.SettingsPage.customized_button_url_label": "Веза са дугметом",
-  "app.containers.AdminPage.SettingsPage.defaultTopic": "Подразумевана ознака",
   "app.containers.AdminPage.SettingsPage.delete": "Избриши",
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "Избриши",
   "app.containers.AdminPage.SettingsPage.deleteTopicConfirmation": "Ово ће избрисати ознаку из свих постојећих постова. Ова промена ће се односити на све пројекте.",
