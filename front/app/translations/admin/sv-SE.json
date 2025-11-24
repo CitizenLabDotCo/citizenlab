@@ -2397,6 +2397,7 @@
   "app.containers.AdminPage.ProjectFiles.allowAiProcessing": "Tillåt avancerad analys av dessa filer med hjälp av AI-bearbetning.",
   "app.containers.AdminPage.ProjectFiles.allowAiProcessingSingleFile": "Tillåt avancerad analys av den här filen med hjälp av AI-bearbetning.",
   "app.containers.AdminPage.ProjectFiles.askButton": "Fråga",
+  "app.containers.AdminPage.ProjectFiles.beta": "Beta",
   "app.containers.AdminPage.ProjectFiles.cancel": "Avbryt",
   "app.containers.AdminPage.ProjectFiles.categoryLabel": "Kategori",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Välj filer",
