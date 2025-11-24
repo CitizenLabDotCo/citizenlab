@@ -413,7 +413,7 @@ export function showInputManager(
     if (
       phases.some(
         (phase) =>
-          getMethodConfig(phase.attributes.participation_method, {})
+          getMethodConfig(phase.attributes.participation_method)
             .showInputManager
       )
     ) {

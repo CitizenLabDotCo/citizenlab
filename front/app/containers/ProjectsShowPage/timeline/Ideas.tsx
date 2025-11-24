@@ -82,14 +82,14 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
     showViewToggle: true,
     defaultView: phase.attributes.presentation_mode,
   };
-  const SidebarFiltersEnabled = config.showIdeaFilters === true;
+  const sidebarFiltersEnabled = config.showIdeaFilters === true;
 
   return (
     <Box
       id="project-ideas"
       className={`e2e-timeline-project-idea-cards ${className || ''}`}
     >
-      {SidebarFiltersEnabled ? (
+      {sidebarFiltersEnabled ? (
         <>
           <IdeaListScrollAnchor />
           <Suspense fallback={<Spinner />}>
