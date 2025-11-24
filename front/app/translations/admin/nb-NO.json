@@ -2397,6 +2397,7 @@
   "app.containers.AdminPage.ProjectFiles.allowAiProcessing": "Tillat avansert analyse av disse filene ved hjelp av AI-behandling.",
   "app.containers.AdminPage.ProjectFiles.allowAiProcessingSingleFile": "Tillat avansert analyse av denne filen ved hjelp av AI-behandling.",
   "app.containers.AdminPage.ProjectFiles.askButton": "Spør",
+  "app.containers.AdminPage.ProjectFiles.beta": "Beta",
   "app.containers.AdminPage.ProjectFiles.cancel": "Avbryt",
   "app.containers.AdminPage.ProjectFiles.categoryLabel": "Kategori",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Velg filer",
