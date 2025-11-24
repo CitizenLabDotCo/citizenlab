@@ -236,13 +236,13 @@ resource 'Phase insights' do
     let!(:pageview5) { create(:pageview, session: session3, created_at: 2.days.ago, project_id: ideation_phase.project.id) } # after ideation phase
 
     let!(:session4) { create(:session) }
-    let!(:pageview5) { create(:pageview, session: session4, created_at: 15.days.ago, project_id: ideation_phase.project.id) } # in ideation phase, did not participate
+    let!(:pageview6) { create(:pageview, session: session4, created_at: 15.days.ago, project_id: ideation_phase.project.id) } # in ideation phase, did not participate
 
     let!(:session5) { create(:session, user_id: user4.id) }
-    let!(:pageview6) { create(:pageview, session: session5, created_at: 10.days.ago, project_id: ideation_phase.project.id) } # in ideation phase
+    let!(:pageview7) { create(:pageview, session: session5, created_at: 10.days.ago, project_id: ideation_phase.project.id) } # in ideation phase
 
     let!(:session6) { create(:session, user_id: user5.id) }
-    let!(:pageview7) { create(:pageview, session: session6, created_at: 5.days.ago, project_id: ideation_phase.project.id) } # in ideation phase, and in last 7 days
+    let!(:pageview8) { create(:pageview, session: session6, created_at: 5.days.ago, project_id: ideation_phase.project.id) } # in ideation phase, and in last 7 days
 
     let(:id) { ideation_phase.id }
     # rubocop:enable RSpec/ScatteredLet
