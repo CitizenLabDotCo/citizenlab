@@ -209,12 +209,12 @@ resource 'Phase insights' do
       )
     end
 
-    (1..4).each do |i|
+    (1..3).each do |i|
       let!(:"user#{i}") { create(:user) }
     end
 
-    let!(:user5) { create(:user, custom_field_values: { gender: 'female', birthyear: 1980 }) }
-    let!(:user6) { create(:user, custom_field_values: { gender: 'male', birthyear: 1990 }) }
+    let!(:user4) { create(:user, custom_field_values: { gender: 'female', birthyear: 1980 }) }
+    let!(:user5) { create(:user, custom_field_values: { gender: 'male', birthyear: 1990 }) }
 
     let!(:idea1) { create(:idea, phases: [ideation_phase], author: user1, published_at: 25.days.ago) } # published before ideation phase (not counted)
     let!(:idea2) { create(:idea, phases: [ideation_phase], author: user2, published_at: 15.days.ago) } # published during ideation phase
@@ -270,6 +270,37 @@ resource 'Phase insights' do
             reactions_last_7_days: 1
           }
         })
+
+        demographics = json_response_body.dig(:data, :attributes, :demographics)
+        expect(demographics).to match(
+          fields: [
+            {
+              id: custom_field_gender.id,
+              key: 'gender',
+              code: nil,
+              input_type: 'select',
+              r_score: 0.0,
+              title_multiloc: { en: 'Gender' },
+              series: { male: 1, female: 1, unspecified: 0, _blank: 1 },
+              options: {
+                male: { title_multiloc: { en: 'Male' }, ordering: 0 },
+                female: { title_multiloc: { en: 'Female' }, ordering: 1 },
+                unspecified: { title_multiloc: { en: 'Unspecified' }, ordering: 2 }
+              },
+              reference_distribution: { male: 480, unspecified: 10, female: 510 }
+            },
+            {
+              id: custom_field_birthyear.id,
+              key: 'birthyear',
+              code: nil,
+              input_type: 'number',
+              r_score: 0.0,
+              title_multiloc: { en: 'Birthyear' },
+              series: { '18-24': 0, '25-34': 0, '35-44': 1, '45-54': 1, '55-64': 0, '65+': 0, _blank: 1 },
+              reference_distribution: { '18-24': 50, '25-34': 200, '35-44': 400, '45-54': 300, '55-64': 50, '65+': 700 }
+            }
+          ]
+        )
       end
     end
   end
