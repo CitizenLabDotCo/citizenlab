@@ -2397,6 +2397,7 @@
   "app.containers.AdminPage.ProjectFiles.allowAiProcessing": "Yapay zeka işleme kullanarak bu dosyaların gelişmiş analizine izin verin.",
   "app.containers.AdminPage.ProjectFiles.allowAiProcessingSingleFile": "Yapay zeka işleme kullanarak bu dosyanın gelişmiş analizine izin verin.",
   "app.containers.AdminPage.ProjectFiles.askButton": "Sor",
+  "app.containers.AdminPage.ProjectFiles.beta": "Beta",
   "app.containers.AdminPage.ProjectFiles.cancel": "İptal",
   "app.containers.AdminPage.ProjectFiles.categoryLabel": "Kategori",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Dosyaları seçin",
