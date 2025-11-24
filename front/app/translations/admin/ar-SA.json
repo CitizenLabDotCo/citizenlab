@@ -2397,6 +2397,7 @@
   "app.containers.AdminPage.ProjectFiles.allowAiProcessing": "السماح بتحليلات متقدمة لهذه الملفات باستخدام معالجة الذكاء الاصطناعي.",
   "app.containers.AdminPage.ProjectFiles.allowAiProcessingSingleFile": "السماح بتحليلات متقدمة لهذا الملف باستخدام معالجة الذكاء الاصطناعي.",
   "app.containers.AdminPage.ProjectFiles.askButton": "بسأل",
+  "app.containers.AdminPage.ProjectFiles.beta": "بيتا",
   "app.containers.AdminPage.ProjectFiles.cancel": "يلغي",
   "app.containers.AdminPage.ProjectFiles.categoryLabel": "فئة",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "اختيار الملفات",
