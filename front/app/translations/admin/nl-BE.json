@@ -2397,6 +2397,7 @@
   "app.containers.AdminPage.ProjectFiles.allowAiProcessing": "Maak geavanceerde analyses van deze bestanden mogelijk met behulp van AI-verwerking.",
   "app.containers.AdminPage.ProjectFiles.allowAiProcessingSingleFile": "Laat geavanceerde analyses van dit bestand toe met behulp van AI-verwerking.",
   "app.containers.AdminPage.ProjectFiles.askButton": "Vraag",
+  "app.containers.AdminPage.ProjectFiles.beta": "Bèta",
   "app.containers.AdminPage.ProjectFiles.cancel": "Annuleer",
   "app.containers.AdminPage.ProjectFiles.categoryLabel": "Categorie",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Bestanden kiezen",
