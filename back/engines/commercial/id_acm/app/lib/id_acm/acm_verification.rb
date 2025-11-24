@@ -94,7 +94,7 @@ module IdAcm
 
     # TODO: Make this work
     def verify_sync(rrn:)
-      true unless config['rrn_verification'] != 'None'
+      true unless config['rrn_verification'] && config['rrn_verification'] != 'None'
 
       validate_citizen!(rrn)
     end
