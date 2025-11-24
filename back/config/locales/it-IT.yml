@@ -203,15 +203,15 @@ it:
         quality_of_services:
           title: Qualità complessiva dei servizi offerti dalla città
         overall_value:
-          title: Il valore complessivo che ricevi per le tue tasse e imposte cittadine
+          title: Rapporto tra la qualità dei servizi e le tasse e tariffe comunali
         cleanliness_and_maintenance:
           title: Pulizia e manutenzione generale delle strade e degli spazi pubblici
         trust_in_government:
           title: Fiducia nell'amministrazione locale
         responsiveness_of_officials:
-          title: Reazione dei funzionari eletti alle preoccupazioni della comunità
+          title: Prontezza dell'amministrazione nel rispondere ai bisogni della comunità
         transparency_of_money_spent:
-          title: Trasparenza su come vengono spesi i soldi delle tasse comunali
+          title: Trasparenza nella gestione e spesa delle entrate comunali
       question_categories:
         quality_of_life: Qualità della vita
         service_delivery: Servizi
