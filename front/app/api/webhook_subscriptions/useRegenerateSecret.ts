@@ -10,7 +10,7 @@ const regenerateSecret = (id: string) =>
   fetcher<IWebhookSubscriptionOnAdd>({
     path: `/webhook_subscriptions/${id}/regenerate_secret`,
     action: 'post',
-    body: null
+    body: null,
   });
 
 const useRegenerateSecret = () => {

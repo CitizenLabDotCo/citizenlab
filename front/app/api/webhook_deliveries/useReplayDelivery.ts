@@ -10,7 +10,7 @@ const replayDelivery = (id: string) =>
   fetcher<IWebhookDelivery>({
     path: `/webhook_deliveries/${id}/replay`,
     action: 'post',
-    body: null
+    body: null,
   });
 
 const useReplayDelivery = () => {
