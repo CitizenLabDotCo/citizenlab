@@ -2397,6 +2397,7 @@
   "app.containers.AdminPage.ProjectFiles.allowAiProcessing": "Ermöglichen Sie eine erweiterte Analyse dieser Dateien mithilfe von KI-Verarbeitung.",
   "app.containers.AdminPage.ProjectFiles.allowAiProcessingSingleFile": "Ermöglichen Sie eine erweiterte Analyse dieser Dateien mithilfe von KI-Verarbeitung.",
   "app.containers.AdminPage.ProjectFiles.askButton": "Fragen",
+  "app.containers.AdminPage.ProjectFiles.beta": "Beta",
   "app.containers.AdminPage.ProjectFiles.cancel": "Abbrechen",
   "app.containers.AdminPage.ProjectFiles.categoryLabel": "Kategorie",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Dateien auswählen",
