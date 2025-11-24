@@ -2397,6 +2397,7 @@
   "app.containers.AdminPage.ProjectFiles.allowAiProcessing": "Autoriser l'utilisation de l'IA pour analyser ces fichiers.",
   "app.containers.AdminPage.ProjectFiles.allowAiProcessingSingleFile": "Autoriser l'utilisation de l'IA pour analyser ce fichier.",
   "app.containers.AdminPage.ProjectFiles.askButton": "Poser une question",
+  "app.containers.AdminPage.ProjectFiles.beta": "Bêta",
   "app.containers.AdminPage.ProjectFiles.cancel": "Annuler",
   "app.containers.AdminPage.ProjectFiles.categoryLabel": "Catégorie",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Choisir des fichiers",
