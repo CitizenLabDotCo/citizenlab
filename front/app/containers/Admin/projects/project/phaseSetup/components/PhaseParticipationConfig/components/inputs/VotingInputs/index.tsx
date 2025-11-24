@@ -232,7 +232,7 @@ const VotingInputs = ({
             <Toggle
               checked={!!commenting_enabled}
               onChange={toggleCommentingEnabled}
-              label={FormattedMessage(messages.inputCommentingEnabled)}
+              label={formatMessage(messages.inputCommentingEnabled)}
             />
           </ToggleRow>
           <Text mb="0px" pb="0px" color={'textSecondary'} fontSize="s">
@@ -248,7 +248,7 @@ const VotingInputs = ({
             <Toggle
               checked={!!voting_filtering_enabled}
               onChange={toggleVotingFilteringEnabled}
-              label={FormattedMessage(messages.votingFilteringEnabled)}
+              label={formatMessage(messages.votingFilteringEnabled)}
             />
           </WideToggleRow>
           <Error apiErrors={apiErrors && apiErrors.votingFilteringEnabled} />
