@@ -80,9 +80,15 @@ describe PhaseInsightsService do
       permission1.update!(global_custom_fields: false)
 
       field1 = create(:custom_field, resource_type: 'User', key: 'single_select1', code: nil, input_type: 'select', title_multiloc: { en: 'Single Select 1' })
-      field2 = create(:custom_field, resource_type: 'User', key: 'single_select2', code: nil, input_type: 'select', title_multiloc: { en: 'Single Select 2' })
+      create(:custom_field, resource_type: 'User', key: 'single_select2', code: nil, input_type: 'select', title_multiloc: { en: 'Single Select 2' })
 
       create(:permissions_custom_field, permission: permission1, custom_field: field1)
+
+      permission2 = create(:permission, action: 'commenting_idea', permission_scope: phase)
+      permission2.update!(global_custom_fields: false)
+
+      field3 = create(:custom_field, resource_type: 'User', key: 'single_select3', code: nil, input_type: 'select', title_multiloc: { en: 'Single Select 3' })
+      create(:permissions_custom_field, permission: permission2, custom_field: field3)
 
       participation = create(:basket_participation)
 
@@ -90,9 +96,8 @@ describe PhaseInsightsService do
       participant_ids = flattened_participations.pluck(:participant_id).uniq
       result = service.send(:demographics_data, phase, flattened_participations, participant_ids)
 
-      expect(result.pluck(:key)).to match_array(['single_select1'])
+      expect(result.pluck(:key)).to match_array(%w[single_select1 single_select3])
     end
-
 
     it 'only includes data related to specific types of user custom fields' do
       # Should be included

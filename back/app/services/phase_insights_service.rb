@@ -146,8 +146,6 @@ class PhaseInsightsService
       @permissions_custom_fields_service.fields_for_permission(permission)
     end.map(&:custom_field).uniq
 
-    puts "Custom fields for demographics: #{custom_fields.map(&:key).join(', ')}"
-
     custom_fields.filter_map do |custom_field|
       reference_distribution = nil
 
