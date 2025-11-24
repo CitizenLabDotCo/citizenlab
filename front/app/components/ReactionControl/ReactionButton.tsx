@@ -221,6 +221,7 @@ const ReactionCount = styled.div<{
   ${({ buttonReactionModeIsActive, buttonReactionMode }) =>
     buttonReactionModeIsActive &&
     `color: ${{ up: colors.success, down: colors.error }[buttonReactionMode]};`}
+    }
 `;
 
 const ReactionIcon = styled(Icon)<{
@@ -319,7 +320,6 @@ const Button = styled.button<{
           `color: ${{ up: colors.success, down: colors.error }[reactionMode]};`
         );
       }}
-    }
   }
 `;
 
