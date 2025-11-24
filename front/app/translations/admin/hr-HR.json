@@ -2397,6 +2397,7 @@
   "app.containers.AdminPage.ProjectFiles.allowAiProcessing": "Omogućite naprednu analitiku ovih datoteka pomoću umjetne inteligencije.",
   "app.containers.AdminPage.ProjectFiles.allowAiProcessingSingleFile": "Omogući naprednu analitiku ove datoteke pomoću umjetne inteligencije.",
   "app.containers.AdminPage.ProjectFiles.askButton": "Pitajte",
+  "app.containers.AdminPage.ProjectFiles.beta": "Beta",
   "app.containers.AdminPage.ProjectFiles.cancel": "Otkazati",
   "app.containers.AdminPage.ProjectFiles.categoryLabel": "Kategorija",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Odaberite datoteke",
