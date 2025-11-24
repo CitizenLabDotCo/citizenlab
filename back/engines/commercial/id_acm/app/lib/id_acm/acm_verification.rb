@@ -92,19 +92,20 @@ module IdAcm
       config[:ui_method_name] || name
     end
 
-    # TODO: Make this work
     def verify_sync(rrn:)
-      true unless config['rrn_verification'] && config['rrn_verification'] != 'None'
+      return true unless config[:rrn_verification] && config[:rrn_verification] != 'None'
 
-      validate_citizen!(rrn)
+      validate_rrn!(rrn)
     end
 
     def verification_parameters(auth)
       { rrn: auth.info.rrn }
     end
 
-    def validate_citizen!(rrn)
-      api = IdOostendeRrn::WijkBudgetApi.new(api_key: config[:api_key], environment: config[:environment])
+    private
+
+    def validate_rrn!(rrn)
+      api = IdOostendeRrn::WijkBudgetApi.new(api_key: config[:rrn_api_key], environment: config[:rrn_environment])
       response = api.verificatie(rrn)
       raise RuntimeError(response) unless response.success?
 

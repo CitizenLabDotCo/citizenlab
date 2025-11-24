@@ -4,7 +4,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 context 'ACM verification (Oostende Itsme)' do
-
   # {"provider" => "acm",
   #  "uid" => "8ebaf29ebc3f51800cf76c0cbb31e73ae9316ab9",
   #  "info" =>
@@ -92,7 +91,10 @@ context 'ACM verification (Oostende Itsme)' do
         client_id: '12345',
         client_secret: '78910',
         api_key: 'test',
-        environment: 'production'
+        environment: 'production',
+        rrn_verification: 'Oostende',
+        rrn_environment: 'dv',
+        rrn_api_key: 'dummy_key'
       }]
     }
     configuration.save!
@@ -118,8 +120,7 @@ context 'ACM verification (Oostende Itsme)' do
     })
   end
 
-  def expect_user_to_be_verified_and_identified(user)
-    expect_user_to_be_verified(user)
+  def expect_user_to_be_identified(user)
     expect(user.identities.first).to have_attributes({
       provider: 'acm',
       user_id: user.id,
@@ -149,26 +150,42 @@ context 'ACM verification (Oostende Itsme)' do
       expect_user_to_be_verified(@user.reload)
     end
 
-    it 'does not verify an existing user if outside the area' do
-      stub_wijk_budget_api({ geldig: false, redenNietGeldig: 'ERR11' })
+    context 'user is outside the area' do
+      before { stub_wijk_budget_api({ geldig: false, redenNietGeldig: 'ERR11' }) }
 
-      get "/auth/acm?token=#{@token}&verification_pathname=/some-page"
-      follow_redirect!
+      it 'does not verify an existing user if outside the area' do
+        get "/auth/acm?token=#{@token}&verification_pathname=/some-page"
+        follow_redirect!
 
-      expect(response).to redirect_to('/some-page?verification_error=true&error_code=not_entitled_lives_outside')
-      expect(@user.reload).to have_attributes({ verified: false })
-      expect(@user.reload.verifications.count).to eq 0
+        expect(response).to redirect_to('/some-page?verification_error=true&error_code=not_entitled_lives_outside')
+        expect(@user.reload).to have_attributes({ verified: false })
+        expect(@user.reload.verifications.count).to eq 0
+      end
+
+      it 'verifies a user outside the area, if rrn verification is set to "None"' do
+        configuration = AppConfiguration.instance
+        configuration.settings['verification']['verification_methods'].first['rrn_verification'] = 'None'
+        configuration.save!
+
+        get "/auth/acm?token=#{@token}&verification_pathname=/some-page"
+        follow_redirect!
+
+        expect(response).to redirect_to('/en/some-page?verification_success=true')
+        expect_user_to_be_verified(@user.reload)
+      end
     end
 
-    it 'does not verify an existing user if they are too young' do
-      stub_wijk_budget_api({ geldig: false, redenNietGeldig: 'ERR12' })
+    context 'user is too young' do
+      before { stub_wijk_budget_api({ geldig: false, redenNietGeldig: 'ERR12' }) }
 
-      get "/auth/acm?token=#{@token}&verification_pathname=/some-page"
-      follow_redirect!
+      it 'does not verify an existing user if they are too young' do
+        get "/auth/acm?token=#{@token}&verification_pathname=/some-page"
+        follow_redirect!
 
-      expect(response).to redirect_to('/some-page?verification_error=true&error_code=not_entitled_too_young')
-      expect(@user.reload).to have_attributes({ verified: false })
-      expect(@user.reload.verifications.count).to eq 0
+        expect(response).to redirect_to('/some-page?verification_error=true&error_code=not_entitled_too_young')
+        expect(@user.reload).to have_attributes({ verified: false })
+        expect(@user.reload.verifications.count).to eq 0
+      end
     end
   end
 
@@ -178,7 +195,8 @@ context 'ACM verification (Oostende Itsme)' do
       follow_redirect!
 
       user = User.order(created_at: :asc).last
-      expect_user_to_be_verified_and_identified(user)
+      expect_user_to_be_identified(user)
+      expect_user_to_be_verified(user)
     end
 
     it 'creates a new user, but does not verify if outside the area' do
@@ -188,7 +206,9 @@ context 'ACM verification (Oostende Itsme)' do
       follow_redirect!
 
       user = User.order(created_at: :asc).last
-      expect_user_to_be_verified_and_identified(user)
+      expect_user_to_be_identified(user)
+      expect(user.verified).to be false
+      expect(user.verifications.count).to eq 0
     end
   end
 end
