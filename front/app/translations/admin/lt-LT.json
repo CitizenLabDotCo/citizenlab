@@ -2397,6 +2397,7 @@
   "app.containers.AdminPage.ProjectFiles.allowAiProcessing": "Sudarykite galimybę atlikti pažangią šių failų analizę naudodami dirbtinio intelekto apdorojimą.",
   "app.containers.AdminPage.ProjectFiles.allowAiProcessingSingleFile": "Leisti atlikti išplėstinę šio failo analizę naudojant dirbtinio intelekto apdorojimą.",
   "app.containers.AdminPage.ProjectFiles.askButton": "Klauskite",
+  "app.containers.AdminPage.ProjectFiles.beta": "Beta",
   "app.containers.AdminPage.ProjectFiles.cancel": "Atšaukti",
   "app.containers.AdminPage.ProjectFiles.categoryLabel": "Kategorija",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Pasirinkite failus",
