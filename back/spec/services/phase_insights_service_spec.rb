@@ -76,6 +76,24 @@ describe PhaseInsightsService do
   end
 
   describe '#demographics_data' do
+    it 'only includes data related to fields used in phase-level action permissions' do
+      permission1.update!(global_custom_fields: false)
+
+      field1 = create(:custom_field, resource_type: 'User', key: 'single_select1', code: nil, input_type: 'select', title_multiloc: { en: 'Single Select 1' })
+      field2 = create(:custom_field, resource_type: 'User', key: 'single_select2', code: nil, input_type: 'select', title_multiloc: { en: 'Single Select 2' })
+
+      create(:permissions_custom_field, permission: permission1, custom_field: field1)
+
+      participation = create(:basket_participation)
+
+      flattened_participations = [participation]
+      participant_ids = flattened_participations.pluck(:participant_id).uniq
+      result = service.send(:demographics_data, phase, flattened_participations, participant_ids)
+
+      expect(result.pluck(:key)).to match_array(['single_select1'])
+    end
+
+
     it 'only includes data related to specific types of user custom fields' do
       # Should be included
       create(:custom_field, resource_type: 'User', key: 'birthyear', input_type: 'number')

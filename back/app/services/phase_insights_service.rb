@@ -142,9 +142,11 @@ class PhaseInsightsService
 
     participant_custom_field_values = participants_custom_field_values(participations, participant_ids)
 
-    custom_fields = phase.permissions.flat_map do |permission| # TODO: Maybe phase.permissions.where.not(action: 'attending_event')?
+    custom_fields = phase_permissions(phase).flat_map do |permission|
       @permissions_custom_fields_service.fields_for_permission(permission)
     end.map(&:custom_field).uniq
+
+    puts "Custom fields for demographics: #{custom_fields.map(&:key).join(', ')}"
 
     custom_fields.filter_map do |custom_field|
       reference_distribution = nil
@@ -179,6 +181,10 @@ class PhaseInsightsService
 
       result
     end
+  end
+
+  def phase_permissions(phase)
+    phase.permissions.where.not(action: 'attending_event')
   end
 
   def birthyear_demographics_data(participant_custom_field_values)
