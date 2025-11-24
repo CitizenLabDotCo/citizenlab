@@ -8,6 +8,7 @@ module IdAcm
       {
         first_name: auth.info.first_name,
         last_name: auth.info.last_name,
+        email: auth.info.email,
         locale: AppConfiguration.instance.closest_locale_to('nl-BE')
       }
     end
@@ -31,7 +32,7 @@ module IdAcm
     end
 
     def email_always_present?
-      true
+      false
     end
 
     def verification_prioritized?
@@ -39,7 +40,7 @@ module IdAcm
     end
 
     def email_confirmed?(_auth)
-      true
+      false
     end
 
     def filter_auth_to_persist(auth)

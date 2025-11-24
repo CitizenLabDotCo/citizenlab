@@ -4,6 +4,32 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 context 'ACM verification (Oostende Itsme)' do
+
+  # {"provider" => "acm",
+  #  "uid" => "8ebaf29ebc3f51800cf76c0cbb31e73ae9316ab9",
+  #  "info" =>
+  #    {"name" => nil, "email" => nil, "email_verified" => nil, "nickname" => nil, "first_name" => "Sébastien", "last_name" => "Hoorens", "gender" => nil, "image" => nil, "phone" => nil, "urls" => {"website" => nil}},
+  #  "credentials" =>
+  #    {"id_token" =>
+  #       "eyJhbGciOiJSUzI1NiIsImtpZCI6IkZNbV9Cc09jME9jeVNoRDJVWkM4SGdhcG5XNlA2ZVlveTNPcWtrMGxsek0iLCJ0eXAiOiJKV1QifQ.eyJhdF9oYXNoIjoiejlkVV9Gc1NVY1JyVXRrVWFiLTZodyIsImF1ZCI6IjIyOGU4YmJhLWIwYzctNDU3OC05MGIxLWU3MmU5YzdkYTRhZCIsImF6cCI6IjIyOGU4YmJhLWIwYzctNDU3OC05MGIxLWU3MmU5YzdkYTRhZCIsImV4cCI6MTc2Mzc0NjY2MCwiZmFtaWx5X25hbWUiOiJIb29yZW5zIiwiZ2l2ZW5fbmFtZSI6IlPDqWJhc3RpZW4iLCJpYXQiOjE3NjM3NDMwNjAsImlzcyI6Imh0dHBzOi8vYXV0aGVudGljYXRpZS10aS52bGFhbmRlcmVuLmJlL29wIiwia2lkIjoiRk1tX0JzT2MwT2N5U2hEMlVaQzhIZ2Fwblc2UDZlWW95M09xa2swbGx6TSIsIm5vbmNlIjoiYzIyYmNkZWRlMGZlNjhlZjNiZDY2NWE4ZmViMDY2YTUiLCJzdWIiOiI4ZWJhZjI5ZWJjM2Y1MTgwMGNmNzZjMGNiYjMxZTczYWU5MzE2YWI5In0.pexqwkBU3IEi3vyxyDXEgOKgqBafNiez6WFU66FUAGNGrq1Dz7-HHEHCEH1rsQ4nL_FC98My_dj1g-3SaN3nut9Ea7wezLN9M-Ona1SZgmr-tPTEPVCag7714SABBy5UntBdeC857-cNVvsQf7LWmBexMOcjWrqnaQOD11FbnbmAYyFlx2LBu3jLreX7s02_3MP5qd4R4rkHF9pbMqBa07TKBfu40N4jssFJYcvzJ_HEgP8sI0iPYD0upgwcc96JaW0pMMRBlO-HgORNCbxY7kx_7f7hVxJ4tWg65CIJxOqeRTewS3sS4gGYiupbAcp0m8Ys3qoHMyBcLpZmr5i6CA",
+  #     "token" => "Jg-woz9sJBj0W1FJ_3p-C37IcJpUPKyVtRFfO7msifw",
+  #     "refresh_token" => nil,
+  #     "expires_in" => 3587,
+  #     "scope" => "profile"},
+  #  "extra" =>
+  #    {"raw_info" =>
+  #       {"family_name" => "Hoorens",
+  #        "given_name" => "Sébastien",
+  #        "sub" => "8ebaf29ebc3f51800cf76c0cbb31e73ae9316ab9",
+  #        "at_hash" => "z9dU_FsSUcRrUtkUab-6hw",
+  #        "aud" => "228e8bba-b0c7-4578-90b1-e72e9c7da4ad",
+  #        "azp" => "228e8bba-b0c7-4578-90b1-e72e9c7da4ad",
+  #        "exp" => 1763746660,
+  #        "iat" => 1763743060,
+  #        "iss" => "https://authenticatie-ti.vlaanderen.be/op",
+  #        "kid" => "FMm_BsOc0OcyShD2UZC8HgapnW6P6eYoy3Oqkk0llzM",
+  #        "nonce" => "c22bcdede0fe68ef3bd665a8feb066a5"}}}
+
   let(:auth_hash) do
     {
       'provider' => 'acm',

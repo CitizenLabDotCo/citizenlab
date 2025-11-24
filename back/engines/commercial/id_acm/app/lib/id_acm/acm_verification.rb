@@ -24,8 +24,9 @@ module IdAcm
         client_secret
         enabled_for_verified_actions
         hide_from_profile
-        api_key
-        environment
+        rrn_verification
+        rrn_api_key
+        rrn_environment
       ]
     end
 
@@ -33,8 +34,24 @@ module IdAcm
       {
         ui_method_name: {
           type: 'string',
-          description: 'The name this verification method will have in the UI',
+          title: 'The name this verification method will have in the UI',
           default: 'ACM'
+        },
+        rrn_verification: {
+          type: 'string',
+          enum: %w[None Oostende Gent],
+          title: 'Verification of age and location based on RRN?',
+          default: 'None',
+          private: true
+        },
+        rrn_environment: {
+          type: 'string',
+          enum: %w[dv qa production],
+          private: true
+        },
+        rrn_api_key: {
+          type: 'string',
+          private: true
         },
         enabled_for_verified_actions: {
           private: true,
@@ -75,7 +92,10 @@ module IdAcm
       config[:ui_method_name] || name
     end
 
+    # TODO: Make this work
     def verify_sync(rrn:)
+      true unless config['rrn_verification'] != 'None'
+
       validate_citizen!(rrn)
     end
 
