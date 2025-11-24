@@ -2397,6 +2397,7 @@
   "app.containers.AdminPage.ProjectFiles.allowAiProcessing": "Ļaujiet veikt šo failu padziļinātu analīzi, izmantojot mākslīgā intelekta apstrādi.",
   "app.containers.AdminPage.ProjectFiles.allowAiProcessingSingleFile": "Ļauj veikt uzlabotas analīzes ar šo failu, izmantojot mākslīgā intelekta apstrādi.",
   "app.containers.AdminPage.ProjectFiles.askButton": "Jautājiet",
+  "app.containers.AdminPage.ProjectFiles.beta": "Beta",
   "app.containers.AdminPage.ProjectFiles.cancel": "Atcelt",
   "app.containers.AdminPage.ProjectFiles.categoryLabel": "Kategorija",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Izvēlieties failus",
