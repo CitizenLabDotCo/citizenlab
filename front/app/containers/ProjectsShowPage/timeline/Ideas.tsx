@@ -44,7 +44,9 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
   const searchParam = searchParams.get('search');
   const topicsParam = searchParams.get('topics');
   const ideaStatusParam = searchParams.get('idea_status');
-  const config = getMethodConfig(phase.attributes.participation_method, phase);
+  const config = getMethodConfig(phase.attributes.participation_method, {
+    showIdeaFilters: phase.attributes.voting_filtering_enabled,
+  });
 
   const ideaQueryParameters = useMemo<QueryParameters>(
     () => ({
@@ -80,14 +82,14 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
     showViewToggle: true,
     defaultView: phase.attributes.presentation_mode,
   };
-  const useSidebarFilters = config.showIdeaFilters === true;
+  const SidebarFiltersEnabled = config.showIdeaFilters === true;
 
   return (
     <Box
       id="project-ideas"
       className={`e2e-timeline-project-idea-cards ${className || ''}`}
     >
-      {useSidebarFilters ? (
+      {SidebarFiltersEnabled ? (
         <>
           <IdeaListScrollAnchor />
           <Suspense fallback={<Spinner />}>

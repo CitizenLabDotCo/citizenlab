@@ -365,19 +365,16 @@ const methodToConfig: {
  */
 export function getMethodConfig(
   participationMethod: ParticipationMethod,
-  phase?: IPhaseData
+  setting?: { showIdeaFilters?: boolean }
 ): ParticipationMethodConfig {
   const baseConfig = methodToConfig[participationMethod];
 
-  // For voting phase >> showIdeaFilters dynamiclly based on phase setting
-  if (participationMethod === 'voting' && phase) {
-    return {
-      ...baseConfig,
-      showIdeaFilters: phase.attributes.voting_filtering_enabled,
-    };
-  }
-
-  return baseConfig;
+  return {
+    ...baseConfig,
+    ...(setting?.showIdeaFilters !== undefined && {
+      showIdeaFilters: setting.showIdeaFilters,
+    }),
+  };
 }
 
 /** Given the project and its phases, it returns the participation method
@@ -416,7 +413,7 @@ export function showInputManager(
     if (
       phases.some(
         (phase) =>
-          getMethodConfig(phase.attributes.participation_method)
+          getMethodConfig(phase.attributes.participation_method, {})
             .showInputManager
       )
     ) {
