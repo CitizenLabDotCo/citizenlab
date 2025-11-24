@@ -2397,6 +2397,7 @@
   "app.containers.AdminPage.ProjectFiles.allowAiProcessing": "AI پروسیسنگ کا استعمال کرتے ہوئے ان فائلوں کے جدید تجزیات کی اجازت دیں۔",
   "app.containers.AdminPage.ProjectFiles.allowAiProcessingSingleFile": "AI پروسیسنگ کا استعمال کرتے ہوئے اس فائل کے جدید تجزیات کی اجازت دیں۔",
   "app.containers.AdminPage.ProjectFiles.askButton": "پوچھو",
+  "app.containers.AdminPage.ProjectFiles.beta": "بیٹا",
   "app.containers.AdminPage.ProjectFiles.cancel": "منسوخ کریں۔",
   "app.containers.AdminPage.ProjectFiles.categoryLabel": "زمرہ",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "فائلوں کا انتخاب کریں۔",
