@@ -443,16 +443,16 @@ module ParticipationMethod
     def participations
       # events? Not associated with phase, so cannot really be seen as participation in voting phase.
       {
-        posting_idea: participation_ideas_submitted,
+        posting_idea: participation_ideas_published,
         commenting_idea: participation_idea_comments,
         reacting_idea: participation_idea_reactions
       }
     end
 
-    def participation_ideas_submitted
+    def participation_ideas_published
       end_time = phase.end_at ? phase.end_at.end_of_day : Time.current.end_of_day # TODO: Consider platform timezone
-      ideas = phase.ideas.where(<<~SQL.squish, phase.start_at.beginning_of_day, end_time)
-        ideas.submitted_at >= ? AND ideas.submitted_at <= ?
+      ideas = phase.ideas.transitive.where(<<~SQL.squish, phase.start_at.beginning_of_day, end_time)
+        ideas.published_at >= ? AND ideas.published_at <= ?
         AND ideas.publication_status = 'published'
       SQL
         .includes(:author)
@@ -461,7 +461,7 @@ module ParticipationMethod
         {
           item_id: idea.id,
           action: 'posting_idea',
-          acted_at: idea.submitted_at, # analytics_fact_participations uses created_at, so maybe we should use that here too?
+          acted_at: idea.published_at, # analytics_fact_participations uses created_at, so maybe we should use that here too?
           classname: 'Idea',
           participant_id: participant_id(idea.id, idea.author_id, idea.author_hash),
           user_custom_field_values: idea&.author&.custom_field_values || {}
