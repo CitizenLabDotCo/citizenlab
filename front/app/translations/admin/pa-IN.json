@@ -2397,6 +2397,7 @@
   "app.containers.AdminPage.ProjectFiles.allowAiProcessing": "AI ਪ੍ਰੋਸੈਸਿੰਗ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਇਹਨਾਂ ਫਾਈਲਾਂ ਦੇ ਉੱਨਤ ਵਿਸ਼ਲੇਸ਼ਣ ਦੀ ਆਗਿਆ ਦਿਓ।",
   "app.containers.AdminPage.ProjectFiles.allowAiProcessingSingleFile": "AI ਪ੍ਰੋਸੈਸਿੰਗ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਇਸ ਫਾਈਲ ਦੇ ਉੱਨਤ ਵਿਸ਼ਲੇਸ਼ਣ ਦੀ ਆਗਿਆ ਦਿਓ।",
   "app.containers.AdminPage.ProjectFiles.askButton": "ਪੁੱਛੋ",
+  "app.containers.AdminPage.ProjectFiles.beta": "ਬੀਟਾ",
   "app.containers.AdminPage.ProjectFiles.cancel": "ਰੱਦ ਕਰੋ",
   "app.containers.AdminPage.ProjectFiles.categoryLabel": "ਸ਼੍ਰੇਣੀ",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "ਫਾਈਲਾਂ ਚੁਣੋ",
