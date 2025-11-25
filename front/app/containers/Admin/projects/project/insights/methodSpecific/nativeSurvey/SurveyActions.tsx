@@ -217,7 +217,7 @@ const SurveyActions = ({ phase }: Props) => {
             right="0px"
             top="45px"
             content={
-              <Box minWidth="200px">
+              <Box minWidth="250px">
                 <DropdownListItem
                   onClick={handleDownloadResults}
                   data-cy="e2e-download-survey-results"

@@ -53,22 +53,11 @@ export const getTabs = (
       feature: 'polls',
       name: 'poll',
     },
-    ...(['native_survey', 'community_monitor'].includes(
-      phase.attributes.participation_method
-    )
-      ? [
-          {
-            label: formatMessage(messages.resultsTab),
-            url: 'results',
-            name: 'results',
-          },
-          {
-            label: formatMessage(messages.surveyFormTab),
-            url: 'survey-form',
-            name: 'survey-form',
-          },
-        ]
-      : []),
+    phase.attributes.participation_method === 'native_survey' && {
+      label: formatMessage(messages.surveyFormTab),
+      url: 'survey-form',
+      name: 'survey-form',
+    },
     phase.attributes.participation_method === 'survey' &&
       surveys_enabled &&
       typeform_enabled && // TODO: Fix this the next time the file is edited.
