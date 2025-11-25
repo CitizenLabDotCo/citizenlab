@@ -62,6 +62,34 @@ describe BasketPolicy do
     it { is_expected.not_to permit(:destroy) }
   end
 
+  context "for a user on a basket where permissions are restricted to groups she's not a member of" do
+    let!(:phase) do
+      phase = create(:single_voting_phase, end_at: nil, with_permissions: true)
+      phase.permissions.find_by(action: 'voting').groups << create(:group)
+      phase
+    end
+    let!(:user) { create(:user) }
+
+    context 'basket is not submitted' do
+      let!(:basket) { create(:basket, user: user, phase: phase, submitted_at: nil) }
+
+      it { is_expected.to     permit(:show)    }
+      it { is_expected.not_to permit(:create)  }
+      it { is_expected.not_to permit(:update)  }
+      it { is_expected.not_to permit(:destroy) }
+    end
+
+    # Updates are allowed so that baskets can be unsubmitted even if there is a smart group now preventing access
+    context 'basket is submitted' do
+      let!(:basket) { create(:basket, user: user, phase: phase) }
+
+      it { is_expected.to     permit(:show)    }
+      it { is_expected.not_to permit(:create)  }
+      it { is_expected.to     permit(:update)  }
+      it { is_expected.to     permit(:destroy) }
+    end
+  end
+
   context "for a user on a basket in a private groups project where she's a member of a manual group with access" do
     let!(:user) { create(:user) }
     let!(:project) { create(:private_groups_single_phase_budgeting_project, user: user) }

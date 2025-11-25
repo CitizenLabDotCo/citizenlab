@@ -22,10 +22,6 @@ class BasketPolicy < ApplicationPolicy
       !basket_update_disabled_reason(record, user)
   end
 
-  def upsert?
-    update?
-  end
-
   def destroy?
     update?
   end
