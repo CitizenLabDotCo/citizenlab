@@ -441,7 +441,7 @@ module ParticipationMethod
     end
 
     def participations
-      # events? Not associated with phase, so cannot really be seen as participation in voting phase.
+      # Events are not associated with phase, so attending_event not included at phase-level.
       {
         posting_idea: participation_ideas_published,
         commenting_idea: participation_idea_comments,

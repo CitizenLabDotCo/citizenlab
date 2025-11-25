@@ -58,6 +58,8 @@ class PhaseInsightsService
       voting_data(phase, participations)
     when 'ideation'
       ideation_data(participations)
+    when 'native_survey'
+      native_survey_data(participations)
     else
       {}
     end
@@ -85,7 +87,7 @@ class PhaseInsightsService
   end
 
   def ideation_data(participations)
-    ideas_counts = phase_ideas_counts(participations)
+    ideas_counts = phase_ideas_counts(participations[:posting_idea] || [])
     comments_counts = phase_comments_counts(participations)
     reactions_counts = phase_reactions_counts(participations)
 
@@ -99,14 +101,26 @@ class PhaseInsightsService
     }
   end
 
+  def native_survey_data(participations)
+    ideas_counts = phase_ideas_counts(participations[:posting_idea] || [])
+    submitted_survey_participations = participations[:posting_idea]&.select { |p| p[:survey_submitted] } || []
+    published_ideas_counts = phase_ideas_counts(submitted_survey_participations)
+    completion_rate = ideas_counts[:total] > 0 ? (published_ideas_counts[:total].to_f / ideas_counts[:total]).round(3) : 0
+
+    {
+      submitted_surveys: ideas_counts[:total],
+      submitted_surveys_last_7_days: ideas_counts[:last_7_days],
+      completion_rate: completion_rate
+    }
+  end
+
   def associated_ideas_count(phase)
-    phase.ideas.where(publication_status: 'published').count
+    phase.ideas.where(publication_status: 'submitted').count
   end
 
   def phase_ideas_counts(participations)
-    ideas_participations = participations[:posting_idea] || []
-    total_ideas = ideas_participations.count
-    ideas_last_7_days = ideas_participations.count { |p| p[:acted_at] >= 7.days.ago }
+    total_ideas = participations.count
+    ideas_last_7_days = participations.count { |p| p[:acted_at] >= 7.days.ago }
 
     {
       total: total_ideas,

@@ -146,9 +146,37 @@ module ParticipationMethod
       end
     end
 
+    def participations
+      # Events are not associated with phase, so attending_event not included at phase-level.
+      { posting_idea: participation_ideas_posted }
+    end
+
     delegate :user_data_collection, to: :posting_permission
 
     private
+
+    def participation_ideas_posted
+      end_time = phase.end_at ? phase.end_at.end_of_day : Time.current.end_of_day # TODO: Consider platform timezone
+      ideas = phase.ideas
+        .transitive(false)
+        .where.not(published_at: nil)
+        .where(<<~SQL.squish, phase.start_at.beginning_of_day, end_time)
+          ideas.created_at >= ? AND ideas.created_at <= ?
+        SQL
+        .includes(:author)
+
+      ideas.map do |idea|
+        {
+          item_id: idea.id,
+          action: 'posting_idea',
+          acted_at: idea&.submitted_at || idea.created_at, # We want data on unsubmitted survey responses too. (?use published_at, not submitted_at?)
+          classname: 'Idea',
+          survey_submitted: idea.published?, # Proxy for submitted (?is this logical / correct?)
+          participant_id: participant_id(idea.id, idea.author_id, idea.author_hash),
+          user_custom_field_values: idea&.custom_field_values || {}
+        }
+      end
+    end
 
     def start_page_field(custom_form)
       CustomField.new(
