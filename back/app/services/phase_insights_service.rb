@@ -106,7 +106,7 @@ class PhaseInsightsService
     submitted_survey_participations = participations[:posting_idea]&.select { |p| p[:survey_submitted] } || []
     total_submitted_surveys = submitted_survey_participations.count
     submitted_surveys_last_7_days = submitted_survey_participations.count { |p| p[:acted_at] >= 7.days.ago }
-    
+
     completion_rate = ideas_counts[:total] > 0 ? (total_submitted_surveys.to_f / ideas_counts[:total]).round(3) : 0
 
     {

@@ -4,7 +4,6 @@ require 'rspec_api_documentation/dsl'
 resource 'Phase insights' do
   before { admin_header_token }
 
-  # rubocop:disable RSpec/ScatteredLet
   let(:ideation_phase) do
     create(
       :phase,
@@ -78,7 +77,6 @@ resource 'Phase insights' do
   let!(:pageview8) { create(:pageview, session: session6, created_at: 5.days.ago, project_id: ideation_phase.project.id) } # in ideation phase, and in last 7 days
 
   let(:id) { ideation_phase.id }
-  # rubocop:enable RSpec/ScatteredLet
 
   get 'web_api/v1/phases/:id/insights' do
     example_request 'creates insights for ideation phase' do
@@ -114,7 +112,7 @@ resource 'Phase insights' do
             input_type: 'select',
             r_score: 0.0,
             title_multiloc: { en: 'Gender' },
-            series: { male: 1, female: 1, unspecified: 0, _blank: 1 },  # TODO: Only the 'blank' value changes between tests, so we can use shared example
+            series: { male: 1, female: 1, unspecified: 0, _blank: 1 }, # TODO: Only the 'blank' value changes between tests, so we can use shared example
             options: {
               male: { title_multiloc: { en: 'Male' }, ordering: 0 },
               female: { title_multiloc: { en: 'Female' }, ordering: 1 },
@@ -129,7 +127,7 @@ resource 'Phase insights' do
             input_type: 'number',
             r_score: 0.0,
             title_multiloc: { en: 'Birthyear' },
-            series: { '18-24': 0, '25-34': 0, '35-44': 1, '45-54': 1, '55-64': 0, '65+': 0, _blank: 1 },  # TODO: Only the 'blank' value changes between tests, so we can use shared example
+            series: { '18-24': 0, '25-34': 0, '35-44': 1, '45-54': 1, '55-64': 0, '65+': 0, _blank: 1 }, # TODO: Only the 'blank' value changes between tests, so we can use shared example
             reference_distribution: { '18-24': 50, '25-34': 200, '35-44': 400, '45-54': 300, '55-64': 50, '65+': 700 }
           }
         ]
