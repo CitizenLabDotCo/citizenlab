@@ -27,7 +27,6 @@ import { downloadSurveyResults } from 'api/survey_results/utils';
 import useLocale from 'hooks/useLocale';
 
 import DeleteModal from 'components/admin/SurveyDeleteModal/SurveyDeleteModal';
-import dropdowMessages from 'components/admin/SurveyDropdownSettings/messages';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
@@ -225,7 +224,7 @@ const SurveyActions = ({ phase }: Props) => {
                 >
                   <Icon name="download" fill={colors.coolGrey600} mr="8px" />
                   <Text my="0px">
-                    {formatMessage(dropdowMessages.downloadResults)}
+                    {formatMessage(messages.downloadSurveyResults)}
                   </Text>
                 </DropdownListItem>
                 <DropdownListItem>
@@ -244,7 +243,7 @@ const SurveyActions = ({ phase }: Props) => {
                   >
                     <Icon name="delete" fill={colors.red600} mr="8px" />
                     <Text color="red600" my="0px">
-                      {formatMessage(dropdowMessages.deleteSurveyResults)}
+                      {formatMessage(messages.deleteSurveyResults)}
                     </Text>
                   </DropdownListItem>
                 )}
