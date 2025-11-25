@@ -9,10 +9,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.surveyResponses',
     defaultMessage: 'Survey responses',
   },
-  openForResponses: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.openForResponses2',
-    defaultMessage: 'Open for responses',
-  },
   existingSubmissionsWarning: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.existingSubmissionsWarning',
     defaultMessage:
