@@ -169,7 +169,7 @@ module ParticipationMethod
         {
           item_id: idea.id,
           action: 'posting_idea',
-          acted_at: idea&.submitted_at || idea.created_at, # We want data on unsubmitted survey responses too. (?use published_at, not submitted_at?)
+          acted_at: idea&.submitted_at || idea&.created_at, # We want data on unsubmitted survey responses too. (?use published_at, not submitted_at?)
           classname: 'Idea',
           survey_submitted: idea.published?, # Proxy for submitted (?is this logical / correct? Seems counterintuitive)
           participant_id: participant_id(idea.id, idea.author_id, idea.author_hash),

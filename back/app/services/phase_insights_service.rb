@@ -67,6 +67,7 @@ class PhaseInsightsService
 
   def voting_data(phase, participations)
     voting_participations = participations[:voting] || []
+    pp voting_participations
     online_votes = voting_participations.sum { |p| p[:votes] }
     online_votes_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.sum { |p| p[:votes] }
     offline_votes = phase.manual_votes_count
@@ -80,7 +81,7 @@ class PhaseInsightsService
       offline_votes: offline_votes,
       voters: voters,
       voters_last_7_days: voters_last_7_days,
-      associated_ideas: associated_ideas_count(phase),
+      associated_ideas: associated_published_ideas_count(phase),
       comments_posted: comments_counts[:total],
       comments_posted_last_7_days: comments_counts[:last_7_days]
     }
@@ -114,8 +115,8 @@ class PhaseInsightsService
     }
   end
 
-  def associated_ideas_count(phase)
-    phase.ideas.where(publication_status: 'submitted').count
+  def associated_published_ideas_count(phase)
+    phase.ideas.where(publication_status: 'published').count
   end
 
   def phase_ideas_counts(participations)
