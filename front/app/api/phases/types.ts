@@ -34,6 +34,7 @@ export interface IPhaseData {
 }
 
 export interface IPhaseAttributes {
+  voting_filtering_enabled: boolean;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
   start_at: string;
@@ -115,6 +116,7 @@ export interface IUpdatedPhaseProperties {
   voting_min_total?: number | null;
   voting_max_total?: number | null;
   voting_max_votes_per_idea?: number | null;
+  voting_filtering_enabled?: boolean | null;
   vote_term?: VoteTerm;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;

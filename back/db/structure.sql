@@ -1,8 +1,3 @@
-\restrict mgZkyDgtCjSLKfZxRhtiC7mYUyUSQRU7ovUCL1fQC2LD80zlZxvwlHvNXgkKxoK
-
--- Dumped from database version 16.6 (Debian 16.6-1.pgdg110+1)
--- Dumped by pg_dump version 16.10 (Debian 16.10-1.pgdg13+1)
-
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -1750,7 +1745,8 @@ CREATE TABLE public.phases (
     similarity_threshold_body double precision DEFAULT 0.4,
     similarity_enabled boolean DEFAULT true NOT NULL,
     vote_term character varying DEFAULT 'vote'::character varying,
-    voting_min_selected_options integer DEFAULT 1 NOT NULL
+    voting_min_selected_options integer DEFAULT 1 NOT NULL,
+    voting_filtering_enabled boolean DEFAULT false NOT NULL
 );
 
 
@@ -8038,11 +8034,10 @@ ALTER TABLE ONLY public.ideas_topics
 -- PostgreSQL database dump complete
 --
 
-\unrestrict mgZkyDgtCjSLKfZxRhtiC7mYUyUSQRU7ovUCL1fQC2LD80zlZxvwlHvNXgkKxoK
-
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251120113747'),
 ('20251029135211'),
 ('20251022100725'),
 ('20251022100724'),

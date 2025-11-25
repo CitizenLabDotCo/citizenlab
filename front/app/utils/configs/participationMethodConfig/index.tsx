@@ -276,7 +276,6 @@ const documentAnnotationConfig: ParticipationMethodConfig = {
 const votingConfig: ParticipationMethodConfig = {
   showInputCount: false,
   formEditor: 'simpleFormEditor',
-  showIdeaFilters: false,
   inputsPageSize: 100,
   supportsReactions: false,
   supportsVotes: true,
@@ -365,9 +364,17 @@ const methodToConfig: {
 /** Get the configuration object for the given participation method
  */
 export function getMethodConfig(
-  participationMethod: ParticipationMethod
+  participationMethod: ParticipationMethod,
+  setting?: { showIdeaFilters?: boolean }
 ): ParticipationMethodConfig {
-  return methodToConfig[participationMethod];
+  const baseConfig = methodToConfig[participationMethod];
+
+  return {
+    ...baseConfig,
+    ...(setting?.showIdeaFilters !== undefined && {
+      showIdeaFilters: setting.showIdeaFilters,
+    }),
+  };
 }
 
 /** Given the project and its phases, it returns the participation method
