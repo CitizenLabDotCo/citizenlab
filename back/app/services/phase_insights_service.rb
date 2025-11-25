@@ -67,7 +67,6 @@ class PhaseInsightsService
 
   def voting_data(phase, participations)
     voting_participations = participations[:voting] || []
-    pp voting_participations
     online_votes = voting_participations.sum { |p| p[:votes] }
     online_votes_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.sum { |p| p[:votes] }
     offline_votes = phase.manual_votes_count
