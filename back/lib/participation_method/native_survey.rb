@@ -159,7 +159,6 @@ module ParticipationMethod
       end_time = phase.end_at ? phase.end_at.end_of_day : Time.current.end_of_day
       ideas = phase.ideas
         .transitive(false)
-        .where.not(published_at: nil)
         .where(<<~SQL.squish, phase.start_at.beginning_of_day, end_time)
           ideas.created_at >= ? AND ideas.created_at <= ?
         SQL
