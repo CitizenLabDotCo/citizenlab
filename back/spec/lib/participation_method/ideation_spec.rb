@@ -259,16 +259,16 @@ RSpec.describe ParticipationMethod::Ideation do
 
   describe '#participation_ideas_published' do
     let(:user1) { create(:user) }
-    let!(:idea1) { create(:idea, phases: [phase], published_at: 20.days.ago, author: user1) } # before phase start
-    let!(:idea2) { create(:idea, phases: [phase], published_at: 10.days.ago, author: user1) } # during phase
-    let!(:idea3) { create(:idea, phases: [phase], published_at: 1.day.ago, author: user1) } # after phase end
+    let!(:idea1) { create(:idea, phases: [phase], created_at: 20.days.ago, published_at: 20.days.ago, author: user1) } # before phase start
+    let!(:idea2) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: user1) } # during phase
+    let!(:idea3) { create(:idea, phases: [phase], created_at: 1.day.ago, published_at: 1.day.ago, author: user1) } # after phase end
 
     let(:user2) { create(:user) }
-    let!(:idea4) { create(:idea, phases: [phase], published_at: 10.days.ago, author: user2) } # during phase
-    let!(:idea5) { create(:idea, phases: [phase], published_at: nil, author: user2, publication_status: 'draft') } # during phase, but not published
+    let!(:idea4) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: user2) } # during phase
+    let!(:idea5) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: nil, author: user2, publication_status: 'draft') } # during phase, but not published
 
-    let!(:idea6) { create(:idea, phases: [phase], published_at: 10.days.ago, author: nil, author_hash: 'some_author_hash') } # during phase, no author (e.g. anonymous participation)
-    let!(:idea7) { create(:idea, phases: [phase], published_at: 10.days.ago, author: nil, author_hash: nil) } # during phase, no author nor author_hash (e.g. imported idea)
+    let!(:idea6) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: nil, author_hash: 'some_author_hash') } # during phase, no author (e.g. anonymous participation)
+    let!(:idea7) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: nil, author_hash: nil) } # during phase, no author nor author_hash (e.g. imported idea)
 
     before { phase.update!(start_at: 15.days.ago, end_at: 2.days.ago) }
 

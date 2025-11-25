@@ -455,7 +455,7 @@ module ParticipationMethod
         .transitive
         .where.not(published_at: nil)
         .where(<<~SQL.squish, phase.start_at.beginning_of_day, end_time)
-          ideas.published_at >= ? AND ideas.published_at <= ?
+          ideas.created_at >= ? AND ideas.created_at <= ?
           AND ideas.publication_status = 'published'
         SQL
         .includes(:author)

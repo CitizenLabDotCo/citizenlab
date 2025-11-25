@@ -48,10 +48,10 @@ resource 'Phase insights' do
   let!(:user4) { create(:user, custom_field_values: { gender: 'female', birthyear: 1980 }) }
   let!(:user5) { create(:user, custom_field_values: { gender: 'male', birthyear: 1990 }) }
 
-  let!(:idea1) { create(:idea, phases: [ideation_phase], author: user1, published_at: 25.days.ago) } # published before ideation phase (not counted)
-  let!(:idea2) { create(:idea, phases: [ideation_phase], author: user2, published_at: 15.days.ago) } # published during ideation phase
-  let!(:idea3) { create(:idea, phases: [ideation_phase], author: user2, published_at: 5.days.ago) } # published during ideation phase, and in last 7 days
-  let!(:idea4) { create(:idea, phases: [ideation_phase], author: user3, published_at: 2.days.ago) } # published after ideation phase (not counted)
+  let!(:idea1) { create(:idea, phases: [ideation_phase], author: user1, created_at: 25.days.ago, published_at: 25.days.ago) } # published before ideation phase (not counted)
+  let!(:idea2) { create(:idea, phases: [ideation_phase], author: user2, created_at: 15.days.ago, published_at: 15.days.ago) } # published during ideation phase
+  let!(:idea3) { create(:idea, phases: [ideation_phase], author: user2, created_at: 5.days.ago, published_at: 5.days.ago) } # published during ideation phase, and in last 7 days
+  let!(:idea4) { create(:idea, phases: [ideation_phase], author: user3, created_at: 2.days.ago, published_at: 2.days.ago) } # published after ideation phase (not counted)
 
   let!(:comment1) { create(:comment, idea: idea2, author: user4, created_at: 10.days.ago) } # in ideation phase
 

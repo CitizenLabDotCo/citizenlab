@@ -58,15 +58,24 @@ module ParticipationMethod
       'proposal'
     end
 
+    def participations
+      # Events are not associated with phase, so attending_event not included at phase-level.
+      {
+        posting_idea: participation_ideas_submitted,
+        commenting_idea: participation_idea_comments,
+        reacting_idea: participation_idea_reactions
+      }
+    end
+
     private
 
-    def participation_ideas_published
+    def participation_ideas_submitted
       end_time = phase.end_at ? phase.end_at.end_of_day : Time.current.end_of_day
       ideas = phase.ideas
         .transitive(false)
         .where.not(submitted_at: nil)
         .where(<<~SQL.squish, phase.start_at.beginning_of_day, end_time)
-          ideas.submitted_at >= ? AND ideas.submitted_at <= ?
+          ideas.created_at >= ? AND ideas.created_at <= ?
           AND ideas.publication_status IN ('published', 'submitted')
         SQL
         .includes(:author)
