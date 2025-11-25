@@ -2,8 +2,8 @@ import React from 'react';
 
 import { ParticipationMethod } from 'api/phases/types';
 
-import CommonGroundInsights from './CommonGroundInsights';
-import NativeSurveyInsights from './NativeSurveyInsights';
+import CommonGroundInsights from './commonGround/CommonGroundInsights';
+import NativeSurveyInsights from './nativeSurvey/NativeSurveyInsights';
 import { MethodSpecificInsightProps } from './types';
 
 /**

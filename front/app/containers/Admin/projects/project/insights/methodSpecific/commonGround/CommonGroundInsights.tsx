@@ -9,17 +9,13 @@ import useLocale from 'hooks/useLocale';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
+import messages from '../../messages';
+import { MethodSpecificInsightProps } from '../types';
 
-import {
-  sortItems,
-  getDemographicKeys,
-  getDemographicLabel,
-} from './commonGroundUtils';
 import DemographicHeaders from './DemographicHeaders';
 import FilterControls from './FilterControls';
 import StatementRow from './StatementRow';
-import { MethodSpecificInsightProps } from './types';
+import { sortItems, getDemographicKeys, getDemographicLabel } from './utils';
 
 type ClusterByOption = '' | 'gender' | 'birthyear' | 'domicile';
 

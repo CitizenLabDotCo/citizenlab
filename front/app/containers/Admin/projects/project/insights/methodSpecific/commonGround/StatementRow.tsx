@@ -6,7 +6,7 @@ import OutcomeBreakdownBar from 'containers/ProjectsShowPage/timeline/CommonGrou
 
 import T from 'components/T';
 
-import { VoteStats, calculatePercentages } from './commonGroundUtils';
+import { VoteStats, calculatePercentages } from './utils';
 
 interface StatementItem {
   id: string;

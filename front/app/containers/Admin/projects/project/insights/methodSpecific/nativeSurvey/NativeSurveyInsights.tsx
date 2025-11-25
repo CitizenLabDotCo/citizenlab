@@ -8,9 +8,8 @@ import FormResults from 'components/admin/FormResults';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from '../messages';
-
-import { MethodSpecificInsightProps } from './types';
+import messages from '../../messages';
+import { MethodSpecificInsightProps } from '../types';
 
 const NativeSurveyInsights = ({ phaseId }: MethodSpecificInsightProps) => {
   const { data: phase } = usePhase(phaseId);
