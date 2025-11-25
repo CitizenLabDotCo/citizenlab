@@ -92,8 +92,8 @@ class PhaseInsightsService
     reactions_counts = phase_reactions_counts(participations)
 
     {
-      ideas_published: ideas_counts[:total],
-      ideas_published_last_7_days: ideas_counts[:last_7_days],
+      ideas_posted: ideas_counts[:total],
+      ideas_posted_last_7_days: ideas_counts[:last_7_days],
       comments_posted: comments_counts[:total],
       comments_posted_last_7_days: comments_counts[:last_7_days],
       reactions: reactions_counts[:total],
