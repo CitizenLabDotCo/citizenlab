@@ -333,7 +333,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
 
       first_participation = participation_ideas_posted.first
       expect(first_participation[:acted_at])
-        .to be_within(1.second).of(Idea.find(first_participation[:item_id]).submitted_at)
+        .to be_within(1.second).of(Idea.find(first_participation[:item_id]).created_at)
     end
 
     it 'correctly handles phases with no end date' do
