@@ -121,6 +121,58 @@ module ParticipationMethod
       ]
     end
 
+    def participations
+      # Events are not associated with phase, so attending_event not included at phase-level.
+      {
+        posting_idea: participation_ideas_published,
+        reacting_idea: participation_idea_reactions
+      }
+    end
+
+    def participation_ideas_published
+      end_time = phase.end_at ? phase.end_at.end_of_day : Time.current.end_of_day
+      ideas = phase.ideas
+        .transitive(false)
+        .where.not(published_at: nil)
+        .where(<<~SQL.squish, phase.start_at.beginning_of_day, end_time)
+          ideas.created_at >= ? AND ideas.created_at <= ?
+          AND ideas.publication_status = 'published'
+        SQL
+        .includes(:author)
+
+      ideas.map do |idea|
+        {
+          item_id: idea.id,
+          action: 'posting_idea',
+          acted_at: idea.created_at, # analytics_fact_participations uses created_at, so maybe we should use that here too?
+          classname: 'Idea',
+          participant_id: participant_id(idea.id, idea.author_id, idea.author_hash),
+          user_custom_field_values: idea&.author&.custom_field_values || {}
+        }
+      end
+    end
+
+    # Cloned from ParticipationMethod::Ideation, since we can't inherit from it directly
+    def participation_idea_reactions
+      end_time = phase.end_at ? phase.end_at.end_of_day : Time.current.end_of_day
+      reactions = Reaction.where(
+        reactable_type: 'Idea',
+        reactable_id: phase.ideas.select(:id),
+        created_at: phase.start_at.beginning_of_day..end_time
+      ).includes(:user)
+
+      reactions.map do |reaction|
+        {
+          item_id: reaction.id,
+          action: 'reacting_idea',
+          acted_at: reaction.created_at,
+          classname: 'Reaction',
+          participant_id: participant_id(reaction.id, reaction.user_id),
+          user_custom_field_values: reaction&.user&.custom_field_values || {}
+        }
+      end
+    end
+
     private
 
     delegate :i18n_to_multiloc, to: :multiloc_service

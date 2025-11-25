@@ -58,6 +58,8 @@ class PhaseInsightsService
       voting_data(phase, participations)
     when 'ideation', 'proposals'
       ideation_data(participations)
+    when 'common_ground'
+      common_ground_data(phase, participations)
     when 'native_survey'
       native_survey_data(participations)
     else
@@ -96,6 +98,19 @@ class PhaseInsightsService
       ideas_posted_last_7_days: ideas_counts[:last_7_days],
       comments_posted: comments_counts[:total],
       comments_posted_last_7_days: comments_counts[:last_7_days],
+      reactions: reactions_counts[:total],
+      reactions_last_7_days: reactions_counts[:last_7_days]
+    }
+  end
+
+  def common_ground_data(phase, participations)
+    ideas_counts = phase_ideas_counts(participations[:posting_idea] || [])
+    reactions_counts = phase_reactions_counts(participations)
+
+    {
+      associated_ideas: associated_published_ideas_count(phase),
+      ideas_posted: ideas_counts[:total],
+      ideas_posted_last_7_days: ideas_counts[:last_7_days],
       reactions: reactions_counts[:total],
       reactions_last_7_days: reactions_counts[:last_7_days]
     }
