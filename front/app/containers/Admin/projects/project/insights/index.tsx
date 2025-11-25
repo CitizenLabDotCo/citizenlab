@@ -10,6 +10,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import DemographicsSection from './DemographicsSection';
 import messages from './messages';
 import MethodSpecificInsights from './methodSpecific/MethodSpecificInsights';
+import SurveyActions from './methodSpecific/nativeSurvey/SurveyActions';
 import ParticipantsTimeline from './ParticipantsTimeline';
 import ParticipationMetrics from './ParticipationMetrics';
 
@@ -23,6 +24,9 @@ const AdminPhaseInsights = () => {
   if (!phase) {
     return null;
   }
+
+  const participationMethod = phase.data.attributes.participation_method;
+  const isNativeSurvey = participationMethod === 'native_survey';
 
   return (
     <Box
@@ -41,24 +45,30 @@ const AdminPhaseInsights = () => {
           <FormattedMessage {...messages.insights} />
         </Title>
         <Box display="flex" gap="8px">
-          <Button
-            buttonStyle="secondary"
-            icon="edit"
-            onClick={() => {
-              // TODO: Implement generate report
-            }}
-          >
-            <FormattedMessage {...messages.generateReport} />
-          </Button>
-          <Button
-            buttonStyle="primary"
-            icon="download"
-            onClick={() => {
-              // TODO: Implement download
-            }}
-          >
-            <FormattedMessage {...messages.download} />
-          </Button>
+          {isNativeSurvey ? (
+            <SurveyActions phase={phase.data} />
+          ) : (
+            <>
+              <Button
+                buttonStyle="secondary"
+                icon="edit"
+                onClick={() => {
+                  // TODO: Implement generate report
+                }}
+              >
+                <FormattedMessage {...messages.generateReport} />
+              </Button>
+              <Button
+                buttonStyle="primary"
+                icon="download"
+                onClick={() => {
+                  // TODO: Implement download
+                }}
+              >
+                <FormattedMessage {...messages.download} />
+              </Button>
+            </>
+          )}
         </Box>
       </Box>
 
@@ -71,7 +81,7 @@ const AdminPhaseInsights = () => {
 
         <MethodSpecificInsights
           phaseId={phase.data.id}
-          participationMethod={phase.data.attributes.participation_method}
+          participationMethod={participationMethod}
         />
       </Box>
     </Box>

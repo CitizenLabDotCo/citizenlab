@@ -170,4 +170,28 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.questions',
     defaultMessage: 'Questions',
   },
+  openForResponses: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.openForResponses2',
+    defaultMessage: 'Open for responses',
+  },
+  newSubmission: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.newSubmission1',
+    defaultMessage: 'New submission',
+  },
+  import: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.importInputs',
+    defaultMessage: 'Import',
+  },
+  aiAnalysis: {
+    id: 'app.containers.Admin.projects.project.survey.aiAnalysis2',
+    defaultMessage: 'AI analysis',
+  },
+  downloadSurveyResults: {
+    id: 'app.components.admin.ProjectEdit.survey.downloadResults2',
+    defaultMessage: 'Download survey results',
+  },
+  deleteSurveyResults: {
+    id: 'app.components.admin.ProjectEdit.survey.deleteSurveyResults2',
+    defaultMessage: 'Delete survey results',
+  },
 });
