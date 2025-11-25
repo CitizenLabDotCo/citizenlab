@@ -186,12 +186,4 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.survey.aiAnalysis2',
     defaultMessage: 'AI analysis',
   },
-  downloadSurveyResults: {
-    id: 'app.components.admin.ProjectEdit.survey.downloadResults2',
-    defaultMessage: 'Download survey results',
-  },
-  deleteSurveyResults: {
-    id: 'app.components.admin.ProjectEdit.survey.deleteSurveyResults2',
-    defaultMessage: 'Delete survey results',
-  },
 });
