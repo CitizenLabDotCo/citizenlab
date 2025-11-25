@@ -144,7 +144,7 @@ module ParticipationMethod
         {
           item_id: idea.id,
           action: 'posting_idea',
-          acted_at: idea.created_at, # analytics_fact_participations uses created_at, so maybe we should use that here too?
+          acted_at: idea.published_at, # analytics_fact_participations uses created_at, so maybe we should use that here too?
           classname: 'Idea',
           participant_id: participant_id(idea.id, idea.author_id, idea.author_hash),
           user_custom_field_values: idea&.author&.custom_field_values || {}
