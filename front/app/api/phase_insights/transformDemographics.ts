@@ -1,3 +1,5 @@
+import { Localize } from 'hooks/useLocalize';
+
 import { transformDemographicsToChartRows } from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/DemographicsWidget/utils';
 
 import {
@@ -15,12 +17,10 @@ import {
  */
 export const transformDemographicsResponse = (
   attributes: { fields: DemographicFieldBackend[] },
-  currentLocale: string
+  localize: Localize
 ): PhaseInsightsDemographics => {
   return {
-    fields: attributes.fields.map((field) =>
-      transformField(field, currentLocale)
-    ),
+    fields: attributes.fields.map((field) => transformField(field, localize)),
   };
 };
 
@@ -29,26 +29,22 @@ export const transformDemographicsResponse = (
  */
 const transformField = (
   field: DemographicFieldBackend,
-  currentLocale: string
+  localize: Localize
 ): DemographicField => {
   // Get localized field name
-  const field_name = getLocalizedLabel(
-    field.field_name_multiloc,
-    currentLocale,
-    field.field_key
-  );
+  const field_name = localize(field.field_name_multiloc);
 
   // Use shared transformation utility to convert series/options to chart rows
   const chartRows = transformDemographicsToChartRows(
     field,
     field.field_code ?? undefined,
-    '_blank', // We'll handle blank label in the next step
-    (key, multiloc) => getLocalizedLabel(multiloc, currentLocale, key)
+    '_blank',
+    (_key, multiloc) => localize(multiloc)
   );
 
   // Convert chart rows to data_points format
   const data_points: DemographicDataPoint[] = chartRows.map((row) => ({
-    key: row.category, // Using category as key (not ideal, but preserves behavior)
+    key: row.category,
     label: row.category,
     count: row.count,
     percentage: row.participants,
@@ -63,37 +59,4 @@ const transformField = (
     data_points,
     r_score: field.r_score,
   };
-};
-
-/**
- * Extracts localized label from multiloc object
- * Falls back to English, then to the key itself
- */
-const getLocalizedLabel = (
-  multiloc: Record<string, string> | undefined,
-  currentLocale: string,
-  fallbackKey: string
-): string => {
-  if (!multiloc) {
-    return fallbackKey;
-  }
-
-  // Try current locale
-  if (multiloc[currentLocale]) {
-    return multiloc[currentLocale];
-  }
-
-  // Try English fallback
-  if (multiloc['en']) {
-    return multiloc['en'];
-  }
-
-  // Try first available locale
-  const firstLocale = Object.keys(multiloc)[0];
-  if (firstLocale && multiloc[firstLocale]) {
-    return multiloc[firstLocale];
-  }
-
-  // Final fallback to key
-  return fallbackKey;
 };

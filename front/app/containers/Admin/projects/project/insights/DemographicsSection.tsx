@@ -7,7 +7,7 @@ import { transformDemographicsResponse } from 'api/phase_insights/transformDemog
 import useDemographics from 'api/phase_insights/useDemographics';
 import { IPhaseData } from 'api/phases/types';
 
-import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
 
 import ComparisonBarChart from 'components/admin/Graphs/ComparisonBarChart';
 import {
@@ -73,7 +73,7 @@ interface Props {
 
 const DemographicsSection = ({ phase }: Props) => {
   const { formatMessage } = useIntl();
-  const currentLocale = useLocale();
+  const localize = useLocalize();
   const [selectedFieldIndex, setSelectedFieldIndex] = useState(0);
 
   // Fetch demographics data in backend format (series/options)
@@ -85,11 +85,8 @@ const DemographicsSection = ({ phase }: Props) => {
   // Transform backend data to frontend format
   const demographicsData = useMemo(() => {
     if (!response?.data.attributes) return null;
-    return transformDemographicsResponse(
-      response.data.attributes,
-      currentLocale
-    );
-  }, [response, currentLocale]);
+    return transformDemographicsResponse(response.data.attributes, localize);
+  }, [response, localize]);
 
   const fields = useMemo(
     () => demographicsData?.fields || [],
