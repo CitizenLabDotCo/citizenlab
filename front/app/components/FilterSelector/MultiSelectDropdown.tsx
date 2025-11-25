@@ -1,4 +1,4 @@
-import React, { useRef, KeyboardEvent, FormEvent, useState } from 'react';
+import React, { useRef, KeyboardEvent, FormEvent } from 'react';
 
 import {
   Dropdown,
@@ -122,7 +122,6 @@ const MultiSelectDropdown = ({
   isLoading,
 }: Props) => {
   const tabsRef = useRef<(HTMLLIElement | null)[]>([]);
-  const [focusedIndex, setFocusedIndex] = useState(-1);
   const isPhoneOrSmaller = useBreakpoint('phone');
 
   const handleOnToggleCheckbox =
@@ -130,28 +129,43 @@ const MultiSelectDropdown = ({
       onChange(entry.value);
     };
 
-  const handleOnSelectSingleValue =
-    (entry: IFilterSelectorValue) => (event: KeyboardEvent<HTMLLIElement>) => {
-      if (
-        event.type === 'keydown' &&
-        (event.key === 'ArrowUp' || event.key === 'ArrowDown')
-      ) {
-        event.preventDefault();
-        const totalItems = values.length;
-        let nextIndex = 0;
-        if (event.key === 'ArrowUp') {
-          nextIndex = focusedIndex === 0 ? totalItems - 1 : focusedIndex - 1;
-        } else {
-          nextIndex = focusedIndex === totalItems - 1 ? 0 : focusedIndex + 1;
+  const handleOnKeyDown =
+    (entry?: IFilterSelectorValue, index?: number) =>
+    (
+      event: KeyboardEvent<HTMLLIElement | HTMLButtonElement | HTMLDivElement>
+    ) => {
+      if (!entry && index === undefined) {
+        if (event.key === 'ArrowDown' && !opened) {
+          event.preventDefault();
+          toggleValuesList();
+        } else if (handleKeyDown) {
+          handleKeyDown(event);
         }
-        setFocusedIndex(nextIndex);
-      } else if (
-        event.type === 'click' ||
-        (event.type === 'keydown' && event.code === 'Space')
-      ) {
-        event.preventDefault();
-        onChange(entry.value);
+      } else {
+        if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+          event.preventDefault();
+          const totalItems = values.length;
+          let nextIndex = 0;
+          if (event.key === 'ArrowUp') {
+            nextIndex = index === 0 ? totalItems - 1 : index! - 1;
+          } else {
+            nextIndex = index === totalItems - 1 ? 0 : index! + 1;
+          }
+          tabsRef.current[nextIndex]?.focus();
+        } else if (event.code === 'Space' || event.code === 'Enter') {
+          event.preventDefault();
+          onChange(entry!.value);
+        } else if (event.key === 'Tab') {
+          toggleValuesList();
+        }
       }
+    };
+
+  const handleOnClick =
+    (entry: IFilterSelectorValue) =>
+    (event: React.MouseEvent<HTMLLIElement>) => {
+      event.preventDefault();
+      onChange(entry.value);
     };
 
   const handleOnClickOutside = (event: FormEvent) => {
@@ -167,7 +181,7 @@ const MultiSelectDropdown = ({
             borderRadius="24px"
             onClick={toggleValuesList}
             minWidth={minWidth}
-            onKeyDown={handleKeyDown}
+            onKeyDown={handleOnKeyDown()}
             ariaExpanded={opened}
             ariaControls={baseID}
           >
@@ -187,7 +201,7 @@ const MultiSelectDropdown = ({
             onClick={toggleValuesList}
             baseID={baseID}
             textColor={textColor}
-            handleKeyDown={handleKeyDown}
+            handleKeyDown={handleOnKeyDown()}
           />
         )}
       </Box>
@@ -224,7 +238,8 @@ const MultiSelectDropdown = ({
                     id={`${baseID}-${index}`}
                     key={entry.value}
                     onMouseDown={removeFocusAfterMouseClick}
-                    onKeyDown={handleOnSelectSingleValue(entry)}
+                    onKeyDown={handleOnKeyDown(entry, index)}
+                    onClick={handleOnClick(entry)}
                     className={classNames}
                     ref={(el) => (tabsRef.current[index] = el)}
                     role="checkbox"
