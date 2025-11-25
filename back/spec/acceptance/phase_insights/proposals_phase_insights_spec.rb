@@ -53,28 +53,28 @@ resource 'Phase insights' do
   let!(:idea3) { create(:idea, phases: [proposals_phase], author: user2, created_at: 5.days.ago, submitted_at: 5.days.ago, creation_phase_id: proposals_phase.id) } # published during ideation phase, and in last 7 days
   let!(:idea4) { create(:idea, phases: [proposals_phase], author: user3, created_at: 2.days.ago, submitted_at: 2.days.ago, creation_phase_id: proposals_phase.id) } # published after ideation phase (not counted)
 
-  let!(:comment1) { create(:comment, idea: idea2, author: user4, created_at: 10.days.ago) } # in ideation phase
+  let!(:comment1) { create(:comment, idea: idea2, author: user4, created_at: 10.days.ago) } # in phase
 
-  let!(:reaction1) { create(:reaction, reactable: idea1, user: user5, created_at: 5.days.ago) } # in ideation phase, and in last 7 days
+  let!(:reaction1) { create(:reaction, reactable: idea1, user: user5, created_at: 5.days.ago) } # in phase, and in last 7 days
 
   let!(:session1) { create(:session, user_id: user1.id) }
-  let!(:pageview1) { create(:pageview, session: session1, created_at: 25.days.ago, project_id: proposals_phase.project.id) } # before ideation phase
+  let!(:pageview1) { create(:pageview, session: session1, created_at: 25.days.ago, project_id: proposals_phase.project.id) } # before phase
 
   let!(:session2) { create(:session, user_id: user2.id) }
-  let!(:pageview2) { create(:pageview, session: session2, created_at: 15.days.ago, project_id: proposals_phase.project.id) } # in ideation phase
-  let!(:pageview3) { create(:pageview, session: session2, created_at: 5.days.ago, project_id: proposals_phase.project.id) } # in ideation phase & last 7 days, same session
+  let!(:pageview2) { create(:pageview, session: session2, created_at: 15.days.ago, project_id: proposals_phase.project.id) } # in phase
+  let!(:pageview3) { create(:pageview, session: session2, created_at: 5.days.ago, project_id: proposals_phase.project.id) } # in phase & last 7 days, same session
 
   let!(:session3) { create(:session, user_id: user3.id) }
-  let!(:pageview5) { create(:pageview, session: session3, created_at: 2.days.ago, project_id: proposals_phase.project.id) } # after ideation phase
+  let!(:pageview5) { create(:pageview, session: session3, created_at: 2.days.ago, project_id: proposals_phase.project.id) } # after phase
 
   let!(:session4) { create(:session) }
-  let!(:pageview6) { create(:pageview, session: session4, created_at: 15.days.ago, project_id: proposals_phase.project.id) } # in ideation phase, did not participate
+  let!(:pageview6) { create(:pageview, session: session4, created_at: 15.days.ago, project_id: proposals_phase.project.id) } # in phase, did not participate
 
   let!(:session5) { create(:session, user_id: user4.id) }
-  let!(:pageview7) { create(:pageview, session: session5, created_at: 10.days.ago, project_id: proposals_phase.project.id) } # in ideation phase
+  let!(:pageview7) { create(:pageview, session: session5, created_at: 10.days.ago, project_id: proposals_phase.project.id) } # in phase
 
   let!(:session6) { create(:session, user_id: user5.id) }
-  let!(:pageview8) { create(:pageview, session: session6, created_at: 5.days.ago, project_id: proposals_phase.project.id) } # in ideation phase, and in last 7 days
+  let!(:pageview8) { create(:pageview, session: session6, created_at: 5.days.ago, project_id: proposals_phase.project.id) } # in phase, and in last 7 days
 
   let(:id) { proposals_phase.id }
 
@@ -84,9 +84,6 @@ resource 'Phase insights' do
 
       expect(json_response_body[:data][:id]).to eq(proposals_phase.id.to_s)
       expect(json_response_body[:data][:type]).to eq('phase_insights')
-
-      pp proposals_phase.end_at
-      pp idea4.created_at
 
       metrics = json_response_body.dig(:data, :attributes, :metrics)
       expect(metrics).to eq({
