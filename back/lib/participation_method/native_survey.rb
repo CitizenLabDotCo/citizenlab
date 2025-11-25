@@ -156,7 +156,7 @@ module ParticipationMethod
     private
 
     def participation_ideas_posted
-      end_time = phase.end_at ? phase.end_at.end_of_day : Time.current.end_of_day # TODO: Consider platform timezone
+      end_time = phase.end_at ? phase.end_at.end_of_day : Time.current.end_of_day
       ideas = phase.ideas
         .transitive(false)
         .where.not(published_at: nil)
@@ -171,7 +171,7 @@ module ParticipationMethod
           action: 'posting_idea',
           acted_at: idea&.submitted_at || idea.created_at, # We want data on unsubmitted survey responses too. (?use published_at, not submitted_at?)
           classname: 'Idea',
-          survey_submitted: idea.published?, # Proxy for submitted (?is this logical / correct?)
+          survey_submitted: idea.published?, # Proxy for submitted (?is this logical / correct? Seems counterintuitive)
           participant_id: participant_id(idea.id, idea.author_id, idea.author_hash),
           user_custom_field_values: idea&.custom_field_values || {}
         }
