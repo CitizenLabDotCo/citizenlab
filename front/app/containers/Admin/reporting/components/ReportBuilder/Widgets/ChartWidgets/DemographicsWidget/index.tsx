@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { Box, Title } from '@citizenlab/cl2-component-library';
 
 import { useDemographics } from 'api/graph_data_units';
+import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 
 import useLocalize from 'hooks/useLocalize';
 
-import useLayout from 'containers/Admin/reporting/hooks/useLayout';
+import RScore from 'containers/Admin/projects/project/insights/audience/RScore';
+
+import ComparisonBarChart from 'components/admin/Graphs/ComparisonBarChart';
+
+import { useIntl } from 'utils/cl-intl';
 
 import Card from '../../_shared/Card';
 import NoData from '../../_shared/NoData';
@@ -14,7 +19,7 @@ import chartWidgetMessages from '../messages';
 
 import messages from './messages';
 import Settings from './Settings';
-import Chart from './StackedBarChart';
+import { toChartData } from './toChartData';
 import { Props } from './typings';
 
 const DemographicsWidget = ({
@@ -26,6 +31,7 @@ const DemographicsWidget = ({
   groupId,
 }: Props) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
 
   const { data: demographicsResponse, isLoading } = useDemographics({
     custom_field_id: customFieldId,
@@ -35,7 +41,27 @@ const DemographicsWidget = ({
     group_id: groupId,
   });
 
-  const layout = useLayout();
+  const { data: customField } = useUserCustomField(customFieldId);
+
+  // Transform data to ComparisonBarChart format
+  const chartData = useMemo(() => {
+    if (!demographicsResponse) return [];
+
+    const blankLabel = formatMessage(messages.unknown);
+    const customFieldCode = customField?.data.attributes.code ?? undefined;
+    return toChartData(
+      demographicsResponse,
+      localize,
+      blankLabel,
+      customFieldCode
+    );
+  }, [demographicsResponse, localize, formatMessage, customField]);
+
+  // Check if we have comparison/reference data (will be from backend later)
+  const hasComparisonData = chartData.some(
+    (row) => row.population !== undefined
+  );
+  const rScore = demographicsResponse?.data.attributes.r_score;
 
   if (isLoading) return null;
 
@@ -47,27 +73,38 @@ const DemographicsWidget = ({
     );
   }
 
-  if (layout === 'narrow') {
-    return (
-      <Card pagebreak className="e2e-demographics-widget">
-        <Title variant="h4" mt="1px">
-          {localize(title)}
-        </Title>
-        <Chart response={demographicsResponse} />
-      </Card>
-    );
-  }
+  const chartElement = (
+    <Box>
+      {/* R-Score (only shown when reference data is available) */}
+      {rScore !== undefined && (
+        <Box mb="8px">
+          <RScore value={rScore} />
+        </Box>
+      )}
+
+      {/* Chart */}
+      <ComparisonBarChart
+        data={chartData}
+        mapping={{
+          category: 'category',
+          primaryValue: 'participants',
+          comparisonValue: 'population',
+          count: 'count',
+        }}
+        showComparison={hasComparisonData}
+        primaryColor="#2f478a"
+        comparisonColor="#40b8c5"
+        barHeight={16}
+      />
+    </Box>
+  );
 
   return (
     <Card pagebreak className="e2e-demographics-widget">
-      <Box width="100%" pb="0px" display="flex">
-        <Box w="300px" display="flex" flexDirection="column">
-          <Title variant="h4" mt="1px" pr="16px">
-            {localize(title)}
-          </Title>
-        </Box>
-        <Chart response={demographicsResponse} />
-      </Box>
+      <Title variant="h4" mt="1px" mb="16px">
+        {localize(title)}
+      </Title>
+      {chartElement}
     </Card>
   );
 };
