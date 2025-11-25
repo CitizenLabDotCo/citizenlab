@@ -249,11 +249,15 @@ module BulkImportIdeas::Importers
         project_data = increment_title(project_data)
 
         # Create a new project only visible to admins
-        project_attributes = project_data.except(:phases, :thumbnail_url)
+        project_attributes = project_data.except(:phases, :thumbnail_url, :banner_url, :attachments)
         project = Project.create!(project_attributes)
 
         # Create the project thumbnail image if it exists
         create_project_thumbnail_image(project, project_data)
+
+        # Add any attachments
+        create_project_attachments(project, project_data)
+
         log "Created new project: #{project_data[:slug]} (#{project.id})"
         project
       end
@@ -261,6 +265,7 @@ module BulkImportIdeas::Importers
 
     def create_project_thumbnail_image(project, project_data)
       thumbnail_url = project_data[:thumbnail_url]
+
       if thumbnail_url.present?
         begin
           # Ensure the correct image format is used - to avoid exif stripping issues
@@ -276,6 +281,34 @@ module BulkImportIdeas::Importers
           log('Created project thumbnail image.')
         rescue StandardError => e
           log "ERROR: Creating project thumbnail image: #{e.message}"
+        end
+      end
+    end
+
+    def create_project_attachments(project, project_data)
+      attachments = project_data[:attachments] || []
+      attachments.each do |file_path|
+        begin
+
+          file_content = File.open(file_path, 'rb') { |f| f.read }
+          file_name = File.basename(file_path)
+
+          binding.pry
+
+          file = Files::File.create!(
+            content_by_content: { content: file_content, name: file_name },
+            uploader: @import_user
+          )
+
+          Files::FileAttachment.create!(
+            file: file,
+            attachable: project,
+            # position: file_params[:ordering]
+          )
+
+          log "Created project attachment: #{file_name}"
+        rescue StandardError => e
+          log "ERROR: Creating project attachment '#{file_path}': #{e.message}"
         end
       end
     end
@@ -514,6 +547,7 @@ module BulkImportIdeas::Importers
         log "EXISTING PROJECT: #{project[:title_multiloc][@locale]} (#{project[:id]})"
       else
         log "NEW PROJECT: #{project[:title_multiloc][@locale]}"
+        log "Attachments: #{project[:attachments]&.count || 0}"
       end
       project_exists
     end

@@ -11,15 +11,16 @@ module BulkImportIdeas::Extractors
     # Return a list of projects, with phases and content
     def projects
       projects = @workbook.worksheets[0].drop(1).map do |row|
-        next if row.cells[5]&.value&.downcase == 'no' # Skip projects that we have marked as 'no' in the 'Import' column
+        next if project_column(row, 'Import?')&.downcase == 'no' # Skip projects that we have marked as 'no' in the 'Import' column
 
-        title = row.cells[0]&.value
+        title = project_column(row, 'ProjectName')
         next unless title
 
-        publication_status = row.cells[1].value || 'published'
-        description_html = row.cells[2].value || ''
-        thumbnail_url = row.cells[3]&.value
-        id = row.cells[4]&.value # Project ID - if we need to update an existing project
+        publication_status = project_column(row, 'Status')&.downcase || 'draft'
+        description_html = project_column(row, 'DescriptionHtml') || ''
+        thumbnail_url = image_path_or_url(row, 'ThumbnailUrl')
+        banner_url = image_path_or_url(row, 'BannerUrl')
+        id = project_column(row, 'ID') # Project ID - if we need to update an existing project
 
         # Extract phases (if there are any)
         phases = phase_details[title]&.map do |phase|
@@ -44,11 +45,13 @@ module BulkImportIdeas::Extractors
           description_multiloc: multiloc(description_html),
           slug: SlugService.new.slugify(title),
           thumbnail_url: thumbnail_url,
+          banner_url: banner_url,
           admin_publication_attributes: {
-            publication_status: publication_status.downcase || 'draft'
+            publication_status: publication_status
           },
           visible_to: 'admins',
-          phases: phases
+          phases: phases,
+          attachments: attachments(row)
         }
       end
 
@@ -115,6 +118,35 @@ module BulkImportIdeas::Extractors
         user_custom_fields: [],
         idea_rows: []
       }
+    end
+
+    def image_path_or_url(row, column_name)
+      value = project_column(row, column_name)
+      return unless value
+
+      if value.starts_with?('http://', 'https://')
+        value
+      else
+        attachment_folder = project_column(row, 'UniqueCode')
+        "#{@xlsx_folder_path}/attachments/#{attachment_folder}/#{value}"
+      end
+    end
+
+    def attachments(row)
+      unique_code = project_column(row, 'UniqueCode')
+      attachments_folder = "#{@xlsx_folder_path}/attachments/#{unique_code}"
+      Dir.glob("#{attachments_folder}/**/*").select do |file_path|
+        next if file_path.include?('banner.') || file_path.include?('thumbnail.') # Skip these special files
+
+        File.file?(file_path)
+      end
+    end
+
+    def project_column(row, column_name)
+      # Define the columns in the order they appear in the XLSX
+      columns = %w[UniqueCode	ProjectName	Status	DescriptionHtml	ThumbnailUrl	BannerUrl	ID Import?]
+      col_index = columns.index(column_name)
+      col_index ? row.cells[col_index]&.value : nil
     end
   end
 end

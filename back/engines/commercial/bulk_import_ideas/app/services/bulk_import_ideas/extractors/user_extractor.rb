@@ -45,6 +45,8 @@ module BulkImportIdeas::Extractors
           value = clean_string_value(cell.value)
           row_data << [header, value]
         end
+        next if row_data.empty? # Skip empty rows
+
         row_data = row_data.to_h
         data << row_data
       end

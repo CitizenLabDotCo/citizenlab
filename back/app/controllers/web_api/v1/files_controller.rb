@@ -104,6 +104,7 @@ class WebApi::V1::FilesController < ApplicationController
   def build_file_attachment
     file_params = create_file_params
 
+    binding.pry
     files_file = Files::File.new(
       content_by_content: file_params[:file_by_content].slice(:content, :name),
       uploader: current_user
