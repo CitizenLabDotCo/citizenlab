@@ -222,16 +222,17 @@ RSpec.describe ParticipationMethod::Proposals do
 
   describe '#participation_ideas_submitted' do
     let(:user1) { create(:user) }
-    let!(:idea1) { create(:idea, phases: [phase], created_at: 20.days.ago, published_at: 20.days.ago, author: user1, creation_phase_id: phase.id) } # before phase start
-    let!(:idea2) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: user1, creation_phase_id: phase.id) } # during phase
-    let!(:idea3) { create(:idea, phases: [phase], created_at: 1.day.ago, published_at: 1.day.ago, author: user1, creation_phase_id: phase.id) } # after phase end
+    let!(:idea1) { create(:idea, phases: [phase], created_at: 20.days.ago, submitted_at: 20.days.ago, author: user1, creation_phase_id: phase.id) } # before phase start
+    let!(:idea2) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, author: user1, creation_phase_id: phase.id) } # during phase
+    let!(:idea3) { create(:idea, phases: [phase], created_at: 1.day.ago, submitted_at: 1.day.ago, author: user1, creation_phase_id: phase.id) } # after phase end
 
     let(:user2) { create(:user) }
-    let!(:idea4) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: nil, publication_status: 'submitted', author: user2, creation_phase_id: phase.id) } # during phase, submitted but not published
-    let!(:idea5) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: nil, author: user2, publication_status: 'draft', creation_phase_id: phase.id) } # during phase, but not submitted nor published
+    let!(:idea4) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, published_at: nil, publication_status: 'submitted', author: user2, creation_phase_id: phase.id) } # during phase, submitted but not published
+    let!(:idea5) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, published_at: nil, author: user2, publication_status: 'draft', creation_phase_id: phase.id) } # during phase, but not submitted nor published
 
-    let!(:idea6) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: nil, author_hash: 'some_author_hash', creation_phase_id: phase.id) } # during phase, no author (e.g. anonymous participation)
-    let!(:idea7) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: nil, author_hash: nil, creation_phase_id: phase.id) } # during phase, no author nor author_hash (e.g. imported idea)
+    let!(:idea6) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, author: nil, author_hash: 'some_author_hash', creation_phase_id: phase.id) } # during phase, no author (e.g. anonymous participation)
+    let!(:idea7) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, author: nil, author_hash: nil, creation_phase_id: phase.id) } # during phase, no author nor author_hash (e.g. imported idea)
+
     before { phase.update!(start_at: 15.days.ago, end_at: 2.days.ago) }
 
     it 'returns the participation ideas published data for published ideas published during phase' do
