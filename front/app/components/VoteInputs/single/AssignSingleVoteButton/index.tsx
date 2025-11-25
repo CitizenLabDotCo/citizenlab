@@ -13,6 +13,8 @@ import useVoting from 'api/baskets_ideas/useVoting';
 import useIdeaById from 'api/ideas/useIdeaById';
 import { IPhaseData } from 'api/phases/types';
 
+import useCustomAccessDeniedMessage from 'hooks/useCustomAccessDeniedMessage';
+
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
@@ -61,6 +63,12 @@ const AssignSingleVoteButton = ({
   const maxVotesReached = maxVotes && numberOfVotesCast === maxVotes;
 
   const actionDescriptor = idea?.data.attributes.action_descriptors.voting;
+
+  const customAccessDeniedMessage = useCustomAccessDeniedMessage({
+    phaseId: phase.id,
+    action: 'voting',
+    disabledReason: actionDescriptor?.disabled_reason,
+  });
 
   if (
     !actionDescriptor ||
@@ -122,6 +130,12 @@ const AssignSingleVoteButton = ({
       actionDescriptor.disabled_reason,
       true
     );
+
+    // Show custom message if available
+    if (customAccessDeniedMessage) {
+      return customAccessDeniedMessage;
+    }
+
     if (permissionDisabledMessage) {
       return formatMessage(permissionDisabledMessage);
     }

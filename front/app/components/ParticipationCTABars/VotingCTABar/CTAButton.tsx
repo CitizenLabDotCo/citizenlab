@@ -16,6 +16,8 @@ import useVoting from 'api/baskets_ideas/useVoting';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
+import useCustomAccessDeniedMessage from 'hooks/useCustomAccessDeniedMessage';
+
 import { triggerPostActionEvents } from 'containers/App/events';
 
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -81,6 +83,15 @@ const CTAButton = ({ phase, project }: Props) => {
   const [processing, setProcessing] = useState(false);
   const [isSubmitSuccessful, setIsSubmitSuccessful] = useState<boolean>(false);
 
+  const permissionsDisabledReason =
+    project.attributes.action_descriptors.voting.disabled_reason;
+
+  const customAccessDeniedMessage = useCustomAccessDeniedMessage({
+    phaseId: phase.id,
+    action: 'voting',
+    disabledReason: permissionsDisabledReason,
+  });
+
   if (
     !appConfig ||
     !phase.attributes.voting_method ||
@@ -135,16 +146,16 @@ const CTAButton = ({ phase, project }: Props) => {
     }
   };
 
-  const permissionsDisabledReason =
-    project.attributes.action_descriptors.voting.disabled_reason;
-  const disabledExplanation = getVoteSubmissionDisabledExplanation(
-    formatMessage,
-    phase,
-    permissionsDisabledReason,
-    numberOfVotesCast,
-    formatCurrency,
-    numberOfOptionsSelected
-  );
+  const disabledExplanation =
+    customAccessDeniedMessage ||
+    getVoteSubmissionDisabledExplanation(
+      formatMessage,
+      phase,
+      permissionsDisabledReason,
+      numberOfVotesCast,
+      formatCurrency,
+      numberOfOptionsSelected
+    );
 
   return (
     <Box width="100%">
