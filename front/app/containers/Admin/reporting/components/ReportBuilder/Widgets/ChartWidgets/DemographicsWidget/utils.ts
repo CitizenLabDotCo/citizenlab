@@ -1,8 +1,12 @@
-import { binAge } from './dataUtils';
-import { roundPercentages } from './math';
+import { DemographicsResponse } from 'api/graph_data_units/responseTypes/DemographicsWidget';
+
+import { Localize } from 'hooks/useLocalize';
+
+import { binAge } from 'utils/dataUtils';
+import { roundPercentages } from 'utils/math';
 
 /**
- * Shared utilities for transforming demographics data from backend format
+ * Utilities for transforming demographics data from backend format
  * (series/options) to frontend chart format.
  *
  * Used by:
@@ -179,4 +183,26 @@ const transformSelectFieldData = (
       count: series[column] || 0,
     };
   });
+};
+
+// ============================================================================
+// Report Builder Specific Adapter
+// ============================================================================
+
+/**
+ * Transform Report Builder demographics response to chart data
+ * Adapts the Report Builder API response format to the generic transformer
+ */
+export const transformReportBuilderDemographics = (
+  response: DemographicsResponse,
+  localize: Localize,
+  blankLabel: string,
+  customFieldCode?: string
+): DemographicChartRow[] => {
+  return transformDemographicsToChartRows(
+    response.data.attributes,
+    customFieldCode,
+    blankLabel,
+    (_key, multiloc) => (multiloc ? localize(multiloc) : _key)
+  );
 };

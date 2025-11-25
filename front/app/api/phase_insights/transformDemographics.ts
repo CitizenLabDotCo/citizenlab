@@ -1,4 +1,4 @@
-import { transformDemographicsToChartRows } from 'utils/demographics';
+import { transformDemographicsToChartRows } from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/DemographicsWidget/utils';
 
 import {
   DemographicDataPoint,

@@ -19,8 +19,8 @@ import chartWidgetMessages from '../messages';
 
 import messages from './messages';
 import Settings from './Settings';
-import { toChartData } from './toChartData';
 import { Props } from './typings';
+import { transformReportBuilderDemographics } from './utils';
 
 const DemographicsWidget = ({
   title,
@@ -49,7 +49,7 @@ const DemographicsWidget = ({
 
     const blankLabel = formatMessage(messages.unknown);
     const customFieldCode = customField?.data.attributes.code ?? undefined;
-    return toChartData(
+    return transformReportBuilderDemographics(
       demographicsResponse,
       localize,
       blankLabel,
