@@ -277,7 +277,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
 
     let!(:idea6) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: nil, author_hash: 'some_author_hash', creation_phase_id: phase.id) } # during phase, no author (e.g. anonymous participation)
     let!(:idea7) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: nil, author_hash: nil, creation_phase_id: phase.id) } # during phase, no author nor author_hash (e.g. imported idea)
-    
+
     before { phase.update!(start_at: 15.days.ago, end_at: 2.days.ago) }
 
     it 'returns the participation ideas posted data for non-transitive ideas created during phase' do
