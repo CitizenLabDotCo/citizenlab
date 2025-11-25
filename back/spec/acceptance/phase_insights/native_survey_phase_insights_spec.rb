@@ -42,8 +42,8 @@ resource 'Phase insights' do
     let!(:"ns_user#{i}") { create(:user) }
   end
 
-  let!(:idea1) { create(:idea, phases: [native_survey_phase], created_at: 25.days.ago, published_at: 25.days.ago,  author: ns_user1, creation_phase_id: native_survey_phase.id) } # created & published before ideation phase (not counted)
-  
+  let!(:idea1) { create(:idea, phases: [native_survey_phase], created_at: 25.days.ago, published_at: 25.days.ago, author: ns_user1, creation_phase_id: native_survey_phase.id) } # created & published before ideation phase (not counted)
+
   # created & published during native survey phase
   let!(:idea2) do
     create(
@@ -59,7 +59,7 @@ resource 'Phase insights' do
 
   let!(:idea3) { create(:idea, phases: [native_survey_phase], created_at: 5.days.ago, published_at: 5.days.ago, author: ns_user2, creation_phase_id: native_survey_phase.id) } # created & published during native survey phase, and in last 7 days
   let!(:idea4) { create(:idea, phases: [native_survey_phase], created_at: 2.days.ago, published_at: 2.days.ago, author: ns_user3, creation_phase_id: native_survey_phase.id) } # created & published after native survey phase (not counted)
-  
+
   # created during native survey phase, not published
   let!(:idea5) do
     create(
@@ -80,7 +80,7 @@ resource 'Phase insights' do
   let!(:session2) { create(:session, user_id: ns_user2.id) }
   let!(:pageview2) { create(:pageview, session: session2, created_at: 15.days.ago, project_id: native_survey_phase.project.id) } # in native survey phase
   let!(:pageview3) { create(:pageview, session: session2, created_at: 5.days.ago, project_id: native_survey_phase.project.id) } # in native survey phase & last 7 days, same session
-  
+
   let!(:session3) { create(:session, user_id: ns_user3.id) }
   let!(:pageview5) { create(:pageview, session: session3, created_at: 2.days.ago, project_id: native_survey_phase.project.id) } # after native survey phase
 
@@ -89,7 +89,7 @@ resource 'Phase insights' do
 
   let!(:session5) { create(:session, user_id: ns_user5.id) }
   let!(:pageview7) { create(:pageview, session: session5, created_at: 15.days.ago, project_id: native_survey_phase.project.id) } # in native survey phase, did not participate
-  
+
   let(:id) { native_survey_phase.id }
 
   get 'web_api/v1/phases/:id/insights' do
