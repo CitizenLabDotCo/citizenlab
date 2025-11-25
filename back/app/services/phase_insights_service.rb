@@ -56,7 +56,7 @@ class PhaseInsightsService
     case phase.participation_method
     when 'voting'
       voting_data(phase, participations)
-    when 'ideation'
+    when 'ideation', 'proposals'
       ideation_data(participations)
     when 'native_survey'
       native_survey_data(participations)
