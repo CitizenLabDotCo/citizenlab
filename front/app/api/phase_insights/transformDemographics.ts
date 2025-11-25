@@ -1,4 +1,4 @@
-import { roundPercentages } from 'utils/math';
+import { transformDemographicsToChartRows } from 'utils/demographics';
 
 import {
   DemographicDataPoint,
@@ -11,8 +11,7 @@ import {
  * Transforms backend demographics attributes (series/options format)
  * into frontend format (data_points array) for component consumption.
  *
- * This follows the established pattern from Report Builder but outputs
- * a simpler structure suitable for phase insights visualizations.
+ * Uses shared transformation utilities for consistency with Report Builder.
  */
 export const transformDemographicsResponse = (
   attributes: { fields: DemographicFieldBackend[] },
@@ -32,66 +31,29 @@ const transformField = (
   field: DemographicFieldBackend,
   currentLocale: string
 ): DemographicField => {
-  // Calculate total population if available
-  const populationTotal = field.population_distribution
-    ? Object.values(field.population_distribution).reduce(
-        (sum, count) => sum + count,
-        0
-      )
-    : 0;
-
-  // Extract counts array in order for percentage calculation
-  const keys = Object.keys(field.series);
-  const counts = keys.map((key) => field.series[key]);
-
-  // Use roundPercentages utility to ensure percentages sum to 100
-  const percentages = roundPercentages(counts, 1); // 1 decimal place
-
-  // Convert series + options into data_points array with ordering
-  const dataPointsWithOrdering = keys.map((key, index) => {
-    const option = field.options?.[key];
-    const count = field.series[key];
-    const percentage = percentages[index];
-
-    // Calculate population percentage if available
-    let population_percentage: number | undefined;
-    if (field.population_distribution?.[key] !== undefined) {
-      const popCount = field.population_distribution[key];
-      population_percentage =
-        populationTotal > 0 ? (popCount / populationTotal) * 100 : 0;
-      // Round to 1 decimal place
-      population_percentage = Math.round(population_percentage * 10) / 10;
-    }
-
-    // Get localized label from multiloc
-    const label = getLocalizedLabel(option?.title_multiloc, currentLocale, key);
-
-    return {
-      key,
-      label,
-      count,
-      percentage,
-      population_percentage,
-      ordering: option?.ordering ?? 999, // Use high number for items without ordering
-    };
-  });
-
-  // Sort by ordering field
-  const sortedDataPoints = dataPointsWithOrdering.sort(
-    (a, b) => a.ordering - b.ordering
-  );
-
-  // Remove ordering from final output
-  const data_points: DemographicDataPoint[] = sortedDataPoints.map(
-    ({ ordering: _ordering, ...rest }) => rest
-  );
-
   // Get localized field name
   const field_name = getLocalizedLabel(
     field.field_name_multiloc,
     currentLocale,
     field.field_key
   );
+
+  // Use shared transformation utility to convert series/options to chart rows
+  const chartRows = transformDemographicsToChartRows(
+    field,
+    field.field_code ?? undefined,
+    '_blank', // We'll handle blank label in the next step
+    (key, multiloc) => getLocalizedLabel(multiloc, currentLocale, key)
+  );
+
+  // Convert chart rows to data_points format
+  const data_points: DemographicDataPoint[] = chartRows.map((row) => ({
+    key: row.category, // Using category as key (not ideal, but preserves behavior)
+    label: row.category,
+    count: row.count,
+    percentage: row.participants,
+    population_percentage: row.population,
+  }));
 
   return {
     field_id: field.field_id,
