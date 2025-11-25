@@ -45,8 +45,11 @@ export default function useCustomAccessDeniedMessage({
   });
 
   return useMemo(() => {
+    if (!disabledReason) {
+      return null;
+    }
     // Don't show custom message if user needs to authenticate first
-    if (disabledReason && isFixableByAuthentication(disabledReason)) {
+    if (isFixableByAuthentication(disabledReason)) {
       return null;
     }
 
