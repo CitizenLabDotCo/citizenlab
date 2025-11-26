@@ -9,20 +9,19 @@ import { IPhaseData } from 'api/phases/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import ComparisonBarChart from 'components/admin/Graphs/ComparisonBarChart';
+import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import {
   tabLineHeight,
   tabPadding,
   tabBorderSize,
   activeBorderSize,
 } from 'components/admin/NavigationTabs/tabsStyleConstants';
-import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 import { useIntl } from 'utils/cl-intl';
 
-import RScore from './audience/RScore';
-import { toChartData, toExcelData } from './audience/utils';
+import DemographicFieldContent from './DemographicFieldContent';
 import messages from './messages';
+import { usePdfExportContext } from './PdfExportContext';
 
 // Styled components reusing NavigationTabs constants and styles
 const TabsContainer = styled.div`
@@ -65,6 +64,10 @@ const TabButton = styled.button<{ active: boolean }>`
       color: ${colors.primary};
     `}
   `}
+
+  @media print {
+    display: none;
+  }
 `;
 
 interface Props {
@@ -75,6 +78,7 @@ const DemographicsSection = ({ phase }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const [selectedFieldIndex, setSelectedFieldIndex] = useState(0);
+  const { isPdfExport } = usePdfExportContext();
 
   // Fetch demographics data in backend format (series/options)
   const { data: response, isLoading } = useDemographics({
@@ -138,6 +142,45 @@ const DemographicsSection = ({ phase }: Props) => {
     );
   }
 
+  // PDF Export mode: wrap header + first field together, then each subsequent field separately
+  if (isPdfExport) {
+    return (
+      <Box
+        background="white"
+        borderRadius="8px"
+        display="flex"
+        flexDirection="column"
+        gap="24px"
+        role="region"
+        aria-label={formatMessage(messages.demographicsAndAudience)}
+      >
+        {/* Header + first field wrapped together to stay on same page */}
+        <PageBreakBox>
+          <Box display="flex" flexDirection="column" gap="24px">
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Text fontSize="m" fontWeight="bold" m="0px">
+                {formatMessage(messages.demographicsAndAudience)}
+              </Text>
+            </Box>
+            <DemographicFieldContent field={fields[0]} showExportMenu={false} />
+          </Box>
+        </PageBreakBox>
+
+        {/* Remaining fields each get their own PageBreakBox */}
+        {fields.slice(1).map((field) => (
+          <PageBreakBox key={field.field_id}>
+            <DemographicFieldContent field={field} showExportMenu={false} />
+          </PageBreakBox>
+        ))}
+      </Box>
+    );
+  }
+
+  // Normal view
   return (
     <Box
       background="white"
@@ -145,6 +188,8 @@ const DemographicsSection = ({ phase }: Props) => {
       display="flex"
       flexDirection="column"
       gap="24px"
+      role="region"
+      aria-label={formatMessage(messages.demographicsAndAudience)}
     >
       {/* Header */}
       <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -154,13 +199,15 @@ const DemographicsSection = ({ phase }: Props) => {
       </Box>
 
       {/* Tabs */}
-      <TabsContainer>
+      <TabsContainer data-pdf-exclude="true">
         {fields.map((field, index) => (
           <TabButton
             key={field.field_id}
             active={selectedFieldIndex === index}
             onClick={() => setSelectedFieldIndex(index)}
             type="button"
+            aria-selected={selectedFieldIndex === index}
+            role="tab"
           >
             {field.field_name}
           </TabButton>
@@ -168,89 +215,7 @@ const DemographicsSection = ({ phase }: Props) => {
       </TabsContainer>
 
       {/* Selected field content */}
-      <Box display="flex" gap="40px">
-        {/* Left side: Chart (60% width) */}
-        <Box flexGrow={1} minWidth="0">
-          {/* Field name and download button */}
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            mb="8px"
-          >
-            <Text fontSize="l" fontWeight="bold" m="0px">
-              {selectedField.field_name}
-            </Text>
-            <ReportExportMenu
-              name={selectedField.field_name}
-              xlsx={{ data: toExcelData(selectedField) }}
-            />
-          </Box>
-
-          {/* R.Score */}
-          {selectedField.r_score !== undefined && (
-            <Box mb="8px">
-              <RScore value={selectedField.r_score} />
-            </Box>
-          )}
-
-          {/* Legend */}
-          <Box display="flex" gap="24px" mb="12px">
-            <Box display="flex" gap="8px" alignItems="center">
-              <Box
-                width="8px"
-                height="8px"
-                borderRadius="50%"
-                background="#2f478a"
-              />
-              <Text fontSize="s" color="coolGrey700" m="0px">
-                {formatMessage(messages.participants)}
-              </Text>
-            </Box>
-            <Box display="flex" gap="8px" alignItems="center">
-              <Box
-                width="8px"
-                height="8px"
-                borderRadius="50%"
-                background="#40b8c5"
-              />
-              <Text fontSize="s" color="coolGrey700" m="0px">
-                {formatMessage(messages.totalPopulation)}
-              </Text>
-            </Box>
-          </Box>
-
-          {/* Chart */}
-          <ComparisonBarChart
-            data={toChartData(selectedField)}
-            mapping={{
-              category: 'category',
-              primaryValue: 'participants',
-              comparisonValue: 'population',
-            }}
-            primaryColor="#2f478a"
-            comparisonColor="#40b8c5"
-          />
-        </Box>
-
-        {/* Right side: Placeholder for Auto Insights (35% width) */}
-        <Box
-          width="35%"
-          minWidth="300px"
-          background="#f7f8f9"
-          borderRadius="8px"
-          p="16px"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Text color="textSecondary" fontSize="s" textAlign="center">
-            Auto Insights
-            <br />
-            Coming soon
-          </Text>
-        </Box>
-      </Box>
+      <DemographicFieldContent field={selectedField} showExportMenu={true} />
     </Box>
   );
 };
