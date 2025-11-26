@@ -322,6 +322,10 @@ class CustomField < ApplicationRecord
     %w[select select_image].include?(input_type)
   end
 
+  def linear_scale?
+    input_type == 'linear_scale'
+  end
+
   def accepts_input?
     !page?
   end
@@ -432,7 +436,7 @@ class CustomField < ApplicationRecord
 
   # @deprecated New HTML PDF formatter does this in {IdeaHtmlFormExporter} instead.
   def linear_scale_print_description(locale)
-    return nil unless input_strategy.supports_linear_scale_labels?
+    return nil unless linear_scale?
 
     multiloc_service = MultilocService.new
 
