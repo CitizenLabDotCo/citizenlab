@@ -157,7 +157,7 @@ const SSOButtonsExceptFCAndCU = ({
           <FormattedMessage
             {...parentMessages.continueWithLoginMechanism}
             values={{
-              loginMechanismName: 'ACM',
+              loginMechanismName: 'Itsme®',
             }}
           />
         </WrappedAuthProviderButton>

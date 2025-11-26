@@ -24,6 +24,7 @@ import idKeycloakConfiguration from './commercial/id_keycloak';
 import idNemLogInConfiguration from './commercial/id_nemlog_in';
 import idOostendeRrnConfiguration from './commercial/id_oostende_rrn';
 import idTwodayConfiguration from './commercial/id_twoday';
+import idAcmConfiguration from './commercial/id_acm';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import impactTrackingConfiguration from './commercial/impact_tracking';
 import intercomConfiguration from './commercial/intercom';
@@ -107,6 +108,9 @@ export default loadModules([
   },
   {
     configuration: idTwodayConfiguration,
+  },
+  {
+    configuration: idAcmConfiguration,
   },
   {
     configuration: idBogusConfiguration,

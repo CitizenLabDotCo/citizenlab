@@ -19,7 +19,7 @@ module IdAcm
 
       options = env['omniauth.strategy'].options
       options[:discovery] = true
-      options[:scope] = %i[openid profile email]
+      options[:scope] = %i[openid profile email rrn]
       options[:response_type] = :code
       options[:issuer] = issuer
       options[:client_options] = {

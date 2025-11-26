@@ -99,7 +99,7 @@ module IdAcm
     end
 
     def verification_parameters(auth)
-      { rrn: auth.info.rrn }
+      { rrn: auth.extra.raw_info.rrn }
     end
 
     private
