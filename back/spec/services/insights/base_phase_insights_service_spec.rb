@@ -11,8 +11,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
 
   it 'raises ArgumentError for unhandled participation method' do
     phase = build(:information_phase)
-    expect {
+    expect do
       described_class.call(phase)
-    }.to raise_error(ArgumentError, 'Unhandled phase participation_method: information')
+    end.to raise_error(ArgumentError, 'Unhandled phase participation_method: information')
   end
 end
