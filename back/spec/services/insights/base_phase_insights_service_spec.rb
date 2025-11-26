@@ -16,7 +16,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
     }
 
     phase_factory_to_service_map.each do |factory, service_class|
-      phase = build("#{factory}_phase".to_sym)
+      phase = build(:"#{factory}_phase")
       expect(service_class).to receive(:new).with(phase).and_call_original
       described_class.call(phase)
     end
