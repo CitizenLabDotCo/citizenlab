@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe InputStrategy::Polygon do
-  let(:custom_field) { build(:custom_field, input_type: 'polygon') }
+RSpec.describe InputStrategy::MatrixLinearScale do
+  let(:custom_field) { build(:custom_field, input_type: 'matrix_linear_scale') }
   let(:input_strategy) { described_class.new(custom_field) }
 
   describe '#supports_average?' do
@@ -43,20 +43,20 @@ RSpec.describe InputStrategy::Polygon do
   end
 
   describe '#supports_linear_scale?' do
-    it 'returns false' do
-      expect(input_strategy.supports_linear_scale?).to be false
+    it 'returns true' do
+      expect(input_strategy.supports_linear_scale?).to be true
     end
   end
 
   describe '#supports_linear_scale_labels?' do
-    it 'returns false' do
-      expect(input_strategy.supports_linear_scale_labels?).to be false
+    it 'returns true' do
+      expect(input_strategy.supports_linear_scale_labels?).to be true
     end
   end
 
   describe '#supports_matrix_statements?' do
-    it 'returns false' do
-      expect(input_strategy.supports_matrix_statements?).to be false
+    it 'returns true' do
+      expect(input_strategy.supports_matrix_statements?).to be true
     end
   end
 

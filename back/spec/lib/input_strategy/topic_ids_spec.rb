@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe InputStrategy::Polygon do
-  let(:custom_field) { build(:custom_field, input_type: 'polygon') }
+RSpec.describe InputStrategy::TopicIds do
+  let(:custom_field) { build(:custom_field, input_type: 'topic_ids') }
   let(:input_strategy) { described_class.new(custom_field) }
 
   describe '#supports_average?' do
@@ -79,8 +79,8 @@ RSpec.describe InputStrategy::Polygon do
   end
 
   describe '#supports_select_count?' do
-    it 'returns false' do
-      expect(input_strategy.supports_select_count?).to be false
+    it 'returns true' do
+      expect(input_strategy.supports_select_count?).to be true
     end
   end
 
