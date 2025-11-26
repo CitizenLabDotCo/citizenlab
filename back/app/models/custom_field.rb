@@ -201,7 +201,6 @@ class CustomField < ApplicationRecord
     ask_follow_up
   end
 
-
   def average_rankings(scope)
     # This basically starts from all combinations of scope ID, option key (value)
     # and position (ordinality) and then calculates the average position for each
