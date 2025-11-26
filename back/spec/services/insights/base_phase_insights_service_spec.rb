@@ -6,10 +6,20 @@ RSpec.describe Insights::BasePhaseInsightsService do
   let(:phase) { create(:single_voting_phase, start_at: 15.days.ago, end_at: 2.days.ago) }
   let!(:permission1) { create(:permission, action: 'voting', permission_scope: phase) }
 
-  it 'instantiates IdeationPhaseInsightsService for ideation participation method' do
-    phase = build(:ideation_phase)
-    expect(Insights::IdeationPhaseInsightsService).to receive(:new).with(phase).and_call_original
-    described_class.call(phase)
+  it 'instantiates the expected service for phase participation method' do
+    phase_factory_to_service_map = {
+      'ideation' => Insights::IdeationPhaseInsightsService,
+      'proposals' => Insights::ProposalsPhaseInsightsService,
+      'multiple_voting' => Insights::VotingPhaseInsightsService,
+      'native_survey' => Insights::NativeSurveyPhaseInsightsService,
+      'common_ground' => Insights::CommonGroundPhaseInsightsService
+    }
+
+    phase_factory_to_service_map.each do |factory, service_class|
+      phase = build("#{factory}_phase".to_sym)
+      expect(service_class).to receive(:new).with(phase).and_call_original
+      described_class.call(phase)
+    end
   end
 
   it 'raises ArgumentError for unhandled participation method' do
