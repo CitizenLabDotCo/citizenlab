@@ -322,18 +322,6 @@ class CustomField < ApplicationRecord
     %w[select select_image].include?(input_type)
   end
 
-  def sentiment_linear_scale?
-    input_type == 'sentiment_linear_scale'
-  end
-
-  def rating?
-    input_type == 'rating'
-  end
-
-  def checkbox?
-    input_type == 'checkbox'
-  end
-
   def accepts_input?
     !page?
   end
