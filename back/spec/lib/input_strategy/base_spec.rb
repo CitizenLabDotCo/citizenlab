@@ -35,4 +35,34 @@ RSpec.describe InputStrategy::Base do
       expect(input_strategy.supports_follow_up?).to be false
     end
   end
+
+  describe '#supports_free_text_value?' do
+    it 'returns false by default for fields without text support' do
+      expect(input_strategy.supports_free_text_value?).to be false
+    end
+  end
+
+  describe '#supports_xlsx_export?' do
+    it 'returns true by default' do
+      expect(input_strategy.supports_xlsx_export?).to be true
+    end
+  end
+
+  describe '#supports_geojson?' do
+    it 'returns false by default' do
+      expect(input_strategy.supports_geojson?).to be false
+    end
+  end
+
+  describe '#supports_linear_scale?' do
+    it 'returns false by default' do
+      expect(input_strategy.supports_linear_scale?).to be false
+    end
+  end
+
+  describe '#supports_linear_scale_labels?' do
+    it 'returns false by default' do
+      expect(input_strategy.supports_linear_scale_labels?).to be false
+    end
+  end
 end

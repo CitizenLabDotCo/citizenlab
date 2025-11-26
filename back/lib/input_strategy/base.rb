@@ -62,6 +62,14 @@ module InputStrategy
       supports_text? || (supports_options? && custom_field.includes_other_option?) || supports_follow_up?
     end
 
+    def supports_xlsx_export?
+      true
+    end
+
+    def supports_geojson?
+      false
+    end
+
     protected
 
     attr_reader :custom_field

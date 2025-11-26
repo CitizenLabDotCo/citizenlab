@@ -178,6 +178,22 @@ class CustomField < ApplicationRecord
       InputStrategy::MatrixLinearScale.new(self)
     when 'topic_ids'
       InputStrategy::TopicIds.new(self)
+    when 'point'
+      InputStrategy::Point.new(self)
+    when 'line'
+      InputStrategy::Line.new(self)
+    when 'polygon'
+      InputStrategy::Polygon.new(self)
+    when 'page'
+      InputStrategy::Page.new(self)
+    when 'image_files'
+      InputStrategy::ImageFiles.new(self)
+    when 'file_upload'
+      InputStrategy::FileUpload.new(self)
+    when 'shapefile_upload'
+      InputStrategy::ShapefileUpload.new(self)
+    when 'cosponsor_ids'
+      InputStrategy::CosponsorIds.new(self)
     else
       InputStrategy::Base.new(self)
     end
