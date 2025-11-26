@@ -75,7 +75,6 @@ module Insights
       end
     end
 
-    # Metrics specific to 'ideation' participation method
     def participation_method_metrics
       ideas_counts = phase_ideas_counts(@participations[:posting_idea] || [])
       comments_counts = phase_comments_counts(@participations)

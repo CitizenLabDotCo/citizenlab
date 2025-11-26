@@ -4,19 +4,36 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
   let(:phase) { create(:ideation_phase, start_at: 15.days.ago, end_at: 2.days.ago) }
   let(:service) { described_class.new(phase) }
 
+  let(:user1) { create(:user) }
+  let!(:idea1) { create(:idea, phases: [phase], created_at: 20.days.ago, published_at: 20.days.ago, author: user1) } # before phase start
+  let!(:idea2) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: user1) } # during phase
+  let!(:idea3) { create(:idea, phases: [phase], created_at: 1.day.ago, published_at: 1.day.ago, author: user1) } # after phase end
+
+  let(:user2) { create(:user) }
+  let!(:idea4) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: user2) } # during phase
+  let!(:idea5) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: nil, author: user2, publication_status: 'draft') } # during phase, but not published
+
+  let!(:idea6) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: nil, author_hash: 'some_author_hash') } # during phase, no author (e.g. anonymous participation)
+  let!(:idea7) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: nil, author_hash: nil) } # during phase, no author nor author_hash (e.g. imported idea)
+
+  let!(:comment1) { create(:comment, idea: idea1, created_at: 20.days.ago, author: user1) } # before phase start
+  let!(:comment2) { create(:comment, idea: idea1, created_at: 10.days.ago, author: user1) } # during phase
+  let!(:comment3) { create(:comment, idea: idea1, created_at: 1.day.ago, author: user1) } # after phase end
+
+  let!(:comment4) { create(:comment, idea: idea1, created_at: 10.days.ago, author: user2) } # during phase
+
+  let!(:comment5) { create(:comment, idea: idea1, created_at: 10.days.ago, author: nil, author_hash: 'some_author_hash') } # during phase, no author
+  let!(:comment6) { create(:comment, idea: idea1, created_at: 10.days.ago, author: nil, author_hash: nil) } # during phase, no author nor author_hash
+
+  let!(:reaction1) { create(:reaction, reactable: idea1, created_at: 20.days.ago, user: user1, mode: 'up') } # before phase start
+  let!(:reaction2) { create(:reaction, reactable: idea2, created_at: 10.days.ago, user: user1, mode: 'up') } # during phase
+  let!(:reaction3) { create(:reaction, reactable: idea3, created_at: 1.day.ago, user: user1, mode: 'up') } # after phase end
+
+  let!(:reaction4) { create(:reaction, reactable: idea2, created_at: 10.days.ago, user: user2, mode: 'down') } # during phase
+
+  let!(:reaction5) { create(:reaction, reactable: idea1, created_at: 10.days.ago, user: nil, mode: 'up') } # during phase, no user
+
   describe '#participation_ideas_published' do
-    let(:user1) { create(:user) }
-    let!(:idea1) { create(:idea, phases: [phase], created_at: 20.days.ago, published_at: 20.days.ago, author: user1) } # before phase start
-    let!(:idea2) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: user1) } # during phase
-    let!(:idea3) { create(:idea, phases: [phase], created_at: 1.day.ago, published_at: 1.day.ago, author: user1) } # after phase end
-
-    let(:user2) { create(:user) }
-    let!(:idea4) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: user2) } # during phase
-    let!(:idea5) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: nil, author: user2, publication_status: 'draft') } # during phase, but not published
-
-    let!(:idea6) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: nil, author_hash: 'some_author_hash') } # during phase, no author (e.g. anonymous participation)
-    let!(:idea7) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: nil, author_hash: nil) } # during phase, no author nor author_hash (e.g. imported idea)
-
     it 'returns the participation ideas published data for published ideas published during phase' do
       participation_ideas_published = service.send(:participation_ideas_published)
 
@@ -91,19 +108,6 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
   end
 
   describe '#participation_idea_comments' do
-    let!(:idea) { create(:idea, phases: [phase]) }
-
-    let(:user1) { create(:user) }
-    let!(:comment1) { create(:comment, idea: idea, created_at: 20.days.ago, author: user1) } # before phase start
-    let!(:comment2) { create(:comment, idea: idea, created_at: 10.days.ago, author: user1) } # during phase
-    let!(:comment3) { create(:comment, idea: idea, created_at: 1.day.ago, author: user1) } # after phase end
-
-    let(:user2) { create(:user) }
-    let!(:comment4) { create(:comment, idea: idea, created_at: 10.days.ago, author: user2) } # during phase
-
-    let!(:comment5) { create(:comment, idea: idea, created_at: 10.days.ago, author: nil, author_hash: 'some_author_hash') } # during phase, no author
-    let!(:comment6) { create(:comment, idea: idea, created_at: 10.days.ago, author: nil, author_hash: nil) } # during phase, no author nor author_hash
-
     it 'returns the participation idea comments data for comments posted during phase' do
       participation_idea_comments = service.send(:participation_idea_comments)
 
@@ -162,22 +166,6 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
   end
 
   describe '#participation_idea_reactions' do
-    let!(:idea1) { create(:idea, phases: [phase]) }
-    let!(:idea2) { create(:idea, phases: [phase]) }
-    let!(:idea3) { create(:idea, phases: [phase]) }
-
-    let(:user1) { create(:user) }
-    let!(:reaction1) { create(:reaction, reactable: idea1, created_at: 20.days.ago, user: user1, mode: 'up') } # before phase start
-    let!(:reaction2) { create(:reaction, reactable: idea2, created_at: 10.days.ago, user: user1, mode: 'up') } # during phase
-    let!(:reaction3) { create(:reaction, reactable: idea3, created_at: 1.day.ago, user: user1, mode: 'up') } # after phase end
-
-    let(:user2) { create(:user) }
-    let!(:reaction4) { create(:reaction, reactable: idea2, created_at: 10.days.ago, user: user2, mode: 'down') } # during phase
-
-    let!(:reaction5) { create(:reaction, reactable: idea1, created_at: 10.days.ago, user: nil, mode: 'up') } # during phase, no user
-
-    before { phase.update!(start_at: 15.days.ago, end_at: 2.days.ago) }
-
     it 'returns the participation idea reactions data for reactions made during phase' do
       participation_idea_reactions = service.send(:participation_idea_reactions)
 
@@ -226,6 +214,18 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
     end
   end
 
+  describe '#participations' do
+    it 'returns the expected aggregation of sets of participations' do
+      participations = service.send(:participations)
+
+      expect(participations).to eq({
+        posting_idea: service.send(:participation_ideas_published),
+        commenting_idea: service.send(:participation_idea_comments),
+        reacting_idea: service.send(:participation_idea_reactions)
+      })
+    end
+  end
+
   describe 'participation_method_metrics' do
     let(:user1) { create(:user) }
     let(:participation1) { create(:posting_idea_participation, acted_at: 10.days.ago, user: user1) }
@@ -243,7 +243,7 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
       }
     end
 
-    it 'calculates the correct metrics for ideation participation method' do
+    it 'calculates the correct metrics' do
       service.instance_variable_set(:@participations, participations)
 
       metrics = service.send(:participation_method_metrics)

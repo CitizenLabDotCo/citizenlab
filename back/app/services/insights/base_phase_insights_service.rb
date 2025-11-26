@@ -16,6 +16,8 @@ module Insights
       service_class = case phase.participation_method
       when 'ideation'
         IdeationPhaseInsightsService
+      when 'proposals'
+        ProposalsPhaseInsightsService
       else
         raise ArgumentError, "Unhandled phase participation_method: #{phase.participation_method}"
       end
