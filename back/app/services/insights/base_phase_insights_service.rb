@@ -12,9 +12,9 @@ module Insights
     # This method is the entry point that handles selection and instantiation.
     def self.call(phase)
       service_class = case phase.participation_method
-                      when 'ideation' then IdeationPhaseInsightsService
-                      else raise ArgumentError, "Unknown service type: #{phase.participation_method}"
-                      end
+        when 'ideation' then IdeationPhaseInsightsService
+        else raise ArgumentError, "Unhandled phase participation_method: #{phase.participation_method}"
+      end
 
       service_class.new(phase).call
     end
@@ -28,7 +28,7 @@ module Insights
     private
 
     def test
-      puts 'BasePhaseInsightsService'
+      Rails.logger.info 'BasePhaseInsightsService'
     end
   end
 end

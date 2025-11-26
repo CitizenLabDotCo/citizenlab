@@ -3,7 +3,7 @@ module Insights
     private
 
     def test
-      puts @phase.participation_method
+      Rails.logger.info @phase.participation_method
     end
   end
 end
