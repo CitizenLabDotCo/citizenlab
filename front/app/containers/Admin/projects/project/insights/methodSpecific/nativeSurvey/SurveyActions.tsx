@@ -34,6 +34,7 @@ import clHistory from 'utils/cl-router/history';
 import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
 
 import messages from '../../messages';
+import { usePdfExportContext } from '../../PdfExportContext';
 
 interface Props {
   phase: IPhaseData;
@@ -44,6 +45,10 @@ const SurveyActions = ({ phase }: Props) => {
   const { formatMessage } = useIntl();
   const projectId = phase.relationships.project.data.id;
   const phaseId = phase.id;
+
+  // PDF download from context (shared with parent)
+  const { downloadPdf, isDownloading: isDownloadingPdf } =
+    usePdfExportContext();
 
   // Project and phase hooks
   const { data: project } = useProjectById(projectId);
@@ -195,7 +200,7 @@ const SurveyActions = ({ phase }: Props) => {
 
   return (
     <>
-      <Box display="flex" alignItems="center" gap="8px">
+      <Box display="flex" alignItems="center" gap="8px" data-pdf-exclude="true">
         <Box position="relative">
           <Button
             icon="dots-horizontal"
@@ -261,9 +266,10 @@ const SurveyActions = ({ phase }: Props) => {
         </Button>
         <Button
           buttonStyle="text"
-          onClick={() => {
-            // TODO: Implement download
-          }}
+          onClick={downloadPdf}
+          processing={isDownloadingPdf}
+          aria-label={formatMessage(messages.downloadInsightsPdf)}
+          data-pdf-exclude="true"
         >
           {formatMessage(messages.download)}
         </Button>
