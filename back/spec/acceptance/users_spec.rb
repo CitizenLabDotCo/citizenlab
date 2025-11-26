@@ -1707,6 +1707,11 @@ resource 'Users' do
       end
 
       delete 'web_api/v1/users/:id' do
+        parameter :delete_participation_data, <<~DESC.squish, required: false
+          When true, permanently deletes all participation data associated with the user
+          instead of anonymizing it (default: false).
+        DESC
+
         before do
           @user.update!(roles: [{ type: 'admin' }])
           @subject_user = create(:admin)
@@ -1717,6 +1722,33 @@ resource 'Users' do
         example_request 'Delete a user' do
           expect(response_status).to eq 200
           expect { User.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+
+        describe 'with delete_participation_data parameter' do
+          example 'Delete a user and their participation data' do
+            idea = create(:idea, author: @subject_user)
+            comment = create(:comment, author: @subject_user)
+            reaction = create(:reaction, user: @subject_user)
+            event_attendee = create(:event_attendance, attendee: @subject_user)
+            basket = create(:basket, user: @subject_user)
+            volunteer = create(:volunteer, user: @subject_user)
+            poll_response = create(:poll_response, user: @subject_user)
+
+            do_request(delete_participation_data: true)
+
+            expect(response_status).to eq 200
+
+            expect { User.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+            expect { Idea.find(idea.id) }.to raise_error(ActiveRecord::RecordNotFound)
+            expect { Reaction.find(reaction.id) }.to raise_error(ActiveRecord::RecordNotFound)
+            expect { Events::Attendance.find(event_attendee.id) }.to raise_error(ActiveRecord::RecordNotFound)
+            expect { Basket.find(basket.id) }.to raise_error(ActiveRecord::RecordNotFound)
+            expect { Volunteering::Volunteer.find(volunteer.id) }.to raise_error(ActiveRecord::RecordNotFound)
+            expect { Polls::Response.find(poll_response.id) }.to raise_error(ActiveRecord::RecordNotFound)
+
+            # Comments are soft-deleted to preserve thread structure
+            expect(Comment.find(comment.id).publication_status).to eq('deleted')
+          end
         end
       end
 

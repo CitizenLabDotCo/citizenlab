@@ -174,7 +174,8 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def destroy
-    DeleteUserJob.perform_now(@user.id, current_user)
+    delete_participation_data = ActiveModel::Type::Boolean.new.cast(params[:delete_participation_data])
+    DeleteUserJob.perform_now(@user.id, current_user, delete_participation_data:)
     head :ok
   end
 

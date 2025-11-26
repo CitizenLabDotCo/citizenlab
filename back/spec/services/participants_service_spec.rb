@@ -481,4 +481,59 @@ describe ParticipantsService do
       expect(Idea.where(id: idea_in_voting_phase.id)).to exist
     end
   end
+
+  describe 'destroy_user_participation_data' do
+    before_all do
+      Analytics::PopulateDimensionsService.populate_types
+    end
+
+    let(:user) { create(:user) }
+    let(:other_user) { create(:user) }
+
+    it 'destroys all participation data for the user' do
+      idea = create(:idea, author: user)
+      comment = create(:comment, author: user)
+      reaction = create(:reaction, user: user)
+      basket = create(:basket, user: user)
+      poll_response = create(:poll_response, user: user)
+      volunteer = create(:volunteer, user: user)
+      event_attendance = create(:event_attendance, attendee: user)
+
+      service.destroy_user_participation_data(user)
+
+      # Hard-deleted participation types
+      expect { Idea.find(idea.id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { Reaction.find(reaction.id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { Basket.find(basket.id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { Polls::Response.find(poll_response.id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { Volunteering::Volunteer.find(volunteer.id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { Events::Attendance.find(event_attendance.id) }.to raise_error(ActiveRecord::RecordNotFound)
+
+      # Comments are soft-deleted to preserve thread structure
+      expect(Comment.find(comment.id).publication_status).to eq('deleted')
+    end
+
+    it 'clears project participant caches for affected projects' do
+      project1, project2 = create_list(:project, 2)
+      create(:idea, author: user, project: project1)
+      create(:comment, author: user, idea: create(:idea, project: project2))
+
+      expect(service).to receive(:clear_project_participants_count_cache).with(project1)
+      expect(service).to receive(:clear_project_participants_count_cache).with(project2)
+
+      service.destroy_user_participation_data(user)
+    end
+
+    it 'does not delete other users participation data' do
+      idea = create(:idea, author: other_user)
+      comment = create(:comment, author: other_user)
+      reaction = create(:reaction, user: other_user)
+
+      service.destroy_user_participation_data(user)
+
+      expect(Idea.find(idea.id)).to be_present
+      expect(Comment.find(comment.id).publication_status).to eq('published')
+      expect(Reaction.find(reaction.id)).to be_present
+    end
+  end
 end
