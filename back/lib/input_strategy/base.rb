@@ -26,6 +26,38 @@ module InputStrategy
       false
     end
 
+    def supports_text?
+      false
+    end
+
+    def supports_linear_scale?
+      false
+    end
+
+    def supports_linear_scale_labels?
+      false
+    end
+
+    def supports_matrix_statements?
+      false
+    end
+
+    def supports_single_selection?
+      false
+    end
+
+    def supports_multiple_selection?
+      false
+    end
+
+    def supports_selection?
+      supports_single_selection? || supports_multiple_selection?
+    end
+
+    def supports_select_count?
+      false
+    end
+
     protected
 
     attr_reader :custom_field

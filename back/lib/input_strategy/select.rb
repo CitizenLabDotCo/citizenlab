@@ -9,5 +9,9 @@ module InputStrategy
     def supports_other_option?
       true
     end
+
+    def supports_single_selection?
+      true
+    end
   end
 end

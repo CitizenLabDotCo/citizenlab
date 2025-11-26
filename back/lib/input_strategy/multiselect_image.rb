@@ -13,5 +13,13 @@ module InputStrategy
     def supports_option_images?
       true
     end
+
+    def supports_multiple_selection?
+      true
+    end
+
+    def supports_select_count?
+      true
+    end
   end
 end

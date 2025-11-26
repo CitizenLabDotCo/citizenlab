@@ -374,7 +374,7 @@ module BulkImportIdeas::Exporters
     end
 
     def field_matrix_details(field)
-      return unless field.supports_matrix_statements?
+      return unless field.input_strategy.supports_matrix_statements?
 
       {
         statements: field.matrix_statements.map { |statement| field_print_title(statement) },
@@ -386,7 +386,7 @@ module BulkImportIdeas::Exporters
     end
 
     def matrix_print_instructions(field)
-      return '' unless field.supports_matrix_statements?
+      return '' unless field.input_strategy.supports_matrix_statements?
 
       description = I18n.with_locale(@locale) do
         I18n.t('form_builder.pdf_export.matrix_print_description')

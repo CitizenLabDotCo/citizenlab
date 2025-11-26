@@ -1,15 +1,7 @@
 # frozen_string_literal: true
 
 module InputStrategy
-  class SentimentLinearScale < Base
-    def supports_average?
-      true
-    end
-
-    def supports_follow_up?
-      true
-    end
-
+  class MatrixLinearScale < Base
     def supports_linear_scale?
       true
     end
@@ -18,7 +10,7 @@ module InputStrategy
       true
     end
 
-    def supports_single_selection?
+    def supports_matrix_statements?
       true
     end
   end

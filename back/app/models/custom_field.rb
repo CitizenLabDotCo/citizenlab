@@ -111,10 +111,10 @@ class CustomField < ApplicationRecord
   validates :page_layout, absence: true, unless: :page?
   validates :question_category, absence: true, unless: :supports_category?
   validates :question_category, inclusion: { in: QUESTION_CATEGORIES }, allow_nil: true, if: :supports_category?
-  validates :maximum, presence: true, inclusion: 2..11, if: :supports_linear_scale?
-  validates :min_characters, comparison: { greater_than_or_equal_to: 0 }, if: :support_text?, allow_nil: true
-  validates :max_characters, comparison: { greater_than: 0 }, if: :support_text?, allow_nil: true
-  validate :max_characters_greater_than_min_characters, if: :support_text?
+  validates :maximum, presence: true, inclusion: 2..11, if: ->(field) { field.input_strategy.supports_linear_scale? }
+  validates :min_characters, comparison: { greater_than_or_equal_to: 0 }, if: ->(field) { field.input_strategy.supports_text? }, allow_nil: true
+  validates :max_characters, comparison: { greater_than: 0 }, if: ->(field) { field.input_strategy.supports_text? }, allow_nil: true
+  validate :max_characters_greater_than_min_characters, if: ->(field) { field.input_strategy.supports_text? }
   validate :maximum_select_count_greater_than_or_equal_to_minimum, if: :select_count_enabled_and_supported?
 
   before_validation :set_default_enabled
@@ -164,6 +164,20 @@ class CustomField < ApplicationRecord
       InputStrategy::MultiselectImage.new(self)
     when 'ranking'
       InputStrategy::Ranking.new(self)
+    when 'text'
+      InputStrategy::Text.new(self)
+    when 'multiline_text'
+      InputStrategy::MultilineText.new(self)
+    when 'text_multiloc'
+      InputStrategy::TextMultiloc.new(self)
+    when 'multiline_text_multiloc'
+      InputStrategy::MultilineTextMultiloc.new(self)
+    when 'html_multiloc'
+      InputStrategy::HtmlMultiloc.new(self)
+    when 'matrix_linear_scale'
+      InputStrategy::MatrixLinearScale.new(self)
+    when 'topic_ids'
+      InputStrategy::TopicIds.new(self)
     else
       InputStrategy::Base.new(self)
     end
@@ -177,30 +191,6 @@ class CustomField < ApplicationRecord
     ask_follow_up
   end
 
-
-  def supports_linear_scale?
-    %w[linear_scale matrix_linear_scale sentiment_linear_scale rating].include?(input_type)
-  end
-
-  def supports_matrix_statements?
-    input_type == 'matrix_linear_scale'
-  end
-
-  def supports_linear_scale_labels?
-    %w[linear_scale matrix_linear_scale sentiment_linear_scale].include?(input_type)
-  end
-
-  def supports_single_selection?
-    %w[select linear_scale sentiment_linear_scale rating].include?(input_type)
-  end
-
-  def supports_multiple_selection?
-    %w[multiselect multiselect_image].include?(input_type)
-  end
-
-  def supports_selection?
-    supports_single_selection? || supports_multiple_selection?
-  end
 
   def average_rankings(scope)
     # This basically starts from all combinations of scope ID, option key (value)
@@ -315,12 +305,8 @@ class CustomField < ApplicationRecord
     %w[multiselect multiselect_image].include?(input_type)
   end
 
-  def supports_select_count?
-    %w[multiselect multiselect_image topic_ids].include?(input_type)
-  end
-
   def select_count_enabled_and_supported?
-    supports_select_count? && select_count_enabled
+    input_strategy.supports_select_count? && select_count_enabled
   end
 
   def singleselect?
