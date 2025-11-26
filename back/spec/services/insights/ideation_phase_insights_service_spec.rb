@@ -214,9 +214,9 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
     end
   end
 
-  describe '#participations' do
+  describe '#phase_participations' do
     it 'returns the expected aggregation of sets of participations' do
-      participations = service.send(:participations)
+      participations = service.send(:phase_participations)
 
       expect(participations).to eq({
         posting_idea: service.send(:participation_ideas_published),
@@ -226,7 +226,7 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
     end
   end
 
-  describe 'participation_method_metrics' do
+  describe 'phase_participation_method_metrics' do
     let(:user1) { create(:user) }
     let(:participation1) { create(:posting_idea_participation, acted_at: 10.days.ago, user: user1) }
     let(:participation2) { create(:posting_idea_participation, acted_at: 5.days.ago, user: user1) }
@@ -244,9 +244,7 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
     end
 
     it 'calculates the correct metrics' do
-      service.instance_variable_set(:@participations, participations)
-
-      metrics = service.send(:participation_method_metrics)
+      metrics = service.send(:phase_participation_method_metrics, participations)
 
       expect(metrics).to eq({
         ideas_posted: 2,

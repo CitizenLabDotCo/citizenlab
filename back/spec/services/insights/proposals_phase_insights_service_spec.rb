@@ -107,9 +107,9 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
     end
   end
 
-  describe '#participations' do
+  describe '#phase_participations' do
     it 'returns the expected aggregation of sets of participations' do
-      participations = service.send(:participations)
+      participations = service.send(:phase_participations)
 
       expect(participations).to eq({
         posting_idea: service.send(:participation_ideas_submitted),

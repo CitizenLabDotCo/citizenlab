@@ -4,9 +4,6 @@ module Insights
 
     def initialize(phase)
       @phase = phase
-      @participations = {}
-      @participation_method_metrics = {}
-
       @permissions_custom_fields_service ||= Permissions::PermissionsCustomFieldsService.new
     end
 
@@ -30,15 +27,15 @@ module Insights
     def call
       cached_insights_data
 
-      Rails.logger.info @participation_method_metrics.inspect
+      # Rails.logger.info @participation_method_metrics.inspect
     end
 
     private
 
     # TODO: Implement caching? (may not be needed if performance good enough)
     def cached_insights_data
-      participations
-      participation_method_metrics
+      participations = phase_participations
+      participation_method_metrics = phase_participation_method_metrics(participations)
     end
 
     def participant_id(item_id, user_id, user_hash = nil)

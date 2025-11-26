@@ -2,8 +2,8 @@ module Insights
   class ProposalsPhaseInsightsService < IdeationPhaseInsightsService
     private
 
-    def participations
-      @participations = {
+    def phase_participations
+      {
         posting_idea: participation_ideas_submitted,
         commenting_idea: participation_idea_comments,
         reacting_idea: participation_idea_reactions
