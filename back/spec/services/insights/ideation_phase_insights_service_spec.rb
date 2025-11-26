@@ -235,8 +235,8 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
     let(:participation5) { create(:reacting_idea_participation, acted_at: 10.days.ago, user: user1) }
     let(:participation6) { create(:reacting_idea_participation, acted_at: 5.days.ago, user: user1) }
 
-    let(:participations) do 
-      { 
+    let(:participations) do
+      {
         posting_idea: [participation1, participation2],
         commenting_idea: [participation3, participation4],
         reacting_idea: [participation5, participation6]
