@@ -3,6 +3,7 @@ module Insights
     private
 
     def phase_participations
+      # Events are not associated with phase, so attending_event not included at phase-level.
       {
         posting_idea: participation_ideas_published,
         commenting_idea: participation_idea_comments,
