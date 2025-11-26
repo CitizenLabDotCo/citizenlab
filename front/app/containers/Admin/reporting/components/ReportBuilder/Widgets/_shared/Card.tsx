@@ -14,7 +14,6 @@ import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 import { useIntl } from 'utils/cl-intl';
 
-// import { ChartAccessibilityProvider } from './../ChartWidgets/_shared/ChartAccessibilityContext';
 import messages from './messages';
 
 interface SharedProps {
