@@ -128,7 +128,7 @@ describe('Input form builder', () => {
     cy.get('.e2e-topics-picker').should('not.exist');
   });
 
-  it.only('can be limited to a minimum and maximum number of selections', () => {
+  it('can be limited to a minimum and maximum number of selections', () => {
     const title = randomString(12);
     const description = randomString(42);
 
