@@ -74,5 +74,21 @@ module Insights
         }
       end
     end
+
+    # Metrics specific to 'ideation' participation method
+    def participation_method_metrics
+      ideas_counts = phase_ideas_counts(@participations[:posting_idea] || [])
+      comments_counts = phase_comments_counts(@participations)
+      reactions_counts = phase_reactions_counts(@participations)
+
+      @participation_method_metrics = {
+        ideas_posted: ideas_counts[:total],
+        ideas_posted_last_7_days: ideas_counts[:last_7_days],
+        comments_posted: comments_counts[:total],
+        comments_posted_last_7_days: comments_counts[:last_7_days],
+        reactions: reactions_counts[:total],
+        reactions_last_7_days: reactions_counts[:last_7_days]
+      }
+    end
   end
 end

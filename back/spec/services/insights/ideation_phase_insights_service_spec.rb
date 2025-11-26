@@ -225,4 +225,37 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
       ])
     end
   end
+
+  describe 'participation_method_metrics' do
+    let(:user1) { create(:user) }
+    let(:participation1) { create(:posting_idea_participation, acted_at: 10.days.ago, user: user1) }
+    let(:participation2) { create(:posting_idea_participation, acted_at: 5.days.ago, user: user1) }
+    let(:participation3) { create(:commenting_idea_participation, acted_at: 10.days.ago, user: user1) }
+    let(:participation4) { create(:commenting_idea_participation, acted_at: 5.days.ago, user: user1) }
+    let(:participation5) { create(:reacting_idea_participation, acted_at: 10.days.ago, user: user1) }
+    let(:participation6) { create(:reacting_idea_participation, acted_at: 5.days.ago, user: user1) }
+
+    let(:participations) do 
+      { 
+        posting_idea: [participation1, participation2],
+        commenting_idea: [participation3, participation4],
+        reacting_idea: [participation5, participation6]
+      }
+    end
+
+    it 'calculates the correct metrics for ideation participation method' do
+      service.instance_variable_set(:@participations, participations)
+
+      metrics = service.send(:participation_method_metrics)
+
+      expect(metrics).to eq({
+        ideas_posted: 2,
+        ideas_posted_last_7_days: 1,
+        comments_posted: 2,
+        comments_posted_last_7_days: 1,
+        reactions: 2,
+        reactions_last_7_days: 1
+      })
+    end
+  end
 end

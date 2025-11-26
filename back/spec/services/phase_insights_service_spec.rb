@@ -46,8 +46,8 @@ describe PhaseInsightsService do
 
     let(:user1) { create(:user) }
     let(:participation1) { create(:basket_participation, :with_votes, acted_at: 10.days.ago, user: user1, vote_count: 3) }
-    let(:participation2) { create(:comment_participation, acted_at: 10.days.ago, user: user1) }
-    let(:participation3) { create(:comment_participation, acted_at: 5.days.ago, user: user1) } # in last 7 days
+    let(:participation2) { create(:commenting_idea_participation, acted_at: 10.days.ago, user: user1) }
+    let(:participation3) { create(:commenting_idea_participation, acted_at: 5.days.ago, user: user1) } # in last 7 days
 
     let(:user2) { create(:user) }
     let(:participation4) { create(:basket_participation, :with_votes, acted_at: 10.days.ago, user: user2, vote_count: 4) }

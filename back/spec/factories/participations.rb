@@ -73,8 +73,26 @@ FactoryBot.define do
     end
   end
 
-  # Comment participation
-  factory :comment_participation, parent: :participation do
+  factory :posting_idea_participation, parent: :participation do
+    initialize_with do
+      participation_user = user || create(:user)
+      idea = create(:idea, author: participation_user)
+      acted_at_time = acted_at || idea.created_at
+      participant_id ||= idea.author_id
+      custom_field_values = user_custom_field_values.presence || idea.author.custom_field_values || {}
+
+      {
+        item_id: idea.id,
+        action: 'posting_idea',
+        acted_at: acted_at_time,
+        classname: 'Idea',
+        participant_id: participant_id,
+        user_custom_field_values: custom_field_values
+      }
+    end
+  end
+
+  factory :commenting_idea_participation, parent: :participation do
     initialize_with do
       participation_user = user || create(:user)
       comment = create(:comment, author: participation_user)
@@ -87,6 +105,25 @@ FactoryBot.define do
         action: 'commenting_idea',
         acted_at: acted_at_time,
         classname: 'Comment',
+        participant_id: participant_id,
+        user_custom_field_values: custom_field_values
+      }
+    end
+  end
+
+  factory :reacting_idea_participation, parent: :participation do
+    initialize_with do
+      participation_user = user || create(:user)
+      reaction = create(:reaction, user: participation_user)
+      acted_at_time = acted_at || reaction.created_at
+      participant_id ||= reaction.user_id
+      custom_field_values = user_custom_field_values.presence || reaction.user.custom_field_values || {}
+
+      {
+        item_id: reaction.id,
+        action: 'reacting_idea',
+        acted_at: acted_at_time,
+        classname: 'Reaction',
         participant_id: participant_id,
         user_custom_field_values: custom_field_values
       }
