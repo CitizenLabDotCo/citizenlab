@@ -6,6 +6,7 @@ import usePhases from 'api/phases/usePhases';
 
 import { hasEmbeddedSurvey } from 'containers/ProjectsShowPage/shared/header/utils';
 
+import { AccessibilityProps } from 'components/admin/Graphs/typings';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
@@ -20,12 +21,16 @@ import { Props } from './typings';
 const ParticipantsWidget = ({
   title,
   ariaLabel,
+  ariaDescribedBy,
   description,
   ...props
-}: Props) => {
+}: Props & AccessibilityProps) => {
   const { formatMessage } = useIntl();
   const { data: phases } = usePhases(props.projectId);
-
+  const accessibilityProps = {
+    ariaLabel,
+    ariaDescribedBy,
+  };
   return (
     <Card
       title={title}
@@ -40,7 +45,7 @@ const ParticipantsWidget = ({
           </Warning>
         </Box>
       )}
-      <ParticipantsCard {...props} />
+      <ParticipantsCard {...props} {...accessibilityProps} />
     </Card>
   );
 };

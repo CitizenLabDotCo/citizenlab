@@ -19,6 +19,10 @@ export interface BaseProps<Row, Payload> {
   onMouseOver?: (payload: Payload, event: React.MouseEvent) => void;
   onMouseOut?: (payload: Payload, event: React.MouseEvent) => void;
 }
+export interface AccessibilityProps {
+  ariaLabel?: string;
+  ariaDescribedBy?: string;
+}
 
 // STYLING
 export interface Margin {

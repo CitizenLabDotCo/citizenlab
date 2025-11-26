@@ -17,7 +17,6 @@ import {
   animation,
 } from 'components/admin/Graphs/styling';
 
-import { useRechartsAccessibility } from '../../../../containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/_shared/useRechartsAccessibility';
 import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
@@ -27,6 +26,7 @@ import {
 } from '../_components/Legend/typings';
 import { DEFAULT_LEGEND_OFFSET } from '../MultiBarChart';
 import { getRechartsLayout, getLabelConfig } from '../MultiBarChart/utils';
+import { AccessibilityProps } from '../typings';
 import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
 
 import { Props } from './typings';
@@ -50,7 +50,9 @@ const StackedBarChart = <Row,>({
   onMouseOver,
   onMouseOut,
   CustomLegend,
-}: Props<Row>) => {
+  ariaLabel,
+  ariaDescribedBy,
+}: Props<Row> & AccessibilityProps) => {
   const [graphDimensions, setGraphDimensions] = useState<
     GraphDimensions | undefined
   >();
@@ -58,7 +60,13 @@ const StackedBarChart = <Row,>({
     LegendDimensions | undefined
   >();
 
-  const accessibilityProps = useRechartsAccessibility();
+  const accessibilityProps = {
+    accessibilityLayer: true,
+    role: 'img',
+    'aria-label': ariaLabel,
+    'aria-describedby': ariaDescribedBy,
+    tabIndex: 0,
+  };
 
   if (hasNoData(data)) {
     return <EmptyState emptyContainerContent={emptyContainerContent} />;

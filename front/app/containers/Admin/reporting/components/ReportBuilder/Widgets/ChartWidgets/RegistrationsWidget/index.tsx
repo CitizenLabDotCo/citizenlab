@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { AccessibilityProps } from 'components/admin/Graphs/typings';
+
 import Card from '../../_shared/Card';
 
 import ChartWidgetSettings from './ChartWidgetSettings';
@@ -11,8 +13,13 @@ const RegistrationsWidget = ({
   title,
   description,
   ariaLabel,
+  ariaDescribedBy,
   ...props
-}: Props) => {
+}: Props & AccessibilityProps) => {
+  const accessibilityProps = {
+    ariaLabel,
+    ariaDescribedBy,
+  };
   return (
     <Card
       title={title}
@@ -20,7 +27,7 @@ const RegistrationsWidget = ({
       pagebreak
       ariaLabel={ariaLabel}
     >
-      <RegistrationsCard {...props} />
+      <RegistrationsCard {...props} {...accessibilityProps} />
     </Card>
   );
 };

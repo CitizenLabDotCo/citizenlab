@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { AccessibilityProps } from 'components/admin/Graphs/typings';
+
 import Card from '../../_shared/Card';
 import messages from '../messages';
 
@@ -7,7 +9,17 @@ import ChartWidgetSettings from './ChartWidgetSettings';
 import { Props } from './typings';
 import VisitorsCard from './VisitorsCard';
 
-const VisitorsWidget = ({ title, ariaLabel, description, ...props }: Props) => {
+const VisitorsWidget = ({
+  title,
+  ariaLabel,
+  description,
+  ariaDescribedBy,
+  ...props
+}: Props & AccessibilityProps) => {
+  const accessibilityProps = {
+    ariaLabel,
+    ariaDescribedBy,
+  };
   return (
     <Card
       title={title}
@@ -15,7 +27,7 @@ const VisitorsWidget = ({ title, ariaLabel, description, ...props }: Props) => {
       description={description}
       pagebreak
     >
-      <VisitorsCard {...props} />
+      <VisitorsCard {...accessibilityProps} {...props} />
     </Card>
   );
 };

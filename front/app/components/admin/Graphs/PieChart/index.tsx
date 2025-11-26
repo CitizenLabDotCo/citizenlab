@@ -8,7 +8,8 @@ import {
   Label,
 } from 'recharts';
 
-import { useRechartsAccessibility } from '../../../../containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/_shared/useRechartsAccessibility';
+import { AccessibilityProps } from 'components/admin/Graphs/typings';
+
 import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
@@ -38,7 +39,9 @@ const PieChart = <Row,>({
   innerRef,
   onMouseOver,
   onMouseOut,
-}: Props<Row>) => {
+  ariaLabel,
+  ariaDescribedBy,
+}: Props<Row> & AccessibilityProps) => {
   const [graphDimensions, setGraphDimensions] = useState<
     GraphDimensions | undefined
   >();
@@ -46,7 +49,13 @@ const PieChart = <Row,>({
     LegendDimensions | undefined
   >();
 
-  const accessibilityProps = useRechartsAccessibility();
+  const accessibilityProps = {
+    accessibilityLayer: true,
+    role: 'img',
+    'aria-label': ariaLabel,
+    'aria-describedby': ariaDescribedBy,
+    tabIndex: 0,
+  };
 
   if (hasNoData(data)) {
     return <EmptyState emptyContainerContent={emptyContainerContent} />;

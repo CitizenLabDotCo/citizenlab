@@ -14,7 +14,7 @@ import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { ChartAccessibilityProvider } from './../ChartWidgets/_shared/ChartAccessibilityContext';
+// import { ChartAccessibilityProvider } from './../ChartWidgets/_shared/ChartAccessibilityContext';
 import messages from './messages';
 
 interface SharedProps {
@@ -55,17 +55,26 @@ const Card = ({
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
+  // Create localized accessibility props for the chart and inject them into children
   const chartId = React.useId();
   const descriptionId = `${chartId}-description`;
   const localizedAriaLabel = ariaLabel ? localize(ariaLabel) : undefined;
   const localizedDescription = description ? localize(description) : undefined;
-
-  // Create the ARIA label for charts - use ariaLabel if provided, otherwise use title
   const chartAriaLabel =
     localizedAriaLabel || (title ? localize(title) : undefined);
 
-  // Create the describedBy ID if there's a description
   const chartAriaDescribedBy = localizedDescription ? descriptionId : undefined;
+  const accessibilityProps = {
+    ariaLabel: chartAriaLabel,
+    ariaDescribedBy: chartAriaDescribedBy,
+  };
+
+  const childrenWithProps = React.Children.map(children, (child) => {
+    if (React.isValidElement(child)) {
+      return React.cloneElement(child, accessibilityProps);
+    }
+    return child;
+  });
 
   return (
     <Container className="report-widget-card" {...rest}>
@@ -88,18 +97,7 @@ const Card = ({
           )}
         </Box>
       )}
-      <ChartAccessibilityProvider
-        ariaLabel={chartAriaLabel}
-        ariaDescribedBy={chartAriaDescribedBy}
-      >
-        <Box
-          role="img"
-          aria-label={chartAriaLabel}
-          aria-describedby={chartAriaDescribedBy}
-        >
-          {children}
-        </Box>
-      </ChartAccessibilityProvider>
+      <Box>{childrenWithProps}</Box>
       {localizedDescription && (
         <Text color="grey700" fontSize="s" id={descriptionId}>
           {formatMessage(messages.description)} {localizedDescription}

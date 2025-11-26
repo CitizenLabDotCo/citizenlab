@@ -14,10 +14,10 @@ import {
   sizes,
   animation,
 } from 'components/admin/Graphs/styling';
+import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
 import { isNilOrError } from 'utils/helperUtils';
 
-import { useRechartsAccessibility } from '../../../../containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/_shared/useRechartsAccessibility';
 import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
@@ -50,7 +50,9 @@ const LineChart = <Row,>({
   onMouseOver,
   onMouseOut,
   showEmptyGraph = false,
-}: Props<Row>) => {
+  ariaLabel,
+  ariaDescribedBy,
+}: Props<Row> & AccessibilityProps) => {
   const [graphDimensions, setGraphDimensions] = useState<
     GraphDimensions | undefined
   >();
@@ -58,7 +60,13 @@ const LineChart = <Row,>({
     LegendDimensions | undefined
   >();
 
-  const accessibilityProps = useRechartsAccessibility();
+  const accessibilityProps = {
+    accessibilityLayer: true,
+    role: 'img',
+    'aria-label': ariaLabel,
+    'aria-describedby': ariaDescribedBy,
+    tabIndex: 0,
+  };
 
   if (hasNoData(data) && !showEmptyGraph) {
     return <EmptyState emptyContainerContent={emptyContainerContent} />;

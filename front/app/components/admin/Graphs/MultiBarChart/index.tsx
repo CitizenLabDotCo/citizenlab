@@ -18,7 +18,6 @@ import {
 
 import { truncate } from 'utils/textUtils';
 
-import { useRechartsAccessibility } from '../../../../containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/_shared/useRechartsAccessibility';
 import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
@@ -26,6 +25,7 @@ import {
   GraphDimensions,
   LegendDimensions,
 } from '../_components/Legend/typings';
+import { AccessibilityProps } from '../typings';
 import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
 
 import { Props } from './typings';
@@ -50,7 +50,9 @@ const MultiBarChart = <Row,>({
   innerRef,
   onMouseOver,
   onMouseOut,
-}: Props<Row>) => {
+  ariaLabel,
+  ariaDescribedBy,
+}: Props<Row> & AccessibilityProps) => {
   const [graphDimensions, setGraphDimensions] = useState<
     GraphDimensions | undefined
   >();
@@ -58,7 +60,13 @@ const MultiBarChart = <Row,>({
     LegendDimensions | undefined
   >();
 
-  const accessibilityProps = useRechartsAccessibility();
+  const accessibilityProps = {
+    accessibilityLayer: true,
+    role: 'img',
+    'aria-label': ariaLabel,
+    'aria-describedby': ariaDescribedBy,
+    tabIndex: 0,
+  };
 
   if (hasNoData(data)) {
     return <EmptyState emptyContainerContent={emptyContainerContent} />;

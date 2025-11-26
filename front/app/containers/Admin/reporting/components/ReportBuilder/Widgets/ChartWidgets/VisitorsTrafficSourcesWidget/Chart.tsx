@@ -5,13 +5,19 @@ import renderTooltip from 'components/admin/GraphCards/VisitorsTrafficSourcesCar
 import { PieRow } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import PieChart from 'components/admin/Graphs/PieChart';
+import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
 interface Props {
   pieData: PieRow[];
   layout?: Layout;
 }
 
-const Chart = ({ pieData, layout = 'wide' }: Props) => {
+const Chart = ({
+  pieData,
+  layout = 'wide',
+  ariaLabel,
+  ariaDescribedBy,
+}: Props & AccessibilityProps) => {
   const [hoverIndex, setHoverIndex] = useState<number | undefined>();
 
   const onMouseOver = ({ rowIndex }) => {
@@ -29,6 +35,10 @@ const Chart = ({ pieData, layout = 'wide' }: Props) => {
       label: `${row.name} (${row.percentage}%)`,
     })
   );
+  const accessibilityProps = {
+    ariaLabel,
+    ariaDescribedBy,
+  };
 
   return (
     <PieChart
@@ -58,6 +68,7 @@ const Chart = ({ pieData, layout = 'wide' }: Props) => {
       }}
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
+      {...accessibilityProps}
     />
   );
 };

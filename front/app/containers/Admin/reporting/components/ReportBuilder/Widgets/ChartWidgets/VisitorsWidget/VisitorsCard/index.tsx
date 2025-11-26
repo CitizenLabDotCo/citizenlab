@@ -2,6 +2,8 @@ import React from 'react';
 
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
+import { AccessibilityProps } from 'components/admin/Graphs/typings';
+
 import NoData from '../../../_shared/NoData';
 import messages from '../../messages';
 import { Props } from '../typings';
@@ -21,7 +23,8 @@ const VisitorsCard = ({
   hideStatistics,
   ariaLabel,
   description,
-}: Props) => {
+  ariaDescribedBy,
+}: Props & AccessibilityProps) => {
   const { currentResolution, stats, timeSeries } = useVisitors({
     startAt,
     endAt,
@@ -46,6 +49,7 @@ const VisitorsCard = ({
     hideStatistics,
     ariaLabel,
     description,
+    ariaDescribedBy,
   };
 
   return layout === 'wide' ? <Wide {...props} /> : <Narrow {...props} />;
