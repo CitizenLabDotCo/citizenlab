@@ -247,7 +247,7 @@ class FormLogicService
         field.options.each do |option|
           logic[option.id] = target_id unless logic.key?(option.id)
         end
-      elsif field.linear_scale?
+      elsif field.input_strategy.supports_linear_scale?
         (1..field.maximum).each do |scale_value|
           logic[scale_value] = target_id unless logic.key?(scale_value)
         end
@@ -269,7 +269,7 @@ class FormLogicService
 
         logic[value] = next_page_id
       end
-    elsif field.linear_scale?
+    elsif field.input_strategy.supports_linear_scale?
       (1..field.maximum).each do |value|
         next if logic.key?(value)
 
