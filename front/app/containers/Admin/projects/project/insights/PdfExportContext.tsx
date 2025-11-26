@@ -37,5 +37,3 @@ export const PdfExportProvider = ({
 };
 
 export const usePdfExportContext = () => useContext(PdfExportContext);
-
-export default PdfExportContext;
