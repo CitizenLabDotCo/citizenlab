@@ -49,7 +49,7 @@ module Insights
       base_metrics = base_metrics(participations, participant_ids, visitors_data)
 
       phase_participation_method_metrics = {
-        @phase.participation_method => phase_participation_method_metrics(participations)
+        @phase.participation_method => participation_method_metrics
       }
 
       { metrics: base_metrics.merge(phase_participation_method_metrics) }
