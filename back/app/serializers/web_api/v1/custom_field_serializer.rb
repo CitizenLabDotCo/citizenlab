@@ -35,7 +35,7 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   }
 
   attribute :ask_follow_up, if: proc { |object, _params|
-    object.input_type == 'sentiment_linear_scale'
+    object.input_strategy.supports_follow_up?
   }
 
   attribute :constraints do |object, params|
