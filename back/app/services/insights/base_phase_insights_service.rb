@@ -17,6 +17,8 @@ module Insights
         IdeationPhaseInsightsService
       when 'proposals'
         ProposalsPhaseInsightsService
+      when 'voting'
+        VotingPhaseInsightsService
       else
         raise ArgumentError, "Unhandled phase participation_method: #{phase.participation_method}"
       end
@@ -71,6 +73,10 @@ module Insights
 
     def participant_id(item_id, user_id, user_hash = nil)
       user_id.presence || user_hash.presence || item_id
+    end
+
+    def associated_published_ideas_count
+      @phase.ideas.where(publication_status: 'published').count
     end
 
     def phase_ideas_counts(participations)
