@@ -164,18 +164,18 @@ describe('Input form builder', () => {
     cy.dataCy('e2e-submit-form').click();
     cy.get('[data-testid="error-message"]').should('exist');
 
+    // Selecting four topics returns an error
     cy.contains('Other').click();
     cy.get('[data-testid="error-message"]').should('not.exist');
     cy.contains('Safety').click();
     cy.contains('Housing').click();
     cy.get('[data-testid="error-message"]').should('exist');
 
+    // Selecting three topics is accepted
     cy.contains('Safety').click();
     cy.get('[data-testid="error-message"]').should('not.exist');
 
     cy.dataCy('e2e-submit-form').click();
     cy.dataCy('e2e-after-submission').should('exist');
-
-    cy.wait(10000);
   });
 });
