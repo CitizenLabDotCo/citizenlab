@@ -144,6 +144,21 @@ class CustomField < ApplicationRecord
     logic.present? && logic != { 'rules' => [] }
   end
 
+  def input_strategy
+    @input_strategy ||= case input_type
+    when 'linear_scale'
+      InputStrategy::LinearScale.new(self)
+    when 'sentiment_linear_scale'
+      InputStrategy::SentimentLinearScale.new(self)
+    when 'rating'
+      InputStrategy::Rating.new(self)
+    when 'number'
+      InputStrategy::Number.new(self)
+    else
+      InputStrategy::Base.new(self)
+    end
+  end
+
   def support_options?
     %w[select multiselect select_image multiselect_image ranking].include?(input_type)
   end
@@ -198,10 +213,6 @@ class CustomField < ApplicationRecord
 
   def supports_linear_scale_labels?
     %w[linear_scale matrix_linear_scale sentiment_linear_scale].include?(input_type)
-  end
-
-  def supports_average?
-    %w[linear_scale sentiment_linear_scale rating number].include?(input_type)
   end
 
   def supports_single_selection?
