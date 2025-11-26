@@ -34,7 +34,7 @@ const Analyses = ({
   const projectLink: RouteType =
     participationMethod === 'ideation'
       ? `/admin/projects/${projectId}/phases/${phaseId}/ideas`
-      : `/admin/projects/${projectId}/phases/${phaseId}/results`;
+      : `/admin/projects/${projectId}/phases/${phaseId}/insights`;
 
   // Analyses related to specific survey questions are now handled in the Survey Question Widget
   const analysesWithoutMainCustomField = analyses?.data.filter(
