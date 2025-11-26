@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  questions: {
+    id: 'app.containers.Admin.projects.project.insights.questions',
+    defaultMessage: 'Questions',
+  },
   totalSurveyResponses: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses2',
     defaultMessage: 'Total {count} responses',
