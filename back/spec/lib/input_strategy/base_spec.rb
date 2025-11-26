@@ -49,8 +49,8 @@ RSpec.describe InputStrategy::Base do
   end
 
   describe '#supports_geojson?' do
-    it 'returns false by default' do
-      expect(input_strategy.supports_geojson?).to be false
+    it 'returns true by default' do
+      expect(input_strategy.supports_geojson?).to be true
     end
   end
 

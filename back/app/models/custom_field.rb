@@ -188,12 +188,6 @@ class CustomField < ApplicationRecord
       InputStrategy::Page.new(self)
     when 'image_files'
       InputStrategy::ImageFiles.new(self)
-    when 'file_upload'
-      InputStrategy::FileUpload.new(self)
-    when 'shapefile_upload'
-      InputStrategy::ShapefileUpload.new(self)
-    when 'cosponsor_ids'
-      InputStrategy::CosponsorIds.new(self)
     else
       InputStrategy::Base.new(self)
     end

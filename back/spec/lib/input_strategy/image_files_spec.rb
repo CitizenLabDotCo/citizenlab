@@ -11,4 +11,10 @@ RSpec.describe InputStrategy::ImageFiles do
       expect(input_strategy.supports_xlsx_export?).to be false
     end
   end
+
+  describe '#supports_geojson?' do
+    it 'returns false' do
+      expect(input_strategy.supports_geojson?).to be false
+    end
+  end
 end

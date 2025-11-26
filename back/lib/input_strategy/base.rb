@@ -67,7 +67,7 @@ module InputStrategy
     end
 
     def supports_geojson?
-      false
+      true
     end
 
     protected

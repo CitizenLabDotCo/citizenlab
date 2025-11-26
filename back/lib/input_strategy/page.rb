@@ -5,5 +5,9 @@ module InputStrategy
     def supports_xlsx_export?
       false
     end
+
+    def supports_geojson?
+      false
+    end
   end
 end
