@@ -10,6 +10,22 @@ module InputStrategy
       false
     end
 
+    def supports_options?
+      false
+    end
+
+    def supports_other_option?
+      false
+    end
+
+    def supports_option_images?
+      false
+    end
+
+    def supports_follow_up?
+      false
+    end
+
     protected
 
     attr_reader :custom_field

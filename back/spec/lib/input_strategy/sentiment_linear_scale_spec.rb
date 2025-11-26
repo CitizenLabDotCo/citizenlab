@@ -11,4 +11,10 @@ RSpec.describe InputStrategy::SentimentLinearScale do
       expect(input_strategy.supports_average?).to be true
     end
   end
+
+  describe '#supports_follow_up?' do
+    it 'returns true' do
+      expect(input_strategy.supports_follow_up?).to be true
+    end
+  end
 end

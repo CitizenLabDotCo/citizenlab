@@ -154,13 +154,19 @@ class CustomField < ApplicationRecord
       InputStrategy::Rating.new(self)
     when 'number'
       InputStrategy::Number.new(self)
+    when 'select'
+      InputStrategy::Select.new(self)
+    when 'multiselect'
+      InputStrategy::Multiselect.new(self)
+    when 'select_image'
+      InputStrategy::SelectImage.new(self)
+    when 'multiselect_image'
+      InputStrategy::MultiselectImage.new(self)
+    when 'ranking'
+      InputStrategy::Ranking.new(self)
     else
       InputStrategy::Base.new(self)
     end
-  end
-
-  def support_options?
-    %w[select multiselect select_image multiselect_image ranking].include?(input_type)
   end
 
   def includes_other_option?
@@ -171,37 +177,6 @@ class CustomField < ApplicationRecord
     ask_follow_up
   end
 
-  def support_other_option?
-    %(select multiselect select_image multiselect_image).include?(input_type)
-  end
-
-  def support_follow_up?
-    %w[sentiment_linear_scale].include?(input_type)
-  end
-
-  def support_free_text_value?
-    support_text? || (support_options? && includes_other_option?) || support_follow_up?
-  end
-
-  def support_text?
-    %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type)
-  end
-
-  def support_option_images?
-    %w[select_image multiselect_image].include?(input_type)
-  end
-
-  def supports_xlsx_export?
-    return false if code == 'idea_images_attributes' # Is this still applicable?
-
-    !page?
-  end
-
-  def supports_geojson?
-    return false if code == 'idea_images_attributes' # Is this still applicable?
-
-    !page?
-  end
 
   def supports_linear_scale?
     %w[linear_scale matrix_linear_scale sentiment_linear_scale rating].include?(input_type)

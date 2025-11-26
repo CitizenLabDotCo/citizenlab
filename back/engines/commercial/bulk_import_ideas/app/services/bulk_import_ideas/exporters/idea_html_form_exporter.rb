@@ -143,7 +143,7 @@ module BulkImportIdeas::Exporters
     end
 
     def option_image_url(field, option)
-      return nil unless field.support_option_images? && option.image
+      return nil unless field.input_strategy.supports_option_images? && option.image
 
       format_urls(option.image.image.versions[:large].url)
     end

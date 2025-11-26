@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 module InputStrategy
-  class SentimentLinearScale < Base
-    def supports_average?
+  class Multiselect < Base
+    def supports_options?
       true
     end
 
-    def supports_follow_up?
+    def supports_other_option?
       true
     end
   end
