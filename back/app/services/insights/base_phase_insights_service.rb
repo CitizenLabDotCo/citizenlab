@@ -48,11 +48,11 @@ module Insights
     def metrics_data(participations, participant_ids, visitors_data, participation_method_metrics)
       base_metrics = base_metrics(participations, participant_ids, visitors_data)
 
-      participation_method_metrics = {
+      phase_participation_method_metrics = {
         @phase.participation_method => phase_participation_method_metrics(participations)
       }
 
-      { metrics: base_metrics.merge(participation_method_metrics) }
+      { metrics: base_metrics.merge(phase_participation_method_metrics) }
     end
 
     def base_metrics(participations, participant_ids, visitors_data)
