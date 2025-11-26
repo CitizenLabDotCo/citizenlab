@@ -31,7 +31,7 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   }
 
   attribute :dropdown_layout, if: proc { |object, _params|
-    object.dropdown_layout_type?
+    object.input_strategy.supports_dropdown_layout?
   }
 
   attribute :ask_follow_up, if: proc { |object, _params|

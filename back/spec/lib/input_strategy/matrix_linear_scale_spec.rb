@@ -84,6 +84,12 @@ RSpec.describe InputStrategy::MatrixLinearScale do
     end
   end
 
+  describe '#supports_dropdown_layout?' do
+    it 'returns false' do
+      expect(input_strategy.supports_dropdown_layout?).to be false
+    end
+  end
+
   describe '#supports_xlsx_export?' do
     it 'returns true' do
       expect(input_strategy.supports_xlsx_export?).to be true

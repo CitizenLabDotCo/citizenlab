@@ -17,5 +17,9 @@ module InputStrategy
     def supports_select_count?
       true
     end
+
+    def supports_dropdown_layout?
+      true
+    end
   end
 end

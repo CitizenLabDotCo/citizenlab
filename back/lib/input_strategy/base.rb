@@ -58,6 +58,10 @@ module InputStrategy
       false
     end
 
+    def supports_dropdown_layout?
+      false
+    end
+
     def supports_free_text_value?
       supports_text? || (supports_options? && custom_field.includes_other_option?) || supports_follow_up?
     end
