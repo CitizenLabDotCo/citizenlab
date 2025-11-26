@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { createPortal } from 'react-dom';
-import { FocusOn } from 'react-focus-on';
 import { SupportedLocale } from 'typings';
 
 import useDeleteFileAttachment from 'api/file_attachments/useDeleteFileAttachment';
@@ -101,17 +99,9 @@ export const ContentBuilder = ({
       h="100vh"
       data-testid="contentBuilderPage"
     >
-      <FocusOn>{children}</FocusOn>
+      {children}
     </Box>
   );
 };
 
-const FullscreenContentBuilder = (props: Props) => {
-  const modalPortalElement = document.getElementById('modal-portal');
-
-  return modalPortalElement
-    ? createPortal(<ContentBuilder {...props} />, modalPortalElement)
-    : null;
-};
-
-export default FullscreenContentBuilder;
+export default ContentBuilder;
