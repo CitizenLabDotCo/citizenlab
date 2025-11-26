@@ -21,6 +21,8 @@ module Insights
         VotingPhaseInsightsService
       when 'native_survey'
         NativeSurveyPhaseInsightsService
+      when 'common_ground'
+        CommonGroundPhaseInsightsService
       else
         raise ArgumentError, "Unhandled phase participation_method: #{phase.participation_method}"
       end
