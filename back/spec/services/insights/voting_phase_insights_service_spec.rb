@@ -14,7 +14,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
 
   let!(:basket2) { create(:basket, phase: phase, user: nil, submitted_at: phase.start_at + 1.day) }
   let!(:baskets_idea3) { create(:baskets_idea, basket: basket2, idea: idea2, votes: 42) }
-  
+
   let!(:comment1) { create(:comment, idea: idea1, created_at: 20.days.ago, author: user) } # before phase start
   let!(:comment2) { create(:comment, idea: idea1, created_at: 10.days.ago, author: user) } # during phase
   let!(:comment3) { create(:comment, idea: idea1, created_at: 1.day.ago, author: user) } # after phase end
