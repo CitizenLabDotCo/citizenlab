@@ -13,17 +13,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.download',
     defaultMessage: 'Download',
   },
-  viewFullReport: {
-    id: 'app.containers.Admin.projects.project.insights.viewFullReport',
-    defaultMessage: 'View full report',
-  },
   visitors: {
     id: 'app.containers.Admin.projects.project.insights.visitors',
     defaultMessage: 'Visitors',
-  },
-  lastWeek: {
-    id: 'app.containers.Admin.projects.project.insights.lastWeek',
-    defaultMessage: 'Last week',
   },
   last7Days: {
     id: 'app.containers.Admin.projects.project.insights.last7Days',
@@ -122,30 +114,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.areas',
     defaultMessage: 'Areas',
   },
-  men: {
-    id: 'app.containers.Admin.projects.project.insights.men',
-    defaultMessage: 'Men',
-  },
-  women: {
-    id: 'app.containers.Admin.projects.project.insights.women',
-    defaultMessage: 'Women',
-  },
-  nonBinary: {
-    id: 'app.containers.Admin.projects.project.insights.nonBinary',
-    defaultMessage: 'Non binary',
-  },
-  unspecified: {
-    id: 'app.containers.Admin.projects.project.insights.unspecified',
-    defaultMessage: 'Unspecified',
-  },
-  audienceTitle: {
-    id: 'app.containers.Admin.projects.project.insights.audienceTitle',
-    defaultMessage: 'Audience',
-  },
-  communityRepresentativeness: {
-    id: 'app.containers.Admin.projects.project.insights.communityRepresentativeness',
-    defaultMessage: 'Community representativeness',
-  },
   representativeScore: {
     id: 'app.containers.Admin.projects.project.insights.representativeScore',
     defaultMessage: 'Representative score',
@@ -165,10 +133,6 @@ export default defineMessages({
   participationOverTime: {
     id: 'app.containers.Admin.projects.project.insights.participationOverTime',
     defaultMessage: 'Participation over time',
-  },
-  questions: {
-    id: 'app.containers.Admin.projects.project.insights.questions',
-    defaultMessage: 'Questions',
   },
   openForResponses: {
     id: 'app.containers.Admin.projects.project.insights.openForResponses',
@@ -193,5 +157,9 @@ export default defineMessages({
   deleteSurveyResults: {
     id: 'app.containers.Admin.projects.project.insights.deleteSurveyResults',
     defaultMessage: 'Delete survey results',
+  },
+  downloadInsightsPdf: {
+    id: 'app.containers.Admin.projects.project.insights.downloadInsightsPdf',
+    defaultMessage: 'Download insights as PDF',
   },
 });
