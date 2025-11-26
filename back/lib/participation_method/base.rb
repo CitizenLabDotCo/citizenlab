@@ -252,14 +252,6 @@ module ParticipationMethod
       false
     end
 
-    def participations
-      {}
-    end
-
-    def participant_id(item_id, user_id, user_hash = nil)
-      user_id.presence || user_hash.presence || item_id
-    end
-
     private
 
     attr_reader :phase

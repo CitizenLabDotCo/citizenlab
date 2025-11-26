@@ -49,29 +49,5 @@ module ParticipationMethod
     def voting_method
       Factory.instance.voting_method_for(phase)
     end
-
-    def participations
-      # Events are not associated with phase, so attending_event not included at phase-level.
-      {
-        voting: participation_baskets,
-        commenting_idea: participation_idea_comments
-      }
-    end
-
-    def participation_baskets
-      phase.baskets.includes(:user, :baskets_ideas).map do |basket|
-        total_votes = basket.baskets_ideas.sum(:votes)
-
-        {
-          item_id: basket.id,
-          action: 'voting',
-          acted_at: basket.submitted_at,
-          classname: 'Basket',
-          participant_id: participant_id(basket.id, basket.user_id),
-          user_custom_field_values: basket&.user&.custom_field_values || {},
-          votes: total_votes
-        }
-      end
-    end
   end
 end

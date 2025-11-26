@@ -146,36 +146,9 @@ module ParticipationMethod
       end
     end
 
-    def participations
-      # Events are not associated with phase, so attending_event not included at phase-level.
-      { posting_idea: participation_ideas_posted }
-    end
-
     delegate :user_data_collection, to: :posting_permission
 
     private
-
-    def participation_ideas_posted
-      end_time = phase.end_at ? phase.end_at.end_of_day : Time.current.end_of_day
-      ideas = phase.ideas
-        .transitive(false)
-        .where(<<~SQL.squish, phase.start_at.beginning_of_day, end_time)
-          ideas.created_at >= ? AND ideas.created_at <= ?
-        SQL
-        .includes(:author)
-
-      ideas.map do |idea|
-        {
-          item_id: idea.id,
-          action: 'posting_idea',
-          acted_at: idea.created_at, # This seems best proxy for acted at, even though may be published/submitted later
-          classname: 'Idea',
-          survey_submitted: idea.published?, # Proxy for submitted (?is this logical / correct? Seems counterintuitive)
-          participant_id: participant_id(idea.id, idea.author_id, idea.author_hash),
-          user_custom_field_values: idea&.custom_field_values || {}
-        }
-      end
-    end
 
     def start_page_field(custom_form)
       CustomField.new(

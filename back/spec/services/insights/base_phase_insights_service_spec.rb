@@ -19,6 +19,20 @@ RSpec.describe Insights::BasePhaseInsightsService do
     end.to raise_error(ArgumentError, 'Unhandled phase participation_method: information')
   end
 
+  describe '#participant_id' do
+    it 'returns the user_id when present' do
+      expect(service.send(:participant_id, 'item_id', 'user_id', 'user_hash')).to eq('user_id')
+    end
+
+    it 'returns user_hash when user_id is not present' do
+      expect(service.send(:participant_id, 'item_id', nil, 'user_hash')).to eq('user_hash')
+    end
+
+    it 'returns item ID when neither user_id nor user_hash is present' do
+      expect(service.send(:participant_id, 'item_id', nil, nil)).to eq('item_id')
+    end
+  end
+
   describe '#base_metrics' do
     let(:visitors_data) { { total: 100, last_7_days: 20 } }
 
