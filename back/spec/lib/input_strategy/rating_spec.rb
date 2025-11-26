@@ -11,4 +11,10 @@ RSpec.describe InputStrategy::Rating do
       expect(input_strategy.supports_average?).to be true
     end
   end
+
+  describe '#supports_linear_scale_labels?' do
+    it 'returns false' do
+      expect(input_strategy.supports_linear_scale_labels?).to be false
+    end
+  end
 end

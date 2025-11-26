@@ -35,7 +35,7 @@ module InputStrategy
     end
 
     def supports_linear_scale_labels?
-      false
+      supports_linear_scale?
     end
 
     def supports_matrix_statements?

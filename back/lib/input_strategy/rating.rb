@@ -10,6 +10,10 @@ module InputStrategy
       true
     end
 
+    def supports_linear_scale_labels?
+      false
+    end
+
     def supports_single_selection?
       true
     end
