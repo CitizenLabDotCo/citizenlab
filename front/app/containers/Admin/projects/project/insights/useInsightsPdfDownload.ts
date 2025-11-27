@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
-import html2pdf from 'html2pdf.js';
 
 interface UseInsightsPdfDownloadOptions {
   filename?: string;
@@ -32,6 +31,9 @@ export default function useInsightsPdfDownload({
     try {
       // Allow React to re-render with PDF export mode
       await new Promise((resolve) => setTimeout(resolve, 100));
+
+      // Lazy load html2pdf.js to reduce initial bundle size (~500KB gzipped)
+      const html2pdf = (await import('html2pdf.js')).default;
 
       const element = document.getElementById(containerId);
 
