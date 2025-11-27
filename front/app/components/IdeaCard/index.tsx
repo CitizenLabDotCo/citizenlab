@@ -84,8 +84,8 @@ const IdeaCard = ({
       };
 
       // Check if ALL images in project description are loaded
-      const projectDescription = document.getElementById(
-        'e2e-content-builder-frame'
+      const projectDescription = document.querySelector(
+        '[id^="project-description"]'
       );
 
       if (projectDescription) {
