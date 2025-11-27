@@ -127,14 +127,14 @@ module BulkImportIdeas::Extractors
       if value.starts_with?('http://', 'https://')
         value
       else
-        attachment_folder = project_column(row, 'UniqueCode')
+        attachment_folder = project_column(row, 'AttachmentsFolder')
         "#{@xlsx_folder_path}/attachments/#{attachment_folder}/#{value}"
       end
     end
 
     def attachments(row)
-      unique_code = project_column(row, 'UniqueCode')
-      attachments_folder = "#{@xlsx_folder_path}/attachments/#{unique_code}"
+      folder_name = project_column(row, 'AttachmentsFolder')
+      attachments_folder = "#{@xlsx_folder_path}/attachments/#{folder_name}"
       Dir.glob("#{attachments_folder}/**/*").select do |file_path|
         next if file_path.include?('banner.') || file_path.include?('thumbnail.') # Skip these special files
 
@@ -144,7 +144,7 @@ module BulkImportIdeas::Extractors
 
     def project_column(row, column_name)
       # Define the columns in the order they appear in the XLSX
-      columns = %w[UniqueCode	ProjectName	Status	DescriptionHtml	ThumbnailUrl	BannerUrl	ID Import?]
+      columns = %w[ProjectName	Status	DescriptionHtml	AttachmentsFolder ThumbnailUrl	BannerUrl	ID Import?]
       col_index = columns.index(column_name)
       col_index ? row.cells[col_index]&.value : nil
     end
