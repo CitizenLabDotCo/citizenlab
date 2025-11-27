@@ -287,24 +287,29 @@ module BulkImportIdeas::Importers
 
     def create_project_attachments(project, project_data)
       attachments = project_data[:attachments] || []
-      attachments.each do |file_path|
+      attachments.each_with_index do |file_path, index|
         begin
-
-          file_content = File.open(file_path, 'rb') { |f| f.read }
+          file_content = File.open(file_path, 'rb')
           file_name = File.basename(file_path)
+          file_mime_type = Marcel::MimeType.for(file_content)
 
-          binding.pry
-
-          file = Files::File.create!(
+          file = Files::File.new(
             content_by_content: { content: file_content, name: file_name },
+            mime_type: file_mime_type,
             uploader: @import_user
           )
 
-          Files::FileAttachment.create!(
+          # Not sure why I have to do this?
+          file.files_projects.build(project: project)
+
+          file_attachment = Files::FileAttachment.new(
             file: file,
             attachable: project,
-            # position: file_params[:ordering]
+            position: index
           )
+
+          file_attachment.file.save!
+          file_attachment.save!
 
           log "Created project attachment: #{file_name}"
         rescue StandardError => e
@@ -379,6 +384,7 @@ module BulkImportIdeas::Importers
 
         # Create the form fields based on the content
         idea_custom_fields.each do |field|
+          log("Creating form field: '#{field[:title_multiloc]}' with input type '#{field[:input_type]}'")
           custom_field = CustomField.create!(field.except(:options, :statements).merge(resource: form))
           if SELECT_TYPES.include? field[:input_type]
             # If the field is a select type, we need to create options

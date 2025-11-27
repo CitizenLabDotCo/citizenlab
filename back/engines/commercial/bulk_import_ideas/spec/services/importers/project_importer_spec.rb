@@ -227,4 +227,30 @@ describe BulkImportIdeas::Importers::ProjectImporter do
       expect(result_users.first['Organization']).to eq('ACME Corp')
     end
   end
+
+  describe '#create_project_attachments' do
+    let(:project) { create(:project) }
+
+    it 'imports attachments' do
+      project_data = {
+        attachments: [
+          Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').to_s,
+          Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/import.xlsx').to_s
+        ]
+      }
+      service.send(:create_project_attachments, project, project_data)
+
+      expect(project.file_attachments.count).to eq(2)
+
+      file1 = project.file_attachments.first
+      expect(file1.position).to eq(0)
+      expect(file1.file.name).to eq('scan_1.pdf')
+      expect(file1.file.mime_type).to eq('application/pdf')
+
+      file2 = project.file_attachments.last
+      expect(file2.position).to eq(1)
+      expect(file2.file.name).to eq('import.xlsx')
+      expect(file2.file.mime_type).to eq('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    end
+  end
 end
