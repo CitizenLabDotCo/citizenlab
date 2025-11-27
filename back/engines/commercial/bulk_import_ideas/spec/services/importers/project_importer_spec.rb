@@ -138,7 +138,7 @@ describe BulkImportIdeas::Importers::ProjectImporter do
   describe '#create_project_attachments' do
     let(:project) { create(:project) }
 
-    it 'imports attachments' do
+    it 'imports attachments from local file path' do
       project_data = {
         attachments: [
           Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').to_s,
@@ -158,6 +158,22 @@ describe BulkImportIdeas::Importers::ProjectImporter do
       expect(file2.position).to eq(1)
       expect(file2.file.name).to eq('import.xlsx')
       expect(file2.file.mime_type).to eq('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    end
+  end
+
+  describe '#create_project_banner_image' do
+    let(:project) { create(:project) }
+
+    it 'imports banner image from local file path' do
+      project_data = {
+        banner_url: Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/banner.jpg').to_s
+      }
+      service.send(:create_project_banner_image, project, project_data)
+
+      expect(project.header_bg).to be_present
+      file_path = project.header_bg.file.file
+      expect(file_path).to include(project.id)
+      expect(file_path).to end_with('.jpeg')
     end
   end
 end

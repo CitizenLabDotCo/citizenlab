@@ -188,8 +188,9 @@ module BulkImportIdeas::Importers
         project_attributes = project_data.except(:phases, :thumbnail_url, :banner_url, :attachments)
         project = Project.create!(project_attributes)
 
-        # Create the project thumbnail image if it exists
+        # Create the project thumbnail and banner images if they exist
         create_project_thumbnail_image(project, project_data)
+        create_project_banner_image(project, project_data)
 
         # Add any attachments
         create_project_attachments(project, project_data)
@@ -201,11 +202,10 @@ module BulkImportIdeas::Importers
 
     def create_project_thumbnail_image(project, project_data)
       thumbnail_url = project_data[:thumbnail_url]
-
       if thumbnail_url.present?
         begin
           # Ensure the correct image format is used - to avoid exif stripping issues
-          image = MiniMagick::Image.open(project_data[:thumbnail_url])
+          image = MiniMagick::Image.open(thumbnail_url)
           image.format(image.data['format'].downcase)
 
           # Create the project image
@@ -217,6 +217,25 @@ module BulkImportIdeas::Importers
           log('Created project thumbnail image.')
         rescue StandardError => e
           log "ERROR: Creating project thumbnail image: #{e.message}"
+        end
+      end
+    end
+
+    def create_project_banner_image(project, project_data)
+      banner_url = project_data[:banner_url]
+      if banner_url.present?
+        begin
+          # Ensure the correct image format is used - to avoid exif stripping issues
+          image = MiniMagick::Image.open(banner_url)
+          image.format(image.data['format'].downcase)
+
+          project.header_bg = image
+          project.header_bg_alt_text_multiloc = project_data[:title_multiloc]
+          project.save!
+
+          log('Created project banner image.')
+        rescue StandardError => e
+          log "ERROR: Creating project banner image: #{e.message}"
         end
       end
     end
