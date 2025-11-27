@@ -74,7 +74,8 @@ const IdeaCard = ({
 
   useEffect(() => {
     if (scrollToCardParam && idea.data.id === scrollToCardParam) {
-      const performScroll = () => {
+      // Function to scroll to the card
+      const scrollToCard = () => {
         scrollToElement({
           id: scrollToCardParam,
           behavior: 'auto',
@@ -83,7 +84,9 @@ const IdeaCard = ({
         removeSearchParams(['scroll_to_card']);
       };
 
-      // Check if ALL images in project description are loaded
+      // First, check if all images in the project description are loaded.
+      // If they are, we've likely missed the IMAGES_LOADED_EVENT which has already
+      // been emitted, so we can perform the scroll right away after checking.
       const projectDescription = document.querySelector(
         '[id^="project-description"]'
       );
@@ -91,28 +94,32 @@ const IdeaCard = ({
       if (projectDescription) {
         const imagesInDescription = projectDescription.querySelectorAll('img');
 
+        // If there are no images, we can scroll to the card.
         if (imagesInDescription.length === 0) {
-          setTimeout(performScroll, 100);
+          setTimeout(scrollToCard, 100);
           return;
         }
 
+        // Check if all images are loaded
         const allImagesLoaded = Array.from(imagesInDescription).every((img) => {
-          const isLoaded = img.complete && img.naturalHeight > 0;
+          const isLoaded = img.complete;
           return isLoaded;
         });
 
         if (allImagesLoaded) {
           // All images in description are loaded, scroll immediately
-          setTimeout(performScroll, 100); // Small delay for layout stability
+          scrollToCard();
           return;
         }
       }
 
-      // Images still loading or no description found, wait for IMAGES_LOADED_EVENT
+      // Images still loading or no description found, wait for the IMAGES_LOADED_EVENT
+      // Note: In this case, we know the event hasn't been emitted yet,
+      // so we can wait for it.
       const subscription = eventEmitter
         .observeEvent(IMAGES_LOADED_EVENT)
         .subscribe(() => {
-          performScroll();
+          scrollToCard();
           subscription.unsubscribe();
         });
 
