@@ -94,9 +94,7 @@ module BulkImportIdeas::Importers
       end
     end
 
-    private
-
-    # Import a single project
+    # Import a single project (called from async job)
     def import_project(project_data)
       log "Importing project: '#{project_data[:title_multiloc][@locale]}'"
       project = nil
@@ -125,6 +123,8 @@ module BulkImportIdeas::Importers
       end
       project
     end
+
+    private
 
     # NOTE: Pinched a little from IdeaBaseFileParser. Could not think of way to share the code easily.
     # Currently only works for fields we know we need to import for new west
