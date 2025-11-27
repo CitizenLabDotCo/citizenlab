@@ -11,21 +11,17 @@ import usePhase from 'api/phases/usePhase';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
-
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import eventEmitter from 'utils/eventEmitter';
-import { scrollToElement } from 'utils/scroll';
 
 import Body from './Body';
 import CardImage from './CardImage';
 import Container from './Container';
 import Footer from './Footer';
 import Interactions from './Interactions';
+import { handleScrollToCard } from './utils';
 
 export interface Props {
   ideaId: string;
@@ -74,58 +70,7 @@ const IdeaCard = ({
 
   useEffect(() => {
     if (scrollToCardParam && idea.data.id === scrollToCardParam) {
-      // Function to scroll to the card
-      const scrollToCard = () => {
-        scrollToElement({
-          id: scrollToCardParam,
-          behavior: 'auto',
-          offset: smallerThanPhone ? 150 : 300,
-        });
-        removeSearchParams(['scroll_to_card']);
-      };
-
-      // First, check if all images in the project description are loaded.
-      // If they are, we've likely missed the IMAGES_LOADED_EVENT which has already
-      // been emitted, so we can perform the scroll right away after checking.
-      const projectDescription = document.querySelector(
-        '[id^="project-description"]'
-      );
-
-      if (projectDescription) {
-        const imagesInDescription = projectDescription.querySelectorAll('img');
-
-        // If there are no images, we can scroll to the card.
-        if (imagesInDescription.length === 0) {
-          setTimeout(scrollToCard, 100);
-          return;
-        }
-
-        // Check if all images are loaded
-        const allImagesLoaded = Array.from(imagesInDescription).every((img) => {
-          const isLoaded = img.complete;
-          return isLoaded;
-        });
-
-        if (allImagesLoaded) {
-          // All images in description are loaded, scroll immediately
-          scrollToCard();
-          return;
-        }
-      }
-
-      // Images still loading or no description found, wait for the IMAGES_LOADED_EVENT
-      // Note: In this case, we know the event hasn't been emitted yet,
-      // so we can wait for it.
-      const subscription = eventEmitter
-        .observeEvent(IMAGES_LOADED_EVENT)
-        .subscribe(() => {
-          scrollToCard();
-          subscription.unsubscribe();
-        });
-
-      return () => {
-        subscription.unsubscribe();
-      };
+      return handleScrollToCard(scrollToCardParam, smallerThanPhone);
     }
     return;
   }, [scrollToCardParam, idea.data.id, smallerThanPhone]);
