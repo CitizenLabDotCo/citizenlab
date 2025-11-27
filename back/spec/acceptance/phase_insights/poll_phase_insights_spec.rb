@@ -4,9 +4,9 @@ require 'rspec_api_documentation/dsl'
 resource 'Phase insights' do
   before { admin_header_token }
 
-  let(:phase) { create(:volunteering_phase, start_at: 20.days.ago, end_at: 3.days.ago) }
+  let(:phase) { create(:poll_phase, start_at: 20.days.ago, end_at: 3.days.ago) }
 
-  let!(:permission1) { create(:permission, action: 'volunteering', permission_scope: phase) }
+  let!(:permission1) { create(:permission, action: 'taking_poll', permission_scope: phase) }
 
   let!(:custom_field_gender) { create(:custom_field, resource_type: 'User', key: 'gender', input_type: 'select', title_multiloc: { en: 'Gender' }) }
   let!(:custom_field_option_male) { create(:custom_field_option, custom_field: custom_field_gender, key: 'male', title_multiloc: { en: 'Male' }) }
@@ -32,15 +32,11 @@ resource 'Phase insights' do
     )
   end
 
-  let(:cause1) { create(:cause, phase: phase) }
-  let(:cause2) { create(:cause, phase: phase) }
-
   let(:user1) { create(:user, custom_field_values: { gender: 'female', birthyear: 1980 }) }
-  let!(:volunteering1) { create(:volunteer, cause: cause1, user: user1, created_at: 15.days.ago) }
-  let!(:volunteering2) { create(:volunteer, cause: cause2, user: user1, created_at: 5.days.ago) }
+  let!(:response1) { create(:poll_response, phase: phase, user: user1, created_at: 15.days.ago) }
 
   let(:user2) { create(:user, custom_field_values: { gender: 'male', birthyear: 1990 }) }
-  let!(:volunteering3) { create(:volunteer, cause: cause1, user: user2, created_at: 10.days.ago) }
+  let!(:response2) { create(:poll_response, phase: phase, user: user2, created_at: 5.days.ago) }
 
   let!(:session1) { create(:session, user_id: user1.id) }
   let!(:pageview1) { create(:pageview, session: session1, created_at: 15.days.ago, project_id: phase.project.id) } # during phase
@@ -69,9 +65,9 @@ resource 'Phase insights' do
         participants: 2,
         participants_last_7_days: 1,
         engagement_rate: 1.0,
-        volunteering: {
-          volunteerings: 3,
-          volunteerings_last_7_days: 1
+        poll: {
+          responses: 2,
+          responses_last_7_days: 1
         }
       })
 
