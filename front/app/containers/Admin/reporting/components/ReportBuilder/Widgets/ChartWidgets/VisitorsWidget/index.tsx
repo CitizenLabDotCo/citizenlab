@@ -16,7 +16,6 @@ const VisitorsWidget = ({
   title,
   ariaLabel,
   description,
-  ariaDescribedBy,
   ...props
 }: Props & AccessibilityProps) => {
   const localize = useLocalize();
