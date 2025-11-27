@@ -39,7 +39,7 @@ const VisitorsWidget = ({
       <VisitorsCard {...accessibilityProps} {...props} />
       <DescriptionText
         description={description}
-        descriptionId={ariaDescribedBy}
+        descriptionId={descriptionId}
       />
     </Card>
   );
