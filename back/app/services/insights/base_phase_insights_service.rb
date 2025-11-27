@@ -25,6 +25,8 @@ module Insights
         CommonGroundPhaseInsightsService
       when 'volunteering'
         VolunteeringPhaseInsightsService
+      when 'poll'
+        PollPhaseInsightsService
       else
         raise ArgumentError, "Unhandled phase participation_method: #{phase.participation_method}"
       end
