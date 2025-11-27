@@ -16,9 +16,9 @@ module BulkImportIdeas::Extractors
     # @param [Array<Hash>] projects output of ProjectExtractor#projects
     def user_details(projects)
       users = @rows
-      custom_fields = custom_fields
-      users, custom_fields = extract_project_user_data(projects, users, custom_fields) if projects.any?
-      [users, custom_fields]
+      user_custom_fields = custom_fields
+      users, user_custom_fields = extract_project_user_data(projects, users, user_custom_fields) if projects.any?
+      [users, user_custom_fields]
     end
 
     private

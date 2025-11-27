@@ -25,11 +25,16 @@ module BulkImportIdeas
       user_extractor = BulkImportIdeas::Extractors::UserExtractor.new(locale, config, import_path)
       users, user_custom_fields = user_extractor.user_details(projects)
 
-      # Import or preview
-      importer = BulkImportIdeas::Importers::ProjectImporter.new(current_user, locale)
-      num_projects = projects.count
-      import_id = preview ? importer.preview_async(projects, users, user_custom_fields) : importer.import_async(projects, users, user_custom_fields)
+      # Preview or import the data
+      if preview
+        previewer = BulkImportIdeas::Previewers::ProjectPreviewer.new(current_user, locale)
+        import_id = previewer.preview_async(projects, users, user_custom_fields)
+      else
+        importer = BulkImportIdeas::Importers::ProjectImporter.new(current_user, locale)
+        import_id = importer.import_async(projects, users, user_custom_fields)
+      end
 
+      num_projects = projects.count
       authorize Project.first # TODO: Fix this authorization
       render json: {
         data: {
