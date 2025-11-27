@@ -4,9 +4,9 @@ require 'rspec_api_documentation/dsl'
 resource 'Phase insights' do
   before { admin_header_token }
 
-  let(:volunteering_phase) { create(:volunteering_phase, start_at: 20.days.ago, end_at: 3.days.ago) }
+  let(:phase) { create(:volunteering_phase, start_at: 20.days.ago, end_at: 3.days.ago) }
 
-  let!(:permission1) { create(:permission, action: 'volunteering', permission_scope: volunteering_phase) }
+  let!(:permission1) { create(:permission, action: 'volunteering', permission_scope: phase) }
 
   let!(:custom_field_gender) { create(:custom_field, resource_type: 'User', key: 'gender', input_type: 'select', title_multiloc: { en: 'Gender' }) }
   let!(:custom_field_option_male) { create(:custom_field_option, custom_field: custom_field_gender, key: 'male', title_multiloc: { en: 'Male' }) }
@@ -36,30 +36,29 @@ resource 'Phase insights' do
   let(:cause2) { create(:cause, phase: phase) }
 
   let(:user1) { create(:user, custom_field_values: { gender: 'female', birthyear: 1980 }) }
-  let!(:volunteering1) { create(:volunteer, cause: cause1, user: user1) }
-  let!(:volunteering2) { create(:volunteer, cause: cause2, user: user1) }
-  
+  let!(:volunteering1) { create(:volunteer, cause: cause1, user: user1, created_at: 15.days.ago) }
+  let!(:volunteering2) { create(:volunteer, cause: cause2, user: user1, created_at: 5.days.ago) }
+
   let(:user2) { create(:user, custom_field_values: { gender: 'male', birthyear: 1990 }) }
-  let!(:volunteering3) { create(:volunteer, cause: cause1, user: user2) }
+  let!(:volunteering3) { create(:volunteer, cause: cause1, user: user2, created_at: 10.days.ago) }
 
   let!(:session1) { create(:session, user_id: user1.id) }
-  let!(:pageview1) { create(:pageview, session: session1, created_at: 15.days.ago, project_id: volunteering_phase.project.id) } # during phase
+  let!(:pageview1) { create(:pageview, session: session1, created_at: 15.days.ago, project_id: phase.project.id) } # during phase
 
   let!(:session2) { create(:session, user_id: user2.id) }
-  let!(:pageview2) { create(:pageview, session: session2, created_at: 15.days.ago, project_id: volunteering_phase.project.id) } # during phase
-  let!(:pageview3) { create(:pageview, session: session2, created_at: 5.days.ago, project_id: volunteering_phase.project.id) } # during phase & last 7 days, same session
-
+  let!(:pageview2) { create(:pageview, session: session2, created_at: 15.days.ago, project_id: phase.project.id) } # during phase
+  let!(:pageview3) { create(:pageview, session: session2, created_at: 5.days.ago, project_id: phase.project.id) } # during phase & last 7 days, same session
   let(:user3) { create(:user) }
   let!(:session3) { create(:session, user_id: user3.id) }
-  let!(:pageview5) { create(:pageview, session: session3, created_at: 2.days.ago, project_id: volunteering_phase.project.id) } # after phase
+  let!(:pageview5) { create(:pageview, session: session3, created_at: 2.days.ago, project_id: phase.project.id) } # after phase
 
-  let(:id) { volunteering_phase.id }
+  let(:id) { phase.id }
 
   get 'web_api/v1/phases/:id/insights' do
     example_request 'creates insights for volunteering phase' do
       assert_status 200
 
-      expect(json_response_body[:data][:id]).to eq(volunteering_phase.id.to_s)
+      expect(json_response_body[:data][:id]).to eq(phase.id.to_s)
       expect(json_response_body[:data][:type]).to eq('phase_insights')
 
       metrics = json_response_body.dig(:data, :attributes, :metrics)

@@ -10,7 +10,7 @@ RSpec.describe Insights::VolunteeringPhaseInsightsService do
   let(:user1) { create(:user) }
   let!(:volunteering1) { create(:volunteer, cause: cause1, user: user1) }
   let!(:volunteering2) { create(:volunteer, cause: cause2, user: user1) }
-  
+
   let(:user2) { create(:user) }
   let!(:volunteering3) { create(:volunteer, cause: cause1, user: user2) }
 
