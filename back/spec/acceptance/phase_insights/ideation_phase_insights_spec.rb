@@ -103,7 +103,7 @@ resource 'Phase insights' do
       })
 
       demographics = json_response_body.dig(:data, :attributes, :demographics)
-      expect(demographics).to match(
+      expect(demographics).to match_array(
         fields: [
           {
             id: custom_field_gender.id,
