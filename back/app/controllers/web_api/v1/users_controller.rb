@@ -3,7 +3,7 @@
 class WebApi::V1::UsersController < ApplicationController
   include BlockingProfanity
 
-  before_action :set_user, only: %i[show update destroy ideas_count comments_count block unblock]
+  before_action :set_user, only: %i[show update destroy ideas_count comments_count block unblock participation_stats]
   skip_before_action :authenticate_user, only: %i[create show check by_slug by_invite ideas_count comments_count]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -220,6 +220,11 @@ class WebApi::V1::UsersController < ApplicationController
   def comments_count
     count = policy_scope(@user.comments.published).count
     render json: raw_json({ count: count }), status: :ok
+  end
+
+  def participation_stats
+    stats = ParticipantsService.new.user_participation_stats(@user)
+    render json: raw_json(stats)
   end
 
   def update_password

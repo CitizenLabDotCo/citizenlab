@@ -109,19 +109,28 @@ Rails.application.routes.draw do
       post 'user_token' => 'user_token#create'
 
       resources :users, only: %i[index create update destroy] do
-        get :me, on: :collection
-        get :seats, on: :collection
-        get :as_xlsx, on: :collection, action: 'index_xlsx'
-        patch :block, :unblock, on: :member
-        post 'reset_password_email' => 'reset_password#reset_password_email', on: :collection
-        post 'reset_password' => 'reset_password#reset_password', on: :collection
-        post 'update_password', on: :collection
-        get 'by_slug/:slug', on: :collection, to: 'users#by_slug'
-        get 'by_invite/:token', on: :collection, to: 'users#by_invite'
-        get 'ideas_count', on: :member
-        get 'comments_count', on: :member
-        get 'blocked_count', on: :collection
-        get 'check/:email', on: :collection, to: 'users#check', constraints: { email: /.*/ }
+        collection do
+          get :me
+          get :seats
+          get :as_xlsx, action: 'index_xlsx'
+
+          post 'reset_password_email' => 'reset_password#reset_password_email'
+          post 'reset_password' => 'reset_password#reset_password'
+          post 'update_password'
+
+          get 'by_slug/:slug', to: 'users#by_slug'
+          get 'by_invite/:token', to: 'users#by_invite'
+          get 'blocked_count'
+          get 'check/:email', to: 'users#check', constraints: { email: /.*/ }
+        end
+
+        member do
+          patch :block, :unblock
+          get 'ideas_count'
+          get 'comments_count'
+          get 'participation_stats'
+        end
+
         scope module: 'verification' do
           get 'me/locked_attributes', on: :collection, to: 'locked_attributes#index'
         end

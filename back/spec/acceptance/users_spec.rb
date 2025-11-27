@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
+require 'test_prof/recipes/rspec/factory_default'
 
 resource 'Users' do
   explanation 'Citizens and city administrators.'
@@ -1273,6 +1274,49 @@ resource 'Users' do
           end
         end
       end
+
+      get 'web_api/v1/users/:id/participation_stats' do
+        let(:target_user) { create(:user) }
+        let(:id) { target_user.id }
+
+        example 'Get participation stats for a user' do
+          # Optimization: Eliminates cascades partially
+          create_default(:single_phase_ideation_project)
+          create_default(:idea_status)
+
+          ideas = create_list(:idea, 3, author: target_user, publication_status: 'published')
+          ideas.each { |idea| create(:reaction, user: target_user, reactable: idea) }
+          create_list(:comment, 2, author: target_user, publication_status: 'published')
+          create(:basket, user: target_user, submitted_at: Time.current)
+          create(:poll_response, user: target_user)
+          create(:volunteer, user: target_user)
+          create(:event_attendance, attendee: target_user)
+
+          do_request
+
+          assert_status 200
+          expect(json_parse(response_body).dig(:data, :attributes)).to include(
+            ideas_count: 3,
+            comments_count: 2,
+            reactions_count: 3,
+            baskets_count: 1,
+            poll_responses_count: 1,
+            volunteers_count: 1,
+            event_attendances_count: 1
+          )
+        end
+
+        example 'Does not count unpublished ideas' do
+          create(:idea, author: target_user, publication_status: 'published')
+          create(:idea, author: target_user, publication_status: 'draft')
+
+          do_request
+
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :ideas_count)).to eq 1
+        end
+      end
     end
 
     context 'when non-admin' do
@@ -1385,6 +1429,15 @@ resource 'Users' do
       get 'web_api/v1/users/blocked_count' do
         example_request 'Get count of blocked users' do
           expect(status).to eq 401
+        end
+      end
+
+      get 'web_api/v1/users/:id/participation_stats' do
+        let(:other_user) { create(:user) }
+        let(:id) { other_user.id }
+
+        example_request "[error] cannot access another user's participation stats" do
+          assert_status :unauthorized
         end
       end
 
@@ -1781,6 +1834,20 @@ resource 'Users' do
           expect(status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :count)).to eq 2
+        end
+      end
+
+      get 'web_api/v1/users/:id/participation_stats' do
+        let(:id) { @user.id }
+
+        example 'User can see their own participation stats' do
+          create(:idea, author: @user, publication_status: 'published')
+
+          do_request
+
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :ideas_count)).to eq 1
         end
       end
     end

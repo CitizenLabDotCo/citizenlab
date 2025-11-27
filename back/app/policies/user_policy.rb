@@ -76,6 +76,10 @@ class UserPolicy < ApplicationPolicy
     true
   end
 
+  def participation_stats?
+    record.id == user&.id || (active? && !user.normal_user?)
+  end
+
   def update_password?
     user&.active? && (record.id == user.id)
   end

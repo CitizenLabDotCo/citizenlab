@@ -203,6 +203,20 @@ class ParticipantsService
     Idea.where(project: project).where.not(id: ideas_in_voting_phases).destroy_all
   end
 
+  # @param user [User] The user to get participation stats for
+  # @return [Hash] Counts of each participation type
+  def user_participation_stats(user)
+    {
+      ideas_count: user.ideas.published.count,
+      comments_count: user.comments.published.count,
+      reactions_count: user.reactions.count,
+      baskets_count: user.baskets.submitted.count,
+      poll_responses_count: user.poll_responses.count,
+      volunteers_count: user.volunteers.count,
+      event_attendances_count: user.event_attendances.count
+    }
+  end
+
   # Destroys all participation data for a user.
   def destroy_user_participation_data(user)
     project_ids = participated_project_ids(user)

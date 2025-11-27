@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'test_prof/recipes/rspec/factory_default'
 
 describe ParticipantsService do
   let(:service) { described_class.new }
@@ -479,6 +480,44 @@ describe ParticipantsService do
 
       expect(Idea.where(id: idea.id)).to exist
       expect(Idea.where(id: idea_in_voting_phase.id)).to exist
+    end
+  end
+
+  describe 'user_participation_stats' do
+    let(:user) { create(:user) }
+
+    it 'returns counts for all participation types' do
+      # Optimization: Eliminates cascades partially
+      create_default(:single_phase_ideation_project)
+      create_default(:idea_status)
+      create_default(:idea)
+
+      create(:idea, author: user, publication_status: 'published')
+      create(:reaction, user: user)
+      create(:comment, author: user, publication_status: 'published')
+      create(:basket, user: user, submitted_at: Time.current)
+      create(:poll_response, user: user)
+      create(:event_attendance, attendee: user)
+      create_list(:volunteer, 2, user: user)
+
+      # The following records should not be counted
+      create(:idea, author: user, publication_status: 'draft')
+      create(:comment, author: user, publication_status: 'deleted')
+      create(:basket, user: user, submitted_at: nil)
+
+      expect(service.user_participation_stats(user)).to eq(
+        ideas_count: 1,
+        comments_count: 1,
+        reactions_count: 1,
+        baskets_count: 1,
+        poll_responses_count: 1,
+        event_attendances_count: 1,
+        volunteers_count: 2
+      )
+    end
+
+    it 'returns zero counts when user has no participation' do
+      expect(service.user_participation_stats(user).values).to all(eq 0)
     end
   end
 
