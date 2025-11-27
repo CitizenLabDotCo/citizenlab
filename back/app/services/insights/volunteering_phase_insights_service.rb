@@ -4,9 +4,7 @@ module Insights
 
     def phase_participations
       # Events are not associated with phase, so attending_event not included at phase-level.
-      {
-        volunteering: participation_volunteerings
-      }
+      { volunteering: participation_volunteerings }
     end
 
     def participation_volunteerings
