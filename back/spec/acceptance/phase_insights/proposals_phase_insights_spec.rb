@@ -79,7 +79,7 @@ resource 'Phase insights' do
   let(:id) { proposals_phase.id }
 
   get 'web_api/v1/phases/:id/insights' do
-    example_request 'creates insights for ideation phase' do
+    example_request 'creates insights for proposals phase' do
       assert_status 200
 
       expect(json_response_body[:data][:id]).to eq(proposals_phase.id.to_s)

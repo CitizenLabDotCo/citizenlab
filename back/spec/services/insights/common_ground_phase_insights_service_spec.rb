@@ -58,9 +58,9 @@ RSpec.describe Insights::CommonGroundPhaseInsightsService do
         }
       ])
 
-      # first_participation = participation_ideas_published.first
-      # expect(first_participation[:acted_at])
-      #   .to be_within(1.second).of(Idea.find(first_participation[:item_id]).published_at)
+      first_participation = participation_ideas_published.first
+      expect(first_participation[:acted_at])
+        .to be_within(1.second).of(Idea.find(first_participation[:item_id]).published_at)
     end
 
     it 'correctly handles phases with no end date' do

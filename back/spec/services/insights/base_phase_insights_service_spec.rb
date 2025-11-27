@@ -12,7 +12,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
       'proposals' => Insights::ProposalsPhaseInsightsService,
       'multiple_voting' => Insights::VotingPhaseInsightsService,
       'native_survey' => Insights::NativeSurveyPhaseInsightsService,
-      'common_ground' => Insights::CommonGroundPhaseInsightsService
+      'common_ground' => Insights::CommonGroundPhaseInsightsService,
+      'volunteering' => Insights::VolunteeringPhaseInsightsService
     }
 
     phase_factory_to_service_map.each do |factory, service_class|
