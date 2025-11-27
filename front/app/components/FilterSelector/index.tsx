@@ -207,7 +207,7 @@ const FilterSelector = ({
   };
 
   const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === 'ArrowDown' && !opened && !multipleSelectionAllowed) {
+    if (event.key === 'ArrowDown' && !opened) {
       event.preventDefault();
       toggleValuesList();
     }

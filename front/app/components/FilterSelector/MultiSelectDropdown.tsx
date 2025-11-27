@@ -129,47 +129,61 @@ const MultiSelectDropdown = ({
       onChange(entry.value);
     };
 
-  const handleOnKeyDown =
-    (entry?: IFilterSelectorValue, index?: number) =>
-    (
-      event: KeyboardEvent<HTMLLIElement | HTMLButtonElement | HTMLDivElement>
-    ) => {
-      if (!entry && index === undefined) {
-        if (event.key === 'ArrowDown' && !opened) {
-          event.preventDefault();
-          toggleValuesList();
-        } else if (handleKeyDown) {
-          handleKeyDown(event);
-        }
-      } else {
-        if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
-          event.preventDefault();
-          const totalItems = values.length;
-          let nextIndex = 0;
-          if (event.key === 'ArrowUp') {
-            nextIndex = index === 0 ? totalItems - 1 : index! - 1;
-          } else {
-            nextIndex = index === totalItems - 1 ? 0 : index! + 1;
-          }
-          tabsRef.current[nextIndex]?.focus();
-        } else if (event.code === 'Space' || event.code === 'Enter') {
-          event.preventDefault();
-          onChange(entry!.value);
-        } else if (event.key === 'Tab') {
-          toggleValuesList();
-        }
-      }
-    };
+  const handleOnKeyDown = (
+    event:
+      | KeyboardEvent<HTMLLIElement | HTMLButtonElement | HTMLDivElement>
+      | React.MouseEvent<HTMLLIElement>
+      | FormEvent
+  ) => {
+    const target = event.currentTarget as HTMLElement;
+    const indexAttr = target.getAttribute('data-index');
+    const value = target.getAttribute('data-value');
+    const index = indexAttr ? parseInt(indexAttr, 10) : undefined;
+    const keyboardEvent = event as KeyboardEvent<HTMLLIElement>;
+    const key = keyboardEvent.key;
+    const totalItems = values.length;
 
-  const handleOnClick =
-    (entry: IFilterSelectorValue) =>
-    (event: React.MouseEvent<HTMLLIElement>) => {
+    if (event.type === 'click') {
       event.preventDefault();
-      onChange(entry.value);
-    };
+      if (value) onChange(value);
+      return;
+    }
+    if (key === 'ArrowDown') {
+      keyboardEvent.preventDefault();
+      if (index === undefined) {
+        if (!opened) toggleValuesList();
+        else handleKeyDown?.(keyboardEvent);
+        return;
+      }
+      // navigate to next item (circular 0,1,2,3,...,0)
+      tabsRef.current[(index + 1) % totalItems]?.focus();
+      return;
+    }
+    if (key === 'ArrowUp') {
+      if (index !== undefined) {
+        keyboardEvent.preventDefault();
+        // navigate to previous item (circular ...,3,2,1,0,4)
+        tabsRef.current[(index - 1 + totalItems) % totalItems]?.focus();
+      }
+      return;
+    }
+    if (key === 'Enter' || key === ' ') {
+      if (value) {
+        keyboardEvent.preventDefault();
+        onChange(value);
+      }
+      return;
+    }
+    if (key === 'Tab' && opened) {
+      toggleValuesList();
+      return;
+    }
+  };
 
   const handleOnClickOutside = (event: FormEvent) => {
-    onClickOutside?.(event);
+    if (onClickOutside) {
+      onClickOutside(event);
+    }
   };
 
   return (
@@ -181,7 +195,7 @@ const MultiSelectDropdown = ({
             borderRadius="24px"
             onClick={toggleValuesList}
             minWidth={minWidth}
-            onKeyDown={handleOnKeyDown()}
+            onKeyDown={handleOnKeyDown}
             ariaExpanded={opened}
             ariaControls={baseID}
           >
@@ -201,7 +215,7 @@ const MultiSelectDropdown = ({
             onClick={toggleValuesList}
             baseID={baseID}
             textColor={textColor}
-            handleKeyDown={handleOnKeyDown()}
+            handleKeyDown={handleOnKeyDown}
           />
         )}
       </Box>
@@ -238,12 +252,13 @@ const MultiSelectDropdown = ({
                     id={`${baseID}-${index}`}
                     key={entry.value}
                     onMouseDown={removeFocusAfterMouseClick}
-                    onKeyDown={handleOnKeyDown(entry, index)}
-                    onClick={handleOnClick(entry)}
+                    onKeyDown={handleOnKeyDown}
                     className={classNames}
                     ref={(el) => (tabsRef.current[index] = el)}
                     role="checkbox"
                     aria-checked={checked}
+                    data-value={entry.value}
+                    data-index={index}
                     tabIndex={0}
                   >
                     <Checkbox
