@@ -22,7 +22,7 @@ export const AccessibilityInputs = () => {
   } = useNode((node) => ({
     ariaLabel: node.data.props.ariaLabel,
     description: node.data.props.description,
-    view: node.data.props.view, // Get the view prop if it exists
+    view: node.data.props.view,
   }));
 
   // hide accessibility inputs when view is set to "table"

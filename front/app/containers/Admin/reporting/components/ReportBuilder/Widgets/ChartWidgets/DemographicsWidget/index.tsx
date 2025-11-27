@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text, Title } from '@citizenlab/cl2-component-library';
+import { Box, Title } from '@citizenlab/cl2-component-library';
 
 import { useDemographics } from 'api/graph_data_units';
 
@@ -10,11 +10,9 @@ import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
-import { useIntl } from 'utils/cl-intl';
-
 import Card from '../../_shared/Card';
-import cardMessages from '../../_shared/messages';
 import NoData from '../../_shared/NoData';
+import { DescriptionText } from '../_shared/DescriptionText';
 import chartWidgetMessages from '../messages';
 
 import messages from './messages';
@@ -33,7 +31,6 @@ const DemographicsWidget = ({
   groupId,
 }: Props & AccessibilityProps) => {
   const localize = useLocalize();
-  const { formatMessage } = useIntl();
 
   const { data: demographicsResponse, isLoading } = useDemographics({
     custom_field_id: customFieldId,
@@ -45,17 +42,14 @@ const DemographicsWidget = ({
 
   const layout = useLayout();
 
-  // since demographicsWidget have another structure, we need to handle localization here
-  const chartId = React.useId();
-  const descriptionId = `${chartId}-description`;
-  const localizedAriaLabel = ariaLabel ? localize(ariaLabel) : undefined;
-  const localizedDescription = description ? localize(description) : undefined;
-  const chartAriaLabel =
-    localizedAriaLabel || (title ? localize(title) : undefined);
-  const chartAriaDescribedBy = localizedDescription ? descriptionId : undefined;
-  const chartAccessibilityProps = {
-    ariaLabel: chartAriaLabel,
-    ariaDescribedBy: chartAriaDescribedBy,
+  const descriptionId = `${React.useId()}-description`;
+  const accessibilityProps = {
+    ariaLabel: ariaLabel
+      ? localize(ariaLabel)
+      : title
+      ? localize(title)
+      : undefined,
+    ariaDescribedBy: description ? descriptionId : undefined,
   };
 
   if (isLoading) return null;
@@ -71,12 +65,11 @@ const DemographicsWidget = ({
   if (layout === 'narrow') {
     return (
       <Card pagebreak className="e2e-demographics-widget">
-        <Chart response={demographicsResponse} {...chartAccessibilityProps} />
-        {localizedDescription && (
-          <Text color="grey700" fontSize="s" id={descriptionId} mt="16px">
-            {formatMessage(cardMessages.description)} {localizedDescription}
-          </Text>
-        )}
+        <Chart response={demographicsResponse} {...accessibilityProps} />
+        <DescriptionText
+          description={description}
+          descriptionId={descriptionId}
+        />
       </Card>
     );
   }
@@ -89,13 +82,12 @@ const DemographicsWidget = ({
             {localize(title)}
           </Title>
         </Box>
-        <Chart response={demographicsResponse} {...chartAccessibilityProps} />
+        <Chart response={demographicsResponse} {...accessibilityProps} />
       </Box>
-      {localizedDescription && (
-        <Text color="grey700" fontSize="s" id={descriptionId} mt="16px">
-          {formatMessage(cardMessages.description)} {localizedDescription}
-        </Text>
-      )}
+      <DescriptionText
+        description={description}
+        descriptionId={descriptionId}
+      />
     </Card>
   );
 };

@@ -1,8 +1,11 @@
 import React from 'react';
 
+import useLocalize from 'hooks/useLocalize';
+
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
 import Card from '../../_shared/Card';
+import { DescriptionText } from '../_shared/DescriptionText';
 import messages from '../messages';
 
 import ChartWidgetSettings from './ChartWidgetSettings';
@@ -16,9 +19,15 @@ const VisitorsWidget = ({
   ariaDescribedBy,
   ...props
 }: Props & AccessibilityProps) => {
+  const localize = useLocalize();
+  const descriptionId = `${React.useId()}-description`;
   const accessibilityProps = {
-    ariaLabel,
-    ariaDescribedBy,
+    ariaLabel: ariaLabel
+      ? localize(ariaLabel)
+      : title
+      ? localize(title)
+      : undefined,
+    ariaDescribedBy: description ? descriptionId : undefined,
   };
   return (
     <Card
@@ -28,6 +37,10 @@ const VisitorsWidget = ({
       pagebreak
     >
       <VisitorsCard {...accessibilityProps} {...props} />
+      <DescriptionText
+        description={description}
+        descriptionId={ariaDescribedBy}
+      />
     </Card>
   );
 };

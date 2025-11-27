@@ -11,11 +11,6 @@ import { Multiloc } from 'typings';
 import useLocalize from 'hooks/useLocalize';
 
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
-
-import { useIntl } from 'utils/cl-intl';
-
-import messages from './messages';
-
 interface SharedProps {
   pagebreak?: boolean;
   'data-testid'?: string;
@@ -43,37 +38,8 @@ const Container = ({ pagebreak, children, ...props }: ContainerProps) => {
   );
 };
 
-const Card = ({
-  title,
-  ariaLabel,
-  description,
-  infoTooltipContent,
-  children,
-  ...rest
-}: Props) => {
+const Card = ({ title, infoTooltipContent, children, ...rest }: Props) => {
   const localize = useLocalize();
-  const { formatMessage } = useIntl();
-
-  // Create localized accessibility props for the chart and inject them into children
-  const chartId = React.useId();
-  const descriptionId = `${chartId}-description`;
-  const localizedAriaLabel = ariaLabel ? localize(ariaLabel) : undefined;
-  const localizedDescription = description ? localize(description) : undefined;
-  const chartAriaLabel =
-    localizedAriaLabel || (title ? localize(title) : undefined);
-
-  const chartAriaDescribedBy = localizedDescription ? descriptionId : undefined;
-  const accessibilityProps = {
-    ariaLabel: chartAriaLabel,
-    ariaDescribedBy: chartAriaDescribedBy,
-  };
-
-  const childrenWithProps = React.Children.map(children, (child) => {
-    if (React.isValidElement(child)) {
-      return React.cloneElement(child, accessibilityProps);
-    }
-    return child;
-  });
 
   return (
     <Container className="report-widget-card" {...rest}>
@@ -96,12 +62,7 @@ const Card = ({
           )}
         </Box>
       )}
-      <Box>{childrenWithProps}</Box>
-      {localizedDescription && (
-        <Text color="grey700" fontSize="s" id={descriptionId}>
-          {formatMessage(messages.description)} {localizedDescription}
-        </Text>
-      )}
+      <Box>{children}</Box>
     </Container>
   );
 };

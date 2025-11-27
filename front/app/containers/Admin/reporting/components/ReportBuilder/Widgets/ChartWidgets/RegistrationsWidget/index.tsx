@@ -1,8 +1,11 @@
 import React from 'react';
 
+import useLocalize from 'hooks/useLocalize';
+
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
 import Card from '../../_shared/Card';
+import { DescriptionText } from '../_shared/DescriptionText';
 
 import ChartWidgetSettings from './ChartWidgetSettings';
 import messages from './messages';
@@ -13,12 +16,17 @@ const RegistrationsWidget = ({
   title,
   description,
   ariaLabel,
-  ariaDescribedBy,
   ...props
 }: Props & AccessibilityProps) => {
+  const localize = useLocalize();
+  const descriptionId = `${React.useId()}-description`;
   const accessibilityProps = {
-    ariaLabel,
-    ariaDescribedBy,
+    ariaLabel: ariaLabel
+      ? localize(ariaLabel)
+      : title
+      ? localize(title)
+      : undefined,
+    ariaDescribedBy: description ? descriptionId : undefined,
   };
   return (
     <Card
@@ -28,6 +36,10 @@ const RegistrationsWidget = ({
       ariaLabel={ariaLabel}
     >
       <RegistrationsCard {...props} {...accessibilityProps} />
+      <DescriptionText
+        description={description}
+        descriptionId={descriptionId}
+      />
     </Card>
   );
 };
