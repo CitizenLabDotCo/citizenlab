@@ -74,21 +74,40 @@ const IdeaCard = ({
 
   useEffect(() => {
     if (scrollToCardParam && idea.data.id === scrollToCardParam) {
-      const subscription = eventEmitter
-        .observeEvent(IMAGES_LOADED_EVENT)
-        .subscribe(() => {
+      // Function to scroll to idea card element
+      const tryScroll = () => {
+        const element = document.getElementById(scrollToCardParam);
+        if (element) {
           scrollToElement({
             id: scrollToCardParam,
             behavior: 'auto',
             offset: smallerThanPhone ? 150 : 300,
           });
+          removeSearchParams(['scroll_to_card']);
+          return true;
+        }
+        return false;
+      };
 
+      // First, try an immediate scroll in case images are already loaded
+      if (tryScroll()) {
+        return;
+      }
+
+      // If immediate scroll didn't work, wait for images loaded event
+      const subscription = eventEmitter
+        .observeEvent(IMAGES_LOADED_EVENT)
+        .subscribe(() => {
+          tryScroll();
           subscription.unsubscribe();
         });
-    }
 
-    removeSearchParams(['scroll_to_card']);
-  }, [scrollToCardParam, idea, smallerThanPhone]);
+      return () => {
+        subscription.unsubscribe();
+      };
+    }
+    return;
+  }, [scrollToCardParam, idea.data.id, smallerThanPhone]);
 
   const { slug } = idea.data.attributes;
 
