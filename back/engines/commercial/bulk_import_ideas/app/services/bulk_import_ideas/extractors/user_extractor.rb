@@ -13,6 +13,16 @@ module BulkImportIdeas::Extractors
       end
     end
 
+    # @param [Array<Hash>] projects output of ProjectExtractor#projects
+    def user_details(projects)
+      users = @rows
+      custom_fields = custom_fields
+      users, custom_fields = extract_project_user_data(projects, users, custom_fields) if projects.any?
+      [users, custom_fields]
+    end
+
+    private
+
     def users
       @rows
     end
@@ -24,8 +34,6 @@ module BulkImportIdeas::Extractors
       columns = @rows.flat_map(&:keys).uniq - ['Email address', 'First name(s)', 'Last name', 'DateCreated', 'LastAccess']
       generate_fields(@rows, columns, fixed_key: true)
     end
-
-    private
 
     def generate_user_rows
       data = []
@@ -51,6 +59,58 @@ module BulkImportIdeas::Extractors
         data << row_data
       end
       data
+    end
+
+    # Phases will have some user data in the idea rows, so we need to extract that so that we can import the users first
+    # Why? Because if imported using the idea importer then they won't be full users
+    def extract_project_user_data(projects, users, user_custom_fields)
+      projects.each do |project_data|
+        project_data[:phases]&.each do |phase_data|
+          if phase_data[:idea_rows].present?
+
+            # Add any custom fields for the user if they exist in the project data
+            if phase_data[:user_custom_fields].present?
+              user_custom_fields.concat(phase_data[:user_custom_fields])
+            end
+
+            # Extract users from the idea rows
+            phase_data[:idea_rows].each do |idea_row|
+              # Ensure the idea row has an author email
+              next if idea_row['Email address'].blank?
+
+              # Create a user row if it doesn't already exist
+              user_row = users.find { |u| u['Email address'] == idea_row['Email address'] }
+              unless user_row
+                user_row = {
+                  'Email address' => idea_row['Email address'],
+                  'First Name(s)' => idea_row['First Name(s)'],
+                  'Last Name' => idea_row['Last Name']
+                }
+                # Get custom field values from the idea row (if they exist)
+                custom_field_keys = phase_data[:user_custom_fields]&.pluck(:title_multiloc)&.pluck(@locale)
+                custom_field_keys&.each do |key|
+                  user_row[key] = idea_row[key] if idea_row[key].present?
+                end
+                users << user_row
+              end
+            end
+          end
+        end
+      end
+
+      # Ensure unique custom fields by key
+      # TODO: user custom fields is nil?
+      user_custom_fields&.uniq! { |field| field[:key] }
+
+      # SECURITY: Replace email addresses so real emails do not get added to dev or staging environments
+      unless Rails.env.production?
+        users = users.map do |user_row|
+          user_row['Email address'] = "#{user_row['Email address']&.gsub(/[@.]/, '_')&.reverse}@example.com"
+          user_row
+        end
+      end
+
+      [users, user_custom_fields]
     end
 
     # TODO: Custom field extraction is currently specific to EngagementHQ only

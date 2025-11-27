@@ -23,8 +23,7 @@ module BulkImportIdeas
       # Extract users from users.xlsx in the ZIP file
       config = project_extractor.import_config # We reuse the config from the project extractor
       user_extractor = BulkImportIdeas::Extractors::UserExtractor.new(locale, config, import_path)
-      users = user_extractor.users
-      user_custom_fields = user_extractor.custom_fields
+      users, user_custom_fields = user_extractor.user_details(projects)
 
       # Import or preview
       importer = BulkImportIdeas::Importers::ProjectImporter.new(current_user, locale)

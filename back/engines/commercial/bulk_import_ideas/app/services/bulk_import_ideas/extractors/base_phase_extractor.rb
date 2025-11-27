@@ -117,11 +117,11 @@ module BulkImportIdeas::Extractors
     end
 
     # Default does nothing
-    def reformat_multiselect_values(column_name, option_values)
+    def reformat_multiselect_values(_column_name, _option_values)
       @rows
     end
 
-    def reformat_matrix_values(column_name, labels)
+    def reformat_matrix_values(_column_name, _labels)
       @rows
     end
   end

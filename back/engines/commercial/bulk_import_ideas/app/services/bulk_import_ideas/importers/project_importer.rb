@@ -15,9 +15,6 @@ module BulkImportIdeas::Importers
 
     # Import all the projects, users etc (synchronous version only for testing via rake task)
     def import(projects, users, user_custom_fields)
-      # Extract any users from projects first
-      users, user_custom_fields = extract_project_user_data(projects, users, user_custom_fields)
-
       # Import users first
       import_users(users, user_custom_fields)
 
@@ -29,9 +26,6 @@ module BulkImportIdeas::Importers
 
     def import_async(projects, users, user_custom_fields)
       import_id = SecureRandom.uuid
-
-      # Extract any users from projects first
-      users, user_custom_fields = extract_project_user_data(projects, users, user_custom_fields)
 
       # We trigger a single import job for the users (even if there are none) - this will then trigger the project import jobs
       # This is because users MUST be imported before the projects, as they may be needed for the idea authors
@@ -176,9 +170,6 @@ module BulkImportIdeas::Importers
 
     # Preview the data that will be imported
     def preview(projects, users, user_custom_fields)
-      # Extract any users from projects first
-      users, user_custom_fields = extract_project_user_data(projects, users, user_custom_fields)
-
       log 'USER IMPORT > '
       preview_users(users, user_custom_fields)
 
@@ -288,33 +279,31 @@ module BulkImportIdeas::Importers
     def create_project_attachments(project, project_data)
       attachments = project_data[:attachments] || []
       attachments.each_with_index do |file_path, index|
-        begin
-          file_content = File.open(file_path, 'rb')
-          file_name = File.basename(file_path)
-          file_mime_type = Marcel::MimeType.for(file_content)
+        file_content = File.open(file_path, 'rb')
+        file_name = File.basename(file_path)
+        file_mime_type = Marcel::MimeType.for(file_content)
 
-          file = Files::File.new(
-            content_by_content: { content: file_content, name: file_name },
-            mime_type: file_mime_type,
-            uploader: @import_user
-          )
+        file = Files::File.new(
+          content_by_content: { content: file_content, name: file_name },
+          mime_type: file_mime_type,
+          uploader: @import_user
+        )
 
-          # Not sure why I have to do this?
-          file.files_projects.build(project: project)
+        # Not sure why I have to do this?
+        file.files_projects.build(project: project)
 
-          file_attachment = Files::FileAttachment.new(
-            file: file,
-            attachable: project,
-            position: index
-          )
+        file_attachment = Files::FileAttachment.new(
+          file: file,
+          attachable: project,
+          position: index
+        )
 
-          file_attachment.file.save!
-          file_attachment.save!
+        file_attachment.file.save!
+        file_attachment.save!
 
-          log "Created project attachment: #{file_name}"
-        rescue StandardError => e
-          log "ERROR: Creating project attachment '#{file_path}': #{e.message}"
-        end
+        log "Created project attachment: #{file_name}"
+      rescue StandardError => e
+        log "ERROR: Creating project attachment '#{file_path}': #{e.message}"
       end
     end
 
@@ -442,58 +431,6 @@ module BulkImportIdeas::Importers
     def remove_idea_import_records(ideas)
       # Remove the idea import records for this project - not needed via this import
       BulkImportIdeas::IdeaImport.where(idea: ideas).delete_all
-    end
-
-    # Phases will have some user data in the idea rows, so we need to extract that so that we can import the users first
-    # Why? Because if imported using the idea importer then they won't be full users
-    # TODO: Ideally this should happen outside of this class
-    def extract_project_user_data(projects, users, user_custom_fields)
-      projects.each do |project_data|
-        project_data[:phases]&.each do |phase_data|
-          if phase_data[:idea_rows].present?
-
-            # Add any custom fields for the user if they exist in the project data
-            if phase_data[:user_custom_fields].present?
-              user_custom_fields.concat(phase_data[:user_custom_fields])
-            end
-
-            # Extract users from the idea rows
-            phase_data[:idea_rows].each do |idea_row|
-              # Ensure the idea row has an author email
-              next if idea_row['Email address'].blank?
-
-              # Create a user row if it doesn't already exist
-              user_row = users.find { |u| u['Email address'] == idea_row['Email address'] }
-              unless user_row
-                user_row = {
-                  'Email address' => idea_row['Email address'],
-                  'First Name(s)' => idea_row['First Name(s)'],
-                  'Last Name' => idea_row['Last Name']
-                }
-                # Get custom field values from the idea row (if they exist)
-                custom_field_keys = phase_data[:user_custom_fields]&.pluck(:title_multiloc)&.pluck(@locale)
-                custom_field_keys&.each do |key|
-                  user_row[key] = idea_row[key] if idea_row[key].present?
-                end
-                users << user_row
-              end
-            end
-          end
-        end
-      end
-
-      # Ensure unique custom fields by key
-      user_custom_fields.uniq! { |field| field[:key] }
-
-      # SECURITY: Replace email addresses so real emails do not get added to dev or staging environments
-      unless Rails.env.production?
-        users = users.map do |user_row|
-          user_row['Email address'] = "#{user_row['Email address']&.gsub(/[@.]/, '_')&.reverse}@example.com"
-          user_row
-        end
-      end
-
-      [users, user_custom_fields]
     end
 
     # If the project already exists, increment the slug and title to avoid conflicts
