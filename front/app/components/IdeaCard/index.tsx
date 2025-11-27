@@ -74,31 +74,45 @@ const IdeaCard = ({
 
   useEffect(() => {
     if (scrollToCardParam && idea.data.id === scrollToCardParam) {
-      // Function to scroll to idea card element
-      const tryScroll = () => {
-        const element = document.getElementById(scrollToCardParam);
-        if (element) {
-          scrollToElement({
-            id: scrollToCardParam,
-            behavior: 'auto',
-            offset: smallerThanPhone ? 150 : 300,
-          });
-          removeSearchParams(['scroll_to_card']);
-          return true;
-        }
-        return false;
+      const performScroll = () => {
+        scrollToElement({
+          id: scrollToCardParam,
+          behavior: 'auto',
+          offset: smallerThanPhone ? 150 : 300,
+        });
+        removeSearchParams(['scroll_to_card']);
       };
 
-      // First, try an immediate scroll in case images are already loaded
-      if (tryScroll()) {
-        return;
+      // Check if ALL images in project description are loaded
+      const projectDescription = document.getElementById(
+        'e2e-content-builder-frame'
+      );
+
+      if (projectDescription) {
+        const imagesInDescription = projectDescription.querySelectorAll('img');
+
+        if (imagesInDescription.length === 0) {
+          setTimeout(performScroll, 100);
+          return;
+        }
+
+        const allImagesLoaded = Array.from(imagesInDescription).every((img) => {
+          const isLoaded = img.complete && img.naturalHeight > 0;
+          return isLoaded;
+        });
+
+        if (allImagesLoaded) {
+          // All images in description are loaded, scroll immediately
+          setTimeout(performScroll, 100); // Small delay for layout stability
+          return;
+        }
       }
 
-      // If immediate scroll didn't work, wait for images loaded event
+      // Images still loading or no description found, wait for IMAGES_LOADED_EVENT
       const subscription = eventEmitter
         .observeEvent(IMAGES_LOADED_EVENT)
         .subscribe(() => {
-          tryScroll();
+          performScroll();
           subscription.unsubscribe();
         });
 
