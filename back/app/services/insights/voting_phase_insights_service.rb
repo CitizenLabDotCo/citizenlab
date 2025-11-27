@@ -12,7 +12,7 @@ module Insights
 
     def participation_baskets
       @phase.baskets.includes(:user, :baskets_ideas).map do |basket|
-        total_votes = basket.baskets_ideas.to_a.sum { |bi| bi.votes }
+        total_votes = basket.baskets_ideas.to_a.sum(&:votes)
 
         {
           item_id: basket.id,
