@@ -38,6 +38,14 @@ module BulkImportIdeas::Extractors
       @worksheet ? @worksheet.sheet_name : 'Default phase title'
     end
 
+    def ideas_row_range
+      [1, @worksheet.count]
+    end
+
+    def ideas_col_range
+      [0, @worksheet[0].size - 1] # Start from column 1 (index 0) to the last column index of header row
+    end
+
     def idea_custom_fields
       generate_fields(@rows, @idea_columns)
     end
@@ -106,6 +114,15 @@ module BulkImportIdeas::Extractors
         native_survey_title_multiloc: { en: 'Survey' },
         native_survey_button_multiloc: { en: 'Take the Survey' }
       }
+    end
+
+    # Default does nothing
+    def reformat_multiselect_values(column_name, option_values)
+      @rows
+    end
+
+    def reformat_matrix_values(column_name, labels)
+      @rows
     end
   end
 end
