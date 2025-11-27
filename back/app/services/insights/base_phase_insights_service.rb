@@ -125,6 +125,9 @@ module Insights
         @permissions_custom_fields_service.fields_for_permission(permission)
       end.map(&:custom_field).uniq
 
+      # Eager load options to avoid N+1 queries
+      custom_fields = CustomField.where(id: custom_fields.map(&:id)).includes(:options).to_a
+
       custom_fields.filter_map do |custom_field|
         reference_distribution = nil
 
@@ -161,7 +164,9 @@ module Insights
     end
 
     def phase_permissions
-      @phase.permissions.where.not(action: 'attending_event')
+      @phase.permissions
+        .where.not(action: 'attending_event')
+        .includes(:permissions_custom_fields, :groups)
     end
 
     def birthyear_demographics_data(participant_custom_field_values)

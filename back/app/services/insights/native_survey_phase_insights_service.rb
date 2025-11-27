@@ -14,7 +14,6 @@ module Insights
         .where(<<~SQL.squish, @phase.start_at.beginning_of_day, end_time)
           ideas.created_at >= ? AND ideas.created_at <= ?
         SQL
-        .includes(:author)
 
       ideas.map do |idea|
         {
