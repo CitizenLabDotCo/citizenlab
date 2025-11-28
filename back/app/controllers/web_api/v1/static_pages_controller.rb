@@ -41,7 +41,6 @@ class WebApi::V1::StaticPagesController < ApplicationController
     assign_attributes
     authorize @page
 
-    SideFxStaticPageService.new.before_update @page, current_user
     if @page.save
       SideFxStaticPageService.new.after_update @page, current_user
       render json: WebApi::V1::StaticPageSerializer.new(@page, params: jsonapi_serializer_params).serializable_hash, status: :ok

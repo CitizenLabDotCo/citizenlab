@@ -39,20 +39,19 @@ class Invite < ApplicationRecord
   belongs_to :inviter, class_name: 'User', optional: true
   belongs_to :invitee, class_name: 'User'
 
+  has_many_text_images from: :invite_text, as: :text_images
+  accepts_nested_attributes_for :text_images
+
   before_validation :generate_token, on: :create
   before_validation :sanitize_invite_text, if: :invite_text
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
-
-  has_many :text_images, as: :imageable, dependent: :destroy
-  accepts_nested_attributes_for :text_images
 
   validates :token, presence: true, uniqueness: true
   validates :invitee, presence: true, uniqueness: true
   validates :send_invite_email, inclusion: [true, false]
 
   after_destroy :destroy_invitee, if: :pending?
-  after_save :process_invite_text_images, if: :invite_text
 
   private
 
@@ -76,11 +75,6 @@ class Invite < ApplicationRecord
     )
     self.invite_text = service.remove_empty_trailing_tags(invite_text)
     self.invite_text = service.linkify(invite_text)
-  end
-
-  def process_invite_text_images
-    processed_invite_text = TextImageService.new.swap_data_images invite_text, field: :invite_text, imageable: self
-    update_column :invite_text, processed_invite_text
   end
 
   def remove_notifications

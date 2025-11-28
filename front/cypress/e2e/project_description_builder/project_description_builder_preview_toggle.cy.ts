@@ -45,7 +45,7 @@ describe('Project description builder preview', () => {
         })
         .then((phase) => {
           phaseId = phase.body.data.id;
-          cy.visit(`/admin/projects/${projectId}/settings/description`);
+          cy.visit(`/admin/projects/${projectId}/general`);
           cy.get('#e2e-toggle-enable-project-description-builder').click({
             force: true,
           });
@@ -62,9 +62,7 @@ describe('Project description builder preview', () => {
   });
 
   it('shows saved description if there is no draft content', () => {
-    cy.visit(
-      `/admin/project-description-builder/projects/${projectId}/description`
-    );
+    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
     cy.get('div#ROOT');
     cy.wait(1000);
 
@@ -89,9 +87,7 @@ describe('Project description builder preview', () => {
   });
 
   it('shows draft content when it exists on desktop and mobile preview', () => {
-    cy.visit(
-      `/admin/project-description-builder/projects/${projectId}/description`
-    );
+    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
     cy.get('div#ROOT');
     cy.get('div.e2e-text-box').should('exist');
     cy.get('div.e2e-text-box').click();

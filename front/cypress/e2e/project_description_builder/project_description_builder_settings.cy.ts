@@ -39,7 +39,7 @@ describe('Settings panel options', () => {
         })
         .then((phase) => {
           phaseId = phase.body.data.id;
-          cy.visit(`/admin/projects/${projectId}/settings/description`);
+          cy.visit(`/admin/projects/${projectId}/general`);
           cy.get('#e2e-toggle-enable-project-description-builder').click({
             force: true,
           });
@@ -55,9 +55,7 @@ describe('Settings panel options', () => {
   });
 
   it('handles close button click correctly', () => {
-    cy.visit(
-      `/admin/project-description-builder/projects/${projectId}/description`
-    );
+    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
     cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
     });

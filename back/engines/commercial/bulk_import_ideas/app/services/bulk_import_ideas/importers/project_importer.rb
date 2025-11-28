@@ -114,7 +114,10 @@ module BulkImportIdeas::Importers
           option_keys = []
           split_values.each do |option_title|
             option = find_object_by_title(field.options, option_title)
-            option_keys << option[:key] if option
+            next unless option
+
+            # For domicile fields, we need to use the area ID as the option key, except for 'outside' option
+            option_keys << (field.domicile? && option.key != 'outside' ? option.area.id : option.key)
           end
 
           value = option_keys.compact.uniq
@@ -136,8 +139,9 @@ module BulkImportIdeas::Importers
 
     def find_object_by_title(custom_fields, title)
       title = title.downcase
-      custom_fields.find { |f| f[:title_multiloc][@locale.to_s].downcase == title } ||
-        custom_fields.find { |f| f[:key].downcase == title }
+      custom_fields.find { |f| f[:title_multiloc][@locale.to_s]&.downcase == title } ||
+        custom_fields.find { |f| f[:key].downcase == title } ||
+        custom_fields.find { |f| f[:title_multiloc]['en']&.downcase == title } # Try fallback to English title
     end
 
     # Import a single project
@@ -248,9 +252,6 @@ module BulkImportIdeas::Importers
         project_attributes = project_data.except(:phases, :thumbnail_url)
         project = Project.create!(project_attributes)
 
-        # Any images in the description need to be uploaded to our system and refs replaced
-        update_description_images(project)
-
         # Create the project thumbnail image if it exists
         create_project_thumbnail_image(project, project_data)
         log "Created new project: #{project_data[:slug]} (#{project.id})"
@@ -292,8 +293,8 @@ module BulkImportIdeas::Importers
       else
         log "Importing phase: '#{phase_attributes[:title_multiloc][@locale]}'"
         begin
-          phase = Phase.create!(phase_attributes.merge(project: project))
-          update_description_images(phase)
+          phase_attributes = phase_attributes.merge(project: project)
+          phase = Phase.create!(phase_attributes)
           Permissions::PermissionsUpdateService.new.update_permissions_for_scope(phase)
           log "Created '#{phase.participation_method}' phase"
           phase
@@ -402,16 +403,6 @@ module BulkImportIdeas::Importers
     def remove_idea_import_records(ideas)
       # Remove the idea import records for this project - not needed via this import
       BulkImportIdeas::IdeaImport.where(idea: ideas).delete_all
-    end
-
-    def update_description_images(record)
-      record.update!(
-        description_multiloc: TextImageService.new.swap_data_images_multiloc(
-          record.description_multiloc,
-          field: :description_multiloc,
-          imageable: record
-        )
-      )
     end
 
     # Phases will have some user data in the idea rows, so we need to extract that so that we can import the users first

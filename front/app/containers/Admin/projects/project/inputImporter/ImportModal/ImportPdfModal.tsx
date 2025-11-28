@@ -10,8 +10,8 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { UploadFile, SupportedLocale } from 'typings';
-import { object, string, mixed, boolean } from 'yup';
+import { SupportedLocale } from 'typings';
+import { object, mixed, boolean } from 'yup';
 
 import { IBackgroundJobData } from 'api/background_jobs/types';
 import useAddOfflineIdeasAsync from 'api/import_ideas/useAddOfflineIdeasAsync';
@@ -27,15 +27,16 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateLocale from 'utils/yup/validateLocale';
 
 import LocalePicker from './LocalePicker';
 import messages from './messages';
 
 interface FormValues {
   locale: SupportedLocale;
-  file?: UploadFile;
+  file: Record<string, any>;
   personal_data: boolean;
-  google_consent: false;
+  google_consent: boolean;
 }
 
 interface Props {
@@ -63,7 +64,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
       ? `/admin/projects/${projectId}/phases/${phaseId}/survey-form`
       : `/admin/projects/${projectId}/phases/${phaseId}/form`;
 
-  const defaultValues: FormValues = {
+  const defaultValues = {
     locale,
     file: undefined,
     personal_data: false,
@@ -71,24 +72,22 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
   };
 
   const schema = object({
-    locale: string().required(),
+    locale: validateLocale().required(),
     file: mixed().required(formatMessage(messages.pleaseUploadFile)),
 
-    personal_data: boolean(),
-    google_consent: boolean().test(
-      '',
-      formatMessage(messages.consentNeeded),
-      (v, context) => {
+    personal_data: boolean().required(),
+    google_consent: boolean()
+      .required()
+      .test('', formatMessage(messages.consentNeeded), (v, context) => {
         if (context.parent.file?.extension === 'application/pdf') {
           return !!v;
         }
 
         return true;
-      }
-    ),
+      }),
   });
 
-  const methods = useForm({
+  const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues,
     resolver: yupResolver(schema),
@@ -97,9 +96,10 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
   const submitFile = async ({
     file,
     google_consent: _,
-    ...rest
+    locale,
+    personal_data,
   }: FormValues) => {
-    if (!file || !phaseId) return;
+    if (!phaseId) return;
 
     try {
       const response = await addOfflineIdeas({
@@ -107,7 +107,8 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
         file: file.base64,
         format: 'pdf',
         legacy_pdf: legacyPdfImport,
-        ...rest,
+        locale,
+        personal_data,
       });
 
       onImport(response.data);

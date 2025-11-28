@@ -407,11 +407,13 @@ ur:
       title: '%{requesterName} نے آپ کو پروجیکٹ کا جائزہ لینے کے لیے مدعو کیا ہے "%{projectTitle}"'
       event_description: "فی الحال، پروجیکٹ ڈرافٹ موڈ میں ہے اور صارفین کو دکھائی نہیں دے رہا ہے۔ ایک بار جب آپ اس کا جائزہ لے لیں اور اسے منظور کر لیں تو ماڈریٹر اسے شائع کر سکے گا۔"
       cta_button: "پروجیکٹ کا جائزہ لیں۔"
+      preheader: '%{requesterName} نے آپ کو پروجیکٹ کا جائزہ لینے کے لیے مدعو کیا ہے "%{projectTitle}"'
     project_review_state_change:
       subject: '"%{projectTitle}" کو منظور کر لیا گیا ہے۔'
       title: '%{reviewerName} نے پروجیکٹ کی منظوری دی "%{projectTitle}"'
       event_description: "پروجیکٹ اب لائیو جانے کے لیے تیار ہے۔ جب بھی آپ تیار ہوں آپ اسے شائع کر سکتے ہیں!"
       cta_button: "پروجیکٹ کی ترتیبات پر جائیں۔"
+      preheader: '%{reviewerName} نے پروجیکٹ کی منظوری دے دی "%{projectTitle}"'
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
       event_description: '%{organizationName} نے اپنے ڈیجیٹل شرکت کے پلیٹ فارم پر ان پٹ ''%{input_title}'' کی حیثیت کو اپ ڈیٹ کیا۔'

@@ -13,7 +13,6 @@ const useRelevantToHeatmapInputCustomFields = ({
     'multiselect',
     'number',
     'linear_scale',
-    'ranking',
     'rating',
     'multiselect_image',
     'sentiment_linear_scale',

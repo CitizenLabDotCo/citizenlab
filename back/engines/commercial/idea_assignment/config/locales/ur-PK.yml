@@ -10,4 +10,4 @@ ur:
       event_description: 'آپ کو ایک ان پٹ تفویض کیا گیا ہے۔ آفیشل اپڈیٹ لکھ کر یا اس کا اسٹیٹس بدل کر رائے دیں۔'
       title: '%{firstName}، آپ کو ایک ان پٹ تفویض کیا گیا تھا۔'
       subject: 'آپ کے پاس %{organizationName}کے پلیٹ فارم پر ایک اسائنمنٹ ہے۔'
-      preheader_idea: '%{authorName} کا آئیڈیا آپ کو تفویض کیا گیا ہے۔'
+      preheader: '%{authorName} کا ان پٹ آپ کو تفویض کیا گیا ہے۔'

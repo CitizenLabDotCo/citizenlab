@@ -90,11 +90,10 @@ const CommentsAdminDeletionForm = ({
   const { formatMessage } = useIntl();
   const schema = object({
     reason_code: string().required(formatMessage(messages.deleteReasonError)),
-    other_reason: string().when('reason_code', {
-      is: 'other',
-      then: string().required(
-        formatMessage(messages.deleteReasonDescriptionError)
-      ),
+    other_reason: string().when('reason_code', ([value], schema) => {
+      return value === 'other'
+        ? schema.required(formatMessage(messages.deleteReasonDescriptionError))
+        : schema.notRequired();
     }),
   });
 

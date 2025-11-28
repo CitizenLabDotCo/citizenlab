@@ -253,6 +253,14 @@ resource 'StaticPages' do
           expect(json_response).to include_response_error(:slug, 'blank')
         end
       end
+
+      context 'when bottom section contains images' do
+        let(:bottom_info_section_multiloc) { { 'en' => html_with_base64_image } }
+
+        it_behaves_like 'creates record with text images',
+          model_class: StaticPage,
+          field: :bottom_info_section_multiloc
+      end
     end
 
     patch 'web_api/v1/static_pages/:id' do

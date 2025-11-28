@@ -30,6 +30,8 @@ const ContentSettings = ({ field }: ContentSettingsProps) => {
 
   const locales = useAppConfigurationLocales();
   const { watch } = useFormContext();
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const lockedAttributes = field.constraints?.locks?.attributes || [];
   const platformLocale = useLocale();
   const isFieldGrouping = field.input_type === 'page';
@@ -68,7 +70,9 @@ const ContentSettings = ({ field }: ContentSettingsProps) => {
                 values={{
                   inputTagsLink: (
                     <Link
-                      to={`/admin/projects/${projectId ?? ''}/settings/tags`}
+                      to={`/admin/projects/${
+                        projectId ?? ''
+                      }/general/input-tags`}
                       target="_blank"
                     >
                       <FormattedMessage {...messages.inputTagsPage} />

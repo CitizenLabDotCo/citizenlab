@@ -5,7 +5,6 @@ import {
   IconButton,
   colors,
   IconTooltip,
-  Divider,
 } from '@citizenlab/cl2-component-library';
 import { useParams, useSearchParams } from 'react-router-dom';
 
@@ -94,14 +93,15 @@ const Question = ({ insight }: Props) => {
   return (
     <Box
       key={question.data.id}
-      mb="24px"
+      my="14px"
       position="relative"
       data-cy="e2e-analysis-question"
     >
-      <Divider />
-
-      <Box>
-        <QuestionHeader question={question.data.attributes.question} />
+      <Box display="flex" flexDirection="column" gap="8px">
+        <QuestionHeader
+          question={question.data.attributes.question}
+          showAiWarning={false}
+        />
         <InsightBody
           text={answer}
           filters={question.data.attributes.filters}
@@ -119,43 +119,59 @@ const Question = ({ insight }: Props) => {
           phaseId={phaseId}
           customFieldIds={question.data.attributes.custom_field_ids}
         />
-      </Box>
-      <Box display="flex" gap="16px" alignItems="center" mt="16px">
-        <IconButton
-          iconName="filter-2"
-          onClick={handleRestoreFilters}
-          iconColor={colors.textPrimary}
-          iconColorOnHover={colors.textSecondary}
-          a11y_buttonActionMessage={formatMessage(messages.restoreFilters)}
-        />
-        <IconButton
-          iconName={isCopied ? 'check' : 'copy'}
-          iconColor={colors.textPrimary}
-          iconColorOnHover={colors.textSecondary}
-          a11y_buttonActionMessage={'Copy summary to clipboard'}
-          onClick={() => {
-            answer &&
-              navigator.clipboard.writeText(
-                `${question.data.attributes.question}\n\n${removeRefs(answer)}`
-              );
-            setIsCopied(true);
-          }}
-        />
-        <IconTooltip
-          icon="flag"
-          content={<Rate insightId={insight.id} />}
-          theme="light"
-          iconSize="24px"
-          iconColor={colors.textPrimary}
-          placement="top"
-        />
-        <IconButton
-          iconName="delete"
-          onClick={() => handleQuestionDelete(insight.id)}
-          iconColor={colors.textPrimary}
-          iconColorOnHover={colors.textSecondary}
-          a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
-        />
+        <Box
+          display="flex"
+          gap="16px"
+          alignItems="center"
+          justifyContent="flex-end"
+        >
+          <IconButton
+            iconName="filter-2"
+            onClick={handleRestoreFilters}
+            iconColor={colors.textPrimary}
+            iconColorOnHover={colors.textSecondary}
+            iconWidth="20px"
+            iconHeight="20px"
+            a11y_buttonActionMessage={formatMessage(messages.restoreFilters)}
+            p="0"
+          />
+          <IconButton
+            iconName={isCopied ? 'check' : 'copy'}
+            iconColor={colors.textPrimary}
+            iconColorOnHover={colors.textSecondary}
+            iconWidth="20px"
+            iconHeight="20px"
+            a11y_buttonActionMessage={'Copy summary to clipboard'}
+            p="0"
+            onClick={() => {
+              answer &&
+                navigator.clipboard.writeText(
+                  `${question.data.attributes.question}\n\n${removeRefs(
+                    answer
+                  )}`
+                );
+              setIsCopied(true);
+            }}
+          />
+          <IconTooltip
+            icon="flag"
+            content={<Rate insightId={insight.id} />}
+            theme="light"
+            iconSize="20px"
+            iconColor={colors.textPrimary}
+            placement="top"
+          />
+          <IconButton
+            iconName="delete"
+            onClick={() => handleQuestionDelete(insight.id)}
+            iconColor={colors.textPrimary}
+            iconColorOnHover={colors.textSecondary}
+            iconWidth="20px"
+            iconHeight="20px"
+            a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
+            p="0"
+          />
+        </Box>
       </Box>
     </Box>
   );

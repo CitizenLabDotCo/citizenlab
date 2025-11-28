@@ -27,7 +27,8 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def create
-    @phase = Phase.new(phase_params)
+    phase_attributes = phase_params
+    @phase = Phase.new(phase_attributes)
     @phase.project_id = params[:project_id]
     sidefx.before_create(@phase, current_user)
     authorize @phase
@@ -167,6 +168,8 @@ class WebApi::V1::PhasesController < ApplicationController
       :voting_max_total,
       :voting_min_total,
       :voting_max_votes_per_idea,
+      :voting_min_selected_options,
+      :voting_filtering_enabled,
       :poll_anonymous,
       :document_annotation_embed_url,
       :ideas_order,

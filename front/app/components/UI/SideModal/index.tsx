@@ -1,6 +1,11 @@
 import React, { PureComponent } from 'react';
 
-import { Icon, media, colors } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  ClickOutside,
+  media,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { hideVisually } from 'polished';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
@@ -9,7 +14,6 @@ import { Subscription } from 'rxjs';
 import styled from 'styled-components';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import clickOutside from 'utils/containers/clickOutside';
 import eventEmitter from 'utils/eventEmitter';
 
 import messages from './messages';
@@ -20,7 +24,7 @@ const exitTimeout = 350;
 const exitDelay = 0;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
 
-const ModalWrapper = styled(clickOutside)``;
+const ModalWrapper = styled(ClickOutside)``;
 
 const ModalContainer = styled.div<{ width: string }>`
   width: ${({ width }) => width};

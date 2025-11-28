@@ -339,6 +339,14 @@ resource 'Projects' do
                    inc[:type] == 'admin_publication'
                  end.dig(:attributes, :ordering)).to eq 0
         end
+
+        context 'when project description contains text images' do
+          let(:description_multiloc) { { 'en' => html_with_base64_image } }
+
+          it_behaves_like 'creates record with text images',
+            model_class: Project,
+            field: :description_multiloc
+        end
       end
     end
 
@@ -440,6 +448,14 @@ resource 'Projects' do
         @project.update!(default_assignee: create(:admin))
         do_request(project: { default_assignee_id: nil })
         expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to be_nil
+      end
+
+      context 'when description_multiloc contains images' do
+        let(:description_multiloc) { { 'en' => html_with_base64_image } }
+
+        it_behaves_like 'updates record with text images',
+          model_class: Project,
+          field: :description_multiloc
       end
 
       describe do

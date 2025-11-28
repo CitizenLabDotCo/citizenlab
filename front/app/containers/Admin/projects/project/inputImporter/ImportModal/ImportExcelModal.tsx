@@ -10,8 +10,8 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
-import { UploadFile, SupportedLocale } from 'typings';
-import { object, string, mixed } from 'yup';
+import { SupportedLocale } from 'typings';
+import { object, mixed } from 'yup';
 
 import { IBackgroundJobData } from 'api/background_jobs/types';
 import useAddOfflineIdeasAsync from 'api/import_ideas/useAddOfflineIdeasAsync';
@@ -26,13 +26,14 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateLocale from 'utils/yup/validateLocale';
 
 import LocalePicker from './LocalePicker';
 import messages from './messages';
 
 interface FormValues {
   locale: SupportedLocale;
-  file?: UploadFile;
+  file: Record<string, any>;
 }
 
 interface Props {
@@ -56,24 +57,24 @@ const ImportExcelModal = ({ open, onClose, onImport }: Props) => {
       ? `/admin/projects/${projectId}/phases/${phaseId}/survey-form`
       : `/admin/projects/${projectId}/phases/${phaseId}/form`;
 
-  const defaultValues: FormValues = {
+  const defaultValues = {
     locale,
     file: undefined,
   };
 
   const schema = object({
-    locale: string().required(),
+    locale: validateLocale().required(),
     file: mixed().required(formatMessage(messages.pleaseUploadFile)),
   });
 
-  const methods = useForm({
+  const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues,
     resolver: yupResolver(schema),
   });
 
-  const submitFile = async ({ file, ...rest }: FormValues) => {
-    if (!file || !phaseId) return;
+  const submitFile = async ({ file, locale }: FormValues) => {
+    if (!phaseId) return;
 
     try {
       const response = await addOfflineIdeas({
@@ -81,7 +82,7 @@ const ImportExcelModal = ({ open, onClose, onImport }: Props) => {
         file: file.base64,
         format: 'xlsx',
         personal_data: false,
-        ...rest,
+        locale,
       });
 
       onImport(response.data);

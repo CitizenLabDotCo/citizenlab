@@ -38,11 +38,12 @@ const Edit = ({ variant }: { variant: IdeaStatusParticipationMethod }) => {
   const tenantLocales = useAppConfigurationLocales();
 
   const handleSubmit = async (values: FormValues) => {
-    const { ...params } = values;
-
     await updateIdeaStatus({
       id: statusId,
-      requestBody: { ...params, participation_method: variant },
+      requestBody: {
+        ...values,
+        participation_method: variant,
+      },
     });
     goBack();
   };

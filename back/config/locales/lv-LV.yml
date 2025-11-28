@@ -125,6 +125,7 @@ lv:
     open_idea_project_description_preview: Varbūt jums ir ideja, kas neiederas kādā no esošajiem projektiem? Tad ievietojiet to šeit, vāciet atbalstu un iekļaujiet to politiskajā darba kārtībā!
     open_idea_project_description: >
       <p>Jūs varat sākt savu ideju, ja tā neiederas kādā no esošajiem projektiem.</p><p><strong> Mērķis?</strong> Iekļaut jūsu ideju politiskajā darba kārtībā.</p><p><strong>Kā?</strong>Iegūstot atbalstu, proti, vismaz 100 balsis 3 mēnešu laikā. To var izdarīt, vispirms padarot savu ideju "pievilcīgu". Rakstiet to skaidri un saistoši, pievienojiet attēlus, sniedziet spēcīgus argumentus, kas balstīti uz faktiem, pievienojiet pielikumus ar papildu informāciju vai pamatinformāciju, ... Pēc tam, kad esat to izdarījis, sāciet dalīties ar savu ideju sociālajos plašsaziņas līdzekļos vai pa e-pastu. Aiciniet cilvēkus iesaistīties diskusijā par jūsu ideju vai vienkārši pārlieciniet viņus atbalstīt šo ideju, balsojot par to.</p><p><strong>Par ko?</strong> Jūsu ideja var būt par daudz ko, ja vien tā ir saistīta ar jūsu pilsētu un tās politiku. Tā var būt problēma, ar kuru jūs saskaraties, risinājums, ko jūs paredzat, vai pat abu šo veidu kombinācija. Tā var būt neparasta un ilgtermiņa, vai arī reāla un ātra uzvara.</p><p><strong>Un tad? </strong>Vai 3 mēnešu laikā jūs sasniedzāt 100 balsis? Apsveicam! Pilsēta tagad ņems vērā jūsu ideju. Ja jūsu ideja tiks uzskatīta par īstenojamu un nekaitēs konkrētām grupām vai indivīdiem, jums tiks dota iespēja prezentēt savu priekšlikumu padomes sēdē. Tās pašas sēdes laikā padomes locekļi sniegs jums tiešu atgriezenisku saiti par to, ko viņi darīs vai nedarīs ar jūsu ideju un kāpēc. Ja 3 mēnešu laikā nesavāksiet 100 balsis, jūsu priekšlikums netiks izskatīts.</p><p>Mēs esam ieinteresēti uzzināt par jūsu idejām!</p>
+    published_projects: Publicētie projekti
   phases:
     open_idea_phase_title: Pašreizējā fāze
     native_survey_title: Aptauja
@@ -386,3 +387,4 @@ lv:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "Maksimālajai vērtībai jābūt lielākai par minimālo."
+      max_must_be_greater_than_or_equal_to_min_select_count: "Maksimālajam lielumam jābūt lielākam vai vienādam ar minimālo lielumu."

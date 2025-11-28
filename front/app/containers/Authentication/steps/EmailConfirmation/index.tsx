@@ -65,7 +65,7 @@ const EmailConfirmation = ({
     [formatMessage]
   );
 
-  const methods = useForm({
+  const methods = useForm<FormValues>({
     mode: 'onSubmit',
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),

@@ -89,7 +89,7 @@ const ChangePassword = () => {
       current_password: '',
       password: '',
     },
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as any,
   });
 
   if (isNilOrError(authUser)) {

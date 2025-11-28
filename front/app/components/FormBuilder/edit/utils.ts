@@ -302,43 +302,45 @@ const nullableNumber = number()
 
 export const createValidationSchema = (formatMessage: FormatMessage) => {
   return object().shape({
-    customFields: array().of(
-      object().shape({
-        title_multiloc: validateElementTitle(
-          formatMessage(messages.emptyTitleError)
-        ),
-        description_multiloc: object(),
-        input_type: string(),
-        options: validateOneOptionForMultiSelect(
-          formatMessage(messages.emptyOptionError),
-          formatMessage(messages.emptyTitleMessage),
-          { multiselect_image: formatMessage(messages.emptyImageOptionError) }
-        ),
-        matrix_statements: validateOneStatementForMatrix(
-          formatMessage(messages.emptyStatementError),
-          formatMessage(messages.emptyTitleStatementMessage)
-        ),
-        maximum: number(),
-        linear_scale_label_1_multiloc: object(),
-        linear_scale_label_2_multiloc: object(),
-        linear_scale_label_3_multiloc: object(),
-        linear_scale_label_4_multiloc: object(),
-        linear_scale_label_5_multiloc: object(),
-        linear_scale_label_6_multiloc: object(),
-        linear_scale_label_7_multiloc: object(),
-        linear_scale_label_8_multiloc: object(),
-        linear_scale_label_9_multiloc: object(),
-        linear_scale_label_10_multiloc: object(),
-        linear_scale_label_11_multiloc: object(),
-        required: boolean(),
-        ask_follow_up: boolean(),
-        include_in_printed_form: boolean(),
-        min_characters: nullableNumber,
-        max_characters: nullableNumber,
-        temp_id: string(),
-        logic: validateLogic(formatMessage(messages.logicValidationError)),
-      })
-    ),
+    customFields: array()
+      .of(
+        object().shape({
+          title_multiloc: validateElementTitle(
+            formatMessage(messages.emptyTitleError)
+          ),
+          description_multiloc: object(),
+          input_type: string(),
+          options: validateOneOptionForMultiSelect(
+            formatMessage(messages.emptyOptionError),
+            formatMessage(messages.emptyTitleMessage),
+            { multiselect_image: formatMessage(messages.emptyImageOptionError) }
+          ),
+          matrix_statements: validateOneStatementForMatrix(
+            formatMessage(messages.emptyStatementError),
+            formatMessage(messages.emptyTitleStatementMessage)
+          ),
+          maximum: number(),
+          linear_scale_label_1_multiloc: object(),
+          linear_scale_label_2_multiloc: object(),
+          linear_scale_label_3_multiloc: object(),
+          linear_scale_label_4_multiloc: object(),
+          linear_scale_label_5_multiloc: object(),
+          linear_scale_label_6_multiloc: object(),
+          linear_scale_label_7_multiloc: object(),
+          linear_scale_label_8_multiloc: object(),
+          linear_scale_label_9_multiloc: object(),
+          linear_scale_label_10_multiloc: object(),
+          linear_scale_label_11_multiloc: object(),
+          required: boolean(),
+          ask_follow_up: boolean(),
+          include_in_printed_form: boolean(),
+          min_characters: nullableNumber,
+          max_characters: nullableNumber,
+          temp_id: string(),
+          logic: validateLogic(formatMessage(messages.logicValidationError)),
+        })
+      )
+      .required(),
   });
 };
 
@@ -475,11 +477,20 @@ export const transformFieldForSubmission = (
         ? field.maximum_select_count
         : null,
       minimum_select_count: field.select_count_enabled
-        ? field.minimum_select_count || '0'
+        ? field.minimum_select_count || 0
         : null,
       select_count_enabled: field.select_count_enabled,
       random_option_ordering: field.random_option_ordering,
       dropdown_layout: field.dropdown_layout,
+    }),
+    ...(field.input_type === 'topic_ids' && {
+      maximum_select_count: field.select_count_enabled
+        ? field.maximum_select_count
+        : null,
+      minimum_select_count: field.select_count_enabled
+        ? field.minimum_select_count || 0
+        : null,
+      select_count_enabled: field.select_count_enabled,
     }),
     ...(field.input_type === 'ranking' && {
       options: field.options || {},

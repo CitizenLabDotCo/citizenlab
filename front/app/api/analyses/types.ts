@@ -31,6 +31,7 @@ export interface IAnalysisData {
     additional_custom_fields?: { data: IRelationship[] };
     main_custom_field?: { data: IRelationship | null };
     files?: { data: IRelationship[] } | null;
+    insightables?: { data: IRelationship[] };
   };
 }
 

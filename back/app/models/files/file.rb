@@ -102,6 +102,7 @@ module Files
     has_many :files_projects, class_name: 'Files::FilesProject', dependent: :destroy
     has_many :projects, through: :files_projects
     has_one :preview, class_name: 'Files::Preview', dependent: :destroy, inverse_of: :file
+    has_one :transcript, class_name: 'Files::Transcript', dependent: :destroy, inverse_of: :file
 
     has_one :project_folders_file, class_name: 'ProjectFolders::File', foreign_key: 'migrated_file_id', inverse_of: 'migrated_file', dependent: :destroy
     has_one :event_file, class_name: 'EventFile', foreign_key: 'migrated_file_id', inverse_of: 'migrated_file', dependent: :destroy

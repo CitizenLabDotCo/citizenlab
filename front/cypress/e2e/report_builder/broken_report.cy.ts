@@ -1,13 +1,15 @@
-import { ICustomFieldResponse } from '../../../app/api/custom_fields/types';
-import { IIdeaJsonFormSchemas } from '../../../app/api/idea_json_form_schema/types';
+import {
+  ICustomFieldResponse,
+  ICustomFields,
+} from '../../../app/api/custom_fields/types';
 import { randomString, randomEmail } from '../../support/commands';
+import { ICustomFieldOptionData } from '../../../app/api/custom_field_options/types';
 import moment = require('moment');
 
 describe('Broken report', () => {
   let projectId: string;
   let surveyPhaseId: string;
-  let surveyFields: ICustomFieldResponse[];
-  let surveySchema: IIdeaJsonFormSchemas;
+  let surveyCustomFields: ICustomFields;
   const projectTitle = randomString();
 
   let reportPhaseId: string;
@@ -44,35 +46,28 @@ describe('Broken report', () => {
           'multiselect',
         ]);
       })
-      .then((response) => {
-        surveyFields = response.body.data;
-        return cy.apiGetSurveySchema(surveyPhaseId);
+      .then(() => {
+        return cy.apiGetSurveyFields(surveyPhaseId);
       })
       .then((response) => {
-        surveySchema = response.body;
+        surveyCustomFields = response.body;
 
-        const selectKey = surveyFields[1].attributes.key;
-        const multiSelectKey = surveyFields[2].attributes.key;
+        const fields = surveyCustomFields.data;
+        const included = (surveyCustomFields as any)
+          .included as ICustomFieldOptionData[];
 
-        const fieldConfigs: any =
-          surveySchema.data.attributes.json_schema_multiloc.en?.properties;
+        const selectField = fields[1];
+        const multiSelectField = fields[2];
 
-        const getAnswerKeys = (fieldKey: string) => {
-          const fieldConfig = fieldConfigs[fieldKey];
-
-          if (fieldConfig.items) {
-            return fieldConfig.items.oneOf.map((x: any) => x.const);
-          }
-
-          if (fieldConfig.enum) {
-            return fieldConfig.enum;
-          }
-
-          return undefined;
+        const getAnswerKeys = (field: ICustomFieldResponse) => {
+          return field.relationships.options.data.map((option) => {
+            const optionData = included.find((i) => i.id === option.id);
+            return optionData?.attributes.key;
+          });
         };
 
-        const selectAnswerKeys = getAnswerKeys(selectKey);
-        const multiSelectAnswerKeys = getAnswerKeys(multiSelectKey);
+        const selectAnswerKeys = getAnswerKeys(selectField);
+        const multiSelectAnswerKeys = getAnswerKeys(multiSelectField);
 
         const firstName = randomString();
         const lastName = randomString();
@@ -92,8 +87,8 @@ describe('Broken report', () => {
               password,
               project_id: projectId,
               fields: {
-                [selectKey]: selectAnswerKeys[0],
-                [multiSelectKey]: [
+                [selectField.attributes.key]: selectAnswerKeys[0],
+                [multiSelectField.attributes.key]: [
                   multiSelectAnswerKeys[0],
                   multiSelectAnswerKeys[1],
                 ],
@@ -141,7 +136,9 @@ describe('Broken report', () => {
         projectTitle
       );
       cy.get('#e2e-phase-filter').select(surveyPhaseId);
-      cy.get('.e2e-question-select select').first().select(surveyFields[1].id);
+      cy.get('.e2e-question-select select')
+        .first()
+        .select(surveyCustomFields.data[1].id);
 
       // Save
       cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(

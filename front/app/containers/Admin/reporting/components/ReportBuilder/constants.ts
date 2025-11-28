@@ -13,6 +13,8 @@ export const SURVEY_QUESTION_INPUT_TYPES = new Set([
   'point',
   'line',
   'polygon',
+  'text',
+  'multiline_text',
 ]);
 
 // Supported input types for slice survey questions

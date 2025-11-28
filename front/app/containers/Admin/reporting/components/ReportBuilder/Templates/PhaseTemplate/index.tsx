@@ -25,12 +25,24 @@ import TextMultiloc from '../../Widgets/TextMultiloc';
 import { TemplateContext } from '../context';
 
 import messages from './messages';
+import usePrefetchSummaries from './usePrefetchSummaries';
 
-interface Props {
+interface PhaseTemplateContentProps {
   phaseId: string;
+  selectedLocale: string;
+  summaries: Record<string, string>;
 }
 
-const PhaseTemplateContent = ({ phaseId }: Props) => {
+interface PhaseTemplateProps {
+  phaseId: string;
+  selectedLocale: string;
+}
+
+const PhaseTemplateContent = ({
+  phaseId,
+  selectedLocale,
+  summaries,
+}: PhaseTemplateContentProps) => {
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
   const { data: phase } = usePhase(phaseId);
@@ -90,6 +102,11 @@ const PhaseTemplateContent = ({ phaseId }: Props) => {
             phaseId={phaseId}
             questionId={question.id}
           />
+          <TextMultiloc
+            text={{
+              [selectedLocale]: summaries[question.id],
+            }}
+          />
           <WhiteSpace />
         </Element>
       ))}
@@ -106,11 +123,24 @@ const PhaseTemplateContent = ({ phaseId }: Props) => {
   );
 };
 
-const PhaseTemplate = ({ phaseId }: Props) => {
+const PhaseTemplate = ({ phaseId, selectedLocale }: PhaseTemplateProps) => {
+  const { summaries, summariesReady } = usePrefetchSummaries({ phaseId });
   const enabled = useContext(TemplateContext);
 
+  if (!summariesReady) {
+    return null;
+  }
+
   if (enabled) {
-    return <PhaseTemplateContent phaseId={phaseId} />;
+    return (
+      <>
+        <PhaseTemplateContent
+          summaries={summaries}
+          phaseId={phaseId}
+          selectedLocale={selectedLocale}
+        />
+      </>
+    );
   } else {
     return <Element id="phase-report-template" is={Box} canvas />;
   }

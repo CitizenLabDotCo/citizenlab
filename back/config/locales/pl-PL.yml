@@ -125,6 +125,7 @@ pl:
     open_idea_project_description_preview: Może masz pomysł, który nie pasuje do żadnego z istniejących projektów? Zamieść go tutaj, zbierz poparcie i włącz go do agendy!
     open_idea_project_description: >
       <p>Tutaj możesz dodać swój własny pomysł, jeśli nie pasuje do żadnego z istniejących projektów.</p><p><strong>Cel?</strong> Aby twój pomysł znalazł się w oficjalnej agendzie miasta.</p><p><strong>Jak?</strong> Zbierając poparcie, czyli co najmniej 100 głosów w ciągu 3 miesięcy. Możesz to zrobić, najpierw czyniąc swój pomysł "atrakcyjnym". Opisz go w jasny i pobudzający wyobraźnię sposób, dodaj obrazy, podaj mocne argumenty oparte na faktach, dodaj załączniki z dalszymi szczegółami lub informacje ogólne, ... Kiedy to zrobisz, podziel się swoim pomysłem na portalach społecznościowych lub poprzez e-mail. Zaproś ludzi do wzięcia udziału w dyskusji na temat Twojego pomysłu lub po prostu przekonaj ich do poparcia go przez oddanie głosu za.</p><p><strong>O czym?</strong> Twój pomysł może dotyczyć wielu rzeczy, o ile jest związany z Twoim miastem i jego polityką. Może to być problem, którego doświadczasz, rozwiązanie, które sobie wyobrażasz, a nawet kombinacja obu tych rzeczy. Może być trochę zwariowany i długofalowy, lub bardzo namacalny z szybkim rezultatem</p><p><strong>A potem? </strong>Czy udało Ci się zebrać 100 głosów w ciągu 3 miesięcy? Gratulacje! Miasto weźmie teraz pod uwagę Twój pomysł. Jeśli Twój pomysł zostanie uznany za wykonalny i niedyskryminujący konkretnych grup ani jednostkek, będziesz miał okazję przedstawić swoją propozycję podczas posiedzenia rady. Podczas tego samego spotkania członkowie rady udzielą Ci bezpośrednich informacji zwrotnych na temat tego, co zrobią lub nie zrobią z Twoim pomysłem i dlaczego. Jeżeli w ciągu 3 miesięcy nie zbierzesz 100 głosów, Twoja propozycja nie zostanie rozpatrzona.</p><p>Jesteśmy ciekawi Twoich pomysłów</p>
+    published_projects: Opublikowane projekty
   phases:
     open_idea_phase_title: Faza bieżąca
     native_survey_title: Ankieta
@@ -387,3 +388,4 @@ pl:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "Maksimum musi być większe niż minimum."
+      max_must_be_greater_than_or_equal_to_min_select_count: "Maksimum musi być większe lub równe minimum."

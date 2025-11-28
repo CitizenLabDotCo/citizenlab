@@ -68,16 +68,16 @@ export const getSchema = (
     ),
     email: emailSchema,
     password: passwordSchema,
-    termsAndConditionsAccepted: boolean().test(
-      '',
-      formatMessage(authProvidersMessages.tacError),
-      isTruthy
-    ),
-    privacyPolicyAccepted: boolean().test(
-      '',
-      formatMessage(authProvidersMessages.privacyPolicyNotAcceptedError),
-      isTruthy
-    ),
+    termsAndConditionsAccepted: boolean()
+      .test('', formatMessage(authProvidersMessages.tacError), isTruthy)
+      .required(),
+    privacyPolicyAccepted: boolean()
+      .test(
+        '',
+        formatMessage(authProvidersMessages.privacyPolicyNotAcceptedError),
+        isTruthy
+      )
+      .required(),
   });
 
   return schema;

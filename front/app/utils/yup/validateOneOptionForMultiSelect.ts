@@ -13,7 +13,7 @@ const validateOneOptionForMultiSelect = (
         title_multiloc: object(),
       })
     )
-    .when('input_type', (input_type: string, schema) => {
+    .when('input_type', ([input_type], schema) => {
       if (['multiselect', 'select', 'multiselect_image'].includes(input_type)) {
         const noOptionMessage =
           specificControlNoOptionMessage &&

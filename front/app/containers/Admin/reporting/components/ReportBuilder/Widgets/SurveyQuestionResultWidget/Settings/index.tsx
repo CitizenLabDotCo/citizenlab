@@ -1,27 +1,24 @@
 import React, { useCallback } from 'react';
 
-import {
-  Box,
-  Text,
-  Icon,
-  Toggle,
-  colors,
-  stylingConsts,
-} from '@citizenlab/cl2-component-library';
+import { Box, Toggle } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { IOption } from 'typings';
 
+import useAnalyses from 'api/analyses/useAnalyses';
 import { ICustomFields } from 'api/custom_fields/types';
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
 import { GroupMode } from 'api/graph_data_units/requestTypes';
 
-import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey/messages';
+import useLocale from 'hooks/useLocale';
 
 import HeatmapTooltipContent from 'components/admin/FormResults/FormResultsQuestion/MappingQuestions/PointLocationQuestion/HeatmapTooltipContent';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import PhaseFilter from 'components/UI/PhaseFilter';
+import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 
+import Insights from '../../../Analysis/Insights';
 import {
   SURVEY_QUESTION_INPUT_TYPES,
   SLICE_SURVEY_QUESTION_INPUT_TYPES,
@@ -42,6 +39,7 @@ const findQuestion = (questions: ICustomFields, questionId: string) => {
 
 const Settings = () => {
   const { formatMessage } = useIntl();
+  const locale = useLocale();
 
   const {
     actions: { setProp },
@@ -62,6 +60,9 @@ const Settings = () => {
   }));
 
   const { data: questions } = useRawCustomFields({ phaseId });
+  const { data: analyses } = useAnalyses({
+    phaseId,
+  });
 
   const selectedQuestion =
     questions && questionId ? findQuestion(questions, questionId) : undefined;
@@ -134,33 +135,14 @@ const Settings = () => {
     });
   }, [setProp, heatmap]);
 
+  const relevantAnalyses = analyses?.data.filter(
+    (analysis) =>
+      analysis.relationships.main_custom_field?.data?.id === questionId
+  );
+
+  const showInsights = projectId && phaseId && questionId;
   return (
     <Box>
-      <Box
-        bgColor={colors.teal100}
-        borderRadius={stylingConsts.borderRadius}
-        px="12px"
-        py="4px"
-        mt="0px"
-        mb="16px"
-        role="alert"
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <Text variant="bodyS" color="textSecondary">
-          <Icon
-            name="info-outline"
-            width="16px"
-            height="16px"
-            mr="4px"
-            fill="textSecondary"
-            display="inline"
-          />
-          {formatMessage(nativeSurveyMessages.informationText)}
-        </Text>
-      </Box>
-
       <ProjectFilter
         projectId={projectId}
         emptyOptionMessage={widgetMessages.noProject}
@@ -215,6 +197,31 @@ const Settings = () => {
           )}
         </>
       )}
+
+      {showInsights &&
+        relevantAnalyses?.map((analysis) => (
+          <Box
+            key={analysis.id}
+            display="flex"
+            flexDirection="column"
+            gap="8px"
+            mb="16px"
+          >
+            <ButtonWithLink
+              linkTo={`/admin/projects/${projectId}/analysis/${analysis.id}?phase_id=${phaseId}`}
+            >
+              {formatMessage(messages.openAIAnalysis)}
+            </ButtonWithLink>
+            <Warning>{formatMessage(messages.dragAndDrop)}</Warning>
+            <Insights
+              analysisId={analysis.id}
+              key={analysis.id}
+              projectId={projectId}
+              selectedLocale={locale}
+              phaseId={phaseId}
+            />
+          </Box>
+        ))}
 
       {showHeatmapSettings && (
         <Box my="32px">

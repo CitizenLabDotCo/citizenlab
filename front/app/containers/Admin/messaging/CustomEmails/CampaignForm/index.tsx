@@ -91,13 +91,16 @@ const CampaignForm = ({
     body_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.fieldBodyError)
     ),
-    group_ids: array(),
+    group_ids: array().optional(),
   });
 
-  const methods = useForm({
+  const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues,
-    resolver: yupResolver(schema),
+    // Again the same yup bug. group_ids is optional,
+    // but somehow yup still sees it as required.
+    // So we need to typecast here.
+    resolver: yupResolver(schema) as any,
   });
 
   if (!authUser || !appConfig) {

@@ -73,9 +73,11 @@ const UsersPage = () => {
     setGroupCreationModal(groupType);
   };
 
-  const handleSubmitForm = (values: NormalFormValues) => {
+  const handleSubmitForm = (
+    formValues: NormalFormValues & { membership_type: MembershipType }
+  ) => {
     addGroup(
-      { ...values },
+      { ...formValues },
       {
         onSuccess: () => {
           closeGroupCreationModal();
@@ -128,10 +130,9 @@ const UsersPage = () => {
 
           {groupCreationModal === 'manual' && (
             <NormalGroupForm
-              defaultValues={{
-                membership_type: 'manual',
-              }}
-              onSubmit={handleSubmitForm}
+              onSubmit={(values) =>
+                handleSubmitForm({ ...values, membership_type: 'manual' })
+              }
             />
           )}
 

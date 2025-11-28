@@ -5,16 +5,16 @@ module Finder
   module Helpers
     protected
 
-    def where(*args)
-      records.where(*args)
+    def where(*)
+      records.where(*)
     end
 
     def order(arg)
       records.order(arg)
     end
 
-    def scope(scope_name, *args)
-      records.send(scope_name, *args) if records.respond_to?(scope_name)
+    def scope(scope_name, *)
+      records.send(scope_name, *) if records.respond_to?(scope_name)
     end
 
     def beginning_of_day(param)

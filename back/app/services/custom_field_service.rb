@@ -76,9 +76,7 @@ class CustomFieldService
   end
 
   def generate_key(title, other_option: false)
-    return 'other' if other_option == true
-
-    keyify(title)
+    other_option ? 'other' : keyify(title)
   end
 
   def keyify(str)

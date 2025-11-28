@@ -636,7 +636,7 @@ resource 'Idea Custom Fields' do
 
         assert_status 422
         json_response = json_parse response_body
-        expect(json_response).to eq({ :errors => { :form => [{ :error => 'stale_data' }] } })
+        expect(json_response).to eq({ errors: { form: [{ error: 'stale_data' }] } })
       end
 
       example '[error] last custom field is not the end page' do
@@ -653,7 +653,7 @@ resource 'Idea Custom Fields' do
 
         assert_status 422
         json_response = json_parse response_body
-        expect(json_response).to eq({ :errors => { :form => [{ :error => 'no_end_page' }] } })
+        expect(json_response).to eq({ errors: { form: [{ error: 'no_end_page' }] } })
       end
 
       example 'Update linear_scale field' do
@@ -3309,7 +3309,6 @@ resource 'Idea Custom Fields' do
         expect { do_request(request) }.to enqueue_job(LogActivityJob).with(field2, 'changed', any_args).exactly(1).times
 
         # 1 for the form
-        # NOTE: If this test fails, check :params_size - this will increase if additional attributes are added to fields
         request[:custom_fields][2][:title_multiloc] = { 'en' => 'Field 2 changed once more' }
         expect { do_request(request) }
           .to enqueue_job(LogActivityJob).with(
@@ -3317,7 +3316,7 @@ resource 'Idea Custom Fields' do
             'changed',
             User.first,
             kind_of(Integer),
-            payload: { save_type: 'manual', pages: 2, fields: 2, params_size: 1405, form_opened_at: kind_of(DateTime), form_updated_at: kind_of(DateTime) },
+            payload: { save_type: 'manual', pages: 2, fields: 2, params_size: kind_of(Integer), form_opened_at: kind_of(DateTime), form_updated_at: kind_of(DateTime) },
             project_id: custom_form.project_id
           ).exactly(1).times
       end

@@ -5,7 +5,6 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 
 import { Localize } from 'hooks/useLocalize';
 
-import legacyMessages from 'components/Form/Components/Controls/messages';
 import { getPlainTextLengthFromHTML } from 'components/UI/QuillEditor/utils';
 
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
@@ -59,7 +58,7 @@ const validateHTMLWithCharacterLimits = (
 // NOTE: When the question is a built-in field, it is necessary to
 // check the `enabled` property before adding it to the schema.
 
-const generateYupValidationSchema = ({
+const generateYupSchema = ({
   pageQuestions,
   formatMessage,
   localize,
@@ -193,15 +192,45 @@ const generateYupValidationSchema = ({
         if (key === 'proposed_budget') {
           schema[key] =
             required && enabled
-              ? number().required(fieldRequired)
+              ? number()
+                  .transform((value, originalValue) =>
+                    originalValue === '' ? null : value
+                  )
+                  .required(fieldRequired)
               : number()
                   .transform((value, originalValue) =>
                     originalValue === '' ? null : value
                   )
                   .nullable();
+        } else if (key === 'birthyear') {
+          schema[key] = required
+            ? number()
+                .transform((value, originalValue) =>
+                  originalValue === '' ? null : value
+                )
+                .min(1900, formatMessage(messages.birthyearTooLow))
+                .max(
+                  new Date().getFullYear(),
+                  formatMessage(messages.birthyearTooHigh)
+                )
+                .required(fieldRequired)
+            : number()
+                .transform((value, originalValue) =>
+                  originalValue === '' ? null : value
+                )
+                .min(1900, formatMessage(messages.birthyearTooLow))
+                .max(
+                  new Date().getFullYear(),
+                  formatMessage(messages.birthyearTooHigh)
+                )
+                .nullable();
         } else {
           schema[key] = required
-            ? number().required(fieldRequired)
+            ? number()
+                .transform((value, originalValue) =>
+                  originalValue === '' ? null : value
+                )
+                .required(fieldRequired)
             : number()
                 .transform((value, originalValue) =>
                   originalValue === '' ? null : value
@@ -215,13 +244,12 @@ const generateYupValidationSchema = ({
         schema[key] = required ? string().required(fieldRequired) : string();
 
         // Other option
-        const fieldSchemaOther = string().when(key, {
-          is: (value?: string) => value === 'other',
-          then: string().required(
-            formatMessage(messages.typeYourAnswerRequired)
-          ),
-          otherwise: string().notRequired(),
+        const fieldSchemaOther = string().when(key, ([value], schema) => {
+          return value === 'other'
+            ? schema.required(formatMessage(messages.typeYourAnswerRequired))
+            : schema.notRequired();
         });
+
         schema[`${key}_other`] = fieldSchemaOther;
 
         break;
@@ -259,12 +287,12 @@ const generateYupValidationSchema = ({
         }
 
         // Other option
-        const fieldSchemaOther = string().when(key, {
-          is: (value?: string[]) => value?.includes('other'),
-          then: string().required(
-            formatMessage(messages.typeYourAnswerRequired)
-          ),
-          otherwise: string().notRequired(),
+        const fieldSchemaOther = string().when(key, ([value], schema) => {
+          if (!Array.isArray(value)) return schema.notRequired();
+
+          return value.includes('other')
+            ? schema.required(formatMessage(messages.typeYourAnswerRequired))
+            : schema.notRequired();
         });
 
         schema[key] = fieldSchema;
@@ -296,13 +324,35 @@ const generateYupValidationSchema = ({
       }
 
       case 'topic_ids': {
-        schema[key] =
-          required && enabled
-            ? array()
-                .of(string())
-                .min(1, formatMessage(messages.topicRequired))
-                .required(formatMessage(messages.topicRequired))
-            : array().nullable();
+        let fieldSchema = array().of(string());
+
+        if (required && enabled) {
+          fieldSchema = fieldSchema
+            .min(1, formatMessage(messages.topicRequired))
+            .required(formatMessage(messages.topicRequired));
+        }
+
+        if (minimum_select_count) {
+          fieldSchema = fieldSchema.min(
+            minimum_select_count,
+            formatMessage(messages.topicMinimum, {
+              minSelections: minimum_select_count,
+              fieldName: title,
+            })
+          );
+        }
+
+        if (maximum_select_count) {
+          fieldSchema = fieldSchema.max(
+            maximum_select_count,
+            formatMessage(messages.topicMaximum, {
+              maxSelections: maximum_select_count,
+              fieldName: title,
+            })
+          );
+        }
+
+        schema[key] = fieldSchema.nullable();
         break;
       }
 
@@ -347,7 +397,7 @@ const generateYupValidationSchema = ({
 
         schema[key] = required
           ? object().test({
-              message: formatMessage(legacyMessages.allStatementsError),
+              message: formatMessage(messages.allStatementsError),
               test: (object) => {
                 if (typeof object !== 'object') {
                   return false;
@@ -462,4 +512,4 @@ const generateYupValidationSchema = ({
   return object(schema);
 };
 
-export default generateYupValidationSchema;
+export default generateYupSchema;

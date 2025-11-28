@@ -43,7 +43,7 @@ RSpec.describe Analysis::LLM::AzureOpenAI do
         expect(ErrorReporter).to receive(:report_msg).once
 
         expect { service.chat('Hello, how are you?', retries: 0) }
-          .to raise_error(Faraday::TooManyRequestsError)
+          .to raise_error(Analysis::LLM::TooManyRequestsError)
       end
 
       it 'retries the specified number of times before raising the error' do
@@ -56,7 +56,7 @@ RSpec.describe Analysis::LLM::AzureOpenAI do
         expect(ErrorReporter).to receive(:report_msg).once
 
         expect { service.chat('Hello, how are you?', retries: max_retries) }
-          .to raise_error(Faraday::TooManyRequestsError)
+          .to raise_error(Analysis::LLM::TooManyRequestsError)
       end
 
       it 'retries MAX_RETRIES times by default' do
@@ -67,7 +67,7 @@ RSpec.describe Analysis::LLM::AzureOpenAI do
         expect(ErrorReporter).to receive(:report_msg).once
 
         expect { service.chat('Hello, how are you?') }
-          .to raise_error(Faraday::TooManyRequestsError)
+          .to raise_error(Analysis::LLM::TooManyRequestsError)
       end
 
       it 'succeeds if a retry succeeds within the allowed attempts' do
@@ -126,6 +126,29 @@ RSpec.describe Analysis::LLM::AzureOpenAI do
       service.chat(messages)
     end
 
+    it 'supports image inputs' do
+      file = create(:global_file, name: 'header.jpg')
+      message = Analysis::LLM::Message.new('Describe the content of this image?', file)
+
+      expect(service.response_client)
+        .to receive(:create).with(parameters: hash_including(input: [{
+          role: 'user', content: [
+            { type: 'input_text', text: 'Describe the content of this image?' },
+            { type: 'input_image', image_url: start_with('data:image/jpeg;base64,') }
+          ]
+        }])).and_return(nil)
+
+      service.chat(message)
+    end
+
+    it 'raises an error for unsupported image types' do
+      file = build(:global_file, name: 'image.heic', mime_type: 'image/heic')
+      message = Analysis::LLM::Message.new('Describe the content of this image?', file)
+
+      expect { service.chat(message) }
+        .to raise_error(Analysis::LLM::UnsupportedAttachmentError, 'image/heic')
+    end
+
     it 'supports file inputs' do
       file = create(:global_file)
       message = Analysis::LLM::Message.new('Describe the content of this file?', file)
@@ -139,6 +162,41 @@ RSpec.describe Analysis::LLM::AzureOpenAI do
         }])).and_return(nil)
 
       service.chat(message)
+    end
+
+    context 'file support' do
+      it 'uses PDF preview for non-PDF files' do
+        file = create(:global_file, name: 'david.docx')
+        create(:file_preview, file: file, status: 'completed')
+        message = Analysis::LLM::Message.new('Summarize this document', file)
+
+        expect(service.response_client)
+          .to receive(:create).with(parameters: hash_including(input: [{
+            role: 'user', content: [
+              { type: 'input_text', text: 'Summarize this document' },
+              { type: 'input_file', filename: 'david.docx', file_data: start_with('data:application/pdf;base64,') }
+            ]
+          }])).and_return(nil)
+
+        service.chat(message)
+      end
+
+      it 'raises PreviewPendingError when preview is pending' do
+        file = create(:global_file, name: 'david.docx')
+        message = Analysis::LLM::Message.new('Summarize', file)
+
+        expect { service.chat(message) }
+          .to raise_error(Analysis::LLM::PreviewPendingError)
+      end
+
+      it 'raises UnsupportedAttachmentError when preview generation failed' do
+        file = build(:global_file, name: 'data.xlsx', mime_type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        file.build_preview(status: 'failed', content: nil)
+        message = Analysis::LLM::Message.new('Summarize', file)
+
+        expect { service.chat(message) }
+          .to raise_error(Analysis::LLM::UnsupportedAttachmentError, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+      end
     end
   end
 

@@ -12,24 +12,6 @@ describe SideFxStaticPageService do
       expect { service.after_create(page, user) }
         .to have_enqueued_job(LogActivityJob).with(page, 'created', user, page.created_at.to_i)
     end
-
-    it 'runs both info sections through the text image service' do
-      obj = instance_double(TextImageService)
-      allow(TextImageService).to receive(:new).and_return(obj)
-      expect(obj).to receive(:swap_data_images_multiloc).with(page.top_info_section_multiloc, field: :top_info_section_multiloc, imageable: page).and_return(page.top_info_section_multiloc)
-      expect(obj).to receive(:swap_data_images_multiloc).with(page.bottom_info_section_multiloc, field: :bottom_info_section_multiloc, imageable: page).and_return(page.bottom_info_section_multiloc)
-      service.after_create(page, user)
-    end
-  end
-
-  describe 'before_update' do
-    it 'runs runs both info sections through the text image service' do
-      obj = instance_double(TextImageService)
-      allow(TextImageService).to receive(:new).and_return(obj)
-      expect(obj).to receive(:swap_data_images_multiloc).with(page.top_info_section_multiloc, field: :top_info_section_multiloc, imageable: page).and_return(page.top_info_section_multiloc)
-      expect(obj).to receive(:swap_data_images_multiloc).with(page.bottom_info_section_multiloc, field: :bottom_info_section_multiloc, imageable: page).and_return(page.bottom_info_section_multiloc)
-      service.before_update(page, user)
-    end
   end
 
   describe 'after_update' do

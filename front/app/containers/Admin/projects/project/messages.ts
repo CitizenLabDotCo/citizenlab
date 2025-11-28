@@ -98,6 +98,11 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.voteTermError',
     defaultMessage: 'Vote terms must be specified for all locales',
   },
+  minSelectedOptionsError: {
+    id: 'app.containers.AdminPage.ProjectEdit.minSelectedOptionsError',
+    defaultMessage:
+      'Minimum number of selected options must be less than total number of votes',
+  },
   noReactingLimitErrorMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage',
     defaultMessage: 'Not a valid number',
@@ -195,6 +200,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.inputPostingEnabled',
     defaultMessage: 'Submitting inputs',
   },
+  votingFilteringEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.votingFilteringEnabled',
+    defaultMessage: 'Allow users to filter input during voting.',
+  },
   inputCommentingEnabled: {
     id: 'app.containers.AdminPage.ProjectEdit.inputCommentingEnabled',
     defaultMessage: 'Commenting on inputs',
@@ -244,6 +253,11 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.Voting.enabledActionsForUsersDescription',
     defaultMessage: 'Select what additional actions users can take.',
   },
+  enabledVotingFiltering: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.enabledVotingFiltering2',
+    defaultMessage: 'Filtering input',
+  },
+
   defaultViewOptions: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.defaultViewOptions',
     defaultMessage: 'Default view of options',
@@ -596,9 +610,9 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.timelineTab',
     defaultMessage: 'Timeline',
   },
-  participationTab: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.participationTab',
-    defaultMessage: 'Participants',
+  audienceTab: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.audienceTab',
+    defaultMessage: 'Audience',
   },
   messagingTab: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.messagingTab',

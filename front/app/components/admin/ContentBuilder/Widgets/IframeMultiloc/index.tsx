@@ -4,6 +4,8 @@ import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { isYouTubeEmbedLink } from 'utils/urlUtils';
+
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 import AspectRatioContainer from './components/AspectRatioContainer';
@@ -58,10 +60,26 @@ const IframeMultiloc = ({
             aspectRatio={aspectRatio}
             customAspectRatio={customAspectRatio}
           >
-            <iframe {...iframeProps} height="100%" />
+            <iframe
+              referrerPolicy={
+                isYouTubeEmbedLink(iframeProps.src)
+                  ? 'strict-origin-when-cross-origin'
+                  : undefined
+              }
+              {...iframeProps}
+              height="100%"
+            />
           </AspectRatioContainer>
         ) : (
-          <iframe {...iframeProps} height={responsiveHeight} />
+          <iframe
+            referrerPolicy={
+              isYouTubeEmbedLink(iframeProps.src)
+                ? 'strict-origin-when-cross-origin'
+                : undefined
+            }
+            {...iframeProps}
+            height={responsiveHeight}
+          />
         ))}
     </Box>
   );

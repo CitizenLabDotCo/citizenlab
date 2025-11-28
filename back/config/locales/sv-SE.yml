@@ -125,6 +125,7 @@ sv:
     open_idea_project_description_preview: Kanske har du en idé som inte passar i något av de befintliga projekten? Publicera den här, samla stöd och få upp den på den politiska agendan!
     open_idea_project_description: >
       <p>Här kan du starta din egen idé om den inte passar i något av de befintliga projekten.</p><p><strong>Målet?</strong> Att få din idé på den politiska dagordningen. </p><p><strong>Hur?</strong> Genom att samla stöd, dvs. minst 100 röster på 3 månader. Du kan göra det genom att först göra din idé attraktiv. Skriv den på ett tydligt och engagerande sätt, lägg till bilder, ge starka argument som baseras på fakta, lägg till bilagor med ytterligare detaljer eller bakgrundsinformation, ... När du har gjort det börjar du dela din idé på sociala medier eller via e-post. Bjud in personer att delta i diskussionen om din idé, eller övertyga dem helt enkelt att stödja den genom att rösta på den.</p><p><strong>Om vad?</strong> Din idé kan handla om många olika saker, så länge det är kopplat till din stad och stadens politik. Det kan röra sig om ett problem du stöter på, en lösning som du tänker dig eller till och med en kombination av båda. Den kan vara djärv och på lång sikt, eller mycket påtaglig och ge en snabb vinst.</p><p><strong>Och sedan? </strong>Nådde du 100 röster på 3 månader? Grattis! Staden kommer nu att överväga din idé. Om din idé anses vara genomförbar och inte skadar specifika grupper eller individer får du chansen att presentera ditt förslag under rådsmötet. Under samma möte kommer rådets medlemmar ge dig direkt återkoppling om vad de kommer eller inte kommer göra med din idé och varför. Om du inte samlar in 100 röster på 3 månader kommer ditt förslag inte att övervägas.</p><p>Vi är nyfikna på att få veta mer om dina idéer!</p>
+    published_projects: Publicerade projekt
   phases:
     open_idea_phase_title: Nuvarande fas
     native_survey_title: Undersökning
@@ -385,3 +386,4 @@ sv:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "Maxvärdet måste vara större än minvärdet."
+      max_must_be_greater_than_or_equal_to_min_select_count: "Maxvärdet måste vara större än eller lika med minimivärdet."
