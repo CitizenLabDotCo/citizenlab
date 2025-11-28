@@ -137,8 +137,6 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
     const [startDate, setStartDate] = useState<string | null>(null);
     const [folderId, setFolderId] = useState<string | null>(null);
     const [folderOptions, setFolderOptions] = useState<IOption[] | null>(null);
-    const [selectedLocale, setSelectedLocale] =
-      useState<SupportedLocale | null>(null);
     const [titleError, setTitleError] = useState<string | null>(null);
     const [startDateError, setStartDateError] = useState<string | null>(null);
     const [processing, setProcessing] = useState(false);
@@ -234,13 +232,6 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
       setTitleMultiloc(titleMultiloc);
     }, []);
 
-    const onSelectedLocaleChange = useCallback(
-      (newSelectedLocale: SupportedLocale) => {
-        setSelectedLocale(newSelectedLocale);
-      },
-      []
-    );
-
     const onStartDateChange = useCallback((startDate: string) => {
       setResponseError(null);
       setStartDateError(null);
@@ -254,7 +245,6 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
     useEffect(() => {
       setTitleMultiloc(null);
       setStartDate(null);
-      setSelectedLocale(null);
       setTitleError(null);
       setStartDateError(null);
       setProcessing(false);
@@ -361,7 +351,6 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
                 type="text"
                 valueMultiloc={titleMultiloc}
                 onChange={onTitleChange}
-                onSelectedLocaleChange={onSelectedLocaleChange}
                 error={titleError}
                 autoFocus={true}
               />
