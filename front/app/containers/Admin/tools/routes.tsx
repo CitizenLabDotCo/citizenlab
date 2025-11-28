@@ -12,6 +12,9 @@ import messages from './messages';
 const EsriKeyInput = lazy(() => import('./Esri/EsriKeyInput'));
 const PowerBITemplates = lazy(() => import('./PowerBI/PowerBITemplates'));
 const PublicAPITokens = lazy(() => import('./PublicAPI/PublicAPITokens'));
+const WebhookSubscriptions = lazy(
+  () => import('./Webhooks/WebhookSubscriptions')
+);
 const Tools = lazy(() => import('./'));
 
 export enum toolRoutes {
@@ -20,13 +23,15 @@ export enum toolRoutes {
   publicApiTokens = `public-api-tokens`,
   powerBi = `power-bi`,
   esriIntegration = `esri-integration`,
+  webhooks = `webhooks`,
 }
 
 export type toolRouteTypes =
   | AdminRoute<toolRoutes.tools>
   | AdminRoute<`${toolRoutes.tools}/${toolRoutes.publicApiTokens}`>
   | AdminRoute<`${toolRoutes.tools}/${toolRoutes.esriIntegration}`>
-  | AdminRoute<`${toolRoutes.tools}/${toolRoutes.powerBi}`>;
+  | AdminRoute<`${toolRoutes.tools}/${toolRoutes.powerBi}`>
+  | AdminRoute<`${toolRoutes.tools}/${toolRoutes.webhooks}`>;
 
 const toolsRoutes = () => {
   return {
@@ -67,6 +72,14 @@ const toolsRoutes = () => {
         element: (
           <PageLoading>
             <EsriKeyInput />
+          </PageLoading>
+        ),
+      },
+      {
+        path: toolRoutes.webhooks,
+        element: (
+          <PageLoading>
+            <WebhookSubscriptions />
           </PageLoading>
         ),
       },
