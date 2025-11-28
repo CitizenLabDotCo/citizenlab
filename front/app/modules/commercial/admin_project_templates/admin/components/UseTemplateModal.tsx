@@ -212,22 +212,21 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
           setResponseError(error);
         }
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
-      tenantLocales,
       titleMultiloc,
       startDate,
-      selectedLocale,
-      folderId,
+      projectTemplateId,
+      tenantLocales,
+      intl,
       applyProjectTemplate,
       templateId,
+      folderId,
       emitSuccessEvent,
     ]);
 
     const onClose = useCallback(() => {
       close();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [close]);
 
     const onTitleChange = useCallback((titleMultiloc: Multiloc | null) => {
       setResponseError(null);
