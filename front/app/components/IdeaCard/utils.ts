@@ -28,11 +28,10 @@ export const handleScrollToCard = (
 
   // Check if project description images are loaded,
   // if so, perform scroll immediately.
-  if (
-    projectDescription &&
-    checkImagesLoadedAndHandleScroll(projectDescription, performScroll)
-  ) {
-    return () => {}; // No cleanup needed
+  if (projectDescription && checkImagesLoaded(projectDescription)) {
+    return () => {
+      performScroll();
+    };
   }
 
   // Otherwise, images still loading. Wait for the images loaded event before scrolling.
@@ -56,22 +55,17 @@ export const scrollToCardAndCleanUpUrl = (
 };
 
 /*
- * checkImagesLoadedAndHandleScroll:
+ * checkImagesLoaded:
  * Checks if project description images have finished loading.
  */
-export const checkImagesLoadedAndHandleScroll = (
-  projectDescription: Element,
-  performScroll: () => void
-): boolean => {
+export const checkImagesLoaded = (projectDescription: Element): boolean => {
   // First, check if all images in the project description are loaded.
-  // If they are, we've likely missed the IMAGES_LOADED_EVENT which has already
+  // If they are, we've missed the IMAGES_LOADED_EVENT which has already
   // been emitted, so we can perform the scroll right away after checking.
-
   const imagesInDescription = projectDescription.querySelectorAll('img');
 
-  // If there are no images, we can scroll to the card.
+  // If there are no images, return true
   if (imagesInDescription.length === 0) {
-    performScroll();
     return true;
   }
 
@@ -82,8 +76,7 @@ export const checkImagesLoadedAndHandleScroll = (
   });
 
   if (allImagesLoaded) {
-    // All images in description are loaded, scroll immediately
-    performScroll();
+    // All images in description are loaded
     return true;
   }
   return false;
