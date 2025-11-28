@@ -12,11 +12,7 @@ interface GraphQLResponse<T = any> {
 
 const ADMIN_TEMPLATES_GRAPHQL_PATH = '/admin_templates_api/graphql';
 
-type GraphQLReturnType = {
-  data: any;
-};
-
-export const graphqlFetcher = async <TData = GraphQLReturnType>({
+export const graphqlFetcher = async <TData = any>({
   query,
   variables,
 }: GraphQLRequest): Promise<TData> => {
