@@ -43,7 +43,7 @@ const MatrixQuestion = ({ result }: Props) => {
 
   return (
     <Box overflowX="auto">
-      <Table borderSpacing="4px 4px">
+      <Table borderSpacing="4px 4px" display="block">
         <Thead>
           <Tr>
             <Th borderBottom="none !important" />
