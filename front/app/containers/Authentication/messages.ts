@@ -61,10 +61,25 @@ export default defineMessages({
     defaultMessage:
       'An account already exists with this email address.{br}{br}You cannot access the platform using FranceConnect as the personal details do not match. To log in using FranceConnect, you will have to first change your first name or last name on this platform to match your official details.{br}{br}You can log in as you normally do below.',
   },
-  nemlogInUnderMinimumAgeVerificationFailed: {
+  underMinimumAgeVerificationFailed: {
     id: 'app.components.AuthProviders.nemlogInUnderMinimumAgeVerificationFailed',
     defaultMessage:
       'You must be the specified minimum age or above to be verified.',
+  },
+  livesOutsideAreaVerificationFailed: {
+    id: 'app.components.AuthProviders.livesOutsideAreaVerificationFailed',
+    defaultMessage:
+      'You cannot be verified as your address is not in the area required.',
+  },
+  underMinimumAgeAuthFailed: {
+    id: 'app.components.AuthProviders.underMinimumAgeAuthFailed',
+    defaultMessage:
+      'You cannot login as you do not meet the specified minimum age to participate.',
+  },
+  livesOutsideAreaAuthFailed: {
+    id: 'app.components.AuthProviders.livesOutsideAreaAuthFailed',
+    defaultMessage:
+      'You cannot login as your address is not in the area required.',
   },
   verificationRequired: {
     id: 'app.components.AuthProviders.verificationRequired',

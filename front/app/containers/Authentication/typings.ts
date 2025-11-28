@@ -16,7 +16,10 @@ export type ErrorCode =
   | 'unknown'
   | 'franceconnect_merging_failed'
   | 'email_taken_and_user_can_be_verified'
-  | 'not_entitled_under_minimum_age'
+  | 'verification_under_minimum_age'
+  | 'verification_lives_outside'
+  | 'auth_under_minimum_age'
+  | 'auth_lives_outside'
   | 'verification_taken'
   | 'resending_code_failed';
 
@@ -45,8 +48,12 @@ export type SignUpInFlow = 'signup' | 'signin';
 export type SignUpInError =
   | 'general'
   | 'franceconnect_merging_failed'
-  | 'not_entitled_under_minimum_age';
-export type VerificationError = 'not_entitled_under_minimum_age';
+  | 'not_entitled_under_minimum_age'
+  | 'not_entitled_lives_outside';
+export type VerificationError =
+  | 'not_entitled_under_minimum_age'
+  | 'not_entitled_lives_outside'
+  | 'taken';
 
 export interface AuthenticationData {
   context: AuthenticationContext;
