@@ -31,7 +31,8 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           classname: 'Basket',
           participant_id: user.id,
           user_custom_field_values: {},
-          votes: 5
+          votes: 5,
+          ideas_count: 2
         },
         {
           item_id: basket2.id,
@@ -40,7 +41,8 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           classname: 'Basket',
           participant_id: basket2.id,
           user_custom_field_values: {},
-          votes: 42
+          votes: 42,
+          ideas_count: 1
         }
       ])
 

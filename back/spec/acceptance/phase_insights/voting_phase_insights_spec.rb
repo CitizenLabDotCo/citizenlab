@@ -76,10 +76,14 @@ resource 'Phase insights' do
   let!(:comment4) { create(:comment, idea: idea3, author: user3, created_at: 5.days.ago) } # in voting phase & last 7 days
 
   let!(:basket1) { create(:basket, phase: voting_phase, user: user4, submitted_at: 20.days.ago) } # before voting phase (still counts)
+  let!(:baskets_idea1) { create(:baskets_idea, basket: basket1, idea: idea1, votes: 1) }
+  let!(:baskets_idea2) { create(:baskets_idea, basket: basket1, idea: idea2, votes: 1) }
+
   let!(:basket2) { create(:basket, phase: voting_phase, user: user5, submitted_at: 10.days.ago) } # in voting phase
-  let!(:basket3) { create(:basket, phase: voting_phase, user: user5, submitted_at: 5.days.ago) } # in voting phase & last 7 days
-  let!(:basket4) { create(:basket, phase: voting_phase, user: user6, submitted_at: 5.days.ago) } # in voting phase & last 7 days
-  let!(:basket5) { create(:basket, phase: voting_phase, user: user3, submitted_at: 5.days.ago) } # in voting phase & last 7 days
+  let!(:baskets_idea3) { create(:baskets_idea, basket: basket2, idea: idea2, votes: 1) }
+
+  let!(:basket3) { create(:basket, phase: voting_phase, user: user6, submitted_at: 5.days.ago) } # in voting phase & last 7 days
+  let!(:baskets_idea4) { create(:baskets_idea, basket: basket3, idea: idea3, votes: 1) }
 
   let!(:session1) { create(:session, user_id: user2.id) }
   let!(:session2) { create(:session, user_id: user2.id) }
@@ -119,14 +123,14 @@ resource 'Phase insights' do
         visitors: 6,
         visitors_last_7_days: 5,
         participants: 5,
-        participants_last_7_days: 4,
+        participants_last_7_days: 3,
         engagement_rate: 0.833,
         voting: {
-          online_votes: 0,
-          online_votes_last_7_days: 0,
+          online_votes: 4,
+          online_votes_last_7_days: 1,
           offline_votes: 3,
-          voters: 4,
-          voters_last_7_days: 3,
+          voters: 3,
+          voters_last_7_days: 1,
           associated_ideas: 3,
           comments_posted: 3,
           comments_posted_last_7_days: 2
@@ -161,6 +165,36 @@ resource 'Phase insights' do
           reference_distribution: { '18-24': 50, '25-34': 200, '35-44': 400, '45-54': 300, '55-64': 50, '65+': 700 }
         }
       ])
+    end
+
+    context 'when the voting method is budgeting' do
+      before { voting_phase.update!(voting_method: 'budgeting') }
+
+      example_request 'Get insights data for a budgeting voting phase' do
+        assert_status 200
+
+        expect(json_response_body[:data][:id]).to eq(voting_phase.id.to_s)
+        expect(json_response_body[:data][:type]).to eq('phase_insights')
+
+        metrics = json_response_body.dig(:data, :attributes, :metrics)
+        expect(metrics).to eq({
+          visitors: 6,
+          visitors_last_7_days: 5,
+          participants: 5,
+          participants_last_7_days: 3,
+          engagement_rate: 0.833,
+          voting: {
+            online_picks: 4,
+            online_picks_last_7_days: 1,
+            offline_picks: 3,
+            voters: 3,
+            voters_last_7_days: 1,
+            associated_ideas: 3,
+            comments_posted: 3,
+            comments_posted_last_7_days: 2
+          }
+        })
+      end
     end
   end
 end
