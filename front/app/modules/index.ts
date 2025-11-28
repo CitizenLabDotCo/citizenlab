@@ -9,6 +9,7 @@ import bulkIdeaImportConfiguration, {
 import flagInappropriateContentConfiguration from './commercial/flag_inappropriate_content';
 import googleAnalyticsConfiguration from './commercial/google_analytics';
 import googleTagManagerConfiguration from './commercial/google_tag_manager';
+import idAcmConfiguration from './commercial/id_acm';
 import idAuth0Configuration from './commercial/id_auth0';
 import idBogusConfiguration from './commercial/id_bogus';
 import idBosaFasConfiguration from './commercial/id_bosa_fas';
@@ -24,7 +25,6 @@ import idKeycloakConfiguration from './commercial/id_keycloak';
 import idNemLogInConfiguration from './commercial/id_nemlog_in';
 import idOostendeRrnConfiguration from './commercial/id_oostende_rrn';
 import idTwodayConfiguration from './commercial/id_twoday';
-import idAcmConfiguration from './commercial/id_acm';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import impactTrackingConfiguration from './commercial/impact_tracking';
 import intercomConfiguration from './commercial/intercom';
