@@ -17,7 +17,7 @@ resource 'Phase insights' do
     create(
       :phase,
       participation_method: 'voting',
-      voting_method: 'single_voting',
+      voting_method: 'multiple_voting',
       start_at: 14.days.ago,
       end_at: 1.day.ago,
       project: ideation_phase.project,
@@ -77,7 +77,7 @@ resource 'Phase insights' do
 
   let!(:basket1) { create(:basket, phase: voting_phase, user: user4, submitted_at: 20.days.ago) } # before voting phase (still counts)
   let!(:baskets_idea1) { create(:baskets_idea, basket: basket1, idea: idea1, votes: 1) }
-  let!(:baskets_idea2) { create(:baskets_idea, basket: basket1, idea: idea2, votes: 1) }
+  let!(:baskets_idea2) { create(:baskets_idea, basket: basket1, idea: idea2, votes: 3) }
 
   let!(:basket2) { create(:basket, phase: voting_phase, user: user5, submitted_at: 10.days.ago) } # in voting phase
   let!(:baskets_idea3) { create(:baskets_idea, basket: basket2, idea: idea2, votes: 1) }
@@ -126,7 +126,7 @@ resource 'Phase insights' do
         participants_last_7_days: 3,
         engagement_rate: 0.833,
         voting: {
-          online_votes: 4,
+          online_votes: 6,
           online_votes_last_7_days: 1,
           offline_votes: 3,
           voters: 3,
