@@ -27,7 +27,7 @@ const fetchAdminPublicationsByIds = ({ pageNumber, pageSize, ids }: Params) => {
 
 const useAdminPublicationsByIds = (
   queryParams: Params,
-  { enabled = true } = {}
+  { enabled = true, keepPreviousData = false } = {}
 ) => {
   return useInfiniteQuery<
     IAdminPublications,
@@ -44,6 +44,7 @@ const useAdminPublicationsByIds = (
       return hasNextPage && pageNumber ? pageNumber + 1 : null;
     },
     enabled,
+    keepPreviousData,
   });
 };
 

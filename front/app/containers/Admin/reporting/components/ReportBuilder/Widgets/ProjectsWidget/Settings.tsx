@@ -1,13 +1,18 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Label, Text } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
+import { useParams } from 'react-router-dom';
 import { IOption } from 'typings';
 
 import MultipleSelect from 'components/UI/MultipleSelect';
 
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
+import {
+  ReportAdminPublicationSearchInput,
+  ReportAdminPublicationList,
+} from '../_shared/ReportAdminPublicationSelector';
 import {
   TitleInput,
   DateRangeInput,
@@ -18,14 +23,18 @@ import { Props } from './typings';
 
 const Settings = () => {
   const { formatMessage } = useIntl();
-
+  const { folderId } = useParams() as { folderId: string };
   const {
     actions: { setProp },
     publicationStatuses,
+    excludedAdminPublicationIds,
   } = useNode((node) => ({
     publicationStatuses: node.data.props.publicationStatuses?.length
       ? node.data.props.publicationStatuses
       : ['published'],
+    excludedAdminPublicationIds: node.data.props.excludedAdminPublicationIds?.length
+      ? node.data.props.excludedAdminPublicationIds
+      : [],
   }));
 
   const handleStatusChange = (options: IOption[]) => {
@@ -40,6 +49,12 @@ const Settings = () => {
     { value: 'archived', label: formatMessage(messages.archived) },
   ];
 
+  const handleExcludedAdminPublicationIdsChange = (newIds: string[]) => {
+    setProp((props: Props) => {
+      props.excludedAdminPublicationIds = newIds;
+    });
+  };
+
   return (
     <Box>
       <TitleInput />
@@ -53,6 +68,21 @@ const Settings = () => {
           onChange={handleStatusChange}
         />
       </Box>
+      <Box mb="20px">
+        <Label htmlFor="report-admin-publication-search-input">
+          <FormattedMessage {...messages.selectProjectsOrFolders} />
+        </Label>
+        <ReportAdminPublicationSearchInput
+          adminPublicationIds={excludedAdminPublicationIds}
+          publicationStatusFilter={publicationStatuses}
+          folderId={folderId}
+          onChange={handleExcludedAdminPublicationIdsChange}
+        />
+      </Box>
+      <ReportAdminPublicationList
+        adminPublicationIds={excludedAdminPublicationIds}
+        onChange={handleExcludedAdminPublicationIdsChange}
+      />
       <DateRangeInput />
     </Box>
   );

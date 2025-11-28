@@ -33,4 +33,8 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publicationStatus',
     defaultMessage: 'Publication status',
   },
+  selectProjectsOrFolders: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.selectProjectsOrFolders',
+    defaultMessage: 'Select projects or folders to exclude',
+  },
 });
