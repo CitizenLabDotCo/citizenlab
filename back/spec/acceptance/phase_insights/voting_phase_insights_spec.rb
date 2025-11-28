@@ -126,6 +126,7 @@ resource 'Phase insights' do
         participants_last_7_days: 3,
         engagement_rate: 0.833,
         voting: {
+          voting_method: 'multiple_voting',
           online_votes: 6,
           online_votes_last_7_days: 1,
           offline_votes: 3,
@@ -184,6 +185,7 @@ resource 'Phase insights' do
           participants_last_7_days: 3,
           engagement_rate: 0.833,
           voting: {
+            voting_method: 'budgeting',
             online_picks: 4,
             online_picks_last_7_days: 1,
             offline_picks: 3,

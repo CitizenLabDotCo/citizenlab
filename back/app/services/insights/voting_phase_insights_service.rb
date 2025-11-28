@@ -39,7 +39,8 @@ module Insights
         online_picks_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.sum { |p| p[:ideas_count] }
 
         {
-          online_picks: online_picks,
+        voting_method: 'budgeting',  
+        online_picks: online_picks,
           online_picks_last_7_days: online_picks_last_7_days,
           offline_picks: offline_votes,
           voters: voters,
@@ -53,6 +54,7 @@ module Insights
         online_votes_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.sum { |p| p[:votes] }
 
         {
+          voting_method: @phase.voting_method,
           online_votes: online_votes,
           online_votes_last_7_days: online_votes_last_7_days,
           offline_votes: offline_votes,
