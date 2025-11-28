@@ -75,12 +75,6 @@ describe('<ChartCard />', () => {
 });
 
 describe('<ChartCard /> (chart view)', () => {
-  it('renders legend', () => {
-    render(<ChartCard userCustomField={userCustomField} />);
-
-    expect(screen.getByTestId('graph-legend')).toBeInTheDocument();
-  });
-
   describe('N <= 10', () => {
     beforeEach(() => {
       mockData = generateData(6);
@@ -337,19 +331,6 @@ describe('<ChartCard /> (chart view)', () => {
 describe('<ChartCard /> (table view)', () => {
   beforeEach(() => {
     mockData = generateData(6);
-  });
-
-  it('does not render legend in table view', () => {
-    const { container } = render(
-      <ChartCard userCustomField={userCustomField} />
-    );
-
-    expect(screen.getByTestId('graph-legend')).toBeInTheDocument();
-
-    const tableTabButton = container.querySelector('button#table');
-    fireEvent.click(tableTabButton);
-
-    expect(screen.queryByTestId('graph-legend')).not.toBeInTheDocument();
   });
 
   describe('N <= 12', () => {

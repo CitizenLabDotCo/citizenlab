@@ -123,7 +123,7 @@ describe('Form builder multiple choice choose multiple component', () => {
     );
 
     cy.get(`[id^="${questionTitle}"]`)
-      .last()
+      .first()
       .should(($element) => {
         const id = $element.attr('id');
         expect(Cypress._.endsWith(id, '_other')).to.be.true;
