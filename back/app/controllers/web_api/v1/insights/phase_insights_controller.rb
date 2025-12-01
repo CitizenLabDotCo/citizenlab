@@ -15,8 +15,8 @@ module WebApi
         end
 
         def voting_insights
-          # Placeholder for voting-specific insights action
-          puts "Voting action called on phase #{@phase.id}"
+          # Example placeholder for voting-specific insights action
+          Rails.logger.info "Voting action called on phase #{@phase.id}"
         end
 
         private
