@@ -41,6 +41,7 @@ export const projectResponse: ICustomFields = {
       },
     },
   ],
+  included: [],
 };
 
 export const phaseResponse: ICustomFields = {
@@ -84,6 +85,7 @@ export const phaseResponse: ICustomFields = {
       },
     },
   ],
+  included: [],
 };
 
 export const ideaResponse: ICustomFields = {
@@ -127,4 +129,5 @@ export const ideaResponse: ICustomFields = {
       },
     },
   ],
+  included: [],
 };

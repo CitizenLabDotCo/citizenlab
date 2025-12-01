@@ -1,10 +1,11 @@
 import React from 'react';
 
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
-import useCustomFieldStatements from 'api/custom_field_statements/useCustomFieldStatements';
+import useAnalysis from 'api/analyses/useAnalysis';
+import { IFormCustomFieldStatementData } from 'api/custom_field_statements/types';
 import { IIdeaCustomField } from 'api/idea_custom_fields/types';
 
 import useLocale from 'hooks/useLocale';
@@ -24,29 +25,26 @@ const MatrixLongField = ({ customField, rawValue }: Props) => {
   const theme = useTheme();
   const locale = useLocale();
   const { formatMessage } = useIntl();
-  const [searchParams] = useSearchParams();
 
-  // Get phase and project from URL
-  const phaseId = searchParams.get('phase_id') || '';
-  const projectId = useParams<{ projectId: string }>().projectId || '';
+  const { analysisId } = useParams() as { analysisId: string };
+  const { data: analysis } = useAnalysis(analysisId);
 
-  // Get the statements data for the custom field
-  const statements = useCustomFieldStatements({
-    projectId,
-    phaseId,
-    customFields: { data: [customField.data] },
-  });
+  const statements =
+    analysis?.included.filter(
+      (included): included is IFormCustomFieldStatementData =>
+        included.type === 'custom_field_matrix_statement'
+    ) ?? [];
 
   // Create an array for the results with statement and linear scale data, so it's simpler to work with
   const resultArray =
     rawValue &&
     Object.entries(rawValue).map(([key, value]) => {
       const statement = statements.find(
-        (statement) => statement.data?.data.attributes.key === key
+        (statement) => statement.attributes.key === key
       );
 
       return {
-        statementTitle: statement?.data?.data.attributes.title_multiloc,
+        statementTitle: statement?.attributes.title_multiloc,
         valueLabel:
           customField.data.attributes[`linear_scale_label_${value}_multiloc`],
         value,

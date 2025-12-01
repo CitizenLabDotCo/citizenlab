@@ -1,5 +1,8 @@
 import { ILinks, IRelationship } from 'typings';
 
+import { IFormCustomFieldStatementData } from 'api/custom_field_statements/types';
+
+import { BaseData } from 'utils/cl-react-query/fetcher';
 import { Keys } from 'utils/cl-react-query/types';
 
 import analysesKeys from './keys';
@@ -37,6 +40,7 @@ export interface IAnalysisData {
 
 export interface IAnalysis {
   data: IAnalysisData;
+  included: (IFormCustomFieldStatementData | BaseData)[];
 }
 
 export interface IAnalysesQueryParams {
