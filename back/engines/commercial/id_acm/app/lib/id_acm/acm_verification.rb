@@ -108,14 +108,14 @@ module IdAcm
     def validate_rrn!(rrn)
       api = IdOostendeRrn::WijkBudgetApi.new(api_key: config[:rrn_api_key], environment: config[:rrn_environment])
       response = api.verificatie(rrn)
-      raise RuntimeError(response) unless response.success?
+      raise Verification::VerificationService::NotEntitledError, 'service_error' unless response.success?
 
       body = response.parsed_response
       reason = body.dig('verificatieResultaat', 'redenNietGeldig')
-      raise Verification::VerificationService::NoMatchError if reason&.include? 'ERR10'
+      raise Verification::VerificationService::NotEntitledError, 'no_match' if reason&.include? 'ERR10'
       raise Verification::VerificationService::NotEntitledError, 'lives_outside' if reason&.include? 'ERR11'
       raise Verification::VerificationService::NotEntitledError, 'under_minimum_age' if reason&.include? 'ERR12'
-      raise Verification::VerificationService::NoMatchError unless body.dig('verificatieResultaat', 'geldig')
+      raise Verification::VerificationService::NotEntitledError, 'no_match' unless body.dig('verificatieResultaat', 'geldig')
 
       true
     end

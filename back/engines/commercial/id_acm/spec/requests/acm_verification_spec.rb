@@ -106,10 +106,10 @@ context 'ACM verification (Oostende Itsme)' do
     expect(user.verifications.count).to eq 0
   end
 
-  def stub_wijk_budget_api(response)
+  def stub_wijk_budget_api(response, status: 200)
     stub_request(:get, %r{/WijkBudget/verificatie/.*})
       .to_return(
-        status: 200,
+        status: status,
         body: { verificatieResultaat: response }.to_json,
         headers: { 'Content-Type' => 'application/json' }
       )
@@ -238,6 +238,43 @@ context 'ACM verification (Oostende Itsme)' do
         new_user = User.order(created_at: :asc).last
         expect_user_to_be_identified(new_user)
         expect_user_to_be_verified(new_user)
+      end
+    end
+
+    context 'verification service errors' do
+      before { stub_wijk_budget_api({}) } # Empty response to simulate service error
+
+      it 'does not create or login a new user and returns no_match if the response from the API is malformed' do
+        stub_wijk_budget_api({})
+        user_count_before = User.count
+        get '/auth/acm'
+        follow_redirect!
+
+        expect(response).to redirect_to('/?error_code=not_entitled_no_match&authentication_error=true')
+        expect(cookies[:cl2_jwt]).not_to be_present
+        expect(User.count).to eq(user_count_before)
+      end
+
+      it 'does not create or login a new user and returns no_match if it cannot find the RRN in the API' do
+        stub_wijk_budget_api({ geldig: false, redenNietGeldig: 'ERR10' })
+        user_count_before = User.count
+        get '/auth/acm'
+        follow_redirect!
+
+        expect(response).to redirect_to('/?error_code=not_entitled_no_match&authentication_error=true')
+        expect(cookies[:cl2_jwt]).not_to be_present
+        expect(User.count).to eq(user_count_before)
+      end
+
+      it 'does not create or login a new user and returns service_error if there is an error with the API request' do
+        stub_wijk_budget_api(nil, status: 500)
+        user_count_before = User.count
+        get '/auth/acm'
+        follow_redirect!
+
+        expect(response).to redirect_to('/?error_code=not_entitled_service_error&authentication_error=true')
+        expect(cookies[:cl2_jwt]).not_to be_present
+        expect(User.count).to eq(user_count_before)
       end
     end
   end

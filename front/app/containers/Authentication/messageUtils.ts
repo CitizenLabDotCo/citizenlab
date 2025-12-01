@@ -84,8 +84,12 @@ export const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
   email_taken_and_user_can_be_verified: messages.emailTakenAndUserCanBeVerified,
   verification_under_minimum_age: messages.underMinimumAgeVerificationFailed,
   verification_lives_outside: messages.livesOutsideAreaVerificationFailed,
+  verification_no_match: messages.noMatchVerificationFailed,
+  verification_service_error: messages.serviceErrorVerificationFailed,
   auth_under_minimum_age: messages.underMinimumAgeAuthFailed,
   auth_lives_outside: messages.livesOutsideAreaAuthFailed,
+  auth_no_match: messages.noMatchAuthFailed,
+  auth_service_error: messages.serviceErrorAuthFailed,
   resending_code_failed: errorMessages.resending_code_failed,
   verification_taken: errorMessages.verification_taken,
 };

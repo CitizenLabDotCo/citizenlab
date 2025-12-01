@@ -71,6 +71,15 @@ export default defineMessages({
     defaultMessage:
       'You cannot be verified as your address is not in the area required.',
   },
+  noMatchVerificationFailed: {
+    id: 'app.components.AuthProviders.noMatchVerificationFailed',
+    defaultMessage: 'You cannot be verified.',
+  },
+  serviceErrorVerificationFailed: {
+    id: 'app.components.AuthProviders.serviceErrorVerificationFailed',
+    defaultMessage:
+      'You cannot be verified as there is an error with the verification service.',
+  },
   underMinimumAgeAuthFailed: {
     id: 'app.components.AuthProviders.underMinimumAgeAuthFailed',
     defaultMessage:
@@ -80,6 +89,15 @@ export default defineMessages({
     id: 'app.components.AuthProviders.livesOutsideAreaAuthFailed',
     defaultMessage:
       'You cannot login as your address is not in the area required.',
+  },
+  noMatchAuthFailed: {
+    id: 'app.components.AuthProviders.noMatchAuthFailed',
+    defaultMessage: 'You cannot login as we cannot successfully verify you.',
+  },
+  serviceErrorAuthFailed: {
+    id: 'app.components.AuthProviders.serviceErrorAuthFailed',
+    defaultMessage:
+      'You cannot login as there is an error with the verification service.',
   },
   verificationRequired: {
     id: 'app.components.AuthProviders.verificationRequired',
