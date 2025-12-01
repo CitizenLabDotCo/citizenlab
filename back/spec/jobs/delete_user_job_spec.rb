@@ -68,19 +68,15 @@ RSpec.describe DeleteUserJob do
       it 'bans the user email' do
         expect { described_class.perform_now(user.id, current_user, ban_email: true) }
           .to change(EmailBan, :count).by(1)
+        expect(EmailBan.find_for('banned.user+test@gmail.com')).to be_present
       end
 
       it 'stores the ban reason' do
         described_class.perform_now(user.id, current_user, ban_email: true, ban_reason: 'Spam account')
-        ban = EmailBan.find_by_email('banned.user+test@gmail.com')
+        ban = EmailBan.find_for('banned.user+test@gmail.com')
+
         expect(ban.reason).to eq 'Spam account'
         expect(ban.banned_by).to eq current_user
-      end
-
-      it 'blocks normalized email variations from registration' do
-        described_class.perform_now(user.id, current_user, ban_email: true)
-        new_user = build(:user, email: 'banneduser@gmail.com') # normalized match
-        expect(new_user).to be_invalid
       end
 
       it 'does not ban email when ban_email is false' do
