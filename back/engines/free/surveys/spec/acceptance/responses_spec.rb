@@ -121,8 +121,11 @@ resource 'Survey Responses' do
   end
 
   before do
-    admin_header_token
+    # admin_header_token
     header 'Content-Type', 'application/json'
+
+    admin_user = create(:admin)
+    jwt_cookie(admin_user)
 
     stub_request(:get, 'https://api.typeform.com/forms/HKGaPV')
       .with(headers: { 'Authorization' => 'Bearer' })
@@ -144,7 +147,10 @@ resource 'Survey Responses' do
     end
 
     describe 'when resident' do
-      before { resident_header_token }
+      before do
+        user = create(:user)
+        jwt_cookie(user)
+      end
 
       example '[error] XLSX export', document: false do
         do_request

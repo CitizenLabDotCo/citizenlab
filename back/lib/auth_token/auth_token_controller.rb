@@ -3,12 +3,44 @@
 # After https://github.com/nsarno/knock/blob/master/app/controllers/knock/auth_token_controller.rb.
 module AuthToken
   class AuthTokenController < ActionController::API
-    before_action :authenticate
+    include ActionController::Cookies
+
+    TOKEN_LIFETIME = 1.day
+
+    before_action :authenticate, except: [:destroy]
 
     rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
     def create
+      @token_lifetime = token_lifetime
+      token = auth_token.token
+
+      # Use response.set_cookie, not `cookies[:cl2_jwt] =`, to bypass middleware
+      # dependency to ensure reliable HttpOnly flag setting in API-only Rails apps
+      response.set_cookie(:cl2_jwt, {
+        value: token,
+        httponly: true,
+        secure: true,
+        same_site: :strict,
+        expires: @token_lifetime.from_now,
+        path: '/'
+      })
+
       render json: auth_token, status: :created
+    end
+
+    def destroy
+      # Clear the JWT cookie by setting it to expire immediately
+      response.set_cookie(:cl2_jwt, {
+        value: '',
+        expires: 1.second.ago,
+        path: '/',
+        httponly: true,
+        secure: true,
+        same_site: :strict
+      })
+
+      head :no_content
     end
 
     private
@@ -62,6 +94,18 @@ module AuthToken
 
     def not_found
       head :not_found
+    end
+
+    def token_lifetime
+      lifetime = TOKEN_LIFETIME
+
+      if auth_params[:remember_me] == true
+        config = AppConfiguration.instance
+        max_lifetime = config.settings.dig('core', 'authentication_token_lifetime_in_days')
+        lifetime = max_lifetime.days if max_lifetime.present?
+      end
+
+      lifetime
     end
   end
 end

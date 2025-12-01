@@ -17,4 +17,9 @@ module ApiAuthenticationHelper
     token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
     "Bearer #{token}"
   end
+
+  def jwt_cookie(user)
+    token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
+    header 'Cookie', "cl2_jwt=#{token}"
+  end
 end
