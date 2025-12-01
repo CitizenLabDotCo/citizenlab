@@ -148,42 +148,49 @@ const MultiSelectDropdown = ({
       if (value) onChange(value);
       return;
     }
-    if (key === 'ArrowDown') {
-      keyboardEvent.preventDefault();
-      if (index === undefined) {
-        if (!opened) toggleValuesList();
-        else handleKeyDown?.(keyboardEvent);
-        return;
-      }
-      // navigate to next item (circular 0,1,2,3,...,0)
-      tabsRef.current[(index + 1) % totalItems]?.focus();
-      return;
-    }
-    if (key === 'ArrowUp') {
-      if (index !== undefined) {
+
+    switch (key) {
+      case 'ArrowDown':
         keyboardEvent.preventDefault();
-        // navigate to previous item (circular ...,3,2,1,0,4)
-        tabsRef.current[(index - 1 + totalItems) % totalItems]?.focus();
-      }
-      return;
-    }
-    if (key === 'Enter' || key === ' ') {
-      if (value) {
-        keyboardEvent.preventDefault();
-        onChange(value);
-      }
-      return;
-    }
-    if (key === 'Tab' && opened) {
-      toggleValuesList();
-      return;
+        if (index === undefined) {
+          if (!opened) toggleValuesList();
+          else handleKeyDown?.(keyboardEvent);
+          return;
+        }
+        // navigate to next item (circular 0,1,2,3,...,0)
+        tabsRef.current[(index + 1) % totalItems]?.focus();
+
+        break;
+
+      case 'ArrowUp':
+        if (index !== undefined) {
+          keyboardEvent.preventDefault();
+          // navigate to previous item (circular ...,3,2,1,0,4)
+          tabsRef.current[(index - 1 + totalItems) % totalItems]?.focus();
+        }
+
+        break;
+
+      case 'Enter':
+      case ' ':
+        if (value) {
+          keyboardEvent.preventDefault();
+          onChange(value);
+        }
+
+        break;
+
+      case 'Tab':
+        if (opened) {
+          toggleValuesList();
+        }
+
+        break;
     }
   };
 
   const handleOnClickOutside = (event: FormEvent) => {
-    if (onClickOutside) {
-      onClickOutside(event);
-    }
+    onClickOutside?.(event);
   };
 
   return (
