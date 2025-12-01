@@ -7,9 +7,8 @@ import { IEmailBanDetails } from './types';
 
 const checkEmailBan = (email: string) =>
   fetcher<IEmailBanDetails>({
-    path: `/email_bans`,
+    path: `/email_bans/${encodeURIComponent(email)}`,
     action: 'get',
-    queryParams: { email },
   });
 
 const useCheckEmailBan = (email: string | null) => {

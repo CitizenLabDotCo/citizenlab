@@ -6,8 +6,7 @@ class WebApi::V1::EmailBansController < ApplicationController
     render json: raw_json({ count: EmailBan.distinct.count(:email_hash) })
   end
 
-  # GET /email_bans?email=user@example.com
-  # Returns ban details or 404 if not banned
+  # GET /email_bans/:email
   def show
     authorize :email_ban
     ban = EmailBan.find_for(params[:email])
@@ -23,7 +22,7 @@ class WebApi::V1::EmailBansController < ApplicationController
     end
   end
 
-  # DELETE /email_bans?email=user@example.com
+  # DELETE /email_bans/:email
   def destroy
     authorize :email_ban
     ban = EmailBan.find_for(params[:email])
