@@ -153,5 +153,27 @@ RSpec.describe ReportBuilder::Queries::Projects do
           .to match_array [@project1.id, @project2.id, @project3.id, @project5.id, @past_project.id]
       end
     end
+
+    context 'when admin publications are excluded' do
+      it 'excludes projects by their admin_publication_ids' do
+        excluded_admin_pub_id = @project1.admin_publication.id
+
+        result = query.run_query(
+          excluded_admin_publication_ids: [excluded_admin_pub_id]
+        )
+
+        expect(result[:projects].count).to eq(3)
+        expect(result[:projects].pluck(:id)).to match_array [@project2.id, @project3.id, @past_project.id]
+      end
+
+      it 'returns all projects when excluded_admin_publication_ids is empty' do
+        result = query.run_query(
+          excluded_admin_publication_ids: []
+        )
+
+        expect(result[:projects].count).to eq(4)
+        expect(result[:projects].pluck(:id)).to match_array [@project1.id, @project2.id, @project3.id, @past_project.id]
+      end
+    end
   end
 end
