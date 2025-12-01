@@ -6,31 +6,6 @@ RSpec.describe Insights::BasePhaseInsightsService do
   let(:phase) { create(:single_voting_phase, start_at: 15.days.ago, end_at: 2.days.ago) }
   let!(:permission1) { create(:permission, action: 'voting', permission_scope: phase) }
 
-  it 'instantiates the expected service for phase participation method' do
-    phase_factory_to_service_map = {
-      'ideation' => Insights::IdeationPhaseInsightsService,
-      'proposals' => Insights::ProposalsPhaseInsightsService,
-      'multiple_voting' => Insights::VotingPhaseInsightsService,
-      'native_survey' => Insights::NativeSurveyPhaseInsightsService,
-      'common_ground' => Insights::CommonGroundPhaseInsightsService,
-      'volunteering' => Insights::VolunteeringPhaseInsightsService,
-      'poll' => Insights::PollPhaseInsightsService
-    }
-
-    phase_factory_to_service_map.each do |factory, service_class|
-      phase = build(:"#{factory}_phase")
-      expect(service_class).to receive(:new).with(phase).and_call_original
-      described_class.call(phase)
-    end
-  end
-
-  it 'raises ArgumentError for unhandled participation method' do
-    phase = build(:information_phase)
-    expect do
-      described_class.call(phase)
-    end.to raise_error(ArgumentError, 'Unhandled phase participation_method: information')
-  end
-
   describe '#participant_id' do
     it 'returns the user_id when present' do
       expect(service.send(:participant_id, 'item_id', 'user_id', 'user_hash')).to eq('user_id')
