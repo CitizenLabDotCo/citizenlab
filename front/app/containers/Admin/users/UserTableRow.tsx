@@ -109,7 +109,7 @@ const UserTableRow = ({
   const [showUnblockUserModal, setShowUnblockUserModal] = useState(false);
   const [showDeleteUserModal, setShowDeleteUserModal] = useState(false);
   const [showChangeSeatModal, setShowChangeSeatModal] = useState(false);
-  const [changingToRoleType, setChangingToRowType] =
+  const [changingToRoleType, setChangingToRoleType] =
     useState<ChangingRoleTypes>('admin');
 
   const exceedsSeatsAdmin = useExceedsSeats()({
@@ -125,7 +125,7 @@ const UserTableRow = ({
   };
 
   const changeRoleHandler = (changingToRoleType: ChangingRoleTypes) => {
-    setChangingToRowType(changingToRoleType);
+    setChangingToRoleType(changingToRoleType);
     const changeToNormalUser = changingToRoleType === 'user';
 
     const showModalForAdmin =
