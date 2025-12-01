@@ -163,12 +163,8 @@ Rails.application.routes.draw do
 
       resource :app_configuration, only: %i[show update]
 
-      resources :email_bans, only: [] do
-        collection do
-          get :count
-          get '/', action: :show
-          delete '/', action: :destroy
-        end
+      resources :email_bans, only: %i[show destroy], param: :email do
+        get :count, on: :collection
       end
 
       resources :static_pages do

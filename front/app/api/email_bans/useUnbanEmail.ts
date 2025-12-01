@@ -6,9 +6,8 @@ import emailBansKeys from './keys';
 
 const unbanEmail = (email: string) =>
   fetcher({
-    path: `/email_bans`,
+    path: `/email_bans/${encodeURIComponent(email)}`,
     action: 'delete',
-    queryParams: { email },
   });
 
 const useUnbanEmail = () => {
