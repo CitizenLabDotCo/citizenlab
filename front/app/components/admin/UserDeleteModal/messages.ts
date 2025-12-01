@@ -65,6 +65,19 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.deleteUserModal.deleteParticipationData',
     defaultMessage: 'Delete participation data',
   },
+  banEmail: {
+    id: 'app.containers.Admin.Users.deleteUserModal.banEmail',
+    defaultMessage: 'Ban email',
+  },
+  banEmailTooltip: {
+    id: 'app.containers.Admin.Users.deleteUserModal.banEmailTooltip',
+    defaultMessage:
+      'Prevents future registration with this email address and common variants (e.g., dots in Gmail addresses)',
+  },
+  banReasonPlaceholder: {
+    id: 'app.containers.Admin.Users.deleteUserModal.banReasonPlaceholder',
+    defaultMessage: 'Reason (optional)',
+  },
   cannotBeUndone: {
     id: 'app.containers.Admin.Users.deleteUserModal.cannotBeUndone',
     defaultMessage: 'This action cannot be undone.',
