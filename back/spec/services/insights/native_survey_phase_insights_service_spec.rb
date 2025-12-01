@@ -20,12 +20,12 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
       author: user2,
       publication_status: 'draft', # to avoid automatic setting of submitted_at
       creation_phase_id: phase.id
-    ) # during phase, but not published
+    ) # during phase, but not submitted
   end
 
   let!(:idea6) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, author: nil, author_hash: 'some_author_hash', creation_phase_id: phase.id) } # during phase, no author (e.g. anonymous participation)
   let!(:idea7) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, author: nil, author_hash: nil, creation_phase_id: phase.id) } # during phase, no author nor author_hash (e.g. imported idea)
-  
+
   describe '#participation_ideas_posted' do
     it 'returns the participation ideas posted data for non-transitive ideas created during phase' do
       participation_ideas_posted = service.send(:participation_ideas_posted)
