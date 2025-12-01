@@ -11,11 +11,11 @@ module IdAcm
     end
 
     def self.feature_title
-      'ACM Login'
+      'ACM Login (Oostende / itsme)'
     end
 
     def self.feature_description
-      'Allow users to authenticate with ACM (Flanders / ITSME).'
+      'Allow users to authenticate with itsme (Oostende).'
     end
 
     def self.allowed_by_default
