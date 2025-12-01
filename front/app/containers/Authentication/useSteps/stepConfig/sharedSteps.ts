@@ -175,7 +175,7 @@ export const sharedSteps = (
           taken: 'verification_taken',
         };
 
-        if (error_code && errorMap[error_code]) {
+        if (error_code) {
           setCurrentStep('missing-data:verification');
           setError(errorMap[error_code]);
         } else {
@@ -195,7 +195,7 @@ export const sharedSteps = (
         };
 
         setCurrentStep('sign-up:auth-providers');
-        if (error_code && errorMap[error_code]) {
+        if (error_code) {
           setError(errorMap[error_code]);
         } else {
           setError('unknown');
