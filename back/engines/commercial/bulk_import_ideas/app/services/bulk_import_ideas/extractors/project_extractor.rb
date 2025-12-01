@@ -16,11 +16,12 @@ module BulkImportIdeas::Extractors
         title = project_column(row, 'ProjectName')
         next unless title
 
+        id = project_column(row, 'ID') # Project ID - if we need to update an existing project
         publication_status = project_column(row, 'Status')&.downcase || 'draft'
         description_html = project_column(row, 'DescriptionHtml') || ''
         thumbnail_url = image_path_or_url(row, 'ThumbnailUrl')
         banner_url = image_path_or_url(row, 'BannerUrl')
-        id = project_column(row, 'ID') # Project ID - if we need to update an existing project
+        attachments = attachments(row)
 
         # Extract phases (if there are any)
         phases = phase_details[title]&.map do |phase|
@@ -51,7 +52,7 @@ module BulkImportIdeas::Extractors
           },
           visible_to: 'admins',
           phases: phases,
-          attachments: attachments(row)
+          attachments: attachments
         }
       end
 
@@ -134,6 +135,8 @@ module BulkImportIdeas::Extractors
 
     def attachments(row)
       folder_name = project_column(row, 'AttachmentsFolder')
+      return [] unless folder_name.present?
+
       attachments_folder = "#{@xlsx_folder_path}/attachments/#{folder_name}"
       Dir.glob("#{attachments_folder}/**/*").select do |file_path|
         next if file_path.include?('banner.') || file_path.include?('thumbnail.') # Skip these special files
