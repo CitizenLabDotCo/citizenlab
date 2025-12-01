@@ -32,7 +32,8 @@ const Settings = () => {
     publicationStatuses: node.data.props.publicationStatuses?.length
       ? node.data.props.publicationStatuses
       : ['published'],
-    excludedAdminPublicationIds: node.data.props.excludedAdminPublicationIds?.length
+    excludedAdminPublicationIds: node.data.props.excludedAdminPublicationIds
+      ?.length
       ? node.data.props.excludedAdminPublicationIds
       : [],
   }));
@@ -56,7 +57,7 @@ const Settings = () => {
   };
 
   return (
-    <Box>
+    <Box mb="20px">
       <TitleInput />
       <Box mb="20px">
         <Text variant="bodyM" color="textSecondary" mb="5px">
@@ -68,6 +69,7 @@ const Settings = () => {
           onChange={handleStatusChange}
         />
       </Box>
+      <DateRangeInput />
       <Box mb="20px">
         <Label htmlFor="report-admin-publication-search-input">
           <FormattedMessage {...messages.selectProjectsOrFolders} />
@@ -83,7 +85,6 @@ const Settings = () => {
         adminPublicationIds={excludedAdminPublicationIds}
         onChange={handleExcludedAdminPublicationIdsChange}
       />
-      <DateRangeInput />
     </Box>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
 import {
   Box,
@@ -129,12 +129,18 @@ const ReportAdminPublicationList = ({
     }
   );
 
-  const adminPublications =
-    adminPublicationIds.length > 0
-      ? selectedAdminPublications?.pages.flatMap((page) => page.data) ?? []
-      : [];
+  const adminPublications = useMemo(
+    () =>
+      adminPublicationIds.length > 0
+        ? selectedAdminPublications?.pages.flatMap((page) => page.data) ?? []
+        : [],
+    [adminPublicationIds.length, selectedAdminPublications]
+  );
 
-  const tree = buildTree(adminPublications);
+  const tree = useMemo(
+    () => buildTree(adminPublications),
+    [adminPublications]
+  );
 
   const toggleExpanded = (id: string) => {
     setExpandedIds((prev) => {
@@ -164,13 +170,7 @@ const ReportAdminPublicationList = ({
   };
 
   if (adminPublications.length === 0) {
-    return (
-      <Box p="12px">
-        <Text color="textSecondary" fontSize="s">
-          No projects or folders selected
-        </Text>
-      </Box>
-    );
+    return null;
   }
 
   return (

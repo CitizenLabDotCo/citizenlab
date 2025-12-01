@@ -18,12 +18,11 @@ export const getOptionId = (option: IAdminPublicationData | LoadMore) =>
 
 export const getOptions = (
   infiniteData: InfiniteData<IAdminPublications> | undefined,
-  adminPublicationIds: string[] | undefined,
+  adminPublicationIds: string[],
   hasNextPage: boolean | undefined,
   localize: (multiloc: Multiloc) => string
 ): (IAdminPublicationData | LoadMore)[] => {
   if (!infiniteData) return [];
-  if (!adminPublicationIds) return [];
 
   const adminPublicationIdsSet = new Set(adminPublicationIds);
 
@@ -56,26 +55,30 @@ export interface TreeNode extends IAdminPublicationData {
 export const buildTree = (
   adminPublications: IAdminPublicationData[]
 ): TreeNode[] => {
-  const idToNodeMap = new Map<string, TreeNode>();
-  const roots: TreeNode[] = [];
+  const nodeById = new Map<string, TreeNode>();
+  const rootNodes: TreeNode[] = [];
 
-  adminPublications.forEach((pub) => {
-    idToNodeMap.set(pub.id, { ...pub, children: [] });
+  // We must create all nodes first before we can reference them as parents
+  adminPublications.forEach((publication) => {
+    nodeById.set(publication.id, { ...publication, children: [] });
   });
 
-  adminPublications.forEach((pub) => {
-    const node = idToNodeMap.get(pub.id)!;
+  // Now that all nodes exist, we can safely look up any parent
+  adminPublications.forEach((publication) => {
+    const currentNode = nodeById.get(publication.id)!;
     const parentId =
-      pub.attributes.parent_id || pub.relationships.parent.data?.id;
+      publication.attributes.parent_id ||
+      publication.relationships.parent.data?.id;
 
-    if (parentId && idToNodeMap.has(parentId)) {
-      idToNodeMap.get(parentId)!.children.push(node);
+    if (parentId && nodeById.has(parentId)) {
+      const parentNode = nodeById.get(parentId)!;
+      parentNode.children.push(currentNode);
     } else {
-      roots.push(node);
+      rootNodes.push(currentNode);
     }
   });
 
-  return roots;
+  return rootNodes;
 };
 
 export const getAllDescendantIds = (
@@ -85,5 +88,22 @@ export const getAllDescendantIds = (
   const folder = adminPublications.find((pub) => pub.id === folderId);
   if (!folder) return [];
 
-  return folder.relationships.children.data.map((child) => child.id);
+  const descendantIds: string[] = [];
+  const directChildrenIds = folder.relationships.children.data.map(
+    (child) => child.id
+  );
+
+  directChildrenIds.forEach((childId) => {
+    // Add the direct child
+    descendantIds.push(childId);
+
+    // If this child is also a folder, recursively get its descendants
+    const child = adminPublications.find((pub) => pub.id === childId);
+    if (child?.relationships.publication.data.type === 'folder') {
+      const grandchildrenIds = getAllDescendantIds(childId, adminPublications);
+      descendantIds.push(...grandchildrenIds);
+    }
+  });
+
+  return descendantIds;
 };
