@@ -90,6 +90,7 @@ Rails.application.routes.draw do
         post :similar_ideas, on: :collection
         resources :authoring_assistance_responses, only: %i[create]
         get :as_xlsx, on: :member, action: 'show_xlsx'
+        resources :exposures, controller: 'idea_exposures', only: %i[create]
       end
 
       resources :background_jobs, only: %i[index]
