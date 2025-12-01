@@ -87,14 +87,14 @@ const TopBar = () => {
   const { formatMessage } = useIntl();
 
   const goBack = () => {
-    if (analysis?.data.attributes.participation_method === 'native_survey') {
-      clHistory.push(`/admin/projects/${projectId}/phases/${phaseId}/insights`);
-    } else if (
-      analysis?.data.attributes.participation_method ===
-      'community_monitor_survey'
-    ) {
+    const fromInsights = urlParams.get('from') === 'insights';
+    const participationMethod = analysis?.data.attributes.participation_method;
+
+    if (participationMethod === 'community_monitor_survey') {
       clHistory.push(`/admin/community-monitor/live-monitor`);
-    } else if (analysis?.data.attributes.participation_method === 'proposals') {
+    } else if (fromInsights || participationMethod === 'native_survey') {
+      clHistory.push(`/admin/projects/${projectId}/phases/${phaseId}/insights`);
+    } else if (participationMethod === 'proposals') {
       clHistory.push(
         `/admin/projects/${projectId}/phases/${phaseId}/proposals`
       );
