@@ -97,17 +97,10 @@ module IdAcm
     end
 
     def entitled?(auth)
-      verify_sync(**verification_parameters(auth))
-    end
-
-    def verify_sync(rrn:)
       return true unless config[:rrn_verification] && config[:rrn_verification] != 'None'
 
+      rrn = auth.extra.raw_info.rrn
       validate_rrn!(rrn)
-    end
-
-    def verification_parameters(auth)
-      { rrn: auth.extra.raw_info.rrn }
     end
 
     private
