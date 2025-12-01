@@ -71,7 +71,7 @@ resource 'Phase insights' do
       author: ns_user4,
       creation_phase_id: native_survey_phase.id,
       custom_field_values: { gender: 'male', birthyear: 1990 }
-    )
+    ) # created during native survey phase, but not submitted (considered incomplete, affecting completion rate)
   end
 
   let!(:session1) { create(:session, user_id: ns_user1.id) }
