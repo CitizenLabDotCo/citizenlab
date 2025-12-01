@@ -163,6 +163,14 @@ Rails.application.routes.draw do
 
       resource :app_configuration, only: %i[show update]
 
+      resources :email_bans, only: [] do
+        collection do
+          get :count
+          get '/', action: :show
+          delete '/', action: :destroy
+        end
+      end
+
       resources :static_pages do
         concerns :file_attachable, attachable_type: 'StaticPage'
         resources :files, defaults: { container_type: 'StaticPage' }, shallow: false
