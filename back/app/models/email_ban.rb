@@ -48,7 +48,7 @@ class EmailBan < ApplicationRecord
       )
     end
 
-    def find_by_email(email)
+    def find_for(email)
       canonical = EmailNormalizationService.canonicalize(email)
       normalized = EmailNormalizationService.normalize(email)
 

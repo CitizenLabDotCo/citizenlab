@@ -10,7 +10,7 @@ class WebApi::V1::EmailBansController < ApplicationController
   # Returns ban details or 404 if not banned
   def show
     authorize :email_ban
-    ban = EmailBan.find_by_email(params[:email])
+    ban = EmailBan.find_for(params[:email])
     if ban
       render json: raw_json({
         id: ban.id,
@@ -26,7 +26,7 @@ class WebApi::V1::EmailBansController < ApplicationController
   # DELETE /email_bans?email=user@example.com
   def destroy
     authorize :email_ban
-    ban = EmailBan.find_by_email(params[:email])
+    ban = EmailBan.find_for(params[:email])
     if ban
       ban.destroy!
       head :ok
