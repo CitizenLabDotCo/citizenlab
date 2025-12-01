@@ -1,7 +1,7 @@
 RSpec.shared_examples 'phase insights demographics' do |gender_blank:, birthyear_blank:|
   example_request 'includes expected demographics' do
     demographics = json_response_body.dig(:data, :attributes, :demographics)
-    
+
     expect(demographics[:fields]).to match_array([
       {
         id: custom_field_gender.id,
