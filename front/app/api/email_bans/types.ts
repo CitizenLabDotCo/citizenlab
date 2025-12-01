@@ -13,12 +13,20 @@ export interface IEmailBansCount {
   };
 }
 
-export interface IEmailBanDetails {
-  data: {
-    type: 'email_ban';
-    attributes: {
-      id: string;
-      reason: string | null;
+export interface IEmailBanData {
+  id: string;
+  type: 'email_ban';
+  attributes: {
+    reason: string | null;
+    created_at: string;
+  };
+  relationships: {
+    banned_by: {
+      data: { id: string; type: 'user' } | null;
     };
   };
+}
+
+export interface IEmailBanDetails {
+  data: IEmailBanData;
 }
