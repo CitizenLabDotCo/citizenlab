@@ -9,31 +9,6 @@ module Insights
       @permissions_custom_fields_service ||= Permissions::PermissionsCustomFieldsService.new
     end
 
-    # --- FACTORY/DISPATCHER METHOD (Class Method) ---
-    # This method is the entry point that handles selection and instantiation.
-    def self.call(phase)
-      service_class = case phase.participation_method
-      when 'ideation'
-        IdeationPhaseInsightsService
-      when 'proposals'
-        ProposalsPhaseInsightsService
-      when 'voting'
-        VotingPhaseInsightsService
-      when 'native_survey'
-        NativeSurveyPhaseInsightsService
-      when 'common_ground'
-        CommonGroundPhaseInsightsService
-      when 'volunteering'
-        VolunteeringPhaseInsightsService
-      when 'poll'
-        PollPhaseInsightsService
-      else
-        raise ArgumentError, "Unhandled phase participation_method: #{phase.participation_method}"
-      end
-
-      service_class.new(phase).call
-    end
-
     # --- TEMPLATE METHOD (Instance Method) ---
     # This method defines the immutable workflow for all child services.
     def call
