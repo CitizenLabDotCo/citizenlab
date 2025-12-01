@@ -12,15 +12,20 @@ module Insights
     # --- TEMPLATE METHOD (Instance Method) ---
     # This method defines the immutable workflow for all child services.
     def call
-      cached_insights_data
+      participations = cached_phase_participations
+      cached_insights_data(participations)
+    end
+
+    # TODO: Implement caching, as intention is to resue cached participations in various places
+    def cached_phase_participations
+      participations = phase_participations
     end
 
     private
 
     # TODO: Implement caching? (may not be needed if performance good enough)
-    def cached_insights_data
+    def cached_insights_data(participations)
       visitors_data = VisitsService.new.phase_visitors_data(@phase)
-      participations = phase_participations # cache separately? (so can be reused in not yet implemented phase specific filtering/slicing methods?)
       flattened_participations = participations.values.flatten
       participant_ids = flattened_participations.pluck(:participant_id).uniq
       participation_method_metrics = phase_participation_method_metrics(participations)

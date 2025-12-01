@@ -11,6 +11,7 @@ module ReportBuilder
       start_at: nil,
       end_at: nil,
       project_id: nil,
+      phase_id: nil,
       resolution: 'month',
       exclude_roles: nil,
       compare_start_at: nil,
@@ -20,6 +21,9 @@ module ReportBuilder
       validate_resolution(resolution)
 
       start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
+
+      test = true
+      return phase_response(phase_id, resolution) if phase_id.present? && test
 
       participations_in_period = participations(
         start_date,
@@ -80,6 +84,34 @@ module ReportBuilder
       response
     end
 
+    def phase_response(phase_id, resolution)
+      phase = Phase.find(phase_id)
+      participations_hash = phase.pmethod.phase_insights_class.new(phase).cached_phase_participations
+      participations = participations_hash.values.flatten
+
+      # Group participations by resolution and count unique participants
+      participants_timeseries = participations
+        .group_by { |p| date_truncate(p[:acted_at], resolution) }
+        .map do |date_group, participations_in_group|
+          {
+            participants: participations_in_group.map { |p| p[:participant_id] }.uniq.count,
+            date_group: date_group
+          }
+        end
+        .sort_by { |row| row[:date_group] }
+
+      participants_whole_period = participations
+        .map { |p| p[:participant_id] }
+        .uniq
+        .count
+
+      {
+        participants_timeseries: participants_timeseries,
+        participants_whole_period: participants_whole_period,
+        participation_rate_whole_period: nil # Could calculate if needed
+      }
+    end
+
     def participations(
       start_date,
       end_date,
@@ -129,6 +161,22 @@ module ReportBuilder
       visitors = query.distinct.count(:monthly_user_hash)
 
       visitors.zero? ? 0 : (participants / visitors.to_f)
+    end
+
+    def date_truncate(datetime, resolution)
+      date = datetime.to_date
+      case resolution
+      when 'day'
+        date
+      when 'week'
+        date.beginning_of_week
+      when 'month'
+        Date.new(date.year, date.month, 1)
+      when 'year'
+        Date.new(date.year, 1, 1)
+      else
+        raise ArgumentError, "Invalid resolution: #{resolution}"
+      end
     end
   end
 end
