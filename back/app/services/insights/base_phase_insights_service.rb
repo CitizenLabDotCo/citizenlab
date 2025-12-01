@@ -45,7 +45,7 @@ module Insights
     # TODO: Implement caching? (may not be needed if performance good enough)
     def cached_insights_data
       visitors_data = VisitsService.new.phase_visitors_data(@phase)
-      participations = phase_participations
+      participations = phase_participations # cache separately? (so can be reused in not yet implemented phase specific filtering/slicing methods?)
       flattened_participations = participations.values.flatten
       participant_ids = flattened_participations.pluck(:participant_id).uniq
       participation_method_metrics = phase_participation_method_metrics(participations)
