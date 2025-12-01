@@ -248,6 +248,77 @@ describe Export::Xlsx::InputSheetGenerator do
       end
     end
 
+    context 'for a proposals context' do
+      let(:phase) { create(:proposals_phase) }
+
+      let(:inputs) { [
+        create(:proposal, project: phase.project, creation_phase: phase, author: create(:user)),
+        create(:proposal, project: phase.project, creation_phase: phase, author: create(:user), publication_status: 'draft', published_at: nil),
+      ] }
+
+      it 'Generates a sheet with the phase inputs' do
+        expect(xlsx).to match([
+          {
+            sheet_name: 'My sheet',
+            column_headers: [
+              'ID',
+              'Title',
+              'Description',
+              'Attachments',
+              'Tags',
+              'Latitude',
+              'Longitude',
+              'Location',
+              'Proposed Budget',
+              'Author name',
+              'Author email',
+              'Author ID',
+              'Submitted at',
+              'Published at',
+              'Comments',
+              'Likes',
+              'Dislikes',
+              'Offline votes',
+              'URL',
+              'Project',
+              'Status',
+              'Assignee',
+              'Assignee email',
+              'birthyear'
+            ],
+            rows: [
+              [
+                inputs.first.id,
+                inputs.first.title_multiloc['en'],
+                'It would improve the air quality!', # html tags are removed
+                %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\Z},
+                "#{inputs.first.topics[0].title_multiloc['en']};#{inputs.first.topics[1].title_multiloc['en']}",
+                inputs.first.location_point.coordinates.last,
+                inputs.first.location_point.coordinates.first,
+                inputs.first.location_description,
+                inputs.first.proposed_budget,
+                inputs.first.author.full_name,
+                inputs.first.author.email,
+                inputs.first.author_id,
+                an_instance_of(DateTime), # created_at
+                an_instance_of(DateTime), # published_at
+                1,
+                2,
+                1,
+                5,
+                "http://example.org/ideas/#{inputs.first.slug}",
+                phase.project.title_multiloc['en'],
+                inputs.first.idea_status.title_multiloc['en'],
+                inputs.first.assignee.full_name,
+                inputs.first.assignee.email,
+                1999
+              ]
+            ]
+          }
+        ])
+      end
+    end
+
     context 'for a native survey context' do
       let(:phase) { create(:native_survey_phase, with_permissions: true) }
       let(:form) { create(:custom_form, participation_context: phase) }
