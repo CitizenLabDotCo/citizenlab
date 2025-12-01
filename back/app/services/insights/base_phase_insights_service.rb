@@ -18,7 +18,8 @@ module Insights
 
     # TODO: Implement caching, as intention is to resue cached participations in various places
     def cached_phase_participations
-      participations = phase_participations
+      # Imagine some caching stuff is here ;-)
+      phase_participations
     end
 
     private
