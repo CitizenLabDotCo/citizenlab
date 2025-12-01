@@ -3,11 +3,16 @@ import React from 'react';
 import { Box, Title, Button } from 'component-library';
 import { useParams } from 'react-router-dom';
 
+import useAddAnalysis from 'api/analyses/useAddAnalysis';
+import useAnalyses from 'api/analyses/useAnalyses';
 import usePhase from 'api/phases/usePhase';
 
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+
+import { getAnalysisScope } from '../../components/AnalysisBanner/utils';
 
 import DemographicsSection from './DemographicsSection';
 import messages from './messages';
@@ -17,9 +22,16 @@ import ParticipantsTimeline from './ParticipantsTimeline';
 import ParticipationMetrics from './ParticipationMetrics';
 import { PdfExportProvider, usePdfExportContext } from './PdfExportContext';
 
+const AI_ANALYSIS_SUPPORTED_METHODS = [
+  'ideation',
+  'voting',
+  'proposals',
+  'native_survey',
+];
+
 // Inner component that uses the PDF export context
 const InsightsContent = () => {
-  const { phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
   };
@@ -31,11 +43,47 @@ const InsightsContent = () => {
     isPdfExport,
   } = usePdfExportContext();
 
+  const participationMethod = phase?.data.attributes.participation_method;
+  const supportsAiAnalysis =
+    participationMethod &&
+    AI_ANALYSIS_SUPPORTED_METHODS.includes(participationMethod);
+  const scope = getAnalysisScope(participationMethod);
+
+  // Get the analysis - use projectId for project-scoped methods, phaseId for phase-scoped
+  const { data: analyses } = useAnalyses(
+    supportsAiAnalysis
+      ? scope === 'project'
+        ? { projectId }
+        : { phaseId }
+      : { phaseId: undefined }
+  );
+  const analysisId = analyses?.data[0]?.id;
+
+  const { mutate: createAnalysis, isLoading: isCreatingAnalysis } =
+    useAddAnalysis();
+
+  const handleGoToAnalysis = () => {
+    if (analysisId) {
+      clHistory.push(
+        `/admin/projects/${projectId}/analysis/${analysisId}?phase_id=${phaseId}&from=insights`
+      );
+    } else {
+      // Create analysis with projectId for project-scoped methods, phaseId for phase-scoped
+      const analysisParams = scope === 'project' ? { projectId } : { phaseId };
+      createAnalysis(analysisParams, {
+        onSuccess: (analysis) => {
+          clHistory.push(
+            `/admin/projects/${projectId}/analysis/${analysis.data.id}?phase_id=${phaseId}&from=insights`
+          );
+        },
+      });
+    }
+  };
+
   if (!phase) {
     return null;
   }
 
-  const participationMethod = phase.data.attributes.participation_method;
   const isNativeSurvey = participationMethod === 'native_survey';
 
   // Get phase name for PDF title
@@ -86,7 +134,7 @@ const InsightsContent = () => {
                 <FormattedMessage {...messages.generateReport} />
               </Button>
               <Button
-                buttonStyle="primary"
+                buttonStyle={supportsAiAnalysis ? 'secondary' : 'primary'}
                 icon="download"
                 onClick={downloadPdf}
                 processing={isDownloadingPdf}
@@ -94,6 +142,16 @@ const InsightsContent = () => {
               >
                 <FormattedMessage {...messages.download} />
               </Button>
+              {supportsAiAnalysis && (
+                <Button
+                  buttonStyle="primary"
+                  icon="stars"
+                  onClick={handleGoToAnalysis}
+                  processing={isCreatingAnalysis}
+                >
+                  <FormattedMessage {...messages.aiAnalysis} />
+                </Button>
+              )}
             </Box>
           )}
         </Box>
@@ -113,7 +171,7 @@ const InsightsContent = () => {
         <PageBreakBox>
           <MethodSpecificInsights
             phaseId={phase.data.id}
-            participationMethod={participationMethod}
+            participationMethod={phase.data.attributes.participation_method}
           />
         </PageBreakBox>
       </Box>
