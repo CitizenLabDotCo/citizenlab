@@ -92,6 +92,14 @@ module IdAcm
       config[:ui_method_name] || name
     end
 
+    def check_entitled_on_sso?
+      true
+    end
+
+    def entitled?(auth)
+      verify_sync(**verification_parameters(auth))
+    end
+
     def verify_sync(rrn:)
       return true unless config[:rrn_verification] && config[:rrn_verification] != 'None'
 
@@ -100,10 +108,6 @@ module IdAcm
 
     def verification_parameters(auth)
       { rrn: auth.extra.raw_info.rrn }
-    end
-
-    def check_entitled_on_sso?
-      true
     end
 
     private
