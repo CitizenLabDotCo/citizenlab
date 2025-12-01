@@ -187,7 +187,6 @@ Rails.application.routes.draw do
           get 'sentiment_by_quarter'
           get :as_xlsx, action: 'index_xlsx'
           get :mini, action: 'show_mini'
-          get :insights, action: 'insights'
           get 'submission_count'
           get 'progress', action: 'show_progress'
           delete 'inputs', action: 'delete_inputs'
@@ -195,6 +194,11 @@ Rails.application.routes.draw do
 
         resources :inputs, only: [], controller: 'ideas' do
           post 'copy', on: :collection
+        end
+
+        resource :insights, only: [], controller: 'insights/phase_insights' do
+          get '', action: 'show_insights'
+          get :voting, action: 'voting_insights'
         end
 
         resources :files, defaults: { container_type: 'Phase' }, shallow: false

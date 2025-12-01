@@ -62,6 +62,14 @@ class PhasePolicy < ApplicationPolicy
     active_moderator?
   end
 
+  def show_insights?
+    active_moderator?
+  end
+
+  def voting_insights?
+    active_moderator?
+  end
+
   def active_moderator?
     policy_for(record.project).active_moderator?
   end
