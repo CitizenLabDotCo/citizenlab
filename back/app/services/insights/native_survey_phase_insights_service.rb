@@ -19,9 +19,9 @@ module Insights
         {
           item_id: idea.id,
           action: 'posting_idea',
-          acted_at: idea.created_at, # This seems best proxy for acted at, even though may be published/submitted later
+          acted_at: idea.created_at,
           classname: 'Idea',
-          survey_submitted: idea.published?, # Proxy for submitted (?is this logical / correct? Seems counterintuitive)
+          survey_submitted_at: idea&.submitted_at,
           participant_id: participant_id(idea.id, idea.author_id, idea.author_hash),
           user_custom_field_values: idea&.custom_field_values || {}
         }
@@ -30,9 +30,9 @@ module Insights
 
     def phase_participation_method_metrics(participations)
       ideas_counts = phase_ideas_counts(participations[:posting_idea] || [])
-      submitted_survey_participations = participations[:posting_idea]&.select { |p| p[:survey_submitted] } || []
+      submitted_survey_participations = participations[:posting_idea]&.select { |p| p[:survey_submitted_at].present? } || []
       total_submitted_surveys = submitted_survey_participations.count
-      submitted_surveys_last_7_days = submitted_survey_participations.count { |p| p[:acted_at] >= 7.days.ago }
+      submitted_surveys_last_7_days = submitted_survey_participations.count { |p| p[:survey_submitted_at] >= 7.days.ago }
 
       completion_rate = ideas_counts[:total] > 0 ? (total_submitted_surveys.to_f / ideas_counts[:total]).round(3) : 0
 

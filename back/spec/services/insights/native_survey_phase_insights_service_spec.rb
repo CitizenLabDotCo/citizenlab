@@ -5,17 +5,27 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
   let(:phase) { create(:native_survey_phase, start_at: 15.days.ago, end_at: 2.days.ago) }
 
   let(:user1) { create(:user) }
-  let!(:idea1) { create(:idea, phases: [phase], created_at: 20.days.ago, published_at: 20.days.ago, author: user1, creation_phase_id: phase.id) } # before phase start
-  let!(:idea2) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: user1, creation_phase_id: phase.id) } # during phase
-  let!(:idea3) { create(:idea, phases: [phase], created_at: 1.day.ago, published_at: 1.day.ago, author: user1, creation_phase_id: phase.id) } # after phase end
+  let!(:idea1) { create(:idea, phases: [phase], created_at: 20.days.ago, submitted_at: 20.days.ago, author: user1, creation_phase_id: phase.id) } # before phase start
+  let!(:idea2) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, author: user1, creation_phase_id: phase.id) } # during phase
+  let!(:idea3) { create(:idea, phases: [phase], created_at: 1.day.ago, submitted_at: 1.day.ago, author: user1, creation_phase_id: phase.id) } # after phase end
 
   let(:user2) { create(:user) }
-  let!(:idea4) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: user2, creation_phase_id: phase.id) } # during phase
-  let!(:idea5) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: nil, author: user2, publication_status: 'draft', creation_phase_id: phase.id) } # during phase, but not published
+  let!(:idea4) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, author: user2, creation_phase_id: phase.id) } # during phase
+  let!(:idea5) do
+    create(
+      :idea,
+      phases: [phase],
+      created_at: 10.days.ago,
+      submitted_at: nil,
+      author: user2,
+      publication_status: 'draft', # to avoid automatic setting of submitted_at
+      creation_phase_id: phase.id
+    ) # during phase, but not published
+  end
 
-  let!(:idea6) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: nil, author_hash: 'some_author_hash', creation_phase_id: phase.id) } # during phase, no author (e.g. anonymous participation)
-  let!(:idea7) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: nil, author_hash: nil, creation_phase_id: phase.id) } # during phase, no author nor author_hash (e.g. imported idea)
-
+  let!(:idea6) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, author: nil, author_hash: 'some_author_hash', creation_phase_id: phase.id) } # during phase, no author (e.g. anonymous participation)
+  let!(:idea7) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, author: nil, author_hash: nil, creation_phase_id: phase.id) } # during phase, no author nor author_hash (e.g. imported idea)
+  
   describe '#participation_ideas_posted' do
     it 'returns the participation ideas posted data for non-transitive ideas created during phase' do
       participation_ideas_posted = service.send(:participation_ideas_posted)
@@ -26,7 +36,7 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
           action: 'posting_idea',
           acted_at: a_kind_of(Time),
           classname: 'Idea',
-          survey_submitted: true,
+          survey_submitted_at: idea2.submitted_at,
           participant_id: user1.id,
           user_custom_field_values: {}
         },
@@ -35,7 +45,7 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
           action: 'posting_idea',
           acted_at: a_kind_of(Time),
           classname: 'Idea',
-          survey_submitted: true,
+          survey_submitted_at: idea4.submitted_at,
           participant_id: user2.id,
           user_custom_field_values: {}
         },
@@ -44,7 +54,7 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
           action: 'posting_idea',
           acted_at: a_kind_of(Time),
           classname: 'Idea',
-          survey_submitted: false,
+          survey_submitted_at: nil,
           participant_id: user2.id,
           user_custom_field_values: {}
         },
@@ -53,7 +63,7 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
           action: 'posting_idea',
           acted_at: a_kind_of(Time),
           classname: 'Idea',
-          survey_submitted: true,
+          survey_submitted_at: idea6.submitted_at,
           participant_id: 'some_author_hash',
           user_custom_field_values: {}
         },
@@ -62,7 +72,7 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
           action: 'posting_idea',
           acted_at: a_kind_of(Time),
           classname: 'Idea',
-          survey_submitted: true,
+          survey_submitted_at: idea7.submitted_at,
           participant_id: idea7.id,
           user_custom_field_values: {}
         }
