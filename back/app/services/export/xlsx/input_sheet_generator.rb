@@ -92,11 +92,17 @@ module Export
       end
 
       def created_at_report_field
-        ComputedFieldForReport.new(column_header_for('created_at'), ->(input) { AppConfiguration.timezone.at(input.created_at) })
+        ComputedFieldForReport.new(
+          column_header_for('created_at'),
+          ->(input) { AppConfiguration.timezone.at(input.created_at) }
+        )
       end
 
       def published_at_report_field
-        ComputedFieldForReport.new(column_header_for('published_at'), ->(input) { AppConfiguration.timezone.at(input.published_at) })
+        ComputedFieldForReport.new(
+          column_header_for('published_at'),
+          ->(input) { input.published_at && AppConfiguration.timezone.at(input.published_at) }
+        )
       end
 
       def comments_count_report_field

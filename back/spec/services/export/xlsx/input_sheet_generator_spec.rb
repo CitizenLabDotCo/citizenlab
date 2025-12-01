@@ -250,11 +250,34 @@ describe Export::Xlsx::InputSheetGenerator do
 
     context 'for a proposals context' do
       let(:phase) { create(:proposals_phase) }
+      let(:assignee1) { create(:admin, first_name: 'Jane', last_name: 'Smith') }
+      let(:assignee2) { create(:admin, first_name: 'John', last_name: 'Doe') }
+      let(:status1) { create(:proposals_status, title_multiloc: { 'en' => 'Accepted' }) }
+      let(:status2) { create(:proposals_status, title_multiloc: { 'en' => 'Under Review' }) }
 
-      let(:inputs) { [
-        create(:proposal, project: phase.project, creation_phase: phase, author: create(:user)),
-        create(:proposal, project: phase.project, creation_phase: phase, author: create(:user), publication_status: 'draft', published_at: nil),
-      ] }
+      let!(:proposal1) do
+        create(
+          :proposal,
+          project: phase.project,
+          creation_phase: phase,
+          assignee: assignee1,
+          idea_status: status1,
+          publication_status: 'published'
+        )
+      end
+      let!(:proposal2) do
+        create(
+          :proposal,
+          project: phase.project,
+          creation_phase: phase,
+          assignee: assignee2,
+          idea_status: status2,
+          publication_status: 'draft',
+          published_at: nil
+        )
+      end
+
+      let(:inputs) { [proposal1, proposal2] }
 
       it 'Generates a sheet with the phase inputs' do
         expect(xlsx).to match([
@@ -269,7 +292,7 @@ describe Export::Xlsx::InputSheetGenerator do
               'Latitude',
               'Longitude',
               'Location',
-              'Proposed Budget',
+              'Co-sponsors',
               'Author name',
               'Author email',
               'Author ID',
@@ -277,41 +300,61 @@ describe Export::Xlsx::InputSheetGenerator do
               'Published at',
               'Comments',
               'Likes',
-              'Dislikes',
               'Offline votes',
               'URL',
               'Project',
               'Status',
               'Assignee',
-              'Assignee email',
-              'birthyear'
+              'Assignee email'
             ],
             rows: [
               [
-                inputs.first.id,
-                inputs.first.title_multiloc['en'],
-                'It would improve the air quality!', # html tags are removed
-                %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\Z},
-                "#{inputs.first.topics[0].title_multiloc['en']};#{inputs.first.topics[1].title_multiloc['en']}",
-                inputs.first.location_point.coordinates.last,
-                inputs.first.location_point.coordinates.first,
-                inputs.first.location_description,
-                inputs.first.proposed_budget,
-                inputs.first.author.full_name,
-                inputs.first.author.email,
-                inputs.first.author_id,
-                an_instance_of(DateTime), # created_at
-                an_instance_of(DateTime), # published_at
-                1,
-                2,
-                1,
-                5,
-                "http://example.org/ideas/#{inputs.first.slug}",
+                proposal1.id,
+                proposal1.title_multiloc['en'],
+                'It would improve the air quality!',
+                '',
+                '',
+                proposal1.location_point.coordinates.last,
+                proposal1.location_point.coordinates.first,
+                proposal1.location_description,
+                '',
+                proposal1.author.full_name,
+                proposal1.author.email,
+                proposal1.author_id,
+                an_instance_of(DateTime),
+                an_instance_of(DateTime),
+                0,
+                0,
+                nil,
+                "http://example.org/ideas/#{proposal1.slug}",
                 phase.project.title_multiloc['en'],
-                inputs.first.idea_status.title_multiloc['en'],
-                inputs.first.assignee.full_name,
-                inputs.first.assignee.email,
-                1999
+                'Accepted',
+                assignee1.full_name,
+                assignee1.email
+              ],
+              [
+                proposal2.id,
+                proposal2.title_multiloc['en'],
+                'It would improve the air quality!',
+                '',
+                '',
+                proposal2.location_point.coordinates.last,
+                proposal2.location_point.coordinates.first,
+                proposal2.location_description,
+                '',
+                proposal2.author.full_name,
+                proposal2.author.email,
+                proposal2.author_id,
+                an_instance_of(DateTime),
+                nil,
+                0,
+                0,
+                nil,
+                "http://example.org/ideas/#{proposal2.slug}",
+                phase.project.title_multiloc['en'],
+                'Under Review',
+                assignee2.full_name,
+                assignee2.email
               ]
             ]
           }
