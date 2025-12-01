@@ -189,6 +189,7 @@ Rails.application.routes.draw do
           get 'sentiment_by_quarter'
           get :as_xlsx, action: 'index_xlsx'
           get :mini, action: 'show_mini'
+          get :insights, action: 'insights'
           get 'submission_count'
           get 'progress', action: 'show_progress'
           delete 'inputs', action: 'delete_inputs'

@@ -1,0 +1,124 @@
+require 'rails_helper'
+
+RSpec.describe Insights::NativeSurveyPhaseInsightsService do
+  let(:service) { described_class.new(phase) }
+  let(:phase) { create(:native_survey_phase, start_at: 15.days.ago, end_at: 2.days.ago) }
+
+  let(:user1) { create(:user) }
+  let!(:idea1) { create(:idea, phases: [phase], created_at: 20.days.ago, published_at: 20.days.ago, author: user1, creation_phase_id: phase.id) } # before phase start
+  let!(:idea2) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: user1, creation_phase_id: phase.id) } # during phase
+  let!(:idea3) { create(:idea, phases: [phase], created_at: 1.day.ago, published_at: 1.day.ago, author: user1, creation_phase_id: phase.id) } # after phase end
+
+  let(:user2) { create(:user) }
+  let!(:idea4) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: user2, creation_phase_id: phase.id) } # during phase
+  let!(:idea5) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: nil, author: user2, publication_status: 'draft', creation_phase_id: phase.id) } # during phase, but not published
+
+  let!(:idea6) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: nil, author_hash: 'some_author_hash', creation_phase_id: phase.id) } # during phase, no author (e.g. anonymous participation)
+  let!(:idea7) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: nil, author_hash: nil, creation_phase_id: phase.id) } # during phase, no author nor author_hash (e.g. imported idea)
+
+  describe '#participation_ideas_posted' do
+    it 'returns the participation ideas posted data for non-transitive ideas created during phase' do
+      participation_ideas_posted = service.send(:participation_ideas_posted)
+
+      expect(participation_ideas_posted).to match_array([
+        {
+          item_id: idea2.id,
+          action: 'posting_idea',
+          acted_at: a_kind_of(Time),
+          classname: 'Idea',
+          survey_submitted: true,
+          participant_id: user1.id,
+          user_custom_field_values: {}
+        },
+        {
+          item_id: idea4.id,
+          action: 'posting_idea',
+          acted_at: a_kind_of(Time),
+          classname: 'Idea',
+          survey_submitted: true,
+          participant_id: user2.id,
+          user_custom_field_values: {}
+        },
+        {
+          item_id: idea5.id,
+          action: 'posting_idea',
+          acted_at: a_kind_of(Time),
+          classname: 'Idea',
+          survey_submitted: false,
+          participant_id: user2.id,
+          user_custom_field_values: {}
+        },
+        {
+          item_id: idea6.id,
+          action: 'posting_idea',
+          acted_at: a_kind_of(Time),
+          classname: 'Idea',
+          survey_submitted: true,
+          participant_id: 'some_author_hash',
+          user_custom_field_values: {}
+        },
+        {
+          item_id: idea7.id,
+          action: 'posting_idea',
+          acted_at: a_kind_of(Time),
+          classname: 'Idea',
+          survey_submitted: true,
+          participant_id: idea7.id,
+          user_custom_field_values: {}
+        }
+      ])
+
+      first_participation = participation_ideas_posted.first
+      expect(first_participation[:acted_at])
+        .to be_within(1.second).of(Idea.find(first_participation[:item_id]).created_at)
+    end
+
+    it 'correctly handles phases with no end date' do
+      phase.update!(end_at: nil)
+      participation_ideas_posted = service.send(:participation_ideas_posted)
+
+      expect(participation_ideas_posted.pluck(:item_id)).to match_array([
+        idea2.id,
+        idea3.id,
+        idea4.id,
+        idea5.id,
+        idea6.id,
+        idea7.id
+      ])
+    end
+
+    it 'includes draft ideas' do
+      participation_ideas_posted = service.send(:participation_ideas_posted)
+
+      idea_ids = participation_ideas_posted.map { |p| p[:item_id] }
+      expect(idea_ids).to include(idea5.id)
+    end
+
+    it 'does not include transitive ideas' do
+      idea2.creation_phase_id = nil
+      idea2.save!(validate: false) # skip validations to allow setting as transitive idea
+      participation_ideas_posted = service.send(:participation_ideas_posted)
+
+      idea_ids = participation_ideas_posted.map { |p| p[:item_id] }
+      expect(idea_ids).not_to include(idea2.id)
+    end
+  end
+
+  describe '#phase_participations' do
+    it 'returns the expected aggregation of sets of participations' do
+      participations = service.send(:phase_participations)
+
+      expect(participations).to eq({
+        posting_idea: service.send(:participation_ideas_posted)
+      })
+
+      expect(participations[:posting_idea].map { |p| p[:item_id] }).to match_array([
+        idea2.id,
+        idea4.id,
+        idea5.id,
+        idea6.id,
+        idea7.id
+      ])
+    end
+  end
+end
