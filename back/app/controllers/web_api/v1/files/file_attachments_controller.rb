@@ -147,6 +147,7 @@ class WebApi::V1::Files::FileAttachmentsController < ApplicationController
   def cleanup_existing_content_builder_attachments(file_attachment)
     # Remove any existing attachments for the same file and layout
     # This enforces the business rule: only one file attachment widget per file per layout
+    # Essentially, the last one added will work. Any existing ones are removed.
     existing_attachments = Files::FileAttachment.where(
       file_id: file_attachment.file_id,
       attachable_type: 'ContentBuilder::Layout',
