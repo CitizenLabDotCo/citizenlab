@@ -64,7 +64,6 @@ context 'ACM verification (Oostende Itsme)' do
         client_secret: '78910',
         api_key: 'test',
         environment: 'production',
-        rrn_verification: 'Oostende',
         rrn_environment: 'dv',
         rrn_api_key: 'dummy_key'
       }]
@@ -117,7 +116,7 @@ context 'ACM verification (Oostende Itsme)' do
 
   def disable_rrn_verification
     configuration = AppConfiguration.instance
-    configuration.settings['verification']['verification_methods'].first['rrn_verification'] = 'None'
+    configuration.settings['verification']['verification_methods'].first['rrn_api_key'] = ''
     configuration.save!
   end
 

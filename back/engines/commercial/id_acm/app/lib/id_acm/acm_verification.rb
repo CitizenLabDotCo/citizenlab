@@ -24,7 +24,6 @@ module IdAcm
         client_secret
         enabled_for_verified_actions
         hide_from_profile
-        rrn_verification
         rrn_api_key
         rrn_environment
       ]
@@ -36,13 +35,6 @@ module IdAcm
           type: 'string',
           title: 'The name this verification method will have in the UI',
           default: 'ACM'
-        },
-        rrn_verification: {
-          type: 'string',
-          enum: %w[None Oostende Gent],
-          title: 'Verification of age and location based on RRN?',
-          default: 'None',
-          private: true
         },
         rrn_environment: {
           type: 'string',
@@ -97,7 +89,7 @@ module IdAcm
     end
 
     def entitled?(auth)
-      return true unless config[:rrn_verification] && config[:rrn_verification] != 'None'
+      return true unless config[:rrn_api_key].present?
 
       rrn = auth.extra.raw_info.rrn
       validate_rrn!(rrn)
