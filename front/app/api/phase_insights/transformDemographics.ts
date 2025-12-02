@@ -17,10 +17,13 @@ import {
  */
 export const transformDemographicsResponse = (
   attributes: { fields: DemographicFieldBackend[] },
-  localize: Localize
+  localize: Localize,
+  blankLabel: string
 ): PhaseInsightsDemographics => {
   return {
-    fields: attributes.fields.map((field) => transformField(field, localize)),
+    fields: attributes.fields.map((field) =>
+      transformField(field, localize, blankLabel)
+    ),
   };
 };
 
@@ -29,7 +32,8 @@ export const transformDemographicsResponse = (
  */
 const transformField = (
   field: DemographicFieldBackend,
-  localize: Localize
+  localize: Localize,
+  blankLabel: string
 ): DemographicField => {
   // Get localized field name
   const field_name = localize(field.title_multiloc);
@@ -43,7 +47,7 @@ const transformField = (
   const chartRows = transformDemographicsToChartRows(
     seriesData,
     field.code ?? undefined,
-    '_blank',
+    blankLabel,
     (_key, multiloc) => localize(multiloc)
   );
 

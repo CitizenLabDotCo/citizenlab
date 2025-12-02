@@ -186,4 +186,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.downloadInsightsPdf',
     defaultMessage: 'Download insights as PDF',
   },
+  noAnswer: {
+    id: 'app.containers.Admin.projects.project.insights.noAnswer',
+    defaultMessage: 'No answer',
+  },
 });

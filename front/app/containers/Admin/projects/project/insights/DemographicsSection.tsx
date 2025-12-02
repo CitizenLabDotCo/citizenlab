@@ -89,14 +89,16 @@ const DemographicsSection = ({ phase }: Props) => {
 
   // Transform backend data to frontend format
   // Only show demographics for non-anonymous phases
+  const blankLabel = formatMessage(messages.noAnswer);
   const demographicsData = useMemo(() => {
     if (userDataCollection === 'anonymous') return null;
     if (!response?.data.attributes.demographics) return null;
     return transformDemographicsResponse(
       response.data.attributes.demographics,
-      localize
+      localize,
+      blankLabel
     );
-  }, [response, localize, userDataCollection]);
+  }, [response, localize, userDataCollection, blankLabel]);
 
   const fields = useMemo(
     () => demographicsData?.fields || [],
