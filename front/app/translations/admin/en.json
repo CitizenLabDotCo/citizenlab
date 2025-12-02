@@ -1298,6 +1298,7 @@
   "app.containers.Admin.projects.project.insights.loading": "Loading...",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Loading demographics...",
   "app.containers.Admin.projects.project.insights.newSubmission": "New submission",
+  "app.containers.Admin.projects.project.insights.noAnswer": "No answer",
   "app.containers.Admin.projects.project.insights.noDemographicData": "No demographic data available for this phase.",
   "app.containers.Admin.projects.project.insights.offlinePicks": "Offline picks",
   "app.containers.Admin.projects.project.insights.offlineVotes": "Offline votes",
