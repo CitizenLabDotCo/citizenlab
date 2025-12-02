@@ -99,8 +99,8 @@ resource 'Phase insights' do
       expect(participants_and_visitors_chart_data).to eq({
         resolution: 'day',
         timeseries: [
-          { participants: 1, visitors: 2, date_group: '2025-11-17'},
-          { participants: 2, visitors: 2, date_group: '2025-11-27'}
+          { participants: 1, visitors: 2, date_group: '2025-11-17' },
+          { participants: 2, visitors: 2, date_group: '2025-11-27' }
         ]
       })
     end

@@ -280,6 +280,7 @@ module Insights
       end
     end
 
+    # TODO: Implement localization for week beginning? (first check if FE does this for other chart data)
     def date_truncate(datetime, resolution)
       date = datetime.to_date
       case resolution
