@@ -9,6 +9,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
+
 import webhooksImage from './webhooks.png';
 
 export const Webhooks = () => {
