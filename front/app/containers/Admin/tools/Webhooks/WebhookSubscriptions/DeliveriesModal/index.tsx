@@ -57,9 +57,7 @@ const DeliveriesModal = ({ subscriptionId }: DeliveriesModalProps) => {
   };
 
   const toggleDetails = (deliveryId: string) => {
-    setExpandedDeliveryId((prev) =>
-      prev === deliveryId ? null : deliveryId
-    );
+    setExpandedDeliveryId((prev) => (prev === deliveryId ? null : deliveryId));
   };
 
   const getStatusBadge = (status: string) => {
@@ -71,7 +69,9 @@ const DeliveriesModal = ({ subscriptionId }: DeliveriesModalProps) => {
 
     return (
       <Badge color={statusColors[status] || colors.grey500}>
-        {formatMessage(messages[status] || { id: status, defaultMessage: status })}
+        {formatMessage(
+          messages[status] || { id: status, defaultMessage: status }
+        )}
       </Badge>
     );
   };
@@ -155,7 +155,9 @@ const DeliveriesModal = ({ subscriptionId }: DeliveriesModalProps) => {
                                 {formatMessage(messages.lastAttempt)}:
                               </Text>
                               <Text>
-                                {formatDate(delivery.attributes.last_attempt_at)}
+                                {formatDate(
+                                  delivery.attributes.last_attempt_at
+                                )}
                               </Text>
                             </Box>
                           )}

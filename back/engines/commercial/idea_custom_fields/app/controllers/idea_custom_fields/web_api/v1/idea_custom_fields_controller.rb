@@ -142,7 +142,10 @@ module IdeaCustomFields
       given_field_ids = given_fields.pluck(:id)
 
       ActiveRecord::Base.transaction do
-        delete_fields = fields.reject { |field| given_field_ids.include? field.id }
+        delete_fields = []
+        if @custom_form.persisted?
+          delete_fields = fields.reject { |field| given_field_ids.include? field.id }
+        end
         delete_fields.each { |field| delete_field! field }
         given_fields.each_with_index do |field_params, index|
           options_params = field_params.delete :options
@@ -160,7 +163,7 @@ module IdeaCustomFields
           end
           update_statements! field, statements_params, errors, index if statements_params
           relate_map_config_to_field(field, field_params, errors, index)
-          field.set_list_position(index)
+          field.move_to_bottom
           count_fields(field)
         end
         raise UpdateAllFailedError, errors if errors.present?
