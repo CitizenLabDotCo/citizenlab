@@ -193,6 +193,9 @@ Rails.application.routes.draw do
           get 'submission_count'
           get 'progress', action: 'show_progress'
           delete 'inputs', action: 'delete_inputs'
+          namespace :idea_feed do
+            resources :ideas, only: [:index]
+          end
         end
 
         resources :inputs, only: [], controller: 'ideas' do
