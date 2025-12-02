@@ -7,5 +7,9 @@ class WebApi::V1::PhaseInsightsSerializer < WebApi::V1::BaseSerializer
     params[:demographics]
   end
 
+  attribute :particants_and_visitors_chart_data do |_phase, params|
+    params[:particants_and_visitors_chart_data]
+  end
+
   belongs_to :project
 end

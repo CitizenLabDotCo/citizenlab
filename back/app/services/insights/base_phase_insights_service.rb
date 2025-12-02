@@ -32,8 +32,9 @@ module Insights
       participation_method_metrics = phase_participation_method_metrics(participations)
       metrics = metrics_data(participations, participant_ids, visitors_data, participation_method_metrics)
       demographics = demographics_data(flattened_participations, participant_ids)
+      particants_and_visitors_data = particants_and_visitors_data(flattened_participations)
 
-      metrics.merge(demographics: { fields: demographics })
+      metrics.merge(demographics: { fields: demographics }, particants_and_visitors_chart_data: particants_and_visitors_data)
     end
 
     def metrics_data(participations, participant_ids, visitors_data, participation_method_metrics)
@@ -234,6 +235,42 @@ module Insights
       return nil if reference_distribution.blank?
 
       UserCustomFields::Representativeness::RScore.compute_scores(counts, reference_distribution)[:min_max_p_ratio]
+    end
+
+    def particants_and_visitors_data(flattened_participations)
+      resolution = 'day' # Todo: calculate, based on phase duration so far
+
+      # Group participations by resolution and count unique participants
+      grouped_participations = flattened_participations.group_by { |p| date_truncate(p[:acted_at], resolution) }
+
+      grouped_participants_timeseries = grouped_participations.map do |date_group, participations_in_group|
+        {
+          participants: participations_in_group.pluck(:participant_id).uniq.count,
+          date_group: date_group
+        }
+      end
+
+      participants_timeseries = grouped_participants_timeseries.sort_by { |row| row[:date_group] }
+
+      {
+        participants_timeseries: participants_timeseries
+      }
+    end
+
+    def date_truncate(datetime, resolution)
+      date = datetime.to_date
+      case resolution
+      when 'day'
+        date
+      when 'week'
+        date.beginning_of_week
+      when 'month'
+        Date.new(date.year, date.month, 1)
+      when 'year'
+        Date.new(date.year, 1, 1)
+      else
+        raise ArgumentError, "Invalid resolution: #{resolution}"
+      end
     end
   end
 end
