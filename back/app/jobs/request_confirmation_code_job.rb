@@ -30,7 +30,7 @@ class RequestConfirmationCodeJob < ApplicationJob
   def reset_user_confirmation_code(user)
     first_code = user.email_confirmation_code.nil?
     user.reset_confirmation_code
-    user.increment_confirmation_code_reset_count if !first_code
+    user.email_confirmation_code_reset_count += 1 if !first_code
   end
 
   def deliver_confirmation_code!(user)

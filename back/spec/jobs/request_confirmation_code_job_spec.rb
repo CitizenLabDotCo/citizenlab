@@ -96,12 +96,7 @@ RSpec.describe RequestConfirmationCodeJob do
 
       context 'when the user has made too many reset requests' do
         let(:user) do
-          create(:user_with_confirmation).tap do |user|
-            5.times do
-              user.increment_confirmation_code_reset_count
-            end
-            user.save!
-          end
+          create(:user_with_confirmation, email_confirmation_code_reset_count: 5)
         end
 
         it 'returns a too many resets on code error' do
