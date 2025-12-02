@@ -1199,16 +1199,6 @@ RSpec.describe User do
       end
     end
 
-    describe '#increment_confirmation_retry_count!' do
-      it 'increments the retry count' do
-        expect { user.increment_confirmation_retry_count! }.to change(user, :email_confirmation_retry_count).from(0).to(1)
-      end
-
-      it 'saved the change to the retry count' do
-        expect { user.increment_confirmation_retry_count! }.to change(user, :saved_change_to_email_confirmation_retry_count?)
-      end
-    end
-
     describe '#reset_confirmation_code' do
       it 'changes the code' do
         expect { user.reset_confirmation_code }.to change(user, :email_confirmation_code)

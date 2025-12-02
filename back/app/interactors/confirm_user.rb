@@ -26,7 +26,8 @@ class ConfirmUser < ApplicationInteractor
   def validate_retry_count
     return if user.email_confirmation_code == code # don't increment unless code is valid
 
-    return if user.increment_confirmation_retry_count!
+    user.email_confirmation_retry_count += 1
+    return if save
 
     fail_with_error! :code, :too_many_retries
   end

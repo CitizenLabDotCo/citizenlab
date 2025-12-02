@@ -61,11 +61,6 @@ module UserConfirmation
     self.email_confirmation_code = Rails.env.development? ? '1234' : rand.to_s[2..5]
   end
 
-  def increment_confirmation_retry_count!
-    self.email_confirmation_retry_count += 1
-    save!
-  end
-
   private
 
   def set_confirmation_required
