@@ -163,7 +163,8 @@ Rails.application.routes.draw do
 
       resource :app_configuration, only: %i[show update]
 
-      resources :email_bans, only: %i[show destroy], param: :email do
+      # Constraint allows dots in email (prevents Rails treating top level domain as format)
+      resources :email_bans, only: %i[show destroy], param: :email, constraints: { email: %r{[^/]+} } do
         get :count, on: :collection
       end
 
