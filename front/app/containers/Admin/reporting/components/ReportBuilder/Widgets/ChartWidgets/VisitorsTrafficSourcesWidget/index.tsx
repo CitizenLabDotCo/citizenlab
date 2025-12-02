@@ -16,6 +16,7 @@ const VisitorsTrafficSourcesWidget = ({
   title,
   ariaLabel,
   description,
+  view,
   ...props
 }: Props & AccessibilityProps) => {
   const localize = useLocalize();
@@ -35,11 +36,17 @@ const VisitorsTrafficSourcesWidget = ({
       description={description}
       pagebreak
     >
-      <VisitorsTrafficSourcesCard {...props} {...accessibilityProps} />
-      <DescriptionText
-        description={description}
-        descriptionId={descriptionId}
+      <VisitorsTrafficSourcesCard
+        view={view}
+        {...props}
+        {...accessibilityProps}
       />
+      {view === 'chart' && (
+        <DescriptionText
+          description={description}
+          descriptionId={descriptionId}
+        />
+      )}
     </Card>
   );
 };

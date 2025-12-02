@@ -79,15 +79,15 @@ export default defineMessages({
     id: 'app.containers.admin.ReportBuilder.charts.accessibility',
     defaultMessage: 'Accessibility',
   },
-  analyticsChartAriaLabelTooltip2: {
-    id: 'app.containers.admin.ReportBuilder.charts.analyticsChartAriaLabelTooltip2',
+  analyticsChartAriaLabelTooltip3: {
+    id: 'app.containers.admin.ReportBuilder.charts.analyticsChartAriaLabelTooltip3',
     defaultMessage:
-      'Provide a label that describes the chart for improved accessibility',
+      'Provide a label that describes the chart for improved accessibility.',
   },
-  analyticsChartDescriptionTooltip2: {
-    id: 'app.containers.admin.ReportBuilder.charts.analyticsChartDescriptionTooltip2',
+  analyticsChartDescriptionTooltip3: {
+    id: 'app.containers.admin.ReportBuilder.charts.analyticsChartDescriptionTooltip3',
     defaultMessage:
-      'Provide a more detailed description of the chart and any relevant trends for improved accessibility',
+      'Provide a more detailed description of the chart and any relevant trends for improved accessibility.',
   },
   description: {
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.description',
