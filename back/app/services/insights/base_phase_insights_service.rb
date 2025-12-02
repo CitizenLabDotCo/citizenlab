@@ -239,8 +239,7 @@ module Insights
 
     def participants_and_visitors_chart_data(flattened_participations, visits_data)
       resolution = chart_resolution
-      visits = visits_data[:visits]
-      grouped_visits = visits.group_by { |v| date_truncate(v[:date], resolution) }
+      grouped_visits = visits_data[:visits].group_by { |v| date_truncate(v[:date], resolution) }
       grouped_participations = flattened_participations.group_by { |p| date_truncate(p[:acted_at], resolution) }
 
       # Get all unique date groups from both participations and visits
@@ -266,13 +265,11 @@ module Insights
 
     # Modelled on logic in getSensibleresolution.ts, with addition of 'year' resolution
     def chart_resolution
-      start_at = @phase.start_at.to_time
       end_at = @phase.end_at.present? ? @phase.end_at.to_time : Time.current
-      
-      duration_seconds = end_at - start_at
+      duration_seconds = end_at - @phase.start_at.to_time
       duration_months = (duration_seconds / 1.month).round(1)
       duration_weeks = (duration_seconds / 1.week).round(1)
-      
+
       if duration_months > 24
         'year'
       elsif duration_months > 6
