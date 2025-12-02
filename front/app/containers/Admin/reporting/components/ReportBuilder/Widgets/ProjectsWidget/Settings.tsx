@@ -2,12 +2,11 @@ import React from 'react';
 
 import { Box, Label, Text } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
-import { useParams } from 'react-router-dom';
 import { IOption } from 'typings';
 
 import MultipleSelect from 'components/UI/MultipleSelect';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 
 import {
   ReportAdminPublicationSearchInput,
@@ -23,7 +22,6 @@ import { Props } from './typings';
 
 const Settings = () => {
   const { formatMessage } = useIntl();
-  const { folderId } = useParams() as { folderId: string };
   const {
     actions: { setProp },
     publicationStatuses,
@@ -72,12 +70,11 @@ const Settings = () => {
       <DateRangeInput />
       <Box mb="20px">
         <Label htmlFor="report-admin-publication-search-input">
-          <FormattedMessage {...messages.selectProjectsOrFolders} />
+          {formatMessage(messages.selectProjectsOrFolders)}
         </Label>
         <ReportAdminPublicationSearchInput
           adminPublicationIds={excludedAdminPublicationIds}
           publicationStatusFilter={publicationStatuses}
-          folderId={folderId}
           onChange={handleExcludedAdminPublicationIdsChange}
         />
       </Box>

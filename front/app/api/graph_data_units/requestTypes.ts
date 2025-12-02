@@ -195,6 +195,7 @@ export interface ProjectsTimelineProps
   sort?: Parameters['sort'];
   locale?: Parameters['locale'];
   no_of_projects?: number;
+  excluded_admin_publication_ids?: string[];
 }
 
 export interface ProjectsTimelineParams extends BaseParams {

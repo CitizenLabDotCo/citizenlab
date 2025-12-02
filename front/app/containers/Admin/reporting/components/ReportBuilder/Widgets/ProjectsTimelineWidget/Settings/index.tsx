@@ -1,6 +1,12 @@
 import React, { ReactNode } from 'react';
 
-import { Box, Text, Select, Input } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  Select,
+  Input,
+  Label,
+} from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { IOption } from 'typings';
 
@@ -18,7 +24,12 @@ import MultiSelect from 'components/UI/MultiSelect';
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
+import {
+  ReportAdminPublicationSearchInput,
+  ReportAdminPublicationList,
+} from '../../_shared/ReportAdminPublicationSelector';
 import { TitleInput } from '../../ChartWidgets/_shared/ChartWidgetSettings';
+import projectsWidgetMessages from '../../ProjectsWidget/messages';
 import { DEFAULT_NO_OF_PROJECTS } from '../constants';
 import messages from '../messages';
 import { ProjectsTimelineCardProps } from '../ProjectsTimelineCard';
@@ -68,6 +79,7 @@ const Settings = () => {
     noOfProjects,
     minStartDate,
     maxStartDate,
+    excludedAdminPublicationIds,
   } = useNode((node) => ({
     status: node.data.props.status || ['published'],
     managers: node.data.props.managers || [],
@@ -81,6 +93,10 @@ const Settings = () => {
     noOfProjects: node.data.props.noOfProjects,
     minStartDate: node.data.props.minStartDate,
     maxStartDate: node.data.props.maxStartDate,
+    excludedAdminPublicationIds: node.data.props.excludedAdminPublicationIds
+      ?.length
+      ? node.data.props.excludedAdminPublicationIds
+      : [],
   }));
 
   const { data: managersData } = useUsers({});
@@ -130,6 +146,12 @@ const Settings = () => {
     setProp((props: ProjectsTimelineCardProps) => {
       props.minStartDate = from;
       props.maxStartDate = to;
+    });
+  };
+
+  const handleExcludedAdminPublicationIdsChange = (newIds: string[]) => {
+    setProp((props: ProjectsTimelineCardProps) => {
+      props.excludedAdminPublicationIds = newIds;
     });
   };
 
@@ -285,13 +307,6 @@ const Settings = () => {
           tooltipContent={formatMessage(projectFilterMessages.projectStartDate)}
         />
       </SettingsField>
-      <SettingsField label={formatMessage(messages.sort)}>
-        <Select
-          value={sort}
-          options={sortOptions}
-          onChange={handleSortChange}
-        />
-      </SettingsField>
       <SettingsField label={formatMessage(messages.numberOfProjects)}>
         <Input
           type="number"
@@ -300,6 +315,27 @@ const Settings = () => {
           onChange={handleNoOfProjectsChange}
         />
       </SettingsField>
+      <SettingsField label={formatMessage(messages.sort)}>
+        <Select
+          value={sort}
+          options={sortOptions}
+          onChange={handleSortChange}
+        />
+      </SettingsField>
+      <Box mb="20px">
+        <Label htmlFor="report-admin-publication-search-input">
+          {formatMessage(projectsWidgetMessages.selectProjectsOrFolders)}
+        </Label>
+        <ReportAdminPublicationSearchInput
+          adminPublicationIds={excludedAdminPublicationIds}
+          publicationStatusFilter={status}
+          onChange={handleExcludedAdminPublicationIdsChange}
+        />
+      </Box>
+      <ReportAdminPublicationList
+        adminPublicationIds={excludedAdminPublicationIds}
+        onChange={handleExcludedAdminPublicationIdsChange}
+      />
     </Box>
   );
 };
