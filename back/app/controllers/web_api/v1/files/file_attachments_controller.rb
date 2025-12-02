@@ -34,6 +34,11 @@ class WebApi::V1::Files::FileAttachmentsController < ApplicationController
     file_attachment = Files::FileAttachment.new(create_params)
     authorize(file_attachment)
 
+    # For ContentBuilder::Layout, proactively clean up any existing attachments for the same file
+    if file_attachment.attachable_type == 'ContentBuilder::Layout'
+      cleanup_existing_content_builder_attachments(file_attachment)
+    end
+
     # If the file does not yet belong to the attachable's project, add it on the fly.
     # This mainly applies when creating a project, as project files are uploaded first
     # and only added to the project once it's created.
@@ -132,5 +137,25 @@ class WebApi::V1::Files::FileAttachmentsController < ApplicationController
 
   def parent_ids
     request.path_parameters.select { |k, _| k.to_s.end_with?('_id') }.values
+  end
+
+  def content_builder_uniqueness_conflict?(file_attachment)
+    file_attachment.attachable_type == 'ContentBuilder::Layout' &&
+      file_attachment.errors.details[:file_id]&.any? { |error| error[:error] == :taken }
+  end
+
+  def cleanup_existing_content_builder_attachments(file_attachment)
+    # Remove any existing attachments for the same file and layout
+    # This enforces the business rule: only one file attachment widget per file per layout
+    existing_attachments = Files::FileAttachment.where(
+      file_id: file_attachment.file_id,
+      attachable_type: 'ContentBuilder::Layout',
+      attachable_id: file_attachment.attachable_id
+    )
+
+    if existing_attachments.exists?
+      Rails.logger.info "Removing #{existing_attachments.count} existing ContentBuilder file attachment(s) for same file"
+      existing_attachments.destroy_all
+    end
   end
 end

@@ -50,23 +50,10 @@ export const ContentBuilder = ({
   useEffect(() => {
     if (!onDeleteElement) return;
 
-    const cleanUpElementAfterDeletion = (deletedElement: SelectedNode) => {
-      // Add additional cleanup logic below for other element types as needed.
-
-      // File Attachment
-      if (deletedElement.custom?.title.defaultMessage === 'File Attachment') {
-        const fileAttachmentId = deletedElement.props.fileAttachmentId;
-        deleteFileAttachment(fileAttachmentId);
-      }
-    };
-
     const subscription = eventEmitter
       .observeEvent(CONTENT_BUILDER_DELETE_ELEMENT_EVENT)
       .subscribe(({ eventValue }) => {
         const deletedElement = eventValue as SelectedNode;
-
-        cleanUpElementAfterDeletion(deletedElement);
-
         const deletedElementId = deletedElement.id;
         onDeleteElement(deletedElementId);
       });
