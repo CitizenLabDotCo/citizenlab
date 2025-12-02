@@ -21,7 +21,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
   end
 
   describe '#base_metrics' do
-    let(:visitors_data) { { visitors_total: 100, visitors_last_7_days: 20 } }
+    let(:visits_data) { { visitors_total: 100, visitors_last_7_days: 20 } }
 
     let(:user1) { create(:user) }
 
@@ -40,7 +40,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
     let(:participant_ids) { participations[:voting].pluck(:participant_id).uniq }
 
     it 'calculates base metrics correctly' do
-      result = service.send(:base_metrics, participations, participant_ids, visitors_data)
+      result = service.send(:base_metrics, participations, participant_ids, visits_data)
 
       expect(result).to eq(
         {

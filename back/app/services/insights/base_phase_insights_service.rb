@@ -32,9 +32,9 @@ module Insights
       participation_method_metrics = phase_participation_method_metrics(participations)
       metrics = metrics_data(participations, participant_ids, visits_data, participation_method_metrics)
       demographics = demographics_data(flattened_participations, participant_ids)
-      participants_and_visitors_timeseries = participants_and_visitors_timeseries(flattened_participations, visits_data)
+      participants_and_visitors_chart_data = participants_and_visitors_chart_data(flattened_participations, visits_data)
 
-      metrics.merge(demographics: { fields: demographics }, participants_and_visitors_timeseries: participants_and_visitors_timeseries)
+      metrics.merge(demographics: { fields: demographics }, participants_and_visitors_chart_data: participants_and_visitors_chart_data)
     end
 
     def metrics_data(participations, participant_ids, visits_data, participation_method_metrics)
@@ -237,8 +237,8 @@ module Insights
       UserCustomFields::Representativeness::RScore.compute_scores(counts, reference_distribution)[:min_max_p_ratio]
     end
 
-    def participants_and_visitors_timeseries(flattened_participations, visits_data)
-      resolution = 'day' # TODO: calculate, based on phase duration so far
+    def participants_and_visitors_chart_data(flattened_participations, visits_data)
+      resolution = chart_resolution
       visits = visits_data[:visits]
       grouped_visits = visits.group_by { |v| date_truncate(v[:date], resolution) }
       grouped_participations = flattened_participations.group_by { |p| date_truncate(p[:acted_at], resolution) }
@@ -258,7 +258,30 @@ module Insights
         }
       end
 
-      grouped_timeseries.sort_by { |row| row[:date_group] }
+      {
+        resolution: resolution,
+        timeseries: grouped_timeseries.sort_by { |row| row[:date_group] }
+      }
+    end
+
+    # Modelled on logic in getSensibleresolution.ts, with addition of 'year' resolution
+    def chart_resolution
+      start_at = @phase.start_at.to_time
+      end_at = @phase.end_at.present? ? @phase.end_at.to_time : Time.current
+      
+      duration_seconds = end_at - start_at
+      duration_months = (duration_seconds / 1.month).round(1)
+      duration_weeks = (duration_seconds / 1.week).round(1)
+      
+      if duration_months > 24
+        'year'
+      elsif duration_months > 6
+        'month'
+      elsif duration_weeks > 4
+        'week'
+      else
+        'day'
+      end
     end
 
     def date_truncate(datetime, resolution)
@@ -270,10 +293,8 @@ module Insights
         date.beginning_of_week
       when 'month'
         Date.new(date.year, date.month, 1)
-      when 'year'
+      else # 'year'
         Date.new(date.year, 1, 1)
-      else
-        raise ArgumentError, "Invalid resolution: #{resolution}"
       end
     end
   end
