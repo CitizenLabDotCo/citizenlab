@@ -35,8 +35,8 @@ class VisitsService
       .count
 
     {
-      visitors_total: visitors_total,
-      visitors_last_7_days: visitors_last_7_days,
+      visitors_total: visitors_total || 0,
+      visitors_last_7_days: visitors_last_7_days || 0,
       visits: visits_list
     }
   end

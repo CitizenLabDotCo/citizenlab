@@ -28,10 +28,10 @@ describe VisitsService do
     # rubocop:enable RSpec/ScatteredLet
 
     it 'returns correct visits data for the phase' do
-      visitors_data = service.phase_visitors_data(phase)
+      visits_data = service.phase_visits_data(phase)
 
-      expect(visitors_data[:total]).to eq(2)
-      expect(visitors_data[:last_7_days]).to eq(1)
+      expect(visits_data[:visitors_total]).to eq(2)
+      expect(visits_data[:visitors_last_7_days]).to eq(1)
     end
   end
 end

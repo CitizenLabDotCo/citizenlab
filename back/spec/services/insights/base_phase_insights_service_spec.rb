@@ -21,7 +21,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
   end
 
   describe '#base_metrics' do
-    let(:visitors_data) { { total: 100, last_7_days: 20 } }
+    let(:visitors_data) { { visitors_total: 100, visitors_last_7_days: 20 } }
 
     let(:user1) { create(:user) }
 
