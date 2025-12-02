@@ -384,4 +384,56 @@ RSpec.describe Insights::BasePhaseInsightsService do
       end
     end
   end
+
+  # Documenting similar behaviour to that in Queries::Analytics::Participation
+  # and Queries::Visitors (as on 02-12-2025).
+  # i.e. timeseries data simply excludes any date groups with zero counts, and
+  # the FE is responsible for filling in gaps if needed.
+  describe '#participants_and_visitors_chart_data' do
+    it 'handles empty participations and visits data' do
+      flattened_participations = []
+      visits_data = { visits: [] }
+      result = service.send(:participants_and_visitors_chart_data, flattened_participations, visits_data)
+
+      expect(result).to eq({ resolution: 'day', timeseries: [] })
+    end
+
+    it 'handles empty participations with non-empty visits data' do
+      flattened_participations = []
+      visits_data = {
+        visits: [
+          { date: 10.days.ago.beginning_of_day, visitor_id: 'visitor_1' },
+          { date: 9.days.ago.beginning_of_day, visitor_id: 'visitor_2' },
+          { date: 9.days.ago.beginning_of_day, visitor_id: 'visitor_3' }
+        ]
+      }
+      result = service.send(:participants_and_visitors_chart_data, flattened_participations, visits_data)
+
+      expect(result).to eq({
+        resolution: 'day',
+        timeseries: [
+          { date_group: 10.days.ago.beginning_of_day.to_date, visitors: 1, participants: 0 },
+          { date_group: 9.days.ago.beginning_of_day.to_date, visitors: 2, participants: 0 }
+        ]
+      })
+    end
+
+    it 'handles non-empty participations with empty visits data' do
+      user = create(:user)
+      participation1 = create(:basket_participation, acted_at: 8.days.ago, user: user)
+      participation2 = create(:basket_participation, acted_at: 7.days.ago, user: user)
+
+      flattened_participations = [participation1, participation2]
+      visits_data = { visits: [] }
+      result = service.send(:participants_and_visitors_chart_data, flattened_participations, visits_data)
+
+      expect(result).to eq({
+        resolution: 'day',
+        timeseries: [
+          { date_group: 8.days.ago.beginning_of_day.to_date, visitors: 0, participants: 1 },
+          { date_group: 7.days.ago.beginning_of_day.to_date, visitors: 0, participants: 1 }
+        ]
+      })
+    end
+  end
 end
