@@ -4,7 +4,7 @@ import { Box, Text, colors, fontSizes } from 'component-library';
 import styled, { css } from 'styled-components';
 
 import { transformDemographicsResponse } from 'api/phase_insights/transformDemographics';
-import useDemographics from 'api/phase_insights/useDemographics';
+import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
 import { IPhaseData } from 'api/phases/types';
 
 import useLocalize from 'hooks/useLocalize';
@@ -80,17 +80,23 @@ const DemographicsSection = ({ phase }: Props) => {
   const [selectedFieldIndex, setSelectedFieldIndex] = useState(0);
   const { isPdfExport } = usePdfExportContext();
 
-  // Fetch demographics data in backend format (series/options)
-  const { data: response, isLoading } = useDemographics({
+  const userDataCollection =
+    phase?.attributes.user_data_collection || 'anonymous';
+
+  const { data: response, isLoading } = usePhaseInsights({
     phaseId: phase?.id || '',
-    userDataCollection: phase?.attributes.user_data_collection || 'anonymous',
   });
 
   // Transform backend data to frontend format
+  // Only show demographics for non-anonymous phases
   const demographicsData = useMemo(() => {
-    if (!response?.data.attributes) return null;
-    return transformDemographicsResponse(response.data.attributes, localize);
-  }, [response, localize]);
+    if (userDataCollection === 'anonymous') return null;
+    if (!response?.data.attributes.demographics) return null;
+    return transformDemographicsResponse(
+      response.data.attributes.demographics,
+      localize
+    );
+  }, [response, localize, userDataCollection]);
 
   const fields = useMemo(
     () => demographicsData?.fields || [],
