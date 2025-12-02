@@ -66,7 +66,7 @@ resource 'Phase insights' do
   let!(:session2) { create(:session, user_id: user2.id) }
   let!(:pageview2) { create(:pageview, session: session2, created_at: time_now - 15.days, project_id: proposals_phase.project.id) } # in phase
   let!(:pageview3) { create(:pageview, session: session2, created_at: time_now - 5.days, project_id: proposals_phase.project.id) } # in phase & last 7 days, same session
-  
+
   let!(:session3) { create(:session, user_id: user3.id) }
   let!(:pageview5) { create(:pageview, session: session3, created_at: time_now - 2.days, project_id: proposals_phase.project.id) } # after phase
 

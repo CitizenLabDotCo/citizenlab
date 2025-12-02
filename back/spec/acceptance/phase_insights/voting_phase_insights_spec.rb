@@ -187,7 +187,6 @@ resource 'Phase insights' do
         })
       end
 
-      # TODO: These numbers seem off. Verify and fix if necessary.
       include_examples 'phase insights demographics',
         gender_blank: 3,
         birthyear_blank: 3
