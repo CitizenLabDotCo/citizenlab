@@ -32,12 +32,17 @@ const transformField = (
   localize: Localize
 ): DemographicField => {
   // Get localized field name
-  const field_name = localize(field.field_name_multiloc);
+  const field_name = localize(field.title_multiloc);
+  const seriesData = {
+    series: field.series,
+    options: field.options,
+    population_distribution: field.reference_distribution,
+  };
 
   // Use shared transformation utility to convert series/options to chart rows
   const chartRows = transformDemographicsToChartRows(
-    field,
-    field.field_code ?? undefined,
+    seriesData,
+    field.code ?? undefined,
     '_blank',
     (_key, multiloc) => localize(multiloc)
   );
@@ -52,11 +57,11 @@ const transformField = (
   }));
 
   return {
-    field_id: field.field_id,
-    field_key: field.field_key,
+    field_id: field.id,
+    field_key: field.key,
     field_name,
-    field_code: field.field_code,
+    field_code: field.code,
     data_points,
-    r_score: field.r_score,
+    r_score: field.r_score ?? undefined,
   };
 };
