@@ -26,7 +26,6 @@ module.exports = {
   reporters: ['default', 'jest-junit'],
   coverageReporters: ['json', 'lcov', 'text-summary', 'clover'],
   moduleNameMapper: {
-    '^canvas$': '<rootDir>/__mocks__/canvas.js',
     '\\.(css)$': 'identity-obj-proxy',
     '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/app/utils/testUtils/fileMock.js',
     '^react-scroll-to-component$': 'identity-obj-proxy',
@@ -37,11 +36,6 @@ module.exports = {
   testEnvironmentOptions: {
     url: 'https://demo.stg.govocal.com/en/',
     customExportConditions: [''],
-    // Tell jsdom to NOT try to load canvas
-    features: {
-      FetchExternalResources: false,
-      ProcessExternalResources: false,
-    },
   },
   resolver: `${__dirname}/internals/jest/resolver.js`,
 };
