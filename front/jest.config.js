@@ -3,7 +3,6 @@ module.exports = {
   clearMocks: true,
   coverageDirectory: 'coverage',
   preset: undefined,
-  testEnvironment: 'jest-environment-jsdom',
   transform: {
     '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
   },
@@ -27,15 +26,21 @@ module.exports = {
   reporters: ['default', 'jest-junit'],
   coverageReporters: ['json', 'lcov', 'text-summary', 'clover'],
   moduleNameMapper: {
+    '^canvas$': '<rootDir>/__mocks__/canvas.js',
     '\\.(css)$': 'identity-obj-proxy',
     '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/app/utils/testUtils/fileMock.js',
     '^react-scroll-to-component$': 'identity-obj-proxy',
     '@citizenlab/cl2-component-library': '<rootDir>/app/component-library',
   },
-  modulePathIgnorePatterns: ['.*__mocks__.*'],
+  testEnvironment: '<rootDir>/internals/jest/jsdom-no-canvas.js',
   testEnvironmentOptions: {
     url: 'https://demo.stg.govocal.com/en/',
     customExportConditions: [''],
+    // Tell jsdom to NOT try to load canvas
+    features: {
+      FetchExternalResources: false,
+      ProcessExternalResources: false,
+    },
   },
   resolver: `${__dirname}/internals/jest/resolver.js`,
 };

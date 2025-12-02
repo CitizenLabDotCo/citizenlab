@@ -1,4 +1,11 @@
+const nodePath = require('path');
+
 module.exports = (path, options) => {
+  // Intercept canvas and all subpaths
+  if (path === 'canvas' || (typeof path === 'string' && path.startsWith('canvas/'))) {
+    return nodePath.join(options.rootDir || process.cwd(), '__mocks__', 'canvas.js');
+  }
+
   // Call the defaultResolver, so we leverage its cache, error handling, etc.
   return options.defaultResolver(path, {
     ...options,
