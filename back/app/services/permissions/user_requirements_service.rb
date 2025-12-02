@@ -36,8 +36,7 @@ class Permissions::UserRequirementsService
         field.required = permissions_custom_field.required
       end
     end
-    fields = fields.reject { |field| field.hidden } # Should not return hidden fields
-    fields
+    fields.reject(&:hidden?) # Should not return hidden fields
   end
 
   # Verification requirement can now come from either a group or the "verified" permitted_by value
