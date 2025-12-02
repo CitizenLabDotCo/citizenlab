@@ -386,3 +386,4 @@ ca:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "El màxim ha de ser més gran que el mínim."
+      max_must_be_greater_than_or_equal_to_min_select_count: "El màxim ha de ser més gran o igual que el mínim."
