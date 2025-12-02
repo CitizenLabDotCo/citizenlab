@@ -111,10 +111,10 @@ class CustomField < ApplicationRecord
   validates :page_layout, absence: true, unless: :page?
   validates :question_category, absence: true, unless: :supports_category?
   validates :question_category, inclusion: { in: QUESTION_CATEGORIES }, allow_nil: true, if: :supports_category?
-  validates :maximum, presence: true, inclusion: 2..11, if: :supports_linear_scale?
-  validates :min_characters, comparison: { greater_than_or_equal_to: 0 }, if: :support_text?, allow_nil: true
-  validates :max_characters, comparison: { greater_than: 0 }, if: :support_text?, allow_nil: true
-  validate :max_characters_greater_than_min_characters, if: :support_text?
+  validates :maximum, presence: true, inclusion: 2..11, if: ->(field) { field.input_strategy.supports_linear_scale? }
+  validates :min_characters, comparison: { greater_than_or_equal_to: 0 }, if: ->(field) { field.input_strategy.supports_text? }, allow_nil: true
+  validates :max_characters, comparison: { greater_than: 0 }, if: ->(field) { field.input_strategy.supports_text? }, allow_nil: true
+  validate :max_characters_greater_than_min_characters, if: ->(field) { field.input_strategy.supports_text? }
   validate :maximum_select_count_greater_than_or_equal_to_minimum, if: :select_count_enabled_and_supported?
 
   before_validation :set_default_enabled
@@ -144,8 +144,53 @@ class CustomField < ApplicationRecord
     logic.present? && logic != { 'rules' => [] }
   end
 
-  def support_options?
-    %w[select multiselect select_image multiselect_image ranking].include?(input_type)
+  def input_strategy
+    @input_strategy ||= case input_type
+    when 'linear_scale'
+      InputStrategy::LinearScale.new(self)
+    when 'sentiment_linear_scale'
+      InputStrategy::SentimentLinearScale.new(self)
+    when 'rating'
+      InputStrategy::Rating.new(self)
+    when 'number'
+      InputStrategy::Number.new(self)
+    when 'select'
+      InputStrategy::Select.new(self)
+    when 'multiselect'
+      InputStrategy::Multiselect.new(self)
+    when 'select_image'
+      InputStrategy::SelectImage.new(self)
+    when 'multiselect_image'
+      InputStrategy::MultiselectImage.new(self)
+    when 'ranking'
+      InputStrategy::Ranking.new(self)
+    when 'text'
+      InputStrategy::Text.new(self)
+    when 'multiline_text'
+      InputStrategy::MultilineText.new(self)
+    when 'text_multiloc'
+      InputStrategy::TextMultiloc.new(self)
+    when 'multiline_text_multiloc'
+      InputStrategy::MultilineTextMultiloc.new(self)
+    when 'html_multiloc'
+      InputStrategy::HtmlMultiloc.new(self)
+    when 'matrix_linear_scale'
+      InputStrategy::MatrixLinearScale.new(self)
+    when 'topic_ids'
+      InputStrategy::TopicIds.new(self)
+    when 'point'
+      InputStrategy::Point.new(self)
+    when 'line'
+      InputStrategy::Line.new(self)
+    when 'polygon'
+      InputStrategy::Polygon.new(self)
+    when 'page'
+      InputStrategy::Page.new(self)
+    when 'image_files'
+      InputStrategy::ImageFiles.new(self)
+    else
+      InputStrategy::Base.new(self)
+    end
   end
 
   def includes_other_option?
@@ -154,66 +199,6 @@ class CustomField < ApplicationRecord
 
   def ask_follow_up?
     ask_follow_up
-  end
-
-  def support_other_option?
-    %(select multiselect select_image multiselect_image).include?(input_type)
-  end
-
-  def support_follow_up?
-    %w[sentiment_linear_scale].include?(input_type)
-  end
-
-  def support_free_text_value?
-    support_text? || (support_options? && includes_other_option?) || support_follow_up?
-  end
-
-  def support_text?
-    %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type)
-  end
-
-  def support_option_images?
-    %w[select_image multiselect_image].include?(input_type)
-  end
-
-  def supports_xlsx_export?
-    return false if code == 'idea_images_attributes' # Is this still applicable?
-
-    !page?
-  end
-
-  def supports_geojson?
-    return false if code == 'idea_images_attributes' # Is this still applicable?
-
-    !page?
-  end
-
-  def supports_linear_scale?
-    %w[linear_scale matrix_linear_scale sentiment_linear_scale rating].include?(input_type)
-  end
-
-  def supports_matrix_statements?
-    input_type == 'matrix_linear_scale'
-  end
-
-  def supports_linear_scale_labels?
-    %w[linear_scale matrix_linear_scale sentiment_linear_scale].include?(input_type)
-  end
-
-  def supports_average?
-    %w[linear_scale sentiment_linear_scale rating number].include?(input_type)
-  end
-
-  def supports_single_selection?
-    %w[select linear_scale sentiment_linear_scale rating].include?(input_type)
-  end
-
-  def supports_multiple_selection?
-    %w[multiselect multiselect_image].include?(input_type)
-  end
-
-  def supports_selection?
-    supports_single_selection? || supports_multiple_selection?
   end
 
   def average_rankings(scope)
@@ -329,12 +314,8 @@ class CustomField < ApplicationRecord
     %w[multiselect multiselect_image].include?(input_type)
   end
 
-  def supports_select_count?
-    %w[multiselect multiselect_image topic_ids].include?(input_type)
-  end
-
   def select_count_enabled_and_supported?
-    supports_select_count? && select_count_enabled
+    input_strategy.supports_select_count? && select_count_enabled
   end
 
   def singleselect?
@@ -343,22 +324,6 @@ class CustomField < ApplicationRecord
 
   def linear_scale?
     input_type == 'linear_scale'
-  end
-
-  def sentiment_linear_scale?
-    input_type == 'sentiment_linear_scale'
-  end
-
-  def rating?
-    input_type == 'rating'
-  end
-
-  def checkbox?
-    input_type == 'checkbox'
-  end
-
-  def dropdown_layout_type?
-    %w[multiselect select].include?(input_type)
   end
 
   def accepts_input?
