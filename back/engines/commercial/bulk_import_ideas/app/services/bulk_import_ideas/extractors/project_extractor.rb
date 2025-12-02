@@ -135,7 +135,7 @@ module BulkImportIdeas::Extractors
 
     def attachments(row)
       folder_name = project_column(row, 'AttachmentsFolder')
-      return [] unless folder_name.present?
+      return [] if folder_name.blank?
 
       attachments_folder = "#{@xlsx_folder_path}/attachments/#{folder_name}"
       Dir.glob("#{attachments_folder}/**/*").select do |file_path|

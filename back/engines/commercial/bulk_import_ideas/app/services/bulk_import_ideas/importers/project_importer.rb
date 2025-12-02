@@ -188,6 +188,9 @@ module BulkImportIdeas::Importers
         project_attributes = project_data.except(:phases, :thumbnail_url, :banner_url, :attachments)
         project = Project.create!(project_attributes)
 
+        # Create the description content builder layout
+        create_description_content_builder_layout(project)
+
         # Create the project thumbnail and banner images if they exist
         create_project_thumbnail_image(project, project_data)
         create_project_banner_image(project, project_data)
@@ -198,6 +201,43 @@ module BulkImportIdeas::Importers
         log "Created new project: #{project_data[:slug]} (#{project.id})"
         project
       end
+    end
+
+    def create_description_content_builder_layout(project)
+      craftjs_json = {
+        ROOT: {
+          type: 'div',
+          nodes: %w[TEXT],
+          props: { id: 'e2e-content-builder-frame' },
+          custom: {},
+          hidden: false,
+          isCanvas: true,
+          displayName: 'div',
+          linkedNodes: {}
+        },
+        TEXT: {
+          type: { resolvedName: 'TextMultiloc' },
+          nodes: [],
+          props: { text: project.description_multiloc || {} },
+          custom: {},
+          hidden: false,
+          parent: 'ROOT',
+          isCanvas: false,
+          displayName: 'TextMultiloc',
+          linkedNodes: {}
+        }
+      }
+
+      ContentBuilder::Layout.create!(
+        content_buildable: project,
+        code: 'project_description',
+        craftjs_json: craftjs_json,
+        enabled: true
+      )
+
+      log 'Created description builder layout for project description.'
+    rescue StandardError => e
+      log "ERROR: Creating description builder layout: #{e.message}"
     end
 
     def create_project_thumbnail_image(project, project_data)

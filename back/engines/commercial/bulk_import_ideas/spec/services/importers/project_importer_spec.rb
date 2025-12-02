@@ -176,4 +176,15 @@ describe BulkImportIdeas::Importers::ProjectImporter do
       expect(file_path).to end_with('.jpeg')
     end
   end
+
+  describe '#create_description_content_builder_layout' do
+    let(:project) { create(:project) }
+
+    it 'creates a description builder layout for the project' do
+      service.send(:create_description_content_builder_layout, project)
+
+      expect(ContentBuilder::Layout.count).to eq(1)
+      expect(ContentBuilder::Layout.first.content_buildable).to eq(project)
+    end
+  end
 end
