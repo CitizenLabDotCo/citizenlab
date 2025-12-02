@@ -63,14 +63,24 @@ module BulkImportIdeas::Extractors
       text_field_attributes(rows, column_name)
     end
 
-    # TODO: This could also detect linear scale fields too
     def number_field_attributes(rows, column_name, override_input_type)
+      # binding.pry if column_name == 'Please rate the following aspects of Town Center. (1 = Very poor, 5 = Excellent): Entertainment / Events [#354446]'
       values = rows.pluck(column_name).compact
-      return nil unless values.all?(Integer) || override_input_type == 'number'
 
-      {
-        input_type: 'number'
-      }
+      return nil unless values.all?(Integer) || values.all? { |str| str.to_s.match?(/\A\d+\z/) } || override_input_type == 'number'
+
+      int_values = values.map(&:to_i)
+      if int_values.uniq.size <= 11 && (int_values.min >= 1 && int_values.max <= 11)
+        {
+          input_type: 'linear_scale',
+          maximum: int_values.max
+        }
+      else
+        # Default to number field
+        {
+          input_type: 'number'
+        }
+      end
     end
 
     def text_field_attributes(rows, column_name)
