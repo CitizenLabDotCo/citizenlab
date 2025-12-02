@@ -32,9 +32,9 @@ module Insights
       participation_method_metrics = phase_participation_method_metrics(participations)
       metrics = metrics_data(participations, participant_ids, visitors_data, participation_method_metrics)
       demographics = demographics_data(flattened_participations, participant_ids)
-      particants_and_visitors_data = particants_and_visitors_data(flattened_participations)
+      participants_and_visitors_timeseries = participants_and_visitors_timeseries(flattened_participations)
 
-      metrics.merge(demographics: { fields: demographics }, particants_and_visitors_chart_data: particants_and_visitors_data)
+      metrics.merge(demographics: { fields: demographics }, participants_and_visitors_timeseries: participants_and_visitors_timeseries)
     end
 
     def metrics_data(participations, participant_ids, visitors_data, participation_method_metrics)
@@ -237,7 +237,7 @@ module Insights
       UserCustomFields::Representativeness::RScore.compute_scores(counts, reference_distribution)[:min_max_p_ratio]
     end
 
-    def particants_and_visitors_data(flattened_participations)
+    def participants_and_visitors_timeseries(flattened_participations)
       resolution = 'day' # TODO: calculate, based on phase duration so far
 
       # Group participations by resolution and count unique participants
@@ -252,9 +252,9 @@ module Insights
 
       participants_timeseries = grouped_participants_timeseries.sort_by { |row| row[:date_group] }
 
-      {
-        participants_timeseries: participants_timeseries
-      }
+      participants_and_visitors_timeseries = participants_timeseries # TODO: Merge with visitors data
+
+      participants_and_visitors_timeseries
     end
 
     def date_truncate(datetime, resolution)
