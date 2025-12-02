@@ -103,14 +103,6 @@ export interface PhaseInsightsParticipationMetricsData {
   attributes: PhaseInsightsParticipationMetrics;
 }
 
-/**
- * Participation metrics response (full JSONAPI structure)
- * This is what the API returns - hooks return this structure
- */
-export interface IPhaseInsightsParticipationMetrics {
-  data: PhaseInsightsParticipationMetricsData;
-}
-
 // ============================================================================
 // DEMOGRAPHICS TYPES - FRONTEND FORMAT (Component Consumption)
 // ============================================================================
@@ -192,18 +184,6 @@ export interface PhaseInsightsDemographicsBackendData {
     fields: DemographicFieldBackend[];
   };
 }
-
-/**
- * Backend demographics response (full JSONAPI structure)
- * This is what the API returns - hooks return this structure
- */
-export interface IPhaseInsightsDemographics {
-  data: PhaseInsightsDemographicsBackendData;
-}
-
-// ============================================================================
-// CONSOLIDATED PHASE INSIGHTS TYPES (Single API endpoint)
-// ============================================================================
 
 /**
  * Consolidated phase insights attributes from single API endpoint
