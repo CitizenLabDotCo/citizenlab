@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import emailBansKeys from 'api/email_bans/keys';
 import groupsKeys from 'api/groups/keys';
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 import userCountKeys from 'api/users_count/keys';
@@ -36,7 +37,7 @@ const useDeleteUser = () => {
 
   return useMutation({
     mutationFn: deleteUser,
-    onSuccess: async () => {
+    onSuccess: async (_data, variables) => {
       queryClient.invalidateQueries({
         queryKey: userCountKeys.items(),
       });
@@ -44,6 +45,10 @@ const useDeleteUser = () => {
 
       queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
       queryClient.invalidateQueries({ queryKey: groupsKeys.all() });
+
+      if (variables.banEmail) {
+        queryClient.invalidateQueries({ queryKey: emailBansKeys.all() });
+      }
     },
   });
 };
