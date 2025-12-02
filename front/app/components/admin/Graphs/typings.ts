@@ -24,6 +24,14 @@ export interface AccessibilityProps {
   ariaDescribedBy?: string;
 }
 
+export interface RechartsAccessibilityProps {
+  accessibilityLayer?: boolean;
+  role?: string;
+  'aria-label'?: string;
+  'aria-describedby'?: string;
+  tabIndex?: number;
+}
+
 // STYLING
 export interface Margin {
   top?: number;

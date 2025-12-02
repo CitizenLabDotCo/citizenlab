@@ -9,6 +9,7 @@ import {
 } from 'recharts';
 
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
+import { getRechartsAccessibilityProps } from 'components/admin/Graphs/utils';
 
 import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
@@ -49,14 +50,6 @@ const PieChart = <Row,>({
     LegendDimensions | undefined
   >();
 
-  const accessibilityProps = {
-    accessibilityLayer: true,
-    role: 'img',
-    'aria-label': ariaLabel,
-    'aria-describedby': ariaDescribedBy,
-    tabIndex: 0,
-  };
-
   if (hasNoData(data)) {
     return <EmptyState emptyContainerContent={emptyContainerContent} />;
   }
@@ -91,7 +84,7 @@ const PieChart = <Row,>({
           DEFAULT_LEGEND_OFFSET
         )}
         ref={innerRef}
-        {...accessibilityProps}
+        {...getRechartsAccessibilityProps(ariaLabel, ariaDescribedBy)}
       >
         {legend && graphDimensions && legendDimensions && (
           <g className="graph-legend">

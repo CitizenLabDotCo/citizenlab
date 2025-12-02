@@ -16,6 +16,7 @@ import {
   sizes,
   animation,
 } from 'components/admin/Graphs/styling';
+import { getRechartsAccessibilityProps } from 'components/admin/Graphs/utils';
 
 import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
@@ -59,14 +60,6 @@ const StackedBarChart = <Row,>({
   const [legendDimensions, setLegendDimensions] = useState<
     LegendDimensions | undefined
   >();
-
-  const accessibilityProps = {
-    accessibilityLayer: true,
-    role: 'img',
-    'aria-label': ariaLabel,
-    'aria-describedby': ariaDescribedBy,
-    tabIndex: 0,
-  };
 
   if (hasNoData(data)) {
     return <EmptyState emptyContainerContent={emptyContainerContent} />;
@@ -131,7 +124,7 @@ const StackedBarChart = <Row,>({
         ref={innerRef}
         barGap={0}
         barCategoryGap={bars?.categoryGap}
-        {...accessibilityProps}
+        {...getRechartsAccessibilityProps(ariaLabel, ariaDescribedBy)}
       >
         {CustomLegend && legend && legendDimensions && (
           <RechartsLegend

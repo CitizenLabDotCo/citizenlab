@@ -15,6 +15,7 @@ import {
   animation,
 } from 'components/admin/Graphs/styling';
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
+import { getRechartsAccessibilityProps } from 'components/admin/Graphs/utils';
 
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -60,14 +61,6 @@ const LineChart = <Row,>({
     LegendDimensions | undefined
   >();
 
-  const accessibilityProps = {
-    accessibilityLayer: true,
-    role: 'img',
-    'aria-label': ariaLabel,
-    'aria-describedby': ariaDescribedBy,
-    tabIndex: 0,
-  };
-
   if (hasNoData(data) && !showEmptyGraph) {
     return <EmptyState emptyContainerContent={emptyContainerContent} />;
   }
@@ -108,7 +101,7 @@ const LineChart = <Row,>({
           DEFAULT_LEGEND_OFFSET
         )}
         ref={innerRef}
-        {...accessibilityProps}
+        {...getRechartsAccessibilityProps(ariaLabel, ariaDescribedBy)}
       >
         {legend && graphDimensions && legendDimensions && (
           <g className="graph-legend">

@@ -15,6 +15,7 @@ import {
   sizes,
   animation,
 } from 'components/admin/Graphs/styling';
+import { getRechartsAccessibilityProps } from 'components/admin/Graphs/utils';
 
 import { truncate } from 'utils/textUtils';
 
@@ -30,7 +31,6 @@ import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
 
 import { Props } from './typings';
 import { getBarConfigs, getRechartsLayout, getLabelConfig } from './utils';
-
 export const DEFAULT_LEGEND_OFFSET = 10;
 
 const MultiBarChart = <Row,>({
@@ -59,14 +59,6 @@ const MultiBarChart = <Row,>({
   const [legendDimensions, setLegendDimensions] = useState<
     LegendDimensions | undefined
   >();
-
-  const accessibilityProps = {
-    accessibilityLayer: true,
-    role: 'img',
-    'aria-label': ariaLabel,
-    'aria-describedby': ariaDescribedBy,
-    tabIndex: 0,
-  };
 
   if (hasNoData(data)) {
     return <EmptyState emptyContainerContent={emptyContainerContent} />;
@@ -135,7 +127,7 @@ const MultiBarChart = <Row,>({
         ref={innerRef}
         barGap={0}
         barCategoryGap={bars?.categoryGap}
-        {...accessibilityProps}
+        {...getRechartsAccessibilityProps(ariaLabel, ariaDescribedBy)}
       >
         {legend && graphDimensions && legendDimensions && (
           <g className="graph-legend">
