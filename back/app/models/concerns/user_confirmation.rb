@@ -54,7 +54,7 @@ module UserConfirmation
   end
 
   def email_confirmation_code_expiration_at
-    email_confirmation_code_sent_at + 1.day
+    email_confirmation_code_sent_at + confirmation_code_duration
   end
 
   def reset_confirmation_code!
@@ -93,5 +93,9 @@ module UserConfirmation
 
   def generate_confirmation_code
     Rails.env.development? ? '1234' : rand.to_s[2..5]
+  end
+
+  def confirmation_code_duration
+    24.hours
   end
 end
