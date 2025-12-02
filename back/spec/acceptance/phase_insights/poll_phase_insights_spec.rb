@@ -4,7 +4,10 @@ require 'rspec_api_documentation/dsl'
 resource 'Phase insights' do
   before { admin_header_token }
 
-  let(:phase) { create(:poll_phase, start_at: 20.days.ago, end_at: 3.days.ago) }
+  # Fixing the dates used as relative to this reference time means we can expect exact dates in the chart data
+  let(:time_now) { Time.new(2025, 12, 2, 12, 0, 0) }
+
+  let(:phase) { create(:poll_phase, start_at: time_now - 20.days, end_at: time_now - 3.days) }
 
   let!(:permission1) { create(:permission, action: 'taking_poll', permission_scope: phase) }
 
@@ -33,21 +36,21 @@ resource 'Phase insights' do
   end
 
   let(:user1) { create(:user, custom_field_values: { gender: 'female', birthyear: 1980 }) }
-  let!(:response1) { create(:poll_response, phase: phase, user: user1, created_at: 15.days.ago) }
+  let!(:response1) { create(:poll_response, phase: phase, user: user1, created_at: time_now - 15.days) }
 
   let(:user2) { create(:user, custom_field_values: { gender: 'male', birthyear: 1990 }) }
-  let!(:response2) { create(:poll_response, phase: phase, user: user2, created_at: 5.days.ago) }
+  let!(:response2) { create(:poll_response, phase: phase, user: user2, created_at: time_now - 5.days) }
 
   let!(:session1) { create(:session, user_id: user1.id) }
-  let!(:pageview1) { create(:pageview, session: session1, created_at: 15.days.ago, project_id: phase.project.id) } # during phase
+  let!(:pageview1) { create(:pageview, session: session1, created_at: time_now - 15.days, project_id: phase.project.id) } # during phase
 
   let!(:session2) { create(:session, user_id: user2.id) }
-  let!(:pageview2) { create(:pageview, session: session2, created_at: 15.days.ago, project_id: phase.project.id) } # during phase
-  let!(:pageview3) { create(:pageview, session: session2, created_at: 5.days.ago, project_id: phase.project.id) } # during phase & last 7 days, same session
+  let!(:pageview2) { create(:pageview, session: session2, created_at: time_now - 15.days, project_id: phase.project.id) } # during phase
+  let!(:pageview3) { create(:pageview, session: session2, created_at: time_now - 5.days, project_id: phase.project.id) } # during phase & last 7 days, same session
 
   let(:user3) { create(:user) }
   let!(:session3) { create(:session, user_id: user3.id) }
-  let!(:pageview5) { create(:pageview, session: session3, created_at: 2.days.ago, project_id: phase.project.id) } # after phase
+  let!(:pageview5) { create(:pageview, session: session3, created_at: time_now - 2.days, project_id: phase.project.id) } # after phase
 
   let(:id) { phase.id }
 
@@ -69,6 +72,15 @@ resource 'Phase insights' do
           responses: 2,
           responses_last_7_days: 1
         }
+      })
+
+      participants_and_visitors_chart_data = json_response_body.dig(:data, :attributes, :participants_and_visitors_chart_data)
+      expect(participants_and_visitors_chart_data).to eq({
+        resolution: 'day',
+        timeseries: [
+          { participants: 1, visitors: 2, date_group: '2025-11-17' },
+          { participants: 1, visitors: 1, date_group: '2025-11-27' }
+        ]
       })
     end
 

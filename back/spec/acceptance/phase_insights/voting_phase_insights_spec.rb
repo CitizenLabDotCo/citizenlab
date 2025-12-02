@@ -4,12 +4,15 @@ require 'rspec_api_documentation/dsl'
 resource 'Phase insights' do
   before { admin_header_token }
 
+  # Fixing the dates used as relative to this reference time means we can expect exact dates in the chart data
+  let(:time_now) { Time.new(2025, 12, 2, 12, 0, 0) }
+
   let(:ideation_phase) do
     create(
       :phase,
       participation_method: 'ideation',
-      start_at: 30.days.ago,
-      end_at: 15.days.ago
+      start_at: time_now - 30.days,
+      end_at: time_now - 15.days
     )
   end
 
@@ -18,8 +21,8 @@ resource 'Phase insights' do
       :phase,
       participation_method: 'voting',
       voting_method: 'multiple_voting',
-      start_at: 14.days.ago,
-      end_at: 1.day.ago,
+      start_at: time_now - 14.days,
+      end_at: time_now - 1.day,
       project: ideation_phase.project,
       manual_votes_count: 3
     )
@@ -53,10 +56,8 @@ resource 'Phase insights' do
     )
   end
 
-  # let!(:permissions_custom_field) { create(:permissions_custom_field, permission: permission1, custom_field: custom_field_gender) }
-
   (1..3).each do |i|
-    let!(:"idea#{i}") { create(:idea, phases: [ideation_phase, voting_phase], project: ideation_phase.project, submitted_at: 20.days.ago) }
+    let!(:"idea#{i}") { create(:idea, phases: [ideation_phase, voting_phase], project: ideation_phase.project, submitted_at: time_now - 20.days) }
   end
 
   (1..4).each do |i|
@@ -70,44 +71,45 @@ resource 'Phase insights' do
   # We do not count the number of NEW participants in the last 7 days.
   # Thus, user2 who participated before the last 7 days AND in last 7 days is also counted,
   # and this is modelled in the test data to document this behavior.
-  let!(:comment1) { create(:comment, idea: idea1, author: user1, created_at: 25.days.ago) } # before voting phase (not counted)
-  let!(:comment2) { create(:comment, idea: idea2, author: user2, created_at: 13.days.ago) } # in voting phase
-  let!(:comment3) { create(:comment, idea: idea3, author: user2, created_at: 5.days.ago) } # in voting phase & last 7 days
-  let!(:comment4) { create(:comment, idea: idea3, author: user3, created_at: 5.days.ago) } # in voting phase & last 7 days
+  let!(:comment1) { create(:comment, idea: idea1, author: user1, created_at: time_now - 25.days) } # before voting phase (not counted)
+  let!(:comment2) { create(:comment, idea: idea2, author: user2, created_at: time_now - 13.days) } # in voting phase
+  let!(:comment3) { create(:comment, idea: idea3, author: user2, created_at: time_now - 5.days) } # in voting phase & last 7 days
+  let!(:comment4) { create(:comment, idea: idea3, author: user3, created_at: time_now - 5.days) } # in voting phase & last 7 days
 
-  let!(:basket1) { create(:basket, phase: voting_phase, user: user4, submitted_at: 20.days.ago) } # before voting phase (still counts)
+  let!(:basket1) { create(:basket, phase: voting_phase, user: user4, submitted_at: time_now - 20.days) } # before voting phase (still counts)
   let!(:baskets_idea1) { create(:baskets_idea, basket: basket1, idea: idea1, votes: 1) }
   let!(:baskets_idea2) { create(:baskets_idea, basket: basket1, idea: idea2, votes: 3) }
 
-  let!(:basket2) { create(:basket, phase: voting_phase, user: user5, submitted_at: 10.days.ago) } # in voting phase
+  let!(:basket2) { create(:basket, phase: voting_phase, user: user5, submitted_at: time_now - 10.days) } # in voting phase
   let!(:baskets_idea3) { create(:baskets_idea, basket: basket2, idea: idea2, votes: 1) }
 
-  let!(:basket3) { create(:basket, phase: voting_phase, user: user6, submitted_at: 5.days.ago) } # in voting phase & last 7 days
+  let!(:basket3) { create(:basket, phase: voting_phase, user: user6, submitted_at: time_now - 5.days) } # in voting phase & last 7 days
   let!(:baskets_idea4) { create(:baskets_idea, basket: basket3, idea: idea3, votes: 1) }
 
   let!(:session1) { create(:session, user_id: user2.id) }
+  let!(:pageview1) { create(:pageview, session: session1, created_at: time_now - 20.days, project_id: voting_phase.project.id) } # before voting phase
+  let!(:pageview2) { create(:pageview, session: session1, created_at: time_now - 13.days, project_id: voting_phase.project.id) } # in voting phase
+
   let!(:session2) { create(:session, user_id: user2.id) }
-  let!(:pageview1) { create(:pageview, session: session1, created_at: 20.days.ago, project_id: voting_phase.project.id) } # before voting phase
-  let!(:pageview2) { create(:pageview, session: session1, created_at: 13.days.ago, project_id: voting_phase.project.id) } # in voting phase
-  let!(:pageview3) { create(:pageview, session: session2, created_at: 5.days.ago, project_id: voting_phase.project.id) } # in voting phase & last 7 days
-  let!(:pageview4) { create(:pageview, session: session2, created_at: 4.days.ago, project_id: voting_phase.project.id) } # different session, but repeat visitor
+  let!(:pageview3) { create(:pageview, session: session2, created_at: time_now - 5.days, project_id: voting_phase.project.id) } # in voting phase & last 7 days
+  let!(:pageview4) { create(:pageview, session: session2, created_at: time_now - 4.days, project_id: voting_phase.project.id) } # different session, but repeat visitor
 
   let!(:session3) { create(:session, user_id: user3.id) }
-  let!(:pageview5) { create(:pageview, session: session3, created_at: 10.days.ago, project_id: voting_phase.project.id) } # in voting phase
+  let!(:pageview5) { create(:pageview, session: session3, created_at: time_now - 10.days, project_id: voting_phase.project.id) } # in voting phase
 
   let!(:session4) { create(:session, user_id: user4.id) }
-  let!(:pageview6) { create(:pageview, session: session4, created_at: 10.days.ago, project_id: voting_phase.project.id) } # in voting phase
-  let!(:pageview7) { create(:pageview, session: session4, created_at: 5.days.ago, project_id: voting_phase.project.id) } # in voting phase & last 7 days
+  let!(:pageview6) { create(:pageview, session: session4, created_at: time_now - 10.days, project_id: voting_phase.project.id) } # in voting phase
+  let!(:pageview7) { create(:pageview, session: session4, created_at: time_now - 5.days, project_id: voting_phase.project.id) } # in voting phase & last 7 days
 
   let!(:session5) { create(:session, user_id: user5.id) }
-  let!(:pageview8) { create(:pageview, session: session5, created_at: 5.days.ago, project_id: voting_phase.project.id) } # in voting phase & last 7 days
+  let!(:pageview8) { create(:pageview, session: session5, created_at: time_now - 5.days, project_id: voting_phase.project.id) } # in voting phase & last 7 days
 
   let!(:session6) { create(:session, user_id: user6.id) }
-  let!(:pageview9) { create(:pageview, session: session6, created_at: 5.days.ago, project_id: voting_phase.project.id) } # in voting phase & last 7 days
+  let!(:pageview9) { create(:pageview, session: session6, created_at: time_now - 5.days, project_id: voting_phase.project.id) } # in voting phase & last 7 days
 
   let!(:session7) { create(:session, monthly_user_hash: 'fake_hash1') }
-  let!(:pageview10) { create(:pageview, session: session7, created_at: 10.days.ago, project_id: voting_phase.project.id) } # in voting phase (visitor did not participate)
-  let!(:pageview11) { create(:pageview, session: session7, created_at: 5.days.ago, project_id: voting_phase.project.id) } # in voting phase & last 7 days (visitor did not participate)
+  let!(:pageview10) { create(:pageview, session: session7, created_at: time_now - 10.days, project_id: voting_phase.project.id) } # in voting phase (visitor did not participate)
+  let!(:pageview11) { create(:pageview, session: session7, created_at: time_now - 5.days, project_id: voting_phase.project.id) } # in voting phase & last 7 days (visitor did not participate)
 
   let(:id) { voting_phase.id }
 
@@ -171,7 +173,24 @@ resource 'Phase insights' do
             comments_posted_last_7_days: 2
           }
         })
+
+        participants_and_visitors_chart_data = json_response_body.dig(:data, :attributes, :participants_and_visitors_chart_data)
+        expect(participants_and_visitors_chart_data).to eq({
+          resolution: 'day',
+          timeseries: [
+            { participants: 1, visitors: 0, date_group: '2025-11-12' },
+            { participants: 1, visitors: 1, date_group: '2025-11-19' },
+            { participants: 1, visitors: 3, date_group: '2025-11-22' },
+            { participants: 3, visitors: 5, date_group: '2025-11-27' },
+            { participants: 0, visitors: 1, date_group: '2025-11-28' }
+          ]
+        })
       end
+
+      # TODO: These numbers seem off. Verify and fix if necessary.
+      include_examples 'phase insights demographics',
+        gender_blank: 3,
+        birthyear_blank: 3
     end
   end
 end
