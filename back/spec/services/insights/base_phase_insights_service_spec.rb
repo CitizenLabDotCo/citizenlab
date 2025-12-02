@@ -441,35 +441,35 @@ RSpec.describe Insights::BasePhaseInsightsService do
     it 'returns "day" for phases shorter than 4 weeks' do
       phase = create(:single_voting_phase, start_at: 20.days.ago, end_at: 1.day.ago)
       service = described_class.new(phase)
-      
+  
       expect(service.send(:chart_resolution)).to eq('day')
     end
 
     it 'returns "week" for phases between 4 weeks and 6 months' do
       phase = create(:single_voting_phase, start_at: 5.months.ago, end_at: 1.day.ago)
       service = described_class.new(phase)
-      
+
       expect(service.send(:chart_resolution)).to eq('week')
     end
 
     it 'returns "month" for phases between 6 months and 24 months' do
       phase = create(:single_voting_phase, start_at: 12.months.ago, end_at: 1.day.ago)
       service = described_class.new(phase)
-      
+
       expect(service.send(:chart_resolution)).to eq('month')
     end
 
     it 'returns "year" for phases longer than 24 months' do
       phase = create(:single_voting_phase, start_at: 30.months.ago, end_at: 1.day.ago)
       service = described_class.new(phase)
-      
+
       expect(service.send(:chart_resolution)).to eq('year')
     end
 
     it 'uses current time for ongoing phases without end_at' do
       phase = create(:single_voting_phase, start_at: 10.days.ago, end_at: nil)
       service = described_class.new(phase)
-      
+
       expect(service.send(:chart_resolution)).to eq('day')
     end
   end

@@ -243,7 +243,6 @@ module Insights
       grouped_participations = flattened_participations.group_by { |p| date_truncate(p[:acted_at], resolution) }
 
       # Get all unique date groups from both participations and visits
-      # (may not be needed, as should always cover same period?)
       all_date_groups = (grouped_participations.keys + grouped_visits.keys).uniq.sort
 
       grouped_timeseries = all_date_groups.map do |date_group|
