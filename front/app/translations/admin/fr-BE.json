@@ -1468,7 +1468,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.participationRate": "Taux de participation",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.showComparisonLastPeriod": "Afficher la comparaison avec la période précédente",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.youNeedToSelectADateRange": "Vous devez d'abord sélectionner une période.",
-  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.MethodsUsedWidget.ChartWidgetSettings.archivedLabel": "Archivés",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.MethodsUsedWidget.ChartWidgetSettings.archivedLabel": "Archivé",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.MethodsUsedWidget.ChartWidgetSettings.projectPublicationStatusLabel": "État de la publication du projet",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.MethodsUsedWidget.ChartWidgetSettings.publishedLabel": "Publié",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipationWidget.comments": "Commentaires",
