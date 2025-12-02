@@ -10,7 +10,7 @@ import {
   dummyCommonGroundResultsWithDomicile,
 } from '../../containers/Admin/projects/project/insights/methodSpecific/dummyData';
 
-import { USE_DUMMY_PHASE_INSIGHTS_DATA } from './dummyData';
+import { USE_DUMMY_METHOD_SPECIFIC_DATA } from './dummyData';
 import { commonGroundResultsKey } from './keys';
 import { CommonGroundResults, GroupByOption, SortOption } from './types';
 
@@ -80,7 +80,7 @@ const useCommonGroundInsights = ({
   return useQuery<CommonGroundResults, CLErrors, CommonGroundResults>({
     queryKey: commonGroundResultsKey({ phaseId, sort, groupBy }),
     queryFn: () =>
-      USE_DUMMY_PHASE_INSIGHTS_DATA
+      USE_DUMMY_METHOD_SPECIFIC_DATA
         ? getDummyCommonGroundResults(groupBy)
         : fetchCommonGroundResults({ phaseId, sort, groupBy }),
     enabled: enabled && !!phaseId,
