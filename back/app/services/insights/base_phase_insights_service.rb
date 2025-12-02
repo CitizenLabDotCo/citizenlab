@@ -238,7 +238,7 @@ module Insights
     end
 
     def particants_and_visitors_data(flattened_participations)
-      resolution = 'day' # Todo: calculate, based on phase duration so far
+      resolution = 'day' # TODO: calculate, based on phase duration so far
 
       # Group participations by resolution and count unique participants
       grouped_participations = flattened_participations.group_by { |p| date_truncate(p[:acted_at], resolution) }
