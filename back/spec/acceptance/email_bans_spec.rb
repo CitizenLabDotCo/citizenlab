@@ -2,90 +2,111 @@
 
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
+require_relative 'shared/errors_examples'
 
 resource 'EmailBans' do
   explanation 'Admin endpoints for managing banned email addresses'
   header 'Content-Type', 'application/json'
 
-  context 'when admin' do
-    before { admin_header_token }
+  before_all do
+    EmailBan.ban!('banned1@example.com')
+    EmailBan.ban!('banned2@example.com')
+    EmailBan.ban!('to_unban@example.com')
+    EmailBan.ban!('banned.user+test@gmail.com', reason: 'Spam account')
+  end
 
-    get 'web_api/v1/email_bans/count' do
-      before do
-        EmailBan.ban!('banned1@example.com')
-        EmailBan.ban!('banned2@example.com')
-      end
+  get 'web_api/v1/email_bans/count' do
+    context 'when admin' do
+      before { admin_header_token }
 
       example_request 'Get count of banned emails' do
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :count)).to eq 2
+        expect(response_data.dig(:attributes, :count)).to eq(4)
       end
     end
 
-    get 'web_api/v1/email_bans' do
-      parameter :email, 'Email address to check', required: true
+    context 'when not admin' do
+      before { header_token_for create(:user) }
 
-      before do
-        EmailBan.ban!('banned.user+test@gmail.com', reason: 'Spam account')
-      end
-
-      example 'Get ban details for a banned email' do
-        do_request email: 'banneduser@gmail.com' # normalized match
-        assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :reason)).to eq 'Spam account'
-        expect(json_response.dig(:data, :attributes, :id)).to be_present
-      end
-
-      example 'Returns 404 for non-banned email' do
-        do_request email: 'not_banned@example.com'
-        assert_status 404
-      end
+      include_examples 'unauthorized'
     end
 
-    delete 'web_api/v1/email_bans' do
-      parameter :email, 'Email address to unban', required: true
-
-      before do
-        EmailBan.ban!('to_unban@example.com')
-      end
-
-      example 'Unban an email address' do
-        expect { do_request email: 'to_unban@example.com' }
-          .to change(EmailBan, :count).by(-1)
-        assert_status 200
-      end
-
-      example 'Returns 404 when trying to unban non-banned email' do
-        do_request email: 'not_banned@example.com'
-        assert_status 404
-      end
+    context 'when not logged in' do
+      include_examples 'unauthorized'
     end
   end
 
-  context 'when not admin' do
-    before { header_token_for create(:user) }
+  get 'web_api/v1/email_bans/:email' do
+    context 'when admin' do
+      before { admin_header_token }
 
-    get 'web_api/v1/email_bans/count' do
-      example_request '[error] Regular user cannot access banned emails count' do
-        assert_status 401
+      describe 'for a banned email' do
+        let(:email) { 'banneduser@gmail.com' } # normalized match
+
+        example_request 'Get ban details' do
+          assert_status 200
+
+          expect(response_data).to match(
+            id: be_a(String),
+            type: 'email_ban',
+            attributes: {
+              reason: 'Spam account',
+              created_at: be_a(String)
+            },
+            relationships: { banned_by: { data: nil } }
+          )
+        end
+      end
+
+      describe 'for a non-banned email' do
+        let(:email) { 'not_banned@example.com' }
+
+        include_examples 'not_found'
       end
     end
 
-    get 'web_api/v1/email_bans' do
-      example 'Regular user cannot check banned emails' do
-        do_request email: 'test@example.com'
-        assert_status 401
-      end
+    context 'when not admin' do
+      before { header_token_for create(:user) }
+
+      let(:email) { 'test@example.com' }
+
+      include_examples 'unauthorized'
     end
   end
 
-  context 'when not logged in' do
-    get 'web_api/v1/email_bans/count' do
-      example_request '[error] Visitor cannot access banned emails count' do
-        assert_status 401
+  delete 'web_api/v1/email_bans/:email' do
+    context 'when admin' do
+      before { admin_header_token }
+
+      describe 'for a banned email' do
+        let(:email) { 'to_unban@example.com' }
+
+        example 'Unban an email address' do
+          expect { do_request }
+            .to change { EmailBan.banned?(email) }.from(true).to(false)
+          assert_status 200
+        end
       end
+
+      describe 'for a non-banned email' do
+        let(:email) { 'not_banned@example.com' }
+
+        include_examples 'not_found'
+      end
+    end
+
+    context 'when not admin' do
+      before { header_token_for create(:user) }
+
+      let(:email) { 'to_unban@example.com' }
+
+      include_examples 'unauthorized'
+    end
+
+    context 'when not logged in' do
+      let(:email) { 'to_unban@example.com' }
+
+      include_examples 'unauthorized'
     end
   end
 end
