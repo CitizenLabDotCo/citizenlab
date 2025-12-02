@@ -8,10 +8,10 @@ module WebApi
         before_action :set_phase, only: [:index]
 
         def index
-          ideas = policy_scope(@phase.ideas.published)
-          ideas = paginate(ideas)
+          feed_service = ::IdeaFeed::FeedService.new(@phase, current_user)
+          ideas = feed_service.top_n(5, policy_scope(Idea))
 
-          render json: linked_json(ideas, WebApi::V1::IdeaSerializer, params: { current_user: })
+          render json: WebApi::V1::IdeaSerializer.new(ideas, params: jsonapi_serializer_params).serializable_hash
         end
 
         private
