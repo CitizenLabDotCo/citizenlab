@@ -8,7 +8,7 @@ import { ParticipantsResponse } from 'api/graph_data_units/responseTypes/Partici
 import useGraphDataUnitsLive from 'api/graph_data_units/useGraphDataUnitsLive';
 import {
   getDummyParticipants,
-  USE_DUMMY_PHASE_INSIGHTS_DATA,
+  USE_DUMMY_METHOD_SPECIFIC_DATA,
 } from 'api/phase_insights/dummyData';
 
 import Chart from 'components/admin/GraphCards/ParticipantsCard/Chart';
@@ -29,7 +29,7 @@ interface Props {
  * Shows both visitors and participants over time to visualize the
  * participation funnel (visitor → participant conversion).
  *
- * When USE_DUMMY_PHASE_INSIGHTS_DATA is false, this will use real API data.
+ * When USE_DUMMY_METHOD_SPECIFIC_DATA is false, this will use real API data.
  */
 const ParticipantsTimeline = ({ phaseId }: Props) => {
   const { formatMessage } = useIntl();
@@ -38,7 +38,7 @@ const ParticipantsTimeline = ({ phaseId }: Props) => {
   const dummyDataQuery = useQuery<ParticipantsResponse>({
     queryKey: ['graph_data_units', 'ParticipantsWidget', 'dummy', phaseId],
     queryFn: () => Promise.resolve(getDummyParticipants()),
-    enabled: USE_DUMMY_PHASE_INSIGHTS_DATA,
+    enabled: USE_DUMMY_METHOD_SPECIFIC_DATA,
   });
 
   const realDataQuery = useGraphDataUnitsLive<ParticipantsResponse>(
@@ -50,10 +50,10 @@ const ParticipantsTimeline = ({ phaseId }: Props) => {
         show_visitors: true,
       },
     },
-    { enabled: !USE_DUMMY_PHASE_INSIGHTS_DATA }
+    { enabled: !USE_DUMMY_METHOD_SPECIFIC_DATA }
   );
 
-  const { data, isLoading } = USE_DUMMY_PHASE_INSIGHTS_DATA
+  const { data, isLoading } = USE_DUMMY_METHOD_SPECIFIC_DATA
     ? dummyDataQuery
     : realDataQuery;
 
