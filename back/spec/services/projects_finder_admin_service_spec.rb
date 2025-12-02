@@ -599,6 +599,35 @@ describe ProjectsFinderAdminService do
         expect(result.pluck(:id)).to eq([p6, p5, p7, p8].pluck(:id))
       end
     end
+
+    describe 'with excluded_admin_publication_ids' do
+      let!(:project1) { create(:project) }
+      let!(:project2) { create(:project) }
+      let!(:project3) { create(:project) }
+      let(:admin_user) { create(:admin) }
+
+      it 'excludes projects by their admin_publication_ids' do
+        excluded_admin_pub_id = project1.admin_publication.id
+
+        result = described_class.execute(
+          Project.all,
+          { excluded_admin_publication_ids: [excluded_admin_pub_id] },
+          current_user: admin_user
+        )
+
+        expect(result.pluck(:id)).to match_array [project2.id, project3.id]
+      end
+
+      it 'returns all projects when excluded_admin_publication_ids is empty' do
+        result = described_class.execute(
+          Project.all,
+          { excluded_admin_publication_ids: [] },
+          current_user: admin_user
+        )
+
+        expect(result.pluck(:id)).to match_array [project1.id, project2.id, project3.id]
+      end
+    end
   end
 
   describe '.filter_with_admin_publication' do

@@ -161,5 +161,23 @@ RSpec.describe ReportBuilder::Queries::ProjectsTimeline do
       expect(timeline_item[:start_date]).to be_present
       expect(timeline_item[:publication_status]).to eq(project1.admin_publication.publication_status)
     end
+
+    context 'when admin publications are excluded' do
+      it 'excludes projects by their admin_publication_ids' do
+        excluded_admin_pub_id = project1.admin_publication.id
+
+        result = query.run_query({ excluded_admin_publication_ids: [excluded_admin_pub_id] })
+
+        timeline_items = result[:timeline_items]
+        expect(timeline_items.map { |item| item[:id] }).to match_array [project2.id]
+      end
+
+      it 'returns all projects when excluded_admin_publication_ids is empty' do
+        result = query.run_query({ excluded_admin_publication_ids: [] })
+
+        timeline_items = result[:timeline_items]
+        expect(timeline_items.map { |item| item[:id] }).to match_array [project1.id, project2.id]
+      end
+    end
   end
 end

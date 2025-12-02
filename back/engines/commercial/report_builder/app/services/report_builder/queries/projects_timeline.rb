@@ -26,7 +26,8 @@ module ReportBuilder
         visibility: params[:visibility] || [],
         discoverability: params[:discoverability] || [],
         sort: params[:sort] || 'recently_created_desc',
-        no_of_projects: params[:no_of_projects]
+        no_of_projects: params[:no_of_projects],
+        excluded_admin_publication_ids: params[:excluded_admin_publication_ids] || []
       }
     end
 

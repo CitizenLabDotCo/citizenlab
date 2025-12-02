@@ -12,6 +12,7 @@ class ProjectsFinderAdminService
     projects = filter_review_state(projects, params)
     projects = filter_by_folder_ids(projects, params)
     projects = filter_project_manager(projects, params)
+    projects = filter_excluded_admin_publications(projects, params)
     projects = search(projects, params)
     projects = filter_start_date(projects, params)
     projects = filter_participation_states(projects, params)
@@ -198,6 +199,14 @@ class ProjectsFinderAdminService
     end
 
     scope.where(id: moderated_projects)
+  end
+
+  # NOTE: This method requires admin_publications to be joined to the scope.
+  def self.filter_excluded_admin_publications(scope, params = {})
+    excluded_admin_publication_ids = params[:excluded_admin_publication_ids] || []
+    return scope if excluded_admin_publication_ids.blank?
+
+    scope.where.not(admin_publications: { id: excluded_admin_publication_ids })
   end
 
   def self.search(scope, params = {})
