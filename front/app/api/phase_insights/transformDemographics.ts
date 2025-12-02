@@ -62,6 +62,10 @@ const transformField = (
     field_name,
     field_code: field.code,
     data_points,
-    r_score: field.r_score ?? undefined,
+    // Backend returns decimal (0-1), convert to percentage (0-100) for display
+    r_score:
+      typeof field.r_score === 'number'
+        ? Math.round(field.r_score * 100)
+        : undefined,
   };
 };
