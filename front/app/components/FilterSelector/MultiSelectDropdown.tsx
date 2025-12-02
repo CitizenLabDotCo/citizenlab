@@ -129,62 +129,42 @@ const MultiSelectDropdown = ({
       onChange(entry.value);
     };
 
-  const handleOnKeyDown = (
-    event:
-      | KeyboardEvent<HTMLLIElement | HTMLButtonElement | HTMLDivElement>
-      | React.MouseEvent<HTMLLIElement>
-      | FormEvent
-  ) => {
+  const handleOnKeyDown = (event: KeyboardEvent) => {
     const target = event.currentTarget as HTMLElement;
-    const indexAttr = target.getAttribute('data-index');
     const value = target.getAttribute('data-value');
-    const index = indexAttr ? parseInt(indexAttr, 10) : undefined;
-    const keyboardEvent = event as KeyboardEvent<HTMLLIElement>;
-    const key = keyboardEvent.key;
+    const index = parseInt(target.getAttribute('data-index')!, 10);
+    const key = event.key;
     const totalItems = values.length;
-
-    if (event.type === 'click') {
-      event.preventDefault();
-      if (value) onChange(value);
-      return;
-    }
 
     switch (key) {
       case 'ArrowDown':
-        keyboardEvent.preventDefault();
-        if (index === undefined) {
-          if (!opened) toggleValuesList();
-          else handleKeyDown?.(keyboardEvent);
+        if (!opened) {
+          handleKeyDown?.(event);
           return;
         }
+        event.preventDefault();
         // navigate to next item (circular 0,1,2,3,...,0)
         tabsRef.current[(index + 1) % totalItems]?.focus();
-
         break;
 
       case 'ArrowUp':
-        if (index !== undefined) {
-          keyboardEvent.preventDefault();
-          // navigate to previous item (circular ...,3,2,1,0,4)
-          tabsRef.current[(index - 1 + totalItems) % totalItems]?.focus();
-        }
-
+        event.preventDefault();
+        // navigate to previous item (circular ...,3,2,1,0,4)
+        tabsRef.current[(index - 1 + totalItems) % totalItems]?.focus();
         break;
 
       case 'Enter':
       case ' ':
         if (value) {
-          keyboardEvent.preventDefault();
+          event.preventDefault();
           onChange(value);
         }
-
         break;
 
       case 'Tab':
         if (opened) {
           toggleValuesList();
         }
-
         break;
     }
   };
