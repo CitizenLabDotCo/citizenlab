@@ -59,8 +59,6 @@ const UserCustomFieldsForm = ({
     return () => subscription.unsubscribe();
   }, [methods, onChange, customFields]);
 
-  console.log(customFields);
-
   if (!customFields) return null;
 
   return (
