@@ -30,12 +30,14 @@ class Permissions::UserRequirementsService
   end
 
   def requirements_custom_fields(permission)
-    permissions_custom_fields_service.fields_for_permission(permission).map do |permissions_custom_field|
+    fields = permissions_custom_fields_service.fields_for_permission(permission).map do |permissions_custom_field|
       permissions_custom_field.custom_field.tap do |field|
         field.enabled = true # Need to override this to ensure it gets displayed when not enabled at platform level
         field.required = permissions_custom_field.required
       end
     end
+    fields = fields.reject { |field| field.hidden } # Should not return hidden fields
+    fields
   end
 
   # Verification requirement can now come from either a group or the "verified" permitted_by value
