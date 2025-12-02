@@ -13,7 +13,7 @@ class VisitsService
       .where(impact_tracking_pageviews: constraints)
 
     visits_list = visits.select(
-      "impact_tracking_sessions.created_at AS date,
+      "impact_tracking_pageviews.created_at AS date,
        impact_tracking_sessions.user_id AS user_id,
        impact_tracking_sessions.monthly_user_hash AS monthly_user_hash"
     ).map do |row|
@@ -23,13 +23,13 @@ class VisitsService
       }
     end
 
-    visitors_total = visits_list.map { |v| v[:visitor_id] }.compact.uniq.count
+    visitors_total = visits_list.pluck(:visitor_id).compact.uniq.count
     last_7_days_start = 7.days.ago
     last_7_days_end = phase.end_at.present? ? [Time.current, phase.end_at].min : Time.current
 
     visitors_last_7_days = visits_list
       .select { |v| v[:date] >= last_7_days_start && v[:date] <= last_7_days_end }
-      .map { |v| v[:visitor_id] }
+      .pluck(:visitor_id)
       .compact
       .uniq
       .count

@@ -239,8 +239,6 @@ module Insights
 
     def participants_and_visitors_timeseries(flattened_participations, visits_data)
       resolution = 'day' # TODO: calculate, based on phase duration so far
-
-      # Group participations by resolution and count unique participants
       visits = visits_data[:visits]
       grouped_visits = visits.group_by { |v| date_truncate(v[:date], resolution) }
       grouped_participations = flattened_participations.group_by { |p| date_truncate(p[:acted_at], resolution) }
