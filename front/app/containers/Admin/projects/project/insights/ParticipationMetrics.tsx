@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 import { Box, Text } from 'component-library';
 
-import useParticipationMetrics from 'api/phase_insights/useParticipationMetrics';
+import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
 import { IPhaseData } from 'api/phases/types';
 
 import { useIntl, MessageDescriptor } from 'utils/cl-intl';
@@ -58,17 +58,16 @@ const buildMetric = <T,>(
 
 const ParticipationMetrics = ({ phase }: Props) => {
   const { formatMessage } = useIntl();
-  const { participation_method } = phase.attributes;
-  const { data: response } = useParticipationMetrics({
+  const { participation_method, voting_method } = phase.attributes;
+  const { data: response } = usePhaseInsights({
     phaseId: phase.id,
-    participationMethod: participation_method,
   });
 
   // Transform API data into display format
   const metrics: MetricDisplay[] = useMemo(() => {
-    if (!response?.data.attributes) return [];
+    if (!response?.data.attributes.metrics) return [];
 
-    const metricsData = response.data.attributes;
+    const metricsData = response.data.attributes.metrics;
     const result: MetricDisplay[] = [];
 
     // Always show visitors and participants first
@@ -98,25 +97,33 @@ const ParticipationMetrics = ({ phase }: Props) => {
       )
     );
 
+    // For voting phases, use voting_method to determine configs (budgeting vs voting)
+    // Backend returns data under 'voting' key but with different fields based on voting_method
+    const configKey =
+      participation_method === 'voting' && voting_method === 'budgeting'
+        ? 'budgeting'
+        : participation_method;
+
     // Add method-specific metrics from config
-    const methodConfigs = METRIC_CONFIGS[participation_method];
+    const methodConfigs = METRIC_CONFIGS[configKey];
     const methodData = metricsData[
       participation_method as keyof typeof metricsData
     ] as Record<string, any> | undefined;
 
-    if (methodData) {
+    if (methodData && methodConfigs) {
       methodConfigs.forEach((config) => {
         result.push(buildMetric(config, methodData, formatMessage));
       });
     }
 
     // Always show engagement rate last
+    // Backend returns decimal (0.75), multiply by 100 for percentage display
     result.push(
       buildMetric(
         {
           key: 'engagementRate',
           message: messages.engagementRate,
-          getValue: (d) => `${d.engagement_rate.toFixed(1)}%`,
+          getValue: (d) => `${(d.engagement_rate * 100).toFixed(1)}%`,
         },
         metricsData,
         formatMessage
@@ -124,7 +131,7 @@ const ParticipationMetrics = ({ phase }: Props) => {
     );
 
     return result;
-  }, [response, formatMessage, participation_method]);
+  }, [response, formatMessage, participation_method, voting_method]);
 
   return (
     <Box
