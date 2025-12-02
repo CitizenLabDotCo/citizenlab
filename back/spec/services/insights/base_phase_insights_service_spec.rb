@@ -441,7 +441,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
     it 'returns "day" for phases shorter than 4 weeks' do
       phase = create(:single_voting_phase, start_at: 20.days.ago, end_at: 1.day.ago)
       service = described_class.new(phase)
-  
+
       expect(service.send(:chart_resolution)).to eq('day')
     end
 
