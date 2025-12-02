@@ -42,7 +42,10 @@ module Files
     #   should be addressed alongside a frontend refactoring. Ticket: TAN-5126.
     # positioned on: :attachable
 
-    validates :file_id, uniqueness: { scope: %i[attachable_type attachable_id] }
+    validates :file_id, uniqueness: { 
+      scope: %i[attachable_type attachable_id],
+      unless: -> { attachable_type == 'ContentBuilder::Layout' }
+    }
     validates :attachable_type, inclusion: { in: ATTACHABLE_TYPES }
     validate :validate_file_belongs_to_project
     validate :validate_idea_attachment_uniqueness
