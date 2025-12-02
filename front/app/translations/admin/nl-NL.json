@@ -2607,7 +2607,7 @@
   "app.containers.AdminPage.SettingsPage.fieldTitleError": "Voer voor elke taal een naam in",
   "app.containers.AdminPage.SettingsPage.fieldTitleTooltip": "De naam die je voor elk gebied kiest is zichtbaar voor gebruikers tijdens hun registratie en bij het filteren van de projecten.",
   "app.containers.AdminPage.SettingsPage.fieldTopicDefault": "Standaard toevoegen aan nieuwe projecten",
-  "app.containers.AdminPage.SettingsPage.fieldTopicDefaultTooltip": "Als deze optie is ingeschakeld, wordt dit onderwerp automatisch toegevoegd aan alle nieuw aangemaakte projecten.",
+  "app.containers.AdminPage.SettingsPage.fieldTopicDefaultTooltip": "Als deze optie is ingeschakeld, wordt deze tag automatisch toegevoegd aan alle nieuw aangemaakte projecten.",
   "app.containers.AdminPage.SettingsPage.fieldTopicDescription": "Tag beschrijving",
   "app.containers.AdminPage.SettingsPage.fieldTopicDescriptionTooltip": "Voeg een optionele beschrijving toe om meer context te geven over deze tag.",
   "app.containers.AdminPage.SettingsPage.fieldTopicSave": "Tag opslaan",
