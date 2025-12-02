@@ -32,6 +32,7 @@ module.exports = {
     '^react-scroll-to-component$': 'identity-obj-proxy',
     '@citizenlab/cl2-component-library': '<rootDir>/app/component-library',
   },
+  modulePathIgnorePatterns: ['.*__mocks__.*'],
   testEnvironment: '<rootDir>/internals/jest/jsdom-no-canvas.js',
   testEnvironmentOptions: {
     url: 'https://demo.stg.govocal.com/en/',
