@@ -26,19 +26,19 @@ module Insights
 
     # TODO: Implement caching? (may not be needed if performance good enough)
     def cached_insights_data(participations)
-      visitors_data = VisitsService.new.phase_visitors_data(@phase)
+      visits_data = VisitsService.new.phase_visits_data(@phase)
       flattened_participations = participations.values.flatten
       participant_ids = flattened_participations.pluck(:participant_id).uniq
       participation_method_metrics = phase_participation_method_metrics(participations)
-      metrics = metrics_data(participations, participant_ids, visitors_data, participation_method_metrics)
+      metrics = metrics_data(participations, participant_ids, visits_data, participation_method_metrics)
       demographics = demographics_data(flattened_participations, participant_ids)
-      participants_and_visitors_timeseries = participants_and_visitors_timeseries(flattened_participations)
+      participants_and_visitors_timeseries = participants_and_visitors_timeseries(flattened_participations, visits_data)
 
       metrics.merge(demographics: { fields: demographics }, participants_and_visitors_timeseries: participants_and_visitors_timeseries)
     end
 
-    def metrics_data(participations, participant_ids, visitors_data, participation_method_metrics)
-      base_metrics = base_metrics(participations, participant_ids, visitors_data)
+    def metrics_data(participations, participant_ids, visits_data, participation_method_metrics)
+      base_metrics = base_metrics(participations, participant_ids, visits_data)
 
       phase_participation_method_metrics = {
         @phase.participation_method => participation_method_metrics
@@ -47,17 +47,17 @@ module Insights
       { metrics: base_metrics.merge(phase_participation_method_metrics) }
     end
 
-    def base_metrics(participations, participant_ids, visitors_data)
+    def base_metrics(participations, participant_ids, visits_data)
       total_participant_count = participant_ids.count
       flattened_participations = participations.values.flatten
       participants_last_7_days_count = flattened_participations.select { |p| p[:acted_at] >= 7.days.ago }.pluck(:participant_id).uniq.count
 
       {
-        visitors: visitors_data[:total],
-        visitors_last_7_days: visitors_data[:last_7_days],
+        visitors: visits_data[:visitors_total],
+        visitors_last_7_days: visits_data[:visitors_last_7_days],
         participants: total_participant_count,
         participants_last_7_days: participants_last_7_days_count,
-        engagement_rate: visitors_data[:total] > 0 ? (total_participant_count.to_f / visitors_data[:total]).round(3) : 0
+        engagement_rate: visits_data[:visitors_total] > 0 ? (total_participant_count.to_f / visits_data[:visitors_total]).round(3) : 0
       }
     end
 
@@ -237,24 +237,30 @@ module Insights
       UserCustomFields::Representativeness::RScore.compute_scores(counts, reference_distribution)[:min_max_p_ratio]
     end
 
-    def participants_and_visitors_timeseries(flattened_participations)
+    def participants_and_visitors_timeseries(flattened_participations, visits_data)
       resolution = 'day' # TODO: calculate, based on phase duration so far
 
       # Group participations by resolution and count unique participants
+      visits = visits_data[:visits]
+      grouped_visits = visits.group_by { |v| date_truncate(v[:date], resolution) }
       grouped_participations = flattened_participations.group_by { |p| date_truncate(p[:acted_at], resolution) }
 
-      grouped_participants_timeseries = grouped_participations.map do |date_group, participations_in_group|
+      # Get all unique date groups from both participations and visits
+      # (may not be needed, as should always cover same period?)
+      all_date_groups = (grouped_participations.keys + grouped_visits.keys).uniq.sort
+
+      grouped_timeseries = all_date_groups.map do |date_group|
+        participations_in_group = grouped_participations[date_group] || []
+        visits_in_group = grouped_visits[date_group] || []
+
         {
           participants: participations_in_group.pluck(:participant_id).uniq.count,
+          visitors: visits_in_group.pluck(:visitor_id).compact.uniq.count,
           date_group: date_group
         }
       end
 
-      participants_timeseries = grouped_participants_timeseries.sort_by { |row| row[:date_group] }
-
-      participants_and_visitors_timeseries = participants_timeseries # TODO: Merge with visitors data
-
-      participants_and_visitors_timeseries
+      grouped_timeseries.sort_by { |row| row[:date_group] }
     end
 
     def date_truncate(datetime, resolution)

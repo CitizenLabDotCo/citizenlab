@@ -1,5 +1,5 @@
 class VisitsService
-  def phase_visitors_data(phase)
+  def phase_visits_data(phase)
     constraints = { project_id: phase.project.id }
 
     constraints[:created_at] = if phase.end_at.present?
@@ -8,26 +8,36 @@ class VisitsService
       phase.start_at..
     end
 
-    visitors_total = ImpactTracking::Session
+    visits = ImpactTracking::Session
       .joins(:pageviews)
       .where(impact_tracking_pageviews: constraints)
-      .distinct
-      .count("COALESCE(NULLIF(impact_tracking_sessions.user_id::text, ''), impact_tracking_sessions.monthly_user_hash)")
 
-    # Calculate last 7 days range, but cap it at phase end date
+    visits_list = visits.select(
+      "impact_tracking_sessions.created_at AS date,
+       impact_tracking_sessions.user_id AS user_id,
+       impact_tracking_sessions.monthly_user_hash AS monthly_user_hash"
+    ).map do |row|
+      {
+        date: row.date,
+        visitor_id: row.user_id.present? ? row.user_id.to_s : row.monthly_user_hash
+      }
+    end
+
+    visitors_total = visits_list.map { |v| v[:visitor_id] }.compact.uniq.count
     last_7_days_start = 7.days.ago
     last_7_days_end = phase.end_at.present? ? [Time.current, phase.end_at].min : Time.current
-    last_7_days_range = last_7_days_start..last_7_days_end
 
-    visitors_last_7_days = ImpactTracking::Session
-      .joins(:pageviews)
-      .where(impact_tracking_pageviews: constraints.merge(created_at: last_7_days_range))
-      .distinct
-      .count("COALESCE(NULLIF(impact_tracking_sessions.user_id::text, ''), impact_tracking_sessions.monthly_user_hash)")
+    visitors_last_7_days = visits_list
+      .select { |v| v[:date] >= last_7_days_start && v[:date] <= last_7_days_end }
+      .map { |v| v[:visitor_id] }
+      .compact
+      .uniq
+      .count
 
     {
-      total: visitors_total,
-      last_7_days: visitors_last_7_days
+      visitors_total: visitors_total,
+      visitors_last_7_days: visitors_last_7_days,
+      visits: visits_list
     }
   end
 end
