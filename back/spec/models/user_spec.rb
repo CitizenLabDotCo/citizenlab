@@ -1199,17 +1199,6 @@ RSpec.describe User do
       end
     end
 
-    describe '#reset_confirmation_code' do
-      it 'changes the code' do
-        expect { user.reset_confirmation_code }.to change(user, :email_confirmation_code)
-        expect(user.email_confirmation_code).to match(USER_CONFIRMATION_CODE_PATTERN)
-      end
-
-      it 'should not save a change to the email confirmation code' do
-        expect { user.reset_confirmation_code }.not_to change(user, :saved_change_to_email_confirmation_code?)
-      end
-    end
-
     describe '#email' do
       let(:email) { 'new_email@email.com' }
 

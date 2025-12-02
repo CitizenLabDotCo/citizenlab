@@ -57,12 +57,14 @@ module UserConfirmation
     email_confirmation_code_sent_at + 1.day
   end
 
-  def reset_confirmation_code
+  def reset_confirmation_code!
     self.email_confirmation_code = generate_confirmation_code
+    self.email_confirmation_code_reset_count += 1
+    save!
   end
 
   def expire_confirmation_code!(code_to_expire)
-    return false if !user&.confirmation_required? || email_confirmation_code != code_to_expire
+    return false if !confirmation_required? || email_confirmation_code != code_to_expire
 
     update!(email_confirmation_code: generate_confirmation_code)
   end
