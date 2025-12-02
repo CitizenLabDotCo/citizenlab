@@ -94,15 +94,6 @@ export interface PhaseInsightsParticipationMetrics {
   volunteering?: VolunteeringMetrics;
 }
 
-/**
- * Participation metrics data (nested in JSONAPI response)
- */
-export interface PhaseInsightsParticipationMetricsData {
-  id: string;
-  type: 'phase_participation_metrics';
-  attributes: PhaseInsightsParticipationMetrics;
-}
-
 // ============================================================================
 // DEMOGRAPHICS TYPES - FRONTEND FORMAT (Component Consumption)
 // ============================================================================
@@ -172,17 +163,6 @@ export interface DemographicFieldBackend {
   series: Record<string, number>; // { "male": 680, "female": 830, "_blank": 10 }
   options?: Record<string, DemographicOption>; // Metadata for each series key
   reference_distribution?: Record<string, number>; // Reference population counts
-}
-
-/**
- * Backend demographics data (nested in JSONAPI response)
- */
-export interface PhaseInsightsDemographicsBackendData {
-  id: string;
-  type: 'phase_demographics';
-  attributes: {
-    fields: DemographicFieldBackend[];
-  };
 }
 
 /**
