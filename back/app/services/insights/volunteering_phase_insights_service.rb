@@ -4,10 +4,10 @@ module Insights
 
     def phase_participations
       # Events are not associated with phase, so attending_event not included at phase-level.
-      { volunteering: participation_volunteerings }
+      { volunteering: participations_volunteering }
     end
 
-    def participation_volunteerings
+    def participations_volunteering
       Volunteering::Volunteer
         .joins(:cause)
         .where(volunteering_causes: { phase_id: @phase.id })

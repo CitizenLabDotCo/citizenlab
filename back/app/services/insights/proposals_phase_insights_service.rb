@@ -4,13 +4,13 @@ module Insights
 
     def phase_participations
       {
-        posting_idea: participation_ideas_submitted,
-        commenting_idea: participation_idea_comments,
-        reacting_idea: participation_idea_reactions
+        posting_idea: participations_posting_idea,
+        commenting_idea: participations_commenting_idea,
+        reacting_idea: participations_reacting_idea
       }
     end
 
-    def participation_ideas_submitted
+    def participations_posting_idea
       end_time = @phase.end_at ? @phase.end_at.end_of_day : Time.current.end_of_day
       ideas = @phase.ideas
         .transitive(false)

@@ -33,11 +33,11 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
 
   let!(:reaction5) { create(:reaction, reactable: idea1, created_at: 10.days.ago, user: nil, mode: 'up') } # during phase, no user
 
-  describe '#participation_ideas_published' do
+  describe '#participations_posting_idea' do
     it 'returns the participation ideas published data for published ideas published during phase' do
-      participation_ideas_published = service.send(:participation_ideas_published)
+      participations_posting_idea = service.send(:participations_posting_idea)
 
-      expect(participation_ideas_published).to match_array([
+      expect(participations_posting_idea).to match_array([
         {
           item_id: idea2.id,
           action: 'posting_idea',
@@ -72,16 +72,16 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
         }
       ])
 
-      first_participation = participation_ideas_published.first
+      first_participation = participations_posting_idea.first
       expect(first_participation[:acted_at])
         .to be_within(1.second).of(Idea.find(first_participation[:item_id]).published_at)
     end
 
     it 'correctly handles phases with no end date' do
       phase.update!(end_at: nil)
-      participation_ideas_published = service.send(:participation_ideas_published)
+      participations_posting_idea = service.send(:participations_posting_idea)
 
-      expect(participation_ideas_published.pluck(:item_id)).to match_array([
+      expect(participations_posting_idea.pluck(:item_id)).to match_array([
         idea2.id,
         idea3.id,
         idea4.id,
@@ -91,27 +91,27 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
     end
 
     it 'does not include ideas that are not published' do
-      participation_ideas_published = service.send(:participation_ideas_published)
+      participations_posting_idea = service.send(:participations_posting_idea)
 
-      idea_ids = participation_ideas_published.map { |p| p[:item_id] }
+      idea_ids = participations_posting_idea.map { |p| p[:item_id] }
       expect(idea_ids).not_to include(idea5.id)
     end
 
     it 'does not include non-transitive ideas' do
       idea2.creation_phase_id = phase.id
       idea2.save!(validate: false) # skip validations to allow non-transitive idea
-      participation_ideas_published = service.send(:participation_ideas_published)
+      participations_posting_idea = service.send(:participations_posting_idea)
 
-      idea_ids = participation_ideas_published.map { |p| p[:item_id] }
+      idea_ids = participations_posting_idea.map { |p| p[:item_id] }
       expect(idea_ids).not_to include(idea2.id)
     end
   end
 
-  describe '#participation_idea_comments' do
+  describe '#participations_commenting_idea' do
     it 'returns the participation idea comments data for comments posted during phase' do
-      participation_idea_comments = service.send(:participation_idea_comments)
+      participations_commenting_idea = service.send(:participations_commenting_idea)
 
-      expect(participation_idea_comments).to match_array([
+      expect(participations_commenting_idea).to match_array([
         {
           item_id: comment2.id,
           action: 'commenting_idea',
@@ -146,16 +146,16 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
         }
       ])
 
-      first_participation = participation_idea_comments.first
+      first_participation = participations_commenting_idea.first
       expect(first_participation[:acted_at])
         .to be_within(1.second).of(Comment.find(first_participation[:item_id]).created_at)
     end
 
     it 'correctly handles phases with no end date' do
       phase.update!(end_at: nil)
-      participation_idea_comments = service.send(:participation_idea_comments)
+      participations_commenting_idea = service.send(:participations_commenting_idea)
 
-      expect(participation_idea_comments.pluck(:item_id)).to match_array([
+      expect(participations_commenting_idea.pluck(:item_id)).to match_array([
         comment2.id,
         comment3.id,
         comment4.id,
@@ -165,11 +165,11 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
     end
   end
 
-  describe '#participation_idea_reactions' do
+  describe '#participations_reacting_idea' do
     it 'returns the participation idea reactions data for reactions made during phase' do
-      participation_idea_reactions = service.send(:participation_idea_reactions)
+      participations_reacting_idea = service.send(:participations_reacting_idea)
 
-      expect(participation_idea_reactions).to match_array([
+      expect(participations_reacting_idea).to match_array([
         {
           item_id: reaction2.id,
           action: 'reacting_idea',
@@ -196,16 +196,16 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
         }
       ])
 
-      first_participation = participation_idea_reactions.first
+      first_participation = participations_reacting_idea.first
       expect(first_participation[:acted_at])
         .to be_within(1.second).of(Reaction.find(first_participation[:item_id]).created_at)
     end
 
     it 'correctly handles phases with no end date' do
       phase.update!(end_at: nil)
-      participation_idea_reactions = service.send(:participation_idea_reactions)
+      participations_reacting_idea = service.send(:participations_reacting_idea)
 
-      expect(participation_idea_reactions.pluck(:item_id)).to match_array([
+      expect(participations_reacting_idea.pluck(:item_id)).to match_array([
         reaction2.id,
         reaction3.id,
         reaction4.id,
@@ -219,9 +219,9 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
       participations = service.send(:phase_participations)
 
       expect(participations).to eq({
-        posting_idea: service.send(:participation_ideas_published),
-        commenting_idea: service.send(:participation_idea_comments),
-        reacting_idea: service.send(:participation_idea_reactions)
+        posting_idea: service.send(:participations_posting_idea),
+        commenting_idea: service.send(:participations_commenting_idea),
+        reacting_idea: service.send(:participations_reacting_idea)
       })
     end
   end

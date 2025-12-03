@@ -5,12 +5,12 @@ module Insights
     def phase_participations
       # Events are not associated with phase, so attending_event not included at phase-level.
       {
-        voting: participation_baskets,
-        commenting_idea: participation_idea_comments
+        voting: participations_voting,
+        commenting_idea: participations_commenting_idea
       }
     end
 
-    def participation_baskets
+    def participations_voting
       @phase.baskets.includes(:user, :baskets_ideas).map do |basket|
         total_votes = basket.baskets_ideas.to_a.sum(&:votes)
 
