@@ -30,9 +30,9 @@ class Permissions::EveryoneTrackingService
     return author_hash if author_hash.present?
 
     # If nothing in the cookies then we create a new one
-    author_hash = if !consent? && @request.ip && @request.user_agent
+    author_hash = if !consent? && @request.remote_ip && @request.user_agent
       # Create one based on the user agent and ip ONLY if no cookie consent
-      Idea.create_author_hash(@request.ip + @request.user_agent, @phase.project_id, true)
+      Idea.create_author_hash(@request.remote_ip + @request.user_agent, @phase.project_id, true)
     else
       Idea.create_author_hash(SecureRandom.uuid, @phase.project_id, true)
     end
