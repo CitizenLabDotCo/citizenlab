@@ -38,7 +38,7 @@ class SideFxIdeaService
     before_publish_or_submit idea, user if idea.will_be_submitted? || idea.will_be_published?
   end
 
-  def after_update(idea, user)
+  def after_update(idea, user) # rubocop:disable Metrics/MethodLength
     # We need to check if the idea was just submitted or just published before
     # we do anything else because updates to the idea can change this state.
     just_submitted = idea.just_submitted?

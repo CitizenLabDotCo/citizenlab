@@ -11,7 +11,7 @@ module IdeaFeed
       eligible_ideas = fetch_eligible_ideas(scope)
       candidates = fetch_candidates_with_scores(eligible_ideas)
       candidates = Idea.from(candidates, :ideas)
-        .order(Arel.sql('recency_score * 0.7 + engagement_score * 0.3 DESC'))
+        .order(Arel.sql('recency_score * 0.65 + engagement_score * 0.25 + wise_voice_score * 0.1 DESC'))
 
       candidates.limit(n)
     end
@@ -19,11 +19,14 @@ module IdeaFeed
     private
 
     def fetch_candidates_with_scores(scope)
-      scope.select("
-        EXP(-EXTRACT(EPOCH FROM (NOW() - ideas.published_at)) / (30 * 86400)) as recency_score,
-        (LN(1 + ideas.comments_count + ideas.likes_count * 0.5)) as engagement_score,
-        ideas.*
-      ")
+      scope
+        .left_joins(:wise_voice_flag)
+        .select("
+          EXP(-EXTRACT(EPOCH FROM (NOW() - ideas.published_at)) / (30 * 86400)) as recency_score,
+          (LN(1 + ideas.comments_count + ideas.likes_count * 0.5)) as engagement_score,
+          CASE WHEN wise_voice_flags.id IS NULL THEN 0 ELSE 1 END as wise_voice_score,
+          ideas.*
+        ")
     end
 
     def fetch_eligible_ideas(scope)

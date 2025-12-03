@@ -52,5 +52,12 @@ describe IdeaFeed::FeedService do
       expect(top_3_ideas.second).to eq(medium_engagement_idea)
       expect(top_3_ideas.third).to eq(low_engagement_idea)
     end
+
+    it 'ranks ideas with wise voices flags higher, everything else being equal' do
+      create(:wise_voice_flag, flaggable: ideas[1])
+
+      top_3_ideas = service.top_n(3)
+      expect(top_3_ideas.first).to eq(ideas[1])
+    end
   end
 end
