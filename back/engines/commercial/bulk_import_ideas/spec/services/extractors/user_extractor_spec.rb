@@ -28,8 +28,8 @@ describe BulkImportIdeas::Extractors::UserExtractor do
         phases: [{
           idea_rows: [{
             'Email address' => 'test@example.com',
-            'First Name(s)' => 'John',
-            'Last Name' => 'Doe'
+            'First name(s)' => 'John',
+            'Last name' => 'Doe'
           }]
         }]
       }]
@@ -38,16 +38,16 @@ describe BulkImportIdeas::Extractors::UserExtractor do
       expect(result_users.length).to eq(1)
       expect(result_users.first).to include(
         'Email address' => 'moc_elpmaxe_tset@example.com', # Email is replaced and reversed as we're on test
-        'First Name(s)' => 'John',
-        'Last Name' => 'Doe'
+        'First name(s)' => 'John',
+        'Last name' => 'Doe'
       )
     end
 
     it 'does not duplicate users with the same email' do
       existing_user = {
         'Email address' => 'test@example.com',
-        'First Name(s)' => 'John',
-        'Last Name' => 'Doe'
+        'First name(s)' => 'John',
+        'Last name' => 'Doe'
       }
       projects = [{
         **base_project_data,
@@ -95,6 +95,49 @@ describe BulkImportIdeas::Extractors::UserExtractor do
 
       result_users, = service.send(:extract_project_user_data, projects, users, user_custom_fields)
       expect(result_users.first['Organization']).to eq('ACME Corp')
+    end
+  end
+
+  describe '#extract_full_name_to_first_last' do
+    it 'returns the first and last name unchanged if first and last names are present' do
+      row = {
+        'Full name' => 'Gary Smith',
+        'First name(s)' => 'John',
+        'Last name' => 'Doe',
+        'Email address' => 'test@example.com'
+      }
+      result = service.send(:extract_full_name_to_first_last, row)
+      expect(result).to eq({
+        'First name(s)' => 'John',
+        'Last name' => 'Doe',
+        'Email address' => 'test@example.com'
+      })
+    end
+
+    it 'returns the first and last names unchanged if full name is blank' do
+      row = {
+        'Full name' => '',
+        'First name(s)' => 'John',
+        'Email address' => 'test@example.com'
+      }
+      result = service.send(:extract_full_name_to_first_last, row)
+      expect(result).to eq({
+        'First name(s)' => 'John',
+        'Email address' => 'test@example.com'
+      })
+    end
+
+    it 'splits full name into first and last names' do
+      row = {
+        'Full name' => 'John Michael Doe',
+        'Email address' => 'test@example.com'
+      }
+      result = service.send(:extract_full_name_to_first_last, row)
+      expect(result).to eq({
+        'First name(s)' => 'John Michael',
+        'Last name' => 'Doe',
+        'Email address' => 'test@example.com'
+      })
     end
   end
 end
