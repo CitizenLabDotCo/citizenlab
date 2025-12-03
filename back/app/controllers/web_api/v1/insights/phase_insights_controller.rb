@@ -8,7 +8,7 @@ module WebApi
         def show_insights
           insights_data = @phase.pmethod.phase_insights_class.new(@phase).call
 
-          render json: WebApi::V1::PhaseInsightsSerializer.new(
+          render json: WebApi::V1::Insights::PhaseInsightsSerializer.new(
             @phase,
             params: jsonapi_serializer_params.merge(**insights_data)
           ).serializable_hash
