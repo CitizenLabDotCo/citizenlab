@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Insights::BasePhaseInsightsService do
   let(:service) { described_class.new(phase) }
 
-  let(:phase) { create(:single_voting_phase, start_at: 15.days.ago, end_at: 2.days.ago) }
+  let(:phase) { create(:single_voting_phase, start_at: 17.days.ago, end_at: 2.days.ago) }
   let!(:permission1) { create(:permission, action: 'voting', permission_scope: phase) }
 
   describe '#participant_id' do
