@@ -89,7 +89,7 @@ module IdAcm
     end
 
     def entitled?(auth)
-      return true unless config[:rrn_api_key].present?
+      return true if config[:rrn_api_key].blank?
 
       rrn = auth.extra.raw_info.rrn
       validate_rrn!(rrn)
