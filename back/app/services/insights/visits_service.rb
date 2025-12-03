@@ -1,4 +1,4 @@
-class VisitsService
+class Insights::VisitsService
   def phase_visitors_data(phase)
     constraints = { project_id: phase.project.id }
 
