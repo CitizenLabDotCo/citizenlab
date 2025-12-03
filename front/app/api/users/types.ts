@@ -16,7 +16,8 @@ export interface UserCheckResponse {
   };
 }
 
-type Action = 'password' | 'confirm' | 'terms';
+// token only used if user_confirmation feature is disabled
+type Action = 'password' | 'confirm' | 'terms' | 'token';
 
 type RequirementStatus = 'dont_ask' | 'require' | 'satisfied' | 'ask';
 

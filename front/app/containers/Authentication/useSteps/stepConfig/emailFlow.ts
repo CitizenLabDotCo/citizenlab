@@ -40,20 +40,27 @@ export const emailFlow = (
           const response = await checkUser(email);
           const { action } = response.data.attributes;
 
-          if (action === 'terms') {
-            updateState({ flow: 'signup' });
-            setCurrentStep('email:policies');
-          }
-
-          if (action === 'password') {
-            updateState({ flow: 'signin' });
-            setCurrentStep('email:password');
-          }
-
-          if (action === 'confirm') {
-            updateState({ flow: 'signin' });
-            await requestEmailConfirmationCodeUnauthenticated(email);
-            setCurrentStep('email:confirmation');
+          switch (action) {
+            case 'terms':
+              updateState({ flow: 'signup' });
+              setCurrentStep('email:policies');
+              break;
+            case 'password':
+              updateState({ flow: 'signin' });
+              setCurrentStep('email:password');
+              break;
+            case 'confirm':
+              updateState({ flow: 'signin' });
+              await requestEmailConfirmationCodeUnauthenticated(email);
+              setCurrentStep('email:confirmation');
+              break;
+            case 'token':
+              updateState({ flow: 'signin' });
+              await getUserTokenUnconfirmed(email);
+              setCurrentStep('missing-data:built-in');
+              break;
+            default:
+              throw new Error(`Unknown action: ${action}`);
           }
         } catch (e) {
           if (e.errors?.email?.[0]?.error === 'taken_by_invite') {
