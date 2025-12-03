@@ -18,7 +18,9 @@ PublicApi::Engine.routes.draw do
     end
 
     resources :files, concerns: :deleted_items
+    resources :file_attachments, only: %i[index show]
     resources :ideas, only: %i[index show create update], concerns: :deleted_items
+    resources :internal_comments, only: %i[index show create], concerns: :deleted_items
 
     with_options only: %i[index show], concerns: :deleted_items do |route_mapper|
       route_mapper.resources :comments

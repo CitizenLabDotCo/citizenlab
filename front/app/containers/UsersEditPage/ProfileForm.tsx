@@ -53,6 +53,7 @@ const StyledIconTooltip = styled(IconTooltip)`
 const InputContainer = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
 `;
 
 type FormValues = {
@@ -73,8 +74,10 @@ const ProfileForm = () => {
   const { data: lockedAttributes } = useUserLockedAttributes();
   const { formatMessage } = useIntl();
   const [extraFormData, setExtraFormData] = useState<Record<string, any>>({});
-  const [showAllErrors, setShowAllErrors] = useState(false);
   const [profanityApiError, setProfanityApiError] = useState(false);
+  const [triggerCustomFieldsValidation, setTriggerCustomFieldsValidation] =
+    useState(false);
+  const [validationInProgress, setValidationInProgress] = useState(false);
 
   const schema = object({
     first_name: string().when('last_name', ([last_name], schema) => {
@@ -128,10 +131,31 @@ const ProfileForm = () => {
     label: appLocalePairs[locale],
   }));
 
-  const handleDisclaimer = (event: FormEvent) => {
+  const handleDisclaimer = async (event: FormEvent) => {
     // Prevent page from reloading
     event.preventDefault();
 
+    // First validate the main form
+    const isMainFormValid = await methods.trigger();
+    if (!isMainFormValid) {
+      return;
+    }
+
+    // Trigger custom fields validation and wait for result
+    setValidationInProgress(true);
+    setTriggerCustomFieldsValidation(true);
+  };
+
+  // Handle custom fields validation result
+  const handleCustomFieldsValidation = (isValid: boolean) => {
+    setTriggerCustomFieldsValidation(false);
+    setValidationInProgress(false);
+
+    if (!isValid) {
+      return; // Stop submission if custom fields are invalid
+    }
+
+    // Proceed with submission logic if both forms are valid
     if (
       methods.formState.dirtyFields.avatar &&
       methods.getValues('avatar') &&
@@ -298,12 +322,17 @@ const ProfileForm = () => {
           </SectionField>
           <UserCustomFieldsForm
             authenticationContext={GLOBAL_CONTEXT}
-            showAllErrors={showAllErrors}
-            setShowAllErrors={setShowAllErrors}
             onChange={setExtraFormData}
+            formData={authUser.data.attributes.custom_field_values}
+            triggerValidation={triggerCustomFieldsValidation}
+            onValidationResult={handleCustomFieldsValidation}
           />
           <Box display="flex">
-            <Button processing={methods.formState.isSubmitting}>
+            <Button
+              processing={
+                methods.formState.isSubmitting || validationInProgress
+              }
+            >
               {formatMessage(messages.submit)}
             </Button>
           </Box>

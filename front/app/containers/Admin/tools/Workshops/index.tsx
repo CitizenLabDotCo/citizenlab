@@ -15,7 +15,7 @@ export const Workshops = () => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box background={colors.white} display="flex" p="20px">
+    <Box background={colors.white} display="flex" p="20px" mb="20px">
       <Box w="320px" h="240px" borderRadius="3px">
         <img
           src={workshopsImage}

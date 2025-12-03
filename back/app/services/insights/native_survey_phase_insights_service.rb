@@ -4,10 +4,10 @@ module Insights
 
     def phase_participations
       # Events are not associated with phase, so attending_event not included at phase-level.
-      { posting_idea: participation_ideas_posted }
+      { posting_idea: participations_posting_idea }
     end
 
-    def participation_ideas_posted
+    def participations_posting_idea
       end_time = @phase.end_at ? @phase.end_at.end_of_day : Time.current.end_of_day
       ideas = @phase.ideas
         .transitive(false)

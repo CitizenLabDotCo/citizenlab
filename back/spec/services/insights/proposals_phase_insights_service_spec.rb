@@ -33,11 +33,11 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
 
   let!(:reaction5) { create(:reaction, reactable: idea1, created_at: 10.days.ago, user: nil, mode: 'up') } # during phase, no user
 
-  describe '#participation_ideas_submitted' do
+  describe '#participations_posting_idea' do
     it 'returns the participation ideas published data for published ideas published during phase' do
-      participation_ideas_submitted = service.send(:participation_ideas_submitted)
+      participations_posting_idea = service.send(:participations_posting_idea)
 
-      expect(participation_ideas_submitted).to match_array([
+      expect(participations_posting_idea).to match_array([
         {
           item_id: idea2.id,
           action: 'posting_idea',
@@ -72,16 +72,16 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
         }
       ])
 
-      first_participation = participation_ideas_submitted.first
+      first_participation = participations_posting_idea.first
       expect(first_participation[:acted_at])
         .to be_within(1.second).of(Idea.find(first_participation[:item_id]).submitted_at)
     end
 
     it 'correctly handles phases with no end date' do
       phase.update!(end_at: nil)
-      participation_ideas_submitted = service.send(:participation_ideas_submitted)
+      participations_posting_idea = service.send(:participations_posting_idea)
 
-      expect(participation_ideas_submitted.pluck(:item_id)).to match_array([
+      expect(participations_posting_idea.pluck(:item_id)).to match_array([
         idea2.id,
         idea3.id,
         idea4.id,
@@ -91,18 +91,18 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
     end
 
     it 'does not include ideas that are not submitted' do
-      participation_ideas_submitted = service.send(:participation_ideas_submitted)
+      participations_posting_idea = service.send(:participations_posting_idea)
 
-      idea_ids = participation_ideas_submitted.map { |p| p[:item_id] }
+      idea_ids = participations_posting_idea.map { |p| p[:item_id] }
       expect(idea_ids).not_to include(idea5.id)
     end
 
     it 'does not include transitive ideas' do
       idea2.creation_phase_id = nil
       idea2.save!(validate: false) # skip validations to allow non-transitive idea
-      participation_ideas_submitted = service.send(:participation_ideas_submitted)
+      participations_posting_idea = service.send(:participations_posting_idea)
 
-      idea_ids = participation_ideas_submitted.map { |p| p[:item_id] }
+      idea_ids = participations_posting_idea.map { |p| p[:item_id] }
       expect(idea_ids).not_to include(idea2.id)
     end
   end
@@ -112,9 +112,9 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
       participations = service.send(:phase_participations)
 
       expect(participations).to eq({
-        posting_idea: service.send(:participation_ideas_submitted),
-        commenting_idea: service.send(:participation_idea_comments),
-        reacting_idea: service.send(:participation_idea_reactions)
+        posting_idea: service.send(:participations_posting_idea),
+        commenting_idea: service.send(:participations_commenting_idea),
+        reacting_idea: service.send(:participations_reacting_idea)
       })
 
       expect(participations[:posting_idea].map { |p| p[:item_id] }).to match_array([

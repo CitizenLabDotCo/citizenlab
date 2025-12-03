@@ -9,4 +9,5 @@ class Analysis::WebApi::V1::QuestionSerializer < WebApi::V1::BaseSerializer
   end
 
   belongs_to :background_task, class_name: 'Analysis::BackgroundTask'
+  has_many :files, serializer: WebApi::V1::FileV2Serializer, &:attached_files
 end

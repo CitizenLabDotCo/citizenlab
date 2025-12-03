@@ -16,7 +16,6 @@ import {
   Label,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { ControlProps } from '@jsonforms/core';
 import { createPortal } from 'react-dom';
 import { useTheme } from 'styled-components';
 
@@ -66,7 +65,7 @@ const FullscreenMapInput = memo<Props>(
     handleMultiPointChange,
     inputType,
     questionPageMapView,
-  }: ControlProps & Props) => {
+  }: Props) => {
     const theme = useTheme();
     const locale = useLocale();
     const localize = useLocalize();
@@ -158,15 +157,14 @@ const FullscreenMapInput = memo<Props>(
     const isConfirmEnabled = () => {
       switch (inputType) {
         case 'point':
-          return !(data?.address === '');
+          // For GeoJSON.Point, check if it has coordinates
+          return data && 'coordinates' in data && data.coordinates.length >= 2;
         case 'line':
-          // Has 2 or more points
-          return data?.coordinates?.length && data.coordinates.length >= 2;
+          // For number[][], check if it has 2 or more points
+          return Array.isArray(data) && data.length >= 2;
         case 'polygon':
-          // Has 4 or more points (3 & 1 duplicated first point to close the polygon)
-          return (
-            data?.coordinates?.[0]?.length && data.coordinates?.[0].length >= 4
-          );
+          // For number[][], check if it has 4 or more points (3 & 1 duplicated first point to close the polygon)
+          return Array.isArray(data) && data.length >= 4;
       }
     };
 
@@ -275,7 +273,7 @@ const FullscreenMapInput = memo<Props>(
                       handleMultiPointChange={handleMultiPointChange}
                       mapView={mapView}
                       undoButtonRef={undoButtonRef}
-                      undoEnabled={data}
+                      undoEnabled={Array.isArray(data) && data.length > 0}
                       inputType={inputType}
                       buttonStyle="secondary"
                     />

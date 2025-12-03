@@ -125,6 +125,7 @@ hu:
     open_idea_project_description_preview: Esetleg van olyan ötleted, ami nem illik valamelyik meglévő projekthez? Tegye fel ide, gyűjtse össze a támogatást, és vegye fel a politikai napirendre!
     open_idea_project_description: >
       <p>Itt elindíthatja saját ötletét, ha az nem fér bele valamelyik meglévő projektbe.</p><p><strong>A cél?</strong> Hogy az ötleted a politikai napirendre kerüljön.</p><p><strong>Hogyan?</strong> Támogatás gyűjtésével, mégpedig legalább 100 szavazat 3 hónap alatt. Ezt úgy teheti meg, hogy először „vonzóvá” teszi az ötletét. Írja le világosan és lebilincselő módon, adjon hozzá képeket, adjon fel tényeken alapuló erős érveket, adjon hozzá mellékleteket további részletekkel vagy háttérinformációkkal... Miután ezt megtette, kezdje el megosztani ötleteit a közösségi médiában vagy e-mailben. Hívja meg az embereket, hogy csatlakozzanak az ötletedről szóló vitához, vagy egyszerűen csak győzd meg őket, hogy támogassák azt a szavazattal.</p><p><strong>Miről?</strong> Az Ön elképzelése sok mindenről szólhat, amennyiben kapcsolódik az Ön városához és annak politikájához. Ez lehet egy tapasztalt probléma, egy elképzelt megoldás vagy akár a kettő kombinációja. Lehet vad és hosszú távon, vagy nagyon kézzelfogható és gyors győzelem.</p><p><strong>És akkor? </strong>Elérted a 100 szavazatot 3 hónap alatt? Gratulálok! A város most figyelembe veszi az Ön elképzelését. Ha az Ön elképzelése megvalósíthatónak bizonyul, és nem sért meg bizonyos csoportokat vagy egyéneket, akkor lehetősége nyílik javaslatát a tanácsülésen bemutatni. Ugyanezen az ülésen a tanács tagjai közvetlen visszajelzést adnak arról, hogy mit fognak és miért nem fognak kezdeni az ötletével. Ha nem gyűjt össze 100 szavazatot 3 hónap alatt, akkor javaslatát nem veszik figyelembe.</p><p>Kíváncsian várjuk az Ön ötleteit!</p>
+    published_projects: Közzétett projektek
   phases:
     open_idea_phase_title: Aktuális fázis
     native_survey_title: Felmérés
@@ -385,3 +386,4 @@ hu:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "A maximumnak nagyobbnak kell lennie a minimumnál."
+      max_must_be_greater_than_or_equal_to_min_select_count: "A maximumnak nagyobbnak vagy egyenlőnek kell lennie a minimummal."

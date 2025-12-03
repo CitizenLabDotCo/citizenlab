@@ -10,4 +10,4 @@ tr:
       event_description: 'Size bir girdi atandı. Resmi bir güncelleme yazarak veya durumunu değiştirerek geri bildirimde bulunun.'
       title: '%{firstName}, size bir girdi atandı'
       subject: '%{organizationName} platformunda bir atamanız var'
-      preheader_idea: '%{authorName} adlı kişinin fikri size atandı'
+      preheader: '%{authorName} girişi size atanmıştır'

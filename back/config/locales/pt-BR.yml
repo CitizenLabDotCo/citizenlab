@@ -125,6 +125,7 @@ pt:
     open_idea_project_description_preview: Talvez você tenha uma ideia que não concorda em um dos projetos existentes? Postá-lo aqui, reunir apoio e colocá-lo na agenda política!
     open_idea_project_description: >
       <p>Aqui, você pode começar sua própria idéia se ela não se encaixar em um dos projetos existentes.</p><p><strong>O objectivo?</strong> Para ter a sua ideia na agenda política.</p><p><strong>Como?</strong> Reunindo apoio, ou seja, pelo menos 100 votos em 3 meses. Você pode fazer isso, primeiro tornando sua idéia 'atraente'. Escreva-a de uma forma clara e envolvente, adicione imagens, dê argumentos fortes baseados em factos, adicione anexos com mais detalhes ou informação de fundo, ... Depois de o ter feito, comece a partilhar a sua ideia nas redes sociais ou através de e-mail. Convide as pessoas a participarem da discussão da sua ideia, ou simplesmente convença-as a apoiá-la, votando a favor.</p><p><strong>Sobre o quê?</strong> A sua ideia pode ser sobre muitas coisas, desde que esteja relacionada com a sua cidade e a sua política. Pode ser um problema que você experimenta, uma solução que você imagina ou mesmo uma combinação de ambos. Pode ser selvagem e a longo prazo, ou muito tangível e uma vitória rápida.</p><p><strong>E depois? </strong>Você alcançou 100 votos em 3 meses? Parabéns! A organização agora vai levar a sua ideia em consideração. Se sua idéia for considerada viável e não prejudicar grupos ou indivíduos específicos, você terá a oportunidade de apresentar sua proposta durante a reunião do conselho. Durante essa mesma reunião, os membros da câmara vão lhe dar uma opinião directo sobre o que farão ou não com a sua ideia e porquê. Se não reunir 100 votos em 3 meses, a sua proposta não será considerada.</p><p>Estamos curiosos por conhecer as suas ideias!</p>
+    published_projects: Projetos publicados
   phases:
     open_idea_phase_title: Fase atual
     native_survey_title: Pesquisa
@@ -385,3 +386,4 @@ pt:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "O máximo deve ser maior que o mínimo."
+      max_must_be_greater_than_or_equal_to_min_select_count: "O máximo deve ser maior ou igual ao mínimo."

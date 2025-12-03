@@ -4,22 +4,6 @@ require 'rspec_api_documentation/dsl'
 resource 'Phase insights' do
   before { admin_header_token }
 
-  # Fixing the dates used as relative to this reference time means we can expect exact dates in the chart data
-  let(:time_now) { Time.new(2025, 12, 2, 12, 0, 0) }
-
-  let(:proposals_phase) do
-    create(
-      :phase,
-      participation_method: 'proposals',
-      start_at: time_now - 20.days,
-      end_at: time_now - 3.days
-    )
-  end
-
-  let!(:permission1) { create(:permission, action: 'posting_idea', permission_scope: proposals_phase) }
-  let!(:permission2) { create(:permission, action: 'commenting_idea', permission_scope: proposals_phase) }
-  let!(:permission3) { create(:permission, action: 'reacting_idea', permission_scope: proposals_phase) }
-
   let!(:custom_field_gender) { create(:custom_field, resource_type: 'User', key: 'gender', input_type: 'select', title_multiloc: { en: 'Gender' }) }
   let!(:custom_field_option_male) { create(:custom_field_option, custom_field: custom_field_gender, key: 'male', title_multiloc: { en: 'Male' }) }
   let!(:custom_field_option_female) { create(:custom_field_option, custom_field: custom_field_gender, key: 'female', title_multiloc: { en: 'Female' }) }
@@ -44,40 +28,57 @@ resource 'Phase insights' do
     )
   end
 
-  (1..3).each do |i|
-    let!(:"user#{i}") { create(:user) }
+  # Fixing the dates used as relative to this reference time means we can expect exact dates in the chart data
+  let(:time_now) { Time.new(2025, 12, 2, 12, 0, 0) }
+
+  let(:proposals_phase) do
+    create(
+      :phase,
+      participation_method: 'proposals',
+      start_at: time_now - 20.days,
+      end_at: time_now - 3.days,
+      with_permissions: true
+    ).tap do |phase|
+      # Users
+      user1 = create(:user)
+      user2 = create(:user)
+      user3 = create(:user)
+      user4 = create(:user, custom_field_values: { gender: 'female', birthyear: 1980 })
+      user5 = create(:user, custom_field_values: { gender: 'male', birthyear: 1990 })
+
+      # Ideas
+      idea1 = create(:idea, phases: [phase], author: user1, created_at: time_now - 25.days, submitted_at: time_now - 25.days, creation_phase_id: phase.id) # published before phase (not counted)
+      idea2 = create(:idea, phases: [phase], author: user2, created_at: time_now - 15.days, submitted_at: time_now - 15.days, creation_phase_id: phase.id) # published during phase
+      create(:idea, phases: [phase], author: user2, created_at: time_now - 5.days, submitted_at: time_now - 5.days, creation_phase_id: phase.id) # published during phase, and in last 7 days
+      create(:idea, phases: [phase], author: user3, created_at: time_now - 2.days, submitted_at: time_now - 2.days, creation_phase_id: phase.id) # published after phase (not counted)
+
+      # Comments
+      create(:comment, idea: idea2, author: user4, created_at: time_now - 10.days) # in phase
+
+      # Reactions
+      create(:reaction, reactable: idea1, user: user5, created_at: time_now - 5.days) # in phase, and in last 7 days
+
+      # Pageviews and sessions
+      session1 = create(:session, user_id: user1.id)
+      create(:pageview, session: session1, created_at: time_now - 25.days, project_id: phase.project.id) # before phase
+
+      session2 = create(:session, user_id: user2.id)
+      create(:pageview, session: session2, created_at: time_now - 15.days, project_id: phase.project.id) # in phase
+      create(:pageview, session: session2, created_at: time_now - 5.days, project_id: phase.project.id) # in phase & last 7 days, same session
+
+      session3 = create(:session, user_id: user3.id)
+      create(:pageview, session: session3, created_at: time_now - 2.days, project_id: phase.project.id) # after phase
+
+      session4 = create(:session)
+      create(:pageview, session: session4, created_at: time_now - 15.days, project_id: phase.project.id) # in phase, did not participate
+
+      session5 = create(:session, user_id: user4.id)
+      create(:pageview, session: session5, created_at: time_now - 10.days, project_id: phase.project.id) # in phase
+
+      session6 = create(:session, user_id: user5.id)
+      create(:pageview, session: session6, created_at: time_now - 5.days, project_id: phase.project.id) # in phase, and in last 7 days
+    end
   end
-
-  let!(:user4) { create(:user, custom_field_values: { gender: 'female', birthyear: 1980 }) }
-  let!(:user5) { create(:user, custom_field_values: { gender: 'male', birthyear: 1990 }) }
-
-  let!(:idea1) { create(:idea, phases: [proposals_phase], author: user1, created_at: time_now - 25.days, submitted_at: time_now - 25.days, creation_phase_id: proposals_phase.id) } # published before ideation phase (not counted)
-  let!(:idea2) { create(:idea, phases: [proposals_phase], author: user2, created_at: time_now - 15.days, submitted_at: time_now - 15.days, creation_phase_id: proposals_phase.id) } # published during ideation phase
-  let!(:idea3) { create(:idea, phases: [proposals_phase], author: user2, created_at: time_now - 5.days, submitted_at: time_now - 5.days, creation_phase_id: proposals_phase.id) } # published during ideation phase, and in last 7 days
-  let!(:idea4) { create(:idea, phases: [proposals_phase], author: user3, created_at: time_now - 2.days, submitted_at: time_now - 2.days, creation_phase_id: proposals_phase.id) } # published after ideation phase (not counted)
-
-  let!(:comment1) { create(:comment, idea: idea2, author: user4, created_at: time_now - 10.days) } # in phase
-
-  let!(:reaction1) { create(:reaction, reactable: idea1, user: user5, created_at: time_now - 5.days) } # in phase, and in last 7 days
-
-  let!(:session1) { create(:session, user_id: user1.id) }
-  let!(:pageview1) { create(:pageview, session: session1, created_at: time_now - 25.days, project_id: proposals_phase.project.id) } # before phase
-
-  let!(:session2) { create(:session, user_id: user2.id) }
-  let!(:pageview2) { create(:pageview, session: session2, created_at: time_now - 15.days, project_id: proposals_phase.project.id) } # in phase
-  let!(:pageview3) { create(:pageview, session: session2, created_at: time_now - 5.days, project_id: proposals_phase.project.id) } # in phase & last 7 days, same session
-
-  let!(:session3) { create(:session, user_id: user3.id) }
-  let!(:pageview5) { create(:pageview, session: session3, created_at: time_now - 2.days, project_id: proposals_phase.project.id) } # after phase
-
-  let!(:session4) { create(:session) }
-  let!(:pageview6) { create(:pageview, session: session4, created_at: time_now - 15.days, project_id: proposals_phase.project.id) } # in phase, did not participate
-
-  let!(:session5) { create(:session, user_id: user4.id) }
-  let!(:pageview7) { create(:pageview, session: session5, created_at: time_now - 10.days, project_id: proposals_phase.project.id) } # in phase
-
-  let!(:session6) { create(:session, user_id: user5.id) }
-  let!(:pageview8) { create(:pageview, session: session6, created_at: time_now - 5.days, project_id: proposals_phase.project.id) } # in phase, and in last 7 days
 
   let(:id) { proposals_phase.id }
 

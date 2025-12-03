@@ -4,13 +4,6 @@ require 'rspec_api_documentation/dsl'
 resource 'Phase insights' do
   before { admin_header_token }
 
-  # Fixing the dates used as relative to this reference time means we can expect exact dates in the chart data
-  let(:time_now) { Time.new(2025, 12, 2, 12, 0, 0) }
-
-  let(:phase) { create(:volunteering_phase, start_at: time_now - 20.days, end_at: time_now - 3.days) }
-
-  let!(:permission1) { create(:permission, action: 'volunteering', permission_scope: phase) }
-
   let!(:custom_field_gender) { create(:custom_field, resource_type: 'User', key: 'gender', input_type: 'select', title_multiloc: { en: 'Gender' }) }
   let!(:custom_field_option_male) { create(:custom_field_option, custom_field: custom_field_gender, key: 'male', title_multiloc: { en: 'Male' }) }
   let!(:custom_field_option_female) { create(:custom_field_option, custom_field: custom_field_gender, key: 'female', title_multiloc: { en: 'Female' }) }
@@ -35,34 +28,45 @@ resource 'Phase insights' do
     )
   end
 
-  let(:cause1) { create(:cause, phase: phase) }
-  let(:cause2) { create(:cause, phase: phase) }
+  # Fixing the dates used as relative to this reference time means we can expect exact dates in the chart data
+  let(:time_now) { Time.new(2025, 12, 2, 12, 0, 0) }
 
-  let(:user1) { create(:user, custom_field_values: { gender: 'female', birthyear: 1980 }) }
-  let!(:volunteering1) { create(:volunteer, cause: cause1, user: user1, created_at: time_now - 15.days) }
-  let!(:volunteering2) { create(:volunteer, cause: cause2, user: user1, created_at: time_now - 5.days) }
+  let(:volunteering_phase) do
+    create(:volunteering_phase, start_at: time_now - 20.days, end_at: time_now - 3.days, with_permissions: true).tap do |phase|
+      # Causes
+      cause1 = create(:cause, phase: phase)
+      cause2 = create(:cause, phase: phase)
 
-  let(:user2) { create(:user, custom_field_values: { gender: 'male', birthyear: 1990 }) }
-  let!(:volunteering3) { create(:volunteer, cause: cause1, user: user2, created_at: time_now - 10.days) }
+      # Users
+      user1 = create(:user, custom_field_values: { gender: 'female', birthyear: 1980 })
+      user2 = create(:user, custom_field_values: { gender: 'male', birthyear: 1990 })
+      user3 = create(:user)
 
-  let!(:session1) { create(:session, user_id: user1.id) }
-  let!(:pageview1) { create(:pageview, session: session1, created_at: time_now - 15.days, project_id: phase.project.id) } # during phase
+      # Volunteerings
+      create(:volunteer, cause: cause1, user: user1, created_at: time_now - 15.days)
+      create(:volunteer, cause: cause2, user: user1, created_at: time_now - 5.days)
+      create(:volunteer, cause: cause1, user: user2, created_at: time_now - 10.days)
 
-  let!(:session2) { create(:session, user_id: user2.id) }
-  let!(:pageview2) { create(:pageview, session: session2, created_at: time_now - 15.days, project_id: phase.project.id) } # during phase
-  let!(:pageview3) { create(:pageview, session: session2, created_at: time_now - 5.days, project_id: phase.project.id) } # during phase & last 7 days, same session
+      # Pageviews and sessions
+      session1 = create(:session, user_id: user1.id)
+      create(:pageview, session: session1, created_at: time_now - 15.days, project_id: phase.project.id) # during phase
 
-  let(:user3) { create(:user) }
-  let!(:session3) { create(:session, user_id: user3.id) }
-  let!(:pageview5) { create(:pageview, session: session3, created_at: time_now - 2.days, project_id: phase.project.id) } # after phase
+      session2 = create(:session, user_id: user2.id)
+      create(:pageview, session: session2, created_at: time_now - 15.days, project_id: phase.project.id) # during phase
+      create(:pageview, session: session2, created_at: time_now - 5.days, project_id: phase.project.id) # during phase & last 7 days, same session
 
-  let(:id) { phase.id }
+      session3 = create(:session, user_id: user3.id)
+      create(:pageview, session: session3, created_at: time_now - 2.days, project_id: phase.project.id) # after phase
+    end
+  end
+
+  let(:id) { volunteering_phase.id }
 
   get 'web_api/v1/phases/:id/insights' do
     example_request 'creates insights for volunteering phase' do
       assert_status 200
 
-      expect(json_response_body[:data][:id]).to eq(phase.id.to_s)
+      expect(json_response_body[:data][:id]).to eq(volunteering_phase.id.to_s)
       expect(json_response_body[:data][:type]).to eq('phase_insights')
 
       metrics = json_response_body.dig(:data, :attributes, :metrics)

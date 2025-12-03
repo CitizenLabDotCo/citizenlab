@@ -477,11 +477,20 @@ export const transformFieldForSubmission = (
         ? field.maximum_select_count
         : null,
       minimum_select_count: field.select_count_enabled
-        ? field.minimum_select_count || '0'
+        ? field.minimum_select_count || 0
         : null,
       select_count_enabled: field.select_count_enabled,
       random_option_ordering: field.random_option_ordering,
       dropdown_layout: field.dropdown_layout,
+    }),
+    ...(field.input_type === 'topic_ids' && {
+      maximum_select_count: field.select_count_enabled
+        ? field.maximum_select_count
+        : null,
+      minimum_select_count: field.select_count_enabled
+        ? field.minimum_select_count || 0
+        : null,
+      select_count_enabled: field.select_count_enabled,
     }),
     ...(field.input_type === 'ranking' && {
       options: field.options || {},

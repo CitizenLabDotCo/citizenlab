@@ -5,7 +5,6 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 
 import { Localize } from 'hooks/useLocalize';
 
-import legacyMessages from 'components/Form/Components/Controls/messages';
 import { getPlainTextLengthFromHTML } from 'components/UI/QuillEditor/utils';
 
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
@@ -193,15 +192,45 @@ const generateYupSchema = ({
         if (key === 'proposed_budget') {
           schema[key] =
             required && enabled
-              ? number().required(fieldRequired)
+              ? number()
+                  .transform((value, originalValue) =>
+                    originalValue === '' ? null : value
+                  )
+                  .required(fieldRequired)
               : number()
                   .transform((value, originalValue) =>
                     originalValue === '' ? null : value
                   )
                   .nullable();
+        } else if (key === 'birthyear') {
+          schema[key] = required
+            ? number()
+                .transform((value, originalValue) =>
+                  originalValue === '' ? null : value
+                )
+                .min(1900, formatMessage(messages.birthyearTooLow))
+                .max(
+                  new Date().getFullYear(),
+                  formatMessage(messages.birthyearTooHigh)
+                )
+                .required(fieldRequired)
+            : number()
+                .transform((value, originalValue) =>
+                  originalValue === '' ? null : value
+                )
+                .min(1900, formatMessage(messages.birthyearTooLow))
+                .max(
+                  new Date().getFullYear(),
+                  formatMessage(messages.birthyearTooHigh)
+                )
+                .nullable();
         } else {
           schema[key] = required
-            ? number().required(fieldRequired)
+            ? number()
+                .transform((value, originalValue) =>
+                  originalValue === '' ? null : value
+                )
+                .required(fieldRequired)
             : number()
                 .transform((value, originalValue) =>
                   originalValue === '' ? null : value
@@ -295,13 +324,35 @@ const generateYupSchema = ({
       }
 
       case 'topic_ids': {
-        schema[key] =
-          required && enabled
-            ? array()
-                .of(string())
-                .min(1, formatMessage(messages.topicRequired))
-                .required(formatMessage(messages.topicRequired))
-            : array().nullable();
+        let fieldSchema = array().of(string());
+
+        if (required && enabled) {
+          fieldSchema = fieldSchema
+            .min(1, formatMessage(messages.topicRequired))
+            .required(formatMessage(messages.topicRequired));
+        }
+
+        if (minimum_select_count) {
+          fieldSchema = fieldSchema.min(
+            minimum_select_count,
+            formatMessage(messages.topicMinimum, {
+              minSelections: minimum_select_count,
+              fieldName: title,
+            })
+          );
+        }
+
+        if (maximum_select_count) {
+          fieldSchema = fieldSchema.max(
+            maximum_select_count,
+            formatMessage(messages.topicMaximum, {
+              maxSelections: maximum_select_count,
+              fieldName: title,
+            })
+          );
+        }
+
+        schema[key] = fieldSchema.nullable();
         break;
       }
 
@@ -346,7 +397,7 @@ const generateYupSchema = ({
 
         schema[key] = required
           ? object().test({
-              message: formatMessage(legacyMessages.allStatementsError),
+              message: formatMessage(messages.allStatementsError),
               test: (object) => {
                 if (typeof object !== 'object') {
                   return false;

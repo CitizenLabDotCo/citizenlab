@@ -4,19 +4,6 @@ require 'rspec_api_documentation/dsl'
 resource 'Phase insights' do
   before { admin_header_token }
 
-  # Fixing the dates used as relative to this reference time means we can expect exact dates in the chart data
-  let(:time_now) { Time.new(2025, 12, 2, 12, 0, 0) }
-
-  let(:native_survey_phase) do
-    create(
-      :native_survey_phase,
-      start_at: time_now - 20.days,
-      end_at: time_now - 3.days
-    )
-  end
-
-  let!(:permission1) { create(:permission, action: 'posting_idea', permission_scope: native_survey_phase) }
-
   let!(:custom_field_gender) { create(:custom_field, resource_type: 'User', key: 'gender', input_type: 'select', title_multiloc: { en: 'Gender' }) }
   let!(:custom_field_option_male) { create(:custom_field_option, custom_field: custom_field_gender, key: 'male', title_multiloc: { en: 'Male' }) }
   let!(:custom_field_option_female) { create(:custom_field_option, custom_field: custom_field_gender, key: 'female', title_multiloc: { en: 'Female' }) }
@@ -41,57 +28,70 @@ resource 'Phase insights' do
     )
   end
 
-  (1..5).each do |i|
-    let!(:"ns_user#{i}") { create(:user) }
-  end
+  # Fixing the dates used as relative to this reference time means we can expect exact dates in the chart data
+  let(:time_now) { Time.new(2025, 12, 2, 12, 0, 0) }
 
-  let!(:idea1) { create(:idea, phases: [native_survey_phase], created_at: time_now - 25.days, author: ns_user1, creation_phase_id: native_survey_phase.id) } # created & published before ideation phase (not counted)
-
-  # created and submitted during native survey phase
-  let!(:idea2) do
+  let(:native_survey_phase) do
     create(
-      :idea,
-      phases: [native_survey_phase],
-      created_at: time_now - 15.days,
-      submitted_at: time_now - 15.days,
-      author: ns_user2,
-      creation_phase_id: native_survey_phase.id,
-      custom_field_values: { gender: 'female', birthyear: 1980 }
-    )
+      :native_survey_phase,
+      start_at: time_now - 20.days,
+      end_at: time_now - 3.days,
+      with_permissions: true
+    ).tap do |phase|
+      # Users
+      ns_user1 = create(:user)
+      ns_user2 = create(:user)
+      ns_user3 = create(:user)
+      ns_user4 = create(:user)
+      ns_user5 = create(:user)
+
+      # Ideas
+      create(:idea, phases: [phase], created_at: time_now - 25.days, author: ns_user1, creation_phase_id: phase.id) # created & published before phase (not counted)
+
+      # created and submitted during native survey phase
+      create(
+        :idea,
+        phases: [phase],
+        created_at: time_now - 15.days,
+        submitted_at: time_now - 15.days,
+        author: ns_user2,
+        creation_phase_id: phase.id,
+        custom_field_values: { gender: 'female', birthyear: 1980 }
+      )
+
+      create(:idea, phases: [phase], created_at: time_now - 5.days, submitted_at: time_now - 5.days, author: ns_user2, creation_phase_id: phase.id) # created during phase, and in last 7 days
+      create(:idea, phases: [phase], created_at: time_now - 2.days, submitted_at: time_now - 2.days, author: ns_user3, creation_phase_id: phase.id) # created & published after phase (not counted)
+
+      # created during native survey phase, not submitted
+      create(
+        :idea,
+        phases: [phase],
+        created_at: time_now - 15.days,
+        publication_status: 'draft', # Avoid automatic setting of submitted_at
+        submitted_at: nil,
+        author: ns_user4,
+        creation_phase_id: phase.id,
+        custom_field_values: { gender: 'male', birthyear: 1990 }
+      ) # created during phase, but not submitted (considered incomplete, affecting completion rate)
+
+      # Pageviews and sessions
+      session1 = create(:session, user_id: ns_user1.id)
+      create(:pageview, session: session1, created_at: time_now - 25.days, project_id: phase.project.id) # before phase
+
+      session2 = create(:session, user_id: ns_user2.id)
+      create(:pageview, session: session2, created_at: time_now - 15.days, project_id: phase.project.id) # in phase
+      create(:pageview, session: session2, created_at: time_now - 5.days, project_id: phase.project.id) # in phase & last 7 days, same session
+
+      session3 = create(:session, user_id: ns_user3.id)
+      create(:pageview, session: session3, created_at: time_now - 2.days, project_id: phase.project.id) # after phase
+
+      session4 = create(:session, user_id: ns_user4.id)
+      create(:pageview, session: session4, created_at: time_now - 15.days, project_id: phase.project.id) # in phase
+
+      session5 = create(:session, user_id: ns_user5.id)
+      create(:pageview, session: session5, created_at: time_now - 15.days, project_id: phase.project.id) # in phase, did not participate
+    end
   end
-
-  let!(:idea3) { create(:idea, phases: [native_survey_phase], created_at: time_now - 5.days, submitted_at: time_now - 5.days, author: ns_user2, creation_phase_id: native_survey_phase.id) } # created during native survey phase, and in last 7 days
-  let!(:idea4) { create(:idea, phases: [native_survey_phase], created_at: time_now - 2.days, submitted_at: time_now - 2.days, author: ns_user3, creation_phase_id: native_survey_phase.id) } # created & published after native survey phase (not counted)
-
-  # created during native survey phase, not submitted
-  let!(:idea5) do
-    create(
-      :idea,
-      phases: [native_survey_phase],
-      created_at: time_now - 15.days,
-      publication_status: 'draft', # Avoid automatic setting of submitted_at
-      submitted_at: nil,
-      author: ns_user4,
-      creation_phase_id: native_survey_phase.id,
-      custom_field_values: { gender: 'male', birthyear: 1990 }
-    ) # created during native survey phase, but not submitted (considered incomplete, affecting completion rate)
-  end
-
-  let!(:session1) { create(:session, user_id: ns_user1.id) }
-  let!(:pageview1) { create(:pageview, session: session1, created_at: time_now - 25.days, project_id: native_survey_phase.project.id) } # before native survey phase
-
-  let!(:session2) { create(:session, user_id: ns_user2.id) }
-  let!(:pageview2) { create(:pageview, session: session2, created_at: time_now - 15.days, project_id: native_survey_phase.project.id) } # in native survey phase
-  let!(:pageview3) { create(:pageview, session: session2, created_at: time_now - 5.days, project_id: native_survey_phase.project.id) } # in native survey phase & last 7 days, same session
-
-  let!(:session3) { create(:session, user_id: ns_user3.id) }
-  let!(:pageview5) { create(:pageview, session: session3, created_at: time_now - 2.days, project_id: native_survey_phase.project.id) } # after native survey phase
-
-  let!(:session4) { create(:session, user_id: ns_user4.id) }
-  let!(:pageview6) { create(:pageview, session: session4, created_at: time_now - 15.days, project_id: native_survey_phase.project.id) }
-
-  let!(:session5) { create(:session, user_id: ns_user5.id) }
-  let!(:pageview7) { create(:pageview, session: session5, created_at: time_now - 15.days, project_id: native_survey_phase.project.id) } # in native survey phase, did not participate
 
   let(:id) { native_survey_phase.id }
 

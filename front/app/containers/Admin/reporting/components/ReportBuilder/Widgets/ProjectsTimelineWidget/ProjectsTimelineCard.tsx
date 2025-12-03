@@ -22,6 +22,7 @@ import { GanttItem } from 'components/UI/GanttChart/types';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { DEFAULT_NO_OF_PROJECTS } from './constants';
 import messages from './messages';
 
 const StyledBox = styled(Box)`
@@ -56,7 +57,7 @@ const ProjectsTimelineCard = ({
   folderIds = [],
   participationMethods = [],
   sort = 'phase_starting_or_ending_soon',
-  noOfProjects = 10,
+  noOfProjects = DEFAULT_NO_OF_PROJECTS,
 }: ProjectsTimelineCardProps) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();

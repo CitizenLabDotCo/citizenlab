@@ -16,6 +16,7 @@
 #  updated_at          :datetime         not null
 #  tags_ids            :jsonb
 #  filters             :jsonb            not null
+#  last_error_class    :string
 #
 # Indexes
 #
@@ -67,11 +68,22 @@ module Analysis
       insightable&.update!(generated_at: Time.now)
     end
 
-    def set_failed!
-      self.state = 'failed'
-      self.progress = nil
-      self.ended_at = Time.now
-      save!
+    def set_failed!(error = nil)
+      attrs = {
+        state: 'failed',
+        progress: nil,
+        ended_at: Time.now
+      }
+      attrs[:last_error_class] = error.class.name if error
+      update!(attrs)
+    end
+
+    def failure_reason
+      case last_error_class
+      when 'Analysis::LLM::UnsupportedAttachmentError' then 'unsupported_file_type'
+      when 'Analysis::LLM::TooManyImagesError' then 'too_many_images'
+      else 'unknown'
+      end
     end
 
     def task_type

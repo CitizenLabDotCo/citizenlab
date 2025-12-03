@@ -41,6 +41,7 @@ class LogActivityJob < ApplicationJob
     activity = create_activity(item, action, user, acted_at, options)
     trigger_notifications(activity)
     trigger_campaigns(activity)
+    trigger_webhooks(activity)
     publish_activity_to_rabbit(activity)
     trigger_track_activity_job(activity, item)
   end
@@ -76,6 +77,14 @@ class LogActivityJob < ApplicationJob
 
   def trigger_campaigns(activity)
     EmailCampaigns::TriggerOnActivityJob.perform_later(activity)
+  end
+
+  def trigger_webhooks(activity)
+    # Optimization: Skip if no webhooks are enabled. This avoids overhead for
+    # the common case where no webhooks are configured
+    return unless Webhooks::Subscription.any_enabled?
+
+    Webhooks::EnqueueService.new.call(activity)
   end
 
   def publish_activity_to_rabbit(activity)

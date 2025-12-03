@@ -125,6 +125,7 @@ ca:
     open_idea_project_description_preview: Potser tens una idea que no encaixa amb algun dels projectes existents? Que publiqueu-lo aquí, recolliu suport i apunteu-lo a l'agenda política!
     open_idea_project_description: >
       <p>Aquí, podeu començar la vostra pròpia idea si no encaixa dins d'un dels projectes existents.</p><p><strong>L'objectiu?</strong> Per incorporar la teva idea a l'agenda política.</p><p><strong>Com?</strong> Recollint suport, és a dir, almenys 100 vots en 3 mesos. Podeu fer-ho fent primer la vostra idea "atractiu". Escriu-lo d'una manera clara i atractiva, afegeix imatges, dóna arguments sòlids basats en fets, afegeix arxius adjunts amb més detalls o informació de fons,... Després d'haver-ho fet, comença a compartir la teva idea a les xarxes socials o per correu electrònic. Convida persones a unir-se a la discussió sobre la teva idea, o simplement convèncer-les perquè la donin suport votant a favor.</p><p><strong>Sobre què?</strong> La teva idea pot tractar sobre moltes coses, sempre que estigui relacionada amb la teva ciutat i la seva política. Pot ser un problema que experimenteu, una solució que imagineu o fins i tot una combinació d'ambdós. Pot ser salvatge i a llarg termini, o molt tangible i una victòria ràpida.</p><p><strong>I llavors? </strong>Has arribat als 100 vots en 3 mesos? Felicitats! La ciutat ara tindrà en compte la teva idea. Si la vostra idea es considera factible i no perjudica col·lectius o individus concrets, tindreu l'oportunitat de presentar la vostra proposta durant la reunió del consell. Durant aquesta mateixa reunió, els membres del consell us donaran comentaris directes sobre què faran o no amb la vostra idea i per què. Si no aplegueu 100 vots en 3 mesos, la vostra proposta no serà considerada.</p><p>Tenim curiositat per conèixer les teves idees!</p>
+    published_projects: Projectes publicats
   phases:
     open_idea_phase_title: Fase actual
     native_survey_title: Enquesta
@@ -385,3 +386,4 @@ ca:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "El màxim ha de ser més gran que el mínim."
+      max_must_be_greater_than_or_equal_to_min_select_count: "El màxim ha de ser més gran o igual que el mínim."

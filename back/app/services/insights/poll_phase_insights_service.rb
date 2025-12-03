@@ -4,10 +4,10 @@ module Insights
 
     def phase_participations
       # Events are not associated with phase, so attending_event not included at phase-level.
-      { taking_poll: participation_taking_polls }
+      { taking_poll: participation_taking_poll }
     end
 
-    def participation_taking_polls
+    def participation_taking_poll
       Polls::Response
         .where(phase_id: @phase.id)
         .map do |response|

@@ -71,8 +71,8 @@ it:
     technology_description: Energia e tecnologia
     economy: Lavoro, economia e turismo
     economy_description: Lavoro, economia e turismo
-    housing: Housing
-    housing_description: Housing
+    housing: Abitazioni
+    housing_description: Abitazioni
     public_space: Spazi pubblici ed edifici
     public_space_description: Spazi pubblici ed edifici
     safety: Sicurezza
@@ -92,7 +92,7 @@ it:
     other: Altro
     other_description: Altro
     quality_of_life: Qualità della vita
-    service_delivery: Consegna del servizio
+    service_delivery: Servizi
     governance_and_trust: Governance e fiducia
   static_pages:
     terms_and_conditions_title: Termini e condizioni
@@ -125,6 +125,7 @@ it:
     open_idea_project_description_preview: Forse hai un'idea che non si adatta a uno dei progetti esistenti? Allora postala qui, raccogli il sostegno e falla entrare nell'agenda politica!
     open_idea_project_description: >
       <p>Qui, puoi iniziare la tua idea se non rientra in uno dei progetti esistenti.</p><p><strong>L'obiettivo?</strong> Far entrare la tua idea nell'agenda politica.</p><p><strong>Come?</strong> Raccogliendo supporto, cioè almeno 100 voti in 3 mesi. Potete farlo rendendo prima la vostra idea "attraente". Scrivi in modo chiaro e accattivante, aggiungi immagini, dai argomenti forti basati sui fatti, aggiungi allegati con ulteriori dettagli o informazioni di base, ... Dopo aver fatto questo, inizia a condividere la tua idea sui social media o tramite e-mail. Invita le persone a partecipare alla discussione sulla tua idea, o semplicemente convincile a sostenerla votando a favore.</p><p><strong>Su cosa?</strong> La tua idea può riguardare un sacco di cose, purché sia collegata alla tua città e alla sua politica. Può essere un problema che sperimenti, una soluzione che immagini o anche una combinazione di entrambi. Può essere selvaggia e a lungo termine, o molto tangibile e una vittoria veloce.</p><p><strong>E poi? </strong>Hai raggiunto 100 voti in 3 mesi? Congratulazioni! La città prenderà ora in considerazione la tua idea. Se la tua idea è considerata fattibile e non danneggia specifici gruppi o individui, avrai la possibilità di presentare la tua proposta durante la riunione del consiglio. Durante la stessa riunione, i membri del consiglio ti daranno un feedback diretto su cosa faranno o non faranno con la tua idea e perché. Se non raccogliete 100 voti in 3 mesi, la vostra proposta non sarà considerata.</p><p>Siamo curiosi di conoscere le tue idee!</p>
+    published_projects: Progetti pubblicati
   phases:
     open_idea_phase_title: Fase attuale
     native_survey_title: Sondaggio
@@ -198,32 +199,32 @@ it:
         affordable_housing:
           title: Disponibilità di alloggi a prezzi accessibili
         employment_opportunities:
-          title: Opportunità di impiego e di avanzamento economico
+          title: Opportunità d'impiego e di avanzamento economico
         quality_of_services:
           title: Qualità complessiva dei servizi offerti dalla città
         overall_value:
-          title: Il valore complessivo che ricevi per le tue tasse e imposte cittadine
+          title: Rapporto tra la qualità dei servizi e le tasse e tariffe comunali
         cleanliness_and_maintenance:
           title: Pulizia e manutenzione generale delle strade e degli spazi pubblici
         trust_in_government:
           title: Fiducia nell'amministrazione locale
         responsiveness_of_officials:
-          title: Reazione dei funzionari eletti alle preoccupazioni della comunità
+          title: Prontezza dell'amministrazione nel rispondere ai bisogni della comunità
         transparency_of_money_spent:
-          title: Trasparenza su come vengono spesi i soldi delle tasse comunali
+          title: Trasparenza nella gestione e spesa delle entrate comunali
       question_categories:
         quality_of_life: Qualità della vita
-        service_delivery: Consegna del servizio
+        service_delivery: Servizi
         governance_and_trust: Governance e fiducia
         other: Altro
       labels:
-        label_1: Molto scarso
-        label_2: Povero
-        label_3: Fiera
-        label_4: Buono
-        label_5: Eccellente
+        label_1: Molto negativo
+        label_2: Negativo
+        label_3: Neutro
+        label_4: Positivo
+        label_5: Ottimo
       form_end:
-        button_text: Torna a casa
+        button_text: Torna alla home page
   custom_forms:
     categories:
       main_content:
@@ -247,7 +248,7 @@ it:
           title: Qual è la tua petizione?
   custom_field_options:
     gender:
-      male: Maschio
+      male: Uomo
       female: Femmina
       unspecified: Altro
     domicile:
@@ -337,10 +338,10 @@ it:
       rating_print_description: 'Valuta questo aspetto scrivendo un numero compreso tra 1 (peggiore) e %{max_stars} (migliore).'
       sentiment_linear_scale_print_description: 'Scrivi un numero compreso tra 1 e 5.'
       sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
-      point_print_description: 'Disegna una X sulla mappa qui sotto per indicare la posizione o scrivi l''indirizzo.'
-      line_print_description: 'Disegna un percorso sulla mappa qui sotto.'
-      polygon_print_description: 'Disegna una forma sulla mappa qui sotto.'
-      select_print_description: 'Scegli solo un''opzione.'
+      point_print_description: 'Per indicare la posizione, traccia una X sulla mappa sottostante oppure scrivi l''indirizzo.'
+      line_print_description: 'Traccia un percorso sulla mappa sottostante.'
+      polygon_print_description: 'Disegna una forma sulla mappa sottostante.'
+      select_print_description: 'Scegli una sola opzione.'
       date_print_description: 'Scrivi una data nel formato AAAA-MM-GG.'
   project_copy:
     title_suffix: 'Copia'
@@ -385,3 +386,4 @@ it:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "Il massimo deve essere maggiore del minimo."
+      max_must_be_greater_than_or_equal_to_min_select_count: "Il massimo deve essere maggiore o uguale al minimo."

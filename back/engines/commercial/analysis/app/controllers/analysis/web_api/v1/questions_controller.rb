@@ -5,6 +5,7 @@ module Analysis
     module V1
       class QuestionsController < ApplicationController
         include FilterParamsExtraction
+
         skip_after_action :verify_policy_scoped # The analysis is authorized instead.
         before_action :set_analysis
         before_action :set_question, only: %i[show regenerate]
@@ -34,7 +35,12 @@ module Analysis
             **question_params,
             insight_attributes: insight_attributes
           )
+
+          file_ids = params.dig(:question, :file_ids).to_a
+          @question.attached_files = Files::File.where(id: file_ids)
+
           plan = plan_task
+
           if !plan.possible?
             render json: { errors: { base: [{ error: plan.impossible_reason }] } }, status: :unprocessable_entity
             return
@@ -43,6 +49,7 @@ module Analysis
           if @question.save
             side_fx_service.after_create(@question, current_user)
             QAndAJob.perform_later(@question)
+
             render json: QuestionSerializer.new(
               @question,
               params: jsonapi_serializer_params,

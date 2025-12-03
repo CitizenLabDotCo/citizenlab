@@ -125,6 +125,7 @@ en-IE:
     open_idea_project_description_preview: Maybe you have an idea that doesn't fit with one of the existing projects? Than post it here, gather support and get it on the political agenda!
     open_idea_project_description: >
       <p>Here, you can start your own idea if it doesn't fit within one of the existing projects.</p><p><strong>The objective?</strong> To get your idea on the political agenda.</p><p><strong>How?</strong> By gathering support, namely at least 100 votes in 3 months. You can do that by first making your idea 'attractive'. Write it in a clear and engaging way, add images, give strong arguments based on facts, add attachments with further details or background information, ... After you've done that, start sharing your idea on social media or through email. Invite people to join the discussion on your idea, or simply convince them to support it by voting in favour.</p><p><strong>About what?</strong> Your idea can be about a lot of things, as long as it is related to your city and its policy. It can be a problem you experience, a solution you envision or even a combination of both. It can be wild and on the long term, or very tangible and a quick win.</p><p><strong>And then? </strong>Did you reach 100 votes in 3 months? Congratulations! The city will now take your idea in consideration. If your idea is considered to be feasible and does not harm specific groups or individuals, you will get the chance to present your proposal during the council meeting. During that same meeting, the council members will give you direct feedback on what they will or won't do with your idea and why. If you don't gather 100 votes in 3 months, your proposal won't be considered.</p><p>We're curious to learn about your ideas!</p>
+    published_projects: Published projects
   phases:
     open_idea_phase_title: Current phase
     native_survey_title: Survey
@@ -385,3 +386,4 @@ en-IE:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "The maximum must be greater than the minimum."
+      max_must_be_greater_than_or_equal_to_min_select_count: "The maximum must be greater than or equal to the minimum."

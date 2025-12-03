@@ -19,11 +19,11 @@ RSpec.describe Insights::VotingPhaseInsightsService do
   let!(:comment2) { create(:comment, idea: idea1, created_at: 10.days.ago, author: user) } # during phase
   let!(:comment3) { create(:comment, idea: idea1, created_at: 1.day.ago, author: user) } # after phase end
 
-  describe '#participation_baskets' do
+  describe '#participations_voting' do
     it 'returns the participation baskets data associated with the phase' do
-      participation_baskets = service.send(:participation_baskets)
+      participations_voting = service.send(:participations_voting)
 
-      expect(participation_baskets).to eq([
+      expect(participations_voting).to eq([
         {
           item_id: basket1.id,
           action: 'voting',
@@ -46,7 +46,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
         }
       ])
 
-      first_participation = participation_baskets.first
+      first_participation = participations_voting.first
       expect(first_participation[:acted_at])
         .to be_within(1.second).of(Basket.find(first_participation[:item_id]).submitted_at)
     end
@@ -57,8 +57,8 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       participations = service.send(:phase_participations)
 
       expect(participations).to eq({
-        voting: service.send(:participation_baskets),
-        commenting_idea: service.send(:participation_idea_comments)
+        voting: service.send(:participations_voting),
+        commenting_idea: service.send(:participations_commenting_idea)
       })
 
       expect(participations[:voting].map { |p| p[:item_id] }).to match_array([

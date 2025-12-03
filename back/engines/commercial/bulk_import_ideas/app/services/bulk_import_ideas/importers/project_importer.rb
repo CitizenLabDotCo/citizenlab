@@ -114,7 +114,10 @@ module BulkImportIdeas::Importers
           option_keys = []
           split_values.each do |option_title|
             option = find_object_by_title(field.options, option_title)
-            option_keys << option[:key] if option
+            next unless option
+
+            # For domicile fields, we need to use the area ID as the option key, except for 'outside' option
+            option_keys << (field.domicile? && option.key != 'outside' ? option.area.id : option.key)
           end
 
           value = option_keys.compact.uniq
@@ -136,8 +139,9 @@ module BulkImportIdeas::Importers
 
     def find_object_by_title(custom_fields, title)
       title = title.downcase
-      custom_fields.find { |f| f[:title_multiloc][@locale.to_s].downcase == title } ||
-        custom_fields.find { |f| f[:key].downcase == title }
+      custom_fields.find { |f| f[:title_multiloc][@locale.to_s]&.downcase == title } ||
+        custom_fields.find { |f| f[:key].downcase == title } ||
+        custom_fields.find { |f| f[:title_multiloc]['en']&.downcase == title } # Try fallback to English title
     end
 
     # Import a single project
@@ -246,23 +250,7 @@ module BulkImportIdeas::Importers
 
         # Create a new project only visible to admins
         project_attributes = project_data.except(:phases, :thumbnail_url)
-
-        # Any images in the description need to be uploaded to our system and refs replaced
-        text_image_service = TextImageService.new
-        extract_output = text_image_service.extract_data_images_multiloc(
-          project_attributes[:description_multiloc]
-        )
-        project_attributes[:description_multiloc] = extract_output[:content_multiloc]
-
-        # Create project
         project = Project.create!(project_attributes)
-
-        # Generate description TextImages
-        text_image_service.bulk_create_images!(
-          extract_output[:extracted_images],
-          project,
-          :description_multiloc
-        )
 
         # Create the project thumbnail image if it exists
         create_project_thumbnail_image(project, project_data)
@@ -306,24 +294,7 @@ module BulkImportIdeas::Importers
         log "Importing phase: '#{phase_attributes[:title_multiloc][@locale]}'"
         begin
           phase_attributes = phase_attributes.merge(project: project)
-
-          # Any images in the description need to be uploaded to our system and refs replaced
-          text_image_service = TextImageService.new
-          extract_output = text_image_service.extract_data_images_multiloc(
-            phase_attributes[:description_multiloc]
-          )
-          phase_attributes[:description_multiloc] = extract_output[:content_multiloc]
-
-          # Create project
           phase = Phase.create!(phase_attributes)
-
-          # Generate description TextImages
-          text_image_service.bulk_create_images!(
-            extract_output[:extracted_images],
-            phase,
-            :description_multiloc
-          )
-
           Permissions::PermissionsUpdateService.new.update_permissions_for_scope(phase)
           log "Created '#{phase.participation_method}' phase"
           phase

@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, useBreakpoint, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
+import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 
 import { DEFAULT_Y_PADDING } from '../../constants';
 
@@ -33,10 +33,11 @@ export const CarrouselContainer = ({
   dataCy,
 }: CarrouselContainerProps) => {
   const isSmallerThanPhone = useBreakpoint('phone');
+  const craftComponentDefaultPadding = useCraftComponentDefaultPadding();
 
   return (
     <Box
-      px={isSmallerThanPhone ? undefined : DEFAULT_PADDING}
+      px={isSmallerThanPhone ? undefined : craftComponentDefaultPadding}
       py={DEFAULT_Y_PADDING}
       w="100%"
       display="flex"
@@ -54,6 +55,6 @@ export const CarrouselContainer = ({
 
 export const CardContainer = styled.div`
   ${media.phone`
-    scroll-snap-align: start;  
+    scroll-snap-align: start;
   `}
 `;
