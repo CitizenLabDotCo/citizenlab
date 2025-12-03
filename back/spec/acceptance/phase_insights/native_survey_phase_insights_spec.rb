@@ -8,11 +8,10 @@ resource 'Phase insights' do
     create(
       :native_survey_phase,
       start_at: 20.days.ago,
-      end_at: 3.days.ago
+      end_at: 3.days.ago,
+      with_permissions: true
     )
   end
-
-  let!(:permission1) { create(:permission, action: 'posting_idea', permission_scope: native_survey_phase) }
 
   let!(:custom_field_gender) { create(:custom_field, resource_type: 'User', key: 'gender', input_type: 'select', title_multiloc: { en: 'Gender' }) }
   let!(:custom_field_option_male) { create(:custom_field_option, custom_field: custom_field_gender, key: 'male', title_multiloc: { en: 'Male' }) }

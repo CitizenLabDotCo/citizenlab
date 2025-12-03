@@ -21,13 +21,10 @@ resource 'Phase insights' do
       start_at: 14.days.ago,
       end_at: 1.day.ago,
       project: ideation_phase.project,
-      manual_votes_count: 3
+      manual_votes_count: 3,
+      with_permissions: true
     )
   end
-
-  let!(:permission1) { create(:permission, action: 'voting', permission_scope: voting_phase) }
-  let!(:permission2) { create(:permission, action: 'commenting_idea', permission_scope: voting_phase) }
-  let!(:permission3) { create(:permission, action: 'attending_event', permission_scope: voting_phase) }
 
   let!(:custom_field_gender) { create(:custom_field, resource_type: 'User', key: 'gender', input_type: 'select', title_multiloc: { en: 'Gender' }) }
   let!(:custom_field_option_male) { create(:custom_field_option, custom_field: custom_field_gender, key: 'male', title_multiloc: { en: 'Male' }) }
