@@ -104,6 +104,17 @@ resource 'Users' do
         end
       end
 
+      context 'when a user exists without a password and has not completed registration' do
+        before { create(:user_with_confirmation, email: 'test@email.com', password: nil) }
+
+        let(:email) { 'test@email.com' }
+
+        example_request 'Returns "confirm"' do
+          assert_status 200
+          expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+        end
+      end
+
       context 'when a user exists with a password', document: false do
         before { create(:user, email: 'test@test.com') }
 
@@ -142,14 +153,28 @@ resource 'Users' do
         end
       end
 
-      context 'when a user exists without a password and has not completed registration' do
-        before { create(:user_with_confirmation, email: 'test@email.com', password: nil) }
+      context 'when user confirmation feature is disabled' do
+        before do
+          SettingsService.new.deactivate_feature! 'user_confirmation'
+        end
 
-        let(:email) { 'test@email.com' }
-
-        example_request 'Returns "confirm"' do
+        example_request 'returns "terms" when user does not exist' do
           assert_status 200
-          expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+          expect(json_response_body[:data][:attributes][:action]).to eq('terms')
+        end
+
+        example 'returns "password" when user exists with a password' do
+          create(:user, email: 'test@test.com')
+          do_request
+          assert_status 200
+          expect(json_response_body[:data][:attributes][:action]).to eq('password')
+        end
+
+        example 'returns "token" when user exists without a password' do
+          create(:user, email: 'test2@email.com', password: nil)
+          do_request(email: 'test2@email.com')
+          assert_status 200
+          expect(json_response_body[:data][:attributes][:action]).to eq('token')
         end
       end
     end
