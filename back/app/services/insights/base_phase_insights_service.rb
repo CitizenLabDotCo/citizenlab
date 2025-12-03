@@ -2,8 +2,6 @@ module Insights
   class BasePhaseInsightsService
     attr_reader :phase
 
-    SUPPORTED_CATEGORICAL_FIELD_TYPES = %w[select checkbox multiselect].freeze
-
     def initialize(phase)
       @phase = phase
       @permissions_custom_fields_service ||= Permissions::PermissionsCustomFieldsService.new
@@ -125,7 +123,7 @@ module Insights
           result[:r_score] = birthyear_data[:r_score]
           result[:series] = birthyear_data[:series]
           reference_distribution = birthyear_data[:reference_distribution]
-        elsif SUPPORTED_CATEGORICAL_FIELD_TYPES.include?(custom_field.input_type)
+        elsif custom_field.support_reference_distribution?
           select_or_checkbox_data = select_or_checkbox_field_demographics_data(participant_custom_field_values, custom_field)
           result[:r_score] = select_or_checkbox_data[:r_score]
           result[:series] = select_or_checkbox_data[:series]

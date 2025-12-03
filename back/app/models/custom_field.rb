@@ -142,6 +142,10 @@ class CustomField < ApplicationRecord
     %w[select multiselect select_image multiselect_image ranking].include?(input_type)
   end
 
+  def support_reference_distribution?
+    %w[select checkbox multiselect].include?(input_type) || key == 'birthyear'
+  end
+
   def includes_other_option?
     options.any?(&:other)
   end
