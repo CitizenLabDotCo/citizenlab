@@ -23,13 +23,12 @@ class WebApi::V1::ResetPasswordController < ApplicationController
     @user = User.not_invited
       .find_by(reset_password_token: reset_password_params[:token])
 
-
     if @user && ResetPasswordService.new.token_valid?(@user, reset_password_params[:token])
       @user.assign_attributes(
-        password: reset_password_params[:password], 
+        password: reset_password_params[:password],
         reset_password_token: nil
       )
-      
+
       # Resetting the password also proves that the user has access to the email,
       # so we can confirm the user if they were pending confirmation.
       @user.confirm if @user.confirmation_required?
