@@ -33,7 +33,7 @@ resource 'Phase insights' do
       :phase,
       participation_method: 'ideation',
       start_at: 30.days.ago,
-      end_at: 15.days.ago
+      end_at: 16.days.ago
     )
   end
 
@@ -42,7 +42,7 @@ resource 'Phase insights' do
       :phase,
       participation_method: 'voting',
       voting_method: 'multiple_voting',
-      start_at: 14.days.ago,
+      start_at: 15.days.ago,
       end_at: 1.day.ago,
       project: ideation_phase.project,
       manual_votes_count: 3,
