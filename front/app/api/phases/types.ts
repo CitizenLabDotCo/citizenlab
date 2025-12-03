@@ -62,7 +62,7 @@ export interface IPhaseAttributes {
   document_annotation_embed_url?: string | null;
   custom_form_persisted?: boolean;
   voting_method?: VotingMethod | null;
-  vote_term: VoteTerm;
+  vote_term?: VoteTerm; // Some existing phases in reports JSON may not have this defined.
   voting_min_total?: number | null;
   voting_max_total?: number | null;
   voting_min_selected_options?: number | null;
