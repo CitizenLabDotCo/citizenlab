@@ -122,6 +122,8 @@ class WebApi::V1::UsersController < ApplicationController
         render json: { errors: { email: [{ error: 'taken_by_invite', value: params[:email], inviter_email: @user.invitee_invite&.inviter&.email }] } }, status: :unprocessable_entity
       elsif !@user.no_password?
         render json: raw_json({ action: 'password' })
+      elsif !app_configuration.feature_activated?('user_confirmation')
+        render json: raw_json({ action: 'token' })
       else
         render json: raw_json({ action: 'confirm' })
       end
