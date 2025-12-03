@@ -10,6 +10,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { scrollToElement } from 'utils/scroll';
+
 import { SelectorProps } from './MultiSelectDropdown';
 import { List, ListItemText } from './StyledComponents';
 import Title from './Title';
@@ -78,13 +80,13 @@ const Combobox = ({
   useEffect(() => {
     if (focusedIndex !== null && listboxRef.current) {
       const items = listboxRef.current.querySelectorAll('li');
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (items[focusedIndex]) {
-        (items[focusedIndex] as HTMLElement).focus();
+      const focusedItem = items[focusedIndex] as HTMLElement;
+      focusedItem.focus();
+      if (isPhoneOrSmaller) {
+        scrollToElement(focusedItem);
       }
     }
-  }, [focusedIndex]);
+  }, [focusedIndex, isPhoneOrSmaller]);
 
   const onKeyDown = (event: KeyboardEvent) => {
     if (listboxRef.current) {
@@ -122,6 +124,21 @@ const Combobox = ({
           break;
       }
     }
+  };
+
+  const handleClickOutside = (event) => {
+    const path = event.composedPath();
+    // Ignore clicks inside dropdown
+    if (
+      path.some(
+        (el) =>
+          el === document.getElementById(baseID) ||
+          el === document.getElementById(`${baseID}-label`)
+      )
+    ) {
+      return;
+    }
+    onClickOutside?.(event);
   };
 
   return (
@@ -180,7 +197,7 @@ const Combobox = ({
         right={right}
         mobileRight={mobileRight}
         opened={opened}
-        onClickOutside={onClickOutside}
+        onClickOutside={handleClickOutside}
         content={
           <List
             ref={listboxRef}

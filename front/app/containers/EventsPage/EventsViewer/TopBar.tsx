@@ -58,6 +58,7 @@ const TopBar = memo<Props>(
           m="0px"
           my="auto"
           fontSize={isSmallerThanPhone ? 'xl' : 'xxl'}
+          tabIndex={0}
         >
           {title}
         </Title>

@@ -174,6 +174,20 @@ const FilterSelector = ({
       if (willOpen && onOpen) {
         onOpen();
       }
+      if (willOpen) {
+        setTimeout(() => {
+          const container = document.getElementById(
+            id ? id : 'e2e-events-section-project-page'
+          );
+          if (container) {
+            window.scrollTo({
+              top: container.getBoundingClientRect().top + window.scrollY - 200,
+              behavior: 'smooth',
+            });
+          }
+        }, 150);
+      }
+
       return willOpen;
     });
   };
