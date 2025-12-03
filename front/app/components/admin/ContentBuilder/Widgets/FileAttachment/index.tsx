@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import {
   Box,
@@ -6,12 +6,11 @@ import {
   Select,
   Spinner,
   Text,
+  Icon,
 } from '@citizenlab/cl2-component-library';
-import { useNode } from '@craftjs/core';
+import { useNode, useEditor } from '@craftjs/core';
 import { useParams } from 'react-router-dom';
 
-import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
-import useAddFileAttachment from 'api/file_attachments/useAddFileAttachment';
 import useDeleteFileAttachment from 'api/file_attachments/useDeleteFileAttachment';
 import useFileAttachmentById from 'api/file_attachments/useFileAttachmentById';
 import useFiles from 'api/files/useFiles';
@@ -26,12 +25,41 @@ import messages from './messages';
 type FileAttachmentProps = {
   fileId?: string;
   fileAttachmentId?: string;
+  fileName?: string;
 };
 
-const FileAttachment = ({ fileAttachmentId }: FileAttachmentProps) => {
+const FileAttachment = ({
+  fileAttachmentId,
+  fileName,
+}: FileAttachmentProps) => {
   const { data: fileAttachment } = useFileAttachmentById(fileAttachmentId);
 
   if (!fileAttachment) {
+    if (fileName) {
+      return (
+        <Box
+          id="e2e-file-attachment"
+          maxWidth="1200px"
+          margin="0 auto"
+          style={{ pointerEvents: 'none' }}
+        >
+          <FileDisplay
+            file={{
+              id: 'temp-id',
+              type: 'file',
+              attributes: {
+                name: fileName,
+                file: { url: '' },
+                ordering: null,
+                size: 0,
+                created_at: '',
+                updated_at: '',
+              },
+            }}
+          />
+        </Box>
+      );
+    }
     return null;
   }
 
@@ -44,7 +72,7 @@ const FileAttachment = ({ fileAttachmentId }: FileAttachmentProps) => {
           ...fileAttachment.data,
           attributes: {
             ordering: fileAttachment.data.attributes.position,
-            name: fileAttachment.data.attributes.file_name,
+            name: fileName || fileAttachment.data.attributes.file_name,
             size: fileAttachment.data.attributes.file_size,
             created_at: fileAttachment.data.attributes.created_at,
             updated_at: fileAttachment.data.attributes.updated_at,
@@ -63,36 +91,86 @@ const FileAttachmentSettings = () => {
     actions: { setProp },
     fileId,
     fileAttachmentId,
+    id: currentNodeId,
   } = useNode((node) => ({
     fileId: node.data.props.fileId,
+    fileName: node.data.props.fileName,
     fileAttachmentId: node.data.props.fileAttachmentId,
     id: node.id,
   }));
 
   const { formatMessage } = useIntl();
+  const { query } = useEditor();
+
   // File attachment API hooks
-  const { mutate: addFileAttachment } = useAddFileAttachment({});
   const { mutate: deleteFileAttachment } = useDeleteFileAttachment({});
 
   const { projectId } = useParams();
-
-  const { data: projectDescriptionLayout } = useContentBuilderLayout(
-    'project',
-    projectId || ''
-  );
 
   // Get files for project
   const { data: files, isFetching: isFetchingFiles } = useFiles({
     project: projectId ? [projectId] : [],
   });
 
-  // Generate options for the file select dropdown
-  const fileOptions = files
-    ? files.data.map((file) => ({
+  // Get current layout state to check for duplicate files
+  const craftjsJson = useMemo(() => {
+    try {
+      return query.getSerializedNodes();
+    } catch {
+      return {};
+    }
+  }, [query]);
+
+  // Generate options for the file select dropdown with usage warnings
+  const fileOptions = useMemo(() => {
+    if (!files) return [];
+
+    return files.data.map((file) => {
+      // Don't count the current node when checking for duplicates
+      const otherUsages = Object.entries(craftjsJson).filter(
+        ([nodeId, node]) => {
+          if (nodeId === currentNodeId) return false; // Skip current node
+          if (typeof node !== 'object') return false;
+
+          const nodeType = node.type;
+          const isFileAttachmentWidget =
+            (typeof nodeType === 'object' &&
+              nodeType.resolvedName === 'FileAttachment') ||
+            (typeof nodeType === 'string' && nodeType === 'FileAttachment');
+
+          return isFileAttachmentWidget && node.props?.fileId === file.id;
+        }
+      ).length;
+
+      let label = file.attributes.name;
+      if (otherUsages > 0) {
+        label += ` (${formatMessage(messages.fileAlreadySelected)})`;
+      }
+
+      return {
         value: file.id,
-        label: file.attributes.name,
-      }))
-    : [];
+        label,
+      };
+    });
+  }, [files, craftjsJson, currentNodeId, formatMessage]);
+
+  // Check if current file is used elsewhere and show warning
+  const currentFileUsageCount = useMemo(() => {
+    if (!fileId) return 0;
+
+    return Object.entries(craftjsJson).filter(([nodeId, node]) => {
+      if (nodeId === currentNodeId) return false; // Don't count current node
+      if (typeof node !== 'object') return false;
+
+      const nodeType = node.type;
+      const isFileAttachmentWidget =
+        (typeof nodeType === 'object' &&
+          nodeType.resolvedName === 'FileAttachment') ||
+        (typeof nodeType === 'string' && nodeType === 'FileAttachment');
+
+      return isFileAttachmentWidget && node.props?.fileId === fileId;
+    }).length;
+  }, [fileId, craftjsJson, currentNodeId]);
 
   if (isFetchingFiles) {
     return <Spinner />;
@@ -113,36 +191,49 @@ const FileAttachmentSettings = () => {
           value={fileId}
           onChange={(option) => {
             setProp((props: FileAttachmentProps) => {
-              // Remove any current file attachment.
+              // Remove any current file attachment if it exists.
               if (fileAttachmentId) {
                 deleteFileAttachment(fileAttachmentId);
+                props.fileAttachmentId = undefined;
               }
-              // Set the new selected file ID.
+              // Set the new selected file ID & name - file attachment will be created when layout is saved.
               props.fileId = option.value;
-
-              // Create a new file attachment to the project description layout.
-              projectDescriptionLayout?.data.id &&
-                addFileAttachment(
-                  {
-                    file_id: option.value,
-                    attachable_type: 'ContentBuilder::Layout',
-                    attachable_id: projectDescriptionLayout.data.id,
-                  },
-                  {
-                    onSuccess: (data) => {
-                      // Update the node's fileId prop with the newly created attachment.
-                      setProp((props: FileAttachmentProps) => {
-                        props.fileAttachmentId = data.data.id;
-                      });
-                    },
-                  }
-                );
+              props.fileName = option.label;
             });
           }}
           placeholder={formatMessage(messages.selectFile)}
           options={fileOptions}
           label={formatMessage(messages.selectFile)}
         />
+      )}
+
+      {/* Show warning if the selected file is used elsewhere */}
+      {currentFileUsageCount > 0 && (
+        <Box
+          background={colors.orange100}
+          borderRadius="3px"
+          p="12px"
+          display="flex"
+          alignItems="center"
+          gap="8px"
+        >
+          <Icon
+            name="info-solid"
+            fill={colors.orange500}
+            width="16px"
+            height="16px"
+          />
+          <Text
+            color="textSecondary"
+            fontSize="s"
+            m="0px"
+            style={{ color: colors.orange500 }}
+          >
+            {formatMessage(messages.fileAlreadyInUse, {
+              count: currentFileUsageCount,
+            })}
+          </Text>
+        </Box>
       )}
 
       <ButtonWithLink
