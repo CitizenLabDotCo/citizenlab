@@ -397,6 +397,14 @@ RSpec.describe Insights::BasePhaseInsightsService do
       expect(service.send(:percentage_change, 0, 100)).to be_nil
     end
 
+    it 'returns zero when there is no change' do
+      expect(service.send(:percentage_change, 100, 100)).to eq(0.0)
+    end
+
+    it 'returns -100.0 when new value is zero' do
+      expect(service.send(:percentage_change, 100, 0)).to eq(-100.0)
+    end
+
     it 'rounds percentage change to nearest integer' do
       expect(service.send(:percentage_change, 3, 4)).to eq(33.3)
       expect(service.send(:percentage_change, 7, 5)).to eq(-28.6)
