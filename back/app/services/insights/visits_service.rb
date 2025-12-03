@@ -13,7 +13,7 @@ module Insights
         .joins(:pageviews)
         .where(impact_tracking_pageviews: constraints)
 
-      visits_list = visits.select(
+      visits.select(
         "impact_tracking_pageviews.created_at AS date,
         impact_tracking_sessions.user_id AS user_id,
         impact_tracking_sessions.monthly_user_hash AS monthly_user_hash"
