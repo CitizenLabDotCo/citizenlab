@@ -41,6 +41,8 @@ module Insights
       total_participant_count = participant_ids.count
       flattened_participations = participations.values.flatten
       participants_last_7_days_count = flattened_participations.select { |p| p[:acted_at] >= 7.days.ago }.pluck(:participant_id).uniq.count
+      participants_last_14_to_8_days_count = flattened_participations.select { |p| p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago }.pluck(:participant_id).uniq.count
+      participants_rolling_7_day_change = percentage_change(participants_last_14_to_8_days_count, participants_last_7_days_count)
       unique_visitors = visits.pluck(:visitor_id).compact.uniq.count
       unique_visitors_last_7_days = visits.select { |v| v[:acted_at] >= 7.days.ago }.pluck(:visitor_id).compact.uniq.count
 
@@ -48,7 +50,7 @@ module Insights
         visitors: unique_visitors,
         visitors_last_7_days: unique_visitors_last_7_days,
         participants: total_participant_count,
-        participants_last_7_days: participants_last_7_days_count,
+        participants_rolling_7_day_change: participants_rolling_7_day_change,
         engagement_rate: unique_visitors > 0 ? (total_participant_count.to_f / unique_visitors).round(3) : 0
       }
     end

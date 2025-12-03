@@ -24,12 +24,12 @@ RSpec.describe Insights::BasePhaseInsightsService do
     let(:user1) { create(:user) }
 
     let(:participation1) { create(:basket_participation, acted_at: 20.days.ago, user: user1) } # before phase start
-    let(:participation2) { create(:basket_participation, acted_at: 10.days.ago, user: user1) } # after phase start & before phase end
+    let(:participation2) { create(:basket_participation, acted_at: 10.days.ago, user: user1) } # after phase start & before phase end (in week before last)
     let(:participation3) { create(:basket_participation, acted_at: 5.days.ago, user: user1) } # in last 7 days & before phase end
     let(:participation4) { create(:basket_participation, acted_at: 1.day.ago, user: user1) } # after phase end
 
     let(:user2) { create(:user) }
-    let(:participation5) { create(:basket_participation, acted_at: 10.days.ago, user: user2) } # after phase start & before phase end
+    let(:participation5) { create(:basket_participation, acted_at: 10.days.ago, user: user2) } # after phase start & before phase end (in week before last)
     let(:participation6) { create(:basket_participation, acted_at: 4.days.ago, user: user2) } # in last 7 days & before phase end
 
     let(:participation7) { create(:basket_participation, acted_at: 4.days.ago, user: nil, participant_id: SecureRandom.uuid) } # Anonymous or no user, in last 7 days & before phase end
@@ -56,7 +56,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
           visitors: 4,
           visitors_last_7_days: 3,
           participants: 3,
-          participants_last_7_days: 3,
+          participants_rolling_7_day_change: 50.0, # from 2 (in week before last) to 3 unique participants (in last 7 days) = 50% increase
           engagement_rate: 0.75
         }
       )

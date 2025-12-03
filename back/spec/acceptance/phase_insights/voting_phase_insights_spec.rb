@@ -120,7 +120,7 @@ resource 'Phase insights' do
         visitors: 6,
         visitors_last_7_days: 5,
         participants: 5,
-        participants_last_7_days: 3,
+        participants_rolling_7_day_change: 50.0, # from 3 (in week before last) to 5 unique participants (in last 7 days) = 50% increase
         engagement_rate: 0.833,
         voting: {
           voting_method: 'multiple_voting',
@@ -154,7 +154,7 @@ resource 'Phase insights' do
           visitors: 6,
           visitors_last_7_days: 5,
           participants: 5,
-          participants_last_7_days: 3,
+          participants_rolling_7_day_change: 50.0, # from 3 (in week before last) to 5 unique participants (in last 7 days) = 50% increase
           engagement_rate: 0.833,
           voting: {
             voting_method: 'budgeting',

@@ -71,7 +71,7 @@ resource 'Phase insights' do
         visitors: 2,
         visitors_last_7_days: 1,
         participants: 2,
-        participants_last_7_days: 1,
+        participants_rolling_7_day_change: 0.0, # from 1 (in week before last) to 1 unique participant (in last 7 days) = 0% change
         engagement_rate: 1.0,
         volunteering: {
           volunteerings: 3,

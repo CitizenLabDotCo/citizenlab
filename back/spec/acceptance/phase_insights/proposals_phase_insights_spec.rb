@@ -91,7 +91,7 @@ resource 'Phase insights' do
         visitors: 4,
         visitors_last_7_days: 2,
         participants: 3,
-        participants_last_7_days: 2,
+        participants_rolling_7_day_change: 100.0, # from 1 (in week before last) to 2 unique participants (in last 7 days) = 100% increase
         engagement_rate: 0.75,
         proposals: {
           ideas_posted: 2,
