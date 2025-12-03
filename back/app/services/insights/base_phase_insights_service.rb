@@ -4,7 +4,6 @@ module Insights
 
     def initialize(phase)
       @phase = phase
-      @permissions_custom_fields_service ||= Permissions::PermissionsCustomFieldsService.new
     end
 
     # --- TEMPLATE METHOD (Instance Method) ---
@@ -97,9 +96,10 @@ module Insights
       return [] if participant_ids.empty?
 
       participant_custom_field_values = participants_custom_field_values(participations, participant_ids)
+      permissions_custom_fields_service = Permissions::PermissionsCustomFieldsService.new
 
       custom_fields = phase_permissions.flat_map do |permission|
-        @permissions_custom_fields_service.fields_for_permission(permission)
+        permissions_custom_fields_service.fields_for_permission(permission)
       end.map(&:custom_field).uniq
 
       # Eager load options to avoid N+1 queries
