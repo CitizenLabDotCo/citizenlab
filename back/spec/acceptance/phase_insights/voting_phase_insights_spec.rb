@@ -53,8 +53,6 @@ resource 'Phase insights' do
     )
   end
 
-  # let!(:permissions_custom_field) { create(:permissions_custom_field, permission: permission1, custom_field: custom_field_gender) }
-
   (1..3).each do |i|
     let!(:"idea#{i}") { create(:idea, phases: [ideation_phase, voting_phase], project: ideation_phase.project, submitted_at: 20.days.ago) }
   end
