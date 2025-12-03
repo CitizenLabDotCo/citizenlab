@@ -99,6 +99,7 @@ class SideFxIdeaService
     end
 
     enqueue_embeddings_job(idea) if idea.title_multiloc_previously_changed? || idea.body_multiloc_previously_changed?
+    enqueue_wise_voice_detection_job(idea) if idea.title_multiloc_previously_changed? || idea.body_multiloc_previously_changed?
 
     if idea.manual_votes_amount_previously_changed?
       LogActivityJob.perform_later(
@@ -148,6 +149,7 @@ class SideFxIdeaService
   def after_submission(idea, user)
     add_autoreaction(idea)
     create_followers(idea, user) unless idea.anonymous?
+    enqueue_wise_voice_detection_job(idea)
     LogActivityJob.set(wait: 20.seconds).perform_later(idea, 'submitted', user_for_activity_on_anonymizable_item(idea, user), idea.submitted_at.to_i)
   end
 
@@ -230,6 +232,12 @@ class SideFxIdeaService
     return if !idea.participation_method_on_creation.supports_public_visibility?
 
     UpsertEmbeddingJob.perform_later(idea)
+  end
+
+  def enqueue_wise_voice_detection_job(idea)
+    return if !AppConfiguration.instance.feature_activated?('idea_feed')
+
+    WiseVoiceDetectionJob.perform_later(idea)
   end
 
   # update the user profile if user fields are changed as part of a survey

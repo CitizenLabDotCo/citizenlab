@@ -21,6 +21,7 @@
 #  fk_rails_...  (phase_id => phases.id)
 #  fk_rails_...  (user_id => users.id)
 #
+
 # An IdeaExposure represents the user seeing an idea in the ideation feed
 class IdeaExposure < ApplicationRecord
   belongs_to :user

@@ -154,6 +154,22 @@ describe SideFxIdeaService do
         .not_to enqueue_job(UpsertEmbeddingJob)
         .with(idea)
     end
+
+    it 'enqueues a wise voice detection job when idea_feed feature is activated' do
+      SettingsService.new.activate_feature! 'idea_feed'
+      idea = create(:idea)
+      expect { service.after_create(idea, user) }
+        .to enqueue_job(WiseVoiceDetectionJob)
+        .with(idea)
+        .exactly(1).times
+    end
+
+    it "doesn't enqueue a wise voice detection job when idea_feed is inactivated" do
+      SettingsService.new.deactivate_feature! 'idea_feed'
+      idea = create(:idea)
+      expect { service.after_create(idea, user) }
+        .not_to enqueue_job(WiseVoiceDetectionJob)
+    end
   end
 
   describe 'after_update' do
@@ -403,6 +419,33 @@ describe SideFxIdeaService do
 
       expect { service.after_update(idea, user) }
         .not_to enqueue_job(UpsertEmbeddingJob)
+        .with(idea)
+    end
+
+    it 'enqueues a wise voice detection job when idea_feed feature is activated and title or body changed' do
+      SettingsService.new.activate_feature! 'idea_feed'
+      idea = create(:idea)
+      idea.update!(title_multiloc: { en: 'changed' })
+      expect { service.after_update(idea, user) }
+        .to enqueue_job(WiseVoiceDetectionJob)
+        .with(idea)
+        .exactly(1).times
+    end
+
+    it 'does not enqueue a wise voice detection job when idea_feed feature is deactivated' do
+      SettingsService.new.deactivate_feature! 'idea_feed'
+      idea = create(:idea)
+      idea.update!(title_multiloc: { en: 'changed' })
+      expect { service.after_update(idea, user) }
+        .not_to enqueue_job(WiseVoiceDetectionJob)
+        .with(idea)
+    end
+
+    it 'does not enqueue a wise voice detection job when idea_feed feature is activated but title and body did not change' do
+      SettingsService.new.activate_feature! 'idea_feed'
+      idea = create(:idea).reload
+      expect { service.after_update(idea, user) }
+        .not_to enqueue_job(WiseVoiceDetectionJob)
         .with(idea)
     end
 

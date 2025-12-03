@@ -52,6 +52,7 @@ class Comment < ApplicationRecord
   before_validation :sanitize_body_multiloc
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
+  has_one :wise_voice_flag, as: :flaggable, class_name: 'WiseVoiceFlag', dependent: :destroy
 
   counter_culture(
     :idea,
@@ -79,6 +80,7 @@ class Comment < ApplicationRecord
   scope :published, -> { where publication_status: 'published' }
 
   delegate :project_id, to: :idea
+  delegate :project, to: :idea
 
   def published?
     publication_status == 'published'
