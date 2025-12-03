@@ -248,6 +248,120 @@ describe Export::Xlsx::InputSheetGenerator do
       end
     end
 
+    context 'for a proposals context' do
+      let(:phase) { create(:proposals_phase) }
+      let(:assignee1) { create(:admin, first_name: 'Jane', last_name: 'Smith') }
+      let(:assignee2) { create(:admin, first_name: 'John', last_name: 'Doe') }
+      let(:status1) { create(:proposals_status, title_multiloc: { 'en' => 'Accepted' }) }
+      let(:status2) { create(:proposals_status, title_multiloc: { 'en' => 'Under Review' }) }
+
+      let!(:proposal1) do
+        create(
+          :proposal,
+          project: phase.project,
+          creation_phase: phase,
+          assignee: assignee1,
+          idea_status: status1,
+          publication_status: 'published'
+        )
+      end
+      let!(:proposal2) do
+        create(
+          :proposal,
+          project: phase.project,
+          creation_phase: phase,
+          assignee: assignee2,
+          idea_status: status2,
+          publication_status: 'draft',
+          published_at: nil
+        )
+      end
+
+      let(:inputs) { [proposal1, proposal2] }
+
+      it 'Generates a sheet with the phase inputs' do
+        expect(xlsx).to match([
+          {
+            sheet_name: 'My sheet',
+            column_headers: [
+              'ID',
+              'Title',
+              'Description',
+              'Attachments',
+              'Tags',
+              'Latitude',
+              'Longitude',
+              'Location',
+              'Co-sponsors',
+              'Author name',
+              'Author email',
+              'Author ID',
+              'Submitted at',
+              'Published at',
+              'Comments',
+              'Likes',
+              'Offline votes',
+              'URL',
+              'Project',
+              'Status',
+              'Assignee',
+              'Assignee email'
+            ],
+            rows: [
+              [
+                proposal1.id,
+                proposal1.title_multiloc['en'],
+                'It would improve the air quality!',
+                '',
+                '',
+                proposal1.location_point.coordinates.last,
+                proposal1.location_point.coordinates.first,
+                proposal1.location_description,
+                '',
+                proposal1.author.full_name,
+                proposal1.author.email,
+                proposal1.author_id,
+                an_instance_of(DateTime),
+                an_instance_of(DateTime),
+                0,
+                0,
+                nil,
+                "http://example.org/ideas/#{proposal1.slug}",
+                phase.project.title_multiloc['en'],
+                'Accepted',
+                assignee1.full_name,
+                assignee1.email
+              ],
+              [
+                proposal2.id,
+                proposal2.title_multiloc['en'],
+                'It would improve the air quality!',
+                '',
+                '',
+                proposal2.location_point.coordinates.last,
+                proposal2.location_point.coordinates.first,
+                proposal2.location_description,
+                '',
+                proposal2.author.full_name,
+                proposal2.author.email,
+                proposal2.author_id,
+                an_instance_of(DateTime),
+                nil,
+                0,
+                0,
+                nil,
+                "http://example.org/ideas/#{proposal2.slug}",
+                phase.project.title_multiloc['en'],
+                'Under Review',
+                assignee2.full_name,
+                assignee2.email
+              ]
+            ]
+          }
+        ])
+      end
+    end
+
     context 'for a native survey context' do
       let(:phase) { create(:native_survey_phase, with_permissions: true) }
       let(:form) { create(:custom_form, participation_context: phase) }
