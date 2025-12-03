@@ -7,6 +7,10 @@ import { randomEmail, randomString } from '../../support/commands';
 
 describe('Change password in profile', () => {
   it('allows changing the password', () => {
+    cy.goToLandingPage();
+    cy.get('#e2e-navbar-login-menu-item').click();
+    cy.get('#e2e-authentication-modal').should('exist');
+
     // Sign up a new user
     const email = randomEmail();
     const password = randomString();
