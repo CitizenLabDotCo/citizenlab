@@ -8,6 +8,10 @@ module ParticipationMethod
       'common_ground'
     end
 
+    def phase_insights_class
+      Insights::CommonGroundPhaseInsightsService
+    end
+
     def built_in_title_required?
       true
     end
