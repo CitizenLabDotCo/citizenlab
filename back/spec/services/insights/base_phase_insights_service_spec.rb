@@ -21,8 +21,6 @@ RSpec.describe Insights::BasePhaseInsightsService do
   end
 
   describe '#base_metrics' do
-    let(:visitors_data) { { total: 100, last_7_days: 20 } }
-
     let(:user1) { create(:user) }
 
     let(:participation1) { create(:basket_participation, acted_at: 20.days.ago, user: user1) } # before phase start
@@ -39,16 +37,27 @@ RSpec.describe Insights::BasePhaseInsightsService do
     let(:participations) { { voting: [participation1, participation2, participation3, participation4, participation5, participation6, participation7] } }
     let(:participant_ids) { participations[:voting].pluck(:participant_id).uniq }
 
+    let(:visits) do
+      [
+        { acted_at: 10.days.ago, visitor_id: user1.id.to_s }, # after phase start & before phase end
+        { acted_at: 5.days.ago, visitor_id: user1.id.to_s },  # in last 7 days & before phase end
+        { acted_at: 10.days.ago, visitor_id: user2.id.to_s }, # after phase start & before phase end
+        { acted_at: 4.days.ago, visitor_id: user2.id.to_s },  # in last 7 days & before phase end
+        { acted_at: 4.days.ago, visitor_id: 'anonymous_1' },  # in last 7 days & before phase end
+        { acted_at: 10.days.ago, visitor_id: SecureRandom.uuid } # in phase, but no participation
+      ]
+    end
+
     it 'calculates base metrics correctly' do
-      result = service.send(:base_metrics, participations, participant_ids, visitors_data)
+      result = service.send(:base_metrics, participations, participant_ids, visits)
 
       expect(result).to eq(
         {
-          visitors: 100,
-          visitors_last_7_days: 20,
+          visitors: 4,
+          visitors_last_7_days: 3,
           participants: 3,
           participants_last_7_days: 3,
-          engagement_rate: 0.03
+          engagement_rate: 0.75
         }
       )
     end
