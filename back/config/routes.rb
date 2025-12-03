@@ -196,6 +196,11 @@ Rails.application.routes.draw do
           post 'copy', on: :collection
         end
 
+        resource :insights, only: [], controller: 'insights/phase_insights' do
+          get '', action: 'show_insights'
+          get :voting, action: 'voting_insights'
+        end
+
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
         get 'custom_form', on: :member, controller: 'custom_forms', action: 'show', defaults: { container_type: 'Phase' }
         patch 'custom_form', on: :member, controller: 'custom_forms', action: 'update', defaults: { container_type: 'Phase' }
