@@ -52,9 +52,9 @@ const Edit = () => {
           defaultValues={{
             title_multiloc: topic.data.attributes.title_multiloc,
             description_multiloc: topic.data.attributes.description_multiloc,
+            default: topic.data.attributes.default,
           }}
           onSubmit={handleSubmit}
-          isCustom={topic.data.attributes.code === 'custom'}
         />
       )}
     </Section>

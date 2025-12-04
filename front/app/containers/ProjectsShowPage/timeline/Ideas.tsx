@@ -49,8 +49,10 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
   const searchParam = searchParams.get('search');
   const topicsParam = searchParams.get('topics');
   const ideaStatusParam = searchParams.get('idea_status');
-  const config = getMethodConfig(phase.attributes.participation_method);
   const { data: project } = useProjectById(projectId);
+  const config = getMethodConfig(phase.attributes.participation_method, {
+    showIdeaFilters: phase.attributes.voting_filtering_enabled,
+  });
 
   const ideaQueryParameters = useMemo<QueryParameters>(
     () => ({
@@ -75,7 +77,6 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
   );
 
   const participationMethod = phase.attributes.participation_method;
-  const isVotingContext = participationMethod === 'voting';
 
   const inputTerm = phase.attributes.input_term;
 
@@ -87,37 +88,35 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
     showViewToggle: true,
     defaultView: phase.attributes.presentation_mode,
   };
-
-  const projectSlug = project?.data.attributes.slug;
+  const sidebarFiltersEnabled = config.showIdeaFilters === true;
 
   return (
     <Box
       id="project-ideas"
       className={`e2e-timeline-project-idea-cards ${className || ''}`}
     >
-      {projectSlug && (
-        <Box mb="16px">
-          <ButtonWithLink linkTo={`/projects/${projectSlug}/ideas`}>
-            <FormattedMessage {...messages.seeTheIdeas} />
-          </ButtonWithLink>
-        </Box>
-      )}
+      <ButtonWithLink
+        linkTo={`/projects/${project?.data.attributes.slug}/ideas`}
+        mb="16px"
+      >
+        <FormattedMessage {...messages.seeTheIdeas} />
+      </ButtonWithLink>
       <StickyNotesPile queryParameters={ideaQueryParameters} maxNotes={20} />
-      {isVotingContext ? (
-        <IdeaCardsWithoutFiltersSidebar
-          defaultSortingMethod={ideaQueryParameters.sort}
-          invisibleTitleMessage={messages.a11y_titleInputsPhase}
-          showDropdownFilters={false}
-          showSearchbar={false}
-          {...sharedProps}
-        />
-      ) : (
+      {sidebarFiltersEnabled ? (
         <>
           <IdeaListScrollAnchor />
           <Suspense fallback={<Spinner />}>
             <IdeasWithFiltersSidebar inputTerm={inputTerm} {...sharedProps} />
           </Suspense>
         </>
+      ) : (
+        <IdeaCardsWithoutFiltersSidebar
+          defaultSortingMethod={ideaQueryParameters.sort}
+          invisibleTitleMessage={messages.a11y_titleInputsPhase}
+          showDropdownFilters={config.showIdeaFilters ?? false}
+          showSearchbar={participationMethod !== 'voting'}
+          {...sharedProps}
+        />
       )}
     </Box>
   );

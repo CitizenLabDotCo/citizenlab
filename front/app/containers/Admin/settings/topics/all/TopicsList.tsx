@@ -3,6 +3,7 @@ import React from 'react';
 import { ITopicData } from 'api/topics/types';
 
 import { List } from 'components/admin/ResourceList';
+
 import TopicRow from './TopicRow';
 
 interface Props {
@@ -15,14 +16,12 @@ export default ({ topics, handleDeleteClick }: Props) => (
     {topics.map((topic, index) => {
       const isLastItem = index === topics.length - 1;
 
-      const isDefaultTopic = topic.attributes.code !== 'custom';
-
       return (
         <TopicRow
           key={topic.id}
           topic={topic}
           isLastItem={isLastItem}
-          handleDeleteClick={isDefaultTopic ? undefined : handleDeleteClick}
+          handleDeleteClick={handleDeleteClick}
         />
       );
     })}

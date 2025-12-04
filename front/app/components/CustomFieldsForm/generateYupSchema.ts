@@ -324,13 +324,35 @@ const generateYupSchema = ({
       }
 
       case 'topic_ids': {
-        schema[key] =
-          required && enabled
-            ? array()
-                .of(string())
-                .min(1, formatMessage(messages.topicRequired))
-                .required(formatMessage(messages.topicRequired))
-            : array().nullable();
+        let fieldSchema = array().of(string());
+
+        if (required && enabled) {
+          fieldSchema = fieldSchema
+            .min(1, formatMessage(messages.topicRequired))
+            .required(formatMessage(messages.topicRequired));
+        }
+
+        if (minimum_select_count) {
+          fieldSchema = fieldSchema.min(
+            minimum_select_count,
+            formatMessage(messages.topicMinimum, {
+              minSelections: minimum_select_count,
+              fieldName: title,
+            })
+          );
+        }
+
+        if (maximum_select_count) {
+          fieldSchema = fieldSchema.max(
+            maximum_select_count,
+            formatMessage(messages.topicMaximum, {
+              maxSelections: maximum_select_count,
+              fieldName: title,
+            })
+          );
+        }
+
+        schema[key] = fieldSchema.nullable();
         break;
       }
 

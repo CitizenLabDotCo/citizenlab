@@ -13,7 +13,6 @@ resource 'Topics' do
       parameter :number, 'Page number'
       parameter :size, 'Number of topics per page'
     end
-    parameter :code, 'Filter by code', required: false
     parameter :sort, 'Either custom, new, -new, projects_count, -projects_count, ideas_count or -ideas_count. Defaults to custom.'
     with_options scope: :ideas do
       parameter :topics, 'Filter by topics (OR)', required: false
@@ -30,25 +29,12 @@ resource 'Topics' do
     end
 
     before do
-      @code1, @code2 = Topic::CODES.take(2)
-      @topics = create_list(:topic, 2, code: @code1) + create_list(:topic, 3, code: @code2, include_in_onboarding: true)
+      @topics = create_list(:topic, 2) + create_list(:topic, 3, include_in_onboarding: true)
     end
 
     example_request 'List all topics' do
       assert_status(200)
       expect(response_data.size).to eq 5
-    end
-
-    example 'List all topics by code' do
-      do_request code: @code1
-      assert_status(200)
-      expect(response_data.size).to eq 2
-    end
-
-    example_request 'List all topics by code exclusion' do
-      do_request exclude_code: @code1
-      assert_status(200)
-      expect(response_data.size).to eq 3
     end
 
     example 'List all topics for onboarding' do
@@ -97,7 +83,6 @@ resource 'Topics' do
     describe do
       before do
         @author = create(:user)
-        @topics[1].update!(code: 'other')
         create(:idea, author: @author, topics: @topics[1..2])
         create(:idea, author: @author, topics: [])
         create(:idea, author: @author, topics: @topics[1..1])
@@ -111,7 +96,9 @@ resource 'Topics' do
       example_request 'List all topics sorted by ideas count' do
         assert_status 200
         expect(response_data.size).to eq 3
-        expect(response_data.pluck(:id)).to eq [@topics[2].id, @topics[3].id, @topics[1].id]
+        # topics[1] and topics[2] are tied with 2 ideas each, topics[3] has 1 idea
+        expect(response_data.pluck(:id).take(2)).to match_array [@topics[1].id, @topics[2].id]
+        expect(response_data.pluck(:id).last).to eq @topics[3].id
       end
     end
 
@@ -177,7 +164,7 @@ resource 'Topics' do
       end
       ValidationErrorHelper.new.error_fields(self, Topic)
 
-      let(:topic) { create(:custom_topic) }
+      let(:topic) { create(:topic) }
       let(:id) { topic.id }
       let(:title_multiloc) { { 'en' => 'Comedy' } }
       let(:description_multiloc) { { 'en' => 'Stuff that tends to make you laugh' } }
@@ -188,16 +175,6 @@ resource 'Topics' do
         expect(response_data.dig(:attributes, :title_multiloc).stringify_keys).to match title_multiloc
         expect(response_data.dig(:attributes, :description_multiloc).stringify_keys).to match description_multiloc
         expect(response_data.dig(:attributes, :include_in_onboarding)).to be true
-      end
-
-      context do
-        let(:topic) { create(:custom_topic, code: 'mobility', title_multiloc: { 'en' => 'Drama' }) }
-        let(:id) { topic.id }
-
-        example_request 'Rename a default topic does not work', example: false do
-          assert_status(200)
-          expect(response_data.dig(:attributes, :title_multiloc).stringify_keys).to match({ 'en' => 'Drama' })
-        end
       end
     end
 
@@ -213,19 +190,10 @@ resource 'Topics' do
         assert_status(200)
         expect(response_data.dig(:attributes, :ordering)).to eq ordering
       end
-
-      context do
-        let(:topic) { create(:topic, code: 'mobility') }
-        let(:id) { topic.id }
-
-        example_request 'Reorder a default topic' do
-          assert_status(200)
-        end
-      end
     end
 
     delete 'web_api/v1/topics/:id' do
-      let(:topic) { create(:custom_topic) }
+      let(:topic) { create(:topic) }
       let!(:id) { topic.id }
 
       example 'Delete a topic' do
@@ -234,15 +202,6 @@ resource 'Topics' do
         assert_status(200)
         expect { Topic.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(Topic.count).to eq(old_count - 1)
-      end
-
-      context do
-        let(:topic) { create(:topic, code: 'mobility') }
-        let(:id) { topic.id }
-
-        example_request '[error] Delete a default topic' do
-          assert_status(401)
-        end
       end
     end
   end

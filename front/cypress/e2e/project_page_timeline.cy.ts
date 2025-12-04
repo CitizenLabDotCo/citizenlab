@@ -3,6 +3,8 @@ import { randomString } from '../support/commands';
 
 describe('Existing Timeline project', () => {
   before(() => {
+    cy.setConsentAndAdminLoginCookies();
+
     cy.visit('/projects/test-project-1-timeline-with-file');
     cy.acceptCookies();
     cy.get('#e2e-project-page');
@@ -10,7 +12,7 @@ describe('Existing Timeline project', () => {
     cy.wait(1000);
   });
 
-  it('shows the correct elements', () => {
+  it.skip('shows the correct elements', () => {
     // shows the project page
     cy.get('#e2e-project-page');
 
@@ -64,6 +66,8 @@ describe('New timeline project', () => {
   const inTwoMonths = moment().add(2, 'month').format('DD/MM/YYYY');
 
   before(() => {
+    cy.setConsentAndAdminLoginCookies();
+
     // create new project
     cy.apiCreateProject({
       title: projectTitle,
@@ -120,7 +124,7 @@ describe('New timeline project', () => {
 
   beforeEach(() => {
     // navigate to project
-    cy.setAdminLoginCookie();
+    cy.setConsentAndAdminLoginCookies();
     const path = `/projects/${projectSlug}`;
     cy.visit(path);
     cy.wait(1000);

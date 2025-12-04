@@ -12,6 +12,7 @@ const defaultProps = {
   defaultValues: {
     title_multiloc: { en: '', 'nl-NL': '' },
     description_multiloc: { en: '', 'nl-NL': '' },
+    default: false,
   },
 };
 
@@ -52,6 +53,7 @@ describe('TopicForm', () => {
       expect(defaultProps.onSubmit).toHaveBeenCalledWith({
         title_multiloc: { en: titleEN, 'nl-NL': titleNL },
         description_multiloc: { en: '', 'nl-NL': '' },
+        default: false,
       });
       expect(screen.getByTestId('feedbackSuccessMessage')).toBeInTheDocument();
     });

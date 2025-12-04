@@ -1114,6 +1114,19 @@ workflows:
           env_file: ".env-web"
           stack_name: "cl2"
           cluster_name: "uk"
+      - back-deploy-to-swarm:
+          name: Deploy to Australia
+          requires:
+            - back-push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_AUS
+          compose_file: docker-compose-production.yml
+          stack_name: cl2
+          env_file: ".env-web"
+          cluster_name: "aus"
 
   # FRONT-END
   front:
@@ -1339,6 +1352,15 @@ workflows:
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
           env_file: ".env-web"
+      - back-generate-tenant-templates:
+          name: "Australia"
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_AUS
+          env_file: ".env-web"
       - back-test-tenant-templates:
           context:
             - docker-hub-access
@@ -1354,6 +1376,7 @@ workflows:
             - "Canada"
             - "US West"
             - "UK"
+            - "Australia"
       - back-release-tenant-templates:
           context:
             - docker-hub-access
@@ -1450,6 +1473,15 @@ workflows:
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
           env_file: ".env-web"
+      - back-generate-tenant-templates:
+          name: "Australia"
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_AUS
+          env_file: ".env-web"
       - back-test-tenant-templates:
           context:
             - docker-hub-access
@@ -1465,6 +1497,7 @@ workflows:
             - "Canada"
             - "US West"
             - "UK"
+            - "Australia"
       - back-release-tenant-templates:
           context:
             - docker-hub-access
@@ -1536,6 +1569,13 @@ workflows:
       #       - slack-dev-notifications-inconsistent-data
       #     ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
       #     env_file: ".env-web"
+      - check-for-inconsistent-data:
+          <<: *slack-fail-post-step-inconsistent-data
+          name: "Australia"
+          context:
+            - slack-dev-notifications-inconsistent-data
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_AUS
+          env_file: ".env-web"
       - slack-invalid-data-success:
           name: ":tada: SUCCESS: No invalid data was detected!" # Mentions are not supported for basic_success_1
           context:
@@ -1545,6 +1585,7 @@ workflows:
             - "Canada"
             - "US West"
       #     - "UK"
+            - "Australia"
 
   manual-chromatic:
     when: << pipeline.parameters.chromatic >>

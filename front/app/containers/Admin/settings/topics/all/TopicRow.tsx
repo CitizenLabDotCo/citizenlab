@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Tooltip, colors, Text, Box } from '@citizenlab/cl2-component-library';
+import { Tooltip, colors, Box, Badge } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useCustomPages from 'api/custom_pages/useCustomPages';
@@ -11,7 +11,7 @@ import useLocalize from 'hooks/useLocalize';
 import { Row } from 'components/admin/ResourceList';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -19,7 +19,6 @@ import messages from './messages';
 import { RowDescription, RowTitle } from './RowStyles';
 
 const StyledLink = styled(Link)`
-  color: ${colors.white} !important;
   text-decoration: underline;
 
   &:hover {
@@ -44,7 +43,6 @@ interface DeleteButtonProps {
 
 const DeleteButton = ({ topic, handleDeleteClick }: DeleteButtonProps) => {
   const localize = useLocalize();
-  const isCustomTopic = topic.attributes.code === 'custom';
 
   const staticPageIds = topic.relationships.static_pages.data.map(
     (page) => page.id
@@ -56,17 +54,9 @@ const DeleteButton = ({ topic, handleDeleteClick }: DeleteButtonProps) => {
     pages?.data.filter((page) => staticPageIds.includes(page.id)) || [];
 
   const hasStaticPages = staticPageIds.length > 0 && !isNilOrError(staticPages);
+  const isDisabled = hasStaticPages;
 
-  // Determine button configuration
-  const isDisabled = !isCustomTopic || hasStaticPages;
-  const buttonId = isCustomTopic
-    ? 'e2e-custom-topic-delete-button'
-    : 'e2e-default-topic-delete-button';
-
-  // Determine tooltip configuration
-  const tooltipContent = !isCustomTopic ? (
-    <FormattedMessage {...messages.defaultTagCannotBeDeleted} />
-  ) : hasStaticPages ? (
+  const tooltipContent = hasStaticPages ? (
     <>
       <FormattedMessage {...messages.tagIsLinkedToStaticPage} />
       <ul>
@@ -90,7 +80,7 @@ const DeleteButton = ({ topic, handleDeleteClick }: DeleteButtonProps) => {
         onClick={isDisabled ? undefined : handleDeleteClick?.(topic.id)}
         buttonStyle="text"
         icon="delete"
-        id={buttonId}
+        id="e2e-custom-topic-delete-button"
       >
         <FormattedMessage {...messages.deleteButtonLabel} />
       </ButtonWithLink>
@@ -101,12 +91,10 @@ const DeleteButton = ({ topic, handleDeleteClick }: DeleteButtonProps) => {
 const TopicRow = (props: Props) => {
   const { isLastItem, topic } = props;
   const localize = useLocalize();
-  const { formatMessage } = useIntl();
+
   if (isNilOrError(topic)) {
     return null;
   }
-
-  const isCustomTopic = topic.attributes.code === 'custom';
 
   return (
     <Row
@@ -129,26 +117,27 @@ const TopicRow = (props: Props) => {
           mr="20px"
           minHeight="40px"
         >
-          <RowTitle>{localize(topic.attributes.title_multiloc)}</RowTitle>
-          <RowDescription>
-            {localize(topic.attributes.description_multiloc, {
-              fallback: formatMessage({ ...messages.noDescriptionProvided }),
-            })}
-          </RowDescription>
+          <Box display="flex" alignItems="center" gap="8px">
+            <RowTitle>{localize(topic.attributes.title_multiloc)}</RowTitle>
+          </Box>
+          <RowDescription
+            supportHtml
+            value={topic.attributes.description_multiloc}
+          />
         </Box>
       </Box>
       <Box display="flex" alignItems="center" gap="16px">
-        {!isCustomTopic && (
-          <Text m="0px">
-            <FormattedMessage {...messages.defaultTopic} />
-          </Text>
+        {topic.attributes.default && (
+          <Badge color={colors.teal400} mr="16px">
+            <FormattedMessage {...messages.defaultBadge} />
+          </Badge>
         )}
         <ButtonWithLink
           linkTo={`/admin/settings/topics/${topic.id}/edit`}
           buttonStyle="secondary-outlined"
           icon="edit"
           m="0px"
-          id={`e2e-${isCustomTopic ? 'custom' : 'default'}-topic-edit-button`}
+          id={`e2e-custom-topic-edit-button`}
         >
           <FormattedMessage {...messages.editButtonLabel} />
         </ButtonWithLink>
