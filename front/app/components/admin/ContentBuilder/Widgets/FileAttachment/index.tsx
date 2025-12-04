@@ -6,7 +6,6 @@ import {
   Select,
   Spinner,
   Text,
-  Icon,
 } from '@citizenlab/cl2-component-library';
 import { useNode, useEditor } from '@craftjs/core';
 import { useParams } from 'react-router-dom';
@@ -21,6 +20,7 @@ import FileDisplay from 'components/UI/FileAttachments/FileDisplay';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import { getFileUsageCount } from './utils';
 
 type FileAttachmentProps = {
   fileId?: string;
@@ -35,6 +35,7 @@ const FileAttachment = ({
   const { data: fileAttachment } = useFileAttachmentById(fileAttachmentId);
 
   if (!fileAttachment) {
+    // Show placeholder with just the file name if we haven't saved yet
     if (fileName) {
       return (
         <Box
@@ -91,12 +92,9 @@ const FileAttachmentSettings = () => {
     actions: { setProp },
     fileId,
     fileAttachmentId,
-    id: currentNodeId,
   } = useNode((node) => ({
     fileId: node.data.props.fileId,
-    fileName: node.data.props.fileName,
     fileAttachmentId: node.data.props.fileAttachmentId,
-    id: node.id,
   }));
 
   const { formatMessage } = useIntl();
@@ -122,55 +120,22 @@ const FileAttachmentSettings = () => {
   }, [query]);
 
   // Generate options for the file select dropdown with usage warnings
-  const fileOptions = useMemo(() => {
+  let fileOptions = useMemo(() => {
     if (!files) return [];
 
     return files.data.map((file) => {
-      // Don't count the current node when checking for duplicates
-      const otherUsages = Object.entries(craftjsJson).filter(
-        ([nodeId, node]) => {
-          if (nodeId === currentNodeId) return false; // Skip current node
-          if (typeof node !== 'object') return false;
-
-          const nodeType = node.type;
-          const isFileAttachmentWidget =
-            (typeof nodeType === 'object' &&
-              nodeType.resolvedName === 'FileAttachment') ||
-            (typeof nodeType === 'string' && nodeType === 'FileAttachment');
-
-          return isFileAttachmentWidget && node.props?.fileId === file.id;
-        }
-      ).length;
-
-      let label = file.attributes.name;
-      if (otherUsages > 0) {
-        label += ` (${formatMessage(messages.fileAlreadySelected)})`;
-      }
-
       return {
         value: file.id,
-        label,
+        label: file.attributes.name,
       };
     });
-  }, [files, craftjsJson, currentNodeId, formatMessage]);
+  }, [files]);
 
-  // Check if current file is used elsewhere and show warning
-  const currentFileUsageCount = useMemo(() => {
-    if (!fileId) return 0;
-
-    return Object.entries(craftjsJson).filter(([nodeId, node]) => {
-      if (nodeId === currentNodeId) return false; // Don't count current node
-      if (typeof node !== 'object') return false;
-
-      const nodeType = node.type;
-      const isFileAttachmentWidget =
-        (typeof nodeType === 'object' &&
-          nodeType.resolvedName === 'FileAttachment') ||
-        (typeof nodeType === 'string' && nodeType === 'FileAttachment');
-
-      return isFileAttachmentWidget && node.props?.fileId === fileId;
-    }).length;
-  }, [fileId, craftjsJson, currentNodeId]);
+  // Filter out any files already being used in the layout
+  fileOptions = fileOptions.filter((option) => {
+    const usageCount = getFileUsageCount(craftjsJson, option.value);
+    return usageCount === 0;
+  });
 
   if (isFetchingFiles) {
     return <Spinner />;
@@ -205,35 +170,6 @@ const FileAttachmentSettings = () => {
           options={fileOptions}
           label={formatMessage(messages.selectFile)}
         />
-      )}
-
-      {/* Show warning if the selected file is used elsewhere */}
-      {currentFileUsageCount > 0 && (
-        <Box
-          background={colors.orange100}
-          borderRadius="3px"
-          p="12px"
-          display="flex"
-          alignItems="center"
-          gap="8px"
-        >
-          <Icon
-            name="info-solid"
-            fill={colors.orange500}
-            width="16px"
-            height="16px"
-          />
-          <Text
-            color="textSecondary"
-            fontSize="s"
-            m="0px"
-            style={{ color: colors.orange500 }}
-          >
-            {formatMessage(messages.fileAlreadyInUse, {
-              count: currentFileUsageCount,
-            })}
-          </Text>
-        </Box>
       )}
 
       <ButtonWithLink

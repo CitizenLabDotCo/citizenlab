@@ -18,13 +18,4 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.uploadFiles2',
     defaultMessage: 'Upload files to project',
   },
-  fileAlreadyInUse: {
-    id: 'app.containers.admin.ContentBuilder.fileAlreadyInUse',
-    defaultMessage:
-      'This file is already used {count} time{count, plural, one {} other {s}} in this layout',
-  },
-  fileAlreadySelected: {
-    id: 'app.containers.admin.ContentBuilder.fileAlreadySelected',
-    defaultMessage: 'Already selected',
-  },
 });
