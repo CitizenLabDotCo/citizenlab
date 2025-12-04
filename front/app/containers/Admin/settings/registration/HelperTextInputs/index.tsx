@@ -19,15 +19,44 @@ const RegistrationQuestions = ({
   customFieldsSignupHelperTextMultiloc,
 }: Props) => {
   return (
-    <HelperTextInput
-      coreSetting="custom_fields_signup_helper_text"
-      labelMessage={messages.demographicQuestions}
-      tooltipMessage={messages.demographicQuestionsTooltip}
-      customFieldsSignupHelperTextMultiloc={
-        customFieldsSignupHelperTextMultiloc
-      }
-      onCoreSettingWithMultilocChange={onCoreSettingWithMultilocChange}
-    />
+    <>
+      <HelperTextInput
+        coreSetting="enter_email_helper_text"
+        labelMessage={messages.enterEmailStep}
+        tooltipMessage={messages.enterEmailStepTooltip}
+        customFieldsSignupHelperTextMultiloc={
+          customFieldsSignupHelperTextMultiloc
+        }
+        onCoreSettingWithMultilocChange={onCoreSettingWithMultilocChange}
+      />
+      <HelperTextInput
+        coreSetting="enter_password_helper_text"
+        labelMessage={messages.enterPasswordStep}
+        tooltipMessage={messages.enterPasswordStepTooltip}
+        customFieldsSignupHelperTextMultiloc={
+          customFieldsSignupHelperTextMultiloc
+        }
+        onCoreSettingWithMultilocChange={onCoreSettingWithMultilocChange}
+      />
+      <HelperTextInput
+        coreSetting="complete_your_profile_helper_text"
+        labelMessage={messages.completeYourProfileStep}
+        tooltipMessage={messages.completeYourProfileStepTooltip}
+        customFieldsSignupHelperTextMultiloc={
+          customFieldsSignupHelperTextMultiloc
+        }
+        onCoreSettingWithMultilocChange={onCoreSettingWithMultilocChange}
+      />
+      <HelperTextInput
+        coreSetting="custom_fields_signup_helper_text"
+        labelMessage={messages.demographicQuestions}
+        tooltipMessage={messages.demographicQuestionsTooltip}
+        customFieldsSignupHelperTextMultiloc={
+          customFieldsSignupHelperTextMultiloc
+        }
+        onCoreSettingWithMultilocChange={onCoreSettingWithMultilocChange}
+      />
+    </>
   );
 };
 

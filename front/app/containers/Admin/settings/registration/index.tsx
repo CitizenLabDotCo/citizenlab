@@ -134,31 +134,12 @@ const SettingsRegistrationTab = () => {
             <FormattedMessage {...messages.registrationHelperTextDescription} />
           </SectionDescription>
           <form onSubmit={handleSubmit}>
-            {/* <SectionField>
-              <InputMultilocWithLocaleSwitcher
-                type="text"
-                valueMultiloc={latestAppConfigSettings.core.enter_email_helper_text}
-                onChange={handleCoreSettingWithMultilocOnChange(
-                  'enter_email_helper_text',
-                )}
-                label={
-                  <LabelTooltip>
-                    <FormattedMessage {...messages.loginHelper} />
-                    <IconTooltip
-                      content={
-                        <FormattedMessage {...messages.loginHelperTooltip} />
-                      }
-                    />
-                  </LabelTooltip>
-                }
-              />
-            </SectionField> */}
             <HelperTextInputs
-              onCoreSettingWithMultilocChange={
-                handleCoreSettingWithMultilocOnChange
-              }
               customFieldsSignupHelperTextMultiloc={
                 latestAppConfigSettings.core.custom_fields_signup_helper_text
+              }
+              onCoreSettingWithMultilocChange={
+                handleCoreSettingWithMultilocOnChange
               }
             />
             <SubmitWrapper
