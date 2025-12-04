@@ -2,7 +2,11 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Phase insights' do
-  before { admin_header_token }
+  before do
+    admin_header_token
+    # This reference time means we can expect exact dates in the chart data
+    travel_to(Time.zone.parse('2025-12-02 12:00:00'))
+  end
 
   let!(:custom_field_gender) { create(:custom_field, resource_type: 'User', key: 'gender', input_type: 'select', title_multiloc: { en: 'Gender' }) }
   let!(:custom_field_option_male) { create(:custom_field_option, custom_field: custom_field_gender, key: 'male', title_multiloc: { en: 'Male' }) }
@@ -28,15 +32,12 @@ resource 'Phase insights' do
     )
   end
 
-  # Fixing the dates used as relative to this reference time means we can expect exact dates in the chart data
-  let(:time_now) { Time.new(2025, 12, 2, 12, 0, 0) }
-
   let(:ideation_phase) do
     create(
       :phase,
       participation_method: 'ideation',
-      start_at: time_now - 20.days,
-      end_at: time_now - 3.days,
+      start_at: 20.days.ago,
+      end_at: 3.days.ago,
       with_permissions: true
     ).tap do |phase|
       # Users
@@ -47,36 +48,36 @@ resource 'Phase insights' do
       user5 = create(:user, custom_field_values: { gender: 'male', birthyear: 1990 })
 
       # Ideas
-      create(:idea, phases: [phase], author: user1, created_at: time_now - 25.days, published_at: time_now - 25.days) # published before ideation phase (not counted)
-      idea2 = create(:idea, phases: [phase], author: user2, created_at: time_now - 15.days, published_at: time_now - 15.days) # published during ideation phase
-      create(:idea, phases: [phase], author: user2, created_at: time_now - 5.days, published_at: time_now - 5.days) # published during ideation phase, and in last 7 days
-      create(:idea, phases: [phase], author: user3, created_at: time_now - 2.days, published_at: time_now - 2.days) # published after ideation phase (not counted)
+      create(:idea, phases: [phase], author: user1, created_at: 25.days.ago, published_at: 25.days.ago) # published before ideation phase (not counted)
+      idea2 = create(:idea, phases: [phase], author: user2, created_at: 15.days.ago, published_at: 15.days.ago) # published during ideation phase
+      create(:idea, phases: [phase], author: user2, created_at: 5.days.ago, published_at: 5.days.ago) # published during ideation phase, and in last 7 days
+      create(:idea, phases: [phase], author: user3, created_at: 2.days.ago, published_at: 2.days.ago) # published after ideation phase (not counted)
 
       # Comments
-      create(:comment, idea: idea2, author: user4, created_at: time_now - 10.days) # in ideation phase
+      create(:comment, idea: idea2, author: user4, created_at: 10.days.ago) # in ideation phase
 
       # Reactions
-      create(:reaction, reactable: idea2, user: user5, created_at: time_now - 5.days) # in ideation phase, and in last 7 days
+      create(:reaction, reactable: idea2, user: user5, created_at: 5.days.ago) # in ideation phase, and in last 7 days
 
       # Pageviews and sessions
       session1 = create(:session, user_id: user1.id)
-      create(:pageview, session: session1, created_at: time_now - 25.days, project_id: phase.project.id) # before ideation phase
+      create(:pageview, session: session1, created_at: 25.days.ago, project_id: phase.project.id) # before ideation phase
 
       session2 = create(:session, user_id: user2.id)
-      create(:pageview, session: session2, created_at: time_now - 15.days, project_id: phase.project.id) # in ideation phase
-      create(:pageview, session: session2, created_at: time_now - 5.days, project_id: phase.project.id) # in ideation phase & last 7 days, same session
+      create(:pageview, session: session2, created_at: 15.days.ago, project_id: phase.project.id) # in ideation phase
+      create(:pageview, session: session2, created_at: 5.days.ago, project_id: phase.project.id) # in ideation phase & last 7 days, same session
 
       session3 = create(:session, user_id: user3.id)
-      create(:pageview, session: session3, created_at: time_now - 2.days, project_id: phase.project.id) # after ideation phase
+      create(:pageview, session: session3, created_at: 2.days.ago, project_id: phase.project.id) # after ideation phase
 
       session4 = create(:session)
-      create(:pageview, session: session4, created_at: time_now - 15.days, project_id: phase.project.id) # in ideation phase, did not participate
+      create(:pageview, session: session4, created_at: 15.days.ago, project_id: phase.project.id) # in ideation phase, did not participate
 
       session5 = create(:session, user_id: user4.id)
-      create(:pageview, session: session5, created_at: time_now - 10.days, project_id: phase.project.id) # in ideation phase
+      create(:pageview, session: session5, created_at: 10.days.ago, project_id: phase.project.id) # in ideation phase
 
       session6 = create(:session, user_id: user5.id)
-      create(:pageview, session: session6, created_at: time_now - 5.days, project_id: phase.project.id) # in ideation phase, and in last 7 days
+      create(:pageview, session: session6, created_at: 5.days.ago, project_id: phase.project.id) # in ideation phase, and in last 7 days
     end
   end
 

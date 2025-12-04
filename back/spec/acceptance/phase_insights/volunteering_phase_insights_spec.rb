@@ -2,7 +2,11 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Phase insights' do
-  before { admin_header_token }
+  before do
+    admin_header_token
+    # This reference time means we can expect exact dates in the chart data
+    travel_to(Time.zone.parse('2025-12-02 12:00:00'))
+  end
 
   let!(:custom_field_gender) { create(:custom_field, resource_type: 'User', key: 'gender', input_type: 'select', title_multiloc: { en: 'Gender' }) }
   let!(:custom_field_option_male) { create(:custom_field_option, custom_field: custom_field_gender, key: 'male', title_multiloc: { en: 'Male' }) }
@@ -28,11 +32,8 @@ resource 'Phase insights' do
     )
   end
 
-  # Fixing the dates used as relative to this reference time means we can expect exact dates in the chart data
-  let(:time_now) { Time.new(2025, 12, 2, 12, 0, 0) }
-
   let(:volunteering_phase) do
-    create(:volunteering_phase, start_at: time_now - 20.days, end_at: time_now - 3.days, with_permissions: true).tap do |phase|
+    create(:volunteering_phase, start_at: 20.days.ago, end_at: 3.days.ago, with_permissions: true).tap do |phase|
       # Causes
       cause1 = create(:cause, phase: phase)
       cause2 = create(:cause, phase: phase)
@@ -43,20 +44,20 @@ resource 'Phase insights' do
       user3 = create(:user)
 
       # Volunteerings
-      create(:volunteer, cause: cause1, user: user1, created_at: time_now - 15.days)
-      create(:volunteer, cause: cause2, user: user1, created_at: time_now - 5.days)
-      create(:volunteer, cause: cause1, user: user2, created_at: time_now - 10.days)
+      create(:volunteer, cause: cause1, user: user1, created_at: 15.days.ago)
+      create(:volunteer, cause: cause2, user: user1, created_at: 5.days.ago)
+      create(:volunteer, cause: cause1, user: user2, created_at: 10.days.ago)
 
       # Pageviews and sessions
       session1 = create(:session, user_id: user1.id)
-      create(:pageview, session: session1, created_at: time_now - 15.days, project_id: phase.project.id) # during phase
+      create(:pageview, session: session1, created_at: 15.days.ago, project_id: phase.project.id) # during phase
 
       session2 = create(:session, user_id: user2.id)
-      create(:pageview, session: session2, created_at: time_now - 15.days, project_id: phase.project.id) # during phase
-      create(:pageview, session: session2, created_at: time_now - 5.days, project_id: phase.project.id) # during phase & last 7 days, same session
+      create(:pageview, session: session2, created_at: 15.days.ago, project_id: phase.project.id) # during phase
+      create(:pageview, session: session2, created_at: 5.days.ago, project_id: phase.project.id) # during phase & last 7 days, same session
 
       session3 = create(:session, user_id: user3.id)
-      create(:pageview, session: session3, created_at: time_now - 2.days, project_id: phase.project.id) # after phase
+      create(:pageview, session: session3, created_at: 2.days.ago, project_id: phase.project.id) # after phase
     end
   end
 
