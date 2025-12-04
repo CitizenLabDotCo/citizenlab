@@ -758,5 +758,14 @@ describe Permissions::UserRequirementsService do
         expect(requirements_custom_fields.map(&:required)).to eq [false, true]
       end
     end
+
+    context 'when user fields are hidden' do
+      it 'does not return hidden fields' do
+        permission.update!(global_custom_fields: false)
+        hidden_field = custom_fields.first
+        hidden_field.update!(hidden: true)
+        expect(requirements_custom_fields.map(&:id)).to eq [custom_fields.second.id]
+      end
+    end
   end
 end

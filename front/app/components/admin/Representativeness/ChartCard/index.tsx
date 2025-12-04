@@ -97,7 +97,6 @@ const ChartCard = injectIntl(
     const hideTicks = referenceData.length > 12;
     const dataIsTooLong = referenceData.length > 24;
     const numberOfHiddenItems = referenceData.length - 24;
-    const hideLegend = view === 'table';
 
     const barNames = [
       formatMessage(messages.users),
@@ -162,7 +161,7 @@ const ChartCard = injectIntl(
           numberOfHiddenItems={numberOfHiddenItems}
           view={view}
           legendLabels={legendLabels}
-          hideLegend={hideLegend}
+          hideLegend
           onClickSwitchToTableView={handleClickSwitchToTableView}
         />
       </Box>
