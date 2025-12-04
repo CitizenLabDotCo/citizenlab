@@ -2586,7 +2586,6 @@
   "app.containers.AdminPage.SettingsPage.customized_button": "Pasirinktinis",
   "app.containers.AdminPage.SettingsPage.customized_button_text_label": "Mygtuko tekstas",
   "app.containers.AdminPage.SettingsPage.customized_button_url_label": "Mygtuko nuoroda",
-  "app.containers.AdminPage.SettingsPage.defaultTopic": "Numatytoji žyma",
   "app.containers.AdminPage.SettingsPage.delete": "Ištrinti",
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "Ištrinti",
   "app.containers.AdminPage.SettingsPage.deleteTopicConfirmation": "Taip ištrinsite žymą iš visų esamų pranešimų. Šis pakeitimas bus taikomas visiems projektams.",

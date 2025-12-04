@@ -2586,7 +2586,6 @@
   "app.containers.AdminPage.SettingsPage.customized_button": "ਕਸਟਮ",
   "app.containers.AdminPage.SettingsPage.customized_button_text_label": "ਬਟਨ ਟੈਕਸਟ",
   "app.containers.AdminPage.SettingsPage.customized_button_url_label": "ਬਟਨ ਲਿੰਕ",
-  "app.containers.AdminPage.SettingsPage.defaultTopic": "ਪੂਰਵ-ਨਿਰਧਾਰਤ ਟੈਗ",
   "app.containers.AdminPage.SettingsPage.delete": "ਮਿਟਾਓ",
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "ਮਿਟਾਓ",
   "app.containers.AdminPage.SettingsPage.deleteTopicConfirmation": "ਇਹ ਸਾਰੀਆਂ ਮੌਜੂਦਾ ਪੋਸਟਾਂ ਤੋਂ ਟੈਗ ਨੂੰ ਮਿਟਾ ਦੇਵੇਗਾ। ਇਹ ਬਦਲਾਅ ਸਾਰੇ ਪ੍ਰੋਜੈਕਟਾਂ 'ਤੇ ਲਾਗੂ ਹੋਵੇਗਾ।",

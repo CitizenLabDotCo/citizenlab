@@ -2586,7 +2586,6 @@
   "app.containers.AdminPage.SettingsPage.customized_button": "Personnalisés",
   "app.containers.AdminPage.SettingsPage.customized_button_text_label": "Texte du bouton",
   "app.containers.AdminPage.SettingsPage.customized_button_url_label": "Lien du bouton",
-  "app.containers.AdminPage.SettingsPage.defaultTopic": "Étiquette par défaut",
   "app.containers.AdminPage.SettingsPage.delete": "Supprimer",
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "Supprimer",
   "app.containers.AdminPage.SettingsPage.deleteTopicConfirmation": "Cela supprimera le sujet, y compris de toutes les contributions existantes. Ce changement s'appliquera à tous les projets.",
