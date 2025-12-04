@@ -463,7 +463,8 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def build_idea_file_attachment(idea, file_params)
-    files_file = Files::File.new(
+    # Use RestrictedFile which blocks SVG uploads for security
+    files_file = Files::RestrictedFile.new(
       content_by_content: {
         content: file_params['content'],
         name: file_params['name']
