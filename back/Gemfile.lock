@@ -80,6 +80,13 @@ PATH
       rails (~> 7.2)
 
 PATH
+  remote: engines/commercial/id_acm
+  specs:
+    id_acm (1.0.0)
+      omniauth_openid_connect (~> 0.8.0)
+      rails (~> 7.2)
+
+PATH
   remote: engines/commercial/id_auth0
   specs:
     id_auth0 (0.1.0)
@@ -1408,6 +1415,7 @@ DEPENDENCIES
   groupdate (~> 6.5)
   icalendar (~> 2.10)
   ice_cube (~> 0.17)
+  id_acm!
   id_auth0!
   id_bogus!
   id_bosa_fas!

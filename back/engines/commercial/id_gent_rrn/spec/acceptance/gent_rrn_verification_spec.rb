@@ -110,7 +110,7 @@ resource 'Verifications' do
         expect(@user.reload.verified).to be false
         expect(@user.custom_field_values[@custom_field.key]).to be_nil
         json_response = json_parse response_body
-        expect(json_response).to include_response_error(:base, 'not_entitled', why: 'too_young')
+        expect(json_response).to include_response_error(:base, 'not_entitled', why: 'under_minimum_age')
       end
     end
 
