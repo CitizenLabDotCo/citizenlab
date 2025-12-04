@@ -1704,7 +1704,7 @@
   "app.containers.Admin.tools.webhooks.webhookEnabled": "Habilitado",
   "app.containers.Admin.tools.webhooks.webhookEvents": "Eventos",
   "app.containers.Admin.tools.webhooks.webhookEventsPlaceholder": "Selecciona los eventos a los que suscribirte",
-  "app.containers.Admin.tools.webhooks.webhookName": "Nombre de la tendencia",
+  "app.containers.Admin.tools.webhooks.webhookName": "Nombre",
   "app.containers.Admin.tools.webhooks.webhookNamePlaceholder": "Dale un nombre a tu webhook",
   "app.containers.Admin.tools.webhooks.webhookProject": "Proyecto",
   "app.containers.Admin.tools.webhooks.webhookUrl": "URL",
