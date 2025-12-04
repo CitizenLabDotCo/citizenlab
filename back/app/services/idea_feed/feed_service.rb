@@ -12,8 +12,9 @@ module IdeaFeed
       candidates = fetch_candidates_with_scores(eligible_ideas)
       candidates = Idea.from(candidates, :ideas)
         .order(Arel.sql('recency_score * 0.65 + engagement_score * 0.25 + wise_voice_score * 0.1 DESC'))
+        .limit(n * 4)
 
-      candidates.limit(n)
+      DiversityService.new.generate_list(candidates, IdeaExposure.where(user:, phase:), n)
     end
 
     private

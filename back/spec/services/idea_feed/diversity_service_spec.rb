@@ -41,5 +41,17 @@ describe IdeaFeed::DiversityService do
 
       expect(result.map(&:id)).to eq([ideas[0].id, ideas[2].id, ideas[1].id])
     end
+
+    it 'returns candidates that do not have embeddings at the end of the list, in the original order' do
+      idea_without_embedding1 = create(:idea)
+      idea_without_embedding2 = create(:idea, created_at: 1.day.ago)
+
+      previous_exposures = IdeaExposure.where(user:) # is empty
+      candidates = Idea.all
+      result = service.generate_list(candidates.order(:created_at), previous_exposures)
+
+      expect(result[-2]).to eq(idea_without_embedding2)
+      expect(result[-1]).to eq(idea_without_embedding1)
+    end
   end
 end

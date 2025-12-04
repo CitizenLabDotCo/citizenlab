@@ -29,7 +29,9 @@ module IdeaFeed
         seen_ideas << next_idea
         candidates.delete(next_idea)
 
-        next_idea_embedding = next_idea.embeddings_similarities.first.embedding
+        next_idea_embedding = next_idea.embeddings_similarities.first&.embedding
+        next if next_idea_embedding.nil?
+
         seen_centroid = update_centroid(seen_centroid, next_idea_embedding, seen_ideas.size - 1)
       end
       selected_ideas
@@ -50,14 +52,18 @@ module IdeaFeed
 
     def find_closest_idea(ideas, centroid)
       ideas.max_by do |idea|
-        idea_embedding = idea.embeddings_similarities.first.embedding
+        idea_embedding = idea.embeddings_similarities.first&.embedding
+        next -Float::INFINITY if idea_embedding.nil?
+
         cosine_similarity(centroid, idea_embedding)
       end
     end
 
     def find_most_distant_idea(ideas, centroid)
       ideas.min_by do |idea|
-        idea_embedding = idea.embeddings_similarities.first.embedding
+        idea_embedding = idea.embeddings_similarities.first&.embedding
+        next Float::INFINITY if idea_embedding.nil?
+
         cosine_similarity(centroid, idea_embedding)
       end
     end
