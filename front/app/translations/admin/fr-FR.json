@@ -2460,7 +2460,7 @@
   "app.containers.AdminPage.ProjectFiles.willRemoveFromAllLocations": "Cette action le supprimera de tous les endroits où il est utilisé.",
   "app.containers.AdminPage.ProjectIdeaForm.collapseAll": "Réduire tous les champs",
   "app.containers.AdminPage.ProjectIdeaForm.descriptionLabel": "Description du champ",
-  "app.containers.AdminPage.ProjectIdeaForm.editInputForm": "Modifier le formulaire de saisie",
+  "app.containers.AdminPage.ProjectIdeaForm.editInputForm": "Modifier le formulaire",
   "app.containers.AdminPage.ProjectIdeaForm.enabled": "Activé",
   "app.containers.AdminPage.ProjectIdeaForm.enabledTooltipContent": "Incluez ce champ.",
   "app.containers.AdminPage.ProjectIdeaForm.errorMessage": "Une erreur est survenue. Veuillez réessayer.",
