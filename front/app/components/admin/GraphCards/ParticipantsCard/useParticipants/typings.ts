@@ -12,6 +12,7 @@ export interface TimeSeriesRow {
   /* Date format: YYYY-MM-DD */
   date: string;
   participants: number;
+  visitors: number;
 }
 
 export type TimeSeries = TimeSeriesRow[];

@@ -9,7 +9,7 @@ export const getBackPath = (
 ): RouteType => {
   switch (participationMethod) {
     case 'native_survey':
-      return `/admin/projects/${projectId}/phases/${phaseId}/results`;
+      return `/admin/projects/${projectId}/phases/${phaseId}/insights`;
     case 'community_monitor_survey':
       return `/admin/community-monitor/settings`;
     default:

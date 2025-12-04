@@ -46,7 +46,6 @@ const AdminPhaseEmails = lazy(
 );
 const AdminProjectSurveyResults = lazy(() => import('./project/surveyResults'));
 const AdminProjectPoll = lazy(() => import('./project/poll'));
-const AdminProjectsSurvey = lazy(() => import('./project/nativeSurvey'));
 
 const AdminProjectIdeaForm = lazy(() => import('./project/inputForm'));
 const AdminPhaseSurveyFormTabPanel = lazy(
@@ -70,6 +69,7 @@ const AdminCustomMapConfigComponent = lazy(
 
 const AdminProjectAnalysis = lazy(() => import('./project/analysis'));
 const ReportTab = lazy(() => import('./project/information/ReportTab'));
+const AdminPhaseInsights = lazy(() => import('./project/insights'));
 
 const AdminProjectProposals = lazy(() => import('./project/proposals'));
 
@@ -115,7 +115,6 @@ export enum projectsRoutes {
   projectPhaseIdeaForm = ':phaseId/form',
   projectPhaseVolunteering = ':phaseId/volunteering',
   projectPhaseMap = ':phaseId/map',
-  projectPhaseNativeSurveyResults = ':phaseId/results',
   projectPhaseSurveyForm = ':phaseId/survey-form',
   projectPhaseNativeSurveyFormEdit = ':phaseId/survey-form/edit',
   projectPhaseVolunteeringNewCause = ':phaseId/volunteering/causes/new',
@@ -123,6 +122,7 @@ export enum projectsRoutes {
   projectPhaseVolunteeringCause = ':phaseId/volunteering/causes/:causeId',
   projectPhaseInputImporter = ':phaseId/input-importer',
   projectPhaseReport = ':phaseId/report',
+  projectPhaseInsights = ':phaseId/insights',
   projectAnalysis = 'analysis/:analysisId',
 }
 
@@ -163,12 +163,12 @@ export type projectsRouteTypes =
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/new`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/new`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/form/edit`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/results`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-form`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-form/edit`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-form/edit?${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/emails`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/insights`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/analysis/${string}`>;
 
 const createAdminProjectsRoutes = () => {
@@ -500,14 +500,6 @@ const createAdminProjectsRoutes = () => {
                 ),
               },
               {
-                path: projectsRoutes.projectPhaseNativeSurveyResults,
-                element: (
-                  <PageLoading>
-                    <AdminProjectsSurvey />
-                  </PageLoading>
-                ),
-              },
-              {
                 path: projectsRoutes.projectPhaseSurveyForm,
                 element: (
                   <PageLoading>
@@ -552,6 +544,14 @@ const createAdminProjectsRoutes = () => {
                 element: (
                   <PageLoading>
                     <ReportTab />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: projectsRoutes.projectPhaseInsights,
+                element: (
+                  <PageLoading>
+                    <AdminPhaseInsights />
                   </PageLoading>
                 ),
               },

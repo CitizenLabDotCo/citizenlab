@@ -18,6 +18,8 @@ const ParticipantsCard = ({
   compareStartAt,
   compareEndAt,
   hideStatistics = false,
+  showVisitors = false,
+  phaseId,
 }: Props) => {
   const { currentResolution, stats, timeSeries } = useParticipants({
     project_id: projectId,
@@ -26,6 +28,8 @@ const ParticipantsCard = ({
     resolution,
     compare_start_at: compareStartAt,
     compare_end_at: compareEndAt,
+    show_visitors: showVisitors,
+    phase_id: phaseId,
   });
 
   const layout = useLayout();
@@ -38,6 +42,7 @@ const ParticipantsCard = ({
     startAt,
     endAt,
     hideStatistics,
+    showVisitors,
     timeSeries,
     stats,
     currentResolution,

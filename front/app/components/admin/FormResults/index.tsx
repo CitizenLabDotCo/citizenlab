@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import useProjectById from 'api/projects/useProjectById';
+import { ResultUngrouped } from 'api/survey_results/types';
 import useFormResults from 'api/survey_results/useSurveyResults';
+
+import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -15,6 +18,7 @@ import messages from './messages';
 type Props = {
   projectId?: string;
   phaseId?: string;
+  isPdfExport?: boolean;
 };
 
 const FormResults = (props: Props) => {
@@ -36,6 +40,69 @@ const FormResults = (props: Props) => {
     filterLogicIds,
   });
 
+  const results = useMemo(
+    () => formResults?.data.attributes.results ?? [],
+    [formResults?.data.attributes.results]
+  );
+  const totalSubmissions = formResults?.data.attributes.totalSubmissions ?? 0;
+
+  // Group results: each page groups with the first question that follows it
+  // This ensures page headers stay with their first question in PDF export
+  const groupedResults = useMemo(() => {
+    if (!props.isPdfExport || results.length === 0) return null;
+
+    const groups: {
+      page: ResultUngrouped | null;
+      firstQuestion: ResultUngrouped | null;
+      remainingQuestions: ResultUngrouped[];
+    }[] = [];
+
+    let currentGroup: {
+      page: ResultUngrouped | null;
+      firstQuestion: ResultUngrouped | null;
+      remainingQuestions: ResultUngrouped[];
+    } = { page: null, firstQuestion: null, remainingQuestions: [] };
+
+    results.forEach((result) => {
+      if (result.inputType === 'page') {
+        // Save current group if it has content
+        if (
+          currentGroup.page ||
+          currentGroup.firstQuestion ||
+          currentGroup.remainingQuestions.length > 0
+        ) {
+          groups.push(currentGroup);
+        }
+        // Start new group with this page
+        currentGroup = {
+          page: result,
+          firstQuestion: null,
+          remainingQuestions: [],
+        };
+      } else {
+        // It's a question
+        if (currentGroup.page && !currentGroup.firstQuestion) {
+          // First question after a page
+          currentGroup.firstQuestion = result;
+        } else {
+          // Remaining questions
+          currentGroup.remainingQuestions.push(result);
+        }
+      }
+    });
+
+    // Don't forget the last group
+    if (
+      currentGroup.page ||
+      currentGroup.firstQuestion ||
+      currentGroup.remainingQuestions.length > 0
+    ) {
+      groups.push(currentGroup);
+    }
+
+    return groups;
+  }, [results, props.isPdfExport]);
+
   if (!formResults || !project) {
     return null;
   }
@@ -47,8 +114,6 @@ const FormResults = (props: Props) => {
       setFilterLogicIds([...filterLogicIds, logicId]);
     }
   };
-
-  const { totalSubmissions, results } = formResults.data.attributes;
 
   const surveyResponseMessage =
     totalSubmissions > 0
@@ -63,13 +128,101 @@ const FormResults = (props: Props) => {
     isLoading: isLoadingResults,
   };
 
+  // PDF Export: render grouped results with title grouped with first content
+  if (props.isPdfExport && groupedResults) {
+    const firstGroup = groupedResults[0];
+    const remainingGroups = groupedResults.slice(1);
+
+    return (
+      <Box width="100%">
+        {/* Title + response count + first page/question grouped together */}
+        <PageBreakBox>
+          <Title variant="h3" as="h2" color="textPrimary" m="0px" mb="16px">
+            {formatMessage(messages.questions)}
+          </Title>
+          <Text variant="bodyM" color="textSecondary" mb="24px">
+            {surveyResponseMessage}
+          </Text>
+          {totalSubmissions > 0 && (
+            <>
+              {firstGroup.page && (
+                <FormResultsPage
+                  result={firstGroup.page}
+                  totalSubmissions={totalSubmissions}
+                  logicConfig={logicConfig}
+                />
+              )}
+              {firstGroup.firstQuestion && (
+                <FormResultsQuestion
+                  result={firstGroup.firstQuestion}
+                  totalSubmissions={totalSubmissions}
+                  logicConfig={logicConfig}
+                  isPdfExport={true}
+                />
+              )}
+            </>
+          )}
+        </PageBreakBox>
+
+        {/* First group's remaining questions */}
+        {firstGroup.remainingQuestions.map((result, qIndex) => (
+          <FormResultsQuestion
+            key={`0-${qIndex}`}
+            result={result}
+            totalSubmissions={totalSubmissions}
+            logicConfig={logicConfig}
+            isPdfExport={true}
+          />
+        ))}
+
+        {/* Remaining groups */}
+        {remainingGroups.map((group, groupIndex) => (
+          <React.Fragment key={groupIndex + 1}>
+            {/* Page + first question wrapped together */}
+            {(group.page || group.firstQuestion) && (
+              <PageBreakBox>
+                {group.page && (
+                  <FormResultsPage
+                    result={group.page}
+                    totalSubmissions={totalSubmissions}
+                    logicConfig={logicConfig}
+                  />
+                )}
+                {group.firstQuestion && (
+                  <FormResultsQuestion
+                    result={group.firstQuestion}
+                    totalSubmissions={totalSubmissions}
+                    logicConfig={logicConfig}
+                    isPdfExport={true}
+                  />
+                )}
+              </PageBreakBox>
+            )}
+            {/* Remaining questions each get their own PageBreakBox */}
+            {group.remainingQuestions.map((result, qIndex) => (
+              <FormResultsQuestion
+                key={`${groupIndex + 1}-${qIndex}`}
+                result={result}
+                totalSubmissions={totalSubmissions}
+                logicConfig={logicConfig}
+                isPdfExport={true}
+              />
+            ))}
+          </React.Fragment>
+        ))}
+      </Box>
+    );
+  }
+
+  // Normal view: render flat list with title
   return (
     <Box width="100%">
-      <Box width="100%">
-        <Text variant="bodyM" color="textSecondary">
-          {surveyResponseMessage}
-        </Text>
-      </Box>
+      <Title variant="h3" as="h2" color="textPrimary" m="0px" mb="16px">
+        {formatMessage(messages.questions)}
+      </Title>
+      <Text variant="bodyM" color="textSecondary">
+        {surveyResponseMessage}
+      </Text>
       <Box mt="24px">
         {totalSubmissions > 0 &&
           results.map((result, index) => {
@@ -89,6 +242,7 @@ const FormResults = (props: Props) => {
                   result={result}
                   totalSubmissions={totalSubmissions}
                   logicConfig={logicConfig}
+                  isPdfExport={false}
                 />
               );
             }

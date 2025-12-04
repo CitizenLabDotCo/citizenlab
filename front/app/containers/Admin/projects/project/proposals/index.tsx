@@ -35,7 +35,7 @@ const AdminProjectProposals = () => {
 
   return (
     <>
-      <AnalysisBanner phaseId={phaseId} projectId={projectId} scope="phase" />
+      <AnalysisBanner phaseId={phaseId} projectId={projectId} />
       <Box mb="30px">
         <Box
           display="flex"

@@ -14,6 +14,11 @@ export type DemographicsResponse = {
           ordering: number;
         };
       };
+      // Optional fields for future backend support
+      population_distribution?: {
+        [key: string]: number;
+      };
+      r_score?: number;
     };
   };
 };

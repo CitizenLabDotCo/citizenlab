@@ -16,6 +16,8 @@ export default function useParticipants({
   resolution = 'month',
   compare_start_at,
   compare_end_at,
+  show_visitors,
+  phase_id,
 }: ParticipantsProps) {
   const [currentResolution, setCurrentResolution] = useState(resolution);
 
@@ -27,6 +29,8 @@ export default function useParticipants({
       resolution,
       compare_start_at,
       compare_end_at,
+      show_visitors,
+      phase_id,
     },
     {
       onSuccess: () => setCurrentResolution(resolution),
