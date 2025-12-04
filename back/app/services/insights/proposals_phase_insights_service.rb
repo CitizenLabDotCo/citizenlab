@@ -68,8 +68,8 @@ module Insights
     # if they ever had a status of threshold_reached.
     def threshold_reached_at(idea)
       activity = idea.activities.find do |act|
-        act.action == 'changed_input_status' && 
-        act.payload['input_status_to_code'] == 'threshold_reached'
+        act.action == 'changed_input_status' &&
+          act.payload['input_status_to_code'] == 'threshold_reached'
       end
 
       activity&.acted_at
