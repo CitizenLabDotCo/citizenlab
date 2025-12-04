@@ -19,7 +19,7 @@ module Insights
           ideas.created_at >= ? AND ideas.created_at <= ?
           AND ideas.publication_status IN ('published', 'submitted')
         SQL
-        .includes(:author)
+        .includes(:author, :activities)
 
       ideas.map do |idea|
         {
@@ -67,8 +67,10 @@ module Insights
     # i.e. we include ideas with statuses of accepted, ineligible, etc,
     # if they ever had a status of threshold_reached.
     def threshold_reached_at(idea)
-      activities = Activity.where(item: idea, action: 'changed_input_status')
-      activity = activities.find { |act| act.payload['input_status_to_code'] == 'threshold_reached' }
+      activity = idea.activities.find do |act|
+        act.action == 'changed_input_status' && 
+        act.payload['input_status_to_code'] == 'threshold_reached'
+      end
 
       activity&.acted_at
     end
