@@ -21,7 +21,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
   end
 
   describe '#base_metrics' do
-    let(:visitors_data) { { total: 100, last_7_days: 20 } }
+    let(:visits_data) { { visitors_total: 100, visitors_last_7_days: 20 } }
 
     let(:user1) { create(:user) }
 
@@ -40,7 +40,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
     let(:participant_ids) { participations[:voting].pluck(:participant_id).uniq }
 
     it 'calculates base metrics correctly' do
-      result = service.send(:base_metrics, participations, participant_ids, visitors_data)
+      result = service.send(:base_metrics, participations, participant_ids, visits_data)
 
       expect(result).to eq(
         {
@@ -382,6 +382,117 @@ RSpec.describe Insights::BasePhaseInsightsService do
           options: nil
         })
       end
+    end
+  end
+
+  # Documenting similar behaviour to that in Queries::Analytics::Participation
+  # and Queries::Visitors (as on 02-12-2025).
+  # i.e. timeseries data simply excludes any date groups with zero counts, and
+  # the FE is responsible for filling in gaps if needed.
+  describe '#participants_and_visitors_chart_data' do
+    it 'handles empty participations and visits data' do
+      flattened_participations = []
+      visits_data = { visits: [] }
+      result = service.send(:participants_and_visitors_chart_data, flattened_participations, visits_data)
+
+      expect(result).to eq({ resolution: 'day', timeseries: [] })
+    end
+
+    it 'handles empty participations with non-empty visits data' do
+      flattened_participations = []
+      visits_data = {
+        visits: [
+          { date: 10.days.ago.beginning_of_day, visitor_id: 'visitor_1' },
+          { date: 9.days.ago.beginning_of_day, visitor_id: 'visitor_2' },
+          { date: 9.days.ago.beginning_of_day, visitor_id: 'visitor_3' }
+        ]
+      }
+      result = service.send(:participants_and_visitors_chart_data, flattened_participations, visits_data)
+
+      expect(result).to eq({
+        resolution: 'day',
+        timeseries: [
+          { date_group: 10.days.ago.beginning_of_day.to_date, visitors: 1, participants: 0 },
+          { date_group: 9.days.ago.beginning_of_day.to_date, visitors: 2, participants: 0 }
+        ]
+      })
+    end
+
+    it 'handles non-empty participations with empty visits data' do
+      user = create(:user)
+      participation1 = create(:basket_participation, acted_at: 8.days.ago, user: user)
+      participation2 = create(:basket_participation, acted_at: 7.days.ago, user: user)
+
+      flattened_participations = [participation1, participation2]
+      visits_data = { visits: [] }
+      result = service.send(:participants_and_visitors_chart_data, flattened_participations, visits_data)
+
+      expect(result).to eq({
+        resolution: 'day',
+        timeseries: [
+          { date_group: 8.days.ago.beginning_of_day.to_date, visitors: 0, participants: 1 },
+          { date_group: 7.days.ago.beginning_of_day.to_date, visitors: 0, participants: 1 }
+        ]
+      })
+    end
+  end
+
+  describe '#chart_resolution' do
+    it 'returns "day" for phases shorter than 4 weeks' do
+      phase = create(:single_voting_phase, start_at: 20.days.ago, end_at: 1.day.ago)
+      service = described_class.new(phase)
+
+      expect(service.send(:chart_resolution)).to eq('day')
+    end
+
+    it 'returns "week" for phases between 4 weeks and 6 months' do
+      phase = create(:single_voting_phase, start_at: 5.months.ago, end_at: 1.day.ago)
+      service = described_class.new(phase)
+
+      expect(service.send(:chart_resolution)).to eq('week')
+    end
+
+    it 'returns "month" for phases between 6 months and 24 months' do
+      phase = create(:single_voting_phase, start_at: 12.months.ago, end_at: 1.day.ago)
+      service = described_class.new(phase)
+
+      expect(service.send(:chart_resolution)).to eq('month')
+    end
+
+    it 'returns "year" for phases longer than 24 months' do
+      phase = create(:single_voting_phase, start_at: 30.months.ago, end_at: 1.day.ago)
+      service = described_class.new(phase)
+
+      expect(service.send(:chart_resolution)).to eq('year')
+    end
+
+    it 'uses current time for ongoing phases without end_at' do
+      phase = create(:single_voting_phase, start_at: 10.days.ago, end_at: nil)
+      service = described_class.new(phase)
+
+      expect(service.send(:chart_resolution)).to eq('day')
+    end
+  end
+
+  describe '#date_truncate' do
+    it 'returns the same date for day resolution' do
+      datetime = Time.new(2024, 6, 15, 14, 30, 0)
+      expect(service.send(:date_truncate, datetime, 'day')).to eq(Date.new(2024, 6, 15))
+    end
+
+    it 'returns the beginning of week for week resolution' do
+      datetime = Time.new(2024, 6, 15, 14, 30, 0) # Saturday
+      expect(service.send(:date_truncate, datetime, 'week')).to eq(Date.new(2024, 6, 10)) # Monday
+    end
+
+    it 'returns the first day of month for month resolution' do
+      datetime = Time.new(2024, 6, 15, 14, 30, 0)
+      expect(service.send(:date_truncate, datetime, 'month')).to eq(Date.new(2024, 6, 1))
+    end
+
+    it 'returns the first day of year for year resolution' do
+      datetime = Time.new(2024, 6, 15, 14, 30, 0)
+      expect(service.send(:date_truncate, datetime, 'year')).to eq(Date.new(2024, 1, 1))
     end
   end
 end
