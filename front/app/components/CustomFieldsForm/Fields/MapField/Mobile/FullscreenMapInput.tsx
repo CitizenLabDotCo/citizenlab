@@ -99,6 +99,13 @@ const FullscreenMapInput = memo<Props>(
       setMapView(mapView);
     }, []);
 
+    // Cleanup: Clear mapView state when component unmounts
+    useEffect(() => {
+      return () => {
+        setMapView(null);
+      };
+    }, []);
+
     // When the user clicks on the map, update the form data
     const onMapClick = useCallback(
       (event: any, mapView: MapView) => {
