@@ -63,7 +63,7 @@ export const getHTML = (editor: Quill) => {
 };
 
 export const setHTML = (editor: Quill, html: string = '') => {
-  const delta = editor.clipboard.convert(html as any);
+  const delta = editor.clipboard.convert({ html });
   editor.setContents(delta);
 };
 

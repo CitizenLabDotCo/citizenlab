@@ -1,7 +1,5 @@
 import Quill from 'quill';
 
-import { attributes } from './altTextToImagesModule';
-
 interface Params {
   id: string;
   toolbarId: string;
@@ -34,7 +32,6 @@ export const createQuill = (
       'bold',
       'italic',
       ...(!noLinks ? ['link'] : []),
-      ...attributes,
       ...(withCTAButton ? ['button'] : []),
       ...(!limitedTextFormatting ? ['header', 'list'] : []),
       ...(!limitedTextFormatting && !noAlign ? ['align'] : []),
