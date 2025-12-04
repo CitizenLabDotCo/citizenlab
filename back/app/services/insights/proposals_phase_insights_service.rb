@@ -27,10 +27,22 @@ module Insights
           action: 'posting_idea',
           acted_at: idea.created_at,
           classname: 'Idea',
+          threshold_reached_at: threshold_reached_at(idea),
           participant_id: participant_id(idea.id, idea.author_id, idea.author_hash),
           user_custom_field_values: idea&.author&.custom_field_values || {}
         }
       end
+    end
+
+    # Because a proposal can be moved from a threshold_reached status to another status,
+    # we ascertain when a proposal had a status of threshold_reached (if ever).
+    # i.e. we include ideas with statuses of accepted, ineligible, etc,
+    # if they ever had a status of threshold_reached.
+    def threshold_reached_at(idea)
+      activities = Activity.where(item: idea, action: 'changed_input_status')
+      activity = activities.find { |activity| activity.payload['input_status_to_code'] == 'threshold_reached' }
+
+      activity&.acted_at
     end
   end
 end

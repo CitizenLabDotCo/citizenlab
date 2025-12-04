@@ -42,6 +42,11 @@ class InputStatusService
     end
   end
 
+  def self.threshold_reached_condition?(input)
+    threshold = input.consultation_context.try(:reacting_threshold)
+    threshold && input.likes_count >= threshold
+  end
+
   private
 
   private_class_method def self.apply_transition!(input, code_to)
@@ -55,11 +60,6 @@ class InputStatusService
       Time.zone.now.to_i,
       payload: { input_status_from_code: code_from, input_status_to_code: code_to }
     )
-  end
-
-  private_class_method def self.threshold_reached_condition?(input)
-    threshold = input.consultation_context.try(:reacting_threshold)
-    threshold && input.likes_count >= threshold
   end
 
   private_class_method def self.expired_scope(inputs, now = Time.zone.now)
