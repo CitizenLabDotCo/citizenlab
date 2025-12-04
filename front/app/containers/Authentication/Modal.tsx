@@ -10,6 +10,8 @@ import { useTheme } from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
+import useLocalize from 'hooks/useLocalize';
+
 import T from 'components/T';
 import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
@@ -61,6 +63,7 @@ const AuthModal = () => {
 
   const smallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
 
   const closable = currentStep !== 'closed' && currentStep !== 'success';
 
@@ -80,6 +83,11 @@ const AuthModal = () => {
   const helperText = helperTextKey
     ? appConfiguration?.data.attributes.settings.core[helperTextKey]
     : undefined;
+
+  const localizedHelperText = localize(helperText);
+
+  const showHelperText =
+    helperText && localizedHelperText && localizedHelperText.length > 0;
 
   return (
     <Modal
@@ -124,7 +132,7 @@ const AuthModal = () => {
             />
           </Box>
         )}
-        {helperText && (
+        {showHelperText && (
           <Box mb="20px">
             <QuillEditedContent
               textColor={theme.colors.tenantText}
