@@ -1675,7 +1675,7 @@
   "app.containers.Admin.tools.webhooks.failed": "fallido",
   "app.containers.Admin.tools.webhooks.hideDetails": "Ocultar detalles",
   "app.containers.Admin.tools.webhooks.lastAttempt": "Último intento",
-  "app.containers.Admin.tools.webhooks.name": "Nombre de la tendencia",
+  "app.containers.Admin.tools.webhooks.name": "Nombre",
   "app.containers.Admin.tools.webhooks.nameRequired": "El nombre es obligatorio",
   "app.containers.Admin.tools.webhooks.newSecretTitle": "Nueva ficha secreta",
   "app.containers.Admin.tools.webhooks.noDeliveries": "Todavía no hay entregas.",
