@@ -9,7 +9,7 @@ import { object } from 'yup';
 import { Section, SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Toggle from 'components/HookForm/Toggle';
 
 import { useIntl } from 'utils/cl-intl';
@@ -67,12 +67,17 @@ const TopicForm = ({ onSubmit, defaultValues }: Props) => {
             />
           </SectionField>
           <SectionField>
-            <TextAreaMultilocWithLocaleSwitcher
+            <QuillMultilocWithLocaleSwitcher
               name="description_multiloc"
               label={formatMessage(messages.fieldTopicDescription)}
               labelTooltipText={formatMessage(
                 messages.fieldTopicDescriptionTooltip
               )}
+              noImages
+              noLinks
+              noVideos
+              noAlign
+              limitedTextFormatting
             />
           </SectionField>
           <SectionField>

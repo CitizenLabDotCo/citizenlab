@@ -11,7 +11,7 @@ import useLocalize from 'hooks/useLocalize';
 import { Row } from 'components/admin/ResourceList';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -92,7 +92,7 @@ const DeleteButton = ({ topic, handleDeleteClick }: DeleteButtonProps) => {
 const TopicRow = (props: Props) => {
   const { isLastItem, topic } = props;
   const localize = useLocalize();
-  const { formatMessage } = useIntl();
+
   if (isNilOrError(topic)) {
     return null;
   }
@@ -121,11 +121,10 @@ const TopicRow = (props: Props) => {
           <Box display="flex" alignItems="center" gap="8px">
             <RowTitle>{localize(topic.attributes.title_multiloc)}</RowTitle>
           </Box>
-          <RowDescription>
-            {localize(topic.attributes.description_multiloc, {
-              fallback: formatMessage({ ...messages.noDescriptionProvided }),
-            })}
-          </RowDescription>
+          <RowDescription
+            supportHtml
+            value={topic.attributes.description_multiloc}
+          />
         </Box>
       </Box>
       <Box display="flex" alignItems="center" gap="16px">
