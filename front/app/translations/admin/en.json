@@ -3187,6 +3187,8 @@
   "app.containers.admin.ContentBuilder.delete": "Delete",
   "app.containers.admin.ContentBuilder.error": "error",
   "app.containers.admin.ContentBuilder.errorMessage": "There is an error on {locale} content, please fix the issue to be able to save your changes",
+  "app.containers.admin.ContentBuilder.fileAlreadyInUse": "This file is already used {count} time{count, plural, one {} other {s}} in this layout",
+  "app.containers.admin.ContentBuilder.fileAlreadySelected": "Already selected",
   "app.containers.admin.ContentBuilder.fileAttachment": "File Attachment",
   "app.containers.admin.ContentBuilder.hideParticipationAvatarsText": "Hide participation avatars",
   "app.containers.admin.ContentBuilder.homepage.communityMonitorCtaDefaultDescription": "This is a quarterly, ongoing survey that tracks how you feel about governance & public services.",
