@@ -79,6 +79,10 @@ const SSOVerificationButton = ({
       label: messages.verifyBosaFas,
       icon: 'shield-check',
     },
+    acm: {
+      label: messages.verifyAcm,
+      icon: 'acm',
+    },
   };
 
   const buttonConfig = verificationButtonConfigs[methodName];
