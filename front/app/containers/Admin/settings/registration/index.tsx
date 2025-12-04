@@ -30,7 +30,7 @@ import getSubmitState from 'utils/getSubmitState';
 import { isNilOrError } from 'utils/helperUtils';
 
 import CustomFieldSettings from './CustomFieldSettings';
-import CustomFieldsSignupText from './CustomFieldsSignupText';
+import CustomFieldsSignupText from './HelperTextInputs/CustomFieldsSignupText';
 import ToggleShowFollowPreferences from './ToggleShowFollowPreferences';
 
 export const LabelTooltip = styled.div`
@@ -134,6 +134,25 @@ const SettingsRegistrationTab = () => {
             <FormattedMessage {...messages.registrationHelperTextDescription} />
           </SectionDescription>
           <form onSubmit={handleSubmit}>
+            {/* <SectionField>
+              <InputMultilocWithLocaleSwitcher
+                type="text"
+                valueMultiloc={latestAppConfigSettings.core.enter_email_helper_text}
+                onChange={handleCoreSettingWithMultilocOnChange(
+                  'enter_email_helper_text',
+                )}
+                label={
+                  <LabelTooltip>
+                    <FormattedMessage {...messages.loginHelper} />
+                    <IconTooltip
+                      content={
+                        <FormattedMessage {...messages.loginHelperTooltip} />
+                      }
+                    />
+                  </LabelTooltip>
+                }
+              />
+            </SectionField> */}
             <CustomFieldsSignupText
               onCoreSettingWithMultilocChange={
                 handleCoreSettingWithMultilocOnChange
