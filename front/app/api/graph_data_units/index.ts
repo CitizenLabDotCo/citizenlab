@@ -1,11 +1,4 @@
 // Props
-import { useQuery } from '@tanstack/react-query';
-
-import {
-  getDummyParticipants,
-  USE_DUMMY_METHOD_SPECIFIC_DATA,
-} from 'api/phase_insights/dummyData';
-
 import {
   ParticipantsProps,
   AnalyticsProps,
@@ -153,29 +146,13 @@ export const useParticipants = (
   props: ParticipantsProps,
   { onSuccess }: { onSuccess?: () => void } = {}
 ) => {
-  // Use dummy data for phase insights when flag is enabled and phase_id is provided
-  const useDummyData = USE_DUMMY_METHOD_SPECIFIC_DATA && !!props.phase_id;
-
-  const dummyDataQuery = useQuery<ParticipantsResponse>({
-    queryKey: [
-      'graph_data_units',
-      'ParticipantsWidget',
-      'dummy',
-      props.phase_id,
-    ],
-    queryFn: () => Promise.resolve(getDummyParticipants()),
-    enabled: useDummyData,
-  });
-
-  const realDataQuery = useGraphDataUnits<ParticipantsResponse>(
+  return useGraphDataUnits<ParticipantsResponse>(
     {
       resolved_name: 'ParticipantsWidget',
       props,
     },
-    { enabled: !useDummyData, onSuccess }
+    { onSuccess }
   );
-
-  return useDummyData ? dummyDataQuery : realDataQuery;
 };
 
 export const useParticipantsLive = (

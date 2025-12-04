@@ -1,15 +1,9 @@
 import React, { useRef } from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import { useQuery } from '@tanstack/react-query';
 import moment from 'moment';
 
-import { ParticipantsResponse } from 'api/graph_data_units/responseTypes/ParticipantsWidget';
-import useGraphDataUnitsLive from 'api/graph_data_units/useGraphDataUnitsLive';
-import {
-  getDummyParticipants,
-  USE_DUMMY_METHOD_SPECIFIC_DATA,
-} from 'api/phase_insights/dummyData';
+import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
 
 import Chart from 'components/admin/GraphCards/ParticipantsCard/Chart';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
@@ -22,40 +16,11 @@ interface Props {
   phaseId: string;
 }
 
-/**
- * ParticipantsTimeline component for Phase Insights
- *
- * Uses the enhanced ParticipantsWidget API with dummy data support.
- * Shows both visitors and participants over time to visualize the
- * participation funnel (visitor → participant conversion).
- *
- * When USE_DUMMY_METHOD_SPECIFIC_DATA is false, this will use real API data.
- */
 const ParticipantsTimeline = ({ phaseId }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
 
-  const dummyDataQuery = useQuery<ParticipantsResponse>({
-    queryKey: ['graph_data_units', 'ParticipantsWidget', 'dummy', phaseId],
-    queryFn: () => Promise.resolve(getDummyParticipants()),
-    enabled: USE_DUMMY_METHOD_SPECIFIC_DATA,
-  });
-
-  const realDataQuery = useGraphDataUnitsLive<ParticipantsResponse>(
-    {
-      resolved_name: 'ParticipantsWidget',
-      props: {
-        phase_id: phaseId,
-        resolution: 'month',
-        show_visitors: true,
-      },
-    },
-    { enabled: !USE_DUMMY_METHOD_SPECIFIC_DATA }
-  );
-
-  const { data, isLoading } = USE_DUMMY_METHOD_SPECIFIC_DATA
-    ? dummyDataQuery
-    : realDataQuery;
+  const { data, isLoading } = usePhaseInsights({ phaseId });
 
   if (isLoading) {
     return (
@@ -65,12 +30,15 @@ const ParticipantsTimeline = ({ phaseId }: Props) => {
     );
   }
 
-  const timeSeries = data?.data.attributes.participants_timeseries || [];
+  const chartDataFromApi =
+    data?.data.attributes.participants_and_visitors_chart_data;
+  const timeSeries = chartDataFromApi?.timeseries || [];
+  const resolution = chartDataFromApi?.resolution || 'month';
 
   const chartData = timeSeries.map((row) => ({
     date: row.date_group,
     participants: row.participants,
-    visitors: row.visitors || 0,
+    visitors: row.visitors,
   }));
 
   const xlsxData = {
@@ -112,7 +80,7 @@ const ParticipantsTimeline = ({ phaseId }: Props) => {
           timeSeries={chartData}
           startAtMoment={startAtMoment}
           endAtMoment={endAtMoment}
-          resolution="month"
+          resolution={resolution}
           showVisitors={true}
           innerRef={graphRef}
         />

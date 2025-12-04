@@ -1,6 +1,4 @@
-// ============================================================================
-// PARTICIPATION METRICS TYPES
-// ============================================================================
+import { IResolution } from 'components/admin/ResolutionControl';
 
 /**
  * Method-specific metric types
@@ -131,6 +129,17 @@ export interface PhaseInsightsDemographics {
   fields: DemographicField[];
 }
 
+export interface ChartTimeseriesDataPoint {
+  participants: number;
+  visitors: number;
+  date_group: string;
+}
+
+export interface ParticipantsAndVisitorsChartData {
+  resolution: IResolution;
+  timeseries: ChartTimeseriesDataPoint[];
+}
+
 // ============================================================================
 // DEMOGRAPHICS TYPES - BACKEND FORMAT (Series/Options Pattern)
 // ============================================================================
@@ -167,13 +176,14 @@ export interface DemographicFieldBackend {
 
 /**
  * Consolidated phase insights attributes from single API endpoint
- * Contains both metrics and demographics
+ * Contains metrics, demographics, and chart data
  */
 export interface PhaseInsightsAttributes {
   metrics: PhaseInsightsParticipationMetrics;
   demographics: {
     fields: DemographicFieldBackend[];
   };
+  participants_and_visitors_chart_data: ParticipantsAndVisitorsChartData;
 }
 
 /**
