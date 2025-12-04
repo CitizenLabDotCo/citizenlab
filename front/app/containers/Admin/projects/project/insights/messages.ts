@@ -61,10 +61,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.engagementRate',
     defaultMessage: 'Engagement rate',
   },
-  offlineVotes: {
-    id: 'app.containers.Admin.projects.project.insights.offlineVotes',
-    defaultMessage: 'Offline votes',
-  },
   totalVotes: {
     id: 'app.containers.Admin.projects.project.insights.totalVotes',
     defaultMessage: 'Total votes',
@@ -84,22 +80,6 @@ export default defineMessages({
   responsesPerRespondent: {
     id: 'app.containers.Admin.projects.project.insights.responsesPerRespondent',
     defaultMessage: 'Responses per respondent',
-  },
-  voters: {
-    id: 'app.containers.Admin.projects.project.insights.voters',
-    defaultMessage: 'Voters',
-  },
-  onlineVotes: {
-    id: 'app.containers.Admin.projects.project.insights.onlineVotes',
-    defaultMessage: 'Online votes',
-  },
-  onlinePicks: {
-    id: 'app.containers.Admin.projects.project.insights.onlinePicks',
-    defaultMessage: 'Online picks',
-  },
-  offlinePicks: {
-    id: 'app.containers.Admin.projects.project.insights.offlinePicks',
-    defaultMessage: 'Offline picks',
   },
   associatedIdeas: {
     id: 'app.containers.Admin.projects.project.insights.associatedIdeas',
