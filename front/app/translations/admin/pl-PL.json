@@ -2591,7 +2591,6 @@
   "app.containers.AdminPage.SettingsPage.customized_button": "Własne",
   "app.containers.AdminPage.SettingsPage.customized_button_text_label": "Tekst przycisku",
   "app.containers.AdminPage.SettingsPage.customized_button_url_label": "Przycisk linku",
-  "app.containers.AdminPage.SettingsPage.defaultTopic": "Temat domyślny",
   "app.containers.AdminPage.SettingsPage.delete": "Usuń",
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "Usuń",
   "app.containers.AdminPage.SettingsPage.deleteTopicConfirmation": "Spowoduje to usunięcie tematu, również z wszystkich istniejących inicjatyw. Ta zmiana będzie miała zastosowanie do wszystkich projektów.",

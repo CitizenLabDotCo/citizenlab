@@ -2591,7 +2591,6 @@
   "app.containers.AdminPage.SettingsPage.customized_button": "Eigen",
   "app.containers.AdminPage.SettingsPage.customized_button_text_label": "Tekst op de knop",
   "app.containers.AdminPage.SettingsPage.customized_button_url_label": "Knoplink",
-  "app.containers.AdminPage.SettingsPage.defaultTopic": "Standaard-tag",
   "app.containers.AdminPage.SettingsPage.delete": "Verwijderen",
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "Verwijderen",
   "app.containers.AdminPage.SettingsPage.deleteTopicConfirmation": "Hiermee wordt het onderwerp verwijderd, inclusief alle bestaande bijdragen. Deze wijziging zal van toepassing zijn op alle projecten.",

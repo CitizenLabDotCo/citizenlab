@@ -2591,7 +2591,6 @@
   "app.containers.AdminPage.SettingsPage.customized_button": "Pielāgots",
   "app.containers.AdminPage.SettingsPage.customized_button_text_label": "Pogas teksts",
   "app.containers.AdminPage.SettingsPage.customized_button_url_label": "Pogas saite",
-  "app.containers.AdminPage.SettingsPage.defaultTopic": "Noklusējuma tags",
   "app.containers.AdminPage.SettingsPage.delete": "Dzēst",
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "Dzēst",
   "app.containers.AdminPage.SettingsPage.deleteTopicConfirmation": "Tādējādi tiks dzēsts tags no visiem esošajiem ierakstiem. Šīs izmaiņas tiks piemērotas visiem projektiem.",

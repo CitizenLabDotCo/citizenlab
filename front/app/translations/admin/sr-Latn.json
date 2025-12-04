@@ -2591,7 +2591,6 @@
   "app.containers.AdminPage.SettingsPage.customized_button": "Prilagođeno",
   "app.containers.AdminPage.SettingsPage.customized_button_text_label": "Tekst dugmeta",
   "app.containers.AdminPage.SettingsPage.customized_button_url_label": "Veza dugmeta",
-  "app.containers.AdminPage.SettingsPage.defaultTopic": "Podrazumevajuća tema",
   "app.containers.AdminPage.SettingsPage.delete": "Izbriši",
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "Izbriši",
   "app.containers.AdminPage.SettingsPage.deleteTopicConfirmation": "Ovo će obrisati temu zajedno sa svim postojećim unosima. Ova izmena će se primeniti na sve projekte.",

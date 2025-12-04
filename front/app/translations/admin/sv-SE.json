@@ -2591,7 +2591,6 @@
   "app.containers.AdminPage.SettingsPage.customized_button": "Anpassad",
   "app.containers.AdminPage.SettingsPage.customized_button_text_label": "Knapptext",
   "app.containers.AdminPage.SettingsPage.customized_button_url_label": "Knapplänk",
-  "app.containers.AdminPage.SettingsPage.defaultTopic": "Standardämne",
   "app.containers.AdminPage.SettingsPage.delete": "Radera",
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "Radera",
   "app.containers.AdminPage.SettingsPage.deleteTopicConfirmation": "Detta kommer att ta bort ämnet från alla befintliga inlägg. Den här ändringen kommer att gälla för alla projekt.",

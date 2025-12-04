@@ -2591,7 +2591,6 @@
   "app.containers.AdminPage.SettingsPage.customized_button": "Custom",
   "app.containers.AdminPage.SettingsPage.customized_button_text_label": "Testun botwm",
   "app.containers.AdminPage.SettingsPage.customized_button_url_label": "Cyswllt botwm",
-  "app.containers.AdminPage.SettingsPage.defaultTopic": "Tag rhagosodedig",
   "app.containers.AdminPage.SettingsPage.delete": "Dileu",
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "Dileu",
   "app.containers.AdminPage.SettingsPage.deleteTopicConfirmation": "Bydd hyn yn dileu'r tag o'r holl bostiadau presennol. Bydd y newid hwn yn berthnasol i bob prosiect.",

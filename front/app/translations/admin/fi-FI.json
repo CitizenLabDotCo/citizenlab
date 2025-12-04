@@ -2591,7 +2591,6 @@
   "app.containers.AdminPage.SettingsPage.customized_button": "Mukautettu",
   "app.containers.AdminPage.SettingsPage.customized_button_text_label": "Painikkeen teksti",
   "app.containers.AdminPage.SettingsPage.customized_button_url_label": "Painikkeen linkki",
-  "app.containers.AdminPage.SettingsPage.defaultTopic": "Oletustunniste",
   "app.containers.AdminPage.SettingsPage.delete": "Poistaa",
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "Poistaa",
   "app.containers.AdminPage.SettingsPage.deleteTopicConfirmation": "Tämä poistaa tunnisteen kaikista olemassa olevista viesteistä. Tämä muutos koskee kaikkia projekteja.",
