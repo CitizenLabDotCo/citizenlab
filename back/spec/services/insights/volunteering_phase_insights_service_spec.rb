@@ -14,11 +14,11 @@ RSpec.describe Insights::VolunteeringPhaseInsightsService do
   let(:user2) { create(:user) }
   let!(:volunteering3) { create(:volunteer, cause: cause1, user: user2) }
 
-  describe '#participation_volunteerings' do
+  describe '#participations_volunteering' do
     it 'returns the participation volunteerings data associated with the phase' do
-      participation_volunteerings = service.send(:participation_volunteerings)
+      participations_volunteering = service.send(:participations_volunteering)
 
-      expect(participation_volunteerings).to match_array([
+      expect(participations_volunteering).to match_array([
         {
           item_id: volunteering1.id,
           action: 'volunteering',
@@ -45,7 +45,7 @@ RSpec.describe Insights::VolunteeringPhaseInsightsService do
         }
       ])
 
-      first_participation = participation_volunteerings.first
+      first_participation = participations_volunteering.first
       expect(first_participation[:acted_at])
         .to be_within(1.second).of(Volunteering::Volunteer.find(first_participation[:item_id]).created_at)
     end
@@ -56,7 +56,7 @@ RSpec.describe Insights::VolunteeringPhaseInsightsService do
       participations = service.send(:phase_participations)
 
       expect(participations).to eq({
-        volunteering: service.send(:participation_volunteerings)
+        volunteering: service.send(:participations_volunteering)
       })
 
       expect(participations[:volunteering].map { |p| p[:item_id] }).to match_array([

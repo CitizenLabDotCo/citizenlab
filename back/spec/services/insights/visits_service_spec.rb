@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe VisitsService do
+describe Insights::VisitsService do
   let(:service) { described_class.new }
 
   describe '#phase_visitors_data' do

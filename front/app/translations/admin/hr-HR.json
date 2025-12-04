@@ -2586,7 +2586,6 @@
   "app.containers.AdminPage.SettingsPage.customized_button": "Prilagođeno",
   "app.containers.AdminPage.SettingsPage.customized_button_text_label": "Tekst gumba",
   "app.containers.AdminPage.SettingsPage.customized_button_url_label": "Veza gumba",
-  "app.containers.AdminPage.SettingsPage.defaultTopic": "Zadana tema",
   "app.containers.AdminPage.SettingsPage.delete": "Izbriši",
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "Izbriši",
   "app.containers.AdminPage.SettingsPage.deleteTopicConfirmation": "Ovo će obrisati temu zajedno sa svim postojećim unosima. Ova izmjena će se primijeniti na sve projekte.",

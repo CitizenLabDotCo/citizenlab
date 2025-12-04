@@ -2586,7 +2586,6 @@
   "app.containers.AdminPage.SettingsPage.customized_button": "حسب ضرورت",
   "app.containers.AdminPage.SettingsPage.customized_button_text_label": "بٹن کا متن",
   "app.containers.AdminPage.SettingsPage.customized_button_url_label": "بٹن لنک",
-  "app.containers.AdminPage.SettingsPage.defaultTopic": "ڈیفالٹ ٹیگ",
   "app.containers.AdminPage.SettingsPage.delete": "حذف کریں۔",
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "حذف کریں۔",
   "app.containers.AdminPage.SettingsPage.deleteTopicConfirmation": "یہ تمام موجودہ پوسٹس سے ٹیگ کو حذف کر دے گا۔ یہ تبدیلی تمام منصوبوں پر لاگو ہوگی۔",
