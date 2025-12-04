@@ -207,6 +207,8 @@
   "app.components.ErrorBoundary.openFormText": "Hjelp oss å finne ut av det",
   "app.components.ErrorToast.budgetExceededError": "Du har ikke nok budsjett",
   "app.components.ErrorToast.votesExceededError": "Du har ikke nok stemmer igjen",
+  "app.components.EsriMap.a11y_mapBottomButton": "Show legend",
+  "app.components.EsriMap.a11y_mapTopButton": "Show layer list",
   "app.components.EventAttendanceButton.forwardToFriend": "Videresend til en venn",
   "app.components.EventAttendanceButton.maxRegistrationsReached": "Det maksimale antallet påmeldinger til arrangementet er nådd. Det er ingen ledige plasser igjen.",
   "app.components.EventAttendanceButton.register": "Registrer deg",
