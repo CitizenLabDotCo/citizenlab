@@ -89,6 +89,30 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.voters',
     defaultMessage: 'Voters',
   },
+  onlineVotes: {
+    id: 'app.containers.Admin.projects.project.insights.onlineVotes',
+    defaultMessage: 'Online votes',
+  },
+  onlinePicks: {
+    id: 'app.containers.Admin.projects.project.insights.onlinePicks',
+    defaultMessage: 'Online picks',
+  },
+  offlinePicks: {
+    id: 'app.containers.Admin.projects.project.insights.offlinePicks',
+    defaultMessage: 'Offline picks',
+  },
+  associatedIdeas: {
+    id: 'app.containers.Admin.projects.project.insights.associatedIdeas',
+    defaultMessage: 'Associated ideas',
+  },
+  ideasPosted: {
+    id: 'app.containers.Admin.projects.project.insights.ideasPosted',
+    defaultMessage: 'Ideas posted',
+  },
+  volunteerings: {
+    id: 'app.containers.Admin.projects.project.insights.volunteerings',
+    defaultMessage: 'Volunteers',
+  },
   // Demographics
   demographicsAndAudience: {
     id: 'app.containers.Admin.projects.project.insights.demographicsAndAudience',
@@ -161,5 +185,9 @@ export default defineMessages({
   downloadInsightsPdf: {
     id: 'app.containers.Admin.projects.project.insights.downloadInsightsPdf',
     defaultMessage: 'Download insights as PDF',
+  },
+  noAnswer: {
+    id: 'app.containers.Admin.projects.project.insights.noAnswer',
+    defaultMessage: 'No answer',
   },
 });

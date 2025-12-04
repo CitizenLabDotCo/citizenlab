@@ -4,63 +4,72 @@
 
 /**
  * Method-specific metric types
+ * These match the backend API response structure from phase insights endpoint
  */
 export interface IdeationMetrics {
-  ideas: number;
-  comments: number;
+  ideas_posted: number;
+  ideas_posted_last_7_days?: number;
+  comments_posted: number;
+  comments_posted_last_7_days?: number;
   reactions: number;
-  ideas_last_7_days?: number;
-  comments_last_7_days?: number;
   reactions_last_7_days?: number;
 }
 
 export interface ProposalsMetrics {
-  ideas: number;
-  comments: number;
+  ideas_posted: number;
+  ideas_posted_last_7_days?: number;
+  comments_posted: number;
+  comments_posted_last_7_days?: number;
   reactions: number;
-  ideas_last_7_days?: number;
-  comments_last_7_days?: number;
   reactions_last_7_days?: number;
 }
 
 export interface VotingMetrics {
-  votes: number;
-  voters: number;
-  comments: number;
+  voting_method: string;
+  online_votes: number;
+  online_votes_last_7_days?: number;
   offline_votes: number;
-  votes_last_7_days?: number;
-  comments_last_7_days?: number;
-  offline_votes_last_7_days?: number;
+  voters: number;
+  voters_last_7_days?: number;
+  associated_ideas: number;
+  comments_posted: number;
+  comments_posted_last_7_days?: number;
 }
 
 export interface BudgetingMetrics {
-  votes: number;
-  votes_per_person: number;
-  total_votes: number;
-  offline_votes: number;
-  comments: number;
-  votes_last_7_days?: number;
-  comments_last_7_days?: number;
-  offline_votes_last_7_days?: number;
+  voting_method: 'budgeting';
+  online_picks: number;
+  online_picks_last_7_days?: number;
+  offline_picks: number;
+  voters: number;
+  voters_last_7_days?: number;
+  associated_ideas: number;
+  comments_posted: number;
+  comments_posted_last_7_days?: number;
 }
 
 export interface SurveyMetrics {
-  submissions: number;
-  completion_rate: number;
-  submissions_last_7_days?: number;
+  submitted_surveys: number;
+  submitted_surveys_last_7_days?: number;
+  completion_rate: number; // Decimal format from backend (0.78 = 78%)
 }
 
 export interface PollMetrics {
-  respondents: number;
+  responses: number;
+  responses_last_7_days?: number;
 }
 
 export interface CommonGroundMetrics {
-  statements: number;
-  respondents: number;
-  responses: number;
-  responses_per_respondent: number;
+  associated_ideas: number;
+  ideas_posted: number;
+  ideas_posted_last_7_days?: number;
   reactions: number;
   reactions_last_7_days?: number;
+}
+
+export interface VolunteeringMetrics {
+  volunteerings: number;
+  volunteerings_last_7_days?: number;
 }
 
 /**
@@ -82,23 +91,7 @@ export interface PhaseInsightsParticipationMetrics {
   survey?: SurveyMetrics;
   poll?: PollMetrics;
   common_ground?: CommonGroundMetrics;
-}
-
-/**
- * Participation metrics data (nested in JSONAPI response)
- */
-export interface PhaseInsightsParticipationMetricsData {
-  id: string;
-  type: 'phase_participation_metrics';
-  attributes: PhaseInsightsParticipationMetrics;
-}
-
-/**
- * Participation metrics response (full JSONAPI structure)
- * This is what the API returns - hooks return this structure
- */
-export interface IPhaseInsightsParticipationMetrics {
-  data: PhaseInsightsParticipationMetricsData;
+  volunteering?: VolunteeringMetrics;
 }
 
 // ============================================================================
@@ -161,33 +154,43 @@ export interface DemographicOption {
  * This is what the API returns before transformation
  */
 export interface DemographicFieldBackend {
-  field_id: string;
-  field_key: string;
-  field_name_multiloc: Record<string, string>; // { en: "Gender", fr: "Genre", ... }
-  field_code?: string | null;
-  r_score?: number;
+  id: string;
+  key: string;
+  code?: string | null;
+  input_type: string; // 'select', 'checkbox', 'multiselect', 'number'
+  title_multiloc: Record<string, string>; // { en: "Gender", fr: "Genre", ... }
+  r_score?: number | null;
   series: Record<string, number>; // { "male": 680, "female": 830, "_blank": 10 }
   options?: Record<string, DemographicOption>; // Metadata for each series key
-  population_distribution?: Record<string, number>; // Reference population counts
+  reference_distribution?: Record<string, number>; // Reference population counts
 }
 
 /**
- * Backend demographics data (nested in JSONAPI response)
+ * Consolidated phase insights attributes from single API endpoint
+ * Contains both metrics and demographics
  */
-export interface PhaseInsightsDemographicsBackendData {
-  id: string;
-  type: 'phase_demographics';
-  attributes: {
+export interface PhaseInsightsAttributes {
+  metrics: PhaseInsightsParticipationMetrics;
+  demographics: {
     fields: DemographicFieldBackend[];
   };
 }
 
 /**
- * Backend demographics response (full JSONAPI structure)
- * This is what the API returns - hooks return this structure
+ * Phase insights data (nested in JSONAPI response)
  */
-export interface IPhaseInsightsDemographics {
-  data: PhaseInsightsDemographicsBackendData;
+export interface PhaseInsightsData {
+  id: string;
+  type: 'phase_insights';
+  attributes: PhaseInsightsAttributes;
+}
+
+/**
+ * Consolidated phase insights response (full JSONAPI structure)
+ * This is what the API returns from GET /phases/:id/insights
+ */
+export interface IPhaseInsights {
+  data: PhaseInsightsData;
 }
 
 // ============================================================================

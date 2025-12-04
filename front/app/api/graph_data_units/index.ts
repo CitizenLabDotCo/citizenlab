@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import {
   getDummyParticipants,
-  USE_DUMMY_PHASE_INSIGHTS_DATA,
+  USE_DUMMY_METHOD_SPECIFIC_DATA,
 } from 'api/phase_insights/dummyData';
 
 import {
@@ -154,7 +154,7 @@ export const useParticipants = (
   { onSuccess }: { onSuccess?: () => void } = {}
 ) => {
   // Use dummy data for phase insights when flag is enabled and phase_id is provided
-  const useDummyData = USE_DUMMY_PHASE_INSIGHTS_DATA && !!props.phase_id;
+  const useDummyData = USE_DUMMY_METHOD_SPECIFIC_DATA && !!props.phase_id;
 
   const dummyDataQuery = useQuery<ParticipantsResponse>({
     queryKey: [

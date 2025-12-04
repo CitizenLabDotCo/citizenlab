@@ -21,6 +21,11 @@ interface Props {
 const DemographicFieldContent = ({ field, showExportMenu = true }: Props) => {
   const { formatMessage } = useIntl();
 
+  // Check if any data point has population data (reference distribution exists)
+  const hasPopulationData = field.data_points.some(
+    (point) => point.population_percentage !== undefined
+  );
+
   return (
     <Box mb="24px">
       {/* Field name and download button */}
@@ -41,8 +46,8 @@ const DemographicFieldContent = ({ field, showExportMenu = true }: Props) => {
         )}
       </Box>
 
-      {/* R.Score */}
-      {field.r_score !== undefined && (
+      {/* R.Score - only show when population data exists */}
+      {hasPopulationData && field.r_score !== undefined && (
         <Box mb="8px">
           <RScore value={field.r_score} />
         </Box>
@@ -62,18 +67,20 @@ const DemographicFieldContent = ({ field, showExportMenu = true }: Props) => {
             {formatMessage(messages.participants)}
           </Text>
         </Box>
-        <Box display="flex" gap="8px" alignItems="center">
-          <Box
-            width="8px"
-            height="8px"
-            borderRadius="50%"
-            background="#40b8c5"
-            aria-hidden="true"
-          />
-          <Text fontSize="s" color="coolGrey700" m="0px">
-            {formatMessage(messages.totalPopulation)}
-          </Text>
-        </Box>
+        {hasPopulationData && (
+          <Box display="flex" gap="8px" alignItems="center">
+            <Box
+              width="8px"
+              height="8px"
+              borderRadius="50%"
+              background="#40b8c5"
+              aria-hidden="true"
+            />
+            <Text fontSize="s" color="coolGrey700" m="0px">
+              {formatMessage(messages.totalPopulation)}
+            </Text>
+          </Box>
+        )}
       </Box>
 
       {/* Chart */}
@@ -84,6 +91,7 @@ const DemographicFieldContent = ({ field, showExportMenu = true }: Props) => {
           primaryValue: 'participants',
           comparisonValue: 'population',
         }}
+        showComparison={hasPopulationData}
         primaryColor="#2f478a"
         comparisonColor="#40b8c5"
       />

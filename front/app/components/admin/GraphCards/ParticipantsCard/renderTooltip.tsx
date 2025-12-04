@@ -58,7 +58,7 @@ const CustomTooltip = ({
             name="dot"
             width="8px"
             height="8px"
-            fill={colors.categorical02}
+            fill={colors.categorical03}
             mr="6px"
             mt="-2px"
           />

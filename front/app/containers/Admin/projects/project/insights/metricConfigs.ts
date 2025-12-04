@@ -6,6 +6,7 @@ import {
   SurveyMetrics,
   PollMetrics,
   CommonGroundMetrics,
+  VolunteeringMetrics,
 } from 'api/phase_insights/types';
 
 import { MessageDescriptor } from 'utils/cl-intl';
@@ -28,14 +29,14 @@ export const METRIC_CONFIGS = {
     {
       key: 'ideas',
       message: messages.inputs,
-      getValue: (d: IdeationMetrics) => d.ideas,
-      getChange: (d: IdeationMetrics) => d.ideas_last_7_days,
+      getValue: (d: IdeationMetrics) => d.ideas_posted,
+      getChange: (d: IdeationMetrics) => d.ideas_posted_last_7_days,
     },
     {
       key: 'comments',
       message: messages.comments,
-      getValue: (d: IdeationMetrics) => d.comments,
-      getChange: (d: IdeationMetrics) => d.comments_last_7_days,
+      getValue: (d: IdeationMetrics) => d.comments_posted,
+      getChange: (d: IdeationMetrics) => d.comments_posted_last_7_days,
     },
     {
       key: 'reactions',
@@ -48,14 +49,14 @@ export const METRIC_CONFIGS = {
     {
       key: 'ideas',
       message: messages.inputs,
-      getValue: (d: ProposalsMetrics) => d.ideas,
-      getChange: (d: ProposalsMetrics) => d.ideas_last_7_days,
+      getValue: (d: ProposalsMetrics) => d.ideas_posted,
+      getChange: (d: ProposalsMetrics) => d.ideas_posted_last_7_days,
     },
     {
       key: 'comments',
       message: messages.comments,
-      getValue: (d: ProposalsMetrics) => d.comments,
-      getChange: (d: ProposalsMetrics) => d.comments_last_7_days,
+      getValue: (d: ProposalsMetrics) => d.comments_posted,
+      getChange: (d: ProposalsMetrics) => d.comments_posted_last_7_days,
     },
     {
       key: 'reactions',
@@ -67,114 +68,112 @@ export const METRIC_CONFIGS = {
   voting: [
     {
       key: 'votes',
-      message: messages.votes,
-      getValue: (d: VotingMetrics) => d.votes,
-      getChange: (d: VotingMetrics) => d.votes_last_7_days,
+      message: messages.onlineVotes,
+      getValue: (d: VotingMetrics) => d.online_votes,
+      getChange: (d: VotingMetrics) => d.online_votes_last_7_days,
     },
     {
       key: 'voters',
       message: messages.voters,
       getValue: (d: VotingMetrics) => d.voters,
+      getChange: (d: VotingMetrics) => d.voters_last_7_days,
     },
     {
       key: 'comments',
       message: messages.comments,
-      getValue: (d: VotingMetrics) => d.comments,
-      getChange: (d: VotingMetrics) => d.comments_last_7_days,
+      getValue: (d: VotingMetrics) => d.comments_posted,
+      getChange: (d: VotingMetrics) => d.comments_posted_last_7_days,
     },
     {
       key: 'offlineVotes',
       message: messages.offlineVotes,
       getValue: (d: VotingMetrics) => d.offline_votes,
-      getChange: (d: VotingMetrics) => d.offline_votes_last_7_days,
+    },
+    {
+      key: 'associatedIdeas',
+      message: messages.associatedIdeas,
+      getValue: (d: VotingMetrics) => d.associated_ideas,
     },
   ] satisfies MetricConfig<VotingMetrics>[],
   budgeting: [
     {
-      key: 'votes',
-      message: messages.votes,
-      getValue: (d: BudgetingMetrics) => d.votes,
-      getChange: (d: BudgetingMetrics) => d.votes_last_7_days,
+      key: 'onlinePicks',
+      message: messages.onlinePicks,
+      getValue: (d: BudgetingMetrics) => d.online_picks,
+      getChange: (d: BudgetingMetrics) => d.online_picks_last_7_days,
     },
     {
-      key: 'votesPerPerson',
-      message: messages.votesPerPerson,
-      getValue: (d: BudgetingMetrics) => d.votes_per_person.toFixed(1),
+      key: 'voters',
+      message: messages.voters,
+      getValue: (d: BudgetingMetrics) => d.voters,
+      getChange: (d: BudgetingMetrics) => d.voters_last_7_days,
     },
     {
-      key: 'totalVotes',
-      message: messages.totalVotes,
-      getValue: (d: BudgetingMetrics) => d.total_votes,
-      customSubtext: (d: BudgetingMetrics, fm) =>
-        `${fm(messages.total)}: ${d.total_votes.toLocaleString()}`,
-    },
-    {
-      key: 'offlineVotes',
-      message: messages.offlineVotes,
-      getValue: (d: BudgetingMetrics) => d.offline_votes,
-      getChange: (d: BudgetingMetrics) => d.offline_votes_last_7_days,
+      key: 'offlinePicks',
+      message: messages.offlinePicks,
+      getValue: (d: BudgetingMetrics) => d.offline_picks,
     },
     {
       key: 'comments',
       message: messages.comments,
-      getValue: (d: BudgetingMetrics) => d.comments,
-      getChange: (d: BudgetingMetrics) => d.comments_last_7_days,
+      getValue: (d: BudgetingMetrics) => d.comments_posted,
+      getChange: (d: BudgetingMetrics) => d.comments_posted_last_7_days,
+    },
+    {
+      key: 'associatedIdeas',
+      message: messages.associatedIdeas,
+      getValue: (d: BudgetingMetrics) => d.associated_ideas,
     },
   ] satisfies MetricConfig<BudgetingMetrics>[],
   native_survey: [
     {
       key: 'submissions',
       message: messages.submissions,
-      getValue: (d: SurveyMetrics) => d.submissions,
-      getChange: (d: SurveyMetrics) => d.submissions_last_7_days,
+      getValue: (d: SurveyMetrics) => d.submitted_surveys,
+      getChange: (d: SurveyMetrics) => d.submitted_surveys_last_7_days,
     },
     {
       key: 'completionRate',
       message: messages.completionRate,
-      getValue: (d: SurveyMetrics) => `${d.completion_rate.toFixed(1)}%`,
+      // Backend returns decimal (0.78), multiply by 100 for percentage display
+      getValue: (d: SurveyMetrics) =>
+        `${(d.completion_rate * 100).toFixed(1)}%`,
     },
   ] satisfies MetricConfig<SurveyMetrics>[],
   survey: [
     {
       key: 'submissions',
       message: messages.submissions,
-      getValue: (d: SurveyMetrics) => d.submissions,
-      getChange: (d: SurveyMetrics) => d.submissions_last_7_days,
+      getValue: (d: SurveyMetrics) => d.submitted_surveys,
+      getChange: (d: SurveyMetrics) => d.submitted_surveys_last_7_days,
     },
     {
       key: 'completionRate',
       message: messages.completionRate,
-      getValue: (d: SurveyMetrics) => `${d.completion_rate.toFixed(1)}%`,
+      // Backend returns decimal (0.78), multiply by 100 for percentage display
+      getValue: (d: SurveyMetrics) =>
+        `${(d.completion_rate * 100).toFixed(1)}%`,
     },
   ] satisfies MetricConfig<SurveyMetrics>[],
   poll: [
     {
-      key: 'respondents',
-      message: messages.respondents,
-      getValue: (d: PollMetrics) => d.respondents,
+      key: 'responses',
+      message: messages.responses,
+      getValue: (d: PollMetrics) => d.responses,
+      getChange: (d: PollMetrics) => d.responses_last_7_days,
     },
   ] satisfies MetricConfig<PollMetrics>[],
   common_ground: [
     {
-      key: 'statements',
-      message: messages.statements,
-      getValue: (d: CommonGroundMetrics) => d.statements,
+      key: 'ideasPosted',
+      message: messages.ideasPosted,
+      getValue: (d: CommonGroundMetrics) => d.ideas_posted,
+      getChange: (d: CommonGroundMetrics) => d.ideas_posted_last_7_days,
     },
     {
-      key: 'respondents',
-      message: messages.respondents,
-      getValue: (d: CommonGroundMetrics) => d.respondents,
-    },
-    {
-      key: 'responses',
-      message: messages.responses,
-      getValue: (d: CommonGroundMetrics) => d.responses,
-    },
-    {
-      key: 'responsesPerRespondent',
-      message: messages.responsesPerRespondent,
-      getValue: (d: CommonGroundMetrics) =>
-        d.responses_per_respondent.toFixed(1),
+      key: 'associatedIdeas',
+      message: messages.associatedIdeas,
+      getValue: (d: CommonGroundMetrics) => d.associated_ideas,
     },
     {
       key: 'reactions',
@@ -183,4 +182,12 @@ export const METRIC_CONFIGS = {
       getChange: (d: CommonGroundMetrics) => d.reactions_last_7_days,
     },
   ] satisfies MetricConfig<CommonGroundMetrics>[],
+  volunteering: [
+    {
+      key: 'volunteerings',
+      message: messages.volunteerings,
+      getValue: (d: VolunteeringMetrics) => d.volunteerings,
+      getChange: (d: VolunteeringMetrics) => d.volunteerings_last_7_days,
+    },
+  ] satisfies MetricConfig<VolunteeringMetrics>[],
 } as const;

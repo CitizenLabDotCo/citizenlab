@@ -17,10 +17,13 @@ import {
  */
 export const transformDemographicsResponse = (
   attributes: { fields: DemographicFieldBackend[] },
-  localize: Localize
+  localize: Localize,
+  blankLabel: string
 ): PhaseInsightsDemographics => {
   return {
-    fields: attributes.fields.map((field) => transformField(field, localize)),
+    fields: attributes.fields.map((field) =>
+      transformField(field, localize, blankLabel)
+    ),
   };
 };
 
@@ -29,16 +32,22 @@ export const transformDemographicsResponse = (
  */
 const transformField = (
   field: DemographicFieldBackend,
-  localize: Localize
+  localize: Localize,
+  blankLabel: string
 ): DemographicField => {
   // Get localized field name
-  const field_name = localize(field.field_name_multiloc);
+  const field_name = localize(field.title_multiloc);
+  const seriesData = {
+    series: field.series,
+    options: field.options,
+    population_distribution: field.reference_distribution,
+  };
 
   // Use shared transformation utility to convert series/options to chart rows
   const chartRows = transformDemographicsToChartRows(
-    field,
-    field.field_code ?? undefined,
-    '_blank',
+    seriesData,
+    field.code ?? undefined,
+    blankLabel,
     (_key, multiloc) => localize(multiloc)
   );
 
@@ -52,11 +61,15 @@ const transformField = (
   }));
 
   return {
-    field_id: field.field_id,
-    field_key: field.field_key,
+    field_id: field.id,
+    field_key: field.key,
     field_name,
-    field_code: field.field_code,
+    field_code: field.code,
     data_points,
-    r_score: field.r_score,
+    // Backend returns decimal (0-1), convert to percentage (0-100) for display
+    r_score:
+      typeof field.r_score === 'number'
+        ? Math.round(field.r_score * 100)
+        : undefined,
   };
 };

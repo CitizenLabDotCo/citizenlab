@@ -10,11 +10,8 @@ const phaseInsightsKeys = {
   ],
 } satisfies QueryKeys;
 
-export const participationMetricsKey = (phaseId: string) =>
-  phaseInsightsKeys.item({ phaseId, type: 'participation_metrics' });
-
-export const demographicsKey = (phaseId: string) =>
-  phaseInsightsKeys.item({ phaseId, type: 'demographics' });
+export const phaseInsightsKey = (phaseId: string) =>
+  phaseInsightsKeys.item({ phaseId, type: 'insight' });
 
 export const commonGroundResultsKey = ({
   phaseId,
