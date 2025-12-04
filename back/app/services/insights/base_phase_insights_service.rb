@@ -267,9 +267,7 @@ module Insights
       duration_months = (duration_seconds / 1.month).round(1)
       duration_weeks = (duration_seconds / 1.week).round(1)
 
-      if duration_months > 24
-        'year'
-      elsif duration_months > 6
+      if duration_months > 6
         'month'
       elsif duration_weeks > 4
         'week'
@@ -286,10 +284,8 @@ module Insights
         date
       when 'week'
         date.beginning_of_week
-      when 'month'
+      else # 'month'
         Date.new(date.year, date.month, 1)
-      else # 'year'
-        Date.new(date.year, 1, 1)
       end
     end
   end
