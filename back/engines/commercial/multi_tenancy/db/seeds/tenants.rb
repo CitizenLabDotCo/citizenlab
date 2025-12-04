@@ -540,6 +540,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            idea_feed: {
+              enabled: true,
+              allowed: true
+            },
             data_repository_transcription: {
               enabled: true,
               allowed: true

@@ -88,6 +88,7 @@ Rails.application.routes.draw do
         post :similar_ideas, on: :collection
         resources :authoring_assistance_responses, only: %i[create]
         get :as_xlsx, on: :member, action: 'show_xlsx'
+        resources :exposures, controller: 'idea_exposures', only: %i[create]
       end
 
       resources :background_jobs, only: %i[index]
@@ -190,6 +191,9 @@ Rails.application.routes.draw do
           get 'submission_count'
           get 'progress', action: 'show_progress'
           delete 'inputs', action: 'delete_inputs'
+          namespace :idea_feed do
+            resources :ideas, only: [:index]
+          end
         end
 
         resources :inputs, only: [], controller: 'ideas' do
