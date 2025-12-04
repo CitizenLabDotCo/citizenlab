@@ -65,66 +65,8 @@ export const METRIC_CONFIGS = {
       getChange: (d: ProposalsMetrics) => d.reactions_last_7_days,
     },
   ] satisfies MetricConfig<ProposalsMetrics>[],
-  voting: [
-    {
-      key: 'votes',
-      message: messages.onlineVotes,
-      getValue: (d: VotingMetrics) => d.online_votes,
-      getChange: (d: VotingMetrics) => d.online_votes_last_7_days,
-    },
-    {
-      key: 'voters',
-      message: messages.voters,
-      getValue: (d: VotingMetrics) => d.voters,
-      getChange: (d: VotingMetrics) => d.voters_last_7_days,
-    },
-    {
-      key: 'comments',
-      message: messages.comments,
-      getValue: (d: VotingMetrics) => d.comments_posted,
-      getChange: (d: VotingMetrics) => d.comments_posted_last_7_days,
-    },
-    {
-      key: 'offlineVotes',
-      message: messages.offlineVotes,
-      getValue: (d: VotingMetrics) => d.offline_votes,
-    },
-    {
-      key: 'associatedIdeas',
-      message: messages.associatedIdeas,
-      getValue: (d: VotingMetrics) => d.associated_ideas,
-    },
-  ] satisfies MetricConfig<VotingMetrics>[],
-  budgeting: [
-    {
-      key: 'onlinePicks',
-      message: messages.onlinePicks,
-      getValue: (d: BudgetingMetrics) => d.online_picks,
-      getChange: (d: BudgetingMetrics) => d.online_picks_last_7_days,
-    },
-    {
-      key: 'voters',
-      message: messages.voters,
-      getValue: (d: BudgetingMetrics) => d.voters,
-      getChange: (d: BudgetingMetrics) => d.voters_last_7_days,
-    },
-    {
-      key: 'offlinePicks',
-      message: messages.offlinePicks,
-      getValue: (d: BudgetingMetrics) => d.offline_picks,
-    },
-    {
-      key: 'comments',
-      message: messages.comments,
-      getValue: (d: BudgetingMetrics) => d.comments_posted,
-      getChange: (d: BudgetingMetrics) => d.comments_posted_last_7_days,
-    },
-    {
-      key: 'associatedIdeas',
-      message: messages.associatedIdeas,
-      getValue: (d: BudgetingMetrics) => d.associated_ideas,
-    },
-  ] satisfies MetricConfig<BudgetingMetrics>[],
+  voting: [] satisfies MetricConfig<VotingMetrics>[],
+  budgeting: [] satisfies MetricConfig<BudgetingMetrics>[],
   native_survey: [
     {
       key: 'submissions',
