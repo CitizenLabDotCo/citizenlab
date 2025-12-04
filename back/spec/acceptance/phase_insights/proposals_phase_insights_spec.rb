@@ -50,8 +50,29 @@ resource 'Phase insights' do
       # Ideas
       idea1 = create(:idea, phases: [phase], author: user1, created_at: 25.days.ago, submitted_at: 25.days.ago, creation_phase_id: phase.id) # published before phase (not counted)
       idea2 = create(:idea, phases: [phase], author: user2, created_at: 15.days.ago, submitted_at: 15.days.ago, creation_phase_id: phase.id) # published during phase
-      create(:idea, phases: [phase], author: user2, created_at: 5.days.ago, submitted_at: 5.days.ago, creation_phase_id: phase.id) # published during phase, and in last 7 days
+      idea3 = create(:idea, phases: [phase], author: user2, created_at: 5.days.ago, submitted_at: 5.days.ago, creation_phase_id: phase.id) # published during phase, and in last 7 days
       create(:idea, phases: [phase], author: user3, created_at: 2.days.ago, submitted_at: 2.days.ago, creation_phase_id: phase.id) # published after phase (not counted)
+
+      # Activities
+      create(:activity, 
+        item: idea2, 
+        action: 'changed_input_status',
+        acted_at: 10.days.ago,
+        payload: { 
+          input_status_from_code: 'proposed',
+          input_status_to_code: 'threshold_reached' 
+        }
+      )
+
+      create(:activity, 
+        item: idea3, 
+        action: 'changed_input_status',
+        acted_at: 3.days.ago,
+        payload: { 
+          input_status_from_code: 'proposed',
+          input_status_to_code: 'threshold_reached' 
+        }
+      )
 
       # Comments
       create(:comment, idea: idea2, author: user4, created_at: 10.days.ago) # in phase
@@ -100,6 +121,8 @@ resource 'Phase insights' do
         proposals: {
           ideas_posted: 2,
           ideas_posted_last_7_days: 1,
+          reached_threshold: 2,
+          reached_threshold_last_7_days: 1,
           comments_posted: 1,
           comments_posted_last_7_days: 0,
           reactions: 1,

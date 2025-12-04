@@ -34,6 +34,34 @@ module Insights
       end
     end
 
+    def phase_participation_method_metrics(participations)
+      ideas_counts = phase_ideas_counts(participations[:posting_idea] || [])
+      comments_counts = phase_comments_counts(participations)
+      reactions_counts = phase_reactions_counts(participations)
+      reached_threshold_counts = threshold_reached_counts(participations[:posting_idea] || [])
+
+      {
+        ideas_posted: ideas_counts[:total],
+        ideas_posted_last_7_days: ideas_counts[:last_7_days],
+        reached_threshold: reached_threshold_counts[:total],
+        reached_threshold_last_7_days: reached_threshold_counts[:last_7_days],
+        comments_posted: comments_counts[:total],
+        comments_posted_last_7_days: comments_counts[:last_7_days],
+        reactions: reactions_counts[:total],
+        reactions_last_7_days: reactions_counts[:last_7_days]
+      }
+    end
+
+    def threshold_reached_counts(posting_idea_participations)
+      total = posting_idea_participations.count { |p| p[:threshold_reached_at].present? }
+      last_7_days = posting_idea_participations.count do |p|
+        p[:threshold_reached_at].present? &&
+          p[:threshold_reached_at] >= 7.days.ago.beginning_of_day
+      end
+
+      { total: total, last_7_days: last_7_days }
+    end
+
     # Because a proposal can be moved from a threshold_reached status to another status,
     # we ascertain when a proposal had a status of threshold_reached (if ever).
     # i.e. we include ideas with statuses of accepted, ineligible, etc,
