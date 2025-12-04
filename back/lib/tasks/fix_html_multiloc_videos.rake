@@ -10,7 +10,7 @@ namespace :fix_existing_description_videos do
       Idea => [:body_multiloc],
       Phase => [:description_multiloc],
       Project => [:description_multiloc],
-      StaticPage => [:body_multiloc],
+      StaticPage => [:top_info_section_multiloc, :bottom_info_section_multiloc],
       CustomField => [:description_multiloc],
       ProjectFolders::Folder => [:description_multiloc],
       EmailCampaigns::Campaign => [:body_multiloc]
@@ -36,7 +36,7 @@ namespace :fix_existing_description_videos do
 
     Tenant.safe_switch_each do |tenant|
       puts "Processing tenant #{tenant.host}..."
-      
+
       content_fields.each do |model, fields|
         puts "  Processing #{model}..."
         model.find_each do |record|
