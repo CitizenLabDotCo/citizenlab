@@ -28,15 +28,19 @@ resource 'Phase insights' do
     )
   end
 
-  # Fixing the dates used as relative to this reference time means we can expect exact dates in the chart data
-  let(:time_now) { Time.new(2025, 12, 2, 12, 0, 0) }
+  around do |example|
+    # This reference time means we can expect exact dates in the chart data
+    travel_to(Time.zone.parse('2025-12-02 12:00:00')) do
+      example.run
+    end
+  end
 
   let(:common_ground_phase) do
     create(
       :phase,
       participation_method: 'common_ground',
-      start_at: time_now - 20.days,
-      end_at: time_now - 3.days,
+      start_at: 20.days.ago,
+      end_at: 3.days.ago,
       with_permissions: true
     ).tap do |phase|
       # Users
@@ -46,30 +50,30 @@ resource 'Phase insights' do
       user4 = create(:user, custom_field_values: { gender: 'male', birthyear: 1990 })
 
       # Ideas
-      idea1 = create(:idea, phases: [phase], author: user1, created_at: time_now - 25.days, published_at: time_now - 25.days, creation_phase_id: phase.id) # published before phase (not counted)
-      create(:idea, phases: [phase], author: user2, created_at: time_now - 15.days, published_at: time_now - 15.days, creation_phase_id: phase.id) # published during phase
-      create(:idea, phases: [phase], author: user2, created_at: time_now - 5.days, published_at: time_now - 5.days, creation_phase_id: phase.id) # published during phase, and in last 7 days
-      create(:idea, phases: [phase], author: user3, created_at: time_now - 2.days, published_at: time_now - 2.days, creation_phase_id: phase.id) # published after phase (not counted)
+      idea1 = create(:idea, phases: [phase], author: user1, created_at: 25.days.ago, published_at: 25.days.ago, creation_phase_id: phase.id) # published before phase (not counted)
+      create(:idea, phases: [phase], author: user2, created_at: 15.days.ago, published_at: 15.days.ago, creation_phase_id: phase.id) # published during phase
+      create(:idea, phases: [phase], author: user2, created_at: 5.days.ago, published_at: 5.days.ago, creation_phase_id: phase.id) # published during phase, and in last 7 days
+      create(:idea, phases: [phase], author: user3, created_at: 2.days.ago, published_at: 2.days.ago, creation_phase_id: phase.id) # published after phase (not counted)
 
       # Reactions
-      create(:reaction, reactable: idea1, user: user4, created_at: time_now - 5.days) # in phase, and in last 7 days
+      create(:reaction, reactable: idea1, user: user4, created_at: 5.days.ago) # in phase, and in last 7 days
 
       # Pageviews and sessions
       session1 = create(:session, user_id: user1.id)
-      create(:pageview, session: session1, created_at: time_now - 25.days, project_id: phase.project.id) # before phase
+      create(:pageview, session: session1, created_at: 25.days.ago, project_id: phase.project.id) # before phase
 
       session2 = create(:session, user_id: user2.id)
-      create(:pageview, session: session2, created_at: time_now - 15.days, project_id: phase.project.id) # in phase
-      create(:pageview, session: session2, created_at: time_now - 5.days, project_id: phase.project.id) # in phase & last 7 days, same session
+      create(:pageview, session: session2, created_at: 15.days.ago, project_id: phase.project.id) # in phase
+      create(:pageview, session: session2, created_at: 5.days.ago, project_id: phase.project.id) # in phase & last 7 days, same session
 
       session3 = create(:session, user_id: user3.id)
-      create(:pageview, session: session3, created_at: time_now - 2.days, project_id: phase.project.id) # after phase
+      create(:pageview, session: session3, created_at: 2.days.ago, project_id: phase.project.id) # after phase
 
       session4 = create(:session)
-      create(:pageview, session: session4, created_at: time_now - 15.days, project_id: phase.project.id) # in phase, did not participate
+      create(:pageview, session: session4, created_at: 15.days.ago, project_id: phase.project.id) # in phase, did not participate
 
       session5 = create(:session, user_id: user4.id)
-      create(:pageview, session: session5, created_at: time_now - 5.days, project_id: phase.project.id) # in phase, and in last 7 days
+      create(:pageview, session: session5, created_at: 5.days.ago, project_id: phase.project.id) # in phase, and in last 7 days
     end
   end
 
