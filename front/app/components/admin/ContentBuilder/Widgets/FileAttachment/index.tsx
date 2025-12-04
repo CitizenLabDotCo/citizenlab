@@ -34,7 +34,10 @@ const FileAttachment = ({
 }: FileAttachmentProps) => {
   const { data: fileAttachment } = useFileAttachmentById(fileAttachmentId);
 
-  if (!fileAttachment) {
+  if (
+    !fileAttachment ||
+    fileName !== fileAttachment.data.attributes.file_name // We've changed the file
+  ) {
     // Show placeholder with just the file name if we haven't saved yet
     if (fileName) {
       return (
@@ -133,8 +136,8 @@ const FileAttachmentSettings = () => {
 
   // Filter out any files already being used in the layout
   fileOptions = fileOptions.filter((option) => {
-    const usageCount = getFileUsageCount(craftjsJson, option.value);
-    return usageCount === 0;
+    const isFileUsed = getFileUsageCount(craftjsJson, option.value);
+    return !isFileUsed;
   });
 
   if (isFetchingFiles) {
