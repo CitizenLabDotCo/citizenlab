@@ -3,6 +3,7 @@ import React from 'react';
 import { ParticipationMethod } from 'api/phases/types';
 
 import CommonGroundInsights from './commonGround/CommonGroundInsights';
+import IdeationInsights from './ideation/IdeationInsights';
 import NativeSurveyInsights from './nativeSurvey/NativeSurveyInsights';
 import { MethodSpecificInsightProps } from './types';
 
@@ -15,8 +16,8 @@ export const methodSpecificInsightsRegistry: Partial<
 > = {
   common_ground: CommonGroundInsights,
   native_survey: NativeSurveyInsights,
+  ideation: IdeationInsights,
   // Future implementations:
-  // ideation: IdeationInsights,
   // voting: VotingInsights,
   // etc.
 };
