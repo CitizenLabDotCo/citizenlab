@@ -103,6 +103,13 @@ const MapField = ({
     setMapView(mapView);
   }, []);
 
+  // Cleanup: Clear mapView state when component unmounts
+  useEffect(() => {
+    return () => {
+      setMapView(null);
+    };
+  }, []);
+
   // Handler for when single point data changes
   const handleSinglePointChange = useCallback(
     (point?: GeoJSON.Point) => {
