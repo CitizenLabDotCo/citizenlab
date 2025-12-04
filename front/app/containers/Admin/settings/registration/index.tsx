@@ -30,7 +30,7 @@ import getSubmitState from 'utils/getSubmitState';
 import { isNilOrError } from 'utils/helperUtils';
 
 import CustomFieldSettings from './CustomFieldSettings';
-import CustomFieldsSignupText from './HelperTextInputs/CustomFieldsSignupText';
+import HelperTextInputs from './HelperTextInputs';
 import ToggleShowFollowPreferences from './ToggleShowFollowPreferences';
 
 export const LabelTooltip = styled.div`
@@ -153,7 +153,7 @@ const SettingsRegistrationTab = () => {
                 }
               />
             </SectionField> */}
-            <CustomFieldsSignupText
+            <HelperTextInputs
               onCoreSettingWithMultilocChange={
                 handleCoreSettingWithMultilocOnChange
               }

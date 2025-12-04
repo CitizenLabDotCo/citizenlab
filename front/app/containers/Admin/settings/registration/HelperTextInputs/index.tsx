@@ -4,15 +4,14 @@ import { Multiloc } from 'typings';
 
 import { TAppConfigurationSettingCore } from 'api/app_configuration/types';
 
-import HelperTextInput from '../HelperTextInput';
-
+import HelperTextInput from './HelperTextInput';
 import messages from './messages';
 
 type Props = {
+  customFieldsSignupHelperTextMultiloc?: Multiloc | null;
   onCoreSettingWithMultilocChange: (
     coreSetting: TAppConfigurationSettingCore
   ) => (multiloc: Multiloc) => void;
-  customFieldsSignupHelperTextMultiloc?: Multiloc | null;
 };
 
 const RegistrationQuestions = ({
