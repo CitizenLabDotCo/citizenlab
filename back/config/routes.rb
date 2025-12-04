@@ -28,7 +28,6 @@ Rails.application.routes.draw do
         # We named the param :permission_action, bc :action is already taken (controller action).
         resources :permissions, param: :permission_action do
           get 'requirements', on: :member
-          get 'schema', on: :member
           get 'custom_fields', on: :member
           get 'custom_field_options', on: :member
           get 'access_denied_explanation', on: :member
@@ -71,7 +70,6 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
         get :as_markers, on: :collection, action: 'index_idea_markers'
         get :filter_counts, on: :collection
-        get :json_forms_schema, on: :member
         get 'draft/:phase_id', on: :collection, to: 'ideas#draft_by_phase'
 
         resources :official_feedback, shallow: true
@@ -202,10 +200,12 @@ Rails.application.routes.draw do
           post 'copy', on: :collection
         end
 
-        resources :files, defaults: { container_type: 'Phase' }, shallow: false
-        resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
-          get 'json_forms_schema', on: :collection
+        resource :insights, only: [], controller: 'insights/phase_insights' do
+          get '', action: 'show_insights'
+          get :voting, action: 'voting_insights'
         end
+
+        resources :files, defaults: { container_type: 'Phase' }, shallow: false
         get 'custom_form', on: :member, controller: 'custom_forms', action: 'show', defaults: { container_type: 'Phase' }
         patch 'custom_form', on: :member, controller: 'custom_forms', action: 'update', defaults: { container_type: 'Phase' }
       end
@@ -219,9 +219,6 @@ Rails.application.routes.draw do
         resources :images, defaults: { container_type: 'Project' }
         resources :files, defaults: { container_type: 'Project' }
         resources :groups_projects, shallow: true, except: [:update]
-        resources :custom_fields, controller: 'project_custom_fields', only: %i[] do
-          get 'json_forms_schema', on: :collection
-        end
         resources :moderators, controller: 'project_moderators', except: [:update] do
           get :users_search, on: :collection
         end

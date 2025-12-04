@@ -3628,9 +3628,9 @@ CREATE TABLE public.topics (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     ordering integer,
-    code character varying DEFAULT 'custom'::character varying NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL,
-    include_in_onboarding boolean DEFAULT false NOT NULL
+    include_in_onboarding boolean DEFAULT false NOT NULL,
+    "default" boolean DEFAULT false NOT NULL
 );
 
 
@@ -8113,6 +8113,7 @@ SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20251127085639'),
+('20251124000000'),
 ('20251120113747'),
 ('20251029135211'),
 ('20251022100725'),
