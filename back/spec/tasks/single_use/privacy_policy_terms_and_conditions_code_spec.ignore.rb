@@ -20,7 +20,9 @@ describe 'fix_existing_tenants:privacy_policy_terms_and_conditions_code rake tas
     terms = create(:static_page, slug: 'terms-and-conditions', code: 'terms-and-conditions')
     privc = create(:static_page, slug: 'privacy-policy', code: 'privacy-policy')
 
-    Rake::Task['fix_existing_tenants:privacy_policy_terms_and_conditions_code'].invoke
+    expect { Rake::Task['fix_existing_tenants:privacy_policy_terms_and_conditions_code'].invoke }
+      .to not_change { terms.reload.updated_at }
+      .and not_change { privc.reload.updated_at }
 
     expect(terms.updated_at).to be_within(0.01.seconds).of(terms.reload.updated_at)
     expect(privc.updated_at).to be_within(0.01.seconds).of(privc.reload.updated_at)
