@@ -9,26 +9,33 @@ module Insights
     # --- TEMPLATE METHOD (Instance Method) ---
     # This method defines the immutable workflow for all child services.
     def call
-      cached_insights_data
+      participations = cached_phase_participations
+      cached_insights_data(participations)
+    end
+
+    # TODO: Implement caching, as intention is to resue cached participations in various places
+    def cached_phase_participations
+      # Imagine some caching stuff is here ;-)
+      phase_participations
     end
 
     private
 
     # TODO: Implement caching? (may not be needed if performance good enough)
-    def cached_insights_data
-      visitors_data = VisitsService.new.phase_visitors_data(@phase)
-      participations = phase_participations # cache separately? (so can be reused in not yet implemented phase specific filtering/slicing methods?)
+    def cached_insights_data(participations)
+      visits_data = VisitsService.new.phase_visits_data(@phase)
       flattened_participations = participations.values.flatten
       participant_ids = flattened_participations.pluck(:participant_id).uniq
       participation_method_metrics = phase_participation_method_metrics(participations)
-      metrics = metrics_data(participations, participant_ids, visitors_data, participation_method_metrics)
+      metrics = metrics_data(participations, participant_ids, visits_data, participation_method_metrics)
       demographics = demographics_data(flattened_participations, participant_ids)
+      participants_and_visitors_chart_data = participants_and_visitors_chart_data(flattened_participations, visits_data)
 
-      metrics.merge(demographics: { fields: demographics })
+      metrics.merge(demographics: { fields: demographics }, participants_and_visitors_chart_data: participants_and_visitors_chart_data)
     end
 
-    def metrics_data(participations, participant_ids, visitors_data, participation_method_metrics)
-      base_metrics = base_metrics(participations, participant_ids, visitors_data)
+    def metrics_data(participations, participant_ids, visits_data, participation_method_metrics)
+      base_metrics = base_metrics(participations, participant_ids, visits_data)
 
       phase_participation_method_metrics = {
         @phase.participation_method => participation_method_metrics
@@ -37,17 +44,17 @@ module Insights
       { metrics: base_metrics.merge(phase_participation_method_metrics) }
     end
 
-    def base_metrics(participations, participant_ids, visitors_data)
+    def base_metrics(participations, participant_ids, visits_data)
       total_participant_count = participant_ids.count
       flattened_participations = participations.values.flatten
       participants_last_7_days_count = flattened_participations.select { |p| p[:acted_at] >= 7.days.ago }.pluck(:participant_id).uniq.count
 
       {
-        visitors: visitors_data[:total],
-        visitors_last_7_days: visitors_data[:last_7_days],
+        visitors: visits_data[:visitors_total],
+        visitors_last_7_days: visits_data[:visitors_last_7_days],
         participants: total_participant_count,
         participants_last_7_days: participants_last_7_days_count,
-        engagement_rate: visitors_data[:total] > 0 ? (total_participant_count.to_f / visitors_data[:total]).round(3) : 0
+        engagement_rate: visits_data[:visitors_total] > 0 ? (total_participant_count.to_f / visits_data[:visitors_total]).round(3) : 0
       }
     end
 
@@ -226,6 +233,60 @@ module Insights
       return nil if reference_distribution.blank?
 
       UserCustomFields::Representativeness::RScore.compute_scores(counts, reference_distribution)[:min_max_p_ratio]
+    end
+
+    def participants_and_visitors_chart_data(flattened_participations, visits_data)
+      resolution = chart_resolution
+      grouped_visits = visits_data[:visits].group_by { |v| date_truncate(v[:date], resolution) }
+      grouped_participations = flattened_participations.group_by { |p| date_truncate(p[:acted_at], resolution) }
+
+      # Get all unique date groups from both participations and visits
+      all_date_groups = (grouped_participations.keys + grouped_visits.keys).uniq.sort
+
+      grouped_timeseries = all_date_groups.map do |date_group|
+        participations_in_group = grouped_participations[date_group] || []
+        visits_in_group = grouped_visits[date_group] || []
+
+        {
+          participants: participations_in_group.pluck(:participant_id).uniq.count,
+          visitors: visits_in_group.pluck(:visitor_id).compact.uniq.count,
+          date_group: date_group
+        }
+      end
+
+      {
+        resolution: resolution,
+        timeseries: grouped_timeseries.sort_by { |row| row[:date_group] }
+      }
+    end
+
+    # Modelled on logic in getSensibleresolution.ts, with addition of 'year' resolution
+    def chart_resolution
+      end_at = @phase.end_at.present? ? @phase.end_at.to_time : Time.current
+      duration_seconds = end_at - @phase.start_at.to_time
+      duration_months = (duration_seconds / 1.month).round(1)
+      duration_weeks = (duration_seconds / 1.week).round(1)
+
+      if duration_months > 6
+        'month'
+      elsif duration_weeks > 4
+        'week'
+      else
+        'day'
+      end
+    end
+
+    # Week start is Monday, as in similar data produced by ReportBuilder Queries
+    def date_truncate(datetime, resolution)
+      date = datetime.to_date
+      case resolution
+      when 'day'
+        date
+      when 'week'
+        date.beginning_of_week
+      else # 'month'
+        Date.new(date.year, date.month, 1)
+      end
     end
   end
 end
