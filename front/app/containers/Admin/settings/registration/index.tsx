@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
@@ -19,13 +19,11 @@ import messages from 'containers/Admin/settings/messages';
 import {
   SectionTitle,
   SubSectionTitle,
-  SectionField,
   SectionDescription,
 } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Areas from 'components/Areas';
 import Topics from 'components/Topics';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import getSubmitState from 'utils/getSubmitState';
@@ -136,43 +134,6 @@ const SettingsRegistrationTab = () => {
             <FormattedMessage {...messages.registrationHelperTextDescription} />
           </SectionDescription>
           <form onSubmit={handleSubmit}>
-            <SectionField>
-              <InputMultilocWithLocaleSwitcher
-                type="text"
-                valueMultiloc={latestAppConfigSettings.core.login_helper_text}
-                onChange={handleCoreSettingWithMultilocOnChange(
-                  'login_helper_text'
-                )}
-                label={
-                  <LabelTooltip>
-                    <FormattedMessage {...messages.loginHelper} />
-                    <IconTooltip
-                      content={
-                        <FormattedMessage {...messages.loginHelperTooltip} />
-                      }
-                    />
-                  </LabelTooltip>
-                }
-              />
-            </SectionField>
-
-            <SectionField>
-              <InputMultilocWithLocaleSwitcher
-                type="text"
-                valueMultiloc={latestAppConfigSettings.core.signup_helper_text}
-                onChange={handleCoreSettingWithMultilocOnChange(
-                  'signup_helper_text'
-                )}
-                label={
-                  <LabelTooltip>
-                    <FormattedMessage {...messages.step1} />
-                    <IconTooltip
-                      content={<FormattedMessage {...messages.step1Tooltip} />}
-                    />
-                  </LabelTooltip>
-                }
-              />
-            </SectionField>
             <CustomFieldsSignupText
               onCoreSettingWithMultilocChange={
                 handleCoreSettingWithMultilocOnChange

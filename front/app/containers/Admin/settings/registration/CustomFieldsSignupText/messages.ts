@@ -1,13 +1,13 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  step2: {
-    id: 'app.containers.AdminPage.SettingsPage.step2_1',
-    defaultMessage: 'Step 2 (demographic questions)',
+  demographicQuestions: {
+    id: 'app.containers.AdminPage.SettingsPage.demographicQuestions',
+    defaultMessage: 'Demographic questions',
   },
-  step2Tooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.step2Tooltip_1',
+  demographicQuestionsTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.demographicQuestionsTooltip',
     defaultMessage:
-      'This is shown on the top of the second page of the sign-up form (additional demographic questions).',
+      'This is shown on the top of the demographic questions form in the authentication flow.',
   },
 });

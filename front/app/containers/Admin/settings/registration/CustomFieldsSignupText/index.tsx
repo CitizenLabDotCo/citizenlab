@@ -35,9 +35,11 @@ const RegistrationQuestions = ({
         )}
         label={
           <LabelTooltip>
-            <FormattedMessage {...messages.step2} />
+            <FormattedMessage {...messages.demographicQuestions} />
             <IconTooltip
-              content={<FormattedMessage {...messages.step2Tooltip} />}
+              content={
+                <FormattedMessage {...messages.demographicQuestionsTooltip} />
+              }
             />
           </LabelTooltip>
         }
