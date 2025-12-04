@@ -2591,7 +2591,6 @@
   "app.containers.AdminPage.SettingsPage.customized_button": "Personalizzato",
   "app.containers.AdminPage.SettingsPage.customized_button_text_label": "Testo del pulsante",
   "app.containers.AdminPage.SettingsPage.customized_button_url_label": "Link al pulsante",
-  "app.containers.AdminPage.SettingsPage.defaultTopic": "Tag predefinito",
   "app.containers.AdminPage.SettingsPage.delete": "Elimina",
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "Elimina",
   "app.containers.AdminPage.SettingsPage.deleteTopicConfirmation": "Questo eliminerà il tag da tutti i post esistenti. Questa modifica sarà applicata a tutti i progetti.",
