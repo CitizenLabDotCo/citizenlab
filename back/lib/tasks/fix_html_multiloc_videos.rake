@@ -5,15 +5,15 @@ namespace :fix_existing_description_videos do
   task youtube_iframes: :environment do
     # All models that have HTML multiloc fields that might contain iframes
     content_fields = {
-      Area => [:description_multiloc],
-      Event => [:description_multiloc],
-      Idea => [:body_multiloc],
-      Phase => [:description_multiloc],
-      Project => [:description_multiloc],
-      StaticPage => [:top_info_section_multiloc, :bottom_info_section_multiloc],
-      CustomField => [:description_multiloc],
-      ProjectFolders::Folder => [:description_multiloc],
-      EmailCampaigns::Campaign => [:body_multiloc]
+      Area => %i[description_multiloc],
+      Event => %i[description_multiloc],
+      Idea => %i[body_multiloc],
+      Phase => %i[description_multiloc],
+      Project => %i[description_multiloc],
+      StaticPage => %i[top_info_section_multiloc bottom_info_section_multiloc],
+      CustomField => %i[description_multiloc],
+      ProjectFolders::Folder => %i[description_multiloc],
+      EmailCampaigns::Campaign => %i[body_multiloc]
     }
 
     reporter = ScriptReporter.new
