@@ -68,7 +68,7 @@ module Insights
     # if they ever had a status of threshold_reached.
     def threshold_reached_at(idea)
       activities = Activity.where(item: idea, action: 'changed_input_status')
-      activity = activities.find { |activity| activity.payload['input_status_to_code'] == 'threshold_reached' }
+      activity = activities.find { |act| act.payload['input_status_to_code'] == 'threshold_reached' }
 
       activity&.acted_at
     end

@@ -146,67 +146,71 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
   describe '#threshold_reached_at' do
     it 'returns nil when idea has no threshold_reached status change' do
       threshold_reached_at = service.send(:threshold_reached_at, idea2)
-      
+
       expect(threshold_reached_at).to be_nil
     end
 
     it 'returns the acted_at time when idea reached threshold' do
       activity_time = 8.days.ago
-      create(:activity, 
-        item: idea2, 
+      create(
+        :activity,
+        item: idea2,
         action: 'changed_input_status',
         acted_at: activity_time,
-        payload: { 
+        payload: {
           input_status_from_code: 'proposed',
-          input_status_to_code: 'threshold_reached' 
+          input_status_to_code: 'threshold_reached'
         }
       )
-      
+
       threshold_reached_at = service.send(:threshold_reached_at, idea2)
-      
+
       expect(threshold_reached_at).to be_within(1.second).of(activity_time)
     end
 
     it 'returns the threshold_reached time even when status changed again after' do
       threshold_time = 8.days.ago
-      create(:activity, 
-        item: idea2, 
+      create(
+        :activity,
+        item: idea2,
         action: 'changed_input_status',
         acted_at: threshold_time,
-        payload: { 
+        payload: {
           input_status_from_code: 'proposed',
-          input_status_to_code: 'threshold_reached' 
+          input_status_to_code: 'threshold_reached'
         }
       )
-      
-      create(:activity, 
-        item: idea2, 
+
+      create(
+        :activity,
+        item: idea2,
         action: 'changed_input_status',
         acted_at: 5.days.ago,
-        payload: { 
+        payload: {
           input_status_from_code: 'threshold_reached',
-          input_status_to_code: 'accepted' 
+          input_status_to_code: 'accepted'
         }
       )
-      
+
       threshold_reached_at = service.send(:threshold_reached_at, idea2)
-      
+
       expect(threshold_reached_at).to be_within(1.second).of(threshold_time)
     end
 
     it 'returns nil when idea has other status changes but not threshold_reached' do
-      create(:activity, 
-        item: idea2, 
+      create(
+        :activity,
+        item: idea2,
         action: 'changed_input_status',
         acted_at: 8.days.ago,
-        payload: { 
+        payload: {
           input_status_from_code: 'proposed',
-          input_status_to_code: 'accepted' 
+          input_status_to_code: 'accepted'
         }
       )
-      
+
       threshold_reached_at = service.send(:threshold_reached_at, idea2)
-      
+
       expect(threshold_reached_at).to be_nil
     end
   end
@@ -217,9 +221,9 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
         { threshold_reached_at: nil },
         { threshold_reached_at: nil }
       ]
-      
+
       counts = service.send(:threshold_reached_counts, mock_participations)
-      
+
       expect(counts).to eq({ total: 0, last_7_days: 0 })
     end
 
@@ -229,9 +233,9 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
         { threshold_reached_at: 5.days.ago },
         { threshold_reached_at: nil }
       ]
-      
+
       counts = service.send(:threshold_reached_counts, mock_participations)
-      
+
       expect(counts).to eq({ total: 2, last_7_days: 1 })
     end
 
@@ -242,15 +246,15 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
         { threshold_reached_at: 6.days.ago },
         { threshold_reached_at: 2.days.ago }
       ]
-      
+
       counts = service.send(:threshold_reached_counts, mock_participations)
-      
+
       expect(counts).to eq({ total: 4, last_7_days: 2 })
     end
 
     it 'returns zero counts for empty participations array' do
       counts = service.send(:threshold_reached_counts, [])
-      
+
       expect(counts).to eq({ total: 0, last_7_days: 0 })
     end
 
@@ -258,9 +262,9 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
       mock_participations = [
         { threshold_reached_at: 7.days.ago.beginning_of_day }
       ]
-      
+
       counts = service.send(:threshold_reached_counts, mock_participations)
-      
+
       expect(counts).to eq({ total: 1, last_7_days: 1 })
     end
   end

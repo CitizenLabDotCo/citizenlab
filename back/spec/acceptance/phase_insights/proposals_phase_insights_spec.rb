@@ -54,23 +54,25 @@ resource 'Phase insights' do
       create(:idea, phases: [phase], author: user3, created_at: 2.days.ago, submitted_at: 2.days.ago, creation_phase_id: phase.id) # published after phase (not counted)
 
       # Activities
-      create(:activity, 
-        item: idea2, 
+      create(
+        :activity,
+        item: idea2,
         action: 'changed_input_status',
         acted_at: 10.days.ago,
-        payload: { 
+        payload: {
           input_status_from_code: 'proposed',
-          input_status_to_code: 'threshold_reached' 
+          input_status_to_code: 'threshold_reached'
         }
       )
 
-      create(:activity, 
-        item: idea3, 
+      create(
+        :activity,
+        item: idea3,
         action: 'changed_input_status',
         acted_at: 3.days.ago,
-        payload: { 
+        payload: {
           input_status_from_code: 'proposed',
-          input_status_to_code: 'threshold_reached' 
+          input_status_to_code: 'threshold_reached'
         }
       )
 
