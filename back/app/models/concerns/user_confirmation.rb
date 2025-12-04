@@ -63,9 +63,7 @@ module UserConfirmation
     save!
   end
 
-  def expire_confirmation_code!(code_to_expire)
-    return false if !confirmation_required? || email_confirmation_code != code_to_expire
-
+  def expire_confirmation_code!
     update!(email_confirmation_code: generate_confirmation_code)
   end
 
