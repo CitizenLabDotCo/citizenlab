@@ -2,7 +2,6 @@
 
 module BulkImportIdeas::Extractors
   class UserExtractor < BaseExtractor
-
     # Fixed keys for the user fields - match the column names in the users.xlsx file
     # TODO: Duplicated in ProjectImporter
     USER_EMAIL = 'Email address'

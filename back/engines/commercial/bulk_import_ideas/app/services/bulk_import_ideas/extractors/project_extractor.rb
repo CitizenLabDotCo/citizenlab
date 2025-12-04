@@ -19,9 +19,9 @@ module BulkImportIdeas::Extractors
         id = project_column(row, 'ID') # Project ID - if we need to update an existing project
         publication_status = project_column(row, 'Status')&.downcase || 'draft'
         description_html = project_column(row, 'DescriptionHtml') || ''
-        thumbnail_url = image_path_or_url(row, 'ThumbnailUrl')
-        banner_url = image_path_or_url(row, 'BannerUrl')
         attachments = attachments(row)
+        thumbnail_url = image_attachment_or_url(row, 'ThumbnailUrl', attachments)
+        banner_url = image_attachment_or_url(row, 'BannerUrl', attachments)
 
         # Extract phases (if there are any)
         phases = phase_details[title]&.map do |phase|
@@ -121,16 +121,19 @@ module BulkImportIdeas::Extractors
       }
     end
 
-    def image_path_or_url(row, column_name)
+    def image_attachment_or_url(row, column_name, attachments)
       value = project_column(row, column_name)
       return unless value
 
-      if value.starts_with?('http://', 'https://')
-        value
-      else
-        attachment_folder = project_column(row, 'AttachmentsFolder')
-        "#{@xlsx_folder_path}/attachments/#{attachment_folder}/#{value}"
+      unless value.starts_with?('http://', 'https://')
+        return if attachments.empty?
+
+        # Find the image in the attachments and then remove it from the attachments array
+        index = attachments.find_index { |v| v.include?(value) }
+        value = index ? attachments[index] : nil
+        attachments.delete_at(index) if index
       end
+      value
     end
 
     def attachments(row)
@@ -138,11 +141,50 @@ module BulkImportIdeas::Extractors
       return [] if folder_name.blank?
 
       attachments_folder = "#{@xlsx_folder_path}/attachments/#{folder_name}"
-      Dir.glob("#{attachments_folder}/**/*").select do |file_path|
-        next if file_path.include?('banner.') || file_path.include?('thumbnail.') # Skip these special files
-
+      paths = Dir.glob("#{attachments_folder}/**/*").select do |file_path|
         File.file?(file_path)
       end
+
+      return paths unless upload_attachments_to_s3? # If not uploading to S3, return local paths
+
+      s3_attachment_paths(paths)
+    end
+
+    def s3_attachment_paths(file_paths)
+      attachments_path = File.join(@xlsx_folder_path, 'attachments')
+
+      bucket = ENV.fetch('AWS_S3_BUCKET')
+      tenant_id = Tenant.current.id
+
+      # Upload each file in the attachments folder
+      file_paths.map do |file_path|
+        next unless File.file?(file_path)
+
+        # Construct S3 key from relative path in attachments folder
+        relative_path = file_path.sub("#{attachments_path}/", '')
+        s3_key = "imports/#{tenant_id}/attachments/#{relative_path}"
+
+        # Upload file to S3
+        File.open(file_path, 'rb') do |file|
+          s3_client.put_object(
+            bucket: bucket,
+            key: s3_key,
+            body: file
+          )
+        end
+
+        s3_key
+      end
+    end
+
+    def upload_attachments_to_s3?
+      return true unless Rails.env.development?
+
+      ENV['USE_AWS_S3_IN_DEV'] == 'true'
+    end
+
+    def s3_client
+      @s3_client ||= Aws::S3::Client.new(region: ENV.fetch('AWS_REGION'))
     end
 
     def project_column(row, column_name)

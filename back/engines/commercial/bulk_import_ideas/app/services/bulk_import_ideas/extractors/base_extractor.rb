@@ -64,7 +64,6 @@ module BulkImportIdeas::Extractors
     end
 
     def number_field_attributes(rows, column_name, override_input_type)
-      # binding.pry if column_name == 'Please rate the following aspects of Town Center. (1 = Very poor, 5 = Excellent): Entertainment / Events [#354446]'
       values = rows.pluck(column_name).compact
 
       return nil unless values.all?(Integer) || values.all? { |str| str.to_s.match?(/\A\d+\z/) } || override_input_type == 'number'

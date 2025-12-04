@@ -203,114 +203,6 @@ module BulkImportIdeas::Importers
       end
     end
 
-    def create_description_content_builder_layout(project)
-      craftjs_json = {
-        ROOT: {
-          type: 'div',
-          nodes: %w[TEXT],
-          props: { id: 'e2e-content-builder-frame' },
-          custom: {},
-          hidden: false,
-          isCanvas: true,
-          displayName: 'div',
-          linkedNodes: {}
-        },
-        TEXT: {
-          type: { resolvedName: 'TextMultiloc' },
-          nodes: [],
-          props: { text: project.description_multiloc || {} },
-          custom: {},
-          hidden: false,
-          parent: 'ROOT',
-          isCanvas: false,
-          displayName: 'TextMultiloc',
-          linkedNodes: {}
-        }
-      }
-
-      ContentBuilder::Layout.create!(
-        content_buildable: project,
-        code: 'project_description',
-        craftjs_json: craftjs_json,
-        enabled: true
-      )
-
-      log 'Created description builder layout for project description.'
-    rescue StandardError => e
-      log "ERROR: Creating description builder layout: #{e.message}"
-    end
-
-    def create_project_thumbnail_image(project, project_data)
-      thumbnail_url = project_data[:thumbnail_url]
-      if thumbnail_url.present?
-        begin
-          # Ensure the correct image format is used - to avoid exif stripping issues
-          image = MiniMagick::Image.open(thumbnail_url)
-          image.format(image.data['format'].downcase)
-
-          # Create the project image
-          ProjectImage.create!(
-            image: image,
-            project: project,
-            alt_text_multiloc: project_data[:title_multiloc]
-          )
-          log('Created project thumbnail image.')
-        rescue StandardError => e
-          log "ERROR: Creating project thumbnail image: #{e.message}"
-        end
-      end
-    end
-
-    def create_project_banner_image(project, project_data)
-      banner_url = project_data[:banner_url]
-      if banner_url.present?
-        begin
-          # Ensure the correct image format is used - to avoid exif stripping issues
-          image = MiniMagick::Image.open(banner_url)
-          image.format(image.data['format'].downcase)
-
-          project.header_bg = image
-          project.header_bg_alt_text_multiloc = project_data[:title_multiloc]
-          project.save!
-
-          log('Created project banner image.')
-        rescue StandardError => e
-          log "ERROR: Creating project banner image: #{e.message}"
-        end
-      end
-    end
-
-    def create_project_attachments(project, project_data)
-      attachments = project_data[:attachments] || []
-      attachments.each_with_index do |file_path, index|
-        file_content = File.open(file_path, 'rb')
-        file_name = File.basename(file_path)
-        file_mime_type = Marcel::MimeType.for(file_content)
-
-        file = Files::File.new(
-          content_by_content: { content: file_content, name: file_name },
-          mime_type: file_mime_type,
-          uploader: @import_user
-        )
-
-        # Not sure why I have to do this?
-        file.files_projects.build(project: project)
-
-        file_attachment = Files::FileAttachment.new(
-          file: file,
-          attachable: project,
-          position: index
-        )
-
-        file_attachment.file.save!
-        file_attachment.save!
-
-        log "Created project attachment: #{file_name}"
-      rescue StandardError => e
-        log "ERROR: Creating project attachment '#{file_path}': #{e.message}"
-      end
-    end
-
     def find_or_create_phase(project, phase_attributes)
       if phase_attributes[:id]
         begin
@@ -457,6 +349,142 @@ module BulkImportIdeas::Importers
       end
 
       project_data
+    end
+
+    def create_description_content_builder_layout(project)
+      craftjs_json = {
+        ROOT: {
+          type: 'div',
+          nodes: %w[TEXT],
+          props: { id: 'e2e-content-builder-frame' },
+          custom: {},
+          hidden: false,
+          isCanvas: true,
+          displayName: 'div',
+          linkedNodes: {}
+        },
+        TEXT: {
+          type: { resolvedName: 'TextMultiloc' },
+          nodes: [],
+          props: { text: project.description_multiloc || {} },
+          custom: {},
+          hidden: false,
+          parent: 'ROOT',
+          isCanvas: false,
+          displayName: 'TextMultiloc',
+          linkedNodes: {}
+        }
+      }
+
+      ContentBuilder::Layout.create!(
+        content_buildable: project,
+        code: 'project_description',
+        craftjs_json: craftjs_json,
+        enabled: true
+      )
+
+      log 'Created description builder layout for project description.'
+    rescue StandardError => e
+      log "ERROR: Creating description builder layout: #{e.message}"
+    end
+
+    def create_project_thumbnail_image(project, project_data)
+      thumbnail_url = project_data[:thumbnail_url]
+      if thumbnail_url.present?
+        begin
+          path_or_url = local_file_path(thumbnail_url)
+
+          # Ensure the correct image format is used - to avoid exif stripping issues
+          image = MiniMagick::Image.open(path_or_url)
+          image.format(image.data['format'].downcase)
+
+          # Create the project image
+          ProjectImage.create!(
+            image: image,
+            project: project,
+            alt_text_multiloc: project_data[:title_multiloc]
+          )
+
+          log('Created project thumbnail image.')
+        rescue StandardError => e
+          log "ERROR: Creating project thumbnail image: #{e.message}"
+        end
+      end
+    end
+
+    def create_project_banner_image(project, project_data)
+      banner_url = project_data[:banner_url]
+      if banner_url.present?
+        begin
+          path_or_url = local_file_path(banner_url)
+
+          # Ensure the correct image format is used - to avoid exif stripping issues
+          image = MiniMagick::Image.open(path_or_url)
+          image.format(image.data['format'].downcase)
+
+          project.header_bg = image
+          project.header_bg_alt_text_multiloc = project_data[:title_multiloc]
+          project.save!
+
+          log('Created project banner image.')
+        rescue StandardError => e
+          log "ERROR: Creating project banner image: #{e.message}"
+        end
+      end
+    end
+
+    def create_project_attachments(project, project_data)
+      attachments = project_data[:attachments] || []
+      attachments.each_with_index do |path, index|
+        file_path = local_file_path(path)
+        file_name = File.basename(path)
+        file_content = File.open(file_path, 'rb')
+        file_mime_type = Marcel::MimeType.for(file_content)
+
+        file = Files::File.new(
+          content_by_content: { content: file_content, name: file_name },
+          mime_type: file_mime_type,
+          uploader: @import_user
+        )
+
+        # Not sure why I have to do this?
+        file.files_projects.build(project: project)
+
+        file_attachment = Files::FileAttachment.new(
+          file: file,
+          attachable: project,
+          position: index
+        )
+
+        file_attachment.file.save!
+        file_attachment.save!
+
+        # Finally, remove the attachment from the local file system
+        File.delete(file_path)
+
+        log "Created project attachment: #{file_name}"
+      rescue StandardError => e
+        log "ERROR: Creating project attachment '#{file_path}': #{e.message}"
+      end
+    end
+
+    # Ensure we have a local file path even if attachment is on S3
+    def local_file_path(path)
+      return path unless path.start_with?("imports/#{Tenant.current.id}")
+
+      file_ext = File.extname(path)
+      file_name = File.basename(path, file_ext)
+      bucket = ENV.fetch('AWS_S3_BUCKET')
+      s3_response = s3_client.get_object(bucket: bucket, key: path)
+      temp_file = Tempfile.new([file_name, file_ext])
+      temp_file.binmode
+      temp_file.write(s3_response.body.read)
+      temp_file.rewind
+      temp_file.path
+    end
+
+    def s3_client
+      @s3_client ||= Aws::S3::Client.new(region: ENV.fetch('AWS_REGION'))
     end
 
     def log(message)
