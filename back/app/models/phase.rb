@@ -173,6 +173,7 @@ class Phase < ApplicationRecord
     validates :voting_method, presence: true, inclusion: { in: VOTING_METHODS }
     validates :autoshare_results_enabled, inclusion: { in: [true, false] }
   end
+
   validates :voting_min_total,
     numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :voting_max_total,
                     if: %i[voting? voting_max_total],
@@ -189,6 +190,7 @@ class Phase < ApplicationRecord
     numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: :voting_max_total,
                     if: %i[voting? voting_max_total],
                     allow_nil: true }
+  validates :voting_filtering_enabled, inclusion: { in: [true, false] }
 
   scope :starting_on, lambda { |date|
     where(start_at: date)
@@ -282,6 +284,8 @@ class Phase < ApplicationRecord
       ParticipationMethod::Volunteering.new(self)
     when 'common_ground'
       ParticipationMethod::CommonGround.new(self)
+    when 'idea_feed'
+      ParticipationMethod::IdeaFeed.new(self)
     else
       ParticipationMethod::None.new
     end

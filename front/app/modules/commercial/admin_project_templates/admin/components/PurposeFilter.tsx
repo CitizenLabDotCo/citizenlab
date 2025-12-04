@@ -1,9 +1,7 @@
 import React, { memo, useCallback, useState } from 'react';
 
-import { gql, useQuery } from '@apollo/client';
 import { WrappedComponentProps } from 'react-intl';
 
-import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import useLocalize from 'hooks/useLocalize';
 
 import FilterSelector, {
@@ -12,7 +10,7 @@ import FilterSelector, {
 
 import { injectIntl } from 'utils/cl-intl';
 
-import { client } from '../../utils/apolloUtils';
+import usePurposes from '../api/usePurposes';
 
 import messages from './messages';
 
@@ -23,31 +21,16 @@ interface Props {
 const PurposeFilter = memo<Props & WrappedComponentProps>(
   ({ intl: { formatMessage }, onChange }) => {
     const localize = useLocalize();
-    const graphqlTenantLocales = useGraphqlTenantLocales();
-
-    const PURPOSES_QUERY = gql`
-    {
-      purposes {
-        nodes {
-          id
-          titleMultiloc {
-            ${graphqlTenantLocales}
-          }
-        }
-      }
-    }
-  `;
-
     const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
-    const { data } = useQuery(PURPOSES_QUERY, { client });
+    const { data: purposes } = usePurposes();
 
     let options: IFilterSelectorValue[] = [];
 
-    if (data) {
-      options = data.purposes.nodes.map((node) => ({
-        value: node.id,
-        text: localize(node.titleMultiloc),
+    if (purposes) {
+      options = purposes.map((purpose) => ({
+        value: purpose.id,
+        text: localize(purpose.titleMultiloc),
       }));
     }
 

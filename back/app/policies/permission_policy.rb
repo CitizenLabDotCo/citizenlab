@@ -30,10 +30,6 @@ class PermissionPolicy < ApplicationPolicy
     true
   end
 
-  def schema?
-    true
-  end
-
   def custom_fields?
     true
   end

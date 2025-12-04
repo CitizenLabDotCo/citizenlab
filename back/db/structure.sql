@@ -1,8 +1,3 @@
-\restrict mgZkyDgtCjSLKfZxRhtiC7mYUyUSQRU7ovUCL1fQC2LD80zlZxvwlHvNXgkKxoK
-
--- Dumped from database version 16.6 (Debian 16.6-1.pgdg110+1)
--- Dumped by pg_dump version 16.10 (Debian 16.10-1.pgdg13+1)
-
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -17,6 +12,7 @@ SET row_security = off;
 ALTER TABLE IF EXISTS ONLY public.ideas_topics DROP CONSTRAINT IF EXISTS fk_rails_ff1788eb50;
 ALTER TABLE IF EXISTS ONLY public.project_reviews DROP CONSTRAINT IF EXISTS fk_rails_fdbeb12ddd;
 ALTER TABLE IF EXISTS ONLY public.ideas_topics DROP CONSTRAINT IF EXISTS fk_rails_fd874ecf4b;
+ALTER TABLE IF EXISTS ONLY public.idea_exposures DROP CONSTRAINT IF EXISTS fk_rails_fd29df3731;
 ALTER TABLE IF EXISTS ONLY public.events_attendances DROP CONSTRAINT IF EXISTS fk_rails_fba307ba3b;
 ALTER TABLE IF EXISTS ONLY public.files_projects DROP CONSTRAINT IF EXISTS fk_rails_f5c8c46abb;
 ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS fk_rails_f44b1e3c8a;
@@ -70,6 +66,7 @@ ALTER TABLE IF EXISTS ONLY public.custom_field_options DROP CONSTRAINT IF EXISTS
 ALTER TABLE IF EXISTS ONLY public.baskets DROP CONSTRAINT IF EXISTS fk_rails_b3d04c10d5;
 ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS fk_rails_b0efe660f5;
 ALTER TABLE IF EXISTS ONLY public.analysis_tags DROP CONSTRAINT IF EXISTS fk_rails_afc2d02258;
+ALTER TABLE IF EXISTS ONLY public.idea_exposures DROP CONSTRAINT IF EXISTS fk_rails_ad985054f0;
 ALTER TABLE IF EXISTS ONLY public.project_reviews DROP CONSTRAINT IF EXISTS fk_rails_ac7bc0a42f;
 ALTER TABLE IF EXISTS ONLY public.maps_layers DROP CONSTRAINT IF EXISTS fk_rails_abbf8658b2;
 ALTER TABLE IF EXISTS ONLY public.files_previews DROP CONSTRAINT IF EXISTS fk_rails_ab74281536;
@@ -128,6 +125,7 @@ ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rail
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_5ac7668cd3;
 ALTER TABLE IF EXISTS ONLY public.event_files DROP CONSTRAINT IF EXISTS fk_rails_577d1fb456;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_575368d182;
+ALTER TABLE IF EXISTS ONLY public.idea_exposures DROP CONSTRAINT IF EXISTS fk_rails_55d2ba0ca8;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_5471f55cd6;
 ALTER TABLE IF EXISTS ONLY public.identities DROP CONSTRAINT IF EXISTS fk_rails_5373344100;
 ALTER TABLE IF EXISTS ONLY public.permissions_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_50335fc43f;
@@ -319,6 +317,9 @@ DROP INDEX IF EXISTS public.index_idea_import_files_on_parent_id;
 DROP INDEX IF EXISTS public.index_idea_images_on_idea_id;
 DROP INDEX IF EXISTS public.index_idea_files_on_migrated_file_id;
 DROP INDEX IF EXISTS public.index_idea_files_on_idea_id;
+DROP INDEX IF EXISTS public.index_idea_exposures_on_user_id;
+DROP INDEX IF EXISTS public.index_idea_exposures_on_phase_id;
+DROP INDEX IF EXISTS public.index_idea_exposures_on_idea_id;
 DROP INDEX IF EXISTS public.index_id_id_card_lookup_id_cards_on_hashed_card_id;
 DROP INDEX IF EXISTS public.index_groups_projects_on_project_id;
 DROP INDEX IF EXISTS public.index_groups_projects_on_group_id_and_project_id;
@@ -534,6 +535,7 @@ ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS idea_im
 ALTER TABLE IF EXISTS ONLY public.idea_import_files DROP CONSTRAINT IF EXISTS idea_import_files_pkey;
 ALTER TABLE IF EXISTS ONLY public.idea_images DROP CONSTRAINT IF EXISTS idea_images_pkey;
 ALTER TABLE IF EXISTS ONLY public.idea_files DROP CONSTRAINT IF EXISTS idea_files_pkey;
+ALTER TABLE IF EXISTS ONLY public.idea_exposures DROP CONSTRAINT IF EXISTS idea_exposures_pkey;
 ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS groups_projects_pkey;
 ALTER TABLE IF EXISTS ONLY public.groups DROP CONSTRAINT IF EXISTS groups_pkey;
 ALTER TABLE IF EXISTS ONLY public.groups_permissions DROP CONSTRAINT IF EXISTS groups_permissions_pkey;
@@ -653,6 +655,7 @@ DROP TABLE IF EXISTS public.idea_imports;
 DROP TABLE IF EXISTS public.idea_import_files;
 DROP TABLE IF EXISTS public.idea_images;
 DROP TABLE IF EXISTS public.idea_files;
+DROP TABLE IF EXISTS public.idea_exposures;
 DROP TABLE IF EXISTS public.id_id_card_lookup_id_cards;
 DROP TABLE IF EXISTS public.groups_projects;
 DROP TABLE IF EXISTS public.groups_permissions;
@@ -1750,7 +1753,8 @@ CREATE TABLE public.phases (
     similarity_threshold_body double precision DEFAULT 0.4,
     similarity_enabled boolean DEFAULT true NOT NULL,
     vote_term character varying DEFAULT 'vote'::character varying,
-    voting_min_selected_options integer DEFAULT 1 NOT NULL
+    voting_min_selected_options integer DEFAULT 1 NOT NULL,
+    voting_filtering_enabled boolean DEFAULT false NOT NULL
 );
 
 
@@ -2670,6 +2674,20 @@ CREATE TABLE public.groups_projects (
 CREATE TABLE public.id_id_card_lookup_id_cards (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     hashed_card_id character varying
+);
+
+
+--
+-- Name: idea_exposures; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.idea_exposures (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    user_id uuid NOT NULL,
+    idea_id uuid NOT NULL,
+    phase_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -3610,9 +3628,9 @@ CREATE TABLE public.topics (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     ordering integer,
-    code character varying DEFAULT 'custom'::character varying NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL,
-    include_in_onboarding boolean DEFAULT false NOT NULL
+    include_in_onboarding boolean DEFAULT false NOT NULL,
+    "default" boolean DEFAULT false NOT NULL
 );
 
 
@@ -4175,6 +4193,14 @@ ALTER TABLE ONLY public.groups
 
 ALTER TABLE ONLY public.groups_projects
     ADD CONSTRAINT groups_projects_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: idea_exposures idea_exposures_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.idea_exposures
+    ADD CONSTRAINT idea_exposures_pkey PRIMARY KEY (id);
 
 
 --
@@ -5752,6 +5778,27 @@ CREATE INDEX index_id_id_card_lookup_id_cards_on_hashed_card_id ON public.id_id_
 
 
 --
+-- Name: index_idea_exposures_on_idea_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_idea_exposures_on_idea_id ON public.idea_exposures USING btree (idea_id);
+
+
+--
+-- Name: index_idea_exposures_on_phase_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_idea_exposures_on_phase_id ON public.idea_exposures USING btree (phase_id);
+
+
+--
+-- Name: index_idea_exposures_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_idea_exposures_on_user_id ON public.idea_exposures USING btree (user_id);
+
+
+--
 -- Name: index_idea_files_on_idea_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7123,6 +7170,14 @@ ALTER TABLE ONLY public.notifications
 
 
 --
+-- Name: idea_exposures fk_rails_55d2ba0ca8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.idea_exposures
+    ADD CONSTRAINT fk_rails_55d2ba0ca8 FOREIGN KEY (phase_id) REFERENCES public.phases(id);
+
+
+--
 -- Name: notifications fk_rails_575368d182; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7587,6 +7642,14 @@ ALTER TABLE ONLY public.project_reviews
 
 
 --
+-- Name: idea_exposures fk_rails_ad985054f0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.idea_exposures
+    ADD CONSTRAINT fk_rails_ad985054f0 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: analysis_tags fk_rails_afc2d02258; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8011,6 +8074,14 @@ ALTER TABLE ONLY public.events_attendances
 
 
 --
+-- Name: idea_exposures fk_rails_fd29df3731; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.idea_exposures
+    ADD CONSTRAINT fk_rails_fd29df3731 FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
+
+
+--
 -- Name: ideas_topics fk_rails_fd874ecf4b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8038,11 +8109,12 @@ ALTER TABLE ONLY public.ideas_topics
 -- PostgreSQL database dump complete
 --
 
-\unrestrict mgZkyDgtCjSLKfZxRhtiC7mYUyUSQRU7ovUCL1fQC2LD80zlZxvwlHvNXgkKxoK
-
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251127085639'),
+('20251124000000'),
+('20251120113747'),
 ('20251029135211'),
 ('20251022100725'),
 ('20251022100724'),
