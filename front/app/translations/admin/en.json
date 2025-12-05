@@ -2611,7 +2611,7 @@
   "app.containers.AdminPage.SettingsPage.enterEmailStep": "Enter email step",
   "app.containers.AdminPage.SettingsPage.enterEmailStepTooltip2": "This is shown on the 'enter your email' step in the registration process.",
   "app.containers.AdminPage.SettingsPage.enterPasswordStep": "Enter password step",
-  "app.containers.AdminPage.SettingsPage.enterPasswordStepTooltip2": "This is shown on the 'enter your password' step in the registration process.",
+  "app.containers.AdminPage.SettingsPage.enterPasswordStepTooltip3": "This is shown on the 'enter your password' step when logging in.",
   "app.containers.AdminPage.SettingsPage.fieldDescription": "Area description",
   "app.containers.AdminPage.SettingsPage.fieldDescriptionTooltip": "This description is only for internal collaboration and is not shown to users.",
   "app.containers.AdminPage.SettingsPage.fieldTitle": "Area name",
