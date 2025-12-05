@@ -66,12 +66,18 @@ module Insights
           v[:acted_at] < 7.days.ago && v[:acted_at] >= 14.days.ago
         end.pluck(:visitor_id).uniq.count
 
+        engagement_rate_last_7_days = visitors_last_7_days_count > 0 ? (participants_last_7_days_count.to_f / visitors_last_7_days_count).round(3) : 0
+        engagement_rate_last_14_to_8_days = visitors_last_14_to_8_days_count > 0 ? (participants_last_14_to_8_days_count.to_f / visitors_last_14_to_8_days_count).round(3) : 0
+
+        puts "engagement_rate_last_7_days: #{engagement_rate_last_7_days}, engagement_rate_last_14_to_8_days: #{engagement_rate_last_14_to_8_days}"
+
         {
           visitors: unique_visitors,
           visitors_rolling_7_day_change: percentage_change(visitors_last_14_to_8_days_count, visitors_last_7_days_count),
           participants: total_participant_count,
           participants_rolling_7_day_change: percentage_change(participants_last_14_to_8_days_count, participants_last_7_days_count),
-          engagement_rate: unique_visitors > 0 ? (total_participant_count.to_f / unique_visitors).round(3) : 0
+          engagement_rate: unique_visitors > 0 ? (total_participant_count.to_f / unique_visitors).round(3) : 0,
+          engagement_rate_rolling_7_day_change: percentage_change(engagement_rate_last_14_to_8_days, engagement_rate_last_7_days)
         }
       else
         {
@@ -79,7 +85,8 @@ module Insights
           visitors_rolling_7_day_change: nil,
           participants: total_participant_count,
           participants_rolling_7_day_change: nil,
-          engagement_rate: unique_visitors > 0 ? (total_participant_count.to_f / unique_visitors).round(3) : 0
+          engagement_rate: unique_visitors > 0 ? (total_participant_count.to_f / unique_visitors).round(3) : 0,
+          engagement_rate_rolling_7_day_change: nil
         }
       end
     end
@@ -106,7 +113,7 @@ module Insights
       return nil if old_value.zero?
 
       # Round to one decimal place
-      (((new_value - old_value).to_f / old_value) * 100).round(1)
+      (((new_value - old_value).to_f / old_value) * 100.0).round(1)
     end
 
     def participant_id(item_id, user_id, user_hash = nil)

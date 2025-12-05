@@ -125,6 +125,7 @@ resource 'Phase insights' do
         participants: 5,
         participants_rolling_7_day_change: 50.0, # from 3 (in week before last) to 5 unique participants (in last 7 days) = 50% increase
         engagement_rate: 0.833,
+        engagement_rate_rolling_7_day_change: 20.0, # engagement_rate_last_7_days: 0.6, engagement_rate_last_14_to_8_days: 0.5 = (((0.6 - 0.5).to_f / 0.5) * 100.0).round(1)
         voting: {
           voting_method: 'multiple_voting',
           online_votes: 6,
@@ -159,6 +160,7 @@ resource 'Phase insights' do
           participants: 5,
           participants_rolling_7_day_change: 50.0, # from 3 (in week before last) to 5 unique participants (in last 7 days) = 50% increase
           engagement_rate: 0.833,
+          engagement_rate_rolling_7_day_change: 20.0, # engagement_rate_last_7_days: 0.6, engagement_rate_last_14_to_8_days: 0.5 = (((0.6 - 0.5).to_f / 0.5) * 100.0).round(1)
           voting: {
             voting_method: 'budgeting',
             online_picks: 4,

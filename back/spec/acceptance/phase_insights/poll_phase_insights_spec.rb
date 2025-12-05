@@ -72,6 +72,7 @@ resource 'Phase insights' do
         participants: 2,
         participants_rolling_7_day_change: 0.0, # from 1 (in week before last) to 1 unique participant (in last 7 days) = 0% change
         engagement_rate: 1.0,
+        engagement_rate_rolling_7_day_change: 100.0, # engagement_rate_last_7_days: 1.0, engagement_rate_last_14_to_8_days: 0.5 = (((1.0 - 0.5).to_f / 0.5) * 100.0).round(1)
         poll: {
           responses: 2,
           responses_last_7_days: 1

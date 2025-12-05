@@ -110,6 +110,7 @@ resource 'Phase insights' do
         participants: 2,
         participants_rolling_7_day_change: -50.0, # from 2 (in week before last) to 1 unique participant (in last 7 days) = -50% decrease
         engagement_rate: 0.667,
+        engagement_rate_rolling_7_day_change: 0.0, # engagement_rate_last_7_days: 1.0, engagement_rate_last_14_to_8_days: 1.0 = 0% change
         native_survey: {
           submitted_surveys: 2,
           submitted_surveys_last_7_days: 1,
