@@ -50,7 +50,7 @@ module Insights
       phase_run_14_days = phase_has_run_more_than_14_days?
 
       participants_rolling_7_day_change = phase_run_14_days ? participants_rolling_7_day_change(flattened_participations) : nil
-      unique_visitors = visits.pluck(:visitor_id).compact.uniq.count
+      unique_visitors = visits.pluck(:visitor_id).uniq.count
       visitors_rolling_7_day_change = phase_run_14_days ? visitors_rolling_7_day_change(visits) : nil
 
       {
@@ -302,7 +302,7 @@ module Insights
 
         {
           participants: participations_in_group.pluck(:participant_id).uniq.count,
-          visitors: visits_in_group.pluck(:visitor_id).compact.uniq.count,
+          visitors: visits_in_group.pluck(:visitor_id).uniq.count,
           date_group: date_group
         }
       end
