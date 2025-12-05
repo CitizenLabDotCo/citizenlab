@@ -49,7 +49,7 @@ resource 'Phase insights' do
 
       # Ideas
       idea1 = create(:idea, phases: [phase], author: user1, created_at: 25.days.ago, submitted_at: 25.days.ago, creation_phase_id: phase.id) # published before phase (not counted)
-      idea2 = create(:idea, phases: [phase], author: user2, created_at: 15.days.ago, submitted_at: 15.days.ago, creation_phase_id: phase.id) # published during phase
+      idea2 = create(:idea, phases: [phase], author: user2, created_at: 13.days.ago, submitted_at: 13.days.ago, creation_phase_id: phase.id) # published during phase (in week before last)
       idea3 = create(:idea, phases: [phase], author: user2, created_at: 5.days.ago, submitted_at: 5.days.ago, creation_phase_id: phase.id) # published during phase, and in last 7 days
       create(:idea, phases: [phase], author: user3, created_at: 2.days.ago, submitted_at: 2.days.ago, creation_phase_id: phase.id) # published after phase (not counted)
 
@@ -87,7 +87,7 @@ resource 'Phase insights' do
       create(:pageview, session: session1, created_at: 25.days.ago, project_id: phase.project.id) # before phase
 
       session2 = create(:session, user_id: user2.id)
-      create(:pageview, session: session2, created_at: 15.days.ago, project_id: phase.project.id) # during phase
+      create(:pageview, session: session2, created_at: 13.days.ago, project_id: phase.project.id) # during phase (in week before last)
       create(:pageview, session: session2, created_at: 5.days.ago, project_id: phase.project.id) # during phase & last 7 days, same session
 
       session3 = create(:session, user_id: user3.id)
@@ -116,20 +116,20 @@ resource 'Phase insights' do
       metrics = json_response_body.dig(:data, :attributes, :metrics)
       expect(metrics).to eq({
         visitors: 4,
-        visitors_rolling_7_day_change: 100.0, # from 1 (in week before last) to 2 unique visitors (in last 7 days) = 100% increase
+        visitors_rolling_7_day_change: 0.0, # from 2 (in week before last) to 2 unique visitors (in last 7 days) = 0% change
         participants: 3,
-        participants_rolling_7_day_change: 100.0, # from 1 (in week before last) to 2 unique participants (in last 7 days) = 100% increase
+        participants_rolling_7_day_change: 0.0, # from 2 (in week before last) to 2 unique participants (in last 7 days) = 0% change
         engagement_rate: 0.75,
         engagement_rate_rolling_7_day_change: 0.0, # engagement_rate_last_7_days: 1.0, engagement_rate_last_14_to_8_days: 1.0 = 0% change
         proposals: {
           ideas_posted: 2,
-          ideas_posted_last_7_days: 1,
+          ideas_posted_rolling_7_day_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) => 0% change
           reached_threshold: 2,
-          reached_threshold_last_7_days: 1,
+          reached_threshold_rolling_7_day_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) => 0% change
           comments_posted: 1,
-          comments_posted_last_7_days: 0,
+          comments_posted_rolling_7_day_change: -100.0, # from 1 (in week before last) to 0 (in last 7 days) = -100% decrease
           reactions: 1,
-          reactions_last_7_days: 1
+          reactions_rolling_7_day_change: nil # from 0 (in week before last) to 1 (in last 7 days) => nil (avoiding division by zero)
         }
       })
 
@@ -137,7 +137,8 @@ resource 'Phase insights' do
       expect(participants_and_visitors_chart_data).to eq({
         resolution: 'day',
         timeseries: [
-          { participants: 1, visitors: 2, date_group: '2025-11-17' },
+          { participants: 0, visitors: 1, date_group: '2025-11-17' },
+          { participants: 1, visitors: 1, date_group: '2025-11-19' },
           { participants: 1, visitors: 1, date_group: '2025-11-22' },
           { participants: 2, visitors: 2, date_group: '2025-11-27' }
         ]
