@@ -100,11 +100,11 @@ resource 'Phase insights' do
         engagement_rate_rolling_7_day_change: 0.0, # engagement_rate_last_7_days: 1.0, engagement_rate_last_14_to_8_days: 1.0 = 0% change
         ideation: {
           ideas_posted: 2,
-          ideas_posted_last_7_days: 1,
+          ideas_posted_rolling_7_day_change: nil, # from 0 (in week before last) to 1 (in last 7 days) => nil (avoiding division by zero),
           comments_posted: 1,
-          comments_posted_last_7_days: 0,
+          comments_posted_rolling_7_day_change: -100.0, # from 1 (in week before last) to 0 (in last 7 days) = -100% decrease
           reactions: 1,
-          reactions_last_7_days: 1
+          reactions_rolling_7_day_change: nil # from 0 (in week before last) to 1 (in last 7 days) => nil (avoiding division by zero)
         }
       })
 

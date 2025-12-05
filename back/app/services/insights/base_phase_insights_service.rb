@@ -69,8 +69,6 @@ module Insights
         engagement_rate_last_7_days = visitors_last_7_days_count > 0 ? (participants_last_7_days_count.to_f / visitors_last_7_days_count).round(3) : 0
         engagement_rate_last_14_to_8_days = visitors_last_14_to_8_days_count > 0 ? (participants_last_14_to_8_days_count.to_f / visitors_last_14_to_8_days_count).round(3) : 0
 
-        puts "engagement_rate_last_7_days: #{engagement_rate_last_7_days}, engagement_rate_last_14_to_8_days: #{engagement_rate_last_14_to_8_days}"
-
         {
           visitors: unique_visitors,
           visitors_rolling_7_day_change: percentage_change(visitors_last_14_to_8_days_count, visitors_last_7_days_count),
@@ -111,10 +109,27 @@ module Insights
 
     def percentage_change(old_value, new_value)
       return 0.0 if old_value == new_value # Includes case where both are zero
-      return nil if old_value.zero?
+      return nil if old_value.zero? # Infinite percentage change (avoid division by zero)
 
       # Round to one decimal place
       (((new_value - old_value).to_f / old_value) * 100.0).round(1)
+    end
+
+    def participations_rolling_7_day_change(participations)
+      return nil unless phase_has_run_more_than_14_days?
+      return 0.0 if participations.empty?
+
+      participations_last_7_days_count = participations.select { |p| p[:acted_at] >= 7.days.ago }
+      participations_last_14_to_8_days_count = participations.select do |p|
+        p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago
+      end
+
+      puts "participations_last_7_days_count: #{participations_last_7_days_count.count}, participations_last_14_to_8_days_count: #{participations_last_14_to_8_days_count.count}"
+
+      percentage_change(
+        participations_last_14_to_8_days_count.count,
+        participations_last_7_days_count.count
+      )
     end
 
     def participant_id(item_id, user_id, user_hash = nil)

@@ -560,4 +560,37 @@ RSpec.describe Insights::BasePhaseInsightsService do
       expect(service.send(:percentage_change, 7, 5)).to eq(-28.6)
     end
   end
+
+  describe '#participations_rolling_7_day_change' do
+    it 'returns nil when phase has not run more than 14 days' do
+      phase = create(:single_voting_phase, start_at: 10.days.ago, end_at: 5.days.ago)
+      service = described_class.new(phase)
+      participations = [create(:basket_participation, acted_at: 9.days.ago)]
+
+      expect(service.send(:participations_rolling_7_day_change, participations)).to be_nil
+    end
+
+    it 'returns 0.0 when participations is empty' do
+      expect(service.send(:participations_rolling_7_day_change, [])).to eq(0.0)
+    end
+
+    it 'calculates rolling 7-day change correctly' do
+      participations = [
+        create(:basket_participation, acted_at: 10.days.ago, participant_id: 'user_1'),
+        create(:basket_participation, acted_at: 9.days.ago, participant_id: 'user_2'),
+        create(:basket_participation, acted_at: 5.days.ago, participant_id: 'user_1'),
+        create(:basket_participation, acted_at: 4.days.ago, participant_id: 'user_3')
+      ]
+
+      # Unique participants in 7-14 days ago: user_1, user_2 => 2
+      # Unique participants in last 7 days: user_1, user_3 => 2
+      expect(service.send(:participations_rolling_7_day_change, participations)).to eq(0.0)
+
+      # Adding one more participation in the last 7 days
+      participations << create(:basket_participation, acted_at: 3.days.ago, participant_id: 'user_4')
+
+      # Unique participants in last 7 days: user_1, user_3, user_4 => 3
+      expect(service.send(:participations_rolling_7_day_change, participations)).to eq(50.0)
+    end
+  end
 end
