@@ -16,6 +16,8 @@ class EmailNormalizationService
     email.strip.downcase
   end
 
+  # Be careful when changing this method. Removing a normalization rule could
+  # potentially unban emails that were previously banned.
   def self.normalize(email)
     return '' if email.blank?
 
