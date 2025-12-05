@@ -11,6 +11,8 @@ import { AuthenticationContext } from 'api/authentication/authentication_require
 import { SSOParams } from 'api/authentication/singleSignOn';
 import useAuthUser from 'api/me/useAuthUser';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { useModalQueue } from 'containers/App/ModalQueue';
 import { invalidateAllActionDescriptors } from 'containers/Authentication/useSteps/invalidateAllActionDescriptors';
 
@@ -29,17 +31,16 @@ import {
   Step,
   AuthenticationData,
 } from '../typings';
-import useAuthConfig from '../useAuthConfig';
 
 import { getStepConfig } from './stepConfig';
 
 let initialized = false;
 
 export default function useSteps() {
-  const { anySSOProviderEnabled } = useAuthConfig();
   const { pathname, search } = useLocation();
   const { data: authUser } = useAuthUser();
   const { queueModal, removeModal } = useModalQueue();
+  const userConfirmationEnabled = useFeatureFlag({ name: 'user_confirmation' });
 
   // The authentication data will be initialized with the global sign up flow.
   // In practice, this will be overwritten before firing the flow (see event
@@ -121,8 +122,8 @@ export default function useSteps() {
       setCurrentStep,
       setError,
       updateState,
-      anySSOProviderEnabled,
-      state
+      state,
+      userConfirmationEnabled
     );
   }, [
     getAuthenticationData,
@@ -130,8 +131,8 @@ export default function useSteps() {
     setCurrentStep,
     setError,
     updateState,
-    anySSOProviderEnabled,
     state,
+    userConfirmationEnabled,
   ]);
 
   /** given the current step and a transition supported by that step, performs the transition */
@@ -319,7 +320,7 @@ export default function useSteps() {
       };
 
       const flow = sso_flow ?? 'signin';
-      updateState({ flow });
+      updateState({ flow, email: authUser.data.attributes.email ?? null });
       transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(flow);
 
       // Check that the path is the same as the one stored in local storage

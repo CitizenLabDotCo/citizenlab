@@ -30,7 +30,7 @@ module BulkImportIdeas
     end
 
     def user_params(user)
-      params.require(:user).permit(policy(user).permitted_attributes_for_create)
+      params.require(:user).permit(policy(user).permitted_attributes_for_update)
     end
   end
 end

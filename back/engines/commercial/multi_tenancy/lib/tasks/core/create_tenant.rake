@@ -17,7 +17,7 @@ namespace :cl2_back do
             'en' => 'Wonderville',
             'nl-BE' => 'Mirakelgem'
           },
-          signup_helper_text: {
+          enter_email_helper_text: {
             en: 'If you don\'t want to register, use hello@govocal.com/democrazy as email/password'
           },
           maximum_admins_number: 2,

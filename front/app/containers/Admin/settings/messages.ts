@@ -114,23 +114,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.signupFormText2',
     defaultMessage: 'Registration and login helper text',
   },
-  loginHelper: {
-    id: 'app.containers.AdminPage.SettingsPage.loginHelper',
-    defaultMessage: 'Login screen',
-  },
-  loginHelperTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.loginHelperTooltip',
-    defaultMessage: 'This is shown on the top of the login form.',
-  },
-  step1: {
-    id: 'app.containers.AdminPage.SettingsPage.step1',
-    defaultMessage: 'Step 1 (email and password)',
-  },
-  step1Tooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.step1Tooltip',
-    defaultMessage:
-      'This is shown on the top of the first page of the sign-up form (name, email, password).',
-  },
   platformConfiguration: {
     id: 'app.containers.AdminPage.SettingsPage.platformConfiguration',
     defaultMessage: 'Platform configuration',

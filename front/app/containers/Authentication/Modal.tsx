@@ -1,9 +1,16 @@
 import React, { lazy, Suspense } from 'react';
 
-import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Spinner,
+  Title,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import useLocalize from 'hooks/useLocalize';
 
 import T from 'components/T';
 import Error from 'components/UI/Error';
@@ -20,20 +27,15 @@ import {
 } from './messageUtils';
 import TextButton from './steps/_components/TextButton';
 import AccessDenied from './steps/AccessDenied';
-import AuthProviders from './steps/AuthProviders';
 import BuiltInFields from './steps/BuiltInFields';
-import ChangeEmail from './steps/ChangeEmail';
-import EmailAndPassword from './steps/EmailAndPassword';
-import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
-import EmailAndPasswordVerifiedActions from './steps/EmailAndPasswordVerifiedActions';
 import EmailConfirmation from './steps/EmailConfirmation';
+import EmailFlowStart from './steps/EmailFlowStart';
 import Invitation from './steps/Invitation';
-import InvitationResent from './steps/InvitationResent';
-import LightFlowStart from './steps/LightFlowStart';
+import InviteSignUp from './steps/InviteSignUp';
+import InviteTaken from './steps/InviteTaken';
 import Onboarding from './steps/Onboarding';
 import Password from './steps/Password';
 import EmailPolicies from './steps/Policies/EmailPolicies';
-import FranceConnectLogin from './steps/Policies/FranceConnectLogin';
 import SSOPolicies from './steps/Policies/SSOPolicies';
 import SSOVerification from './steps/SSOVerification';
 import SSOVerificationPolicies from './steps/SSOVerificationPolicies';
@@ -61,6 +63,7 @@ const AuthModal = () => {
 
   const smallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
 
   const closable = currentStep !== 'closed' && currentStep !== 'success';
 
@@ -80,6 +83,11 @@ const AuthModal = () => {
   const helperText = helperTextKey
     ? appConfiguration?.data.attributes.settings.core[helperTextKey]
     : undefined;
+
+  const localizedHelperText = localize(helperText);
+
+  const showHelperText =
+    helperText && localizedHelperText && localizedHelperText.length > 0;
 
   return (
     <Modal
@@ -110,8 +118,8 @@ const AuthModal = () => {
                     createAnAccountLink: (
                       <TextButton
                         onClick={
-                          currentStep === 'sign-in:email-password'
-                            ? transition(currentStep, 'SWITCH_FLOW')
+                          currentStep === 'email:password'
+                            ? transition(currentStep, 'GO_BACK')
                             : undefined
                         }
                       >
@@ -124,12 +132,11 @@ const AuthModal = () => {
             />
           </Box>
         )}
-        {helperText && (
-          <Box mb="16px">
+        {showHelperText && (
+          <Box mb="20px">
             <QuillEditedContent
               textColor={theme.colors.tenantText}
               fontSize="base"
-              fontWeight={300}
             >
               <T value={helperText} supportHtml />
             </QuillEditedContent>
@@ -141,92 +148,73 @@ const AuthModal = () => {
             onContinue={transition(currentStep, 'CONTINUE')}
           />
         )}
-        {/* old sign in flow */}
-        {currentStep === 'sign-in:auth-providers' && (
-          <AuthProviders
-            flow="signin"
-            error={error}
-            onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
-            onSelectAuthProvider={transition(
-              currentStep,
-              'SELECT_AUTH_PROVIDER'
-            )}
-          />
-        )}
-        {currentStep === 'sign-in:email-password' && (
-          <EmailAndPassword
-            loading={loading}
-            setError={setError}
-            onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
-            onGoBack={transition(currentStep, 'GO_BACK')}
-            onSubmit={transition(currentStep, 'SIGN_IN')}
-            closeModal={transition(currentStep, 'CLOSE')}
-          />
-        )}
-        {/* old sign up flow */}
-        {currentStep === 'sign-up:auth-providers' && (
-          <AuthProviders
-            flow="signup"
-            error={error}
-            onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
-            onSelectAuthProvider={transition(
-              currentStep,
-              'SELECT_AUTH_PROVIDER'
-            )}
-          />
-        )}
-        {currentStep === 'sign-up:email-password' && (
-          <EmailAndPasswordSignUp
-            state={state}
-            loading={loading}
-            setError={setError}
-            onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
-            onGoBack={transition(currentStep, 'GO_BACK')}
-            onSubmit={transition(currentStep, 'SUBMIT')}
-          />
-        )}
-        {currentStep === 'sign-up:invite' && (
-          <Invitation
-            loading={loading}
-            setError={setError}
-            onSubmit={transition(currentStep, 'SUBMIT')}
-          />
-        )}
-        {/* light flow */}
-        {currentStep === 'light-flow:email' && (
-          <LightFlowStart
+
+        {/* email flow */}
+        {currentStep === 'email:start' && (
+          <EmailFlowStart
             loading={loading}
             setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
             onSwitchToSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
+            onEnterFranceConnect={transition(
+              currentStep,
+              'ENTER_FRANCE_CONNECT'
+            )}
           />
         )}
-        {currentStep === 'light-flow:email-policies' && (
+        {currentStep === 'email:policies' && (
           <EmailPolicies
             state={state}
             loading={loading}
             setError={setError}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
+            goBack={transition(currentStep, 'GO_BACK')}
           />
         )}
-        {currentStep === 'light-flow:sso-policies' && (
+        {currentStep === 'email:password' && (
+          <Password
+            state={state}
+            loading={loading}
+            setError={setError}
+            onSubmit={transition(currentStep, 'SUBMIT_PASSWORD')}
+            onClose={transition(currentStep, 'CLOSE')}
+          />
+        )}
+        {currentStep === 'email:sso-policies' && (
           <SSOPolicies
             state={state}
             loading={loading}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
-        {currentStep === 'light-flow:france-connect-login' && (
-          <FranceConnectLogin onLogin={transition(currentStep, 'LOGIN')} />
-        )}
-        {currentStep === 'light-flow:password' && (
-          <Password
+        {currentStep === 'email:confirmation' && (
+          <EmailConfirmation
             state={state}
             loading={loading}
             setError={setError}
-            onSubmit={transition(currentStep, 'SUBMIT_PASSWORD')}
+            onConfirm={transition(currentStep, 'SUBMIT_CODE')}
+            onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
+            onResendCode={transition(currentStep, 'RESEND_CODE')}
           />
         )}
+
+        {/* invite flow */}
+        {currentStep === 'invite:email-password' && (
+          <InviteSignUp
+            state={state}
+            loading={loading}
+            setError={setError}
+            onSubmit={transition(currentStep, 'SUBMIT')}
+          />
+        )}
+        {currentStep === 'invite:code' && (
+          <Invitation
+            loading={loading}
+            setError={setError}
+            onSubmit={transition(currentStep, 'SUBMIT')}
+          />
+        )}
+        {currentStep === 'invite:taken' && <InviteTaken state={state} />}
 
         {/* missing data flow / shared */}
         {currentStep === 'missing-data:built-in' && (
@@ -237,23 +225,14 @@ const AuthModal = () => {
             onSubmit={transition(currentStep, 'SUBMIT')}
           />
         )}
-        {(currentStep === 'light-flow:email-confirmation' ||
-          currentStep === 'missing-data:email-confirmation') && (
+        {currentStep === 'missing-data:email-confirmation' && (
           <EmailConfirmation
             state={state}
             loading={loading}
             setError={setError}
             onConfirm={transition(currentStep, 'SUBMIT_CODE')}
             onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
-          />
-        )}
-
-        {currentStep === 'missing-data:change-email' && (
-          <ChangeEmail
-            loading={loading}
-            setError={setError}
-            onGoBack={transition(currentStep, 'GO_BACK')}
-            onChangeEmail={transition(currentStep, 'RESEND_CODE')}
+            onResendCode={transition(currentStep, 'RESEND_CODE')}
           />
         )}
 
@@ -266,7 +245,7 @@ const AuthModal = () => {
           />
         )}
         {currentStep === 'missing-data:custom-fields' && (
-          <Suspense fallback={null}>
+          <Suspense fallback={<Spinner />}>
             <CustomFields
               authenticationData={authenticationData}
               loading={loading}
@@ -305,25 +284,11 @@ const AuthModal = () => {
           />
         )}
 
-        {currentStep === 'sso-verification:email-password' && (
-          <EmailAndPasswordVerifiedActions
-            loading={loading}
-            setError={setError}
-            onSubmit={transition(currentStep, 'SIGN_IN')}
-            onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
-            closeModal={transition(currentStep, 'CLOSE')}
-          />
-        )}
-
         {currentStep === 'access-denied' && (
           <AccessDenied
             authenticationData={authenticationData}
             onClose={transition(currentStep, 'CLOSE')}
           />
-        )}
-
-        {currentStep === 'taken-by-invite' && (
-          <InvitationResent state={state} />
         )}
       </Box>
     </Modal>

@@ -9,7 +9,7 @@ import signOut from './signOut';
 
 interface Parameters {
   email: string;
-  password?: string;
+  password: string;
   rememberMe?: boolean;
   tokenLifetime?: number;
 }
@@ -29,9 +29,9 @@ export default async function signIn(parameters: Parameters) {
   }
 }
 
-export async function getAndSetToken({
+async function getAndSetToken({
   email,
-  password = '',
+  password,
   rememberMe = false,
   tokenLifetime,
 }: Parameters) {

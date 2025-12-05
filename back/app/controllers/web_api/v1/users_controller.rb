@@ -116,14 +116,16 @@ class WebApi::V1::UsersController < ApplicationController
     skip_authorization
     if User::EMAIL_REGEX.match?(params[:email])
       @user = User.find_by_cimail(params[:email])
-      if @user&.invite_pending?
-        render json: { errors: { email: [{ error: 'taken_by_invite', value: params[:email], inviter_email: @user.invitee_invite&.inviter&.email }] } }, status: :unprocessable_entity
-      elsif @user && !@user&.no_password?
-        render json: raw_json({ action: 'password' })
-      elsif @user&.registration_completed_at.present?
-        render json: raw_json({ action: 'confirm' })
-      else
+      if @user.nil?
         render json: raw_json({ action: 'terms' })
+      elsif @user.invite_pending?
+        render json: { errors: { email: [{ error: 'taken_by_invite', value: params[:email], inviter_email: @user.invitee_invite&.inviter&.email }] } }, status: :unprocessable_entity
+      elsif !@user.no_password?
+        render json: raw_json({ action: 'password' })
+      elsif !app_configuration.feature_activated?('user_confirmation')
+        render json: raw_json({ action: 'token' })
+      else
+        render json: raw_json({ action: 'confirm' })
       end
     else
       render json: { errors: { email: [{ error: 'invalid', value: params[:email] }] } }, status: :unprocessable_entity
@@ -133,7 +135,6 @@ class WebApi::V1::UsersController < ApplicationController
   def create
     @user = User.new
     saved = UserService.upsert_in_web_api(@user, permitted_attributes(@user)) do
-      verify_profanity @user
       authorize @user
     end
     if saved
@@ -142,12 +143,6 @@ class WebApi::V1::UsersController < ApplicationController
         @user,
         params: jsonapi_serializer_params
       ).serializable_hash, status: :created
-    elsif reset_confirm_on_existing_no_password_user?
-      SideFxUserService.new.after_update(@user, current_user)
-      render json: WebApi::V1::UserSerializer.new(
-        @user,
-        params: jsonapi_serializer_params
-      ).serializable_hash, status: :ok
     else
       SideFxUserService.new.after_error(@user, request&.remote_ip)
 
@@ -247,28 +242,6 @@ class WebApi::V1::UsersController < ApplicationController
     send_error(nil, 404)
   end
 
-  def reset_confirm_on_existing_no_password_user?
-    return false unless app_configuration.feature_activated?('user_confirmation')
-
-    original_user = @user
-    errors = original_user.errors.details[:email]
-    return false unless errors.any? { |hash| hash[:error] == :taken }
-
-    existing_user = User.find_by(email: @user.email)
-    return false unless existing_user
-    return false unless existing_user.no_password?
-
-    # If any attributes try to change then ignore this found user
-    existing_user.assign_attributes(permitted_attributes(existing_user))
-    return false if existing_user.changed?
-
-    @user = existing_user
-    @user.reset_confirmation_and_counts
-    return false unless @user.save
-
-    true
-  end
-
   def sort_by_sort_param
     @users = case params[:sort]
     when 'created_at'
@@ -307,6 +280,13 @@ class WebApi::V1::UsersController < ApplicationController
       attrs[:onboarding] = @user.onboarding.merge(attrs[:onboarding].to_h)
       attrs[:custom_field_values] = params_service.updated_custom_field_values(@user.custom_field_values, attrs[:custom_field_values].to_h)
       CustomFieldService.new.compact_custom_field_values!(attrs[:custom_field_values])
+
+      first_name = attrs[:first_name]
+      last_name = attrs[:last_name]
+
+      if @user.first_name.blank? && @user.last_name.blank? && first_name.present? && last_name.present?
+        attrs[:slug] = UserSlugService.new.generate_slug(@user, [first_name, last_name].compact.join(' '))
+      end
 
       # Even if the feature is not activated, we still want to allow the user to remove
       # their avatar.

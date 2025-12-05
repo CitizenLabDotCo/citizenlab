@@ -3,7 +3,7 @@
 # After https://github.com/nsarno/knock/blob/master/app/controllers/knock/auth_token_controller.rb.
 module AuthToken
   class AuthTokenController < ActionController::API
-    before_action :authenticate
+    before_action :authenticate, only: [:create]
 
     rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
@@ -14,7 +14,11 @@ module AuthToken
     private
 
     def authenticate
-      return if entity.present? && entity.authenticate(auth_params[secret_param])
+      block_because_requires_confirmation = entity.respond_to?(:confirmation_required?) && entity.confirmation_required?
+
+      return if entity.present? &&
+                entity.authenticate(auth_params[secret_param]) &&
+                !block_because_requires_confirmation
 
       raise ActiveRecord::RecordNotFound
     end

@@ -46,6 +46,13 @@ RSpec.describe RequestConfirmationCodeJob do
           expect { job.perform(user) }.not_to change(user, :new_email)
         end
 
+        it 'sets confirmation_required to true' do
+          user = create(:user)
+          expect(user.confirmation_required?).to be false
+          job.perform(user)
+          expect(user.reload.confirmation_required?).to be true
+        end
+
         context 'when setting a new email' do
           let(:new_email) { 'new@email.com' }
 
@@ -78,6 +85,20 @@ RSpec.describe RequestConfirmationCodeJob do
             expect(user).to be_invalid
             expect(user.errors.details).to eq({ email: [{ error: :taken, value: new_email }] })
             expect(user.reload.new_email).to be_nil
+          end
+
+          it 'does not reset email_confirmation_code_reset_count' do
+            job.perform(user, new_email: new_email)
+            expect(user.email_confirmation_code_reset_count).to eq 1
+            job.perform(user, new_email: new_email)
+            expect(user.email_confirmation_code_reset_count).to eq 2
+          end
+
+          it 'sets confirmation_required to true' do
+            user = create(:user)
+            expect(user.confirmation_required?).to be false
+            job.perform(user, new_email: new_email)
+            expect(user.reload.confirmation_required?).to be true
           end
         end
       end

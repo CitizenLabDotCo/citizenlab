@@ -2,6 +2,23 @@
 
 class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
   TOKEN_LIFETIME = 1.day
+  before_action :authenticate_user_token_unconfirmed, only: [:user_token_unconfirmed]
+
+  # This endpoint is only used when user_confirmation is disabled.
+  def user_token_unconfirmed
+    user = User.find_by(email: user_token_unconfirmed_params[:email])
+
+    raise ActiveRecord::RecordNotFound if user.blank?
+
+    if user.password_digest.present?
+      render(
+        json: { errors: { base: [{ error: 'cannot_have_password' }] } },
+        status: :unprocessable_entity
+      )
+    else
+      render json: auth_token, status: :created
+    end
+  end
 
   private
 
@@ -17,5 +34,15 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
 
   def extra_params
     [:remember_me]
+  end
+
+  def user_token_unconfirmed_params
+    params.require(:auth).permit id_param
+  end
+
+  def authenticate_user_token_unconfirmed
+    return unless AppConfiguration.instance.feature_activated?('user_confirmation')
+
+    raise ActiveRecord::RecordNotFound
   end
 end
