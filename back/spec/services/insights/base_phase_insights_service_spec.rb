@@ -21,17 +21,15 @@ RSpec.describe Insights::BasePhaseInsightsService do
   end
 
   describe '#base_metrics' do
-    let(:visits_data) { { visitors_total: 100, visitors_last_7_days: 20 } }
-
     let(:user1) { create(:user) }
 
     let(:participation1) { create(:basket_participation, acted_at: 20.days.ago, user: user1) } # before phase start
-    let(:participation2) { create(:basket_participation, acted_at: 10.days.ago, user: user1) } # during phase & before last 7 days
+    let(:participation2) { create(:basket_participation, acted_at: 10.days.ago, user: user1) } # during phase (in week before last)
     let(:participation3) { create(:basket_participation, acted_at: 5.days.ago, user: user1) } # during phase & in last 7 days
     let(:participation4) { create(:basket_participation, acted_at: 1.day.ago, user: user1) } # after phase end
 
     let(:user2) { create(:user) }
-    let(:participation5) { create(:basket_participation, acted_at: 10.days.ago, user: user2) } # during phase & before last 7 days
+    let(:participation5) { create(:basket_participation, acted_at: 10.days.ago, user: user2) } # during phase (in week before last)
     let(:participation6) { create(:basket_participation, acted_at: 4.days.ago, user: user2) } # during phase & in last 7 days
 
     let(:participation7) { create(:basket_participation, acted_at: 4.days.ago, user: nil, participant_id: SecureRandom.uuid) } # Anonymous or no user, in last 7 days & before phase end
@@ -39,16 +37,27 @@ RSpec.describe Insights::BasePhaseInsightsService do
     let(:participations) { { voting: [participation1, participation2, participation3, participation4, participation5, participation6, participation7] } }
     let(:participant_ids) { participations[:voting].pluck(:participant_id).uniq }
 
+    let(:visits) do
+      [
+        { acted_at: 10.days.ago, visitor_id: user1.id.to_s }, # after phase start & before phase end
+        { acted_at: 5.days.ago, visitor_id: user1.id.to_s },  # in last 7 days & before phase end
+        { acted_at: 10.days.ago, visitor_id: user2.id.to_s }, # after phase start & before phase end
+        { acted_at: 4.days.ago, visitor_id: user2.id.to_s },  # in last 7 days & before phase end
+        { acted_at: 4.days.ago, visitor_id: 'anonymous_1' },  # in last 7 days & before phase end
+        { acted_at: 10.days.ago, visitor_id: SecureRandom.uuid } # in phase, but no participation
+      ]
+    end
+
     it 'calculates base metrics correctly' do
-      result = service.send(:base_metrics, participations, participant_ids, visits_data)
+      result = service.send(:base_metrics, participations, participant_ids, visits)
 
       expect(result).to eq(
         {
-          visitors: 100,
-          visitors_last_7_days: 20,
+          visitors: 4,
+          visitors_last_7_days: 3,
           participants: 3,
           participants_rolling_7_day_change: 50.0, # From 2 (7 to 14 days ago) to 3 (last 7-day period) participants = 50% increase
-          engagement_rate: 0.03
+          engagement_rate: 0.75
         }
       )
     end
@@ -392,22 +401,21 @@ RSpec.describe Insights::BasePhaseInsightsService do
   describe '#participants_and_visitors_chart_data' do
     it 'handles empty participations and visits data' do
       flattened_participations = []
-      visits_data = { visits: [] }
-      result = service.send(:participants_and_visitors_chart_data, flattened_participations, visits_data)
+      visits = []
+      result = service.send(:participants_and_visitors_chart_data, flattened_participations, visits)
 
       expect(result).to eq({ resolution: 'day', timeseries: [] })
     end
 
     it 'handles empty participations with non-empty visits data' do
       flattened_participations = []
-      visits_data = {
-        visits: [
-          { date: 10.days.ago.beginning_of_day, visitor_id: 'visitor_1' },
-          { date: 9.days.ago.beginning_of_day, visitor_id: 'visitor_2' },
-          { date: 9.days.ago.beginning_of_day, visitor_id: 'visitor_3' }
-        ]
-      }
-      result = service.send(:participants_and_visitors_chart_data, flattened_participations, visits_data)
+      visits = [
+        { acted_at: 10.days.ago.beginning_of_day, visitor_id: 'visitor_1' },
+        { acted_at: 9.days.ago.beginning_of_day, visitor_id: 'visitor_2' },
+        { acted_at: 9.days.ago.beginning_of_day, visitor_id: 'visitor_3' }
+      ]
+
+      result = service.send(:participants_and_visitors_chart_data, flattened_participations, visits)
 
       expect(result).to eq({
         resolution: 'day',
@@ -424,8 +432,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
       participation2 = create(:basket_participation, acted_at: 7.days.ago, user: user)
 
       flattened_participations = [participation1, participation2]
-      visits_data = { visits: [] }
-      result = service.send(:participants_and_visitors_chart_data, flattened_participations, visits_data)
+      visits = []
+      result = service.send(:participants_and_visitors_chart_data, flattened_participations, visits)
 
       expect(result).to eq({
         resolution: 'day',

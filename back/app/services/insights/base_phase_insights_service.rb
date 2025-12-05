@@ -23,19 +23,19 @@ module Insights
 
     # TODO: Implement caching? (may not be needed if performance good enough)
     def cached_insights_data(participations)
-      visits_data = VisitsService.new.phase_visits_data(@phase)
+      visits = VisitsService.new.phase_visits(@phase)
       flattened_participations = participations.values.flatten
       participant_ids = flattened_participations.pluck(:participant_id).uniq
       participation_method_metrics = phase_participation_method_metrics(participations)
-      metrics = metrics_data(participations, participant_ids, visits_data, participation_method_metrics)
+      metrics = metrics_data(participations, participant_ids, visits, participation_method_metrics)
       demographics = demographics_data(flattened_participations, participant_ids)
-      participants_and_visitors_chart_data = participants_and_visitors_chart_data(flattened_participations, visits_data)
+      participants_and_visitors_chart_data = participants_and_visitors_chart_data(flattened_participations, visits)
 
       metrics.merge(demographics: { fields: demographics }, participants_and_visitors_chart_data: participants_and_visitors_chart_data)
     end
 
-    def metrics_data(participations, participant_ids, visits_data, participation_method_metrics)
-      base_metrics = base_metrics(participations, participant_ids, visits_data)
+    def metrics_data(participations, participant_ids, visits, participation_method_metrics)
+      base_metrics = base_metrics(participations, participant_ids, visits)
 
       phase_participation_method_metrics = {
         @phase.participation_method => participation_method_metrics
@@ -44,7 +44,7 @@ module Insights
       { metrics: base_metrics.merge(phase_participation_method_metrics) }
     end
 
-    def base_metrics(participations, participant_ids, visits_data)
+    def base_metrics(participations, participant_ids, visits)
       total_participant_count = participant_ids.count
       flattened_participations = participations.values.flatten
 
@@ -52,12 +52,15 @@ module Insights
 
       participants_rolling_7_day_change = phase_run_14_days ? participants_rolling_7_day_change(flattened_participations) : nil
 
+      unique_visitors = visits.pluck(:visitor_id).compact.uniq.count
+      unique_visitors_last_7_days = visits.select { |v| v[:acted_at] >= 7.days.ago }.pluck(:visitor_id).compact.uniq.count
+
       {
-        visitors: visits_data[:visitors_total],
-        visitors_last_7_days: visits_data[:visitors_last_7_days],
+        visitors: unique_visitors,
+        visitors_last_7_days: unique_visitors_last_7_days,
         participants: total_participant_count,
         participants_rolling_7_day_change: participants_rolling_7_day_change,
-        engagement_rate: visits_data[:visitors_total] > 0 ? (total_participant_count.to_f / visits_data[:visitors_total]).round(3) : 0
+        engagement_rate: unique_visitors > 0 ? (total_participant_count.to_f / unique_visitors).round(3) : 0
       }
     end
 
@@ -275,9 +278,9 @@ module Insights
       UserCustomFields::Representativeness::RScore.compute_scores(counts, reference_distribution)[:min_max_p_ratio]
     end
 
-    def participants_and_visitors_chart_data(flattened_participations, visits_data)
+    def participants_and_visitors_chart_data(flattened_participations, visits)
       resolution = chart_resolution
-      grouped_visits = visits_data[:visits].group_by { |v| date_truncate(v[:date], resolution) }
+      grouped_visits = visits.group_by { |v| date_truncate(v[:acted_at], resolution) }
       grouped_participations = flattened_participations.group_by { |p| date_truncate(p[:acted_at], resolution) }
 
       # Get all unique date groups from both participations and visits
