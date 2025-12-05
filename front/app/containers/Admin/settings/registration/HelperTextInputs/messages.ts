@@ -29,7 +29,7 @@ export default defineMessages({
       "This is shown on the 'complete your profile' step in the authentication flow.",
   },
   demographicQuestions: {
-    id: 'app.containers.AdminPage.SettingsPage.demographicQuestions',
+    id: 'app.containers.AdminPage.SettingsPage.demographicQuestionsStep',
     defaultMessage: 'Demographic questions',
   },
   demographicQuestionsTooltip: {
