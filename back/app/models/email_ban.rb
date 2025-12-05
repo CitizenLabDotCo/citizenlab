@@ -19,6 +19,9 @@
 #
 #  fk_rails_...  (banned_by_id => users.id)
 #
+# Following the principle of data minimization, we store email hashes instead of the
+# actual emails. This keeps things simpler for GDPR compliance and avoids issues with
+# banned users objecting to their email being stored.
 class EmailBan < ApplicationRecord
   belongs_to :banned_by, class_name: 'User', optional: true
 
