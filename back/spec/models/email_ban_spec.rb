@@ -5,8 +5,8 @@ require 'rails_helper'
 RSpec.describe EmailBan do
   subject { described_class.ban!('test@example.com') }
 
-  it { is_expected.to validate_presence_of(:email_hash) }
   it { is_expected.to validate_presence_of(:normalized_email_hash) }
+  it { is_expected.to validate_uniqueness_of(:normalized_email_hash) }
   it { is_expected.to belong_to(:banned_by).class_name('User').optional }
 
   describe '.ban!' do
@@ -14,20 +14,34 @@ RSpec.describe EmailBan do
     let(:admin) { create(:admin) }
     let(:reason) { 'Spam account' }
 
-    it 'creates an email ban with hashed email' do
+    it 'creates an email ban with hashed normalized email' do
       ban = described_class.ban!(email, reason: reason, banned_by: admin)
 
       expect(ban).to be_persisted
-      expect(ban.email_hash).to eq Digest::SHA256.hexdigest('test.user+tag@gmail.com')
       expect(ban.normalized_email_hash).to eq Digest::SHA256.hexdigest('testuser@gmail.com')
       expect(ban.reason).to eq(reason)
       expect(ban.banned_by).to eq(admin)
     end
 
-    it 'allows multiple bans for the same email (no unique constraint)' do
-      described_class.ban!(email)
-      # No unique constraint - this creates a second record but banned? still works
-      expect { described_class.ban!(email) }.to change(described_class, :count).by(1)
+    it 'is idempotent - banning same email again updates the existing record' do
+      first_admin = create(:admin)
+      second_admin = create(:admin)
+      first_ban = described_class.ban!(email, reason: 'First reason', banned_by: first_admin)
+
+      expect do
+        described_class.ban!(email, reason: 'Updated reason', banned_by: second_admin)
+      end.not_to change(described_class, :count)
+
+      first_ban.reload
+
+      expect(first_ban.reason).to eq('Updated reason')
+      expect(first_ban.banned_by).to eq(second_admin)
+    end
+
+    it 'treats email variants as the same email' do
+      described_class.ban!('test.user@gmail.com')
+      expect { described_class.ban!('testuser+alias@gmail.com') }
+        .not_to change(described_class, :count)
     end
   end
 
@@ -45,7 +59,6 @@ RSpec.describe EmailBan do
       expect(described_class.banned?('JOHNDOE@GMAIL.COM')).to be true
       expect(described_class.banned?('john.doe+newtag@gmail.com')).to be true
     end
-
 
     it 'returns false for different emails' do
       expect(described_class.banned?('other@gmail.com')).to be false
