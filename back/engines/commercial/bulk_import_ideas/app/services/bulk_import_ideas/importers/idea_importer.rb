@@ -2,7 +2,7 @@
 
 module BulkImportIdeas::Importers
   class IdeaImporter < BaseImporter
-    DEFAULT_MAX_IDEAS = 2000
+    DEFAULT_MAX_IDEAS = 5000
     DATE_FORMAT_REGEX = /^(0[1-9]|[1|2][0-9]|3[0|1])-(0[1-9]|1[0-2])-([0-9]{4})$/ # After https://stackoverflow.com/a/47218282/3585671
 
     def import(idea_rows)
