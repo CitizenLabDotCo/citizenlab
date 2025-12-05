@@ -124,8 +124,6 @@ module Insights
         p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago
       end
 
-      # puts "participations_last_7_days_count: #{participations_last_7_days_count.count}, participations_last_14_to_8_days_count: #{participations_last_14_to_8_days_count.count}"
-
       percentage_change(
         participations_last_14_to_8_days_count.count,
         participations_last_7_days_count.count
