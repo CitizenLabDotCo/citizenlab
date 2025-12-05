@@ -23,7 +23,31 @@ RSpec.describe DeleteUserJob do
       current_user = build_stubbed(:user)
       described_class.perform_now(user.id, current_user)
 
-      expect(sidefx_service).to have_received(:after_destroy).with(user, current_user)
+      expect(sidefx_service).to have_received(:after_destroy)
+        .with(user, current_user, participation_data_deleted: false)
+    end
+
+    context 'with delete_participation_data: true' do
+      let(:current_user) { create(:admin) }
+
+      it 'deletes user participation data' do
+        participation_service = instance_spy(ParticipantsService, 'participation_service')
+        allow(ParticipantsService).to receive(:new).and_return(participation_service)
+
+        described_class.perform_now(user.id, current_user, delete_participation_data: true)
+
+        expect(participation_service)
+          .to have_received(:destroy_user_participation_data).with(user)
+      end
+
+      it 'passes participation_data_deleted to side effects' do
+        sidefx_service = instance_spy(SideFxUserService, 'sidefx_service')
+        allow(SideFxUserService).to receive(:new).and_return(sidefx_service)
+
+        described_class.perform_now(user.id, current_user, delete_participation_data: true)
+
+        expect(sidefx_service).to have_received(:after_destroy).with(user, current_user, participation_data_deleted: true)
+      end
     end
 
     context 'when the user does not exist' do

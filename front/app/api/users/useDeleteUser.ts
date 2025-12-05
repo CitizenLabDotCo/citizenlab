@@ -8,10 +8,16 @@ import fetcher from 'utils/cl-react-query/fetcher';
 
 import usersKeys from './keys';
 
-const deleteUser = (id: string) =>
+interface QueryParams {
+  userId: string;
+  deleteParticipationData: boolean;
+}
+
+const deleteUser = ({ userId, deleteParticipationData }: QueryParams) =>
   fetcher({
-    path: `/users/${id}`,
+    path: `/users/${userId}`,
     action: 'delete',
+    body: { delete_participation_data: deleteParticipationData },
   });
 
 const useDeleteUser = () => {
