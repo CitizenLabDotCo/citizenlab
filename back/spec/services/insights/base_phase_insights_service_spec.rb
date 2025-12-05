@@ -483,4 +483,42 @@ RSpec.describe Insights::BasePhaseInsightsService do
       expect(service.send(:date_truncate, datetime, 'month')).to eq(Date.new(2024, 6, 1))
     end
   end
+
+  describe '#phase_has_run_more_than_14_days?' do
+    it 'returns false when phase duration is less than 14 days' do
+      phase = create(:single_voting_phase, start_at: 15.days.ago, end_at: 2.days.ago)
+      service = described_class.new(phase)
+      expect(service.send(:phase_has_run_more_than_14_days?)).to be false
+    end
+
+    it 'returns false when phase duration is more than 14 days but elapsed time is less than 14 days' do
+      phase = create(:single_voting_phase, start_at: 13.days.ago, end_at: 2.days.from_now)
+      service = described_class.new(phase)
+      expect(service.send(:phase_has_run_more_than_14_days?)).to be false
+    end
+
+    it 'returns true when phase duration is more than 14 days and elapsed time is at least 14 days' do
+      phase = create(:single_voting_phase, start_at: 20.days.ago, end_at: 1.day.ago)
+      service = described_class.new(phase)
+      expect(service.send(:phase_has_run_more_than_14_days?)).to be true
+    end
+
+    it 'returns false when phase is long enough but started less than 14 days ago' do
+      phase = create(:single_voting_phase, start_at: 10.days.ago, end_at: 30.days.from_now)
+      service = described_class.new(phase)
+      expect(service.send(:phase_has_run_more_than_14_days?)).to be false
+    end
+
+    it 'returns true for ongoing phases without end_at when started more than 14 days ago' do
+      phase = create(:single_voting_phase, start_at: 20.days.ago, end_at: nil)
+      service = described_class.new(phase)
+      expect(service.send(:phase_has_run_more_than_14_days?)).to be true
+    end
+
+    it 'returns false for ongoing phases without end_at when started less than 14 days ago' do
+      phase = create(:single_voting_phase, start_at: 10.days.ago, end_at: nil)
+      service = described_class.new(phase)
+      expect(service.send(:phase_has_run_more_than_14_days?)).to be false
+    end
+  end
 end

@@ -58,6 +58,24 @@ module Insights
       }
     end
 
+    def phase_has_run_more_than_14_days?
+      time_now = Time.current
+      phase_start_at = @phase.start_at.to_time
+      phase_end_at = (@phase.end_at || time_now).to_time
+
+      # Check if the phase duration (start to end or current time) is more than 14 days
+      phase_duration_seconds = phase_end_at - phase_start_at
+      phase_duration_days = (phase_duration_seconds / 86_400).to_i
+
+      return false if phase_duration_days < 14
+
+      # Check if the elapsed time from phase start to now is more than 14 days
+      elapsed_seconds = time_now - phase_start_at
+      elapsed_days = (elapsed_seconds / 86_400).to_i
+
+      elapsed_days >= 14
+    end
+
     def participant_id(item_id, user_id, user_hash = nil)
       user_id.presence || user_hash.presence || item_id
     end
