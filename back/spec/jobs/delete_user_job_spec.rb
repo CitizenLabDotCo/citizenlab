@@ -60,5 +60,35 @@ RSpec.describe DeleteUserJob do
           .to raise_error(ActiveRecord::RecordNotFound)
       end
     end
+
+    context 'with ban_email: true' do
+      let(:current_user) { create(:admin) }
+      let(:user) { create(:user, email: 'banned.user+test@gmail.com') }
+
+      it 'bans the user email' do
+        expect { described_class.perform_now(user.id, current_user, ban_email: true) }
+          .to change(EmailBan, :count).by(1)
+        expect(EmailBan.find_for('banned.user+test@gmail.com')).to be_present
+      end
+
+      it 'stores the ban reason' do
+        described_class.perform_now(user.id, current_user, ban_email: true, ban_reason: 'Spam account')
+        ban = EmailBan.find_for('banned.user+test@gmail.com')
+
+        expect(ban.reason).to eq 'Spam account'
+        expect(ban.banned_by).to eq current_user
+      end
+
+      it 'does not ban email when ban_email is false' do
+        expect { described_class.perform_now(user.id, current_user, ban_email: false) }
+          .not_to change(EmailBan, :count)
+      end
+
+      it 'does not ban email when user has no email' do
+        user.update_column(:email, nil)
+        expect { described_class.perform_now(user.id, current_user, ban_email: true) }
+          .not_to change(EmailBan, :count)
+      end
+    end
   end
 end

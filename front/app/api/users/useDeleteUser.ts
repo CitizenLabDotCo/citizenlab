@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import emailBansKeys from 'api/email_bans/keys';
 import groupsKeys from 'api/groups/keys';
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 import userCountKeys from 'api/users_count/keys';
@@ -10,14 +11,25 @@ import usersKeys from './keys';
 
 interface QueryParams {
   userId: string;
-  deleteParticipationData: boolean;
+  deleteParticipationData?: boolean;
+  banEmail?: boolean;
+  banReason?: string;
 }
 
-const deleteUser = ({ userId, deleteParticipationData }: QueryParams) =>
+const deleteUser = ({
+  userId,
+  deleteParticipationData,
+  banEmail,
+  banReason,
+}: QueryParams) =>
   fetcher({
     path: `/users/${userId}`,
     action: 'delete',
-    body: { delete_participation_data: deleteParticipationData },
+    body: {
+      delete_participation_data: deleteParticipationData,
+      ban_email: banEmail,
+      ban_reason: banReason,
+    },
   });
 
 const useDeleteUser = () => {
@@ -25,7 +37,7 @@ const useDeleteUser = () => {
 
   return useMutation({
     mutationFn: deleteUser,
-    onSuccess: async () => {
+    onSuccess: async (_data, variables) => {
       queryClient.invalidateQueries({
         queryKey: userCountKeys.items(),
       });
@@ -33,6 +45,10 @@ const useDeleteUser = () => {
 
       queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
       queryClient.invalidateQueries({ queryKey: groupsKeys.all() });
+
+      if (variables.banEmail) {
+        queryClient.invalidateQueries({ queryKey: emailBansKeys.all() });
+      }
     },
   });
 };

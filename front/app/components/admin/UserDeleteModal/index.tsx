@@ -9,19 +9,22 @@ import {
   colors,
   Spinner,
   Icon,
+  Input,
+  IconTooltip,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import styled from 'styled-components';
 
+import useCheckEmailBan from 'api/email_bans/useCheckEmailBan';
 import useUserParticipationStats from 'api/user_participation_stats/useUserParticipationStats';
 import { IUserData } from 'api/users/types';
 import useDeleteUser from 'api/users/useDeleteUser';
 
-import Modal from 'components/UI/Modal';
-import Warning from 'components/UI/Warning';
-
 import events from 'containers/Admin/users/events';
 import adminUserMessages from 'containers/Admin/users/messages';
+
+import Modal from 'components/UI/Modal';
+import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
@@ -51,16 +54,27 @@ type Props = {
 
 const DeleteUserModal = ({ open, setClose, user, returnFocusRef }: Props) => {
   const [deleteParticipationData, setDeleteParticipationData] = useState(false);
+  const [banEmail, setBanEmail] = useState(false);
+  const [banReason, setBanReason] = useState('');
   const { formatMessage } = useIntl();
   const { mutate: deleteUser, isLoading } = useDeleteUser();
   const { data: statsResponse, isLoading: isLoadingStats } =
     useUserParticipationStats({ userId: user.id, enabled: open });
+  const { data: banDetails } = useCheckEmailBan(
+    open ? user.attributes.email : null
+  );
 
   const stats = statsResponse?.data.attributes;
+  const isAlreadyBanned = !!banDetails;
 
   const handleDelete = () => {
     deleteUser(
-      { userId: user.id, deleteParticipationData },
+      {
+        userId: user.id,
+        deleteParticipationData,
+        banEmail,
+        banReason: banEmail && banReason ? banReason : undefined,
+      },
       {
         onSuccess: () => {
           setClose();
@@ -188,6 +202,46 @@ const DeleteUserModal = ({ open, setClose, user, returnFocusRef }: Props) => {
             }
             label={formatMessage(messages.deleteParticipationData)}
           />
+        </Box>
+
+        {isAlreadyBanned && (
+          <Box mb="24px" p="16px" background={colors.red100} borderRadius="3px">
+            <Text m="0" color="error">
+              {formatMessage(messages.emailAlreadyBanned)}
+            </Text>
+            {banDetails.data.attributes.reason && (
+              <Text m="0" mt="8px" fontSize="s" color="textSecondary">
+                <strong>{formatMessage(messages.banReasonLabel)}:</strong>{' '}
+                {banDetails.data.attributes.reason}
+              </Text>
+            )}
+          </Box>
+        )}
+
+        <Box mb="24px">
+          <Toggle
+            checked={isAlreadyBanned || banEmail}
+            disabled={isAlreadyBanned}
+            onChange={() => setBanEmail(!banEmail)}
+            label={
+              <Box display="flex" alignItems="center" gap="4px">
+                {formatMessage(messages.banEmail)}
+                <IconTooltip
+                  content={formatMessage(messages.banEmailTooltip)}
+                />
+              </Box>
+            }
+          />
+          {banEmail && (
+            <Box mt="12px">
+              <Input
+                type="text"
+                value={banReason}
+                onChange={(e) => setBanReason(e)}
+                placeholder={formatMessage(messages.banReasonPlaceholder)}
+              />
+            </Box>
+          )}
         </Box>
 
         <Box m="30px 0">
