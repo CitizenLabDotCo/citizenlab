@@ -16,7 +16,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     end
 
     result = user_confirmation_service.validate_and_confirm!(
-      current_user, 
+      current_user,
       confirm_code_unauthenticated_params[:code]
     )
 
@@ -42,7 +42,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     end
 
     result = user_confirmation_service.validate_and_confirm!(
-      current_user, 
+      current_user,
       confirm_code_params[:code]
     )
 
@@ -69,7 +69,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     end
 
     result = user_confirmation_service.validate_and_confirm!(
-      current_user, 
+      current_user,
       confirm_code_params[:code]
     )
 
