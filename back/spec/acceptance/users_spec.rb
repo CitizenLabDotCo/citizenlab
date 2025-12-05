@@ -31,8 +31,8 @@ resource 'Users' do
       parameter :can_moderate, 'Return only admins and moderators', required: false
 
       parameter :can_moderate_project, <<~DESC, required: false
-        All admins + users who can moderate the project (by project id), excluding folder moderators of folder 
-        containing project (who can, in fact, moderate the project), OR All admins + users with project moderator role 
+        All admins + users who can moderate the project (by project id), excluding folder moderators of folder
+        containing project (who can, in fact, moderate the project), OR All admins + users with project moderator role
         (if no project ID provided).
       DESC
 
@@ -42,7 +42,7 @@ resource 'Users' do
       DESC
 
       parameter :is_not_folder_moderator, <<~DESC, required: false
-        Users who are not folder moderators of folder (by folder id), OR Users who do not have folder moderator role 
+        Users who are not folder moderators of folder (by folder id), OR Users who do not have folder moderator role
         (if no folder ID provided).
       DESC
 
@@ -68,14 +68,6 @@ resource 'Users' do
     get 'web_api/v1/users/:id' do
       before do
         @user = create(:user)
-        settings = AppConfiguration.instance.settings
-        settings['password_login'] = {
-          'allowed' => true,
-          'enabled' => true,
-          'enable_signup' => true,
-          'minimum_length' => 6
-        }
-        AppConfiguration.instance.update!(settings: settings)
       end
 
       let(:id) { @user.id }
@@ -401,16 +393,6 @@ resource 'Users' do
       before do
         @user.update!(roles: [{ type: 'admin' }])
         %w[Bednar Cole Hagenes MacGyver Oberbrunner].map { |l| create(:user, last_name: l) }
-        create(:super_admin) # super admin are not included in admins
-
-        @admins = [@user, *create_list(:admin, 3)]
-
-        folder_moderators = create_list(:project_folder_moderator, 2, project_folders: [create(:project_folder)])
-        project_moderators = create_list(:project_moderator, 4, projects: [create(:project)])
-        @moderators = [*folder_moderators, *project_moderators]
-        settings = AppConfiguration.instance.settings
-        settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
-        AppConfiguration.instance.update!(settings: settings)
       end
 
       get 'web_api/v1/users' do
@@ -847,7 +829,17 @@ resource 'Users' do
       end
 
       get 'web_api/v1/users/seats' do
-        example_request 'Get number of admin and manager (moderator) seats' do
+        example 'Get number of admin and manager (moderator) seats' do
+          create(:super_admin) # super admin are not included in admins
+
+          @admins = [@user, *create_list(:admin, 3)]
+
+          folder_moderators = create_list(:project_folder_moderator, 2, project_folders: [create(:project_folder)])
+          project_moderators = create_list(:project_moderator, 4, projects: [create(:project)])
+          @moderators = [*folder_moderators, *project_moderators]
+
+          do_request
+
           expect(status).to eq 200
           expect(response_data[:type]).to eq 'seats'
           attributes = response_data[:attributes]
@@ -1090,23 +1082,31 @@ resource 'Users' do
         end
         ValidationErrorHelper.new.error_fields(self, User)
 
-        let!(:user) { create(:user) }
-        let!(:id) { user.id }
+        context 'when user blocking is enabled' do
+          before do
+            settings = AppConfiguration.instance.settings
+            settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
+            AppConfiguration.instance.update!(settings: settings)
+          end
 
-        example 'Block a user using a null value for block_reason' do
-          do_request user: { block_reason: nil }
+          let!(:user) { create(:user) }
+          let!(:id) { user.id }
 
-          expect(status).to eq 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :blocked)).to be true
-        end
+          example 'Block a user using a null value for block_reason' do
+            do_request user: { block_reason: nil }
 
-        example 'Block a user and provide a reason' do
-          do_request user: { block_reason: 'reason' }
+            expect(status).to eq 200
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data, :attributes, :blocked)).to be true
+          end
 
-          expect(status).to eq 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :blocked)).to be true
+          example 'Block a user and provide a reason' do
+            do_request user: { block_reason: 'reason' }
+
+            expect(status).to eq 200
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data, :attributes, :blocked)).to be true
+          end
         end
       end
 

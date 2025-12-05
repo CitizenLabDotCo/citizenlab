@@ -69,11 +69,6 @@ resource 'Projects' do
 
       @projects = %w[published published draft published archived archived published]
         .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
-      Analytics::PopulateDimensionsService.populate_types
-      @project = create(:project)
-      config = AppConfiguration.instance
-      config.settings['core']['private_attributes_in_export'] = true
-      config.save!
     end
 
     let(:user) { @user }
@@ -258,6 +253,7 @@ resource 'Projects' do
       end
 
       example 'Get a project includes the participants_count and avatars_count', document: false do
+        Analytics::PopulateDimensionsService.populate_types
         idea = create(:idea)
         project = idea.project
         do_request id: project.id
@@ -354,123 +350,127 @@ resource 'Projects' do
     patch 'web_api/v1/projects/:id' do
       include_context 'PATCH project parameters'
 
-      let(:id) { @project.id }
-      let(:title_multiloc) { { 'en' => 'Changed title' } }
-      let(:description_multiloc) { { 'en' => 'Changed body' } }
-      let(:description_preview_multiloc) { @project.description_preview_multiloc }
-      let(:slug) { 'changed-title' }
-      let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
-      let(:area_ids) { create_list(:area, 2).map(&:id) }
-      let(:topic_ids) { create_list(:topic, 2).map(&:id) }
-      let(:visible_to) { 'groups' }
-      let(:publication_status) { 'archived' }
-      let(:default_assignee_id) { create(:admin).id }
+      context do
+        before { @project = create(:project) }
 
-      example 'Update a project' do
-        old_publcation_ids = AdminPublication.ids
-        do_request
+        let(:id) { @project.id }
+        let(:title_multiloc) { { 'en' => 'Changed title' } }
+        let(:description_multiloc) { { 'en' => 'Changed body' } }
+        let(:description_preview_multiloc) { @project.description_preview_multiloc }
+        let(:slug) { 'changed-title' }
+        let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
+        let(:area_ids) { create_list(:area, 2).map(&:id) }
+        let(:topic_ids) { create_list(:topic, 2).map(&:id) }
+        let(:visible_to) { 'groups' }
+        let(:publication_status) { 'archived' }
+        let(:default_assignee_id) { create(:admin).id }
 
-        assert_status 200
-        # admin publications should not be replaced, but rather should be updated
-        expect(AdminPublication.ids).to match_array old_publcation_ids
-        expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
-        expect(json_response.dig(:data, :attributes, :description_multiloc, :en)).to eq 'Changed body'
-        expect(json_response.dig(:data, :attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
-        expect(json_response.dig(:data, :attributes, :slug)).to eq 'changed-title'
-        expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
-        expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
-        expect(json_response.dig(:data, :attributes, :visible_to)).to eq 'groups'
-        expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'archived'
-        expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id
-      end
+        example 'Update a project' do
+          old_publcation_ids = AdminPublication.ids
+          do_request
 
-      example 'Add a project to a folder' do
-        folder = create(:project_folder)
-
-        do_request(project: { folder_id: folder.id })
-        @project.reload
-
-        expect(@project.folder_id).to eq folder.id
-        # Projects moved into folders are added to the top
-        expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
-      end
-
-      example 'Remove a project from a folder' do
-        create(:project_folder, projects: [@project])
-
-        do_request(project: { folder_id: nil })
-        @project.reload
-
-        expect(@project.folder_id).to be_nil
-        # Projects moved out of folders are added to the top
-        expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
-      end
-
-      example 'Move a project from one folder to another' do
-        old_folder = create(:project_folder, projects: [@project])
-        new_folder = create(:project_folder)
-        old_folder_moderators = create_list(:project_folder_moderator, 2, project_folders: [old_folder])
-        new_folder_moderators = create_list(:project_folder_moderator, 3, project_folders: [new_folder])
-
-        do_request(project: { folder_id: new_folder.id })
-        @project.reload
-
-        assert_status 200
-        expect(@project.folder_id).to eq new_folder.id
-        expect(@project.admin_publication.parent.id).to eq new_folder.admin_publication.id
-
-        project_moderators = User.project_moderator(@project.id)
-        expect(project_moderators.pluck(:id)).not_to match_array old_folder_moderators.pluck(:id)
-        expect(project_moderators.pluck(:id)).to match_array new_folder_moderators.pluck(:id)
-      end
-
-      example '[error] Put a project in a non-existing folder' do
-        do_request(project: { folder_id: 'dinosaur' })
-        expect(response_status).to eq 404
-      end
-
-      example 'Clear all areas', document: false do
-        @project.update!(area_ids: area_ids)
-        expect(@project.areas.size).to eq 2
-        do_request(project: { area_ids: [] })
-        expect(json_response.dig(:data, :relationships, :areas, :data).size).to eq 0
-      end
-
-      example 'Clear all topics', document: false do
-        @project.update!(topic_ids: topic_ids)
-        expect(@project.topics.size).to eq 2
-        do_request(project: { topic_ids: [] })
-        expect(json_response.dig(:data, :relationships, :topics, :data).size).to eq 0
-      end
-
-      example 'Set default assignee to unassigned', document: false do
-        @project.update!(default_assignee: create(:admin))
-        do_request(project: { default_assignee_id: nil })
-        expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to be_nil
-      end
-
-      context 'when description_multiloc contains images' do
-        let(:description_multiloc) { { 'en' => html_with_base64_image } }
-
-        it_behaves_like 'updates record with text images',
-          model_class: Project,
-          field: :description_multiloc
-      end
-
-      describe do
-        example 'The header image can be removed' do
-          @project.update!(header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
-          expect(@project.reload.header_bg_url).to be_present
-          do_request project: { header_bg: nil }
-          expect(@project.reload.header_bg_url).to be_nil
+          assert_status 200
+          # admin publications should not be replaced, but rather should be updated
+          expect(AdminPublication.ids).to match_array old_publcation_ids
+          expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
+          expect(json_response.dig(:data, :attributes, :description_multiloc, :en)).to eq 'Changed body'
+          expect(json_response.dig(:data, :attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
+          expect(json_response.dig(:data, :attributes, :slug)).to eq 'changed-title'
+          expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
+          expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+          expect(json_response.dig(:data, :attributes, :visible_to)).to eq 'groups'
+          expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'archived'
+          expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id
         end
-      end
 
-      example 'Logs `published` activity when going from draft to published', document: false do
-        @project.admin_publication.update!(publication_status: 'draft')
-        expect { do_request project: { admin_publication_attributes: { publication_status: 'published' } } }
-          .to have_enqueued_job(LogActivityJob)
-          .with(@project, 'published', anything, anything, anything)
+        example 'Add a project to a folder' do
+          folder = create(:project_folder)
+
+          do_request(project: { folder_id: folder.id })
+          @project.reload
+
+          expect(@project.folder_id).to eq folder.id
+          # Projects moved into folders are added to the top
+          expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
+        end
+
+        example 'Remove a project from a folder' do
+          create(:project_folder, projects: [@project])
+
+          do_request(project: { folder_id: nil })
+          @project.reload
+
+          expect(@project.folder_id).to be_nil
+          # Projects moved out of folders are added to the top
+          expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
+        end
+
+        example 'Move a project from one folder to another' do
+          old_folder = create(:project_folder, projects: [@project])
+          new_folder = create(:project_folder)
+          old_folder_moderators = create_list(:project_folder_moderator, 2, project_folders: [old_folder])
+          new_folder_moderators = create_list(:project_folder_moderator, 3, project_folders: [new_folder])
+
+          do_request(project: { folder_id: new_folder.id })
+          @project.reload
+
+          assert_status 200
+          expect(@project.folder_id).to eq new_folder.id
+          expect(@project.admin_publication.parent.id).to eq new_folder.admin_publication.id
+
+          project_moderators = User.project_moderator(@project.id)
+          expect(project_moderators.pluck(:id)).not_to match_array old_folder_moderators.pluck(:id)
+          expect(project_moderators.pluck(:id)).to match_array new_folder_moderators.pluck(:id)
+        end
+
+        example '[error] Put a project in a non-existing folder' do
+          do_request(project: { folder_id: 'dinosaur' })
+          expect(response_status).to eq 404
+        end
+
+        example 'Clear all areas', document: false do
+          @project.update!(area_ids: area_ids)
+          expect(@project.areas.size).to eq 2
+          do_request(project: { area_ids: [] })
+          expect(json_response.dig(:data, :relationships, :areas, :data).size).to eq 0
+        end
+
+        example 'Clear all topics', document: false do
+          @project.update!(topic_ids: topic_ids)
+          expect(@project.topics.size).to eq 2
+          do_request(project: { topic_ids: [] })
+          expect(json_response.dig(:data, :relationships, :topics, :data).size).to eq 0
+        end
+
+        example 'Set default assignee to unassigned', document: false do
+          @project.update!(default_assignee: create(:admin))
+          do_request(project: { default_assignee_id: nil })
+          expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to be_nil
+        end
+
+        context 'when description_multiloc contains images' do
+          let(:description_multiloc) { { 'en' => html_with_base64_image } }
+
+          it_behaves_like 'updates record with text images',
+            model_class: Project,
+            field: :description_multiloc
+        end
+
+        describe do
+          example 'The header image can be removed' do
+            @project.update!(header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
+            expect(@project.reload.header_bg_url).to be_present
+            do_request project: { header_bg: nil }
+            expect(@project.reload.header_bg_url).to be_nil
+          end
+        end
+
+        example 'Logs `published` activity when going from draft to published', document: false do
+          @project.admin_publication.update!(publication_status: 'draft')
+          expect { do_request project: { admin_publication_attributes: { publication_status: 'published' } } }
+            .to have_enqueued_job(LogActivityJob)
+            .with(@project, 'published', anything, anything, anything)
+        end
       end
     end
 
