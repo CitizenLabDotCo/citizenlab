@@ -539,8 +539,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
       expect(service.send(:percentage_change, 80, 60)).to eq(-25.0)
     end
 
-    it 'returns nil when old value is zero and new value is not zero' do
-      expect(service.send(:percentage_change, 0, 100)).to be_nil
+    it "returns 'last_7_days_compared_with_zero' when old value is zero and new value is not zero" do
+      expect(service.send(:percentage_change, 0, 100)).to eq('last_7_days_compared_with_zero')
     end
 
     it 'returns zero when there is no change' do

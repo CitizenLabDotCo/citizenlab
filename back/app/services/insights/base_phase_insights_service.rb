@@ -109,7 +109,7 @@ module Insights
 
     def percentage_change(old_value, new_value)
       return 0.0 if old_value == new_value # Includes case where both are zero
-      return nil if old_value.zero? # Infinite percentage change (avoid division by zero)
+      return 'last_7_days_compared_with_zero' if old_value.zero? # Infinite percentage change (avoid division by zero)
 
       # Round to one decimal place
       (((new_value - old_value).to_f / old_value) * 100.0).round(1)
