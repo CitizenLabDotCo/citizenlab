@@ -68,6 +68,14 @@ resource 'Users' do
     get 'web_api/v1/users/:id' do
       before do
         @user = create(:user)
+        settings = AppConfiguration.instance.settings
+        settings['password_login'] = {
+          'allowed' => true,
+          'enabled' => true,
+          'enable_signup' => true,
+          'minimum_length' => 6
+        }
+        AppConfiguration.instance.update!(settings: settings)
       end
 
       let(:id) { @user.id }
@@ -139,17 +147,6 @@ resource 'Users' do
     end
 
     post 'web_api/v1/users' do
-      before do
-        settings = AppConfiguration.instance.settings
-        settings['password_login'] = {
-          'allowed' => true,
-          'enabled' => true,
-          'enable_signup' => true,
-          'minimum_length' => 6
-        }
-        AppConfiguration.instance.update!(settings: settings)
-      end
-
       with_options scope: 'user' do
         parameter :first_name, 'User full name', required: false
         parameter :last_name, 'User full name', required: false
@@ -404,6 +401,16 @@ resource 'Users' do
       before do
         @user.update!(roles: [{ type: 'admin' }])
         %w[Bednar Cole Hagenes MacGyver Oberbrunner].map { |l| create(:user, last_name: l) }
+        create(:super_admin) # super admin are not included in admins
+
+        @admins = [@user, *create_list(:admin, 3)]
+
+        folder_moderators = create_list(:project_folder_moderator, 2, project_folders: [create(:project_folder)])
+        project_moderators = create_list(:project_moderator, 4, projects: [create(:project)])
+        @moderators = [*folder_moderators, *project_moderators]
+        settings = AppConfiguration.instance.settings
+        settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
+        AppConfiguration.instance.update!(settings: settings)
       end
 
       get 'web_api/v1/users' do
@@ -840,16 +847,6 @@ resource 'Users' do
       end
 
       get 'web_api/v1/users/seats' do
-        before do
-          create(:super_admin) # super admin are not included in admins
-
-          @admins = [@user, *create_list(:admin, 3)]
-
-          folder_moderators = create_list(:project_folder_moderator, 2, project_folders: [create(:project_folder)])
-          project_moderators = create_list(:project_moderator, 4, projects: [create(:project)])
-          @moderators = [*folder_moderators, *project_moderators]
-        end
-
         example_request 'Get number of admin and manager (moderator) seats' do
           expect(status).to eq 200
           expect(response_data[:type]).to eq 'seats'
@@ -1088,12 +1085,6 @@ resource 'Users' do
       end
 
       patch 'web_api/v1/users/:id/block' do
-        before do
-          settings = AppConfiguration.instance.settings
-          settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
-          AppConfiguration.instance.update!(settings: settings)
-        end
-
         with_options scope: 'user' do
           parameter :block_reason, 'Reason for blocking & any additional information', required: false
         end

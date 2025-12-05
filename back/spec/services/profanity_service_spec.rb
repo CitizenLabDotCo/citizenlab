@@ -6,9 +6,11 @@ describe ProfanityService do
   let(:service) { described_class.new }
 
   describe 'search_blocked_words' do
-    before { Rails.cache.clear } # for some reason, caching is enabled while testing
-
-    before { stub_fetch_blocked_words! service }
+    # for some reason, caching is enabled while testing
+    before do
+      Rails.cache.clear
+      stub_fetch_blocked_words! service
+    end
 
     after { Rails.cache.clear }
 

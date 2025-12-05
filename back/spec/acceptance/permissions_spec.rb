@@ -18,7 +18,11 @@ resource 'Permissions' do
   let(:phase_id) { @phase.id }
 
   context 'when admin' do
-    before { admin_header_token }
+    before do
+      admin_header_token
+      create(:custom_field_gender, enabled: true, required: true)
+      @phase.permissions.first.update!(group_ids: create_list(:group, 2, projects: [@phase.project]).map(&:id), global_custom_fields: true)
+    end
 
     get 'web_api/v1/phases/:phase_id/permissions' do
       with_options scope: :page do
@@ -98,11 +102,6 @@ resource 'Permissions' do
 
     get 'web_api/v1/phases/:phase_id/permissions/:action' do
       let(:action) { @phase.permissions.first.action }
-
-      before do
-        create(:custom_field_gender, enabled: true, required: true)
-        @phase.permissions.first.update!(group_ids: create_list(:group, 2, projects: [@phase.project]).map(&:id), global_custom_fields: true)
-      end
 
       example_request 'Get one permission by action' do
         expect(status).to eq 200
@@ -222,6 +221,41 @@ resource 'Permissions' do
     before do
       @user = create(:user)
       header_token_for @user
+      @permission = Permission.where(permission_scope_type: nil).first
+      @permission.update!(permitted_by: 'everyone')
+      create(:custom_field_birthyear, required: true)
+      create(:custom_field_gender, required: false)
+      create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field')
+      create(:custom_field, resource_type: 'User', enabled: false, key: 'disabled_field') # Should not be returned
+
+      @user.update!(
+        email: 'my@email.com',
+        first_name: 'Jack',
+        last_name: nil,
+        password_digest: nil,
+        custom_field_values: { 'gender' => 'male' }
+      )
+
+      create(:topic, include_in_onboarding: true)
+      @permission = @phase.permissions.first
+      @permission.update!(permitted_by: 'users')
+
+      create(:topic, include_in_onboarding: true)
+      @permission = @project.phases.first.permissions.first
+      @permission.update!(global_custom_fields: false)
+      @field1 = create(:custom_field, required: true)
+      @field2 = create(:custom_field, required: false)
+      create(:permissions_custom_field, permission: @permission, custom_field: @field1, required: false)
+      create(:permissions_custom_field, permission: @permission, custom_field: @field2, required: true)
+      @permission = @phase.permissions.first
+      @permission.update!(global_custom_fields: false)
+      @field1 = create(:custom_field, required: true)
+      @field2 = create(:custom_field, required: false)
+      create(:permissions_custom_field, permission: @permission, custom_field: @field1, required: false)
+      create(:permissions_custom_field, permission: @permission, custom_field: @field2, required: true)
+      @permission = @phase.permissions.first
+      @multiloc = { en: '<p>You do not have access because you are not in the right group</p>' }
+      @permission.update!(access_denied_explanation_multiloc: @multiloc)
     end
 
     get 'web_api/v1/phases/:phase_id/permissions/:action/requirements' do
@@ -294,11 +328,6 @@ resource 'Permissions' do
     end
 
     get 'web_api/v1/permissions/:action/requirements' do
-      before do
-        @permission = Permission.where(permission_scope_type: nil).first
-        @permission.update!(permitted_by: 'everyone')
-      end
-
       let(:action) { @permission.action }
 
       example_request 'Get the participation requirements of a user in the global scope' do
@@ -321,23 +350,6 @@ resource 'Permissions' do
     end
 
     get 'web_api/v1/permissions/:action/requirements' do
-      before do
-        create(:custom_field_birthyear, required: true)
-        create(:custom_field_gender, required: false)
-        create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field')
-        create(:custom_field, resource_type: 'User', enabled: false, key: 'disabled_field') # Should not be returned
-
-        @user.update!(
-          email: 'my@email.com',
-          first_name: 'Jack',
-          last_name: nil,
-          password_digest: nil,
-          custom_field_values: { 'gender' => 'male' }
-        )
-
-        create(:topic, include_in_onboarding: true)
-      end
-
       let(:action) { 'visiting' }
 
       example_request 'Get the global registration requirements when custom fields are asked' do
@@ -363,13 +375,6 @@ resource 'Permissions' do
     end
 
     get 'web_api/v1/ideas/:idea_id/permissions/:action/requirements' do
-      before do
-        @permission = @phase.permissions.first
-        @permission.update!(permitted_by: 'users')
-
-        create(:topic, include_in_onboarding: true)
-      end
-
       let(:action) { @permission.action }
       let(:idea) { create(:idea, project: @project) }
       let(:idea_id) { idea.id }
@@ -469,15 +474,6 @@ resource 'Permissions' do
     end
 
     get 'web_api/v1/ideas/:idea_id/permissions/:action/custom_fields' do
-      before do
-        @permission = @project.phases.first.permissions.first
-        @permission.update!(global_custom_fields: false)
-        @field1 = create(:custom_field, required: true)
-        @field2 = create(:custom_field, required: false)
-        create(:permissions_custom_field, permission: @permission, custom_field: @field1, required: false)
-        create(:permissions_custom_field, permission: @permission, custom_field: @field2, required: true)
-      end
-
       let(:action) { @permission.action }
       let(:idea) { create(:idea, project: @project, phases: @project.phases) }
       let(:idea_id) { idea.id }
@@ -500,15 +496,6 @@ resource 'Permissions' do
     end
 
     get 'web_api/v1/phases/:phase_id/permissions/:action/custom_fields' do
-      before do
-        @permission = @phase.permissions.first
-        @permission.update!(global_custom_fields: false)
-        @field1 = create(:custom_field, required: true)
-        @field2 = create(:custom_field, required: false)
-        create(:permissions_custom_field, permission: @permission, custom_field: @field1, required: false)
-        create(:permissions_custom_field, permission: @permission, custom_field: @field2, required: true)
-      end
-
       let(:action) { @permission.action }
       let(:phase_id) { @phase.id }
 
@@ -530,12 +517,6 @@ resource 'Permissions' do
     end
 
     get 'web_api/v1/phases/:phase_id/permissions/:action/access_denied_explanation' do
-      before do
-        @permission = @phase.permissions.first
-        @multiloc = { en: '<p>You do not have access because you are not in the right group</p>' }
-        @permission.update!(access_denied_explanation_multiloc: @multiloc)
-      end
-
       let(:action) { @permission.action }
 
       example_request 'Get the access denied explanation of a phase permission' do

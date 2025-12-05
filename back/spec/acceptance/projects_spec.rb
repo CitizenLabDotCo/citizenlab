@@ -69,6 +69,11 @@ resource 'Projects' do
 
       @projects = %w[published published draft published archived archived published]
         .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
+      Analytics::PopulateDimensionsService.populate_types
+      @project = create(:project)
+      config = AppConfiguration.instance
+      config.settings['core']['private_attributes_in_export'] = true
+      config.save!
     end
 
     let(:user) { @user }
@@ -190,10 +195,6 @@ resource 'Projects' do
 
     get 'web_api/v1/projects/:id' do
       let(:id) { @projects.first.id }
-
-      before do
-        Analytics::PopulateDimensionsService.populate_types
-      end
 
       example 'Get one project by id' do
         Permissions::PermissionsUpdateService.new.update_all_permissions
@@ -352,8 +353,6 @@ resource 'Projects' do
 
     patch 'web_api/v1/projects/:id' do
       include_context 'PATCH project parameters'
-
-      before { @project = create(:project) }
 
       let(:id) { @project.id }
       let(:title_multiloc) { { 'en' => 'Changed title' } }
@@ -782,12 +781,6 @@ resource 'Projects' do
           phases: [native_survey_phase],
           custom_field_values: { linear_scale_field.key => 2 }
         )
-      end
-
-      before do
-        config = AppConfiguration.instance
-        config.settings['core']['private_attributes_in_export'] = true
-        config.save!
       end
 
       example_request 'Download inputs of a timeline project with different phases in separate sheets' do

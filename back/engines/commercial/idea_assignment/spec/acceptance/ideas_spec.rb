@@ -9,7 +9,10 @@ resource 'Ideas' do
   before { header 'Content-Type', 'application/json' }
 
   context 'when admin' do
-    before { admin_header_token }
+    before do
+      admin_header_token
+      create(:idea_status, code: 'proposed')
+    end
 
     get 'web_api/v1/ideas' do
       with_options scope: :page do
@@ -100,10 +103,6 @@ resource 'Ideas' do
       ValidationErrorHelper.new.error_fields self, Idea
       response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
       response_field :base, "Array containing objects with signature { error: #{Permissions::PhasePermissionsService::POSTING_DENIED_REASONS.values.join(' | ')} }", scope: :errors
-
-      before do
-        create(:idea_status, code: 'proposed')
-      end
 
       let(:idea) { build(:idea) }
       let(:default_assignee) { create(:admin) }
