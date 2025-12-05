@@ -59,7 +59,7 @@ const ActionFormSurvey = ({
 
   const { participation_method } = phase.data.attributes;
 
-  // Currently only community monitor supports everyone tracking
+  // Only community monitor supports everyone tracking
   const canUseEveryoneTracking =
     participation_method === 'community_monitor_survey' &&
     action === 'posting_idea' &&

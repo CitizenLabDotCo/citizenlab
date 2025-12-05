@@ -33,10 +33,15 @@ const ActionForm = ({ permissionData, phaseId, ...props }: Props) => {
     );
   }
 
+  const showAnyone =
+    ['ideation', 'proposals'].includes(participation_method) &&
+    action === 'posting_idea';
+
   return (
     <ActionFormDefault
       permissionData={permissionData}
       phaseId={phaseId}
+      showAnyone={showAnyone}
       {...props}
     />
   );
