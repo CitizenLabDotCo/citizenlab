@@ -12,13 +12,15 @@ const ProjectsCard = ({
   startAt,
   endAt,
   publicationStatuses,
-  excludedAdminPublicationIds,
+  excludedProjectIds,
+  excludedFolderIds,
 }: Props) => {
   const { data: response } = useProjects({
     start_at: startAt,
     end_at: endAt,
     publication_statuses: publicationStatuses,
-    excluded_admin_publication_ids: excludedAdminPublicationIds,
+    excluded_project_ids: excludedProjectIds,
+    excluded_folder_ids: excludedFolderIds,
   });
   if (!response) return null;
 

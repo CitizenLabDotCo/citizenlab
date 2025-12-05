@@ -1,6 +1,6 @@
 module ReportBuilder
   class Queries::Projects < ReportBuilder::Queries::Base
-    def run_query(start_at: nil, end_at: nil, publication_statuses: ['published'], excluded_admin_publication_ids: [], **_other_props)
+    def run_query(start_at: nil, end_at: nil, publication_statuses: ['published'], excluded_project_ids: [], excluded_folder_ids: [], **_other_props)
       start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
 
       overlapping_project_ids = Phase
@@ -11,8 +11,10 @@ module ReportBuilder
         .joins(:admin_publication)
         .where(id: overlapping_project_ids)
         .where(admin_publication: { publication_status: publication_statuses })
-        .where.not(admin_publication: { id: excluded_admin_publication_ids })
         .not_hidden
+
+      overlapping_projects = filter_excluded_project_ids(overlapping_projects, excluded_project_ids)
+      overlapping_projects = filter_excluded_folder_ids(overlapping_projects, excluded_folder_ids)
 
       periods = Phase
         .select(
@@ -48,6 +50,29 @@ module ReportBuilder
     end
 
     private
+
+    # Excludes projects by their project IDs
+    def filter_excluded_project_ids(scope, excluded_project_ids)
+      return scope if excluded_project_ids.blank?
+
+      scope.where.not(id: excluded_project_ids)
+    end
+
+    # Excludes projects whose parent folder is in the excluded folders list.
+    # When a folder is excluded, all projects within that folder are automatically excluded.
+    def filter_excluded_folder_ids(scope, excluded_folder_ids)
+      return scope if excluded_folder_ids.blank?
+
+      excluded_folder_admin_pub_ids = AdminPublication
+        .where(publication_type: 'ProjectFolders::Folder', publication_id: excluded_folder_ids)
+        .select(:id)
+
+      scope.where(
+        admin_publication: { parent_id: [nil] }
+      ).or(
+        scope.where.not(admin_publication: { parent_id: excluded_folder_admin_pub_ids })
+      )
+    end
 
     def serialize(entity, serializer)
       serializer.new(entity, params: { current_user: @current_user }).serializable_hash[:data]

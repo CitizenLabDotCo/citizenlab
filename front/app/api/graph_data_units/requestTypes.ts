@@ -181,7 +181,8 @@ export type ProjectReportsPublicationStatus = 'published' | 'archived';
 
 export interface ProjectsProps extends DateProps {
   publication_statuses?: ProjectReportsPublicationStatus[];
-  excluded_admin_publication_ids?: string[];
+  excluded_project_ids?: string[];
+  excluded_folder_ids?: string[];
 }
 
 interface ProjectsParams extends BaseParams {
@@ -195,7 +196,8 @@ export interface ProjectsTimelineProps
   sort?: Parameters['sort'];
   locale?: Parameters['locale'];
   no_of_projects?: number;
-  excluded_admin_publication_ids?: string[];
+  excluded_project_ids?: string[];
+  excluded_folder_ids?: string[];
 }
 
 export interface ProjectsTimelineParams extends BaseParams {

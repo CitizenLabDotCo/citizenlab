@@ -12,7 +12,8 @@ class ProjectsFinderAdminService
     projects = filter_review_state(projects, params)
     projects = filter_by_folder_ids(projects, params)
     projects = filter_project_manager(projects, params)
-    projects = filter_excluded_admin_publications(projects, params)
+    projects = filter_excluded_project_ids(projects, params)
+    projects = filter_excluded_folder_ids(projects, params)
     projects = search(projects, params)
     projects = filter_start_date(projects, params)
     projects = filter_participation_states(projects, params)
@@ -201,12 +202,30 @@ class ProjectsFinderAdminService
     scope.where(id: moderated_projects)
   end
 
-  # NOTE: This method requires admin_publications to be joined to the scope.
-  def self.filter_excluded_admin_publications(scope, params = {})
-    excluded_admin_publication_ids = params[:excluded_admin_publication_ids] || []
-    return scope if excluded_admin_publication_ids.blank?
+  # Excludes projects by their project IDs
+  def self.filter_excluded_project_ids(scope, params = {})
+    excluded_project_ids = params[:excluded_project_ids] || []
+    return scope if excluded_project_ids.blank?
 
-    scope.where.not(admin_publications: { id: excluded_admin_publication_ids })
+    scope.where.not(id: excluded_project_ids)
+  end
+
+  # NOTE: This method requires admin_publications to be joined to the scope.
+  # Excludes projects whose parent folder is in the excluded folders list.
+  # When a folder is excluded, all projects within that folder are automatically excluded.
+  def self.filter_excluded_folder_ids(scope, params = {})
+    excluded_folder_ids = params[:excluded_folder_ids] || []
+    return scope if excluded_folder_ids.blank?
+
+    excluded_folder_admin_pub_ids = AdminPublication
+      .where(publication_type: 'ProjectFolders::Folder', publication_id: excluded_folder_ids)
+      .select(:id)
+
+    scope.where(
+      admin_publication: { parent_id: [nil] }
+    ).or(
+      scope.where.not(admin_publication: { parent_id: excluded_folder_admin_pub_ids })
+    )
   end
 
   def self.search(scope, params = {})

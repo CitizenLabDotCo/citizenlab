@@ -37,4 +37,12 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.selectProjectsOrFolders2',
     defaultMessage: 'Projects or folders to exclude',
   },
+  excludeFolders: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.excludeFolders',
+    defaultMessage: 'Exclude folders',
+  },
+  excludeProjects: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.excludeProjects',
+    defaultMessage: 'Exclude projects',
+  },
 });

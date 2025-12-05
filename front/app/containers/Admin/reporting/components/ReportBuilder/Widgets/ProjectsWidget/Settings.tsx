@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Label, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { IOption } from 'typings';
 
@@ -8,10 +8,8 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { useIntl } from 'utils/cl-intl';
 
-import {
-  ReportAdminPublicationSearchInput,
-  ReportAdminPublicationList,
-} from '../_shared/ReportAdminPublicationSelector';
+import FolderMultiSelect from '../_shared/FolderMultiSelect';
+import ProjectMultiSelect from '../_shared/ProjectMultiSelect';
 import {
   TitleInput,
   DateRangeInput,
@@ -25,15 +23,14 @@ const Settings = () => {
   const {
     actions: { setProp },
     publicationStatuses,
-    excludedAdminPublicationIds,
+    excludedProjectIds,
+    excludedFolderIds,
   } = useNode((node) => ({
     publicationStatuses: node.data.props.publicationStatuses?.length
       ? node.data.props.publicationStatuses
       : ['published'],
-    excludedAdminPublicationIds: node.data.props.excludedAdminPublicationIds
-      ?.length
-      ? node.data.props.excludedAdminPublicationIds
-      : [],
+    excludedProjectIds: node.data.props.excludedProjectIds || [],
+    excludedFolderIds: node.data.props.excludedFolderIds || [],
   }));
 
   const handleStatusChange = (options: IOption[]) => {
@@ -43,16 +40,22 @@ const Settings = () => {
     });
   };
 
-  const options: IOption[] = [
+  const handleExcludedFoldersChange = (ids: string[]) => {
+    setProp((props: Props) => {
+      props.excludedFolderIds = ids;
+    });
+  };
+
+  const handleExcludedProjectsChange = (ids: string[]) => {
+    setProp((props: Props) => {
+      props.excludedProjectIds = ids;
+    });
+  };
+
+  const statusOptions: IOption[] = [
     { value: 'published', label: formatMessage(messages.published) },
     { value: 'archived', label: formatMessage(messages.archived) },
   ];
-
-  const handleExcludedAdminPublicationIdsChange = (newIds: string[]) => {
-    setProp((props: Props) => {
-      props.excludedAdminPublicationIds = newIds;
-    });
-  };
 
   return (
     <Box mb="20px">
@@ -63,25 +66,31 @@ const Settings = () => {
         </Text>
         <MultipleSelect
           value={publicationStatuses}
-          options={options}
+          options={statusOptions}
           onChange={handleStatusChange}
         />
       </Box>
       <DateRangeInput />
       <Box mb="20px">
-        <Label htmlFor="report-admin-publication-search-input">
-          {formatMessage(messages.selectProjectsOrFolders)}
-        </Label>
-        <ReportAdminPublicationSearchInput
-          adminPublicationIds={excludedAdminPublicationIds}
-          publicationStatusFilter={publicationStatuses}
-          onChange={handleExcludedAdminPublicationIdsChange}
+        <Text variant="bodyM" color="textSecondary" mb="5px">
+          {formatMessage(messages.excludeFolders)}
+        </Text>
+        <FolderMultiSelect
+          value={excludedFolderIds}
+          onChange={handleExcludedFoldersChange}
         />
       </Box>
-      <ReportAdminPublicationList
-        adminPublicationIds={excludedAdminPublicationIds}
-        onChange={handleExcludedAdminPublicationIdsChange}
-      />
+      <Box mb="20px">
+        <Text variant="bodyM" color="textSecondary" mb="5px">
+          {formatMessage(messages.excludeProjects)}
+        </Text>
+        <ProjectMultiSelect
+          value={excludedProjectIds}
+          onChange={handleExcludedProjectsChange}
+          publicationStatusFilter={publicationStatuses}
+          excludedFolderIds={excludedFolderIds}
+        />
+      </Box>
     </Box>
   );
 };

@@ -1,12 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import {
-  Box,
-  Text,
-  Select,
-  Input,
-  Label,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text, Select, Input } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { IOption } from 'typings';
 
@@ -24,10 +18,8 @@ import MultiSelect from 'components/UI/MultiSelect';
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
-import {
-  ReportAdminPublicationSearchInput,
-  ReportAdminPublicationList,
-} from '../../_shared/ReportAdminPublicationSelector';
+import FolderMultiSelect from '../../_shared/FolderMultiSelect';
+import ProjectMultiSelect from '../../_shared/ProjectMultiSelect';
 import { TitleInput } from '../../ChartWidgets/_shared/ChartWidgetSettings';
 import projectsWidgetMessages from '../../ProjectsWidget/messages';
 import { DEFAULT_NO_OF_PROJECTS } from '../constants';
@@ -79,7 +71,8 @@ const Settings = () => {
     noOfProjects,
     minStartDate,
     maxStartDate,
-    excludedAdminPublicationIds,
+    excludedProjectIds,
+    excludedFolderIds,
   } = useNode((node) => ({
     status: node.data.props.status || ['published'],
     managers: node.data.props.managers || [],
@@ -93,10 +86,8 @@ const Settings = () => {
     noOfProjects: node.data.props.noOfProjects,
     minStartDate: node.data.props.minStartDate,
     maxStartDate: node.data.props.maxStartDate,
-    excludedAdminPublicationIds: node.data.props.excludedAdminPublicationIds
-      ?.length
-      ? node.data.props.excludedAdminPublicationIds
-      : [],
+    excludedProjectIds: node.data.props.excludedProjectIds || [],
+    excludedFolderIds: node.data.props.excludedFolderIds || [],
   }));
 
   const { data: managersData } = useUsers({});
@@ -149,9 +140,15 @@ const Settings = () => {
     });
   };
 
-  const handleExcludedAdminPublicationIdsChange = (newIds: string[]) => {
+  const handleExcludedFoldersChange = (ids: string[]) => {
     setProp((props: ProjectsTimelineCardProps) => {
-      props.excludedAdminPublicationIds = newIds;
+      props.excludedFolderIds = ids;
+    });
+  };
+
+  const handleExcludedProjectsChange = (ids: string[]) => {
+    setProp((props: ProjectsTimelineCardProps) => {
+      props.excludedProjectIds = ids;
     });
   };
 
@@ -322,20 +319,26 @@ const Settings = () => {
           onChange={handleSortChange}
         />
       </SettingsField>
-      <Box mb="20px">
-        <Label htmlFor="report-admin-publication-search-input">
-          {formatMessage(projectsWidgetMessages.selectProjectsOrFolders)}
-        </Label>
-        <ReportAdminPublicationSearchInput
-          adminPublicationIds={excludedAdminPublicationIds}
-          publicationStatusFilter={status}
-          onChange={handleExcludedAdminPublicationIdsChange}
+      <SettingsField
+        label={formatMessage(projectsWidgetMessages.excludeFolders)}
+      >
+        <FolderMultiSelect
+          value={excludedFolderIds}
+          onChange={handleExcludedFoldersChange}
+          placeholder={formatMessage(projectsWidgetMessages.excludeFolders)}
         />
-      </Box>
-      <ReportAdminPublicationList
-        adminPublicationIds={excludedAdminPublicationIds}
-        onChange={handleExcludedAdminPublicationIdsChange}
-      />
+      </SettingsField>
+      <SettingsField
+        label={formatMessage(projectsWidgetMessages.excludeProjects)}
+      >
+        <ProjectMultiSelect
+          value={excludedProjectIds}
+          onChange={handleExcludedProjectsChange}
+          publicationStatusFilter={status}
+          excludedFolderIds={excludedFolderIds}
+          placeholder={formatMessage(projectsWidgetMessages.excludeProjects)}
+        />
+      </SettingsField>
     </Box>
   );
 };
