@@ -41,17 +41,17 @@ RSpec.describe ContentBuilder::Layout do
 
     it 'returns all the layouts that contain the specified widget type' do
       expect(described_class.with_widget_type('Widget1'))
-        .to match_array([layout1, layout2])
+        .to contain_exactly(layout1, layout2)
     end
 
     it 'does not duplicate layouts that contain multiple instances of the widget type' do
       expect(described_class.with_widget_type('Widget2'))
-        .to match_array([layout1])
+        .to contain_exactly(layout1)
     end
 
     it 'returns all the layouts that contain the specified widget types' do
       expect(described_class.with_widget_type('Widget2', 'Widget3'))
-        .to match_array([layout1, layout2])
+        .to contain_exactly(layout1, layout2)
     end
 
     it 'returns an empty array when no layout contains the specified widget type' do

@@ -51,7 +51,7 @@ resource 'Activity' do
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].pluck(:id)).to match_array [activity2.id, activity3.id]
+      expect(json_response[:data].pluck(:id)).to contain_exactly(activity2.id, activity3.id)
     end
 
     example 'List all activities where project_id matches a given project_id' do
@@ -63,7 +63,7 @@ resource 'Activity' do
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].pluck(:id)).to match_array [activity2.id, activity3.id]
+      expect(json_response[:data].pluck(:id)).to contain_exactly(activity2.id, activity3.id)
     end
 
     example 'List all activities excludes activities with acted_at more than 30 days ago', document: false do
@@ -131,7 +131,7 @@ resource 'Activity' do
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].pluck(:id)).to match_array [activity1.id, activity2.id]
+      expect(json_response[:data].pluck(:id)).to contain_exactly(activity1.id, activity2.id)
     end
   end
 end

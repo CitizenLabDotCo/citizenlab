@@ -144,7 +144,7 @@ resource 'Stats - Comments' do
             @topic1.id => 3,
             @topic2.id => 2
           })
-          expect(json_attributes[:topics].keys.map(&:to_s)).to match_array [@topic1.id, @topic2.id, @topic3.id]
+          expect(json_attributes[:topics].keys.map(&:to_s)).to contain_exactly(@topic1.id, @topic2.id, @topic3.id)
         end
       end
 
@@ -243,11 +243,11 @@ resource 'Stats - Comments' do
 
           topic_ids_col = worksheet.map { |col| col.cells[1].value }
           _header, *topic_ids = topic_ids_col
-          expect(topic_ids).to match_array [@topic1.id, @topic2.id]
+          expect(topic_ids).to contain_exactly(@topic1.id, @topic2.id)
 
           amount_col = worksheet.map { |col| col.cells[2].value }
           _header, *amounts = amount_col
-          expect(amounts).to match_array [3, 2]
+          expect(amounts).to contain_exactly(3, 2)
         end
       end
 
@@ -340,7 +340,7 @@ resource 'Stats - Comments' do
             @project1.id => 3,
             @project2.id => 1
           })
-          expect(json_attributes[:projects].keys.map(&:to_s)).to match_array [@project1.id, @project2.id]
+          expect(json_attributes[:projects].keys.map(&:to_s)).to contain_exactly(@project1.id, @project2.id)
         end
       end
 
@@ -430,15 +430,15 @@ resource 'Stats - Comments' do
           expect(worksheet[0].cells.map(&:value)).to match %w[project project_id comments]
           project_id_col = worksheet.map { |col| col.cells[1].value }
           _header, *project_ids = project_id_col
-          expect(project_ids).to match_array [@project1.id, @project2.id]
+          expect(project_ids).to contain_exactly(@project1.id, @project2.id)
 
           project_name_col = worksheet.map { |col| col.cells[0].value }
           _header, *project_names = project_name_col
-          expect(project_names).to match_array [multiloc_service.t(@project1.title_multiloc), multiloc_service.t(@project2.title_multiloc)]
+          expect(project_names).to contain_exactly(multiloc_service.t(@project1.title_multiloc), multiloc_service.t(@project2.title_multiloc))
 
           comment_col = worksheet.map { |col| col.cells[2].value }
           _header, *comments = comment_col
-          expect(comments).to match_array [3, 1]
+          expect(comments).to contain_exactly(3, 1)
         end
       end
 

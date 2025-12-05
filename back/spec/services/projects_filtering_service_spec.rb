@@ -13,7 +13,7 @@ describe ProjectsFilteringService do
       let!(:project3) { create(:project) }
 
       it 'returns projects for the given area and `all` areas' do
-        expect(result.ids).to match_array([project1.id, project2.id])
+        expect(result.ids).to contain_exactly(project1.id, project2.id)
       end
     end
   end

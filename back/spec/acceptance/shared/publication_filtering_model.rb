@@ -25,7 +25,7 @@ RSpec.shared_examples 'publication filtering model' do |model_name|
 
       do_request(for_homepage_filter: true)
       expect(status).to eq(200)
-      expect(response_data.pluck(:id)).to match_array [models[1].id, models[2].id]
+      expect(response_data.pluck(:id)).to contain_exactly(models[1].id, models[2].id)
     end
 
     example "List only selected #{model_name_plural} does not include #{model_name_plural} only used by projects in draft folders" do
@@ -34,7 +34,7 @@ RSpec.shared_examples 'publication filtering model' do |model_name|
 
       do_request(for_homepage_filter: true)
       expect(status).to eq(200)
-      expect(response_data.pluck(:id)).to match_array [models[0].id, models[2].id]
+      expect(response_data.pluck(:id)).to contain_exactly(models[0].id, models[2].id)
     end
 
     example "List only selected #{model_name_plural} does not include #{model_name_plural} only used by projects not visible to user" do
@@ -46,7 +46,7 @@ RSpec.shared_examples 'publication filtering model' do |model_name|
 
       do_request(for_homepage_filter: true)
       expect(status).to eq(200)
-      expect(response_data.pluck(:id)).to match_array [models[2].id]
+      expect(response_data.pluck(:id)).to contain_exactly(models[2].id)
     end
   end
 end

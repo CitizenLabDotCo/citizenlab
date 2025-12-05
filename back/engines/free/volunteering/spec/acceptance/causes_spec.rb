@@ -47,7 +47,11 @@ resource 'Volunteering Causes' do
   end
 
   context 'when admin' do
-    before { admin_header_token }
+    before do
+      admin_header_token
+      @project = create(:single_phase_volunteering_project)
+      @causes = create_list(:cause, 3, phase: @project.phases.first)
+    end
 
     post 'web_api/v1/causes' do
       with_options scope: :cause do
@@ -109,11 +113,6 @@ resource 'Volunteering Causes' do
     patch 'web_api/v1/causes/:id/reorder' do
       with_options scope: :cause do
         parameter :ordering, 'The position, starting from 0, where the cause should be at. Causes after will move down.', required: true
-      end
-
-      before do
-        @project = create(:single_phase_volunteering_project)
-        @causes = create_list(:cause, 3, phase: @project.phases.first)
       end
 
       let(:id) { @causes.last.id }

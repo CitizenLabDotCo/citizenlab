@@ -34,7 +34,7 @@ RSpec.describe Activity do
       let!(:a12) { create(:project_folder_deleted_activity, user: admin) }
 
       it "includes 'Management Feed' activities" do
-        expect(described_class.management).to match_array [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12]
+        expect(described_class.management).to contain_exactly(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12)
       end
 
       it 'excludes activities where item_type is not in the MANAGEMENT_FILTERS' do

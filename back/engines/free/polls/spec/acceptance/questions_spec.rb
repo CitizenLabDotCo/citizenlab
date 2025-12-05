@@ -48,7 +48,11 @@ resource 'Poll Questions' do
   end
 
   context 'when admin' do
-    before { admin_header_token }
+    before do
+      admin_header_token
+      @phase = create(:single_phase_poll_project).phases.first
+      @questions = create_list(:poll_question, 3, phase: @phase)
+    end
 
     post 'web_api/v1/poll_questions' do
       with_options scope: :question do
@@ -101,11 +105,6 @@ resource 'Poll Questions' do
     patch 'web_api/v1/poll_questions/:id/reorder' do
       with_options scope: :question do
         parameter :ordering, 'The position, starting from 0, where the question should be at. Questions after will move down.', required: true
-      end
-
-      before do
-        @phase = create(:single_phase_poll_project).phases.first
-        @questions = create_list(:poll_question, 3, phase: @phase)
       end
 
       let(:id) { @questions.last.id }

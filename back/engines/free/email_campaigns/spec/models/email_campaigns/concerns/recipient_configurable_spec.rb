@@ -22,7 +22,7 @@ RSpec.describe EmailCampaigns::RecipientConfigurable do
 
       campaign.update!(groups: [g1, g2])
 
-      expect(campaign.apply_recipient_filters.all).to match_array [users[0], users[2]]
+      expect(campaign.apply_recipient_filters.all).to contain_exactly(users[0], users[2])
     end
 
     it 'returns all users when there are no associated groups' do

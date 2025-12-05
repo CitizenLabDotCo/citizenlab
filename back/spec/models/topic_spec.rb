@@ -31,7 +31,7 @@ RSpec.describe Topic do
       expect(sorted_topics.size).to eq 6
       # topics[1]: 0 ideas, topics[3]: 1 idea, topics[0]: 2 ideas, topics[2] & topics[4]: 3 ideas each (tied), topics[5]: 4 ideas
       expect(sorted_topics.map(&:id).take(3)).to eq [topics[1].id, topics[3].id, topics[0].id]
-      expect(sorted_topics.map(&:id)[3..4]).to match_array [topics[2].id, topics[4].id]
+      expect(sorted_topics.map(&:id)[3..4]).to contain_exactly(topics[2].id, topics[4].id)
       expect(sorted_topics.map(&:id).last).to eq topics[5].id
     end
 

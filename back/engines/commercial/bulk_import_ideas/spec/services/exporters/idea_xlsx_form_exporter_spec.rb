@@ -15,20 +15,7 @@ describe BulkImportIdeas::Exporters::IdeaXlsxFormExporter do
 
       expect(xlsx).not_to be_nil
       expect(xlsx_hash.count).to eq 1
-      expect(xlsx_hash[0].keys).to match_array([
-        'First name(s)',
-        'Last name',
-        'Email address',
-        'Permission',
-        'Date Published (dd-mm-yyyy)',
-        'Title',
-        'Description',
-        'Tags',
-        'Location',
-        'Image URL',
-        'Latitude',
-        'Longitude'
-      ])
+      expect(xlsx_hash[0].keys).to contain_exactly('First name(s)', 'Last name', 'Email address', 'Permission', 'Date Published (dd-mm-yyyy)', 'Title', 'Description', 'Tags', 'Location', 'Image URL', 'Latitude', 'Longitude')
     end
   end
 
@@ -77,24 +64,7 @@ describe BulkImportIdeas::Exporters::IdeaXlsxFormExporter do
 
       expect(xlsx).not_to be_nil
       expect(xlsx_hash.count).to eq 1
-      expect(xlsx_hash[0].keys).to match_array([
-        'First name(s)',
-        'Last name',
-        'Email address',
-        'Permission',
-        'Date Published (dd-mm-yyyy)',
-        'Text field',
-        'Multiline text field',
-        'Number field',
-        'Linear scale field',
-        'Rating field',
-        'Select field',
-        'Type your answer',
-        'Multi select field',
-        'Image select field',
-        'Ranking field',
-        'Matrix field'
-      ])
+      expect(xlsx_hash[0].keys).to contain_exactly('First name(s)', 'Last name', 'Email address', 'Permission', 'Date Published (dd-mm-yyyy)', 'Text field', 'Multiline text field', 'Number field', 'Linear scale field', 'Rating field', 'Select field', 'Type your answer', 'Multi select field', 'Image select field', 'Ranking field', 'Matrix field')
     end
 
     context 'when user fields in surveys are enabled' do

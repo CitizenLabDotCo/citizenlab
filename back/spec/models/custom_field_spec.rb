@@ -651,7 +651,7 @@ RSpec.describe CustomField do
     let!(:option3) { create(:custom_field_option, custom_field: field, key: 'by_train') }
     let!(:option4) { create(:custom_field_option, custom_field: field, key: 'by_horse') }
 
-    it 'works' do
+    it 'calculates average rankings for field options' do
       create(:idea, custom_field_values: { field.key => %w[by_bike by_horse by_train by_foot] })
       create(:idea, custom_field_values: { field.key => %w[by_train by_bike by_foot by_horse] })
       create(:idea, custom_field_values: {})
@@ -675,7 +675,7 @@ RSpec.describe CustomField do
     let!(:option3) { create(:custom_field_option, custom_field: field, key: 'by_train') }
     let!(:option4) { create(:custom_field_option, custom_field: field, key: 'by_horse') }
 
-    it 'works' do
+    it 'returns ranking position counts for each option' do
       create(:user, custom_field_values: { field.key => %w[by_bike by_horse by_train by_foot] })
       create(:user, custom_field_values: { field.key => %w[by_train by_bike by_foot by_horse] })
       create(:user, custom_field_values: {})

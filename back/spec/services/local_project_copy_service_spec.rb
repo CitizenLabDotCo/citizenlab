@@ -52,7 +52,7 @@ describe LocalProjectCopyService do
     let!(:timeline_project) { create(:project_with_past_ideation_and_current_information_phase) }
     let!(:folder) { create(:project_folder) }
 
-    it 'works' do
+    it 'creates a new project when copying' do
       project_count = Project.count
       service.copy(open_ended_project)
 

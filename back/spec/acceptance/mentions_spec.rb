@@ -133,7 +133,7 @@ resource 'Mentions' do
         do_request base_query_params.merge({ roles: ['admin'] })
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].pluck(:id)).to match_array [admin.id]
+        expect(json_response[:data].pluck(:id)).to contain_exactly(admin.id)
       end
 
       context 'when a post is specified' do
@@ -141,14 +141,14 @@ resource 'Mentions' do
           do_request base_query_params.merge({ roles: ['moderator'] })
           assert_status 200
           json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id)).to match_array [moderator_of_project.id]
+          expect(json_response[:data].pluck(:id)).to contain_exactly(moderator_of_project.id)
         end
 
         example "Includes only admins and moderators of post's project when both roles are specified" do
           do_request base_query_params.merge({ roles: %w[moderator admin] })
           assert_status 200
           json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id)).to match_array [moderator_of_project.id, admin.id]
+          expect(json_response[:data].pluck(:id)).to contain_exactly(moderator_of_project.id, admin.id)
         end
       end
 
@@ -160,7 +160,7 @@ resource 'Mentions' do
           assert_status 200
           json_response = json_parse(response_body)
           expect(json_response[:data].pluck(:id))
-            .to match_array [moderator_of_project.id, moderator_of_other_project.id]
+            .to contain_exactly(moderator_of_project.id, moderator_of_other_project.id)
         end
 
         example 'Includes only admins and moderators when both roles are specified' do
@@ -168,7 +168,7 @@ resource 'Mentions' do
           assert_status 200
           json_response = json_parse(response_body)
           expect(json_response[:data].pluck(:id))
-            .to match_array [moderator_of_project.id, moderator_of_other_project.id, admin.id]
+            .to contain_exactly(moderator_of_project.id, moderator_of_other_project.id, admin.id)
         end
       end
     end

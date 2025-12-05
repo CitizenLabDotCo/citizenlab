@@ -31,10 +31,10 @@ resource 'Analytics - Sessions model' do
       assert_status 200
 
       expect(response_data[:attributes])
-        .to match_array([{
+        .to contain_exactly({
           count: 5,
           count_monthly_user_hash: 1
-        }])
+        })
     end
   end
 end

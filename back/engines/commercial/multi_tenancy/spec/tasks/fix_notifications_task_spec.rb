@@ -11,6 +11,6 @@ describe 'fix_existing_tenants:remove_deprecated_notifications rake task' do
     deprecated.update_columns(type: 'Notifications::InitiativeAssignedToYou')
 
     expect { Rake::Task['fix_existing_tenants:remove_deprecated_notifications'].invoke }.to change(Notification, :count).by(-1)
-    expect(Notification.distinct.pluck(:type)).to match_array ['Notifications::CommentOnIdeaYouFollow', 'Notifications::CommentOnYourComment']
+    expect(Notification.distinct.pluck(:type)).to contain_exactly('Notifications::CommentOnIdeaYouFollow', 'Notifications::CommentOnYourComment')
   end
 end

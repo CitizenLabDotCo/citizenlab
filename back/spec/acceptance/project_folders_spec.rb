@@ -402,7 +402,7 @@ resource 'ProjectFolder' do
 
           expect(response_status).to eq 200
           expect(layout.reload.craftjs_json['nUOW77iNcW']['props']['adminPublicationIds'])
-            .to match_array [project_folder2.admin_publication.id, project3.admin_publication.id]
+            .to contain_exactly(project_folder2.admin_publication.id, project3.admin_publication.id)
         end
       end
     end

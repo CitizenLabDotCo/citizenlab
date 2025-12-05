@@ -46,10 +46,7 @@ resource 'Analytics - FactPosts model' do
         }
       })
       assert_status 200
-      expect(response_data[:attributes]).to match_array([
-        { 'dimension_date_created.month': '2022-09', count: 2 },
-        { 'dimension_date_created.month': '2022-10', count: 2 }
-      ])
+      expect(response_data[:attributes]).to contain_exactly({ 'dimension_date_created.month': '2022-09', count: 2 }, { 'dimension_date_created.month': '2022-10', count: 2 })
     end
 
     example 'does not return survey responses', document: false do
@@ -76,9 +73,7 @@ resource 'Analytics - FactPosts model' do
         }
       })
       assert_status 200
-      expect(response_data[:attributes]).to match_array([
-        { 'dimension_date_created.month': '2022-09', count: 2 }
-      ])
+      expect(response_data[:attributes]).to contain_exactly({ 'dimension_date_created.month': '2022-09', count: 2 })
     end
   end
 end
