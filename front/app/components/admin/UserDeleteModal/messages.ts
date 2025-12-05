@@ -78,6 +78,14 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.deleteUserModal.banReasonPlaceholder',
     defaultMessage: 'Reason (optional)',
   },
+  emailAlreadyBanned: {
+    id: 'app.containers.Admin.Users.deleteUserModal.emailAlreadyBanned',
+    defaultMessage: 'This email address (or a variant) is already banned.',
+  },
+  banReasonLabel: {
+    id: 'app.containers.Admin.Users.deleteUserModal.banReasonLabel',
+    defaultMessage: 'Reason',
+  },
   cannotBeUndone: {
     id: 'app.containers.Admin.Users.deleteUserModal.cannotBeUndone',
     defaultMessage: 'This action cannot be undone.',

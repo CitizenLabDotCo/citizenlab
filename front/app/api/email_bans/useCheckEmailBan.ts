@@ -11,7 +11,7 @@ const checkEmailBan = (email: string) =>
     action: 'get',
   });
 
-const useCheckEmailBan = (email: string | null) => {
+const useCheckEmailBan = (email?: string | null) => {
   return useQuery<IEmailBanDetails, Error>({
     queryKey: [...emailBansKeys.items(), 'check', email],
     queryFn: () => checkEmailBan(email!),
