@@ -600,6 +600,59 @@ describe ProjectsFinderAdminService do
       end
     end
 
+    describe 'with excluded_project_ids' do
+      let!(:project1) { create(:project) }
+      let!(:project2) { create(:project) }
+      let!(:project3) { create(:project) }
+      let(:admin_user) { create(:admin) }
+
+      it 'excludes projects by their project IDs' do
+        result = described_class.execute(
+          Project.all,
+          { excluded_project_ids: [project1.id] },
+          current_user: admin_user
+        )
+
+        expect(result.pluck(:id)).to match_array [project2.id, project3.id]
+      end
+
+      it 'returns all projects when excluded_project_ids is empty' do
+        result = described_class.execute(
+          Project.all,
+          { excluded_project_ids: [] },
+          current_user: admin_user
+        )
+
+        expect(result.pluck(:id)).to match_array [project1.id, project2.id, project3.id]
+      end
+    end
+
+    describe 'with excluded_folder_ids' do
+      let!(:folder) { create(:project_folder) }
+      let!(:project_in_folder) { create(:project, folder: folder) }
+      let!(:project_outside_folder) { create(:project) }
+      let(:admin_user) { create(:admin) }
+
+      it 'excludes projects within excluded folders' do
+        result = described_class.execute(
+          Project.all,
+          { excluded_folder_ids: [folder.id] },
+          current_user: admin_user
+        )
+
+        expect(result.pluck(:id)).to match_array [project_outside_folder.id]
+      end
+
+      it 'returns all projects when excluded_folder_ids is empty' do
+        result = described_class.execute(
+          Project.all,
+          { excluded_folder_ids: [] },
+          current_user: admin_user
+        )
+
+        expect(result.pluck(:id)).to match_array [project_in_folder.id, project_outside_folder.id]
+      end
+    end
   end
 
   describe '.filter_with_admin_publication' do
