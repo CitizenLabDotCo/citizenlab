@@ -1925,7 +1925,7 @@
   "app.containers.UsersEditPage.changePassword2": "Ændre adgangskode",
   "app.containers.UsersEditPage.clickHereToUpdateVerification": "Klik venligst her for at opdatere din bekræftelse.",
   "app.containers.UsersEditPage.conditionsLinkText": "vores vilkår ",
-  "app.containers.UsersEditPage.contactUs": "Endnu en grund til at gå? {feedbackLink}, så kan vi måske hjælpe.",
+  "app.containers.UsersEditPage.contactUs": "Endnu en grund til at gå? Kontakt os (support@govocal.com), måske kan vi hjælpe.",
   "app.containers.UsersEditPage.deleteAccountSubtext": "Vi er kede af, at du forlader os. ",
   "app.containers.UsersEditPage.deleteMyAccount": "Slet min konto ",
   "app.containers.UsersEditPage.deleteYourAccount": "Slet din konto ",
