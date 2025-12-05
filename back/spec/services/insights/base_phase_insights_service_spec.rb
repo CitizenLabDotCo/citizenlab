@@ -39,12 +39,12 @@ RSpec.describe Insights::BasePhaseInsightsService do
 
     let(:visits) do
       [
-        { acted_at: 10.days.ago, visitor_id: user1.id.to_s }, # after phase start & before phase end
-        { acted_at: 5.days.ago, visitor_id: user1.id.to_s },  # in last 7 days & before phase end
-        { acted_at: 10.days.ago, visitor_id: user2.id.to_s }, # after phase start & before phase end
-        { acted_at: 4.days.ago, visitor_id: user2.id.to_s },  # in last 7 days & before phase end
-        { acted_at: 4.days.ago, visitor_id: 'anonymous_1' },  # in last 7 days & before phase end
-        { acted_at: 10.days.ago, visitor_id: SecureRandom.uuid } # in phase, but no participation
+        { acted_at: 10.days.ago, visitor_id: user1.id.to_s }, # during phase (in week before last)
+        { acted_at: 5.days.ago, visitor_id: user1.id.to_s },  # during phase & in last 7 days
+        { acted_at: 10.days.ago, visitor_id: user2.id.to_s }, # during phase (in week before last)
+        { acted_at: 4.days.ago, visitor_id: user2.id.to_s },  # during phase & in last 7 days
+        { acted_at: 4.days.ago, visitor_id: 'anonymous_1' },  # during phase & in last 7 days
+        { acted_at: 10.days.ago, visitor_id: SecureRandom.uuid } # # during phase (in week before last)
       ]
     end
 
@@ -54,9 +54,9 @@ RSpec.describe Insights::BasePhaseInsightsService do
       expect(result).to eq(
         {
           visitors: 4,
-          visitors_last_7_days: 3,
+          visitors_rolling_7_day_change: 0.0, # From 3 (7 to 14 days ago) to 3 (last 7-day period) unique visitors = 0% change
           participants: 3,
-          participants_rolling_7_day_change: 50.0, # From 2 (7 to 14 days ago) to 3 (last 7-day period) participants = 50% increase
+          participants_rolling_7_day_change: 50.0, # From 2 (7 to 14 days ago) to 3 (last 7-day period) unique participants = 50% increase
           engagement_rate: 0.75
         }
       )

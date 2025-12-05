@@ -77,7 +77,7 @@ resource 'Phase insights' do
   let(:id) { common_ground_phase.id }
 
   get 'web_api/v1/phases/:id/insights' do
-    example_request 'returns insights for common_ground phase' do
+    example_request 'returns insights data for common_ground phase' do
       assert_status 200
 
       expect(json_response_body[:data][:id]).to eq(common_ground_phase.id.to_s)

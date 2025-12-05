@@ -77,37 +77,37 @@ resource 'Phase insights' do
       )
 
       # Comments
-      create(:comment, idea: idea2, author: user4, created_at: 10.days.ago) # in phase (in week before last)
+      create(:comment, idea: idea2, author: user4, created_at: 10.days.ago) # during phase (in week before last)
 
       # Reactions
-      create(:reaction, reactable: idea1, user: user5, created_at: 5.days.ago) # in phase, and in last 7 days
+      create(:reaction, reactable: idea1, user: user5, created_at: 5.days.ago) # during phase & last 7 days
 
       # Pageviews and sessions
       session1 = create(:session, user_id: user1.id)
       create(:pageview, session: session1, created_at: 25.days.ago, project_id: phase.project.id) # before phase
 
       session2 = create(:session, user_id: user2.id)
-      create(:pageview, session: session2, created_at: 15.days.ago, project_id: phase.project.id) # in phase
-      create(:pageview, session: session2, created_at: 5.days.ago, project_id: phase.project.id) # in phase & last 7 days, same session
+      create(:pageview, session: session2, created_at: 15.days.ago, project_id: phase.project.id) # during phase
+      create(:pageview, session: session2, created_at: 5.days.ago, project_id: phase.project.id) # during phase & last 7 days, same session
 
       session3 = create(:session, user_id: user3.id)
       create(:pageview, session: session3, created_at: 2.days.ago, project_id: phase.project.id) # after phase
 
       session4 = create(:session)
-      create(:pageview, session: session4, created_at: 15.days.ago, project_id: phase.project.id) # in phase, did not participate
+      create(:pageview, session: session4, created_at: 15.days.ago, project_id: phase.project.id) # during phase, did not participate
 
       session5 = create(:session, user_id: user4.id)
-      create(:pageview, session: session5, created_at: 10.days.ago, project_id: phase.project.id) # in phase
+      create(:pageview, session: session5, created_at: 10.days.ago, project_id: phase.project.id) # during phase (in week before last)
 
       session6 = create(:session, user_id: user5.id)
-      create(:pageview, session: session6, created_at: 5.days.ago, project_id: phase.project.id) # in phase, and in last 7 days
+      create(:pageview, session: session6, created_at: 5.days.ago, project_id: phase.project.id) # during phase & last 7 days
     end
   end
 
   let(:id) { proposals_phase.id }
 
   get 'web_api/v1/phases/:id/insights' do
-    example_request 'creates insights for proposals phase' do
+    example_request 'returns insights data for proposals phase' do
       assert_status 200
 
       expect(json_response_body[:data][:id]).to eq(proposals_phase.id.to_s)
@@ -116,7 +116,7 @@ resource 'Phase insights' do
       metrics = json_response_body.dig(:data, :attributes, :metrics)
       expect(metrics).to eq({
         visitors: 4,
-        visitors_last_7_days: 2,
+        visitors_rolling_7_day_change: 100.0, # from 1 (in week before last) to 2 unique visitors (in last 7 days) = 100% increase
         participants: 3,
         participants_rolling_7_day_change: 100.0, # from 1 (in week before last) to 2 unique participants (in last 7 days) = 100% increase
         engagement_rate: 0.75,

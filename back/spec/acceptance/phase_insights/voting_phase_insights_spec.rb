@@ -67,53 +67,52 @@ resource 'Phase insights' do
 
       # Comments
       create(:comment, idea: idea1, author: user1, created_at: 25.days.ago) # before voting phase (not counted)
-      create(:comment, idea: idea2, author: user2, created_at: 13.days.ago) # in voting phase (in week before last)
-      create(:comment, idea: idea3, author: user2, created_at: 5.days.ago) # in voting phase & last 7 days
-      create(:comment, idea: idea3, author: user3, created_at: 5.days.ago) # in voting phase & last 7 days
+      create(:comment, idea: idea2, author: user2, created_at: 13.days.ago) # during voting phase (in week before last)
+      create(:comment, idea: idea3, author: user2, created_at: 5.days.ago) # during voting phase & last 7 days
+      create(:comment, idea: idea3, author: user3, created_at: 5.days.ago) # during voting phase & last 7 days
 
       # Baskets and votes
       basket1 = create(:basket, phase: phase, user: user4, submitted_at: 20.days.ago) # before voting phase (still counts)
       create(:baskets_idea, basket: basket1, idea: idea1, votes: 1)
       create(:baskets_idea, basket: basket1, idea: idea2, votes: 3)
 
-      basket2 = create(:basket, phase: phase, user: user5, submitted_at: 10.days.ago) # in voting phase (in week before last)
+      basket2 = create(:basket, phase: phase, user: user5, submitted_at: 10.days.ago) # during voting phase (in week before last)
       create(:baskets_idea, basket: basket2, idea: idea2, votes: 1)
 
-      basket3 = create(:basket, phase: phase, user: user6, submitted_at: 5.days.ago) # in voting phase & last 7 days
+      basket3 = create(:basket, phase: phase, user: user6, submitted_at: 5.days.ago) # during voting phase & last 7 days
       create(:baskets_idea, basket: basket3, idea: idea3, votes: 1)
 
       # Pageviews and sessions
       session1 = create(:session, user_id: user2.id)
       create(:pageview, session: session1, created_at: 20.days.ago, project_id: phase.project.id) # before voting phase
-      create(:pageview, session: session1, created_at: 13.days.ago, project_id: phase.project.id) # in voting phase
+      create(:pageview, session: session1, created_at: 13.days.ago, project_id: phase.project.id) # during voting phase (in week before last)
 
       session2 = create(:session, user_id: user2.id)
-      create(:pageview, session: session2, created_at: 5.days.ago, project_id: phase.project.id) # in voting phase & last 7 days
+      create(:pageview, session: session2, created_at: 5.days.ago, project_id: phase.project.id) # during voting phase & last 7 days
       create(:pageview, session: session2, created_at: 4.days.ago, project_id: phase.project.id) # different session, but repeat visitor
 
       session3 = create(:session, user_id: user3.id)
-      create(:pageview, session: session3, created_at: 10.days.ago, project_id: phase.project.id) # in voting phase
-
+      create(:pageview, session: session3, created_at: 10.days.ago, project_id: phase.project.id) # during voting phase (in week before last)
       session4 = create(:session, user_id: user4.id)
-      create(:pageview, session: session4, created_at: 10.days.ago, project_id: phase.project.id) # in voting phase
-      create(:pageview, session: session4, created_at: 5.days.ago, project_id: phase.project.id) # in voting phase & last 7 days
+      create(:pageview, session: session4, created_at: 10.days.ago, project_id: phase.project.id) # during voting phase (in week before last)
+      create(:pageview, session: session4, created_at: 5.days.ago, project_id: phase.project.id) # during voting phase & last 7 days
 
       session5 = create(:session, user_id: user5.id)
-      create(:pageview, session: session5, created_at: 5.days.ago, project_id: phase.project.id) # in voting phase & last 7 days
+      create(:pageview, session: session5, created_at: 5.days.ago, project_id: phase.project.id) # during voting phase & last 7 days
 
       session6 = create(:session, user_id: user6.id)
-      create(:pageview, session: session6, created_at: 5.days.ago, project_id: phase.project.id) # in voting phase & last 7 days
+      create(:pageview, session: session6, created_at: 5.days.ago, project_id: phase.project.id) # during voting phase & last 7 days
 
       session7 = create(:session, monthly_user_hash: 'fake_hash1')
-      create(:pageview, session: session7, created_at: 10.days.ago, project_id: phase.project.id) # in voting phase (visitor did not participate)
-      create(:pageview, session: session7, created_at: 5.days.ago, project_id: phase.project.id) # in voting phase & last 7 days (visitor did not participate)
+      create(:pageview, session: session7, created_at: 10.days.ago, project_id: phase.project.id) # during voting phase (in week before last) (visitor did not participate)
+      create(:pageview, session: session7, created_at: 5.days.ago, project_id: phase.project.id) # during voting phase & last 7 days (visitor did not participate)
     end
   end
 
   let(:id) { voting_phase.id }
 
   get 'web_api/v1/phases/:id/insights' do
-    example_request 'Get insights data for a voting phase' do
+    example_request 'returns insights data for a voting phase' do
       assert_status 200
 
       expect(json_response_body[:data][:id]).to eq(voting_phase.id.to_s)
@@ -122,7 +121,7 @@ resource 'Phase insights' do
       metrics = json_response_body.dig(:data, :attributes, :metrics)
       expect(metrics).to eq({
         visitors: 6,
-        visitors_last_7_days: 5,
+        visitors_rolling_7_day_change: 25.0, # from 4 (in week before last) to 5 unique visitors (in last 7 days) = 25% increase
         participants: 5,
         participants_rolling_7_day_change: 50.0, # from 3 (in week before last) to 5 unique participants (in last 7 days) = 50% increase
         engagement_rate: 0.833,
@@ -156,7 +155,7 @@ resource 'Phase insights' do
         metrics = json_response_body.dig(:data, :attributes, :metrics)
         expect(metrics).to eq({
           visitors: 6,
-          visitors_last_7_days: 5,
+          visitors_rolling_7_day_change: 25.0, # from 4 (in week before last) to 5 unique visitors (in last 7 days) = 25% increase
           participants: 5,
           participants_rolling_7_day_change: 50.0, # from 3 (in week before last) to 5 unique participants (in last 7 days) = 50% increase
           engagement_rate: 0.833,

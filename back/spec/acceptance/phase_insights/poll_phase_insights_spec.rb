@@ -59,7 +59,7 @@ resource 'Phase insights' do
   let(:id) { poll_phase.id }
 
   get 'web_api/v1/phases/:id/insights' do
-    example_request 'creates insights for poll phase' do
+    example_request 'returns insights data for poll phase' do
       assert_status 200
 
       expect(json_response_body[:data][:id]).to eq(poll_phase.id.to_s)
@@ -68,7 +68,7 @@ resource 'Phase insights' do
       metrics = json_response_body.dig(:data, :attributes, :metrics)
       expect(metrics).to eq({
         visitors: 2,
-        visitors_last_7_days: 1,
+        visitors_rolling_7_day_change: -50.0, # from 2 (in week before last) to 1 unique visitor (in last 7 days) = -50% decrease
         participants: 2,
         participants_rolling_7_day_change: 0.0, # from 1 (in week before last) to 1 unique participant (in last 7 days) = 0% change
         engagement_rate: 1.0,
