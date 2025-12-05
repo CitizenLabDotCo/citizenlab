@@ -9,6 +9,7 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import { useIntl } from 'utils/cl-intl';
 
 import FolderMultiSelect from '../_shared/FolderMultiSelect';
+import sharedMessages from '../_shared/messages';
 import ProjectMultiSelect from '../_shared/ProjectMultiSelect';
 import {
   TitleInput,
@@ -73,7 +74,7 @@ const Settings = () => {
       <DateRangeInput />
       <Box mb="20px">
         <Text variant="bodyM" color="textSecondary" mb="5px">
-          {formatMessage(messages.excludeFolders)}
+          {formatMessage(sharedMessages.excludeFolders)}
         </Text>
         <FolderMultiSelect
           value={excludedFolderIds}
@@ -82,7 +83,7 @@ const Settings = () => {
       </Box>
       <Box mb="20px">
         <Text variant="bodyM" color="textSecondary" mb="5px">
-          {formatMessage(messages.excludeProjects)}
+          {formatMessage(sharedMessages.excludeProjects)}
         </Text>
         <ProjectMultiSelect
           value={excludedProjectIds}

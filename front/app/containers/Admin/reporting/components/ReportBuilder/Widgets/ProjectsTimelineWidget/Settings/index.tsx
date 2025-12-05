@@ -19,9 +19,9 @@ import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
 import FolderMultiSelect from '../../_shared/FolderMultiSelect';
+import sharedMessages from '../../_shared/messages';
 import ProjectMultiSelect from '../../_shared/ProjectMultiSelect';
 import { TitleInput } from '../../ChartWidgets/_shared/ChartWidgetSettings';
-import projectsWidgetMessages from '../../ProjectsWidget/messages';
 import { DEFAULT_NO_OF_PROJECTS } from '../constants';
 import messages from '../messages';
 import { ProjectsTimelineCardProps } from '../ProjectsTimelineCard';
@@ -319,24 +319,20 @@ const Settings = () => {
           onChange={handleSortChange}
         />
       </SettingsField>
-      <SettingsField
-        label={formatMessage(projectsWidgetMessages.excludeFolders)}
-      >
+      <SettingsField label={formatMessage(sharedMessages.excludeFolders)}>
         <FolderMultiSelect
           value={excludedFolderIds}
           onChange={handleExcludedFoldersChange}
-          placeholder={formatMessage(projectsWidgetMessages.excludeFolders)}
+          placeholder={formatMessage(sharedMessages.excludeFolders)}
         />
       </SettingsField>
-      <SettingsField
-        label={formatMessage(projectsWidgetMessages.excludeProjects)}
-      >
+      <SettingsField label={formatMessage(sharedMessages.excludeProjects)}>
         <ProjectMultiSelect
           value={excludedProjectIds}
           onChange={handleExcludedProjectsChange}
           publicationStatusFilter={status}
           excludedFolderIds={excludedFolderIds}
-          placeholder={formatMessage(projectsWidgetMessages.excludeProjects)}
+          placeholder={formatMessage(sharedMessages.excludeProjects)}
         />
       </SettingsField>
     </Box>
