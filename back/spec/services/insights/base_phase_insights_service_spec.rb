@@ -539,12 +539,16 @@ RSpec.describe Insights::BasePhaseInsightsService do
       expect(service.send(:percentage_change, 80, 60)).to eq(-25.0)
     end
 
-    it 'returns nil when old value is zero' do
+    it 'returns nil when old value is zero and new value is not zero' do
       expect(service.send(:percentage_change, 0, 100)).to be_nil
     end
 
     it 'returns zero when there is no change' do
       expect(service.send(:percentage_change, 100, 100)).to eq(0.0)
+    end
+
+    it 'returns zero when both old and new values are zero' do
+      expect(service.send(:percentage_change, 0, 0)).to eq(0.0)
     end
 
     it 'returns -100.0 when new value is zero' do

@@ -110,6 +110,7 @@ module Insights
     end
 
     def percentage_change(old_value, new_value)
+      return 0.0 if old_value == new_value # Includes case where both are zero
       return nil if old_value.zero?
 
       # Round to one decimal place
