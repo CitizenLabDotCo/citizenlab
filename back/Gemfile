@@ -111,7 +111,7 @@ gem 'premailer-rails', '~> 1.12.0'
 gem 'rest-client'
 gem 'rgeo-geojson'
 gem 'rubyzip', '~> 1.3.0'
-gem 'stackprof', '~> 0.2.26'
+gem 'stackprof', '~> 0.2.27'
 gem 'scientist', '~> 1.6.4'
 
 gem 'okcomputer'
