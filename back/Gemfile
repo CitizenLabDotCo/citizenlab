@@ -10,6 +10,7 @@ end
 
 gem 'rails', '~> 7.2.3'
 gem 'pg', '~> 1.5.6'
+gem 'strong_migrations', '~> 2.5'
 gem 'puma', '~> 6.4.3'
 gem 'bcrypt', '~> 3.1.20' # Use ActiveModel has_secure_password
 gem 'csv', '~> 3.3.0'
@@ -63,7 +64,6 @@ group :development do
   gem 'spring-commands-rspec'
   gem 'spring-watcher-listen', '~> 2.1'
   gem 'annotate'
-  gem 'strong_migrations', '~> 2.5'
 end
 
 group :test do
@@ -79,7 +79,7 @@ end
 gem 'pundit', '~> 2.5.0'
 gem 'active_model_serializers', '~> 0.10.15'
 
-gem 'jwt', '~> 2.8.1'
+gem 'jwt', '~> 2.9.2'
 gem 'que', '~> 2.3.0'
 
 gem 'activerecord-import', '~> 1.7'
@@ -115,15 +115,10 @@ gem 'stackprof', '~> 0.2.26'
 gem 'scientist', '~> 1.6.4'
 
 gem 'okcomputer'
-gem 'omniauth', '~> 2.1'
-gem 'omniauth-saml', '~> 2.2.3'
-gem 'omniauth-rails_csrf_protection'
-gem 'omniauth-facebook'
-gem 'omniauth-google-oauth2'
 gem 'sentry-ruby'
 gem 'sentry-rails'
 gem 'simple_segment', '~>1.5'
-gem 'omniauth_openid_connect', '~> 0.7.1'
+
 gem 'faraday-jwt', '~> 0.1.0'
 gem 'acts_as_list', '~> 1.2'
 gem 'positioning', '~> 0.4.6'
@@ -132,6 +127,14 @@ gem 'faker'
 gem 'order_as_specified'
 gem 'scenic'
 gem 'ice_cube', '~> 0.17'
+
+# Omniauth SSO
+gem 'omniauth', '~> 2.1.4'
+gem 'omniauth-rails_csrf_protection', '~> 1.0.2'
+gem 'omniauth-saml', '~> 2.2.3'
+gem 'omniauth_openid_connect', '~> 0.8.0'
+gem 'omniauth-facebook', '~> 10.0.0'
+gem 'omniauth-google-oauth2', '~> 1.2.1'
 
 # Libraries for PDF generation /reading
 gem 'prawn', '~> 2.5'
@@ -242,6 +245,7 @@ commercial_engines = [
   'webhooks',
 
   # ID verification & SSO engines.
+  'id_acm',
   'id_auth0',
   'id_bogus',
   'id_bosa_fas',

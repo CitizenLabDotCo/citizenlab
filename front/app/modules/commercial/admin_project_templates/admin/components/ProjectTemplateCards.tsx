@@ -13,6 +13,7 @@ import SearchInput from 'components/UI/SearchInput';
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
+import { Templates } from '../../types';
 import DepartmentFilter from '../components/DepartmentFilter';
 
 import messages from './messages';
@@ -95,12 +96,7 @@ interface Props {
   onPurposeFilterChange: (purposes: string[]) => void;
   onDepartmentFilterChange: (departments: string[]) => void;
   onParticipationLevelFilterChange: (participationLevels: string[]) => void;
-  templates: {
-    edges: [];
-    pageInfo: {
-      hasNextPage: boolean;
-    };
-  } | null;
+  templates: Templates;
 }
 
 const ProjectTemplateCards = memo<Props & WrappedComponentProps>(

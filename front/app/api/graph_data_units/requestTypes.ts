@@ -161,7 +161,7 @@ interface RegistrationsParams {
   props: RegistrationsProps;
 }
 
-export interface MethodsUsedProps extends DateProps, CompareProps {}
+export interface MethodsUsedProps extends CompareProps, ProjectsProps {}
 
 interface MethodsUsedParams extends BaseParams {
   resolved_name: 'MethodsUsedWidget';
