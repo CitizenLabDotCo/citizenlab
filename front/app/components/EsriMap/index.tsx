@@ -150,12 +150,15 @@ const EsriMap = ({
   useEffect(() => {
     if (!mapView || !updateMapViewConfig) return;
 
-    configureMapView(
-      mapView,
-      initialData,
-      globalMapSettings,
-      isMobileOrSmaller
-    );
+    // Wait for the mapView to be fully initialized before configuring it
+    mapView.when(() => {
+      configureMapView(
+        mapView,
+        initialData,
+        globalMapSettings,
+        isMobileOrSmaller
+      );
+    });
 
     setUpdateMapViewConfig(false);
   }, [
