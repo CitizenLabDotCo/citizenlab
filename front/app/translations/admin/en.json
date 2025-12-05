@@ -1493,6 +1493,8 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.yes": "Yes",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.active": "Active",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.archived": "Archived",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.excludeFolders": "Exclude folders",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.excludeProjects": "Exclude projects",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.finished": "Finished",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.openEnded": "Open-ended",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.planned": "Planned",
