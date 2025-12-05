@@ -3,7 +3,7 @@
 class WebApi::V1::EmailBansController < ApplicationController
   def count
     authorize(:email_ban)
-    render json: raw_json({ count: EmailBan.distinct.count(:email_hash) })
+    render json: raw_json({ count: EmailBan.count })
   end
 
   # GET /email_bans/:email

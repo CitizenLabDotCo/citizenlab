@@ -374,7 +374,6 @@ DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_groups_on_group_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_groups_on_campaign_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaign_email_commands_on_recipient_id;
 DROP INDEX IF EXISTS public.index_email_bans_on_normalized_email_hash;
-DROP INDEX IF EXISTS public.index_email_bans_on_email_hash;
 DROP INDEX IF EXISTS public.index_email_bans_on_banned_by_id;
 DROP INDEX IF EXISTS public.index_dismissals_on_campaign_name_and_user_id;
 DROP INDEX IF EXISTS public.index_custom_forms_on_participation_context;
@@ -2348,7 +2347,6 @@ CREATE TABLE public.custom_forms (
 
 CREATE TABLE public.email_bans (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
-    email_hash character varying NOT NULL,
     normalized_email_hash character varying NOT NULL,
     reason text,
     banned_by_id uuid,
@@ -5377,17 +5375,10 @@ CREATE INDEX index_email_bans_on_banned_by_id ON public.email_bans USING btree (
 
 
 --
--- Name: index_email_bans_on_email_hash; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_email_bans_on_email_hash ON public.email_bans USING btree (email_hash);
-
-
---
 -- Name: index_email_bans_on_normalized_email_hash; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_email_bans_on_normalized_email_hash ON public.email_bans USING btree (normalized_email_hash);
+CREATE UNIQUE INDEX index_email_bans_on_normalized_email_hash ON public.email_bans USING btree (normalized_email_hash);
 
 
 --
