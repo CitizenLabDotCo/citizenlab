@@ -2638,8 +2638,6 @@
   "app.containers.AdminPage.SettingsPage.languages": "Langues",
   "app.containers.AdminPage.SettingsPage.languagesTooltip": "Sélectionnez les langues dans lesquelles vous souhaitez que votre plateforme soit disponible. Ils peuvent facilement choisir leur langue préférée à partir de cette liste via un bouton dans la barre de navigation.",
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Activité",
-  "app.containers.AdminPage.SettingsPage.loginHelper": "Connexion",
-  "app.containers.AdminPage.SettingsPage.loginHelperTooltip": "Affiché en haut du formulaire de connexion",
   "app.containers.AdminPage.SettingsPage.logo": "Logo",
   "app.containers.AdminPage.SettingsPage.noDescriptionProvided": "Aucune description n'est fournie",
   "app.containers.AdminPage.SettingsPage.noHeader": "Veuillez insérer une image de couverture",
