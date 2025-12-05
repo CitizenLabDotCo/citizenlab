@@ -19,6 +19,8 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useLocale from 'hooks/useLocale';
 
+import { useIntl } from 'utils/cl-intl';
+
 import { configureMapView } from './config';
 import { InitialData, DefaultBasemapType } from './types';
 import {
@@ -26,6 +28,7 @@ import {
   getDefaultBasemap,
   handleWebMapReferenceLayers,
   createUserLocationGraphic,
+  useLabelExpandButtons,
 } from './utils';
 
 // Custom Esri styles
@@ -102,6 +105,10 @@ const EsriMap = ({
   const [initialized, setInitialized] = useState(false);
 
   const mapRefAvailable = !!mapRef.current;
+
+  // for Accessibility: add labels to the expand buttons in the map's legend and layer list
+  const { formatMessage } = useIntl();
+  useLabelExpandButtons({ mapView, formatMessage });
 
   useEffect(() => {
     if (!mapRefAvailable) return;

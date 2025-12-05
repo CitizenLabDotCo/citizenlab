@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import Basemap from '@arcgis/core/Basemap';
 import Collection from '@arcgis/core/core/Collection';
 import Point from '@arcgis/core/geometry/Point';
@@ -33,7 +35,55 @@ import {
   DEFAULT_TILE_PROVIDER,
   MAPTILER_ATTRIBUTION,
 } from './constants';
+import messages from './messages';
 import { DefaultBasemapType } from './types';
+
+// For Accessibility: add (aria-labels) to the expand buttons for layer list and legend
+interface UseLabelExpandButtonsProps {
+  mapView: MapView | null;
+  formatMessage: (messages: { id: string; defaultMessage: string }) => string;
+}
+export const useLabelExpandButtons = ({
+  mapView,
+  formatMessage,
+}: UseLabelExpandButtonsProps) => {
+  useEffect(() => {
+    if (!mapView) return;
+
+    const labelExpandButtons = () => {
+      document
+        .querySelectorAll('.esri-expand__container')
+        .forEach((container) => {
+          const button = container.querySelector(
+            ".esri-widget--button[role='button']"
+          );
+          const content = container.querySelector('.esri-expand__content');
+          if (!button || !content) return;
+
+          if (content.querySelector('.esri-layer-list')) {
+            button.setAttribute(
+              'aria-label',
+              formatMessage(messages.a11y_mapTopButton)
+            );
+          }
+          if (content.querySelector('.esri-legend')) {
+            button.setAttribute(
+              'aria-label',
+              formatMessage(messages.a11y_mapBottomButton)
+            );
+          }
+        });
+    };
+    labelExpandButtons();
+
+    const observer = new MutationObserver(labelExpandButtons);
+    observer.observe(mapView.container, { childList: true, subtree: true });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [mapView, formatMessage]);
+};
 
 // getBasemapType
 // Description: Gets the basemap type given a certain tileProvider URL.
