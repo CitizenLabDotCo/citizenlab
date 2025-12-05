@@ -21,7 +21,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'email:start': messages.beforeYouParticipate,
   'email:policies': messages.beforeYouParticipate,
   'email:password': messages.logIn,
-  'email:sso-policies': messages.beforeYouParticipate,
+  'email:sso-policies': messages.signUp,
   'email:confirmation': messages.confirmYourEmail,
 
   // invite flow
@@ -74,13 +74,14 @@ export const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
 };
 
 type HelperTextKey =
-  | 'signup_helper_text'
-  | 'custom_fields_signup_helper_text'
-  | 'login_helper_text';
+  | 'enter_email_helper_text'
+  | 'enter_password_helper_text'
+  | 'complete_your_profile_helper_text'
+  | 'custom_fields_signup_helper_text';
 
 export const HELPER_TEXT_KEYS: Partial<Record<Step, HelperTextKey>> = {
-  'email:policies': 'signup_helper_text',
-  'invite:email-password': 'signup_helper_text',
-  'email:password': 'login_helper_text',
+  'email:start': 'enter_email_helper_text',
+  'email:password': 'enter_password_helper_text',
+  'missing-data:built-in': 'complete_your_profile_helper_text',
   'missing-data:custom-fields': 'custom_fields_signup_helper_text',
 };
