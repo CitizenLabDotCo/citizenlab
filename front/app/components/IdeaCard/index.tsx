@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { useBreakpoint, Box, Title } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
@@ -21,7 +21,7 @@ import CardImage from './CardImage';
 import Container from './Container';
 import Footer from './Footer';
 import Interactions from './Interactions';
-import { handleScrollToCard } from './utils';
+import { useScrollToCard } from './utils';
 
 export interface Props {
   ideaId: string;
@@ -68,12 +68,13 @@ const IdeaCard = ({
   const [searchParams] = useSearchParams();
   const scrollToCardParam = searchParams.get('scroll_to_card');
 
-  useEffect(() => {
-    if (scrollToCardParam && idea.data.id === scrollToCardParam) {
-      return handleScrollToCard(scrollToCardParam, smallerThanPhone);
-    }
-    return;
-  }, [scrollToCardParam, idea.data.id, smallerThanPhone]);
+  // Scroll to this card if it matches the scroll_to_card search param
+  const shouldScrollToCard =
+    scrollToCardParam && idea.data.id === scrollToCardParam
+      ? scrollToCardParam
+      : undefined;
+
+  useScrollToCard(shouldScrollToCard, smallerThanPhone);
 
   const { slug } = idea.data.attributes;
 

@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
@@ -10,32 +12,43 @@ const SCROLL_OFFSETS = {
 } as const;
 
 /*
- * handleScrollToCard:
- * Handles the scroll-to-card with project description image loading considerations.
+ * useScrollToCard:
+ * Hook that handles scrolling to a card with project description image loading considerations.
+ * Automatically subscribes to image loaded events and cleans up on unmount.
  */
-export const handleScrollToCard = (
-  cardId: string,
+export const useScrollToCard = (
+  cardId: string | undefined,
   smallerThanPhone: boolean
-): (() => void) => {
-  // Define the scroll function
-  const performScroll = () =>
-    scrollToCardAndCleanUpUrl(cardId, smallerThanPhone);
+) => {
+  useEffect(() => {
+    if (!cardId) return;
 
-  // Get the project description element
-  const projectDescription = document.querySelector(
-    '[id^="project-description"]'
-  );
+    const performScroll = () =>
+      scrollToCardAndCleanUpUrl(cardId, smallerThanPhone);
 
-  // Check if project description images are loaded,
-  // if so, perform scroll immediately.
-  if (projectDescription && checkImagesLoaded(projectDescription)) {
-    return () => {
+    // Get the project description element
+    const projectDescription = document.querySelector(
+      '[id^="project-description"]'
+    );
+
+    // Check if project description images are loaded,
+    // if so, perform scroll immediately.
+    if (projectDescription && checkImagesLoaded(projectDescription)) {
       performScroll();
-    };
-  }
+      return;
+    }
 
-  // Otherwise, images still loading. Wait for the images loaded event before scrolling.
-  return subscribeToImagesLoadedEvent(performScroll);
+    // Otherwise, images still loading. Wait for the images loaded event before scrolling.
+    const subscription = eventEmitter
+      .observeEvent(IMAGES_LOADED_EVENT)
+      .subscribe(() => {
+        performScroll();
+      });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [cardId, smallerThanPhone]);
 };
 
 /*
@@ -80,23 +93,4 @@ export const checkImagesLoaded = (projectDescription: Element): boolean => {
     return true;
   }
   return false;
-};
-
-/*
- * subscribeToImagesLoadedEvent:
- * Subscribes to the IMAGES_LOADED_EVENT and executes the callback when the event is emitted.
- */
-export const subscribeToImagesLoadedEvent = (
-  callback: () => void
-): (() => void) => {
-  const subscription = eventEmitter
-    .observeEvent(IMAGES_LOADED_EVENT)
-    .subscribe(() => {
-      callback();
-      subscription.unsubscribe();
-    });
-
-  return () => {
-    subscription.unsubscribe();
-  };
 };
