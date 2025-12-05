@@ -35,15 +35,15 @@ module Insights
       completion_rate = completion_rate(posted_ideas_count, total_submitted_surveys)
 
       if phase_has_run_more_than_14_days?
-        ideas_last_7_days_count = participations[:posting_idea].select { |p| p[:acted_at] >= 7.days.ago }.count
-        ideas_last_14_to_8_days_count = participations[:posting_idea].select do |p|
+        ideas_last_7_days_count = participations[:posting_idea].count { |p| p[:acted_at] >= 7.days.ago }
+        ideas_last_14_to_8_days_count = participations[:posting_idea].count do |p|
           p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago
-        end.count
+        end
 
-        submitted_last_7_days_count = submitted_survey_participations.select { |p| p[:survey_submitted_at] >= 7.days.ago }.count
-        submitted_last_14_to_8_days_count = submitted_survey_participations.select do |p|
+        submitted_last_7_days_count = submitted_survey_participations.count { |p| p[:survey_submitted_at] >= 7.days.ago }
+        submitted_last_14_to_8_days_count = submitted_survey_participations.count do |p|
           p[:survey_submitted_at] < 7.days.ago && p[:survey_submitted_at] >= 14.days.ago
-        end.count
+        end
 
         completion_rate_last_7_days = completion_rate(ideas_last_7_days_count, submitted_last_7_days_count)
         completion_rate_last_14_to_8_days = completion_rate(ideas_last_14_to_8_days_count, submitted_last_14_to_8_days_count)
@@ -78,8 +78,6 @@ module Insights
       participations_last_14_to_8_days_count = participations.select do |p|
         p[:survey_submitted_at] < 7.days.ago && p[:survey_submitted_at] >= 14.days.ago
       end
-
-      puts "participations_last_7_days_count: #{participations_last_7_days_count.count}, participations_last_14_to_8_days_count: #{participations_last_14_to_8_days_count.count}"
 
       percentage_change(
         participations_last_14_to_8_days_count.count,
