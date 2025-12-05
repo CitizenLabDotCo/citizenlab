@@ -209,6 +209,5 @@ RSpec.describe ReportBuilder::Queries::Projects do
         expect(result[:projects].pluck(:id)).to include(@project_in_folder.id, @project1.id, @project2.id, @project3.id)
       end
     end
-
   end
 end
