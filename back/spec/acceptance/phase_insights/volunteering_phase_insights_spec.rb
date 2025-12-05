@@ -44,9 +44,9 @@ resource 'Phase insights' do
       user3 = create(:user)
 
       # Volunteerings
-      create(:volunteer, cause: cause1, user: user1, created_at: 15.days.ago)
-      create(:volunteer, cause: cause2, user: user1, created_at: 5.days.ago)
-      create(:volunteer, cause: cause1, user: user2, created_at: 10.days.ago)
+      create(:volunteer, cause: cause1, user: user1, created_at: 15.days.ago) # during phase
+      create(:volunteer, cause: cause2, user: user1, created_at: 5.days.ago) # during phase & last 7 days
+      create(:volunteer, cause: cause1, user: user2, created_at: 10.days.ago) # during phase (in week before last)
 
       # Pageviews and sessions
       session1 = create(:session, user_id: user1.id)
@@ -75,7 +75,7 @@ resource 'Phase insights' do
         visitors: 2,
         visitors_last_7_days: 1,
         participants: 2,
-        participants_last_7_days: 1,
+        participants_rolling_7_day_change: 0.0, # from 1 (in week before last) to 1 unique participant (in last 7 days) = 0% change
         engagement_rate: 1.0,
         volunteering: {
           volunteerings: 3,

@@ -49,12 +49,12 @@ resource 'Phase insights' do
       # Ideas
       create(:idea, phases: [phase], created_at: 25.days.ago, author: ns_user1, creation_phase_id: phase.id) # created & published before phase (not counted)
 
-      # created and submitted during native survey phase
+      # created and submitted during native survey phase (in week before last)
       create(
         :idea,
         phases: [phase],
-        created_at: 15.days.ago,
-        submitted_at: 15.days.ago,
+        created_at: 12.days.ago,
+        submitted_at: 12.days.ago,
         author: ns_user2,
         creation_phase_id: phase.id,
         custom_field_values: { gender: 'female', birthyear: 1980 }
@@ -63,11 +63,11 @@ resource 'Phase insights' do
       create(:idea, phases: [phase], created_at: 5.days.ago, submitted_at: 5.days.ago, author: ns_user2, creation_phase_id: phase.id) # created during phase, and in last 7 days
       create(:idea, phases: [phase], created_at: 2.days.ago, submitted_at: 2.days.ago, author: ns_user3, creation_phase_id: phase.id) # created & published after phase (not counted)
 
-      # created during native survey phase, not submitted
+      # created during native survey phase (in week before last), not submitted
       create(
         :idea,
         phases: [phase],
-        created_at: 15.days.ago,
+        created_at: 12.days.ago,
         publication_status: 'draft', # Avoid automatic setting of submitted_at
         submitted_at: nil,
         author: ns_user4,
@@ -87,10 +87,10 @@ resource 'Phase insights' do
       create(:pageview, session: session3, created_at: 2.days.ago, project_id: phase.project.id) # after phase
 
       session4 = create(:session, user_id: ns_user4.id)
-      create(:pageview, session: session4, created_at: 15.days.ago, project_id: phase.project.id) # in phase
+      create(:pageview, session: session4, created_at: 12.days.ago, project_id: phase.project.id) # in phase
 
       session5 = create(:session, user_id: ns_user5.id)
-      create(:pageview, session: session5, created_at: 15.days.ago, project_id: phase.project.id) # in phase, did not participate
+      create(:pageview, session: session5, created_at: 12.days.ago, project_id: phase.project.id) # in phase, did not participate
     end
   end
 
@@ -108,7 +108,7 @@ resource 'Phase insights' do
         visitors: 3,
         visitors_last_7_days: 1,
         participants: 2,
-        participants_last_7_days: 1,
+        participants_rolling_7_day_change: -50.0, # from 2 (in week before last) to 1 unique participant (in last 7 days) = -50% decrease
         engagement_rate: 0.667,
         native_survey: {
           submitted_surveys: 2,
@@ -121,7 +121,8 @@ resource 'Phase insights' do
       expect(participants_and_visitors_chart_data).to eq({
         resolution: 'day',
         timeseries: [
-          { participants: 2, visitors: 3, date_group: '2025-11-17' },
+          { participants: 0, visitors: 1, date_group: '2025-11-17' },
+          { participants: 2, visitors: 2, date_group: '2025-11-20' },
           { participants: 1, visitors: 1, date_group: '2025-11-27' }
         ]
       })

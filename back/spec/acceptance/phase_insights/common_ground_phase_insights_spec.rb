@@ -48,7 +48,7 @@ resource 'Phase insights' do
 
       # Ideas
       idea1 = create(:idea, phases: [phase], author: user1, created_at: 25.days.ago, published_at: 25.days.ago, creation_phase_id: phase.id) # published before phase (not counted)
-      create(:idea, phases: [phase], author: user2, created_at: 15.days.ago, published_at: 15.days.ago, creation_phase_id: phase.id) # published during phase
+      create(:idea, phases: [phase], author: user2, created_at: 13.days.ago, published_at: 13.days.ago, creation_phase_id: phase.id) # published during phase
       create(:idea, phases: [phase], author: user2, created_at: 5.days.ago, published_at: 5.days.ago, creation_phase_id: phase.id) # published during phase, and in last 7 days
       create(:idea, phases: [phase], author: user3, created_at: 2.days.ago, published_at: 2.days.ago, creation_phase_id: phase.id) # published after phase (not counted)
 
@@ -60,14 +60,14 @@ resource 'Phase insights' do
       create(:pageview, session: session1, created_at: 25.days.ago, project_id: phase.project.id) # before phase
 
       session2 = create(:session, user_id: user2.id)
-      create(:pageview, session: session2, created_at: 15.days.ago, project_id: phase.project.id) # in phase
+      create(:pageview, session: session2, created_at: 13.days.ago, project_id: phase.project.id) # in phase
       create(:pageview, session: session2, created_at: 5.days.ago, project_id: phase.project.id) # in phase & last 7 days, same session
 
       session3 = create(:session, user_id: user3.id)
       create(:pageview, session: session3, created_at: 2.days.ago, project_id: phase.project.id) # after phase
 
       session4 = create(:session)
-      create(:pageview, session: session4, created_at: 15.days.ago, project_id: phase.project.id) # in phase, did not participate
+      create(:pageview, session: session4, created_at: 13.days.ago, project_id: phase.project.id) # in phase, did not participate
 
       session5 = create(:session, user_id: user4.id)
       create(:pageview, session: session5, created_at: 5.days.ago, project_id: phase.project.id) # in phase, and in last 7 days
@@ -88,7 +88,7 @@ resource 'Phase insights' do
         visitors: 3,
         visitors_last_7_days: 2,
         participants: 2,
-        participants_last_7_days: 2,
+        participants_rolling_7_day_change: 100.0, # from 1 (in week before last) to 2 unique participants (in last 7 days) = 100% increase
         engagement_rate: 0.667,
         common_ground: {
           associated_ideas: 4,
@@ -103,7 +103,7 @@ resource 'Phase insights' do
       expect(participants_and_visitors_chart_data).to eq({
         resolution: 'day',
         timeseries: [
-          { participants: 1, visitors: 2, date_group: '2025-11-17' },
+          { participants: 1, visitors: 2, date_group: '2025-11-19' },
           { participants: 2, visitors: 2, date_group: '2025-11-27' }
         ]
       })

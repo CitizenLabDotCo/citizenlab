@@ -54,7 +54,7 @@ resource 'Phase insights' do
       create(:idea, phases: [phase], author: user3, created_at: 2.days.ago, published_at: 2.days.ago) # published after ideation phase (not counted)
 
       # Comments
-      create(:comment, idea: idea2, author: user4, created_at: 10.days.ago) # in ideation phase
+      create(:comment, idea: idea2, author: user4, created_at: 10.days.ago) # in ideation phase (in week before last)
 
       # Reactions
       create(:reaction, reactable: idea2, user: user5, created_at: 5.days.ago) # in ideation phase, and in last 7 days
@@ -74,7 +74,7 @@ resource 'Phase insights' do
       create(:pageview, session: session4, created_at: 15.days.ago, project_id: phase.project.id) # in ideation phase, did not participate
 
       session5 = create(:session, user_id: user4.id)
-      create(:pageview, session: session5, created_at: 10.days.ago, project_id: phase.project.id) # in ideation phase
+      create(:pageview, session: session5, created_at: 10.days.ago, project_id: phase.project.id) # in ideation phase (in week before last)
 
       session6 = create(:session, user_id: user5.id)
       create(:pageview, session: session6, created_at: 5.days.ago, project_id: phase.project.id) # in ideation phase, and in last 7 days
@@ -95,7 +95,7 @@ resource 'Phase insights' do
         visitors: 4,
         visitors_last_7_days: 2,
         participants: 3,
-        participants_last_7_days: 2,
+        participants_rolling_7_day_change: 100.0, # from 1 (in week before last) to 2 unique participants (in last 7 days) = 100% increase
         engagement_rate: 0.75,
         ideation: {
           ideas_posted: 2,

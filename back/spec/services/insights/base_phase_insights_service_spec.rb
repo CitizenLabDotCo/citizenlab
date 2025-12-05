@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Insights::BasePhaseInsightsService do
   let(:service) { described_class.new(phase) }
 
-  let(:phase) { create(:single_voting_phase, start_at: 15.days.ago, end_at: 2.days.ago) }
+  let(:phase) { create(:single_voting_phase, start_at: 17.days.ago, end_at: 2.days.ago) }
   let!(:permission1) { create(:permission, action: 'voting', permission_scope: phase) }
 
   describe '#participant_id' do
@@ -26,13 +26,13 @@ RSpec.describe Insights::BasePhaseInsightsService do
     let(:user1) { create(:user) }
 
     let(:participation1) { create(:basket_participation, acted_at: 20.days.ago, user: user1) } # before phase start
-    let(:participation2) { create(:basket_participation, acted_at: 10.days.ago, user: user1) } # after phase start & before phase end
-    let(:participation3) { create(:basket_participation, acted_at: 5.days.ago, user: user1) } # in last 7 days & before phase end
+    let(:participation2) { create(:basket_participation, acted_at: 10.days.ago, user: user1) } # during phase & before last 7 days
+    let(:participation3) { create(:basket_participation, acted_at: 5.days.ago, user: user1) } # during phase & in last 7 days
     let(:participation4) { create(:basket_participation, acted_at: 1.day.ago, user: user1) } # after phase end
 
     let(:user2) { create(:user) }
-    let(:participation5) { create(:basket_participation, acted_at: 10.days.ago, user: user2) } # after phase start & before phase end
-    let(:participation6) { create(:basket_participation, acted_at: 4.days.ago, user: user2) } # in last 7 days & before phase end
+    let(:participation5) { create(:basket_participation, acted_at: 10.days.ago, user: user2) } # during phase & before last 7 days
+    let(:participation6) { create(:basket_participation, acted_at: 4.days.ago, user: user2) } # during phase & in last 7 days
 
     let(:participation7) { create(:basket_participation, acted_at: 4.days.ago, user: nil, participant_id: SecureRandom.uuid) } # Anonymous or no user, in last 7 days & before phase end
 
@@ -47,7 +47,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
           visitors: 100,
           visitors_last_7_days: 20,
           participants: 3,
-          participants_last_7_days: 3,
+          participants_rolling_7_day_change: 50.0, # From 2 (7 to 14 days ago) to 3 (last 7-day period) participants = 50% increase
           engagement_rate: 0.03
         }
       )
@@ -481,6 +481,11 @@ RSpec.describe Insights::BasePhaseInsightsService do
     it 'returns the first day of month for month resolution' do
       datetime = Time.new(2024, 6, 15, 14, 30, 0)
       expect(service.send(:date_truncate, datetime, 'month')).to eq(Date.new(2024, 6, 1))
+    end
+  end
+
+  describe 'participants_rolling_7_day_change' do
+    it 'calculates rolling 7-day change correctly' do
     end
   end
 

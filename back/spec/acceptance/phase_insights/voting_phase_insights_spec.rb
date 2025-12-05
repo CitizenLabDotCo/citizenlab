@@ -37,7 +37,7 @@ resource 'Phase insights' do
       :phase,
       participation_method: 'ideation',
       start_at: 30.days.ago,
-      end_at: 15.days.ago
+      end_at: 16.days.ago
     )
   end
 
@@ -46,7 +46,7 @@ resource 'Phase insights' do
       :phase,
       participation_method: 'voting',
       voting_method: 'multiple_voting',
-      start_at: 14.days.ago,
+      start_at: 15.days.ago,
       end_at: 1.day.ago,
       project: ideation_phase.project,
       manual_votes_count: 3,
@@ -67,7 +67,7 @@ resource 'Phase insights' do
 
       # Comments
       create(:comment, idea: idea1, author: user1, created_at: 25.days.ago) # before voting phase (not counted)
-      create(:comment, idea: idea2, author: user2, created_at: 13.days.ago) # in voting phase
+      create(:comment, idea: idea2, author: user2, created_at: 13.days.ago) # in voting phase (in week before last)
       create(:comment, idea: idea3, author: user2, created_at: 5.days.ago) # in voting phase & last 7 days
       create(:comment, idea: idea3, author: user3, created_at: 5.days.ago) # in voting phase & last 7 days
 
@@ -76,7 +76,7 @@ resource 'Phase insights' do
       create(:baskets_idea, basket: basket1, idea: idea1, votes: 1)
       create(:baskets_idea, basket: basket1, idea: idea2, votes: 3)
 
-      basket2 = create(:basket, phase: phase, user: user5, submitted_at: 10.days.ago) # in voting phase
+      basket2 = create(:basket, phase: phase, user: user5, submitted_at: 10.days.ago) # in voting phase (in week before last)
       create(:baskets_idea, basket: basket2, idea: idea2, votes: 1)
 
       basket3 = create(:basket, phase: phase, user: user6, submitted_at: 5.days.ago) # in voting phase & last 7 days
@@ -124,7 +124,7 @@ resource 'Phase insights' do
         visitors: 6,
         visitors_last_7_days: 5,
         participants: 5,
-        participants_last_7_days: 3,
+        participants_rolling_7_day_change: 50.0, # from 3 (in week before last) to 5 unique participants (in last 7 days) = 50% increase
         engagement_rate: 0.833,
         voting: {
           voting_method: 'multiple_voting',
@@ -158,7 +158,7 @@ resource 'Phase insights' do
           visitors: 6,
           visitors_last_7_days: 5,
           participants: 5,
-          participants_last_7_days: 3,
+          participants_rolling_7_day_change: 50.0, # from 3 (in week before last) to 5 unique participants (in last 7 days) = 50% increase
           engagement_rate: 0.833,
           voting: {
             voting_method: 'budgeting',
