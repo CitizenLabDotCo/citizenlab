@@ -63,7 +63,7 @@ resource 'Phase insights' do
       create(:idea, phases: [phase], created_at: 5.days.ago, submitted_at: 5.days.ago, author: ns_user2, creation_phase_id: phase.id) # created during phase, and in last 7 days
       create(:idea, phases: [phase], created_at: 2.days.ago, submitted_at: 2.days.ago, author: ns_user3, creation_phase_id: phase.id) # created & published after phase (not counted)
 
-      # created during native survey phase (in week before last), not submitted
+      # created during native survey phase (in week before last), not submitted (considered incomplete, affecting completion rate)
       create(
         :idea,
         phases: [phase],
@@ -73,7 +73,7 @@ resource 'Phase insights' do
         author: ns_user4,
         creation_phase_id: phase.id,
         custom_field_values: { gender: 'male', birthyear: 1990 }
-      ) # created during phase, but not submitted (considered incomplete, affecting completion rate)
+      )
 
       # Pageviews and sessions
       session1 = create(:session, user_id: ns_user1.id)
@@ -113,8 +113,9 @@ resource 'Phase insights' do
         engagement_rate_rolling_7_day_change: 0.0, # engagement_rate_last_7_days: 1.0, engagement_rate_last_14_to_8_days: 1.0 = 0% change
         native_survey: {
           submitted_surveys: 2,
-          submitted_surveys_last_7_days: 1,
-          completion_rate: 0.667
+          submitted_surveys_rolling_7_day_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) = 0% change
+          completion_rate: 0.667,
+          completion_rate_rolling_7_day_change: 100.0 # completion_rate_last_7_days: 1.0, completion_rate_last_14_to_8_days: 0.5 = (((1.0 - 0.5).to_f / 0.5) * 100.0).round(1)
         }
       })
 
