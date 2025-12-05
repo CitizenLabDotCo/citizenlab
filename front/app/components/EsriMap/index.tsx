@@ -150,14 +150,17 @@ const EsriMap = ({
   useEffect(() => {
     if (!mapView || !updateMapViewConfig) return;
 
-    configureMapView(
-      mapView,
-      initialData,
-      globalMapSettings,
-      isMobileOrSmaller
-    );
+    // Wait for mapView to be ready before configuring it
+    mapView.when(() => {
+      configureMapView(
+        mapView,
+        initialData,
+        globalMapSettings,
+        isMobileOrSmaller
+      );
 
-    setUpdateMapViewConfig(false);
+      setUpdateMapViewConfig(false);
+    });
   }, [
     mapView,
     updateMapViewConfig,
@@ -170,11 +173,14 @@ const EsriMap = ({
   useEffect(() => {
     if (!mapView || initialized) return;
 
-    if (initialData?.onInit) {
-      initialData.onInit(mapView);
-    }
+    // Wait for mapView to be ready before calling onInit
+    mapView.when(() => {
+      if (initialData?.onInit) {
+        initialData.onInit(mapView);
+      }
 
-    setInitialized(true);
+      setInitialized(true);
+    });
   }, [initialData, initialized, mapView]);
 
   // The following useEffects are used for handling dynamic data that is passed in.
