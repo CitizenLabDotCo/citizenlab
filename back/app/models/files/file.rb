@@ -75,6 +75,13 @@ module Files
   class File < ApplicationRecord
     include PgSearch::Model
 
+    SAFE_EXTENSIONS = (
+      %w[
+        avi csv doc docx key mkv mp3 mp4 numbers odp ods odt pages pdf ppt pptx
+        txt xls xlsx
+      ] + BaseImageUploader::ALLOWED_TYPES
+    ).freeze
+
     attribute :ai_processing_allowed, :boolean, default: false
 
     enum :category, {
@@ -121,6 +128,7 @@ module Files
     )
 
     mount_base64_file_uploader :content, FileUploader
+    validate :validate_extension, if: :will_save_change_to_content?
 
     validates :name, presence: true
     validates :content, presence: true
@@ -209,6 +217,30 @@ module Files
 
       self.size = content.size
       self.mime_type = content.content_type
+    end
+
+    def validate_extension
+      return if uploader_has_admin_rights?
+
+      extension = content.file&.extension&.downcase
+      return if extension.present? && SAFE_EXTENSIONS.include?(extension)
+
+      errors.add(
+        :content, :extension_whitelist_error,
+        extension: extension.inspect,
+        allowed_types: SAFE_EXTENSIONS.join(', ')
+      )
+    end
+
+    def uploader_has_admin_rights?
+      return false unless uploader
+      return true if uploader.admin?
+
+      project_ids = files_projects.map(&:project_id).compact
+      return false if project_ids.empty?
+
+      projects = Project.where(id: project_ids)
+      UserRoleService.new.moderatable_projects(uploader, projects).exists?
     end
   end
 end

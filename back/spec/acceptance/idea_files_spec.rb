@@ -9,17 +9,20 @@ resource 'File attachment as legacy IdeaFile' do
     model behind the scenes, instead of the legacy +IdeaFile+ model.
   EXPLANATION
 
-  before do
-    header 'Content-Type', 'application/json'
-    @user = create(:user)
-    header_token_for @user
-    @project = create(:single_phase_ideation_project)
-    @idea = create(:idea, author: @user, project: @project)
-    create_list(:file_attachment, 2, attachable: @idea)
+  header 'Content-Type', 'application/json'
+
+  before { header_token_for(user) }
+
+  let(:user) { create(:user) }
+  let(:project) { create(:single_phase_ideation_project) }
+  let!(:idea) do
+    create(:idea, author: user, project: project).tap do |idea|
+      create_list(:file_attachment, 2, attachable: idea)
+    end
   end
 
   get 'web_api/v1/ideas/:idea_id/files' do
-    let(:idea_id) { @idea.id }
+    let(:idea_id) { idea.id }
 
     example_request 'List all file attachments of an idea' do
       assert_status 200
@@ -28,8 +31,8 @@ resource 'File attachment as legacy IdeaFile' do
   end
 
   get 'web_api/v1/ideas/:idea_id/files/:file_id' do
-    let(:idea_id) { @idea.id }
-    let(:file_id) { @idea.file_attachments.first.id }
+    let(:idea_id) { idea.id }
+    let(:file_id) { idea.file_attachments.first.id }
 
     example_request 'Get one file attachment of an idea by id' do
       expect(status).to eq(200)
@@ -54,8 +57,8 @@ resource 'File attachment as legacy IdeaFile' do
       parameter :ordering, 'An integer to update the order of the file attachments', required: false
     end
 
-    let(:idea_id) { @idea.id }
-    let(:file_id) { @idea.file_attachments.first.id }
+    let(:idea_id) { idea.id }
+    let(:file_id) { idea.file_attachments.first.id }
     let(:ordering) { 3 }
 
     example_request 'Update the ordering of a file attachment' do
@@ -71,7 +74,7 @@ resource 'File attachment as legacy IdeaFile' do
       parameter :ordering, 'An integer that is used to order the files within an idea', required: false
     end
     ValidationErrorHelper.new.error_fields(self, Files::File)
-    let(:idea_id) { @idea.id }
+    let(:idea_id) { idea.id }
     let(:name) { 'afvalkalender.pdf' }
     let(:file) { file_as_base64 name, 'application/pdf' }
     let(:ordering) { 1 }
@@ -90,11 +93,44 @@ resource 'File attachment as legacy IdeaFile' do
         name: name
       )
     end
+
+    describe 'when a regular user' do
+      let(:name) { 'keylogger.exe' }
+      let(:file) { file_as_base64(name, 'application/octet-stream') }
+
+      example '[error] cannot upload file with forbidden extension', document: false do
+        do_request
+        assert_status 422
+        expect(json_response_body).to include_response_error(:file, 'extension_whitelist_error')
+      end
+    end
+
+    describe 'when moderator of another project' do
+      let(:user) { create(:project_moderator) }
+      let(:name) { 'keylogger.exe' }
+      let(:file) { file_as_base64(name, 'application/octet-stream') }
+
+      example_request '[error] cannot upload file with forbidden extension', document: false do
+        assert_status 422
+        expect(json_response_body).to include_response_error(:file, 'extension_whitelist_error')
+      end
+    end
+
+    describe 'when moderator of the project' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+      let(:name) { 'keylogger.exe' }
+      let(:file) { file_as_base64(name, 'application/octet-stream') }
+
+      example 'can upload file with any extension' do
+        do_request
+        assert_status 201
+      end
+    end
   end
 
   delete 'web_api/v1/ideas/:idea_id/files/:file_id' do
-    let(:idea_id) { @idea.id }
-    let(:file_attachment) { @idea.file_attachments.first }
+    let(:idea_id) { idea.id }
+    let(:file_attachment) { idea.file_attachments.first }
     let(:file_id) { file_attachment.id }
 
     example 'Delete the file attachment by id and its underlying file' do
