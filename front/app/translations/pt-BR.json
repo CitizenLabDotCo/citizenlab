@@ -572,6 +572,7 @@
   "app.components.UserName.authorWithNoNameTooltip": "Seu nome foi gerado automaticamente porque você não inseriu seu nome. Atualize seu perfil se você quiser alterá-lo.",
   "app.components.UserName.deletedUser": "autor desconhecido",
   "app.components.UserName.verified": "Verificado",
+  "app.components.VerificationModal.verifyAcm": "Verificar com Itsme®",
   "app.components.VerificationModal.verifyAuth0": "Verificar com o NemID",
   "app.components.VerificationModal.verifyBOSA": "Verificar com o seu nome ou seu usuário",
   "app.components.VerificationModal.verifyBosaFas": "Verificar com itsme ou eID",

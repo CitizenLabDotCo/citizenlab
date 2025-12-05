@@ -1,5 +1,7 @@
 import { Multiloc } from 'typings';
 
+import { ProjectReportsPublicationStatus } from 'api/graph_data_units/requestTypes';
+
 import { IResolution } from 'components/admin/ResolutionControl';
 
 export interface ChartWidgetProps {
@@ -7,6 +9,10 @@ export interface ChartWidgetProps {
   projectId?: string | undefined;
   startAt?: string;
   endAt?: string | null;
+}
+
+export interface ProjectPublicationStatusProps {
+  projectPublicationStatus?: ProjectReportsPublicationStatus;
 }
 
 export interface TimeSeriesWidgetProps extends ChartWidgetProps {

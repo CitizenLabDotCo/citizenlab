@@ -60,21 +60,18 @@ module UserConfirmation
   end
 
   def email_confirmation_code_expiration_at
-    email_confirmation_code_sent_at + 1.day
+    email_confirmation_code_sent_at + confirmation_code_duration
   end
 
-  def reset_confirmation_code
-    self.email_confirmation_code = Rails.env.development? ? '1234' : rand.to_s[2..5]
-    self.confirmation_required = true
-  end
-
-  def increment_confirmation_code_reset_count
+  def reset_confirmation_code!
+    self.email_confirmation_code = generate_confirmation_code
     self.email_confirmation_code_reset_count += 1
+    self.confirmation_required = true
+    save!
   end
 
-  def increment_confirmation_retry_count!
-    self.email_confirmation_retry_count += 1
-    save!
+  def expire_confirmation_code!
+    update!(email_confirmation_code: generate_confirmation_code)
   end
 
   private
@@ -97,5 +94,13 @@ module UserConfirmation
 
   def user_confirmation_enabled?
     @user_confirmation_enabled ||= AppConfiguration.instance.feature_activated?('user_confirmation')
+  end
+
+  def generate_confirmation_code
+    Rails.env.development? ? '1234' : rand.to_s[2..5]
+  end
+
+  def confirmation_code_duration
+    24.hours
   end
 end

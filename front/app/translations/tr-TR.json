@@ -572,6 +572,7 @@
   "app.components.UserName.authorWithNoNameTooltip": "Adınızı girmediğiniz için adınız otomatik olarak oluşturuldu. Değiştirmek isterseniz lütfen profilinizi güncelleyin.",
   "app.components.UserName.deletedUser": "bilinmeyen yazar",
   "app.components.UserName.verified": "Doğrulandı",
+  "app.components.VerificationModal.verifyAcm": "Itsme® ile doğrulayın",
   "app.components.VerificationModal.verifyAuth0": "NemID ile doğrulayın",
   "app.components.VerificationModal.verifyBOSA": "Kimliğinizi itsme veya eID ile doğrulayın",
   "app.components.VerificationModal.verifyBosaFas": "itsme veya eID ile doğrulayın",

@@ -572,6 +572,7 @@
   "app.components.UserName.authorWithNoNameTooltip": "Nimesi on luotu automaattisesti, koska et ole antanut nimeäsi. Päivitä profiilisi, jos haluat muuttaa sitä.",
   "app.components.UserName.deletedUser": "tuntematon kirjoittaja",
   "app.components.UserName.verified": "Vahvistettu",
+  "app.components.VerificationModal.verifyAcm": "Vahvista Itsme®:llä",
   "app.components.VerificationModal.verifyAuth0": "Vahvista NemID:llä",
   "app.components.VerificationModal.verifyBOSA": "Vahvista itsme- tai eID-tunnuksella",
   "app.components.VerificationModal.verifyBosaFas": "Vahvista itsme- tai eID-tunnuksella",

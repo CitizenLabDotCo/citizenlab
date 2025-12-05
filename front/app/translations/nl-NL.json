@@ -572,6 +572,7 @@
   "app.components.UserName.authorWithNoNameTooltip": "Je naam is automatisch gegenereerd omdat je je naam niet hebt ingevuld. Werk je profiel bij als je dit wilt veranderen.",
   "app.components.UserName.deletedUser": "onbekende auteur",
   "app.components.UserName.verified": "Geverifieerd",
+  "app.components.VerificationModal.verifyAcm": "Verifieer met Itsme®",
   "app.components.VerificationModal.verifyAuth0": "Verifieer met NemID",
   "app.components.VerificationModal.verifyBOSA": "Verifieer met itsme of e-ID",
   "app.components.VerificationModal.verifyBosaFas": "Verifieer met itsme of eID",

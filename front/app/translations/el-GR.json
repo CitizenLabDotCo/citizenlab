@@ -572,6 +572,7 @@
   "app.components.UserName.authorWithNoNameTooltip": "Το όνομά σας έχει δημιουργηθεί αυτόματα επειδή δεν έχετε εισάγει το όνομά σας. Παρακαλούμε ενημερώστε το προφίλ σας αν θέλετε να το αλλάξετε.",
   "app.components.UserName.deletedUser": "άγνωστος συντάκτης",
   "app.components.UserName.verified": "Επαληθευμένος",
+  "app.components.VerificationModal.verifyAcm": "Επαληθεύστε με το Itsme®",
   "app.components.VerificationModal.verifyAuth0": "Επαλήθευση με το NemID",
   "app.components.VerificationModal.verifyBOSA": "Επαλήθευση με itsme ή eID",
   "app.components.VerificationModal.verifyBosaFas": "Επαλήθευση με itsme ή eID",

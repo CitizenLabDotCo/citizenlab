@@ -572,6 +572,7 @@
   "app.components.UserName.authorWithNoNameTooltip": "Ären Numm gouf autogeneréiert well Dir Ären Numm net aginn hutt. Update w.e.g. Äre Profil wann Dir et wëllt änneren.",
   "app.components.UserName.deletedUser": "Onbekannten Auteur",
   "app.components.UserName.verified": "Iwwerpréift",
+  "app.components.VerificationModal.verifyAcm": "Verifizéiert mat Itsme®",
   "app.components.VerificationModal.verifyAuth0": "Verifizéiert mat NemID",
   "app.components.VerificationModal.verifyBOSA": "Mat itsme oder eID verifizéieren",
   "app.components.VerificationModal.verifyBosaFas": "Verifizéiert mat itsme oder eID",

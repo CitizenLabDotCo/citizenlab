@@ -572,6 +572,7 @@
   "app.components.UserName.authorWithNoNameTooltip": "A rendszer automatikusan generálta a nevét, mert nem adta meg a nevét. Kérjük, frissítse profilját, ha módosítani szeretné.",
   "app.components.UserName.deletedUser": "ismeretlen szerző",
   "app.components.UserName.verified": "Ellenőrzött",
+  "app.components.VerificationModal.verifyAcm": "Igazolás az Itsme® segítségével",
   "app.components.VerificationModal.verifyAuth0": "Ellenőrizze a NemID segítségével",
   "app.components.VerificationModal.verifyBOSA": "Igazolás itme vagy eID segítségével",
   "app.components.VerificationModal.verifyBosaFas": "Igazolás itme vagy eID segítségével",

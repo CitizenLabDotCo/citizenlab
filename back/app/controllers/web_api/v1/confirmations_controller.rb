@@ -15,7 +15,10 @@ class WebApi::V1::ConfirmationsController < ApplicationController
       return
     end
 
-    result = ConfirmUser.call(user:, code: confirm_code_unauthenticated_params[:code])
+    result = user_confirmation_service.validate_and_confirm!(
+      current_user, 
+      confirm_code_unauthenticated_params[:code]
+    )
 
     if result.success?
       SideFxUserService.new.after_update(user, user)
@@ -38,7 +41,10 @@ class WebApi::V1::ConfirmationsController < ApplicationController
       return
     end
 
-    result = ConfirmUser.call(user: current_user, code: confirm_code_params[:code])
+    result = user_confirmation_service.validate_and_confirm!(
+      current_user, 
+      confirm_code_params[:code]
+    )
 
     if result.success?
       SideFxUserService.new.after_update(current_user, current_user)
@@ -62,7 +68,10 @@ class WebApi::V1::ConfirmationsController < ApplicationController
       return
     end
 
-    result = ConfirmUser.call(user: current_user, code: confirm_code_params[:code])
+    result = user_confirmation_service.validate_and_confirm!(
+      current_user, 
+      confirm_code_params[:code]
+    )
 
     if result.success?
       SideFxUserService.new.after_update(current_user, current_user)
@@ -85,5 +94,9 @@ class WebApi::V1::ConfirmationsController < ApplicationController
 
   def confirmation_codes_service
     @confirmation_codes_service ||= ConfirmationCodesService.new
+  end
+
+  def user_confirmation_service
+    @user_confirmation_service ||= UserConfirmationService.new
   end
 end

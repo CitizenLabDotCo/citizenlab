@@ -572,6 +572,7 @@
   "app.components.UserName.authorWithNoNameTooltip": "Mae'ch enw wedi'i gynhyrchu'n awtomatig oherwydd nad ydych wedi nodi'ch enw. Diweddarwch eich proffil os hoffech ei newid.",
   "app.components.UserName.deletedUser": "awdur anhysbys",
   "app.components.UserName.verified": "Wedi'i wirio",
+  "app.components.VerificationModal.verifyAcm": "Dilysu gydag Itsme®",
   "app.components.VerificationModal.verifyAuth0": "Gwiriwch gyda NemID",
   "app.components.VerificationModal.verifyBOSA": "Dilyswch gyda'i thema neu eID",
   "app.components.VerificationModal.verifyBosaFas": "Dilyswch gyda'i thema neu eID",

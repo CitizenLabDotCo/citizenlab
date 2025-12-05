@@ -572,6 +572,7 @@
   "app.components.UserName.authorWithNoNameTooltip": "ਤੁਹਾਡਾ ਨਾਮ ਸਵੈਚਲਿਤ ਹੋ ਗਿਆ ਹੈ ਕਿਉਂਕਿ ਤੁਸੀਂ ਆਪਣਾ ਨਾਮ ਦਰਜ ਨਹੀਂ ਕੀਤਾ ਹੈ। ਜੇਕਰ ਤੁਸੀਂ ਇਸ ਨੂੰ ਬਦਲਣਾ ਚਾਹੁੰਦੇ ਹੋ ਤਾਂ ਕਿਰਪਾ ਕਰਕੇ ਆਪਣੀ ਪ੍ਰੋਫਾਈਲ ਨੂੰ ਅੱਪਡੇਟ ਕਰੋ।",
   "app.components.UserName.deletedUser": "ਅਗਿਆਤ ਲੇਖਕ",
   "app.components.UserName.verified": "ਪ੍ਰਮਾਣਿਤ",
+  "app.components.VerificationModal.verifyAcm": "Itsme® ਨਾਲ ਪੁਸ਼ਟੀ ਕਰੋ",
   "app.components.VerificationModal.verifyAuth0": "NemID ਨਾਲ ਪੁਸ਼ਟੀ ਕਰੋ",
   "app.components.VerificationModal.verifyBOSA": "itme ਜਾਂ eID ਨਾਲ ਪੁਸ਼ਟੀ ਕਰੋ",
   "app.components.VerificationModal.verifyBosaFas": "itme ਜਾਂ eID ਨਾਲ ਪੁਸ਼ਟੀ ਕਰੋ",

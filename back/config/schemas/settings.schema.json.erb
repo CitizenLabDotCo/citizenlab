@@ -1469,6 +1469,18 @@
         }
       },
 
+      "idea_feed": {
+        "type": "object",
+        "title": "Idea feed",
+        "description": "Idea Feed is a participation method very similar to ideation, but ideas are presented one-by-one in a scrollable feed, there is a stronger emphasis on clustering. Optimized for larger projects, initially built with America One.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "data_repository_transcription": {
         "type": "object",
         "title": "Data repository transcription",

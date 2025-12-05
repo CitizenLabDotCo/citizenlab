@@ -572,6 +572,7 @@
   "app.components.UserName.authorWithNoNameTooltip": "Jūsų vardas buvo sugeneruotas automatiškai, nes neįvedėte savo vardo. Jei norite jį pakeisti, atnaujinkite savo profilį.",
   "app.components.UserName.deletedUser": "nežinomas autorius",
   "app.components.UserName.verified": "Patikrinta",
+  "app.components.VerificationModal.verifyAcm": "Patikrinkite su Itsme®",
   "app.components.VerificationModal.verifyAuth0": "Patikrinkite su NemID",
   "app.components.VerificationModal.verifyBOSA": "Patikrinkite pagal itsme arba eID",
   "app.components.VerificationModal.verifyBosaFas": "Patikrinkite pagal itsme arba eID",

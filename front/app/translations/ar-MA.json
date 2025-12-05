@@ -572,6 +572,7 @@
   "app.components.UserName.authorWithNoNameTooltip": "لقد تم إنشاء اسمك تلقائيًا لأنك لم تدخل اسمك. يرجى تحديث ملفك الشخصي إذا كنت ترغب في تغييره.",
   "app.components.UserName.deletedUser": "مؤلف غير معروف",
   "app.components.UserName.verified": "تم التحقق منه",
+  "app.components.VerificationModal.verifyAcm": "التحقق مع Itsme®",
   "app.components.VerificationModal.verifyAuth0": "التحقق باستخدام NemID",
   "app.components.VerificationModal.verifyBOSA": "تحقق باستخدام itsme أو eID",
   "app.components.VerificationModal.verifyBosaFas": "التحقق باستخدام itsme أو eID",

@@ -572,6 +572,7 @@
   "app.components.UserName.authorWithNoNameTooltip": "Vaše ime je automatski generirano jer niste unijeli svoje ime. Ažurirajte svoj profil ako ga želite promijeniti.",
   "app.components.UserName.deletedUser": "nepoznat autor",
   "app.components.UserName.verified": "Potvrđeno",
+  "app.components.VerificationModal.verifyAcm": "Provjerite s Itsme®-om",
   "app.components.VerificationModal.verifyAuth0": "Potvrdite s NemID-om",
   "app.components.VerificationModal.verifyBOSA": "Potvrđivanje putem itsme ili eID-ja",
   "app.components.VerificationModal.verifyBosaFas": "Potvrdite s itsme ili eID-om",

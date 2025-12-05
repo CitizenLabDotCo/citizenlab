@@ -139,6 +139,10 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
   };
+  acm_login?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   nemlog_in_login?: {
     allowed: boolean;
     enabled: boolean;

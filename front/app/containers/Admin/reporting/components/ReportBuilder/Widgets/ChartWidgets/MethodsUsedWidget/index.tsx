@@ -22,6 +22,7 @@ MethodsUsedWidget.craft = {
     endAt: undefined,
     compareStartAt: undefined,
     compareEndAt: undefined,
+    projectPublicationStatus: undefined,
   },
   related: {
     settings: ChartWidgetSettings,
