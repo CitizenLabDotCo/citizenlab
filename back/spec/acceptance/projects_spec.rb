@@ -142,7 +142,7 @@ resource 'Projects' do
         do_request areas: [a1.id], publication_statuses: ['published']
 
         expect(json_response[:data].size).to eq 1
-        expect(json_response[:data].pluck(:id)).to match_array [p1.id]
+        expect(json_response[:data].pluck(:id)).to contain_exactly(p1.id)
       end
 
       example 'List all projects with all given areas', document: false do
@@ -164,7 +164,7 @@ resource 'Projects' do
 
         do_request areas: [a1.id, a2.id], publication_statuses: ['published']
         expect(json_response[:data].size).to eq 2
-        expect(json_response[:data].pluck(:id)).to match_array [p1.id, p2.id]
+        expect(json_response[:data].pluck(:id)).to contain_exactly(p1.id, p2.id)
       end
 
       example 'Admins can moderate all projects', document: false do
@@ -184,7 +184,7 @@ resource 'Projects' do
 
         do_request filter_user_is_moderator_of: moderator.id
         assert_status 200
-        expect(json_response[:data].pluck(:id)).to match_array [@projects[0].id, @projects[1].id]
+        expect(json_response[:data].pluck(:id)).to contain_exactly(@projects[0].id, @projects[1].id)
       end
     end
 
@@ -581,7 +581,7 @@ resource 'Projects' do
 
           expect(response_status).to eq 200
           expect(layout.reload.craftjs_json['nUOW77iNcW']['props']['adminPublicationIds'])
-            .to match_array [project2.admin_publication.id]
+            .to contain_exactly(project2.admin_publication.id)
         end
       end
     end
@@ -794,144 +794,139 @@ resource 'Projects' do
         assert_status 200
         xlsx = xlsx_contents response_body
         expect(xlsx.size).to eq 3
-        expect(xlsx).to match_array([
-          {
-            sheet_name: 'Phase 1 Ideation',
-            column_headers: [
-              'ID',
-              'Title',
-              'Description',
-              'Attachments',
-              'Tags',
-              'Latitude',
-              'Longitude',
-              'Location',
-              'Proposed Budget',
-              extra_idea_field.title_multiloc['en'],
-              'Author name',
-              'Author email',
-              'Author ID',
-              'Submitted at',
-              'Published at',
-              'Comments',
-              'Likes',
-              'Dislikes',
-              'Offline votes',
-              'URL',
-              'Project',
-              'Status',
-              'Assignee',
-              'Assignee email'
-            ],
-            rows: [
-              [
-                ideation_response.id,
-                ideation_response.title_multiloc['en'],
-                'It would improve the air quality!', # html tags are removed
-                '',
-                '',
-                ideation_response.location_point.coordinates.last,
-                ideation_response.location_point.coordinates.first,
-                ideation_response.location_description,
-                ideation_response.proposed_budget,
-                'Answer',
-                ideation_response.author_name,
-                ideation_response.author.email,
-                ideation_response.author_id,
-                an_instance_of(DateTime), # created_at
-                an_instance_of(DateTime), # published_at
-                0,
-                0,
-                0,
-                24,
-                "http://example.org/ideas/#{ideation_response.slug}",
-                project.title_multiloc['en'],
-                ideation_response.idea_status.title_multiloc['en'],
-                nil,
-                nil
-              ]
+        expect(xlsx).to contain_exactly({
+          sheet_name: 'Phase 1 Ideation',
+          column_headers: [
+            'ID',
+            'Title',
+            'Description',
+            'Attachments',
+            'Tags',
+            'Latitude',
+            'Longitude',
+            'Location',
+            'Proposed Budget',
+            extra_idea_field.title_multiloc['en'],
+            'Author name',
+            'Author email',
+            'Author ID',
+            'Submitted at',
+            'Published at',
+            'Comments',
+            'Likes',
+            'Dislikes',
+            'Offline votes',
+            'URL',
+            'Project',
+            'Status',
+            'Assignee',
+            'Assignee email'
+          ],
+          rows: [
+            [
+              ideation_response.id,
+              ideation_response.title_multiloc['en'],
+              'It would improve the air quality!', # html tags are removed
+              '',
+              '',
+              ideation_response.location_point.coordinates.last,
+              ideation_response.location_point.coordinates.first,
+              ideation_response.location_description,
+              ideation_response.proposed_budget,
+              'Answer',
+              ideation_response.author_name,
+              ideation_response.author.email,
+              ideation_response.author_id,
+              an_instance_of(DateTime), # created_at
+              an_instance_of(DateTime), # published_at
+              0,
+              0,
+              0,
+              24,
+              "http://example.org/ideas/#{ideation_response.slug}",
+              project.title_multiloc['en'],
+              ideation_response.idea_status.title_multiloc['en'],
+              nil,
+              nil
             ]
-          },
-          {
-            sheet_name: 'Phase 2 Native survey',
-            column_headers: [
-              'ID',
-              linear_scale_field.title_multiloc['en'],
-              'Author name',
-              'Author email',
-              'Author ID',
-              'Submitted at',
-              'Project'
-            ],
-            rows: [
-              [
-                survey_response.id,
-                2,
-                survey_response.author_name,
-                survey_response.author.email,
-                survey_response.author_id,
-                an_instance_of(DateTime), # created_at
-                project.title_multiloc['en']
-              ]
+          ]
+        }, {
+          sheet_name: 'Phase 2 Native survey',
+          column_headers: [
+            'ID',
+            linear_scale_field.title_multiloc['en'],
+            'Author name',
+            'Author email',
+            'Author ID',
+            'Submitted at',
+            'Project'
+          ],
+          rows: [
+            [
+              survey_response.id,
+              2,
+              survey_response.author_name,
+              survey_response.author.email,
+              survey_response.author_id,
+              an_instance_of(DateTime), # created_at
+              project.title_multiloc['en']
             ]
-          },
-          # Phase 3 is not included because it's an information phase.
-          {
-            sheet_name: 'Phase 4 Voting',
-            column_headers: [
-              'ID',
-              'Title',
-              'Description',
-              'Attachments',
-              'Tags',
-              'Latitude',
-              'Longitude',
-              'Location',
-              'Proposed Budget',
-              extra_idea_field.title_multiloc['en'],
-              'Author name',
-              'Author email',
-              'Author ID',
-              'Submitted at',
-              'Published at',
-              'Comments',
-              'Votes',
-              'Offline votes',
-              'URL',
-              'Project',
-              'Status',
-              'Assignee',
-              'Assignee email'
-            ],
-            rows: [
-              [
-                ideation_response.id,
-                ideation_response.title_multiloc['en'],
-                'It would improve the air quality!', # html tags are removed
-                '',
-                '',
-                ideation_response.location_point.coordinates.last,
-                ideation_response.location_point.coordinates.first,
-                ideation_response.location_description,
-                ideation_response.proposed_budget,
-                'Answer',
-                ideation_response.author_name,
-                ideation_response.author.email,
-                ideation_response.author_id,
-                an_instance_of(DateTime), # created_at
-                an_instance_of(DateTime), # published_at
-                0,
-                0,
-                24,
-                "http://example.org/ideas/#{ideation_response.slug}",
-                project.title_multiloc['en'],
-                ideation_response.idea_status.title_multiloc['en'],
-                nil,
-                nil
-              ]
+          ]
+        }, {
+          sheet_name: 'Phase 4 Voting',
+          column_headers: [
+            'ID',
+            'Title',
+            'Description',
+            'Attachments',
+            'Tags',
+            'Latitude',
+            'Longitude',
+            'Location',
+            'Proposed Budget',
+            extra_idea_field.title_multiloc['en'],
+            'Author name',
+            'Author email',
+            'Author ID',
+            'Submitted at',
+            'Published at',
+            'Comments',
+            'Votes',
+            'Offline votes',
+            'URL',
+            'Project',
+            'Status',
+            'Assignee',
+            'Assignee email'
+          ],
+          rows: [
+            [
+              ideation_response.id,
+              ideation_response.title_multiloc['en'],
+              'It would improve the air quality!', # html tags are removed
+              '',
+              '',
+              ideation_response.location_point.coordinates.last,
+              ideation_response.location_point.coordinates.first,
+              ideation_response.location_description,
+              ideation_response.proposed_budget,
+              'Answer',
+              ideation_response.author_name,
+              ideation_response.author.email,
+              ideation_response.author_id,
+              an_instance_of(DateTime), # created_at
+              an_instance_of(DateTime), # published_at
+              0,
+              0,
+              24,
+              "http://example.org/ideas/#{ideation_response.slug}",
+              project.title_multiloc['en'],
+              ideation_response.idea_status.title_multiloc['en'],
+              nil,
+              nil
             ]
-          }
-        ])
+          ]
+        })
       end
     end
   end
@@ -1008,9 +1003,9 @@ resource 'Projects' do
         header_row2 = workbook.worksheets[1][0].cells.map(&:value)
         header_row3 = workbook.worksheets[2][0].cells.map(&:value)
 
-        expect(header_row1).to match_array([dutch_column_headers['submitted_at']])
-        expect(header_row2).to match_array([dutch_column_headers['submitted_at']])
-        expect(header_row3).to match_array([dutch_column_headers['submitted_at']])
+        expect(header_row1).to contain_exactly(dutch_column_headers['submitted_at'])
+        expect(header_row2).to contain_exactly(dutch_column_headers['submitted_at'])
+        expect(header_row3).to contain_exactly(dutch_column_headers['submitted_at'])
       end
     end
 
@@ -1844,7 +1839,7 @@ resource 'Projects' do
     example 'Returns only listed projects' do
       do_request filter_by: 'finished_and_archived'
       assert_status 200
-      expect(response_data.pluck(:id)).to match_array [@listed_archived_project.id]
+      expect(response_data.pluck(:id)).to contain_exactly(@listed_archived_project.id)
     end
   end
 

@@ -14,22 +14,22 @@ RSpec.describe Tasks::SingleUse::Services::FileUploadCustomFieldMigrationService
     context 'without persistence' do
       before { service.migrate(false) }
 
-      it 'should list number of projects with no success' do
+      it 'lists number of projects with no success' do
         expect(service.stats).to eq({ ideas: 1, file_fields: 1, ideas_updated: 0, errors: [] })
       end
 
-      it 'should not change the custom field format' do
+      it 'does not change the custom field format' do
         expect(idea.reload.custom_field_values).to eq({ file_upload_custom_field.key => idea_file.id })
       end
     end
 
     context 'with persistence' do
-      it 'should show the correct stats' do
+      it 'shows the correct stats' do
         service.migrate(true)
         expect(service.stats).to eq({ ideas: 1, file_fields: 1, ideas_updated: 1, errors: [] })
       end
 
-      it 'should transform file upload custom fields' do
+      it 'transforms file upload custom fields' do
         service.migrate(true)
         expect(idea.reload.custom_field_values).to eq({
           file_upload_custom_field.key => { 'id' => idea_file.id, 'name' => idea_file.name }

@@ -35,13 +35,7 @@ describe Insights::VisitsService do
 
       expect(visits_data[:visitors_total]).to eq(3)
       expect(visits_data[:visitors_last_7_days]).to eq(1)
-      expect(visits_data[:visits]).to match_array([
-        { date: pageview2.created_at, visitor_id: user1.id.to_s },
-        { date: pageview3.created_at, visitor_id: user1.id.to_s },
-        { date: pageview4.created_at, visitor_id: user2.id.to_s },
-        { date: pageview5.created_at, visitor_id: user2.id.to_s },
-        { date: pageview6.created_at, visitor_id: 'anonymous_user_hash' }
-      ])
+      expect(visits_data[:visits]).to contain_exactly({ date: pageview2.created_at, visitor_id: user1.id.to_s }, { date: pageview3.created_at, visitor_id: user1.id.to_s }, { date: pageview4.created_at, visitor_id: user2.id.to_s }, { date: pageview5.created_at, visitor_id: user2.id.to_s }, { date: pageview6.created_at, visitor_id: 'anonymous_user_hash' })
     end
   end
 end

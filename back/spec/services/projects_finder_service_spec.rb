@@ -142,7 +142,7 @@ describe ProjectsFinderService do
       create(:follower, followable: followed_project2, user: user)
 
       expect(Project.count).to eq 3
-      expect(result).to match_array [followed_project, followed_project2]
+      expect(result).to contain_exactly(followed_project, followed_project2)
     end
 
     it 'excludes projects not followed by user' do
@@ -166,7 +166,7 @@ describe ProjectsFinderService do
       create(:follower, followable: idea, user: user)
 
       expect(service.new(Project.all, user).followed_by_user)
-        .to match_array([followed_project, project_with_followed_idea])
+        .to contain_exactly(followed_project, project_with_followed_idea)
     end
 
     it 'includes projects for an Area the user follows' do
@@ -176,7 +176,7 @@ describe ProjectsFinderService do
       create(:follower, followable: area, user: user)
 
       expect(service.new(Project.all, user).followed_by_user)
-        .to match_array([followed_project, project_for_followed_area])
+        .to contain_exactly(followed_project, project_for_followed_area)
     end
 
     it 'includes projects for a Topic the user follows' do
@@ -186,7 +186,7 @@ describe ProjectsFinderService do
       create(:follower, followable: topic, user: user)
 
       expect(service.new(Project.all, user).followed_by_user)
-        .to match_array([followed_project, project_for_followed_topic])
+        .to contain_exactly(followed_project, project_for_followed_topic)
     end
 
     it 'includes projects in a Folder the user follows' do
@@ -196,7 +196,7 @@ describe ProjectsFinderService do
       create(:follower, followable: folder, user: user)
 
       expect(service.new(Project.all, user).followed_by_user)
-        .to match_array([followed_project, project_in_followed_folder])
+        .to contain_exactly(followed_project, project_in_followed_folder)
     end
 
     it 'orders the projects by the creation date of follows (most recent first)' do
@@ -273,7 +273,7 @@ describe ProjectsFinderService do
         create(:report, phase: unfinished_project2.phases.last, visible: true)
 
         expect(Project.count).to eq 3
-        expect(result).to match_array([finished_project1, unfinished_project2])
+        expect(result).to contain_exactly(finished_project1, unfinished_project2)
       end
 
       it 'excludes unfinished projects with a last phase that contains an invisible report' do
@@ -282,7 +282,7 @@ describe ProjectsFinderService do
         create(:report, phase: unfinished_project2.phases.last, visible: false)
 
         expect(Project.count).to eq 3
-        expect(result).to match_array([finished_project1])
+        expect(result).to contain_exactly(finished_project1)
       end
 
       it 'excludes unfinished projects with a phase containing a visible report that is not the final phase' do
@@ -292,7 +292,7 @@ describe ProjectsFinderService do
         create(:report, phase: phase1, visible: true)
 
         expect(Project.count).to eq 3
-        expect(result).to match_array([finished_project1])
+        expect(result).to contain_exactly(finished_project1)
       end
 
       it 'inludes projects with an endless last phase & visible report in last phase' do
@@ -301,7 +301,7 @@ describe ProjectsFinderService do
         create(:report, phase: endless_project.phases.last, visible: true)
 
         expect(Project.count).to eq 3
-        expect(result).to match_array([endless_project, finished_project1])
+        expect(result).to contain_exactly(endless_project, finished_project1)
       end
 
       it 'excludes projects with an endless last phase & NO report in last phase' do
@@ -309,14 +309,14 @@ describe ProjectsFinderService do
         create(:phase, project: endless_project, start_at: 3.days.ago, end_at: nil)
 
         expect(Project.count).to eq 3
-        expect(result).to match_array([finished_project1])
+        expect(result).to contain_exactly(finished_project1)
       end
 
       it 'excludes projects with no phase' do
         _phaseless_project = create(:project, phases: [])
 
         expect(Project.count).to eq 3
-        expect(result).to match_array([finished_project1])
+        expect(result).to contain_exactly(finished_project1)
       end
 
       it 'lists projects ordered by last phase end_at DESC' do
@@ -418,7 +418,7 @@ describe ProjectsFinderService do
 
       it 'includes expected projects' do
         expect(Project.count).to eq 7
-        expect(result).to match_array [finished_project1, archived_project, unfinished_project1]
+        expect(result).to contain_exactly(finished_project1, archived_project, unfinished_project1)
       end
 
       it 'lists projects ordered by last phase end_at DESC (Nulls first)' do
@@ -483,7 +483,7 @@ describe ProjectsFinderService do
       result = service.new(Project.all, user, { areas: [area1.id] }).projects_for_areas
 
       expect(Project.count).to eq 3
-      expect(result).to match_array [project_with_areas, project_for_all_areas]
+      expect(result).to contain_exactly(project_with_areas, project_for_all_areas)
     end
 
     it 'Orders projects by created_at DESC' do
@@ -513,7 +513,7 @@ describe ProjectsFinderService do
 
       result = service.new(Project.all, user, {}).projects_for_areas
 
-      expect(result).to match_array [project_with_areas, project_for_all_areas]
+      expect(result).to contain_exactly(project_with_areas, project_for_all_areas)
     end
 
     it 'Does not include draft projects, even for an admin' do

@@ -83,7 +83,7 @@ describe UserRoleService do
         create(:project_folder_moderator, project_folders: [other_folder])
       ]
 
-      expect(service.moderators_for(folder).ids).to match_array [admin.id, folder_moderators[0].id]
+      expect(service.moderators_for(folder).ids).to contain_exactly(admin.id, folder_moderators[0].id)
     end
 
     it 'lists all moderators of a project' do
@@ -100,7 +100,7 @@ describe UserRoleService do
         create(:project_folder_moderator, project_folders: [other_folder])
       ]
 
-      expect(service.moderators_for(project.reload).ids).to match_array [admin.id, moderator.id, folder_moderators[0].id]
+      expect(service.moderators_for(project.reload).ids).to contain_exactly(admin.id, moderator.id, folder_moderators[0].id)
     end
 
     it 'lists all moderators of an idea' do
@@ -113,7 +113,7 @@ describe UserRoleService do
       create(:project_moderator, projects: [other_project])
       idea = create(:idea, project: project)
 
-      expect(service.moderators_for(idea).ids).to match_array [admin.id, moderator.id, also_moderator.id]
+      expect(service.moderators_for(idea).ids).to contain_exactly(admin.id, moderator.id, also_moderator.id)
     end
 
     it 'lists all moderators of a comment' do
@@ -127,7 +127,7 @@ describe UserRoleService do
       idea = create(:idea, project: project)
       comment = create(:comment, idea: idea)
 
-      expect(service.moderators_for(comment).ids).to match_array [admin.id, moderator.id, also_moderator.id]
+      expect(service.moderators_for(comment).ids).to contain_exactly(admin.id, moderator.id, also_moderator.id)
     end
   end
 
@@ -149,7 +149,7 @@ describe UserRoleService do
         create(:project_folder_moderator, project_folders: [other_folder])
       ]
 
-      expect(service.moderators_for_project(project.reload).ids).to match_array [admin.id, moderators[0].id, moderators[1].id, folder_moderators[0].id]
+      expect(service.moderators_for_project(project.reload).ids).to contain_exactly(admin.id, moderators[0].id, moderators[1].id, folder_moderators[0].id)
     end
   end
 

@@ -237,70 +237,57 @@ describe Surveys::TypeformWebhookParser do
       submitted_at: Time.parse('2018-01-18T18:17:02Z')
     })
 
-    expect(response.answers).to match_array [
-      {
-        'question_id' => 'DlXFaesGBpoF',
-        'question_text' => "Thanks, {{answer_60906475}}! What's it like where you live? Tell us in a few sentences.",
-        'value' => "It's cold right now! I live in an older medium-sized city with a university. Geographically, the area is hilly."
-      },
-      {
-        'question_id' => 'SMEUb7VJz92Q',
-        'question_text' => "If you're OK with our city management following up if they have further questions, please give us your email address.",
-        'value' => 'laura@example.com'
-      },
-      {
-        'question_id' => 'JwWggjAKtOkA',
-        'question_text' => 'What is your first name?',
-        'value' => 'Laura'
-      },
-      {
-        'question_id' => 'KoJxDM3c6x8h',
-        'question_text' => 'When did you move to the place where you live?',
-        'value' => '2005-10-15'
-      },
-      {
-        'question_id' => 'PNe8ZKBK8C2Q',
-        'question_text' => 'Which pictures do you like? You can choose as many as you like.',
-        'value' => %w[
-          London
-          Sydney
-        ]
-      },
-      {
-        'question_id' => 'Q7M2XAwY04dW',
-        'question_text' => 'On a scale of 1 to 5, what rating would you give the weather in Sydney? 1 is poor weather, 5 is excellent weather',
-        'value' => 5
-      },
-      {
-        'question_id' => 'gFFf3xAkJKsr',
-        'question_text' => 'By submitting this form, you understand and accept that we will share your answers with city management. Your answers will be anonymous will not be shared.',
-        'value' => true
-      },
-      {
-        'question_id' => 'k6TP9oLGgHjl',
-        'question_text' => 'Which of these cities is your favorite?',
-        'value' => 'London'
-      },
-      {
-        'question_id' => 'RUqkXSeXBXSd',
-        'question_text' => "Do you have a favorite city we haven't listed?",
-        'value' => false
-      },
-      {
-        'question_id' => 'NRsxU591jIW9',
-        'question_text' => 'How important is the weather to your opinion about a city? 1 is not important, 5 is very important.',
-        'value' => 2
-      },
-      {
-        'question_id' => 'WOTdC00F8A3h',
-        'question_text' => 'How would you rate the weather where you currently live? 1 is poor weather, 5 is excellent weather.',
-        'value' => 3
-      },
-      {
-        'question_id' => 'pn48RmPazVdM',
-        'question_text' => 'On a scale of 1 to 5, what rating would you give the general quality of life in Sydney? 1 is poor, 5 is excellent',
-        'value' => 4
-      }
-    ]
+    expect(response.answers).to contain_exactly({
+      'question_id' => 'DlXFaesGBpoF',
+      'question_text' => "Thanks, {{answer_60906475}}! What's it like where you live? Tell us in a few sentences.",
+      'value' => "It's cold right now! I live in an older medium-sized city with a university. Geographically, the area is hilly."
+    }, {
+      'question_id' => 'SMEUb7VJz92Q',
+      'question_text' => "If you're OK with our city management following up if they have further questions, please give us your email address.",
+      'value' => 'laura@example.com'
+    }, {
+      'question_id' => 'JwWggjAKtOkA',
+      'question_text' => 'What is your first name?',
+      'value' => 'Laura'
+    }, {
+      'question_id' => 'KoJxDM3c6x8h',
+      'question_text' => 'When did you move to the place where you live?',
+      'value' => '2005-10-15'
+    }, {
+      'question_id' => 'PNe8ZKBK8C2Q',
+      'question_text' => 'Which pictures do you like? You can choose as many as you like.',
+      'value' => %w[
+        London
+        Sydney
+      ]
+    }, {
+      'question_id' => 'Q7M2XAwY04dW',
+      'question_text' => 'On a scale of 1 to 5, what rating would you give the weather in Sydney? 1 is poor weather, 5 is excellent weather',
+      'value' => 5
+    }, {
+      'question_id' => 'gFFf3xAkJKsr',
+      'question_text' => 'By submitting this form, you understand and accept that we will share your answers with city management. Your answers will be anonymous will not be shared.',
+      'value' => true
+    }, {
+      'question_id' => 'k6TP9oLGgHjl',
+      'question_text' => 'Which of these cities is your favorite?',
+      'value' => 'London'
+    }, {
+      'question_id' => 'RUqkXSeXBXSd',
+      'question_text' => "Do you have a favorite city we haven't listed?",
+      'value' => false
+    }, {
+      'question_id' => 'NRsxU591jIW9',
+      'question_text' => 'How important is the weather to your opinion about a city? 1 is not important, 5 is very important.',
+      'value' => 2
+    }, {
+      'question_id' => 'WOTdC00F8A3h',
+      'question_text' => 'How would you rate the weather where you currently live? 1 is poor weather, 5 is excellent weather.',
+      'value' => 3
+    }, {
+      'question_id' => 'pn48RmPazVdM',
+      'question_text' => 'On a scale of 1 to 5, what rating would you give the general quality of life in Sydney? 1 is poor, 5 is excellent',
+      'value' => 4
+    })
   end
 end

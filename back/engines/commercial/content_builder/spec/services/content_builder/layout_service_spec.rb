@@ -173,10 +173,10 @@ describe ContentBuilder::LayoutService do
       service.clean_homepage_layout_when_publication_deleted project1
 
       expect(layout.reload.craftjs_json['nUOW77iNcW']['props']['adminPublicationIds'])
-        .to match_array [project2.admin_publication.id, project_folder.admin_publication.id]
+        .to contain_exactly(project2.admin_publication.id, project_folder.admin_publication.id)
 
       expect(layout.reload.craftjs_json['Dtg42sYnM']['props']['adminPublicationIds'])
-        .to match_array [project2.admin_publication.id]
+        .to contain_exactly(project2.admin_publication.id)
     end
 
     it 'deletes all Spotlight widgets for a publication from homepage layout' do

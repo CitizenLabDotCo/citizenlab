@@ -11,7 +11,7 @@ RSpec.describe Notification do
       activity = create(:activity, item: flag, action: 'created')
 
       notifications = FlagInappropriateContent::Notifications::InappropriateContentFlagged.make_notifications_on activity
-      expect(notifications.map(&:recipient_id)).to match_array [admin.id]
+      expect(notifications.map(&:recipient_id)).to contain_exactly(admin.id)
     end
   end
 

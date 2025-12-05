@@ -55,13 +55,6 @@ FactoryBot/FactoryAssociationWithStrategy:
 Gemspec/DevelopmentDependencies:
   Enabled: false
 
-# Offense count: 49
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: TreatCommentsAsGroupSeparators, ConsiderPunctuation, Include.
-# Include: **/*.gemspec
-Gemspec/OrderedDependencies:
-  Enabled: false
-
 # Offense count: 46
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: Severity, Include.
@@ -210,11 +203,6 @@ RSpec/InstanceVariable:
 RSpec/LetSetup:
   Enabled: false
 
-# Offense count: 344
-# This cop supports safe autocorrection (--autocorrect).
-RSpec/MatchArray:
-  Enabled: false
-
 # Offense count: 307
 # Configuration parameters: EnforcedStyle.
 # SupportedStyles: have_received, receive
@@ -272,22 +260,6 @@ RSpec/RepeatedDescription:
     - 'engines/commercial/idea_assignment/spec/acceptance/moderators_spec.rb'
     - 'engines/commercial/smart_groups/spec/rules/custom_field_select_spec.rb'
     - 'spec/services/sanitization_service_spec.rb'
-
-# Offense count: 37
-# This cop supports safe autocorrection (--autocorrect).
-RSpec/ScatteredSetup:
-  Exclude:
-    - 'engines/commercial/idea_assignment/spec/acceptance/ideas_spec.rb'
-    - 'engines/free/polls/spec/acceptance/options_spec.rb'
-    - 'engines/free/polls/spec/acceptance/questions_spec.rb'
-    - 'engines/free/volunteering/spec/acceptance/causes_spec.rb'
-    - 'engines/free/volunteering/spec/acceptance/volunteers_spec.rb'
-    - 'spec/acceptance/areas_spec.rb'
-    - 'spec/acceptance/nav_bar_items_spec.rb'
-    - 'spec/acceptance/permissions_spec.rb'
-    - 'spec/acceptance/projects_spec.rb'
-    - 'spec/acceptance/users_spec.rb'
-    - 'spec/services/profanity_service_spec.rb'
 
 # Offense count: 184
 # Configuration parameters: Include, CustomTransform, IgnoreMethods, IgnoreMetadata.

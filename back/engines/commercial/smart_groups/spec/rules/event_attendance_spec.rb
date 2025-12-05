@@ -69,7 +69,7 @@ RSpec.describe SmartGroups::Rules::EventAttendance do
 
     it 'correctly selects users that attend something' do
       rule = described_class.new('attends_something')
-      expect(rule.filter(User.all)).to match_array [user1, user2]
+      expect(rule.filter(User.all)).to contain_exactly(user1, user2)
     end
 
     it 'correctly selects users that attend nothing' do
@@ -79,17 +79,17 @@ RSpec.describe SmartGroups::Rules::EventAttendance do
 
     it 'correctly selects users that attend some of the events (single event)' do
       rule = described_class.new('attends_some_of', [event1.id])
-      expect(rule.filter(User.all)).to match_array [user1]
+      expect(rule.filter(User.all)).to contain_exactly(user1)
     end
 
     it 'correctly selects users that attend some of the events (multiple events)' do
       rule = described_class.new('attends_some_of', [event1.id, event2.id])
-      expect(rule.filter(User.all)).to match_array [user1, user2]
+      expect(rule.filter(User.all)).to contain_exactly(user1, user2)
     end
 
     it 'correctly selects users that attend none of the events (single event)' do
       rule = described_class.new('attends_none_of', [event1.id])
-      expect(rule.filter(User.all)).to match_array [user2, *attends_nothing_users]
+      expect(rule.filter(User.all)).to contain_exactly(user2, *attends_nothing_users)
     end
 
     it 'correctly selects users that attend none of the events (multiple events)' do

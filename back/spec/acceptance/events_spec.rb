@@ -82,12 +82,12 @@ resource 'Events' do
 
       example 'List events that overlap with the given range' do
         do_request(ongoing_during: '[2020-12-31T00:00:00Z,2020-12-31T23:59:59Z]')
-        expect(response_ids).to match_array [event1.id]
+        expect(response_ids).to contain_exactly(event1.id)
       end
 
       example 'List events that overlap with the given range (right open-ended)', document: false do
         do_request(ongoing_during: '[2020-12-31,null]')
-        expect(response_ids).to match_array [event1.id, event2.id]
+        expect(response_ids).to contain_exactly(event1.id, event2.id)
       end
 
       example 'List events that overlap with the given range (left open-ended)', document: false do
@@ -263,12 +263,7 @@ resource 'Events' do
         workbook = RubyXL::Parser.parse_buffer(response_body)
         header_row = workbook.worksheets[0][0].cells.map(&:value)
 
-        expect(header_row).to match_array([
-          french_column_headers['first_name'],
-          french_column_headers['last_name'],
-          french_column_headers['email'],
-          french_column_headers['registration_completed_at']
-        ])
+        expect(header_row).to contain_exactly(french_column_headers['first_name'], french_column_headers['last_name'], french_column_headers['email'], french_column_headers['registration_completed_at'])
       end
     end
 

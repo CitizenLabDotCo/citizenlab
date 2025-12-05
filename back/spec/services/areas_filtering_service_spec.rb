@@ -15,7 +15,7 @@ describe AreasFilteringService do
 
       result = described_class.new.filter(Area.all, params: { for_homepage_filter: true }, current_user: user)
 
-      expect(result).to match_array [area1, area2]
+      expect(result).to contain_exactly(area1, area2)
     end
 
     it 'returns all areas when there are projects visible to user that include all areas' do

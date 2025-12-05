@@ -138,7 +138,7 @@ RSpec.describe CustomFieldBins::OptionBin do
           end.to change(described_class, :count).by(2)
 
           bins = described_class.all
-          expect(bins.pluck(:custom_field_option_id)).to match_array([option1.id, option2.id])
+          expect(bins.pluck(:custom_field_option_id)).to contain_exactly(option1.id, option2.id)
         end
       end
 
@@ -154,7 +154,7 @@ RSpec.describe CustomFieldBins::OptionBin do
           end.to change(described_class, :count).by(3)
 
           bins = described_class.all
-          expect(bins.pluck(:custom_field_option_id)).to match_array([option1.id, option2.id, option3.id])
+          expect(bins.pluck(:custom_field_option_id)).to contain_exactly(option1.id, option2.id, option3.id)
         end
       end
     end

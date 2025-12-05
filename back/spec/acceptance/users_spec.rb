@@ -580,7 +580,7 @@ resource 'Users' do
           aggregate_failures 'testing json response' do
             expect(json_response[:data].size).to eq 6
             expect(json_response[:data].pluck(:id)).to match_array group_users.map(&:id)
-            expect(json_response[:data].pluck(:id).reverse.take(2)).to match_array [admin.id, both.id]
+            expect(json_response[:data].pluck(:id).reverse.take(2)).to contain_exactly(admin.id, both.id)
           end
         end
 
@@ -629,7 +629,7 @@ resource 'Users' do
           json_response = json_parse(response_body)
 
           expect(json_response[:data].size).to eq 2
-          expect(json_response[:data].pluck(:id)).to match_array [participant1.id, participant2.id]
+          expect(json_response[:data].pluck(:id)).to contain_exactly(participant1.id, participant2.id)
         end
 
         example 'List users who participated in a project with search' do
@@ -738,7 +738,7 @@ resource 'Users' do
               do_request(project: @project.id)
               expect(status).to eq 200
               json_response = json_parse(response_body)
-              expect(json_response[:data].pluck(:id)).to match_array [@participant1.id]
+              expect(json_response[:data].pluck(:id)).to contain_exactly(@participant1.id)
             end
           end
         end
@@ -787,7 +787,7 @@ resource 'Users' do
 
           do_request(can_moderate_project: p.id)
           json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id)).to match_array [a.id, m1.id, @user.id]
+          expect(json_response[:data].pluck(:id)).to contain_exactly(a.id, m1.id, @user.id)
         end
 
         example 'List all users who can moderate' do
@@ -799,7 +799,7 @@ resource 'Users' do
 
           do_request(can_moderate: true)
           json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id)).to match_array [a.id, m1.id, m2.id, @user.id]
+          expect(json_response[:data].pluck(:id)).to contain_exactly(a.id, m1.id, m2.id, @user.id)
         end
 
         example 'List all moderators who are not admins' do
@@ -812,7 +812,7 @@ resource 'Users' do
 
           do_request(can_moderate: true, can_admin: false)
           json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id)).to match_array [m1.id, m2.id, f.id]
+          expect(json_response[:data].pluck(:id)).to contain_exactly(m1.id, m2.id, f.id)
         end
 
         example 'List all admins' do
@@ -824,7 +824,7 @@ resource 'Users' do
 
           do_request(can_admin: true)
           json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id)).to match_array [a.id, @user.id]
+          expect(json_response[:data].pluck(:id)).to contain_exactly(a.id, @user.id)
         end
 
         example 'List all project reviewers' do
@@ -835,7 +835,7 @@ resource 'Users' do
           do_request(project_reviewer: true)
 
           assert_status 200
-          expect(response_ids).to match_array [project_reviewer.id]
+          expect(response_ids).to contain_exactly(project_reviewer.id)
         end
       end
 
@@ -909,7 +909,7 @@ resource 'Users' do
           example_request 'XLSX export all users who participated in a project' do
             expect(status).to eq 200
             xlsx_hash = XlsxService.new.xlsx_to_hash_array RubyXL::Parser.parse_buffer(response_body).stream
-            expect(xlsx_hash.pluck('id')).to match_array [@participant1.id, @participant2.id]
+            expect(xlsx_hash.pluck('id')).to contain_exactly(@participant1.id, @participant2.id)
           end
         end
 

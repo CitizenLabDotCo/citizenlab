@@ -11,7 +11,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
   include_context 'survey_setup'
 
   describe 'generate_results' do
-    it 'it is not implemented and returns an error' do
+    it 'is not implemented and returns an error' do
       generator = described_class.new(survey_phase)
       expect { generator.generate_results }.to raise_error(NotImplementedError)
     end

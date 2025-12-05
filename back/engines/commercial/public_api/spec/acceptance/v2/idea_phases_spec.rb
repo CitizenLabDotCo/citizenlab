@@ -54,7 +54,7 @@ resource 'Posts' do
 
       example_request 'List only idea-phase associations for the specified idea', document: false do
         assert_status 200
-        expect(json_response_body[:idea_phases].pluck(:phase_id)).to match_array([idea_phases.first[:phase_id]])
+        expect(json_response_body[:idea_phases].pluck(:phase_id)).to contain_exactly(idea_phases.first[:phase_id])
       end
     end
 
@@ -63,7 +63,7 @@ resource 'Posts' do
 
       example_request 'List only idea-phase associations for the specified phase', document: false do
         assert_status 200
-        expect(json_response_body[:idea_phases].pluck(:idea_id)).to match_array([idea_phases.first[:idea_id]])
+        expect(json_response_body[:idea_phases].pluck(:idea_id)).to contain_exactly(idea_phases.first[:idea_id])
       end
     end
   end

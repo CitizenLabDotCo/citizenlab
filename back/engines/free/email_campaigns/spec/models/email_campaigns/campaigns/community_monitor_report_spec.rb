@@ -25,19 +25,19 @@ RSpec.describe EmailCampaigns::Campaigns::CommunityMonitorReport do
     it 'filters out invitees' do
       admin = create(:admin)
       create(:invited_user, roles: [{ type: 'admin' }])
-      expect(campaign.apply_recipient_filters).to match_array([admin])
+      expect(campaign.apply_recipient_filters).to contain_exactly(admin)
     end
 
     it 'filters out normal users' do
       admin = create(:admin)
       create(:user)
-      expect(campaign.apply_recipient_filters).to match_array([admin])
+      expect(campaign.apply_recipient_filters).to contain_exactly(admin)
     end
 
     it 'filters out moderators of other projects' do
       admin = create(:admin)
       create(:project_moderator)
-      expect(campaign.apply_recipient_filters).to match_array([admin])
+      expect(campaign.apply_recipient_filters).to contain_exactly(admin)
     end
 
     it 'includes moderators of community monitor' do
@@ -49,7 +49,7 @@ RSpec.describe EmailCampaigns::Campaigns::CommunityMonitorReport do
       admin = create(:admin)
       moderator = create(:project_moderator, project_ids: [phase.project_id])
 
-      expect(campaign.apply_recipient_filters).to match_array([admin, moderator])
+      expect(campaign.apply_recipient_filters).to contain_exactly(admin, moderator)
     end
   end
 

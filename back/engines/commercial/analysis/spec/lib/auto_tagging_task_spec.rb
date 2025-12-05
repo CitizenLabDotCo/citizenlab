@@ -82,7 +82,7 @@ RSpec.describe Analysis::AutoTaggingTask do
       expect(negative_tag).to be_present
       expect(positive_tag.reload).to be_present
 
-      expect(idea.tags).to match_array([negative_tag])
+      expect(idea.tags).to contain_exactly(negative_tag)
       expect(idea.taggings.first.background_task).to eq att
     end
   end
@@ -151,7 +151,7 @@ RSpec.describe Analysis::AutoTaggingTask do
       other_tag = Analysis::Tag.find_by(analysis: analysis, name: 'other')
       expect(bananas_tag).to be_present
       expect(other_tag).not_to be_present
-      expect(ideas.map(&:tags)).to match_array [[bananas_tag], []]
+      expect(ideas.map(&:tags)).to contain_exactly([bananas_tag], [])
     end
 
     describe '#fit_inputs_in_context_window' do

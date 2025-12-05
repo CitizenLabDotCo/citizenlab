@@ -20,7 +20,7 @@ describe FoldersFinderAdminService do
       result = described_class.execute(scope, params)
       # Only f1 should be returned, as it is the only one that is published AND managed by a user in the
       # specified list of managers.
-      expect(result).to match_array([f1])
+      expect(result).to contain_exactly(f1)
     end
   end
 
@@ -67,7 +67,7 @@ describe FoldersFinderAdminService do
 
     it 'returns all folders when no managers specified' do
       result = described_class.filter_folder_manager(ProjectFolders::Folder.all, {})
-      expect(result.pluck(:id)).to match_array([f1.id, f2.id, f3.id])
+      expect(result.pluck(:id)).to contain_exactly(f1.id, f2.id, f3.id)
     end
   end
 
