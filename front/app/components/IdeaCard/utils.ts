@@ -83,14 +83,5 @@ export const checkImagesLoaded = (projectDescription: Element): boolean => {
   }
 
   // Check if all images are loaded
-  const allImagesLoaded = Array.from(imagesInDescription).every((img) => {
-    const isLoaded = img.complete;
-    return isLoaded;
-  });
-
-  if (allImagesLoaded) {
-    // All images in description are loaded
-    return true;
-  }
-  return false;
+  return Array.from(imagesInDescription).every((img) => img.complete);
 };
