@@ -484,11 +484,6 @@ RSpec.describe Insights::BasePhaseInsightsService do
     end
   end
 
-  describe 'participants_rolling_7_day_change' do
-    it 'calculates rolling 7-day change correctly' do
-    end
-  end
-
   describe '#phase_has_run_more_than_14_days?' do
     it 'returns false when phase duration is less than 14 days' do
       phase = create(:single_voting_phase, start_at: 15.days.ago, end_at: 2.days.ago)

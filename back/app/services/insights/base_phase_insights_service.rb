@@ -47,7 +47,7 @@ module Insights
     def base_metrics(participations, participant_ids, visits_data)
       total_participant_count = participant_ids.count
       flattened_participations = participations.values.flatten
-      
+
       phase_run_14_days = phase_has_run_more_than_14_days?
 
       participants_rolling_7_day_change = phase_run_14_days ? participants_rolling_7_day_change(flattened_participations) : nil
