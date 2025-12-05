@@ -35,7 +35,7 @@ module Insights
     end
 
     def phase_participation_method_metrics(participations)
-      proposals_reached_threshold = participations[:posting_idea].select { |p| p[:threshold_reached_at].present? } 
+      proposals_reached_threshold = participations[:posting_idea].select { |p| p[:threshold_reached_at].present? }
 
       {
         ideas_posted: participations[:posting_idea].count,
