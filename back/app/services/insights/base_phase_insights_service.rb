@@ -76,6 +76,13 @@ module Insights
       elapsed_days >= 14
     end
 
+    def percentage_change(old_value, new_value)
+      return nil if old_value.zero?
+
+      # Round to one decimal place
+      (((new_value - old_value).to_f / old_value) * 100).round(1)
+    end
+
     def participant_id(item_id, user_id, user_hash = nil)
       user_id.presence || user_hash.presence || item_id
     end

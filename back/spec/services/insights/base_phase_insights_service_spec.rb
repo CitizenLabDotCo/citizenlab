@@ -521,4 +521,30 @@ RSpec.describe Insights::BasePhaseInsightsService do
       expect(service.send(:phase_has_run_more_than_14_days?)).to be false
     end
   end
+
+  describe '#percentage_change' do
+    it 'calculates percentage change correctly' do
+      expect(service.send(:percentage_change, 100, 150)).to eq(50.0)
+      expect(service.send(:percentage_change, 200, 100)).to eq(-50.0)
+      expect(service.send(:percentage_change, 50, 75)).to eq(50.0)
+      expect(service.send(:percentage_change, 80, 60)).to eq(-25.0)
+    end
+
+    it 'returns nil when old value is zero' do
+      expect(service.send(:percentage_change, 0, 100)).to be_nil
+    end
+
+    it 'returns zero when there is no change' do
+      expect(service.send(:percentage_change, 100, 100)).to eq(0.0)
+    end
+
+    it 'returns -100.0 when new value is zero' do
+      expect(service.send(:percentage_change, 100, 0)).to eq(-100.0)
+    end
+
+    it 'rounds percentage change to one decimal place' do
+      expect(service.send(:percentage_change, 3, 4)).to eq(33.3)
+      expect(service.send(:percentage_change, 7, 5)).to eq(-28.6)
+    end
+  end
 end
