@@ -16,10 +16,10 @@ type Props = {
   coreSetting: TAppConfigurationSettingCore;
   labelMessage: MessageDescriptor;
   tooltipMessage?: MessageDescriptor;
+  customFieldsSignupHelperTextMultiloc?: Multiloc | null;
   onCoreSettingWithMultilocChange: (
     coreSetting: TAppConfigurationSettingCore
   ) => (multiloc: Multiloc) => void;
-  customFieldsSignupHelperTextMultiloc?: Multiloc | null;
 };
 
 const HelperTextInput = ({

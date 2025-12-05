@@ -135,9 +135,7 @@ const SettingsRegistrationTab = () => {
           </SectionDescription>
           <form onSubmit={handleSubmit}>
             <HelperTextInputs
-              customFieldsSignupHelperTextMultiloc={
-                latestAppConfigSettings.core.custom_fields_signup_helper_text
-              }
+              coreSettings={latestAppConfigSettings.core}
               onCoreSettingWithMultilocChange={
                 handleCoreSettingWithMultilocOnChange
               }

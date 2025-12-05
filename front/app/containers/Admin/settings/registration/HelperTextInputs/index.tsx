@@ -2,21 +2,24 @@ import React from 'react';
 
 import { Multiloc } from 'typings';
 
-import { TAppConfigurationSettingCore } from 'api/app_configuration/types';
+import {
+  TAppConfigurationSettingCore,
+  IAppConfigurationSettingsCore,
+} from 'api/app_configuration/types';
 
 import HelperTextInput from './HelperTextInput';
 import messages from './messages';
 
 type Props = {
-  customFieldsSignupHelperTextMultiloc?: Multiloc | null;
+  coreSettings: IAppConfigurationSettingsCore;
   onCoreSettingWithMultilocChange: (
     coreSetting: TAppConfigurationSettingCore
   ) => (multiloc: Multiloc) => void;
 };
 
 const RegistrationQuestions = ({
+  coreSettings,
   onCoreSettingWithMultilocChange,
-  customFieldsSignupHelperTextMultiloc,
 }: Props) => {
   return (
     <>
@@ -25,7 +28,7 @@ const RegistrationQuestions = ({
         labelMessage={messages.enterEmailStep}
         tooltipMessage={messages.enterEmailStepTooltip}
         customFieldsSignupHelperTextMultiloc={
-          customFieldsSignupHelperTextMultiloc
+          coreSettings.enter_email_helper_text
         }
         onCoreSettingWithMultilocChange={onCoreSettingWithMultilocChange}
       />
@@ -34,7 +37,7 @@ const RegistrationQuestions = ({
         labelMessage={messages.enterPasswordStep}
         tooltipMessage={messages.enterPasswordStepTooltip}
         customFieldsSignupHelperTextMultiloc={
-          customFieldsSignupHelperTextMultiloc
+          coreSettings.enter_password_helper_text
         }
         onCoreSettingWithMultilocChange={onCoreSettingWithMultilocChange}
       />
@@ -43,7 +46,7 @@ const RegistrationQuestions = ({
         labelMessage={messages.completeYourProfileStep}
         tooltipMessage={messages.completeYourProfileStepTooltip}
         customFieldsSignupHelperTextMultiloc={
-          customFieldsSignupHelperTextMultiloc
+          coreSettings.complete_your_profile_helper_text
         }
         onCoreSettingWithMultilocChange={onCoreSettingWithMultilocChange}
       />
@@ -52,7 +55,7 @@ const RegistrationQuestions = ({
         labelMessage={messages.demographicQuestions}
         tooltipMessage={messages.demographicQuestionsTooltip}
         customFieldsSignupHelperTextMultiloc={
-          customFieldsSignupHelperTextMultiloc
+          coreSettings.custom_fields_signup_helper_text
         }
         onCoreSettingWithMultilocChange={onCoreSettingWithMultilocChange}
       />
