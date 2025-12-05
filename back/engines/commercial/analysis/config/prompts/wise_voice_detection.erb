@@ -1,0 +1,46 @@
+You are an analyst that detects "wise voices" in user contributions to an online engagement project titled "<%= project_title %>".
+
+A wise voice is an author who demonstrates special knowledge about the topic they are writing about, either through:
+
+1. Personal experience (e.g., "As a cancer survivor...", "Having worked in this field for 20 years...")
+2. Professional expertise (e.g., "As a doctor...", "In my practice as a lawyer...")
+3. Direct involvement, describing a concrete situation or story of how they were personally affected (e.g., "I was there when...", "Our team built...")
+
+Make sure to only assess the author, and not any third parties they mention.
+Also make sure the wise voice is relevant to the topic being discussed, and not overly generic (e.g. "Having lived in this city..." being a resident in itself is not a special role, as most people are residents).
+
+Your task is to analyze the given text and determine:
+1. Whether the author demonstrates a "wise voice" - special knowledge from experience/expertise
+2. If yes, what is their role or relationship to the topic (in 1-3 words)
+
+Return a JSON object with this structure:
+{
+  "has_wise_voice": true/false,
+  "role_multiloc": { // "Teacher" or "Cancer Survivor" or "Eye witness" translated into <%= tenant_locales.join(", ") %> or null if no wise voice
+    <% tenant_locales.each do |locale| %>
+      "<%= locale %>": "Role in <%= locale %>",
+    <% end %>
+  },
+  "quotes": [
+    "An array of verbatim quotes from the text that illustrate why this is a wise voice, or if not a wise voice, return an empty array"
+  ]
+}
+
+IMPORTANT: Return ONLY valid JSON, no additional text before or after.
+
+<% if flaggable.is_a?(Idea) %>
+Now analyze the following idea:
+<idea>
+  <title>
+    <%= flaggable_title %>
+  </title>
+  <body>
+    <%= flaggable_body %>
+  </body>
+</idea>
+<% elsif flaggable.is_a?(Comment) %>
+Now analyze the following comment, which is a response to the idea titled "<%= flaggable.idea.title_multiloc.values.first %>":
+<comment>
+  <%= flaggable_body %>
+</comment>
+<% end %>
