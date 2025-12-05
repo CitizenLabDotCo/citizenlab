@@ -22,13 +22,13 @@ import useLocale from 'hooks/useLocale';
 import { useIntl } from 'utils/cl-intl';
 
 import { configureMapView } from './config';
-import messages from './messages';
 import { InitialData, DefaultBasemapType } from './types';
 import {
   getDefaultBasemapType,
   getDefaultBasemap,
   handleWebMapReferenceLayers,
   createUserLocationGraphic,
+  useLabelExpandButtons,
 } from './utils';
 
 // Custom Esri styles
@@ -106,46 +106,9 @@ const EsriMap = ({
 
   const mapRefAvailable = !!mapRef.current;
 
-  // For Accessibility: add (aria-labels) to the expand buttons for layer list and legend
+  // for Accessibility: add labels to the expand buttons in the map's legend and layer list
   const { formatMessage } = useIntl();
-  useEffect(() => {
-    if (!mapView) return;
-
-    const labelExpandButtons = () => {
-      document
-        .querySelectorAll('.esri-expand__container')
-        .forEach((container) => {
-          const button = container.querySelector(
-            ".esri-widget--button[role='button']"
-          );
-          const content = container.querySelector('.esri-expand__content');
-          if (!button || !content) return;
-
-          if (content.querySelector('.esri-layer-list')) {
-            button.setAttribute(
-              'aria-label',
-              formatMessage(messages.a11y_mapTopButton)
-            );
-          }
-
-          if (content.querySelector('.esri-legend')) {
-            button.setAttribute(
-              'aria-label',
-              formatMessage(messages.a11y_mapBottomButton)
-            );
-          }
-        });
-    };
-
-    const timeoutId = setTimeout(labelExpandButtons, 300);
-    const observer = new MutationObserver(labelExpandButtons);
-    observer.observe(document.body, { childList: true, subtree: true });
-
-    return () => {
-      clearTimeout(timeoutId);
-      observer.disconnect();
-    };
-  }, [mapView, formatMessage]);
+  useLabelExpandButtons({ mapView, formatMessage });
 
   useEffect(() => {
     if (!mapRefAvailable) return;
