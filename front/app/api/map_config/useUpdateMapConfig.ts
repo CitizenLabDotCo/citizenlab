@@ -23,7 +23,7 @@ const useUpdateMapConfig = (projectId?: string) => {
     mutationFn: updateMapConfig,
     onSuccess: async (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: mapConfigKeys.item({ mapConfigId: variables.mapConfigId }),
+        queryKey: mapConfigKeys.item({ id: variables.mapConfigId }),
       });
       if (projectId) {
         queryClient.invalidateQueries({

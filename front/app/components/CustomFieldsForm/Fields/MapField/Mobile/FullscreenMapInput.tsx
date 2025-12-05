@@ -48,7 +48,7 @@ import {
 type Props = {
   setShowFullscreenMap: (show: boolean) => void;
   mapConfig?: IMapConfig;
-  data: GeoJSON.Point | number[][] | undefined;
+  data: GeoJSON.Point | GeoJSON.LineString | GeoJSON.Polygon | undefined;
   handleSinglePointChange: (point: GeoJSON.Point | undefined) => void;
   handleMultiPointChange?: (points: number[][] | undefined) => void;
   inputType: MapInputType;
@@ -155,16 +155,17 @@ const FullscreenMapInput = memo<Props>(
 
     // Check if confirm button is enabled
     const isConfirmEnabled = () => {
+      if (!data || !('coordinates' in data)) return false;
       switch (inputType) {
         case 'point':
-          // For GeoJSON.Point, check if it has coordinates
-          return data && 'coordinates' in data && data.coordinates.length >= 2;
         case 'line':
-          // For number[][], check if it has 2 or more points
-          return Array.isArray(data) && data.length >= 2;
+          return data.coordinates.length >= 2;
         case 'polygon':
-          // For number[][], check if it has 4 or more points (3 & 1 duplicated first point to close the polygon)
-          return Array.isArray(data) && data.length >= 4;
+          // For polygon, check if the first ring has 4+ points (3 points + 1 duplicated to close)
+          return (
+            Array.isArray(data.coordinates[0]) &&
+            data.coordinates[0].length >= 4
+          );
       }
     };
 
@@ -273,7 +274,11 @@ const FullscreenMapInput = memo<Props>(
                       handleMultiPointChange={handleMultiPointChange}
                       mapView={mapView}
                       undoButtonRef={undoButtonRef}
-                      undoEnabled={Array.isArray(data) && data.length > 0}
+                      undoEnabled={
+                        'coordinates' in data &&
+                        Array.isArray(data.coordinates) &&
+                        data.coordinates.length > 0
+                      }
                       inputType={inputType}
                       buttonStyle="secondary"
                     />

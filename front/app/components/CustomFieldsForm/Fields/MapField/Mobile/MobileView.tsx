@@ -37,7 +37,7 @@ type Props = {
   handleSinglePointChange: (point: GeoJSON.Point | undefined) => void;
   handleMultiPointChange?: (points: number[][] | undefined) => void;
   inputType: MapInputType;
-  data?: GeoJSON.Point | number[][] | undefined;
+  data?: GeoJSON.Point | GeoJSON.LineString | GeoJSON.Polygon | undefined;
 };
 
 const MobileView = ({

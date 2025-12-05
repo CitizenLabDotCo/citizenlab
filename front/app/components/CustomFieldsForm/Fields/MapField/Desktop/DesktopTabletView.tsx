@@ -5,6 +5,7 @@ import Layer from '@arcgis/core/layers/Layer';
 import MapView from '@arcgis/core/views/MapView';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { Point } from 'geojson';
+import { isEmpty } from 'lodash-es';
 import { useTheme } from 'styled-components';
 
 import { IMapConfig } from 'api/map_config/types';
@@ -39,7 +40,7 @@ type Props = {
   mapView?: MapView | null;
   handleSinglePointChange: (point: GeoJSON.Point | undefined) => void;
   handleMultiPointChange?: (points: number[][] | undefined) => void;
-  data: any;
+  data: GeoJSON.Point | GeoJSON.LineString | GeoJSON.Polygon | undefined;
 };
 
 const DesktopView = ({
@@ -190,7 +191,7 @@ const DesktopView = ({
                 handleMultiPointChange={handleMultiPointChange}
                 mapView={mapView}
                 undoButtonRef={undoButtonRef}
-                undoEnabled={data}
+                undoEnabled={!isEmpty(data)}
                 inputType={inputType}
                 width="32px"
                 height="32px"
