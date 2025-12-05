@@ -14,13 +14,6 @@ Bundler/OrderedGems:
   Exclude:
     - 'Gemfile'
 
-# Offense count: 73
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle, NonImplicitAssociationMethodNames.
-# SupportedStyles: explicit, implicit
-FactoryBot/AssociationStyle:
-  Enabled: false
-
 # Offense count: 4
 # Configuration parameters: Include, MaxAmount.
 # Include: **/*_spec.rb, **/spec/**/*, **/test/**/*, **/features/support/factories/**/*.rb
@@ -48,26 +41,6 @@ FactoryBot/FactoryAssociationWithStrategy:
     - 'spec/factories/custom_forms.rb'
     - 'spec/factories/invites.rb'
 
-# Offense count: 86
-# Configuration parameters: EnforcedStyle, AllowedGems, Include.
-# SupportedStyles: Gemfile, gems.rb, gemspec
-# Include: **/*.gemspec, **/Gemfile, **/gems.rb
-Gemspec/DevelopmentDependencies:
-  Enabled: false
-
-# Offense count: 46
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: Severity, Include.
-# Include: **/*.gemspec
-Gemspec/RequireMFA:
-  Enabled: false
-
-# Offense count: 47
-# Configuration parameters: Severity, Include.
-# Include: **/*.gemspec
-Gemspec/RequiredRubyVersion:
-  Enabled: false
-
 # Offense count: 1
 # Configuration parameters: AllowComments, AllowEmptyLambdas.
 Lint/EmptyBlock:
@@ -80,68 +53,16 @@ Lint/OrAssignmentToConstant:
   Exclude:
     - 'config/initializers/bunny.rb'
 
-# Offense count: 659
-# Configuration parameters: AllowedMethods, AllowedPatterns, CountRepeatedAttributes.
-Metrics/AbcSize:
-  Max: 126
-
-# Offense count: 290
-# Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns, inherit_mode.
-# AllowedMethods: refine
-Metrics/BlockLength:
-  Max: 384
-
-# Offense count: 12
-# Configuration parameters: CountBlocks, CountModifierForms.
-Metrics/BlockNesting:
-  Max: 5
-
-# Offense count: 127
-# Configuration parameters: CountComments, CountAsOne.
-Metrics/ClassLength:
-  Max: 564
-
 # Offense count: 1
 # Configuration parameters: LengthThreshold.
 Metrics/CollectionLiteralLength:
   Exclude:
     - 'app/services/timezone_service.rb'
 
-# Offense count: 218
-# Configuration parameters: AllowedMethods, AllowedPatterns.
-Metrics/CyclomaticComplexity:
-  Max: 26
-
-# Offense count: 572
-# Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns.
-Metrics/MethodLength:
-  Max: 61
-
-# Offense count: 1
-# Configuration parameters: CountComments, CountAsOne.
-Metrics/ModuleLength:
-  Max: 102
-
-# Offense count: 20
-# Configuration parameters: CountKeywordArgs, MaxOptionalParameters.
-Metrics/ParameterLists:
-  Max: 10
-
-# Offense count: 162
-# Configuration parameters: AllowedMethods, AllowedPatterns.
-Metrics/PerceivedComplexity:
-  Max: 28
-
 # Offense count: 1
 Naming/AccessorMethodName:
   Exclude:
     - 'engines/free/email_campaigns/app/models/email_campaigns/delivery.rb'
-
-# Offense count: 39
-# Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
-# AllowedNames: as, at, by, cc, db, id, if, in, io, ip, of, on, os, pp, to
-Naming/MethodParameterName:
-  Enabled: false
 
 # Offense count: 18
 # Configuration parameters: EnforcedStyle, CheckMethodNames, CheckSymbols, AllowedIdentifiers, AllowedPatterns.
@@ -154,10 +75,6 @@ Naming/VariableNumber:
     - 'db/migrate/20230811123114_rework_event_location_attributes.rb'
     - 'spec/acceptance/events_spec.rb'
 
-# Offense count: 119
-RSpec/AnyInstance:
-  Enabled: false
-
 # Offense count: 6
 RSpec/BeforeAfterAll:
   Exclude:
@@ -165,46 +82,10 @@ RSpec/BeforeAfterAll:
     - 'engines/free/surveys/spec/acceptance/typeform_events_spec.rb'
     - 'spec/services/user_display_name_service_spec.rb'
 
-# Offense count: 1014
-# Configuration parameters: Prefixes, AllowedPatterns.
-# Prefixes: when, with, without
-RSpec/ContextWording:
-  Enabled: false
-
 # Offense count: 2
 RSpec/ExpectInHook:
   Exclude:
     - 'engines/commercial/admin_api/spec/acceptance/users_spec.rb'
-
-# Offense count: 197
-# Configuration parameters: Include, CustomTransform, IgnoreMethods, SpecSuffixOnly.
-# Include: **/*_spec*rb*, **/spec/**/*
-RSpec/FilePath:
-  Enabled: false
-
-# Offense count: 481
-# Configuration parameters: Max, AllowedIdentifiers, AllowedPatterns.
-RSpec/IndexedLet:
-  Enabled: false
-
-# Offense count: 502
-# Configuration parameters: AssignmentOnly.
-RSpec/InstanceVariable:
-  Enabled: false
-
-# Offense count: 450
-RSpec/LetSetup:
-  Enabled: false
-
-# Offense count: 307
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: have_received, receive
-RSpec/MessageSpies:
-  Enabled: false
-
-# Offense count: 247
-RSpec/MissingExampleGroupArgument:
-  Enabled: false
 
 # Offense count: 16
 # Configuration parameters: EnforcedStyle, IgnoreSharedExamples.
@@ -216,11 +97,6 @@ RSpec/NamedSubject:
     - 'spec/lib/omniauth_methods/google_spec.rb'
     - 'spec/models/area_spec.rb'
     - 'spec/models/idea_status_spec.rb'
-
-# Offense count: 584
-# Configuration parameters: AllowedGroups.
-RSpec/NestedGroups:
-  Max: 6
 
 # Offense count: 33
 # Configuration parameters: AllowedPatterns.
@@ -254,16 +130,6 @@ RSpec/RepeatedDescription:
     - 'engines/commercial/smart_groups/spec/rules/custom_field_select_spec.rb'
     - 'spec/services/sanitization_service_spec.rb'
 
-# Offense count: 184
-# Configuration parameters: Include, CustomTransform, IgnoreMethods, IgnoreMetadata.
-# Include: **/*_spec.rb
-RSpec/SpecFilePathFormat:
-  Enabled: false
-
-# Offense count: 77
-RSpec/StubbedMock:
-  Enabled: false
-
 # Offense count: 4
 RSpec/SubjectStub:
   Exclude:
@@ -278,13 +144,6 @@ RSpec/VerifiedDoubles:
   Exclude:
     - 'engines/commercial/multi_tenancy/spec/services/track_intercom_service_spec.rb'
     - 'spec/services/track_intercom_service_spec.rb'
-
-# Offense count: 121
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: not_to, be_invalid
-RSpecRails/NegationBeValid:
-  Enabled: false
 
 # Offense count: 2
 # This cop supports unsafe autocorrection (--autocorrect-all).
@@ -302,13 +161,6 @@ Rails/AddColumnIndex:
     - 'db/migrate/20200306160918_add_text_reference_to_text_image.rb'
     - 'db/migrate/20200527093956_add_code_to_topics.rb'
     - 'db/migrate/20210217112905_add_project_folder_id_to_notifications.project_folders.rb'
-
-# Offense count: 58
-# Configuration parameters: Database, Include.
-# SupportedDatabases: mysql, postgresql
-# Include: db/**/*.rb
-Rails/BulkChangeTable:
-  Enabled: false
 
 # Offense count: 5
 # Configuration parameters: Severity, Include.
@@ -329,13 +181,6 @@ Rails/Date:
   Exclude:
     - 'engines/commercial/smart_groups/spec/rules/custom_field_date_spec.rb'
     - 'engines/commercial/smart_groups/spec/rules/registration_completed_at_spec.rb'
-
-# Offense count: 150
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: AllowedMethods, AllowedPatterns.
-# AllowedMethods: order, limit, select, lock
-Rails/FindEach:
-  Enabled: false
 
 # Offense count: 12
 # Configuration parameters: Include.
@@ -392,24 +237,6 @@ Rails/PluckInWhere:
   Exclude:
     - 'engines/free/email_campaigns/app/models/concerns/email_campaigns/consentable.rb'
 
-# Offense count: 66
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: AllowedReceivers.
-# AllowedReceivers: ActionMailer::Preview, ActiveSupport::TimeZone
-Rails/RedundantActiveRecordAllMethod:
-  Enabled: false
-
-# Offense count: 48
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Rails/RedundantPresenceValidationOnBelongsTo:
-  Enabled: false
-
-# Offense count: 81
-# Configuration parameters: Include.
-# Include: db/**/*.rb
-Rails/ReversibleMigration:
-  Enabled: false
-
 # Offense count: 9
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Rails/RootPathnameMethods:
@@ -429,12 +256,6 @@ Rails/SelectMap:
   Exclude:
     - 'app/models/user.rb'
 
-# Offense count: 176
-# Configuration parameters: ForbiddenMethods, AllowedMethods.
-# ForbiddenMethods: decrement!, decrement_counter, increment!, increment_counter, insert, insert!, insert_all, insert_all!, toggle!, touch, touch_all, update_all, update_attribute, update_column, update_columns, update_counters, upsert, upsert_all
-Rails/SkipsModelValidations:
-  Enabled: false
-
 # Offense count: 10
 # Configuration parameters: Include.
 # Include: db/**/*.rb
@@ -446,13 +267,6 @@ Rails/ThreeStateBooleanColumn:
     - 'db/migrate/20180220142344_create_custom_fields.rb'
     - 'db/migrate/20180815114121_create_campaigns.email_campaigns.rb'
     - 'db/migrate/20180815114124_create_consents.email_campaigns.rb'
-
-# Offense count: 371
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: strict, flexible
-Rails/TimeZone:
-  Enabled: false
 
 # Offense count: 1
 # Configuration parameters: Severity, Environments.
@@ -474,22 +288,11 @@ Rails/WhereRange:
     - 'engines/commercial/multi_tenancy/lib/tasks/core/migrate_creation_finalized_at.rake'
     - 'spec/finders/events_finder_spec.rb'
 
-# Offense count: 37
-Security/Open:
-  Enabled: false
-
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Style/ArrayIntersect:
   Exclude:
     - 'app/services/user_reduce_service.rb'
-
-# Offense count: 475
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: nested, compact
-Style/ClassAndModuleChildren:
-  Enabled: false
 
 # Offense count: 10
 Style/ClassVars:
@@ -514,13 +317,6 @@ Style/MultilineBlockChain:
     - 'engines/free/email_campaigns/spec/acceptance/consents_spec.rb'
     - 'lib/tasks/tenant_template_csv_to_yml.rake'
     - 'spec/services/profanity_service_spec.rb'
-
-# Offense count: 144
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: literals, strict
-Style/MutableConstant:
-  Enabled: false
 
 # Offense count: 12
 Style/OpenStructUse:
@@ -576,9 +372,3 @@ Style/SafeNavigationChainLength:
     - 'lib/omniauth_methods/facebook.rb'
     - 'spec/support/validation_error_helper.rb'
 
-# Offense count: 2945
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, AllowedPatterns, SplitStrings.
-# URISchemes: http, https
-Layout/LineLength:
-  Max: 1269
