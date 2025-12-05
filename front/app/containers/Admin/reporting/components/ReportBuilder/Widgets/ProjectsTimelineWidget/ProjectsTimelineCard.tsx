@@ -43,6 +43,8 @@ export interface ProjectsTimelineCardProps {
   participationMethods?: ParticipationMethod[];
   sort?: ProjectSortableParam;
   noOfProjects?: number;
+  excludedProjectIds?: string[];
+  excludedFolderIds?: string[];
 }
 
 const ProjectsTimelineCard = ({
@@ -58,6 +60,8 @@ const ProjectsTimelineCard = ({
   participationMethods = [],
   sort = 'phase_starting_or_ending_soon',
   noOfProjects = DEFAULT_NO_OF_PROJECTS,
+  excludedProjectIds = [],
+  excludedFolderIds = [],
 }: ProjectsTimelineCardProps) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -75,6 +79,8 @@ const ProjectsTimelineCard = ({
     discoverability,
     sort,
     no_of_projects: noOfProjects,
+    excluded_project_ids: excludedProjectIds,
+    excluded_folder_ids: excludedFolderIds,
   });
 
   if (isLoading) {

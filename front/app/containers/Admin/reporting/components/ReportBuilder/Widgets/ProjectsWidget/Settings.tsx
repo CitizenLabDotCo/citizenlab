@@ -8,6 +8,9 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { useIntl } from 'utils/cl-intl';
 
+import FolderMultiSelect from '../_shared/FolderMultiSelect';
+import sharedMessages from '../_shared/messages';
+import ProjectMultiSelect from '../_shared/ProjectMultiSelect';
 import {
   TitleInput,
   DateRangeInput,
@@ -18,14 +21,17 @@ import { Props } from './typings';
 
 const Settings = () => {
   const { formatMessage } = useIntl();
-
   const {
     actions: { setProp },
     publicationStatuses,
+    excludedProjectIds,
+    excludedFolderIds,
   } = useNode((node) => ({
     publicationStatuses: node.data.props.publicationStatuses?.length
       ? node.data.props.publicationStatuses
       : ['published'],
+    excludedProjectIds: node.data.props.excludedProjectIds || [],
+    excludedFolderIds: node.data.props.excludedFolderIds || [],
   }));
 
   const handleStatusChange = (options: IOption[]) => {
@@ -35,13 +41,25 @@ const Settings = () => {
     });
   };
 
-  const options: IOption[] = [
+  const handleExcludedFoldersChange = (ids: string[]) => {
+    setProp((props: Props) => {
+      props.excludedFolderIds = ids;
+    });
+  };
+
+  const handleExcludedProjectsChange = (ids: string[]) => {
+    setProp((props: Props) => {
+      props.excludedProjectIds = ids;
+    });
+  };
+
+  const statusOptions: IOption[] = [
     { value: 'published', label: formatMessage(messages.published) },
     { value: 'archived', label: formatMessage(messages.archived) },
   ];
 
   return (
-    <Box>
+    <Box mb="20px">
       <TitleInput />
       <Box mb="20px">
         <Text variant="bodyM" color="textSecondary" mb="5px">
@@ -49,11 +67,31 @@ const Settings = () => {
         </Text>
         <MultipleSelect
           value={publicationStatuses}
-          options={options}
+          options={statusOptions}
           onChange={handleStatusChange}
         />
       </Box>
       <DateRangeInput />
+      <Box mb="20px">
+        <Text variant="bodyM" color="textSecondary" mb="5px">
+          {formatMessage(sharedMessages.excludeFolders)}
+        </Text>
+        <FolderMultiSelect
+          value={excludedFolderIds}
+          onChange={handleExcludedFoldersChange}
+        />
+      </Box>
+      <Box mb="20px">
+        <Text variant="bodyM" color="textSecondary" mb="5px">
+          {formatMessage(sharedMessages.excludeProjects)}
+        </Text>
+        <ProjectMultiSelect
+          value={excludedProjectIds}
+          onChange={handleExcludedProjectsChange}
+          publicationStatusFilter={publicationStatuses}
+          excludedFolderIds={excludedFolderIds}
+        />
+      </Box>
     </Box>
   );
 };

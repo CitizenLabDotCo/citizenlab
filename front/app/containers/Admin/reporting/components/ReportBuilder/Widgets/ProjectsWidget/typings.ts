@@ -7,4 +7,6 @@ export interface Props {
   startAt?: string;
   endAt?: string | null;
   publicationStatuses?: ProjectReportsPublicationStatus[];
+  excludedProjectIds?: string[];
+  excludedFolderIds?: string[];
 }

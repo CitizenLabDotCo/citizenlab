@@ -21,6 +21,8 @@ ProjectsWidget.craft = {
     startAt: undefined,
     endAt: undefined,
     publicationStatus: undefined,
+    excludedProjectIds: [],
+    excludedFolderIds: [],
   },
   related: {
     settings: Settings,
