@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Analysis::AutoTaggingTask do
   describe 'Controversial auto_tagging' do
-    it 'works' do
+    it 'tags controversial ideas based on likes/dislikes ratio' do
       att = create(:auto_tagging_task, state: 'queued', auto_tagging_method: 'controversial', filters: { 'reactions_from' => 101 })
       idea1 = create(:idea, project: att.analysis.project, likes_count: 100, dislikes_count: 100)
       idea2 = create(:idea, project: att.analysis.project, likes_count: 50, dislikes_count: 50)
@@ -28,7 +28,7 @@ RSpec.describe Analysis::AutoTaggingTask do
   end
 
   describe 'PlatformTopic auto_tagging' do
-    it 'works' do
+    it 'creates tags from platform topics and assigns them to ideas' do
       analysis = create(:analysis)
       att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'platform_topic')
       idea1 = create(:idea_with_topics, project: att.analysis.project, topics_count: 1)
@@ -57,7 +57,7 @@ RSpec.describe Analysis::AutoTaggingTask do
   end
 
   describe 'Sentiment auto_tagging' do
-    it 'works' do
+    it 'detects sentiment and applies positive/negative tags' do
       project = create(:single_phase_ideation_project)
       custom_form = create(:custom_form, :with_default_fields, participation_context: project)
       analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
@@ -88,7 +88,7 @@ RSpec.describe Analysis::AutoTaggingTask do
   end
 
   describe 'Language detection auto_tagging' do
-    it 'works' do
+    it 'detects language and creates language tags' do
       project = create(:single_phase_ideation_project)
       custom_form = create(:custom_form, :with_default_fields, participation_context: project)
       analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
@@ -121,7 +121,7 @@ RSpec.describe Analysis::AutoTaggingTask do
     let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
     let(:analysis) { create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project) }
 
-    it 'works' do
+    it 'extracts NLP topics and classifies ideas' do
       task = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'nlp_topic')
       ideas = create_list(:idea, 2, project: project)
 
@@ -183,7 +183,7 @@ RSpec.describe Analysis::AutoTaggingTask do
   end
 
   describe 'LabelClassification auto_tagging' do
-    it 'works' do
+    it 'classifies ideas using label classification with filters' do
       project = create(:single_phase_ideation_project)
       custom_form = create(:custom_form, :with_default_fields, participation_context: project)
       analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
@@ -246,7 +246,7 @@ RSpec.describe Analysis::AutoTaggingTask do
   end
 
   describe 'FewShotClassification auto_tagging' do
-    it 'works' do
+    it 'performs few-shot classification with example taggings' do
       project = create(:single_phase_ideation_project)
       custom_form = create(:custom_form, :with_default_fields, participation_context: project)
       analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)

@@ -10,7 +10,7 @@ describe ProjectCopyService do
       stub_translations
     end
 
-    it 'works' do
+    it 'exports and imports projects with various configurations' do
       load Rails.root.join('db/seeds.rb')
       Apartment::Tenant.switch('localhost') do
         load Rails.root.join('db/seeds.rb')

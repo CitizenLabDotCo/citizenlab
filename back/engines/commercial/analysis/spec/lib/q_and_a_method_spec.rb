@@ -24,7 +24,7 @@ RSpec.describe Analysis::QAndAMethod do
       end
     end
 
-    it 'works' do
+    it 'generates a Q&A plan with default parameters' do
       plan = Analysis::QAndAMethod::OnePassLLM.new(question).generate_plan
       expect(plan).to have_attributes({
         q_and_a_method_class: Analysis::QAndAMethod::OnePassLLM,

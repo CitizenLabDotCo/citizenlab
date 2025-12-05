@@ -11,7 +11,7 @@ RSpec.describe ReportBuilder::Queries::DeviceTypes do
       AppConfiguration.instance.update!(created_at: Date.new(2021, 1, 1))
     end
 
-    it 'works' do
+    it 'returns device type analytics data for given time period' do
       2.times do
         create(:session, created_at: Date.new(2023, 2, 1), device_type: 'desktop_or_other')
       end

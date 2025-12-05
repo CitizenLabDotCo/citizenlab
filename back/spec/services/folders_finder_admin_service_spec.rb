@@ -14,7 +14,7 @@ describe FoldersFinderAdminService do
     let!(:user1) { create(:user, roles: [{ 'type' => 'project_folder_moderator', project_folder_id: f1.id }]) }
     let!(:user2) { create(:user, roles: [{ 'type' => 'project_folder_moderator', project_folder_id: f2.id }]) }
 
-    it 'works' do
+    it 'filters folders by status and managers' do
       scope = ProjectFolders::Folder.all
       params = { status: ['published'], managers: [user1.id, user2.id] }
       result = described_class.execute(scope, params)

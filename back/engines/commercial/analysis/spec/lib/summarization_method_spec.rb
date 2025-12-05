@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Analysis::SummarizationMethod do
   describe 'Bogus summarization' do
-    it 'works' do
+    it 'generates a bogus summary from filtered ideas' do
       analysis = create(:analysis, main_custom_field: create(
         :custom_field,
         :for_custom_form,
@@ -63,7 +63,7 @@ RSpec.describe Analysis::SummarizationMethod do
       end
     end
 
-    it 'works' do
+    it 'generates a summarization plan with default parameters' do
       plan = Analysis::SummarizationMethod::OnePassLLM.new(summary).generate_plan
       expect(plan).to have_attributes({
         summarization_method_class: Analysis::SummarizationMethod::OnePassLLM,
